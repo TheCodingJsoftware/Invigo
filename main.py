@@ -4,7 +4,7 @@ __credits__: "list[str]" = ["Jared Gross"]
 __license__ = "MIT"
 __name__ = "Inventory Manager"
 __version__ = "v0.0.1"
-__updated__ = "2022-05-05 20:51:21"
+__updated__ = "2022-05-05 20:54:36"
 __maintainer__ = "Jared Gross"
 __email__ = "jared@pinelandfarms.ca"
 __status__ = "Production"
@@ -150,7 +150,7 @@ class MainWindow(QMainWindow):
         s.bind((host, port))
         s.listen(10)
         c, addr = s.accept()
-        msg = "Bye.............."
+        msg = "test"
         c.send(msg.encode())
         c.close()
 
