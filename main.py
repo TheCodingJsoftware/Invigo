@@ -5,7 +5,7 @@ __credits__: "list[str]" = ["Jared Gross"]
 __license__ = "MIT"
 __name__ = "Inventory Manager"
 __version__ = "v0.0.1"
-__updated__ = "2022-05-06 11:46:16"
+__updated__ = "2022-05-06 12:32:19"
 __maintainer__ = "Jared Gross"
 __email__ = "jared@pinelandfarms.ca"
 __status__ = "Production"
@@ -58,9 +58,9 @@ from PyQt5.QtWidgets import (
 
 import license_menu
 import log_config
+from download_thread import DownloadThread
 from json_file import JsonFile
 from upload_thread import UploadThread
-from download_thread import DownloadThread
 
 settings_file = JsonFile(file_name="settings")
 
@@ -177,10 +177,16 @@ class MainWindow(QMainWindow):
 
     def data_received(self, data):
         print(data)
-        if data == "Success":
+        if data == "Successfully uploaded":
             self.show_dialog(
                 title="Successfully received",
                 message=f"{data}\n\nData successfully received.\nWill take roughly 5 minutes to update database",
+            )
+            logging.info(f"Server: {data}")
+        elif data == "Successfully downloaded":
+            self.show_dialog(
+                title="Successfully downloaded",
+                message=f"{data}\n\nData successfully downloaded.",
             )
             logging.info(f"Server: {data}")
         elif str(data) == "timed out":

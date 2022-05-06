@@ -37,7 +37,7 @@ class DownloadThread(QThread):
             with open("data/database.json", "w") as database:
                 database.write(data)
             self.s.close()
-            self.signal.emit("Success")
+            self.signal.emit("Successfully downloaded")
         except Exception as e:
             logging.exception("Exception occurred")
             self.signal.emit(e)

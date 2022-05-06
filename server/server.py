@@ -46,7 +46,7 @@ class Server:
                 with open("data/database.json", "w") as database:
                     database.write(text)
                     logging.info("downloaded data")
-                self.s.sendto("Success".encode("utf-8"), client_address)
+                self.s.sendto("Successfully uploaded".encode("utf-8"), client_address)
                 logging.info("sent response")
             elif data == "download":
                 self.send_database(client=client_address)
