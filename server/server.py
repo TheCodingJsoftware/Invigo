@@ -13,7 +13,7 @@ class Server:
         try:
             # Starting server
             self.s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-            self.s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEclient_address, 1)
+            self.s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
             self.s.bind((self.SERVER_IP, self.servSERVER_PORTer_port))
             print(f"Server Started succesfully on {self.SERVER_IP}:{self.SERVER_PORT}")
         except Exception as e:
