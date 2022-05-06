@@ -3,6 +3,10 @@ import os
 
 
 class JsonFile:
+    """
+    Json data file handler
+    """
+
     def __init__(self, file_name: str = "json_file"):
         self.data = None
         self.file_name: str = file_name.replace(".json", "")

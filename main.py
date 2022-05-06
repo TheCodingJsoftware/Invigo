@@ -1,14 +1,16 @@
+# sourcery skip: avoid-builtin-shadow
 __author__ = "Jared Gross"
 __copyright__ = "Copyright 2022, TheCodingJ's"
 __credits__: "list[str]" = ["Jared Gross"]
 __license__ = "MIT"
 __name__ = "Inventory Manager"
 __version__ = "v0.0.1"
-__updated__ = "2022-05-05 21:33:33"
+__updated__ = "2022-05-05 23:01:20"
 __maintainer__ = "Jared Gross"
 __email__ = "jared@pinelandfarms.ca"
 __status__ = "Production"
 
+import logging
 import os
 import socket
 import sys
@@ -55,6 +57,7 @@ from PyQt5.QtWidgets import (
 )
 
 import license_menu
+import log_config
 from json_file import JsonFile
 from upload_thread import UploadThread
 
@@ -62,18 +65,24 @@ settings_file = JsonFile(file_name="settings")
 
 
 class MainWindow(QMainWindow):
+    """
+    Main program
+    """
+
     def __init__(self):
         super().__init__()
         uic.loadUi("ui/main.ui", self)
         self.setWindowTitle(__name__)
+        self.setWindowIcon(QIcon("icons/icon.png"))
+
         if settings_file.get_value(item_name="dark_mode"):
             self.setStyleSheet(qdarktheme.load_stylesheet())
         else:
             self.setStyleSheet(qdarktheme.load_stylesheet("light"))
-        self.load_ui_elements()
+        self.__load_ui()
         self.show()
 
-    def load_ui_elements(self) -> None:
+    def __load_ui(self) -> None:
         # Action events
         self.actionView_License.triggered.connect(self.show_license_window)
         self.actionCheck_for_Updates.triggered.connect(self.check_for_updates)
@@ -81,6 +90,7 @@ class MainWindow(QMainWindow):
         self.actionDarkmode.triggered.connect(self.toggle_dark_mode)
         self.actionAbout_Qt.triggered.connect(qApp.aboutQt)
         self.actionAbout.triggered.connect(self.show_about_window)
+        self.actionExit.triggered.connect(self.close)
 
         # Button events
         self.btnUploadChanges.clicked.connect(self.upload_changes)
@@ -160,24 +170,23 @@ class MainWindow(QMainWindow):
         upload_thread.start()
 
     def data_received(self, data):
+        print(data)
         if data == "Success":
             self.show_dialog(
                 title="Successfully received",
                 message=f"{data}\n\nData successfully received.\nWill take roughly 5 minutes to update database",
             )
+            logging.info(f"Server: {data}")
+        elif str(data) == "timed out":
+            self.show_dialog(
+                title="Time out",
+                message="Server is offline, contact server administrator.",
+            )
         else:
             self.show_dialog(
                 title="error",
-                message=data,
+                message=str(data),
             )
-
-
-def main() -> None:
-    default_settings()
-    app = QApplication([])
-    window = MainWindow()
-    window.show()
-    app.exec_()
 
 
 def default_settings() -> None:
@@ -187,6 +196,14 @@ def default_settings() -> None:
 def check_settings(setting: str, default_value) -> None:
     if settings_file.get_value(item_name=setting) is None:
         settings_file.add_item(item_name=setting, value=default_value)
+
+
+def main() -> None:
+    default_settings()
+    app = QApplication([])
+    window = MainWindow()
+    window.show()
+    app.exec_()
 
 
 # if __name__ == "__main__":

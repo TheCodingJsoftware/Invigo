@@ -1,9 +1,16 @@
+import logging
 import socket
 
 from PyQt5.QtCore import QThread, pyqtSignal
 
+import log_config
+
 
 class UploadThread(QThread):
+    """
+    Uploads client data to the server
+    """
+
     signal = pyqtSignal(object)
 
     def __init__(self):
@@ -20,15 +27,18 @@ class UploadThread(QThread):
         try:
             self.server = (self.SERVER_IP, self.SERVER_PORT)
             self.s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+            self.s.settimeout(10)
             self.s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
             self.s.bind((self.client_ip, self.client_port))
-
+            # TODO send actual data to the server
             message = "test"
+
             self.s.sendto(message.encode("utf-8"), self.server)
             data = self.s.recv(1024).decode("utf-8")
             self.s.close()
             self.signal.emit(data)
         except Exception as e:
+            logging.exception("Exception occurred")
             self.signal.emit(e)
 
     def get_system_ip_address(self) -> str:
