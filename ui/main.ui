@@ -41,6 +41,9 @@
     <property name="title">
      <string>File</string>
     </property>
+    <addaction name="actionUpload_Changes"/>
+    <addaction name="actionGet_Changes"/>
+    <addaction name="separator"/>
     <addaction name="actionExit"/>
    </widget>
    <widget class="QMenu" name="menuSettings">
@@ -110,6 +113,16 @@
   <action name="actionAbout">
    <property name="text">
     <string>About</string>
+   </property>
+  </action>
+  <action name="actionUpload_Changes">
+   <property name="text">
+    <string>Upload Changes</string>
+   </property>
+  </action>
+  <action name="actionGet_Changes">
+   <property name="text">
+    <string>Get Changes</string>
    </property>
   </action>
  </widget>

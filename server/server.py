@@ -2,7 +2,7 @@ import logging
 import socket
 
 logging.basicConfig(
-    filename="logs/app.log",
+    filename="logs/server.log",
     filemode="a",
     format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
     datefmt="%d-%b-%y %H:%M:%S",
@@ -40,10 +40,22 @@ class Server:
             data = data.decode("utf-8")
             logging.info("got data")
             print(f"Message received from: {str(client_address)}")
-            # TODO Handle data from the client
-            print(data)
-            self.s.sendto("Success".encode("utf-8"), client_address)
-            logging.info("sent response")
+
+            if "sent" in data:
+                text = data.split("|")[-1]
+                with open("data/database.json", "w") as database:
+                    database.write(text)
+                    logging.info("downloaded data")
+                self.s.sendto("Success".encode("utf-8"), client_address)
+                logging.info("sent response")
+            elif data == "download":
+                self.send_databse(client=client_address)
+
+    def send_database(self, client):
+        with open("data/database.json", "r") as database:
+            text = database.readall()
+            self.s.sendto(text.encode("utf-8"), client)
+            logging.info("sent data")
 
 
 if __name__ == "__main__":

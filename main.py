@@ -5,7 +5,7 @@ __credits__: "list[str]" = ["Jared Gross"]
 __license__ = "MIT"
 __name__ = "Inventory Manager"
 __version__ = "v0.0.1"
-__updated__ = "2022-05-05 23:01:20"
+__updated__ = "2022-05-06 11:46:16"
 __maintainer__ = "Jared Gross"
 __email__ = "jared@pinelandfarms.ca"
 __status__ = "Production"
@@ -60,6 +60,7 @@ import license_menu
 import log_config
 from json_file import JsonFile
 from upload_thread import UploadThread
+from download_thread import DownloadThread
 
 settings_file = JsonFile(file_name="settings")
 
@@ -84,12 +85,17 @@ class MainWindow(QMainWindow):
 
     def __load_ui(self) -> None:
         # Action events
+        # HELP
         self.actionView_License.triggered.connect(self.show_license_window)
         self.actionCheck_for_Updates.triggered.connect(self.check_for_updates)
-        self.actionDarkmode.setChecked(settings_file.get_value(item_name="dark_mode"))
-        self.actionDarkmode.triggered.connect(self.toggle_dark_mode)
         self.actionAbout_Qt.triggered.connect(qApp.aboutQt)
         self.actionAbout.triggered.connect(self.show_about_window)
+        # SETTINGS
+        self.actionDarkmode.setChecked(settings_file.get_value(item_name="dark_mode"))
+        self.actionDarkmode.triggered.connect(self.toggle_dark_mode)
+        # FILE
+        self.actionUpload_Changes.triggered.connect(self.upload_changes)
+        self.actionGet_Changes.triggered.connect(self.download_database)
         self.actionExit.triggered.connect(self.close)
 
         # Button events
@@ -187,6 +193,13 @@ class MainWindow(QMainWindow):
                 title="error",
                 message=str(data),
             )
+
+    def download_database(self):
+        self.threads = []
+        download_thread = DownloadThread()
+        download_thread.signal.connect(self.data_received)
+        self.threads.append(download_thread)
+        download_thread.start()
 
 
 def default_settings() -> None:

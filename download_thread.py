@@ -6,7 +6,7 @@ from PyQt5.QtCore import QThread, pyqtSignal
 import log_config
 
 
-class UploadThread(QThread):
+class DownloadThread(QThread):
     """
     Uploads client data to the server
     """
@@ -31,13 +31,13 @@ class UploadThread(QThread):
             self.s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
             self.s.bind((self.client_ip, self.client_port))
 
-            with open("data/database.json", "r") as database:
-                data = database.readall()
-                self.s.sendto(data.encode("utf-8"), self.server)
+            self.s.sendto("download".encode("utf-8"), self.server)
 
             data = self.s.recv(1024).decode("utf-8")
+            with open("data/database.json", "w") as database:
+                database.write(data)
             self.s.close()
-            self.signal.emit(data)
+            self.signal.emit("Success")
         except Exception as e:
             logging.exception("Exception occurred")
             self.signal.emit(e)
