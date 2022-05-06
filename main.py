@@ -4,7 +4,7 @@ __credits__: "list[str]" = ["Jared Gross"]
 __license__ = "MIT"
 __name__ = "Inventory Manager"
 __version__ = "v0.0.1"
-__updated__ = "2022-05-05 20:54:36"
+__updated__ = "2022-05-05 21:22:37"
 __maintainer__ = "Jared Gross"
 __email__ = "jared@pinelandfarms.ca"
 __status__ = "Production"
@@ -56,6 +56,7 @@ from PyQt5.QtWidgets import (
 
 import license_menu
 from json_file import JsonFile
+from upload_thread import UploadThread
 
 settings_file = JsonFile(file_name="settings")
 
@@ -93,6 +94,15 @@ class MainWindow(QMainWindow):
             self,
             __name__,
             f"Developed by: TheCodingJ's\nVersion: {__version__}\nDate: {__updated__}",
+            QMessageBox.Ok,
+            QMessageBox.Ok,
+        )
+
+    def show_dialog(self, title: str, message: str) -> None:
+        QMessageBox.information(
+            self,
+            title,
+            message,
             QMessageBox.Ok,
             QMessageBox.Ok,
         )
@@ -143,16 +153,26 @@ class MainWindow(QMainWindow):
                 )
 
     def upload_changes(self):
-        host: str = "10.0.0.237"
-        port: int = 8080
-        s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        self.threads = []
+        upload_thread = UploadThread()
+        upload_thread.signal.connect(self.data_received)
+        self.threads.append(upload_thread)
+        upload_thread.start()
 
-        s.bind((host, port))
-        s.listen(10)
-        c, addr = s.accept()
-        msg = "test"
-        c.send(msg.encode())
-        c.close()
+    def data_received(self, data):
+        try:
+            print(data)
+        except Exception as e:
+            print(e)
+            self.show_dialog(
+                title="error",
+                message=e,
+            )
+        if data == "Success":
+            self.show_dialog(
+                title="Successfully received",
+                message=f"{data}\n\nData successfully received.\nWill take roughly 5 minutes to update database",
+            )
 
 
 def main() -> None:
