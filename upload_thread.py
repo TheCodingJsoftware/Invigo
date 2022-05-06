@@ -32,7 +32,7 @@ class UploadThread(QThread):
             self.s.bind((self.client_ip, self.client_port))
 
             with open("data/database.json", "r") as database:
-                data = database.readall()
+                data = database.read()
                 self.s.sendto(data.encode("utf-8"), self.server)
 
             data = self.s.recv(1024).decode("utf-8")

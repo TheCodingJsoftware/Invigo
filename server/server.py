@@ -49,11 +49,11 @@ class Server:
                 self.s.sendto("Success".encode("utf-8"), client_address)
                 logging.info("sent response")
             elif data == "download":
-                self.send_databse(client=client_address)
+                self.send_database(client=client_address)
 
     def send_database(self, client):
         with open("data/database.json", "r") as database:
-            text = database.readall()
+            text = database.read()
             self.s.sendto(text.encode("utf-8"), client)
             logging.info("sent data")
 
