@@ -4,7 +4,7 @@ __credits__: "list[str]" = ["Jared Gross"]
 __license__ = "MIT"
 __name__ = "Inventory Manager"
 __version__ = "v0.0.1"
-__updated__ = "2022-05-05 21:22:37"
+__updated__ = "2022-05-05 21:33:33"
 __maintainer__ = "Jared Gross"
 __email__ = "jared@pinelandfarms.ca"
 __status__ = "Production"
@@ -160,18 +160,15 @@ class MainWindow(QMainWindow):
         upload_thread.start()
 
     def data_received(self, data):
-        try:
-            print(data)
-        except Exception as e:
-            print(e)
-            self.show_dialog(
-                title="error",
-                message=e,
-            )
         if data == "Success":
             self.show_dialog(
                 title="Successfully received",
                 message=f"{data}\n\nData successfully received.\nWill take roughly 5 minutes to update database",
+            )
+        else:
+            self.show_dialog(
+                title="error",
+                message=data,
             )
 
 
