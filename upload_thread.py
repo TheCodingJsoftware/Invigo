@@ -9,18 +9,16 @@ class UploadThread(QThread):
     def __init__(self):
         QThread.__init__(self)
         # Declaring server IP and port
-        self.server_ip = "10.0.0.162"
-        self.server_port = 4000
+        self.SERVER_IP: str = "10.0.0.162"
+        self.SERVER_PORT: int = 4000
 
         # Declaring clients IP and port
-        self.client_ip = self.get_system_ip_address()
-        self.client_port = 4005
+        self.client_ip: str = self.get_system_ip_address()
+        self.client_port: int = 4005
 
     def run(self):
         try:
-            self.signal.emit("Starting")
-
-            self.server = (self.server_ip, self.server_port)
+            self.server = (self.SERVER_IP, self.SERVER_PORT)
             self.s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
             self.s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
             self.s.bind((self.client_ip, self.client_port))
