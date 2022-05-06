@@ -14,7 +14,7 @@ class Server:
             # Starting server
             self.s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
             self.s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-            self.s.bind((self.SERVER_IP, self.servSERVER_PORTer_port))
+            self.s.bind((self.SERVER_IP, self.SERVER_PORT))
             print(f"Server Started succesfully on {self.SERVER_IP}:{self.SERVER_PORT}")
         except Exception as e:
             print(f"Server could not start.\n\nReason:\n{e}")
