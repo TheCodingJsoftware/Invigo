@@ -16,15 +16,7 @@
   <widget class="QWidget" name="centralwidget">
    <layout class="QVBoxLayout" name="verticalLayout_2">
     <item>
-     <layout class="QVBoxLayout" name="verticalLayout">
-      <item>
-       <widget class="QPushButton" name="btnUploadChanges">
-        <property name="text">
-         <string>Upload Changes</string>
-        </property>
-       </widget>
-      </item>
-     </layout>
+     <layout class="QVBoxLayout" name="verticalLayout"/>
     </item>
    </layout>
   </widget>
@@ -119,10 +111,16 @@
    <property name="text">
     <string>Upload Changes</string>
    </property>
+   <property name="statusTip">
+    <string>Upload all files online for other users</string>
+   </property>
   </action>
   <action name="actionGet_Changes">
    <property name="text">
     <string>Get Changes</string>
+   </property>
+   <property name="statusTip">
+    <string>Get latest changes from the online database</string>
    </property>
   </action>
  </widget>

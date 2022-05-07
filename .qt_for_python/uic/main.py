@@ -19,9 +19,6 @@ class Ui_MainWindow(object):
         self.verticalLayout_2.setObjectName("verticalLayout_2")
         self.verticalLayout = QtWidgets.QVBoxLayout()
         self.verticalLayout.setObjectName("verticalLayout")
-        self.btnUploadChanges = QtWidgets.QPushButton(self.centralwidget)
-        self.btnUploadChanges.setObjectName("btnUploadChanges")
-        self.verticalLayout.addWidget(self.btnUploadChanges)
         self.verticalLayout_2.addLayout(self.verticalLayout)
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar(MainWindow)
@@ -77,7 +74,6 @@ class Ui_MainWindow(object):
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
-        self.btnUploadChanges.setText(_translate("MainWindow", "Upload Changes"))
         self.menuFile.setTitle(_translate("MainWindow", "File"))
         self.menuSettings.setTitle(_translate("MainWindow", "Settings"))
         self.menuHelp.setTitle(_translate("MainWindow", "Help"))
@@ -92,4 +88,6 @@ class Ui_MainWindow(object):
         self.actionCheck_for_Updates.setStatusTip(_translate("MainWindow", "Checks for new updates on GitHub"))
         self.actionAbout.setText(_translate("MainWindow", "About"))
         self.actionUpload_Changes.setText(_translate("MainWindow", "Upload Changes"))
+        self.actionUpload_Changes.setStatusTip(_translate("MainWindow", "Upload all files online for other users"))
         self.actionGet_Changes.setText(_translate("MainWindow", "Get Changes"))
+        self.actionGet_Changes.setStatusTip(_translate("MainWindow", "Get latest changes from the online database"))
