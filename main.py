@@ -5,7 +5,7 @@ __credits__: "list[str]" = ["Jared Gross"]
 __license__ = "MIT"
 __name__ = "Inventory Manager"
 __version__ = "v0.0.1"
-__updated__ = "2022-05-07 20:12:11"
+__updated__ = "2022-05-07 21:41:19"
 __maintainer__ = "Jared Gross"
 __email__ = "jared@pinelandfarms.ca"
 __status__ = "Production"
@@ -60,11 +60,11 @@ from PyQt5.QtWidgets import (
 import log_config
 import ui.BreezeStyleSheets.breeze_resources
 from about_dialog import AboutDialog
-from compress import compress_file
 from download_thread import DownloadThread
-from geometry import Geometry
 from json_file import JsonFile
 from upload_thread import UploadThread
+from utils.compress import compress_file
+from utils.geometry import Geometry
 
 settings_file = JsonFile(file_name="settings")
 
@@ -194,7 +194,7 @@ class MainWindow(QMainWindow):
         elif str(data) == "timed out":
             self.show_message_dialog(
                 title="Time out",
-                message="Server is offline, contact server administrator.",
+                message="Server is offline, contact server administrator.\n\nOr try again.",
             )
         else:
             self.show_message_dialog(

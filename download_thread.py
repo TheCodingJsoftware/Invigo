@@ -5,6 +5,7 @@ from PyQt5.QtCore import QThread, pyqtSignal
 
 import log_config
 from json_file import JsonFile
+from utils.ip_utils import get_server_ip_address, get_server_port, get_system_ip_address
 
 settings_file = JsonFile(file_name="settings")
 
@@ -19,11 +20,11 @@ class DownloadThread(QThread):
     def __init__(self):
         QThread.__init__(self)
         # Declaring server IP and port
-        self.SERVER_IP: str = self.get_server_ip_address()
-        self.SERVER_PORT: int = self.get_server_port()
+        self.SERVER_IP: str = get_server_ip_address()
+        self.SERVER_PORT: int = get_server_port()
 
         # Declaring clients IP and port
-        self.CLIENT_IP: str = self.get_system_ip_address()
+        self.CLIENT_IP: str = get_system_ip_address()
         self.CLIENT_PORT: int = 4005
 
     def run(self):
@@ -46,12 +47,3 @@ class DownloadThread(QThread):
         except Exception as e:
             logging.exception("Exception occurred")
             self.signal.emit(e)
-
-    def get_server_ip_address(self) -> str:
-        return settings_file.get_value(item_name="server_ip")
-
-    def get_server_port(self) -> int:
-        return settings_file.get_value(item_name="server_port")
-
-    def get_system_ip_address(self) -> str:
-        return socket.gethostbyname(socket.gethostname())
