@@ -20,6 +20,7 @@ class Server:
         self.SERVER_IP: str = "10.0.0.162"
         self.SERVER_PORT: int = 4000
 
+        self.check_folders(folders=["data"])
         self.start_server()
 
     def start_server(self):
@@ -50,6 +51,12 @@ class Server:
                 logging.info("sent response")
             elif data == "download":
                 self.send_database(client=client_address)
+
+    def check_folders(self, folders: list[str]) -> None:
+        for folder in folders:
+            if not os.path.exists(folder):
+                os.makedirs(folder)
+                logging.info(f"{folder} Created.")
 
     def send_database(self, client):
         with open("data/database.json", "r") as database:

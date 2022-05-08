@@ -13,6 +13,7 @@ class Ui_About(object):
     def setupUi(self, About):
         About.setObjectName("About")
         About.resize(361, 165)
+        About.setContextMenuPolicy(QtCore.Qt.ContextMenuPolicy.DefaultContextMenu)
         self.horizontalLayout = QtWidgets.QHBoxLayout(About)
         self.horizontalLayout.setObjectName("horizontalLayout")
         self.gridLayout = QtWidgets.QGridLayout()
@@ -63,6 +64,6 @@ class Ui_About(object):
 
     def retranslateUi(self, About):
         _translate = QtCore.QCoreApplication.translate
-        About.setWindowTitle(_translate("About", "Settings"))
+        About.setWindowTitle(_translate("About", "About"))
         self.label.setText(_translate("About", "Inventory Manager"))
         self.btnClose.setText(_translate("About", "OK"))

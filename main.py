@@ -5,7 +5,7 @@ __credits__: "list[str]" = ["Jared Gross"]
 __license__ = "MIT"
 __name__ = "Inventory Manager"
 __version__ = "v0.0.1"
-__updated__ = "2022-05-06 20:42:50"
+__updated__ = "2022-05-07 20:12:11"
 __maintainer__ = "Jared Gross"
 __email__ = "jared@pinelandfarms.ca"
 __status__ = "Production"
@@ -19,15 +19,16 @@ import urllib.request
 from datetime import datetime, timedelta
 from functools import partial
 
-import qdarktheme
 import requests
 from PyQt5 import uic
 from PyQt5.QtCore import (
     QCoreApplication,
+    QFile,
     QProcess,
     QRunnable,
     QSettings,
     Qt,
+    QTextStream,
     QThreadPool,
     QTimer,
     pyqtSignal,
@@ -57,9 +58,12 @@ from PyQt5.QtWidgets import (
 )
 
 import log_config
+import ui.BreezeStyleSheets.breeze_resources
+from about_dialog import AboutDialog
+from compress import compress_file
 from download_thread import DownloadThread
+from geometry import Geometry
 from json_file import JsonFile
-from license_dialog import LicenseDialog
 from upload_thread import UploadThread
 
 settings_file = JsonFile(file_name="settings")
@@ -76,39 +80,55 @@ class MainWindow(QMainWindow):
         self.setWindowTitle(__name__)
         self.setWindowIcon(QIcon("icons/icon.png"))
 
-        if settings_file.get_value(item_name="dark_mode"):
-            self.setStyleSheet(qdarktheme.load_stylesheet())
-        else:
-            self.setStyleSheet(qdarktheme.load_stylesheet("light"))
+        self.check_for_updates(on_start_up=True)
+
         self.__load_ui()
         self.show()
 
     def __load_ui(self) -> None:
+        self.update_theme()
+        self.setGeometry(
+            Geometry().x(),
+            Geometry().y(),
+            Geometry().width(),
+            Geometry().height(),
+        )
+
         # Action events
         # HELP
-        self.actionView_License.triggered.connect(self.show_license_window)
         self.actionCheck_for_Updates.triggered.connect(self.check_for_updates)
         self.actionAbout_Qt.triggered.connect(qApp.aboutQt)
-        self.actionAbout.triggered.connect(self.show_about_window)
+        self.actionAbout.triggered.connect(self.show_about_dialog)
         # SETTINGS
         self.actionDarkmode.setChecked(settings_file.get_value(item_name="dark_mode"))
         self.actionDarkmode.triggered.connect(self.toggle_dark_mode)
         # FILE
         self.actionUpload_Changes.triggered.connect(self.upload_changes)
         self.actionGet_Changes.triggered.connect(self.download_database)
+        self.actionBackup.triggered.connect(self.backup_database)
         self.actionExit.triggered.connect(self.close)
 
-    def show_license_window(self) -> None:
-        self.dialog = LicenseDialog()
-        self.dialog.show()
-
-    def show_about_window(self) -> None:
-        self.show_dialog(
-            title=__name__,
-            message=f"Developed by: TheCodingJ's\nVersion: {__version__}\nDate: {__updated__}",
+    def save_geometry(self):
+        settings_file.change_item(
+            item_name="geometry",
+            new_value={
+                "x": self.pos().x(),
+                "y": self.pos().y(),
+                "width": self.size().width(),
+                "height": self.size().height(),
+            },
         )
 
-    def show_dialog(self, title: str, message: str) -> None:
+    def show_about_dialog(self) -> None:
+        self.dialog = AboutDialog(
+            __name__,
+            __version__,
+            __updated__,
+            "https://github.com/TheCodingJsoftware/Inventory-Manager",
+        )
+        self.dialog.show()
+
+    def show_message_dialog(self, title: str, message: str) -> None:
         QMessageBox.information(
             self,
             title,
@@ -121,9 +141,16 @@ class MainWindow(QMainWindow):
         settings_file.change_item(
             item_name="dark_mode", new_value=not settings_file.get_value("dark_mode")
         )
-        self.show_dialog(
-            title=__name__, message="The program must restart for this to take effect"
-        )
+        self.update_theme()
+
+    def update_theme(self) -> None:
+        if settings_file.get_value(item_name="dark_mode"):
+            file = QFile("ui/BreezeStyleSheets/dist/qrc/dark/stylesheet.qss")
+        else:
+            file = QFile("ui/BreezeStyleSheets/dist/qrc/light/stylesheet.qss")
+        file.open(QFile.ReadOnly | QFile.Text)
+        stream = QTextStream(file)
+        self.setStyleSheet(stream.readAll())
 
     def check_for_updates(self, on_start_up: bool = False) -> None:
         try:
@@ -132,16 +159,16 @@ class MainWindow(QMainWindow):
             )
             version: str = response.json()["name"].replace(" ", "")
             if version != __version__:
-                self.show_dialog(
+                self.show_message_dialog(
                     title=__name__, message="There is a new update available"
                 )
             elif not on_start_up:
-                self.show_dialog(
+                self.show_message_dialog(
                     title=__name__, message="There are currently no updates available."
                 )
         except Exception as e:
             if not on_start_up:
-                self.show_dialog(title=__name__, message=f"Error\n\n{e}")
+                self.show_message_dialog(title=__name__, message=f"Error\n\n{e}")
 
     def upload_changes(self):
         self.threads = []
@@ -153,24 +180,24 @@ class MainWindow(QMainWindow):
     def data_received(self, data):
         print(data)
         if data == "Successfully uploaded":
-            self.show_dialog(
+            self.show_message_dialog(
                 title=data,
                 message=f"{data}\n\nDatabase successfully uploaded.\nWill take roughly 5 minutes to update database",
             )
             logging.info(f"Server: {data}")
         elif data == "Successfully downloaded":
-            self.show_dialog(
+            self.show_message_dialog(
                 title=data,
                 message=f"{data}\n\nDatabase successfully downloaded.",
             )
             logging.info(f"Server: {data}")
         elif str(data) == "timed out":
-            self.show_dialog(
+            self.show_message_dialog(
                 title="Time out",
                 message="Server is offline, contact server administrator.",
             )
         else:
-            self.show_dialog(
+            self.show_message_dialog(
                 title="error",
                 message=str(data),
             )
@@ -182,9 +209,23 @@ class MainWindow(QMainWindow):
         self.threads.append(download_thread)
         download_thread.start()
 
+    def backup_database(self):
+        compress_file(path_to_file="data/database.json")
+        self.show_message_dialog(title="Success", message="Backup was successful!")
+
+    def closeEvent(self, event):
+        self.save_geometry()
+        super().closeEvent(event)
+
 
 def default_settings() -> None:
     check_settings(setting="dark_mode", default_value=False)
+    check_settings(setting="server_ip", default_value="10.0.0.162")
+    check_settings(setting="server_port", default_value=4000)
+    check_settings(
+        setting="geometry",
+        default_value={"x": 200, "y": 200, "width": 600, "height": 400},
+    )
 
 
 def check_settings(setting: str, default_value) -> None:
@@ -192,8 +233,16 @@ def check_settings(setting: str, default_value) -> None:
         settings_file.add_item(item_name=setting, value=default_value)
 
 
+def check_folders(folders: list[str]) -> None:
+    for folder in folders:
+        if not os.path.exists(folder):
+            os.makedirs(folder)
+            logging.info(f"{folder} Created.")
+
+
 def main() -> None:
     default_settings()
+    check_folders(folders=["logs", "data", "backups"])
     app = QApplication([])
     window = MainWindow()
     window.show()

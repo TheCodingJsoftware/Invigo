@@ -61,13 +61,9 @@ target/
 *.exe
 Recordings
 logs/
-CURRENTLY_RECORDING
-credentials.json
-archivedPage.html
-archivedPage - Copy.html
 *.vscode
 __pycache__
 test.py
-websiteDownloadLinks.json
-*.mp3
-ffmpeg-2022-02-10-git-b6bb6b9f22-full_build
+settings.json
+data
+backups

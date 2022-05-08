@@ -36,6 +36,8 @@
     <addaction name="actionUpload_Changes"/>
     <addaction name="actionGet_Changes"/>
     <addaction name="separator"/>
+    <addaction name="actionBackup"/>
+    <addaction name="separator"/>
     <addaction name="actionExit"/>
    </widget>
    <widget class="QMenu" name="menuSettings">
@@ -49,7 +51,6 @@
      <string>Help</string>
     </property>
     <addaction name="actionAbout_Qt"/>
-    <addaction name="actionView_License"/>
     <addaction name="separator"/>
     <addaction name="actionCheck_for_Updates"/>
     <addaction name="separator"/>
@@ -121,6 +122,11 @@
    </property>
    <property name="statusTip">
     <string>Get latest changes from the online database</string>
+   </property>
+  </action>
+  <action name="actionBackup">
+   <property name="text">
+    <string>Backup</string>
    </property>
   </action>
  </widget>
