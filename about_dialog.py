@@ -4,7 +4,7 @@ from PyQt5.QtCore import QFile, Qt, QTextStream
 from PyQt5.QtGui import QIcon, QPixmap
 from PyQt5.QtWidgets import QWidget
 
-from json_file import JsonFile
+from utils.json_file import JsonFile
 
 settings_file = JsonFile(file_name="settings")
 

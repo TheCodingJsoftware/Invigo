@@ -5,7 +5,7 @@ __credits__: "list[str]" = ["Jared Gross"]
 __license__ = "MIT"
 __name__ = "Inventory Manager"
 __version__ = "v0.0.1"
-__updated__ = "2022-05-07 21:41:19"
+__updated__ = "2022-05-08 17:15:15"
 __maintainer__ = "Jared Gross"
 __email__ = "jared@pinelandfarms.ca"
 __status__ = "Production"
@@ -61,12 +61,13 @@ import log_config
 import ui.BreezeStyleSheets.breeze_resources
 from about_dialog import AboutDialog
 from download_thread import DownloadThread
-from json_file import JsonFile
 from upload_thread import UploadThread
 from utils.compress import compress_file
-from utils.geometry import Geometry
+from utils.json_file import JsonFile
+from utils.json_object import JsonObject
 
 settings_file = JsonFile(file_name="settings")
+geometry = JsonObject(JsonFile=settings_file, object_name="geometry")
 
 
 class MainWindow(QMainWindow):
@@ -88,10 +89,10 @@ class MainWindow(QMainWindow):
     def __load_ui(self) -> None:
         self.update_theme()
         self.setGeometry(
-            Geometry().x(),
-            Geometry().y(),
-            Geometry().width(),
-            Geometry().height(),
+            geometry.get_value("x"),
+            geometry.get_value("y"),
+            geometry.get_value("width"),
+            geometry.get_value("height"),
         )
 
         # Action events
@@ -109,15 +110,10 @@ class MainWindow(QMainWindow):
         self.actionExit.triggered.connect(self.close)
 
     def save_geometry(self):
-        settings_file.change_item(
-            item_name="geometry",
-            new_value={
-                "x": self.pos().x(),
-                "y": self.pos().y(),
-                "width": self.size().width(),
-                "height": self.size().height(),
-            },
-        )
+        geometry.set_value(item_name="x", value=self.pos().x())
+        geometry.set_value(item_name="y", value=self.pos().y())
+        geometry.set_value(item_name="width", value=self.size().width())
+        geometry.set_value(item_name="height", value=self.size().height())
 
     def show_about_dialog(self) -> None:
         self.dialog = AboutDialog(

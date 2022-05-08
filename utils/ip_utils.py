@@ -1,6 +1,6 @@
 import socket
 
-from json_file import JsonFile
+from utils.json_file import JsonFile
 
 settings_file = JsonFile("settings")
 

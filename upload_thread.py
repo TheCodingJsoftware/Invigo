@@ -4,8 +4,8 @@ import socket
 from PyQt5.QtCore import QThread, pyqtSignal
 
 import log_config
-from json_file import JsonFile
 from utils.ip_utils import get_server_ip_address, get_server_port, get_system_ip_address
+from utils.json_file import JsonFile
 
 settings_file = JsonFile(file_name="settings")
 

@@ -39,6 +39,11 @@ class JsonFile:
         self.data.update({item_name: new_value})
         self.__save_data()
 
+    def change_item(self, object_name: str, item_name: str, new_value) -> None:
+        self.__load_data()
+        self.data[object_name][item_name] = new_value
+        self.__save_data()
+
     def remove_item(self, item_name) -> None:
         self.__load_data()
         self.data.pop(item_name)
