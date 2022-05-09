@@ -1,4 +1,3 @@
-import qdarktheme
 from PyQt5 import uic
 from PyQt5.QtCore import QFile, Qt, QTextStream
 from PyQt5.QtGui import QIcon, QPixmap
