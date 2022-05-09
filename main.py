@@ -5,7 +5,7 @@ __credits__: "list[str]" = ["Jared Gross"]
 __license__ = "MIT"
 __name__ = "Inventory Manager"
 __version__ = "v0.0.1"
-__updated__ = "2022-05-09 12:42:20"
+__updated__ = "2022-05-09 12:45:24"
 __maintainer__ = "Jared Gross"
 __email__ = "jared@pinelandfarms.ca"
 __status__ = "Production"
@@ -229,7 +229,7 @@ def check_settings(setting: str, default_value) -> None:
         settings_file.add_item(item_name=setting, value=default_value)
 
 
-def check_folders(self, folders: list[str]) -> None:
+def check_folders(folders: list) -> None:
     for folder in folders:
         if not os.path.exists(f"{os.path.dirname(os.path.realpath(__file__))}/{folder}"):
             os.makedirs(f"{os.path.dirname(os.path.realpath(__file__))}/{folder}")

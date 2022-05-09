@@ -68,7 +68,7 @@ class Server:
                 f"{Colors.BOLD}{datetime.now()}{Colors.ENDC} - {Colors.OKGREEN}Response sent to: {str(client_address)}{Colors.ENDC}"
             )
 
-    def check_folders(self, folders: list[str]) -> None:
+    def check_folders(self, folders: list) -> None:
         for folder in folders:
             if not os.path.exists(
                 f"{os.path.dirname(os.path.realpath(__file__))}/{folder}"
