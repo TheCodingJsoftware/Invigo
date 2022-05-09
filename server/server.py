@@ -5,13 +5,6 @@ from datetime import datetime
 
 from utils.colors import Colors
 
-logging.basicConfig(
-    filename="logs/server.log",
-    filemode="a",
-    format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
-    datefmt="%d-%b-%y %H:%M:%S",
-)
-
 
 class Server:
     """
@@ -24,8 +17,17 @@ class Server:
         self.SERVER_IP: str = "10.0.0.162"
         self.SERVER_PORT: int = 4000
 
-        self.check_folders(folders=["data"])
+        self.check_folders(folders=["data", "logs"])
+        self.config_logs()
         self.start_server()
+
+    def config_logs(self):
+        logging.basicConfig(
+            filename=f"{os.path.dirname(os.path.realpath(__file__))}/logs/server.log",
+            filemode="a",
+            format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
+            datefmt="%d-%b-%y %H:%M:%S",
+        )
 
     def start_server(self):
         try:
@@ -68,9 +70,13 @@ class Server:
 
     def check_folders(self, folders: list[str]) -> None:
         for folder in folders:
-            if not os.path.exists(folder):
-                os.makedirs(folder)
-                logging.info(f"{folder} Created.")
+            if not os.path.exists(
+                f"{os.path.dirname(os.path.realpath(__file__))}/{folder}"
+            ):
+                os.makedirs(f"{os.path.dirname(os.path.realpath(__file__))}/{folder}")
+                print(
+                    f"{Colors.BOLD}{datetime.now()}{Colors.ENDC} - {Colors.OKGREEN}{os.path.dirname(os.path.realpath(__file__))}/{folder} Created.{Colors.ENDC}"
+                )
 
     def send_database(self, client):
         with open("data/database.json", "r") as database:
