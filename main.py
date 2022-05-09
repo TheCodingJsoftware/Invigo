@@ -5,7 +5,7 @@ __credits__: "list[str]" = ["Jared Gross"]
 __license__ = "MIT"
 __name__ = "Inventory Manager"
 __version__ = "v0.0.1"
-__updated__ = "2022-05-08 17:15:15"
+__updated__ = "2022-05-08 19:54:45"
 __maintainer__ = "Jared Gross"
 __email__ = "jared@pinelandfarms.ca"
 __status__ = "Production"
@@ -110,10 +110,10 @@ class MainWindow(QMainWindow):
         self.actionExit.triggered.connect(self.close)
 
     def save_geometry(self):
-        geometry.set_value(item_name="x", value=self.pos().x())
-        geometry.set_value(item_name="y", value=self.pos().y())
-        geometry.set_value(item_name="width", value=self.size().width())
-        geometry.set_value(item_name="height", value=self.size().height())
+        geometry.set_value("x", value=self.pos().x())
+        geometry.set_value("y", value=self.pos().y())
+        geometry.set_value("width", value=self.size().width())
+        geometry.set_value("height", value=self.size().height())
 
     def show_about_dialog(self) -> None:
         self.dialog = AboutDialog(

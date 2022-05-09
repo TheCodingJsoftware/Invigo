@@ -18,7 +18,7 @@ class JsonObject:
         self.data = self.JsonFile.get_value(item_name=self.object_name)
 
     def set_value(self, item_name: str, value) -> None:
-        self.JsonFile.change_item(
+        self.JsonFile.change_object_item(
             object_name=self.object_name, item_name=item_name, new_value=value
         )
 

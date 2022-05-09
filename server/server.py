@@ -1,5 +1,9 @@
 import logging
+import os
 import socket
+from datetime import datetime
+
+from utils.colors import Colors
 
 logging.basicConfig(
     filename="logs/server.log",
@@ -29,10 +33,14 @@ class Server:
             self.s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
             self.s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
             self.s.bind((self.SERVER_IP, self.SERVER_PORT))
-            print(f"Server Started succesfully on {self.SERVER_IP}:{self.SERVER_PORT}")
+            print(
+                f"{Colors.BOLD}{datetime.now()}{Colors.ENDC} - {Colors.OKGREEN}Server Started succesfully on {self.SERVER_IP}:{self.SERVER_PORT}{Colors.ENDC}"
+            )
             logging.info("server started succesfully")
         except Exception as e:
-            print(f"Server could not start.\n\nReason:\n{e}")
+            print(
+                f"{Colors.BOLD}{datetime.now()}{Colors.ENDC} - {Colors.ERROR}Server could not start.\n\nReason:\n{e}{Colors.ENDC}"
+            )
             logging.exception("Exception occured")
             return
         while True:
@@ -40,7 +48,9 @@ class Server:
             data, client_address = self.s.recvfrom(1024)
             data = data.decode("utf-8")
             logging.info("got data")
-            print(f"Message received from: {str(client_address)}")
+            print(
+                f"{Colors.BOLD}{datetime.now()}{Colors.ENDC} - {Colors.OKGREEN}Message received from: {str(client_address)} Message: {data}{Colors.ENDC}"
+            )
 
             if "sent" in data:
                 text = data.split("|")[-1]
@@ -51,6 +61,10 @@ class Server:
                 logging.info("sent response")
             elif data == "download":
                 self.send_database(client=client_address)
+
+            print(
+                f"{Colors.BOLD}{datetime.now()}{Colors.ENDC} - {Colors.OKGREEN}Response sent to: {str(client_address)}{Colors.ENDC}"
+            )
 
     def check_folders(self, folders: list[str]) -> None:
         for folder in folders:
