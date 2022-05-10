@@ -15,7 +15,7 @@ class AboutDialog(QWidget):
 
     def __init__(self, title: str, version: str, updated: str, home: str):
         super(AboutDialog, self).__init__()
-        uic.loadUi("ui/about.ui", self)
+        uic.loadUi("ui/about_dialog.ui", self)
 
         self.setWindowFlags(Qt.Window | Qt.FramelessWindowHint)
         self.setWindowIcon(QIcon("icons/icon.png"))

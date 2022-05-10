@@ -5,7 +5,7 @@ __credits__: "list[str]" = ["Jared Gross"]
 __license__ = "MIT"
 __name__ = "Inventory Manager"
 __version__ = "v0.0.1"
-__updated__ = "2022-05-09 12:45:24"
+__updated__ = "2022-05-09 22:58:50"
 __maintainer__ = "Jared Gross"
 __email__ = "jared@pinelandfarms.ca"
 __status__ = "Production"
@@ -61,10 +61,12 @@ import log_config
 import ui.BreezeStyleSheets.breeze_resources
 from about_dialog import AboutDialog
 from download_thread import DownloadThread
+from message_dialog import MessageDialog
 from upload_thread import UploadThread
 from utils.compress import compress_file
 from utils.json_file import JsonFile
 from utils.json_object import JsonObject
+from utils.message_icons import Icons
 
 settings_file = JsonFile(file_name="settings")
 geometry = JsonObject(JsonFile=settings_file, object_name="geometry")
@@ -77,13 +79,15 @@ class MainWindow(QMainWindow):
 
     def __init__(self):
         super().__init__()
-        uic.loadUi("ui/main.ui", self)
+        uic.loadUi("ui/main_menu.ui", self)
         self.setWindowTitle(__name__)
         self.setWindowIcon(QIcon("icons/icon.png"))
 
         self.check_for_updates(on_start_up=True)
 
         self.__load_ui()
+        self.m = MessageDialog(Icons.information, "test1", "test2")
+        # self.m.show()
         self.show()
 
     def __load_ui(self) -> None:
@@ -125,13 +129,12 @@ class MainWindow(QMainWindow):
         self.dialog.show()
 
     def show_message_dialog(self, title: str, message: str) -> None:
-        QMessageBox.information(
-            self,
-            title,
-            message,
-            QMessageBox.Ok,
-            QMessageBox.Ok,
-        )
+        self.message_dialog = MessageDialog(Icons.information, title, message)
+        self.message_dialog.show()
+
+    def show_error_dialog(self, title: str, message: str) -> None:
+        self.message_dialog = MessageDialog(Icons.critical, title, message)
+        self.message_dialog.show()
 
     def toggle_dark_mode(self) -> None:
         settings_file.change_item(
@@ -166,14 +169,7 @@ class MainWindow(QMainWindow):
             if not on_start_up:
                 self.show_message_dialog(title=__name__, message=f"Error\n\n{e}")
 
-    def upload_changes(self):
-        self.threads = []
-        upload_thread = UploadThread()
-        upload_thread.signal.connect(self.data_received)
-        self.threads.append(upload_thread)
-        upload_thread.start()
-
-    def data_received(self, data):
+    def data_received(self, data) -> None:
         print(data)
         if data == "Successfully uploaded":
             self.show_message_dialog(
@@ -188,24 +184,32 @@ class MainWindow(QMainWindow):
             )
             logging.info(f"Server: {data}")
         elif str(data) == "timed out":
-            self.show_message_dialog(
+            self.show_error_dialog(
                 title="Time out",
-                message="Server is offline, contact server administrator.\n\nOr try again.",
+                message="Server is either offline or try again. \n\nMake sure VPN's are disabled, else\n\ncontact server administrator.\n\n",
             )
         else:
-            self.show_message_dialog(
+            self.show_error_dialog(
                 title="error",
                 message=str(data),
             )
 
-    def download_database(self):
+    def upload_changes(self) -> None:
+        self.threads = []
+        upload_thread = UploadThread()
+        self.start_thread(upload_thread)
+
+    def download_database(self) -> None:
         self.threads = []
         download_thread = DownloadThread()
-        download_thread.signal.connect(self.data_received)
-        self.threads.append(download_thread)
-        download_thread.start()
+        self.start_thread(download_thread)
 
-    def backup_database(self):
+    def start_thread(self, thread) -> None:
+        thread.signal.connect(self.data_received)
+        self.threads.append(thread)
+        thread.start()
+
+    def backup_database(self) -> None:
         compress_file(path_to_file="data/database.json")
         self.show_message_dialog(title="Success", message="Backup was successful!")
 

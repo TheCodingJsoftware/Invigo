@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'f:\Code\Python-Projects\Inventory Manager\ui\about.ui'
+# Form implementation generated from reading ui file 'f:\Code\Python-Projects\Inventory Manager\ui\about_dialog.ui'
 #
 # Created by: PyQt5 UI code generator 5.15.6
 #
@@ -32,6 +32,7 @@ class Ui_Form(object):
         self.verticalLayout_2 = QtWidgets.QVBoxLayout()
         self.verticalLayout_2.setObjectName("verticalLayout_2")
         self.lblIcon = QtWidgets.QLabel(self.frame)
+        self.lblIcon.setMinimumSize(QtCore.QSize(100, 100))
         self.lblIcon.setText("")
         self.lblIcon.setObjectName("lblIcon")
         self.verticalLayout_2.addWidget(self.lblIcon)
@@ -68,7 +69,7 @@ class Ui_Form(object):
         self.scrollArea.setWidgetResizable(True)
         self.scrollArea.setObjectName("scrollArea")
         self.scrollAreaWidgetContents = QtWidgets.QWidget()
-        self.scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, 0, 374, 85))
+        self.scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, 0, 358, 69))
         self.scrollAreaWidgetContents.setObjectName("scrollAreaWidgetContents")
         self.horizontalLayout_3 = QtWidgets.QHBoxLayout(self.scrollAreaWidgetContents)
         self.horizontalLayout_3.setObjectName("horizontalLayout_3")
