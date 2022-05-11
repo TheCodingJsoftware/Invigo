@@ -5,13 +5,14 @@ __credits__: "list[str]" = ["Jared Gross"]
 __license__ = "MIT"
 __name__ = "Inventory Manager"
 __version__ = "v0.0.1"
-__updated__ = "2022-05-09 22:58:50"
+__updated__ = "2022-05-10 22:49:08"
 __maintainer__ = "Jared Gross"
 __email__ = "jared@pinelandfarms.ca"
 __status__ = "Production"
 
 import logging
 import os
+import shutil
 import socket
 import sys
 import urllib
@@ -34,7 +35,7 @@ from PyQt5.QtCore import (
     pyqtSignal,
     pyqtSlot,
 )
-from PyQt5.QtGui import QFont, QIcon, QPalette, QPixmap
+from PyQt5.QtGui import QFont, QIcon, QImage, QPalette, QPixmap
 from PyQt5.QtWidgets import (
     QAction,
     QActionGroup,
@@ -63,10 +64,11 @@ from about_dialog import AboutDialog
 from download_thread import DownloadThread
 from message_dialog import MessageDialog
 from upload_thread import UploadThread
-from utils.compress import compress_file
+from utils.compress import compress_database, compress_folder
+from utils.dialog_buttons import DialogButtons
+from utils.dialog_icons import Icons
 from utils.json_file import JsonFile
 from utils.json_object import JsonObject
-from utils.message_icons import Icons
 
 settings_file = JsonFile(file_name="settings")
 geometry = JsonObject(JsonFile=settings_file, object_name="geometry")
@@ -84,10 +86,12 @@ class MainWindow(QMainWindow):
         self.setWindowIcon(QIcon("icons/icon.png"))
 
         self.check_for_updates(on_start_up=True)
+        self.theme: str = (
+            "dark" if settings_file.get_value(item_name="dark_mode") else "light"
+        )
 
         self.__load_ui()
-        self.m = MessageDialog(Icons.information, "test1", "test2")
-        # self.m.show()
+        self.show_error_dialog("test1", "test2\n" * 100)
         self.show()
 
     def __load_ui(self) -> None:
@@ -128,25 +132,70 @@ class MainWindow(QMainWindow):
         )
         self.dialog.show()
 
-    def show_message_dialog(self, title: str, message: str) -> None:
-        self.message_dialog = MessageDialog(Icons.information, title, message)
+    def show_message_dialog(
+        self, title: str, message: str, dialog_buttons: DialogButtons = DialogButtons.ok
+    ) -> str:
+        self.message_dialog = MessageDialog(
+            self, Icons.information, dialog_buttons, title, message
+        )
         self.message_dialog.show()
 
-    def show_error_dialog(self, title: str, message: str) -> None:
-        self.message_dialog = MessageDialog(Icons.critical, title, message)
+        response: str = ""
+
+        if self.message_dialog.exec_():
+            response = self.message_dialog.get_response()
+
+        return response
+
+    def show_error_dialog(
+        self,
+        title: str,
+        message: str,
+        dialog_buttons: DialogButtons = DialogButtons.ok_save_copy_cancel,
+    ) -> str:
+        self.message_dialog = MessageDialog(
+            self, Icons.critical, dialog_buttons, title, message
+        )
         self.message_dialog.show()
+
+        response: str = ""
+
+        if self.message_dialog.exec_():
+            response = self.message_dialog.get_response()
+
+        if response == DialogButtons.copy:
+            pixmap = QPixmap(self.message_dialog.grab())
+            QApplication.clipboard().setPixmap(pixmap)
+        elif response == DialogButtons.save:
+            self.generate_error_log(message_dialog=self.message_dialog)
+        return response
+
+    def generate_error_log(self, message_dialog: MessageDialog) -> None:
+        output_directory: str = (
+            f"logs/ErrorLog_{datetime.now().strftime('%Y-%m-%d-%H-%M')}"
+        )
+        check_folders([output_directory])
+        pixmap = QPixmap(message_dialog.grab())
+        pixmap.save(f"{output_directory}/screenshot.png")
+        with open(f"{output_directory}/error.log", "w") as error_log:
+            error_log.write(message_dialog.message)
+        shutil.copyfile("logs/app.log", f"{output_directory}/app.log")
+        compress_folder(foldername=output_directory, target_dir=output_directory)
+        shutil.rmtree(output_directory)
 
     def toggle_dark_mode(self) -> None:
         settings_file.change_item(
             item_name="dark_mode", new_value=not settings_file.get_value("dark_mode")
         )
+
+        self.theme: str = (
+            "dark" if settings_file.get_value(item_name="dark_mode") else "light"
+        )
+
         self.update_theme()
 
     def update_theme(self) -> None:
-        if settings_file.get_value(item_name="dark_mode"):
-            file = QFile("ui/BreezeStyleSheets/dist/qrc/dark/stylesheet.qss")
-        else:
-            file = QFile("ui/BreezeStyleSheets/dist/qrc/light/stylesheet.qss")
+        file = QFile(f"ui/BreezeStyleSheets/dist/qrc/{self.theme}/stylesheet.qss")
         file.open(QFile.ReadOnly | QFile.Text)
         stream = QTextStream(file)
         self.setStyleSheet(stream.readAll())
@@ -210,7 +259,7 @@ class MainWindow(QMainWindow):
         thread.start()
 
     def backup_database(self) -> None:
-        compress_file(path_to_file="data/database.json")
+        compress_database(path_to_file="data/database.json")
         self.show_message_dialog(title="Success", message="Backup was successful!")
 
     def closeEvent(self, event):

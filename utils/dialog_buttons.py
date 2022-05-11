@@ -1,0 +1,10 @@
+class DialogButtons:
+    ok: str = "Ok"
+    no: str = "No"
+    copy: str = "Copy"
+    save: str = "Save"
+    yes_no_cancel: str = "Yes, No, Cancel"
+    save_cancel: str = "Save, Cancel"
+    open_cancel: str = "Open, Cancel"
+    ok_copy_cancel: str = "Ok, Copy, Cancel"
+    ok_save_copy_cancel: str = "Ok, Save, Copy, Cancel"

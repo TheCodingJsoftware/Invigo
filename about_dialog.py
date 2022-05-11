@@ -21,6 +21,10 @@ class AboutDialog(QWidget):
         self.setWindowIcon(QIcon("icons/icon.png"))
         self.setFixedSize(550, 400)
 
+        self.theme: str = (
+            "dark" if settings_file.get_value(item_name="dark_mode") else "light"
+        )
+
         pixmap = QPixmap("icons/icon.png")
         scaled_pixmap = pixmap.scaled(self.lblIcon.size(), Qt.KeepAspectRatio)
 
@@ -42,11 +46,12 @@ class AboutDialog(QWidget):
 
         self.btnClose.clicked.connect(self.close)
 
-        if settings_file.get_value(item_name="dark_mode"):
-            stylesheet_file = QFile("ui/BreezeStyleSheets/dist/qrc/dark/stylesheet.qss")
-        else:
-            stylesheet_file = QFile("ui/BreezeStyleSheets/dist/qrc/light/stylesheet.qss")
+        self.load_theme()
 
+    def load_theme(self) -> None:
+        stylesheet_file = QFile(
+            f"ui/BreezeStyleSheets/dist/qrc/{self.theme}/stylesheet.qss"
+        )
         stylesheet_file.open(QFile.ReadOnly | QFile.Text)
         stream = QTextStream(stylesheet_file)
         self.setStyleSheet(stream.readAll())
