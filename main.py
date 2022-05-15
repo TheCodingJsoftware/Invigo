@@ -5,7 +5,7 @@ __credits__: "list[str]" = ["Jared Gross"]
 __license__ = "MIT"
 __name__ = "Inventory Manager"
 __version__ = "v0.0.1"
-__updated__ = "2022-05-10 22:49:08"
+__updated__ = "2022-05-15 12:09:27"
 __maintainer__ = "Jared Gross"
 __email__ = "jared@pinelandfarms.ca"
 __status__ = "Production"
@@ -269,7 +269,7 @@ class MainWindow(QMainWindow):
 
 def default_settings() -> None:
     check_settings(setting="dark_mode", default_value=False)
-    check_settings(setting="server_ip", default_value="10.0.0.162")
+    check_settings(setting="server_ip", default_value="10.0.0.64")
     check_settings(setting="server_port", default_value=4000)
     check_settings(
         setting="geometry",

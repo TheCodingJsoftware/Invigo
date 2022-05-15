@@ -14,7 +14,7 @@ class Server:
 
     def __init__(self):
         # Declaring server IP and port
-        self.SERVER_IP: str = "10.0.0.162"
+        self.SERVER_IP: str = "10.0.0.64"
         self.SERVER_PORT: int = 4000
 
         self.check_folders(folders=["data", "logs"])
