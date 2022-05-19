@@ -1,5 +1,42 @@
 {
-    "Test":{
-        "part 1": 78
+    "Motors": {
+        "Motor 3": {
+            "price": 50,
+            "priority": 2,
+            "notes": "This is a custom note",
+            "quantity": 8
+        },
+        "Motor 4": {
+            "quantity": 10,
+            "price": 50,
+            "priority": 0,
+            "notes": "This is a custom note"
+        },
+        "Motor 5": {
+            "price": 48.12,
+            "priority": 1,
+            "notes": "This is a custom notes for motor 1",
+            "quantity": 48
+        },
+        "Motor 7": {
+            "price": 50,
+            "priority": 3,
+            "notes": "This is a custom note for motor dupe",
+            "quantity": 8
+        }
+    },
+    "Bolts": {
+        "2 inch bolt": {
+            "quantity": 11,
+            "price": 12.0,
+            "priority": 3,
+            "notes": "this is bolt"
+        },
+        "1 inch bolt": {
+            "quantity": 16,
+            "price": 4.0,
+            "priority": 3,
+            "notes": "adasdasdasd"
+        }
     }
 }

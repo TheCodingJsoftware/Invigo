@@ -3,7 +3,7 @@ from functools import partial
 from PyQt5 import QtSvg, uic
 from PyQt5.QtCore import QFile, Qt, QTextStream
 from PyQt5.QtGui import QIcon
-from PyQt5.QtWidgets import QDialog, QPushButton
+from PyQt5.QtWidgets import QDialog, QLineEdit, QPushButton
 
 from utils.dialog_buttons import DialogButtons
 from utils.dialog_icons import Icons
@@ -12,7 +12,7 @@ from utils.json_file import JsonFile
 settings_file = JsonFile(file_name="settings")
 
 
-class MessageDialog(QDialog):
+class InputDialog(QDialog):
     """
     Message dialog
     """
@@ -20,18 +20,19 @@ class MessageDialog(QDialog):
     def __init__(
         self,
         parent=None,
-        icon_name: str = Icons.information,
-        button_names: str = DialogButtons.ok,
+        icon_name: str = Icons.question,
+        button_names: str = DialogButtons.ok_cancel,
         title: str = __name__,
         message: str = "",
     ):
-        super(MessageDialog, self).__init__(parent)
-        uic.loadUi("ui/message_dialog.ui", self)
+        super(InputDialog, self).__init__(parent)
+        uic.loadUi("ui/input_dialog.ui", self)
 
         self.icon_name = icon_name
         self.button_names = button_names
         self.title = title
         self.message = message
+        self.inputText: str = ""
         self.theme: str = (
             "dark" if settings_file.get_value(item_name="dark_mode") else "light"
         )
@@ -41,6 +42,7 @@ class MessageDialog(QDialog):
 
         self.lblTitle.setText(self.title)
         self.lblMessage.setText(self.message)
+        self.lineEditInput.returnPressed.connect(self.input_enter_pressed)
 
         self.load_dialog_buttons()
 
@@ -48,7 +50,11 @@ class MessageDialog(QDialog):
         svg_icon.setFixedSize(62, 50)
         self.iconHolder.addWidget(svg_icon)
 
+        self.resize(300, 150)
+
         self.load_theme()
+
+        self.lineEditInput.selectAll()
 
     def load_theme(self) -> None:
         stylesheet_file = QFile(
@@ -65,6 +71,12 @@ class MessageDialog(QDialog):
 
     def button_press(self, button) -> None:
         self.response = button.text()
+        self.inputText = self.lineEditInput.text()
+        self.accept()
+
+    def input_enter_pressed(self) -> None:
+        self.response = "Ok"
+        self.inputText = self.lineEditInput.text()
         self.accept()
 
     def load_dialog_buttons(self) -> None:

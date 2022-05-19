@@ -12,7 +12,7 @@ settings_file = JsonFile(file_name="settings")
 
 class DownloadThread(QThread):
     """
-    Uploads client data to the server
+    Downloads server data to the client
     """
 
     signal = pyqtSignal(object)

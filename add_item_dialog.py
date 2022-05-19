@@ -3,7 +3,7 @@ from functools import partial
 from PyQt5 import QtSvg, uic
 from PyQt5.QtCore import QFile, Qt, QTextStream
 from PyQt5.QtGui import QIcon
-from PyQt5.QtWidgets import QDialog, QPushButton
+from PyQt5.QtWidgets import QDialog, QLineEdit, QPushButton
 
 from utils.dialog_buttons import DialogButtons
 from utils.dialog_icons import Icons
@@ -12,7 +12,7 @@ from utils.json_file import JsonFile
 settings_file = JsonFile(file_name="settings")
 
 
-class MessageDialog(QDialog):
+class AddItemDialog(QDialog):
     """
     Message dialog
     """
@@ -20,18 +20,19 @@ class MessageDialog(QDialog):
     def __init__(
         self,
         parent=None,
-        icon_name: str = Icons.information,
-        button_names: str = DialogButtons.ok,
+        icon_name: str = Icons.question,
+        button_names: str = DialogButtons.add_cancel,
         title: str = __name__,
         message: str = "",
     ):
-        super(MessageDialog, self).__init__(parent)
-        uic.loadUi("ui/message_dialog.ui", self)
+        super(AddItemDialog, self).__init__(parent)
+        uic.loadUi("ui/add_item_dialog.ui", self)
 
         self.icon_name = icon_name
         self.button_names = button_names
         self.title = title
         self.message = message
+        self.inputText: str = ""
         self.theme: str = (
             "dark" if settings_file.get_value(item_name="dark_mode") else "light"
         )
@@ -47,6 +48,8 @@ class MessageDialog(QDialog):
         svg_icon = self.get_icon(icon_name)
         svg_icon.setFixedSize(62, 50)
         self.iconHolder.addWidget(svg_icon)
+
+        # self.resize(300, 150)
 
         self.load_theme()
 
@@ -81,3 +84,18 @@ class MessageDialog(QDialog):
 
     def get_response(self) -> str:
         return self.response
+
+    def get_name(self) -> str:
+        return self.lineEdit_name.text()
+
+    def get_priority(self) -> int:
+        return self.comboBox_priority.currentIndex()
+
+    def get_quantity(self) -> int:
+        return self.spinBox_quantity.value()
+
+    def get_price(self) -> float:
+        return self.doubleSpinBox_price.value()
+
+    def get_notes(self) -> str:
+        return self.plainTextEdit_notes.toPlainText()
