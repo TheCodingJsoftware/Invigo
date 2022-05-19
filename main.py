@@ -5,7 +5,7 @@ __credits__: "list[str]" = ["Jared Gross"]
 __license__ = "MIT"
 __name__ = "Inventory Manager"
 __version__ = "v0.0.1"
-__updated__ = "2022-05-18 20:25:34"
+__updated__ = "2022-05-18 21:23:10"
 __maintainer__ = "Jared Gross"
 __email__ = "jared@pinelandfarms.ca"
 __status__ = "Production"
@@ -106,6 +106,7 @@ class MainWindow(QMainWindow):
         self.categories = []
         self.category: str = ""
         self.tabs = []
+        self.last_item_selected: int = 0
 
         self.__load_ui()
         self.show()
@@ -155,7 +156,7 @@ class MainWindow(QMainWindow):
         self.categories = database.get_keys()
         self.tab_widget = QTabWidget(self)
         self.tab_widget.setMovable(True)
-
+        i: int = -1
         for i, category in enumerate(self.categories):
             tab = QScrollArea(self)
             content_widget = QWidget()
@@ -164,6 +165,15 @@ class MainWindow(QMainWindow):
             tab.setWidgetResizable(True)
             self.tabs.append(grid_layout)
             self.tab_widget.addTab(tab, category)
+        if i == -1:
+            tab = QScrollArea(self)
+            content_widget = QWidget()
+            tab.setWidget(content_widget)
+            grid_layout = QGridLayout(content_widget)
+            tab.setWidgetResizable(True)
+            self.tabs.append(grid_layout)
+            self.tab_widget.addTab(tab, "")
+            i += 1
         tab = QWidget(self)
         self.tab_widget.addTab(tab, "Create category")
         tab = QWidget(self)
@@ -184,114 +194,134 @@ class MainWindow(QMainWindow):
     def load_tab(self) -> None:
         tab_index: int = self.tab_widget.currentIndex()
         self.category = self.tab_widget.tabText(tab_index)
-        if self.category == "+":
+        if self.category == "Create category":
             self.tab_widget.setCurrentIndex(settings_file.get_value("last_tab"))
             self.create_new_category()
             return
-        if self.category == "-":
+        if self.category == "Delete category":
             self.tab_widget.setCurrentIndex(settings_file.get_value("last_tab"))
             self.delete_category()
             return
-        self.clearLayout(self.tabs[tab_index])
+        self.pushButton_create_new.setEnabled(True)
+        try:
+            self.clearLayout(self.tabs[tab_index])
+        except IndexError:
+            return
         settings_file.add_item("last_tab", tab_index)
         tab = self.tabs[tab_index]
         category_data = database.get_value(item_name=self.category)
         self.update_list_widget()
         self.label_category_name.setText(f"Category: {self.category}")
-        headers = ["Name", "Quantity", "Price", "Priority", "Notes"]
-        horizontal_layout = QHBoxLayout()
-
-        row_index: int = 0
-
-        for i, header in enumerate(headers):
-            lbl_header = QLabel(header)
-            tab.addWidget(lbl_header, 0, i)
 
         # ! Some signals that are being used might be to performant heavy... may have to use on lost focus or something
-        for row_index, item in enumerate(list(category_data.keys()), start=1):
-            quantity: int = category_data[item]["quantity"]
-            priority: int = category_data[item]["priority"]
-            price: float = category_data[item]["price"]
-            notes: str = category_data[item]["notes"]
+        try:
+            if list(category_data.keys()):
+                headers = ["Name", "Quantity", "Price", "Priority", "Notes"]
 
-            col_index: int = 0
+                row_index: int = 0
 
-            item_name = QLineEdit()
-            item_name.setText(item)
-            item_name.textEdited.connect(
-                partial(self.name_change, self.category, item_name.text(), item_name)
-            )
-            tab.addWidget(item_name, row_index, col_index)
+                for i, header in enumerate(headers):
+                    lbl_header = QLabel(header)
+                    tab.addWidget(lbl_header, 0, i)
 
-            col_index += 1
+            for row_index, item in enumerate(list(category_data.keys()), start=1):
+                quantity: int = category_data[item]["quantity"]
+                priority: int = category_data[item]["priority"]
+                price: float = category_data[item]["price"]
+                notes: str = category_data[item]["notes"]
 
-            spin_quantity = QSpinBox()
-            spin_quantity.setValue(quantity)
-            spin_quantity.valueChanged.connect(
-                partial(
-                    self.quantity_change,
-                    self.category,
-                    item_name,
-                    "quantity",
-                    spin_quantity,
+                col_index: int = 0
+
+                item_name = QLineEdit()
+                item_name.setText(item)
+                item_name.textEdited.connect(
+                    partial(self.name_change, self.category, item_name.text(), item_name)
                 )
-            )
-            tab.addWidget(spin_quantity, row_index, col_index)
+                tab.addWidget(item_name, row_index, col_index)
 
-            col_index += 1
+                col_index += 1
 
-            spin_price = QDoubleSpinBox()
-            spin_price.setValue(price)
-            spin_price.valueChanged.connect(
-                partial(self.price_change, self.category, item_name, "price", spin_price)
-            )
-            tab.addWidget(spin_price, row_index, col_index)
-
-            col_index += 1
-
-            combo_priority = QComboBox()
-            combo_priority.addItems(["Default", "Low", "Medium", "High"])
-            combo_priority.setCurrentIndex(priority)
-            combo_priority.currentIndexChanged.connect(
-                partial(
-                    self.priority_change,
-                    self.category,
-                    item_name,
-                    "priority",
-                    combo_priority,
+                spin_quantity = QSpinBox()
+                spin_quantity.setValue(quantity)
+                spin_quantity.valueChanged.connect(
+                    partial(
+                        self.quantity_change,
+                        self.category,
+                        item_name,
+                        "quantity",
+                        spin_quantity,
+                    )
                 )
-            )
-            tab.addWidget(combo_priority, row_index, col_index)
+                tab.addWidget(spin_quantity, row_index, col_index)
 
-            col_index += 1
+                col_index += 1
 
-            text_notes = QPlainTextEdit()
-            text_notes.setMaximumWidth(300)
-            text_notes.setMaximumHeight(60)
-            text_notes.setPlainText(notes)
-            text_notes.textChanged.connect(
-                partial(self.notes_changed, self.category, item_name, "notes", text_notes)
-            )
-            tab.addWidget(text_notes, row_index, col_index)
+                spin_price = QDoubleSpinBox()
+                spin_price.setValue(price)
+                spin_price.valueChanged.connect(
+                    partial(
+                        self.price_change, self.category, item_name, "price", spin_price
+                    )
+                )
+                tab.addWidget(spin_price, row_index, col_index)
 
-            col_index += 1
+                col_index += 1
 
-            btn_delete = QPushButton()
-            btn_delete.setIcon(
-                QIcon(f"ui/BreezeStyleSheets/dist/pyqt6/{self.theme}/trash.png")
-            )
-            btn_delete.clicked.connect(
-                partial(self.delete_item, self.category, item_name)
-            )
-            tab.addWidget(btn_delete, row_index, col_index)
+                combo_priority = QComboBox()
+                combo_priority.addItems(["Default", "Low", "Medium", "High"])
+                combo_priority.setCurrentIndex(priority)
+                combo_priority.currentIndexChanged.connect(
+                    partial(
+                        self.priority_change,
+                        self.category,
+                        item_name,
+                        "priority",
+                        combo_priority,
+                    )
+                )
+                tab.addWidget(combo_priority, row_index, col_index)
+
+                col_index += 1
+
+                text_notes = QPlainTextEdit()
+                text_notes.setMaximumWidth(300)
+                text_notes.setMaximumHeight(60)
+                text_notes.setPlainText(notes)
+                text_notes.textChanged.connect(
+                    partial(
+                        self.notes_changed, self.category, item_name, "notes", text_notes
+                    )
+                )
+                tab.addWidget(text_notes, row_index, col_index)
+
+                col_index += 1
+
+                btn_delete = QPushButton()
+                btn_delete.setIcon(
+                    QIcon(f"ui/BreezeStyleSheets/dist/pyqt6/{self.theme}/trash.png")
+                )
+                btn_delete.clicked.connect(
+                    partial(self.delete_item, self.category, item_name)
+                )
+                tab.addWidget(btn_delete, row_index, col_index)
+        except AttributeError:
+            lbl = QLabel("You need to create a category.")
+            self.pushButton_create_new.setEnabled(False)
+            tab.addWidget(lbl, 0, 0)
+            return
 
     def update_list_widget(self):
         search_input: str = self.lineEdit_search_items.text()
         category_data = database.get_value(item_name=self.category)
         self.listWidget_itemnames.clear()
-        for item in list(category_data.keys()):
-            if search_input.lower() in item.lower():
-                self.listWidget_itemnames.addItem(item)
+        self.pushButton_add_quantity.setEnabled(False)
+        self.pushButton_remove_quantity.setEnabled(False)
+        try:
+            for item in list(category_data.keys()):
+                if search_input.lower() in item.lower():
+                    self.listWidget_itemnames.addItem(item)
+        except AttributeError:
+            return
 
     def create_new_category(self):
         self.input_dialog = InputDialog(
@@ -415,24 +445,32 @@ class MainWindow(QMainWindow):
         self.load_tab()
 
     def add_quantity(self, item_name: str, old_quantity: int) -> None:
+        category_data = database.get_value(item_name=self.category)
+        quantity: int = category_data[item_name]["quantity"]
         self.value_change(
             self.category,
             item_name,
             "quantity",
-            old_quantity + self.spinBox_quantity.value(),
+            quantity + self.spinBox_quantity.value(),
         )
-        self.spinBox_quantity.setValue(old_quantity + self.spinBox_quantity.value())
+        self.pushButton_add_quantity.setEnabled(False)
+        self.pushButton_remove_quantity.setEnabled(False)
         self.load_tab()
+        self.listWidget_itemnames.setCurrentRow(self.last_item_selected)
 
     def remove_quantity(self, item_name: str, old_quantity: int) -> None:
+        category_data = database.get_value(item_name=self.category)
+        quantity: int = category_data[item_name]["quantity"]
         self.value_change(
             self.category,
             item_name,
             "quantity",
-            old_quantity - self.spinBox_quantity.value(),
+            quantity - self.spinBox_quantity.value(),
         )
-        self.spinBox_quantity.setValue(old_quantity - self.spinBox_quantity.value())
+        self.pushButton_add_quantity.setEnabled(False)
+        self.pushButton_remove_quantity.setEnabled(False)
         self.load_tab()
+        self.listWidget_itemnames.setCurrentRow(self.last_item_selected)
 
     def listWidget_item_changed(self) -> None:
         selected_item: str = self.listWidget_itemnames.currentItem().text()
@@ -441,6 +479,8 @@ class MainWindow(QMainWindow):
             quantity: int = category_data[selected_item]["quantity"]
         except KeyError:
             return
+        self.last_item_selected = self.listWidget_itemnames.currentRow()
+
         self.pushButton_add_quantity.setEnabled(True)
         self.pushButton_remove_quantity.setEnabled(True)
         self.pushButton_add_quantity.disconnect()
@@ -452,7 +492,7 @@ class MainWindow(QMainWindow):
         self.pushButton_add_quantity.clicked.connect(
             partial(self.add_quantity, selected_item, quantity)
         )
-        self.spinBox_quantity.setValue(quantity)
+        self.spinBox_quantity.setValue(1)
 
     def value_change(
         self, category: str, item_name: str, value_name: str, new_value
@@ -580,7 +620,6 @@ class MainWindow(QMainWindow):
             logging.info(f"Server: {data}")
             database.load_data()
             self.load_categories()
-            self.load_tab()
         elif str(data) == "timed out":
             self.show_error_dialog(
                 title="Time out",

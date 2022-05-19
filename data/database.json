@@ -4,10 +4,10 @@
             "price": 50,
             "priority": 2,
             "notes": "This is a custom note",
-            "quantity": 8
+            "quantity": 67
         },
         "Motor 4": {
-            "quantity": 10,
+            "quantity": 15,
             "price": 50,
             "priority": 0,
             "notes": "This is a custom note"
@@ -16,27 +16,33 @@
             "price": 48.12,
             "priority": 1,
             "notes": "This is a custom notes for motor 1",
-            "quantity": 48
+            "quantity": 59
         },
         "Motor 7": {
             "price": 50,
             "priority": 3,
             "notes": "This is a custom note for motor dupe",
-            "quantity": 8
+            "quantity": 18
         }
     },
     "Bolts": {
         "2 inch bolt": {
-            "quantity": 11,
+            "quantity": 14,
             "price": 12.0,
             "priority": 3,
             "notes": "this is bolt"
         },
         "1 inch bolt": {
-            "quantity": 16,
+            "quantity": 17,
             "price": 4.0,
             "priority": 3,
             "notes": "adasdasdasd"
+        },
+        "3 inch bolt": {
+            "quantity": 18,
+            "price": 0.0,
+            "priority": 0,
+            "notes": ""
         }
     }
 }

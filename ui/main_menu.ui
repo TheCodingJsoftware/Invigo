@@ -195,7 +195,7 @@
     <string>Darkmode</string>
    </property>
    <property name="statusTip">
-    <string>Toggle between darkmode and lightmode</string>
+    <string>Toggle between darkmode and lightmode. Some changes need the program to restart to take effect.</string>
    </property>
   </action>
   <action name="actionAbout_Qt">
@@ -245,6 +245,9 @@
   <action name="actionBackup">
    <property name="text">
     <string>Backup</string>
+   </property>
+   <property name="statusTip">
+    <string>Backup all your changes locally.</string>
    </property>
   </action>
  </widget>

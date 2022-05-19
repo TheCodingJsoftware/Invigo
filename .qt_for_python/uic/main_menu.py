@@ -151,7 +151,7 @@ class Ui_MainWindow(object):
         self.actionExit.setText(_translate("MainWindow", "Exit"))
         self.actionExit.setStatusTip(_translate("MainWindow", "Exit program"))
         self.actionDarkmode.setText(_translate("MainWindow", "Darkmode"))
-        self.actionDarkmode.setStatusTip(_translate("MainWindow", "Toggle between darkmode and lightmode"))
+        self.actionDarkmode.setStatusTip(_translate("MainWindow", "Toggle between darkmode and lightmode. Some changes need the program to restart to take effect."))
         self.actionAbout_Qt.setText(_translate("MainWindow", "About Qt"))
         self.actionView_License.setText(_translate("MainWindow", "View License"))
         self.actionCheck_for_updates.setText(_translate("MainWindow", "Check for updates"))
@@ -163,3 +163,4 @@ class Ui_MainWindow(object):
         self.actionGet_Changes.setText(_translate("MainWindow", "Get Changes"))
         self.actionGet_Changes.setStatusTip(_translate("MainWindow", "Get latest changes from the online database"))
         self.actionBackup.setText(_translate("MainWindow", "Backup"))
+        self.actionBackup.setStatusTip(_translate("MainWindow", "Backup all your changes locally."))
