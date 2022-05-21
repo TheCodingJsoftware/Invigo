@@ -67,3 +67,5 @@ test.py
 settings.json
 data
 backups
+*.zip
+venv/

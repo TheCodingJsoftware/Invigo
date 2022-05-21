@@ -17,7 +17,7 @@ class DownloadThread(QThread):
 
     signal = pyqtSignal(object)
 
-    def __init__(self):
+    def __init__(self, file_to_download: str):
         QThread.__init__(self)
         # Declaring server IP and port
         self.SERVER_IP: str = get_server_ip_address()
@@ -27,6 +27,8 @@ class DownloadThread(QThread):
         self.CLIENT_IP: str = get_system_ip_address()
         self.CLIENT_PORT: int = 4005
 
+        self.file_to_download: str = file_to_download
+
     def run(self):
         try:
             self.server = (self.SERVER_IP, self.SERVER_PORT)
@@ -35,10 +37,12 @@ class DownloadThread(QThread):
             self.s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
             self.s.bind((self.CLIENT_IP, self.CLIENT_PORT))
 
-            self.s.sendto("download".encode("utf-8"), self.server)
+            self.s.sendto(
+                f"get_file;{self.file_to_download};".encode("utf-8"), self.server
+            )
 
             data = self.s.recv(1024).decode("utf-8")
-            with open("data/database.json", "w") as database:
+            with open(f"{self.file_to_download}", "w") as database:
                 database.write(data)
 
             self.s.close()

@@ -17,7 +17,7 @@ class UploadThread(QThread):
 
     signal = pyqtSignal(object)
 
-    def __init__(self):
+    def __init__(self, file_to_upload: str):
         QThread.__init__(self)
         # Declaring server IP and port
         self.SERVER_IP: str = get_server_ip_address()
@@ -27,6 +27,8 @@ class UploadThread(QThread):
         self.CLIENT_IP: str = get_system_ip_address()
         self.CLIENT_PORT: int = 4005
 
+        self.file_to_upload = file_to_upload
+
     def run(self):
         try:
             self.server = (self.SERVER_IP, self.SERVER_PORT)
@@ -35,8 +37,8 @@ class UploadThread(QThread):
             self.s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
             self.s.bind((self.CLIENT_IP, self.CLIENT_PORT))
 
-            with open("data/database.json", "r") as database:
-                data = f"sent|{database.read()}"
+            with open(f"{self.file_to_upload}", "r") as f:
+                data = f"send_file;{self.file_to_upload}{f.read()}"
                 self.s.sendto(data.encode("utf-8"), self.server)
 
             data = self.s.recv(1024).decode("utf-8")

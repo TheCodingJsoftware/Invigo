@@ -5,7 +5,7 @@ __credits__: "list[str]" = ["Jared Gross"]
 __license__ = "MIT"
 __name__ = "Inventory Manager"
 __version__ = "v0.0.1"
-__updated__ = "2022-05-18 21:23:10"
+__updated__ = "2022-05-20 22:01:07"
 __maintainer__ = "Jared Gross"
 __email__ = "jared@pinelandfarms.ca"
 __status__ = "Production"
@@ -82,7 +82,7 @@ from utils.json_file import JsonFile
 from utils.json_object import JsonObject
 
 settings_file = JsonFile(file_name="settings")
-database = JsonFile(file_name="data/database")
+inventory = JsonFile(file_name="data/inventory")
 geometry = JsonObject(JsonFile=settings_file, object_name="geometry")
 
 
@@ -123,6 +123,12 @@ class MainWindow(QMainWindow):
         # Dockable Widget
         self.lineEdit_search_items.textChanged.connect(self.update_list_widget)
 
+        # Tool Box
+        self.toolBox.setCurrentIndex(
+            settings_file.get_value(item_name="last_toolbox_tab")
+        )
+        self.toolBox.currentChanged.connect(self.tool_box_menu_changed)
+
         # Tab widget
         self.load_categories()
         self.pushButton_create_new.clicked.connect(self.add_item)
@@ -145,15 +151,36 @@ class MainWindow(QMainWindow):
         self.actionDarkmode.triggered.connect(self.toggle_dark_mode)
 
         # FILE
-        self.actionUpload_Changes.triggered.connect(self.upload_changes)
-        self.actionGet_Changes.triggered.connect(self.download_database)
+        # TODO MAKE THESE QMENUS
+        self.actionUploadInventory.triggered.connect(
+            partial(self.upload_file, "data/inventory.json")
+        )
+        self.actionDownloadInventory.triggered.connect(
+            partial(self.download_file, "data/inventory.json")
+        )
+        for i, category in enumerate(self.categories):
+            action = QAction(self)
+            action.triggered.connect(partial(self.quick_load_category, i))
+            action.setText(category)
+            self.menuOpen_Category.addAction(action)
         self.actionBackup.triggered.connect(self.backup_database)
         self.actionExit.triggered.connect(self.close)
+
+    def quick_load_category(self, index: int):
+        self.tab_widget.setCurrentIndex(index)
+        self.load_tab()
+
+    def tool_box_menu_changed(self):
+        if self.toolBox.currentIndex() != 0:
+            self.dockWidget_create_add_remove.setVisible(False)
+        else:
+            self.dockWidget_create_add_remove.setVisible(True)
+        settings_file.add_item("last_toolbox_tab", self.toolBox.currentIndex())
 
     def load_categories(self) -> None:
         self.clearLayout(self.verticalLayout)
         self.tabs.clear()
-        self.categories = database.get_keys()
+        self.categories = inventory.get_keys()
         self.tab_widget = QTabWidget(self)
         self.tab_widget.setMovable(True)
         i: int = -1
@@ -186,7 +213,7 @@ class MainWindow(QMainWindow):
         self.tab_widget.setTabIcon(
             i + 2, QIcon(f"ui/BreezeStyleSheets/dist/pyqt6/{self.theme}/list_remove.png")
         )
-        self.tab_widget.setCurrentIndex(settings_file.get_value("last_tab"))
+        self.tab_widget.setCurrentIndex(settings_file.get_value("last_category_tab"))
         self.tab_widget.currentChanged.connect(self.load_tab)
         self.verticalLayout.addWidget(self.tab_widget)
         self.load_tab()
@@ -195,11 +222,11 @@ class MainWindow(QMainWindow):
         tab_index: int = self.tab_widget.currentIndex()
         self.category = self.tab_widget.tabText(tab_index)
         if self.category == "Create category":
-            self.tab_widget.setCurrentIndex(settings_file.get_value("last_tab"))
+            self.tab_widget.setCurrentIndex(settings_file.get_value("last_category_tab"))
             self.create_new_category()
             return
         if self.category == "Delete category":
-            self.tab_widget.setCurrentIndex(settings_file.get_value("last_tab"))
+            self.tab_widget.setCurrentIndex(settings_file.get_value("last_category_tab"))
             self.delete_category()
             return
         self.pushButton_create_new.setEnabled(True)
@@ -207,9 +234,9 @@ class MainWindow(QMainWindow):
             self.clearLayout(self.tabs[tab_index])
         except IndexError:
             return
-        settings_file.add_item("last_tab", tab_index)
+        settings_file.add_item("last_category_tab", tab_index)
         tab = self.tabs[tab_index]
-        category_data = database.get_value(item_name=self.category)
+        category_data = inventory.get_value(item_name=self.category)
         self.update_list_widget()
         self.label_category_name.setText(f"Category: {self.category}")
 
@@ -297,6 +324,8 @@ class MainWindow(QMainWindow):
                 col_index += 1
 
                 btn_delete = QPushButton()
+                btn_delete.setToolTip(f"Delete {item_name.text()} from {self.category}")
+                btn_delete.setFixedSize(26, 26)
                 btn_delete.setIcon(
                     QIcon(f"ui/BreezeStyleSheets/dist/pyqt6/{self.theme}/trash.png")
                 )
@@ -312,7 +341,7 @@ class MainWindow(QMainWindow):
 
     def update_list_widget(self):
         search_input: str = self.lineEdit_search_items.text()
-        category_data = database.get_value(item_name=self.category)
+        category_data = inventory.get_value(item_name=self.category)
         self.listWidget_itemnames.clear()
         self.pushButton_add_quantity.setEnabled(False)
         self.pushButton_remove_quantity.setEnabled(False)
@@ -341,7 +370,7 @@ class MainWindow(QMainWindow):
                         dialog_buttons=DialogButtons.ok,
                     )
                     return
-            database.add_item(item_name=input_text, value={})
+            inventory.add_item(item_name=input_text, value={})
             self.load_categories()
         elif response == DialogButtons.cancel:
             return
@@ -359,7 +388,7 @@ class MainWindow(QMainWindow):
 
         if response == DialogButtons.delete:
             try:
-                database.remove_item(self.select_item_dialog.get_selected_item())
+                inventory.remove_item(self.select_item_dialog.get_selected_item())
             except AttributeError:
                 return
             self.tab_widget.setCurrentIndex(0)
@@ -368,7 +397,7 @@ class MainWindow(QMainWindow):
             return
 
     def name_change(self, category: str, old_name: str, name: QLineEdit) -> None:
-        category_data = database.get_value(item_name=category)
+        category_data = inventory.get_value(item_name=category)
         for item in list(category_data.keys()):
             if name.text() == item:
                 self.show_error_dialog(
@@ -379,9 +408,10 @@ class MainWindow(QMainWindow):
                 name.setText(old_name)
                 name.selectAll()
                 return
-        database.change_item_name(category, old_name, name.text())
+        inventory.change_item_name(category, old_name, name.text())
         name.disconnect()
         name.textEdited.connect(partial(self.name_change, category, name.text(), name))
+        self.update_list_widget()
 
     def quantity_change(
         self, category: str, item_name: QLineEdit, value_name: str, quantity: QSpinBox
@@ -414,7 +444,7 @@ class MainWindow(QMainWindow):
 
         if response == DialogButtons.add:
             name: str = self.add_item_dialog.get_name()
-            category_data = database.get_value(item_name=self.category)
+            category_data = inventory.get_value(item_name=self.category)
             for item in list(category_data.keys()):
                 if name == item:
                     self.show_error_dialog(
@@ -427,25 +457,25 @@ class MainWindow(QMainWindow):
             quantity: int = self.add_item_dialog.get_quantity()
             price: float = self.add_item_dialog.get_price()
             notes: str = self.add_item_dialog.get_notes()
-            database.add_item_in_object(self.category, name)
-            database.change_object_in_object_item(
+            inventory.add_item_in_object(self.category, name)
+            inventory.change_object_in_object_item(
                 self.category, name, "quantity", quantity
             )
-            database.change_object_in_object_item(self.category, name, "price", price)
-            database.change_object_in_object_item(
+            inventory.change_object_in_object_item(self.category, name, "price", price)
+            inventory.change_object_in_object_item(
                 self.category, name, "priority", priority
             )
-            database.change_object_in_object_item(self.category, name, "notes", notes)
+            inventory.change_object_in_object_item(self.category, name, "notes", notes)
             self.load_tab()
         elif response == DialogButtons.cancel:
             return
 
     def delete_item(self, category: str, item_name: QLineEdit) -> None:
-        database.remove_object_item(category, item_name.text())
+        inventory.remove_object_item(category, item_name.text())
         self.load_tab()
 
     def add_quantity(self, item_name: str, old_quantity: int) -> None:
-        category_data = database.get_value(item_name=self.category)
+        category_data = inventory.get_value(item_name=self.category)
         quantity: int = category_data[item_name]["quantity"]
         self.value_change(
             self.category,
@@ -459,7 +489,7 @@ class MainWindow(QMainWindow):
         self.listWidget_itemnames.setCurrentRow(self.last_item_selected)
 
     def remove_quantity(self, item_name: str, old_quantity: int) -> None:
-        category_data = database.get_value(item_name=self.category)
+        category_data = inventory.get_value(item_name=self.category)
         quantity: int = category_data[item_name]["quantity"]
         self.value_change(
             self.category,
@@ -474,7 +504,7 @@ class MainWindow(QMainWindow):
 
     def listWidget_item_changed(self) -> None:
         selected_item: str = self.listWidget_itemnames.currentItem().text()
-        category_data = database.get_value(item_name=self.category)
+        category_data = inventory.get_value(item_name=self.category)
         try:
             quantity: int = category_data[selected_item]["quantity"]
         except KeyError:
@@ -483,6 +513,7 @@ class MainWindow(QMainWindow):
 
         self.pushButton_add_quantity.setEnabled(True)
         self.pushButton_remove_quantity.setEnabled(True)
+
         self.pushButton_add_quantity.disconnect()
         self.pushButton_remove_quantity.disconnect()
 
@@ -497,7 +528,7 @@ class MainWindow(QMainWindow):
     def value_change(
         self, category: str, item_name: str, value_name: str, new_value
     ) -> None:
-        database.change_object_in_object_item(
+        inventory.change_object_in_object_item(
             object_name=category,
             item_name=item_name,
             value_name=value_name,
@@ -618,7 +649,7 @@ class MainWindow(QMainWindow):
                 message=f"{data}\n\nDatabase successfully downloaded.",
             )
             logging.info(f"Server: {data}")
-            database.load_data()
+            inventory.load_data()
             self.load_categories()
         elif str(data) == "timed out":
             self.show_error_dialog(
@@ -631,14 +662,14 @@ class MainWindow(QMainWindow):
                 message=str(data),
             )
 
-    def upload_changes(self) -> None:
+    def upload_file(self, file_to_upload: str) -> None:
         self.threads = []
-        upload_thread = UploadThread()
+        upload_thread = UploadThread(file_to_upload)
         self.start_thread(upload_thread)
 
-    def download_database(self) -> None:
+    def download_file(self, file_to_download: str) -> None:
         self.threads = []
-        download_thread = DownloadThread()
+        download_thread = DownloadThread(file_to_download)
         self.start_thread(download_thread)
 
     def start_thread(self, thread) -> None:
@@ -647,7 +678,7 @@ class MainWindow(QMainWindow):
         thread.start()
 
     def backup_database(self) -> None:
-        compress_database(path_to_file="data/database.json")
+        compress_database(path_to_file="data/inventory.json")
         self.show_message_dialog(title="Success", message="Backup was successful!")
 
     def closeEvent(self, event):
@@ -666,17 +697,18 @@ class MainWindow(QMainWindow):
 
 
 def default_settings() -> None:
-    check_settings(setting="dark_mode", default_value=False)
-    check_settings(setting="server_ip", default_value="10.0.0.64")
-    check_settings(setting="server_port", default_value=4000)
-    check_settings(
+    check_setting(setting="dark_mode", default_value=False)
+    check_setting(setting="server_ip", default_value="10.0.0.64")
+    check_setting(setting="server_port", default_value=4000)
+    check_setting(
         setting="geometry",
         default_value={"x": 200, "y": 200, "width": 600, "height": 400},
     )
-    check_settings(setting="last_tab", default_value=0)
+    check_setting(setting="last_category_tab", default_value=0)
+    check_setting(setting="last_toolbox_tab", default_value=0)
 
 
-def check_settings(setting: str, default_value) -> None:
+def check_setting(setting: str, default_value) -> None:
     if settings_file.get_value(item_name=setting) is None:
         settings_file.add_item(item_name=setting, value=default_value)
 

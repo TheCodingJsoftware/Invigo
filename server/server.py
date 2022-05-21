@@ -54,15 +54,20 @@ class Server:
                 f"{Colors.BOLD}{datetime.now()}{Colors.ENDC} - {Colors.OKGREEN}Message received from: {str(client_address)} Message: {data}{Colors.ENDC}"
             )
 
-            if "sent" in data:
+            data = data.split(";")
+            command: str = data[0]
+            file: str = data[1]
+            text: str = data[2]
+
+            if command == "send_file":
                 text = data.split("|")[-1]
-                with open("data/database.json", "w") as database:
-                    database.write(text)
+                with open("data/{file}", "w") as f:
+                    f.write(text)
                     logging.info("downloaded data")
                 self.s.sendto("Successfully uploaded".encode("utf-8"), client_address)
                 logging.info("sent response")
-            elif data == "download":
-                self.send_database(client=client_address)
+            elif command = 'get_file':
+                self.send_database(file_to_send=file, client=client_address)
 
             print(
                 f"{Colors.BOLD}{datetime.now()}{Colors.ENDC} - {Colors.OKGREEN}Response sent to: {str(client_address)}{Colors.ENDC}"
@@ -78,8 +83,8 @@ class Server:
                     f"{Colors.BOLD}{datetime.now()}{Colors.ENDC} - {Colors.OKGREEN}{os.path.dirname(os.path.realpath(__file__))}/{folder} Created.{Colors.ENDC}"
                 )
 
-    def send_database(self, client):
-        with open("data/database.json", "r") as database:
+    def send_database(self, file_to_send: str, client):
+        with open("data/{file_to_send}", "r") as database:
             text = database.read()
             self.s.sendto(text.encode("utf-8"), client)
             logging.info("sent data")

@@ -30,6 +30,7 @@ class JsonFile:
             json.dump(self.data, json_file, ensure_ascii=False, indent=4)
 
     def add_item(self, item_name: str, value) -> None:
+        # sourcery skip: class-extract-method
         self.load_data()
         self.data.update({item_name: value})
         self.__save_data()
