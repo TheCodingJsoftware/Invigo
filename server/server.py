@@ -63,7 +63,7 @@ class Server:
             f"{Colors.BOLD}{datetime.now()}{Colors.ENDC} - {Colors.OKGREEN}Message received from: {str(client_address)} Message: {data}{Colors.ENDC}"
         )
 
-        print(data)
+        print(command, filename, filesize)
 
         if command == "get_file":
             self.send_database(file_to_send=file, client=client_address)

@@ -39,9 +39,9 @@ class UploadThread(QThread):
             self.server = (self.SERVER_IP, self.SERVER_PORT)
             self.s = socket.socket()
             # self.s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-            self.s.settimeout(10)
+            # self.s.settimeout(10)
             # self.s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-            self.s.bind((self.CLIENT_IP, self.CLIENT_PORT))
+            self.s.connect(self.server)
 
             self.s.send(
                 f"send_file{self.SEPARATOR}{self.file_to_upload}{self.SEPARATOR}{self.filesize}".encode()
@@ -53,7 +53,7 @@ class UploadThread(QThread):
                     if not bytes_read:
                         # file transmitting is done
                         break
-                    s.sendall(bytes_read)
+                    self.s.sendall(bytes_read)
 
             response: str = self.s.recv(1024).decode("utf-8")
 
