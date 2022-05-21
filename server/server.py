@@ -82,7 +82,7 @@ class Server:
                 )
 
     def send_database(self, file_to_send: str, client):
-        with open("data/{file_to_send}", "r") as database:
+        with open(f"{file_to_send}", "r") as database:
             text = database.read()
             self.s.sendto(text.encode("utf-8"), client)
             logging.info("sent data")
