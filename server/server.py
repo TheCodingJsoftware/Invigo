@@ -59,16 +59,14 @@ class Server:
             file: str = data[1]
             text: str = data[2]
 
-            if command == "send_file":
-                text = data.split("|")[-1]
+            if command == "get_file":
+                self.send_database(file_to_send=file, client=client_address)
+            elif command == "send_file":
                 with open("data/{file}", "w") as f:
                     f.write(text)
                     logging.info("downloaded data")
                 self.s.sendto("Successfully uploaded".encode("utf-8"), client_address)
                 logging.info("sent response")
-            elif command = 'get_file':
-                self.send_database(file_to_send=file, client=client_address)
-
             print(
                 f"{Colors.BOLD}{datetime.now()}{Colors.ENDC} - {Colors.OKGREEN}Response sent to: {str(client_address)}{Colors.ENDC}"
             )
