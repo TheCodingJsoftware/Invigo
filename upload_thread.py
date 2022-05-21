@@ -38,7 +38,7 @@ class UploadThread(QThread):
             self.s.bind((self.CLIENT_IP, self.CLIENT_PORT))
 
             with open(f"{self.file_to_upload}", "r") as f:
-                data = f"send_file;{self.file_to_upload}{f.read()}"
+                data = f"send_file;{self.file_to_upload};{f.read()}"
                 self.s.sendto(data.encode("utf-8"), self.server)
 
             data = self.s.recv(1024).decode("utf-8")

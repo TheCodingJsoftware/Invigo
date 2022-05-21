@@ -58,10 +58,11 @@ class Server:
             command: str = data[0]
             file: str = data[1]
             text: str = data[2]
+            print(data)
 
             if command == "get_file":
                 self.send_database(file_to_send=file, client=client_address)
-            elif command == "send_file":
+            if command == "send_file":
                 with open(f"{file}", "w") as f:
                     f.write(text)
                     logging.info("downloaded data")
