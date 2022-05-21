@@ -50,7 +50,7 @@ class Server:
             logging.exception("Exception occured")
             return
         while True:
-            self.s.listen(1)
+            self.s.listen(5)
             # Wait for message from client
             client_socket, client_address = self.s.accept()
             data = client_socket.recv(BUFFER_SIZE).decode()

@@ -32,7 +32,7 @@ class UploadThread(QThread):
         self.SEPARATOR = "<SEPARATOR>"
 
         self.file_to_upload = file_to_upload
-        self.filesize = os.path.getsize(file_to_upload)
+        self.filesize = os.path.getsize(self.file_to_upload)
 
     def run(self):
         try:
@@ -43,11 +43,10 @@ class UploadThread(QThread):
             # self.s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
             self.s.bind((self.CLIENT_IP, self.CLIENT_PORT))
 
-            with open(f"{self.file_to_upload}", "r") as f:
-                self.s.send(
-                    f"send_file{self.SEPARATOR}{self.file_to_upload}{self.SEPARATOR}{self.filesize}".encode()
-                )
-                # self.s.sendto(data.encode("utf-8"), self.server)
+            self.s.send(
+                f"send_file{self.SEPARATOR}{self.file_to_upload}{self.SEPARATOR}{self.filesize}".encode()
+            )
+            # self.s.sendto(data.encode("utf-8"), self.server)
             with open(self.file_to_upload, "rb") as f:
                 while True:
                     bytes_read = f.read(self.BUFFER_SIZE)
