@@ -1,4 +1,5 @@
 import logging
+import os
 import socket
 
 from PyQt5.QtCore import QThread, pyqtSignal
@@ -27,7 +28,11 @@ class UploadThread(QThread):
         self.CLIENT_IP: str = get_system_ip_address()
         self.CLIENT_PORT: int = 4005
 
+        self.BUFFER_SIZE = 4096
+        self.SEPARATOR = "<SEPARATOR>"
+
         self.file_to_upload = file_to_upload
+        self.filesize = os.path.getsize(file_to_upload)
 
     def run(self):
         try:
@@ -38,14 +43,23 @@ class UploadThread(QThread):
             self.s.bind((self.CLIENT_IP, self.CLIENT_PORT))
 
             with open(f"{self.file_to_upload}", "r") as f:
-                data = f"send_file;{self.file_to_upload};{f.read()}"
-                self.s.sendto(data.encode("utf-8"), self.server)
+                self.s.send(
+                    f"send_file{self.SEPARATOR}{self.file_to_upload}{self.SEPARATOR}{self.filesize}".encode()
+                )
+                # self.s.sendto(data.encode("utf-8"), self.server)
+            with open(self.file_to_upload, "rb") as f:
+                while True:
+                    bytes_read = f.read(self.BUFFER_SIZE)
+                    if not bytes_read:
+                        # file transmitting is done
+                        break
+                    s.sendall(bytes_read)
 
-            data = self.s.recv(1024).decode("utf-8")
+            response: str = self.s.recv(1024).decode("utf-8")
 
             self.s.close()
 
-            self.signal.emit(data)
+            self.signal.emit(response)
         except Exception as e:
             logging.exception("Exception occurred")
             self.signal.emit(e)

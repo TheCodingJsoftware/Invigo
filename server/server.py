@@ -17,6 +17,9 @@ class Server:
         self.SERVER_IP: str = "10.0.0.64"
         self.SERVER_PORT: int = 4000
 
+        self.BUFFER_SIZE = 4096
+        self.SEPARATOR = "<SEPARATOR>"
+
         self.check_folders(folders=["data", "logs"])
         self.config_logs()
         self.start_server()
@@ -46,26 +49,31 @@ class Server:
             logging.exception("Exception occured")
             return
         while True:
+            self.s.listen(1)
             # Wait for message from client
-            data, client_address = self.s.recvfrom(1024)
-            data = data.decode("utf-8")
+            client_socket, client_address = self.s.accept()
+            data = client_socket.recv(BUFFER_SIZE).decode()
+            command, filename, filesize = data.split(SEPARATOR)
+            filesize = int(filesize)
+
             logging.info("got data")
             print(
                 f"{Colors.BOLD}{datetime.now()}{Colors.ENDC} - {Colors.OKGREEN}Message received from: {str(client_address)} Message: {data}{Colors.ENDC}"
             )
 
-            data = data.split(";")
-            command: str = data[0]
-            file: str = data[1]
-            text: str = data[2]
             print(data)
 
             if command == "get_file":
                 self.send_database(file_to_send=file, client=client_address)
             if command == "send_file":
-                with open(f"{file}", "w") as f:
-                    f.write(text)
-                    logging.info("downloaded data")
+                with open(filename, "wb") as f:
+                    while True:
+                        # read 1024 bytes from the socket (receive)
+                        bytes_read = client_socket.recv(self.BUFFER_SIZE)
+                        if not bytes_read:
+                            # file transmitting is done
+                            break
+                        f.write(bytes_read)
                 self.s.sendto("Successfully uploaded".encode("utf-8"), client_address)
                 logging.info("sent response")
             print(
