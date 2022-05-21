@@ -2,6 +2,7 @@ import logging
 import os
 import socket
 from datetime import datetime
+from time import sleep
 
 from utils.colors import Colors
 
@@ -53,8 +54,8 @@ class Server:
             self.s.listen(5)
             # Wait for message from client
             client_socket, client_address = self.s.accept()
-            data = client_socket.recv(BUFFER_SIZE).decode()
-            command, filename, filesize = data.split(SEPARATOR)
+            data = client_socket.recv(self.BUFFER_SIZE).decode()
+            command, filename, filesize = data.split(self.SEPARATOR)
             filesize = int(filesize)
 
             logging.info("got data")
@@ -80,6 +81,7 @@ class Server:
             print(
                 f"{Colors.BOLD}{datetime.now()}{Colors.ENDC} - {Colors.OKGREEN}Response sent to: {str(client_address)}{Colors.ENDC}"
             )
+            sleep(5)
 
     def check_folders(self, folders: list) -> None:
         for folder in folders:
