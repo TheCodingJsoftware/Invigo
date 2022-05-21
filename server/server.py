@@ -69,6 +69,7 @@ class Server:
                 self.send_database(file_to_send=file, client=client_address)
             if command == "send_file":
                 with open(filename, "wb") as f:
+                    print("opening file")
                     while True:
                         # read 1024 bytes from the socket (receive)
                         bytes_read = client_socket.recv(self.BUFFER_SIZE)
