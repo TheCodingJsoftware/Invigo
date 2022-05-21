@@ -62,7 +62,7 @@ class Server:
             if command == "get_file":
                 self.send_database(file_to_send=file, client=client_address)
             elif command == "send_file":
-                with open("data/{file}", "w") as f:
+                with open(f"{file}", "w") as f:
                     f.write(text)
                     logging.info("downloaded data")
                 self.s.sendto("Successfully uploaded".encode("utf-8"), client_address)
