@@ -72,6 +72,7 @@ class Server:
                 while True:
                     # read 1024 bytes from the socket (receive)
                     bytes_read = client_socket.recv(self.BUFFER_SIZE)
+                    print(bytes_read)
                     if not bytes_read:
                         # file transmitting is done
                         break

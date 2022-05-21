@@ -50,6 +50,7 @@ class UploadThread(QThread):
             with open(self.file_to_upload, "rb") as f:
                 while True:
                     bytes_read = f.read(self.BUFFER_SIZE)
+                    print(bytes_read)
                     if not bytes_read:
                         # file transmitting is done
                         break
