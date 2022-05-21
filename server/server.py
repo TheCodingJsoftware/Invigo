@@ -52,7 +52,7 @@ class Server:
             logging.exception("Exception occured")
             return
         # while True:
-            # Wait for message from client
+        # Wait for message from client
         client_socket, client_address = self.s.accept()
         data = client_socket.recv(self.BUFFER_SIZE).decode()
         command, filename, filesize = data.split(self.SEPARATOR)
@@ -78,13 +78,14 @@ class Server:
                         # file transmitting is done
                         break
                     f.write(bytes_read)
-            print('finished')
+            print("finished")
             self.s.sendto("Successfully uploaded".encode("utf-8"), client_address)
+            client_socket.close()
             logging.info("sent response")
         print(
             f"{Colors.BOLD}{datetime.now()}{Colors.ENDC} - {Colors.OKGREEN}Response sent to: {str(client_address)}{Colors.ENDC}"
         )
-            # sleep(5)
+        # sleep(5)
 
     def check_folders(self, folders: list) -> None:
         for folder in folders:
