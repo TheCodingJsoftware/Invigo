@@ -35,8 +35,9 @@ class Server:
     def start_server(self):
         try:
             # Starting server
-            self.s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-            self.s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+            self.s = socket.socket()
+            # self.s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+            # self.s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
             self.s.bind((self.SERVER_IP, self.SERVER_PORT))
             print(
                 f"{Colors.BOLD}{datetime.now()}{Colors.ENDC} - {Colors.OKGREEN}Server Started succesfully on {self.SERVER_IP}:{self.SERVER_PORT}{Colors.ENDC}"

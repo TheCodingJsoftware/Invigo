@@ -37,9 +37,10 @@ class UploadThread(QThread):
     def run(self):
         try:
             self.server = (self.SERVER_IP, self.SERVER_PORT)
-            self.s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+            self.s = socket.socket()
+            # self.s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
             self.s.settimeout(10)
-            self.s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+            # self.s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
             self.s.bind((self.CLIENT_IP, self.CLIENT_PORT))
 
             with open(f"{self.file_to_upload}", "r") as f:
