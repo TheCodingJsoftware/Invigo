@@ -78,6 +78,7 @@ class Server:
                         # file transmitting is done
                         break
                     f.write(bytes_read)
+            print('finished')
             self.s.sendto("Successfully uploaded".encode("utf-8"), client_address)
             logging.info("sent response")
         print(
