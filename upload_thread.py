@@ -37,30 +37,23 @@ class UploadThread(QThread):
     def run(self):
         try:
             self.server = (self.SERVER_IP, self.SERVER_PORT)
-            self.s = socket.socket()
-            # self.s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-            # self.s.settimeout(10)
-            # self.s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+            self.s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+            self.s.settimeout(10)
             self.s.connect(self.server)
 
             self.s.send(
                 f"send_file{self.SEPARATOR}{self.file_to_upload}{self.SEPARATOR}{self.filesize}".encode()
             )
-            # self.s.sendto(data.encode("utf-8"), self.server)
             with open(self.file_to_upload, "rb") as f:
                 while True:
                     bytes_read = f.read(self.BUFFER_SIZE)
-                    print(bytes_read)
                     if not bytes_read:
-                        # file transmitting is done
                         break
                     self.s.sendall(bytes_read)
 
-            response: str = self.s.recv(1024).decode("utf-8")
-
             self.s.close()
 
-            self.signal.emit(response)
+            self.signal.emit("Successfully uploaded")
         except Exception as e:
             logging.exception("Exception occurred")
             self.signal.emit(e)
