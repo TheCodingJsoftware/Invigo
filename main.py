@@ -5,7 +5,7 @@ __credits__: "list[str]" = ["Jared Gross"]
 __license__ = "MIT"
 __name__ = "Inventory Manager"
 __version__ = "v0.0.1"
-__updated__ = "2022-05-20 22:17:11"
+__updated__ = "2022-05-22 15:28:44"
 __maintainer__ = "Jared Gross"
 __email__ = "jared@pinelandfarms.ca"
 __status__ = "Production"
@@ -158,11 +158,6 @@ class MainWindow(QMainWindow):
         self.actionDownloadInventory.triggered.connect(
             partial(self.download_file, "data/inventory.json")
         )
-        for i, category in enumerate(self.categories):
-            action = QAction(self)
-            action.triggered.connect(partial(self.quick_load_category, i))
-            action.setText(category)
-            self.menuOpen_Category.addAction(action)
         self.actionBackup.triggered.connect(self.backup_database)
         self.actionExit.triggered.connect(self.close)
 
@@ -181,6 +176,12 @@ class MainWindow(QMainWindow):
         self.clearLayout(self.verticalLayout)
         self.tabs.clear()
         self.categories = inventory.get_keys()
+        self.menuOpen_Category.clear()
+        for i, category in enumerate(self.categories):
+            action = QAction(self)
+            action.triggered.connect(partial(self.quick_load_category, i))
+            action.setText(category)
+            self.menuOpen_Category.addAction(action)
         self.tab_widget = QTabWidget(self)
         self.tab_widget.setMovable(True)
         i: int = -1
