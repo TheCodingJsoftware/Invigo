@@ -33,12 +33,9 @@ class Server:
             datefmt="%d-%b-%y %H:%M:%S",
         )
 
-    def start_server(self):
+    def start_server(self):  # sourcery skip: low-code-quality
         try:
-            # Starting server
-            self.s = socket.socket()
-            # self.s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-            # self.s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+            self.s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
             self.s.bind((self.SERVER_IP, self.SERVER_PORT))
             self.s.listen(5)
             print(
@@ -51,41 +48,58 @@ class Server:
             )
             logging.exception("Exception occured")
             return
-        # while True:
-        # Wait for message from client
-        client_socket, client_address = self.s.accept()
-        data = client_socket.recv(self.BUFFER_SIZE).decode()
-        command, filename, filesize = data.split(self.SEPARATOR)
-        filesize = int(filesize)
+        while True:
+            # Wait for message from client
+            client_socket, client_address = self.s.accept()
+            data = client_socket.recv(self.BUFFER_SIZE).decode()
 
-        logging.info("got data")
-        print(
-            f"{Colors.BOLD}{datetime.now()}{Colors.ENDC} - {Colors.OKGREEN}Message received from: {str(client_address)} Message: {data}{Colors.ENDC}"
-        )
+            logging.info("got data")
+            print(
+                f"{Colors.BOLD}{datetime.now()}{Colors.ENDC} - {Colors.OKGREEN}Message received from: {str(client_address)} Message: {data}{Colors.ENDC}"
+            )
 
-        print(command, filename, filesize)
-
-        if command == "get_file":
-            self.send_database(file_to_send=file, client=client_address)
-        if command == "send_file":
-            with open(filename, "wb") as f:
-                print("opening file")
-                while True:
-                    # read 1024 bytes from the socket (receive)
-                    bytes_read = client_socket.recv(self.BUFFER_SIZE)
-                    print(bytes_read)
-                    if not bytes_read:
-                        # file transmitting is done
-                        break
-                    f.write(bytes_read)
-            print("finished")
-            self.s.sendto("Successfully uploaded".encode("utf-8"), client_address)
+            if "get_file" in data:
+                print(
+                    f"{Colors.BOLD}{datetime.now()}{Colors.ENDC} - {Colors.OKGREEN}Sending file from client - {str(client_address)}{Colors.ENDC}"
+                )
+                command, filename = data.split(self.SEPARATOR)
+                client_socket.send(f"{os.path.getsize(filename)}".encode())
+                # sel
+                with open(filename, "rb") as f:
+                    while True:
+                        bytes_read = f.read(self.BUFFER_SIZE)
+                        if not bytes_read:
+                            # file transmitting is done
+                            break
+                        client_socket.sendall(bytes_read)
+                print(
+                    f"{Colors.BOLD}{datetime.now()}{Colors.ENDC} - {Colors.OKGREEN}Finished - {str(client_address)}{Colors.ENDC}"
+                )
+                # self.send_database(file_to_send=file, client=client_address)
+            if "send_file" in data:
+                command, filename, filesize = data.split(self.SEPARATOR)
+                print(
+                    f"{Colors.BOLD}{datetime.now()}{Colors.ENDC} - {Colors.OKGREEN}Downloading file from client - {str(client_address)}{Colors.ENDC}"
+                )
+                filesize = int(filesize)
+                with open(filename, "wb") as f:
+                    while True:
+                        # read 1024 bytes from the socket (receive)
+                        bytes_read = client_socket.recv(self.BUFFER_SIZE)
+                        if not bytes_read:
+                            # file transmitting is done
+                            break
+                        f.write(bytes_read)
+                # client_socket.send("Successfully uploaded".encode("utf-8"))
+                logging.info("sent response")
+                print(
+                    f"{Colors.BOLD}{datetime.now()}{Colors.ENDC} - {Colors.OKGREEN}Finished - {str(client_address)}{Colors.ENDC}"
+                )
             client_socket.close()
-            logging.info("sent response")
-        print(
-            f"{Colors.BOLD}{datetime.now()}{Colors.ENDC} - {Colors.OKGREEN}Response sent to: {str(client_address)}{Colors.ENDC}"
-        )
-        # sleep(5)
+            print(
+                f"{Colors.BOLD}{datetime.now()}{Colors.ENDC} - {Colors.OKGREEN}Socket closed - {str(client_address)}{Colors.ENDC}"
+            )
+            # sleep(5)
 
     def check_folders(self, folders: list) -> None:
         for folder in folders:
@@ -96,12 +110,6 @@ class Server:
                 print(
                     f"{Colors.BOLD}{datetime.now()}{Colors.ENDC} - {Colors.OKGREEN}{os.path.dirname(os.path.realpath(__file__))}/{folder} Created.{Colors.ENDC}"
                 )
-
-    def send_database(self, file_to_send: str, client):
-        with open(f"{file_to_send}", "r") as database:
-            text = database.read()
-            self.s.sendto(text.encode("utf-8"), client)
-            logging.info("sent data")
 
 
 if __name__ == "__main__":
