@@ -27,23 +27,31 @@ class DownloadThread(QThread):
         self.CLIENT_IP: str = get_system_ip_address()
         self.CLIENT_PORT: int = 4005
 
+        self.BUFFER_SIZE = 4096
+        self.SEPARATOR = "<SEPARATOR>"
+
         self.file_to_download: str = file_to_download
 
     def run(self):
         try:
             self.server = (self.SERVER_IP, self.SERVER_PORT)
-            self.s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+            self.s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
             self.s.settimeout(10)
-            self.s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-            self.s.bind((self.CLIENT_IP, self.CLIENT_PORT))
+            self.s.connect(self.server)
 
-            self.s.sendto(
-                f"get_file;{self.file_to_download};".encode("utf-8"), self.server
+            self.s.send(
+                f"get_file{self.SEPARATOR}{self.file_to_download}".encode("utf-8")
             )
 
-            data = self.s.recv(1024).decode("utf-8")
-            with open(f"{self.file_to_download}", "w") as database:
-                database.write(data)
+            filesize: int = int(self.s.recv(1024).decode("utf-8"))
+
+            with open(self.file_to_download, "wb") as f:
+                while True:
+                    bytes_read = self.s.recv(self.BUFFER_SIZE)
+                    if not bytes_read:
+                        # file transmitting is done
+                        break
+                    f.write(bytes_read)
 
             self.s.close()
 
