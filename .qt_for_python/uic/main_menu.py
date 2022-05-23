@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'f:\Code\Python-Projects\Inventory Manager\dist - Copy\ui\main_menu.ui'
+# Form implementation generated from reading ui file 'f:\Code\Python-Projects\Inventory Manager\ui\main_menu.ui'
 #
 # Created by: PyQt5 UI code generator 5.15.6
 #

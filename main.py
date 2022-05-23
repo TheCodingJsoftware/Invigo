@@ -5,7 +5,7 @@ __credits__: "list[str]" = ["Jared Gross"]
 __license__ = "MIT"
 __name__ = "Inventory Manager"
 __version__ = "v0.0.2"
-__updated__ = "2022-05-22 19:52:15"
+__updated__ = "2022-05-22 20:56:30"
 __maintainer__ = "Jared Gross"
 __email__ = "jared@pinelandfarms.ca"
 __status__ = "Production"
@@ -142,24 +142,53 @@ class MainWindow(QMainWindow):
 
         # Action events
         # HELP
-        self.actionCheck_for_Updates.triggered.connect(self.check_for_updates)
         self.actionAbout_Qt.triggered.connect(qApp.aboutQt)
+        self.actionAbout_Qt.setIcon(
+            self.style().standardIcon(QStyle.SP_TitleBarMenuButton)
+        )
+        self.actionCheck_for_Updates.triggered.connect(self.check_for_updates)
+        self.actionCheck_for_Updates.setIcon(
+            QIcon(f"ui/BreezeStyleSheets/dist/pyqt6/{self.theme}/refresh.png")
+        )
         self.actionAbout.triggered.connect(self.show_about_dialog)
+        self.actionAbout.setIcon(
+            QIcon(f"ui/BreezeStyleSheets/dist/pyqt6/{self.theme}/about.png")
+        )
 
         # SETTINGS
         self.actionDarkmode.setChecked(settings_file.get_value(item_name="dark_mode"))
         self.actionDarkmode.triggered.connect(self.toggle_dark_mode)
 
         # FILE
-        # TODO MAKE THESE QMENUS
+        self.menuOpen_Category.setIcon(
+            QIcon(f"ui/BreezeStyleSheets/dist/pyqt6/{self.theme}/folder.png")
+        )
+        self.menuUpload_File.setIcon(
+            QIcon(f"ui/BreezeStyleSheets/dist/pyqt6/{self.theme}/upload.png")
+        )
         self.actionUploadInventory.triggered.connect(
             partial(self.upload_file, "data/inventory.json")
+        )
+        self.actionUploadInventory.setIcon(
+            QIcon(f"ui/BreezeStyleSheets/dist/pyqt6/{self.theme}/upload.png")
+        )
+        self.menuDownload_File.setIcon(
+            QIcon(f"ui/BreezeStyleSheets/dist/pyqt6/{self.theme}/download.png")
         )
         self.actionDownloadInventory.triggered.connect(
             partial(self.download_file, "data/inventory.json")
         )
+        self.actionDownloadInventory.setIcon(
+            QIcon(f"ui/BreezeStyleSheets/dist/pyqt6/{self.theme}/download.png")
+        )
         self.actionBackup.triggered.connect(self.backup_database)
+        self.actionBackup.setIcon(
+            QIcon(f"ui/BreezeStyleSheets/dist/pyqt6/{self.theme}/backup.png")
+        )
         self.actionExit.triggered.connect(self.close)
+        self.actionExit.setIcon(
+            QIcon(f"ui/BreezeStyleSheets/dist/pyqt6/{self.theme}/tab_close.png")
+        )
 
     def quick_load_category(self, index: int):
         self.tab_widget.setCurrentIndex(index)
@@ -179,6 +208,9 @@ class MainWindow(QMainWindow):
         self.menuOpen_Category.clear()
         for i, category in enumerate(self.categories):
             action = QAction(self)
+            action.setIcon(
+                QIcon(f"ui/BreezeStyleSheets/dist/pyqt6/{self.theme}/project_open.png")
+            )
             action.triggered.connect(partial(self.quick_load_category, i))
             action.setText(category)
             self.menuOpen_Category.addAction(action)
