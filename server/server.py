@@ -50,7 +50,6 @@ class Server:
             logging.exception("Exception occured")
             return
         while True:
-            # Wait for message from client
             print(
                 f"{Colors.BOLD}{datetime.now()}{Colors.ENDC} - {Colors.HEADER}[ ] Listening for connections...{Colors.ENDC}"
             )
@@ -58,11 +57,18 @@ class Server:
             data = client_socket.recv(self.BUFFER_SIZE).decode()
 
             logging.info("got data")
+
             print(
                 f"{Colors.BOLD}{datetime.now()}{Colors.ENDC} - {Colors.OKGREEN}[+] Connection established with: {str(client_address)} data: {data}{Colors.ENDC}"
             )
+            logging.info(
+                f"Connection established with: {str(client_address)} data: {data}"
+            )
             print(
                 f"{Colors.BOLD}{datetime.now()}{Colors.ENDC} - {Colors.OKGREEN}[ ] Starting process: {str(client_address)} Command: {data.split(self.SEPARATOR)[0]}{Colors.ENDC}"
+            )
+            logging.info(
+                f"Starting process: {str(client_address)} Command: {data.split(self.SEPARATOR)[0]}"
             )
 
             # The server returns a file to the client
@@ -71,6 +77,7 @@ class Server:
                 print(
                     f"{Colors.BOLD}{datetime.now()}{Colors.ENDC}\t{Colors.OKGREEN}[ ] Sending file to client\tFile: {filename}{Colors.ENDC}"
                 )
+                logging.info(f"Sending file to client\tFile: {filename}")
                 client_socket.send(f"{os.path.getsize(filename)}".encode())
                 # sel
                 with open(filename, "rb") as f:
@@ -83,6 +90,7 @@ class Server:
                 print(
                     f"{Colors.BOLD}{datetime.now()}{Colors.ENDC}\t{Colors.OKGREEN}[+] File successfuly sent{Colors.ENDC}"
                 )
+                logging.info("File successfuly sent")
 
             # The client sends a file to the server
             if "send_file" in data:
@@ -90,6 +98,7 @@ class Server:
                 print(
                     f"{Colors.BOLD}{datetime.now()}{Colors.ENDC}\t{Colors.OKGREEN}[ ] Receiving file from client\tFile: {filename}{Colors.ENDC}"
                 )
+                logging.info(f"Receiving file from client\tFile: {filename}")
                 filesize = int(filesize)
                 with open(filename, "wb") as f:
                     while True:
@@ -99,15 +108,17 @@ class Server:
                             # file transmitting is done
                             break
                         f.write(bytes_read)
-                # client_socket.send("Successfully uploaded".encode("utf-8"))
                 logging.info("sent response")
                 print(
                     f"{Colors.BOLD}{datetime.now()}{Colors.ENDC}\t{Colors.OKGREEN}[+] Succesfully received file{Colors.ENDC}"
                 )
+                logging.info("Succesfully received file")
             client_socket.close()
             print(
-                f"{Colors.BOLD}{datetime.now()}{Colors.ENDC} - {Colors.OKGREEN}[+] Connection closed succesfully with: {str(client_address)}{Colors.ENDC}"
+                f"{Colors.BOLD}{datetime.now()}{Colors.ENDC} - {Colors.HEADER}[+] Connection closed succesfully with: {str(client_address)}{Colors.ENDC}"
             )
+            logging.info(f"Connection closed succesfully with: {str(client_address)}")
+            print()
 
     def check_folders(self, folders: list) -> None:
         for folder in folders:
