@@ -4,8 +4,8 @@ __copyright__ = "Copyright 2022, TheCodingJ's"
 __credits__: "list[str]" = ["Jared Gross"]
 __license__ = "MIT"
 __name__ = "Inventory Manager"
-__version__ = "v0.0.1"
-__updated__ = "2022-05-22 15:28:44"
+__version__ = "v0.0.2"
+__updated__ = "2022-05-22 19:52:15"
 __maintainer__ = "Jared Gross"
 __email__ = "jared@pinelandfarms.ca"
 __status__ = "Production"
@@ -641,13 +641,13 @@ class MainWindow(QMainWindow):
         if data == "Successfully uploaded":
             self.show_message_dialog(
                 title=data,
-                message=f"{data}\n\nDatabase successfully uploaded.\nWill take roughly 5 minutes to update database",
+                message=f"{data}\n\nFile successfully sent.\nWill take roughly 5 minutes to update database",
             )
             logging.info(f"Server: {data}")
         elif data == "Successfully downloaded":
             self.show_message_dialog(
                 title=data,
-                message=f"{data}\n\nDatabase successfully downloaded.",
+                message=f"{data}\n\nFile successfully downloaded.",
             )
             logging.info(f"Server: {data}")
             inventory.load_data()
