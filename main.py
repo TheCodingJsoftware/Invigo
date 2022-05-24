@@ -4,8 +4,8 @@ __copyright__ = "Copyright 2022, TheCodingJ's"
 __credits__: "list[str]" = ["Jared Gross"]
 __license__ = "MIT"
 __name__ = "Inventory Manager"
-__version__ = "v0.0.2"
-__updated__ = "2022-05-23 22:28:48"
+__version__ = "v0.0.3"
+__updated__ = "2022-05-23 22:46:07"
 __maintainer__ = "Jared Gross"
 __email__ = "jared@pinelandfarms.ca"
 __status__ = "Production"
@@ -383,6 +383,7 @@ class MainWindow(QMainWindow):
             lbl = QLabel("You need to create a category.")
             self.pushButton_create_new.setEnabled(False)
             tab.addWidget(lbl, 0, 0)
+            QApplication.restoreOverrideCursor()
             return
         QApplication.restoreOverrideCursor()
 
