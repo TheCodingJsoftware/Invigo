@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
+ <author>Jared Gross</author>
  <class>MainWindow</class>
  <widget class="QMainWindow" name="MainWindow">
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>824</width>
-    <height>600</height>
+    <width>840</width>
+    <height>640</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -34,8 +35,8 @@
         <rect>
          <x>0</x>
          <y>0</y>
-         <width>491</width>
-         <height>487</height>
+         <width>507</width>
+         <height>492</height>
         </rect>
        </property>
        <attribute name="label">
@@ -55,8 +56,8 @@
         <rect>
          <x>0</x>
          <y>0</y>
-         <width>491</width>
-         <height>487</height>
+         <width>507</width>
+         <height>497</height>
         </rect>
        </property>
        <attribute name="label">
@@ -70,6 +71,38 @@
       </widget>
      </widget>
     </item>
+    <item>
+     <widget class="Line" name="line_3">
+      <property name="orientation">
+       <enum>Qt::Horizontal</enum>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="QLabel" name="lblStatus">
+      <property name="minimumSize">
+       <size>
+        <width>0</width>
+        <height>20</height>
+       </size>
+      </property>
+      <property name="frameShape">
+       <enum>QFrame::StyledPanel</enum>
+      </property>
+      <property name="frameShadow">
+       <enum>QFrame::Raised</enum>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+      <property name="textFormat">
+       <enum>Qt::RichText</enum>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignCenter</set>
+      </property>
+     </widget>
+    </item>
    </layout>
   </widget>
   <widget class="QMenuBar" name="menubar">
@@ -77,7 +110,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>824</width>
+     <width>840</width>
      <height>21</height>
     </rect>
    </property>
@@ -86,17 +119,26 @@
      <string>File</string>
     </property>
     <widget class="QMenu" name="menuDownload_File">
+     <property name="statusTip">
+      <string>A selection of files you can download.</string>
+     </property>
      <property name="title">
       <string>Download File</string>
      </property>
      <addaction name="actionDownloadInventory"/>
     </widget>
     <widget class="QMenu" name="menuOpen_Category">
+     <property name="statusTip">
+      <string>Quick load categories</string>
+     </property>
      <property name="title">
       <string>Open Category</string>
      </property>
     </widget>
     <widget class="QMenu" name="menuUpload_File">
+     <property name="statusTip">
+      <string>A selection of files you can upload online.</string>
+     </property>
      <property name="title">
       <string>Upload File</string>
      </property>
@@ -183,6 +225,18 @@
         <widget class="QLineEdit" name="lineEdit_search_items">
          <property name="statusTip">
           <string>Search items in this category</string>
+         </property>
+         <property name="inputMask">
+          <string/>
+         </property>
+         <property name="dragEnabled">
+          <bool>false</bool>
+         </property>
+         <property name="placeholderText">
+          <string>Search for items...</string>
+         </property>
+         <property name="clearButtonEnabled">
+          <bool>true</bool>
          </property>
         </widget>
        </item>
@@ -324,10 +378,16 @@
    <property name="text">
     <string>Inventory</string>
    </property>
+   <property name="statusTip">
+    <string>Upload all inventory category and items.</string>
+   </property>
   </action>
   <action name="actionDownloadInventory">
    <property name="text">
     <string>Inventory</string>
+   </property>
+   <property name="statusTip">
+    <string>Download all inventory categories and items.</string>
    </property>
   </action>
  </widget>

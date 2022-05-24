@@ -5,7 +5,7 @@ __credits__: "list[str]" = ["Jared Gross"]
 __license__ = "MIT"
 __name__ = "Inventory Manager"
 __version__ = "v0.0.2"
-__updated__ = "2022-05-22 20:56:30"
+__updated__ = "2022-05-23 22:28:48"
 __maintainer__ = "Jared Gross"
 __email__ = "jared@pinelandfarms.ca"
 __status__ = "Production"
@@ -70,6 +70,7 @@ import log_config
 import ui.BreezeStyleSheets.breeze_resources
 from about_dialog import AboutDialog
 from add_item_dialog import AddItemDialog
+from changes_thread import ChangesThread
 from download_thread import DownloadThread
 from input_dialog import InputDialog
 from message_dialog import MessageDialog
@@ -78,6 +79,7 @@ from upload_thread import UploadThread
 from utils.compress import compress_database, compress_folder
 from utils.dialog_buttons import DialogButtons
 from utils.dialog_icons import Icons
+from utils.file_changes import FileChanges
 from utils.json_file import JsonFile
 from utils.json_object import JsonObject
 
@@ -94,7 +96,7 @@ class MainWindow(QMainWindow):
     def __init__(self):
         super().__init__()
         uic.loadUi("ui/main_menu.ui", self)
-        self.setWindowTitle(__name__)
+        self.setWindowTitle(f"{__name__} {__version__}")
         self.setWindowIcon(QIcon("icons/icon.png"))
 
         self.check_for_updates(on_start_up=True)
@@ -107,8 +109,10 @@ class MainWindow(QMainWindow):
         self.category: str = ""
         self.tabs = []
         self.last_item_selected: int = 0
+        self.threads = []
 
         self.__load_ui()
+        self.start_changes_thread("data/inventory.json")
         self.show()
 
     def __load_ui(self) -> None:
@@ -134,8 +138,14 @@ class MainWindow(QMainWindow):
         self.pushButton_create_new.clicked.connect(self.add_item)
         self.pushButton_add_quantity.clicked.connect(self.add_quantity)
         self.pushButton_add_quantity.setEnabled(False)
+        self.pushButton_add_quantity.setIcon(
+            QIcon(f"ui/BreezeStyleSheets/dist/pyqt6/{self.theme}/list_add.png")
+        )
         self.pushButton_remove_quantity.clicked.connect(self.remove_quantity)
         self.pushButton_remove_quantity.setEnabled(False)
+        self.pushButton_remove_quantity.setIcon(
+            QIcon(f"ui/BreezeStyleSheets/dist/pyqt6/{self.theme}/list_remove.png")
+        )
         self.listWidget_itemnames.itemSelectionChanged.connect(
             self.listWidget_item_changed
         )
@@ -202,6 +212,7 @@ class MainWindow(QMainWindow):
         settings_file.add_item("last_toolbox_tab", self.toolBox.currentIndex())
 
     def load_categories(self) -> None:
+        QApplication.setOverrideCursor(Qt.WaitCursor)
         self.clearLayout(self.verticalLayout)
         self.tabs.clear()
         self.categories = inventory.get_keys()
@@ -357,7 +368,9 @@ class MainWindow(QMainWindow):
                 col_index += 1
 
                 btn_delete = QPushButton()
-                btn_delete.setToolTip(f"Delete {item_name.text()} from {self.category}")
+                btn_delete.setToolTip(
+                    f"Delete {item_name.text()} permanently from {self.category}"
+                )
                 btn_delete.setFixedSize(26, 26)
                 btn_delete.setIcon(
                     QIcon(f"ui/BreezeStyleSheets/dist/pyqt6/{self.theme}/trash.png")
@@ -371,6 +384,7 @@ class MainWindow(QMainWindow):
             self.pushButton_create_new.setEnabled(False)
             tab.addWidget(lbl, 0, 0)
             return
+        QApplication.restoreOverrideCursor()
 
     def update_list_widget(self):
         search_input: str = self.lineEdit_search_items.text()
@@ -412,7 +426,7 @@ class MainWindow(QMainWindow):
         self.select_item_dialog = SelectItemDialog(
             button_names=DialogButtons.delete_cancel,
             title="Delete category",
-            message="Select a category to delete.",
+            message="Select a category to delete.\n\nThis action is permanent and cannot\nbe undone.",
             items=self.categories,
         )
 
@@ -659,17 +673,33 @@ class MainWindow(QMainWindow):
             version: str = response.json()["name"].replace(" ", "")
             if version != __version__:
                 self.show_message_dialog(
-                    title=__name__, message="There is a new update available"
+                    title=__name__,
+                    message=f"There is a new update available.\n\nNew Version: {version}",
                 )
             elif not on_start_up:
                 self.show_message_dialog(
-                    title=__name__, message="There are currently no updates available."
+                    title=__name__,
+                    message=f"There are currently no updates available.\n\nCurrent Version: {__version__}",
                 )
         except Exception as e:
             if not on_start_up:
-                self.show_message_dialog(title=__name__, message=f"Error\n\n{e}")
+                self.show_error_dialog(title=__name__, message=f"Error\n\n{e}")
+
+    def changes_response(self, data) -> None:
+        try:
+            file_change = FileChanges(
+                from_file="data/inventory - Compare.json", to_file="data/inventory.json"
+            )
+            if settings_file.get_value(item_name="last_toolbox_tab") == 0:
+                self.lblStatus.setText(file_change.which_file_changed().title())
+            else:
+                self.lblStatus.setText("")
+            os.remove("data/inventory - Compare.json")
+        except Exception as e:
+            logging.critical(e)
 
     def data_received(self, data) -> None:
+        QApplication.restoreOverrideCursor()
         if data == "Successfully uploaded":
             self.show_message_dialog(
                 title=data,
@@ -695,14 +725,20 @@ class MainWindow(QMainWindow):
                 message=str(data),
             )
 
+    def start_changes_thread(self, file_to_download: str) -> None:
+        changes_thread = ChangesThread(file_to_download, 60)  # 1 minute
+        changes_thread.signal.connect(self.changes_response)
+        self.threads.append(changes_thread)
+        changes_thread.start()
+
     def upload_file(self, file_to_upload: str) -> None:
-        self.threads = []
         upload_thread = UploadThread(file_to_upload)
+        QApplication.setOverrideCursor(Qt.WaitCursor)
         self.start_thread(upload_thread)
 
     def download_file(self, file_to_download: str) -> None:
-        self.threads = []
         download_thread = DownloadThread(file_to_download)
+        QApplication.setOverrideCursor(Qt.WaitCursor)
         self.start_thread(download_thread)
 
     def start_thread(self, thread) -> None:
