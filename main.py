@@ -5,7 +5,7 @@ __credits__: "list[str]" = ["Jared Gross"]
 __license__ = "MIT"
 __name__ = "Inventory Manager"
 __version__ = "v0.0.3"
-__updated__ = "2022-05-23 22:46:07"
+__updated__ = "2022-06-02 08:46:42"
 __maintainer__ = "Jared Gross"
 __email__ = "jared@pinelandfarms.ca"
 __status__ = "Production"
@@ -88,12 +88,12 @@ inventory = JsonFile(file_name="data/inventory")
 geometry = JsonObject(JsonFile=settings_file, object_name="geometry")
 
 
+# The class MainWindow inherits from the class QMainWindow
 class MainWindow(QMainWindow):
-    """
-    Main program
-    """
-
     def __init__(self):
+        """
+        It loads the UI and starts a thread that checks for changes in a JSON file.
+        """
         super().__init__()
         uic.loadUi("ui/main_menu.ui", self)
         self.setWindowTitle(f"{__name__} {__version__}")
@@ -116,6 +116,9 @@ class MainWindow(QMainWindow):
         self.show()
 
     def __load_ui(self) -> None:
+        """
+        It loads the UI
+        """
         self.update_theme()
         self.setGeometry(
             geometry.get_value("x"),
@@ -201,10 +204,19 @@ class MainWindow(QMainWindow):
         )
 
     def quick_load_category(self, index: int):
+        """
+        It sets the current tab to the index passed in, then calls the load_tab function
+
+        Args:
+          index (int): int - The index of the tab to load
+        """
         self.tab_widget.setCurrentIndex(index)
         self.load_tab()
 
     def tool_box_menu_changed(self):
+        """
+        If the toolbox is not on the first tab, hide the dock widget
+        """
         if self.toolBox.currentIndex() != 0:
             self.dockWidget_create_add_remove.setVisible(False)
         else:
@@ -212,6 +224,9 @@ class MainWindow(QMainWindow):
         settings_file.add_item("last_toolbox_tab", self.toolBox.currentIndex())
 
     def load_categories(self) -> None:
+        """
+        It loads the categories from the inventory file and creates a tab for each category.
+        """
         QApplication.setOverrideCursor(Qt.WaitCursor)
         self.clearLayout(self.verticalLayout)
         self.tabs.clear()
@@ -263,6 +278,12 @@ class MainWindow(QMainWindow):
         self.load_tab()
 
     def load_tab(self) -> None:
+        """
+        It loads the data from the inventory file and displays it in the GUI
+
+        Returns:
+          The return value is a list of QWidget objects.
+        """
         tab_index: int = self.tab_widget.currentIndex()
         self.category = self.tab_widget.tabText(tab_index)
         if self.category == "Create category":
@@ -388,6 +409,13 @@ class MainWindow(QMainWindow):
         QApplication.restoreOverrideCursor()
 
     def update_list_widget(self):
+        """
+        It takes the text from a lineEdit widget and searches for it in a dictionary. If the text is
+        found, it adds the key to a listWidget
+
+        Returns:
+          the value of the item_name key in the category_data dictionary.
+        """
         search_input: str = self.lineEdit_search_items.text()
         category_data = inventory.get_value(item_name=self.category)
         self.listWidget_itemnames.clear()
@@ -401,6 +429,12 @@ class MainWindow(QMainWindow):
             return
 
     def create_new_category(self):
+        """
+        It creates a new category
+
+        Returns:
+          The response is being returned.
+        """
         self.input_dialog = InputDialog(
             title="Create category", message="Enter a name for a new category."
         )
@@ -424,6 +458,12 @@ class MainWindow(QMainWindow):
             return
 
     def delete_category(self):
+        """
+        It's a function that deletes a category from a list of categories
+
+        Returns:
+          The response from the dialog.
+        """
         self.select_item_dialog = SelectItemDialog(
             button_names=DialogButtons.delete_cancel,
             title="Delete category",
@@ -445,6 +485,18 @@ class MainWindow(QMainWindow):
             return
 
     def name_change(self, category: str, old_name: str, name: QLineEdit) -> None:
+        """
+        It checks if the name is the same as any other name in the category, and if it is, it sets the
+        name back to the old name and displays an error message
+
+        Args:
+          category (str): str
+          old_name (str): The name of the item before it was changed.
+          name (QLineEdit): QLineEdit
+
+        Returns:
+          The return value is the result of the last expression evaluated in the function.
+        """
         category_data = inventory.get_value(item_name=category)
         for item in list(category_data.keys()):
             if name.text() == item:
@@ -464,24 +516,69 @@ class MainWindow(QMainWindow):
     def quantity_change(
         self, category: str, item_name: QLineEdit, value_name: str, quantity: QSpinBox
     ) -> None:
+        """
+        It takes a category, item name, value name, and quantity, and changes the value of the item in
+        the category to the quantity
+
+        Args:
+          category (str): str - The category of the item.
+          item_name (QLineEdit): QLineEdit
+          value_name (str): str = The name of the value you want to change.
+          quantity (QSpinBox): QSpinBox
+        """
         self.value_change(category, item_name.text(), value_name, quantity.value())
 
     def price_change(
         self, category: str, item_name: QLineEdit, value_name: str, price: QDoubleSpinBox
     ) -> None:
+        """
+        It takes a category, item name, value name, and price, and then calls the value_change function
+        with the same arguments
+
+        Args:
+          category (str): str - The category of the item.
+          item_name (QLineEdit): QLineEdit
+          value_name (str): str = The name of the value you want to change.
+          price (QDoubleSpinBox): QDoubleSpinBox
+        """
         self.value_change(category, item_name.text(), value_name, price.value())
 
     def priority_change(
         self, category: str, item_name: QLineEdit, value_name: str, combo: QComboBox
     ) -> None:
+        """
+        It changes the priority of a task
+
+        Args:
+          category (str): str - The category of the item
+          item_name (QLineEdit): QLineEdit
+          value_name (str): str = The name of the value to change
+          combo (QComboBox): QComboBox
+        """
         self.value_change(category, item_name.text(), value_name, combo.currentIndex())
 
     def notes_changed(
         self, category: str, item_name: QLineEdit, value_name: str, note: QPlainTextEdit
     ) -> None:
+        """
+        It takes the category, item name, value name, and note as parameters and then calls the
+        value_change function with the category, item name, value name, and note as parameters
+
+        Args:
+          category (str): str = The category of the item.
+          item_name (QLineEdit): QLineEdit
+          value_name (str): str = The name of the value that is being changed.
+          note (QPlainTextEdit): QPlainTextEdit
+        """
         self.value_change(category, item_name.text(), value_name, note.toPlainText())
 
     def add_item(self) -> None:
+        """
+        It adds an item to a category
+
+        Returns:
+          The response from the dialog.
+        """
         self.add_item_dialog = AddItemDialog(
             title="Add item",
             message=f"Adding an item to {self.category}.\n\nPress 'Add' when finished.",
@@ -519,10 +616,24 @@ class MainWindow(QMainWindow):
             return
 
     def delete_item(self, category: str, item_name: QLineEdit) -> None:
+        """
+        It removes an item from the inventory
+
+        Args:
+          category (str): str
+          item_name (QLineEdit): QLineEdit
+        """
         inventory.remove_object_item(category, item_name.text())
         self.load_tab()
 
     def add_quantity(self, item_name: str, old_quantity: int) -> None:
+        """
+        It adds the value of the spinbox to the quantity of the item selected in the listwidget
+
+        Args:
+          item_name (str): str = the name of the item
+          old_quantity (int): int = the quantity of the item before the change
+        """
         category_data = inventory.get_value(item_name=self.category)
         quantity: int = category_data[item_name]["quantity"]
         self.value_change(
@@ -537,6 +648,13 @@ class MainWindow(QMainWindow):
         self.listWidget_itemnames.setCurrentRow(self.last_item_selected)
 
     def remove_quantity(self, item_name: str, old_quantity: int) -> None:
+        """
+        It removes the quantity of an item from the inventory
+
+        Args:
+          item_name (str): str = the name of the item
+          old_quantity (int): int = the quantity of the item before the change
+        """
         category_data = inventory.get_value(item_name=self.category)
         quantity: int = category_data[item_name]["quantity"]
         self.value_change(
@@ -551,6 +669,13 @@ class MainWindow(QMainWindow):
         self.listWidget_itemnames.setCurrentRow(self.last_item_selected)
 
     def listWidget_item_changed(self) -> None:
+        """
+        It's a function that is called when an item is selected from a list widget. It then enables two
+        buttons and connects them to two other functions
+
+        Returns:
+          The return value of the function is None.
+        """
         selected_item: str = self.listWidget_itemnames.currentItem().text()
         category_data = inventory.get_value(item_name=self.category)
         try:
@@ -576,6 +701,15 @@ class MainWindow(QMainWindow):
     def value_change(
         self, category: str, item_name: str, value_name: str, new_value
     ) -> None:
+        """
+        It changes the value of a value in an item in an object
+
+        Args:
+          category (str): str = The category of the item you want to change.
+          item_name (str): str = The name of the item you want to change.
+          value_name (str): str = The name of the value you want to change.
+          new_value: The new value to be assigned to the value_name
+        """
         inventory.change_object_in_object_item(
             object_name=category,
             item_name=item_name,
@@ -584,12 +718,18 @@ class MainWindow(QMainWindow):
         )
 
     def save_geometry(self):
+        """
+        It saves the geometry of the window to the settings file
+        """
         geometry.set_value("x", value=self.pos().x())
         geometry.set_value("y", value=self.pos().y())
         geometry.set_value("width", value=self.size().width())
         geometry.set_value("height", value=self.size().height())
 
     def show_about_dialog(self) -> None:
+        """
+        It creates an AboutDialog object and shows it.
+        """
         self.dialog = AboutDialog(
             __name__,
             __version__,
@@ -601,6 +741,17 @@ class MainWindow(QMainWindow):
     def show_message_dialog(
         self, title: str, message: str, dialog_buttons: DialogButtons = DialogButtons.ok
     ) -> str:
+        """
+        It creates a message dialog, shows it, and returns the response
+
+        Args:
+          title (str): str = The title of the dialog
+          message (str): str = The message to display in the dialog
+          dialog_buttons (DialogButtons): DialogButtons = DialogButtons.ok
+
+        Returns:
+          The response is being returned.
+        """
         self.message_dialog = MessageDialog(
             self, Icons.information, dialog_buttons, title, message
         )
@@ -619,6 +770,17 @@ class MainWindow(QMainWindow):
         message: str,
         dialog_buttons: DialogButtons = DialogButtons.ok_save_copy_cancel,
     ) -> str:
+        """
+        It creates a dialog box with a message and a title, and returns the response
+
+        Args:
+          title (str): str = The title of the dialog
+          message (str): str = The message to be displayed in the dialog.
+          dialog_buttons (DialogButtons): DialogButtons = DialogButtons.ok_save_copy_cancel,
+
+        Returns:
+          The response from the dialog.
+        """
         self.message_dialog = MessageDialog(
             self, Icons.critical, dialog_buttons, title, message
         )
@@ -637,6 +799,15 @@ class MainWindow(QMainWindow):
         return response
 
     def generate_error_log(self, message_dialog: MessageDialog) -> None:
+        """
+        It takes a screenshot of the error message dialog, saves it to a folder, writes the error
+        message to a file, copies the app log to the folder, compresses the folder, and deletes the
+        folder
+
+        Args:
+          message_dialog (MessageDialog): MessageDialog = The error message dialog that pops up when an
+        error occurs.
+        """
         output_directory: str = (
             f"logs/ErrorLog_{datetime.now().strftime('%Y-%m-%d-%H-%M')}"
         )
@@ -650,6 +821,9 @@ class MainWindow(QMainWindow):
         shutil.rmtree(output_directory)
 
     def toggle_dark_mode(self) -> None:
+        """
+        It toggles the dark mode setting in the settings file and updates the theme
+        """
         settings_file.change_item(
             item_name="dark_mode", new_value=not settings_file.get_value("dark_mode")
         )
@@ -661,12 +835,22 @@ class MainWindow(QMainWindow):
         self.update_theme()
 
     def update_theme(self) -> None:
+        """
+        It reads the stylesheet.qss file from the theme folder and sets it as the stylesheet for the
+        application
+        """
         file = QFile(f"ui/BreezeStyleSheets/dist/qrc/{self.theme}/stylesheet.qss")
         file.open(QFile.ReadOnly | QFile.Text)
         stream = QTextStream(file)
         self.setStyleSheet(stream.readAll())
 
     def check_for_updates(self, on_start_up: bool = False) -> None:
+        """
+        It checks for updates on GitHub and displays a message dialog if there is a new update available
+
+        Args:
+          on_start_up (bool): bool = False. Defaults to False
+        """
         try:
             response = requests.get(
                 "https://api.github.com/repos/thecodingjsoftware/Inventory-Manager/releases/latest"
@@ -687,6 +871,12 @@ class MainWindow(QMainWindow):
                 self.show_error_dialog(title=__name__, message=f"Error\n\n{e}")
 
     def changes_response(self, data) -> None:
+        """
+        It compares two files, and if they are different, it displays a message in a label
+
+        Args:
+          data: The data that is returned from the server.
+        """
         try:
             file_change = FileChanges(
                 from_file="data/inventory - Compare.json", to_file="data/inventory.json"
@@ -700,6 +890,13 @@ class MainWindow(QMainWindow):
             logging.critical(e)
 
     def data_received(self, data) -> None:
+        """
+        If the data received is "Successfully uploaded" or "Successfully downloaded", then show a
+        message dialog with the title and message
+
+        Args:
+          data: the data received from the server
+        """
         QApplication.restoreOverrideCursor()
         if data == "Successfully uploaded":
             self.show_message_dialog(
@@ -727,35 +924,77 @@ class MainWindow(QMainWindow):
             )
 
     def start_changes_thread(self, file_to_download: str) -> None:
+        """
+        It creates a thread that will run a function that will check for changes in a file every 60
+        seconds
+
+        Args:
+          file_to_download (str): str = the file to download
+        """
         changes_thread = ChangesThread(file_to_download, 60)  # 1 minute
         changes_thread.signal.connect(self.changes_response)
         self.threads.append(changes_thread)
         changes_thread.start()
 
     def upload_file(self, file_to_upload: str) -> None:
+        """
+        It creates a new thread, sets the cursor to wait, and starts the thread
+
+        Args:
+          file_to_upload (str): str - The file to upload
+        """
         upload_thread = UploadThread(file_to_upload)
         QApplication.setOverrideCursor(Qt.WaitCursor)
         self.start_thread(upload_thread)
 
     def download_file(self, file_to_download: str) -> None:
+        """
+        It creates a new thread, sets the cursor to wait, and starts the thread
+
+        Args:
+          file_to_download (str): str = The file to download
+        """
         download_thread = DownloadThread(file_to_download)
         QApplication.setOverrideCursor(Qt.WaitCursor)
         self.start_thread(download_thread)
 
     def start_thread(self, thread) -> None:
+        """
+        It connects the signal from the thread to the data_received function, then appends the thread to
+        the threads list, and finally starts the thread
+
+        Args:
+          thread: The thread to start
+        """
         thread.signal.connect(self.data_received)
         self.threads.append(thread)
         thread.start()
 
     def backup_database(self) -> None:
+        """
+        This function compresses the database file and shows a message dialog to the user
+        """
         compress_database(path_to_file="data/inventory.json")
         self.show_message_dialog(title="Success", message="Backup was successful!")
 
     def closeEvent(self, event):
+        """
+        The function saves the geometry of the window and then closes the window
+
+        Args:
+          event: the event that triggered the closeEvent() method
+        """
         self.save_geometry()
         super().closeEvent(event)
 
     def clearLayout(self, layout):
+        """
+        If the layout is not None, while the layout has items, take the first item, get the widget, if
+        the widget is not None, delete it, otherwise clear the layout
+
+        Args:
+          layout: The layout to be cleared
+        """
         if layout is not None:
             while layout.count():
                 item = layout.takeAt(0)
@@ -767,6 +1006,10 @@ class MainWindow(QMainWindow):
 
 
 def default_settings() -> None:
+    """
+    It checks if a setting exists in the settings file, and if it doesn't, it creates it with a default
+    value
+    """
     check_setting(setting="dark_mode", default_value=False)
     check_setting(setting="server_ip", default_value="10.0.0.64")
     check_setting(setting="server_port", default_value=4000)
@@ -779,17 +1022,35 @@ def default_settings() -> None:
 
 
 def check_setting(setting: str, default_value) -> None:
+    """
+    If the setting is not in the settings file, add it with the default value
+
+    Args:
+      setting (str): The name of the setting to check.
+      default_value: The default value of the setting.
+    """
     if settings_file.get_value(item_name=setting) is None:
         settings_file.add_item(item_name=setting, value=default_value)
 
 
 def check_folders(folders: list) -> None:
+    """
+    If the folder doesn't exist, create it
+
+    Args:
+      folders (list): list = ["data", "data/images", "data/images/thumbnails", "data/images/fullsize",
+    "data/images/fullsize/temp"]
+    """
     for folder in folders:
         if not os.path.exists(f"{os.path.dirname(os.path.realpath(__file__))}/{folder}"):
             os.makedirs(f"{os.path.dirname(os.path.realpath(__file__))}/{folder}")
 
 
 def main() -> None:
+    """
+    It creates a QApplication, creates a MainWindow, shows the MainWindow, and then runs the
+    QApplication
+    """
     default_settings()
     check_folders(folders=["logs", "data", "backups"])
     app = QApplication([])

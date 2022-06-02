@@ -18,7 +18,13 @@ class UploadThread(QThread):
 
     signal = pyqtSignal(object)
 
-    def __init__(self, file_to_upload: str):
+    def __init__(self, file_to_upload: str) -> None:
+        """
+        A constructor function.
+
+        Args:
+          file_to_upload (str): str = The file to upload
+        """
         QThread.__init__(self)
         # Declaring server IP and port
         self.SERVER_IP: str = get_server_ip_address()
@@ -34,7 +40,10 @@ class UploadThread(QThread):
         self.file_to_upload = file_to_upload
         self.filesize = os.path.getsize(self.file_to_upload)
 
-    def run(self):
+    def run(self) -> None:
+        """
+        It connects to a server, sends a message, and then sends the file
+        """
         try:
             self.server = (self.SERVER_IP, self.SERVER_PORT)
             self.s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)

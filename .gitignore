@@ -69,3 +69,4 @@ data
 backups
 *.zip
 venv/
+*.ini

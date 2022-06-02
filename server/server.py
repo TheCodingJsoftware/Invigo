@@ -13,7 +13,11 @@ class Server:
     and is not intended for the client to use this script.
     """
 
-    def __init__(self):
+    def __init__(self) -> None:
+        """
+        It checks if the folders "data" and "logs" exist, if not it creates them. Then it configures the
+        logs and starts the server
+        """
         # Declaring server IP and port
         self.SERVER_IP: str = "10.0.0.64"
         self.SERVER_PORT: int = 4000
@@ -25,7 +29,10 @@ class Server:
         self.config_logs()
         self.start_server()
 
-    def config_logs(self):
+    def config_logs(self) -> None:
+        """
+        It configures the logs.
+        """
         logging.basicConfig(
             filename=f"{os.path.dirname(os.path.realpath(__file__))}/logs/server.log",
             filemode="a",
@@ -34,7 +41,15 @@ class Server:
             level=logging.INFO,
         )
 
-    def start_server(self):  # sourcery skip: low-code-quality
+    def start_server(self) -> None:  # sourcery skip: low-code-quality
+        """
+        The server receives a file from the client, then sends a file to the client.
+
+        Returns:
+          The server returns a file to the client
+        Question: What is being sent?
+        Answer: The client sends a file to the server
+        """
         try:
             self.s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
             self.s.bind((self.SERVER_IP, self.SERVER_PORT))
@@ -121,6 +136,12 @@ class Server:
             print()
 
     def check_folders(self, folders: list) -> None:
+        """
+        It checks if a folder exists, if it doesn't, it creates it
+
+        Args:
+          folders (list): list = ["logs", "data", "config"]
+        """
         for folder in folders:
             if not os.path.exists(
                 f"{os.path.dirname(os.path.realpath(__file__))}/{folder}"

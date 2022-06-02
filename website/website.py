@@ -20,10 +20,12 @@ app = Flask(__name__)
 
 @app.route("/")
 def index() -> None:
-    """Main page
+    """
+    It renders the index.html template with the variables downloadableRecordings, searchValue,
+    colonySearchList, monthsList, daysList, and recordingStatus
 
     Returns:
-        _type_: webpage
+      The webpage
     """
     # fileNames: list[str] = []
     # downloadLinks: list[str] = []

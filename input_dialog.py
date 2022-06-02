@@ -14,7 +14,7 @@ settings_file = JsonFile(file_name="settings")
 
 class InputDialog(QDialog):
     """
-    Message dialog
+    Input dialog
     """
 
     def __init__(
@@ -24,7 +24,18 @@ class InputDialog(QDialog):
         button_names: str = DialogButtons.ok_cancel,
         title: str = __name__,
         message: str = "",
-    ):
+    ) -> None:
+        """
+        It's a function that takes in a bunch of arguments and sets them to variables
+
+        Args:
+          parent: The parent widget of the dialog. If no parent is given, the dialog will be shown as a
+        window.
+          icon_name (str): str = Icons.question,
+          button_names (str): str = DialogButtons.ok_cancel,
+          title (str): str = __name__,
+          message (str): str = "",
+        """
         super(InputDialog, self).__init__(parent)
         uic.loadUi("ui/input_dialog.ui", self)
 
@@ -57,6 +68,9 @@ class InputDialog(QDialog):
         self.lineEditInput.selectAll()
 
     def load_theme(self) -> None:
+        """
+        It loads the stylesheet.qss file from the theme folder
+        """
         stylesheet_file = QFile(
             f"ui/BreezeStyleSheets/dist/qrc/{self.theme}/stylesheet.qss"
         )
@@ -65,21 +79,44 @@ class InputDialog(QDialog):
         self.setStyleSheet(stream.readAll())
 
     def get_icon(self, path_to_icon: str) -> QtSvg.QSvgWidget:
+        """
+        It returns a QSvgWidget object that is initialized with a path to an SVG icon
+
+        Args:
+          path_to_icon (str): The path to the icon you want to use.
+
+        Returns:
+          A QSvgWidget object.
+        """
         return QtSvg.QSvgWidget(
             f"ui/BreezeStyleSheets/dist/pyqt6/{self.theme}/{path_to_icon}"
         )
 
     def button_press(self, button) -> None:
+        """
+        The function is called when a button is pressed. It sets the response to the text of the button
+        that was pressed, and the inputText to the text in the lineEditInput. Then it accepts the dialog
+
+        Args:
+          button: The button that was clicked.
+        """
         self.response = button.text()
         self.inputText = self.lineEditInput.text()
         self.accept()
 
     def input_enter_pressed(self) -> None:
+        """
+        It takes the text from the lineEditInput widget and puts it into the inputText variable
+        """
         self.response = "Ok"
         self.inputText = self.lineEditInput.text()
         self.accept()
 
     def load_dialog_buttons(self) -> None:
+        """
+        It takes a string of button names, splits them into a list, and then creates a button for each
+        name in the list
+        """
         button_names = self.button_names.split(", ")
         for name in button_names:
             button = QPushButton(name)
@@ -92,4 +129,10 @@ class InputDialog(QDialog):
             self.buttonsLayout.addWidget(button)
 
     def get_response(self) -> str:
+        """
+        This function returns the response of the class
+
+        Returns:
+          The response
+        """
         return self.response

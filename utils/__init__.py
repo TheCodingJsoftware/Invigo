@@ -1,3 +1,4 @@
+# Importing the functions from the files in the utils folder.
 from utils.compress import compress_database, compress_folder
 from utils.dialog_buttons import DialogButtons
 from utils.dialog_icons import Icons

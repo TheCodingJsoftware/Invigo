@@ -1,3 +1,4 @@
+# Configuring the logging module to write to a file called app.log in a folder called logs.
 import logging
 
 logging.basicConfig(

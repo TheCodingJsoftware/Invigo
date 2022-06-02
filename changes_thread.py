@@ -16,7 +16,14 @@ class ChangesThread(QThread):
 
     signal = pyqtSignal(object)
 
-    def __init__(self, file_to_download: str, delay: int):
+    def __init__(self, file_to_download: str, delay: int) -> None:
+        """
+        The function is used to download a file from a server
+
+        Args:
+          file_to_download (str): The name of the file to download
+          delay (int): The time to wait before sending the next packet.
+        """
         QThread.__init__(self)
 
         # Declaring server IP and port
@@ -33,7 +40,10 @@ class ChangesThread(QThread):
         self.file_to_download: str = file_to_download
         self.delay = delay
 
-    def run(self):
+    def run(self) -> None:
+        """
+        It connects to a server, sends a message, receives a file, and then closes the connection
+        """
         while True:
             try:
                 self.server = (self.SERVER_IP, self.SERVER_PORT)
