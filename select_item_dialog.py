@@ -3,7 +3,7 @@ from functools import partial
 from PyQt5 import QtSvg, uic
 from PyQt5.QtCore import QFile, Qt, QTextStream
 from PyQt5.QtGui import QIcon
-from PyQt5.QtWidgets import QDialog, QLineEdit, QPushButton
+from PyQt5.QtWidgets import QDialog, QPushButton
 
 from utils.dialog_buttons import DialogButtons
 from utils.dialog_icons import Icons

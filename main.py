@@ -5,7 +5,7 @@ __credits__: "list[str]" = ["Jared Gross"]
 __license__ = "MIT"
 __name__ = "Inventory Manager"
 __version__ = "v0.0.3"
-__updated__ = "2022-06-02 08:46:42"
+__updated__ = "2022-06-21 21:31:00"
 __maintainer__ = "Jared Gross"
 __email__ = "jared@pinelandfarms.ca"
 __status__ = "Production"
@@ -13,55 +13,28 @@ __status__ = "Production"
 import logging
 import os
 import shutil
-import socket
-import sys
-import urllib
-import urllib.request
-from datetime import datetime, timedelta
+from datetime import datetime
 from functools import partial
 
 import requests
-from PyQt5 import QtSvg, uic
-from PyQt5.QtCore import (
-    QCoreApplication,
-    QFile,
-    QProcess,
-    QRunnable,
-    QSettings,
-    Qt,
-    QTextStream,
-    QThreadPool,
-    QTimer,
-    pyqtSignal,
-    pyqtSlot,
-)
-from PyQt5.QtGui import QFont, QIcon, QImage, QPalette, QPixmap
+from PyQt5 import uic
+from PyQt5.QtCore import QFile, Qt, QTextStream
+from PyQt5.QtGui import QIcon, QPixmap
 from PyQt5.QtWidgets import (
     QAction,
-    QActionGroup,
     QApplication,
     QComboBox,
-    QDialog,
     QDoubleSpinBox,
-    QFormLayout,
     QGridLayout,
-    QGroupBox,
-    QHBoxLayout,
-    QInputDialog,
     QLabel,
     QLineEdit,
     QMainWindow,
-    QMenu,
-    QMessageBox,
     QPlainTextEdit,
     QPushButton,
     QScrollArea,
     QSpinBox,
     QStyle,
-    QSystemTrayIcon,
     QTabWidget,
-    QToolButton,
-    QVBoxLayout,
     QWidget,
     qApp,
 )
@@ -88,8 +61,9 @@ inventory = JsonFile(file_name="data/inventory")
 geometry = JsonObject(JsonFile=settings_file, object_name="geometry")
 
 
-# The class MainWindow inherits from the class QMainWindow
 class MainWindow(QMainWindow):
+    """The class MainWindow inherits from the class QMainWindow"""
+
     def __init__(self):
         """
         It loads the UI and starts a thread that checks for changes in a JSON file.
@@ -228,7 +202,7 @@ class MainWindow(QMainWindow):
         It loads the categories from the inventory file and creates a tab for each category.
         """
         QApplication.setOverrideCursor(Qt.WaitCursor)
-        self.clearLayout(self.verticalLayout)
+        self.clear_layout(self.verticalLayout)
         self.tabs.clear()
         self.categories = inventory.get_keys()
         self.menuOpen_Category.clear()
@@ -296,7 +270,7 @@ class MainWindow(QMainWindow):
             return
         self.pushButton_create_new.setEnabled(True)
         try:
-            self.clearLayout(self.tabs[tab_index])
+            self.clear_layout(self.tabs[tab_index])
         except IndexError:
             return
         settings_file.add_item("last_category_tab", tab_index)
@@ -307,7 +281,7 @@ class MainWindow(QMainWindow):
 
         # ! Some signals that are being used might be to performant heavy... may have to use on lost focus or something
         try:
-            if list(category_data.keys()):
+            if list(category_data.keys()):  # type: ignore
                 headers = ["Name", "Quantity", "Price", "Priority", "Notes"]
 
                 row_index: int = 0
@@ -316,7 +290,7 @@ class MainWindow(QMainWindow):
                     lbl_header = QLabel(header)
                     tab.addWidget(lbl_header, 0, i)
 
-            for row_index, item in enumerate(list(category_data.keys()), start=1):
+            for row_index, item in enumerate(list(category_data.keys()), start=1):  # type: ignore
                 quantity: int = category_data[item]["quantity"]
                 priority: int = category_data[item]["priority"]
                 price: float = category_data[item]["price"]
@@ -408,7 +382,7 @@ class MainWindow(QMainWindow):
             return
         QApplication.restoreOverrideCursor()
 
-    def update_list_widget(self):
+    def update_list_widget(self) -> None:
         """
         It takes the text from a lineEdit widget and searches for it in a dictionary. If the text is
         found, it adds the key to a listWidget
@@ -428,7 +402,7 @@ class MainWindow(QMainWindow):
         except AttributeError:
             return
 
-    def create_new_category(self):
+    def create_new_category(self) -> None:
         """
         It creates a new category
 
@@ -457,7 +431,7 @@ class MainWindow(QMainWindow):
         elif response == DialogButtons.cancel:
             return
 
-    def delete_category(self):
+    def delete_category(self) -> None:
         """
         It's a function that deletes a category from a list of categories
 
@@ -717,7 +691,7 @@ class MainWindow(QMainWindow):
             new_value=new_value,
         )
 
-    def save_geometry(self):
+    def save_geometry(self) -> None:
         """
         It saves the geometry of the window to the settings file
         """
@@ -814,7 +788,7 @@ class MainWindow(QMainWindow):
         check_folders([output_directory])
         pixmap = QPixmap(message_dialog.grab())
         pixmap.save(f"{output_directory}/screenshot.png")
-        with open(f"{output_directory}/error.log", "w") as error_log:
+        with open(f"{output_directory}/error.log", "w", encoding="utf-8") as error_log:
             error_log.write(message_dialog.message)
         shutil.copyfile("logs/app.log", f"{output_directory}/app.log")
         compress_folder(foldername=output_directory, target_dir=output_directory)
@@ -977,17 +951,17 @@ class MainWindow(QMainWindow):
         compress_database(path_to_file="data/inventory.json")
         self.show_message_dialog(title="Success", message="Backup was successful!")
 
-    def closeEvent(self, event):
+    def close_event(self, event):
         """
         The function saves the geometry of the window and then closes the window
 
         Args:
-          event: the event that triggered the closeEvent() method
+          event: the event that triggered the close_event() method
         """
         self.save_geometry()
-        super().closeEvent(event)
+        super().close_event(event)
 
-    def clearLayout(self, layout):
+    def clear_layout(self, layout):
         """
         If the layout is not None, while the layout has items, take the first item, get the widget, if
         the widget is not None, delete it, otherwise clear the layout
@@ -1002,7 +976,7 @@ class MainWindow(QMainWindow):
                 if widget is not None:
                     widget.deleteLater()
                 else:
-                    self.clearLayout(item.layout())
+                    self.clear_layout(item.layout())
 
 
 def default_settings() -> None:
