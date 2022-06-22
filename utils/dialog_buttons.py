@@ -1,5 +1,6 @@
-# A class that contains constants.
 class DialogButtons:
+    """A class that contains constants."""
+
     ok: str = "Ok"
     ok_cancel: str = "Ok, Cancel"
     cancel: str = "Cancel"

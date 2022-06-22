@@ -4,8 +4,9 @@ import os
 from datetime import datetime
 
 
-# It's a class that keeps track of the changes made to a file
 class FileChanges:
+    """It's a class that keeps track of the changes made to a file"""
+
     def __init__(self, from_file: str, to_file: str) -> None:
         """
         This function takes two file names as input, and sets the file_name variable to the name of the
