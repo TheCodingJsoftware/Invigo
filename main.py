@@ -1,11 +1,10 @@
-# sourcery skip: avoid-builtin-shadow
 __author__ = "Jared Gross"
 __copyright__ = "Copyright 2022, TheCodingJ's"
 __credits__: "list[str]" = ["Jared Gross"]
 __license__ = "MIT"
 __name__ = "Inventory Manager"
 __version__ = "v0.0.3"
-__updated__ = "2022-06-21 21:31:00"
+__updated__ = "2022-06-26 15:37:53"
 __maintainer__ = "Jared Gross"
 __email__ = "jared@pinelandfarms.ca"
 __status__ = "Production"
@@ -41,14 +40,15 @@ from PyQt5.QtWidgets import (
 
 import log_config
 import ui.BreezeStyleSheets.breeze_resources
-from about_dialog import AboutDialog
-from add_item_dialog import AddItemDialog
-from changes_thread import ChangesThread
-from download_thread import DownloadThread
-from input_dialog import InputDialog
-from message_dialog import MessageDialog
-from select_item_dialog import SelectItemDialog
-from upload_thread import UploadThread
+from threads.changes_thread import ChangesThread
+from threads.download_thread import DownloadThread
+from threads.upload_thread import UploadThread
+from ui.about_dialog import AboutDialog
+from ui.add_item_dialog import AddItemDialog
+from ui.custom_widgets import RichTextPushButton
+from ui.input_dialog import InputDialog
+from ui.message_dialog import MessageDialog
+from ui.select_item_dialog import SelectItemDialog
 from utils.compress import compress_database, compress_folder
 from utils.dialog_buttons import DialogButtons
 from utils.dialog_icons import Icons
@@ -111,6 +111,7 @@ class MainWindow(QMainWindow):
         self.toolBox.currentChanged.connect(self.tool_box_menu_changed)
 
         # Tab widget
+        # self.tab_widget = QTabWidget(self)
         self.load_categories()
         self.pushButton_create_new.clicked.connect(self.add_item)
         self.pushButton_add_quantity.clicked.connect(self.add_quantity)
@@ -126,6 +127,16 @@ class MainWindow(QMainWindow):
         self.listWidget_itemnames.itemSelectionChanged.connect(
             self.listWidget_item_changed
         )
+
+        # Status
+        self.status_button = RichTextPushButton(
+            self, '<p style="color:yellow;">Getting changes...</p>'
+        )
+        self.status_button.setFlat(True)
+        self.status_button.setStatusTip(
+            "View additions and removals from the inventory file."
+        )
+        self.verticalLayout_status.addWidget(self.status_button)
 
         # Action events
         # HELP
@@ -193,8 +204,10 @@ class MainWindow(QMainWindow):
         """
         if self.toolBox.currentIndex() != 0:
             self.dockWidget_create_add_remove.setVisible(False)
+            self.status_button.setHidden(True)
         else:
             self.dockWidget_create_add_remove.setVisible(True)
+            self.status_button.setHidden(False)
         settings_file.add_item("last_toolbox_tab", self.toolBox.currentIndex())
 
     def load_categories(self) -> None:
@@ -409,27 +422,26 @@ class MainWindow(QMainWindow):
         Returns:
           The response is being returned.
         """
-        self.input_dialog = InputDialog(
+        input_dialog = InputDialog(
             title="Create category", message="Enter a name for a new category."
         )
 
-        if self.input_dialog.exec_():
-            response = self.input_dialog.get_response()
-
-        if response == DialogButtons.ok:
-            input_text = self.input_dialog.inputText
-            for category in self.categories:
-                if input_text in [category, "+"]:
-                    self.show_error_dialog(
-                        title="Invalid name",
-                        message=f"'{input_text}' is an invalid name for a category.\n\nCan't have two categories with the same name.",
-                        dialog_buttons=DialogButtons.ok,
-                    )
-                    return
-            inventory.add_item(item_name=input_text, value={})
-            self.load_categories()
-        elif response == DialogButtons.cancel:
-            return
+        if input_dialog.exec_():
+            response = input_dialog.get_response()
+            if response == DialogButtons.ok:
+                input_text = input_dialog.inputText
+                for category in self.categories:
+                    if input_text in [category, "+"]:
+                        self.show_error_dialog(
+                            title="Invalid name",
+                            message=f"'{input_text}' is an invalid name for a category.\n\nCan't have two categories with the same name.",
+                            dialog_buttons=DialogButtons.ok,
+                        )
+                        return
+                inventory.add_item(item_name=input_text, value={})
+                self.load_categories()
+            elif response == DialogButtons.cancel:
+                return
 
     def delete_category(self) -> None:
         """
@@ -438,25 +450,24 @@ class MainWindow(QMainWindow):
         Returns:
           The response from the dialog.
         """
-        self.select_item_dialog = SelectItemDialog(
+        select_item_dialog = SelectItemDialog(
             button_names=DialogButtons.delete_cancel,
             title="Delete category",
             message="Select a category to delete.\n\nThis action is permanent and cannot\nbe undone.",
             items=self.categories,
         )
 
-        if self.select_item_dialog.exec_():
-            response = self.select_item_dialog.get_response()
-
-        if response == DialogButtons.delete:
-            try:
-                inventory.remove_item(self.select_item_dialog.get_selected_item())
-            except AttributeError:
+        if select_item_dialog.exec_():
+            response = select_item_dialog.get_response()
+            if response == DialogButtons.delete:
+                try:
+                    inventory.remove_item(select_item_dialog.get_selected_item())
+                except AttributeError:
+                    return
+                self.tab_widget.setCurrentIndex(0)
+                self.load_categories()
+            elif response == DialogButtons.cancel:
                 return
-            self.tab_widget.setCurrentIndex(0)
-            self.load_categories()
-        elif response == DialogButtons.cancel:
-            return
 
     def name_change(self, category: str, old_name: str, name: QLineEdit) -> None:
         """
@@ -553,41 +564,44 @@ class MainWindow(QMainWindow):
         Returns:
           The response from the dialog.
         """
-        self.add_item_dialog = AddItemDialog(
+        add_item_dialog = AddItemDialog(
             title="Add item",
             message=f"Adding an item to {self.category}.\n\nPress 'Add' when finished.",
         )
 
-        if self.add_item_dialog.exec_():
-            response = self.add_item_dialog.get_response()
-
-        if response == DialogButtons.add:
-            name: str = self.add_item_dialog.get_name()
-            category_data = inventory.get_value(item_name=self.category)
-            for item in list(category_data.keys()):
-                if name == item:
-                    self.show_error_dialog(
-                        "Invalid name",
-                        f"'{name}' is an invalid item name.\n\nCan't be the same as other names.",
-                        dialog_buttons=DialogButtons.ok,
-                    )
-                    return
-            priority: int = self.add_item_dialog.get_priority()
-            quantity: int = self.add_item_dialog.get_quantity()
-            price: float = self.add_item_dialog.get_price()
-            notes: str = self.add_item_dialog.get_notes()
-            inventory.add_item_in_object(self.category, name)
-            inventory.change_object_in_object_item(
-                self.category, name, "quantity", quantity
-            )
-            inventory.change_object_in_object_item(self.category, name, "price", price)
-            inventory.change_object_in_object_item(
-                self.category, name, "priority", priority
-            )
-            inventory.change_object_in_object_item(self.category, name, "notes", notes)
-            self.load_tab()
-        elif response == DialogButtons.cancel:
-            return
+        if add_item_dialog.exec_():
+            response = add_item_dialog.get_response()
+            if response == DialogButtons.add:
+                name: str = add_item_dialog.get_name()
+                category_data = inventory.get_value(item_name=self.category)
+                for item in list(category_data.keys()):
+                    if name == item:
+                        self.show_error_dialog(
+                            "Invalid name",
+                            f"'{name}' is an invalid item name.\n\nCan't be the same as other names.",
+                            dialog_buttons=DialogButtons.ok,
+                        )
+                        return
+                priority: int = add_item_dialog.get_priority()
+                quantity: int = add_item_dialog.get_quantity()
+                price: float = add_item_dialog.get_price()
+                notes: str = add_item_dialog.get_notes()
+                inventory.add_item_in_object(self.category, name)
+                inventory.change_object_in_object_item(
+                    self.category, name, "quantity", quantity
+                )
+                inventory.change_object_in_object_item(
+                    self.category, name, "price", price
+                )
+                inventory.change_object_in_object_item(
+                    self.category, name, "priority", priority
+                )
+                inventory.change_object_in_object_item(
+                    self.category, name, "notes", notes
+                )
+                self.load_tab()
+            elif response == DialogButtons.cancel:
+                return
 
     def delete_item(self, category: str, item_name: QLineEdit) -> None:
         """
@@ -704,16 +718,16 @@ class MainWindow(QMainWindow):
         """
         It creates an AboutDialog object and shows it.
         """
-        self.dialog = AboutDialog(
+        dialog = AboutDialog(
             __name__,
             __version__,
             __updated__,
             "https://github.com/TheCodingJsoftware/Inventory-Manager",
         )
-        self.dialog.show()
+        dialog.show()
 
     def show_message_dialog(
-        self, title: str, message: str, dialog_buttons: DialogButtons = DialogButtons.ok
+        self, title: str, message: str, dialog_buttons: str = DialogButtons.ok
     ) -> str:
         """
         It creates a message dialog, shows it, and returns the response
@@ -721,20 +735,20 @@ class MainWindow(QMainWindow):
         Args:
           title (str): str = The title of the dialog
           message (str): str = The message to display in the dialog
-          dialog_buttons (DialogButtons): DialogButtons = DialogButtons.ok
+          dialog_buttons (str): str = DialogButtons.ok
 
         Returns:
           The response is being returned.
         """
-        self.message_dialog = MessageDialog(
+        message_dialog = MessageDialog(
             self, Icons.information, dialog_buttons, title, message
         )
-        self.message_dialog.show()
+        message_dialog.show()
 
         response: str = ""
 
-        if self.message_dialog.exec_():
-            response = self.message_dialog.get_response()
+        if message_dialog.exec_():
+            response = message_dialog.get_response()
 
         return response
 
@@ -742,7 +756,7 @@ class MainWindow(QMainWindow):
         self,
         title: str,
         message: str,
-        dialog_buttons: DialogButtons = DialogButtons.ok_save_copy_cancel,
+        dialog_buttons: str = DialogButtons.ok_save_copy_cancel,
     ) -> str:
         """
         It creates a dialog box with a message and a title, and returns the response
@@ -750,26 +764,52 @@ class MainWindow(QMainWindow):
         Args:
           title (str): str = The title of the dialog
           message (str): str = The message to be displayed in the dialog.
-          dialog_buttons (DialogButtons): DialogButtons = DialogButtons.ok_save_copy_cancel,
+          dialog_buttons (str): str = DialogButtons.ok_save_copy_cancel,
 
         Returns:
           The response from the dialog.
         """
-        self.message_dialog = MessageDialog(
+        message_dialog = MessageDialog(
             self, Icons.critical, dialog_buttons, title, message
         )
-        self.message_dialog.show()
+        message_dialog.show()
 
         response: str = ""
 
-        if self.message_dialog.exec_():
-            response = self.message_dialog.get_response()
+        if message_dialog.exec_():
+            response = message_dialog.get_response()
 
         if response == DialogButtons.copy:
             pixmap = QPixmap(self.message_dialog.grab())
             QApplication.clipboard().setPixmap(pixmap)
         elif response == DialogButtons.save:
-            self.generate_error_log(message_dialog=self.message_dialog)
+            self.generate_error_log(message_dialog=message_dialog)
+        return response
+
+    def show_file_changes(
+        self, title: str, message: str, dialog_buttons: str = DialogButtons.ok
+    ) -> None:
+        """
+        It creates a message dialog, shows it, and returns the response
+
+        Args:
+          title (str): str = The title of the dialog
+          message (str): str = The message to display in the dialog
+          dialog_buttons (str): str = DialogButtons.ok
+
+        Returns:
+          The response is being returned.
+        """
+        message_dialog = MessageDialog(
+            self, Icons.information, dialog_buttons, title, message
+        )
+        message_dialog.show()
+
+        response: str = ""
+
+        if message_dialog.exec_():
+            response = message_dialog.get_response()
+
         return response
 
     def generate_error_log(self, message_dialog: MessageDialog) -> None:
@@ -855,10 +895,26 @@ class MainWindow(QMainWindow):
             file_change = FileChanges(
                 from_file="data/inventory - Compare.json", to_file="data/inventory.json"
             )
-            if settings_file.get_value(item_name="last_toolbox_tab") == 0:
-                self.lblStatus.setText(file_change.which_file_changed().title())
+            self.status_button.disconnect()
+            if file_change.get_changes() == "":
+                self.status_button.clicked.connect(
+                    partial(
+                        self.show_file_changes, title="Changes", message="No changes."
+                    )
+                )
             else:
-                self.lblStatus.setText("")
+                self.status_button.clicked.connect(
+                    partial(
+                        self.show_file_changes,
+                        title="Changes",
+                        message=file_change.get_changes(),
+                    )
+                )
+            if settings_file.get_value(item_name="last_toolbox_tab") == 0:
+                self.status_button.setHidden(False)
+                self.status_button.setText(file_change.which_file_changed().title())
+            else:
+                self.status_button.setHidden(True)
             os.remove("data/inventory - Compare.json")
         except Exception as e:
             logging.critical(e)

@@ -28,7 +28,7 @@
        <enum>QFrame::Plain</enum>
       </property>
       <property name="currentIndex">
-       <number>0</number>
+       <number>1</number>
       </property>
       <widget class="QWidget" name="inventory_page">
        <property name="geometry">
@@ -36,7 +36,7 @@
          <x>0</x>
          <y>0</y>
          <width>507</width>
-         <height>492</height>
+         <height>510</height>
         </rect>
        </property>
        <attribute name="label">
@@ -57,7 +57,7 @@
          <x>0</x>
          <y>0</y>
          <width>507</width>
-         <height>497</height>
+         <height>510</height>
         </rect>
        </property>
        <attribute name="label">
@@ -79,29 +79,14 @@
      </widget>
     </item>
     <item>
-     <widget class="QLabel" name="lblStatus">
-      <property name="minimumSize">
-       <size>
-        <width>0</width>
-        <height>20</height>
-       </size>
+     <layout class="QVBoxLayout" name="verticalLayout_status">
+      <property name="leftMargin">
+       <number>6</number>
       </property>
-      <property name="frameShape">
-       <enum>QFrame::StyledPanel</enum>
+      <property name="rightMargin">
+       <number>6</number>
       </property>
-      <property name="frameShadow">
-       <enum>QFrame::Raised</enum>
-      </property>
-      <property name="text">
-       <string/>
-      </property>
-      <property name="textFormat">
-       <enum>Qt::RichText</enum>
-      </property>
-      <property name="alignment">
-       <set>Qt::AlignCenter</set>
-      </property>
-     </widget>
+     </layout>
     </item>
    </layout>
   </widget>

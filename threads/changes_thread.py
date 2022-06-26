@@ -1,10 +1,8 @@
-import logging
 import socket
 from time import sleep
 
 from PyQt5.QtCore import QThread, pyqtSignal
 
-import log_config
 from utils.ip_utils import get_server_ip_address, get_server_port, get_system_ip_address
 from utils.json_file import JsonFile
 
@@ -70,6 +68,5 @@ class ChangesThread(QThread):
                 self.s.close()
                 self.signal.emit("")
             except Exception as e:
-                logging.exception("Exception occurred")
                 self.signal.emit(e)
             sleep(self.delay)

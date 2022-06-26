@@ -1,29 +1,27 @@
-import logging
-import os
 import socket
 
 from PyQt5.QtCore import QThread, pyqtSignal
 
-import log_config
 from utils.ip_utils import get_server_ip_address, get_server_port, get_system_ip_address
 from utils.json_file import JsonFile
 
 settings_file = JsonFile(file_name="settings")
 
 
-class UploadThread(QThread):
+class DownloadThread(QThread):
     """
-    Uploads client data to the server
+    Downloads server data to the client
     """
 
     signal = pyqtSignal(object)
 
-    def __init__(self, file_to_upload: str) -> None:
+    def __init__(self, file_to_download: str) -> None:
         """
-        A constructor function.
+        The function is a constructor for a class that inherits from QThread. It takes a string as an
+        argument and returns None
 
         Args:
-          file_to_upload (str): str = The file to upload
+          file_to_download (str): The file to download from the server
         """
         QThread.__init__(self)
         # Declaring server IP and port
@@ -37,12 +35,12 @@ class UploadThread(QThread):
         self.BUFFER_SIZE = 4096
         self.SEPARATOR = "<SEPARATOR>"
 
-        self.file_to_upload = file_to_upload
-        self.filesize = os.path.getsize(self.file_to_upload)
+        self.file_to_download: str = file_to_download
 
     def run(self) -> None:
         """
-        It connects to a server, sends a message, and then sends the file
+        It connects to a server, sends a command to download a file, receives the file size, receives
+        the file, and then closes the connection
         """
         try:
             self.server = (self.SERVER_IP, self.SERVER_PORT)
@@ -51,18 +49,21 @@ class UploadThread(QThread):
             self.s.connect(self.server)
 
             self.s.send(
-                f"send_file{self.SEPARATOR}{self.file_to_upload}{self.SEPARATOR}{self.filesize}".encode()
+                f"get_file{self.SEPARATOR}{self.file_to_download}".encode("utf-8")
             )
-            with open(self.file_to_upload, "rb") as f:
+
+            filesize: int = int(self.s.recv(1024).decode("utf-8"))
+
+            with open(self.file_to_download, "wb") as f:
                 while True:
-                    bytes_read = f.read(self.BUFFER_SIZE)
+                    bytes_read = self.s.recv(self.BUFFER_SIZE)
                     if not bytes_read:
+                        # file transmitting is done
                         break
-                    self.s.sendall(bytes_read)
+                    f.write(bytes_read)
 
             self.s.close()
 
-            self.signal.emit("Successfully uploaded")
+            self.signal.emit("Successfully downloaded")
         except Exception as e:
-            logging.exception("Exception occurred")
             self.signal.emit(e)

@@ -43,6 +43,44 @@ class FileChanges:
             else f'<p style="color:red;"><b>{self.file_name}</b> - There are changes to the cloud file that are not present locally. - {datetime.now().strftime("%H:%M:%S")}</p>'
         )
 
+    def get_changes(self) -> str:
+        """
+        It takes the two files, reads them into lists, and then uses the difflib.unified_diff function
+        to compare the two lists.
+
+        The difflib.unified_diff function returns a generator object that contains the differences
+        between the two lists.
+
+        The generator object is iterated over and each line is checked to see if it starts with one of
+        the prefixes that we don't want to include in the output.
+
+        If the line doesn't start with one of the prefixes, it is added to the changes string.
+
+        The changes string is then returned
+
+        Returns:
+          The changes between the two files.
+        """
+        changes: str = ""
+        with open(self.from_file, "r", encoding="utf-8") as from_file:
+            from_file_lines = from_file.readlines()
+        with open(self.to_file, "r", encoding="utf-8") as to_file:
+            to_file_lines = to_file.readlines()
+        for line in difflib.unified_diff(
+            from_file_lines,
+            to_file_lines,
+            fromfile=self.from_file,
+            tofile=self.to_file,
+            lineterm="",
+            n=0,
+        ):
+            for prefix in ("---", "+++", "@@"):
+                if line.startswith(prefix):
+                    break
+            else:
+                changes += line
+        return changes
+
     def update_size(self) -> None:
         """
         It updates the size of the files

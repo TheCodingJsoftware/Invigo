@@ -43,7 +43,6 @@ class AddItemDialog(QDialog):
         self.button_names = button_names
         self.title = title
         self.message = message
-        self.inputText: str = ""
         self.theme: str = (
             "dark" if settings_file.get_value(item_name="dark_mode") else "light"
         )
