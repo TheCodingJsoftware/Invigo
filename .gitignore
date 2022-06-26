@@ -70,4 +70,3 @@ backups
 *.zip
 venv/
 *.ini
-.qt_for_python
