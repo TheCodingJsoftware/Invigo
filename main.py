@@ -4,7 +4,7 @@ __credits__: "list[str]" = ["Jared Gross"]
 __license__ = "MIT"
 __name__ = "Inventory Manager"
 __version__ = "v0.0.3"
-__updated__ = "2022-06-26 15:37:53"
+__updated__ = "2022-06-26 19:15:49"
 __maintainer__ = "Jared Gross"
 __email__ = "jared@pinelandfarms.ca"
 __status__ = "Production"
@@ -582,11 +582,14 @@ class MainWindow(QMainWindow):
                             dialog_buttons=DialogButtons.ok,
                         )
                         return
+
                 priority: int = add_item_dialog.get_priority()
                 quantity: int = add_item_dialog.get_quantity()
                 price: float = add_item_dialog.get_price()
                 notes: str = add_item_dialog.get_notes()
+
                 inventory.add_item_in_object(self.category, name)
+
                 inventory.change_object_in_object_item(
                     self.category, name, "quantity", quantity
                 )
