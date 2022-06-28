@@ -4,7 +4,7 @@ __credits__: "list[str]" = ["Jared Gross"]
 __license__ = "MIT"
 __name__ = "Inventory Manager"
 __version__ = "v1.0.0"
-__updated__ = "2022-06-27 22:34:33"
+__updated__ = "2022-06-27 23:18:10"
 __maintainer__ = "Jared Gross"
 __email__ = "jared@pinelandfarms.ca"
 __status__ = "Production"
@@ -943,12 +943,28 @@ class MainWindow(QMainWindow):
         category_data = inventory.get_value(item_name=self.category)
         current_quantity: int = category_data[item_name]["current_quantity"]
         unit_quantity: int = category_data[item_name]["unit_quantity"]
+        part_number: str = category_data[item_name]["part_number"]
         self.value_change(
             self.category,
             item_name,
             "current_quantity",
             current_quantity + (unit_quantity * self.spinBox_quantity.value()),
         )
+        data = inventory.get_data()
+        for category in list(data.keys()):
+            if category == self.category:
+                continue
+            for item in data[category].keys():
+                if part_number == data[category][item]["part_number"]:
+                    unit_quantity: int = data[category][item]["unit_quantity"]
+                    current_quantity: int = data[category][item]["current_quantity"]
+                    self.value_change(
+                        category=category,
+                        item_name=item,
+                        value_name="current_quantity",
+                        new_value=current_quantity
+                        + (unit_quantity * self.spinBox_quantity.value()),
+                    )
         self.pushButton_add_quantity.setEnabled(False)
         self.pushButton_remove_quantity.setEnabled(False)
         self.load_tab()
@@ -965,12 +981,28 @@ class MainWindow(QMainWindow):
         category_data = inventory.get_value(item_name=self.category)
         current_quantity: int = category_data[item_name]["current_quantity"]
         unit_quantity: int = category_data[item_name]["unit_quantity"]
+        part_number: str = category_data[item_name]["part_number"]
         self.value_change(
             self.category,
             item_name,
             "current_quantity",
             current_quantity - (unit_quantity * self.spinBox_quantity.value()),
         )
+        data = inventory.get_data()
+        for category in list(data.keys()):
+            if category == self.category:
+                continue
+            for item in data[category].keys():
+                if part_number == data[category][item]["part_number"]:
+                    unit_quantity: int = data[category][item]["unit_quantity"]
+                    current_quantity: int = data[category][item]["current_quantity"]
+                    self.value_change(
+                        category=category,
+                        item_name=item,
+                        value_name="current_quantity",
+                        new_value=current_quantity
+                        - (unit_quantity * self.spinBox_quantity.value()),
+                    )
         self.pushButton_add_quantity.setEnabled(False)
         self.pushButton_remove_quantity.setEnabled(False)
         self.load_tab()
