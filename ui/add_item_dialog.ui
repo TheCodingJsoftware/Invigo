@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>380</width>
-    <height>321</height>
+    <width>453</width>
+    <height>373</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -136,7 +136,7 @@
               <rect>
                <x>0</x>
                <y>0</y>
-               <width>328</width>
+               <width>401</width>
                <height>69</height>
               </rect>
              </property>
@@ -179,28 +179,39 @@
          </layout>
         </item>
         <item>
-         <layout class="QGridLayout" name="gridLayout">
-          <item row="0" column="2">
-           <widget class="QLineEdit" name="lineEdit_name"/>
-          </item>
-          <item row="2" column="0">
-           <widget class="QLabel" name="label_3">
-            <property name="text">
-             <string>Quantity:</string>
-            </property>
-            <property name="alignment">
-             <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+         <layout class="QGridLayout" name="gridLayout" columnminimumwidth="0,0,0,0">
+          <item row="1" column="2">
+           <widget class="QLineEdit" name="lineEdit_part_number">
+            <property name="placeholderText">
+             <string>Enter part number</string>
             </property>
            </widget>
           </item>
-          <item row="2" column="2">
-           <widget class="QSpinBox" name="spinBox_quantity">
+          <item row="5" column="2">
+           <widget class="QDoubleSpinBox" name="doubleSpinBox_price">
+            <property name="prefix">
+             <string>$</string>
+            </property>
+            <property name="suffix">
+             <string> CAD</string>
+            </property>
             <property name="maximum">
-             <number>9999999</number>
+             <double>999999999.000000000000000</double>
             </property>
            </widget>
           </item>
-          <item row="4" column="0">
+          <item row="6" column="2">
+           <widget class="QPlainTextEdit" name="plainTextEdit_notes">
+            <property name="plainText">
+             <string>Vendor: 
+Description: </string>
+            </property>
+            <property name="placeholderText">
+             <string>Notes...</string>
+            </property>
+           </widget>
+          </item>
+          <item row="6" column="0">
            <widget class="QLabel" name="label_4">
             <property name="text">
              <string>Notes:</string>
@@ -210,7 +221,27 @@
             </property>
            </widget>
           </item>
-          <item row="1" column="2">
+          <item row="0" column="0">
+           <widget class="QLabel" name="label">
+            <property name="text">
+             <string>Item name:</string>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="0">
+           <widget class="QLabel" name="label_2">
+            <property name="text">
+             <string>Priority:</string>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="2">
            <widget class="QComboBox" name="comboBox_priority">
             <property name="editable">
              <bool>false</bool>
@@ -237,30 +268,10 @@
             </item>
            </widget>
           </item>
-          <item row="1" column="0">
-           <widget class="QLabel" name="label_2">
-            <property name="text">
-             <string>Priority:</string>
-            </property>
-            <property name="alignment">
-             <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
-            </property>
-           </widget>
-          </item>
-          <item row="0" column="0">
-           <widget class="QLabel" name="label">
-            <property name="text">
-             <string>Item name:</string>
-            </property>
-            <property name="alignment">
-             <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
-            </property>
-           </widget>
-          </item>
-          <item row="3" column="0">
+          <item row="5" column="0">
            <widget class="QLabel" name="label_5">
             <property name="text">
-             <string>Price:</string>
+             <string>Item Price:</string>
             </property>
             <property name="alignment">
              <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
@@ -268,14 +279,78 @@
            </widget>
           </item>
           <item row="3" column="2">
-           <widget class="QDoubleSpinBox" name="doubleSpinBox_price">
+           <widget class="QSpinBox" name="spinBox_current_quantity">
             <property name="maximum">
-             <double>999999999.000000000000000</double>
+             <number>9999999</number>
+            </property>
+           </widget>
+          </item>
+          <item row="3" column="0">
+           <widget class="QLabel" name="label_7">
+            <property name="text">
+             <string>Current Quantity:</string>
+            </property>
+           </widget>
+          </item>
+          <item row="4" column="0">
+           <widget class="QLabel" name="label_3">
+            <property name="text">
+             <string>Unit Quantity:</string>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
             </property>
            </widget>
           </item>
           <item row="4" column="2">
-           <widget class="QPlainTextEdit" name="plainTextEdit_notes"/>
+           <widget class="QSpinBox" name="spinBox_unit_quantity">
+            <property name="maximum">
+             <number>9999999</number>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="0">
+           <widget class="QLabel" name="label_6">
+            <property name="text">
+             <string>Part Number:</string>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="2">
+           <widget class="QLineEdit" name="lineEdit_name">
+            <property name="placeholderText">
+             <string>Enter item name</string>
+            </property>
+           </widget>
+          </item>
+          <item row="5" column="3">
+           <widget class="QComboBox" name="comboBox_exchange_price">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>50</width>
+              <height>16777215</height>
+             </size>
+            </property>
+            <property name="currentText">
+             <string>CAD</string>
+            </property>
+            <item>
+             <property name="text">
+              <string>CAD</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>USD</string>
+             </property>
+            </item>
+           </widget>
           </item>
          </layout>
         </item>

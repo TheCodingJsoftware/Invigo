@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'f:\Code\Python-Projects\Inventory Manager\dist - Copy\ui\select_item_dialog.ui'
+# Form implementation generated from reading ui file 'f:\Code\Python-Projects\Inventory Manager\dist\ui\select_item_dialog.ui'
 #
 # Created by: PyQt5 UI code generator 5.15.6
 #

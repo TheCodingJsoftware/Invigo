@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'f:\Code\Python-Projects\Inventory Manager\dist\ui\input_dialog.ui'
+# Form implementation generated from reading ui file 'f:\Code\Python-Projects\Inventory Manager\dist\ui\web_scrape_results_dialog.ui'
 #
 # Created by: PyQt5 UI code generator 5.15.6
 #
@@ -14,7 +14,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class Ui_Form(object):
     def setupUi(self, Form):
         Form.setObjectName("Form")
-        Form.resize(380, 222)
+        Form.resize(695, 717)
         self.horizontalLayout = QtWidgets.QHBoxLayout(Form)
         self.horizontalLayout.setContentsMargins(0, 0, 0, 0)
         self.horizontalLayout.setSpacing(0)
@@ -57,7 +57,7 @@ class Ui_Form(object):
         self.scrollArea.setWidgetResizable(True)
         self.scrollArea.setObjectName("scrollArea")
         self.scrollAreaWidgetContents = QtWidgets.QWidget()
-        self.scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, 0, 328, 127))
+        self.scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, 0, 643, 69))
         self.scrollAreaWidgetContents.setObjectName("scrollAreaWidgetContents")
         self.verticalLayout_4 = QtWidgets.QVBoxLayout(self.scrollAreaWidgetContents)
         self.verticalLayout_4.setContentsMargins(0, 0, 0, 0)
@@ -75,12 +75,26 @@ class Ui_Form(object):
         self.scrollArea.setWidget(self.scrollAreaWidgetContents)
         self.horizontalLayout_4.addWidget(self.scrollArea)
         self.verticalLayout.addLayout(self.horizontalLayout_4)
-        self.lineEditInput = QtWidgets.QLineEdit(self.frame)
-        self.lineEditInput.setObjectName("lineEditInput")
-        self.verticalLayout.addWidget(self.lineEditInput)
+        self.scrollArea_2 = QtWidgets.QScrollArea(self.frame)
+        self.scrollArea_2.setMaximumSize(QtCore.QSize(16777215, 16777215))
+        self.scrollArea_2.setSizeAdjustPolicy(QtWidgets.QAbstractScrollArea.AdjustToContents)
+        self.scrollArea_2.setWidgetResizable(True)
+        self.scrollArea_2.setAlignment(QtCore.Qt.AlignCenter)
+        self.scrollArea_2.setObjectName("scrollArea_2")
+        self.scrollAreaWidgetContents_2 = QtWidgets.QWidget()
+        self.scrollAreaWidgetContents_2.setGeometry(QtCore.QRect(0, 0, 673, 571))
+        self.scrollAreaWidgetContents_2.setObjectName("scrollAreaWidgetContents_2")
+        self.verticalLayout_6 = QtWidgets.QVBoxLayout(self.scrollAreaWidgetContents_2)
+        self.verticalLayout_6.setObjectName("verticalLayout_6")
+        self.layout_results = QtWidgets.QVBoxLayout()
+        self.layout_results.setObjectName("layout_results")
+        self.verticalLayout_6.addLayout(self.layout_results)
+        self.scrollArea_2.setWidget(self.scrollAreaWidgetContents_2)
+        self.verticalLayout.addWidget(self.scrollArea_2)
         self.buttonsLayout = QtWidgets.QHBoxLayout()
         self.buttonsLayout.setObjectName("buttonsLayout")
         self.verticalLayout.addLayout(self.buttonsLayout)
+        self.verticalLayout.setStretch(1, 1)
         self.verticalLayout_3.addLayout(self.verticalLayout)
         self.horizontalLayout.addWidget(self.frame)
 

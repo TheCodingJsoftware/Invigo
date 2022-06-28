@@ -60,6 +60,9 @@ class AddItemDialog(QDialog):
         self.iconHolder.addWidget(svg_icon)
 
         # self.resize(300, 150)
+        self.comboBox_exchange_price.currentIndexChanged.connect(
+            self.exchange_price_toggled
+        )
 
         self.load_theme()
 
@@ -115,6 +118,15 @@ class AddItemDialog(QDialog):
             button.clicked.connect(partial(self.button_press, button))
             self.buttonsLayout.addWidget(button)
 
+    def exchange_price_toggled(self) -> None:
+        """
+        When the user selects a different exchange from the dropdown menu, the suffix of the price
+        spinbox changes to the selected exchange
+        """
+        self.doubleSpinBox_price.setSuffix(
+            f" {self.comboBox_exchange_price.currentText()}"
+        )
+
     def get_response(self) -> str:
         """
         This function returns the response of the class
@@ -123,6 +135,15 @@ class AddItemDialog(QDialog):
           The response
         """
         return self.response
+
+    def get_part_number(self) -> str:
+        """
+        It returns the text in the lineEdit_part_number widget
+
+        Returns:
+          The text in the lineEdit_part_number widget.
+        """
+        return self.lineEdit_part_number.text()
 
     def get_name(self) -> str:
         """
@@ -142,16 +163,25 @@ class AddItemDialog(QDialog):
         """
         return self.comboBox_priority.currentIndex()
 
-    def get_quantity(self) -> int:
+    def get_unit_quantity(self) -> int:
         """
-        It returns the value of the spinBox_quantity widget
+        It returns the value of the spinBox_unit_quantity widget
 
         Returns:
-          The value of the spinBox_quantity.
+          The value of the spinBox_unit_quantity.
         """
-        return self.spinBox_quantity.value()
+        return self.spinBox_unit_quantity.value()
 
-    def get_price(self) -> float:
+    def get_current_quantity(self) -> int:
+        """
+        It returns the value of the spinBox_current_quantity widget
+
+        Returns:
+          The value of the spinBox_current_quantity.
+        """
+        return self.spinBox_current_quantity.value()
+
+    def get_item_price(self) -> float:
         """
         It returns the value of the doubleSpinBox_price widget
 
@@ -159,6 +189,16 @@ class AddItemDialog(QDialog):
           The value of the doubleSpinBox_price.
         """
         return self.doubleSpinBox_price.value()
+
+    def get_exchange_rate(self) -> bool:
+        """
+        It returns the value of the doubleSpinBox_price widget
+
+        Returns:
+          The value of the doubleSpinBox_price.
+        """
+
+        return self.comboBox_exchange_price.currentText() == "USD"
 
     def get_notes(self) -> str:
         """

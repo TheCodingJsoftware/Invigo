@@ -28,7 +28,7 @@
        <enum>QFrame::Plain</enum>
       </property>
       <property name="currentIndex">
-       <number>1</number>
+       <number>0</number>
       </property>
       <widget class="QWidget" name="inventory_page">
        <property name="geometry">
@@ -135,6 +135,7 @@
     <addaction name="menuOpen_Category"/>
     <addaction name="separator"/>
     <addaction name="actionBackup"/>
+    <addaction name="actionLoad_Backup"/>
     <addaction name="separator"/>
     <addaction name="actionExit"/>
    </widget>
@@ -154,8 +155,15 @@
     <addaction name="separator"/>
     <addaction name="actionAbout"/>
    </widget>
+   <widget class="QMenu" name="menuSearch">
+    <property name="title">
+     <string>Search</string>
+    </property>
+    <addaction name="actionEbay"/>
+   </widget>
    <addaction name="menuFile"/>
    <addaction name="menuSettings"/>
+   <addaction name="menuSearch"/>
    <addaction name="menuHelp"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
@@ -166,7 +174,7 @@
    <property name="minimumSize">
     <size>
      <width>300</width>
-     <height>256</height>
+     <height>453</height>
     </size>
    </property>
    <property name="features">
@@ -185,6 +193,13 @@
     <layout class="QHBoxLayout" name="horizontalLayout">
      <item>
       <layout class="QVBoxLayout" name="verticalLayout_3">
+       <item>
+        <widget class="QLabel" name="label_exchange_price">
+         <property name="text">
+          <string>Getting exchange rate...</string>
+         </property>
+        </widget>
+       </item>
        <item>
         <widget class="QLabel" name="label_category_name">
          <property name="text">
@@ -233,10 +248,60 @@
         </widget>
        </item>
        <item>
-        <widget class="Line" name="line_2">
-         <property name="orientation">
-          <enum>Qt::Horizontal</enum>
+        <widget class="QGroupBox" name="groupBox">
+         <property name="minimumSize">
+          <size>
+           <width>0</width>
+           <height>60</height>
+          </size>
          </property>
+         <property name="title">
+          <string>Change Quantities by</string>
+         </property>
+         <layout class="QHBoxLayout" name="horizontalLayout_6">
+          <property name="topMargin">
+           <number>0</number>
+          </property>
+          <property name="bottomMargin">
+           <number>9</number>
+          </property>
+          <item>
+           <layout class="QGridLayout" name="gridLayout">
+            <property name="leftMargin">
+             <number>0</number>
+            </property>
+            <property name="topMargin">
+             <number>0</number>
+            </property>
+            <property name="rightMargin">
+             <number>0</number>
+            </property>
+            <property name="bottomMargin">
+             <number>0</number>
+            </property>
+            <property name="spacing">
+             <number>0</number>
+            </property>
+            <item row="0" column="0">
+             <widget class="QRadioButton" name="radioButton_category">
+              <property name="text">
+               <string>Category</string>
+              </property>
+              <property name="checked">
+               <bool>true</bool>
+              </property>
+             </widget>
+            </item>
+            <item row="0" column="1">
+             <widget class="QRadioButton" name="radioButton_single">
+              <property name="text">
+               <string>Item</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+         </layout>
         </widget>
        </item>
        <item>
@@ -244,14 +309,17 @@
          <item>
           <widget class="QLabel" name="label">
            <property name="text">
-            <string>Quantity:</string>
+            <string>Batches Multiplier:</string>
            </property>
           </widget>
          </item>
          <item>
           <widget class="QSpinBox" name="spinBox_quantity">
            <property name="statusTip">
-            <string>Quantity you want to add/remove to the selected item</string>
+            <string>Quantity you want to add/remove to the selected item/category</string>
+           </property>
+           <property name="maximum">
+            <number>999999</number>
            </property>
           </widget>
          </item>
@@ -268,7 +336,7 @@
             <string>Create a new item</string>
            </property>
            <property name="text">
-            <string>Create New</string>
+            <string>Add New Item</string>
            </property>
           </widget>
          </item>
@@ -373,6 +441,22 @@
    </property>
    <property name="statusTip">
     <string>Download all inventory categories and items.</string>
+   </property>
+  </action>
+  <action name="actionEbay">
+   <property name="text">
+    <string>Ebay</string>
+   </property>
+   <property name="statusTip">
+    <string>Search ebay for prices</string>
+   </property>
+  </action>
+  <action name="actionLoad_Backup">
+   <property name="text">
+    <string>Load Backup</string>
+   </property>
+   <property name="statusTip">
+    <string>Load a backup</string>
    </property>
   </action>
  </widget>

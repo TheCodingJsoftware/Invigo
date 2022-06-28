@@ -13,7 +13,7 @@ class AboutDialog(QWidget):
     About dialog
     """
 
-    def __init__(self, title: str, version: str, updated: str, home: str) -> None:
+    def __init__(self, parent, title: str, version: str, updated: str, home: str) -> None:
         """
         It's a function that loads the about dialog
 
@@ -23,7 +23,7 @@ class AboutDialog(QWidget):
           updated (str): str = "2020-04-20"
           home (str): str = "https://github.com/michael-k-zhang/py-pomodoro"
         """
-        super(AboutDialog, self).__init__()
+        super(AboutDialog, self).__init__(parent)
         uic.loadUi("ui/about_dialog.ui", self)
 
         self.setWindowFlags(Qt.Window | Qt.FramelessWindowHint)

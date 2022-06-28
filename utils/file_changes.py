@@ -19,7 +19,7 @@ class FileChanges:
         self.from_file = from_file
         self.to_file = to_file
 
-        self.file_name = self.to_file.replace(".json", "").replace("data/", "")
+        self.file_name = self.to_file.replace(".json", "").replace("data/", "").title()
 
         self.from_file_size: int = 0
         self.to_file_size: int = 0
@@ -35,12 +35,12 @@ class FileChanges:
         """
         changes: bool = filecmp.cmp(self.from_file, self.to_file, shallow=False)
         if changes:
-            return f'<p style="color:green;"> <b>{self.file_name}</b> - Up to date. - {datetime.now().strftime("%H:%M:%S")}</p>'
+            return f'<p style="color:green;"> <b>{self.file_name}</b> - Up to date. - {datetime.now().strftime("%r")}</p>'
         self.update_size()
         return (
-            f'<p style="color:yellow;"> <b>{self.file_name}</b> - Your local changes are not uploaded.- {datetime.now().strftime("%H:%M:%S")}</p>'
+            f'<p style="color:yellow;"> <b>{self.file_name}</b> - Your local changes are not uploaded.- {datetime.now().strftime("%r")}</p>'
             if self.from_file_size < self.to_file_size
-            else f'<p style="color:red;"><b>{self.file_name}</b> - There are changes to the cloud file that are not present locally. - {datetime.now().strftime("%H:%M:%S")}</p>'
+            else f'<p style="color:red;"><b>{self.file_name}</b> - There are changes to the cloud file that are not present locally. - {datetime.now().strftime("%r")}</p>'
         )
 
     def get_changes(self) -> str:

@@ -162,6 +162,15 @@ class JsonFile:
         del self.data[object_name][item_name]
         self.__save_data()
 
+    def get_data(self) -> dict:
+        """
+        It returns the data attribute of the object
+
+        Returns:
+          The data attribute of the class.
+        """
+        return self.data
+
     def get_keys(self) -> list:
         """
         It returns a list of keys in the dictionary.
