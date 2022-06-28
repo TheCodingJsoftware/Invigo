@@ -62,8 +62,11 @@ class FileChanges:
           The changes between the two files.
         """
         changes: str = ""
-        with open(self.from_file, "r", encoding="utf-8") as from_file:
-            from_file_lines = from_file.readlines()
+        try:
+            with open(self.from_file, "r", encoding="utf-8") as from_file:
+                from_file_lines = from_file.readlines()
+        except FileNotFoundError:
+            return "Could not download file"
         with open(self.to_file, "r", encoding="utf-8") as to_file:
             to_file_lines = to_file.readlines()
         for line in difflib.unified_diff(

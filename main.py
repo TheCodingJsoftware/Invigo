@@ -3,8 +3,8 @@ __copyright__ = "Copyright 2022, TheCodingJ's"
 __credits__: "list[str]" = ["Jared Gross"]
 __license__ = "MIT"
 __name__ = "Inventory Manager"
-__version__ = "v1.0.0"
-__updated__ = "2022-06-27 23:18:10"
+__version__ = "v1.0.1"
+__updated__ = "2022-06-28 12:55:01"
 __maintainer__ = "Jared Gross"
 __email__ = "jared@pinelandfarms.ca"
 __status__ = "Production"
@@ -96,7 +96,6 @@ class MainWindow(QMainWindow):
         self.threads = []
 
         self.__load_ui()
-        self.quantities_change()
         self.start_changes_thread("data/inventory.json")
         self.start_exchange_rate_thread()
         self.show()
@@ -292,7 +291,7 @@ class MainWindow(QMainWindow):
         tab_index: int = self.tab_widget.currentIndex()
         self.category = self.tab_widget.tabText(tab_index)
         self.inventory_prices_objects.clear()
-        MINIMUM_WIDTH: int = 100
+        MINIMUM_WIDTH: int = 170
 
         if self.category == "Create category":
             self.tab_widget.setCurrentIndex(settings_file.get_value("last_category_tab"))
@@ -303,6 +302,8 @@ class MainWindow(QMainWindow):
             self.delete_category()
             return
         self.pushButton_create_new.setEnabled(True)
+        self.radioButton_category.setEnabled(True)
+        self.radioButton_single.setEnabled(True)
         try:
             self.clear_layout(self.tabs[tab_index])
         except IndexError:
@@ -333,6 +334,7 @@ class MainWindow(QMainWindow):
 
                 for i, header in enumerate(headers):
                     lbl_header = QLabel(header)
+                    lbl_header.setFixedHeight(10)
                     tab.addWidget(lbl_header, 0, i)
 
             for row_index, item in enumerate(list(category_data.keys()), start=1):  # type: ignore
@@ -412,7 +414,7 @@ class MainWindow(QMainWindow):
                 col_index += 1
 
                 spin_price = QDoubleSpinBox()
-                spin_price.setMinimumWidth(MINIMUM_WIDTH)
+                spin_price.setFixedWidth(100)
                 spin_price.setValue(price)
                 spin_price.setMaximum(99999999)
                 spin_price.setMinimum(-99999999)
@@ -444,7 +446,7 @@ class MainWindow(QMainWindow):
                 col_index += 1
 
                 spin_total_cost = QLineEdit()
-                spin_total_cost.setMinimumWidth(MINIMUM_WIDTH)
+                spin_total_cost.setFixedWidth(100)
                 spin_total_cost.setReadOnly(True)
                 round_number = lambda x, n: eval(
                     '"%.'
@@ -510,6 +512,10 @@ class MainWindow(QMainWindow):
         except AttributeError:
             lbl = QLabel("You need to create a category.")
             self.pushButton_create_new.setEnabled(False)
+            self.pushButton_add_quantity.setEnabled(False)
+            self.pushButton_remove_quantity.setEnabled(False)
+            self.radioButton_category.setEnabled(False)
+            self.radioButton_single.setEnabled(False)
             tab.addWidget(lbl, 0, 0)
             QApplication.restoreOverrideCursor()
             return
@@ -1308,7 +1314,18 @@ class MainWindow(QMainWindow):
             else:
                 self.status_button.setHidden(True)
             os.remove("data/inventory - Compare.json")
-        except Exception as e:
+        except (TypeError, FileNotFoundError) as e:
+            self.status_button.setText(
+                f'<p style="color:red;"><b>Inventory</b> - Failed to get changes. - {datetime.now().strftime("%r")}</p>'
+            )
+            self.status_button.disconnect()
+            self.status_button.clicked.connect(
+                partial(
+                    self.show_error_dialog,
+                    title="Error",
+                    message=f"Could not get changes.\n\n{str(e)}",
+                )
+            )
             logging.critical(e)
 
     def data_received(self, data) -> None:
