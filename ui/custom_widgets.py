@@ -1,5 +1,16 @@
+from typing import Type
+
 from PyQt5.QtCore import Qt
-from PyQt5.QtWidgets import QHBoxLayout, QLabel, QPushButton, QSizePolicy
+from PyQt5.QtWidgets import (
+    QComboBox,
+    QDoubleSpinBox,
+    QHBoxLayout,
+    QLabel,
+    QPushButton,
+    QSizePolicy,
+    QTreeWidget,
+    QTreeWidgetItem,
+)
 
 
 class ClickableLabel(QLabel):
@@ -75,3 +86,154 @@ class RichTextPushButton(QPushButton):
         button_size.setWidth(label_size.width())
         button_size.setHeight(label_size.height())
         return button_size
+
+
+class HumbleSpinBox(QDoubleSpinBox):
+    """It's a spin box that doesn't let you enter a value that's too close to zero."""
+
+    def __init__(self, *args):
+        """
+        The function sets the focus policy of the spinbox to strong focus
+        """
+        super(HumbleSpinBox, self).__init__(*args)
+        self.setFocusPolicy(Qt.StrongFocus)
+
+    def focusInEvent(self, event):
+        """
+        When the user clicks on the spinbox, the focus policy is changed to allow the mouse wheel to be
+        used to change the value
+
+        Args:
+          event: QFocusEvent
+        """
+        self.setFocusPolicy(Qt.WheelFocus)
+        super(HumbleSpinBox, self).focusInEvent(event)
+
+    def focusOutEvent(self, event):
+        """
+        When the user clicks on the spinbox, the focus policy is changed to StrongFocus, and then the
+        focusOutEvent is called
+
+        Args:
+          event: QFocusEvent
+        """
+        self.setFocusPolicy(Qt.StrongFocus)
+        super(HumbleSpinBox, self).focusOutEvent(event)
+
+    def wheelEvent(self, event):
+        """
+        If the spinbox has focus, then it will behave as normal. If it doesn't have focus, then the
+        wheel event will be ignored
+
+        Args:
+          event: The event object
+
+        Returns:
+          The super class of the HumbleSpinBox class.
+        """
+        if self.hasFocus():
+            return super(HumbleSpinBox, self).wheelEvent(event)
+        else:
+            event.ignore()
+
+
+class HumbleComboBox(QComboBox):
+    """> A QComboBox that can be set to a default value"""
+
+    def __init__(self, scrollWidget=None, *args, **kwargs):
+        """
+        It sets the focus policy to strong focus.
+
+        Args:
+          scrollWidget: The widget that will be scrolled when the combobox is opened.
+        """
+        super(HumbleComboBox, self).__init__(*args, **kwargs)
+        self.scrollWidget = scrollWidget
+        self.setFocusPolicy(Qt.StrongFocus)
+
+    def wheelEvent(self, *args, **kwargs):
+        """
+        If the combobox has focus, then the wheel event is handled by the combobox, otherwise the wheel
+        event is handled by the scroll widget
+
+        Returns:
+          The return value is the return value of the last statement in the function.
+        """
+        if self.hasFocus():
+            return QComboBox.wheelEvent(self, *args, **kwargs)
+        else:
+            return self.scrollWidget.wheelEvent(*args, **kwargs)
+
+
+class ViewTree(QTreeWidget):
+    """It's a QTreeWidget that displays a list of files and folders"""
+
+    def __init__(self, value):
+        """
+        It takes a value and creates a tree widget item for it.
+
+        If the value is a dictionary, it creates a child item for each key and value pair.
+
+        If the value is a list or tuple, it creates a child item for each value.
+
+        If the value is anything else, it creates a child item with the value as its text.
+
+        The function is recursive, so if the value is a dictionary or list, it calls itself to create
+        the child items.
+
+        The function is also a nested function, so it can access the item argument of the outer
+        function.
+
+        The function is also a nested function, so it can access the item argument of the outer
+        function.
+
+        The function is also a nested function, so it can access the item argument of the outer
+        function.
+
+        The function is also a nested function, so it can access the item argument of the outer
+        function.
+
+        Args:
+          value: The value to be displayed in the tree.
+        """
+        super().__init__()
+        self.setHeaderLabels(["Name", "Value"])
+
+        def fill_item(item, value):
+            """
+            It takes a QTreeWidgetItem and a value, and if the value is a dict, list, or tuple, it
+            creates a new QTreeWidgetItem for each key/value pair or list item, and recursively calls
+            itself on each of those new QTreeWidgetItems
+
+            Args:
+              item: The item to fill
+              value: The value to be displayed in the tree.
+
+            Returns:
+              A dictionary with a list of dictionaries.
+            """
+
+            def new_item(parent, text, val=None):
+                if type(val) != dict:
+                    child = QTreeWidgetItem([text, str(val)])
+                else:
+                    child = QTreeWidgetItem([text])
+                fill_item(child, val)
+                parent.addChild(child)
+                child.setExpanded(True)
+
+            if value is None:
+                return
+            elif isinstance(value, dict):
+                for key, val in sorted(value.items()):
+                    new_item(item, str(key), val)
+            elif isinstance(value, (list, tuple)):
+                for val in value:
+                    text = (
+                        str(val)
+                        if not isinstance(val, (dict, list, tuple))
+                        else "[%s]" % type(val).__name__
+                    )
+                    new_item(item, text, val)
+
+        fill_item(self.invisibleRootItem(), value)

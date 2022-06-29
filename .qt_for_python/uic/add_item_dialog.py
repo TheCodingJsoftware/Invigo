@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'f:\Code\Python-Projects\Inventory Manager\dist\ui\add_item_dialog.ui'
+# Form implementation generated from reading ui file 'f:\Code\Python-Projects\Inventory Manager\ui\add_item_dialog.ui'
 #
 # Created by: PyQt5 UI code generator 5.15.6
 #
@@ -77,9 +77,6 @@ class Ui_Form(object):
         self.verticalLayout.addLayout(self.horizontalLayout_4)
         self.gridLayout = QtWidgets.QGridLayout()
         self.gridLayout.setObjectName("gridLayout")
-        self.lineEdit_part_number = QtWidgets.QLineEdit(self.frame)
-        self.lineEdit_part_number.setObjectName("lineEdit_part_number")
-        self.gridLayout.addWidget(self.lineEdit_part_number, 1, 2, 1, 1)
         self.doubleSpinBox_price = QtWidgets.QDoubleSpinBox(self.frame)
         self.doubleSpinBox_price.setMaximum(999999999.0)
         self.doubleSpinBox_price.setObjectName("doubleSpinBox_price")
@@ -129,9 +126,6 @@ class Ui_Form(object):
         self.label_6 = QtWidgets.QLabel(self.frame)
         self.label_6.setObjectName("label_6")
         self.gridLayout.addWidget(self.label_6, 1, 0, 1, 1)
-        self.lineEdit_name = QtWidgets.QLineEdit(self.frame)
-        self.lineEdit_name.setObjectName("lineEdit_name")
-        self.gridLayout.addWidget(self.lineEdit_name, 0, 2, 1, 1)
         self.comboBox_exchange_price = QtWidgets.QComboBox(self.frame)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Fixed)
         sizePolicy.setHorizontalStretch(0)
@@ -143,6 +137,13 @@ class Ui_Form(object):
         self.comboBox_exchange_price.addItem("")
         self.comboBox_exchange_price.addItem("")
         self.gridLayout.addWidget(self.comboBox_exchange_price, 5, 3, 1, 1)
+        self.lineEdit_part_number = QtWidgets.QComboBox(self.frame)
+        self.lineEdit_part_number.setEditable(True)
+        self.lineEdit_part_number.setObjectName("lineEdit_part_number")
+        self.gridLayout.addWidget(self.lineEdit_part_number, 1, 2, 1, 1)
+        self.lineEdit_name = QtWidgets.QComboBox(self.frame)
+        self.lineEdit_name.setObjectName("lineEdit_name")
+        self.gridLayout.addWidget(self.lineEdit_name, 0, 2, 1, 1)
         self.verticalLayout.addLayout(self.gridLayout)
         self.buttonsLayout = QtWidgets.QHBoxLayout()
         self.buttonsLayout.setObjectName("buttonsLayout")
@@ -158,7 +159,6 @@ class Ui_Form(object):
         Form.setWindowTitle(_translate("Form", "Form"))
         self.lblTitle.setText(_translate("Form", "TextLabel"))
         self.lblMessage.setText(_translate("Form", "TextLabel"))
-        self.lineEdit_part_number.setPlaceholderText(_translate("Form", "Enter part number"))
         self.doubleSpinBox_price.setPrefix(_translate("Form", "$"))
         self.doubleSpinBox_price.setSuffix(_translate("Form", " CAD"))
         self.plainTextEdit_notes.setPlainText(_translate("Form", "Vendor: \n"
@@ -175,7 +175,6 @@ class Ui_Form(object):
         self.label_7.setText(_translate("Form", "Current Quantity:"))
         self.label_3.setText(_translate("Form", "Unit Quantity:"))
         self.label_6.setText(_translate("Form", "Part Number:"))
-        self.lineEdit_name.setPlaceholderText(_translate("Form", "Enter item name"))
         self.comboBox_exchange_price.setCurrentText(_translate("Form", "CAD"))
         self.comboBox_exchange_price.setItemText(0, _translate("Form", "CAD"))
         self.comboBox_exchange_price.setItemText(1, _translate("Form", "USD"))

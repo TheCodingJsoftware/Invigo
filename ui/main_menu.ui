@@ -61,11 +61,15 @@
         </rect>
        </property>
        <attribute name="label">
-        <string>Page 2</string>
+        <string>View</string>
        </attribute>
        <layout class="QHBoxLayout" name="horizontalLayout_5">
         <item>
-         <layout class="QVBoxLayout" name="verticalLayout_4"/>
+         <layout class="QVBoxLayout" name="verticalLayout_4">
+          <item>
+           <layout class="QGridLayout" name="search_layout"/>
+          </item>
+         </layout>
         </item>
        </layout>
       </widget>

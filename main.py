@@ -3,8 +3,8 @@ __copyright__ = "Copyright 2022, TheCodingJ's"
 __credits__: "list[str]" = ["Jared Gross"]
 __license__ = "MIT"
 __name__ = "Inventory Manager"
-__version__ = "v1.0.1"
-__updated__ = "2022-06-28 12:55:01"
+__version__ = "v1.0.2"
+__updated__ = "2022-06-28 23:11:19"
 __maintainer__ = "Jared Gross"
 __email__ = "jared@pinelandfarms.ca"
 __status__ = "Production"
@@ -14,6 +14,7 @@ import logging
 import math
 import os
 import shutil
+import webbrowser
 from datetime import datetime
 from functools import partial
 from operator import add
@@ -50,7 +51,12 @@ from threads.download_thread import DownloadThread
 from threads.upload_thread import UploadThread
 from ui.about_dialog import AboutDialog
 from ui.add_item_dialog import AddItemDialog
-from ui.custom_widgets import RichTextPushButton
+from ui.custom_widgets import (
+    HumbleComboBox,
+    HumbleSpinBox,
+    RichTextPushButton,
+    ViewTree,
+)
 from ui.input_dialog import InputDialog
 from ui.message_dialog import MessageDialog
 from ui.select_item_dialog import SelectItemDialog
@@ -96,6 +102,7 @@ class MainWindow(QMainWindow):
         self.threads = []
 
         self.__load_ui()
+        self.tool_box_menu_changed()
         self.start_changes_thread("data/inventory.json")
         self.start_exchange_rate_thread()
         self.show()
@@ -117,6 +124,13 @@ class MainWindow(QMainWindow):
         self.radioButton_category.toggled.connect(self.quantities_change)
         self.radioButton_single.toggled.connect(self.quantities_change)
 
+        if settings_file.get_value(item_name="change_quantities_by") == "Category":
+            self.radioButton_category.setChecked(True)
+            self.radioButton_single.setChecked(False)
+        else:
+            self.radioButton_category.setChecked(False)
+            self.radioButton_single.setChecked(True)
+
         # Tool Box
         self.toolBox.setCurrentIndex(
             settings_file.get_value(item_name="last_toolbox_tab")
@@ -124,7 +138,6 @@ class MainWindow(QMainWindow):
         self.toolBox.currentChanged.connect(self.tool_box_menu_changed)
 
         # Tab widget
-        # self.tab_widget = QTabWidget(self)
         self.load_categories()
         self.pushButton_create_new.clicked.connect(self.add_item)
         self.pushButton_add_quantity.clicked.connect(self.add_quantity)
@@ -222,6 +235,9 @@ class MainWindow(QMainWindow):
         if self.toolBox.currentIndex() != 0:
             self.dockWidget_create_add_remove.setVisible(False)
             self.status_button.setHidden(True)
+            self.clear_layout(self.search_layout)
+            tree_view = ViewTree(inventory.get_data())
+            self.search_layout.addWidget(tree_view, 0, 0)
         else:
             self.dockWidget_create_add_remove.setVisible(True)
             self.status_button.setHidden(False)
@@ -231,6 +247,7 @@ class MainWindow(QMainWindow):
         """
         It loads the categories from the inventory file and creates a tab for each category.
         """
+        inventory = JsonFile(file_name="data/inventory")
         QApplication.setOverrideCursor(Qt.WaitCursor)
         self.clear_layout(self.verticalLayout)
         self.tabs.clear()
@@ -334,7 +351,7 @@ class MainWindow(QMainWindow):
 
                 for i, header in enumerate(headers):
                     lbl_header = QLabel(header)
-                    lbl_header.setFixedHeight(10)
+                    lbl_header.setFixedHeight(30)
                     tab.addWidget(lbl_header, 0, i)
 
             for row_index, item in enumerate(list(category_data.keys()), start=1):  # type: ignore
@@ -352,20 +369,31 @@ class MainWindow(QMainWindow):
 
                 col_index: int = 0
 
-                item_name = QLineEdit()
-                item_name.setText(item)
-                item_name.textEdited.connect(
-                    partial(self.name_change, self.category, item_name.text(), item_name)
+                item_name = QComboBox()
+                item_name.addItems(self.get_all_part_names())
+                item_name.wheelEvent = lambda event: None
+                item_name.setEditable(True)
+                item_name.setCurrentText(item)
+                item_name.currentTextChanged.connect(
+                    partial(
+                        self.name_change,
+                        self.category,
+                        item_name.currentText(),
+                        item_name,
+                    )
                 )
                 item_name.setMinimumWidth(MINIMUM_WIDTH)
                 tab.addWidget(item_name, row_index, col_index)
 
                 col_index += 1
 
-                line_edit_part_number = QLineEdit()
+                line_edit_part_number = QComboBox()
+                line_edit_part_number.addItems(self.get_all_part_numbers())
+                line_edit_part_number.wheelEvent = lambda event: None
+                line_edit_part_number.setEditable(True)
+                line_edit_part_number.setCurrentText(part_number)
                 line_edit_part_number.setMinimumWidth(MINIMUM_WIDTH)
-                line_edit_part_number.setText(part_number)
-                line_edit_part_number.textEdited.connect(
+                line_edit_part_number.currentTextChanged.connect(
                     partial(
                         self.part_number_change,
                         self.category,
@@ -378,11 +406,12 @@ class MainWindow(QMainWindow):
 
                 col_index += 1
 
-                spin_unit_quantity = QSpinBox()
+                spin_unit_quantity = HumbleSpinBox()
                 spin_unit_quantity.setMinimumWidth(MINIMUM_WIDTH)
                 spin_unit_quantity.setMaximum(99999999)
                 spin_unit_quantity.setMinimum(-99999999)
                 spin_unit_quantity.setValue(unit_quantity)
+                spin_unit_quantity.setDecimals(0)
                 spin_unit_quantity.valueChanged.connect(
                     partial(
                         self.unit_quantity_change,
@@ -395,11 +424,13 @@ class MainWindow(QMainWindow):
                 tab.addWidget(spin_unit_quantity, row_index, col_index)
 
                 col_index += 1
-                spin_current_quantity = QSpinBox()
+
+                spin_current_quantity = HumbleSpinBox()
                 spin_current_quantity.setMinimumWidth(MINIMUM_WIDTH)
                 spin_current_quantity.setMaximum(99999999)
                 spin_current_quantity.setMinimum(-99999999)
                 spin_current_quantity.setValue(current_quantity)
+                spin_current_quantity.setDecimals(0)
                 spin_current_quantity.valueChanged.connect(
                     partial(
                         self.current_quantity_change,
@@ -413,12 +444,13 @@ class MainWindow(QMainWindow):
 
                 col_index += 1
 
-                spin_price = QDoubleSpinBox()
+                spin_price = HumbleSpinBox()
                 spin_price.setFixedWidth(100)
                 spin_price.setValue(price)
                 spin_price.setMaximum(99999999)
                 spin_price.setMinimum(-99999999)
                 spin_price.setPrefix("$")
+                spin_price.setSuffix(" USD" if use_exchange_rate else " CAD")
                 spin_price.valueChanged.connect(
                     partial(
                         self.price_change, self.category, item_name, "price", spin_price
@@ -429,7 +461,8 @@ class MainWindow(QMainWindow):
                 col_index += 1
 
                 combo_exchange_rate = QComboBox()
-                combo_exchange_rate.setMinimumWidth(50)
+                combo_exchange_rate.wheelEvent = lambda event: None
+                combo_exchange_rate.setFixedWidth(50)
                 combo_exchange_rate.addItems(["CAD", "USD"])
                 combo_exchange_rate.setCurrentText("USD" if use_exchange_rate else "CAD")
                 combo_exchange_rate.currentIndexChanged.connect(
@@ -454,7 +487,9 @@ class MainWindow(QMainWindow):
                     + 'f" % '
                     + repr(int(x) + round(float("." + str(float(x)).split(".")[1]), n))
                 )
-                spin_total_cost.setText(f"${str(round_number(total_cost_in_stock, 2))}")
+                spin_total_cost.setText(
+                    f"${str(round_number(total_cost_in_stock, 2))} {combo_exchange_rate.currentText()}"
+                )
                 tab.addWidget(spin_total_cost, row_index, col_index)
 
                 self.inventory_prices_objects[item_name] = {
@@ -467,7 +502,8 @@ class MainWindow(QMainWindow):
                 col_index += 1
 
                 combo_priority = QComboBox()
-                combo_priority.setMinimumWidth(MINIMUM_WIDTH)
+                combo_priority.wheelEvent = lambda event: None
+                combo_priority.setFixedWidth(60)
                 combo_priority.addItems(["Default", "Low", "Medium", "High"])
                 combo_priority.setCurrentIndex(priority)
                 combo_priority.currentIndexChanged.connect(
@@ -486,7 +522,7 @@ class MainWindow(QMainWindow):
                 text_notes = QPlainTextEdit()
                 text_notes.setMinimumWidth(MINIMUM_WIDTH)
                 text_notes.setMaximumWidth(300)
-                text_notes.setMaximumHeight(60)
+                text_notes.setFixedHeight(60)
                 text_notes.setPlainText(notes)
                 text_notes.textChanged.connect(
                     partial(
@@ -499,7 +535,7 @@ class MainWindow(QMainWindow):
 
                 btn_delete = QPushButton()
                 btn_delete.setToolTip(
-                    f"Delete {item_name.text()} permanently from {self.category}"
+                    f"Delete {item_name.currentText()} permanently from {self.category}"
                 )
                 btn_delete.setFixedSize(26, 26)
                 btn_delete.setIcon(
@@ -542,6 +578,10 @@ class MainWindow(QMainWindow):
             return
 
     def update_stock_costs(self) -> None:
+        """
+        It takes the current quantity of an item, multiplies it by the price of the item, and then
+        multiplies that by the exchange rate
+        """
         for item_name in list(self.inventory_prices_objects.keys()):
             spin_current_quantity = self.inventory_prices_objects[item_name][
                 "current_quantity"
@@ -550,8 +590,8 @@ class MainWindow(QMainWindow):
             combo_exchange_rate = self.inventory_prices_objects[item_name][
                 "use_exchange_rate"
             ]
+            spin_price.setSuffix(f" {combo_exchange_rate.currentText()}")
             spin_total_cost = self.inventory_prices_objects[item_name]["total_cost"]
-
             use_exchange_rate: bool = combo_exchange_rate.currentText() == "USD"
             exchange_rate: float = self.get_exchange_rate() if use_exchange_rate else 1
             round_number = lambda x, n: eval(
@@ -561,7 +601,7 @@ class MainWindow(QMainWindow):
                 + repr(int(x) + round(float("." + str(float(x)).split(".")[1]), n))
             )
             spin_total_cost.setText(
-                f"${round_number(spin_current_quantity.value() * spin_price.value() * exchange_rate, 2)}"
+                f"${round_number(spin_current_quantity.value() * spin_price.value() * exchange_rate, 2)} {combo_exchange_rate.currentText()}"
             )
 
     def create_new_category(self) -> None:
@@ -633,22 +673,24 @@ class MainWindow(QMainWindow):
         """
         category_data = inventory.get_value(item_name=category)
         for item in list(category_data.keys()):
-            if name.text() == item:
+            if name.currentText() == item:
                 self.show_error_dialog(
                     "Invalid name",
-                    f"'{name.text()}' is an invalid item name.\n\nCan't be the same as other names.",
+                    f"'{name.currentText()}' is an invalid item name.\n\nCan't be the same as other names.",
                     dialog_buttons=DialogButtons.ok,
                 )
-                name.setText(old_name)
+                name.setCurrentText(old_name)
                 name.selectAll()
                 return
-        inventory.change_item_name(category, old_name, name.text())
+        inventory.change_item_name(category, old_name, name.currentText())
         name.disconnect()
-        name.textEdited.connect(partial(self.name_change, category, name.text(), name))
+        name.currentTextChanged.connect(
+            partial(self.name_change, category, name.currentText(), name)
+        )
         self.update_list_widget()
 
     def part_number_change(
-        self, category: str, item_name: QLineEdit, value_name: str, part_number: QLineEdit
+        self, category: str, item_name: QComboBox, value_name: str, part_number: QLineEdit
     ) -> None:
         """
         It takes a category, item name, value name, and quantity, and changes the value of the item in
@@ -660,10 +702,12 @@ class MainWindow(QMainWindow):
         value_name (str): str = The name of the value you want to change.
         quantity (QLineEdit): QLineEdit
         """
-        self.value_change(category, item_name.text(), value_name, part_number.text())
+        self.value_change(
+            category, item_name.currentText(), value_name, part_number.currentText()
+        )
 
     def current_quantity_change(
-        self, category: str, item_name: QLineEdit, value_name: str, quantity: QSpinBox
+        self, category: str, item_name: QComboBox, value_name: str, quantity: QSpinBox
     ) -> None:
         """
         It takes a category, item name, value name, and quantity, and changes the value of the item in
@@ -675,11 +719,11 @@ class MainWindow(QMainWindow):
         value_name (str): str = The name of the value you want to change.
         quantity (QSpinBox): QSpinBox
         """
-        self.value_change(category, item_name.text(), value_name, quantity.value())
+        self.value_change(category, item_name.currentText(), value_name, quantity.value())
         self.update_stock_costs()
 
     def unit_quantity_change(
-        self, category: str, item_name: QLineEdit, value_name: str, quantity: QSpinBox
+        self, category: str, item_name: QComboBox, value_name: str, quantity: QSpinBox
     ) -> None:
         """
         It takes a category, item name, value name, and quantity, and changes the value of the item in
@@ -691,10 +735,10 @@ class MainWindow(QMainWindow):
           value_name (str): str = The name of the value you want to change.
           quantity (QSpinBox): QSpinBox
         """
-        self.value_change(category, item_name.text(), value_name, quantity.value())
+        self.value_change(category, item_name.currentText(), value_name, quantity.value())
 
     def price_change(
-        self, category: str, item_name: QLineEdit, value_name: str, price: QDoubleSpinBox
+        self, category: str, item_name: QComboBox, value_name: str, price: QDoubleSpinBox
     ) -> None:
         """
         It takes a category, item name, value name, and price, and then calls the value_change function
@@ -706,11 +750,11 @@ class MainWindow(QMainWindow):
           value_name (str): str = The name of the value you want to change.
           price (QDoubleSpinBox): QDoubleSpinBox
         """
-        self.value_change(category, item_name.text(), value_name, price.value())
+        self.value_change(category, item_name.currentText(), value_name, price.value())
         self.update_stock_costs()
 
     def use_exchange_rate_change(
-        self, category: str, item_name: QLineEdit, value_name: str, combo: QComboBox
+        self, category: str, item_name: QComboBox, value_name: str, combo: QComboBox
     ) -> None:
         """
         It changes the exchange rate
@@ -723,14 +767,14 @@ class MainWindow(QMainWindow):
         """
         self.value_change(
             category,
-            item_name.text(),
+            item_name.currentText(),
             value_name,
             combo.currentText() == "USD",
         )
         self.update_stock_costs()
 
     def priority_change(
-        self, category: str, item_name: QLineEdit, value_name: str, combo: QComboBox
+        self, category: str, item_name: QComboBox, value_name: str, combo: QComboBox
     ) -> None:
         """
         It changes the priority of a task
@@ -741,10 +785,12 @@ class MainWindow(QMainWindow):
           value_name (str): str = The name of the value to change
           combo (QComboBox): QComboBox
         """
-        self.value_change(category, item_name.text(), value_name, combo.currentIndex())
+        self.value_change(
+            category, item_name.currentText(), value_name, combo.currentIndex()
+        )
 
     def notes_changed(
-        self, category: str, item_name: QLineEdit, value_name: str, note: QPlainTextEdit
+        self, category: str, item_name: QComboBox, value_name: str, note: QPlainTextEdit
     ) -> None:
         """
         It takes the category, item name, value name, and note as parameters and then calls the
@@ -756,7 +802,9 @@ class MainWindow(QMainWindow):
           value_name (str): str = The name of the value that is being changed.
           note (QPlainTextEdit): QPlainTextEdit
         """
-        self.value_change(category, item_name.text(), value_name, note.toPlainText())
+        self.value_change(
+            category, item_name.currentText(), value_name, note.toPlainText()
+        )
 
     def add_item(self) -> None:
         """
@@ -819,7 +867,7 @@ class MainWindow(QMainWindow):
             elif response == DialogButtons.cancel:
                 return
 
-    def delete_item(self, category: str, item_name: QLineEdit) -> None:
+    def delete_item(self, category: str, item_name: QComboBox) -> None:
         """
         It removes an item from the inventory
 
@@ -827,18 +875,16 @@ class MainWindow(QMainWindow):
           category (str): str
           item_name (QLineEdit): QLineEdit
         """
-        inventory.remove_object_item(category, item_name.text())
+        inventory.remove_object_item(category, item_name.currentText())
         self.load_tab()
 
     def quantities_change(self) -> None:
         """
         If the radio button is checked, then the list widget is disabled, the add and remove buttons are
-        enabled, the add and remove buttons are disconnected, the add and remove buttons are connected
-        to the add and remove quantity functions, the spin box is set to 1, and the label is set to
-        "Batches Multiplier:". If the radio button is not checked, then the add and remove buttons are
-        disabled, the list widget is enabled, and the label is set to "Quantity:".
+        enabled, and the add and remove buttons are connected to the add and remove quantity functions
         """
         if self.radioButton_category.isChecked():
+            settings_file.add_item(item_name="change_quantities_by", value="Category")
             self.listWidget_itemnames.setEnabled(False)
             self.listWidget_itemnames.clearSelection()
 
@@ -854,6 +900,7 @@ class MainWindow(QMainWindow):
             self.pushButton_add_quantity.clicked.connect(self.add_quantity_from_category)
             self.spinBox_quantity.setValue(1)
         else:
+            settings_file.add_item(item_name="change_quantities_by", value="Item")
             self.pushButton_add_quantity.setEnabled(False)
             self.pushButton_remove_quantity.setEnabled(False)
             self.listWidget_itemnames.setEnabled(True)
@@ -1062,6 +1109,42 @@ class MainWindow(QMainWindow):
             new_value=new_value,
         )
 
+    def get_all_part_numbers(self) -> list:
+        """
+        It takes the data from the inventory module, loops through the data, and returns a list of all
+        the part numbers
+
+        Returns:
+          A list of all the part numbers in the inventory.
+        """
+        data = inventory.get_data()
+        part_numbers = []
+        for category in list(data.keys()):
+            part_numbers.extend(
+                data[category][item]["part_number"]
+                for item in list(data[category].keys())
+            )
+
+        part_numbers = list(set(part_numbers))
+        return part_numbers
+
+    def get_all_part_names(self) -> list:
+        """
+        It takes the data from the inventory module, loops through the data, and returns a list of all
+        the part names
+
+        Returns:
+          A list of all the part names in the inventory.
+        """
+        data = inventory.get_data()
+        part_names = []
+        for category in list(data.keys()):
+            if category == self.category:
+                continue
+            part_names.extend(iter(list(data[category].keys())))
+        part_names = list(set(part_names))
+        return part_names
+
     def get_exchange_rate(self) -> float:
         """
         It returns the exchange rate from the settings file
@@ -1269,10 +1352,15 @@ class MainWindow(QMainWindow):
             )
             version: str = response.json()["name"].replace(" ", "")
             if version != __version__:
-                self.show_message_dialog(
+                message_dialog = self.show_message_dialog(
                     title=__name__,
                     message=f"There is a new update available.\n\nNew Version: {version}",
+                    dialog_buttons=DialogButtons.ok_download,
                 )
+                if message_dialog == DialogButtons.download:
+                    webbrowser.open(
+                        f"https://github.com/TheCodingJsoftware/Inventory-Manager/releases/tag/{version}"
+                    )
             elif not on_start_up:
                 self.show_message_dialog(
                     title=__name__,
@@ -1500,6 +1588,7 @@ def default_settings() -> None:
     )
     check_setting(setting="last_category_tab", default_value=0)
     check_setting(setting="last_toolbox_tab", default_value=0)
+    check_setting(setting="change_quantities_by", default_value="Category")
 
 
 def check_setting(setting: str, default_value) -> None:

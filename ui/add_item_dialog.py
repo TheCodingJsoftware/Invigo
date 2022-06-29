@@ -10,6 +10,7 @@ from utils.dialog_icons import Icons
 from utils.json_file import JsonFile
 
 settings_file = JsonFile(file_name="settings")
+inventory = JsonFile(file_name="data/inventory")
 
 
 class AddItemDialog(QDialog):
@@ -52,6 +53,10 @@ class AddItemDialog(QDialog):
 
         self.lblTitle.setText(self.title)
         self.lblMessage.setText(self.message)
+        self.lineEdit_name.addItems(self.get_all_part_names())
+        self.lineEdit_part_number.addItems(self.get_all_part_numbers())
+        self.lineEdit_name.setCurrentText("")
+        self.lineEdit_part_number.setCurrentText("")
 
         self.load_dialog_buttons()
 
@@ -143,7 +148,7 @@ class AddItemDialog(QDialog):
         Returns:
           The text in the lineEdit_part_number widget.
         """
-        return self.lineEdit_part_number.text()
+        return self.lineEdit_part_number.currentText()
 
     def get_name(self) -> str:
         """
@@ -152,7 +157,7 @@ class AddItemDialog(QDialog):
         Returns:
           The text in the lineEdit_name widget.
         """
-        return self.lineEdit_name.text()
+        return self.lineEdit_name.currentText()
 
     def get_priority(self) -> int:
         """
@@ -208,3 +213,37 @@ class AddItemDialog(QDialog):
           The text in the text box.
         """
         return self.plainTextEdit_notes.toPlainText()
+
+    def get_all_part_numbers(self) -> list:
+        """
+        It takes the data from the inventory module, loops through the data, and returns a list of all
+        the part numbers
+
+        Returns:
+          A list of all the part numbers in the inventory.
+        """
+        data = inventory.get_data()
+        part_numbers = []
+        for category in list(data.keys()):
+            part_numbers.extend(
+                data[category][item]["part_number"]
+                for item in list(data[category].keys())
+            )
+
+        part_numbers = list(set(part_numbers))
+        return part_numbers
+
+    def get_all_part_names(self) -> list:
+        """
+        It takes the data from the inventory module, loops through the data, and returns a list of all
+        the part names
+
+        Returns:
+          A list of all the part names in the inventory.
+        """
+        data = inventory.get_data()
+        part_names = []
+        for category in list(data.keys()):
+            part_names.extend(iter(list(data[category].keys())))
+        part_names = list(set(part_names))
+        return part_names
