@@ -60,8 +60,10 @@ class AddItemDialog(QDialog):
         self.lineEdit_name.setCurrentText("")
         self.lineEdit_part_number.setCurrentText("")
 
-        self.lineEdit_name.lineEdit().textChanged.connect(self.name_changed)
-        self.lineEdit_part_number.lineEdit().textChanged.connect(self.part_number_changed)
+        # self.lineEdit_name.lineEdit().editingFinished.connect(self.name_changed)
+        # self.lineEdit_part_number.lineEdit().editingFinished.connect(
+        #     self.part_number_changed
+        # )
 
         self.load_dialog_buttons()
 
