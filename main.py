@@ -4,7 +4,7 @@ __credits__: "list[str]" = ["Jared Gross"]
 __license__ = "MIT"
 __name__ = "Inventory Manager"
 __version__ = "v1.0.2"
-__updated__ = "2022-06-29 21:09:43"
+__updated__ = "2022-06-29 21:50:05"
 __maintainer__ = "Jared Gross"
 __email__ = "jared@pinelandfarms.ca"
 __status__ = "Production"
@@ -999,11 +999,11 @@ class MainWindow(QMainWindow):
             self.pushButton_add_quantity.setText("Add Quantities")
             self.pushButton_remove_quantity.setText("Remove Quantities")
             settings_file.add_item(item_name="change_quantities_by", value="Category")
-            self.listWidget_itemnames.setEnabled(False)
+            # self.listWidget_itemnames.setEnabled(False)
             self.listWidget_itemnames.clearSelection()
-            self.listWidget_itemnames.setStyleSheet(
-                "QAbstractItemView::item{color: grey}"
-            )
+            # self.listWidget_itemnames.setStyleSheet(
+            #     "QAbstractItemView::item{color: grey}"
+            # )
 
             self.pushButton_add_quantity.setEnabled(False)
             self.pushButton_remove_quantity.setEnabled(True)
@@ -1022,10 +1022,12 @@ class MainWindow(QMainWindow):
             settings_file.add_item(item_name="change_quantities_by", value="Item")
             self.pushButton_add_quantity.setEnabled(False)
             self.pushButton_remove_quantity.setEnabled(False)
-            self.listWidget_itemnames.setEnabled(True)
-            self.listWidget_itemnames.setStyleSheet(
-                "QAbstractItemView::item{color: white}"
-            )
+            # self.listWidget_itemnames.clearSelection()
+            self.listWidget_item_changed()
+            # self.listWidget_itemnames.setEnabled(True)
+            # self.listWidget_itemnames.setStyleSheet(
+            #     "QAbstractItemView::item{color: white}"
+            # )
 
     def remove_quantity_from_category(self) -> None:
         """
@@ -1147,7 +1149,10 @@ class MainWindow(QMainWindow):
         Returns:
           The return value of the function is None.
         """
-        selected_item: str = self.listWidget_itemnames.currentItem().text()
+        try:
+            selected_item: str = self.listWidget_itemnames.currentItem().text()
+        except AttributeError:
+            return
         category_data = inventory.get_value(item_name=self.category)
         try:
             quantity: int = category_data[selected_item]["current_quantity"]
@@ -1159,24 +1164,51 @@ class MainWindow(QMainWindow):
                 if self.highlight_color == "#4380A0":
                     item.setStyleSheet(f"background-color: {self.highlight_color}")
                 else:
-                    self.inventory_prices_objects[item]["current_quantity"].setStyleSheet(
-                        f"background-color: {self.highlight_color}"
-                    )
+                    if (
+                        self.inventory_prices_objects[item]["current_quantity"].value()
+                        <= 0
+                    ):
+                        self.inventory_prices_objects[item][
+                            "current_quantity"
+                        ].setStyleSheet(
+                            f"background-color: {self.highlight_color}; color: red"
+                        )
+                    else:
+                        self.inventory_prices_objects[item][
+                            "current_quantity"
+                        ].setStyleSheet(
+                            f"background-color: {self.highlight_color}; color: white"
+                        )
                     self.highlight_color = "#4380A0"
+
                 # QtTest.QTest.qWait(1000)
-            else:
-                if self.theme == "dark":
-                    if self.highlight_color == "#4380A0":
-                        item.setStyleSheet("background-color: #1d2023")
+            elif self.theme == "dark":
+                if self.highlight_color == "#4380A0":
+                    item.setStyleSheet("background-color: #1d2023")
+
+                if self.inventory_prices_objects[item]["current_quantity"].value() <= 0:
                     self.inventory_prices_objects[item]["current_quantity"].setStyleSheet(
-                        "background-color: #1d2023"
+                        "background-color: #1d2023; color: red"
                     )
+
                 else:
-                    if self.highlight_color == "#4380A0":
-                        item.setStyleSheet("background-color: #eff0f1")
                     self.inventory_prices_objects[item]["current_quantity"].setStyleSheet(
-                        "background-color: #eff0f1"
+                        "background-color: #1d2023; color: white"
                     )
+
+            else:
+                if self.highlight_color == "#4380A0":
+                    item.setStyleSheet("background-color: #eff0f1")
+                if self.inventory_prices_objects[item]["current_quantity"].value() <= 0:
+                    self.inventory_prices_objects[item]["current_quantity"].setStyleSheet(
+                        "background-color: #eff0f1; color: red"
+                    )
+
+                else:
+                    self.inventory_prices_objects[item]["current_quantity"].setStyleSheet(
+                        "background-color: #eff0f1; color: white"
+                    )
+
         self.pushButton_add_quantity.setEnabled(True)
         self.pushButton_remove_quantity.setEnabled(True)
         self.pushButton_add_quantity.disconnect()

@@ -322,6 +322,9 @@
            <property name="statusTip">
             <string>Quantity you want to add/remove to the selected item/category</string>
            </property>
+           <property name="accelerated">
+            <bool>true</bool>
+           </property>
            <property name="maximum">
             <number>999999</number>
            </property>
