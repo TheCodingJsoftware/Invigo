@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'f:\Code\Python-Projects\Inventory Manager\dist\ui\input_dialog.ui'
+# Form implementation generated from reading ui file 'f:\Code\Python-Projects\Inventory Manager\ui\web_scrape_results.ui'
 #
 # Created by: PyQt5 UI code generator 5.15.6
 #
@@ -14,7 +14,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class Ui_Form(object):
     def setupUi(self, Form):
         Form.setObjectName("Form")
-        Form.resize(380, 222)
+        Form.resize(522, 268)
         self.horizontalLayout = QtWidgets.QHBoxLayout(Form)
         self.horizontalLayout.setContentsMargins(0, 0, 0, 0)
         self.horizontalLayout.setSpacing(0)
@@ -57,7 +57,7 @@ class Ui_Form(object):
         self.scrollArea.setWidgetResizable(True)
         self.scrollArea.setObjectName("scrollArea")
         self.scrollAreaWidgetContents = QtWidgets.QWidget()
-        self.scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, 0, 328, 127))
+        self.scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, 0, 470, 191))
         self.scrollAreaWidgetContents.setObjectName("scrollAreaWidgetContents")
         self.verticalLayout_4 = QtWidgets.QVBoxLayout(self.scrollAreaWidgetContents)
         self.verticalLayout_4.setContentsMargins(0, 0, 0, 0)
@@ -75,9 +75,9 @@ class Ui_Form(object):
         self.scrollArea.setWidget(self.scrollAreaWidgetContents)
         self.horizontalLayout_4.addWidget(self.scrollArea)
         self.verticalLayout.addLayout(self.horizontalLayout_4)
-        self.lineEditInput = QtWidgets.QLineEdit(self.frame)
-        self.lineEditInput.setObjectName("lineEditInput")
-        self.verticalLayout.addWidget(self.lineEditInput)
+        self.verticalLayout_results = QtWidgets.QVBoxLayout()
+        self.verticalLayout_results.setObjectName("verticalLayout_results")
+        self.verticalLayout.addLayout(self.verticalLayout_results)
         self.buttonsLayout = QtWidgets.QHBoxLayout()
         self.buttonsLayout.setObjectName("buttonsLayout")
         self.verticalLayout.addLayout(self.buttonsLayout)

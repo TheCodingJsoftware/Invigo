@@ -1,4 +1,6 @@
 class DialogButtons:
+    """A class that contains constants."""
+
     ok: str = "Ok"
     ok_cancel: str = "Ok, Cancel"
     cancel: str = "Cancel"
@@ -7,10 +9,14 @@ class DialogButtons:
     save: str = "Save"
     add: str = "Add"
     delete: str = "Delete"
+    clone: str = "Clone"
+    download: str = "Download"
     delete_cancel: str = "Delete, Cancel"
+    clone_cancel: str = "Clone, Cancel"
     add_cancel: str = "Add, Cancel"
     yes_no_cancel: str = "Yes, No, Cancel"
     save_cancel: str = "Save, Cancel"
     open_cancel: str = "Open, Cancel"
+    ok_download: str = "Ok, Download"
     ok_copy_cancel: str = "Ok, Copy, Cancel"
     ok_save_copy_cancel: str = "Ok, Save, Copy, Cancel"
