@@ -220,7 +220,6 @@ class ViewTree(QTreeWidget):
                     child = QTreeWidgetItem([text])
                 fill_item(child, val)
                 parent.addChild(child)
-                child.setExpanded(True)
 
             if value is None:
                 return

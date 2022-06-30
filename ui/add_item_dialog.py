@@ -53,10 +53,15 @@ class AddItemDialog(QDialog):
 
         self.lblTitle.setText(self.title)
         self.lblMessage.setText(self.message)
+
         self.lineEdit_name.addItems(self.get_all_part_names())
         self.lineEdit_part_number.addItems(self.get_all_part_numbers())
+
         self.lineEdit_name.setCurrentText("")
         self.lineEdit_part_number.setCurrentText("")
+
+        self.lineEdit_name.lineEdit().textChanged.connect(self.name_changed)
+        self.lineEdit_part_number.lineEdit().textChanged.connect(self.part_number_changed)
 
         self.load_dialog_buttons()
 
@@ -131,6 +136,62 @@ class AddItemDialog(QDialog):
         self.doubleSpinBox_price.setSuffix(
             f" {self.comboBox_exchange_price.currentText()}"
         )
+
+    def name_changed(self) -> None:
+        """
+        It takes the name of an item from a combobox, and then fills in the rest of the fields with the
+        data from the dictionary.
+        """
+        data = inventory.get_data()
+        for category in list(data.keys()):
+            for item in list(data[category].keys()):
+                if item == self.lineEdit_name.currentText():
+                    self.lineEdit_part_number.setCurrentText(
+                        data[category][item]["part_number"]
+                    )
+                    self.comboBox_priority.setCurrentIndex(
+                        data[category][item]["priority"]
+                    )
+                    self.spinBox_current_quantity.setValue(
+                        data[category][item]["current_quantity"]
+                    )
+                    self.spinBox_unit_quantity.setValue(
+                        data[category][item]["unit_quantity"]
+                    )
+                    self.doubleSpinBox_price.setValue(data[category][item]["price"])
+                    self.comboBox_exchange_price.setCurrentText(
+                        "USD" if data[category][item]["use_exchange_rate"] else "CAD"
+                    )
+                    self.plainTextEdit_notes.setPlainText(data[category][item]["notes"])
+
+    def part_number_changed(self) -> None:
+        """
+        It takes the part number from the lineEdit_part_number widget and searches the inventory data
+        for a matching part number. If it finds a match, it sets the other widgets to the values of the
+        matching part number.
+        """
+        data = inventory.get_data()
+        for category in list(data.keys()):
+            for item in list(data[category].keys()):
+                if (
+                    data[category][item]["part_number"]
+                    == self.lineEdit_part_number.currentText()
+                ):
+                    self.lineEdit_name.setCurrentText(item)
+                    self.comboBox_priority.setCurrentIndex(
+                        data[category][item]["priority"]
+                    )
+                    self.spinBox_current_quantity.setValue(
+                        data[category][item]["current_quantity"]
+                    )
+                    self.spinBox_unit_quantity.setValue(
+                        data[category][item]["unit_quantity"]
+                    )
+                    self.doubleSpinBox_price.setValue(data[category][item]["price"])
+                    self.comboBox_exchange_price.setCurrentText(
+                        "USD" if data[category][item]["use_exchange_rate"] else "CAD"
+                    )
+                    self.plainTextEdit_notes.setPlainText(data[category][item]["notes"])
 
     def get_response(self) -> str:
         """

@@ -35,7 +35,7 @@
         <rect>
          <x>0</x>
          <y>0</y>
-         <width>507</width>
+         <width>477</width>
          <height>510</height>
         </rect>
        </property>
@@ -56,7 +56,7 @@
         <rect>
          <x>0</x>
          <y>0</y>
-         <width>507</width>
+         <width>477</width>
          <height>510</height>
         </rect>
        </property>
@@ -177,7 +177,7 @@
    </property>
    <property name="minimumSize">
     <size>
-     <width>300</width>
+     <width>330</width>
      <height>453</height>
     </size>
    </property>
@@ -332,19 +332,6 @@
        <item>
         <layout class="QHBoxLayout" name="horizontalLayout_2">
          <item>
-          <widget class="QPushButton" name="pushButton_create_new">
-           <property name="toolTip">
-            <string/>
-           </property>
-           <property name="statusTip">
-            <string>Create a new item</string>
-           </property>
-           <property name="text">
-            <string>Add New Item</string>
-           </property>
-          </widget>
-         </item>
-         <item>
           <widget class="QPushButton" name="pushButton_add_quantity">
            <property name="statusTip">
             <string>Adds to the currently selected item</string>
@@ -365,6 +352,19 @@
           </widget>
          </item>
         </layout>
+       </item>
+       <item>
+        <widget class="QPushButton" name="pushButton_create_new">
+         <property name="toolTip">
+          <string/>
+         </property>
+         <property name="statusTip">
+          <string>Create a new item</string>
+         </property>
+         <property name="text">
+          <string>Add New Item</string>
+         </property>
+        </widget>
        </item>
       </layout>
      </item>

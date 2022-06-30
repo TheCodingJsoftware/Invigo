@@ -32,8 +32,11 @@ class JsonFile:
         """
         It opens the file, reads the data, and then closes the file
         """
-        with open(f"{self.FOLDER_LOCATION}/{self.file_name}.json", "r") as json_file:
-            self.data = json.load(json_file)
+        try:
+            with open(f"{self.FOLDER_LOCATION}/{self.file_name}.json", "r") as json_file:
+                self.data = json.load(json_file)
+        except json.decoder.JSONDecodeError:
+            self.load_data()
 
     def __save_data(self):
         """
@@ -77,10 +80,27 @@ class JsonFile:
         Args:
           key_name (str): The name of the key you want to change.
           new_name (str): The new name of the key.
-        """
+        """  # Loading the data from the file into the class.
+
         self.load_data()
         self.data[new_name] = self.data[key_name]
         del self.data[key_name]
+        self.__save_data()
+
+    def clone_key(self, key_name) -> None:
+        """
+        It takes a key name as an argument, loads the data, clones the data, updates the data, and saves
+        the data
+
+        Args:
+          key_name: The name of the key you want to clone.
+        """
+        self.load_data()
+        clonded_data = self.data
+        clonded_data[f"Clone from: {key_name} Double click me rename me"] = clonded_data[
+            key_name
+        ]
+        self.data.update(clonded_data)
         self.__save_data()
 
     def change_item_name(self, object_name: str, item_name: str, new_name: str) -> None:

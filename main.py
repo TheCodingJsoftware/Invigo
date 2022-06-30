@@ -4,7 +4,7 @@ __credits__: "list[str]" = ["Jared Gross"]
 __license__ = "MIT"
 __name__ = "Inventory Manager"
 __version__ = "v1.0.2"
-__updated__ = "2022-06-28 23:11:19"
+__updated__ = "2022-06-29 21:09:43"
 __maintainer__ = "Jared Gross"
 __email__ = "jared@pinelandfarms.ca"
 __status__ = "Production"
@@ -14,6 +14,7 @@ import logging
 import math
 import os
 import shutil
+import threading
 import webbrowser
 from datetime import datetime
 from functools import partial
@@ -21,7 +22,7 @@ from operator import add
 
 import requests
 from forex_python.converter import CurrencyRates
-from PyQt5 import uic
+from PyQt5 import QtTest, uic
 from PyQt5.QtCore import QFile, Qt, QTextStream
 from PyQt5.QtGui import QIcon, QPixmap
 from PyQt5.QtWidgets import (
@@ -85,7 +86,7 @@ class MainWindow(QMainWindow):
         """
         super().__init__()
         uic.loadUi("ui/main_menu.ui", self)
-        self.setWindowTitle(f"{__name__} {__version__}")
+        self.setWindowTitle(f"{__name__} {__version__} - {os.getlogin()}")
         self.setWindowIcon(QIcon("icons/icon.png"))
 
         self.check_for_updates(on_start_up=True)
@@ -96,6 +97,7 @@ class MainWindow(QMainWindow):
 
         # VARIABLES
         self.categories = []
+        self.highlight_color: str = "#4380A0"
         self.category: str = ""
         self.tabs = []
         self.last_item_selected: int = 0
@@ -141,12 +143,12 @@ class MainWindow(QMainWindow):
         self.load_categories()
         self.pushButton_create_new.clicked.connect(self.add_item)
         self.pushButton_add_quantity.clicked.connect(self.add_quantity)
-        self.pushButton_add_quantity.setEnabled(False)
+        # self.pushButton_add_quantity.setEnabled(False)
         self.pushButton_add_quantity.setIcon(
             QIcon(f"ui/BreezeStyleSheets/dist/pyqt6/{self.theme}/list_add.png")
         )
         self.pushButton_remove_quantity.clicked.connect(self.remove_quantity)
-        self.pushButton_remove_quantity.setEnabled(False)
+        # self.pushButton_remove_quantity.setEnabled(False)
         self.pushButton_remove_quantity.setIcon(
             QIcon(f"ui/BreezeStyleSheets/dist/pyqt6/{self.theme}/list_remove.png")
         )
@@ -262,7 +264,9 @@ class MainWindow(QMainWindow):
             action.setText(category)
             self.menuOpen_Category.addAction(action)
         self.tab_widget = QTabWidget(self)
+        self.tab_widget.tabBarDoubleClicked.connect(self.rename_category)
         self.tab_widget.setMovable(True)
+        self.tab_widget.setDocumentMode(True)
         i: int = -1
         for i, category in enumerate(self.categories):
             tab = QScrollArea(self)
@@ -272,6 +276,7 @@ class MainWindow(QMainWindow):
             tab.setWidgetResizable(True)
             self.tabs.append(grid_layout)
             self.tab_widget.addTab(tab, category)
+
         if i == -1:
             tab = QScrollArea(self)
             content_widget = QWidget()
@@ -281,10 +286,14 @@ class MainWindow(QMainWindow):
             self.tabs.append(grid_layout)
             self.tab_widget.addTab(tab, "")
             i += 1
+
         tab = QWidget(self)
         self.tab_widget.addTab(tab, "Create category")
         tab = QWidget(self)
         self.tab_widget.addTab(tab, "Delete category")
+        if self.tab_widget.tabText(0) != "":
+            tab = QWidget(self)
+            self.tab_widget.addTab(tab, "Clone category")
         self.tab_widget.setTabToolTip(i + 1, "Add a new category")
         self.tab_widget.setTabIcon(
             i + 1, QIcon(f"ui/BreezeStyleSheets/dist/pyqt6/{self.theme}/list_add.png")
@@ -293,6 +302,13 @@ class MainWindow(QMainWindow):
         self.tab_widget.setTabIcon(
             i + 2, QIcon(f"ui/BreezeStyleSheets/dist/pyqt6/{self.theme}/list_remove.png")
         )
+
+        if self.tab_widget.tabText(0) != "":
+            self.tab_widget.setTabToolTip(i + 3, "Clone an existing category")
+            self.tab_widget.setTabIcon(
+                i + 3,
+                QIcon(f"ui/BreezeStyleSheets/dist/pyqt6/{self.theme}/tab_duplicate.png"),
+            )
         self.tab_widget.setCurrentIndex(settings_file.get_value("last_category_tab"))
         self.tab_widget.currentChanged.connect(self.load_tab)
         self.verticalLayout.addWidget(self.tab_widget)
@@ -318,6 +334,10 @@ class MainWindow(QMainWindow):
             self.tab_widget.setCurrentIndex(settings_file.get_value("last_category_tab"))
             self.delete_category()
             return
+        if self.category == "Clone category":
+            self.tab_widget.setCurrentIndex(settings_file.get_value("last_category_tab"))
+            self.clone_category()
+            return
         self.pushButton_create_new.setEnabled(True)
         self.radioButton_category.setEnabled(True)
         self.radioButton_single.setEnabled(True)
@@ -339,7 +359,7 @@ class MainWindow(QMainWindow):
                     "Name",
                     "Part Number",
                     "Quantity Per Unit",
-                    "Quantity Remaining",
+                    "Quantity in Stock",
                     "Item Price",
                     "",
                     "Total Cost in Stock",
@@ -392,7 +412,7 @@ class MainWindow(QMainWindow):
                 line_edit_part_number.wheelEvent = lambda event: None
                 line_edit_part_number.setEditable(True)
                 line_edit_part_number.setCurrentText(part_number)
-                line_edit_part_number.setMinimumWidth(MINIMUM_WIDTH)
+                line_edit_part_number.setFixedWidth(120)
                 line_edit_part_number.currentTextChanged.connect(
                     partial(
                         self.part_number_change,
@@ -407,9 +427,10 @@ class MainWindow(QMainWindow):
                 col_index += 1
 
                 spin_unit_quantity = HumbleSpinBox()
-                spin_unit_quantity.setMinimumWidth(MINIMUM_WIDTH)
+                spin_unit_quantity.setFixedWidth(100)
                 spin_unit_quantity.setMaximum(99999999)
                 spin_unit_quantity.setMinimum(-99999999)
+                spin_unit_quantity.setAccelerated(True)
                 spin_unit_quantity.setValue(unit_quantity)
                 spin_unit_quantity.setDecimals(0)
                 spin_unit_quantity.valueChanged.connect(
@@ -426,10 +447,13 @@ class MainWindow(QMainWindow):
                 col_index += 1
 
                 spin_current_quantity = HumbleSpinBox()
-                spin_current_quantity.setMinimumWidth(MINIMUM_WIDTH)
+                spin_current_quantity.setFixedWidth(100)
                 spin_current_quantity.setMaximum(99999999)
                 spin_current_quantity.setMinimum(-99999999)
+                spin_current_quantity.setAccelerated(True)
                 spin_current_quantity.setValue(current_quantity)
+                if current_quantity <= 0:
+                    spin_current_quantity.setStyleSheet("color: red")
                 spin_current_quantity.setDecimals(0)
                 spin_current_quantity.valueChanged.connect(
                     partial(
@@ -446,9 +470,10 @@ class MainWindow(QMainWindow):
 
                 spin_price = HumbleSpinBox()
                 spin_price.setFixedWidth(100)
-                spin_price.setValue(price)
                 spin_price.setMaximum(99999999)
                 spin_price.setMinimum(-99999999)
+                spin_price.setAccelerated(True)
+                spin_price.setValue(price)
                 spin_price.setPrefix("$")
                 spin_price.setSuffix(" USD" if use_exchange_rate else " CAD")
                 spin_price.valueChanged.connect(
@@ -506,6 +531,10 @@ class MainWindow(QMainWindow):
                 combo_priority.setFixedWidth(60)
                 combo_priority.addItems(["Default", "Low", "Medium", "High"])
                 combo_priority.setCurrentIndex(priority)
+                if combo_priority.currentText() == "Medium":
+                    combo_priority.setStyleSheet("color: yellow")
+                elif combo_priority.currentText() == "High":
+                    combo_priority.setStyleSheet("color: red")
                 combo_priority.currentIndexChanged.connect(
                     partial(
                         self.priority_change,
@@ -520,8 +549,8 @@ class MainWindow(QMainWindow):
                 col_index += 1
 
                 text_notes = QPlainTextEdit()
-                text_notes.setMinimumWidth(MINIMUM_WIDTH)
-                text_notes.setMaximumWidth(300)
+                text_notes.setMinimumWidth(100)
+                text_notes.setMaximumWidth(200)
                 text_notes.setFixedHeight(60)
                 text_notes.setPlainText(notes)
                 text_notes.textChanged.connect(
@@ -530,6 +559,14 @@ class MainWindow(QMainWindow):
                     )
                 )
                 tab.addWidget(text_notes, row_index, col_index)
+
+                col_index += 1
+
+                btn_po = QPushButton("PO")
+                btn_po.setToolTip(f"Open a new purchase order")
+                btn_po.setFixedSize(36, 26)
+                btn_po.clicked.connect(self.open_po)
+                tab.addWidget(btn_po, row_index, col_index)
 
                 col_index += 1
 
@@ -572,7 +609,10 @@ class MainWindow(QMainWindow):
         self.pushButton_remove_quantity.setEnabled(False)
         try:
             for item in list(category_data.keys()):
-                if search_input.lower() in item.lower():
+                if (
+                    search_input.lower() in item.lower()
+                    or search_input.lower() in category_data[item]["part_number"].lower()
+                ):
                     self.listWidget_itemnames.addItem(item)
         except AttributeError:
             return
@@ -658,6 +698,67 @@ class MainWindow(QMainWindow):
             elif response == DialogButtons.cancel:
                 return
 
+    def clone_category(self) -> None:
+        """
+        It's a function that opens a dialog box that allows the user to select a category to clone
+
+        Returns:
+          The response from the dialog.
+        """
+        select_item_dialog = SelectItemDialog(
+            button_names=DialogButtons.clone_cancel,
+            title="Clone category",
+            message="Select a category to clone.",
+            items=self.categories,
+        )
+
+        if select_item_dialog.exec_():
+            response = select_item_dialog.get_response()
+            if response == DialogButtons.clone:
+                try:
+                    inventory.clone_key(select_item_dialog.get_selected_item())
+                except AttributeError:
+                    return
+                self.tab_widget.setCurrentIndex(0)
+                self.load_categories()
+            elif response == DialogButtons.cancel:
+                return
+
+    def rename_category(self, index):
+        """
+        It takes the index of the tab that was clicked, opens a dialog box, and if the user clicks ok,
+        it renames the tab.
+
+        Args:
+          index: The index of the tab that was clicked.
+
+        Returns:
+          The return value of the function is the return value of the last expression evaluated, or None
+        if no expression was evaluated.
+        """
+        input_dialog = InputDialog(
+            title="Rename category", message="Enter a new name for a category."
+        )
+
+        if input_dialog.exec_():
+            response = input_dialog.get_response()
+            if response == DialogButtons.ok:
+                input_text = input_dialog.inputText
+                for category in self.categories:
+                    if input_text in [category, "+"]:
+                        self.show_error_dialog(
+                            title="Invalid name",
+                            message=f"'{input_text}' is an invalid name for a category.\n\nCan't have two categories with the same name.",
+                            dialog_buttons=DialogButtons.ok,
+                        )
+                        return
+                inventory.change_key_name(
+                    key_name=self.tab_widget.tabText(index), new_name=input_text
+                )
+                self.load_categories()
+            elif response == DialogButtons.cancel:
+                return
+
     def name_change(self, category: str, old_name: str, name: QLineEdit) -> None:
         """
         It checks if the name is the same as any other name in the category, and if it is, it sets the
@@ -680,7 +781,7 @@ class MainWindow(QMainWindow):
                     dialog_buttons=DialogButtons.ok,
                 )
                 name.setCurrentText(old_name)
-                name.selectAll()
+                # name.selectAll()
                 return
         inventory.change_item_name(category, old_name, name.currentText())
         name.disconnect()
@@ -720,6 +821,10 @@ class MainWindow(QMainWindow):
         quantity (QSpinBox): QSpinBox
         """
         self.value_change(category, item_name.currentText(), value_name, quantity.value())
+        if quantity.value() <= 0:
+            quantity.setStyleSheet("color: red")
+        else:
+            quantity.setStyleSheet("color: white")
         self.update_stock_costs()
 
     def unit_quantity_change(
@@ -788,6 +893,12 @@ class MainWindow(QMainWindow):
         self.value_change(
             category, item_name.currentText(), value_name, combo.currentIndex()
         )
+        if combo.currentText() == "Medium":
+            combo.setStyleSheet("color: yellow")
+        elif combo.currentText() == "High":
+            combo.setStyleSheet("color: red")
+        else:
+            combo.setStyleSheet("color: white")
 
     def notes_changed(
         self, category: str, item_name: QComboBox, value_name: str, note: QPlainTextEdit
@@ -884,66 +995,37 @@ class MainWindow(QMainWindow):
         enabled, and the add and remove buttons are connected to the add and remove quantity functions
         """
         if self.radioButton_category.isChecked():
+            self.label.setText("Batches Multiplier:")
+            self.pushButton_add_quantity.setText("Add Quantities")
+            self.pushButton_remove_quantity.setText("Remove Quantities")
             settings_file.add_item(item_name="change_quantities_by", value="Category")
             self.listWidget_itemnames.setEnabled(False)
             self.listWidget_itemnames.clearSelection()
+            self.listWidget_itemnames.setStyleSheet(
+                "QAbstractItemView::item{color: grey}"
+            )
 
-            self.pushButton_add_quantity.setEnabled(True)
+            self.pushButton_add_quantity.setEnabled(False)
             self.pushButton_remove_quantity.setEnabled(True)
 
-            self.pushButton_add_quantity.disconnect()
+            # self.pushButton_add_quantity.disconnect()
             self.pushButton_remove_quantity.disconnect()
 
             self.pushButton_remove_quantity.clicked.connect(
                 self.remove_quantity_from_category
             )
-            self.pushButton_add_quantity.clicked.connect(self.add_quantity_from_category)
-            self.spinBox_quantity.setValue(1)
+            self.spinBox_quantity.setValue(0)
         else:
+            self.label.setText("Quantity:")
+            self.pushButton_add_quantity.setText("Add Quantity")
+            self.pushButton_remove_quantity.setText("Remove Quantity")
             settings_file.add_item(item_name="change_quantities_by", value="Item")
             self.pushButton_add_quantity.setEnabled(False)
             self.pushButton_remove_quantity.setEnabled(False)
             self.listWidget_itemnames.setEnabled(True)
-
-    def add_quantity_from_category(self) -> None:
-        """
-        It takes the quantity of an item in a category, and adds that quantity to all items in the
-        inventory that have the same part number as the item in the category
-        """
-        category_data = inventory.get_value(item_name=self.category)
-        part_numbers = []
-        for item in list(category_data.keys()):
-            unit_quantity: int = category_data[item]["unit_quantity"]
-            current_quantity: int = category_data[item]["current_quantity"]
-            part_numbers.append(category_data[item]["part_number"])
-            self.value_change(
-                category=self.category,
-                item_name=item,
-                value_name="current_quantity",
-                new_value=current_quantity
-                + (unit_quantity * self.spinBox_quantity.value()),
+            self.listWidget_itemnames.setStyleSheet(
+                "QAbstractItemView::item{color: white}"
             )
-        part_numbers = list(set(part_numbers))
-        data = inventory.get_data()
-        for category in list(data.keys()):
-            if category == self.category:
-                continue
-            for item, part_number in itertools.product(
-                list(data[category].keys()), part_numbers
-            ):
-                if part_number == data[category][item]["part_number"]:
-                    unit_quantity: int = data[category][item]["unit_quantity"]
-                    current_quantity: int = data[category][item]["current_quantity"]
-                    self.value_change(
-                        category=category,
-                        item_name=item,
-                        value_name="current_quantity",
-                        new_value=current_quantity
-                        + (unit_quantity * self.spinBox_quantity.value()),
-                    )
-        self.load_tab()
-        self.pushButton_add_quantity.setEnabled(True)
-        self.pushButton_remove_quantity.setEnabled(True)
 
     def remove_quantity_from_category(self) -> None:
         """
@@ -982,7 +1064,7 @@ class MainWindow(QMainWindow):
                         - (unit_quantity * self.spinBox_quantity.value()),
                     )
         self.load_tab()
-        self.pushButton_add_quantity.setEnabled(True)
+        self.pushButton_add_quantity.setEnabled(False)
         self.pushButton_remove_quantity.setEnabled(True)
 
     def add_quantity(self, item_name: str, old_quantity: int) -> None:
@@ -993,15 +1075,15 @@ class MainWindow(QMainWindow):
           item_name (str): str = the name of the item
           old_quantity (int): int = the quantity of the item before the change
         """
+        self.highlight_color = "#45A54D"
         category_data = inventory.get_value(item_name=self.category)
         current_quantity: int = category_data[item_name]["current_quantity"]
-        unit_quantity: int = category_data[item_name]["unit_quantity"]
         part_number: str = category_data[item_name]["part_number"]
         self.value_change(
             self.category,
             item_name,
             "current_quantity",
-            current_quantity + (unit_quantity * self.spinBox_quantity.value()),
+            current_quantity + self.spinBox_quantity.value(),
         )
         data = inventory.get_data()
         for category in list(data.keys()):
@@ -1009,14 +1091,12 @@ class MainWindow(QMainWindow):
                 continue
             for item in data[category].keys():
                 if part_number == data[category][item]["part_number"]:
-                    unit_quantity: int = data[category][item]["unit_quantity"]
                     current_quantity: int = data[category][item]["current_quantity"]
                     self.value_change(
                         category=category,
                         item_name=item,
                         value_name="current_quantity",
-                        new_value=current_quantity
-                        + (unit_quantity * self.spinBox_quantity.value()),
+                        new_value=current_quantity + self.spinBox_quantity.value(),
                     )
         self.pushButton_add_quantity.setEnabled(False)
         self.pushButton_remove_quantity.setEnabled(False)
@@ -1031,15 +1111,15 @@ class MainWindow(QMainWindow):
           item_name (str): str = the name of the item
           old_quantity (int): int = the quantity of the item before the change
         """
+        self.highlight_color = "#A34444"
         category_data = inventory.get_value(item_name=self.category)
         current_quantity: int = category_data[item_name]["current_quantity"]
-        unit_quantity: int = category_data[item_name]["unit_quantity"]
         part_number: str = category_data[item_name]["part_number"]
         self.value_change(
             self.category,
             item_name,
             "current_quantity",
-            current_quantity - (unit_quantity * self.spinBox_quantity.value()),
+            current_quantity - self.spinBox_quantity.value(),
         )
         data = inventory.get_data()
         for category in list(data.keys()):
@@ -1047,14 +1127,12 @@ class MainWindow(QMainWindow):
                 continue
             for item in data[category].keys():
                 if part_number == data[category][item]["part_number"]:
-                    unit_quantity: int = data[category][item]["unit_quantity"]
                     current_quantity: int = data[category][item]["current_quantity"]
                     self.value_change(
                         category=category,
                         item_name=item,
                         value_name="current_quantity",
-                        new_value=current_quantity
-                        - (unit_quantity * self.spinBox_quantity.value()),
+                        new_value=current_quantity - self.spinBox_quantity.value(),
                     )
         self.pushButton_add_quantity.setEnabled(False)
         self.pushButton_remove_quantity.setEnabled(False)
@@ -1076,7 +1154,29 @@ class MainWindow(QMainWindow):
         except KeyError:
             return
         self.last_item_selected = self.listWidget_itemnames.currentRow()
-
+        for item in list(self.inventory_prices_objects.keys()):
+            if item.currentText() == selected_item:
+                if self.highlight_color == "#4380A0":
+                    item.setStyleSheet(f"background-color: {self.highlight_color}")
+                else:
+                    self.inventory_prices_objects[item]["current_quantity"].setStyleSheet(
+                        f"background-color: {self.highlight_color}"
+                    )
+                    self.highlight_color = "#4380A0"
+                # QtTest.QTest.qWait(1000)
+            else:
+                if self.theme == "dark":
+                    if self.highlight_color == "#4380A0":
+                        item.setStyleSheet("background-color: #1d2023")
+                    self.inventory_prices_objects[item]["current_quantity"].setStyleSheet(
+                        "background-color: #1d2023"
+                    )
+                else:
+                    if self.highlight_color == "#4380A0":
+                        item.setStyleSheet("background-color: #eff0f1")
+                    self.inventory_prices_objects[item]["current_quantity"].setStyleSheet(
+                        "background-color: #eff0f1"
+                    )
         self.pushButton_add_quantity.setEnabled(True)
         self.pushButton_remove_quantity.setEnabled(True)
         self.pushButton_add_quantity.disconnect()
@@ -1088,7 +1188,7 @@ class MainWindow(QMainWindow):
         self.pushButton_add_quantity.clicked.connect(
             partial(self.add_quantity, selected_item, quantity)
         )
-        self.spinBox_quantity.setValue(1)
+        self.spinBox_quantity.setValue(0)
 
     def value_change(
         self, category: str, item_name: str, value_name: str, new_value
@@ -1102,12 +1202,18 @@ class MainWindow(QMainWindow):
           value_name (str): str = The name of the value you want to change.
           new_value: The new value to be assigned to the value_name
         """
+        self.pushButton_add_quantity.setEnabled(False)
+        self.pushButton_remove_quantity.setEnabled(False)
+        QApplication.setOverrideCursor(Qt.WaitCursor)
         inventory.change_object_in_object_item(
             object_name=category,
             item_name=item_name,
             value_name=value_name,
             new_value=new_value,
         )
+        QApplication.restoreOverrideCursor()
+        self.pushButton_add_quantity.setEnabled(True)
+        self.pushButton_remove_quantity.setEnabled(True)
 
     def get_all_part_numbers(self) -> list:
         """
@@ -1283,6 +1389,12 @@ class MainWindow(QMainWindow):
             elif response == DialogButtons.cancel:
                 return
 
+    def open_po(self) -> None:
+        input_dialog = SelectItemDialog(
+            title="Open PO", message="Waiting for PO templates", items=[]
+        )
+        input_dialog.show()
+
     def show_web_scrape_results(self, data) -> None:
         QApplication.restoreOverrideCursor()
         results = WebScrapeResultsDialog(
@@ -1354,7 +1466,7 @@ class MainWindow(QMainWindow):
             if version != __version__:
                 message_dialog = self.show_message_dialog(
                     title=__name__,
-                    message=f"There is a new update available.\n\nNew Version: {version}",
+                    message=f"There is a new update available.\n\nNew Version: {version}\n\nMake sure to make a backup\nbefore installing new version.",
                     dialog_buttons=DialogButtons.ok_download,
                 )
                 if message_dialog == DialogButtons.download:
@@ -1545,7 +1657,7 @@ class MainWindow(QMainWindow):
         compress_database(path_to_file="data/inventory.json")
         self.show_message_dialog(title="Success", message="Backup was successful!")
 
-    def close_event(self, event):
+    def closeEvent(self, event):
         """
         The function saves the geometry of the window and then closes the window
 
@@ -1553,7 +1665,7 @@ class MainWindow(QMainWindow):
           event: the event that triggered the close_event() method
         """
         self.save_geometry()
-        super().close_event(event)
+        super().closeEvent(event)
 
     def clear_layout(self, layout):
         """

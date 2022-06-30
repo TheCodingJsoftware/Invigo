@@ -182,6 +182,15 @@
          <layout class="QGridLayout" name="gridLayout" columnminimumwidth="0,0,0,0">
           <item row="5" column="2">
            <widget class="QDoubleSpinBox" name="doubleSpinBox_price">
+            <property name="specialValueText">
+             <string> </string>
+            </property>
+            <property name="accelerated">
+             <bool>true</bool>
+            </property>
+            <property name="showGroupSeparator" stdset="0">
+             <bool>false</bool>
+            </property>
             <property name="prefix">
              <string>$</string>
             </property>
@@ -273,6 +282,9 @@ Description: </string>
           </item>
           <item row="3" column="2">
            <widget class="QSpinBox" name="spinBox_current_quantity">
+            <property name="accelerated">
+             <bool>true</bool>
+            </property>
             <property name="maximum">
              <number>9999999</number>
             </property>
@@ -297,6 +309,12 @@ Description: </string>
           </item>
           <item row="4" column="2">
            <widget class="QSpinBox" name="spinBox_unit_quantity">
+            <property name="accelerated">
+             <bool>true</bool>
+            </property>
+            <property name="minimum">
+             <number>1</number>
+            </property>
             <property name="maximum">
              <number>9999999</number>
             </property>
