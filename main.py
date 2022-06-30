@@ -4,7 +4,7 @@ __credits__: "list[str]" = ["Jared Gross"]
 __license__ = "MIT"
 __name__ = "Inventory Manager"
 __version__ = "v1.0.2"
-__updated__ = "2022-06-29 21:50:05"
+__updated__ = "2022-06-29 22:35:17"
 __maintainer__ = "Jared Gross"
 __email__ = "jared@pinelandfarms.ca"
 __status__ = "Production"
@@ -54,6 +54,7 @@ from ui.about_dialog import AboutDialog
 from ui.add_item_dialog import AddItemDialog
 from ui.custom_widgets import (
     HumbleComboBox,
+    HumbleDoubleSpinBox,
     HumbleSpinBox,
     RichTextPushButton,
     ViewTree,
@@ -431,8 +432,7 @@ class MainWindow(QMainWindow):
                 spin_unit_quantity.setMaximum(99999999)
                 spin_unit_quantity.setMinimum(-99999999)
                 spin_unit_quantity.setAccelerated(True)
-                spin_unit_quantity.setValue(unit_quantity)
-                spin_unit_quantity.setDecimals(0)
+                spin_unit_quantity.setValue(int(unit_quantity))
                 spin_unit_quantity.valueChanged.connect(
                     partial(
                         self.unit_quantity_change,
@@ -451,10 +451,9 @@ class MainWindow(QMainWindow):
                 spin_current_quantity.setMaximum(99999999)
                 spin_current_quantity.setMinimum(-99999999)
                 spin_current_quantity.setAccelerated(True)
-                spin_current_quantity.setValue(current_quantity)
+                spin_current_quantity.setValue(int(current_quantity))
                 if current_quantity <= 0:
                     spin_current_quantity.setStyleSheet("color: red")
-                spin_current_quantity.setDecimals(0)
                 spin_current_quantity.valueChanged.connect(
                     partial(
                         self.current_quantity_change,
@@ -468,7 +467,7 @@ class MainWindow(QMainWindow):
 
                 col_index += 1
 
-                spin_price = HumbleSpinBox()
+                spin_price = HumbleDoubleSpinBox()
                 spin_price.setFixedWidth(100)
                 spin_price.setMaximum(99999999)
                 spin_price.setMinimum(-99999999)
@@ -1023,7 +1022,7 @@ class MainWindow(QMainWindow):
             self.pushButton_add_quantity.setEnabled(False)
             self.pushButton_remove_quantity.setEnabled(False)
             # self.listWidget_itemnames.clearSelection()
-            self.listWidget_item_changed()
+            # self.listWidget_item_changed()
             # self.listWidget_itemnames.setEnabled(True)
             # self.listWidget_itemnames.setStyleSheet(
             #     "QAbstractItemView::item{color: white}"
@@ -1152,6 +1151,8 @@ class MainWindow(QMainWindow):
         try:
             selected_item: str = self.listWidget_itemnames.currentItem().text()
         except AttributeError:
+            self.pushButton_add_quantity.setEnabled(False)
+            self.pushButton_remove_quantity.setEnabled(False)
             return
         category_data = inventory.get_value(item_name=self.category)
         try:
@@ -1208,18 +1209,19 @@ class MainWindow(QMainWindow):
                     self.inventory_prices_objects[item]["current_quantity"].setStyleSheet(
                         "background-color: #eff0f1; color: white"
                     )
+        if self.radioButton_single.isChecked():
+            self.pushButton_add_quantity.setEnabled(True)
+            self.pushButton_remove_quantity.setEnabled(True)
 
-        self.pushButton_add_quantity.setEnabled(True)
-        self.pushButton_remove_quantity.setEnabled(True)
-        self.pushButton_add_quantity.disconnect()
-        self.pushButton_remove_quantity.disconnect()
+            self.pushButton_add_quantity.disconnect()
+            self.pushButton_remove_quantity.disconnect()
 
-        self.pushButton_remove_quantity.clicked.connect(
-            partial(self.remove_quantity, selected_item, quantity)
-        )
-        self.pushButton_add_quantity.clicked.connect(
-            partial(self.add_quantity, selected_item, quantity)
-        )
+            self.pushButton_remove_quantity.clicked.connect(
+                partial(self.remove_quantity, selected_item, quantity)
+            )
+            self.pushButton_add_quantity.clicked.connect(
+                partial(self.add_quantity, selected_item, quantity)
+            )
         self.spinBox_quantity.setValue(0)
 
     def value_change(
@@ -1234,6 +1236,8 @@ class MainWindow(QMainWindow):
           value_name (str): str = The name of the value you want to change.
           new_value: The new value to be assigned to the value_name
         """
+        add_quantity_state: bool = self.pushButton_add_quantity.isEnabled()
+        remove_quantity_state: bool = self.pushButton_remove_quantity.isEnabled()
         self.pushButton_add_quantity.setEnabled(False)
         self.pushButton_remove_quantity.setEnabled(False)
         QApplication.setOverrideCursor(Qt.WaitCursor)
@@ -1244,8 +1248,8 @@ class MainWindow(QMainWindow):
             new_value=new_value,
         )
         QApplication.restoreOverrideCursor()
-        self.pushButton_add_quantity.setEnabled(True)
-        self.pushButton_remove_quantity.setEnabled(True)
+        self.pushButton_add_quantity.setEnabled(add_quantity_state)
+        self.pushButton_remove_quantity.setEnabled(remove_quantity_state)
 
     def get_all_part_numbers(self) -> list:
         """

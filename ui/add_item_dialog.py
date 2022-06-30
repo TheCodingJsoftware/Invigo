@@ -153,10 +153,10 @@ class AddItemDialog(QDialog):
                         data[category][item]["priority"]
                     )
                     self.spinBox_current_quantity.setValue(
-                        data[category][item]["current_quantity"]
+                        int(data[category][item]["current_quantity"])
                     )
                     self.spinBox_unit_quantity.setValue(
-                        data[category][item]["unit_quantity"]
+                        int(data[category][item]["unit_quantity"])
                     )
                     self.doubleSpinBox_price.setValue(data[category][item]["price"])
                     self.comboBox_exchange_price.setCurrentText(
@@ -182,10 +182,10 @@ class AddItemDialog(QDialog):
                         data[category][item]["priority"]
                     )
                     self.spinBox_current_quantity.setValue(
-                        data[category][item]["current_quantity"]
+                        int(data[category][item]["current_quantity"])
                     )
                     self.spinBox_unit_quantity.setValue(
-                        data[category][item]["unit_quantity"]
+                        int(data[category][item]["unit_quantity"])
                     )
                     self.doubleSpinBox_price.setValue(data[category][item]["price"])
                     self.comboBox_exchange_price.setCurrentText(

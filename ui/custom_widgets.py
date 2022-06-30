@@ -8,6 +8,7 @@ from PyQt5.QtWidgets import (
     QLabel,
     QPushButton,
     QSizePolicy,
+    QSpinBox,
     QTreeWidget,
     QTreeWidgetItem,
 )
@@ -88,7 +89,56 @@ class RichTextPushButton(QPushButton):
         return button_size
 
 
-class HumbleSpinBox(QDoubleSpinBox):
+class HumbleDoubleSpinBox(QDoubleSpinBox):
+    """It's a spin box that doesn't let you enter a value that's too close to zero."""
+
+    def __init__(self, *args):
+        """
+        The function sets the focus policy of the spinbox to strong focus
+        """
+        super(HumbleDoubleSpinBox, self).__init__(*args)
+        self.setFocusPolicy(Qt.StrongFocus)
+
+    def focusInEvent(self, event):
+        """
+        When the user clicks on the spinbox, the focus policy is changed to allow the mouse wheel to be
+        used to change the value
+
+        Args:
+          event: QFocusEvent
+        """
+        self.setFocusPolicy(Qt.WheelFocus)
+        super(HumbleDoubleSpinBox, self).focusInEvent(event)
+
+    def focusOutEvent(self, event):
+        """
+        When the user clicks on the spinbox, the focus policy is changed to StrongFocus, and then the
+        focusOutEvent is called
+
+        Args:
+          event: QFocusEvent
+        """
+        self.setFocusPolicy(Qt.StrongFocus)
+        super(HumbleDoubleSpinBox, self).focusOutEvent(event)
+
+    def wheelEvent(self, event):
+        """
+        If the spinbox has focus, then it will behave as normal. If it doesn't have focus, then the
+        wheel event will be ignored
+
+        Args:
+          event: The event object
+
+        Returns:
+          The super class of the HumbleSpinBox class.
+        """
+        if self.hasFocus():
+            return super(HumbleDoubleSpinBox, self).wheelEvent(event)
+        else:
+            event.ignore()
+
+
+class HumbleSpinBox(QSpinBox):
     """It's a spin box that doesn't let you enter a value that's too close to zero."""
 
     def __init__(self, *args):
