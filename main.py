@@ -4,7 +4,7 @@ __credits__: "list[str]" = ["Jared Gross"]
 __license__ = "MIT"
 __name__ = "Inventory Manager"
 __version__ = "v1.1.4"
-__updated__ = "2022-06-30 23:24:57"
+__updated__ = "2022-06-30 23:26:44"
 __maintainer__ = "Jared Gross"
 __email__ = "jared@pinelandfarms.ca"
 __status__ = "Production"
@@ -46,7 +46,6 @@ from PyQt5.QtWidgets import (
     qApp,
 )
 
-import log_config
 import ui.BreezeStyleSheets.breeze_resources
 from threads.changes_thread import ChangesThread
 from threads.download_thread import DownloadThread
@@ -119,6 +118,9 @@ def check_folders(folders: list) -> None:
 
 
 check_folders(folders=["logs", "data", "backups"])
+
+import log_config
+
 settings_file = JsonFile(file_name="settings")
 default_settings()
 inventory = JsonFile(file_name="data/inventory")
