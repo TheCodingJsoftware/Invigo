@@ -1,10 +1,12 @@
+import contextlib
+
 __author__ = "Jared Gross"
 __copyright__ = "Copyright 2022, TheCodingJ's"
 __credits__: "list[str]" = ["Jared Gross"]
 __license__ = "MIT"
 __name__ = "Inventory Manager"
 __version__ = "v1.1.4"
-__updated__ = "2022-06-30 23:26:44"
+__updated__ = "2022-06-30 23:45:59"
 __maintainer__ = "Jared Gross"
 __email__ = "jared@pinelandfarms.ca"
 __status__ = "Production"
@@ -19,6 +21,7 @@ import webbrowser
 from datetime import datetime
 from functools import partial
 from operator import add
+from pathlib import Path
 
 import requests
 from forex_python.converter import CurrencyRates
@@ -113,13 +116,20 @@ def check_folders(folders: list) -> None:
     "data/images/fullsize/temp"]
     """
     for folder in folders:
-        if not os.path.exists(f"{os.path.dirname(os.path.realpath(__file__))}/{folder}"):
-            os.makedirs(f"{os.path.dirname(os.path.realpath(__file__))}/{folder}")
-
+        with contextlib.suppress(FileExistsError):
+            if not os.path.exists(folder):
+                os.mkdir(folder)
 
 check_folders(folders=["logs", "data", "backups"])
 
-import log_config
+logging.basicConfig(
+    filename="logs/app.log",
+    filemode="a",
+    format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
+    datefmt="%d-%b-%y %H:%M:%S",
+    level=logging.INFO,
+)
+
 
 settings_file = JsonFile(file_name="settings")
 default_settings()
