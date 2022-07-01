@@ -3,8 +3,8 @@ __copyright__ = "Copyright 2022, TheCodingJ's"
 __credits__: "list[str]" = ["Jared Gross"]
 __license__ = "MIT"
 __name__ = "Inventory Manager"
-__version__ = "v1.1.3"
-__updated__ = "2022-06-30 13:01:43"
+__version__ = "v1.1.4"
+__updated__ = "2022-06-30 23:24:57"
 __maintainer__ = "Jared Gross"
 __email__ = "jared@pinelandfarms.ca"
 __status__ = "Production"
@@ -24,11 +24,12 @@ import requests
 from forex_python.converter import CurrencyRates
 from PyQt5 import QtTest, uic
 from PyQt5.QtCore import QFile, Qt, QTextStream
-from PyQt5.QtGui import QIcon, QPixmap
+from PyQt5.QtGui import QIcon, QPixmap, QStandardItemModel
 from PyQt5.QtWidgets import (
     QAction,
     QApplication,
     QComboBox,
+    QCompleter,
     QDoubleSpinBox,
     QFileDialog,
     QGridLayout,
@@ -73,7 +74,53 @@ from utils.json_object import JsonObject
 from web_scrapers.ebay_scraper import EbayScraper
 from web_scrapers.exchange_rate import ExchangeRate
 
+
+def default_settings() -> None:
+    """
+    It checks if a setting exists in the settings file, and if it doesn't, it creates it with a default
+    value
+    """
+    check_setting(setting="exchange_rate", default_value=1.0)
+    check_setting(setting="dark_mode", default_value=True)
+    check_setting(setting="server_ip", default_value="10.0.0.64")
+    check_setting(setting="server_port", default_value=4000)
+    check_setting(
+        setting="geometry",
+        default_value={"x": 200, "y": 200, "width": 600, "height": 400},
+    )
+    check_setting(setting="last_category_tab", default_value=0)
+    check_setting(setting="last_toolbox_tab", default_value=0)
+    check_setting(setting="change_quantities_by", default_value="Category")
+
+
+def check_setting(setting: str, default_value) -> None:
+    """
+    If the setting is not in the settings file, add it with the default value
+
+    Args:
+      setting (str): The name of the setting to check.
+      default_value: The default value of the setting.
+    """
+    if settings_file.get_value(item_name=setting) is None:
+        settings_file.add_item(item_name=setting, value=default_value)
+
+
+def check_folders(folders: list) -> None:
+    """
+    If the folder doesn't exist, create it
+
+    Args:
+      folders (list): list = ["data", "data/images", "data/images/thumbnails", "data/images/fullsize",
+    "data/images/fullsize/temp"]
+    """
+    for folder in folders:
+        if not os.path.exists(f"{os.path.dirname(os.path.realpath(__file__))}/{folder}"):
+            os.makedirs(f"{os.path.dirname(os.path.realpath(__file__))}/{folder}")
+
+
+check_folders(folders=["logs", "data", "backups"])
 settings_file = JsonFile(file_name="settings")
+default_settings()
 inventory = JsonFile(file_name="data/inventory")
 geometry = JsonObject(JsonFile=settings_file, object_name="geometry")
 
@@ -349,6 +396,11 @@ class MainWindow(QMainWindow):
         settings_file.add_item("last_category_tab", tab_index)
         tab = self.tabs[tab_index]
         category_data = inventory.get_value(item_name=self.category)
+        autofill_search_options = self.get_all_part_names() + self.get_all_part_numbers()
+        completer = QCompleter(autofill_search_options)
+        completer.setCaseSensitivity(Qt.CaseInsensitive)
+        self.lineEdit_search_items.setCompleter(completer)
+
         self.update_list_widget()
         self.label_category_name.setText(f"Category: {self.category}")
         self.quantities_change()
@@ -1067,6 +1119,17 @@ class MainWindow(QMainWindow):
         self.load_tab()
         self.pushButton_add_quantity.setEnabled(False)
         self.pushButton_remove_quantity.setEnabled(True)
+        self.highlight_color = "#A34444"
+        for item in list(self.inventory_prices_objects.keys()):
+            if self.inventory_prices_objects[item]["current_quantity"].value() <= 0:
+                self.inventory_prices_objects[item]["current_quantity"].setStyleSheet(
+                    f"background-color: {self.highlight_color}; color: red"
+                )
+            else:
+                self.inventory_prices_objects[item]["current_quantity"].setStyleSheet(
+                    f"background-color: {self.highlight_color}; color: white"
+                )
+        self.highlight_color = "#4380A0"
 
     def add_quantity(self, item_name: str, old_quantity: int) -> None:
         """
@@ -1148,6 +1211,7 @@ class MainWindow(QMainWindow):
         Returns:
           The return value of the function is None.
         """
+
         try:
             selected_item: str = self.listWidget_itemnames.currentItem().text()
         except AttributeError:
@@ -1164,6 +1228,19 @@ class MainWindow(QMainWindow):
             if item.currentText() == selected_item:
                 if self.highlight_color == "#4380A0":
                     item.setStyleSheet(f"background-color: {self.highlight_color}")
+
+                    if (
+                        self.inventory_prices_objects[item]["current_quantity"].value()
+                        <= 0
+                    ):
+                        self.inventory_prices_objects[item][
+                            "current_quantity"
+                        ].setStyleSheet("background-color: #1d2023; color: red")
+
+                    else:
+                        self.inventory_prices_objects[item][
+                            "current_quantity"
+                        ].setStyleSheet("background-color: #1d2023; color: white")
                 else:
                     if (
                         self.inventory_prices_objects[item]["current_quantity"].value()
@@ -1281,10 +1358,8 @@ class MainWindow(QMainWindow):
         data = inventory.get_data()
         part_names = []
         for category in list(data.keys()):
-            if category == self.category:
-                continue
             part_names.extend(iter(list(data[category].keys())))
-        part_names = list(set(part_names))
+        # part_names = list(set(part_names))
         return part_names
 
     def get_exchange_rate(self) -> float:
@@ -1700,6 +1775,7 @@ class MainWindow(QMainWindow):
         Args:
           event: the event that triggered the close_event() method
         """
+        compress_database(path_to_file="data/inventory.json")
         self.save_geometry()
         super().closeEvent(event)
 
@@ -1721,56 +1797,11 @@ class MainWindow(QMainWindow):
                     self.clear_layout(item.layout())
 
 
-def default_settings() -> None:
-    """
-    It checks if a setting exists in the settings file, and if it doesn't, it creates it with a default
-    value
-    """
-    check_setting(setting="exchange_rate", default_value=1.0)
-    check_setting(setting="dark_mode", default_value=True)
-    check_setting(setting="server_ip", default_value="10.0.0.64")
-    check_setting(setting="server_port", default_value=4000)
-    check_setting(
-        setting="geometry",
-        default_value={"x": 200, "y": 200, "width": 600, "height": 400},
-    )
-    check_setting(setting="last_category_tab", default_value=0)
-    check_setting(setting="last_toolbox_tab", default_value=0)
-    check_setting(setting="change_quantities_by", default_value="Category")
-
-
-def check_setting(setting: str, default_value) -> None:
-    """
-    If the setting is not in the settings file, add it with the default value
-
-    Args:
-      setting (str): The name of the setting to check.
-      default_value: The default value of the setting.
-    """
-    if settings_file.get_value(item_name=setting) is None:
-        settings_file.add_item(item_name=setting, value=default_value)
-
-
-def check_folders(folders: list) -> None:
-    """
-    If the folder doesn't exist, create it
-
-    Args:
-      folders (list): list = ["data", "data/images", "data/images/thumbnails", "data/images/fullsize",
-    "data/images/fullsize/temp"]
-    """
-    for folder in folders:
-        if not os.path.exists(f"{os.path.dirname(os.path.realpath(__file__))}/{folder}"):
-            os.makedirs(f"{os.path.dirname(os.path.realpath(__file__))}/{folder}")
-
-
 def main() -> None:
     """
     It creates a QApplication, creates a MainWindow, shows the MainWindow, and then runs the
     QApplication
     """
-    default_settings()
-    check_folders(folders=["logs", "data", "backups"])
     app = QApplication([])
     window = MainWindow()
     window.show()

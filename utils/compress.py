@@ -12,7 +12,9 @@ def compress_database(path_to_file: str) -> None:
       path_to_file (str): str = path_to_file.split("/")[-1]
     """
     file_name: str = path_to_file.split("/")[-1]
-    path_to_zip_file: str = f"backups/{datetime.now().strftime('%Y-%m-%d-%H-%M')}.zip"
+    path_to_zip_file: str = (
+        f"backups/{datetime.now().strftime('%B %d %A %Y %I-%M-%S %p')}.zip"
+    )
     file = zipfile.ZipFile(path_to_zip_file, mode="w")
     file.write(path_to_file, file_name, compress_type=zipfile.ZIP_DEFLATED)
     file.close()
