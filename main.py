@@ -5,8 +5,8 @@ __copyright__ = "Copyright 2022, TheCodingJ's"
 __credits__: "list[str]" = ["Jared Gross"]
 __license__ = "MIT"
 __name__ = "Inventory Manager"
-__version__ = "v1.1.4"
-__updated__ = "2022-06-30 23:45:59"
+__version__ = "v1.1.5"
+__updated__ = "2022-07-01 19:48:02"
 __maintainer__ = "Jared Gross"
 __email__ = "jared@pinelandfarms.ca"
 __status__ = "Production"
@@ -16,6 +16,8 @@ import logging
 import math
 import os
 import shutil
+import subprocess
+import sys
 import threading
 import webbrowser
 from datetime import datetime
@@ -120,6 +122,7 @@ def check_folders(folders: list) -> None:
             if not os.path.exists(folder):
                 os.mkdir(folder)
 
+
 check_folders(folders=["logs", "data", "backups"])
 
 logging.basicConfig(
@@ -146,7 +149,8 @@ class MainWindow(QMainWindow):
         """
         super().__init__()
         uic.loadUi("ui/main_menu.ui", self)
-        self.setWindowTitle(f"{__name__} {__version__} - {os.getlogin()}")
+        self.username = os.getlogin().title()
+        self.setWindowTitle(f"{__name__} {__version__} - {self.username}")
         self.setWindowIcon(QIcon("icons/icon.png"))
 
         self.check_for_updates(on_start_up=True)
@@ -447,6 +451,48 @@ class MainWindow(QMainWindow):
                 notes: str = category_data[item]["notes"]
                 part_number: str = category_data[item]["part_number"]
                 use_exchange_rate: bool = category_data[item]["use_exchange_rate"]
+                try:
+                    latest_change_part_number: str = category_data[item][
+                        "latest_change_part_number"
+                    ]
+                except KeyError:
+                    latest_change_part_number: str = "No changes saved yet."
+                try:
+                    latest_change_unit_quantity: str = category_data[item][
+                        "latest_change_unit_quantity"
+                    ]
+                except KeyError:
+                    latest_change_unit_quantity: str = "No changes saved yet."
+                try:
+                    latest_change_current_quantity: str = category_data[item][
+                        "latest_change_current_quantity"
+                    ]
+                except KeyError:
+                    latest_change_current_quantity: str = "No changes saved yet."
+                try:
+                    latest_change_price: str = category_data[item]["latest_change_price"]
+                except KeyError:
+                    latest_change_price: str = "No changes saved yet."
+                try:
+                    latest_change_use_exchange_rate: str = category_data[item][
+                        "latest_change_use_exchange_rate"
+                    ]
+                except KeyError:
+                    latest_change_use_exchange_rate: str = "No changes saved yet."
+                try:
+                    latest_change_priority: str = category_data[item][
+                        "latest_change_priority"
+                    ]
+                except KeyError:
+                    latest_change_priority: str = "No changes saved yet."
+                try:
+                    latest_change_notes: str = category_data[item]["latest_change_notes"]
+                except KeyError:
+                    latest_change_notes: str = "No changes saved yet."
+                try:
+                    latest_change_name: str = category_data[item]["latest_change_name"]
+                except KeyError:
+                    latest_change_name: str = "No changes saved yet."
                 exchange_rate: float = (
                     self.get_exchange_rate() if use_exchange_rate else 1
                 )
@@ -467,6 +513,7 @@ class MainWindow(QMainWindow):
                         item_name,
                     )
                 )
+                item_name.setToolTip(latest_change_name)
                 item_name.setMinimumWidth(MINIMUM_WIDTH)
                 tab.addWidget(item_name, row_index, col_index)
 
@@ -478,6 +525,7 @@ class MainWindow(QMainWindow):
                 line_edit_part_number.setEditable(True)
                 line_edit_part_number.setCurrentText(part_number)
                 line_edit_part_number.setFixedWidth(120)
+                line_edit_part_number.setToolTip(latest_change_part_number)
                 line_edit_part_number.currentTextChanged.connect(
                     partial(
                         self.part_number_change,
@@ -496,6 +544,7 @@ class MainWindow(QMainWindow):
                 spin_unit_quantity.setMaximum(99999999)
                 spin_unit_quantity.setMinimum(-99999999)
                 spin_unit_quantity.setAccelerated(True)
+                spin_unit_quantity.setToolTip(latest_change_unit_quantity)
                 spin_unit_quantity.setValue(int(unit_quantity))
                 spin_unit_quantity.valueChanged.connect(
                     partial(
@@ -515,6 +564,7 @@ class MainWindow(QMainWindow):
                 spin_current_quantity.setMaximum(99999999)
                 spin_current_quantity.setMinimum(-99999999)
                 spin_current_quantity.setAccelerated(True)
+                spin_current_quantity.setToolTip(latest_change_current_quantity)
                 spin_current_quantity.setValue(int(current_quantity))
                 if current_quantity <= 0:
                     spin_current_quantity.setStyleSheet("color: red")
@@ -537,6 +587,7 @@ class MainWindow(QMainWindow):
                 spin_price.setMinimum(-99999999)
                 spin_price.setAccelerated(True)
                 spin_price.setValue(price)
+                spin_price.setToolTip(latest_change_price)
                 spin_price.setPrefix("$")
                 spin_price.setSuffix(" USD" if use_exchange_rate else " CAD")
                 spin_price.valueChanged.connect(
@@ -553,6 +604,7 @@ class MainWindow(QMainWindow):
                 combo_exchange_rate.setFixedWidth(50)
                 combo_exchange_rate.addItems(["CAD", "USD"])
                 combo_exchange_rate.setCurrentText("USD" if use_exchange_rate else "CAD")
+                combo_exchange_rate.setToolTip(latest_change_use_exchange_rate)
                 combo_exchange_rate.currentIndexChanged.connect(
                     partial(
                         self.use_exchange_rate_change,
@@ -592,6 +644,7 @@ class MainWindow(QMainWindow):
                 combo_priority = QComboBox()
                 combo_priority.wheelEvent = lambda event: None
                 combo_priority.setFixedWidth(60)
+                combo_priority.setToolTip(latest_change_priority)
                 combo_priority.addItems(["Default", "Low", "Medium", "High"])
                 combo_priority.setCurrentIndex(priority)
                 if combo_priority.currentText() == "Medium":
@@ -613,6 +666,7 @@ class MainWindow(QMainWindow):
 
                 text_notes = QPlainTextEdit()
                 text_notes.setMinimumWidth(100)
+                text_notes.setToolTip(latest_change_notes)
                 text_notes.setMaximumWidth(200)
                 text_notes.setFixedHeight(60)
                 text_notes.setPlainText(notes)
@@ -846,6 +900,16 @@ class MainWindow(QMainWindow):
                 name.setCurrentText(old_name)
                 # name.selectAll()
                 return
+
+        inventory.change_object_in_object_item(
+            category,
+            old_name,
+            "latest_change_name",
+            f"Latest Change:\nfrom: \"{old_name}\"\nto: \"{name.currentText()}\"\n{self.username}\n{datetime.now().strftime('%B %d %A %Y %I:%M:%S %p')}",
+        )
+        name.setToolTip(
+            f"Latest Change:\nfrom: \"{old_name}\"\nto: \"{name.currentText()}\"\n{self.username}\n{datetime.now().strftime('%B %d %A %Y %I:%M:%S %p')}",
+        )
         inventory.change_item_name(category, old_name, name.currentText())
         name.disconnect()
         name.currentTextChanged.connect(
@@ -866,6 +930,18 @@ class MainWindow(QMainWindow):
         value_name (str): str = The name of the value you want to change.
         quantity (QLineEdit): QLineEdit
         """
+        value_before = inventory.get_value(item_name=category)[item_name.currentText()][
+            "part_number"
+        ]
+        inventory.change_object_in_object_item(
+            category,
+            item_name.currentText(),
+            "latest_change_part_number",
+            f"Latest Change:\nfrom: {value_before}\nto: {part_number.currentText()}\n{self.username}\n{datetime.now().strftime('%B %d %A %Y %I:%M:%S %p')}",
+        )
+        part_number.setToolTip(
+            f"Latest Change:\nfrom: {value_before}\nto: {part_number.currentText()}\n{self.username}\n{datetime.now().strftime('%B %d %A %Y %I:%M:%S %p')}",
+        )
         self.value_change(
             category, item_name.currentText(), value_name, part_number.currentText()
         )
@@ -883,6 +959,18 @@ class MainWindow(QMainWindow):
         value_name (str): str = The name of the value you want to change.
         quantity (QSpinBox): QSpinBox
         """
+        value_before = inventory.get_value(item_name=category)[item_name.currentText()][
+            "current_quantity"
+        ]
+        inventory.change_object_in_object_item(
+            category,
+            item_name.currentText(),
+            "latest_change_current_quantity",
+            f"Latest Change:\nfrom: {value_before}\nto: {quantity.value()}\n{self.username}\n{datetime.now().strftime('%B %d %A %Y %I:%M:%S %p')}",
+        )
+        quantity.setToolTip(
+            f"Latest Change:\nfrom: {value_before}\nto: {quantity.value()}\n{self.username}\n{datetime.now().strftime('%B %d %A %Y %I:%M:%S %p')}",
+        )
         self.value_change(category, item_name.currentText(), value_name, quantity.value())
         if quantity.value() <= 0:
             quantity.setStyleSheet("color: red")
@@ -903,6 +991,18 @@ class MainWindow(QMainWindow):
           value_name (str): str = The name of the value you want to change.
           quantity (QSpinBox): QSpinBox
         """
+        value_before = inventory.get_value(item_name=category)[item_name.currentText()][
+            "unit_quantity"
+        ]
+        inventory.change_object_in_object_item(
+            category,
+            item_name.currentText(),
+            "latest_change_unit_quantity",
+            f"Latest Change:\nfrom: {value_before}\nto: {quantity.value()}\n{self.username}\n{datetime.now().strftime('%B %d %A %Y %I:%M:%S %p')}",
+        )
+        quantity.setToolTip(
+            f"Latest Change:\nfrom: {value_before}\nto: {quantity.value()}\n{self.username}\n{datetime.now().strftime('%B %d %A %Y %I:%M:%S %p')}",
+        )
         self.value_change(category, item_name.currentText(), value_name, quantity.value())
 
     def price_change(
@@ -918,6 +1018,19 @@ class MainWindow(QMainWindow):
           value_name (str): str = The name of the value you want to change.
           price (QDoubleSpinBox): QDoubleSpinBox
         """
+
+        value_before = inventory.get_value(item_name=category)[item_name.currentText()][
+            "price"
+        ]
+        inventory.change_object_in_object_item(
+            category,
+            item_name.currentText(),
+            "latest_change_price",
+            f"Latest Change:\nfrom: {value_before}\nto: {price.value()}\n{self.username}\n{datetime.now().strftime('%B %d %A %Y %I:%M:%S %p')}",
+        )
+        price.setToolTip(
+            f"Latest Change:\nfrom: {value_before}\nto: {price.value()}\n{self.username}\n{datetime.now().strftime('%B %d %A %Y %I:%M:%S %p')}",
+        )
         self.value_change(category, item_name.currentText(), value_name, price.value())
         self.update_stock_costs()
 
@@ -933,11 +1046,25 @@ class MainWindow(QMainWindow):
           value_name (str): str = The name of the value to change
           combo (QComboBox): QComboBox
         """
+        value_before = inventory.get_value(item_name=category)[item_name.currentText()][
+            "use_exchange_rate"
+        ]
+        usd = combo.currentText() == "USD"
+        inventory.change_object_in_object_item(
+            category,
+            item_name.currentText(),
+            "latest_change_use_exchange_rate",
+            f"Latest Change:\nfrom: {value_before}\nto: {usd}\n{self.username}\n{datetime.now().strftime('%B %d %A %Y %I:%M:%S %p')}",
+        )
+        combo.setToolTip(
+            f"Latest Change:\nfrom: {value_before}\nto: {usd}\n{self.username}\n{datetime.now().strftime('%B %d %A %Y %I:%M:%S %p')}",
+        )
+
         self.value_change(
             category,
             item_name.currentText(),
             value_name,
-            combo.currentText() == "USD",
+            usd,
         )
         self.update_stock_costs()
 
@@ -953,6 +1080,20 @@ class MainWindow(QMainWindow):
           value_name (str): str = The name of the value to change
           combo (QComboBox): QComboBox
         """
+
+        value_before = inventory.get_value(item_name=category)[item_name.currentText()][
+            "priority"
+        ]
+        inventory.change_object_in_object_item(
+            category,
+            item_name.currentText(),
+            "latest_change_priority",
+            f"Latest Change:\nfrom: {value_before}\nto: {combo.currentIndex()}\n{self.username}\n{datetime.now().strftime('%B %d %A %Y %I:%M:%S %p')}",
+        )
+        combo.setToolTip(
+            f"Latest Change:\nfrom: {value_before}\nto: {combo.currentIndex()}\n{self.username}\n{datetime.now().strftime('%B %d %A %Y %I:%M:%S %p')}",
+        )
+
         self.value_change(
             category, item_name.currentText(), value_name, combo.currentIndex()
         )
@@ -976,6 +1117,18 @@ class MainWindow(QMainWindow):
           value_name (str): str = The name of the value that is being changed.
           note (QPlainTextEdit): QPlainTextEdit
         """
+        value_before = inventory.get_value(item_name=category)[item_name.currentText()][
+            "notes"
+        ]
+        inventory.change_object_in_object_item(
+            category,
+            item_name.currentText(),
+            "latest_change_notes",
+            f"Latest Change:\nfrom: \"{value_before}\"\nto: \"{note.toPlainText()}\"\n{self.username}\n{datetime.now().strftime('%B %d %A %Y %I:%M:%S %p')}",
+        )
+        note.setToolTip(
+            f"Latest Change:\nfrom: \"{value_before}\"\nto: \"{note.toPlainText()}\"\n{self.username}\n{datetime.now().strftime('%B %d %A %Y %I:%M:%S %p')}",
+        )
         self.value_change(
             category, item_name.currentText(), value_name, note.toPlainText()
         )
@@ -1036,6 +1189,54 @@ class MainWindow(QMainWindow):
                 )
                 inventory.change_object_in_object_item(
                     self.category, name, "notes", notes
+                )
+                inventory.change_object_in_object_item(
+                    self.category,
+                    name,
+                    "latest_change_name",
+                    f"Item added\n{self.username}\n{datetime.now().strftime('%B %d %A %Y %I-%M-%S %p')}",
+                )
+                inventory.change_object_in_object_item(
+                    self.category,
+                    name,
+                    "latest_change_part_number",
+                    f"Item added\n{self.username}\n{datetime.now().strftime('%B %d %A %Y %I-%M-%S %p')}",
+                )
+                inventory.change_object_in_object_item(
+                    self.category,
+                    name,
+                    "latest_change_unit_quantity",
+                    f"Item added\n{self.username}\n{datetime.now().strftime('%B %d %A %Y %I-%M-%S %p')}",
+                )
+                inventory.change_object_in_object_item(
+                    self.category,
+                    name,
+                    "latest_change_current_quantity",
+                    f"Item added\n{self.username}\n{datetime.now().strftime('%B %d %A %Y %I-%M-%S %p')}",
+                )
+                inventory.change_object_in_object_item(
+                    self.category,
+                    name,
+                    "latest_change_price",
+                    f"Item added\n{self.username}\n{datetime.now().strftime('%B %d %A %Y %I-%M-%S %p')}",
+                )
+                inventory.change_object_in_object_item(
+                    self.category,
+                    name,
+                    "latest_change_use_exchange_price",
+                    f"Item added\n{self.username}\n{datetime.now().strftime('%B %d %A %Y %I-%M-%S %p')}",
+                )
+                inventory.change_object_in_object_item(
+                    self.category,
+                    name,
+                    "latest_change_priority",
+                    f"Item added\n{self.username}\n{datetime.now().strftime('%B %d %A %Y %I-%M-%S %p')}",
+                )
+                inventory.change_object_in_object_item(
+                    self.category,
+                    name,
+                    "latest_change_notes",
+                    f"Item added\n{self.username}\n{datetime.now().strftime('%B %d %A %Y %I-%M-%S %p')}",
                 )
                 self.load_tab()
             elif response == DialogButtons.cancel:
@@ -1161,6 +1362,7 @@ class MainWindow(QMainWindow):
             "current_quantity",
             current_quantity + self.spinBox_quantity.value(),
         )
+
         data = inventory.get_data()
         for category in list(data.keys()):
             if category == self.category:
@@ -1336,6 +1538,16 @@ class MainWindow(QMainWindow):
             value_name=value_name,
             new_value=new_value,
         )
+        if value_name == "current_quantity":
+            value_before = inventory.get_value(item_name=category)[item_name][
+                "current_quantity"
+            ]
+            inventory.change_object_in_object_item(
+                category,
+                item_name,
+                "latest_change_current_quantity",
+                f"Latest Change:\nfrom: {value_before}\nto: {new_value}\n{self.username}\n{datetime.now().strftime('%B %d %A %Y %I:%M:%S %p')}",
+            )
         QApplication.restoreOverrideCursor()
         self.pushButton_add_quantity.setEnabled(add_quantity_state)
         self.pushButton_remove_quantity.setEnabled(remove_quantity_state)
@@ -1589,13 +1801,15 @@ class MainWindow(QMainWindow):
             if version != __version__:
                 message_dialog = self.show_message_dialog(
                     title=__name__,
+                    # The above code is checking if the user has entered a valid input. If the user
+                    # has entered a valid input, the program will continue. If the user has entered an
+                    # invalid input, the program will exit.
                     message=f"There is a new update available.\n\nNew Version: {version}\n\nMake sure to make a backup\nbefore installing new version.",
-                    dialog_buttons=DialogButtons.ok_download,
+                    dialog_buttons=DialogButtons.ok_update,
                 )
-                if message_dialog == DialogButtons.download:
-                    webbrowser.open(
-                        f"https://github.com/TheCodingJsoftware/Inventory-Manager/releases/tag/{version}"
-                    )
+                if message_dialog == DialogButtons.update:
+                    subprocess.Popen("start update.exe", shell=True)
+                    # sys.exit()
             elif not on_start_up:
                 self.show_message_dialog(
                     title=__name__,
