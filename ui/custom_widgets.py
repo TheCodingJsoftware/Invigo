@@ -216,7 +216,7 @@ class HumbleComboBox(QComboBox):
 class ViewTree(QTreeWidget):
     """It's a QTreeWidget that displays a list of files and folders"""
 
-    def __init__(self, value):
+    def __init__(self, data):
         """
         It takes a value and creates a tree widget item for it.
 
@@ -245,8 +245,27 @@ class ViewTree(QTreeWidget):
           value: The value to be displayed in the tree.
         """
         super().__init__()
-        self.setHeaderLabels(["Name", "Value"])
+        self.data = data
+        self.setHeaderLabels(
+            [
+                "Name",
+                "Part Number",
+                "Unit Quantity",
+                "Current Quantity",
+                "Price",
+                "Priority",
+                "Notes",
+            ]
+        )
+        self.setColumnWidth(0, 400)
+        self.setColumnWidth(1, 70)
+        self.setColumnWidth(2, 70)
+        self.setColumnWidth(3, 90)
+        self.setColumnWidth(4, 40)
+        self.setColumnWidth(5, 40)
+        self.load_ui()
 
+    def load_ui(self) -> None:
         def fill_item(item, value):
             """
             It takes a QTreeWidgetItem and a value, and if the value is a dict, list, or tuple, it
@@ -265,8 +284,21 @@ class ViewTree(QTreeWidget):
                 if type(val) != dict:
                     child = QTreeWidgetItem([text, str(val)])
                 else:
-                    child = QTreeWidgetItem([text])
-                fill_item(child, val)
+                    try:
+                        child = QTreeWidgetItem(
+                            [
+                                text,
+                                str(val["part_number"]),
+                                str(val["unit_quantity"]),
+                                str(val["current_quantity"]),
+                                str(val["price"]),
+                                str(val["priority"]),
+                                str(val["notes"]),
+                            ]
+                        )
+                    except KeyError:
+                        child = QTreeWidgetItem([text])
+                        fill_item(child, val)
                 parent.addChild(child)
 
             if value is None:
@@ -283,4 +315,4 @@ class ViewTree(QTreeWidget):
                     )
                     new_item(item, text, val)
 
-        fill_item(self.invisibleRootItem(), value)
+        fill_item(self.invisibleRootItem(), self.data)

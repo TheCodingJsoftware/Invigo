@@ -6,7 +6,7 @@ __credits__: "list[str]" = ["Jared Gross"]
 __license__ = "MIT"
 __name__ = "Inventory Manager"
 __version__ = "v1.1.5"
-__updated__ = "2022-07-01 19:48:02"
+__updated__ = "2022-07-04 22:57:31"
 __maintainer__ = "Jared Gross"
 __email__ = "jared@pinelandfarms.ca"
 __status__ = "Production"
@@ -95,6 +95,7 @@ def default_settings() -> None:
     check_setting(setting="last_category_tab", default_value=0)
     check_setting(setting="last_toolbox_tab", default_value=0)
     check_setting(setting="change_quantities_by", default_value="Category")
+    check_setting(setting="inventory_file_name", default_value="inventory")
 
 
 def check_setting(setting: str, default_value) -> None:
@@ -136,7 +137,9 @@ logging.basicConfig(
 
 settings_file = JsonFile(file_name="settings")
 default_settings()
-inventory = JsonFile(file_name="data/inventory")
+inventory = JsonFile(
+    file_name=f"data/{settings_file.get_value(item_name='inventory_file_name')}"
+)
 geometry = JsonObject(JsonFile=settings_file, object_name="geometry")
 
 
@@ -257,7 +260,10 @@ class MainWindow(QMainWindow):
             QIcon(f"ui/BreezeStyleSheets/dist/pyqt6/{self.theme}/upload.png")
         )
         self.actionUploadInventory.triggered.connect(
-            partial(self.upload_file, "data/inventory.json")
+            partial(
+                self.upload_file,
+                f"data/{settings_file.get_value(item_name='inventory_file_name')}.json",
+            )
         )
         self.actionUploadInventory.setIcon(
             QIcon(f"ui/BreezeStyleSheets/dist/pyqt6/{self.theme}/upload.png")
@@ -266,7 +272,10 @@ class MainWindow(QMainWindow):
             QIcon(f"ui/BreezeStyleSheets/dist/pyqt6/{self.theme}/download.png")
         )
         self.actionDownloadInventory.triggered.connect(
-            partial(self.download_file, "data/inventory.json")
+            partial(
+                self.download_file,
+                f"data/{settings_file.get_value(item_name='inventory_file_name')}.json",
+            )
         )
         self.actionDownloadInventory.setIcon(
             QIcon(f"ui/BreezeStyleSheets/dist/pyqt6/{self.theme}/download.png")
@@ -302,7 +311,7 @@ class MainWindow(QMainWindow):
             self.dockWidget_create_add_remove.setVisible(False)
             self.status_button.setHidden(True)
             self.clear_layout(self.search_layout)
-            tree_view = ViewTree(inventory.get_data())
+            tree_view = ViewTree(data=inventory.get_data())
             self.search_layout.addWidget(tree_view, 0, 0)
         else:
             self.dockWidget_create_add_remove.setVisible(True)
@@ -313,7 +322,9 @@ class MainWindow(QMainWindow):
         """
         It loads the categories from the inventory file and creates a tab for each category.
         """
-        inventory = JsonFile(file_name="data/inventory")
+        inventory = JsonFile(
+            file_name=f"data/{settings_file.get_value(item_name='inventory_file_name')}"
+        )
         QApplication.setOverrideCursor(Qt.WaitCursor)
         self.clear_layout(self.verticalLayout)
         self.tabs.clear()
@@ -1280,11 +1291,6 @@ class MainWindow(QMainWindow):
             )
             self.spinBox_quantity.setValue(0)
         else:
-            self.label.setText("Quantity:")
-            self.pushButton_add_quantity.setText("Add Quantity")
-            self.pushButton_remove_quantity.setText("Remove Quantity")
-            settings_file.add_item(item_name="change_quantities_by", value="Item")
-            self.pushButton_add_quantity.setEnabled(False)
             self.pushButton_remove_quantity.setEnabled(False)
             # self.listWidget_itemnames.clearSelection()
             # self.listWidget_item_changed()
@@ -1292,6 +1298,11 @@ class MainWindow(QMainWindow):
             # self.listWidget_itemnames.setStyleSheet(
             #     "QAbstractItemView::item{color: white}"
             # )
+            self.label.setText("Quantity:")
+            self.pushButton_add_quantity.setText("Add Quantity")
+            self.pushButton_remove_quantity.setText("Remove Quantity")
+            settings_file.add_item(item_name="change_quantities_by", value="Item")
+            self.pushButton_add_quantity.setEnabled(False)
 
     def remove_quantity_from_category(self) -> None:
         """
@@ -1725,12 +1736,21 @@ class MainWindow(QMainWindow):
                 return
 
     def open_po(self) -> None:
+        """
+        It opens a dialog box with a list of items
+        """
         input_dialog = SelectItemDialog(
             title="Open PO", message="Waiting for PO templates", items=[]
         )
         input_dialog.show()
 
     def show_web_scrape_results(self, data) -> None:
+        """
+        Shows results of webscrape
+
+        Args:
+          data: a list of dictionaries
+        """
         QApplication.restoreOverrideCursor()
         results = WebScrapeResultsDialog(
             title="Results", message="Ebay search results", data=data
@@ -1828,7 +1848,8 @@ class MainWindow(QMainWindow):
         """
         try:
             file_change = FileChanges(
-                from_file="data/inventory - Compare.json", to_file="data/inventory.json"
+                from_file=f"data/{settings_file.get_value(item_name='inventory_file_name')} - Compare.json",
+                to_file=f"data/{settings_file.get_value(item_name='inventory_file_name')}.json",
             )
             self.status_button.disconnect()
             if file_change.get_changes() == "":
@@ -1850,20 +1871,22 @@ class MainWindow(QMainWindow):
                 self.status_button.setText(file_change.which_file_changed())
             else:
                 self.status_button.setHidden(True)
-            os.remove("data/inventory - Compare.json")
-        except (TypeError, FileNotFoundError) as e:
+            os.remove(
+                f"data/{settings_file.get_value(item_name='inventory_file_name')} - Compare.json"
+            )
+        except (TypeError, FileNotFoundError) as error:
             self.status_button.setText(
-                f'<p style="color:red;"><b>Inventory</b> - Failed to get changes. - {datetime.now().strftime("%r")}</p>'
+                f'<p style="color:red;"><b>{settings_file.get_value(item_name="inventory_file_name").title()}</b> - Failed to get changes. - {datetime.now().strftime("%r")}</p>'
             )
             self.status_button.disconnect()
             self.status_button.clicked.connect(
                 partial(
                     self.show_error_dialog,
                     title="Error",
-                    message=f"Could not get changes.\n\n{str(e)}",
+                    message=f"Could not get changes.\n\n{str(error)}",
                 )
             )
-            logging.critical(e)
+            logging.critical(error)
 
     def data_received(self, data) -> None:
         """
@@ -1991,7 +2014,9 @@ class MainWindow(QMainWindow):
         """
         This function compresses the database file and shows a message dialog to the user
         """
-        compress_database(path_to_file="data/inventory.json")
+        compress_database(
+            path_to_file=f"data/{settings_file.get_value(item_name='inventory_file_name')}.json"
+        )
         self.show_message_dialog(title="Success", message="Backup was successful!")
 
     def closeEvent(self, event):
@@ -2001,7 +2026,10 @@ class MainWindow(QMainWindow):
         Args:
           event: the event that triggered the close_event() method
         """
-        compress_database(path_to_file="data/inventory.json")
+        compress_database(
+            path_to_file=f"data/{settings_file.get_value(item_name='inventory_file_name')}.json",
+            on_close=True,
+        )
         self.save_geometry()
         super().closeEvent(event)
 
