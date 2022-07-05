@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'f:\Code\Python-Projects\Inventory Manager\ui\add_item_dialog.ui'
+# Form implementation generated from reading ui file 'f:\Code\Python-Projects\Inventory Manager\dist\ui\add_item_dialog.ui'
 #
 # Created by: PyQt5 UI code generator 5.15.6
 #
@@ -78,6 +78,8 @@ class Ui_Form(object):
         self.gridLayout = QtWidgets.QGridLayout()
         self.gridLayout.setObjectName("gridLayout")
         self.doubleSpinBox_price = QtWidgets.QDoubleSpinBox(self.frame)
+        self.doubleSpinBox_price.setAccelerated(True)
+        self.doubleSpinBox_price.setProperty("showGroupSeparator", False)
         self.doubleSpinBox_price.setMaximum(999999999.0)
         self.doubleSpinBox_price.setObjectName("doubleSpinBox_price")
         self.gridLayout.addWidget(self.doubleSpinBox_price, 5, 2, 1, 1)
@@ -109,6 +111,7 @@ class Ui_Form(object):
         self.label_5.setObjectName("label_5")
         self.gridLayout.addWidget(self.label_5, 5, 0, 1, 1)
         self.spinBox_current_quantity = QtWidgets.QSpinBox(self.frame)
+        self.spinBox_current_quantity.setAccelerated(True)
         self.spinBox_current_quantity.setMaximum(9999999)
         self.spinBox_current_quantity.setObjectName("spinBox_current_quantity")
         self.gridLayout.addWidget(self.spinBox_current_quantity, 3, 2, 1, 1)
@@ -120,6 +123,8 @@ class Ui_Form(object):
         self.label_3.setObjectName("label_3")
         self.gridLayout.addWidget(self.label_3, 4, 0, 1, 1)
         self.spinBox_unit_quantity = QtWidgets.QSpinBox(self.frame)
+        self.spinBox_unit_quantity.setAccelerated(True)
+        self.spinBox_unit_quantity.setMinimum(1)
         self.spinBox_unit_quantity.setMaximum(9999999)
         self.spinBox_unit_quantity.setObjectName("spinBox_unit_quantity")
         self.gridLayout.addWidget(self.spinBox_unit_quantity, 4, 2, 1, 1)
@@ -142,6 +147,7 @@ class Ui_Form(object):
         self.lineEdit_part_number.setObjectName("lineEdit_part_number")
         self.gridLayout.addWidget(self.lineEdit_part_number, 1, 2, 1, 1)
         self.lineEdit_name = QtWidgets.QComboBox(self.frame)
+        self.lineEdit_name.setEditable(True)
         self.lineEdit_name.setObjectName("lineEdit_name")
         self.gridLayout.addWidget(self.lineEdit_name, 0, 2, 1, 1)
         self.verticalLayout.addLayout(self.gridLayout)
@@ -159,6 +165,7 @@ class Ui_Form(object):
         Form.setWindowTitle(_translate("Form", "Form"))
         self.lblTitle.setText(_translate("Form", "TextLabel"))
         self.lblMessage.setText(_translate("Form", "TextLabel"))
+        self.doubleSpinBox_price.setSpecialValueText(_translate("Form", " "))
         self.doubleSpinBox_price.setPrefix(_translate("Form", "$"))
         self.doubleSpinBox_price.setSuffix(_translate("Form", " CAD"))
         self.plainTextEdit_notes.setPlainText(_translate("Form", "Vendor: \n"

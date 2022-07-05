@@ -1,16 +1,15 @@
-import contextlib
-
 __author__ = "Jared Gross"
 __copyright__ = "Copyright 2022, TheCodingJ's"
 __credits__: "list[str]" = ["Jared Gross"]
 __license__ = "MIT"
 __name__ = "Inventory Manager"
-__version__ = "v1.1.6"
-__updated__ = "2022-07-04 23:13:39"
+__version__ = "v1.1.7"
+__updated__ = "2022-07-05 17:48:10"
 __maintainer__ = "Jared Gross"
 __email__ = "jared@pinelandfarms.ca"
 __status__ = "Production"
 
+import contextlib
 import itertools
 import logging
 import math
