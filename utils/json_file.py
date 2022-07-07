@@ -191,7 +191,7 @@ class JsonFile:
         """
         return self.data
 
-    def get_keys(self) -> list:
+    def get_keys(self) -> list[str]:
         """
         It returns a list of keys in the dictionary.
 

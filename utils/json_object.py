@@ -41,7 +41,7 @@ class JsonObject:
             object_name=self.object_name, item_name=item_name, new_value=value
         )
 
-    def get_value(self, item_name: str):
+    def get_value(self, item_name: str) -> dict:
         """
         It returns the value of the item in the dictionary with the key of the item_name parameter
 

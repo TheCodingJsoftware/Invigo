@@ -33,8 +33,7 @@ class FileChanges:
         Returns:
           A string.
         """
-        changes: bool = filecmp.cmp(self.from_file, self.to_file, shallow=False)
-        if changes:
+        if changes := filecmp.cmp(self.from_file, self.to_file, shallow=False):
             return f'<p style="color:green;"> <b>{self.file_name}</b> - Up to date. - {datetime.now().strftime("%r")}</p>'
         self.update_size()
         return (

@@ -278,7 +278,7 @@ class AddItemDialog(QDialog):
         """
         return self.plainTextEdit_notes.toPlainText()
 
-    def get_all_part_numbers(self) -> list:
+    def get_all_part_numbers(self) -> list[str]:
         """
         It takes the data from the self.inventory module, loops through the data, and returns a list of all
         the part numbers
@@ -297,7 +297,7 @@ class AddItemDialog(QDialog):
         part_numbers = list(set(part_numbers))
         return part_numbers
 
-    def get_all_part_names(self) -> list:
+    def get_all_part_names(self) -> list[str]:
         """
         It takes the data from the self.inventory module, loops through the data, and returns a list of all
         the part names

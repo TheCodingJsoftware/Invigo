@@ -3,8 +3,8 @@ __copyright__ = "Copyright 2022, TheCodingJ's"
 __credits__: "list[str]" = ["Jared Gross"]
 __license__ = "MIT"
 __name__ = "Inventory Manager"
-__version__ = "v1.1.7"
-__updated__ = "2022-07-05 17:48:10"
+__version__ = "v1.1.8"
+__updated__ = "2022-07-06 22:02:42"
 __maintainer__ = "Jared Gross"
 __email__ = "jared@pinelandfarms.ca"
 __status__ = "Production"
@@ -153,7 +153,7 @@ class MainWindow(QMainWindow):
         uic.loadUi("ui/main_menu.ui", self)
         self.username = os.getlogin().title()
         self.setWindowTitle(f"{__name__} {__version__} - {self.username}")
-        self.setWindowIcon(QIcon("icons/icon.png"))
+        self.setWindowIcon(QIcon(Icons.icon))
 
         self.check_for_updates(on_start_up=True)
         self.theme: str = (
@@ -1562,7 +1562,7 @@ class MainWindow(QMainWindow):
         self.pushButton_add_quantity.setEnabled(add_quantity_state)
         self.pushButton_remove_quantity.setEnabled(remove_quantity_state)
 
-    def get_all_part_numbers(self) -> list:
+    def get_all_part_numbers(self) -> list[str]:
         """
         It takes the data from the inventory module, loops through the data, and returns a list of all
         the part numbers
@@ -1581,7 +1581,7 @@ class MainWindow(QMainWindow):
         part_numbers = list(set(part_numbers))
         return part_numbers
 
-    def get_all_part_names(self) -> list:
+    def get_all_part_names(self) -> list[str]:
         """
         It takes the data from the inventory module, loops through the data, and returns a list of all
         the part names
@@ -2018,7 +2018,7 @@ class MainWindow(QMainWindow):
         )
         self.show_message_dialog(title="Success", message="Backup was successful!")
 
-    def closeEvent(self, event):
+    def closeEvent(self, event) -> None:
         """
         The function saves the geometry of the window and then closes the window
 
@@ -2032,7 +2032,7 @@ class MainWindow(QMainWindow):
         self.save_geometry()
         super().closeEvent(event)
 
-    def clear_layout(self, layout):
+    def clear_layout(self, layout) -> None:
         """
         If the layout is not None, while the layout has items, take the first item, get the widget, if
         the widget is not None, delete it, otherwise clear the layout
