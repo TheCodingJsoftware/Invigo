@@ -212,7 +212,7 @@ class AddItemDialog(QDialog):
         Returns:
           The text in the lineEdit_part_number widget.
         """
-        return self.lineEdit_part_number.currentText()
+        return self.lineEdit_part_number.currentText().encode("ascii", "ignore").decode()
 
     def get_name(self) -> str:
         """
@@ -221,7 +221,7 @@ class AddItemDialog(QDialog):
         Returns:
           The text in the lineEdit_name widget.
         """
-        return self.lineEdit_name.currentText()
+        return self.lineEdit_name.currentText().encode("ascii", "ignore").decode()
 
     def get_priority(self) -> int:
         """
@@ -276,7 +276,7 @@ class AddItemDialog(QDialog):
         Returns:
           The text in the text box.
         """
-        return self.plainTextEdit_notes.toPlainText()
+        return self.plainTextEdit_notes.toPlainText().encode("ascii", "ignore").decode()
 
     def get_all_part_numbers(self) -> list[str]:
         """
@@ -289,10 +289,13 @@ class AddItemDialog(QDialog):
         data = self.inventory.get_data()
         part_numbers = []
         for category in list(data.keys()):
-            part_numbers.extend(
-                data[category][item]["part_number"]
-                for item in list(data[category].keys())
-            )
+            try:
+                part_numbers.extend(
+                    data[category][item]["part_number"]
+                    for item in list(data[category].keys())
+                )
+            except KeyError:
+                continue
 
         part_numbers = list(set(part_numbers))
         return part_numbers

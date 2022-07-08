@@ -3,8 +3,8 @@ __copyright__ = "Copyright 2022, TheCodingJ's"
 __credits__: "list[str]" = ["Jared Gross"]
 __license__ = "MIT"
 __name__ = "Inventory Manager"
-__version__ = "v1.1.8"
-__updated__ = "2022-07-06 22:02:42"
+__version__ = "v1.1.9"
+__updated__ = "2022-07-08 15:14:15"
 __maintainer__ = "Jared Gross"
 __email__ = "jared@pinelandfarms.ca"
 __status__ = "Production"
@@ -454,13 +454,16 @@ class MainWindow(QMainWindow):
                     tab.addWidget(lbl_header, 0, i)
 
             for row_index, item in enumerate(list(category_data.keys()), start=1):  # type: ignore
-                current_quantity: int = category_data[item]["current_quantity"]
-                unit_quantity: int = category_data[item]["unit_quantity"]
-                priority: int = category_data[item]["priority"]
-                price: float = category_data[item]["price"]
-                notes: str = category_data[item]["notes"]
-                part_number: str = category_data[item]["part_number"]
-                use_exchange_rate: bool = category_data[item]["use_exchange_rate"]
+                try:
+                    current_quantity: int = category_data[item]["current_quantity"]
+                    unit_quantity: int = category_data[item]["unit_quantity"]
+                    priority: int = category_data[item]["priority"]
+                    price: float = category_data[item]["price"]
+                    notes: str = category_data[item]["notes"]
+                    part_number: str = category_data[item]["part_number"]
+                    use_exchange_rate: bool = category_data[item]["use_exchange_rate"]
+                except KeyError:
+                    continue
                 try:
                     latest_change_part_number: str = category_data[item][
                         "latest_change_part_number"
@@ -1164,7 +1167,7 @@ class MainWindow(QMainWindow):
                     if name == item:
                         self.show_error_dialog(
                             "Invalid name",
-                            f"'{name}' is an invalid item name.\n\nCan't be the same as other names.",
+                            f"'{name}'\nis an invalid item name.\n\nCan't be the same as other names.",
                             dialog_buttons=DialogButtons.ok,
                         )
                         return
@@ -1177,11 +1180,18 @@ class MainWindow(QMainWindow):
                 part_number: str = add_item_dialog.get_part_number()
                 use_exchange_rate: bool = add_item_dialog.get_exchange_rate()
 
-                inventory.add_item_in_object(self.category, name)
-
-                inventory.change_object_in_object_item(
-                    self.category, name, "part_number", part_number
-                )
+                try:
+                    inventory.add_item_in_object(self.category, name)
+                    inventory.change_object_in_object_item(
+                        self.category, name, "part_number", part_number
+                    )
+                except KeyError:
+                    self.show_error_dialog(
+                        "Invalid characters",
+                        f"'{name}'\nis an invalid item name.",
+                        dialog_buttons=DialogButtons.ok,
+                    )
+                    return
                 inventory.change_object_in_object_item(
                     self.category, name, "unit_quantity", unit_quantity
                 )
@@ -1573,11 +1583,13 @@ class MainWindow(QMainWindow):
         data = inventory.get_data()
         part_numbers = []
         for category in list(data.keys()):
-            part_numbers.extend(
-                data[category][item]["part_number"]
-                for item in list(data[category].keys())
-            )
-
+            try:
+                part_numbers.extend(
+                    data[category][item]["part_number"]
+                    for item in list(data[category].keys())
+                )
+            except KeyError:
+                continue
         part_numbers = list(set(part_numbers))
         return part_numbers
 
