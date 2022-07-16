@@ -174,7 +174,7 @@ class Server:
         repo = Repo(
             "C:/Users/user/Desktop/Inventory-Manager"
         )  # if repo is CWD just do '.'
-        repo.index.add([f"C:/Users/user/Desktop/Inventory-Manager/server/{file_name}"])
+        repo.index.add([f"server/{file_name}"])
         repo.index.commit(file_name)
         origin = repo.remote("origin")
         origin.push()
