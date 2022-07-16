@@ -3,16 +3,22 @@ import zipfile
 from datetime import datetime
 
 
-def compress_database(path_to_file: str) -> None:
+def compress_database(path_to_file: str, on_close: bool = False) -> None:
     """
-    It takes a path to a file, creates a zip file with the current date and time as the name, and then
-    adds the file to the zip file
+    It takes a path to a file, and creates a zip file in the backups directory with the current date and
+    time as the name, and the file as the content
 
     Args:
-      path_to_file (str): str = path_to_file.split("/")[-1]
+      path_to_file (str): str = The path to the file you want to compress.
+      on_close (bool): bool = False. Defaults to False
     """
     file_name: str = path_to_file.split("/")[-1]
-    path_to_zip_file: str = f"backups/{datetime.now().strftime('%Y-%m-%d-%H-%M')}.zip"
+    if on_close:
+        path_to_zip_file: str = f"backups/{datetime.now().strftime('%B %d %A %Y %I-%M-%S %p')} - (Auto Generated).zip"
+    else:
+        path_to_zip_file: str = (
+            f"backups/{datetime.now().strftime('%B %d %A %Y %I-%M-%S %p')}.zip"
+        )
     file = zipfile.ZipFile(path_to_zip_file, mode="w")
     file.write(path_to_file, file_name, compress_type=zipfile.ZIP_DEFLATED)
     file.close()

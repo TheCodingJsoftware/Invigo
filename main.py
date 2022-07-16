@@ -3,32 +3,37 @@ __copyright__ = "Copyright 2022, TheCodingJ's"
 __credits__: "list[str]" = ["Jared Gross"]
 __license__ = "MIT"
 __name__ = "Inventory Manager"
-__version__ = "v1.1.2"
-__updated__ = "2022-06-29 22:36:56"
+__version__ = "v1.1.9"
+__updated__ = "2022-07-08 15:14:15"
 __maintainer__ = "Jared Gross"
 __email__ = "jared@pinelandfarms.ca"
 __status__ = "Production"
 
+import contextlib
 import itertools
 import logging
 import math
 import os
 import shutil
+import subprocess
+import sys
 import threading
 import webbrowser
 from datetime import datetime
 from functools import partial
 from operator import add
+from pathlib import Path
 
 import requests
 from forex_python.converter import CurrencyRates
 from PyQt5 import QtTest, uic
 from PyQt5.QtCore import QFile, Qt, QTextStream
-from PyQt5.QtGui import QIcon, QPixmap
+from PyQt5.QtGui import QIcon, QPixmap, QStandardItemModel
 from PyQt5.QtWidgets import (
     QAction,
     QApplication,
     QComboBox,
+    QCompleter,
     QDoubleSpinBox,
     QFileDialog,
     QGridLayout,
@@ -45,7 +50,6 @@ from PyQt5.QtWidgets import (
     qApp,
 )
 
-import log_config
 import ui.BreezeStyleSheets.breeze_resources
 from threads.changes_thread import ChangesThread
 from threads.download_thread import DownloadThread
@@ -73,8 +77,68 @@ from utils.json_object import JsonObject
 from web_scrapers.ebay_scraper import EbayScraper
 from web_scrapers.exchange_rate import ExchangeRate
 
+
+def default_settings() -> None:
+    """
+    It checks if a setting exists in the settings file, and if it doesn't, it creates it with a default
+    value
+    """
+    check_setting(setting="exchange_rate", default_value=1.0)
+    check_setting(setting="dark_mode", default_value=True)
+    check_setting(setting="server_ip", default_value="10.0.0.64")
+    check_setting(setting="server_port", default_value=4000)
+    check_setting(
+        setting="geometry",
+        default_value={"x": 200, "y": 200, "width": 600, "height": 400},
+    )
+    check_setting(setting="last_category_tab", default_value=0)
+    check_setting(setting="last_toolbox_tab", default_value=0)
+    check_setting(setting="change_quantities_by", default_value="Category")
+    check_setting(setting="inventory_file_name", default_value="inventory")
+
+
+def check_setting(setting: str, default_value) -> None:
+    """
+    If the setting is not in the settings file, add it with the default value
+
+    Args:
+      setting (str): The name of the setting to check.
+      default_value: The default value of the setting.
+    """
+    if settings_file.get_value(item_name=setting) is None:
+        settings_file.add_item(item_name=setting, value=default_value)
+
+
+def check_folders(folders: list) -> None:
+    """
+    If the folder doesn't exist, create it
+
+    Args:
+      folders (list): list = ["data", "data/images", "data/images/thumbnails", "data/images/fullsize",
+    "data/images/fullsize/temp"]
+    """
+    for folder in folders:
+        with contextlib.suppress(FileExistsError):
+            if not os.path.exists(folder):
+                os.mkdir(folder)
+
+
+check_folders(folders=["logs", "data", "backups"])
+
+logging.basicConfig(
+    filename="logs/app.log",
+    filemode="a",
+    format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
+    datefmt="%d-%b-%y %H:%M:%S",
+    level=logging.INFO,
+)
+
+
 settings_file = JsonFile(file_name="settings")
-inventory = JsonFile(file_name="data/inventory")
+default_settings()
+inventory = JsonFile(
+    file_name=f"data/{settings_file.get_value(item_name='inventory_file_name')}"
+)
 geometry = JsonObject(JsonFile=settings_file, object_name="geometry")
 
 
@@ -87,8 +151,9 @@ class MainWindow(QMainWindow):
         """
         super().__init__()
         uic.loadUi("ui/main_menu.ui", self)
-        self.setWindowTitle(f"{__name__} {__version__} - {os.getlogin()}")
-        self.setWindowIcon(QIcon("icons/icon.png"))
+        self.username = os.getlogin().title()
+        self.setWindowTitle(f"{__name__} {__version__} - {self.username}")
+        self.setWindowIcon(QIcon(Icons.icon))
 
         self.check_for_updates(on_start_up=True)
         self.theme: str = (
@@ -194,7 +259,10 @@ class MainWindow(QMainWindow):
             QIcon(f"ui/BreezeStyleSheets/dist/pyqt6/{self.theme}/upload.png")
         )
         self.actionUploadInventory.triggered.connect(
-            partial(self.upload_file, "data/inventory.json")
+            partial(
+                self.upload_file,
+                f"data/{settings_file.get_value(item_name='inventory_file_name')}.json",
+            )
         )
         self.actionUploadInventory.setIcon(
             QIcon(f"ui/BreezeStyleSheets/dist/pyqt6/{self.theme}/upload.png")
@@ -203,7 +271,10 @@ class MainWindow(QMainWindow):
             QIcon(f"ui/BreezeStyleSheets/dist/pyqt6/{self.theme}/download.png")
         )
         self.actionDownloadInventory.triggered.connect(
-            partial(self.download_file, "data/inventory.json")
+            partial(
+                self.download_file,
+                f"data/{settings_file.get_value(item_name='inventory_file_name')}.json",
+            )
         )
         self.actionDownloadInventory.setIcon(
             QIcon(f"ui/BreezeStyleSheets/dist/pyqt6/{self.theme}/download.png")
@@ -239,7 +310,7 @@ class MainWindow(QMainWindow):
             self.dockWidget_create_add_remove.setVisible(False)
             self.status_button.setHidden(True)
             self.clear_layout(self.search_layout)
-            tree_view = ViewTree(inventory.get_data())
+            tree_view = ViewTree(data=inventory.get_data())
             self.search_layout.addWidget(tree_view, 0, 0)
         else:
             self.dockWidget_create_add_remove.setVisible(True)
@@ -250,7 +321,9 @@ class MainWindow(QMainWindow):
         """
         It loads the categories from the inventory file and creates a tab for each category.
         """
-        inventory = JsonFile(file_name="data/inventory")
+        inventory = JsonFile(
+            file_name=f"data/{settings_file.get_value(item_name='inventory_file_name')}"
+        )
         QApplication.setOverrideCursor(Qt.WaitCursor)
         self.clear_layout(self.verticalLayout)
         self.tabs.clear()
@@ -349,6 +422,11 @@ class MainWindow(QMainWindow):
         settings_file.add_item("last_category_tab", tab_index)
         tab = self.tabs[tab_index]
         category_data = inventory.get_value(item_name=self.category)
+        autofill_search_options = self.get_all_part_names() + self.get_all_part_numbers()
+        completer = QCompleter(autofill_search_options)
+        completer.setCaseSensitivity(Qt.CaseInsensitive)
+        self.lineEdit_search_items.setCompleter(completer)
+
         self.update_list_widget()
         self.label_category_name.setText(f"Category: {self.category}")
         self.quantities_change()
@@ -376,13 +454,58 @@ class MainWindow(QMainWindow):
                     tab.addWidget(lbl_header, 0, i)
 
             for row_index, item in enumerate(list(category_data.keys()), start=1):  # type: ignore
-                current_quantity: int = category_data[item]["current_quantity"]
-                unit_quantity: int = category_data[item]["unit_quantity"]
-                priority: int = category_data[item]["priority"]
-                price: float = category_data[item]["price"]
-                notes: str = category_data[item]["notes"]
-                part_number: str = category_data[item]["part_number"]
-                use_exchange_rate: bool = category_data[item]["use_exchange_rate"]
+                try:
+                    current_quantity: int = category_data[item]["current_quantity"]
+                    unit_quantity: int = category_data[item]["unit_quantity"]
+                    priority: int = category_data[item]["priority"]
+                    price: float = category_data[item]["price"]
+                    notes: str = category_data[item]["notes"]
+                    part_number: str = category_data[item]["part_number"]
+                    use_exchange_rate: bool = category_data[item]["use_exchange_rate"]
+                except KeyError:
+                    continue
+                try:
+                    latest_change_part_number: str = category_data[item][
+                        "latest_change_part_number"
+                    ]
+                except KeyError:
+                    latest_change_part_number: str = "No changes saved yet."
+                try:
+                    latest_change_unit_quantity: str = category_data[item][
+                        "latest_change_unit_quantity"
+                    ]
+                except KeyError:
+                    latest_change_unit_quantity: str = "No changes saved yet."
+                try:
+                    latest_change_current_quantity: str = category_data[item][
+                        "latest_change_current_quantity"
+                    ]
+                except KeyError:
+                    latest_change_current_quantity: str = "No changes saved yet."
+                try:
+                    latest_change_price: str = category_data[item]["latest_change_price"]
+                except KeyError:
+                    latest_change_price: str = "No changes saved yet."
+                try:
+                    latest_change_use_exchange_rate: str = category_data[item][
+                        "latest_change_use_exchange_rate"
+                    ]
+                except KeyError:
+                    latest_change_use_exchange_rate: str = "No changes saved yet."
+                try:
+                    latest_change_priority: str = category_data[item][
+                        "latest_change_priority"
+                    ]
+                except KeyError:
+                    latest_change_priority: str = "No changes saved yet."
+                try:
+                    latest_change_notes: str = category_data[item]["latest_change_notes"]
+                except KeyError:
+                    latest_change_notes: str = "No changes saved yet."
+                try:
+                    latest_change_name: str = category_data[item]["latest_change_name"]
+                except KeyError:
+                    latest_change_name: str = "No changes saved yet."
                 exchange_rate: float = (
                     self.get_exchange_rate() if use_exchange_rate else 1
                 )
@@ -403,6 +526,7 @@ class MainWindow(QMainWindow):
                         item_name,
                     )
                 )
+                item_name.setToolTip(latest_change_name)
                 item_name.setMinimumWidth(MINIMUM_WIDTH)
                 tab.addWidget(item_name, row_index, col_index)
 
@@ -414,6 +538,7 @@ class MainWindow(QMainWindow):
                 line_edit_part_number.setEditable(True)
                 line_edit_part_number.setCurrentText(part_number)
                 line_edit_part_number.setFixedWidth(120)
+                line_edit_part_number.setToolTip(latest_change_part_number)
                 line_edit_part_number.currentTextChanged.connect(
                     partial(
                         self.part_number_change,
@@ -432,6 +557,7 @@ class MainWindow(QMainWindow):
                 spin_unit_quantity.setMaximum(99999999)
                 spin_unit_quantity.setMinimum(-99999999)
                 spin_unit_quantity.setAccelerated(True)
+                spin_unit_quantity.setToolTip(latest_change_unit_quantity)
                 spin_unit_quantity.setValue(int(unit_quantity))
                 spin_unit_quantity.valueChanged.connect(
                     partial(
@@ -451,6 +577,7 @@ class MainWindow(QMainWindow):
                 spin_current_quantity.setMaximum(99999999)
                 spin_current_quantity.setMinimum(-99999999)
                 spin_current_quantity.setAccelerated(True)
+                spin_current_quantity.setToolTip(latest_change_current_quantity)
                 spin_current_quantity.setValue(int(current_quantity))
                 if current_quantity <= 0:
                     spin_current_quantity.setStyleSheet("color: red")
@@ -473,6 +600,7 @@ class MainWindow(QMainWindow):
                 spin_price.setMinimum(-99999999)
                 spin_price.setAccelerated(True)
                 spin_price.setValue(price)
+                spin_price.setToolTip(latest_change_price)
                 spin_price.setPrefix("$")
                 spin_price.setSuffix(" USD" if use_exchange_rate else " CAD")
                 spin_price.valueChanged.connect(
@@ -489,6 +617,7 @@ class MainWindow(QMainWindow):
                 combo_exchange_rate.setFixedWidth(50)
                 combo_exchange_rate.addItems(["CAD", "USD"])
                 combo_exchange_rate.setCurrentText("USD" if use_exchange_rate else "CAD")
+                combo_exchange_rate.setToolTip(latest_change_use_exchange_rate)
                 combo_exchange_rate.currentIndexChanged.connect(
                     partial(
                         self.use_exchange_rate_change,
@@ -528,6 +657,7 @@ class MainWindow(QMainWindow):
                 combo_priority = QComboBox()
                 combo_priority.wheelEvent = lambda event: None
                 combo_priority.setFixedWidth(60)
+                combo_priority.setToolTip(latest_change_priority)
                 combo_priority.addItems(["Default", "Low", "Medium", "High"])
                 combo_priority.setCurrentIndex(priority)
                 if combo_priority.currentText() == "Medium":
@@ -549,6 +679,7 @@ class MainWindow(QMainWindow):
 
                 text_notes = QPlainTextEdit()
                 text_notes.setMinimumWidth(100)
+                text_notes.setToolTip(latest_change_notes)
                 text_notes.setMaximumWidth(200)
                 text_notes.setFixedHeight(60)
                 text_notes.setPlainText(notes)
@@ -782,6 +913,16 @@ class MainWindow(QMainWindow):
                 name.setCurrentText(old_name)
                 # name.selectAll()
                 return
+
+        inventory.change_object_in_object_item(
+            category,
+            old_name,
+            "latest_change_name",
+            f"Latest Change:\nfrom: \"{old_name}\"\nto: \"{name.currentText()}\"\n{self.username}\n{datetime.now().strftime('%B %d %A %Y %I:%M:%S %p')}",
+        )
+        name.setToolTip(
+            f"Latest Change:\nfrom: \"{old_name}\"\nto: \"{name.currentText()}\"\n{self.username}\n{datetime.now().strftime('%B %d %A %Y %I:%M:%S %p')}",
+        )
         inventory.change_item_name(category, old_name, name.currentText())
         name.disconnect()
         name.currentTextChanged.connect(
@@ -802,6 +943,18 @@ class MainWindow(QMainWindow):
         value_name (str): str = The name of the value you want to change.
         quantity (QLineEdit): QLineEdit
         """
+        value_before = inventory.get_value(item_name=category)[item_name.currentText()][
+            "part_number"
+        ]
+        inventory.change_object_in_object_item(
+            category,
+            item_name.currentText(),
+            "latest_change_part_number",
+            f"Latest Change:\nfrom: {value_before}\nto: {part_number.currentText()}\n{self.username}\n{datetime.now().strftime('%B %d %A %Y %I:%M:%S %p')}",
+        )
+        part_number.setToolTip(
+            f"Latest Change:\nfrom: {value_before}\nto: {part_number.currentText()}\n{self.username}\n{datetime.now().strftime('%B %d %A %Y %I:%M:%S %p')}",
+        )
         self.value_change(
             category, item_name.currentText(), value_name, part_number.currentText()
         )
@@ -819,6 +972,18 @@ class MainWindow(QMainWindow):
         value_name (str): str = The name of the value you want to change.
         quantity (QSpinBox): QSpinBox
         """
+        value_before = inventory.get_value(item_name=category)[item_name.currentText()][
+            "current_quantity"
+        ]
+        inventory.change_object_in_object_item(
+            category,
+            item_name.currentText(),
+            "latest_change_current_quantity",
+            f"Latest Change:\nfrom: {value_before}\nto: {quantity.value()}\n{self.username}\n{datetime.now().strftime('%B %d %A %Y %I:%M:%S %p')}",
+        )
+        quantity.setToolTip(
+            f"Latest Change:\nfrom: {value_before}\nto: {quantity.value()}\n{self.username}\n{datetime.now().strftime('%B %d %A %Y %I:%M:%S %p')}",
+        )
         self.value_change(category, item_name.currentText(), value_name, quantity.value())
         if quantity.value() <= 0:
             quantity.setStyleSheet("color: red")
@@ -839,6 +1004,18 @@ class MainWindow(QMainWindow):
           value_name (str): str = The name of the value you want to change.
           quantity (QSpinBox): QSpinBox
         """
+        value_before = inventory.get_value(item_name=category)[item_name.currentText()][
+            "unit_quantity"
+        ]
+        inventory.change_object_in_object_item(
+            category,
+            item_name.currentText(),
+            "latest_change_unit_quantity",
+            f"Latest Change:\nfrom: {value_before}\nto: {quantity.value()}\n{self.username}\n{datetime.now().strftime('%B %d %A %Y %I:%M:%S %p')}",
+        )
+        quantity.setToolTip(
+            f"Latest Change:\nfrom: {value_before}\nto: {quantity.value()}\n{self.username}\n{datetime.now().strftime('%B %d %A %Y %I:%M:%S %p')}",
+        )
         self.value_change(category, item_name.currentText(), value_name, quantity.value())
 
     def price_change(
@@ -854,6 +1031,19 @@ class MainWindow(QMainWindow):
           value_name (str): str = The name of the value you want to change.
           price (QDoubleSpinBox): QDoubleSpinBox
         """
+
+        value_before = inventory.get_value(item_name=category)[item_name.currentText()][
+            "price"
+        ]
+        inventory.change_object_in_object_item(
+            category,
+            item_name.currentText(),
+            "latest_change_price",
+            f"Latest Change:\nfrom: {value_before}\nto: {price.value()}\n{self.username}\n{datetime.now().strftime('%B %d %A %Y %I:%M:%S %p')}",
+        )
+        price.setToolTip(
+            f"Latest Change:\nfrom: {value_before}\nto: {price.value()}\n{self.username}\n{datetime.now().strftime('%B %d %A %Y %I:%M:%S %p')}",
+        )
         self.value_change(category, item_name.currentText(), value_name, price.value())
         self.update_stock_costs()
 
@@ -869,11 +1059,25 @@ class MainWindow(QMainWindow):
           value_name (str): str = The name of the value to change
           combo (QComboBox): QComboBox
         """
+        value_before = inventory.get_value(item_name=category)[item_name.currentText()][
+            "use_exchange_rate"
+        ]
+        usd = combo.currentText() == "USD"
+        inventory.change_object_in_object_item(
+            category,
+            item_name.currentText(),
+            "latest_change_use_exchange_rate",
+            f"Latest Change:\nfrom: {value_before}\nto: {usd}\n{self.username}\n{datetime.now().strftime('%B %d %A %Y %I:%M:%S %p')}",
+        )
+        combo.setToolTip(
+            f"Latest Change:\nfrom: {value_before}\nto: {usd}\n{self.username}\n{datetime.now().strftime('%B %d %A %Y %I:%M:%S %p')}",
+        )
+
         self.value_change(
             category,
             item_name.currentText(),
             value_name,
-            combo.currentText() == "USD",
+            usd,
         )
         self.update_stock_costs()
 
@@ -889,6 +1093,20 @@ class MainWindow(QMainWindow):
           value_name (str): str = The name of the value to change
           combo (QComboBox): QComboBox
         """
+
+        value_before = inventory.get_value(item_name=category)[item_name.currentText()][
+            "priority"
+        ]
+        inventory.change_object_in_object_item(
+            category,
+            item_name.currentText(),
+            "latest_change_priority",
+            f"Latest Change:\nfrom: {value_before}\nto: {combo.currentIndex()}\n{self.username}\n{datetime.now().strftime('%B %d %A %Y %I:%M:%S %p')}",
+        )
+        combo.setToolTip(
+            f"Latest Change:\nfrom: {value_before}\nto: {combo.currentIndex()}\n{self.username}\n{datetime.now().strftime('%B %d %A %Y %I:%M:%S %p')}",
+        )
+
         self.value_change(
             category, item_name.currentText(), value_name, combo.currentIndex()
         )
@@ -912,6 +1130,18 @@ class MainWindow(QMainWindow):
           value_name (str): str = The name of the value that is being changed.
           note (QPlainTextEdit): QPlainTextEdit
         """
+        value_before = inventory.get_value(item_name=category)[item_name.currentText()][
+            "notes"
+        ]
+        inventory.change_object_in_object_item(
+            category,
+            item_name.currentText(),
+            "latest_change_notes",
+            f"Latest Change:\nfrom: \"{value_before}\"\nto: \"{note.toPlainText()}\"\n{self.username}\n{datetime.now().strftime('%B %d %A %Y %I:%M:%S %p')}",
+        )
+        note.setToolTip(
+            f"Latest Change:\nfrom: \"{value_before}\"\nto: \"{note.toPlainText()}\"\n{self.username}\n{datetime.now().strftime('%B %d %A %Y %I:%M:%S %p')}",
+        )
         self.value_change(
             category, item_name.currentText(), value_name, note.toPlainText()
         )
@@ -937,7 +1167,7 @@ class MainWindow(QMainWindow):
                     if name == item:
                         self.show_error_dialog(
                             "Invalid name",
-                            f"'{name}' is an invalid item name.\n\nCan't be the same as other names.",
+                            f"'{name}'\nis an invalid item name.\n\nCan't be the same as other names.",
                             dialog_buttons=DialogButtons.ok,
                         )
                         return
@@ -950,11 +1180,18 @@ class MainWindow(QMainWindow):
                 part_number: str = add_item_dialog.get_part_number()
                 use_exchange_rate: bool = add_item_dialog.get_exchange_rate()
 
-                inventory.add_item_in_object(self.category, name)
-
-                inventory.change_object_in_object_item(
-                    self.category, name, "part_number", part_number
-                )
+                try:
+                    inventory.add_item_in_object(self.category, name)
+                    inventory.change_object_in_object_item(
+                        self.category, name, "part_number", part_number
+                    )
+                except KeyError:
+                    self.show_error_dialog(
+                        "Invalid characters",
+                        f"'{name}'\nis an invalid item name.",
+                        dialog_buttons=DialogButtons.ok,
+                    )
+                    return
                 inventory.change_object_in_object_item(
                     self.category, name, "unit_quantity", unit_quantity
                 )
@@ -972,6 +1209,54 @@ class MainWindow(QMainWindow):
                 )
                 inventory.change_object_in_object_item(
                     self.category, name, "notes", notes
+                )
+                inventory.change_object_in_object_item(
+                    self.category,
+                    name,
+                    "latest_change_name",
+                    f"Item added\n{self.username}\n{datetime.now().strftime('%B %d %A %Y %I-%M-%S %p')}",
+                )
+                inventory.change_object_in_object_item(
+                    self.category,
+                    name,
+                    "latest_change_part_number",
+                    f"Item added\n{self.username}\n{datetime.now().strftime('%B %d %A %Y %I-%M-%S %p')}",
+                )
+                inventory.change_object_in_object_item(
+                    self.category,
+                    name,
+                    "latest_change_unit_quantity",
+                    f"Item added\n{self.username}\n{datetime.now().strftime('%B %d %A %Y %I-%M-%S %p')}",
+                )
+                inventory.change_object_in_object_item(
+                    self.category,
+                    name,
+                    "latest_change_current_quantity",
+                    f"Item added\n{self.username}\n{datetime.now().strftime('%B %d %A %Y %I-%M-%S %p')}",
+                )
+                inventory.change_object_in_object_item(
+                    self.category,
+                    name,
+                    "latest_change_price",
+                    f"Item added\n{self.username}\n{datetime.now().strftime('%B %d %A %Y %I-%M-%S %p')}",
+                )
+                inventory.change_object_in_object_item(
+                    self.category,
+                    name,
+                    "latest_change_use_exchange_price",
+                    f"Item added\n{self.username}\n{datetime.now().strftime('%B %d %A %Y %I-%M-%S %p')}",
+                )
+                inventory.change_object_in_object_item(
+                    self.category,
+                    name,
+                    "latest_change_priority",
+                    f"Item added\n{self.username}\n{datetime.now().strftime('%B %d %A %Y %I-%M-%S %p')}",
+                )
+                inventory.change_object_in_object_item(
+                    self.category,
+                    name,
+                    "latest_change_notes",
+                    f"Item added\n{self.username}\n{datetime.now().strftime('%B %d %A %Y %I-%M-%S %p')}",
                 )
                 self.load_tab()
             elif response == DialogButtons.cancel:
@@ -1015,11 +1300,6 @@ class MainWindow(QMainWindow):
             )
             self.spinBox_quantity.setValue(0)
         else:
-            self.label.setText("Quantity:")
-            self.pushButton_add_quantity.setText("Add Quantity")
-            self.pushButton_remove_quantity.setText("Remove Quantity")
-            settings_file.add_item(item_name="change_quantities_by", value="Item")
-            self.pushButton_add_quantity.setEnabled(False)
             self.pushButton_remove_quantity.setEnabled(False)
             # self.listWidget_itemnames.clearSelection()
             # self.listWidget_item_changed()
@@ -1027,6 +1307,11 @@ class MainWindow(QMainWindow):
             # self.listWidget_itemnames.setStyleSheet(
             #     "QAbstractItemView::item{color: white}"
             # )
+            self.label.setText("Quantity:")
+            self.pushButton_add_quantity.setText("Add Quantity")
+            self.pushButton_remove_quantity.setText("Remove Quantity")
+            settings_file.add_item(item_name="change_quantities_by", value="Item")
+            self.pushButton_add_quantity.setEnabled(False)
 
     def remove_quantity_from_category(self) -> None:
         """
@@ -1067,6 +1352,17 @@ class MainWindow(QMainWindow):
         self.load_tab()
         self.pushButton_add_quantity.setEnabled(False)
         self.pushButton_remove_quantity.setEnabled(True)
+        self.highlight_color = "#A34444"
+        for item in list(self.inventory_prices_objects.keys()):
+            if self.inventory_prices_objects[item]["current_quantity"].value() <= 0:
+                self.inventory_prices_objects[item]["current_quantity"].setStyleSheet(
+                    f"background-color: {self.highlight_color}; color: red"
+                )
+            else:
+                self.inventory_prices_objects[item]["current_quantity"].setStyleSheet(
+                    f"background-color: {self.highlight_color}; color: white"
+                )
+        self.highlight_color = "#4380A0"
 
     def add_quantity(self, item_name: str, old_quantity: int) -> None:
         """
@@ -1086,6 +1382,7 @@ class MainWindow(QMainWindow):
             "current_quantity",
             current_quantity + self.spinBox_quantity.value(),
         )
+
         data = inventory.get_data()
         for category in list(data.keys()):
             if category == self.category:
@@ -1148,6 +1445,7 @@ class MainWindow(QMainWindow):
         Returns:
           The return value of the function is None.
         """
+
         try:
             selected_item: str = self.listWidget_itemnames.currentItem().text()
         except AttributeError:
@@ -1164,6 +1462,19 @@ class MainWindow(QMainWindow):
             if item.currentText() == selected_item:
                 if self.highlight_color == "#4380A0":
                     item.setStyleSheet(f"background-color: {self.highlight_color}")
+
+                    if (
+                        self.inventory_prices_objects[item]["current_quantity"].value()
+                        <= 0
+                    ):
+                        self.inventory_prices_objects[item][
+                            "current_quantity"
+                        ].setStyleSheet("background-color: #1d2023; color: red")
+
+                    else:
+                        self.inventory_prices_objects[item][
+                            "current_quantity"
+                        ].setStyleSheet("background-color: #1d2023; color: white")
                 else:
                     if (
                         self.inventory_prices_objects[item]["current_quantity"].value()
@@ -1247,11 +1558,21 @@ class MainWindow(QMainWindow):
             value_name=value_name,
             new_value=new_value,
         )
+        if value_name == "current_quantity":
+            value_before = inventory.get_value(item_name=category)[item_name][
+                "current_quantity"
+            ]
+            inventory.change_object_in_object_item(
+                category,
+                item_name,
+                "latest_change_current_quantity",
+                f"Latest Change:\nfrom: {value_before}\nto: {new_value}\n{self.username}\n{datetime.now().strftime('%B %d %A %Y %I:%M:%S %p')}",
+            )
         QApplication.restoreOverrideCursor()
         self.pushButton_add_quantity.setEnabled(add_quantity_state)
         self.pushButton_remove_quantity.setEnabled(remove_quantity_state)
 
-    def get_all_part_numbers(self) -> list:
+    def get_all_part_numbers(self) -> list[str]:
         """
         It takes the data from the inventory module, loops through the data, and returns a list of all
         the part numbers
@@ -1262,15 +1583,17 @@ class MainWindow(QMainWindow):
         data = inventory.get_data()
         part_numbers = []
         for category in list(data.keys()):
-            part_numbers.extend(
-                data[category][item]["part_number"]
-                for item in list(data[category].keys())
-            )
-
+            try:
+                part_numbers.extend(
+                    data[category][item]["part_number"]
+                    for item in list(data[category].keys())
+                )
+            except KeyError:
+                continue
         part_numbers = list(set(part_numbers))
         return part_numbers
 
-    def get_all_part_names(self) -> list:
+    def get_all_part_names(self) -> list[str]:
         """
         It takes the data from the inventory module, loops through the data, and returns a list of all
         the part names
@@ -1281,10 +1604,8 @@ class MainWindow(QMainWindow):
         data = inventory.get_data()
         part_names = []
         for category in list(data.keys()):
-            if category == self.category:
-                continue
             part_names.extend(iter(list(data[category].keys())))
-        part_names = list(set(part_names))
+        # part_names = list(set(part_names))
         return part_names
 
     def get_exchange_rate(self) -> float:
@@ -1426,12 +1747,21 @@ class MainWindow(QMainWindow):
                 return
 
     def open_po(self) -> None:
+        """
+        It opens a dialog box with a list of items
+        """
         input_dialog = SelectItemDialog(
             title="Open PO", message="Waiting for PO templates", items=[]
         )
         input_dialog.show()
 
     def show_web_scrape_results(self, data) -> None:
+        """
+        Shows results of webscrape
+
+        Args:
+          data: a list of dictionaries
+        """
         QApplication.restoreOverrideCursor()
         results = WebScrapeResultsDialog(
             title="Results", message="Ebay search results", data=data
@@ -1502,13 +1832,15 @@ class MainWindow(QMainWindow):
             if version != __version__:
                 message_dialog = self.show_message_dialog(
                     title=__name__,
+                    # The above code is checking if the user has entered a valid input. If the user
+                    # has entered a valid input, the program will continue. If the user has entered an
+                    # invalid input, the program will exit.
                     message=f"There is a new update available.\n\nNew Version: {version}\n\nMake sure to make a backup\nbefore installing new version.",
-                    dialog_buttons=DialogButtons.ok_download,
+                    dialog_buttons=DialogButtons.ok_update,
                 )
-                if message_dialog == DialogButtons.download:
-                    webbrowser.open(
-                        f"https://github.com/TheCodingJsoftware/Inventory-Manager/releases/tag/{version}"
-                    )
+                if message_dialog == DialogButtons.update:
+                    subprocess.Popen("start update.exe", shell=True)
+                    # sys.exit()
             elif not on_start_up:
                 self.show_message_dialog(
                     title=__name__,
@@ -1527,7 +1859,8 @@ class MainWindow(QMainWindow):
         """
         try:
             file_change = FileChanges(
-                from_file="data/inventory - Compare.json", to_file="data/inventory.json"
+                from_file=f"data/{settings_file.get_value(item_name='inventory_file_name')} - Compare.json",
+                to_file=f"data/{settings_file.get_value(item_name='inventory_file_name')}.json",
             )
             self.status_button.disconnect()
             if file_change.get_changes() == "":
@@ -1549,20 +1882,22 @@ class MainWindow(QMainWindow):
                 self.status_button.setText(file_change.which_file_changed())
             else:
                 self.status_button.setHidden(True)
-            os.remove("data/inventory - Compare.json")
-        except (TypeError, FileNotFoundError) as e:
+            os.remove(
+                f"data/{settings_file.get_value(item_name='inventory_file_name')} - Compare.json"
+            )
+        except (TypeError, FileNotFoundError) as error:
             self.status_button.setText(
-                f'<p style="color:red;"><b>Inventory</b> - Failed to get changes. - {datetime.now().strftime("%r")}</p>'
+                f'<p style="color:red;"><b>{settings_file.get_value(item_name="inventory_file_name").title()}</b> - Failed to get changes. - {datetime.now().strftime("%r")}</p>'
             )
             self.status_button.disconnect()
             self.status_button.clicked.connect(
                 partial(
                     self.show_error_dialog,
                     title="Error",
-                    message=f"Could not get changes.\n\n{str(e)}",
+                    message=f"Could not get changes.\n\n{str(error)}",
                 )
             )
-            logging.critical(e)
+            logging.critical(error)
 
     def data_received(self, data) -> None:
         """
@@ -1690,20 +2025,26 @@ class MainWindow(QMainWindow):
         """
         This function compresses the database file and shows a message dialog to the user
         """
-        compress_database(path_to_file="data/inventory.json")
+        compress_database(
+            path_to_file=f"data/{settings_file.get_value(item_name='inventory_file_name')}.json"
+        )
         self.show_message_dialog(title="Success", message="Backup was successful!")
 
-    def closeEvent(self, event):
+    def closeEvent(self, event) -> None:
         """
         The function saves the geometry of the window and then closes the window
 
         Args:
           event: the event that triggered the close_event() method
         """
+        compress_database(
+            path_to_file=f"data/{settings_file.get_value(item_name='inventory_file_name')}.json",
+            on_close=True,
+        )
         self.save_geometry()
         super().closeEvent(event)
 
-    def clear_layout(self, layout):
+    def clear_layout(self, layout) -> None:
         """
         If the layout is not None, while the layout has items, take the first item, get the widget, if
         the widget is not None, delete it, otherwise clear the layout
@@ -1721,56 +2062,11 @@ class MainWindow(QMainWindow):
                     self.clear_layout(item.layout())
 
 
-def default_settings() -> None:
-    """
-    It checks if a setting exists in the settings file, and if it doesn't, it creates it with a default
-    value
-    """
-    check_setting(setting="exchange_rate", default_value=1.0)
-    check_setting(setting="dark_mode", default_value=True)
-    check_setting(setting="server_ip", default_value="10.0.0.64")
-    check_setting(setting="server_port", default_value=4000)
-    check_setting(
-        setting="geometry",
-        default_value={"x": 200, "y": 200, "width": 600, "height": 400},
-    )
-    check_setting(setting="last_category_tab", default_value=0)
-    check_setting(setting="last_toolbox_tab", default_value=0)
-    check_setting(setting="change_quantities_by", default_value="Category")
-
-
-def check_setting(setting: str, default_value) -> None:
-    """
-    If the setting is not in the settings file, add it with the default value
-
-    Args:
-      setting (str): The name of the setting to check.
-      default_value: The default value of the setting.
-    """
-    if settings_file.get_value(item_name=setting) is None:
-        settings_file.add_item(item_name=setting, value=default_value)
-
-
-def check_folders(folders: list) -> None:
-    """
-    If the folder doesn't exist, create it
-
-    Args:
-      folders (list): list = ["data", "data/images", "data/images/thumbnails", "data/images/fullsize",
-    "data/images/fullsize/temp"]
-    """
-    for folder in folders:
-        if not os.path.exists(f"{os.path.dirname(os.path.realpath(__file__))}/{folder}"):
-            os.makedirs(f"{os.path.dirname(os.path.realpath(__file__))}/{folder}")
-
-
 def main() -> None:
     """
     It creates a QApplication, creates a MainWindow, shows the MainWindow, and then runs the
     QApplication
     """
-    default_settings()
-    check_folders(folders=["logs", "data", "backups"])
     app = QApplication([])
     window = MainWindow()
     window.show()

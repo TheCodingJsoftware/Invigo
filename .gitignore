@@ -70,3 +70,4 @@ backups
 *.zip
 venv/
 *.ini
+server/data/

@@ -10,7 +10,6 @@ from utils.dialog_icons import Icons
 from utils.json_file import JsonFile
 
 settings_file = JsonFile(file_name="settings")
-inventory = JsonFile(file_name="data/inventory")
 
 
 class AddItemDialog(QDialog):
@@ -40,6 +39,8 @@ class AddItemDialog(QDialog):
         super(AddItemDialog, self).__init__(parent)
         uic.loadUi("ui/add_item_dialog.ui", self)
 
+        self.inventory = JsonFile(file_name="data/inventory")
+
         self.icon_name = icon_name
         self.button_names = button_names
         self.title = title
@@ -60,8 +61,10 @@ class AddItemDialog(QDialog):
         self.lineEdit_name.setCurrentText("")
         self.lineEdit_part_number.setCurrentText("")
 
-        self.lineEdit_name.lineEdit().textChanged.connect(self.name_changed)
-        self.lineEdit_part_number.lineEdit().textChanged.connect(self.part_number_changed)
+        # self.lineEdit_name.lineEdit().editingFinished.connect(self.name_changed)
+        # self.lineEdit_part_number.lineEdit().editingFinished.connect(
+        #     self.part_number_changed
+        # )
 
         self.load_dialog_buttons()
 
@@ -142,7 +145,7 @@ class AddItemDialog(QDialog):
         It takes the name of an item from a combobox, and then fills in the rest of the fields with the
         data from the dictionary.
         """
-        data = inventory.get_data()
+        data = self.inventory.get_data()
         for category in list(data.keys()):
             for item in list(data[category].keys()):
                 if item == self.lineEdit_name.currentText():
@@ -166,11 +169,11 @@ class AddItemDialog(QDialog):
 
     def part_number_changed(self) -> None:
         """
-        It takes the part number from the lineEdit_part_number widget and searches the inventory data
+        It takes the part number from the lineEdit_part_number widget and searches the self.inventory data
         for a matching part number. If it finds a match, it sets the other widgets to the values of the
         matching part number.
         """
-        data = inventory.get_data()
+        data = self.inventory.get_data()
         for category in list(data.keys()):
             for item in list(data[category].keys()):
                 if (
@@ -209,7 +212,7 @@ class AddItemDialog(QDialog):
         Returns:
           The text in the lineEdit_part_number widget.
         """
-        return self.lineEdit_part_number.currentText()
+        return self.lineEdit_part_number.currentText().encode("ascii", "ignore").decode()
 
     def get_name(self) -> str:
         """
@@ -218,7 +221,7 @@ class AddItemDialog(QDialog):
         Returns:
           The text in the lineEdit_name widget.
         """
-        return self.lineEdit_name.currentText()
+        return self.lineEdit_name.currentText().encode("ascii", "ignore").decode()
 
     def get_priority(self) -> int:
         """
@@ -273,36 +276,39 @@ class AddItemDialog(QDialog):
         Returns:
           The text in the text box.
         """
-        return self.plainTextEdit_notes.toPlainText()
+        return self.plainTextEdit_notes.toPlainText().encode("ascii", "ignore").decode()
 
-    def get_all_part_numbers(self) -> list:
+    def get_all_part_numbers(self) -> list[str]:
         """
-        It takes the data from the inventory module, loops through the data, and returns a list of all
+        It takes the data from the self.inventory module, loops through the data, and returns a list of all
         the part numbers
 
         Returns:
-          A list of all the part numbers in the inventory.
+          A list of all the part numbers in the self.inventory.
         """
-        data = inventory.get_data()
+        data = self.inventory.get_data()
         part_numbers = []
         for category in list(data.keys()):
-            part_numbers.extend(
-                data[category][item]["part_number"]
-                for item in list(data[category].keys())
-            )
+            try:
+                part_numbers.extend(
+                    data[category][item]["part_number"]
+                    for item in list(data[category].keys())
+                )
+            except KeyError:
+                continue
 
         part_numbers = list(set(part_numbers))
         return part_numbers
 
-    def get_all_part_names(self) -> list:
+    def get_all_part_names(self) -> list[str]:
         """
-        It takes the data from the inventory module, loops through the data, and returns a list of all
+        It takes the data from the self.inventory module, loops through the data, and returns a list of all
         the part names
 
         Returns:
-          A list of all the part names in the inventory.
+          A list of all the part names in the self.inventory.
         """
-        data = inventory.get_data()
+        data = self.inventory.get_data()
         part_names = []
         for category in list(data.keys()):
             part_names.extend(iter(list(data[category].keys())))

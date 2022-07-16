@@ -2,21 +2,23 @@ class DialogButtons:
     """A class that contains constants."""
 
     ok: str = "Ok"
-    ok_cancel: str = "Ok, Cancel"
-    cancel: str = "Cancel"
+    yes: str = "Yes"
     no: str = "No"
+    cancel: str = "Cancel"
     copy: str = "Copy"
     save: str = "Save"
+    clone: str = "Clone"
     add: str = "Add"
     delete: str = "Delete"
-    clone: str = "Clone"
-    download: str = "Download"
-    delete_cancel: str = "Delete, Cancel"
-    clone_cancel: str = "Clone, Cancel"
-    add_cancel: str = "Add, Cancel"
-    yes_no_cancel: str = "Yes, No, Cancel"
-    save_cancel: str = "Save, Cancel"
-    open_cancel: str = "Open, Cancel"
-    ok_download: str = "Ok, Download"
-    ok_copy_cancel: str = "Ok, Copy, Cancel"
-    ok_save_copy_cancel: str = "Ok, Save, Copy, Cancel"
+    update: str = "Update"
+    open: str = "Open"
+    ok_cancel: str = ", ".join([ok, cancel])
+    delete_cancel: str = ", ".join([delete, cancel])
+    clone_cancel: str = ", ".join([clone, cancel])
+    add_cancel: str = ", ".join([add, cancel])
+    yes_no_cancel: str = ", ".join([yes, no, cancel])
+    save_cancel: str = ", ".join([save, cancel])
+    open_cancel: str = ", ".join([open, cancel])
+    ok_update: str = ", ".join([ok, update])
+    ok_copy_cancel: str = ", ".join([ok, copy, cancel])
+    ok_save_copy_cancel: str = ", ".join([ok, save, copy, cancel])
