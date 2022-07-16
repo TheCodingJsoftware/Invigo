@@ -171,7 +171,9 @@ class Server:
         """
         It adds the file to the git index, commits it, and pushes it to the remote origin
         """
-        repo = Repo(".")  # if repo is CWD just do '.'
+        repo = Repo(
+            r"C:\Users\user\Desktop\Inventory-Manager"
+        )  # if repo is CWD just do '.'
         repo.index.add([file_name])
         repo.index.commit(file_name)
         origin = repo.remote("origin")
