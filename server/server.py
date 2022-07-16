@@ -4,6 +4,8 @@ import socket
 from datetime import datetime
 from time import sleep
 
+from git import Repo
+
 from utils.colors import Colors
 
 
@@ -65,28 +67,28 @@ class Server:
             logging.exception("Exception occured")
             return
         while True:
-            print(
-                f"{Colors.BOLD}{datetime.now()}{Colors.ENDC} - {Colors.HEADER}[ ] Listening for connections...{Colors.ENDC}"
-            )
-            client_socket, client_address = self.s.accept()
-            data = client_socket.recv(self.BUFFER_SIZE).decode()
-
-            logging.info("got data")
-
-            print(
-                f"{Colors.BOLD}{datetime.now()}{Colors.ENDC} - {Colors.OKGREEN}[+] Connection established with: {str(client_address)} data: {data}{Colors.ENDC}"
-            )
-            logging.info(
-                f"Connection established with: {str(client_address)} data: {data}"
-            )
-            print(
-                f"{Colors.BOLD}{datetime.now()}{Colors.ENDC} - {Colors.OKGREEN}[ ] Starting process: {str(client_address)} Command: {data.split(self.SEPARATOR)[0]}{Colors.ENDC}"
-            )
-            logging.info(
-                f"Starting process: {str(client_address)} Command: {data.split(self.SEPARATOR)[0]}"
-            )
-
             try:
+                print(
+                    f"{Colors.BOLD}{datetime.now()}{Colors.ENDC} - {Colors.HEADER}[ ] Listening for connections...{Colors.ENDC}"
+                )
+                client_socket, client_address = self.s.accept()
+                data = client_socket.recv(self.BUFFER_SIZE).decode()
+
+                logging.info("got data")
+
+                print(
+                    f"{Colors.BOLD}{datetime.now()}{Colors.ENDC} - {Colors.OKGREEN}[+] Connection established with: {str(client_address)} data: {data}{Colors.ENDC}"
+                )
+                logging.info(
+                    f"Connection established with: {str(client_address)} data: {data}"
+                )
+                print(
+                    f"{Colors.BOLD}{datetime.now()}{Colors.ENDC} - {Colors.OKGREEN}[ ] Starting process: {str(client_address)} Command: {data.split(self.SEPARATOR)[0]}{Colors.ENDC}"
+                )
+                logging.info(
+                    f"Starting process: {str(client_address)} Command: {data.split(self.SEPARATOR)[0]}"
+                )
+
                 # The server returns a file to the client
                 if "get_file" in data:
                     command, filename = data.split(self.SEPARATOR)
@@ -129,8 +131,12 @@ class Server:
                         f"{Colors.BOLD}{datetime.now()}{Colors.ENDC}\t{Colors.OKGREEN}[+] Succesfully received file{Colors.ENDC}"
                     )
                     logging.info("Succesfully received file")
+                    self.__upload_inventory(filename)
             except Exception as e:
-                logging.exception(str(e))
+                logging.exception(e)
+                print(
+                    f"{Colors.BOLD}{datetime.now()}{Colors.ENDC} - {Colors.ERROR}[X] ERROR: {e} {Colors.ENDC}"
+                )
             try:
                 client_socket.close()
                 print(
@@ -160,6 +166,19 @@ class Server:
                 print(
                     f"{Colors.BOLD}{datetime.now()}{Colors.ENDC} - {Colors.OKGREEN}{os.path.dirname(os.path.realpath(__file__))}/{folder} Created.{Colors.ENDC}"
                 )
+
+    def __upload_inventory(self, file_name: str) -> None:
+        """
+        It adds the file to the git index, commits it, and pushes it to the remote origin
+        """
+        repo = Repo(".")  # if repo is CWD just do '.'
+        repo.index.add([file_name])
+        repo.index.commit(file_name)
+        origin = repo.remote("origin")
+        origin.push()
+        print(
+            f"{Colors.ENDC}{Colors.BOLD}{datetime.now()}{Colors.ENDC} - {Colors.OKGREEN}Updated {file_name}{Colors.ENDC}"
+        )
 
 
 if __name__ == "__main__":
