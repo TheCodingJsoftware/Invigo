@@ -86,11 +86,12 @@
         "Sticker  319  easy Sweep": {
             "part_number": "319",
             "unit_quantity": 1,
-            "current_quantity": 130,
+            "current_quantity": 160,
             "price": 1.86,
             "use_exchange_rate": false,
             "priority": 0,
-            "notes": "Vendor: \nDescription: "
+            "notes": "Vendor: \nDescription: ",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 160\nto: 160\nJared\nJuly 16 Saturday 2022 08:45:24 PM"
         },
         "Sticker 320 Water Temperture 5\"x9.5\"": {
             "part_number": "320",
@@ -670,11 +671,12 @@
         "Sticker  319  easy Sweep": {
             "part_number": "319",
             "unit_quantity": 1,
-            "current_quantity": 130,
+            "current_quantity": 160,
             "price": 1.86,
             "use_exchange_rate": false,
             "priority": 0,
-            "notes": "Vendor: \nDescription: "
+            "notes": "Vendor: \nDescription: ",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 160\nto: 160\nJared\nJuly 16 Saturday 2022 08:45:24 PM"
         },
         "Handle Black Phenolic BTH-2": {
             "part_number": "bth-2",
@@ -1249,11 +1251,12 @@
         "Sticker  319  easy Sweep": {
             "part_number": "319",
             "unit_quantity": 1,
-            "current_quantity": 130,
+            "current_quantity": 160,
             "price": 1.86,
             "use_exchange_rate": false,
             "priority": 0,
-            "notes": "Vendor: \nDescription: "
+            "notes": "Vendor: \nDescription: ",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 160\nto: 160\nJared\nJuly 16 Saturday 2022 08:45:24 PM"
         },
         "Sticker 320 Water Temperture 5\"x9.5\"": {
             "part_number": "320",
