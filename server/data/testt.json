@@ -3,11 +3,12 @@
         "6L12  ASHT 6\"X12\" Section": {
             "part_number": "6L12",
             "unit_quantity": 1.0,
-            "current_quantity": 3,
+            "current_quantity": 8,
             "price": 44.03,
             "use_exchange_rate": false,
             "priority": 2,
-            "notes": "Vendor: Security Chimneys\ndmorris@duraventgroup.com\nDescription: "
+            "notes": "Vendor: Security Chimneys\ndmorris@duraventgroup.com\nDescription: ",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 8\nto: 8\nJared\nJuly 16 Saturday 2022 08:54:02 PM"
         },
         "6L24 ASHT 6\"X24\" Section": {
             "part_number": "6L24",
@@ -21,11 +22,12 @@
         "6BL Chimney Cap": {
             "part_number": "6BL",
             "unit_quantity": 1,
-            "current_quantity": 3,
+            "current_quantity": 4,
             "price": 0.0,
             "use_exchange_rate": false,
             "priority": 2,
-            "notes": "Vendor: \nDescription: "
+            "notes": "Vendor: \nDescription: ",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 4\nto: 4\nJared\nJuly 16 Saturday 2022 09:03:52 PM"
         },
         "535 Blacl Silicone 300ML ": {
             "part_number": "32390",
@@ -1070,20 +1072,22 @@
         "6L12  ASHT 6\"X12\" Section": {
             "part_number": "6L12",
             "unit_quantity": 1.0,
-            "current_quantity": 3,
+            "current_quantity": 8,
             "price": 44.03,
             "use_exchange_rate": false,
             "priority": 2,
-            "notes": "Vendor: Security Chimneys\ndmorris@duraventgroup.com\nDescription: "
+            "notes": "Vendor: Security Chimneys\ndmorris@duraventgroup.com\nDescription: ",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 8\nto: 8\nJared\nJuly 16 Saturday 2022 08:54:02 PM"
         },
         "6BL Chimney Cap": {
             "part_number": "6BL",
             "unit_quantity": 1,
-            "current_quantity": 3,
+            "current_quantity": 4,
             "price": 0.0,
             "use_exchange_rate": false,
             "priority": 2,
-            "notes": "Vendor: \nDescription: "
+            "notes": "Vendor: \nDescription: ",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 4\nto: 4\nJared\nJuly 16 Saturday 2022 09:03:53 PM"
         },
         "6L24 ASHT 6\"X24\" Section": {
             "part_number": "6L24",
@@ -1168,11 +1172,12 @@
         "6L12  ASHT 6\"X12\" Section": {
             "part_number": "6L12",
             "unit_quantity": 1.0,
-            "current_quantity": 3,
+            "current_quantity": 8,
             "price": 44.03,
             "use_exchange_rate": false,
             "priority": 2,
-            "notes": "Vendor: Security Chimneys\ndmorris@duraventgroup.com\nDescription: "
+            "notes": "Vendor: Security Chimneys\ndmorris@duraventgroup.com\nDescription: ",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 8\nto: 8\nJared\nJuly 16 Saturday 2022 08:54:02 PM"
         },
         "6L24 ASHT 6\"X24\" Section": {
             "part_number": "6L24",
@@ -1186,11 +1191,12 @@
         "6BL Chimney Cap": {
             "part_number": "6BL",
             "unit_quantity": 1,
-            "current_quantity": 3,
+            "current_quantity": 4,
             "price": 0.0,
             "use_exchange_rate": false,
             "priority": 2,
-            "notes": "Vendor: \nDescription: "
+            "notes": "Vendor: \nDescription: ",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 4\nto: 4\nJared\nJuly 16 Saturday 2022 09:03:52 PM"
         },
         "535 Blacl Silicone 300ML ": {
             "part_number": "32390",
