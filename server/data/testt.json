@@ -3,12 +3,12 @@
         "6L12  ASHT 6\"X12\" Section": {
             "part_number": "6L12",
             "unit_quantity": 1.0,
-            "current_quantity": 7.0,
+            "current_quantity": 10.0,
             "price": 44.03,
             "use_exchange_rate": false,
             "priority": 2,
             "notes": "Vendor: Security Chimneys\ndmorris@duraventgroup.com\nDescription: ",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 7.0\nto: 7.0\nJared\nJuly 16 Saturday 2022 09:13:32 PM"
+            "latest_change_current_quantity": "Latest Change:\nfrom: 10.0\nto: 10.0\nJared\nJuly 16 Saturday 2022 09:35:24 PM"
         },
         "6L24 ASHT 6\"X24\" Section": {
             "part_number": "6L24",
@@ -1129,12 +1129,12 @@
         "6L12  ASHT 6\"X12\" Section": {
             "part_number": "6L12",
             "unit_quantity": 1.0,
-            "current_quantity": 7.0,
+            "current_quantity": 10.0,
             "price": 44.03,
             "use_exchange_rate": false,
             "priority": 2,
             "notes": "Vendor: Security Chimneys\ndmorris@duraventgroup.com\nDescription: ",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 7.0\nto: 7.0\nJared\nJuly 16 Saturday 2022 09:13:38 PM"
+            "latest_change_current_quantity": "Latest Change:\nfrom: 10.0\nto: 10.0\nJared\nJuly 16 Saturday 2022 09:35:24 PM"
         },
         "6BL Chimney Cap": {
             "part_number": "6BL",
@@ -1230,12 +1230,12 @@
         "6L12  ASHT 6\"X12\" Section": {
             "part_number": "6L12",
             "unit_quantity": 1.0,
-            "current_quantity": 7.0,
+            "current_quantity": 10.0,
             "price": 44.03,
             "use_exchange_rate": false,
             "priority": 2,
             "notes": "Vendor: Security Chimneys\ndmorris@duraventgroup.com\nDescription: ",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 7.0\nto: 7.0\nJared\nJuly 16 Saturday 2022 09:13:28 PM"
+            "latest_change_current_quantity": "Latest Change:\nfrom: 10.0\nto: 10.0\nJared\nJuly 16 Saturday 2022 09:35:24 PM"
         },
         "6L24 ASHT 6\"X24\" Section": {
             "part_number": "6L24",
