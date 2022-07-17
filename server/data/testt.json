@@ -3,350 +3,350 @@
         "6L12  ASHT 6\"X12\" Section": {
             "part_number": "6L12",
             "unit_quantity": 1.0,
-            "current_quantity": 18.0,
+            "current_quantity": 15.0,
             "price": 44.03,
             "use_exchange_rate": false,
             "priority": 2,
             "notes": "Vendor: Security Chimneys\ndmorris@duraventgroup.com\nDescription: ",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 18.0\nto: 18.0\nJared\nJuly 16 Saturday 2022 09:55:14 PM"
+            "latest_change_current_quantity": "Latest Change:\nfrom: 15.0\nto: 15.0\nJared\nJuly 16 Saturday 2022 10:00:31 PM"
         },
         "6L24 ASHT 6\"X24\" Section": {
             "part_number": "6L24",
             "unit_quantity": 1,
-            "current_quantity": -6,
+            "current_quantity": -9,
             "price": 0.0,
             "use_exchange_rate": false,
             "priority": 2,
             "notes": "Vendor: Security Chimneys\n\nDescription: ",
-            "latest_change_current_quantity": "Latest Change:\nfrom: -6\nto: -6\nJared\nJuly 16 Saturday 2022 09:55:14 PM"
+            "latest_change_current_quantity": "Latest Change:\nfrom: -9\nto: -9\nJared\nJuly 16 Saturday 2022 10:00:31 PM"
         },
         "6BL Chimney Cap": {
             "part_number": "6BL",
             "unit_quantity": 1,
-            "current_quantity": 6,
+            "current_quantity": 3,
             "price": 0.0,
             "use_exchange_rate": false,
             "priority": 2,
             "notes": "Vendor: \nDescription: ",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 6\nto: 6\nJared\nJuly 16 Saturday 2022 09:55:14 PM"
+            "latest_change_current_quantity": "Latest Change:\nfrom: 3\nto: 3\nJared\nJuly 16 Saturday 2022 10:00:31 PM"
         },
         "535 Blacl Silicone 300ML ": {
             "part_number": "32390",
             "unit_quantity": 1,
-            "current_quantity": 94,
+            "current_quantity": 91,
             "price": 9.7,
             "use_exchange_rate": false,
             "priority": 3,
             "notes": "Vendor: Rantec\nRachel@rantec.ca\nDescription: ",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 94\nto: 94\nJared\nJuly 16 Saturday 2022 09:55:14 PM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 91\nto: 91\nJared\nJuly 16 Saturday 2022 10:00:31 PM",
             "latest_change_price": "Latest Change:\nfrom: 9.7\nto: 9.7\nItsme\nJuly 07 Thursday 2022 03:59:16 PM"
         },
         "Sticker   #306 Polar Furnace with Polar Bear  11\"x14\" ": {
             "part_number": "403",
             "unit_quantity": 1,
-            "current_quantity": 104,
+            "current_quantity": 101,
             "price": 4.31,
             "use_exchange_rate": false,
             "priority": 0,
             "notes": "Vendor: \nDescription: ",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 104\nto: 104\nJared\nJuly 16 Saturday 2022 09:55:14 PM"
+            "latest_change_current_quantity": "Latest Change:\nfrom: 101\nto: 101\nJared\nJuly 16 Saturday 2022 10:00:31 PM"
         },
         "Sticker 308 CSA Polar G2 10\"x 6\" Silver Foil ": {
             "part_number": "308",
             "unit_quantity": 1,
-            "current_quantity": 97,
+            "current_quantity": 94,
             "price": 5.37,
             "use_exchange_rate": false,
             "priority": 0,
             "notes": "Vendor: \nDescription: ",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 97\nto: 97\nJared\nJuly 16 Saturday 2022 09:55:14 PM"
+            "latest_change_current_quantity": "Latest Change:\nfrom: 94\nto: 94\nJared\nJuly 16 Saturday 2022 10:00:31 PM"
         },
         " Sticker 309 Polar G2 & G3 Caution Disconnect Power 4.5\"x2\"": {
             "part_number": "309",
             "unit_quantity": 1.0,
-            "current_quantity": 104.0,
+            "current_quantity": 101.0,
             "price": 0.61,
             "use_exchange_rate": false,
             "priority": 0,
             "notes": "Vendor: \nDescription: ",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 104.0\nto: 104.0\nJared\nJuly 16 Saturday 2022 09:55:14 PM"
+            "latest_change_current_quantity": "Latest Change:\nfrom: 101.0\nto: 101.0\nJared\nJuly 16 Saturday 2022 10:00:32 PM"
         },
         "Sticker 310 Polar G2 & G3 Caution Pinch Hazard 4.5\"x2.75\"": {
             "part_number": "310",
             "unit_quantity": 2,
-            "current_quantity": 98,
+            "current_quantity": 92,
             "price": 0.64,
             "use_exchange_rate": false,
             "priority": 0,
             "notes": "Vendor: \nDescription: ",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 98\nto: 98\nJared\nJuly 16 Saturday 2022 09:55:14 PM"
+            "latest_change_current_quantity": "Latest Change:\nfrom: 92\nto: 92\nJared\nJuly 16 Saturday 2022 10:00:32 PM"
         },
         "Sticker 312 Polar G2 & G3 G series Wiring 8\"x10\"": {
             "part_number": "312",
             "unit_quantity": 1,
-            "current_quantity": 84,
+            "current_quantity": 81,
             "price": 2.06,
             "use_exchange_rate": false,
             "priority": 0,
             "notes": "Vendor: \nDescription: ",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 84\nto: 84\nJared\nJuly 16 Saturday 2022 09:55:14 PM"
+            "latest_change_current_quantity": "Latest Change:\nfrom: 81\nto: 81\nJared\nJuly 16 Saturday 2022 10:00:32 PM"
         },
         "Sticker  319  easy Sweep": {
             "part_number": "319",
             "unit_quantity": 1,
-            "current_quantity": 154,
+            "current_quantity": 151,
             "price": 1.86,
             "use_exchange_rate": false,
             "priority": 0,
             "notes": "Vendor: \nDescription: ",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 154\nto: 154\nJared\nJuly 16 Saturday 2022 09:55:14 PM"
+            "latest_change_current_quantity": "Latest Change:\nfrom: 151\nto: 151\nJared\nJuly 16 Saturday 2022 10:00:32 PM"
         },
         "Sticker 320 Water Temperture 5\"x9.5\"": {
             "part_number": "320",
             "unit_quantity": 1,
-            "current_quantity": 164,
+            "current_quantity": 161,
             "price": 2.47,
             "use_exchange_rate": false,
             "priority": 0,
             "notes": "Vendor: \nDescription: ",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 164\nto: 164\nJared\nJuly 16 Saturday 2022 09:55:14 PM"
+            "latest_change_current_quantity": "Latest Change:\nfrom: 161\nto: 161\nJared\nJuly 16 Saturday 2022 10:00:32 PM"
         },
         "Sticker 322 G2 and G3 Remove Label ": {
             "part_number": "322",
             "unit_quantity": 1,
-            "current_quantity": 94,
+            "current_quantity": 91,
             "price": 1.81,
             "use_exchange_rate": false,
             "priority": 0,
             "notes": "Vendor: \nDescription: ",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 94\nto: 94\nJared\nJuly 16 Saturday 2022 09:55:14 PM"
+            "latest_change_current_quantity": "Latest Change:\nfrom: 91\nto: 91\nJared\nJuly 16 Saturday 2022 10:00:32 PM"
         },
         "3\"x48\"x96\" FSK Insulation Sheet": {
             "part_number": "FSK3",
             "unit_quantity": 3.0,
-            "current_quantity": 10.0,
+            "current_quantity": 1.0,
             "price": 124.99,
             "use_exchange_rate": false,
             "priority": 0,
             "notes": "Vendor: BrockWhite\nevandenberg@brockwhite.com\n",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 10.0\nto: 10.0\nJared\nJuly 16 Saturday 2022 09:55:14 PM"
+            "latest_change_current_quantity": "Latest Change:\nfrom: 1.0\nto: 1.0\nJared\nJuly 16 Saturday 2022 10:00:32 PM"
         },
         "1\"x25\"x48\" FSK 300 Certainteed Insulation": {
             "part_number": "FSK1",
             "unit_quantity": 2,
-            "current_quantity": 28,
+            "current_quantity": 22,
             "price": 8.8,
             "use_exchange_rate": false,
             "priority": 0,
             "notes": "Vendor: BrockWhite\nDescription: \nevandenberg@brockwhite.com",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 28\nto: 28\nJared\nJuly 16 Saturday 2022 09:55:14 PM"
+            "latest_change_current_quantity": "Latest Change:\nfrom: 22\nto: 22\nJared\nJuly 16 Saturday 2022 10:00:32 PM"
         },
         "UKC 2\"  Open Cell Foam G-Class-Fan": {
             "part_number": "UKC2",
             "unit_quantity": 1.0,
-            "current_quantity": 80.0,
+            "current_quantity": 77.0,
             "price": 9.0,
             "use_exchange_rate": false,
             "priority": 0,
             "notes": "Vendor: Industrial  Rubber Supply\nDescription: ",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 80.0\nto: 80.0\nJared\nJuly 16 Saturday 2022 09:55:14 PM"
+            "latest_change_current_quantity": "Latest Change:\nfrom: 77.0\nto: 77.0\nJared\nJuly 16 Saturday 2022 10:00:32 PM"
         },
         "Sticker #304  Polar Furnace 3.65\"x 37.79\" ": {
             "part_number": "404",
             "unit_quantity": 1,
-            "current_quantity": 104,
+            "current_quantity": 101,
             "price": 2.33,
             "use_exchange_rate": false,
             "priority": 0,
             "notes": "Vendor: \nDescription: ",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 104\nto: 104\nJared\nJuly 16 Saturday 2022 09:55:14 PM"
+            "latest_change_current_quantity": "Latest Change:\nfrom: 101\nto: 101\nJared\nJuly 16 Saturday 2022 10:00:32 PM"
         },
         "10mm Isoplan  Fan Mount insulation": {
             "part_number": "10IFMI",
             "unit_quantity": 1,
-            "current_quantity": 14,
+            "current_quantity": 11,
             "price": 5.0,
             "use_exchange_rate": false,
             "priority": 0,
             "notes": "Vendor: Piney MFG\nDescription: ",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 14\nto: 14\nJared\nJuly 16 Saturday 2022 09:55:14 PM"
+            "latest_change_current_quantity": "Latest Change:\nfrom: 11\nto: 11\nJared\nJuly 16 Saturday 2022 10:00:32 PM"
         },
         "2\" ThermaxSF-450": {
             "part_number": "THERMAXSF450",
             "unit_quantity": 1.0,
-            "current_quantity": 55.0,
+            "current_quantity": 52.0,
             "price": 49.94,
             "use_exchange_rate": false,
             "priority": 1,
             "notes": "Vendor: Neux Hearth Products\nDescription: Jim.willes@neux.com \n",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 55.0\nto: 55.0\nJared\nJuly 16 Saturday 2022 09:55:14 PM"
+            "latest_change_current_quantity": "Latest Change:\nfrom: 52.0\nto: 52.0\nJared\nJuly 16 Saturday 2022 10:00:32 PM"
         },
         "3\" Thermax SF- 600 Brick Slabs": {
             "part_number": "THERMAXSF600",
             "unit_quantity": 1,
-            "current_quantity": 30,
+            "current_quantity": 27,
             "price": 104.5,
             "use_exchange_rate": false,
             "priority": 0,
             "notes": "Vendor: Nuex Hearth Ptoducts\nDescription: Jim.willes@neux.com ",
             "latest_change_price": "Latest Change:\nfrom: 104.5\nto: 104.5\nItsme\nJuly 07 Thursday 2022 08:54:01 AM",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 30\nto: 30\nJared\nJuly 16 Saturday 2022 09:55:14 PM"
+            "latest_change_current_quantity": "Latest Change:\nfrom: 27\nto: 27\nJared\nJuly 16 Saturday 2022 10:00:32 PM"
         },
         "Hose Industrial G322-125 1-1\/4 ": {
             "part_number": "G322-125",
             "unit_quantity": 1,
-            "current_quantity": 44,
+            "current_quantity": 41,
             "price": 5.13,
             "use_exchange_rate": false,
             "priority": 0,
             "notes": "Vendor: GreenLine \nDescription: 204-694-0332",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 44\nto: 44\nJared\nJuly 16 Saturday 2022 09:55:14 PM"
+            "latest_change_current_quantity": "Latest Change:\nfrom: 41\nto: 41\nJared\nJuly 16 Saturday 2022 10:00:32 PM"
         },
         "1 1\/4 Full Port ball Valve": {
             "part_number": "114BV",
             "unit_quantity": 2,
-            "current_quantity": -3,
+            "current_quantity": -9,
             "price": 11.78,
             "use_exchange_rate": false,
             "priority": 0,
             "notes": "Vendor: Greenline\nDescription: 204-694-0332",
-            "latest_change_current_quantity": "Latest Change:\nfrom: -3\nto: -3\nJared\nJuly 16 Saturday 2022 09:55:14 PM"
+            "latest_change_current_quantity": "Latest Change:\nfrom: -9\nto: -9\nJared\nJuly 16 Saturday 2022 10:00:32 PM"
         },
         "1 1\/4 Closed Nipple ": {
             "part_number": "114CN",
             "unit_quantity": 3.0,
-            "current_quantity": 47.0,
+            "current_quantity": 38.0,
             "price": 0.7,
             "use_exchange_rate": false,
             "priority": 0,
             "notes": "Vendor: Greenline\nDescription: 204-694-0332",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 47.0\nto: 47.0\nJared\nJuly 16 Saturday 2022 09:55:14 PM"
+            "latest_change_current_quantity": "Latest Change:\nfrom: 38.0\nto: 38.0\nJared\nJuly 16 Saturday 2022 10:00:32 PM"
         },
         "Hose Clamp 1 1\/2  S.S": {
             "part_number": "CLAMP112",
             "unit_quantity": 2,
-            "current_quantity": 68,
+            "current_quantity": 62,
             "price": 0.5,
             "use_exchange_rate": false,
             "priority": 0,
             "notes": "Vendor: Greenline\nDescription: 204-694-0332",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 68\nto: 68\nJared\nJuly 16 Saturday 2022 09:55:14 PM"
+            "latest_change_current_quantity": "Latest Change:\nfrom: 62\nto: 62\nJared\nJuly 16 Saturday 2022 10:00:32 PM"
         },
         "Barb Hose Adapter fitting": {
             "part_number": "BIA-020",
             "unit_quantity": 2,
-            "current_quantity": 18,
+            "current_quantity": 12,
             "price": 3.32,
             "use_exchange_rate": false,
             "priority": 0,
             "notes": "Vendor: GreenLine\nDescription: 204-694-0332",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 18\nto: 18\nJared\nJuly 16 Saturday 2022 09:55:14 PM"
+            "latest_change_current_quantity": "Latest Change:\nfrom: 12\nto: 12\nJared\nJuly 16 Saturday 2022 10:00:32 PM"
         },
         "3\" Nipple x 3\/4 Black Steel ": {
             "part_number": "483-030",
             "unit_quantity": 11.0,
-            "current_quantity": -21.0,
+            "current_quantity": -54.0,
             "price": 0.57,
             "use_exchange_rate": false,
             "priority": 0,
             "notes": "Vendor: GreenLine\nDescription: 204-694-0332",
-            "latest_change_current_quantity": "Latest Change:\nfrom: -21.0\nto: -21.0\nJared\nJuly 16 Saturday 2022 09:55:14 PM"
+            "latest_change_current_quantity": "Latest Change:\nfrom: -54.0\nto: -54.0\nJared\nJuly 16 Saturday 2022 10:00:32 PM"
         },
         "3\/4 Brass Ball Valve": {
             "part_number": "34BV",
             "unit_quantity": 1,
-            "current_quantity": 2,
+            "current_quantity": -1,
             "price": 4.5,
             "use_exchange_rate": false,
             "priority": 0,
             "notes": "Vendor: GreenLine\nDescription: 204-694-0332",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 2\nto: 2\nJared\nJuly 16 Saturday 2022 09:55:14 PM"
+            "latest_change_current_quantity": "Latest Change:\nfrom: -1\nto: -1\nJared\nJuly 16 Saturday 2022 10:00:32 PM"
         },
         "Grundfos Pump Flange 1 1\/4 ": {
             "part_number": "PF114",
             "unit_quantity": 1,
-            "current_quantity": 41,
+            "current_quantity": 38,
             "price": 10.7,
             "use_exchange_rate": false,
             "priority": 2,
             "notes": "Vendor: Grundfos Canada\nDescription: ",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 41\nto: 41\nJared\nJuly 16 Saturday 2022 09:55:14 PM"
+            "latest_change_current_quantity": "Latest Change:\nfrom: 38\nto: 38\nJared\nJuly 16 Saturday 2022 10:00:32 PM"
         },
         "Grundfos 15-58FC 115V 9H": {
             "part_number": "15-58FC",
             "unit_quantity": 1,
-            "current_quantity": 74,
+            "current_quantity": 71,
             "price": 67.0,
             "use_exchange_rate": false,
             "priority": 0,
             "notes": "Vendor: Grundfos Canada\nDescription: ",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 74\nto: 74\nJared\nJuly 16 Saturday 2022 09:55:14 PM"
+            "latest_change_current_quantity": "Latest Change:\nfrom: 71\nto: 71\nJared\nJuly 16 Saturday 2022 10:00:32 PM"
         },
         "6 FT Power Cord Nema 5-16P 3 pin": {
             "part_number": "Nema5",
             "unit_quantity": 1,
-            "current_quantity": 234,
+            "current_quantity": 231,
             "price": 2.75,
             "use_exchange_rate": false,
             "priority": 2,
             "notes": "Vendor: \nDescription: ",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 234\nto: 234\nJared\nJuly 16 Saturday 2022 09:55:14 PM"
+            "latest_change_current_quantity": "Latest Change:\nfrom: 231\nto: 231\nJared\nJuly 16 Saturday 2022 10:00:32 PM"
         },
         "WeatherStripping NDA- .5\" x 3\/16\" x 50'": {
             "part_number": "WSNDA",
             "unit_quantity": 1,
-            "current_quantity": 34,
+            "current_quantity": 31,
             "price": 10.0,
             "use_exchange_rate": false,
             "priority": 0,
             "notes": "Vendor: Industrial Rubber Supply\nDescription: ",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 34\nto: 34\nJared\nJuly 16 Saturday 2022 09:55:14 PM"
+            "latest_change_current_quantity": "Latest Change:\nfrom: 31\nto: 31\nJared\nJuly 16 Saturday 2022 10:00:32 PM"
         },
         "Knob 2 3\/8 DIA. 1\/2-13. Fluted Black Plastic": {
             "part_number": "DK-122",
             "unit_quantity": 2,
-            "current_quantity": 48,
+            "current_quantity": 42,
             "price": 2.75,
             "use_exchange_rate": false,
             "priority": 0,
             "notes": "Vendor: Weiss Instruments\nDescription: ",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 48\nto: 48\nJared\nJuly 16 Saturday 2022 09:55:14 PM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 42\nto: 42\nJared\nJuly 16 Saturday 2022 10:00:32 PM",
             "latest_change_notes": "Latest Change:\nfrom: \"Vendor: Weiss Instrument\nDescription: \"\nto: \"Vendor: Weiss Instruments\nDescription: \"\nItsme\nJuly 08 Friday 2022 08:58:25 AM"
         },
         "Knob 3\/4 DIA. 7\/16 Bore. Press-On Black Phenlic Round Knob": {
             "part_number": "POK-10",
             "unit_quantity": 1,
-            "current_quantity": 74,
+            "current_quantity": 71,
             "price": 2.99,
             "use_exchange_rate": false,
             "priority": 0,
             "notes": "Vendor: \nDescription: ",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 74\nto: 74\nJared\nJuly 16 Saturday 2022 09:55:14 PM"
+            "latest_change_current_quantity": "Latest Change:\nfrom: 71\nto: 71\nJared\nJuly 16 Saturday 2022 10:00:32 PM"
         },
         "Blower Wheel 9-15\/16\" X 2-1\/4 BI Steel 1\/2 #2-106CI CW \"A\" 1800R": {
             "part_number": "2-106CI CW",
             "unit_quantity": 1,
-            "current_quantity": 59,
+            "current_quantity": 56,
             "price": 63.0,
             "use_exchange_rate": false,
             "priority": 0,
             "notes": "Vendor: Jan-Air Illinois\nDescription: ",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 59\nto: 59\nJared\nJuly 16 Saturday 2022 09:55:14 PM"
+            "latest_change_current_quantity": "Latest Change:\nfrom: 56\nto: 56\nJared\nJuly 16 Saturday 2022 10:00:32 PM"
         },
         "Spring Damper Adjust SIL29710 35LBS  Spring Rate": {
             "part_number": "SIL29710",
             "unit_quantity": 2,
-            "current_quantity": 13,
+            "current_quantity": 7,
             "price": 2.01,
             "use_exchange_rate": false,
             "priority": 0,
             "notes": "Vendor: MC Master Carr\nDescription: ",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 13\nto: 13\nJared\nJuly 16 Saturday 2022 09:55:14 PM"
+            "latest_change_current_quantity": "Latest Change:\nfrom: 7\nto: 7\nJared\nJuly 16 Saturday 2022 10:00:32 PM"
         },
         "Spring SIL29756 10LB Spring Rate Damper Seating": {
             "part_number": "SIL29756",
             "unit_quantity": 2,
-            "current_quantity": 18,
+            "current_quantity": 12,
             "price": 2.0,
             "use_exchange_rate": false,
             "priority": 0,
@@ -354,7 +354,7 @@
             "latest_change_name": "Item added\nItsme\nJuly 05 Tuesday 2022 09-14-28 AM",
             "latest_change_part_number": "Item added\nItsme\nJuly 05 Tuesday 2022 09-14-28 AM",
             "latest_change_unit_quantity": "Item added\nItsme\nJuly 05 Tuesday 2022 09-14-28 AM",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 18\nto: 18\nJared\nJuly 16 Saturday 2022 09:55:14 PM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 12\nto: 12\nJared\nJuly 16 Saturday 2022 10:00:32 PM",
             "latest_change_price": "Item added\nItsme\nJuly 05 Tuesday 2022 09-14-28 AM",
             "latest_change_use_exchange_price": "Item added\nItsme\nJuly 05 Tuesday 2022 09-14-28 AM",
             "latest_change_priority": "Item added\nItsme\nJuly 05 Tuesday 2022 09-14-28 AM",
@@ -363,7 +363,7 @@
         " 12BK SLOTTED QUARTER-TURN LATCH, DIE CST, UL FACE SEAL & INTERNAL O-RING, BODY NUT, NO CAM, BLACK POWDER COATED": {
             "part_number": "12BK",
             "unit_quantity": 4,
-            "current_quantity": -4,
+            "current_quantity": -16,
             "price": 2.3,
             "use_exchange_rate": false,
             "priority": 0,
@@ -371,7 +371,7 @@
             "latest_change_name": "Item added\nItsme\nJuly 05 Tuesday 2022 10-28-43 AM",
             "latest_change_part_number": "Item added\nItsme\nJuly 05 Tuesday 2022 10-28-43 AM",
             "latest_change_unit_quantity": "Item added\nItsme\nJuly 05 Tuesday 2022 10-28-43 AM",
-            "latest_change_current_quantity": "Latest Change:\nfrom: -4\nto: -4\nJared\nJuly 16 Saturday 2022 09:55:14 PM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: -16\nto: -16\nJared\nJuly 16 Saturday 2022 10:00:32 PM",
             "latest_change_price": "Latest Change:\nfrom: 2.3\nto: 2.3\nItsme\nJuly 06 Wednesday 2022 10:10:41 AM",
             "latest_change_use_exchange_price": "Item added\nItsme\nJuly 05 Tuesday 2022 10-28-43 AM",
             "latest_change_priority": "Item added\nItsme\nJuly 05 Tuesday 2022 10-28-43 AM",
@@ -380,7 +380,7 @@
         " 12C6 CAM, .177 OFFSET OUT, ZINC PLATED": {
             "part_number": "12C6",
             "unit_quantity": 4,
-            "current_quantity": 376,
+            "current_quantity": 364,
             "price": 2.0,
             "use_exchange_rate": false,
             "priority": 0,
@@ -388,7 +388,7 @@
             "latest_change_name": "Item added\nItsme\nJuly 05 Tuesday 2022 10-52-34 AM",
             "latest_change_part_number": "Item added\nItsme\nJuly 05 Tuesday 2022 10-52-34 AM",
             "latest_change_unit_quantity": "Item added\nItsme\nJuly 05 Tuesday 2022 10-52-34 AM",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 376\nto: 376\nJared\nJuly 16 Saturday 2022 09:55:14 PM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 364\nto: 364\nJared\nJuly 16 Saturday 2022 10:00:32 PM",
             "latest_change_price": "Latest Change:\nfrom: 20.0\nto: 2.0\nItsme\nJuly 06 Wednesday 2022 10:10:57 AM",
             "latest_change_use_exchange_price": "Item added\nItsme\nJuly 05 Tuesday 2022 10-52-34 AM",
             "latest_change_priority": "Item added\nItsme\nJuly 05 Tuesday 2022 10-52-34 AM",
@@ -397,7 +397,7 @@
         "Hytex 1000 Rope Knit 1\" High Density White": {
             "part_number": "RK0100",
             "unit_quantity": 17,
-            "current_quantity": 898,
+            "current_quantity": 847,
             "price": 2.97,
             "use_exchange_rate": false,
             "priority": 0,
@@ -405,7 +405,7 @@
             "latest_change_name": "Item added\nItsme\nJuly 07 Thursday 2022 09-40-05 AM",
             "latest_change_part_number": "Item added\nItsme\nJuly 07 Thursday 2022 09-40-05 AM",
             "latest_change_unit_quantity": "Latest Change:\nfrom: 17\nto: 17\nItsme\nJuly 07 Thursday 2022 09:48:20 AM",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 898\nto: 898\nJared\nJuly 16 Saturday 2022 09:55:14 PM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 847\nto: 847\nJared\nJuly 16 Saturday 2022 10:00:32 PM",
             "latest_change_price": "Item added\nItsme\nJuly 07 Thursday 2022 09-40-05 AM",
             "latest_change_use_exchange_price": "Item added\nItsme\nJuly 07 Thursday 2022 09-40-05 AM",
             "latest_change_priority": "Item added\nItsme\nJuly 07 Thursday 2022 09-40-05 AM",
@@ -414,7 +414,7 @@
         "Hytex 1000 Rope Knit 3\/4 High Density White": {
             "part_number": "RK0101",
             "unit_quantity": 15,
-            "current_quantity": 910,
+            "current_quantity": 865,
             "price": 2.5,
             "use_exchange_rate": false,
             "priority": 0,
@@ -422,7 +422,7 @@
             "latest_change_name": "Item added\nItsme\nJuly 07 Thursday 2022 09-48-03 AM",
             "latest_change_part_number": "Item added\nItsme\nJuly 07 Thursday 2022 09-48-03 AM",
             "latest_change_unit_quantity": "Item added\nItsme\nJuly 07 Thursday 2022 09-48-03 AM",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 910\nto: 910\nJared\nJuly 16 Saturday 2022 09:55:14 PM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 865\nto: 865\nJared\nJuly 16 Saturday 2022 10:00:32 PM",
             "latest_change_price": "Item added\nItsme\nJuly 07 Thursday 2022 09-48-03 AM",
             "latest_change_use_exchange_price": "Item added\nItsme\nJuly 07 Thursday 2022 09-48-03 AM",
             "latest_change_priority": "Item added\nItsme\nJuly 07 Thursday 2022 09-48-03 AM",
@@ -431,7 +431,7 @@
         "1-1\/4 Half Coupling": {
             "part_number": "G0008MC-125",
             "unit_quantity": 1,
-            "current_quantity": 14,
+            "current_quantity": 11,
             "price": 2.0,
             "use_exchange_rate": false,
             "priority": 0,
@@ -439,7 +439,7 @@
             "latest_change_name": "Item added\nItsme\nJuly 07 Thursday 2022 10-23-19 AM",
             "latest_change_part_number": "Item added\nItsme\nJuly 07 Thursday 2022 10-23-19 AM",
             "latest_change_unit_quantity": "Item added\nItsme\nJuly 07 Thursday 2022 10-23-19 AM",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 14\nto: 14\nJared\nJuly 16 Saturday 2022 09:55:14 PM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 11\nto: 11\nJared\nJuly 16 Saturday 2022 10:00:32 PM",
             "latest_change_price": "Latest Change:\nfrom: 0.0\nto: 2.0\nItsme\nJuly 07 Thursday 2022 11:22:08 AM",
             "latest_change_use_exchange_price": "Item added\nItsme\nJuly 07 Thursday 2022 10-23-19 AM",
             "latest_change_priority": "Item added\nItsme\nJuly 07 Thursday 2022 10-23-19 AM",
@@ -448,7 +448,7 @@
         "Spring Sil29757 4.8 LB  Spring Rate Peep Hole": {
             "part_number": "SIL29757",
             "unit_quantity": 1,
-            "current_quantity": 39,
+            "current_quantity": 36,
             "price": 1.42,
             "use_exchange_rate": false,
             "priority": 0,
@@ -456,7 +456,7 @@
             "latest_change_name": "Item added\nItsme\nJuly 07 Thursday 2022 11-24-47 AM",
             "latest_change_part_number": "Item added\nItsme\nJuly 07 Thursday 2022 11-24-47 AM",
             "latest_change_unit_quantity": "Item added\nItsme\nJuly 07 Thursday 2022 11-24-47 AM",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 39\nto: 39\nJared\nJuly 16 Saturday 2022 09:55:14 PM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 36\nto: 36\nJared\nJuly 16 Saturday 2022 10:00:32 PM",
             "latest_change_price": "Item added\nItsme\nJuly 07 Thursday 2022 11-24-47 AM",
             "latest_change_use_exchange_price": "Item added\nItsme\nJuly 07 Thursday 2022 11-24-47 AM",
             "latest_change_priority": "Item added\nItsme\nJuly 07 Thursday 2022 11-24-47 AM",
@@ -465,7 +465,7 @@
         "Tempered Glass 1 1\/4\" X 1 1\/4\" X 3\/16\" NEO Ceram Robax": {
             "part_number": "TG113",
             "unit_quantity": 1,
-            "current_quantity": 14,
+            "current_quantity": 11,
             "price": 3.36,
             "use_exchange_rate": false,
             "priority": 0,
@@ -473,7 +473,7 @@
             "latest_change_name": "Item added\nItsme\nJuly 07 Thursday 2022 11-27-45 AM",
             "latest_change_part_number": "Item added\nItsme\nJuly 07 Thursday 2022 11-27-45 AM",
             "latest_change_unit_quantity": "Item added\nItsme\nJuly 07 Thursday 2022 11-27-45 AM",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 14\nto: 14\nJared\nJuly 16 Saturday 2022 09:55:14 PM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 11\nto: 11\nJared\nJuly 16 Saturday 2022 10:00:32 PM",
             "latest_change_price": "Item added\nItsme\nJuly 07 Thursday 2022 11-27-45 AM",
             "latest_change_use_exchange_price": "Item added\nItsme\nJuly 07 Thursday 2022 11-27-45 AM",
             "latest_change_priority": "Item added\nItsme\nJuly 07 Thursday 2022 11-27-45 AM",
@@ -482,7 +482,7 @@
         "Cooling fan Blade 5\" Dia Fan  10BL5.0CCW35, 1\/2IN": {
             "part_number": "10BL5.0CCW35",
             "unit_quantity": 1,
-            "current_quantity": 24,
+            "current_quantity": 21,
             "price": 5.64,
             "use_exchange_rate": false,
             "priority": 0,
@@ -490,7 +490,7 @@
             "latest_change_name": "Item added\nItsme\nJuly 07 Thursday 2022 11-29-44 AM",
             "latest_change_part_number": "Item added\nItsme\nJuly 07 Thursday 2022 11-29-44 AM",
             "latest_change_unit_quantity": "Item added\nItsme\nJuly 07 Thursday 2022 11-29-44 AM",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 24\nto: 24\nJared\nJuly 16 Saturday 2022 09:55:14 PM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 21\nto: 21\nJared\nJuly 16 Saturday 2022 10:00:32 PM",
             "latest_change_price": "Item added\nItsme\nJuly 07 Thursday 2022 11-29-44 AM",
             "latest_change_use_exchange_price": "Item added\nItsme\nJuly 07 Thursday 2022 11-29-44 AM",
             "latest_change_priority": "Item added\nItsme\nJuly 07 Thursday 2022 11-29-44 AM",
@@ -499,7 +499,7 @@
         "Boiler Treatment Solution 1 Gallon": {
             "part_number": "TS1G",
             "unit_quantity": 1,
-            "current_quantity": 326,
+            "current_quantity": 323,
             "price": 25.78,
             "use_exchange_rate": false,
             "priority": 0,
@@ -507,7 +507,7 @@
             "latest_change_name": "Latest Change:\nfrom: \"BoilerTreatment Solution 1 Gallon\"\nto: \"Boiler Treatment Solution 1 Gallon\"\nItsme\nJuly 07 Thursday 2022 04:17:10 PM",
             "latest_change_part_number": "Item added\nItsme\nJuly 07 Thursday 2022 04-16-48 PM",
             "latest_change_unit_quantity": "Item added\nItsme\nJuly 07 Thursday 2022 04-16-48 PM",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 326\nto: 326\nJared\nJuly 16 Saturday 2022 09:55:14 PM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 323\nto: 323\nJared\nJuly 16 Saturday 2022 10:00:32 PM",
             "latest_change_price": "Item added\nItsme\nJuly 07 Thursday 2022 04-16-48 PM",
             "latest_change_use_exchange_price": "Item added\nItsme\nJuly 07 Thursday 2022 04-16-48 PM",
             "latest_change_priority": "Item added\nItsme\nJuly 07 Thursday 2022 04-16-48 PM",
@@ -516,7 +516,7 @@
         "Shaft Collar 7\/16 with Set Screw": {
             "part_number": "BRA0420",
             "unit_quantity": 2,
-            "current_quantity": 18,
+            "current_quantity": 12,
             "price": 1.3,
             "use_exchange_rate": false,
             "priority": 0,
@@ -524,7 +524,7 @@
             "latest_change_name": "Latest Change:\nfrom: \"Shaft Collar 7\/16 with Set Scre\"\nto: \"Shaft Collar 7\/16 with Set Screw\"\nItsme\nJuly 07 Thursday 2022 04:30:05 PM",
             "latest_change_part_number": "Item added\nItsme\nJuly 07 Thursday 2022 03-57-46 PM",
             "latest_change_unit_quantity": "Item added\nItsme\nJuly 07 Thursday 2022 03-57-46 PM",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 18\nto: 18\nJared\nJuly 16 Saturday 2022 09:55:14 PM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 12\nto: 12\nJared\nJuly 16 Saturday 2022 10:00:32 PM",
             "latest_change_price": "Item added\nItsme\nJuly 07 Thursday 2022 03-57-46 PM",
             "latest_change_use_exchange_price": "Item added\nItsme\nJuly 07 Thursday 2022 03-57-46 PM",
             "latest_change_priority": "Item added\nItsme\nJuly 07 Thursday 2022 03-57-46 PM",
@@ -533,7 +533,7 @@
         "Lock Pin 5\/16\" X 1 3\/8\" ": {
             "part_number": "LP515",
             "unit_quantity": 7,
-            "current_quantity": 758,
+            "current_quantity": 737,
             "price": 0.68,
             "use_exchange_rate": false,
             "priority": 0,
@@ -541,7 +541,7 @@
             "latest_change_name": "Item added\nItsme\nJuly 07 Thursday 2022 04-32-40 PM",
             "latest_change_part_number": "Item added\nItsme\nJuly 07 Thursday 2022 04-32-40 PM",
             "latest_change_unit_quantity": "Item added\nItsme\nJuly 07 Thursday 2022 04-32-40 PM",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 758\nto: 758\nJared\nJuly 16 Saturday 2022 09:55:14 PM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 737\nto: 737\nJared\nJuly 16 Saturday 2022 10:00:32 PM",
             "latest_change_price": "Item added\nItsme\nJuly 07 Thursday 2022 04-32-40 PM",
             "latest_change_use_exchange_price": "Item added\nItsme\nJuly 07 Thursday 2022 04-32-40 PM",
             "latest_change_priority": "Item added\nItsme\nJuly 07 Thursday 2022 04-32-40 PM",
@@ -550,7 +550,7 @@
         "G2 Turbulator": {
             "part_number": "",
             "unit_quantity": 7,
-            "current_quantity": -42,
+            "current_quantity": -63,
             "price": 11.55,
             "use_exchange_rate": false,
             "priority": 0,
@@ -558,7 +558,7 @@
             "latest_change_name": "Item added\nItsme\nJuly 08 Friday 2022 08-22-50 AM",
             "latest_change_part_number": "Item added\nItsme\nJuly 08 Friday 2022 08-22-50 AM",
             "latest_change_unit_quantity": "Item added\nItsme\nJuly 08 Friday 2022 08-22-50 AM",
-            "latest_change_current_quantity": "Latest Change:\nfrom: -42\nto: -42\nJared\nJuly 16 Saturday 2022 09:55:14 PM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: -63\nto: -63\nJared\nJuly 16 Saturday 2022 10:00:32 PM",
             "latest_change_price": "Item added\nItsme\nJuly 08 Friday 2022 08-22-50 AM",
             "latest_change_use_exchange_price": "Item added\nItsme\nJuly 08 Friday 2022 08-22-50 AM",
             "latest_change_priority": "Item added\nItsme\nJuly 08 Friday 2022 08-22-50 AM",
@@ -567,7 +567,7 @@
         "Handle Black Phenolic BTH-2": {
             "part_number": "bth-2",
             "unit_quantity": 3,
-            "current_quantity": 102,
+            "current_quantity": 93,
             "price": 4.96,
             "use_exchange_rate": false,
             "priority": 0,
@@ -575,12 +575,12 @@
             "latest_change_name": "Latest Change:\nfrom: \"Ha\"\nto: \"Handle Black Phenolic BTH-2\"\nItsme\nJuly 08 Friday 2022 09:09:36 AM",
             "latest_change_part_number": "Latest Change:\nfrom: bth-\nto: bth-2\nItsme\nJuly 08 Friday 2022 09:10:02 AM",
             "latest_change_notes": "Latest Change:\nfrom: \"Vendor: Sierra Pacifi\nDescription: \"\nto: \"Vendor: Sierra Pacific\nDescription: \"\nItsme\nJuly 08 Friday 2022 09:06:17 AM",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 102\nto: 102\nJared\nJuly 16 Saturday 2022 09:55:14 PM"
+            "latest_change_current_quantity": "Latest Change:\nfrom: 93\nto: 93\nJared\nJuly 16 Saturday 2022 10:00:32 PM"
         },
         " L-HANDLE LATCH ASSEMBLY, BLACK PLASTIC HANDLE, WITH STAMPED CAM": {
             "part_number": " 1153-01",
             "unit_quantity": 1,
-            "current_quantity": -6,
+            "current_quantity": -9,
             "price": 21.4,
             "use_exchange_rate": false,
             "priority": 0,
@@ -588,7 +588,7 @@
             "latest_change_name": "Item added\nItsme\nJuly 08 Friday 2022 09-12-31 AM",
             "latest_change_part_number": "Item added\nItsme\nJuly 08 Friday 2022 09-12-31 AM",
             "latest_change_unit_quantity": "Item added\nItsme\nJuly 08 Friday 2022 09-12-31 AM",
-            "latest_change_current_quantity": "Latest Change:\nfrom: -6\nto: -6\nJared\nJuly 16 Saturday 2022 09:55:14 PM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: -9\nto: -9\nJared\nJuly 16 Saturday 2022 10:00:32 PM",
             "latest_change_price": "Item added\nItsme\nJuly 08 Friday 2022 09-12-32 AM",
             "latest_change_use_exchange_price": "Item added\nItsme\nJuly 08 Friday 2022 09-12-32 AM",
             "latest_change_priority": "Item added\nItsme\nJuly 08 Friday 2022 09-12-32 AM",
@@ -599,7 +599,7 @@
         "Hytex 1000 Rope Knit 3\/4 High Density White": {
             "part_number": "RK0101",
             "unit_quantity": 15,
-            "current_quantity": 685,
+            "current_quantity": 640,
             "price": 2.5,
             "use_exchange_rate": false,
             "priority": 0,
@@ -607,7 +607,7 @@
             "latest_change_name": "Item added\nItsme\nJuly 07 Thursday 2022 09-48-03 AM",
             "latest_change_part_number": "Item added\nItsme\nJuly 07 Thursday 2022 09-48-03 AM",
             "latest_change_unit_quantity": "Item added\nItsme\nJuly 07 Thursday 2022 09-48-03 AM",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 685\nto: 685\nJared\nJuly 16 Saturday 2022 09:55:12 PM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 640\nto: 640\nJared\nJuly 16 Saturday 2022 10:00:30 PM",
             "latest_change_price": "Item added\nItsme\nJuly 07 Thursday 2022 09-48-03 AM",
             "latest_change_use_exchange_price": "Item added\nItsme\nJuly 07 Thursday 2022 09-48-03 AM",
             "latest_change_priority": "Item added\nItsme\nJuly 07 Thursday 2022 09-48-03 AM",
@@ -616,7 +616,7 @@
         "Hytex 1000 Rope Knit 1\" High Density White": {
             "part_number": "RK0100",
             "unit_quantity": 17,
-            "current_quantity": 728,
+            "current_quantity": 677,
             "price": 2.97,
             "use_exchange_rate": false,
             "priority": 0,
@@ -624,7 +624,7 @@
             "latest_change_name": "Item added\nItsme\nJuly 07 Thursday 2022 09-40-05 AM",
             "latest_change_part_number": "Item added\nItsme\nJuly 07 Thursday 2022 09-40-05 AM",
             "latest_change_unit_quantity": "Latest Change:\nfrom: 17\nto: 17\nItsme\nJuly 07 Thursday 2022 09:48:20 AM",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 728\nto: 728\nJared\nJuly 16 Saturday 2022 09:55:12 PM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 677\nto: 677\nJared\nJuly 16 Saturday 2022 10:00:30 PM",
             "latest_change_price": "Item added\nItsme\nJuly 07 Thursday 2022 09-40-05 AM",
             "latest_change_use_exchange_price": "Item added\nItsme\nJuly 07 Thursday 2022 09-40-05 AM",
             "latest_change_priority": "Item added\nItsme\nJuly 07 Thursday 2022 09-40-05 AM",
@@ -633,7 +633,7 @@
         "Lock Pin 5\/16\" X 1 3\/8\" ": {
             "part_number": "LP515",
             "unit_quantity": 7,
-            "current_quantity": 688,
+            "current_quantity": 667,
             "price": 0.68,
             "use_exchange_rate": false,
             "priority": 0,
@@ -641,7 +641,7 @@
             "latest_change_name": "Item added\nItsme\nJuly 07 Thursday 2022 04-32-40 PM",
             "latest_change_part_number": "Item added\nItsme\nJuly 07 Thursday 2022 04-32-40 PM",
             "latest_change_unit_quantity": "Item added\nItsme\nJuly 07 Thursday 2022 04-32-40 PM",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 688\nto: 688\nJared\nJuly 16 Saturday 2022 09:55:12 PM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 667\nto: 667\nJared\nJuly 16 Saturday 2022 10:00:30 PM",
             "latest_change_price": "Item added\nItsme\nJuly 07 Thursday 2022 04-32-40 PM",
             "latest_change_use_exchange_price": "Item added\nItsme\nJuly 07 Thursday 2022 04-32-40 PM",
             "latest_change_priority": "Item added\nItsme\nJuly 07 Thursday 2022 04-32-40 PM",
@@ -650,7 +650,7 @@
         " 12C6 CAM, .177 OFFSET OUT, ZINC PLATED": {
             "part_number": "12C6",
             "unit_quantity": 4,
-            "current_quantity": 336,
+            "current_quantity": 324,
             "price": 2.0,
             "use_exchange_rate": false,
             "priority": 0,
@@ -658,7 +658,7 @@
             "latest_change_name": "Item added\nItsme\nJuly 05 Tuesday 2022 10-52-34 AM",
             "latest_change_part_number": "Item added\nItsme\nJuly 05 Tuesday 2022 10-52-34 AM",
             "latest_change_unit_quantity": "Item added\nItsme\nJuly 05 Tuesday 2022 10-52-34 AM",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 336\nto: 336\nJared\nJuly 16 Saturday 2022 09:55:12 PM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 324\nto: 324\nJared\nJuly 16 Saturday 2022 10:00:30 PM",
             "latest_change_price": "Latest Change:\nfrom: 20.0\nto: 2.0\nItsme\nJuly 06 Wednesday 2022 10:10:57 AM",
             "latest_change_use_exchange_price": "Item added\nItsme\nJuly 05 Tuesday 2022 10-52-34 AM",
             "latest_change_priority": "Item added\nItsme\nJuly 05 Tuesday 2022 10-52-34 AM",
@@ -667,7 +667,7 @@
         "Boiler Treatment Solution 1 Gallon": {
             "part_number": "TS1G",
             "unit_quantity": 1,
-            "current_quantity": 316,
+            "current_quantity": 313,
             "price": 25.78,
             "use_exchange_rate": false,
             "priority": 0,
@@ -675,7 +675,7 @@
             "latest_change_name": "Latest Change:\nfrom: \"BoilerTreatment Solution 1 Gallon\"\nto: \"Boiler Treatment Solution 1 Gallon\"\nItsme\nJuly 07 Thursday 2022 04:17:10 PM",
             "latest_change_part_number": "Item added\nItsme\nJuly 07 Thursday 2022 04-16-48 PM",
             "latest_change_unit_quantity": "Item added\nItsme\nJuly 07 Thursday 2022 04-16-48 PM",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 316\nto: 316\nJared\nJuly 16 Saturday 2022 09:55:12 PM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 313\nto: 313\nJared\nJuly 16 Saturday 2022 10:00:30 PM",
             "latest_change_price": "Item added\nItsme\nJuly 07 Thursday 2022 04-16-48 PM",
             "latest_change_use_exchange_price": "Item added\nItsme\nJuly 07 Thursday 2022 04-16-48 PM",
             "latest_change_priority": "Item added\nItsme\nJuly 07 Thursday 2022 04-16-48 PM",
@@ -684,37 +684,37 @@
         "6 FT Power Cord Nema 5-16P 3 pin": {
             "part_number": "Nema5",
             "unit_quantity": 1,
-            "current_quantity": 224,
+            "current_quantity": 221,
             "price": 2.75,
             "use_exchange_rate": false,
             "priority": 2,
             "notes": "Vendor: \nDescription: ",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 224\nto: 224\nJared\nJuly 16 Saturday 2022 09:55:12 PM"
+            "latest_change_current_quantity": "Latest Change:\nfrom: 221\nto: 221\nJared\nJuly 16 Saturday 2022 10:00:30 PM"
         },
         "Sticker 320 Water Temperture 5\"x9.5\"": {
             "part_number": "320",
             "unit_quantity": 1,
-            "current_quantity": 154,
+            "current_quantity": 151,
             "price": 2.47,
             "use_exchange_rate": false,
             "priority": 0,
             "notes": "Vendor: \nDescription: ",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 154\nto: 154\nJared\nJuly 16 Saturday 2022 09:55:12 PM"
+            "latest_change_current_quantity": "Latest Change:\nfrom: 151\nto: 151\nJared\nJuly 16 Saturday 2022 10:00:30 PM"
         },
         "Sticker  319  easy Sweep": {
             "part_number": "319",
             "unit_quantity": 1,
-            "current_quantity": 144,
+            "current_quantity": 141,
             "price": 1.86,
             "use_exchange_rate": false,
             "priority": 0,
             "notes": "Vendor: \nDescription: ",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 144\nto: 144\nJared\nJuly 16 Saturday 2022 09:55:12 PM"
+            "latest_change_current_quantity": "Latest Change:\nfrom: 141\nto: 141\nJared\nJuly 16 Saturday 2022 10:00:30 PM"
         },
         "Handle Black Phenolic BTH-2": {
             "part_number": "bth-2",
             "unit_quantity": 3,
-            "current_quantity": 72,
+            "current_quantity": 63,
             "price": 4.96,
             "use_exchange_rate": false,
             "priority": 0,
@@ -722,194 +722,194 @@
             "latest_change_name": "Latest Change:\nfrom: \"Ha\"\nto: \"Handle Black Phenolic BTH-2\"\nItsme\nJuly 08 Friday 2022 09:09:36 AM",
             "latest_change_part_number": "Latest Change:\nfrom: bth-\nto: bth-2\nItsme\nJuly 08 Friday 2022 09:10:02 AM",
             "latest_change_notes": "Latest Change:\nfrom: \"Vendor: Sierra Pacifi\nDescription: \"\nto: \"Vendor: Sierra Pacific\nDescription: \"\nItsme\nJuly 08 Friday 2022 09:06:17 AM",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 72\nto: 72\nJared\nJuly 16 Saturday 2022 09:55:12 PM"
+            "latest_change_current_quantity": "Latest Change:\nfrom: 63\nto: 63\nJared\nJuly 16 Saturday 2022 10:00:30 PM"
         },
         "Sticker   #306 Polar Furnace with Polar Bear  11\"x14\" ": {
             "part_number": "403",
             "unit_quantity": 1,
-            "current_quantity": 94,
+            "current_quantity": 91,
             "price": 4.31,
             "use_exchange_rate": false,
             "priority": 0,
             "notes": "Vendor: \nDescription: ",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 94\nto: 94\nJared\nJuly 16 Saturday 2022 09:55:12 PM"
+            "latest_change_current_quantity": "Latest Change:\nfrom: 91\nto: 91\nJared\nJuly 16 Saturday 2022 10:00:30 PM"
         },
         " Sticker 309 Polar G2 & G3 Caution Disconnect Power 4.5\"x2\"": {
             "part_number": "309",
             "unit_quantity": 1.0,
-            "current_quantity": 94,
+            "current_quantity": 91,
             "price": 0.61,
             "use_exchange_rate": false,
             "priority": 0,
             "notes": "Vendor: \nDescription: ",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 94\nto: 94\nJared\nJuly 16 Saturday 2022 09:55:12 PM"
+            "latest_change_current_quantity": "Latest Change:\nfrom: 91\nto: 91\nJared\nJuly 16 Saturday 2022 10:00:30 PM"
         },
         "Sticker #304  Polar Furnace 3.65\"x 37.79\" ": {
             "part_number": "404",
             "unit_quantity": 1,
-            "current_quantity": 99,
+            "current_quantity": 96,
             "price": 2.33,
             "use_exchange_rate": false,
             "priority": 0,
             "notes": "Vendor: \nDescription: ",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 99\nto: 99\nJared\nJuly 16 Saturday 2022 09:55:13 PM"
+            "latest_change_current_quantity": "Latest Change:\nfrom: 96\nto: 96\nJared\nJuly 16 Saturday 2022 10:00:30 PM"
         },
         "Sticker 310 Polar G2 & G3 Caution Pinch Hazard 4.5\"x2.75\"": {
             "part_number": "310",
             "unit_quantity": 2,
-            "current_quantity": 88,
+            "current_quantity": 82,
             "price": 0.64,
             "use_exchange_rate": false,
             "priority": 0,
             "notes": "Vendor: \nDescription: ",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 88\nto: 88\nJared\nJuly 16 Saturday 2022 09:55:13 PM"
+            "latest_change_current_quantity": "Latest Change:\nfrom: 82\nto: 82\nJared\nJuly 16 Saturday 2022 10:00:30 PM"
         },
         "Sticker 308 CSA Polar G2 10\"x 6\" Silver Foil ": {
             "part_number": "308",
             "unit_quantity": 1,
-            "current_quantity": 92,
+            "current_quantity": 89,
             "price": 5.37,
             "use_exchange_rate": false,
             "priority": 0,
             "notes": "Vendor: \nDescription: ",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 92\nto: 92\nJared\nJuly 16 Saturday 2022 09:55:13 PM"
+            "latest_change_current_quantity": "Latest Change:\nfrom: 89\nto: 89\nJared\nJuly 16 Saturday 2022 10:00:30 PM"
         },
         "535 Blacl Silicone 300ML ": {
             "part_number": "32390",
             "unit_quantity": 1,
-            "current_quantity": 89,
+            "current_quantity": 86,
             "price": 9.7,
             "use_exchange_rate": false,
             "priority": 3,
             "notes": "Vendor: Rantec\nRachel@rantec.ca\nDescription: ",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 89\nto: 89\nJared\nJuly 16 Saturday 2022 09:55:13 PM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 86\nto: 86\nJared\nJuly 16 Saturday 2022 10:00:30 PM",
             "latest_change_price": "Latest Change:\nfrom: 9.7\nto: 9.7\nItsme\nJuly 07 Thursday 2022 03:59:16 PM"
         },
         "Sticker 322 G2 and G3 Remove Label ": {
             "part_number": "322",
             "unit_quantity": 1,
-            "current_quantity": 89,
+            "current_quantity": 86,
             "price": 1.81,
             "use_exchange_rate": false,
             "priority": 0,
             "notes": "Vendor: \nDescription: ",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 89\nto: 89\nJared\nJuly 16 Saturday 2022 09:55:13 PM"
+            "latest_change_current_quantity": "Latest Change:\nfrom: 86\nto: 86\nJared\nJuly 16 Saturday 2022 10:00:30 PM"
         },
         "Sticker 312 Polar G2 & G3 G series Wiring 8\"x10\"": {
             "part_number": "312",
             "unit_quantity": 1,
-            "current_quantity": 79,
+            "current_quantity": 76,
             "price": 2.06,
             "use_exchange_rate": false,
             "priority": 0,
             "notes": "Vendor: \nDescription: ",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 79\nto: 79\nJared\nJuly 16 Saturday 2022 09:55:13 PM"
+            "latest_change_current_quantity": "Latest Change:\nfrom: 76\nto: 76\nJared\nJuly 16 Saturday 2022 10:00:30 PM"
         },
         "UKC 2\"  Open Cell Foam G-Class-Fan": {
             "part_number": "UKC2",
             "unit_quantity": 1.0,
-            "current_quantity": 75,
+            "current_quantity": 72,
             "price": 9.0,
             "use_exchange_rate": false,
             "priority": 0,
             "notes": "Vendor: Industrial  Rubber Supply\nDescription: ",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 75\nto: 75\nJared\nJuly 16 Saturday 2022 09:55:13 PM"
+            "latest_change_current_quantity": "Latest Change:\nfrom: 72\nto: 72\nJared\nJuly 16 Saturday 2022 10:00:30 PM"
         },
         "Grundfos 15-58FC 115V 9H": {
             "part_number": "15-58FC",
             "unit_quantity": 1,
-            "current_quantity": 69,
+            "current_quantity": 66,
             "price": 67.0,
             "use_exchange_rate": false,
             "priority": 0,
             "notes": "Vendor: Grundfos Canada\nDescription: ",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 69\nto: 69\nJared\nJuly 16 Saturday 2022 09:55:13 PM"
+            "latest_change_current_quantity": "Latest Change:\nfrom: 66\nto: 66\nJared\nJuly 16 Saturday 2022 10:00:30 PM"
         },
         "Knob 3\/4 DIA. 7\/16 Bore. Press-On Black Phenlic Round Knob": {
             "part_number": "POK-10",
             "unit_quantity": 1,
-            "current_quantity": 69,
+            "current_quantity": 66,
             "price": 2.99,
             "use_exchange_rate": false,
             "priority": 0,
             "notes": "Vendor: \nDescription: ",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 69\nto: 69\nJared\nJuly 16 Saturday 2022 09:55:13 PM"
+            "latest_change_current_quantity": "Latest Change:\nfrom: 66\nto: 66\nJared\nJuly 16 Saturday 2022 10:00:30 PM"
         },
         "Hose Clamp 1 1\/2  S.S": {
             "part_number": "CLAMP112",
             "unit_quantity": 2,
-            "current_quantity": 58,
+            "current_quantity": 52,
             "price": 0.5,
             "use_exchange_rate": false,
             "priority": 0,
             "notes": "Vendor: Greenline\nDescription: 204-694-0332",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 58\nto: 58\nJared\nJuly 16 Saturday 2022 09:55:13 PM"
+            "latest_change_current_quantity": "Latest Change:\nfrom: 52\nto: 52\nJared\nJuly 16 Saturday 2022 10:00:30 PM"
         },
         "Blower Wheel 9-15\/16\" X 2-1\/4 BI Steel 1\/2 #2-106CI CW \"A\" 1800R": {
             "part_number": "2-106CI CW",
             "unit_quantity": 1,
-            "current_quantity": 54,
+            "current_quantity": 51,
             "price": 63.0,
             "use_exchange_rate": false,
             "priority": 0,
             "notes": "Vendor: Jan-Air Illinois\nDescription: ",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 54\nto: 54\nJared\nJuly 16 Saturday 2022 09:55:13 PM"
+            "latest_change_current_quantity": "Latest Change:\nfrom: 51\nto: 51\nJared\nJuly 16 Saturday 2022 10:00:30 PM"
         },
         "1 1\/4 Closed Nipple ": {
             "part_number": "114CN",
             "unit_quantity": 3.0,
-            "current_quantity": 32,
+            "current_quantity": 23,
             "price": 0.7,
             "use_exchange_rate": false,
             "priority": 0,
             "notes": "Vendor: Greenline\nDescription: 204-694-0332",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 32\nto: 32\nJared\nJuly 16 Saturday 2022 09:55:13 PM"
+            "latest_change_current_quantity": "Latest Change:\nfrom: 23\nto: 23\nJared\nJuly 16 Saturday 2022 10:00:30 PM"
         },
         "2\" ThermaxSF-450": {
             "part_number": "THERMAXSF450",
             "unit_quantity": 1.0,
-            "current_quantity": 50,
+            "current_quantity": 47,
             "price": 49.94,
             "use_exchange_rate": false,
             "priority": 1,
             "notes": "Vendor: Neux Hearth Products\nDescription: Jim.willes@neux.com \n",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 50\nto: 50\nJared\nJuly 16 Saturday 2022 09:55:13 PM"
+            "latest_change_current_quantity": "Latest Change:\nfrom: 47\nto: 47\nJared\nJuly 16 Saturday 2022 10:00:30 PM"
         },
         "Knob 2 3\/8 DIA. 1\/2-13. Fluted Black Plastic": {
             "part_number": "DK-122",
             "unit_quantity": 2,
-            "current_quantity": 38,
+            "current_quantity": 32,
             "price": 2.75,
             "use_exchange_rate": false,
             "priority": 0,
             "notes": "Vendor: Weiss Instruments\nDescription: ",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 38\nto: 38\nJared\nJuly 16 Saturday 2022 09:55:13 PM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 32\nto: 32\nJared\nJuly 16 Saturday 2022 10:00:31 PM",
             "latest_change_notes": "Latest Change:\nfrom: \"Vendor: Weiss Instrument\nDescription: \"\nto: \"Vendor: Weiss Instruments\nDescription: \"\nItsme\nJuly 08 Friday 2022 08:58:25 AM"
         },
         "Hose Industrial G322-125 1-1\/4 ": {
             "part_number": "G322-125",
             "unit_quantity": 1,
-            "current_quantity": 39,
+            "current_quantity": 36,
             "price": 5.13,
             "use_exchange_rate": false,
             "priority": 0,
             "notes": "Vendor: GreenLine \nDescription: 204-694-0332",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 39\nto: 39\nJared\nJuly 16 Saturday 2022 09:55:13 PM"
+            "latest_change_current_quantity": "Latest Change:\nfrom: 36\nto: 36\nJared\nJuly 16 Saturday 2022 10:00:31 PM"
         },
         "Grundfos Pump Flange 1 1\/4 ": {
             "part_number": "PF114",
             "unit_quantity": 1,
-            "current_quantity": 36,
+            "current_quantity": 33,
             "price": 10.7,
             "use_exchange_rate": false,
             "priority": 2,
             "notes": "Vendor: Grundfos Canada\nDescription: ",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 36\nto: 36\nJared\nJuly 16 Saturday 2022 09:55:13 PM"
+            "latest_change_current_quantity": "Latest Change:\nfrom: 33\nto: 33\nJared\nJuly 16 Saturday 2022 10:00:31 PM"
         },
         "Spring Sil29757 4.8 LB  Spring Rate Peep Hole": {
             "part_number": "SIL29757",
             "unit_quantity": 1,
-            "current_quantity": 34,
+            "current_quantity": 31,
             "price": 1.42,
             "use_exchange_rate": false,
             "priority": 0,
@@ -917,7 +917,7 @@
             "latest_change_name": "Item added\nItsme\nJuly 07 Thursday 2022 11-24-47 AM",
             "latest_change_part_number": "Item added\nItsme\nJuly 07 Thursday 2022 11-24-47 AM",
             "latest_change_unit_quantity": "Item added\nItsme\nJuly 07 Thursday 2022 11-24-47 AM",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 34\nto: 34\nJared\nJuly 16 Saturday 2022 09:55:13 PM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 31\nto: 31\nJared\nJuly 16 Saturday 2022 10:00:31 PM",
             "latest_change_price": "Item added\nItsme\nJuly 07 Thursday 2022 11-24-47 AM",
             "latest_change_use_exchange_price": "Item added\nItsme\nJuly 07 Thursday 2022 11-24-47 AM",
             "latest_change_priority": "Item added\nItsme\nJuly 07 Thursday 2022 11-24-47 AM",
@@ -926,48 +926,48 @@
         "WeatherStripping NDA- .5\" x 3\/16\" x 50'": {
             "part_number": "WSNDA",
             "unit_quantity": 1,
-            "current_quantity": 29,
+            "current_quantity": 26,
             "price": 10.0,
             "use_exchange_rate": false,
             "priority": 0,
             "notes": "Vendor: Industrial Rubber Supply\nDescription: ",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 29\nto: 29\nJared\nJuly 16 Saturday 2022 09:55:13 PM"
+            "latest_change_current_quantity": "Latest Change:\nfrom: 26\nto: 26\nJared\nJuly 16 Saturday 2022 10:00:31 PM"
         },
         "1\"x25\"x48\" FSK 300 Certainteed Insulation": {
             "part_number": "FSK1",
             "unit_quantity": 2,
-            "current_quantity": 18,
+            "current_quantity": 12,
             "price": 8.8,
             "use_exchange_rate": false,
             "priority": 0,
             "notes": "Vendor: BrockWhite\nDescription: \nevandenberg@brockwhite.com",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 18\nto: 18\nJared\nJuly 16 Saturday 2022 09:55:13 PM"
+            "latest_change_current_quantity": "Latest Change:\nfrom: 12\nto: 12\nJared\nJuly 16 Saturday 2022 10:00:31 PM"
         },
         "3\" Thermax SF- 600 Brick Slabs": {
             "part_number": "THERMAXSF600",
             "unit_quantity": 1,
-            "current_quantity": 25,
+            "current_quantity": 22,
             "price": 104.5,
             "use_exchange_rate": false,
             "priority": 0,
             "notes": "Vendor: Nuex Hearth Ptoducts\nDescription: Jim.willes@neux.com ",
             "latest_change_price": "Latest Change:\nfrom: 104.5\nto: 104.5\nItsme\nJuly 07 Thursday 2022 08:54:01 AM",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 25\nto: 25\nJared\nJuly 16 Saturday 2022 09:55:13 PM"
+            "latest_change_current_quantity": "Latest Change:\nfrom: 22\nto: 22\nJared\nJuly 16 Saturday 2022 10:00:31 PM"
         },
         "3\" Nipple x 3\/4 Black Steel ": {
             "part_number": "483-030",
             "unit_quantity": 11.0,
-            "current_quantity": -76,
+            "current_quantity": -109,
             "price": 0.57,
             "use_exchange_rate": false,
             "priority": 0,
             "notes": "Vendor: GreenLine\nDescription: 204-694-0332",
-            "latest_change_current_quantity": "Latest Change:\nfrom: -76\nto: -76\nJared\nJuly 16 Saturday 2022 09:55:13 PM"
+            "latest_change_current_quantity": "Latest Change:\nfrom: -109\nto: -109\nJared\nJuly 16 Saturday 2022 10:00:31 PM"
         },
         "Cooling fan Blade 5\" Dia Fan  10BL5.0CCW35, 1\/2IN": {
             "part_number": "10BL5.0CCW35",
             "unit_quantity": 1,
-            "current_quantity": 19,
+            "current_quantity": 16,
             "price": 5.64,
             "use_exchange_rate": false,
             "priority": 0,
@@ -975,7 +975,7 @@
             "latest_change_name": "Item added\nItsme\nJuly 07 Thursday 2022 11-29-44 AM",
             "latest_change_part_number": "Item added\nItsme\nJuly 07 Thursday 2022 11-29-44 AM",
             "latest_change_unit_quantity": "Item added\nItsme\nJuly 07 Thursday 2022 11-29-44 AM",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 19\nto: 19\nJared\nJuly 16 Saturday 2022 09:55:13 PM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 16\nto: 16\nJared\nJuly 16 Saturday 2022 10:00:31 PM",
             "latest_change_price": "Item added\nItsme\nJuly 07 Thursday 2022 11-29-44 AM",
             "latest_change_use_exchange_price": "Item added\nItsme\nJuly 07 Thursday 2022 11-29-44 AM",
             "latest_change_priority": "Item added\nItsme\nJuly 07 Thursday 2022 11-29-44 AM",
@@ -984,17 +984,17 @@
         "Barb Hose Adapter fitting": {
             "part_number": "BIA-020",
             "unit_quantity": 2,
-            "current_quantity": 8,
+            "current_quantity": 2,
             "price": 3.32,
             "use_exchange_rate": false,
             "priority": 0,
             "notes": "Vendor: GreenLine\nDescription: 204-694-0332",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 8\nto: 8\nJared\nJuly 16 Saturday 2022 09:55:13 PM"
+            "latest_change_current_quantity": "Latest Change:\nfrom: 2\nto: 2\nJared\nJuly 16 Saturday 2022 10:00:31 PM"
         },
         "Spring SIL29756 10LB Spring Rate Damper Seating": {
             "part_number": "SIL29756",
             "unit_quantity": 2,
-            "current_quantity": 8,
+            "current_quantity": 2,
             "price": 2.0,
             "use_exchange_rate": false,
             "priority": 0,
@@ -1002,7 +1002,7 @@
             "latest_change_name": "Item added\nItsme\nJuly 05 Tuesday 2022 09-14-28 AM",
             "latest_change_part_number": "Item added\nItsme\nJuly 05 Tuesday 2022 09-14-28 AM",
             "latest_change_unit_quantity": "Item added\nItsme\nJuly 05 Tuesday 2022 09-14-28 AM",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 8\nto: 8\nJared\nJuly 16 Saturday 2022 09:55:13 PM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 2\nto: 2\nJared\nJuly 16 Saturday 2022 10:00:31 PM",
             "latest_change_price": "Item added\nItsme\nJuly 05 Tuesday 2022 09-14-28 AM",
             "latest_change_use_exchange_price": "Item added\nItsme\nJuly 05 Tuesday 2022 09-14-28 AM",
             "latest_change_priority": "Item added\nItsme\nJuly 05 Tuesday 2022 09-14-28 AM",
@@ -1011,7 +1011,7 @@
         "Shaft Collar 7\/16 with Set Screw": {
             "part_number": "BRA0420",
             "unit_quantity": 2,
-            "current_quantity": 8,
+            "current_quantity": 2,
             "price": 1.3,
             "use_exchange_rate": false,
             "priority": 0,
@@ -1019,7 +1019,7 @@
             "latest_change_name": "Latest Change:\nfrom: \"Shaft Collar 7\/16 with Set Scre\"\nto: \"Shaft Collar 7\/16 with Set Screw\"\nItsme\nJuly 07 Thursday 2022 04:30:05 PM",
             "latest_change_part_number": "Item added\nItsme\nJuly 07 Thursday 2022 03-57-46 PM",
             "latest_change_unit_quantity": "Item added\nItsme\nJuly 07 Thursday 2022 03-57-46 PM",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 8\nto: 8\nJared\nJuly 16 Saturday 2022 09:55:13 PM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 2\nto: 2\nJared\nJuly 16 Saturday 2022 10:00:31 PM",
             "latest_change_price": "Item added\nItsme\nJuly 07 Thursday 2022 03-57-46 PM",
             "latest_change_use_exchange_price": "Item added\nItsme\nJuly 07 Thursday 2022 03-57-46 PM",
             "latest_change_priority": "Item added\nItsme\nJuly 07 Thursday 2022 03-57-46 PM",
@@ -1028,47 +1028,47 @@
         "6L12  ASHT 6\"X12\" Section": {
             "part_number": "6L12",
             "unit_quantity": 1.0,
-            "current_quantity": 18,
+            "current_quantity": 15,
             "price": 44.03,
             "use_exchange_rate": false,
             "priority": 2,
             "notes": "Vendor: Security Chimneys\ndmorris@duraventgroup.com\nDescription: ",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 18\nto: 18\nJared\nJuly 16 Saturday 2022 09:55:13 PM"
+            "latest_change_current_quantity": "Latest Change:\nfrom: 15\nto: 15\nJared\nJuly 16 Saturday 2022 10:00:31 PM"
         },
         "3\"x48\"x96\" FSK Insulation Sheet": {
             "part_number": "FSK3",
             "unit_quantity": 3.0,
-            "current_quantity": -5,
+            "current_quantity": -14,
             "price": 124.99,
             "use_exchange_rate": false,
             "priority": 0,
             "notes": "Vendor: BrockWhite\nevandenberg@brockwhite.com\n",
-            "latest_change_current_quantity": "Latest Change:\nfrom: -5\nto: -5\nJared\nJuly 16 Saturday 2022 09:55:13 PM"
+            "latest_change_current_quantity": "Latest Change:\nfrom: -14\nto: -14\nJared\nJuly 16 Saturday 2022 10:00:31 PM"
         },
         "Spring Damper Adjust SIL29710 35LBS  Spring Rate": {
             "part_number": "SIL29710",
             "unit_quantity": 2,
-            "current_quantity": 3,
+            "current_quantity": -3,
             "price": 2.01,
             "use_exchange_rate": false,
             "priority": 0,
             "notes": "Vendor: MC Master Carr\nDescription: ",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 3\nto: 3\nJared\nJuly 16 Saturday 2022 09:55:13 PM"
+            "latest_change_current_quantity": "Latest Change:\nfrom: -3\nto: -3\nJared\nJuly 16 Saturday 2022 10:00:31 PM"
         },
         "10mm Isoplan  Fan Mount insulation": {
             "part_number": "10IFMI",
             "unit_quantity": 1,
-            "current_quantity": 9,
+            "current_quantity": 6,
             "price": 5.0,
             "use_exchange_rate": false,
             "priority": 0,
             "notes": "Vendor: Piney MFG\nDescription: ",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 9\nto: 9\nJared\nJuly 16 Saturday 2022 09:55:13 PM"
+            "latest_change_current_quantity": "Latest Change:\nfrom: 6\nto: 6\nJared\nJuly 16 Saturday 2022 10:00:31 PM"
         },
         "1-1\/4 Half Coupling": {
             "part_number": "G0008MC-125",
             "unit_quantity": 1,
-            "current_quantity": 9,
+            "current_quantity": 6,
             "price": 2.0,
             "use_exchange_rate": false,
             "priority": 0,
@@ -1076,7 +1076,7 @@
             "latest_change_name": "Item added\nItsme\nJuly 07 Thursday 2022 10-23-19 AM",
             "latest_change_part_number": "Item added\nItsme\nJuly 07 Thursday 2022 10-23-19 AM",
             "latest_change_unit_quantity": "Item added\nItsme\nJuly 07 Thursday 2022 10-23-19 AM",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 9\nto: 9\nJared\nJuly 16 Saturday 2022 09:55:13 PM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 6\nto: 6\nJared\nJuly 16 Saturday 2022 10:00:31 PM",
             "latest_change_price": "Latest Change:\nfrom: 0.0\nto: 2.0\nItsme\nJuly 07 Thursday 2022 11:22:08 AM",
             "latest_change_use_exchange_price": "Item added\nItsme\nJuly 07 Thursday 2022 10-23-19 AM",
             "latest_change_priority": "Item added\nItsme\nJuly 07 Thursday 2022 10-23-19 AM",
@@ -1085,7 +1085,7 @@
         "Tempered Glass 1 1\/4\" X 1 1\/4\" X 3\/16\" NEO Ceram Robax": {
             "part_number": "TG113",
             "unit_quantity": 1,
-            "current_quantity": 9,
+            "current_quantity": 6,
             "price": 3.36,
             "use_exchange_rate": false,
             "priority": 0,
@@ -1093,7 +1093,7 @@
             "latest_change_name": "Item added\nItsme\nJuly 07 Thursday 2022 11-27-45 AM",
             "latest_change_part_number": "Item added\nItsme\nJuly 07 Thursday 2022 11-27-45 AM",
             "latest_change_unit_quantity": "Item added\nItsme\nJuly 07 Thursday 2022 11-27-45 AM",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 9\nto: 9\nJared\nJuly 16 Saturday 2022 09:55:13 PM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 6\nto: 6\nJared\nJuly 16 Saturday 2022 10:00:31 PM",
             "latest_change_price": "Item added\nItsme\nJuly 07 Thursday 2022 11-27-45 AM",
             "latest_change_use_exchange_price": "Item added\nItsme\nJuly 07 Thursday 2022 11-27-45 AM",
             "latest_change_priority": "Item added\nItsme\nJuly 07 Thursday 2022 11-27-45 AM",
@@ -1102,7 +1102,7 @@
         " 12BK SLOTTED QUARTER-TURN LATCH, DIE CST, UL FACE SEAL & INTERNAL O-RING, BODY NUT, NO CAM, BLACK POWDER COATED": {
             "part_number": "12BK",
             "unit_quantity": 4,
-            "current_quantity": -24,
+            "current_quantity": -36,
             "price": 2.3,
             "use_exchange_rate": false,
             "priority": 0,
@@ -1110,7 +1110,7 @@
             "latest_change_name": "Item added\nItsme\nJuly 05 Tuesday 2022 10-28-43 AM",
             "latest_change_part_number": "Item added\nItsme\nJuly 05 Tuesday 2022 10-28-43 AM",
             "latest_change_unit_quantity": "Item added\nItsme\nJuly 05 Tuesday 2022 10-28-43 AM",
-            "latest_change_current_quantity": "Latest Change:\nfrom: -24\nto: -24\nJared\nJuly 16 Saturday 2022 09:55:14 PM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: -36\nto: -36\nJared\nJuly 16 Saturday 2022 10:00:31 PM",
             "latest_change_price": "Latest Change:\nfrom: 2.3\nto: 2.3\nItsme\nJuly 06 Wednesday 2022 10:10:41 AM",
             "latest_change_use_exchange_price": "Item added\nItsme\nJuly 05 Tuesday 2022 10-28-43 AM",
             "latest_change_priority": "Item added\nItsme\nJuly 05 Tuesday 2022 10-28-43 AM",
@@ -1119,17 +1119,17 @@
         "6BL Chimney Cap": {
             "part_number": "6BL",
             "unit_quantity": 1,
-            "current_quantity": 1,
+            "current_quantity": -2,
             "price": 0.0,
             "use_exchange_rate": false,
             "priority": 2,
             "notes": "Vendor: \nDescription: ",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 1\nto: 1\nJared\nJuly 16 Saturday 2022 09:55:14 PM"
+            "latest_change_current_quantity": "Latest Change:\nfrom: -2\nto: -2\nJared\nJuly 16 Saturday 2022 10:00:31 PM"
         },
         "sadsadasdas": {
             "part_number": "",
             "unit_quantity": 1,
-            "current_quantity": -1,
+            "current_quantity": -4,
             "price": 0.01,
             "use_exchange_rate": true,
             "priority": 0,
@@ -1137,7 +1137,7 @@
             "latest_change_name": "Item added\nJared\nJuly 16 Saturday 2022 11-58-24 AM",
             "latest_change_part_number": "Item added\nJared\nJuly 16 Saturday 2022 11-58-24 AM",
             "latest_change_unit_quantity": "Item added\nJared\nJuly 16 Saturday 2022 11-58-24 AM",
-            "latest_change_current_quantity": "Latest Change:\nfrom: -1\nto: -1\nJared\nJuly 16 Saturday 2022 09:55:14 PM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: -4\nto: -4\nJared\nJuly 16 Saturday 2022 10:00:31 PM",
             "latest_change_price": "Item added\nJared\nJuly 16 Saturday 2022 11-58-24 AM",
             "latest_change_use_exchange_price": "Item added\nJared\nJuly 16 Saturday 2022 11-58-24 AM",
             "latest_change_priority": "Item added\nJared\nJuly 16 Saturday 2022 11-58-24 AM",
@@ -1147,27 +1147,27 @@
         "1 1\/4 Full Port ball Valve": {
             "part_number": "114BV",
             "unit_quantity": 2,
-            "current_quantity": -13,
+            "current_quantity": -19,
             "price": 11.78,
             "use_exchange_rate": false,
             "priority": 0,
             "notes": "Vendor: Greenline\nDescription: 204-694-0332",
-            "latest_change_current_quantity": "Latest Change:\nfrom: -13\nto: -13\nJared\nJuly 16 Saturday 2022 09:55:14 PM"
+            "latest_change_current_quantity": "Latest Change:\nfrom: -19\nto: -19\nJared\nJuly 16 Saturday 2022 10:00:31 PM"
         },
         "3\/4 Brass Ball Valve": {
             "part_number": "34BV",
             "unit_quantity": 1,
-            "current_quantity": -3,
+            "current_quantity": -6,
             "price": 4.5,
             "use_exchange_rate": false,
             "priority": 0,
             "notes": "Vendor: GreenLine\nDescription: 204-694-0332",
-            "latest_change_current_quantity": "Latest Change:\nfrom: -3\nto: -3\nJared\nJuly 16 Saturday 2022 09:55:14 PM"
+            "latest_change_current_quantity": "Latest Change:\nfrom: -6\nto: -6\nJared\nJuly 16 Saturday 2022 10:00:31 PM"
         },
         "asdasdasd": {
             "part_number": "",
             "unit_quantity": 1,
-            "current_quantity": -10,
+            "current_quantity": -13,
             "price": 0.0,
             "use_exchange_rate": false,
             "priority": 0,
@@ -1175,7 +1175,7 @@
             "latest_change_name": "Item added\nJared\nJuly 16 Saturday 2022 09-44-09 PM",
             "latest_change_part_number": "Item added\nJared\nJuly 16 Saturday 2022 09-44-09 PM",
             "latest_change_unit_quantity": "Item added\nJared\nJuly 16 Saturday 2022 09-44-09 PM",
-            "latest_change_current_quantity": "Latest Change:\nfrom: -10\nto: -10\nJared\nJuly 16 Saturday 2022 09:55:14 PM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: -13\nto: -13\nJared\nJuly 16 Saturday 2022 10:00:31 PM",
             "latest_change_price": "Item added\nJared\nJuly 16 Saturday 2022 09-44-09 PM",
             "latest_change_use_exchange_price": "Item added\nJared\nJuly 16 Saturday 2022 09-44-09 PM",
             "latest_change_priority": "Item added\nJared\nJuly 16 Saturday 2022 09-44-09 PM",
@@ -1184,17 +1184,17 @@
         "6L24 ASHT 6\"X24\" Section": {
             "part_number": "6L24",
             "unit_quantity": 1,
-            "current_quantity": -11,
+            "current_quantity": -14,
             "price": 0.0,
             "use_exchange_rate": false,
             "priority": 2,
             "notes": "Vendor: Security Chimneys\n\nDescription: ",
-            "latest_change_current_quantity": "Latest Change:\nfrom: -11\nto: -11\nJared\nJuly 16 Saturday 2022 09:55:14 PM"
+            "latest_change_current_quantity": "Latest Change:\nfrom: -14\nto: -14\nJared\nJuly 16 Saturday 2022 10:00:31 PM"
         },
         " L-HANDLE LATCH ASSEMBLY, BLACK PLASTIC HANDLE, WITH STAMPED CAM": {
             "part_number": " 1153-01",
             "unit_quantity": 1,
-            "current_quantity": -11,
+            "current_quantity": -14,
             "price": 21.4,
             "use_exchange_rate": false,
             "priority": 0,
@@ -1202,7 +1202,7 @@
             "latest_change_name": "Item added\nItsme\nJuly 08 Friday 2022 09-12-31 AM",
             "latest_change_part_number": "Item added\nItsme\nJuly 08 Friday 2022 09-12-31 AM",
             "latest_change_unit_quantity": "Item added\nItsme\nJuly 08 Friday 2022 09-12-31 AM",
-            "latest_change_current_quantity": "Latest Change:\nfrom: -11\nto: -11\nJared\nJuly 16 Saturday 2022 09:55:14 PM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: -14\nto: -14\nJared\nJuly 16 Saturday 2022 10:00:31 PM",
             "latest_change_price": "Item added\nItsme\nJuly 08 Friday 2022 09-12-32 AM",
             "latest_change_use_exchange_price": "Item added\nItsme\nJuly 08 Friday 2022 09-12-32 AM",
             "latest_change_priority": "Item added\nItsme\nJuly 08 Friday 2022 09-12-32 AM",
@@ -1211,7 +1211,7 @@
         "test": {
             "part_number": " 1153-01",
             "unit_quantity": 1,
-            "current_quantity": -11,
+            "current_quantity": -14,
             "price": 21.4,
             "use_exchange_rate": false,
             "priority": 0,
@@ -1219,7 +1219,7 @@
             "latest_change_name": "Item added\nItsme\nJuly 08 Friday 2022 09-12-31 AM",
             "latest_change_part_number": "Item added\nItsme\nJuly 08 Friday 2022 09-12-31 AM",
             "latest_change_unit_quantity": "Item added\nItsme\nJuly 08 Friday 2022 09-12-31 AM",
-            "latest_change_current_quantity": "Latest Change:\nfrom: -11\nto: -11\nJared\nJuly 16 Saturday 2022 09:55:14 PM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: -14\nto: -14\nJared\nJuly 16 Saturday 2022 10:00:31 PM",
             "latest_change_price": "Item added\nItsme\nJuly 08 Friday 2022 09-12-32 AM",
             "latest_change_use_exchange_price": "Item added\nItsme\nJuly 08 Friday 2022 09-12-32 AM",
             "latest_change_priority": "Item added\nItsme\nJuly 08 Friday 2022 09-12-32 AM",
@@ -1228,7 +1228,7 @@
         "G2 Turbulator": {
             "part_number": "",
             "unit_quantity": 7,
-            "current_quantity": -77,
+            "current_quantity": -98,
             "price": 11.55,
             "use_exchange_rate": false,
             "priority": 0,
@@ -1236,7 +1236,7 @@
             "latest_change_name": "Item added\nItsme\nJuly 08 Friday 2022 08-22-50 AM",
             "latest_change_part_number": "Item added\nItsme\nJuly 08 Friday 2022 08-22-50 AM",
             "latest_change_unit_quantity": "Item added\nItsme\nJuly 08 Friday 2022 08-22-50 AM",
-            "latest_change_current_quantity": "Latest Change:\nfrom: -77\nto: -77\nJared\nJuly 16 Saturday 2022 09:55:14 PM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: -98\nto: -98\nJared\nJuly 16 Saturday 2022 10:00:31 PM",
             "latest_change_price": "Item added\nItsme\nJuly 08 Friday 2022 08-22-50 AM",
             "latest_change_use_exchange_price": "Item added\nItsme\nJuly 08 Friday 2022 08-22-50 AM",
             "latest_change_priority": "Item added\nItsme\nJuly 08 Friday 2022 08-22-50 AM",
