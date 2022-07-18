@@ -497,12 +497,12 @@
         "Spring Damper Adjust SIL29710 35LBS  Spring Rate": {
             "part_number": "SIL29710",
             "unit_quantity": 2,
-            "current_quantity": -11,
+            "current_quantity": -3,
             "price": 2.01,
             "use_exchange_rate": false,
             "priority": 0,
             "notes": "Vendor: MC Master Carr\nDescription: ",
-            "latest_change_current_quantity": "Latest Change:\nfrom: -11\nto: -11\nJared\nJuly 18 Monday 2022 08:23:31 AM"
+            "latest_change_current_quantity": "Latest Change:\nfrom: -3\nto: -3\nJared\nJuly 18 Monday 2022 08:27:28 AM"
         },
         " L-HANDLE LATCH ASSEMBLY, BLACK PLASTIC HANDLE, WITH STAMPED CAM": {
             "part_number": " 1153-01",
@@ -1039,12 +1039,12 @@
         "Spring Damper Adjust SIL29710 35LBS  Spring Rate": {
             "part_number": "SIL29710",
             "unit_quantity": 2,
-            "current_quantity": -21,
+            "current_quantity": -13,
             "price": 2.01,
             "use_exchange_rate": false,
             "priority": 0,
             "notes": "Vendor: MC Master Carr\nDescription: ",
-            "latest_change_current_quantity": "Latest Change:\nfrom: -21\nto: -21\nJared\nJuly 18 Monday 2022 08:23:32 AM"
+            "latest_change_current_quantity": "Latest Change:\nfrom: -8\nto: -13\nJared\nJuly 18 Monday 2022 08:27:28 AM"
         },
         "10mm Isoplan  Fan Mount insulation": {
             "part_number": "10IFMI",
