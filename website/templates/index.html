@@ -2,7 +2,7 @@
 <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.js"></script>
 <script src="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.2/js/bootstrap.js"></script>
 <script src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.4/js/bootstrap-select.js"></script>
-
+<script src="https://www.kryogenix.org/code/browser/sorttable/sorttable.js"></script>
 
 <head>
     <link rel="icon" href="/static/favicon.png">
@@ -12,93 +12,161 @@
         rel="stylesheet" />
     <link type="text/css" rel="stylesheet" href='/static/main.css' />
 
-    <meta property="og:title" content="HBNI Audio Archive" />
+    <meta property="og:title" content="Inventory" />
     <meta property="og:url" content="https://hbniaudioarchive.herokuapp.com" />
-    <meta property="og:image" content="https://hbniaudioarchive.herokuapp.com/static/hbnilogo.png" />
-    <meta property="og:description" content="Download or relisten to previously broadcasted streams." />
+    <meta property="og:description" content="View inventory." />
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <div id="logo">
-        <img src="/static/hbnilogo.png">
+
+    <h1 id="header">Inventory Manager</h1>
+
+    <br>
+    <div class="search-box">
+        <div class="search-icon"><i class="fa fa-search search-icon"></i></div>
+
+        <form action="" class="search-form">
+            <input type="text" placeholder="Search" id="search" autocomplete="off" value={{search_term}}>
+        </form>
+        <svg class="search-border" version="1.1" xmlns="http://www.w3.org/2000/svg"
+            xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:a="http://ns.adobe.com/AdobeSVGViewerExtensions/3.0/"
+            x="0px" y="0px" viewBox="0 0 671 111" style="enable-background:new 0 0 671 111;" xml:space="preserve">
+            <path class="border" d="M335.5,108.5h-280c-29.3,0-53-23.7-53-53v0c0-29.3,23.7-53,53-53h280" />
+            <path class="border" d="M335.5,108.5h280c29.3,0,53-23.7,53-53v0c0-29.3-23.7-53-53-53h-280" />
+        </svg>
+        <div class="go-icon"><i class="fa fa-close"></i></div>
     </div>
-    <div id="menu">
-        <h1 id="header">HBNI Audio Streaming Archive</h1>
+    <br>
+    <div class="container">
+        <div class="item">
+            <h3>Quick Search</h3>
+        </div>
+        <div class="item">
+            <select name="search_categories" id="coloylist" class="selectpicker" data-style="btn-info"
+                data-live-search="true">
+                <option value="" selected="selected" disabled>Select Quick Search</option>
+                <optgroup label="Part Names">
+                    {% for part_name in part_names%}
+                    <option value={{part_name}}>{{part_name}}</option>
+                    {%endfor%}
+                </optgroup>
+                <optgroup label="Part Numbers">
+                    {% for part_number in part_numbers%}
+                    <option value={{part_number}}>{{part_number}}</option>
+                    {%endfor%}
+                </optgroup>
+            </select>
+        </div>
     </div>
-    <h4> Downloads </h4>
     <div id="downloads">
-        <br>
-        <div class="search-box">
-            <div class="search-icon"><i class="fa fa-search search-icon"></i></div>
-
-            <form action="" class="search-form">
-                <input type="text" placeholder="Search" id="search" autocomplete="off" value={{searchValue}}>
-            </form>
-            <svg class="search-border" version="1.1" xmlns="http://www.w3.org/2000/svg"
-                xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:a="http://ns.adobe.com/AdobeSVGViewerExtensions/3.0/"
-                x="0px" y="0px" viewBox="0 0 671 111" style="enable-background:new 0 0 671 111;" xml:space="preserve">
-                <path class="border" d="M335.5,108.5h-280c-29.3,0-53-23.7-53-53v0c0-29.3,23.7-53,53-53h280" />
-                <path class="border" d="M335.5,108.5h280c29.3,0,53-23.7,53-53v0c0-29.3-23.7-53-53-53h-280" />
-            </svg>
-            <div class="go-icon"><i class="fa fa-close"></i></div>
-        </div>
-        <br>
-        <div class="container">
-            <div class="item">
-                <h3>Quick Search</h3>
-            </div>
-            <div class="item">
-                <select name="search_categories" id="coloylist" class="selectpicker" data-style="btn-info"
-                    data-live-search="true">
-                    <option value="" selected="selected" disabled>Select Quick Search</option>
-                    <optgroup label="Colonies">
-                        {% for coloyName in colonySearchList%}
-                        <option value={{coloyName}}>{{coloyName}}</option>
-                        {%endfor%}
-                    </optgroup>
-                    <optgroup label="Months">
-                        {% for month in monthsList%}
-                        <option value={{month}}>{{month}}</option>
-                        {%endfor%}
-                    </optgroup>
-                    <optgroup label="Days of the week">
-                        {% for day in daysList%}
-                        <option value={{day}}>{{day}}</option>
-                        {%endfor%}
-                    </optgroup>
-                </select>
-            </div>
-        </div>
-        <br>
-
         <div class="scroll">
-            {% for fileName, downloadLink in downloadableRecordings %}
-            <p>
-                <a target="_blank" href={{ downloadLink }}>
-                    <button class="buttonDownload"><i class="fa fa-download"></i> {{ fileName }}</button>
-                </a>
-            </p>
+            {% for key, value in inventory.items() %}
+            {%if search_term == ""%}
+            <details>
+                <summary>{{key}}</summary>
+                <div class="content">
+                    <div class="scroll">
+                        <table class="sortable">
+                            <thead>
+                                <tr>
+                                    <th>Part Name</th>
+                                    <th>Part Number</th>
+                                    <th>Quantity Per Unit</th>
+                                    <th>Quantity in Stock</th>
+                                    <th>Item Price</th>
+                                    <th>Priority</th>
+                                    <th>Notes</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for item_name, item_dictionary in value.items() %}
+                                <tr>
+                                    <th>{{item_name}}</th>
+                                    <td>{{item_dictionary['part_number']}}</td>
+                                    <td>{{item_dictionary['unit_quantity']}}</td>
+                                    {% if item_dictionary['current_quantity'] == 0 %}
+                                    <td class="high-priority">{{item_dictionary['current_quantity']}}</td>
+                                    {% else %}
+                                    <td>{{item_dictionary['current_quantity']}}</td>
+                                    {% endif %}
+                                    {% if item_dictionary['use_exchange_rate'] == true %}
+                                    <td sorttable_customkey={{item_dictionary['price']}}>${{item_dictionary['price']}}
+                                        USD</td>
+                                    {% else %}
+                                    <td sorttable_customkey={{item_dictionary['price']}}>${{item_dictionary['price']}}
+                                        CAD</td>
+                                    {% endif %}
+                                    {% if item_dictionary['priority'] == 0 %}
+                                    <td sorttable_customkey="0">Default</td>
+                                    {% elif item_dictionary['priority'] == 1 %}
+                                    <td sorttable_customkey="1"> Low</td>
+                                    {% elif item_dictionary['priority'] == 2 %}
+                                    <td sorttable_customkey="2" class="medium-priority">Medium</td>
+                                    {% elif item_dictionary['priority'] == 3 %}
+                                    <td sorttable_customkey="3" class="high-priority">High</td>
+                                    {% endif %}
+                                    <td>{{item_dictionary['notes']}}</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </details>
+            {% else %}
+            <details open>
+                <summary>{{key}}</summary>
+                <div class="content">
+                    <div class="scroll">
+                        <table class="sortable">
+                            <thead>
+                                <tr>
+                                    <th>Part Name</th>
+                                    <th>Part Number</th>
+                                    <th>Quantity Per Unit</th>
+                                    <th>Quantity in Stock</th>
+                                    <th>Item Price</th>
+                                    <th>Priority</th>
+                                    <th>Notes</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for item_name, item_dictionary in value.items() %}
+                                <tr>
+                                    <th>{{item_name}}</th>
+                                    <td>{{item_dictionary['part_number']}}</td>
+                                    <td>{{item_dictionary['unit_quantity']}}</td>
+                                    {% if item_dictionary['current_quantity'] == 0 %}
+                                    <td class="high-priority">{{item_dictionary['current_quantity']}}</td>
+                                    {% else %}
+                                    <td>{{item_dictionary['current_quantity']}}</td>
+                                    {% endif %}
+                                    {% if item_dictionary['use_exchange_rate'] == true %}
+                                    <td sorttable_customkey={{item_dictionary['price']}}>${{item_dictionary['price']}}
+                                        USD</td>
+                                    {% else %}
+                                    <td sorttable_customkey={{item_dictionary['price']}}>${{item_dictionary['price']}}
+                                        CAD</td>
+                                    {% endif %}
+                                    {% if item_dictionary['priority'] == 0 %}
+                                    <td sorttable_customkey="0">Default</td>
+                                    {% elif item_dictionary['priority'] == 1 %}
+                                    <td sorttable_customkey="1"> Low</td>
+                                    {% elif item_dictionary['priority'] == 2 %}
+                                    <td sorttable_customkey="2" class="medium-priority">Medium</td>
+                                    {% elif item_dictionary['priority'] == 3 %}
+                                    <td sorttable_customkey="3" class="high-priority">High</td>
+                                    {% endif %}
+                                    <td>{{item_dictionary['notes']}}</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </details>
+            {% endif %}
+            <br>
             {% endfor %}
         </div>
-    </div>
-    <div class="recording_status_container">
-        <div class="item">
-            <h3>Recording Status: </h3>
-        </div>
-        {% if recordingStatus != "Currently nothing to record"%}
-        <div class="item">
-            Currently recording <a href="http://hbniaudio.hbni.net:8000{{recordingStatus}}">{{recordingStatus}}</a>
-        </div>
-        <div class="item">
-            <div class="recorder-container">
-                <div class="outer"></div>
-                <div class="outer-2"></div>
-            </div>
-        </div>
-        {% else %}
-
-        <div class="item">
-            {{recordingStatus}}
-        </div>
-        {% endif %}
     </div>
 </head>
 
@@ -106,33 +174,15 @@
 <br>
 <footer>
     <div class="footer-container">
-        <h3>HBNI Streaming Archive</h3>
+        <h3>Inventory Manager</h3>
     </div <div class="address">For Questions, Comments or Concerns about this service please email: <a
         href="mailto:jared@pinelandfarms.ca">jared@pinelandfarms.ca</a></p>
     </div>
     <ul class="apps">
-
-        <a class="download apple" href="https://apps.apple.com/ca/app/hbni-audio-streaming/id1611672333">
-            <i class="fa fa fa-apple fa-3x"></i>
-            <span class="df">Download from</span>
-            <span class="dfn">App Store</span>
-        </a>
-        <a class="download windows" href="https://github.com/TheCodingJsoftware/HBNI-Audio-Stream-Listener/releases">
+        <a class="download windows" href="https://github.com/TheCodingJsoftware/Inventory-Manager/releases">
             <i class="fa fa fa-windows fa-3x"></i>
             <span class="df">Get it on</span>
             <span class="dfn">Windows</span>
-        </a>
-        <a class="download linux"
-            href="https://github.com/TheCodingJsoftware/HBNI-Audio-Stream-Listener#development-setup">
-            <i class="fa fa fa-linux fa-3x"></i>
-            <span class="df">Get it on</span>
-            <span class="dfn">Linux</span>
-        </a>
-        <a class="download android"
-            href="https://play.google.com/store/apps/details?id=com.thecodingjsoftware.hutteritechurch">
-            <i class="fa fa fa-android fa-3x"></i>
-            <span class="df">Download from</span>
-            <span class="dfn">Google Play</span>
         </a>
     </ul>
     </div>
@@ -140,6 +190,10 @@
         <p>Copyright 2022 by TheCodingJ's</p>
     </div>
 </footer>
+<br>
+
+</html>
+
 <script>
     var input = document.getElementById("search");
     // Execute a function when the user releases a key on the keyboard
@@ -148,7 +202,7 @@
             event.preventDefault();
             location.replace(input.value);
             if (input.value === "") {
-                location.assign('https://hbniaudioarchive.herokuapp.com');
+                location.assign('http://10.0.0.217:5000');
             }
         }
     });
@@ -165,7 +219,7 @@
         $(".go-icon").click(function () {
             $(".search-form").submit();
             $(".go-icon").removeClass("go-in");
-            location.assign('https://hbniaudioarchive.herokuapp.com');
+            location.assign('http://10.0.0.217:5000');
         });
         $(function () {
             $('select').on('change', function (e) {
@@ -174,6 +228,120 @@
 
         });
     });
-</script>
+    class Accordion {
+        constructor(el) {
+            // Store the <details> element
+            this.el = el;
+            // Store the <summary> element
+            this.summary = el.querySelector('summary');
+            // Store the <div class="content"> element
+            this.content = el.querySelector('.content');
 
-</html>
+            // Store the animation object (so we can cancel it if needed)
+            this.animation = null;
+            // Store if the element is closing
+            this.isClosing = false;
+            // Store if the element is expanding
+            this.isExpanding = false;
+            // Detect user clicks on the summary element
+            this.summary.addEventListener('click', (e) => this.onClick(e));
+        }
+
+        onClick(e) {
+            // Stop default behaviour from the browser
+            e.preventDefault();
+            // Add an overflow on the <details> to avoid content overflowing
+            this.el.style.overflow = 'hidden';
+            // Check if the element is being closed or is already closed
+            if (this.isClosing || !this.el.open) {
+                this.open();
+                // Check if the element is being openned or is already open
+            } else if (this.isExpanding || this.el.open) {
+                this.shrink();
+            }
+        }
+
+        shrink() {
+            // Set the element as "being closed"
+            this.isClosing = true;
+
+            // Store the current height of the element
+            const startHeight = `${this.el.offsetHeight}px`;
+            // Calculate the height of the summary
+            const endHeight = `${this.summary.offsetHeight}px`;
+
+            // If there is already an animation running
+            if (this.animation) {
+                // Cancel the current animation
+                this.animation.cancel();
+            }
+
+            // Start a WAAPI animation
+            this.animation = this.el.animate({
+                // Set the keyframes from the startHeight to endHeight
+                height: [startHeight, endHeight]
+            }, {
+                duration: 400,
+                easing: 'ease-out'
+            });
+
+            // When the animation is complete, call onAnimationFinish()
+            this.animation.onfinish = () => this.onAnimationFinish(false);
+            // If the animation is cancelled, isClosing variable is set to false
+            this.animation.oncancel = () => this.isClosing = false;
+        }
+
+        open() {
+            // Apply a fixed height on the element
+            this.el.style.height = `${this.el.offsetHeight}px`;
+            // Force the [open] attribute on the details element
+            this.el.open = true;
+            // Wait for the next frame to call the expand function
+            window.requestAnimationFrame(() => this.expand());
+        }
+
+        expand() {
+            // Set the element as "being expanding"
+            this.isExpanding = true;
+            // Get the current fixed height of the element
+            const startHeight = `${this.el.offsetHeight}px`;
+            // Calculate the open height of the element (summary height + content height)
+            const endHeight = `${this.summary.offsetHeight + this.content.offsetHeight}px`;
+
+            // If there is already an animation running
+            if (this.animation) {
+                // Cancel the current animation
+                this.animation.cancel();
+            }
+
+            // Start a WAAPI animation
+            this.animation = this.el.animate({
+                // Set the keyframes from the startHeight to endHeight
+                height: [startHeight, endHeight]
+            }, {
+                duration: 400,
+                easing: 'ease-out'
+            });
+            // When the animation is complete, call onAnimationFinish()
+            this.animation.onfinish = () => this.onAnimationFinish(true);
+            // If the animation is cancelled, isExpanding variable is set to false
+            this.animation.oncancel = () => this.isExpanding = false;
+        }
+
+        onAnimationFinish(open) {
+            // Set the open attribute based on the parameter
+            this.el.open = open;
+            // Clear the stored animation
+            this.animation = null;
+            // Reset isClosing & isExpanding
+            this.isClosing = false;
+            this.isExpanding = false;
+            // Remove the overflow hidden and the fixed height
+            this.el.style.height = this.el.style.overflow = '';
+        }
+    }
+
+    document.querySelectorAll('details').forEach((el) => {
+        new Accordion(el);
+    });
+</script>
