@@ -176,16 +176,6 @@
             "notes": "Vendor: \nDescription: ",
             "latest_change_current_quantity": "Latest Change:\nfrom: 79\nto: 79\nJared\nJuly 18 Monday 2022 08:31:51 AM"
         },
-        "Sticker 310 Polar G2 & G3 Caution Pinch Hazard 4.5\"x2.75\"": {
-            "part_number": "310",
-            "unit_quantity": 2,
-            "current_quantity": 68,
-            "price": 0.64,
-            "use_exchange_rate": false,
-            "priority": 0,
-            "notes": "Vendor: \nDescription: ",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 74\nto: 68\nJared\nJuly 18 Monday 2022 08:31:51 AM"
-        },
         "Sticker 312 Polar G2 & G3 G series Wiring 8\"x10\"": {
             "part_number": "312",
             "unit_quantity": 1,
@@ -196,6 +186,16 @@
             "notes": "Vendor: \nDescription: ",
             "latest_change_current_quantity": "Latest Change:\nfrom: 69\nto: 69\nJared\nJuly 18 Monday 2022 08:31:51 AM"
         },
+        "Sticker 310 Polar G2 & G3 Caution Pinch Hazard 4.5\"x2.75\"": {
+            "part_number": "310",
+            "unit_quantity": 2,
+            "current_quantity": 68,
+            "price": 0.64,
+            "use_exchange_rate": false,
+            "priority": 0,
+            "notes": "Vendor: \nDescription: ",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 74\nto: 68\nJared\nJuly 18 Monday 2022 08:31:51 AM"
+        },
         "UKC 2\"  Open Cell Foam G-Class-Fan": {
             "part_number": "UKC2",
             "unit_quantity": 1.0,
@@ -205,19 +205,6 @@
             "priority": 0,
             "notes": "Vendor: Industrial  Rubber Supply\nDescription: ",
             "latest_change_current_quantity": "Latest Change:\nfrom: 65.0\nto: 65\nJared\nJuly 18 Monday 2022 08:31:51 AM"
-        },
-        "Handle Black Phenolic BTH-2": {
-            "part_number": "bth-2",
-            "unit_quantity": 3,
-            "current_quantity": 57,
-            "price": 4.96,
-            "use_exchange_rate": false,
-            "priority": 0,
-            "notes": "Vendor: Sierra Pacific\nDescription: ",
-            "latest_change_name": "Latest Change:\nfrom: \"Ha\"\nto: \"Handle Black Phenolic BTH-2\"\nItsme\nJuly 08 Friday 2022 09:09:36 AM",
-            "latest_change_part_number": "Latest Change:\nfrom: bth-\nto: bth-2\nItsme\nJuly 08 Friday 2022 09:10:02 AM",
-            "latest_change_notes": "Latest Change:\nfrom: \"Vendor: Sierra Pacifi\nDescription: \"\nto: \"Vendor: Sierra Pacific\nDescription: \"\nItsme\nJuly 08 Friday 2022 09:06:17 AM",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 57\nto: 57\nJared\nJuly 18 Monday 2022 08:31:51 AM"
         },
         "Grundfos 15-58FC 115V 9H": {
             "part_number": "15-58FC",
@@ -239,6 +226,19 @@
             "notes": "Vendor: \nDescription: ",
             "latest_change_current_quantity": "Latest Change:\nfrom: 59\nto: 59\nJared\nJuly 18 Monday 2022 08:31:51 AM"
         },
+        "Handle Black Phenolic BTH-2": {
+            "part_number": "bth-2",
+            "unit_quantity": 3,
+            "current_quantity": 57,
+            "price": 4.96,
+            "use_exchange_rate": false,
+            "priority": 0,
+            "notes": "Vendor: Sierra Pacific\nDescription: ",
+            "latest_change_name": "Latest Change:\nfrom: \"Ha\"\nto: \"Handle Black Phenolic BTH-2\"\nItsme\nJuly 08 Friday 2022 09:09:36 AM",
+            "latest_change_part_number": "Latest Change:\nfrom: bth-\nto: bth-2\nItsme\nJuly 08 Friday 2022 09:10:02 AM",
+            "latest_change_notes": "Latest Change:\nfrom: \"Vendor: Sierra Pacifi\nDescription: \"\nto: \"Vendor: Sierra Pacific\nDescription: \"\nItsme\nJuly 08 Friday 2022 09:06:17 AM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 57\nto: 57\nJared\nJuly 18 Monday 2022 08:31:51 AM"
+        },
         "Blower Wheel 9-15\/16\" X 2-1\/4 BI Steel 1\/2 #2-106CI CW \"A\" 1800R": {
             "part_number": "2-106CI CW",
             "unit_quantity": 1,
@@ -249,16 +249,6 @@
             "notes": "Vendor: Jan-Air Illinois\nDescription: ",
             "latest_change_current_quantity": "Latest Change:\nfrom: 44\nto: 44\nJared\nJuly 18 Monday 2022 08:31:51 AM"
         },
-        "Hose Clamp 1 1\/2  S.S": {
-            "part_number": "CLAMP112",
-            "unit_quantity": 2,
-            "current_quantity": 38,
-            "price": 0.5,
-            "use_exchange_rate": false,
-            "priority": 0,
-            "notes": "Vendor: Greenline\nDescription: 204-694-0332",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 44\nto: 38\nJared\nJuly 18 Monday 2022 08:31:51 AM"
-        },
         "2\" ThermaxSF-450": {
             "part_number": "THERMAXSF450",
             "unit_quantity": 1.0,
@@ -268,6 +258,16 @@
             "priority": 1,
             "notes": "Vendor: Neux Hearth Products\nDescription: Jim.willes@neux.com \n",
             "latest_change_current_quantity": "Latest Change:\nfrom: 40.0\nto: 40\nJared\nJuly 18 Monday 2022 08:31:51 AM"
+        },
+        "Hose Clamp 1 1\/2  S.S": {
+            "part_number": "CLAMP112",
+            "unit_quantity": 2,
+            "current_quantity": 38,
+            "price": 0.5,
+            "use_exchange_rate": false,
+            "priority": 0,
+            "notes": "Vendor: Greenline\nDescription: 204-694-0332",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 44\nto: 38\nJared\nJuly 18 Monday 2022 08:31:51 AM"
         },
         "Hose Industrial G322-125 1-1\/4 ": {
             "part_number": "G322-125",
@@ -306,6 +306,16 @@
             "latest_change_priority": "Item added\nItsme\nJuly 07 Thursday 2022 11-24-47 AM",
             "latest_change_notes": "Item added\nItsme\nJuly 07 Thursday 2022 11-24-47 AM"
         },
+        "WeatherStripping NDA- .5\" x 3\/16\" x 50'": {
+            "part_number": "WSNDA",
+            "unit_quantity": 1,
+            "current_quantity": 19,
+            "price": 10.0,
+            "use_exchange_rate": false,
+            "priority": 0,
+            "notes": "Vendor: Industrial Rubber Supply\nDescription: ",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 19\nto: 19\nJared\nJuly 18 Monday 2022 08:31:51 AM"
+        },
         "Knob 2 3\/8 DIA. 1\/2-13. Fluted Black Plastic": {
             "part_number": "DK-122",
             "unit_quantity": 2,
@@ -316,16 +326,6 @@
             "notes": "Vendor: Weiss Instruments\nDescription: ",
             "latest_change_current_quantity": "Latest Change:\nfrom: 18\nto: 18\nJared\nJuly 18 Monday 2022 08:31:51 AM",
             "latest_change_notes": "Latest Change:\nfrom: \"Vendor: Weiss Instrument\nDescription: \"\nto: \"Vendor: Weiss Instruments\nDescription: \"\nItsme\nJuly 08 Friday 2022 08:58:25 AM"
-        },
-        "WeatherStripping NDA- .5\" x 3\/16\" x 50'": {
-            "part_number": "WSNDA",
-            "unit_quantity": 1,
-            "current_quantity": 19,
-            "price": 10.0,
-            "use_exchange_rate": false,
-            "priority": 0,
-            "notes": "Vendor: Industrial Rubber Supply\nDescription: ",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 19\nto: 19\nJared\nJuly 18 Monday 2022 08:31:51 AM"
         },
         "3\" Thermax SF- 600 Brick Slabs": {
             "part_number": "THERMAXSF600",
@@ -376,15 +376,17 @@
             "notes": "Vendor: Greenline\nDescription: 204-694-0332",
             "latest_change_current_quantity": "Latest Change:\nfrom: 11.0\nto: 2.0\nJared\nJuly 18 Monday 2022 08:31:52 AM"
         },
-        "1\"x25\"x48\" FSK 300 Certainteed Insulation": {
-            "part_number": "FSK1",
-            "unit_quantity": 2,
-            "current_quantity": -2,
-            "price": 8.8,
-            "use_exchange_rate": false,
+        "asdasdasddasdsd": {
+            "notes": "Vendor: \nDescription: ",
+            "latest_change_name": "Item added\nJared\nJuly 18 Monday 2022 09-51-42 PM",
             "priority": 0,
-            "notes": "Vendor: BrockWhite\nDescription: \nevandenberg@brockwhite.com",
-            "latest_change_current_quantity": "Latest Change:\nfrom: -2\nto: -2\nJared\nJuly 18 Monday 2022 08:31:52 AM"
+            "part_number": "dsfdsf",
+            "use_exchange_rate": false,
+            "current_quantity": 0,
+            "latest_change_current_quantity": "Item added\nJared\nJuly 18 Monday 2022 09-51-42 PM",
+            "latest_change_priority": "Item added\nJared\nJuly 18 Monday 2022 09-51-42 PM",
+            "latest_change_use_exchange_price": "Item added\nJared\nJuly 18 Monday 2022 09-51-42 PM",
+            "latest_change_unit_quantity": "Item added\nJared\nJuly 18 Monday 2022 09-51-42 PM"
         },
         "10mm Isoplan  Fan Mount insulation": {
             "part_number": "10IFMI",
@@ -430,6 +432,16 @@
             "latest_change_priority": "Item added\nItsme\nJuly 07 Thursday 2022 11-27-45 AM",
             "latest_change_notes": "Item added\nItsme\nJuly 07 Thursday 2022 11-27-45 AM"
         },
+        "1\"x25\"x48\" FSK 300 Certainteed Insulation": {
+            "part_number": "FSK1",
+            "unit_quantity": 2,
+            "current_quantity": -2,
+            "price": 8.8,
+            "use_exchange_rate": false,
+            "priority": 0,
+            "notes": "Vendor: BrockWhite\nDescription: \nevandenberg@brockwhite.com",
+            "latest_change_current_quantity": "Latest Change:\nfrom: -2\nto: -2\nJared\nJuly 18 Monday 2022 08:31:52 AM"
+        },
         "6BL Chimney Cap": {
             "part_number": "6BL",
             "unit_quantity": 1,
@@ -439,6 +451,16 @@
             "priority": 2,
             "notes": "Vendor: \nDescription: ",
             "latest_change_current_quantity": "Latest Change:\nfrom: -3\nto: -3\nJared\nJuly 18 Monday 2022 08:31:52 AM"
+        },
+        "Spring Damper Adjust SIL29710 35LBS  Spring Rate": {
+            "part_number": "SIL29710",
+            "unit_quantity": 2,
+            "current_quantity": -9,
+            "price": 2.01,
+            "use_exchange_rate": false,
+            "priority": 0,
+            "notes": "Vendor: MC Master Carr\nDescription: ",
+            "latest_change_current_quantity": "Latest Change:\nfrom: -9\nto: -9\nJared\nJuly 18 Monday 2022 08:31:52 AM"
         },
         "Barb Hose Adapter fitting": {
             "part_number": "BIA-020",
@@ -494,16 +516,6 @@
             "notes": "Vendor: GreenLine\nDescription: 204-694-0332",
             "latest_change_current_quantity": "Latest Change:\nfrom: -10\nto: -13\nJared\nJuly 18 Monday 2022 08:31:52 AM"
         },
-        "Spring Damper Adjust SIL29710 35LBS  Spring Rate": {
-            "part_number": "SIL29710",
-            "unit_quantity": 2,
-            "current_quantity": -9,
-            "price": 2.01,
-            "use_exchange_rate": false,
-            "priority": 0,
-            "notes": "Vendor: MC Master Carr\nDescription: ",
-            "latest_change_current_quantity": "Latest Change:\nfrom: -9\nto: -9\nJared\nJuly 18 Monday 2022 08:31:52 AM"
-        },
         " L-HANDLE LATCH ASSEMBLY, BLACK PLASTIC HANDLE, WITH STAMPED CAM": {
             "part_number": " 1153-01",
             "unit_quantity": 1,
@@ -521,16 +533,6 @@
             "latest_change_priority": "Item added\nItsme\nJuly 08 Friday 2022 09-12-32 AM",
             "latest_change_notes": "Item added\nItsme\nJuly 08 Friday 2022 09-12-32 AM"
         },
-        "3\"x48\"x96\" FSK Insulation Sheet": {
-            "part_number": "FSK3",
-            "unit_quantity": 3.0,
-            "current_quantity": -35,
-            "price": 124.99,
-            "use_exchange_rate": false,
-            "priority": 0,
-            "notes": "Vendor: BrockWhite\nevandenberg@brockwhite.com\n",
-            "latest_change_current_quantity": "Latest Change:\nfrom: -35\nto: -35\nJared\nJuly 18 Monday 2022 08:31:52 AM"
-        },
         "1 1\/4 Full Port ball Valve": {
             "part_number": "114BV",
             "unit_quantity": 2,
@@ -540,6 +542,16 @@
             "priority": 0,
             "notes": "Vendor: Greenline\nDescription: 204-694-0332",
             "latest_change_current_quantity": "Latest Change:\nfrom: -33\nto: -33\nJared\nJuly 18 Monday 2022 08:31:52 AM"
+        },
+        "3\"x48\"x96\" FSK Insulation Sheet": {
+            "part_number": "FSK3",
+            "unit_quantity": 3.0,
+            "current_quantity": -35,
+            "price": 124.99,
+            "use_exchange_rate": false,
+            "priority": 0,
+            "notes": "Vendor: BrockWhite\nevandenberg@brockwhite.com\n",
+            "latest_change_current_quantity": "Latest Change:\nfrom: -35\nto: -35\nJared\nJuly 18 Monday 2022 08:31:52 AM"
         },
         " 12BK SLOTTED QUARTER-TURN LATCH, DIE CST, UL FACE SEAL & INTERNAL O-RING, BODY NUT, NO CAM, BLACK POWDER COATED": {
             "part_number": "12BK",
