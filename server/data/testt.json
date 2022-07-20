@@ -679,9 +679,10 @@
             "current_quantity": 209,
             "price": 2.75,
             "use_exchange_rate": false,
-            "priority": 2,
+            "priority": 0,
             "notes": "Vendor: \nDescription: ",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 209\nto: 209\nJared\nJuly 20 Wednesday 2022 01:29:29 PM"
+            "latest_change_current_quantity": "Latest Change:\nfrom: 209\nto: 209\nJared\nJuly 20 Wednesday 2022 01:29:29 PM",
+            "latest_change_priority": "Latest Change:\nfrom: 1\nto: 0\nJared\nJuly 20 Wednesday 2022 04:28:26 PM"
         },
         "Sticker 320 Water Temperture 5\"x9.5\"": {
             "part_number": "320",
@@ -752,7 +753,8 @@
             "priority": 3,
             "notes": "Vendor: Rantec\nRachel@rantec.ca\nDescription: ",
             "latest_change_current_quantity": "Latest Change:\nfrom: 74\nto: 74\nJared\nJuly 20 Wednesday 2022 01:29:29 PM",
-            "latest_change_price": "Latest Change:\nfrom: 9.7\nto: 9.7\nItsme\nJuly 07 Thursday 2022 03:59:16 PM"
+            "latest_change_price": "Latest Change:\nfrom: 9.7\nto: 9.7\nItsme\nJuly 07 Thursday 2022 03:59:16 PM",
+            "latest_change_priority": "Latest Change:\nfrom: 2\nto: 3\nJared\nJuly 20 Wednesday 2022 04:26:14 PM"
         },
         "Sticker 322 G2 and G3 Remove Label ": {
             "part_number": "322",
