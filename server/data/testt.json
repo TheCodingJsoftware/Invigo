@@ -1,5 +1,67 @@
 {
     "Polar G2": {
+        "535 Blacl Silicone 300ML ": {
+            "part_number": "32390",
+            "unit_quantity": 1,
+            "current_quantity": 79,
+            "price": 9.7,
+            "use_exchange_rate": false,
+            "priority": 3,
+            "notes": "Vendor: Rantec\nRachel@rantec.ca\nDescription: ",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 79\nto: 79\nJared\nJuly 20 Wednesday 2022 01:29:29 PM",
+            "latest_change_price": "Latest Change:\nfrom: 9.7\nto: 9.7\nItsme\nJuly 07 Thursday 2022 03:59:16 PM"
+        },
+        "6 FT Power Cord Nema 5-16P 3 pin": {
+            "part_number": "Nema5",
+            "unit_quantity": 1,
+            "current_quantity": 219,
+            "price": 2.75,
+            "use_exchange_rate": false,
+            "priority": 2,
+            "notes": "Vendor: \nDescription: ",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 219\nto: 219\nJared\nJuly 20 Wednesday 2022 01:29:29 PM"
+        },
+        "Grundfos Pump Flange 1 1\/4 ": {
+            "part_number": "PF114",
+            "unit_quantity": 1,
+            "current_quantity": 26,
+            "price": 10.7,
+            "use_exchange_rate": false,
+            "priority": 2,
+            "notes": "Vendor: Grundfos Canada\nDescription: ",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 26\nto: 26\nJared\nJuly 19 Tuesday 2022 03:10:20 PM"
+        },
+        "6L12  ASHT 6\"X12\" Section": {
+            "part_number": "6L12",
+            "unit_quantity": 1,
+            "current_quantity": 9,
+            "price": 44.03,
+            "use_exchange_rate": false,
+            "priority": 2,
+            "notes": "Vendor: Security Chimneys\ndmorris@duraventgroup.com\nDescription: ",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 12\nto: 9\nJared\nJuly 18 Monday 2022 08:31:51 AM",
+            "latest_change_unit_quantity": "Latest Change:\nfrom: 2\nto: 1\nJared\nJuly 16 Saturday 2022 11:22:06 PM"
+        },
+        "6BL Chimney Cap": {
+            "part_number": "6BL",
+            "unit_quantity": 1,
+            "current_quantity": -3,
+            "price": 0.0,
+            "use_exchange_rate": false,
+            "priority": 2,
+            "notes": "Vendor: \nDescription: ",
+            "latest_change_current_quantity": "Latest Change:\nfrom: -3\nto: -3\nJared\nJuly 20 Wednesday 2022 01:29:29 PM"
+        },
+        "2\" ThermaxSF-450": {
+            "part_number": "THERMAXSF450",
+            "unit_quantity": 1.0,
+            "current_quantity": 40.0,
+            "price": 49.94,
+            "use_exchange_rate": false,
+            "priority": 1,
+            "notes": "Vendor: Neux Hearth Products\nDescription: Jim.willes@neux.com \n",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 40.0\nto: 40.0\nJared\nJuly 20 Wednesday 2022 01:29:29 PM"
+        },
         "Lock Pin 5\/16\" X 1 3\/8\" ": {
             "part_number": "LP515",
             "unit_quantity": 7,
@@ -86,16 +148,6 @@
             "latest_change_priority": "Item added\nItsme\nJuly 07 Thursday 2022 04-16-48 PM",
             "latest_change_notes": "Item added\nItsme\nJuly 07 Thursday 2022 04-16-48 PM"
         },
-        "6 FT Power Cord Nema 5-16P 3 pin": {
-            "part_number": "Nema5",
-            "unit_quantity": 1,
-            "current_quantity": 219,
-            "price": 2.75,
-            "use_exchange_rate": false,
-            "priority": 2,
-            "notes": "Vendor: \nDescription: ",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 219\nto: 219\nJared\nJuly 20 Wednesday 2022 01:29:29 PM"
-        },
         "Sticker 320 Water Temperture 5\"x9.5\"": {
             "part_number": "320",
             "unit_quantity": 1,
@@ -155,17 +207,6 @@
             "priority": 0,
             "notes": "Vendor: \nDescription: ",
             "latest_change_current_quantity": "Latest Change:\nfrom: 82\nto: 82\nJared\nJuly 20 Wednesday 2022 01:29:29 PM"
-        },
-        "535 Blacl Silicone 300ML ": {
-            "part_number": "32390",
-            "unit_quantity": 1,
-            "current_quantity": 79,
-            "price": 9.7,
-            "use_exchange_rate": false,
-            "priority": 3,
-            "notes": "Vendor: Rantec\nRachel@rantec.ca\nDescription: ",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 79\nto: 79\nJared\nJuly 20 Wednesday 2022 01:29:29 PM",
-            "latest_change_price": "Latest Change:\nfrom: 9.7\nto: 9.7\nItsme\nJuly 07 Thursday 2022 03:59:16 PM"
         },
         "Sticker 322 G2 and G3 Remove Label ": {
             "part_number": "322",
@@ -250,16 +291,6 @@
             "notes": "Vendor: Jan-Air Illinois\nDescription: ",
             "latest_change_current_quantity": "Latest Change:\nfrom: 44\nto: 44\nJared\nJuly 20 Wednesday 2022 01:29:29 PM"
         },
-        "2\" ThermaxSF-450": {
-            "part_number": "THERMAXSF450",
-            "unit_quantity": 1.0,
-            "current_quantity": 40.0,
-            "price": 49.94,
-            "use_exchange_rate": false,
-            "priority": 1,
-            "notes": "Vendor: Neux Hearth Products\nDescription: Jim.willes@neux.com \n",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 40.0\nto: 40.0\nJared\nJuly 20 Wednesday 2022 01:29:29 PM"
-        },
         "Hose Clamp 1 1\/2  S.S": {
             "part_number": "CLAMP112",
             "unit_quantity": 2,
@@ -279,16 +310,6 @@
             "priority": 0,
             "notes": "Vendor: GreenLine \nDescription: 204-694-0332",
             "latest_change_current_quantity": "Latest Change:\nfrom: 29\nto: 29\nJared\nJuly 18 Monday 2022 08:31:51 AM"
-        },
-        "Grundfos Pump Flange 1 1\/4 ": {
-            "part_number": "PF114",
-            "unit_quantity": 1,
-            "current_quantity": 26,
-            "price": 10.7,
-            "use_exchange_rate": false,
-            "priority": 2,
-            "notes": "Vendor: Grundfos Canada\nDescription: ",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 26\nto: 26\nJared\nJuly 19 Tuesday 2022 03:10:20 PM"
         },
         "Spring Sil29757 4.8 LB  Spring Rate Peep Hole": {
             "part_number": "SIL29757",
@@ -338,17 +359,6 @@
             "notes": "Vendor: Nuex Hearth Ptoducts\nDescription: Jim.willes@neux.com ",
             "latest_change_price": "Latest Change:\nfrom: 104.5\nto: 104.5\nItsme\nJuly 07 Thursday 2022 08:54:01 AM",
             "latest_change_current_quantity": "Latest Change:\nfrom: 15\nto: 15\nJared\nJuly 20 Wednesday 2022 01:29:29 PM"
-        },
-        "6L12  ASHT 6\"X12\" Section": {
-            "part_number": "6L12",
-            "unit_quantity": 1,
-            "current_quantity": 9,
-            "price": 44.03,
-            "use_exchange_rate": false,
-            "priority": 2,
-            "notes": "Vendor: Security Chimneys\ndmorris@duraventgroup.com\nDescription: ",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 12\nto: 9\nJared\nJuly 18 Monday 2022 08:31:51 AM",
-            "latest_change_unit_quantity": "Latest Change:\nfrom: 2\nto: 1\nJared\nJuly 16 Saturday 2022 11:22:06 PM"
         },
         "Cooling fan Blade 5\" Dia Fan  10BL5.0CCW35, 1\/2IN": {
             "part_number": "10BL5.0CCW35",
@@ -430,16 +440,6 @@
             "priority": 0,
             "notes": "Vendor: BrockWhite\nDescription: \nevandenberg@brockwhite.com",
             "latest_change_current_quantity": "Latest Change:\nfrom: -2\nto: -2\nJared\nJuly 19 Tuesday 2022 03:10:21 PM"
-        },
-        "6BL Chimney Cap": {
-            "part_number": "6BL",
-            "unit_quantity": 1,
-            "current_quantity": -3,
-            "price": 0.0,
-            "use_exchange_rate": false,
-            "priority": 2,
-            "notes": "Vendor: \nDescription: ",
-            "latest_change_current_quantity": "Latest Change:\nfrom: -3\nto: -3\nJared\nJuly 20 Wednesday 2022 01:29:29 PM"
         },
         "Spring Damper Adjust SIL29710 35LBS  Spring Rate": {
             "part_number": "SIL29710",
@@ -877,7 +877,8 @@
             "use_exchange_rate": false,
             "priority": 2,
             "notes": "Vendor: Grundfos Canada\nDescription: ",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 24\nto: 24\nJared\nJuly 20 Wednesday 2022 01:29:30 PM"
+            "latest_change_current_quantity": "Latest Change:\nfrom: 24\nto: 24\nJared\nJuly 20 Wednesday 2022 01:29:30 PM",
+            "latest_change_priority": "Latest Change:\nfrom: 3\nto: 2\nJared\nJuly 20 Wednesday 2022 04:45:31 PM"
         },
         "Spring Sil29757 4.8 LB  Spring Rate Peep Hole": {
             "part_number": "SIL29757",
