@@ -1244,23 +1244,5 @@
             "latest_change_current_quantity": "Latest Change:\nfrom: -208.0\nto: -219.0\nJared\nJuly 20 Wednesday 2022 06:21:51 PM"
         }
     },
-    "new": {
-        "v": {
-            "part_number": "",
-            "unit_quantity": 1,
-            "current_quantity": 0,
-            "price": 0.0,
-            "use_exchange_rate": false,
-            "priority": 0,
-            "notes": "Vendor: \nDescription: ",
-            "latest_change_name": "Item added\nJared\nJuly 21 Thursday 2022 05-21-54 PM",
-            "latest_change_part_number": "Item added\nJared\nJuly 21 Thursday 2022 05-21-54 PM",
-            "latest_change_unit_quantity": "Item added\nJared\nJuly 21 Thursday 2022 05-21-54 PM",
-            "latest_change_current_quantity": "Item added\nJared\nJuly 21 Thursday 2022 05-21-54 PM",
-            "latest_change_price": "Item added\nJared\nJuly 21 Thursday 2022 05-21-54 PM",
-            "latest_change_use_exchange_price": "Item added\nJared\nJuly 21 Thursday 2022 05-21-54 PM",
-            "latest_change_priority": "Item added\nJared\nJuly 21 Thursday 2022 05-21-54 PM",
-            "latest_change_notes": "Item added\nJared\nJuly 21 Thursday 2022 05-21-54 PM"
-        }
-    }
+    "new": {}
 }
