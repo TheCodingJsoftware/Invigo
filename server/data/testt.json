@@ -591,6 +591,9 @@
             "latest_change_use_exchange_price": "Item added\nItsme\nJuly 07 Thursday 2022 04-32-40 PM",
             "latest_change_priority": "Item added\nItsme\nJuly 07 Thursday 2022 04-32-40 PM",
             "latest_change_notes": "Item added\nItsme\nJuly 07 Thursday 2022 04-32-40 PM"
+        },
+        "test": {
+            "group": true
         }
     },
     "Polary G3": {
