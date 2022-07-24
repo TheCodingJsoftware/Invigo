@@ -15,7 +15,8 @@
             "latest_change_price": "Item added\nItsme\nJuly 08 Friday 2022 08-22-50 AM",
             "latest_change_use_exchange_price": "Item added\nItsme\nJuly 08 Friday 2022 08-22-50 AM",
             "latest_change_priority": "Item added\nItsme\nJuly 08 Friday 2022 08-22-50 AM",
-            "latest_change_notes": "Item added\nItsme\nJuly 08 Friday 2022 08-22-50 AM"
+            "latest_change_notes": "Item added\nItsme\nJuly 08 Friday 2022 08-22-50 AM",
+            "group": "test"
         },
         " 12BK SLOTTED QUARTER-TURN LATCH, DIE CST, UL FACE SEAL & INTERNAL O-RING, BODY NUT, NO CAM, BLACK POWDER COATED": {
             "part_number": "12BK",
@@ -28,33 +29,36 @@
             "latest_change_name": "Item added\nItsme\nJuly 05 Tuesday 2022 10-28-43 AM",
             "latest_change_part_number": "Item added\nItsme\nJuly 05 Tuesday 2022 10-28-43 AM",
             "latest_change_unit_quantity": "Latest Change:\nfrom: 4\nto: 5\nJared\nJuly 22 Friday 2022 04:33:30 PM",
-            "latest_change_current_quantity": "Latest Change:\nfrom: -5\nto: -5\nJared\nJuly 22 Friday 2022 04:33:36 PM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: -15\nto: -15\nJared\nJuly 23 Saturday 2022 08:50:07 PM",
             "latest_change_price": "Latest Change:\nfrom: 2.3\nto: 2.3\nItsme\nJuly 06 Wednesday 2022 10:10:41 AM",
             "latest_change_use_exchange_price": "Item added\nItsme\nJuly 05 Tuesday 2022 10-28-43 AM",
             "latest_change_priority": "Item added\nItsme\nJuly 05 Tuesday 2022 10-28-43 AM",
             "latest_change_notes": "Latest Change:\nfrom: \"Vendor: Sierra Pacific Engeneering and Products\nDescription: \nGoes With 12C6 as 1 ass\"\nto: \"Vendor: Sierra Pacific Engeneering and Products\nDescription: \nGoes With 12C6 as 1 assy\"\nItsme\nJuly 07 Thursday 2022 04:08:41 PM",
-            "latest_change_use_exchange_rate": "Latest Change:\nfrom: USD\nto: CAD\nJared\nJuly 20 Wednesday 2022 09:19:27 PM"
+            "latest_change_use_exchange_rate": "Latest Change:\nfrom: USD\nto: CAD\nJared\nJuly 20 Wednesday 2022 09:19:27 PM",
+            "group": "test"
         },
         "3\"x48\"x96\" FSK Insulation Sheet": {
             "part_number": "FSK3",
             "unit_quantity": 3.0,
-            "current_quantity": -74.0,
+            "current_quantity": -74,
             "price": 124.99,
             "use_exchange_rate": false,
             "priority": 0,
             "notes": "Vendor: BrockWhite\nevandenberg@brockwhite.com\n",
-            "latest_change_current_quantity": "Latest Change:\nfrom: -68.0\nto: -68\nJared\nJuly 22 Friday 2022 04:33:36 PM",
-            "latest_change_use_exchange_rate": "Latest Change:\nfrom: True\nto: False\nJared\nJuly 20 Wednesday 2022 09:18:02 PM"
+            "latest_change_current_quantity": "Latest Change:\nfrom: -74\nto: -74\nJared\nJuly 23 Saturday 2022 08:49:58 PM",
+            "latest_change_use_exchange_rate": "Latest Change:\nfrom: True\nto: False\nJared\nJuly 20 Wednesday 2022 09:18:02 PM",
+            "group": "bolt"
         },
         "1 1\/4 Full Port ball Valve": {
             "part_number": "114BV",
             "unit_quantity": 2,
-            "current_quantity": -59,
+            "current_quantity": -58,
             "price": 11.78,
             "use_exchange_rate": false,
             "priority": 0,
             "notes": "Vendor: Greenline\nDescription: 204-694-0332",
-            "latest_change_current_quantity": "Latest Change:\nfrom: -55\nto: -59\nJared\nJuly 22 Friday 2022 04:33:55 PM"
+            "latest_change_current_quantity": "Latest Change:\nfrom: -58\nto: -58\nJared\nJuly 23 Saturday 2022 08:50:21 PM",
+            "group": null
         },
         " L-HANDLE LATCH ASSEMBLY, BLACK PLASTIC HANDLE, WITH STAMPED CAM": {
             "part_number": " 1153-01",
@@ -71,7 +75,8 @@
             "latest_change_price": "Item added\nItsme\nJuly 08 Friday 2022 09-12-32 AM",
             "latest_change_use_exchange_price": "Item added\nItsme\nJuly 08 Friday 2022 09-12-32 AM",
             "latest_change_priority": "Item added\nItsme\nJuly 08 Friday 2022 09-12-32 AM",
-            "latest_change_notes": "Item added\nItsme\nJuly 08 Friday 2022 09-12-32 AM"
+            "latest_change_notes": "Item added\nItsme\nJuly 08 Friday 2022 09-12-32 AM",
+            "group": "test"
         },
         "3\/4 Brass Ball Valve": {
             "part_number": "34BV",
@@ -207,12 +212,13 @@
         "10mm Isoplan  Fan Mount insulation": {
             "part_number": "10IFMI",
             "unit_quantity": 1,
-            "current_quantity": -9,
+            "current_quantity": 0,
             "price": 5.0,
             "use_exchange_rate": false,
             "priority": 0,
             "notes": "Vendor: Piney MFG\nDescription: ",
-            "latest_change_current_quantity": "Latest Change:\nfrom: -7\nto: -7\nJared\nJuly 22 Friday 2022 04:33:36 PM"
+            "latest_change_current_quantity": "Latest Change:\nfrom: 0\nto: 0\nJared\nJuly 23 Saturday 2022 09:19:31 PM",
+            "group": "bolt"
         },
         "1 1\/4 Closed Nipple ": {
             "part_number": "114CN",
@@ -262,7 +268,7 @@
             "priority": 0,
             "notes": "Vendor: Nuex Hearth Ptoducts\nDescription: Jim.willes@neux.com ",
             "latest_change_price": "Latest Change:\nfrom: 104.5\nto: 104.5\nItsme\nJuly 07 Thursday 2022 08:54:01 AM",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 5\nto: 4\nJared\nJuly 22 Friday 2022 04:33:37 PM"
+            "latest_change_current_quantity": "Latest Change:\nfrom: 2\nto: 2\nJared\nJuly 23 Saturday 2022 08:50:38 PM"
         },
         "Knob 2 3\/8 DIA. 1\/2-13. Fluted Black Plastic": {
             "part_number": "DK-122",
@@ -591,9 +597,6 @@
             "latest_change_use_exchange_price": "Item added\nItsme\nJuly 07 Thursday 2022 04-32-40 PM",
             "latest_change_priority": "Item added\nItsme\nJuly 07 Thursday 2022 04-32-40 PM",
             "latest_change_notes": "Item added\nItsme\nJuly 07 Thursday 2022 04-32-40 PM"
-        },
-        "test": {
-            "group": true
         }
     },
     "Polary G3": {
@@ -636,7 +639,7 @@
             "latest_change_name": "Item added\nItsme\nJuly 05 Tuesday 2022 10-28-43 AM",
             "latest_change_part_number": "Item added\nItsme\nJuly 05 Tuesday 2022 10-28-43 AM",
             "latest_change_unit_quantity": "Item added\nItsme\nJuly 05 Tuesday 2022 10-28-43 AM",
-            "latest_change_current_quantity": "Latest Change:\nfrom: -12\nto: -12\nJared\nJuly 22 Friday 2022 04:33:53 PM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: -12\nto: -12\nJared\nJuly 23 Saturday 2022 08:50:07 PM",
             "latest_change_price": "Latest Change:\nfrom: 2.3\nto: 2.3\nItsme\nJuly 06 Wednesday 2022 10:10:41 AM",
             "latest_change_use_exchange_price": "Item added\nItsme\nJuly 05 Tuesday 2022 10-28-43 AM",
             "latest_change_priority": "Item added\nItsme\nJuly 05 Tuesday 2022 10-28-43 AM",
@@ -650,17 +653,17 @@
             "use_exchange_rate": false,
             "priority": 0,
             "notes": "Vendor: BrockWhite\nevandenberg@brockwhite.com\n",
-            "latest_change_current_quantity": "Latest Change:\nfrom: -89.0\nto: -89\nJared\nJuly 22 Friday 2022 04:33:53 PM"
+            "latest_change_current_quantity": "Latest Change:\nfrom: -88\nto: -89\nJared\nJuly 23 Saturday 2022 08:49:58 PM"
         },
         "1 1\/4 Full Port ball Valve": {
             "part_number": "114BV",
             "unit_quantity": 2,
-            "current_quantity": -65,
+            "current_quantity": -63,
             "price": 11.78,
             "use_exchange_rate": false,
             "priority": 0,
             "notes": "Vendor: Greenline\nDescription: 204-694-0332",
-            "latest_change_current_quantity": "Latest Change:\nfrom: -61\nto: -65\nJared\nJuly 22 Friday 2022 04:33:53 PM"
+            "latest_change_current_quantity": "Latest Change:\nfrom: -63\nto: -64\nJared\nJuly 23 Saturday 2022 08:50:21 PM"
         },
         " L-HANDLE LATCH ASSEMBLY, BLACK PLASTIC HANDLE, WITH STAMPED CAM": {
             "part_number": " 1153-01",
@@ -872,12 +875,12 @@
         "10mm Isoplan  Fan Mount insulation": {
             "part_number": "10IFMI",
             "unit_quantity": 1,
-            "current_quantity": -17,
+            "current_quantity": -8,
             "price": 5.0,
             "use_exchange_rate": false,
             "priority": 0,
             "notes": "Vendor: Piney MFG\nDescription: ",
-            "latest_change_current_quantity": "Latest Change:\nfrom: -17\nto: -17\nJared\nJuly 22 Friday 2022 04:33:54 PM"
+            "latest_change_current_quantity": "Latest Change:\nfrom: -7\nto: -8\nJared\nJuly 23 Saturday 2022 09:19:31 PM"
         },
         "6L12  ASHT 6\"X12\" Section": {
             "part_number": "6L12",
@@ -920,13 +923,13 @@
         "3\" Thermax SF- 600 Brick Slabs": {
             "part_number": "THERMAXSF600",
             "unit_quantity": 1,
-            "current_quantity": 2,
+            "current_quantity": 4,
             "price": 104.5,
             "use_exchange_rate": false,
             "priority": 0,
             "notes": "Vendor: Nuex Hearth Ptoducts\nDescription: Jim.willes@neux.com ",
             "latest_change_price": "Latest Change:\nfrom: 104.5\nto: 104.5\nItsme\nJuly 07 Thursday 2022 08:54:01 AM",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 2\nto: 2\nJared\nJuly 22 Friday 2022 04:33:54 PM"
+            "latest_change_current_quantity": "Latest Change:\nfrom: 4\nto: 4\nJared\nJuly 23 Saturday 2022 08:50:38 PM"
         },
         "WeatherStripping NDA- .5\" x 3\/16\" x 50'": {
             "part_number": "WSNDA",
@@ -1250,8 +1253,39 @@
         }
     },
     "test": {
-        "test": {
-            "group": true
+        "sdad": {
+            "part_number": "",
+            "unit_quantity": 1,
+            "current_quantity": 0,
+            "price": 0.0,
+            "use_exchange_rate": false,
+            "priority": 0,
+            "notes": "Vendor: \nDescription: ",
+            "latest_change_name": "Latest Change:\nfrom: \"sda\"\nto: \"sdad\"\nJared\nJuly 23 Saturday 2022 11:01:39 PM",
+            "latest_change_part_number": "Item added\nJared\nJuly 23 Saturday 2022 11-01-32 PM",
+            "latest_change_unit_quantity": "Item added\nJared\nJuly 23 Saturday 2022 11-01-32 PM",
+            "latest_change_current_quantity": "Item added\nJared\nJuly 23 Saturday 2022 11-01-32 PM",
+            "latest_change_price": "Item added\nJared\nJuly 23 Saturday 2022 11-01-32 PM",
+            "latest_change_use_exchange_price": "Item added\nJared\nJuly 23 Saturday 2022 11-01-32 PM",
+            "latest_change_priority": "Item added\nJared\nJuly 23 Saturday 2022 11-01-32 PM",
+            "latest_change_notes": "Item added\nJared\nJuly 23 Saturday 2022 11-01-32 PM"
+        },
+        "testssa": {
+            "part_number": "",
+            "unit_quantity": 1,
+            "current_quantity": 0,
+            "price": 0.0,
+            "use_exchange_rate": false,
+            "priority": 0,
+            "notes": "Vendor: \nDescription: ",
+            "latest_change_name": "Latest Change:\nfrom: \"testss\"\nto: \"testssa\"\nJared\nJuly 23 Saturday 2022 11:01:41 PM",
+            "latest_change_part_number": "Item added\nJared\nJuly 23 Saturday 2022 11-01-27 PM",
+            "latest_change_unit_quantity": "Item added\nJared\nJuly 23 Saturday 2022 11-01-27 PM",
+            "latest_change_current_quantity": "Item added\nJared\nJuly 23 Saturday 2022 11-01-27 PM",
+            "latest_change_price": "Item added\nJared\nJuly 23 Saturday 2022 11-01-27 PM",
+            "latest_change_use_exchange_price": "Item added\nJared\nJuly 23 Saturday 2022 11-01-27 PM",
+            "latest_change_priority": "Item added\nJared\nJuly 23 Saturday 2022 11-01-27 PM",
+            "latest_change_notes": "Item added\nJared\nJuly 23 Saturday 2022 11-01-27 PM"
         }
     }
 }
