@@ -30,7 +30,7 @@
     <number>0</number>
    </property>
    <item>
-    <widget class="QFrame" name="frame">
+    <widget class="QWidget" name="widget" native="true">
      <property name="contextMenuPolicy">
       <enum>Qt::ActionsContextMenu</enum>
      </property>
@@ -38,10 +38,13 @@
       <bool>false</bool>
      </property>
      <property name="styleSheet">
-      <string notr="true"/>
-     </property>
-     <property name="frameShape">
-      <enum>QFrame::Box</enum>
+      <string notr="true">QWidget#widget{
+	border-top-left-radius:10px;
+	border-bottom-left-radius:10px;
+	border-top-right-radius:10px;
+	border-bottom-right-radius:10px;
+	border: 1px solid  rgb(0,120,212);;
+}</string>
      </property>
      <layout class="QVBoxLayout" name="verticalLayout_3">
       <item>
@@ -146,7 +149,7 @@
              <rect>
               <x>0</x>
               <y>0</y>
-              <width>358</width>
+              <width>360</width>
               <height>69</height>
              </rect>
             </property>
@@ -170,22 +173,48 @@
         <item>
          <widget class="QPushButton" name="btnClose">
           <property name="sizePolicy">
-           <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
             <horstretch>0</horstretch>
             <verstretch>0</verstretch>
            </sizepolicy>
           </property>
           <property name="maximumSize">
            <size>
-            <width>100</width>
+            <width>70</width>
             <height>16777215</height>
            </size>
           </property>
+          <property name="styleSheet">
+           <string notr="true">
+        QPushButton#btnClose{
+            background-color: #3daee9;
+            border: 0.04em solid  #3daee9;
+            border-radius: 5px;
+        }
+        QPushButton#btnClose:hover{
+            background-color: #49b3eb;
+            border: 0.04em solid  #49b3eb;
+            border-radius: 5px;
+        }
+        QPushButton#btnClose:pressed{
+            background-color: #5cbaed;
+            color: #bae2f8;
+            border: 0.04em solid  #5cbaed;
+            border-radius: 5px;
+        }</string>
+          </property>
           <property name="text">
-           <string>OK</string>
+           <string>  OK</string>
+          </property>
+          <property name="icon">
+           <iconset>
+            <normaloff>BreezeStyleSheets/dist/pyqt6/dark/dialog_ok.svg</normaloff>BreezeStyleSheets/dist/pyqt6/dark/dialog_ok.svg</iconset>
           </property>
           <property name="checkable">
            <bool>false</bool>
+          </property>
+          <property name="default">
+           <bool>true</bool>
           </property>
          </widget>
         </item>

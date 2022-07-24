@@ -71,3 +71,6 @@ backups
 venv/
 *.ini
 server/data/
+Piney MFG
+*.xlsx
+*.xls

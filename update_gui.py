@@ -2,19 +2,27 @@ import os
 import time
 import urllib.request
 import zipfile
+from turtle import width
 
 import requests
 from PyQt5.QtCore import (
     QEasingCurve,
+    QFile,
     QParallelAnimationGroup,
     QPoint,
     QPropertyAnimation,
     QSize,
     Qt,
+    QTextStream,
     QThread,
     pyqtSignal,
 )
+from PyQt5.QtGui import QIcon, QPixmap
 from PyQt5.QtWidgets import QApplication, QLabel, QVBoxLayout, QWidget
+
+from utils.json_file import JsonFile
+
+settings_file = JsonFile(file_name="settings")
 
 
 class DownloadThread(QThread):
@@ -89,56 +97,78 @@ class DownloadThread(QThread):
 class Window(QWidget):
     def __init__(self):
         super().__init__()
-        WIDTH, HEIGHT = 440, 150
+        WIDTH, HEIGHT = 440, 120
         BORDER_THICKNESS: int = 1
         OFFSET: int = 50
         PROGRESS_BAR_HEIGHT: int = 20
+        MAX_PROGRESS_BAR_WIDTH: int = 120
+        PROGRESS_BAR_COLOR: str = "#3daee9"
+        ANIMATION_DURATION: int = 2000
+        LOOP_DELAY: int = 2000
+        self.theme: str = (
+            "dark" if settings_file.get_value(item_name="dark_mode") else "light"
+        )
+
         self.setFixedSize(WIDTH, HEIGHT)
         self.setWindowTitle("Inventory Manager Update")
-        self.setWindowFlags(
-            self.windowFlags() & ~Qt.WindowCloseButtonHint | Qt.WindowStaysOnTopHint
+        self.setWindowFlags(Qt.Window | Qt.FramelessWindowHint)
+        widget = QWidget(self)
+        widget.resize(WIDTH, HEIGHT)
+        widget.setObjectName("widget")
+        widget.setStyleSheet(
+            "QWidget#widget{border-top-left-radius:10px; border-bottom-left-radius:10px; border-top-right-radius:10px; border-bottom-right-radius:10px; border: 1px solid  rgb(0,120,212);}"
         )
-        self.progress_text = QLabel(self)
-        self.progress_text.setFixedSize(WIDTH, 20)
+        self.progress_text = QLabel(widget)
+        self.progress_text.setFixedSize(WIDTH - 20, 20)
+        self.progress_text.setAlignment(Qt.AlignHCenter | Qt.AlignVCenter)
 
-        self.background = QWidget(self)
-        self.background.setStyleSheet(
-            f"background-color:#E6E6E6; border: {BORDER_THICKNESS}px solid #BCBCBC"
-        )
+        self.background = QWidget(widget)
+        if self.theme == "dark":
+            self.background.setStyleSheet(
+                "background-color: #626568; border: {BORDER_THICKNESS}px solid #222222; border-radius: 3px;"
+            )
+        else:
+            self.background.setStyleSheet(
+                "background-color: rgba(106, 105, 105, 0.7); border: {BORDER_THICKNESS}px solid  #eff0f1; border-radius: 3px;"
+            )
         self.background.move(
             QPoint(OFFSET - BORDER_THICKNESS, HEIGHT - OFFSET - (BORDER_THICKNESS))
         )
         self.background.resize(
             WIDTH - ((OFFSET - BORDER_THICKNESS) * 2),
-            PROGRESS_BAR_HEIGHT + BORDER_THICKNESS,
+            PROGRESS_BAR_HEIGHT + BORDER_THICKNESS * 2,
         )
 
-        self.progress_bar = QWidget(self)
-        self.progress_bar.setStyleSheet("background-color:#06B025")
-        self.progress_bar.resize(30, PROGRESS_BAR_HEIGHT)
+        self.progress_bar = QWidget(widget)
+        self.progress_bar.setStyleSheet(
+            f"background-color: {PROGRESS_BAR_COLOR}; border-radius: 3px"
+        )
+        self.progress_bar.resize(0, PROGRESS_BAR_HEIGHT)
 
         self.anim = QPropertyAnimation(self.progress_bar, b"pos")
         self.anim.setEasingCurve(QEasingCurve.InOutCubic)
         self.anim.setStartValue(QPoint(OFFSET, HEIGHT - OFFSET))
-        self.anim.setEndValue(QPoint(WIDTH - (40 * 2), HEIGHT - OFFSET))
-        self.anim.setDuration(1500)
+        self.anim.setEndValue(QPoint(WIDTH - (40 * 2) + 30, HEIGHT - OFFSET))
+        self.anim.setDuration(ANIMATION_DURATION)
 
         self.anim_2 = QPropertyAnimation(self.progress_bar, b"size")
-        self.anim_2.setDuration(1500)
-        self.anim_2.setStartValue(QSize(30, PROGRESS_BAR_HEIGHT))
+        self.anim_2.setDuration(ANIMATION_DURATION)
+        self.anim_2.setStartValue(QSize(0, PROGRESS_BAR_HEIGHT))
         self.anim_2.setEasingCurve(QEasingCurve.InOutCubic)
-        self.anim_2.setKeyValueAt(0.7, QSize(60, PROGRESS_BAR_HEIGHT))
-        self.anim_2.setEndValue(QSize(30, PROGRESS_BAR_HEIGHT))
+        self.anim_2.setKeyValueAt(0.0, QSize(0, PROGRESS_BAR_HEIGHT))
+        self.anim_2.setKeyValueAt(0.1, QSize(40, PROGRESS_BAR_HEIGHT))
+        self.anim_2.setKeyValueAt(0.6, QSize(MAX_PROGRESS_BAR_WIDTH, PROGRESS_BAR_HEIGHT))
+        self.anim_2.setEndValue(QSize(0, PROGRESS_BAR_HEIGHT))
 
-        self.anim_group = QParallelAnimationGroup()
+        self.anim_group = QParallelAnimationGroup(widget)
         self.anim_group.addAnimation(self.anim)
         self.anim_group.addAnimation(self.anim_2)
-        self.anim_group.setLoopCount(1000)
+        self.anim_group.setLoopCount(LOOP_DELAY)
         self.anim_group.start()
 
-        self.layout = QVBoxLayout(self)
+        self.layout = QVBoxLayout()
         self.layout.addWidget(self.progress_text)
-        self.setLayout(self.layout)
+        widget.setLayout(self.layout)
         self.threads = []
 
         download_thread = DownloadThread(
@@ -146,6 +176,19 @@ class Window(QWidget):
         )
         QApplication.setOverrideCursor(Qt.WaitCursor)
         self.start_thread(download_thread)
+
+        self.load_theme()
+
+    def load_theme(self) -> None:
+        """
+        It loads the stylesheet.qss file from the theme folder
+        """
+        stylesheet_file = QFile(
+            f"ui/BreezeStyleSheets/dist/qrc/{self.theme}/stylesheet.qss"
+        )
+        stylesheet_file.open(QFile.ReadOnly | QFile.Text)
+        stream = QTextStream(stylesheet_file)
+        self.setStyleSheet(stream.readAll())
 
     def start_thread(self, thread) -> None:
         """
@@ -167,7 +210,7 @@ class Window(QWidget):
         Args:
           data: the data received from the server
         """
-        self.progress_text.setText(data)
+        self.progress_text.setText(data + "\n")
         QApplication.restoreOverrideCursor()
         if data == "":
             self.close()

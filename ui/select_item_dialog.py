@@ -1,3 +1,4 @@
+import os.path
 from functools import partial
 
 from PyQt5 import QtSvg, uic
@@ -5,6 +6,7 @@ from PyQt5.QtCore import QFile, Qt, QTextStream
 from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import QDialog, QPushButton
 
+from ui.custom_widgets import set_default_dialog_button_stylesheet
 from utils.dialog_buttons import DialogButtons
 from utils.dialog_icons import Icons
 from utils.json_file import JsonFile
@@ -112,8 +114,26 @@ class SelectItemDialog(QDialog):
         name in the list
         """
         button_names = self.button_names.split(", ")
-        for name in button_names:
-            button = QPushButton(name)
+        for index, name in enumerate(button_names):
+            if name == DialogButtons.clone:
+                button = QPushButton(f"  {name}")
+                button.setIcon(
+                    QIcon(f"ui/BreezeStyleSheets/dist/pyqt6/{self.theme}/dialog_ok.svg")
+                )
+            elif os.path.isfile(
+                f"ui/BreezeStyleSheets/dist/pyqt6/{self.theme}/dialog_{name.lower()}.svg"
+            ):
+                button = QPushButton(f"  {name}")
+                button.setIcon(
+                    QIcon(
+                        f"ui/BreezeStyleSheets/dist/pyqt6/{self.theme}/dialog_{name.lower()}.svg"
+                    )
+                )
+            else:
+                button = QPushButton(name)
+            if index == 0:
+                button.setObjectName("default_dialog_button")
+                set_default_dialog_button_stylesheet(button)
             button.setFixedWidth(100)
             if name == DialogButtons.copy:
                 button.setToolTip("Will copy this window to your clipboard.")
@@ -129,7 +149,7 @@ class SelectItemDialog(QDialog):
         Returns:
           The response
         """
-        return self.response
+        return self.response.replace(" ", "")
 
     def get_selected_item(self) -> str:
         """

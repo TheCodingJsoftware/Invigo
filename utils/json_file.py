@@ -1,5 +1,6 @@
-import json
 import os
+
+import ujson as json
 
 
 class JsonFile:
@@ -35,7 +36,7 @@ class JsonFile:
         try:
             with open(f"{self.FOLDER_LOCATION}/{self.file_name}.json", "r") as json_file:
                 self.data = json.load(json_file)
-        except json.decoder.JSONDecodeError:
+        except Exception:
             self.load_data()
 
     def __save_data(self):
@@ -70,6 +71,18 @@ class JsonFile:
         """
         self.load_data()
         self.data[object_name].update({item_name: {}})
+        self.__save_data()
+
+    def add_group_to_category(self, category: str, group_name: str) -> None:
+        """
+        It adds a group to a category
+
+        Args:
+          category (str): The category you want to add the group to.
+          group_name (str): The name of the group you want to add to the category.
+        """
+        self.load_data()
+        self.data[category].update({group_name: {"group": True}})
         self.__save_data()
 
     def change_key_name(self, key_name: str, new_name: str) -> None:
@@ -216,3 +229,31 @@ class JsonFile:
             return self.data[item_name]
         except KeyError:
             return None
+
+    def sort(self, category: str, item_name: str, ascending: bool) -> None:
+        """
+        It sorts the data in the data.json file by the category and item_name specified by the user
+
+        Args:
+          category (str): str
+          item_name (str): The name of the item to sort by.
+          ascending (bool): bool
+        """
+        if item_name == "alphabet":
+            sorted_data = dict(
+                sorted(
+                    self.data[category].items(),
+                    key=lambda x: x[0],
+                    reverse=ascending,
+                )
+            )
+        else:
+            sorted_data = dict(
+                sorted(
+                    self.data[category].items(),
+                    key=lambda x: x[1][item_name],
+                    reverse=ascending,
+                )
+            )
+        self.data[category] = sorted_data
+        self.__save_data()
