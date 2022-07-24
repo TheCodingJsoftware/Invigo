@@ -1,3 +1,4 @@
+import contextlib
 import socket
 from time import sleep
 
@@ -68,5 +69,6 @@ class ChangesThread(QThread):
                 self.s.close()
                 self.signal.emit("")
             except Exception as e:
-                self.signal.emit(e)
+                with contextlib.suppress(AttributeError):
+                    self.signal.emit(e)
             sleep(self.delay)

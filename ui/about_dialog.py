@@ -3,6 +3,7 @@ from PyQt5.QtCore import QFile, Qt, QTextStream
 from PyQt5.QtGui import QIcon, QPixmap
 from PyQt5.QtWidgets import QWidget
 
+from utils.dialog_icons import Icons
 from utils.json_file import JsonFile
 
 settings_file = JsonFile(file_name="settings")
@@ -27,7 +28,7 @@ class AboutDialog(QWidget):
         uic.loadUi("ui/about_dialog.ui", self)
 
         self.setWindowFlags(Qt.Window | Qt.FramelessWindowHint)
-        self.setWindowIcon(QIcon("icons/icon.png"))
+        self.setWindowIcon(QIcon(Icons.icon))
         self.setFixedSize(550, 400)
 
         self.theme: str = (

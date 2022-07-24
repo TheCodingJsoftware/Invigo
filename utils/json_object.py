@@ -1,5 +1,4 @@
-import json
-import os
+from typing import Any
 
 from utils.json_file import JsonFile
 
@@ -41,12 +40,12 @@ class JsonObject:
             object_name=self.object_name, item_name=item_name, new_value=value
         )
 
-    def get_value(self, item_name: str) -> dict:
+    def get_value(self, item_name: str) -> Any:
         """
-        It returns the value of the item in the dictionary with the key of the item_name parameter
+        This function returns the value of the item in the dictionary with the key of item_name
 
         Args:
-          item_name (str): The name of the item you want to get the value of.
+          item_name (str): The name of the item to get the value of.
 
         Returns:
           The value of the item_name key in the data dictionary.

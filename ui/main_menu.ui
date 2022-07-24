@@ -11,6 +11,9 @@
     <height>640</height>
    </rect>
   </property>
+  <property name="acceptDrops">
+   <bool>true</bool>
+  </property>
   <property name="windowTitle">
    <string>MainWindow</string>
   </property>
@@ -36,7 +39,7 @@
          <x>0</x>
          <y>0</y>
          <width>477</width>
-         <height>510</height>
+         <height>519</height>
         </rect>
        </property>
        <attribute name="label">
@@ -57,11 +60,14 @@
          <x>0</x>
          <y>0</y>
          <width>477</width>
-         <height>510</height>
+         <height>519</height>
         </rect>
        </property>
        <attribute name="label">
         <string>View</string>
+       </attribute>
+       <attribute name="toolTip">
+        <string>View all inventory items as read only.</string>
        </attribute>
        <layout class="QHBoxLayout" name="horizontalLayout_5">
         <item>
@@ -73,13 +79,6 @@
         </item>
        </layout>
       </widget>
-     </widget>
-    </item>
-    <item>
-     <widget class="Line" name="line_3">
-      <property name="orientation">
-       <enum>Qt::Horizontal</enum>
-      </property>
      </widget>
     </item>
     <item>
@@ -148,11 +147,15 @@
      <string>Settings</string>
     </property>
     <addaction name="actionDarkmode"/>
+    <addaction name="actionAuto_back_up_to_cloud"/>
    </widget>
    <widget class="QMenu" name="menuHelp">
     <property name="title">
      <string>Help</string>
     </property>
+    <addaction name="actionRelease_Notes"/>
+    <addaction name="actionWebsite"/>
+    <addaction name="separator"/>
     <addaction name="actionAbout_Qt"/>
     <addaction name="separator"/>
     <addaction name="actionCheck_for_Updates"/>
@@ -165,8 +168,32 @@
     </property>
     <addaction name="actionEbay"/>
    </widget>
+   <widget class="QMenu" name="menuSort">
+    <property name="title">
+     <string>Sort by</string>
+    </property>
+    <addaction name="actionAlphabatical"/>
+    <addaction name="actionQuantity_in_Stock"/>
+    <addaction name="actionPriority"/>
+    <addaction name="separator"/>
+    <addaction name="actionAscending"/>
+    <addaction name="actionDescending"/>
+    <addaction name="separator"/>
+    <addaction name="actionSort"/>
+   </widget>
+   <widget class="QMenu" name="menuPurchase_Orders">
+    <property name="title">
+     <string>Purchase Orders</string>
+    </property>
+    <addaction name="actionAdd_Purchase_Order"/>
+    <addaction name="actionRemove_Purchase_Order"/>
+    <addaction name="separator"/>
+    <addaction name="actionOpen_Purchase_Order"/>
+   </widget>
    <addaction name="menuFile"/>
    <addaction name="menuSettings"/>
+   <addaction name="menuSort"/>
+   <addaction name="menuPurchase_Orders"/>
    <addaction name="menuSearch"/>
    <addaction name="menuHelp"/>
   </widget>
@@ -181,6 +208,9 @@
      <height>453</height>
     </size>
    </property>
+   <property name="floating">
+    <bool>false</bool>
+   </property>
    <property name="features">
     <set>QDockWidget::DockWidgetFloatable|QDockWidget::DockWidgetMovable</set>
    </property>
@@ -188,7 +218,7 @@
     <set>Qt::LeftDockWidgetArea|Qt::RightDockWidgetArea</set>
    </property>
    <property name="windowTitle">
-    <string>Create/Add/Remove</string>
+    <string>Item Controls</string>
    </property>
    <attribute name="dockWidgetArea">
     <number>2</number>
@@ -248,6 +278,9 @@
         <widget class="QListWidget" name="listWidget_itemnames">
          <property name="statusTip">
           <string>All items from this category</string>
+         </property>
+         <property name="styleSheet">
+          <string notr="true"/>
          </property>
         </widget>
        </item>
@@ -326,7 +359,7 @@
             <bool>true</bool>
            </property>
            <property name="maximum">
-            <number>999999</number>
+            <number>99999999</number>
            </property>
           </widget>
          </item>
@@ -358,14 +391,74 @@
        </item>
        <item>
         <widget class="QPushButton" name="pushButton_create_new">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="minimumSize">
+          <size>
+           <width>0</width>
+           <height>40</height>
+          </size>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>16777215</width>
+           <height>40</height>
+          </size>
+         </property>
+         <property name="font">
+          <font>
+           <pointsize>10</pointsize>
+          </font>
+         </property>
+         <property name="cursor">
+          <cursorShape>ArrowCursor</cursorShape>
+         </property>
          <property name="toolTip">
           <string/>
          </property>
          <property name="statusTip">
           <string>Create a new item</string>
          </property>
+         <property name="styleSheet">
+          <string notr="true">
+        QPushButton#pushButton_create_new{
+            background-color: #3daee9;
+            border: 0.04em solid  #3daee9;
+            border-radius: 5px;
+        }
+        QPushButton#pushButton_create_new:hover{
+            background-color: #49b3eb;
+            border: 0.04em solid  #49b3eb;
+            border-radius: 5px;
+        }
+        QPushButton#pushButton_create_new:pressed{
+            background-color: #5cbaed;
+            color: #bae2f8;
+            border: 0.04em solid  #5cbaed;
+            border-radius: 5px;
+        }
+QPushButton#pushButton_create_new:disabled{
+            background-color: #222222;
+            color: gray;
+            border: 0.04em solid  gray;
+            border-radius: 1px;
+        }</string>
+         </property>
          <property name="text">
           <string>Add New Item</string>
+         </property>
+         <property name="checkable">
+          <bool>false</bool>
+         </property>
+         <property name="default">
+          <bool>false</bool>
+         </property>
+         <property name="flat">
+          <bool>false</bool>
          </property>
         </widget>
        </item>
@@ -392,10 +485,16 @@
    <property name="statusTip">
     <string>Toggle between darkmode and lightmode. Some changes need the program to restart to take effect.</string>
    </property>
+   <property name="iconVisibleInMenu">
+    <bool>false</bool>
+   </property>
   </action>
   <action name="actionAbout_Qt">
    <property name="text">
     <string>About Qt</string>
+   </property>
+   <property name="iconVisibleInMenu">
+    <bool>true</bool>
    </property>
   </action>
   <action name="actionView_License">
@@ -420,13 +519,16 @@
    <property name="text">
     <string>About</string>
    </property>
+   <property name="iconVisibleInMenu">
+    <bool>true</bool>
+   </property>
   </action>
   <action name="actionBackup">
    <property name="text">
     <string>Backup</string>
    </property>
    <property name="statusTip">
-    <string>Backup all your changes locally.</string>
+    <string>Backup your inventory locally on your computer.</string>
    </property>
   </action>
   <action name="actions">
@@ -460,10 +562,127 @@
   </action>
   <action name="actionLoad_Backup">
    <property name="text">
-    <string>Load Backup</string>
+    <string>Load Local Backup</string>
    </property>
    <property name="statusTip">
-    <string>Load a backup</string>
+    <string>Load a local backup that is saved to your computer.</string>
+   </property>
+   <property name="iconVisibleInMenu">
+    <bool>false</bool>
+   </property>
+  </action>
+  <action name="actionQuantity_in_Stock">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="checked">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Quantity in Stock</string>
+   </property>
+  </action>
+  <action name="actionPriority">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Priority</string>
+   </property>
+   <property name="iconVisibleInMenu">
+    <bool>true</bool>
+   </property>
+  </action>
+  <action name="actionAscending">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Ascending</string>
+   </property>
+  </action>
+  <action name="actionDescending">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="checked">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Descending</string>
+   </property>
+  </action>
+  <action name="actionAlphabatical">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Alphabatical</string>
+   </property>
+  </action>
+  <action name="actionSort">
+   <property name="text">
+    <string>Apply Sorting Method</string>
+   </property>
+   <property name="iconVisibleInMenu">
+    <bool>false</bool>
+   </property>
+  </action>
+  <action name="actionAuto_back_up_to_cloud">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Auto backup to cloud</string>
+   </property>
+   <property name="statusTip">
+    <string>Automatically backups your changes to the cloud.</string>
+   </property>
+   <property name="iconVisibleInMenu">
+    <bool>false</bool>
+   </property>
+  </action>
+  <action name="actionAdd_Purchase_Order">
+   <property name="text">
+    <string>Add Purchase Order Template</string>
+   </property>
+   <property name="iconVisibleInMenu">
+    <bool>false</bool>
+   </property>
+  </action>
+  <action name="actionRemove_Purchase_Order">
+   <property name="text">
+    <string>Remove Purchase Order Template</string>
+   </property>
+   <property name="iconVisibleInMenu">
+    <bool>false</bool>
+   </property>
+  </action>
+  <action name="actionOpen_Purchase_Order">
+   <property name="text">
+    <string>Open Purchase Order</string>
+   </property>
+   <property name="iconVisibleInMenu">
+    <bool>false</bool>
+   </property>
+  </action>
+  <action name="actionRelease_Notes">
+   <property name="text">
+    <string>Release Notes</string>
+   </property>
+   <property name="iconVisibleInMenu">
+    <bool>true</bool>
+   </property>
+  </action>
+  <action name="actionWebsite">
+   <property name="text">
+    <string>Website</string>
+   </property>
+   <property name="toolTip">
+    <string>https://piney-manufacturing-inventory.herokuapp.com</string>
+   </property>
+   <property name="statusTip">
+    <string>https://piney-manufacturing-inventory.herokuapp.com</string>
    </property>
   </action>
  </widget>

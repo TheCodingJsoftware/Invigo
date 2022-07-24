@@ -10,10 +10,12 @@ class DialogButtons:
     clone: str = "Clone"
     add: str = "Add"
     delete: str = "Delete"
+    discard: str = "Discard"
     update: str = "Update"
     open: str = "Open"
     ok_cancel: str = ", ".join([ok, cancel])
     delete_cancel: str = ", ".join([delete, cancel])
+    discard_cancel: str = ", ".join([discard, cancel])
     clone_cancel: str = ", ".join([clone, cancel])
     add_cancel: str = ", ".join([add, cancel])
     yes_no_cancel: str = ", ".join([yes, no, cancel])
