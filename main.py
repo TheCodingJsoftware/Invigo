@@ -5,7 +5,7 @@ __credits__: "list[str]" = ["Jared Gross"]
 __license__ = "MIT"
 __name__ = "Inventory Manager"
 __version__ = "v1.2.0"
-__updated__ = "2022-07-24 15:46:30"
+__updated__ = "2022-07-25 13:00:16"
 __maintainer__ = "Jared Gross"
 __email__ = "jared@pinelandfarms.ca"
 __status__ = "Production"
@@ -2353,12 +2353,10 @@ class MainWindow(QMainWindow):
                     self.show_error_dialog(
                         title="Error",
                         message=f"Error parsing excel file. Please double check Order number and Vendor cell positions, or email me the excel file.\n\n{error}\n\n{po_file_path}",
-                        dialog_buttons=DialogButtons.ok,
                     )
                     return
-                extension: str = po_file_path.split(".")[-1]
                 new_file_path = (
-                    f"PO's/templates/{po_file.get_vendor().replace('.','')}.{extension}"
+                    f"PO's/templates/{po_file.get_vendor().replace('.','')}.xlsx"
                 )
                 shutil.copyfile(po_file_path, new_file_path)
             check_po_directories()
@@ -2373,12 +2371,10 @@ class MainWindow(QMainWindow):
                     self.show_error_dialog(
                         title="Error",
                         message=f"Error parsing excel file. Please double check Order number and Vendor cell positions, or email me the excel file.\n\n{error}",
-                        dialog_buttons=DialogButtons.ok,
                     )
                     return
-                extension: str = po_file_path.split(".")[-1]
                 new_file_path = (
-                    f"PO's/templates/{po_file.get_vendor().replace('.','')}.{extension}"
+                    f"PO's/templates/{po_file.get_vendor().replace('.','')}.xlsx"
                 )
                 shutil.copyfile(po_file_path, new_file_path)
             check_po_directories()
@@ -3002,8 +2998,8 @@ class MainWindow(QMainWindow):
             for url in event.mimeData().urls():
                 if str(url.toLocalFile()).endswith(".xlsx"):
                     files = [str(url.toLocalFile()) for url in event.mimeData().urls()]
-                    self.add_po_templates(files)
                     self.load_categories()
+                    self.add_po_templates(files)
                     break
                 elif str(url.toLocalFile()).endswith(".zip"):
                     self.load_backup(
