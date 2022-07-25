@@ -1,3 +1,6 @@
+<h1>v1.2.1</h1>
+Version 1.2.1 fixed PO bugs.
+
 <h1>v1.2.0</h1>
 Version 1.2.0 introduces many visual changes and features. With a side of many bug fixes.
 
