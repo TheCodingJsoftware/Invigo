@@ -32,6 +32,7 @@ class RemoveQuantityThread(QThread):
     def run(self) -> None:
         try:
             category_data = self.inventory.get_value(item_name=self.category)
+            inventory = self.inventory.get_data()
             part_numbers = []
             for item, object_item in zip(
                 list(category_data.keys()), list(self.inventory_prices_objects.keys())
@@ -42,18 +43,17 @@ class RemoveQuantityThread(QThread):
                 spin_current_quantity = self.inventory_prices_objects[object_item][
                     "current_quantity"
                 ]
-                self.value_change(
-                    category=self.category,
-                    item_name=item,
-                    value_name="current_quantity",
-                    new_value=current_quantity - (unit_quantity * self.multiplier),
+                inventory[self.category][item]["current_quantity"] = current_quantity - (
+                    unit_quantity * self.multiplier
                 )
+                inventory[self.category][item][
+                    "latest_change_current_quantity"
+                ] = f"Latest Change:\nfrom: {current_quantity}\nto: {current_quantity - (unit_quantity * self.multiplier)}\n{self.username}\n{datetime.now().strftime('%B %d %A %Y %I:%M:%S %p')}"
                 spin_current_quantity.setValue(
                     int(current_quantity - (unit_quantity * self.multiplier))
                 )
                 self.completion_count += 1
                 self.signal.emit(f"{self.completion_count}, {self.max_item_count}")
-                QtTest.QTest.qWait(50)
             part_numbers = list(set(part_numbers))
             data = self.inventory.get_data()
             for category in list(data.keys()):
@@ -68,60 +68,16 @@ class RemoveQuantityThread(QThread):
                     if part_number == data[category][item]["part_number"]:
                         unit_quantity: int = data[category][item]["unit_quantity"]
                         current_quantity: int = data[category][item]["current_quantity"]
-                        self.value_change(
-                            category=category,
-                            item_name=item,
-                            value_name="current_quantity",
-                            new_value=current_quantity
-                            - (unit_quantity * self.multiplier),
-                        )
+                        inventory[category][item][
+                            "current_quantity"
+                        ] = current_quantity - (unit_quantity * self.multiplier)
+                        inventory[category][item][
+                            "latest_change_current_quantity"
+                        ] = f"Latest Change:\nfrom: {current_quantity}\nto: {current_quantity - (unit_quantity * self.multiplier)}\n{self.username}\n{datetime.now().strftime('%B %d %A %Y %I:%M:%S %p')}"
                     self.completion_count += 1
                     self.signal.emit(f"{self.completion_count}, {self.max_item_count}")
-                    QtTest.QTest.qWait(50)
-
+            self.inventory.save_data(inventory)
             self.signal.emit("Done")
         except Exception as error:
+            print(error)
             self.signal.emit(error)
-
-    def value_change(
-        self, category: str, item_name: str, value_name: str, new_value
-    ) -> None:
-        """
-        It changes the value of a value in a dictionary in a dictionary in a dictionary.
-
-        Args:
-          category (str): str = "category"
-          item_name (str): str = the name of the item
-          value_name (str): str = "current_quantity"
-          new_value: str
-        """
-
-        # threading.Thread(
-        #     target=self.inventory.change_object_in_object_item,
-        #     args=(category, item_name, value_name, new_value),
-        # ).start()
-        self.inventory.change_object_in_object_item(
-            object_name=category,
-            item_name=item_name,
-            value_name=value_name,
-            new_value=new_value,
-        )
-        if value_name == "current_quantity":
-            value_before = self.inventory.get_value(item_name=category)[item_name][
-                "current_quantity"
-            ]
-            # threading.Thread(
-            #     target=self.inventory.change_object_in_object_item,
-            #     args=(
-            #         category,
-            #         item_name,
-            #         "latest_change_current_quantity",
-            #         f"Latest Change:\nfrom: {value_before}\nto: {new_value}\n{self.username}\n{datetime.now().strftime('%B %d %A %Y %I:%M:%S %p')}",
-            #     ),
-            # ).start()
-            self.inventory.change_object_in_object_item(
-                category,
-                item_name,
-                "latest_change_current_quantity",
-                f"Latest Change:\nfrom: {value_before}\nto: {new_value}\n{self.username}\n{datetime.now().strftime('%B %d %A %Y %I:%M:%S %p')}",
-            )

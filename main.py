@@ -4,8 +4,8 @@ __copyright__ = "Copyright 2022, TheCodingJ's"
 __credits__: "list[str]" = ["Jared Gross"]
 __license__ = "MIT"
 __name__ = "Inventory Manager"
-__version__ = "v1.2.2"
-__updated__ = "2022-07-26 23:17:08"
+__version__ = "v1.2.3"
+__updated__ = "2022-07-27 07:44:46"
 __maintainer__ = "Jared Gross"
 __email__ = "jared@pinelandfarms.ca"
 __status__ = "Production"
@@ -1763,7 +1763,6 @@ class MainWindow(QMainWindow):
         self.spinBox_quantity.setValue(0)
 
     def remove_quantity_thread_response(self, data) -> None:
-        print(data)
         if data != "Done":
             count = int(data.split(", ")[0])
             total = int(data.split(", ")[1])
@@ -1782,7 +1781,7 @@ class MainWindow(QMainWindow):
             self.listWidget_itemnames.setEnabled(True)
             self.pushButton_create_new.setEnabled(True)
             inventory.load_data()
-            set_status_button_stylesheet(button=self.status_button, color="#3daee9")
+            set_status_button_stylesheet(button=self.status_button, color="#33b833")
             self.highlight_color = "#BE2525"
             for item in list(self.inventory_prices_objects.keys()):
                 spin_current_quantity = self.inventory_prices_objects[item][
@@ -1791,6 +1790,7 @@ class MainWindow(QMainWindow):
                 spin_current_quantity.setStyleSheet(
                     f"background-color: {self.highlight_color}; {'color: red; border-color: red;' if spin_current_quantity.value() <= 0 else 'color: white;'} border: 1px solid {self.highlight_color};"
                 )
+            self.status_button.setText("Done!")
             self.highlight_color = "#3daee9"
             QtTest.QTest.qWait(1750)
             for item in list(self.inventory_prices_objects.keys()):

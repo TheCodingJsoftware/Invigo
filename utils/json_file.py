@@ -42,7 +42,7 @@ class JsonFile:
             print(error)
             # self.load_data()
 
-    def __save_data(self):
+    def __save_data(self) -> None:
         """
         It opens a file, writes the data to it, and then closes the file
         """
@@ -50,6 +50,19 @@ class JsonFile:
             f"{self.FOLDER_LOCATION}/{self.file_name}.json", "w", encoding="utf-8"
         ) as json_file:
             json.dump(self.data, json_file, ensure_ascii=False, indent=4)
+
+    def save_data(self, data: dict) -> None:
+        """
+        It takes a dictionary, and saves it to a file
+
+        Args:
+          data (dict): dict - The data to save
+        """
+        with open(
+            f"{self.FOLDER_LOCATION}/{self.file_name}.json", "w", encoding="utf-8"
+        ) as json_file:
+            json.dump(data, json_file, ensure_ascii=False, indent=4)
+
 
     def add_item(self, item_name: str, value) -> None:
         """
