@@ -4,8 +4,8 @@ __copyright__ = "Copyright 2022, TheCodingJ's"
 __credits__: "list[str]" = ["Jared Gross"]
 __license__ = "MIT"
 __name__ = "Inventory Manager"
-__version__ = "v1.2.1"
-__updated__ = "2022-07-25 13:03:49"
+__version__ = "v1.2.2"
+__updated__ = "2022-07-26 23:17:08"
 __maintainer__ = "Jared Gross"
 __email__ = "jared@pinelandfarms.ca"
 __status__ = "Production"
@@ -59,6 +59,7 @@ from PyQt5.QtWidgets import (
 import ui.BreezeStyleSheets.breeze_resources
 from threads.changes_thread import ChangesThread
 from threads.download_thread import DownloadThread
+from threads.remove_quantity import RemoveQuantityThread
 from threads.ui_threads import ProcessItemSelectedThread, SetStyleSheetThread
 from threads.upload_thread import UploadThread
 from ui.about_dialog import AboutDialog
@@ -1701,66 +1702,106 @@ class MainWindow(QMainWindow):
         It removes the quantity from the category and all other categories that have the same part
         number
         """
-        category_data = inventory.get_value(item_name=self.category)
-        part_numbers = []
-        for item, object_item in zip(
-            list(category_data.keys()), list(self.inventory_prices_objects.keys())
-        ):
-            unit_quantity: int = category_data[item]["unit_quantity"]
-            current_quantity: int = category_data[item]["current_quantity"]
-            part_numbers.append(category_data[item]["part_number"])
-            spin_current_quantity = self.inventory_prices_objects[object_item][
-                "current_quantity"
-            ]
-            self.value_change(
-                category=self.category,
-                item_name=item,
-                value_name="current_quantity",
-                new_value=current_quantity
-                - (unit_quantity * self.spinBox_quantity.value()),
-            )
-            spin_current_quantity.setValue(
-                int(current_quantity - (unit_quantity * self.spinBox_quantity.value()))
-            )
-        part_numbers = list(set(part_numbers))
-        data = inventory.get_data()
-        for category in list(data.keys()):
-            if category == self.category:
-                continue
-            for item, part_number in itertools.product(
-                list(data[category].keys()), part_numbers
-            ):
-                if part_number == data[category][item]["part_number"]:
-                    unit_quantity: int = data[category][item]["unit_quantity"]
-                    current_quantity: int = data[category][item]["current_quantity"]
-                    self.value_change(
-                        category=category,
-                        item_name=item,
-                        value_name="current_quantity",
-                        new_value=current_quantity
-                        - (unit_quantity * self.spinBox_quantity.value()),
-                    )
+        # category_data = inventory.get_value(item_name=self.category)
+        # part_numbers = []
+        # for item, object_item in zip(
+        #     list(category_data.keys()), list(self.inventory_prices_objects.keys())
+        # ):
+        #     unit_quantity: int = category_data[item]["unit_quantity"]
+        #     current_quantity: int = category_data[item]["current_quantity"]
+        #     part_numbers.append(category_data[item]["part_number"])
+        #     spin_current_quantity = self.inventory_prices_objects[object_item][
+        #         "current_quantity"
+        #     ]
+        #     self.value_change(
+        #         category=self.category,
+        #         item_name=item,
+        #         value_name="current_quantity",
+        #         new_value=current_quantity
+        #         - (unit_quantity * self.spinBox_quantity.value()),
+        #     )
+        #     spin_current_quantity.setValue(
+        #         int(current_quantity - (unit_quantity * self.spinBox_quantity.value()))
+        #     )
+        # part_numbers = list(set(part_numbers))
+        # data = inventory.get_data()
+        # for category in list(data.keys()):
+        #     if category == self.category:
+        #         continue
+        #     for item, part_number in itertools.product(
+        #         list(data[category].keys()), part_numbers
+        #     ):
+        #         if part_number == data[category][item]["part_number"]:
+        #             unit_quantity: int = data[category][item]["unit_quantity"]
+        #             current_quantity: int = data[category][item]["current_quantity"]
+        #             self.value_change(
+        #                 category=category,
+        #                 item_name=item,
+        #                 value_name="current_quantity",
+        #                 new_value=current_quantity
+        #                 - (unit_quantity * self.spinBox_quantity.value()),
+        #             )
         # self.load_tab()
-        self.spinBox_quantity.setValue(0)
+
+        self.radioButton_category.setEnabled(False)
+        self.radioButton_single.setEnabled(False)
         self.pushButton_add_quantity.setEnabled(False)
-        self.pushButton_remove_quantity.setEnabled(True)
-        self.highlight_color = "#BE2525"
-        for item in list(self.inventory_prices_objects.keys()):
-            spin_current_quantity = self.inventory_prices_objects[item][
-                "current_quantity"
-            ]
-            spin_current_quantity.setStyleSheet(
-                f"background-color: {self.highlight_color}; {'color: red; border-color: red;' if spin_current_quantity.value() <= 0 else 'color: white;'} border: 1px solid {self.highlight_color};"
+        self.pushButton_remove_quantity.setEnabled(False)
+        self.pushButton_create_new.setEnabled(False)
+        self.tab_widget.setEnabled(False)
+        self.listWidget_itemnames.setEnabled(False)
+        remove_quantity_thread = RemoveQuantityThread(
+            inventory,
+            self.category,
+            self.inventory_prices_objects,
+            self.spinBox_quantity.value(),
+        )
+        remove_quantity_thread.signal.connect(self.remove_quantity_thread_response)
+        self.threads.append(remove_quantity_thread)
+        remove_quantity_thread.start()
+
+        self.spinBox_quantity.setValue(0)
+
+    def remove_quantity_thread_response(self, data) -> None:
+        print(data)
+        if data != "Done":
+            count = int(data.split(", ")[0])
+            total = int(data.split(", ")[1])
+            __start: float = (count) / total
+            __middle: float = __start + 0.001 if __start <= 1 - 0.001 else 1.0
+            __end: float = __start + 0.0011 if __start <= 1 - 0.0011 else 1.0
+            self.status_button.setText("This may take awhile, please wait...")
+            self.status_button.setStyleSheet(
+                """QPushButton#status_button {background: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0,stop:%(start)s #3daee9,stop:%(middle)s #3daee9,stop:%(end)s #222222)}"""
+                % {"start": str(__start), "middle": str(__middle), "end": str(__end)}
             )
-        self.highlight_color = "#3daee9"
-        QtTest.QTest.qWait(1750)
-        for item in list(self.inventory_prices_objects.keys()):
-            spin_current_quantity = self.inventory_prices_objects[item][
-                "current_quantity"
-            ]
-            self.inventory_prices_objects[item]["current_quantity"].setStyleSheet(
-                f"{'color: red; border-color: red;' if spin_current_quantity.value() <= 0 else ''}"
-            )
+        else:
+            self.radioButton_category.setEnabled(True)
+            self.radioButton_single.setEnabled(True)
+            self.tab_widget.setEnabled(True)
+            self.listWidget_itemnames.setEnabled(True)
+            self.pushButton_create_new.setEnabled(True)
+            inventory.load_data()
+            set_status_button_stylesheet(button=self.status_button, color="#3daee9")
+            self.highlight_color = "#BE2525"
+            for item in list(self.inventory_prices_objects.keys()):
+                spin_current_quantity = self.inventory_prices_objects[item][
+                    "current_quantity"
+                ]
+                spin_current_quantity.setStyleSheet(
+                    f"background-color: {self.highlight_color}; {'color: red; border-color: red;' if spin_current_quantity.value() <= 0 else 'color: white;'} border: 1px solid {self.highlight_color};"
+                )
+            self.highlight_color = "#3daee9"
+            QtTest.QTest.qWait(1750)
+            for item in list(self.inventory_prices_objects.keys()):
+                spin_current_quantity = self.inventory_prices_objects[item][
+                    "current_quantity"
+                ]
+                self.inventory_prices_objects[item]["current_quantity"].setStyleSheet(
+                    f"{'color: red; border-color: red;' if spin_current_quantity.value() <= 0 else ''}"
+                )
+            self.pushButton_add_quantity.setEnabled(False)
+            self.pushButton_remove_quantity.setEnabled(True)
 
     def add_quantity(self, item_name: str, old_quantity: int) -> None:
         """
@@ -2312,14 +2353,14 @@ class MainWindow(QMainWindow):
         It opens a dialog box with a list of items
         """
         input_dialog = SelectItemDialog(
-            title="Open PO",
-            message="Select a PO to open.\n\nThis cannot be undone.",
+            title="Delete PO",
+            message="Select a PO to delete.\n\nThis cannot be undone.",
             items=get_all_po(),
-            button_names=DialogButtons.delete_cancel,
+            button_names=DialogButtons.discard_cancel,
         )
         if input_dialog.exec_():
             response = input_dialog.get_response()
-            if response == DialogButtons.delete:
+            if response == DialogButtons.discard:
                 try:
                     os.remove(f"PO's/templates/{input_dialog.get_selected_item()}.xlsx")
                     self.show_message_dialog(

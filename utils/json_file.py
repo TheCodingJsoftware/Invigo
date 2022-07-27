@@ -34,10 +34,13 @@ class JsonFile:
         It opens the file, reads the data, and then closes the file
         """
         try:
-            with open(f"{self.FOLDER_LOCATION}/{self.file_name}.json", "r") as json_file:
+            with open(
+                f"{self.FOLDER_LOCATION}/{self.file_name}.json", "r", encoding="utf-8"
+            ) as json_file:
                 self.data = json.load(json_file)
-        except Exception:
-            self.load_data()
+        except Exception as error:
+            print(error)
+            # self.load_data()
 
     def __save_data(self):
         """
@@ -229,6 +232,18 @@ class JsonFile:
             return self.data[item_name]
         except KeyError:
             return None
+
+    def get_sum_of_items(self) -> int:
+        """
+        It loads the data, then it creates a variable called sum and sets it to 0. Then it loops through
+        the categories in the data, and for each category it adds the number of items in that category
+        to the sum. Finally, it returns the sum
+
+        Returns:
+          The number of items in the database.
+        """
+        self.load_data()
+        return sum(len(self.data[category].keys()) for category in list(self.data.keys()))
 
     def sort(self, category: str, item_name: str, ascending: bool) -> None:
         """

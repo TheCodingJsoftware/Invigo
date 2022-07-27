@@ -1,4 +1,9 @@
 <h1>v1.2.1</h1>
+Version 1.2.2 performance improvements.
+&bull; Removing quantites is now multi-threaded with a progressbar, this has a slight performance drop, however its more stable.<br>
+&bull; Added some wrap text to dialogs.<br>
+
+<h1>v1.2.1</h1>
 Version 1.2.1 fixed PO bugs.
 
 <h1>v1.2.0</h1>
