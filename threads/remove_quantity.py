@@ -11,6 +11,8 @@ from utils.json_file import JsonFile
 
 
 class RemoveQuantityThread(QThread):
+    """This class is a thread that removes a quantity of a product from the database."""
+
     signal = pyqtSignal(object)
 
     def __init__(
@@ -20,6 +22,16 @@ class RemoveQuantityThread(QThread):
         inventory_prices_objects: dict,
         multiplier: int,
     ) -> None:
+        """
+        This function is a constructor for a class that inherits from QThread
+
+        Args:
+          inventory (JsonFile): JsonFile = The inventory object
+          category (str): str = The category of the item.
+          inventory_prices_objects (dict): A dictionary of objects that contain the prices of the items
+        in the inventory.
+          multiplier (int): int = multiplier
+        """
         QThread.__init__(self)
         self.username = os.getlogin().title()
         self.category = category
@@ -30,6 +42,10 @@ class RemoveQuantityThread(QThread):
         self.inventory = inventory
 
     def run(self) -> None:
+        """
+        It takes the current quantity of an item, subtracts the unit quantity of the item multiplied by
+        the multiplier, and then sets the current quantity of the item to the result of the subtraction
+        """
         try:
             category_data = self.inventory.get_value(item_name=self.category)
             inventory = self.inventory.get_data()
@@ -55,19 +71,20 @@ class RemoveQuantityThread(QThread):
                 self.completion_count += 1
                 self.signal.emit(f"{self.completion_count}, {self.max_item_count}")
             part_numbers = list(set(part_numbers))
-            data = self.inventory.get_data()
-            for category in list(data.keys()):
+            for category in list(inventory.keys()):
                 if category == self.category:
                     continue
-                self.max_item_count += len(list(data[category].keys())) * len(
+                self.max_item_count += len(list(inventory[category].keys())) * len(
                     part_numbers
                 )
                 for item, part_number in itertools.product(
-                    list(data[category].keys()), part_numbers
+                    list(inventory[category].keys()), part_numbers
                 ):
-                    if part_number == data[category][item]["part_number"]:
-                        unit_quantity: int = data[category][item]["unit_quantity"]
-                        current_quantity: int = data[category][item]["current_quantity"]
+                    if part_number == inventory[category][item]["part_number"]:
+                        unit_quantity: int = inventory[category][item]["unit_quantity"]
+                        current_quantity: int = inventory[category][item][
+                            "current_quantity"
+                        ]
                         inventory[category][item][
                             "current_quantity"
                         ] = current_quantity - (unit_quantity * self.multiplier)

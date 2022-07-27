@@ -5,7 +5,7 @@ __credits__: "list[str]" = ["Jared Gross"]
 __license__ = "MIT"
 __name__ = "Inventory Manager"
 __version__ = "v1.2.3"
-__updated__ = "2022-07-27 07:44:46"
+__updated__ = "2022-07-27 07:51:20"
 __maintainer__ = "Jared Gross"
 __email__ = "jared@pinelandfarms.ca"
 __status__ = "Production"
@@ -1699,8 +1699,7 @@ class MainWindow(QMainWindow):
 
     def remove_quantity_from_category(self) -> None:
         """
-        It removes the quantity from the category and all other categories that have the same part
-        number
+        It removes a quantity of items from a category
         """
         # category_data = inventory.get_value(item_name=self.category)
         # part_numbers = []
@@ -1763,6 +1762,13 @@ class MainWindow(QMainWindow):
         self.spinBox_quantity.setValue(0)
 
     def remove_quantity_thread_response(self, data) -> None:
+        """
+        It's a function that is called when a thread is finished. It's purpose is to update the GUI with
+        the results of the thread.
+
+        Args:
+          data: str = "Done" or "count, total"
+        """
         if data != "Done":
             count = int(data.split(", ")[0])
             total = int(data.split(", ")[1])
