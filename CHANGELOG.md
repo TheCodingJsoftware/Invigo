@@ -1,3 +1,8 @@
+<h1>v1.2.4</h1>
+Version 1.2.4 performance improvements.
+&bull; adding or removing quantities had major issues which are now fixed.<br>
+&bull; Further code optimizations and improved stability with json loading, parsing and threading.<br>
+
 <h1>v1.2.3</h1>
 Version 1.2.3 big performance improvements.
 &bull; Removing quantites is now multi-threaded with a progressbar, and made alot more speed.<br>

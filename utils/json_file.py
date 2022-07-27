@@ -63,7 +63,6 @@ class JsonFile:
         ) as json_file:
             json.dump(data, json_file, ensure_ascii=False, indent=4)
 
-
     def add_item(self, item_name: str, value) -> None:
         """
         This function adds an item to the data dictionary
@@ -73,7 +72,7 @@ class JsonFile:
           value: The value to be stored in the file.
         """
         # sourcery skip: class-extract-method
-        self.load_data()
+        # self.load_data()
         self.data.update({item_name: value})
         self.__save_data()
 
@@ -85,7 +84,7 @@ class JsonFile:
           object_name (str): The name of the object you want to add the item to.
           item_name (str): str = The name of the item you want to add.
         """
-        self.load_data()
+        # self.load_data()
         self.data[object_name].update({item_name: {}})
         self.__save_data()
 
@@ -97,7 +96,7 @@ class JsonFile:
           category (str): The category you want to add the group to.
           group_name (str): The name of the group you want to add to the category.
         """
-        self.load_data()
+        # self.load_data()
         self.data[category].update({group_name: {"group": True}})
         self.__save_data()
 
@@ -111,7 +110,7 @@ class JsonFile:
           new_name (str): The new name of the key.
         """  # Loading the data from the file into the class.
 
-        self.load_data()
+        # self.load_data()
         self.data[new_name] = self.data[key_name]
         del self.data[key_name]
         self.__save_data()
@@ -124,7 +123,7 @@ class JsonFile:
         Args:
           key_name: The name of the key you want to clone.
         """
-        self.load_data()
+        # self.load_data()
         clonded_data = self.data
         clonded_data[f"Clone from: {key_name} Double click me rename me"] = clonded_data[
             key_name
@@ -141,7 +140,7 @@ class JsonFile:
           item_name (str): The name of the item you want to change.
           new_name (str): The new name of the item
         """
-        self.load_data()
+        # self.load_data()
         self.data[object_name][new_name] = self.data[object_name][item_name]
         del self.data[object_name][item_name]
         self.__save_data()
@@ -154,7 +153,7 @@ class JsonFile:
           item_name (str): The name of the item you want to change.
           new_value: The new value of the item.
         """
-        self.load_data()
+        # self.load_data()
         self.data.update({item_name: new_value})
         self.__save_data()
 
@@ -168,7 +167,7 @@ class JsonFile:
           item_name (str): The name of the item you want to change.
           new_value: The new value of the item.
         """
-        self.load_data()
+        # self.load_data()
         self.data[object_name][item_name] = new_value
         self.__save_data()
 
@@ -184,7 +183,7 @@ class JsonFile:
           value_name (str): str = The name of the value you want to change.
           new_value: The new value you want to change the value to.
         """
-        self.load_data()
+        # self.load_data()
         self.data[object_name][item_name][value_name] = new_value
         self.__save_data()
 
@@ -195,7 +194,7 @@ class JsonFile:
         Args:
           item_name: The name of the item to remove.
         """
-        self.load_data()
+        # self.load_data()
         self.data.pop(item_name)
         self.__save_data()
 
@@ -207,7 +206,7 @@ class JsonFile:
           object_name (str): The name of the object you want to remove an item from.
           item_name (str): The name of the item you want to remove.
         """
-        self.load_data()
+        # self.load_data()
         del self.data[object_name][item_name]
         self.__save_data()
 
@@ -240,7 +239,7 @@ class JsonFile:
         Returns:
           None
         """
-        self.load_data()
+        # self.load_data()
         try:
             return self.data[item_name]
         except KeyError:
@@ -255,7 +254,7 @@ class JsonFile:
         Returns:
           The number of items in the database.
         """
-        self.load_data()
+        # self.load_data()
         return sum(len(self.data[category].keys()) for category in list(self.data.keys()))
 
     def sort(self, category: str, item_name: str, ascending: bool) -> None:

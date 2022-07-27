@@ -4,8 +4,8 @@ __copyright__ = "Copyright 2022, TheCodingJ's"
 __credits__: "list[str]" = ["Jared Gross"]
 __license__ = "MIT"
 __name__ = "Inventory Manager"
-__version__ = "v1.2.3"
-__updated__ = "2022-07-27 07:51:20"
+__version__ = "v1.2.4"
+__updated__ = "2022-07-27 12:48:05"
 __maintainer__ = "Jared Gross"
 __email__ = "jared@pinelandfarms.ca"
 __status__ = "Production"
@@ -1701,47 +1701,6 @@ class MainWindow(QMainWindow):
         """
         It removes a quantity of items from a category
         """
-        # category_data = inventory.get_value(item_name=self.category)
-        # part_numbers = []
-        # for item, object_item in zip(
-        #     list(category_data.keys()), list(self.inventory_prices_objects.keys())
-        # ):
-        #     unit_quantity: int = category_data[item]["unit_quantity"]
-        #     current_quantity: int = category_data[item]["current_quantity"]
-        #     part_numbers.append(category_data[item]["part_number"])
-        #     spin_current_quantity = self.inventory_prices_objects[object_item][
-        #         "current_quantity"
-        #     ]
-        #     self.value_change(
-        #         category=self.category,
-        #         item_name=item,
-        #         value_name="current_quantity",
-        #         new_value=current_quantity
-        #         - (unit_quantity * self.spinBox_quantity.value()),
-        #     )
-        #     spin_current_quantity.setValue(
-        #         int(current_quantity - (unit_quantity * self.spinBox_quantity.value()))
-        #     )
-        # part_numbers = list(set(part_numbers))
-        # data = inventory.get_data()
-        # for category in list(data.keys()):
-        #     if category == self.category:
-        #         continue
-        #     for item, part_number in itertools.product(
-        #         list(data[category].keys()), part_numbers
-        #     ):
-        #         if part_number == data[category][item]["part_number"]:
-        #             unit_quantity: int = data[category][item]["unit_quantity"]
-        #             current_quantity: int = data[category][item]["current_quantity"]
-        #             self.value_change(
-        #                 category=category,
-        #                 item_name=item,
-        #                 value_name="current_quantity",
-        #                 new_value=current_quantity
-        #                 - (unit_quantity * self.spinBox_quantity.value()),
-        #             )
-        # self.load_tab()
-
         self.radioButton_category.setEnabled(False)
         self.radioButton_single.setEnabled(False)
         self.pushButton_add_quantity.setEnabled(False)
@@ -1749,6 +1708,7 @@ class MainWindow(QMainWindow):
         self.pushButton_create_new.setEnabled(False)
         self.tab_widget.setEnabled(False)
         self.listWidget_itemnames.setEnabled(False)
+        self.status_button.setText("This may take awhile, please wait...")
         remove_quantity_thread = RemoveQuantityThread(
             inventory,
             self.category,
@@ -1772,10 +1732,9 @@ class MainWindow(QMainWindow):
         if data != "Done":
             count = int(data.split(", ")[0])
             total = int(data.split(", ")[1])
-            __start: float = (count) / total
+            __start: float = count / total
             __middle: float = __start + 0.001 if __start <= 1 - 0.001 else 1.0
             __end: float = __start + 0.0011 if __start <= 1 - 0.0011 else 1.0
-            self.status_button.setText("This may take awhile, please wait...")
             self.status_button.setStyleSheet(
                 """QPushButton#status_button {background: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0,stop:%(start)s #3daee9,stop:%(middle)s #3daee9,stop:%(end)s #222222)}"""
                 % {"start": str(__start), "middle": str(__middle), "end": str(__end)}
@@ -1818,28 +1777,24 @@ class MainWindow(QMainWindow):
           old_quantity (int): int = the quantity of the item before the change
         """
         self.highlight_color = "#33b833"
-        category_data = inventory.get_value(item_name=self.category)
-        current_quantity: int = category_data[item_name]["current_quantity"]
-        part_number: str = category_data[item_name]["part_number"]
-        self.value_change(
-            self.category,
-            item_name,
-            "current_quantity",
-            current_quantity + self.spinBox_quantity.value(),
-        )
+        data = inventory.get_data()
+        part_number: str = data[self.category][item_name]["part_number"]
         for object_item in list(self.inventory_prices_objects.keys()):
             if object_item.currentText() == item_name:
-                unit_quantity: int = category_data[object_item.currentText()][
-                    "unit_quantity"
-                ]
-                current_quantity: int = category_data[object_item.currentText()][
+                current_quantity: int = data[self.category][object_item.currentText()][
                     "current_quantity"
                 ]
                 self.inventory_prices_objects[object_item]["current_quantity"].setValue(
                     int(current_quantity + self.spinBox_quantity.value())
                 )
+        current_quantity: int = data[self.category][item_name]["current_quantity"]
+        # self.value_change(
+        #     self.category,
+        #     item_name,
+        #     "current_quantity",
+        #     current_quantity + self.spinBox_quantity.value(),
+        # )
 
-        data = inventory.get_data()
         for category in list(data.keys()):
             if category == self.category:
                 continue
@@ -1867,27 +1822,26 @@ class MainWindow(QMainWindow):
           old_quantity (int): int = the quantity of the item before the change
         """
         self.highlight_color = "#BE2525"
-        category_data = inventory.get_value(item_name=self.category)
-        current_quantity: int = category_data[item_name]["current_quantity"]
-        part_number: str = category_data[item_name]["part_number"]
-        self.value_change(
-            self.category,
-            item_name,
-            "current_quantity",
-            current_quantity - self.spinBox_quantity.value(),
-        )
+        data = inventory.get_data()
+        part_number: str = data[self.category][item_name]["part_number"]
+        print(data[self.category][item_name]["current_quantity"])
         for object_item in list(self.inventory_prices_objects.keys()):
             if object_item.currentText() == item_name:
-                unit_quantity: int = category_data[object_item.currentText()][
-                    "unit_quantity"
-                ]
-                current_quantity: int = category_data[object_item.currentText()][
+                current_quantity: int = data[self.category][object_item.currentText()][
                     "current_quantity"
                 ]
                 self.inventory_prices_objects[object_item]["current_quantity"].setValue(
                     int(current_quantity - self.spinBox_quantity.value())
                 )
-        data = inventory.get_data()
+        print(data[self.category][item_name]["current_quantity"])
+        current_quantity: int = data[self.category][item_name]["current_quantity"]
+        # self.value_change(
+        #     self.category,
+        #     item_name,
+        #     "current_quantity",
+        #     current_quantity - self.spinBox_quantity.value(),
+        # )
+        print(data[self.category][item_name]["current_quantity"])
         for category in list(data.keys()):
             if category == self.category:
                 continue
@@ -1900,6 +1854,7 @@ class MainWindow(QMainWindow):
                         value_name="current_quantity",
                         new_value=current_quantity - self.spinBox_quantity.value(),
                     )
+        print(data[self.category][item_name]["current_quantity"])
         self.pushButton_add_quantity.setEnabled(False)
         self.pushButton_remove_quantity.setEnabled(False)
         # self.load_tab()
@@ -1989,35 +1944,35 @@ class MainWindow(QMainWindow):
         self.pushButton_add_quantity.setEnabled(False)
         self.pushButton_remove_quantity.setEnabled(False)
         QApplication.setOverrideCursor(Qt.BusyCursor)
-        threading.Thread(
-            target=inventory.change_object_in_object_item,
-            args=(category, item_name, value_name, new_value),
-        ).start()
-        # inventory.change_object_in_object_item(
-        #     object_name=category,
-        #     item_name=item_name,
-        #     value_name=value_name,
-        #     new_value=new_value,
-        # )
+        # threading.Thread(
+        #     target=inventory.change_object_in_object_item,
+        #     args=(category, item_name, value_name, new_value),
+        # ).start()
+        inventory.change_object_in_object_item(
+            object_name=category,
+            item_name=item_name,
+            value_name=value_name,
+            new_value=new_value,
+        )
         if value_name == "current_quantity":
             value_before = inventory.get_value(item_name=category)[item_name][
                 "current_quantity"
             ]
-            threading.Thread(
-                target=inventory.change_object_in_object_item,
-                args=(
-                    category,
-                    item_name,
-                    "latest_change_current_quantity",
-                    f"Latest Change:\nfrom: {value_before}\nto: {new_value}\n{self.username}\n{datetime.now().strftime('%B %d %A %Y %I:%M:%S %p')}",
-                ),
-            ).start()
-            # inventory.change_object_in_object_item(
-            #     category,
-            #     item_name,
-            #     "latest_change_current_quantity",
-            #     f"Latest Change:\nfrom: {value_before}\nto: {new_value}\n{self.username}\n{datetime.now().strftime('%B %d %A %Y %I:%M:%S %p')}",
-            # )
+            # threading.Thread(
+            #     target=inventory.change_object_in_object_item,
+            #     args=(
+            #         category,
+            #         item_name,
+            #         "latest_change_current_quantity",
+            #         f"Latest Change:\nfrom: {value_before}\nto: {new_value}\n{self.username}\n{datetime.now().strftime('%B %d %A %Y %I:%M:%S %p')}",
+            #     ),
+            # ).start()
+            inventory.change_object_in_object_item(
+                category,
+                item_name,
+                "latest_change_current_quantity",
+                f"Latest Change:\nfrom: {value_before}\nto: {new_value}\n{self.username}\n{datetime.now().strftime('%B %d %A %Y %I:%M:%S %p')}",
+            )
         QApplication.restoreOverrideCursor()
         self.pushButton_add_quantity.setEnabled(add_quantity_state)
         self.pushButton_remove_quantity.setEnabled(remove_quantity_state)

@@ -46,16 +46,17 @@ class RemoveQuantityThread(QThread):
         It takes the current quantity of an item, subtracts the unit quantity of the item multiplied by
         the multiplier, and then sets the current quantity of the item to the result of the subtraction
         """
+        self.signal.emit(f"{self.completion_count}, {self.max_item_count}")
         try:
-            category_data = self.inventory.get_value(item_name=self.category)
             inventory = self.inventory.get_data()
             part_numbers = []
             for item, object_item in zip(
-                list(category_data.keys()), list(self.inventory_prices_objects.keys())
+                list(inventory[self.category].keys()),
+                list(self.inventory_prices_objects.keys()),
             ):
-                unit_quantity: int = category_data[item]["unit_quantity"]
-                current_quantity: int = category_data[item]["current_quantity"]
-                part_numbers.append(category_data[item]["part_number"])
+                unit_quantity: int = inventory[self.category][item]["unit_quantity"]
+                current_quantity: int = inventory[self.category][item]["current_quantity"]
+                part_numbers.append(inventory[self.category][item]["part_number"])
                 spin_current_quantity = self.inventory_prices_objects[object_item][
                     "current_quantity"
                 ]
