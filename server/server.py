@@ -183,10 +183,7 @@ class Server:
             path_to_zip_file: str = f"{os.path.dirname(os.path.realpath(__file__))}/backups/{file_name} - {datetime.now().strftime('%B %d %A %Y %I-%M-%S %p')}.zip"
             file = zipfile.ZipFile(path_to_zip_file, mode="w")
             file.write(
-                file_path.replace(
-                    "data",
-                    "backups",
-                ),
+                f"{os.path.dirname(os.path.realpath(__file__))}/data/{file_path}",
                 file_name,
                 compress_type=zipfile.ZIP_DEFLATED,
             )
