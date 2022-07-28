@@ -1901,6 +1901,23 @@
             "latest_change_use_exchange_price": "Item added\nItsme\nJuly 19 Tuesday 2022 03-54-38 PM",
             "latest_change_priority": "Item added\nItsme\nJuly 19 Tuesday 2022 03-54-38 PM",
             "latest_change_notes": "Item added\nItsme\nJuly 19 Tuesday 2022 03-54-38 PM"
+        },
+        "G3 Brick Set": {
+            "part_number": "G3BS",
+            "unit_quantity": 1,
+            "current_quantity": 17,
+            "price": 903.0,
+            "use_exchange_rate": false,
+            "priority": 0,
+            "notes": "Vendor: Reftec Insudtries\nDescription: ",
+            "latest_change_name": "Item added\nItsme\nJuly 28 Thursday 2022 04-39-31 PM",
+            "latest_change_part_number": "Latest Change:\nfrom: G3B\nto: G3BS\nItsme\nJuly 28 Thursday 2022 04:39:58 PM",
+            "latest_change_unit_quantity": "Item added\nItsme\nJuly 28 Thursday 2022 04-39-31 PM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 17\nto: 17\nItsme\nJuly 28 Thursday 2022 04:40:31 PM",
+            "latest_change_price": "Item added\nItsme\nJuly 28 Thursday 2022 04-39-31 PM",
+            "latest_change_use_exchange_price": "Item added\nItsme\nJuly 28 Thursday 2022 04-39-31 PM",
+            "latest_change_priority": "Item added\nItsme\nJuly 28 Thursday 2022 04-39-31 PM",
+            "latest_change_notes": "Latest Change:\nfrom: \"Vendor: Reftec Insudtrie\nDescription: \"\nto: \"Vendor: Reftec Insudtries\nDescription: \"\nItsme\nJuly 28 Thursday 2022 04:40:40 PM"
         }
     },
     "Polar G2+": {
@@ -2896,6 +2913,74 @@
             "latest_change_use_exchange_price": "Item added\nItsme\nJuly 28 Thursday 2022 02-50-18 PM",
             "latest_change_priority": "Item added\nItsme\nJuly 28 Thursday 2022 02-50-18 PM",
             "latest_change_notes": "Item added\nItsme\nJuly 28 Thursday 2022 02-50-18 PM"
+        },
+        "Ceramic Paper Fiber  STD (2300F) 6mm X 24\" X 32.81' (62 sq ft\/ roll)": {
+            "part_number": "CP62432",
+            "unit_quantity": 2,
+            "current_quantity": 63,
+            "price": 63.0,
+            "use_exchange_rate": false,
+            "priority": 0,
+            "notes": "Vendor: Reftec \nDescription: ",
+            "latest_change_name": "Item added\nItsme\nJuly 28 Thursday 2022 03-29-44 PM",
+            "latest_change_part_number": "Item added\nItsme\nJuly 28 Thursday 2022 03-29-44 PM",
+            "latest_change_unit_quantity": "Item added\nItsme\nJuly 28 Thursday 2022 03-29-44 PM",
+            "latest_change_current_quantity": "Item added\nItsme\nJuly 28 Thursday 2022 03-29-44 PM",
+            "latest_change_price": "Item added\nItsme\nJuly 28 Thursday 2022 03-29-44 PM",
+            "latest_change_use_exchange_price": "Item added\nItsme\nJuly 28 Thursday 2022 03-29-44 PM",
+            "latest_change_priority": "Item added\nItsme\nJuly 28 Thursday 2022 03-29-44 PM",
+            "latest_change_notes": "Item added\nItsme\nJuly 28 Thursday 2022 03-29-44 PM"
+        },
+        "Tank Flange 1\" NPT-254 SA-181": {
+            "part_number": "TF100",
+            "unit_quantity": 1,
+            "current_quantity": 400,
+            "price": 2.1,
+            "use_exchange_rate": false,
+            "priority": 0,
+            "notes": "Vendor: Greenline Hose and Fittings\nDescription: ",
+            "latest_change_name": "Item added\nItsme\nJuly 28 Thursday 2022 03-57-10 PM",
+            "latest_change_part_number": "Item added\nItsme\nJuly 28 Thursday 2022 03-57-10 PM",
+            "latest_change_unit_quantity": "Item added\nItsme\nJuly 28 Thursday 2022 03-57-10 PM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 400\nto: 400\nItsme\nJuly 28 Thursday 2022 04:33:17 PM",
+            "latest_change_price": "Latest Change:\nfrom: 2.0\nto: 2.1\nItsme\nJuly 28 Thursday 2022 04:13:14 PM",
+            "latest_change_use_exchange_price": "Item added\nItsme\nJuly 28 Thursday 2022 03-57-10 PM",
+            "latest_change_priority": "Item added\nItsme\nJuly 28 Thursday 2022 03-57-10 PM",
+            "latest_change_notes": "Item added\nItsme\nJuly 28 Thursday 2022 03-57-10 PM"
+        },
+        "1\" Black Pipe SCH40 -14 inches Per stove": {
+            "part_number": "1IBP",
+            "unit_quantity": 1,
+            "current_quantity": 1,
+            "price": 0.0,
+            "use_exchange_rate": false,
+            "priority": 0,
+            "notes": "Vendor: Russel Metals\nDescription: ",
+            "latest_change_name": "Item added\nItsme\nJuly 28 Thursday 2022 04-10-06 PM",
+            "latest_change_part_number": "Item added\nItsme\nJuly 28 Thursday 2022 04-10-06 PM",
+            "latest_change_unit_quantity": "Item added\nItsme\nJuly 28 Thursday 2022 04-10-06 PM",
+            "latest_change_current_quantity": "Item added\nItsme\nJuly 28 Thursday 2022 04-10-06 PM",
+            "latest_change_price": "Item added\nItsme\nJuly 28 Thursday 2022 04-10-06 PM",
+            "latest_change_use_exchange_price": "Item added\nItsme\nJuly 28 Thursday 2022 04-10-06 PM",
+            "latest_change_priority": "Item added\nItsme\nJuly 28 Thursday 2022 04-10-06 PM",
+            "latest_change_notes": "Item added\nItsme\nJuly 28 Thursday 2022 04-10-06 PM"
+        },
+        "Tank Flange 1\/2\" NPT -953 SA-181": {
+            "part_number": "TF12",
+            "unit_quantity": 2,
+            "current_quantity": 150,
+            "price": 2.1,
+            "use_exchange_rate": false,
+            "priority": 0,
+            "notes": "Vendor: GreenLine Hose and Fitting\nDescription: ",
+            "latest_change_name": "Item added\nItsme\nJuly 28 Thursday 2022 04-11-33 PM",
+            "latest_change_part_number": "Item added\nItsme\nJuly 28 Thursday 2022 04-11-33 PM",
+            "latest_change_unit_quantity": "Item added\nItsme\nJuly 28 Thursday 2022 04-11-33 PM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 150\nto: 150\nItsme\nJuly 28 Thursday 2022 04:32:58 PM",
+            "latest_change_price": "Item added\nItsme\nJuly 28 Thursday 2022 04-11-33 PM",
+            "latest_change_use_exchange_price": "Item added\nItsme\nJuly 28 Thursday 2022 04-11-33 PM",
+            "latest_change_priority": "Item added\nItsme\nJuly 28 Thursday 2022 04-11-33 PM",
+            "latest_change_notes": "Item added\nItsme\nJuly 28 Thursday 2022 04-11-33 PM"
         }
     }
 }
