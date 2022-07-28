@@ -191,6 +191,8 @@
     <addaction name="actionRemove_Purchase_Order"/>
     <addaction name="separator"/>
     <addaction name="actionOpen_Purchase_Order"/>
+    <addaction name="separator"/>
+    <addaction name="actionOpen_Folder"/>
    </widget>
    <addaction name="menuFile"/>
    <addaction name="menuSettings"/>
@@ -535,6 +537,9 @@ QPushButton#pushButton_create_new:disabled{
    <property name="text">
     <string>About</string>
    </property>
+   <property name="statusTip">
+    <string>Shows license, version, distrbuter and webpage.</string>
+   </property>
    <property name="iconVisibleInMenu">
     <bool>true</bool>
    </property>
@@ -573,7 +578,7 @@ QPushButton#pushButton_create_new:disabled{
     <string>Ebay</string>
    </property>
    <property name="statusTip">
-    <string>Search ebay for prices</string>
+    <string>Search ebay for prices (beta &amp; deprecated)</string>
    </property>
   </action>
   <action name="actionLoad_Backup">
@@ -652,7 +657,7 @@ QPushButton#pushButton_create_new:disabled{
     <string>Auto backup to cloud</string>
    </property>
    <property name="statusTip">
-    <string>Automatically backups your changes to the cloud.</string>
+    <string>Automatically upload your changes to the cloud.</string>
    </property>
    <property name="iconVisibleInMenu">
     <bool>false</bool>
@@ -662,6 +667,9 @@ QPushButton#pushButton_create_new:disabled{
    <property name="text">
     <string>Add Purchase Order Template</string>
    </property>
+   <property name="statusTip">
+    <string>Add a new Purchase Order</string>
+   </property>
    <property name="iconVisibleInMenu">
     <bool>false</bool>
    </property>
@@ -669,6 +677,9 @@ QPushButton#pushButton_create_new:disabled{
   <action name="actionRemove_Purchase_Order">
    <property name="text">
     <string>Remove Purchase Order Template</string>
+   </property>
+   <property name="statusTip">
+    <string>Remove a PO Template, BUT does NOT remove the generated PO's</string>
    </property>
    <property name="iconVisibleInMenu">
     <bool>false</bool>
@@ -678,6 +689,9 @@ QPushButton#pushButton_create_new:disabled{
    <property name="text">
     <string>Open Purchase Order</string>
    </property>
+   <property name="statusTip">
+    <string>Generate and open the selected Purchase Order</string>
+   </property>
    <property name="iconVisibleInMenu">
     <bool>false</bool>
    </property>
@@ -685,6 +699,9 @@ QPushButton#pushButton_create_new:disabled{
   <action name="actionRelease_Notes">
    <property name="text">
     <string>Release Notes</string>
+   </property>
+   <property name="statusTip">
+    <string>View release notes</string>
    </property>
    <property name="iconVisibleInMenu">
     <bool>true</bool>
@@ -704,6 +721,20 @@ QPushButton#pushButton_create_new:disabled{
   <action name="actionPrint_Inventory">
    <property name="text">
     <string>Print Inventory</string>
+   </property>
+   <property name="statusTip">
+    <string>Generates a excel sheet summary of the current inventory.</string>
+   </property>
+  </action>
+  <action name="actionOpen_Folder">
+   <property name="text">
+    <string>Open Folder</string>
+   </property>
+   <property name="statusTip">
+    <string>Open PO's directory in windows explorer</string>
+   </property>
+   <property name="iconVisibleInMenu">
+    <bool>false</bool>
    </property>
   </action>
  </widget>

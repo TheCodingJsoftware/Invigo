@@ -4,8 +4,8 @@ __copyright__ = "Copyright 2022, TheCodingJ's"
 __credits__: "list[str]" = ["Jared Gross"]
 __license__ = "MIT"
 __name__ = "Inventory Manager"
-__version__ = "v1.2.6"
-__updated__ = "2022-07-28 11:50:52"
+__version__ = "v1.2.7"
+__updated__ = "2022-07-28 12:48:16"
 __maintainer__ = "Jared Gross"
 __email__ = "jared@pinelandfarms.ca"
 __status__ = "Production"
@@ -438,6 +438,7 @@ class MainWindow(QMainWindow):
         )
         self.actionRemove_Purchase_Order.triggered.connect(self.delete_po)
         self.actionOpen_Purchase_Order.triggered.connect(partial(self.open_po, None))
+        self.actionOpen_Folder.triggered.connect(partial(self.open_folder, "PO's"))
         # FILE
         self.menuOpen_Category.setIcon(
             QIcon(f"ui/BreezeStyleSheets/dist/pyqt6/{self.theme}/folder.png")
@@ -667,8 +668,9 @@ class MainWindow(QMainWindow):
         )
         try:
             self.label_units_possible.setText(
-                f"Total Units Possible ≈ {round_number(inventory.get_total_count(self.category, 'current_quantity')/inventory.get_total_count(self.category, 'unit_quantity'),2)}"
+                f"Total Units Possible ≈ {inventory.get_exact_total_unit_count(self.category)} to {round_number(inventory.get_total_count(self.category, 'current_quantity')/inventory.get_total_count(self.category, 'unit_quantity'),2)}"
             )
+            print(inventory.get_exact_total_unit_count(self.category))
         except ZeroDivisionError:
             self.label_units_possible.setText("Total Units Possible: 0")
         self.quantities_change()
@@ -1814,7 +1816,7 @@ class MainWindow(QMainWindow):
 
             try:
                 self.label_units_possible.setText(
-                    f"Total Units Possible ≈ {round_number(inventory.get_total_count(self.category, 'current_quantity')/inventory.get_total_count(self.category, 'unit_quantity'),2)}"
+                    f"Total Units Possible ≈ {inventory.get_exact_total_unit_count(self.category)} to {round_number(inventory.get_total_count(self.category, 'current_quantity')/inventory.get_total_count(self.category, 'unit_quantity'),2)}"
                 )
             except ZeroDivisionError:
                 self.label_units_possible.setText("Total Units Possible: 0")
@@ -2069,7 +2071,7 @@ class MainWindow(QMainWindow):
         )
         try:
             self.label_units_possible.setText(
-                f"Total Units Possible ≈ {round_number(inventory.get_total_count(self.category, 'current_quantity')/inventory.get_total_count(self.category, 'unit_quantity'),2)}"
+                f"Total Units Possible ≈ {inventory.get_exact_total_unit_count(self.category)} to {round_number(inventory.get_total_count(self.category, 'current_quantity')/inventory.get_total_count(self.category, 'unit_quantity'),2)}"
             )
         except ZeroDivisionError:
             self.label_units_possible.setText("Total Units Possible: 0")
@@ -3015,6 +3017,20 @@ class MainWindow(QMainWindow):
                     widget.deleteLater()
                 else:
                     self.clear_layout(item.layout())
+
+    def open_folder(self, path: str) -> None:
+        """
+        It opens the folder in the default file browser
+
+        Args:
+          path: The path to the folder
+        """
+        if sys.platform == "win32":
+            os.startfile(path)
+        elif sys.platform == "darwin":
+            subprocess.Popen(["open", path])
+        else:
+            subprocess.Popen(["xdg-open", path])
 
     def set_layout_message(
         self,
