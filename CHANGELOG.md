@@ -1,3 +1,9 @@
+<h1>v1.2.7</h1>
+Version 1.2.7 Hotfix.<br>
+
+&bull; Bug fixes.<br>
+&bull; UI buttons added and changes to status tips.<br>
+
 <h1>v1.2.6</h1>
 Version 1.2.6 Hotfix.<br>
 

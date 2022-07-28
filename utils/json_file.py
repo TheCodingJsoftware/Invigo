@@ -1,4 +1,5 @@
 import contextlib
+import math
 import os
 
 import ujson as json
@@ -273,6 +274,33 @@ class JsonFile:
                 self.data[category][item][key_name]
                 for item in list(self.data[category].keys())
             )
+        except Exception as error:
+            return 1
+
+    def get_exact_total_unit_count(self, category: str) -> float:
+        """
+        It takes a category as an argument, and returns the smallest number of units that can be made
+        from the ingredients in that category
+
+        Args:
+          category (str): str = the category of the item
+
+        Returns:
+          The total number of units in the category.
+        """
+        try:
+            total_count: float = math.inf
+            for item in list(self.data[category].keys()):
+                if (
+                    self.data[category][item]["current_quantity"]
+                    / self.data[category][item]["unit_quantity"]
+                    < total_count
+                ):
+                    total_count = (
+                        self.data[category][item]["current_quantity"]
+                        / self.data[category][item]["unit_quantity"]
+                    )
+            return total_count
         except Exception as error:
             return 1
 
