@@ -1,3 +1,8 @@
+<h1>v1.2.6</h1>
+Version 1.2.6 Hotfix.<br>
+
+&bull; Bug fixes.<br>
+
 <h1>v1.2.5</h1>
 Version 1.2.5 Printing inventory.<br>
 

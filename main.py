@@ -4,8 +4,8 @@ __copyright__ = "Copyright 2022, TheCodingJ's"
 __credits__: "list[str]" = ["Jared Gross"]
 __license__ = "MIT"
 __name__ = "Inventory Manager"
-__version__ = "v1.2.5"
-__updated__ = "2022-07-27 22:58:34"
+__version__ = "v1.2.6"
+__updated__ = "2022-07-28 11:50:52"
 __maintainer__ = "Jared Gross"
 __email__ = "jared@pinelandfarms.ca"
 __status__ = "Production"
@@ -525,7 +525,7 @@ class MainWindow(QMainWindow):
         inventory = JsonFile(
             file_name=f"data/{settings_file.get_value(item_name='inventory_file_name')}"
         )
-        QApplication.setOverrideCursor(Qt.BusyCursor)
+        # QApplication.setOverrideCursor(Qt.BusyCursor)
         self.clear_layout(self.verticalLayout)
         self.tabs.clear()
         self.categories = inventory.get_keys()
@@ -665,9 +665,12 @@ class MainWindow(QMainWindow):
         self.label_total_unit_cost.setText(
             f"Total Unit Cost: ${round_number(inventory.get_total_unit_cost(self.category, self.get_exchange_rate()),2)}"
         )
-        self.label_units_possible.setText(
-            f"Total Units Possible ≈ {round_number(inventory.get_total_count(self.category, 'current_quantity')/inventory.get_total_count(self.category, 'unit_quantity'),2)}"
-        )
+        try:
+            self.label_units_possible.setText(
+                f"Total Units Possible ≈ {round_number(inventory.get_total_count(self.category, 'current_quantity')/inventory.get_total_count(self.category, 'unit_quantity'),2)}"
+            )
+        except ZeroDivisionError:
+            self.label_units_possible.setText("Total Units Possible: 0")
         self.quantities_change()
 
         try:
@@ -677,7 +680,7 @@ class MainWindow(QMainWindow):
                 self.pushButton_remove_quantity.setEnabled(False)
                 self.radioButton_category.setEnabled(False)
                 self.radioButton_single.setEnabled(False)
-                QApplication.restoreOverrideCursor()
+                # QApplication.restoreOverrideCursor()
                 return
         except AttributeError:
             self.set_layout_message(
@@ -696,13 +699,13 @@ class MainWindow(QMainWindow):
             self.pushButton_remove_quantity.setEnabled(False)
             self.radioButton_category.setEnabled(False)
             self.radioButton_single.setEnabled(False)
-            QApplication.restoreOverrideCursor()
+            # QApplication.restoreOverrideCursor()
             return
         self._timer = QTimer(
             interval=0, timeout=partial(self.load_item, tab, tab_index, category_data)
         )
         self._timer.start()
-        QApplication.setOverrideCursor(Qt.BusyCursor)
+        # QApplication.setOverrideCursor(Qt.BusyCursor)
 
     def load_item(self, tab: QVBoxLayout, tab_index: int, category_data: dict) -> None:
         """
@@ -719,12 +722,12 @@ class MainWindow(QMainWindow):
         MINIMUM_WIDTH: int = 170
         try:
             row_index = next(self._iter)
-            QApplication.setOverrideCursor(Qt.BusyCursor)
+            # QApplication.setOverrideCursor(Qt.BusyCursor)
         except StopIteration:
             self._timer.stop()
             set_status_button_stylesheet(button=self.status_button, color="#3daee9")
             self.load_item_context_menu()
-            QApplication.restoreOverrideCursor()
+            # QApplication.restoreOverrideCursor()
         else:
             __start: float = (row_index + 1) / len(list(category_data.keys()))
             __middle: float = __start + 0.001 if __start <= 1 - 0.001 else 1.0
@@ -868,9 +871,17 @@ class MainWindow(QMainWindow):
             spin_current_quantity = HumbleSpinBox(self)
             spin_current_quantity.setToolTip(latest_change_current_quantity)
             spin_current_quantity.setValue(current_quantity)
-            spin_current_quantity.setStyleSheet(
-                "color: red; border-color: red;" if current_quantity <= 0 else ""
-            )
+            if current_quantity <= 10:
+                quantity_color = "red"
+            elif current_quantity <= 20:
+                quantity_color = "yellow"
+
+            if current_quantity > 20:
+                spin_current_quantity.setStyleSheet("")
+            else:
+                spin_current_quantity.setStyleSheet(
+                    f"color: {quantity_color}; border-color: {quantity_color};"
+                )
             spin_current_quantity.valueChanged.connect(
                 partial(
                     self.current_quantity_change,
@@ -1004,7 +1015,7 @@ class MainWindow(QMainWindow):
                 self.group_layouts[group].addLayout(layout)
             except KeyError:
                 tab.addLayout(layout)
-            QApplication.restoreOverrideCursor()
+            # QApplication.restoreOverrideCursor()
 
     def update_list_widget(self) -> None:
         """
@@ -1383,9 +1394,18 @@ class MainWindow(QMainWindow):
             f"Latest Change:\nfrom: {value_before}\nto: {quantity.value()}\n{self.username}\n{datetime.now().strftime('%B %d %A %Y %I:%M:%S %p')}",
         )
         self.value_change(category, item_name.currentText(), value_name, quantity.value())
-        quantity.setStyleSheet(
-            f"{'color: red; border-color: red;' if quantity.value() <= 0 else ''}"
-        )
+
+        if quantity.value() <= 10:
+            quantity_color = "red"
+        elif quantity.value() <= 20:
+            quantity_color = "yellow"
+
+        if quantity.value() > 20:
+            quantity.setStyleSheet("")
+        else:
+            quantity.setStyleSheet(
+                f"color: {quantity_color}; border-color: {quantity_color};"
+            )
         self.update_stock_costs()
 
     def unit_quantity_change(
@@ -1791,9 +1811,13 @@ class MainWindow(QMainWindow):
                 + 'f" % '
                 + repr(int(x) + round(float("." + str(float(x)).split(".")[1]), n))
             )
-            self.label_units_possible.setText(
-                f"Total Units Possible ≈ {round_number(inventory.get_total_count(self.category, 'current_quantity')/inventory.get_total_count(self.category, 'unit_quantity'),2)}"
-            )
+
+            try:
+                self.label_units_possible.setText(
+                    f"Total Units Possible ≈ {round_number(inventory.get_total_count(self.category, 'current_quantity')/inventory.get_total_count(self.category, 'unit_quantity'),2)}"
+                )
+            except ZeroDivisionError:
+                self.label_units_possible.setText("Total Units Possible: 0")
             self.highlight_color = "#3daee9"
             QtTest.QTest.qWait(1750)
             for item in list(self.inventory_prices_objects.keys()):
@@ -1923,9 +1947,18 @@ class MainWindow(QMainWindow):
         except (KeyError, IndexError):
             return
         item_name.setStyleSheet(f"")
-        current_quantity.setStyleSheet(
-            f"{'color: red; border-color: red;' if current_quantity.value() <= 0 else ''}"
-        )
+
+        if current_quantity.value() <= 10:
+            quantity_color = "red"
+        elif current_quantity.value() <= 20:
+            quantity_color = "yellow"
+
+        if current_quantity.value() > 20:
+            current_quantity.setStyleSheet("")
+        else:
+            current_quantity.setStyleSheet(
+                f"color: {quantity_color}; border-color: {quantity_color};"
+            )
 
         # self.last_item_selected_index = self.listWidget_itemnames.currentRow()
         self.last_item_selected_index = [
@@ -1942,12 +1975,25 @@ class MainWindow(QMainWindow):
             item_name.setStyleSheet(
                 f"background-color: {self.highlight_color}; border: 1px solid {self.highlight_color};"
             )
-            current_quantity.setStyleSheet(
-                f"{'color: red; border-color: red;' if current_quantity.value() <= 0 else ''}"
-            )
+            if current_quantity.value() <= 10:
+                quantity_color = "red"
+            elif current_quantity.value() <= 20:
+                quantity_color = "yellow"
+
+            if current_quantity.value() > 20:
+                current_quantity.setStyleSheet("")
+            else:
+                current_quantity.setStyleSheet(
+                    f"color: {quantity_color}; border-color: {quantity_color};"
+                )
         else:
+            if current_quantity.value() <= 10:
+                quantity_color = "red"
+            elif current_quantity.value() <= 20:
+                quantity_color = "yellow"
+
             current_quantity.setStyleSheet(
-                f"background-color: {self.highlight_color}; border: 1px solid {self.highlight_color}; {'color: red; border-color: red;' if current_quantity.value() <= 0 else ''}"
+                f"background-color: {self.highlight_color}; border: 1px solid {self.highlight_color}; {'color: {quantity_color}; border-color: {quantity_color};' if current_quantity.value() <= 20 else ''}"
             )
             self.highlight_color = "#3daee9"
         if self.radioButton_single.isChecked():
@@ -1981,7 +2027,7 @@ class MainWindow(QMainWindow):
         remove_quantity_state: bool = self.pushButton_remove_quantity.isEnabled()
         self.pushButton_add_quantity.setEnabled(False)
         self.pushButton_remove_quantity.setEnabled(False)
-        QApplication.setOverrideCursor(Qt.BusyCursor)
+        # QApplication.setOverrideCursor(Qt.BusyCursor)
         # threading.Thread(
         #     target=inventory.change_object_in_object_item,
         #     args=(category, item_name, value_name, new_value),
@@ -2011,7 +2057,7 @@ class MainWindow(QMainWindow):
                 "latest_change_current_quantity",
                 f"Latest Change:\nfrom: {value_before}\nto: {new_value}\n{self.username}\n{datetime.now().strftime('%B %d %A %Y %I:%M:%S %p')}",
             )
-        QApplication.restoreOverrideCursor()
+        # QApplication.restoreOverrideCursor()
         self.pushButton_add_quantity.setEnabled(add_quantity_state)
         self.pushButton_remove_quantity.setEnabled(remove_quantity_state)
 
@@ -2021,9 +2067,12 @@ class MainWindow(QMainWindow):
             + 'f" % '
             + repr(int(x) + round(float("." + str(float(x)).split(".")[1]), n))
         )
-        self.label_units_possible.setText(
-            f"Total Units Possible ≈ {round_number(inventory.get_total_count(self.category, 'current_quantity')/inventory.get_total_count(self.category, 'unit_quantity'),2)}"
-        )
+        try:
+            self.label_units_possible.setText(
+                f"Total Units Possible ≈ {round_number(inventory.get_total_count(self.category, 'current_quantity')/inventory.get_total_count(self.category, 'unit_quantity'),2)}"
+            )
+        except ZeroDivisionError:
+            self.label_units_possible.setText("Total Units Possible: 0")
 
     def toggle_auto_back_up_to_cloud(self) -> None:
         """
@@ -2319,7 +2368,7 @@ class MainWindow(QMainWindow):
             if response == DialogButtons.ok:
                 input_text = input_dialog.inputText
                 ebay_scraper_thread = EbayScraper(item_to_search=input_text)
-                QApplication.setOverrideCursor(Qt.BusyCursor)
+                # QApplication.setOverrideCursor(Qt.BusyCursor)
                 ebay_scraper_thread.signal.connect(self.show_web_scrape_results)
                 self.threads.append(ebay_scraper_thread)
                 ebay_scraper_thread.start()
@@ -2490,7 +2539,7 @@ class MainWindow(QMainWindow):
         Args:
           data: a list of dictionaries
         """
-        QApplication.restoreOverrideCursor()
+        # QApplication.restoreOverrideCursor()
         results = WebScrapeResultsDialog(
             title="Results", message="Ebay search results", data=data
         )
@@ -2758,7 +2807,7 @@ class MainWindow(QMainWindow):
         Args:
           data: the data received from the server
         """
-        QApplication.restoreOverrideCursor()
+        # QApplication.restoreOverrideCursor()
         if data == "Successfully uploaded" and self.get_upload_file_response:
             self.show_message_dialog(
                 title=data,
@@ -2839,8 +2888,8 @@ class MainWindow(QMainWindow):
         """
         self.get_upload_file_response = get_response
         upload_thread = UploadThread(file_to_upload)
-        if get_response:
-            QApplication.setOverrideCursor(Qt.BusyCursor)
+        # if get_response:
+        # QApplication.setOverrideCursor(Qt.BusyCursor)
         self.start_thread(upload_thread)
 
     def download_file(self, file_to_download: str) -> None:
@@ -2852,7 +2901,7 @@ class MainWindow(QMainWindow):
         """
         self.get_upload_file_response = True
         download_thread = DownloadThread(file_to_download)
-        QApplication.setOverrideCursor(Qt.BusyCursor)
+        # QApplication.setOverrideCursor(Qt.BusyCursor)
         self.start_thread(download_thread)
 
     def start_thread(self, thread) -> None:

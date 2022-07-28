@@ -17,13 +17,13 @@ class POTemplate:
           po_template (str): The path to the template file.
         """
         self.po_template = po_template
+        self.order_number_cell = (4, 6)  # F4
+        self.date_cell = (6, 6)  # F6
         self.cwd: str = os.path.abspath(os.getcwd()).replace("\\", "/")
         self.date = date.today().strftime("%m/%d/%y")
         self.signature: str = f"Lynden Gross                                                          {self.date}"
         self.vendor: str = self.get_vendor()
         self.order_number: int = self.get_order_number()
-        self.order_number_cell = (4, 6)  # F4
-        self.date_cell = (6, 6)  # F6
 
     def generate(self) -> None:
         """
