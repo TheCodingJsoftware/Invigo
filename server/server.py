@@ -30,8 +30,8 @@ class Server:
 
         self.check_folders(folders=["data", "logs", "backups"])
         self.config_logs()
-        self.start_server()
         self.__backup_inventroy_files()
+        self.start_server()
 
     def config_logs(self) -> None:
         """
