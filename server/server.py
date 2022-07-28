@@ -117,7 +117,7 @@ class Server:
                         f"{Colors.BOLD}{datetime.now()}{Colors.ENDC}\t{Colors.OKGREEN}[ ] Receiving file from client\tFile: {filename}{Colors.ENDC}"
                     )
                     logging.info(f"Receiving file from client\tFile: {filename}")
-                    filesize = int(filesize)
+                    # filesize = int(filesize)
                     with open(filename, "wb") as f:
                         while True:
                             # read 1024 bytes from the socket (receive)
