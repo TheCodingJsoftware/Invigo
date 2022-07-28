@@ -1,6 +1,7 @@
 import logging
 import os
 import socket
+import zipfile
 from datetime import datetime
 from time import sleep
 
@@ -27,9 +28,10 @@ class Server:
         self.BUFFER_SIZE = 4096
         self.SEPARATOR = "<SEPARATOR>"
 
-        self.check_folders(folders=["data", "logs"])
+        self.check_folders(folders=["data", "logs", "backups"])
         self.config_logs()
         self.start_server()
+        self.__backup_inventroy_files()
 
     def config_logs(self) -> None:
         """
@@ -166,6 +168,26 @@ class Server:
                 print(
                     f"{Colors.BOLD}{datetime.now()}{Colors.ENDC} - {Colors.OKGREEN}{os.path.dirname(os.path.realpath(__file__))}/{folder} Created.{Colors.ENDC}"
                 )
+
+    def __backup_inventroy_files(self):
+        """
+        It backs up the inventory file to a backup file
+        """
+        print(
+            f"{Colors.BOLD}{datetime.now()}{Colors.ENDC} - {Colors.OKGREEN}[ ] Backing up inventory file{Colors.ENDC}"
+        )
+        logging.info("Backing up inventory files")
+        files = os.listdir(f"{os.path.dirname(os.path.realpath(__file__))}/backups")
+        for file_path in files:
+            file_name: str = file_path.split("/")[-1].split(".")[0]
+            path_to_zip_file: str = f"backups/{file_name} - {datetime.now().strftime('%B %d %A %Y %I-%M-%S %p')}.zip"
+            file = zipfile.ZipFile(path_to_zip_file, mode="w")
+            file.write(file_path, file_name, compress_type=zipfile.ZIP_DEFLATED)
+            file.close()
+        print(
+            f"{Colors.BOLD}{datetime.now()}{Colors.ENDC} - {Colors.OKGREEN}[+] Inventory file backed up{Colors.ENDC}"
+        )
+        logging.info("Inventory file backed up")
 
     def __upload_inventory(self, file_name: str) -> None:
         """
