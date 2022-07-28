@@ -177,12 +177,19 @@ class Server:
             f"{Colors.BOLD}{datetime.now()}{Colors.ENDC} - {Colors.OKGREEN}[ ] Backing up inventory file{Colors.ENDC}"
         )
         logging.info("Backing up inventory files")
-        files = os.listdir(f"{os.path.dirname(os.path.realpath(__file__))}/backups")
+        files = os.listdir(f"{os.path.dirname(os.path.realpath(__file__))}/data")
         for file_path in files:
             file_name: str = file_path.split("/")[-1].split(".")[0]
             path_to_zip_file: str = f"backups/{file_name} - {datetime.now().strftime('%B %d %A %Y %I-%M-%S %p')}.zip"
             file = zipfile.ZipFile(path_to_zip_file, mode="w")
-            file.write(file_path, file_name, compress_type=zipfile.ZIP_DEFLATED)
+            file.write(
+                file_path.replace(
+                    f"{os.path.dirname(os.path.realpath(__file__))}/data",
+                    f"{os.path.dirname(os.path.realpath(__file__))}/backups",
+                ),
+                file_name,
+                compress_type=zipfile.ZIP_DEFLATED,
+            )
             file.close()
         print(
             f"{Colors.BOLD}{datetime.now()}{Colors.ENDC} - {Colors.OKGREEN}[+] Inventory file backed up{Colors.ENDC}"
