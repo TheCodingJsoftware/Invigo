@@ -1,23 +1,33 @@
+<h1>v1.2.5</h1>
+Version 1.2.5 Printing inventory.<br>
+
+&bull; Print inventory, generats an excel sheet summary.<br>
+&bull; View total unit cost for each category.<br>
+&bull; View total units available to make in each category.<br>
+
 <h1>v1.2.4</h1>
-Version 1.2.4 performance improvements.
+
+Version 1.2.4 performance improvements.<br>
 &bull; adding or removing quantities had major issues which are now fixed.<br>
 &bull; Further code optimizations and improved stability with json loading, parsing and threading.<br>
 
 <h1>v1.2.3</h1>
-Version 1.2.3 big performance improvements.
+
+Version 1.2.3 big performance improvements.<br>
 &bull; Removing quantites is now multi-threaded with a progressbar, and made alot more speed.<br>
 &bull; This is a hotfix for the v1.2.2 as it was bad update.<br>
 
 <h1>v1.2.2</h1>
-Version 1.2.2 performance improvements.
+
+Version 1.2.2 performance improvements.<br>
 &bull; Removing quantites is now multi-threaded with a progressbar, this has a slight performance drop, however its more stable.<br>
 &bull; Added some wrap text to dialogs.<br>
 
 <h1>v1.2.1</h1>
-Version 1.2.1 fixed PO bugs.
+Version 1.2.1 fixed PO bugs.<br>
 
 <h1>v1.2.0</h1>
-Version 1.2.0 introduces many visual changes and features. With a side of many bug fixes.
+Version 1.2.0 introduces many visual changes and features. With a side of many bug fixes.<br>
 
 <h2>Purchase Orders</h2>
 &bull; Add purchase orders templates via the menu bar or dragging your excel templates onto the program.<br>

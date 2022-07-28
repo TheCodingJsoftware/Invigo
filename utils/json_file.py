@@ -1,3 +1,4 @@
+import contextlib
 import os
 
 import ujson as json
@@ -40,7 +41,6 @@ class JsonFile:
                 self.data = json.load(json_file)
         except Exception as error:
             print(error)
-            # self.load_data()
 
     def __save_data(self) -> None:
         """
@@ -256,6 +256,46 @@ class JsonFile:
         """
         # self.load_data()
         return sum(len(self.data[category].keys()) for category in list(self.data.keys()))
+
+    def get_total_count(self, category: str, key_name: str) -> int:
+        """
+        It returns the sum of the values of the key_name for each item in the category.
+
+        Args:
+          category (str): str - the category of the data you want to get the total count of
+          key_name (str): The key name of the value you want to get the total of.
+
+        Returns:
+          The sum of the values of the key_name for each item in the category.
+        """
+        try:
+            return sum(
+                self.data[category][item][key_name]
+                for item in list(self.data[category].keys())
+            )
+        except Exception as error:
+            return 1
+
+    def get_total_unit_cost(self, category: str, last_exchange_rate: float) -> float:
+        """
+        It returns the total cost of all items in a given category, taking into account the exchange
+        rate if the item is priced in a foreign currency
+
+        Args:
+          category (str): str = the category of the item
+
+        Returns:
+          The total cost of all items in a category.
+        """
+        total_cost: float = 0
+        with contextlib.suppress(KeyError):
+            for item in self.data[category]:
+                use_exchange_rate: bool = self.data[category][item]["use_exchange_rate"]
+                exchange_rate: float = last_exchange_rate if use_exchange_rate else 1
+                price: float = self.data[category][item]["price"]
+                unit_quantity: int = self.data[category][item]["unit_quantity"]
+                total_cost += price * unit_quantity * exchange_rate
+        return total_cost
 
     def sort(self, category: str, item_name: str, ascending: bool) -> None:
         """

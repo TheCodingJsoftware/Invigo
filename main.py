@@ -4,8 +4,8 @@ __copyright__ = "Copyright 2022, TheCodingJ's"
 __credits__: "list[str]" = ["Jared Gross"]
 __license__ = "MIT"
 __name__ = "Inventory Manager"
-__version__ = "v1.2.4"
-__updated__ = "2022-07-27 12:48:05"
+__version__ = "v1.2.5"
+__updated__ = "2022-07-27 22:58:34"
 __maintainer__ = "Jared Gross"
 __email__ = "jared@pinelandfarms.ca"
 __status__ = "Production"
@@ -16,6 +16,7 @@ import logging
 import os
 import shutil
 import subprocess
+import sys
 import threading
 import time
 import webbrowser
@@ -88,9 +89,11 @@ from ui.input_dialog import InputDialog
 from ui.message_dialog import MessageDialog
 from ui.select_item_dialog import SelectItemDialog
 from ui.web_scrape_results_dialog import WebScrapeResultsDialog
+from utils import excel_file
 from utils.compress import compress_database, compress_folder
 from utils.dialog_buttons import DialogButtons
 from utils.dialog_icons import Icons
+from utils.excel_file import ExcelFile
 from utils.extract import extract
 from utils.file_changes import FileChanges
 from utils.json_file import JsonFile
@@ -159,7 +162,9 @@ def check_folders(folders: list[str]) -> None:
                 os.mkdir(folder)
 
 
-check_folders(folders=["logs", "data", "backups", "PO's", "PO's/templates"])
+check_folders(
+    folders=["logs", "data", "backups", "excel files", "PO's", "PO's/templates"]
+)
 
 logging.basicConfig(
     filename="logs/app.log",
@@ -338,6 +343,8 @@ class MainWindow(QMainWindow):
         self.actionWebsite.setIcon(
             QIcon(f"ui/BreezeStyleSheets/dist/pyqt6/{self.theme}/website.png")
         )
+        # PRINT
+        self.actionPrint_Inventory.triggered.connect(self.print_inventory)
 
         # SETTINGS
         self.actionDarkmode.setChecked(settings_file.get_value(item_name="dark_mode"))
@@ -649,6 +656,18 @@ class MainWindow(QMainWindow):
 
         self.update_list_widget()
         self.label_category_name.setText(f"Category: {self.category}")
+        round_number = lambda x, n: eval(
+            '"%.'
+            + str(int(n))
+            + 'f" % '
+            + repr(int(x) + round(float("." + str(float(x)).split(".")[1]), n))
+        )
+        self.label_total_unit_cost.setText(
+            f"Total Unit Cost: ${round_number(inventory.get_total_unit_cost(self.category, self.get_exchange_rate()),2)}"
+        )
+        self.label_units_possible.setText(
+            f"Total Units Possible ≈ {round_number(inventory.get_total_count(self.category, 'current_quantity')/inventory.get_total_count(self.category, 'unit_quantity'),2)}"
+        )
         self.quantities_change()
 
         try:
@@ -1425,6 +1444,15 @@ class MainWindow(QMainWindow):
         )
         self.value_change(category, item_name.currentText(), value_name, price.value())
         self.update_stock_costs()
+        round_number = lambda x, n: eval(
+            '"%.'
+            + str(int(n))
+            + 'f" % '
+            + repr(int(x) + round(float("." + str(float(x)).split(".")[1]), n))
+        )
+        self.label_total_unit_cost.setText(
+            f"Total Unit Cost: ${round_number(inventory.get_total_unit_cost(self.category, self.get_exchange_rate()),2)}"
+        )
 
     def use_exchange_rate_change(
         self, category: str, item_name: QComboBox, value_name: str, combo: QComboBox
@@ -1756,6 +1784,16 @@ class MainWindow(QMainWindow):
                     f"background-color: {self.highlight_color}; {'color: red; border-color: red;' if spin_current_quantity.value() <= 0 else 'color: white;'} border: 1px solid {self.highlight_color};"
                 )
             self.status_button.setText("Done!")
+
+            round_number = lambda x, n: eval(
+                '"%.'
+                + str(int(n))
+                + 'f" % '
+                + repr(int(x) + round(float("." + str(float(x)).split(".")[1]), n))
+            )
+            self.label_units_possible.setText(
+                f"Total Units Possible ≈ {round_number(inventory.get_total_count(self.category, 'current_quantity')/inventory.get_total_count(self.category, 'unit_quantity'),2)}"
+            )
             self.highlight_color = "#3daee9"
             QtTest.QTest.qWait(1750)
             for item in list(self.inventory_prices_objects.keys()):
@@ -1976,6 +2014,16 @@ class MainWindow(QMainWindow):
         QApplication.restoreOverrideCursor()
         self.pushButton_add_quantity.setEnabled(add_quantity_state)
         self.pushButton_remove_quantity.setEnabled(remove_quantity_state)
+
+        round_number = lambda x, n: eval(
+            '"%.'
+            + str(int(n))
+            + 'f" % '
+            + repr(int(x) + round(float("." + str(float(x)).split(".")[1]), n))
+        )
+        self.label_units_possible.setText(
+            f"Total Units Possible ≈ {round_number(inventory.get_total_count(self.category, 'current_quantity')/inventory.get_total_count(self.category, 'unit_quantity'),2)}"
+        )
 
     def toggle_auto_back_up_to_cloud(self) -> None:
         """
@@ -2397,6 +2445,44 @@ class MainWindow(QMainWindow):
                 po_menu.addAction(po, partial(self.open_po, po))
             po_button.setMenu(po_menu)
 
+    def print_inventory(self) -> None:
+        """
+        It takes a file path as an argument, opens the file, generates an excel file, and saves it
+
+        Returns:
+          The return value is None.
+        """
+        try:
+            file_name = (
+                f"excel files/{datetime.now().strftime('%B %d %A %Y %I-%M-%S %p')}"
+            )
+            excel_file = ExcelFile(inventory, f"{file_name}.xlsx")
+            excel_file.generate()
+            excel_file.save()
+
+            input_dialog = MessageDialog(
+                title="Success",
+                message="Successfully generated inventory.\n\nWould you love to open it?",
+                button_names=DialogButtons.open_cancel,
+            )
+            if input_dialog.exec_():
+                response = input_dialog.get_response()
+                if response == DialogButtons.open:
+                    try:
+                        os.startfile(
+                            f"{os.path.dirname(os.path.realpath(sys.argv[0]))}/{file_name}.xlsx"
+                        )
+                    except AttributeError:
+                        return
+                elif response == DialogButtons.cancel:
+                    return
+        except Exception as error:
+            self.show_error_dialog(
+                title="Error",
+                message=f"Error generating inventory excel file. Please review the error message below.\n\n{error}",
+            )
+            return
+
     def show_web_scrape_results(self, data) -> None:
         """
         Shows results of webscrape
@@ -2728,8 +2814,18 @@ class MainWindow(QMainWindow):
         Args:
           exchange_rate (float): float
         """
+
+        round_number = lambda x, n: eval(
+            '"%.'
+            + str(int(n))
+            + 'f" % '
+            + repr(int(x) + round(float("." + str(float(x)).split(".")[1]), n))
+        )
         self.label_exchange_price.setText(
             f"1.00 USD: {exchange_rate} CAD - {datetime.now().strftime('%r')}"
+        )
+        self.label_total_unit_cost.setText(
+            f"Total Unit Cost: ${round_number(inventory.get_total_unit_cost(self.category, self.get_exchange_rate()),2)}"
         )
         settings_file.change_item(item_name="exchange_rate", new_value=exchange_rate)
         self.update_stock_costs()

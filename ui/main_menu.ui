@@ -140,6 +140,8 @@
     <addaction name="actionBackup"/>
     <addaction name="actionLoad_Backup"/>
     <addaction name="separator"/>
+    <addaction name="actionPrint_Inventory"/>
+    <addaction name="separator"/>
     <addaction name="actionExit"/>
    </widget>
    <widget class="QMenu" name="menuSettings">
@@ -237,7 +239,21 @@
        <item>
         <widget class="QLabel" name="label_category_name">
          <property name="text">
-          <string/>
+          <string>Category: </string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLabel" name="label_total_unit_cost">
+         <property name="text">
+          <string>Total Cost: </string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLabel" name="label_units_possible">
+         <property name="text">
+          <string>Total Units Possible:</string>
          </property>
         </widget>
        </item>
@@ -683,6 +699,11 @@ QPushButton#pushButton_create_new:disabled{
    </property>
    <property name="statusTip">
     <string>https://piney-manufacturing-inventory.herokuapp.com</string>
+   </property>
+  </action>
+  <action name="actionPrint_Inventory">
+   <property name="text">
+    <string>Print Inventory</string>
    </property>
   </action>
  </widget>
