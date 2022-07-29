@@ -1,3 +1,9 @@
+<h1>v1.2.8</h1>
+Version 1.2.8 QoL.<br>
+&bull; Bug fixes.<br>
+&bull; Printing inventory now considers groups.<br>
+&bull; When pressing an item from the Item Controls it scrolls to it.<br>
+
 <h1>v1.2.7</h1>
 Version 1.2.7 Hotfix.<br>
 

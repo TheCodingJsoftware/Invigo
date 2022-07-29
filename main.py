@@ -4,8 +4,8 @@ __copyright__ = "Copyright 2022, TheCodingJ's"
 __credits__: "list[str]" = ["Jared Gross"]
 __license__ = "MIT"
 __name__ = "Inventory Manager"
-__version__ = "v1.2.7"
-__updated__ = "2022-07-28 12:48:16"
+__version__ = "v1.2.8"
+__updated__ = "2022-07-28 22:58:29"
 __maintainer__ = "Jared Gross"
 __email__ = "jared@pinelandfarms.ca"
 __status__ = "Production"
@@ -218,6 +218,7 @@ class MainWindow(QMainWindow):
         ] = {}
         self.po_buttons: list[QPushButton] = []
         self.categories: list[str] = []
+        self.scroll_areas: list[QScrollArea] = []
         self.highlight_color: str = "#3daee9"
         self.category: str = ""
         self.tabs: list[QVBoxLayout] = []
@@ -529,6 +530,7 @@ class MainWindow(QMainWindow):
         # QApplication.setOverrideCursor(Qt.BusyCursor)
         self.clear_layout(self.verticalLayout)
         self.tabs.clear()
+        self.scroll_areas.clear()
         self.categories = inventory.get_keys()
         self.menuOpen_Category.clear()
         for i, category in enumerate(self.categories):
@@ -552,6 +554,7 @@ class MainWindow(QMainWindow):
                 self.headers,
                 self,
             )
+            self.scroll_areas.append(tab)
             content_widget = QWidget()
             content_widget.setObjectName("tab")
             tab.setWidget(content_widget)
@@ -563,6 +566,7 @@ class MainWindow(QMainWindow):
 
         if i == -1:
             tab = QScrollArea(self)
+            self.scroll_areas.append(tab)
             content_widget = QWidget()
             content_widget.setObjectName("tab")
             tab.setWidget(content_widget)
@@ -670,7 +674,6 @@ class MainWindow(QMainWindow):
             self.label_units_possible.setText(
                 f"Total Units Possible ≈ {inventory.get_exact_total_unit_count(self.category)} to {round_number(inventory.get_total_count(self.category, 'current_quantity')/inventory.get_total_count(self.category, 'unit_quantity'),2)}"
             )
-            print(inventory.get_exact_total_unit_count(self.category))
         except ZeroDivisionError:
             self.label_units_possible.setText("Total Units Possible: 0")
         self.quantities_change()
@@ -1931,6 +1934,9 @@ class MainWindow(QMainWindow):
         an item in a QListWidget.
         """
 
+        tab_index: int = self.tab_widget.currentIndex()
+        scroll_area: QVBoxLayout = self.scroll_areas[tab_index]
+
         try:
             selected_item: str = self.listWidget_itemnames.currentItem().text()
         except AttributeError:
@@ -1963,9 +1969,12 @@ class MainWindow(QMainWindow):
             )
 
         # self.last_item_selected_index = self.listWidget_itemnames.currentRow()
-        self.last_item_selected_index = [
-            item.currentText() for item in list(self.inventory_prices_objects.keys())
-        ].index(self.listWidget_itemnames.currentItem().text())
+        try:
+            self.last_item_selected_index = [
+                item.currentText() for item in list(self.inventory_prices_objects.keys())
+            ].index(self.listWidget_itemnames.currentItem().text())
+        except ValueError:
+            return
 
         item_name: QComboBox = list(self.inventory_prices_objects.keys())[
             self.last_item_selected_index
@@ -1973,6 +1982,7 @@ class MainWindow(QMainWindow):
         current_quantity: QDoubleSpinBox = self.inventory_prices_objects[item_name][
             "current_quantity"
         ]
+        scroll_area.verticalScrollBar().setValue(item_name.pos().y())
         if self.highlight_color == "#3daee9":
             item_name.setStyleSheet(
                 f"background-color: {self.highlight_color}; border: 1px solid {self.highlight_color};"
