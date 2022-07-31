@@ -38,23 +38,26 @@ details {
 	background-color: #222222;
 	padding: 6px;
 	border-radius: 25px;
-    border: 1px solid #76797c;
+	border: 1px solid #76797c;
 }
 
 details:hover {
 	border: 1px solid #3daee9;
 }
+
 details span {
 	display: inline-block;
 	margin-top: 1rem;
 }
 
 details summary::-webkit-details-marker {
-  display:none;
+	display: none;
 }
-details[open] > summary:before {
-  transform: rotate(90deg);
+
+details[open]>summary:before {
+	transform: rotate(90deg);
 }
+
 details[open] summary {
 	opacity: 0.8;
 	animation-name: fadeOut;
@@ -66,13 +69,16 @@ details[open] summary {
 	width: 100%;
 	object-fit: contain;
 }
-details[open] > summary:before {
-    content: "⇩ ";
+
+details[open]>summary:before {
+	content: "⇩ ";
 }
-details > summary:before {
-    content: "⇨ ";
+
+details>summary:before {
+	content: "⇨ ";
 }
-details > summary {
+
+details>summary {
 	padding: 2px 6px;
 	font-weight: 700;
 	border: none;
@@ -142,12 +148,12 @@ details > summary {
 	text-transform: capitalize;
 }
 
-.footer-container{
+.footer-container {
 	margin-top: 10px;
 	margin-bottom: 15px;
 }
 
-footer{
+footer {
 	border: 1px solid #76797c;
 }
 
@@ -160,10 +166,22 @@ footer{
 .scroll {
 	overflow-y: auto;
 	overflow-x: hidden;
-	min-height: 500px;
 	padding: 2%;
 	width: auto;
+	height: auto;
 	font-size: large;
+}
+
+#group {
+	overflow-y: auto;
+	overflow-x: hidden;
+	background: rgb(32, 32, 32);
+	padding: 2%;
+	width: auto;
+}
+
+#group_name {
+	font-size: 25px;
 }
 
 th,
@@ -172,18 +190,21 @@ td {
 	padding: 8px;
 	font-size: 1.4rem;
 	min-width: 200px;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    word-wrap: break-word;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	word-wrap: break-word;
 
 }
+
 @media only screen and (max-width: 1800px) {
-    /* horizontal scrollbar for tables if mobile screen */
-    table {
-        overflow-x: auto;
-        display: block;
-    }
+
+	/* horizontal scrollbar for tables if mobile screen */
+	table {
+		overflow-x: auto;
+		display: block;
+	}
 }
+
 table {
 	border-collapse: collapse;
 	border: 1px solid #222222;
@@ -229,12 +250,14 @@ thead th {
 .low-priority {
 	background-color: white;
 	font-weight: bold;
-  }
+}
+
 .medium-priority {
 	color: yellow;
 }
+
 .high-priority {
-color: red;
+	color: red;
 }
 
 .container {
@@ -354,8 +377,8 @@ h4 {
 	margin-top: 10px;
 	outline: 0;
 	background: #222222;
-    color: #eff0f1;
-    border: 1px solid #76797c;
+	color: #eff0f1;
+	border: 1px solid #76797c;
 	padding: 4px;
 	border-radius: 10px;
 	position: relative;
@@ -365,9 +388,11 @@ h4 {
 	overflow: hidden;
 	position: relative;
 }
-.btn.dropdown-toggle.btn-info:hover{
-    border: 1px solid #3daee9;
+
+.btn.dropdown-toggle.btn-info:hover {
+	border: 1px solid #3daee9;
 }
+
 .search_categories .select select {
 	background: transparent;
 	line-height: 1;
@@ -379,7 +404,7 @@ h4 {
 	z-index: 10;
 	font-size: 1em;
 	color: black;
-    border: 1px solid #3daee9;
+	border: 1px solid #3daee9;
 }
 
 .search-box {
@@ -585,9 +610,9 @@ h4 {
 	border-radius: 5px;
 	position: relative;
 	cursor: pointer;
-    color: #eff0f1;
-    background-color: #222222;
-    border: 1px solid #76797c;
+	color: #eff0f1;
+	background-color: #222222;
+	border: 1px solid #76797c;
 }
 
 .download>.fa {
@@ -615,7 +640,7 @@ h4 {
 }
 
 .download:hover {
-    background-color: #222222;
-    border: 0.04em solid #3daee9;
-    color: #eff0f1;
+	background-color: #222222;
+	border: 0.04em solid #3daee9;
+	color: #eff0f1;
 }

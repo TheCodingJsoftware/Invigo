@@ -4,8 +4,8 @@ __copyright__ = "Copyright 2022, TheCodingJ's"
 __credits__: "list[str]" = ["Jared Gross"]
 __license__ = "MIT"
 __name__ = "Inventory Manager"
-__version__ = "v1.2.8"
-__updated__ = "2022-07-28 22:58:29"
+__version__ = "v1.2.9"
+__updated__ = "2022-07-31 15:52:44"
 __maintainer__ = "Jared Gross"
 __email__ = "jared@pinelandfarms.ca"
 __status__ = "Production"
@@ -468,6 +468,19 @@ class MainWindow(QMainWindow):
         self.actionDownloadInventory.setIcon(
             QIcon(f"ui/BreezeStyleSheets/dist/pyqt6/{self.theme}/download.png")
         )
+        self.actionCreate_Category.triggered.connect(self.create_new_category)
+        self.actionCreate_Category.setIcon(
+            QIcon(f"ui/BreezeStyleSheets/dist/pyqt6/{self.theme}/list_add.png")
+        )
+        self.actionDelete_Category.triggered.connect(self.delete_category)
+        self.actionDelete_Category.setIcon(
+            QIcon(f"ui/BreezeStyleSheets/dist/pyqt6/{self.theme}/list_remove.png")
+        )
+        self.actionClone_Category.triggered.connect(self.clone_category)
+        self.actionClone_Category.setIcon(
+            QIcon(f"ui/BreezeStyleSheets/dist/pyqt6/{self.theme}/tab_duplicate.png")
+        )
+
         self.actionBackup.triggered.connect(self.backup_database)
         self.actionBackup.setIcon(
             QIcon(f"ui/BreezeStyleSheets/dist/pyqt6/{self.theme}/backup.png")
@@ -577,32 +590,6 @@ class MainWindow(QMainWindow):
             self.tab_widget.addTab(tab, "")
             i += 1
 
-        if self.tab_widget.tabText(0) != "":
-            tab = QWidget(self)
-            self.tab_widget.addTab(tab, "Create category")
-            tab = QWidget(self)
-            self.tab_widget.addTab(tab, "Delete category")
-            tab = QWidget(self)
-            self.tab_widget.addTab(tab, "Clone category")
-
-            self.tab_widget.setTabToolTip(i + 1, "Add a new category")
-            self.tab_widget.setTabIcon(
-                i + 1, QIcon(f"ui/BreezeStyleSheets/dist/pyqt6/{self.theme}/list_add.png")
-            )
-
-            self.tab_widget.setTabToolTip(i + 2, "Delete an existing category")
-            self.tab_widget.setTabIcon(
-                i + 2,
-                QIcon(f"ui/BreezeStyleSheets/dist/pyqt6/{self.theme}/list_remove.png"),
-            )
-            self.tab_widget.setTabToolTip(i + 3, "Clone an existing category")
-            self.tab_widget.setTabIcon(
-                i + 3,
-                QIcon(f"ui/BreezeStyleSheets/dist/pyqt6/{self.theme}/tab_duplicate.png"),
-            )
-        else:
-            self.tab_widget.setTabVisible(0, False)
-
         self.tab_widget.setCurrentIndex(settings_file.get_value("last_category_tab"))
         self.tab_widget.currentChanged.connect(self.load_tab)
         self.verticalLayout.addWidget(self.tab_widget)
@@ -622,28 +609,12 @@ class MainWindow(QMainWindow):
         """
         tab_index: int = self.tab_widget.currentIndex()
         self.category = self.tab_widget.tabText(tab_index)
-        self.tab_widget.disconnect()
-        if self.category == "Create category":
-            self.create_new_category()
-            self.tab_widget.currentChanged.connect(self.load_tab)
-            self.tab_widget.tabBarDoubleClicked.connect(self.rename_category)
-            return
-        if self.category == "Delete category":
-            self.delete_category()
-            self.tab_widget.currentChanged.connect(self.load_tab)
-            self.tab_widget.tabBarDoubleClicked.connect(self.rename_category)
-            return
-        if self.category == "Clone category":
-            self.clone_category()
-            self.tab_widget.currentChanged.connect(self.load_tab)
-            self.tab_widget.tabBarDoubleClicked.connect(self.rename_category)
-            return
         self.inventory_prices_objects.clear()
         self.po_buttons.clear()
         self.item_layouts.clear()
         self.group_layouts.clear()
-        self.tab_widget.currentChanged.connect(self.load_tab)
-        self.tab_widget.tabBarDoubleClicked.connect(self.rename_category)
+        # self.tab_widget.currentChanged.connect(self.load_tab)
+        # self.tab_widget.tabBarDoubleClicked.connect(self.rename_category)
         self.pushButton_create_new.setEnabled(True)
         self.radioButton_category.setEnabled(True)
         self.radioButton_single.setEnabled(True)
@@ -743,10 +714,10 @@ class MainWindow(QMainWindow):
             )
             item = list(category_data.keys())[row_index]
 
-            part_number: str = self.get_item_from_category(
+            part_number: str = self.get_value_from_category(
                 item_name=item, key="part_number"
             )
-            group = self.get_item_from_category(item_name=item, key="group")
+            group = self.get_value_from_category(item_name=item, key="group")
 
             if group:
                 try:
@@ -767,49 +738,49 @@ class MainWindow(QMainWindow):
             layout = QHBoxLayout()
             # Checking if the item is in the inventory.
             if (
-                self.get_item_from_category(item_name=item, key="current_quantity")
+                self.get_value_from_category(item_name=item, key="current_quantity")
                 is None
             ):
                 return
 
             self.item_layouts.append(layout)
             current_quantity: int = int(
-                self.get_item_from_category(item_name=item, key="current_quantity")
+                self.get_value_from_category(item_name=item, key="current_quantity")
             )
             unit_quantity: int = int(
-                self.get_item_from_category(item_name=item, key="unit_quantity")
+                self.get_value_from_category(item_name=item, key="unit_quantity")
             )
-            priority: int = self.get_item_from_category(item_name=item, key="priority")
-            price: float = self.get_item_from_category(item_name=item, key="price")
-            notes: str = self.get_item_from_category(item_name=item, key="notes")
-            use_exchange_rate: bool = self.get_item_from_category(
+            priority: int = self.get_value_from_category(item_name=item, key="priority")
+            price: float = self.get_value_from_category(item_name=item, key="price")
+            notes: str = self.get_value_from_category(item_name=item, key="notes")
+            use_exchange_rate: bool = self.get_value_from_category(
                 item_name=item, key="use_exchange_rate"
             )
             exchange_rate: float = self.get_exchange_rate() if use_exchange_rate else 1
             total_cost_in_stock: float = current_quantity * price * exchange_rate
             total_unit_cost: float = unit_quantity * price * exchange_rate
-            latest_change_part_number: str = self.get_item_from_category(
+            latest_change_part_number: str = self.get_value_from_category(
                 item_name=item, key="latest_change_part_number"
             )
-            latest_change_unit_quantity: str = self.get_item_from_category(
+            latest_change_unit_quantity: str = self.get_value_from_category(
                 item_name=item, key="latest_change_unit_quantity"
             )
-            latest_change_current_quantity: str = self.get_item_from_category(
+            latest_change_current_quantity: str = self.get_value_from_category(
                 item_name=item, key="latest_change_current_quantity"
             )
-            latest_change_price: str = self.get_item_from_category(
+            latest_change_price: str = self.get_value_from_category(
                 item_name=item, key="latest_change_price"
             )
-            latest_change_use_exchange_rate: str = self.get_item_from_category(
+            latest_change_use_exchange_rate: str = self.get_value_from_category(
                 item_name=item, key="latest_change_use_exchange_rate"
             )
-            latest_change_priority: str = self.get_item_from_category(
+            latest_change_priority: str = self.get_value_from_category(
                 item_name=item, key="latest_change_priority"
             )
-            latest_change_notes: str = self.get_item_from_category(
+            latest_change_notes: str = self.get_value_from_category(
                 item_name=item, key="latest_change_notes"
             )
-            latest_change_name: str = self.get_item_from_category(
+            latest_change_name: str = self.get_value_from_category(
                 item_name=item, key="latest_change_name"
             )
 
@@ -1107,11 +1078,8 @@ class MainWindow(QMainWindow):
                         )
                         return
                 inventory.add_item(item_name=input_text, value={})
-                settings_file.add_item(item_name="last_category_tab", value=0)
                 self.load_categories()
             elif response == DialogButtons.cancel:
-                settings_file.add_item(item_name="last_category_tab", value=0)
-                self.load_categories()
                 return
 
     def delete_category(self) -> None:
@@ -1138,8 +1106,6 @@ class MainWindow(QMainWindow):
                 settings_file.add_item(item_name="last_category_tab", value=0)
                 self.load_categories()
             elif response == DialogButtons.cancel:
-                settings_file.add_item(item_name="last_category_tab", value=0)
-                self.load_categories()
                 return
 
     def clone_category(self) -> None:
@@ -1174,11 +1140,8 @@ class MainWindow(QMainWindow):
                     inventory.clone_key(select_item_dialog.get_selected_item())
                 except AttributeError:
                     return
-                settings_file.add_item(item_name="last_category_tab", value=0)
                 self.load_categories()
             elif response == DialogButtons.cancel:
-                settings_file.add_item(item_name="last_category_tab", value=0)
-                self.load_categories()
                 return
 
     def rename_category(self, index):
@@ -1276,7 +1239,7 @@ class MainWindow(QMainWindow):
         It creates a context menu for each item in the inventory
         """
         for item_name in list(self.inventory_prices_objects.keys()):
-            group = self.get_item_from_category(
+            group = self.get_value_from_category(
                 item_name=item_name.currentText(), key="group"
             )
             menu = QMenu(self)
@@ -1386,9 +1349,11 @@ class MainWindow(QMainWindow):
         value_name (str): str = The name of the value you want to change.
         quantity (QSpinBox): QSpinBox
         """
+        data = inventory.get_data()
         value_before = inventory.get_value(item_name=category)[item_name.currentText()][
             "current_quantity"
         ]
+        part_number: str = data[self.category][item_name.currentText()]["part_number"]
         inventory.change_object_in_object_item(
             category,
             item_name.currentText(),
@@ -1399,7 +1364,17 @@ class MainWindow(QMainWindow):
             f"Latest Change:\nfrom: {value_before}\nto: {quantity.value()}\n{self.username}\n{datetime.now().strftime('%B %d %A %Y %I:%M:%S %p')}",
         )
         self.value_change(category, item_name.currentText(), value_name, quantity.value())
-
+        for category in list(data.keys()):
+            if category == self.category:
+                continue
+            for item in list(data[category].keys()):
+                if part_number == data[category][item]["part_number"]:
+                    data[category][item]["current_quantity"] = quantity.value()
+                    data[category][item][
+                        "latest_change_current_quantity"
+                    ] = f"Latest Change:\nfrom: {value_before}\nto: {quantity.value()}\n{self.username}\n{datetime.now().strftime('%B %d %A %Y %I:%M:%S %p')}"
+        inventory.save_data(data)
+        inventory.load_data()
         if quantity.value() <= 10:
             quantity_color = "red"
         elif quantity.value() <= 20:
@@ -1455,6 +1430,8 @@ class MainWindow(QMainWindow):
           price (QDoubleSpinBox): QDoubleSpinBox
         """
 
+        data = inventory.get_data()
+        part_number: str = data[self.category][item_name.currentText()]["part_number"]
         value_before = inventory.get_value(item_name=category)[item_name.currentText()][
             "price"
         ]
@@ -1468,6 +1445,18 @@ class MainWindow(QMainWindow):
             f"Latest Change:\nfrom: {value_before}\nto: {price.value()}\n{self.username}\n{datetime.now().strftime('%B %d %A %Y %I:%M:%S %p')}",
         )
         self.value_change(category, item_name.currentText(), value_name, price.value())
+        for category in list(data.keys()):
+            if category == self.category:
+                continue
+            for item in list(data[category].keys()):
+                if part_number == data[category][item]["part_number"]:
+                    current_price: int = data[category][item]["price"]
+                    data[category][item]["price"] = price.value()
+                    data[category][item][
+                        "latest_change_price"
+                    ] = f"Latest Change:\nfrom: {current_price}\nto: {price.value()}\n{self.username}\n{datetime.now().strftime('%B %d %A %Y %I:%M:%S %p')}"
+        inventory.save_data(data)
+        inventory.load_data()
         self.update_stock_costs()
         round_number = lambda x, n: eval(
             '"%.'
@@ -1846,21 +1835,32 @@ class MainWindow(QMainWindow):
         self.highlight_color = "#33b833"
         data = inventory.get_data()
         part_number: str = data[self.category][item_name]["part_number"]
+        current_quantity: int = data[self.category][item_name]["current_quantity"]
         for object_item in list(self.inventory_prices_objects.keys()):
             if object_item.currentText() == item_name:
-                current_quantity: int = data[self.category][object_item.currentText()][
+                self.inventory_prices_objects[object_item][
                     "current_quantity"
-                ]
+                ].disconnect()
                 self.inventory_prices_objects[object_item]["current_quantity"].setValue(
                     int(current_quantity + self.spinBox_quantity.value())
                 )
-        current_quantity: int = data[self.category][item_name]["current_quantity"]
-        # self.value_change(
-        #     self.category,
-        #     item_name,
-        #     "current_quantity",
-        #     current_quantity + self.spinBox_quantity.value(),
-        # )
+                self.value_change(
+                    self.category,
+                    item_name,
+                    "current_quantity",
+                    current_quantity + self.spinBox_quantity.value(),
+                )
+                self.inventory_prices_objects[object_item][
+                    "current_quantity"
+                ].valueChanged.connect(
+                    partial(
+                        self.current_quantity_change,
+                        self.category,
+                        item_name,
+                        "current_quantity",
+                        self.inventory_prices_objects[object_item]["current_quantity"],
+                    )
+                )
 
         for category in list(data.keys()):
             if category == self.category:
@@ -1891,24 +1891,32 @@ class MainWindow(QMainWindow):
         self.highlight_color = "#BE2525"
         data = inventory.get_data()
         part_number: str = data[self.category][item_name]["part_number"]
-        print(data[self.category][item_name]["current_quantity"])
+        current_quantity: int = data[self.category][item_name]["current_quantity"]
         for object_item in list(self.inventory_prices_objects.keys()):
             if object_item.currentText() == item_name:
-                current_quantity: int = data[self.category][object_item.currentText()][
+                self.inventory_prices_objects[object_item][
                     "current_quantity"
-                ]
+                ].disconnect()
                 self.inventory_prices_objects[object_item]["current_quantity"].setValue(
                     int(current_quantity - self.spinBox_quantity.value())
                 )
-        print(data[self.category][item_name]["current_quantity"])
-        current_quantity: int = data[self.category][item_name]["current_quantity"]
-        # self.value_change(
-        #     self.category,
-        #     item_name,
-        #     "current_quantity",
-        #     current_quantity - self.spinBox_quantity.value(),
-        # )
-        print(data[self.category][item_name]["current_quantity"])
+                self.value_change(
+                    self.category,
+                    item_name,
+                    "current_quantity",
+                    current_quantity - self.spinBox_quantity.value(),
+                )
+                self.inventory_prices_objects[object_item][
+                    "current_quantity"
+                ].valueChanged.connect(
+                    partial(
+                        self.current_quantity_change,
+                        self.category,
+                        item_name,
+                        "current_quantity",
+                        self.inventory_prices_objects[object_item]["current_quantity"],
+                    )
+                )
         for category in list(data.keys()):
             if category == self.category:
                 continue
@@ -2241,7 +2249,7 @@ class MainWindow(QMainWindow):
         """
         return settings_file.get_value(item_name="exchange_rate")
 
-    def get_item_from_category(self, item_name: str, key: str) -> Any:
+    def get_value_from_category(self, item_name: str, key: str) -> Any:
         """
         It returns the value of a key in a dictionary, if the key exists. If the key doesn't exist, it
         returns a string

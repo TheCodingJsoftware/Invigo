@@ -139,14 +139,17 @@ class ExcelFile:
             )
             worksheet.print_area(f"A1:E{row}")
 
-    def __sort_groups(self, category: dict) -> None:
+    def __sort_groups(self, category: dict) -> dict:
         """
-        It sorts the data in the data.json file by the category and item_name specified by the user
+        It takes a dictionary of dictionaries, and returns a dictionary of dictionaries, where the keys
+        of the returned dictionary are the values of the "group" key in the original dictionary
 
         Args:
-          category (str): str
-          item_name (str): The name of the item to sort by.
-          ascending (bool): bool
+          category (dict): dict
+
+        Returns:
+          A dictionary with the keys being the group names and the values being a dictionary of the
+        items in that group.
         """
         grouped_category: dict = {}
         for item in category.items():

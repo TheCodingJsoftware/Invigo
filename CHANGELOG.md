@@ -1,3 +1,9 @@
+<h1>v1.2.9 More QoL</h1>
+&bull; Current Quantity and Prices now link together with part numbers when you change the spinbox.<br>
+&bull; Website now supports groups.<br>
+&bull; Create, Delete, Clone category tab buttons have been removed.<br>
+&bull; Create, Delete, Clone category buttons have been moved under the File -> Inventory Menu.<br>
+
 <h1>v1.2.8</h1>
 Version 1.2.8 QoL.<br>
 &bull; Bug fixes.<br>

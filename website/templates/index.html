@@ -58,108 +58,134 @@
     </div>
     <div id="downloads">
         <div class="scroll">
-            {% for key, value in inventory.items() %}
+            {% for category, category_data in inventory.items() %}
             {%if search_term == ""%}
             <details>
-                <summary>{{key}}</summary>
+                <summary>{{category}}</summary>
                 <div class="content">
                     <div class="scroll">
-                        <table class="sortable">
-                            <thead>
-                                <tr>
-                                    <th>Part Name</th>
-                                    <th>Part Number</th>
-                                    <th>Quantity Per Unit</th>
-                                    <th>Quantity in Stock</th>
-                                    <th>Item Price</th>
-                                    <th>Priority</th>
-                                    <th>Notes</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {% for item_name, item_dictionary in value.items() %}
-                                <tr>
-                                    <th>{{item_name}}</th>
-                                    <td>{{item_dictionary['part_number']}}</td>
-                                    <td>{{item_dictionary['unit_quantity']}}</td>
-                                    {% if item_dictionary['current_quantity'] == 0 %}
-                                    <td class="high-priority">{{item_dictionary['current_quantity']}}</td>
-                                    {% else %}
-                                    <td>{{item_dictionary['current_quantity']}}</td>
-                                    {% endif %}
-                                    {% if item_dictionary['use_exchange_rate'] == true %}
-                                    <td sorttable_customkey={{item_dictionary['price']}}>${{item_dictionary['price']}}
-                                        USD</td>
-                                    {% else %}
-                                    <td sorttable_customkey={{item_dictionary['price']}}>${{item_dictionary['price']}}
-                                        CAD</td>
-                                    {% endif %}
-                                    {% if item_dictionary['priority'] == 0 %}
-                                    <td sorttable_customkey="0">Default</td>
-                                    {% elif item_dictionary['priority'] == 1 %}
-                                    <td sorttable_customkey="1"> Low</td>
-                                    {% elif item_dictionary['priority'] == 2 %}
-                                    <td sorttable_customkey="2" class="medium-priority">Medium</td>
-                                    {% elif item_dictionary['priority'] == 3 %}
-                                    <td sorttable_customkey="3" class="high-priority">High</td>
-                                    {% endif %}
-                                    <td>{{item_dictionary['notes']}}</td>
-                                </tr>
-                                {% endfor %}
-                            </tbody>
-                        </table>
+                        {% for group, value in category_data.items() %}
+                        <details id='group'>
+                            <summary id='group_name'>{{group}}</summary>
+                            <div class="content">
+                                <div class="scroll">
+                                    <table class="sortable">
+                                        <thead>
+                                            <tr>
+                                                <th>Part Name</th>
+                                                <th>Part Number</th>
+                                                <th>Quantity Per Unit</th>
+                                                <th>Quantity in Stock</th>
+                                                <th>Item Price</th>
+                                                <th>Priority</th>
+                                                <th>Notes</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {% for item_name, item_dictionary in value.items() %}
+                                            <tr>
+                                                <th>{{item_name}}</th>
+                                                <td>{{item_dictionary['part_number']}}</td>
+                                                <td>{{item_dictionary['unit_quantity']}}</td>
+                                                {% if item_dictionary['current_quantity'] <= 10 %}
+                                                <td class="high-priority">{{item_dictionary['current_quantity']}}</td>
+                                                {% elif item_dictionary['current_quantity'] <= 20 %}
+                                                <td class="medium-priority">{{item_dictionary['current_quantity']}}</td>
+                                                {% else %}
+                                                <td>{{item_dictionary['current_quantity']}}</td>
+                                                {% endif %}
+                                                {% if item_dictionary['use_exchange_rate'] == true %}
+                                                <td sorttable_customkey={{item_dictionary['price']}}>
+                                                    ${{item_dictionary['price']}}
+                                                    USD</td>
+                                                {% else %}
+                                                <td sorttable_customkey={{item_dictionary['price']}}>
+                                                    ${{item_dictionary['price']}}
+                                                    CAD</td>
+                                                {% endif %}
+                                                {% if item_dictionary['priority'] == 0 %}
+                                                <td sorttable_customkey="0">Default</td>
+                                                {% elif item_dictionary['priority'] == 1 %}
+                                                <td sorttable_customkey="1"> Low</td>
+                                                {% elif item_dictionary['priority'] == 2 %}
+                                                <td sorttable_customkey="2" class="medium-priority">Medium</td>
+                                                {% elif item_dictionary['priority'] == 3 %}
+                                                <td sorttable_customkey="3" class="high-priority">High</td>
+                                                {% endif %}
+                                                <td>{{item_dictionary['notes']}}</td>
+                                            </tr>
+                                            {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </details>
+                        {% endfor %}
                     </div>
                 </div>
             </details>
             {% else %}
             <details open>
-                <summary>{{key}}</summary>
+                <summary>{{category}}</summary>
                 <div class="content">
                     <div class="scroll">
-                        <table class="sortable">
-                            <thead>
-                                <tr>
-                                    <th>Part Name</th>
-                                    <th>Part Number</th>
-                                    <th>Quantity Per Unit</th>
-                                    <th>Quantity in Stock</th>
-                                    <th>Item Price</th>
-                                    <th>Priority</th>
-                                    <th>Notes</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {% for item_name, item_dictionary in value.items() %}
-                                <tr>
-                                    <th>{{item_name}}</th>
-                                    <td>{{item_dictionary['part_number']}}</td>
-                                    <td>{{item_dictionary['unit_quantity']}}</td>
-                                    {% if item_dictionary['current_quantity'] == 0 %}
-                                    <td class="high-priority">{{item_dictionary['current_quantity']}}</td>
-                                    {% else %}
-                                    <td>{{item_dictionary['current_quantity']}}</td>
-                                    {% endif %}
-                                    {% if item_dictionary['use_exchange_rate'] == true %}
-                                    <td sorttable_customkey={{item_dictionary['price']}}>${{item_dictionary['price']}}
-                                        USD</td>
-                                    {% else %}
-                                    <td sorttable_customkey={{item_dictionary['price']}}>${{item_dictionary['price']}}
-                                        CAD</td>
-                                    {% endif %}
-                                    {% if item_dictionary['priority'] == 0 %}
-                                    <td sorttable_customkey="0">Default</td>
-                                    {% elif item_dictionary['priority'] == 1 %}
-                                    <td sorttable_customkey="1"> Low</td>
-                                    {% elif item_dictionary['priority'] == 2 %}
-                                    <td sorttable_customkey="2" class="medium-priority">Medium</td>
-                                    {% elif item_dictionary['priority'] == 3 %}
-                                    <td sorttable_customkey="3" class="high-priority">High</td>
-                                    {% endif %}
-                                    <td>{{item_dictionary['notes']}}</td>
-                                </tr>
-                                {% endfor %}
-                            </tbody>
-                        </table>
+                        {% for group, value in category_data.items() %}
+                        <details open id='group'>
+                            <summary id='group_name'>{{group}}</summary>
+                            <div class="content">
+                                <div class="scroll">
+                                    <table class="sortable">
+                                        <thead>
+                                            <tr>
+                                                <th>Part Name</th>
+                                                <th>Part Number</th>
+                                                <th>Quantity Per Unit</th>
+                                                <th>Quantity in Stock</th>
+                                                <th>Item Price</th>
+                                                <th>Priority</th>
+                                                <th>Notes</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {% for item_name, item_dictionary in value.items() %}
+                                            <tr>
+                                                <th>{{item_name}}</th>
+                                                <td>{{item_dictionary['part_number']}}</td>
+                                                <td>{{item_dictionary['unit_quantity']}}</td>
+                                                {% if item_dictionary['current_quantity'] <= 10 %}
+                                                <td class="high-priority">{{item_dictionary['current_quantity']}}</td>
+                                                {% elif item_dictionary['current_quantity'] <= 20 %}
+                                                <td class="medium-priority">{{item_dictionary['current_quantity']}}</td>
+                                                {% else %}
+                                                <td>{{item_dictionary['current_quantity']}}</td>
+                                                {% endif %}
+                                                {% if item_dictionary['use_exchange_rate'] == true %}
+                                                <td sorttable_customkey={{item_dictionary['price']}}>
+                                                    ${{item_dictionary['price']}}
+                                                    USD</td>
+                                                {% else %}
+                                                <td sorttable_customkey={{item_dictionary['price']}}>
+                                                    ${{item_dictionary['price']}}
+                                                    CAD</td>
+                                                {% endif %}
+                                                {% if item_dictionary['priority'] == 0 %}
+                                                <td sorttable_customkey="0">Default</td>
+                                                {% elif item_dictionary['priority'] == 1 %}
+                                                <td sorttable_customkey="1"> Low</td>
+                                                {% elif item_dictionary['priority'] == 2 %}
+                                                <td sorttable_customkey="2" class="medium-priority">Medium</td>
+                                                {% elif item_dictionary['priority'] == 3 %}
+                                                <td sorttable_customkey="3" class="high-priority">High</td>
+                                                {% endif %}
+                                                <td>{{item_dictionary['notes']}}</td>
+                                            </tr>
+                                            {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </details>
+                        {% endfor %}
                     </div>
                 </div>
             </details>
@@ -202,7 +228,7 @@
             event.preventDefault();
             location.replace(input.value);
             if (input.value === "") {
-                location.assign('http://10.0.0.217:5000');
+                location.assign('https://piney-manufacturing-inventory.herokuapp.com');
             }
         }
     });
@@ -219,7 +245,7 @@
         $(".go-icon").click(function () {
             $(".search-form").submit();
             $(".go-icon").removeClass("go-in");
-            location.assign('http://10.0.0.217:5000');
+            location.assign('https://piney-manufacturing-inventory.herokuapp.com');
         });
         $(function () {
             $('select').on('change', function (e) {

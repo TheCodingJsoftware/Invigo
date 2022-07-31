@@ -3,6 +3,7 @@ This script is seperate from the entire client-end project
 and is not intended for the client to use this script.
 """
 
+import contextlib
 import json
 import threading
 import time
@@ -22,10 +23,11 @@ def index() -> None:
     Returns:
       The webpage
     """
+    inventory = sort_groups(get_inventory_data())
     return render_template(
         "index.html",
         search_term="",
-        inventory=get_inventory_data(),
+        inventory=inventory,
         part_names=get_all_part_names(),
         part_numbers=get_all_part_numbers(),
     )
@@ -37,36 +39,72 @@ def search(search_term):
     Returns:
         _type_: webpage
     """
-    inventory = get_inventory_data()
-    data = {}
+    inventory = sort_groups(get_inventory_data())
     search_term = search_term.replace("_", " ")
     for category in list(inventory.keys()):
-        data[category] = {}
-        for item_name in list(inventory[category].keys()):
-            try:
-                part_name = inventory[category][item_name]["part_number"].replace(
-                    "/", "_"
-                )
-                if (
-                    search_term.lower().replace("/", "⁄")
-                    in item_name.lower().replace("/", "⁄")
-                    or search_term.lower().replace("/", "_") in part_name.lower()
-                ):
-                    data[category][item_name] = dict(inventory[category][item_name])
-            except KeyError:
-                continue
+        for group in list(inventory[category].keys()):
+            for item_name in list(inventory[category][group].keys()):
+                try:
+                    part_name = inventory[category][group][item_name][
+                        "part_number"
+                    ].replace("/", "_")
+                    if not (
+                        search_term.lower().replace("/", "⁄")
+                        in item_name.lower().replace("/", "⁄")
+                        or search_term.lower().replace("/", "_") in part_name.lower()
+                    ):
+                        inventory[category][group].pop(item_name)
+                except KeyError:
+                    continue
 
-    for category in list(data.keys()):
-        if len(data[category]) == 0:
-            data.pop(category)
+    for category in list(inventory.keys()):
+        for group in list(inventory[category].keys()):
+            if len(inventory[category][group]) == 0:
+                inventory[category].pop(group)
+
+    for category in list(inventory.keys()):
+        if len(inventory[category]) == 0:
+            inventory.pop(category)
 
     return render_template(
         "index.html",
-        inventory=data,
+        inventory=inventory,
         search_term=search_term.replace(" ", "_"),
         part_names=get_all_part_names(),
         part_numbers=get_all_part_numbers(),
     )
+
+
+def sort_groups(category: dict) -> dict:
+    """
+    It takes a dictionary of dictionaries, and returns a dictionary of dictionaries, where the keys
+    of the returned dictionary are the values of the "group" key in the original dictionary
+
+    Args:
+        category (dict): dict
+
+    Returns:
+        A dictionary with the keys being the group names and the values being a dictionary of the
+    items in that group.
+    """
+    grouped_category: dict = {}
+    for category_name in list(category.keys()):
+        grouped_category[category_name] = {}
+        for item in category[category_name].items():
+            with contextlib.suppress(KeyError):
+                if item[1]["group"] and item[1]["group"] != "":
+                    grouped_category[category_name][item[1]["group"]] = {}
+        grouped_category[category_name]["Everything else"] = {}
+
+    for category_name in list(category.keys()):
+        for item in category[category_name].items():
+            try:
+                if item[1]["group"] and item[1]["group"] != "":
+                    grouped_category[category_name][item[1]["group"]][item[0]] = item[1]
+            except Exception:
+                grouped_category[category_name]["Everything else"][item[0]] = item[1]
+
+    return grouped_category
 
 
 def get_all_part_names() -> list[str]:
@@ -139,4 +177,4 @@ def downloadThread() -> None:
 
 
 threading.Thread(target=downloadThread).start()
-app.run(host="10.0.0.217", port=5000, debug=False, threaded=True)
+# app.run(host="10.0.0.217", port=5000, debug=False, threaded=True)

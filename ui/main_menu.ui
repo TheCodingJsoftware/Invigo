@@ -132,8 +132,19 @@
      </property>
      <addaction name="actionUploadInventory"/>
     </widget>
+    <widget class="QMenu" name="menuInventory">
+     <property name="title">
+      <string>Inventory</string>
+     </property>
+     <addaction name="actionCreate_Category"/>
+     <addaction name="actionDelete_Category"/>
+     <addaction name="separator"/>
+     <addaction name="actionClone_Category"/>
+    </widget>
     <addaction name="menuUpload_File"/>
     <addaction name="menuDownload_File"/>
+    <addaction name="separator"/>
+    <addaction name="menuInventory"/>
     <addaction name="separator"/>
     <addaction name="menuOpen_Category"/>
     <addaction name="separator"/>
@@ -735,6 +746,30 @@ QPushButton#pushButton_create_new:disabled{
    </property>
    <property name="iconVisibleInMenu">
     <bool>false</bool>
+   </property>
+  </action>
+  <action name="actionCreate_Category">
+   <property name="text">
+    <string>Create Category</string>
+   </property>
+   <property name="statusTip">
+    <string>Craete a new Category</string>
+   </property>
+  </action>
+  <action name="actionDelete_Category">
+   <property name="text">
+    <string>Delete Category</string>
+   </property>
+   <property name="statusTip">
+    <string>Delete an existing Category.</string>
+   </property>
+  </action>
+  <action name="actionClone_Category">
+   <property name="text">
+    <string>Clone Category</string>
+   </property>
+   <property name="statusTip">
+    <string>Clone an existing Category.</string>
    </property>
   </action>
  </widget>
