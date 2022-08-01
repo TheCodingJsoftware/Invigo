@@ -67,10 +67,11 @@ class AddItemDialog(QDialog):
         self.lineEdit_name.setCurrentText("")
         self.lineEdit_part_number.setCurrentText("")
 
-        # self.lineEdit_name.lineEdit().editingFinished.connect(self.name_changed)
+        self.lineEdit_name.lineEdit().editingFinished.connect(self.name_changed)
         # self.lineEdit_part_number.lineEdit().editingFinished.connect(
         #     self.part_number_changed
         # )
+        self.pushButton_autofill.clicked.connect(self.autofill)
 
         self.setTabOrder(self.lineEdit_name, self.lineEdit_part_number)
         self.setTabOrder(self.lineEdit_part_number, self.spinBox_current_quantity)
@@ -158,6 +159,16 @@ class AddItemDialog(QDialog):
             button.clicked.connect(partial(self.button_press, button))
             self.buttonsLayout.addWidget(button)
 
+    def autofill(self) -> None:
+        data = self.inventory.get_data()
+        for category in list(data.keys()):
+            for item in list(data[category].keys()):
+                if item == self.lineEdit_name.currentText():
+                    self.lineEdit_part_number.setCurrentText(
+                        data[category][item]["part_number"]
+                    )
+                    self._extracted_from_part_number_changed_10(data, category, item)
+
     def name_changed(self) -> None:
         """
         It takes the name of an item from a combobox, and then fills in the rest of the fields with the
@@ -167,10 +178,13 @@ class AddItemDialog(QDialog):
         for category in list(data.keys()):
             for item in list(data[category].keys()):
                 if item == self.lineEdit_name.currentText():
-                    self.lineEdit_part_number.setCurrentText(
-                        data[category][item]["part_number"]
-                    )
-                    self._extracted_from_part_number_changed_10(data, category, item)
+                    self.pushButton_autofill.setEnabled(False)
+                else:
+                    self.pushButton_autofill.setEnabled(True)
+                    # self.lineEdit_part_number.setCurrentText(
+                    #     data[category][item]["part_number"]
+                    # )
+                    # self._extracted_from_part_number_changed_10(data, category, item)
 
     def part_number_changed(self) -> None:
         """

@@ -4,8 +4,8 @@ __copyright__ = "Copyright 2022, TheCodingJ's"
 __credits__: "list[str]" = ["Jared Gross"]
 __license__ = "MIT"
 __name__ = "Inventory Manager"
-__version__ = "v1.2.9"
-__updated__ = "2022-07-31 15:52:44"
+__version__ = "v1.3.0"
+__updated__ = "2022-08-01 15:35:03"
 __maintainer__ = "Jared Gross"
 __email__ = "jared@pinelandfarms.ca"
 __status__ = "Production"
@@ -133,7 +133,7 @@ def default_settings() -> None:
     check_setting(setting="change_quantities_by", default_value="Category")
     check_setting(setting="inventory_file_name", default_value="inventory")
     check_setting(setting="trusted_users", default_value=["itsme", "jared", "joseph"])
-    check_setting(setting="auto_backup_to_cloud", default_value=True)
+    check_setting(setting="auto_backup_to_cloud", default_value=False)
 
 
 def check_setting(setting: str, default_value) -> None:
