@@ -1,3 +1,6 @@
+<h1>v1.3.0 More QoL</h1>
+&bull; Added autofill button.<br>
+
 <h1>v1.2.9 More QoL</h1>
 &bull; Current Quantity and Prices now link together with part numbers when you change the spinbox.<br>
 &bull; Website now supports groups.<br>
