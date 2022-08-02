@@ -4,8 +4,8 @@ __copyright__ = "Copyright 2022, TheCodingJ's"
 __credits__: "list[str]" = ["Jared Gross"]
 __license__ = "MIT"
 __name__ = "Inventory Manager"
-__version__ = "v1.3.0"
-__updated__ = "2022-08-01 15:35:03"
+__version__ = "v1.3.1"
+__updated__ = "2022-08-01 22:28:58"
 __maintainer__ = "Jared Gross"
 __email__ = "jared@pinelandfarms.ca"
 __status__ = "Production"
@@ -610,6 +610,7 @@ class MainWindow(QMainWindow):
         tab_index: int = self.tab_widget.currentIndex()
         self.category = self.tab_widget.tabText(tab_index)
         self.inventory_prices_objects.clear()
+        self.last_item_selected_index = 0
         self.po_buttons.clear()
         self.item_layouts.clear()
         self.group_layouts.clear()
@@ -1990,7 +1991,9 @@ class MainWindow(QMainWindow):
         current_quantity: QDoubleSpinBox = self.inventory_prices_objects[item_name][
             "current_quantity"
         ]
-        scroll_area.verticalScrollBar().setValue(item_name.pos().y())
+        scroll_area.verticalScrollBar().setValue(
+            item_name.pos().y() - int(scroll_area.size().height() / 2) + 30
+        )
         if self.highlight_color == "#3daee9":
             item_name.setStyleSheet(
                 f"background-color: {self.highlight_color}; border: 1px solid {self.highlight_color};"
