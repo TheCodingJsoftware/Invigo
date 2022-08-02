@@ -67,7 +67,7 @@ class AddItemDialog(QDialog):
         self.lineEdit_name.setCurrentText("")
         self.lineEdit_part_number.setCurrentText("")
 
-        self.lineEdit_name.lineEdit().editingFinished.connect(self.name_changed)
+        self.lineEdit_name.lineEdit().textChanged.connect(self.name_changed)
         # self.lineEdit_part_number.lineEdit().editingFinished.connect(
         #     self.part_number_changed
         # )
@@ -160,6 +160,10 @@ class AddItemDialog(QDialog):
             self.buttonsLayout.addWidget(button)
 
     def autofill(self) -> None:
+        """
+        It takes the data from the inventory, and if the item name matches the item name in the
+        inventory, it will fill in the part number and the rest of the data.
+        """
         data = self.inventory.get_data()
         for category in list(data.keys()):
             for item in list(data[category].keys()):
@@ -178,9 +182,10 @@ class AddItemDialog(QDialog):
         for category in list(data.keys()):
             for item in list(data[category].keys()):
                 if item == self.lineEdit_name.currentText():
-                    self.pushButton_autofill.setEnabled(False)
-                else:
                     self.pushButton_autofill.setEnabled(True)
+                    return
+                else:
+                    self.pushButton_autofill.setEnabled(False)
                     # self.lineEdit_part_number.setCurrentText(
                     #     data[category][item]["part_number"]
                     # )

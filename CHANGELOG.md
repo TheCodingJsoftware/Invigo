@@ -1,3 +1,8 @@
+<h1>v1.3.1</h1>
+&bull; Fixed bug with autofill button.<br>
+&bull; Fixed bug with Item Controls menu.<br>
+&bull; Selecting an item from the Item Controls menu puts it in the middle of the screen.<br>
+
 <h1>v1.3.0 More QoL</h1>
 &bull; Added autofill button.<br>
 
