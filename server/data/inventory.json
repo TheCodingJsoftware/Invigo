@@ -1,11 +1,44 @@
-rt_number": "BIA-020",
+{
+    "Polar G2": {
+        "6L24 ASHT 6\"X24\" Section": {
+            "part_number": "6L24",
+            "unit_quantity": 1,
+            "current_quantity": -14,
+            "price": 0.0,
+            "use_exchange_rate": false,
+            "priority": 2,
+            "notes": "Vendor: Security Chimneys\n\nDescription: ",
+            "latest_change_current_quantity": "Latest Change:\nfrom: -14\nto: -14\nItsme\nJuly 20 Wednesday 2022 07:39:42 PM"
+        },
+        "3\"x48\"x96\" FSK Insulation Sheet": {
+            "part_number": "FSK3",
+            "unit_quantity": 3.0,
+            "current_quantity": -14.0,
+            "price": 124.99,
+            "use_exchange_rate": false,
+            "priority": 0,
+            "notes": "Vendor: BrockWhite\nevandenberg@brockwhite.com\n",
+            "latest_change_current_quantity": "Latest Change:\nfrom: -14.0\nto: -14.0\nItsme\nJuly 20 Wednesday 2022 07:39:42 PM"
+        },
+        "1 1\/4 Full Port ball Valve": {
+            "part_number": "114BV",
             "unit_quantity": 2,
-            "current_quantity": 2,
+            "current_quantity": 41,
+            "price": 11.78,
+            "use_exchange_rate": false,
+            "priority": 0,
+            "notes": "Vendor: Greenline\nDescription: 204-694-0332",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 41\nto: 41\nItsme\nAugust 03 Wednesday 2022 08:45:19 AM"
+        },
+        "Barb Hose Adapter fitting": {
+            "part_number": "BIA-020",
+            "unit_quantity": 2,
+            "current_quantity": 52,
             "price": 3.32,
             "use_exchange_rate": false,
             "priority": 0,
             "notes": "Vendor: GreenLine\nDescription: 204-694-0332",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 2\nto: 2\nItsme\nJuly 28 Thursday 2022 08:13:31 AM"
+            "latest_change_current_quantity": "Latest Change:\nfrom: 52\nto: 52\nItsme\nAugust 03 Wednesday 2022 08:45:57 AM"
         },
         "Shaft Collar 7\/16 with Set Screw": {
             "part_number": "BRA0420",
@@ -90,12 +123,12 @@ rt_number": "BIA-020",
         "1 1\/4 Closed Nipple ": {
             "part_number": "114CN",
             "unit_quantity": 3.0,
-            "current_quantity": 23.0,
+            "current_quantity": 63.0,
             "price": 0.7,
             "use_exchange_rate": false,
             "priority": 0,
             "notes": "Vendor: Greenline\nDescription: 204-694-0332",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 23.0\nto: 23.0\nItsme\nJuly 20 Wednesday 2022 07:39:42 PM"
+            "latest_change_current_quantity": "Latest Change:\nfrom: 63.0\nto: 63.0\nItsme\nAugust 03 Wednesday 2022 08:46:28 AM"
         },
         "WeatherStripping NDA- .5\" x 3\/16\" x 50'": {
             "part_number": "WSNDA",
@@ -1029,12 +1062,12 @@ rt_number": "BIA-020",
         "Barb Hose Adapter fitting": {
             "part_number": "BIA-020",
             "unit_quantity": 2,
-            "current_quantity": 2,
+            "current_quantity": 52,
             "price": 3.32,
             "use_exchange_rate": false,
             "priority": 0,
             "notes": "Vendor: GreenLine\nDescription: 204-694-0332",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 2\nto: 2\nItsme\nJuly 28 Thursday 2022 08:13:31 AM"
+            "latest_change_current_quantity": "Latest Change:\nfrom: 52\nto: 52\nItsme\nAugust 03 Wednesday 2022 08:45:57 AM"
         },
         "Shaft Collar 7\/16 with Set Screw": {
             "part_number": "BRA0420",
@@ -1139,12 +1172,12 @@ rt_number": "BIA-020",
         "1 1\/4 Closed Nipple ": {
             "part_number": "114CN",
             "unit_quantity": 3.0,
-            "current_quantity": 23.0,
+            "current_quantity": 63.0,
             "price": 0.7,
             "use_exchange_rate": false,
             "priority": 0,
             "notes": "Vendor: Greenline\nDescription: 204-694-0332",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 23.0\nto: 23.0\nItsme\nJuly 20 Wednesday 2022 07:39:44 PM"
+            "latest_change_current_quantity": "Latest Change:\nfrom: 63.0\nto: 63.0\nItsme\nAugust 03 Wednesday 2022 08:46:28 AM"
         },
         "Grundfos 26-99FC 115V 9H": {
             "part_number": "26-99FC",
@@ -1963,12 +1996,12 @@ rt_number": "BIA-020",
         "Barb Hose Adapter fitting": {
             "part_number": "BIA-020",
             "unit_quantity": 2,
-            "current_quantity": 2,
+            "current_quantity": 52,
             "price": 3.32,
             "use_exchange_rate": false,
             "priority": 0,
             "notes": "Vendor: GreenLine\nDescription: 204-694-0332",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 2\nto: 2\nItsme\nJuly 28 Thursday 2022 08:13:31 AM"
+            "latest_change_current_quantity": "Latest Change:\nfrom: 52\nto: 52\nItsme\nAugust 03 Wednesday 2022 08:45:57 AM"
         },
         "Shaft Collar 7\/16 with Set Screw": {
             "part_number": "BRA0420",
@@ -2090,12 +2123,12 @@ rt_number": "BIA-020",
         "1 1\/4 Closed Nipple ": {
             "part_number": "114CN",
             "unit_quantity": 3.0,
-            "current_quantity": 23.0,
+            "current_quantity": 63.0,
             "price": 0.7,
             "use_exchange_rate": false,
             "priority": 0,
             "notes": "Vendor: Greenline\nDescription: 204-694-0332",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 23.0\nto: 23.0\nItsme\nJuly 20 Wednesday 2022 07:39:46 PM"
+            "latest_change_current_quantity": "Latest Change:\nfrom: 63.0\nto: 63.0\nItsme\nAugust 03 Wednesday 2022 08:46:28 AM"
         },
         "WeatherStripping NDA- .5\" x 3\/16\" x 50'": {
             "part_number": "WSNDA",
