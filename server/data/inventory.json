@@ -3335,6 +3335,23 @@
             "latest_change_use_exchange_price": "Item added\nItsme\nAugust 03 Wednesday 2022 08-47-07 AM",
             "latest_change_priority": "Item added\nItsme\nAugust 03 Wednesday 2022 08-47-07 AM",
             "latest_change_notes": "Item added\nItsme\nAugust 03 Wednesday 2022 08-47-07 AM"
+        },
+        "1 1\/4 Closed Nipple ": {
+            "part_number": "114CN",
+            "unit_quantity": 3,
+            "current_quantity": 63,
+            "price": 0.7,
+            "use_exchange_rate": false,
+            "priority": 0,
+            "notes": "Vendor: Greenline\nDescription: 204-694-0332",
+            "latest_change_name": "Item added\nItsme\nAugust 03 Wednesday 2022 08-48-01 AM",
+            "latest_change_part_number": "Item added\nItsme\nAugust 03 Wednesday 2022 08-48-01 AM",
+            "latest_change_unit_quantity": "Item added\nItsme\nAugust 03 Wednesday 2022 08-48-01 AM",
+            "latest_change_current_quantity": "Item added\nItsme\nAugust 03 Wednesday 2022 08-48-01 AM",
+            "latest_change_price": "Item added\nItsme\nAugust 03 Wednesday 2022 08-48-01 AM",
+            "latest_change_use_exchange_price": "Item added\nItsme\nAugust 03 Wednesday 2022 08-48-01 AM",
+            "latest_change_priority": "Item added\nItsme\nAugust 03 Wednesday 2022 08-48-01 AM",
+            "latest_change_notes": "Item added\nItsme\nAugust 03 Wednesday 2022 08-48-01 AM"
         }
     }
 }
