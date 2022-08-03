@@ -3318,6 +3318,23 @@
             "latest_change_use_exchange_price": "Item added\nItsme\nJuly 29 Friday 2022 04-09-28 PM",
             "latest_change_priority": "Item added\nItsme\nJuly 29 Friday 2022 04-09-28 PM",
             "latest_change_notes": "Item added\nItsme\nJuly 29 Friday 2022 04-09-28 PM"
+        },
+        "Barb Hose Adapter fitting": {
+            "part_number": "BIA-020",
+            "unit_quantity": 2,
+            "current_quantity": 52,
+            "price": 3.32,
+            "use_exchange_rate": false,
+            "priority": 0,
+            "notes": "Vendor: GreenLine\nDescription: 204-694-0332",
+            "latest_change_name": "Item added\nItsme\nAugust 03 Wednesday 2022 08-47-07 AM",
+            "latest_change_part_number": "Item added\nItsme\nAugust 03 Wednesday 2022 08-47-07 AM",
+            "latest_change_unit_quantity": "Item added\nItsme\nAugust 03 Wednesday 2022 08-47-07 AM",
+            "latest_change_current_quantity": "Item added\nItsme\nAugust 03 Wednesday 2022 08-47-07 AM",
+            "latest_change_price": "Item added\nItsme\nAugust 03 Wednesday 2022 08-47-07 AM",
+            "latest_change_use_exchange_price": "Item added\nItsme\nAugust 03 Wednesday 2022 08-47-07 AM",
+            "latest_change_priority": "Item added\nItsme\nAugust 03 Wednesday 2022 08-47-07 AM",
+            "latest_change_notes": "Item added\nItsme\nAugust 03 Wednesday 2022 08-47-07 AM"
         }
     }
 }
