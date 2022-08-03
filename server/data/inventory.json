@@ -24,21 +24,23 @@
             "part_number": "114BV",
             "unit_quantity": 2,
             "current_quantity": 41,
-            "price": 11.78,
+            "price": 20.5,
             "use_exchange_rate": false,
             "priority": 0,
             "notes": "Vendor: Greenline\nDescription: 204-694-0332",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 41\nto: 41\nItsme\nAugust 03 Wednesday 2022 08:45:19 AM"
+            "latest_change_current_quantity": "Latest Change:\nfrom: 41\nto: 41\nItsme\nAugust 03 Wednesday 2022 08:45:19 AM",
+            "latest_change_price": "Latest Change:\nfrom: 20.0\nto: 20.5\nItsme\nAugust 03 Wednesday 2022 08:49:45 AM"
         },
         "Barb Hose Adapter fitting": {
             "part_number": "BIA-020",
             "unit_quantity": 2,
             "current_quantity": 52,
-            "price": 3.32,
+            "price": 3.0,
             "use_exchange_rate": false,
             "priority": 0,
             "notes": "Vendor: GreenLine\nDescription: 204-694-0332",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 52\nto: 52\nItsme\nAugust 03 Wednesday 2022 08:45:57 AM"
+            "latest_change_current_quantity": "Latest Change:\nfrom: 52\nto: 52\nItsme\nAugust 03 Wednesday 2022 08:45:57 AM",
+            "latest_change_price": "Latest Change:\nfrom: 3.3\nto: 3.0\nItsme\nAugust 03 Wednesday 2022 08:50:27 AM"
         },
         "Shaft Collar 7\/16 with Set Screw": {
             "part_number": "BRA0420",
@@ -124,11 +126,12 @@
             "part_number": "114CN",
             "unit_quantity": 3.0,
             "current_quantity": 63.0,
-            "price": 0.7,
+            "price": 1.21,
             "use_exchange_rate": false,
             "priority": 0,
             "notes": "Vendor: Greenline\nDescription: 204-694-0332",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 63.0\nto: 63.0\nItsme\nAugust 03 Wednesday 2022 08:46:28 AM"
+            "latest_change_current_quantity": "Latest Change:\nfrom: 63.0\nto: 63.0\nItsme\nAugust 03 Wednesday 2022 08:46:28 AM",
+            "latest_change_price": "Latest Change:\nfrom: 1.2\nto: 1.21\nItsme\nAugust 03 Wednesday 2022 08:50:13 AM"
         },
         "WeatherStripping NDA- .5\" x 3\/16\" x 50'": {
             "part_number": "WSNDA",
@@ -1042,11 +1045,12 @@
             "part_number": "114BV",
             "unit_quantity": 2,
             "current_quantity": 41,
-            "price": 11.78,
+            "price": 20.5,
             "use_exchange_rate": false,
             "priority": 0,
             "notes": "Vendor: Greenline\nDescription: 204-694-0332",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 41\nto: 41\nItsme\nAugust 03 Wednesday 2022 08:45:19 AM"
+            "latest_change_current_quantity": "Latest Change:\nfrom: 41\nto: 41\nItsme\nAugust 03 Wednesday 2022 08:45:19 AM",
+            "latest_change_price": "Latest Change:\nfrom: 20.0\nto: 20.5\nItsme\nAugust 03 Wednesday 2022 08:49:45 AM"
         },
         "3\" Nipple x 3\/4 Black Steel ": {
             "part_number": "483-030",
@@ -1063,11 +1067,12 @@
             "part_number": "BIA-020",
             "unit_quantity": 2,
             "current_quantity": 52,
-            "price": 3.32,
+            "price": 3.0,
             "use_exchange_rate": false,
             "priority": 0,
             "notes": "Vendor: GreenLine\nDescription: 204-694-0332",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 52\nto: 52\nItsme\nAugust 03 Wednesday 2022 08:45:57 AM"
+            "latest_change_current_quantity": "Latest Change:\nfrom: 52\nto: 52\nItsme\nAugust 03 Wednesday 2022 08:45:57 AM",
+            "latest_change_price": "Latest Change:\nfrom: 3.3\nto: 3.0\nItsme\nAugust 03 Wednesday 2022 08:50:27 AM"
         },
         "Shaft Collar 7\/16 with Set Screw": {
             "part_number": "BRA0420",
@@ -1173,11 +1178,12 @@
             "part_number": "114CN",
             "unit_quantity": 3.0,
             "current_quantity": 63.0,
-            "price": 0.7,
+            "price": 1.21,
             "use_exchange_rate": false,
             "priority": 0,
             "notes": "Vendor: Greenline\nDescription: 204-694-0332",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 63.0\nto: 63.0\nItsme\nAugust 03 Wednesday 2022 08:46:28 AM"
+            "latest_change_current_quantity": "Latest Change:\nfrom: 63.0\nto: 63.0\nItsme\nAugust 03 Wednesday 2022 08:46:28 AM",
+            "latest_change_price": "Latest Change:\nfrom: 1.2\nto: 1.21\nItsme\nAugust 03 Wednesday 2022 08:50:13 AM"
         },
         "Grundfos 26-99FC 115V 9H": {
             "part_number": "26-99FC",
@@ -1987,21 +1993,23 @@
             "part_number": "114BV",
             "unit_quantity": 2,
             "current_quantity": 41,
-            "price": 11.78,
+            "price": 20.5,
             "use_exchange_rate": false,
             "priority": 0,
             "notes": "Vendor: Greenline\nDescription: 204-694-0332",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 41\nto: 41\nItsme\nAugust 03 Wednesday 2022 08:45:19 AM"
+            "latest_change_current_quantity": "Latest Change:\nfrom: 41\nto: 41\nItsme\nAugust 03 Wednesday 2022 08:45:19 AM",
+            "latest_change_price": "Latest Change:\nfrom: 20.0\nto: 20.5\nItsme\nAugust 03 Wednesday 2022 08:49:45 AM"
         },
         "Barb Hose Adapter fitting": {
             "part_number": "BIA-020",
             "unit_quantity": 2,
             "current_quantity": 52,
-            "price": 3.32,
+            "price": 3.0,
             "use_exchange_rate": false,
             "priority": 0,
             "notes": "Vendor: GreenLine\nDescription: 204-694-0332",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 52\nto: 52\nItsme\nAugust 03 Wednesday 2022 08:45:57 AM"
+            "latest_change_current_quantity": "Latest Change:\nfrom: 52\nto: 52\nItsme\nAugust 03 Wednesday 2022 08:45:57 AM",
+            "latest_change_price": "Latest Change:\nfrom: 3.3\nto: 3.0\nItsme\nAugust 03 Wednesday 2022 08:50:27 AM"
         },
         "Shaft Collar 7\/16 with Set Screw": {
             "part_number": "BRA0420",
@@ -2124,11 +2132,12 @@
             "part_number": "114CN",
             "unit_quantity": 3.0,
             "current_quantity": 63.0,
-            "price": 0.7,
+            "price": 1.21,
             "use_exchange_rate": false,
             "priority": 0,
             "notes": "Vendor: Greenline\nDescription: 204-694-0332",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 63.0\nto: 63.0\nItsme\nAugust 03 Wednesday 2022 08:46:28 AM"
+            "latest_change_current_quantity": "Latest Change:\nfrom: 63.0\nto: 63.0\nItsme\nAugust 03 Wednesday 2022 08:46:28 AM",
+            "latest_change_price": "Latest Change:\nfrom: 1.2\nto: 1.21\nItsme\nAugust 03 Wednesday 2022 08:50:13 AM"
         },
         "WeatherStripping NDA- .5\" x 3\/16\" x 50'": {
             "part_number": "WSNDA",
@@ -3323,7 +3332,7 @@
             "part_number": "BIA-020",
             "unit_quantity": 2,
             "current_quantity": 52,
-            "price": 3.32,
+            "price": 3.0,
             "use_exchange_rate": false,
             "priority": 0,
             "notes": "Vendor: GreenLine\nDescription: 204-694-0332",
@@ -3331,7 +3340,7 @@
             "latest_change_part_number": "Item added\nItsme\nAugust 03 Wednesday 2022 08-47-07 AM",
             "latest_change_unit_quantity": "Item added\nItsme\nAugust 03 Wednesday 2022 08-47-07 AM",
             "latest_change_current_quantity": "Item added\nItsme\nAugust 03 Wednesday 2022 08-47-07 AM",
-            "latest_change_price": "Item added\nItsme\nAugust 03 Wednesday 2022 08-47-07 AM",
+            "latest_change_price": "Latest Change:\nfrom: 3.3\nto: 3.0\nItsme\nAugust 03 Wednesday 2022 08:50:27 AM",
             "latest_change_use_exchange_price": "Item added\nItsme\nAugust 03 Wednesday 2022 08-47-07 AM",
             "latest_change_priority": "Item added\nItsme\nAugust 03 Wednesday 2022 08-47-07 AM",
             "latest_change_notes": "Item added\nItsme\nAugust 03 Wednesday 2022 08-47-07 AM"
@@ -3340,7 +3349,7 @@
             "part_number": "114CN",
             "unit_quantity": 3,
             "current_quantity": 63,
-            "price": 0.7,
+            "price": 1.21,
             "use_exchange_rate": false,
             "priority": 0,
             "notes": "Vendor: Greenline\nDescription: 204-694-0332",
@@ -3348,7 +3357,7 @@
             "latest_change_part_number": "Item added\nItsme\nAugust 03 Wednesday 2022 08-48-01 AM",
             "latest_change_unit_quantity": "Item added\nItsme\nAugust 03 Wednesday 2022 08-48-01 AM",
             "latest_change_current_quantity": "Item added\nItsme\nAugust 03 Wednesday 2022 08-48-01 AM",
-            "latest_change_price": "Item added\nItsme\nAugust 03 Wednesday 2022 08-48-01 AM",
+            "latest_change_price": "Latest Change:\nfrom: 1.2\nto: 1.21\nItsme\nAugust 03 Wednesday 2022 08:50:13 AM",
             "latest_change_use_exchange_price": "Item added\nItsme\nAugust 03 Wednesday 2022 08-48-01 AM",
             "latest_change_priority": "Item added\nItsme\nAugust 03 Wednesday 2022 08-48-01 AM",
             "latest_change_notes": "Item added\nItsme\nAugust 03 Wednesday 2022 08-48-01 AM"
@@ -3357,7 +3366,7 @@
             "part_number": "114BV",
             "unit_quantity": 2,
             "current_quantity": 41,
-            "price": 11.78,
+            "price": 20.5,
             "use_exchange_rate": false,
             "priority": 0,
             "notes": "Vendor: Greenline\nDescription: 204-694-0332",
@@ -3365,7 +3374,7 @@
             "latest_change_part_number": "Item added\nItsme\nAugust 03 Wednesday 2022 08-49-20 AM",
             "latest_change_unit_quantity": "Item added\nItsme\nAugust 03 Wednesday 2022 08-49-20 AM",
             "latest_change_current_quantity": "Item added\nItsme\nAugust 03 Wednesday 2022 08-49-20 AM",
-            "latest_change_price": "Item added\nItsme\nAugust 03 Wednesday 2022 08-49-20 AM",
+            "latest_change_price": "Latest Change:\nfrom: 20.0\nto: 20.5\nItsme\nAugust 03 Wednesday 2022 08:49:45 AM",
             "latest_change_use_exchange_price": "Item added\nItsme\nAugust 03 Wednesday 2022 08-49-20 AM",
             "latest_change_priority": "Item added\nItsme\nAugust 03 Wednesday 2022 08-49-20 AM",
             "latest_change_notes": "Item added\nItsme\nAugust 03 Wednesday 2022 08-49-20 AM"
