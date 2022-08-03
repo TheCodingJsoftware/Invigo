@@ -3080,7 +3080,7 @@
         "383 Blower Fan\/ 1523 blower Fan": {
             "part_number": "",
             "unit_quantity": 1,
-            "current_quantity": 0,
+            "current_quantity": 22,
             "price": 0.0,
             "use_exchange_rate": false,
             "priority": 0,
@@ -3088,7 +3088,7 @@
             "latest_change_name": "Latest Change:\nfrom: \"383 Blower Fan\/ 1523 blower Fa\"\nto: \"383 Blower Fan\/ 1523 blower Fan\"\nItsme\nAugust 01 Monday 2022 03:43:18 PM",
             "latest_change_part_number": "Item added\nItsme\nAugust 01 Monday 2022 09-30-35 AM",
             "latest_change_unit_quantity": "Item added\nItsme\nAugust 01 Monday 2022 09-30-35 AM",
-            "latest_change_current_quantity": "Item added\nItsme\nAugust 01 Monday 2022 09-30-35 AM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 22\nto: 22\nItsme\nAugust 03 Wednesday 2022 08:44:00 AM",
             "latest_change_price": "Item added\nItsme\nAugust 01 Monday 2022 09-30-35 AM",
             "latest_change_use_exchange_price": "Item added\nItsme\nAugust 01 Monday 2022 09-30-35 AM",
             "latest_change_priority": "Item added\nItsme\nAugust 01 Monday 2022 09-30-35 AM",
@@ -3133,7 +3133,7 @@
         "D500 Blower Fan": {
             "part_number": "",
             "unit_quantity": 1,
-            "current_quantity": 19,
+            "current_quantity": 41,
             "price": 0.0,
             "use_exchange_rate": false,
             "priority": 0,
@@ -3141,7 +3141,7 @@
             "latest_change_name": "Item added\nItsme\nAugust 01 Monday 2022 09-29-30 AM",
             "latest_change_part_number": "Item added\nItsme\nAugust 01 Monday 2022 09-29-30 AM",
             "latest_change_unit_quantity": "Item added\nItsme\nAugust 01 Monday 2022 09-29-30 AM",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 19\nto: 19\nItsme\nAugust 01 Monday 2022 11:20:09 AM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 41\nto: 41\nItsme\nAugust 03 Wednesday 2022 08:44:00 AM",
             "latest_change_price": "Item added\nItsme\nAugust 01 Monday 2022 09-29-30 AM",
             "latest_change_use_exchange_price": "Item added\nItsme\nAugust 01 Monday 2022 09-29-30 AM",
             "latest_change_priority": "Item added\nItsme\nAugust 01 Monday 2022 09-29-30 AM",
@@ -3318,25 +3318,6 @@
             "latest_change_use_exchange_price": "Item added\nItsme\nJuly 29 Friday 2022 04-09-28 PM",
             "latest_change_priority": "Item added\nItsme\nJuly 29 Friday 2022 04-09-28 PM",
             "latest_change_notes": "Item added\nItsme\nJuly 29 Friday 2022 04-09-28 PM"
-        }
-    },
-    "Miscellanious Items": {
-        "LCB 300 Brick Set": {
-            "part_number": "LCB300BS",
-            "unit_quantity": 1,
-            "current_quantity": 54,
-            "price": 1672.65,
-            "use_exchange_rate": false,
-            "priority": 0,
-            "notes": "Vendor: \nDescription: ",
-            "latest_change_name": "Item added\nItsme\nAugust 02 Tuesday 2022 04-04-52 PM",
-            "latest_change_part_number": "Item added\nItsme\nAugust 02 Tuesday 2022 04-04-52 PM",
-            "latest_change_unit_quantity": "Item added\nItsme\nAugust 02 Tuesday 2022 04-04-52 PM",
-            "latest_change_current_quantity": "Item added\nItsme\nAugust 02 Tuesday 2022 04-04-52 PM",
-            "latest_change_price": "Item added\nItsme\nAugust 02 Tuesday 2022 04-04-52 PM",
-            "latest_change_use_exchange_price": "Item added\nItsme\nAugust 02 Tuesday 2022 04-04-52 PM",
-            "latest_change_priority": "Item added\nItsme\nAugust 02 Tuesday 2022 04-04-52 PM",
-            "latest_change_notes": "Item added\nItsme\nAugust 02 Tuesday 2022 04-04-52 PM"
         }
     }
 }
