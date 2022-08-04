@@ -337,12 +337,12 @@
         "10mm Isoplan  Fan Mount insulation": {
             "part_number": "10IFMI",
             "unit_quantity": 1,
-            "current_quantity": 60,
+            "current_quantity": 6,
             "price": 5.0,
             "use_exchange_rate": false,
             "priority": 0,
             "notes": "Vendor: Piney MFG\nDescription: ",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 60\nto: 60\nItsme\nJuly 21 Thursday 2022 08:55:16 AM"
+            "latest_change_current_quantity": "Latest Change:\nfrom: 7\nto: 6\nItsme\nAugust 03 Wednesday 2022 12:35:12 PM"
         },
         "5\/16x2 1\/2 Carr BLT": {
             "part_number": "516x212",
@@ -1100,7 +1100,7 @@
             "use_exchange_rate": false,
             "priority": 0,
             "notes": "Vendor: Piney MFG\nDescription: ",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 6\nto: 6\nItsme\nJuly 20 Wednesday 2022 07:39:44 PM"
+            "latest_change_current_quantity": "Latest Change:\nfrom: 7\nto: 6\nItsme\nAugust 03 Wednesday 2022 12:35:12 PM"
         },
         "1-1\/4 Half Coupling": {
             "part_number": "G0008MC-125",
@@ -2038,7 +2038,7 @@
             "use_exchange_rate": false,
             "priority": 0,
             "notes": "Vendor: Piney MFG\nDescription: ",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 6\nto: 6\nItsme\nJuly 20 Wednesday 2022 07:39:46 PM"
+            "latest_change_current_quantity": "Latest Change:\nfrom: 6\nto: 6\nItsme\nAugust 03 Wednesday 2022 12:35:12 PM"
         },
         "1-1\/4 Half Coupling": {
             "part_number": "G0008MC-125",
