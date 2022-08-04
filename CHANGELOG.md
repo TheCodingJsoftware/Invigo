@@ -1,3 +1,7 @@
+<h1>v1.4.0</h1>
+&bull; Fixed bug with Item Controls menu.<br>
+&bull; View removed quantities from the new history view menu.<br>
+
 <h1>v1.3.1</h1>
 &bull; Fixed bug with autofill button.<br>
 &bull; Fixed bug with Item Controls menu.<br>

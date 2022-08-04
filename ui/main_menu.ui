@@ -7,8 +7,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>840</width>
-    <height>640</height>
+    <width>1133</width>
+    <height>652</height>
    </rect>
   </property>
   <property name="acceptDrops">
@@ -31,19 +31,19 @@
        <enum>QFrame::Plain</enum>
       </property>
       <property name="currentIndex">
-       <number>0</number>
+       <number>2</number>
       </property>
       <widget class="QWidget" name="inventory_page">
        <property name="geometry">
         <rect>
          <x>0</x>
          <y>0</y>
-         <width>477</width>
-         <height>519</height>
+         <width>770</width>
+         <height>504</height>
         </rect>
        </property>
        <attribute name="label">
-        <string>Inventory</string>
+        <string>Edit Inventory</string>
        </attribute>
        <attribute name="toolTip">
         <string>Manage all items</string>
@@ -54,17 +54,17 @@
         </item>
        </layout>
       </widget>
-      <widget class="QWidget" name="page_2">
+      <widget class="QWidget" name="view_page">
        <property name="geometry">
         <rect>
          <x>0</x>
          <y>0</y>
-         <width>477</width>
-         <height>519</height>
+         <width>770</width>
+         <height>504</height>
         </rect>
        </property>
        <attribute name="label">
-        <string>View</string>
+        <string>View Inventory (Read Only)</string>
        </attribute>
        <attribute name="toolTip">
         <string>View all inventory items as read only.</string>
@@ -74,6 +74,95 @@
          <layout class="QVBoxLayout" name="verticalLayout_4">
           <item>
            <layout class="QGridLayout" name="search_layout"/>
+          </item>
+         </layout>
+        </item>
+       </layout>
+      </widget>
+      <widget class="QWidget" name="history_page">
+       <property name="geometry">
+        <rect>
+         <x>0</x>
+         <y>0</y>
+         <width>770</width>
+         <height>504</height>
+        </rect>
+       </property>
+       <attribute name="label">
+        <string>View Removed Quantities History (Read Only)</string>
+       </attribute>
+       <layout class="QHBoxLayout" name="horizontalLayout_7">
+        <item>
+         <layout class="QVBoxLayout" name="verticalLayout_5">
+          <item>
+           <layout class="QHBoxLayout" name="horizontalLayout_11">
+            <item>
+             <widget class="QGroupBox" name="groupBox_2">
+              <property name="title">
+               <string>Category History</string>
+              </property>
+              <layout class="QHBoxLayout" name="horizontalLayout_12">
+               <item>
+                <widget class="QTableWidget" name="categoryHistoryTable">
+                 <property name="enabled">
+                  <bool>false</bool>
+                 </property>
+                 <property name="rowCount">
+                  <number>0</number>
+                 </property>
+                 <property name="columnCount">
+                  <number>2</number>
+                 </property>
+                 <attribute name="horizontalHeaderDefaultSectionSize">
+                  <number>500</number>
+                 </attribute>
+                 <attribute name="horizontalHeaderMinimumSectionSize">
+                  <number>42</number>
+                 </attribute>
+                 <attribute name="verticalHeaderDefaultSectionSize">
+                  <number>30</number>
+                 </attribute>
+                 <attribute name="verticalHeaderMinimumSectionSize">
+                  <number>28</number>
+                 </attribute>
+                 <column/>
+                 <column/>
+                </widget>
+               </item>
+              </layout>
+             </widget>
+            </item>
+            <item>
+             <widget class="QGroupBox" name="groupBox_3">
+              <property name="title">
+               <string>Single Item History</string>
+              </property>
+              <layout class="QHBoxLayout" name="horizontalLayout_13">
+               <item>
+                <widget class="QTableWidget" name="singleItemHistoryTable">
+                 <property name="enabled">
+                  <bool>false</bool>
+                 </property>
+                 <property name="rowCount">
+                  <number>0</number>
+                 </property>
+                 <property name="columnCount">
+                  <number>2</number>
+                 </property>
+                 <attribute name="horizontalHeaderDefaultSectionSize">
+                  <number>500</number>
+                 </attribute>
+                 <attribute name="horizontalHeaderMinimumSectionSize">
+                  <number>42</number>
+                 </attribute>
+                 <column/>
+                 <column/>
+                </widget>
+               </item>
+              </layout>
+             </widget>
+            </item>
+           </layout>
           </item>
          </layout>
         </item>
@@ -98,7 +187,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>840</width>
+     <width>1133</width>
      <height>21</height>
     </rect>
    </property>
@@ -152,6 +241,8 @@
     <addaction name="actionLoad_Backup"/>
     <addaction name="separator"/>
     <addaction name="actionPrint_Inventory"/>
+    <addaction name="separator"/>
+    <addaction name="actionOpen_Item_History"/>
     <addaction name="separator"/>
     <addaction name="actionExit"/>
    </widget>
@@ -770,6 +861,17 @@ QPushButton#pushButton_create_new:disabled{
    </property>
    <property name="statusTip">
     <string>Clone an existing Category.</string>
+   </property>
+  </action>
+  <action name="actionOpen_Item_History">
+   <property name="text">
+    <string>Open Inventory History</string>
+   </property>
+   <property name="toolTip">
+    <string>Open removed quantites history excel file.</string>
+   </property>
+   <property name="statusTip">
+    <string>Open removed quantites history excel file.</string>
    </property>
   </action>
  </widget>

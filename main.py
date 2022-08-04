@@ -4,8 +4,8 @@ __copyright__ = "Copyright 2022, TheCodingJ's"
 __credits__: "list[str]" = ["Jared Gross"]
 __license__ = "MIT"
 __name__ = "Inventory Manager"
-__version__ = "v1.3.1"
-__updated__ = "2022-08-01 22:28:58"
+__version__ = "v1.4.0"
+__updated__ = "2022-08-03 23:06:28"
 __maintainer__ = "Jared Gross"
 __email__ = "jared@pinelandfarms.ca"
 __status__ = "Production"
@@ -40,6 +40,7 @@ from PyQt5.QtWidgets import (
     QGridLayout,
     QGroupBox,
     QHBoxLayout,
+    QHeaderView,
     QLabel,
     QLineEdit,
     QMainWindow,
@@ -49,6 +50,7 @@ from PyQt5.QtWidgets import (
     QScrollArea,
     QSpinBox,
     QStyle,
+    QTableWidgetItem,
     QTabWidget,
     QTextEdit,
     QToolTip,
@@ -96,6 +98,7 @@ from utils.dialog_icons import Icons
 from utils.excel_file import ExcelFile
 from utils.extract import extract
 from utils.file_changes import FileChanges
+from utils.history_file import HistoryFile
 from utils.json_file import JsonFile
 from utils.json_object import JsonObject
 from utils.po import check_po_directories, get_all_po
@@ -486,6 +489,9 @@ class MainWindow(QMainWindow):
             QIcon(f"ui/BreezeStyleSheets/dist/pyqt6/{self.theme}/backup.png")
         )
         self.actionLoad_Backup.triggered.connect(partial(self.load_backup, None))
+
+        self.actionOpen_Item_History.triggered.connect(self.open_item_history)
+
         self.actionExit.triggered.connect(self.close)
         self.actionExit.setIcon(
             QIcon(f"ui/BreezeStyleSheets/dist/pyqt6/{self.theme}/tab_close.png")
@@ -525,11 +531,13 @@ class MainWindow(QMainWindow):
 
         If the toolbox is not on the first tab, hide the dock widget
         """
-        if self.toolBox.currentIndex() != 0:
+        if self.toolBox.currentIndex() == 1:
             self.load_tree_view(inventory)
-        else:
+        elif self.toolBox.currentIndex() == 0:
             self.dockWidget_create_add_remove.setVisible(self.tab_widget.tabText(0) != "")
             self.status_button.setHidden(False)
+        elif self.toolBox.currentIndex() == 2:
+            self.load_history_view()
         settings_file.add_item("last_toolbox_tab", self.toolBox.currentIndex())
 
     def load_categories(self) -> None:
@@ -1727,7 +1735,14 @@ class MainWindow(QMainWindow):
             )
             self.spinBox_quantity.setValue(0)
         else:
-            self.pushButton_remove_quantity.setEnabled(False)
+
+            try:
+                _ = self.listWidget_itemnames.currentItem().text()
+                self.pushButton_remove_quantity.setEnabled(True)
+                self.pushButton_add_quantity.setEnabled(True)
+            except AttributeError:
+                self.pushButton_remove_quantity.setEnabled(False)
+                self.pushButton_add_quantity.setEnabled(False)
             # self.listWidget_itemnames.clearSelection()
             # self.listWidget_item_changed()
             # self.listWidget_itemnames.setEnabled(True)
@@ -1738,12 +1753,23 @@ class MainWindow(QMainWindow):
             self.pushButton_add_quantity.setText("Add Quantity")
             self.pushButton_remove_quantity.setText("Remove Quantity")
             settings_file.add_item(item_name="change_quantities_by", value="Item")
-            self.pushButton_add_quantity.setEnabled(False)
 
     def remove_quantity_from_category(self) -> None:
         """
         It removes a quantity of items from a category
         """
+        are_you_sure_dialog = self.show_message_dialog(
+            title="Are you sure?",
+            message=f'Removing quantities from the whole selected category.\n\nAre you sure you want to remove a multiple of {self.spinBox_quantity.value()} quantities from each item in "{self.category}"?',
+            dialog_buttons=DialogButtons.no_yes_cancel,
+        )
+        if are_you_sure_dialog in [DialogButtons.no, DialogButtons.cancel]:
+            return
+        history_file = HistoryFile()
+        history_file.add_new_to_category(
+            date=datetime.now().strftime("%B %d %A %Y %I:%M:%S %p"),
+            description=f"Removed a multiple of {self.spinBox_quantity.value()} quantities from each item in {self.category}",
+        )
         self.radioButton_category.setEnabled(False)
         self.radioButton_single.setEnabled(False)
         self.pushButton_add_quantity.setEnabled(False)
@@ -1833,6 +1859,13 @@ class MainWindow(QMainWindow):
           item_name (str): str = the name of the item
           old_quantity (int): int = the quantity of the item before the change
         """
+        are_you_sure_dialog = self.show_message_dialog(
+            title="Are you sure?",
+            message=f'Adding quantities to a single item.\n\nAre you sure you want to add {self.spinBox_quantity.value()} quantities to "{item_name}"?',
+            dialog_buttons=DialogButtons.no_yes_cancel,
+        )
+        if are_you_sure_dialog in [DialogButtons.no, DialogButtons.cancel]:
+            return
         self.highlight_color = "#33b833"
         data = inventory.get_data()
         part_number: str = data[self.category][item_name]["part_number"]
@@ -1889,6 +1922,20 @@ class MainWindow(QMainWindow):
           item_name (str): str = the name of the item
           old_quantity (int): int = the quantity of the item before the change
         """
+        are_you_sure_dialog = self.show_message_dialog(
+            title="Are you sure?",
+            message=f'Removing quantities from a single item.\n\nAre you sure you want to remove {self.spinBox_quantity.value()} quantities to "{item_name}"?',
+            dialog_buttons=DialogButtons.no_yes_cancel,
+        )
+        if are_you_sure_dialog in [DialogButtons.no, DialogButtons.cancel]:
+            return
+
+        history_file = HistoryFile()
+        history_file.add_new_to_single_item(
+            date=datetime.now().strftime("%B %d %A %Y %I:%M:%S %p"),
+            description=f'Removed {self.spinBox_quantity.value()} quantities from "{item_name}"',
+        )
+
         self.highlight_color = "#BE2525"
         data = inventory.get_data()
         part_number: str = data[self.category][item_name]["part_number"]
@@ -2398,6 +2445,43 @@ class MainWindow(QMainWindow):
             elif response == DialogButtons.cancel:
                 return
 
+    def load_history_view(self) -> None:
+        """
+        It loads the history view of the application.
+        """
+        self.dockWidget_create_add_remove.setVisible(False)
+        self.status_button.setHidden(True)
+        self.categoryHistoryTable.clear()
+        self.categoryHistoryTable.setHorizontalHeaderLabels(
+            ("Date;Description;").split(";")
+        )
+        self.categoryHistoryTable.setColumnWidth(0, 270)
+        self.categoryHistoryTable.setColumnWidth(1, 600)
+        history_file = HistoryFile()
+        for i, date, description in zip(
+            range(len(history_file.get_data_from_category()["Date"])),
+            history_file.get_data_from_category()["Date"],
+            history_file.get_data_from_category()["Description"],
+        ):
+            self.categoryHistoryTable.insertRow(self.categoryHistoryTable.rowCount())
+            self.categoryHistoryTable.setItem(i, 0, QTableWidgetItem(date))
+            self.categoryHistoryTable.setItem(i, 1, QTableWidgetItem(description))
+
+        self.singleItemHistoryTable.clear()
+        self.singleItemHistoryTable.setHorizontalHeaderLabels(
+            ("Date;Description;").split(";")
+        )
+        self.singleItemHistoryTable.setColumnWidth(0, 270)
+        self.singleItemHistoryTable.setColumnWidth(1, 600)
+        for i, date, description in zip(
+            range(len(history_file.get_data_from_single_item()["Date"])),
+            history_file.get_data_from_single_item()["Date"],
+            history_file.get_data_from_single_item()["Description"],
+        ):
+            self.singleItemHistoryTable.insertRow(self.singleItemHistoryTable.rowCount())
+            self.singleItemHistoryTable.setItem(i, 0, QTableWidgetItem(date))
+            self.singleItemHistoryTable.setItem(i, 1, QTableWidgetItem(description))
+
     def open_po(self, po_name: str = None) -> None:
         """
         It opens a dialog box with a list of items
@@ -2763,6 +2847,11 @@ class MainWindow(QMainWindow):
         This function opens the website in the default browser.
         """
         webbrowser.open("https://piney-manufacturing-inventory.herokuapp.com", new=0)
+
+    def open_item_history(self) -> None:
+        os.startfile(
+            f"{os.path.dirname(os.path.realpath(sys.argv[0]))}/data/inventory history.xlsx"
+        )
 
     def changes_response(self, data) -> None:
         """
