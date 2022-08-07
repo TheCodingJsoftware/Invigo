@@ -5,6 +5,7 @@ import zipfile
 from datetime import datetime
 from time import sleep
 
+import ujson as json
 from git import Repo
 
 from utils.colors import Colors
@@ -102,11 +103,11 @@ class Server:
                     # sel
                     with open(filename, "rb") as f:
                         while True:
-                            bytes_read = f.read(self.BUFFER_SIZE)
-                            if not bytes_read:
+                            if bytes_read := f.read(self.BUFFER_SIZE):
+                                client_socket.sendall(bytes_read)
+                            else:
                                 # file transmitting is done
                                 break
-                            client_socket.sendall(bytes_read)
                     print(
                         f"{Colors.BOLD}{datetime.now()}{Colors.ENDC}\t{Colors.OKGREEN}[+] File successfuly sent{Colors.ENDC}"
                     )
@@ -122,36 +123,27 @@ class Server:
                     # filesize = int(filesize)
                     with open(filename, "wb") as f:
                         while True:
-                            # read 1024 bytes from the socket (receive)
-                            bytes_read = client_socket.recv(self.BUFFER_SIZE)
-                            if not bytes_read:
+                            if bytes_read := client_socket.recv(self.BUFFER_SIZE):
+                                f.write(bytes_read)
+                            else:
                                 # file transmitting is done
                                 break
-                            f.write(bytes_read)
                     logging.info("sent response")
                     print(
                         f"{Colors.BOLD}{datetime.now()}{Colors.ENDC}\t{Colors.OKGREEN}[+] Succesfully received file{Colors.ENDC}"
                     )
                     logging.info("Succesfully received file")
                     self.__upload_inventory(filename)
-            except Exception as e:
-                logging.exception(e)
-                print(
-                    f"{Colors.BOLD}{datetime.now()}{Colors.ENDC} - {Colors.ERROR}[X] ERROR: {e} {Colors.ENDC}"
-                )
-            try:
                 client_socket.close()
                 print(
                     f"{Colors.BOLD}{datetime.now()}{Colors.ENDC} - {Colors.HEADER}[+] Connection closed succesfully with: {str(client_address)}{Colors.ENDC}"
                 )
                 logging.info(f"Connection closed succesfully with: {str(client_address)}")
             except Exception as e:
-                logging.exception(str(e))
+                logging.exception(e)
                 print(
-                    f"{Colors.BOLD}{datetime.now()}{Colors.ENDC} - {Colors.ERROR}[+] Connection forcefully closed with: {str(client_address)}{Colors.ENDC}"
+                    f"{Colors.BOLD}{datetime.now()}{Colors.ENDC} - {Colors.ERROR}[X] ERROR: {e} {Colors.ENDC}"
                 )
-                logging.info(f"Connection forcefully closed with: {str(client_address)}")
-            print()
 
     def check_folders(self, folders: list) -> None:
         """
@@ -196,6 +188,17 @@ class Server:
         """
         It adds the file to the git index, commits it, and pushes it to the remote origin
         """
+        try:
+            with open(f"server/{file_name}", "r") as f:
+                data = json.load(f)
+        except Exception:
+            print(
+                f"{Colors.ENDC}{Colors.BOLD}{datetime.now()}{Colors.ENDC} - {Colors.ERROR}Error loading file, improper JSON format, aborting upload to GitHub.{Colors.ENDC}"
+            )
+            logging.info(
+                "Error loading file, improper JSON format, aborting upload to GitHub."
+            )
+            return
         repo = Repo(
             "C:/Users/user/Desktop/Inventory-Manager"
         )  # if repo is CWD just do '.'
