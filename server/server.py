@@ -191,12 +191,12 @@ class Server:
         try:
             with open(f"server/{file_name}", "r") as f:
                 data = json.load(f)
-        except Exception:
+        except Exception as e:
             print(
-                f"{Colors.ENDC}{Colors.BOLD}{datetime.now()}{Colors.ENDC} - {Colors.ERROR}Error loading file, improper JSON format, aborting upload to GitHub.{Colors.ENDC}"
+                f"{Colors.ENDC}{Colors.BOLD}{datetime.now()}{Colors.ENDC} - {Colors.ERROR}Error loading file, improper JSON format, aborting upload to GitHub. {e}{Colors.ENDC}"
             )
             logging.info(
-                "Error loading file, improper JSON format, aborting upload to GitHub."
+                f"Error loading file, improper JSON format, aborting upload to GitHub. {e}"
             )
             return
         repo = Repo(
