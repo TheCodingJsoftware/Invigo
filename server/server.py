@@ -190,7 +190,9 @@ class Server:
         It adds the file to the git index, commits it, and pushes it to the remote origin
         """
         try:
-            with open(f"server/{file_name}", "r") as f:
+            with open(
+                f"C:/Users/user/Desktop/Inventory-Manager/server/{file_name}", "r"
+            ) as f:
                 data = json.load(f)
         except Exception as e:
             print(
