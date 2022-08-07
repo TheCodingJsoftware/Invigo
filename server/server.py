@@ -103,11 +103,11 @@ class Server:
                     # sel
                     with open(filename, "rb") as f:
                         while True:
-                            if bytes_read := f.read(self.BUFFER_SIZE):
-                                client_socket.sendall(bytes_read)
-                            else:
+                            bytes_read = f.read(self.BUFFER_SIZE)
+                            if not bytes_read:
                                 # file transmitting is done
                                 break
+                            client_socket.sendall(bytes_read)
                     print(
                         f"{Colors.BOLD}{datetime.now()}{Colors.ENDC}\t{Colors.OKGREEN}[+] File successfuly sent{Colors.ENDC}"
                     )
@@ -123,11 +123,12 @@ class Server:
                     # filesize = int(filesize)
                     with open(filename, "wb") as f:
                         while True:
-                            if bytes_read := client_socket.recv(self.BUFFER_SIZE):
-                                f.write(bytes_read)
-                            else:
+                            # read 1024 bytes from the socket (receive)
+                            bytes_read = client_socket.recv(self.BUFFER_SIZE)
+                            if not bytes_read:
                                 # file transmitting is done
                                 break
+                            f.write(bytes_read)
                     logging.info("sent response")
                     print(
                         f"{Colors.BOLD}{datetime.now()}{Colors.ENDC}\t{Colors.OKGREEN}[+] Succesfully received file{Colors.ENDC}"
@@ -193,11 +194,9 @@ class Server:
                 data = json.load(f)
         except Exception as e:
             print(
-                f"{Colors.ENDC}{Colors.BOLD}{datetime.now()}{Colors.ENDC} - {Colors.ERROR}Error loading file, improper JSON format, aborting upload to GitHub. {e}{Colors.ENDC}"
+                f"{Colors.ENDC}{Colors.BOLD}{datetime.now()}{Colors.ENDC} - {Colors.ERROR}Error loading file, improper JSON format, aborting. {e}{Colors.ENDC}"
             )
-            logging.info(
-                f"Error loading file, improper JSON format, aborting upload to GitHub. {e}"
-            )
+            logging.info("Error loading file, improper JSON format, aborting. {e}")
             return
         repo = Repo(
             "C:/Users/user/Desktop/Inventory-Manager"
