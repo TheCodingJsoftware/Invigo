@@ -4,8 +4,8 @@ __copyright__ = "Copyright 2022, TheCodingJ's"
 __credits__: "list[str]" = ["Jared Gross"]
 __license__ = "MIT"
 __name__ = "Inventory Manager"
-__version__ = "v1.4.0"
-__updated__ = "2022-08-03 23:06:28"
+__version__ = "v1.4.1"
+__updated__ = "2022-08-07 22:50:52"
 __maintainer__ = "Jared Gross"
 __email__ = "jared@pinelandfarms.ca"
 __status__ = "Production"
@@ -70,6 +70,7 @@ from ui.add_item_dialog import AddItemDialog
 from ui.custom_widgets import (
     ClickableLabel,
     CostLineEdit,
+    CurrentQuantitySpinBox,
     DeletePushButton,
     DragableLayout,
     ExchangeRateComboBox,
@@ -690,7 +691,6 @@ class MainWindow(QMainWindow):
             interval=0, timeout=partial(self.load_item, tab, tab_index, category_data)
         )
         self._timer.start()
-        # QApplication.setOverrideCursor(Qt.BusyCursor)
 
     def load_item(self, tab: QVBoxLayout, tab_index: int, category_data: dict) -> None:
         """
@@ -853,7 +853,7 @@ class MainWindow(QMainWindow):
             col_index += 1
 
             # ITEM QUANTITY
-            spin_current_quantity = HumbleSpinBox(self)
+            spin_current_quantity = CurrentQuantitySpinBox(self)
             spin_current_quantity.setToolTip(latest_change_current_quantity)
             spin_current_quantity.setValue(current_quantity)
             if current_quantity <= 10:
@@ -1000,7 +1000,6 @@ class MainWindow(QMainWindow):
                 self.group_layouts[group].addLayout(layout)
             except KeyError:
                 tab.addLayout(layout)
-            # QApplication.restoreOverrideCursor()
 
     def update_list_widget(self) -> None:
         """
@@ -1736,14 +1735,14 @@ class MainWindow(QMainWindow):
             self.spinBox_quantity.setValue(0)
         else:
 
-            try:
-                _ = self.listWidget_itemnames.currentItem().text()
-                self.pushButton_remove_quantity.setEnabled(True)
-                self.pushButton_add_quantity.setEnabled(True)
-            except AttributeError:
-                self.pushButton_remove_quantity.setEnabled(False)
-                self.pushButton_add_quantity.setEnabled(False)
-            # self.listWidget_itemnames.clearSelection()
+            # try:
+            # _ = self.listWidget_itemnames.currentItem().text()
+            # self.pushButton_remove_quantity.setEnabled(True)
+            # self.pushButton_add_quantity.setEnabled(True)
+            # except AttributeError:
+            self.pushButton_remove_quantity.setEnabled(False)
+            self.pushButton_add_quantity.setEnabled(False)
+            self.listWidget_itemnames.clearSelection()
             # self.listWidget_item_changed()
             # self.listWidget_itemnames.setEnabled(True)
             # self.listWidget_itemnames.setStyleSheet(
@@ -1770,6 +1769,18 @@ class MainWindow(QMainWindow):
             date=datetime.now().strftime("%B %d %A %Y %I:%M:%S %p"),
             description=f"Removed a multiple of {self.spinBox_quantity.value()} quantities from each item in {self.category}",
         )
+
+        if self.spinBox_quantity.value() > 1:
+            history_file.add_new_to_category(
+                date=datetime.now().strftime("%B %d %A %Y %I:%M:%S %p"),
+                description=f"Removed a multiple of {self.spinBox_quantity.value()} quantities from each item in {self.category}",
+            )
+        elif self.spinBox_quantity.value() == 1:
+            history_file.add_new_to_category(
+                date=datetime.now().strftime("%B %d %A %Y %I:%M:%S %p"),
+                description=f"Removed a multiple of {self.spinBox_quantity.value()} quantity from each item in {self.category}",
+            )
+
         self.radioButton_category.setEnabled(False)
         self.radioButton_single.setEnabled(False)
         self.pushButton_add_quantity.setEnabled(False)
@@ -1809,8 +1820,6 @@ class MainWindow(QMainWindow):
                 % {"start": str(__start), "middle": str(__middle), "end": str(__end)}
             )
         else:
-            self.radioButton_category.setEnabled(True)
-            self.radioButton_single.setEnabled(True)
             self.tab_widget.setEnabled(True)
             self.listWidget_itemnames.setEnabled(True)
             self.pushButton_create_new.setEnabled(True)
@@ -1845,11 +1854,23 @@ class MainWindow(QMainWindow):
                 spin_current_quantity = self.inventory_prices_objects[item][
                     "current_quantity"
                 ]
-                self.inventory_prices_objects[item]["current_quantity"].setStyleSheet(
-                    f"{'color: red; border-color: red;' if spin_current_quantity.value() <= 0 else ''}"
-                )
+                if spin_current_quantity.value() <= 10:
+                    quantity_color = "red"
+                elif spin_current_quantity.value() <= 20:
+                    quantity_color = "yellow"
+
+                if spin_current_quantity.value() > 20:
+                    self.inventory_prices_objects[item]["current_quantity"].setStyleSheet(
+                        ""
+                    )
+                else:
+                    self.inventory_prices_objects[item]["current_quantity"].setStyleSheet(
+                        f"color: {quantity_color}; border-color: {quantity_color};"
+                    )
             self.pushButton_add_quantity.setEnabled(False)
             self.pushButton_remove_quantity.setEnabled(True)
+            self.radioButton_category.setEnabled(True)
+            self.radioButton_single.setEnabled(True)
 
     def add_quantity(self, item_name: str, old_quantity: int) -> None:
         """
@@ -1931,10 +1952,16 @@ class MainWindow(QMainWindow):
             return
 
         history_file = HistoryFile()
-        history_file.add_new_to_single_item(
-            date=datetime.now().strftime("%B %d %A %Y %I:%M:%S %p"),
-            description=f'Removed {self.spinBox_quantity.value()} quantities from "{item_name}"',
-        )
+        if self.spinBox_quantity.value() > 1:
+            history_file.add_new_to_single_item(
+                date=datetime.now().strftime("%B %d %A %Y %I:%M:%S %p"),
+                description=f'Removed {self.spinBox_quantity.value()} quantities from "{item_name}"',
+            )
+        elif self.spinBox_quantity.value() == 1:
+            history_file.add_new_to_single_item(
+                date=datetime.now().strftime("%B %d %A %Y %I:%M:%S %p"),
+                description=f'Removed {self.spinBox_quantity.value()} quantity from "{item_name}"',
+            )
 
         self.highlight_color = "#BE2525"
         data = inventory.get_data()
@@ -2451,7 +2478,9 @@ class MainWindow(QMainWindow):
         """
         self.dockWidget_create_add_remove.setVisible(False)
         self.status_button.setHidden(True)
+        # CATEOGRY HISTORY
         self.categoryHistoryTable.clear()
+        self.categoryHistoryTable.setRowCount(0)
         self.categoryHistoryTable.setHorizontalHeaderLabels(
             ("Date;Description;").split(";")
         )
@@ -2466,8 +2495,9 @@ class MainWindow(QMainWindow):
             self.categoryHistoryTable.insertRow(self.categoryHistoryTable.rowCount())
             self.categoryHistoryTable.setItem(i, 0, QTableWidgetItem(date))
             self.categoryHistoryTable.setItem(i, 1, QTableWidgetItem(description))
-
+        # SINGLE ITEM HISTORY
         self.singleItemHistoryTable.clear()
+        self.singleItemHistoryTable.setRowCount(0)
         self.singleItemHistoryTable.setHorizontalHeaderLabels(
             ("Date;Description;").split(";")
         )
@@ -2849,6 +2879,9 @@ class MainWindow(QMainWindow):
         webbrowser.open("https://piney-manufacturing-inventory.herokuapp.com", new=0)
 
     def open_item_history(self) -> None:
+        """
+        It opens the inventory history file in the data folder.
+        """
         os.startfile(
             f"{os.path.dirname(os.path.realpath(sys.argv[0]))}/data/inventory history.xlsx"
         )

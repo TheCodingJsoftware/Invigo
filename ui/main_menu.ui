@@ -105,7 +105,7 @@
                <item>
                 <widget class="QTableWidget" name="categoryHistoryTable">
                  <property name="enabled">
-                  <bool>false</bool>
+                  <bool>true</bool>
                  </property>
                  <property name="rowCount">
                   <number>0</number>
@@ -141,7 +141,7 @@
                <item>
                 <widget class="QTableWidget" name="singleItemHistoryTable">
                  <property name="enabled">
-                  <bool>false</bool>
+                  <bool>true</bool>
                  </property>
                  <property name="rowCount">
                   <number>0</number>
@@ -442,7 +442,7 @@
             <item row="0" column="0">
              <widget class="QRadioButton" name="radioButton_category">
               <property name="text">
-               <string>Category</string>
+               <string>All Items in Category</string>
               </property>
               <property name="checked">
                <bool>true</bool>
@@ -452,7 +452,7 @@
             <item row="0" column="1">
              <widget class="QRadioButton" name="radioButton_single">
               <property name="text">
-               <string>Item</string>
+               <string>Selected Item</string>
               </property>
              </widget>
             </item>

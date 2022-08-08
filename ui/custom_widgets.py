@@ -1,6 +1,7 @@
 from PyQt5.QtCore import QMargins, QMimeData, Qt, pyqtSignal
 from PyQt5.QtGui import QDrag, QIcon, QPalette, QPixmap
 from PyQt5.QtWidgets import (
+    QAbstractSpinBox,
     QComboBox,
     QDoubleSpinBox,
     QGridLayout,
@@ -376,6 +377,51 @@ class HumbleSpinBox(QSpinBox):
             return super(HumbleSpinBox, self).wheelEvent(event)
         else:
             event.ignore()
+
+
+class CurrentQuantitySpinBox(QSpinBox):
+    """It's a spin box that doesn't let you enter a value that's too close to zero."""
+
+    def __init__(self, *args):
+        """
+        The function sets the focus policy of the spinbox to strong focus
+        """
+        super(CurrentQuantitySpinBox, self).__init__(*args)
+        self.setFocusPolicy(Qt.StrongFocus)
+        self.setFixedWidth(100)
+        self.setMaximum(99999999)
+        self.setMinimum(-99999999)
+        self.setAccelerated(True)
+        self.lineEdit().setReadOnly(True)
+        self.setButtonSymbols(QAbstractSpinBox.NoButtons)
+
+    def focusInEvent(self, event):
+        """
+        When the user clicks on the spinbox, the focus policy is changed to allow the mouse wheel to be
+        used to change the value
+
+        Args:
+          event: QFocusEvent
+        """
+        self.setFocusPolicy(Qt.WheelFocus)
+        super(CurrentQuantitySpinBox, self).focusInEvent(event)
+
+    def focusOutEvent(self, event):
+        """
+        When the user clicks on the spinbox, the focus policy is changed to StrongFocus, and then the
+        focusOutEvent is called
+
+        Args:
+          event: QFocusEvent
+        """
+        self.setFocusPolicy(Qt.StrongFocus)
+        super(CurrentQuantitySpinBox, self).focusOutEvent(event)
+
+    def wheelEvent(self, event):
+        """
+        ignore all wheel events
+        """
+        event.ignore()
 
 
 class HumbleComboBox(QComboBox):

@@ -1,3 +1,8 @@
+<h1>v1.4.1</h1>
+&bull; Fixed more bugs with Item Controls menu.<br>
+&bull; Changed some text for clarity in Main Window.<br>
+&bull; Fixed visual bug when removing items from category.<br>
+
 <h1>v1.4.0</h1>
 &bull; Fixed bug with Item Controls menu.<br>
 &bull; View removed quantities from the new history view menu.<br>
