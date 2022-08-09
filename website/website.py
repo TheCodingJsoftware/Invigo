@@ -10,6 +10,7 @@ import time
 
 import requests
 from flask import Flask, render_template
+from forex_python.converter import CurrencyRates
 
 app = Flask(__name__)
 
@@ -30,6 +31,7 @@ def index() -> None:
         inventory=inventory,
         part_names=get_all_part_names(),
         part_numbers=get_all_part_numbers(),
+        unit_costs=get_all_unit_cost(),
     )
 
 
@@ -72,6 +74,7 @@ def search(search_term):
         search_term=search_term.replace(" ", "_"),
         part_names=get_all_part_names(),
         part_numbers=get_all_part_numbers(),
+        unit_costs=get_all_unit_cost(),
     )
 
 
@@ -105,6 +108,31 @@ def sort_groups(category: dict) -> dict:
                 grouped_category[category_name]["Everything else"][item[0]] = item[1]
 
     return grouped_category
+
+
+def get_all_unit_cost() -> dict:
+    data = get_inventory_data()
+    currency_rates = CurrencyRates()
+    last_exchange_rate = currency_rates.get_rate("USD", "CAD")
+    unit_costs = {}
+    round_number = lambda x, n: eval(
+        '"%.'
+        + str(int(n))
+        + 'f" % '
+        + repr(int(x) + round(float("." + str(float(x)).split(".")[1]), n))
+    )
+    for category in list(data.keys()):
+        total_cost: float = 0
+        unit_costs[category] = {}
+        with contextlib.suppress(KeyError):
+            for item in data[category]:
+                use_exchange_rate: bool = data[category][item]["use_exchange_rate"]
+                exchange_rate: float = last_exchange_rate if use_exchange_rate else 1
+                price: float = data[category][item]["price"]
+                unit_quantity: int = data[category][item]["unit_quantity"]
+                total_cost += price * unit_quantity * exchange_rate
+            unit_costs[category] = round(total_cost, 2)
+    return unit_costs
 
 
 def get_all_part_names() -> list[str]:
@@ -177,4 +205,4 @@ def downloadThread() -> None:
 
 
 threading.Thread(target=downloadThread).start()
-# app.run(host="10.0.0.217", port=5000, debug=False, threaded=True)
+app.run(host="10.0.0.217", port=5000, debug=False, threaded=True)
