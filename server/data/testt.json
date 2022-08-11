@@ -604,23 +604,6 @@
             "notes": "Vendor: GreenLine\nDescription: 204-694-0332",
             "latest_change_current_quantity": "Latest Change:\nfrom: -241.0\nto: -241.0\nJared\nAugust 07 Sunday 2022 10:43:31 PM"
         },
-        "G2 Turbulator": {
-            "part_number": "",
-            "unit_quantity": 7,
-            "current_quantity": -11,
-            "price": 999.0,
-            "use_exchange_rate": false,
-            "priority": 0,
-            "notes": "Vendor: Top Flights\nDescription: rfs@hmailton.net",
-            "latest_change_name": "Item added\nItsme\nJuly 08 Friday 2022 08-22-50 AM",
-            "latest_change_part_number": "Item added\nItsme\nJuly 08 Friday 2022 08-22-50 AM",
-            "latest_change_unit_quantity": "Item added\nItsme\nJuly 08 Friday 2022 08-22-50 AM",
-            "latest_change_current_quantity": "Latest Change:\nfrom: -11\nto: -11\nJared\nAugust 07 Sunday 2022 10:48:08 PM",
-            "latest_change_price": "Latest Change:\nfrom: 99.0\nto: 999.0\nJared\nAugust 08 Monday 2022 10:06:01 PM",
-            "latest_change_use_exchange_price": "Item added\nItsme\nJuly 08 Friday 2022 08-22-50 AM",
-            "latest_change_priority": "Item added\nItsme\nJuly 08 Friday 2022 08-22-50 AM",
-            "latest_change_notes": "Item added\nItsme\nJuly 08 Friday 2022 08-22-50 AM"
-        },
         " 12BK SLOTTED QUARTER-TURN LATCH, DIE CST, UL FACE SEAL & INTERNAL O-RING, BODY NUT, NO CAM, BLACK POWDER COATED": {
             "part_number": "12BK",
             "unit_quantity": 4,
@@ -691,23 +674,6 @@
             "latest_change_use_exchange_price": "Item added\nItsme\nJuly 08 Friday 2022 09-12-32 AM",
             "latest_change_priority": "Item added\nItsme\nJuly 08 Friday 2022 09-12-32 AM",
             "latest_change_notes": "Item added\nItsme\nJuly 08 Friday 2022 09-12-32 AM"
-        },
-        "Shaft Collar 7\/16 with Set Screw": {
-            "part_number": "BRA0420",
-            "unit_quantity": 2,
-            "current_quantity": -30,
-            "price": 1.3,
-            "use_exchange_rate": false,
-            "priority": 0,
-            "notes": "Vendor: A.Adams Supply\nDescription: ",
-            "latest_change_name": "Latest Change:\nfrom: \"Shaft Collar 7\/16 with Set Scre\"\nto: \"Shaft Collar 7\/16 with Set Screw\"\nItsme\nJuly 07 Thursday 2022 04:30:05 PM",
-            "latest_change_part_number": "Item added\nItsme\nJuly 07 Thursday 2022 03-57-46 PM",
-            "latest_change_unit_quantity": "Item added\nItsme\nJuly 07 Thursday 2022 03-57-46 PM",
-            "latest_change_current_quantity": "Latest Change:\nfrom: -30\nto: -30\nJared\nAugust 07 Sunday 2022 10:43:31 PM",
-            "latest_change_price": "Item added\nItsme\nJuly 07 Thursday 2022 03-57-46 PM",
-            "latest_change_use_exchange_price": "Item added\nItsme\nJuly 07 Thursday 2022 03-57-46 PM",
-            "latest_change_priority": "Item added\nItsme\nJuly 07 Thursday 2022 03-57-46 PM",
-            "latest_change_notes": "Item added\nItsme\nJuly 07 Thursday 2022 03-57-46 PM"
         },
         "asdasdasd": {
             "part_number": "",
@@ -1279,7 +1245,7 @@
             "latest_change_use_exchange_price": "Item added\nJared\nAugust 01 Monday 2022 08-38-03 PM",
             "latest_change_priority": "Item added\nJared\nAugust 01 Monday 2022 08-38-03 PM",
             "latest_change_notes": "Item added\nJared\nAugust 01 Monday 2022 08-38-03 PM",
-            "group": null
+            "group": "kbjk"
         },
         "asdasdasd": {
             "part_number": "",
@@ -1314,7 +1280,8 @@
             "latest_change_price": "Latest Change:\nfrom: 3.0\nto: 4.0\nJared\nAugust 08 Monday 2022 10:05:41 PM",
             "latest_change_use_exchange_price": "Item added\nJared\nAugust 08 Monday 2022 10-05-34 PM",
             "latest_change_priority": "Item added\nJared\nAugust 08 Monday 2022 10-05-34 PM",
-            "latest_change_notes": "Item added\nJared\nAugust 08 Monday 2022 10-05-34 PM"
+            "latest_change_notes": "Item added\nJared\nAugust 08 Monday 2022 10-05-34 PM",
+            "group": "None"
         }
     }
 }
