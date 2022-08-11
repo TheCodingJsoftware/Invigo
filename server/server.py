@@ -126,7 +126,7 @@ class Server:
 
                             # read 1024 bytes from the socket (receive)
                             bytes_read = client_socket.recv(self.BUFFER_SIZE)
-                            print(f"In Loop writing file{bytes_read}")
+                            print(f"In Loop writing file {bytes_read} {len(bytes_read)}")
                             if not bytes_read:
                                 # file transmitting is done
                                 break
