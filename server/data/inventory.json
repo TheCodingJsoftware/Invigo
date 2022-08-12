@@ -2067,23 +2067,6 @@
             "notes": "Vendor: Piney MFG\nDescription: ",
             "latest_change_current_quantity": "Latest Change:\nfrom: 6\nto: 6\nItsme\nAugust 03 Wednesday 2022 12:35:12 PM"
         },
-        "1-1\/4 Half Coupling": {
-            "part_number": "G0008MC-125",
-            "unit_quantity": 1,
-            "current_quantity": 26,
-            "price": 2.0,
-            "use_exchange_rate": false,
-            "priority": 0,
-            "notes": "Vendor: Greenline\nDescription: 204-694-0332",
-            "latest_change_name": "Item added\nItsme\nJuly 07 Thursday 2022 10-23-19 AM",
-            "latest_change_part_number": "Item added\nItsme\nJuly 07 Thursday 2022 10-23-19 AM",
-            "latest_change_unit_quantity": "Item added\nItsme\nJuly 07 Thursday 2022 10-23-19 AM",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 26\nto: 26\nItsme\nAugust 12 Friday 2022 08:03:02 AM",
-            "latest_change_price": "Latest Change:\nfrom: 0.0\nto: 2.0\nItsme\nJuly 07 Thursday 2022 11:22:08 AM",
-            "latest_change_use_exchange_price": "Item added\nItsme\nJuly 07 Thursday 2022 10-23-19 AM",
-            "latest_change_priority": "Item added\nItsme\nJuly 07 Thursday 2022 10-23-19 AM",
-            "latest_change_notes": "Latest Change:\nfrom: \"Vendor: Greenline\nDescription: \"\nto: \"Vendor: Greenline\nDescription: 204-694-0332\"\nItsme\nJuly 07 Thursday 2022 11:22:22 AM"
-        },
         "3\"x48\"x96\" FSK Insulation Sheet": {
             "part_number": "FSK3",
             "unit_quantity": 3.0,
@@ -2103,6 +2086,23 @@
             "priority": 0,
             "notes": "Vendor: BrockWhite\nDescription: \nevandenberg@brockwhite.com",
             "latest_change_current_quantity": "Latest Change:\nfrom: 12\nto: 12\nItsme\nJuly 20 Wednesday 2022 07:39:46 PM"
+        },
+        "Vapor Thermometer": {
+            "part_number": "20UB8-220FC-4111-03FT                        ",
+            "unit_quantity": 1,
+            "current_quantity": 12,
+            "price": 32.0,
+            "use_exchange_rate": false,
+            "priority": 0,
+            "notes": "Vendor: Miljoco Corp\nDescription: ",
+            "latest_change_name": "Item added\nItsme\nAugust 12 Friday 2022 09-52-11 AM",
+            "latest_change_part_number": "Item added\nItsme\nAugust 12 Friday 2022 09-52-11 AM",
+            "latest_change_unit_quantity": "Item added\nItsme\nAugust 12 Friday 2022 09-52-11 AM",
+            "latest_change_current_quantity": "Item added\nItsme\nAugust 12 Friday 2022 09-52-11 AM",
+            "latest_change_price": "Item added\nItsme\nAugust 12 Friday 2022 09-52-11 AM",
+            "latest_change_use_exchange_price": "Item added\nItsme\nAugust 12 Friday 2022 09-52-11 AM",
+            "latest_change_priority": "Item added\nItsme\nAugust 12 Friday 2022 09-52-11 AM",
+            "latest_change_notes": "Item added\nItsme\nAugust 12 Friday 2022 09-52-11 AM"
         },
         "Tempered Glass 1 1\/4\" X 1 1\/4\" X 3\/16\" NEO Ceram Robax": {
             "part_number": "TG113",
@@ -2132,6 +2132,23 @@
             "latest_change_price": "Latest Change:\nfrom: 104.5\nto: 104.5\nItsme\nJuly 07 Thursday 2022 08:54:01 AM",
             "latest_change_current_quantity": "Latest Change:\nfrom: 22\nto: 22\nItsme\nJuly 20 Wednesday 2022 07:39:47 PM",
             "latest_change_name": "Latest Change:\nfrom: \"3\" Thermax SF- 600 Brick Slabs 1000x610x7\"\nto: \"3\" Thermax SF- 600 Brick Slabs 1000x610x75\"\nItsme\nJuly 11 Monday 2022 09:45:53 AM"
+        },
+        "1-1\/4 Half Coupling": {
+            "part_number": "G0008MC-125",
+            "unit_quantity": 1,
+            "current_quantity": 26,
+            "price": 2.0,
+            "use_exchange_rate": false,
+            "priority": 0,
+            "notes": "Vendor: Greenline\nDescription: 204-694-0332",
+            "latest_change_name": "Item added\nItsme\nJuly 07 Thursday 2022 10-23-19 AM",
+            "latest_change_part_number": "Item added\nItsme\nJuly 07 Thursday 2022 10-23-19 AM",
+            "latest_change_unit_quantity": "Item added\nItsme\nJuly 07 Thursday 2022 10-23-19 AM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 26\nto: 26\nItsme\nAugust 12 Friday 2022 08:03:02 AM",
+            "latest_change_price": "Latest Change:\nfrom: 0.0\nto: 2.0\nItsme\nJuly 07 Thursday 2022 11:22:08 AM",
+            "latest_change_use_exchange_price": "Item added\nItsme\nJuly 07 Thursday 2022 10-23-19 AM",
+            "latest_change_priority": "Item added\nItsme\nJuly 07 Thursday 2022 10-23-19 AM",
+            "latest_change_notes": "Latest Change:\nfrom: \"Vendor: Greenline\nDescription: \"\nto: \"Vendor: Greenline\nDescription: 204-694-0332\"\nItsme\nJuly 07 Thursday 2022 11:22:22 AM"
         },
         "WeatherStripping NDA- .5\" x 3\/16\" x 50'": {
             "part_number": "WSNDA",
@@ -3036,22 +3053,22 @@
             "latest_change_priority": "Item added\nItsme\nJuly 19 Tuesday 2022 03-54-38 PM",
             "latest_change_notes": "Item added\nItsme\nJuly 19 Tuesday 2022 03-54-38 PM"
         },
-        "Vapor Thermometer": {
-            "part_number": "20UB8-220FC-4111-03FT                        ",
+        "G3 Brick Set": {
+            "part_number": "G3BS",
             "unit_quantity": 1,
-            "current_quantity": 12,
-            "price": 32.0,
+            "current_quantity": 9,
+            "price": 903.0,
             "use_exchange_rate": false,
             "priority": 0,
-            "notes": "Vendor: Miljoco Corp\nDescription: ",
-            "latest_change_name": "Item added\nItsme\nAugust 12 Friday 2022 09-52-11 AM",
-            "latest_change_part_number": "Item added\nItsme\nAugust 12 Friday 2022 09-52-11 AM",
-            "latest_change_unit_quantity": "Item added\nItsme\nAugust 12 Friday 2022 09-52-11 AM",
-            "latest_change_current_quantity": "Item added\nItsme\nAugust 12 Friday 2022 09-52-11 AM",
-            "latest_change_price": "Item added\nItsme\nAugust 12 Friday 2022 09-52-11 AM",
-            "latest_change_use_exchange_price": "Item added\nItsme\nAugust 12 Friday 2022 09-52-11 AM",
-            "latest_change_priority": "Item added\nItsme\nAugust 12 Friday 2022 09-52-11 AM",
-            "latest_change_notes": "Item added\nItsme\nAugust 12 Friday 2022 09-52-11 AM"
+            "notes": "Vendor: Reftec Insudtries\nDescription: ",
+            "latest_change_name": "Item added\nItsme\nAugust 12 Friday 2022 11-21-54 AM",
+            "latest_change_part_number": "Item added\nItsme\nAugust 12 Friday 2022 11-21-54 AM",
+            "latest_change_unit_quantity": "Item added\nItsme\nAugust 12 Friday 2022 11-21-54 AM",
+            "latest_change_current_quantity": "Item added\nItsme\nAugust 12 Friday 2022 11-21-54 AM",
+            "latest_change_price": "Item added\nItsme\nAugust 12 Friday 2022 11-21-54 AM",
+            "latest_change_use_exchange_price": "Item added\nItsme\nAugust 12 Friday 2022 11-21-54 AM",
+            "latest_change_priority": "Item added\nItsme\nAugust 12 Friday 2022 11-21-54 AM",
+            "latest_change_notes": "Item added\nItsme\nAugust 12 Friday 2022 11-21-54 AM"
         }
     },
     "BL 25": {
