@@ -1054,6 +1054,23 @@
             "latest_change_use_exchange_price": "Item added\nItsme\nAugust 12 Friday 2022 09-51-42 AM",
             "latest_change_priority": "Item added\nItsme\nAugust 12 Friday 2022 09-51-42 AM",
             "latest_change_notes": "Item added\nItsme\nAugust 12 Friday 2022 09-51-42 AM"
+        },
+        "Actuator M9203-BUA-2\n": {
+            "part_number": "M9203",
+            "unit_quantity": 2,
+            "current_quantity": 48,
+            "price": 162.36,
+            "use_exchange_rate": false,
+            "priority": 0,
+            "notes": "Vendor: Johnson controle\nDescription: ",
+            "latest_change_name": "Item added\nItsme\nAugust 12 Friday 2022 11-27-27 AM",
+            "latest_change_part_number": "Item added\nItsme\nAugust 12 Friday 2022 11-27-27 AM",
+            "latest_change_unit_quantity": "Item added\nItsme\nAugust 12 Friday 2022 11-27-27 AM",
+            "latest_change_current_quantity": "Item added\nItsme\nAugust 12 Friday 2022 11-27-27 AM",
+            "latest_change_price": "Item added\nItsme\nAugust 12 Friday 2022 11-27-27 AM",
+            "latest_change_use_exchange_price": "Item added\nItsme\nAugust 12 Friday 2022 11-27-27 AM",
+            "latest_change_priority": "Item added\nItsme\nAugust 12 Friday 2022 11-27-27 AM",
+            "latest_change_notes": "Item added\nItsme\nAugust 12 Friday 2022 11-27-27 AM"
         }
     },
     "Polar G3": {
@@ -2054,6 +2071,23 @@
             "latest_change_use_exchange_price": "Item added\nItsme\nAugust 12 Friday 2022 09-51-59 AM",
             "latest_change_priority": "Item added\nItsme\nAugust 12 Friday 2022 09-51-59 AM",
             "latest_change_notes": "Item added\nItsme\nAugust 12 Friday 2022 09-51-59 AM"
+        },
+        "Actuator M9203-BUA-2\n": {
+            "part_number": "M9203",
+            "unit_quantity": 2,
+            "current_quantity": 48,
+            "price": 162.36,
+            "use_exchange_rate": false,
+            "priority": 0,
+            "notes": "Vendor: Johnson controle\nDescription: ",
+            "latest_change_name": "Item added\nItsme\nAugust 12 Friday 2022 11-27-45 AM",
+            "latest_change_part_number": "Item added\nItsme\nAugust 12 Friday 2022 11-27-45 AM",
+            "latest_change_unit_quantity": "Item added\nItsme\nAugust 12 Friday 2022 11-27-45 AM",
+            "latest_change_current_quantity": "Item added\nItsme\nAugust 12 Friday 2022 11-27-45 AM",
+            "latest_change_price": "Item added\nItsme\nAugust 12 Friday 2022 11-27-45 AM",
+            "latest_change_use_exchange_price": "Item added\nItsme\nAugust 12 Friday 2022 11-27-45 AM",
+            "latest_change_priority": "Item added\nItsme\nAugust 12 Friday 2022 11-27-45 AM",
+            "latest_change_notes": "Item added\nItsme\nAugust 12 Friday 2022 11-27-45 AM"
         }
     },
     "Polar G2+": {
