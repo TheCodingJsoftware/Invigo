@@ -58,7 +58,7 @@ class Server:
         try:
             self.s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
             self.s.bind((self.SERVER_IP, self.SERVER_PORT))
-            self.s.listen(5)
+            self.s.listen(128)
             print(
                 f"{Colors.BOLD}{datetime.now()}{Colors.ENDC} - {Colors.OKGREEN}[+] Server Started succesfully on {self.SERVER_IP}:{self.SERVER_PORT}{Colors.ENDC}"
             )
@@ -75,6 +75,7 @@ class Server:
                     f"{Colors.BOLD}{datetime.now()}{Colors.ENDC} - {Colors.HEADER}[ ] Listening for connections...{Colors.ENDC}"
                 )
                 client_socket, client_address = self.s.accept()
+                client_socket.settimeout(10)
                 data = client_socket.recv(self.BUFFER_SIZE).decode()
 
                 logging.info("got data")
