@@ -1282,6 +1282,23 @@
             "latest_change_priority": "Item added\nJared\nAugust 08 Monday 2022 10-05-34 PM",
             "latest_change_notes": "Item added\nJared\nAugust 08 Monday 2022 10-05-34 PM",
             "group": "None"
+        },
+        "Sticker 320 Water Temperture 5\"x9.5\"": {
+            "part_number": "320",
+            "unit_quantity": 1,
+            "current_quantity": 135,
+            "price": 2.47,
+            "use_exchange_rate": false,
+            "priority": 0,
+            "notes": "Vendor: \nDescription: ",
+            "latest_change_name": "Item added\nJared\nAugust 11 Thursday 2022 10-03-25 PM",
+            "latest_change_part_number": "Item added\nJared\nAugust 11 Thursday 2022 10-03-25 PM",
+            "latest_change_unit_quantity": "Item added\nJared\nAugust 11 Thursday 2022 10-03-25 PM",
+            "latest_change_current_quantity": "Item added\nJared\nAugust 11 Thursday 2022 10-03-25 PM",
+            "latest_change_price": "Item added\nJared\nAugust 11 Thursday 2022 10-03-25 PM",
+            "latest_change_use_exchange_price": "Item added\nJared\nAugust 11 Thursday 2022 10-03-25 PM",
+            "latest_change_priority": "Item added\nJared\nAugust 11 Thursday 2022 10-03-25 PM",
+            "latest_change_notes": "Item added\nJared\nAugust 11 Thursday 2022 10-03-25 PM"
         }
     }
 }
