@@ -3404,7 +3404,7 @@
             "priority": 0,
             "notes": "Vendor: \nDescription: ",
             "latest_change_name": "Item added\nItsme\nAugust 04 Thursday 2022 10-13-32 AM",
-            "latest_change_part_number": "Latest Change:\nfrom: DH4\nto: dh4\nItsme\nAugust 15 Monday 2022 11:26:33 AM",
+            "latest_change_part_number": "Latest Change:\nfrom: DH4\nto: dh4\nItsme\nAugust 15 Monday 2022 11:26:39 AM",
             "latest_change_unit_quantity": "Item added\nItsme\nAugust 04 Thursday 2022 10-13-32 AM",
             "latest_change_current_quantity": "Latest Change:\nfrom: -220\nto: -220\nItsme\nAugust 15 Monday 2022 11:24:29 AM",
             "latest_change_price": "Item added\nItsme\nAugust 04 Thursday 2022 10-13-32 AM",
@@ -3636,7 +3636,7 @@
             "latest_change_notes": "Item added\nItsme\nAugust 04 Thursday 2022 10-10-41 AM"
         },
         "Door Hinge": {
-            "part_number": "",
+            "part_number": "dh4",
             "unit_quantity": 4,
             "current_quantity": 710,
             "price": 1.66,
@@ -3644,7 +3644,7 @@
             "priority": 0,
             "notes": "Vendor: \nDescription: ",
             "latest_change_name": "Item added\nItsme\nAugust 04 Thursday 2022 10-14-22 AM",
-            "latest_change_part_number": "Item added\nItsme\nAugust 04 Thursday 2022 10-14-22 AM",
+            "latest_change_part_number": "Latest Change:\nfrom: DH4\nto: dh4\nItsme\nAugust 15 Monday 2022 11:26:49 AM",
             "latest_change_unit_quantity": "Item added\nItsme\nAugust 04 Thursday 2022 10-14-22 AM",
             "latest_change_current_quantity": "Latest Change:\nfrom: 710\nto: 710\nItsme\nAugust 15 Monday 2022 11:24:29 AM",
             "latest_change_price": "Item added\nItsme\nAugust 04 Thursday 2022 10-14-22 AM",
