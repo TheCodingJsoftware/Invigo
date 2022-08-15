@@ -1187,12 +1187,12 @@
         "Grundfos 26-99FC 115V 9H": {
             "part_number": "26-99FC",
             "unit_quantity": 1,
-            "current_quantity": 25,
+            "current_quantity": 18,
             "price": 264.0,
             "use_exchange_rate": false,
             "priority": 0,
             "notes": "Vendor: Grundfos Canada\nDescription: ",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 25\nto: 25\nItsme\nJuly 20 Wednesday 2022 10:20:21 AM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 18\nto: 18\nItsme\nAugust 15 Monday 2022 04:55:19 PM",
             "latest_change_name": "Latest Change:\nfrom: \"Grundfos 2-99FC 115V 9H\"\nto: \"Grundfos 26-99FC 115V 9H\"\nItsme\nJuly 20 Wednesday 2022 10:19:33 AM",
             "latest_change_part_number": "Latest Change:\nfrom: 26-9FC\nto: 26-99FC\nItsme\nJuly 20 Wednesday 2022 10:20:02 AM",
             "latest_change_price": "Latest Change:\nfrom: 26.0\nto: 264.0\nItsme\nJuly 20 Wednesday 2022 10:25:03 AM"
