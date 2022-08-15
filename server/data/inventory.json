@@ -3396,7 +3396,7 @@
             "latest_change_notes": "Item added\nItsme\nAugust 04 Thursday 2022 10-10-27 AM"
         },
         "Door Hinge": {
-            "part_number": "",
+            "part_number": "dh4",
             "unit_quantity": 4,
             "current_quantity": -220,
             "price": 1.66,
@@ -3404,7 +3404,7 @@
             "priority": 0,
             "notes": "Vendor: \nDescription: ",
             "latest_change_name": "Item added\nItsme\nAugust 04 Thursday 2022 10-13-32 AM",
-            "latest_change_part_number": "Item added\nItsme\nAugust 04 Thursday 2022 10-13-32 AM",
+            "latest_change_part_number": "Latest Change:\nfrom: DH4\nto: dh4\nItsme\nAugust 15 Monday 2022 11:26:33 AM",
             "latest_change_unit_quantity": "Item added\nItsme\nAugust 04 Thursday 2022 10-13-32 AM",
             "latest_change_current_quantity": "Latest Change:\nfrom: -220\nto: -220\nItsme\nAugust 15 Monday 2022 11:24:29 AM",
             "latest_change_price": "Item added\nItsme\nAugust 04 Thursday 2022 10-13-32 AM",
@@ -3413,7 +3413,7 @@
             "latest_change_notes": "Item added\nItsme\nAugust 04 Thursday 2022 10-13-32 AM"
         },
         "Damper Box- Aluminum": {
-            "part_number": "",
+            "part_number": "DBA",
             "unit_quantity": 1,
             "current_quantity": -247,
             "price": 33.0,
@@ -3421,7 +3421,7 @@
             "priority": 0,
             "notes": "Vendor: Matric Metal Casting\nDescription: ",
             "latest_change_name": "Item added\nItsme\nAugust 04 Thursday 2022 10-19-42 AM",
-            "latest_change_part_number": "Item added\nItsme\nAugust 04 Thursday 2022 10-19-42 AM",
+            "latest_change_part_number": "Latest Change:\nfrom: DB\nto: DBA\nItsme\nAugust 15 Monday 2022 11:26:22 AM",
             "latest_change_unit_quantity": "Item added\nItsme\nAugust 04 Thursday 2022 10-19-42 AM",
             "latest_change_current_quantity": "Latest Change:\nfrom: -247\nto: -247\nItsme\nAugust 15 Monday 2022 11:24:29 AM",
             "latest_change_price": "Item added\nItsme\nAugust 04 Thursday 2022 10-19-42 AM",
@@ -3483,17 +3483,17 @@
     },
     "BL 28": {
         "383 Blower Fan\/ 1523 blower Fan": {
-            "part_number": "",
+            "part_number": "383bf",
             "unit_quantity": 1,
-            "current_quantity": 480,
+            "current_quantity": 20,
             "price": 165.3,
             "use_exchange_rate": false,
             "priority": 0,
             "notes": "Vendor: \nDescription: ",
             "latest_change_name": "Latest Change:\nfrom: \"383 Blower Fan\/ 1523 blower Fa\"\nto: \"383 Blower Fan\/ 1523 blower Fan\"\nItsme\nAugust 01 Monday 2022 03:43:18 PM",
-            "latest_change_part_number": "Item added\nItsme\nAugust 01 Monday 2022 09-30-35 AM",
+            "latest_change_part_number": "Latest Change:\nfrom: 383b\nto: 383bf\nItsme\nAugust 15 Monday 2022 11:25:38 AM",
             "latest_change_unit_quantity": "Item added\nItsme\nAugust 01 Monday 2022 09-30-35 AM",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 480\nto: 480\nItsme\nAugust 15 Monday 2022 11:24:29 AM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 20\nto: 20\nItsme\nAugust 15 Monday 2022 11:26:08 AM",
             "latest_change_price": "Latest Change:\nfrom: 165.0\nto: 165.3\nItsme\nAugust 03 Wednesday 2022 10:53:28 AM",
             "latest_change_use_exchange_price": "Item added\nItsme\nAugust 01 Monday 2022 09-30-35 AM",
             "latest_change_priority": "Item added\nItsme\nAugust 01 Monday 2022 09-30-35 AM",
