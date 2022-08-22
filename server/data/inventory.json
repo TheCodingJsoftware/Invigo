@@ -3958,7 +3958,8 @@
             "latest_change_price": "Latest Change:\nfrom: 561.0\nto: 561.2\nItsme\nJuly 29 Friday 2022 01:45:34 PM",
             "latest_change_use_exchange_price": "Item added\nItsme\nJuly 29 Friday 2022 01-44-12 PM",
             "latest_change_priority": "Item added\nItsme\nJuly 29 Friday 2022 01-44-12 PM",
-            "latest_change_notes": "Latest Change:\nfrom: \"Vendor: Reftec\nDescription: \"\nto: \"Vendor: Reftech\nDescription: \"\nItsme\nJuly 29 Friday 2022 01:45:47 PM"
+            "latest_change_notes": "Latest Change:\nfrom: \"Vendor: Reftec\nDescription: \"\nto: \"Vendor: Reftech\nDescription: \"\nItsme\nJuly 29 Friday 2022 01:45:47 PM",
+            "latest_change_use_exchange_rate": "Latest Change:\nfrom: USD\nto: CAD\nItsme\nAugust 22 Monday 2022 10:51:28 AM"
         },
         "D500 Blower Fan": {
             "part_number": "ARC50752D500",
