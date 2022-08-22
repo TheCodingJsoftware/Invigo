@@ -4559,6 +4559,23 @@
             "latest_change_use_exchange_price": "Item added\nItsme\nAugust 03 Wednesday 2022 09-08-33 AM",
             "latest_change_priority": "Item added\nItsme\nAugust 03 Wednesday 2022 09-08-33 AM",
             "latest_change_notes": "Item added\nItsme\nAugust 03 Wednesday 2022 09-08-33 AM"
+        },
+        "WHITE DTM Polyure Enamel 3.78L": {
+            "part_number": "83500k01",
+            "unit_quantity": 1,
+            "current_quantity": 5,
+            "price": 105.81,
+            "use_exchange_rate": false,
+            "priority": 0,
+            "notes": "Vendor:  Cloverdale Paint Inc. \nDescription: ",
+            "latest_change_name": "Item added\nItsme\nAugust 22 Monday 2022 03-47-31 PM",
+            "latest_change_part_number": "Item added\nItsme\nAugust 22 Monday 2022 03-47-31 PM",
+            "latest_change_unit_quantity": "Item added\nItsme\nAugust 22 Monday 2022 03-47-31 PM",
+            "latest_change_current_quantity": "Item added\nItsme\nAugust 22 Monday 2022 03-47-31 PM",
+            "latest_change_price": "Item added\nItsme\nAugust 22 Monday 2022 03-47-31 PM",
+            "latest_change_use_exchange_price": "Item added\nItsme\nAugust 22 Monday 2022 03-47-31 PM",
+            "latest_change_priority": "Item added\nItsme\nAugust 22 Monday 2022 03-47-31 PM",
+            "latest_change_notes": "Item added\nItsme\nAugust 22 Monday 2022 03-47-31 PM"
         }
     }
 }
