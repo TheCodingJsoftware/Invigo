@@ -55,13 +55,13 @@
         "400mm Rollers (Pairs)": {
             "part_number": "9245359\/9245360",
             "unit_quantity": 1,
-            "current_quantity": 0,
+            "current_quantity": 1,
             "price": 0.0,
             "use_exchange_rate": false,
             "priority": 0,
             "notes": "Vendor: Hettich\nDescription: L\/R",
             "latest_change_name": "Latest Change:\nfrom: \"400mm Rollers (Pair)\"\nto: \"400mm Rollers (Pairs)\"\nJoseph\nAugust 22 Monday 2022 02:55:49 PM",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 0\nto: 0\nJoseph\nAugust 22 Monday 2022 02:57:53 PM"
+            "latest_change_current_quantity": "Latest Change:\nfrom: 1\nto: 1\nJoseph\nAugust 22 Monday 2022 05:44:11 PM"
         },
         "450mm Rollers (Pairs)": {
             "part_number": "9245363\/9245364",
