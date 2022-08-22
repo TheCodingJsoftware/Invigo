@@ -56,14 +56,15 @@
         },
         "250mm Rollers (Pairs)": {
             "part_number": "9245347\/9245348",
-            "unit_quantity": 17,
-            "current_quantity": 1,
+            "unit_quantity": 1,
+            "current_quantity": 17,
             "price": 0.0,
             "use_exchange_rate": false,
             "priority": 0,
             "notes": "Vendor: Hettich\nDescription: L\/R",
             "latest_change_name": "Latest Change:\nfrom: \"250mm Rollers (Pair)\"\nto: \"250mm Rollers (Pairs)\"\nJoseph\nAugust 22 Monday 2022 02:55:34 PM",
-            "latest_change_unit_quantity": "Latest Change:\nfrom: 1\nto: 17\nJoseph\nAugust 22 Monday 2022 02:56:16 PM"
+            "latest_change_unit_quantity": "Latest Change:\nfrom: 17\nto: 1\nJoseph\nAugust 22 Monday 2022 02:56:27 PM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 17\nto: 17\nJoseph\nAugust 22 Monday 2022 02:56:52 PM"
         },
         "350mm Rollers (Pairs)": {
             "part_number": "9245363\/9245364",
@@ -78,12 +79,13 @@
         "300mm Rollers (Pairs)": {
             "part_number": "9245341\/9245342",
             "unit_quantity": 1,
-            "current_quantity": 2,
+            "current_quantity": 16,
             "price": 0.0,
             "use_exchange_rate": false,
             "priority": 0,
             "notes": "Vendor: Hettich\nDescription: L\/R",
-            "latest_change_name": "Latest Change:\nfrom: \"300mm Rollers (Pair)\"\nto: \"300mm Rollers (Pairs)\"\nJoseph\nAugust 22 Monday 2022 02:55:42 PM"
+            "latest_change_name": "Latest Change:\nfrom: \"300mm Rollers (Pair)\"\nto: \"300mm Rollers (Pairs)\"\nJoseph\nAugust 22 Monday 2022 02:55:42 PM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 16\nto: 16\nJoseph\nAugust 22 Monday 2022 02:57:10 PM"
         },
         "450mm Rollers (Pairs)": {
             "part_number": "9245363\/9245364",
