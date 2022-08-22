@@ -1,85 +1,31 @@
 {
     "Cabinet Hardware": {
-        "250mm Rollers (Box)": {
-            "part_number": "9245347/9245348",
-            "unit_quantity": 1,
-            "current_quantity": 1,
-            "price": 0.0,
-            "use_exchange_rate": false,
-            "priority": 0,
-            "notes": "Vendor: Hettich\nDescription: L/R"
-        },
-        "350mm Rollers (Box)": {
-            "part_number": "9245363/9245364",
-            "unit_quantity": 1,
-            "current_quantity": 2,
-            "price": 0.0,
-            "use_exchange_rate": false,
-            "priority": 0,
-            "notes": "Vendor: Hettich\nDescription: L/R"
-        },
-        "300mm Rollers (Box)": {
-            "part_number": "9245341/9245342",
-            "unit_quantity": 1,
-            "current_quantity": 2,
-            "price": 0.0,
-            "use_exchange_rate": false,
-            "priority": 0,
-            "notes": "Vendor: Hettich\nDescription: L/R"
-        },
-        "450mm Rollers (Box)": {
-            "part_number": "9245363/9245364",
-            "unit_quantity": 1,
-            "current_quantity": 2,
-            "price": 0.0,
-            "use_exchange_rate": false,
-            "priority": 0,
-            "notes": "Vendor: Hettich\nDescription: L/R"
-        },
-        "400mm Rollers (Box)": {
-            "part_number": "9245359/9245360",
-            "unit_quantity": 1,
-            "current_quantity": 2,
-            "price": 0.0,
-            "use_exchange_rate": false,
-            "priority": 0,
-            "notes": "Vendor: Hettich\nDescription: L/R"
-        },
-        "500mm Rollers (Box)": {
-            "part_number": "9245367/9245368",
-            "unit_quantity": 1,
-            "current_quantity": 3,
-            "price": 0.0,
-            "use_exchange_rate": false,
-            "priority": 0,
-            "notes": "Vendor: Hettich\nDescription: L/R"
-        },
         "550mm Rollers (Box)": {
-            "part_number": "9245371/9245372",
+            "part_number": "9245371\/9245372",
             "unit_quantity": 1,
             "current_quantity": 2,
             "price": 0.0,
             "use_exchange_rate": false,
             "priority": 0,
-            "notes": "Vendor: Hettich\nDescription: L/R"
+            "notes": "Vendor: Hettich\nDescription: L\/R"
         },
         "600mm ROllers (Box)": {
-            "part_number": "9245375/9245376",
+            "part_number": "9245375\/9245376",
             "unit_quantity": 1,
             "current_quantity": 3,
             "price": 0.0,
             "use_exchange_rate": false,
             "priority": 0,
-            "notes": "Vendor: Hettich\nDescription: L/R"
+            "notes": "Vendor: Hettich\nDescription: L\/R"
         },
         "Roller Front Clips": {
-            "part_number": "9247355/9247356",
+            "part_number": "9247355\/9247356",
             "unit_quantity": 1,
             "current_quantity": 2,
             "price": 0.0,
             "use_exchange_rate": false,
             "priority": 0,
-            "notes": "Vendor: Hettich\nDescription: L/R"
+            "notes": "Vendor: Hettich\nDescription: L\/R"
         },
         "Leg Levelers (Box)": {
             "part_number": "NA",
@@ -97,7 +43,7 @@
             "price": 0.0,
             "use_exchange_rate": false,
             "priority": 0,
-            "notes": "Vendor: Hettich\nDescription: For 5/8 Cabinetes"
+            "notes": "Vendor: Hettich\nDescription: For 5\/8 Cabinetes"
         },
         "3mm Rollers (Box)": {
             "part_number": "9071657",
@@ -106,7 +52,68 @@
             "price": 0.0,
             "use_exchange_rate": false,
             "priority": 0,
-            "notes": "Vendor: Hettich\nDescription: For 3/4\" Cabinets"
+            "notes": "Vendor: Hettich\nDescription: For 3\/4\" Cabinets"
+        },
+        "250mm Rollers (Pairs)": {
+            "part_number": "9245347\/9245348",
+            "unit_quantity": 17,
+            "current_quantity": 1,
+            "price": 0.0,
+            "use_exchange_rate": false,
+            "priority": 0,
+            "notes": "Vendor: Hettich\nDescription: L\/R",
+            "latest_change_name": "Latest Change:\nfrom: \"250mm Rollers (Pair)\"\nto: \"250mm Rollers (Pairs)\"\nJoseph\nAugust 22 Monday 2022 02:55:34 PM",
+            "latest_change_unit_quantity": "Latest Change:\nfrom: 1\nto: 17\nJoseph\nAugust 22 Monday 2022 02:56:16 PM"
+        },
+        "350mm Rollers (Pairs)": {
+            "part_number": "9245363\/9245364",
+            "unit_quantity": 1,
+            "current_quantity": 2,
+            "price": 0.0,
+            "use_exchange_rate": false,
+            "priority": 0,
+            "notes": "Vendor: Hettich\nDescription: L\/R",
+            "latest_change_name": "Latest Change:\nfrom: \"350mm Rollers (Pair)\"\nto: \"350mm Rollers (Pairs)\"\nJoseph\nAugust 22 Monday 2022 02:55:36 PM"
+        },
+        "300mm Rollers (Pairs)": {
+            "part_number": "9245341\/9245342",
+            "unit_quantity": 1,
+            "current_quantity": 2,
+            "price": 0.0,
+            "use_exchange_rate": false,
+            "priority": 0,
+            "notes": "Vendor: Hettich\nDescription: L\/R",
+            "latest_change_name": "Latest Change:\nfrom: \"300mm Rollers (Pair)\"\nto: \"300mm Rollers (Pairs)\"\nJoseph\nAugust 22 Monday 2022 02:55:42 PM"
+        },
+        "450mm Rollers (Pairs)": {
+            "part_number": "9245363\/9245364",
+            "unit_quantity": 1,
+            "current_quantity": 2,
+            "price": 0.0,
+            "use_exchange_rate": false,
+            "priority": 0,
+            "notes": "Vendor: Hettich\nDescription: L\/R",
+            "latest_change_name": "Latest Change:\nfrom: \"450mm Rollers (Pair)\"\nto: \"450mm Rollers (Pairs)\"\nJoseph\nAugust 22 Monday 2022 02:55:45 PM"
+        },
+        "400mm Rollers (Pairs)": {
+            "part_number": "9245359\/9245360",
+            "unit_quantity": 1,
+            "current_quantity": 2,
+            "price": 0.0,
+            "use_exchange_rate": false,
+            "priority": 0,
+            "notes": "Vendor: Hettich\nDescription: L\/R",
+            "latest_change_name": "Latest Change:\nfrom: \"400mm Rollers (Pair)\"\nto: \"400mm Rollers (Pairs)\"\nJoseph\nAugust 22 Monday 2022 02:55:49 PM"
+        },
+        "500mm Rollers (Pairs)": {
+            "part_number": "9245367\/9245368",
+            "unit_quantity": 1,
+            "current_quantity": 3,
+            "price": 0.0,
+            "use_exchange_rate": false,
+            "priority": 0,
+            "notes": "Vendor: Hettich\nDescription: L\/R",
+            "latest_change_name": "Latest Change:\nfrom: \"500mm Rollers (Pair)\"\nto: \"500mm Rollers (Pairs)\"\nJoseph\nAugust 22 Monday 2022 02:55:52 PM"
         }
     },
     "Shed": {
@@ -162,7 +169,7 @@
         }
     },
     "Sheet Bundles": {
-        "5/8 White Melamine": {
+        "5\/8 White Melamine": {
             "part_number": "",
             "unit_quantity": 1,
             "current_quantity": 47,
@@ -172,7 +179,7 @@
             "notes": "Vendor: \nDescription: ",
             "latest_change_current_quantity": "Latest Change:\nfrom: 47\nto: 47\nJoseph\nJuly 23 Saturday 2022 11:19:38 AM"
         },
-        "5/8 Woodgrain": {
+        "5\/8 Woodgrain": {
             "part_number": "",
             "unit_quantity": 1,
             "current_quantity": 57,
@@ -188,9 +195,9 @@
             "price": 0.0,
             "use_exchange_rate": false,
             "priority": 0,
-            "notes": "Vendor: \nDescription: 1/4\""
+            "notes": "Vendor: \nDescription: 1\/4\""
         },
-        "3/8\" Plywood": {
+        "3\/8\" Plywood": {
             "part_number": "",
             "unit_quantity": 1,
             "current_quantity": 5,
@@ -199,7 +206,7 @@
             "priority": 0,
             "notes": "Vendor: \nDescription: "
         },
-        "3/4\" Plywood": {
+        "3\/4\" Plywood": {
             "part_number": "",
             "unit_quantity": 1,
             "current_quantity": 55,
@@ -208,7 +215,7 @@
             "priority": 0,
             "notes": "Vendor: \nDescription: "
         },
-        "3/4\" White Melamine": {
+        "3\/4\" White Melamine": {
             "part_number": "",
             "unit_quantity": 1,
             "current_quantity": 23,
@@ -235,7 +242,7 @@
             "priority": 0,
             "notes": "Vendor: \nDescription: "
         },
-        "3/4\" Oak plywood": {
+        "3\/4\" Oak plywood": {
             "part_number": "",
             "unit_quantity": 1,
             "current_quantity": 11,
@@ -244,7 +251,7 @@
             "priority": 0,
             "notes": "Vendor: \nDescription: "
         },
-        "3/8\" Treated Plywood": {
+        "3\/8\" Treated Plywood": {
             "part_number": "",
             "unit_quantity": 1,
             "current_quantity": 5,
