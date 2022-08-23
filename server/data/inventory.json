@@ -3700,6 +3700,23 @@
             "latest_change_use_exchange_price": "Item added\nItsme\nAugust 18 Thursday 2022 09-52-11 AM",
             "latest_change_priority": "Item added\nItsme\nAugust 18 Thursday 2022 09-52-11 AM",
             "latest_change_notes": "Item added\nItsme\nAugust 18 Thursday 2022 09-52-11 AM"
+        },
+        "1\" Street Elbow- 90 ": {
+            "part_number": "1SE9",
+            "unit_quantity": 4,
+            "current_quantity": 25,
+            "price": 3.25,
+            "use_exchange_rate": false,
+            "priority": 0,
+            "notes": "Vendor: GreenLine Hose and Fittings\nDescription: ",
+            "latest_change_name": "Item added\nItsme\nAugust 23 Tuesday 2022 02-46-23 PM",
+            "latest_change_part_number": "Item added\nItsme\nAugust 23 Tuesday 2022 02-46-23 PM",
+            "latest_change_unit_quantity": "Item added\nItsme\nAugust 23 Tuesday 2022 02-46-23 PM",
+            "latest_change_current_quantity": "Item added\nItsme\nAugust 23 Tuesday 2022 02-46-23 PM",
+            "latest_change_price": "Item added\nItsme\nAugust 23 Tuesday 2022 02-46-23 PM",
+            "latest_change_use_exchange_price": "Item added\nItsme\nAugust 23 Tuesday 2022 02-46-23 PM",
+            "latest_change_priority": "Item added\nItsme\nAugust 23 Tuesday 2022 02-46-23 PM",
+            "latest_change_notes": "Item added\nItsme\nAugust 23 Tuesday 2022 02-46-23 PM"
         }
     },
     "BL 28": {
