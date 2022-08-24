@@ -1464,7 +1464,7 @@
             "latest_change_notes": "Item added\nItsme\nJuly 08 Friday 2022 09-12-32 AM"
         },
         "Eon Motor 1\/3 HP 5660": {
-            "part_number": "5660",
+            "part_number": "5SAB39DLV5000-P",
             "unit_quantity": 1,
             "current_quantity": 26,
             "price": 325.0,
@@ -1472,7 +1472,7 @@
             "priority": 0,
             "notes": "Vendor: Rantec\nDescription: ",
             "latest_change_name": "Item added\nItsme\nAugust 22 Monday 2022 03-39-33 PM",
-            "latest_change_part_number": "Item added\nItsme\nAugust 22 Monday 2022 03-39-33 PM",
+            "latest_change_part_number": "Latest Change:\nfrom: 5SAB39DLV5000-\nto: 5SAB39DLV5000-P\nItsme\nAugust 24 Wednesday 2022 01:13:27 PM",
             "latest_change_unit_quantity": "Item added\nItsme\nAugust 22 Monday 2022 03-39-33 PM",
             "latest_change_current_quantity": "Latest Change:\nfrom: 26\nto: 26\nItsme\nAugust 23 Tuesday 2022 03:01:06 PM",
             "latest_change_price": "Item added\nItsme\nAugust 22 Monday 2022 03-39-33 PM",
