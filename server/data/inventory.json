@@ -1277,15 +1277,15 @@
         "Grundfos 26-99FC 115V 9H": {
             "part_number": "26-99FC",
             "unit_quantity": 1,
-            "current_quantity": 8,
-            "price": 264.0,
+            "current_quantity": 104,
+            "price": 169.7,
             "use_exchange_rate": false,
             "priority": 0,
             "notes": "Vendor: Grundfos Canada\nDescription: ",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 8\nto: 8\nItsme\nAugust 23 Tuesday 2022 03:01:04 PM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 104\nto: 104\nItsme\nAugust 25 Thursday 2022 01:21:42 PM",
             "latest_change_name": "Latest Change:\nfrom: \"Grundfos 2-99FC 115V 9H\"\nto: \"Grundfos 26-99FC 115V 9H\"\nItsme\nJuly 20 Wednesday 2022 10:19:33 AM",
             "latest_change_part_number": "Latest Change:\nfrom: 26-9FC\nto: 26-99FC\nItsme\nJuly 20 Wednesday 2022 10:20:02 AM",
-            "latest_change_price": "Latest Change:\nfrom: 26.0\nto: 264.0\nItsme\nJuly 20 Wednesday 2022 10:25:03 AM"
+            "latest_change_price": "Latest Change:\nfrom: 169.0\nto: 169.7\nItsme\nAugust 25 Thursday 2022 01:22:27 PM"
         },
         "3\" Thermax SF- 600 Brick Slabs 1000x610x75": {
             "part_number": "THERMAXSF600",
