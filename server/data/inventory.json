@@ -4390,22 +4390,22 @@
             "latest_change_priority": "Item added\nItsme\nAugust 04 Thursday 2022 10-19-53 AM",
             "latest_change_notes": "Item added\nItsme\nAugust 04 Thursday 2022 10-19-53 AM"
         },
-        "2840 Wood Brick Set": {
-            "part_number": "2840S",
+        "BL 28 Wood Brick Set": {
+            "part_number": "BL28W",
             "unit_quantity": 1,
-            "current_quantity": 10,
+            "current_quantity": 3,
             "price": 561.5,
             "use_exchange_rate": false,
             "priority": 0,
-            "notes": "Vendor: Reftech\nDescription: ",
-            "latest_change_name": "Latest Change:\nfrom: \"BL28 Shaker Brick Set\"\nto: \"BL 28 Shaker Brick Set\"\nItsme\nAugust 26 Friday 2022 08:32:42 AM",
-            "latest_change_part_number": "Latest Change:\nfrom: 2840\nto: 2840S\nItsme\nAugust 26 Friday 2022 08:35:21 AM",
-            "latest_change_unit_quantity": "Item added\nItsme\nJuly 29 Friday 2022 01-41-31 PM",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 10\nto: 10\nItsme\nAugust 26 Friday 2022 08:36:02 AM",
-            "latest_change_price": "Latest Change:\nfrom: 561.0\nto: 561.5\nItsme\nJuly 29 Friday 2022 01:43:01 PM",
-            "latest_change_use_exchange_price": "Item added\nItsme\nJuly 29 Friday 2022 01-41-31 PM",
-            "latest_change_priority": "Item added\nItsme\nJuly 29 Friday 2022 01-41-31 PM",
-            "latest_change_notes": "Item added\nItsme\nJuly 29 Friday 2022 01-41-31 PM"
+            "notes": "Vendor: Reftec\nDescription: ",
+            "latest_change_name": "Item added\nItsme\nAugust 26 Friday 2022 08-37-24 AM",
+            "latest_change_part_number": "Item added\nItsme\nAugust 26 Friday 2022 08-37-24 AM",
+            "latest_change_unit_quantity": "Item added\nItsme\nAugust 26 Friday 2022 08-37-24 AM",
+            "latest_change_current_quantity": "Item added\nItsme\nAugust 26 Friday 2022 08-37-24 AM",
+            "latest_change_price": "Item added\nItsme\nAugust 26 Friday 2022 08-37-24 AM",
+            "latest_change_use_exchange_price": "Item added\nItsme\nAugust 26 Friday 2022 08-37-24 AM",
+            "latest_change_priority": "Item added\nItsme\nAugust 26 Friday 2022 08-37-24 AM",
+            "latest_change_notes": "Item added\nItsme\nAugust 26 Friday 2022 08-37-24 AM"
         },
         "383 Blower Fan\/ 1523 blower Fan": {
             "part_number": "383bf",
