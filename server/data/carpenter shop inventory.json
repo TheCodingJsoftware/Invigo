@@ -280,7 +280,7 @@
         "16\" Coffin": {
             "part_number": "16c",
             "unit_quantity": 1,
-            "current_quantity": 49,
+            "current_quantity": 1,
             "price": 1500.0,
             "use_exchange_rate": false,
             "priority": 0,
@@ -291,7 +291,7 @@
         "20\" Coffin": {
             "part_number": "20c",
             "unit_quantity": 1,
-            "current_quantity": 49,
+            "current_quantity": 1,
             "price": 1500.0,
             "use_exchange_rate": false,
             "priority": 0,
@@ -302,7 +302,7 @@
         "22\" Coffin": {
             "part_number": "22c",
             "unit_quantity": 1,
-            "current_quantity": 49,
+            "current_quantity": 1,
             "price": 1500.0,
             "use_exchange_rate": false,
             "priority": 0,
@@ -313,7 +313,7 @@
         "24\" Coffin": {
             "part_number": "14c",
             "unit_quantity": 1,
-            "current_quantity": 49,
+            "current_quantity": 1,
             "price": 1500.0,
             "use_exchange_rate": false,
             "priority": 0,
@@ -324,7 +324,7 @@
         "26\" Coffin": {
             "part_number": "26c",
             "unit_quantity": 1,
-            "current_quantity": 49,
+            "current_quantity": 1,
             "price": 1500.0,
             "use_exchange_rate": false,
             "priority": 0,
@@ -335,7 +335,7 @@
         "28\" Coffin": {
             "part_number": "28c",
             "unit_quantity": 1,
-            "current_quantity": 49,
+            "current_quantity": 1,
             "price": 1500.0,
             "use_exchange_rate": false,
             "priority": 0,
@@ -346,7 +346,7 @@
         "18\" Coffin (Small)": {
             "part_number": "18sc",
             "unit_quantity": 1,
-            "current_quantity": 49,
+            "current_quantity": 1,
             "price": 1500.0,
             "use_exchange_rate": false,
             "priority": 0,
@@ -357,7 +357,7 @@
         "18\" Coffin (Big)": {
             "part_number": "18bc",
             "unit_quantity": 1,
-            "current_quantity": 49,
+            "current_quantity": 1,
             "price": 1500.0,
             "use_exchange_rate": false,
             "priority": 0,
@@ -401,24 +401,26 @@
             "latest_change_part_number": "Latest Change:\nfrom: 3mmwhit\nto: 3mmwhite\nJoseph\nAugust 27 Saturday 2022 02:58:36 PM"
         },
         "0.5mm Brown Woodgrain": {
-            "part_number": "",
+            "part_number": "0.5mmwg",
             "unit_quantity": 1,
             "current_quantity": 51,
             "price": 0.0,
             "use_exchange_rate": false,
             "priority": 0,
             "notes": "Vendor: \nDescription: ",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 51\nto: 51\nJoseph\nAugust 25 Thursday 2022 09:44:23 AM"
+            "latest_change_current_quantity": "Latest Change:\nfrom: 51\nto: 51\nJoseph\nAugust 25 Thursday 2022 09:44:23 AM",
+            "latest_change_part_number": "Latest Change:\nfrom: 0.5mmw\nto: 0.5mmwg\nJoseph\nAugust 27 Saturday 2022 02:58:45 PM"
         },
         "1mm Maple": {
-            "part_number": "",
+            "part_number": "1mmmaple",
             "unit_quantity": 1,
             "current_quantity": 53,
             "price": 0.0,
             "use_exchange_rate": false,
             "priority": 0,
             "notes": "Vendor: \nDescription: ",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 53\nto: 53\nJoseph\nAugust 25 Thursday 2022 09:44:23 AM"
+            "latest_change_current_quantity": "Latest Change:\nfrom: 53\nto: 53\nJoseph\nAugust 25 Thursday 2022 09:44:23 AM",
+            "latest_change_part_number": "Latest Change:\nfrom: 1mmmapl\nto: 1mmmaple\nJoseph\nAugust 27 Saturday 2022 02:58:49 PM"
         }
     }
 }
