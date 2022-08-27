@@ -127,54 +127,59 @@
     },
     "Shed": {
         "Insulation": {
-            "part_number": "",
+            "part_number": "ins",
             "unit_quantity": 1,
             "current_quantity": 53,
             "price": 0.0,
             "use_exchange_rate": false,
             "priority": 0,
             "notes": "Vendor: \nDescription: White",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 53\nto: 53\nJoseph\nAugust 25 Thursday 2022 09:44:22 AM"
+            "latest_change_current_quantity": "Latest Change:\nfrom: 53\nto: 53\nJoseph\nAugust 25 Thursday 2022 09:44:22 AM",
+            "latest_change_part_number": "Latest Change:\nfrom: in\nto: ins\nJoseph\nAugust 27 Saturday 2022 02:56:07 PM"
         },
         "12\" Pieres": {
-            "part_number": "",
+            "part_number": "12pi",
             "unit_quantity": 1,
             "current_quantity": 52,
             "price": 0.0,
             "use_exchange_rate": false,
             "priority": 0,
             "notes": "Vendor: \nDescription: ",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 52\nto: 52\nJoseph\nAugust 25 Thursday 2022 09:44:22 AM"
+            "latest_change_current_quantity": "Latest Change:\nfrom: 52\nto: 52\nJoseph\nAugust 25 Thursday 2022 09:44:22 AM",
+            "latest_change_part_number": "Latest Change:\nfrom: 12p\nto: 12pi\nJoseph\nAugust 27 Saturday 2022 02:56:10 PM"
         },
         "10\" Pieres": {
-            "part_number": "",
+            "part_number": "10pi",
             "unit_quantity": 1,
             "current_quantity": 49,
             "price": 0.0,
             "use_exchange_rate": false,
             "priority": 0,
             "notes": "Vendor: \nDescription: ",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 49\nto: 49\nJoseph\nAugust 25 Thursday 2022 09:44:22 AM"
+            "latest_change_current_quantity": "Latest Change:\nfrom: 49\nto: 49\nJoseph\nAugust 25 Thursday 2022 09:44:22 AM",
+            "latest_change_part_number": "Latest Change:\nfrom: 10p\nto: 10pi\nJoseph\nAugust 27 Saturday 2022 02:56:17 PM"
         },
         "12\" Pieres (Short)": {
-            "part_number": "",
+            "part_number": "12pi",
             "unit_quantity": 1,
             "current_quantity": 57,
             "price": 0.0,
             "use_exchange_rate": false,
             "priority": 0,
             "notes": "Vendor: \nDescription: 33\" Long",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 57\nto: 57\nJoseph\nAugust 25 Thursday 2022 09:44:22 AM"
+            "latest_change_current_quantity": "Latest Change:\nfrom: 57\nto: 57\nJoseph\nAugust 25 Thursday 2022 09:44:22 AM",
+            "latest_change_part_number": "Latest Change:\nfrom: 12pis\nto: 12pi\nJoseph\nAugust 27 Saturday 2022 02:56:27 PM"
         },
         "40mm Pieres": {
-            "part_number": "",
+            "part_number": "40",
             "unit_quantity": 1,
             "current_quantity": 49,
             "price": 0.0,
             "use_exchange_rate": false,
             "priority": 0,
             "notes": "Vendor: \nDescription: ",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 49\nto: 49\nJoseph\nAugust 25 Thursday 2022 09:44:22 AM"
+            "latest_change_current_quantity": "Latest Change:\nfrom: 49\nto: 49\nJoseph\nAugust 25 Thursday 2022 09:44:22 AM",
+            "latest_change_part_number": "Latest Change:\nfrom: 40n\nto: 40\nJoseph\nAugust 27 Saturday 2022 02:56:31 PM"
         }
     },
     "Sheet Bundles": {
