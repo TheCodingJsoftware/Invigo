@@ -11,7 +11,7 @@
             "latest_change_current_quantity": "Latest Change:\nfrom: -18.0\nto: -18\nItsme\nAugust 23 Tuesday 2022 03:01:03 PM"
         },
         "Float Clamp  G1SS-11.3 7\/16 One Ear Stainless": {
-            "part_number": "",
+            "part_number": "G1SS-11.3",
             "unit_quantity": 1,
             "current_quantity": -10,
             "price": 0.0,
@@ -19,7 +19,7 @@
             "priority": 0,
             "notes": "Vendor: \nDescription: ",
             "latest_change_name": "Item added\nItsme\nAugust 18 Thursday 2022 09-53-26 AM",
-            "latest_change_part_number": "Item added\nItsme\nAugust 18 Thursday 2022 09-53-26 AM",
+            "latest_change_part_number": "Latest Change:\nfrom: \nto: G1SS-11.3\nItsme\nAugust 29 Monday 2022 03:41:06 PM",
             "latest_change_unit_quantity": "Item added\nItsme\nAugust 18 Thursday 2022 09-53-26 AM",
             "latest_change_current_quantity": "Latest Change:\nfrom: -10\nto: -10\nItsme\nAugust 23 Tuesday 2022 03:01:06 PM",
             "latest_change_price": "Item added\nItsme\nAugust 18 Thursday 2022 09-53-26 AM",
@@ -1170,7 +1170,7 @@
             "latest_change_current_quantity": "Latest Change:\nfrom: -18\nto: -18\nItsme\nAugust 23 Tuesday 2022 03:01:03 PM"
         },
         "Float Clamp  G1SS-11.3 7\/16 One Ear Stainless": {
-            "part_number": "",
+            "part_number": "G1SS-11.3",
             "unit_quantity": 1,
             "current_quantity": -10,
             "price": 0.0,
@@ -1178,7 +1178,7 @@
             "priority": 0,
             "notes": "Vendor: \nDescription: ",
             "latest_change_name": "Item added\nItsme\nAugust 18 Thursday 2022 09-53-15 AM",
-            "latest_change_part_number": "Item added\nItsme\nAugust 18 Thursday 2022 09-53-15 AM",
+            "latest_change_part_number": "Latest Change:\nfrom: \nto: G1SS-11.3\nItsme\nAugust 29 Monday 2022 03:40:55 PM",
             "latest_change_unit_quantity": "Item added\nItsme\nAugust 18 Thursday 2022 09-53-15 AM",
             "latest_change_current_quantity": "Latest Change:\nfrom: -10\nto: -10\nItsme\nAugust 23 Tuesday 2022 03:01:05 PM",
             "latest_change_price": "Item added\nItsme\nAugust 18 Thursday 2022 09-53-15 AM",
@@ -1273,19 +1273,6 @@
             "latest_change_use_exchange_price": "Item added\nItsme\nJuly 07 Thursday 2022 11-27-45 AM",
             "latest_change_priority": "Item added\nItsme\nJuly 07 Thursday 2022 11-27-45 AM",
             "latest_change_notes": "Latest Change:\nfrom: \"Vendor: Mc Master Car\nDescription: \"\nto: \"Vendor: Mc Master Carr\nDescription: \"\nItsme\nJuly 18 Monday 2022 02:01:12 PM"
-        },
-        "Grundfos 26-99FC 115V 9H": {
-            "part_number": "26-99FC",
-            "unit_quantity": 1,
-            "current_quantity": 104,
-            "price": 169.7,
-            "use_exchange_rate": false,
-            "priority": 0,
-            "notes": "Vendor: Grundfos Canada\nDescription: ",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 104\nto: 104\nItsme\nAugust 25 Thursday 2022 01:21:42 PM",
-            "latest_change_name": "Latest Change:\nfrom: \"Grundfos 2-99FC 115V 9H\"\nto: \"Grundfos 26-99FC 115V 9H\"\nItsme\nJuly 20 Wednesday 2022 10:19:33 AM",
-            "latest_change_part_number": "Latest Change:\nfrom: 26-9FC\nto: 26-99FC\nItsme\nJuly 20 Wednesday 2022 10:20:02 AM",
-            "latest_change_price": "Latest Change:\nfrom: 169.0\nto: 169.7\nItsme\nAugust 25 Thursday 2022 01:22:27 PM"
         },
         "3\" Thermax SF- 600 Brick Slabs 1000x610x75": {
             "part_number": "THERMAXSF600",
@@ -1887,6 +1874,19 @@
             "latest_change_use_exchange_price": "Item added\nItsme\nJuly 19 Tuesday 2022 07-10-49 PM",
             "latest_change_priority": "Item added\nItsme\nJuly 19 Tuesday 2022 07-10-49 PM",
             "latest_change_notes": "Item added\nItsme\nJuly 19 Tuesday 2022 07-10-49 PM"
+        },
+        "Grundfos 26-99FC 115V 9H": {
+            "part_number": "26-99FC",
+            "unit_quantity": 1,
+            "current_quantity": 104,
+            "price": 169.7,
+            "use_exchange_rate": false,
+            "priority": 0,
+            "notes": "Vendor: Grundfos Canada\nDescription: ",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 104\nto: 104\nItsme\nAugust 25 Thursday 2022 01:21:42 PM",
+            "latest_change_name": "Latest Change:\nfrom: \"Grundfos 2-99FC 115V 9H\"\nto: \"Grundfos 26-99FC 115V 9H\"\nItsme\nJuly 20 Wednesday 2022 10:19:33 AM",
+            "latest_change_part_number": "Latest Change:\nfrom: 26-9FC\nto: 26-99FC\nItsme\nJuly 20 Wednesday 2022 10:20:02 AM",
+            "latest_change_price": "Latest Change:\nfrom: 169.0\nto: 169.7\nItsme\nAugust 25 Thursday 2022 01:22:27 PM"
         },
         "Sticker  319  easy Sweep": {
             "part_number": "319",
