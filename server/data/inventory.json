@@ -1169,23 +1169,6 @@
             "notes": "Vendor: BrockWhite\nevandenberg@brockwhite.com\n",
             "latest_change_current_quantity": "Latest Change:\nfrom: -18\nto: -18\nItsme\nAugust 23 Tuesday 2022 03:01:03 PM"
         },
-        "Float Clamp  G1SS-11.3 7\/16 One Ear Stainless": {
-            "part_number": "G1SS-11.3",
-            "unit_quantity": 1,
-            "current_quantity": -10,
-            "price": 0.25,
-            "use_exchange_rate": false,
-            "priority": 0,
-            "notes": "Vendor: \nDescription: ",
-            "latest_change_name": "Item added\nItsme\nAugust 18 Thursday 2022 09-53-15 AM",
-            "latest_change_part_number": "Latest Change:\nfrom: \nto: G1SS-11.3\nItsme\nAugust 29 Monday 2022 03:40:55 PM",
-            "latest_change_unit_quantity": "Item added\nItsme\nAugust 18 Thursday 2022 09-53-15 AM",
-            "latest_change_current_quantity": "Latest Change:\nfrom: -10\nto: -10\nItsme\nAugust 23 Tuesday 2022 03:01:05 PM",
-            "latest_change_price": "Latest Change:\nfrom: 0.25\nto: 0.25\nItsme\nAugust 29 Monday 2022 03:42:18 PM",
-            "latest_change_use_exchange_price": "Item added\nItsme\nAugust 18 Thursday 2022 09-53-15 AM",
-            "latest_change_priority": "Item added\nItsme\nAugust 18 Thursday 2022 09-53-15 AM",
-            "latest_change_notes": "Item added\nItsme\nAugust 18 Thursday 2022 09-53-15 AM"
-        },
         "1\"x25\"x48\" FSK 300 Certainteed Insulation": {
             "part_number": "FSK1",
             "unit_quantity": 2,
@@ -1222,23 +1205,6 @@
             "priority": 0,
             "notes": "Vendor: Piney MFG\nDescription: ",
             "latest_change_current_quantity": "Latest Change:\nfrom: -4\nto: -4\nItsme\nAugust 23 Tuesday 2022 03:01:03 PM"
-        },
-        "3\/4 Hose to Pipe Double male Adaptor": {
-            "part_number": "htp34",
-            "unit_quantity": 1,
-            "current_quantity": 75,
-            "price": 2.67,
-            "use_exchange_rate": false,
-            "priority": 0,
-            "notes": "Vendor: GreenLine Hose and Fittings\nDescription: ",
-            "latest_change_name": "Item added\nItsme\nAugust 17 Wednesday 2022 09-45-09 AM",
-            "latest_change_part_number": "Item added\nItsme\nAugust 17 Wednesday 2022 09-45-09 AM",
-            "latest_change_unit_quantity": "Item added\nItsme\nAugust 17 Wednesday 2022 09-45-09 AM",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 75\nto: 75\nItsme\nAugust 29 Monday 2022 03:45:05 PM",
-            "latest_change_price": "Latest Change:\nfrom: 2.67\nto: 2.67\nItsme\nAugust 29 Monday 2022 03:45:19 PM",
-            "latest_change_use_exchange_price": "Item added\nItsme\nAugust 17 Wednesday 2022 09-45-09 AM",
-            "latest_change_priority": "Item added\nItsme\nAugust 17 Wednesday 2022 09-45-09 AM",
-            "latest_change_notes": "Item added\nItsme\nAugust 17 Wednesday 2022 09-45-09 AM"
         },
         "Vapor Thermometer": {
             "part_number": "20UB8-220FC-4111-03FT                        ",
@@ -1728,6 +1694,23 @@
             "latest_change_use_exchange_price": "Item added\nItsme\nJuly 12 Tuesday 2022 09-29-24 AM",
             "latest_change_priority": "Item added\nItsme\nJuly 12 Tuesday 2022 09-29-24 AM",
             "latest_change_notes": "Item added\nItsme\nJuly 12 Tuesday 2022 09-29-24 AM"
+        },
+        "3\/4 Hose to Pipe Double male Adaptor": {
+            "part_number": "htp34",
+            "unit_quantity": 1,
+            "current_quantity": 75,
+            "price": 2.67,
+            "use_exchange_rate": false,
+            "priority": 0,
+            "notes": "Vendor: GreenLine Hose and Fittings\nDescription: ",
+            "latest_change_name": "Item added\nItsme\nAugust 17 Wednesday 2022 09-45-09 AM",
+            "latest_change_part_number": "Item added\nItsme\nAugust 17 Wednesday 2022 09-45-09 AM",
+            "latest_change_unit_quantity": "Item added\nItsme\nAugust 17 Wednesday 2022 09-45-09 AM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 75\nto: 75\nItsme\nAugust 29 Monday 2022 03:45:05 PM",
+            "latest_change_price": "Latest Change:\nfrom: 2.67\nto: 2.67\nItsme\nAugust 29 Monday 2022 03:45:19 PM",
+            "latest_change_use_exchange_price": "Item added\nItsme\nAugust 17 Wednesday 2022 09-45-09 AM",
+            "latest_change_priority": "Item added\nItsme\nAugust 17 Wednesday 2022 09-45-09 AM",
+            "latest_change_notes": "Item added\nItsme\nAugust 17 Wednesday 2022 09-45-09 AM"
         },
         "Sticker 308 CSA Polar G2 10\"x 6\" Silver Foil ": {
             "part_number": "308",
@@ -2258,6 +2241,23 @@
             "latest_change_use_exchange_price": "Item added\nItsme\nJuly 19 Tuesday 2022 03-54-38 PM",
             "latest_change_priority": "Item added\nItsme\nJuly 19 Tuesday 2022 03-54-38 PM",
             "latest_change_notes": "Item added\nItsme\nJuly 19 Tuesday 2022 03-54-38 PM"
+        },
+        "Float Clamp  G1SS-11.3 7\/16 One Ear Stainless": {
+            "part_number": "G1SS-11.3",
+            "unit_quantity": 1,
+            "current_quantity": 227,
+            "price": 0.25,
+            "use_exchange_rate": false,
+            "priority": 0,
+            "notes": "Vendor: GreenLine Hose and Fittings\nDescription: ",
+            "latest_change_name": "Item added\nItsme\nAugust 29 Monday 2022 03-46-48 PM",
+            "latest_change_part_number": "Item added\nItsme\nAugust 29 Monday 2022 03-46-48 PM",
+            "latest_change_unit_quantity": "Item added\nItsme\nAugust 29 Monday 2022 03-46-48 PM",
+            "latest_change_current_quantity": "Item added\nItsme\nAugust 29 Monday 2022 03-46-48 PM",
+            "latest_change_price": "Item added\nItsme\nAugust 29 Monday 2022 03-46-48 PM",
+            "latest_change_use_exchange_price": "Item added\nItsme\nAugust 29 Monday 2022 03-46-48 PM",
+            "latest_change_priority": "Item added\nItsme\nAugust 29 Monday 2022 03-46-48 PM",
+            "latest_change_notes": "Item added\nItsme\nAugust 29 Monday 2022 03-46-48 PM"
         }
     },
     "Polar G2+": {
