@@ -108,7 +108,7 @@
         "1-1\/4 Half Coupling": {
             "part_number": "G0008MC-125",
             "unit_quantity": 1,
-            "current_quantity": 16,
+            "current_quantity": 50,
             "price": 2.0,
             "use_exchange_rate": false,
             "priority": 0,
@@ -116,7 +116,7 @@
             "latest_change_name": "Item added\nItsme\nJuly 07 Thursday 2022 10-23-19 AM",
             "latest_change_part_number": "Item added\nItsme\nJuly 07 Thursday 2022 10-23-19 AM",
             "latest_change_unit_quantity": "Item added\nItsme\nJuly 07 Thursday 2022 10-23-19 AM",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 16\nto: 16\nItsme\nAugust 23 Tuesday 2022 03:01:03 PM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 50\nto: 50\nItsme\nSeptember 03 Saturday 2022 10:08:44 AM",
             "latest_change_price": "Latest Change:\nfrom: 0.0\nto: 2.0\nItsme\nJuly 07 Thursday 2022 11:22:08 AM",
             "latest_change_use_exchange_price": "Item added\nItsme\nJuly 07 Thursday 2022 10-23-19 AM",
             "latest_change_priority": "Item added\nItsme\nJuly 07 Thursday 2022 10-23-19 AM",
@@ -1267,7 +1267,7 @@
         "1-1\/4 Half Coupling": {
             "part_number": "G0008MC-125",
             "unit_quantity": 1,
-            "current_quantity": 16,
+            "current_quantity": 50,
             "price": 2.0,
             "use_exchange_rate": false,
             "priority": 0,
@@ -1275,7 +1275,7 @@
             "latest_change_name": "Item added\nItsme\nJuly 07 Thursday 2022 10-23-19 AM",
             "latest_change_part_number": "Item added\nItsme\nJuly 07 Thursday 2022 10-23-19 AM",
             "latest_change_unit_quantity": "Item added\nItsme\nJuly 07 Thursday 2022 10-23-19 AM",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 16\nto: 16\nItsme\nAugust 23 Tuesday 2022 03:01:03 PM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 50\nto: 50\nItsme\nSeptember 03 Saturday 2022 10:08:44 AM",
             "latest_change_price": "Latest Change:\nfrom: 0.0\nto: 2.0\nItsme\nJuly 07 Thursday 2022 11:22:08 AM",
             "latest_change_use_exchange_price": "Item added\nItsme\nJuly 07 Thursday 2022 10-23-19 AM",
             "latest_change_priority": "Item added\nItsme\nJuly 07 Thursday 2022 10-23-19 AM",
@@ -2257,13 +2257,14 @@
         },
         "1\"x25\"x48\" FSK 300 Certainteed Insulation": {
             "part_number": "FSK1",
-            "unit_quantity": 2,
+            "unit_quantity": 0,
             "current_quantity": -8,
             "price": 8.8,
             "use_exchange_rate": false,
             "priority": 0,
             "notes": "Vendor: BrockWhite\nDescription: \nevandenberg@brockwhite.com",
-            "latest_change_current_quantity": "Latest Change:\nfrom: -8\nto: -8\nItsme\nAugust 23 Tuesday 2022 03:01:03 PM"
+            "latest_change_current_quantity": "Latest Change:\nfrom: -8\nto: -8\nItsme\nAugust 23 Tuesday 2022 03:01:03 PM",
+            "latest_change_unit_quantity": "Latest Change:\nfrom: 0\nto: 0\nItsme\nSeptember 03 Saturday 2022 10:09:11 AM"
         },
         "G3 Brick Set": {
             "part_number": "G3BS",
@@ -2352,7 +2353,7 @@
         "1-1\/4 Half Coupling": {
             "part_number": "G0008MC-125",
             "unit_quantity": 1,
-            "current_quantity": 16,
+            "current_quantity": 50,
             "price": 2.0,
             "use_exchange_rate": false,
             "priority": 0,
@@ -2360,7 +2361,7 @@
             "latest_change_name": "Item added\nItsme\nJuly 07 Thursday 2022 10-23-19 AM",
             "latest_change_part_number": "Item added\nItsme\nJuly 07 Thursday 2022 10-23-19 AM",
             "latest_change_unit_quantity": "Item added\nItsme\nJuly 07 Thursday 2022 10-23-19 AM",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 16\nto: 16\nItsme\nAugust 23 Tuesday 2022 03:01:03 PM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 50\nto: 50\nItsme\nSeptember 03 Saturday 2022 10:08:44 AM",
             "latest_change_price": "Latest Change:\nfrom: 0.0\nto: 2.0\nItsme\nJuly 07 Thursday 2022 11:22:08 AM",
             "latest_change_use_exchange_price": "Item added\nItsme\nJuly 07 Thursday 2022 10-23-19 AM",
             "latest_change_priority": "Item added\nItsme\nJuly 07 Thursday 2022 10-23-19 AM",
@@ -3928,7 +3929,7 @@
         "1-1\/4 Half Coupling": {
             "part_number": "G0008MC-125",
             "unit_quantity": 1,
-            "current_quantity": 16,
+            "current_quantity": 50,
             "price": 2.0,
             "use_exchange_rate": false,
             "priority": 0,
@@ -3936,7 +3937,7 @@
             "latest_change_name": "Item added\nItsme\nAugust 04 Thursday 2022 09-05-57 AM",
             "latest_change_part_number": "Item added\nItsme\nAugust 04 Thursday 2022 09-05-57 AM",
             "latest_change_unit_quantity": "Item added\nItsme\nAugust 04 Thursday 2022 09-05-57 AM",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 16\nto: 16\nItsme\nAugust 23 Tuesday 2022 03:01:03 PM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 50\nto: 50\nItsme\nSeptember 03 Saturday 2022 10:08:44 AM",
             "latest_change_price": "Item added\nItsme\nAugust 04 Thursday 2022 09-05-57 AM",
             "latest_change_use_exchange_price": "Item added\nItsme\nAugust 04 Thursday 2022 09-05-57 AM",
             "latest_change_priority": "Item added\nItsme\nAugust 04 Thursday 2022 09-05-57 AM",
