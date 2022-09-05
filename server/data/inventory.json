@@ -1578,9 +1578,10 @@
             "current_quantity": 41,
             "price": 63.0,
             "use_exchange_rate": false,
-            "priority": 0,
+            "priority": 3,
             "notes": "Vendor: Jan-Air Illinois\nDescription: ",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 41\nto: 41\nItsme\nAugust 23 Tuesday 2022 03:01:04 PM"
+            "latest_change_current_quantity": "Latest Change:\nfrom: 41\nto: 41\nItsme\nAugust 23 Tuesday 2022 03:01:04 PM",
+            "latest_change_priority": "Latest Change:\nfrom: 0\nto: 3\nItsme\nSeptember 05 Monday 2022 09:49:27 AM"
         },
         "6L24 ASHT 6\"X24\" Section": {
             "part_number": "6L24",
