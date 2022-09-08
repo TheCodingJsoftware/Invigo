@@ -55,23 +55,6 @@
             "latest_change_priority": "Item added\nItsme\nJuly 07 Thursday 2022 11-27-45 AM",
             "latest_change_notes": "Latest Change:\nfrom: \"Vendor: Mc Master Car\nDescription: \"\nto: \"Vendor: Mc Master Carr\nDescription: \"\nItsme\nJuly 18 Monday 2022 02:01:12 PM"
         },
-        " L-HANDLE LATCH ASSEMBLY, BLACK PLASTIC HANDLE, WITH STAMPED CAM": {
-            "part_number": " 1153-01",
-            "unit_quantity": 1,
-            "current_quantity": 71,
-            "price": 12.35,
-            "use_exchange_rate": false,
-            "priority": 0,
-            "notes": "Vendor: Sierra Pacific\nDescription: ",
-            "latest_change_name": "Item added\nItsme\nJuly 08 Friday 2022 09-12-31 AM",
-            "latest_change_part_number": "Item added\nItsme\nJuly 08 Friday 2022 09-12-31 AM",
-            "latest_change_unit_quantity": "Item added\nItsme\nJuly 08 Friday 2022 09-12-31 AM",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 71\nto: 71\nItsme\nSeptember 07 Wednesday 2022 08:40:09 AM",
-            "latest_change_price": "Latest Change:\nfrom: 12.35\nto: 12.35\nItsme\nAugust 31 Wednesday 2022 08:22:24 AM",
-            "latest_change_use_exchange_price": "Item added\nItsme\nJuly 08 Friday 2022 09-12-32 AM",
-            "latest_change_priority": "Item added\nItsme\nJuly 08 Friday 2022 09-12-32 AM",
-            "latest_change_notes": "Item added\nItsme\nJuly 08 Friday 2022 09-12-32 AM"
-        },
         "3\" Thermax SF- 600 Brick Slabs 1000x610x75": {
             "part_number": "THERMAXSF600",
             "unit_quantity": 1,
@@ -91,9 +74,9 @@
             "price": 2.75,
             "use_exchange_rate": false,
             "priority": 0,
-            "notes": "Vendor: Miljoco Corp\nDescription: ",
+            "notes": "Vendor: Miljoco Corp or Macmaster carr\nDescription: ",
             "latest_change_current_quantity": "Latest Change:\nfrom: 12\nto: 12\nItsme\nAugust 23 Tuesday 2022 03:01:04 PM",
-            "latest_change_notes": "Latest Change:\nfrom: \"Vendor: Miljoco Cor\nDescription: \"\nto: \"Vendor: Miljoco Corp\nDescription: \"\nItsme\nAugust 12 Friday 2022 09:57:00 AM"
+            "latest_change_notes": "Latest Change:\nfrom: \"Vendor: Miljoco Corp or Macmaster car\nDescription: \"\nto: \"Vendor: Miljoco Corp or Macmaster carr\nDescription: \"\nItsme\nSeptember 08 Thursday 2022 10:48:55 AM"
         },
         "WeatherStripping NDA- .5\" x 3\/16\" x 50'": {
             "part_number": "WSNDA",
@@ -104,23 +87,6 @@
             "priority": 0,
             "notes": "Vendor: Industrial Rubber Supply\nDescription: ",
             "latest_change_current_quantity": "Latest Change:\nfrom: 16\nto: 16\nItsme\nAugust 23 Tuesday 2022 03:01:04 PM"
-        },
-        "1-1\/4 Half Coupling": {
-            "part_number": "G0008MC-125",
-            "unit_quantity": 1,
-            "current_quantity": 50,
-            "price": 2.4,
-            "use_exchange_rate": false,
-            "priority": 0,
-            "notes": "Vendor: Greenline\nDescription: 204-694-0332",
-            "latest_change_name": "Item added\nItsme\nJuly 07 Thursday 2022 10-23-19 AM",
-            "latest_change_part_number": "Item added\nItsme\nJuly 07 Thursday 2022 10-23-19 AM",
-            "latest_change_unit_quantity": "Item added\nItsme\nJuly 07 Thursday 2022 10-23-19 AM",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 50\nto: 50\nItsme\nSeptember 03 Saturday 2022 10:08:44 AM",
-            "latest_change_price": "Latest Change:\nfrom: 2.0\nto: 2.4\nItsme\nSeptember 03 Saturday 2022 02:45:54 PM",
-            "latest_change_use_exchange_price": "Item added\nItsme\nJuly 07 Thursday 2022 10-23-19 AM",
-            "latest_change_priority": "Item added\nItsme\nJuly 07 Thursday 2022 10-23-19 AM",
-            "latest_change_notes": "Latest Change:\nfrom: \"Vendor: Greenline\nDescription: \"\nto: \"Vendor: Greenline\nDescription: 204-694-0332\"\nItsme\nJuly 07 Thursday 2022 11:22:22 AM"
         },
         "1 1\/4 Full Port ball Valve": {
             "part_number": "114BV",
@@ -196,23 +162,6 @@
             "latest_change_use_exchange_price": "Item added\nItsme\nAugust 22 Monday 2022 03-39-14 PM",
             "latest_change_priority": "Item added\nItsme\nAugust 22 Monday 2022 03-39-14 PM",
             "latest_change_notes": "Latest Change:\nfrom: \"Vendor: Rante\nDescription: \"\nto: \"Vendor: Rantec\nDescription: \"\nItsme\nAugust 23 Tuesday 2022 02:48:48 PM"
-        },
-        "Actuator M9203-BUA-2\n": {
-            "part_number": "M9203",
-            "unit_quantity": 2,
-            "current_quantity": 88,
-            "price": 162.36,
-            "use_exchange_rate": false,
-            "priority": 0,
-            "notes": "Vendor: Johnson controle\nDescription: ",
-            "latest_change_name": "Item added\nItsme\nAugust 12 Friday 2022 11-27-27 AM",
-            "latest_change_part_number": "Item added\nItsme\nAugust 12 Friday 2022 11-27-27 AM",
-            "latest_change_unit_quantity": "Item added\nItsme\nAugust 12 Friday 2022 11-27-27 AM",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 88\nto: 88\nItsme\nSeptember 05 Monday 2022 01:12:03 PM",
-            "latest_change_price": "Item added\nItsme\nAugust 12 Friday 2022 11-27-27 AM",
-            "latest_change_use_exchange_price": "Item added\nItsme\nAugust 12 Friday 2022 11-27-27 AM",
-            "latest_change_priority": "Item added\nItsme\nAugust 12 Friday 2022 11-27-27 AM",
-            "latest_change_notes": "Item added\nItsme\nAugust 12 Friday 2022 11-27-27 AM"
         },
         "bushing 786-251 Bronze Insert Bushing ": {
             "part_number": "786-251",
@@ -421,6 +370,23 @@
             "latest_change_notes": "Latest Change:\nfrom: \"Vendor: Sierra Pacifi\nDescription: \"\nto: \"Vendor: Sierra Pacific\nDescription: \"\nItsme\nJuly 08 Friday 2022 09:06:17 AM",
             "latest_change_current_quantity": "Latest Change:\nfrom: 48\nto: 48\nItsme\nAugust 23 Tuesday 2022 03:01:04 PM"
         },
+        "1-1\/4 Half Coupling": {
+            "part_number": "G0008MC-125",
+            "unit_quantity": 1,
+            "current_quantity": 50,
+            "price": 2.4,
+            "use_exchange_rate": false,
+            "priority": 0,
+            "notes": "Vendor: Greenline\nDescription: 204-694-0332",
+            "latest_change_name": "Item added\nItsme\nJuly 07 Thursday 2022 10-23-19 AM",
+            "latest_change_part_number": "Item added\nItsme\nJuly 07 Thursday 2022 10-23-19 AM",
+            "latest_change_unit_quantity": "Item added\nItsme\nJuly 07 Thursday 2022 10-23-19 AM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 50\nto: 50\nItsme\nSeptember 03 Saturday 2022 10:08:44 AM",
+            "latest_change_price": "Latest Change:\nfrom: 2.0\nto: 2.4\nItsme\nSeptember 03 Saturday 2022 02:45:54 PM",
+            "latest_change_use_exchange_price": "Item added\nItsme\nJuly 07 Thursday 2022 10-23-19 AM",
+            "latest_change_priority": "Item added\nItsme\nJuly 07 Thursday 2022 10-23-19 AM",
+            "latest_change_notes": "Latest Change:\nfrom: \"Vendor: Greenline\nDescription: \"\nto: \"Vendor: Greenline\nDescription: 204-694-0332\"\nItsme\nJuly 07 Thursday 2022 11:22:22 AM"
+        },
         "Knob 3\/4 DIA. 7\/16 Bore. Press-On Black Phenlic Round Knob": {
             "part_number": "POK-10",
             "unit_quantity": 1,
@@ -488,6 +454,23 @@
             "latest_change_use_exchange_price": "Item added\nItsme\nJuly 12 Tuesday 2022 09-29-24 AM",
             "latest_change_priority": "Item added\nItsme\nJuly 12 Tuesday 2022 09-29-24 AM",
             "latest_change_notes": "Item added\nItsme\nJuly 12 Tuesday 2022 09-29-24 AM"
+        },
+        " L-HANDLE LATCH ASSEMBLY, BLACK PLASTIC HANDLE, WITH STAMPED CAM": {
+            "part_number": " 1153-01",
+            "unit_quantity": 1,
+            "current_quantity": 71,
+            "price": 12.35,
+            "use_exchange_rate": false,
+            "priority": 0,
+            "notes": "Vendor: Sierra Pacific\nDescription: ",
+            "latest_change_name": "Item added\nItsme\nJuly 08 Friday 2022 09-12-31 AM",
+            "latest_change_part_number": "Item added\nItsme\nJuly 08 Friday 2022 09-12-31 AM",
+            "latest_change_unit_quantity": "Item added\nItsme\nJuly 08 Friday 2022 09-12-31 AM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 71\nto: 71\nItsme\nSeptember 07 Wednesday 2022 08:40:09 AM",
+            "latest_change_price": "Latest Change:\nfrom: 12.35\nto: 12.35\nItsme\nAugust 31 Wednesday 2022 08:22:24 AM",
+            "latest_change_use_exchange_price": "Item added\nItsme\nJuly 08 Friday 2022 09-12-32 AM",
+            "latest_change_priority": "Item added\nItsme\nJuly 08 Friday 2022 09-12-32 AM",
+            "latest_change_notes": "Item added\nItsme\nJuly 08 Friday 2022 09-12-32 AM"
         },
         "3\/4 Hose to Pipe Double male Adaptor": {
             "part_number": "htp34",
@@ -604,6 +587,23 @@
             "notes": "Vendor: HC Graphic Screen Printing\nDescription: ",
             "latest_change_current_quantity": "Latest Change:\nfrom: 86\nto: 86\nItsme\nAugust 23 Tuesday 2022 03:01:05 PM",
             "latest_change_notes": "Latest Change:\nfrom: \"Vendor: HC Graphic Sreen Printing\nDescription: \"\nto: \"Vendor: HC Graphic Screen Printing\nDescription: \"\nItsme\nJuly 29 Friday 2022 04:11:20 PM"
+        },
+        "Actuator M9203-BUA-2\n": {
+            "part_number": "M9203",
+            "unit_quantity": 2,
+            "current_quantity": 88,
+            "price": 162.36,
+            "use_exchange_rate": false,
+            "priority": 0,
+            "notes": "Vendor: Johnson controle\nDescription: ",
+            "latest_change_name": "Item added\nItsme\nAugust 12 Friday 2022 11-27-27 AM",
+            "latest_change_part_number": "Item added\nItsme\nAugust 12 Friday 2022 11-27-27 AM",
+            "latest_change_unit_quantity": "Item added\nItsme\nAugust 12 Friday 2022 11-27-27 AM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 88\nto: 88\nItsme\nSeptember 05 Monday 2022 01:12:03 PM",
+            "latest_change_price": "Item added\nItsme\nAugust 12 Friday 2022 11-27-27 AM",
+            "latest_change_use_exchange_price": "Item added\nItsme\nAugust 12 Friday 2022 11-27-27 AM",
+            "latest_change_priority": "Item added\nItsme\nAugust 12 Friday 2022 11-27-27 AM",
+            "latest_change_notes": "Item added\nItsme\nAugust 12 Friday 2022 11-27-27 AM"
         },
         "Snap in Flush Pull, Large, Black Plastic, For Panel Thickness .040- .055": {
             "part_number": "91-19BK02",
@@ -805,16 +805,6 @@
             "notes": "Vendor: BrockWhite\nevandenberg@brockwhite.com\n",
             "latest_change_current_quantity": "Latest Change:\nfrom: 162\nto: 162\nItsme\nSeptember 03 Saturday 2022 08:39:13 AM"
         },
-        "6BL Chimney Cap": {
-            "part_number": "6BL",
-            "unit_quantity": 1,
-            "current_quantity": 230,
-            "price": 0.0,
-            "use_exchange_rate": false,
-            "priority": 2,
-            "notes": "Vendor: \nDescription: ",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 230\nto: 230\nItsme\nSeptember 07 Wednesday 2022 10:57:26 AM"
-        },
         "3\/8 Coupling Nut 1 3\/4 Long ": {
             "part_number": "n38134",
             "unit_quantity": 16,
@@ -860,16 +850,6 @@
             "latest_change_priority": "Item added\nItsme\nJuly 13 Wednesday 2022 09-11-15 AM",
             "latest_change_notes": "Latest Change:\nfrom: \"Vendor: A.Adams Suppl\nDescription: \"\nto: \"Vendor: A.Adams Supply\nDescription: \"\nItsme\nJuly 13 Wednesday 2022 09:11:29 AM"
         },
-        "6 FT Power Cord Nema 5-16P 3 pin": {
-            "part_number": "Nema5",
-            "unit_quantity": 1,
-            "current_quantity": 216,
-            "price": 2.75,
-            "use_exchange_rate": false,
-            "priority": 2,
-            "notes": "Vendor: \nDescription: ",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 216\nto: 216\nItsme\nAugust 23 Tuesday 2022 03:01:05 PM"
-        },
         "Float Clamp  G1SS-11.3 7\/16 One Ear Stainless": {
             "part_number": "G1SS-11.3",
             "unit_quantity": 1,
@@ -886,6 +866,26 @@
             "latest_change_use_exchange_price": "Item added\nItsme\nAugust 29 Monday 2022 03-48-06 PM",
             "latest_change_priority": "Item added\nItsme\nAugust 29 Monday 2022 03-48-06 PM",
             "latest_change_notes": "Item added\nItsme\nAugust 29 Monday 2022 03-48-06 PM"
+        },
+        "6 FT Power Cord Nema 5-16P 3 pin": {
+            "part_number": "Nema5",
+            "unit_quantity": 1,
+            "current_quantity": 216,
+            "price": 2.75,
+            "use_exchange_rate": false,
+            "priority": 2,
+            "notes": "Vendor: \nDescription: ",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 216\nto: 216\nItsme\nAugust 23 Tuesday 2022 03:01:05 PM"
+        },
+        "6BL Chimney Cap": {
+            "part_number": "6BL",
+            "unit_quantity": 1,
+            "current_quantity": 230,
+            "price": 0.0,
+            "use_exchange_rate": false,
+            "priority": 2,
+            "notes": "Vendor: \nDescription: ",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 230\nto: 230\nItsme\nSeptember 07 Wednesday 2022 10:57:26 AM"
         },
         "SCR MACH PH PHIL ZP 10-32 x 1\/2 ": {
             "part_number": "397-1032-0050",
@@ -1215,23 +1215,6 @@
             "latest_change_priority": "Item added\nItsme\nJuly 07 Thursday 2022 11-27-45 AM",
             "latest_change_notes": "Latest Change:\nfrom: \"Vendor: Mc Master Car\nDescription: \"\nto: \"Vendor: Mc Master Carr\nDescription: \"\nItsme\nJuly 18 Monday 2022 02:01:12 PM"
         },
-        " L-HANDLE LATCH ASSEMBLY, BLACK PLASTIC HANDLE, WITH STAMPED CAM": {
-            "part_number": " 1153-01",
-            "unit_quantity": 1,
-            "current_quantity": 71,
-            "price": 12.35,
-            "use_exchange_rate": false,
-            "priority": 0,
-            "notes": "Vendor: Sierra Pacific\nDescription: ",
-            "latest_change_name": "Item added\nItsme\nJuly 08 Friday 2022 09-12-31 AM",
-            "latest_change_part_number": "Item added\nItsme\nJuly 08 Friday 2022 09-12-31 AM",
-            "latest_change_unit_quantity": "Item added\nItsme\nJuly 08 Friday 2022 09-12-31 AM",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 71\nto: 71\nItsme\nSeptember 07 Wednesday 2022 08:40:09 AM",
-            "latest_change_price": "Latest Change:\nfrom: 12.35\nto: 12.35\nItsme\nAugust 31 Wednesday 2022 08:22:24 AM",
-            "latest_change_use_exchange_price": "Item added\nItsme\nJuly 08 Friday 2022 09-12-32 AM",
-            "latest_change_priority": "Item added\nItsme\nJuly 08 Friday 2022 09-12-32 AM",
-            "latest_change_notes": "Item added\nItsme\nJuly 08 Friday 2022 09-12-32 AM"
-        },
         "3\" Thermax SF- 600 Brick Slabs 1000x610x75": {
             "part_number": "THERMAXSF600",
             "unit_quantity": 1,
@@ -1251,9 +1234,9 @@
             "price": 2.75,
             "use_exchange_rate": false,
             "priority": 0,
-            "notes": "Vendor: Weiss Instruments\nDescription: ",
+            "notes": "Vendor: Weiss Instruments or Macmaster Carr\nDescription: ",
             "latest_change_current_quantity": "Latest Change:\nfrom: 12\nto: 12\nItsme\nAugust 23 Tuesday 2022 03:01:04 PM",
-            "latest_change_notes": "Latest Change:\nfrom: \"Vendor: Weiss Instrument\nDescription: \"\nto: \"Vendor: Weiss Instruments\nDescription: \"\nItsme\nJuly 08 Friday 2022 08:58:25 AM"
+            "latest_change_notes": "Latest Change:\nfrom: \"Vendor: Weiss Instruments or Macmaster Car\nDescription: \"\nto: \"Vendor: Weiss Instruments or Macmaster Carr\nDescription: \"\nItsme\nSeptember 08 Thursday 2022 10:48:35 AM"
         },
         "WeatherStripping NDA- .5\" x 3\/16\" x 50'": {
             "part_number": "WSNDA",
@@ -1638,6 +1621,23 @@
             "latest_change_priority": "Item added\nItsme\nJuly 12 Tuesday 2022 09-29-24 AM",
             "latest_change_notes": "Item added\nItsme\nJuly 12 Tuesday 2022 09-29-24 AM"
         },
+        " L-HANDLE LATCH ASSEMBLY, BLACK PLASTIC HANDLE, WITH STAMPED CAM": {
+            "part_number": " 1153-01",
+            "unit_quantity": 1,
+            "current_quantity": 71,
+            "price": 12.35,
+            "use_exchange_rate": false,
+            "priority": 0,
+            "notes": "Vendor: Sierra Pacific\nDescription: ",
+            "latest_change_name": "Item added\nItsme\nJuly 08 Friday 2022 09-12-31 AM",
+            "latest_change_part_number": "Item added\nItsme\nJuly 08 Friday 2022 09-12-31 AM",
+            "latest_change_unit_quantity": "Item added\nItsme\nJuly 08 Friday 2022 09-12-31 AM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 71\nto: 71\nItsme\nSeptember 07 Wednesday 2022 08:40:09 AM",
+            "latest_change_price": "Latest Change:\nfrom: 12.35\nto: 12.35\nItsme\nAugust 31 Wednesday 2022 08:22:24 AM",
+            "latest_change_use_exchange_price": "Item added\nItsme\nJuly 08 Friday 2022 09-12-32 AM",
+            "latest_change_priority": "Item added\nItsme\nJuly 08 Friday 2022 09-12-32 AM",
+            "latest_change_notes": "Item added\nItsme\nJuly 08 Friday 2022 09-12-32 AM"
+        },
         "3\/4 Hose to Pipe Double male Adaptor": {
             "part_number": "htp34",
             "unit_quantity": 1,
@@ -1943,16 +1943,6 @@
             "notes": "Vendor: BrockWhite\nevandenberg@brockwhite.com\n",
             "latest_change_current_quantity": "Latest Change:\nfrom: 162\nto: 162\nItsme\nSeptember 03 Saturday 2022 08:39:13 AM"
         },
-        "6BL Chimney Cap": {
-            "part_number": "6BL",
-            "unit_quantity": 1,
-            "current_quantity": 230,
-            "price": 0.0,
-            "use_exchange_rate": false,
-            "priority": 2,
-            "notes": "Vendor: \nDescription: ",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 230\nto: 230\nItsme\nSeptember 07 Wednesday 2022 10:57:26 AM"
-        },
         "3\/8 Coupling Nut 1 3\/4 Long ": {
             "part_number": "n38134",
             "unit_quantity": 16,
@@ -1998,16 +1988,6 @@
             "latest_change_priority": "Item added\nItsme\nJuly 13 Wednesday 2022 09-11-15 AM",
             "latest_change_notes": "Latest Change:\nfrom: \"Vendor: A.Adams Suppl\nDescription: \"\nto: \"Vendor: A.Adams Supply\nDescription: \"\nItsme\nJuly 13 Wednesday 2022 09:11:29 AM"
         },
-        "6 FT Power Cord Nema 5-16P 3 pin": {
-            "part_number": "Nema5",
-            "unit_quantity": 1,
-            "current_quantity": 216,
-            "price": 2.75,
-            "use_exchange_rate": false,
-            "priority": 2,
-            "notes": "Vendor: \nDescription: ",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 216\nto: 216\nItsme\nAugust 23 Tuesday 2022 03:01:05 PM"
-        },
         "Float Clamp  G1SS-11.3 7\/16 One Ear Stainless": {
             "part_number": "G1SS-11.3",
             "unit_quantity": 1,
@@ -2024,6 +2004,26 @@
             "latest_change_use_exchange_price": "Item added\nItsme\nAugust 29 Monday 2022 03-46-48 PM",
             "latest_change_priority": "Item added\nItsme\nAugust 29 Monday 2022 03-46-48 PM",
             "latest_change_notes": "Item added\nItsme\nAugust 29 Monday 2022 03-46-48 PM"
+        },
+        "6 FT Power Cord Nema 5-16P 3 pin": {
+            "part_number": "Nema5",
+            "unit_quantity": 1,
+            "current_quantity": 216,
+            "price": 2.75,
+            "use_exchange_rate": false,
+            "priority": 2,
+            "notes": "Vendor: \nDescription: ",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 216\nto: 216\nItsme\nAugust 23 Tuesday 2022 03:01:05 PM"
+        },
+        "6BL Chimney Cap": {
+            "part_number": "6BL",
+            "unit_quantity": 1,
+            "current_quantity": 230,
+            "price": 0.0,
+            "use_exchange_rate": false,
+            "priority": 2,
+            "notes": "Vendor: \nDescription: ",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 230\nto: 230\nItsme\nSeptember 07 Wednesday 2022 10:57:26 AM"
         },
         "SCR MACH PH PHIL ZP 10-32 x 1\/2 ": {
             "part_number": "397-1032-0050",
@@ -2212,6 +2212,23 @@
             "latest_change_priority": "Item added\nItsme\nJuly 07 Thursday 2022 09-48-03 AM",
             "latest_change_notes": "Item added\nItsme\nJuly 07 Thursday 2022 09-48-03 AM"
         },
+        "3\/8 X 1.25\" Bolt ": {
+            "part_number": "38125",
+            "unit_quantity": 4,
+            "current_quantity": 770,
+            "price": 0.2,
+            "use_exchange_rate": false,
+            "priority": 0,
+            "notes": "Vendor:  Fastener Wearhouse\nDescription: ",
+            "latest_change_name": "Item added\nItsme\nSeptember 06 Tuesday 2022 10-18-37 AM",
+            "latest_change_part_number": "Item added\nItsme\nSeptember 06 Tuesday 2022 10-18-37 AM",
+            "latest_change_unit_quantity": "Item added\nItsme\nSeptember 06 Tuesday 2022 10-18-37 AM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 770\nto: 770\nItsme\nSeptember 07 Wednesday 2022 01:16:13 PM",
+            "latest_change_price": "Item added\nItsme\nSeptember 06 Tuesday 2022 10-18-37 AM",
+            "latest_change_use_exchange_price": "Item added\nItsme\nSeptember 06 Tuesday 2022 10-18-37 AM",
+            "latest_change_priority": "Item added\nItsme\nSeptember 06 Tuesday 2022 10-18-37 AM",
+            "latest_change_notes": "Item added\nItsme\nSeptember 06 Tuesday 2022 10-18-37 AM"
+        },
         "NU SKT HD CP NC 8\/32 x 3 1\/2\"": {
             "part_number": "700-0832-0350",
             "unit_quantity": 1,
@@ -2245,36 +2262,9 @@
             "latest_change_use_exchange_price": "Item added\nItsme\nJuly 19 Tuesday 2022 03-54-38 PM",
             "latest_change_priority": "Item added\nItsme\nJuly 19 Tuesday 2022 03-54-38 PM",
             "latest_change_notes": "Item added\nItsme\nJuly 19 Tuesday 2022 03-54-38 PM"
-        },
-        "3\/8 X 1.25\" Bolt ": {
-            "part_number": "38125",
-            "unit_quantity": 4,
-            "current_quantity": 770,
-            "price": 0.2,
-            "use_exchange_rate": false,
-            "priority": 0,
-            "notes": "Vendor:  Fastener Wearhouse\nDescription: ",
-            "latest_change_name": "Item added\nItsme\nSeptember 06 Tuesday 2022 10-18-37 AM",
-            "latest_change_part_number": "Item added\nItsme\nSeptember 06 Tuesday 2022 10-18-37 AM",
-            "latest_change_unit_quantity": "Item added\nItsme\nSeptember 06 Tuesday 2022 10-18-37 AM",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 770\nto: 770\nItsme\nSeptember 07 Wednesday 2022 01:16:13 PM",
-            "latest_change_price": "Item added\nItsme\nSeptember 06 Tuesday 2022 10-18-37 AM",
-            "latest_change_use_exchange_price": "Item added\nItsme\nSeptember 06 Tuesday 2022 10-18-37 AM",
-            "latest_change_priority": "Item added\nItsme\nSeptember 06 Tuesday 2022 10-18-37 AM",
-            "latest_change_notes": "Item added\nItsme\nSeptember 06 Tuesday 2022 10-18-37 AM"
         }
     },
     "Polar G2+": {
-        "3\"x48\"x96\" FSK Insulation Sheet": {
-            "part_number": "FSK3",
-            "unit_quantity": 3.0,
-            "current_quantity": 162,
-            "price": 124.99,
-            "use_exchange_rate": false,
-            "priority": 0,
-            "notes": "Vendor: BrockWhite\nevandenberg@brockwhite.com\n",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 162\nto: 162\nItsme\nSeptember 03 Saturday 2022 08:39:13 AM"
-        },
         "1\"x25\"x48\" FSK 300 Certainteed Insulation": {
             "part_number": "FSK1",
             "unit_quantity": 0,
@@ -2366,26 +2356,9 @@
             "price": 2.75,
             "use_exchange_rate": false,
             "priority": 0,
-            "notes": "Vendor: Weiss Instruments\nDescription: ",
+            "notes": "Vendor: Weiss Instruments or macMaster Carr\nDescription: ",
             "latest_change_current_quantity": "Latest Change:\nfrom: 12\nto: 12\nItsme\nAugust 23 Tuesday 2022 03:01:04 PM",
-            "latest_change_notes": "Latest Change:\nfrom: \"Vendor: Weiss Instrument\nDescription: \"\nto: \"Vendor: Weiss Instruments\nDescription: \"\nItsme\nJuly 08 Friday 2022 08:58:25 AM"
-        },
-        "1-1\/4 Half Coupling": {
-            "part_number": "G0008MC-125",
-            "unit_quantity": 1,
-            "current_quantity": 50,
-            "price": 2.4,
-            "use_exchange_rate": false,
-            "priority": 0,
-            "notes": "Vendor: Greenline\nDescription: 204-694-0332",
-            "latest_change_name": "Item added\nItsme\nJuly 07 Thursday 2022 10-23-19 AM",
-            "latest_change_part_number": "Item added\nItsme\nJuly 07 Thursday 2022 10-23-19 AM",
-            "latest_change_unit_quantity": "Item added\nItsme\nJuly 07 Thursday 2022 10-23-19 AM",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 50\nto: 50\nItsme\nSeptember 03 Saturday 2022 10:08:44 AM",
-            "latest_change_price": "Latest Change:\nfrom: 2.0\nto: 2.4\nItsme\nSeptember 03 Saturday 2022 02:45:54 PM",
-            "latest_change_use_exchange_price": "Item added\nItsme\nJuly 07 Thursday 2022 10-23-19 AM",
-            "latest_change_priority": "Item added\nItsme\nJuly 07 Thursday 2022 10-23-19 AM",
-            "latest_change_notes": "Latest Change:\nfrom: \"Vendor: Greenline\nDescription: \"\nto: \"Vendor: Greenline\nDescription: 204-694-0332\"\nItsme\nJuly 07 Thursday 2022 11:22:22 AM"
+            "latest_change_notes": "Latest Change:\nfrom: \"Vendor: Weiss Instruments or macMaster Car\nDescription: \"\nto: \"Vendor: Weiss Instruments or macMaster Carr\nDescription: \"\nItsme\nSeptember 08 Thursday 2022 10:49:13 AM"
         },
         "WeatherStripping NDA- .5\" x 3\/16\" x 50'": {
             "part_number": "WSNDA",
@@ -2455,23 +2428,6 @@
             "notes": "Vendor: GreenLine \nDescription: 204-694-0332",
             "latest_change_current_quantity": "Latest Change:\nfrom: 26\nto: 26\nItsme\nAugust 23 Tuesday 2022 03:01:04 PM"
         },
-        " L-HANDLE LATCH ASSEMBLY, BLACK PLASTIC HANDLE, WITH STAMPED CAM": {
-            "part_number": " 1153-01",
-            "unit_quantity": 1,
-            "current_quantity": 71,
-            "price": 12.35,
-            "use_exchange_rate": false,
-            "priority": 0,
-            "notes": "Vendor: Sierra Pacific\nDescription: ",
-            "latest_change_name": "Item added\nItsme\nJuly 08 Friday 2022 09-12-31 AM",
-            "latest_change_part_number": "Item added\nItsme\nJuly 08 Friday 2022 09-12-31 AM",
-            "latest_change_unit_quantity": "Item added\nItsme\nJuly 08 Friday 2022 09-12-31 AM",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 71\nto: 71\nItsme\nSeptember 07 Wednesday 2022 08:40:09 AM",
-            "latest_change_price": "Latest Change:\nfrom: 12.35\nto: 12.35\nItsme\nAugust 31 Wednesday 2022 08:22:24 AM",
-            "latest_change_use_exchange_price": "Item added\nItsme\nJuly 08 Friday 2022 09-12-32 AM",
-            "latest_change_priority": "Item added\nItsme\nJuly 08 Friday 2022 09-12-32 AM",
-            "latest_change_notes": "Item added\nItsme\nJuly 08 Friday 2022 09-12-32 AM"
-        },
         "Eon Motor 1\/3 HP 5660": {
             "part_number": "5660",
             "unit_quantity": 1,
@@ -2488,23 +2444,6 @@
             "latest_change_use_exchange_price": "Item added\nItsme\nAugust 22 Monday 2022 03-39-47 PM",
             "latest_change_priority": "Item added\nItsme\nAugust 22 Monday 2022 03-39-47 PM",
             "latest_change_notes": "Latest Change:\nfrom: \"Vendor: Ranteck\nDescription: \"\nto: \"Vendor: Rantec\nDescription: \"\nItsme\nAugust 23 Tuesday 2022 02:48:04 PM"
-        },
-        "Actuator M9203-BUA-2\n": {
-            "part_number": "M9203",
-            "unit_quantity": 2,
-            "current_quantity": 88,
-            "price": 162.36,
-            "use_exchange_rate": false,
-            "priority": 0,
-            "notes": "Vendor: Johnson controle\nDescription: ",
-            "latest_change_name": "Item added\nItsme\nJuly 28 Thursday 2022 10-32-50 AM",
-            "latest_change_part_number": "Item added\nItsme\nJuly 28 Thursday 2022 10-32-50 AM",
-            "latest_change_unit_quantity": "Item added\nItsme\nJuly 28 Thursday 2022 10-32-50 AM",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 88\nto: 88\nItsme\nSeptember 05 Monday 2022 01:12:03 PM",
-            "latest_change_price": "Item added\nItsme\nJuly 28 Thursday 2022 10-32-50 AM",
-            "latest_change_use_exchange_price": "Item added\nItsme\nJuly 28 Thursday 2022 10-32-50 AM",
-            "latest_change_priority": "Item added\nItsme\nJuly 28 Thursday 2022 10-32-50 AM",
-            "latest_change_notes": "Item added\nItsme\nJuly 28 Thursday 2022 10-32-50 AM"
         },
         "bushing 786-251 Bronze Insert Bushing ": {
             "part_number": "786-251",
@@ -2696,6 +2635,23 @@
             "latest_change_notes": "Latest Change:\nfrom: \"Vendor: Sierra Pacifi\nDescription: \"\nto: \"Vendor: Sierra Pacific\nDescription: \"\nItsme\nJuly 08 Friday 2022 09:06:17 AM",
             "latest_change_current_quantity": "Latest Change:\nfrom: 48\nto: 48\nItsme\nAugust 23 Tuesday 2022 03:01:04 PM"
         },
+        "1-1\/4 Half Coupling": {
+            "part_number": "G0008MC-125",
+            "unit_quantity": 1,
+            "current_quantity": 50,
+            "price": 2.4,
+            "use_exchange_rate": false,
+            "priority": 0,
+            "notes": "Vendor: Greenline\nDescription: 204-694-0332",
+            "latest_change_name": "Item added\nItsme\nJuly 07 Thursday 2022 10-23-19 AM",
+            "latest_change_part_number": "Item added\nItsme\nJuly 07 Thursday 2022 10-23-19 AM",
+            "latest_change_unit_quantity": "Item added\nItsme\nJuly 07 Thursday 2022 10-23-19 AM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 50\nto: 50\nItsme\nSeptember 03 Saturday 2022 10:08:44 AM",
+            "latest_change_price": "Latest Change:\nfrom: 2.0\nto: 2.4\nItsme\nSeptember 03 Saturday 2022 02:45:54 PM",
+            "latest_change_use_exchange_price": "Item added\nItsme\nJuly 07 Thursday 2022 10-23-19 AM",
+            "latest_change_priority": "Item added\nItsme\nJuly 07 Thursday 2022 10-23-19 AM",
+            "latest_change_notes": "Latest Change:\nfrom: \"Vendor: Greenline\nDescription: \"\nto: \"Vendor: Greenline\nDescription: 204-694-0332\"\nItsme\nJuly 07 Thursday 2022 11:22:22 AM"
+        },
         "Knob 3\/4 DIA. 7\/16 Bore. Press-On Black Phenlic Round Knob": {
             "part_number": "POK-10",
             "unit_quantity": 1,
@@ -2762,6 +2718,23 @@
             "latest_change_use_exchange_price": "Item added\nItsme\nJuly 12 Tuesday 2022 09-29-24 AM",
             "latest_change_priority": "Item added\nItsme\nJuly 12 Tuesday 2022 09-29-24 AM",
             "latest_change_notes": "Item added\nItsme\nJuly 12 Tuesday 2022 09-29-24 AM"
+        },
+        " L-HANDLE LATCH ASSEMBLY, BLACK PLASTIC HANDLE, WITH STAMPED CAM": {
+            "part_number": " 1153-01",
+            "unit_quantity": 1,
+            "current_quantity": 71,
+            "price": 12.35,
+            "use_exchange_rate": false,
+            "priority": 0,
+            "notes": "Vendor: Sierra Pacific\nDescription: ",
+            "latest_change_name": "Item added\nItsme\nJuly 08 Friday 2022 09-12-31 AM",
+            "latest_change_part_number": "Item added\nItsme\nJuly 08 Friday 2022 09-12-31 AM",
+            "latest_change_unit_quantity": "Item added\nItsme\nJuly 08 Friday 2022 09-12-31 AM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 71\nto: 71\nItsme\nSeptember 07 Wednesday 2022 08:40:09 AM",
+            "latest_change_price": "Latest Change:\nfrom: 12.35\nto: 12.35\nItsme\nAugust 31 Wednesday 2022 08:22:24 AM",
+            "latest_change_use_exchange_price": "Item added\nItsme\nJuly 08 Friday 2022 09-12-32 AM",
+            "latest_change_priority": "Item added\nItsme\nJuly 08 Friday 2022 09-12-32 AM",
+            "latest_change_notes": "Item added\nItsme\nJuly 08 Friday 2022 09-12-32 AM"
         },
         "3\/4 Hose to Pipe Double male Adaptor": {
             "part_number": "htp34",
@@ -2873,6 +2846,23 @@
             "priority": 0,
             "notes": "Vendor: \nDescription: ",
             "latest_change_current_quantity": "Latest Change:\nfrom: 86\nto: 86\nItsme\nAugust 23 Tuesday 2022 03:01:05 PM"
+        },
+        "Actuator M9203-BUA-2\n": {
+            "part_number": "M9203",
+            "unit_quantity": 2,
+            "current_quantity": 88,
+            "price": 162.36,
+            "use_exchange_rate": false,
+            "priority": 0,
+            "notes": "Vendor: Johnson controle\nDescription: ",
+            "latest_change_name": "Item added\nItsme\nJuly 28 Thursday 2022 10-32-50 AM",
+            "latest_change_part_number": "Item added\nItsme\nJuly 28 Thursday 2022 10-32-50 AM",
+            "latest_change_unit_quantity": "Item added\nItsme\nJuly 28 Thursday 2022 10-32-50 AM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 88\nto: 88\nItsme\nSeptember 05 Monday 2022 01:12:03 PM",
+            "latest_change_price": "Item added\nItsme\nJuly 28 Thursday 2022 10-32-50 AM",
+            "latest_change_use_exchange_price": "Item added\nItsme\nJuly 28 Thursday 2022 10-32-50 AM",
+            "latest_change_priority": "Item added\nItsme\nJuly 28 Thursday 2022 10-32-50 AM",
+            "latest_change_notes": "Item added\nItsme\nJuly 28 Thursday 2022 10-32-50 AM"
         },
         "Snap in Flush Pull, Large, Black Plastic, For Panel Thickness .040- .055": {
             "part_number": "91-19BK02",
@@ -3045,15 +3035,15 @@
             "latest_change_priority": "Item added\nItsme\nAugust 01 Monday 2022 03-33-59 PM",
             "latest_change_notes": "Item added\nItsme\nAugust 01 Monday 2022 03-33-59 PM"
         },
-        "6BL Chimney Cap": {
-            "part_number": "6BL",
-            "unit_quantity": 1,
-            "current_quantity": 230,
-            "price": 0.0,
+        "3\"x48\"x96\" FSK Insulation Sheet": {
+            "part_number": "FSK3",
+            "unit_quantity": 3.0,
+            "current_quantity": 162,
+            "price": 124.99,
             "use_exchange_rate": false,
-            "priority": 2,
-            "notes": "Vendor: \nDescription: ",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 230\nto: 230\nItsme\nSeptember 07 Wednesday 2022 10:57:26 AM"
+            "priority": 0,
+            "notes": "Vendor: BrockWhite\nevandenberg@brockwhite.com\n",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 162\nto: 162\nItsme\nSeptember 03 Saturday 2022 08:39:13 AM"
         },
         "3\/8 Coupling Nut 1 3\/4 Long ": {
             "part_number": "n38134",
@@ -3083,23 +3073,6 @@
             "latest_change_current_quantity": "Latest Change:\nfrom: 196\nto: 196\nItsme\nAugust 23 Tuesday 2022 03:01:05 PM",
             "latest_change_price": "Latest Change:\nfrom: 9.7\nto: 9.7\nItsme\nJuly 07 Thursday 2022 03:59:16 PM"
         },
-        "5\/16x5\/8 starlock push on Locking washer": {
-            "part_number": "SPOLW",
-            "unit_quantity": 8,
-            "current_quantity": 408,
-            "price": 0.06,
-            "use_exchange_rate": false,
-            "priority": 0,
-            "notes": "Vendor: A. Adams Supply\nDescription: ",
-            "latest_change_name": "Item added\nItsme\nJuly 13 Wednesday 2022 09-10-18 AM",
-            "latest_change_part_number": "Item added\nItsme\nJuly 13 Wednesday 2022 09-10-18 AM",
-            "latest_change_unit_quantity": "Item added\nItsme\nJuly 13 Wednesday 2022 09-10-18 AM",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 408\nto: 408\nItsme\nAugust 31 Wednesday 2022 08:47:32 AM",
-            "latest_change_price": "Item added\nItsme\nJuly 13 Wednesday 2022 09-10-18 AM",
-            "latest_change_use_exchange_price": "Item added\nItsme\nJuly 13 Wednesday 2022 09-10-18 AM",
-            "latest_change_priority": "Item added\nItsme\nJuly 13 Wednesday 2022 09-10-18 AM",
-            "latest_change_notes": "Item added\nItsme\nJuly 13 Wednesday 2022 09-10-18 AM"
-        },
         "rivet  3\/4x 5\/16 DIA ": {
             "part_number": "Rivet516",
             "unit_quantity": 8,
@@ -3117,16 +3090,6 @@
             "latest_change_priority": "Item added\nItsme\nJuly 13 Wednesday 2022 09-11-15 AM",
             "latest_change_notes": "Latest Change:\nfrom: \"Vendor: A.Adams Suppl\nDescription: \"\nto: \"Vendor: A.Adams Supply\nDescription: \"\nItsme\nJuly 13 Wednesday 2022 09:11:29 AM"
         },
-        "6 FT Power Cord Nema 5-16P 3 pin": {
-            "part_number": "Nema5",
-            "unit_quantity": 1,
-            "current_quantity": 216,
-            "price": 2.75,
-            "use_exchange_rate": false,
-            "priority": 2,
-            "notes": "Vendor: \nDescription: ",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 216\nto: 216\nItsme\nAugust 23 Tuesday 2022 03:01:05 PM"
-        },
         "Float Clamp  G1SS-11.3 7\/16 One Ear Stainless": {
             "part_number": "G1SS-11.3",
             "unit_quantity": 1,
@@ -3143,6 +3106,26 @@
             "latest_change_use_exchange_price": "Item added\nItsme\nAugust 18 Thursday 2022 09-53-03 AM",
             "latest_change_priority": "Item added\nItsme\nAugust 18 Thursday 2022 09-53-03 AM",
             "latest_change_notes": "Item added\nItsme\nAugust 18 Thursday 2022 09-53-03 AM"
+        },
+        "6 FT Power Cord Nema 5-16P 3 pin": {
+            "part_number": "Nema5",
+            "unit_quantity": 1,
+            "current_quantity": 216,
+            "price": 2.75,
+            "use_exchange_rate": false,
+            "priority": 2,
+            "notes": "Vendor: \nDescription: ",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 216\nto: 216\nItsme\nAugust 23 Tuesday 2022 03:01:05 PM"
+        },
+        "6BL Chimney Cap": {
+            "part_number": "6BL",
+            "unit_quantity": 1,
+            "current_quantity": 230,
+            "price": 0.0,
+            "use_exchange_rate": false,
+            "priority": 2,
+            "notes": "Vendor: \nDescription: ",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 230\nto: 230\nItsme\nSeptember 07 Wednesday 2022 10:57:26 AM"
         },
         "SCR MACH PH PHIL ZP 10-32 x 1\/2 ": {
             "part_number": "397-1032-0050",
@@ -3228,6 +3211,23 @@
             "latest_change_use_exchange_price": "Item added\nItsme\nJuly 05 Tuesday 2022 10-28-43 AM",
             "latest_change_priority": "Item added\nItsme\nJuly 05 Tuesday 2022 10-28-43 AM",
             "latest_change_notes": "Latest Change:\nfrom: \"Vendor: Sierra Pacific Engeneering and Products\nDescription: \nGoes With 12C6 as 1 ass\"\nto: \"Vendor: Sierra Pacific Engeneering and Products\nDescription: \nGoes With 12C6 as 1 assy\"\nItsme\nJuly 07 Thursday 2022 04:08:41 PM"
+        },
+        "5\/16x5\/8 starlock push on Locking washer": {
+            "part_number": "SPOLW",
+            "unit_quantity": 8,
+            "current_quantity": 408,
+            "price": 0.06,
+            "use_exchange_rate": false,
+            "priority": 0,
+            "notes": "Vendor: A. Adams Supply\nDescription: ",
+            "latest_change_name": "Item added\nItsme\nJuly 13 Wednesday 2022 09-10-18 AM",
+            "latest_change_part_number": "Item added\nItsme\nJuly 13 Wednesday 2022 09-10-18 AM",
+            "latest_change_unit_quantity": "Item added\nItsme\nJuly 13 Wednesday 2022 09-10-18 AM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 408\nto: 408\nItsme\nAugust 31 Wednesday 2022 08:47:32 AM",
+            "latest_change_price": "Item added\nItsme\nJuly 13 Wednesday 2022 09-10-18 AM",
+            "latest_change_use_exchange_price": "Item added\nItsme\nJuly 13 Wednesday 2022 09-10-18 AM",
+            "latest_change_priority": "Item added\nItsme\nJuly 13 Wednesday 2022 09-10-18 AM",
+            "latest_change_notes": "Item added\nItsme\nJuly 13 Wednesday 2022 09-10-18 AM"
         },
         "1\"x 3\/8\"  Bolt ": {
             "part_number": "138",
