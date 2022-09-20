@@ -1144,23 +1144,6 @@
         }
     },
     "Polar G3": {
-        "Washer 3\/16 Tooth Lock Internal ": {
-            "part_number": "W316",
-            "unit_quantity": 16,
-            "current_quantity": 920,
-            "price": 0.06,
-            "use_exchange_rate": false,
-            "priority": 0,
-            "notes": "Vendor: A.Adams Supply\nDescription: ",
-            "latest_change_name": "Item added\nItsme\nJuly 19 Tuesday 2022 03-56-19 PM",
-            "latest_change_part_number": "Item added\nItsme\nJuly 19 Tuesday 2022 03-56-19 PM",
-            "latest_change_unit_quantity": "Item added\nItsme\nJuly 19 Tuesday 2022 03-56-19 PM",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 920\nto: 920\nItsme\nSeptember 20 Tuesday 2022 08:38:51 AM",
-            "latest_change_price": "Item added\nItsme\nJuly 19 Tuesday 2022 03-56-19 PM",
-            "latest_change_use_exchange_price": "Item added\nItsme\nJuly 19 Tuesday 2022 03-56-19 PM",
-            "latest_change_priority": "Item added\nItsme\nJuly 19 Tuesday 2022 03-56-19 PM",
-            "latest_change_notes": "Item added\nItsme\nJuly 19 Tuesday 2022 03-56-19 PM"
-        },
         "Thumb Screw 5\/16 DIAx 3\/4 Long x1\/2 FLG": {
             "part_number": "TS535",
             "unit_quantity": 10,
@@ -1340,6 +1323,23 @@
             "latest_change_price": "Latest Change:\nfrom: 104.5\nto: 104.5\nItsme\nJuly 07 Thursday 2022 08:54:01 AM",
             "latest_change_current_quantity": "Latest Change:\nfrom: 2\nto: 2\nItsme\nSeptember 16 Friday 2022 02:01:24 PM",
             "latest_change_name": "Latest Change:\nfrom: \"3\" Thermax SF- 600 Brick Slabs 1000x610x7\"\nto: \"3\" Thermax SF- 600 Brick Slabs 1000x610x75\"\nItsme\nJuly 11 Monday 2022 09:45:53 AM"
+        },
+        "1 1\/2 x 1 1\/4 Elbow": {
+            "part_number": "112E",
+            "unit_quantity": 2,
+            "current_quantity": 2,
+            "price": 4.0,
+            "use_exchange_rate": false,
+            "priority": 0,
+            "notes": "Vendor: Greenline Hose and fitting\nDescription: ",
+            "latest_change_name": "Item added\nItsme\nSeptember 16 Friday 2022 02-18-08 PM",
+            "latest_change_part_number": "Item added\nItsme\nSeptember 16 Friday 2022 02-18-08 PM",
+            "latest_change_unit_quantity": "Item added\nItsme\nSeptember 16 Friday 2022 02-18-08 PM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 2\nto: 2\nItsme\nSeptember 16 Friday 2022 02:25:00 PM",
+            "latest_change_price": "Item added\nItsme\nSeptember 16 Friday 2022 02-18-08 PM",
+            "latest_change_use_exchange_price": "Item added\nItsme\nSeptember 16 Friday 2022 02-18-09 PM",
+            "latest_change_priority": "Item added\nItsme\nSeptember 16 Friday 2022 02-18-09 PM",
+            "latest_change_notes": "Item added\nItsme\nSeptember 16 Friday 2022 02-18-09 PM"
         },
         "1 1\/4 Closed Nipple ": {
             "part_number": "114CN",
@@ -2230,6 +2230,23 @@
             "latest_change_priority": "Item added\nItsme\nSeptember 06 Tuesday 2022 10-18-37 AM",
             "latest_change_notes": "Item added\nItsme\nSeptember 06 Tuesday 2022 10-18-37 AM"
         },
+        "Washer 3\/16 Tooth Lock Internal ": {
+            "part_number": "W316",
+            "unit_quantity": 16,
+            "current_quantity": 920,
+            "price": 0.06,
+            "use_exchange_rate": false,
+            "priority": 0,
+            "notes": "Vendor: A.Adams Supply\nDescription: ",
+            "latest_change_name": "Item added\nItsme\nJuly 19 Tuesday 2022 03-56-19 PM",
+            "latest_change_part_number": "Item added\nItsme\nJuly 19 Tuesday 2022 03-56-19 PM",
+            "latest_change_unit_quantity": "Item added\nItsme\nJuly 19 Tuesday 2022 03-56-19 PM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 920\nto: 920\nItsme\nSeptember 20 Tuesday 2022 08:38:51 AM",
+            "latest_change_price": "Item added\nItsme\nJuly 19 Tuesday 2022 03-56-19 PM",
+            "latest_change_use_exchange_price": "Item added\nItsme\nJuly 19 Tuesday 2022 03-56-19 PM",
+            "latest_change_priority": "Item added\nItsme\nJuly 19 Tuesday 2022 03-56-19 PM",
+            "latest_change_notes": "Item added\nItsme\nJuly 19 Tuesday 2022 03-56-19 PM"
+        },
         "NU SKT HD CP NC 8\/32 x 3 1\/2\"": {
             "part_number": "700-0832-0350",
             "unit_quantity": 1,
@@ -2263,23 +2280,6 @@
             "latest_change_use_exchange_price": "Item added\nItsme\nJuly 19 Tuesday 2022 03-54-38 PM",
             "latest_change_priority": "Item added\nItsme\nJuly 19 Tuesday 2022 03-54-38 PM",
             "latest_change_notes": "Item added\nItsme\nJuly 19 Tuesday 2022 03-54-38 PM"
-        },
-        "1 1\/2 x 1 1\/4 Elbow": {
-            "part_number": "112E",
-            "unit_quantity": 2,
-            "current_quantity": 2,
-            "price": 4.0,
-            "use_exchange_rate": false,
-            "priority": 0,
-            "notes": "Vendor: Greenline Hose and fitting\nDescription: ",
-            "latest_change_name": "Item added\nItsme\nSeptember 16 Friday 2022 02-18-08 PM",
-            "latest_change_part_number": "Item added\nItsme\nSeptember 16 Friday 2022 02-18-08 PM",
-            "latest_change_unit_quantity": "Item added\nItsme\nSeptember 16 Friday 2022 02-18-08 PM",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 2\nto: 2\nItsme\nSeptember 16 Friday 2022 02:25:00 PM",
-            "latest_change_price": "Item added\nItsme\nSeptember 16 Friday 2022 02-18-08 PM",
-            "latest_change_use_exchange_price": "Item added\nItsme\nSeptember 16 Friday 2022 02-18-09 PM",
-            "latest_change_priority": "Item added\nItsme\nSeptember 16 Friday 2022 02-18-09 PM",
-            "latest_change_notes": "Item added\nItsme\nSeptember 16 Friday 2022 02-18-09 PM"
         }
     },
     "Polar G2+": {
