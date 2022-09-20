@@ -1249,6 +1249,24 @@
             "latest_change_priority": "Item added\nItsme\nJuly 19 Tuesday 2022 04-54-55 PM",
             "latest_change_notes": "Item added\nItsme\nJuly 19 Tuesday 2022 04-54-55 PM"
         },
+        "G3 Brick Set": {
+            "part_number": "G3BS",
+            "unit_quantity": 1,
+            "current_quantity": -10,
+            "price": 691.2,
+            "use_exchange_rate": true,
+            "priority": 0,
+            "notes": "Vendor: Reftec Insudtries\nDescription: ",
+            "latest_change_name": "Item added\nItsme\nJuly 28 Thursday 2022 04-39-31 PM",
+            "latest_change_part_number": "Latest Change:\nfrom: G3B\nto: G3BS\nItsme\nJuly 28 Thursday 2022 04:39:58 PM",
+            "latest_change_unit_quantity": "Item added\nItsme\nJuly 28 Thursday 2022 04-39-31 PM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: -10\nto: -10\nItsme\nSeptember 20 Tuesday 2022 02:14:49 PM",
+            "latest_change_price": "Latest Change:\nfrom: 691.2\nto: 691.2\nItsme\nSeptember 15 Thursday 2022 09:24:02 AM",
+            "latest_change_use_exchange_price": "Item added\nItsme\nJuly 28 Thursday 2022 04-39-31 PM",
+            "latest_change_priority": "Item added\nItsme\nJuly 28 Thursday 2022 04-39-31 PM",
+            "latest_change_notes": "Latest Change:\nfrom: \"Vendor: Reftec Insudtrie\nDescription: \"\nto: \"Vendor: Reftec Insudtries\nDescription: \"\nItsme\nJuly 28 Thursday 2022 04:40:40 PM",
+            "latest_change_use_exchange_rate": "Latest Change:\nfrom: CAD\nto: USD\nItsme\nSeptember 15 Thursday 2022 09:23:50 AM"
+        },
         "Vapor Thermometer": {
             "part_number": "20UB8-220FC-4111-03FT                        ",
             "unit_quantity": 1,
@@ -1265,24 +1283,6 @@
             "latest_change_use_exchange_price": "Item added\nItsme\nAugust 12 Friday 2022 09-51-59 AM",
             "latest_change_priority": "Item added\nItsme\nAugust 12 Friday 2022 09-51-59 AM",
             "latest_change_notes": "Item added\nItsme\nAugust 12 Friday 2022 09-51-59 AM"
-        },
-        "G3 Brick Set": {
-            "part_number": "G3BS",
-            "unit_quantity": 1,
-            "current_quantity": -1,
-            "price": 691.2,
-            "use_exchange_rate": true,
-            "priority": 0,
-            "notes": "Vendor: Reftec Insudtries\nDescription: ",
-            "latest_change_name": "Item added\nItsme\nJuly 28 Thursday 2022 04-39-31 PM",
-            "latest_change_part_number": "Latest Change:\nfrom: G3B\nto: G3BS\nItsme\nJuly 28 Thursday 2022 04:39:58 PM",
-            "latest_change_unit_quantity": "Item added\nItsme\nJuly 28 Thursday 2022 04-39-31 PM",
-            "latest_change_current_quantity": "Latest Change:\nfrom: -1\nto: -1\nItsme\nSeptember 16 Friday 2022 02:01:24 PM",
-            "latest_change_price": "Latest Change:\nfrom: 691.2\nto: 691.2\nItsme\nSeptember 15 Thursday 2022 09:24:02 AM",
-            "latest_change_use_exchange_price": "Item added\nItsme\nJuly 28 Thursday 2022 04-39-31 PM",
-            "latest_change_priority": "Item added\nItsme\nJuly 28 Thursday 2022 04-39-31 PM",
-            "latest_change_notes": "Latest Change:\nfrom: \"Vendor: Reftec Insudtrie\nDescription: \"\nto: \"Vendor: Reftec Insudtries\nDescription: \"\nItsme\nJuly 28 Thursday 2022 04:40:40 PM",
-            "latest_change_use_exchange_rate": "Latest Change:\nfrom: CAD\nto: USD\nItsme\nSeptember 15 Thursday 2022 09:23:50 AM"
         },
         "3\" x 3\/8 Carr BLT ": {
             "part_number": "338CB",
@@ -2409,7 +2409,7 @@
         "G3 Brick Set": {
             "part_number": "G3BS",
             "unit_quantity": 1,
-            "current_quantity": -1,
+            "current_quantity": -10,
             "price": 691.2,
             "use_exchange_rate": false,
             "priority": 0,
@@ -2417,7 +2417,7 @@
             "latest_change_name": "Item added\nItsme\nAugust 12 Friday 2022 11-21-54 AM",
             "latest_change_part_number": "Item added\nItsme\nAugust 12 Friday 2022 11-21-54 AM",
             "latest_change_unit_quantity": "Item added\nItsme\nAugust 12 Friday 2022 11-21-54 AM",
-            "latest_change_current_quantity": "Latest Change:\nfrom: -1\nto: -1\nItsme\nSeptember 16 Friday 2022 02:01:24 PM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: -10\nto: -10\nItsme\nSeptember 20 Tuesday 2022 02:14:49 PM",
             "latest_change_price": "Latest Change:\nfrom: 691.2\nto: 691.2\nItsme\nSeptember 15 Thursday 2022 09:24:02 AM",
             "latest_change_use_exchange_price": "Item added\nItsme\nAugust 12 Friday 2022 11-21-54 AM",
             "latest_change_priority": "Item added\nItsme\nAugust 12 Friday 2022 11-21-54 AM",
