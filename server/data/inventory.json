@@ -1144,23 +1144,6 @@
         }
     },
     "Polar G3": {
-        "G2 Turbulator": {
-            "part_number": "LP515",
-            "unit_quantity": 7,
-            "current_quantity": 2,
-            "price": 11.55,
-            "use_exchange_rate": false,
-            "priority": 0,
-            "notes": "Vendor: Top Flights\nDescription: rfs@hmailton.net",
-            "latest_change_name": "Item added\nItsme\nJuly 08 Friday 2022 08-22-50 AM",
-            "latest_change_part_number": "Latest Change:\nfrom: lP515\nto: LP515\nItsme\nJuly 11 Monday 2022 01:14:09 PM",
-            "latest_change_unit_quantity": "Item added\nItsme\nJuly 08 Friday 2022 08-22-50 AM",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 2\nto: 2\nItsme\nSeptember 29 Thursday 2022 09:57:40 AM",
-            "latest_change_price": "Item added\nItsme\nJuly 08 Friday 2022 08-22-50 AM",
-            "latest_change_use_exchange_price": "Item added\nItsme\nJuly 08 Friday 2022 08-22-50 AM",
-            "latest_change_priority": "Item added\nItsme\nJuly 08 Friday 2022 08-22-50 AM",
-            "latest_change_notes": "Item added\nItsme\nJuly 08 Friday 2022 08-22-50 AM"
-        },
         "1\"x25\"x48\" FSK 300 Certainteed Insulation": {
             "part_number": "FSK1",
             "unit_quantity": 2,
@@ -1266,6 +1249,23 @@
             "latest_change_use_exchange_price": "Item added\nItsme\nAugust 12 Friday 2022 09-51-59 AM",
             "latest_change_priority": "Item added\nItsme\nAugust 12 Friday 2022 09-51-59 AM",
             "latest_change_notes": "Item added\nItsme\nAugust 12 Friday 2022 09-51-59 AM"
+        },
+        "G2 Turbulator": {
+            "part_number": "LP515",
+            "unit_quantity": 7,
+            "current_quantity": 2,
+            "price": 11.55,
+            "use_exchange_rate": false,
+            "priority": 0,
+            "notes": "Vendor: Top Flights\nDescription: rfs@hmailton.net",
+            "latest_change_name": "Item added\nItsme\nJuly 08 Friday 2022 08-22-50 AM",
+            "latest_change_part_number": "Latest Change:\nfrom: lP515\nto: LP515\nItsme\nJuly 11 Monday 2022 01:14:09 PM",
+            "latest_change_unit_quantity": "Item added\nItsme\nJuly 08 Friday 2022 08-22-50 AM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 2\nto: 2\nItsme\nSeptember 29 Thursday 2022 09:57:40 AM",
+            "latest_change_price": "Item added\nItsme\nJuly 08 Friday 2022 08-22-50 AM",
+            "latest_change_use_exchange_price": "Item added\nItsme\nJuly 08 Friday 2022 08-22-50 AM",
+            "latest_change_priority": "Item added\nItsme\nJuly 08 Friday 2022 08-22-50 AM",
+            "latest_change_notes": "Item added\nItsme\nJuly 08 Friday 2022 08-22-50 AM"
         },
         "3\" Thermax SF- 600 Brick Slabs 1000x610x75": {
             "part_number": "THERMAXSF600",
