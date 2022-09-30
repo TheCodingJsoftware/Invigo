@@ -177,12 +177,12 @@
         "WeatherStripping NDA- .5\" x 3\/16\" x 50'": {
             "part_number": "WSNDA",
             "unit_quantity": 1,
-            "current_quantity": 6,
+            "current_quantity": 96,
             "price": 10.0,
             "use_exchange_rate": false,
             "priority": 0,
             "notes": "Vendor: Industrial Rubber Supply\nDescription: ",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 6\nto: 6\nItsme\nSeptember 16 Friday 2022 02:01:24 PM"
+            "latest_change_current_quantity": "Latest Change:\nfrom: 96\nto: 96\nItsme\nSeptember 30 Friday 2022 03:59:16 PM"
         },
         "bushing 786-251 Bronze Insert Bushing ": {
             "part_number": "786-251",
@@ -1279,16 +1279,6 @@
             "latest_change_current_quantity": "Latest Change:\nfrom: 2\nto: 2\nItsme\nSeptember 16 Friday 2022 02:01:24 PM",
             "latest_change_name": "Latest Change:\nfrom: \"3\" Thermax SF- 600 Brick Slabs 1000x610x7\"\nto: \"3\" Thermax SF- 600 Brick Slabs 1000x610x75\"\nItsme\nJuly 11 Monday 2022 09:45:53 AM"
         },
-        "WeatherStripping NDA- .5\" x 3\/16\" x 50'": {
-            "part_number": "WSNDA",
-            "unit_quantity": 1,
-            "current_quantity": 6,
-            "price": 10.0,
-            "use_exchange_rate": false,
-            "priority": 0,
-            "notes": "Vendor: Industrial Rubber Supply\nDescription: ",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 6\nto: 6\nItsme\nSeptember 16 Friday 2022 02:01:24 PM"
-        },
         "bushing 786-251 Bronze Insert Bushing ": {
             "part_number": "786-251",
             "unit_quantity": 2,
@@ -1880,6 +1870,16 @@
             "latest_change_part_number": "Latest Change:\nfrom: 26-9FC\nto: 26-99FC\nItsme\nJuly 20 Wednesday 2022 10:20:02 AM",
             "latest_change_price": "Latest Change:\nfrom: 169.0\nto: 169.7\nItsme\nAugust 25 Thursday 2022 01:22:27 PM"
         },
+        "WeatherStripping NDA- .5\" x 3\/16\" x 50'": {
+            "part_number": "WSNDA",
+            "unit_quantity": 1,
+            "current_quantity": 96,
+            "price": 10.0,
+            "use_exchange_rate": false,
+            "priority": 0,
+            "notes": "Vendor: Industrial Rubber Supply\nDescription: ",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 96\nto: 96\nItsme\nSeptember 30 Friday 2022 03:59:16 PM"
+        },
         "Sticker  319  easy Sweep": {
             "part_number": "319",
             "unit_quantity": 1,
@@ -1995,6 +1995,23 @@
             "latest_change_priority": "Item added\nItsme\nJuly 19 Tuesday 2022 04-50-50 PM",
             "latest_change_notes": "Item added\nItsme\nJuly 19 Tuesday 2022 04-50-50 PM"
         },
+        "Float Clamp  G1SS-11.3 7\/16 One Ear Stainless": {
+            "part_number": "G1SS-11.3",
+            "unit_quantity": 1,
+            "current_quantity": 177,
+            "price": 0.25,
+            "use_exchange_rate": false,
+            "priority": 0,
+            "notes": "Vendor: GreenLine Hose and Fittings\nDescription: ",
+            "latest_change_name": "Item added\nItsme\nAugust 29 Monday 2022 03-46-48 PM",
+            "latest_change_part_number": "Item added\nItsme\nAugust 29 Monday 2022 03-46-48 PM",
+            "latest_change_unit_quantity": "Item added\nItsme\nAugust 29 Monday 2022 03-46-48 PM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 177\nto: 177\nItsme\nSeptember 30 Friday 2022 09:49:56 AM",
+            "latest_change_price": "Item added\nItsme\nAugust 29 Monday 2022 03-46-48 PM",
+            "latest_change_use_exchange_price": "Item added\nItsme\nAugust 29 Monday 2022 03-46-48 PM",
+            "latest_change_priority": "Item added\nItsme\nAugust 29 Monday 2022 03-46-48 PM",
+            "latest_change_notes": "Item added\nItsme\nAugust 29 Monday 2022 03-46-48 PM"
+        },
         "3\/8 x 4 Carr BLT ": {
             "part_number": "38384",
             "unit_quantity": 6,
@@ -2022,23 +2039,6 @@
             "notes": "Vendor: Rantec\nRachel@rantec.ca\nDescription: ",
             "latest_change_current_quantity": "Latest Change:\nfrom: 186\nto: 186\nItsme\nSeptember 16 Friday 2022 02:01:25 PM",
             "latest_change_price": "Latest Change:\nfrom: 9.7\nto: 9.7\nItsme\nJuly 07 Thursday 2022 03:59:16 PM"
-        },
-        "Float Clamp  G1SS-11.3 7\/16 One Ear Stainless": {
-            "part_number": "G1SS-11.3",
-            "unit_quantity": 1,
-            "current_quantity": 177,
-            "price": 0.25,
-            "use_exchange_rate": false,
-            "priority": 0,
-            "notes": "Vendor: GreenLine Hose and Fittings\nDescription: ",
-            "latest_change_name": "Item added\nItsme\nAugust 29 Monday 2022 03-46-48 PM",
-            "latest_change_part_number": "Item added\nItsme\nAugust 29 Monday 2022 03-46-48 PM",
-            "latest_change_unit_quantity": "Item added\nItsme\nAugust 29 Monday 2022 03-46-48 PM",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 177\nto: 177\nItsme\nSeptember 30 Friday 2022 09:49:56 AM",
-            "latest_change_price": "Item added\nItsme\nAugust 29 Monday 2022 03-46-48 PM",
-            "latest_change_use_exchange_price": "Item added\nItsme\nAugust 29 Monday 2022 03-46-48 PM",
-            "latest_change_priority": "Item added\nItsme\nAugust 29 Monday 2022 03-46-48 PM",
-            "latest_change_notes": "Item added\nItsme\nAugust 29 Monday 2022 03-46-48 PM"
         },
         "6 FT Power Cord Nema 5-16P 3 pin": {
             "part_number": "Nema5",
@@ -2477,12 +2477,12 @@
         "WeatherStripping NDA- .5\" x 3\/16\" x 50'": {
             "part_number": "WSNDA",
             "unit_quantity": 1,
-            "current_quantity": 6,
+            "current_quantity": 96,
             "price": 10.0,
             "use_exchange_rate": false,
             "priority": 0,
             "notes": "Vendor: Industrial Rubber Supply\nDescription: ",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 6\nto: 6\nItsme\nSeptember 16 Friday 2022 02:01:24 PM"
+            "latest_change_current_quantity": "Latest Change:\nfrom: 96\nto: 96\nItsme\nSeptember 30 Friday 2022 03:59:16 PM"
         },
         "bushing 786-251 Bronze Insert Bushing ": {
             "part_number": "786-251",
