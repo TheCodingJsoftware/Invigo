@@ -583,11 +583,12 @@
             "part_number": "6L12",
             "unit_quantity": 1.0,
             "current_quantity": 70,
-            "price": 44.03,
+            "price": 60.3,
             "use_exchange_rate": false,
             "priority": 2,
             "notes": "Vendor: Security Chimneys\ndmorris@duraventgroup.com\nDescription: ",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 70.0\nto: 70\nItsme\nSeptember 16 Friday 2022 02:01:25 PM"
+            "latest_change_current_quantity": "Latest Change:\nfrom: 70.0\nto: 70\nItsme\nSeptember 16 Friday 2022 02:01:25 PM",
+            "latest_change_price": "Latest Change:\nfrom: 60.3\nto: 60.3\nItsme\nOctober 04 Tuesday 2022 01:57:08 PM"
         },
         "Cotter Pin 1\/16x 1\/2 ": {
             "part_number": "CP116",
@@ -1693,11 +1694,12 @@
             "part_number": "6L12",
             "unit_quantity": 1.0,
             "current_quantity": 70,
-            "price": 44.03,
+            "price": 60.3,
             "use_exchange_rate": false,
             "priority": 2,
             "notes": "Vendor: Security Chimneys\ndmorris@duraventgroup.com\nDescription: ",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 70\nto: 70\nItsme\nSeptember 16 Friday 2022 02:01:25 PM"
+            "latest_change_current_quantity": "Latest Change:\nfrom: 70\nto: 70\nItsme\nSeptember 16 Friday 2022 02:01:25 PM",
+            "latest_change_price": "Latest Change:\nfrom: 60.3\nto: 60.3\nItsme\nOctober 04 Tuesday 2022 01:57:08 PM"
         },
         "Cotter Pin 1\/16x 1\/2 ": {
             "part_number": "CP116",
@@ -2863,11 +2865,12 @@
             "part_number": "6L12",
             "unit_quantity": 1.0,
             "current_quantity": 70,
-            "price": 44.03,
+            "price": 60.3,
             "use_exchange_rate": false,
             "priority": 2,
             "notes": "Vendor: Security Chimneys\ndmorris@duraventgroup.com\nDescription: ",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 70.0\nto: 70\nItsme\nSeptember 16 Friday 2022 02:01:25 PM"
+            "latest_change_current_quantity": "Latest Change:\nfrom: 70.0\nto: 70\nItsme\nSeptember 16 Friday 2022 02:01:25 PM",
+            "latest_change_price": "Latest Change:\nfrom: 60.3\nto: 60.3\nItsme\nOctober 04 Tuesday 2022 01:57:08 PM"
         },
         "Cotter Pin 1\/16x 1\/2 ": {
             "part_number": "CP116",
@@ -3474,7 +3477,7 @@
             "part_number": "DBA",
             "unit_quantity": 1,
             "current_quantity": 0,
-            "price": 33.0,
+            "price": 440.0,
             "use_exchange_rate": false,
             "priority": 0,
             "notes": "Vendor: Matric Metal Casting\nDescription: ",
@@ -3482,7 +3485,7 @@
             "latest_change_part_number": "Item added\nItsme\nAugust 15 Monday 2022 11-32-51 AM",
             "latest_change_unit_quantity": "Item added\nItsme\nAugust 15 Monday 2022 11-32-51 AM",
             "latest_change_current_quantity": "Latest Change:\nfrom: 0\nto: 0\nItsme\nSeptember 30 Friday 2022 09:49:56 AM",
-            "latest_change_price": "Item added\nItsme\nAugust 15 Monday 2022 11-32-51 AM",
+            "latest_change_price": "Latest Change:\nfrom: 440.0\nto: 440.0\nItsme\nOctober 04 Tuesday 2022 02:02:18 PM",
             "latest_change_use_exchange_price": "Item added\nItsme\nAugust 15 Monday 2022 11-32-51 AM",
             "latest_change_priority": "Item added\nItsme\nAugust 15 Monday 2022 11-32-51 AM",
             "latest_change_notes": "Item added\nItsme\nAugust 15 Monday 2022 11-32-51 AM"
@@ -4296,7 +4299,7 @@
             "part_number": "DBA",
             "unit_quantity": 1,
             "current_quantity": 0,
-            "price": 33.0,
+            "price": 440.0,
             "use_exchange_rate": false,
             "priority": 0,
             "notes": "Vendor: Matric Metal Casting\nDescription: ",
@@ -4304,7 +4307,7 @@
             "latest_change_part_number": "Latest Change:\nfrom: DBA\nto: DBA\nItsme\nAugust 15 Monday 2022 11:28:11 AM",
             "latest_change_unit_quantity": "Item added\nItsme\nAugust 04 Thursday 2022 10-19-53 AM",
             "latest_change_current_quantity": "Latest Change:\nfrom: 0\nto: 0\nItsme\nSeptember 30 Friday 2022 09:49:56 AM",
-            "latest_change_price": "Item added\nItsme\nAugust 04 Thursday 2022 10-19-53 AM",
+            "latest_change_price": "Latest Change:\nfrom: 440.0\nto: 440.0\nItsme\nOctober 04 Tuesday 2022 02:02:18 PM",
             "latest_change_use_exchange_price": "Item added\nItsme\nAugust 04 Thursday 2022 10-19-53 AM",
             "latest_change_priority": "Item added\nItsme\nAugust 04 Thursday 2022 10-19-53 AM",
             "latest_change_notes": "Item added\nItsme\nAugust 04 Thursday 2022 10-19-53 AM"
@@ -4656,7 +4659,7 @@
             "part_number": "DBA",
             "unit_quantity": 1,
             "current_quantity": 0,
-            "price": 33.0,
+            "price": 440.0,
             "use_exchange_rate": false,
             "priority": 0,
             "notes": "Vendor: Matric Metal Casting\nDescription: ",
@@ -4664,7 +4667,7 @@
             "latest_change_part_number": "Latest Change:\nfrom: DBA\nto: DBA\nItsme\nAugust 15 Monday 2022 11:28:11 AM",
             "latest_change_unit_quantity": "Item added\nItsme\nAugust 04 Thursday 2022 10-19-53 AM",
             "latest_change_current_quantity": "Latest Change:\nfrom: 0\nto: 0\nItsme\nSeptember 30 Friday 2022 09:49:56 AM",
-            "latest_change_price": "Item added\nItsme\nAugust 04 Thursday 2022 10-19-53 AM",
+            "latest_change_price": "Latest Change:\nfrom: 440.0\nto: 440.0\nItsme\nOctober 04 Tuesday 2022 02:02:18 PM",
             "latest_change_use_exchange_price": "Item added\nItsme\nAugust 04 Thursday 2022 10-19-53 AM",
             "latest_change_priority": "Item added\nItsme\nAugust 04 Thursday 2022 10-19-53 AM",
             "latest_change_notes": "Item added\nItsme\nAugust 04 Thursday 2022 10-19-53 AM"
@@ -5083,7 +5086,7 @@
             "part_number": "DBA",
             "unit_quantity": 1,
             "current_quantity": 0,
-            "price": 33.0,
+            "price": 440.0,
             "use_exchange_rate": false,
             "priority": 0,
             "notes": "Vendor: Matric Metal Casting\nDescription: ",
@@ -5091,7 +5094,7 @@
             "latest_change_part_number": "Item added\nItsme\nAugust 15 Monday 2022 11-32-18 AM",
             "latest_change_unit_quantity": "Item added\nItsme\nAugust 15 Monday 2022 11-32-18 AM",
             "latest_change_current_quantity": "Latest Change:\nfrom: 0\nto: 0\nItsme\nSeptember 30 Friday 2022 09:49:56 AM",
-            "latest_change_price": "Item added\nItsme\nAugust 15 Monday 2022 11-32-18 AM",
+            "latest_change_price": "Latest Change:\nfrom: 440.0\nto: 440.0\nItsme\nOctober 04 Tuesday 2022 02:02:18 PM",
             "latest_change_use_exchange_price": "Item added\nItsme\nAugust 15 Monday 2022 11-32-18 AM",
             "latest_change_priority": "Item added\nItsme\nAugust 15 Monday 2022 11-32-18 AM",
             "latest_change_notes": "Item added\nItsme\nAugust 15 Monday 2022 11-32-18 AM"
@@ -5459,7 +5462,7 @@
             "part_number": "DBA",
             "unit_quantity": 1,
             "current_quantity": 0,
-            "price": 33.0,
+            "price": 440.0,
             "use_exchange_rate": false,
             "priority": 0,
             "notes": "Vendor: Matric Metal Casting\nDescription: ",
@@ -5467,7 +5470,7 @@
             "latest_change_part_number": "Item added\nItsme\nAugust 15 Monday 2022 11-32-18 AM",
             "latest_change_unit_quantity": "Item added\nItsme\nAugust 15 Monday 2022 11-32-18 AM",
             "latest_change_current_quantity": "Latest Change:\nfrom: 0\nto: 0\nItsme\nSeptember 30 Friday 2022 09:49:56 AM",
-            "latest_change_price": "Item added\nItsme\nAugust 15 Monday 2022 11-32-18 AM",
+            "latest_change_price": "Latest Change:\nfrom: 440.0\nto: 440.0\nItsme\nOctober 04 Tuesday 2022 02:02:18 PM",
             "latest_change_use_exchange_price": "Item added\nItsme\nAugust 15 Monday 2022 11-32-18 AM",
             "latest_change_priority": "Item added\nItsme\nAugust 15 Monday 2022 11-32-18 AM",
             "latest_change_notes": "Item added\nItsme\nAugust 15 Monday 2022 11-32-18 AM"
