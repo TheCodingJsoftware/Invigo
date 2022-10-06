@@ -233,11 +233,12 @@
             "part_number": "CLAMP112",
             "unit_quantity": 2,
             "current_quantity": 12,
-            "price": 0.5,
+            "price": 0.85,
             "use_exchange_rate": false,
             "priority": 0,
             "notes": "Vendor: Greenline\nDescription: 204-694-0332",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 12\nto: 12\nItsme\nSeptember 16 Friday 2022 02:01:24 PM"
+            "latest_change_current_quantity": "Latest Change:\nfrom: 12\nto: 12\nItsme\nSeptember 16 Friday 2022 02:01:24 PM",
+            "latest_change_price": "Latest Change:\nfrom: 0.85\nto: 0.85\nItsme\nOctober 06 Thursday 2022 09:11:22 AM"
         },
         "Grundfos Pump Flange 1 1\/4 ": {
             "part_number": "PF114",
@@ -1189,6 +1190,23 @@
             "latest_change_priority": "Item added\nItsme\nAugust 12 Friday 2022 09-51-59 AM",
             "latest_change_notes": "Item added\nItsme\nAugust 12 Friday 2022 09-51-59 AM"
         },
+        "1\" Plug": {
+            "part_number": "G1600M",
+            "unit_quantity": 6,
+            "current_quantity": 2,
+            "price": 0.66,
+            "use_exchange_rate": false,
+            "priority": 0,
+            "notes": "Vendor:  GreenLine \nDescription: ",
+            "latest_change_name": "Item added\nItsme\nOctober 06 Thursday 2022 09-10-38 AM",
+            "latest_change_part_number": "Item added\nItsme\nOctober 06 Thursday 2022 09-10-38 AM",
+            "latest_change_unit_quantity": "Item added\nItsme\nOctober 06 Thursday 2022 09-10-38 AM",
+            "latest_change_current_quantity": "Item added\nItsme\nOctober 06 Thursday 2022 09-10-38 AM",
+            "latest_change_price": "Item added\nItsme\nOctober 06 Thursday 2022 09-10-38 AM",
+            "latest_change_use_exchange_price": "Item added\nItsme\nOctober 06 Thursday 2022 09-10-38 AM",
+            "latest_change_priority": "Item added\nItsme\nOctober 06 Thursday 2022 09-10-38 AM",
+            "latest_change_notes": "Item added\nItsme\nOctober 06 Thursday 2022 09-10-38 AM"
+        },
         "G3 Brick Set": {
             "part_number": "G3BS",
             "unit_quantity": 1,
@@ -1245,11 +1263,12 @@
             "part_number": "CLAMP112",
             "unit_quantity": 2,
             "current_quantity": 12,
-            "price": 0.5,
+            "price": 0.85,
             "use_exchange_rate": false,
             "priority": 0,
             "notes": "Vendor: Greenline\nDescription: 204-694-0332",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 12\nto: 12\nItsme\nSeptember 16 Friday 2022 02:01:24 PM"
+            "latest_change_current_quantity": "Latest Change:\nfrom: 12\nto: 12\nItsme\nSeptember 16 Friday 2022 02:01:24 PM",
+            "latest_change_price": "Latest Change:\nfrom: 0.85\nto: 0.85\nItsme\nOctober 06 Thursday 2022 09:11:22 AM"
         },
         "Grundfos Pump Flange 1 1\/4 ": {
             "part_number": "PF114",
@@ -2368,11 +2387,12 @@
             "part_number": "CLAMP112",
             "unit_quantity": 2,
             "current_quantity": 12,
-            "price": 0.5,
+            "price": 0.85,
             "use_exchange_rate": false,
             "priority": 0,
             "notes": "Vendor: Greenline\nDescription: 204-694-0332",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 12\nto: 12\nItsme\nSeptember 16 Friday 2022 02:01:24 PM"
+            "latest_change_current_quantity": "Latest Change:\nfrom: 12\nto: 12\nItsme\nSeptember 16 Friday 2022 02:01:24 PM",
+            "latest_change_price": "Latest Change:\nfrom: 0.85\nto: 0.85\nItsme\nOctober 06 Thursday 2022 09:11:22 AM"
         },
         "Grundfos Pump Flange 1 1\/4 ": {
             "part_number": "PF114",
@@ -3866,6 +3886,40 @@
         }
     },
     "Fittings": {
+        "1\" Street Elbow- 45": {
+            "part_number": "1str45",
+            "unit_quantity": 2,
+            "current_quantity": 0,
+            "price": 2.3,
+            "use_exchange_rate": false,
+            "priority": 0,
+            "notes": "Vendor:  Greenline Hose and fittings\nDescription: ",
+            "latest_change_name": "Item added\nItsme\nOctober 06 Thursday 2022 09-13-02 AM",
+            "latest_change_part_number": "Item added\nItsme\nOctober 06 Thursday 2022 09-13-02 AM",
+            "latest_change_unit_quantity": "Item added\nItsme\nOctober 06 Thursday 2022 09-13-02 AM",
+            "latest_change_current_quantity": "Item added\nItsme\nOctober 06 Thursday 2022 09-13-02 AM",
+            "latest_change_price": "Item added\nItsme\nOctober 06 Thursday 2022 09-13-02 AM",
+            "latest_change_use_exchange_price": "Item added\nItsme\nOctober 06 Thursday 2022 09-13-02 AM",
+            "latest_change_priority": "Item added\nItsme\nOctober 06 Thursday 2022 09-13-02 AM",
+            "latest_change_notes": "Item added\nItsme\nOctober 06 Thursday 2022 09-13-02 AM"
+        },
+        "3\/4 stainless Coupler": {
+            "part_number": "G0808SS-075-075",
+            "unit_quantity": 1,
+            "current_quantity": 3,
+            "price": 3.36,
+            "use_exchange_rate": false,
+            "priority": 0,
+            "notes": "Vendor: Greenline Hose and Fittings\nDescription: ",
+            "latest_change_name": "Item added\nItsme\nSeptember 07 Wednesday 2022 08-49-47 AM",
+            "latest_change_part_number": "Item added\nItsme\nSeptember 07 Wednesday 2022 08-49-47 AM",
+            "latest_change_unit_quantity": "Item added\nItsme\nSeptember 07 Wednesday 2022 08-49-47 AM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 3\nto: 3\nItsme\nSeptember 07 Wednesday 2022 08:50:22 AM",
+            "latest_change_price": "Item added\nItsme\nSeptember 07 Wednesday 2022 08-49-47 AM",
+            "latest_change_use_exchange_price": "Item added\nItsme\nSeptember 07 Wednesday 2022 08-49-47 AM",
+            "latest_change_priority": "Item added\nItsme\nSeptember 07 Wednesday 2022 08-49-47 AM",
+            "latest_change_notes": "Item added\nItsme\nSeptember 07 Wednesday 2022 08-49-47 AM"
+        },
         "2 1\/2 cap plug": {
             "part_number": "2\/2CP",
             "unit_quantity": 1,
@@ -3882,6 +3936,23 @@
             "latest_change_use_exchange_price": "Item added\nItsme\nJuly 29 Friday 2022 04-07-34 PM",
             "latest_change_priority": "Item added\nItsme\nJuly 29 Friday 2022 04-07-34 PM",
             "latest_change_notes": "Item added\nItsme\nJuly 29 Friday 2022 04-07-34 PM"
+        },
+        "2\" 90 STR ELBOW": {
+            "part_number": "G1698M-200",
+            "unit_quantity": 1,
+            "current_quantity": 6,
+            "price": 4.99,
+            "use_exchange_rate": false,
+            "priority": 0,
+            "notes": "Vendor: GreenLine\nDescription: ",
+            "latest_change_name": "Item added\nItsme\nSeptember 07 Wednesday 2022 08-47-19 AM",
+            "latest_change_part_number": "Item added\nItsme\nSeptember 07 Wednesday 2022 08-47-19 AM",
+            "latest_change_unit_quantity": "Item added\nItsme\nSeptember 07 Wednesday 2022 08-47-19 AM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 6\nto: 6\nItsme\nSeptember 07 Wednesday 2022 08:47:28 AM",
+            "latest_change_price": "Item added\nItsme\nSeptember 07 Wednesday 2022 08-47-19 AM",
+            "latest_change_use_exchange_price": "Item added\nItsme\nSeptember 07 Wednesday 2022 08-47-19 AM",
+            "latest_change_priority": "Item added\nItsme\nSeptember 07 Wednesday 2022 08-47-19 AM",
+            "latest_change_notes": "Item added\nItsme\nSeptember 07 Wednesday 2022 08-47-19 AM"
         },
         "1 1\/4x4\" Nipple": {
             "part_number": "1144N",
@@ -3968,23 +4039,6 @@
             "latest_change_priority": "Item added\nItsme\nJuly 29 Friday 2022 04-05-02 PM",
             "latest_change_notes": "Item added\nItsme\nJuly 29 Friday 2022 04-05-02 PM"
         },
-        "1 1\/4 Full Port ball Valve": {
-            "part_number": "114BV",
-            "unit_quantity": 2,
-            "current_quantity": 61,
-            "price": 20.5,
-            "use_exchange_rate": false,
-            "priority": 0,
-            "notes": "Vendor: Greenline\nDescription: 204-694-0332",
-            "latest_change_name": "Item added\nItsme\nAugust 03 Wednesday 2022 08-49-20 AM",
-            "latest_change_part_number": "Item added\nItsme\nAugust 03 Wednesday 2022 08-49-20 AM",
-            "latest_change_unit_quantity": "Item added\nItsme\nAugust 03 Wednesday 2022 08-49-20 AM",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 61\nto: 61\nItsme\nSeptember 27 Tuesday 2022 08:13:55 AM",
-            "latest_change_price": "Latest Change:\nfrom: 20.0\nto: 20.5\nItsme\nAugust 03 Wednesday 2022 08:49:45 AM",
-            "latest_change_use_exchange_price": "Item added\nItsme\nAugust 03 Wednesday 2022 08-49-20 AM",
-            "latest_change_priority": "Item added\nItsme\nAugust 03 Wednesday 2022 08-49-20 AM",
-            "latest_change_notes": "Item added\nItsme\nAugust 03 Wednesday 2022 08-49-20 AM"
-        },
         "1 1\/4 STR Elbow": {
             "part_number": "114STR",
             "unit_quantity": 1,
@@ -4001,40 +4055,6 @@
             "latest_change_use_exchange_price": "Item added\nItsme\nJuly 29 Friday 2022 08-53-22 AM",
             "latest_change_priority": "Item added\nItsme\nJuly 29 Friday 2022 08-53-22 AM",
             "latest_change_notes": "Item added\nItsme\nJuly 29 Friday 2022 08-53-22 AM"
-        },
-        "Barb Hose Adapter fitting": {
-            "part_number": "BIA-020",
-            "unit_quantity": 2,
-            "current_quantity": 72,
-            "price": 3.0,
-            "use_exchange_rate": false,
-            "priority": 0,
-            "notes": "Vendor: GreenLine\nDescription: 204-694-0332",
-            "latest_change_name": "Item added\nItsme\nAugust 03 Wednesday 2022 08-47-07 AM",
-            "latest_change_part_number": "Item added\nItsme\nAugust 03 Wednesday 2022 08-47-07 AM",
-            "latest_change_unit_quantity": "Item added\nItsme\nAugust 03 Wednesday 2022 08-47-07 AM",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 72\nto: 72\nItsme\nSeptember 27 Tuesday 2022 08:14:33 AM",
-            "latest_change_price": "Latest Change:\nfrom: 3.3\nto: 3.0\nItsme\nAugust 03 Wednesday 2022 08:50:27 AM",
-            "latest_change_use_exchange_price": "Item added\nItsme\nAugust 03 Wednesday 2022 08-47-07 AM",
-            "latest_change_priority": "Item added\nItsme\nAugust 03 Wednesday 2022 08-47-07 AM",
-            "latest_change_notes": "Item added\nItsme\nAugust 03 Wednesday 2022 08-47-07 AM"
-        },
-        "1 1\/4 Closed Nipple ": {
-            "part_number": "114CN",
-            "unit_quantity": 3,
-            "current_quantity": 63,
-            "price": 1.21,
-            "use_exchange_rate": false,
-            "priority": 0,
-            "notes": "Vendor: Greenline\nDescription: 204-694-0332",
-            "latest_change_name": "Item added\nItsme\nAugust 03 Wednesday 2022 08-48-01 AM",
-            "latest_change_part_number": "Item added\nItsme\nAugust 03 Wednesday 2022 08-48-01 AM",
-            "latest_change_unit_quantity": "Item added\nItsme\nAugust 03 Wednesday 2022 08-48-01 AM",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 63\nto: 63\nItsme\nSeptember 27 Tuesday 2022 08:14:20 AM",
-            "latest_change_price": "Latest Change:\nfrom: 1.2\nto: 1.21\nItsme\nAugust 03 Wednesday 2022 08:50:13 AM",
-            "latest_change_use_exchange_price": "Item added\nItsme\nAugust 03 Wednesday 2022 08-48-01 AM",
-            "latest_change_priority": "Item added\nItsme\nAugust 03 Wednesday 2022 08-48-01 AM",
-            "latest_change_notes": "Item added\nItsme\nAugust 03 Wednesday 2022 08-48-01 AM"
         },
         "1-1\/4 Half Coupling": {
             "part_number": "G0008MC-125",
@@ -4070,6 +4090,40 @@
             "latest_change_priority": "Item added\nItsme\nJuly 29 Friday 2022 04-09-28 PM",
             "latest_change_notes": "Item added\nItsme\nJuly 29 Friday 2022 04-09-28 PM"
         },
+        "1 1\/4 Full Port ball Valve": {
+            "part_number": "114BV",
+            "unit_quantity": 2,
+            "current_quantity": 61,
+            "price": 20.5,
+            "use_exchange_rate": false,
+            "priority": 0,
+            "notes": "Vendor: Greenline\nDescription: 204-694-0332",
+            "latest_change_name": "Item added\nItsme\nAugust 03 Wednesday 2022 08-49-20 AM",
+            "latest_change_part_number": "Item added\nItsme\nAugust 03 Wednesday 2022 08-49-20 AM",
+            "latest_change_unit_quantity": "Item added\nItsme\nAugust 03 Wednesday 2022 08-49-20 AM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 61\nto: 61\nItsme\nSeptember 27 Tuesday 2022 08:13:55 AM",
+            "latest_change_price": "Latest Change:\nfrom: 20.0\nto: 20.5\nItsme\nAugust 03 Wednesday 2022 08:49:45 AM",
+            "latest_change_use_exchange_price": "Item added\nItsme\nAugust 03 Wednesday 2022 08-49-20 AM",
+            "latest_change_priority": "Item added\nItsme\nAugust 03 Wednesday 2022 08-49-20 AM",
+            "latest_change_notes": "Item added\nItsme\nAugust 03 Wednesday 2022 08-49-20 AM"
+        },
+        "1 1\/4 Closed Nipple ": {
+            "part_number": "114CN",
+            "unit_quantity": 3,
+            "current_quantity": 63,
+            "price": 1.21,
+            "use_exchange_rate": false,
+            "priority": 0,
+            "notes": "Vendor: Greenline\nDescription: 204-694-0332",
+            "latest_change_name": "Item added\nItsme\nAugust 03 Wednesday 2022 08-48-01 AM",
+            "latest_change_part_number": "Item added\nItsme\nAugust 03 Wednesday 2022 08-48-01 AM",
+            "latest_change_unit_quantity": "Item added\nItsme\nAugust 03 Wednesday 2022 08-48-01 AM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 63\nto: 63\nItsme\nSeptember 27 Tuesday 2022 08:14:20 AM",
+            "latest_change_price": "Latest Change:\nfrom: 1.2\nto: 1.21\nItsme\nAugust 03 Wednesday 2022 08:50:13 AM",
+            "latest_change_use_exchange_price": "Item added\nItsme\nAugust 03 Wednesday 2022 08-48-01 AM",
+            "latest_change_priority": "Item added\nItsme\nAugust 03 Wednesday 2022 08-48-01 AM",
+            "latest_change_notes": "Item added\nItsme\nAugust 03 Wednesday 2022 08-48-01 AM"
+        },
         "1 1\/4 to 1\" reducing elbow": {
             "part_number": "1141RE",
             "unit_quantity": 1,
@@ -4086,6 +4140,23 @@
             "latest_change_use_exchange_price": "Item added\nItsme\nJuly 29 Friday 2022 04-08-27 PM",
             "latest_change_priority": "Item added\nItsme\nJuly 29 Friday 2022 04-08-27 PM",
             "latest_change_notes": "Item added\nItsme\nJuly 29 Friday 2022 04-08-27 PM"
+        },
+        "Barb Hose Adapter fitting": {
+            "part_number": "BIA-020",
+            "unit_quantity": 2,
+            "current_quantity": 72,
+            "price": 3.0,
+            "use_exchange_rate": false,
+            "priority": 0,
+            "notes": "Vendor: GreenLine\nDescription: 204-694-0332",
+            "latest_change_name": "Item added\nItsme\nAugust 03 Wednesday 2022 08-47-07 AM",
+            "latest_change_part_number": "Item added\nItsme\nAugust 03 Wednesday 2022 08-47-07 AM",
+            "latest_change_unit_quantity": "Item added\nItsme\nAugust 03 Wednesday 2022 08-47-07 AM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 72\nto: 72\nItsme\nSeptember 27 Tuesday 2022 08:14:33 AM",
+            "latest_change_price": "Latest Change:\nfrom: 3.3\nto: 3.0\nItsme\nAugust 03 Wednesday 2022 08:50:27 AM",
+            "latest_change_use_exchange_price": "Item added\nItsme\nAugust 03 Wednesday 2022 08-47-07 AM",
+            "latest_change_priority": "Item added\nItsme\nAugust 03 Wednesday 2022 08-47-07 AM",
+            "latest_change_notes": "Item added\nItsme\nAugust 03 Wednesday 2022 08-47-07 AM"
         },
         "1\" Street Elbow- 90 ": {
             "part_number": "1SE9",
@@ -4120,40 +4191,6 @@
             "latest_change_use_exchange_price": "Item added\nItsme\nJuly 29 Friday 2022 08-58-18 AM",
             "latest_change_priority": "Item added\nItsme\nJuly 29 Friday 2022 08-58-18 AM",
             "latest_change_notes": "Item added\nItsme\nJuly 29 Friday 2022 08-58-18 AM"
-        },
-        "2\" 90 STR ELBOW": {
-            "part_number": "G1698M-200",
-            "unit_quantity": 1,
-            "current_quantity": 6,
-            "price": 4.99,
-            "use_exchange_rate": false,
-            "priority": 0,
-            "notes": "Vendor: GreenLine\nDescription: ",
-            "latest_change_name": "Item added\nItsme\nSeptember 07 Wednesday 2022 08-47-19 AM",
-            "latest_change_part_number": "Item added\nItsme\nSeptember 07 Wednesday 2022 08-47-19 AM",
-            "latest_change_unit_quantity": "Item added\nItsme\nSeptember 07 Wednesday 2022 08-47-19 AM",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 6\nto: 6\nItsme\nSeptember 07 Wednesday 2022 08:47:28 AM",
-            "latest_change_price": "Item added\nItsme\nSeptember 07 Wednesday 2022 08-47-19 AM",
-            "latest_change_use_exchange_price": "Item added\nItsme\nSeptember 07 Wednesday 2022 08-47-19 AM",
-            "latest_change_priority": "Item added\nItsme\nSeptember 07 Wednesday 2022 08-47-19 AM",
-            "latest_change_notes": "Item added\nItsme\nSeptember 07 Wednesday 2022 08-47-19 AM"
-        },
-        "3\/4 stainless Coupler": {
-            "part_number": "G0808SS-075-075",
-            "unit_quantity": 1,
-            "current_quantity": 3,
-            "price": 3.36,
-            "use_exchange_rate": false,
-            "priority": 0,
-            "notes": "Vendor: Greenline Hose and Fittings\nDescription: ",
-            "latest_change_name": "Item added\nItsme\nSeptember 07 Wednesday 2022 08-49-47 AM",
-            "latest_change_part_number": "Item added\nItsme\nSeptember 07 Wednesday 2022 08-49-47 AM",
-            "latest_change_unit_quantity": "Item added\nItsme\nSeptember 07 Wednesday 2022 08-49-47 AM",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 3\nto: 3\nItsme\nSeptember 07 Wednesday 2022 08:50:22 AM",
-            "latest_change_price": "Item added\nItsme\nSeptember 07 Wednesday 2022 08-49-47 AM",
-            "latest_change_use_exchange_price": "Item added\nItsme\nSeptember 07 Wednesday 2022 08-49-47 AM",
-            "latest_change_priority": "Item added\nItsme\nSeptember 07 Wednesday 2022 08-49-47 AM",
-            "latest_change_notes": "Item added\nItsme\nSeptember 07 Wednesday 2022 08-49-47 AM"
         }
     },
     "Miscillanious Items": {
@@ -5065,23 +5102,6 @@
             "latest_change_priority": "Item added\nItsme\nJuly 28 Thursday 2022 07-52-01 PM",
             "latest_change_notes": "Item added\nItsme\nJuly 28 Thursday 2022 07-52-01 PM"
         },
-        "Bl 34 Shaker Brick Set": {
-            "part_number": "BL34S",
-            "unit_quantity": 1,
-            "current_quantity": 27,
-            "price": 760.0,
-            "use_exchange_rate": false,
-            "priority": 0,
-            "notes": "Vendor: Reftec\nDescription: ",
-            "latest_change_name": "Latest Change:\nfrom: \"Bl 34 ShakerBrick Set\"\nto: \"Bl 34 Shaker Brick Set\"\nItsme\nSeptember 07 Wednesday 2022 01:15:00 PM",
-            "latest_change_part_number": "Latest Change:\nfrom: BL34\nto: BL34S\nItsme\nAugust 29 Monday 2022 11:02:39 AM",
-            "latest_change_unit_quantity": "Item added\nItsme\nAugust 26 Friday 2022 08-44-24 AM",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 27\nto: 27\nItsme\nOctober 04 Tuesday 2022 10:45:18 AM",
-            "latest_change_price": "Item added\nItsme\nAugust 26 Friday 2022 08-44-24 AM",
-            "latest_change_use_exchange_price": "Item added\nItsme\nAugust 26 Friday 2022 08-44-24 AM",
-            "latest_change_priority": "Item added\nItsme\nAugust 26 Friday 2022 08-44-24 AM",
-            "latest_change_notes": "Item added\nItsme\nAugust 26 Friday 2022 08-44-24 AM"
-        },
         "Damper Box- Aluminum": {
             "part_number": "DBA",
             "unit_quantity": 1,
@@ -5098,6 +5118,40 @@
             "latest_change_use_exchange_price": "Item added\nItsme\nAugust 15 Monday 2022 11-32-18 AM",
             "latest_change_priority": "Item added\nItsme\nAugust 15 Monday 2022 11-32-18 AM",
             "latest_change_notes": "Item added\nItsme\nAugust 15 Monday 2022 11-32-18 AM"
+        },
+        "1\" Street Elbow- 45": {
+            "part_number": "1str45",
+            "unit_quantity": 2,
+            "current_quantity": 0,
+            "price": 2.3,
+            "use_exchange_rate": false,
+            "priority": 0,
+            "notes": "Vendor:  Greenline Hose and fittings\nDescription: ",
+            "latest_change_name": "Item added\nItsme\nOctober 06 Thursday 2022 09-05-10 AM",
+            "latest_change_part_number": "Item added\nItsme\nOctober 06 Thursday 2022 09-05-10 AM",
+            "latest_change_unit_quantity": "Item added\nItsme\nOctober 06 Thursday 2022 09-05-10 AM",
+            "latest_change_current_quantity": "Item added\nItsme\nOctober 06 Thursday 2022 09-05-10 AM",
+            "latest_change_price": "Latest Change:\nfrom: 2.3\nto: 2.3\nItsme\nOctober 06 Thursday 2022 09:12:06 AM",
+            "latest_change_use_exchange_price": "Item added\nItsme\nOctober 06 Thursday 2022 09-05-10 AM",
+            "latest_change_priority": "Item added\nItsme\nOctober 06 Thursday 2022 09-05-10 AM",
+            "latest_change_notes": "Item added\nItsme\nOctober 06 Thursday 2022 09-05-10 AM"
+        },
+        "Bl 34 Shaker Brick Set": {
+            "part_number": "BL34S",
+            "unit_quantity": 1,
+            "current_quantity": 27,
+            "price": 760.0,
+            "use_exchange_rate": false,
+            "priority": 0,
+            "notes": "Vendor: Reftec\nDescription: ",
+            "latest_change_name": "Latest Change:\nfrom: \"Bl 34 ShakerBrick Set\"\nto: \"Bl 34 Shaker Brick Set\"\nItsme\nSeptember 07 Wednesday 2022 01:15:00 PM",
+            "latest_change_part_number": "Latest Change:\nfrom: BL34\nto: BL34S\nItsme\nAugust 29 Monday 2022 11:02:39 AM",
+            "latest_change_unit_quantity": "Item added\nItsme\nAugust 26 Friday 2022 08-44-24 AM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 27\nto: 27\nItsme\nOctober 04 Tuesday 2022 10:45:18 AM",
+            "latest_change_price": "Item added\nItsme\nAugust 26 Friday 2022 08-44-24 AM",
+            "latest_change_use_exchange_price": "Item added\nItsme\nAugust 26 Friday 2022 08-44-24 AM",
+            "latest_change_priority": "Item added\nItsme\nAugust 26 Friday 2022 08-44-24 AM",
+            "latest_change_notes": "Item added\nItsme\nAugust 26 Friday 2022 08-44-24 AM"
         },
         "8\" Chimney T  8TL14-PM": {
             "part_number": "210800",
@@ -5424,23 +5478,6 @@
         }
     },
     "BL 34 Wood": {
-        "1\" Street Elbow- 90 ": {
-            "part_number": "1SE9",
-            "unit_quantity": 4,
-            "current_quantity": 75,
-            "price": 3.25,
-            "use_exchange_rate": false,
-            "priority": 0,
-            "notes": "Vendor: GreenLine Hose and Fittings\nDescription: ",
-            "latest_change_name": "Item added\nItsme\nAugust 23 Tuesday 2022 02-47-05 PM",
-            "latest_change_part_number": "Item added\nItsme\nAugust 23 Tuesday 2022 02-47-05 PM",
-            "latest_change_unit_quantity": "Item added\nItsme\nAugust 23 Tuesday 2022 02-47-05 PM",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 75\nto: 75\nItsme\nOctober 03 Monday 2022 09:14:22 AM",
-            "latest_change_price": "Item added\nItsme\nAugust 23 Tuesday 2022 02-47-05 PM",
-            "latest_change_use_exchange_price": "Item added\nItsme\nAugust 23 Tuesday 2022 02-47-05 PM",
-            "latest_change_priority": "Item added\nItsme\nAugust 23 Tuesday 2022 02-47-05 PM",
-            "latest_change_notes": "Item added\nItsme\nAugust 23 Tuesday 2022 02-47-05 PM"
-        },
         "Die Cast Zinc Hinge, 1.57 Open x 1.57 Long, 4 Csunk Holes, SS Pin, Black Powder Coated": {
             "part_number": "H2080-02",
             "unit_quantity": 4,
@@ -5458,6 +5495,23 @@
             "latest_change_priority": "Item added\nItsme\nSeptember 14 Wednesday 2022 04-24-35 PM",
             "latest_change_notes": "Item added\nItsme\nSeptember 14 Wednesday 2022 04-24-35 PM"
         },
+        "100-Coffee Brown HT ProRib- 41 1\/4 ": {
+            "part_number": "1328GA-103-2",
+            "unit_quantity": 3,
+            "current_quantity": -13,
+            "price": 125.0,
+            "use_exchange_rate": false,
+            "priority": 0,
+            "notes": "Vendor: Domtek\nDescription: ",
+            "latest_change_name": "Item added\nItsme\nJuly 28 Thursday 2022 07-52-01 PM",
+            "latest_change_part_number": "Latest Change:\nfrom: 1328GA-103-\nto: 1328GA-103-2\nItsme\nAugust 15 Monday 2022 02:20:00 PM",
+            "latest_change_unit_quantity": "Item added\nItsme\nJuly 28 Thursday 2022 07-52-01 PM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: -13\nto: -13\nItsme\nSeptember 30 Friday 2022 09:49:56 AM",
+            "latest_change_price": "Item added\nItsme\nJuly 28 Thursday 2022 07-52-01 PM",
+            "latest_change_use_exchange_price": "Item added\nItsme\nJuly 28 Thursday 2022 07-52-01 PM",
+            "latest_change_priority": "Item added\nItsme\nJuly 28 Thursday 2022 07-52-01 PM",
+            "latest_change_notes": "Item added\nItsme\nJuly 28 Thursday 2022 07-52-01 PM"
+        },
         "Damper Box- Aluminum": {
             "part_number": "DBA",
             "unit_quantity": 1,
@@ -5474,6 +5528,23 @@
             "latest_change_use_exchange_price": "Item added\nItsme\nAugust 15 Monday 2022 11-32-18 AM",
             "latest_change_priority": "Item added\nItsme\nAugust 15 Monday 2022 11-32-18 AM",
             "latest_change_notes": "Item added\nItsme\nAugust 15 Monday 2022 11-32-18 AM"
+        },
+        "1\" Street Elbow- 45": {
+            "part_number": "1str45",
+            "unit_quantity": 2,
+            "current_quantity": 0,
+            "price": 2.3,
+            "use_exchange_rate": false,
+            "priority": 0,
+            "notes": "Vendor:  Greenline Hose and fittings\nDescription: ",
+            "latest_change_name": "Item added\nItsme\nOctober 06 Thursday 2022 09-05-29 AM",
+            "latest_change_part_number": "Item added\nItsme\nOctober 06 Thursday 2022 09-05-29 AM",
+            "latest_change_unit_quantity": "Item added\nItsme\nOctober 06 Thursday 2022 09-05-29 AM",
+            "latest_change_current_quantity": "Item added\nItsme\nOctober 06 Thursday 2022 09-05-29 AM",
+            "latest_change_price": "Latest Change:\nfrom: 2.3\nto: 2.3\nItsme\nOctober 06 Thursday 2022 09:12:06 AM",
+            "latest_change_use_exchange_price": "Item added\nItsme\nOctober 06 Thursday 2022 09-05-29 AM",
+            "latest_change_priority": "Item added\nItsme\nOctober 06 Thursday 2022 09-05-29 AM",
+            "latest_change_notes": "Item added\nItsme\nOctober 06 Thursday 2022 09-05-29 AM"
         },
         "Bl 34 Wood Brick Sets": {
             "part_number": "BL34W",
@@ -5493,23 +5564,6 @@
             "latest_change_notes": "Item added\nItsme\nAugust 26 Friday 2022 08-44-24 AM",
             "latest_change_use_exchange_rate": "Latest Change:\nfrom: CAD\nto: USD\nItsme\nSeptember 15 Thursday 2022 09:20:50 AM"
         },
-        "100-Coffee Brown HT ProRib- 41 1\/4 ": {
-            "part_number": "1328GA-103-2",
-            "unit_quantity": 3,
-            "current_quantity": -13,
-            "price": 125.0,
-            "use_exchange_rate": false,
-            "priority": 0,
-            "notes": "Vendor: Domtek\nDescription: ",
-            "latest_change_name": "Item added\nItsme\nJuly 28 Thursday 2022 07-52-01 PM",
-            "latest_change_part_number": "Latest Change:\nfrom: 1328GA-103-\nto: 1328GA-103-2\nItsme\nAugust 15 Monday 2022 02:20:00 PM",
-            "latest_change_unit_quantity": "Item added\nItsme\nJuly 28 Thursday 2022 07-52-01 PM",
-            "latest_change_current_quantity": "Latest Change:\nfrom: -13\nto: -13\nItsme\nSeptember 30 Friday 2022 09:49:56 AM",
-            "latest_change_price": "Item added\nItsme\nJuly 28 Thursday 2022 07-52-01 PM",
-            "latest_change_use_exchange_price": "Item added\nItsme\nJuly 28 Thursday 2022 07-52-01 PM",
-            "latest_change_priority": "Item added\nItsme\nJuly 28 Thursday 2022 07-52-01 PM",
-            "latest_change_notes": "Item added\nItsme\nJuly 28 Thursday 2022 07-52-01 PM"
-        },
         "8\" Chimney T  8TL14-PM": {
             "part_number": "210800",
             "unit_quantity": 1,
@@ -5526,23 +5580,6 @@
             "latest_change_use_exchange_price": "Item added\nItsme\nAugust 03 Wednesday 2022 11-04-02 AM",
             "latest_change_priority": "Item added\nItsme\nAugust 03 Wednesday 2022 11-04-02 AM",
             "latest_change_notes": "Item added\nItsme\nAugust 03 Wednesday 2022 11-04-02 AM"
-        },
-        "1\" x4\" Nipple": {
-            "part_number": "G1616-100x4",
-            "unit_quantity": 2,
-            "current_quantity": 120,
-            "price": 1.35,
-            "use_exchange_rate": false,
-            "priority": 0,
-            "notes": "Vendor: GreenLine\nDescription: ",
-            "latest_change_name": "Item added\nItsme\nAugust 29 Monday 2022 08-28-30 AM",
-            "latest_change_part_number": "Item added\nItsme\nAugust 29 Monday 2022 08-28-30 AM",
-            "latest_change_unit_quantity": "Item added\nItsme\nAugust 29 Monday 2022 08-28-30 AM",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 120\nto: 120\nItsme\nOctober 03 Monday 2022 09:13:53 AM",
-            "latest_change_price": "Item added\nItsme\nAugust 29 Monday 2022 08-28-30 AM",
-            "latest_change_use_exchange_price": "Item added\nItsme\nAugust 29 Monday 2022 08-28-30 AM",
-            "latest_change_priority": "Item added\nItsme\nAugust 29 Monday 2022 08-28-30 AM",
-            "latest_change_notes": "Item added\nItsme\nAugust 29 Monday 2022 08-28-30 AM"
         },
         "D500 Blower Fan": {
             "part_number": "ARC50752D500",
@@ -5594,6 +5631,23 @@
             "latest_change_use_exchange_price": "Item added\nItsme\nAugust 04 Thursday 2022 09-19-47 AM",
             "latest_change_priority": "Item added\nItsme\nAugust 04 Thursday 2022 09-19-47 AM",
             "latest_change_notes": "Item added\nItsme\nAugust 04 Thursday 2022 09-19-47 AM"
+        },
+        "1\" Street Elbow- 90 ": {
+            "part_number": "1SE9",
+            "unit_quantity": 4,
+            "current_quantity": 75,
+            "price": 3.25,
+            "use_exchange_rate": false,
+            "priority": 0,
+            "notes": "Vendor: GreenLine Hose and Fittings\nDescription: ",
+            "latest_change_name": "Item added\nItsme\nAugust 23 Tuesday 2022 02-47-05 PM",
+            "latest_change_part_number": "Item added\nItsme\nAugust 23 Tuesday 2022 02-47-05 PM",
+            "latest_change_unit_quantity": "Item added\nItsme\nAugust 23 Tuesday 2022 02-47-05 PM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 75\nto: 75\nItsme\nOctober 03 Monday 2022 09:14:22 AM",
+            "latest_change_price": "Item added\nItsme\nAugust 23 Tuesday 2022 02-47-05 PM",
+            "latest_change_use_exchange_price": "Item added\nItsme\nAugust 23 Tuesday 2022 02-47-05 PM",
+            "latest_change_priority": "Item added\nItsme\nAugust 23 Tuesday 2022 02-47-05 PM",
+            "latest_change_notes": "Item added\nItsme\nAugust 23 Tuesday 2022 02-47-05 PM"
         },
         "Mechanical Johnson Controler ": {
             "part_number": "A19ABC-12C",
@@ -5663,6 +5717,40 @@
             "latest_change_priority": "Item added\nItsme\nAugust 04 Thursday 2022 10-09-28 AM",
             "latest_change_notes": "Item added\nItsme\nAugust 04 Thursday 2022 10-09-28 AM"
         },
+        "1\" x4\" Nipple": {
+            "part_number": "G1616-100x4",
+            "unit_quantity": 2,
+            "current_quantity": 120,
+            "price": 1.35,
+            "use_exchange_rate": false,
+            "priority": 0,
+            "notes": "Vendor: GreenLine\nDescription: ",
+            "latest_change_name": "Item added\nItsme\nAugust 29 Monday 2022 08-28-30 AM",
+            "latest_change_part_number": "Item added\nItsme\nAugust 29 Monday 2022 08-28-30 AM",
+            "latest_change_unit_quantity": "Item added\nItsme\nAugust 29 Monday 2022 08-28-30 AM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 120\nto: 120\nItsme\nOctober 03 Monday 2022 09:13:53 AM",
+            "latest_change_price": "Item added\nItsme\nAugust 29 Monday 2022 08-28-30 AM",
+            "latest_change_use_exchange_price": "Item added\nItsme\nAugust 29 Monday 2022 08-28-30 AM",
+            "latest_change_priority": "Item added\nItsme\nAugust 29 Monday 2022 08-28-30 AM",
+            "latest_change_notes": "Item added\nItsme\nAugust 29 Monday 2022 08-28-30 AM"
+        },
+        "1 Gallon Treatment ": {
+            "part_number": "treatment",
+            "unit_quantity": 2,
+            "current_quantity": 156,
+            "price": 20.0,
+            "use_exchange_rate": false,
+            "priority": 0,
+            "notes": "Vendor: \nDescription: ",
+            "latest_change_name": "Item added\nItsme\nAugust 04 Thursday 2022 10-10-59 AM",
+            "latest_change_part_number": "Item added\nItsme\nAugust 04 Thursday 2022 10-10-59 AM",
+            "latest_change_unit_quantity": "Latest Change:\nfrom: 1\nto: 2\nItsme\nSeptember 15 Thursday 2022 09:03:01 AM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 156\nto: 156\nItsme\nSeptember 30 Friday 2022 09:49:56 AM",
+            "latest_change_price": "Item added\nItsme\nAugust 04 Thursday 2022 10-10-59 AM",
+            "latest_change_use_exchange_price": "Item added\nItsme\nAugust 04 Thursday 2022 10-10-59 AM",
+            "latest_change_priority": "Item added\nItsme\nAugust 04 Thursday 2022 10-10-59 AM",
+            "latest_change_notes": "Item added\nItsme\nAugust 04 Thursday 2022 10-10-59 AM"
+        },
         "Ring Retaining 13\/16": {
             "part_number": "RR-1400-081",
             "unit_quantity": 1,
@@ -5696,23 +5784,6 @@
             "latest_change_use_exchange_price": "Item added\nItsme\nAugust 04 Thursday 2022 10-21-57 AM",
             "latest_change_priority": "Item added\nItsme\nAugust 04 Thursday 2022 10-21-57 AM",
             "latest_change_notes": "Item added\nItsme\nAugust 04 Thursday 2022 10-21-57 AM"
-        },
-        "1 Gallon Treatment ": {
-            "part_number": "treatment",
-            "unit_quantity": 2,
-            "current_quantity": 156,
-            "price": 20.0,
-            "use_exchange_rate": false,
-            "priority": 0,
-            "notes": "Vendor: \nDescription: ",
-            "latest_change_name": "Item added\nItsme\nAugust 04 Thursday 2022 10-10-59 AM",
-            "latest_change_part_number": "Item added\nItsme\nAugust 04 Thursday 2022 10-10-59 AM",
-            "latest_change_unit_quantity": "Latest Change:\nfrom: 1\nto: 2\nItsme\nSeptember 15 Thursday 2022 09:03:01 AM",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 156\nto: 156\nItsme\nSeptember 30 Friday 2022 09:49:56 AM",
-            "latest_change_price": "Item added\nItsme\nAugust 04 Thursday 2022 10-10-59 AM",
-            "latest_change_use_exchange_price": "Item added\nItsme\nAugust 04 Thursday 2022 10-10-59 AM",
-            "latest_change_priority": "Item added\nItsme\nAugust 04 Thursday 2022 10-10-59 AM",
-            "latest_change_notes": "Item added\nItsme\nAugust 04 Thursday 2022 10-10-59 AM"
         },
         "Float Clamp  G1SS-11.3 7\/16 One Ear Stainless": {
             "part_number": "G1SS-11.3",
