@@ -80,6 +80,7 @@
                                                 <th>Quantity Per Unit</th>
                                                 <th>Quantity in Stock</th>
                                                 <th>Item Price</th>
+                                                <th>Exchange Rate</th>
                                                 <th>Priority</th>
                                                 <th>Notes</th>
                                             </tr>
@@ -97,14 +98,17 @@
                                                 {% else %}
                                                 <td>{{item_dictionary['current_quantity']}}</td>
                                                 {% endif %}
+                                                <td sorttable_customkey={{item_dictionary['price']}}>
+                                                    ${{item_dictionary['price']}}
+                                                </td>
                                                 {% if item_dictionary['use_exchange_rate'] == true %}
-                                                <td sorttable_customkey={{item_dictionary['price']}}>
-                                                    ${{item_dictionary['price']}}
-                                                    USD</td>
+                                                <td sorttable_customkey=USD>
+                                                    USD
+                                                </td>
                                                 {% else %}
-                                                <td sorttable_customkey={{item_dictionary['price']}}>
-                                                    ${{item_dictionary['price']}}
-                                                    CAD</td>
+                                                <td sorttable_customkey=CAD>
+                                                    CAD
+                                                </td>
                                                 {% endif %}
                                                 {% if item_dictionary['priority'] == 0 %}
                                                 <td sorttable_customkey="0">Default</td>
@@ -165,14 +169,17 @@
                                                 {% else %}
                                                 <td>{{item_dictionary['current_quantity']}}</td>
                                                 {% endif %}
+                                                <td sorttable_customkey={{item_dictionary['price']}}>
+                                                    ${{item_dictionary['price']}}
+                                                </td>
                                                 {% if item_dictionary['use_exchange_rate'] == true %}
-                                                <td sorttable_customkey={{item_dictionary['price']}}>
-                                                    ${{item_dictionary['price']}}
-                                                    USD</td>
+                                                <td sorttable_customkey=USD>
+                                                    USD
+                                                </td>
                                                 {% else %}
-                                                <td sorttable_customkey={{item_dictionary['price']}}>
-                                                    ${{item_dictionary['price']}}
-                                                    CAD</td>
+                                                <td sorttable_customkey=CAD>
+                                                    CAD
+                                                </td>
                                                 {% endif %}
                                                 {% if item_dictionary['priority'] == 0 %}
                                                 <td sorttable_customkey="0">Default</td>
