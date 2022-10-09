@@ -113,7 +113,10 @@ def sort_groups(category: dict) -> dict:
 def get_all_unit_cost() -> dict:
     data = get_inventory_data()
     currency_rates = CurrencyRates()
-    last_exchange_rate = currency_rates.get_rate("USD", "CAD")
+    try:
+        last_exchange_rate = currency_rates.get_rate("USD", "CAD")
+    except:
+        last_exchange_rate = 1.3608673726676752  # just a guess
     unit_costs = {}
     round_number = lambda x, n: eval(
         '"%.'
@@ -205,4 +208,4 @@ def downloadThread() -> None:
 
 
 threading.Thread(target=downloadThread).start()
-app.run(host="10.0.0.217", port=5000, debug=False, threaded=True)
+# app.run(host="10.0.1.217", port=5000, debug=False, threaded=True)

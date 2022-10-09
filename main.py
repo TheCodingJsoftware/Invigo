@@ -4,8 +4,8 @@ __copyright__ = "Copyright 2022, TheCodingJ's"
 __credits__: "list[str]" = ["Jared Gross"]
 __license__ = "MIT"
 __name__ = "Inventory Manager"
-__version__ = "v1.4.1"
-__updated__ = "2022-08-07 22:50:52"
+__version__ = "v1.4.2"
+__updated__ = "2022-10-09 10:34:46"
 __maintainer__ = "Jared Gross"
 __email__ = "jared@pinelandfarms.ca"
 __status__ = "Production"
@@ -92,7 +92,6 @@ from ui.input_dialog import InputDialog
 from ui.message_dialog import MessageDialog
 from ui.select_item_dialog import SelectItemDialog
 from ui.web_scrape_results_dialog import WebScrapeResultsDialog
-from utils import excel_file
 from utils.compress import compress_database, compress_folder
 from utils.dialog_buttons import DialogButtons
 from utils.dialog_icons import Icons
@@ -607,6 +606,7 @@ class MainWindow(QMainWindow):
             self.load_tree_view(inventory)
 
         self.dockWidget_create_add_remove.setVisible(self.tab_widget.tabText(0) != "")
+        self.update_category_total_costs()
         self.load_tab()
 
     def load_tab(self) -> None:
@@ -767,6 +767,8 @@ class MainWindow(QMainWindow):
             )
             exchange_rate: float = self.get_exchange_rate() if use_exchange_rate else 1
             total_cost_in_stock: float = current_quantity * price * exchange_rate
+            if total_cost_in_stock < 0:
+                total_cost_in_stock = 0
             total_unit_cost: float = unit_quantity * price * exchange_rate
             latest_change_part_number: str = self.get_value_from_category(
                 item_name=item, key="latest_change_part_number"
@@ -1058,6 +1060,29 @@ class MainWindow(QMainWindow):
             spin_total_unit_cost.setText(
                 f"${round_number(spin_unit_quantity.value() * spin_price.value() * exchange_rate, 2)} {combo_exchange_rate.currentText()}"
             )
+
+    def update_category_total_costs(self) -> None:
+        """
+        It takes a list of categories, and then sums up the total cost of each category in the list
+        """
+        categories: list[str] = ["Polar", "BL"]
+        total_cost_message: str = ""
+
+        round_number = lambda x, n: eval(
+            '"%.'
+            + str(int(n))
+            + 'f" % '
+            + repr(int(x) + round(float("." + str(float(x)).split(".")[1]), n))
+        )
+        for main_category in categories:
+            total_category_cost: float = 0.0
+            for category in self.categories:
+                if main_category in category:
+                    total_category_cost += inventory.get_total_unit_cost(
+                        category, self.get_exchange_rate()
+                    )
+            total_cost_message += f"{main_category} Total Category Cost: ${round_number(total_category_cost,2)}\n"
+        self.labal_category_costs.setText(total_cost_message)
 
     def create_new_category(self, event=None) -> None:
         """

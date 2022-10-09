@@ -362,6 +362,13 @@
         </widget>
        </item>
        <item>
+        <widget class="QLabel" name="labal_category_costs">
+         <property name="text">
+          <string>TextLabel</string>
+         </property>
+        </widget>
+       </item>
+       <item>
         <widget class="Line" name="line">
          <property name="orientation">
           <enum>Qt::Horizontal</enum>

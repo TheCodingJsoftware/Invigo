@@ -1,3 +1,8 @@
+<h1>v1.4.2</h1>
+&bull; Added total category costs.<br>
+&bull; Made Total Cost in Stock be zero when negative quantity.<br>
+&bull; Website changes and fixes.<br>
+
 <h1>v1.4.1</h1>
 &bull; Fixed more bugs with Item Controls menu.<br>
 &bull; Changed some text for clarity in Main Window.<br>
