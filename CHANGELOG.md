@@ -1,5 +1,8 @@
+<h1>v1.4.4</h1>
+&bull; Changed some stock costs to show all categories.<br>
+
 <h1>v1.4.3</h1>
-&bull; Changet total category cost to total stock cost.<br>
+&bull; Change total category cost to total stock cost.<br>
 
 <h1>v1.4.2</h1>
 &bull; Added total category costs.<br>

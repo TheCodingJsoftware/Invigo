@@ -5,7 +5,7 @@ __credits__: "list[str]" = ["Jared Gross"]
 __license__ = "MIT"
 __name__ = "Inventory Manager"
 __version__ = "v1.4.3"
-__updated__ = "2022-10-10 10:12:31"
+__updated__ = "2022-10-10 14:30:52"
 __maintainer__ = "Jared Gross"
 __email__ = "jared@pinelandfarms.ca"
 __status__ = "Production"
@@ -1065,9 +1065,7 @@ class MainWindow(QMainWindow):
         """
         It takes a list of categories, and then sums up the total cost of all items in those categories
         """
-        searching_categories: list[str] = ["Polar", "BL"]
-        total_cost_message: str = ""
-
+        total_stock_costs = {}
         round_number = lambda x, n: eval(
             '"%.'
             + str(int(n))
@@ -1075,27 +1073,29 @@ class MainWindow(QMainWindow):
             + repr(int(x) + round(float("." + str(float(x)).split(".")[1]), n))
         )
         categories = inventory.get_data()
-        for main_category in searching_categories:
+        for category in list(categories.keys()):
             total_category_stock_cost: float = 0.0
-            for category in list(categories.keys()):
-                if main_category in category:
-                    for item in list(categories[category].keys()):
-                        use_exchange_rate: bool = (
-                            categories[category][item]["use_exchange_rate"] == "USD"
-                        )
-                        exchange_rate: float = (
-                            self.get_exchange_rate() if use_exchange_rate else 1
-                        )
-                        price: float = categories[category][item]["price"]
-                        price = max(price, 0)
-                        current_quantity: int = categories[category][item][
-                            "current_quantity"
-                        ]
-                        total_category_stock_cost += (
-                            current_quantity * price * exchange_rate
-                        )
-            total_cost_message += f"{main_category} Stock Cost: ${round_number(total_category_stock_cost,2)}\n"
-        self.labal_category_costs.setText(total_cost_message)
+            for item in list(categories[category].keys()):
+                use_exchange_rate: bool = (
+                    categories[category][item]["use_exchange_rate"] == "USD"
+                )
+                exchange_rate: float = (
+                    self.get_exchange_rate() if use_exchange_rate else 1
+                )
+                price: float = categories[category][item]["price"]
+                price = max(price, 0)
+                current_quantity: int = categories[category][item]["current_quantity"]
+                total_category_stock_cost += current_quantity * price * exchange_rate
+            total_stock_costs[category] = round_number(total_category_stock_cost, 2)
+        total_stock_costs = dict(sorted(total_stock_costs.items()))
+
+        lbl = QLabel("Stock Costs:", self)
+        self.gridLayout_Categor_Stock_Prices.addWidget(lbl, 0, 0)
+        for i, stock_cost in enumerate(total_stock_costs, start=1):
+            lbl = QLabel(stock_cost, self)
+            self.gridLayout_Categor_Stock_Prices.addWidget(lbl, i, 0)
+            lbl = QLabel(f"${total_stock_costs[stock_cost]}", self)
+            self.gridLayout_Categor_Stock_Prices.addWidget(lbl, i, 1)
 
     def create_new_category(self, event=None) -> None:
         """
