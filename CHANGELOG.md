@@ -1,3 +1,6 @@
+<h1>v1.4.3</h1>
+&bull; Changet total category cost to total stock cost.<br>
+
 <h1>v1.4.2</h1>
 &bull; Added total category costs.<br>
 &bull; Made Total Cost in Stock be zero when negative quantity.<br>
