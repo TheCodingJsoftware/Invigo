@@ -5788,24 +5788,6 @@
             "latest_change_priority": "Item added\nItsme\nOctober 06 Thursday 2022 09-05-29 AM",
             "latest_change_notes": "Item added\nItsme\nOctober 06 Thursday 2022 09-05-29 AM"
         },
-        "Bl 34 Wood Brick Sets": {
-            "part_number": "BL34W",
-            "unit_quantity": 1,
-            "current_quantity": 14,
-            "price": 569.5,
-            "use_exchange_rate": true,
-            "priority": 0,
-            "notes": "Vendor: Reftec\nDescription: ",
-            "latest_change_name": "Latest Change:\nfrom: \"Bl 34 Wood Brick Set\"\nto: \"Bl 34 Wood Brick Sets\"\nItsme\nAugust 29 Monday 2022 11:02:15 AM",
-            "latest_change_part_number": "Item added\nItsme\nAugust 26 Friday 2022 08-44-24 AM",
-            "latest_change_unit_quantity": "Item added\nItsme\nAugust 26 Friday 2022 08-44-24 AM",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 14\nto: 14\nItsme\nOctober 04 Tuesday 2022 10:38:55 AM",
-            "latest_change_price": "Latest Change:\nfrom: 569.0\nto: 569.5\nItsme\nSeptember 15 Thursday 2022 09:21:35 AM",
-            "latest_change_use_exchange_price": "Item added\nItsme\nAugust 26 Friday 2022 08-44-24 AM",
-            "latest_change_priority": "Item added\nItsme\nAugust 26 Friday 2022 08-44-24 AM",
-            "latest_change_notes": "Item added\nItsme\nAugust 26 Friday 2022 08-44-24 AM",
-            "latest_change_use_exchange_rate": "Latest Change:\nfrom: CAD\nto: USD\nItsme\nSeptember 15 Thursday 2022 09:20:50 AM"
-        },
         "8\" Chimney T  8TL14-PM": {
             "part_number": "210800",
             "unit_quantity": 1,
@@ -6180,6 +6162,24 @@
             "latest_change_use_exchange_price": "Item added\nItsme\nAugust 08 Monday 2022 08-17-54 AM",
             "latest_change_priority": "Item added\nItsme\nAugust 08 Monday 2022 08-17-54 AM",
             "latest_change_notes": "Item added\nItsme\nAugust 08 Monday 2022 08-17-54 AM"
+        },
+        "BL 40 Wood Brick Sets": {
+            "part_number": "BL40W",
+            "unit_quantity": 1,
+            "current_quantity": 14,
+            "price": 569.5,
+            "use_exchange_rate": true,
+            "priority": 0,
+            "notes": "Vendor: Reftec\nDescription: ",
+            "latest_change_name": "Latest Change:\nfrom: \"BL 4 Wood Brick Sets\"\nto: \"BL 40 Wood Brick Sets\"\nItsme\nOctober 15 Saturday 2022 11:06:48 AM",
+            "latest_change_part_number": "Latest Change:\nfrom: BL4W\nto: BL40W\nItsme\nOctober 15 Saturday 2022 11:06:55 AM",
+            "latest_change_unit_quantity": "Item added\nItsme\nAugust 26 Friday 2022 08-44-24 AM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 14\nto: 14\nItsme\nOctober 04 Tuesday 2022 10:38:55 AM",
+            "latest_change_price": "Latest Change:\nfrom: 569.0\nto: 569.5\nItsme\nSeptember 15 Thursday 2022 09:21:35 AM",
+            "latest_change_use_exchange_price": "Item added\nItsme\nAugust 26 Friday 2022 08-44-24 AM",
+            "latest_change_priority": "Item added\nItsme\nAugust 26 Friday 2022 08-44-24 AM",
+            "latest_change_notes": "Item added\nItsme\nAugust 26 Friday 2022 08-44-24 AM",
+            "latest_change_use_exchange_rate": "Latest Change:\nfrom: CAD\nto: USD\nItsme\nSeptember 15 Thursday 2022 09:20:50 AM"
         }
     },
     "BL 40 Wood": {
@@ -6234,24 +6234,6 @@
             "latest_change_priority": "Item added\nItsme\nOctober 06 Thursday 2022 09-05-29 AM",
             "latest_change_notes": "Item added\nItsme\nOctober 06 Thursday 2022 09-05-29 AM"
         },
-        "Bl 34 Wood Brick Sets": {
-            "part_number": "BL34W",
-            "unit_quantity": 1,
-            "current_quantity": 14,
-            "price": 569.5,
-            "use_exchange_rate": true,
-            "priority": 0,
-            "notes": "Vendor: Reftec\nDescription: ",
-            "latest_change_name": "Latest Change:\nfrom: \"Bl 34 Wood Brick Set\"\nto: \"Bl 34 Wood Brick Sets\"\nItsme\nAugust 29 Monday 2022 11:02:15 AM",
-            "latest_change_part_number": "Item added\nItsme\nAugust 26 Friday 2022 08-44-24 AM",
-            "latest_change_unit_quantity": "Item added\nItsme\nAugust 26 Friday 2022 08-44-24 AM",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 14\nto: 14\nItsme\nOctober 04 Tuesday 2022 10:38:55 AM",
-            "latest_change_price": "Latest Change:\nfrom: 569.0\nto: 569.5\nItsme\nSeptember 15 Thursday 2022 09:21:35 AM",
-            "latest_change_use_exchange_price": "Item added\nItsme\nAugust 26 Friday 2022 08-44-24 AM",
-            "latest_change_priority": "Item added\nItsme\nAugust 26 Friday 2022 08-44-24 AM",
-            "latest_change_notes": "Item added\nItsme\nAugust 26 Friday 2022 08-44-24 AM",
-            "latest_change_use_exchange_rate": "Latest Change:\nfrom: CAD\nto: USD\nItsme\nSeptember 15 Thursday 2022 09:20:50 AM"
-        },
         "8\" Chimney T  8TL14-PM": {
             "part_number": "210800",
             "unit_quantity": 1,
@@ -6626,6 +6608,24 @@
             "latest_change_use_exchange_price": "Item added\nItsme\nAugust 08 Monday 2022 08-17-54 AM",
             "latest_change_priority": "Item added\nItsme\nAugust 08 Monday 2022 08-17-54 AM",
             "latest_change_notes": "Item added\nItsme\nAugust 08 Monday 2022 08-17-54 AM"
+        },
+        "BL 40 Wood Brick Sets": {
+            "part_number": "BL40W",
+            "unit_quantity": 1,
+            "current_quantity": 14,
+            "price": 569.5,
+            "use_exchange_rate": true,
+            "priority": 0,
+            "notes": "Vendor: Reftec\nDescription: ",
+            "latest_change_name": "Latest Change:\nfrom: \"BL 4 Wood Brick Sets\"\nto: \"BL 40 Wood Brick Sets\"\nItsme\nOctober 15 Saturday 2022 11:06:48 AM",
+            "latest_change_part_number": "Latest Change:\nfrom: BL4W\nto: BL40W\nItsme\nOctober 15 Saturday 2022 11:06:55 AM",
+            "latest_change_unit_quantity": "Item added\nItsme\nAugust 26 Friday 2022 08-44-24 AM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 14\nto: 14\nItsme\nOctober 04 Tuesday 2022 10:38:55 AM",
+            "latest_change_price": "Latest Change:\nfrom: 569.0\nto: 569.5\nItsme\nSeptember 15 Thursday 2022 09:21:35 AM",
+            "latest_change_use_exchange_price": "Item added\nItsme\nAugust 26 Friday 2022 08-44-24 AM",
+            "latest_change_priority": "Item added\nItsme\nAugust 26 Friday 2022 08-44-24 AM",
+            "latest_change_notes": "Item added\nItsme\nAugust 26 Friday 2022 08-44-24 AM",
+            "latest_change_use_exchange_rate": "Latest Change:\nfrom: CAD\nto: USD\nItsme\nSeptember 15 Thursday 2022 09:20:50 AM"
         }
     }
 }
