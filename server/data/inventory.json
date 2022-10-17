@@ -2103,23 +2103,6 @@
             "latest_change_priority": "Latest Change:\nfrom: 1\nto: 2\nItsme\nAugust 10 Wednesday 2022 01:40:13 PM",
             "latest_change_notes": "Item added\nItsme\nJuly 19 Tuesday 2022 04-14-32 PM"
         },
-        " 12BK SLOTTED QUARTER-TURN LATCH, DIE CST, UL FACE SEAL & INTERNAL O-RING, BODY NUT, NO CAM, BLACK POWDER COATED": {
-            "part_number": "12BK",
-            "unit_quantity": 4,
-            "current_quantity": 584,
-            "price": 2.3,
-            "use_exchange_rate": false,
-            "priority": 0,
-            "notes": "Vendor: Sierra Pacific Engeneering and Products\nDescription: \nGoes With 12C6 as 1 assy",
-            "latest_change_name": "Item added\nItsme\nJuly 05 Tuesday 2022 10-28-43 AM",
-            "latest_change_part_number": "Item added\nItsme\nJuly 05 Tuesday 2022 10-28-43 AM",
-            "latest_change_unit_quantity": "Item added\nItsme\nJuly 05 Tuesday 2022 10-28-43 AM",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 584\nto: 584\nItsme\nOctober 17 Monday 2022 10:48:05 AM",
-            "latest_change_price": "Latest Change:\nfrom: 2.3\nto: 2.3\nItsme\nJuly 06 Wednesday 2022 10:10:41 AM",
-            "latest_change_use_exchange_price": "Item added\nItsme\nJuly 05 Tuesday 2022 10-28-43 AM",
-            "latest_change_priority": "Item added\nItsme\nJuly 05 Tuesday 2022 10-28-43 AM",
-            "latest_change_notes": "Latest Change:\nfrom: \"Vendor: Sierra Pacific Engeneering and Products\nDescription: \nGoes With 12C6 as 1 ass\"\nto: \"Vendor: Sierra Pacific Engeneering and Products\nDescription: \nGoes With 12C6 as 1 assy\"\nItsme\nJuly 07 Thursday 2022 04:08:41 PM"
-        },
         "Cotter Pin 3\/32x 3\/4 ": {
             "part_number": " CP332",
             "unit_quantity": 4,
@@ -2309,6 +2292,23 @@
             "latest_change_use_exchange_price": "Item added\nItsme\nJuly 07 Thursday 2022 04-32-40 PM",
             "latest_change_priority": "Item added\nItsme\nJuly 07 Thursday 2022 04-32-40 PM",
             "latest_change_notes": "Item added\nItsme\nJuly 07 Thursday 2022 04-32-40 PM"
+        },
+        " 12BK SLOTTED QUARTER-TURN LATCH, DIE CST, UL FACE SEAL & INTERNAL O-RING, BODY NUT, NO CAM, BLACK POWDER COATED": {
+            "part_number": "12BK",
+            "unit_quantity": 4,
+            "current_quantity": 584,
+            "price": 2.3,
+            "use_exchange_rate": false,
+            "priority": 0,
+            "notes": "Vendor: Sierra Pacific Engeneering and Products\nDescription: \nGoes With 12C6 as 1 assy",
+            "latest_change_name": "Item added\nItsme\nJuly 05 Tuesday 2022 10-28-43 AM",
+            "latest_change_part_number": "Item added\nItsme\nJuly 05 Tuesday 2022 10-28-43 AM",
+            "latest_change_unit_quantity": "Item added\nItsme\nJuly 05 Tuesday 2022 10-28-43 AM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 584\nto: 584\nItsme\nOctober 17 Monday 2022 10:48:05 AM",
+            "latest_change_price": "Latest Change:\nfrom: 2.3\nto: 2.3\nItsme\nJuly 06 Wednesday 2022 10:10:41 AM",
+            "latest_change_use_exchange_price": "Item added\nItsme\nJuly 05 Tuesday 2022 10-28-43 AM",
+            "latest_change_priority": "Item added\nItsme\nJuly 05 Tuesday 2022 10-28-43 AM",
+            "latest_change_notes": "Latest Change:\nfrom: \"Vendor: Sierra Pacific Engeneering and Products\nDescription: \nGoes With 12C6 as 1 ass\"\nto: \"Vendor: Sierra Pacific Engeneering and Products\nDescription: \nGoes With 12C6 as 1 assy\"\nItsme\nJuly 07 Thursday 2022 04:08:41 PM"
         },
         "Washer 3\/16 Tooth Lock Internal ": {
             "part_number": "W316",
