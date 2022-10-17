@@ -14,7 +14,7 @@
         "1\/8 Hight Temp Rubber- Orange": {
             "part_number": "1460N44",
             "unit_quantity": 4,
-            "current_quantity": -16,
+            "current_quantity": 14,
             "price": 2.0,
             "use_exchange_rate": false,
             "priority": 0,
@@ -22,7 +22,7 @@
             "latest_change_name": "Item added\nItsme\nJuly 12 Tuesday 2022 09-30-57 AM",
             "latest_change_part_number": "Item added\nItsme\nJuly 12 Tuesday 2022 09-30-57 AM",
             "latest_change_unit_quantity": "Item added\nItsme\nJuly 12 Tuesday 2022 09-30-57 AM",
-            "latest_change_current_quantity": "Latest Change:\nfrom: -16\nto: -16\nItsme\nSeptember 16 Friday 2022 02:01:24 PM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 14\nto: 14\nItsme\nOctober 17 Monday 2022 08:41:59 AM",
             "latest_change_price": "Item added\nItsme\nJuly 12 Tuesday 2022 09-30-57 AM",
             "latest_change_use_exchange_price": "Item added\nItsme\nJuly 12 Tuesday 2022 09-30-57 AM",
             "latest_change_priority": "Item added\nItsme\nJuly 12 Tuesday 2022 09-30-57 AM",
@@ -1207,23 +1207,6 @@
             "notes": "Vendor: BrockWhite\nDescription: \nevandenberg@brockwhite.com",
             "latest_change_current_quantity": "Latest Change:\nfrom: -28\nto: -28\nItsme\nSeptember 16 Friday 2022 02:01:24 PM"
         },
-        "1\/8 Hight Temp Rubber- Orange": {
-            "part_number": "1460N44",
-            "unit_quantity": 4,
-            "current_quantity": -16,
-            "price": 2.0,
-            "use_exchange_rate": false,
-            "priority": 0,
-            "notes": "Vendor: Mc MasterCarr\nDescription: ",
-            "latest_change_name": "Item added\nItsme\nJuly 12 Tuesday 2022 09-30-57 AM",
-            "latest_change_part_number": "Item added\nItsme\nJuly 12 Tuesday 2022 09-30-57 AM",
-            "latest_change_unit_quantity": "Item added\nItsme\nJuly 12 Tuesday 2022 09-30-57 AM",
-            "latest_change_current_quantity": "Latest Change:\nfrom: -16\nto: -16\nItsme\nSeptember 16 Friday 2022 02:01:24 PM",
-            "latest_change_price": "Item added\nItsme\nJuly 12 Tuesday 2022 09-30-57 AM",
-            "latest_change_use_exchange_price": "Item added\nItsme\nJuly 12 Tuesday 2022 09-30-57 AM",
-            "latest_change_priority": "Item added\nItsme\nJuly 12 Tuesday 2022 09-30-57 AM",
-            "latest_change_notes": "Item added\nItsme\nJuly 12 Tuesday 2022 09-30-57 AM"
-        },
         "Vapor Thermometer": {
             "part_number": "20UB8-220FC-4111-03FT                        ",
             "unit_quantity": 1,
@@ -1285,6 +1268,23 @@
             "priority": 2,
             "notes": "Vendor: Grundfos Canada\nDescription: ",
             "latest_change_current_quantity": "Latest Change:\nfrom: 13\nto: 13\nItsme\nSeptember 16 Friday 2022 02:01:24 PM"
+        },
+        "1\/8 Hight Temp Rubber- Orange": {
+            "part_number": "1460N44",
+            "unit_quantity": 4,
+            "current_quantity": 14,
+            "price": 2.0,
+            "use_exchange_rate": false,
+            "priority": 0,
+            "notes": "Vendor: Mc MasterCarr\nDescription: ",
+            "latest_change_name": "Item added\nItsme\nJuly 12 Tuesday 2022 09-30-57 AM",
+            "latest_change_part_number": "Item added\nItsme\nJuly 12 Tuesday 2022 09-30-57 AM",
+            "latest_change_unit_quantity": "Item added\nItsme\nJuly 12 Tuesday 2022 09-30-57 AM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 14\nto: 14\nItsme\nOctober 17 Monday 2022 08:41:59 AM",
+            "latest_change_price": "Item added\nItsme\nJuly 12 Tuesday 2022 09-30-57 AM",
+            "latest_change_use_exchange_price": "Item added\nItsme\nJuly 12 Tuesday 2022 09-30-57 AM",
+            "latest_change_priority": "Item added\nItsme\nJuly 12 Tuesday 2022 09-30-57 AM",
+            "latest_change_notes": "Item added\nItsme\nJuly 12 Tuesday 2022 09-30-57 AM"
         },
         "Handle Black Phenolic BTH-2": {
             "part_number": "bth-2",
@@ -1348,6 +1348,23 @@
             "latest_change_use_exchange_price": "Item added\nItsme\nJuly 08 Friday 2022 08-22-50 AM",
             "latest_change_priority": "Item added\nItsme\nJuly 08 Friday 2022 08-22-50 AM",
             "latest_change_notes": "Item added\nItsme\nJuly 08 Friday 2022 08-22-50 AM"
+        },
+        "1\/4 Nialon Plastic Shaft- Float assy": {
+            "part_number": "14NPS",
+            "unit_quantity": 1,
+            "current_quantity": 36,
+            "price": 3.0,
+            "use_exchange_rate": false,
+            "priority": 0,
+            "notes": "Vendor: MCmaster Carr and Johnsons Plastic\nDescription: ",
+            "latest_change_name": "Item added\nItsme\nOctober 17 Monday 2022 08-12-48 AM",
+            "latest_change_part_number": "Item added\nItsme\nOctober 17 Monday 2022 08-12-48 AM",
+            "latest_change_unit_quantity": "Item added\nItsme\nOctober 17 Monday 2022 08-12-48 AM",
+            "latest_change_current_quantity": "Item added\nItsme\nOctober 17 Monday 2022 08-12-48 AM",
+            "latest_change_price": "Item added\nItsme\nOctober 17 Monday 2022 08-12-48 AM",
+            "latest_change_use_exchange_price": "Item added\nItsme\nOctober 17 Monday 2022 08-12-48 AM",
+            "latest_change_priority": "Item added\nItsme\nOctober 17 Monday 2022 08-12-48 AM",
+            "latest_change_notes": "Item added\nItsme\nOctober 17 Monday 2022 08-12-48 AM"
         },
         "6L24 ASHT 6\"X24\" Section": {
             "part_number": "6L24",
@@ -2369,23 +2386,6 @@
             "latest_change_use_exchange_price": "Item added\nItsme\nJuly 19 Tuesday 2022 03-54-38 PM",
             "latest_change_priority": "Item added\nItsme\nJuly 19 Tuesday 2022 03-54-38 PM",
             "latest_change_notes": "Item added\nItsme\nJuly 19 Tuesday 2022 03-54-38 PM"
-        },
-        "1\/4 Nialon Plastic Shaft- Float assy": {
-            "part_number": "14NPS",
-            "unit_quantity": 1,
-            "current_quantity": 36,
-            "price": 3.0,
-            "use_exchange_rate": false,
-            "priority": 0,
-            "notes": "Vendor: MCmaster Carr and Johnsons Plastic\nDescription: ",
-            "latest_change_name": "Item added\nItsme\nOctober 17 Monday 2022 08-12-48 AM",
-            "latest_change_part_number": "Item added\nItsme\nOctober 17 Monday 2022 08-12-48 AM",
-            "latest_change_unit_quantity": "Item added\nItsme\nOctober 17 Monday 2022 08-12-48 AM",
-            "latest_change_current_quantity": "Item added\nItsme\nOctober 17 Monday 2022 08-12-48 AM",
-            "latest_change_price": "Item added\nItsme\nOctober 17 Monday 2022 08-12-48 AM",
-            "latest_change_use_exchange_price": "Item added\nItsme\nOctober 17 Monday 2022 08-12-48 AM",
-            "latest_change_priority": "Item added\nItsme\nOctober 17 Monday 2022 08-12-48 AM",
-            "latest_change_notes": "Item added\nItsme\nOctober 17 Monday 2022 08-12-48 AM"
         }
     },
     "Polar G2+": {
@@ -2403,7 +2403,7 @@
         "1\/8 Hight Temp Rubber- Orange": {
             "part_number": "1460N44",
             "unit_quantity": 4,
-            "current_quantity": -16,
+            "current_quantity": 14,
             "price": 2.0,
             "use_exchange_rate": false,
             "priority": 0,
@@ -2411,7 +2411,7 @@
             "latest_change_name": "Item added\nItsme\nJuly 12 Tuesday 2022 09-30-57 AM",
             "latest_change_part_number": "Item added\nItsme\nJuly 12 Tuesday 2022 09-30-57 AM",
             "latest_change_unit_quantity": "Item added\nItsme\nJuly 12 Tuesday 2022 09-30-57 AM",
-            "latest_change_current_quantity": "Latest Change:\nfrom: -16\nto: -16\nItsme\nSeptember 16 Friday 2022 02:01:24 PM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 14\nto: 14\nItsme\nOctober 17 Monday 2022 08:41:59 AM",
             "latest_change_price": "Item added\nItsme\nJuly 12 Tuesday 2022 09-30-57 AM",
             "latest_change_use_exchange_price": "Item added\nItsme\nJuly 12 Tuesday 2022 09-30-57 AM",
             "latest_change_priority": "Item added\nItsme\nJuly 12 Tuesday 2022 09-30-57 AM",
@@ -5479,6 +5479,23 @@
             "latest_change_priority": "Item added\nItsme\nAugust 03 Wednesday 2022 11-04-02 AM",
             "latest_change_notes": "Item added\nItsme\nAugust 03 Wednesday 2022 11-04-02 AM"
         },
+        "1\/4 Nialon Plastic Shaft- Float assy": {
+            "part_number": "14NPS",
+            "unit_quantity": 1,
+            "current_quantity": 36,
+            "price": 3.0,
+            "use_exchange_rate": false,
+            "priority": 0,
+            "notes": "Vendor: MCmaster Carr and Johnsons Plastic\nDescription: ",
+            "latest_change_name": "Item added\nItsme\nOctober 17 Monday 2022 08-11-52 AM",
+            "latest_change_part_number": "Item added\nItsme\nOctober 17 Monday 2022 08-11-52 AM",
+            "latest_change_unit_quantity": "Item added\nItsme\nOctober 17 Monday 2022 08-11-52 AM",
+            "latest_change_current_quantity": "Item added\nItsme\nOctober 17 Monday 2022 08-11-52 AM",
+            "latest_change_price": "Item added\nItsme\nOctober 17 Monday 2022 08-11-52 AM",
+            "latest_change_use_exchange_price": "Item added\nItsme\nOctober 17 Monday 2022 08-11-52 AM",
+            "latest_change_priority": "Item added\nItsme\nOctober 17 Monday 2022 08-11-52 AM",
+            "latest_change_notes": "Item added\nItsme\nOctober 17 Monday 2022 08-11-52 AM"
+        },
         "Digital Johnson Controle": {
             "part_number": "A421ABC-02",
             "unit_quantity": 1,
@@ -5529,24 +5546,6 @@
             "latest_change_use_exchange_price": "Item added\nItsme\nAugust 04 Thursday 2022 10-09-28 AM",
             "latest_change_priority": "Item added\nItsme\nAugust 04 Thursday 2022 10-09-28 AM",
             "latest_change_notes": "Item added\nItsme\nAugust 04 Thursday 2022 10-09-28 AM"
-        },
-        "Ceramic Paper Fiber  STD (2300F) 6mm X 48\" X 33\"": {
-            "part_number": "CP62432",
-            "unit_quantity": 11,
-            "current_quantity": 6879,
-            "price": 1.8,
-            "use_exchange_rate": true,
-            "priority": 0,
-            "notes": "Vendor: Mineral Seal Corporation \nDescription: ",
-            "latest_change_name": "Item added\nItsme\nOctober 14 Friday 2022 10-40-02 AM",
-            "latest_change_part_number": "Item added\nItsme\nOctober 14 Friday 2022 10-40-02 AM",
-            "latest_change_unit_quantity": "Latest Change:\nfrom: 11\nto: 11\nItsme\nOctober 14 Friday 2022 01:35:34 PM",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 6879\nto: 6879\nItsme\nOctober 15 Saturday 2022 11:14:17 AM",
-            "latest_change_price": "Latest Change:\nfrom: 1.0\nto: 1.8\nItsme\nOctober 14 Friday 2022 01:34:25 PM",
-            "latest_change_use_exchange_price": "Item added\nItsme\nOctober 14 Friday 2022 10-40-02 AM",
-            "latest_change_priority": "Item added\nItsme\nOctober 14 Friday 2022 10-40-02 AM",
-            "latest_change_notes": "Item added\nItsme\nOctober 14 Friday 2022 10-40-02 AM",
-            "latest_change_use_exchange_rate": "Latest Change:\nfrom: CAD\nto: USD\nItsme\nOctober 15 Saturday 2022 09:12:24 AM"
         },
         "8 x36\" Chimney ": {
             "part_number": "8L36",
@@ -5837,22 +5836,23 @@
             "latest_change_priority": "Item added\nItsme\nAugust 08 Monday 2022 08-17-54 AM",
             "latest_change_notes": "Item added\nItsme\nAugust 08 Monday 2022 08-17-54 AM"
         },
-        "1\/4 Nialon Plastic Shaft- Float assy": {
-            "part_number": "14NPS",
-            "unit_quantity": 1,
-            "current_quantity": 36,
-            "price": 3.0,
-            "use_exchange_rate": false,
+        "Ceramic Paper Fiber  STD (2300F) 6mm X 48\" X 33\"": {
+            "part_number": "CP62432",
+            "unit_quantity": 11,
+            "current_quantity": 6879,
+            "price": 1.8,
+            "use_exchange_rate": true,
             "priority": 0,
-            "notes": "Vendor: MCmaster Carr and Johnsons Plastic\nDescription: ",
-            "latest_change_name": "Item added\nItsme\nOctober 17 Monday 2022 08-11-52 AM",
-            "latest_change_part_number": "Item added\nItsme\nOctober 17 Monday 2022 08-11-52 AM",
-            "latest_change_unit_quantity": "Item added\nItsme\nOctober 17 Monday 2022 08-11-52 AM",
-            "latest_change_current_quantity": "Item added\nItsme\nOctober 17 Monday 2022 08-11-52 AM",
-            "latest_change_price": "Item added\nItsme\nOctober 17 Monday 2022 08-11-52 AM",
-            "latest_change_use_exchange_price": "Item added\nItsme\nOctober 17 Monday 2022 08-11-52 AM",
-            "latest_change_priority": "Item added\nItsme\nOctober 17 Monday 2022 08-11-52 AM",
-            "latest_change_notes": "Item added\nItsme\nOctober 17 Monday 2022 08-11-52 AM"
+            "notes": "Vendor: Mineral Seal Corporation \nDescription: ",
+            "latest_change_name": "Item added\nItsme\nOctober 14 Friday 2022 10-40-02 AM",
+            "latest_change_part_number": "Item added\nItsme\nOctober 14 Friday 2022 10-40-02 AM",
+            "latest_change_unit_quantity": "Latest Change:\nfrom: 11\nto: 11\nItsme\nOctober 14 Friday 2022 01:35:34 PM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 6879\nto: 6879\nItsme\nOctober 15 Saturday 2022 11:14:17 AM",
+            "latest_change_price": "Latest Change:\nfrom: 1.0\nto: 1.8\nItsme\nOctober 14 Friday 2022 01:34:25 PM",
+            "latest_change_use_exchange_price": "Item added\nItsme\nOctober 14 Friday 2022 10-40-02 AM",
+            "latest_change_priority": "Item added\nItsme\nOctober 14 Friday 2022 10-40-02 AM",
+            "latest_change_notes": "Item added\nItsme\nOctober 14 Friday 2022 10-40-02 AM",
+            "latest_change_use_exchange_rate": "Latest Change:\nfrom: CAD\nto: USD\nItsme\nOctober 15 Saturday 2022 09:12:24 AM"
         }
     },
     "BL 34 Wood": {
