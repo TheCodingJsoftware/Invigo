@@ -2140,6 +2140,23 @@
             "notes": "Vendor: \nDescription: ",
             "latest_change_current_quantity": "Latest Change:\nfrom: 220\nto: 220\nItsme\nSeptember 16 Friday 2022 02:01:26 PM"
         },
+        "Hytex 1000 Rope Knit 1\" High Density White": {
+            "part_number": "RK0100",
+            "unit_quantity": 17,
+            "current_quantity": 222,
+            "price": 2.97,
+            "use_exchange_rate": false,
+            "priority": 0,
+            "notes": "Vendor: Mid Mountain Materials\nDescription: (206) 762-7600",
+            "latest_change_name": "Item added\nItsme\nJuly 07 Thursday 2022 09-40-05 AM",
+            "latest_change_part_number": "Item added\nItsme\nJuly 07 Thursday 2022 09-40-05 AM",
+            "latest_change_unit_quantity": "Latest Change:\nfrom: 17\nto: 17\nItsme\nJuly 07 Thursday 2022 09:48:20 AM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 222\nto: 222\nItsme\nOctober 18 Tuesday 2022 08:21:39 AM",
+            "latest_change_price": "Item added\nItsme\nJuly 07 Thursday 2022 09-40-05 AM",
+            "latest_change_use_exchange_price": "Item added\nItsme\nJuly 07 Thursday 2022 09-40-05 AM",
+            "latest_change_priority": "Item added\nItsme\nJuly 07 Thursday 2022 09-40-05 AM",
+            "latest_change_notes": "Latest Change:\nfrom: \"Vendor: Mid Mountain Materials\nDescription: (206) 762-760\"\nto: \"Vendor: Mid Mountain Materials\nDescription: (206) 762-7600\"\nItsme\nJuly 07 Thursday 2022 09:41:13 AM"
+        },
         "bushing 786-251 Bronze Insert Bushing ": {
             "part_number": "786-251",
             "unit_quantity": 2,
@@ -2156,6 +2173,23 @@
             "latest_change_use_exchange_price": "Item added\nItsme\nJuly 19 Tuesday 2022 03-57-37 PM",
             "latest_change_priority": "Item added\nItsme\nJuly 19 Tuesday 2022 03-57-37 PM",
             "latest_change_notes": "Item added\nItsme\nJuly 19 Tuesday 2022 03-57-37 PM"
+        },
+        "Hytex 1000 Rope Knit 3\/4 High Density White": {
+            "part_number": "RK0101",
+            "unit_quantity": 15,
+            "current_quantity": 240,
+            "price": 2.5,
+            "use_exchange_rate": false,
+            "priority": 0,
+            "notes": "Vendor: Mid Mountain Materials\t\nDescription:  (206) 762-7600",
+            "latest_change_name": "Item added\nItsme\nJuly 07 Thursday 2022 09-48-03 AM",
+            "latest_change_part_number": "Item added\nItsme\nJuly 07 Thursday 2022 09-48-03 AM",
+            "latest_change_unit_quantity": "Item added\nItsme\nJuly 07 Thursday 2022 09-48-03 AM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 240\nto: 240\nItsme\nOctober 18 Tuesday 2022 08:21:55 AM",
+            "latest_change_price": "Item added\nItsme\nJuly 07 Thursday 2022 09-48-03 AM",
+            "latest_change_use_exchange_price": "Item added\nItsme\nJuly 07 Thursday 2022 09-48-03 AM",
+            "latest_change_priority": "Item added\nItsme\nJuly 07 Thursday 2022 09-48-03 AM",
+            "latest_change_notes": "Item added\nItsme\nJuly 07 Thursday 2022 09-48-03 AM"
         },
         "1\"x 3\/8\"  Bolt ": {
             "part_number": "138",
@@ -2224,40 +2258,6 @@
             "latest_change_use_exchange_price": "Item added\nItsme\nAugust 19 Friday 2022 10-21-10 AM",
             "latest_change_priority": "Item added\nItsme\nAugust 19 Friday 2022 10-21-10 AM",
             "latest_change_notes": "Item added\nItsme\nAugust 19 Friday 2022 10-21-10 AM"
-        },
-        "Hytex 1000 Rope Knit 1\" High Density White": {
-            "part_number": "RK0100",
-            "unit_quantity": 17,
-            "current_quantity": 222,
-            "price": 2.97,
-            "use_exchange_rate": false,
-            "priority": 0,
-            "notes": "Vendor: Mid Mountain Materials\nDescription: (206) 762-7600",
-            "latest_change_name": "Item added\nItsme\nJuly 07 Thursday 2022 09-40-05 AM",
-            "latest_change_part_number": "Item added\nItsme\nJuly 07 Thursday 2022 09-40-05 AM",
-            "latest_change_unit_quantity": "Latest Change:\nfrom: 17\nto: 17\nItsme\nJuly 07 Thursday 2022 09:48:20 AM",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 222\nto: 222\nItsme\nOctober 18 Tuesday 2022 08:21:39 AM",
-            "latest_change_price": "Item added\nItsme\nJuly 07 Thursday 2022 09-40-05 AM",
-            "latest_change_use_exchange_price": "Item added\nItsme\nJuly 07 Thursday 2022 09-40-05 AM",
-            "latest_change_priority": "Item added\nItsme\nJuly 07 Thursday 2022 09-40-05 AM",
-            "latest_change_notes": "Latest Change:\nfrom: \"Vendor: Mid Mountain Materials\nDescription: (206) 762-760\"\nto: \"Vendor: Mid Mountain Materials\nDescription: (206) 762-7600\"\nItsme\nJuly 07 Thursday 2022 09:41:13 AM"
-        },
-        "Hytex 1000 Rope Knit 3\/4 High Density White": {
-            "part_number": "RK0101",
-            "unit_quantity": 15,
-            "current_quantity": 240,
-            "price": 2.5,
-            "use_exchange_rate": false,
-            "priority": 0,
-            "notes": "Vendor: Mid Mountain Materials\t\nDescription:  (206) 762-7600",
-            "latest_change_name": "Item added\nItsme\nJuly 07 Thursday 2022 09-48-03 AM",
-            "latest_change_part_number": "Item added\nItsme\nJuly 07 Thursday 2022 09-48-03 AM",
-            "latest_change_unit_quantity": "Item added\nItsme\nJuly 07 Thursday 2022 09-48-03 AM",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 240\nto: 240\nItsme\nOctober 18 Tuesday 2022 08:21:55 AM",
-            "latest_change_price": "Item added\nItsme\nJuly 07 Thursday 2022 09-48-03 AM",
-            "latest_change_use_exchange_price": "Item added\nItsme\nJuly 07 Thursday 2022 09-48-03 AM",
-            "latest_change_priority": "Item added\nItsme\nJuly 07 Thursday 2022 09-48-03 AM",
-            "latest_change_notes": "Item added\nItsme\nJuly 07 Thursday 2022 09-48-03 AM"
         },
         "3\/8 X 1.25\" Bolt ": {
             "part_number": "38125",
