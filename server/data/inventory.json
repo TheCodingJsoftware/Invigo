@@ -3559,7 +3559,7 @@
         "100-Coffee Brown HT ProRib- 38 3\/8": {
             "part_number": "1328GA-103",
             "unit_quantity": 3,
-            "current_quantity": -20,
+            "current_quantity": 180,
             "price": 14.8,
             "use_exchange_rate": false,
             "priority": 0,
@@ -3567,7 +3567,7 @@
             "latest_change_name": "Item added\nItsme\nJuly 28 Thursday 2022 07-50-08 PM",
             "latest_change_part_number": "Item added\nItsme\nJuly 28 Thursday 2022 07-50-08 PM",
             "latest_change_unit_quantity": "Item added\nItsme\nJuly 28 Thursday 2022 07-50-08 PM",
-            "latest_change_current_quantity": "Latest Change:\nfrom: -20\nto: -20\nItsme\nOctober 13 Thursday 2022 05:05:54 PM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 180\nto: 180\nItsme\nOctober 19 Wednesday 2022 12:54:39 PM",
             "latest_change_price": "Latest Change:\nfrom: 14.8\nto: 14.8\nItsme\nOctober 14 Friday 2022 09:32:01 AM",
             "latest_change_use_exchange_price": "Item added\nItsme\nJuly 28 Thursday 2022 07-50-08 PM",
             "latest_change_priority": "Item added\nItsme\nJuly 28 Thursday 2022 07-50-08 PM",
@@ -4515,23 +4515,6 @@
             "latest_change_priority": "Item added\nItsme\nAugust 04 Thursday 2022 10-19-53 AM",
             "latest_change_notes": "Item added\nItsme\nAugust 04 Thursday 2022 10-19-53 AM"
         },
-        "100-Coffee Brown HT ProRib- 38 3\/8": {
-            "part_number": "1328GA-103",
-            "unit_quantity": 3,
-            "current_quantity": -20,
-            "price": 14.8,
-            "use_exchange_rate": false,
-            "priority": 0,
-            "notes": "Vendor: Domtek\nDescription: ",
-            "latest_change_name": "Item added\nItsme\nAugust 04 Thursday 2022 09-11-10 AM",
-            "latest_change_part_number": "Item added\nItsme\nAugust 04 Thursday 2022 09-11-10 AM",
-            "latest_change_unit_quantity": "Item added\nItsme\nAugust 04 Thursday 2022 09-11-10 AM",
-            "latest_change_current_quantity": "Latest Change:\nfrom: -20\nto: -20\nItsme\nOctober 13 Thursday 2022 05:05:54 PM",
-            "latest_change_price": "Latest Change:\nfrom: 14.8\nto: 14.8\nItsme\nOctober 14 Friday 2022 09:32:01 AM",
-            "latest_change_use_exchange_price": "Item added\nItsme\nAugust 04 Thursday 2022 09-11-10 AM",
-            "latest_change_priority": "Item added\nItsme\nAugust 04 Thursday 2022 09-11-10 AM",
-            "latest_change_notes": "Item added\nItsme\nAugust 04 Thursday 2022 09-11-10 AM"
-        },
         "383 Blower Fan\/ 1523 blower Fan": {
             "part_number": "383bf",
             "unit_quantity": 1,
@@ -4601,6 +4584,23 @@
             "latest_change_notes": "Item added\nItsme\nAugust 26 Friday 2022 08-37-24 AM",
             "latest_change_use_exchange_rate": "Latest Change:\nfrom: USD\nto: CAD\nItsme\nOctober 04 Tuesday 2022 02:26:48 PM"
         },
+        "1\/4 Nialon Plastic Shaft- Float assy": {
+            "part_number": "14NPS",
+            "unit_quantity": 1,
+            "current_quantity": 36,
+            "price": 3.0,
+            "use_exchange_rate": false,
+            "priority": 0,
+            "notes": "Vendor: MCmaster Carr and Johnsons Plastic\nDescription: ",
+            "latest_change_name": "Item added\nItsme\nOctober 17 Monday 2022 08-11-15 AM",
+            "latest_change_part_number": "Item added\nItsme\nOctober 17 Monday 2022 08-11-15 AM",
+            "latest_change_unit_quantity": "Item added\nItsme\nOctober 17 Monday 2022 08-11-15 AM",
+            "latest_change_current_quantity": "Item added\nItsme\nOctober 17 Monday 2022 08-11-15 AM",
+            "latest_change_price": "Item added\nItsme\nOctober 17 Monday 2022 08-11-15 AM",
+            "latest_change_use_exchange_price": "Item added\nItsme\nOctober 17 Monday 2022 08-11-15 AM",
+            "latest_change_priority": "Item added\nItsme\nOctober 17 Monday 2022 08-11-15 AM",
+            "latest_change_notes": "Item added\nItsme\nOctober 17 Monday 2022 08-11-15 AM"
+        },
         "Digital Johnson Controle": {
             "part_number": "A421ABC-02",
             "unit_quantity": 1,
@@ -4634,24 +4634,6 @@
             "latest_change_use_exchange_price": "Item added\nItsme\nAugust 04 Thursday 2022 10-09-19 AM",
             "latest_change_priority": "Item added\nItsme\nAugust 04 Thursday 2022 10-09-19 AM",
             "latest_change_notes": "Item added\nItsme\nAugust 04 Thursday 2022 10-09-19 AM"
-        },
-        "Ceramic Paper Fiber  STD (2300F) 6mm X 48\" X 33\"": {
-            "part_number": "CP62432",
-            "unit_quantity": 9,
-            "current_quantity": 6879,
-            "price": 1.8,
-            "use_exchange_rate": true,
-            "priority": 0,
-            "notes": "Vendor: Mineral Seal Corporation \nDescription: ",
-            "latest_change_name": "Item added\nItsme\nOctober 14 Friday 2022 10-39-38 AM",
-            "latest_change_part_number": "Item added\nItsme\nOctober 14 Friday 2022 10-39-38 AM",
-            "latest_change_unit_quantity": "Latest Change:\nfrom: 7\nto: 9\nItsme\nOctober 14 Friday 2022 01:33:59 PM",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 6879\nto: 6879\nItsme\nOctober 15 Saturday 2022 11:14:17 AM",
-            "latest_change_price": "Latest Change:\nfrom: 1.0\nto: 1.8\nItsme\nOctober 14 Friday 2022 01:34:25 PM",
-            "latest_change_use_exchange_price": "Item added\nItsme\nOctober 14 Friday 2022 10-39-38 AM",
-            "latest_change_priority": "Item added\nItsme\nOctober 14 Friday 2022 10-39-38 AM",
-            "latest_change_notes": "Item added\nItsme\nOctober 14 Friday 2022 10-39-38 AM",
-            "latest_change_use_exchange_rate": "Latest Change:\nfrom: CAD\nto: USD\nItsme\nOctober 15 Saturday 2022 09:12:10 AM"
         },
         "GF 417 PHOS ( 55 Gallon)  UN1760 Corrosive Liquid N.O.S (Phosphoric Acid Class 8 ": {
             "part_number": "01034.0011",
@@ -4789,6 +4771,23 @@
             "latest_change_priority": "Item added\nItsme\nAugust 18 Thursday 2022 09-52-34 AM",
             "latest_change_notes": "Item added\nItsme\nAugust 18 Thursday 2022 09-52-34 AM"
         },
+        "100-Coffee Brown HT ProRib- 38 3\/8": {
+            "part_number": "1328GA-103",
+            "unit_quantity": 3,
+            "current_quantity": 180,
+            "price": 14.8,
+            "use_exchange_rate": false,
+            "priority": 0,
+            "notes": "Vendor: Domtek\nDescription: ",
+            "latest_change_name": "Item added\nItsme\nAugust 04 Thursday 2022 09-11-10 AM",
+            "latest_change_part_number": "Item added\nItsme\nAugust 04 Thursday 2022 09-11-10 AM",
+            "latest_change_unit_quantity": "Item added\nItsme\nAugust 04 Thursday 2022 09-11-10 AM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 180\nto: 180\nItsme\nOctober 19 Wednesday 2022 12:54:39 PM",
+            "latest_change_price": "Latest Change:\nfrom: 14.8\nto: 14.8\nItsme\nOctober 14 Friday 2022 09:32:01 AM",
+            "latest_change_use_exchange_price": "Item added\nItsme\nAugust 04 Thursday 2022 09-11-10 AM",
+            "latest_change_priority": "Item added\nItsme\nAugust 04 Thursday 2022 09-11-10 AM",
+            "latest_change_notes": "Item added\nItsme\nAugust 04 Thursday 2022 09-11-10 AM"
+        },
         "1\" Scully flange": {
             "part_number": "1SF",
             "unit_quantity": 2,
@@ -4908,22 +4907,23 @@
             "latest_change_priority": "Item added\nItsme\nAugust 08 Monday 2022 08-16-28 AM",
             "latest_change_notes": "Item added\nItsme\nAugust 08 Monday 2022 08-16-28 AM"
         },
-        "1\/4 Nialon Plastic Shaft- Float assy": {
-            "part_number": "14NPS",
-            "unit_quantity": 1,
-            "current_quantity": 36,
-            "price": 3.0,
-            "use_exchange_rate": false,
+        "Ceramic Paper Fiber  STD (2300F) 6mm X 48\" X 33\"": {
+            "part_number": "CP62432",
+            "unit_quantity": 9,
+            "current_quantity": 6879,
+            "price": 1.8,
+            "use_exchange_rate": true,
             "priority": 0,
-            "notes": "Vendor: MCmaster Carr and Johnsons Plastic\nDescription: ",
-            "latest_change_name": "Item added\nItsme\nOctober 17 Monday 2022 08-11-15 AM",
-            "latest_change_part_number": "Item added\nItsme\nOctober 17 Monday 2022 08-11-15 AM",
-            "latest_change_unit_quantity": "Item added\nItsme\nOctober 17 Monday 2022 08-11-15 AM",
-            "latest_change_current_quantity": "Item added\nItsme\nOctober 17 Monday 2022 08-11-15 AM",
-            "latest_change_price": "Item added\nItsme\nOctober 17 Monday 2022 08-11-15 AM",
-            "latest_change_use_exchange_price": "Item added\nItsme\nOctober 17 Monday 2022 08-11-15 AM",
-            "latest_change_priority": "Item added\nItsme\nOctober 17 Monday 2022 08-11-15 AM",
-            "latest_change_notes": "Item added\nItsme\nOctober 17 Monday 2022 08-11-15 AM"
+            "notes": "Vendor: Mineral Seal Corporation \nDescription: ",
+            "latest_change_name": "Item added\nItsme\nOctober 14 Friday 2022 10-39-38 AM",
+            "latest_change_part_number": "Item added\nItsme\nOctober 14 Friday 2022 10-39-38 AM",
+            "latest_change_unit_quantity": "Latest Change:\nfrom: 7\nto: 9\nItsme\nOctober 14 Friday 2022 01:33:59 PM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 6879\nto: 6879\nItsme\nOctober 15 Saturday 2022 11:14:17 AM",
+            "latest_change_price": "Latest Change:\nfrom: 1.0\nto: 1.8\nItsme\nOctober 14 Friday 2022 01:34:25 PM",
+            "latest_change_use_exchange_price": "Item added\nItsme\nOctober 14 Friday 2022 10-39-38 AM",
+            "latest_change_priority": "Item added\nItsme\nOctober 14 Friday 2022 10-39-38 AM",
+            "latest_change_notes": "Item added\nItsme\nOctober 14 Friday 2022 10-39-38 AM",
+            "latest_change_use_exchange_rate": "Latest Change:\nfrom: CAD\nto: USD\nItsme\nOctober 15 Saturday 2022 09:12:10 AM"
         }
     },
     "BL 28 Shaker": {
@@ -4964,7 +4964,7 @@
         "100-Coffee Brown HT ProRib- 38 3\/8": {
             "part_number": "1328GA-103",
             "unit_quantity": 3,
-            "current_quantity": -20,
+            "current_quantity": 180,
             "price": 14.8,
             "use_exchange_rate": false,
             "priority": 0,
@@ -4972,7 +4972,7 @@
             "latest_change_name": "Item added\nItsme\nAugust 04 Thursday 2022 09-11-10 AM",
             "latest_change_part_number": "Item added\nItsme\nAugust 04 Thursday 2022 09-11-10 AM",
             "latest_change_unit_quantity": "Item added\nItsme\nAugust 04 Thursday 2022 09-11-10 AM",
-            "latest_change_current_quantity": "Latest Change:\nfrom: -20\nto: -20\nItsme\nOctober 13 Thursday 2022 05:05:54 PM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 180\nto: 180\nItsme\nOctober 19 Wednesday 2022 12:54:39 PM",
             "latest_change_price": "Latest Change:\nfrom: 14.8\nto: 14.8\nItsme\nOctober 14 Friday 2022 09:32:01 AM",
             "latest_change_use_exchange_price": "Item added\nItsme\nAugust 04 Thursday 2022 09-11-10 AM",
             "latest_change_priority": "Item added\nItsme\nAugust 04 Thursday 2022 09-11-10 AM",
