@@ -6928,6 +6928,23 @@
             "latest_change_use_exchange_price": "Item added\nItsme\nOctober 19 Wednesday 2022 02-54-47 PM",
             "latest_change_priority": "Item added\nItsme\nOctober 19 Wednesday 2022 02-54-47 PM",
             "latest_change_notes": "Latest Change:\nfrom: \"Vendor: Russel Metals\nDescription: Round bar is measured in FT and Item Price is Per Foot- One legth is 20 F\"\nto: \"Vendor: Russel Metals\nDescription: Round bar is measured in FT and Item Price is Per Foot- One legth is 20 Ft\"\nItsme\nOctober 19 Wednesday 2022 02:55:05 PM"
+        },
+        "3\/8 SCH 40 BLK A53 ": {
+            "part_number": "37646",
+            "unit_quantity": 1,
+            "current_quantity": 420,
+            "price": 2.6,
+            "use_exchange_rate": false,
+            "priority": 0,
+            "notes": "Vendor: Russel Metals \nMeasured per Foot\/ 20 Ft per length\nDescription: ",
+            "latest_change_name": "Item added\nItsme\nOctober 19 Wednesday 2022 03-32-50 PM",
+            "latest_change_part_number": "Item added\nItsme\nOctober 19 Wednesday 2022 03-32-50 PM",
+            "latest_change_unit_quantity": "Item added\nItsme\nOctober 19 Wednesday 2022 03-32-50 PM",
+            "latest_change_current_quantity": "Item added\nItsme\nOctober 19 Wednesday 2022 03-32-50 PM",
+            "latest_change_price": "Item added\nItsme\nOctober 19 Wednesday 2022 03-32-50 PM",
+            "latest_change_use_exchange_price": "Item added\nItsme\nOctober 19 Wednesday 2022 03-32-50 PM",
+            "latest_change_priority": "Item added\nItsme\nOctober 19 Wednesday 2022 03-32-50 PM",
+            "latest_change_notes": "Item added\nItsme\nOctober 19 Wednesday 2022 03-32-50 PM"
         }
     }
 }
