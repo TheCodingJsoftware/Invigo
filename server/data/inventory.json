@@ -3611,7 +3611,7 @@
             "part_number": "1IBP",
             "unit_quantity": 1,
             "current_quantity": -9,
-            "price": 0.0,
+            "price": 3.0,
             "use_exchange_rate": false,
             "priority": 0,
             "notes": "Vendor: Russel Metals\nDescription: ",
@@ -3619,7 +3619,7 @@
             "latest_change_part_number": "Item added\nItsme\nJuly 28 Thursday 2022 04-10-06 PM",
             "latest_change_unit_quantity": "Item added\nItsme\nJuly 28 Thursday 2022 04-10-06 PM",
             "latest_change_current_quantity": "Latest Change:\nfrom: -9\nto: -9\nItsme\nOctober 13 Thursday 2022 05:05:54 PM",
-            "latest_change_price": "Item added\nItsme\nJuly 28 Thursday 2022 04-10-06 PM",
+            "latest_change_price": "Latest Change:\nfrom: 3.0\nto: 3.0\nItsme\nOctober 19 Wednesday 2022 04:51:44 PM",
             "latest_change_use_exchange_price": "Item added\nItsme\nJuly 28 Thursday 2022 04-10-06 PM",
             "latest_change_priority": "Item added\nItsme\nJuly 28 Thursday 2022 04-10-06 PM",
             "latest_change_notes": "Item added\nItsme\nJuly 28 Thursday 2022 04-10-06 PM"
@@ -4049,6 +4049,23 @@
             "latest_change_use_exchange_price": "Item added\nItsme\nOctober 19 Wednesday 2022 02-40-34 PM",
             "latest_change_priority": "Item added\nItsme\nOctober 19 Wednesday 2022 02-40-34 PM",
             "latest_change_notes": "Item added\nItsme\nOctober 19 Wednesday 2022 02-40-34 PM"
+        },
+        "383 Blower Fan\/ 1523 blower Fan": {
+            "part_number": "383bf",
+            "unit_quantity": 1,
+            "current_quantity": 0,
+            "price": 165.3,
+            "use_exchange_rate": false,
+            "priority": 0,
+            "notes": "Vendor: \nDescription: ",
+            "latest_change_name": "Item added\nItsme\nOctober 19 Wednesday 2022 04-57-10 PM",
+            "latest_change_part_number": "Item added\nItsme\nOctober 19 Wednesday 2022 04-57-10 PM",
+            "latest_change_unit_quantity": "Item added\nItsme\nOctober 19 Wednesday 2022 04-57-10 PM",
+            "latest_change_current_quantity": "Item added\nItsme\nOctober 19 Wednesday 2022 04-57-10 PM",
+            "latest_change_price": "Item added\nItsme\nOctober 19 Wednesday 2022 04-57-10 PM",
+            "latest_change_use_exchange_price": "Item added\nItsme\nOctober 19 Wednesday 2022 04-57-10 PM",
+            "latest_change_priority": "Item added\nItsme\nOctober 19 Wednesday 2022 04-57-10 PM",
+            "latest_change_notes": "Item added\nItsme\nOctober 19 Wednesday 2022 04-57-10 PM"
         }
     },
     "Fittings": {
@@ -6945,6 +6962,23 @@
             "latest_change_use_exchange_price": "Item added\nItsme\nOctober 19 Wednesday 2022 03-32-50 PM",
             "latest_change_priority": "Item added\nItsme\nOctober 19 Wednesday 2022 03-32-50 PM",
             "latest_change_notes": "Item added\nItsme\nOctober 19 Wednesday 2022 03-32-50 PM"
+        },
+        "1\" SCH 40 BLK A53": {
+            "part_number": "17674",
+            "unit_quantity": 1,
+            "current_quantity": 420,
+            "price": 2.58,
+            "use_exchange_rate": false,
+            "priority": 0,
+            "notes": "Vendor: Russel Metals\nDescription: Current Quantity is in Feet. Price is Per FT \n",
+            "latest_change_name": "Item added\nItsme\nOctober 19 Wednesday 2022 04-48-05 PM",
+            "latest_change_part_number": "Item added\nItsme\nOctober 19 Wednesday 2022 04-48-05 PM",
+            "latest_change_unit_quantity": "Item added\nItsme\nOctober 19 Wednesday 2022 04-48-05 PM",
+            "latest_change_current_quantity": "Item added\nItsme\nOctober 19 Wednesday 2022 04-48-05 PM",
+            "latest_change_price": "Item added\nItsme\nOctober 19 Wednesday 2022 04-48-05 PM",
+            "latest_change_use_exchange_price": "Item added\nItsme\nOctober 19 Wednesday 2022 04-48-05 PM",
+            "latest_change_priority": "Item added\nItsme\nOctober 19 Wednesday 2022 04-48-05 PM",
+            "latest_change_notes": "Item added\nItsme\nOctober 19 Wednesday 2022 04-48-05 PM"
         }
     }
 }
