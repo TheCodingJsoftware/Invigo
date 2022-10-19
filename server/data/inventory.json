@@ -5306,7 +5306,7 @@
             "unit_quantity": 5,
             "current_quantity": 1050,
             "price": 3.85,
-            "use_exchange_rate": false,
+            "use_exchange_rate": true,
             "priority": 0,
             "notes": "Vendor: Mid-Mountain Materials\nDescription: ",
             "latest_change_name": "Item added\nItsme\nAugust 08 Monday 2022 08-16-28 AM",
@@ -5316,7 +5316,8 @@
             "latest_change_price": "Item added\nItsme\nAugust 08 Monday 2022 08-16-28 AM",
             "latest_change_use_exchange_price": "Item added\nItsme\nAugust 08 Monday 2022 08-16-28 AM",
             "latest_change_priority": "Item added\nItsme\nAugust 08 Monday 2022 08-16-28 AM",
-            "latest_change_notes": "Item added\nItsme\nAugust 08 Monday 2022 08-16-28 AM"
+            "latest_change_notes": "Item added\nItsme\nAugust 08 Monday 2022 08-16-28 AM",
+            "latest_change_use_exchange_rate": "Latest Change:\nfrom: CAD\nto: USD\nItsme\nOctober 19 Wednesday 2022 02:08:15 PM"
         },
         "Ceramic Paper Fiber  STD (2300F) 6mm X 48\" X 33\"": {
             "part_number": "CP62432",
@@ -5334,7 +5335,7 @@
             "latest_change_use_exchange_price": "Item added\nItsme\nOctober 14 Friday 2022 10-39-50 AM",
             "latest_change_priority": "Item added\nItsme\nOctober 14 Friday 2022 10-39-50 AM",
             "latest_change_notes": "Item added\nItsme\nOctober 14 Friday 2022 10-39-50 AM",
-            "latest_change_use_exchange_rate": "Latest Change:\nfrom: CAD\nto: USD\nItsme\nOctober 15 Saturday 2022 09:11:48 AM"
+            "latest_change_use_exchange_rate": "Latest Change:\nfrom: CAD\nto: USD\nItsme\nOctober 19 Wednesday 2022 02:08:01 PM"
         }
     },
     "BL 34 Shaker": {
@@ -6722,5 +6723,6 @@
             "latest_change_priority": "Item added\nItsme\nOctober 17 Monday 2022 08-12-14 AM",
             "latest_change_notes": "Item added\nItsme\nOctober 17 Monday 2022 08-12-14 AM"
         }
-    }
+    },
+    "Round Bar And Tube": {}
 }
