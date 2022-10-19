@@ -1728,6 +1728,19 @@
             "latest_change_current_quantity": "Latest Change:\nfrom: 72\nto: 72\nItsme\nSeptember 27 Tuesday 2022 08:14:33 AM",
             "latest_change_price": "Latest Change:\nfrom: 3.3\nto: 3.0\nItsme\nAugust 03 Wednesday 2022 08:50:27 AM"
         },
+        "Grundfos 26-99FC 115V 9H": {
+            "part_number": "26-99FC",
+            "unit_quantity": 1,
+            "current_quantity": 74,
+            "price": 169.7,
+            "use_exchange_rate": false,
+            "priority": 0,
+            "notes": "Vendor: Grundfos Canada\nDescription: ",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 74\nto: 74\nItsme\nOctober 19 Wednesday 2022 04:03:45 PM",
+            "latest_change_name": "Latest Change:\nfrom: \"Grundfos 2-99FC 115V 9H\"\nto: \"Grundfos 26-99FC 115V 9H\"\nItsme\nJuly 20 Wednesday 2022 10:19:33 AM",
+            "latest_change_part_number": "Latest Change:\nfrom: 26-9FC\nto: 26-99FC\nItsme\nJuly 20 Wednesday 2022 10:20:02 AM",
+            "latest_change_price": "Latest Change:\nfrom: 169.0\nto: 169.7\nItsme\nAugust 25 Thursday 2022 01:22:27 PM"
+        },
         "Sticker   #306 Polar Furnace with Polar Bear  11\"x14\" ": {
             "part_number": "403",
             "unit_quantity": 1,
@@ -1874,19 +1887,6 @@
             "latest_change_part_number": "Latest Change:\nfrom: 9657k54\nto: 9657k545\nItsme\nJuly 19 Tuesday 2022 02:29:19 PM",
             "latest_change_price": "Latest Change:\nfrom: 3.0\nto: 3.1\nItsme\nJuly 19 Tuesday 2022 03:20:10 PM",
             "latest_change_notes": "Latest Change:\nfrom: \"Vendor: Digi-Key Electronic\nDescription: \"\nto: \"Vendor: Digi-Key Electronics\nDescription: \"\nItsme\nJuly 19 Tuesday 2022 03:48:38 PM"
-        },
-        "Grundfos 26-99FC 115V 9H": {
-            "part_number": "26-99FC",
-            "unit_quantity": 1,
-            "current_quantity": 94,
-            "price": 169.7,
-            "use_exchange_rate": false,
-            "priority": 0,
-            "notes": "Vendor: Grundfos Canada\nDescription: ",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 94\nto: 94\nItsme\nSeptember 16 Friday 2022 02:01:25 PM",
-            "latest_change_name": "Latest Change:\nfrom: \"Grundfos 2-99FC 115V 9H\"\nto: \"Grundfos 26-99FC 115V 9H\"\nItsme\nJuly 20 Wednesday 2022 10:19:33 AM",
-            "latest_change_part_number": "Latest Change:\nfrom: 26-9FC\nto: 26-99FC\nItsme\nJuly 20 Wednesday 2022 10:20:02 AM",
-            "latest_change_price": "Latest Change:\nfrom: 169.0\nto: 169.7\nItsme\nAugust 25 Thursday 2022 01:22:27 PM"
         },
         "Thumb Screw 5\/16 DIAx 3\/4 Long x1\/2 FLG": {
             "part_number": "TS535",
@@ -2137,6 +2137,23 @@
             "latest_change_priority": "Item added\nItsme\nJuly 19 Tuesday 2022 04-48-12 PM",
             "latest_change_notes": "Item added\nItsme\nJuly 19 Tuesday 2022 04-48-12 PM"
         },
+        "1\/2 Tank Flange  NPT ": {
+            "part_number": "953 SA-181-70 82D 3M",
+            "unit_quantity": 2,
+            "current_quantity": 200,
+            "price": 2.1,
+            "use_exchange_rate": false,
+            "priority": 0,
+            "notes": "Vendor: GreenLine Hose and Fitting \nDescription: ",
+            "latest_change_name": "Item added\nItsme\nOctober 19 Wednesday 2022 02-47-17 PM",
+            "latest_change_part_number": "Item added\nItsme\nOctober 19 Wednesday 2022 02-47-17 PM",
+            "latest_change_unit_quantity": "Item added\nItsme\nOctober 19 Wednesday 2022 02-47-17 PM",
+            "latest_change_current_quantity": "Item added\nItsme\nOctober 19 Wednesday 2022 02-47-17 PM",
+            "latest_change_price": "Item added\nItsme\nOctober 19 Wednesday 2022 02-47-17 PM",
+            "latest_change_use_exchange_price": "Item added\nItsme\nOctober 19 Wednesday 2022 02-47-17 PM",
+            "latest_change_priority": "Item added\nItsme\nOctober 19 Wednesday 2022 02-47-17 PM",
+            "latest_change_notes": "Item added\nItsme\nOctober 19 Wednesday 2022 02-47-17 PM"
+        },
         "6 FT Power Cord Nema 5-16P 3 pin": {
             "part_number": "Nema5",
             "unit_quantity": 1,
@@ -2377,23 +2394,6 @@
             "latest_change_use_exchange_price": "Item added\nItsme\nJuly 19 Tuesday 2022 03-54-38 PM",
             "latest_change_priority": "Item added\nItsme\nJuly 19 Tuesday 2022 03-54-38 PM",
             "latest_change_notes": "Item added\nItsme\nJuly 19 Tuesday 2022 03-54-38 PM"
-        },
-        "1\/2 Tank Flange  NPT ": {
-            "part_number": "953 SA-181-70 82D 3M",
-            "unit_quantity": 2,
-            "current_quantity": 200,
-            "price": 2.1,
-            "use_exchange_rate": false,
-            "priority": 0,
-            "notes": "Vendor: GreenLine Hose and Fitting \nDescription: ",
-            "latest_change_name": "Item added\nItsme\nOctober 19 Wednesday 2022 02-47-17 PM",
-            "latest_change_part_number": "Item added\nItsme\nOctober 19 Wednesday 2022 02-47-17 PM",
-            "latest_change_unit_quantity": "Item added\nItsme\nOctober 19 Wednesday 2022 02-47-17 PM",
-            "latest_change_current_quantity": "Item added\nItsme\nOctober 19 Wednesday 2022 02-47-17 PM",
-            "latest_change_price": "Item added\nItsme\nOctober 19 Wednesday 2022 02-47-17 PM",
-            "latest_change_use_exchange_price": "Item added\nItsme\nOctober 19 Wednesday 2022 02-47-17 PM",
-            "latest_change_priority": "Item added\nItsme\nOctober 19 Wednesday 2022 02-47-17 PM",
-            "latest_change_notes": "Item added\nItsme\nOctober 19 Wednesday 2022 02-47-17 PM"
         }
     },
     "Polar G2+": {
