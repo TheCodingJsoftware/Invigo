@@ -3614,7 +3614,7 @@
             "price": 3.0,
             "use_exchange_rate": false,
             "priority": 0,
-            "notes": "Vendor: Russel Metals\nDescription: ",
+            "notes": "Vendor: Russel Metals\nDescription:  ",
             "latest_change_name": "Item added\nItsme\nJuly 28 Thursday 2022 04-10-06 PM",
             "latest_change_part_number": "Item added\nItsme\nJuly 28 Thursday 2022 04-10-06 PM",
             "latest_change_unit_quantity": "Item added\nItsme\nJuly 28 Thursday 2022 04-10-06 PM",
@@ -3622,7 +3622,7 @@
             "latest_change_price": "Latest Change:\nfrom: 3.0\nto: 3.0\nItsme\nOctober 19 Wednesday 2022 04:51:44 PM",
             "latest_change_use_exchange_price": "Item added\nItsme\nJuly 28 Thursday 2022 04-10-06 PM",
             "latest_change_priority": "Item added\nItsme\nJuly 28 Thursday 2022 04-10-06 PM",
-            "latest_change_notes": "Item added\nItsme\nJuly 28 Thursday 2022 04-10-06 PM"
+            "latest_change_notes": "Latest Change:\nfrom: \"Vendor: Russel Metals\nDescription:  N\"\nto: \"Vendor: Russel Metals\nDescription:  \"\nItsme\nOctober 20 Thursday 2022 10:18:20 AM"
         },
         "BL 25 Shaker Brick Set ": {
             "part_number": "BL25BS",
