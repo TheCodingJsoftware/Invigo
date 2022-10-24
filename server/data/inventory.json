@@ -96,12 +96,12 @@
         "Blower Wheel 9-15\/16\" X 2-1\/4 BI Steel 1\/2 #2-106CI CW \"A\" 1800R": {
             "part_number": "2-106CI CW",
             "unit_quantity": 1,
-            "current_quantity": 21,
+            "current_quantity": 0,
             "price": 68.45,
             "use_exchange_rate": false,
             "priority": 0,
             "notes": "Vendor: Jan-Air Illinois\nDescription: ",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 21\nto: 21\nItsme\nOctober 21 Friday 2022 10:41:43 AM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 0\nto: 0\nItsme\nOctober 24 Monday 2022 08:44:21 AM",
             "latest_change_price": "Latest Change:\nfrom: 68.45\nto: 68.45\nItsme\nSeptember 06 Tuesday 2022 11:12:17 AM"
         },
         "6L24 ASHT 6\"X24\" Section": {
@@ -1314,12 +1314,12 @@
         "Blower Wheel 9-15\/16\" X 2-1\/4 BI Steel 1\/2 #2-106CI CW \"A\" 1800R": {
             "part_number": "2-106CI CW",
             "unit_quantity": 1,
-            "current_quantity": 21,
+            "current_quantity": 0,
             "price": 68.45,
             "use_exchange_rate": false,
             "priority": 3,
             "notes": "Vendor: Jan-Air Illinois\nDescription: ",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 21\nto: 21\nItsme\nOctober 21 Friday 2022 10:41:43 AM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 0\nto: 0\nItsme\nOctober 24 Monday 2022 08:44:21 AM",
             "latest_change_priority": "Latest Change:\nfrom: 0\nto: 3\nItsme\nSeptember 05 Monday 2022 09:49:27 AM",
             "latest_change_price": "Latest Change:\nfrom: 68.45\nto: 68.45\nItsme\nSeptember 06 Tuesday 2022 11:12:17 AM"
         },
@@ -2550,13 +2550,14 @@
         "Blower Wheel 9-15\/16\" X 2-1\/4 BI Steel 1\/2 #2-106CI CW \"A\" 1800R": {
             "part_number": "2-106CI CW",
             "unit_quantity": 1,
-            "current_quantity": 21,
+            "current_quantity": 0,
             "price": 68.45,
             "use_exchange_rate": false,
-            "priority": 0,
+            "priority": 3,
             "notes": "Vendor: Jan-Air Illinois\nDescription: ",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 21\nto: 21\nItsme\nOctober 21 Friday 2022 10:41:43 AM",
-            "latest_change_price": "Latest Change:\nfrom: 68.45\nto: 68.45\nItsme\nSeptember 06 Tuesday 2022 11:12:17 AM"
+            "latest_change_current_quantity": "Latest Change:\nfrom: 0\nto: 0\nItsme\nOctober 24 Monday 2022 08:44:21 AM",
+            "latest_change_price": "Latest Change:\nfrom: 68.45\nto: 68.45\nItsme\nSeptember 06 Tuesday 2022 11:12:17 AM",
+            "latest_change_priority": "Latest Change:\nfrom: 0\nto: 3\nItsme\nOctober 24 Monday 2022 08:34:48 AM"
         },
         "Sticker 310 Polar G2 & G3 Caution Pinch Hazard 4.5\"x2.75\"": {
             "part_number": "310",
