@@ -6661,7 +6661,7 @@
             "current_quantity": 60,
             "price": 94.4,
             "use_exchange_rate": false,
-            "priority": 0,
+            "priority": 2,
             "notes": "Vendor: Johnson Controle\nDescription: ",
             "latest_change_name": "Item added\nItsme\nAugust 04 Thursday 2022 09-19-57 AM",
             "latest_change_part_number": "Item added\nItsme\nAugust 04 Thursday 2022 09-19-57 AM",
@@ -6669,7 +6669,7 @@
             "latest_change_current_quantity": "Latest Change:\nfrom: 60\nto: 60\nItsme\nOctober 13 Thursday 2022 05:05:54 PM",
             "latest_change_price": "Item added\nItsme\nAugust 04 Thursday 2022 09-19-57 AM",
             "latest_change_use_exchange_price": "Item added\nItsme\nAugust 04 Thursday 2022 09-19-57 AM",
-            "latest_change_priority": "Item added\nItsme\nAugust 04 Thursday 2022 09-19-57 AM",
+            "latest_change_priority": "Latest Change:\nfrom: 0\nto: 2\nItsme\nOctober 26 Wednesday 2022 11:24:47 AM",
             "latest_change_notes": "Item added\nItsme\nAugust 04 Thursday 2022 09-19-57 AM"
         },
         "1\" x4\" Nipple": {
