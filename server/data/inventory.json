@@ -7048,6 +7048,23 @@
             "latest_change_use_exchange_price": "Item added\nItsme\nOctober 19 Wednesday 2022 04-48-05 PM",
             "latest_change_priority": "Item added\nItsme\nOctober 19 Wednesday 2022 04-48-05 PM",
             "latest_change_notes": "Item added\nItsme\nOctober 19 Wednesday 2022 04-48-05 PM"
+        },
+        "Brass Bar C360": {
+            "part_number": "c360",
+            "unit_quantity": 1,
+            "current_quantity": 15,
+            "price": 263.0,
+            "use_exchange_rate": false,
+            "priority": 0,
+            "notes": "Vendor: NEW WEST mETALS\nDescription: Price is per length. ",
+            "latest_change_name": "Item added\nItsme\nOctober 26 Wednesday 2022 05-27-37 PM",
+            "latest_change_part_number": "Item added\nItsme\nOctober 26 Wednesday 2022 05-27-37 PM",
+            "latest_change_unit_quantity": "Item added\nItsme\nOctober 26 Wednesday 2022 05-27-37 PM",
+            "latest_change_current_quantity": "Item added\nItsme\nOctober 26 Wednesday 2022 05-27-37 PM",
+            "latest_change_price": "Item added\nItsme\nOctober 26 Wednesday 2022 05-27-37 PM",
+            "latest_change_use_exchange_price": "Item added\nItsme\nOctober 26 Wednesday 2022 05-27-37 PM",
+            "latest_change_priority": "Item added\nItsme\nOctober 26 Wednesday 2022 05-27-37 PM",
+            "latest_change_notes": "Item added\nItsme\nOctober 26 Wednesday 2022 05-27-37 PM"
         }
     }
 }
