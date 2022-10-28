@@ -7303,6 +7303,23 @@
             "latest_change_use_exchange_price": "Item added\nItsme\nOctober 26 Wednesday 2022 05-27-37 PM",
             "latest_change_priority": "Item added\nItsme\nOctober 26 Wednesday 2022 05-27-37 PM",
             "latest_change_notes": "Item added\nItsme\nOctober 26 Wednesday 2022 05-27-37 PM"
+        },
+        "3\/8 HR Round MS": {
+            "part_number": "38790",
+            "unit_quantity": 1,
+            "current_quantity": 15,
+            "price": 0.66,
+            "use_exchange_rate": false,
+            "priority": 0,
+            "notes": "Vendor: Russel Metals\nDescription: Length is 20' Price is per FT",
+            "latest_change_name": "Item added\nItsme\nOctober 28 Friday 2022 10-45-34 AM",
+            "latest_change_part_number": "Item added\nItsme\nOctober 28 Friday 2022 10-45-34 AM",
+            "latest_change_unit_quantity": "Item added\nItsme\nOctober 28 Friday 2022 10-45-34 AM",
+            "latest_change_current_quantity": "Item added\nItsme\nOctober 28 Friday 2022 10-45-34 AM",
+            "latest_change_price": "Item added\nItsme\nOctober 28 Friday 2022 10-45-34 AM",
+            "latest_change_use_exchange_price": "Item added\nItsme\nOctober 28 Friday 2022 10-45-34 AM",
+            "latest_change_priority": "Item added\nItsme\nOctober 28 Friday 2022 10-45-34 AM",
+            "latest_change_notes": "Item added\nItsme\nOctober 28 Friday 2022 10-45-34 AM"
         }
     }
 }
