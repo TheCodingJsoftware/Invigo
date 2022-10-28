@@ -4734,6 +4734,40 @@
             "latest_change_use_exchange_price": "Item added\nItsme\nOctober 11 Tuesday 2022 08-31-40 AM",
             "latest_change_priority": "Item added\nItsme\nOctober 11 Tuesday 2022 08-31-40 AM",
             "latest_change_notes": "Item added\nItsme\nOctober 11 Tuesday 2022 08-31-40 AM"
+        },
+        "Pferd Zip Cut .03": {
+            "part_number": "PF-69818",
+            "unit_quantity": 1,
+            "current_quantity": 0,
+            "price": 1.0,
+            "use_exchange_rate": false,
+            "priority": 0,
+            "notes": "Vendor: A.Adams supply\nDescription: ",
+            "latest_change_name": "Item added\nItsme\nOctober 28 Friday 2022 09-59-03 AM",
+            "latest_change_part_number": "Item added\nItsme\nOctober 28 Friday 2022 09-59-03 AM",
+            "latest_change_unit_quantity": "Item added\nItsme\nOctober 28 Friday 2022 09-59-03 AM",
+            "latest_change_current_quantity": "Item added\nItsme\nOctober 28 Friday 2022 09-59-03 AM",
+            "latest_change_price": "Item added\nItsme\nOctober 28 Friday 2022 09-59-03 AM",
+            "latest_change_use_exchange_price": "Item added\nItsme\nOctober 28 Friday 2022 09-59-03 AM",
+            "latest_change_priority": "Item added\nItsme\nOctober 28 Friday 2022 09-59-03 AM",
+            "latest_change_notes": "Item added\nItsme\nOctober 28 Friday 2022 09-59-03 AM"
+        },
+        "Pferd Zip Cut .04": {
+            "part_number": "PF-69855",
+            "unit_quantity": 1,
+            "current_quantity": 0,
+            "price": 1.0,
+            "use_exchange_rate": false,
+            "priority": 0,
+            "notes": "Vendor: A.Adams Supply \nDescription: ",
+            "latest_change_name": "Item added\nItsme\nOctober 28 Friday 2022 09-59-40 AM",
+            "latest_change_part_number": "Item added\nItsme\nOctober 28 Friday 2022 09-59-40 AM",
+            "latest_change_unit_quantity": "Item added\nItsme\nOctober 28 Friday 2022 09-59-40 AM",
+            "latest_change_current_quantity": "Item added\nItsme\nOctober 28 Friday 2022 09-59-40 AM",
+            "latest_change_price": "Item added\nItsme\nOctober 28 Friday 2022 09-59-40 AM",
+            "latest_change_use_exchange_price": "Item added\nItsme\nOctober 28 Friday 2022 09-59-40 AM",
+            "latest_change_priority": "Item added\nItsme\nOctober 28 Friday 2022 09-59-40 AM",
+            "latest_change_notes": "Item added\nItsme\nOctober 28 Friday 2022 09-59-40 AM"
         }
     },
     "BL 28 Wood": {
