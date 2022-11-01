@@ -71,12 +71,12 @@
         "Blower Wheel 9-15\/16\" X 2-1\/4 BI Steel 1\/2 #2-106CI CW \"A\" 1800R": {
             "part_number": "2-106CI CW",
             "unit_quantity": 1,
-            "current_quantity": 0,
+            "current_quantity": 100,
             "price": 68.45,
             "use_exchange_rate": false,
             "priority": 0,
             "notes": "Vendor: Jan-Air Illinois\nDescription: ",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 0\nto: 0\nItsme\nOctober 24 Monday 2022 08:44:21 AM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 100\nto: 100\nItsme\nNovember 01 Tuesday 2022 08:06:58 AM",
             "latest_change_price": "Latest Change:\nfrom: 68.45\nto: 68.45\nItsme\nSeptember 06 Tuesday 2022 11:12:17 AM"
         },
         "Grundfos Pump Flange 1 1\/4 ": {
@@ -1365,12 +1365,12 @@
         "Blower Wheel 9-15\/16\" X 2-1\/4 BI Steel 1\/2 #2-106CI CW \"A\" 1800R": {
             "part_number": "2-106CI CW",
             "unit_quantity": 1,
-            "current_quantity": 0,
+            "current_quantity": 100,
             "price": 68.45,
             "use_exchange_rate": false,
             "priority": 3,
             "notes": "Vendor: Jan-Air Illinois\nDescription: ",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 0\nto: 0\nItsme\nOctober 24 Monday 2022 08:44:21 AM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 100\nto: 100\nItsme\nNovember 01 Tuesday 2022 08:06:58 AM",
             "latest_change_priority": "Latest Change:\nfrom: 0\nto: 3\nItsme\nSeptember 05 Monday 2022 09:49:27 AM",
             "latest_change_price": "Latest Change:\nfrom: 68.45\nto: 68.45\nItsme\nSeptember 06 Tuesday 2022 11:12:17 AM"
         },
@@ -1380,7 +1380,7 @@
             "current_quantity": -38,
             "price": 11.55,
             "use_exchange_rate": false,
-            "priority": 0,
+            "priority": 2,
             "notes": "Vendor: Top Flights\nDescription: rfs@hmailton.net",
             "latest_change_name": "Item added\nItsme\nJuly 08 Friday 2022 08-22-50 AM",
             "latest_change_part_number": "Latest Change:\nfrom: lP515\nto: LP515\nItsme\nJuly 11 Monday 2022 01:14:09 PM",
@@ -1388,7 +1388,7 @@
             "latest_change_current_quantity": "Latest Change:\nfrom: 32\nto: -38\nItsme\nOctober 21 Friday 2022 10:41:41 AM",
             "latest_change_price": "Item added\nItsme\nJuly 08 Friday 2022 08-22-50 AM",
             "latest_change_use_exchange_price": "Item added\nItsme\nJuly 08 Friday 2022 08-22-50 AM",
-            "latest_change_priority": "Item added\nItsme\nJuly 08 Friday 2022 08-22-50 AM",
+            "latest_change_priority": "Latest Change:\nfrom: 0\nto: 2\nItsme\nNovember 01 Tuesday 2022 08:07:22 AM",
             "latest_change_notes": "Item added\nItsme\nJuly 08 Friday 2022 08-22-50 AM"
         },
         "1\/4 Nialon Plastic Shaft- Float assy": {
@@ -2587,12 +2587,12 @@
         "Blower Wheel 9-15\/16\" X 2-1\/4 BI Steel 1\/2 #2-106CI CW \"A\" 1800R": {
             "part_number": "2-106CI CW",
             "unit_quantity": 1,
-            "current_quantity": 0,
+            "current_quantity": 100,
             "price": 68.45,
             "use_exchange_rate": false,
             "priority": 3,
             "notes": "Vendor: Jan-Air Illinois\nDescription: ",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 0\nto: 0\nItsme\nOctober 24 Monday 2022 08:44:21 AM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 100\nto: 100\nItsme\nNovember 01 Tuesday 2022 08:06:58 AM",
             "latest_change_price": "Latest Change:\nfrom: 68.45\nto: 68.45\nItsme\nSeptember 06 Tuesday 2022 11:12:17 AM",
             "latest_change_priority": "Latest Change:\nfrom: 0\nto: 3\nItsme\nOctober 24 Monday 2022 08:34:48 AM"
         },
