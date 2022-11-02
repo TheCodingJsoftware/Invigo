@@ -433,19 +433,19 @@
         "rivet  3\/4x 5\/16 DIA ": {
             "part_number": "Rivet516",
             "unit_quantity": 8,
-            "current_quantity": 48,
+            "current_quantity": 348,
             "price": 1.0,
             "use_exchange_rate": false,
             "priority": 0,
-            "notes": "Vendor: A.Adams Supply\nDescription: ",
+            "notes": "Vendor: A.Adams Supply Mc master carr\nDescription: ",
             "latest_change_name": "Item added\nItsme\nJuly 13 Wednesday 2022 09-11-15 AM",
             "latest_change_part_number": "Item added\nItsme\nJuly 13 Wednesday 2022 09-11-15 AM",
             "latest_change_unit_quantity": "Item added\nItsme\nJuly 13 Wednesday 2022 09-11-15 AM",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 128\nto: 48\nItsme\nOctober 21 Friday 2022 10:41:41 AM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 348\nto: 348\nItsme\nNovember 02 Wednesday 2022 10:02:58 AM",
             "latest_change_price": "Item added\nItsme\nJuly 13 Wednesday 2022 09-11-15 AM",
             "latest_change_use_exchange_price": "Item added\nItsme\nJuly 13 Wednesday 2022 09-11-15 AM",
             "latest_change_priority": "Item added\nItsme\nJuly 13 Wednesday 2022 09-11-15 AM",
-            "latest_change_notes": "Latest Change:\nfrom: \"Vendor: A.Adams Suppl\nDescription: \"\nto: \"Vendor: A.Adams Supply\nDescription: \"\nItsme\nJuly 13 Wednesday 2022 09:11:29 AM"
+            "latest_change_notes": "Latest Change:\nfrom: \"Vendor: A.Adams Supply Mc master car\nDescription: \"\nto: \"Vendor: A.Adams Supply Mc master carr\nDescription: \"\nItsme\nNovember 02 Wednesday 2022 10:02:42 AM"
         },
         "Snap in Flush Pull, Large, Black Plastic, For Panel Thickness .040- .055": {
             "part_number": "91-19BK02",
@@ -721,18 +721,18 @@
         "1\"x 3\/8\"  Bolt ": {
             "part_number": "138",
             "unit_quantity": 18,
-            "current_quantity": 80,
+            "current_quantity": 880,
             "price": 0.3,
             "use_exchange_rate": false,
-            "priority": 0,
+            "priority": 3,
             "notes": "Vendor: A.Adams Supply\nDescription: ",
             "latest_change_name": "Item added\nItsme\nJuly 19 Tuesday 2022 03-52-41 PM",
             "latest_change_part_number": "Item added\nItsme\nJuly 19 Tuesday 2022 03-52-41 PM",
             "latest_change_unit_quantity": "Item added\nItsme\nJuly 19 Tuesday 2022 03-52-41 PM",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 260\nto: 80\nItsme\nOctober 21 Friday 2022 10:41:41 AM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 880\nto: 880\nItsme\nNovember 02 Wednesday 2022 10:01:29 AM",
             "latest_change_price": "Item added\nItsme\nJuly 19 Tuesday 2022 03-52-41 PM",
             "latest_change_use_exchange_price": "Item added\nItsme\nJuly 19 Tuesday 2022 03-52-41 PM",
-            "latest_change_priority": "Item added\nItsme\nJuly 19 Tuesday 2022 03-52-41 PM",
+            "latest_change_priority": "Latest Change:\nfrom: 0\nto: 3\nItsme\nNovember 02 Wednesday 2022 10:01:17 AM",
             "latest_change_notes": "Item added\nItsme\nJuly 19 Tuesday 2022 03-52-41 PM"
         },
         "WeatherStripping NDA- .5\" x 3\/16\" x 50'": {
@@ -1732,23 +1732,6 @@
             "latest_change_priority": "Item added\nItsme\nAugust 12 Friday 2022 11-27-45 AM",
             "latest_change_notes": "Item added\nItsme\nAugust 12 Friday 2022 11-27-45 AM"
         },
-        "rivet  3\/4x 5\/16 DIA ": {
-            "part_number": "Rivet516",
-            "unit_quantity": 8,
-            "current_quantity": 48,
-            "price": 1.0,
-            "use_exchange_rate": false,
-            "priority": 0,
-            "notes": "Vendor: A.Adams Supply\nDescription: ",
-            "latest_change_name": "Item added\nItsme\nJuly 13 Wednesday 2022 09-11-15 AM",
-            "latest_change_part_number": "Item added\nItsme\nJuly 13 Wednesday 2022 09-11-15 AM",
-            "latest_change_unit_quantity": "Item added\nItsme\nJuly 13 Wednesday 2022 09-11-15 AM",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 128\nto: 48\nItsme\nOctober 21 Friday 2022 10:41:41 AM",
-            "latest_change_price": "Item added\nItsme\nJuly 13 Wednesday 2022 09-11-15 AM",
-            "latest_change_use_exchange_price": "Item added\nItsme\nJuly 13 Wednesday 2022 09-11-15 AM",
-            "latest_change_priority": "Item added\nItsme\nJuly 13 Wednesday 2022 09-11-15 AM",
-            "latest_change_notes": "Latest Change:\nfrom: \"Vendor: A.Adams Suppl\nDescription: \"\nto: \"Vendor: A.Adams Supply\nDescription: \"\nItsme\nJuly 13 Wednesday 2022 09:11:29 AM"
-        },
         "Snap in Flush Pull, Large, Black Plastic, For Panel Thickness .040- .055": {
             "part_number": "91-19BK02",
             "unit_quantity": 3,
@@ -2000,23 +1983,6 @@
             "latest_change_name": "Latest Change:\nfrom: \"Grundfos 2-99FC 115V 9H\"\nto: \"Grundfos 26-99FC 115V 9H\"\nItsme\nJuly 20 Wednesday 2022 10:19:33 AM",
             "latest_change_part_number": "Latest Change:\nfrom: 26-9FC\nto: 26-99FC\nItsme\nJuly 20 Wednesday 2022 10:20:02 AM",
             "latest_change_price": "Latest Change:\nfrom: 169.0\nto: 169.7\nItsme\nAugust 25 Thursday 2022 01:22:27 PM"
-        },
-        "1\"x 3\/8\"  Bolt ": {
-            "part_number": "138",
-            "unit_quantity": 18,
-            "current_quantity": 80,
-            "price": 0.3,
-            "use_exchange_rate": false,
-            "priority": 0,
-            "notes": "Vendor: A.Adams Supply\nDescription: ",
-            "latest_change_name": "Item added\nItsme\nJuly 19 Tuesday 2022 03-52-41 PM",
-            "latest_change_part_number": "Item added\nItsme\nJuly 19 Tuesday 2022 03-52-41 PM",
-            "latest_change_unit_quantity": "Item added\nItsme\nJuly 19 Tuesday 2022 03-52-41 PM",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 260\nto: 80\nItsme\nOctober 21 Friday 2022 10:41:41 AM",
-            "latest_change_price": "Item added\nItsme\nJuly 19 Tuesday 2022 03-52-41 PM",
-            "latest_change_use_exchange_price": "Item added\nItsme\nJuly 19 Tuesday 2022 03-52-41 PM",
-            "latest_change_priority": "Item added\nItsme\nJuly 19 Tuesday 2022 03-52-41 PM",
-            "latest_change_notes": "Item added\nItsme\nJuly 19 Tuesday 2022 03-52-41 PM"
         },
         "WeatherStripping NDA- .5\" x 3\/16\" x 50'": {
             "part_number": "WSNDA",
@@ -2368,6 +2334,23 @@
             "latest_change_priority": "Item added\nItsme\nJuly 13 Wednesday 2022 09-10-18 AM",
             "latest_change_notes": "Item added\nItsme\nJuly 13 Wednesday 2022 09-10-18 AM"
         },
+        "rivet  3\/4x 5\/16 DIA ": {
+            "part_number": "Rivet516",
+            "unit_quantity": 8,
+            "current_quantity": 348,
+            "price": 1.0,
+            "use_exchange_rate": false,
+            "priority": 0,
+            "notes": "Vendor: A.Adams Supply\nDescription: ",
+            "latest_change_name": "Item added\nItsme\nJuly 13 Wednesday 2022 09-11-15 AM",
+            "latest_change_part_number": "Item added\nItsme\nJuly 13 Wednesday 2022 09-11-15 AM",
+            "latest_change_unit_quantity": "Item added\nItsme\nJuly 13 Wednesday 2022 09-11-15 AM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 348\nto: 348\nItsme\nNovember 02 Wednesday 2022 10:02:58 AM",
+            "latest_change_price": "Item added\nItsme\nJuly 13 Wednesday 2022 09-11-15 AM",
+            "latest_change_use_exchange_price": "Item added\nItsme\nJuly 13 Wednesday 2022 09-11-15 AM",
+            "latest_change_priority": "Item added\nItsme\nJuly 13 Wednesday 2022 09-11-15 AM",
+            "latest_change_notes": "Latest Change:\nfrom: \"Vendor: A.Adams Suppl\nDescription: \"\nto: \"Vendor: A.Adams Supply\nDescription: \"\nItsme\nJuly 13 Wednesday 2022 09:11:29 AM"
+        },
         "Spring Washer 3\/16 ": {
             "part_number": "514-010",
             "unit_quantity": 4,
@@ -2462,6 +2445,23 @@
             "latest_change_use_exchange_price": "Item added\nItsme\nJuly 19 Tuesday 2022 03-56-19 PM",
             "latest_change_priority": "Item added\nItsme\nJuly 19 Tuesday 2022 03-56-19 PM",
             "latest_change_notes": "Item added\nItsme\nJuly 19 Tuesday 2022 03-56-19 PM"
+        },
+        "1\"x 3\/8\"  Bolt ": {
+            "part_number": "138",
+            "unit_quantity": 18,
+            "current_quantity": 880,
+            "price": 0.3,
+            "use_exchange_rate": false,
+            "priority": 0,
+            "notes": "Vendor: A.Adams Supply\nDescription: ",
+            "latest_change_name": "Item added\nItsme\nJuly 19 Tuesday 2022 03-52-41 PM",
+            "latest_change_part_number": "Item added\nItsme\nJuly 19 Tuesday 2022 03-52-41 PM",
+            "latest_change_unit_quantity": "Item added\nItsme\nJuly 19 Tuesday 2022 03-52-41 PM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 880\nto: 880\nItsme\nNovember 02 Wednesday 2022 10:01:29 AM",
+            "latest_change_price": "Item added\nItsme\nJuly 19 Tuesday 2022 03-52-41 PM",
+            "latest_change_use_exchange_price": "Item added\nItsme\nJuly 19 Tuesday 2022 03-52-41 PM",
+            "latest_change_priority": "Item added\nItsme\nJuly 19 Tuesday 2022 03-52-41 PM",
+            "latest_change_notes": "Item added\nItsme\nJuly 19 Tuesday 2022 03-52-41 PM"
         },
         "NU SKT HD CP NC 8\/32 x 3 1\/2\"": {
             "part_number": "700-0832-0350",
@@ -2948,7 +2948,7 @@
         "rivet  3\/4x 5\/16 DIA ": {
             "part_number": "Rivet516",
             "unit_quantity": 8,
-            "current_quantity": 48,
+            "current_quantity": 348,
             "price": 1.0,
             "use_exchange_rate": false,
             "priority": 0,
@@ -2956,7 +2956,7 @@
             "latest_change_name": "Item added\nItsme\nJuly 13 Wednesday 2022 09-11-15 AM",
             "latest_change_part_number": "Item added\nItsme\nJuly 13 Wednesday 2022 09-11-15 AM",
             "latest_change_unit_quantity": "Item added\nItsme\nJuly 13 Wednesday 2022 09-11-15 AM",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 128\nto: 48\nItsme\nOctober 21 Friday 2022 10:41:41 AM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 348\nto: 348\nItsme\nNovember 02 Wednesday 2022 10:02:58 AM",
             "latest_change_price": "Item added\nItsme\nJuly 13 Wednesday 2022 09-11-15 AM",
             "latest_change_use_exchange_price": "Item added\nItsme\nJuly 13 Wednesday 2022 09-11-15 AM",
             "latest_change_priority": "Item added\nItsme\nJuly 13 Wednesday 2022 09-11-15 AM",
@@ -3214,7 +3214,7 @@
         "1\"x 3\/8\"  Bolt ": {
             "part_number": "138",
             "unit_quantity": 18,
-            "current_quantity": 80,
+            "current_quantity": 880,
             "price": 0.3,
             "use_exchange_rate": false,
             "priority": 0,
@@ -3222,7 +3222,7 @@
             "latest_change_name": "Item added\nItsme\nJuly 19 Tuesday 2022 03-52-41 PM",
             "latest_change_part_number": "Item added\nItsme\nJuly 19 Tuesday 2022 03-52-41 PM",
             "latest_change_unit_quantity": "Item added\nItsme\nJuly 19 Tuesday 2022 03-52-41 PM",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 260\nto: 80\nItsme\nOctober 21 Friday 2022 10:41:41 AM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 880\nto: 880\nItsme\nNovember 02 Wednesday 2022 10:01:29 AM",
             "latest_change_price": "Item added\nItsme\nJuly 19 Tuesday 2022 03-52-41 PM",
             "latest_change_use_exchange_price": "Item added\nItsme\nJuly 19 Tuesday 2022 03-52-41 PM",
             "latest_change_priority": "Item added\nItsme\nJuly 19 Tuesday 2022 03-52-41 PM",
