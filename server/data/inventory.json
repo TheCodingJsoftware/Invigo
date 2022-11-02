@@ -1460,7 +1460,7 @@
             "current_quantity": 20,
             "price": 5.25,
             "use_exchange_rate": false,
-            "priority": 0,
+            "priority": 2,
             "notes": "Vendor: StanPro \nDescription: ",
             "latest_change_name": "Item added\nItsme\nOctober 27 Thursday 2022 02-44-24 PM",
             "latest_change_part_number": "Item added\nItsme\nOctober 27 Thursday 2022 02-44-24 PM",
@@ -1468,7 +1468,7 @@
             "latest_change_current_quantity": "Item added\nItsme\nOctober 27 Thursday 2022 02-44-24 PM",
             "latest_change_price": "Item added\nItsme\nOctober 27 Thursday 2022 02-44-24 PM",
             "latest_change_use_exchange_price": "Item added\nItsme\nOctober 27 Thursday 2022 02-44-24 PM",
-            "latest_change_priority": "Item added\nItsme\nOctober 27 Thursday 2022 02-44-24 PM",
+            "latest_change_priority": "Latest Change:\nfrom: 0\nto: 2\nItsme\nNovember 02 Wednesday 2022 10:40:06 AM",
             "latest_change_notes": "Item added\nItsme\nOctober 27 Thursday 2022 02-44-24 PM"
         },
         "Sticker 310 Polar G2 & G3 Caution Pinch Hazard 4.5\"x2.75\"": {
