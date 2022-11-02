@@ -5285,6 +5285,23 @@
             "latest_change_priority": "Item added\nItsme\nAugust 04 Thursday 2022 10-19-53 AM",
             "latest_change_notes": "Item added\nItsme\nAugust 04 Thursday 2022 10-19-53 AM"
         },
+        "3\" Flex Hose": {
+            "part_number": "3FH",
+            "unit_quantity": 1,
+            "current_quantity": 4,
+            "price": 3.26,
+            "use_exchange_rate": false,
+            "priority": 0,
+            "notes": "Vendor: Duravent Inc. \nDescription: ",
+            "latest_change_name": "Item added\nItsme\nSeptember 06 Tuesday 2022 08-52-05 AM",
+            "latest_change_part_number": "Item added\nItsme\nSeptember 06 Tuesday 2022 08-52-05 AM",
+            "latest_change_unit_quantity": "Item added\nItsme\nSeptember 06 Tuesday 2022 08-52-05 AM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 4\nto: 4\nItsme\nNovember 02 Wednesday 2022 12:55:32 PM",
+            "latest_change_price": "Item added\nItsme\nSeptember 06 Tuesday 2022 08-52-05 AM",
+            "latest_change_use_exchange_price": "Item added\nItsme\nSeptember 06 Tuesday 2022 08-52-05 AM",
+            "latest_change_priority": "Item added\nItsme\nSeptember 06 Tuesday 2022 08-52-05 AM",
+            "latest_change_notes": "Item added\nItsme\nSeptember 06 Tuesday 2022 08-52-05 AM"
+        },
         "6\" Chimney T 6Tl12-PM": {
             "part_number": "208800",
             "unit_quantity": 1,
@@ -5370,23 +5387,6 @@
             "latest_change_priority": "Item added\nItsme\nAugust 03 Wednesday 2022 11-00-24 AM",
             "latest_change_notes": "Item added\nItsme\nAugust 03 Wednesday 2022 11-00-24 AM"
         },
-        "Digital Johnson Controle": {
-            "part_number": "A421ABC-02",
-            "unit_quantity": 1,
-            "current_quantity": 40,
-            "price": 70.03,
-            "use_exchange_rate": false,
-            "priority": 0,
-            "notes": "Vendor: Johnson Controle\nDescription: ",
-            "latest_change_name": "Item added\nItsme\nAugust 04 Thursday 2022 09-19-26 AM",
-            "latest_change_part_number": "Item added\nItsme\nAugust 04 Thursday 2022 09-19-26 AM",
-            "latest_change_unit_quantity": "Item added\nItsme\nAugust 04 Thursday 2022 09-19-26 AM",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 40\nto: 40\nItsme\nOctober 13 Thursday 2022 05:05:54 PM",
-            "latest_change_price": "Item added\nItsme\nAugust 04 Thursday 2022 09-19-26 AM",
-            "latest_change_use_exchange_price": "Item added\nItsme\nAugust 04 Thursday 2022 09-19-26 AM",
-            "latest_change_priority": "Item added\nItsme\nAugust 04 Thursday 2022 09-19-26 AM",
-            "latest_change_notes": "Item added\nItsme\nAugust 04 Thursday 2022 09-19-26 AM"
-        },
         "Paddle Latch 3.625 x 4.75": {
             "part_number": "PH-9015-L-ZN",
             "unit_quantity": 2,
@@ -5403,6 +5403,23 @@
             "latest_change_use_exchange_price": "Item added\nItsme\nAugust 04 Thursday 2022 10-09-19 AM",
             "latest_change_priority": "Item added\nItsme\nAugust 04 Thursday 2022 10-09-19 AM",
             "latest_change_notes": "Item added\nItsme\nAugust 04 Thursday 2022 10-09-19 AM"
+        },
+        "Digital Johnson Controle": {
+            "part_number": "A421ABC-02",
+            "unit_quantity": 1,
+            "current_quantity": 40,
+            "price": 70.03,
+            "use_exchange_rate": false,
+            "priority": 0,
+            "notes": "Vendor: Johnson Controle\nDescription: ",
+            "latest_change_name": "Item added\nItsme\nAugust 04 Thursday 2022 09-19-26 AM",
+            "latest_change_part_number": "Item added\nItsme\nAugust 04 Thursday 2022 09-19-26 AM",
+            "latest_change_unit_quantity": "Item added\nItsme\nAugust 04 Thursday 2022 09-19-26 AM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 40\nto: 40\nItsme\nOctober 13 Thursday 2022 05:05:54 PM",
+            "latest_change_price": "Item added\nItsme\nAugust 04 Thursday 2022 09-19-26 AM",
+            "latest_change_use_exchange_price": "Item added\nItsme\nAugust 04 Thursday 2022 09-19-26 AM",
+            "latest_change_priority": "Item added\nItsme\nAugust 04 Thursday 2022 09-19-26 AM",
+            "latest_change_notes": "Item added\nItsme\nAugust 04 Thursday 2022 09-19-26 AM"
         },
         "1\" 90 Degree  Elbow ": {
             "part_number": "100-90-EB",
@@ -5471,23 +5488,6 @@
             "latest_change_use_exchange_price": "Item added\nItsme\nAugust 29 Monday 2022 08-28-05 AM",
             "latest_change_priority": "Item added\nItsme\nAugust 29 Monday 2022 08-28-05 AM",
             "latest_change_notes": "Item added\nItsme\nAugust 29 Monday 2022 08-28-05 AM"
-        },
-        "3\" Flex Hose": {
-            "part_number": "3FH",
-            "unit_quantity": 1,
-            "current_quantity": 4,
-            "price": 3.26,
-            "use_exchange_rate": false,
-            "priority": 0,
-            "notes": "Vendor: Duravent Inc. \nDescription: ",
-            "latest_change_name": "Item added\nItsme\nSeptember 06 Tuesday 2022 08-52-05 AM",
-            "latest_change_part_number": "Item added\nItsme\nSeptember 06 Tuesday 2022 08-52-05 AM",
-            "latest_change_unit_quantity": "Item added\nItsme\nSeptember 06 Tuesday 2022 08-52-05 AM",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 4\nto: 4\nItsme\nNovember 02 Wednesday 2022 12:55:32 PM",
-            "latest_change_price": "Item added\nItsme\nSeptember 06 Tuesday 2022 08-52-05 AM",
-            "latest_change_use_exchange_price": "Item added\nItsme\nSeptember 06 Tuesday 2022 08-52-05 AM",
-            "latest_change_priority": "Item added\nItsme\nSeptember 06 Tuesday 2022 08-52-05 AM",
-            "latest_change_notes": "Item added\nItsme\nSeptember 06 Tuesday 2022 08-52-05 AM"
         },
         "1 Gallon Treatment ": {
             "part_number": "treatment",
