@@ -3868,7 +3868,7 @@
             "unit_quantity": 2,
             "current_quantity": 21,
             "price": 16.0,
-            "use_exchange_rate": false,
+            "use_exchange_rate": true,
             "priority": 0,
             "notes": "Vendor: Sierra Pacific\nDescription: ",
             "latest_change_name": "Item added\nItsme\nAugust 04 Thursday 2022 10-09-07 AM",
@@ -3878,7 +3878,8 @@
             "latest_change_price": "Item added\nItsme\nAugust 04 Thursday 2022 10-09-07 AM",
             "latest_change_use_exchange_price": "Item added\nItsme\nAugust 04 Thursday 2022 10-09-07 AM",
             "latest_change_priority": "Item added\nItsme\nAugust 04 Thursday 2022 10-09-07 AM",
-            "latest_change_notes": "Item added\nItsme\nAugust 04 Thursday 2022 10-09-07 AM"
+            "latest_change_notes": "Item added\nItsme\nAugust 04 Thursday 2022 10-09-07 AM",
+            "latest_change_use_exchange_rate": "Latest Change:\nfrom: CAD\nto: USD\nItsme\nNovember 02 Wednesday 2022 05:05:46 PM"
         },
         "1\" 90 Degree  Elbow ": {
             "part_number": "100-90-EB",
