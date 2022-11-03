@@ -2218,17 +2218,6 @@
             "latest_change_priority": "Item added\nItsme\nJuly 19 Tuesday 2022 04-11-52 PM",
             "latest_change_notes": "Item added\nItsme\nJuly 19 Tuesday 2022 04-11-52 PM"
         },
-        "535 Blacl Silicone 300ML ": {
-            "part_number": "32390",
-            "unit_quantity": 1,
-            "current_quantity": 166,
-            "price": 9.7,
-            "use_exchange_rate": false,
-            "priority": 3,
-            "notes": "Vendor: Rantec\nRachel@rantec.ca\nDescription: ",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 176\nto: 166\nItsme\nOctober 21 Friday 2022 10:41:41 AM",
-            "latest_change_price": "Latest Change:\nfrom: 9.7\nto: 9.7\nItsme\nJuly 07 Thursday 2022 03:59:16 PM"
-        },
         "Flat Head Solid S.S Rivet 18-8 1\/4\" Diameter for .25\" material thickness. ": {
             "part_number": "97386A341",
             "unit_quantity": 4,
@@ -2316,6 +2305,19 @@
             "latest_change_use_exchange_price": "Item added\nItsme\nJuly 13 Wednesday 2022 09-10-18 AM",
             "latest_change_priority": "Item added\nItsme\nJuly 13 Wednesday 2022 09-10-18 AM",
             "latest_change_notes": "Item added\nItsme\nJuly 13 Wednesday 2022 09-10-18 AM"
+        },
+        "300 ML General Purpose Black Silicone 300ML ": {
+            "part_number": "30203",
+            "unit_quantity": 1,
+            "current_quantity": 322,
+            "price": 9.7,
+            "use_exchange_rate": false,
+            "priority": 3,
+            "notes": "Vendor: Rantec\nRachel@rantec.ca\nDescription: ",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 322\nto: 322\nItsme\nNovember 03 Thursday 2022 10:04:04 AM",
+            "latest_change_price": "Latest Change:\nfrom: 9.7\nto: 9.7\nItsme\nJuly 07 Thursday 2022 03:59:16 PM",
+            "latest_change_part_number": "Latest Change:\nfrom: 3020\nto: 30203\nItsme\nNovember 03 Thursday 2022 10:02:36 AM",
+            "latest_change_name": "Latest Change:\nfrom: \"300 ML General Purpos Black Silicone 300ML \"\nto: \"300 ML General Purpose Black Silicone 300ML \"\nItsme\nNovember 03 Thursday 2022 10:03:03 AM"
         },
         "rivet  3\/4x 5\/16 DIA ": {
             "part_number": "Rivet516",
