@@ -1704,7 +1704,7 @@
             "current_quantity": 48,
             "price": 162.36,
             "use_exchange_rate": false,
-            "priority": 0,
+            "priority": 2,
             "notes": "Vendor: Johnson controle\nDescription: ",
             "latest_change_name": "Item added\nItsme\nAugust 12 Friday 2022 11-27-45 AM",
             "latest_change_part_number": "Item added\nItsme\nAugust 12 Friday 2022 11-27-45 AM",
@@ -1712,7 +1712,7 @@
             "latest_change_current_quantity": "Latest Change:\nfrom: 68\nto: 48\nItsme\nOctober 21 Friday 2022 10:41:41 AM",
             "latest_change_price": "Item added\nItsme\nAugust 12 Friday 2022 11-27-45 AM",
             "latest_change_use_exchange_price": "Item added\nItsme\nAugust 12 Friday 2022 11-27-45 AM",
-            "latest_change_priority": "Item added\nItsme\nAugust 12 Friday 2022 11-27-45 AM",
+            "latest_change_priority": "Latest Change:\nfrom: 1\nto: 2\nItsme\nNovember 03 Thursday 2022 11:01:43 AM",
             "latest_change_notes": "Item added\nItsme\nAugust 12 Friday 2022 11-27-45 AM"
         },
         "Snap in Flush Pull, Large, Black Plastic, For Panel Thickness .040- .055": {
