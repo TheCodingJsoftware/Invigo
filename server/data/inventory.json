@@ -4347,6 +4347,23 @@
             "latest_change_priority": "Latest Change:\nfrom: 0\nto: 3\nItsme\nOctober 21 Friday 2022 04:31:28 PM",
             "latest_change_notes": "Item added\nItsme\nJuly 28 Thursday 2022 03-29-44 PM",
             "latest_change_use_exchange_rate": "Latest Change:\nfrom: CAD\nto: USD\nItsme\nOctober 15 Saturday 2022 09:12:56 AM"
+        },
+        "Brass Insert ( milled in house)": {
+            "part_number": "BI",
+            "unit_quantity": 2,
+            "current_quantity": 400,
+            "price": 5.5,
+            "use_exchange_rate": false,
+            "priority": 0,
+            "notes": "Vendor: Shaft From ASA and milled in house, 40 per 10FT length\nDescription: ",
+            "latest_change_name": "Item added\nItsme\nNovember 08 Tuesday 2022 04-58-59 PM",
+            "latest_change_part_number": "Item added\nItsme\nNovember 08 Tuesday 2022 04-58-59 PM",
+            "latest_change_unit_quantity": "Item added\nItsme\nNovember 08 Tuesday 2022 04-58-59 PM",
+            "latest_change_current_quantity": "Item added\nItsme\nNovember 08 Tuesday 2022 04-58-59 PM",
+            "latest_change_price": "Item added\nItsme\nNovember 08 Tuesday 2022 04-58-59 PM",
+            "latest_change_use_exchange_price": "Item added\nItsme\nNovember 08 Tuesday 2022 04-58-59 PM",
+            "latest_change_priority": "Item added\nItsme\nNovember 08 Tuesday 2022 04-58-59 PM",
+            "latest_change_notes": "Item added\nItsme\nNovember 08 Tuesday 2022 04-58-59 PM"
         }
     },
     "Fittings": {
@@ -5443,6 +5460,23 @@
             "latest_change_priority": "Item added\nItsme\nOctober 14 Friday 2022 10-39-38 AM",
             "latest_change_notes": "Item added\nItsme\nOctober 14 Friday 2022 10-39-38 AM",
             "latest_change_use_exchange_rate": "Latest Change:\nfrom: CAD\nto: USD\nItsme\nOctober 15 Saturday 2022 09:12:10 AM"
+        },
+        "Brass Insert ( milled in house)3": {
+            "part_number": "BI",
+            "unit_quantity": 2,
+            "current_quantity": 400,
+            "price": 5.5,
+            "use_exchange_rate": false,
+            "priority": 0,
+            "notes": "Vendor: Shaft From ASA and milled in house, 40 per 10FT length\nDescription: ",
+            "latest_change_name": "Item added\nItsme\nNovember 08 Tuesday 2022 04-59-20 PM",
+            "latest_change_part_number": "Item added\nItsme\nNovember 08 Tuesday 2022 04-59-20 PM",
+            "latest_change_unit_quantity": "Item added\nItsme\nNovember 08 Tuesday 2022 04-59-20 PM",
+            "latest_change_current_quantity": "Item added\nItsme\nNovember 08 Tuesday 2022 04-59-20 PM",
+            "latest_change_price": "Item added\nItsme\nNovember 08 Tuesday 2022 04-59-20 PM",
+            "latest_change_use_exchange_price": "Item added\nItsme\nNovember 08 Tuesday 2022 04-59-20 PM",
+            "latest_change_priority": "Item added\nItsme\nNovember 08 Tuesday 2022 04-59-20 PM",
+            "latest_change_notes": "Item added\nItsme\nNovember 08 Tuesday 2022 04-59-20 PM"
         }
     },
     "BL 28 Shaker": {
@@ -5957,6 +5991,23 @@
             "latest_change_priority": "Latest Change:\nfrom: 0\nto: 3\nItsme\nOctober 21 Friday 2022 10:04:37 AM",
             "latest_change_notes": "Item added\nItsme\nOctober 14 Friday 2022 10-39-50 AM",
             "latest_change_use_exchange_rate": "Latest Change:\nfrom: CAD\nto: USD\nItsme\nOctober 19 Wednesday 2022 02:08:01 PM"
+        },
+        "Brass Insert ( milled in house)": {
+            "part_number": "BI",
+            "unit_quantity": 2,
+            "current_quantity": 400,
+            "price": 5.5,
+            "use_exchange_rate": false,
+            "priority": 0,
+            "notes": "Vendor: Shaft From ASA and milled in house, 40 per 10FT length\nDescription: ",
+            "latest_change_name": "Item added\nItsme\nNovember 08 Tuesday 2022 04-59-31 PM",
+            "latest_change_part_number": "Item added\nItsme\nNovember 08 Tuesday 2022 04-59-31 PM",
+            "latest_change_unit_quantity": "Item added\nItsme\nNovember 08 Tuesday 2022 04-59-31 PM",
+            "latest_change_current_quantity": "Item added\nItsme\nNovember 08 Tuesday 2022 04-59-31 PM",
+            "latest_change_price": "Item added\nItsme\nNovember 08 Tuesday 2022 04-59-31 PM",
+            "latest_change_use_exchange_price": "Item added\nItsme\nNovember 08 Tuesday 2022 04-59-31 PM",
+            "latest_change_priority": "Item added\nItsme\nNovember 08 Tuesday 2022 04-59-31 PM",
+            "latest_change_notes": "Item added\nItsme\nNovember 08 Tuesday 2022 04-59-31 PM"
         }
     },
     "BL 34 Shaker": {
@@ -6487,6 +6538,23 @@
             "latest_change_priority": "Item added\nItsme\nOctober 14 Friday 2022 10-40-02 AM",
             "latest_change_notes": "Item added\nItsme\nOctober 14 Friday 2022 10-40-02 AM",
             "latest_change_use_exchange_rate": "Latest Change:\nfrom: CAD\nto: USD\nItsme\nOctober 15 Saturday 2022 09:12:24 AM"
+        },
+        "Brass Insert ( milled in house)": {
+            "part_number": "BI",
+            "unit_quantity": 2,
+            "current_quantity": 400,
+            "price": 5.5,
+            "use_exchange_rate": false,
+            "priority": 0,
+            "notes": "Vendor: Shaft From ASA and milled in house, 40 per 10FT length\nDescription: ",
+            "latest_change_name": "Item added\nItsme\nNovember 08 Tuesday 2022 04-59-42 PM",
+            "latest_change_part_number": "Item added\nItsme\nNovember 08 Tuesday 2022 04-59-42 PM",
+            "latest_change_unit_quantity": "Item added\nItsme\nNovember 08 Tuesday 2022 04-59-42 PM",
+            "latest_change_current_quantity": "Item added\nItsme\nNovember 08 Tuesday 2022 04-59-42 PM",
+            "latest_change_price": "Item added\nItsme\nNovember 08 Tuesday 2022 04-59-42 PM",
+            "latest_change_use_exchange_price": "Item added\nItsme\nNovember 08 Tuesday 2022 04-59-42 PM",
+            "latest_change_priority": "Item added\nItsme\nNovember 08 Tuesday 2022 04-59-42 PM",
+            "latest_change_notes": "Item added\nItsme\nNovember 08 Tuesday 2022 04-59-42 PM"
         }
     },
     "BL 34 Wood": {
@@ -7017,6 +7085,23 @@
             "latest_change_use_exchange_price": "Item added\nItsme\nNovember 03 Thursday 2022 09-41-10 AM",
             "latest_change_priority": "Item added\nItsme\nNovember 03 Thursday 2022 09-41-10 AM",
             "latest_change_notes": "Item added\nItsme\nNovember 03 Thursday 2022 09-41-10 AM"
+        },
+        "Brass Insert ( milled in house)": {
+            "part_number": "BI",
+            "unit_quantity": 2,
+            "current_quantity": 400,
+            "price": 5.5,
+            "use_exchange_rate": false,
+            "priority": 0,
+            "notes": "Vendor: Shaft From ASA and milled in house, 40 per 10FT length\nDescription: ",
+            "latest_change_name": "Item added\nItsme\nNovember 08 Tuesday 2022 04-59-54 PM",
+            "latest_change_part_number": "Item added\nItsme\nNovember 08 Tuesday 2022 04-59-54 PM",
+            "latest_change_unit_quantity": "Item added\nItsme\nNovember 08 Tuesday 2022 04-59-54 PM",
+            "latest_change_current_quantity": "Item added\nItsme\nNovember 08 Tuesday 2022 04-59-54 PM",
+            "latest_change_price": "Item added\nItsme\nNovember 08 Tuesday 2022 04-59-54 PM",
+            "latest_change_use_exchange_price": "Item added\nItsme\nNovember 08 Tuesday 2022 04-59-54 PM",
+            "latest_change_priority": "Item added\nItsme\nNovember 08 Tuesday 2022 04-59-54 PM",
+            "latest_change_notes": "Item added\nItsme\nNovember 08 Tuesday 2022 04-59-54 PM"
         }
     },
     "BL 40 Wood": {
@@ -7513,6 +7598,23 @@
             "latest_change_priority": "Item added\nItsme\nOctober 14 Friday 2022 10-40-14 AM",
             "latest_change_notes": "Item added\nItsme\nOctober 14 Friday 2022 10-40-14 AM",
             "latest_change_use_exchange_rate": "Latest Change:\nfrom: CAD\nto: USD\nItsme\nOctober 15 Saturday 2022 09:12:41 AM"
+        },
+        "Brass Insert ( milled in house)": {
+            "part_number": "BI",
+            "unit_quantity": 2,
+            "current_quantity": 400,
+            "price": 5.5,
+            "use_exchange_rate": false,
+            "priority": 0,
+            "notes": "Vendor: Shaft From ASA and milled in house, 40 per 10FT length\nDescription: ",
+            "latest_change_name": "Item added\nItsme\nNovember 08 Tuesday 2022 05-00-04 PM",
+            "latest_change_part_number": "Item added\nItsme\nNovember 08 Tuesday 2022 05-00-04 PM",
+            "latest_change_unit_quantity": "Item added\nItsme\nNovember 08 Tuesday 2022 05-00-04 PM",
+            "latest_change_current_quantity": "Item added\nItsme\nNovember 08 Tuesday 2022 05-00-05 PM",
+            "latest_change_price": "Item added\nItsme\nNovember 08 Tuesday 2022 05-00-05 PM",
+            "latest_change_use_exchange_price": "Item added\nItsme\nNovember 08 Tuesday 2022 05-00-05 PM",
+            "latest_change_priority": "Item added\nItsme\nNovember 08 Tuesday 2022 05-00-05 PM",
+            "latest_change_notes": "Item added\nItsme\nNovember 08 Tuesday 2022 05-00-05 PM"
         }
     },
     "Round Bar And Tube": {
