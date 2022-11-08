@@ -7617,6 +7617,23 @@
             "latest_change_use_exchange_price": "Item added\nItsme\nOctober 28 Friday 2022 10-45-34 AM",
             "latest_change_priority": "Item added\nItsme\nOctober 28 Friday 2022 10-45-34 AM",
             "latest_change_notes": "Item added\nItsme\nOctober 28 Friday 2022 10-45-34 AM"
+        },
+        "1\/4 X 1 HR Flat 44W 20\" Long": {
+            "part_number": "47140",
+            "unit_quantity": 1,
+            "current_quantity": 3,
+            "price": 17.85,
+            "use_exchange_rate": false,
+            "priority": 0,
+            "notes": "Vendor: Russel Metals\nDescription: Is measured is full leangth ",
+            "latest_change_name": "Item added\nItsme\nNovember 08 Tuesday 2022 10-29-16 AM",
+            "latest_change_part_number": "Item added\nItsme\nNovember 08 Tuesday 2022 10-29-16 AM",
+            "latest_change_unit_quantity": "Item added\nItsme\nNovember 08 Tuesday 2022 10-29-16 AM",
+            "latest_change_current_quantity": "Item added\nItsme\nNovember 08 Tuesday 2022 10-29-16 AM",
+            "latest_change_price": "Item added\nItsme\nNovember 08 Tuesday 2022 10-29-16 AM",
+            "latest_change_use_exchange_price": "Item added\nItsme\nNovember 08 Tuesday 2022 10-29-16 AM",
+            "latest_change_priority": "Item added\nItsme\nNovember 08 Tuesday 2022 10-29-16 AM",
+            "latest_change_notes": "Item added\nItsme\nNovember 08 Tuesday 2022 10-29-16 AM"
         }
     }
 }
