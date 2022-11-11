@@ -285,7 +285,6 @@ class HumbleDoubleSpinBox(QDoubleSpinBox):
         self.setMaximum(99999999)
         self.setMinimum(-99999999)
         self.setAccelerated(True)
-        self.setPrefix("$")
 
     def focusInEvent(self, event):
         """

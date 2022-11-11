@@ -1,3 +1,8 @@
+<h1>v1.4.5</h1>
+&bull; Items less than or equal to 10 are shown in a "Low in Quantity" group.<br>
+&bull; Unit quantities are now as decimal numbers.<br>
+&bull; Notes sync with all parts with the same part numbers.<br>
+
 <h1>v1.4.4</h1>
 &bull; Changed some stock costs to show all categories.<br>
 

@@ -4,8 +4,8 @@ __copyright__ = "Copyright 2022, TheCodingJ's"
 __credits__: "list[str]" = ["Jared Gross"]
 __license__ = "MIT"
 __name__ = "Inventory Manager"
-__version__ = "v1.4.4"
-__updated__ = "2022-10-10 14:31:49"
+__version__ = "v1.4.5"
+__updated__ = "2022-11-11 08:27:41"
 __maintainer__ = "Jared Gross"
 __email__ = "jared@pinelandfarms.ca"
 __status__ = "Production"
@@ -628,6 +628,7 @@ class MainWindow(QMainWindow):
         self.pushButton_create_new.setEnabled(True)
         self.radioButton_category.setEnabled(True)
         self.radioButton_single.setEnabled(True)
+
         try:
             self.clear_layout(self.tabs[tab_index])
         except IndexError:
@@ -673,6 +674,18 @@ class MainWindow(QMainWindow):
                 "You need to", "create", "a category", 120, self.create_new_category
             )
         # self.load_item(tab, tab_index, category_data)
+
+        if inventory.check_if_value_exists_less_then(
+            category=self.category, value_to_check=10
+        ):
+            group_box = QGroupBox()
+            group_box.setObjectName("group")
+            group_box.setTitle("Low in Quantity")
+            group_layout = QVBoxLayout()
+            group_layout.setAlignment(Qt.AlignTop)
+            self.group_layouts["Low in Quantity"] = group_layout
+            group_box.setLayout(group_layout)
+            tab.addWidget(group_box)
         self._row_index: int = 0
         try:
             self._iter = iter(range(len(list(category_data.keys()))))
@@ -727,6 +740,11 @@ class MainWindow(QMainWindow):
                 item_name=item, key="part_number"
             )
             group = self.get_value_from_category(item_name=item, key="group")
+            current_quantity: int = int(
+                self.get_value_from_category(item_name=item, key="current_quantity")
+            )
+            if current_quantity <= 10:
+                group = "Low in Quantity"
 
             if group:
                 try:
@@ -753,10 +771,7 @@ class MainWindow(QMainWindow):
                 return
 
             self.item_layouts.append(layout)
-            current_quantity: int = int(
-                self.get_value_from_category(item_name=item, key="current_quantity")
-            )
-            unit_quantity: int = int(
+            unit_quantity: float = float(
                 self.get_value_from_category(item_name=item, key="unit_quantity")
             )
             priority: int = self.get_value_from_category(item_name=item, key="priority")
@@ -838,7 +853,8 @@ class MainWindow(QMainWindow):
             col_index += 1
 
             # UNIT QUANTITY
-            spin_unit_quantity = HumbleSpinBox(self)
+            spin_unit_quantity = HumbleDoubleSpinBox(self)
+            # spin_unit_quantity.setButtonSymbols(QAbstractSpinBox.NoButtons)
             spin_unit_quantity.setToolTip(latest_change_unit_quantity)
             spin_unit_quantity.setValue(unit_quantity)
             spin_unit_quantity.valueChanged.connect(
@@ -886,6 +902,7 @@ class MainWindow(QMainWindow):
             spin_price = HumbleDoubleSpinBox(self)
             spin_price.setToolTip(latest_change_price)
             spin_price.setValue(price)
+            spin_price.setPrefix("$")
             spin_price.setSuffix(" USD" if use_exchange_rate else " CAD")
             spin_price.valueChanged.connect(
                 partial(self.price_change, self.category, item_name, "price", spin_price)
@@ -1597,6 +1614,8 @@ class MainWindow(QMainWindow):
           value_name (str): str = The name of the value that is being changed.
           note (QPlainTextEdit): QPlainTextEdit
         """
+        data = inventory.get_data()
+        part_number: str = data[self.category][item_name.currentText()]["part_number"]
         value_before = inventory.get_value(item_name=category)[item_name.currentText()][
             "notes"
         ]
@@ -1612,6 +1631,18 @@ class MainWindow(QMainWindow):
         self.value_change(
             category, item_name.currentText(), value_name, note.toPlainText()
         )
+        for category in list(data.keys()):
+            if category == self.category:
+                continue
+            for item in list(data[category].keys()):
+                if part_number == data[category][item]["part_number"]:
+                    previous_notes: str = data[category][item]["notes"]
+                    data[category][item]["notes"] = note.toPlainText()
+                    data[category][item][
+                        "latest_change_notes"
+                    ] = f"Latest Change:\nfrom: {previous_notes}\nto: {note.toPlainText()}\n{self.username}\n{datetime.now().strftime('%B %d %A %Y %I:%M:%S %p')}"
+        inventory.save_data(data)
+        inventory.load_data()
 
     def add_item(self) -> None:
         """
@@ -1640,7 +1671,7 @@ class MainWindow(QMainWindow):
                         return
 
                 priority: int = add_item_dialog.get_priority()
-                unit_quantity: int = add_item_dialog.get_unit_quantity()
+                unit_quantity: float = add_item_dialog.get_unit_quantity()
                 current_quantity: int = add_item_dialog.get_current_quantity()
                 price: float = add_item_dialog.get_item_price()
                 notes: str = add_item_dialog.get_notes()

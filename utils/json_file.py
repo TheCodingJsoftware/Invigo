@@ -325,6 +325,24 @@ class JsonFile:
                 total_cost += price * unit_quantity * exchange_rate
         return total_cost
 
+    def check_if_value_exists_less_then(self, category: str, value_to_check: int) -> bool:
+        """
+        It checks if there are any items in the category that have a quantity less than the
+        value_to_check.
+
+        Args:
+          category (str): str = The category of the item you want to check.
+          value_to_check (int): int = The value you want to check if it exists in the database.
+
+        Returns:
+          A boolean value.
+        """
+        with contextlib.suppress(KeyError):
+            for item in self.data[category]:
+                if self.data[category][item]["current_quantity"] <= value_to_check:
+                    return True
+        return False
+
     def sort(self, category: str, item_name: str, ascending: bool) -> None:
         """
         It sorts the data in the data.json file by the category and item_name specified by the user
@@ -350,5 +368,6 @@ class JsonFile:
                     reverse=ascending,
                 )
             )
+
         self.data[category] = sorted_data
         self.__save_data()
