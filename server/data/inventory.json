@@ -1,22 +1,5 @@
 {
     "Polar G2": {
-        "1\/8 Hight Temp Rubber- Orange": {
-            "part_number": "1460N44",
-            "unit_quantity": 4,
-            "current_quantity": 284,
-            "price": 2.0,
-            "use_exchange_rate": false,
-            "priority": 0,
-            "notes": "Vendor: Mc MasterCarr\nDescription: ",
-            "latest_change_name": "Item added\nItsme\nJuly 12 Tuesday 2022 09-30-57 AM",
-            "latest_change_part_number": "Item added\nItsme\nJuly 12 Tuesday 2022 09-30-57 AM",
-            "latest_change_unit_quantity": "Item added\nItsme\nJuly 12 Tuesday 2022 09-30-57 AM",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 284\nto: 284\nItsme\nNovember 11 Friday 2022 09:52:13 AM",
-            "latest_change_price": "Item added\nItsme\nJuly 12 Tuesday 2022 09-30-57 AM",
-            "latest_change_use_exchange_price": "Item added\nItsme\nJuly 12 Tuesday 2022 09-30-57 AM",
-            "latest_change_priority": "Item added\nItsme\nJuly 12 Tuesday 2022 09-30-57 AM",
-            "latest_change_notes": "Item added\nItsme\nJuly 12 Tuesday 2022 09-30-57 AM"
-        },
         "Vapor Thermometer": {
             "part_number": "20UB8-220FC-4111-03FT                        ",
             "unit_quantity": 1,
@@ -33,67 +16,6 @@
             "latest_change_use_exchange_price": "Item added\nItsme\nAugust 12 Friday 2022 09-51-42 AM",
             "latest_change_priority": "Item added\nItsme\nAugust 12 Friday 2022 09-51-42 AM",
             "latest_change_notes": "Item added\nItsme\nAugust 12 Friday 2022 09-51-42 AM"
-        },
-        "Thumb Screw 5\/16 DIAx 3\/4 Long x1\/2 FLG": {
-            "part_number": "TS535",
-            "unit_quantity": 10,
-            "current_quantity": 546,
-            "price": 0.3,
-            "use_exchange_rate": false,
-            "priority": 0,
-            "notes": "Vendor: A.Adams Supply\nDescription: ",
-            "latest_change_name": "Item added\nItsme\nJuly 19 Tuesday 2022 05-07-40 PM",
-            "latest_change_part_number": "Item added\nItsme\nJuly 19 Tuesday 2022 05-07-40 PM",
-            "latest_change_unit_quantity": "Item added\nItsme\nJuly 19 Tuesday 2022 05-07-40 PM",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 546\nto: 546\nItsme\nNovember 09 Wednesday 2022 09:00:14 AM",
-            "latest_change_price": "Item added\nItsme\nJuly 19 Tuesday 2022 05-07-40 PM",
-            "latest_change_use_exchange_price": "Item added\nItsme\nJuly 19 Tuesday 2022 05-07-40 PM",
-            "latest_change_priority": "Item added\nItsme\nJuly 19 Tuesday 2022 05-07-40 PM",
-            "latest_change_notes": "Item added\nItsme\nJuly 19 Tuesday 2022 05-07-40 PM"
-        },
-        "Grundfos Pump Flange 1 1\/4 ": {
-            "part_number": "PF114",
-            "unit_quantity": 1,
-            "current_quantity": 43,
-            "price": 10.7,
-            "use_exchange_rate": false,
-            "priority": 2,
-            "notes": "Vendor: Grundfos Canada\nDescription: ",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 43\nto: 43\nItsme\nNovember 08 Tuesday 2022 03:51:51 PM"
-        },
-        "SCR MACH PH PHIL ZP 10-32 x 1\/2 ": {
-            "part_number": "397-1032-0050",
-            "unit_quantity": 16,
-            "current_quantity": 504,
-            "price": 0.1,
-            "use_exchange_rate": false,
-            "priority": 0,
-            "notes": "Vendor: A.Adams Supply\nDescription: ",
-            "latest_change_name": "Item added\nItsme\nAugust 15 Monday 2022 08-58-38 AM",
-            "latest_change_part_number": "Item added\nItsme\nAugust 15 Monday 2022 08-58-38 AM",
-            "latest_change_unit_quantity": "Item added\nItsme\nAugust 15 Monday 2022 08-58-38 AM",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 504\nto: 504\nItsme\nNovember 09 Wednesday 2022 08:58:49 AM",
-            "latest_change_price": "Item added\nItsme\nAugust 15 Monday 2022 08-58-38 AM",
-            "latest_change_use_exchange_price": "Item added\nItsme\nAugust 15 Monday 2022 08-58-38 AM",
-            "latest_change_priority": "Item added\nItsme\nAugust 15 Monday 2022 08-58-38 AM",
-            "latest_change_notes": "Item added\nItsme\nAugust 15 Monday 2022 08-58-38 AM"
-        },
-        "Spring Pin 2\" x .25": {
-            "part_number": "sp225",
-            "unit_quantity": 3,
-            "current_quantity": 206,
-            "price": 1.5,
-            "use_exchange_rate": false,
-            "priority": 0,
-            "notes": "Vendor: A.Adams Supply\nDescription: ",
-            "latest_change_name": "Item added\nItsme\nNovember 08 Tuesday 2022 08-21-16 AM",
-            "latest_change_part_number": "Item added\nItsme\nNovember 08 Tuesday 2022 08-21-16 AM",
-            "latest_change_unit_quantity": "Item added\nItsme\nNovember 08 Tuesday 2022 08-21-16 AM",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 206\nto: 206\nItsme\nNovember 09 Wednesday 2022 08:59:04 AM",
-            "latest_change_price": "Item added\nItsme\nNovember 08 Tuesday 2022 08-21-16 AM",
-            "latest_change_use_exchange_price": "Item added\nItsme\nNovember 08 Tuesday 2022 08-21-16 AM",
-            "latest_change_priority": "Item added\nItsme\nNovember 08 Tuesday 2022 08-21-16 AM",
-            "latest_change_notes": "Item added\nItsme\nNovember 08 Tuesday 2022 08-21-16 AM"
         },
         "3\" Nipple x 3\/4 Black Steel ": {
             "part_number": "483-030",
@@ -133,23 +55,6 @@
             "latest_change_use_exchange_price": "Item added\nItsme\nOctober 27 Thursday 2022 04-30-17 PM",
             "latest_change_priority": "Item added\nItsme\nOctober 27 Thursday 2022 04-30-17 PM",
             "latest_change_notes": "Item added\nItsme\nOctober 27 Thursday 2022 04-30-17 PM"
-        },
-        "Hexagon Head Machined Screw 5\/16   10-32x1\/2 ": {
-            "part_number": "776",
-            "unit_quantity": 4,
-            "current_quantity": 520,
-            "price": 0.2,
-            "use_exchange_rate": false,
-            "priority": 0,
-            "notes": "Vendor:A.Adams Supply\nDescription: ",
-            "latest_change_name": "Item added\nItsme\nJuly 19 Tuesday 2022 07-10-49 PM",
-            "latest_change_part_number": "Item added\nItsme\nJuly 19 Tuesday 2022 07-10-49 PM",
-            "latest_change_unit_quantity": "Item added\nItsme\nJuly 19 Tuesday 2022 07-10-49 PM",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 520\nto: 520\nItsme\nNovember 09 Wednesday 2022 08:59:20 AM",
-            "latest_change_price": "Item added\nItsme\nJuly 19 Tuesday 2022 07-10-49 PM",
-            "latest_change_use_exchange_price": "Item added\nItsme\nJuly 19 Tuesday 2022 07-10-49 PM",
-            "latest_change_priority": "Item added\nItsme\nJuly 19 Tuesday 2022 07-10-49 PM",
-            "latest_change_notes": "Latest Change:\nfrom: \"Vendor:A.Adams Suppl\nDescription: \"\nto: \"Vendor:A.Adams Supply\nDescription: \"\nItsme\nJuly 21 Thursday 2022 09:25:48 AM"
         },
         "Front  MNT Snap-In Scr Terminal ": {
             "part_number": "38100",
@@ -386,6 +291,16 @@
             "latest_change_use_exchange_price": "Item added\nItsme\nOctober 11 Tuesday 2022 01-58-02 PM",
             "latest_change_priority": "Item added\nItsme\nOctober 11 Tuesday 2022 01-58-02 PM",
             "latest_change_notes": "Item added\nItsme\nOctober 11 Tuesday 2022 01-58-02 PM"
+        },
+        "Grundfos Pump Flange 1 1\/4 ": {
+            "part_number": "PF114",
+            "unit_quantity": 1,
+            "current_quantity": 43,
+            "price": 10.7,
+            "use_exchange_rate": false,
+            "priority": 2,
+            "notes": "Vendor: Grundfos Canada\nDescription: ",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 43\nto: 43\nItsme\nNovember 08 Tuesday 2022 03:51:51 PM"
         },
         "Sticker 312 Polar G2 & G3 G series Wiring 8\"x10\"": {
             "part_number": "312",
@@ -1016,6 +931,23 @@
             "notes": "Vendor: \nDescription: ",
             "latest_change_current_quantity": "Latest Change:\nfrom: 206\nto: 196\nItsme\nOctober 21 Friday 2022 10:41:41 AM"
         },
+        "Spring Pin 2\" x .25": {
+            "part_number": "sp225",
+            "unit_quantity": 3,
+            "current_quantity": 206,
+            "price": 1.5,
+            "use_exchange_rate": false,
+            "priority": 0,
+            "notes": "Vendor: A.Adams Supply\nDescription: ",
+            "latest_change_name": "Item added\nItsme\nNovember 08 Tuesday 2022 08-21-16 AM",
+            "latest_change_part_number": "Item added\nItsme\nNovember 08 Tuesday 2022 08-21-16 AM",
+            "latest_change_unit_quantity": "Item added\nItsme\nNovember 08 Tuesday 2022 08-21-16 AM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 206\nto: 206\nItsme\nNovember 09 Wednesday 2022 08:59:04 AM",
+            "latest_change_price": "Item added\nItsme\nNovember 08 Tuesday 2022 08-21-16 AM",
+            "latest_change_use_exchange_price": "Item added\nItsme\nNovember 08 Tuesday 2022 08-21-16 AM",
+            "latest_change_priority": "Item added\nItsme\nNovember 08 Tuesday 2022 08-21-16 AM",
+            "latest_change_notes": "Item added\nItsme\nNovember 08 Tuesday 2022 08-21-16 AM"
+        },
         "6BL Chimney Cap": {
             "part_number": "6BL",
             "unit_quantity": 1,
@@ -1059,6 +991,23 @@
             "latest_change_use_exchange_price": "Item added\nItsme\nJuly 13 Wednesday 2022 09-10-18 AM",
             "latest_change_priority": "Item added\nItsme\nJuly 13 Wednesday 2022 09-10-18 AM",
             "latest_change_notes": "Item added\nItsme\nJuly 13 Wednesday 2022 09-10-18 AM"
+        },
+        "1\/8 Hight Temp Rubber- Orange": {
+            "part_number": "1460N44",
+            "unit_quantity": 4,
+            "current_quantity": 284,
+            "price": 2.0,
+            "use_exchange_rate": false,
+            "priority": 0,
+            "notes": "Vendor: Mc MasterCarr\nDescription: ",
+            "latest_change_name": "Item added\nItsme\nJuly 12 Tuesday 2022 09-30-57 AM",
+            "latest_change_part_number": "Item added\nItsme\nJuly 12 Tuesday 2022 09-30-57 AM",
+            "latest_change_unit_quantity": "Item added\nItsme\nJuly 12 Tuesday 2022 09-30-57 AM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 284\nto: 284\nItsme\nNovember 11 Friday 2022 09:52:13 AM",
+            "latest_change_price": "Item added\nItsme\nJuly 12 Tuesday 2022 09-30-57 AM",
+            "latest_change_use_exchange_price": "Item added\nItsme\nJuly 12 Tuesday 2022 09-30-57 AM",
+            "latest_change_priority": "Item added\nItsme\nJuly 12 Tuesday 2022 09-30-57 AM",
+            "latest_change_notes": "Item added\nItsme\nJuly 12 Tuesday 2022 09-30-57 AM"
         },
         "rivet  3\/4x 5\/16 DIA ": {
             "part_number": "Rivet516",
@@ -1122,6 +1071,51 @@
             "latest_change_current_quantity": "Latest Change:\nfrom: 548\nto: 468\nItsme\nOctober 21 Friday 2022 10:41:41 AM",
             "latest_change_unit_quantity": "Latest Change:\nfrom: 2\nto: 8\nItsme\nSeptember 03 Saturday 2022 08:38:29 AM"
         },
+        "SCR MACH PH PHIL ZP 10-32 x 1\/2 ": {
+            "part_number": "397-1032-0050",
+            "unit_quantity": 16,
+            "current_quantity": 504,
+            "price": 0.1,
+            "use_exchange_rate": false,
+            "priority": 0,
+            "notes": "Vendor: A.Adams Supply\nDescription: ",
+            "latest_change_name": "Item added\nItsme\nAugust 15 Monday 2022 08-58-38 AM",
+            "latest_change_part_number": "Item added\nItsme\nAugust 15 Monday 2022 08-58-38 AM",
+            "latest_change_unit_quantity": "Item added\nItsme\nAugust 15 Monday 2022 08-58-38 AM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 504\nto: 504\nItsme\nNovember 09 Wednesday 2022 08:58:49 AM",
+            "latest_change_price": "Item added\nItsme\nAugust 15 Monday 2022 08-58-38 AM",
+            "latest_change_use_exchange_price": "Item added\nItsme\nAugust 15 Monday 2022 08-58-38 AM",
+            "latest_change_priority": "Item added\nItsme\nAugust 15 Monday 2022 08-58-38 AM",
+            "latest_change_notes": "Item added\nItsme\nAugust 15 Monday 2022 08-58-38 AM"
+        },
+        "Hexagon Head Machined Screw 5\/16   10-32x1\/2 ": {
+            "part_number": "776",
+            "unit_quantity": 4,
+            "current_quantity": 520,
+            "price": 0.2,
+            "use_exchange_rate": false,
+            "priority": 0,
+            "notes": "Vendor:A.Adams Supply\nDescription: ",
+            "latest_change_name": "Item added\nItsme\nJuly 19 Tuesday 2022 07-10-49 PM",
+            "latest_change_part_number": "Item added\nItsme\nJuly 19 Tuesday 2022 07-10-49 PM",
+            "latest_change_unit_quantity": "Item added\nItsme\nJuly 19 Tuesday 2022 07-10-49 PM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 520\nto: 520\nItsme\nNovember 09 Wednesday 2022 08:59:20 AM",
+            "latest_change_price": "Item added\nItsme\nJuly 19 Tuesday 2022 07-10-49 PM",
+            "latest_change_use_exchange_price": "Item added\nItsme\nJuly 19 Tuesday 2022 07-10-49 PM",
+            "latest_change_priority": "Item added\nItsme\nJuly 19 Tuesday 2022 07-10-49 PM",
+            "latest_change_notes": "Latest Change:\nfrom: \"Vendor:A.Adams Suppl\nDescription: \"\nto: \"Vendor:A.Adams Supply\nDescription: \"\nItsme\nJuly 21 Thursday 2022 09:25:48 AM"
+        },
+        "Grundfos 15-58FC 115V 9H": {
+            "part_number": "15-58FC",
+            "unit_quantity": 1,
+            "current_quantity": 536,
+            "price": 71.0,
+            "use_exchange_rate": false,
+            "priority": 0,
+            "notes": "Vendor: Grundfos Canada\nDescription: ",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 536\nto: 536\nItsme\nNovember 12 Saturday 2022 09:25:48 AM",
+            "latest_change_price": "Latest Change:\nfrom: 7.0\nto: 71.0\nItsme\nNovember 03 Thursday 2022 04:30:00 PM"
+        },
         " 12BK SLOTTED QUARTER-TURN LATCH, DIE CST, UL FACE SEAL & INTERNAL O-RING, BODY NUT, NO CAM, BLACK POWDER COATED": {
             "part_number": "12BK",
             "unit_quantity": 4,
@@ -1138,6 +1132,23 @@
             "latest_change_use_exchange_price": "Item added\nItsme\nJuly 05 Tuesday 2022 10-28-43 AM",
             "latest_change_priority": "Item added\nItsme\nJuly 05 Tuesday 2022 10-28-43 AM",
             "latest_change_notes": "Latest Change:\nfrom: \"Vendor: Sierra Pacific Engeneering and Products\nDescription: \nGoes With 12C6 as 1 ass\"\nto: \"Vendor: Sierra Pacific Engeneering and Products\nDescription: \nGoes With 12C6 as 1 assy\"\nItsme\nJuly 07 Thursday 2022 04:08:41 PM"
+        },
+        "Thumb Screw 5\/16 DIAx 3\/4 Long x1\/2 FLG": {
+            "part_number": "TS535",
+            "unit_quantity": 10,
+            "current_quantity": 546,
+            "price": 0.3,
+            "use_exchange_rate": false,
+            "priority": 0,
+            "notes": "Vendor: A.Adams Supply\nDescription: ",
+            "latest_change_name": "Item added\nItsme\nJuly 19 Tuesday 2022 05-07-40 PM",
+            "latest_change_part_number": "Item added\nItsme\nJuly 19 Tuesday 2022 05-07-40 PM",
+            "latest_change_unit_quantity": "Item added\nItsme\nJuly 19 Tuesday 2022 05-07-40 PM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 546\nto: 546\nItsme\nNovember 09 Wednesday 2022 09:00:14 AM",
+            "latest_change_price": "Item added\nItsme\nJuly 19 Tuesday 2022 05-07-40 PM",
+            "latest_change_use_exchange_price": "Item added\nItsme\nJuly 19 Tuesday 2022 05-07-40 PM",
+            "latest_change_priority": "Item added\nItsme\nJuly 19 Tuesday 2022 05-07-40 PM",
+            "latest_change_notes": "Item added\nItsme\nJuly 19 Tuesday 2022 05-07-40 PM"
         },
         "3\" x 3\/8 Carr BLT ": {
             "part_number": "338CB",
@@ -1189,17 +1200,6 @@
             "latest_change_use_exchange_price": "Item added\nItsme\nJuly 07 Thursday 2022 04-32-40 PM",
             "latest_change_priority": "Item added\nItsme\nJuly 07 Thursday 2022 04-32-40 PM",
             "latest_change_notes": "Item added\nItsme\nJuly 07 Thursday 2022 04-32-40 PM"
-        },
-        "Grundfos 15-58FC 115V 9H": {
-            "part_number": "15-58FC",
-            "unit_quantity": 1,
-            "current_quantity": 632,
-            "price": 71.0,
-            "use_exchange_rate": false,
-            "priority": 0,
-            "notes": "Vendor: Grundfos Canada\nDescription: ",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 632\nto: 632\nItsme\nNovember 03 Thursday 2022 04:31:06 PM",
-            "latest_change_price": "Latest Change:\nfrom: 7.0\nto: 71.0\nItsme\nNovember 03 Thursday 2022 04:30:00 PM"
         },
         "Washer 3\/16 Tooth Lock Internal ": {
             "part_number": "W316",
@@ -2441,12 +2441,12 @@
         "Grundfos 26-99FC 115V 9H": {
             "part_number": "26-99FC",
             "unit_quantity": 1,
-            "current_quantity": 746,
+            "current_quantity": 650,
             "price": 169.7,
             "use_exchange_rate": false,
             "priority": 0,
             "notes": "Vendor: Grundfos Canada\nDescription: ",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 746\nto: 746\nItsme\nNovember 03 Thursday 2022 04:33:01 PM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 650\nto: 650\nItsme\nNovember 12 Saturday 2022 09:25:14 AM",
             "latest_change_name": "Latest Change:\nfrom: \"Grundfos 2-99FC 115V 9H\"\nto: \"Grundfos 26-99FC 115V 9H\"\nItsme\nJuly 20 Wednesday 2022 10:19:33 AM",
             "latest_change_part_number": "Latest Change:\nfrom: 26-9FC\nto: 26-99FC\nItsme\nJuly 20 Wednesday 2022 10:20:02 AM",
             "latest_change_price": "Latest Change:\nfrom: 169.0\nto: 169.7\nItsme\nAugust 25 Thursday 2022 01:22:27 PM"
@@ -3707,12 +3707,12 @@
         "Grundfos 15-58FC 115V 9H": {
             "part_number": "15-58FC",
             "unit_quantity": 1,
-            "current_quantity": 632,
+            "current_quantity": 536,
             "price": 71.0,
             "use_exchange_rate": false,
             "priority": 0,
             "notes": "Vendor: Grundfos Canada\nDescription: ",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 632\nto: 632\nItsme\nNovember 03 Thursday 2022 04:31:06 PM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 536\nto: 536\nItsme\nNovember 12 Saturday 2022 09:25:48 AM",
             "latest_change_price": "Latest Change:\nfrom: 7.0\nto: 71.0\nItsme\nNovember 03 Thursday 2022 04:30:00 PM"
         },
         "Washer 3\/16 Tooth Lock Internal ": {
