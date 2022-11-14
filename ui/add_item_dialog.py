@@ -75,8 +75,8 @@ class AddItemDialog(QDialog):
 
         self.setTabOrder(self.lineEdit_name, self.lineEdit_part_number)
         self.setTabOrder(self.lineEdit_part_number, self.spinBox_current_quantity)
-        self.setTabOrder(self.spinBox_current_quantity, self.spinBox_unit_quantity)
-        self.setTabOrder(self.spinBox_unit_quantity, self.doubleSpinBox_price)
+        self.setTabOrder(self.spinBox_current_quantity, self.doubleSpinBox_unit_quantity)
+        self.setTabOrder(self.doubleSpinBox_unit_quantity, self.doubleSpinBox_price)
         self.setTabOrder(self.doubleSpinBox_price, self.plainTextEdit_notes)
         self.setTabOrder(self.plainTextEdit_notes, self.comboBox_group)
 
@@ -214,7 +214,9 @@ class AddItemDialog(QDialog):
             int(data[category][item]["current_quantity"])
         )
 
-        self.spinBox_unit_quantity.setValue(int(data[category][item]["unit_quantity"]))
+        self.doubleSpinBox_unit_quantity.setValue(
+            float(data[category][item]["unit_quantity"])
+        )
         self.doubleSpinBox_price.setValue(data[category][item]["price"])
         self.comboBox_exchange_price.setCurrentText(
             "USD" if data[category][item]["use_exchange_rate"] else "CAD"
@@ -258,14 +260,14 @@ class AddItemDialog(QDialog):
         """
         return self.comboBox_priority.currentIndex()
 
-    def get_unit_quantity(self) -> int:
+    def get_unit_quantity(self) -> float:
         """
-        It returns the value of the spinBox_unit_quantity widget
+        It returns the value of the doubleSpinBox_unit_quantity widget
 
         Returns:
-          The value of the spinBox_unit_quantity.
+          The value of the doubleSpinBox_unit_quantity.
         """
-        return self.spinBox_unit_quantity.value()
+        return self.doubleSpinBox_unit_quantity.value()
 
     def get_current_quantity(self) -> int:
         """

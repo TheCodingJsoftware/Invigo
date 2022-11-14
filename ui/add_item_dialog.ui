@@ -345,19 +345,6 @@ border: 1px solid  rgb(0,120,212);
             </item>
            </layout>
           </item>
-          <item row="4" column="3">
-           <widget class="QSpinBox" name="spinBox_unit_quantity">
-            <property name="accelerated">
-             <bool>true</bool>
-            </property>
-            <property name="minimum">
-             <number>1</number>
-            </property>
-            <property name="maximum">
-             <number>9999999</number>
-            </property>
-           </widget>
-          </item>
           <item row="4" column="0">
            <widget class="QLabel" name="label_3">
             <property name="text">
@@ -472,6 +459,16 @@ Description: </string>
              </widget>
             </item>
            </layout>
+          </item>
+          <item row="4" column="3">
+           <widget class="QDoubleSpinBox" name="doubleSpinBox_unit_quantity">
+            <property name="accelerated">
+             <bool>true</bool>
+            </property>
+            <property name="maximum">
+             <double>999999999.990000009536743</double>
+            </property>
+           </widget>
           </item>
          </layout>
         </item>
