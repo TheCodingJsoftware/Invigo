@@ -4935,18 +4935,18 @@
             "part_number": "PINML42",
             "unit_quantity": 1,
             "current_quantity": 19,
-            "price": 155.0,
+            "price": 196.2,
             "use_exchange_rate": false,
             "priority": 0,
-            "notes": "Vendor: Matrix Metal Castings \nDescription: ",
+            "notes": "Vendor: Matrix Metal Castings \nDescription: $155 is cost at matrix, but we drill holes in house",
             "latest_change_name": "Item added\nItsme\nNovember 09 Wednesday 2022 08-56-43 AM",
             "latest_change_part_number": "Item added\nItsme\nNovember 09 Wednesday 2022 08-56-43 AM",
             "latest_change_unit_quantity": "Item added\nItsme\nNovember 09 Wednesday 2022 08-56-43 AM",
             "latest_change_current_quantity": "Latest Change:\nfrom: 19\nto: 19\nItsme\nNovember 11 Friday 2022 09:43:23 AM",
-            "latest_change_price": "Item added\nItsme\nNovember 09 Wednesday 2022 08-56-43 AM",
+            "latest_change_price": "Latest Change:\nfrom: 196.0\nto: 196.2\nItsme\nNovember 15 Tuesday 2022 08:20:39 AM",
             "latest_change_use_exchange_price": "Item added\nItsme\nNovember 09 Wednesday 2022 08-56-43 AM",
             "latest_change_priority": "Item added\nItsme\nNovember 09 Wednesday 2022 08-56-43 AM",
-            "latest_change_notes": "Item added\nItsme\nNovember 09 Wednesday 2022 08-56-43 AM"
+            "latest_change_notes": "Latest Change:\nfrom: \"Vendor: Matrix Metal Castings \nDescription: $155 is cost at matrix, but we drill holes in hous\"\nto: \"Vendor: Matrix Metal Castings \nDescription: $155 is cost at matrix, but we drill holes in house\"\nItsme\nNovember 15 Tuesday 2022 08:20:03 AM"
         },
         "Love Joy- MSP Coupling ": {
             "part_number": "L095-1",
@@ -7293,23 +7293,6 @@
             "latest_change_priority": "Item added\nItsme\nNovember 03 Thursday 2022 09-52-25 AM",
             "latest_change_notes": "Item added\nItsme\nNovember 03 Thursday 2022 09-52-25 AM"
         },
-        "D500 Blower Fan": {
-            "part_number": "ARC50752D500",
-            "unit_quantity": 1,
-            "current_quantity": 11,
-            "price": 165.3,
-            "use_exchange_rate": false,
-            "priority": 0,
-            "notes": "Vendor: sopers supply\nDescription: ",
-            "latest_change_name": "Item added\nItsme\nAugust 01 Monday 2022 09-29-30 AM",
-            "latest_change_part_number": "Latest Change:\nfrom: ARC50752D50\nto: ARC50752D500\nItsme\nAugust 03 Wednesday 2022 11:07:50 AM",
-            "latest_change_unit_quantity": "Item added\nItsme\nAugust 01 Monday 2022 09-29-30 AM",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 11\nto: 11\nItsme\nNovember 08 Tuesday 2022 09:31:19 AM",
-            "latest_change_price": "Latest Change:\nfrom: 165.0\nto: 165.3\nItsme\nAugust 03 Wednesday 2022 10:53:28 AM",
-            "latest_change_use_exchange_price": "Item added\nItsme\nAugust 01 Monday 2022 09-29-30 AM",
-            "latest_change_priority": "Item added\nItsme\nAugust 01 Monday 2022 09-29-30 AM",
-            "latest_change_notes": "Latest Change:\nfrom: \"Vendor: sopers suppl\nDescription: \"\nto: \"Vendor: sopers supply\nDescription: \"\nItsme\nAugust 02 Tuesday 2022 10:28:01 AM"
-        },
         "8 x36\" Chimney ": {
             "part_number": "8L36",
             "unit_quantity": 1,
@@ -7667,6 +7650,23 @@
             "latest_change_priority": "Item added\nItsme\nOctober 14 Friday 2022 10-40-14 AM",
             "latest_change_notes": "Item added\nItsme\nOctober 14 Friday 2022 10-40-14 AM",
             "latest_change_use_exchange_rate": "Latest Change:\nfrom: CAD\nto: USD\nItsme\nOctober 15 Saturday 2022 09:12:41 AM"
+        },
+        "Nidec 3274 Blower Motor": {
+            "part_number": "3274",
+            "unit_quantity": 1.0,
+            "current_quantity": 20,
+            "price": 182.0,
+            "use_exchange_rate": false,
+            "priority": 0,
+            "notes": "Vendor: E Motors Direct or Sopers Supply\/Masters\nDescription: ",
+            "latest_change_name": "Item added\nItsme\nNovember 15 Tuesday 2022 08-22-13 AM",
+            "latest_change_part_number": "Item added\nItsme\nNovember 15 Tuesday 2022 08-22-13 AM",
+            "latest_change_unit_quantity": "Item added\nItsme\nNovember 15 Tuesday 2022 08-22-13 AM",
+            "latest_change_current_quantity": "Item added\nItsme\nNovember 15 Tuesday 2022 08-22-13 AM",
+            "latest_change_price": "Item added\nItsme\nNovember 15 Tuesday 2022 08-22-13 AM",
+            "latest_change_use_exchange_price": "Item added\nItsme\nNovember 15 Tuesday 2022 08-22-13 AM",
+            "latest_change_priority": "Item added\nItsme\nNovember 15 Tuesday 2022 08-22-13 AM",
+            "latest_change_notes": "Item added\nItsme\nNovember 15 Tuesday 2022 08-22-13 AM"
         }
     },
     "Round Bar And Tube": {
