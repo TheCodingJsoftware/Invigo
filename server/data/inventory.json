@@ -4365,6 +4365,23 @@
             "latest_change_priority": "Latest Change:\nfrom: 0\nto: 3\nItsme\nOctober 21 Friday 2022 04:31:28 PM",
             "latest_change_notes": "Item added\nItsme\nJuly 28 Thursday 2022 03-29-44 PM",
             "latest_change_use_exchange_rate": "Latest Change:\nfrom: CAD\nto: USD\nItsme\nOctober 15 Saturday 2022 09:12:56 AM"
+        },
+        "3\/16 Pop Rivet X 1\/4 ": {
+            "part_number": "em-ssd64ssbs",
+            "unit_quantity": 8.0,
+            "current_quantity": 2000,
+            "price": 0.2,
+            "use_exchange_rate": false,
+            "priority": 0,
+            "notes": "Vendor: A.Adams Supply \nDescription: ",
+            "latest_change_name": "Item added\nItsme\nNovember 16 Wednesday 2022 09-51-40 AM",
+            "latest_change_part_number": "Item added\nItsme\nNovember 16 Wednesday 2022 09-51-40 AM",
+            "latest_change_unit_quantity": "Item added\nItsme\nNovember 16 Wednesday 2022 09-51-40 AM",
+            "latest_change_current_quantity": "Item added\nItsme\nNovember 16 Wednesday 2022 09-51-40 AM",
+            "latest_change_price": "Item added\nItsme\nNovember 16 Wednesday 2022 09-51-40 AM",
+            "latest_change_use_exchange_price": "Item added\nItsme\nNovember 16 Wednesday 2022 09-51-40 AM",
+            "latest_change_priority": "Item added\nItsme\nNovember 16 Wednesday 2022 09-51-40 AM",
+            "latest_change_notes": "Item added\nItsme\nNovember 16 Wednesday 2022 09-51-40 AM"
         }
     },
     "Fittings": {
