@@ -3,7 +3,7 @@
         "Vapor Thermometer": {
             "part_number": "20UB8-220FC-4111-03FT                        ",
             "unit_quantity": 1,
-            "current_quantity": -8,
+            "current_quantity": 52,
             "price": 34.25,
             "use_exchange_rate": false,
             "priority": 0,
@@ -11,7 +11,7 @@
             "latest_change_name": "Item added\nItsme\nAugust 12 Friday 2022 09-51-42 AM",
             "latest_change_part_number": "Item added\nItsme\nAugust 12 Friday 2022 09-51-42 AM",
             "latest_change_unit_quantity": "Item added\nItsme\nAugust 12 Friday 2022 09-51-42 AM",
-            "latest_change_current_quantity": "Latest Change:\nfrom: -8\nto: -8\nItsme\nNovember 08 Tuesday 2022 03:51:33 PM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 52\nto: 52\nItsme\nNovember 17 Thursday 2022 08:08:40 AM",
             "latest_change_price": "Latest Change:\nfrom: 34.2\nto: 34.25\nItsme\nNovember 14 Monday 2022 02:52:29 PM",
             "latest_change_use_exchange_price": "Item added\nItsme\nAugust 12 Friday 2022 09-51-42 AM",
             "latest_change_priority": "Item added\nItsme\nAugust 12 Friday 2022 09-51-42 AM",
@@ -1271,24 +1271,6 @@
         }
     },
     "Polar G3": {
-        "Vapor Thermometer": {
-            "part_number": "20UB8-220FC-4111-03FT                        ",
-            "unit_quantity": 1,
-            "current_quantity": -8,
-            "price": 34.25,
-            "use_exchange_rate": true,
-            "priority": 0,
-            "notes": "Vendor: Miljoco Corp\nDescription: ",
-            "latest_change_name": "Item added\nItsme\nAugust 12 Friday 2022 09-51-59 AM",
-            "latest_change_part_number": "Item added\nItsme\nAugust 12 Friday 2022 09-51-59 AM",
-            "latest_change_unit_quantity": "Item added\nItsme\nAugust 12 Friday 2022 09-51-59 AM",
-            "latest_change_current_quantity": "Latest Change:\nfrom: -8\nto: -8\nItsme\nNovember 08 Tuesday 2022 03:51:33 PM",
-            "latest_change_price": "Latest Change:\nfrom: 34.2\nto: 34.25\nItsme\nNovember 14 Monday 2022 02:52:29 PM",
-            "latest_change_use_exchange_price": "Item added\nItsme\nAugust 12 Friday 2022 09-51-59 AM",
-            "latest_change_priority": "Item added\nItsme\nAugust 12 Friday 2022 09-51-59 AM",
-            "latest_change_notes": "Item added\nItsme\nAugust 12 Friday 2022 09-51-59 AM",
-            "latest_change_use_exchange_rate": "Latest Change:\nfrom: CAD\nto: USD\nItsme\nNovember 14 Monday 2022 02:52:33 PM"
-        },
         "G3 Brick Set": {
             "part_number": "G3BS",
             "unit_quantity": 1,
@@ -1443,18 +1425,6 @@
             "priority": 0,
             "notes": "Vendor: GreenLine \nDescription: 204-694-0332",
             "latest_change_current_quantity": "Latest Change:\nfrom: 31\nto: 31\nItsme\nOctober 21 Friday 2022 10:41:43 AM"
-        },
-        "3\" Thermax SF- 600 Brick Slabs 1000x610x75": {
-            "part_number": "THERMAXSF600",
-            "unit_quantity": 1,
-            "current_quantity": 60,
-            "price": 104.5,
-            "use_exchange_rate": false,
-            "priority": 0,
-            "notes": "Vendor: Nuex Hearth Ptoducts\nDescription: Jim.willes@neux.com ",
-            "latest_change_price": "Latest Change:\nfrom: 104.5\nto: 104.5\nItsme\nJuly 07 Thursday 2022 08:54:01 AM",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 60\nto: 60\nItsme\nNovember 16 Wednesday 2022 10:49:06 AM",
-            "latest_change_name": "Latest Change:\nfrom: \"3\" Thermax SF- 600 Brick Slabs 1000x610x7\"\nto: \"3\" Thermax SF- 600 Brick Slabs 1000x610x75\"\nItsme\nJuly 11 Monday 2022 09:45:53 AM"
         },
         "1 1\/4 Closed Nipple ": {
             "part_number": "114CN",
@@ -1736,6 +1706,24 @@
             "latest_change_priority": "Item added\nItsme\nJuly 08 Friday 2022 09-12-32 AM",
             "latest_change_notes": "Item added\nItsme\nJuly 08 Friday 2022 09-12-32 AM"
         },
+        "Vapor Thermometer": {
+            "part_number": "20UB8-220FC-4111-03FT                        ",
+            "unit_quantity": 1,
+            "current_quantity": 52,
+            "price": 34.25,
+            "use_exchange_rate": true,
+            "priority": 0,
+            "notes": "Vendor: Miljoco Corp\nDescription: ",
+            "latest_change_name": "Item added\nItsme\nAugust 12 Friday 2022 09-51-59 AM",
+            "latest_change_part_number": "Item added\nItsme\nAugust 12 Friday 2022 09-51-59 AM",
+            "latest_change_unit_quantity": "Item added\nItsme\nAugust 12 Friday 2022 09-51-59 AM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 52\nto: 52\nItsme\nNovember 17 Thursday 2022 08:08:40 AM",
+            "latest_change_price": "Latest Change:\nfrom: 34.2\nto: 34.25\nItsme\nNovember 14 Monday 2022 02:52:29 PM",
+            "latest_change_use_exchange_price": "Item added\nItsme\nAugust 12 Friday 2022 09-51-59 AM",
+            "latest_change_priority": "Item added\nItsme\nAugust 12 Friday 2022 09-51-59 AM",
+            "latest_change_notes": "Item added\nItsme\nAugust 12 Friday 2022 09-51-59 AM",
+            "latest_change_use_exchange_rate": "Latest Change:\nfrom: CAD\nto: USD\nItsme\nNovember 14 Monday 2022 02:52:33 PM"
+        },
         "Barb Hose Adapter fitting": {
             "part_number": "BIA-020",
             "unit_quantity": 2,
@@ -1800,6 +1788,18 @@
             "priority": 0,
             "notes": "Vendor: \nDescription: ",
             "latest_change_current_quantity": "Latest Change:\nfrom: 66\nto: 56\nItsme\nOctober 21 Friday 2022 10:41:41 AM"
+        },
+        "3\" Thermax SF- 600 Brick Slabs 1000x610x75": {
+            "part_number": "THERMAXSF600",
+            "unit_quantity": 1,
+            "current_quantity": 60,
+            "price": 104.5,
+            "use_exchange_rate": false,
+            "priority": 0,
+            "notes": "Vendor: Nuex Hearth Ptoducts\nDescription: Jim.willes@neux.com ",
+            "latest_change_price": "Latest Change:\nfrom: 104.5\nto: 104.5\nItsme\nJuly 07 Thursday 2022 08:54:01 AM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 60\nto: 60\nItsme\nNovember 16 Wednesday 2022 10:49:06 AM",
+            "latest_change_name": "Latest Change:\nfrom: \"3\" Thermax SF- 600 Brick Slabs 1000x610x7\"\nto: \"3\" Thermax SF- 600 Brick Slabs 1000x610x75\"\nItsme\nJuly 11 Monday 2022 09:45:53 AM"
         },
         "Hylon Lift off Hinge ": {
             "part_number": "",
@@ -2542,7 +2542,7 @@
         "Vapor Thermometer": {
             "part_number": "20UB8-220FC-4111-03FT                        ",
             "unit_quantity": 1,
-            "current_quantity": -8,
+            "current_quantity": 52,
             "price": 34.25,
             "use_exchange_rate": false,
             "priority": 0,
@@ -2550,7 +2550,7 @@
             "latest_change_name": "Item added\nItsme\nAugust 12 Friday 2022 09-52-11 AM",
             "latest_change_part_number": "Item added\nItsme\nAugust 12 Friday 2022 09-52-11 AM",
             "latest_change_unit_quantity": "Item added\nItsme\nAugust 12 Friday 2022 09-52-11 AM",
-            "latest_change_current_quantity": "Latest Change:\nfrom: -8\nto: -8\nItsme\nNovember 08 Tuesday 2022 03:51:33 PM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 52\nto: 52\nItsme\nNovember 17 Thursday 2022 08:08:40 AM",
             "latest_change_price": "Latest Change:\nfrom: 34.2\nto: 34.25\nItsme\nNovember 14 Monday 2022 02:52:29 PM",
             "latest_change_use_exchange_price": "Item added\nItsme\nAugust 12 Friday 2022 09-52-11 AM",
             "latest_change_priority": "Item added\nItsme\nAugust 12 Friday 2022 09-52-11 AM",
