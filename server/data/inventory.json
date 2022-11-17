@@ -1,43 +1,15 @@
 {
     "Polar G2": {
-        "Vapor Thermometer": {
-            "part_number": "20UB8-220FC-4111-03FT                        ",
-            "unit_quantity": 1,
-            "current_quantity": 52,
-            "price": 34.25,
-            "use_exchange_rate": false,
-            "priority": 0,
-            "notes": "Vendor: Miljoco Corp\nDescription: ",
-            "latest_change_name": "Item added\nItsme\nAugust 12 Friday 2022 09-51-42 AM",
-            "latest_change_part_number": "Item added\nItsme\nAugust 12 Friday 2022 09-51-42 AM",
-            "latest_change_unit_quantity": "Item added\nItsme\nAugust 12 Friday 2022 09-51-42 AM",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 52\nto: 52\nItsme\nNovember 17 Thursday 2022 08:08:40 AM",
-            "latest_change_price": "Latest Change:\nfrom: 34.2\nto: 34.25\nItsme\nNovember 14 Monday 2022 02:52:29 PM",
-            "latest_change_use_exchange_price": "Item added\nItsme\nAugust 12 Friday 2022 09-51-42 AM",
-            "latest_change_priority": "Item added\nItsme\nAugust 12 Friday 2022 09-51-42 AM",
-            "latest_change_notes": "Item added\nItsme\nAugust 12 Friday 2022 09-51-42 AM"
-        },
-        "3\" Nipple x 3\/4 Black Steel ": {
-            "part_number": "483-030",
-            "unit_quantity": 1,
-            "current_quantity": 111,
-            "price": 0.81,
-            "use_exchange_rate": false,
-            "priority": 0,
-            "notes": "Vendor: GreenLine\nDescription: 204-694-0332",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 111\nto: 111\nItsme\nNovember 17 Thursday 2022 08:39:40 AM",
-            "latest_change_unit_quantity": "Latest Change:\nfrom: 15\nto: 1\nItsme\nJuly 19 Tuesday 2022 01:36:56 PM",
-            "latest_change_price": "Latest Change:\nfrom: 1.81\nto: 0.81\nItsme\nNovember 08 Tuesday 2022 09:37:09 AM"
-        },
         "2\" ThermaxSF-450": {
             "part_number": "THERMAXSF450",
             "unit_quantity": 1.0,
             "current_quantity": 17,
             "price": 49.94,
-            "use_exchange_rate": false,
+            "use_exchange_rate": true,
             "priority": 1,
             "notes": "Vendor: Neux Hearth Products\nDescription: Jim.willes@neux.com \n",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 17.0\nto: 17\nItsme\nOctober 21 Friday 2022 10:41:43 AM"
+            "latest_change_current_quantity": "Latest Change:\nfrom: 17.0\nto: 17\nItsme\nOctober 21 Friday 2022 10:41:43 AM",
+            "latest_change_use_exchange_rate": "Latest Change:\nfrom: CAD\nto: USD\nItsme\nNovember 17 Thursday 2022 09:31:23 AM"
         },
         "1\" x 1\" Narrow Slot Gray Duct": {
             "part_number": "PDTF1X1LG6",
@@ -138,18 +110,6 @@
             "priority": 0,
             "notes": "Vendor: GreenLine \nDescription: 204-694-0332",
             "latest_change_current_quantity": "Latest Change:\nfrom: 31\nto: 31\nItsme\nOctober 21 Friday 2022 10:41:43 AM"
-        },
-        "3\" Thermax SF- 600 Brick Slabs 1000x610x75": {
-            "part_number": "THERMAXSF600",
-            "unit_quantity": 1,
-            "current_quantity": 60,
-            "price": 104.5,
-            "use_exchange_rate": false,
-            "priority": 0,
-            "notes": "Vendor: Nuex Hearth Ptoducts\nDescription: Jim.willes@neux.com ",
-            "latest_change_price": "Latest Change:\nfrom: 104.5\nto: 104.5\nItsme\nJuly 07 Thursday 2022 08:54:01 AM",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 60\nto: 60\nItsme\nNovember 16 Wednesday 2022 10:49:06 AM",
-            "latest_change_name": "Latest Change:\nfrom: \"3\" Thermax SF- 600 Brick Slabs 1000x610x7\"\nto: \"3\" Thermax SF- 600 Brick Slabs 1000x610x75\"\nItsme\nJuly 11 Monday 2022 09:45:53 AM"
         },
         "1 1\/4 Closed Nipple ": {
             "part_number": "114CN",
@@ -431,6 +391,24 @@
             "latest_change_priority": "Item added\nItsme\nJuly 08 Friday 2022 09-12-32 AM",
             "latest_change_notes": "Item added\nItsme\nJuly 08 Friday 2022 09-12-32 AM"
         },
+        "Vapor Thermometer": {
+            "part_number": "20UB8-220FC-4111-03FT                        ",
+            "unit_quantity": 1,
+            "current_quantity": 52,
+            "price": 34.25,
+            "use_exchange_rate": true,
+            "priority": 0,
+            "notes": "Vendor: Miljoco Corp\nDescription: ",
+            "latest_change_name": "Item added\nItsme\nAugust 12 Friday 2022 09-51-42 AM",
+            "latest_change_part_number": "Item added\nItsme\nAugust 12 Friday 2022 09-51-42 AM",
+            "latest_change_unit_quantity": "Item added\nItsme\nAugust 12 Friday 2022 09-51-42 AM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 52\nto: 52\nItsme\nNovember 17 Thursday 2022 08:08:40 AM",
+            "latest_change_price": "Latest Change:\nfrom: 34.2\nto: 34.25\nItsme\nNovember 14 Monday 2022 02:52:29 PM",
+            "latest_change_use_exchange_price": "Item added\nItsme\nAugust 12 Friday 2022 09-51-42 AM",
+            "latest_change_priority": "Item added\nItsme\nAugust 12 Friday 2022 09-51-42 AM",
+            "latest_change_notes": "Item added\nItsme\nAugust 12 Friday 2022 09-51-42 AM",
+            "latest_change_use_exchange_rate": "Latest Change:\nfrom: CAD\nto: USD\nItsme\nNovember 17 Thursday 2022 09:30:53 AM"
+        },
         "Barb Hose Adapter fitting": {
             "part_number": "BIA-020",
             "unit_quantity": 2,
@@ -497,6 +475,18 @@
             "notes": "Vendor: HC Graphic Screen Printing\nDescription: ",
             "latest_change_current_quantity": "Latest Change:\nfrom: 66\nto: 56\nItsme\nOctober 21 Friday 2022 10:41:41 AM",
             "latest_change_notes": "Latest Change:\nfrom: \"Vendor: HC Graphic Screen Printin\nDescription: \"\nto: \"Vendor: HC Graphic Screen Printing\nDescription: \"\nItsme\nJuly 29 Friday 2022 04:12:22 PM"
+        },
+        "3\" Thermax SF- 600 Brick Slabs 1000x610x75": {
+            "part_number": "THERMAXSF600",
+            "unit_quantity": 1,
+            "current_quantity": 60,
+            "price": 104.5,
+            "use_exchange_rate": false,
+            "priority": 0,
+            "notes": "Vendor: Nuex Hearth Ptoducts\nDescription: Jim.willes@neux.com ",
+            "latest_change_price": "Latest Change:\nfrom: 104.5\nto: 104.5\nItsme\nJuly 07 Thursday 2022 08:54:01 AM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 60\nto: 60\nItsme\nNovember 16 Wednesday 2022 10:49:06 AM",
+            "latest_change_name": "Latest Change:\nfrom: \"3\" Thermax SF- 600 Brick Slabs 1000x610x7\"\nto: \"3\" Thermax SF- 600 Brick Slabs 1000x610x75\"\nItsme\nJuly 11 Monday 2022 09:45:53 AM"
         },
         "6L12  ASHT 6\"X12\" Section": {
             "part_number": "6L12",
@@ -701,23 +691,6 @@
             "latest_change_current_quantity": "Latest Change:\nfrom: 100\nto: 100\nItsme\nNovember 01 Tuesday 2022 08:06:58 AM",
             "latest_change_price": "Latest Change:\nfrom: 68.45\nto: 68.45\nItsme\nSeptember 06 Tuesday 2022 11:12:17 AM"
         },
-        "1\/2 Tank Flange  NPT ": {
-            "part_number": "953 SA-181-70 82D 3M",
-            "unit_quantity": 2,
-            "current_quantity": 490,
-            "price": 2.1,
-            "use_exchange_rate": false,
-            "priority": 0,
-            "notes": "Vendor: GreenLine Hose and Fitting \nDescription: ",
-            "latest_change_name": "Item added\nItsme\nOctober 19 Wednesday 2022 02-47-04 PM",
-            "latest_change_part_number": "Item added\nItsme\nOctober 19 Wednesday 2022 02-47-04 PM",
-            "latest_change_unit_quantity": "Item added\nItsme\nOctober 19 Wednesday 2022 02-47-04 PM",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 490\nto: 490\nItsme\nNovember 17 Thursday 2022 08:45:20 AM",
-            "latest_change_price": "Item added\nItsme\nOctober 19 Wednesday 2022 02-47-05 PM",
-            "latest_change_use_exchange_price": "Item added\nItsme\nOctober 19 Wednesday 2022 02-47-05 PM",
-            "latest_change_priority": "Item added\nItsme\nOctober 19 Wednesday 2022 02-47-05 PM",
-            "latest_change_notes": "Item added\nItsme\nOctober 19 Wednesday 2022 02-47-05 PM"
-        },
         "3\"x48\"x96\" FSK Insulation Sheet": {
             "part_number": "FSK3",
             "unit_quantity": 3.0,
@@ -745,6 +718,18 @@
             "latest_change_priority": "Item added\nItsme\nJuly 07 Thursday 2022 11-29-44 AM",
             "latest_change_notes": "Latest Change:\nfrom: \"Vendor: Revcor Revolutionary Air Flo\nDescription: \"\nto: \"Vendor: Revcor Revolutionary Air Flow\nDescription: \"\nItsme\nAugust 04 Thursday 2022 08:52:41 AM",
             "latest_change_use_exchange_rate": "Latest Change:\nfrom: CAD\nto: USD\nItsme\nAugust 04 Thursday 2022 08:52:11 AM"
+        },
+        "3\" Nipple x 3\/4 Black Steel ": {
+            "part_number": "483-030",
+            "unit_quantity": 1,
+            "current_quantity": 111,
+            "price": 0.81,
+            "use_exchange_rate": false,
+            "priority": 0,
+            "notes": "Vendor: GreenLine\nDescription: 204-694-0332",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 111\nto: 111\nItsme\nNovember 17 Thursday 2022 08:39:40 AM",
+            "latest_change_unit_quantity": "Latest Change:\nfrom: 15\nto: 1\nItsme\nJuly 19 Tuesday 2022 01:36:56 PM",
+            "latest_change_price": "Latest Change:\nfrom: 1.81\nto: 0.81\nItsme\nNovember 08 Tuesday 2022 09:37:09 AM"
         },
         "3\"x24\"x48\" FSK Board": {
             "part_number": "702294",
@@ -1070,6 +1055,23 @@
             "notes": "Vendor: BrockWhite\nDescription: \nevandenberg@brockwhite.com",
             "latest_change_current_quantity": "Latest Change:\nfrom: 548\nto: 468\nItsme\nOctober 21 Friday 2022 10:41:41 AM",
             "latest_change_unit_quantity": "Latest Change:\nfrom: 2\nto: 8\nItsme\nSeptember 03 Saturday 2022 08:38:29 AM"
+        },
+        "1\/2 Tank Flange  NPT ": {
+            "part_number": "953 SA-181-70 82D 3M",
+            "unit_quantity": 2,
+            "current_quantity": 490,
+            "price": 2.1,
+            "use_exchange_rate": false,
+            "priority": 0,
+            "notes": "Vendor: GreenLine Hose and Fitting \nDescription: ",
+            "latest_change_name": "Item added\nItsme\nOctober 19 Wednesday 2022 02-47-04 PM",
+            "latest_change_part_number": "Item added\nItsme\nOctober 19 Wednesday 2022 02-47-04 PM",
+            "latest_change_unit_quantity": "Item added\nItsme\nOctober 19 Wednesday 2022 02-47-04 PM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 490\nto: 490\nItsme\nNovember 17 Thursday 2022 08:45:20 AM",
+            "latest_change_price": "Item added\nItsme\nOctober 19 Wednesday 2022 02-47-05 PM",
+            "latest_change_use_exchange_price": "Item added\nItsme\nOctober 19 Wednesday 2022 02-47-05 PM",
+            "latest_change_priority": "Item added\nItsme\nOctober 19 Wednesday 2022 02-47-05 PM",
+            "latest_change_notes": "Item added\nItsme\nOctober 19 Wednesday 2022 02-47-05 PM"
         },
         "SCR MACH PH PHIL ZP 10-32 x 1\/2 ": {
             "part_number": "397-1032-0050",
@@ -6134,7 +6136,7 @@
         "100-Coffee Brown HT ProRib- 41 1\/4 ": {
             "part_number": "1328GA-103-2",
             "unit_quantity": 3,
-            "current_quantity": -3,
+            "current_quantity": 97,
             "price": 125.0,
             "use_exchange_rate": false,
             "priority": 0,
@@ -6142,7 +6144,7 @@
             "latest_change_name": "Item added\nItsme\nJuly 28 Thursday 2022 07-52-01 PM",
             "latest_change_part_number": "Latest Change:\nfrom: 1328GA-103-\nto: 1328GA-103-2\nItsme\nAugust 15 Monday 2022 02:20:00 PM",
             "latest_change_unit_quantity": "Item added\nItsme\nJuly 28 Thursday 2022 07-52-01 PM",
-            "latest_change_current_quantity": "Latest Change:\nfrom: -3\nto: -3\nItsme\nNovember 08 Tuesday 2022 09:31:19 AM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 97\nto: 97\nItsme\nNovember 17 Thursday 2022 09:24:29 AM",
             "latest_change_price": "Item added\nItsme\nJuly 28 Thursday 2022 07-52-01 PM",
             "latest_change_use_exchange_price": "Item added\nItsme\nJuly 28 Thursday 2022 07-52-01 PM",
             "latest_change_priority": "Item added\nItsme\nJuly 28 Thursday 2022 07-52-01 PM",
@@ -6644,23 +6646,6 @@
         }
     },
     "BL 34 Wood": {
-        "1\" x4\" Nipple": {
-            "part_number": "G1616-100x4",
-            "unit_quantity": 2,
-            "current_quantity": 170,
-            "price": 1.35,
-            "use_exchange_rate": false,
-            "priority": 0,
-            "notes": "Vendor: GreenLine\nDescription: ",
-            "latest_change_name": "Item added\nItsme\nAugust 29 Monday 2022 08-28-30 AM",
-            "latest_change_part_number": "Item added\nItsme\nAugust 29 Monday 2022 08-28-30 AM",
-            "latest_change_unit_quantity": "Item added\nItsme\nAugust 29 Monday 2022 08-28-30 AM",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 170\nto: 170\nItsme\nNovember 17 Thursday 2022 08:47:19 AM",
-            "latest_change_price": "Item added\nItsme\nAugust 29 Monday 2022 08-28-30 AM",
-            "latest_change_use_exchange_price": "Item added\nItsme\nAugust 29 Monday 2022 08-28-30 AM",
-            "latest_change_priority": "Item added\nItsme\nAugust 29 Monday 2022 08-28-30 AM",
-            "latest_change_notes": "Item added\nItsme\nAugust 29 Monday 2022 08-28-30 AM"
-        },
         "8\" Chimney T  8TL14-PM": {
             "part_number": "210800",
             "unit_quantity": 1,
@@ -6677,23 +6662,6 @@
             "latest_change_use_exchange_price": "Item added\nItsme\nAugust 03 Wednesday 2022 11-04-02 AM",
             "latest_change_priority": "Item added\nItsme\nAugust 03 Wednesday 2022 11-04-02 AM",
             "latest_change_notes": "Item added\nItsme\nAugust 03 Wednesday 2022 11-04-02 AM"
-        },
-        "100-Coffee Brown HT ProRib- 41 1\/4 ": {
-            "part_number": "1328GA-103-2",
-            "unit_quantity": 3,
-            "current_quantity": -3,
-            "price": 125.0,
-            "use_exchange_rate": false,
-            "priority": 0,
-            "notes": "Vendor: Domtek\nDescription: ",
-            "latest_change_name": "Item added\nItsme\nJuly 28 Thursday 2022 07-52-01 PM",
-            "latest_change_part_number": "Latest Change:\nfrom: 1328GA-103-\nto: 1328GA-103-2\nItsme\nAugust 15 Monday 2022 02:20:00 PM",
-            "latest_change_unit_quantity": "Item added\nItsme\nJuly 28 Thursday 2022 07-52-01 PM",
-            "latest_change_current_quantity": "Latest Change:\nfrom: -3\nto: -3\nItsme\nNovember 08 Tuesday 2022 09:31:19 AM",
-            "latest_change_price": "Item added\nItsme\nJuly 28 Thursday 2022 07-52-01 PM",
-            "latest_change_use_exchange_price": "Item added\nItsme\nJuly 28 Thursday 2022 07-52-01 PM",
-            "latest_change_priority": "Item added\nItsme\nJuly 28 Thursday 2022 07-52-01 PM",
-            "latest_change_notes": "Item added\nItsme\nJuly 28 Thursday 2022 07-52-01 PM"
         },
         "Digital Johnson Controle": {
             "part_number": "A421ABC-02",
@@ -6865,23 +6833,6 @@
             "latest_change_priority": "Item added\nItsme\nSeptember 14 Wednesday 2022 04-24-35 PM",
             "latest_change_notes": "Item added\nItsme\nSeptember 14 Wednesday 2022 04-24-35 PM"
         },
-        "1\" Scully flange": {
-            "part_number": "1SF",
-            "unit_quantity": 4,
-            "current_quantity": 471,
-            "price": 2.0,
-            "use_exchange_rate": false,
-            "priority": 0,
-            "notes": "Vendor: Greenline\nDescription: ",
-            "latest_change_name": "Item added\nItsme\nOctober 14 Friday 2022 11-25-49 AM",
-            "latest_change_part_number": "Item added\nItsme\nOctober 14 Friday 2022 11-25-49 AM",
-            "latest_change_unit_quantity": "Item added\nItsme\nOctober 14 Friday 2022 11-25-49 AM",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 471\nto: 471\nItsme\nNovember 17 Thursday 2022 08:46:18 AM",
-            "latest_change_price": "Item added\nItsme\nOctober 14 Friday 2022 11-25-49 AM",
-            "latest_change_use_exchange_price": "Item added\nItsme\nOctober 14 Friday 2022 11-25-49 AM",
-            "latest_change_priority": "Item added\nItsme\nOctober 14 Friday 2022 11-25-49 AM",
-            "latest_change_notes": "Item added\nItsme\nOctober 14 Friday 2022 11-25-49 AM"
-        },
         "8\" Plug cap Twist Lock": {
             "part_number": "8BL",
             "unit_quantity": 1,
@@ -6933,22 +6884,22 @@
             "latest_change_priority": "Item added\nItsme\nOctober 17 Monday 2022 08-12-04 AM",
             "latest_change_notes": "Item added\nItsme\nOctober 17 Monday 2022 08-12-04 AM"
         },
-        "1\/2 Tank Flange  NPT ": {
-            "part_number": "953 SA-181-70 82D 3M",
-            "unit_quantity": 2,
-            "current_quantity": 490,
-            "price": 2.1,
+        "100-Coffee Brown HT ProRib- 41 1\/4 ": {
+            "part_number": "1328GA-103-2",
+            "unit_quantity": 3,
+            "current_quantity": 97,
+            "price": 125.0,
             "use_exchange_rate": false,
             "priority": 0,
-            "notes": "Vendor: GreenLine Hose and Fitting \nDescription: ",
-            "latest_change_name": "Item added\nItsme\nOctober 19 Wednesday 2022 02-48-21 PM",
-            "latest_change_part_number": "Item added\nItsme\nOctober 19 Wednesday 2022 02-48-21 PM",
-            "latest_change_unit_quantity": "Item added\nItsme\nOctober 19 Wednesday 2022 02-48-21 PM",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 490\nto: 490\nItsme\nNovember 17 Thursday 2022 08:45:20 AM",
-            "latest_change_price": "Item added\nItsme\nOctober 19 Wednesday 2022 02-48-21 PM",
-            "latest_change_use_exchange_price": "Item added\nItsme\nOctober 19 Wednesday 2022 02-48-21 PM",
-            "latest_change_priority": "Item added\nItsme\nOctober 19 Wednesday 2022 02-48-21 PM",
-            "latest_change_notes": "Item added\nItsme\nOctober 19 Wednesday 2022 02-48-21 PM"
+            "notes": "Vendor: Domtek\nDescription: ",
+            "latest_change_name": "Item added\nItsme\nJuly 28 Thursday 2022 07-52-01 PM",
+            "latest_change_part_number": "Latest Change:\nfrom: 1328GA-103-\nto: 1328GA-103-2\nItsme\nAugust 15 Monday 2022 02:20:00 PM",
+            "latest_change_unit_quantity": "Item added\nItsme\nJuly 28 Thursday 2022 07-52-01 PM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 97\nto: 97\nItsme\nNovember 17 Thursday 2022 09:24:29 AM",
+            "latest_change_price": "Item added\nItsme\nJuly 28 Thursday 2022 07-52-01 PM",
+            "latest_change_use_exchange_price": "Item added\nItsme\nJuly 28 Thursday 2022 07-52-01 PM",
+            "latest_change_priority": "Item added\nItsme\nJuly 28 Thursday 2022 07-52-01 PM",
+            "latest_change_notes": "Item added\nItsme\nJuly 28 Thursday 2022 07-52-01 PM"
         },
         "1\" Street Elbow- 90 ": {
             "part_number": "1SE9",
@@ -7035,6 +6986,23 @@
             "latest_change_priority": "Item added\nItsme\nAugust 04 Thursday 2022 10-09-28 AM",
             "latest_change_notes": "Item added\nItsme\nAugust 04 Thursday 2022 10-09-28 AM"
         },
+        "1\" x4\" Nipple": {
+            "part_number": "G1616-100x4",
+            "unit_quantity": 2,
+            "current_quantity": 170,
+            "price": 1.35,
+            "use_exchange_rate": false,
+            "priority": 0,
+            "notes": "Vendor: GreenLine\nDescription: ",
+            "latest_change_name": "Item added\nItsme\nAugust 29 Monday 2022 08-28-30 AM",
+            "latest_change_part_number": "Item added\nItsme\nAugust 29 Monday 2022 08-28-30 AM",
+            "latest_change_unit_quantity": "Item added\nItsme\nAugust 29 Monday 2022 08-28-30 AM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 170\nto: 170\nItsme\nNovember 17 Thursday 2022 08:47:19 AM",
+            "latest_change_price": "Item added\nItsme\nAugust 29 Monday 2022 08-28-30 AM",
+            "latest_change_use_exchange_price": "Item added\nItsme\nAugust 29 Monday 2022 08-28-30 AM",
+            "latest_change_priority": "Item added\nItsme\nAugust 29 Monday 2022 08-28-30 AM",
+            "latest_change_notes": "Item added\nItsme\nAugust 29 Monday 2022 08-28-30 AM"
+        },
         "Brass Insert ( milled in house)": {
             "part_number": "BI",
             "unit_quantity": 2,
@@ -7068,6 +7036,40 @@
             "latest_change_use_exchange_price": "Item added\nItsme\nAugust 04 Thursday 2022 10-23-20 AM",
             "latest_change_priority": "Item added\nItsme\nAugust 04 Thursday 2022 10-23-20 AM",
             "latest_change_notes": "Item added\nItsme\nAugust 04 Thursday 2022 10-23-20 AM"
+        },
+        "1\" Scully flange": {
+            "part_number": "1SF",
+            "unit_quantity": 4,
+            "current_quantity": 471,
+            "price": 2.0,
+            "use_exchange_rate": false,
+            "priority": 0,
+            "notes": "Vendor: Greenline\nDescription: ",
+            "latest_change_name": "Item added\nItsme\nOctober 14 Friday 2022 11-25-49 AM",
+            "latest_change_part_number": "Item added\nItsme\nOctober 14 Friday 2022 11-25-49 AM",
+            "latest_change_unit_quantity": "Item added\nItsme\nOctober 14 Friday 2022 11-25-49 AM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 471\nto: 471\nItsme\nNovember 17 Thursday 2022 08:46:18 AM",
+            "latest_change_price": "Item added\nItsme\nOctober 14 Friday 2022 11-25-49 AM",
+            "latest_change_use_exchange_price": "Item added\nItsme\nOctober 14 Friday 2022 11-25-49 AM",
+            "latest_change_priority": "Item added\nItsme\nOctober 14 Friday 2022 11-25-49 AM",
+            "latest_change_notes": "Item added\nItsme\nOctober 14 Friday 2022 11-25-49 AM"
+        },
+        "1\/2 Tank Flange  NPT ": {
+            "part_number": "953 SA-181-70 82D 3M",
+            "unit_quantity": 2,
+            "current_quantity": 490,
+            "price": 2.1,
+            "use_exchange_rate": false,
+            "priority": 0,
+            "notes": "Vendor: GreenLine Hose and Fitting \nDescription: ",
+            "latest_change_name": "Item added\nItsme\nOctober 19 Wednesday 2022 02-48-21 PM",
+            "latest_change_part_number": "Item added\nItsme\nOctober 19 Wednesday 2022 02-48-21 PM",
+            "latest_change_unit_quantity": "Item added\nItsme\nOctober 19 Wednesday 2022 02-48-21 PM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 490\nto: 490\nItsme\nNovember 17 Thursday 2022 08:45:20 AM",
+            "latest_change_price": "Item added\nItsme\nOctober 19 Wednesday 2022 02-48-21 PM",
+            "latest_change_use_exchange_price": "Item added\nItsme\nOctober 19 Wednesday 2022 02-48-21 PM",
+            "latest_change_priority": "Item added\nItsme\nOctober 19 Wednesday 2022 02-48-21 PM",
+            "latest_change_notes": "Item added\nItsme\nOctober 19 Wednesday 2022 02-48-21 PM"
         },
         "Ring Retaining 13\/16": {
             "part_number": "RR-1400-081",
@@ -7211,7 +7213,7 @@
         "100-Coffee Brown HT ProRib- 41 1\/4 ": {
             "part_number": "1328GA-103-2",
             "unit_quantity": 3,
-            "current_quantity": -3,
+            "current_quantity": 97,
             "price": 125.0,
             "use_exchange_rate": false,
             "priority": 0,
@@ -7219,7 +7221,7 @@
             "latest_change_name": "Item added\nItsme\nJuly 28 Thursday 2022 07-52-01 PM",
             "latest_change_part_number": "Latest Change:\nfrom: 1328GA-103-\nto: 1328GA-103-2\nItsme\nAugust 15 Monday 2022 02:20:00 PM",
             "latest_change_unit_quantity": "Item added\nItsme\nJuly 28 Thursday 2022 07-52-01 PM",
-            "latest_change_current_quantity": "Latest Change:\nfrom: -3\nto: -3\nItsme\nNovember 08 Tuesday 2022 09:31:19 AM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 97\nto: 97\nItsme\nNovember 17 Thursday 2022 09:24:29 AM",
             "latest_change_price": "Item added\nItsme\nJuly 28 Thursday 2022 07-52-01 PM",
             "latest_change_use_exchange_price": "Item added\nItsme\nJuly 28 Thursday 2022 07-52-01 PM",
             "latest_change_priority": "Item added\nItsme\nJuly 28 Thursday 2022 07-52-01 PM",
