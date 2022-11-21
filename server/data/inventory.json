@@ -7809,23 +7809,6 @@
             "latest_change_priority": "Item added\nItsme\nNovember 08 Tuesday 2022 10-29-16 AM",
             "latest_change_notes": "Item added\nItsme\nNovember 08 Tuesday 2022 10-29-16 AM"
         },
-        "1\" HR Round 44W": {
-            "part_number": "37706",
-            "unit_quantity": 1.0,
-            "current_quantity": 20,
-            "price": 58.8,
-            "use_exchange_rate": false,
-            "priority": 0,
-            "notes": "Vendor: Russel Metals\nDescription: 20FT Per Length ",
-            "latest_change_name": "Item added\nItsme\nNovember 14 Monday 2022 02-56-00 PM",
-            "latest_change_part_number": "Item added\nItsme\nNovember 14 Monday 2022 02-56-00 PM",
-            "latest_change_unit_quantity": "Item added\nItsme\nNovember 14 Monday 2022 02-56-00 PM",
-            "latest_change_current_quantity": "Item added\nItsme\nNovember 14 Monday 2022 02-56-00 PM",
-            "latest_change_price": "Item added\nItsme\nNovember 14 Monday 2022 02-56-00 PM",
-            "latest_change_use_exchange_price": "Item added\nItsme\nNovember 14 Monday 2022 02-56-00 PM",
-            "latest_change_priority": "Item added\nItsme\nNovember 14 Monday 2022 02-56-00 PM",
-            "latest_change_notes": "Item added\nItsme\nNovember 14 Monday 2022 02-56-00 PM"
-        },
         "3\/4 SCH 40 BLK A53": {
             "part_number": "17670",
             "unit_quantity": 1.0,
@@ -7842,6 +7825,23 @@
             "latest_change_use_exchange_price": "Item added\nItsme\nNovember 14 Monday 2022 02-57-12 PM",
             "latest_change_priority": "Item added\nItsme\nNovember 14 Monday 2022 02-57-12 PM",
             "latest_change_notes": "Item added\nItsme\nNovember 14 Monday 2022 02-57-12 PM"
+        },
+        "1\" CR Round 44W": {
+            "part_number": "37706",
+            "unit_quantity": 1.0,
+            "current_quantity": 20,
+            "price": 58.8,
+            "use_exchange_rate": false,
+            "priority": 0,
+            "notes": "Vendor: Russel Metals\nDescription: 20FT Per Length ",
+            "latest_change_name": "Latest Change:\nfrom: \"1\" R Round 44W\"\nto: \"1\" CR Round 44W\"\nItsme\nNovember 21 Monday 2022 04:57:47 PM",
+            "latest_change_part_number": "Item added\nItsme\nNovember 14 Monday 2022 02-56-00 PM",
+            "latest_change_unit_quantity": "Item added\nItsme\nNovember 14 Monday 2022 02-56-00 PM",
+            "latest_change_current_quantity": "Item added\nItsme\nNovember 14 Monday 2022 02-56-00 PM",
+            "latest_change_price": "Item added\nItsme\nNovember 14 Monday 2022 02-56-00 PM",
+            "latest_change_use_exchange_price": "Item added\nItsme\nNovember 14 Monday 2022 02-56-00 PM",
+            "latest_change_priority": "Item added\nItsme\nNovember 14 Monday 2022 02-56-00 PM",
+            "latest_change_notes": "Item added\nItsme\nNovember 14 Monday 2022 02-56-00 PM"
         }
     }
 }
