@@ -1270,6 +1270,23 @@
             "latest_change_use_exchange_price": "Item added\nItsme\nJuly 19 Tuesday 2022 03-54-38 PM",
             "latest_change_priority": "Item added\nItsme\nJuly 19 Tuesday 2022 03-54-38 PM",
             "latest_change_notes": "Item added\nItsme\nJuly 19 Tuesday 2022 03-54-38 PM"
+        },
+        "Base Relay ( Allen- Bradley)": {
+            "part_number": "700-HF32A1 SQ BASE RELAY 120V AC",
+            "unit_quantity": 2.0,
+            "current_quantity": 6,
+            "price": 11.5,
+            "use_exchange_rate": false,
+            "priority": 0,
+            "notes": "Vendor: Westburn \nDescription: For Polar which needs 2 per boiler and LCB300 ",
+            "latest_change_name": "Item added\nItsme\nNovember 24 Thursday 2022 10-52-35 AM",
+            "latest_change_part_number": "Item added\nItsme\nNovember 24 Thursday 2022 10-52-35 AM",
+            "latest_change_unit_quantity": "Item added\nItsme\nNovember 24 Thursday 2022 10-52-35 AM",
+            "latest_change_current_quantity": "Item added\nItsme\nNovember 24 Thursday 2022 10-52-35 AM",
+            "latest_change_price": "Item added\nItsme\nNovember 24 Thursday 2022 10-52-35 AM",
+            "latest_change_use_exchange_price": "Item added\nItsme\nNovember 24 Thursday 2022 10-52-35 AM",
+            "latest_change_priority": "Item added\nItsme\nNovember 24 Thursday 2022 10-52-35 AM",
+            "latest_change_notes": "Item added\nItsme\nNovember 24 Thursday 2022 10-52-35 AM"
         }
     },
     "Polar G3": {
