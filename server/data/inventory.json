@@ -6409,7 +6409,7 @@
             "current_quantity": 500,
             "price": 4.0,
             "use_exchange_rate": false,
-            "priority": 2,
+            "priority": 3,
             "notes": "Vendor: Mid-Mountain Materials\nDescription: ",
             "latest_change_name": "Item added\nItsme\nAugust 08 Monday 2022 08-17-35 AM",
             "latest_change_part_number": "Item added\nItsme\nAugust 08 Monday 2022 08-17-35 AM",
@@ -6417,7 +6417,7 @@
             "latest_change_current_quantity": "Latest Change:\nfrom: 500\nto: 500\nItsme\nNovember 08 Tuesday 2022 09:31:19 AM",
             "latest_change_price": "Item added\nItsme\nAugust 08 Monday 2022 08-17-35 AM",
             "latest_change_use_exchange_price": "Item added\nItsme\nAugust 08 Monday 2022 08-17-35 AM",
-            "latest_change_priority": "Latest Change:\nfrom: 0\nto: 2\nItsme\nOctober 21 Friday 2022 10:04:28 AM",
+            "latest_change_priority": "Latest Change:\nfrom: 2\nto: 3\nItsme\nDecember 06 Tuesday 2022 08:48:48 AM",
             "latest_change_notes": "Item added\nItsme\nAugust 08 Monday 2022 08-17-35 AM"
         },
         "S.S Wire Coil .156": {
@@ -6443,7 +6443,7 @@
             "current_quantity": 550,
             "price": 3.85,
             "use_exchange_rate": true,
-            "priority": 2,
+            "priority": 3,
             "notes": "Vendor: Mid-Mountain Materials\nDescription: ",
             "latest_change_name": "Item added\nItsme\nAugust 08 Monday 2022 08-16-28 AM",
             "latest_change_part_number": "Item added\nItsme\nAugust 08 Monday 2022 08-16-28 AM",
@@ -6451,7 +6451,7 @@
             "latest_change_current_quantity": "Latest Change:\nfrom: 550\nto: 550\nItsme\nNovember 08 Tuesday 2022 09:31:19 AM",
             "latest_change_price": "Item added\nItsme\nAugust 08 Monday 2022 08-16-28 AM",
             "latest_change_use_exchange_price": "Item added\nItsme\nAugust 08 Monday 2022 08-16-28 AM",
-            "latest_change_priority": "Latest Change:\nfrom: 0\nto: 2\nItsme\nOctober 21 Friday 2022 10:04:31 AM",
+            "latest_change_priority": "Latest Change:\nfrom: 2\nto: 3\nItsme\nDecember 06 Tuesday 2022 08:48:51 AM",
             "latest_change_notes": "Item added\nItsme\nAugust 08 Monday 2022 08-16-28 AM",
             "latest_change_use_exchange_rate": "Latest Change:\nfrom: CAD\nto: USD\nItsme\nOctober 19 Wednesday 2022 02:08:15 PM"
         },
