@@ -5358,6 +5358,40 @@
             "latest_change_use_exchange_price": "Item added\nItsme\nDecember 05 Monday 2022 10-53-08 AM",
             "latest_change_priority": "Item added\nItsme\nDecember 05 Monday 2022 10-53-08 AM",
             "latest_change_notes": "Item added\nItsme\nDecember 05 Monday 2022 10-53-08 AM"
+        },
+        "MQR-124CW      1\/2HP-324-18T-56C ": {
+            "part_number": "MQR-124VW",
+            "unit_quantity": 1.0,
+            "current_quantity": 5,
+            "price": 249.0,
+            "use_exchange_rate": false,
+            "priority": 0,
+            "notes": "Vendor: Rantec\nDescription:  Motor For GEarbox bonfiglioli (N56C B5) for LCB series and B500 and sloped bin",
+            "latest_change_name": "Item added\nItsme\nDecember 14 Wednesday 2022 04-44-41 PM",
+            "latest_change_part_number": "Item added\nItsme\nDecember 14 Wednesday 2022 04-44-41 PM",
+            "latest_change_unit_quantity": "Item added\nItsme\nDecember 14 Wednesday 2022 04-44-41 PM",
+            "latest_change_current_quantity": "Item added\nItsme\nDecember 14 Wednesday 2022 04-44-41 PM",
+            "latest_change_price": "Item added\nItsme\nDecember 14 Wednesday 2022 04-44-41 PM",
+            "latest_change_use_exchange_price": "Item added\nItsme\nDecember 14 Wednesday 2022 04-44-41 PM",
+            "latest_change_priority": "Item added\nItsme\nDecember 14 Wednesday 2022 04-44-41 PM",
+            "latest_change_notes": "Item added\nItsme\nDecember 14 Wednesday 2022 04-44-41 PM"
+        },
+        "Tec Top Round Flange Motor 18KW-324-1800-D63-B5 ": {
+            "part_number": " MTP63B4D-B5",
+            "unit_quantity": 1.0,
+            "current_quantity": 5,
+            "price": 252.0,
+            "use_exchange_rate": false,
+            "priority": 0,
+            "notes": "Vendor: Rantec\nDescription: Motor For Stoker Gearbox or Coal Burner",
+            "latest_change_name": "Item added\nItsme\nDecember 14 Wednesday 2022 04-49-04 PM",
+            "latest_change_part_number": "Item added\nItsme\nDecember 14 Wednesday 2022 04-49-04 PM",
+            "latest_change_unit_quantity": "Item added\nItsme\nDecember 14 Wednesday 2022 04-49-04 PM",
+            "latest_change_current_quantity": "Item added\nItsme\nDecember 14 Wednesday 2022 04-49-04 PM",
+            "latest_change_price": "Item added\nItsme\nDecember 14 Wednesday 2022 04-49-04 PM",
+            "latest_change_use_exchange_price": "Item added\nItsme\nDecember 14 Wednesday 2022 04-49-04 PM",
+            "latest_change_priority": "Item added\nItsme\nDecember 14 Wednesday 2022 04-49-04 PM",
+            "latest_change_notes": "Item added\nItsme\nDecember 14 Wednesday 2022 04-49-04 PM"
         }
     },
     "BL 28 Wood": {
@@ -6493,7 +6527,7 @@
             "unit_quantity": 5,
             "current_quantity": 500,
             "price": 4.0,
-            "use_exchange_rate": false,
+            "use_exchange_rate": true,
             "priority": 3,
             "notes": "Vendor: Mid-Mountain Materials\nDescription: ",
             "latest_change_name": "Item added\nItsme\nAugust 08 Monday 2022 08-17-35 AM",
@@ -6503,7 +6537,8 @@
             "latest_change_price": "Item added\nItsme\nAugust 08 Monday 2022 08-17-35 AM",
             "latest_change_use_exchange_price": "Item added\nItsme\nAugust 08 Monday 2022 08-17-35 AM",
             "latest_change_priority": "Latest Change:\nfrom: 2\nto: 3\nItsme\nDecember 06 Tuesday 2022 08:48:48 AM",
-            "latest_change_notes": "Item added\nItsme\nAugust 08 Monday 2022 08-17-35 AM"
+            "latest_change_notes": "Item added\nItsme\nAugust 08 Monday 2022 08-17-35 AM",
+            "latest_change_use_exchange_rate": "Latest Change:\nfrom: CAD\nto: USD\nItsme\nDecember 14 Wednesday 2022 04:51:38 PM"
         },
         "S.S Wire Coil .156": {
             "part_number": "PIN35467",
