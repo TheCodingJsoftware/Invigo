@@ -4251,7 +4251,7 @@
         "100-Coffee Brown HT ProRib- 38 3\/8": {
             "part_number": "1328GA-103",
             "unit_quantity": 3,
-            "current_quantity": 85,
+            "current_quantity": 185,
             "price": 14.8,
             "use_exchange_rate": false,
             "priority": 0,
@@ -4259,7 +4259,7 @@
             "latest_change_name": "Item added\nItsme\nJuly 28 Thursday 2022 07-50-08 PM",
             "latest_change_part_number": "Item added\nItsme\nJuly 28 Thursday 2022 07-50-08 PM",
             "latest_change_unit_quantity": "Item added\nItsme\nJuly 28 Thursday 2022 07-50-08 PM",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 85\nto: 85\nItsme\nNovember 22 Tuesday 2022 10:11:54 AM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 185\nto: 185\nItsme\nDecember 14 Wednesday 2022 04:22:18 PM",
             "latest_change_price": "Latest Change:\nfrom: 14.8\nto: 14.8\nItsme\nOctober 14 Friday 2022 09:32:01 AM",
             "latest_change_use_exchange_price": "Item added\nItsme\nJuly 28 Thursday 2022 07-50-08 PM",
             "latest_change_priority": "Item added\nItsme\nJuly 28 Thursday 2022 07-50-08 PM",
@@ -5620,7 +5620,7 @@
         "100-Coffee Brown HT ProRib- 38 3\/8": {
             "part_number": "1328GA-103",
             "unit_quantity": 3,
-            "current_quantity": 85,
+            "current_quantity": 185,
             "price": 14.8,
             "use_exchange_rate": false,
             "priority": 0,
@@ -5628,7 +5628,7 @@
             "latest_change_name": "Item added\nItsme\nAugust 04 Thursday 2022 09-11-10 AM",
             "latest_change_part_number": "Item added\nItsme\nAugust 04 Thursday 2022 09-11-10 AM",
             "latest_change_unit_quantity": "Item added\nItsme\nAugust 04 Thursday 2022 09-11-10 AM",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 85\nto: 85\nItsme\nNovember 22 Tuesday 2022 10:11:54 AM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 185\nto: 185\nItsme\nDecember 14 Wednesday 2022 04:22:18 PM",
             "latest_change_price": "Latest Change:\nfrom: 14.8\nto: 14.8\nItsme\nOctober 14 Friday 2022 09:32:01 AM",
             "latest_change_use_exchange_price": "Item added\nItsme\nAugust 04 Thursday 2022 09-11-10 AM",
             "latest_change_priority": "Item added\nItsme\nAugust 04 Thursday 2022 09-11-10 AM",
@@ -6233,23 +6233,6 @@
             "latest_change_priority": "Item added\nItsme\nAugust 01 Monday 2022 09-30-35 AM",
             "latest_change_notes": "Item added\nItsme\nAugust 01 Monday 2022 09-30-35 AM"
         },
-        "100-Coffee Brown HT ProRib- 38 3\/8": {
-            "part_number": "1328GA-103",
-            "unit_quantity": 3,
-            "current_quantity": 85,
-            "price": 14.8,
-            "use_exchange_rate": false,
-            "priority": 0,
-            "notes": "Vendor: Domtek\nDescription: ",
-            "latest_change_name": "Item added\nItsme\nAugust 04 Thursday 2022 09-11-10 AM",
-            "latest_change_part_number": "Item added\nItsme\nAugust 04 Thursday 2022 09-11-10 AM",
-            "latest_change_unit_quantity": "Item added\nItsme\nAugust 04 Thursday 2022 09-11-10 AM",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 85\nto: 85\nItsme\nNovember 22 Tuesday 2022 10:11:54 AM",
-            "latest_change_price": "Latest Change:\nfrom: 14.8\nto: 14.8\nItsme\nOctober 14 Friday 2022 09:32:01 AM",
-            "latest_change_use_exchange_price": "Item added\nItsme\nAugust 04 Thursday 2022 09-11-10 AM",
-            "latest_change_priority": "Item added\nItsme\nAugust 04 Thursday 2022 09-11-10 AM",
-            "latest_change_notes": "Item added\nItsme\nAugust 04 Thursday 2022 09-11-10 AM"
-        },
         "1\/4 Nialon Plastic Shaft- Float assy": {
             "part_number": "14NPS",
             "unit_quantity": 1,
@@ -6368,6 +6351,23 @@
             "latest_change_use_exchange_price": "Item added\nItsme\nAugust 29 Monday 2022 08-28-05 AM",
             "latest_change_priority": "Item added\nItsme\nAugust 29 Monday 2022 08-28-05 AM",
             "latest_change_notes": "Item added\nItsme\nAugust 29 Monday 2022 08-28-05 AM"
+        },
+        "100-Coffee Brown HT ProRib- 38 3\/8": {
+            "part_number": "1328GA-103",
+            "unit_quantity": 3,
+            "current_quantity": 185,
+            "price": 14.8,
+            "use_exchange_rate": false,
+            "priority": 0,
+            "notes": "Vendor: Domtek\nDescription: ",
+            "latest_change_name": "Item added\nItsme\nAugust 04 Thursday 2022 09-11-10 AM",
+            "latest_change_part_number": "Item added\nItsme\nAugust 04 Thursday 2022 09-11-10 AM",
+            "latest_change_unit_quantity": "Item added\nItsme\nAugust 04 Thursday 2022 09-11-10 AM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 185\nto: 185\nItsme\nDecember 14 Wednesday 2022 04:22:18 PM",
+            "latest_change_price": "Latest Change:\nfrom: 14.8\nto: 14.8\nItsme\nOctober 14 Friday 2022 09:32:01 AM",
+            "latest_change_use_exchange_price": "Item added\nItsme\nAugust 04 Thursday 2022 09-11-10 AM",
+            "latest_change_priority": "Item added\nItsme\nAugust 04 Thursday 2022 09-11-10 AM",
+            "latest_change_notes": "Item added\nItsme\nAugust 04 Thursday 2022 09-11-10 AM"
         },
         "Snap-Tite Romex C 1\/2\" 841ST": {
             "part_number": "ARL841ST",
