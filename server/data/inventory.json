@@ -8782,6 +8782,40 @@
             "latest_change_use_exchange_price": "Item added\nItsme\nDecember 05 Monday 2022 04-02-30 PM",
             "latest_change_priority": "Item added\nItsme\nDecember 05 Monday 2022 04-02-30 PM",
             "latest_change_notes": "Item added\nItsme\nDecember 05 Monday 2022 04-02-30 PM"
+        },
+        "8x8x .375 Square Tube 40 feet long": {
+            "part_number": "88375ST",
+            "unit_quantity": 1.0,
+            "current_quantity": 2,
+            "price": 35.0,
+            "use_exchange_rate": false,
+            "priority": 0,
+            "notes": "Vendor: Russel Metals\nDescription: 40feet per leangth",
+            "latest_change_name": "Item added\nItsme\nDecember 16 Friday 2022 04-21-33 PM",
+            "latest_change_part_number": "Item added\nItsme\nDecember 16 Friday 2022 04-21-33 PM",
+            "latest_change_unit_quantity": "Item added\nItsme\nDecember 16 Friday 2022 04-21-33 PM",
+            "latest_change_current_quantity": "Item added\nItsme\nDecember 16 Friday 2022 04-21-33 PM",
+            "latest_change_price": "Item added\nItsme\nDecember 16 Friday 2022 04-21-33 PM",
+            "latest_change_use_exchange_price": "Item added\nItsme\nDecember 16 Friday 2022 04-21-33 PM",
+            "latest_change_priority": "Item added\nItsme\nDecember 16 Friday 2022 04-21-33 PM",
+            "latest_change_notes": "Item added\nItsme\nDecember 16 Friday 2022 04-21-33 PM"
+        },
+        "8x8x.25 Square Tube 40 Feet long": {
+            "part_number": "8825ST",
+            "unit_quantity": 1.0,
+            "current_quantity": 1,
+            "price": 35.0,
+            "use_exchange_rate": false,
+            "priority": 0,
+            "notes": "Vendor: Russel\nDescription: 40 Feet per leangth",
+            "latest_change_name": "Item added\nItsme\nDecember 16 Friday 2022 04-22-32 PM",
+            "latest_change_part_number": "Item added\nItsme\nDecember 16 Friday 2022 04-22-32 PM",
+            "latest_change_unit_quantity": "Item added\nItsme\nDecember 16 Friday 2022 04-22-32 PM",
+            "latest_change_current_quantity": "Item added\nItsme\nDecember 16 Friday 2022 04-22-32 PM",
+            "latest_change_price": "Item added\nItsme\nDecember 16 Friday 2022 04-22-32 PM",
+            "latest_change_use_exchange_price": "Item added\nItsme\nDecember 16 Friday 2022 04-22-32 PM",
+            "latest_change_priority": "Item added\nItsme\nDecember 16 Friday 2022 04-22-32 PM",
+            "latest_change_notes": "Item added\nItsme\nDecember 16 Friday 2022 04-22-32 PM"
         }
     }
 }
