@@ -3090,7 +3090,7 @@
             "unit_quantity": 3,
             "current_quantity": 20,
             "price": 5.0,
-            "use_exchange_rate": false,
+            "use_exchange_rate": true,
             "priority": 0,
             "notes": "Vendor: Sierra Pacific Engineering and Products\nDescription: ",
             "latest_change_name": "Item added\nItsme\nJuly 19 Tuesday 2022 01-59-38 PM",
@@ -3100,7 +3100,8 @@
             "latest_change_price": "Item added\nItsme\nJuly 19 Tuesday 2022 01-59-38 PM",
             "latest_change_use_exchange_price": "Item added\nItsme\nJuly 19 Tuesday 2022 01-59-38 PM",
             "latest_change_priority": "Item added\nItsme\nJuly 19 Tuesday 2022 01-59-38 PM",
-            "latest_change_notes": "Item added\nItsme\nJuly 19 Tuesday 2022 01-59-38 PM"
+            "latest_change_notes": "Item added\nItsme\nJuly 19 Tuesday 2022 01-59-38 PM",
+            "latest_change_use_exchange_rate": "Latest Change:\nfrom: CAD\nto: USD\nItsme\nDecember 16 Friday 2022 09:57:39 AM"
         },
         "Washer 5\/16\" Spring Lock": {
             "part_number": "W516SL",
@@ -3124,7 +3125,7 @@
             "unit_quantity": 1,
             "current_quantity": 41,
             "price": 12.35,
-            "use_exchange_rate": false,
+            "use_exchange_rate": true,
             "priority": 0,
             "notes": "Vendor: Sierra Pacific\nDescription: ",
             "latest_change_name": "Item added\nItsme\nJuly 08 Friday 2022 09-12-31 AM",
@@ -3134,7 +3135,8 @@
             "latest_change_price": "Latest Change:\nfrom: 12.35\nto: 12.35\nItsme\nAugust 31 Wednesday 2022 08:22:24 AM",
             "latest_change_use_exchange_price": "Item added\nItsme\nJuly 08 Friday 2022 09-12-32 AM",
             "latest_change_priority": "Item added\nItsme\nJuly 08 Friday 2022 09-12-32 AM",
-            "latest_change_notes": "Item added\nItsme\nJuly 08 Friday 2022 09-12-32 AM"
+            "latest_change_notes": "Item added\nItsme\nJuly 08 Friday 2022 09-12-32 AM",
+            "latest_change_use_exchange_rate": "Latest Change:\nfrom: CAD\nto: USD\nItsme\nDecember 16 Friday 2022 09:58:47 AM"
         },
         "Base Relay ( Allen- Bradley)": {
             "part_number": "700-HF32A1 SQ  ",
