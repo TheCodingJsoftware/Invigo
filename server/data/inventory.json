@@ -2132,12 +2132,13 @@
             "unit_quantity": 1,
             "current_quantity": 90,
             "price": 68.45,
-            "use_exchange_rate": false,
+            "use_exchange_rate": true,
             "priority": 3,
             "notes": "Vendor: Jan-Air Illinois\nDescription: ",
             "latest_change_current_quantity": "Latest Change:\nfrom: 90\nto: 90\nItsme\nNovember 30 Wednesday 2022 09:58:04 AM",
             "latest_change_priority": "Latest Change:\nfrom: 0\nto: 3\nItsme\nSeptember 05 Monday 2022 09:49:27 AM",
-            "latest_change_price": "Latest Change:\nfrom: 68.45\nto: 68.45\nItsme\nSeptember 06 Tuesday 2022 11:12:17 AM"
+            "latest_change_price": "Latest Change:\nfrom: 68.45\nto: 68.45\nItsme\nSeptember 06 Tuesday 2022 11:12:17 AM",
+            "latest_change_use_exchange_rate": "Latest Change:\nfrom: CAD\nto: USD\nItsme\nDecember 16 Friday 2022 09:36:46 AM"
         },
         "1\/4 Nialon Plastic Shaft- Float assy": {
             "part_number": "14NPS",
