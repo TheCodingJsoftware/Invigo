@@ -4,8 +4,8 @@ __copyright__ = "Copyright 2022, TheCodingJ's"
 __credits__: "list[str]" = ["Jared Gross"]
 __license__ = "MIT"
 __name__ = "Inventory Manager"
-__version__ = "v1.4.5"
-__updated__ = "2022-11-11 08:27:41"
+__version__ = "v1.4.6"
+__updated__ = "2022-12-21 14:22:09"
 __maintainer__ = "Jared Gross"
 __email__ = "jared@pinelandfarms.ca"
 __status__ = "Production"
@@ -643,21 +643,6 @@ class MainWindow(QMainWindow):
 
         self.update_list_widget()
         self.label_category_name.setText(f"Category: {self.category}")
-        round_number = lambda x, n: eval(
-            '"%.'
-            + str(int(n))
-            + 'f" % '
-            + repr(int(x) + round(float("." + str(float(x)).split(".")[1]), n))
-        )
-        self.label_total_unit_cost.setText(
-            f"Total Unit Cost: ${round_number(inventory.get_total_unit_cost(self.category, self.get_exchange_rate()),2)}"
-        )
-        try:
-            self.label_units_possible.setText(
-                f"Total Units Possible ≈ {inventory.get_exact_total_unit_count(self.category)} to {round_number(inventory.get_total_count(self.category, 'current_quantity')/inventory.get_total_count(self.category, 'unit_quantity'),2)}"
-            )
-        except ZeroDivisionError:
-            self.label_units_possible.setText("Total Units Possible: 0")
         self.quantities_change()
 
         try:
@@ -1111,8 +1096,16 @@ class MainWindow(QMainWindow):
         for i, stock_cost in enumerate(total_stock_costs, start=1):
             lbl = QLabel(stock_cost, self)
             self.gridLayout_Categor_Stock_Prices.addWidget(lbl, i, 0)
-            lbl = QLabel(f"${total_stock_costs[stock_cost]}", self)
+            lbl = QLabel(f"${format(float(total_stock_costs[stock_cost]),',')}", self)
             self.gridLayout_Categor_Stock_Prices.addWidget(lbl, i, 1)
+        lbl = QLabel("__________________________", self)
+        self.gridLayout_Categor_Stock_Prices.addWidget(lbl, i + 1, 0)
+        lbl = QLabel("__________________________", self)
+        self.gridLayout_Categor_Stock_Prices.addWidget(lbl, i + 1, 1)
+        lbl = QLabel("Total Cost in Stock:", self)
+        self.gridLayout_Categor_Stock_Prices.addWidget(lbl, i + 2, 0)
+        lbl = QLabel(f"${format(inventory.get_total_stock_cost(), ',')}", self)
+        self.gridLayout_Categor_Stock_Prices.addWidget(lbl, i + 2, 1)
 
     def create_new_category(self, event=None) -> None:
         """
@@ -1528,7 +1521,7 @@ class MainWindow(QMainWindow):
             + repr(int(x) + round(float("." + str(float(x)).split(".")[1]), n))
         )
         self.label_total_unit_cost.setText(
-            f"Total Unit Cost: ${round_number(inventory.get_total_unit_cost(self.category, self.get_exchange_rate()),2)}"
+            f"Total Unit Cost: ${format(float(round_number(inventory.get_total_unit_cost(self.category, self.get_exchange_rate()),2)),',')}"
         )
 
     def use_exchange_rate_change(
@@ -1761,7 +1754,8 @@ class MainWindow(QMainWindow):
                     "latest_change_notes",
                     f"Item added\n{self.username}\n{datetime.now().strftime('%B %d %A %Y %I-%M-%S %p')}",
                 )
-                self.load_tab()
+                self.sort_inventory()
+                # self.load_tab()
             elif response == DialogButtons.cancel:
                 return
 
@@ -1904,19 +1898,6 @@ class MainWindow(QMainWindow):
                 )
             self.status_button.setText("Done!")
 
-            round_number = lambda x, n: eval(
-                '"%.'
-                + str(int(n))
-                + 'f" % '
-                + repr(int(x) + round(float("." + str(float(x)).split(".")[1]), n))
-            )
-
-            try:
-                self.label_units_possible.setText(
-                    f"Total Units Possible ≈ {inventory.get_exact_total_unit_count(self.category)} to {round_number(inventory.get_total_count(self.category, 'current_quantity')/inventory.get_total_count(self.category, 'unit_quantity'),2)}"
-                )
-            except ZeroDivisionError:
-                self.label_units_possible.setText("Total Units Possible: 0")
             self.highlight_color = "#3daee9"
             QtTest.QTest.qWait(1750)
             for item in list(self.inventory_prices_objects.keys()):
@@ -1940,6 +1921,7 @@ class MainWindow(QMainWindow):
             self.pushButton_remove_quantity.setEnabled(True)
             self.radioButton_category.setEnabled(True)
             self.radioButton_single.setEnabled(True)
+            self.sort_inventory()
 
     def add_quantity(self, item_name: str, old_quantity: int) -> None:
         """
@@ -2003,6 +1985,7 @@ class MainWindow(QMainWindow):
         # self.load_tab()
         self.listWidget_itemnames.setCurrentRow(self.last_item_selected_index)
         self.listWidget_item_changed()
+        self.sort_inventory()
 
     def remove_quantity(self, item_name: str, old_quantity: int) -> None:
         """
@@ -2079,6 +2062,7 @@ class MainWindow(QMainWindow):
         # self.load_tab()
         self.listWidget_itemnames.setCurrentRow(self.last_item_selected_index)
         self.listWidget_item_changed()
+        self.sort_inventory()
 
     def listWidget_item_changed(self) -> None:
         """
@@ -2226,19 +2210,6 @@ class MainWindow(QMainWindow):
         # QApplication.restoreOverrideCursor()
         self.pushButton_add_quantity.setEnabled(add_quantity_state)
         self.pushButton_remove_quantity.setEnabled(remove_quantity_state)
-
-        round_number = lambda x, n: eval(
-            '"%.'
-            + str(int(n))
-            + 'f" % '
-            + repr(int(x) + round(float("." + str(float(x)).split(".")[1]), n))
-        )
-        try:
-            self.label_units_possible.setText(
-                f"Total Units Possible ≈ {inventory.get_exact_total_unit_count(self.category)} to {round_number(inventory.get_total_count(self.category, 'current_quantity')/inventory.get_total_count(self.category, 'unit_quantity'),2)}"
-            )
-        except ZeroDivisionError:
-            self.label_units_possible.setText("Total Units Possible: 0")
 
     def toggle_auto_back_up_to_cloud(self) -> None:
         """
@@ -3088,7 +3059,7 @@ class MainWindow(QMainWindow):
             f"1.00 USD: {exchange_rate} CAD - {datetime.now().strftime('%r')}"
         )
         self.label_total_unit_cost.setText(
-            f"Total Unit Cost: ${round_number(inventory.get_total_unit_cost(self.category, self.get_exchange_rate()),2)}"
+            f"Total Unit Cost: ${format(float(round_number(inventory.get_total_unit_cost(self.category, self.get_exchange_rate()),2)),',')}"
         )
         settings_file.change_item(item_name="exchange_rate", new_value=exchange_rate)
         self.update_stock_costs()

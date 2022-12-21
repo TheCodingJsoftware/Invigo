@@ -325,6 +325,32 @@ class JsonFile:
                 total_cost += price * unit_quantity * exchange_rate
         return total_cost
 
+    def get_total_stock_cost(self) -> float:
+        """
+        It takes the price and quantity of each item in the inventory and multiplies them together to
+        get the total cost of the inventory
+
+        Returns:
+          The total cost of all items in the inventory.
+        """
+        total_stock_cost: float = 0.0
+        all_items = {}
+        for category in self.get_keys():
+            for item in self.data[category]:
+                all_items[self.data[category][item]["part_number"]] = {}
+                all_items[self.data[category][item]["part_number"]].update(
+                    {
+                        "price": self.data[category][item]["price"],
+                        "quantity": self.data[category][item]["current_quantity"],
+                    },
+                )
+
+        for item in all_items:
+            price: float = all_items[item]["price"] * all_items[item]["quantity"]
+            price = max(price, 0)
+            total_stock_cost += price
+        return total_stock_cost
+
     def check_if_value_exists_less_then(self, category: str, value_to_check: int) -> bool:
         """
         It checks if there are any items in the category that have a quantity less than the

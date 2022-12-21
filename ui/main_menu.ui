@@ -355,13 +355,6 @@
         </widget>
        </item>
        <item>
-        <widget class="QLabel" name="label_units_possible">
-         <property name="text">
-          <string>Total Units Possible:</string>
-         </property>
-        </widget>
-       </item>
-       <item>
         <widget class="Line" name="line_2">
          <property name="orientation">
           <enum>Qt::Horizontal</enum>
@@ -369,7 +362,14 @@
         </widget>
        </item>
        <item>
-        <layout class="QGridLayout" name="gridLayout_Categor_Stock_Prices"/>
+        <layout class="QGridLayout" name="gridLayout_Categor_Stock_Prices">
+         <property name="horizontalSpacing">
+          <number>0</number>
+         </property>
+         <property name="verticalSpacing">
+          <number>6</number>
+         </property>
+        </layout>
        </item>
        <item>
         <widget class="Line" name="line">

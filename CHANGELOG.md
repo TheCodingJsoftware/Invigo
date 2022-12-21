@@ -1,3 +1,7 @@
+<h1>v1.4.6</h1>
+&bull; Added total stock in cost to dock menu.<br>
+&bull; Sorting is applied automatically once new item is added.<br>
+
 <h1>v1.4.5</h1>
 &bull; Items less than or equal to 10 are shown in a "Low in Quantity" group.<br>
 &bull; Unit quantities are now as decimal numbers.<br>
