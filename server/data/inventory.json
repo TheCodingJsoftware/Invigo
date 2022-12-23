@@ -412,12 +412,12 @@
         "6L12  ASHT 6\"X12\" Section": {
             "part_number": "6L12",
             "unit_quantity": 1.0,
-            "current_quantity": 50,
+            "current_quantity": 80,
             "price": 60.3,
             "use_exchange_rate": false,
             "priority": 2,
             "notes": "Vendor: Security Chimneys\ndmorris@duraventgroup.com\nDescription: ",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 50.0\nto: 50\nItsme\nNovember 30 Wednesday 2022 09:58:03 AM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 80\nto: 80\nItsme\nDecember 23 Friday 2022 10:15:02 AM",
             "latest_change_price": "Latest Change:\nfrom: 60.3\nto: 60.3\nItsme\nOctober 04 Tuesday 2022 01:57:08 PM"
         },
         "Cotter Pin 1\/16x 1\/2 ": {
@@ -1834,12 +1834,12 @@
         "6L12  ASHT 6\"X12\" Section": {
             "part_number": "6L12",
             "unit_quantity": 1.0,
-            "current_quantity": 50,
+            "current_quantity": 80,
             "price": 60.3,
             "use_exchange_rate": false,
             "priority": 3,
             "notes": "Vendor: Security Chimneys\ndmorris@duraventgroup.com\nDescription: ",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 50\nto: 50\nItsme\nNovember 30 Wednesday 2022 09:58:03 AM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 80\nto: 80\nItsme\nDecember 23 Friday 2022 10:15:02 AM",
             "latest_change_price": "Latest Change:\nfrom: 60.3\nto: 60.3\nItsme\nOctober 04 Tuesday 2022 01:57:08 PM",
             "latest_change_priority": "Latest Change:\nfrom: 2\nto: 3\nItsme\nDecember 05 Monday 2022 02:46:47 PM"
         },
@@ -3187,17 +3187,6 @@
             "latest_change_current_quantity": "Latest Change:\nfrom: 50\nto: 50\nItsme\nNovember 30 Wednesday 2022 09:58:03 AM",
             "latest_change_name": "Latest Change:\nfrom: \"3\" Thermax SF- 600 Brick Slabs 1000x610x7\"\nto: \"3\" Thermax SF- 600 Brick Slabs 1000x610x75\"\nItsme\nJuly 11 Monday 2022 09:45:53 AM"
         },
-        "6L12  ASHT 6\"X12\" Section": {
-            "part_number": "6L12",
-            "unit_quantity": 1.0,
-            "current_quantity": 50,
-            "price": 60.3,
-            "use_exchange_rate": false,
-            "priority": 2,
-            "notes": "Vendor: Security Chimneys\ndmorris@duraventgroup.com\nDescription: ",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 50.0\nto: 50\nItsme\nNovember 30 Wednesday 2022 09:58:03 AM",
-            "latest_change_price": "Latest Change:\nfrom: 60.3\nto: 60.3\nItsme\nOctober 04 Tuesday 2022 01:57:08 PM"
-        },
         "Cotter Pin 1\/16x 1\/2 ": {
             "part_number": "CP116",
             "unit_quantity": 1,
@@ -3412,6 +3401,17 @@
             "priority": 0,
             "notes": "Vendor: \nDescription: ",
             "latest_change_current_quantity": "Latest Change:\nfrom: 76\nto: 76\nItsme\nNovember 30 Wednesday 2022 09:58:03 AM"
+        },
+        "6L12  ASHT 6\"X12\" Section": {
+            "part_number": "6L12",
+            "unit_quantity": 1.0,
+            "current_quantity": 80,
+            "price": 60.3,
+            "use_exchange_rate": false,
+            "priority": 2,
+            "notes": "Vendor: Security Chimneys\ndmorris@duraventgroup.com\nDescription: ",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 80\nto: 80\nItsme\nDecember 23 Friday 2022 10:15:02 AM",
+            "latest_change_price": "Latest Change:\nfrom: 60.3\nto: 60.3\nItsme\nOctober 04 Tuesday 2022 01:57:08 PM"
         },
         " 12C6 CAM, .177 OFFSET OUT, ZINC PLATED": {
             "part_number": "12C6",
@@ -4220,7 +4220,7 @@
         "6\" Chimney T 6Tl12-PM": {
             "part_number": "208800",
             "unit_quantity": 1,
-            "current_quantity": 50,
+            "current_quantity": 100,
             "price": 199.52,
             "use_exchange_rate": false,
             "priority": 3,
@@ -4228,7 +4228,7 @@
             "latest_change_name": "Item added\nItsme\nAugust 03 Wednesday 2022 11-11-49 AM",
             "latest_change_part_number": "Item added\nItsme\nAugust 03 Wednesday 2022 11-11-49 AM",
             "latest_change_unit_quantity": "Item added\nItsme\nAugust 03 Wednesday 2022 11-11-49 AM",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 50\nto: 50\nItsme\nNovember 21 Monday 2022 04:21:41 PM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 100\nto: 100\nItsme\nDecember 23 Friday 2022 10:13:58 AM",
             "latest_change_price": "Latest Change:\nfrom: 199.52\nto: 199.52\nItsme\nOctober 04 Tuesday 2022 01:54:33 PM",
             "latest_change_use_exchange_price": "Item added\nItsme\nAugust 03 Wednesday 2022 11-11-49 AM",
             "latest_change_priority": "Latest Change:\nfrom: 0\nto: 3\nItsme\nOctober 21 Friday 2022 04:30:28 PM",
@@ -4254,7 +4254,7 @@
         "6 x 36\" Chimney 6L36": {
             "part_number": "206800",
             "unit_quantity": 1,
-            "current_quantity": 57,
+            "current_quantity": 107,
             "price": 149.43,
             "use_exchange_rate": false,
             "priority": 3,
@@ -4262,7 +4262,7 @@
             "latest_change_name": "Item added\nItsme\nAugust 03 Wednesday 2022 11-11-13 AM",
             "latest_change_part_number": "Item added\nItsme\nAugust 03 Wednesday 2022 11-11-13 AM",
             "latest_change_unit_quantity": "Item added\nItsme\nAugust 03 Wednesday 2022 11-11-13 AM",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 57\nto: 57\nItsme\nNovember 21 Monday 2022 04:22:30 PM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 107\nto: 107\nItsme\nDecember 23 Friday 2022 10:14:29 AM",
             "latest_change_price": "Latest Change:\nfrom: 149.43\nto: 149.43\nItsme\nOctober 04 Tuesday 2022 01:54:56 PM",
             "latest_change_use_exchange_price": "Item added\nItsme\nAugust 03 Wednesday 2022 11-11-13 AM",
             "latest_change_priority": "Latest Change:\nfrom: 0\nto: 3\nItsme\nOctober 21 Friday 2022 04:30:25 PM",
@@ -5640,7 +5640,7 @@
         "6\" Chimney T 6Tl12-PM": {
             "part_number": "208800",
             "unit_quantity": 1,
-            "current_quantity": 50,
+            "current_quantity": 100,
             "price": 199.52,
             "use_exchange_rate": false,
             "priority": 0,
@@ -5648,7 +5648,7 @@
             "latest_change_name": "Item added\nItsme\nAugust 03 Wednesday 2022 10-59-02 AM",
             "latest_change_part_number": "Item added\nItsme\nAugust 03 Wednesday 2022 10-59-02 AM",
             "latest_change_unit_quantity": "Item added\nItsme\nAugust 03 Wednesday 2022 10-59-02 AM",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 50\nto: 50\nItsme\nNovember 21 Monday 2022 04:21:41 PM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 100\nto: 100\nItsme\nDecember 23 Friday 2022 10:13:58 AM",
             "latest_change_price": "Latest Change:\nfrom: 199.52\nto: 199.52\nItsme\nOctober 04 Tuesday 2022 01:54:33 PM",
             "latest_change_use_exchange_price": "Item added\nItsme\nAugust 03 Wednesday 2022 10-59-02 AM",
             "latest_change_priority": "Item added\nItsme\nAugust 03 Wednesday 2022 10-59-02 AM",
@@ -5674,7 +5674,7 @@
         "6 x 36\" Chimney 6L36": {
             "part_number": "206800",
             "unit_quantity": 1,
-            "current_quantity": 57,
+            "current_quantity": 107,
             "price": 149.43,
             "use_exchange_rate": false,
             "priority": 0,
@@ -5682,7 +5682,7 @@
             "latest_change_name": "Item added\nItsme\nAugust 03 Wednesday 2022 11-00-24 AM",
             "latest_change_part_number": "Item added\nItsme\nAugust 03 Wednesday 2022 11-00-24 AM",
             "latest_change_unit_quantity": "Item added\nItsme\nAugust 03 Wednesday 2022 11-00-24 AM",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 57\nto: 57\nItsme\nNovember 21 Monday 2022 04:22:30 PM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 107\nto: 107\nItsme\nDecember 23 Friday 2022 10:14:29 AM",
             "latest_change_price": "Latest Change:\nfrom: 149.43\nto: 149.43\nItsme\nOctober 04 Tuesday 2022 01:54:56 PM",
             "latest_change_use_exchange_price": "Item added\nItsme\nAugust 03 Wednesday 2022 11-00-24 AM",
             "latest_change_priority": "Item added\nItsme\nAugust 03 Wednesday 2022 11-00-24 AM",
@@ -6253,23 +6253,6 @@
             "latest_change_priority": "Item added\nItsme\nAugust 04 Thursday 2022 09-19-26 AM",
             "latest_change_notes": "Item added\nItsme\nAugust 04 Thursday 2022 09-19-26 AM"
         },
-        "6\" Chimney T 6Tl12-PM": {
-            "part_number": "208800",
-            "unit_quantity": 1,
-            "current_quantity": 50,
-            "price": 199.52,
-            "use_exchange_rate": false,
-            "priority": 0,
-            "notes": "Vendor: Security Chimney\nDescription: ",
-            "latest_change_name": "Item added\nItsme\nAugust 03 Wednesday 2022 10-59-02 AM",
-            "latest_change_part_number": "Item added\nItsme\nAugust 03 Wednesday 2022 10-59-02 AM",
-            "latest_change_unit_quantity": "Item added\nItsme\nAugust 03 Wednesday 2022 10-59-02 AM",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 50\nto: 50\nItsme\nNovember 21 Monday 2022 04:21:41 PM",
-            "latest_change_price": "Latest Change:\nfrom: 199.52\nto: 199.52\nItsme\nOctober 04 Tuesday 2022 01:54:33 PM",
-            "latest_change_use_exchange_price": "Item added\nItsme\nAugust 03 Wednesday 2022 10-59-02 AM",
-            "latest_change_priority": "Item added\nItsme\nAugust 03 Wednesday 2022 10-59-02 AM",
-            "latest_change_notes": "Item added\nItsme\nAugust 03 Wednesday 2022 10-59-02 AM"
-        },
         "BC52171-K 4\" SQ BOX 2-1\/8\" DEE": {
             "part_number": "THSBC52171K",
             "unit_quantity": 1,
@@ -6286,23 +6269,6 @@
             "latest_change_use_exchange_price": "Item added\nItsme\nNovember 02 Wednesday 2022 03-24-24 PM",
             "latest_change_priority": "Item added\nItsme\nNovember 02 Wednesday 2022 03-24-24 PM",
             "latest_change_notes": "Item added\nItsme\nNovember 02 Wednesday 2022 03-24-24 PM"
-        },
-        "6 x 36\" Chimney 6L36": {
-            "part_number": "206800",
-            "unit_quantity": 1,
-            "current_quantity": 57,
-            "price": 149.43,
-            "use_exchange_rate": false,
-            "priority": 0,
-            "notes": "Vendor: Security Chimney\nDescription: ",
-            "latest_change_name": "Item added\nItsme\nAugust 03 Wednesday 2022 11-00-24 AM",
-            "latest_change_part_number": "Item added\nItsme\nAugust 03 Wednesday 2022 11-00-24 AM",
-            "latest_change_unit_quantity": "Item added\nItsme\nAugust 03 Wednesday 2022 11-00-24 AM",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 57\nto: 57\nItsme\nNovember 21 Monday 2022 04:22:30 PM",
-            "latest_change_price": "Latest Change:\nfrom: 149.43\nto: 149.43\nItsme\nOctober 04 Tuesday 2022 01:54:56 PM",
-            "latest_change_use_exchange_price": "Item added\nItsme\nAugust 03 Wednesday 2022 11-00-24 AM",
-            "latest_change_priority": "Item added\nItsme\nAugust 03 Wednesday 2022 11-00-24 AM",
-            "latest_change_notes": "Item added\nItsme\nAugust 03 Wednesday 2022 11-00-24 AM"
         },
         "3\" Flex Hose": {
             "part_number": "3FH",
@@ -6406,6 +6372,40 @@
             "latest_change_priority": "Item added\nItsme\nOctober 17 Monday 2022 08-11-37 AM",
             "latest_change_notes": "Item added\nItsme\nOctober 17 Monday 2022 08-11-37 AM"
         },
+        "6\" Chimney T 6Tl12-PM": {
+            "part_number": "208800",
+            "unit_quantity": 1,
+            "current_quantity": 100,
+            "price": 199.52,
+            "use_exchange_rate": false,
+            "priority": 0,
+            "notes": "Vendor: Security Chimney\nDescription: ",
+            "latest_change_name": "Item added\nItsme\nAugust 03 Wednesday 2022 10-59-02 AM",
+            "latest_change_part_number": "Item added\nItsme\nAugust 03 Wednesday 2022 10-59-02 AM",
+            "latest_change_unit_quantity": "Item added\nItsme\nAugust 03 Wednesday 2022 10-59-02 AM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 100\nto: 100\nItsme\nDecember 23 Friday 2022 10:13:58 AM",
+            "latest_change_price": "Latest Change:\nfrom: 199.52\nto: 199.52\nItsme\nOctober 04 Tuesday 2022 01:54:33 PM",
+            "latest_change_use_exchange_price": "Item added\nItsme\nAugust 03 Wednesday 2022 10-59-02 AM",
+            "latest_change_priority": "Item added\nItsme\nAugust 03 Wednesday 2022 10-59-02 AM",
+            "latest_change_notes": "Item added\nItsme\nAugust 03 Wednesday 2022 10-59-02 AM"
+        },
+        "6 x 36\" Chimney 6L36": {
+            "part_number": "206800",
+            "unit_quantity": 1,
+            "current_quantity": 107,
+            "price": 149.43,
+            "use_exchange_rate": false,
+            "priority": 0,
+            "notes": "Vendor: Security Chimney\nDescription: ",
+            "latest_change_name": "Item added\nItsme\nAugust 03 Wednesday 2022 11-00-24 AM",
+            "latest_change_part_number": "Item added\nItsme\nAugust 03 Wednesday 2022 11-00-24 AM",
+            "latest_change_unit_quantity": "Item added\nItsme\nAugust 03 Wednesday 2022 11-00-24 AM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 107\nto: 107\nItsme\nDecember 23 Friday 2022 10:14:29 AM",
+            "latest_change_price": "Latest Change:\nfrom: 149.43\nto: 149.43\nItsme\nOctober 04 Tuesday 2022 01:54:56 PM",
+            "latest_change_use_exchange_price": "Item added\nItsme\nAugust 03 Wednesday 2022 11-00-24 AM",
+            "latest_change_priority": "Item added\nItsme\nAugust 03 Wednesday 2022 11-00-24 AM",
+            "latest_change_notes": "Item added\nItsme\nAugust 03 Wednesday 2022 11-00-24 AM"
+        },
         "Single Pole Switch 1301W": {
             "part_number": "CWD1301W",
             "unit_quantity": 1.0,
@@ -6422,23 +6422,6 @@
             "latest_change_use_exchange_price": "Item added\nItsme\nNovember 28 Monday 2022 10-42-23 AM",
             "latest_change_priority": "Item added\nItsme\nNovember 28 Monday 2022 10-42-23 AM",
             "latest_change_notes": "Item added\nItsme\nNovember 28 Monday 2022 10-42-23 AM"
-        },
-        "Damper Box- Aluminum": {
-            "part_number": "DBA",
-            "unit_quantity": 1,
-            "current_quantity": 158,
-            "price": 33.0,
-            "use_exchange_rate": false,
-            "priority": 0,
-            "notes": "Vendor: Matric Metal Casting\nDescription: ",
-            "latest_change_name": "Item added\nItsme\nAugust 04 Thursday 2022 10-19-53 AM",
-            "latest_change_part_number": "Latest Change:\nfrom: DBA\nto: DBA\nItsme\nAugust 15 Monday 2022 11:28:11 AM",
-            "latest_change_unit_quantity": "Item added\nItsme\nAugust 04 Thursday 2022 10-19-53 AM",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 158\nto: 158\nItsme\nDecember 23 Friday 2022 08:16:10 AM",
-            "latest_change_price": "Latest Change:\nfrom: 33.0\nto: 33.0\nItsme\nOctober 04 Tuesday 2022 02:15:42 PM",
-            "latest_change_use_exchange_price": "Item added\nItsme\nAugust 04 Thursday 2022 10-19-53 AM",
-            "latest_change_priority": "Item added\nItsme\nAugust 04 Thursday 2022 10-19-53 AM",
-            "latest_change_notes": "Item added\nItsme\nAugust 04 Thursday 2022 10-19-53 AM"
         },
         "1\" Street Elbow- 90 ": {
             "part_number": "1SE9",
@@ -6490,6 +6473,23 @@
             "latest_change_use_exchange_price": "Item added\nItsme\nAugust 04 Thursday 2022 10-09-19 AM",
             "latest_change_priority": "Item added\nItsme\nAugust 04 Thursday 2022 10-09-19 AM",
             "latest_change_notes": "Item added\nItsme\nAugust 04 Thursday 2022 10-09-19 AM"
+        },
+        "Damper Box- Aluminum": {
+            "part_number": "DBA",
+            "unit_quantity": 1,
+            "current_quantity": 158,
+            "price": 33.0,
+            "use_exchange_rate": false,
+            "priority": 0,
+            "notes": "Vendor: Matric Metal Casting\nDescription: ",
+            "latest_change_name": "Item added\nItsme\nAugust 04 Thursday 2022 10-19-53 AM",
+            "latest_change_part_number": "Latest Change:\nfrom: DBA\nto: DBA\nItsme\nAugust 15 Monday 2022 11:28:11 AM",
+            "latest_change_unit_quantity": "Item added\nItsme\nAugust 04 Thursday 2022 10-19-53 AM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 158\nto: 158\nItsme\nDecember 23 Friday 2022 08:16:10 AM",
+            "latest_change_price": "Latest Change:\nfrom: 33.0\nto: 33.0\nItsme\nOctober 04 Tuesday 2022 02:15:42 PM",
+            "latest_change_use_exchange_price": "Item added\nItsme\nAugust 04 Thursday 2022 10-19-53 AM",
+            "latest_change_priority": "Item added\nItsme\nAugust 04 Thursday 2022 10-19-53 AM",
+            "latest_change_notes": "Item added\nItsme\nAugust 04 Thursday 2022 10-19-53 AM"
         },
         "1\" x4\" Nipple": {
             "part_number": "G1616-100x4",
@@ -6904,23 +6904,6 @@
             "latest_change_priority": "Item added\nItsme\nNovember 02 Wednesday 2022 03-24-32 PM",
             "latest_change_notes": "Item added\nItsme\nNovember 02 Wednesday 2022 03-24-32 PM"
         },
-        "8\" Chimney T  8TL14-PM": {
-            "part_number": "210800",
-            "unit_quantity": 1,
-            "current_quantity": 57,
-            "price": 210.3,
-            "use_exchange_rate": false,
-            "priority": 0,
-            "notes": "Vendor: Security Chimneys\nDescription: ",
-            "latest_change_name": "Item added\nItsme\nAugust 03 Wednesday 2022 11-04-02 AM",
-            "latest_change_part_number": "Item added\nItsme\nAugust 03 Wednesday 2022 11-04-02 AM",
-            "latest_change_unit_quantity": "Item added\nItsme\nAugust 03 Wednesday 2022 11-04-02 AM",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 57\nto: 57\nItsme\nNovember 21 Monday 2022 04:23:08 PM",
-            "latest_change_price": "Latest Change:\nfrom: 210.0\nto: 210.3\nItsme\nOctober 04 Tuesday 2022 01:53:52 PM",
-            "latest_change_use_exchange_price": "Item added\nItsme\nAugust 03 Wednesday 2022 11-04-02 AM",
-            "latest_change_priority": "Item added\nItsme\nAugust 03 Wednesday 2022 11-04-02 AM",
-            "latest_change_notes": "Item added\nItsme\nAugust 03 Wednesday 2022 11-04-02 AM"
-        },
         "3\" Flex Hose": {
             "part_number": "3FH",
             "unit_quantity": 1,
@@ -6954,23 +6937,6 @@
             "latest_change_use_exchange_price": "Item added\nItsme\nAugust 18 Thursday 2022 09-52-46 AM",
             "latest_change_priority": "Item added\nItsme\nAugust 18 Thursday 2022 09-52-46 AM",
             "latest_change_notes": "Item added\nItsme\nAugust 18 Thursday 2022 09-52-46 AM"
-        },
-        "8 x36\" Chimney ": {
-            "part_number": "8L36",
-            "unit_quantity": 1,
-            "current_quantity": 68,
-            "price": 177.4,
-            "use_exchange_rate": false,
-            "priority": 0,
-            "notes": "Vendor: Security Chimney\nDescription: ",
-            "latest_change_name": "Item added\nItsme\nAugust 03 Wednesday 2022 11-05-12 AM",
-            "latest_change_part_number": "Item added\nItsme\nAugust 03 Wednesday 2022 11-05-12 AM",
-            "latest_change_unit_quantity": "Item added\nItsme\nAugust 03 Wednesday 2022 11-05-12 AM",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 68\nto: 68\nItsme\nNovember 21 Monday 2022 04:23:28 PM",
-            "latest_change_price": "Latest Change:\nfrom: 177.0\nto: 177.4\nItsme\nOctober 04 Tuesday 2022 01:52:55 PM",
-            "latest_change_use_exchange_price": "Item added\nItsme\nAugust 03 Wednesday 2022 11-05-12 AM",
-            "latest_change_priority": "Item added\nItsme\nAugust 03 Wednesday 2022 11-05-12 AM",
-            "latest_change_notes": "Item added\nItsme\nAugust 03 Wednesday 2022 11-05-12 AM"
         },
         "D500 Blower Fan": {
             "part_number": "ARC50752D500",
@@ -7040,6 +7006,23 @@
             "latest_change_priority": "Item added\nItsme\nJuly 28 Thursday 2022 07-52-01 PM",
             "latest_change_notes": "Item added\nItsme\nJuly 28 Thursday 2022 07-52-01 PM"
         },
+        "8\" Chimney T  8TL14-PM": {
+            "part_number": "210800",
+            "unit_quantity": 1,
+            "current_quantity": 107,
+            "price": 210.3,
+            "use_exchange_rate": false,
+            "priority": 0,
+            "notes": "Vendor: Security Chimneys\nDescription: ",
+            "latest_change_name": "Item added\nItsme\nAugust 03 Wednesday 2022 11-04-02 AM",
+            "latest_change_part_number": "Item added\nItsme\nAugust 03 Wednesday 2022 11-04-02 AM",
+            "latest_change_unit_quantity": "Item added\nItsme\nAugust 03 Wednesday 2022 11-04-02 AM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 107\nto: 107\nItsme\nDecember 23 Friday 2022 10:15:34 AM",
+            "latest_change_price": "Latest Change:\nfrom: 210.0\nto: 210.3\nItsme\nOctober 04 Tuesday 2022 01:53:52 PM",
+            "latest_change_use_exchange_price": "Item added\nItsme\nAugust 03 Wednesday 2022 11-04-02 AM",
+            "latest_change_priority": "Item added\nItsme\nAugust 03 Wednesday 2022 11-04-02 AM",
+            "latest_change_notes": "Item added\nItsme\nAugust 03 Wednesday 2022 11-04-02 AM"
+        },
         "Single Pole Switch 1301W": {
             "part_number": "CWD1301W",
             "unit_quantity": 1.0,
@@ -7057,22 +7040,22 @@
             "latest_change_priority": "Item added\nItsme\nNovember 28 Monday 2022 10-42-59 AM",
             "latest_change_notes": "Item added\nItsme\nNovember 28 Monday 2022 10-42-59 AM"
         },
-        "Damper Box- Aluminum": {
-            "part_number": "DBA",
+        "8 x36\" Chimney ": {
+            "part_number": "8L36",
             "unit_quantity": 1,
-            "current_quantity": 158,
-            "price": 33.0,
+            "current_quantity": 118,
+            "price": 177.4,
             "use_exchange_rate": false,
             "priority": 0,
-            "notes": "Vendor: Matric Metal Casting\nDescription: ",
-            "latest_change_name": "Item added\nItsme\nAugust 15 Monday 2022 11-32-18 AM",
-            "latest_change_part_number": "Item added\nItsme\nAugust 15 Monday 2022 11-32-18 AM",
-            "latest_change_unit_quantity": "Item added\nItsme\nAugust 15 Monday 2022 11-32-18 AM",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 158\nto: 158\nItsme\nDecember 23 Friday 2022 08:16:10 AM",
-            "latest_change_price": "Latest Change:\nfrom: 33.0\nto: 33.0\nItsme\nOctober 04 Tuesday 2022 02:15:42 PM",
-            "latest_change_use_exchange_price": "Item added\nItsme\nAugust 15 Monday 2022 11-32-18 AM",
-            "latest_change_priority": "Item added\nItsme\nAugust 15 Monday 2022 11-32-18 AM",
-            "latest_change_notes": "Item added\nItsme\nAugust 15 Monday 2022 11-32-18 AM"
+            "notes": "Vendor: Security Chimney\nDescription: ",
+            "latest_change_name": "Item added\nItsme\nAugust 03 Wednesday 2022 11-05-12 AM",
+            "latest_change_part_number": "Item added\nItsme\nAugust 03 Wednesday 2022 11-05-12 AM",
+            "latest_change_unit_quantity": "Item added\nItsme\nAugust 03 Wednesday 2022 11-05-12 AM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 118\nto: 118\nItsme\nDecember 23 Friday 2022 10:15:46 AM",
+            "latest_change_price": "Latest Change:\nfrom: 177.0\nto: 177.4\nItsme\nOctober 04 Tuesday 2022 01:52:55 PM",
+            "latest_change_use_exchange_price": "Item added\nItsme\nAugust 03 Wednesday 2022 11-05-12 AM",
+            "latest_change_priority": "Item added\nItsme\nAugust 03 Wednesday 2022 11-05-12 AM",
+            "latest_change_notes": "Item added\nItsme\nAugust 03 Wednesday 2022 11-05-12 AM"
         },
         "1\" Street Elbow- 90 ": {
             "part_number": "1SE9",
@@ -7141,6 +7124,23 @@
             "latest_change_use_exchange_price": "Item added\nItsme\nAugust 04 Thursday 2022 10-09-28 AM",
             "latest_change_priority": "Item added\nItsme\nAugust 04 Thursday 2022 10-09-28 AM",
             "latest_change_notes": "Item added\nItsme\nAugust 04 Thursday 2022 10-09-28 AM"
+        },
+        "Damper Box- Aluminum": {
+            "part_number": "DBA",
+            "unit_quantity": 1,
+            "current_quantity": 158,
+            "price": 33.0,
+            "use_exchange_rate": false,
+            "priority": 0,
+            "notes": "Vendor: Matric Metal Casting\nDescription: ",
+            "latest_change_name": "Item added\nItsme\nAugust 15 Monday 2022 11-32-18 AM",
+            "latest_change_part_number": "Item added\nItsme\nAugust 15 Monday 2022 11-32-18 AM",
+            "latest_change_unit_quantity": "Item added\nItsme\nAugust 15 Monday 2022 11-32-18 AM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 158\nto: 158\nItsme\nDecember 23 Friday 2022 08:16:10 AM",
+            "latest_change_price": "Latest Change:\nfrom: 33.0\nto: 33.0\nItsme\nOctober 04 Tuesday 2022 02:15:42 PM",
+            "latest_change_use_exchange_price": "Item added\nItsme\nAugust 15 Monday 2022 11-32-18 AM",
+            "latest_change_priority": "Item added\nItsme\nAugust 15 Monday 2022 11-32-18 AM",
+            "latest_change_notes": "Item added\nItsme\nAugust 15 Monday 2022 11-32-18 AM"
         },
         "1\" x4\" Nipple": {
             "part_number": "G1616-100x4",
@@ -7522,7 +7522,7 @@
         "8\" Chimney T  8TL14-PM": {
             "part_number": "210800",
             "unit_quantity": 1,
-            "current_quantity": 57,
+            "current_quantity": 107,
             "price": 210.3,
             "use_exchange_rate": false,
             "priority": 0,
@@ -7530,7 +7530,7 @@
             "latest_change_name": "Item added\nItsme\nAugust 03 Wednesday 2022 11-04-02 AM",
             "latest_change_part_number": "Item added\nItsme\nAugust 03 Wednesday 2022 11-04-02 AM",
             "latest_change_unit_quantity": "Item added\nItsme\nAugust 03 Wednesday 2022 11-04-02 AM",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 57\nto: 57\nItsme\nNovember 21 Monday 2022 04:23:08 PM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 107\nto: 107\nItsme\nDecember 23 Friday 2022 10:15:34 AM",
             "latest_change_price": "Latest Change:\nfrom: 210.0\nto: 210.3\nItsme\nOctober 04 Tuesday 2022 01:53:52 PM",
             "latest_change_use_exchange_price": "Item added\nItsme\nAugust 03 Wednesday 2022 11-04-02 AM",
             "latest_change_priority": "Item added\nItsme\nAugust 03 Wednesday 2022 11-04-02 AM",
@@ -7556,7 +7556,7 @@
         "8 x36\" Chimney ": {
             "part_number": "8L36",
             "unit_quantity": 1,
-            "current_quantity": 68,
+            "current_quantity": 118,
             "price": 177.4,
             "use_exchange_rate": false,
             "priority": 0,
@@ -7564,7 +7564,7 @@
             "latest_change_name": "Item added\nItsme\nAugust 03 Wednesday 2022 11-05-12 AM",
             "latest_change_part_number": "Item added\nItsme\nAugust 03 Wednesday 2022 11-05-12 AM",
             "latest_change_unit_quantity": "Item added\nItsme\nAugust 03 Wednesday 2022 11-05-12 AM",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 68\nto: 68\nItsme\nNovember 21 Monday 2022 04:23:28 PM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 118\nto: 118\nItsme\nDecember 23 Friday 2022 10:15:46 AM",
             "latest_change_price": "Latest Change:\nfrom: 177.0\nto: 177.4\nItsme\nOctober 04 Tuesday 2022 01:52:55 PM",
             "latest_change_use_exchange_price": "Item added\nItsme\nAugust 03 Wednesday 2022 11-05-12 AM",
             "latest_change_priority": "Item added\nItsme\nAugust 03 Wednesday 2022 11-05-12 AM",
@@ -8018,7 +8018,7 @@
         "8\" Chimney T  8TL14-PM": {
             "part_number": "210800",
             "unit_quantity": 1,
-            "current_quantity": 57,
+            "current_quantity": 107,
             "price": 210.3,
             "use_exchange_rate": false,
             "priority": 0,
@@ -8026,7 +8026,7 @@
             "latest_change_name": "Item added\nItsme\nAugust 03 Wednesday 2022 11-04-02 AM",
             "latest_change_part_number": "Item added\nItsme\nAugust 03 Wednesday 2022 11-04-02 AM",
             "latest_change_unit_quantity": "Item added\nItsme\nAugust 03 Wednesday 2022 11-04-02 AM",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 57\nto: 57\nItsme\nNovember 21 Monday 2022 04:23:08 PM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 107\nto: 107\nItsme\nDecember 23 Friday 2022 10:15:34 AM",
             "latest_change_price": "Latest Change:\nfrom: 210.0\nto: 210.3\nItsme\nOctober 04 Tuesday 2022 01:53:52 PM",
             "latest_change_use_exchange_price": "Item added\nItsme\nAugust 03 Wednesday 2022 11-04-02 AM",
             "latest_change_priority": "Item added\nItsme\nAugust 03 Wednesday 2022 11-04-02 AM",
@@ -8137,7 +8137,7 @@
         "8 x36\" Chimney ": {
             "part_number": "8L36",
             "unit_quantity": 1,
-            "current_quantity": 68,
+            "current_quantity": 118,
             "price": 177.4,
             "use_exchange_rate": false,
             "priority": 0,
@@ -8145,7 +8145,7 @@
             "latest_change_name": "Item added\nItsme\nAugust 03 Wednesday 2022 11-05-12 AM",
             "latest_change_part_number": "Item added\nItsme\nAugust 03 Wednesday 2022 11-05-12 AM",
             "latest_change_unit_quantity": "Item added\nItsme\nAugust 03 Wednesday 2022 11-05-12 AM",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 68\nto: 68\nItsme\nNovember 21 Monday 2022 04:23:28 PM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 118\nto: 118\nItsme\nDecember 23 Friday 2022 10:15:46 AM",
             "latest_change_price": "Latest Change:\nfrom: 177.0\nto: 177.4\nItsme\nOctober 04 Tuesday 2022 01:52:55 PM",
             "latest_change_use_exchange_price": "Item added\nItsme\nAugust 03 Wednesday 2022 11-05-12 AM",
             "latest_change_priority": "Item added\nItsme\nAugust 03 Wednesday 2022 11-05-12 AM",
