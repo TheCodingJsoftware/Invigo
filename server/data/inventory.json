@@ -1409,24 +1409,6 @@
             "latest_change_priority": "Item added\nItsme\nJuly 19 Tuesday 2022 04-16-30 PM",
             "latest_change_notes": "Item added\nItsme\nJuly 19 Tuesday 2022 04-16-30 PM"
         },
-        "G3 Brick Set": {
-            "part_number": "G3BS",
-            "unit_quantity": 1,
-            "current_quantity": 1,
-            "price": 691.2,
-            "use_exchange_rate": true,
-            "priority": 0,
-            "notes": "Vendor: Reftec Insudtries\nDescription: ",
-            "latest_change_name": "Item added\nItsme\nJuly 28 Thursday 2022 04-39-31 PM",
-            "latest_change_part_number": "Latest Change:\nfrom: G3B\nto: G3BS\nItsme\nJuly 28 Thursday 2022 04:39:58 PM",
-            "latest_change_unit_quantity": "Item added\nItsme\nJuly 28 Thursday 2022 04-39-31 PM",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 1\nto: 1\nItsme\nNovember 30 Wednesday 2022 09:58:02 AM",
-            "latest_change_price": "Latest Change:\nfrom: 691.2\nto: 691.2\nItsme\nSeptember 15 Thursday 2022 09:24:02 AM",
-            "latest_change_use_exchange_price": "Item added\nItsme\nJuly 28 Thursday 2022 04-39-31 PM",
-            "latest_change_priority": "Item added\nItsme\nJuly 28 Thursday 2022 04-39-31 PM",
-            "latest_change_notes": "Latest Change:\nfrom: \"Vendor: Reftec Insudtrie\nDescription: \"\nto: \"Vendor: Reftec Insudtries\nDescription: \"\nItsme\nJuly 28 Thursday 2022 04:40:40 PM",
-            "latest_change_use_exchange_rate": "Latest Change:\nfrom: CAD\nto: USD\nItsme\nSeptember 15 Thursday 2022 09:23:50 AM"
-        },
         "Sticker 310 Polar G2 & G3 Caution Pinch Hazard 4.5\"x2.75\"": {
             "part_number": "310",
             "unit_quantity": 2,
@@ -1576,6 +1558,24 @@
             "latest_change_use_exchange_price": "Item added\nItsme\nOctober 10 Monday 2022 03-57-58 PM",
             "latest_change_priority": "Item added\nItsme\nOctober 10 Monday 2022 03-57-58 PM",
             "latest_change_notes": "Item added\nItsme\nOctober 10 Monday 2022 03-57-58 PM"
+        },
+        "G3 Brick Set": {
+            "part_number": "G3BS",
+            "unit_quantity": 1,
+            "current_quantity": 31,
+            "price": 691.2,
+            "use_exchange_rate": true,
+            "priority": 0,
+            "notes": "Vendor: Reftec Insudtries\nDescription: ",
+            "latest_change_name": "Item added\nItsme\nJuly 28 Thursday 2022 04-39-31 PM",
+            "latest_change_part_number": "Latest Change:\nfrom: G3B\nto: G3BS\nItsme\nJuly 28 Thursday 2022 04:39:58 PM",
+            "latest_change_unit_quantity": "Item added\nItsme\nJuly 28 Thursday 2022 04-39-31 PM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 31\nto: 31\nItsme\nDecember 23 Friday 2022 04:19:58 PM",
+            "latest_change_price": "Latest Change:\nfrom: 691.2\nto: 691.2\nItsme\nSeptember 15 Thursday 2022 09:24:02 AM",
+            "latest_change_use_exchange_price": "Item added\nItsme\nJuly 28 Thursday 2022 04-39-31 PM",
+            "latest_change_priority": "Item added\nItsme\nJuly 28 Thursday 2022 04-39-31 PM",
+            "latest_change_notes": "Latest Change:\nfrom: \"Vendor: Reftec Insudtrie\nDescription: \"\nto: \"Vendor: Reftec Insudtries\nDescription: \"\nItsme\nJuly 28 Thursday 2022 04:40:40 PM",
+            "latest_change_use_exchange_rate": "Latest Change:\nfrom: CAD\nto: USD\nItsme\nSeptember 15 Thursday 2022 09:23:50 AM"
         },
         "1\" Plug": {
             "part_number": "G1600M",
@@ -1831,18 +1831,6 @@
             "latest_change_current_quantity": "Latest Change:\nfrom: 50\nto: 50\nItsme\nNovember 30 Wednesday 2022 09:58:03 AM",
             "latest_change_name": "Latest Change:\nfrom: \"3\" Thermax SF- 600 Brick Slabs 1000x610x7\"\nto: \"3\" Thermax SF- 600 Brick Slabs 1000x610x75\"\nItsme\nJuly 11 Monday 2022 09:45:53 AM"
         },
-        "6L12  ASHT 6\"X12\" Section": {
-            "part_number": "6L12",
-            "unit_quantity": 1.0,
-            "current_quantity": 80,
-            "price": 60.3,
-            "use_exchange_rate": false,
-            "priority": 3,
-            "notes": "Vendor: Security Chimneys\ndmorris@duraventgroup.com\nDescription: ",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 80\nto: 80\nItsme\nDecember 23 Friday 2022 10:15:02 AM",
-            "latest_change_price": "Latest Change:\nfrom: 60.3\nto: 60.3\nItsme\nOctober 04 Tuesday 2022 01:57:08 PM",
-            "latest_change_priority": "Latest Change:\nfrom: 2\nto: 3\nItsme\nDecember 05 Monday 2022 02:46:47 PM"
-        },
         "Cotter Pin 1\/16x 1\/2 ": {
             "part_number": "CP116",
             "unit_quantity": 1,
@@ -2057,6 +2045,18 @@
             "priority": 0,
             "notes": "Vendor: \nDescription: ",
             "latest_change_current_quantity": "Latest Change:\nfrom: 76\nto: 76\nItsme\nNovember 30 Wednesday 2022 09:58:03 AM"
+        },
+        "6L12  ASHT 6\"X12\" Section": {
+            "part_number": "6L12",
+            "unit_quantity": 1.0,
+            "current_quantity": 80,
+            "price": 60.3,
+            "use_exchange_rate": false,
+            "priority": 3,
+            "notes": "Vendor: Security Chimneys\ndmorris@duraventgroup.com\nDescription: ",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 80\nto: 80\nItsme\nDecember 23 Friday 2022 10:15:02 AM",
+            "latest_change_price": "Latest Change:\nfrom: 60.3\nto: 60.3\nItsme\nOctober 04 Tuesday 2022 01:57:08 PM",
+            "latest_change_priority": "Latest Change:\nfrom: 2\nto: 3\nItsme\nDecember 05 Monday 2022 02:46:47 PM"
         },
         "Cooling fan Blade 5\" Dia Fan  10BL5.0CCW35, 1\/2IN": {
             "part_number": "10BL5.0CCW35",
@@ -2433,6 +2433,40 @@
             "latest_change_priority": "Item added\nItsme\nAugust 19 Friday 2022 10-21-10 AM",
             "latest_change_notes": "Item added\nItsme\nAugust 19 Friday 2022 10-21-10 AM"
         },
+        "RAL 3007 Beige": {
+            "part_number": "RD9XP773",
+            "unit_quantity": 3.0,
+            "current_quantity": 330,
+            "price": 13.34,
+            "use_exchange_rate": false,
+            "priority": 0,
+            "notes": "Vendor: Cloverdale\nDescription: \n\nIs measured in Pounds  Price per Box $733.75",
+            "latest_change_name": "Item added\nItsme\nDecember 15 Thursday 2022 05-11-38 PM",
+            "latest_change_part_number": "Item added\nItsme\nDecember 15 Thursday 2022 05-11-38 PM",
+            "latest_change_unit_quantity": "Item added\nItsme\nDecember 15 Thursday 2022 05-11-38 PM",
+            "latest_change_current_quantity": "Item added\nItsme\nDecember 15 Thursday 2022 05-11-38 PM",
+            "latest_change_price": "Latest Change:\nfrom: 13.3\nto: 13.34\nItsme\nDecember 19 Monday 2022 01:53:59 PM",
+            "latest_change_use_exchange_price": "Item added\nItsme\nDecember 15 Thursday 2022 05-11-38 PM",
+            "latest_change_priority": "Item added\nItsme\nDecember 15 Thursday 2022 05-11-38 PM",
+            "latest_change_notes": "Latest Change:\nfrom: Vendor: Cloverdale\nDescription: \n\nIs measured in Pounds  Price per Box 733.75\nto: Vendor: Cloverdale\nDescription: \n\nIs measured in Pounds  Price per Box $733.75\nItsme\nDecember 19 Monday 2022 01:51:27 PM"
+        },
+        "RAL 1019 TAN": {
+            "part_number": "BE8XP576",
+            "unit_quantity": 3.0,
+            "current_quantity": 330,
+            "price": 12.65,
+            "use_exchange_rate": false,
+            "priority": 0,
+            "notes": "Vendor: Cloverdale\nDescription: \nPowder is measured per pound At 55LBS per box   $632.50 per box",
+            "latest_change_name": "Item added\nItsme\nDecember 15 Thursday 2022 05-13-41 PM",
+            "latest_change_part_number": "Item added\nItsme\nDecember 15 Thursday 2022 05-13-41 PM",
+            "latest_change_unit_quantity": "Item added\nItsme\nDecember 15 Thursday 2022 05-13-41 PM",
+            "latest_change_current_quantity": "Item added\nItsme\nDecember 15 Thursday 2022 05-13-41 PM",
+            "latest_change_price": "Latest Change:\nfrom: 12.6\nto: 12.65\nItsme\nDecember 19 Monday 2022 01:54:26 PM",
+            "latest_change_use_exchange_price": "Item added\nItsme\nDecember 15 Thursday 2022 05-13-41 PM",
+            "latest_change_priority": "Item added\nItsme\nDecember 15 Thursday 2022 05-13-41 PM",
+            "latest_change_notes": "Latest Change:\nfrom: Vendor: Cloverdale\nDescription: \nPowder is measured per pound At 55LBS per box   $632.50 per bo\nto: Vendor: Cloverdale\nDescription: \nPowder is measured per pound At 55LBS per box   $632.50 per box\nItsme\nDecember 19 Monday 2022 01:51:23 PM"
+        },
         "SCR MACH PH PHIL ZP 10-32 x 1\/2 ": {
             "part_number": "397-1032-0050",
             "unit_quantity": 16,
@@ -2727,40 +2761,6 @@
             "latest_change_use_exchange_price": "Item added\nItsme\nJuly 19 Tuesday 2022 03-54-38 PM",
             "latest_change_priority": "Item added\nItsme\nJuly 19 Tuesday 2022 03-54-38 PM",
             "latest_change_notes": "Item added\nItsme\nJuly 19 Tuesday 2022 03-54-38 PM"
-        },
-        "RAL 3007 Beige": {
-            "part_number": "RD9XP773",
-            "unit_quantity": 3.0,
-            "current_quantity": 330,
-            "price": 13.34,
-            "use_exchange_rate": false,
-            "priority": 0,
-            "notes": "Vendor: Cloverdale\nDescription: \n\nIs measured in Pounds  Price per Box $733.75",
-            "latest_change_name": "Item added\nItsme\nDecember 15 Thursday 2022 05-11-38 PM",
-            "latest_change_part_number": "Item added\nItsme\nDecember 15 Thursday 2022 05-11-38 PM",
-            "latest_change_unit_quantity": "Item added\nItsme\nDecember 15 Thursday 2022 05-11-38 PM",
-            "latest_change_current_quantity": "Item added\nItsme\nDecember 15 Thursday 2022 05-11-38 PM",
-            "latest_change_price": "Latest Change:\nfrom: 13.3\nto: 13.34\nItsme\nDecember 19 Monday 2022 01:53:59 PM",
-            "latest_change_use_exchange_price": "Item added\nItsme\nDecember 15 Thursday 2022 05-11-38 PM",
-            "latest_change_priority": "Item added\nItsme\nDecember 15 Thursday 2022 05-11-38 PM",
-            "latest_change_notes": "Latest Change:\nfrom: Vendor: Cloverdale\nDescription: \n\nIs measured in Pounds  Price per Box 733.75\nto: Vendor: Cloverdale\nDescription: \n\nIs measured in Pounds  Price per Box $733.75\nItsme\nDecember 19 Monday 2022 01:51:27 PM"
-        },
-        "RAL 1019 TAN": {
-            "part_number": "BE8XP576",
-            "unit_quantity": 3.0,
-            "current_quantity": 330,
-            "price": 12.65,
-            "use_exchange_rate": false,
-            "priority": 0,
-            "notes": "Vendor: Cloverdale\nDescription: \nPowder is measured per pound At 55LBS per box   $632.50 per box",
-            "latest_change_name": "Item added\nItsme\nDecember 15 Thursday 2022 05-13-41 PM",
-            "latest_change_part_number": "Item added\nItsme\nDecember 15 Thursday 2022 05-13-41 PM",
-            "latest_change_unit_quantity": "Item added\nItsme\nDecember 15 Thursday 2022 05-13-41 PM",
-            "latest_change_current_quantity": "Item added\nItsme\nDecember 15 Thursday 2022 05-13-41 PM",
-            "latest_change_price": "Latest Change:\nfrom: 12.6\nto: 12.65\nItsme\nDecember 19 Monday 2022 01:54:26 PM",
-            "latest_change_use_exchange_price": "Item added\nItsme\nDecember 15 Thursday 2022 05-13-41 PM",
-            "latest_change_priority": "Item added\nItsme\nDecember 15 Thursday 2022 05-13-41 PM",
-            "latest_change_notes": "Latest Change:\nfrom: Vendor: Cloverdale\nDescription: \nPowder is measured per pound At 55LBS per box   $632.50 per bo\nto: Vendor: Cloverdale\nDescription: \nPowder is measured per pound At 55LBS per box   $632.50 per box\nItsme\nDecember 19 Monday 2022 01:51:23 PM"
         }
     },
     "Polar G2+": {
@@ -2784,7 +2784,7 @@
         "G3 Brick Set": {
             "part_number": "G3BS",
             "unit_quantity": 1,
-            "current_quantity": 1,
+            "current_quantity": 31,
             "price": 691.2,
             "use_exchange_rate": false,
             "priority": 0,
@@ -2792,7 +2792,7 @@
             "latest_change_name": "Item added\nItsme\nAugust 12 Friday 2022 11-21-54 AM",
             "latest_change_part_number": "Item added\nItsme\nAugust 12 Friday 2022 11-21-54 AM",
             "latest_change_unit_quantity": "Item added\nItsme\nAugust 12 Friday 2022 11-21-54 AM",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 1\nto: 1\nItsme\nNovember 30 Wednesday 2022 09:58:02 AM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 31\nto: 31\nItsme\nDecember 23 Friday 2022 04:19:58 PM",
             "latest_change_price": "Latest Change:\nfrom: 691.2\nto: 691.2\nItsme\nSeptember 15 Thursday 2022 09:24:02 AM",
             "latest_change_use_exchange_price": "Item added\nItsme\nAugust 12 Friday 2022 11-21-54 AM",
             "latest_change_priority": "Item added\nItsme\nAugust 12 Friday 2022 11-21-54 AM",
@@ -4132,23 +4132,6 @@
             "latest_change_priority": "Item added\nItsme\nDecember 05 Monday 2022 02-54-38 PM",
             "latest_change_notes": "Item added\nItsme\nDecember 05 Monday 2022 02-54-38 PM"
         },
-        "BL 25 Shaker Brick Set ": {
-            "part_number": "BL25BS",
-            "unit_quantity": 1,
-            "current_quantity": 18,
-            "price": 577.02,
-            "use_exchange_rate": false,
-            "priority": 3,
-            "notes": "Vendor: Reftec \nDescription: ",
-            "latest_change_name": "Item added\nItsme\nJuly 28 Thursday 2022 02-50-18 PM",
-            "latest_change_part_number": "Item added\nItsme\nJuly 28 Thursday 2022 02-50-18 PM",
-            "latest_change_unit_quantity": "Item added\nItsme\nJuly 28 Thursday 2022 02-50-18 PM",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 18\nto: 18\nItsme\nNovember 11 Friday 2022 08:51:38 AM",
-            "latest_change_price": "Item added\nItsme\nJuly 28 Thursday 2022 02-50-18 PM",
-            "latest_change_use_exchange_price": "Item added\nItsme\nJuly 28 Thursday 2022 02-50-18 PM",
-            "latest_change_priority": "Latest Change:\nfrom: 0\nto: 3\nItsme\nOctober 21 Friday 2022 04:30:36 PM",
-            "latest_change_notes": "Item added\nItsme\nJuly 28 Thursday 2022 02-50-18 PM"
-        },
         "Mechanical Johnson Controler ": {
             "part_number": "A19ABC-12C",
             "unit_quantity": 1,
@@ -4182,6 +4165,23 @@
             "latest_change_use_exchange_price": "Item added\nItsme\nOctober 28 Friday 2022 08-30-16 AM",
             "latest_change_priority": "Latest Change:\nfrom: 0\nto: 1\nItsme\nOctober 28 Friday 2022 08:30:42 AM",
             "latest_change_notes": "Item added\nItsme\nOctober 28 Friday 2022 08-30-16 AM"
+        },
+        "BL 25 Shaker Brick Set ": {
+            "part_number": "BL25BS",
+            "unit_quantity": 1,
+            "current_quantity": 30,
+            "price": 577.02,
+            "use_exchange_rate": false,
+            "priority": 3,
+            "notes": "Vendor: Reftec \nDescription: ",
+            "latest_change_name": "Item added\nItsme\nJuly 28 Thursday 2022 02-50-18 PM",
+            "latest_change_part_number": "Item added\nItsme\nJuly 28 Thursday 2022 02-50-18 PM",
+            "latest_change_unit_quantity": "Item added\nItsme\nJuly 28 Thursday 2022 02-50-18 PM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 30\nto: 30\nItsme\nDecember 23 Friday 2022 04:19:32 PM",
+            "latest_change_price": "Item added\nItsme\nJuly 28 Thursday 2022 02-50-18 PM",
+            "latest_change_use_exchange_price": "Item added\nItsme\nJuly 28 Thursday 2022 02-50-18 PM",
+            "latest_change_priority": "Latest Change:\nfrom: 0\nto: 3\nItsme\nOctober 21 Friday 2022 04:30:36 PM",
+            "latest_change_notes": "Item added\nItsme\nJuly 28 Thursday 2022 02-50-18 PM"
         },
         "3\" Air Tube": {
             "part_number": "3AT",
@@ -4217,23 +4217,6 @@
             "latest_change_priority": "Latest Change:\nfrom: 0\nto: 3\nItsme\nOctober 21 Friday 2022 04:30:40 PM",
             "latest_change_notes": "Item added\nItsme\nJuly 28 Thursday 2022 02-05-47 PM"
         },
-        "6\" Chimney T 6Tl12-PM": {
-            "part_number": "208800",
-            "unit_quantity": 1,
-            "current_quantity": 100,
-            "price": 199.52,
-            "use_exchange_rate": false,
-            "priority": 3,
-            "notes": "Vendor: Security Chimney\nDescription: ",
-            "latest_change_name": "Item added\nItsme\nAugust 03 Wednesday 2022 11-11-49 AM",
-            "latest_change_part_number": "Item added\nItsme\nAugust 03 Wednesday 2022 11-11-49 AM",
-            "latest_change_unit_quantity": "Item added\nItsme\nAugust 03 Wednesday 2022 11-11-49 AM",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 100\nto: 100\nItsme\nDecember 23 Friday 2022 10:13:58 AM",
-            "latest_change_price": "Latest Change:\nfrom: 199.52\nto: 199.52\nItsme\nOctober 04 Tuesday 2022 01:54:33 PM",
-            "latest_change_use_exchange_price": "Item added\nItsme\nAugust 03 Wednesday 2022 11-11-49 AM",
-            "latest_change_priority": "Latest Change:\nfrom: 0\nto: 3\nItsme\nOctober 21 Friday 2022 04:30:28 PM",
-            "latest_change_notes": "Item added\nItsme\nAugust 03 Wednesday 2022 11-11-49 AM"
-        },
         "BC52171-K 4\" SQ BOX 2-1\/8\" DEE": {
             "part_number": "THSBC52171K",
             "unit_quantity": 1,
@@ -4250,23 +4233,6 @@
             "latest_change_use_exchange_price": "Item added\nItsme\nNovember 02 Wednesday 2022 03-23-58 PM",
             "latest_change_priority": "Item added\nItsme\nNovember 02 Wednesday 2022 03-23-58 PM",
             "latest_change_notes": "Item added\nItsme\nNovember 02 Wednesday 2022 03-23-58 PM"
-        },
-        "6 x 36\" Chimney 6L36": {
-            "part_number": "206800",
-            "unit_quantity": 1,
-            "current_quantity": 107,
-            "price": 149.43,
-            "use_exchange_rate": false,
-            "priority": 3,
-            "notes": "Vendor: Security Chimney\nDescription: ",
-            "latest_change_name": "Item added\nItsme\nAugust 03 Wednesday 2022 11-11-13 AM",
-            "latest_change_part_number": "Item added\nItsme\nAugust 03 Wednesday 2022 11-11-13 AM",
-            "latest_change_unit_quantity": "Item added\nItsme\nAugust 03 Wednesday 2022 11-11-13 AM",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 107\nto: 107\nItsme\nDecember 23 Friday 2022 10:14:29 AM",
-            "latest_change_price": "Latest Change:\nfrom: 149.43\nto: 149.43\nItsme\nOctober 04 Tuesday 2022 01:54:56 PM",
-            "latest_change_use_exchange_price": "Item added\nItsme\nAugust 03 Wednesday 2022 11-11-13 AM",
-            "latest_change_priority": "Latest Change:\nfrom: 0\nto: 3\nItsme\nOctober 21 Friday 2022 04:30:25 PM",
-            "latest_change_notes": "Item added\nItsme\nAugust 03 Wednesday 2022 11-11-13 AM"
         },
         "3\" Flex Hose": {
             "part_number": "3FH",
@@ -4370,6 +4336,40 @@
             "latest_change_priority": "Latest Change:\nfrom: 0\nto: 2\nItsme\nOctober 21 Friday 2022 04:30:19 PM",
             "latest_change_notes": "Item added\nItsme\nOctober 17 Monday 2022 08-12-25 AM"
         },
+        "6\" Chimney T 6Tl12-PM": {
+            "part_number": "208800",
+            "unit_quantity": 1,
+            "current_quantity": 100,
+            "price": 199.52,
+            "use_exchange_rate": false,
+            "priority": 3,
+            "notes": "Vendor: Security Chimney\nDescription: ",
+            "latest_change_name": "Item added\nItsme\nAugust 03 Wednesday 2022 11-11-49 AM",
+            "latest_change_part_number": "Item added\nItsme\nAugust 03 Wednesday 2022 11-11-49 AM",
+            "latest_change_unit_quantity": "Item added\nItsme\nAugust 03 Wednesday 2022 11-11-49 AM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 100\nto: 100\nItsme\nDecember 23 Friday 2022 10:13:58 AM",
+            "latest_change_price": "Latest Change:\nfrom: 199.52\nto: 199.52\nItsme\nOctober 04 Tuesday 2022 01:54:33 PM",
+            "latest_change_use_exchange_price": "Item added\nItsme\nAugust 03 Wednesday 2022 11-11-49 AM",
+            "latest_change_priority": "Latest Change:\nfrom: 0\nto: 3\nItsme\nOctober 21 Friday 2022 04:30:28 PM",
+            "latest_change_notes": "Item added\nItsme\nAugust 03 Wednesday 2022 11-11-49 AM"
+        },
+        "6 x 36\" Chimney 6L36": {
+            "part_number": "206800",
+            "unit_quantity": 1,
+            "current_quantity": 107,
+            "price": 149.43,
+            "use_exchange_rate": false,
+            "priority": 3,
+            "notes": "Vendor: Security Chimney\nDescription: ",
+            "latest_change_name": "Item added\nItsme\nAugust 03 Wednesday 2022 11-11-13 AM",
+            "latest_change_part_number": "Item added\nItsme\nAugust 03 Wednesday 2022 11-11-13 AM",
+            "latest_change_unit_quantity": "Item added\nItsme\nAugust 03 Wednesday 2022 11-11-13 AM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 107\nto: 107\nItsme\nDecember 23 Friday 2022 10:14:29 AM",
+            "latest_change_price": "Latest Change:\nfrom: 149.43\nto: 149.43\nItsme\nOctober 04 Tuesday 2022 01:54:56 PM",
+            "latest_change_use_exchange_price": "Item added\nItsme\nAugust 03 Wednesday 2022 11-11-13 AM",
+            "latest_change_priority": "Latest Change:\nfrom: 0\nto: 3\nItsme\nOctober 21 Friday 2022 04:30:25 PM",
+            "latest_change_notes": "Item added\nItsme\nAugust 03 Wednesday 2022 11-11-13 AM"
+        },
         "Single Pole Switch 1301W": {
             "part_number": "CWD1301W",
             "unit_quantity": 1.0,
@@ -4386,23 +4386,6 @@
             "latest_change_use_exchange_price": "Item added\nItsme\nNovember 28 Monday 2022 10-38-44 AM",
             "latest_change_priority": "Item added\nItsme\nNovember 28 Monday 2022 10-38-44 AM",
             "latest_change_notes": "Item added\nItsme\nNovember 28 Monday 2022 10-38-44 AM"
-        },
-        "Damper Box- Aluminum": {
-            "part_number": "DBA",
-            "unit_quantity": 1,
-            "current_quantity": 158,
-            "price": 33.0,
-            "use_exchange_rate": false,
-            "priority": 0,
-            "notes": "Vendor: Matric Metal Casting\nDescription: ",
-            "latest_change_name": "Item added\nItsme\nAugust 15 Monday 2022 11-32-51 AM",
-            "latest_change_part_number": "Item added\nItsme\nAugust 15 Monday 2022 11-32-51 AM",
-            "latest_change_unit_quantity": "Item added\nItsme\nAugust 15 Monday 2022 11-32-51 AM",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 158\nto: 158\nItsme\nDecember 23 Friday 2022 08:16:10 AM",
-            "latest_change_price": "Latest Change:\nfrom: 33.0\nto: 33.0\nItsme\nOctober 04 Tuesday 2022 02:15:42 PM",
-            "latest_change_use_exchange_price": "Item added\nItsme\nAugust 15 Monday 2022 11-32-51 AM",
-            "latest_change_priority": "Item added\nItsme\nAugust 15 Monday 2022 11-32-51 AM",
-            "latest_change_notes": "Item added\nItsme\nAugust 15 Monday 2022 11-32-51 AM"
         },
         "1\" Street Elbow- 90 ": {
             "part_number": "1SE9",
@@ -4455,6 +4438,23 @@
             "latest_change_priority": "Item added\nItsme\nAugust 04 Thursday 2022 10-09-07 AM",
             "latest_change_notes": "Item added\nItsme\nAugust 04 Thursday 2022 10-09-07 AM",
             "latest_change_use_exchange_rate": "Latest Change:\nfrom: CAD\nto: USD\nItsme\nNovember 02 Wednesday 2022 05:05:46 PM"
+        },
+        "Damper Box- Aluminum": {
+            "part_number": "DBA",
+            "unit_quantity": 1,
+            "current_quantity": 158,
+            "price": 33.0,
+            "use_exchange_rate": false,
+            "priority": 0,
+            "notes": "Vendor: Matric Metal Casting\nDescription: ",
+            "latest_change_name": "Item added\nItsme\nAugust 15 Monday 2022 11-32-51 AM",
+            "latest_change_part_number": "Item added\nItsme\nAugust 15 Monday 2022 11-32-51 AM",
+            "latest_change_unit_quantity": "Item added\nItsme\nAugust 15 Monday 2022 11-32-51 AM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 158\nto: 158\nItsme\nDecember 23 Friday 2022 08:16:10 AM",
+            "latest_change_price": "Latest Change:\nfrom: 33.0\nto: 33.0\nItsme\nOctober 04 Tuesday 2022 02:15:42 PM",
+            "latest_change_use_exchange_price": "Item added\nItsme\nAugust 15 Monday 2022 11-32-51 AM",
+            "latest_change_priority": "Item added\nItsme\nAugust 15 Monday 2022 11-32-51 AM",
+            "latest_change_notes": "Item added\nItsme\nAugust 15 Monday 2022 11-32-51 AM"
         },
         "535 Blacl Silicone 300ML ": {
             "part_number": "32390",
@@ -5331,7 +5331,7 @@
         "BL 40 Brick Set": {
             "part_number": "BL40W",
             "unit_quantity": 1,
-            "current_quantity": 23,
+            "current_quantity": 38,
             "price": 1062.92,
             "use_exchange_rate": false,
             "priority": 0,
@@ -5339,7 +5339,7 @@
             "latest_change_name": "Item added\nItsme\nAugust 26 Friday 2022 08-40-38 AM",
             "latest_change_part_number": "Item added\nItsme\nAugust 26 Friday 2022 08-40-38 AM",
             "latest_change_unit_quantity": "Item added\nItsme\nAugust 26 Friday 2022 08-40-38 AM",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 23\nto: 23\nItsme\nDecember 23 Friday 2022 10:54:38 AM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 38\nto: 38\nItsme\nDecember 23 Friday 2022 04:21:05 PM",
             "latest_change_price": "Item added\nItsme\nAugust 26 Friday 2022 08-40-38 AM",
             "latest_change_use_exchange_price": "Item added\nItsme\nAugust 26 Friday 2022 08-40-38 AM",
             "latest_change_priority": "Item added\nItsme\nAugust 26 Friday 2022 08-40-38 AM",
@@ -6168,23 +6168,6 @@
             "latest_change_priority": "Item added\nItsme\nDecember 05 Monday 2022 02-54-58 PM",
             "latest_change_notes": "Item added\nItsme\nDecember 05 Monday 2022 02-54-58 PM"
         },
-        "BL 28 Shaker Brick Set": {
-            "part_number": "2840S",
-            "unit_quantity": 1,
-            "current_quantity": 18,
-            "price": 561.5,
-            "use_exchange_rate": false,
-            "priority": 0,
-            "notes": "Vendor: Reftech\nDescription: ",
-            "latest_change_name": "Latest Change:\nfrom: \"BL28 Shaker Brick Set\"\nto: \"BL 28 Shaker Brick Set\"\nItsme\nAugust 26 Friday 2022 08:32:42 AM",
-            "latest_change_part_number": "Latest Change:\nfrom: 2840\nto: 2840S\nItsme\nAugust 26 Friday 2022 08:35:21 AM",
-            "latest_change_unit_quantity": "Item added\nItsme\nJuly 29 Friday 2022 01-41-31 PM",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 18\nto: 18\nItsme\nNovember 11 Friday 2022 08:52:31 AM",
-            "latest_change_price": "Latest Change:\nfrom: 561.0\nto: 561.5\nItsme\nJuly 29 Friday 2022 01:43:01 PM",
-            "latest_change_use_exchange_price": "Item added\nItsme\nJuly 29 Friday 2022 01-41-31 PM",
-            "latest_change_priority": "Item added\nItsme\nJuly 29 Friday 2022 01-41-31 PM",
-            "latest_change_notes": "Item added\nItsme\nJuly 29 Friday 2022 01-41-31 PM"
-        },
         "Mechanical Johnson Controler ": {
             "part_number": "A19ABC-12C",
             "unit_quantity": 1,
@@ -6269,6 +6252,23 @@
             "latest_change_use_exchange_price": "Item added\nItsme\nNovember 02 Wednesday 2022 03-24-24 PM",
             "latest_change_priority": "Item added\nItsme\nNovember 02 Wednesday 2022 03-24-24 PM",
             "latest_change_notes": "Item added\nItsme\nNovember 02 Wednesday 2022 03-24-24 PM"
+        },
+        "BL 28 Shaker Brick Set": {
+            "part_number": "2840S",
+            "unit_quantity": 1,
+            "current_quantity": 63,
+            "price": 561.5,
+            "use_exchange_rate": false,
+            "priority": 0,
+            "notes": "Vendor: Reftech\nDescription: ",
+            "latest_change_name": "Latest Change:\nfrom: \"BL28 Shaker Brick Set\"\nto: \"BL 28 Shaker Brick Set\"\nItsme\nAugust 26 Friday 2022 08:32:42 AM",
+            "latest_change_part_number": "Latest Change:\nfrom: 2840\nto: 2840S\nItsme\nAugust 26 Friday 2022 08:35:21 AM",
+            "latest_change_unit_quantity": "Item added\nItsme\nJuly 29 Friday 2022 01-41-31 PM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 63\nto: 63\nItsme\nDecember 23 Friday 2022 04:20:23 PM",
+            "latest_change_price": "Latest Change:\nfrom: 561.0\nto: 561.5\nItsme\nJuly 29 Friday 2022 01:43:01 PM",
+            "latest_change_use_exchange_price": "Item added\nItsme\nJuly 29 Friday 2022 01-41-31 PM",
+            "latest_change_priority": "Item added\nItsme\nJuly 29 Friday 2022 01-41-31 PM",
+            "latest_change_notes": "Item added\nItsme\nJuly 29 Friday 2022 01-41-31 PM"
         },
         "3\" Flex Hose": {
             "part_number": "3FH",
@@ -8083,23 +8083,6 @@
             "latest_change_priority": "Item added\nItsme\nNovember 15 Tuesday 2022 08-22-13 AM",
             "latest_change_notes": "Item added\nItsme\nNovember 15 Tuesday 2022 08-22-13 AM"
         },
-        "BL 40 Brick Set": {
-            "part_number": "BL40W",
-            "unit_quantity": 1,
-            "current_quantity": 23,
-            "price": 1062.92,
-            "use_exchange_rate": false,
-            "priority": 0,
-            "notes": "Vendor: Reftec\nDescription: ",
-            "latest_change_name": "Item added\nItsme\nOctober 15 Saturday 2022 11-08-19 AM",
-            "latest_change_part_number": "Item added\nItsme\nOctober 15 Saturday 2022 11-08-19 AM",
-            "latest_change_unit_quantity": "Item added\nItsme\nOctober 15 Saturday 2022 11-08-19 AM",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 23\nto: 23\nItsme\nDecember 23 Friday 2022 10:54:38 AM",
-            "latest_change_price": "Item added\nItsme\nOctober 15 Saturday 2022 11-08-19 AM",
-            "latest_change_use_exchange_price": "Item added\nItsme\nOctober 15 Saturday 2022 11-08-19 AM",
-            "latest_change_priority": "Item added\nItsme\nOctober 15 Saturday 2022 11-08-19 AM",
-            "latest_change_notes": "Item added\nItsme\nOctober 15 Saturday 2022 11-08-19 AM"
-        },
         "Boiler Treatment 1.9L ": {
             "part_number": "BT19L",
             "unit_quantity": 1,
@@ -8133,6 +8116,23 @@
             "latest_change_use_exchange_price": "Item added\nItsme\nDecember 05 Monday 2022 02-51-20 PM",
             "latest_change_priority": "Item added\nItsme\nDecember 05 Monday 2022 02-51-20 PM",
             "latest_change_notes": "Item added\nItsme\nDecember 05 Monday 2022 02-51-20 PM"
+        },
+        "BL 40 Brick Set": {
+            "part_number": "BL40W",
+            "unit_quantity": 1,
+            "current_quantity": 38,
+            "price": 1062.92,
+            "use_exchange_rate": false,
+            "priority": 0,
+            "notes": "Vendor: Reftec\nDescription: ",
+            "latest_change_name": "Item added\nItsme\nOctober 15 Saturday 2022 11-08-19 AM",
+            "latest_change_part_number": "Item added\nItsme\nOctober 15 Saturday 2022 11-08-19 AM",
+            "latest_change_unit_quantity": "Item added\nItsme\nOctober 15 Saturday 2022 11-08-19 AM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 38\nto: 38\nItsme\nDecember 23 Friday 2022 04:21:05 PM",
+            "latest_change_price": "Item added\nItsme\nOctober 15 Saturday 2022 11-08-19 AM",
+            "latest_change_use_exchange_price": "Item added\nItsme\nOctober 15 Saturday 2022 11-08-19 AM",
+            "latest_change_priority": "Item added\nItsme\nOctober 15 Saturday 2022 11-08-19 AM",
+            "latest_change_notes": "Item added\nItsme\nOctober 15 Saturday 2022 11-08-19 AM"
         },
         "Digital Johnson Controle": {
             "part_number": "A421ABC-02",
