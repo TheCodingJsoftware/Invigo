@@ -1,3 +1,6 @@
+<h1>v1.4.8</h1>
+&bull; Hovering over price shows it in USD/CAD.<br>
+
 <h1>v1.4.7</h1>
 &bull; Added Price History Page.<br>
 &bull; Fixed total stock cost formating.<br>

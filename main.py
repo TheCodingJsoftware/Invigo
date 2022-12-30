@@ -4,8 +4,8 @@ __copyright__ = "Copyright 2022, TheCodingJ's"
 __credits__: "list[str]" = ["Jared Gross"]
 __license__ = "MIT"
 __name__ = "Inventory Manager"
-__version__ = "v1.4.7"
-__updated__ = "2022-12-30 14:55:36"
+__version__ = "v1.4.8"
+__updated__ = "2022-12-30 17:32:21"
 __maintainer__ = "Jared Gross"
 __email__ = "jared@pinelandfarms.ca"
 __status__ = "Production"
@@ -920,8 +920,31 @@ class MainWindow(QMainWindow):
             col_index += 1
 
             # PRICE
+            round_number = lambda x, n: eval(
+                '"%.'
+                + str(int(n))
+                + 'f" % '
+                + repr(int(x) + round(float("." + str(float(x)).split(".")[1]), n))
+            )
+            converted_price: float = (
+                price * self.get_exchange_rate()
+                if use_exchange_rate
+                else price / self.get_exchange_rate()
+            )
             spin_price = HumbleDoubleSpinBox(self)
-            spin_price.setToolTip(latest_change_price)
+            spin_price.setToolTip(
+                "$"
+                + str(round_number(converted_price, 2))
+                + " CAD"
+                + "\n"
+                + latest_change_price
+                if use_exchange_rate
+                else "$"
+                + str(round_number(converted_price, 2))
+                + " USD"
+                + "\n"
+                + latest_change_price
+            )
             spin_price.setValue(price)
             spin_price.setPrefix("$")
             spin_price.setSuffix(" USD" if use_exchange_rate else " CAD")
@@ -1140,7 +1163,10 @@ class MainWindow(QMainWindow):
         self.gridLayout_Categor_Stock_Prices.addWidget(lbl, i + 1, 1)
         lbl = QLabel("Total Cost in Stock:", self)
         self.gridLayout_Categor_Stock_Prices.addWidget(lbl, i + 2, 0)
-        lbl = QLabel(f"${format(float(round_number(float(inventory.get_total_stock_cost()), 2)), ',')}", self)
+        lbl = QLabel(
+            f"${format(float(round_number(float(inventory.get_total_stock_cost()), 2)), ',')}",
+            self,
+        )
         self.gridLayout_Categor_Stock_Prices.addWidget(lbl, i + 2, 1)
 
     def create_new_category(self, event=None) -> None:
@@ -1543,8 +1569,19 @@ class MainWindow(QMainWindow):
             "latest_change_price",
             f"Latest Change:\nfrom: {value_before}\nto: {price.value()}\n{self.username}\n{datetime.now().strftime('%B %d %A %Y %I:%M:%S %p')}",
         )
+        round_number = lambda x, n: eval(
+            '"%.'
+            + str(int(n))
+            + 'f" % '
+            + repr(int(x) + round(float("." + str(float(x)).split(".")[1]), n))
+        )
+        converted_price: float = (
+            price.value() * self.get_exchange_rate()
+            if price.suffix() == " USD"
+            else price.value() / self.get_exchange_rate()
+        )
         price.setToolTip(
-            f"Latest Change:\nfrom: {value_before}\nto: {price.value()}\n{self.username}\n{datetime.now().strftime('%B %d %A %Y %I:%M:%S %p')}",
+            f"${str(round_number(converted_price,2))} {'CAD' if price.suffix() == ' USD' else 'USD'}\nLatest Change:\nfrom: {value_before}\nto: {price.value()}\n{self.username}\n{datetime.now().strftime('%B %d %A %Y %I:%M:%S %p')}",
         )
         self.value_change(category, item_name.currentText(), value_name, price.value())
         for category in list(data.keys()):
