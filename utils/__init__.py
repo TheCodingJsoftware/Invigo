@@ -10,4 +10,5 @@ from utils.json_file import JsonFile
 from utils.json_object import JsonObject
 from utils.po import check_po_directories, get_all_po
 from utils.po_template import POTemplate
+from utils.price_history_file import PriceHistoryFile
 from utils.trusted_users import get_trusted_users

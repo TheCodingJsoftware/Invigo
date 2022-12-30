@@ -31,7 +31,7 @@
        <enum>QFrame::Plain</enum>
       </property>
       <property name="currentIndex">
-       <number>0</number>
+       <number>3</number>
       </property>
       <widget class="QWidget" name="inventory_page">
        <property name="geometry">
@@ -39,7 +39,7 @@
          <x>0</x>
          <y>0</y>
          <width>770</width>
-         <height>504</height>
+         <height>463</height>
         </rect>
        </property>
        <attribute name="label">
@@ -60,7 +60,7 @@
          <x>0</x>
          <y>0</y>
          <width>770</width>
-         <height>504</height>
+         <height>463</height>
         </rect>
        </property>
        <attribute name="label">
@@ -85,7 +85,7 @@
          <x>0</x>
          <y>0</y>
          <width>770</width>
-         <height>504</height>
+         <height>463</height>
         </rect>
        </property>
        <attribute name="label">
@@ -113,17 +113,17 @@
                  <property name="columnCount">
                   <number>2</number>
                  </property>
-                 <attribute name="horizontalHeaderDefaultSectionSize">
-                  <number>500</number>
-                 </attribute>
                  <attribute name="horizontalHeaderMinimumSectionSize">
                   <number>42</number>
                  </attribute>
-                 <attribute name="verticalHeaderDefaultSectionSize">
-                  <number>30</number>
+                 <attribute name="horizontalHeaderDefaultSectionSize">
+                  <number>500</number>
                  </attribute>
                  <attribute name="verticalHeaderMinimumSectionSize">
                   <number>28</number>
+                 </attribute>
+                 <attribute name="verticalHeaderDefaultSectionSize">
+                  <number>30</number>
                  </attribute>
                  <column/>
                  <column/>
@@ -149,11 +149,11 @@
                  <property name="columnCount">
                   <number>2</number>
                  </property>
-                 <attribute name="horizontalHeaderDefaultSectionSize">
-                  <number>500</number>
-                 </attribute>
                  <attribute name="horizontalHeaderMinimumSectionSize">
                   <number>42</number>
+                 </attribute>
+                 <attribute name="horizontalHeaderDefaultSectionSize">
+                  <number>500</number>
                  </attribute>
                  <column/>
                  <column/>
@@ -163,6 +163,38 @@
              </widget>
             </item>
            </layout>
+          </item>
+         </layout>
+        </item>
+       </layout>
+      </widget>
+      <widget class="QWidget" name="price_history_page">
+       <attribute name="label">
+        <string>View Price Changes History (Read Only)</string>
+       </attribute>
+       <layout class="QHBoxLayout" name="horizontalLayout_9">
+        <item>
+         <layout class="QHBoxLayout" name="horizontalLayout_8">
+          <item>
+           <widget class="QGroupBox" name="groupBox_4">
+            <property name="title">
+             <string>Price History</string>
+            </property>
+            <layout class="QHBoxLayout" name="horizontalLayout_10">
+             <item>
+              <widget class="QTableWidget" name="priceHistoryTable">
+               <property name="columnCount">
+                <number>5</number>
+               </property>
+               <column/>
+               <column/>
+               <column/>
+               <column/>
+               <column/>
+              </widget>
+             </item>
+            </layout>
+           </widget>
           </item>
          </layout>
         </item>
@@ -188,7 +220,7 @@
      <x>0</x>
      <y>0</y>
      <width>1133</width>
-     <height>21</height>
+     <height>22</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">

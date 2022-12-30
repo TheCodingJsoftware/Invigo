@@ -4,8 +4,8 @@ __copyright__ = "Copyright 2022, TheCodingJ's"
 __credits__: "list[str]" = ["Jared Gross"]
 __license__ = "MIT"
 __name__ = "Inventory Manager"
-__version__ = "v1.4.6"
-__updated__ = "2022-12-21 14:22:09"
+__version__ = "v1.4.7"
+__updated__ = "2022-12-30 14:55:36"
 __maintainer__ = "Jared Gross"
 __email__ = "jared@pinelandfarms.ca"
 __status__ = "Production"
@@ -103,6 +103,7 @@ from utils.json_file import JsonFile
 from utils.json_object import JsonObject
 from utils.po import check_po_directories, get_all_po
 from utils.po_template import POTemplate
+from utils.price_history_file import PriceHistoryFile
 from utils.trusted_users import get_trusted_users
 from web_scrapers.ebay_scraper import EbayScraper
 from web_scrapers.exchange_rate import ExchangeRate
@@ -137,6 +138,14 @@ def default_settings() -> None:
     check_setting(setting="inventory_file_name", default_value="inventory")
     check_setting(setting="trusted_users", default_value=["itsme", "jared", "joseph"])
     check_setting(setting="auto_backup_to_cloud", default_value=False)
+    check_setting(
+        setting="price_history_file_name",
+        default_value=str(datetime.now().strftime("%B %d %A %Y")),
+    )
+    check_setting(
+        setting="days_until_new_price_history_assessment",
+        default_value=90,
+    )
 
 
 def check_setting(setting: str, default_value) -> None:
@@ -166,7 +175,15 @@ def check_folders(folders: list[str]) -> None:
 
 
 check_folders(
-    folders=["logs", "data", "backups", "excel files", "PO's", "PO's/templates"]
+    folders=[
+        "logs",
+        "data",
+        "backups",
+        "Price History Files",
+        "excel files",
+        "PO's",
+        "PO's/templates",
+    ]
 )
 
 logging.basicConfig(
@@ -185,6 +202,13 @@ inventory = JsonFile(
 )
 geometry = JsonObject(JsonFile=settings_file, object_name="geometry")
 
+history_file_date = datetime.strptime(
+    settings_file.get_value("price_history_file_name"), "%B %d %A %Y"
+)
+days_from_last_price_history_assessment: int = int(
+    (datetime.now() - history_file_date).total_seconds() / 60 / 60 / 24
+)
+
 
 class MainWindow(QMainWindow):
     """The class MainWindow inherits from the class QMainWindow"""
@@ -202,6 +226,17 @@ class MainWindow(QMainWindow):
 
         check_po_directories()
         self.check_for_updates(on_start_up=True)
+
+        if days_from_last_price_history_assessment > settings_file.get_value(
+            "days_until_new_price_history_assessment"
+        ):
+            settings_file.add_item(
+                "price_history_file_name", str(datetime.now().strftime("%B %d %A %Y"))
+            )
+            self.show_message_dialog(
+                title="Price Assessment",
+                message=f"It has been {settings_file.get_value('days_until_new_price_history_assessment')} days until the last price assessment. A new price history file has been created in the 'Price History Files' directory.",
+            )
 
         # VARIABLES
         self.theme: str = (
@@ -234,7 +269,6 @@ class MainWindow(QMainWindow):
             ...,
         ] = []
         self.get_upload_file_response: bool = True
-        # {str("Header name"): int(Label fixed width)}
         self.headers: dict[dict[str, int]] = {
             "Part Name": 486,
             "Part Number": 120,
@@ -538,6 +572,8 @@ class MainWindow(QMainWindow):
             self.status_button.setHidden(False)
         elif self.toolBox.currentIndex() == 2:
             self.load_history_view()
+        elif self.toolBox.currentIndex() == 3:
+            self.load_price_history_view()
         settings_file.add_item("last_toolbox_tab", self.toolBox.currentIndex())
 
     def load_categories(self) -> None:
@@ -889,7 +925,7 @@ class MainWindow(QMainWindow):
             spin_price.setValue(price)
             spin_price.setPrefix("$")
             spin_price.setSuffix(" USD" if use_exchange_rate else " CAD")
-            spin_price.valueChanged.connect(
+            spin_price.editingFinished.connect(
                 partial(self.price_change, self.category, item_name, "price", spin_price)
             )
             layout.addWidget(spin_price)
@@ -1104,7 +1140,7 @@ class MainWindow(QMainWindow):
         self.gridLayout_Categor_Stock_Prices.addWidget(lbl, i + 1, 1)
         lbl = QLabel("Total Cost in Stock:", self)
         self.gridLayout_Categor_Stock_Prices.addWidget(lbl, i + 2, 0)
-        lbl = QLabel(f"${format(inventory.get_total_stock_cost(), ',')}", self)
+        lbl = QLabel(f"${format(float(round_number(float(inventory.get_total_stock_cost()), 2)), ',')}", self)
         self.gridLayout_Categor_Stock_Prices.addWidget(lbl, i + 2, 1)
 
     def create_new_category(self, event=None) -> None:
@@ -1491,6 +1527,16 @@ class MainWindow(QMainWindow):
         value_before = inventory.get_value(item_name=category)[item_name.currentText()][
             "price"
         ]
+        price_history_file = PriceHistoryFile(
+            file_name=f"{settings_file.get_value(item_name='price_history_file_name')}.xlsx"
+        )
+        price_history_file.add_new(
+            date=datetime.now().strftime("%B %d %A %Y %I:%M:%S %p"),
+            part_name=item_name.currentText(),
+            part_number=part_number,
+            old_price=value_before,
+            new_price=price.value(),
+        )
         inventory.change_object_in_object_item(
             category,
             item_name.currentText(),
@@ -2551,6 +2597,40 @@ class MainWindow(QMainWindow):
             self.singleItemHistoryTable.insertRow(self.singleItemHistoryTable.rowCount())
             self.singleItemHistoryTable.setItem(i, 0, QTableWidgetItem(date))
             self.singleItemHistoryTable.setItem(i, 1, QTableWidgetItem(description))
+
+    def load_price_history_view(self) -> None:
+        """
+        It loads the history view of the application.
+        """
+        self.dockWidget_create_add_remove.setVisible(False)
+        self.status_button.setHidden(True)
+        # CATEOGRY HISTORY
+        self.priceHistoryTable.clear()
+        self.priceHistoryTable.setRowCount(0)
+        self.priceHistoryTable.setHorizontalHeaderLabels(
+            ("Date;Part Name;Part #;Old Price;New Price").split(";")
+        )
+        self.priceHistoryTable.setColumnWidth(0, 270)
+        self.priceHistoryTable.setColumnWidth(1, 600)
+        price_history_file = PriceHistoryFile(
+            file_name=f"{settings_file.get_value(item_name='price_history_file_name')}.xlsx"
+        )
+        for i, date, part_name, part_number, old_price, new_price in zip(
+            range(len(price_history_file.get_data_from_category()["Date"])),
+            price_history_file.get_data_from_category()["Date"],
+            price_history_file.get_data_from_category()["Part Name"],
+            price_history_file.get_data_from_category()["Part Number"],
+            price_history_file.get_data_from_category()["Old Price"],
+            price_history_file.get_data_from_category()["New Price"],
+        ):
+            if i == 0:
+                continue
+            self.priceHistoryTable.insertRow(self.priceHistoryTable.rowCount())
+            self.priceHistoryTable.setItem(i - 1, 0, QTableWidgetItem(str(date)))
+            self.priceHistoryTable.setItem(i - 1, 1, QTableWidgetItem(str(part_name)))
+            self.priceHistoryTable.setItem(i - 1, 2, QTableWidgetItem(str(part_number)))
+            self.priceHistoryTable.setItem(i - 1, 3, QTableWidgetItem(str(old_price)))
+            self.priceHistoryTable.setItem(i - 1, 4, QTableWidgetItem(str(new_price)))
 
     def open_po(self, po_name: str = None) -> None:
         """

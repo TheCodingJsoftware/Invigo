@@ -1,3 +1,7 @@
+<h1>v1.4.7</h1>
+&bull; Added Price History Page.<br>
+&bull; Fixed total stock cost formating.<br>
+
 <h1>v1.4.6</h1>
 &bull; Added total stock in cost to dock menu.<br>
 &bull; Sorting is applied automatically once new item is added.<br>
