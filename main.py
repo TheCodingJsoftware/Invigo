@@ -4,8 +4,8 @@ __copyright__ = "Copyright 2022, TheCodingJ's"
 __credits__: "list[str]" = ["Jared Gross"]
 __license__ = "MIT"
 __name__ = "Inventory Manager"
-__version__ = "v1.4.8"
-__updated__ = "2022-12-30 17:32:21"
+__version__ = "v1.4.9"
+__updated__ = "2023-01-02 13:59:22"
 __maintainer__ = "Jared Gross"
 __email__ = "jared@pinelandfarms.ca"
 __status__ = "Production"
@@ -678,6 +678,7 @@ class MainWindow(QMainWindow):
         self.lineEdit_search_items.setCompleter(completer)
 
         self.update_list_widget()
+        self.update_category_total_stock_costs()
         self.label_category_name.setText(f"Category: {self.category}")
         self.quantities_change()
 
@@ -1144,30 +1145,44 @@ class MainWindow(QMainWindow):
                     self.get_exchange_rate() if use_exchange_rate else 1
                 )
                 price: float = categories[category][item]["price"]
-                price = max(price, 0)
                 current_quantity: int = categories[category][item]["current_quantity"]
-                total_category_stock_cost += current_quantity * price * exchange_rate
+                price = max(current_quantity * price * exchange_rate, 0)
+                total_category_stock_cost += price
             total_stock_costs[category] = round_number(total_category_stock_cost, 2)
+        total_stock_costs["Polar Total Stock Cost"] = round_number(
+            inventory.get_total_stock_cost_for_similar_categories("Polar"), 2
+        )
+        total_stock_costs["BL Total Stock Cost"] = round_number(
+            inventory.get_total_stock_cost_for_similar_categories("BL"), 2
+        )
         total_stock_costs = dict(sorted(total_stock_costs.items()))
 
         lbl = QLabel("Stock Costs:", self)
         self.gridLayout_Categor_Stock_Prices.addWidget(lbl, 0, 0)
         for i, stock_cost in enumerate(total_stock_costs, start=1):
             lbl = QLabel(stock_cost, self)
+            if "Total" in stock_cost:
+                lbl.setStyleSheet(
+                    "border-top: 1px solid grey; border-bottom: 1px solid grey"
+                )
             self.gridLayout_Categor_Stock_Prices.addWidget(lbl, i, 0)
             lbl = QLabel(f"${format(float(total_stock_costs[stock_cost]),',')}", self)
+            lbl.setTextInteractionFlags(Qt.TextSelectableByMouse)
+            if "Total" in stock_cost:
+                lbl.setStyleSheet(
+                    "border-top: 1px solid grey; border-bottom: 1px solid grey"
+                )
             self.gridLayout_Categor_Stock_Prices.addWidget(lbl, i, 1)
-        lbl = QLabel("__________________________", self)
-        self.gridLayout_Categor_Stock_Prices.addWidget(lbl, i + 1, 0)
-        lbl = QLabel("__________________________", self)
-        self.gridLayout_Categor_Stock_Prices.addWidget(lbl, i + 1, 1)
         lbl = QLabel("Total Cost in Stock:", self)
-        self.gridLayout_Categor_Stock_Prices.addWidget(lbl, i + 2, 0)
+        lbl.setStyleSheet("border-top: 1px solid grey")
+        self.gridLayout_Categor_Stock_Prices.addWidget(lbl, i + 1, 0)
         lbl = QLabel(
             f"${format(float(round_number(float(inventory.get_total_stock_cost()), 2)), ',')}",
             self,
         )
-        self.gridLayout_Categor_Stock_Prices.addWidget(lbl, i + 2, 1)
+        lbl.setTextInteractionFlags(Qt.TextSelectableByMouse)
+        lbl.setStyleSheet("border-top: 1px solid grey")
+        self.gridLayout_Categor_Stock_Prices.addWidget(lbl, i + 1, 1)
 
     def create_new_category(self, event=None) -> None:
         """

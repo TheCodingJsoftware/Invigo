@@ -39,7 +39,7 @@
          <x>0</x>
          <y>0</y>
          <width>770</width>
-         <height>463</height>
+         <height>477</height>
         </rect>
        </property>
        <attribute name="label">
@@ -60,7 +60,7 @@
          <x>0</x>
          <y>0</y>
          <width>770</width>
-         <height>463</height>
+         <height>477</height>
         </rect>
        </property>
        <attribute name="label">
@@ -85,7 +85,7 @@
          <x>0</x>
          <y>0</y>
          <width>770</width>
-         <height>463</height>
+         <height>477</height>
         </rect>
        </property>
        <attribute name="label">
@@ -113,17 +113,17 @@
                  <property name="columnCount">
                   <number>2</number>
                  </property>
-                 <attribute name="horizontalHeaderMinimumSectionSize">
-                  <number>42</number>
-                 </attribute>
                  <attribute name="horizontalHeaderDefaultSectionSize">
                   <number>500</number>
                  </attribute>
-                 <attribute name="verticalHeaderMinimumSectionSize">
-                  <number>28</number>
+                 <attribute name="horizontalHeaderMinimumSectionSize">
+                  <number>42</number>
                  </attribute>
                  <attribute name="verticalHeaderDefaultSectionSize">
                   <number>30</number>
+                 </attribute>
+                 <attribute name="verticalHeaderMinimumSectionSize">
+                  <number>28</number>
                  </attribute>
                  <column/>
                  <column/>
@@ -149,11 +149,11 @@
                  <property name="columnCount">
                   <number>2</number>
                  </property>
-                 <attribute name="horizontalHeaderMinimumSectionSize">
-                  <number>42</number>
-                 </attribute>
                  <attribute name="horizontalHeaderDefaultSectionSize">
                   <number>500</number>
+                 </attribute>
+                 <attribute name="horizontalHeaderMinimumSectionSize">
+                  <number>42</number>
                  </attribute>
                  <column/>
                  <column/>
@@ -169,6 +169,14 @@
        </layout>
       </widget>
       <widget class="QWidget" name="price_history_page">
+       <property name="geometry">
+        <rect>
+         <x>0</x>
+         <y>0</y>
+         <width>770</width>
+         <height>477</height>
+        </rect>
+       </property>
        <attribute name="label">
         <string>View Price Changes History (Read Only)</string>
        </attribute>
@@ -220,7 +228,7 @@
      <x>0</x>
      <y>0</y>
      <width>1133</width>
-     <height>22</height>
+     <height>21</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
@@ -343,7 +351,7 @@
    <property name="minimumSize">
     <size>
      <width>330</width>
-     <height>453</height>
+     <height>491</height>
     </size>
    </property>
    <property name="floating">
@@ -384,6 +392,9 @@
          <property name="text">
           <string>Total Cost: </string>
          </property>
+         <property name="textInteractionFlags">
+          <set>Qt::LinksAccessibleByMouse|Qt::TextSelectableByMouse</set>
+         </property>
         </widget>
        </item>
        <item>
@@ -394,14 +405,54 @@
         </widget>
        </item>
        <item>
-        <layout class="QGridLayout" name="gridLayout_Categor_Stock_Prices">
-         <property name="horizontalSpacing">
-          <number>0</number>
+        <widget class="QScrollArea" name="scrollArea">
+         <property name="widgetResizable">
+          <bool>true</bool>
          </property>
-         <property name="verticalSpacing">
-          <number>6</number>
-         </property>
-        </layout>
+         <widget class="QWidget" name="scrollAreaWidgetContents">
+          <property name="geometry">
+           <rect>
+            <x>0</x>
+            <y>0</y>
+            <width>308</width>
+            <height>78</height>
+           </rect>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>16777215</width>
+            <height>500</height>
+           </size>
+          </property>
+          <layout class="QVBoxLayout" name="verticalLayout_6">
+           <property name="spacing">
+            <number>0</number>
+           </property>
+           <property name="leftMargin">
+            <number>0</number>
+           </property>
+           <property name="topMargin">
+            <number>0</number>
+           </property>
+           <property name="rightMargin">
+            <number>0</number>
+           </property>
+           <property name="bottomMargin">
+            <number>0</number>
+           </property>
+           <item>
+            <layout class="QGridLayout" name="gridLayout_Categor_Stock_Prices">
+             <property name="horizontalSpacing">
+              <number>0</number>
+             </property>
+             <property name="verticalSpacing">
+              <number>6</number>
+             </property>
+            </layout>
+           </item>
+          </layout>
+         </widget>
+        </widget>
        </item>
        <item>
         <widget class="Line" name="line">

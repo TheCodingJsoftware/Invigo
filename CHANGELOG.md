@@ -1,3 +1,6 @@
+<h1>v1.4.9</h1>
+&bull; Total Stock cost for BL and Polar.<br>
+
 <h1>v1.4.8</h1>
 &bull; Hovering over price shows it in USD/CAD.<br>
 

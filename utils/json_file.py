@@ -322,7 +322,8 @@ class JsonFile:
                 exchange_rate: float = last_exchange_rate if use_exchange_rate else 1
                 price: float = self.data[category][item]["price"]
                 unit_quantity: int = self.data[category][item]["unit_quantity"]
-                total_cost += price * unit_quantity * exchange_rate
+                price = max(price * unit_quantity * exchange_rate, 0)
+                total_cost += price
         return total_cost
 
     def get_total_stock_cost(self) -> float:
@@ -344,6 +345,33 @@ class JsonFile:
                         "quantity": self.data[category][item]["current_quantity"],
                     },
                 )
+
+        for item in all_items:
+            price: float = all_items[item]["price"] * all_items[item]["quantity"]
+            price = max(price, 0)
+            total_stock_cost += price
+        return total_stock_cost
+
+    def get_total_stock_cost_for_similar_categories(self, category_name: str) -> float:
+        """
+        It takes the price and quantity of each item in the inventory and multiplies them together to
+        get the total cost of the inventory
+
+        Returns:
+          The total cost of all items in the inventory.
+        """
+        total_stock_cost: float = 0.0
+        all_items = {}
+        for category in self.get_keys():
+            if category_name in category:
+                for item in self.data[category]:
+                    all_items[self.data[category][item]["part_number"]] = {}
+                    all_items[self.data[category][item]["part_number"]].update(
+                        {
+                            "price": self.data[category][item]["price"],
+                            "quantity": self.data[category][item]["current_quantity"],
+                        },
+                    )
 
         for item in all_items:
             price: float = all_items[item]["price"] * all_items[item]["quantity"]
