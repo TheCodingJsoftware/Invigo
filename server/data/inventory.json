@@ -8855,5 +8855,24 @@
             "latest_change_priority": "Item added\nItsme\nDecember 31 Saturday 2022 10-57-04 AM",
             "latest_change_notes": "Item added\nItsme\nDecember 31 Saturday 2022 10-57-04 AM"
         }
+    },
+    "EGOR 218 Composter (mini)": {
+        "ABB VFD Drive 1\/4HP": {
+            "part_number": "ACS55-01N-01A4-2  ",
+            "unit_quantity": 1.0,
+            "current_quantity": 720,
+            "price": 180.0,
+            "use_exchange_rate": false,
+            "priority": 0,
+            "notes": "Vendor: \nDescription: ",
+            "latest_change_name": "Item added\nItsme\nJanuary 02 Monday 2023 10-42-04 AM",
+            "latest_change_part_number": "Item added\nItsme\nJanuary 02 Monday 2023 10-42-04 AM",
+            "latest_change_unit_quantity": "Item added\nItsme\nJanuary 02 Monday 2023 10-42-04 AM",
+            "latest_change_current_quantity": "Item added\nItsme\nJanuary 02 Monday 2023 10-42-04 AM",
+            "latest_change_price": "Item added\nItsme\nJanuary 02 Monday 2023 10-42-04 AM",
+            "latest_change_use_exchange_price": "Item added\nItsme\nJanuary 02 Monday 2023 10-42-04 AM",
+            "latest_change_priority": "Item added\nItsme\nJanuary 02 Monday 2023 10-42-04 AM",
+            "latest_change_notes": "Item added\nItsme\nJanuary 02 Monday 2023 10-42-04 AM"
+        }
     }
 }
