@@ -4,8 +4,8 @@ __copyright__ = "Copyright 2022, TheCodingJ's"
 __credits__: "list[str]" = ["Jared Gross"]
 __license__ = "MIT"
 __name__ = "Inventory Manager"
-__version__ = "v1.4.9"
-__updated__ = "2023-01-02 14:01:10"
+__version__ = "v1.4.10"
+__updated__ = "2023-01-03 08:44:25"
 __maintainer__ = "Jared Gross"
 __email__ = "jared@pinelandfarms.ca"
 __status__ = "Production"
@@ -1612,6 +1612,7 @@ class MainWindow(QMainWindow):
         inventory.save_data(data)
         inventory.load_data()
         self.update_stock_costs()
+        self.update_category_total_stock_costs()
         round_number = lambda x, n: eval(
             '"%.'
             + str(int(n))
@@ -2083,6 +2084,7 @@ class MainWindow(QMainWindow):
         # self.load_tab()
         self.listWidget_itemnames.setCurrentRow(self.last_item_selected_index)
         self.listWidget_item_changed()
+        self.update_category_total_stock_costs()
         self.sort_inventory()
 
     def remove_quantity(self, item_name: str, old_quantity: int) -> None:
@@ -2160,6 +2162,7 @@ class MainWindow(QMainWindow):
         # self.load_tab()
         self.listWidget_itemnames.setCurrentRow(self.last_item_selected_index)
         self.listWidget_item_changed()
+        self.update_category_total_stock_costs()
         self.sort_inventory()
 
     def listWidget_item_changed(self) -> None:

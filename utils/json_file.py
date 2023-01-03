@@ -353,17 +353,17 @@ class JsonFile:
         return total_stock_cost
 
     def get_total_stock_cost_for_similar_categories(self, category_name: str) -> float:
-      """
-      It returns the total stock cost for all items in the inventory that have a category name that
-      contains the category_name parameter.
+        """
+        It returns the total stock cost for all items in the inventory that have a category name that
+        contains the category_name parameter.
 
-      Args:
-        category_name (str): str = "category_name"
+        Args:
+          category_name (str): str = "category_name"
 
-      Returns:
-        The total stock cost for all items in the inventory that have a category name that contains
-      the category name passed in as a parameter.
-      """
+        Returns:
+          The total stock cost for all items in the inventory that have a category name that contains
+        the category name passed in as a parameter.
+        """
         total_stock_cost: float = 0.0
         all_items = {}
         for category in self.get_keys():

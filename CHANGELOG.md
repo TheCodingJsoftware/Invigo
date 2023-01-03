@@ -1,3 +1,7 @@
+<h1>v1.4.10</h1>
+&bull; Added a few changes such as automatically updating stock costs when price or quantity change.<br>
+&bull; if old price and new price are the same they are not added in history file.<br>
+
 <h1>v1.4.9</h1>
 &bull; Total Stock cost for BL and Polar.<br>
 

@@ -70,6 +70,8 @@ class PriceHistoryFile:
           date (str): str
           description (str): str = "description"
         """
+        if old_price == new_price:
+            return
         self.price_history_sheet.cell(row=self.row_pos + 1, column=1, value=date)
         self.price_history_sheet.cell(row=self.row_pos + 1, column=2, value=part_name)
         self.price_history_sheet.cell(row=self.row_pos + 1, column=3, value=part_number)
