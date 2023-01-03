@@ -3580,6 +3580,23 @@
             "latest_change_priority": "Item added\nItsme\nJuly 19 Tuesday 2022 04-50-50 PM",
             "latest_change_notes": "Item added\nItsme\nJuly 19 Tuesday 2022 04-50-50 PM"
         },
+        "10-16 x 3\/4  HWH TeK3\nSelf tapping screw ( Black )\nWithout Washer": {
+            "part_number": "10-16 x 3\/4 HWH TeK3 ",
+            "unit_quantity": 100.0,
+            "current_quantity": 100,
+            "price": 0.05,
+            "use_exchange_rate": false,
+            "priority": 0,
+            "notes": "Vendor: Domtek\nDescription: Used by Polar Only",
+            "latest_change_name": "Item added\nItsme\nJanuary 03 Tuesday 2023 09-29-10 AM",
+            "latest_change_part_number": "Item added\nItsme\nJanuary 03 Tuesday 2023 09-29-10 AM",
+            "latest_change_unit_quantity": "Item added\nItsme\nJanuary 03 Tuesday 2023 09-29-10 AM",
+            "latest_change_current_quantity": "Item added\nItsme\nJanuary 03 Tuesday 2023 09-29-10 AM",
+            "latest_change_price": "Item added\nItsme\nJanuary 03 Tuesday 2023 09-29-10 AM",
+            "latest_change_use_exchange_price": "Item added\nItsme\nJanuary 03 Tuesday 2023 09-29-10 AM",
+            "latest_change_priority": "Item added\nItsme\nJanuary 03 Tuesday 2023 09-29-10 AM",
+            "latest_change_notes": "Item added\nItsme\nJanuary 03 Tuesday 2023 09-29-10 AM"
+        },
         "3\" Nipple x 3\/4 Black Steel ": {
             "part_number": "483-030",
             "unit_quantity": 1,
@@ -5210,6 +5227,23 @@
             "latest_change_use_exchange_price": "Item added\nItsme\nNovember 03 Thursday 2022 02-15-52 PM",
             "latest_change_priority": "Item added\nItsme\nNovember 03 Thursday 2022 02-15-52 PM",
             "latest_change_notes": "Item added\nItsme\nNovember 03 Thursday 2022 02-15-52 PM"
+        },
+        "LCB Chip Bin Flighting ( 4.125\"OD x 4.125\" Pitch x 1.25\"ID 120\" RH 10GA Flighting ": {
+            "part_number": "10R412412125",
+            "unit_quantity": 7.0,
+            "current_quantity": 2,
+            "price": 21.75,
+            "use_exchange_rate": false,
+            "priority": 0,
+            "notes": "Vendor: AccuTwist \nDescription: 1 Bin has 7 Pieces of 120\" ",
+            "latest_change_name": "Item added\nItsme\nJanuary 03 Tuesday 2023 10-31-52 AM",
+            "latest_change_part_number": "Item added\nItsme\nJanuary 03 Tuesday 2023 10-31-52 AM",
+            "latest_change_unit_quantity": "Item added\nItsme\nJanuary 03 Tuesday 2023 10-31-52 AM",
+            "latest_change_current_quantity": "Item added\nItsme\nJanuary 03 Tuesday 2023 10-31-52 AM",
+            "latest_change_price": "Item added\nItsme\nJanuary 03 Tuesday 2023 10-31-52 AM",
+            "latest_change_use_exchange_price": "Item added\nItsme\nJanuary 03 Tuesday 2023 10-31-52 AM",
+            "latest_change_priority": "Item added\nItsme\nJanuary 03 Tuesday 2023 10-31-52 AM",
+            "latest_change_notes": "Item added\nItsme\nJanuary 03 Tuesday 2023 10-31-52 AM"
         },
         "M16 Bolt ( Rear tire Assy Electric Fork Lift": {
             "part_number": "M16x50 ",
@@ -8926,7 +8960,7 @@
         "HoneyComb ": {
             "part_number": "33HC",
             "unit_quantity": 1.0,
-            "current_quantity": 400,
+            "current_quantity": 100,
             "price": 26.0,
             "use_exchange_rate": false,
             "priority": 0,
@@ -8934,7 +8968,7 @@
             "latest_change_name": "Item added\nItsme\nDecember 31 Saturday 2022 10-57-04 AM",
             "latest_change_part_number": "Item added\nItsme\nDecember 31 Saturday 2022 10-57-04 AM",
             "latest_change_unit_quantity": "Item added\nItsme\nDecember 31 Saturday 2022 10-57-04 AM",
-            "latest_change_current_quantity": "Item added\nItsme\nDecember 31 Saturday 2022 10-57-04 AM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 100\nto: 100\nItsme\nJanuary 03 Tuesday 2023 10:17:33 AM",
             "latest_change_price": "Item added\nItsme\nDecember 31 Saturday 2022 10-57-04 AM",
             "latest_change_use_exchange_price": "Item added\nItsme\nDecember 31 Saturday 2022 10-57-04 AM",
             "latest_change_priority": "Item added\nItsme\nDecember 31 Saturday 2022 10-57-04 AM",
