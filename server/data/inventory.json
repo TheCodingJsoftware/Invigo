@@ -1,22 +1,5 @@
 {
     "Polar G2": {
-        "10-16 x 3\/4  HWH TeK3\nSelf tapping screw ( Black )\nWithout Washer": {
-            "part_number": "10-16 x 3\/4 HWH TeK3 ",
-            "unit_quantity": 100.0,
-            "current_quantity": 8600,
-            "price": 0.05,
-            "use_exchange_rate": false,
-            "priority": 0,
-            "notes": "Vendor: Domtek\nDescription: Used by Polar Only",
-            "latest_change_name": "Item added\nItsme\nJanuary 03 Tuesday 2023 09-15-34 AM",
-            "latest_change_part_number": "Item added\nItsme\nJanuary 03 Tuesday 2023 09-15-34 AM",
-            "latest_change_unit_quantity": "Item added\nItsme\nJanuary 03 Tuesday 2023 09-15-34 AM",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 8600\nto: 8600\nItsme\nJanuary 12 Thursday 2023 10:42:22 AM",
-            "latest_change_price": "Item added\nItsme\nJanuary 03 Tuesday 2023 09-15-34 AM",
-            "latest_change_use_exchange_price": "Item added\nItsme\nJanuary 03 Tuesday 2023 09-15-34 AM",
-            "latest_change_priority": "Item added\nItsme\nJanuary 03 Tuesday 2023 09-15-34 AM",
-            "latest_change_notes": "Item added\nItsme\nJanuary 03 Tuesday 2023 09-15-34 AM"
-        },
         "1\" x 1\" Narrow Slot Gray Duct": {
             "part_number": "PDTF1X1LG6",
             "unit_quantity": 26,
@@ -1407,6 +1390,23 @@
             "latest_change_use_exchange_price": "Item added\nItsme\nAugust 04 Thursday 2022 09-02-56 AM",
             "latest_change_priority": "Item added\nItsme\nAugust 04 Thursday 2022 09-02-56 AM",
             "latest_change_notes": "Item added\nItsme\nAugust 04 Thursday 2022 09-02-56 AM"
+        },
+        "10-16 x 3\/4  HWH TeK3\nSelf tapping screw ( Black )\nWithout Washer": {
+            "part_number": "10-16 x 3\/4 HWH TeK3 ",
+            "unit_quantity": 100.0,
+            "current_quantity": 8600,
+            "price": 0.05,
+            "use_exchange_rate": false,
+            "priority": 0,
+            "notes": "Vendor: Domtek\nDescription: Used by Polar Only",
+            "latest_change_name": "Item added\nItsme\nJanuary 03 Tuesday 2023 09-15-34 AM",
+            "latest_change_part_number": "Item added\nItsme\nJanuary 03 Tuesday 2023 09-15-34 AM",
+            "latest_change_unit_quantity": "Item added\nItsme\nJanuary 03 Tuesday 2023 09-15-34 AM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 8600\nto: 8600\nItsme\nJanuary 12 Thursday 2023 10:42:22 AM",
+            "latest_change_price": "Item added\nItsme\nJanuary 03 Tuesday 2023 09-15-34 AM",
+            "latest_change_use_exchange_price": "Item added\nItsme\nJanuary 03 Tuesday 2023 09-15-34 AM",
+            "latest_change_priority": "Item added\nItsme\nJanuary 03 Tuesday 2023 09-15-34 AM",
+            "latest_change_notes": "Item added\nItsme\nJanuary 03 Tuesday 2023 09-15-34 AM"
         },
         "Self Tapping Screw #12-14x 3\/4\" Hex Tek Zinc": {
             "part_number": "1214",
