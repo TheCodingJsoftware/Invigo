@@ -139,12 +139,13 @@
             "part_number": "6L24",
             "unit_quantity": 1,
             "current_quantity": 13,
-            "price": 0.0,
+            "price": 102.3,
             "use_exchange_rate": false,
             "priority": 1,
             "notes": "Vendor: Security Chimneys\n\nDescription: ",
             "latest_change_current_quantity": "Latest Change:\nfrom: 13\nto: 13\nItsme\nJanuary 05 Thursday 2023 09:13:02 AM",
-            "latest_change_priority": "Latest Change:\nfrom: 2\nto: 1\nItsme\nAugust 03 Wednesday 2022 11:22:18 AM"
+            "latest_change_priority": "Latest Change:\nfrom: 2\nto: 1\nItsme\nAugust 03 Wednesday 2022 11:22:18 AM",
+            "latest_change_price": "Latest Change:\nfrom: 102.3\nto: 102.3\nItsme\nJanuary 13 Friday 2023 02:05:00 PM"
         },
         "Hose Industrial G322-125 1-1\/4 ": {
             "part_number": "G322-125",
@@ -1554,11 +1555,12 @@
             "part_number": "6L24",
             "unit_quantity": 1,
             "current_quantity": 13,
-            "price": 0.0,
+            "price": 102.3,
             "use_exchange_rate": false,
             "priority": 2,
             "notes": "Vendor: Security Chimneys\n\nDescription: ",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 13\nto: 13\nItsme\nJanuary 05 Thursday 2023 09:13:02 AM"
+            "latest_change_current_quantity": "Latest Change:\nfrom: 13\nto: 13\nItsme\nJanuary 05 Thursday 2023 09:13:02 AM",
+            "latest_change_price": "Latest Change:\nfrom: 102.3\nto: 102.3\nItsme\nJanuary 13 Friday 2023 02:05:00 PM"
         },
         "Hose Industrial G322-125 1-1\/4 ": {
             "part_number": "G322-125",
@@ -2990,12 +2992,13 @@
             "part_number": "6L24",
             "unit_quantity": 1,
             "current_quantity": 13,
-            "price": 0.0,
+            "price": 102.3,
             "use_exchange_rate": false,
             "priority": 1,
             "notes": "Vendor: Security Chimneys\n\nDescription: ",
             "latest_change_current_quantity": "Latest Change:\nfrom: 13\nto: 13\nItsme\nJanuary 05 Thursday 2023 09:13:02 AM",
-            "latest_change_priority": "Latest Change:\nfrom: 2\nto: 1\nItsme\nAugust 03 Wednesday 2022 11:23:30 AM"
+            "latest_change_priority": "Latest Change:\nfrom: 2\nto: 1\nItsme\nAugust 03 Wednesday 2022 11:23:30 AM",
+            "latest_change_price": "Latest Change:\nfrom: 102.3\nto: 102.3\nItsme\nJanuary 13 Friday 2023 02:05:00 PM"
         },
         "Hose Industrial G322-125 1-1\/4 ": {
             "part_number": "G322-125",
@@ -5280,22 +5283,22 @@
             "latest_change_priority": "Item added\nItsme\nNovember 03 Thursday 2022 02-15-52 PM",
             "latest_change_notes": "Item added\nItsme\nNovember 03 Thursday 2022 02-15-52 PM"
         },
-        "LCB Chip Bin Flighting ( 4.125\"OD x 4.125\" Pitch x 1.25\"ID 120\" RH 10GA Flighting ": {
-            "part_number": "10R412412125",
-            "unit_quantity": 7.0,
+        "4\"x60\"x80Grit Belt": {
+            "part_number": "r205-4-60-80",
+            "unit_quantity": 1.0,
             "current_quantity": 2,
-            "price": 21.75,
+            "price": 9.27,
             "use_exchange_rate": false,
             "priority": 0,
-            "notes": "Vendor: AccuTwist \nDescription: 1 Bin has 7 Pieces of 120\" ",
-            "latest_change_name": "Item added\nItsme\nJanuary 03 Tuesday 2023 10-31-52 AM",
-            "latest_change_part_number": "Item added\nItsme\nJanuary 03 Tuesday 2023 10-31-52 AM",
-            "latest_change_unit_quantity": "Item added\nItsme\nJanuary 03 Tuesday 2023 10-31-52 AM",
-            "latest_change_current_quantity": "Item added\nItsme\nJanuary 03 Tuesday 2023 10-31-52 AM",
-            "latest_change_price": "Item added\nItsme\nJanuary 03 Tuesday 2023 10-31-52 AM",
-            "latest_change_use_exchange_price": "Item added\nItsme\nJanuary 03 Tuesday 2023 10-31-52 AM",
-            "latest_change_priority": "Item added\nItsme\nJanuary 03 Tuesday 2023 10-31-52 AM",
-            "latest_change_notes": "Item added\nItsme\nJanuary 03 Tuesday 2023 10-31-52 AM"
+            "notes": "Vendor: Wesmac Inc. \nDescription: 60 grit  $11.73 \n80 grit \n100 grit \n4\"x60\"x Grit  ",
+            "latest_change_name": "Item added\nItsme\nJanuary 13 Friday 2023 02-29-23 PM",
+            "latest_change_part_number": "Item added\nItsme\nJanuary 13 Friday 2023 02-29-23 PM",
+            "latest_change_unit_quantity": "Item added\nItsme\nJanuary 13 Friday 2023 02-29-23 PM",
+            "latest_change_current_quantity": "Item added\nItsme\nJanuary 13 Friday 2023 02-29-23 PM",
+            "latest_change_price": "Item added\nItsme\nJanuary 13 Friday 2023 02-29-23 PM",
+            "latest_change_use_exchange_price": "Item added\nItsme\nJanuary 13 Friday 2023 02-29-24 PM",
+            "latest_change_priority": "Item added\nItsme\nJanuary 13 Friday 2023 02-29-24 PM",
+            "latest_change_notes": "Item added\nItsme\nJanuary 13 Friday 2023 02-29-24 PM"
         },
         "M16 Bolt ( Rear tire Assy Electric Fork Lift": {
             "part_number": "M16x50 ",
@@ -5551,23 +5554,6 @@
             "latest_change_use_exchange_price": "Item added\nItsme\nNovember 07 Monday 2022 02-55-52 PM",
             "latest_change_priority": "Item added\nItsme\nNovember 07 Monday 2022 02-55-52 PM",
             "latest_change_notes": "Item added\nItsme\nNovember 07 Monday 2022 02-55-52 PM"
-        },
-        "LCB 300 Brick Set": {
-            "part_number": "LCB300",
-            "unit_quantity": 1,
-            "current_quantity": 48,
-            "price": 1243.0,
-            "use_exchange_rate": false,
-            "priority": 0,
-            "notes": "Vendor: Reftech OR Glasrock\nDescription: ",
-            "latest_change_name": "Item added\nItsme\nAugust 03 Wednesday 2022 08-55-43 AM",
-            "latest_change_part_number": "Item added\nItsme\nAugust 03 Wednesday 2022 08-55-43 AM",
-            "latest_change_unit_quantity": "Item added\nItsme\nAugust 03 Wednesday 2022 08-55-43 AM",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 48\nto: 48\nItsme\nJanuary 02 Monday 2023 01:18:30 PM",
-            "latest_change_price": "Latest Change:\nfrom: 12430.0\nto: 1243.0\nItsme\nAugust 03 Wednesday 2022 10:05:23 AM",
-            "latest_change_use_exchange_price": "Item added\nItsme\nAugust 03 Wednesday 2022 08-55-43 AM",
-            "latest_change_priority": "Item added\nItsme\nAugust 03 Wednesday 2022 08-55-43 AM",
-            "latest_change_notes": "Item added\nItsme\nAugust 03 Wednesday 2022 08-55-43 AM"
         },
         "Pferd Zip Cut .04": {
             "part_number": "PF-69855",
@@ -9115,6 +9101,76 @@
             "latest_change_use_exchange_price": "Item added\nItsme\nJanuary 02 Monday 2023 10-42-04 AM",
             "latest_change_priority": "Item added\nItsme\nJanuary 02 Monday 2023 10-42-04 AM",
             "latest_change_notes": "Latest Change:\nfrom: \"Vendor:  BSI\nDescription: \"\nto: \"Vendor:  BSI \nDescription: \"\nItsme\nJanuary 02 Monday 2023 11:03:10 AM"
+        }
+    },
+    "LCB ": {
+        "LCB Chip Bin Flighting ( 4.125\"OD x 4.125\" Pitch x 1.25\"ID 120\" RH 10GA Flighting ": {
+            "part_number": "10R412412125",
+            "unit_quantity": 7.0,
+            "current_quantity": 2,
+            "price": 21.75,
+            "use_exchange_rate": false,
+            "priority": 0,
+            "notes": "Vendor: AccuTwist \nDescription: 1 Bin has 7 Pieces of 120\" ",
+            "latest_change_name": "Item added\nItsme\nJanuary 13 Friday 2023 01-45-16 PM",
+            "latest_change_part_number": "Item added\nItsme\nJanuary 13 Friday 2023 01-45-16 PM",
+            "latest_change_unit_quantity": "Item added\nItsme\nJanuary 13 Friday 2023 01-45-16 PM",
+            "latest_change_current_quantity": "Item added\nItsme\nJanuary 13 Friday 2023 01-45-16 PM",
+            "latest_change_price": "Item added\nItsme\nJanuary 13 Friday 2023 01-45-16 PM",
+            "latest_change_use_exchange_price": "Item added\nItsme\nJanuary 13 Friday 2023 01-45-16 PM",
+            "latest_change_priority": "Item added\nItsme\nJanuary 13 Friday 2023 01-45-16 PM",
+            "latest_change_notes": "Item added\nItsme\nJanuary 13 Friday 2023 01-45-16 PM"
+        },
+        "Wall Mount Panel CSD24308 Type 4\/12 ENCL(77470  Hoffman": {
+            "part_number": "HOFCSD24308",
+            "unit_quantity": 1.0,
+            "current_quantity": 3,
+            "price": 403.95,
+            "use_exchange_rate": false,
+            "priority": 0,
+            "notes": "Vendor: Westburn\nDescription: ",
+            "latest_change_name": "Item added\nItsme\nJanuary 13 Friday 2023 01-43-33 PM",
+            "latest_change_part_number": "Item added\nItsme\nJanuary 13 Friday 2023 01-43-33 PM",
+            "latest_change_unit_quantity": "Item added\nItsme\nJanuary 13 Friday 2023 01-43-33 PM",
+            "latest_change_current_quantity": "Item added\nItsme\nJanuary 13 Friday 2023 01-43-33 PM",
+            "latest_change_price": "Item added\nItsme\nJanuary 13 Friday 2023 01-43-33 PM",
+            "latest_change_use_exchange_price": "Item added\nItsme\nJanuary 13 Friday 2023 01-43-33 PM",
+            "latest_change_priority": "Item added\nItsme\nJanuary 13 Friday 2023 01-43-33 PM",
+            "latest_change_notes": "Item added\nItsme\nJanuary 13 Friday 2023 01-43-33 PM"
+        },
+        "VFD 22F-A2P5N103 PF4M 240V 1PH .5HP": {
+            "part_number": "ALB22FA2P5N103",
+            "unit_quantity": 6.0,
+            "current_quantity": 14,
+            "price": 205.95,
+            "use_exchange_rate": false,
+            "priority": 0,
+            "notes": "Vendor: Westburn\nDescription: ",
+            "latest_change_name": "Item added\nItsme\nJanuary 13 Friday 2023 01-41-18 PM",
+            "latest_change_part_number": "Item added\nItsme\nJanuary 13 Friday 2023 01-41-18 PM",
+            "latest_change_unit_quantity": "Item added\nItsme\nJanuary 13 Friday 2023 01-41-18 PM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 14\nto: 14\nItsme\nJanuary 13 Friday 2023 01:41:33 PM",
+            "latest_change_price": "Item added\nItsme\nJanuary 13 Friday 2023 01-41-18 PM",
+            "latest_change_use_exchange_price": "Item added\nItsme\nJanuary 13 Friday 2023 01-41-18 PM",
+            "latest_change_priority": "Item added\nItsme\nJanuary 13 Friday 2023 01-41-18 PM",
+            "latest_change_notes": "Item added\nItsme\nJanuary 13 Friday 2023 01-41-18 PM"
+        },
+        "LCB 300 Brick Set": {
+            "part_number": "LCB300",
+            "unit_quantity": 1.0,
+            "current_quantity": 44,
+            "price": 1243.0,
+            "use_exchange_rate": false,
+            "priority": 0,
+            "notes": "Vendor:  Glasrock\nDescription: ",
+            "latest_change_name": "Item added\nItsme\nJanuary 13 Friday 2023 01-44-42 PM",
+            "latest_change_part_number": "Item added\nItsme\nJanuary 13 Friday 2023 01-44-42 PM",
+            "latest_change_unit_quantity": "Item added\nItsme\nJanuary 13 Friday 2023 01-44-42 PM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 44\nto: 44\nItsme\nJanuary 13 Friday 2023 01:46:49 PM",
+            "latest_change_price": "Item added\nItsme\nJanuary 13 Friday 2023 01-44-42 PM",
+            "latest_change_use_exchange_price": "Item added\nItsme\nJanuary 13 Friday 2023 01-44-42 PM",
+            "latest_change_priority": "Item added\nItsme\nJanuary 13 Friday 2023 01-44-42 PM",
+            "latest_change_notes": "Item added\nItsme\nJanuary 13 Friday 2023 01-44-42 PM"
         }
     }
 }
