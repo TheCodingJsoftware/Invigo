@@ -370,7 +370,7 @@
             "price": 34.25,
             "use_exchange_rate": true,
             "priority": 0,
-            "notes": "Vendor: Miljoco Corp\nDescription: ",
+            "notes": "Vendor: Miljoco Corp\nDescription: Weiss instruments\nsend to tom Adams and Srenner",
             "latest_change_name": "Item added\nItsme\nAugust 12 Friday 2022 09-51-42 AM",
             "latest_change_part_number": "Item added\nItsme\nAugust 12 Friday 2022 09-51-42 AM",
             "latest_change_unit_quantity": "Item added\nItsme\nAugust 12 Friday 2022 09-51-42 AM",
@@ -378,7 +378,7 @@
             "latest_change_price": "Latest Change:\nfrom: 34.2\nto: 34.25\nItsme\nNovember 14 Monday 2022 02:52:29 PM",
             "latest_change_use_exchange_price": "Item added\nItsme\nAugust 12 Friday 2022 09-51-42 AM",
             "latest_change_priority": "Item added\nItsme\nAugust 12 Friday 2022 09-51-42 AM",
-            "latest_change_notes": "Item added\nItsme\nAugust 12 Friday 2022 09-51-42 AM",
+            "latest_change_notes": "Latest Change:\nfrom: Vendor: Miljoco Corp\nDescription: Weiss instruments\nsend to tom Adams and Srenne\nto: Vendor: Miljoco Corp\nDescription: Weiss instruments\nsend to tom Adams and Srenner\nItsme\nJanuary 17 Tuesday 2023 01:12:19 PM",
             "latest_change_use_exchange_rate": "Latest Change:\nfrom: CAD\nto: USD\nItsme\nNovember 17 Thursday 2022 09:30:53 AM"
         },
         "1 1\/4 Closed Nipple ": {
@@ -1838,7 +1838,7 @@
             "price": 34.25,
             "use_exchange_rate": true,
             "priority": 3,
-            "notes": "Vendor: Miljoco Corp\nDescription: ",
+            "notes": "Vendor: Miljoco Corp\nDescription: Weiss instruments\nsend to tom Adams and Srenner",
             "latest_change_name": "Item added\nItsme\nAugust 12 Friday 2022 09-51-59 AM",
             "latest_change_part_number": "Item added\nItsme\nAugust 12 Friday 2022 09-51-59 AM",
             "latest_change_unit_quantity": "Item added\nItsme\nAugust 12 Friday 2022 09-51-59 AM",
@@ -1846,7 +1846,7 @@
             "latest_change_price": "Latest Change:\nfrom: 34.2\nto: 34.25\nItsme\nNovember 14 Monday 2022 02:52:29 PM",
             "latest_change_use_exchange_price": "Item added\nItsme\nAugust 12 Friday 2022 09-51-59 AM",
             "latest_change_priority": "Latest Change:\nfrom: 0\nto: 3\nItsme\nNovember 30 Wednesday 2022 10:23:17 AM",
-            "latest_change_notes": "Item added\nItsme\nAugust 12 Friday 2022 09-51-59 AM",
+            "latest_change_notes": "Latest Change:\nfrom: \"Vendor: Miljoco Corp\nDescription: Weiss instruments\nsend to tom Adams and Srenne\"\nto: \"Vendor: Miljoco Corp\nDescription: Weiss instruments\nsend to tom Adams and Srenner\"\nItsme\nJanuary 17 Tuesday 2023 01:12:19 PM",
             "latest_change_use_exchange_rate": "Latest Change:\nfrom: CAD\nto: USD\nItsme\nNovember 14 Monday 2022 02:52:33 PM"
         },
         "1 1\/4 Closed Nipple ": {
@@ -3306,7 +3306,7 @@
             "price": 34.25,
             "use_exchange_rate": false,
             "priority": 0,
-            "notes": "Vendor: Miljoco Corp\nDescription: ",
+            "notes": "Vendor: Miljoco Corp\nDescription: Weiss instruments\nsend to tom Adams and Srenner",
             "latest_change_name": "Item added\nItsme\nAugust 12 Friday 2022 09-52-11 AM",
             "latest_change_part_number": "Item added\nItsme\nAugust 12 Friday 2022 09-52-11 AM",
             "latest_change_unit_quantity": "Item added\nItsme\nAugust 12 Friday 2022 09-52-11 AM",
@@ -3314,7 +3314,7 @@
             "latest_change_price": "Latest Change:\nfrom: 34.2\nto: 34.25\nItsme\nNovember 14 Monday 2022 02:52:29 PM",
             "latest_change_use_exchange_price": "Item added\nItsme\nAugust 12 Friday 2022 09-52-11 AM",
             "latest_change_priority": "Item added\nItsme\nAugust 12 Friday 2022 09-52-11 AM",
-            "latest_change_notes": "Item added\nItsme\nAugust 12 Friday 2022 09-52-11 AM"
+            "latest_change_notes": "Latest Change:\nfrom: Vendor: Miljoco Corp\nDescription: Weiss instruments\nsend to tom Adams and Srenne\nto: Vendor: Miljoco Corp\nDescription: Weiss instruments\nsend to tom Adams and Srenner\nItsme\nJanuary 17 Tuesday 2023 01:12:19 PM"
         },
         "1 1\/4 Closed Nipple ": {
             "part_number": "114CN",
