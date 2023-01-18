@@ -430,7 +430,7 @@
         "Rocker Switch SPST 20A 125V ": {
             "part_number": "KGC2ANB1BBD",
             "unit_quantity": 2.0,
-            "current_quantity": 40,
+            "current_quantity": 140,
             "price": 6.69,
             "use_exchange_rate": false,
             "priority": 0,
@@ -438,7 +438,7 @@
             "latest_change_name": "Item added\nItsme\nJanuary 13 Friday 2023 04-34-19 PM",
             "latest_change_part_number": "Item added\nItsme\nJanuary 13 Friday 2023 04-34-19 PM",
             "latest_change_unit_quantity": "Item added\nItsme\nJanuary 13 Friday 2023 04-34-19 PM",
-            "latest_change_current_quantity": "Item added\nItsme\nJanuary 13 Friday 2023 04-34-19 PM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 140\nto: 140\nItsme\nJanuary 18 Wednesday 2023 02:35:24 PM",
             "latest_change_price": "Item added\nItsme\nJanuary 13 Friday 2023 04-34-19 PM",
             "latest_change_use_exchange_price": "Item added\nItsme\nJanuary 13 Friday 2023 04-34-19 PM",
             "latest_change_priority": "Item added\nItsme\nJanuary 13 Friday 2023 04-34-19 PM",
@@ -1912,23 +1912,6 @@
             "latest_change_priority": "Item added\nItsme\nDecember 12 Monday 2022 08-25-35 AM",
             "latest_change_notes": "Item added\nItsme\nDecember 12 Monday 2022 08-25-35 AM"
         },
-        "Rocker Switch SPST 20A 125V ": {
-            "part_number": "KGC2ANB1BBD",
-            "unit_quantity": 2.0,
-            "current_quantity": 40,
-            "price": 6.69,
-            "use_exchange_rate": false,
-            "priority": 0,
-            "notes": "Vendor: Digi-Key\nDescription: ",
-            "latest_change_name": "Item added\nItsme\nJanuary 13 Friday 2023 04-34-37 PM",
-            "latest_change_part_number": "Item added\nItsme\nJanuary 13 Friday 2023 04-34-37 PM",
-            "latest_change_unit_quantity": "Item added\nItsme\nJanuary 13 Friday 2023 04-34-37 PM",
-            "latest_change_current_quantity": "Item added\nItsme\nJanuary 13 Friday 2023 04-34-37 PM",
-            "latest_change_price": "Item added\nItsme\nJanuary 13 Friday 2023 04-34-37 PM",
-            "latest_change_use_exchange_price": "Item added\nItsme\nJanuary 13 Friday 2023 04-34-37 PM",
-            "latest_change_priority": "Item added\nItsme\nJanuary 13 Friday 2023 04-34-37 PM",
-            "latest_change_notes": "Item added\nItsme\nJanuary 13 Friday 2023 04-34-37 PM"
-        },
         "Sticker 308 CSA Polar G2 10\"x 6\" Silver Foil ": {
             "part_number": "308",
             "unit_quantity": 1,
@@ -2416,6 +2399,23 @@
             "latest_change_use_exchange_price": "Item added\nItsme\nJuly 13 Wednesday 2022 09-10-18 AM",
             "latest_change_priority": "Item added\nItsme\nJuly 13 Wednesday 2022 09-10-18 AM",
             "latest_change_notes": "Item added\nItsme\nJuly 13 Wednesday 2022 09-10-18 AM"
+        },
+        "Rocker Switch SPST 20A 125V ": {
+            "part_number": "KGC2ANB1BBD",
+            "unit_quantity": 2.0,
+            "current_quantity": 140,
+            "price": 6.69,
+            "use_exchange_rate": false,
+            "priority": 0,
+            "notes": "Vendor: Digi-Key\nDescription: ",
+            "latest_change_name": "Item added\nItsme\nJanuary 13 Friday 2023 04-34-37 PM",
+            "latest_change_part_number": "Item added\nItsme\nJanuary 13 Friday 2023 04-34-37 PM",
+            "latest_change_unit_quantity": "Item added\nItsme\nJanuary 13 Friday 2023 04-34-37 PM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 140\nto: 140\nItsme\nJanuary 18 Wednesday 2023 02:35:24 PM",
+            "latest_change_price": "Item added\nItsme\nJanuary 13 Friday 2023 04-34-37 PM",
+            "latest_change_use_exchange_price": "Item added\nItsme\nJanuary 13 Friday 2023 04-34-37 PM",
+            "latest_change_priority": "Item added\nItsme\nJanuary 13 Friday 2023 04-34-37 PM",
+            "latest_change_notes": "Item added\nItsme\nJanuary 13 Friday 2023 04-34-37 PM"
         },
         "Spring Pin 2\" x .25": {
             "part_number": "sp225",
@@ -3365,7 +3365,7 @@
         "Rocker Switch SPST 20A 125V ": {
             "part_number": "KGC2ANB1BBD",
             "unit_quantity": 2.0,
-            "current_quantity": 40,
+            "current_quantity": 140,
             "price": 6.69,
             "use_exchange_rate": false,
             "priority": 0,
@@ -3373,7 +3373,7 @@
             "latest_change_name": "Item added\nItsme\nJanuary 13 Friday 2023 04-34-48 PM",
             "latest_change_part_number": "Item added\nItsme\nJanuary 13 Friday 2023 04-34-48 PM",
             "latest_change_unit_quantity": "Item added\nItsme\nJanuary 13 Friday 2023 04-34-48 PM",
-            "latest_change_current_quantity": "Item added\nItsme\nJanuary 13 Friday 2023 04-34-48 PM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 140\nto: 140\nItsme\nJanuary 18 Wednesday 2023 02:35:24 PM",
             "latest_change_price": "Item added\nItsme\nJanuary 13 Friday 2023 04-34-48 PM",
             "latest_change_use_exchange_price": "Item added\nItsme\nJanuary 13 Friday 2023 04-34-48 PM",
             "latest_change_priority": "Item added\nItsme\nJanuary 13 Friday 2023 04-34-48 PM",
