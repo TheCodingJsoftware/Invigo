@@ -5051,7 +5051,7 @@
             "price": 1.8,
             "use_exchange_rate": true,
             "priority": 3,
-            "notes": "Vendor: Reftec \nDescription: ",
+            "notes": "Vendor: Mineral Seal \n\nDescription: ",
             "latest_change_name": "Latest Change:\nfrom: \"Ceramic Paper Fiber  STD (2300F) 6mm X 48\" X 33\"\nto: \"Ceramic Paper Fiber  STD (2300F) 6mm X 48\" X 33\"\"\nItsme\nOctober 14 Friday 2022 10:38:30 AM",
             "latest_change_part_number": "Item added\nItsme\nJuly 28 Thursday 2022 03-29-44 PM",
             "latest_change_unit_quantity": "Latest Change:\nfrom: 9\nto: 9\nItsme\nOctober 14 Friday 2022 01:36:20 PM",
@@ -5059,7 +5059,7 @@
             "latest_change_price": "Latest Change:\nfrom: 1.0\nto: 1.8\nItsme\nOctober 14 Friday 2022 01:34:25 PM",
             "latest_change_use_exchange_price": "Item added\nItsme\nJuly 28 Thursday 2022 03-29-44 PM",
             "latest_change_priority": "Latest Change:\nfrom: 0\nto: 3\nItsme\nOctober 21 Friday 2022 04:31:28 PM",
-            "latest_change_notes": "Item added\nItsme\nJuly 28 Thursday 2022 03-29-44 PM",
+            "latest_change_notes": "Latest Change:\nfrom: \"Vendor: Mineral Seal \nDescription: \"\nto: \"Vendor: Mineral Seal \n\nDescription: \"\nItsme\nJanuary 18 Wednesday 2023 03:29:23 PM",
             "latest_change_use_exchange_rate": "Latest Change:\nfrom: CAD\nto: USD\nItsme\nOctober 15 Saturday 2022 09:12:56 AM"
         }
     },
@@ -5644,6 +5644,23 @@
             "latest_change_priority": "Item added\nItsme\nAugust 26 Friday 2022 08-57-36 AM",
             "latest_change_notes": "Item added\nItsme\nAugust 26 Friday 2022 08-57-36 AM"
         },
+        "PTC Silicon Sensor ": {
+            "part_number": "A99BA-200C ",
+            "unit_quantity": 1.0,
+            "current_quantity": 15,
+            "price": 30.94,
+            "use_exchange_rate": false,
+            "priority": 0,
+            "notes": "Vendor: Johnson Controls\nDescription: ",
+            "latest_change_name": "Item added\nItsme\nJanuary 18 Wednesday 2023 03-22-10 PM",
+            "latest_change_part_number": "Item added\nItsme\nJanuary 18 Wednesday 2023 03-22-10 PM",
+            "latest_change_unit_quantity": "Item added\nItsme\nJanuary 18 Wednesday 2023 03-22-10 PM",
+            "latest_change_current_quantity": "Item added\nItsme\nJanuary 18 Wednesday 2023 03-22-10 PM",
+            "latest_change_price": "Item added\nItsme\nJanuary 18 Wednesday 2023 03-22-10 PM",
+            "latest_change_use_exchange_price": "Item added\nItsme\nJanuary 18 Wednesday 2023 03-22-10 PM",
+            "latest_change_priority": "Item added\nItsme\nJanuary 18 Wednesday 2023 03-22-10 PM",
+            "latest_change_notes": "Item added\nItsme\nJanuary 18 Wednesday 2023 03-22-10 PM"
+        },
         "LCB 600 Brick Set": {
             "part_number": "LCB600",
             "unit_quantity": 1,
@@ -5782,6 +5799,23 @@
         }
     },
     "BL 28 Wood": {
+        "Black Gloss 76795 Enamel ": {
+            "part_number": "76795",
+            "unit_quantity": 0.1,
+            "current_quantity": 2,
+            "price": 295.0,
+            "use_exchange_rate": false,
+            "priority": 0,
+            "notes": "Vendor: Cloverdale Paint \nDescription: \n5 Gallon pails \n",
+            "latest_change_name": "Item added\nItsme\nJanuary 18 Wednesday 2023 03-23-23 PM",
+            "latest_change_part_number": "Item added\nItsme\nJanuary 18 Wednesday 2023 03-23-23 PM",
+            "latest_change_unit_quantity": "Item added\nItsme\nJanuary 18 Wednesday 2023 03-23-23 PM",
+            "latest_change_current_quantity": "Item added\nItsme\nJanuary 18 Wednesday 2023 03-23-23 PM",
+            "latest_change_price": "Item added\nItsme\nJanuary 18 Wednesday 2023 03-23-23 PM",
+            "latest_change_use_exchange_price": "Item added\nItsme\nJanuary 18 Wednesday 2023 03-23-23 PM",
+            "latest_change_priority": "Item added\nItsme\nJanuary 18 Wednesday 2023 03-23-23 PM",
+            "latest_change_notes": "Item added\nItsme\nJanuary 18 Wednesday 2023 03-23-23 PM"
+        },
         "Black primer scoat 713 ": {
             "part_number": "7133505",
             "unit_quantity": 0.2,
@@ -6350,7 +6384,7 @@
             "unit_quantity": 5,
             "current_quantity": 1450,
             "price": 3.85,
-            "use_exchange_rate": false,
+            "use_exchange_rate": true,
             "priority": 0,
             "notes": "Vendor: Mid-Mountain Materials\nDescription: ",
             "latest_change_name": "Item added\nItsme\nAugust 08 Monday 2022 08-16-28 AM",
@@ -6360,7 +6394,8 @@
             "latest_change_price": "Item added\nItsme\nAugust 08 Monday 2022 08-16-28 AM",
             "latest_change_use_exchange_price": "Item added\nItsme\nAugust 08 Monday 2022 08-16-28 AM",
             "latest_change_priority": "Item added\nItsme\nAugust 08 Monday 2022 08-16-28 AM",
-            "latest_change_notes": "Item added\nItsme\nAugust 08 Monday 2022 08-16-28 AM"
+            "latest_change_notes": "Item added\nItsme\nAugust 08 Monday 2022 08-16-28 AM",
+            "latest_change_use_exchange_rate": "Latest Change:\nfrom: CAD\nto: USD\nItsme\nJanuary 18 Wednesday 2023 03:28:03 PM"
         },
         "3\/8 X 1.25\" Bolt ": {
             "part_number": "38125",
@@ -6384,7 +6419,7 @@
             "unit_quantity": 5,
             "current_quantity": 1650,
             "price": 4.0,
-            "use_exchange_rate": false,
+            "use_exchange_rate": true,
             "priority": 0,
             "notes": "Vendor: Mid-Mountain Materials\nDescription: ",
             "latest_change_name": "Item added\nItsme\nAugust 08 Monday 2022 08-17-35 AM",
@@ -6394,7 +6429,8 @@
             "latest_change_price": "Item added\nItsme\nAugust 08 Monday 2022 08-17-35 AM",
             "latest_change_use_exchange_price": "Item added\nItsme\nAugust 08 Monday 2022 08-17-35 AM",
             "latest_change_priority": "Item added\nItsme\nAugust 08 Monday 2022 08-17-35 AM",
-            "latest_change_notes": "Item added\nItsme\nAugust 08 Monday 2022 08-17-35 AM"
+            "latest_change_notes": "Item added\nItsme\nAugust 08 Monday 2022 08-17-35 AM",
+            "latest_change_use_exchange_rate": "Latest Change:\nfrom: CAD\nto: USD\nItsme\nJanuary 18 Wednesday 2023 03:28:06 PM"
         },
         "3\/16 Rivet POP DH Open END ": {
             "part_number": "EM-AD66ABS",
@@ -6420,7 +6456,7 @@
             "price": 1.8,
             "use_exchange_rate": true,
             "priority": 0,
-            "notes": "Vendor: Mineral Seal Corporation \nDescription: ",
+            "notes": "Vendor: Mineral Seal \n\nDescription: ",
             "latest_change_name": "Item added\nItsme\nOctober 14 Friday 2022 10-39-38 AM",
             "latest_change_part_number": "Item added\nItsme\nOctober 14 Friday 2022 10-39-38 AM",
             "latest_change_unit_quantity": "Latest Change:\nfrom: 7\nto: 9\nItsme\nOctober 14 Friday 2022 01:33:59 PM",
@@ -6428,11 +6464,28 @@
             "latest_change_price": "Latest Change:\nfrom: 1.0\nto: 1.8\nItsme\nOctober 14 Friday 2022 01:34:25 PM",
             "latest_change_use_exchange_price": "Item added\nItsme\nOctober 14 Friday 2022 10-39-38 AM",
             "latest_change_priority": "Item added\nItsme\nOctober 14 Friday 2022 10-39-38 AM",
-            "latest_change_notes": "Item added\nItsme\nOctober 14 Friday 2022 10-39-38 AM",
+            "latest_change_notes": "Latest Change:\nfrom: Vendor: Mineral Seal \nDescription: \nto: Vendor: Mineral Seal \n\nDescription: \nItsme\nJanuary 18 Wednesday 2023 03:29:23 PM",
             "latest_change_use_exchange_rate": "Latest Change:\nfrom: CAD\nto: USD\nItsme\nOctober 15 Saturday 2022 09:12:10 AM"
         }
     },
     "BL 28 Shaker": {
+        "Black Gloss 76795 Enamel ": {
+            "part_number": "76795",
+            "unit_quantity": 0.1,
+            "current_quantity": 2,
+            "price": 295.0,
+            "use_exchange_rate": false,
+            "priority": 0,
+            "notes": "Vendor: Cloverdale Paint \nDescription: \n5 Gallon pails \n",
+            "latest_change_name": "Item added\nItsme\nJanuary 18 Wednesday 2023 03-23-36 PM",
+            "latest_change_part_number": "Item added\nItsme\nJanuary 18 Wednesday 2023 03-23-36 PM",
+            "latest_change_unit_quantity": "Item added\nItsme\nJanuary 18 Wednesday 2023 03-23-36 PM",
+            "latest_change_current_quantity": "Item added\nItsme\nJanuary 18 Wednesday 2023 03-23-36 PM",
+            "latest_change_price": "Item added\nItsme\nJanuary 18 Wednesday 2023 03-23-36 PM",
+            "latest_change_use_exchange_price": "Item added\nItsme\nJanuary 18 Wednesday 2023 03-23-36 PM",
+            "latest_change_priority": "Item added\nItsme\nJanuary 18 Wednesday 2023 03-23-36 PM",
+            "latest_change_notes": "Item added\nItsme\nJanuary 18 Wednesday 2023 03-23-36 PM"
+        },
         "Black primer scoat 713 ": {
             "part_number": "7133505",
             "unit_quantity": 0.2,
@@ -7055,7 +7108,7 @@
             "price": 1.8,
             "use_exchange_rate": true,
             "priority": 3,
-            "notes": "Vendor: Mineral Seal Corporation \nDescription: ",
+            "notes": "Vendor: Mineral Seal \n\nDescription: ",
             "latest_change_name": "Item added\nItsme\nOctober 14 Friday 2022 10-39-50 AM",
             "latest_change_part_number": "Item added\nItsme\nOctober 14 Friday 2022 10-39-50 AM",
             "latest_change_unit_quantity": "Latest Change:\nfrom: 2\nto: 9\nItsme\nOctober 14 Friday 2022 01:35:23 PM",
@@ -7063,11 +7116,28 @@
             "latest_change_price": "Latest Change:\nfrom: 1.0\nto: 1.8\nItsme\nOctober 14 Friday 2022 01:34:25 PM",
             "latest_change_use_exchange_price": "Item added\nItsme\nOctober 14 Friday 2022 10-39-50 AM",
             "latest_change_priority": "Latest Change:\nfrom: 0\nto: 3\nItsme\nOctober 21 Friday 2022 10:04:37 AM",
-            "latest_change_notes": "Item added\nItsme\nOctober 14 Friday 2022 10-39-50 AM",
+            "latest_change_notes": "Latest Change:\nfrom: Vendor: Mineral Seal \nDescription: \nto: Vendor: Mineral Seal \n\nDescription: \nItsme\nJanuary 18 Wednesday 2023 03:29:23 PM",
             "latest_change_use_exchange_rate": "Latest Change:\nfrom: CAD\nto: USD\nItsme\nOctober 19 Wednesday 2022 02:08:01 PM"
         }
     },
     "BL 34 Shaker": {
+        "Black Gloss 76795 Enamel ": {
+            "part_number": "76795",
+            "unit_quantity": 0.1,
+            "current_quantity": 2,
+            "price": 295.0,
+            "use_exchange_rate": false,
+            "priority": 0,
+            "notes": "Vendor: Cloverdale Paint \nDescription: \n5 Gallon pails \n",
+            "latest_change_name": "Item added\nItsme\nJanuary 18 Wednesday 2023 03-23-51 PM",
+            "latest_change_part_number": "Item added\nItsme\nJanuary 18 Wednesday 2023 03-23-51 PM",
+            "latest_change_unit_quantity": "Item added\nItsme\nJanuary 18 Wednesday 2023 03-23-51 PM",
+            "latest_change_current_quantity": "Item added\nItsme\nJanuary 18 Wednesday 2023 03-23-51 PM",
+            "latest_change_price": "Item added\nItsme\nJanuary 18 Wednesday 2023 03-23-51 PM",
+            "latest_change_use_exchange_price": "Item added\nItsme\nJanuary 18 Wednesday 2023 03-23-51 PM",
+            "latest_change_priority": "Item added\nItsme\nJanuary 18 Wednesday 2023 03-23-51 PM",
+            "latest_change_notes": "Item added\nItsme\nJanuary 18 Wednesday 2023 03-23-51 PM"
+        },
         "Black primer scoat 713 ": {
             "part_number": "7133505",
             "unit_quantity": 0.2,
@@ -7705,7 +7775,7 @@
             "price": 1.8,
             "use_exchange_rate": true,
             "priority": 0,
-            "notes": "Vendor: Mineral Seal Corporation \nDescription: ",
+            "notes": "Vendor: Mineral Seal \n\nDescription: ",
             "latest_change_name": "Item added\nItsme\nOctober 14 Friday 2022 10-40-02 AM",
             "latest_change_part_number": "Item added\nItsme\nOctober 14 Friday 2022 10-40-02 AM",
             "latest_change_unit_quantity": "Latest Change:\nfrom: 11\nto: 11\nItsme\nOctober 14 Friday 2022 01:35:34 PM",
@@ -7713,11 +7783,28 @@
             "latest_change_price": "Latest Change:\nfrom: 1.0\nto: 1.8\nItsme\nOctober 14 Friday 2022 01:34:25 PM",
             "latest_change_use_exchange_price": "Item added\nItsme\nOctober 14 Friday 2022 10-40-02 AM",
             "latest_change_priority": "Item added\nItsme\nOctober 14 Friday 2022 10-40-02 AM",
-            "latest_change_notes": "Item added\nItsme\nOctober 14 Friday 2022 10-40-02 AM",
+            "latest_change_notes": "Latest Change:\nfrom: Vendor: Mineral Seal \nDescription: \nto: Vendor: Mineral Seal \n\nDescription: \nItsme\nJanuary 18 Wednesday 2023 03:29:23 PM",
             "latest_change_use_exchange_rate": "Latest Change:\nfrom: CAD\nto: USD\nItsme\nOctober 15 Saturday 2022 09:12:24 AM"
         }
     },
     "BL 34 Wood": {
+        "Black Gloss 76795 Enamel ": {
+            "part_number": "76795",
+            "unit_quantity": 0.1,
+            "current_quantity": 2,
+            "price": 295.0,
+            "use_exchange_rate": false,
+            "priority": 0,
+            "notes": "Vendor: Cloverdale Paint \nDescription: \n5 Gallon pails \n",
+            "latest_change_name": "Item added\nItsme\nJanuary 18 Wednesday 2023 03-24-19 PM",
+            "latest_change_part_number": "Item added\nItsme\nJanuary 18 Wednesday 2023 03-24-19 PM",
+            "latest_change_unit_quantity": "Item added\nItsme\nJanuary 18 Wednesday 2023 03-24-19 PM",
+            "latest_change_current_quantity": "Item added\nItsme\nJanuary 18 Wednesday 2023 03-24-19 PM",
+            "latest_change_price": "Item added\nItsme\nJanuary 18 Wednesday 2023 03-24-19 PM",
+            "latest_change_use_exchange_price": "Item added\nItsme\nJanuary 18 Wednesday 2023 03-24-19 PM",
+            "latest_change_priority": "Item added\nItsme\nJanuary 18 Wednesday 2023 03-24-19 PM",
+            "latest_change_notes": "Item added\nItsme\nJanuary 18 Wednesday 2023 03-24-19 PM"
+        },
         "Black primer scoat 713 ": {
             "part_number": "7133505",
             "unit_quantity": 0.2,
@@ -8337,7 +8424,7 @@
             "price": 1.8,
             "use_exchange_rate": true,
             "priority": 0,
-            "notes": "Vendor: Mineral Seal Corporation \nDescription: ",
+            "notes": "Vendor: Mineral Seal \n\nDescription: ",
             "latest_change_name": "Item added\nItsme\nOctober 14 Friday 2022 10-40-14 AM",
             "latest_change_part_number": "Item added\nItsme\nOctober 14 Friday 2022 10-40-14 AM",
             "latest_change_unit_quantity": "Latest Change:\nfrom: 13\nto: 13\nItsme\nOctober 15 Saturday 2022 11:13:20 AM",
@@ -8345,11 +8432,28 @@
             "latest_change_price": "Latest Change:\nfrom: 1.0\nto: 1.8\nItsme\nOctober 14 Friday 2022 01:34:25 PM",
             "latest_change_use_exchange_price": "Item added\nItsme\nOctober 14 Friday 2022 10-40-14 AM",
             "latest_change_priority": "Item added\nItsme\nOctober 14 Friday 2022 10-40-14 AM",
-            "latest_change_notes": "Item added\nItsme\nOctober 14 Friday 2022 10-40-14 AM",
+            "latest_change_notes": "Latest Change:\nfrom: Vendor: Mineral Seal \nDescription: \nto: Vendor: Mineral Seal \n\nDescription: \nItsme\nJanuary 18 Wednesday 2023 03:29:23 PM",
             "latest_change_use_exchange_rate": "Latest Change:\nfrom: CAD\nto: USD\nItsme\nOctober 15 Saturday 2022 09:12:41 AM"
         }
     },
     "BL 40 Wood": {
+        "Black Gloss 76795 Enamel ": {
+            "part_number": "76795",
+            "unit_quantity": 0.1,
+            "current_quantity": 2,
+            "price": 295.0,
+            "use_exchange_rate": false,
+            "priority": 0,
+            "notes": "Vendor: Cloverdale Paint \nDescription: \n5 Gallon pails \n",
+            "latest_change_name": "Item added\nItsme\nJanuary 18 Wednesday 2023 03-24-44 PM",
+            "latest_change_part_number": "Item added\nItsme\nJanuary 18 Wednesday 2023 03-24-44 PM",
+            "latest_change_unit_quantity": "Item added\nItsme\nJanuary 18 Wednesday 2023 03-24-44 PM",
+            "latest_change_current_quantity": "Item added\nItsme\nJanuary 18 Wednesday 2023 03-24-44 PM",
+            "latest_change_price": "Item added\nItsme\nJanuary 18 Wednesday 2023 03-24-44 PM",
+            "latest_change_use_exchange_price": "Item added\nItsme\nJanuary 18 Wednesday 2023 03-24-44 PM",
+            "latest_change_priority": "Item added\nItsme\nJanuary 18 Wednesday 2023 03-24-44 PM",
+            "latest_change_notes": "Item added\nItsme\nJanuary 18 Wednesday 2023 03-24-44 PM"
+        },
         "1.25 90 Degree Street Elbow": {
             "part_number": "MIB90STR1E ",
             "unit_quantity": 4,
@@ -8919,7 +9023,7 @@
             "price": 1.8,
             "use_exchange_rate": true,
             "priority": 0,
-            "notes": "Vendor: Mineral Seal Corporation \nDescription: ",
+            "notes": "Vendor: Mineral Seal \n\nDescription: ",
             "latest_change_name": "Item added\nItsme\nOctober 14 Friday 2022 10-40-14 AM",
             "latest_change_part_number": "Item added\nItsme\nOctober 14 Friday 2022 10-40-14 AM",
             "latest_change_unit_quantity": "Latest Change:\nfrom: 13\nto: 13\nItsme\nOctober 15 Saturday 2022 11:13:20 AM",
@@ -8927,7 +9031,7 @@
             "latest_change_price": "Latest Change:\nfrom: 1.0\nto: 1.8\nItsme\nOctober 14 Friday 2022 01:34:25 PM",
             "latest_change_use_exchange_price": "Item added\nItsme\nOctober 14 Friday 2022 10-40-14 AM",
             "latest_change_priority": "Item added\nItsme\nOctober 14 Friday 2022 10-40-14 AM",
-            "latest_change_notes": "Item added\nItsme\nOctober 14 Friday 2022 10-40-14 AM",
+            "latest_change_notes": "Latest Change:\nfrom: Vendor: Mineral Seal \nDescription: \nto: Vendor: Mineral Seal \n\nDescription: \nItsme\nJanuary 18 Wednesday 2023 03:29:23 PM",
             "latest_change_use_exchange_rate": "Latest Change:\nfrom: CAD\nto: USD\nItsme\nOctober 15 Saturday 2022 09:12:41 AM"
         }
     },
