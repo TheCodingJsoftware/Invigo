@@ -120,23 +120,6 @@
             "latest_change_price": "Latest Change:\nfrom: 3.3\nto: 3.0\nItsme\nAugust 03 Wednesday 2022 08:50:27 AM",
             "latest_change_notes": "Latest Change:\nfrom: Vendor: GreenLine\nDescription: 204-694-0332\nPart # G33G-12\nto: Vendor: GreenLine\nDescription: 204-694-0332\nPart # G33G-125\nItsme\nJanuary 17 Tuesday 2023 09:09:11 AM"
         },
-        "Hubble Plug-in  CR15WHI HUB REC Duplex 125V 15A WHT ": {
-            "part_number": "CR15WHI",
-            "unit_quantity": 1.0,
-            "current_quantity": 5,
-            "price": 2.19,
-            "use_exchange_rate": false,
-            "priority": 0,
-            "notes": "Vendor: Westburn \nDescription: ",
-            "latest_change_name": "Item added\nItsme\nJanuary 16 Monday 2023 01-09-32 PM",
-            "latest_change_part_number": "Item added\nItsme\nJanuary 16 Monday 2023 01-09-32 PM",
-            "latest_change_unit_quantity": "Item added\nItsme\nJanuary 16 Monday 2023 01-09-32 PM",
-            "latest_change_current_quantity": "Item added\nItsme\nJanuary 16 Monday 2023 01-09-32 PM",
-            "latest_change_price": "Item added\nItsme\nJanuary 16 Monday 2023 01-09-32 PM",
-            "latest_change_use_exchange_price": "Item added\nItsme\nJanuary 16 Monday 2023 01-09-32 PM",
-            "latest_change_priority": "Item added\nItsme\nJanuary 16 Monday 2023 01-09-32 PM",
-            "latest_change_notes": "Item added\nItsme\nJanuary 16 Monday 2023 01-09-32 PM"
-        },
         "Hose Industrial G322-125 1-1\/4 ": {
             "part_number": "G322-125",
             "unit_quantity": 1,
@@ -804,6 +787,23 @@
             "latest_change_use_exchange_price": "Item added\nItsme\nJanuary 09 Monday 2023 01-29-56 PM",
             "latest_change_priority": "Item added\nItsme\nJanuary 09 Monday 2023 01-29-56 PM",
             "latest_change_notes": "Item added\nItsme\nJanuary 09 Monday 2023 01-29-56 PM"
+        },
+        "Hubble Plug-in  CR15WHI HUB REC Duplex 125V 15A WHT ": {
+            "part_number": "CR15WHI",
+            "unit_quantity": 1.0,
+            "current_quantity": 105,
+            "price": 2.19,
+            "use_exchange_rate": false,
+            "priority": 0,
+            "notes": "Vendor: Westburn \nDescription: ",
+            "latest_change_name": "Item added\nItsme\nJanuary 16 Monday 2023 01-09-32 PM",
+            "latest_change_part_number": "Item added\nItsme\nJanuary 16 Monday 2023 01-09-32 PM",
+            "latest_change_unit_quantity": "Item added\nItsme\nJanuary 16 Monday 2023 01-09-32 PM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 105\nto: 105\nItsme\nJanuary 19 Thursday 2023 09:12:55 AM",
+            "latest_change_price": "Item added\nItsme\nJanuary 16 Monday 2023 01-09-32 PM",
+            "latest_change_use_exchange_price": "Item added\nItsme\nJanuary 16 Monday 2023 01-09-32 PM",
+            "latest_change_priority": "Item added\nItsme\nJanuary 16 Monday 2023 01-09-32 PM",
+            "latest_change_notes": "Item added\nItsme\nJanuary 16 Monday 2023 01-09-32 PM"
         },
         "Snap in Flush Pull, Large, Black Plastic, For Panel Thickness .040- .055": {
             "part_number": "91-19BK02",
@@ -1591,7 +1591,7 @@
         "Hubble Plug-in  CR15WHI HUB REC Duplex 125V 15A WHT ": {
             "part_number": "CR15WHI",
             "unit_quantity": 1.0,
-            "current_quantity": 5,
+            "current_quantity": 105,
             "price": 2.19,
             "use_exchange_rate": false,
             "priority": 0,
@@ -1599,7 +1599,7 @@
             "latest_change_name": "Item added\nItsme\nJanuary 16 Monday 2023 01-09-59 PM",
             "latest_change_part_number": "Item added\nItsme\nJanuary 16 Monday 2023 01-09-59 PM",
             "latest_change_unit_quantity": "Item added\nItsme\nJanuary 16 Monday 2023 01-09-59 PM",
-            "latest_change_current_quantity": "Item added\nItsme\nJanuary 16 Monday 2023 01-09-59 PM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 105\nto: 105\nItsme\nJanuary 19 Thursday 2023 09:12:55 AM",
             "latest_change_price": "Item added\nItsme\nJanuary 16 Monday 2023 01-09-59 PM",
             "latest_change_use_exchange_price": "Item added\nItsme\nJanuary 16 Monday 2023 01-09-59 PM",
             "latest_change_priority": "Item added\nItsme\nJanuary 16 Monday 2023 01-09-59 PM",
@@ -3059,7 +3059,7 @@
         "Hubble Plug-in  CR15WHI HUB REC Duplex 125V 15A WHT ": {
             "part_number": "CR15WHI",
             "unit_quantity": 1.0,
-            "current_quantity": 5,
+            "current_quantity": 105,
             "price": 2.19,
             "use_exchange_rate": false,
             "priority": 0,
@@ -3067,7 +3067,7 @@
             "latest_change_name": "Item added\nItsme\nJanuary 16 Monday 2023 01-10-23 PM",
             "latest_change_part_number": "Item added\nItsme\nJanuary 16 Monday 2023 01-10-23 PM",
             "latest_change_unit_quantity": "Item added\nItsme\nJanuary 16 Monday 2023 01-10-23 PM",
-            "latest_change_current_quantity": "Item added\nItsme\nJanuary 16 Monday 2023 01-10-23 PM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 105\nto: 105\nItsme\nJanuary 19 Thursday 2023 09:12:55 AM",
             "latest_change_price": "Item added\nItsme\nJanuary 16 Monday 2023 01-10-23 PM",
             "latest_change_use_exchange_price": "Item added\nItsme\nJanuary 16 Monday 2023 01-10-23 PM",
             "latest_change_priority": "Item added\nItsme\nJanuary 16 Monday 2023 01-10-23 PM",
