@@ -5766,7 +5766,7 @@
         "Squirrl Cage BOM # 7816506 is for the ML Chip Burners and BL 4044": {
             "part_number": "BOM7816506",
             "unit_quantity": 1,
-            "current_quantity": 25,
+            "current_quantity": 19,
             "price": 17.0,
             "use_exchange_rate": false,
             "priority": 0,
@@ -5774,7 +5774,7 @@
             "latest_change_name": "Item added\nItsme\nAugust 26 Friday 2022 09-16-37 AM",
             "latest_change_part_number": "Item added\nItsme\nAugust 26 Friday 2022 09-16-37 AM",
             "latest_change_unit_quantity": "Item added\nItsme\nAugust 26 Friday 2022 09-16-37 AM",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 25\nto: 25\nItsme\nOctober 14 Friday 2022 11:22:03 AM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 19\nto: 19\nItsme\nJanuary 19 Thursday 2023 02:51:49 PM",
             "latest_change_price": "Latest Change:\nfrom: 170.0\nto: 17.0\nItsme\nOctober 14 Friday 2022 11:22:18 AM",
             "latest_change_use_exchange_price": "Item added\nItsme\nAugust 26 Friday 2022 09-16-37 AM",
             "latest_change_priority": "Item added\nItsme\nAugust 26 Friday 2022 09-16-37 AM",
@@ -8640,6 +8640,23 @@
             "latest_change_use_exchange_price": "Item added\nItsme\nOctober 10 Monday 2022 04-00-38 PM",
             "latest_change_priority": "Item added\nItsme\nOctober 10 Monday 2022 04-00-38 PM",
             "latest_change_notes": "Item added\nItsme\nOctober 10 Monday 2022 04-00-38 PM"
+        },
+        "Squirrl Cage BOM # 7816506 is for the ML Chip Burners and BL 4044": {
+            "part_number": "BOM7816506",
+            "unit_quantity": 1.0,
+            "current_quantity": 19,
+            "price": 17.0,
+            "use_exchange_rate": false,
+            "priority": 0,
+            "notes": "Vendor: Sopers Supply- Masters\nDescription: \nsquirrl cage Part Nu,ber 4829585\nAA-508-229X .500, ccw,HI,GALV ",
+            "latest_change_name": "Item added\nItsme\nJanuary 19 Thursday 2023 02-45-46 PM",
+            "latest_change_part_number": "Item added\nItsme\nJanuary 19 Thursday 2023 02-45-46 PM",
+            "latest_change_unit_quantity": "Item added\nItsme\nJanuary 19 Thursday 2023 02-45-46 PM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 19\nto: 19\nItsme\nJanuary 19 Thursday 2023 02:51:49 PM",
+            "latest_change_price": "Item added\nItsme\nJanuary 19 Thursday 2023 02-45-46 PM",
+            "latest_change_use_exchange_price": "Item added\nItsme\nJanuary 19 Thursday 2023 02-45-46 PM",
+            "latest_change_priority": "Item added\nItsme\nJanuary 19 Thursday 2023 02-45-46 PM",
+            "latest_change_notes": "Item added\nItsme\nJanuary 19 Thursday 2023 02-45-46 PM"
         },
         "BC52171-K 4\" SQ BOX 2-1\/8\" DEE": {
             "part_number": "THSBC52171K",
