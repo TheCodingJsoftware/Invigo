@@ -94,7 +94,7 @@
         "Shaft Collar 7\/16 with Set Screw": {
             "part_number": "BRA0420",
             "unit_quantity": 2,
-            "current_quantity": 4,
+            "current_quantity": 104,
             "price": 1.3,
             "use_exchange_rate": false,
             "priority": 0,
@@ -102,7 +102,7 @@
             "latest_change_name": "Latest Change:\nfrom: \"Shaft Collar 7\/16 with Set Scre\"\nto: \"Shaft Collar 7\/16 with Set Screw\"\nItsme\nJuly 07 Thursday 2022 04:30:05 PM",
             "latest_change_part_number": "Item added\nItsme\nJuly 07 Thursday 2022 03-57-46 PM",
             "latest_change_unit_quantity": "Item added\nItsme\nJuly 07 Thursday 2022 03-57-46 PM",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 4\nto: 4\nItsme\nJanuary 16 Monday 2023 09:52:43 AM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 104\nto: 104\nItsme\nJanuary 21 Saturday 2023 09:08:48 AM",
             "latest_change_price": "Item added\nItsme\nJuly 07 Thursday 2022 03-57-46 PM",
             "latest_change_use_exchange_price": "Item added\nItsme\nJuly 07 Thursday 2022 03-57-46 PM",
             "latest_change_priority": "Item added\nItsme\nJuly 07 Thursday 2022 03-57-46 PM",
@@ -1512,23 +1512,6 @@
             "notes": "Vendor: \nDescription: ",
             "latest_change_current_quantity": "Latest Change:\nfrom: -8\nto: -8\nItsme\nJanuary 05 Thursday 2023 09:13:01 AM"
         },
-        "Shaft Collar 7\/16 with Set Screw": {
-            "part_number": "BRA0420",
-            "unit_quantity": 2,
-            "current_quantity": 4,
-            "price": 1.3,
-            "use_exchange_rate": false,
-            "priority": 0,
-            "notes": "Vendor: A.Adams Supply\nDescription: mc master carr",
-            "latest_change_name": "Latest Change:\nfrom: \"Shaft Collar 7\/16 with Set Scre\"\nto: \"Shaft Collar 7\/16 with Set Screw\"\nItsme\nJuly 07 Thursday 2022 04:30:05 PM",
-            "latest_change_part_number": "Item added\nItsme\nJuly 07 Thursday 2022 03-57-46 PM",
-            "latest_change_unit_quantity": "Item added\nItsme\nJuly 07 Thursday 2022 03-57-46 PM",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 4\nto: 4\nItsme\nJanuary 16 Monday 2023 09:52:43 AM",
-            "latest_change_price": "Item added\nItsme\nJuly 07 Thursday 2022 03-57-46 PM",
-            "latest_change_use_exchange_price": "Item added\nItsme\nJuly 07 Thursday 2022 03-57-46 PM",
-            "latest_change_priority": "Item added\nItsme\nJuly 07 Thursday 2022 03-57-46 PM",
-            "latest_change_notes": "Latest Change:\nfrom: \"Vendor: A.Adams Supply\nDescription: mc master car\"\nto: \"Vendor: A.Adams Supply\nDescription: mc master carr\"\nItsme\nJanuary 10 Tuesday 2023 04:18:46 PM"
-        },
         "6L24 ASHT 6\"X24\" Section": {
             "part_number": "6L24",
             "unit_quantity": 1,
@@ -2253,6 +2236,23 @@
             "latest_change_use_exchange_price": "Item added\nItsme\nJanuary 09 Monday 2023 01-29-39 PM",
             "latest_change_priority": "Item added\nItsme\nJanuary 09 Monday 2023 01-29-39 PM",
             "latest_change_notes": "Item added\nItsme\nJanuary 09 Monday 2023 01-29-39 PM"
+        },
+        "Shaft Collar 7\/16 with Set Screw": {
+            "part_number": "BRA0420",
+            "unit_quantity": 2,
+            "current_quantity": 104,
+            "price": 1.3,
+            "use_exchange_rate": false,
+            "priority": 0,
+            "notes": "Vendor: A.Adams Supply\nDescription: mc master carr",
+            "latest_change_name": "Latest Change:\nfrom: \"Shaft Collar 7\/16 with Set Scre\"\nto: \"Shaft Collar 7\/16 with Set Screw\"\nItsme\nJuly 07 Thursday 2022 04:30:05 PM",
+            "latest_change_part_number": "Item added\nItsme\nJuly 07 Thursday 2022 03-57-46 PM",
+            "latest_change_unit_quantity": "Item added\nItsme\nJuly 07 Thursday 2022 03-57-46 PM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 104\nto: 104\nItsme\nJanuary 21 Saturday 2023 09:08:48 AM",
+            "latest_change_price": "Item added\nItsme\nJuly 07 Thursday 2022 03-57-46 PM",
+            "latest_change_use_exchange_price": "Item added\nItsme\nJuly 07 Thursday 2022 03-57-46 PM",
+            "latest_change_priority": "Item added\nItsme\nJuly 07 Thursday 2022 03-57-46 PM",
+            "latest_change_notes": "Latest Change:\nfrom: \"Vendor: A.Adams Supply\nDescription: mc master car\"\nto: \"Vendor: A.Adams Supply\nDescription: mc master carr\"\nItsme\nJanuary 10 Tuesday 2023 04:18:46 PM"
         },
         "Hubble Plug-in  CR15WHI HUB REC Duplex 125V 15A WHT ": {
             "part_number": "CR15WHI",
@@ -3045,7 +3045,7 @@
         "Shaft Collar 7\/16 with Set Screw": {
             "part_number": "BRA0420",
             "unit_quantity": 2,
-            "current_quantity": 4,
+            "current_quantity": 104,
             "price": 1.3,
             "use_exchange_rate": false,
             "priority": 0,
@@ -3053,7 +3053,7 @@
             "latest_change_name": "Latest Change:\nfrom: \"Shaft Collar 7\/16 with Set Scre\"\nto: \"Shaft Collar 7\/16 with Set Screw\"\nItsme\nJuly 07 Thursday 2022 04:30:05 PM",
             "latest_change_part_number": "Item added\nItsme\nJuly 07 Thursday 2022 03-57-46 PM",
             "latest_change_unit_quantity": "Item added\nItsme\nJuly 07 Thursday 2022 03-57-46 PM",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 4\nto: 4\nItsme\nJanuary 16 Monday 2023 09:52:43 AM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 104\nto: 104\nItsme\nJanuary 21 Saturday 2023 09:08:48 AM",
             "latest_change_price": "Item added\nItsme\nJuly 07 Thursday 2022 03-57-46 PM",
             "latest_change_use_exchange_price": "Item added\nItsme\nJuly 07 Thursday 2022 03-57-46 PM",
             "latest_change_priority": "Item added\nItsme\nJuly 07 Thursday 2022 03-57-46 PM",
