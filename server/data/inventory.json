@@ -5509,6 +5509,23 @@
             "latest_change_priority": "Item added\nItsme\nJanuary 18 Wednesday 2023 01-19-40 PM",
             "latest_change_notes": "Item added\nItsme\nJanuary 18 Wednesday 2023 01-19-40 PM"
         },
+        "Powder Gun Tip ": {
+            "part_number": "AW2321976",
+            "unit_quantity": 1.0,
+            "current_quantity": 1,
+            "price": 30.0,
+            "use_exchange_rate": true,
+            "priority": 0,
+            "notes": "Vendor: Arizona Powder Supply\nDescription: White tip on the outside of the gun",
+            "latest_change_name": "Item added\nItsme\nJanuary 24 Tuesday 2023 08-25-39 AM",
+            "latest_change_part_number": "Item added\nItsme\nJanuary 24 Tuesday 2023 08-25-39 AM",
+            "latest_change_unit_quantity": "Item added\nItsme\nJanuary 24 Tuesday 2023 08-25-39 AM",
+            "latest_change_current_quantity": "Item added\nItsme\nJanuary 24 Tuesday 2023 08-25-39 AM",
+            "latest_change_price": "Item added\nItsme\nJanuary 24 Tuesday 2023 08-25-39 AM",
+            "latest_change_use_exchange_price": "Item added\nItsme\nJanuary 24 Tuesday 2023 08-25-39 AM",
+            "latest_change_priority": "Item added\nItsme\nJanuary 24 Tuesday 2023 08-25-39 AM",
+            "latest_change_notes": "Item added\nItsme\nJanuary 24 Tuesday 2023 08-25-39 AM"
+        },
         "MEP 2HP-324-18T-56C C\/W BASE MQRP-204CH ": {
             "part_number": "MQRP-204CW",
             "unit_quantity": 1,
