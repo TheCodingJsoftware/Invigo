@@ -1671,23 +1671,6 @@
             "notes": "Vendor: \nDescription: ",
             "latest_change_current_quantity": "Latest Change:\nfrom: 31\nto: 31\nItsme\nJanuary 05 Thursday 2023 09:13:02 AM"
         },
-        "Tempered Glass 1 1\/4\" X 1 1\/4\" X 3\/16\" NEO Ceram Robax": {
-            "part_number": "TG113",
-            "unit_quantity": 1,
-            "current_quantity": 32,
-            "price": 11.33,
-            "use_exchange_rate": false,
-            "priority": 0,
-            "notes": "Vendor: Mc Master Carr\nDescription: ",
-            "latest_change_name": "Item added\nItsme\nJuly 07 Thursday 2022 11-27-45 AM",
-            "latest_change_part_number": "Item added\nItsme\nJuly 07 Thursday 2022 11-27-45 AM",
-            "latest_change_unit_quantity": "Item added\nItsme\nJuly 07 Thursday 2022 11-27-45 AM",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 32\nto: 32\nItsme\nJanuary 05 Thursday 2023 09:13:02 AM",
-            "latest_change_price": "Latest Change:\nfrom: 11.3\nto: 11.33\nItsme\nAugust 24 Wednesday 2022 03:56:44 PM",
-            "latest_change_use_exchange_price": "Item added\nItsme\nJuly 07 Thursday 2022 11-27-45 AM",
-            "latest_change_priority": "Item added\nItsme\nJuly 07 Thursday 2022 11-27-45 AM",
-            "latest_change_notes": "Latest Change:\nfrom: \"Vendor: Mc Master Car\nDescription: \"\nto: \"Vendor: Mc Master Carr\nDescription: \"\nItsme\nJuly 18 Monday 2022 02:01:12 PM"
-        },
         "Borosilicate Glass Disc": {
             "part_number": "8477K28",
             "unit_quantity": 1,
