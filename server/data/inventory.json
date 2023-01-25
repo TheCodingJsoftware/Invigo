@@ -2921,20 +2921,20 @@
         },
         "G3 Turbulator  HELxRx 2.25 x 1.5 x 1.25 x .135 x 38\" ": {
             "part_number": "G3T44",
-            "unit_quantity": 26.6,
+            "unit_quantity": 21.0,
             "current_quantity": 1230,
             "price": 2.78,
             "use_exchange_rate": true,
             "priority": 0,
-            "notes": "Vendor: Top Flight Corporation \n\nDescription: rfs@hamilton.net\n2.78$ per foot at 38\n\" per turbulator. 7 Pieces per boiler \n182\" per boiler",
+            "notes": "Vendor: Top Flight Corporation \n\nDescription: rfs@hamilton.net\n2.78$ per foot at 38\n\" per turbulator. 7 Pieces per boiler at 21 feet\n266\" per boiler",
             "latest_change_name": "Latest Change:\nfrom: \"G3 Turbulator  HELxRx 2.25 x 1.5 x 1.25 x .135 x 3\" \"\nto: \"G3 Turbulator  HELxRx 2.25 x 1.5 x 1.25 x .135 x 38\" \"\nItsme\nJanuary 25 Wednesday 2023 04:39:54 PM",
             "latest_change_part_number": "Item added\nItsme\nDecember 28 Wednesday 2022 03-19-58 PM",
-            "latest_change_unit_quantity": "Item added\nItsme\nDecember 28 Wednesday 2022 03-19-58 PM",
+            "latest_change_unit_quantity": "Latest Change:\nfrom: 21.0\nto: 21.0\nItsme\nJanuary 25 Wednesday 2023 04:49:53 PM",
             "latest_change_current_quantity": "Latest Change:\nfrom: 1230\nto: 1230\nItsme\nJanuary 23 Monday 2023 08:42:51 AM",
             "latest_change_price": "Item added\nItsme\nDecember 28 Wednesday 2022 03-19-58 PM",
             "latest_change_use_exchange_price": "Item added\nItsme\nDecember 28 Wednesday 2022 03-19-58 PM",
             "latest_change_priority": "Item added\nItsme\nDecember 28 Wednesday 2022 03-19-58 PM",
-            "latest_change_notes": "Latest Change:\nfrom: \"Vendor: Top Flight Corporation \n\nDescription: rfs@hamilton.net\n2.78$ per foot at 38\" per turbulator. 7 Pieces per boiler \n182\" per boiler\"\nto: \"Vendor: Top Flight Corporation \n\nDescription: rfs@hamilton.net\n2.78$ per foot at 38\n\" per turbulator. 7 Pieces per boiler \n182\" per boiler\"\nItsme\nJanuary 25 Wednesday 2023 04:40:00 PM"
+            "latest_change_notes": "Latest Change:\nfrom: \"Vendor: Top Flight Corporation \n\nDescription: rfs@hamilton.net\n2.78$ per foot at 38\n\" per turbulator. 7 Pieces per boiler at 21 fee\n266\" per boiler\"\nto: \"Vendor: Top Flight Corporation \n\nDescription: rfs@hamilton.net\n2.78$ per foot at 38\n\" per turbulator. 7 Pieces per boiler at 21 feet\n266\" per boiler\"\nItsme\nJanuary 25 Wednesday 2023 04:50:36 PM"
         }
     },
     "Polar G2+": {
