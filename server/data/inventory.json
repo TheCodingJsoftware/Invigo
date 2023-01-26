@@ -1305,13 +1305,14 @@
             "part_number": "FSK1",
             "unit_quantity": 8,
             "current_quantity": -32,
-            "price": 8.8,
+            "price": 15.04,
             "use_exchange_rate": false,
             "priority": 0,
             "notes": "Vendor: BrockWhite\nDescription: \nrjackmann@brockwhite.com",
             "latest_change_current_quantity": "Latest Change:\nfrom: -32\nto: -32\nItsme\nJanuary 25 Wednesday 2023 04:01:51 PM",
             "latest_change_unit_quantity": "Latest Change:\nfrom: 2\nto: 8\nItsme\nSeptember 03 Saturday 2022 08:38:29 AM",
-            "latest_change_notes": "Latest Change:\nfrom: Vendor: BrockWhite\nDescription: \nrjackman@brockwhite.com\nto: Vendor: BrockWhite\nDescription: \nrjackmann@brockwhite.com\nItsme\nJanuary 25 Wednesday 2023 04:06:01 PM"
+            "latest_change_notes": "Latest Change:\nfrom: Vendor: BrockWhite\nDescription: \nrjackman@brockwhite.com\nto: Vendor: BrockWhite\nDescription: \nrjackmann@brockwhite.com\nItsme\nJanuary 25 Wednesday 2023 04:06:01 PM",
+            "latest_change_price": "Latest Change:\nfrom: 8.8\nto: 15.04\nItsme\nJanuary 26 Thursday 2023 08:23:36 AM"
         },
         " 12BK SLOTTED QUARTER-TURN LATCH, DIE CST, UL FACE SEAL & INTERNAL O-RING, BODY NUT, NO CAM, BLACK POWDER COATED": {
             "part_number": "12BK",
@@ -2743,14 +2744,16 @@
         },
         "1\"x25\"x48\" FSK 300 Certainteed Insulation": {
             "part_number": "FSK1",
-            "unit_quantity": 2,
+            "unit_quantity": 1.0,
             "current_quantity": -2,
-            "price": 8.8,
+            "price": 15.04,
             "use_exchange_rate": false,
             "priority": 0,
             "notes": "Vendor: BrockWhite\nDescription: \nrjackmann@brockwhite.com",
             "latest_change_current_quantity": "Latest Change:\nfrom: -2\nto: -2\nItsme\nJanuary 25 Wednesday 2023 04:01:51 PM",
-            "latest_change_notes": "Latest Change:\nfrom: Vendor: BrockWhite\nDescription: \nrjackman@brockwhite.com\nto: Vendor: BrockWhite\nDescription: \nrjackmann@brockwhite.com\nItsme\nJanuary 25 Wednesday 2023 04:06:01 PM"
+            "latest_change_notes": "Latest Change:\nfrom: Vendor: BrockWhite\nDescription: \nrjackman@brockwhite.com\nto: Vendor: BrockWhite\nDescription: \nrjackmann@brockwhite.com\nItsme\nJanuary 25 Wednesday 2023 04:06:01 PM",
+            "latest_change_unit_quantity": "Latest Change:\nfrom: 0.0\nto: 1.0\nItsme\nJanuary 26 Thursday 2023 08:23:21 AM",
+            "latest_change_price": "Latest Change:\nfrom: 8.8\nto: 15.04\nItsme\nJanuary 26 Thursday 2023 08:23:36 AM"
         },
         "Washer 3\/16 Tooth Lock Internal ": {
             "part_number": "W316",
@@ -2986,13 +2989,14 @@
             "part_number": "FSK1",
             "unit_quantity": 1.0,
             "current_quantity": 8,
-            "price": 8.8,
+            "price": 15.04,
             "use_exchange_rate": false,
             "priority": 0,
             "notes": "Vendor: BrockWhite\nDescription: \nrjackmann@brockwhite.com",
             "latest_change_current_quantity": "Latest Change:\nfrom: 8\nto: 8\nItsme\nJanuary 25 Wednesday 2023 04:01:51 PM",
             "latest_change_unit_quantity": "Latest Change:\nfrom: 0\nto: 1.0\nItsme\nJanuary 25 Wednesday 2023 04:01:38 PM",
-            "latest_change_notes": "Latest Change:\nfrom: \"Vendor: BrockWhite\nDescription: \nrjackman@brockwhite.com\"\nto: \"Vendor: BrockWhite\nDescription: \nrjackmann@brockwhite.com\"\nItsme\nJanuary 25 Wednesday 2023 04:06:01 PM"
+            "latest_change_notes": "Latest Change:\nfrom: \"Vendor: BrockWhite\nDescription: \nrjackman@brockwhite.com\"\nto: \"Vendor: BrockWhite\nDescription: \nrjackmann@brockwhite.com\"\nItsme\nJanuary 25 Wednesday 2023 04:06:01 PM",
+            "latest_change_price": "Latest Change:\nfrom: 8.8\nto: 15.04\nItsme\nJanuary 26 Thursday 2023 08:23:36 AM"
         },
         "Knob 2 3\/8 DIA. 1\/2-13. Fluted Black Plastic": {
             "part_number": "DK-122",
