@@ -20,15 +20,15 @@
         "1\"x25\"x48\" FSK 300 Certainteed Insulation": {
             "part_number": "FSK1",
             "unit_quantity": 8,
-            "current_quantity": -32,
-            "price": 15.04,
+            "current_quantity": 736,
+            "price": 1.88,
             "use_exchange_rate": false,
             "priority": 0,
-            "notes": "Vendor: BrockWhite\nDescription: \nrjackmann@brockwhite.com",
-            "latest_change_current_quantity": "Latest Change:\nfrom: -32\nto: -32\nItsme\nJanuary 25 Wednesday 2023 04:01:51 PM",
+            "notes": "Vendor: BrockWhite\nDescription: \nrjackmann@brockwhite.com\nis measured in square feet\n15.04$ per sheet\nprice per square foot",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 736\nto: 736\nItsme\nJanuary 31 Tuesday 2023 08:32:58 AM",
             "latest_change_unit_quantity": "Latest Change:\nfrom: 2\nto: 8\nItsme\nSeptember 03 Saturday 2022 08:38:29 AM",
-            "latest_change_notes": "Latest Change:\nfrom: Vendor: BrockWhite\nDescription: \nrjackman@brockwhite.com\nto: Vendor: BrockWhite\nDescription: \nrjackmann@brockwhite.com\nItsme\nJanuary 25 Wednesday 2023 04:06:01 PM",
-            "latest_change_price": "Latest Change:\nfrom: 8.8\nto: 15.04\nItsme\nJanuary 26 Thursday 2023 08:23:36 AM"
+            "latest_change_notes": "Latest Change:\nfrom: Vendor: BrockWhite\nDescription: \nrjackmann@brockwhite.com\nis measured in square feet\n15.04$ per shee\nprice per square foot\nto: Vendor: BrockWhite\nDescription: \nrjackmann@brockwhite.com\nis measured in square feet\n15.04$ per sheet\nprice per square foot\nItsme\nJanuary 31 Tuesday 2023 08:34:08 AM",
+            "latest_change_price": "Latest Change:\nfrom: 15.04\nto: 1.88\nItsme\nJanuary 31 Tuesday 2023 08:33:50 AM"
         },
         "Sticker 310 Polar G2 & G3 Caution Pinch Hazard 4.5\"x2.75\"": {
             "part_number": "310",
@@ -1551,15 +1551,15 @@
         "1\"x25\"x48\" FSK 300 Certainteed Insulation": {
             "part_number": "FSK1",
             "unit_quantity": 1.0,
-            "current_quantity": -2,
-            "price": 15.04,
+            "current_quantity": 766,
+            "price": 1.88,
             "use_exchange_rate": false,
             "priority": 0,
-            "notes": "Vendor: BrockWhite\nDescription: \nrjackmann@brockwhite.com",
-            "latest_change_current_quantity": "Latest Change:\nfrom: -2\nto: -2\nItsme\nJanuary 25 Wednesday 2023 04:01:51 PM",
-            "latest_change_notes": "Latest Change:\nfrom: Vendor: BrockWhite\nDescription: \nrjackman@brockwhite.com\nto: Vendor: BrockWhite\nDescription: \nrjackmann@brockwhite.com\nItsme\nJanuary 25 Wednesday 2023 04:06:01 PM",
+            "notes": "Vendor: BrockWhite\nDescription: \nrjackmann@brockwhite.com\nis measured in square feet\n15.04$ per sheet\nprice per square foot",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 766\nto: 766\nItsme\nJanuary 31 Tuesday 2023 08:32:58 AM",
+            "latest_change_notes": "Latest Change:\nfrom: Vendor: BrockWhite\nDescription: \nrjackmann@brockwhite.com\nis measured in square feet\n15.04$ per shee\nprice per square foot\nto: Vendor: BrockWhite\nDescription: \nrjackmann@brockwhite.com\nis measured in square feet\n15.04$ per sheet\nprice per square foot\nItsme\nJanuary 31 Tuesday 2023 08:34:08 AM",
             "latest_change_unit_quantity": "Latest Change:\nfrom: 0.0\nto: 1.0\nItsme\nJanuary 26 Thursday 2023 08:23:21 AM",
-            "latest_change_price": "Latest Change:\nfrom: 8.8\nto: 15.04\nItsme\nJanuary 26 Thursday 2023 08:23:36 AM"
+            "latest_change_price": "Latest Change:\nfrom: 15.04\nto: 1.88\nItsme\nJanuary 31 Tuesday 2023 08:33:50 AM"
         },
         "1 1\/2 x 1 1\/4 Elbow": {
             "part_number": "112E",
@@ -3070,19 +3070,6 @@
             "latest_change_priority": "Item added\nItsme\nSeptember 16 Friday 2022 02-18-33 PM",
             "latest_change_notes": "Item added\nItsme\nSeptember 16 Friday 2022 02-18-33 PM"
         },
-        "1\"x25\"x48\" FSK 300 Certainteed Insulation": {
-            "part_number": "FSK1",
-            "unit_quantity": 1.0,
-            "current_quantity": 8,
-            "price": 15.04,
-            "use_exchange_rate": false,
-            "priority": 0,
-            "notes": "Vendor: BrockWhite\nDescription: \nrjackmann@brockwhite.com",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 8\nto: 8\nItsme\nJanuary 25 Wednesday 2023 04:01:51 PM",
-            "latest_change_unit_quantity": "Latest Change:\nfrom: 0\nto: 1.0\nItsme\nJanuary 25 Wednesday 2023 04:01:38 PM",
-            "latest_change_notes": "Latest Change:\nfrom: \"Vendor: BrockWhite\nDescription: \nrjackman@brockwhite.com\"\nto: \"Vendor: BrockWhite\nDescription: \nrjackmann@brockwhite.com\"\nItsme\nJanuary 25 Wednesday 2023 04:06:01 PM",
-            "latest_change_price": "Latest Change:\nfrom: 8.8\nto: 15.04\nItsme\nJanuary 26 Thursday 2023 08:23:36 AM"
-        },
         "Knob 2 3\/8 DIA. 1\/2-13. Fluted Black Plastic": {
             "part_number": "DK-122",
             "unit_quantity": 2,
@@ -4418,6 +4405,19 @@
             "latest_change_use_exchange_price": "Item added\nItsme\nJuly 07 Thursday 2022 09-40-05 AM",
             "latest_change_priority": "Item added\nItsme\nJuly 07 Thursday 2022 09-40-05 AM",
             "latest_change_notes": "Latest Change:\nfrom: \"Vendor: Mid Mountain Materials\nDescription: (206) 762-760\"\nto: \"Vendor: Mid Mountain Materials\nDescription: (206) 762-7600\"\nItsme\nJuly 07 Thursday 2022 09:41:13 AM"
+        },
+        "1\"x25\"x48\" FSK 300 Certainteed Insulation": {
+            "part_number": "FSK1",
+            "unit_quantity": 18.0,
+            "current_quantity": 776,
+            "price": 1.88,
+            "use_exchange_rate": false,
+            "priority": 0,
+            "notes": "Vendor: BrockWhite\nDescription: \nrjackmann@brockwhite.com\nis measured in square feet\n15.04$ per sheet\nprice per square foot",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 776\nto: 776\nItsme\nJanuary 31 Tuesday 2023 08:32:58 AM",
+            "latest_change_unit_quantity": "Latest Change:\nfrom: 1.0\nto: 18.0\nItsme\nJanuary 31 Tuesday 2023 08:32:10 AM",
+            "latest_change_notes": "Latest Change:\nfrom: \"Vendor: BrockWhite\nDescription: \nrjackmann@brockwhite.com\nis measured in square feet\n15.04$ per shee\nprice per square foot\"\nto: \"Vendor: BrockWhite\nDescription: \nrjackmann@brockwhite.com\nis measured in square feet\n15.04$ per sheet\nprice per square foot\"\nItsme\nJanuary 31 Tuesday 2023 08:34:08 AM",
+            "latest_change_price": "Latest Change:\nfrom: 15.04\nto: 1.88\nItsme\nJanuary 31 Tuesday 2023 08:33:50 AM"
         },
         "Hytex 1000 Rope Knit 3\/4 High Density White": {
             "part_number": "RK0101",
