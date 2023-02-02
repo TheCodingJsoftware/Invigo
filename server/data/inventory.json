@@ -46,14 +46,17 @@
             "latest_change_notes": "Latest Change:\nfrom: \"Vendor: Greenline Hose and fittin\nDescription: \"\nto: \"Vendor: Greenline Hose and fitting\nDescription: \"\nItsme\nJuly 21 Thursday 2022 09:25:33 AM"
         },
         "Grundfos Pump Flange 1 1\/4 ": {
-            "part_number": "PF114",
+            "part_number": "519603",
             "unit_quantity": 1,
             "current_quantity": 10,
-            "price": 10.7,
+            "price": 17.38,
             "use_exchange_rate": false,
             "priority": 2,
-            "notes": "Vendor: Grundfos Canada\nDescription: ",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 10\nto: 10\nItsme\nJanuary 31 Tuesday 2023 10:10:33 AM"
+            "notes": "Vendor: Grundfos Canada\nDescription: \nsupport-ca@sales.grundfos.com",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 10\nto: 10\nItsme\nJanuary 31 Tuesday 2023 10:10:33 AM",
+            "latest_change_part_number": "Latest Change:\nfrom: 5196\nto: 519603\nItsme\nFebruary 02 Thursday 2023 11:07:12 AM",
+            "latest_change_price": "Latest Change:\nfrom: 17.38\nto: 17.38\nItsme\nFebruary 02 Thursday 2023 11:07:28 AM",
+            "latest_change_notes": "Latest Change:\nfrom: Vendor: Grundfos Canada\nDescription: \nsupport-ca@sales.grundfos.co\nto: Vendor: Grundfos Canada\nDescription: \nsupport-ca@sales.grundfos.com\nItsme\nFebruary 02 Thursday 2023 11:20:34 AM"
         },
         "Knob 2 3\/8 DIA. 1\/2-13. Fluted Black Plastic": {
             "part_number": "DK-122",
@@ -1582,14 +1585,17 @@
             "latest_change_notes": "Item added\nItsme\nJanuary 27 Friday 2023 01-32-27 PM"
         },
         "Grundfos Pump Flange 1 1\/4 ": {
-            "part_number": "PF114",
+            "part_number": "519603",
             "unit_quantity": 1,
             "current_quantity": 10,
-            "price": 10.7,
+            "price": 17.38,
             "use_exchange_rate": false,
             "priority": 2,
-            "notes": "Vendor: Grundfos Canada\nDescription: ",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 10\nto: 10\nItsme\nJanuary 31 Tuesday 2023 10:10:33 AM"
+            "notes": "Vendor: Grundfos Canada\nDescription: \nsupport-ca@sales.grundfos.com",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 10\nto: 10\nItsme\nJanuary 31 Tuesday 2023 10:10:33 AM",
+            "latest_change_part_number": "Latest Change:\nfrom: 51960\nto: 519603\nItsme\nFebruary 02 Thursday 2023 11:05:47 AM",
+            "latest_change_price": "Latest Change:\nfrom: 17.38\nto: 17.38\nItsme\nFebruary 02 Thursday 2023 11:07:28 AM",
+            "latest_change_notes": "Latest Change:\nfrom: \"Vendor: Grundfos Canada\nDescription: \nsupport-ca@sales.grundfos.co\"\nto: \"Vendor: Grundfos Canada\nDescription: \nsupport-ca@sales.grundfos.com\"\nItsme\nFebruary 02 Thursday 2023 11:20:34 AM"
         },
         "Cooling fan Blade 5\" Dia Fan  10BL5.0CCW35, 1\/2IN": {
             "part_number": "10BL5.0CCW35",
@@ -3070,14 +3076,17 @@
             "latest_change_notes": "Item added\nItsme\nSeptember 16 Friday 2022 02-18-33 PM"
         },
         "Grundfos Pump Flange 1 1\/4 ": {
-            "part_number": "PF114",
+            "part_number": "519603",
             "unit_quantity": 1,
             "current_quantity": 10,
-            "price": 10.7,
+            "price": 17.38,
             "use_exchange_rate": false,
             "priority": 2,
-            "notes": "Vendor: Grundfos Canada\nDescription: ",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 10\nto: 10\nItsme\nJanuary 31 Tuesday 2023 10:10:33 AM"
+            "notes": "Vendor: Grundfos Canada\nDescription: \nsupport-ca@sales.grundfos.com",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 10\nto: 10\nItsme\nJanuary 31 Tuesday 2023 10:10:33 AM",
+            "latest_change_part_number": "Latest Change:\nfrom: 5196\nto: 519603\nItsme\nFebruary 02 Thursday 2023 11:06:32 AM",
+            "latest_change_price": "Latest Change:\nfrom: 17.38\nto: 17.38\nItsme\nFebruary 02 Thursday 2023 11:07:28 AM",
+            "latest_change_notes": "Latest Change:\nfrom: Vendor: Grundfos Canada\nDescription: \nsupport-ca@sales.grundfos.co\nto: Vendor: Grundfos Canada\nDescription: \nsupport-ca@sales.grundfos.com\nItsme\nFebruary 02 Thursday 2023 11:20:34 AM"
         },
         "Knob 2 3\/8 DIA. 1\/2-13. Fluted Black Plastic": {
             "part_number": "DK-122",
