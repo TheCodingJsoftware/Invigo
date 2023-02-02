@@ -86,18 +86,6 @@
             "latest_change_priority": "Item added\nItsme\nFebruary 02 Thursday 2023 09-49-02 AM",
             "latest_change_notes": "Item added\nItsme\nFebruary 02 Thursday 2023 09-49-02 AM"
         },
-        "6L24 ASHT 6\"X24\" Section": {
-            "part_number": "6L24",
-            "unit_quantity": 1,
-            "current_quantity": 13,
-            "price": 102.3,
-            "use_exchange_rate": false,
-            "priority": 1,
-            "notes": "Vendor: Security Chimneys\n\nDescription: ",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 13\nto: 13\nItsme\nJanuary 05 Thursday 2023 09:13:02 AM",
-            "latest_change_priority": "Latest Change:\nfrom: 2\nto: 1\nItsme\nAugust 03 Wednesday 2022 11:22:18 AM",
-            "latest_change_price": "Latest Change:\nfrom: 102.3\nto: 102.3\nItsme\nJanuary 13 Friday 2023 02:05:00 PM"
-        },
         "G Class Ash Shovel Small": {
             "part_number": "GCASS",
             "unit_quantity": 1.0,
@@ -115,6 +103,40 @@
             "latest_change_priority": "Item added\nItsme\nJanuary 30 Monday 2023 02-33-47 PM",
             "latest_change_notes": "Item added\nItsme\nJanuary 30 Monday 2023 02-33-47 PM"
         },
+        "Gasket 3\/16\" Thick 5\"OD x 3.75\"ID EPDM Sponge Adhesive Back": {
+            "part_number": "1000-795",
+            "unit_quantity": 2.0,
+            "current_quantity": 15,
+            "price": 1.63,
+            "use_exchange_rate": false,
+            "priority": 0,
+            "notes": "Vendor: Industrial Rubber Supply\nDescription: ",
+            "latest_change_name": "Item added\nItsme\nFebruary 02 Thursday 2023 02-05-35 PM",
+            "latest_change_part_number": "Latest Change:\nfrom: 1000-795\nto: 1000-795\nItsme\nFebruary 02 Thursday 2023 02:59:44 PM",
+            "latest_change_unit_quantity": "Item added\nItsme\nFebruary 02 Thursday 2023 02-05-35 PM",
+            "latest_change_current_quantity": "Item added\nItsme\nFebruary 02 Thursday 2023 02-05-35 PM",
+            "latest_change_price": "Latest Change:\nfrom: 2.0\nto: 1.63\nItsme\nFebruary 02 Thursday 2023 02:56:54 PM",
+            "latest_change_use_exchange_price": "Item added\nItsme\nFebruary 02 Thursday 2023 02-05-35 PM",
+            "latest_change_priority": "Item added\nItsme\nFebruary 02 Thursday 2023 02-05-35 PM",
+            "latest_change_notes": "Item added\nItsme\nFebruary 02 Thursday 2023 02-05-35 PM"
+        },
+        "Gasket 3\/16\" Thick 4.125\" OD x 1.625\"ID EPDM Sponge Adhesive Back": {
+            "part_number": "1000-794",
+            "unit_quantity": 6.0,
+            "current_quantity": 15,
+            "price": 1.88,
+            "use_exchange_rate": false,
+            "priority": 0,
+            "notes": "Vendor: Industrial Rubber Supply\nDescription: ",
+            "latest_change_name": "Item added\nItsme\nFebruary 02 Thursday 2023 02-07-46 PM",
+            "latest_change_part_number": "Latest Change:\nfrom: 1000-795\nto: 1000-794\nItsme\nFebruary 02 Thursday 2023 02:59:55 PM",
+            "latest_change_unit_quantity": "Item added\nItsme\nFebruary 02 Thursday 2023 02-07-47 PM",
+            "latest_change_current_quantity": "Item added\nItsme\nFebruary 02 Thursday 2023 02-07-47 PM",
+            "latest_change_price": "Latest Change:\nfrom: 3.0\nto: 1.88\nItsme\nFebruary 02 Thursday 2023 02:57:06 PM",
+            "latest_change_use_exchange_price": "Item added\nItsme\nFebruary 02 Thursday 2023 02-07-47 PM",
+            "latest_change_priority": "Item added\nItsme\nFebruary 02 Thursday 2023 02-07-47 PM",
+            "latest_change_notes": "Item added\nItsme\nFebruary 02 Thursday 2023 02-07-47 PM"
+        },
         "Washer 5\/16\" Spring Lock": {
             "part_number": "W516SL",
             "unit_quantity": 4,
@@ -131,16 +153,6 @@
             "latest_change_use_exchange_price": "Item added\nItsme\nJuly 19 Tuesday 2022 04-54-55 PM",
             "latest_change_priority": "Item added\nItsme\nJuly 19 Tuesday 2022 04-54-55 PM",
             "latest_change_notes": "Item added\nItsme\nJuly 19 Tuesday 2022 04-54-55 PM"
-        },
-        "10mm Isoplan  Fan Mount insulation": {
-            "part_number": "10IFMI",
-            "unit_quantity": 1,
-            "current_quantity": 121,
-            "price": 5.0,
-            "use_exchange_rate": false,
-            "priority": 0,
-            "notes": "Vendor: Piney MFG\nDescription: ",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 121\nto: 121\nItsme\nFebruary 02 Thursday 2023 10:34:05 AM"
         },
         "Knob 3\/4 DIA. 7\/16 Bore. Press-On Black Phenlic Round Knob": {
             "part_number": "POK-10",
@@ -774,6 +786,18 @@
             "latest_change_priority": "Item added\nItsme\nJanuary 09 Monday 2023 01-29-56 PM",
             "latest_change_notes": "Item added\nItsme\nJanuary 09 Monday 2023 01-29-56 PM"
         },
+        "6L24 ASHT 6\"X24\" Section": {
+            "part_number": "6L24",
+            "unit_quantity": 1,
+            "current_quantity": 103,
+            "price": 102.3,
+            "use_exchange_rate": false,
+            "priority": 1,
+            "notes": "Vendor: Security Chimneys\n\nDescription: ",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 103\nto: 103\nItsme\nFebruary 02 Thursday 2023 01:10:22 PM",
+            "latest_change_priority": "Latest Change:\nfrom: 2\nto: 1\nItsme\nAugust 03 Wednesday 2022 11:22:18 AM",
+            "latest_change_price": "Latest Change:\nfrom: 102.3\nto: 102.3\nItsme\nJanuary 13 Friday 2023 02:05:00 PM"
+        },
         "Shaft Collar 7\/16 with Set Screw": {
             "part_number": "BRA0420",
             "unit_quantity": 2,
@@ -920,6 +944,16 @@
             "latest_change_use_exchange_price": "Item added\nItsme\nAugust 01 Monday 2022 03-40-45 PM",
             "latest_change_priority": "Item added\nItsme\nAugust 01 Monday 2022 03-40-45 PM",
             "latest_change_notes": "Item added\nItsme\nAugust 01 Monday 2022 03-40-45 PM"
+        },
+        "10mm Isoplan  Fan Mount insulation": {
+            "part_number": "10IFMI",
+            "unit_quantity": 1,
+            "current_quantity": 121,
+            "price": 5.0,
+            "use_exchange_rate": false,
+            "priority": 0,
+            "notes": "Vendor: Piney MFG\nDescription: ",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 121\nto: 121\nItsme\nFebruary 02 Thursday 2023 10:34:05 AM"
         },
         "5\/16x5\/8 starlock push on Locking washer": {
             "part_number": "SPOLW",
@@ -1615,17 +1649,6 @@
             "latest_change_notes": "Latest Change:\nfrom: \"Vendor: Revcor  Revolutionary Air Flo\nDescription: \"\nto: \"Vendor: Revcor  Revolutionary Air Flow\nDescription: \"\nItsme\nAugust 04 Thursday 2022 08:55:25 AM",
             "latest_change_use_exchange_rate": "Latest Change:\nfrom: CAD\nto: USD\nItsme\nAugust 04 Thursday 2022 08:56:53 AM"
         },
-        "6L24 ASHT 6\"X24\" Section": {
-            "part_number": "6L24",
-            "unit_quantity": 1,
-            "current_quantity": 13,
-            "price": 102.3,
-            "use_exchange_rate": false,
-            "priority": 2,
-            "notes": "Vendor: Security Chimneys\n\nDescription: ",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 13\nto: 13\nItsme\nJanuary 05 Thursday 2023 09:13:02 AM",
-            "latest_change_price": "Latest Change:\nfrom: 102.3\nto: 102.3\nItsme\nJanuary 13 Friday 2023 02:05:00 PM"
-        },
         "G Class Ash Shovel Small": {
             "part_number": "GCASS",
             "unit_quantity": 1.0,
@@ -1642,6 +1665,40 @@
             "latest_change_use_exchange_price": "Item added\nItsme\nJanuary 30 Monday 2023 02-35-04 PM",
             "latest_change_priority": "Item added\nItsme\nJanuary 30 Monday 2023 02-35-04 PM",
             "latest_change_notes": "Item added\nItsme\nJanuary 30 Monday 2023 02-35-04 PM"
+        },
+        "Gasket 3\/16\" Thick 5\"OD x 3.75\"ID EPDM Sponge Adhesive Back": {
+            "part_number": "1000-795",
+            "unit_quantity": 2.0,
+            "current_quantity": 15,
+            "price": 1.63,
+            "use_exchange_rate": false,
+            "priority": 0,
+            "notes": "Vendor: Industrial Rubber Supply\nDescription: shaun@indrub.com",
+            "latest_change_name": "Item added\nItsme\nFebruary 02 Thursday 2023 02-09-39 PM",
+            "latest_change_part_number": "Latest Change:\nfrom: 1000-795\nto: 1000-795\nItsme\nFebruary 02 Thursday 2023 02:58:36 PM",
+            "latest_change_unit_quantity": "Item added\nItsme\nFebruary 02 Thursday 2023 02-09-39 PM",
+            "latest_change_current_quantity": "Item added\nItsme\nFebruary 02 Thursday 2023 02-09-39 PM",
+            "latest_change_price": "Latest Change:\nfrom: 2.0\nto: 1.63\nItsme\nFebruary 02 Thursday 2023 02:56:54 PM",
+            "latest_change_use_exchange_price": "Item added\nItsme\nFebruary 02 Thursday 2023 02-09-39 PM",
+            "latest_change_priority": "Item added\nItsme\nFebruary 02 Thursday 2023 02-09-39 PM",
+            "latest_change_notes": "Latest Change:\nfrom: \"Vendor: Industrial Rubber Supply\nDescription: shaun@indrub.co\"\nto: \"Vendor: Industrial Rubber Supply\nDescription: shaun@indrub.com\"\nItsme\nFebruary 02 Thursday 2023 02:59:08 PM"
+        },
+        "Gasket 3\/16\" Thick 4.125\" OD x 1.625\"ID EPDM Sponge Adhesive Back": {
+            "part_number": "1000-794",
+            "unit_quantity": 6.0,
+            "current_quantity": 15,
+            "price": 1.88,
+            "use_exchange_rate": false,
+            "priority": 0,
+            "notes": "Vendor: Industrial Rubber Supply\nDescription: shaun@indrub.com",
+            "latest_change_name": "Item added\nItsme\nFebruary 02 Thursday 2023 02-10-21 PM",
+            "latest_change_part_number": "Latest Change:\nfrom: 1000-795\nto: 1000-794\nItsme\nFebruary 02 Thursday 2023 02:58:48 PM",
+            "latest_change_unit_quantity": "Item added\nItsme\nFebruary 02 Thursday 2023 02-10-21 PM",
+            "latest_change_current_quantity": "Item added\nItsme\nFebruary 02 Thursday 2023 02-10-21 PM",
+            "latest_change_price": "Latest Change:\nfrom: 3.0\nto: 1.88\nItsme\nFebruary 02 Thursday 2023 02:57:06 PM",
+            "latest_change_use_exchange_price": "Item added\nItsme\nFebruary 02 Thursday 2023 02-10-21 PM",
+            "latest_change_priority": "Item added\nItsme\nFebruary 02 Thursday 2023 02-10-21 PM",
+            "latest_change_notes": "Latest Change:\nfrom: \"Vendor: Industrial Rubber Supply\nDescription: shaun@indrub.co\"\nto: \"Vendor: Industrial Rubber Supply\nDescription: shaun@indrub.com\"\nItsme\nFebruary 02 Thursday 2023 02:59:19 PM"
         },
         "Washer 5\/16\" Spring Lock": {
             "part_number": "W516SL",
@@ -2302,6 +2359,17 @@
             "latest_change_use_exchange_price": "Item added\nItsme\nJanuary 09 Monday 2023 01-29-39 PM",
             "latest_change_priority": "Item added\nItsme\nJanuary 09 Monday 2023 01-29-39 PM",
             "latest_change_notes": "Item added\nItsme\nJanuary 09 Monday 2023 01-29-39 PM"
+        },
+        "6L24 ASHT 6\"X24\" Section": {
+            "part_number": "6L24",
+            "unit_quantity": 1,
+            "current_quantity": 103,
+            "price": 102.3,
+            "use_exchange_rate": false,
+            "priority": 2,
+            "notes": "Vendor: Security Chimneys\n\nDescription: ",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 103\nto: 103\nItsme\nFebruary 02 Thursday 2023 01:10:22 PM",
+            "latest_change_price": "Latest Change:\nfrom: 102.3\nto: 102.3\nItsme\nJanuary 13 Friday 2023 02:05:00 PM"
         },
         "Shaft Collar 7\/16 with Set Screw": {
             "part_number": "BRA0420",
@@ -3116,18 +3184,6 @@
             "latest_change_priority": "Item added\nItsme\nFebruary 02 Thursday 2023 09-47-06 AM",
             "latest_change_notes": "Item added\nItsme\nFebruary 02 Thursday 2023 09-47-06 AM"
         },
-        "6L24 ASHT 6\"X24\" Section": {
-            "part_number": "6L24",
-            "unit_quantity": 1,
-            "current_quantity": 13,
-            "price": 102.3,
-            "use_exchange_rate": false,
-            "priority": 1,
-            "notes": "Vendor: Security Chimneys\n\nDescription: ",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 13\nto: 13\nItsme\nJanuary 05 Thursday 2023 09:13:02 AM",
-            "latest_change_priority": "Latest Change:\nfrom: 2\nto: 1\nItsme\nAugust 03 Wednesday 2022 11:23:30 AM",
-            "latest_change_price": "Latest Change:\nfrom: 102.3\nto: 102.3\nItsme\nJanuary 13 Friday 2023 02:05:00 PM"
-        },
         "G Class Ash Shovel Small": {
             "part_number": "GCASS",
             "unit_quantity": 1.0,
@@ -3145,6 +3201,40 @@
             "latest_change_priority": "Item added\nItsme\nJanuary 30 Monday 2023 02-35-54 PM",
             "latest_change_notes": "Item added\nItsme\nJanuary 30 Monday 2023 02-35-54 PM"
         },
+        "Gasket 3\/16\" Thick 5\"OD x 3.75\"ID EPDM Sponge Adhesive Back": {
+            "part_number": "1000-795",
+            "unit_quantity": 2.0,
+            "current_quantity": 15,
+            "price": 1.63,
+            "use_exchange_rate": false,
+            "priority": 0,
+            "notes": "Vendor: Industrial Rubber Supply\nDescription: shaun@indrub.com",
+            "latest_change_name": "Item added\nItsme\nFebruary 02 Thursday 2023 02-10-57 PM",
+            "latest_change_part_number": "Latest Change:\nfrom: 1000-79\nto: 1000-795\nItsme\nFebruary 02 Thursday 2023 02:57:30 PM",
+            "latest_change_unit_quantity": "Item added\nItsme\nFebruary 02 Thursday 2023 02-10-57 PM",
+            "latest_change_current_quantity": "Item added\nItsme\nFebruary 02 Thursday 2023 02-10-57 PM",
+            "latest_change_price": "Latest Change:\nfrom: 2.0\nto: 1.63\nItsme\nFebruary 02 Thursday 2023 02:56:54 PM",
+            "latest_change_use_exchange_price": "Item added\nItsme\nFebruary 02 Thursday 2023 02-10-57 PM",
+            "latest_change_priority": "Item added\nItsme\nFebruary 02 Thursday 2023 02-10-57 PM",
+            "latest_change_notes": "Latest Change:\nfrom: Vendor: Industrial Rubber Supply\nDescription: shaun@indrub.co\nto: Vendor: Industrial Rubber Supply\nDescription: shaun@indrub.com\nItsme\nFebruary 02 Thursday 2023 02:59:08 PM"
+        },
+        "Gasket 3\/16\" Thick 4.125\" OD x 1.625\"ID EPDM Sponge Adhesive Back": {
+            "part_number": "1000-794",
+            "unit_quantity": 6.0,
+            "current_quantity": 15,
+            "price": 1.88,
+            "use_exchange_rate": false,
+            "priority": 0,
+            "notes": "Vendor: Industrial Rubber Supply\nDescription: shaun@indrub.com",
+            "latest_change_name": "Item added\nItsme\nFebruary 02 Thursday 2023 02-11-45 PM",
+            "latest_change_part_number": "Latest Change:\nfrom: 1000-79\nto: 1000-794\nItsme\nFebruary 02 Thursday 2023 02:57:22 PM",
+            "latest_change_unit_quantity": "Item added\nItsme\nFebruary 02 Thursday 2023 02-11-45 PM",
+            "latest_change_current_quantity": "Item added\nItsme\nFebruary 02 Thursday 2023 02-11-45 PM",
+            "latest_change_price": "Latest Change:\nfrom: 3.0\nto: 1.88\nItsme\nFebruary 02 Thursday 2023 02:57:06 PM",
+            "latest_change_use_exchange_price": "Item added\nItsme\nFebruary 02 Thursday 2023 02-11-45 PM",
+            "latest_change_priority": "Item added\nItsme\nFebruary 02 Thursday 2023 02-11-45 PM",
+            "latest_change_notes": "Latest Change:\nfrom: Vendor: Industrial Rubber Supply\nDescription: shaun@indrub.co\nto: Vendor: Industrial Rubber Supply\nDescription: shaun@indrub.com\nItsme\nFebruary 02 Thursday 2023 02:59:19 PM"
+        },
         "Washer 5\/16\" Spring Lock": {
             "part_number": "W516SL",
             "unit_quantity": 4,
@@ -3161,16 +3251,6 @@
             "latest_change_use_exchange_price": "Item added\nItsme\nJuly 19 Tuesday 2022 04-54-55 PM",
             "latest_change_priority": "Item added\nItsme\nJuly 19 Tuesday 2022 04-54-55 PM",
             "latest_change_notes": "Item added\nItsme\nJuly 19 Tuesday 2022 04-54-55 PM"
-        },
-        "10mm Isoplan  Fan Mount insulation": {
-            "part_number": "10IFMI",
-            "unit_quantity": 1,
-            "current_quantity": 121,
-            "price": 5.0,
-            "use_exchange_rate": false,
-            "priority": 0,
-            "notes": "Vendor: Piney MFG\nDescription: ",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 121\nto: 121\nItsme\nFebruary 02 Thursday 2023 10:34:05 AM"
         },
         "Knob 3\/4 DIA. 7\/16 Bore. Press-On Black Phenlic Round Knob": {
             "part_number": "POK-10",
@@ -3656,6 +3736,18 @@
             "latest_change_current_quantity": "Latest Change:\nfrom: 75\nto: 75\nItsme\nJanuary 05 Thursday 2023 09:13:03 AM",
             "latest_change_price": "Latest Change:\nfrom: 60.3\nto: 60.3\nItsme\nOctober 04 Tuesday 2022 01:57:08 PM"
         },
+        "Blower Wheel 9-15\/16\" X 2-1\/4 BI Steel 1\/2 #2-106CI CW \"A\" 1800R": {
+            "part_number": "2-106CI CW",
+            "unit_quantity": 1,
+            "current_quantity": 75,
+            "price": 68.45,
+            "use_exchange_rate": false,
+            "priority": 3,
+            "notes": "Vendor: Jan-Air Illinois\nDescription: ",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 75\nto: 75\nItsme\nFebruary 02 Thursday 2023 09:48:26 AM",
+            "latest_change_price": "Latest Change:\nfrom: 68.45\nto: 68.45\nItsme\nSeptember 06 Tuesday 2022 11:12:17 AM",
+            "latest_change_priority": "Latest Change:\nfrom: 0\nto: 3\nItsme\nOctober 24 Monday 2022 08:34:48 AM"
+        },
         "Base Relay ( Allen- Bradley)": {
             "part_number": "700-HF32A1 SQ  ",
             "unit_quantity": 2.0,
@@ -3706,18 +3798,6 @@
             "latest_change_use_exchange_price": "Item added\nItsme\nOctober 27 Thursday 2022 04-27-14 PM",
             "latest_change_priority": "Item added\nItsme\nOctober 27 Thursday 2022 04-27-14 PM",
             "latest_change_notes": "Item added\nItsme\nOctober 27 Thursday 2022 04-27-14 PM"
-        },
-        "Blower Wheel 9-15\/16\" X 2-1\/4 BI Steel 1\/2 #2-106CI CW \"A\" 1800R": {
-            "part_number": "2-106CI CW",
-            "unit_quantity": 1,
-            "current_quantity": 75,
-            "price": 68.45,
-            "use_exchange_rate": false,
-            "priority": 3,
-            "notes": "Vendor: Jan-Air Illinois\nDescription: ",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 75\nto: 75\nItsme\nFebruary 02 Thursday 2023 09:48:26 AM",
-            "latest_change_price": "Latest Change:\nfrom: 68.45\nto: 68.45\nItsme\nSeptember 06 Tuesday 2022 11:12:17 AM",
-            "latest_change_priority": "Latest Change:\nfrom: 0\nto: 3\nItsme\nOctober 24 Monday 2022 08:34:48 AM"
         },
         "Compression Spring, 2.25\" Long, 0.625\" OD, 0.517\" ID 10lbs damper seating": {
             "part_number": "9657k127",
@@ -3798,6 +3878,18 @@
             "latest_change_use_exchange_price": "Item added\nItsme\nJanuary 09 Monday 2023 01-28-00 PM",
             "latest_change_priority": "Item added\nItsme\nJanuary 09 Monday 2023 01-28-00 PM",
             "latest_change_notes": "Item added\nItsme\nJanuary 09 Monday 2023 01-28-00 PM"
+        },
+        "6L24 ASHT 6\"X24\" Section": {
+            "part_number": "6L24",
+            "unit_quantity": 1,
+            "current_quantity": 103,
+            "price": 102.3,
+            "use_exchange_rate": false,
+            "priority": 1,
+            "notes": "Vendor: Security Chimneys\n\nDescription: ",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 103\nto: 103\nItsme\nFebruary 02 Thursday 2023 01:10:22 PM",
+            "latest_change_priority": "Latest Change:\nfrom: 2\nto: 1\nItsme\nAugust 03 Wednesday 2022 11:23:30 AM",
+            "latest_change_price": "Latest Change:\nfrom: 102.3\nto: 102.3\nItsme\nJanuary 13 Friday 2023 02:05:00 PM"
         },
         "Shaft Collar 7\/16 with Set Screw": {
             "part_number": "BRA0420",
@@ -3911,6 +4003,16 @@
             "latest_change_use_exchange_price": "Item added\nItsme\nAugust 01 Monday 2022 03-33-59 PM",
             "latest_change_priority": "Item added\nItsme\nAugust 01 Monday 2022 03-33-59 PM",
             "latest_change_notes": "Item added\nItsme\nAugust 01 Monday 2022 03-33-59 PM"
+        },
+        "10mm Isoplan  Fan Mount insulation": {
+            "part_number": "10IFMI",
+            "unit_quantity": 1,
+            "current_quantity": 121,
+            "price": 5.0,
+            "use_exchange_rate": false,
+            "priority": 0,
+            "notes": "Vendor: Piney MFG\nDescription: ",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 121\nto: 121\nItsme\nFebruary 02 Thursday 2023 10:34:05 AM"
         },
         "5\/16x5\/8 starlock push on Locking washer": {
             "part_number": "SPOLW",
