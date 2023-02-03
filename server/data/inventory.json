@@ -185,11 +185,12 @@
             "part_number": "UKC2",
             "unit_quantity": 1.0,
             "current_quantity": 27,
-            "price": 9.0,
+            "price": 12.94,
             "use_exchange_rate": false,
             "priority": 0,
             "notes": "Vendor: Industrial  Rubber Supply\nDescription: ",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 27.0\nto: 27\nItsme\nJanuary 05 Thursday 2023 09:13:02 AM"
+            "latest_change_current_quantity": "Latest Change:\nfrom: 27.0\nto: 27\nItsme\nJanuary 05 Thursday 2023 09:13:02 AM",
+            "latest_change_price": "Latest Change:\nfrom: 9.0\nto: 12.94\nItsme\nFebruary 02 Thursday 2023 04:22:00 PM"
         },
         "Terminal Block 1492-H7": {
             "part_number": "ALB1492H7",
@@ -1778,11 +1779,12 @@
             "part_number": "UKC2",
             "unit_quantity": 1.0,
             "current_quantity": 27,
-            "price": 9.0,
+            "price": 12.94,
             "use_exchange_rate": false,
             "priority": 0,
             "notes": "Vendor: Industrial  Rubber Supply\nDescription: ",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 27.0\nto: 27\nItsme\nJanuary 05 Thursday 2023 09:13:02 AM"
+            "latest_change_current_quantity": "Latest Change:\nfrom: 27.0\nto: 27\nItsme\nJanuary 05 Thursday 2023 09:13:02 AM",
+            "latest_change_price": "Latest Change:\nfrom: 9.0\nto: 12.94\nItsme\nFebruary 02 Thursday 2023 04:22:00 PM"
         },
         "Terminal Block 1492-H7": {
             "part_number": "ALB1492H7",
@@ -3300,11 +3302,12 @@
             "part_number": "UKC2",
             "unit_quantity": 1.0,
             "current_quantity": 27,
-            "price": 9.0,
+            "price": 12.94,
             "use_exchange_rate": false,
             "priority": 0,
             "notes": "Vendor: Industrial  Rubber Supply\nDescription: ",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 27\nto: 27\nItsme\nJanuary 05 Thursday 2023 09:13:02 AM"
+            "latest_change_current_quantity": "Latest Change:\nfrom: 27\nto: 27\nItsme\nJanuary 05 Thursday 2023 09:13:02 AM",
+            "latest_change_price": "Latest Change:\nfrom: 9.0\nto: 12.94\nItsme\nFebruary 02 Thursday 2023 04:22:00 PM"
         },
         "Terminal Block 1492-H7": {
             "part_number": "ALB1492H7",
