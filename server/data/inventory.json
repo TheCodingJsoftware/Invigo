@@ -3,7 +3,7 @@
         "1\" x 1\" Narrow Slot Gray Duct": {
             "part_number": "PDTF1X1LG6",
             "unit_quantity": 26,
-            "current_quantity": -63,
+            "current_quantity": 0,
             "price": 0.66,
             "use_exchange_rate": false,
             "priority": 0,
@@ -11,7 +11,7 @@
             "latest_change_name": "Item added\nItsme\nOctober 27 Thursday 2022 04-30-17 PM",
             "latest_change_part_number": "Latest Change:\nfrom: \nto: PDTF1X1LG6\nItsme\nNovember 01 Tuesday 2022 10:09:29 AM",
             "latest_change_unit_quantity": "Item added\nItsme\nOctober 27 Thursday 2022 04-30-17 PM",
-            "latest_change_current_quantity": "Latest Change:\nfrom: -63\nto: -63\nItsme\nJanuary 05 Thursday 2023 09:13:03 AM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 0\nto: 0\nItsme\nFebruary 04 Saturday 2023 09:27:23 AM",
             "latest_change_price": "Item added\nItsme\nOctober 27 Thursday 2022 04-30-17 PM",
             "latest_change_use_exchange_price": "Item added\nItsme\nOctober 27 Thursday 2022 04-30-17 PM",
             "latest_change_priority": "Item added\nItsme\nOctober 27 Thursday 2022 04-30-17 PM",
@@ -1558,23 +1558,6 @@
         }
     },
     "Polar G3": {
-        "1\" x 1\" Narrow Slot Gray Duct": {
-            "part_number": "PDTF1X1LG6",
-            "unit_quantity": 1.0,
-            "current_quantity": -63,
-            "price": 0.66,
-            "use_exchange_rate": false,
-            "priority": 0,
-            "notes": "Vendor: Westburn \nDescription: is measured in inches. price per foot is $7.45. per 6 feet is $7.50",
-            "latest_change_name": "Item added\nItsme\nOctober 27 Thursday 2022 04-30-41 PM",
-            "latest_change_part_number": "Latest Change:\nfrom: \nto: PDTF1X1LG6\nItsme\nNovember 01 Tuesday 2022 10:08:02 AM",
-            "latest_change_unit_quantity": "Latest Change:\nfrom: 0.0\nto: 1.0\nItsme\nNovember 30 Wednesday 2022 09:56:52 AM",
-            "latest_change_current_quantity": "Latest Change:\nfrom: -63\nto: -63\nItsme\nJanuary 05 Thursday 2023 09:13:03 AM",
-            "latest_change_price": "Item added\nItsme\nOctober 27 Thursday 2022 04-30-41 PM",
-            "latest_change_use_exchange_price": "Item added\nItsme\nOctober 27 Thursday 2022 04-30-41 PM",
-            "latest_change_priority": "Item added\nItsme\nOctober 27 Thursday 2022 04-30-41 PM",
-            "latest_change_notes": "Item added\nItsme\nOctober 27 Thursday 2022 04-30-41 PM"
-        },
         "Sticker 310 Polar G2 & G3 Caution Pinch Hazard 4.5\"x2.75\"": {
             "part_number": "310",
             "unit_quantity": 2,
@@ -1584,6 +1567,23 @@
             "priority": 0,
             "notes": "Vendor: \nDescription: ",
             "latest_change_current_quantity": "Latest Change:\nfrom: -8\nto: -8\nItsme\nJanuary 05 Thursday 2023 09:13:01 AM"
+        },
+        "1\" x 1\" Narrow Slot Gray Duct": {
+            "part_number": "PDTF1X1LG6",
+            "unit_quantity": 1.0,
+            "current_quantity": 0,
+            "price": 0.66,
+            "use_exchange_rate": false,
+            "priority": 0,
+            "notes": "Vendor: Westburn \nDescription: is measured in inches. price per foot is $7.45. per 6 feet is $7.50",
+            "latest_change_name": "Item added\nItsme\nOctober 27 Thursday 2022 04-30-41 PM",
+            "latest_change_part_number": "Latest Change:\nfrom: \nto: PDTF1X1LG6\nItsme\nNovember 01 Tuesday 2022 10:08:02 AM",
+            "latest_change_unit_quantity": "Latest Change:\nfrom: 0.0\nto: 1.0\nItsme\nNovember 30 Wednesday 2022 09:56:52 AM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 0\nto: 0\nItsme\nFebruary 04 Saturday 2023 09:27:23 AM",
+            "latest_change_price": "Item added\nItsme\nOctober 27 Thursday 2022 04-30-41 PM",
+            "latest_change_use_exchange_price": "Item added\nItsme\nOctober 27 Thursday 2022 04-30-41 PM",
+            "latest_change_priority": "Item added\nItsme\nOctober 27 Thursday 2022 04-30-41 PM",
+            "latest_change_notes": "Item added\nItsme\nOctober 27 Thursday 2022 04-30-41 PM"
         },
         "1 1\/2 x 1 1\/4 Elbow": {
             "part_number": "112E",
@@ -3104,7 +3104,7 @@
         "1\" x 1\" Narrow Slot Gray Duct": {
             "part_number": "PDTF1X1LG6",
             "unit_quantity": 26,
-            "current_quantity": -63,
+            "current_quantity": 0,
             "price": 0.66,
             "use_exchange_rate": false,
             "priority": 0,
@@ -3112,7 +3112,7 @@
             "latest_change_name": "Item added\nItsme\nOctober 27 Thursday 2022 04-31-00 PM",
             "latest_change_part_number": "Latest Change:\nfrom: \nto: PDTF1X1LG6\nItsme\nNovember 01 Tuesday 2022 10:08:36 AM",
             "latest_change_unit_quantity": "Item added\nItsme\nOctober 27 Thursday 2022 04-31-00 PM",
-            "latest_change_current_quantity": "Latest Change:\nfrom: -63\nto: -63\nItsme\nJanuary 05 Thursday 2023 09:13:03 AM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 0\nto: 0\nItsme\nFebruary 04 Saturday 2023 09:27:23 AM",
             "latest_change_price": "Item added\nItsme\nOctober 27 Thursday 2022 04-31-00 PM",
             "latest_change_use_exchange_price": "Item added\nItsme\nOctober 27 Thursday 2022 04-31-00 PM",
             "latest_change_priority": "Item added\nItsme\nOctober 27 Thursday 2022 04-31-00 PM",
