@@ -31,7 +31,7 @@
         "1 1\/2 x 1 1\/4 Elbow": {
             "part_number": "112E",
             "unit_quantity": 2,
-            "current_quantity": 4,
+            "current_quantity": 27,
             "price": 4.0,
             "use_exchange_rate": false,
             "priority": 0,
@@ -39,7 +39,7 @@
             "latest_change_name": "Item added\nItsme\nJuly 21 Thursday 2022 09-23-42 AM",
             "latest_change_part_number": "Item added\nItsme\nJuly 21 Thursday 2022 09-23-42 AM",
             "latest_change_unit_quantity": "Item added\nItsme\nJuly 21 Thursday 2022 09-23-42 AM",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 4\nto: 4\nItsme\nJanuary 24 Tuesday 2023 05:08:47 PM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 27\nto: 27\nItsme\nFebruary 07 Tuesday 2023 09:00:25 AM",
             "latest_change_price": "Latest Change:\nfrom: 0.0\nto: 4.0\nItsme\nJuly 21 Thursday 2022 09:25:24 AM",
             "latest_change_use_exchange_price": "Item added\nItsme\nJuly 21 Thursday 2022 09-23-42 AM",
             "latest_change_priority": "Item added\nItsme\nJuly 21 Thursday 2022 09-23-42 AM",
@@ -1585,23 +1585,6 @@
             "latest_change_priority": "Item added\nItsme\nOctober 27 Thursday 2022 04-30-41 PM",
             "latest_change_notes": "Item added\nItsme\nOctober 27 Thursday 2022 04-30-41 PM"
         },
-        "1 1\/2 x 1 1\/4 Elbow": {
-            "part_number": "112E",
-            "unit_quantity": 2,
-            "current_quantity": 4,
-            "price": 4.0,
-            "use_exchange_rate": false,
-            "priority": 0,
-            "notes": "Vendor: Greenline Hose and fitting\nDescription: ",
-            "latest_change_name": "Item added\nItsme\nSeptember 16 Friday 2022 02-18-08 PM",
-            "latest_change_part_number": "Item added\nItsme\nSeptember 16 Friday 2022 02-18-08 PM",
-            "latest_change_unit_quantity": "Item added\nItsme\nSeptember 16 Friday 2022 02-18-08 PM",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 4\nto: 4\nItsme\nJanuary 24 Tuesday 2023 05:08:47 PM",
-            "latest_change_price": "Item added\nItsme\nSeptember 16 Friday 2022 02-18-08 PM",
-            "latest_change_use_exchange_price": "Item added\nItsme\nSeptember 16 Friday 2022 02-18-09 PM",
-            "latest_change_priority": "Item added\nItsme\nSeptember 16 Friday 2022 02-18-09 PM",
-            "latest_change_notes": "Item added\nItsme\nSeptember 16 Friday 2022 02-18-09 PM"
-        },
         "RAL 3007 Beige Gloss": {
             "part_number": "7600205",
             "unit_quantity": 0.2,
@@ -1774,6 +1757,23 @@
             "latest_change_priority": "Item added\nItsme\nJuly 28 Thursday 2022 04-39-31 PM",
             "latest_change_notes": "Latest Change:\nfrom: \"Vendor: Reftec Insudtrie\nDescription: \"\nto: \"Vendor: Reftec Insudtries\nDescription: \"\nItsme\nJuly 28 Thursday 2022 04:40:40 PM",
             "latest_change_use_exchange_rate": "Latest Change:\nfrom: CAD\nto: USD\nItsme\nSeptember 15 Thursday 2022 09:23:50 AM"
+        },
+        "1 1\/2 x 1 1\/4 Elbow": {
+            "part_number": "112E",
+            "unit_quantity": 2,
+            "current_quantity": 27,
+            "price": 4.0,
+            "use_exchange_rate": false,
+            "priority": 0,
+            "notes": "Vendor: Greenline Hose and fitting\nDescription: ",
+            "latest_change_name": "Item added\nItsme\nSeptember 16 Friday 2022 02-18-08 PM",
+            "latest_change_part_number": "Item added\nItsme\nSeptember 16 Friday 2022 02-18-08 PM",
+            "latest_change_unit_quantity": "Item added\nItsme\nSeptember 16 Friday 2022 02-18-08 PM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 27\nto: 27\nItsme\nFebruary 07 Tuesday 2023 09:00:25 AM",
+            "latest_change_price": "Item added\nItsme\nSeptember 16 Friday 2022 02-18-08 PM",
+            "latest_change_use_exchange_price": "Item added\nItsme\nSeptember 16 Friday 2022 02-18-09 PM",
+            "latest_change_priority": "Item added\nItsme\nSeptember 16 Friday 2022 02-18-09 PM",
+            "latest_change_notes": "Item added\nItsme\nSeptember 16 Friday 2022 02-18-09 PM"
         },
         "UKC 2\"  Open Cell Foam G-Class-Fan": {
             "part_number": "UKC2",
@@ -3131,7 +3131,7 @@
         "1 1\/2 x 1 1\/4 Elbow": {
             "part_number": "112E",
             "unit_quantity": 2,
-            "current_quantity": 4,
+            "current_quantity": 27,
             "price": 4.0,
             "use_exchange_rate": false,
             "priority": 0,
@@ -3139,7 +3139,7 @@
             "latest_change_name": "Item added\nItsme\nSeptember 16 Friday 2022 02-18-33 PM",
             "latest_change_part_number": "Item added\nItsme\nSeptember 16 Friday 2022 02-18-33 PM",
             "latest_change_unit_quantity": "Item added\nItsme\nSeptember 16 Friday 2022 02-18-33 PM",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 4\nto: 4\nItsme\nJanuary 24 Tuesday 2023 05:08:47 PM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 27\nto: 27\nItsme\nFebruary 07 Tuesday 2023 09:00:25 AM",
             "latest_change_price": "Item added\nItsme\nSeptember 16 Friday 2022 02-18-33 PM",
             "latest_change_use_exchange_price": "Item added\nItsme\nSeptember 16 Friday 2022 02-18-33 PM",
             "latest_change_priority": "Item added\nItsme\nSeptember 16 Friday 2022 02-18-33 PM",
