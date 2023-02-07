@@ -24,9 +24,9 @@
             "price": 0.64,
             "use_exchange_rate": false,
             "priority": 0,
-            "notes": "Vendor: HC Graphic Screen Printing\nDescription: ",
+            "notes": "Vendor: HC Graphic Screen Printing\nDescription: orders@hdcraphicsinc.com",
             "latest_change_current_quantity": "Latest Change:\nfrom: -28\nto: -28\nItsme\nFebruary 07 Tuesday 2023 01:49:55 PM",
-            "latest_change_notes": "Latest Change:\nfrom: \"Vendor: HC Graphic Screen Printin\nDescription: \"\nto: \"Vendor: HC Graphic Screen Printing\nDescription: \"\nItsme\nJuly 29 Friday 2022 04:12:32 PM"
+            "latest_change_notes": "Latest Change:\nfrom: \"Vendor: HC Graphic Screen Printing\nDescription: orders@hdcraphicsinc.co\"\nto: \"Vendor: HC Graphic Screen Printing\nDescription: orders@hdcraphicsinc.com\"\nItsme\nFebruary 07 Tuesday 2023 03:13:57 PM"
         },
         "1 1\/2 x 1 1\/4 Elbow": {
             "part_number": "112E",
@@ -1582,8 +1582,9 @@
             "price": 0.64,
             "use_exchange_rate": false,
             "priority": 0,
-            "notes": "Vendor: \nDescription: ",
-            "latest_change_current_quantity": "Latest Change:\nfrom: -28\nto: -28\nItsme\nFebruary 07 Tuesday 2023 01:49:55 PM"
+            "notes": "Vendor: HC Graphic Screen Printing\nDescription: orders@hdcraphicsinc.com",
+            "latest_change_current_quantity": "Latest Change:\nfrom: -28\nto: -28\nItsme\nFebruary 07 Tuesday 2023 01:49:55 PM",
+            "latest_change_notes": "Latest Change:\nfrom: Vendor: HC Graphic Screen Printing\nDescription: orders@hdcraphicsinc.co\nto: Vendor: HC Graphic Screen Printing\nDescription: orders@hdcraphicsinc.com\nItsme\nFebruary 07 Tuesday 2023 03:13:57 PM"
         },
         "Washer 5\/16\" Spring Lock": {
             "part_number": "W516SL",
@@ -3142,8 +3143,9 @@
             "price": 0.64,
             "use_exchange_rate": false,
             "priority": 0,
-            "notes": "Vendor: \nDescription: ",
-            "latest_change_current_quantity": "Latest Change:\nfrom: -28\nto: -28\nItsme\nFebruary 07 Tuesday 2023 01:49:55 PM"
+            "notes": "Vendor: HC Graphic Screen Printing\nDescription: orders@hdcraphicsinc.com",
+            "latest_change_current_quantity": "Latest Change:\nfrom: -28\nto: -28\nItsme\nFebruary 07 Tuesday 2023 01:49:55 PM",
+            "latest_change_notes": "Latest Change:\nfrom: Vendor: HC Graphic Screen Printing\nDescription: orders@hdcraphicsinc.co\nto: Vendor: HC Graphic Screen Printing\nDescription: orders@hdcraphicsinc.com\nItsme\nFebruary 07 Tuesday 2023 03:13:57 PM"
         },
         "Washer 5\/16\" Spring Lock": {
             "part_number": "W516SL",
