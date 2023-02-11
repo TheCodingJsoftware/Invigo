@@ -10027,6 +10027,23 @@
             "latest_change_priority": "Item added\nItsme\nDecember 31 Saturday 2022 11-02-21 AM",
             "latest_change_notes": "Item added\nItsme\nDecember 31 Saturday 2022 11-02-21 AM"
         },
+        "RAL 7004 Powder   Light Grey": {
+            "part_number": "GY9XP1161",
+            "unit_quantity": 0.0,
+            "current_quantity": 100,
+            "price": 22.0,
+            "use_exchange_rate": false,
+            "priority": 0,
+            "notes": "Vendor: Gloverdale Paint\n\nDescription: Powder is per pound. and price is also per pound",
+            "latest_change_name": "Item added\nItsme\nFebruary 11 Saturday 2023 08-51-29 AM",
+            "latest_change_part_number": "Item added\nItsme\nFebruary 11 Saturday 2023 08-51-29 AM",
+            "latest_change_unit_quantity": "Item added\nItsme\nFebruary 11 Saturday 2023 08-51-29 AM",
+            "latest_change_current_quantity": "Item added\nItsme\nFebruary 11 Saturday 2023 08-51-29 AM",
+            "latest_change_price": "Latest Change:\nfrom: 0.0\nto: 22.0\nItsme\nFebruary 11 Saturday 2023 08:55:17 AM",
+            "latest_change_use_exchange_price": "Item added\nItsme\nFebruary 11 Saturday 2023 08-51-29 AM",
+            "latest_change_priority": "Item added\nItsme\nFebruary 11 Saturday 2023 08-51-29 AM",
+            "latest_change_notes": "Item added\nItsme\nFebruary 11 Saturday 2023 08-51-29 AM"
+        },
         "HoneyComb ": {
             "part_number": "33HC",
             "unit_quantity": 1.0,
