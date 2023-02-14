@@ -9052,23 +9052,6 @@
             "latest_change_priority": "Item added\nItsme\nNovember 03 Thursday 2022 09-52-25 AM",
             "latest_change_notes": "Item added\nItsme\nNovember 03 Thursday 2022 09-52-25 AM"
         },
-        " Housing For Squirrl Cage 7816455 HSG (842) SPECIAL C\/W \nAA508-202 CW": {
-            "part_number": "7816455 ",
-            "unit_quantity": 1.0,
-            "current_quantity": 0,
-            "price": 60.0,
-            "use_exchange_rate": false,
-            "priority": 0,
-            "notes": "Vendor:  Masters \nDescription: ",
-            "latest_change_name": "Item added\nItsme\nFebruary 11 Saturday 2023 08-36-46 AM",
-            "latest_change_part_number": "Item added\nItsme\nFebruary 11 Saturday 2023 08-36-46 AM",
-            "latest_change_unit_quantity": "Item added\nItsme\nFebruary 11 Saturday 2023 08-36-46 AM",
-            "latest_change_current_quantity": "Item added\nItsme\nFebruary 11 Saturday 2023 08-36-46 AM",
-            "latest_change_price": "Item added\nItsme\nFebruary 11 Saturday 2023 08-36-46 AM",
-            "latest_change_use_exchange_price": "Item added\nItsme\nFebruary 11 Saturday 2023 08-36-46 AM",
-            "latest_change_priority": "Item added\nItsme\nFebruary 11 Saturday 2023 08-36-46 AM",
-            "latest_change_notes": "Item added\nItsme\nFebruary 11 Saturday 2023 08-36-46 AM"
-        },
         "Black Gloss 76795 Enamel ": {
             "part_number": "76795",
             "unit_quantity": 0.1,
@@ -9119,23 +9102,6 @@
             "latest_change_use_exchange_price": "Item added\nItsme\nOctober 10 Monday 2022 04-00-38 PM",
             "latest_change_priority": "Item added\nItsme\nOctober 10 Monday 2022 04-00-38 PM",
             "latest_change_notes": "Item added\nItsme\nOctober 10 Monday 2022 04-00-38 PM"
-        },
-        "Squirrl Cage AA-508-229 X .500, CCW, HI, GALV.": {
-            "part_number": "4829585",
-            "unit_quantity": 1.0,
-            "current_quantity": 7,
-            "price": 18.65,
-            "use_exchange_rate": false,
-            "priority": 0,
-            "notes": "Vendor: Sopers Supply- Masters\nDescription: \nsquirrl cage Part Nu,ber 4829585\nAA-508-229X .500, ccw,HI,GALV ",
-            "latest_change_name": "Latest Change:\nfrom: \"Squirrl Cage BOM # 7816506 is for the ML Chip Burners and BL 4044\"\nto: \"Squirrl Cage AA-508-229 X .500, CCW, HI, GALV.\"\nItsme\nFebruary 11 Saturday 2023 08:35:42 AM",
-            "latest_change_part_number": "Latest Change:\nfrom: \nto: 4829585\nItsme\nFebruary 11 Saturday 2023 08:35:52 AM",
-            "latest_change_unit_quantity": "Item added\nItsme\nJanuary 19 Thursday 2023 02-45-46 PM",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 7\nto: 7\nItsme\nFebruary 07 Tuesday 2023 01:16:40 PM",
-            "latest_change_price": "Latest Change:\nfrom: 17.0\nto: 18.65\nItsme\nJanuary 28 Saturday 2023 02:02:04 PM",
-            "latest_change_use_exchange_price": "Item added\nItsme\nJanuary 19 Thursday 2023 02-45-46 PM",
-            "latest_change_priority": "Item added\nItsme\nJanuary 19 Thursday 2023 02-45-46 PM",
-            "latest_change_notes": "Item added\nItsme\nJanuary 19 Thursday 2023 02-45-46 PM"
         },
         "Nidec 3274 Blower Motor": {
             "part_number": "3274",
@@ -9682,6 +9648,40 @@
             "latest_change_priority": "Item added\nItsme\nOctober 14 Friday 2022 10-40-14 AM",
             "latest_change_notes": "Latest Change:\nfrom: Vendor: Mineral Seal \nDescription: \nto: Vendor: Mineral Seal \n\nDescription: \nItsme\nJanuary 18 Wednesday 2023 03:29:23 PM",
             "latest_change_use_exchange_rate": "Latest Change:\nfrom: CAD\nto: USD\nItsme\nOctober 15 Saturday 2022 09:12:41 AM"
+        },
+        " Housing For Squirrl Cage 7816505 HSG (842) SPECIAL C\/W \nAA508-202 CW": {
+            "part_number": "7816505",
+            "unit_quantity": 1.0,
+            "current_quantity": 0,
+            "price": 60.0,
+            "use_exchange_rate": false,
+            "priority": 0,
+            "notes": "Vendor:  Masters \nDescription: ",
+            "latest_change_name": "Latest Change:\nfrom: \" Housing For Squirrl Cage 781650 HSG (842) SPECIAL C\/W \nAA508-202 CW\"\nto: \" Housing For Squirrl Cage 7816505 HSG (842) SPECIAL C\/W \nAA508-202 CW\"\nItsme\nFebruary 14 Tuesday 2023 10:01:48 AM",
+            "latest_change_part_number": "Latest Change:\nfrom: 781650\nto: 7816505\nItsme\nFebruary 14 Tuesday 2023 10:04:14 AM",
+            "latest_change_unit_quantity": "Item added\nItsme\nFebruary 11 Saturday 2023 08-36-46 AM",
+            "latest_change_current_quantity": "Item added\nItsme\nFebruary 11 Saturday 2023 08-36-46 AM",
+            "latest_change_price": "Item added\nItsme\nFebruary 11 Saturday 2023 08-36-46 AM",
+            "latest_change_use_exchange_price": "Item added\nItsme\nFebruary 11 Saturday 2023 08-36-46 AM",
+            "latest_change_priority": "Item added\nItsme\nFebruary 11 Saturday 2023 08-36-46 AM",
+            "latest_change_notes": "Item added\nItsme\nFebruary 11 Saturday 2023 08-36-46 AM"
+        },
+        "Squirrl Cage AA-508-202 X .500, CCW, HI, GALV.": {
+            "part_number": "4817632",
+            "unit_quantity": 1.0,
+            "current_quantity": 7,
+            "price": 18.65,
+            "use_exchange_rate": false,
+            "priority": 0,
+            "notes": "Vendor: Sopers Supply- Masters\nDescription: \nsquirrl cage Part Nu,ber 4829585\nAA-508-229X .500, ccw,HI,GALV ",
+            "latest_change_name": "Latest Change:\nfrom: \"Squirrl Cage AA-508-20 X .500, CCW, HI, GALV.\"\nto: \"Squirrl Cage AA-508-202 X .500, CCW, HI, GALV.\"\nItsme\nFebruary 14 Tuesday 2023 10:02:04 AM",
+            "latest_change_part_number": "Latest Change:\nfrom: 481763\nto: 4817632\nItsme\nFebruary 14 Tuesday 2023 10:05:51 AM",
+            "latest_change_unit_quantity": "Item added\nItsme\nJanuary 19 Thursday 2023 02-45-46 PM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 7\nto: 7\nItsme\nFebruary 07 Tuesday 2023 01:16:40 PM",
+            "latest_change_price": "Latest Change:\nfrom: 17.0\nto: 18.65\nItsme\nJanuary 28 Saturday 2023 02:02:04 PM",
+            "latest_change_use_exchange_price": "Item added\nItsme\nJanuary 19 Thursday 2023 02-45-46 PM",
+            "latest_change_priority": "Item added\nItsme\nJanuary 19 Thursday 2023 02-45-46 PM",
+            "latest_change_notes": "Item added\nItsme\nJanuary 19 Thursday 2023 02-45-46 PM"
         }
     },
     "Round Bar And Tube": {
