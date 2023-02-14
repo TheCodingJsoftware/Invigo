@@ -3,7 +3,7 @@
         "1\" x 1\" Narrow Slot Gray Duct": {
             "part_number": "PDTF1X1LG6",
             "unit_quantity": 26,
-            "current_quantity": -10,
+            "current_quantity": 92,
             "price": 0.66,
             "use_exchange_rate": false,
             "priority": 0,
@@ -11,7 +11,7 @@
             "latest_change_name": "Item added\nItsme\nOctober 27 Thursday 2022 04-30-17 PM",
             "latest_change_part_number": "Latest Change:\nfrom: \nto: PDTF1X1LG6\nItsme\nNovember 01 Tuesday 2022 10:09:29 AM",
             "latest_change_unit_quantity": "Item added\nItsme\nOctober 27 Thursday 2022 04-30-17 PM",
-            "latest_change_current_quantity": "Latest Change:\nfrom: -10.0\nto: -10\nItsme\nFebruary 07 Tuesday 2023 01:49:55 PM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 92\nto: 92\nItsme\nFebruary 14 Tuesday 2023 10:36:51 AM",
             "latest_change_price": "Item added\nItsme\nOctober 27 Thursday 2022 04-30-17 PM",
             "latest_change_use_exchange_price": "Item added\nItsme\nOctober 27 Thursday 2022 04-30-17 PM",
             "latest_change_priority": "Item added\nItsme\nOctober 27 Thursday 2022 04-30-17 PM",
@@ -1603,23 +1603,6 @@
             "latest_change_priority": "Item added\nItsme\nJuly 19 Tuesday 2022 04-54-55 PM",
             "latest_change_notes": "Item added\nItsme\nJuly 19 Tuesday 2022 04-54-55 PM"
         },
-        "1\" x 1\" Narrow Slot Gray Duct": {
-            "part_number": "PDTF1X1LG6",
-            "unit_quantity": 1.0,
-            "current_quantity": -10,
-            "price": 0.66,
-            "use_exchange_rate": false,
-            "priority": 0,
-            "notes": "Vendor: Westburn \nDescription: is measured in inches. price per foot is $7.45. per 6 feet is $7.50",
-            "latest_change_name": "Item added\nItsme\nOctober 27 Thursday 2022 04-30-41 PM",
-            "latest_change_part_number": "Latest Change:\nfrom: \nto: PDTF1X1LG6\nItsme\nNovember 01 Tuesday 2022 10:08:02 AM",
-            "latest_change_unit_quantity": "Latest Change:\nfrom: 0.0\nto: 1.0\nItsme\nNovember 30 Wednesday 2022 09:56:52 AM",
-            "latest_change_current_quantity": "Latest Change:\nfrom: -10\nto: -10\nItsme\nFebruary 07 Tuesday 2023 01:49:55 PM",
-            "latest_change_price": "Item added\nItsme\nOctober 27 Thursday 2022 04-30-41 PM",
-            "latest_change_use_exchange_price": "Item added\nItsme\nOctober 27 Thursday 2022 04-30-41 PM",
-            "latest_change_priority": "Item added\nItsme\nOctober 27 Thursday 2022 04-30-41 PM",
-            "latest_change_notes": "Item added\nItsme\nOctober 27 Thursday 2022 04-30-41 PM"
-        },
         "Gasket 3\/16\" Thick 5\"OD x 3.75\"ID EPDM Sponge Adhesive Back": {
             "part_number": "1000-795",
             "unit_quantity": 2.0,
@@ -2238,6 +2221,19 @@
             "latest_change_priority": "Item added\nItsme\nNovember 30 Wednesday 2022 09-47-00 AM",
             "latest_change_notes": "Item added\nItsme\nNovember 30 Wednesday 2022 09-47-00 AM"
         },
+        "300 ML General Purpose Black Silicone 300ML ": {
+            "part_number": "30203",
+            "unit_quantity": 1,
+            "current_quantity": 57,
+            "price": 9.7,
+            "use_exchange_rate": false,
+            "priority": 3,
+            "notes": "Vendor: Rantec\nRachel@rantec.ca\nDescription: ",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 57\nto: 57\nItsme\nFebruary 14 Tuesday 2023 11:07:18 AM",
+            "latest_change_price": "Latest Change:\nfrom: 9.7\nto: 9.7\nItsme\nJuly 07 Thursday 2022 03:59:16 PM",
+            "latest_change_part_number": "Latest Change:\nfrom: 3020\nto: 30203\nItsme\nNovember 03 Thursday 2022 10:02:36 AM",
+            "latest_change_name": "Latest Change:\nfrom: \"300 ML General Purpos Black Silicone 300ML \"\nto: \"300 ML General Purpose Black Silicone 300ML \"\nItsme\nNovember 03 Thursday 2022 10:03:03 AM"
+        },
         "WeatherStripping NDA- .5\" x 3\/16\" x 50'": {
             "part_number": "WSNDA",
             "unit_quantity": 1,
@@ -2447,6 +2443,23 @@
             "latest_change_current_quantity": "Latest Change:\nfrom: 86\nto: 86\nItsme\nFebruary 07 Tuesday 2023 01:49:57 PM",
             "latest_change_unit_quantity": "Latest Change:\nfrom: 15\nto: 1\nItsme\nJuly 19 Tuesday 2022 01:36:56 PM",
             "latest_change_price": "Latest Change:\nfrom: 1.81\nto: 0.81\nItsme\nNovember 08 Tuesday 2022 09:37:09 AM"
+        },
+        "1\" x 1\" Narrow Slot Gray Duct": {
+            "part_number": "PDTF1X1LG6",
+            "unit_quantity": 1.0,
+            "current_quantity": 92,
+            "price": 0.66,
+            "use_exchange_rate": false,
+            "priority": 0,
+            "notes": "Vendor: Westburn \nDescription: is measured in inches. price per foot is $7.45. per 6 feet is $7.50",
+            "latest_change_name": "Item added\nItsme\nOctober 27 Thursday 2022 04-30-41 PM",
+            "latest_change_part_number": "Latest Change:\nfrom: \nto: PDTF1X1LG6\nItsme\nNovember 01 Tuesday 2022 10:08:02 AM",
+            "latest_change_unit_quantity": "Latest Change:\nfrom: 0.0\nto: 1.0\nItsme\nNovember 30 Wednesday 2022 09:56:52 AM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 92\nto: 92\nItsme\nFebruary 14 Tuesday 2023 10:36:51 AM",
+            "latest_change_price": "Item added\nItsme\nOctober 27 Thursday 2022 04-30-41 PM",
+            "latest_change_use_exchange_price": "Item added\nItsme\nOctober 27 Thursday 2022 04-30-41 PM",
+            "latest_change_priority": "Item added\nItsme\nOctober 27 Thursday 2022 04-30-41 PM",
+            "latest_change_notes": "Item added\nItsme\nOctober 27 Thursday 2022 04-30-41 PM"
         },
         "6L24 ASHT 6\"X24\" Section": {
             "part_number": "6L24",
@@ -2703,6 +2716,23 @@
             "latest_change_priority": "Latest Change:\nfrom: 1\nto: 2\nItsme\nAugust 10 Wednesday 2022 01:40:13 PM",
             "latest_change_notes": "Item added\nItsme\nJuly 19 Tuesday 2022 04-14-32 PM"
         },
+        "1\/4 Nialon Plastic Shaft- Float assy": {
+            "part_number": "14NPS",
+            "unit_quantity": 1,
+            "current_quantity": 217,
+            "price": 3.24,
+            "use_exchange_rate": false,
+            "priority": 0,
+            "notes": "Vendor: MCmaster Carr and Johnsons Plastic\nDescription: ",
+            "latest_change_name": "Item added\nItsme\nOctober 17 Monday 2022 08-12-48 AM",
+            "latest_change_part_number": "Item added\nItsme\nOctober 17 Monday 2022 08-12-48 AM",
+            "latest_change_unit_quantity": "Item added\nItsme\nOctober 17 Monday 2022 08-12-48 AM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 217\nto: 217\nItsme\nFebruary 11 Saturday 2023 10:26:42 AM",
+            "latest_change_price": "Latest Change:\nfrom: 3.0\nto: 3.24\nItsme\nJanuary 17 Tuesday 2023 03:52:53 PM",
+            "latest_change_use_exchange_price": "Item added\nItsme\nOctober 17 Monday 2022 08-12-48 AM",
+            "latest_change_priority": "Item added\nItsme\nOctober 17 Monday 2022 08-12-48 AM",
+            "latest_change_notes": "Item added\nItsme\nOctober 17 Monday 2022 08-12-48 AM"
+        },
         "Spring Washer 3\/16 ": {
             "part_number": "514-010",
             "unit_quantity": 4,
@@ -2736,23 +2766,6 @@
             "latest_change_use_exchange_price": "Item added\nItsme\nJuly 19 Tuesday 2022 04-11-52 PM",
             "latest_change_priority": "Item added\nItsme\nJuly 19 Tuesday 2022 04-11-52 PM",
             "latest_change_notes": "Item added\nItsme\nJuly 19 Tuesday 2022 04-11-52 PM"
-        },
-        "1\/4 Nialon Plastic Shaft- Float assy": {
-            "part_number": "14NPS",
-            "unit_quantity": 1,
-            "current_quantity": 217,
-            "price": 3.24,
-            "use_exchange_rate": false,
-            "priority": 0,
-            "notes": "Vendor: MCmaster Carr and Johnsons Plastic\nDescription: ",
-            "latest_change_name": "Item added\nItsme\nOctober 17 Monday 2022 08-12-48 AM",
-            "latest_change_part_number": "Item added\nItsme\nOctober 17 Monday 2022 08-12-48 AM",
-            "latest_change_unit_quantity": "Item added\nItsme\nOctober 17 Monday 2022 08-12-48 AM",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 217\nto: 217\nItsme\nFebruary 11 Saturday 2023 10:26:42 AM",
-            "latest_change_price": "Latest Change:\nfrom: 3.0\nto: 3.24\nItsme\nJanuary 17 Tuesday 2023 03:52:53 PM",
-            "latest_change_use_exchange_price": "Item added\nItsme\nOctober 17 Monday 2022 08-12-48 AM",
-            "latest_change_priority": "Item added\nItsme\nOctober 17 Monday 2022 08-12-48 AM",
-            "latest_change_notes": "Item added\nItsme\nOctober 17 Monday 2022 08-12-48 AM"
         },
         "RAL 3007 Beige": {
             "part_number": "RD9XP773",
@@ -2804,19 +2817,6 @@
             "latest_change_use_exchange_price": "Item added\nItsme\nJuly 19 Tuesday 2022 05-07-40 PM",
             "latest_change_priority": "Item added\nItsme\nJuly 19 Tuesday 2022 05-07-40 PM",
             "latest_change_notes": "Item added\nItsme\nJuly 19 Tuesday 2022 05-07-40 PM"
-        },
-        "300 ML General Purpose Black Silicone 300ML ": {
-            "part_number": "30203",
-            "unit_quantity": 1,
-            "current_quantity": 307,
-            "price": 9.7,
-            "use_exchange_rate": false,
-            "priority": 3,
-            "notes": "Vendor: Rantec\nRachel@rantec.ca\nDescription: ",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 307\nto: 307\nItsme\nFebruary 07 Tuesday 2023 01:49:58 PM",
-            "latest_change_price": "Latest Change:\nfrom: 9.7\nto: 9.7\nItsme\nJuly 07 Thursday 2022 03:59:16 PM",
-            "latest_change_part_number": "Latest Change:\nfrom: 3020\nto: 30203\nItsme\nNovember 03 Thursday 2022 10:02:36 AM",
-            "latest_change_name": "Latest Change:\nfrom: \"300 ML General Purpos Black Silicone 300ML \"\nto: \"300 ML General Purpose Black Silicone 300ML \"\nItsme\nNovember 03 Thursday 2022 10:03:03 AM"
         },
         "1\/2 Tank Flange  NPT ": {
             "part_number": "953 SA-181-70 82D 3M",
@@ -3150,7 +3150,7 @@
         "1\" x 1\" Narrow Slot Gray Duct": {
             "part_number": "PDTF1X1LG6",
             "unit_quantity": 26,
-            "current_quantity": -10,
+            "current_quantity": 92,
             "price": 0.66,
             "use_exchange_rate": false,
             "priority": 0,
@@ -3158,7 +3158,7 @@
             "latest_change_name": "Item added\nItsme\nOctober 27 Thursday 2022 04-31-00 PM",
             "latest_change_part_number": "Latest Change:\nfrom: \nto: PDTF1X1LG6\nItsme\nNovember 01 Tuesday 2022 10:08:36 AM",
             "latest_change_unit_quantity": "Item added\nItsme\nOctober 27 Thursday 2022 04-31-00 PM",
-            "latest_change_current_quantity": "Latest Change:\nfrom: -10.0\nto: -10\nItsme\nFebruary 07 Tuesday 2023 01:49:55 PM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 92\nto: 92\nItsme\nFebruary 14 Tuesday 2023 10:36:51 AM",
             "latest_change_price": "Item added\nItsme\nOctober 27 Thursday 2022 04-31-00 PM",
             "latest_change_use_exchange_price": "Item added\nItsme\nOctober 27 Thursday 2022 04-31-00 PM",
             "latest_change_priority": "Item added\nItsme\nOctober 27 Thursday 2022 04-31-00 PM",
