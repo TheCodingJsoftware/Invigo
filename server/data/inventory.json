@@ -1651,18 +1651,6 @@
             "latest_change_price": "Latest Change:\nfrom: 17.38\nto: 17.38\nItsme\nFebruary 02 Thursday 2023 11:07:28 AM",
             "latest_change_notes": "Latest Change:\nfrom: \"Vendor: Grundfos Canada\nDescription: \nsupport-ca@sales.grundfos.co\"\nto: \"Vendor: Grundfos Canada\nDescription: \nsupport-ca@sales.grundfos.com\"\nItsme\nFebruary 02 Thursday 2023 11:20:34 AM"
         },
-        "Knob 2 3\/8 DIA. 1\/2-13. Fluted Black Plastic": {
-            "part_number": "",
-            "unit_quantity": 2,
-            "current_quantity": 1,
-            "price": 2.75,
-            "use_exchange_rate": false,
-            "priority": 0,
-            "notes": "Vendor: Weiss Instruments or Macmaster Carr\nDescription: ",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 1\nto: 1\nItsme\nFebruary 07 Tuesday 2023 01:49:56 PM",
-            "latest_change_notes": "Latest Change:\nfrom: \"Vendor: Weiss Instruments or Macmaster Car\nDescription: \"\nto: \"Vendor: Weiss Instruments or Macmaster Carr\nDescription: \"\nItsme\nSeptember 08 Thursday 2022 10:48:35 AM",
-            "latest_change_part_number": "Latest Change:\nfrom: DK-122\nto: \nItsme\nJanuary 04 Wednesday 2023 08:58:53 AM"
-        },
         "RAL 3007 Beige Gloss": {
             "part_number": "7600205",
             "unit_quantity": 0.2,
@@ -2505,6 +2493,18 @@
             "latest_change_use_exchange_price": "Item added\nItsme\nAugust 12 Friday 2022 11-27-45 AM",
             "latest_change_priority": "Latest Change:\nfrom: 1\nto: 2\nItsme\nNovember 03 Thursday 2022 11:01:43 AM",
             "latest_change_notes": "Item added\nItsme\nAugust 12 Friday 2022 11-27-45 AM"
+        },
+        "Knob 2 3\/8 DIA. 1\/2-13. Fluted Black Plastic": {
+            "part_number": "",
+            "unit_quantity": 2,
+            "current_quantity": 101,
+            "price": 2.75,
+            "use_exchange_rate": false,
+            "priority": 0,
+            "notes": "Vendor: Weiss Instruments or Macmaster Carr\nDescription: ",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 101\nto: 101\nItsme\nFebruary 16 Thursday 2023 08:15:30 AM",
+            "latest_change_notes": "Latest Change:\nfrom: \"Vendor: Weiss Instruments or Macmaster Car\nDescription: \"\nto: \"Vendor: Weiss Instruments or Macmaster Carr\nDescription: \"\nItsme\nSeptember 08 Thursday 2022 10:48:35 AM",
+            "latest_change_part_number": "Latest Change:\nfrom: DK-122\nto: \nItsme\nJanuary 04 Wednesday 2023 08:58:53 AM"
         },
         "Sticker 320 Water Temperture 5\"x9.5\"": {
             "part_number": "320",
