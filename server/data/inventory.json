@@ -20,12 +20,12 @@
         "Sticker 310 Polar G2 & G3 Caution Pinch Hazard 4.5\"x2.75\"": {
             "part_number": "310",
             "unit_quantity": 2,
-            "current_quantity": -28,
+            "current_quantity": 0,
             "price": 0.64,
             "use_exchange_rate": false,
             "priority": 0,
             "notes": "Vendor: HC Graphic Screen Printing\nDescription: orders@hdcraphicsinc.com",
-            "latest_change_current_quantity": "Latest Change:\nfrom: -28\nto: -28\nItsme\nFebruary 07 Tuesday 2023 01:49:55 PM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 0\nto: 0\nItsme\nFebruary 17 Friday 2023 10:39:47 AM",
             "latest_change_notes": "Latest Change:\nfrom: \"Vendor: HC Graphic Screen Printing\nDescription: orders@hdcraphicsinc.co\"\nto: \"Vendor: HC Graphic Screen Printing\nDescription: orders@hdcraphicsinc.com\"\nItsme\nFebruary 07 Tuesday 2023 03:13:57 PM"
         },
         "Washer 5\/16\" Spring Lock": {
@@ -79,18 +79,22 @@
             "latest_change_priority": "Item added\nItsme\nFebruary 02 Thursday 2023 09-49-02 AM",
             "latest_change_notes": "Latest Change:\nfrom: Vendor: Revcor  Revolutionary Air Flow\nDescription:  \n9 inch fan-motor and 5\" includes full assembly\nto: Vendor: Revcor  Revolutionary Air Flow\nDescription:  \n9 inch fan-motor and 5\" includes full assembly\n\nItsme\nFebruary 11 Saturday 2023 10:18:54 AM"
         },
-        "Grundfos Pump Flange 1 1\/4 ": {
-            "part_number": "519603",
-            "unit_quantity": 1,
+        "Sticker #342 Bilingual Caution Notice Decal ": {
+            "part_number": "342",
+            "unit_quantity": 1.0,
             "current_quantity": 0,
-            "price": 17.38,
+            "price": 3.0,
             "use_exchange_rate": false,
-            "priority": 2,
-            "notes": "Vendor: Grundfos Canada\nDescription: \nsupport-ca@sales.grundfos.com",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 0\nto: 0\nItsme\nFebruary 07 Tuesday 2023 01:49:55 PM",
-            "latest_change_part_number": "Latest Change:\nfrom: 5196\nto: 519603\nItsme\nFebruary 02 Thursday 2023 11:07:12 AM",
-            "latest_change_price": "Latest Change:\nfrom: 17.38\nto: 17.38\nItsme\nFebruary 02 Thursday 2023 11:07:28 AM",
-            "latest_change_notes": "Latest Change:\nfrom: Vendor: Grundfos Canada\nDescription: \nsupport-ca@sales.grundfos.co\nto: Vendor: Grundfos Canada\nDescription: \nsupport-ca@sales.grundfos.com\nItsme\nFebruary 02 Thursday 2023 11:20:34 AM"
+            "priority": 0,
+            "notes": "Vendor: HD Graphics Inc\nDescription: ",
+            "latest_change_name": "Item added\nItsme\nFebruary 17 Friday 2023 10-37-30 AM",
+            "latest_change_part_number": "Item added\nItsme\nFebruary 17 Friday 2023 10-37-30 AM",
+            "latest_change_unit_quantity": "Item added\nItsme\nFebruary 17 Friday 2023 10-37-30 AM",
+            "latest_change_current_quantity": "Item added\nItsme\nFebruary 17 Friday 2023 10-37-30 AM",
+            "latest_change_price": "Item added\nItsme\nFebruary 17 Friday 2023 10-37-30 AM",
+            "latest_change_use_exchange_price": "Item added\nItsme\nFebruary 17 Friday 2023 10-37-30 AM",
+            "latest_change_priority": "Item added\nItsme\nFebruary 17 Friday 2023 10-37-30 AM",
+            "latest_change_notes": "Item added\nItsme\nFebruary 17 Friday 2023 10-37-30 AM"
         },
         "1\" Plug": {
             "part_number": "G1600M",
@@ -170,6 +174,33 @@
             "latest_change_use_exchange_price": "Item added\nItsme\nJuly 21 Thursday 2022 09-23-42 AM",
             "latest_change_priority": "Item added\nItsme\nJuly 21 Thursday 2022 09-23-42 AM",
             "latest_change_notes": "Latest Change:\nfrom: \"Vendor: Greenline Hose and fittin\nDescription: \"\nto: \"Vendor: Greenline Hose and fitting\nDescription: \"\nItsme\nJuly 21 Thursday 2022 09:25:33 AM"
+        },
+        "Sticker #341 Bilingual Danger Warning Decal": {
+            "part_number": "341",
+            "unit_quantity": 1.0,
+            "current_quantity": 7,
+            "price": 3.0,
+            "use_exchange_rate": false,
+            "priority": 0,
+            "notes": "Vendor: HD Graphics Inc\nDescription: ",
+            "latest_change_name": "Item added\nItsme\nFebruary 17 Friday 2023 10-37-09 AM",
+            "latest_change_part_number": "Item added\nItsme\nFebruary 17 Friday 2023 10-37-09 AM",
+            "latest_change_unit_quantity": "Item added\nItsme\nFebruary 17 Friday 2023 10-37-09 AM",
+            "latest_change_current_quantity": "Item added\nItsme\nFebruary 17 Friday 2023 10-37-09 AM",
+            "latest_change_price": "Item added\nItsme\nFebruary 17 Friday 2023 10-37-09 AM",
+            "latest_change_use_exchange_price": "Item added\nItsme\nFebruary 17 Friday 2023 10-37-09 AM",
+            "latest_change_priority": "Item added\nItsme\nFebruary 17 Friday 2023 10-37-09 AM",
+            "latest_change_notes": "Item added\nItsme\nFebruary 17 Friday 2023 10-37-09 AM"
+        },
+        "Sticker 312 Polar G2 & G3 G series Wiring 8\"x10\"": {
+            "part_number": "312",
+            "unit_quantity": 1,
+            "current_quantity": 9,
+            "price": 2.06,
+            "use_exchange_rate": false,
+            "priority": 0,
+            "notes": "Vendor: \nDescription: ",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 9\nto: 9\nItsme\nFebruary 17 Friday 2023 08:40:46 AM"
         },
         "Terminal BlockPluggable ": {
             "part_number": "222-412 Wago 2 pos",
@@ -254,16 +285,6 @@
             "latest_change_use_exchange_price": "Item added\nItsme\nNovember 30 Wednesday 2022 09-37-45 AM",
             "latest_change_priority": "Item added\nItsme\nNovember 30 Wednesday 2022 09-37-45 AM",
             "latest_change_notes": "Item added\nItsme\nNovember 30 Wednesday 2022 09-37-45 AM"
-        },
-        "Sticker 312 Polar G2 & G3 G series Wiring 8\"x10\"": {
-            "part_number": "312",
-            "unit_quantity": 1,
-            "current_quantity": 21,
-            "price": 2.06,
-            "use_exchange_rate": false,
-            "priority": 0,
-            "notes": "Vendor: \nDescription: ",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 21\nto: 21\nItsme\nFebruary 07 Tuesday 2023 01:49:56 PM"
         },
         "3\"x48\"x96\" FSK Insulation Sheet": {
             "part_number": "FSK3",
@@ -413,17 +434,6 @@
             "latest_change_priority": "Item added\nItsme\nFebruary 16 Thursday 2023 11-02-20 AM",
             "latest_change_notes": "Item added\nItsme\nFebruary 16 Thursday 2023 11-02-20 AM"
         },
-        "Sticker 308 CSA Polar G2 10\"x 6\" Silver Foil ": {
-            "part_number": "308",
-            "unit_quantity": 1,
-            "current_quantity": 31,
-            "price": 5.37,
-            "use_exchange_rate": false,
-            "priority": 0,
-            "notes": "Vendor: HC Graphic Screen Printing\nDescription: ",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 31\nto: 31\nItsme\nFebruary 07 Tuesday 2023 01:49:56 PM",
-            "latest_change_notes": "Latest Change:\nfrom: \"Vendor: HC Graphic Screen Printin\nDescription: \"\nto: \"Vendor: HC Graphic Screen Printing\nDescription: \"\nItsme\nJuly 29 Friday 2022 04:12:13 PM"
-        },
         "Sticker 322 G2 and G3 Remove Label ": {
             "part_number": "322",
             "unit_quantity": 1,
@@ -434,6 +444,17 @@
             "notes": "Vendor: HC Graphic Screen Printing\nDescription: ",
             "latest_change_current_quantity": "Latest Change:\nfrom: 31\nto: 31\nItsme\nFebruary 07 Tuesday 2023 01:49:56 PM",
             "latest_change_notes": "Latest Change:\nfrom: \"Vendor: HC Graphic Screen Printin\nDescription: \"\nto: \"Vendor: HC Graphic Screen Printing\nDescription: \"\nItsme\nJuly 29 Friday 2022 04:12:22 PM"
+        },
+        "Sticker   #306 Polar Furnace with Polar Bear  11\"x14\" ": {
+            "part_number": "403",
+            "unit_quantity": 1,
+            "current_quantity": 31,
+            "price": 4.31,
+            "use_exchange_rate": false,
+            "priority": 0,
+            "notes": "Vendor: HC grphic Screen Printing\nDescription: ",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 31\nto: 31\nItsme\nFebruary 17 Friday 2023 08:59:10 AM",
+            "latest_change_notes": "Latest Change:\nfrom: \"Vendor: HC grphic Screen Printin\nDescription: \"\nto: \"Vendor: HC grphic Screen Printing\nDescription: \"\nItsme\nJuly 29 Friday 2022 04:10:56 PM"
         },
         "Tempered Glass 1 1\/4\" X 1 1\/4\" X 3\/16\" NEO Ceram Robax": {
             "part_number": "TG113",
@@ -541,17 +562,6 @@
             "latest_change_price": "Latest Change:\nfrom: 3.0\nto: 3.1\nItsme\nJuly 19 Tuesday 2022 03:20:10 PM",
             "latest_change_notes": "Latest Change:\nfrom: \"Vendor: Digi-Key Electronic\nDescription: \"\nto: \"Vendor: Digi-Key Electronics\nDescription: \"\nItsme\nJuly 19 Tuesday 2022 03:48:38 PM"
         },
-        "Sticker   #306 Polar Furnace with Polar Bear  11\"x14\" ": {
-            "part_number": "403",
-            "unit_quantity": 1,
-            "current_quantity": 41,
-            "price": 4.31,
-            "use_exchange_rate": false,
-            "priority": 0,
-            "notes": "Vendor: HC grphic Screen Printing\nDescription: ",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 41\nto: 41\nItsme\nFebruary 07 Tuesday 2023 01:49:56 PM",
-            "latest_change_notes": "Latest Change:\nfrom: \"Vendor: HC grphic Screen Printin\nDescription: \"\nto: \"Vendor: HC grphic Screen Printing\nDescription: \"\nItsme\nJuly 29 Friday 2022 04:10:56 PM"
-        },
         " Sticker 309 Polar G2 & G3 Caution Disconnect Power 4.5\"x2\"": {
             "part_number": "309",
             "unit_quantity": 1.0,
@@ -562,17 +572,6 @@
             "notes": "Vendor: HC Graphic Screen Printing\nDescription: ",
             "latest_change_current_quantity": "Latest Change:\nfrom: 41.0\nto: 41\nItsme\nFebruary 07 Tuesday 2023 01:49:56 PM",
             "latest_change_notes": "Latest Change:\nfrom: \"Vendor: HC Graphic Screen Printin\nDescription: \"\nto: \"Vendor: HC Graphic Screen Printing\nDescription: \"\nItsme\nJuly 29 Friday 2022 04:11:06 PM"
-        },
-        "Sticker #304  Polar Furnace 3.65\"x 37.79\" ": {
-            "part_number": "404",
-            "unit_quantity": 1,
-            "current_quantity": 41,
-            "price": 2.33,
-            "use_exchange_rate": false,
-            "priority": 0,
-            "notes": "Vendor: HC Graphic Screen Printing\nDescription: ",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 41\nto: 41\nItsme\nFebruary 07 Tuesday 2023 01:49:56 PM",
-            "latest_change_notes": "Latest Change:\nfrom: \"Vendor: HC Graphic Sreen Printing\nDescription: \"\nto: \"Vendor: HC Graphic Screen Printing\nDescription: \"\nItsme\nJuly 29 Friday 2022 04:11:20 PM"
         },
         "Hose Clamp 1 1\/2  S.S": {
             "part_number": "CLAMP112",
@@ -630,6 +629,17 @@
             "latest_change_priority": "Item added\nItsme\nJuly 19 Tuesday 2022 04-48-12 PM",
             "latest_change_notes": "Item added\nItsme\nJuly 19 Tuesday 2022 04-48-12 PM"
         },
+        "Sticker  319  easy Sweep": {
+            "part_number": "319",
+            "unit_quantity": 1,
+            "current_quantity": 51,
+            "price": 1.86,
+            "use_exchange_rate": false,
+            "priority": 0,
+            "notes": "Vendor: HC Graphic Screen Printing\nDescription: ",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 51\nto: 51\nItsme\nFebruary 17 Friday 2023 09:00:28 AM",
+            "latest_change_notes": "Latest Change:\nfrom: \"Vendor: HC Graphic Screen Printin\nDescription: \"\nto: \"Vendor: HC Graphic Screen Printing\nDescription: \"\nItsme\nJuly 29 Friday 2022 04:11:34 PM"
+        },
         "Compression Spring, 1.5\" Long, 0.313\" OD, 0.269\" ID  Spring Rate Peep Hole": {
             "part_number": "18",
             "unit_quantity": 1,
@@ -673,17 +683,6 @@
             "priority": 0,
             "notes": "Vendor: Industrial Rubber Supply\nDescription: ",
             "latest_change_current_quantity": "Latest Change:\nfrom: 61\nto: 61\nItsme\nFebruary 07 Tuesday 2023 01:49:57 PM"
-        },
-        "Sticker  319  easy Sweep": {
-            "part_number": "319",
-            "unit_quantity": 1,
-            "current_quantity": 61,
-            "price": 1.86,
-            "use_exchange_rate": false,
-            "priority": 0,
-            "notes": "Vendor: HC Graphic Screen Printing\nDescription: ",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 61\nto: 61\nItsme\nFebruary 07 Tuesday 2023 01:49:57 PM",
-            "latest_change_notes": "Latest Change:\nfrom: \"Vendor: HC Graphic Screen Printin\nDescription: \"\nto: \"Vendor: HC Graphic Screen Printing\nDescription: \"\nItsme\nJuly 29 Friday 2022 04:11:34 PM"
         },
         "Blower Wheel 9-15\/16\" X 2-1\/4 BI Steel 1\/2 #2-106CI CW \"A\" 1800R": {
             "part_number": "2-106CI CW",
@@ -860,6 +859,17 @@
             "latest_change_priority": "Item added\nItsme\nJuly 07 Thursday 2022 03-57-46 PM",
             "latest_change_notes": "Latest Change:\nfrom: Vendor: A.Adams Supply\nDescription: mc master car\nto: Vendor: A.Adams Supply\nDescription: mc master carr\nItsme\nJanuary 10 Tuesday 2023 04:18:46 PM"
         },
+        "Sticker #304  Polar Furnace 3.65\"x 37.79\" ": {
+            "part_number": "404",
+            "unit_quantity": 1,
+            "current_quantity": 86,
+            "price": 2.33,
+            "use_exchange_rate": false,
+            "priority": 0,
+            "notes": "Vendor: HC Graphic Screen Printing\nDescription: ",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 86\nto: 86\nItsme\nFebruary 17 Friday 2023 08:59:58 AM",
+            "latest_change_notes": "Latest Change:\nfrom: \"Vendor: HC Graphic Sreen Printing\nDescription: \"\nto: \"Vendor: HC Graphic Screen Printing\nDescription: \"\nItsme\nJuly 29 Friday 2022 04:11:20 PM"
+        },
         "3\" Nipple x 3\/4 Black Steel ": {
             "part_number": "483-030",
             "unit_quantity": 1,
@@ -934,6 +944,19 @@
             "latest_change_use_exchange_price": "Item added\nItsme\nAugust 12 Friday 2022 11-27-27 AM",
             "latest_change_priority": "Item added\nItsme\nAugust 12 Friday 2022 11-27-27 AM",
             "latest_change_notes": "Item added\nItsme\nAugust 12 Friday 2022 11-27-27 AM"
+        },
+        "Grundfos Pump Flange 1 1\/4 ": {
+            "part_number": "519603",
+            "unit_quantity": 1,
+            "current_quantity": 100,
+            "price": 17.38,
+            "use_exchange_rate": false,
+            "priority": 2,
+            "notes": "Vendor: Grundfos Canada\nDescription: \nsupport-ca@sales.grundfos.com",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 100\nto: 100\nItsme\nFebruary 17 Friday 2023 08:25:39 AM",
+            "latest_change_part_number": "Latest Change:\nfrom: 5196\nto: 519603\nItsme\nFebruary 02 Thursday 2023 11:07:12 AM",
+            "latest_change_price": "Latest Change:\nfrom: 17.38\nto: 17.38\nItsme\nFebruary 02 Thursday 2023 11:07:28 AM",
+            "latest_change_notes": "Latest Change:\nfrom: Vendor: Grundfos Canada\nDescription: \nsupport-ca@sales.grundfos.co\nto: Vendor: Grundfos Canada\nDescription: \nsupport-ca@sales.grundfos.com\nItsme\nFebruary 02 Thursday 2023 11:20:34 AM"
         },
         "Sticker 320 Water Temperture 5\"x9.5\"": {
             "part_number": "320",
@@ -1074,6 +1097,17 @@
             "latest_change_use_exchange_price": "Item added\nItsme\nJanuary 13 Friday 2023 04-34-19 PM",
             "latest_change_priority": "Item added\nItsme\nJanuary 13 Friday 2023 04-34-19 PM",
             "latest_change_notes": "Item added\nItsme\nJanuary 13 Friday 2023 04-34-19 PM"
+        },
+        "Sticker 308 CSA Polar G2 10\"x 6\" Silver Foil ": {
+            "part_number": "308",
+            "unit_quantity": 1,
+            "current_quantity": 121,
+            "price": 5.37,
+            "use_exchange_rate": false,
+            "priority": 0,
+            "notes": "Vendor: HC Graphic Screen Printing\nDescription: ",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 121\nto: 121\nItsme\nFebruary 17 Friday 2023 08:58:10 AM",
+            "latest_change_notes": "Latest Change:\nfrom: \"Vendor: HC Graphic Screen Printin\nDescription: \"\nto: \"Vendor: HC Graphic Screen Printing\nDescription: \"\nItsme\nJuly 29 Friday 2022 04:12:13 PM"
         },
         "Spring Pin 2\" x .25": {
             "part_number": "sp225",
@@ -1595,12 +1629,12 @@
         "Sticker 310 Polar G2 & G3 Caution Pinch Hazard 4.5\"x2.75\"": {
             "part_number": "310",
             "unit_quantity": 2,
-            "current_quantity": -28,
+            "current_quantity": 0,
             "price": 0.64,
             "use_exchange_rate": false,
             "priority": 0,
             "notes": "Vendor: HC Graphic Screen Printing\nDescription: orders@hdcraphicsinc.com",
-            "latest_change_current_quantity": "Latest Change:\nfrom: -28\nto: -28\nItsme\nFebruary 07 Tuesday 2023 01:49:55 PM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 0\nto: 0\nItsme\nFebruary 17 Friday 2023 10:39:47 AM",
             "latest_change_notes": "Latest Change:\nfrom: Vendor: HC Graphic Screen Printing\nDescription: orders@hdcraphicsinc.co\nto: Vendor: HC Graphic Screen Printing\nDescription: orders@hdcraphicsinc.com\nItsme\nFebruary 07 Tuesday 2023 03:13:57 PM"
         },
         "Washer 5\/16\" Spring Lock": {
@@ -1655,18 +1689,22 @@
             "latest_change_notes": "Latest Change:\nfrom: \"Vendor: Revcor  Revolutionary Air Flow\nDescription:  \n9 inch fan-motor and 5\" includes full assembly\"\nto: \"Vendor: Revcor  Revolutionary Air Flow\nDescription:  \n9 inch fan-motor and 5\" includes full assembly\n\"\nItsme\nFebruary 11 Saturday 2023 10:18:54 AM",
             "latest_change_use_exchange_rate": "Latest Change:\nfrom: CAD\nto: USD\nItsme\nAugust 04 Thursday 2022 08:56:53 AM"
         },
-        "Grundfos Pump Flange 1 1\/4 ": {
-            "part_number": "519603",
-            "unit_quantity": 1,
+        "Sticker #342 Bilingual Caution Notice Decal ": {
+            "part_number": "342",
+            "unit_quantity": 1.0,
             "current_quantity": 0,
-            "price": 17.38,
+            "price": 3.0,
             "use_exchange_rate": false,
-            "priority": 2,
-            "notes": "Vendor: Grundfos Canada\nDescription: \nsupport-ca@sales.grundfos.com",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 0\nto: 0\nItsme\nFebruary 07 Tuesday 2023 01:49:55 PM",
-            "latest_change_part_number": "Latest Change:\nfrom: 51960\nto: 519603\nItsme\nFebruary 02 Thursday 2023 11:05:47 AM",
-            "latest_change_price": "Latest Change:\nfrom: 17.38\nto: 17.38\nItsme\nFebruary 02 Thursday 2023 11:07:28 AM",
-            "latest_change_notes": "Latest Change:\nfrom: \"Vendor: Grundfos Canada\nDescription: \nsupport-ca@sales.grundfos.co\"\nto: \"Vendor: Grundfos Canada\nDescription: \nsupport-ca@sales.grundfos.com\"\nItsme\nFebruary 02 Thursday 2023 11:20:34 AM"
+            "priority": 0,
+            "notes": "Vendor: HD Graphics Inc\nDescription: ",
+            "latest_change_name": "Item added\nItsme\nFebruary 17 Friday 2023 10-36-35 AM",
+            "latest_change_part_number": "Item added\nItsme\nFebruary 17 Friday 2023 10-36-35 AM",
+            "latest_change_unit_quantity": "Item added\nItsme\nFebruary 17 Friday 2023 10-36-35 AM",
+            "latest_change_current_quantity": "Item added\nItsme\nFebruary 17 Friday 2023 10-36-35 AM",
+            "latest_change_price": "Item added\nItsme\nFebruary 17 Friday 2023 10-36-35 AM",
+            "latest_change_use_exchange_price": "Item added\nItsme\nFebruary 17 Friday 2023 10-36-35 AM",
+            "latest_change_priority": "Item added\nItsme\nFebruary 17 Friday 2023 10-36-35 AM",
+            "latest_change_notes": "Item added\nItsme\nFebruary 17 Friday 2023 10-36-35 AM"
         },
         "RAL 3007 Beige Gloss": {
             "part_number": "7600205",
@@ -1752,6 +1790,33 @@
             "latest_change_use_exchange_price": "Item added\nItsme\nSeptember 16 Friday 2022 02-18-09 PM",
             "latest_change_priority": "Item added\nItsme\nSeptember 16 Friday 2022 02-18-09 PM",
             "latest_change_notes": "Item added\nItsme\nSeptember 16 Friday 2022 02-18-09 PM"
+        },
+        "Sticker #341 Bilingual Danger Warning Decal": {
+            "part_number": "341",
+            "unit_quantity": 1.0,
+            "current_quantity": 7,
+            "price": 3.0,
+            "use_exchange_rate": false,
+            "priority": 0,
+            "notes": "Vendor: HD Graphics Inc\nDescription: ",
+            "latest_change_name": "Item added\nItsme\nFebruary 17 Friday 2023 10-35-31 AM",
+            "latest_change_part_number": "Item added\nItsme\nFebruary 17 Friday 2023 10-35-31 AM",
+            "latest_change_unit_quantity": "Item added\nItsme\nFebruary 17 Friday 2023 10-35-31 AM",
+            "latest_change_current_quantity": "Item added\nItsme\nFebruary 17 Friday 2023 10-35-31 AM",
+            "latest_change_price": "Item added\nItsme\nFebruary 17 Friday 2023 10-35-31 AM",
+            "latest_change_use_exchange_price": "Item added\nItsme\nFebruary 17 Friday 2023 10-35-31 AM",
+            "latest_change_priority": "Item added\nItsme\nFebruary 17 Friday 2023 10-35-31 AM",
+            "latest_change_notes": "Item added\nItsme\nFebruary 17 Friday 2023 10-35-31 AM"
+        },
+        "Sticker 312 Polar G2 & G3 G series Wiring 8\"x10\"": {
+            "part_number": "312",
+            "unit_quantity": 1,
+            "current_quantity": 9,
+            "price": 2.06,
+            "use_exchange_rate": false,
+            "priority": 0,
+            "notes": "Vendor: \nDescription: ",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 9\nto: 9\nItsme\nFebruary 17 Friday 2023 08:40:46 AM"
         },
         "Terminal BlockPluggable ": {
             "part_number": "222-412 Wago 2 pos",
@@ -1855,16 +1920,6 @@
             "latest_change_use_exchange_price": "Item added\nItsme\nNovember 30 Wednesday 2022 09-40-57 AM",
             "latest_change_priority": "Item added\nItsme\nNovember 30 Wednesday 2022 09-40-57 AM",
             "latest_change_notes": "Item added\nItsme\nNovember 30 Wednesday 2022 09-40-57 AM"
-        },
-        "Sticker 312 Polar G2 & G3 G series Wiring 8\"x10\"": {
-            "part_number": "312",
-            "unit_quantity": 1,
-            "current_quantity": 21,
-            "price": 2.06,
-            "use_exchange_rate": false,
-            "priority": 0,
-            "notes": "Vendor: \nDescription: ",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 21\nto: 21\nItsme\nFebruary 07 Tuesday 2023 01:49:56 PM"
         },
         "3\"x48\"x96\" FSK Insulation Sheet": {
             "part_number": "FSK3",
@@ -2014,16 +2069,6 @@
             "latest_change_priority": "Item added\nItsme\nFebruary 16 Thursday 2023 11-01-51 AM",
             "latest_change_notes": "Item added\nItsme\nFebruary 16 Thursday 2023 11-01-51 AM"
         },
-        "Sticker 308 CSA Polar G2 10\"x 6\" Silver Foil ": {
-            "part_number": "308",
-            "unit_quantity": 1,
-            "current_quantity": 31,
-            "price": 5.37,
-            "use_exchange_rate": false,
-            "priority": 0,
-            "notes": "Vendor: \nDescription: ",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 31\nto: 31\nItsme\nFebruary 07 Tuesday 2023 01:49:56 PM"
-        },
         "Sticker 322 G2 and G3 Remove Label ": {
             "part_number": "322",
             "unit_quantity": 1,
@@ -2033,6 +2078,16 @@
             "priority": 0,
             "notes": "Vendor: \nDescription: ",
             "latest_change_current_quantity": "Latest Change:\nfrom: 31\nto: 31\nItsme\nFebruary 07 Tuesday 2023 01:49:56 PM"
+        },
+        "Sticker   #306 Polar Furnace with Polar Bear  11\"x14\" ": {
+            "part_number": "403",
+            "unit_quantity": 1,
+            "current_quantity": 31,
+            "price": 4.31,
+            "use_exchange_rate": false,
+            "priority": 0,
+            "notes": "Vendor: \nDescription: ",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 31\nto: 31\nItsme\nFebruary 17 Friday 2023 08:59:10 AM"
         },
         "1-1\/4 Half Coupling": {
             "part_number": "G0008MC-125",
@@ -2123,31 +2178,11 @@
             "latest_change_price": "Latest Change:\nfrom: 3.0\nto: 3.1\nItsme\nJuly 19 Tuesday 2022 03:20:10 PM",
             "latest_change_notes": "Latest Change:\nfrom: \"Vendor: Digi-Key Electronic\nDescription: \"\nto: \"Vendor: Digi-Key Electronics\nDescription: \"\nItsme\nJuly 19 Tuesday 2022 03:48:38 PM"
         },
-        "Sticker   #306 Polar Furnace with Polar Bear  11\"x14\" ": {
-            "part_number": "403",
-            "unit_quantity": 1,
-            "current_quantity": 41,
-            "price": 4.31,
-            "use_exchange_rate": false,
-            "priority": 0,
-            "notes": "Vendor: \nDescription: ",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 41\nto: 41\nItsme\nFebruary 07 Tuesday 2023 01:49:56 PM"
-        },
         " Sticker 309 Polar G2 & G3 Caution Disconnect Power 4.5\"x2\"": {
             "part_number": "309",
             "unit_quantity": 1.0,
             "current_quantity": 41,
             "price": 0.61,
-            "use_exchange_rate": false,
-            "priority": 0,
-            "notes": "Vendor: \nDescription: ",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 41\nto: 41\nItsme\nFebruary 07 Tuesday 2023 01:49:56 PM"
-        },
-        "Sticker #304  Polar Furnace 3.65\"x 37.79\" ": {
-            "part_number": "404",
-            "unit_quantity": 1,
-            "current_quantity": 41,
-            "price": 2.33,
             "use_exchange_rate": false,
             "priority": 0,
             "notes": "Vendor: \nDescription: ",
@@ -2209,6 +2244,16 @@
             "latest_change_priority": "Item added\nItsme\nJuly 19 Tuesday 2022 04-48-12 PM",
             "latest_change_notes": "Item added\nItsme\nJuly 19 Tuesday 2022 04-48-12 PM"
         },
+        "Sticker  319  easy Sweep": {
+            "part_number": "319",
+            "unit_quantity": 1,
+            "current_quantity": 51,
+            "price": 1.86,
+            "use_exchange_rate": false,
+            "priority": 0,
+            "notes": "Vendor: \nDescription: ",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 51\nto: 51\nItsme\nFebruary 17 Friday 2023 09:00:28 AM"
+        },
         "Compression Spring, 1.5\" Long, 0.313\" OD, 0.269\" ID  Spring Rate Peep Hole": {
             "part_number": "18",
             "unit_quantity": 1,
@@ -2264,16 +2309,6 @@
             "use_exchange_rate": false,
             "priority": 0,
             "notes": "Vendor: Industrial Rubber Supply\nDescription: ",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 61\nto: 61\nItsme\nFebruary 07 Tuesday 2023 01:49:57 PM"
-        },
-        "Sticker  319  easy Sweep": {
-            "part_number": "319",
-            "unit_quantity": 1,
-            "current_quantity": 61,
-            "price": 1.86,
-            "use_exchange_rate": false,
-            "priority": 0,
-            "notes": "Vendor: \nDescription: ",
             "latest_change_current_quantity": "Latest Change:\nfrom: 61\nto: 61\nItsme\nFebruary 07 Tuesday 2023 01:49:57 PM"
         },
         "Blower Wheel 9-15\/16\" X 2-1\/4 BI Steel 1\/2 #2-106CI CW \"A\" 1800R": {
@@ -2454,6 +2489,16 @@
             "latest_change_priority": "Item added\nItsme\nJuly 07 Thursday 2022 03-57-46 PM",
             "latest_change_notes": "Latest Change:\nfrom: \"Vendor: A.Adams Supply\nDescription: mc master car\"\nto: \"Vendor: A.Adams Supply\nDescription: mc master carr\"\nItsme\nJanuary 10 Tuesday 2023 04:18:46 PM"
         },
+        "Sticker #304  Polar Furnace 3.65\"x 37.79\" ": {
+            "part_number": "404",
+            "unit_quantity": 1,
+            "current_quantity": 86,
+            "price": 2.33,
+            "use_exchange_rate": false,
+            "priority": 0,
+            "notes": "Vendor: \nDescription: ",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 86\nto: 86\nItsme\nFebruary 17 Friday 2023 08:59:58 AM"
+        },
         "3\" Nipple x 3\/4 Black Steel ": {
             "part_number": "483-030",
             "unit_quantity": 1,
@@ -2527,6 +2572,19 @@
             "latest_change_use_exchange_price": "Item added\nItsme\nAugust 12 Friday 2022 11-27-45 AM",
             "latest_change_priority": "Latest Change:\nfrom: 1\nto: 2\nItsme\nNovember 03 Thursday 2022 11:01:43 AM",
             "latest_change_notes": "Item added\nItsme\nAugust 12 Friday 2022 11-27-45 AM"
+        },
+        "Grundfos Pump Flange 1 1\/4 ": {
+            "part_number": "519603",
+            "unit_quantity": 1,
+            "current_quantity": 100,
+            "price": 17.38,
+            "use_exchange_rate": false,
+            "priority": 2,
+            "notes": "Vendor: Grundfos Canada\nDescription: \nsupport-ca@sales.grundfos.com",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 100\nto: 100\nItsme\nFebruary 17 Friday 2023 08:25:39 AM",
+            "latest_change_part_number": "Latest Change:\nfrom: 51960\nto: 519603\nItsme\nFebruary 02 Thursday 2023 11:05:47 AM",
+            "latest_change_price": "Latest Change:\nfrom: 17.38\nto: 17.38\nItsme\nFebruary 02 Thursday 2023 11:07:28 AM",
+            "latest_change_notes": "Latest Change:\nfrom: \"Vendor: Grundfos Canada\nDescription: \nsupport-ca@sales.grundfos.co\"\nto: \"Vendor: Grundfos Canada\nDescription: \nsupport-ca@sales.grundfos.com\"\nItsme\nFebruary 02 Thursday 2023 11:20:34 AM"
         },
         "Knob 2 3\/8 DIA. 1\/2-13. Fluted Black Plastic": {
             "part_number": "",
@@ -2644,6 +2702,16 @@
             "latest_change_use_exchange_price": "Item added\nItsme\nJanuary 13 Friday 2023 04-34-37 PM",
             "latest_change_priority": "Item added\nItsme\nJanuary 13 Friday 2023 04-34-37 PM",
             "latest_change_notes": "Item added\nItsme\nJanuary 13 Friday 2023 04-34-37 PM"
+        },
+        "Sticker 308 CSA Polar G2 10\"x 6\" Silver Foil ": {
+            "part_number": "308",
+            "unit_quantity": 1,
+            "current_quantity": 121,
+            "price": 5.37,
+            "use_exchange_rate": false,
+            "priority": 0,
+            "notes": "Vendor: \nDescription: ",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 121\nto: 121\nItsme\nFebruary 17 Friday 2023 08:58:10 AM"
         },
         "Spring Pin 2\" x .25": {
             "part_number": "sp225",
@@ -3153,17 +3221,6 @@
             "latest_change_priority": "Item added\nItsme\nFebruary 02 Thursday 2023 02-11-45 PM",
             "latest_change_notes": "Latest Change:\nfrom: Vendor: Industrial Rubber Supply\nDescription: shaun@indrub.co\nto: Vendor: Industrial Rubber Supply\nDescription: shaun@indrub.com\nItsme\nFebruary 02 Thursday 2023 02:59:19 PM"
         },
-        "Sticker 310 Polar G2 & G3 Caution Pinch Hazard 4.5\"x2.75\"": {
-            "part_number": "310",
-            "unit_quantity": 2,
-            "current_quantity": -28,
-            "price": 0.64,
-            "use_exchange_rate": false,
-            "priority": 0,
-            "notes": "Vendor: HC Graphic Screen Printing\nDescription: orders@hdcraphicsinc.com",
-            "latest_change_current_quantity": "Latest Change:\nfrom: -28\nto: -28\nItsme\nFebruary 07 Tuesday 2023 01:49:55 PM",
-            "latest_change_notes": "Latest Change:\nfrom: Vendor: HC Graphic Screen Printing\nDescription: orders@hdcraphicsinc.co\nto: Vendor: HC Graphic Screen Printing\nDescription: orders@hdcraphicsinc.com\nItsme\nFebruary 07 Tuesday 2023 03:13:57 PM"
-        },
         "Washer 5\/16\" Spring Lock": {
             "part_number": "W516SL",
             "unit_quantity": 4,
@@ -3215,18 +3272,33 @@
             "latest_change_priority": "Item added\nItsme\nFebruary 02 Thursday 2023 09-47-06 AM",
             "latest_change_notes": "Latest Change:\nfrom: Vendor: Revcor  Revolutionary Air Flow\nDescription:  \n9 inch fan-motor and 5\" includes full assembly\nto: Vendor: Revcor  Revolutionary Air Flow\nDescription:  \n9 inch fan-motor and 5\" includes full assembly\n\nItsme\nFebruary 11 Saturday 2023 10:18:54 AM"
         },
-        "Grundfos Pump Flange 1 1\/4 ": {
-            "part_number": "519603",
-            "unit_quantity": 1,
+        "Sticker 310 Polar G2 & G3 Caution Pinch Hazard 4.5\"x2.75\"": {
+            "part_number": "310",
+            "unit_quantity": 2,
             "current_quantity": 0,
-            "price": 17.38,
+            "price": 0.64,
             "use_exchange_rate": false,
-            "priority": 2,
-            "notes": "Vendor: Grundfos Canada\nDescription: \nsupport-ca@sales.grundfos.com",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 0\nto: 0\nItsme\nFebruary 07 Tuesday 2023 01:49:55 PM",
-            "latest_change_part_number": "Latest Change:\nfrom: 5196\nto: 519603\nItsme\nFebruary 02 Thursday 2023 11:06:32 AM",
-            "latest_change_price": "Latest Change:\nfrom: 17.38\nto: 17.38\nItsme\nFebruary 02 Thursday 2023 11:07:28 AM",
-            "latest_change_notes": "Latest Change:\nfrom: Vendor: Grundfos Canada\nDescription: \nsupport-ca@sales.grundfos.co\nto: Vendor: Grundfos Canada\nDescription: \nsupport-ca@sales.grundfos.com\nItsme\nFebruary 02 Thursday 2023 11:20:34 AM"
+            "priority": 0,
+            "notes": "Vendor: HC Graphic Screen Printing\nDescription: orders@hdcraphicsinc.com",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 0\nto: 0\nItsme\nFebruary 17 Friday 2023 10:39:47 AM",
+            "latest_change_notes": "Latest Change:\nfrom: Vendor: HC Graphic Screen Printing\nDescription: orders@hdcraphicsinc.co\nto: Vendor: HC Graphic Screen Printing\nDescription: orders@hdcraphicsinc.com\nItsme\nFebruary 07 Tuesday 2023 03:13:57 PM"
+        },
+        "Sticker #342 Bilingual Caution Notice Decal ": {
+            "part_number": "342",
+            "unit_quantity": 1.0,
+            "current_quantity": 0,
+            "price": 3.0,
+            "use_exchange_rate": false,
+            "priority": 0,
+            "notes": "Vendor: HD Graphics Inc\nDescription: ",
+            "latest_change_name": "Item added\nItsme\nFebruary 17 Friday 2023 10-38-00 AM",
+            "latest_change_part_number": "Item added\nItsme\nFebruary 17 Friday 2023 10-38-00 AM",
+            "latest_change_unit_quantity": "Item added\nItsme\nFebruary 17 Friday 2023 10-38-00 AM",
+            "latest_change_current_quantity": "Item added\nItsme\nFebruary 17 Friday 2023 10-38-00 AM",
+            "latest_change_price": "Item added\nItsme\nFebruary 17 Friday 2023 10-38-00 AM",
+            "latest_change_use_exchange_price": "Item added\nItsme\nFebruary 17 Friday 2023 10-38-00 AM",
+            "latest_change_priority": "Item added\nItsme\nFebruary 17 Friday 2023 10-38-00 AM",
+            "latest_change_notes": "Item added\nItsme\nFebruary 17 Friday 2023 10-38-00 AM"
         },
         "1\" Plug": {
             "part_number": "G1600M",
@@ -3306,6 +3378,33 @@
             "latest_change_use_exchange_price": "Item added\nItsme\nSeptember 16 Friday 2022 02-18-33 PM",
             "latest_change_priority": "Item added\nItsme\nSeptember 16 Friday 2022 02-18-33 PM",
             "latest_change_notes": "Item added\nItsme\nSeptember 16 Friday 2022 02-18-33 PM"
+        },
+        "Sticker #341 Bilingual Danger Warning Decal": {
+            "part_number": "341",
+            "unit_quantity": 1.0,
+            "current_quantity": 7,
+            "price": 3.0,
+            "use_exchange_rate": false,
+            "priority": 0,
+            "notes": "Vendor: HD Graphics Inc\nDescription: ",
+            "latest_change_name": "Item added\nItsme\nFebruary 17 Friday 2023 10-38-27 AM",
+            "latest_change_part_number": "Item added\nItsme\nFebruary 17 Friday 2023 10-38-27 AM",
+            "latest_change_unit_quantity": "Item added\nItsme\nFebruary 17 Friday 2023 10-38-27 AM",
+            "latest_change_current_quantity": "Item added\nItsme\nFebruary 17 Friday 2023 10-38-27 AM",
+            "latest_change_price": "Item added\nItsme\nFebruary 17 Friday 2023 10-38-27 AM",
+            "latest_change_use_exchange_price": "Item added\nItsme\nFebruary 17 Friday 2023 10-38-27 AM",
+            "latest_change_priority": "Item added\nItsme\nFebruary 17 Friday 2023 10-38-27 AM",
+            "latest_change_notes": "Item added\nItsme\nFebruary 17 Friday 2023 10-38-27 AM"
+        },
+        "Sticker 312 Polar G2 & G3 G series Wiring 8\"x10\"": {
+            "part_number": "312",
+            "unit_quantity": 1,
+            "current_quantity": 9,
+            "price": 2.06,
+            "use_exchange_rate": false,
+            "priority": 0,
+            "notes": "Vendor: \nDescription: ",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 9\nto: 9\nItsme\nFebruary 17 Friday 2023 08:40:46 AM"
         },
         "Terminal BlockPluggable ": {
             "part_number": "222-412 Wago 2 pos",
@@ -3408,16 +3507,6 @@
             "latest_change_use_exchange_price": "Item added\nItsme\nNovember 30 Wednesday 2022 09-41-24 AM",
             "latest_change_priority": "Item added\nItsme\nNovember 30 Wednesday 2022 09-41-24 AM",
             "latest_change_notes": "Item added\nItsme\nNovember 30 Wednesday 2022 09-41-24 AM"
-        },
-        "Sticker 312 Polar G2 & G3 G series Wiring 8\"x10\"": {
-            "part_number": "312",
-            "unit_quantity": 1,
-            "current_quantity": 21,
-            "price": 2.06,
-            "use_exchange_rate": false,
-            "priority": 0,
-            "notes": "Vendor: \nDescription: ",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 21\nto: 21\nItsme\nFebruary 07 Tuesday 2023 01:49:56 PM"
         },
         "3\"x48\"x96\" FSK Insulation Sheet": {
             "part_number": "FSK3",
@@ -3566,16 +3655,6 @@
             "latest_change_priority": "Item added\nItsme\nFebruary 16 Thursday 2023 11-01-31 AM",
             "latest_change_notes": "Item added\nItsme\nFebruary 16 Thursday 2023 11-01-31 AM"
         },
-        "Sticker 308 CSA Polar G2 10\"x 6\" Silver Foil ": {
-            "part_number": "308",
-            "unit_quantity": 1,
-            "current_quantity": 31,
-            "price": 5.37,
-            "use_exchange_rate": false,
-            "priority": 0,
-            "notes": "Vendor: \nDescription: ",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 31\nto: 31\nItsme\nFebruary 07 Tuesday 2023 01:49:56 PM"
-        },
         "Sticker 322 G2 and G3 Remove Label ": {
             "part_number": "322",
             "unit_quantity": 1,
@@ -3585,6 +3664,16 @@
             "priority": 0,
             "notes": "Vendor: \nDescription: ",
             "latest_change_current_quantity": "Latest Change:\nfrom: 31\nto: 31\nItsme\nFebruary 07 Tuesday 2023 01:49:56 PM"
+        },
+        "Sticker   #306 Polar Furnace with Polar Bear  11\"x14\" ": {
+            "part_number": "403",
+            "unit_quantity": 1,
+            "current_quantity": 31,
+            "price": 4.31,
+            "use_exchange_rate": false,
+            "priority": 0,
+            "notes": "Vendor: \nDescription: ",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 31\nto: 31\nItsme\nFebruary 17 Friday 2023 08:59:10 AM"
         },
         "Tempered Glass 1 1\/4\" X 1 1\/4\" X 3\/16\" NEO Ceram Robax": {
             "part_number": "TG113",
@@ -3678,16 +3767,6 @@
             "latest_change_price": "Latest Change:\nfrom: 1.2\nto: 1.21\nItsme\nAugust 03 Wednesday 2022 08:50:13 AM",
             "latest_change_notes": "Latest Change:\nfrom: Vendor: Greenline\nDescription: 204-694-0332\nPart # G1616-12\nto: Vendor: Greenline\nDescription: 204-694-0332\nPart # G1616-125\nItsme\nJanuary 17 Tuesday 2023 09:14:55 AM"
         },
-        "Sticker   #306 Polar Furnace with Polar Bear  11\"x14\" ": {
-            "part_number": "403",
-            "unit_quantity": 1,
-            "current_quantity": 41,
-            "price": 4.31,
-            "use_exchange_rate": false,
-            "priority": 0,
-            "notes": "Vendor: \nDescription: ",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 41\nto: 41\nItsme\nFebruary 07 Tuesday 2023 01:49:56 PM"
-        },
         " Sticker 309 Polar G2 & G3 Caution Disconnect Power 4.5\"x2\"": {
             "part_number": "309",
             "unit_quantity": 1.0,
@@ -3697,16 +3776,6 @@
             "priority": 0,
             "notes": "Vendor: \nDescription: ",
             "latest_change_current_quantity": "Latest Change:\nfrom: 41.0\nto: 41\nItsme\nFebruary 07 Tuesday 2023 01:49:56 PM"
-        },
-        "Sticker #304  Polar Furnace 3.65\"x 37.79\" ": {
-            "part_number": "404",
-            "unit_quantity": 1,
-            "current_quantity": 41,
-            "price": 2.33,
-            "use_exchange_rate": false,
-            "priority": 0,
-            "notes": "Vendor: \nDescription: ",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 41\nto: 41\nItsme\nFebruary 07 Tuesday 2023 01:49:56 PM"
         },
         "Hose Clamp 1 1\/2  S.S": {
             "part_number": "CLAMP112",
@@ -3778,6 +3847,16 @@
             "latest_change_priority": "Item added\nItsme\nJuly 19 Tuesday 2022 04-48-12 PM",
             "latest_change_notes": "Item added\nItsme\nJuly 19 Tuesday 2022 04-48-12 PM"
         },
+        "Sticker  319  easy Sweep": {
+            "part_number": "319",
+            "unit_quantity": 1,
+            "current_quantity": 51,
+            "price": 1.86,
+            "use_exchange_rate": false,
+            "priority": 0,
+            "notes": "Vendor: \nDescription: ",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 51\nto: 51\nItsme\nFebruary 17 Friday 2023 09:00:28 AM"
+        },
         "Compression Spring, 1.5\" Long, 0.313\" OD, 0.269\" ID  Spring Rate Peep Hole": {
             "part_number": "18",
             "unit_quantity": 1,
@@ -3820,16 +3899,6 @@
             "use_exchange_rate": false,
             "priority": 0,
             "notes": "Vendor: Industrial Rubber Supply\nDescription: ",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 61\nto: 61\nItsme\nFebruary 07 Tuesday 2023 01:49:57 PM"
-        },
-        "Sticker  319  easy Sweep": {
-            "part_number": "319",
-            "unit_quantity": 1,
-            "current_quantity": 61,
-            "price": 1.86,
-            "use_exchange_rate": false,
-            "priority": 0,
-            "notes": "Vendor: \nDescription: ",
             "latest_change_current_quantity": "Latest Change:\nfrom: 61\nto: 61\nItsme\nFebruary 07 Tuesday 2023 01:49:57 PM"
         },
         "Blower Wheel 9-15\/16\" X 2-1\/4 BI Steel 1\/2 #2-106CI CW \"A\" 1800R": {
@@ -4009,6 +4078,16 @@
             "latest_change_priority": "Item added\nItsme\nJuly 07 Thursday 2022 03-57-46 PM",
             "latest_change_notes": "Latest Change:\nfrom: Vendor: A.Adams Supply\nDescription: mc master car\nto: Vendor: A.Adams Supply\nDescription: mc master carr\nItsme\nJanuary 10 Tuesday 2023 04:18:46 PM"
         },
+        "Sticker #304  Polar Furnace 3.65\"x 37.79\" ": {
+            "part_number": "404",
+            "unit_quantity": 1,
+            "current_quantity": 86,
+            "price": 2.33,
+            "use_exchange_rate": false,
+            "priority": 0,
+            "notes": "Vendor: \nDescription: ",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 86\nto: 86\nItsme\nFebruary 17 Friday 2023 08:59:58 AM"
+        },
         "3\" Nipple x 3\/4 Black Steel ": {
             "part_number": "483-030",
             "unit_quantity": 1,
@@ -4083,6 +4162,19 @@
             "latest_change_use_exchange_price": "Item added\nItsme\nJuly 28 Thursday 2022 10-32-50 AM",
             "latest_change_priority": "Item added\nItsme\nJuly 28 Thursday 2022 10-32-50 AM",
             "latest_change_notes": "Item added\nItsme\nJuly 28 Thursday 2022 10-32-50 AM"
+        },
+        "Grundfos Pump Flange 1 1\/4 ": {
+            "part_number": "519603",
+            "unit_quantity": 1,
+            "current_quantity": 100,
+            "price": 17.38,
+            "use_exchange_rate": false,
+            "priority": 2,
+            "notes": "Vendor: Grundfos Canada\nDescription: \nsupport-ca@sales.grundfos.com",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 100\nto: 100\nItsme\nFebruary 17 Friday 2023 08:25:39 AM",
+            "latest_change_part_number": "Latest Change:\nfrom: 5196\nto: 519603\nItsme\nFebruary 02 Thursday 2023 11:06:32 AM",
+            "latest_change_price": "Latest Change:\nfrom: 17.38\nto: 17.38\nItsme\nFebruary 02 Thursday 2023 11:07:28 AM",
+            "latest_change_notes": "Latest Change:\nfrom: Vendor: Grundfos Canada\nDescription: \nsupport-ca@sales.grundfos.co\nto: Vendor: Grundfos Canada\nDescription: \nsupport-ca@sales.grundfos.com\nItsme\nFebruary 02 Thursday 2023 11:20:34 AM"
         },
         "Sticker 320 Water Temperture 5\"x9.5\"": {
             "part_number": "320",
@@ -4188,6 +4280,16 @@
             "latest_change_use_exchange_price": "Item added\nItsme\nJanuary 13 Friday 2023 04-34-48 PM",
             "latest_change_priority": "Item added\nItsme\nJanuary 13 Friday 2023 04-34-48 PM",
             "latest_change_notes": "Item added\nItsme\nJanuary 13 Friday 2023 04-34-48 PM"
+        },
+        "Sticker 308 CSA Polar G2 10\"x 6\" Silver Foil ": {
+            "part_number": "308",
+            "unit_quantity": 1,
+            "current_quantity": 121,
+            "price": 5.37,
+            "use_exchange_rate": false,
+            "priority": 0,
+            "notes": "Vendor: \nDescription: ",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 121\nto: 121\nItsme\nFebruary 17 Friday 2023 08:58:10 AM"
         },
         "Spring Pin 2\" x .25": {
             "part_number": "sp225",
