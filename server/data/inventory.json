@@ -2070,7 +2070,7 @@
             "latest_change_notes": "Latest Change:\nfrom: \"Vendor: GreenLine\nDescription: 204-694-0332\nPart # V202-075\"\nto: \"Vendor: GreenLine\nDescription: 204-694-0332\nPart # V202-075 \"\nItsme\nJanuary 17 Tuesday 2023 09:11:14 AM"
         },
         " L-HANDLE LATCH ASSEMBLY, BLACK PLASTIC HANDLE, WITH STAMPED CAM": {
-            "part_number": " 1153-01",
+            "part_number": "1153-01",
             "unit_quantity": 1,
             "current_quantity": 11,
             "price": 12.35,
@@ -2078,7 +2078,7 @@
             "priority": 0,
             "notes": "Vendor: Sierra Pacific\nDescription: ",
             "latest_change_name": "Item added\nItsme\nJuly 08 Friday 2022 09-12-31 AM",
-            "latest_change_part_number": "Item added\nItsme\nJuly 08 Friday 2022 09-12-31 AM",
+            "latest_change_part_number": "Latest Change:\nfrom: 1153-0\nto: 1153-01\nItsme\nFebruary 17 Friday 2023 02:54:35 PM",
             "latest_change_unit_quantity": "Item added\nItsme\nJuly 08 Friday 2022 09-12-31 AM",
             "latest_change_current_quantity": "Latest Change:\nfrom: 11\nto: 11\nItsme\nFebruary 17 Friday 2023 11:07:56 AM",
             "latest_change_price": "Latest Change:\nfrom: 12.35\nto: 12.35\nItsme\nAugust 31 Wednesday 2022 08:22:24 AM",
