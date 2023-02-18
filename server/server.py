@@ -145,8 +145,8 @@ class Server:
                             "r",
                         ) as f:
                             data = json.load(f)
-                        with open(filename, "w") as f:
-                            f.write(json.dumps(data))
+                        with open(filename, "w", encoding="utf-8") as f:
+                            json.dump(data, f, ensure_ascii=False, indent=4)
                         print(
                             f"{Colors.BOLD}{datetime.now()}{Colors.ENDC}\t\t{Colors.OKGREEN}[+] File saved\tFile: {filename}{Colors.ENDC}"
                         )
