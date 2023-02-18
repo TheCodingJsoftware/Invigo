@@ -122,12 +122,13 @@ class Server:
                     )
                     logging.info(f"Receiving file from client\tFile: {filename}")
                     # filesize = int(filesize)
-                    with open(filename, "wb") as f:
+
+                    with open("data/temp.json", "wb") as f:
                         while True:
 
                             # read 1024 bytes from the socket (receive)
                             bytes_read = client_socket.recv(self.BUFFER_SIZE)
-                            print(f"In Loop writing file {bytes_read} {len(bytes_read)}")
+                            # print(f"In Loop writing file {bytes_read} {len(bytes_read)}")
                             if not bytes_read:
                                 # file transmitting is done
                                 break
@@ -137,7 +138,23 @@ class Server:
                         f"{Colors.BOLD}{datetime.now()}{Colors.ENDC}\t{Colors.OKGREEN}[+] Succesfully received file{Colors.ENDC}"
                     )
                     logging.info("Succesfully received file")
-                    self.__upload_inventory(filename)
+
+                    try:
+                        with open(
+                            "data/temp.json",
+                            "r",
+                        ) as f:
+                            data = json.load(f)
+                        with open(filename, "w") as f:
+                            f.write(data)
+                        self.__upload_inventory(filename)
+                    except Exception as e:
+                        print(
+                            f"{Colors.ENDC}{Colors.BOLD}{datetime.now()}{Colors.ENDC} - {Colors.ERROR}Error loading file, improper JSON format, aborting. {e}{Colors.ENDC}"
+                        )
+                        logging.info(
+                            f"Error loading file, improper JSON format, aborting. {e}"
+                        )
                 client_socket.close()
                 print(
                     f"{Colors.BOLD}{datetime.now()}{Colors.ENDC} - {Colors.HEADER}[+] Connection closed succesfully with: {str(client_address)}{Colors.ENDC}"
