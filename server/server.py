@@ -136,7 +136,9 @@ class Server:
                         f"{Colors.BOLD}{datetime.now()}{Colors.ENDC}\t{Colors.OKGREEN}[+] Succesfully received file{Colors.ENDC}"
                     )
                     logging.info("Succesfully received file")
-
+                    print(
+                        f"{Colors.BOLD}{datetime.now()}{Colors.ENDC}\t\t{Colors.OKGREEN}[ ] Saving file\tFile: {filename}{Colors.ENDC}"
+                    )
                     try:
                         with open(
                             "data/temp.json",
@@ -145,6 +147,9 @@ class Server:
                             data = json.load(f)
                         with open(filename, "w") as f:
                             f.write(json.dumps(data))
+                        print(
+                            f"{Colors.BOLD}{datetime.now()}{Colors.ENDC}\t\t{Colors.OKGREEN}[+] File saved\tFile: {filename}{Colors.ENDC}"
+                        )
                         self.__upload_inventory(filename)
                     except Exception as e:
                         print(
