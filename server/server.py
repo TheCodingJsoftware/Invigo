@@ -81,11 +81,9 @@ class Server:
                 logging.info("got data")
 
                 print(
-                    f"{Colors.BOLD}{datetime.now()}{Colors.ENDC} - {Colors.OKGREEN}[+] Connection established with: {str(client_address)} data: {data}{Colors.ENDC}"
+                    f"{Colors.BOLD}{datetime.now()}{Colors.ENDC} - {Colors.OKGREEN}[+] Connection established with: {str(client_address)}{Colors.ENDC}"
                 )
-                logging.info(
-                    f"Connection established with: {str(client_address)} data: {data}"
-                )
+                logging.info(f"Connection established with: {str(client_address)}")
                 print(
                     f"{Colors.BOLD}{datetime.now()}{Colors.ENDC} - {Colors.OKGREEN}[ ] Starting process: {str(client_address)} Command: {data.split(self.SEPARATOR)[0]}{Colors.ENDC}"
                 )
