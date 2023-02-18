@@ -144,7 +144,7 @@ class Server:
                         ) as f:
                             data = json.load(f)
                         with open(filename, "w") as f:
-                            f.write(data)
+                            f.write(json.dumps(data))
                         self.__upload_inventory(filename)
                     except Exception as e:
                         print(
