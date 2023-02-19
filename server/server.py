@@ -24,7 +24,7 @@ class Server:
         """
         # Declaring server IP and port
         self.SERVER_IP: str = "10.0.0.237"
-        self.SERVER_PORT: int = 4000
+        self.SERVER_PORT: int = 524288
 
         self.BUFFER_SIZE = 4096
         self.SEPARATOR = "<SEPARATOR>"
@@ -56,9 +56,9 @@ class Server:
         Answer: The client sends a file to the server
         """
         try:
-            self.s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-            self.s.bind((self.SERVER_IP, self.SERVER_PORT))
-            self.s.listen(128)
+            self.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+            self.socket.bind((self.SERVER_IP, self.SERVER_PORT))
+            self.socket.listen(128)
             print(
                 f"{Colors.BOLD}{datetime.now()}{Colors.ENDC} - {Colors.OKGREEN}[+] Server Started succesfully on {self.SERVER_IP}:{self.SERVER_PORT}{Colors.ENDC}"
             )
@@ -74,7 +74,7 @@ class Server:
                 print(
                     f"{Colors.BOLD}{datetime.now()}{Colors.ENDC} - {Colors.HEADER}[ ] Listening for connections...{Colors.ENDC}"
                 )
-                client_socket, client_address = self.s.accept()
+                client_socket, client_address = self.socket.accept()
                 client_socket.settimeout(10)
                 data = client_socket.recv(self.BUFFER_SIZE).decode()
 
@@ -158,6 +158,7 @@ class Server:
                         logging.info(
                             f"Error loading file, improper JSON format, aborting. {e}"
                         )
+                client_socket.shutdown(socket.SHUT_RD)
                 client_socket.close()
                 print(
                     f"{Colors.BOLD}{datetime.now()}{Colors.ENDC} - {Colors.HEADER}[+] Connection closed succesfully with: {str(client_address)}{Colors.ENDC}"
