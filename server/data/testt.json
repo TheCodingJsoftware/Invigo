@@ -3236,7 +3236,8 @@
             "latest_change_price": "Latest Change:\nfrom: 3.0\nto: 1.88\nItsme\nFebruary 02 Thursday 2023 02:57:06 PM",
             "latest_change_use_exchange_price": "Item added\nItsme\nFebruary 02 Thursday 2023 02-11-45 PM",
             "latest_change_priority": "Item added\nItsme\nFebruary 02 Thursday 2023 02-11-45 PM",
-            "latest_change_notes": "Latest Change:\nfrom: Vendor: Industrial Rubber Supply\nDescription: shaun@indrub.co\nto: Vendor: Industrial Rubber Supply\nDescription: shaun@indrub.com\nItsme\nFebruary 02 Thursday 2023 02:59:19 PM"
+            "latest_change_notes": "Latest Change:\nfrom: Vendor: Industrial Rubber Supply\nDescription: shaun@indrub.co\nto: Vendor: Industrial Rubber Supply\nDescription: shaun@indrub.com\nItsme\nFebruary 02 Thursday 2023 02:59:19 PM",
+            "group": null
         },
         "Terminal BlockPluggable ": {
             "part_number": "222-412 Wago 2 pos",
