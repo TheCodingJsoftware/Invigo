@@ -60,7 +60,7 @@ class Server:
             self.socket.bind((self.SERVER_IP, self.SERVER_PORT))
             self.socket.listen(128)
             print(
-                f"{Colors.BOLD}{datetime.now()}{Colors.ENDC} - {Colors.OKGREEN}[+] Server Started succesfully on {self.SERVER_IP}:{self.SERVER_PORT}{Colors.ENDC}"
+                f"{Colors.BOLD}{datetime.now()}{Colors.ENDC} - {Colors.OKGREEN}Server Started succesfully on {self.SERVER_IP}:{self.SERVER_PORT}{Colors.ENDC}"
             )
             logging.info("server started succesfully")
         except Exception as e:
@@ -73,7 +73,7 @@ class Server:
             try:
 
                 print(
-                    f"{Colors.BOLD}-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-={Colors.ENDC}"
+                    f"{Colors.BOLD}-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-{Colors.ENDC}"
                 )
                 print(
                     f"{Colors.BOLD}{datetime.now()}{Colors.ENDC} - {Colors.HEADER}Listening for connections...{Colors.ENDC}"
