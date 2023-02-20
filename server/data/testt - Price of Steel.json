@@ -1,25 +1,32 @@
 {
     "Price Per Pound": {
         "304 SS": {
-            "price": 2.39
+            "price": 2.39,
+            "latest_change_price": "Latest Change:\nfrom: 7.0\nto: 7.0\nItsme\nFebruary 07 Tuesday 2023 02:38:22 PM"
         },
         "409 SS": {
-            "price": 2.22
+            "price": 2.22,
+            "latest_change_price": "Latest Change:\nfrom: 7.0\nto: 7.0\nItsme\nFebruary 07 Tuesday 2023 02:38:22 PM"
         },
         "Mild Steel": {
-            "price": 0.64
+            "price": 0.64,
+            "latest_change_price": "Latest Change:\nfrom: 7.0\nto: 7.0\nItsme\nFebruary 07 Tuesday 2023 02:38:22 PM"
         },
         "Galvanneal": {
-            "price": 1.22
+            "price": 1.22,
+            "latest_change_price": "Latest Change:\nfrom: 7.0\nto: 7.0\nItsme\nFebruary 07 Tuesday 2023 02:38:22 PM"
         },
         "Galvanized": {
-            "price": 1.2
+            "price": 1.2,
+            "latest_change_price": "Latest Change:\nfrom: 7.0\nto: 7.0\nItsme\nFebruary 07 Tuesday 2023 02:38:22 PM"
         },
         "Aluminium": {
-            "price": 2.85
+            "price": 2.85,
+            "latest_change_price": "Latest Change:\nfrom: 7.0\nto: 7.0\nItsme\nFebruary 07 Tuesday 2023 02:38:22 PM"
         },
         "Laser Grade Plate": {
-            "price": 1.45
+            "price": 1.45,
+            "latest_change_price": "Latest Change:\nfrom: 7.0\nto: 7.0\nItsme\nFebruary 07 Tuesday 2023 02:38:22 PM"
         }
     }
 }
