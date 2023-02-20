@@ -220,10 +220,10 @@ class Server:
             print(
                 f"{Colors.ENDC}{Colors.BOLD}{datetime.now()}{Colors.ENDC} - {Colors.ERROR}Error loading file, improper JSON format, aborting. {e}{Colors.ENDC}"
             )
-            logging.info("Error loading file, improper JSON format, aborting. {e}")
+            logging.info(f"Error loading file, improper JSON format, aborting. {e}")
             return
         repo = Repo(
-            "C:/Users/user/Desktop/Inventory-Manager"
+            "C:/Users/joe/Documents/Inventory-Manager"
         )  # if repo is CWD just do '.'
         repo.index.add([f"server/{file_name}"])
         repo.index.commit(file_name)
