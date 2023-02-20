@@ -65,12 +65,16 @@ class Server:
             logging.info("server started succesfully")
         except Exception as e:
             print(
-                f"{Colors.BOLD}{datetime.now()}{Colors.ENDC} - {Colors.ERROR}[+] Server could not start.\n\nReason:\n{e}{Colors.ENDC}"
+                f"{Colors.BOLD}{datetime.now()}{Colors.ENDC} - {Colors.ERROR}[X] Server could not start.\n\nReason:\n{e}{Colors.ENDC}"
             )
             logging.exception("Exception occured")
             return
         while True:
             try:
+
+                print(
+                    f"{Colors.HEADER}-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-{Colors.ENDC}"
+                )
                 print(
                     f"{Colors.BOLD}{datetime.now()}{Colors.ENDC} - {Colors.HEADER}[ ] Listening for connections...{Colors.ENDC}"
                 )
@@ -86,7 +90,7 @@ class Server:
                 logging.info(f"Connection established with: {str(client_address)}")
                 sleep(1)  # ! IMPORTANT
                 print(
-                    f"{Colors.BOLD}{datetime.now()}{Colors.ENDC} - {Colors.OKGREEN}[ ] Starting process: {str(client_address)} Command: {data.split(self.SEPARATOR)[0]}{Colors.ENDC}"
+                    f"{Colors.BOLD}{datetime.now()}{Colors.ENDC}\t{Colors.OKGREEN}[ ] Starting process: {str(client_address)} Command: {data.split(self.SEPARATOR)[0]}{Colors.ENDC}"
                 )
                 logging.info(
                     f"Starting process: {str(client_address)} Command: {data.split(self.SEPARATOR)[0]}"
@@ -95,7 +99,7 @@ class Server:
                 if "get_file" in data:
                     command, filename = data.split(self.SEPARATOR)
                     print(
-                        f"{Colors.BOLD}{datetime.now()}{Colors.ENDC}\t{Colors.OKGREEN}[ ] Sending file to client\tFile: {filename}{Colors.ENDC}"
+                        f"{Colors.BOLD}{datetime.now()}{Colors.ENDC}\t\t{Colors.OKGREEN}[ ] Sending file to {str(client_address)}\tFile: {filename}{Colors.ENDC}"
                     )
                     logging.info(f"Sending file to client\tFile: {filename}")
                     client_socket.send(f"{os.path.getsize(filename)}".encode())
@@ -108,7 +112,7 @@ class Server:
                                 # file transmitting is done
                                 break
                     print(
-                        f"{Colors.BOLD}{datetime.now()}{Colors.ENDC}\t{Colors.OKGREEN}[+] File successfuly sent{Colors.ENDC}"
+                        f"{Colors.BOLD}{datetime.now()}{Colors.ENDC}\t\t{Colors.OKGREEN}[+] File successfuly sent!{Colors.ENDC}"
                     )
                     logging.info("File successfuly sent")
 
@@ -116,7 +120,7 @@ class Server:
                 if "send_file" in data:
                     command, filename, filesize = data.split(self.SEPARATOR)
                     print(
-                        f"{Colors.BOLD}{datetime.now()}{Colors.ENDC}\t{Colors.OKGREEN}[ ] Receiving file from client\tFile: {filename}{Colors.ENDC}"
+                        f"{Colors.BOLD}{datetime.now()}{Colors.ENDC}\t\t{Colors.OKGREEN}[ ] Receiving file from client\tFile: {filename}{Colors.ENDC}"
                     )
                     logging.info(f"Receiving file from client\tFile: {filename}")
                     # filesize = int(filesize)
@@ -130,11 +134,11 @@ class Server:
                                 break
                     logging.info("sent response")
                     print(
-                        f"{Colors.BOLD}{datetime.now()}{Colors.ENDC}\t{Colors.OKGREEN}[+] Succesfully received file{Colors.ENDC}"
+                        f"{Colors.BOLD}{datetime.now()}{Colors.ENDC}\t\t{Colors.OKGREEN}[+] Succesfully received file{Colors.ENDC}"
                     )
                     logging.info("Succesfully received file")
                     print(
-                        f"{Colors.BOLD}{datetime.now()}{Colors.ENDC}\t\t{Colors.OKGREEN}[ ] Saving file\tFile: {filename}{Colors.ENDC}"
+                        f"{Colors.BOLD}{datetime.now()}{Colors.ENDC}\t\t\t{Colors.OKGREEN}[ ] Saving file\tFile: {filename}{Colors.ENDC}"
                     )
                     try:
                         with open(
@@ -145,16 +149,19 @@ class Server:
                         with open(filename, "w", encoding="utf-8") as f:
                             json.dump(data, f, ensure_ascii=False, indent=4)
                         print(
-                            f"{Colors.BOLD}{datetime.now()}{Colors.ENDC}\t\t{Colors.OKGREEN}[+] File saved\tFile: {filename}{Colors.ENDC}"
+                            f"{Colors.BOLD}{datetime.now()}{Colors.ENDC}\t\t\t{Colors.OKGREEN}[+] File saved\tFile: {filename}{Colors.ENDC}"
                         )
                         self.__upload_inventory(filename)
                     except Exception as e:
                         print(
-                            f"{Colors.ENDC}{Colors.BOLD}{datetime.now()}{Colors.ENDC} - {Colors.ERROR}Error loading file, improper JSON format, aborting. {e}{Colors.ENDC}"
+                            f"{Colors.ENDC}{Colors.BOLD}{datetime.now()}{Colors.ENDC}\t\t\t{Colors.ERROR}[X] ERROR loading file, improper JSON format, aborting. {e}{Colors.ENDC}"
                         )
                         logging.info(
                             f"Error loading file, improper JSON format, aborting. {e}"
                         )
+                print(
+                    f"{Colors.BOLD}{datetime.now()}{Colors.ENDC}\t{Colors.OKGREEN}[+] Process finished!{Colors.ENDC}"
+                )
                 client_socket.shutdown(socket.SHUT_RD)
                 client_socket.close()
                 print(
@@ -164,7 +171,7 @@ class Server:
             except Exception as e:
                 logging.exception(e)
                 print(
-                    f"{Colors.BOLD}{datetime.now()}{Colors.ENDC} - {Colors.ERROR}[X] ERROR: {e} {Colors.ENDC}"
+                    f"{Colors.BOLD}{datetime.now()}{Colors.ENDC}\t\t{Colors.ERROR}[X] ERROR: {e} {Colors.ENDC}"
                 )
 
     def check_folders(self, folders: list) -> None:
@@ -210,6 +217,9 @@ class Server:
         """
         It adds the file to the git index, commits it, and pushes it to the remote origin
         """
+        print(
+            f"{Colors.ENDC}{Colors.BOLD}{datetime.now()}{Colors.ENDC} - {Colors.OKGREEN} [ ] Updating {file_name} to github{Colors.ENDC}"
+        )
         try:
             with open(
                 f"C:/Users/joe/Documents/Inventory-Manager/server/{file_name}", "r"
@@ -217,7 +227,7 @@ class Server:
                 data = json.load(f)
         except Exception as e:
             print(
-                f"{Colors.ENDC}{Colors.BOLD}{datetime.now()}{Colors.ENDC} - {Colors.ERROR}Error loading file, improper JSON format, aborting. {e}{Colors.ENDC}"
+                f"{Colors.ENDC}{Colors.BOLD}{datetime.now()}{Colors.ENDC} - {Colors.ERROR} [X] Error loading file, improper JSON format, aborting. {e}{Colors.ENDC}"
             )
             logging.info(f"Error loading file, improper JSON format, aborting. {e}")
             return
@@ -229,7 +239,7 @@ class Server:
         origin = repo.remote("origin")
         origin.push()
         print(
-            f"{Colors.ENDC}{Colors.BOLD}{datetime.now()}{Colors.ENDC} - {Colors.OKGREEN}Updated {file_name}{Colors.ENDC}"
+            f"{Colors.ENDC}{Colors.BOLD}{datetime.now()}{Colors.ENDC} - {Colors.OKGREEN} [+] Updated {file_name} to github.{Colors.ENDC}"
         )
 
 
