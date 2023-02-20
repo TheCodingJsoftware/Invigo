@@ -102,11 +102,11 @@ class Server:
                     # sel
                     with open(filename, "rb") as f:
                         while True:
-                            bytes_read = f.read(self.BUFFER_SIZE)
-                            if not bytes_read:
+                            if bytes_read := f.read(self.BUFFER_SIZE):
+                                client_socket.sendall(bytes_read)
+                            else:
                                 # file transmitting is done
                                 break
-                            client_socket.sendall(bytes_read)
                     print(
                         f"{Colors.BOLD}{datetime.now()}{Colors.ENDC}\t{Colors.OKGREEN}[+] File successfuly sent{Colors.ENDC}"
                     )
@@ -124,13 +124,11 @@ class Server:
                     with open("data/temp.json", "wb") as f:
                         while True:
 
-                            # read 1024 bytes from the socket (receive)
-                            bytes_read = client_socket.recv(self.BUFFER_SIZE)
-                            # print(f"In Loop writing file {bytes_read} {len(bytes_read)}")
-                            if not bytes_read:
+                            if bytes_read := client_socket.recv(self.BUFFER_SIZE):
+                                f.write(bytes_read)
+                            else:
                                 # file transmitting is done
                                 break
-                            f.write(bytes_read)
                     logging.info("sent response")
                     print(
                         f"{Colors.BOLD}{datetime.now()}{Colors.ENDC}\t{Colors.OKGREEN}[+] Succesfully received file{Colors.ENDC}"
