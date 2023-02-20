@@ -84,7 +84,7 @@ class Server:
                     f"{Colors.BOLD}{datetime.now()}{Colors.ENDC} - {Colors.OKGREEN}[+] Connection established with: {str(client_address)}{Colors.ENDC}"
                 )
                 logging.info(f"Connection established with: {str(client_address)}")
-                sleep(1)
+                sleep(1)  # ! IMPORTANT
                 print(
                     f"{Colors.BOLD}{datetime.now()}{Colors.ENDC} - {Colors.OKGREEN}[ ] Starting process: {str(client_address)} Command: {data.split(self.SEPARATOR)[0]}{Colors.ENDC}"
                 )
@@ -122,12 +122,8 @@ class Server:
                     # filesize = int(filesize)
 
                     with open("data/temp.json", "wb") as f:
-                        count = 0
                         while True:
-
                             if bytes_read := client_socket.recv(self.BUFFER_SIZE):
-                                count += 1
-                                print(f"{count} {len(bytes_read)}")
                                 f.write(bytes_read)
                             else:
                                 # file transmitting is done
