@@ -26,7 +26,7 @@ class Server:
         self.SERVER_IP: str = "10.0.0.211"
         self.SERVER_PORT: int = 4000
 
-        self.BUFFER_SIZE = 8096
+        self.BUFFER_SIZE = 4096
         self.SEPARATOR = "<SEPARATOR>"
 
         self.check_folders(folders=["data", "logs", "backups"])
@@ -56,7 +56,7 @@ class Server:
         Answer: The client sends a file to the server
         """
         try:
-            self.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+            self.socket = socket.socket()
             self.socket.bind((self.SERVER_IP, self.SERVER_PORT))
             self.socket.listen(128)
             print(
