@@ -1,21 +1,25 @@
 {
-    "Galvenozied": {
-        "Gasket 3\/16\" Thick 4.125\" OD x 1.625\"ID EPDM Sponge Adhesive Back": {
-            "part_number": "1000-794",
-            "unit_quantity": 6.0,
-            "current_quantity": 65,
-            "price": 1.88,
-            "use_exchange_rate": false,
-            "priority": 0,
-            "notes": "Vendor: Industrial Rubber Supply\nDescription: ",
-            "latest_change_name": "Item added\nItsme\nFebruary 02 Thursday 2023 02-07-46 PM",
-            "latest_change_part_number": "Latest Change:\nfrom: 1000-795\nto: 1000-794\nItsme\nFebruary 02 Thursday 2023 02:59:55 PM",
-            "latest_change_unit_quantity": "Item added\nItsme\nFebruary 02 Thursday 2023 02-07-47 PM",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 65\nto: 65\nItsme\nFebruary 17 Friday 2023 02:37:33 PM",
-            "latest_change_price": "Latest Change:\nfrom: 3.0\nto: 1.88\nItsme\nFebruary 02 Thursday 2023 02:57:06 PM",
-            "latest_change_use_exchange_price": "Item added\nItsme\nFebruary 02 Thursday 2023 02-07-47 PM",
-            "latest_change_priority": "Item added\nItsme\nFebruary 02 Thursday 2023 02-07-47 PM",
-            "latest_change_notes": "Item added\nItsme\nFebruary 02 Thursday 2023 02-07-47 PM"
+    "Price Per Pound": {
+        "304 SS": {
+            "price": 2.39
+        },
+        "409 SS": {
+            "price": 2.22
+        },
+        "Mild Steel": {
+            "price": 0.64
+        },
+        "Galvanneal": {
+            "price": 1.22
+        },
+        "Galvanized": {
+            "price": 1.2
+        },
+        "Aluminium": {
+            "price": 2.85
+        },
+        "Laser Grade Plate": {
+            "price": 1.45
         }
     }
 }
