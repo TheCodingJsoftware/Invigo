@@ -218,7 +218,7 @@ class Server:
         It adds the file to the git index, commits it, and pushes it to the remote origin
         """
         print(
-            f"{Colors.ENDC}{Colors.BOLD}{datetime.now()}{Colors.ENDC} - {Colors.OKGREEN} [ ] Updating {file_name} to github{Colors.ENDC}"
+            f"{Colors.ENDC}{Colors.BOLD}{datetime.now()}{Colors.ENDC}\t{Colors.OKGREEN} [ ] Updating {file_name} to github{Colors.ENDC}"
         )
         try:
             with open(
@@ -227,7 +227,7 @@ class Server:
                 data = json.load(f)
         except Exception as e:
             print(
-                f"{Colors.ENDC}{Colors.BOLD}{datetime.now()}{Colors.ENDC} - {Colors.ERROR} [X] Error loading file, improper JSON format, aborting. {e}{Colors.ENDC}"
+                f"{Colors.ENDC}{Colors.BOLD}{datetime.now()}{Colors.ENDC}\t{Colors.ERROR} [X] Error loading file, improper JSON format, aborting. {e}{Colors.ENDC}"
             )
             logging.info(f"Error loading file, improper JSON format, aborting. {e}")
             return
@@ -239,7 +239,7 @@ class Server:
         origin = repo.remote("origin")
         origin.push()
         print(
-            f"{Colors.ENDC}{Colors.BOLD}{datetime.now()}{Colors.ENDC} - {Colors.OKGREEN} [+] Updated {file_name} to github.{Colors.ENDC}"
+            f"{Colors.ENDC}{Colors.BOLD}{datetime.now()}{Colors.ENDC}\t{Colors.OKGREEN} [+] Updated {file_name} to github.{Colors.ENDC}"
         )
 
 
