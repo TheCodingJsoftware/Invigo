@@ -122,10 +122,12 @@ class Server:
                     # filesize = int(filesize)
 
                     with open("data/temp.json", "wb") as f:
+                        count = 0
                         while True:
 
                             if bytes_read := client_socket.recv(self.BUFFER_SIZE):
-                                print(len(bytes_read))
+                                count += 1
+                                print(f"{count}{len(bytes_read)}")
                                 f.write(bytes_read)
                             else:
                                 # file transmitting is done
