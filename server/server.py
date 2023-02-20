@@ -85,7 +85,7 @@ class Server:
                 logging.info("got data")
 
                 print(
-                    f"{Colors.BOLD}{datetime.now()}{Colors.ENDC} - {Colors.OKGREEN}[+] Connection established with: {str(client_address)}{Colors.ENDC}"
+                    f"{Colors.BOLD}{datetime.now()}{Colors.ENDC} - {Colors.OKGREEN}[ ] Connection established with: {str(client_address)}{Colors.ENDC}"
                 )
                 logging.info(f"Connection established with: {str(client_address)}")
                 sleep(1)  # ! IMPORTANT
