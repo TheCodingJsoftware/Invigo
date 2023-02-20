@@ -23,10 +23,10 @@ class Server:
         logs and starts the server
         """
         # Declaring server IP and port
-        self.SERVER_IP: str = "10.0.0.211"
+        self.SERVER_IP: str = "10.0.0.217"
         self.SERVER_PORT: int = 4000
 
-        self.BUFFER_SIZE = 1024
+        self.BUFFER_SIZE = 8096
         self.SEPARATOR = "<SEPARATOR>"
 
         self.check_folders(folders=["data", "logs", "backups"])
