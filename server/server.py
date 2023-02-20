@@ -213,7 +213,7 @@ class Server:
         """
         try:
             with open(
-                f"C:/Users/user/Desktop/Inventory-Manager/server/{file_name}", "r"
+                f"C:/Users/joe/Documents/Inventory-Manager/server/{file_name}", "r"
             ) as f:
                 data = json.load(f)
         except Exception as e:
