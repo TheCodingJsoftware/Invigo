@@ -84,13 +84,13 @@ class Server:
                     f"{Colors.BOLD}{datetime.now()}{Colors.ENDC} - {Colors.OKGREEN}[+] Connection established with: {str(client_address)}{Colors.ENDC}"
                 )
                 logging.info(f"Connection established with: {str(client_address)}")
+                sleep(1)
                 print(
                     f"{Colors.BOLD}{datetime.now()}{Colors.ENDC} - {Colors.OKGREEN}[ ] Starting process: {str(client_address)} Command: {data.split(self.SEPARATOR)[0]}{Colors.ENDC}"
                 )
                 logging.info(
                     f"Starting process: {str(client_address)} Command: {data.split(self.SEPARATOR)[0]}"
                 )
-
                 # The server returns a file to the client
                 if "get_file" in data:
                     command, filename = data.split(self.SEPARATOR)
