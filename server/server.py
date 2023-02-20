@@ -56,7 +56,7 @@ class Server:
         Answer: The client sends a file to the server
         """
         try:
-            self.socket = socket.socket()
+            self.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
             self.socket.bind((self.SERVER_IP, self.SERVER_PORT))
             self.socket.listen(128)
             print(
