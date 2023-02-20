@@ -138,7 +138,7 @@ class Server:
                     )
                     logging.info("Succesfully received file")
                     print(
-                        f"{Colors.BOLD}{datetime.now()}{Colors.ENDC}\t\t\t{Colors.OKGREEN}[ ] Saving file\tFile: {filename}{Colors.ENDC}"
+                        f"{Colors.BOLD}{datetime.now()}{Colors.ENDC}\t\t{Colors.OKGREEN}[ ] Saving file\tFile: {filename}{Colors.ENDC}"
                     )
                     try:
                         with open(
@@ -149,12 +149,12 @@ class Server:
                         with open(filename, "w", encoding="utf-8") as f:
                             json.dump(data, f, ensure_ascii=False, indent=4)
                         print(
-                            f"{Colors.BOLD}{datetime.now()}{Colors.ENDC}\t\t\t{Colors.OKGREEN}[+] File saved\tFile: {filename}{Colors.ENDC}"
+                            f"{Colors.BOLD}{datetime.now()}{Colors.ENDC}\t\t{Colors.OKGREEN}[+] File saved\tFile: {filename}{Colors.ENDC}"
                         )
                         self.__upload_inventory(filename)
                     except Exception as e:
                         print(
-                            f"{Colors.ENDC}{Colors.BOLD}{datetime.now()}{Colors.ENDC}\t\t\t{Colors.ERROR}[X] ERROR loading file, improper JSON format, aborting. {e}{Colors.ENDC}"
+                            f"{Colors.ENDC}{Colors.BOLD}{datetime.now()}{Colors.ENDC}\t\t{Colors.ERROR}[X] ERROR loading file, improper JSON format, aborting. {e}{Colors.ENDC}"
                         )
                         logging.info(
                             f"Error loading file, improper JSON format, aborting. {e}"
@@ -218,7 +218,7 @@ class Server:
         It adds the file to the git index, commits it, and pushes it to the remote origin
         """
         print(
-            f"{Colors.ENDC}{Colors.BOLD}{datetime.now()}{Colors.ENDC}\t{Colors.OKGREEN} [ ] Updating {file_name} to github{Colors.ENDC}"
+            f"{Colors.ENDC}{Colors.BOLD}{datetime.now()}{Colors.ENDC}\t\t{Colors.OKGREEN}[ ] Updating {file_name} to github{Colors.ENDC}"
         )
         try:
             with open(
@@ -227,7 +227,7 @@ class Server:
                 data = json.load(f)
         except Exception as e:
             print(
-                f"{Colors.ENDC}{Colors.BOLD}{datetime.now()}{Colors.ENDC}\t{Colors.ERROR} [X] Error loading file, improper JSON format, aborting. {e}{Colors.ENDC}"
+                f"{Colors.ENDC}{Colors.BOLD}{datetime.now()}{Colors.ENDC}\t\t{Colors.ERROR}[X] Error loading file, improper JSON format, aborting. {e}{Colors.ENDC}"
             )
             logging.info(f"Error loading file, improper JSON format, aborting. {e}")
             return
@@ -239,7 +239,7 @@ class Server:
         origin = repo.remote("origin")
         origin.push()
         print(
-            f"{Colors.ENDC}{Colors.BOLD}{datetime.now()}{Colors.ENDC}\t{Colors.OKGREEN} [+] Updated {file_name} to github.{Colors.ENDC}"
+            f"{Colors.ENDC}{Colors.BOLD}{datetime.now()}{Colors.ENDC}\t\t{Colors.OKGREEN}[+] Updated {file_name} to github.{Colors.ENDC}"
         )
 
 
