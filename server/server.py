@@ -73,10 +73,10 @@ class Server:
             try:
 
                 print(
-                    f"{Colors.BOLD}-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-{Colors.ENDC}"
+                    f"{Colors.BOLD}-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-{Colors.ENDC}"
                 )
                 print(
-                    f"{Colors.BOLD}{datetime.now()}{Colors.ENDC} - {Colors.HEADER}[ ] Listening for connections...{Colors.ENDC}"
+                    f"{Colors.BOLD}{datetime.now()}{Colors.ENDC} - {Colors.HEADER}Listening for connections...{Colors.ENDC}"
                 )
                 client_socket, client_address = self.socket.accept()
                 client_socket.settimeout(10)
@@ -165,7 +165,7 @@ class Server:
                 client_socket.shutdown(socket.SHUT_RD)
                 client_socket.close()
                 print(
-                    f"{Colors.BOLD}{datetime.now()}{Colors.ENDC} - {Colors.HEADER}[+] Connection closed succesfully with: {str(client_address)}{Colors.ENDC}"
+                    f"{Colors.BOLD}{datetime.now()}{Colors.ENDC} - {Colors.OKGREEN}[+] Connection closed succesfully with: {str(client_address)}{Colors.ENDC}"
                 )
                 logging.info(f"Connection closed succesfully with: {str(client_address)}")
             except Exception as e:
