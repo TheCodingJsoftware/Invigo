@@ -26,7 +26,7 @@ class Server:
         self.SERVER_IP: str = "10.0.0.237"
         self.SERVER_PORT: int = 4000
 
-        self.BUFFER_SIZE = 1500
+        self.BUFFER_SIZE = 1024
         self.SEPARATOR = "<SEPARATOR>"
 
         self.check_folders(folders=["data", "logs", "backups"])
