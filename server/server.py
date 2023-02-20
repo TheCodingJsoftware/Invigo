@@ -75,7 +75,7 @@ class Server:
                     f"{Colors.BOLD}{datetime.now()}{Colors.ENDC} - {Colors.HEADER}[ ] Listening for connections...{Colors.ENDC}"
                 )
                 client_socket, client_address = self.socket.accept()
-                client_socket.settimeout(10)
+                client_socket.settimeout(30)
                 data = client_socket.recv(self.BUFFER_SIZE).decode()
 
                 logging.info("got data")
