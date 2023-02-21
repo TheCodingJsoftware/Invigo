@@ -177,6 +177,7 @@ class Server:
                                 # file transmitting is done
                                 break
                     logging.info("sent response")
+                    client_socket.send("Batch sent successfully".encode())
                     print(
                         f"{Colors.BOLD}{datetime.now()}{Colors.ENDC}\t\t{Colors.OKGREEN}[+] Succesfully received file{Colors.ENDC}"
                     )
@@ -197,7 +198,6 @@ class Server:
                         print(
                             f"{Colors.BOLD}{datetime.now()}{Colors.ENDC}\t\t{Colors.OKGREEN}[+] File saved\tFile: {filename}{Colors.ENDC}"
                         )
-                        client_socket.send("Batch sent successfully".encode())
                     except Exception as e:
                         print(
                             f"{Colors.ENDC}{Colors.BOLD}{datetime.now()}{Colors.ENDC}\t\t{Colors.ERROR}[X] ERROR loading file, improper JSON format, aborting. {e}{Colors.ENDC}"
