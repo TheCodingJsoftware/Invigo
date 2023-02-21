@@ -175,6 +175,7 @@ class Server:
                                 f.write(bytes_read)
                             else:
                                 # file transmitting is done
+                                sleep(1)
                                 break
                     logging.info("sent response")
                     client_socket.send("Batch sent successfully".encode())
