@@ -175,10 +175,8 @@ class Server:
                                 f.write(bytes_read)
                             else:
                                 # file transmitting is done
-                                sleep(1)
                                 break
                     logging.info("sent response")
-                    client_socket.send("Batch sent successfully".encode())
                     print(
                         f"{Colors.BOLD}{datetime.now()}{Colors.ENDC}\t\t{Colors.OKGREEN}[+] Succesfully received file{Colors.ENDC}"
                     )
@@ -206,6 +204,7 @@ class Server:
                         logging.info(
                             f"Error loading file, improper JSON format, aborting. {e}"
                         )
+                    client_socket.send("Batch sent successfully".encode("utf-8"))
                 print(
                     f"{Colors.BOLD}{datetime.now()}{Colors.ENDC}\t{Colors.OKGREEN}[+] Process finished!{Colors.ENDC}"
                 )
