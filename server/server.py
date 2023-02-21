@@ -208,6 +208,7 @@ class Server:
                         logging.info(
                             f"Error loading file, improper JSON format, aborting. {e}"
                         )
+                        client_socket.sendall(f"{e}".encode("utf-8"))
                     client_socket.sendall("Batch sent successfully".encode("utf-8"))
                 print(
                     f"{Colors.BOLD}{datetime.now()}{Colors.ENDC}\t{Colors.OKGREEN}[+] Process finished!{Colors.ENDC}"
