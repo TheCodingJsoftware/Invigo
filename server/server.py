@@ -159,6 +159,49 @@ class Server:
                         logging.info(
                             f"Error loading file, improper JSON format, aborting. {e}"
                         )
+                if "laser_parts_list_upload" in data:
+                    command, filename, filesize = data.split(self.SEPARATOR)
+                    print(
+                        f"{Colors.BOLD}{datetime.now()}{Colors.ENDC}\t\t{Colors.OKGREEN}[ ] Receiving file from client\tFile: {filename}{Colors.ENDC}"
+                    )
+                    logging.info(f"Receiving file from client\tFile: {filename}")
+                    # filesize = int(filesize)
+
+                    with open("data/temp.json", "wb") as f:
+                        while True:
+                            if bytes_read := client_socket.recv(self.BUFFER_SIZE):
+                                f.write(bytes_read)
+                            else:
+                                # file transmitting is done
+                                break
+                    logging.info("sent response")
+                    print(
+                        f"{Colors.BOLD}{datetime.now()}{Colors.ENDC}\t\t{Colors.OKGREEN}[+] Succesfully received file{Colors.ENDC}"
+                    )
+                    logging.info("Succesfully received file")
+                    print(
+                        f"{Colors.BOLD}{datetime.now()}{Colors.ENDC}\t\t{Colors.OKGREEN}[ ] Saving file\tFile: {filename}{Colors.ENDC}"
+                    )
+                    try:
+                        with open(
+                            "data/temp.json",
+                            "r",
+                        ) as f:
+                            data = json.load(f)
+                        with open(
+                            "data/laser_parts_new_batch.json", "w", encoding="utf-8"
+                        ) as f:
+                            json.dump(data, f, ensure_ascii=False, indent=4)
+                        print(
+                            f"{Colors.BOLD}{datetime.now()}{Colors.ENDC}\t\t{Colors.OKGREEN}[+] File saved\tFile: {filename}{Colors.ENDC}"
+                        )
+                    except Exception as e:
+                        print(
+                            f"{Colors.ENDC}{Colors.BOLD}{datetime.now()}{Colors.ENDC}\t\t{Colors.ERROR}[X] ERROR loading file, improper JSON format, aborting. {e}{Colors.ENDC}"
+                        )
+                        logging.info(
+                            f"Error loading file, improper JSON format, aborting. {e}"
+                        )
                 print(
                     f"{Colors.BOLD}{datetime.now()}{Colors.ENDC}\t{Colors.OKGREEN}[+] Process finished!{Colors.ENDC}"
                 )
