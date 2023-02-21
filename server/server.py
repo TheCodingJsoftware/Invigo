@@ -201,6 +201,7 @@ class Server:
                         print(
                             f"{Colors.BOLD}{datetime.now()}{Colors.ENDC}\t\t{Colors.OKGREEN}[+] File saved\tFile: {filename}{Colors.ENDC}"
                         )
+                        client_socket.sendall("Batch sent successfully".encode("utf-8"))
                     except Exception as e:
                         print(
                             f"{Colors.ENDC}{Colors.BOLD}{datetime.now()}{Colors.ENDC}\t\t{Colors.ERROR}[X] ERROR loading file, improper JSON format, aborting. {e}{Colors.ENDC}"
@@ -209,7 +210,56 @@ class Server:
                             f"Error loading file, improper JSON format, aborting. {e}"
                         )
                         client_socket.sendall(f"{e}".encode("utf-8"))
-                    client_socket.sendall("Batch sent successfully".encode("utf-8"))
+                # Laser PC sends file to server
+                if "laser_parts_list_recut" in data:
+                    command, filename, filesize = data.split(self.SEPARATOR)
+                    print(
+                        f"{Colors.BOLD}{datetime.now()}{Colors.ENDC}\t\t{Colors.OKGREEN}[ ] Receiving file from client\tFile: {filename}{Colors.ENDC}"
+                    )
+                    logging.info(f"Receiving file from client\tFile: {filename}")
+                    # filesize = int(filesize)
+
+                    with open("data/temp.json", "wb") as f:
+                        while True:
+                            if bytes_read := client_socket.recv(self.BUFFER_SIZE):
+                                if bytes_read.decode("utf-8") == "FINSIHED!":
+                                    break
+                                f.write(bytes_read)
+                            else:
+                                # file transmitting is done
+                                break
+                    # receive acknowledgment from the server
+                    # _ = client_socket.recv(1024)
+                    logging.info("sent response")
+                    print(
+                        f"{Colors.BOLD}{datetime.now()}{Colors.ENDC}\t\t{Colors.OKGREEN}[+] Succesfully received file{Colors.ENDC}"
+                    )
+                    logging.info("Succesfully received file")
+                    print(
+                        f"{Colors.BOLD}{datetime.now()}{Colors.ENDC}\t\t{Colors.OKGREEN}[ ] Saving file\tFile: {filename}{Colors.ENDC}"
+                    )
+                    try:
+                        with open(
+                            "data/temp.json",
+                            "r",
+                        ) as f:
+                            data = json.load(f)
+                        with open(
+                            "data/laser_parts_new_batch.json", "w", encoding="utf-8"
+                        ) as f:
+                            json.dump(data, f, ensure_ascii=False, indent=4)
+                        print(
+                            f"{Colors.BOLD}{datetime.now()}{Colors.ENDC}\t\t{Colors.OKGREEN}[+] File saved\tFile: {filename}{Colors.ENDC}"
+                        )
+                        client_socket.sendall("Batch sent successfully".encode("utf-8"))
+                    except Exception as e:
+                        print(
+                            f"{Colors.ENDC}{Colors.BOLD}{datetime.now()}{Colors.ENDC}\t\t{Colors.ERROR}[X] ERROR loading file, improper JSON format, aborting. {e}{Colors.ENDC}"
+                        )
+                        logging.info(
+                            f"Error loading file, improper JSON format, aborting. {e}"
+                        )
+                        client_socket.sendall(f"{e}".encode("utf-8"))
                 print(
                     f"{Colors.BOLD}{datetime.now()}{Colors.ENDC}\t{Colors.OKGREEN}[+] Process finished!{Colors.ENDC}"
                 )
