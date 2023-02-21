@@ -64,14 +64,14 @@
             "group": "409 SS"
         },
         "22 Gauge Aluminium 120.000x58.000": {
-            "current_quantity": 12.0,
+            "current_quantity": 9.0,
             "sheet_dimension": "120.000x58.000",
             "thickness": "22 Gauge",
             "material": "Aluminium",
             "latest_change_material": "Item added\nJared\nFebruary 21 Tuesday 2023 04-44-26 PM",
             "latest_sheet_dimension": "Item added\nJared\nFebruary 21 Tuesday 2023 04-44-26 PM",
             "latest_change_thickness": "Item added\nJared\nFebruary 21 Tuesday 2023 04-44-26 PM",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 11.0\nto: 12.0\nJared\nFebruary 21 Tuesday 2023 04:44:46 PM"
+            "latest_change_current_quantity": "Latest Change:\nfrom: 10.0\nto: 9.0\nJared\nFebruary 21 Tuesday 2023 05:36:21 PM"
         }
     },
     "Aluminium": {
