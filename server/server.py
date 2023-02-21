@@ -9,6 +9,7 @@ import ujson as json
 from git import Repo
 
 from utils.colors import Colors
+from utils.inventory_updater import update_inventory
 
 
 class Server:
@@ -210,6 +211,7 @@ class Server:
                             f"Error loading file, improper JSON format, aborting. {e}"
                         )
                         client_socket.sendall(f"{e}".encode("utf-8"))
+                    update_inventory("data/laser_parts_new_batch.json")
                 # Laser PC sends file to server
                 if "laser_parts_list_recut" in data:
                     command, filename, filesize = data.split(self.SEPARATOR)
@@ -269,6 +271,7 @@ class Server:
                     f"{Colors.BOLD}{datetime.now()}{Colors.ENDC} - {Colors.OKGREEN}[+] Connection closed succesfully with: {str(client_address)}{Colors.ENDC}"
                 )
                 logging.info(f"Connection closed succesfully with: {str(client_address)}")
+
             except Exception as e:
                 logging.exception(e)
                 print(
