@@ -31,36 +31,36 @@
     },
     "Mild Steel": {
         "14 Gauge 409 SS 150x20": {
-            "current_quantity": 4.0,
+            "current_quantity": 5.0,
             "sheet_dimension": "150x20",
             "thickness": "14 Gauge",
             "material": "409 SS",
             "latest_change_material": "Item added\nJared\nFebruary 20 Monday 2023 08-42-35 PM",
             "latest_sheet_dimension": "Item added\nJared\nFebruary 20 Monday 2023 08-42-35 PM",
             "latest_change_thickness": "Item added\nJared\nFebruary 20 Monday 2023 08-42-35 PM",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 5.0\nto: 4.0\nJared\nFebruary 20 Monday 2023 09:35:46 PM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 4.0\nto: 5.0\nJared\nFebruary 21 Tuesday 2023 09:40:47 AM",
             "group": null
         },
         "  12x42": {
-            "current_quantity": 0,
+            "current_quantity": 4.0,
             "sheet_dimension": "12x42",
             "thickness": "",
             "material": "",
             "latest_change_material": "Item added\nJared\nFebruary 20 Monday 2023 09-47-16 PM",
             "latest_sheet_dimension": "Item added\nJared\nFebruary 20 Monday 2023 09-47-16 PM",
             "latest_change_thickness": "Item added\nJared\nFebruary 20 Monday 2023 09-47-16 PM",
-            "latest_change_current_quantity": "Item added\nJared\nFebruary 20 Monday 2023 09-47-16 PM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 3.0\nto: 4.0\nJared\nFebruary 21 Tuesday 2023 09:40:43 AM",
             "group": "304 SS"
         },
         "0.1875\" Galvanneal 133x12": {
-            "current_quantity": 6,
+            "current_quantity": 6.0,
             "sheet_dimension": "133x12",
             "thickness": "0.1875\"",
             "material": "Galvanneal",
             "latest_change_material": "Item added\nJared\nFebruary 20 Monday 2023 09-52-08 PM",
             "latest_sheet_dimension": "Item added\nJared\nFebruary 20 Monday 2023 09-52-08 PM",
             "latest_change_thickness": "Item added\nJared\nFebruary 20 Monday 2023 09-52-08 PM",
-            "latest_change_current_quantity": "Item added\nJared\nFebruary 20 Monday 2023 09-52-08 PM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 5.0\nto: 6.0\nJared\nFebruary 21 Tuesday 2023 09:40:41 AM",
             "group": "409 SS"
         }
     },
