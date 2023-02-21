@@ -172,10 +172,9 @@ class Server:
                     with open("data/temp.json", "wb") as f:
                         while True:
                             if bytes_read := client_socket.recv(self.BUFFER_SIZE):
-                                f.write(bytes_read)
-                                print(bytes_read.decode("utf-8"))
                                 if bytes_read.decode("utf-8") == "FINSIHED!":
                                     break
+                                f.write(bytes_read)
                             else:
                                 # file transmitting is done
                                 break
