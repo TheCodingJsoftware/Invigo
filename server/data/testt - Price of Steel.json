@@ -50,6 +50,16 @@
             "latest_sheet_dimension": "Item added\nJared\nFebruary 20 Monday 2023 09-47-16 PM",
             "latest_change_thickness": "Item added\nJared\nFebruary 20 Monday 2023 09-47-16 PM",
             "latest_change_current_quantity": "Item added\nJared\nFebruary 20 Monday 2023 09-47-16 PM"
+        },
+        "0.1875\" Galvanneal 133x12": {
+            "current_quantity": 6,
+            "sheet_dimension": "133x12",
+            "thickness": "0.1875\"",
+            "material": "Galvanneal",
+            "latest_change_material": "Item added\nJared\nFebruary 20 Monday 2023 09-52-08 PM",
+            "latest_sheet_dimension": "Item added\nJared\nFebruary 20 Monday 2023 09-52-08 PM",
+            "latest_change_thickness": "Item added\nJared\nFebruary 20 Monday 2023 09-52-08 PM",
+            "latest_change_current_quantity": "Item added\nJared\nFebruary 20 Monday 2023 09-52-08 PM"
         }
     },
     "Aluminium": {},
