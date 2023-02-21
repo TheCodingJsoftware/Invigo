@@ -29,7 +29,18 @@
             "latest_change_price": "Latest Change:\nfrom: 7.0\nto: 7.0\nItsme\nFebruary 07 Tuesday 2023 02:38:22 PM"
         }
     },
-    "Mild Steel": {},
+    "Mild Steel": {
+        "14 Gauge 409 SS 150x20": {
+            "current_quantity": 4,
+            "sheet_dimension": "150x20",
+            "thickness": "14 Gauge",
+            "material": "409 SS",
+            "latest_change_material": "Item added\nJared\nFebruary 20 Monday 2023 08-42-35 PM",
+            "latest_sheet_dimension": "Item added\nJared\nFebruary 20 Monday 2023 08-42-35 PM",
+            "latest_change_thickness": "Item added\nJared\nFebruary 20 Monday 2023 08-42-35 PM",
+            "latest_change_current_quantity": "Item added\nJared\nFebruary 20 Monday 2023 08-42-35 PM"
+        }
+    },
     "Aluminium": {},
     "Stainless": {},
     "Galvanized\/Galvanneal": {}
