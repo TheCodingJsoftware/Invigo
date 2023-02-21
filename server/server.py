@@ -197,6 +197,7 @@ class Server:
                         print(
                             f"{Colors.BOLD}{datetime.now()}{Colors.ENDC}\t\t{Colors.OKGREEN}[+] File saved\tFile: {filename}{Colors.ENDC}"
                         )
+                        client_socket.send("Batch sent successfully".encode())
                     except Exception as e:
                         print(
                             f"{Colors.ENDC}{Colors.BOLD}{datetime.now()}{Colors.ENDC}\t\t{Colors.ERROR}[X] ERROR loading file, improper JSON format, aborting. {e}{Colors.ENDC}"
@@ -204,7 +205,6 @@ class Server:
                         logging.info(
                             f"Error loading file, improper JSON format, aborting. {e}"
                         )
-                    client_socket.send("Batch sent successfully".encode())
                 print(
                     f"{Colors.BOLD}{datetime.now()}{Colors.ENDC}\t{Colors.OKGREEN}[+] Process finished!{Colors.ENDC}"
                 )
