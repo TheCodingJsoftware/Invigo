@@ -180,7 +180,7 @@ class Server:
                                 # file transmitting is done
                                 break
                     # receive acknowledgment from the server
-                    _ = client_socket.recv(1024)
+                    # _ = client_socket.recv(1024)
                     logging.info("sent response")
                     print(
                         f"{Colors.BOLD}{datetime.now()}{Colors.ENDC}\t\t{Colors.OKGREEN}[+] Succesfully received file{Colors.ENDC}"
