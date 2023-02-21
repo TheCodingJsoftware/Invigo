@@ -173,6 +173,7 @@ class Server:
                         while True:
                             if bytes_read := client_socket.recv(self.BUFFER_SIZE):
                                 f.write(bytes_read)
+                                print(bytes_read)
                             else:
                                 # file transmitting is done
                                 break
