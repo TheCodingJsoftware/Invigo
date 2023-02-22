@@ -1,3 +1,4 @@
+import contextlib
 import json
 import os
 import shutil
@@ -86,13 +87,12 @@ def get_recut_parts(batch_data) -> list[str]:
     Returns:
       A list of strings.
     """
+    print(batch_data)
     recut_parts: list[str] = []
     for part_name in list(batch_data.keys()):
-        try:
+        with contextlib.suppress(KeyError):
             if batch_data[part_name]["recut"] == True:
                 recut_parts.append(part_name)
-        except KeyError:
-            return
     return recut_parts
 
 
