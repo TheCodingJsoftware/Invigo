@@ -67,7 +67,7 @@ def add_part_to_inventory(category, part_to_add, batch_data) -> None:
         calculate_price(batch_data, part_to_add),
     )
     parts_in_inventory.change_object_in_object_item(
-        "Recut",
+        category,
         part_to_add,
         "unit_quantity",
         1,
@@ -92,6 +92,8 @@ def update_quantity(part_name_to_update: str, quantity: int) -> None:
       quantity (int): int
     """
     for category in list(parts_in_inventory.get_data().keys()):
+        if category == "Recut":
+            continue
         if part_exists(category=category, part_name_to_find=part_name_to_update):
             current_quantity: int = parts_in_inventory.get_data()[category][
                 part_name_to_update
