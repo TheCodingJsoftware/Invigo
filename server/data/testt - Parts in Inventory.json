@@ -7,6 +7,72 @@
             "unit_quantity": 0,
             "price": 0,
             "modified_date": ""
+        },
+        "304428": {
+            "current_quantity": 12,
+            "unit_quantity": 1,
+            "modified_date": "Added @ February 21 Tuesday 2023 09-07-23 PM",
+            "group": null
+        },
+        "304434": {
+            "current_quantity": 2,
+            "unit_quantity": 1,
+            "modified_date": "Added @ February 21 Tuesday 2023 09-07-23 PM",
+            "group": null
+        },
+        "404413": {
+            "current_quantity": 4,
+            "unit_quantity": 1,
+            "modified_date": "Added @ February 21 Tuesday 2023 09-07-23 PM",
+            "group": null
+        },
+        "G2Plus-Fan-Mount Base Plate": {
+            "current_quantity": 4,
+            "unit_quantity": 1,
+            "modified_date": "Added @ February 21 Tuesday 2023 09-07-23 PM",
+            "group": null
+        },
+        "NEWLEG": {
+            "current_quantity": 4,
+            "unit_quantity": 1,
+            "modified_date": "Added @ February 21 Tuesday 2023 09-07-23 PM",
+            "group": null
+        },
+        "304428 - (Copy)": {},
+        "2534-020": {
+            "current_quantity": 5,
+            "price": 112.45264,
+            "unit_quantity": 1,
+            "modified_date": "Added at February 21 Tuesday 2023 10-37-59 PM",
+            "group": null
+        },
+        "2534-021": {
+            "current_quantity": 5,
+            "price": 28.30316,
+            "unit_quantity": 1,
+            "modified_date": "Added at February 21 Tuesday 2023 10-37-59 PM",
+            "group": null
+        },
+        "404460": {
+            "current_quantity": 5,
+            "price": 19.36428,
+            "unit_quantity": 1,
+            "modified_date": "Added at February 21 Tuesday 2023 10-37-59 PM",
+            "group": null
+        },
+        "NEWLEG - (Copy)": {
+            "current_quantity": 20,
+            "price": 15.04244,
+            "unit_quantity": 1,
+            "modified_date": "Added at February 21 Tuesday 2023 10-37-59 PM",
+            "group": null
+        },
+        "B-32154 R0": {
+            "current_quantity": 5,
+            "price": 22.469549999999998,
+            "unit_quantity": 1,
+            "modified_date": "Added at February 21 Tuesday 2023 10-40-59 PM",
+            "group": null
         }
     }
 }
