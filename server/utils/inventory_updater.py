@@ -88,7 +88,7 @@ def get_recut_parts(batch_data) -> list[str]:
     recut_parts: list[str] = [
         part_name
         for part_name in list(batch_data.keys())
-        if batch_data[part_name]["recut"] == True and part_name[0] != "_"
+        if part_name[0] != "_" and batch_data[part_name]["recut"] == True
     ]
     return recut_parts
 
