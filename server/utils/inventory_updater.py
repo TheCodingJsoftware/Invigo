@@ -20,6 +20,7 @@ def update_inventory(file_path: str) -> None:
         sheet_name_to_update=name_of_sheet, sheet_count=total_sheet_count
     )
     recut_parts: list[str] = get_recut_parts(batch_data=new_laser_batch_data)
+    print(recut_parts)
     add_recut_parts(batch_data=new_laser_batch_data, recut_parts=recut_parts)
     no_recut_parts: list[str] = get_no_recut_parts(batch_data=new_laser_batch_data)
 
