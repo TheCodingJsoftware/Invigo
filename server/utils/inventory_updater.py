@@ -21,7 +21,6 @@ def update_inventory(file_path: str) -> None:
         sheet_name_to_update=name_of_sheet, sheet_count=total_sheet_count
     )
     recut_parts: list[str] = get_recut_parts(batch_data=new_laser_batch_data)
-    print(recut_parts)
     add_recut_parts(batch_data=new_laser_batch_data, recut_parts=recut_parts)
     no_recut_parts: list[str] = get_no_recut_parts(batch_data=new_laser_batch_data)
 
@@ -36,30 +35,57 @@ def add_recut_parts(batch_data: dict, recut_parts: list[str]) -> None:
       recut_parts (list[str])
     """
     for recut_part in recut_parts:
+        name = recut_part
         if part_exists(category="Recut", part_name_to_find=recut_part):
-            recut_part = f"{recut_part} - (Copy)"
-        parts_in_inventory.add_item_in_object("Recut", recut_part)
+            name = f"{recut_part} - (Copy)"
+        parts_in_inventory.add_item_in_object("Recut", name)
         parts_in_inventory.change_object_in_object_item(
             "Recut",
-            recut_part,
+            name,
             "current_quantity",
             batch_data[recut_part]["quantity"],
         )
         parts_in_inventory.change_object_in_object_item(
             "Recut",
-            recut_part,
+            name,
+            "price",
+            calculate_price(batch_data, recut_part),
+        )
+        parts_in_inventory.change_object_in_object_item(
+            "Recut",
+            name,
             "unit_quantity",
             1,
         )
         parts_in_inventory.change_object_in_object_item(
             "Recut",
-            recut_part,
+            name,
             "modified_date",
-            "Added @ " + str(datetime.now().strftime("%B %d %A %Y %I-%M-%S %p")),
+            "Added at " + str(datetime.now().strftime("%B %d %A %Y %I-%M-%S %p")),
         )
-        parts_in_inventory.change_object_in_object_item(
-            "Recut", recut_part, "group", None
-        )
+        parts_in_inventory.change_object_in_object_item("Recut", name, "group", None)
+
+
+def calculate_price(batch_data: dict, part_name: str) -> float:
+    """
+    > Calculate the price of a part by multiplying the weight of the part by the price per pound of the
+    material, and adding the cost of the laser time
+
+    Args:
+      batch_data (dict): dict = {
+      part_name (str): str = "part_name"
+
+    Returns:
+      The price of the part.
+    """
+    weight: float = batch_data[part_name]["weight"]
+    material: str = batch_data[part_name]["material"]
+    machine_time: float = batch_data[part_name]["machine_time"]
+    price_per_pound: float = price_of_steel_inventory.get_data()["Price Per Pound"][
+        material
+    ]["price"]
+    cost_for_laser: float = 250 if material in {"304 SS", "409 SS", "Aluminium"} else 150
+    return machine_time * (cost_for_laser / 60) + weight * price_per_pound
 
 
 def part_exists(category: str, part_name_to_find: str) -> bool:
