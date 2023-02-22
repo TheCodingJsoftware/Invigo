@@ -87,7 +87,6 @@ def get_recut_parts(batch_data) -> list[str]:
     Returns:
       A list of strings.
     """
-    print(batch_data)
     recut_parts: list[str] = []
     for part_name in list(batch_data.keys()):
         with contextlib.suppress(KeyError):
@@ -107,11 +106,11 @@ def get_no_recut_parts(batch_data) -> list[str]:
     Returns:
       A list of part names that have a recut value of False.
     """
-    no_recut_parts: list[str] = [
-        part_name
-        for part_name in list(batch_data.keys())
-        if batch_data[part_name]["recut"] == False
-    ]
+    no_recut_parts: list[str] = []
+    for part_name in list(batch_data.keys()):
+        with contextlib.suppress(KeyError):
+            if batch_data[part_name]["recut"] == False:
+                no_recut_parts.append(part_name)
     return no_recut_parts
 
 
