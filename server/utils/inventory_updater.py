@@ -16,7 +16,9 @@ def update_inventory(file_path: str) -> None:
         new_laser_batch_data = json.load(json_file)
     total_sheet_count: int = get_total_sheet_count(batch_data=new_laser_batch_data)
     name_of_sheet: str = get_sheet_name(batch_data=new_laser_batch_data)
-    subtract_sheet_count(sheet_name=name_of_sheet, sheet_count=total_sheet_count)
+    subtract_sheet_count(
+        sheet_name_to_update=name_of_sheet, sheet_count=total_sheet_count
+    )
     recut_parts: list[str] = get_recut_parts(batch_data=new_laser_batch_data)
     add_recut_parts(batch_data=new_laser_batch_data, recut_parts=recut_parts)
     no_recut_parts: list[str] = get_no_recut_parts(batch_data=new_laser_batch_data)
