@@ -1,6 +1,89 @@
 {
-    "BL 29": {},
-    "Custom": {},
+    "BL 29": {
+        "NEWLEG": {
+            "current_quantity": 52,
+            "unit_quantity": 1,
+            "modified_date": "32 quantity added at February 22 Wednesday 2023 07-11-29 AM",
+            "group": null
+        }
+    },
+    "Custom": {
+        "2534-022": {
+            "current_quantity": 18,
+            "price": "35.39",
+            "modified_date": "8 quantity added at February 22 Wednesday 2023 07-11-29 AM"
+        },
+        "2534-020": {
+            "current_quantity": 6,
+            "price": "112.45",
+            "unit_quantity": 1,
+            "modified_date": "Added at February 22 Wednesday 2023 07-11-29 AM",
+            "group": null
+        },
+        "2534-021": {
+            "current_quantity": 6,
+            "price": "28.30",
+            "unit_quantity": 1,
+            "modified_date": "Added at February 22 Wednesday 2023 07-11-29 AM",
+            "group": null
+        },
+        "2534-050": {
+            "current_quantity": 5,
+            "price": "11.00",
+            "unit_quantity": 1,
+            "modified_date": "Added at February 22 Wednesday 2023 07-11-29 AM",
+            "group": null
+        },
+        "304428": {
+            "current_quantity": 30,
+            "price": "4.23",
+            "unit_quantity": 1,
+            "modified_date": "Added at February 22 Wednesday 2023 07-11-29 AM",
+            "group": null
+        },
+        "304434": {
+            "current_quantity": 18,
+            "price": "11.57",
+            "unit_quantity": 1,
+            "modified_date": "Added at February 22 Wednesday 2023 07-11-29 AM",
+            "group": null
+        },
+        "404412": {
+            "current_quantity": 5,
+            "price": "58.54",
+            "unit_quantity": 1,
+            "modified_date": "Added at February 22 Wednesday 2023 07-11-29 AM",
+            "group": null
+        },
+        "404413": {
+            "current_quantity": 5,
+            "price": "71.13",
+            "unit_quantity": 1,
+            "modified_date": "Added at February 22 Wednesday 2023 07-11-29 AM",
+            "group": null
+        },
+        "404459": {
+            "current_quantity": 1,
+            "price": "20.53",
+            "unit_quantity": 1,
+            "modified_date": "Added at February 22 Wednesday 2023 07-11-29 AM",
+            "group": null
+        },
+        "404460": {
+            "current_quantity": 5,
+            "price": "19.36",
+            "unit_quantity": 1,
+            "modified_date": "Added at February 22 Wednesday 2023 07-11-29 AM",
+            "group": null
+        },
+        "G2Plus-Fan-Mount Base Plate": {
+            "current_quantity": 16,
+            "price": "5.01",
+            "unit_quantity": 1,
+            "modified_date": "Added at February 22 Wednesday 2023 07-11-29 AM",
+            "group": null
+        }
+    },
     "Recut": {
         "123123 213123 12": {
             "current_quantity": 0,
@@ -33,9 +116,9 @@
             "group": null
         },
         "NEWLEG": {
-            "current_quantity": 4,
+            "current_quantity": 23,
             "unit_quantity": 1,
-            "modified_date": "Added @ February 21 Tuesday 2023 09-07-23 PM",
+            "modified_date": "19 quantity added at February 22 Wednesday 2023 07-07-06 AM",
             "group": null
         },
         "304428 - (Copy)": {},
