@@ -38,26 +38,26 @@ def add_recut_parts(batch_data: dict, recut_parts: list[str]) -> None:
     for recut_part in recut_parts:
         if part_exists(category="Recut", part_name_to_find=recut_part):
             recut_part = f"{recut_part} - (Copy)"
-        price_of_steel_inventory.add_item_in_object("Recut", recut_part)
-        price_of_steel_inventory.change_object_in_object_item(
+        parts_in_inventory.add_item_in_object("Recut", recut_part)
+        parts_in_inventory.change_object_in_object_item(
             "Recut",
             recut_part,
             "current_quantity",
             batch_data[recut_part]["quantity"],
         )
-        price_of_steel_inventory.change_object_in_object_item(
+        parts_in_inventory.change_object_in_object_item(
             "Recut",
             recut_part,
             "unit_quantity",
             1,
         )
-        price_of_steel_inventory.change_object_in_object_item(
+        parts_in_inventory.change_object_in_object_item(
             "Recut",
             recut_part,
             "modified_date",
             "Added @ " + str(datetime.now().strftime("%B %d %A %Y %I-%M-%S %p")),
         )
-        price_of_steel_inventory.change_object_in_object_item(
+        parts_in_inventory.change_object_in_object_item(
             "Recut", recut_part, "group", None
         )
 
