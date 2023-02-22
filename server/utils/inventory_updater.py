@@ -27,6 +27,13 @@ def update_inventory(file_path: str) -> None:
 
 
 def add_parts(batch_data: dict, parts_to_add: list[str]):
+    """
+    It takes a dictionary of parts and quantities and adds them to the inventory
+
+    Args:
+      batch_data (dict): dict = {
+      parts_to_add (list[str]): list[str] = list(batch_data.keys())
+    """
     parts_updated: list[str] = list(parts_to_add)
     for category in list(parts_in_inventory.get_data().keys()):
         if category == "Recut":
@@ -177,8 +184,11 @@ def calculate_price(batch_data: dict, part_name: str) -> float:
         material
     ]["price"]
     cost_for_laser: float = 250 if material in {"304 SS", "409 SS", "Aluminium"} else 150
-    return round_number(
-        (machine_time * (cost_for_laser / 60)) + (weight * price_per_pound), 2
+    return float(
+        # Rounding the number to 2 decimal places.
+        round_number(
+            (machine_time * (cost_for_laser / 60)) + (weight * price_per_pound), 2
+        )
     )
 
 
