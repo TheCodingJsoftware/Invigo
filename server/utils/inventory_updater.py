@@ -2,12 +2,13 @@ import json
 import os
 import shutil
 import sys
+from datetime import datetime
 
 from utils.json_file import JsonFile
 
 inventory = JsonFile(file_name="data/testt")
 price_of_steel_inventory = JsonFile(file_name="data/testt - Price of Steel")
-laser_parts_list_inventory = JsonFile(file_name="data/testt - Laser Parts List")
+parts_in_inventory = JsonFile(file_name="data/testt - Parts in Inventory")
 
 
 def update_inventory(file_path: str) -> None:
@@ -15,8 +16,122 @@ def update_inventory(file_path: str) -> None:
         new_laser_batch_data = json.load(json_file)
     total_sheet_count: int = get_total_sheet_count(batch_data=new_laser_batch_data)
     name_of_sheet: str = get_sheet_name(batch_data=new_laser_batch_data)
-    print(total_sheet_count)
-    print(name_of_sheet)
+    subtract_sheet_count(sheet_name=name_of_sheet, sheet_count=total_sheet_count)
+    recut_parts: list[str] = get_recut_parts(batch_data=new_laser_batch_data)
+    add_recut_parts(batch_data=new_laser_batch_data, recut_parts=recut_parts)
+    no_recut_parts: list[str] = get_no_recut_parts(batch_data=new_laser_batch_data)
+
+
+def add_recut_parts(batch_data: dict, recut_parts: list[str]) -> None:
+    """
+    It adds a new item to the "Recut" category of the inventory, and then changes the current quantity,
+    unit quantity, modified date, and group of the new item
+
+    Args:
+      batch_data (dict)
+      recut_parts (list[str])
+    """
+    for recut_part in recut_parts:
+        if part_exists(category="Recut", part_name_to_find=recut_part):
+            recut_part = f"{recut_part} - (Copy)"
+        price_of_steel_inventory.add_item_in_object("Recut", recut_part)
+        price_of_steel_inventory.change_object_in_object_item(
+            "Recut",
+            recut_part,
+            "current_quantity",
+            batch_data[recut_part]["quantity"],
+        )
+        price_of_steel_inventory.change_object_in_object_item(
+            "Recut",
+            recut_part,
+            "unit_quantity",
+            1,
+        )
+        price_of_steel_inventory.change_object_in_object_item(
+            "Recut",
+            recut_part,
+            "modified_date",
+            "Added @ " + str(datetime.now().strftime("%B %d %A %Y %I-%M-%S %p")),
+        )
+        price_of_steel_inventory.change_object_in_object_item(
+            "Recut", recut_part, "group", None
+        )
+
+
+def part_exists(category: str, part_name_to_find: str) -> bool:
+    """
+    > Given a category and a part name, return True if the part exists in the inventory, False otherwise
+
+    Args:
+      category (str): str
+      part_name_to_find (str): The name of the part you want to find.
+
+    Returns:
+      A boolean value.
+    """
+    return part_name_to_find in list(parts_in_inventory.get_data()[category].keys())
+
+
+def get_recut_parts(batch_data) -> list[str]:
+    """
+    > This function takes a dictionary of part names and their attributes, and returns a list of part
+    names that have the attribute "recut" set to True
+
+    Args:
+      batch_data: dict
+
+    Returns:
+      A list of strings.
+    """
+    recut_parts: list[str] = [
+        part_name
+        for part_name in list(batch_data.keys())
+        if batch_data[part_name]["recut"] == True
+    ]
+    return recut_parts
+
+
+def get_no_recut_parts(batch_data) -> list[str]:
+    """
+    > This function takes a dictionary of part names and their attributes, and returns a list of part
+    names that have a `recut` attribute of `False`
+
+    Args:
+      batch_data: dict
+
+    Returns:
+      A list of part names that have a recut value of False.
+    """
+    no_recut_parts: list[str] = [
+        part_name
+        for part_name in list(batch_data.keys())
+        if batch_data[part_name]["recut"] == False
+    ]
+    return no_recut_parts
+
+
+def subtract_sheet_count(sheet_name_to_update: str, sheet_count: int) -> None:
+    """
+    It takes a sheet name and a sheet count, and subtracts the sheet count from the sheet name's current
+    quantity
+
+    Args:
+      sheet_name_to_update (str): str = "Sheet Name"
+      sheet_count (int): int = the number of sheets to subtract from the inventory
+    """
+    print(sheet_name_to_update, sheet_count)
+    category_data = price_of_steel_inventory.get_data()
+    for category in list(category_data.keys()):
+        if category == "Price Per Pound":
+            continue
+        for sheet_name in list(category_data[category].keys()):
+            if sheet_name_to_update == sheet_name:
+                old_quantity: int = category_data[category][sheet_name][
+                    "current_quantity"
+                ]
+                price_of_steel_inventory.change_object_in_object_item(
+                    category, sheet_name, "quantity", old_quantity - sheet_count
+                )
 
 
 def get_sheet_name(batch_data: dict) -> str:
@@ -50,3 +165,9 @@ def get_total_sheet_count(batch_data: dict) -> int:
         if part_name[0] == "_"
     )
     return sheet_count
+
+
+if __name__ == "__main__":
+    update_inventory(
+        r"F:\Code\Python-Projects\Inventory Manager\server\data\laser_parts_new_batch.json"
+    )
