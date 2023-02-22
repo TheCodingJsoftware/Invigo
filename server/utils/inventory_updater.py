@@ -13,6 +13,7 @@ parts_in_inventory = JsonFile(file_name="data/testt - Parts in Inventory")
 
 
 def update_inventory(file_path: str) -> None:
+    parts_in_inventory = JsonFile(file_name="data/testt - Parts in Inventory")
     with open(file_path) as json_file:
         new_laser_batch_data = json.load(json_file)
     total_sheet_count: int = get_total_sheet_count(batch_data=new_laser_batch_data)
@@ -24,6 +25,7 @@ def update_inventory(file_path: str) -> None:
     add_recut_parts(batch_data=new_laser_batch_data, recut_parts=recut_parts)
     no_recut_parts: list[str] = get_no_recut_parts(batch_data=new_laser_batch_data)
     add_parts(batch_data=new_laser_batch_data, parts_to_add=no_recut_parts)
+    parts_in_inventory.save_data()
 
 
 def add_parts(batch_data: dict, parts_to_add: list[str]):
@@ -133,6 +135,9 @@ def add_recut_parts(batch_data: dict, recut_parts: list[str]) -> None:
         name = recut_part
         if part_exists(category="Recut", part_name_to_find=recut_part):
             name = f"{recut_part} - (Copy)"
+            for _ in range(10):
+                if part_exists(category="Recut", part_name_to_find=name):
+                    name += " - (Copy)"
         parts_in_inventory.add_item_in_object("Recut", name)
         parts_in_inventory.change_object_in_object_item(
             "Recut",
