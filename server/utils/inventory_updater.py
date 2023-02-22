@@ -85,11 +85,13 @@ def get_recut_parts(batch_data) -> list[str]:
     Returns:
       A list of strings.
     """
-    recut_parts: list[str] = [
-        part_name
-        for part_name in list(batch_data.keys())
-        if part_name[0] != "_" and batch_data[part_name]["recut"] == True
-    ]
+    recut_parts: list[str] = []
+    for part_name in list(batch_data.keys()):
+        try:
+            if batch_data[part_name]["recut"] == True:
+                recut_parts.append(part_name)
+        except KeyError:
+            return
     return recut_parts
 
 
