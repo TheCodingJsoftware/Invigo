@@ -13,6 +13,12 @@ parts_in_inventory = JsonFile(file_name="data/testt - Parts in Inventory")
 
 
 def update_inventory(file_path: str) -> None:
+    """
+    It takes a json file, parses it, and updates a google sheet with the data
+
+    Args:
+      file_path (str): str = "data/testt - Laser Batch Data.json"
+    """
     parts_in_inventory = JsonFile(file_name="data/testt - Parts in Inventory")
     with open(file_path) as json_file:
         new_laser_batch_data = json.load(json_file)
@@ -45,7 +51,8 @@ def add_parts(batch_data: dict, parts_to_add: list[str]):
                     part_name_to_update=part_to_add,
                     quantity=batch_data[part_to_add]["quantity"],
                 )
-                parts_updated.remove(part_to_add)
+                with contextlib.suppress(ValueError):
+                    parts_updated.remove(part_to_add)
     for part_to_add_to_custom in parts_updated:
         add_part_to_inventory(
             category="Custom", part_to_add=part_to_add_to_custom, batch_data=batch_data
