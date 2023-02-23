@@ -1,38 +1,82 @@
 {
     "BL 29": {
         "2534-022": {
-            "current_quantity": 2,
+            "current_quantity": 10.0,
             "machine_time": 1.58,
             "gauge": "3\/16\"",
             "material": "Mild Steel",
             "weight": 49.118,
             "price": 35.39,
             "unit_quantity": 1,
-            "modified_date": "Added at February 23 Thursday 2023 08:42:11 AM",
+            "modified_date": "Removed 1 quantity at February 23 Thursday 2023 11:48:12 AM",
             "group": null
         }
     },
     "Custom": {
         "2534-022": {
-            "current_quantity": 2,
+            "current_quantity": 10.0,
             "machine_time": 1.58,
             "gauge": "3\/16\"",
             "material": "Mild Steel",
             "weight": 49.118,
             "price": 35.39,
             "unit_quantity": 1,
-            "modified_date": "Added at February 23 Thursday 2023 08:42:11 AM",
+            "modified_date": "Removed 1 quantity at February 23 Thursday 2023 11:48:12 AM",
             "group": null
         },
         "304434": {
-            "current_quantity": 4,
+            "current_quantity": 3,
             "machine_time": 0.8,
             "gauge": "3\/16\"",
             "material": "Mild Steel",
             "weight": 14.956,
             "price": 11.57,
             "unit_quantity": 1,
-            "modified_date": "Added at February 23 Thursday 2023 08:42:11 AM",
+            "modified_date": "Removed 1 quantity at February 23 Thursday 2023 11:48:12 AM",
+            "group": null
+        },
+        "G3-1-Housing-Back-cross piece 1": {
+            "current_quantity": 0,
+            "machine_time": 0.73,
+            "gauge": "0.05\"",
+            "material": "Mild Steel",
+            "weight": 6.811,
+            "price": 6.18,
+            "unit_quantity": 1,
+            "modified_date": "Removed 1 quantity at February 23 Thursday 2023 11:48:12 AM",
+            "group": null
+        },
+        "G3-1-Housing-Front-Bottom": {
+            "current_quantity": 0,
+            "machine_time": 0.6,
+            "gauge": "0.05\"",
+            "material": "Mild Steel",
+            "weight": 6.355,
+            "price": 5.57,
+            "unit_quantity": 1,
+            "modified_date": "Removed 1 quantity at February 23 Thursday 2023 11:48:12 AM",
+            "group": null
+        },
+        "G3-1-Housing-left side panel": {
+            "current_quantity": 0,
+            "machine_time": 1.1,
+            "gauge": "0.05\"",
+            "material": "Mild Steel",
+            "weight": 24.288,
+            "price": 18.29,
+            "unit_quantity": 1,
+            "modified_date": "Removed 1 quantity at February 23 Thursday 2023 11:48:12 AM",
+            "group": null
+        },
+        "G3-1-Housing-right side panel": {
+            "current_quantity": 0,
+            "machine_time": 1.42,
+            "gauge": "0.05\"",
+            "material": "Mild Steel",
+            "weight": 24.218,
+            "price": 19.05,
+            "unit_quantity": 1,
+            "modified_date": "Removed 1 quantity at February 23 Thursday 2023 11:48:12 AM",
             "group": null
         }
     },
@@ -40,13 +84,49 @@
         "NEWLEG": {
             "current_quantity": 7,
             "price": 15.04,
-            "recut_count": 0,
+            "recut_count": 2,
             "machine_time": 0.93,
             "gauge": "3\/16\"",
             "material": "Mild Steel",
             "weight": 19.871,
             "unit_quantity": 1,
             "modified_date": "Added at February 23 Thursday 2023 08:42:11 AM",
+            "group": null
+        },
+        "G3-1-Roof-Rear": {
+            "current_quantity": 1,
+            "price": 10.64,
+            "recut_count": 0,
+            "machine_time": 0.72,
+            "gauge": "0.05\"",
+            "material": "Mild Steel",
+            "weight": 13.816,
+            "unit_quantity": 1,
+            "modified_date": "Added at February 23 Thursday 2023 09:15:33 AM",
+            "group": null
+        },
+        "NEWLEG - (Recut 1 time(s))": {
+            "current_quantity": 7,
+            "price": 15.04,
+            "recut_count": 1,
+            "machine_time": 0.93,
+            "gauge": "3\/16\"",
+            "material": "Mild Steel",
+            "weight": 19.871,
+            "unit_quantity": 1,
+            "modified_date": "Added at February 23 Thursday 2023 09:15:52 AM",
+            "group": null
+        },
+        "NEWLEG - (Recut 2 time(s))": {
+            "current_quantity": 7,
+            "price": 15.04,
+            "recut_count": 2,
+            "machine_time": 0.93,
+            "gauge": "3\/16\"",
+            "material": "Mild Steel",
+            "weight": 19.871,
+            "unit_quantity": 1,
+            "modified_date": "Added at February 23 Thursday 2023 09:19:48 AM",
             "group": null
         }
     }
