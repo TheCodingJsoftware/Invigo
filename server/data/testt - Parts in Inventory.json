@@ -1,5 +1,17 @@
 {
-    "BL 29": {},
+    "BL 29": {
+        "PLT-0500-044W-0050": {
+            "current_quantity": 1,
+            "machine_time": 1.93,
+            "gauge": "1\/2\"",
+            "material": "Laser Grade Plate",
+            "weight": 62.594,
+            "price": 220.77,
+            "unit_quantity": 1,
+            "modified_date": "Added at February 23 Thursday 2023 04:13:51 PM",
+            "group": null
+        }
+    },
     "Custom": {
         "PLT-0500-044W-0014x4": {
             "current_quantity": 4,
@@ -63,17 +75,6 @@
             "material": "Laser Grade Plate",
             "weight": 12.587,
             "price": 20.33,
-            "unit_quantity": 1,
-            "modified_date": "Added at February 23 Thursday 2023 04:13:51 PM",
-            "group": null
-        },
-        "PLT-0500-044W-0050": {
-            "current_quantity": 1,
-            "machine_time": 1.93,
-            "gauge": "1\/2\"",
-            "material": "Laser Grade Plate",
-            "weight": 62.594,
-            "price": 95.59,
             "unit_quantity": 1,
             "modified_date": "Added at February 23 Thursday 2023 04:13:51 PM",
             "group": null
