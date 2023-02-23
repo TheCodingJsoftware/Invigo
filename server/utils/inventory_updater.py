@@ -158,12 +158,17 @@ def add_recut_parts(batch_data: dict, recut_parts: list[str]) -> None:
         name = recut_part
         recut_count: int = 0
         if part_exists(category="Recut", part_name_to_find=recut_part):
-            name = f"{recut_part} - (Copy)"
-            recut_count = 1
-            for _ in range(10):
-                if part_exists(category="Recut", part_name_to_find=name):
-                    name += " - (Copy)"
-                    recut_count += 1
+
+            recut_count = (
+                parts_in_inventory.get_data()["Recut"][recut_part]["recut_count"] + 1
+            )
+            parts_in_inventory.change_object_in_object_item(
+                "Recut",
+                name,
+                "recut_count",
+                recut_count,
+            )
+            name = recut_part + f" - (Recut {recut_count} time(s))"
         parts_in_inventory.add_item_in_object("Recut", name)
         parts_in_inventory.change_object_in_object_item(
             "Recut",
