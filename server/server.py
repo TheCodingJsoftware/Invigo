@@ -90,7 +90,7 @@ class Server:
                     f"{Colors.BOLD}{datetime.now()}{Colors.ENDC} - {Colors.OKGREEN}[ ] Connection established with: {str(client_address)}{Colors.ENDC}"
                 )
                 logging.info(f"Connection established with: {str(client_address)}")
-                sleep(1)  # ! IMPORTANT
+                sleep(0.5)  # ! IMPORTANT
                 print(
                     f"{Colors.BOLD}{datetime.now()}{Colors.ENDC}\t{Colors.OKGREEN}[ ] Starting process: {str(client_address)} Command: {data.split(self.SEPARATOR)[0]}{Colors.ENDC}"
                 )
@@ -105,7 +105,7 @@ class Server:
                     )
                     logging.info(f"Sending file to client\tFile: {filename}")
                     client_socket.sendall(f"{os.path.getsize(filename)}".encode())
-                    sleep(1)  # ! IMPORTANT
+                    sleep(0.5)  # ! IMPORTANT
                     # sel
                     with open(filename, "rb") as f:
                         while True:
