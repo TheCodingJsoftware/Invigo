@@ -31,6 +31,7 @@ def update_inventory(file_path: str) -> None:
     add_recut_parts(batch_data=new_laser_batch_data, recut_parts=recut_parts)
     no_recut_parts: list[str] = get_no_recut_parts(batch_data=new_laser_batch_data)
     add_parts(batch_data=new_laser_batch_data, parts_to_add=no_recut_parts)
+    sort_inventory()
 
 
 def add_parts(batch_data: dict, parts_to_add: list[str]):
@@ -175,7 +176,7 @@ def add_recut_parts(batch_data: dict, recut_parts: list[str]) -> None:
                 "recut_count",
                 recut_count,
             )
-            name = recut_part + f" - (Recut {recut_count} time(s))"
+            name = f"{recut_part} - (Recut {recut_count} time(s))"
         parts_in_inventory.add_item_in_object("Recut", name)
         parts_in_inventory.change_object_in_object_item(
             "Recut",
@@ -371,6 +372,13 @@ def get_total_sheet_count(batch_data: dict) -> int:
         if part_name[0] == "_"
     )
     return sheet_count
+
+
+def sort_inventory() -> None:
+    for category in parts_in_inventory.get_data():
+        parts_in_inventory.sort(
+            category=category, item_name="current_quantity", ascending=False
+        )
 
 
 if __name__ == "__main__":
