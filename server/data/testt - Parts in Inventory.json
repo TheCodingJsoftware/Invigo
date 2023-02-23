@@ -14,7 +14,7 @@
             "price": 22.47,
             "unit_quantity": 5.0,
             "modified_date": "Removed 50.0 quantity at February 22 Wednesday 2023 08:18:11 PM",
-            "group": null
+            "group": "group i am"
         },
         "BIA-038": {
             "current_quantity": -207.0,
@@ -28,7 +28,7 @@
             "price": 18.92,
             "unit_quantity": 1,
             "modified_date": "Removed 8 quantity at February 22 Wednesday 2023 08:17:27 PM",
-            "group": null
+            "group": "group i am"
         },
         "G3-1-Door-Outer Panel": {
             "current_quantity": -38,
