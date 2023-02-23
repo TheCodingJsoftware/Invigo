@@ -20,7 +20,7 @@
             "material": "Mild Steel",
             "weight": 49.118,
             "price": 35.39,
-            "unit_quantity": 999.0,
+            "unit_quantity": 1,
             "modified_date": "10 quantity added at February 23 Thursday 2023 01:35:30 PM",
             "group": null
         },
@@ -953,7 +953,7 @@
         "NEWLEG": {
             "current_quantity": 7,
             "price": 15.04,
-            "recut_count": 3,
+            "recut_count": 4,
             "machine_time": 0.93,
             "gauge": "3\/16\"",
             "material": "Mild Steel",
@@ -1001,7 +1001,7 @@
         "2534-022": {
             "current_quantity": 2,
             "price": 35.39,
-            "recut_count": 0,
+            "recut_count": 1,
             "machine_time": 1.58,
             "gauge": "3\/16\"",
             "material": "Mild Steel",
@@ -1013,7 +1013,7 @@
         "304434": {
             "current_quantity": 4,
             "price": 11.57,
-            "recut_count": 0,
+            "recut_count": 1,
             "machine_time": 0.8,
             "gauge": "3\/16\"",
             "material": "Mild Steel",
@@ -1176,6 +1176,42 @@
             "weight": 8.625,
             "unit_quantity": 1,
             "modified_date": "Added at February 23 Thursday 2023 01:28:18 PM",
+            "group": null
+        },
+        "2534-022 - (Recut 1 time(s))": {
+            "current_quantity": 2,
+            "price": 35.39,
+            "recut_count": 1,
+            "machine_time": 1.58,
+            "gauge": "3\/16\"",
+            "material": "Mild Steel",
+            "weight": 49.118,
+            "unit_quantity": 1,
+            "modified_date": "Added at February 23 Thursday 2023 01:42:34 PM",
+            "group": null
+        },
+        "304434 - (Recut 1 time(s))": {
+            "current_quantity": 4,
+            "price": 11.57,
+            "recut_count": 1,
+            "machine_time": 0.8,
+            "gauge": "3\/16\"",
+            "material": "Mild Steel",
+            "weight": 14.956,
+            "unit_quantity": 1,
+            "modified_date": "Added at February 23 Thursday 2023 01:42:34 PM",
+            "group": null
+        },
+        "NEWLEG - (Recut 4 time(s))": {
+            "current_quantity": 7,
+            "price": 15.04,
+            "recut_count": 4,
+            "machine_time": 0.93,
+            "gauge": "3\/16\"",
+            "material": "Mild Steel",
+            "weight": 19.871,
+            "unit_quantity": 1,
+            "modified_date": "Added at February 23 Thursday 2023 01:42:34 PM",
             "group": null
         }
     }
