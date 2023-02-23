@@ -1,160 +1,434 @@
 {
     "BL 29": {
-        "NEWLEG": {
-            "current_quantity": 110,
-            "unit_quantity": 1,
-            "modified_date": "39 quantity added at February 22 Wednesday 2023 07-59-35 AM",
+        "B-32154 R0": {
+            "current_quantity": 24.0,
+            "price": 22.47,
+            "unit_quantity": 8.0,
+            "modified_date": "Manually set to 24.0 quantity at February 22 Wednesday 2023 07:27:35 PM",
             "group": null
         }
     },
     "Custom": {
-        "2534-022": {
-            "current_quantity": 38,
-            "price": "35.39",
-            "modified_date": "10 quantity added at February 22 Wednesday 2023 07-59-35 AM"
-        },
-        "2534-020": {
-            "current_quantity": 11,
-            "price": "112.45",
-            "unit_quantity": 1,
-            "modified_date": "5 quantity added at February 22 Wednesday 2023 07-59-35 AM",
+        "B-32154 R0": {
+            "current_quantity": 24.0,
+            "price": 22.47,
+            "unit_quantity": 8.0,
+            "modified_date": "Manually set to 24.0 quantity at February 22 Wednesday 2023 07:27:35 PM",
             "group": null
         },
-        "2534-021": {
-            "current_quantity": 11,
-            "price": "28.30",
-            "unit_quantity": 1,
-            "modified_date": "5 quantity added at February 22 Wednesday 2023 07-59-35 AM",
+        "BIA-038": {
+            "current_quantity": 9.0,
+            "price": 2.4,
+            "unit_quantity": 8.0,
+            "modified_date": "Manually set to 9.0 quantity at February 22 Wednesday 2023 07:23:26 PM",
             "group": null
         },
-        "2534-050": {
-            "current_quantity": 5,
-            "price": "11.00",
+        "G3-1-Door-Inner Panel": {
+            "current_quantity": -9.0,
+            "price": 18.92,
             "unit_quantity": 1,
-            "modified_date": "Added at February 22 Wednesday 2023 07-11-29 AM",
+            "modified_date": "Manually set to -9.0 quantity at February 22 Wednesday 2023 07:23:43 PM",
             "group": null
         },
-        "304428": {
-            "current_quantity": 90,
-            "price": "4.23",
+        "G3-1-Door-Outer Panel": {
+            "current_quantity": -11,
+            "price": 22.95,
             "unit_quantity": 1,
-            "modified_date": "30 quantity added at February 22 Wednesday 2023 07-59-35 AM",
+            "modified_date": "Removed 5 quantity at February 22 Wednesday 2023 06:20:11 PM",
             "group": null
         },
-        "304434": {
-            "current_quantity": 62,
-            "price": "11.57",
+        "G3-1-Housing-Access Cover-Bottom": {
+            "current_quantity": -11,
+            "price": 18.23,
             "unit_quantity": 1,
-            "modified_date": "22 quantity added at February 22 Wednesday 2023 07-59-35 AM",
+            "modified_date": "Removed 5 quantity at February 22 Wednesday 2023 06:20:11 PM",
             "group": null
         },
-        "404412": {
-            "current_quantity": 15,
-            "price": "58.54",
+        "G3-1-Housing-Access Cover-Top": {
+            "current_quantity": -10,
+            "price": 8.31,
             "unit_quantity": 1,
-            "modified_date": "5 quantity added at February 22 Wednesday 2023 07-59-35 AM",
+            "modified_date": "Removed 5 quantity at February 22 Wednesday 2023 06:20:11 PM",
             "group": null
         },
-        "404413": {
-            "current_quantity": 15,
-            "price": "71.13",
+        "G3-1-Housing-Back-cross piece 1": {
+            "current_quantity": -11,
+            "price": 6.18,
             "unit_quantity": 1,
-            "modified_date": "5 quantity added at February 22 Wednesday 2023 07-59-35 AM",
+            "modified_date": "Removed 5 quantity at February 22 Wednesday 2023 06:20:11 PM",
             "group": null
         },
-        "404459": {
-            "current_quantity": 1,
-            "price": "20.53",
+        "G3-1-Housing-Door Top": {
+            "current_quantity": -10,
+            "price": 1.78,
             "unit_quantity": 1,
-            "modified_date": "Added at February 22 Wednesday 2023 07-11-29 AM",
+            "modified_date": "Removed 5 quantity at February 22 Wednesday 2023 06:20:11 PM",
             "group": null
         },
-        "404460": {
-            "current_quantity": 10,
-            "price": "19.36",
+        "G3-1-Housing-Fan cooling air channel": {
+            "current_quantity": -10,
+            "price": 4.29,
             "unit_quantity": 1,
-            "modified_date": "5 quantity added at February 22 Wednesday 2023 07-59-35 AM",
+            "modified_date": "Removed 5 quantity at February 22 Wednesday 2023 06:20:11 PM",
             "group": null
         },
-        "G2Plus-Fan-Mount Base Plate": {
-            "current_quantity": 48,
-            "price": "5.01",
+        "G3-1-Housing-Front Insulation cover insert 01": {
+            "current_quantity": -11,
+            "price": 1.38,
             "unit_quantity": 1,
-            "modified_date": "16 quantity added at February 22 Wednesday 2023 07-59-35 AM",
+            "modified_date": "Removed 5 quantity at February 22 Wednesday 2023 06:20:11 PM",
+            "group": null
+        },
+        "G3-1-Housing-Front Insulation cover insert 02": {
+            "current_quantity": -11,
+            "price": 0.83,
+            "unit_quantity": 1,
+            "modified_date": "Removed 5 quantity at February 22 Wednesday 2023 06:20:11 PM",
+            "group": null
+        },
+        "G3-1-Housing-Front Insulation cover insert 03": {
+            "current_quantity": -11,
+            "price": 1.61,
+            "unit_quantity": 1,
+            "modified_date": "Removed 5 quantity at February 22 Wednesday 2023 06:20:11 PM",
+            "group": null
+        },
+        "G3-1-Housing-Front Insulation cover insert 04x3": {
+            "current_quantity": 17.0,
+            "price": 0.73,
+            "unit_quantity": 5.0,
+            "modified_date": "Manually set to 17.0 quantity at February 22 Wednesday 2023 07:30:01 PM",
+            "group": null
+        },
+        "G3-1-Housing-Front-Bottom": {
+            "current_quantity": -11,
+            "price": 5.57,
+            "unit_quantity": 1,
+            "modified_date": "Removed 5 quantity at February 22 Wednesday 2023 06:20:11 PM",
+            "group": null
+        },
+        "G3-1-Housing-Left Side_Rear Panel": {
+            "current_quantity": -11,
+            "price": 41.13,
+            "unit_quantity": 1,
+            "modified_date": "Removed 5 quantity at February 22 Wednesday 2023 06:20:11 PM",
+            "group": null
+        },
+        "G3-1-Housing-Main Cross Link": {
+            "current_quantity": -10,
+            "price": 27.7,
+            "unit_quantity": 1,
+            "modified_date": "Removed 5 quantity at February 22 Wednesday 2023 06:20:11 PM",
+            "group": null
+        },
+        "G3-1-Housing-Outer Door- limit switch": {
+            "current_quantity": -11,
+            "price": 0.42,
+            "unit_quantity": 1,
+            "modified_date": "Removed 5 quantity at February 22 Wednesday 2023 06:20:11 PM",
+            "group": null
+        },
+        "G3-1-Housing-Rear-Partitioning-part 1": {
+            "current_quantity": -11,
+            "price": 2.61,
+            "unit_quantity": 1,
+            "modified_date": "Removed 5 quantity at February 22 Wednesday 2023 06:20:11 PM",
+            "group": null
+        },
+        "G3-1-Housing-access to flues outer cover": {
+            "current_quantity": -11,
+            "price": 6.15,
+            "unit_quantity": 1,
+            "modified_date": "Removed 5 quantity at February 22 Wednesday 2023 06:20:11 PM",
+            "group": null
+        },
+        "G3-1-Housing-left side panel": {
+            "current_quantity": -11,
+            "price": 18.29,
+            "unit_quantity": 1,
+            "modified_date": "Removed 5 quantity at February 22 Wednesday 2023 06:20:11 PM",
+            "group": null
+        },
+        "G3-1-Housing-overflow pipe trim": {
+            "current_quantity": -11,
+            "price": 0.54,
+            "unit_quantity": 1,
+            "modified_date": "Removed 5 quantity at February 22 Wednesday 2023 06:20:11 PM",
+            "group": null
+        },
+        "G3-1-Housing-right side panel": {
+            "current_quantity": -11,
+            "price": 19.05,
+            "unit_quantity": 1,
+            "modified_date": "Removed 5 quantity at February 22 Wednesday 2023 06:20:11 PM",
+            "group": null
+        },
+        "G3-1-Housing-side cleanout door trim": {
+            "current_quantity": -11,
+            "price": 2.24,
+            "unit_quantity": 1,
+            "modified_date": "Removed 5 quantity at February 22 Wednesday 2023 06:20:11 PM",
+            "group": null
+        },
+        "G3-1-Lift hook trim": {
+            "current_quantity": -11,
+            "price": 0.58,
+            "unit_quantity": 1,
+            "modified_date": "Removed 5 quantity at February 22 Wednesday 2023 06:20:11 PM",
+            "group": null
+        },
+        "G3-1-Roof-Rear": {
+            "current_quantity": -11,
+            "price": 10.64,
+            "unit_quantity": 1,
+            "modified_date": "Removed 5 quantity at February 22 Wednesday 2023 06:20:11 PM",
+            "group": null
+        },
+        "G3-1-Wiring Board": {
+            "current_quantity": -10,
+            "price": 3.75,
+            "unit_quantity": 1,
+            "modified_date": "Removed 5 quantity at February 22 Wednesday 2023 06:20:11 PM",
+            "group": null
+        },
+        "G3-1-housing-Back Bottom": {
+            "current_quantity": -11,
+            "price": 7.8,
+            "unit_quantity": 1,
+            "modified_date": "Removed 5 quantity at February 22 Wednesday 2023 06:20:11 PM",
+            "group": null
+        },
+        "G3-1-light shroud": {
+            "current_quantity": -11,
+            "price": 2.49,
+            "unit_quantity": 1,
+            "modified_date": "Removed 5 quantity at February 22 Wednesday 2023 06:20:11 PM",
+            "group": null
+        },
+        "PLT-0250-044W-0004x4": {
+            "current_quantity": -8,
+            "price": 2.34,
+            "unit_quantity": 1,
+            "modified_date": "Removed 5 quantity at February 22 Wednesday 2023 06:20:11 PM",
+            "group": null
+        },
+        "PLT-0250-044W-0006x4": {
+            "current_quantity": -8,
+            "price": 2.29,
+            "unit_quantity": 1,
+            "modified_date": "Removed 5 quantity at February 22 Wednesday 2023 06:20:11 PM",
+            "group": null
+        },
+        "PLT-0250-044W-0007x4": {
+            "current_quantity": -8,
+            "price": 2.74,
+            "unit_quantity": 1,
+            "modified_date": "Removed 5 quantity at February 22 Wednesday 2023 06:20:11 PM",
+            "group": null
+        },
+        "PLT-0250-044W-0008x4": {
+            "current_quantity": -8,
+            "price": 2.54,
+            "unit_quantity": 1,
+            "modified_date": "Removed 5 quantity at February 22 Wednesday 2023 06:20:11 PM",
+            "group": null
+        },
+        "PLT-0250-044W-0009": {
+            "current_quantity": -11,
+            "price": 9.21,
+            "unit_quantity": 1,
+            "modified_date": "Removed 5 quantity at February 22 Wednesday 2023 06:20:11 PM",
+            "group": null
+        },
+        "PLT-0375-044W-0017x4": {
+            "current_quantity": -8,
+            "price": 4.35,
+            "unit_quantity": 1,
+            "modified_date": "Removed 5 quantity at February 22 Wednesday 2023 06:20:11 PM",
+            "group": null
+        },
+        "PLT-0375-044W-0018x2": {
+            "current_quantity": -10,
+            "price": 9.1,
+            "unit_quantity": 1,
+            "modified_date": "Removed 5 quantity at February 22 Wednesday 2023 06:20:11 PM",
+            "group": null
+        },
+        "PLT-0750-044W-0001x6": {
+            "current_quantity": -6,
+            "price": 102.36,
+            "unit_quantity": 1,
+            "modified_date": "Removed 5 quantity at February 22 Wednesday 2023 06:20:11 PM",
+            "group": null
+        },
+        "G3-1-Housing-Front Insulation cover": {
+            "current_quantity": -11,
+            "price": 24.45,
+            "unit_quantity": 1,
+            "modified_date": "Removed 5 quantity at February 22 Wednesday 2023 06:20:11 PM",
             "group": null
         }
     },
     "Recut": {
-        "123123 213123 12": {
-            "current_quantity": 0,
-            "unit_quantity": 0,
-            "price": 0,
-            "modified_date": ""
-        },
-        "304428": {
-            "current_quantity": 12,
+        "G3-1-Housing-Front Insulation cover": {
+            "current_quantity": 1,
+            "price": 24.45,
             "unit_quantity": 1,
-            "modified_date": "Added @ February 21 Tuesday 2023 09-07-23 PM",
+            "modified_date": "Added at February 22 Wednesday 2023 02-20-35 PM",
             "group": null
         },
-        "304434": {
+        "PLT-0250-044W-0004x4": {
+            "current_quantity": 4,
+            "price": 2.34,
+            "unit_quantity": 1,
+            "modified_date": "Added at February 22 Wednesday 2023 02-36-27 PM",
+            "group": null
+        },
+        "PLT-0250-044W-0006x4": {
+            "current_quantity": 4,
+            "price": 2.29,
+            "unit_quantity": 1,
+            "modified_date": "Added at February 22 Wednesday 2023 02-36-27 PM",
+            "group": null
+        },
+        "PLT-0250-044W-0007x4": {
+            "current_quantity": 4,
+            "price": 2.74,
+            "unit_quantity": 1,
+            "modified_date": "Added at February 22 Wednesday 2023 02-36-27 PM",
+            "group": null
+        },
+        "PLT-0250-044W-0008x4": {
+            "current_quantity": 4,
+            "price": 2.54,
+            "unit_quantity": 1,
+            "modified_date": "Added at February 22 Wednesday 2023 02-36-27 PM",
+            "group": null
+        },
+        "PLT-0250-044W-0009": {
+            "current_quantity": 1,
+            "price": 9.21,
+            "unit_quantity": 1,
+            "modified_date": "Added at February 22 Wednesday 2023 02-36-27 PM",
+            "group": null
+        },
+        "PLT-0750-044W-0001x6": {
+            "current_quantity": 6,
+            "price": 102.36,
+            "unit_quantity": 1,
+            "modified_date": "Added at February 22 Wednesday 2023 02-36-27 PM",
+            "group": null
+        },
+        "PLT-0250-044W-0004x4 - (Copy)": {
+            "current_quantity": 4,
+            "price": 2.34,
+            "unit_quantity": 1,
+            "modified_date": "Added at February 22 Wednesday 2023 02-37-08 PM",
+            "group": null
+        },
+        "PLT-0250-044W-0006x4 - (Copy)": {
+            "current_quantity": 4,
+            "price": 2.29,
+            "unit_quantity": 1,
+            "modified_date": "Added at February 22 Wednesday 2023 02-37-08 PM",
+            "group": null
+        },
+        "PLT-0250-044W-0007x4 - (Copy)": {
+            "current_quantity": 4,
+            "price": 2.74,
+            "unit_quantity": 1,
+            "modified_date": "Added at February 22 Wednesday 2023 02-37-08 PM",
+            "group": null
+        },
+        "PLT-0250-044W-0008x4 - (Copy)": {
+            "current_quantity": 4,
+            "price": 2.54,
+            "unit_quantity": 1,
+            "modified_date": "Added at February 22 Wednesday 2023 02-37-08 PM",
+            "group": null
+        },
+        "PLT-0250-044W-0009 - (Copy)": {
+            "current_quantity": 1,
+            "price": 9.21,
+            "unit_quantity": 1,
+            "modified_date": "Added at February 22 Wednesday 2023 02-37-08 PM",
+            "group": null
+        },
+        "PLT-0375-044W-0017x4": {
+            "current_quantity": 4,
+            "price": 4.35,
+            "unit_quantity": 1,
+            "modified_date": "Added at February 22 Wednesday 2023 02-37-08 PM",
+            "group": null
+        },
+        "PLT-0375-044W-0018x2": {
             "current_quantity": 2,
+            "price": 9.1,
             "unit_quantity": 1,
-            "modified_date": "Added @ February 21 Tuesday 2023 09-07-23 PM",
+            "modified_date": "Added at February 22 Wednesday 2023 02-37-08 PM",
             "group": null
         },
-        "404413": {
+        "PLT-0750-044W-0001x6 - (Copy)": {
+            "current_quantity": 6,
+            "price": 102.36,
+            "unit_quantity": 1,
+            "modified_date": "Added at February 22 Wednesday 2023 02-37-08 PM",
+            "group": null
+        },
+        "PLT-0250-044W-0004x4 - (Copy) - (Copy)": {
             "current_quantity": 4,
+            "price": 2.34,
             "unit_quantity": 1,
-            "modified_date": "Added @ February 21 Tuesday 2023 09-07-23 PM",
+            "modified_date": "Added at February 22 Wednesday 2023 02-38-09 PM",
             "group": null
         },
-        "G2Plus-Fan-Mount Base Plate": {
+        "PLT-0250-044W-0006x4 - (Copy) - (Copy)": {
             "current_quantity": 4,
+            "price": 2.29,
             "unit_quantity": 1,
-            "modified_date": "Added @ February 21 Tuesday 2023 09-07-23 PM",
+            "modified_date": "Added at February 22 Wednesday 2023 02-38-09 PM",
             "group": null
         },
-        "NEWLEG": {
-            "current_quantity": 23,
+        "PLT-0250-044W-0007x4 - (Copy) - (Copy)": {
+            "current_quantity": 4,
+            "price": 2.74,
             "unit_quantity": 1,
-            "modified_date": "19 quantity added at February 22 Wednesday 2023 07-07-06 AM",
+            "modified_date": "Added at February 22 Wednesday 2023 02-38-09 PM",
             "group": null
         },
-        "304428 - (Copy)": {},
-        "2534-020": {
-            "current_quantity": 5,
-            "price": 112.45264,
+        "PLT-0250-044W-0008x4 - (Copy) - (Copy)": {
+            "current_quantity": 4,
+            "price": 2.54,
             "unit_quantity": 1,
-            "modified_date": "Added at February 21 Tuesday 2023 10-37-59 PM",
+            "modified_date": "Added at February 22 Wednesday 2023 02-38-09 PM",
             "group": null
         },
-        "2534-021": {
-            "current_quantity": 5,
-            "price": 28.30316,
+        "PLT-0250-044W-0009 - (Copy) - (Copy)": {
+            "current_quantity": 1,
+            "price": 9.21,
             "unit_quantity": 1,
-            "modified_date": "Added at February 21 Tuesday 2023 10-37-59 PM",
+            "modified_date": "Added at February 22 Wednesday 2023 02-38-09 PM",
             "group": null
         },
-        "404460": {
-            "current_quantity": 5,
-            "price": 19.36428,
+        "PLT-0375-044W-0017x4 - (Copy)": {
+            "current_quantity": 4,
+            "price": 4.35,
             "unit_quantity": 1,
-            "modified_date": "Added at February 21 Tuesday 2023 10-37-59 PM",
+            "modified_date": "Added at February 22 Wednesday 2023 02-38-09 PM",
             "group": null
         },
-        "NEWLEG - (Copy)": {
-            "current_quantity": 20,
-            "price": 15.04244,
+        "PLT-0375-044W-0018x2 - (Copy)": {
+            "current_quantity": 2,
+            "price": 9.1,
             "unit_quantity": 1,
-            "modified_date": "Added at February 21 Tuesday 2023 10-37-59 PM",
+            "modified_date": "Added at February 22 Wednesday 2023 02-38-09 PM",
             "group": null
         },
-        "B-32154 R0": {
-            "current_quantity": 5,
-            "price": 22.469549999999998,
+        "PLT-0750-044W-0001x6 - (Copy) - (Copy)": {
+            "current_quantity": 6,
+            "price": 102.36,
             "unit_quantity": 1,
-            "modified_date": "Added at February 21 Tuesday 2023 10-40-59 PM",
+            "modified_date": "Added at February 22 Wednesday 2023 02-38-09 PM",
             "group": null
         }
     }
