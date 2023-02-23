@@ -25,7 +25,6 @@ def update_inventory(file_path: str) -> None:
     add_recut_parts(batch_data=new_laser_batch_data, recut_parts=recut_parts)
     no_recut_parts: list[str] = get_no_recut_parts(batch_data=new_laser_batch_data)
     add_parts(batch_data=new_laser_batch_data, parts_to_add=no_recut_parts)
-    parts_in_inventory.save_data()
 
 
 def add_parts(batch_data: dict, parts_to_add: list[str]):
@@ -72,6 +71,30 @@ def add_part_to_inventory(category, part_to_add, batch_data) -> None:
     parts_in_inventory.change_object_in_object_item(
         category,
         part_to_add,
+        "machine_time",
+        batch_data[part_to_add]["machine_time"],
+    )
+    parts_in_inventory.change_object_in_object_item(
+        category,
+        part_to_add,
+        "gauge",
+        batch_data[part_to_add]["gauge"],
+    )
+    parts_in_inventory.change_object_in_object_item(
+        category,
+        part_to_add,
+        "material",
+        batch_data[part_to_add]["material"],
+    )
+    parts_in_inventory.change_object_in_object_item(
+        category,
+        part_to_add,
+        "weight",
+        batch_data[part_to_add]["weight"],
+    )
+    parts_in_inventory.change_object_in_object_item(
+        category,
+        part_to_add,
         "price",
         calculate_price(batch_data, part_to_add),
     )
@@ -85,7 +108,7 @@ def add_part_to_inventory(category, part_to_add, batch_data) -> None:
         category,
         part_to_add,
         "modified_date",
-        "Added at " + str(datetime.now().strftime("%B %d %A %Y %I-%M-%S %p")),
+        "Added at " + str(datetime.now().strftime("%B %d %A %Y %I:%M:%S %p")),
     )
     parts_in_inventory.change_object_in_object_item(category, part_to_add, "group", None)
 
@@ -118,7 +141,7 @@ def update_quantity(part_name_to_update: str, quantity: int) -> None:
                 part_name_to_update,
                 "modified_date",
                 f"{quantity} quantity added at "
-                + str(datetime.now().strftime("%B %d %A %Y %I-%M-%S %p")),
+                + str(datetime.now().strftime("%B %d %A %Y %I:%M:%S %p")),
             )
 
 
@@ -133,11 +156,14 @@ def add_recut_parts(batch_data: dict, recut_parts: list[str]) -> None:
     """
     for recut_part in recut_parts:
         name = recut_part
+        recut_count: int = 0
         if part_exists(category="Recut", part_name_to_find=recut_part):
             name = f"{recut_part} - (Copy)"
+            recut_count = 1
             for _ in range(10):
                 if part_exists(category="Recut", part_name_to_find=name):
                     name += " - (Copy)"
+                    recut_count += 1
         parts_in_inventory.add_item_in_object("Recut", name)
         parts_in_inventory.change_object_in_object_item(
             "Recut",
@@ -154,6 +180,36 @@ def add_recut_parts(batch_data: dict, recut_parts: list[str]) -> None:
         parts_in_inventory.change_object_in_object_item(
             "Recut",
             name,
+            "recut_count",
+            recut_count,
+        )
+        parts_in_inventory.change_object_in_object_item(
+            "Recut",
+            name,
+            "machine_time",
+            batch_data[name]["machine_time"],
+        )
+        parts_in_inventory.change_object_in_object_item(
+            "Recut",
+            name,
+            "gauge",
+            batch_data[name]["gauge"],
+        )
+        parts_in_inventory.change_object_in_object_item(
+            "Recut",
+            name,
+            "material",
+            batch_data[name]["material"],
+        )
+        parts_in_inventory.change_object_in_object_item(
+            "Recut",
+            name,
+            "weight",
+            batch_data[name]["weight"],
+        )
+        parts_in_inventory.change_object_in_object_item(
+            "Recut",
+            name,
             "unit_quantity",
             1,
         )
@@ -161,7 +217,7 @@ def add_recut_parts(batch_data: dict, recut_parts: list[str]) -> None:
             "Recut",
             name,
             "modified_date",
-            "Added at " + str(datetime.now().strftime("%B %d %A %Y %I-%M-%S %p")),
+            "Added at " + str(datetime.now().strftime("%B %d %A %Y %I:%M:%S %p")),
         )
         parts_in_inventory.change_object_in_object_item("Recut", name, "group", None)
 
