@@ -1,6 +1,7 @@
 import logging
 import os
 import socket
+import time
 import zipfile
 from datetime import datetime
 from time import sleep
@@ -208,7 +209,22 @@ class Server:
                         )
                         client_socket.sendall(f"{e}".encode("utf-8"))
                     update_inventory("data/laser_parts_new_batch.json")
-                # Laser PC sends file to server
+
+                if "get_modified_date" in data:
+                    command, filename = data.split(self.SEPARATOR)
+                    print(
+                        f"{Colors.BOLD}{datetime.now()}{Colors.ENDC}\t\t{Colors.OKGREEN}[ ] Sending modified date of {filename}{Colors.ENDC}"
+                    )
+                    logging.info(f"Sending modified date of {filename}")
+
+                    client_socket.sendall(
+                        f'{time.strftime("%m/%d/%Y %I:%M:%S %p", time.localtime(os.path.getmtime(filename)))}'.encode()
+                    )
+                    print(
+                        f"{Colors.BOLD}{datetime.now()}{Colors.ENDC}\t\t{Colors.OKGREEN}[+] Succesfully send modified date. {Colors.ENDC}"
+                    )
+                    logging.info("Succesfully send modified date")
+
                 print(
                     f"{Colors.BOLD}{datetime.now()}{Colors.ENDC}\t{Colors.OKGREEN}[+] Process finished!{Colors.ENDC}"
                 )
