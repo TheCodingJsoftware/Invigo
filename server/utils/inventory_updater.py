@@ -192,25 +192,25 @@ def add_recut_parts(batch_data: dict, recut_parts: list[str]) -> None:
             "Recut",
             name,
             "machine_time",
-            batch_data[name]["machine_time"],
+            batch_data[recut_part]["machine_time"],
         )
         parts_in_inventory.change_object_in_object_item(
             "Recut",
             name,
             "gauge",
-            batch_data[name]["gauge"],
+            batch_data[recut_part]["gauge"],
         )
         parts_in_inventory.change_object_in_object_item(
             "Recut",
             name,
             "material",
-            batch_data[name]["material"],
+            batch_data[recut_part]["material"],
         )
         parts_in_inventory.change_object_in_object_item(
             "Recut",
             name,
             "weight",
-            batch_data[name]["weight"],
+            batch_data[recut_part]["weight"],
         )
         parts_in_inventory.change_object_in_object_item(
             "Recut",
