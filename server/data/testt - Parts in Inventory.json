@@ -1,82 +1,82 @@
 {
     "BL 29": {
         "PLT-0500-044W-0050": {
-            "current_quantity": 1,
+            "current_quantity": 2,
             "machine_time": 1.93,
             "gauge": "1\/2\"",
             "material": "Laser Grade Plate",
             "weight": 62.594,
             "price": 95.59,
             "unit_quantity": 1,
-            "modified_date": "Removed 0 quantity at February 23 Thursday 2023 04:52:22 PM",
+            "modified_date": "1 quantity added at February 23 Thursday 2023 05:09:31 PM",
             "group": null
         },
         "PLT-0500-044W-0024-Ax2": {
-            "current_quantity": 1,
+            "current_quantity": 2,
             "machine_time": 0.83,
             "gauge": "1\/2\"",
             "material": "Laser Grade Plate",
             "weight": 12.587,
             "price": 20.33,
             "unit_quantity": 1,
-            "modified_date": "Removed 0 quantity at February 23 Thursday 2023 04:52:22 PM",
+            "modified_date": "1 quantity added at February 23 Thursday 2023 05:09:31 PM",
             "group": "test"
         }
     },
     "Custom": {
         "PLT-0500-044W-0014x4": {
-            "current_quantity": 4,
+            "current_quantity": 8,
             "machine_time": 4.57,
             "gauge": "1\/2\"",
             "material": "Laser Grade Plate",
             "weight": 131.769,
             "price": 202.49,
             "unit_quantity": 1,
-            "modified_date": "Added at February 23 Thursday 2023 04:13:51 PM",
+            "modified_date": "4 quantity added at February 23 Thursday 2023 05:09:31 PM",
             "group": null
         },
         "PLT-0500-044W-0048x4": {
-            "current_quantity": 4,
+            "current_quantity": 8,
             "machine_time": 1.22,
             "gauge": "1\/2\"",
             "material": "Laser Grade Plate",
             "weight": 7.489,
             "price": 13.91,
             "unit_quantity": 1,
-            "modified_date": "Added at February 23 Thursday 2023 04:13:51 PM",
+            "modified_date": "4 quantity added at February 23 Thursday 2023 05:09:31 PM",
             "group": null
         },
         "PLT-0500-044W-0015x4": {
-            "current_quantity": 3,
+            "current_quantity": 6,
             "machine_time": 0.87,
             "gauge": "1\/2\"",
             "material": "Laser Grade Plate",
             "weight": 14.963,
             "price": 23.87,
             "unit_quantity": 1,
-            "modified_date": "Added at February 23 Thursday 2023 04:13:51 PM",
+            "modified_date": "3 quantity added at February 23 Thursday 2023 05:09:31 PM",
             "group": null
         },
         "PLT-0500-044W-0047x2": {
-            "current_quantity": 2,
+            "current_quantity": 4,
             "machine_time": 1.63,
             "gauge": "1\/2\"",
             "material": "Laser Grade Plate",
             "weight": 14.589,
             "price": 25.23,
             "unit_quantity": 1,
-            "modified_date": "Added at February 23 Thursday 2023 04:13:51 PM",
+            "modified_date": "2 quantity added at February 23 Thursday 2023 05:09:31 PM",
             "group": null
         },
         "PLT-0500-044W-0061x2": {
-            "current_quantity": 2,
+            "current_quantity": 4,
             "machine_time": 1.22,
             "gauge": "1\/2\"",
             "material": "Laser Grade Plate",
             "weight": 23.5,
             "price": 37.12,
             "unit_quantity": 1,
-            "modified_date": "Added at February 23 Thursday 2023 04:13:51 PM",
+            "modified_date": "2 quantity added at February 23 Thursday 2023 05:09:31 PM",
             "group": null
         },
         "PM - SS HINGE 3 B_1pcs": {
@@ -132,6 +132,17 @@
             "price": 2.13,
             "unit_quantity": 1,
             "modified_date": "Added at February 23 Thursday 2023 05:08:10 PM",
+            "group": null
+        },
+        "ANG-6X6-0500-044W-0064x3": {
+            "current_quantity": 1,
+            "machine_time": 1.13,
+            "gauge": "1\/2\"",
+            "material": "Laser Grade Plate",
+            "weight": 25.938,
+            "price": 40.44,
+            "unit_quantity": 1,
+            "modified_date": "Added at February 23 Thursday 2023 05:09:31 PM",
             "group": null
         }
     },
