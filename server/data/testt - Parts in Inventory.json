@@ -1,38 +1,38 @@
 {
     "BL 29": {
         "2534-022": {
-            "current_quantity": 43.0,
+            "current_quantity": 38.0,
             "machine_time": 1.58,
             "gauge": "3\/16\"",
             "material": "Mild Steel",
             "weight": 49.118,
             "price": 35.39,
             "unit_quantity": 1,
-            "modified_date": "Manually set to 43.0 quantity at February 23 Thursday 2023 01:44:45 PM",
+            "modified_date": "2 quantity added at February 23 Thursday 2023 02:19:09 PM",
             "group": null
         }
     },
     "Custom": {
         "2534-022": {
-            "current_quantity": 43.0,
+            "current_quantity": 38.0,
             "machine_time": 1.58,
             "gauge": "3\/16\"",
             "material": "Mild Steel",
             "weight": 49.118,
             "price": 35.39,
             "unit_quantity": 1,
-            "modified_date": "Manually set to 43.0 quantity at February 23 Thursday 2023 01:44:45 PM",
+            "modified_date": "2 quantity added at February 23 Thursday 2023 02:19:09 PM",
             "group": null
         },
         "304434": {
-            "current_quantity": 29,
+            "current_quantity": 33,
             "machine_time": 0.8,
             "gauge": "3\/16\"",
             "material": "Mild Steel",
             "weight": 14.956,
             "price": 11.57,
             "unit_quantity": 1,
-            "modified_date": "22 quantity added at February 23 Thursday 2023 01:35:30 PM",
+            "modified_date": "4 quantity added at February 23 Thursday 2023 02:19:09 PM",
             "group": null
         },
         "G3-1-Housing-Back-cross piece 1": {
@@ -80,14 +80,14 @@
             "group": null
         },
         "NEWLEG": {
-            "current_quantity": 46,
+            "current_quantity": 53,
             "machine_time": 0.93,
             "gauge": "3\/16\"",
             "material": "Mild Steel",
             "weight": 19.871,
             "price": 15.04,
             "unit_quantity": 1,
-            "modified_date": "39 quantity added at February 23 Thursday 2023 01:35:30 PM",
+            "modified_date": "7 quantity added at February 23 Thursday 2023 02:19:09 PM",
             "group": null
         },
         "2534-020": {
@@ -311,14 +311,14 @@
             "group": null
         },
         "G3-1-Housing-Fan motor sides": {
-            "current_quantity": 1,
+            "current_quantity": 2,
             "machine_time": 0.32,
             "gauge": "0.05\"",
             "material": "Mild Steel",
             "weight": 4.323,
             "price": 3.57,
             "unit_quantity": 1,
-            "modified_date": "Added at February 23 Thursday 2023 01:35:30 PM",
+            "modified_date": "1 quantity added at February 23 Thursday 2023 02:19:09 PM",
             "group": null
         },
         "G3-1-Housing-Front Insulation cover": {
@@ -421,25 +421,25 @@
             "group": null
         },
         "G3-1-Housing-Right Side_Rear Panel": {
-            "current_quantity": 1,
+            "current_quantity": 2,
             "machine_time": 1.72,
             "gauge": "0.05\"",
             "material": "Mild Steel",
             "weight": 56.811,
             "price": 40.66,
             "unit_quantity": 1,
-            "modified_date": "Added at February 23 Thursday 2023 01:35:30 PM",
+            "modified_date": "1 quantity added at February 23 Thursday 2023 02:19:09 PM",
             "group": null
         },
         "G3-1-Housing-Roof-Front": {
-            "current_quantity": 1,
+            "current_quantity": 2,
             "machine_time": 0.98,
             "gauge": "0.05\"",
             "material": "Mild Steel",
             "weight": 26.814,
             "price": 19.61,
             "unit_quantity": 1,
-            "modified_date": "Added at February 23 Thursday 2023 01:35:30 PM",
+            "modified_date": "1 quantity added at February 23 Thursday 2023 02:19:09 PM",
             "group": null
         },
         "G3-1-Housing-access to flues outer cover": {
