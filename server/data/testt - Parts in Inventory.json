@@ -21,9 +21,7 @@
             "unit_quantity": 1,
             "modified_date": "1 quantity added at February 23 Thursday 2023 05:09:31 PM",
             "group": "test"
-        }
-    },
-    "Custom": {
+        },
         "PLT-0500-044W-0014x4": {
             "current_quantity": 8,
             "machine_time": 4.57,
@@ -34,7 +32,9 @@
             "unit_quantity": 1,
             "modified_date": "4 quantity added at February 23 Thursday 2023 05:09:31 PM",
             "group": null
-        },
+        }
+    },
+    "Custom": {
         "PLT-0500-044W-0048x4": {
             "current_quantity": 8,
             "machine_time": 1.22,
