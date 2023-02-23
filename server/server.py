@@ -105,6 +105,7 @@ class Server:
                     )
                     logging.info(f"Sending file to client\tFile: {filename}")
                     client_socket.sendall(f"{os.path.getsize(filename)}".encode())
+                    sleep(1)  # ! IMPORTANT
                     # sel
                     with open(filename, "rb") as f:
                         while True:
