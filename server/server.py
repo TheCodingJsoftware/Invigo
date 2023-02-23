@@ -104,7 +104,7 @@ class Server:
                         f"{Colors.BOLD}{datetime.now()}{Colors.ENDC}\t\t{Colors.OKGREEN}[ ] Sending file to {str(client_address)}\tFile: {filename}{Colors.ENDC}"
                     )
                     logging.info(f"Sending file to client\tFile: {filename}")
-                    client_socket.send(f"{os.path.getsize(filename)}".encode())
+                    # client_socket.send(f"{os.path.getsize(filename)}".encode())
                     # sel
                     with open(filename, "rb") as f:
                         while True:

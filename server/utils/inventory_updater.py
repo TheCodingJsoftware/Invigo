@@ -375,6 +375,9 @@ def get_total_sheet_count(batch_data: dict) -> int:
 
 
 def sort_inventory() -> None:
+    """
+    This function sorts the parts in inventory by category and then by current quantity
+    """
     for category in parts_in_inventory.get_data():
         parts_in_inventory.sort(
             category=category, item_name="current_quantity", ascending=True
