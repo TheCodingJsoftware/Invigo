@@ -78,6 +78,61 @@
             "unit_quantity": 1,
             "modified_date": "Added at February 23 Thursday 2023 04:13:51 PM",
             "group": null
+        },
+        "PM - SS HINGE 3 B_1pcs": {
+            "current_quantity": 1,
+            "machine_time": 0.25,
+            "gauge": "12G\"",
+            "material": "304 SS",
+            "weight": 0.304,
+            "price": 1.77,
+            "unit_quantity": 1,
+            "modified_date": "Added at February 23 Thursday 2023 05:08:10 PM",
+            "group": null
+        },
+        "PM - SS HINGE 4 B_1pcs": {
+            "current_quantity": 1,
+            "machine_time": 0.27,
+            "gauge": "12G\"",
+            "material": "304 SS",
+            "weight": 0.322,
+            "price": 1.89,
+            "unit_quantity": 1,
+            "modified_date": "Added at February 23 Thursday 2023 05:08:10 PM",
+            "group": null
+        },
+        "PM - SS HINGE 5 B_1pcs": {
+            "current_quantity": 1,
+            "machine_time": 0.25,
+            "gauge": "12G\"",
+            "material": "304 SS",
+            "weight": 0.341,
+            "price": 1.86,
+            "unit_quantity": 1,
+            "modified_date": "Added at February 23 Thursday 2023 05:08:10 PM",
+            "group": null
+        },
+        "PM - SS HINGE 7 B_1pcs": {
+            "current_quantity": 1,
+            "machine_time": 0.27,
+            "gauge": "12G\"",
+            "material": "304 SS",
+            "weight": 0.382,
+            "price": 2.04,
+            "unit_quantity": 1,
+            "modified_date": "Added at February 23 Thursday 2023 05:08:10 PM",
+            "group": null
+        },
+        "PM - SS HINGE 8 B_1pcs": {
+            "current_quantity": 1,
+            "machine_time": 0.28,
+            "gauge": "12G\"",
+            "material": "304 SS",
+            "weight": 0.404,
+            "price": 2.13,
+            "unit_quantity": 1,
+            "modified_date": "Added at February 23 Thursday 2023 05:08:10 PM",
+            "group": null
         }
     },
     "Recut": {
@@ -103,6 +158,18 @@
             "weight": 0.118,
             "unit_quantity": 1,
             "modified_date": "Added at February 23 Thursday 2023 04:18:14 PM",
+            "group": null
+        },
+        "PM - SS HINGE 6 B_1pcs": {
+            "current_quantity": 1,
+            "price": 1.99,
+            "recut_count": 0,
+            "machine_time": 0.27,
+            "gauge": "12G\"",
+            "material": "304 SS",
+            "weight": 0.361,
+            "unit_quantity": 1,
+            "modified_date": "Added at February 23 Thursday 2023 05:08:10 PM",
             "group": null
         }
     }
