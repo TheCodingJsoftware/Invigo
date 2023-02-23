@@ -19,7 +19,7 @@ def update_inventory(file_path: str) -> None:
     Args:
       file_path (str): str = "data/testt - Laser Batch Data.json"
     """
-    parts_in_inventory = JsonFile(file_name="data/testt - Parts in Inventory")
+    parts_in_inventory.load_data()
     with open(file_path) as json_file:
         new_laser_batch_data = json.load(json_file)
     total_sheet_count: int = get_total_sheet_count(batch_data=new_laser_batch_data)
