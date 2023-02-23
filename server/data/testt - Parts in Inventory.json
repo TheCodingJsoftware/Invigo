@@ -6,10 +6,21 @@
             "gauge": "1\/2\"",
             "material": "Laser Grade Plate",
             "weight": 62.594,
-            "price": 220.77,
+            "price": 95.59,
             "unit_quantity": 1,
             "modified_date": "Added at February 23 Thursday 2023 04:13:51 PM",
             "group": null
+        },
+        "PLT-0500-044W-0024-Ax2": {
+            "current_quantity": 1,
+            "machine_time": 0.83,
+            "gauge": "1\/2\"",
+            "material": "Laser Grade Plate",
+            "weight": 12.587,
+            "price": 20.33,
+            "unit_quantity": 1,
+            "modified_date": "Added at February 23 Thursday 2023 04:13:51 PM",
+            "group": "test"
         }
     },
     "Custom": {
@@ -64,17 +75,6 @@
             "material": "Laser Grade Plate",
             "weight": 23.5,
             "price": 37.12,
-            "unit_quantity": 1,
-            "modified_date": "Added at February 23 Thursday 2023 04:13:51 PM",
-            "group": null
-        },
-        "PLT-0500-044W-0024-Ax2": {
-            "current_quantity": 1,
-            "machine_time": 0.83,
-            "gauge": "1\/2\"",
-            "material": "Laser Grade Plate",
-            "weight": 12.587,
-            "price": 20.33,
             "unit_quantity": 1,
             "modified_date": "Added at February 23 Thursday 2023 04:13:51 PM",
             "group": null
