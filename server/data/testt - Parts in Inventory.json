@@ -1,27 +1,27 @@
 {
     "BL 29": {
         "2534-022": {
-            "current_quantity": 34.0,
+            "current_quantity": 43.0,
             "machine_time": 1.58,
             "gauge": "3\/16\"",
             "material": "Mild Steel",
             "weight": 49.118,
             "price": 35.39,
             "unit_quantity": 1,
-            "modified_date": "10 quantity added at February 23 Thursday 2023 01:35:30 PM",
+            "modified_date": "Manually set to 43.0 quantity at February 23 Thursday 2023 01:44:45 PM",
             "group": null
         }
     },
     "Custom": {
         "2534-022": {
-            "current_quantity": 34.0,
+            "current_quantity": 43.0,
             "machine_time": 1.58,
             "gauge": "3\/16\"",
             "material": "Mild Steel",
             "weight": 49.118,
             "price": 35.39,
             "unit_quantity": 1,
-            "modified_date": "10 quantity added at February 23 Thursday 2023 01:35:30 PM",
+            "modified_date": "Manually set to 43.0 quantity at February 23 Thursday 2023 01:44:45 PM",
             "group": null
         },
         "304434": {
