@@ -12,7 +12,7 @@
             "latest_change_part_number": "Item added\nItsme\nAugust 15 Monday 2022 08-58-38 AM",
             "latest_change_unit_quantity": "Item added\nItsme\nAugust 15 Monday 2022 08-58-38 AM",
             "latest_change_current_quantity": "Latest Change:\nfrom: -216\nto: -216\nJared\nFebruary 23 Thursday 2023 11:48:23 AM",
-            "latest_change_price": "Item added\nItsme\nAugust 15 Monday 2022 08-58-38 AM",
+            "latest_change_price": "Latest Change:\nfrom: 0.1\nto: 0.1\nJared\nFebruary 23 Thursday 2023 02:05:00 PM",
             "latest_change_use_exchange_price": "Item added\nItsme\nAugust 15 Monday 2022 08-58-38 AM",
             "latest_change_priority": "Item added\nItsme\nAugust 15 Monday 2022 08-58-38 AM",
             "latest_change_notes": "Item added\nItsme\nAugust 15 Monday 2022 08-58-38 AM"
@@ -1611,7 +1611,7 @@
     "Polar G3": {
         "SCR MACH PH PHIL ZP 10-32 x 1\/2 ": {
             "part_number": "397-1032-0050",
-            "unit_quantity": 16.0,
+            "unit_quantity": 17.0,
             "current_quantity": -216.0,
             "price": 0.1,
             "use_exchange_rate": false,
@@ -1619,9 +1619,9 @@
             "notes": "Vendor: A.Adams Supply\nDescription: ",
             "latest_change_name": "Item added\nItsme\nAugust 15 Monday 2022 08-58-53 AM",
             "latest_change_part_number": "Item added\nItsme\nAugust 15 Monday 2022 08-58-53 AM",
-            "latest_change_unit_quantity": "Latest Change:\nfrom: 17.0\nto: 16.0\nJared\nFebruary 21 Tuesday 2023 05:30:31 PM",
+            "latest_change_unit_quantity": "Latest Change:\nfrom: 16.0\nto: 17.0\nJared\nFebruary 23 Thursday 2023 02:05:00 PM",
             "latest_change_current_quantity": "Latest Change:\nfrom: -216.0\nto: -216.0\nJared\nFebruary 23 Thursday 2023 11:48:23 AM",
-            "latest_change_price": "Item added\nItsme\nAugust 15 Monday 2022 08-58-53 AM",
+            "latest_change_price": "Latest Change:\nfrom: 0.1\nto: 0.1\nJared\nFebruary 23 Thursday 2023 02:05:00 PM",
             "latest_change_use_exchange_price": "Item added\nItsme\nAugust 15 Monday 2022 08-58-53 AM",
             "latest_change_priority": "Item added\nItsme\nAugust 15 Monday 2022 08-58-53 AM",
             "latest_change_notes": "Item added\nItsme\nAugust 15 Monday 2022 08-58-53 AM"
@@ -3216,7 +3216,7 @@
             "latest_change_part_number": "Item added\nItsme\nAugust 15 Monday 2022 08-59-04 AM",
             "latest_change_unit_quantity": "Item added\nItsme\nAugust 15 Monday 2022 08-59-04 AM",
             "latest_change_current_quantity": "Latest Change:\nfrom: -216\nto: -216\nJared\nFebruary 23 Thursday 2023 11:48:23 AM",
-            "latest_change_price": "Item added\nItsme\nAugust 15 Monday 2022 08-59-04 AM",
+            "latest_change_price": "Latest Change:\nfrom: 0.1\nto: 0.1\nJared\nFebruary 23 Thursday 2023 02:05:00 PM",
             "latest_change_use_exchange_price": "Item added\nItsme\nAugust 15 Monday 2022 08-59-04 AM",
             "latest_change_priority": "Item added\nItsme\nAugust 15 Monday 2022 08-59-04 AM",
             "latest_change_notes": "Item added\nItsme\nAugust 15 Monday 2022 08-59-04 AM"
