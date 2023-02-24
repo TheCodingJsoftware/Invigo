@@ -29,75 +29,9 @@
             "latest_change_price": "Latest Change:\nfrom: 1.45\nto: 1.45\nJared\nFebruary 21 Tuesday 2023 06:12:37 PM"
         }
     },
-    "Mild Steel": {
-        "14 Gauge 409 SS 150x20": {
-            "current_quantity": 16.0,
-            "sheet_dimension": "150x20",
-            "thickness": "14 Gauge",
-            "material": "409 SS",
-            "latest_change_material": "Item added\nJared\nFebruary 20 Monday 2023 08-42-35 PM",
-            "latest_sheet_dimension": "Item added\nJared\nFebruary 20 Monday 2023 08-42-35 PM",
-            "latest_change_thickness": "Item added\nJared\nFebruary 20 Monday 2023 08-42-35 PM",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 20.0\nto: 16.0\nJared\nFebruary 21 Tuesday 2023 05:44:09 PM",
-            "group": null
-        },
-        "  12x42": {
-            "current_quantity": 31.0,
-            "sheet_dimension": "12x42",
-            "thickness": "",
-            "material": "",
-            "latest_change_material": "Item added\nJared\nFebruary 20 Monday 2023 09-47-16 PM",
-            "latest_sheet_dimension": "Item added\nJared\nFebruary 20 Monday 2023 09-47-16 PM",
-            "latest_change_thickness": "Item added\nJared\nFebruary 20 Monday 2023 09-47-16 PM",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 30.0\nto: 31.0\nJared\nFebruary 21 Tuesday 2023 05:44:02 PM",
-            "group": "304 SS"
-        },
-        "0.1875\" Galvanneal 133x12": {
-            "current_quantity": 8.0,
-            "sheet_dimension": "133x12",
-            "thickness": "0.1875\"",
-            "material": "Galvanneal",
-            "latest_change_material": "Item added\nJared\nFebruary 20 Monday 2023 09-52-08 PM",
-            "latest_sheet_dimension": "Item added\nJared\nFebruary 20 Monday 2023 09-52-08 PM",
-            "latest_change_thickness": "Item added\nJared\nFebruary 20 Monday 2023 09-52-08 PM",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 9.0\nto: 8.0\nJared\nFebruary 21 Tuesday 2023 10:15:53 AM",
-            "group": "409 SS"
-        },
-        "22 Gauge Aluminium 120.000x58.000": {
-            "current_quantity": 9.0,
-            "sheet_dimension": "120.000x58.000",
-            "thickness": "22 Gauge",
-            "material": "Aluminium",
-            "latest_change_material": "Item added\nJared\nFebruary 21 Tuesday 2023 04-44-26 PM",
-            "latest_sheet_dimension": "Item added\nJared\nFebruary 21 Tuesday 2023 04-44-26 PM",
-            "latest_change_thickness": "Item added\nJared\nFebruary 21 Tuesday 2023 04-44-26 PM",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 10.0\nto: 9.0\nJared\nFebruary 21 Tuesday 2023 05:36:21 PM"
-        }
-    },
-    "Aluminium": {
-        "22 Gauge 304 SS 150x20": {
-            "current_quantity": 24.0,
-            "sheet_dimension": "150x20",
-            "thickness": "22 Gauge",
-            "material": "304 SS",
-            "latest_change_material": "Item added\nJared\nFebruary 21 Tuesday 2023 10-21-30 AM",
-            "latest_sheet_dimension": "Item added\nJared\nFebruary 21 Tuesday 2023 10-21-30 AM",
-            "latest_change_thickness": "Item added\nJared\nFebruary 21 Tuesday 2023 10-21-30 AM",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 23.0\nto: 24.0\nJared\nFebruary 21 Tuesday 2023 05:43:58 PM"
-        }
-    },
+    "Mild Steel": {},
+    "Aluminium": {},
     "Stainless": {},
     "Galvanized\/Galvanneal": {},
-    "Cutoff": {
-        "22 Gauge 304 SS 12.000x13.000": {
-            "current_quantity": 1.0,
-            "sheet_dimension": "12.000x13.000",
-            "thickness": "22 Gauge",
-            "material": "304 SS",
-            "latest_change_material": "Item added\nJared\nFebruary 21 Tuesday 2023 05-43-26 PM",
-            "latest_sheet_dimension": "Item added\nJared\nFebruary 21 Tuesday 2023 05-43-26 PM",
-            "latest_change_thickness": "Item added\nJared\nFebruary 21 Tuesday 2023 05-43-26 PM",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 0.0\nto: 1.0\nJared\nFebruary 23 Thursday 2023 09:10:19 PM"
-        }
-    }
+    "Cutoff": {}
 }
