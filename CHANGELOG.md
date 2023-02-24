@@ -1,3 +1,12 @@
+<h1>v1.5.0</h1>
+&bull; Improved auto saving to cloud.<br>
+&bull; Server is reliable and quicker.<br>
+&bull; Added Price of Sheets menu and Parts in Inventory.<br>
+&bull; Program works together with Laser Quote Generator with adding parts to inventory.<br>
+&bull; Changes to tabs instead of stacked widgets.<br>
+&bull; Alot of stuff and functionality has been added.<br>
+&bull; Maybe some bug fixes? I know I added more...<br>
+
 <h1>v1.4.10</h1>
 &bull; Added a few changes such as automatically updating stock costs when price or quantity change.<br>
 &bull; if old price and new price are the same they are not added in history file.<br>

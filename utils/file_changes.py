@@ -1,6 +1,8 @@
 import difflib
 import filecmp
 import os
+import pathlib
+import time
 from datetime import datetime
 
 
@@ -16,31 +18,51 @@ class FileChanges:
           from_file (str): The file that you want to copy from.
           to_file (str): The file that will be written to.
         """
-        self.from_file = from_file
-        self.to_file = to_file
+        self.server_file = from_file
+        self.client_file = to_file
 
-        self.file_name = self.to_file.replace(".json", "").replace("data/", "").title()
-
-        self.from_file_size: int = 0
-        self.to_file_size: int = 0
-
-    def which_file_changed(self) -> str:
-        """
-        If the files are the same, return a green message. If the local file is smaller than the cloud
-        file, return a yellow message. If the local file is larger than the cloud file, return a red
-        message
-
-        Returns:
-          A string.
-        """
-        if changes := filecmp.cmp(self.from_file, self.to_file, shallow=False):
-            return f'<p style="color:green;"> <b>{self.file_name}</b> - Up to date. - {datetime.now().strftime("%r")}</p>'
-        self.update_size()
-        return (
-            f'<p style="color:yellow;"> <b>{self.file_name}</b> - Your local changes are not uploaded.- {datetime.now().strftime("%r")}</p>'
-            if self.from_file_size < self.to_file_size
-            else f'<p style="color:red;"><b>{self.file_name}</b> - There are changes to the cloud file that are not present locally. - {datetime.now().strftime("%r")}</p>'
+        self.file_name = (
+            self.client_file.replace(".json", "").replace("data/", "").title()
         )
+
+    def get_time_difference(self) -> str:
+        """
+        It compares the last modified date of a file on the server to the last modified date of a file
+        on the client
+        If difference is negative, that means the server file was modified last.
+        If difference is positive, that means the client file was modified last.
+        Returns:
+          A string
+        """
+
+        server_file_modified_date = datetime.strptime(
+            pathlib.Path(self.server_file).read_text(), "%m/%d/%Y %I:%M:%S %p"
+        )
+        client_file_modified_date = datetime.strptime(
+            str(
+                time.strftime(
+                    "%m/%d/%Y %I:%M:%S %p",
+                    time.localtime(os.path.getmtime(self.client_file)),
+                )
+            ),
+            "%m/%d/%Y %I:%M:%S %p",
+        )
+        time.strftime(
+            "Database last updated on %A %B %d %Y at %I:%M:%S %p",
+            time.localtime(os.path.getmtime(self.client_file)),
+        )
+        datetime.now().strftime("Database last updated on %A %B %d %Y at %I:%M:%S %p"),
+        difference = client_file_modified_date - server_file_modified_date
+        difference = difference.total_seconds()
+        return difference
+
+        # if difference > -15 and difference < 15:
+        # return f'<p style="color:green;"> <b>{self.file_name}</b> - Up to date. - {datetime.now().strftime("%r")}</p>'
+        # return (
+        #     f'<p style="color:yellow;"> <b>{self.file_name}</b> - Your local changes are not uploaded.- {datetime.now().strftime("%r")}</p>'
+        #     if difference > 0
+        #     else f'<p style="color:red;"><b>{self.file_name}</b> - There are changes to the cloud file that are not present locally. - {datetime.now().strftime("%r")}</p>'
+        # )
 
     def get_changes(self) -> str:
         """
@@ -62,17 +84,17 @@ class FileChanges:
         """
         changes: str = ""
         try:
-            with open(self.from_file, "r", encoding="utf-8") as from_file:
+            with open(self.server_file, "r", encoding="utf-8") as from_file:
                 from_file_lines = from_file.readlines()
         except FileNotFoundError:
             return "Could not download file"
-        with open(self.to_file, "r", encoding="utf-8") as to_file:
+        with open(self.client_file, "r", encoding="utf-8") as to_file:
             to_file_lines = to_file.readlines()
         for line in difflib.unified_diff(
             from_file_lines,
             to_file_lines,
-            fromfile=self.from_file,
-            tofile=self.to_file,
+            fromfile=self.server_file,
+            tofile=self.client_file,
             lineterm="",
             n=0,
         ):
@@ -82,10 +104,3 @@ class FileChanges:
             else:
                 changes += line
         return changes
-
-    def update_size(self) -> None:
-        """
-        It updates the size of the files
-        """
-        self.from_file_size = os.path.getsize(self.from_file)
-        self.to_file_size = os.path.getsize(self.to_file)

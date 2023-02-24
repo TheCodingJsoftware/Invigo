@@ -5,6 +5,7 @@ and is not intended for the client to use this script.
 
 import contextlib
 import json
+import os
 import threading
 import time
 
@@ -32,6 +33,7 @@ def index() -> None:
         part_names=get_all_part_names(),
         part_numbers=get_all_part_numbers(),
         unit_costs=get_all_unit_cost(),
+        price_of_steel=get_price_of_steel(),
     )
 
 
@@ -75,7 +77,22 @@ def search(search_term):
         part_names=get_all_part_names(),
         part_numbers=get_all_part_numbers(),
         unit_costs=get_all_unit_cost(),
+        price_of_steel=get_price_of_steel(),
     )
+
+
+def get_price_of_steel() -> dict:
+    """
+    It opens the file "inventory - Price of Steel.json" and returns the value of the key "Price Per
+    Pound"
+
+    Returns:
+      A dictionary of the price of steel.
+    """
+    price_of_steel = {}
+    with open("inventory - Price of Steel.json", "r") as f:
+        data = json.load(f)
+    return data["Price Per Pound"]
 
 
 def sort_groups(category: dict) -> dict:
@@ -111,6 +128,13 @@ def sort_groups(category: dict) -> dict:
 
 
 def get_all_unit_cost() -> dict:
+    """
+    It takes a dictionary of dictionaries of dictionaries and returns a dictionary of dictionaries of
+    floats
+
+    Returns:
+      A dictionary of dictionaries.
+    """
     data = get_inventory_data()
     currency_rates = CurrencyRates()
     try:
@@ -192,12 +216,16 @@ def get_inventory_data() -> dict:
 
 def downloadDatabase() -> None:
     """downloads the inventory.json file from github"""
-    url = "https://raw.githubusercontent.com/TheCodingJsoftware/Inventory-Manager/master/server/data/inventory.json"
-    req = requests.get(url)
-    if req.status_code == requests.codes.ok:
-        data = req.json()  # the response is a JSON
-        with open("inventory.json", "w+") as f:
-            json.dump(data, f, ensure_ascii=False, indent=4)
+    files_to_download: dict[list[str, str]] = {
+        "inventory.json": "https://raw.githubusercontent.com/TheCodingJsoftware/Inventory-Manager/master/server/data/inventory.json",
+        "inventory - Price of Steel.json": "https://raw.githubusercontent.com/TheCodingJsoftware/Inventory-Manager/master/server/data/inventory - Price of Steel.json",
+    }
+    for file in list(files_to_download.keys()):
+        req = requests.get(files_to_download[file])
+        if req.status_code == requests.codes.ok:
+            data = req.json()  # the response is a JSON
+            with open(f"{file}", "w+") as f:
+                json.dump(data, f, ensure_ascii=False, indent=4)
 
 
 def downloadThread() -> None:
@@ -208,4 +236,4 @@ def downloadThread() -> None:
 
 
 threading.Thread(target=downloadThread).start()
-# app.run(host="10.0.1.217", port=5000, debug=False, threaded=True)
+# app.run(host="10.0.0.217", port=5000, debug=False, threaded=True)

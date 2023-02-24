@@ -205,6 +205,29 @@
             {% endif %}
             <br>
             {% endfor %}
+            <details>
+                <summary>Price of Steel</summary>
+                <div class="content">
+                    <div class="scroll">
+                        <table class="sortable">
+                            <thead>
+                                <tr>
+                                    {% for steel_name, item_dictionary in price_of_steel.items() %}
+                                    <th>{{steel_name}}</th>
+                                    {% endfor %}
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    {% for steel_name, item_dictionary in price_of_steel.items() %}
+                                    <td>${{item_dictionary['price']}}</td>
+                                    {% endfor %}
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </details>
         </div>
     </div>
 </head>

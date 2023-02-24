@@ -34,3 +34,23 @@ def get_system_ip_address() -> str:
       The IP address of the system.
     """
     return socket.gethostbyname(socket.gethostname())
+
+
+def get_buffer_size() -> int:
+    """
+    This function returns the buffer size of the server
+
+    Returns:
+      The value of the item "server_buffer_size" in the settings file.
+    """
+    return settings_file.get_value(item_name="server_buffer_size")
+
+
+def get_server_timeout() -> int:
+    """
+    This function returns the value of the server_time_out setting from the settings file
+
+    Returns:
+      The value of the item_name "server_time_out"
+    """
+    return settings_file.get_value(item_name="server_time_out")

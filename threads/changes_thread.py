@@ -4,7 +4,13 @@ from time import sleep
 
 from PyQt5.QtCore import QThread, pyqtSignal
 
-from utils.ip_utils import get_server_ip_address, get_server_port, get_system_ip_address
+from utils.ip_utils import (
+    get_buffer_size,
+    get_server_ip_address,
+    get_server_port,
+    get_server_timeout,
+    get_system_ip_address,
+)
 
 
 class ChangesThread(QThread):
@@ -14,7 +20,7 @@ class ChangesThread(QThread):
 
     signal = pyqtSignal(object)
 
-    def __init__(self, file_to_download: str, delay: int) -> None:
+    def __init__(self, files_to_download: list[str], delay: int) -> None:
         """
         The function is used to download a file from a server
 
@@ -32,42 +38,55 @@ class ChangesThread(QThread):
         self.CLIENT_IP: str = get_system_ip_address()
         self.CLIENT_PORT: int = 4005
 
-        self.BUFFER_SIZE = 4096
+        self.BUFFER_SIZE = get_buffer_size()
         self.SEPARATOR = "<SEPARATOR>"
 
-        self.file_to_download: str = file_to_download
+        self.files_to_download: str = files_to_download
         self.delay = delay
 
     def run(self) -> None:
         """
         It connects to a server, sends a message, receives a file, and then closes the connection
         """
+        # Give the app time to first download all files on startup
+        sleep(30)
         while True:
             try:
-                self.server = (self.SERVER_IP, self.SERVER_PORT)
-                self.s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-                self.s.settimeout(10)
-                self.s.connect(self.server)
+                for file_to_download in self.files_to_download:
+                    self.server = (self.SERVER_IP, self.SERVER_PORT)
+                    self.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+                    self.socket.settimeout(get_server_timeout())
+                    self.socket.connect(self.server)
 
-                self.s.send(
-                    f"get_file{self.SEPARATOR}{self.file_to_download}".encode("utf-8")
-                )
+                    self.socket.send(
+                        f"get_modified_date{self.SEPARATOR}{file_to_download}".encode(
+                            "utf-8"
+                        )
+                    )
+                    # self.socket.send(
+                    #     f"get_file{self.SEPARATOR}{file_to_download}".encode("utf-8")
+                    # )
 
-                filesize: int = int(self.s.recv(1024).decode("utf-8"))
+                    # filesize: int = int(self.socket.recv(1024).decode("utf-8"))
 
-                new_name = self.file_to_download.replace(".json", " - Compare.json")
-
-                with open(new_name, "wb") as f:
-                    while True:
-                        bytes_read = self.s.recv(self.BUFFER_SIZE)
-                        if not bytes_read:
-                            # file transmitting is done
-                            break
-                        f.write(bytes_read)
-
-                self.s.close()
+                    new_name = file_to_download.replace(".json", " - Compare.json")
+                    sleep(0.5)  # ! IMPORTANT
+                    file_modified_date = self.socket.recv(self.BUFFER_SIZE).decode(
+                        "utf-8"
+                    )
+                    with open(new_name, "w") as f:
+                        f.write(file_modified_date)
+                    #     while True:
+                    #         if bytes_read := self.socket.recv(self.BUFFER_SIZE):
+                    #             f.write(bytes_read)
+                    #         else:
+                    #             # file transmitting is done
+                    #             sleep(1)  # ! IMPORTANT
+                    #             break
+                    self.socket.shutdown(2)
+                    self.socket.close()
                 self.signal.emit("")
-            except Exception as e:
+            except Exception as error:
                 with contextlib.suppress(AttributeError):
-                    self.signal.emit(e)
+                    self.signal.emit(error)
             sleep(self.delay)

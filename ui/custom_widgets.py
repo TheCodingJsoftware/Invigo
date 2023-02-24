@@ -140,7 +140,10 @@ class CostLineEdit(QLineEdit):
             + repr(int(x) + round(float("." + str(float(x)).split(".")[1]), n))
         )
         self.setStyleSheet("border: 0.09em solid #76797c; background-color: #222222;")
-        self.setText(f"{prefix}{str(round_number(text, 2))} {suffix}")
+        try:
+            self.setText(f"{prefix}{str(round_number(text, 2))} {suffix}")
+        except:
+            self.setText(f"{prefix}{text} {suffix}")
 
 
 class NotesPlainTextEdit(QPlainTextEdit):
