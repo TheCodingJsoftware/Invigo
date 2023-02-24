@@ -454,6 +454,28 @@
             "latest_sheet_dimension": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-56-03 PM",
             "latest_change_thickness": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-56-03 PM",
             "latest_change_current_quantity": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-56-03 PM"
+        },
+        "10 Gauge 409 SS 145.500x60.000": {
+            "current_quantity": 6,
+            "sheet_dimension": "145.500x60.000",
+            "thickness": "10 Gauge",
+            "material": "409 SS",
+            "group": "409 Stainless Steel",
+            "latest_change_material": "Item added\nLaser Pc\nFebruary 24 Friday 2023 05-26-01 PM",
+            "latest_sheet_dimension": "Item added\nLaser Pc\nFebruary 24 Friday 2023 05-26-01 PM",
+            "latest_change_thickness": "Item added\nLaser Pc\nFebruary 24 Friday 2023 05-26-01 PM",
+            "latest_change_current_quantity": "Item added\nLaser Pc\nFebruary 24 Friday 2023 05-26-01 PM"
+        },
+        "10 Gauge 409 SS 120.000x48.000": {
+            "current_quantity": 169,
+            "sheet_dimension": "120.000x48.000",
+            "thickness": "10 Gauge",
+            "material": "409 SS",
+            "group": "409 Stainless Steel",
+            "latest_change_material": "Item added\nLaser Pc\nFebruary 24 Friday 2023 05-26-48 PM",
+            "latest_sheet_dimension": "Item added\nLaser Pc\nFebruary 24 Friday 2023 05-26-48 PM",
+            "latest_change_thickness": "Item added\nLaser Pc\nFebruary 24 Friday 2023 05-26-48 PM",
+            "latest_change_current_quantity": "Item added\nLaser Pc\nFebruary 24 Friday 2023 05-26-48 PM"
         }
     },
     "Galvanized\/Galvanneal": {
