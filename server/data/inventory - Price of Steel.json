@@ -29,7 +29,19 @@
             "latest_change_price": "Latest Change:\nfrom: 1.45\nto: 1.45\nJared\nFebruary 21 Tuesday 2023 06:12:37 PM"
         }
     },
-    "Mild Steel": {},
+    "Mild Steel": {
+        "1\/4 Mild Steel 120.000x60.000": {
+            "current_quantity": 105,
+            "sheet_dimension": "120.000x60.000",
+            "thickness": "1\/4",
+            "material": "Mild Steel",
+            "latest_change_material": "Item added\nLaser Pc\nFebruary 24 Friday 2023 03-54-42 PM",
+            "latest_sheet_dimension": "Item added\nLaser Pc\nFebruary 24 Friday 2023 03-54-42 PM",
+            "latest_change_thickness": "Item added\nLaser Pc\nFebruary 24 Friday 2023 03-54-42 PM",
+            "latest_change_current_quantity": "Item added\nLaser Pc\nFebruary 24 Friday 2023 03-54-42 PM",
+            "group": "1\/4 Mild Steel"
+        }
+    },
     "Aluminium": {},
     "Stainless": {
         "14 Gauge 304 SS 120.000x60.000": {
