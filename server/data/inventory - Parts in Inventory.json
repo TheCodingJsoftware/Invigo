@@ -1,5 +1,62 @@
 {
-    "Custom": {
+    "Custom": {},
+    "Recut": {},
+    "BL25": {
+        "2534-053": {
+            "current_quantity": 1,
+            "machine_time": 0.83,
+            "gauge": "0.05\"",
+            "material": "304 SS",
+            "weight": 8.511,
+            "price": 23.8,
+            "unit_quantity": 1,
+            "modified_date": "Added at February 24 Friday 2023 09:17:55 AM",
+            "group": null
+        },
+        "2534-065": {
+            "current_quantity": 1,
+            "machine_time": 0.57,
+            "gauge": "0.05\"",
+            "material": "304 SS",
+            "weight": 5.879,
+            "price": 16.43,
+            "unit_quantity": 1,
+            "modified_date": "Added at February 24 Friday 2023 09:17:55 AM",
+            "group": null
+        },
+        "2534-071": {
+            "current_quantity": 1,
+            "machine_time": 0.95,
+            "gauge": "0.05\"",
+            "material": "304 SS",
+            "weight": 4.166,
+            "price": 13.92,
+            "unit_quantity": 1,
+            "modified_date": "Added at February 24 Friday 2023 09:17:55 AM",
+            "group": null
+        },
+        "2534-072": {
+            "current_quantity": 1,
+            "machine_time": 0.63,
+            "gauge": "0.05\"",
+            "material": "304 SS",
+            "weight": 5.231,
+            "price": 15.13,
+            "unit_quantity": 1,
+            "modified_date": "Added at February 24 Friday 2023 09:17:55 AM",
+            "group": null
+        },
+        "2534-073": {
+            "current_quantity": 1,
+            "machine_time": 0.6,
+            "gauge": "0.05\"",
+            "material": "304 SS",
+            "weight": 7.185,
+            "price": 19.67,
+            "unit_quantity": 1,
+            "modified_date": "Added at February 24 Friday 2023 09:17:55 AM",
+            "group": null
+        },
         "2534-075": {
             "current_quantity": 1,
             "machine_time": 0.53,
@@ -95,7 +152,7 @@
             "material": "304 SS",
             "weight": 2.772,
             "price": 8.21,
-            "unit_quantity": 2.0,
+            "unit_quantity": 1,
             "modified_date": "Added at February 24 Friday 2023 09:17:55 AM",
             "group": null
         },
@@ -183,64 +240,6 @@
             "material": "304 SS",
             "weight": 9.514,
             "price": 25.36,
-            "unit_quantity": 1,
-            "modified_date": "Added at February 24 Friday 2023 09:17:55 AM",
-            "group": null
-        }
-    },
-    "Recut": {},
-    "BL25": {
-        "2534-053": {
-            "current_quantity": 1,
-            "machine_time": 0.83,
-            "gauge": "0.05\"",
-            "material": "304 SS",
-            "weight": 8.511,
-            "price": 23.8,
-            "unit_quantity": 1,
-            "modified_date": "Added at February 24 Friday 2023 09:17:55 AM",
-            "group": null
-        },
-        "2534-065": {
-            "current_quantity": 1,
-            "machine_time": 0.57,
-            "gauge": "0.05\"",
-            "material": "304 SS",
-            "weight": 5.879,
-            "price": 16.43,
-            "unit_quantity": 1,
-            "modified_date": "Added at February 24 Friday 2023 09:17:55 AM",
-            "group": null
-        },
-        "2534-071": {
-            "current_quantity": 1,
-            "machine_time": 0.95,
-            "gauge": "0.05\"",
-            "material": "304 SS",
-            "weight": 4.166,
-            "price": 13.92,
-            "unit_quantity": 1,
-            "modified_date": "Added at February 24 Friday 2023 09:17:55 AM",
-            "group": null
-        },
-        "2534-072": {
-            "current_quantity": 1,
-            "machine_time": 0.63,
-            "gauge": "0.05\"",
-            "material": "304 SS",
-            "weight": 5.231,
-            "price": 15.13,
-            "unit_quantity": 1,
-            "modified_date": "Added at February 24 Friday 2023 09:17:55 AM",
-            "group": null
-        },
-        "2534-073": {
-            "current_quantity": 1,
-            "machine_time": 0.6,
-            "gauge": "0.05\"",
-            "material": "304 SS",
-            "weight": 7.185,
-            "price": 19.67,
             "unit_quantity": 1,
             "modified_date": "Added at February 24 Friday 2023 09:17:55 AM",
             "group": null
