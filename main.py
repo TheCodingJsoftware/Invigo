@@ -5,7 +5,7 @@ __credits__: "list[str]" = ["Jared Gross"]
 __license__ = "MIT"
 __name__ = "Inventory Manager"
 __version__ = "v1.5.0"
-__updated__ = "2023-02-23 21:39:47"
+__updated__ = "2023-02-24 11:23:31"
 __maintainer__ = "Jared Gross"
 __email__ = "jared@pinelandfarms.ca"
 __status__ = "Production"
@@ -33,6 +33,7 @@ from PyQt5.QtGui import QCursor, QFont, QIcon, QPixmap
 from PyQt5.QtWidgets import (
     QAction,
     QApplication,
+    QCheckBox,
     QComboBox,
     QCompleter,
     QDialog,
@@ -287,6 +288,7 @@ class MainWindow(QMainWindow):
         self.tabs: list[QVBoxLayout] = []
         self.last_item_selected_index: int = 0
         self.last_item_selected_text: str = None
+        self.check_box_selections: dict = {}
         self.item_layouts: list[QHBoxLayout] = []
         self.group_layouts: dict[str, QVBoxLayout] = {}
         self.threads: tuple[
@@ -594,12 +596,20 @@ class MainWindow(QMainWindow):
         If the toolbox is not on the first tab, hide the dock widget
         """
         if self.tabWidget.currentIndex() == 3:
+            if not self.trusted_user:
+                self.show_not_trusted_user()
+                self.tabWidget.setCurrentIndex(1)
+                return
             self.active_layout = self.verticalLayout_4
             self.load_tree_view(inventory)
             self.status_button.setHidden(True)
             self.dockWidget_price_of_steel.setVisible(False)
             self.dockWidget_parts_in_inventory.setVisible(False)
         elif self.tabWidget.currentIndex() == 0:
+            if not self.trusted_user:
+                self.show_not_trusted_user()
+                self.tabWidget.setCurrentIndex(1)
+                return
             self.headers: dict[dict[str, int]] = {
                 "Part Name": 486,
                 "Part Number": 120,
@@ -704,12 +714,20 @@ class MainWindow(QMainWindow):
             self.dockWidget_parts_in_inventory.setVisible(True)
             self.status_button.setHidden(False)
         elif self.tabWidget.currentIndex() == 4:
+            if not self.trusted_user:
+                self.show_not_trusted_user()
+                self.tabWidget.setCurrentIndex(1)
+                return
             self.active_layout = self.verticalLayout_5
             self.load_history_view()
             self.status_button.setHidden(True)
             self.dockWidget_price_of_steel.setVisible(False)
             self.dockWidget_parts_in_inventory.setVisible(False)
         elif self.tabWidget.currentIndex() == 5:
+            if not self.trusted_user:
+                self.show_not_trusted_user()
+                self.tabWidget.setCurrentIndex(1)
+                return
             self.active_layout = self.horizontalLayout_8
             self.load_price_history_view()
             self.status_button.setHidden(True)
@@ -731,6 +749,14 @@ class MainWindow(QMainWindow):
         """
         It loads the categories from the inventory file and creates a tab for each category.
         """
+        if (
+            not self.trusted_user
+            and self.tabWidget.currentIndex() != 1
+            and self.tabWidget.currentIndex() != 2
+        ):
+            self.show_not_trusted_user()
+            self.tabWidget.setCurrentIndex(1)
+            return
         self.set_layout_message("", "Loading...", "", 120)
 
         inventory = JsonFile(
@@ -746,6 +772,7 @@ class MainWindow(QMainWindow):
         self.clear_layout(self.active_layout)
         self.tabs.clear()
         self.scroll_areas.clear()
+        self.check_box_selections.clear()
         if self.active_json_file is None:
             return
         else:
@@ -954,6 +981,7 @@ class MainWindow(QMainWindow):
                 + 'f" % '
                 + repr(int(x) + round(float("." + str(float(x)).split(".")[1]), n))
             )
+
             item = list(category_data.keys())[row_index]
             current_quantity: int = self.get_value_from_category(
                 item_name=item, key="current_quantity"
@@ -984,13 +1012,17 @@ class MainWindow(QMainWindow):
                 self.group_layouts["__main__"] = tab
 
             layout = QHBoxLayout()
+            check_box = QCheckBox(self)
+            layout.addWidget(check_box)
             item = list(category_data.keys())[row_index]
+            self.check_box_selections[item] = check_box
+            col_index += 1
             # NAME
             item_name = ItemNameComboBox(
                 parent=self,
                 selected_item=item,
                 items=[item],
-                tool_tip="Right click to change group",
+                tool_tip=f'Material: {self.get_value_from_category(item_name=item, key="material")}\nGauge: {self.get_value_from_category(item_name=item, key="gauge")}\nWeight: {self.get_value_from_category(item_name=item, key="weight")}\nMachine Time: {self.get_value_from_category(item_name=item, key="weight")}',
             )
             item_name.setFixedWidth(400)
             item_name.setContextMenuPolicy(Qt.CustomContextMenu)
@@ -1115,6 +1147,7 @@ class MainWindow(QMainWindow):
                 latest_change_price: float = self.get_value_from_category(
                     item_name=item, key="latest_change_price"
                 )
+
                 # NAME
                 item_name = QLabel(self)
                 item_name.setText(item)
@@ -1240,9 +1273,12 @@ class MainWindow(QMainWindow):
                 # POUNDS PER SHEET
                 sheet_length = float(sheet_dimension.split("x")[0])
                 sheet_width = float(sheet_dimension.split("x")[1])
-                pounds_per_sheet: float = pounds_per_square_foot * (
-                    sheet_length * sheet_width
-                )
+                try:
+                    pounds_per_sheet: float = (sheet_length * sheet_width) / (
+                        144 * pounds_per_square_foot
+                    )
+                except ZeroDivisionError:
+                    pounds_per_sheet = 0.0
                 # PRICE PER POUND
                 try:
                     price_per_pound: float = float(
@@ -1777,6 +1813,7 @@ class MainWindow(QMainWindow):
         """
         It takes the weight and machine time of a part, and uses that to calculate the price of the part
         """
+
         round_number = lambda x, n: eval(
             '"%.'
             + str(int(n))
@@ -2005,62 +2042,120 @@ class MainWindow(QMainWindow):
           item_name (QComboBox): QComboBox
           category (str): str = "category"
         """
-        copy_of_item = parts_in_inventory.get_data()[self.category][
-            item_name.currentText()
-        ]
-        parts_in_inventory.remove_object_item(self.category, item_name.currentText())
-        parts_in_inventory.add_item_in_object(category, item_name.currentText())
-        parts_in_inventory.change_object_in_object_item(
-            category,
-            item_name.currentText(),
-            "current_quantity",
-            copy_of_item["current_quantity"],
-        )
-        parts_in_inventory.change_object_in_object_item(
-            category,
-            item_name.currentText(),
-            "machine_time",
-            copy_of_item["machine_time"],
-        )
-        parts_in_inventory.change_object_in_object_item(
-            category,
-            item_name.currentText(),
-            "gauge",
-            copy_of_item["gauge"],
-        )
-        parts_in_inventory.change_object_in_object_item(
-            category,
-            item_name.currentText(),
-            "material",
-            copy_of_item["material"],
-        )
-        parts_in_inventory.change_object_in_object_item(
-            category,
-            item_name.currentText(),
-            "weight",
-            copy_of_item["weight"],
-        )
-        parts_in_inventory.change_object_in_object_item(
-            category,
-            item_name.currentText(),
-            "price",
-            copy_of_item["price"],
-        )
-        parts_in_inventory.change_object_in_object_item(
-            category,
-            item_name.currentText(),
-            "unit_quantity",
-            1,
-        )
-        parts_in_inventory.change_object_in_object_item(
-            category,
-            item_name.currentText(),
-            "modified_date",
-            copy_of_item["modified_date"],
-        )
-        parts_in_inventory.change_object_in_object_item(
-            category, item_name.currentText(), "group", copy_of_item["group"]
-        )
+        if self.are_parts_checked():
+            checked_parts = self.get_all_checked_parts()
+            for checked_part in checked_parts:
+                copy_of_item = parts_in_inventory.get_data()[self.category][checked_part]
+                parts_in_inventory.remove_object_item(self.category, checked_part)
+                parts_in_inventory.add_item_in_object(category, checked_part)
+                parts_in_inventory.change_object_in_object_item(
+                    category,
+                    checked_part,
+                    "current_quantity",
+                    copy_of_item["current_quantity"],
+                )
+                parts_in_inventory.change_object_in_object_item(
+                    category,
+                    checked_part,
+                    "machine_time",
+                    copy_of_item["machine_time"],
+                )
+                parts_in_inventory.change_object_in_object_item(
+                    category,
+                    checked_part,
+                    "gauge",
+                    copy_of_item["gauge"],
+                )
+                parts_in_inventory.change_object_in_object_item(
+                    category,
+                    checked_part,
+                    "material",
+                    copy_of_item["material"],
+                )
+                parts_in_inventory.change_object_in_object_item(
+                    category,
+                    checked_part,
+                    "weight",
+                    copy_of_item["weight"],
+                )
+                parts_in_inventory.change_object_in_object_item(
+                    category,
+                    checked_part,
+                    "price",
+                    copy_of_item["price"],
+                )
+                parts_in_inventory.change_object_in_object_item(
+                    category,
+                    checked_part,
+                    "unit_quantity",
+                    1,
+                )
+                parts_in_inventory.change_object_in_object_item(
+                    category,
+                    checked_part,
+                    "modified_date",
+                    copy_of_item["modified_date"],
+                )
+                parts_in_inventory.change_object_in_object_item(
+                    category, checked_part, "group", copy_of_item["group"]
+                )
+        else:
+            copy_of_item = parts_in_inventory.get_data()[self.category][
+                item_name.currentText()
+            ]
+            parts_in_inventory.remove_object_item(self.category, item_name.currentText())
+            parts_in_inventory.add_item_in_object(category, item_name.currentText())
+            parts_in_inventory.change_object_in_object_item(
+                category,
+                item_name.currentText(),
+                "current_quantity",
+                copy_of_item["current_quantity"],
+            )
+            parts_in_inventory.change_object_in_object_item(
+                category,
+                item_name.currentText(),
+                "machine_time",
+                copy_of_item["machine_time"],
+            )
+            parts_in_inventory.change_object_in_object_item(
+                category,
+                item_name.currentText(),
+                "gauge",
+                copy_of_item["gauge"],
+            )
+            parts_in_inventory.change_object_in_object_item(
+                category,
+                item_name.currentText(),
+                "material",
+                copy_of_item["material"],
+            )
+            parts_in_inventory.change_object_in_object_item(
+                category,
+                item_name.currentText(),
+                "weight",
+                copy_of_item["weight"],
+            )
+            parts_in_inventory.change_object_in_object_item(
+                category,
+                item_name.currentText(),
+                "price",
+                copy_of_item["price"],
+            )
+            parts_in_inventory.change_object_in_object_item(
+                category,
+                item_name.currentText(),
+                "unit_quantity",
+                1,
+            )
+            parts_in_inventory.change_object_in_object_item(
+                category,
+                item_name.currentText(),
+                "modified_date",
+                copy_of_item["modified_date"],
+            )
+            parts_in_inventory.change_object_in_object_item(
+                category, item_name.currentText(), "group", copy_of_item["group"]
+            )
         self.load_categories()
 
     def add_to_group(self, item_name: QComboBox, group: str) -> None:
@@ -2082,16 +2177,30 @@ class MainWindow(QMainWindow):
                 response = input_dialog.get_response()
                 if response == DialogButtons.ok:
                     input_text = input_dialog.inputText
-                    self.active_json_file.change_object_in_object_item(
-                        self.category, item_name.currentText(), "group", input_text
-                    )
+                    if self.tabWidget.currentIndex() == 2 and self.are_parts_checked():
+                        checked_parts = self.get_all_checked_parts()
+                        for checked_part in checked_parts:
+                            self.active_json_file.change_object_in_object_item(
+                                self.category, checked_part, "group", input_text
+                            )
+                    else:
+                        self.active_json_file.change_object_in_object_item(
+                            self.category, item_name.currentText(), "group", input_text
+                        )
                     self.load_categories()
                 elif response == DialogButtons.cancel:
                     return
         else:
-            self.active_json_file.change_object_in_object_item(
-                self.category, item_name.currentText(), "group", group
-            )
+            if self.tabWidget.currentIndex() == 2 and self.are_parts_checked():
+                checked_parts = self.get_all_checked_parts()
+                for checked_part in checked_parts:
+                    self.active_json_file.change_object_in_object_item(
+                        self.category, checked_part, "group", group
+                    )
+            else:
+                self.active_json_file.change_object_in_object_item(
+                    self.category, item_name.currentText(), "group", group
+                )
             self.load_categories()
 
     def remove_from_group(self, item_name: QComboBox, group: str) -> None:
@@ -2494,6 +2603,14 @@ class MainWindow(QMainWindow):
         It takes a dictionary of dictionaries of dictionaries and calculates the total value of each
         category and the total value of all categories.
         """
+
+        while self.gridLayout_parts_in_inventory_summary.count():
+            item = self.gridLayout_parts_in_inventory_summary.takeAt(0)
+            widget = item.widget()
+            # if widget has some id attributes you need to
+            # save in a list to maintain order, you can do that here
+            # i.e.:   aList.append(widget.someId)
+            widget.deleteLater()
         category_data = parts_in_inventory.get_data()
         round_number = lambda x, n: eval(
             '"%.'
@@ -2517,13 +2634,13 @@ class MainWindow(QMainWindow):
             if category == "Recut" or category == "Custom":
                 lbl = QLabel(f"Total Cost in {category}:", self)
                 self.gridLayout_parts_in_inventory_summary.addWidget(
-                    lbl, len(list(category_data.keys())) + i + 3, 0
+                    lbl, len(list(category_data.keys())) + i + 2, 0
                 )
                 lbl = QLabel(
                     f"${format(float(round_number(category_total,2)),',')}", self
                 )
                 self.gridLayout_parts_in_inventory_summary.addWidget(
-                    lbl, len(list(category_data.keys())) + i + 3, 1
+                    lbl, len(list(category_data.keys())) + i + 2, 1
                 )
             else:
                 lbl = QLabel(f"{category}:", self)
@@ -4386,6 +4503,8 @@ class MainWindow(QMainWindow):
                         )
                     )
                     self.should_reload_categories = True
+                    if self.are_parts_checked():
+                        return
                     self.download_file([file_name_to_upload + ".json"], False)
                 set_status_button_stylesheet(button=self.status_button, color="yellow")
                 button_status = (
@@ -4425,6 +4544,26 @@ class MainWindow(QMainWindow):
                 )
             )
             logging.critical(error)
+
+    def are_parts_checked(self) -> bool:
+        """
+        If any of the checkboxes are checked, return True. Otherwise, return False
+
+        Returns:
+          A boolean value.
+        """
+        return any(
+            self.check_box_selections[part_name].isChecked()
+            for part_name in list(self.check_box_selections.keys())
+        )
+
+    def get_all_checked_parts(self) -> list[str]:
+        checked_parts: list[str] = [
+            part_name
+            for part_name in list(self.check_box_selections.keys())
+            if self.check_box_selections[part_name].isChecked()
+        ]
+        return checked_parts
 
     def data_received(self, data) -> None:
         """
@@ -4614,13 +4753,13 @@ class MainWindow(QMainWindow):
             )
             if check:
                 extract(file_to_extract=backup_file)
-                # self.load_categories()
+                self.load_categories()
                 self.show_message_dialog(
                     title="Success", message="Successfully loaded backup!"
                 )
         else:
             extract(file_to_extract=file_path)
-            # self.load_categories()
+            self.load_categories()
             self.show_message_dialog(
                 title="Success", message="Successfully loaded backup!"
             )
@@ -4638,9 +4777,9 @@ class MainWindow(QMainWindow):
         """
         It shows a message dialog with a title and a message
         """
-        self.tabWidget.currentChanged.disconnect()
+        # self.tabWidget.currentChanged.disconnect()
         self.tabWidget.setCurrentIndex(1)
-        self.tabWidget.currentChanged.connect(self.show_not_trusted_user)
+        # self.tabWidget.currentChanged.connect(self.show_not_trusted_user)
         self.show_message_dialog(
             title="Permission error",
             message="You don't have permission to change inventory items.\n\nnot sorry \n\n(:",
@@ -4656,12 +4795,12 @@ class MainWindow(QMainWindow):
             self.trusted_user = self.username.lower() == user.lower()
 
         if not self.trusted_user:
-            self.verticalLayout.setEnabled(False)
-            self.load_tree_view(inventory)
-            self.tabWidget.currentChanged.disconnect()
-            self.tabWidget.setCurrentIndex(1)
-            settings_file.add_item("last_toolbox_tab", 1)
-            self.tabWidget.currentChanged.connect(self.show_not_trusted_user)
+            # self.verticalLayout.setEnabled(False)
+            # self.load_tree_view(inventory)
+            # self.tabWidget.currentChanged.disconnect()
+            # self.tabWidget.setCurrentIndex(1)
+            # settings_file.add_item("last_toolbox_tab", 1)
+            # self.tabWidget.currentChanged.connect(self.show_not_trusted_user)
             # self.tabWidget.setItemToolTip(
             #     0,
             #     "You don't have permission to change inventory items.\n\nnot sorry \n\n(:",
