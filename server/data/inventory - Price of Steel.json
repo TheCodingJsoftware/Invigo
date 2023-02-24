@@ -422,6 +422,17 @@
             "latest_sheet_dimension": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-54-48 PM",
             "latest_change_thickness": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-54-48 PM",
             "latest_change_current_quantity": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-54-48 PM"
+        },
+        "20 Gauge 304 SS 120.000x48.000": {
+            "current_quantity": 20,
+            "sheet_dimension": "120.000x48.000",
+            "thickness": "20 Gauge",
+            "material": "304 SS",
+            "group": "20G SS",
+            "latest_change_material": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-55-39 PM",
+            "latest_sheet_dimension": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-55-39 PM",
+            "latest_change_thickness": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-55-39 PM",
+            "latest_change_current_quantity": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-55-39 PM"
         }
     },
     "Galvanized\/Galvanneal": {},
