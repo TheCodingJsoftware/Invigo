@@ -53,7 +53,7 @@
             "latest_change_current_quantity": "Item added\nLaser Pc\nFebruary 24 Friday 2023 02-29-02 PM"
         },
         "10 Gauge 304 SS 120.000x60.000": {
-            "current_quantity": 11.0,
+            "current_quantity": 10.0,
             "sheet_dimension": "120.000x60.000",
             "thickness": "10 Gauge",
             "material": "304 SS",
