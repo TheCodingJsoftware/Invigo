@@ -29,19 +29,7 @@
             "latest_change_price": "Latest Change:\nfrom: 1.45\nto: 1.45\nJared\nFebruary 21 Tuesday 2023 06:12:37 PM"
         }
     },
-    "Mild Steel": {
-        "22 Gauge Mild Steel 120.000x60.000": {
-            "current_quantity": 0,
-            "sheet_dimension": "120.000x60.000",
-            "thickness": "22 Gauge",
-            "material": "Mild Steel",
-            "latest_change_material": "Item added\nJordan\nFebruary 24 Friday 2023 08-40-54 AM",
-            "latest_sheet_dimension": "Item added\nJordan\nFebruary 24 Friday 2023 08-40-54 AM",
-            "latest_change_thickness": "Item added\nJordan\nFebruary 24 Friday 2023 08-40-54 AM",
-            "latest_change_current_quantity": "Item added\nJordan\nFebruary 24 Friday 2023 08-40-54 AM",
-            "group": "Mild Steel"
-        }
-    },
+    "Mild Steel": {},
     "Aluminium": {},
     "Stainless": {},
     "Galvanized\/Galvanneal": {},
