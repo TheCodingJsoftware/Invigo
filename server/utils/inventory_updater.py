@@ -20,6 +20,7 @@ def update_inventory(file_path: str) -> None:
       file_path (str): str = "data/testt - Laser Batch Data.json"
     """
     parts_in_inventory.load_data()
+    price_of_steel_inventory.load_data()
     with open(file_path) as json_file:
         new_laser_batch_data = json.load(json_file)
     total_sheet_count: int = get_total_sheet_count(batch_data=new_laser_batch_data)
@@ -27,6 +28,8 @@ def update_inventory(file_path: str) -> None:
     subtract_sheet_count(
         sheet_name_to_update=name_of_sheet, sheet_count=total_sheet_count
     )
+    print(total_sheet_count)
+    print(name_of_sheet)
     recut_parts: list[str] = get_recut_parts(batch_data=new_laser_batch_data)
     add_recut_parts(batch_data=new_laser_batch_data, recut_parts=recut_parts)
     no_recut_parts: list[str] = get_no_recut_parts(batch_data=new_laser_batch_data)
@@ -336,8 +339,9 @@ def subtract_sheet_count(sheet_name_to_update: str, sheet_count: int) -> None:
                 old_quantity: int = category_data[category][sheet_name][
                     "current_quantity"
                 ]
+                print(old_quantity)
                 price_of_steel_inventory.change_object_in_object_item(
-                    category, sheet_name, "quantity", old_quantity - sheet_count
+                    category, sheet_name, "current_quantity", old_quantity - sheet_count
                 )
 
 
