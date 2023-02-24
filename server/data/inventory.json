@@ -1143,12 +1143,12 @@
         "535 Blacl Silicone 300ML ": {
             "part_number": "32390",
             "unit_quantity": 1,
-            "current_quantity": 131,
+            "current_quantity": 36,
             "price": 9.7,
             "use_exchange_rate": false,
             "priority": 3,
             "notes": "Vendor: Rantec\nRachel@rantec.ca\nDescription: ",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 131\nto: 131\nItsme\nFebruary 17 Friday 2023 11:07:58 AM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 36\nto: 36\nItsme\nFebruary 24 Friday 2023 04:33:14 PM",
             "latest_change_price": "Latest Change:\nfrom: 9.7\nto: 9.7\nItsme\nJuly 07 Thursday 2022 03:59:16 PM"
         },
         "bushing 786-251 Bronze Insert Bushing ": {
@@ -4373,12 +4373,12 @@
         "535 Blacl Silicone 300ML ": {
             "part_number": "32390",
             "unit_quantity": 1,
-            "current_quantity": 131,
+            "current_quantity": 36,
             "price": 9.7,
             "use_exchange_rate": false,
             "priority": 3,
             "notes": "Vendor: Rantec\nRachel@rantec.ca\nDescription: ",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 131\nto: 131\nItsme\nFebruary 17 Friday 2023 11:07:58 AM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 36\nto: 36\nItsme\nFebruary 24 Friday 2023 04:33:14 PM",
             "latest_change_price": "Latest Change:\nfrom: 9.7\nto: 9.7\nItsme\nJuly 07 Thursday 2022 03:59:16 PM"
         },
         "Knob 3\/4 DIA. 7\/16 Bore. Press-On Black Phenlic Round Knob": {
@@ -4982,6 +4982,23 @@
             "latest_change_priority": "Item added\nItsme\nAugust 04 Thursday 2022 10-10-27 AM",
             "latest_change_notes": "Latest Change:\nfrom: \"Vendor: Ike Chemical Enterpris\nDescription: \"\nto: \"Vendor: Ike Chemical Enterprise\nDescription: \"\nItsme\nOctober 10 Monday 2022 03:59:01 PM"
         },
+        "535 Blacl Silicone 300ML ": {
+            "part_number": "32390",
+            "unit_quantity": 1,
+            "current_quantity": 36,
+            "price": 9.7,
+            "use_exchange_rate": false,
+            "priority": 2,
+            "notes": "Vendor: Anchor Products\n\nDescription: ",
+            "latest_change_name": "Item added\nItsme\nAugust 04 Thursday 2022 09-08-31 AM",
+            "latest_change_part_number": "Item added\nItsme\nAugust 04 Thursday 2022 09-08-31 AM",
+            "latest_change_unit_quantity": "Item added\nItsme\nAugust 04 Thursday 2022 09-08-31 AM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 36\nto: 36\nItsme\nFebruary 24 Friday 2023 04:33:14 PM",
+            "latest_change_price": "Item added\nItsme\nAugust 04 Thursday 2022 09-08-31 AM",
+            "latest_change_use_exchange_price": "Item added\nItsme\nAugust 04 Thursday 2022 09-08-31 AM",
+            "latest_change_priority": "Latest Change:\nfrom: 1\nto: 2\nItsme\nOctober 21 Friday 2022 04:31:05 PM",
+            "latest_change_notes": "Item added\nItsme\nAugust 04 Thursday 2022 09-08-31 AM"
+        },
         "6\" Plug Cap Twist Lock   6BL": {
             "part_number": "206036U",
             "unit_quantity": 1,
@@ -5220,23 +5237,6 @@
             "latest_change_use_exchange_price": "Item added\nItsme\nJuly 28 Thursday 2022 02-04-32 PM",
             "latest_change_priority": "Latest Change:\nfrom: 0\nto: 3\nItsme\nOctober 21 Friday 2022 04:30:53 PM",
             "latest_change_notes": "Item added\nItsme\nJuly 28 Thursday 2022 02-04-32 PM"
-        },
-        "535 Blacl Silicone 300ML ": {
-            "part_number": "32390",
-            "unit_quantity": 1,
-            "current_quantity": 131,
-            "price": 9.7,
-            "use_exchange_rate": false,
-            "priority": 2,
-            "notes": "Vendor: Anchor Products\n\nDescription: ",
-            "latest_change_name": "Item added\nItsme\nAugust 04 Thursday 2022 09-08-31 AM",
-            "latest_change_part_number": "Item added\nItsme\nAugust 04 Thursday 2022 09-08-31 AM",
-            "latest_change_unit_quantity": "Item added\nItsme\nAugust 04 Thursday 2022 09-08-31 AM",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 131\nto: 131\nItsme\nFebruary 17 Friday 2023 11:07:58 AM",
-            "latest_change_price": "Item added\nItsme\nAugust 04 Thursday 2022 09-08-31 AM",
-            "latest_change_use_exchange_price": "Item added\nItsme\nAugust 04 Thursday 2022 09-08-31 AM",
-            "latest_change_priority": "Latest Change:\nfrom: 1\nto: 2\nItsme\nOctober 21 Friday 2022 04:31:05 PM",
-            "latest_change_notes": "Item added\nItsme\nAugust 04 Thursday 2022 09-08-31 AM"
         },
         "3\" Air Tube": {
             "part_number": "3AT",
