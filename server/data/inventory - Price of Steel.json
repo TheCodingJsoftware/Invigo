@@ -240,7 +240,38 @@
             "latest_change_current_quantity": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-33-02 PM"
         }
     },
-    "Aluminium": {},
+    "Aluminium": {
+        "3\/8 Aluminium 144.000x48.000": {
+            "current_quantity": 2,
+            "sheet_dimension": "144.000x48.000",
+            "thickness": "3\/8",
+            "material": "Aluminium",
+            "latest_change_material": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-44-01 PM",
+            "latest_sheet_dimension": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-44-01 PM",
+            "latest_change_thickness": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-44-01 PM",
+            "latest_change_current_quantity": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-44-01 PM"
+        },
+        "1\/4 304 SS 120.000x60.000": {
+            "current_quantity": 2,
+            "sheet_dimension": "120.000x60.000",
+            "thickness": "1\/4",
+            "material": "304 SS",
+            "latest_change_material": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-44-14 PM",
+            "latest_sheet_dimension": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-44-14 PM",
+            "latest_change_thickness": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-44-14 PM",
+            "latest_change_current_quantity": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-44-14 PM"
+        },
+        "3\/16 Aluminium 120.000x60.000": {
+            "current_quantity": 2,
+            "sheet_dimension": "120.000x60.000",
+            "thickness": "3\/16",
+            "material": "Aluminium",
+            "latest_change_material": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-44-35 PM",
+            "latest_sheet_dimension": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-44-35 PM",
+            "latest_change_thickness": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-44-35 PM",
+            "latest_change_current_quantity": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-44-35 PM"
+        }
+    },
     "Stainless": {},
     "Galvanized\/Galvanneal": {},
     "Cutoff": {}
