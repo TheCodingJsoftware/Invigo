@@ -33,7 +33,7 @@
     "Aluminium": {},
     "Stainless": {
         "14 Gauge 304 SS 120.000x60.000": {
-            "current_quantity": 10,
+            "current_quantity": 9,
             "sheet_dimension": "120.000x60.000",
             "thickness": "14 Gauge",
             "material": "304 SS",
