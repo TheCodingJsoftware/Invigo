@@ -95,6 +95,17 @@
             "latest_sheet_dimension": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-10-35 PM",
             "latest_change_thickness": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-10-35 PM",
             "latest_change_current_quantity": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-10-35 PM"
+        },
+        "1\/4 Mild Steel 96.000x48.000": {
+            "current_quantity": 41,
+            "sheet_dimension": "96.000x48.000",
+            "thickness": "1\/4",
+            "material": "Mild Steel",
+            "group": "1\/4 Mild Steel",
+            "latest_change_material": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-13-13 PM",
+            "latest_sheet_dimension": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-13-13 PM",
+            "latest_change_thickness": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-13-13 PM",
+            "latest_change_current_quantity": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-13-13 PM"
         }
     },
     "Aluminium": {},
