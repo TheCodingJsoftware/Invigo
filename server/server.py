@@ -25,7 +25,7 @@ class Server:
         logs and starts the server
         """
         # Declaring server IP and port
-        self.SERVER_IP: str = "10.0.0.211"
+        self.SERVER_IP: str = "10.0.0.93"
         self.SERVER_PORT: int = 80
 
         self.BUFFER_SIZE = 8192
