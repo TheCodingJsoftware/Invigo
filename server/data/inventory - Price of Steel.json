@@ -520,7 +520,8 @@
             "latest_change_material": "Item added\nLaser Pc\nFebruary 24 Friday 2023 05-11-18 PM",
             "latest_sheet_dimension": "Item added\nLaser Pc\nFebruary 24 Friday 2023 05-11-18 PM",
             "latest_change_thickness": "Item added\nLaser Pc\nFebruary 24 Friday 2023 05-11-18 PM",
-            "latest_change_current_quantity": "Item added\nLaser Pc\nFebruary 24 Friday 2023 05-11-18 PM"
+            "latest_change_current_quantity": "Item added\nLaser Pc\nFebruary 24 Friday 2023 05-11-18 PM",
+            "group": "Galvanized"
         },
         "20 Gauge Galvanized 120.000x60.000": {
             "current_quantity": 0,
@@ -530,7 +531,19 @@
             "latest_change_material": "Item added\nLaser Pc\nFebruary 24 Friday 2023 05-12-02 PM",
             "latest_sheet_dimension": "Item added\nLaser Pc\nFebruary 24 Friday 2023 05-12-02 PM",
             "latest_change_thickness": "Item added\nLaser Pc\nFebruary 24 Friday 2023 05-12-02 PM",
-            "latest_change_current_quantity": "Item added\nLaser Pc\nFebruary 24 Friday 2023 05-12-02 PM"
+            "latest_change_current_quantity": "Item added\nLaser Pc\nFebruary 24 Friday 2023 05-12-02 PM",
+            "group": "Galvanized"
+        },
+        "18 Gauge Galvanneal 120.000x60.000": {
+            "current_quantity": 191,
+            "sheet_dimension": "120.000x60.000",
+            "thickness": "18 Gauge",
+            "material": "Galvanneal",
+            "group": "Galvaneal",
+            "latest_change_material": "Item added\nLaser Pc\nFebruary 24 Friday 2023 05-19-31 PM",
+            "latest_sheet_dimension": "Item added\nLaser Pc\nFebruary 24 Friday 2023 05-19-31 PM",
+            "latest_change_thickness": "Item added\nLaser Pc\nFebruary 24 Friday 2023 05-19-31 PM",
+            "latest_change_current_quantity": "Item added\nLaser Pc\nFebruary 24 Friday 2023 05-19-31 PM"
         }
     },
     "Cutoff": {}
