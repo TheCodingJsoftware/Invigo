@@ -4,8 +4,8 @@ __copyright__ = "Copyright 2022, TheCodingJ's"
 __credits__: "list[str]" = ["Jared Gross"]
 __license__ = "MIT"
 __name__ = "Inventory Manager"
-__version__ = "v1.5.2"
-__updated__ = "2023-02-24 14:08:13"
+__version__ = "v1.5.3"
+__updated__ = "2023-02-24 14:41:15"
 __maintainer__ = "Jared Gross"
 __email__ = "jared@pinelandfarms.ca"
 __status__ = "Production"
@@ -2568,9 +2568,12 @@ class MainWindow(QMainWindow):
                     pounds_per_square_foot: float = 0.0
                 sheet_length: float = float(sheet_dimension.split("x")[0])
                 sheet_width: float = float(sheet_dimension.split("x")[1])
-                pounds_per_sheet: float = pounds_per_square_foot * (
-                    sheet_length * sheet_width
-                )
+                try:
+                    pounds_per_sheet: float = (
+                        (sheet_length * sheet_width) / 144
+                    ) * pounds_per_square_foot
+                except ZeroDivisionError:
+                    pounds_per_sheet = 0.0
                 try:
                     price_per_pound: float = float(
                         price_of_steel_inventory.get_data()["Price Per Pound"][material][
