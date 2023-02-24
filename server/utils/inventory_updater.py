@@ -7,9 +7,9 @@ from datetime import datetime
 
 from utils.json_file import JsonFile
 
-inventory = JsonFile(file_name="data/testt")
-price_of_steel_inventory = JsonFile(file_name="data/testt - Price of Steel")
-parts_in_inventory = JsonFile(file_name="data/testt - Parts in Inventory")
+inventory = JsonFile(file_name="data/inventory")
+price_of_steel_inventory = JsonFile(file_name="data/inventory - Price of Steel")
+parts_in_inventory = JsonFile(file_name="data/inventory - Parts in Inventory")
 
 
 def update_inventory(file_path: str) -> None:
