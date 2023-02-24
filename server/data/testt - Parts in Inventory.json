@@ -1,49 +1,5 @@
 {
     "Custom": {
-        "2534-073": {
-            "current_quantity": 6,
-            "machine_time": 0.6,
-            "gauge": "0.05\"",
-            "material": "Galvanized",
-            "weight": 7.185,
-            "price": 10.12,
-            "unit_quantity": 1,
-            "modified_date": "1 quantity added at February 24 Friday 2023 09:12:07 AM",
-            "group": null
-        },
-        "2534-075": {
-            "current_quantity": 6,
-            "machine_time": 0.53,
-            "gauge": "0.05\"",
-            "material": "Galvanized",
-            "weight": 5.812,
-            "price": 8.3,
-            "unit_quantity": 1,
-            "modified_date": "1 quantity added at February 24 Friday 2023 09:12:07 AM",
-            "group": null
-        },
-        "2534-086": {
-            "current_quantity": 6,
-            "machine_time": 0.85,
-            "gauge": "0.05\"",
-            "material": "Galvanized",
-            "weight": 8.511,
-            "price": 12.34,
-            "unit_quantity": 1,
-            "modified_date": "1 quantity added at February 24 Friday 2023 09:12:07 AM",
-            "group": null
-        },
-        "2534-087": {
-            "current_quantity": 6,
-            "machine_time": 0.62,
-            "gauge": "0.05\"",
-            "material": "Galvanized",
-            "weight": 4.603,
-            "price": 7.07,
-            "unit_quantity": 1,
-            "modified_date": "1 quantity added at February 24 Friday 2023 09:12:07 AM",
-            "group": null
-        },
         "2534-090": {
             "current_quantity": 6,
             "machine_time": 0.62,
@@ -208,28 +164,6 @@
             "unit_quantity": 1,
             "modified_date": "1 quantity added at February 24 Friday 2023 09:09:02 AM",
             "group": null
-        },
-        "2840-Shaker-89": {
-            "current_quantity": 4,
-            "machine_time": 0.08,
-            "gauge": "0.05\"",
-            "material": "304 SS",
-            "weight": 0.047,
-            "price": 0.45,
-            "unit_quantity": 1,
-            "modified_date": "1 quantity added at February 24 Friday 2023 09:09:02 AM",
-            "group": null
-        },
-        "Flat pattern - 2534-093PUNCHED CHECK SPARE PARTS AT PUNCH": {
-            "current_quantity": 4,
-            "machine_time": 0.63,
-            "gauge": "0.05\"",
-            "material": "304 SS",
-            "weight": 9.514,
-            "price": 25.36,
-            "unit_quantity": 1,
-            "modified_date": "1 quantity added at February 24 Friday 2023 09:09:02 AM",
-            "group": null
         }
     },
     "Recut": {
@@ -269,7 +203,74 @@
             "unit_quantity": 1,
             "modified_date": "1 quantity added at February 24 Friday 2023 09:12:07 AM",
             "group": null
+        },
+        "2534-073": {
+            "current_quantity": 6,
+            "machine_time": 0.6,
+            "gauge": "0.05\"",
+            "material": "Galvanized",
+            "weight": 7.185,
+            "price": 10.12,
+            "unit_quantity": 1,
+            "modified_date": "1 quantity added at February 24 Friday 2023 09:12:07 AM",
+            "group": null
+        },
+        "2534-075": {
+            "current_quantity": 6,
+            "machine_time": 0.53,
+            "gauge": "0.05\"",
+            "material": "Galvanized",
+            "weight": 5.812,
+            "price": 8.3,
+            "unit_quantity": 1,
+            "modified_date": "1 quantity added at February 24 Friday 2023 09:12:07 AM",
+            "group": null
+        },
+        "2534-086": {
+            "current_quantity": 6,
+            "machine_time": 0.85,
+            "gauge": "0.05\"",
+            "material": "Galvanized",
+            "weight": 8.511,
+            "price": 12.34,
+            "unit_quantity": 1,
+            "modified_date": "1 quantity added at February 24 Friday 2023 09:12:07 AM",
+            "group": null
+        },
+        "2534-087": {
+            "current_quantity": 6,
+            "machine_time": 0.62,
+            "gauge": "0.05\"",
+            "material": "Galvanized",
+            "weight": 4.603,
+            "price": 7.07,
+            "unit_quantity": 1,
+            "modified_date": "1 quantity added at February 24 Friday 2023 09:12:07 AM",
+            "group": null
         }
     },
-    "asdasdasdas": {}
+    "asdasdasdas": {
+        "2840-Shaker-89": {
+            "current_quantity": 4,
+            "machine_time": 0.08,
+            "gauge": "0.05\"",
+            "material": "304 SS",
+            "weight": 0.047,
+            "price": 0.45,
+            "unit_quantity": 1,
+            "modified_date": "1 quantity added at February 24 Friday 2023 09:09:02 AM",
+            "group": null
+        },
+        "Flat pattern - 2534-093PUNCHED CHECK SPARE PARTS AT PUNCH": {
+            "current_quantity": 4,
+            "machine_time": 0.63,
+            "gauge": "0.05\"",
+            "material": "304 SS",
+            "weight": 9.514,
+            "price": 25.36,
+            "unit_quantity": 1,
+            "modified_date": "1 quantity added at February 24 Friday 2023 09:09:02 AM",
+            "group": null
+        }
+    }
 }
