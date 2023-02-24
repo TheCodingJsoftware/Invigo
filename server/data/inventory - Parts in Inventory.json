@@ -1,5 +1,49 @@
 {
     "Custom": {
+        "Flat pattern - Bins Power Box Lid": {
+            "current_quantity": 7,
+            "machine_time": 0.12,
+            "gauge": "0.05\"",
+            "material": "304 SS",
+            "weight": 0.669,
+            "price": 2.1,
+            "unit_quantity": 1,
+            "modified_date": "Added at February 24 Friday 2023 11:34:06 AM",
+            "group": null
+        },
+        "central air": {
+            "current_quantity": 3,
+            "machine_time": 1.45,
+            "gauge": "0.05\"",
+            "material": "304 SS",
+            "weight": 17.37,
+            "price": 47.56,
+            "unit_quantity": 1,
+            "modified_date": "Added at February 24 Friday 2023 11:34:06 AM",
+            "group": null
+        },
+        "central air filter mesh": {
+            "current_quantity": 3,
+            "machine_time": 1.15,
+            "gauge": "0.05\"",
+            "material": "304 SS",
+            "weight": 1.447,
+            "price": 8.25,
+            "unit_quantity": 1,
+            "modified_date": "Added at February 24 Friday 2023 11:34:06 AM",
+            "group": null
+        },
+        "central air plate": {
+            "current_quantity": 3,
+            "machine_time": 0.37,
+            "gauge": "0.05\"",
+            "material": "304 SS",
+            "weight": 4.343,
+            "price": 11.92,
+            "unit_quantity": 1,
+            "modified_date": "Added at February 24 Friday 2023 11:34:06 AM",
+            "group": null
+        },
         "2534-053": {
             "current_quantity": 1,
             "machine_time": 0.83,
@@ -240,6 +284,17 @@
             "price": 13.18,
             "unit_quantity": 1,
             "modified_date": "Added at February 24 Friday 2023 09:28:46 AM",
+            "group": null
+        },
+        "Flat pattern - Bins Power Box": {
+            "current_quantity": 1,
+            "machine_time": 0.35,
+            "gauge": "0.05\"",
+            "material": "304 SS",
+            "weight": 2.07,
+            "price": 6.41,
+            "unit_quantity": 1,
+            "modified_date": "Added at February 24 Friday 2023 11:34:06 AM",
             "group": null
         }
     },
