@@ -1,16 +1,5 @@
 {
     "Custom": {
-        "2534-071": {
-            "current_quantity": 6,
-            "machine_time": 0.95,
-            "gauge": "0.05\"",
-            "material": "Galvanized",
-            "weight": 4.166,
-            "price": 7.37,
-            "unit_quantity": 1,
-            "modified_date": "1 quantity added at February 24 Friday 2023 09:12:07 AM",
-            "group": null
-        },
         "2534-073": {
             "current_quantity": 6,
             "machine_time": 0.6,
@@ -269,5 +258,18 @@
             "group": null
         }
     },
-    "asdasdasd": {}
+    "asdasdasd": {
+        "2534-071": {
+            "current_quantity": 6,
+            "machine_time": 0.95,
+            "gauge": "0.05\"",
+            "material": "Galvanized",
+            "weight": 4.166,
+            "price": 7.37,
+            "unit_quantity": 1,
+            "modified_date": "1 quantity added at February 24 Friday 2023 09:12:07 AM",
+            "group": null
+        }
+    },
+    "asdasdasdas": {}
 }
