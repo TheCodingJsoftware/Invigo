@@ -4,8 +4,8 @@ __copyright__ = "Copyright 2022, TheCodingJ's"
 __credits__: "list[str]" = ["Jared Gross"]
 __license__ = "MIT"
 __name__ = "Inventory Manager"
-__version__ = "v1.5.0"
-__updated__ = "2023-02-24 11:23:31"
+__version__ = "v1.5.1"
+__updated__ = "2023-02-24 13:54:01"
 __maintainer__ = "Jared Gross"
 __email__ = "jared@pinelandfarms.ca"
 __status__ = "Production"
@@ -1274,9 +1274,9 @@ class MainWindow(QMainWindow):
                 sheet_length = float(sheet_dimension.split("x")[0])
                 sheet_width = float(sheet_dimension.split("x")[1])
                 try:
-                    pounds_per_sheet: float = (sheet_length * sheet_width) / (
-                        144 * pounds_per_square_foot
-                    )
+                    pounds_per_sheet: float = (
+                        (sheet_length * sheet_width) / 144
+                    ) * pounds_per_square_foot
                 except ZeroDivisionError:
                     pounds_per_sheet = 0.0
                 # PRICE PER POUND
