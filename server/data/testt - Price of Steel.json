@@ -33,5 +33,17 @@
     "Aluminium": {},
     "Stainless": {},
     "Galvanized\/Galvanneal": {},
-    "Cutoff": {}
+    "Cutoff": {
+        "1\" 304 SS 0.000x0.000": {
+            "current_quantity": 0,
+            "sheet_dimension": "0.000x0.000",
+            "thickness": "1\"",
+            "material": "304 SS",
+            "latest_change_material": "Item added\nJared\nFebruary 24 Friday 2023 11-23-50 AM",
+            "latest_sheet_dimension": "Item added\nJared\nFebruary 24 Friday 2023 11-23-50 AM",
+            "latest_change_thickness": "Item added\nJared\nFebruary 24 Friday 2023 11-23-50 AM",
+            "latest_change_current_quantity": "Item added\nJared\nFebruary 24 Friday 2023 11-23-50 AM",
+            "group": null
+        }
+    }
 }
