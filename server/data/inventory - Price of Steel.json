@@ -31,7 +31,18 @@
     },
     "Mild Steel": {},
     "Aluminium": {},
-    "Stainless": {},
+    "Stainless": {
+        "18 Guage 304 SS 120.000x60.000": {
+            "current_quantity": 18,
+            "sheet_dimension": "120.000x60.000",
+            "thickness": "18 Guage",
+            "material": "304 SS",
+            "latest_change_material": "Item added\nJordan\nFebruary 24 Friday 2023 10-56-19 AM",
+            "latest_sheet_dimension": "Item added\nJordan\nFebruary 24 Friday 2023 10-56-19 AM",
+            "latest_change_thickness": "Item added\nJordan\nFebruary 24 Friday 2023 10-56-19 AM",
+            "latest_change_current_quantity": "Item added\nJordan\nFebruary 24 Friday 2023 10-56-19 AM"
+        }
+    },
     "Galvanized\/Galvanneal": {},
     "Cutoff": {}
 }
