@@ -356,6 +356,28 @@
             "latest_sheet_dimension": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-51-47 PM",
             "latest_change_thickness": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-51-47 PM",
             "latest_change_current_quantity": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-51-47 PM"
+        },
+        "11 Gauge 304 SS 120.000x60.000": {
+            "current_quantity": 15,
+            "sheet_dimension": "120.000x60.000",
+            "thickness": "11 Gauge",
+            "material": "304 SS",
+            "group": "11G SS",
+            "latest_change_material": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-52-12 PM",
+            "latest_sheet_dimension": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-52-12 PM",
+            "latest_change_thickness": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-52-12 PM",
+            "latest_change_current_quantity": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-52-12 PM"
+        },
+        "12 Gauge 304 SS 120.000x60.000": {
+            "current_quantity": 25,
+            "sheet_dimension": "120.000x60.000",
+            "thickness": "12 Gauge",
+            "material": "304 SS",
+            "group": "12G SS",
+            "latest_change_material": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-52-33 PM",
+            "latest_sheet_dimension": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-52-33 PM",
+            "latest_change_thickness": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-52-33 PM",
+            "latest_change_current_quantity": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-52-33 PM"
         }
     },
     "Galvanized\/Galvanneal": {},
