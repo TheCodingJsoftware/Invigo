@@ -62,15 +62,15 @@
             "latest_change_thickness": "Item added\nLaser Pc\nFebruary 24 Friday 2023 02-37-18 PM",
             "latest_change_current_quantity": "Latest Change:\nfrom: 11.0\nto: 11.0\nLaser Pc\nFebruary 24 Friday 2023 02:37:24 PM"
         },
-        "3\/16\" 304 SS 120.000x60.000": {
-            "current_quantity": 0,
+        "3\/16 304 SS 120.000x60.000": {
+            "current_quantity": 11,
             "sheet_dimension": "120.000x60.000",
-            "thickness": "3\/16\"",
+            "thickness": "3\/16",
             "material": "304 SS",
-            "latest_change_material": "Item added\nLaser Pc\nFebruary 24 Friday 2023 02-44-42 PM",
-            "latest_sheet_dimension": "Item added\nLaser Pc\nFebruary 24 Friday 2023 02-44-42 PM",
-            "latest_change_thickness": "Item added\nLaser Pc\nFebruary 24 Friday 2023 02-44-42 PM",
-            "latest_change_current_quantity": "Item added\nLaser Pc\nFebruary 24 Friday 2023 02-44-42 PM"
+            "latest_change_material": "Item added\nLaser Pc\nFebruary 24 Friday 2023 02-48-27 PM",
+            "latest_sheet_dimension": "Item added\nLaser Pc\nFebruary 24 Friday 2023 02-48-27 PM",
+            "latest_change_thickness": "Item added\nLaser Pc\nFebruary 24 Friday 2023 02-48-27 PM",
+            "latest_change_current_quantity": "Item added\nLaser Pc\nFebruary 24 Friday 2023 02-48-27 PM"
         }
     },
     "Galvanized\/Galvanneal": {},
