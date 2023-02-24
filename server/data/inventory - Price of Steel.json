@@ -33,15 +33,16 @@
     "Aluminium": {},
     "Stainless": {
         "18 Gauge 304 SS 120.000x60.000": {
-            "current_quantity": 18,
+            "current_quantity": 17.0,
             "sheet_dimension": "120.000x60.000",
             "thickness": "18 Gauge",
             "material": "304 SS",
             "latest_change_material": "Item added\nLaser Pc\nFebruary 24 Friday 2023 01-29-08 PM",
             "latest_sheet_dimension": "Item added\nLaser Pc\nFebruary 24 Friday 2023 01-29-08 PM",
             "latest_change_thickness": "Item added\nLaser Pc\nFebruary 24 Friday 2023 01-29-08 PM",
-            "latest_change_current_quantity": "Item added\nLaser Pc\nFebruary 24 Friday 2023 01-29-08 PM",
-            "group": "304 Stainless Steel"
+            "latest_change_current_quantity": "Latest Change:\nfrom: 16\nto: 17.0\nLaser Pc\nFebruary 24 Friday 2023 01:44:46 PM",
+            "group": "304 Stainless Steel",
+            "quantity": 17
         }
     },
     "Galvanized\/Galvanneal": {},
