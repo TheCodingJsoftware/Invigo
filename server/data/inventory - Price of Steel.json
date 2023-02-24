@@ -106,6 +106,17 @@
             "latest_sheet_dimension": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-13-13 PM",
             "latest_change_thickness": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-13-13 PM",
             "latest_change_current_quantity": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-13-13 PM"
+        },
+        "3\/16 Mild Steel 120.000x60.000": {
+            "current_quantity": 56,
+            "sheet_dimension": "120.000x60.000",
+            "thickness": "3\/16",
+            "material": "Mild Steel",
+            "group": "3\/16 Mild Steel ",
+            "latest_change_material": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-14-45 PM",
+            "latest_sheet_dimension": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-14-45 PM",
+            "latest_change_thickness": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-14-45 PM",
+            "latest_change_current_quantity": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-14-45 PM"
         }
     },
     "Aluminium": {},
