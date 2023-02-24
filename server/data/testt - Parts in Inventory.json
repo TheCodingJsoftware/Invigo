@@ -1,16 +1,5 @@
 {
     "BL 29": {
-        "PLT-0500-044W-0024-Ax2": {
-            "current_quantity": 2,
-            "machine_time": 0.83,
-            "gauge": "1\/2\"",
-            "material": "Laser Grade Plate",
-            "weight": 12.587,
-            "price": 20.33,
-            "unit_quantity": 1,
-            "modified_date": "1 quantity added at February 23 Thursday 2023 05:09:31 PM",
-            "group": "test"
-        },
         "PLT-0500-044W-0014x4": {
             "current_quantity": 8,
             "machine_time": 4.57,
@@ -21,6 +10,17 @@
             "unit_quantity": 1,
             "modified_date": "4 quantity added at February 23 Thursday 2023 05:09:31 PM",
             "group": null
+        },
+        "PLT-0500-044W-0024-Ax2": {
+            "current_quantity": 2,
+            "machine_time": 0.83,
+            "gauge": "1\/2\"",
+            "material": "Laser Grade Plate",
+            "weight": 12.587,
+            "price": 20.33,
+            "unit_quantity": 1,
+            "modified_date": "1 quantity added at February 23 Thursday 2023 05:09:31 PM",
+            "group": "test"
         }
     },
     "Custom": {
@@ -132,6 +132,17 @@
             "price": 40.44,
             "unit_quantity": 1,
             "modified_date": "Added at February 23 Thursday 2023 05:09:31 PM",
+            "group": null
+        },
+        "PM - SS HINGE A-B": {
+            "current_quantity": 1,
+            "machine_time": 0.15,
+            "gauge": "0.08\"",
+            "material": "Aluminium",
+            "weight": 0.118,
+            "price": 0.96,
+            "unit_quantity": 1,
+            "modified_date": "Added at February 23 Thursday 2023 07:04:52 PM",
             "group": null
         }
     },
