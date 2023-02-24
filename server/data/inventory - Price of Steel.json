@@ -194,6 +194,28 @@
             "latest_change_thickness": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-28-06 PM",
             "latest_change_current_quantity": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-28-06 PM",
             "group": "10G Mild Steel"
+        },
+        "12 Gauge Mild Steel 120.000x60.000": {
+            "current_quantity": 20,
+            "sheet_dimension": "120.000x60.000",
+            "thickness": "12 Gauge",
+            "material": "Mild Steel",
+            "group": "12G Mild Steel",
+            "latest_change_material": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-30-46 PM",
+            "latest_sheet_dimension": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-30-46 PM",
+            "latest_change_thickness": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-30-46 PM",
+            "latest_change_current_quantity": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-30-46 PM"
+        },
+        "14 Gauge Mild Steel 120.000x60.000": {
+            "current_quantity": 13,
+            "sheet_dimension": "120.000x60.000",
+            "thickness": "14 Gauge",
+            "material": "Mild Steel",
+            "group": "14G Mild Steel",
+            "latest_change_material": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-31-20 PM",
+            "latest_sheet_dimension": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-31-20 PM",
+            "latest_change_thickness": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-31-20 PM",
+            "latest_change_current_quantity": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-31-20 PM"
         }
     },
     "Aluminium": {},
