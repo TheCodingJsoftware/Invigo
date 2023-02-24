@@ -90,14 +90,14 @@
     "Galvanized\/Galvanneal": {},
     "Cutoff": {
         "22 Gauge 304 SS 12.000x13.000": {
-            "current_quantity": -1.0,
+            "current_quantity": 1.0,
             "sheet_dimension": "12.000x13.000",
             "thickness": "22 Gauge",
             "material": "304 SS",
             "latest_change_material": "Item added\nJared\nFebruary 21 Tuesday 2023 05-43-26 PM",
             "latest_sheet_dimension": "Item added\nJared\nFebruary 21 Tuesday 2023 05-43-26 PM",
             "latest_change_thickness": "Item added\nJared\nFebruary 21 Tuesday 2023 05-43-26 PM",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 0.0\nto: -1.0\nJared\nFebruary 21 Tuesday 2023 05:46:04 PM"
+            "latest_change_current_quantity": "Latest Change:\nfrom: 0.0\nto: 1.0\nJared\nFebruary 23 Thursday 2023 09:10:19 PM"
         }
     }
 }
