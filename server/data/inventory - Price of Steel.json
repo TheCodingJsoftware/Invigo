@@ -468,24 +468,24 @@
             "latest_change_current_quantity": "Item added\nLaser Pc\nFebruary 24 Friday 2023 05-10-11 PM"
         },
         "12 Gauge Galvanized 120.000x60.000": {
-            "current_quantity": 0,
+            "current_quantity": 4.0,
             "sheet_dimension": "120.000x60.000",
             "thickness": "12 Gauge",
             "material": "Galvanized",
             "latest_change_material": "Item added\nLaser Pc\nFebruary 24 Friday 2023 05-10-27 PM",
             "latest_sheet_dimension": "Item added\nLaser Pc\nFebruary 24 Friday 2023 05-10-27 PM",
             "latest_change_thickness": "Item added\nLaser Pc\nFebruary 24 Friday 2023 05-10-27 PM",
-            "latest_change_current_quantity": "Item added\nLaser Pc\nFebruary 24 Friday 2023 05-10-27 PM"
+            "latest_change_current_quantity": "Latest Change:\nfrom: 3.0\nto: 4.0\nLaser Pc\nFebruary 24 Friday 2023 05:12:17 PM"
         },
         "14 Gauge Galvanized 120.000x60.000": {
-            "current_quantity": 0,
+            "current_quantity": 11.0,
             "sheet_dimension": "120.000x60.000",
             "thickness": "14 Gauge",
             "material": "Galvanized",
             "latest_change_material": "Item added\nLaser Pc\nFebruary 24 Friday 2023 05-10-41 PM",
             "latest_sheet_dimension": "Item added\nLaser Pc\nFebruary 24 Friday 2023 05-10-41 PM",
             "latest_change_thickness": "Item added\nLaser Pc\nFebruary 24 Friday 2023 05-10-41 PM",
-            "latest_change_current_quantity": "Item added\nLaser Pc\nFebruary 24 Friday 2023 05-10-41 PM"
+            "latest_change_current_quantity": "Latest Change:\nfrom: 12.0\nto: 11.0\nLaser Pc\nFebruary 24 Friday 2023 05:12:24 PM"
         },
         "16 Gauge Galvanized 120.000x60.000": {
             "current_quantity": 0,
@@ -506,6 +506,16 @@
             "latest_sheet_dimension": "Item added\nLaser Pc\nFebruary 24 Friday 2023 05-11-18 PM",
             "latest_change_thickness": "Item added\nLaser Pc\nFebruary 24 Friday 2023 05-11-18 PM",
             "latest_change_current_quantity": "Item added\nLaser Pc\nFebruary 24 Friday 2023 05-11-18 PM"
+        },
+        "20 Gauge Galvanized 120.000x60.000": {
+            "current_quantity": 0,
+            "sheet_dimension": "120.000x60.000",
+            "thickness": "20 Gauge",
+            "material": "Galvanized",
+            "latest_change_material": "Item added\nLaser Pc\nFebruary 24 Friday 2023 05-12-02 PM",
+            "latest_sheet_dimension": "Item added\nLaser Pc\nFebruary 24 Friday 2023 05-12-02 PM",
+            "latest_change_thickness": "Item added\nLaser Pc\nFebruary 24 Friday 2023 05-12-02 PM",
+            "latest_change_current_quantity": "Item added\nLaser Pc\nFebruary 24 Friday 2023 05-12-02 PM"
         }
     },
     "Cutoff": {}
