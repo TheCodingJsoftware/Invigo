@@ -116,7 +116,7 @@
         "Leg Bolt 5\/16x 4\" ": {
             "part_number": "LG2154",
             "unit_quantity": 8.0,
-            "current_quantity": 810,
+            "current_quantity": -90,
             "price": 0.8,
             "use_exchange_rate": false,
             "priority": 0,
@@ -124,7 +124,7 @@
             "latest_change_name": "Item added\nItsme\nFebruary 16 Thursday 2023 11-02-20 AM",
             "latest_change_part_number": "Item added\nItsme\nFebruary 16 Thursday 2023 11-02-20 AM",
             "latest_change_unit_quantity": "Item added\nItsme\nFebruary 16 Thursday 2023 11-02-20 AM",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 810\nto: 810\nItsme\nFebruary 24 Friday 2023 09:43:00 AM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: -90.0\nto: -90\nItsme\nFebruary 17 Friday 2023 11:07:56 AM",
             "latest_change_price": "Item added\nItsme\nFebruary 16 Thursday 2023 11-02-20 AM",
             "latest_change_use_exchange_price": "Item added\nItsme\nFebruary 16 Thursday 2023 11-02-20 AM",
             "latest_change_priority": "Item added\nItsme\nFebruary 16 Thursday 2023 11-02-20 AM",
@@ -1646,7 +1646,7 @@
         "Leg Bolt 5\/16x 4\" ": {
             "part_number": "LG2154",
             "unit_quantity": 8.0,
-            "current_quantity": 810,
+            "current_quantity": -90,
             "price": 0.8,
             "use_exchange_rate": false,
             "priority": 0,
@@ -1654,7 +1654,7 @@
             "latest_change_name": "Item added\nItsme\nFebruary 16 Thursday 2023 11-01-51 AM",
             "latest_change_part_number": "Item added\nItsme\nFebruary 16 Thursday 2023 11-01-51 AM",
             "latest_change_unit_quantity": "Item added\nItsme\nFebruary 16 Thursday 2023 11-01-51 AM",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 810\nto: 810\nItsme\nFebruary 24 Friday 2023 09:43:00 AM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: -90.0\nto: -90\nItsme\nFebruary 17 Friday 2023 11:07:56 AM",
             "latest_change_price": "Item added\nItsme\nFebruary 16 Thursday 2023 11-01-51 AM",
             "latest_change_use_exchange_price": "Item added\nItsme\nFebruary 16 Thursday 2023 11-01-51 AM",
             "latest_change_priority": "Item added\nItsme\nFebruary 16 Thursday 2023 11-01-51 AM",
@@ -3221,6 +3221,23 @@
             "latest_change_priority": "Item added\nItsme\nAugust 15 Monday 2022 08-59-04 AM",
             "latest_change_notes": "Item added\nItsme\nAugust 15 Monday 2022 08-59-04 AM"
         },
+        "Gasket 3\/16\" Thick 4.125\" OD x 1.625\"ID EPDM Sponge Adhesive Back": {
+            "part_number": "1000-794",
+            "unit_quantity": 6.0,
+            "current_quantity": 65,
+            "price": 1.88,
+            "use_exchange_rate": false,
+            "priority": 0,
+            "notes": "Vendor: Industrial Rubber Supply\nDescription: shaun@indrub.com",
+            "latest_change_name": "Item added\nItsme\nFebruary 02 Thursday 2023 02-11-45 PM",
+            "latest_change_part_number": "Latest Change:\nfrom: 1000-79\nto: 1000-794\nItsme\nFebruary 02 Thursday 2023 02:57:22 PM",
+            "latest_change_unit_quantity": "Item added\nItsme\nFebruary 02 Thursday 2023 02-11-45 PM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 65\nto: 65\nItsme\nFebruary 17 Friday 2023 02:37:33 PM",
+            "latest_change_price": "Latest Change:\nfrom: 3.0\nto: 1.88\nItsme\nFebruary 02 Thursday 2023 02:57:06 PM",
+            "latest_change_use_exchange_price": "Item added\nItsme\nFebruary 02 Thursday 2023 02-11-45 PM",
+            "latest_change_priority": "Item added\nItsme\nFebruary 02 Thursday 2023 02-11-45 PM",
+            "latest_change_notes": "Latest Change:\nfrom: Vendor: Industrial Rubber Supply\nDescription: shaun@indrub.co\nto: Vendor: Industrial Rubber Supply\nDescription: shaun@indrub.com\nItsme\nFebruary 02 Thursday 2023 02:59:19 PM"
+        },
         "Terminal BlockPluggable ": {
             "part_number": "222-412 Wago 2 pos",
             "unit_quantity": 9.0,
@@ -3237,6 +3254,23 @@
             "latest_change_use_exchange_price": "Item added\nItsme\nJanuary 09 Monday 2023 01-28-00 PM",
             "latest_change_priority": "Item added\nItsme\nJanuary 09 Monday 2023 01-28-00 PM",
             "latest_change_notes": "Item added\nItsme\nJanuary 09 Monday 2023 01-28-00 PM"
+        },
+        "Leg Bolt 5\/16x 4\" ": {
+            "part_number": "LG2154",
+            "unit_quantity": 8.0,
+            "current_quantity": -90,
+            "price": 0.8,
+            "use_exchange_rate": false,
+            "priority": 0,
+            "notes": "Vendor: A.Adams Supply\nDescription: ",
+            "latest_change_name": "Item added\nItsme\nFebruary 16 Thursday 2023 11-01-30 AM",
+            "latest_change_part_number": "Item added\nItsme\nFebruary 16 Thursday 2023 11-01-30 AM",
+            "latest_change_unit_quantity": "Item added\nItsme\nFebruary 16 Thursday 2023 11-01-30 AM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: -90\nto: -90\nItsme\nFebruary 17 Friday 2023 11:07:56 AM",
+            "latest_change_price": "Item added\nItsme\nFebruary 16 Thursday 2023 11-01-31 AM",
+            "latest_change_use_exchange_price": "Item added\nItsme\nFebruary 16 Thursday 2023 11-01-31 AM",
+            "latest_change_priority": "Item added\nItsme\nFebruary 16 Thursday 2023 11-01-31 AM",
+            "latest_change_notes": "Item added\nItsme\nFebruary 16 Thursday 2023 11-01-31 AM"
         },
         "1\" Plug": {
             "part_number": "G1600M",
@@ -3538,6 +3572,16 @@
             "latest_change_price": "Latest Change:\nfrom: 20.0\nto: 20.5\nItsme\nAugust 03 Wednesday 2022 08:49:45 AM",
             "latest_change_notes": "Latest Change:\nfrom: Vendor: Greenline\nDescription: 204-694-0332\nPart # V202-12\nto: Vendor: Greenline\nDescription: 204-694-0332\nPart # V202-125\nItsme\nJanuary 17 Tuesday 2023 09:09:45 AM"
         },
+        "Knob 3\/4 DIA. 7\/16 Bore. Press-On Black Phenlic Round Knob": {
+            "part_number": "POK-10",
+            "unit_quantity": 1,
+            "current_quantity": 6,
+            "price": 2.99,
+            "use_exchange_rate": false,
+            "priority": 0,
+            "notes": "Vendor: \nDescription: ",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 6\nto: 6\nItsme\nFebruary 17 Friday 2023 02:36:57 PM"
+        },
         "1\" x 1\" Narrow Slot Gray Duct": {
             "part_number": "PDTF1X1LG6",
             "unit_quantity": 1.0,
@@ -3565,16 +3609,6 @@
             "notes": "Vendor: Industrial  Rubber Supply\nDescription: ",
             "latest_change_current_quantity": "Latest Change:\nfrom: 2\nto: 2\nItsme\nFebruary 17 Friday 2023 11:07:56 AM",
             "latest_change_price": "Latest Change:\nfrom: 9.0\nto: 12.94\nItsme\nFebruary 02 Thursday 2023 04:22:00 PM"
-        },
-        "Knob 3\/4 DIA. 7\/16 Bore. Press-On Black Phenlic Round Knob": {
-            "part_number": "POK-10",
-            "unit_quantity": 1,
-            "current_quantity": 6,
-            "price": 2.99,
-            "use_exchange_rate": false,
-            "priority": 0,
-            "notes": "Vendor: \nDescription: ",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 6\nto: 6\nItsme\nFebruary 17 Friday 2023 02:36:57 PM"
         },
         "G3 Brick Set": {
             "part_number": "G3BS",
@@ -4095,40 +4129,6 @@
             "latest_change_priority": "Item added\nItsme\nOctober 27 Thursday 2022 04-27-14 PM",
             "latest_change_notes": "Item added\nItsme\nOctober 27 Thursday 2022 04-27-14 PM"
         },
-        "Eon Motor 1\/3 HP 5660": {
-            "part_number": "5SAB39DLV5000-P",
-            "unit_quantity": 1,
-            "current_quantity": 61,
-            "price": 325.0,
-            "use_exchange_rate": false,
-            "priority": 0,
-            "notes": "Vendor: Rantec\nDescription: ",
-            "latest_change_name": "Item added\nItsme\nOctober 21 Friday 2022 10-48-42 AM",
-            "latest_change_part_number": "Item added\nItsme\nOctober 21 Friday 2022 10-48-42 AM",
-            "latest_change_unit_quantity": "Item added\nItsme\nOctober 21 Friday 2022 10-48-42 AM",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 61\nto: 61\nItsme\nFebruary 17 Friday 2023 02:31:01 PM",
-            "latest_change_price": "Item added\nItsme\nOctober 21 Friday 2022 10-48-42 AM",
-            "latest_change_use_exchange_price": "Item added\nItsme\nOctober 21 Friday 2022 10-48-42 AM",
-            "latest_change_priority": "Item added\nItsme\nOctober 21 Friday 2022 10-48-42 AM",
-            "latest_change_notes": "Item added\nItsme\nOctober 21 Friday 2022 10-48-42 AM"
-        },
-        "Gasket 3\/16\" Thick 4.125\" OD x 1.625\"ID EPDM Sponge Adhesive Back": {
-            "part_number": "1000-794",
-            "unit_quantity": 6.0,
-            "current_quantity": 65,
-            "price": 1.88,
-            "use_exchange_rate": false,
-            "priority": 0,
-            "notes": "Vendor: Industrial Rubber Supply\nDescription: shaun@indrub.com",
-            "latest_change_name": "Item added\nItsme\nFebruary 02 Thursday 2023 02-11-45 PM",
-            "latest_change_part_number": "Latest Change:\nfrom: 1000-79\nto: 1000-794\nItsme\nFebruary 02 Thursday 2023 02:57:22 PM",
-            "latest_change_unit_quantity": "Item added\nItsme\nFebruary 02 Thursday 2023 02-11-45 PM",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 65\nto: 65\nItsme\nFebruary 17 Friday 2023 02:37:33 PM",
-            "latest_change_price": "Latest Change:\nfrom: 3.0\nto: 1.88\nItsme\nFebruary 02 Thursday 2023 02:57:06 PM",
-            "latest_change_use_exchange_price": "Item added\nItsme\nFebruary 02 Thursday 2023 02-11-45 PM",
-            "latest_change_priority": "Item added\nItsme\nFebruary 02 Thursday 2023 02-11-45 PM",
-            "latest_change_notes": "Latest Change:\nfrom: Vendor: Industrial Rubber Supply\nDescription: shaun@indrub.co\nto: Vendor: Industrial Rubber Supply\nDescription: shaun@indrub.com\nItsme\nFebruary 02 Thursday 2023 02:59:19 PM"
-        },
         "Actuator M9203-BUA-2\n": {
             "part_number": "M9203",
             "unit_quantity": 2,
@@ -4219,6 +4219,23 @@
             "priority": 0,
             "notes": "Vendor: \nDescription: ",
             "latest_change_current_quantity": "Latest Change:\nfrom: 86\nto: 86\nItsme\nFebruary 17 Friday 2023 11:07:57 AM"
+        },
+        "Eon Motor 1\/3 HP 5660": {
+            "part_number": "5SAB39DLV5000-P",
+            "unit_quantity": 1,
+            "current_quantity": 61,
+            "price": 325.0,
+            "use_exchange_rate": false,
+            "priority": 0,
+            "notes": "Vendor: Rantec\nDescription: ",
+            "latest_change_name": "Item added\nItsme\nOctober 21 Friday 2022 10-48-42 AM",
+            "latest_change_part_number": "Item added\nItsme\nOctober 21 Friday 2022 10-48-42 AM",
+            "latest_change_unit_quantity": "Item added\nItsme\nOctober 21 Friday 2022 10-48-42 AM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 61\nto: 61\nItsme\nFebruary 17 Friday 2023 02:31:01 PM",
+            "latest_change_price": "Item added\nItsme\nOctober 21 Friday 2022 10-48-42 AM",
+            "latest_change_use_exchange_price": "Item added\nItsme\nOctober 21 Friday 2022 10-48-42 AM",
+            "latest_change_priority": "Item added\nItsme\nOctober 21 Friday 2022 10-48-42 AM",
+            "latest_change_notes": "Item added\nItsme\nOctober 21 Friday 2022 10-48-42 AM"
         },
         "Spring Pin 2\" x .25": {
             "part_number": "sp225",
@@ -4719,23 +4736,6 @@
             "latest_change_use_exchange_price": "Item added\nItsme\nDecember 28 Wednesday 2022 03-58-12 PM",
             "latest_change_priority": "Item added\nItsme\nDecember 28 Wednesday 2022 03-58-12 PM",
             "latest_change_notes": "Item added\nItsme\nDecember 28 Wednesday 2022 03-58-12 PM"
-        },
-        "Leg Bolt 5\/16x 4\" ": {
-            "part_number": "LG2154",
-            "unit_quantity": 8.0,
-            "current_quantity": 810,
-            "price": 0.8,
-            "use_exchange_rate": false,
-            "priority": 0,
-            "notes": "Vendor: A.Adams Supply\nDescription: ",
-            "latest_change_name": "Item added\nItsme\nFebruary 16 Thursday 2023 11-01-30 AM",
-            "latest_change_part_number": "Item added\nItsme\nFebruary 16 Thursday 2023 11-01-30 AM",
-            "latest_change_unit_quantity": "Item added\nItsme\nFebruary 16 Thursday 2023 11-01-30 AM",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 810\nto: 810\nItsme\nFebruary 24 Friday 2023 09:43:00 AM",
-            "latest_change_price": "Item added\nItsme\nFebruary 16 Thursday 2023 11-01-31 AM",
-            "latest_change_use_exchange_price": "Item added\nItsme\nFebruary 16 Thursday 2023 11-01-31 AM",
-            "latest_change_priority": "Item added\nItsme\nFebruary 16 Thursday 2023 11-01-31 AM",
-            "latest_change_notes": "Item added\nItsme\nFebruary 16 Thursday 2023 11-01-31 AM"
         },
         "NU SKT HD CP NC 8\/32 x 3 1\/2\"": {
             "part_number": "700-0832-0350",
