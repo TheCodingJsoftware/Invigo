@@ -62,6 +62,17 @@
             "latest_sheet_dimension": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-01-41 PM",
             "latest_change_thickness": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-01-41 PM",
             "latest_change_current_quantity": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-01-41 PM"
+        },
+        "1\/2 Laser Grade Plate 120.000x60.000": {
+            "current_quantity": 4,
+            "sheet_dimension": "120.000x60.000",
+            "thickness": "1\/2",
+            "material": "Laser Grade Plate",
+            "group": "Laser Grade Plate",
+            "latest_change_material": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-02-22 PM",
+            "latest_sheet_dimension": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-02-22 PM",
+            "latest_change_thickness": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-02-22 PM",
+            "latest_change_current_quantity": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-02-22 PM"
         }
     },
     "Aluminium": {},
