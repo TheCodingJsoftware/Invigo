@@ -446,6 +446,27 @@
             "latest_change_current_quantity": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-56-03 PM"
         }
     },
-    "Galvanized\/Galvanneal": {},
+    "Galvanized\/Galvanneal": {
+        "3\/16 Galvanized 120.000x60.000": {
+            "current_quantity": 0,
+            "sheet_dimension": "120.000x60.000",
+            "thickness": "3\/16",
+            "material": "Galvanized",
+            "latest_change_material": "Item added\nLaser Pc\nFebruary 24 Friday 2023 05-09-52 PM",
+            "latest_sheet_dimension": "Item added\nLaser Pc\nFebruary 24 Friday 2023 05-09-52 PM",
+            "latest_change_thickness": "Item added\nLaser Pc\nFebruary 24 Friday 2023 05-09-52 PM",
+            "latest_change_current_quantity": "Item added\nLaser Pc\nFebruary 24 Friday 2023 05-09-52 PM"
+        },
+        "10 Gauge Galvanized 120.000x60.000": {
+            "current_quantity": 8,
+            "sheet_dimension": "120.000x60.000",
+            "thickness": "10 Gauge",
+            "material": "Galvanized",
+            "latest_change_material": "Item added\nLaser Pc\nFebruary 24 Friday 2023 05-10-11 PM",
+            "latest_sheet_dimension": "Item added\nLaser Pc\nFebruary 24 Friday 2023 05-10-11 PM",
+            "latest_change_thickness": "Item added\nLaser Pc\nFebruary 24 Friday 2023 05-10-11 PM",
+            "latest_change_current_quantity": "Item added\nLaser Pc\nFebruary 24 Friday 2023 05-10-11 PM"
+        }
+    },
     "Cutoff": {}
 }
