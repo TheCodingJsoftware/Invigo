@@ -86,7 +86,7 @@
             "latest_change_current_quantity": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-09-47 PM"
         },
         "1\/4 Mild Steel 120.000x60.000": {
-            "current_quantity": 105,
+            "current_quantity": 87.0,
             "sheet_dimension": "120.000x60.000",
             "thickness": "1\/4",
             "material": "Mild Steel",
@@ -94,10 +94,10 @@
             "latest_change_material": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-10-35 PM",
             "latest_sheet_dimension": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-10-35 PM",
             "latest_change_thickness": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-10-35 PM",
-            "latest_change_current_quantity": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-10-35 PM"
+            "latest_change_current_quantity": "Latest Change:\nfrom: 86.0\nto: 87.0\nJusti\nFebruary 25 Saturday 2023 10:40:09 AM"
         },
         "1\/4 Mild Steel 96.000x48.000": {
-            "current_quantity": 41,
+            "current_quantity": 47.0,
             "sheet_dimension": "96.000x48.000",
             "thickness": "1\/4",
             "material": "Mild Steel",
@@ -105,7 +105,7 @@
             "latest_change_material": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-13-13 PM",
             "latest_sheet_dimension": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-13-13 PM",
             "latest_change_thickness": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-13-13 PM",
-            "latest_change_current_quantity": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-13-13 PM"
+            "latest_change_current_quantity": "Latest Change:\nfrom: 46.0\nto: 47.0\nJusti\nFebruary 25 Saturday 2023 10:40:15 AM"
         },
         "3\/16 Mild Steel 120.000x60.000": {
             "current_quantity": 56,
