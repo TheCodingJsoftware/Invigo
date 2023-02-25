@@ -141,7 +141,7 @@
             "latest_change_current_quantity": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-17-35 PM"
         },
         "3\/16 Mild Steel 86.000x60.000": {
-            "current_quantity": 65,
+            "current_quantity": 44.0,
             "sheet_dimension": "86.000x60.000",
             "thickness": "3\/16",
             "material": "Mild Steel",
@@ -149,7 +149,7 @@
             "latest_change_material": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-18-54 PM",
             "latest_sheet_dimension": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-18-54 PM",
             "latest_change_thickness": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-18-54 PM",
-            "latest_change_current_quantity": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-18-54 PM"
+            "latest_change_current_quantity": "Latest Change:\nfrom: 45.0\nto: 44.0\nJusti\nFebruary 25 Saturday 2023 10:49:12 AM"
         },
         "3\/16 Mild Steel 84.000x48.000": {
             "current_quantity": 47,
