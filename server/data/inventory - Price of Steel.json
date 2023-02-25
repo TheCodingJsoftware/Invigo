@@ -346,7 +346,7 @@
             "latest_change_current_quantity": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-49-43 PM"
         },
         "3\/16 304 SS 120.000x60.000": {
-            "current_quantity": 5,
+            "current_quantity": 12.0,
             "sheet_dimension": "120.000x60.000",
             "thickness": "3\/16",
             "material": "304 SS",
@@ -354,7 +354,7 @@
             "latest_change_material": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-50-54 PM",
             "latest_sheet_dimension": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-50-54 PM",
             "latest_change_thickness": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-50-54 PM",
-            "latest_change_current_quantity": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-50-54 PM"
+            "latest_change_current_quantity": "Latest Change:\nfrom: 11.0\nto: 12.0\nJusti\nFebruary 25 Saturday 2023 10:58:57 AM"
         },
         "10 Gauge 304 SS 120.000x60.000": {
             "current_quantity": 7,
