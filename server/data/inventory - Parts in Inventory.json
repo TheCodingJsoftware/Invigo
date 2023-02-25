@@ -1,58 +1,58 @@
 {
     "Custom": {
         "Flat pattern - Bins Power Box Lid": {
-            "current_quantity": 70,
+            "current_quantity": 7.0,
             "machine_time": 0.12,
             "gauge": "0.05\"",
             "material": "304 SS",
             "weight": 0.669,
             "price": 2.1,
             "unit_quantity": 1,
-            "modified_date": "7 quantity added at February 24 Friday 2023 01:44:26 PM",
+            "modified_date": "Manually set to 7.0 quantity at February 25 Saturday 2023 09:06:06 AM",
             "group": null
         },
         "central air": {
-            "current_quantity": 30,
+            "current_quantity": 3.0,
             "machine_time": 1.45,
             "gauge": "0.05\"",
             "material": "304 SS",
             "weight": 17.37,
             "price": 47.56,
             "unit_quantity": 1,
-            "modified_date": "3 quantity added at February 24 Friday 2023 01:44:26 PM",
+            "modified_date": "Manually set to 3.0 quantity at February 25 Saturday 2023 09:06:18 AM",
             "group": null
         },
         "central air filter mesh": {
-            "current_quantity": 30,
+            "current_quantity": 3.0,
             "machine_time": 1.15,
             "gauge": "0.05\"",
             "material": "304 SS",
             "weight": 1.447,
             "price": 8.25,
             "unit_quantity": 1,
-            "modified_date": "3 quantity added at February 24 Friday 2023 01:44:26 PM",
+            "modified_date": "Manually set to 3.0 quantity at February 25 Saturday 2023 09:06:23 AM",
             "group": null
         },
         "central air plate": {
-            "current_quantity": 30,
+            "current_quantity": 3.0,
             "machine_time": 0.37,
             "gauge": "0.05\"",
             "material": "304 SS",
             "weight": 4.343,
             "price": 11.92,
             "unit_quantity": 1,
-            "modified_date": "3 quantity added at February 24 Friday 2023 01:44:26 PM",
+            "modified_date": "Manually set to 3.0 quantity at February 25 Saturday 2023 09:06:27 AM",
             "group": null
         },
         "Flat pattern - P-009": {
-            "current_quantity": 15,
+            "current_quantity": 7.0,
             "machine_time": 0.05,
             "gauge": "0.08\"",
             "material": "304 SS",
             "weight": 0.228,
             "price": 0.75,
             "unit_quantity": 1,
-            "modified_date": "1 quantity added at February 24 Friday 2023 02:49:21 PM",
+            "modified_date": "Manually set to 7.0 quantity at February 25 Saturday 2023 09:06:34 AM",
             "group": null
         },
         "2840-107": {
