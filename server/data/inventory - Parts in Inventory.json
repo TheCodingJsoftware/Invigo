@@ -1,5 +1,82 @@
 {
     "Custom": {
+        "2534-Ashpan": {
+            "current_quantity": 20,
+            "machine_time": 0.52,
+            "gauge": "16 Gauge",
+            "material": "304 SS",
+            "weight": 9.934,
+            "price": 25.91,
+            "unit_quantity": 1,
+            "modified_date": "10 quantity added at February 25 Saturday 2023 10:15:58 AM",
+            "group": null
+        },
+        "3044 Ashpan": {
+            "current_quantity": 20,
+            "machine_time": 0.55,
+            "gauge": "16 Gauge",
+            "material": "304 SS",
+            "weight": 11.347,
+            "price": 29.41,
+            "unit_quantity": 1,
+            "modified_date": "10 quantity added at February 25 Saturday 2023 10:15:58 AM",
+            "group": null
+        },
+        "3444 -Ash Pan Handle": {
+            "current_quantity": 20,
+            "machine_time": 0.17,
+            "gauge": "16 Gauge",
+            "material": "304 SS",
+            "weight": 0.257,
+            "price": 1.32,
+            "unit_quantity": 1,
+            "modified_date": "10 quantity added at February 25 Saturday 2023 10:15:58 AM",
+            "group": null
+        },
+        "3444 Ash Pan": {
+            "current_quantity": 20,
+            "machine_time": 0.73,
+            "gauge": "16 Gauge",
+            "material": "304 SS",
+            "weight": 14.336,
+            "price": 37.3,
+            "unit_quantity": 1,
+            "modified_date": "10 quantity added at February 25 Saturday 2023 10:15:58 AM",
+            "group": null
+        },
+        "4044 Ash Pan": {
+            "current_quantity": 20,
+            "machine_time": 0.78,
+            "gauge": "16 Gauge",
+            "material": "304 SS",
+            "weight": 17.901,
+            "price": 46.03,
+            "unit_quantity": 1,
+            "modified_date": "10 quantity added at February 25 Saturday 2023 10:15:58 AM",
+            "group": null
+        },
+        "4044 Ash Pan Handle": {
+            "current_quantity": 20,
+            "machine_time": 0.18,
+            "gauge": "16 Gauge",
+            "material": "304 SS",
+            "weight": 0.311,
+            "price": 1.49,
+            "unit_quantity": 1,
+            "modified_date": "10 quantity added at February 25 Saturday 2023 10:15:58 AM",
+            "group": null
+        },
+        "404480": {
+            "current_quantity": 20,
+            "machine_time": 1.77,
+            "gauge": "16 Gauge",
+            "material": "304 SS",
+            "weight": 44.621,
+            "price": 114.02,
+            "unit_quantity": 1,
+            "modified_date": "10 quantity added at February 25 Saturday 2023 10:15:58 AM",
+            "group": null
+        },
         "Flat pattern - Bins Power Box Lid": {
             "current_quantity": 7,
             "machine_time": 0.12,
