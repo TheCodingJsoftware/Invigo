@@ -4,8 +4,8 @@ __copyright__ = "Copyright 2022, TheCodingJ's"
 __credits__: "list[str]" = ["Jared Gross"]
 __license__ = "MIT"
 __name__ = "Inventory Manager"
-__version__ = "v1.5.4"
-__updated__ = "2023-02-25 13:01:00"
+__version__ = "v1.5.5"
+__updated__ = "2023-02-25 14:21:39"
 __maintainer__ = "Jared Gross"
 __email__ = "jared@pinelandfarms.ca"
 __status__ = "Production"
@@ -830,9 +830,6 @@ class MainWindow(QMainWindow):
             elif self.tabWidget.currentIndex() == 1:
                 self.headers: dict[dict[str, int]] = {
                     "Name": 500,
-                    "Material": 150,
-                    "Thickness": 150,
-                    "Sheet Dimension": 170,
                     "Sheet Cost": 150,
                     "Quantity": 150,
                     "Total Cost in Stock": 150,
@@ -927,7 +924,7 @@ class MainWindow(QMainWindow):
             )
         # self.load_item(tab, tab_index, category_data)
 
-        if self.active_json_file.check_if_value_exists_less_then(
+        if inventory.check_if_value_exists_less_then(
             category=self.category, value_to_check=10
         ):
             group_box = QGroupBox()
@@ -1039,6 +1036,11 @@ class MainWindow(QMainWindow):
 
             layout = QHBoxLayout()
             check_box = QCheckBox(self)
+            check_box.setObjectName("checkbox")
+            check_box.setStyleSheet(
+                "QCheckBox#checkbox:indicator{width: 30px; height: 30px}"
+            )
+            check_box.setFixedWidth(30)
             layout.addWidget(check_box)
             item = list(category_data.keys())[row_index]
             self.check_box_selections[item] = check_box
@@ -1048,9 +1050,9 @@ class MainWindow(QMainWindow):
                 parent=self,
                 selected_item=item,
                 items=[item],
-                tool_tip=f'Material: {self.get_value_from_category(item_name=item, key="material")}\nGauge: {self.get_value_from_category(item_name=item, key="gauge")}\nWeight: {self.get_value_from_category(item_name=item, key="weight")}\nMachine Time: {self.get_value_from_category(item_name=item, key="weight")}',
+                tool_tip=f'Material: {self.get_value_from_category(item_name=item, key="material")}\nGauge: {self.get_value_from_category(item_name=item, key="gauge")}\nWeight: {self.get_value_from_category(item_name=item, key="weight")}\nMachine Time: {self.get_value_from_category(item_name=item, key="machine_time")}',
             )
-            item_name.setFixedWidth(400)
+            item_name.setFixedWidth(350)
             item_name.setContextMenuPolicy(Qt.CustomContextMenu)
             self.inventory_prices_objects[item_name] = {}
             layout.addWidget(item_name)
@@ -1081,6 +1083,7 @@ class MainWindow(QMainWindow):
                     spin_unit_quantity,
                 )
             )
+
             layout.addWidget(spin_unit_quantity)
 
             col_index += 1
@@ -1088,6 +1091,14 @@ class MainWindow(QMainWindow):
             spin_quantity = HumbleDoubleSpinBox(self)
             spin_quantity.setValue(current_quantity)
             spin_quantity.setFixedWidth(150)
+            if current_quantity <= 2:
+                quantity_color = "red"
+            if current_quantity > 2:
+                spin_quantity.setStyleSheet("")
+            else:
+                spin_quantity.setStyleSheet(
+                    f"color: {quantity_color}; border-color: {quantity_color};"
+                )
             layout.addWidget(spin_quantity)
 
             col_index += 1
@@ -1239,9 +1250,6 @@ class MainWindow(QMainWindow):
                     item_name=item, key="latest_change_current_quantity"
                 )
 
-                if current_quantity <= 10:
-                    group = "Low in Quantity"
-
                 if group:
                     try:
                         layout = self.group_layouts[group]
@@ -1273,23 +1281,23 @@ class MainWindow(QMainWindow):
 
                 col_index += 1
                 # MATERIAL
-                material_label = QLabel(self)
-                material_label.setText(material)
-                material_label.setFixedWidth(150)
-                layout.addWidget(material_label)
-                col_index += 1
+                # material_label = QLabel(self)
+                # material_label.setText(material)
+                # material_label.setFixedWidth(150)
+                # layout.addWidget(material_label)
+                # col_index += 1
                 # THICKNESS
-                thickness_label = QLabel(self)
-                thickness_label.setText(thickness)
-                thickness_label.setFixedWidth(150)
-                layout.addWidget(thickness_label)
-                col_index += 1
+                # thickness_label = QLabel(self)
+                # thickness_label.setText(thickness)
+                # thickness_label.setFixedWidth(150)
+                # layout.addWidget(thickness_label)
+                # col_index += 1
                 # SHEET DIMENSION
-                sheet_dimension_label = QLabel(self)
-                sheet_dimension_label.setText(sheet_dimension)
-                sheet_dimension_label.setFixedWidth(150)
-                layout.addWidget(sheet_dimension_label)
-                col_index += 1
+                # sheet_dimension_label = QLabel(self)
+                # sheet_dimension_label.setText(sheet_dimension)
+                # sheet_dimension_label.setFixedWidth(150)
+                # layout.addWidget(sheet_dimension_label)
+                # col_index += 1
                 # POUNDS PER SQUARE FOOT
                 try:
                     pounds_per_square_foot: float = float(
@@ -1335,8 +1343,10 @@ class MainWindow(QMainWindow):
                 spin_quantity.setFixedWidth(150)
                 spin_quantity.setToolTip(latest_change_current_quantity)
 
-                if current_quantity <= 10:
+                if current_quantity <= 4:
                     quantity_color = "red"
+                elif current_quantity <= 10:
+                    quantity_color = "yellow"
                 if current_quantity > 10:
                     spin_quantity.setStyleSheet("")
                 else:
@@ -2464,9 +2474,10 @@ class MainWindow(QMainWindow):
         spin_quantity.setToolTip(
             f"Latest Change:\nfrom: {value_before}\nto: {spin_quantity.value()}\n{self.username}\n{datetime.now().strftime('%B %d %A %Y %I:%M:%S %p')}",
         )
-
-        if spin_quantity.value() <= 10:
+        if spin_quantity.value() <= 4:
             quantity_color = "red"
+        elif spin_quantity.value() <= 10:
+            quantity_color = "yellow"
         if spin_quantity.value() > 10:
             spin_quantity.setStyleSheet("")
         else:
@@ -2560,6 +2571,15 @@ class MainWindow(QMainWindow):
         modified_date_label.setText(
             f'Manually set to {spin_quantity.value()} quantity at {str(datetime.now().strftime("%B %d %A %Y %I:%M:%S %p"))}'
         )
+
+        if spin_quantity.value() <= 2:
+            quantity_color = "red"
+        if spin_quantity.value() > 2:
+            spin_quantity.setStyleSheet("")
+        else:
+            spin_quantity.setStyleSheet(
+                f"color: {quantity_color}; border-color: {quantity_color};"
+            )
 
         for category in list(category_data.keys()):
             if category == "Recut" or category == self.category:
