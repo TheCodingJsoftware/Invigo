@@ -1,16 +1,5 @@
 {
     "Custom": {
-        "2534-Ashpan": {
-            "current_quantity": 20,
-            "machine_time": 0.52,
-            "gauge": "16 Gauge",
-            "material": "304 SS",
-            "weight": 9.934,
-            "price": 25.91,
-            "unit_quantity": 1,
-            "modified_date": "10 quantity added at February 25 Saturday 2023 10:15:58 AM",
-            "group": null
-        },
         "3044 Ashpan": {
             "current_quantity": 20,
             "machine_time": 0.55,
@@ -145,5 +134,17 @@
         }
     },
     "Recut": {},
-    "BL25": {}
+    "BL25": {
+        "2534-Ashpan": {
+            "current_quantity": 20,
+            "machine_time": 0.52,
+            "gauge": "16 Gauge",
+            "material": "304 SS",
+            "weight": 9.934,
+            "price": 25.91,
+            "unit_quantity": 1,
+            "modified_date": "10 quantity added at February 25 Saturday 2023 10:15:58 AM",
+            "group": null
+        }
+    }
 }
