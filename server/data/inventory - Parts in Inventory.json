@@ -1,5 +1,72 @@
 {
-    "Custom": {},
+    "Custom": {
+        "Flat pattern - Bins Power Box Lid": {
+            "current_quantity": 7,
+            "machine_time": 0.12,
+            "gauge": "18 Gauge",
+            "material": "304 SS",
+            "weight": 0.669,
+            "price": 2.1,
+            "unit_quantity": 1,
+            "modified_date": "Added at February 25 Saturday 2023 09:10:26 AM",
+            "group": null
+        },
+        "central air filter mesh": {
+            "current_quantity": 4,
+            "machine_time": 1.18,
+            "gauge": "18 Gauge",
+            "material": "304 SS",
+            "weight": 1.447,
+            "price": 8.37,
+            "unit_quantity": 1,
+            "modified_date": "Added at February 25 Saturday 2023 09:10:26 AM",
+            "group": null
+        },
+        "plates for everything Volkswagon": {
+            "current_quantity": 4,
+            "machine_time": 0.68,
+            "gauge": "18 Gauge",
+            "material": "304 SS",
+            "weight": 0.398,
+            "price": 3.78,
+            "unit_quantity": 1,
+            "modified_date": "Added at February 25 Saturday 2023 09:10:26 AM",
+            "group": null
+        },
+        "central air": {
+            "current_quantity": 3,
+            "machine_time": 1.45,
+            "gauge": "18 Gauge",
+            "material": "304 SS",
+            "weight": 17.37,
+            "price": 47.56,
+            "unit_quantity": 1,
+            "modified_date": "Added at February 25 Saturday 2023 09:10:26 AM",
+            "group": null
+        },
+        "central air plate": {
+            "current_quantity": 3,
+            "machine_time": 0.37,
+            "gauge": "18 Gauge",
+            "material": "304 SS",
+            "weight": 4.343,
+            "price": 11.92,
+            "unit_quantity": 1,
+            "modified_date": "Added at February 25 Saturday 2023 09:10:26 AM",
+            "group": null
+        },
+        "Flat pattern - Bins Power Box": {
+            "current_quantity": 1,
+            "machine_time": 0.35,
+            "gauge": "18 Gauge",
+            "material": "304 SS",
+            "weight": 2.07,
+            "price": 6.41,
+            "unit_quantity": 1,
+            "modified_date": "Added at February 25 Saturday 2023 09:10:26 AM",
+            "group": null
+        }
+    },
     "Recut": {},
     "BL25": {}
 }
