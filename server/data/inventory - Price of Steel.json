@@ -557,7 +557,7 @@
             "group": "Galvanized"
         },
         "16 Gauge Galvanized 120.000x60.000": {
-            "current_quantity": 72.0,
+            "current_quantity": 62.0,
             "sheet_dimension": "120.000x60.000",
             "thickness": "16 Gauge",
             "material": "Galvanized",
