@@ -53,7 +53,7 @@
             "price": 8.64,
             "unit_quantity": 1,
             "modified_date": "1 quantity added at February 24 Friday 2023 09:12:07 AM",
-            "group": null
+            "group": "test"
         },
         "2534-053": {
             "current_quantity": 3.0,
@@ -64,7 +64,7 @@
             "price": 12.29,
             "unit_quantity": 1,
             "modified_date": "Manually set to 3.0 quantity at February 25 Saturday 2023 02:01:49 PM",
-            "group": null
+            "group": "test"
         },
         "2534-065": {
             "current_quantity": 5,
@@ -75,7 +75,7 @@
             "price": 8.48,
             "unit_quantity": 1,
             "modified_date": "1 quantity added at February 24 Friday 2023 09:09:02 AM",
-            "group": null
+            "group": "test"
         },
         "2534-072": {
             "current_quantity": 4,
@@ -86,7 +86,7 @@
             "price": 15.13,
             "unit_quantity": 1,
             "modified_date": "1 quantity added at February 24 Friday 2023 09:09:02 AM",
-            "group": null
+            "group": "test"
         },
         "2534-085": {
             "current_quantity": 4,
@@ -97,7 +97,7 @@
             "price": 10.28,
             "unit_quantity": 1,
             "modified_date": "1 quantity added at February 24 Friday 2023 09:09:02 AM",
-            "group": null
+            "group": "test"
         },
         "2534-088": {
             "current_quantity": 4,
@@ -108,7 +108,7 @@
             "price": 52.45,
             "unit_quantity": 1,
             "modified_date": "1 quantity added at February 24 Friday 2023 09:09:02 AM",
-            "group": null
+            "group": "test"
         },
         "2534-099": {
             "current_quantity": 4,
