@@ -4,8 +4,8 @@ __copyright__ = "Copyright 2022, TheCodingJ's"
 __credits__: "list[str]" = ["Jared Gross"]
 __license__ = "MIT"
 __name__ = "Inventory Manager"
-__version__ = "v1.5.5"
-__updated__ = "2023-02-25 14:21:39"
+__version__ = "v1.5.6"
+__updated__ = "2023-02-25 16:52:57"
 __maintainer__ = "Jared Gross"
 __email__ = "jared@pinelandfarms.ca"
 __status__ = "Production"
@@ -62,6 +62,7 @@ from PyQt5.QtWidgets import (
     QWidget,
     qApp,
 )
+QApplication.setAttribute(Qt.AA_EnableHighDpiScaling, True)
 
 import ui.BreezeStyleSheets.breeze_resources
 from threads.changes_thread import ChangesThread
@@ -4792,7 +4793,7 @@ class MainWindow(QMainWindow):
         Args:
           files_to_download (list[str]): list[str]
         """
-        changes_thread = ChangesThread(files_to_download, 60)  # 1 minute
+        changes_thread = ChangesThread(files_to_download, 60*5)  # 5 minutes
         changes_thread.signal.connect(self.changes_response)
         self.threads.append(changes_thread)
         changes_thread.start()
