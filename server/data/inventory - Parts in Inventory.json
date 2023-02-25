@@ -33,70 +33,37 @@
             "modified_date": "Manually set to 3.0 quantity at February 25 Saturday 2023 09:06:23 AM",
             "group": null
         },
-        "central air plate": {
-            "current_quantity": 3.0,
-            "machine_time": 0.37,
-            "gauge": "0.05\"",
-            "material": "304 SS",
-            "weight": 4.343,
-            "price": 11.92,
-            "unit_quantity": 1,
-            "modified_date": "Manually set to 3.0 quantity at February 25 Saturday 2023 09:06:27 AM",
-            "group": null
-        },
         "Flat pattern - P-009": {
-            "current_quantity": 7.0,
+            "current_quantity": 0.0,
             "machine_time": 0.05,
             "gauge": "0.08\"",
             "material": "304 SS",
             "weight": 0.228,
             "price": 0.75,
             "unit_quantity": 1,
-            "modified_date": "Manually set to 7.0 quantity at February 25 Saturday 2023 09:06:34 AM",
+            "modified_date": "Manually set to 0.0 quantity at February 25 Saturday 2023 09:06:35 AM",
             "group": null
         },
         "2840-107": {
-            "current_quantity": 11,
+            "current_quantity": 0.0,
             "machine_time": 0.8,
             "gauge": "3\/16",
             "material": "304 SS",
             "weight": 6.858,
             "price": 19.72,
             "unit_quantity": 1,
-            "modified_date": "1 quantity added at February 24 Friday 2023 03:06:51 PM",
+            "modified_date": "Manually set to 0.0 quantity at February 25 Saturday 2023 09:06:43 AM",
             "group": null
         },
         "Flat pattern - Bins Power Box": {
-            "current_quantity": 10,
+            "current_quantity": 1.0,
             "machine_time": 0.35,
             "gauge": "0.05\"",
             "material": "304 SS",
             "weight": 2.07,
             "price": 6.41,
             "unit_quantity": 1,
-            "modified_date": "1 quantity added at February 24 Friday 2023 01:44:26 PM",
-            "group": null
-        },
-        "2534-053": {
-            "current_quantity": 1,
-            "machine_time": 0.83,
-            "gauge": "0.05\"",
-            "material": "Galvanneal",
-            "weight": 8.511,
-            "price": 12.46,
-            "unit_quantity": 1,
-            "modified_date": "Added at February 24 Friday 2023 09:28:46 AM",
-            "group": null
-        },
-        "2534-065": {
-            "current_quantity": 1,
-            "machine_time": 0.57,
-            "gauge": "0.05\"",
-            "material": "Galvanneal",
-            "weight": 5.879,
-            "price": 8.6,
-            "unit_quantity": 1,
-            "modified_date": "Added at February 24 Friday 2023 09:28:46 AM",
+            "modified_date": "Manually set to 1.0 quantity at February 25 Saturday 2023 09:06:48 AM",
             "group": null
         },
         "2534-071": {
