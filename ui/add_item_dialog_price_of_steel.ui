@@ -281,6 +281,9 @@ border: 1px solid  rgb(0,120,212);
               <property name="maximum">
                <double>9999999.000000000000000</double>
               </property>
+              <property name="value">
+               <double>120.000000000000000</double>
+              </property>
              </widget>
             </item>
             <item>
@@ -306,6 +309,9 @@ border: 1px solid  rgb(0,120,212);
               </property>
               <property name="maximum">
                <double>9999999.000000000000000</double>
+              </property>
+              <property name="value">
+               <double>60.000000000000000</double>
               </property>
              </widget>
             </item>

@@ -365,7 +365,7 @@
     <set>Qt::LeftDockWidgetArea|Qt::RightDockWidgetArea</set>
    </property>
    <property name="windowTitle">
-    <string>Item Controls</string>
+    <string>Inventory Controls &amp; Summary</string>
    </property>
    <attribute name="dockWidgetArea">
     <number>2</number>
@@ -688,7 +688,7 @@ QPushButton#pushButton_create_new:disabled{
    <property name="minimumSize">
     <size>
      <width>330</width>
-     <height>163</height>
+     <height>234</height>
     </size>
    </property>
    <property name="features">
@@ -698,13 +698,74 @@ QPushButton#pushButton_create_new:disabled{
     <set>Qt::LeftDockWidgetArea|Qt::RightDockWidgetArea</set>
    </property>
    <property name="windowTitle">
-    <string>Price of Steel Summary</string>
+    <string>Sheets in Inventory</string>
    </property>
    <attribute name="dockWidgetArea">
     <number>2</number>
    </attribute>
    <widget class="QWidget" name="dockWidgetContents_price_of_steel">
     <layout class="QVBoxLayout" name="verticalLayout_15">
+     <item>
+      <layout class="QHBoxLayout" name="horizontalLayout_9">
+       <item>
+        <widget class="QPushButton" name="pushButton_refresh_price_of_steel">
+         <property name="minimumSize">
+          <size>
+           <width>100</width>
+           <height>40</height>
+          </size>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>120</width>
+           <height>40</height>
+          </size>
+         </property>
+         <property name="toolTip">
+          <string>Downloads and refreshes  sheets in inventory</string>
+         </property>
+         <property name="statusTip">
+          <string>Downloads and refreshes  sheets in inventory</string>
+         </property>
+         <property name="text">
+          <string>Get Changes</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="pushButton_update_price_of_steel">
+         <property name="minimumSize">
+          <size>
+           <width>100</width>
+           <height>40</height>
+          </size>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>120</width>
+           <height>40</height>
+          </size>
+         </property>
+         <property name="toolTip">
+          <string>Uploads sheets in inventory</string>
+         </property>
+         <property name="statusTip">
+          <string>Uploads sheets in inventory</string>
+         </property>
+         <property name="text">
+          <string>Upload Changes</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </item>
+     <item>
+      <widget class="Line" name="line_4">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+      </widget>
+     </item>
      <item>
       <widget class="QScrollArea" name="scrollArea_2">
        <property name="widgetResizable">
@@ -716,7 +777,7 @@ QPushButton#pushButton_create_new:disabled{
           <x>0</x>
           <y>0</y>
           <width>310</width>
-          <height>75</height>
+          <height>89</height>
          </rect>
         </property>
         <property name="maximumSize">
@@ -858,7 +919,7 @@ QPushButton#pushButton_add_new_sheet:disabled{
    <property name="minimumSize">
     <size>
      <width>330</width>
-     <height>313</height>
+     <height>332</height>
     </size>
    </property>
    <property name="features">
@@ -878,26 +939,61 @@ QPushButton#pushButton_add_new_sheet:disabled{
      <item>
       <layout class="QVBoxLayout" name="verticalLayout_20">
        <item>
-        <widget class="QPushButton" name="pushButton_refresh">
-         <property name="maximumSize">
-          <size>
-           <width>60</width>
-           <height>16777215</height>
-          </size>
-         </property>
-         <property name="toolTip">
-          <string>Downloads and refreshes inventory</string>
-         </property>
-         <property name="statusTip">
-          <string>Downloads and refreshes inventory</string>
-         </property>
-         <property name="text">
-          <string>Refresh</string>
-         </property>
-         <property name="flat">
-          <bool>false</bool>
-         </property>
-        </widget>
+        <layout class="QHBoxLayout" name="horizontalLayout_5">
+         <item>
+          <widget class="QPushButton" name="pushButton_refresh_parts_in_inventory">
+           <property name="minimumSize">
+            <size>
+             <width>0</width>
+             <height>40</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>120</width>
+             <height>40</height>
+            </size>
+           </property>
+           <property name="toolTip">
+            <string>Downloads and refreshes parts in inventory</string>
+           </property>
+           <property name="statusTip">
+            <string>Downloads and refreshes parts in inventory</string>
+           </property>
+           <property name="text">
+            <string>Get Changes</string>
+           </property>
+           <property name="flat">
+            <bool>false</bool>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="pushButton_update_parts_in_inventory">
+           <property name="minimumSize">
+            <size>
+             <width>0</width>
+             <height>40</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>120</width>
+             <height>40</height>
+            </size>
+           </property>
+           <property name="toolTip">
+            <string>Uploads parts in inventory</string>
+           </property>
+           <property name="statusTip">
+            <string>Uploads parts in inventory</string>
+           </property>
+           <property name="text">
+            <string>Upload Changes</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
        </item>
        <item>
         <widget class="Line" name="line_3">

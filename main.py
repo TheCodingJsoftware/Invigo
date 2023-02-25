@@ -4,8 +4,8 @@ __copyright__ = "Copyright 2022, TheCodingJ's"
 __credits__: "list[str]" = ["Jared Gross"]
 __license__ = "MIT"
 __name__ = "Inventory Manager"
-__version__ = "v1.5.3"
-__updated__ = "2023-02-24 14:41:15"
+__version__ = "v1.5.4"
+__updated__ = "2023-02-25 13:01:00"
 __maintainer__ = "Jared Gross"
 __email__ = "jared@pinelandfarms.ca"
 __status__ = "Production"
@@ -362,7 +362,30 @@ class MainWindow(QMainWindow):
         self.tabWidget.currentChanged.connect(self.tool_box_menu_changed)
 
         # Refresh
-        self.pushButton_refresh.clicked.connect(self.refresh_parts_in_inventory)
+        self.pushButton_refresh_parts_in_inventory.clicked.connect(
+            self.refresh_parts_in_inventory
+        )
+        self.pushButton_refresh_parts_in_inventory.setIcon(
+            QIcon(f"ui/BreezeStyleSheets/dist/pyqt6/{self.theme}/download.png")
+        )
+        self.pushButton_refresh_price_of_steel.clicked.connect(
+            self.refresh_price_of_steel
+        )
+        self.pushButton_refresh_price_of_steel.setIcon(
+            QIcon(f"ui/BreezeStyleSheets/dist/pyqt6/{self.theme}/download.png")
+        )
+        # Update
+        self.pushButton_update_parts_in_inventory.clicked.connect(
+            self.update_parts_in_inventory
+        )
+        self.pushButton_update_parts_in_inventory.setIcon(
+            QIcon(f"ui/BreezeStyleSheets/dist/pyqt6/{self.theme}/upload.png")
+        )
+        self.pushButton_update_price_of_steel.clicked.connect(self.update_price_of_steel)
+
+        self.pushButton_update_price_of_steel.setIcon(
+            QIcon(f"ui/BreezeStyleSheets/dist/pyqt6/{self.theme}/upload.png")
+        )
         self.pushButton_add_new_item_to_inventory.clicked.connect(
             self.open_im_useless_message
         )
@@ -391,6 +414,9 @@ class MainWindow(QMainWindow):
         self.pushButton_remove_quantity.clicked.connect(self.remove_quantity)
         # self.pushButton_remove_quantity.setEnabled(False)
         self.pushButton_remove_quantity.setIcon(
+            QIcon(f"ui/BreezeStyleSheets/dist/pyqt6/{self.theme}/list_remove.png")
+        )
+        self.pushButton_remove_quantities_from_inventory.setIcon(
             QIcon(f"ui/BreezeStyleSheets/dist/pyqt6/{self.theme}/list_remove.png")
         )
         self.listWidget_itemnames.itemSelectionChanged.connect(
@@ -901,7 +927,7 @@ class MainWindow(QMainWindow):
             )
         # self.load_item(tab, tab_index, category_data)
 
-        if inventory.check_if_value_exists_less_then(
+        if self.active_json_file.check_if_value_exists_less_then(
             category=self.category, value_to_check=10
         ):
             group_box = QGroupBox()
@@ -1213,6 +1239,9 @@ class MainWindow(QMainWindow):
                     item_name=item, key="latest_change_current_quantity"
                 )
 
+                if current_quantity <= 10:
+                    group = "Low in Quantity"
+
                 if group:
                     try:
                         layout = self.group_layouts[group]
@@ -1305,6 +1334,15 @@ class MainWindow(QMainWindow):
                 spin_quantity.setValue(current_quantity)
                 spin_quantity.setFixedWidth(150)
                 spin_quantity.setToolTip(latest_change_current_quantity)
+
+                if current_quantity <= 10:
+                    quantity_color = "red"
+                if current_quantity > 10:
+                    spin_quantity.setStyleSheet("")
+                else:
+                    spin_quantity.setStyleSheet(
+                        f"color: {quantity_color}; border-color: {quantity_color};"
+                    )
                 layout.addWidget(spin_quantity)
                 col_index += 1
                 # TOTAL COST
@@ -2426,6 +2464,15 @@ class MainWindow(QMainWindow):
         spin_quantity.setToolTip(
             f"Latest Change:\nfrom: {value_before}\nto: {spin_quantity.value()}\n{self.username}\n{datetime.now().strftime('%B %d %A %Y %I:%M:%S %p')}",
         )
+
+        if spin_quantity.value() <= 10:
+            quantity_color = "red"
+        if spin_quantity.value() > 10:
+            spin_quantity.setStyleSheet("")
+        else:
+            spin_quantity.setStyleSheet(
+                f"color: {quantity_color}; border-color: {quantity_color};"
+            )
         total_cost: float = float(round_number(spin_quantity.value() * cost_per_sheet, 2))
         spin_total_cost.setText(f"${format(float(total_cost),',')}")
         self.calculuate_price_of_steel_summary()
@@ -2757,13 +2804,59 @@ class MainWindow(QMainWindow):
         It downloads a file from a server, and then does some stuff with it
         """
         QApplication.setOverrideCursor(Qt.BusyCursor)
-        self.pushButton_refresh.setEnabled(False)
+        self.pushButton_refresh_parts_in_inventory.setEnabled(False)
+        self.pushButton_update_parts_in_inventory.setEnabled(False)
         self.refresh_pressed = True
         self.download_file(
             [
                 f"data/{settings_file.get_value(item_name='inventory_file_name')} - Parts in Inventory.json"
             ],
             False,
+        )
+
+    def refresh_price_of_steel(self) -> None:
+        """
+        It downloads a file from a server, and then does some stuff with it
+        """
+        QApplication.setOverrideCursor(Qt.BusyCursor)
+        self.pushButton_refresh_price_of_steel.setEnabled(False)
+        self.pushButton_update_price_of_steel.setEnabled(False)
+        self.refresh_pressed = True
+        self.download_file(
+            [
+                f"data/{settings_file.get_value(item_name='inventory_file_name')} - Price of Steel.json"
+            ],
+            False,
+        )
+
+    def update_parts_in_inventory(self) -> None:
+        """
+        It downloads a file from a server, and then does some stuff with it
+        """
+        QApplication.setOverrideCursor(Qt.BusyCursor)
+        self.pushButton_refresh_parts_in_inventory.setEnabled(False)
+        self.pushButton_update_parts_in_inventory.setEnabled(False)
+        self.refresh_pressed = True
+        self.upload_file(
+            [
+                f"data/{settings_file.get_value(item_name='inventory_file_name')} - Parts in Inventory.json"
+            ],
+            True,
+        )
+
+    def update_price_of_steel(self) -> None:
+        """
+        It downloads a file from a server, and then does some stuff with it
+        """
+        QApplication.setOverrideCursor(Qt.BusyCursor)
+        self.pushButton_refresh_price_of_steel.setEnabled(False)
+        self.pushButton_update_price_of_steel.setEnabled(False)
+        self.refresh_pressed = True
+        self.upload_file(
+            [
+                f"data/{settings_file.get_value(item_name='inventory_file_name')} - Price of Steel.json"
+            ],
+            True,
         )
 
     # ! \/ FOR INVENTORY JSON FILE ONLY \/
@@ -4610,10 +4703,16 @@ class MainWindow(QMainWindow):
             parts_in_inventory.load_data()
             self.load_categories()
             self.refresh_pressed = False
-            self.pushButton_refresh.setEnabled(True)
+            self.pushButton_refresh_price_of_steel.setEnabled(True)
+            self.pushButton_update_price_of_steel.setEnabled(True)
+            self.pushButton_refresh_parts_in_inventory.setEnabled(True)
+            self.pushButton_update_parts_in_inventory.setEnabled(True)
             QApplication.restoreOverrideCursor()
-        if self.refresh_pressed:
-            self.pushButton_refresh.setEnabled(True)
+        # if self.refresh_pressed:
+        #     self.pushButton_refresh_price_of_steel.setEnabled(True)
+        #     self.pushButton_update_price_of_steel.setEnabled(True)
+        #     self.pushButton_refresh_parts_in_inventory.setEnabled(True)
+        #     self.pushButton_update_parts_in_inventory.setEnabled(True)
         if data == "Successfully uploaded":
             self.status_button.setText(
                 f'<p style="color:green;"> <b>{data}</b> - Up to date. - {datetime.now().strftime("%r")}</p>'
@@ -4627,6 +4726,14 @@ class MainWindow(QMainWindow):
                     message=f"Successfully uploaded",
                 )
             )
+        if data == "Successfully uploaded" and self.refresh_pressed:
+            self.refresh_pressed = False
+            self.pushButton_refresh_price_of_steel.setEnabled(True)
+            self.pushButton_update_price_of_steel.setEnabled(True)
+            self.pushButton_refresh_parts_in_inventory.setEnabled(True)
+            self.pushButton_update_parts_in_inventory.setEnabled(True)
+            QApplication.restoreOverrideCursor()
+
         if data == "Successfully downloaded" and self.should_reload_categories:
             inventory.load_data()
             price_of_steel_inventory.load_data()
