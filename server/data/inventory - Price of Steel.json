@@ -390,7 +390,7 @@
             "latest_change_current_quantity": "Latest Change:\nfrom: 25\nto: 24.0\nJusti\nFebruary 25 Saturday 2023 11:01:03 AM"
         },
         "14 Gauge 304 SS 120.000x60.000": {
-            "current_quantity": 9,
+            "current_quantity": 0,
             "sheet_dimension": "120.000x60.000",
             "thickness": "14 Gauge",
             "material": "304 SS",
