@@ -153,7 +153,19 @@
             "group": null
         }
     },
-    "Polar G2": {
+    "Polar G2": {},
+    "Polar G2+": {
+        "G-Class-Catch1-Base": {
+            "current_quantity": 81,
+            "machine_time": 0.35,
+            "gauge": "10 Gauge",
+            "material": "304 SS",
+            "weight": 0.502,
+            "price": 2.66,
+            "unit_quantity": 1,
+            "modified_date": "Added at February 27 Monday 2023 09:03:19 AM",
+            "group": null
+        },
         "G2-3-Air Gate-Adjusting lever": {
             "current_quantity": 72,
             "machine_time": 0.25,
@@ -166,6 +178,5 @@
             "group": null
         }
     },
-    "Polar G2+": {},
     "Polar G3": {}
 }
