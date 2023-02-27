@@ -1,5 +1,27 @@
 {
     "Custom": {
+        "G2Plus-Air Damper": {
+            "current_quantity": 60,
+            "machine_time": 0.1,
+            "gauge": "12 Gauge",
+            "material": "304 SS",
+            "weight": 0.181,
+            "price": 0.85,
+            "unit_quantity": 1,
+            "modified_date": "Added at February 27 Monday 2023 10:55:22 AM",
+            "group": null
+        },
+        "kent trigger_1": {
+            "current_quantity": 10,
+            "machine_time": 0.05,
+            "gauge": "12 Gauge",
+            "material": "304 SS",
+            "weight": 0.063,
+            "price": 0.36,
+            "unit_quantity": 1,
+            "modified_date": "Added at February 27 Monday 2023 10:55:22 AM",
+            "group": null
+        },
         "Flat pattern - Bins Power Box Lid": {
             "current_quantity": 7,
             "machine_time": 0.12,
