@@ -5073,7 +5073,7 @@
         "6\" Chimney T 6Tl12-PM": {
             "part_number": "208800",
             "unit_quantity": 1,
-            "current_quantity": 69,
+            "current_quantity": 51,
             "price": 199.52,
             "use_exchange_rate": false,
             "priority": 3,
@@ -5081,7 +5081,7 @@
             "latest_change_name": "Item added\nItsme\nAugust 03 Wednesday 2022 11-11-49 AM",
             "latest_change_part_number": "Item added\nItsme\nAugust 03 Wednesday 2022 11-11-49 AM",
             "latest_change_unit_quantity": "Item added\nItsme\nAugust 03 Wednesday 2022 11-11-49 AM",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 69\nto: 69\nItsme\nFebruary 11 Saturday 2023 10:43:59 AM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 51\nto: 51\nItsme\nFebruary 27 Monday 2023 04:33:52 PM",
             "latest_change_price": "Latest Change:\nfrom: 199.52\nto: 199.52\nItsme\nOctober 04 Tuesday 2022 01:54:33 PM",
             "latest_change_use_exchange_price": "Item added\nItsme\nAugust 03 Wednesday 2022 11-11-49 AM",
             "latest_change_priority": "Latest Change:\nfrom: 0\nto: 3\nItsme\nOctober 21 Friday 2022 04:30:28 PM",
@@ -6591,6 +6591,23 @@
             "latest_change_priority": "Item added\nItsme\nAugust 03 Wednesday 2022 11-01-29 AM",
             "latest_change_notes": "Item added\nItsme\nAugust 03 Wednesday 2022 11-01-29 AM"
         },
+        "6\" Chimney T 6Tl12-PM": {
+            "part_number": "208800",
+            "unit_quantity": 1,
+            "current_quantity": 51,
+            "price": 199.52,
+            "use_exchange_rate": false,
+            "priority": 0,
+            "notes": "Vendor: Security Chimney\nDescription: ",
+            "latest_change_name": "Item added\nItsme\nAugust 03 Wednesday 2022 10-59-02 AM",
+            "latest_change_part_number": "Item added\nItsme\nAugust 03 Wednesday 2022 10-59-02 AM",
+            "latest_change_unit_quantity": "Item added\nItsme\nAugust 03 Wednesday 2022 10-59-02 AM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 51\nto: 51\nItsme\nFebruary 27 Monday 2023 04:33:52 PM",
+            "latest_change_price": "Latest Change:\nfrom: 199.52\nto: 199.52\nItsme\nOctober 04 Tuesday 2022 01:54:33 PM",
+            "latest_change_use_exchange_price": "Item added\nItsme\nAugust 03 Wednesday 2022 10-59-02 AM",
+            "latest_change_priority": "Item added\nItsme\nAugust 03 Wednesday 2022 10-59-02 AM",
+            "latest_change_notes": "Item added\nItsme\nAugust 03 Wednesday 2022 10-59-02 AM"
+        },
         "3\" Flex Hose": {
             "part_number": "3FH",
             "unit_quantity": 1,
@@ -6624,23 +6641,6 @@
             "latest_change_use_exchange_price": "Item added\nItsme\nAugust 04 Thursday 2022 10-09-19 AM",
             "latest_change_priority": "Item added\nItsme\nAugust 04 Thursday 2022 10-09-19 AM",
             "latest_change_notes": "Item added\nItsme\nAugust 04 Thursday 2022 10-09-19 AM"
-        },
-        "6\" Chimney T 6Tl12-PM": {
-            "part_number": "208800",
-            "unit_quantity": 1,
-            "current_quantity": 69,
-            "price": 199.52,
-            "use_exchange_rate": false,
-            "priority": 0,
-            "notes": "Vendor: Security Chimney\nDescription: ",
-            "latest_change_name": "Item added\nItsme\nAugust 03 Wednesday 2022 10-59-02 AM",
-            "latest_change_part_number": "Item added\nItsme\nAugust 03 Wednesday 2022 10-59-02 AM",
-            "latest_change_unit_quantity": "Item added\nItsme\nAugust 03 Wednesday 2022 10-59-02 AM",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 69\nto: 69\nItsme\nFebruary 11 Saturday 2023 10:43:59 AM",
-            "latest_change_price": "Latest Change:\nfrom: 199.52\nto: 199.52\nItsme\nOctober 04 Tuesday 2022 01:54:33 PM",
-            "latest_change_use_exchange_price": "Item added\nItsme\nAugust 03 Wednesday 2022 10-59-02 AM",
-            "latest_change_priority": "Item added\nItsme\nAugust 03 Wednesday 2022 10-59-02 AM",
-            "latest_change_notes": "Item added\nItsme\nAugust 03 Wednesday 2022 10-59-02 AM"
         },
         "Single Pole Switch 1301W": {
             "part_number": "CWD1301W",
@@ -7332,7 +7332,7 @@
         "6\" Chimney T 6Tl12-PM": {
             "part_number": "208800",
             "unit_quantity": 1,
-            "current_quantity": 69,
+            "current_quantity": 51,
             "price": 199.52,
             "use_exchange_rate": false,
             "priority": 0,
@@ -7340,7 +7340,7 @@
             "latest_change_name": "Item added\nItsme\nAugust 03 Wednesday 2022 10-59-02 AM",
             "latest_change_part_number": "Item added\nItsme\nAugust 03 Wednesday 2022 10-59-02 AM",
             "latest_change_unit_quantity": "Item added\nItsme\nAugust 03 Wednesday 2022 10-59-02 AM",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 69\nto: 69\nItsme\nFebruary 11 Saturday 2023 10:43:59 AM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 51\nto: 51\nItsme\nFebruary 27 Monday 2023 04:33:52 PM",
             "latest_change_price": "Latest Change:\nfrom: 199.52\nto: 199.52\nItsme\nOctober 04 Tuesday 2022 01:54:33 PM",
             "latest_change_use_exchange_price": "Item added\nItsme\nAugust 03 Wednesday 2022 10-59-02 AM",
             "latest_change_priority": "Item added\nItsme\nAugust 03 Wednesday 2022 10-59-02 AM",
