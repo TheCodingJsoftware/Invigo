@@ -291,14 +291,14 @@
             "group": "Galvanized Hinges"
         },
         "PM - SS HINGE 1-7pcs": {
-            "current_quantity": 203,
+            "current_quantity": 313.0,
             "machine_time": 0.18,
             "gauge": "12 Gauge",
             "material": "Galvanized",
             "weight": 0.244,
             "price": 0.74,
             "unit_quantity": 1,
-            "modified_date": "Added at February 27 Monday 2023 02:26:29 PM",
+            "modified_date": "Manually set to 313.0 quantity at February 27 Monday 2023 02:33:10 PM",
             "group": "Galvanized Hinges"
         }
     }
