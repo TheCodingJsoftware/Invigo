@@ -9,7 +9,7 @@
             "price": 1.41,
             "unit_quantity": 1,
             "modified_date": "Added at February 27 Monday 2023 08:36:19 AM",
-            "group": null
+            "group": "Polar G2"
         },
         "Flat pattern - Bins Power Box Lid": {
             "current_quantity": 7,
@@ -163,5 +163,7 @@
             "modified_date": "10 quantity added at February 25 Saturday 2023 10:15:58 AM",
             "group": null
         }
-    }
+    },
+    "Polar G2": {},
+    "Polar G2+": {}
 }
