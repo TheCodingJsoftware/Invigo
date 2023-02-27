@@ -5375,23 +5375,6 @@
             "latest_change_priority": "Item added\nItsme\nNovember 28 Monday 2022 11-05-28 AM",
             "latest_change_notes": "Item added\nItsme\nNovember 28 Monday 2022 11-05-28 AM"
         },
-        "100-Coffee Brown HT ProRib- 38 3\/8": {
-            "part_number": "1328GA-103",
-            "unit_quantity": 3,
-            "current_quantity": 95,
-            "price": 14.8,
-            "use_exchange_rate": false,
-            "priority": 0,
-            "notes": "Vendor: Domtek\nDescription: ",
-            "latest_change_name": "Item added\nItsme\nJuly 28 Thursday 2022 07-50-08 PM",
-            "latest_change_part_number": "Item added\nItsme\nJuly 28 Thursday 2022 07-50-08 PM",
-            "latest_change_unit_quantity": "Item added\nItsme\nJuly 28 Thursday 2022 07-50-08 PM",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 95\nto: 95\nItsme\nFebruary 07 Tuesday 2023 01:29:23 PM",
-            "latest_change_price": "Latest Change:\nfrom: 14.8\nto: 14.8\nItsme\nOctober 14 Friday 2022 09:32:01 AM",
-            "latest_change_use_exchange_price": "Item added\nItsme\nJuly 28 Thursday 2022 07-50-08 PM",
-            "latest_change_priority": "Item added\nItsme\nJuly 28 Thursday 2022 07-50-08 PM",
-            "latest_change_notes": "Item added\nItsme\nJuly 28 Thursday 2022 07-50-08 PM"
-        },
         "Aluminum Float Cap ( 2\" )": {
             "part_number": "Float cap",
             "unit_quantity": 1.0,
@@ -5648,6 +5631,23 @@
             "latest_change_use_exchange_price": "Item added\nItsme\nOctober 28 Friday 2022 08-30-16 AM",
             "latest_change_priority": "Latest Change:\nfrom: 0\nto: 1\nItsme\nOctober 28 Friday 2022 08:30:42 AM",
             "latest_change_notes": "Item added\nItsme\nOctober 28 Friday 2022 08-30-16 AM"
+        },
+        "100-Coffee Brown HT ProRib- 37\"": {
+            "part_number": "1328GA",
+            "unit_quantity": 3,
+            "current_quantity": 95,
+            "price": 14.8,
+            "use_exchange_rate": false,
+            "priority": 0,
+            "notes": "Vendor: Domtek\nDescription: ",
+            "latest_change_name": "Latest Change:\nfrom: \"100-Coffee Brown HT ProRib- 37\"\nto: \"100-Coffee Brown HT ProRib- 37\"\"\nItsme\nFebruary 27 Monday 2023 09:54:57 AM",
+            "latest_change_part_number": "Latest Change:\nfrom: 1328GA-\nto: 1328GA\nItsme\nFebruary 27 Monday 2023 09:54:51 AM",
+            "latest_change_unit_quantity": "Item added\nItsme\nJuly 28 Thursday 2022 07-50-08 PM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 95\nto: 95\nItsme\nFebruary 07 Tuesday 2023 01:29:23 PM",
+            "latest_change_price": "Latest Change:\nfrom: 14.8\nto: 14.8\nItsme\nOctober 14 Friday 2022 09:32:01 AM",
+            "latest_change_use_exchange_price": "Item added\nItsme\nJuly 28 Thursday 2022 07-50-08 PM",
+            "latest_change_priority": "Item added\nItsme\nJuly 28 Thursday 2022 07-50-08 PM",
+            "latest_change_notes": "Item added\nItsme\nJuly 28 Thursday 2022 07-50-08 PM"
         }
     },
     "Fittings": {
