@@ -1,5 +1,27 @@
 {
     "Custom": {
+        "PM - SS HINGE 1 B_1pcs": {
+            "current_quantity": 204,
+            "machine_time": 0.18,
+            "gauge": "12 Gauge",
+            "material": "Galvanized",
+            "weight": 0.26,
+            "price": 0.76,
+            "unit_quantity": 1,
+            "modified_date": "Added at February 27 Monday 2023 02:26:29 PM",
+            "group": null
+        },
+        "PM - SS HINGE 1-7pcs": {
+            "current_quantity": 203,
+            "machine_time": 0.18,
+            "gauge": "12 Gauge",
+            "material": "Galvanized",
+            "weight": 0.244,
+            "price": 0.74,
+            "unit_quantity": 1,
+            "modified_date": "Added at February 27 Monday 2023 02:26:29 PM",
+            "group": null
+        },
         "G2Plus-Air Damper": {
             "current_quantity": 100,
             "machine_time": 0.1,
@@ -141,6 +163,17 @@
             "price": 11.92,
             "unit_quantity": 1,
             "modified_date": "Added at February 25 Saturday 2023 09:10:26 AM",
+            "group": null
+        },
+        "LCB300M-CB103": {
+            "current_quantity": 2,
+            "machine_time": 1.5,
+            "gauge": "12 Gauge",
+            "material": "Galvanized",
+            "weight": 12.287,
+            "price": 18.49,
+            "unit_quantity": 1,
+            "modified_date": "Added at February 27 Monday 2023 02:26:29 PM",
             "group": null
         },
         "Flat pattern - Bins Power Box": {
