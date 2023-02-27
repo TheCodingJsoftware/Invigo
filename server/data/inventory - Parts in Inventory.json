@@ -11,6 +11,17 @@
             "modified_date": "40 quantity added at February 27 Monday 2023 11:02:44 AM",
             "group": null
         },
+        "G2Plus-Fan Motor-inner condensation shield": {
+            "current_quantity": 50,
+            "machine_time": 0.25,
+            "gauge": "14 Gauge",
+            "material": "304 SS",
+            "weight": 2.49,
+            "price": 6.99,
+            "unit_quantity": 1,
+            "modified_date": "Added at February 27 Monday 2023 11:19:33 AM",
+            "group": null
+        },
         "kent trigger_1": {
             "current_quantity": 10,
             "machine_time": 0.05,
