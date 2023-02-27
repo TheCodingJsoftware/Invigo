@@ -12,14 +12,69 @@
             "group": null
         },
         "G2Plus-Fan Motor-inner condensation shield": {
-            "current_quantity": 50,
+            "current_quantity": 54,
             "machine_time": 0.25,
             "gauge": "14 Gauge",
             "material": "304 SS",
             "weight": 2.49,
             "price": 6.99,
             "unit_quantity": 1,
-            "modified_date": "Added at February 27 Monday 2023 11:19:33 AM",
+            "modified_date": "4 quantity added at February 27 Monday 2023 02:07:10 PM",
+            "group": null
+        },
+        "G2Plus-Primary Air Delivery-Tube-Cleanout-Cover-Inner": {
+            "current_quantity": 40,
+            "machine_time": 0.1,
+            "gauge": "14 Gauge",
+            "material": "304 SS",
+            "weight": 0.092,
+            "price": 0.64,
+            "unit_quantity": 1,
+            "modified_date": "Added at February 27 Monday 2023 02:07:10 PM",
+            "group": null
+        },
+        "G2Plus-Secondary Air Delivery-tube-part1x2": {
+            "current_quantity": 40,
+            "machine_time": 0.63,
+            "gauge": "14 Gauge",
+            "material": "304 SS",
+            "weight": 8.762,
+            "price": 23.57,
+            "unit_quantity": 1,
+            "modified_date": "Added at February 27 Monday 2023 02:07:11 PM",
+            "group": null
+        },
+        "G2Plus-Secondary Air Delivery-tube-part2x2": {
+            "current_quantity": 40,
+            "machine_time": 0.7,
+            "gauge": "14 Gauge",
+            "material": "304 SS",
+            "weight": 5.571,
+            "price": 16.23,
+            "unit_quantity": 1,
+            "modified_date": "Added at February 27 Monday 2023 02:07:11 PM",
+            "group": null
+        },
+        "G2Plus-Primary Air Delivery-tube-part1x2": {
+            "current_quantity": 39,
+            "machine_time": 0.78,
+            "gauge": "14 Gauge",
+            "material": "304 SS",
+            "weight": 10.639,
+            "price": 28.68,
+            "unit_quantity": 1,
+            "modified_date": "Added at February 27 Monday 2023 02:07:10 PM",
+            "group": null
+        },
+        "G2Plus-Primary Air Delivery-tube-part2x2": {
+            "current_quantity": 39,
+            "machine_time": 0.82,
+            "gauge": "14 Gauge",
+            "material": "304 SS",
+            "weight": 6.791,
+            "price": 19.65,
+            "unit_quantity": 1,
+            "modified_date": "Added at February 27 Monday 2023 02:07:10 PM",
             "group": null
         },
         "kent trigger_1": {
