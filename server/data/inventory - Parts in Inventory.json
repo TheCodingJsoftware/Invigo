@@ -1,27 +1,5 @@
 {
     "Custom": {
-        "PM - SS HINGE 1 B_1pcs": {
-            "current_quantity": 204,
-            "machine_time": 0.18,
-            "gauge": "12 Gauge",
-            "material": "Galvanized",
-            "weight": 0.26,
-            "price": 0.76,
-            "unit_quantity": 1,
-            "modified_date": "Added at February 27 Monday 2023 02:26:29 PM",
-            "group": null
-        },
-        "PM - SS HINGE 1-7pcs": {
-            "current_quantity": 203,
-            "machine_time": 0.18,
-            "gauge": "12 Gauge",
-            "material": "Galvanized",
-            "weight": 0.244,
-            "price": 0.74,
-            "unit_quantity": 1,
-            "modified_date": "Added at February 27 Monday 2023 02:26:29 PM",
-            "group": null
-        },
         "G2Plus-Air Damper": {
             "current_quantity": 100,
             "machine_time": 0.1,
@@ -299,5 +277,29 @@
             "group": null
         }
     },
-    "Polar G3": {}
+    "Polar G3": {},
+    "Overhead Door Part's": {
+        "PM - SS HINGE 1 B_1pcs": {
+            "current_quantity": 204,
+            "machine_time": 0.18,
+            "gauge": "12 Gauge",
+            "material": "Galvanized",
+            "weight": 0.26,
+            "price": 0.76,
+            "unit_quantity": 1,
+            "modified_date": "Added at February 27 Monday 2023 02:26:29 PM",
+            "group": "Galvanized Hinges"
+        },
+        "PM - SS HINGE 1-7pcs": {
+            "current_quantity": 203,
+            "machine_time": 0.18,
+            "gauge": "12 Gauge",
+            "material": "Galvanized",
+            "weight": 0.244,
+            "price": 0.74,
+            "unit_quantity": 1,
+            "modified_date": "Added at February 27 Monday 2023 02:26:29 PM",
+            "group": "Galvanized Hinges"
+        }
+    }
 }
