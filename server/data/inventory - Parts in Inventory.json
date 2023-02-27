@@ -153,36 +153,36 @@
     },
     "BL40": {
         "4044 Ash Pan": {
-            "current_quantity": 20,
+            "current_quantity": 10.0,
             "machine_time": 0.78,
             "gauge": "16 Gauge",
             "material": "304 SS",
             "weight": 17.901,
             "price": 46.03,
             "unit_quantity": 1,
-            "modified_date": "10 quantity added at February 25 Saturday 2023 10:15:58 AM",
+            "modified_date": "Manually set to 10.0 quantity at February 27 Monday 2023 11:32:02 AM",
             "group": null
         },
         "4044 Ash Pan Handle": {
-            "current_quantity": 20,
+            "current_quantity": 10.0,
             "machine_time": 0.18,
             "gauge": "16 Gauge",
             "material": "304 SS",
             "weight": 0.311,
             "price": 1.49,
             "unit_quantity": 1,
-            "modified_date": "10 quantity added at February 25 Saturday 2023 10:15:58 AM",
+            "modified_date": "Manually set to 10.0 quantity at February 27 Monday 2023 11:31:59 AM",
             "group": null
         },
         "404480": {
-            "current_quantity": 20,
+            "current_quantity": 10.0,
             "machine_time": 1.77,
             "gauge": "16 Gauge",
             "material": "304 SS",
             "weight": 44.621,
             "price": 114.02,
             "unit_quantity": 1,
-            "modified_date": "10 quantity added at February 25 Saturday 2023 10:15:58 AM",
+            "modified_date": "Manually set to 10.0 quantity at February 27 Monday 2023 11:31:55 AM",
             "group": null
         }
     },
