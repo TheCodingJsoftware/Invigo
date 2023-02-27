@@ -280,25 +280,25 @@
     "Polar G3": {},
     "Overhead Door Part's": {
         "PM - SS HINGE 1-7pcs": {
-            "current_quantity": 516.0,
+            "current_quantity": 204.0,
             "machine_time": 0.18,
             "gauge": "12 Gauge",
             "material": "Galvanized",
             "weight": 0.244,
             "price": 0.74,
             "unit_quantity": 1,
-            "modified_date": "203 quantity added at February 27 Monday 2023 02:37:18 PM",
+            "modified_date": "Manually set to 204.0 quantity at February 27 Monday 2023 02:40:36 PM",
             "group": "Galvanized Hinges"
         },
         "PM - SS HINGE 1 B_1pcs": {
-            "current_quantity": 408,
+            "current_quantity": 203.0,
             "machine_time": 0.18,
             "gauge": "12 Gauge",
             "material": "Galvanized",
             "weight": 0.26,
             "price": 0.76,
             "unit_quantity": 1,
-            "modified_date": "204 quantity added at February 27 Monday 2023 02:37:18 PM",
+            "modified_date": "Manually set to 203.0 quantity at February 27 Monday 2023 02:40:43 PM",
             "group": "Galvanized Hinges"
         }
     }
