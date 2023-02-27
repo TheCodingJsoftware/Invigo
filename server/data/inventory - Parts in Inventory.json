@@ -1,16 +1,5 @@
 {
     "Custom": {
-        "G2-3-Air Gate-Adjusting lever": {
-            "current_quantity": 72,
-            "machine_time": 0.25,
-            "gauge": "12 Gauge",
-            "material": "304 SS",
-            "weight": 0.156,
-            "price": 1.41,
-            "unit_quantity": 1,
-            "modified_date": "Added at February 27 Monday 2023 08:36:19 AM",
-            "group": "Polar G2"
-        },
         "Flat pattern - Bins Power Box Lid": {
             "current_quantity": 7,
             "machine_time": 0.12,
@@ -164,6 +153,19 @@
             "group": null
         }
     },
-    "Polar G2": {},
-    "Polar G2+": {}
+    "Polar G2": {
+        "G2-3-Air Gate-Adjusting lever": {
+            "current_quantity": 72,
+            "machine_time": 0.25,
+            "gauge": "12 Gauge",
+            "material": "304 SS",
+            "weight": 0.156,
+            "price": 1.41,
+            "unit_quantity": 1,
+            "modified_date": "Added at February 27 Monday 2023 08:36:19 AM",
+            "group": null
+        }
+    },
+    "Polar G2+": {},
+    "Polar G3": {}
 }
