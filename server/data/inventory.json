@@ -421,23 +421,6 @@
             "latest_change_priority": "Item added\nItsme\nJuly 19 Tuesday 2022 04-54-55 PM",
             "latest_change_notes": "Item added\nItsme\nJuly 19 Tuesday 2022 04-54-55 PM"
         },
-        "3\/4 Hose to Pipe Double male Adaptor": {
-            "part_number": "G1716B-12",
-            "unit_quantity": 1,
-            "current_quantity": 15,
-            "price": 2.67,
-            "use_exchange_rate": false,
-            "priority": 0,
-            "notes": "Vendor: GreenLine Hose and Fittings\nDescription: ",
-            "latest_change_name": "Item added\nItsme\nAugust 17 Wednesday 2022 09-44-18 AM",
-            "latest_change_part_number": "Latest Change:\nfrom: G1716B-12\nto: G1716B-12\nItsme\nFebruary 28 Tuesday 2023 11:18:53 AM",
-            "latest_change_unit_quantity": "Item added\nItsme\nAugust 17 Wednesday 2022 09-44-18 AM",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 15\nto: 15\nItsme\nFebruary 17 Friday 2023 11:07:56 AM",
-            "latest_change_price": "Latest Change:\nfrom: 2.67\nto: 2.67\nItsme\nAugust 29 Monday 2022 03:45:19 PM",
-            "latest_change_use_exchange_price": "Item added\nItsme\nAugust 17 Wednesday 2022 09-44-18 AM",
-            "latest_change_priority": "Item added\nItsme\nAugust 17 Wednesday 2022 09-44-18 AM",
-            "latest_change_notes": "Item added\nItsme\nAugust 17 Wednesday 2022 09-44-18 AM"
-        },
         "Sticker 322 G2 and G3 Remove Label ": {
             "part_number": "322",
             "unit_quantity": 1,
@@ -1147,10 +1130,10 @@
             "price": 9.7,
             "use_exchange_rate": false,
             "priority": 3,
-            "notes": "Vendor: Anchor Products\nGrunthal Lumber\nDescription: ",
+            "notes": "Vendor: Anchor Products\nGrunthal Lumber\nDescription: General Purpose Silicone black\n",
             "latest_change_current_quantity": "Latest Change:\nfrom: 36\nto: 36\nItsme\nFebruary 24 Friday 2023 04:33:14 PM",
             "latest_change_price": "Latest Change:\nfrom: 9.7\nto: 9.7\nItsme\nJuly 07 Thursday 2022 03:59:16 PM",
-            "latest_change_notes": "Latest Change:\nfrom: Vendor: Anchor Products\nGrunthal Lumbe\nDescription: \nto: Vendor: Anchor Products\nGrunthal Lumber\nDescription: \nItsme\nFebruary 24 Friday 2023 04:38:38 PM"
+            "latest_change_notes": "Latest Change:\nfrom: \"Vendor: Anchor Products\nGrunthal Lumber\nDescription: General Purpose Silicone black\"\nto: \"Vendor: Anchor Products\nGrunthal Lumber\nDescription: General Purpose Silicone black\n\"\nItsme\nFebruary 28 Tuesday 2023 11:22:12 AM"
         },
         "bushing 786-251 Bronze Insert Bushing ": {
             "part_number": "786-251",
@@ -1638,6 +1621,23 @@
             "latest_change_use_exchange_price": "Item added\nItsme\nJuly 19 Tuesday 2022 03-54-38 PM",
             "latest_change_priority": "Item added\nItsme\nJuly 19 Tuesday 2022 03-54-38 PM",
             "latest_change_notes": "Item added\nItsme\nJuly 19 Tuesday 2022 03-54-38 PM"
+        },
+        "3\/4 Hose to Pipe Double male Adaptor  G1716B-12": {
+            "part_number": "G1716B-12",
+            "unit_quantity": 1,
+            "current_quantity": 15,
+            "price": 2.67,
+            "use_exchange_rate": false,
+            "priority": 0,
+            "notes": "Vendor: GreenLine Hose and Fittings\nDescription: ",
+            "latest_change_name": "Latest Change:\nfrom: \"3\/4 Hose to Pipe Double male Adaptor  G1716B-1\"\nto: \"3\/4 Hose to Pipe Double male Adaptor  G1716B-12\"\nItsme\nFebruary 28 Tuesday 2023 11:19:11 AM",
+            "latest_change_part_number": "Latest Change:\nfrom: G1716B-12\nto: G1716B-12\nItsme\nFebruary 28 Tuesday 2023 11:18:53 AM",
+            "latest_change_unit_quantity": "Item added\nItsme\nAugust 17 Wednesday 2022 09-44-18 AM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 15\nto: 15\nItsme\nFebruary 17 Friday 2023 11:07:56 AM",
+            "latest_change_price": "Latest Change:\nfrom: 2.67\nto: 2.67\nItsme\nAugust 29 Monday 2022 03:45:19 PM",
+            "latest_change_use_exchange_price": "Item added\nItsme\nAugust 17 Wednesday 2022 09-44-18 AM",
+            "latest_change_priority": "Item added\nItsme\nAugust 17 Wednesday 2022 09-44-18 AM",
+            "latest_change_notes": "Item added\nItsme\nAugust 17 Wednesday 2022 09-44-18 AM"
         }
     },
     "Polar G3": {
@@ -4378,10 +4378,10 @@
             "price": 9.7,
             "use_exchange_rate": false,
             "priority": 3,
-            "notes": "Vendor: Anchor Products\nGrunthal Lumber\nDescription: ",
+            "notes": "Vendor: Anchor Products\nGrunthal Lumber\nDescription: General Purpose Silicone black\n",
             "latest_change_current_quantity": "Latest Change:\nfrom: 36\nto: 36\nItsme\nFebruary 24 Friday 2023 04:33:14 PM",
             "latest_change_price": "Latest Change:\nfrom: 9.7\nto: 9.7\nItsme\nJuly 07 Thursday 2022 03:59:16 PM",
-            "latest_change_notes": "Latest Change:\nfrom: Vendor: Anchor Products\nGrunthal Lumbe\nDescription: \nto: Vendor: Anchor Products\nGrunthal Lumber\nDescription: \nItsme\nFebruary 24 Friday 2023 04:38:38 PM"
+            "latest_change_notes": "Latest Change:\nfrom: Vendor: Anchor Products\nGrunthal Lumber\nDescription: General Purpose Silicone black\nto: Vendor: Anchor Products\nGrunthal Lumber\nDescription: General Purpose Silicone black\n\nItsme\nFebruary 28 Tuesday 2023 11:22:12 AM"
         },
         "Knob 3\/4 DIA. 7\/16 Bore. Press-On Black Phenlic Round Knob": {
             "part_number": "POK-10",
@@ -5008,7 +5008,7 @@
             "price": 9.7,
             "use_exchange_rate": false,
             "priority": 2,
-            "notes": "Vendor: Anchor Products\nGrunthal Lumber\nDescription: ",
+            "notes": "Vendor: Anchor Products\nGrunthal Lumber\nDescription: General Purpose Silicone black\n",
             "latest_change_name": "Item added\nItsme\nAugust 04 Thursday 2022 09-08-31 AM",
             "latest_change_part_number": "Item added\nItsme\nAugust 04 Thursday 2022 09-08-31 AM",
             "latest_change_unit_quantity": "Item added\nItsme\nAugust 04 Thursday 2022 09-08-31 AM",
@@ -5016,7 +5016,7 @@
             "latest_change_price": "Item added\nItsme\nAugust 04 Thursday 2022 09-08-31 AM",
             "latest_change_use_exchange_price": "Item added\nItsme\nAugust 04 Thursday 2022 09-08-31 AM",
             "latest_change_priority": "Latest Change:\nfrom: 1\nto: 2\nItsme\nOctober 21 Friday 2022 04:31:05 PM",
-            "latest_change_notes": "Latest Change:\nfrom: \"Vendor: Anchor Products\nGrunthal Lumbe\nDescription: \"\nto: \"Vendor: Anchor Products\nGrunthal Lumber\nDescription: \"\nItsme\nFebruary 24 Friday 2023 04:38:38 PM"
+            "latest_change_notes": "Latest Change:\nfrom: Vendor: Anchor Products\nGrunthal Lumber\nDescription: General Purpose Silicone black\nto: Vendor: Anchor Products\nGrunthal Lumber\nDescription: General Purpose Silicone black\n\nItsme\nFebruary 28 Tuesday 2023 11:22:12 AM"
         },
         "6\" Plug Cap Twist Lock   6BL": {
             "part_number": "206036U",
