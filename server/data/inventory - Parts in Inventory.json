@@ -239,7 +239,7 @@
             "material": "304 SS",
             "weight": 8.762,
             "price": 23.57,
-            "unit_quantity": 1,
+            "unit_quantity": 2.0,
             "modified_date": "Added at February 27 Monday 2023 02:07:11 PM",
             "group": null
         },
@@ -250,7 +250,7 @@
             "material": "304 SS",
             "weight": 5.571,
             "price": 16.23,
-            "unit_quantity": 1,
+            "unit_quantity": 2.0,
             "modified_date": "Added at February 27 Monday 2023 02:07:11 PM",
             "group": null
         },
@@ -261,7 +261,7 @@
             "material": "304 SS",
             "weight": 10.639,
             "price": 28.68,
-            "unit_quantity": 1,
+            "unit_quantity": 2.0,
             "modified_date": "Added at February 27 Monday 2023 02:07:10 PM",
             "group": null
         },
@@ -272,7 +272,7 @@
             "material": "304 SS",
             "weight": 6.791,
             "price": 19.65,
-            "unit_quantity": 1,
+            "unit_quantity": 2.0,
             "modified_date": "Added at February 27 Monday 2023 02:07:10 PM",
             "group": null
         }
