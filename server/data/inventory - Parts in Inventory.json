@@ -222,14 +222,14 @@
             "group": null
         },
         "G2Plus-Primary Air Delivery-Tube-Cleanout-Cover-Inner": {
-            "current_quantity": 40,
+            "current_quantity": 40.0,
             "machine_time": 0.1,
             "gauge": "14 Gauge",
             "material": "304 SS",
             "weight": 0.092,
             "price": 0.64,
-            "unit_quantity": 1,
-            "modified_date": "Added at February 27 Monday 2023 02:07:10 PM",
+            "unit_quantity": 4.0,
+            "modified_date": "Manually set to 40.0 quantity at March 02 Thursday 2023 04:30:15 PM",
             "group": null
         },
         "G2Plus-Secondary Air Delivery-tube-part1x2": {
@@ -323,14 +323,14 @@
             "group": null
         },
         "G2Plus-Primary Air Delivery-Tube-Cleanout-Cover-Inner": {
-            "current_quantity": 40,
+            "current_quantity": 40.0,
             "machine_time": 0.1,
             "gauge": "14 Gauge",
             "material": "304 SS",
             "weight": 0.092,
             "price": 0.64,
             "unit_quantity": 1,
-            "modified_date": "Added at February 27 Monday 2023 02:07:10 PM",
+            "modified_date": "Manually set to 40.0 quantity at March 02 Thursday 2023 04:30:15 PM",
             "group": null
         },
         "G2Plus-Secondary Air Delivery-tube-part1x2": {
