@@ -511,7 +511,7 @@
         "Plastic Offset Lift-off hinge with Threaded Holes": {
             "part_number": "ML23P",
             "unit_quantity": 4,
-            "current_quantity": 20,
+            "current_quantity": 220,
             "price": 1.47,
             "use_exchange_rate": false,
             "priority": 0,
@@ -519,7 +519,7 @@
             "latest_change_name": "Item added\nItsme\nOctober 11 Tuesday 2022 10-28-01 AM",
             "latest_change_part_number": "Item added\nItsme\nOctober 11 Tuesday 2022 10-28-01 AM",
             "latest_change_unit_quantity": "Item added\nItsme\nOctober 11 Tuesday 2022 10-28-01 AM",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 20.0\nto: 20\nItsme\nFebruary 17 Friday 2023 11:07:57 AM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 220\nto: 220\nItsme\nMarch 02 Thursday 2023 10:36:15 AM",
             "latest_change_price": "Latest Change:\nfrom: 1.47\nto: 1.47\nItsme\nFebruary 17 Friday 2023 03:42:13 PM",
             "latest_change_use_exchange_price": "Item added\nItsme\nOctober 11 Tuesday 2022 10-28-01 AM",
             "latest_change_priority": "Item added\nItsme\nOctober 11 Tuesday 2022 10-28-01 AM",
@@ -2104,23 +2104,6 @@
             "latest_change_priority": "Item added\nItsme\nAugust 01 Monday 2022 03-41-17 PM",
             "latest_change_notes": "Item added\nItsme\nAugust 01 Monday 2022 03-41-17 PM"
         },
-        "Plastic Offset Lift-off hinge with Threaded Holes": {
-            "part_number": "ML23P",
-            "unit_quantity": 4.0,
-            "current_quantity": 20,
-            "price": 1.47,
-            "use_exchange_rate": false,
-            "priority": 0,
-            "notes": "Vendor: Sierra Pacific \nDescription:  ",
-            "latest_change_name": "Item added\nItsme\nFebruary 07 Tuesday 2023 02-42-07 PM",
-            "latest_change_part_number": "Item added\nItsme\nFebruary 07 Tuesday 2023 02-42-07 PM",
-            "latest_change_unit_quantity": "Item added\nItsme\nFebruary 07 Tuesday 2023 02-42-07 PM",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 20.0\nto: 20\nItsme\nFebruary 17 Friday 2023 11:07:57 AM",
-            "latest_change_price": "Latest Change:\nfrom: 1.47\nto: 1.47\nItsme\nFebruary 17 Friday 2023 03:42:13 PM",
-            "latest_change_use_exchange_price": "Item added\nItsme\nFebruary 07 Tuesday 2023 02-42-07 PM",
-            "latest_change_priority": "Item added\nItsme\nFebruary 07 Tuesday 2023 02-42-07 PM",
-            "latest_change_notes": "Item added\nItsme\nFebruary 07 Tuesday 2023 02-42-07 PM"
-        },
         "3\/8 Coupling Nut 1 3\/4 Long ": {
             "part_number": "n38134",
             "unit_quantity": 16,
@@ -2875,6 +2858,23 @@
             "latest_change_use_exchange_price": "Item added\nItsme\nOctober 17 Monday 2022 08-12-48 AM",
             "latest_change_priority": "Item added\nItsme\nOctober 17 Monday 2022 08-12-48 AM",
             "latest_change_notes": "Item added\nItsme\nOctober 17 Monday 2022 08-12-48 AM"
+        },
+        "Plastic Offset Lift-off hinge with Threaded Holes": {
+            "part_number": "ML23P",
+            "unit_quantity": 4.0,
+            "current_quantity": 220,
+            "price": 1.47,
+            "use_exchange_rate": false,
+            "priority": 0,
+            "notes": "Vendor: Sierra Pacific \nDescription:  ",
+            "latest_change_name": "Item added\nItsme\nFebruary 07 Tuesday 2023 02-42-07 PM",
+            "latest_change_part_number": "Item added\nItsme\nFebruary 07 Tuesday 2023 02-42-07 PM",
+            "latest_change_unit_quantity": "Item added\nItsme\nFebruary 07 Tuesday 2023 02-42-07 PM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 220\nto: 220\nItsme\nMarch 02 Thursday 2023 10:36:15 AM",
+            "latest_change_price": "Latest Change:\nfrom: 1.47\nto: 1.47\nItsme\nFebruary 17 Friday 2023 03:42:13 PM",
+            "latest_change_use_exchange_price": "Item added\nItsme\nFebruary 07 Tuesday 2023 02-42-07 PM",
+            "latest_change_priority": "Item added\nItsme\nFebruary 07 Tuesday 2023 02-42-07 PM",
+            "latest_change_notes": "Item added\nItsme\nFebruary 07 Tuesday 2023 02-42-07 PM"
         },
         "RAL 3007 Beige": {
             "part_number": "RD9XP773",
@@ -3778,7 +3778,7 @@
         "Plastic Offset Lift-off hinge with Threaded Holes": {
             "part_number": "ML23P",
             "unit_quantity": 4.0,
-            "current_quantity": 20,
+            "current_quantity": 220,
             "price": 1.47,
             "use_exchange_rate": false,
             "priority": 0,
@@ -3786,7 +3786,7 @@
             "latest_change_name": "Item added\nItsme\nFebruary 07 Tuesday 2023 02-42-23 PM",
             "latest_change_part_number": "Item added\nItsme\nFebruary 07 Tuesday 2023 02-42-23 PM",
             "latest_change_unit_quantity": "Item added\nItsme\nFebruary 07 Tuesday 2023 02-42-23 PM",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 20\nto: 20\nItsme\nFebruary 17 Friday 2023 11:07:57 AM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 220\nto: 220\nItsme\nMarch 02 Thursday 2023 10:36:15 AM",
             "latest_change_price": "Latest Change:\nfrom: 1.47\nto: 1.47\nItsme\nFebruary 17 Friday 2023 03:42:13 PM",
             "latest_change_use_exchange_price": "Item added\nItsme\nFebruary 07 Tuesday 2023 02-42-23 PM",
             "latest_change_priority": "Item added\nItsme\nFebruary 07 Tuesday 2023 02-42-23 PM",
