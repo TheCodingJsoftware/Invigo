@@ -482,7 +482,7 @@
         "Eon Motor 1\/3 HP 5660": {
             "part_number": "5SAB39DLV5000-P",
             "unit_quantity": 1,
-            "current_quantity": 19,
+            "current_quantity": 139,
             "price": 325.0,
             "use_exchange_rate": false,
             "priority": 0,
@@ -490,7 +490,7 @@
             "latest_change_name": "Item added\nItsme\nOctober 21 Friday 2022 10-49-31 AM",
             "latest_change_part_number": "Item added\nItsme\nOctober 21 Friday 2022 10-49-31 AM",
             "latest_change_unit_quantity": "Item added\nItsme\nOctober 21 Friday 2022 10-49-31 AM",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 19\nto: 19\nItsme\nFebruary 23 Thursday 2023 11:26:06 AM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 139\nto: 139\nItsme\nMarch 02 Thursday 2023 09:23:33 AM",
             "latest_change_price": "Item added\nItsme\nOctober 21 Friday 2022 10-49-31 AM",
             "latest_change_use_exchange_price": "Item added\nItsme\nOctober 21 Friday 2022 10-49-31 AM",
             "latest_change_priority": "Item added\nItsme\nOctober 21 Friday 2022 10-49-31 AM",
@@ -1963,24 +1963,6 @@
             "latest_change_price": "Latest Change:\nfrom: 9.72\nto: 9.72\nItsme\nJanuary 17 Tuesday 2023 09:03:36 AM",
             "latest_change_notes": "Latest Change:\nfrom: \"Vendor: GreenLine\nDescription: 204-694-0332\nPart # V202-075\"\nto: \"Vendor: GreenLine\nDescription: 204-694-0332\nPart # V202-075 \"\nItsme\nJanuary 17 Tuesday 2023 09:11:14 AM"
         },
-        " L-HANDLE LATCH ASSEMBLY, BLACK PLASTIC HANDLE, WITH STAMPED CAM": {
-            "part_number": "1153-01",
-            "unit_quantity": 1,
-            "current_quantity": 11,
-            "price": 12.35,
-            "use_exchange_rate": true,
-            "priority": 0,
-            "notes": "Vendor: Sierra Pacific\nDescription: ",
-            "latest_change_name": "Item added\nItsme\nJuly 08 Friday 2022 09-12-31 AM",
-            "latest_change_part_number": "Latest Change:\nfrom: 1153-0\nto: 1153-01\nItsme\nFebruary 17 Friday 2023 02:54:35 PM",
-            "latest_change_unit_quantity": "Item added\nItsme\nJuly 08 Friday 2022 09-12-31 AM",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 11\nto: 11\nItsme\nFebruary 17 Friday 2023 11:07:56 AM",
-            "latest_change_price": "Latest Change:\nfrom: 12.35\nto: 12.35\nItsme\nAugust 31 Wednesday 2022 08:22:24 AM",
-            "latest_change_use_exchange_price": "Item added\nItsme\nJuly 08 Friday 2022 09-12-32 AM",
-            "latest_change_priority": "Item added\nItsme\nJuly 08 Friday 2022 09-12-32 AM",
-            "latest_change_notes": "Item added\nItsme\nJuly 08 Friday 2022 09-12-32 AM",
-            "latest_change_use_exchange_rate": "Latest Change:\nfrom: CAD\nto: USD\nItsme\nJanuary 23 Monday 2023 08:56:27 AM"
-        },
         "2\" ThermaxSF-450": {
             "part_number": "THERMAXSF450",
             "unit_quantity": 1.0,
@@ -2092,23 +2074,6 @@
             "latest_change_use_exchange_price": "Item added\nItsme\nJuly 07 Thursday 2022 10-23-19 AM",
             "latest_change_priority": "Item added\nItsme\nJuly 07 Thursday 2022 10-23-19 AM",
             "latest_change_notes": "Latest Change:\nfrom: \"Vendor: Greenline\nDescription: \"\nto: \"Vendor: Greenline\nDescription: 204-694-0332\"\nItsme\nJuly 07 Thursday 2022 11:22:22 AM"
-        },
-        "Eon Motor 1\/3 HP 5660": {
-            "part_number": "5SAB39DLV5000-P",
-            "unit_quantity": 1,
-            "current_quantity": 19,
-            "price": 325.0,
-            "use_exchange_rate": false,
-            "priority": 0,
-            "notes": "Vendor: Rantec\nDescription: ",
-            "latest_change_name": "Item added\nItsme\nAugust 22 Monday 2022 03-39-33 PM",
-            "latest_change_part_number": "Latest Change:\nfrom: 5SAB39DLV5000-\nto: 5SAB39DLV5000-P\nItsme\nAugust 24 Wednesday 2022 01:13:27 PM",
-            "latest_change_unit_quantity": "Item added\nItsme\nAugust 22 Monday 2022 03-39-33 PM",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 19\nto: 19\nItsme\nFebruary 23 Thursday 2023 11:26:06 AM",
-            "latest_change_price": "Item added\nItsme\nAugust 22 Monday 2022 03-39-33 PM",
-            "latest_change_use_exchange_price": "Item added\nItsme\nAugust 22 Monday 2022 03-39-33 PM",
-            "latest_change_priority": "Item added\nItsme\nAugust 22 Monday 2022 03-39-33 PM",
-            "latest_change_notes": "Latest Change:\nfrom: \"Vendor: Rante\nDescription: \"\nto: \"Vendor: Rantec\nDescription: \"\nItsme\nAugust 23 Tuesday 2022 02:48:25 PM"
         },
         "3\" Thermax SF- 600 Brick Slabs 1000x610x75": {
             "part_number": "THERMAXSF600",
@@ -2500,6 +2465,24 @@
             "latest_change_priority": "Latest Change:\nfrom: 1\nto: 2\nItsme\nNovember 03 Thursday 2022 11:01:43 AM",
             "latest_change_notes": "Item added\nItsme\nAugust 12 Friday 2022 11-27-45 AM"
         },
+        " L-HANDLE LATCH ASSEMBLY, BLACK PLASTIC HANDLE, WITH STAMPED CAM": {
+            "part_number": "1153-01",
+            "unit_quantity": 1,
+            "current_quantity": 71,
+            "price": 12.35,
+            "use_exchange_rate": true,
+            "priority": 0,
+            "notes": "Vendor: Sierra Pacific\nDescription: ",
+            "latest_change_name": "Item added\nItsme\nJuly 08 Friday 2022 09-12-31 AM",
+            "latest_change_part_number": "Latest Change:\nfrom: 1153-0\nto: 1153-01\nItsme\nFebruary 17 Friday 2023 02:54:35 PM",
+            "latest_change_unit_quantity": "Item added\nItsme\nJuly 08 Friday 2022 09-12-31 AM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 71\nto: 71\nItsme\nMarch 02 Thursday 2023 09:22:36 AM",
+            "latest_change_price": "Latest Change:\nfrom: 12.35\nto: 12.35\nItsme\nAugust 31 Wednesday 2022 08:22:24 AM",
+            "latest_change_use_exchange_price": "Item added\nItsme\nJuly 08 Friday 2022 09-12-32 AM",
+            "latest_change_priority": "Item added\nItsme\nJuly 08 Friday 2022 09-12-32 AM",
+            "latest_change_notes": "Item added\nItsme\nJuly 08 Friday 2022 09-12-32 AM",
+            "latest_change_use_exchange_rate": "Latest Change:\nfrom: CAD\nto: USD\nItsme\nJanuary 23 Monday 2023 08:56:27 AM"
+        },
         "Sticker #304  Polar Furnace 3.65\"x 37.79\" ": {
             "part_number": "404",
             "unit_quantity": 1,
@@ -2770,6 +2753,23 @@
             "priority": 0,
             "notes": "Vendor: \nDescription: ",
             "latest_change_current_quantity": "Latest Change:\nfrom: 136\nto: 136\nItsme\nFebruary 23 Thursday 2023 01:45:24 PM"
+        },
+        "Eon Motor 1\/3 HP 5660": {
+            "part_number": "5SAB39DLV5000-P",
+            "unit_quantity": 1,
+            "current_quantity": 139,
+            "price": 325.0,
+            "use_exchange_rate": false,
+            "priority": 0,
+            "notes": "Vendor: Rantec\nDescription: ",
+            "latest_change_name": "Item added\nItsme\nAugust 22 Monday 2022 03-39-33 PM",
+            "latest_change_part_number": "Latest Change:\nfrom: 5SAB39DLV5000-\nto: 5SAB39DLV5000-P\nItsme\nAugust 24 Wednesday 2022 01:13:27 PM",
+            "latest_change_unit_quantity": "Item added\nItsme\nAugust 22 Monday 2022 03-39-33 PM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 139\nto: 139\nItsme\nMarch 02 Thursday 2023 09:23:33 AM",
+            "latest_change_price": "Item added\nItsme\nAugust 22 Monday 2022 03-39-33 PM",
+            "latest_change_use_exchange_price": "Item added\nItsme\nAugust 22 Monday 2022 03-39-33 PM",
+            "latest_change_priority": "Item added\nItsme\nAugust 22 Monday 2022 03-39-33 PM",
+            "latest_change_notes": "Latest Change:\nfrom: \"Vendor: Rante\nDescription: \"\nto: \"Vendor: Rantec\nDescription: \"\nItsme\nAugust 23 Tuesday 2022 02:48:25 PM"
         },
         "bushing 786-251 Bronze Insert Bushing ": {
             "part_number": "786-251",
@@ -3732,7 +3732,7 @@
         "Eon Motor 1\/3 HP 5660": {
             "part_number": "5SAB39DLV5000-P",
             "unit_quantity": 1,
-            "current_quantity": 19,
+            "current_quantity": 139,
             "price": 325.0,
             "use_exchange_rate": false,
             "priority": 0,
@@ -3740,7 +3740,7 @@
             "latest_change_name": "Item added\nItsme\nOctober 21 Friday 2022 10-48-42 AM",
             "latest_change_part_number": "Item added\nItsme\nOctober 21 Friday 2022 10-48-42 AM",
             "latest_change_unit_quantity": "Item added\nItsme\nOctober 21 Friday 2022 10-48-42 AM",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 19\nto: 19\nItsme\nFebruary 23 Thursday 2023 11:26:06 AM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 139\nto: 139\nItsme\nMarch 02 Thursday 2023 09:23:33 AM",
             "latest_change_price": "Item added\nItsme\nOctober 21 Friday 2022 10-48-42 AM",
             "latest_change_use_exchange_price": "Item added\nItsme\nOctober 21 Friday 2022 10-48-42 AM",
             "latest_change_priority": "Item added\nItsme\nOctober 21 Friday 2022 10-48-42 AM",
