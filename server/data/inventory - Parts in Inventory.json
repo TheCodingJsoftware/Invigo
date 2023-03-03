@@ -330,6 +330,28 @@
             "modified_date": "Added at March 03 Friday 2023 08:51:40 AM",
             "group": null
         },
+        "2534-043x2": {
+            "current_quantity": 10,
+            "machine_time": 1.58,
+            "gauge": "3\/8",
+            "material": "Mild Steel",
+            "weight": 15.178,
+            "price": 13.66,
+            "unit_quantity": 1,
+            "modified_date": "Added at March 03 Friday 2023 03:46:38 PM",
+            "group": null
+        },
+        "2840-60x2": {
+            "current_quantity": 8,
+            "machine_time": 0.27,
+            "gauge": "3\/8",
+            "material": "Mild Steel",
+            "weight": 0.357,
+            "price": 0.9,
+            "unit_quantity": 1,
+            "modified_date": "Added at March 03 Friday 2023 03:46:38 PM",
+            "group": null
+        },
         "Flat pattern - Bins Power Box Lid": {
             "current_quantity": 7,
             "machine_time": 0.12,
@@ -394,6 +416,17 @@
             "price": 11.92,
             "unit_quantity": 1,
             "modified_date": "Added at February 25 Saturday 2023 09:10:26 AM",
+            "group": null
+        },
+        "2840-Shaker-64x2": {
+            "current_quantity": 3,
+            "machine_time": 1.67,
+            "gauge": "3\/8",
+            "material": "Mild Steel",
+            "weight": 17.471,
+            "price": 15.36,
+            "unit_quantity": 1,
+            "modified_date": "Added at March 03 Friday 2023 03:46:38 PM",
             "group": null
         },
         "Flat pattern - Bins Power Box": {
