@@ -22,6 +22,28 @@
             "modified_date": "Added at March 03 Friday 2023 08:51:40 AM",
             "group": null
         },
+        "SFM-01 BL28": {
+            "current_quantity": 55,
+            "machine_time": 0.3,
+            "gauge": "12 Gauge",
+            "material": "Mild Steel",
+            "weight": 0.606,
+            "price": 1.14,
+            "unit_quantity": 1,
+            "modified_date": "Added at March 04 Saturday 2023 11:36:22 AM",
+            "group": null
+        },
+        "SFM-02 BL34": {
+            "current_quantity": 55,
+            "machine_time": 0.32,
+            "gauge": "12 Gauge",
+            "material": "Mild Steel",
+            "weight": 0.559,
+            "price": 1.16,
+            "unit_quantity": 1,
+            "modified_date": "Added at March 04 Saturday 2023 11:36:22 AM",
+            "group": null
+        },
         "BIA-019x2": {
             "current_quantity": 40,
             "machine_time": 0.1,
@@ -242,6 +264,28 @@
             "modified_date": "Added at March 03 Friday 2023 04:55:19 PM",
             "group": null
         },
+        "S30-37": {
+            "current_quantity": 20,
+            "machine_time": 0.4,
+            "gauge": "12 Gauge",
+            "material": "Mild Steel",
+            "weight": 0.447,
+            "price": 1.29,
+            "unit_quantity": 1,
+            "modified_date": "Added at March 04 Saturday 2023 11:36:22 AM",
+            "group": null
+        },
+        "S30-38": {
+            "current_quantity": 20,
+            "machine_time": 0.12,
+            "gauge": "12 Gauge",
+            "material": "Mild Steel",
+            "weight": 0.612,
+            "price": 0.69,
+            "unit_quantity": 1,
+            "modified_date": "Added at March 04 Saturday 2023 11:36:22 AM",
+            "group": null
+        },
         "2840-337": {
             "current_quantity": 13,
             "machine_time": 0.43,
@@ -429,6 +473,17 @@
             "modified_date": "Added at March 03 Friday 2023 05:19:24 PM",
             "group": null
         },
+        "Flat pattern - Door Hanger": {
+            "current_quantity": 10,
+            "machine_time": 0.48,
+            "gauge": "12 Gauge",
+            "material": "Mild Steel",
+            "weight": 0.776,
+            "price": 1.7,
+            "unit_quantity": 1,
+            "modified_date": "Added at March 04 Saturday 2023 11:36:22 AM",
+            "group": null
+        },
         "2840-60x2": {
             "current_quantity": 8,
             "machine_time": 0.27,
@@ -449,6 +504,28 @@
             "price": 2.1,
             "unit_quantity": 1,
             "modified_date": "Added at February 25 Saturday 2023 09:10:26 AM",
+            "group": null
+        },
+        "2840-55": {
+            "current_quantity": 6,
+            "machine_time": 0.43,
+            "gauge": "12 Gauge",
+            "material": "Mild Steel",
+            "weight": 3.158,
+            "price": 3.1,
+            "unit_quantity": 1,
+            "modified_date": "5 quantity added at March 04 Saturday 2023 11:36:22 AM",
+            "group": null
+        },
+        "2840-56": {
+            "current_quantity": 6,
+            "machine_time": 0.32,
+            "gauge": "12 Gauge",
+            "material": "Mild Steel",
+            "weight": 2.468,
+            "price": 2.38,
+            "unit_quantity": 1,
+            "modified_date": "5 quantity added at March 04 Saturday 2023 11:36:22 AM",
             "group": null
         },
         "G2Plus-Side door 2-outer shell": {
@@ -799,28 +876,6 @@
             "material": "Mild Steel",
             "weight": 2.194,
             "price": 2.48,
-            "unit_quantity": 1,
-            "modified_date": "Added at March 04 Saturday 2023 11:21:31 AM",
-            "group": null
-        },
-        "2840-55": {
-            "current_quantity": 1,
-            "machine_time": 0.43,
-            "gauge": "12 Gauge",
-            "material": "Mild Steel",
-            "weight": 3.158,
-            "price": 3.1,
-            "unit_quantity": 1,
-            "modified_date": "Added at March 04 Saturday 2023 11:21:31 AM",
-            "group": null
-        },
-        "2840-56": {
-            "current_quantity": 1,
-            "machine_time": 0.32,
-            "gauge": "12 Gauge",
-            "material": "Mild Steel",
-            "weight": 2.468,
-            "price": 2.38,
             "unit_quantity": 1,
             "modified_date": "Added at March 04 Saturday 2023 11:21:31 AM",
             "group": null
