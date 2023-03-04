@@ -1002,7 +1002,20 @@
             "group": null
         }
     },
-    "Recut": {},
+    "Recut": {
+        "2840-40": {
+            "current_quantity": 2,
+            "price": 8.05,
+            "recut_count": 0,
+            "machine_time": 0.53,
+            "gauge": "18 Gauge",
+            "material": "Galvanneal",
+            "weight": 5.512,
+            "unit_quantity": 1,
+            "modified_date": "Added at March 04 Saturday 2023 02:37:47 PM",
+            "group": null
+        }
+    },
     "BL25": {
         "2534-Ashpan": {
             "current_quantity": 20,
