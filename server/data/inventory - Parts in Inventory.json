@@ -1,5 +1,16 @@
 {
     "Custom": {
+        "PJ washer": {
+            "current_quantity": 345,
+            "machine_time": 0.07,
+            "gauge": "3\/16",
+            "material": "304 SS",
+            "weight": 0.012,
+            "price": 0.32,
+            "unit_quantity": 1,
+            "modified_date": "Added at March 04 Saturday 2023 02:22:05 PM",
+            "group": null
+        },
         "G2Plus-Firechamber-Skirting-part 1-version Y2x6": {
             "current_quantity": 60,
             "machine_time": 0.92,
