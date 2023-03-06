@@ -671,6 +671,28 @@
             "modified_date": "Added at March 04 Saturday 2023 01:43:50 PM",
             "group": null
         },
+        "PM - SS HINGE 1 3 quarter hinge": {
+            "current_quantity": 2,
+            "machine_time": 0.17,
+            "gauge": "14 Gauge",
+            "material": "Galvanized",
+            "weight": 0.212,
+            "price": 0.68,
+            "unit_quantity": 1,
+            "modified_date": "1 quantity added at March 06 Monday 2023 09:33:21 AM",
+            "group": null
+        },
+        "PM - SS HINGE A-A also used in 3 quarter hinge": {
+            "current_quantity": 2,
+            "machine_time": 0.13,
+            "gauge": "14 Gauge",
+            "material": "Galvanized",
+            "weight": 0.088,
+            "price": 0.43,
+            "unit_quantity": 1,
+            "modified_date": "1 quantity added at March 06 Monday 2023 09:33:21 AM",
+            "group": null
+        },
         "Flat pattern - Bins Power Box": {
             "current_quantity": 1,
             "machine_time": 0.35,
@@ -1013,6 +1035,18 @@
             "weight": 5.512,
             "unit_quantity": 1,
             "modified_date": "Added at March 04 Saturday 2023 02:37:47 PM",
+            "group": null
+        },
+        "404431": {
+            "current_quantity": 1,
+            "price": 9.81,
+            "recut_count": 0,
+            "machine_time": 0.63,
+            "gauge": "18 Gauge",
+            "material": "Galvanneal",
+            "weight": 6.75,
+            "unit_quantity": 1,
+            "modified_date": "Added at March 06 Monday 2023 09:27:25 AM",
             "group": null
         }
     },
