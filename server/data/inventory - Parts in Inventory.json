@@ -1,27 +1,5 @@
 {
     "Custom": {
-        "SFM-01 BL28": {
-            "current_quantity": 55,
-            "machine_time": 0.3,
-            "gauge": "12 Gauge",
-            "material": "Mild Steel",
-            "weight": 0.606,
-            "price": 1.14,
-            "unit_quantity": 1,
-            "modified_date": "Added at March 04 Saturday 2023 01:43:51 PM",
-            "group": null
-        },
-        "SFM-02 BL34": {
-            "current_quantity": 55,
-            "machine_time": 0.32,
-            "gauge": "12 Gauge",
-            "material": "Mild Steel",
-            "weight": 0.559,
-            "price": 1.16,
-            "unit_quantity": 1,
-            "modified_date": "Added at March 04 Saturday 2023 01:43:51 PM",
-            "group": null
-        },
         "BIA-019x2": {
             "current_quantity": 40,
             "machine_time": 0.1,
@@ -42,28 +20,6 @@
             "price": 0.15,
             "unit_quantity": 1,
             "modified_date": "Added at March 03 Friday 2023 08:51:40 AM",
-            "group": null
-        },
-        "S30-37": {
-            "current_quantity": 20,
-            "machine_time": 0.4,
-            "gauge": "12 Gauge",
-            "material": "Mild Steel",
-            "weight": 0.447,
-            "price": 1.29,
-            "unit_quantity": 1,
-            "modified_date": "Added at March 04 Saturday 2023 01:43:51 PM",
-            "group": null
-        },
-        "S30-38": {
-            "current_quantity": 20,
-            "machine_time": 0.12,
-            "gauge": "12 Gauge",
-            "material": "Mild Steel",
-            "weight": 0.612,
-            "price": 0.69,
-            "unit_quantity": 1,
-            "modified_date": "Added at March 04 Saturday 2023 01:43:51 PM",
             "group": null
         },
         "BIA-024": {
@@ -359,6 +315,17 @@
             "unit_quantity": 1,
             "modified_date": "Added at March 03 Friday 2023 03:46:38 PM",
             "group": null
+        },
+        "SFM-01 BL28": {
+            "current_quantity": 55,
+            "machine_time": 0.3,
+            "gauge": "12 Gauge",
+            "material": "Mild Steel",
+            "weight": 0.606,
+            "price": 1.14,
+            "unit_quantity": 1,
+            "modified_date": "Added at March 04 Saturday 2023 01:43:51 PM",
+            "group": null
         }
     },
     "BL34": {
@@ -382,6 +349,17 @@
             "price": 37.3,
             "unit_quantity": 1,
             "modified_date": "10 quantity added at February 25 Saturday 2023 10:15:58 AM",
+            "group": null
+        },
+        "SFM-02 BL34": {
+            "current_quantity": 55,
+            "machine_time": 0.32,
+            "gauge": "12 Gauge",
+            "material": "Mild Steel",
+            "weight": 0.559,
+            "price": 1.16,
+            "unit_quantity": 1,
+            "modified_date": "Added at March 04 Saturday 2023 01:43:51 PM",
             "group": null
         }
     },
@@ -439,6 +417,28 @@
             "price": 11.39,
             "unit_quantity": 1,
             "modified_date": "Added at March 07 Tuesday 2023 01:28:02 PM",
+            "group": null
+        },
+        "S30-37": {
+            "current_quantity": 20,
+            "machine_time": 0.4,
+            "gauge": "12 Gauge",
+            "material": "Mild Steel",
+            "weight": 0.447,
+            "price": 1.29,
+            "unit_quantity": 1,
+            "modified_date": "Added at March 04 Saturday 2023 01:43:51 PM",
+            "group": null
+        },
+        "S30-38": {
+            "current_quantity": 20,
+            "machine_time": 0.12,
+            "gauge": "12 Gauge",
+            "material": "Mild Steel",
+            "weight": 0.612,
+            "price": 0.69,
+            "unit_quantity": 1,
+            "modified_date": "Added at March 04 Saturday 2023 01:43:51 PM",
             "group": null
         }
     },
