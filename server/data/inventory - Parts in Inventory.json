@@ -176,17 +176,6 @@
             "modified_date": "Added at March 03 Friday 2023 05:19:24 PM",
             "group": null
         },
-        "LCB300M-CB103": {
-            "current_quantity": 4,
-            "machine_time": 1.5,
-            "gauge": "12 Gauge",
-            "material": "Galvanized",
-            "weight": 12.287,
-            "price": 18.49,
-            "unit_quantity": 1,
-            "modified_date": "2 quantity added at February 27 Monday 2023 02:37:18 PM",
-            "group": null
-        },
         "PY-TFT-03_": {
             "current_quantity": 4,
             "machine_time": 0.37,
@@ -2090,6 +2079,19 @@
             "price": 3.78,
             "unit_quantity": 1,
             "modified_date": "Added at February 25 Saturday 2023 09:10:26 AM",
+            "group": null
+        }
+    },
+    "LCB300 Boiler\/Chip Bin": {
+        "LCB300M-CB103": {
+            "current_quantity": 4,
+            "machine_time": 1.5,
+            "gauge": "12 Gauge",
+            "material": "Galvanized",
+            "weight": 12.287,
+            "price": 18.49,
+            "unit_quantity": 1,
+            "modified_date": "2 quantity added at February 27 Monday 2023 02:37:18 PM",
             "group": null
         }
     }
