@@ -1,5 +1,16 @@
 {
     "Custom": {
+        "Polar Spiral": {
+            "current_quantity": 160,
+            "machine_time": 0.25,
+            "gauge": "3\/16",
+            "material": "Mild Steel",
+            "weight": 0.272,
+            "price": 0.8,
+            "unit_quantity": 1,
+            "modified_date": "Added at March 07 Tuesday 2023 04:11:23 PM",
+            "group": null
+        },
         "BIA-019x2": {
             "current_quantity": 40,
             "machine_time": 0.1,
@@ -141,6 +152,127 @@
             "price": 133.14,
             "unit_quantity": 1,
             "modified_date": "Added at March 07 Tuesday 2023 02:42:38 PM",
+            "group": null
+        },
+        "BIA-028": {
+            "current_quantity": 10,
+            "machine_time": 0.95,
+            "gauge": "3\/16",
+            "material": "Mild Steel",
+            "weight": 7.183,
+            "price": 6.97,
+            "unit_quantity": 1,
+            "modified_date": "Added at March 07 Tuesday 2023 04:11:23 PM",
+            "group": null
+        },
+        "BIA-037": {
+            "current_quantity": 10,
+            "machine_time": 0.58,
+            "gauge": "3\/16",
+            "material": "Mild Steel",
+            "weight": 2.733,
+            "price": 3.2,
+            "unit_quantity": 1,
+            "modified_date": "Added at March 07 Tuesday 2023 04:11:23 PM",
+            "group": null
+        },
+        "G2-3-Bottom Door Mount Bracket": {
+            "current_quantity": 10,
+            "machine_time": 0.48,
+            "gauge": "3\/16",
+            "material": "Mild Steel",
+            "weight": 1.11,
+            "price": 1.91,
+            "unit_quantity": 1,
+            "modified_date": "Added at March 07 Tuesday 2023 04:11:23 PM",
+            "group": null
+        },
+        "G2-3-Middle Door Mount Bracket": {
+            "current_quantity": 10,
+            "machine_time": 0.3,
+            "gauge": "3\/16",
+            "material": "Mild Steel",
+            "weight": 0.509,
+            "price": 1.08,
+            "unit_quantity": 1,
+            "modified_date": "Added at March 07 Tuesday 2023 04:11:23 PM",
+            "group": null
+        },
+        "G3-1-Fan Housing-Top": {
+            "current_quantity": 10,
+            "machine_time": 0.5,
+            "gauge": "3\/16",
+            "material": "Mild Steel",
+            "weight": 4.029,
+            "price": 3.83,
+            "unit_quantity": 1,
+            "modified_date": "Added at March 07 Tuesday 2023 04:11:23 PM",
+            "group": null
+        },
+        "G3-1-Fan-Mount Base Plate": {
+            "current_quantity": 10,
+            "machine_time": 0.58,
+            "gauge": "3\/16",
+            "material": "Mild Steel",
+            "weight": 5.559,
+            "price": 5.01,
+            "unit_quantity": 1,
+            "modified_date": "Added at March 07 Tuesday 2023 04:11:23 PM",
+            "group": null
+        },
+        "G3-1-Housing-Front Door - Bottom Hinge": {
+            "current_quantity": 10,
+            "machine_time": 0.48,
+            "gauge": "3\/16",
+            "material": "Mild Steel",
+            "weight": 2.231,
+            "price": 2.63,
+            "unit_quantity": 1,
+            "modified_date": "Added at March 07 Tuesday 2023 04:11:23 PM",
+            "group": null
+        },
+        "G3-1-Housing-Front Door - Top Hinge": {
+            "current_quantity": 10,
+            "machine_time": 0.47,
+            "gauge": "3\/16",
+            "material": "Mild Steel",
+            "weight": 2.231,
+            "price": 2.6,
+            "unit_quantity": 1,
+            "modified_date": "Added at March 07 Tuesday 2023 04:11:23 PM",
+            "group": null
+        },
+        "G3-1-Load Door-Door Mount Bracket": {
+            "current_quantity": 10,
+            "machine_time": 0.57,
+            "gauge": "3\/16",
+            "material": "Mild Steel",
+            "weight": 1.352,
+            "price": 2.29,
+            "unit_quantity": 1,
+            "modified_date": "Added at March 07 Tuesday 2023 04:11:23 PM",
+            "group": null
+        },
+        "G3-1-Waterjacket-Back": {
+            "current_quantity": 10,
+            "machine_time": 3.32,
+            "gauge": "3\/16",
+            "material": "Mild Steel",
+            "weight": 110.476,
+            "price": 79.0,
+            "unit_quantity": 1,
+            "modified_date": "Added at March 07 Tuesday 2023 04:11:23 PM",
+            "group": null
+        },
+        "G3-1-Waterjacket-Front": {
+            "current_quantity": 10,
+            "machine_time": 3.52,
+            "gauge": "3\/16",
+            "material": "Mild Steel",
+            "weight": 80.063,
+            "price": 60.04,
+            "unit_quantity": 1,
+            "modified_date": "Added at March 07 Tuesday 2023 04:11:23 PM",
             "group": null
         },
         "Flat pattern - P-008": {
