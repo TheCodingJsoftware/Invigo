@@ -1,27 +1,5 @@
 {
     "Custom": {
-        "PJ washer": {
-            "current_quantity": 345,
-            "machine_time": 0.07,
-            "gauge": "3\/16",
-            "material": "304 SS",
-            "weight": 0.012,
-            "price": 0.32,
-            "unit_quantity": 1,
-            "modified_date": "Added at March 04 Saturday 2023 02:22:05 PM",
-            "group": null
-        },
-        "G2Plus-Firechamber-Skirting-part 1-version Y2x6": {
-            "current_quantity": 60,
-            "machine_time": 0.92,
-            "gauge": "10 Gauge",
-            "material": "Mild Steel",
-            "weight": 12.42,
-            "price": 10.25,
-            "unit_quantity": 6.0,
-            "modified_date": "Added at March 03 Friday 2023 08:51:40 AM",
-            "group": null
-        },
         "G3-1-Firechamber-Skirting-part 1x6": {
             "current_quantity": 60,
             "machine_time": 0.9,
@@ -62,7 +40,7 @@
             "material": "Mild Steel",
             "weight": 0.18,
             "price": 0.37,
-            "unit_quantity": 1,
+            "unit_quantity": 2.0,
             "modified_date": "Added at March 03 Friday 2023 08:51:40 AM",
             "group": null
         },
@@ -96,149 +74,6 @@
             "weight": 11.258,
             "price": 9.01,
             "unit_quantity": 3.0,
-            "modified_date": "Added at March 03 Friday 2023 08:51:40 AM",
-            "group": null
-        },
-        "G2Plus-Middle Door-Gasket Stop 2": {
-            "current_quantity": 28,
-            "machine_time": 0.08,
-            "gauge": "10 Gauge",
-            "material": "Mild Steel",
-            "weight": 0.135,
-            "price": 0.29,
-            "unit_quantity": 1,
-            "modified_date": "Added at March 03 Friday 2023 08:51:40 AM",
-            "group": null
-        },
-        "G2Plus-Bottom Door-Gasket Stop 1": {
-            "current_quantity": 24,
-            "machine_time": 0.25,
-            "gauge": "10 Gauge",
-            "material": "Mild Steel",
-            "weight": 0.58,
-            "price": 1.0,
-            "unit_quantity": 1,
-            "modified_date": "Added at March 03 Friday 2023 08:51:40 AM",
-            "group": null
-        },
-        "G2Plus-Bottom Door-Gasket Stop 2": {
-            "current_quantity": 24,
-            "machine_time": 0.23,
-            "gauge": "10 Gauge",
-            "material": "Mild Steel",
-            "weight": 0.394,
-            "price": 0.83,
-            "unit_quantity": 1,
-            "modified_date": "Added at March 03 Friday 2023 08:51:40 AM",
-            "group": null
-        },
-        "G2Plus- Middle Door-Gasket Stop 1": {
-            "current_quantity": 20,
-            "machine_time": 0.1,
-            "gauge": "10 Gauge",
-            "material": "Mild Steel",
-            "weight": 0.217,
-            "price": 0.39,
-            "unit_quantity": 1,
-            "modified_date": "Added at March 03 Friday 2023 08:51:40 AM",
-            "group": null
-        },
-        "G2Plus-Bottom Door-Outer": {
-            "current_quantity": 20,
-            "machine_time": 0.93,
-            "gauge": "10 Gauge",
-            "material": "Mild Steel",
-            "weight": 15.174,
-            "price": 12.04,
-            "unit_quantity": 1,
-            "modified_date": "Added at March 03 Friday 2023 08:51:40 AM",
-            "group": null
-        },
-        "G2Plus-Firechamber-Skirting-Front Left Cornerx2": {
-            "current_quantity": 20,
-            "machine_time": 0.58,
-            "gauge": "10 Gauge",
-            "material": "Mild Steel",
-            "weight": 5.59,
-            "price": 5.03,
-            "unit_quantity": 1,
-            "modified_date": "Added at March 03 Friday 2023 08:51:40 AM",
-            "group": null
-        },
-        "G2Plus-Firechamber-Skirting-part 2x2": {
-            "current_quantity": 20,
-            "machine_time": 0.7,
-            "gauge": "10 Gauge",
-            "material": "Mild Steel",
-            "weight": 11.962,
-            "price": 9.41,
-            "unit_quantity": 0.0,
-            "modified_date": "Added at March 03 Friday 2023 08:51:40 AM",
-            "group": null
-        },
-        "G2Plus-Load Door-Gasket Retainer 1": {
-            "current_quantity": 20,
-            "machine_time": 0.3,
-            "gauge": "10 Gauge",
-            "material": "Mild Steel",
-            "weight": 0.496,
-            "price": 1.07,
-            "unit_quantity": 1,
-            "modified_date": "Added at March 03 Friday 2023 08:51:40 AM",
-            "group": null
-        },
-        "G2Plus-Load Door-Gasket Retainer 2": {
-            "current_quantity": 20,
-            "machine_time": 0.32,
-            "gauge": "10 Gauge",
-            "material": "Mild Steel",
-            "weight": 0.728,
-            "price": 1.27,
-            "unit_quantity": 1,
-            "modified_date": "Added at March 03 Friday 2023 08:51:40 AM",
-            "group": null
-        },
-        "G2Plus-Load Door-Inner Shell": {
-            "current_quantity": 20,
-            "machine_time": 0.77,
-            "gauge": "10 Gauge",
-            "material": "Mild Steel",
-            "weight": 13.263,
-            "price": 10.41,
-            "unit_quantity": 1,
-            "modified_date": "Added at March 03 Friday 2023 08:51:40 AM",
-            "group": null
-        },
-        "G2Plus-Load Door-Outer": {
-            "current_quantity": 20,
-            "machine_time": 0.93,
-            "gauge": "10 Gauge",
-            "material": "Mild Steel",
-            "weight": 18.598,
-            "price": 14.23,
-            "unit_quantity": 1,
-            "modified_date": "Added at March 03 Friday 2023 08:51:40 AM",
-            "group": null
-        },
-        "G2Plus-Middle Door-Heat Shield": {
-            "current_quantity": 20,
-            "machine_time": 0.4,
-            "gauge": "10 Gauge",
-            "material": "Mild Steel",
-            "weight": 5.185,
-            "price": 4.32,
-            "unit_quantity": 1,
-            "modified_date": "Added at March 03 Friday 2023 08:51:40 AM",
-            "group": null
-        },
-        "G2Plus-MiddleDoor-Outer": {
-            "current_quantity": 20,
-            "machine_time": 0.67,
-            "gauge": "10 Gauge",
-            "material": "Mild Steel",
-            "weight": 6.743,
-            "price": 5.99,
-            "unit_quantity": 1,
             "modified_date": "Added at March 03 Friday 2023 08:51:40 AM",
             "group": null
         },
@@ -352,17 +187,6 @@
             "modified_date": "Added at March 03 Friday 2023 05:19:24 PM",
             "group": null
         },
-        "G2Plus-Side door 2 - inner shel": {
-            "current_quantity": 11,
-            "machine_time": 0.27,
-            "gauge": "12 Gauge",
-            "material": "Mild Steel",
-            "weight": 2.112,
-            "price": 2.03,
-            "unit_quantity": 1,
-            "modified_date": "Added at March 04 Saturday 2023 01:43:51 PM",
-            "group": null
-        },
         "kent trigger_1": {
             "current_quantity": 10,
             "machine_time": 0.05,
@@ -436,28 +260,6 @@
             "material": "Mild Steel",
             "weight": 1.923,
             "price": 2.03,
-            "unit_quantity": 1,
-            "modified_date": "Added at March 03 Friday 2023 08:51:40 AM",
-            "group": null
-        },
-        "G2Plus-Firechamber-Skirting-Jam-Bottom": {
-            "current_quantity": 10,
-            "machine_time": 0.42,
-            "gauge": "10 Gauge",
-            "material": "Mild Steel",
-            "weight": 4.063,
-            "price": 3.65,
-            "unit_quantity": 1,
-            "modified_date": "Added at March 03 Friday 2023 08:51:40 AM",
-            "group": null
-        },
-        "G2Plus-Firechamber-Skirting-Jam-Top": {
-            "current_quantity": 10,
-            "machine_time": 0.48,
-            "gauge": "10 Gauge",
-            "material": "Mild Steel",
-            "weight": 5.926,
-            "price": 4.99,
             "unit_quantity": 1,
             "modified_date": "Added at March 03 Friday 2023 08:51:40 AM",
             "group": null
@@ -568,17 +370,6 @@
             "material": "Mild Steel",
             "weight": 2.468,
             "price": 2.38,
-            "unit_quantity": 1,
-            "modified_date": "Added at March 04 Saturday 2023 01:43:51 PM",
-            "group": null
-        },
-        "G2Plus-Side door 2-outer shell": {
-            "current_quantity": 5,
-            "machine_time": 0.32,
-            "gauge": "12 Gauge",
-            "material": "Mild Steel",
-            "weight": 2.726,
-            "price": 2.54,
             "unit_quantity": 1,
             "modified_date": "Added at March 04 Saturday 2023 01:43:51 PM",
             "group": null
@@ -1597,6 +1388,215 @@
             "price": 19.65,
             "unit_quantity": 2.0,
             "modified_date": "Added at February 27 Monday 2023 02:07:10 PM",
+            "group": null
+        },
+        "PJ washer": {
+            "current_quantity": 345,
+            "machine_time": 0.07,
+            "gauge": "3\/16",
+            "material": "304 SS",
+            "weight": 0.012,
+            "price": 0.32,
+            "unit_quantity": 1,
+            "modified_date": "Added at March 04 Saturday 2023 02:22:05 PM",
+            "group": null
+        },
+        "G2Plus-Firechamber-Skirting-part 1-version Y2x6": {
+            "current_quantity": 60,
+            "machine_time": 0.92,
+            "gauge": "10 Gauge",
+            "material": "Mild Steel",
+            "weight": 12.42,
+            "price": 10.25,
+            "unit_quantity": 1,
+            "modified_date": "Added at March 03 Friday 2023 08:51:40 AM",
+            "group": null
+        },
+        "G2Plus-Middle Door-Gasket Stop 2": {
+            "current_quantity": 28,
+            "machine_time": 0.08,
+            "gauge": "10 Gauge",
+            "material": "Mild Steel",
+            "weight": 0.135,
+            "price": 0.29,
+            "unit_quantity": 1,
+            "modified_date": "Added at March 03 Friday 2023 08:51:40 AM",
+            "group": null
+        },
+        "G2Plus-Bottom Door-Gasket Stop 1": {
+            "current_quantity": 24,
+            "machine_time": 0.25,
+            "gauge": "10 Gauge",
+            "material": "Mild Steel",
+            "weight": 0.58,
+            "price": 1.0,
+            "unit_quantity": 1,
+            "modified_date": "Added at March 03 Friday 2023 08:51:40 AM",
+            "group": null
+        },
+        "G2Plus-Bottom Door-Gasket Stop 2": {
+            "current_quantity": 24,
+            "machine_time": 0.23,
+            "gauge": "10 Gauge",
+            "material": "Mild Steel",
+            "weight": 0.394,
+            "price": 0.83,
+            "unit_quantity": 1,
+            "modified_date": "Added at March 03 Friday 2023 08:51:40 AM",
+            "group": null
+        },
+        "G2Plus- Middle Door-Gasket Stop 1": {
+            "current_quantity": 20,
+            "machine_time": 0.1,
+            "gauge": "10 Gauge",
+            "material": "Mild Steel",
+            "weight": 0.217,
+            "price": 0.39,
+            "unit_quantity": 1,
+            "modified_date": "Added at March 03 Friday 2023 08:51:40 AM",
+            "group": null
+        },
+        "G2Plus-Bottom Door-Outer": {
+            "current_quantity": 20,
+            "machine_time": 0.93,
+            "gauge": "10 Gauge",
+            "material": "Mild Steel",
+            "weight": 15.174,
+            "price": 12.04,
+            "unit_quantity": 1,
+            "modified_date": "Added at March 03 Friday 2023 08:51:40 AM",
+            "group": null
+        },
+        "G2Plus-Firechamber-Skirting-Front Left Cornerx2": {
+            "current_quantity": 20,
+            "machine_time": 0.58,
+            "gauge": "10 Gauge",
+            "material": "Mild Steel",
+            "weight": 5.59,
+            "price": 5.03,
+            "unit_quantity": 1,
+            "modified_date": "Added at March 03 Friday 2023 08:51:40 AM",
+            "group": null
+        },
+        "G2Plus-Firechamber-Skirting-part 2x2": {
+            "current_quantity": 20,
+            "machine_time": 0.7,
+            "gauge": "10 Gauge",
+            "material": "Mild Steel",
+            "weight": 11.962,
+            "price": 9.41,
+            "unit_quantity": 1,
+            "modified_date": "Added at March 03 Friday 2023 08:51:40 AM",
+            "group": null
+        },
+        "G2Plus-Load Door-Gasket Retainer 1": {
+            "current_quantity": 20,
+            "machine_time": 0.3,
+            "gauge": "10 Gauge",
+            "material": "Mild Steel",
+            "weight": 0.496,
+            "price": 1.07,
+            "unit_quantity": 1,
+            "modified_date": "Added at March 03 Friday 2023 08:51:40 AM",
+            "group": null
+        },
+        "G2Plus-Load Door-Gasket Retainer 2": {
+            "current_quantity": 20,
+            "machine_time": 0.32,
+            "gauge": "10 Gauge",
+            "material": "Mild Steel",
+            "weight": 0.728,
+            "price": 1.27,
+            "unit_quantity": 1,
+            "modified_date": "Added at March 03 Friday 2023 08:51:40 AM",
+            "group": null
+        },
+        "G2Plus-Load Door-Inner Shell": {
+            "current_quantity": 20,
+            "machine_time": 0.77,
+            "gauge": "10 Gauge",
+            "material": "Mild Steel",
+            "weight": 13.263,
+            "price": 10.41,
+            "unit_quantity": 1,
+            "modified_date": "Added at March 03 Friday 2023 08:51:40 AM",
+            "group": null
+        },
+        "G2Plus-Load Door-Outer": {
+            "current_quantity": 20,
+            "machine_time": 0.93,
+            "gauge": "10 Gauge",
+            "material": "Mild Steel",
+            "weight": 18.598,
+            "price": 14.23,
+            "unit_quantity": 1,
+            "modified_date": "Added at March 03 Friday 2023 08:51:40 AM",
+            "group": null
+        },
+        "G2Plus-Middle Door-Heat Shield": {
+            "current_quantity": 20,
+            "machine_time": 0.4,
+            "gauge": "10 Gauge",
+            "material": "Mild Steel",
+            "weight": 5.185,
+            "price": 4.32,
+            "unit_quantity": 1,
+            "modified_date": "Added at March 03 Friday 2023 08:51:40 AM",
+            "group": null
+        },
+        "G2Plus-MiddleDoor-Outer": {
+            "current_quantity": 20,
+            "machine_time": 0.67,
+            "gauge": "10 Gauge",
+            "material": "Mild Steel",
+            "weight": 6.743,
+            "price": 5.99,
+            "unit_quantity": 1,
+            "modified_date": "Added at March 03 Friday 2023 08:51:40 AM",
+            "group": null
+        },
+        "G2Plus-Side door 2 - inner shel": {
+            "current_quantity": 11,
+            "machine_time": 0.27,
+            "gauge": "12 Gauge",
+            "material": "Mild Steel",
+            "weight": 2.112,
+            "price": 2.03,
+            "unit_quantity": 1,
+            "modified_date": "Added at March 04 Saturday 2023 01:43:51 PM",
+            "group": null
+        },
+        "G2Plus-Firechamber-Skirting-Jam-Bottom": {
+            "current_quantity": 10,
+            "machine_time": 0.42,
+            "gauge": "10 Gauge",
+            "material": "Mild Steel",
+            "weight": 4.063,
+            "price": 3.65,
+            "unit_quantity": 1,
+            "modified_date": "Added at March 03 Friday 2023 08:51:40 AM",
+            "group": null
+        },
+        "G2Plus-Firechamber-Skirting-Jam-Top": {
+            "current_quantity": 10,
+            "machine_time": 0.48,
+            "gauge": "10 Gauge",
+            "material": "Mild Steel",
+            "weight": 5.926,
+            "price": 4.99,
+            "unit_quantity": 1,
+            "modified_date": "Added at March 03 Friday 2023 08:51:40 AM",
+            "group": null
+        },
+        "G2Plus-Side door 2-outer shell": {
+            "current_quantity": 5,
+            "machine_time": 0.32,
+            "gauge": "12 Gauge",
+            "material": "Mild Steel",
+            "weight": 2.726,
+            "price": 2.54,
+            "unit_quantity": 1,
+            "modified_date": "Added at March 04 Saturday 2023 01:43:51 PM",
             "group": null
         }
     },
