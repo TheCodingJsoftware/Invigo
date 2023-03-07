@@ -121,6 +121,28 @@
             "modified_date": "Added at March 07 Tuesday 2023 02:30:08 PM",
             "group": null
         },
+        "G3-1-Waterjacket-Left Side": {
+            "current_quantity": 10,
+            "machine_time": 3.33,
+            "gauge": "3\/16",
+            "material": "Mild Steel",
+            "weight": 200.009,
+            "price": 136.33,
+            "unit_quantity": 1,
+            "modified_date": "Added at March 07 Tuesday 2023 02:42:38 PM",
+            "group": null
+        },
+        "G3-1-Waterjacket-Right Side": {
+            "current_quantity": 10,
+            "machine_time": 3.63,
+            "gauge": "3\/16",
+            "material": "Mild Steel",
+            "weight": 193.844,
+            "price": 133.14,
+            "unit_quantity": 1,
+            "modified_date": "Added at March 07 Tuesday 2023 02:42:38 PM",
+            "group": null
+        },
         "Flat pattern - P-008": {
             "current_quantity": 2,
             "machine_time": 0.27,
@@ -465,6 +487,72 @@
             "modified_date": "Added at March 04 Saturday 2023 02:22:05 PM",
             "group": null
         },
+        "G2Plus-Ceramics-Secondary Plate-part2x14": {
+            "current_quantity": 180,
+            "machine_time": 0.07,
+            "gauge": "1\/4",
+            "material": "Mild Steel",
+            "weight": 0.148,
+            "price": 0.27,
+            "unit_quantity": 1,
+            "modified_date": "Added at March 07 Tuesday 2023 02:30:08 PM",
+            "group": null
+        },
+        "G2Plus-3-Waterjacket-bottom TABS-02x8": {
+            "current_quantity": 80,
+            "machine_time": 0.05,
+            "gauge": "1\/4",
+            "material": "Mild Steel",
+            "weight": 0.062,
+            "price": 0.16,
+            "unit_quantity": 1,
+            "modified_date": "Added at March 07 Tuesday 2023 02:30:08 PM",
+            "group": null
+        },
+        "G2Plus-Ceramics-Secondary Plate-part4x4": {
+            "current_quantity": 70,
+            "machine_time": 0.08,
+            "gauge": "1\/4",
+            "material": "Mild Steel",
+            "weight": 0.222,
+            "price": 0.34,
+            "unit_quantity": 1,
+            "modified_date": "Added at March 07 Tuesday 2023 02:30:08 PM",
+            "group": null
+        },
+        "G2Plus-Waterjacket Assembly-Front plate spacerx6": {
+            "current_quantity": 60,
+            "machine_time": 0.07,
+            "gauge": "1\/4",
+            "material": "Mild Steel",
+            "weight": 0.071,
+            "price": 0.22,
+            "unit_quantity": 1,
+            "modified_date": "Added at March 07 Tuesday 2023 02:30:08 PM",
+            "group": null
+        },
+        "G2Plus-Air Tubes-End stopX4": {
+            "current_quantity": 40,
+            "machine_time": 0.05,
+            "gauge": "1\/4",
+            "material": "Mild Steel",
+            "weight": 0.065,
+            "price": 0.17,
+            "unit_quantity": 1,
+            "modified_date": "Added at March 07 Tuesday 2023 02:30:08 PM",
+            "group": null
+        },
+        "G2Plus-Ceramics-Secondary Plate-part3x2": {
+            "current_quantity": 20,
+            "machine_time": 0.22,
+            "gauge": "1\/4",
+            "material": "Mild Steel",
+            "weight": 0.638,
+            "price": 0.96,
+            "unit_quantity": 1,
+            "modified_date": "Added at March 07 Tuesday 2023 02:30:08 PM",
+            "group": null
+        },
         "G2-3-Housing-Access Cover-Top": {
             "current_quantity": 16,
             "machine_time": 0.45,
@@ -518,6 +606,39 @@
             "price": 2.05,
             "unit_quantity": 1,
             "modified_date": "Added at March 07 Tuesday 2023 08:27:23 AM",
+            "group": null
+        },
+        "G2Plus-Firechamber-smoke tunnel support": {
+            "current_quantity": 10,
+            "machine_time": 0.07,
+            "gauge": "1\/4",
+            "material": "Mild Steel",
+            "weight": 0.173,
+            "price": 0.29,
+            "unit_quantity": 1,
+            "modified_date": "Added at March 07 Tuesday 2023 02:30:08 PM",
+            "group": null
+        },
+        "G2Plus-Flue Access lid-Latch Catch": {
+            "current_quantity": 10,
+            "machine_time": 0.13,
+            "gauge": "1\/4",
+            "material": "Mild Steel",
+            "weight": 0.723,
+            "price": 0.79,
+            "unit_quantity": 1,
+            "modified_date": "Added at March 07 Tuesday 2023 02:30:08 PM",
+            "group": null
+        },
+        "G2Plus-Side Door 2-latch catch": {
+            "current_quantity": 10,
+            "machine_time": 0.22,
+            "gauge": "1\/4",
+            "material": "Mild Steel",
+            "weight": 1.011,
+            "price": 1.2,
+            "unit_quantity": 1,
+            "modified_date": "Added at March 07 Tuesday 2023 02:30:08 PM",
             "group": null
         },
         "G2-3-Door-Inner Panel": {
@@ -816,105 +937,6 @@
             "unit_quantity": 1,
             "modified_date": "Added at March 07 Tuesday 2023 08:27:23 AM",
             "group": null
-        },
-        "G2Plus-Ceramics-Secondary Plate-part2x14": {
-            "current_quantity": 180,
-            "machine_time": 0.07,
-            "gauge": "1\/4",
-            "material": "Mild Steel",
-            "weight": 0.148,
-            "price": 0.27,
-            "unit_quantity": 1,
-            "modified_date": "Added at March 07 Tuesday 2023 02:30:08 PM",
-            "group": null
-        },
-        "G2Plus-3-Waterjacket-bottom TABS-02x8": {
-            "current_quantity": 80,
-            "machine_time": 0.05,
-            "gauge": "1\/4",
-            "material": "Mild Steel",
-            "weight": 0.062,
-            "price": 0.16,
-            "unit_quantity": 1,
-            "modified_date": "Added at March 07 Tuesday 2023 02:30:08 PM",
-            "group": null
-        },
-        "G2Plus-Ceramics-Secondary Plate-part4x4": {
-            "current_quantity": 70,
-            "machine_time": 0.08,
-            "gauge": "1\/4",
-            "material": "Mild Steel",
-            "weight": 0.222,
-            "price": 0.34,
-            "unit_quantity": 1,
-            "modified_date": "Added at March 07 Tuesday 2023 02:30:08 PM",
-            "group": null
-        },
-        "G2Plus-Waterjacket Assembly-Front plate spacerx6": {
-            "current_quantity": 60,
-            "machine_time": 0.07,
-            "gauge": "1\/4",
-            "material": "Mild Steel",
-            "weight": 0.071,
-            "price": 0.22,
-            "unit_quantity": 1,
-            "modified_date": "Added at March 07 Tuesday 2023 02:30:08 PM",
-            "group": null
-        },
-        "G2Plus-Air Tubes-End stopX4": {
-            "current_quantity": 40,
-            "machine_time": 0.05,
-            "gauge": "1\/4",
-            "material": "Mild Steel",
-            "weight": 0.065,
-            "price": 0.17,
-            "unit_quantity": 1,
-            "modified_date": "Added at March 07 Tuesday 2023 02:30:08 PM",
-            "group": null
-        },
-        "G2Plus-Ceramics-Secondary Plate-part3x2": {
-            "current_quantity": 20,
-            "machine_time": 0.22,
-            "gauge": "1\/4",
-            "material": "Mild Steel",
-            "weight": 0.638,
-            "price": 0.96,
-            "unit_quantity": 1,
-            "modified_date": "Added at March 07 Tuesday 2023 02:30:08 PM",
-            "group": null
-        },
-        "G2Plus-Firechamber-smoke tunnel support": {
-            "current_quantity": 10,
-            "machine_time": 0.07,
-            "gauge": "1\/4",
-            "material": "Mild Steel",
-            "weight": 0.173,
-            "price": 0.29,
-            "unit_quantity": 1,
-            "modified_date": "Added at March 07 Tuesday 2023 02:30:08 PM",
-            "group": null
-        },
-        "G2Plus-Flue Access lid-Latch Catch": {
-            "current_quantity": 10,
-            "machine_time": 0.13,
-            "gauge": "1\/4",
-            "material": "Mild Steel",
-            "weight": 0.723,
-            "price": 0.79,
-            "unit_quantity": 1,
-            "modified_date": "Added at March 07 Tuesday 2023 02:30:08 PM",
-            "group": null
-        },
-        "G2Plus-Side Door 2-latch catch": {
-            "current_quantity": 10,
-            "machine_time": 0.22,
-            "gauge": "1\/4",
-            "material": "Mild Steel",
-            "weight": 1.011,
-            "price": 1.2,
-            "unit_quantity": 1,
-            "modified_date": "Added at March 07 Tuesday 2023 02:30:08 PM",
-            "group": null
         }
     },
     "Polar G2+": {
@@ -927,6 +949,17 @@
             "price": 0.32,
             "unit_quantity": 1,
             "modified_date": "Added at March 04 Saturday 2023 02:22:05 PM",
+            "group": null
+        },
+        "G2Plus-Ceramics-Secondary Plate-part2x14": {
+            "current_quantity": 180,
+            "machine_time": 0.07,
+            "gauge": "1\/4",
+            "material": "Mild Steel",
+            "weight": 0.148,
+            "price": 0.27,
+            "unit_quantity": 1,
+            "modified_date": "Added at March 07 Tuesday 2023 02:30:08 PM",
             "group": null
         },
         "G2Plus-Air Damper": {
@@ -951,6 +984,17 @@
             "modified_date": "Added at February 27 Monday 2023 09:03:19 AM",
             "group": null
         },
+        "G2Plus-3-Waterjacket-bottom TABS-02x8": {
+            "current_quantity": 80,
+            "machine_time": 0.05,
+            "gauge": "1\/4",
+            "material": "Mild Steel",
+            "weight": 0.062,
+            "price": 0.16,
+            "unit_quantity": 1,
+            "modified_date": "Added at March 07 Tuesday 2023 02:30:08 PM",
+            "group": null
+        },
         "G2-3-Air Gate-Adjusting lever": {
             "current_quantity": 72,
             "machine_time": 0.25,
@@ -962,6 +1006,17 @@
             "modified_date": "Added at February 27 Monday 2023 08:36:19 AM",
             "group": null
         },
+        "G2Plus-Ceramics-Secondary Plate-part4x4": {
+            "current_quantity": 70,
+            "machine_time": 0.08,
+            "gauge": "1\/4",
+            "material": "Mild Steel",
+            "weight": 0.222,
+            "price": 0.34,
+            "unit_quantity": 1,
+            "modified_date": "Added at March 07 Tuesday 2023 02:30:08 PM",
+            "group": null
+        },
         "G2Plus-Firechamber-Skirting-part 1-version Y2x6": {
             "current_quantity": 60,
             "machine_time": 0.92,
@@ -971,6 +1026,17 @@
             "price": 10.25,
             "unit_quantity": 1,
             "modified_date": "Added at March 03 Friday 2023 08:51:40 AM",
+            "group": null
+        },
+        "G2Plus-Waterjacket Assembly-Front plate spacerx6": {
+            "current_quantity": 60,
+            "machine_time": 0.07,
+            "gauge": "1\/4",
+            "material": "Mild Steel",
+            "weight": 0.071,
+            "price": 0.22,
+            "unit_quantity": 1,
+            "modified_date": "Added at March 07 Tuesday 2023 02:30:08 PM",
             "group": null
         },
         "G2Plus-Fan Motor-inner condensation shield": {
@@ -1015,6 +1081,17 @@
             "price": 16.23,
             "unit_quantity": 2.0,
             "modified_date": "Added at February 27 Monday 2023 02:07:11 PM",
+            "group": null
+        },
+        "G2Plus-Air Tubes-End stopX4": {
+            "current_quantity": 40,
+            "machine_time": 0.05,
+            "gauge": "1\/4",
+            "material": "Mild Steel",
+            "weight": 0.065,
+            "price": 0.17,
+            "unit_quantity": 1,
+            "modified_date": "Added at March 07 Tuesday 2023 02:30:08 PM",
             "group": null
         },
         "G2Plus-Primary Air Delivery-tube-part1x2": {
@@ -1191,6 +1268,17 @@
             "price": 5.99,
             "unit_quantity": 1,
             "modified_date": "Added at March 03 Friday 2023 08:51:40 AM",
+            "group": null
+        },
+        "G2Plus-Ceramics-Secondary Plate-part3x2": {
+            "current_quantity": 20,
+            "machine_time": 0.22,
+            "gauge": "1\/4",
+            "material": "Mild Steel",
+            "weight": 0.638,
+            "price": 0.96,
+            "unit_quantity": 1,
+            "modified_date": "Added at March 07 Tuesday 2023 02:30:08 PM",
             "group": null
         },
         "G2Plus-Side door 2 - inner shel": {
@@ -1512,83 +1600,6 @@
             "modified_date": "Added at March 07 Tuesday 2023 01:28:02 PM",
             "group": null
         },
-        "G2Plus-Side door 2-outer shell": {
-            "current_quantity": 5,
-            "machine_time": 0.32,
-            "gauge": "12 Gauge",
-            "material": "Mild Steel",
-            "weight": 2.726,
-            "price": 2.54,
-            "unit_quantity": 1,
-            "modified_date": "Added at March 04 Saturday 2023 01:43:51 PM",
-            "group": null
-        },
-        "G2Plus-Ceramics-Secondary Plate-part2x14": {
-            "current_quantity": 180,
-            "machine_time": 0.07,
-            "gauge": "1\/4",
-            "material": "Mild Steel",
-            "weight": 0.148,
-            "price": 0.27,
-            "unit_quantity": 1,
-            "modified_date": "Added at March 07 Tuesday 2023 02:30:08 PM",
-            "group": null
-        },
-        "G2Plus-3-Waterjacket-bottom TABS-02x8": {
-            "current_quantity": 80,
-            "machine_time": 0.05,
-            "gauge": "1\/4",
-            "material": "Mild Steel",
-            "weight": 0.062,
-            "price": 0.16,
-            "unit_quantity": 1,
-            "modified_date": "Added at March 07 Tuesday 2023 02:30:08 PM",
-            "group": null
-        },
-        "G2Plus-Ceramics-Secondary Plate-part4x4": {
-            "current_quantity": 70,
-            "machine_time": 0.08,
-            "gauge": "1\/4",
-            "material": "Mild Steel",
-            "weight": 0.222,
-            "price": 0.34,
-            "unit_quantity": 1,
-            "modified_date": "Added at March 07 Tuesday 2023 02:30:08 PM",
-            "group": null
-        },
-        "G2Plus-Waterjacket Assembly-Front plate spacerx6": {
-            "current_quantity": 60,
-            "machine_time": 0.07,
-            "gauge": "1\/4",
-            "material": "Mild Steel",
-            "weight": 0.071,
-            "price": 0.22,
-            "unit_quantity": 1,
-            "modified_date": "Added at March 07 Tuesday 2023 02:30:08 PM",
-            "group": null
-        },
-        "G2Plus-Air Tubes-End stopX4": {
-            "current_quantity": 40,
-            "machine_time": 0.05,
-            "gauge": "1\/4",
-            "material": "Mild Steel",
-            "weight": 0.065,
-            "price": 0.17,
-            "unit_quantity": 1,
-            "modified_date": "Added at March 07 Tuesday 2023 02:30:08 PM",
-            "group": null
-        },
-        "G2Plus-Ceramics-Secondary Plate-part3x2": {
-            "current_quantity": 20,
-            "machine_time": 0.22,
-            "gauge": "1\/4",
-            "material": "Mild Steel",
-            "weight": 0.638,
-            "price": 0.96,
-            "unit_quantity": 1,
-            "modified_date": "Added at March 07 Tuesday 2023 02:30:08 PM",
-            "group": null
-        },
         "G2Plus-Firechamber-smoke tunnel support": {
             "current_quantity": 10,
             "machine_time": 0.07,
@@ -1621,6 +1632,17 @@
             "unit_quantity": 1,
             "modified_date": "Added at March 07 Tuesday 2023 02:30:08 PM",
             "group": null
+        },
+        "G2Plus-Side door 2-outer shell": {
+            "current_quantity": 5,
+            "machine_time": 0.32,
+            "gauge": "12 Gauge",
+            "material": "Mild Steel",
+            "weight": 2.726,
+            "price": 2.54,
+            "unit_quantity": 1,
+            "modified_date": "Added at March 04 Saturday 2023 01:43:51 PM",
+            "group": null
         }
     },
     "Polar G3": {
@@ -1633,6 +1655,28 @@
             "price": 0.32,
             "unit_quantity": 3.0,
             "modified_date": "Added at March 04 Saturday 2023 02:22:05 PM",
+            "group": null
+        },
+        "G2Plus-Ceramics-Secondary Plate-part2x14": {
+            "current_quantity": 180,
+            "machine_time": 0.07,
+            "gauge": "1\/4",
+            "material": "Mild Steel",
+            "weight": 0.148,
+            "price": 0.27,
+            "unit_quantity": 1,
+            "modified_date": "Added at March 07 Tuesday 2023 02:30:08 PM",
+            "group": null
+        },
+        "G3-3-Waterjacket-bottom TABS-01x12": {
+            "current_quantity": 120,
+            "machine_time": 0.15,
+            "gauge": "1\/4",
+            "material": "Mild Steel",
+            "weight": 0.082,
+            "price": 0.43,
+            "unit_quantity": 1,
+            "modified_date": "Added at March 07 Tuesday 2023 02:30:09 PM",
             "group": null
         },
         "G2Plus-Air Damper": {
@@ -1657,6 +1701,17 @@
             "modified_date": "Added at February 27 Monday 2023 09:03:19 AM",
             "group": null
         },
+        "G2Plus-3-Waterjacket-bottom TABS-02x8": {
+            "current_quantity": 80,
+            "machine_time": 0.05,
+            "gauge": "1\/4",
+            "material": "Mild Steel",
+            "weight": 0.062,
+            "price": 0.16,
+            "unit_quantity": 1,
+            "modified_date": "Added at March 07 Tuesday 2023 02:30:08 PM",
+            "group": null
+        },
         "G2-3-Air Gate-Adjusting lever": {
             "current_quantity": 72,
             "machine_time": 0.25,
@@ -1668,6 +1723,17 @@
             "modified_date": "Added at February 27 Monday 2023 08:36:19 AM",
             "group": null
         },
+        "G2Plus-Ceramics-Secondary Plate-part4x4": {
+            "current_quantity": 70,
+            "machine_time": 0.08,
+            "gauge": "1\/4",
+            "material": "Mild Steel",
+            "weight": 0.222,
+            "price": 0.34,
+            "unit_quantity": 1,
+            "modified_date": "Added at March 07 Tuesday 2023 02:30:08 PM",
+            "group": null
+        },
         "G3-1-Firechamber-Skirting-part 1x6": {
             "current_quantity": 60,
             "machine_time": 0.9,
@@ -1677,6 +1743,17 @@
             "price": 11.16,
             "unit_quantity": 1,
             "modified_date": "Added at March 03 Friday 2023 08:51:40 AM",
+            "group": null
+        },
+        "G2Plus-Waterjacket Assembly-Front plate spacerx6": {
+            "current_quantity": 60,
+            "machine_time": 0.07,
+            "gauge": "1\/4",
+            "material": "Mild Steel",
+            "weight": 0.071,
+            "price": 0.22,
+            "unit_quantity": 1,
+            "modified_date": "Added at March 07 Tuesday 2023 02:30:08 PM",
             "group": null
         },
         "G2Plus-Fan Motor-inner condensation shield": {
@@ -1723,6 +1800,17 @@
             "modified_date": "Added at February 27 Monday 2023 02:07:11 PM",
             "group": null
         },
+        "G2Plus-Air Tubes-End stopX4": {
+            "current_quantity": 40,
+            "machine_time": 0.05,
+            "gauge": "1\/4",
+            "material": "Mild Steel",
+            "weight": 0.065,
+            "price": 0.17,
+            "unit_quantity": 1,
+            "modified_date": "Added at March 07 Tuesday 2023 02:30:08 PM",
+            "group": null
+        },
         "G2Plus-Primary Air Delivery-tube-part1x2": {
             "current_quantity": 39,
             "machine_time": 0.78,
@@ -1767,6 +1855,28 @@
             "modified_date": "Added at March 03 Friday 2023 08:51:40 AM",
             "group": null
         },
+        "G2Plus-Ceramics-Secondary Plate-part3x2": {
+            "current_quantity": 20,
+            "machine_time": 0.22,
+            "gauge": "1\/4",
+            "material": "Mild Steel",
+            "weight": 0.638,
+            "price": 0.96,
+            "unit_quantity": 1,
+            "modified_date": "Added at March 07 Tuesday 2023 02:30:08 PM",
+            "group": null
+        },
+        "G3-1-Waterjacket-Secondary Sealx2": {
+            "current_quantity": 20,
+            "machine_time": 0.27,
+            "gauge": "1\/4",
+            "material": "Mild Steel",
+            "weight": 0.981,
+            "price": 1.3,
+            "unit_quantity": 1,
+            "modified_date": "Added at March 07 Tuesday 2023 02:30:09 PM",
+            "group": null
+        },
         "G3-1-Firechamber-Skirting-Jam-Bottom": {
             "current_quantity": 10,
             "machine_time": 0.45,
@@ -1800,72 +1910,6 @@
             "modified_date": "Added at March 07 Tuesday 2023 01:28:02 PM",
             "group": null
         },
-        "G2Plus-Ceramics-Secondary Plate-part2x14": {
-            "current_quantity": 180,
-            "machine_time": 0.07,
-            "gauge": "1\/4",
-            "material": "Mild Steel",
-            "weight": 0.148,
-            "price": 0.27,
-            "unit_quantity": 1,
-            "modified_date": "Added at March 07 Tuesday 2023 02:30:08 PM",
-            "group": null
-        },
-        "G2Plus-3-Waterjacket-bottom TABS-02x8": {
-            "current_quantity": 80,
-            "machine_time": 0.05,
-            "gauge": "1\/4",
-            "material": "Mild Steel",
-            "weight": 0.062,
-            "price": 0.16,
-            "unit_quantity": 1,
-            "modified_date": "Added at March 07 Tuesday 2023 02:30:08 PM",
-            "group": null
-        },
-        "G2Plus-Ceramics-Secondary Plate-part4x4": {
-            "current_quantity": 70,
-            "machine_time": 0.08,
-            "gauge": "1\/4",
-            "material": "Mild Steel",
-            "weight": 0.222,
-            "price": 0.34,
-            "unit_quantity": 1,
-            "modified_date": "Added at March 07 Tuesday 2023 02:30:08 PM",
-            "group": null
-        },
-        "G2Plus-Waterjacket Assembly-Front plate spacerx6": {
-            "current_quantity": 60,
-            "machine_time": 0.07,
-            "gauge": "1\/4",
-            "material": "Mild Steel",
-            "weight": 0.071,
-            "price": 0.22,
-            "unit_quantity": 1,
-            "modified_date": "Added at March 07 Tuesday 2023 02:30:08 PM",
-            "group": null
-        },
-        "G2Plus-Air Tubes-End stopX4": {
-            "current_quantity": 40,
-            "machine_time": 0.05,
-            "gauge": "1\/4",
-            "material": "Mild Steel",
-            "weight": 0.065,
-            "price": 0.17,
-            "unit_quantity": 1,
-            "modified_date": "Added at March 07 Tuesday 2023 02:30:08 PM",
-            "group": null
-        },
-        "G2Plus-Ceramics-Secondary Plate-part3x2": {
-            "current_quantity": 20,
-            "machine_time": 0.22,
-            "gauge": "1\/4",
-            "material": "Mild Steel",
-            "weight": 0.638,
-            "price": 0.96,
-            "unit_quantity": 1,
-            "modified_date": "Added at March 07 Tuesday 2023 02:30:08 PM",
-            "group": null
-        },
         "G2Plus-Firechamber-smoke tunnel support": {
             "current_quantity": 10,
             "machine_time": 0.07,
@@ -1897,28 +1941,6 @@
             "price": 1.2,
             "unit_quantity": 1,
             "modified_date": "Added at March 07 Tuesday 2023 02:30:08 PM",
-            "group": null
-        },
-        "G3-3-Waterjacket-bottom TABS-01x12": {
-            "current_quantity": 120,
-            "machine_time": 0.15,
-            "gauge": "1\/4",
-            "material": "Mild Steel",
-            "weight": 0.082,
-            "price": 0.43,
-            "unit_quantity": 1,
-            "modified_date": "Added at March 07 Tuesday 2023 02:30:09 PM",
-            "group": null
-        },
-        "G3-1-Waterjacket-Secondary Sealx2": {
-            "current_quantity": 20,
-            "machine_time": 0.27,
-            "gauge": "1\/4",
-            "material": "Mild Steel",
-            "weight": 0.981,
-            "price": 1.3,
-            "unit_quantity": 1,
-            "modified_date": "Added at March 07 Tuesday 2023 02:30:09 PM",
             "group": null
         },
         "G3-1-Fan housing": {
