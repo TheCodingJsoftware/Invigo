@@ -22,6 +22,17 @@
             "modified_date": "Added at March 04 Saturday 2023 01:43:51 PM",
             "group": null
         },
+        "2840-92": {
+            "current_quantity": 50,
+            "machine_time": 0.53,
+            "gauge": "18 Gauge",
+            "material": "Galvanneal",
+            "weight": 2.248,
+            "price": 4.07,
+            "unit_quantity": 1,
+            "modified_date": "Added at March 07 Tuesday 2023 01:28:02 PM",
+            "group": null
+        },
         "BIA-019x2": {
             "current_quantity": 40,
             "machine_time": 0.1,
@@ -66,26 +77,15 @@
             "modified_date": "Added at March 04 Saturday 2023 01:43:51 PM",
             "group": null
         },
-        "2840-337": {
-            "current_quantity": 13,
-            "machine_time": 0.43,
-            "gauge": "12 Gauge",
-            "material": "Mild Steel",
-            "weight": 2.955,
-            "price": 2.97,
+        "BIA-024": {
+            "current_quantity": 15,
+            "machine_time": 0.23,
+            "gauge": "18 Gauge",
+            "material": "Galvanneal",
+            "weight": 1.417,
+            "price": 2.3,
             "unit_quantity": 1,
-            "modified_date": "Added at March 04 Saturday 2023 01:43:51 PM",
-            "group": null
-        },
-        "2840-339": {
-            "current_quantity": 13,
-            "machine_time": 0.33,
-            "gauge": "12 Gauge",
-            "material": "Mild Steel",
-            "weight": 2.281,
-            "price": 2.28,
-            "unit_quantity": 1,
-            "modified_date": "Added at March 04 Saturday 2023 01:43:51 PM",
+            "modified_date": "10 quantity added at March 07 Tuesday 2023 01:28:02 PM",
             "group": null
         },
         "PY-TFT-01_": {
@@ -198,6 +198,39 @@
             "modified_date": "Added at March 04 Saturday 2023 01:43:51 PM",
             "group": null
         },
+        "404437": {
+            "current_quantity": 10,
+            "machine_time": 0.62,
+            "gauge": "18 Gauge",
+            "material": "Galvanneal",
+            "weight": 10.808,
+            "price": 14.74,
+            "unit_quantity": 1,
+            "modified_date": "Added at March 07 Tuesday 2023 01:28:02 PM",
+            "group": null
+        },
+        "404440": {
+            "current_quantity": 10,
+            "machine_time": 0.62,
+            "gauge": "18 Gauge",
+            "material": "Galvanneal",
+            "weight": 8.064,
+            "price": 11.39,
+            "unit_quantity": 1,
+            "modified_date": "Added at March 07 Tuesday 2023 01:28:02 PM",
+            "group": null
+        },
+        "G3-1-Lift hook trim": {
+            "current_quantity": 10,
+            "machine_time": 0.17,
+            "gauge": "18 Gauge",
+            "material": "Galvanneal",
+            "weight": 0.24,
+            "price": 0.72,
+            "unit_quantity": 1,
+            "modified_date": "Added at March 07 Tuesday 2023 01:28:02 PM",
+            "group": null
+        },
         "Flat pattern - Bins Power Box Lid": {
             "current_quantity": 7,
             "machine_time": 0.12,
@@ -207,17 +240,6 @@
             "price": 2.1,
             "unit_quantity": 1,
             "modified_date": "Added at February 25 Saturday 2023 09:10:26 AM",
-            "group": null
-        },
-        "BIA-024": {
-            "current_quantity": 5,
-            "machine_time": 0.23,
-            "gauge": "18 Gauge",
-            "material": "Galvanneal",
-            "weight": 1.417,
-            "price": 2.3,
-            "unit_quantity": 1,
-            "modified_date": "Added at March 07 Tuesday 2023 08:27:23 AM",
             "group": null
         },
         "ring for chimm": {
@@ -350,28 +372,6 @@
             "price": 1.34,
             "unit_quantity": 1,
             "modified_date": "Added at March 04 Saturday 2023 01:43:50 PM",
-            "group": null
-        },
-        "PM - SS HINGE 1 3 quarter hinge": {
-            "current_quantity": 2,
-            "machine_time": 0.17,
-            "gauge": "14 Gauge",
-            "material": "Galvanized",
-            "weight": 0.212,
-            "price": 0.68,
-            "unit_quantity": 1,
-            "modified_date": "1 quantity added at March 06 Monday 2023 09:33:21 AM",
-            "group": null
-        },
-        "PM - SS HINGE A-A also used in 3 quarter hinge": {
-            "current_quantity": 2,
-            "machine_time": 0.13,
-            "gauge": "14 Gauge",
-            "material": "Galvanized",
-            "weight": 0.088,
-            "price": 0.43,
-            "unit_quantity": 1,
-            "modified_date": "1 quantity added at March 06 Monday 2023 09:33:21 AM",
             "group": null
         },
         "Flat pattern - Bins Power Box": {
@@ -681,28 +681,6 @@
             "unit_quantity": 1,
             "modified_date": "Added at March 04 Saturday 2023 01:43:51 PM",
             "group": null
-        },
-        "2840-63": {
-            "current_quantity": 1,
-            "machine_time": 0.92,
-            "gauge": "3\/16",
-            "material": "Mild Steel",
-            "weight": 19.872,
-            "price": 15.02,
-            "unit_quantity": 1,
-            "modified_date": "Added at March 04 Saturday 2023 01:59:01 PM",
-            "group": null
-        },
-        "2840-68": {
-            "current_quantity": 1,
-            "machine_time": 0.98,
-            "gauge": "3\/16",
-            "material": "Mild Steel",
-            "weight": 18.913,
-            "price": 14.55,
-            "unit_quantity": 1,
-            "modified_date": "Added at March 04 Saturday 2023 01:59:01 PM",
-            "group": null
         }
     },
     "Recut": {
@@ -799,6 +777,50 @@
             "unit_quantity": 1,
             "modified_date": "Added at March 04 Saturday 2023 01:43:51 PM",
             "group": null
+        },
+        "2840-337": {
+            "current_quantity": 13,
+            "machine_time": 0.43,
+            "gauge": "12 Gauge",
+            "material": "Mild Steel",
+            "weight": 2.955,
+            "price": 2.97,
+            "unit_quantity": 1,
+            "modified_date": "Added at March 04 Saturday 2023 01:43:51 PM",
+            "group": null
+        },
+        "2840-339": {
+            "current_quantity": 13,
+            "machine_time": 0.33,
+            "gauge": "12 Gauge",
+            "material": "Mild Steel",
+            "weight": 2.281,
+            "price": 2.28,
+            "unit_quantity": 1,
+            "modified_date": "Added at March 04 Saturday 2023 01:43:51 PM",
+            "group": null
+        },
+        "2840-63": {
+            "current_quantity": 1,
+            "machine_time": 0.92,
+            "gauge": "3\/16",
+            "material": "Mild Steel",
+            "weight": 19.872,
+            "price": 15.02,
+            "unit_quantity": 1,
+            "modified_date": "Added at March 04 Saturday 2023 01:59:01 PM",
+            "group": null
+        },
+        "2840-68": {
+            "current_quantity": 1,
+            "machine_time": 0.98,
+            "gauge": "3\/16",
+            "material": "Mild Steel",
+            "weight": 18.913,
+            "price": 14.55,
+            "unit_quantity": 1,
+            "modified_date": "Added at March 04 Saturday 2023 01:59:01 PM",
+            "group": null
         }
     },
     "BL34": {
@@ -870,6 +892,61 @@
             "price": 0.32,
             "unit_quantity": 3.0,
             "modified_date": "Added at March 04 Saturday 2023 02:22:05 PM",
+            "group": null
+        },
+        "G2-3-Housing-Access Cover-Top": {
+            "current_quantity": 16,
+            "machine_time": 0.45,
+            "gauge": "18 Gauge",
+            "material": "Galvanneal",
+            "weight": 9.539,
+            "price": 12.76,
+            "unit_quantity": 1,
+            "modified_date": "Added at March 07 Tuesday 2023 08:27:23 AM",
+            "group": null
+        },
+        "G2-3-Housing-Outer Door- limit switch": {
+            "current_quantity": 15,
+            "machine_time": 0.13,
+            "gauge": "18 Gauge",
+            "material": "Galvanneal",
+            "weight": 0.149,
+            "price": 0.51,
+            "unit_quantity": 1,
+            "modified_date": "10 quantity added at March 07 Tuesday 2023 01:28:02 PM",
+            "group": null
+        },
+        "G3-1-Wiring Board": {
+            "current_quantity": 15,
+            "machine_time": 0.93,
+            "gauge": "18 Gauge",
+            "material": "Galvanneal",
+            "weight": 2.23,
+            "price": 5.05,
+            "unit_quantity": 1,
+            "modified_date": "10 quantity added at March 07 Tuesday 2023 01:28:02 PM",
+            "group": null
+        },
+        "G2-3-Housing-Front Insulation cover insert 03x3": {
+            "current_quantity": 15,
+            "machine_time": 0.18,
+            "gauge": "18 Gauge",
+            "material": "Galvanneal",
+            "weight": 0.442,
+            "price": 0.99,
+            "unit_quantity": 1,
+            "modified_date": "Added at March 07 Tuesday 2023 08:27:23 AM",
+            "group": null
+        },
+        "G2-3-Housing-Front Insulation cover insert 01x2": {
+            "current_quantity": 10,
+            "machine_time": 0.27,
+            "gauge": "18 Gauge",
+            "material": "Galvanneal",
+            "weight": 1.124,
+            "price": 2.05,
+            "unit_quantity": 1,
+            "modified_date": "Added at March 07 Tuesday 2023 08:27:23 AM",
             "group": null
         },
         "G2-3-Door-Inner Panel": {
@@ -1000,17 +1077,6 @@
             "material": "Galvanneal",
             "weight": 26.781,
             "price": 38.35,
-            "unit_quantity": 1,
-            "modified_date": "Added at March 07 Tuesday 2023 08:27:23 AM",
-            "group": null
-        },
-        "G2-3-Housing-Outer Door- limit switch": {
-            "current_quantity": 5,
-            "machine_time": 0.13,
-            "gauge": "18 Gauge",
-            "material": "Galvanneal",
-            "weight": 0.149,
-            "price": 0.51,
             "unit_quantity": 1,
             "modified_date": "Added at March 07 Tuesday 2023 08:27:23 AM",
             "group": null
@@ -1158,17 +1224,6 @@
             "modified_date": "Added at March 07 Tuesday 2023 08:27:23 AM",
             "group": null
         },
-        "G3-1-Wiring Board": {
-            "current_quantity": 5,
-            "machine_time": 0.93,
-            "gauge": "18 Gauge",
-            "material": "Galvanneal",
-            "weight": 2.23,
-            "price": 5.05,
-            "unit_quantity": 1,
-            "modified_date": "Added at March 07 Tuesday 2023 08:27:23 AM",
-            "group": null
-        },
         "easy sweep hole cover": {
             "current_quantity": 5,
             "machine_time": 0.08,
@@ -1179,42 +1234,20 @@
             "unit_quantity": 1,
             "modified_date": "Added at March 07 Tuesday 2023 08:27:23 AM",
             "group": null
-        },
-        "G2-3-Housing-Front Insulation cover insert 01x2": {
-            "current_quantity": 10,
-            "machine_time": 0.27,
-            "gauge": "18 Gauge",
-            "material": "Galvanneal",
-            "weight": 1.124,
-            "price": 2.05,
-            "unit_quantity": 1,
-            "modified_date": "Added at March 07 Tuesday 2023 08:27:23 AM",
-            "group": null
-        },
-        "G2-3-Housing-Access Cover-Top": {
-            "current_quantity": 16,
-            "machine_time": 0.45,
-            "gauge": "18 Gauge",
-            "material": "Galvanneal",
-            "weight": 9.539,
-            "price": 12.76,
-            "unit_quantity": 1,
-            "modified_date": "Added at March 07 Tuesday 2023 08:27:23 AM",
-            "group": null
-        },
-        "G2-3-Housing-Front Insulation cover insert 03x3": {
-            "current_quantity": 15,
-            "machine_time": 0.18,
-            "gauge": "18 Gauge",
-            "material": "Galvanneal",
-            "weight": 0.442,
-            "price": 0.99,
-            "unit_quantity": 1,
-            "modified_date": "Added at March 07 Tuesday 2023 08:27:23 AM",
-            "group": null
         }
     },
     "Polar G2+": {
+        "PJ washer": {
+            "current_quantity": 345,
+            "machine_time": 0.07,
+            "gauge": "3\/16",
+            "material": "304 SS",
+            "weight": 0.012,
+            "price": 0.32,
+            "unit_quantity": 1,
+            "modified_date": "Added at March 04 Saturday 2023 02:22:05 PM",
+            "group": null
+        },
         "G2Plus-Air Damper": {
             "current_quantity": 100,
             "machine_time": 0.1,
@@ -1246,6 +1279,17 @@
             "price": 1.41,
             "unit_quantity": 1,
             "modified_date": "Added at February 27 Monday 2023 08:36:19 AM",
+            "group": null
+        },
+        "G2Plus-Firechamber-Skirting-part 1-version Y2x6": {
+            "current_quantity": 60,
+            "machine_time": 0.92,
+            "gauge": "10 Gauge",
+            "material": "Mild Steel",
+            "weight": 12.42,
+            "price": 10.25,
+            "unit_quantity": 1,
+            "modified_date": "Added at March 03 Friday 2023 08:51:40 AM",
             "group": null
         },
         "G2Plus-Fan Motor-inner condensation shield": {
@@ -1312,28 +1356,6 @@
             "price": 19.65,
             "unit_quantity": 2.0,
             "modified_date": "Added at February 27 Monday 2023 02:07:10 PM",
-            "group": null
-        },
-        "PJ washer": {
-            "current_quantity": 345,
-            "machine_time": 0.07,
-            "gauge": "3\/16",
-            "material": "304 SS",
-            "weight": 0.012,
-            "price": 0.32,
-            "unit_quantity": 1,
-            "modified_date": "Added at March 04 Saturday 2023 02:22:05 PM",
-            "group": null
-        },
-        "G2Plus-Firechamber-Skirting-part 1-version Y2x6": {
-            "current_quantity": 60,
-            "machine_time": 0.92,
-            "gauge": "10 Gauge",
-            "material": "Mild Steel",
-            "weight": 12.42,
-            "price": 10.25,
-            "unit_quantity": 1,
-            "modified_date": "Added at March 03 Friday 2023 08:51:40 AM",
             "group": null
         },
         "G2Plus-Middle Door-Gasket Stop 2": {
@@ -1522,9 +1544,317 @@
             "unit_quantity": 1,
             "modified_date": "Added at March 04 Saturday 2023 01:43:51 PM",
             "group": null
+        },
+        "G2Plus-Housing-Front Insulation cover insert 04x3": {
+            "current_quantity": 30,
+            "machine_time": 0.18,
+            "gauge": "18 Gauge",
+            "material": "Galvanneal",
+            "weight": 0.442,
+            "price": 0.99,
+            "unit_quantity": 1,
+            "modified_date": "Added at March 07 Tuesday 2023 01:28:02 PM",
+            "group": null
+        },
+        "G2Plus-Door-Inner Panel": {
+            "current_quantity": 10,
+            "machine_time": 1.15,
+            "gauge": "18 Gauge",
+            "material": "Galvanneal",
+            "weight": 23.887,
+            "price": 32.02,
+            "unit_quantity": 1,
+            "modified_date": "Added at March 07 Tuesday 2023 01:28:02 PM",
+            "group": null
+        },
+        "G2Plus-Door-Outer Panel": {
+            "current_quantity": 10,
+            "machine_time": 1.17,
+            "gauge": "18 Gauge",
+            "material": "Galvanneal",
+            "weight": 29.686,
+            "price": 39.14,
+            "unit_quantity": 1,
+            "modified_date": "Added at March 07 Tuesday 2023 01:28:02 PM",
+            "group": null
+        },
+        "G2Plus-Housing-Access Cover-Bottom": {
+            "current_quantity": 10,
+            "machine_time": 0.65,
+            "gauge": "18 Gauge",
+            "material": "Galvanneal",
+            "weight": 21.947,
+            "price": 28.4,
+            "unit_quantity": 1,
+            "modified_date": "Added at March 07 Tuesday 2023 01:28:02 PM",
+            "group": null
+        },
+        "G2Plus-Housing-Access Cover-Top": {
+            "current_quantity": 10,
+            "machine_time": 0.47,
+            "gauge": "18 Gauge",
+            "material": "Galvanneal",
+            "weight": 10.708,
+            "price": 14.24,
+            "unit_quantity": 1,
+            "modified_date": "Added at March 07 Tuesday 2023 01:28:02 PM",
+            "group": null
+        },
+        "G2Plus-Housing-Back-cross piece 1": {
+            "current_quantity": 10,
+            "machine_time": 0.72,
+            "gauge": "18 Gauge",
+            "material": "Galvanneal",
+            "weight": 6.442,
+            "price": 9.66,
+            "unit_quantity": 1,
+            "modified_date": "Added at March 07 Tuesday 2023 01:28:02 PM",
+            "group": null
+        },
+        "G2Plus-Housing-Door Top": {
+            "current_quantity": 10,
+            "machine_time": 0.32,
+            "gauge": "18 Gauge",
+            "material": "Galvanneal",
+            "weight": 1.617,
+            "price": 2.77,
+            "unit_quantity": 1,
+            "modified_date": "Added at March 07 Tuesday 2023 01:28:02 PM",
+            "group": null
+        },
+        "G2Plus-Housing-Fan cooling air channel": {
+            "current_quantity": 10,
+            "machine_time": 0.58,
+            "gauge": "18 Gauge",
+            "material": "Galvanneal",
+            "weight": 4.455,
+            "price": 6.89,
+            "unit_quantity": 1,
+            "modified_date": "Added at March 07 Tuesday 2023 01:28:02 PM",
+            "group": null
+        },
+        "G2Plus-Housing-Fan motor sides": {
+            "current_quantity": 10,
+            "machine_time": 0.32,
+            "gauge": "18 Gauge",
+            "material": "Galvanneal",
+            "weight": 4.341,
+            "price": 6.1,
+            "unit_quantity": 1,
+            "modified_date": "Added at March 07 Tuesday 2023 01:28:02 PM",
+            "group": null
+        },
+        "G2Plus-Housing-Front Insulation cover": {
+            "current_quantity": 10,
+            "machine_time": 3.72,
+            "gauge": "18 Gauge",
+            "material": "Galvanneal",
+            "weight": 20.716,
+            "price": 34.57,
+            "unit_quantity": 1,
+            "modified_date": "Added at March 07 Tuesday 2023 01:28:02 PM",
+            "group": null
+        },
+        "G2Plus-Housing-Front Insulation cover insert 01": {
+            "current_quantity": 10,
+            "machine_time": 0.27,
+            "gauge": "18 Gauge",
+            "material": "Galvanneal",
+            "weight": 1.102,
+            "price": 2.02,
+            "unit_quantity": 1,
+            "modified_date": "Added at March 07 Tuesday 2023 01:28:02 PM",
+            "group": null
+        },
+        "G2Plus-Housing-Front Insulation cover insert 02": {
+            "current_quantity": 10,
+            "machine_time": 0.18,
+            "gauge": "18 Gauge",
+            "material": "Galvanneal",
+            "weight": 0.51,
+            "price": 1.07,
+            "unit_quantity": 1,
+            "modified_date": "Added at March 07 Tuesday 2023 01:28:02 PM",
+            "group": null
+        },
+        "G2Plus-Housing-Front Insulation cover insert 03": {
+            "current_quantity": 10,
+            "machine_time": 0.28,
+            "gauge": "18 Gauge",
+            "material": "Galvanneal",
+            "weight": 1.35,
+            "price": 2.35,
+            "unit_quantity": 1,
+            "modified_date": "Added at March 07 Tuesday 2023 01:28:02 PM",
+            "group": null
+        },
+        "G2Plus-Housing-Front-Bottom": {
+            "current_quantity": 10,
+            "machine_time": 0.55,
+            "gauge": "18 Gauge",
+            "material": "Galvanneal",
+            "weight": 5.869,
+            "price": 8.54,
+            "unit_quantity": 1,
+            "modified_date": "Added at March 07 Tuesday 2023 01:28:02 PM",
+            "group": null
+        },
+        "G2Plus-Housing-Left Side_Rear Panel": {
+            "current_quantity": 10,
+            "machine_time": 1.52,
+            "gauge": "18 Gauge",
+            "material": "Galvanneal",
+            "weight": 55.546,
+            "price": 71.57,
+            "unit_quantity": 1,
+            "modified_date": "Added at March 07 Tuesday 2023 01:28:02 PM",
+            "group": null
+        },
+        "G2Plus-Housing-Main Cross Link": {
+            "current_quantity": 10,
+            "machine_time": 2.32,
+            "gauge": "18 Gauge",
+            "material": "Galvanneal",
+            "weight": 32.752,
+            "price": 45.76,
+            "unit_quantity": 1,
+            "modified_date": "Added at March 07 Tuesday 2023 01:28:02 PM",
+            "group": null
+        },
+        "G2Plus-Housing-Rear-Partitioning-part 1": {
+            "current_quantity": 10,
+            "machine_time": 0.32,
+            "gauge": "18 Gauge",
+            "material": "Galvanneal",
+            "weight": 2.806,
+            "price": 4.22,
+            "unit_quantity": 1,
+            "modified_date": "Added at March 07 Tuesday 2023 01:28:02 PM",
+            "group": null
+        },
+        "G2Plus-Housing-Right Side_Rear Panel": {
+            "current_quantity": 10,
+            "machine_time": 1.7,
+            "gauge": "18 Gauge",
+            "material": "Galvanneal",
+            "weight": 54.141,
+            "price": 70.3,
+            "unit_quantity": 1,
+            "modified_date": "Added at March 07 Tuesday 2023 01:28:02 PM",
+            "group": null
+        },
+        "G2Plus-Housing-Roof-Front": {
+            "current_quantity": 10,
+            "machine_time": 1.0,
+            "gauge": "18 Gauge",
+            "material": "Galvanneal",
+            "weight": 25.445,
+            "price": 33.54,
+            "unit_quantity": 1,
+            "modified_date": "Added at March 07 Tuesday 2023 01:28:02 PM",
+            "group": null
+        },
+        "G2Plus-Housing-access to flues outer cover": {
+            "current_quantity": 10,
+            "machine_time": 0.35,
+            "gauge": "18 Gauge",
+            "material": "Galvanneal",
+            "weight": 7.759,
+            "price": 10.34,
+            "unit_quantity": 1,
+            "modified_date": "Added at March 07 Tuesday 2023 01:28:02 PM",
+            "group": null
+        },
+        "G2Plus-Housing-left side panel": {
+            "current_quantity": 10,
+            "machine_time": 1.05,
+            "gauge": "18 Gauge",
+            "material": "Galvanneal",
+            "weight": 21.949,
+            "price": 29.4,
+            "unit_quantity": 1,
+            "modified_date": "Added at March 07 Tuesday 2023 01:28:02 PM",
+            "group": null
+        },
+        "G2Plus-Housing-overflow pipe trim": {
+            "current_quantity": 10,
+            "machine_time": 0.15,
+            "gauge": "18 Gauge",
+            "material": "Galvanneal",
+            "weight": 0.26,
+            "price": 0.69,
+            "unit_quantity": 1,
+            "modified_date": "Added at March 07 Tuesday 2023 01:28:02 PM",
+            "group": null
+        },
+        "G2Plus-Housing-right side panel": {
+            "current_quantity": 10,
+            "machine_time": 1.38,
+            "gauge": "18 Gauge",
+            "material": "Galvanneal",
+            "weight": 21.909,
+            "price": 30.18,
+            "unit_quantity": 1,
+            "modified_date": "Added at March 07 Tuesday 2023 01:28:02 PM",
+            "group": null
+        },
+        "G2Plus-Housing-side cleanout door trim": {
+            "current_quantity": 10,
+            "machine_time": 0.47,
+            "gauge": "18 Gauge",
+            "material": "Galvanneal",
+            "weight": 1.54,
+            "price": 3.05,
+            "unit_quantity": 1,
+            "modified_date": "Added at March 07 Tuesday 2023 01:28:02 PM",
+            "group": null
+        },
+        "G2Plus-Roof-Rear": {
+            "current_quantity": 10,
+            "machine_time": 0.72,
+            "gauge": "18 Gauge",
+            "material": "Galvanneal",
+            "weight": 12.995,
+            "price": 17.65,
+            "unit_quantity": 1,
+            "modified_date": "Added at March 07 Tuesday 2023 01:28:02 PM",
+            "group": null
+        },
+        "G2Plus-housing-Back Bottom": {
+            "current_quantity": 10,
+            "machine_time": 1.42,
+            "gauge": "18 Gauge",
+            "material": "Galvanneal",
+            "weight": 7.113,
+            "price": 12.23,
+            "unit_quantity": 1,
+            "modified_date": "Added at March 07 Tuesday 2023 01:28:02 PM",
+            "group": null
+        },
+        "G2Plus-light shroud": {
+            "current_quantity": 10,
+            "machine_time": 0.78,
+            "gauge": "18 Gauge",
+            "material": "Galvanneal",
+            "weight": 0.476,
+            "price": 2.53,
+            "unit_quantity": 1,
+            "modified_date": "Added at March 07 Tuesday 2023 01:28:02 PM",
+            "group": null
         }
     },
     "Polar G3": {
+        "PJ washer": {
+            "current_quantity": 345,
+            "machine_time": 0.07,
+            "gauge": "3\/16",
+            "material": "304 SS",
+            "weight": 0.012,
+            "price": 0.32,
+            "unit_quantity": 3.0,
+            "modified_date": "Added at March 04 Saturday 2023 02:22:05 PM",
+            "group": null
+        },
         "G2Plus-Air Damper": {
             "current_quantity": 100,
             "machine_time": 0.1,
@@ -1556,6 +1886,17 @@
             "price": 1.41,
             "unit_quantity": 1,
             "modified_date": "Added at February 27 Monday 2023 08:36:19 AM",
+            "group": null
+        },
+        "G3-1-Firechamber-Skirting-part 1x6": {
+            "current_quantity": 60,
+            "machine_time": 0.9,
+            "gauge": "10 Gauge",
+            "material": "Mild Steel",
+            "weight": 13.924,
+            "price": 11.16,
+            "unit_quantity": 1,
+            "modified_date": "Added at March 03 Friday 2023 08:51:40 AM",
             "group": null
         },
         "G2Plus-Fan Motor-inner condensation shield": {
@@ -1622,28 +1963,6 @@
             "price": 19.65,
             "unit_quantity": 1,
             "modified_date": "Added at February 27 Monday 2023 02:07:10 PM",
-            "group": null
-        },
-        "PJ washer": {
-            "current_quantity": 345,
-            "machine_time": 0.07,
-            "gauge": "3\/16",
-            "material": "304 SS",
-            "weight": 0.012,
-            "price": 0.32,
-            "unit_quantity": 3.0,
-            "modified_date": "Added at March 04 Saturday 2023 02:22:05 PM",
-            "group": null
-        },
-        "G3-1-Firechamber-Skirting-part 1x6": {
-            "current_quantity": 60,
-            "machine_time": 0.9,
-            "gauge": "10 Gauge",
-            "material": "Mild Steel",
-            "weight": 13.924,
-            "price": 11.16,
-            "unit_quantity": 1,
-            "modified_date": "Added at March 03 Friday 2023 08:51:40 AM",
             "group": null
         },
         "G3-1-Firechamber-Skirting-part 2x3": {
@@ -1713,6 +2032,28 @@
             "unit_quantity": 1,
             "modified_date": "Manually set to 203.0 quantity at February 27 Monday 2023 02:49:39 PM",
             "group": "Galvanized Hinges"
+        },
+        "PM - SS HINGE 1 3 quarter hinge": {
+            "current_quantity": 2,
+            "machine_time": 0.17,
+            "gauge": "14 Gauge",
+            "material": "Galvanized",
+            "weight": 0.212,
+            "price": 0.68,
+            "unit_quantity": 1,
+            "modified_date": "1 quantity added at March 06 Monday 2023 09:33:21 AM",
+            "group": null
+        },
+        "PM - SS HINGE A-A also used in 3 quarter hinge": {
+            "current_quantity": 2,
+            "machine_time": 0.13,
+            "gauge": "14 Gauge",
+            "material": "Galvanized",
+            "weight": 0.088,
+            "price": 0.43,
+            "unit_quantity": 1,
+            "modified_date": "1 quantity added at March 06 Monday 2023 09:33:21 AM",
+            "group": null
         }
     },
     "Honey Comb Wagon": {
