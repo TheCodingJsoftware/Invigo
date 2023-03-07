@@ -22,17 +22,6 @@
             "modified_date": "Added at March 04 Saturday 2023 01:43:51 PM",
             "group": null
         },
-        "2840-92": {
-            "current_quantity": 50,
-            "machine_time": 0.53,
-            "gauge": "18 Gauge",
-            "material": "Galvanneal",
-            "weight": 2.248,
-            "price": 4.07,
-            "unit_quantity": 1,
-            "modified_date": "Added at March 07 Tuesday 2023 01:28:02 PM",
-            "group": null
-        },
         "BIA-019x2": {
             "current_quantity": 40,
             "machine_time": 0.1,
@@ -187,61 +176,6 @@
             "modified_date": "Added at March 03 Friday 2023 05:19:24 PM",
             "group": null
         },
-        "Flat pattern - Door Hanger": {
-            "current_quantity": 10,
-            "machine_time": 0.48,
-            "gauge": "12 Gauge",
-            "material": "Mild Steel",
-            "weight": 0.776,
-            "price": 1.7,
-            "unit_quantity": 1,
-            "modified_date": "Added at March 04 Saturday 2023 01:43:51 PM",
-            "group": null
-        },
-        "Flat pattern - Bins Power Box Lid": {
-            "current_quantity": 7,
-            "machine_time": 0.12,
-            "gauge": "18 Gauge",
-            "material": "304 SS",
-            "weight": 0.669,
-            "price": 2.1,
-            "unit_quantity": 1,
-            "modified_date": "Added at February 25 Saturday 2023 09:10:26 AM",
-            "group": null
-        },
-        "ring for chimm": {
-            "current_quantity": 5,
-            "machine_time": 0.15,
-            "gauge": "18 Gauge",
-            "material": "Galvanneal",
-            "weight": 0.167,
-            "price": 0.58,
-            "unit_quantity": 1,
-            "modified_date": "Added at March 07 Tuesday 2023 08:27:23 AM",
-            "group": null
-        },
-        "central air filter mesh": {
-            "current_quantity": 4,
-            "machine_time": 1.18,
-            "gauge": "18 Gauge",
-            "material": "304 SS",
-            "weight": 1.447,
-            "price": 8.37,
-            "unit_quantity": 1,
-            "modified_date": "Added at February 25 Saturday 2023 09:10:26 AM",
-            "group": null
-        },
-        "plates for everything Volkswagon": {
-            "current_quantity": 4,
-            "machine_time": 0.68,
-            "gauge": "18 Gauge",
-            "material": "304 SS",
-            "weight": 0.398,
-            "price": 3.78,
-            "unit_quantity": 1,
-            "modified_date": "Added at February 25 Saturday 2023 09:10:26 AM",
-            "group": null
-        },
         "LCB300M-CB103": {
             "current_quantity": 4,
             "machine_time": 1.5,
@@ -262,28 +196,6 @@
             "price": 1.23,
             "unit_quantity": 1,
             "modified_date": "Added at March 03 Friday 2023 05:19:24 PM",
-            "group": null
-        },
-        "central air": {
-            "current_quantity": 3,
-            "machine_time": 1.45,
-            "gauge": "18 Gauge",
-            "material": "304 SS",
-            "weight": 17.37,
-            "price": 47.56,
-            "unit_quantity": 1,
-            "modified_date": "Added at February 25 Saturday 2023 09:10:26 AM",
-            "group": null
-        },
-        "central air plate": {
-            "current_quantity": 3,
-            "machine_time": 0.37,
-            "gauge": "18 Gauge",
-            "material": "304 SS",
-            "weight": 4.343,
-            "price": 11.92,
-            "unit_quantity": 1,
-            "modified_date": "Added at February 25 Saturday 2023 09:10:26 AM",
             "group": null
         },
         "2840-Shaker-64x2": {
@@ -330,17 +242,6 @@
             "modified_date": "Added at March 03 Friday 2023 05:19:24 PM",
             "group": null
         },
-        "Flat pattern - Bins Power Box": {
-            "current_quantity": 1,
-            "machine_time": 0.35,
-            "gauge": "18 Gauge",
-            "material": "304 SS",
-            "weight": 2.07,
-            "price": 6.41,
-            "unit_quantity": 1,
-            "modified_date": "Added at February 25 Saturday 2023 09:10:26 AM",
-            "group": null
-        },
         "Flat pattern - SP": {
             "current_quantity": 1,
             "machine_time": 2.38,
@@ -383,39 +284,6 @@
             "price": 1.32,
             "unit_quantity": 1,
             "modified_date": "Added at March 03 Friday 2023 05:19:24 PM",
-            "group": null
-        },
-        "Pail Holder x1": {
-            "current_quantity": 1,
-            "machine_time": 0.45,
-            "gauge": "12 Gauge",
-            "material": "Mild Steel",
-            "weight": 0.916,
-            "price": 1.71,
-            "unit_quantity": 1,
-            "modified_date": "Added at March 04 Saturday 2023 01:43:51 PM",
-            "group": null
-        },
-        "Rolled part no holes x1": {
-            "current_quantity": 1,
-            "machine_time": 0.25,
-            "gauge": "12 Gauge",
-            "material": "Mild Steel",
-            "weight": 0.574,
-            "price": 0.99,
-            "unit_quantity": 1,
-            "modified_date": "Added at March 04 Saturday 2023 01:43:51 PM",
-            "group": null
-        },
-        "Rolled part x1": {
-            "current_quantity": 1,
-            "machine_time": 0.3,
-            "gauge": "12 Gauge",
-            "material": "Mild Steel",
-            "weight": 0.567,
-            "price": 1.11,
-            "unit_quantity": 1,
-            "modified_date": "Added at March 04 Saturday 2023 01:43:51 PM",
             "group": null
         }
     },
@@ -556,6 +424,17 @@
             "price": 14.55,
             "unit_quantity": 1,
             "modified_date": "Added at March 04 Saturday 2023 01:59:01 PM",
+            "group": null
+        },
+        "2840-92": {
+            "current_quantity": 50,
+            "machine_time": 0.53,
+            "gauge": "18 Gauge",
+            "material": "Galvanneal",
+            "weight": 2.248,
+            "price": 4.07,
+            "unit_quantity": 1,
+            "modified_date": "Added at March 07 Tuesday 2023 01:28:02 PM",
             "group": null
         }
     },
@@ -989,6 +868,17 @@
             "material": "Galvanneal",
             "weight": 0.059,
             "price": 0.27,
+            "unit_quantity": 1,
+            "modified_date": "Added at March 07 Tuesday 2023 08:27:23 AM",
+            "group": null
+        },
+        "ring for chimm": {
+            "current_quantity": 5,
+            "machine_time": 0.15,
+            "gauge": "18 Gauge",
+            "material": "Galvanneal",
+            "weight": 0.167,
+            "price": 0.58,
             "unit_quantity": 1,
             "modified_date": "Added at March 07 Tuesday 2023 08:27:23 AM",
             "group": null
@@ -2090,6 +1980,116 @@
             "price": 1.34,
             "unit_quantity": 1,
             "modified_date": "Added at March 04 Saturday 2023 01:43:50 PM",
+            "group": null
+        },
+        "Pail Holder x1": {
+            "current_quantity": 1,
+            "machine_time": 0.45,
+            "gauge": "12 Gauge",
+            "material": "Mild Steel",
+            "weight": 0.916,
+            "price": 1.71,
+            "unit_quantity": 1,
+            "modified_date": "Added at March 04 Saturday 2023 01:43:51 PM",
+            "group": null
+        },
+        "Rolled part no holes x1": {
+            "current_quantity": 1,
+            "machine_time": 0.25,
+            "gauge": "12 Gauge",
+            "material": "Mild Steel",
+            "weight": 0.574,
+            "price": 0.99,
+            "unit_quantity": 1,
+            "modified_date": "Added at March 04 Saturday 2023 01:43:51 PM",
+            "group": null
+        },
+        "Rolled part x1": {
+            "current_quantity": 1,
+            "machine_time": 0.3,
+            "gauge": "12 Gauge",
+            "material": "Mild Steel",
+            "weight": 0.567,
+            "price": 1.11,
+            "unit_quantity": 1,
+            "modified_date": "Added at March 04 Saturday 2023 01:43:51 PM",
+            "group": null
+        },
+        "Flat pattern - Door Hanger": {
+            "current_quantity": 10,
+            "machine_time": 0.48,
+            "gauge": "12 Gauge",
+            "material": "Mild Steel",
+            "weight": 0.776,
+            "price": 1.7,
+            "unit_quantity": 1,
+            "modified_date": "Added at March 04 Saturday 2023 01:43:51 PM",
+            "group": null
+        },
+        "Flat pattern - Bins Power Box Lid": {
+            "current_quantity": 7,
+            "machine_time": 0.12,
+            "gauge": "18 Gauge",
+            "material": "304 SS",
+            "weight": 0.669,
+            "price": 2.1,
+            "unit_quantity": 1,
+            "modified_date": "Added at February 25 Saturday 2023 09:10:26 AM",
+            "group": null
+        },
+        "central air filter mesh": {
+            "current_quantity": 3.0,
+            "machine_time": 1.18,
+            "gauge": "18 Gauge",
+            "material": "304 SS",
+            "weight": 1.447,
+            "price": 8.37,
+            "unit_quantity": 1,
+            "modified_date": "Manually set to 3.0 quantity at March 07 Tuesday 2023 01:58:23 PM",
+            "group": null
+        },
+        "Flat pattern - Bins Power Box": {
+            "current_quantity": 1,
+            "machine_time": 0.35,
+            "gauge": "18 Gauge",
+            "material": "304 SS",
+            "weight": 2.07,
+            "price": 6.41,
+            "unit_quantity": 1,
+            "modified_date": "Added at February 25 Saturday 2023 09:10:26 AM",
+            "group": null
+        },
+        "central air plate": {
+            "current_quantity": 2.0,
+            "machine_time": 0.37,
+            "gauge": "18 Gauge",
+            "material": "304 SS",
+            "weight": 4.343,
+            "price": 11.92,
+            "unit_quantity": 1,
+            "modified_date": "Manually set to 2.0 quantity at March 07 Tuesday 2023 01:58:26 PM",
+            "group": null
+        },
+        "central air": {
+            "current_quantity": 2.0,
+            "machine_time": 1.45,
+            "gauge": "18 Gauge",
+            "material": "304 SS",
+            "weight": 17.37,
+            "price": 47.56,
+            "unit_quantity": 1,
+            "modified_date": "Manually set to 2.0 quantity at March 07 Tuesday 2023 01:58:27 PM",
+            "group": null
+        },
+        "plates for everything Volkswagon": {
+            "current_quantity": 4,
+            "machine_time": 0.68,
+            "gauge": "18 Gauge",
+            "material": "304 SS",
+            "weight": 0.398,
+            "price": 3.78,
+            "unit_quantity": 1,
+            "modified_date": "Added at February 25 Saturday 2023 09:10:26 AM",
             "group": null
         }
     }
