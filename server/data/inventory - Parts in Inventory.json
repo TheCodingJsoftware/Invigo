@@ -539,17 +539,6 @@
             "modified_date": "Added at March 07 Tuesday 2023 01:28:02 PM",
             "group": null
         },
-        "G3-1-Lift hook trim": {
-            "current_quantity": 10,
-            "machine_time": 0.17,
-            "gauge": "18 Gauge",
-            "material": "Galvanneal",
-            "weight": 0.24,
-            "price": 0.72,
-            "unit_quantity": 1,
-            "modified_date": "Added at March 07 Tuesday 2023 01:28:02 PM",
-            "group": null
-        },
         "Flat pattern - Bins Power Box Lid": {
             "current_quantity": 7,
             "machine_time": 0.12,
@@ -2030,6 +2019,17 @@
             "unit_quantity": 1,
             "modified_date": "Added at March 03 Friday 2023 08:51:40 AM",
             "group": null
+        },
+        "G3-1-Lift hook trim": {
+            "current_quantity": 10,
+            "machine_time": 0.17,
+            "gauge": "18 Gauge",
+            "material": "Galvanneal",
+            "weight": 0.24,
+            "price": 0.72,
+            "unit_quantity": 1,
+            "modified_date": "Added at March 07 Tuesday 2023 01:28:02 PM",
+            "group": null
         }
     },
     "Overhead Door Part's": {
@@ -2090,5 +2090,7 @@
             "modified_date": "Added at March 03 Friday 2023 04:55:19 PM",
             "group": null
         }
-    }
+    },
+    "Farm\/Colony": {},
+    "LCB300 Boiler\/Chip Bin": {}
 }
