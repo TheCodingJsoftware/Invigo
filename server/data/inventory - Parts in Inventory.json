@@ -98,28 +98,6 @@
             "unit_quantity": 1,
             "modified_date": "Added at March 03 Friday 2023 08:51:40 AM",
             "group": null
-        },
-        "2840-63": {
-            "current_quantity": 1,
-            "machine_time": 0.92,
-            "gauge": "3\/16",
-            "material": "Mild Steel",
-            "weight": 19.872,
-            "price": 15.02,
-            "unit_quantity": 1,
-            "modified_date": "Added at March 04 Saturday 2023 01:59:01 PM",
-            "group": null
-        },
-        "2840-68": {
-            "current_quantity": 1,
-            "machine_time": 0.98,
-            "gauge": "3\/16",
-            "material": "Mild Steel",
-            "weight": 18.913,
-            "price": 14.55,
-            "unit_quantity": 1,
-            "modified_date": "Added at March 04 Saturday 2023 01:59:01 PM",
-            "group": null
         }
     },
     "Recut": {
@@ -270,6 +248,28 @@
             "price": 15.36,
             "unit_quantity": 1,
             "modified_date": "Added at March 03 Friday 2023 03:46:38 PM",
+            "group": null
+        },
+        "2840-63": {
+            "current_quantity": 1,
+            "machine_time": 0.92,
+            "gauge": "3\/16",
+            "material": "Mild Steel",
+            "weight": 19.872,
+            "price": 15.02,
+            "unit_quantity": 1,
+            "modified_date": "Added at March 04 Saturday 2023 01:59:01 PM",
+            "group": null
+        },
+        "2840-68": {
+            "current_quantity": 1,
+            "machine_time": 0.98,
+            "gauge": "3\/16",
+            "material": "Mild Steel",
+            "weight": 18.913,
+            "price": 14.55,
+            "unit_quantity": 1,
+            "modified_date": "Added at March 04 Saturday 2023 01:59:01 PM",
             "group": null
         }
     },
