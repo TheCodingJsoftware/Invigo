@@ -22,17 +22,6 @@
             "modified_date": "Added at March 04 Saturday 2023 01:43:51 PM",
             "group": null
         },
-        "2840-92": {
-            "current_quantity": 50,
-            "machine_time": 0.53,
-            "gauge": "18 Gauge",
-            "material": "Galvanneal",
-            "weight": 2.248,
-            "price": 4.07,
-            "unit_quantity": 1,
-            "modified_date": "Added at March 07 Tuesday 2023 01:28:02 PM",
-            "group": null
-        },
         "BIA-019x2": {
             "current_quantity": 40,
             "machine_time": 0.1,
@@ -86,17 +75,6 @@
             "price": 2.3,
             "unit_quantity": 1,
             "modified_date": "10 quantity added at March 07 Tuesday 2023 01:28:02 PM",
-            "group": null
-        },
-        "kent trigger_1": {
-            "current_quantity": 10,
-            "machine_time": 0.05,
-            "gauge": "12 Gauge",
-            "material": "304 SS",
-            "weight": 0.063,
-            "price": 0.36,
-            "unit_quantity": 1,
-            "modified_date": "Added at February 27 Monday 2023 10:55:22 AM",
             "group": null
         },
         "BIA-018": {
@@ -253,17 +231,6 @@
             "modified_date": "Added at February 25 Saturday 2023 09:10:26 AM",
             "group": null
         },
-        "2840-Shaker-64x2": {
-            "current_quantity": 3,
-            "machine_time": 1.67,
-            "gauge": "3\/8",
-            "material": "Mild Steel",
-            "weight": 17.471,
-            "price": 15.36,
-            "unit_quantity": 1,
-            "modified_date": "Added at March 03 Friday 2023 03:46:38 PM",
-            "group": null
-        },
         "Flat pattern - P-008": {
             "current_quantity": 2,
             "machine_time": 0.27,
@@ -383,28 +350,6 @@
             "price": 1.11,
             "unit_quantity": 1,
             "modified_date": "Added at March 04 Saturday 2023 01:43:51 PM",
-            "group": null
-        },
-        "2840-63": {
-            "current_quantity": 1,
-            "machine_time": 0.92,
-            "gauge": "3\/16",
-            "material": "Mild Steel",
-            "weight": 19.872,
-            "price": 15.02,
-            "unit_quantity": 1,
-            "modified_date": "Added at March 04 Saturday 2023 01:59:01 PM",
-            "group": null
-        },
-        "2840-68": {
-            "current_quantity": 1,
-            "machine_time": 0.98,
-            "gauge": "3\/16",
-            "material": "Mild Steel",
-            "weight": 18.913,
-            "price": 14.55,
-            "unit_quantity": 1,
-            "modified_date": "Added at March 04 Saturday 2023 01:59:01 PM",
             "group": null
         }
     },
@@ -556,6 +501,17 @@
             "price": 14.55,
             "unit_quantity": 1,
             "modified_date": "Added at March 04 Saturday 2023 01:59:01 PM",
+            "group": null
+        },
+        "2840-Shaker-64x2": {
+            "current_quantity": 3,
+            "machine_time": 1.67,
+            "gauge": "3\/8",
+            "material": "Mild Steel",
+            "weight": 17.471,
+            "price": 15.36,
+            "unit_quantity": 1,
+            "modified_date": "Added at March 03 Friday 2023 03:46:38 PM",
             "group": null
         }
     },
@@ -2126,6 +2082,17 @@
             "price": 1.32,
             "unit_quantity": 1,
             "modified_date": "Added at March 03 Friday 2023 05:19:24 PM",
+            "group": null
+        },
+        "kent trigger_1": {
+            "current_quantity": 10,
+            "machine_time": 0.05,
+            "gauge": "12 Gauge",
+            "material": "304 SS",
+            "weight": 0.063,
+            "price": 0.36,
+            "unit_quantity": 1,
+            "modified_date": "Added at February 27 Monday 2023 10:55:22 AM",
             "group": null
         }
     }
