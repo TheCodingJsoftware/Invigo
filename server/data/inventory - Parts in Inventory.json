@@ -33,17 +33,6 @@
             "modified_date": "10 quantity added at March 07 Tuesday 2023 01:28:02 PM",
             "group": null
         },
-        "kent trigger_1": {
-            "current_quantity": 10,
-            "machine_time": 0.05,
-            "gauge": "12 Gauge",
-            "material": "304 SS",
-            "weight": 0.063,
-            "price": 0.36,
-            "unit_quantity": 1,
-            "modified_date": "Added at February 27 Monday 2023 10:55:22 AM",
-            "group": null
-        },
         "BIA-018": {
             "current_quantity": 10,
             "machine_time": 0.22,
@@ -108,83 +97,6 @@
             "price": 2.03,
             "unit_quantity": 1,
             "modified_date": "Added at March 03 Friday 2023 08:51:40 AM",
-            "group": null
-        },
-        "Flat pattern - Door Hanger": {
-            "current_quantity": 10,
-            "machine_time": 0.48,
-            "gauge": "12 Gauge",
-            "material": "Mild Steel",
-            "weight": 0.776,
-            "price": 1.7,
-            "unit_quantity": 1,
-            "modified_date": "Added at March 04 Saturday 2023 01:43:51 PM",
-            "group": null
-        },
-        "Flat pattern - Bins Power Box Lid": {
-            "current_quantity": 7,
-            "machine_time": 0.12,
-            "gauge": "18 Gauge",
-            "material": "304 SS",
-            "weight": 0.669,
-            "price": 2.1,
-            "unit_quantity": 1,
-            "modified_date": "Added at February 25 Saturday 2023 09:10:26 AM",
-            "group": null
-        },
-        "Flat pattern - P-008": {
-            "current_quantity": 2,
-            "machine_time": 0.27,
-            "gauge": "1\/2",
-            "material": "Mild Steel",
-            "weight": 0.383,
-            "price": 0.92,
-            "unit_quantity": 1,
-            "modified_date": "Added at March 03 Friday 2023 05:19:24 PM",
-            "group": null
-        },
-        "Flat pattern - P-009": {
-            "current_quantity": 2,
-            "machine_time": 0.33,
-            "gauge": "1\/2",
-            "material": "Mild Steel",
-            "weight": 1.42,
-            "price": 1.73,
-            "unit_quantity": 1,
-            "modified_date": "Added at March 03 Friday 2023 05:19:24 PM",
-            "group": null
-        },
-        "Flat pattern - SP1": {
-            "current_quantity": 2,
-            "machine_time": 0.6,
-            "gauge": "1\/2",
-            "material": "Mild Steel",
-            "weight": 5.162,
-            "price": 4.8,
-            "unit_quantity": 1,
-            "modified_date": "Added at March 03 Friday 2023 05:19:24 PM",
-            "group": null
-        },
-        "Flat pattern - Bins Power Box": {
-            "current_quantity": 1,
-            "machine_time": 0.35,
-            "gauge": "18 Gauge",
-            "material": "304 SS",
-            "weight": 2.07,
-            "price": 6.41,
-            "unit_quantity": 1,
-            "modified_date": "Added at February 25 Saturday 2023 09:10:26 AM",
-            "group": null
-        },
-        "Flat pattern - SP": {
-            "current_quantity": 1,
-            "machine_time": 2.38,
-            "gauge": "1\/2",
-            "material": "Mild Steel",
-            "weight": 28.227,
-            "price": 24.02,
-            "unit_quantity": 1,
-            "modified_date": "Added at March 03 Friday 2023 05:19:24 PM",
             "group": null
         },
         "2840-63": {
@@ -2014,6 +1926,39 @@
             "unit_quantity": 1,
             "modified_date": "Manually set to 2.0 quantity at March 08 Wednesday 2023 09:26:08 AM",
             "group": null
+        },
+        "Flat pattern - Door Hanger": {
+            "current_quantity": 10,
+            "machine_time": 0.48,
+            "gauge": "12 Gauge",
+            "material": "Mild Steel",
+            "weight": 0.776,
+            "price": 1.7,
+            "unit_quantity": 1,
+            "modified_date": "Added at March 04 Saturday 2023 01:43:51 PM",
+            "group": null
+        },
+        "Flat pattern - Bins Power Box Lid": {
+            "current_quantity": 7,
+            "machine_time": 0.12,
+            "gauge": "18 Gauge",
+            "material": "304 SS",
+            "weight": 0.669,
+            "price": 2.1,
+            "unit_quantity": 1,
+            "modified_date": "Added at February 25 Saturday 2023 09:10:26 AM",
+            "group": null
+        },
+        "Flat pattern - Bins Power Box": {
+            "current_quantity": 1,
+            "machine_time": 0.35,
+            "gauge": "18 Gauge",
+            "material": "304 SS",
+            "weight": 2.07,
+            "price": 6.41,
+            "unit_quantity": 1,
+            "modified_date": "Added at February 25 Saturday 2023 09:10:26 AM",
+            "group": null
         }
     },
     "LCB300 Boiler\/Chip Bin": {
@@ -2094,6 +2039,61 @@
             "price": 1.32,
             "unit_quantity": 1,
             "modified_date": "Added at March 03 Friday 2023 05:19:24 PM",
+            "group": null
+        },
+        "Flat pattern - P-008": {
+            "current_quantity": 2,
+            "machine_time": 0.27,
+            "gauge": "1\/2",
+            "material": "Mild Steel",
+            "weight": 0.383,
+            "price": 0.92,
+            "unit_quantity": 1,
+            "modified_date": "Added at March 03 Friday 2023 05:19:24 PM",
+            "group": null
+        },
+        "Flat pattern - P-009": {
+            "current_quantity": 2,
+            "machine_time": 0.33,
+            "gauge": "1\/2",
+            "material": "Mild Steel",
+            "weight": 1.42,
+            "price": 1.73,
+            "unit_quantity": 1,
+            "modified_date": "Added at March 03 Friday 2023 05:19:24 PM",
+            "group": null
+        },
+        "Flat pattern - SP1": {
+            "current_quantity": 2,
+            "machine_time": 0.6,
+            "gauge": "1\/2",
+            "material": "Mild Steel",
+            "weight": 5.162,
+            "price": 4.8,
+            "unit_quantity": 1,
+            "modified_date": "Added at March 03 Friday 2023 05:19:24 PM",
+            "group": null
+        },
+        "Flat pattern - SP": {
+            "current_quantity": 1,
+            "machine_time": 2.38,
+            "gauge": "1\/2",
+            "material": "Mild Steel",
+            "weight": 28.227,
+            "price": 24.02,
+            "unit_quantity": 1,
+            "modified_date": "Added at March 03 Friday 2023 05:19:24 PM",
+            "group": null
+        },
+        "kent trigger_1": {
+            "current_quantity": 10,
+            "machine_time": 0.05,
+            "gauge": "12 Gauge",
+            "material": "304 SS",
+            "weight": 0.063,
+            "price": 0.36,
+            "unit_quantity": 1,
+            "modified_date": "Added at February 27 Monday 2023 10:55:22 AM",
             "group": null
         }
     }
