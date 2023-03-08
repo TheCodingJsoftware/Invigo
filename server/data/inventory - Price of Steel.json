@@ -357,7 +357,7 @@
             "latest_change_current_quantity": "Latest Change:\nfrom: 11.0\nto: 12.0\nJusti\nFebruary 25 Saturday 2023 10:58:57 AM"
         },
         "10 Gauge 304 SS 120.000x60.000": {
-            "current_quantity": 15.0,
+            "current_quantity": 8.0,
             "sheet_dimension": "120.000x60.000",
             "thickness": "10 Gauge",
             "material": "304 SS",
@@ -590,7 +590,7 @@
             "group": "Galvanized"
         },
         "18 Gauge Galvanneal 120.000x60.000": {
-            "current_quantity": 119,
+            "current_quantity": 70.0,
             "sheet_dimension": "120.000x60.000",
             "thickness": "18 Gauge",
             "material": "Galvanneal",
@@ -598,7 +598,7 @@
             "latest_change_material": "Item added\nLaser Pc\nFebruary 24 Friday 2023 05-19-31 PM",
             "latest_sheet_dimension": "Item added\nLaser Pc\nFebruary 24 Friday 2023 05-19-31 PM",
             "latest_change_thickness": "Item added\nLaser Pc\nFebruary 24 Friday 2023 05-19-31 PM",
-            "latest_change_current_quantity": "Item added\nLaser Pc\nFebruary 24 Friday 2023 05-19-31 PM"
+            "latest_change_current_quantity": "Latest Change:\nfrom: 70.0\nto: 70.0\nLaser Pc\nMarch 08 Wednesday 2023 10:59:53 AM"
         },
         "20 Gauge Galvanneal 120.000x60.000": {
             "current_quantity": 23,
