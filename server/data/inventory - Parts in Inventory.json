@@ -1,5 +1,49 @@
 {
     "Custom": {
+        "SFM-01 BL28": {
+            "current_quantity": 55,
+            "machine_time": 0.3,
+            "gauge": "12 Gauge",
+            "material": "Mild Steel",
+            "weight": 0.606,
+            "price": 1.14,
+            "unit_quantity": 1,
+            "modified_date": "Added at March 04 Saturday 2023 01:43:51 PM",
+            "group": null
+        },
+        "SFM-02 BL34": {
+            "current_quantity": 55,
+            "machine_time": 0.32,
+            "gauge": "12 Gauge",
+            "material": "Mild Steel",
+            "weight": 0.559,
+            "price": 1.16,
+            "unit_quantity": 1,
+            "modified_date": "Added at March 04 Saturday 2023 01:43:51 PM",
+            "group": null
+        },
+        "2840-92": {
+            "current_quantity": 50,
+            "machine_time": 0.53,
+            "gauge": "18 Gauge",
+            "material": "Galvanneal",
+            "weight": 2.248,
+            "price": 4.07,
+            "unit_quantity": 1,
+            "modified_date": "Added at March 07 Tuesday 2023 01:28:02 PM",
+            "group": null
+        },
+        "BIA-019x2": {
+            "current_quantity": 40,
+            "machine_time": 0.1,
+            "gauge": "10 Gauge",
+            "material": "Mild Steel",
+            "weight": 0.18,
+            "price": 0.37,
+            "unit_quantity": 2.0,
+            "modified_date": "Added at March 03 Friday 2023 08:51:40 AM",
+            "group": null
+        },
         "BIA-023": {
             "current_quantity": 40,
             "machine_time": 0.05,
@@ -11,6 +55,28 @@
             "modified_date": "Added at March 03 Friday 2023 08:51:40 AM",
             "group": null
         },
+        "S30-37": {
+            "current_quantity": 20,
+            "machine_time": 0.4,
+            "gauge": "12 Gauge",
+            "material": "Mild Steel",
+            "weight": 0.447,
+            "price": 1.29,
+            "unit_quantity": 1,
+            "modified_date": "Added at March 04 Saturday 2023 01:43:51 PM",
+            "group": null
+        },
+        "S30-38": {
+            "current_quantity": 20,
+            "machine_time": 0.12,
+            "gauge": "12 Gauge",
+            "material": "Mild Steel",
+            "weight": 0.612,
+            "price": 0.69,
+            "unit_quantity": 1,
+            "modified_date": "Added at March 04 Saturday 2023 01:43:51 PM",
+            "group": null
+        },
         "BIA-024": {
             "current_quantity": 15,
             "machine_time": 0.23,
@@ -20,6 +86,17 @@
             "price": 2.3,
             "unit_quantity": 1,
             "modified_date": "10 quantity added at March 07 Tuesday 2023 01:28:02 PM",
+            "group": null
+        },
+        "kent trigger_1": {
+            "current_quantity": 10,
+            "machine_time": 0.05,
+            "gauge": "12 Gauge",
+            "material": "304 SS",
+            "weight": 0.063,
+            "price": 0.36,
+            "unit_quantity": 1,
+            "modified_date": "Added at February 27 Monday 2023 10:55:22 AM",
             "group": null
         },
         "BIA-018": {
@@ -87,6 +164,248 @@
             "unit_quantity": 1,
             "modified_date": "Added at March 03 Friday 2023 08:51:40 AM",
             "group": null
+        },
+        "Flat pattern - Door Hanger": {
+            "current_quantity": 10,
+            "machine_time": 0.48,
+            "gauge": "12 Gauge",
+            "material": "Mild Steel",
+            "weight": 0.776,
+            "price": 1.7,
+            "unit_quantity": 1,
+            "modified_date": "Added at March 04 Saturday 2023 01:43:51 PM",
+            "group": null
+        },
+        "Flat pattern - Bins Power Box Lid": {
+            "current_quantity": 7,
+            "machine_time": 0.12,
+            "gauge": "18 Gauge",
+            "material": "304 SS",
+            "weight": 0.669,
+            "price": 2.1,
+            "unit_quantity": 1,
+            "modified_date": "Added at February 25 Saturday 2023 09:10:26 AM",
+            "group": null
+        },
+        "ring for chimm": {
+            "current_quantity": 5,
+            "machine_time": 0.15,
+            "gauge": "18 Gauge",
+            "material": "Galvanneal",
+            "weight": 0.167,
+            "price": 0.58,
+            "unit_quantity": 1,
+            "modified_date": "Added at March 07 Tuesday 2023 08:27:23 AM",
+            "group": null
+        },
+        "central air filter mesh": {
+            "current_quantity": 4,
+            "machine_time": 1.18,
+            "gauge": "18 Gauge",
+            "material": "304 SS",
+            "weight": 1.447,
+            "price": 8.37,
+            "unit_quantity": 1,
+            "modified_date": "Added at February 25 Saturday 2023 09:10:26 AM",
+            "group": null
+        },
+        "plates for everything Volkswagon": {
+            "current_quantity": 4,
+            "machine_time": 0.68,
+            "gauge": "18 Gauge",
+            "material": "304 SS",
+            "weight": 0.398,
+            "price": 3.78,
+            "unit_quantity": 1,
+            "modified_date": "Added at February 25 Saturday 2023 09:10:26 AM",
+            "group": null
+        },
+        "LCB300M-CB103": {
+            "current_quantity": 4,
+            "machine_time": 1.5,
+            "gauge": "12 Gauge",
+            "material": "Galvanized",
+            "weight": 12.287,
+            "price": 18.49,
+            "unit_quantity": 1,
+            "modified_date": "2 quantity added at February 27 Monday 2023 02:37:18 PM",
+            "group": null
+        },
+        "central air": {
+            "current_quantity": 3,
+            "machine_time": 1.45,
+            "gauge": "18 Gauge",
+            "material": "304 SS",
+            "weight": 17.37,
+            "price": 47.56,
+            "unit_quantity": 1,
+            "modified_date": "Added at February 25 Saturday 2023 09:10:26 AM",
+            "group": null
+        },
+        "central air plate": {
+            "current_quantity": 3,
+            "machine_time": 0.37,
+            "gauge": "18 Gauge",
+            "material": "304 SS",
+            "weight": 4.343,
+            "price": 11.92,
+            "unit_quantity": 1,
+            "modified_date": "Added at February 25 Saturday 2023 09:10:26 AM",
+            "group": null
+        },
+        "2840-Shaker-64x2": {
+            "current_quantity": 3,
+            "machine_time": 1.67,
+            "gauge": "3\/8",
+            "material": "Mild Steel",
+            "weight": 17.471,
+            "price": 15.36,
+            "unit_quantity": 1,
+            "modified_date": "Added at March 03 Friday 2023 03:46:38 PM",
+            "group": null
+        },
+        "Flat pattern - P-008": {
+            "current_quantity": 2,
+            "machine_time": 0.27,
+            "gauge": "1\/2",
+            "material": "Mild Steel",
+            "weight": 0.383,
+            "price": 0.92,
+            "unit_quantity": 1,
+            "modified_date": "Added at March 03 Friday 2023 05:19:24 PM",
+            "group": null
+        },
+        "Flat pattern - P-009": {
+            "current_quantity": 2,
+            "machine_time": 0.33,
+            "gauge": "1\/2",
+            "material": "Mild Steel",
+            "weight": 1.42,
+            "price": 1.73,
+            "unit_quantity": 1,
+            "modified_date": "Added at March 03 Friday 2023 05:19:24 PM",
+            "group": null
+        },
+        "Flat pattern - SP1": {
+            "current_quantity": 2,
+            "machine_time": 0.6,
+            "gauge": "1\/2",
+            "material": "Mild Steel",
+            "weight": 5.162,
+            "price": 4.8,
+            "unit_quantity": 1,
+            "modified_date": "Added at March 03 Friday 2023 05:19:24 PM",
+            "group": null
+        },
+        "13 Top PurlingR 12g x30": {
+            "current_quantity": 2,
+            "machine_time": 0.27,
+            "gauge": "12 Gauge",
+            "material": "Mild Steel",
+            "weight": 1.035,
+            "price": 1.34,
+            "unit_quantity": 1,
+            "modified_date": "Added at March 04 Saturday 2023 01:43:50 PM",
+            "group": null
+        },
+        "PM - SS HINGE 1 3 quarter hinge": {
+            "current_quantity": 2,
+            "machine_time": 0.17,
+            "gauge": "14 Gauge",
+            "material": "Galvanized",
+            "weight": 0.212,
+            "price": 0.68,
+            "unit_quantity": 1,
+            "modified_date": "1 quantity added at March 06 Monday 2023 09:33:21 AM",
+            "group": null
+        },
+        "PM - SS HINGE A-A also used in 3 quarter hinge": {
+            "current_quantity": 2,
+            "machine_time": 0.13,
+            "gauge": "14 Gauge",
+            "material": "Galvanized",
+            "weight": 0.088,
+            "price": 0.43,
+            "unit_quantity": 1,
+            "modified_date": "1 quantity added at March 06 Monday 2023 09:33:21 AM",
+            "group": null
+        },
+        "Flat pattern - Bins Power Box": {
+            "current_quantity": 1,
+            "machine_time": 0.35,
+            "gauge": "18 Gauge",
+            "material": "304 SS",
+            "weight": 2.07,
+            "price": 6.41,
+            "unit_quantity": 1,
+            "modified_date": "Added at February 25 Saturday 2023 09:10:26 AM",
+            "group": null
+        },
+        "Flat pattern - SP": {
+            "current_quantity": 1,
+            "machine_time": 2.38,
+            "gauge": "1\/2",
+            "material": "Mild Steel",
+            "weight": 28.227,
+            "price": 24.02,
+            "unit_quantity": 1,
+            "modified_date": "Added at March 03 Friday 2023 05:19:24 PM",
+            "group": null
+        },
+        "Pail Holder x1": {
+            "current_quantity": 1,
+            "machine_time": 0.45,
+            "gauge": "12 Gauge",
+            "material": "Mild Steel",
+            "weight": 0.916,
+            "price": 1.71,
+            "unit_quantity": 1,
+            "modified_date": "Added at March 04 Saturday 2023 01:43:51 PM",
+            "group": null
+        },
+        "Rolled part no holes x1": {
+            "current_quantity": 1,
+            "machine_time": 0.25,
+            "gauge": "12 Gauge",
+            "material": "Mild Steel",
+            "weight": 0.574,
+            "price": 0.99,
+            "unit_quantity": 1,
+            "modified_date": "Added at March 04 Saturday 2023 01:43:51 PM",
+            "group": null
+        },
+        "Rolled part x1": {
+            "current_quantity": 1,
+            "machine_time": 0.3,
+            "gauge": "12 Gauge",
+            "material": "Mild Steel",
+            "weight": 0.567,
+            "price": 1.11,
+            "unit_quantity": 1,
+            "modified_date": "Added at March 04 Saturday 2023 01:43:51 PM",
+            "group": null
+        },
+        "2840-63": {
+            "current_quantity": 1,
+            "machine_time": 0.92,
+            "gauge": "3\/16",
+            "material": "Mild Steel",
+            "weight": 19.872,
+            "price": 15.02,
+            "unit_quantity": 1,
+            "modified_date": "Added at March 04 Saturday 2023 01:59:01 PM",
+            "group": null
+        },
+        "2840-68": {
+            "current_quantity": 1,
+            "machine_time": 0.98,
+            "gauge": "3\/16",
+            "material": "Mild Steel",
+            "weight": 18.913,
+            "price": 14.55,
+            "unit_quantity": 1,
+            "modified_date": "Added at March 04 Saturday 2023 01:59:01 PM",
+            "group": null
         }
     },
     "Recut": {
@@ -140,28 +459,6 @@
         }
     },
     "BL28": {
-        "SFM-01 BL28": {
-            "current_quantity": 55,
-            "machine_time": 0.3,
-            "gauge": "12 Gauge",
-            "material": "Mild Steel",
-            "weight": 0.606,
-            "price": 1.14,
-            "unit_quantity": 1,
-            "modified_date": "Added at March 04 Saturday 2023 01:43:51 PM",
-            "group": null
-        },
-        "2840-92": {
-            "current_quantity": 50,
-            "machine_time": 0.53,
-            "gauge": "18 Gauge",
-            "material": "Galvanneal",
-            "weight": 2.248,
-            "price": 4.07,
-            "unit_quantity": 1,
-            "modified_date": "Added at March 07 Tuesday 2023 01:28:02 PM",
-            "group": null
-        },
         "3044 Ashpan": {
             "current_quantity": 20,
             "machine_time": 0.55,
@@ -171,28 +468,6 @@
             "price": 29.41,
             "unit_quantity": 1,
             "modified_date": "10 quantity added at February 25 Saturday 2023 10:15:58 AM",
-            "group": null
-        },
-        "2840-337": {
-            "current_quantity": 13,
-            "machine_time": 0.43,
-            "gauge": "12 Gauge",
-            "material": "Mild Steel",
-            "weight": 2.955,
-            "price": 2.97,
-            "unit_quantity": 1,
-            "modified_date": "Added at March 04 Saturday 2023 01:43:51 PM",
-            "group": null
-        },
-        "2840-339": {
-            "current_quantity": 13,
-            "machine_time": 0.33,
-            "gauge": "12 Gauge",
-            "material": "Mild Steel",
-            "weight": 2.281,
-            "price": 2.28,
-            "unit_quantity": 1,
-            "modified_date": "Added at March 04 Saturday 2023 01:43:51 PM",
             "group": null
         },
         "2840-60x2": {
@@ -228,52 +503,30 @@
             "modified_date": "Added at March 04 Saturday 2023 01:43:51 PM",
             "group": null
         },
-        "2840-Shaker-64x2": {
-            "current_quantity": 3,
-            "machine_time": 1.67,
-            "gauge": "3\/8",
-            "material": "Mild Steel",
-            "weight": 17.471,
-            "price": 15.36,
-            "unit_quantity": 1,
-            "modified_date": "Added at March 03 Friday 2023 03:46:38 PM",
-            "group": null
-        },
-        "2840-63": {
-            "current_quantity": 1,
-            "machine_time": 0.92,
-            "gauge": "3\/16",
-            "material": "Mild Steel",
-            "weight": 19.872,
-            "price": 15.02,
-            "unit_quantity": 1,
-            "modified_date": "Added at March 04 Saturday 2023 01:59:01 PM",
-            "group": null
-        },
-        "2840-68": {
-            "current_quantity": 1,
-            "machine_time": 0.98,
-            "gauge": "3\/16",
-            "material": "Mild Steel",
-            "weight": 18.913,
-            "price": 14.55,
-            "unit_quantity": 1,
-            "modified_date": "Added at March 04 Saturday 2023 01:59:01 PM",
-            "group": null
-        }
-    },
-    "BL34": {
-        "SFM-02 BL34": {
-            "current_quantity": 55,
-            "machine_time": 0.32,
+        "2840-337": {
+            "current_quantity": 13,
+            "machine_time": 0.43,
             "gauge": "12 Gauge",
             "material": "Mild Steel",
-            "weight": 0.559,
-            "price": 1.16,
+            "weight": 2.955,
+            "price": 2.97,
             "unit_quantity": 1,
             "modified_date": "Added at March 04 Saturday 2023 01:43:51 PM",
             "group": null
         },
+        "2840-339": {
+            "current_quantity": 13,
+            "machine_time": 0.33,
+            "gauge": "12 Gauge",
+            "material": "Mild Steel",
+            "weight": 2.281,
+            "price": 2.28,
+            "unit_quantity": 1,
+            "modified_date": "Added at March 04 Saturday 2023 01:43:51 PM",
+            "group": null
+        }
+    },
+    "BL34": {
         "3444 -Ash Pan Handle": {
             "current_quantity": 20,
             "machine_time": 0.17,
@@ -298,28 +551,6 @@
         }
     },
     "BL40": {
-        "S30-37": {
-            "current_quantity": 20,
-            "machine_time": 0.4,
-            "gauge": "12 Gauge",
-            "material": "Mild Steel",
-            "weight": 0.447,
-            "price": 1.29,
-            "unit_quantity": 1,
-            "modified_date": "Added at March 04 Saturday 2023 01:43:51 PM",
-            "group": null
-        },
-        "S30-38": {
-            "current_quantity": 20,
-            "machine_time": 0.12,
-            "gauge": "12 Gauge",
-            "material": "Mild Steel",
-            "weight": 0.612,
-            "price": 0.69,
-            "unit_quantity": 1,
-            "modified_date": "Added at March 04 Saturday 2023 01:43:51 PM",
-            "group": null
-        },
         "4044 Ash Pan": {
             "current_quantity": 10.0,
             "machine_time": 0.78,
@@ -728,72 +959,6 @@
             "unit_quantity": 1,
             "modified_date": "Added at March 07 Tuesday 2023 08:27:23 AM",
             "group": null
-        },
-        "ring for chimm": {
-            "current_quantity": 5,
-            "machine_time": 0.15,
-            "gauge": "18 Gauge",
-            "material": "Galvanneal",
-            "weight": 0.167,
-            "price": 0.58,
-            "unit_quantity": 1,
-            "modified_date": "Added at March 07 Tuesday 2023 08:27:23 AM",
-            "group": null
-        },
-        "G-Easy Sweep-Spiral hanger-part 3": {
-            "current_quantity": 192,
-            "machine_time": 0.15,
-            "gauge": "10 Gauge",
-            "material": "304 SS",
-            "weight": 0.303,
-            "price": 1.35,
-            "unit_quantity": 7.0,
-            "modified_date": "Added at March 08 Wednesday 2023 10:54:02 AM",
-            "group": null
-        },
-        "G2Plus-Primary Air Delivery-Tube-Cleanout-Cover": {
-            "current_quantity": 160,
-            "machine_time": 0.2,
-            "gauge": "10 Gauge",
-            "material": "304 SS",
-            "weight": 0.922,
-            "price": 3.04,
-            "unit_quantity": 1,
-            "modified_date": "Added at March 08 Wednesday 2023 10:54:02 AM",
-            "group": null
-        },
-        "BIA-018": {
-            "current_quantity": 10,
-            "machine_time": 0.22,
-            "gauge": "10 Gauge",
-            "material": "Mild Steel",
-            "weight": 1.071,
-            "price": 1.24,
-            "unit_quantity": 1,
-            "modified_date": "Added at March 03 Friday 2023 08:51:40 AM",
-            "group": null
-        },
-        "BIA-019x2": {
-            "current_quantity": 40,
-            "machine_time": 0.1,
-            "gauge": "10 Gauge",
-            "material": "Mild Steel",
-            "weight": 0.18,
-            "price": 0.37,
-            "unit_quantity": 1,
-            "modified_date": "Added at March 03 Friday 2023 08:51:40 AM",
-            "group": null
-        },
-        "BIA-023": {
-            "current_quantity": 40,
-            "machine_time": 0.05,
-            "gauge": "10 Gauge",
-            "material": "Mild Steel",
-            "weight": 0.037,
-            "price": 0.15,
-            "unit_quantity": 1,
-            "modified_date": "Added at March 03 Friday 2023 08:51:40 AM",
-            "group": null
         }
     },
     "Polar G2+": {
@@ -804,7 +969,7 @@
             "material": "304 SS",
             "weight": 0.012,
             "price": 0.32,
-            "unit_quantity": 3.0,
+            "unit_quantity": 1,
             "modified_date": "Added at March 04 Saturday 2023 02:22:05 PM",
             "group": null
         },
@@ -916,17 +1081,6 @@
             "price": 19.65,
             "unit_quantity": 2.0,
             "modified_date": "Added at February 27 Monday 2023 02:07:10 PM",
-            "group": null
-        },
-        "G2Plus-Housing-Front Insulation cover insert 04x3": {
-            "current_quantity": 30,
-            "machine_time": 0.18,
-            "gauge": "18 Gauge",
-            "material": "Galvanneal",
-            "weight": 0.442,
-            "price": 0.99,
-            "unit_quantity": 1,
-            "modified_date": "Added at March 07 Tuesday 2023 01:28:02 PM",
             "group": null
         },
         "G2Plus-Middle Door-Gasket Stop 2": {
@@ -1103,6 +1257,17 @@
             "price": 4.99,
             "unit_quantity": 1,
             "modified_date": "Added at March 03 Friday 2023 08:51:40 AM",
+            "group": null
+        },
+        "G2Plus-Side door 2-outer shell": {
+            "current_quantity": 5,
+            "machine_time": 0.32,
+            "gauge": "12 Gauge",
+            "material": "Mild Steel",
+            "weight": 2.726,
+            "price": 2.54,
+            "unit_quantity": 1,
+            "modified_date": "Added at March 04 Saturday 2023 01:43:51 PM",
             "group": null
         },
         "G2Plus-Door-Inner Panel": {
@@ -1391,48 +1556,15 @@
             "modified_date": "Added at March 07 Tuesday 2023 01:28:02 PM",
             "group": null
         },
-        "G2Plus-Side door 2-outer shell": {
-            "current_quantity": 5,
-            "machine_time": 0.32,
-            "gauge": "12 Gauge",
-            "material": "Mild Steel",
-            "weight": 2.726,
-            "price": 2.54,
+        "G2Plus-Housing-Front Insulation cover insert 04x3": {
+            "current_quantity": 30,
+            "machine_time": 0.18,
+            "gauge": "18 Gauge",
+            "material": "Galvanneal",
+            "weight": 0.442,
+            "price": 0.99,
             "unit_quantity": 1,
-            "modified_date": "Added at March 04 Saturday 2023 01:43:51 PM",
-            "group": null
-        },
-        "G-Easy Sweep-Spiral hanger-part 3": {
-            "current_quantity": 192,
-            "machine_time": 0.15,
-            "gauge": "10 Gauge",
-            "material": "304 SS",
-            "weight": 0.303,
-            "price": 1.35,
-            "unit_quantity": 7.0,
-            "modified_date": "Added at March 08 Wednesday 2023 10:54:02 AM",
-            "group": null
-        },
-        "G2Plus-Primary Air Delivery-Tube-Cleanout-Cover": {
-            "current_quantity": 160,
-            "machine_time": 0.2,
-            "gauge": "10 Gauge",
-            "material": "304 SS",
-            "weight": 0.922,
-            "price": 3.04,
-            "unit_quantity": 1,
-            "modified_date": "Added at March 08 Wednesday 2023 10:54:02 AM",
-            "group": null
-        },
-        "BIA-019x2": {
-            "current_quantity": 40,
-            "machine_time": 0.1,
-            "gauge": "10 Gauge",
-            "material": "Mild Steel",
-            "weight": 0.18,
-            "price": 0.37,
-            "unit_quantity": 1,
-            "modified_date": "Added at March 03 Friday 2023 08:51:40 AM",
+            "modified_date": "Added at March 07 Tuesday 2023 01:28:02 PM",
             "group": null
         }
     },
@@ -1612,72 +1744,6 @@
             "unit_quantity": 1,
             "modified_date": "Added at March 07 Tuesday 2023 01:28:02 PM",
             "group": null
-        },
-        "G-Easy Sweep-Spiral hanger-part 3": {
-            "current_quantity": 192,
-            "machine_time": 0.15,
-            "gauge": "10 Gauge",
-            "material": "304 SS",
-            "weight": 0.303,
-            "price": 1.35,
-            "unit_quantity": 7.0,
-            "modified_date": "Added at March 08 Wednesday 2023 10:54:02 AM",
-            "group": null
-        },
-        "G2Plus-Primary Air Delivery-Tube-Cleanout-Cover": {
-            "current_quantity": 160,
-            "machine_time": 0.2,
-            "gauge": "10 Gauge",
-            "material": "304 SS",
-            "weight": 0.922,
-            "price": 3.04,
-            "unit_quantity": 1,
-            "modified_date": "Added at March 08 Wednesday 2023 10:54:02 AM",
-            "group": null
-        },
-        "G3-1-Firechamber-back": {
-            "current_quantity": 10,
-            "machine_time": 2.03,
-            "gauge": "10 Gauge",
-            "material": "304 SS",
-            "weight": 60.385,
-            "price": 152.78,
-            "unit_quantity": 1,
-            "modified_date": "Added at March 08 Wednesday 2023 10:54:02 AM",
-            "group": null
-        },
-        "G3-1-Firechamber-left side": {
-            "current_quantity": 10,
-            "machine_time": 1.15,
-            "gauge": "10 Gauge",
-            "material": "304 SS",
-            "weight": 45.073,
-            "price": 112.52,
-            "unit_quantity": 1,
-            "modified_date": "Added at March 08 Wednesday 2023 10:54:02 AM",
-            "group": null
-        },
-        "G3-1-Firechamber-right side": {
-            "current_quantity": 10,
-            "machine_time": 1.15,
-            "gauge": "10 Gauge",
-            "material": "304 SS",
-            "weight": 45.073,
-            "price": 112.52,
-            "unit_quantity": 1,
-            "modified_date": "Added at March 08 Wednesday 2023 10:54:02 AM",
-            "group": null
-        },
-        "BIA-019x2": {
-            "current_quantity": 40,
-            "machine_time": 0.1,
-            "gauge": "10 Gauge",
-            "material": "Mild Steel",
-            "weight": 0.18,
-            "price": 0.37,
-            "unit_quantity": 1,
-            "modified_date": "Added at March 03 Friday 2023 08:51:40 AM",
-            "group": null
         }
     },
     "Overhead Door Part's": {
@@ -1702,28 +1768,6 @@
             "unit_quantity": 1,
             "modified_date": "Manually set to 203.0 quantity at February 27 Monday 2023 02:49:39 PM",
             "group": "Galvanized Hinges"
-        },
-        "PM - SS HINGE 1 3 quarter hinge": {
-            "current_quantity": 2,
-            "machine_time": 0.17,
-            "gauge": "14 Gauge",
-            "material": "Galvanized",
-            "weight": 0.212,
-            "price": 0.68,
-            "unit_quantity": 1,
-            "modified_date": "1 quantity added at March 06 Monday 2023 09:33:21 AM",
-            "group": null
-        },
-        "PM - SS HINGE A-A also used in 3 quarter hinge": {
-            "current_quantity": 2,
-            "machine_time": 0.13,
-            "gauge": "14 Gauge",
-            "material": "Galvanized",
-            "weight": 0.088,
-            "price": 0.43,
-            "unit_quantity": 1,
-            "modified_date": "1 quantity added at March 06 Monday 2023 09:33:21 AM",
-            "group": null
         }
     },
     "Honey Comb Wagon": {
@@ -1762,83 +1806,6 @@
         }
     },
     "Farm\/Colony": {
-        "Flat pattern - Door Hanger": {
-            "current_quantity": 10,
-            "machine_time": 0.48,
-            "gauge": "12 Gauge",
-            "material": "Mild Steel",
-            "weight": 0.776,
-            "price": 1.7,
-            "unit_quantity": 1,
-            "modified_date": "Added at March 04 Saturday 2023 01:43:51 PM",
-            "group": null
-        },
-        "Flat pattern - Bins Power Box Lid": {
-            "current_quantity": 7,
-            "machine_time": 0.12,
-            "gauge": "18 Gauge",
-            "material": "304 SS",
-            "weight": 0.669,
-            "price": 2.1,
-            "unit_quantity": 1,
-            "modified_date": "Added at February 25 Saturday 2023 09:10:26 AM",
-            "group": null
-        },
-        "plates for everything Volkswagon": {
-            "current_quantity": 4.0,
-            "machine_time": 0.68,
-            "gauge": "18 Gauge",
-            "material": "304 SS",
-            "weight": 0.398,
-            "price": 3.78,
-            "unit_quantity": 1,
-            "modified_date": "Manually set to 4.0 quantity at March 08 Wednesday 2023 09:26:06 AM",
-            "group": null
-        },
-        "central air filter mesh": {
-            "current_quantity": 3.0,
-            "machine_time": 1.18,
-            "gauge": "18 Gauge",
-            "material": "304 SS",
-            "weight": 1.447,
-            "price": 8.37,
-            "unit_quantity": 1,
-            "modified_date": "Manually set to 3.0 quantity at March 08 Wednesday 2023 09:26:01 AM",
-            "group": null
-        },
-        "13 Top PurlingR 12g x30": {
-            "current_quantity": 2,
-            "machine_time": 0.27,
-            "gauge": "12 Gauge",
-            "material": "Mild Steel",
-            "weight": 1.035,
-            "price": 1.34,
-            "unit_quantity": 1,
-            "modified_date": "Added at March 04 Saturday 2023 01:43:50 PM",
-            "group": null
-        },
-        "central air": {
-            "current_quantity": 2.0,
-            "machine_time": 1.45,
-            "gauge": "18 Gauge",
-            "material": "304 SS",
-            "weight": 17.37,
-            "price": 47.56,
-            "unit_quantity": 1,
-            "modified_date": "Manually set to 2.0 quantity at March 08 Wednesday 2023 09:26:03 AM",
-            "group": null
-        },
-        "central air plate": {
-            "current_quantity": 2.0,
-            "machine_time": 0.37,
-            "gauge": "18 Gauge",
-            "material": "304 SS",
-            "weight": 4.343,
-            "price": 11.92,
-            "unit_quantity": 1,
-            "modified_date": "Manually set to 2.0 quantity at March 08 Wednesday 2023 09:26:08 AM",
-            "group": null
-        },
         "01 Anchor 12g x64": {
             "current_quantity": 1,
             "machine_time": 0.42,
@@ -2058,65 +2025,9 @@
             "unit_quantity": 1,
             "modified_date": "Added at March 04 Saturday 2023 01:43:51 PM",
             "group": null
-        },
-        "Pail Holder x1": {
-            "current_quantity": 1,
-            "machine_time": 0.45,
-            "gauge": "12 Gauge",
-            "material": "Mild Steel",
-            "weight": 0.916,
-            "price": 1.71,
-            "unit_quantity": 1,
-            "modified_date": "Added at March 04 Saturday 2023 01:43:51 PM",
-            "group": null
-        },
-        "Rolled part no holes x1": {
-            "current_quantity": 1,
-            "machine_time": 0.25,
-            "gauge": "12 Gauge",
-            "material": "Mild Steel",
-            "weight": 0.574,
-            "price": 0.99,
-            "unit_quantity": 1,
-            "modified_date": "Added at March 04 Saturday 2023 01:43:51 PM",
-            "group": null
-        },
-        "Rolled part x1": {
-            "current_quantity": 1,
-            "machine_time": 0.3,
-            "gauge": "12 Gauge",
-            "material": "Mild Steel",
-            "weight": 0.567,
-            "price": 1.11,
-            "unit_quantity": 1,
-            "modified_date": "Added at March 04 Saturday 2023 01:43:51 PM",
-            "group": null
-        },
-        "Flat pattern - Bins Power Box": {
-            "current_quantity": 1,
-            "machine_time": 0.35,
-            "gauge": "18 Gauge",
-            "material": "304 SS",
-            "weight": 2.07,
-            "price": 6.41,
-            "unit_quantity": 1,
-            "modified_date": "Added at February 25 Saturday 2023 09:10:26 AM",
-            "group": null
         }
     },
-    "LCB300 Boiler\/Chip Bin": {
-        "LCB300M-CB103": {
-            "current_quantity": 4,
-            "machine_time": 1.5,
-            "gauge": "12 Gauge",
-            "material": "Galvanized",
-            "weight": 12.287,
-            "price": 18.49,
-            "unit_quantity": 1,
-            "modified_date": "2 quantity added at February 27 Monday 2023 02:37:18 PM",
-            "group": null
-        }
-    },
+    "LCB300 Boiler\/Chip Bin": {},
     "Piney MFG": {
         "PY-TFT-01_": {
             "current_quantity": 12,
@@ -2140,17 +2051,6 @@
             "modified_date": "Added at March 03 Friday 2023 05:19:24 PM",
             "group": null
         },
-        "kent trigger_1": {
-            "current_quantity": 10,
-            "machine_time": 0.05,
-            "gauge": "12 Gauge",
-            "material": "304 SS",
-            "weight": 0.063,
-            "price": 0.36,
-            "unit_quantity": 1,
-            "modified_date": "Added at February 27 Monday 2023 10:55:22 AM",
-            "group": null
-        },
         "PY-TFT-03_": {
             "current_quantity": 4,
             "machine_time": 0.37,
@@ -2158,39 +2058,6 @@
             "material": "Mild Steel",
             "weight": 0.471,
             "price": 1.23,
-            "unit_quantity": 1,
-            "modified_date": "Added at March 03 Friday 2023 05:19:24 PM",
-            "group": null
-        },
-        "Flat pattern - P-008": {
-            "current_quantity": 2,
-            "machine_time": 0.27,
-            "gauge": "1\/2",
-            "material": "Mild Steel",
-            "weight": 0.383,
-            "price": 0.92,
-            "unit_quantity": 1,
-            "modified_date": "Added at March 03 Friday 2023 05:19:24 PM",
-            "group": null
-        },
-        "Flat pattern - P-009": {
-            "current_quantity": 2,
-            "machine_time": 0.33,
-            "gauge": "1\/2",
-            "material": "Mild Steel",
-            "weight": 1.42,
-            "price": 1.73,
-            "unit_quantity": 1,
-            "modified_date": "Added at March 03 Friday 2023 05:19:24 PM",
-            "group": null
-        },
-        "Flat pattern - SP1": {
-            "current_quantity": 2,
-            "machine_time": 0.6,
-            "gauge": "1\/2",
-            "material": "Mild Steel",
-            "weight": 5.162,
-            "price": 4.8,
             "unit_quantity": 1,
             "modified_date": "Added at March 03 Friday 2023 05:19:24 PM",
             "group": null
@@ -2224,17 +2091,6 @@
             "material": "Mild Steel",
             "weight": 0.577,
             "price": 1.32,
-            "unit_quantity": 1,
-            "modified_date": "Added at March 03 Friday 2023 05:19:24 PM",
-            "group": null
-        },
-        "Flat pattern - SP": {
-            "current_quantity": 1,
-            "machine_time": 2.38,
-            "gauge": "1\/2",
-            "material": "Mild Steel",
-            "weight": 28.227,
-            "price": 24.02,
             "unit_quantity": 1,
             "modified_date": "Added at March 03 Friday 2023 05:19:24 PM",
             "group": null
