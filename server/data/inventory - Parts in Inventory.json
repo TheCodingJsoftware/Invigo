@@ -1,16 +1,5 @@
 {
     "Custom": {
-        "BIA-019x2": {
-            "current_quantity": 40,
-            "machine_time": 0.1,
-            "gauge": "10 Gauge",
-            "material": "Mild Steel",
-            "weight": 0.18,
-            "price": 0.37,
-            "unit_quantity": 2.0,
-            "modified_date": "Added at March 03 Friday 2023 08:51:40 AM",
-            "group": null
-        },
         "BIA-023": {
             "current_quantity": 40,
             "machine_time": 0.05,
@@ -1434,6 +1423,17 @@
             "unit_quantity": 1,
             "modified_date": "Added at March 08 Wednesday 2023 10:54:02 AM",
             "group": null
+        },
+        "BIA-019x2": {
+            "current_quantity": 40,
+            "machine_time": 0.1,
+            "gauge": "10 Gauge",
+            "material": "Mild Steel",
+            "weight": 0.18,
+            "price": 0.37,
+            "unit_quantity": 1,
+            "modified_date": "Added at March 03 Friday 2023 08:51:40 AM",
+            "group": null
         }
     },
     "Polar G3": {
@@ -1666,6 +1666,17 @@
             "price": 112.52,
             "unit_quantity": 1,
             "modified_date": "Added at March 08 Wednesday 2023 10:54:02 AM",
+            "group": null
+        },
+        "BIA-019x2": {
+            "current_quantity": 40,
+            "machine_time": 0.1,
+            "gauge": "10 Gauge",
+            "material": "Mild Steel",
+            "weight": 0.18,
+            "price": 0.37,
+            "unit_quantity": 1,
+            "modified_date": "Added at March 03 Friday 2023 08:51:40 AM",
             "group": null
         }
     },
