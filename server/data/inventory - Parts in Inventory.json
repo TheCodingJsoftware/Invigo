@@ -98,39 +98,6 @@
             "unit_quantity": 1,
             "modified_date": "Added at March 03 Friday 2023 08:51:40 AM",
             "group": null
-        },
-        "G3-1-Firechamber-back": {
-            "current_quantity": 10,
-            "machine_time": 2.03,
-            "gauge": "10 Gauge",
-            "material": "304 SS",
-            "weight": 60.385,
-            "price": 152.78,
-            "unit_quantity": 1,
-            "modified_date": "Added at March 08 Wednesday 2023 10:54:02 AM",
-            "group": null
-        },
-        "G3-1-Firechamber-left side": {
-            "current_quantity": 10,
-            "machine_time": 1.15,
-            "gauge": "10 Gauge",
-            "material": "304 SS",
-            "weight": 45.073,
-            "price": 112.52,
-            "unit_quantity": 1,
-            "modified_date": "Added at March 08 Wednesday 2023 10:54:02 AM",
-            "group": null
-        },
-        "G3-1-Firechamber-right side": {
-            "current_quantity": 10,
-            "machine_time": 1.15,
-            "gauge": "10 Gauge",
-            "material": "304 SS",
-            "weight": 45.073,
-            "price": 112.52,
-            "unit_quantity": 1,
-            "modified_date": "Added at March 08 Wednesday 2023 10:54:02 AM",
-            "group": null
         }
     },
     "Recut": {
@@ -804,6 +771,28 @@
             "price": 3.04,
             "unit_quantity": 1,
             "modified_date": "Added at March 08 Wednesday 2023 10:54:02 AM",
+            "group": null
+        },
+        "BIA-018": {
+            "current_quantity": 10,
+            "machine_time": 0.22,
+            "gauge": "10 Gauge",
+            "material": "Mild Steel",
+            "weight": 1.071,
+            "price": 1.24,
+            "unit_quantity": 1,
+            "modified_date": "Added at March 03 Friday 2023 08:51:40 AM",
+            "group": null
+        },
+        "BIA-019x2": {
+            "current_quantity": 40,
+            "machine_time": 0.1,
+            "gauge": "10 Gauge",
+            "material": "Mild Steel",
+            "weight": 0.18,
+            "price": 0.37,
+            "unit_quantity": 1,
+            "modified_date": "Added at March 03 Friday 2023 08:51:40 AM",
             "group": null
         }
     },
@@ -1631,6 +1620,39 @@
             "material": "304 SS",
             "weight": 0.922,
             "price": 3.04,
+            "unit_quantity": 1,
+            "modified_date": "Added at March 08 Wednesday 2023 10:54:02 AM",
+            "group": null
+        },
+        "G3-1-Firechamber-back": {
+            "current_quantity": 10,
+            "machine_time": 2.03,
+            "gauge": "10 Gauge",
+            "material": "304 SS",
+            "weight": 60.385,
+            "price": 152.78,
+            "unit_quantity": 1,
+            "modified_date": "Added at March 08 Wednesday 2023 10:54:02 AM",
+            "group": null
+        },
+        "G3-1-Firechamber-left side": {
+            "current_quantity": 10,
+            "machine_time": 1.15,
+            "gauge": "10 Gauge",
+            "material": "304 SS",
+            "weight": 45.073,
+            "price": 112.52,
+            "unit_quantity": 1,
+            "modified_date": "Added at March 08 Wednesday 2023 10:54:02 AM",
+            "group": null
+        },
+        "G3-1-Firechamber-right side": {
+            "current_quantity": 10,
+            "machine_time": 1.15,
+            "gauge": "10 Gauge",
+            "material": "304 SS",
+            "weight": 45.073,
+            "price": 112.52,
             "unit_quantity": 1,
             "modified_date": "Added at March 08 Wednesday 2023 10:54:02 AM",
             "group": null
