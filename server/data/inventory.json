@@ -2287,7 +2287,8 @@
             "latest_change_current_quantity": "Latest Change:\nfrom: 44\nto: 44\nItsme\nFebruary 23 Thursday 2023 11:28:24 AM",
             "latest_change_priority": "Latest Change:\nfrom: 0\nto: 3\nItsme\nSeptember 05 Monday 2022 09:49:27 AM",
             "latest_change_price": "Latest Change:\nfrom: 68.45\nto: 68.45\nItsme\nSeptember 06 Tuesday 2022 11:12:17 AM",
-            "latest_change_use_exchange_rate": "Latest Change:\nfrom: CAD\nto: USD\nItsme\nDecember 16 Friday 2022 09:36:46 AM"
+            "latest_change_use_exchange_rate": "Latest Change:\nfrom: CAD\nto: USD\nItsme\nDecember 16 Friday 2022 09:36:46 AM",
+            "group": "Eon Motor Fan Assy"
         },
         "WeatherStripping NDA- .5\" x 3\/16\" x 50'": {
             "part_number": "WSNDA",
@@ -2739,7 +2740,8 @@
             "latest_change_price": "Latest Change:\nfrom: 325.0\nto: 355.0\nItsme\nMarch 02 Thursday 2023 10:35:07 AM",
             "latest_change_use_exchange_price": "Item added\nItsme\nAugust 22 Monday 2022 03-39-33 PM",
             "latest_change_priority": "Item added\nItsme\nAugust 22 Monday 2022 03-39-33 PM",
-            "latest_change_notes": "Latest Change:\nfrom: \"Vendor: Rante\nDescription: \"\nto: \"Vendor: Rantec\nDescription: \"\nItsme\nAugust 23 Tuesday 2022 02:48:25 PM"
+            "latest_change_notes": "Latest Change:\nfrom: \"Vendor: Rante\nDescription: \"\nto: \"Vendor: Rantec\nDescription: \"\nItsme\nAugust 23 Tuesday 2022 02:48:25 PM",
+            "group": "Eon Motor Fan Assy"
         },
         "bushing 786-251 Bronze Insert Bushing ": {
             "part_number": "786-251",
