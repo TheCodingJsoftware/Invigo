@@ -88,17 +88,6 @@
             "modified_date": "10 quantity added at March 07 Tuesday 2023 01:28:02 PM",
             "group": null
         },
-        "PY-TFT-01_": {
-            "current_quantity": 12,
-            "machine_time": 0.22,
-            "gauge": "1\/2",
-            "material": "Mild Steel",
-            "weight": 0.298,
-            "price": 0.74,
-            "unit_quantity": 1,
-            "modified_date": "Added at March 03 Friday 2023 05:19:24 PM",
-            "group": null
-        },
         "kent trigger_1": {
             "current_quantity": 10,
             "machine_time": 0.05,
@@ -176,17 +165,6 @@
             "modified_date": "Added at March 03 Friday 2023 08:51:40 AM",
             "group": null
         },
-        "PY-TFT-02_": {
-            "current_quantity": 10,
-            "machine_time": 0.18,
-            "gauge": "1\/2",
-            "material": "Mild Steel",
-            "weight": 0.158,
-            "price": 0.55,
-            "unit_quantity": 1,
-            "modified_date": "Added at March 03 Friday 2023 05:19:24 PM",
-            "group": null
-        },
         "Flat pattern - Door Hanger": {
             "current_quantity": 10,
             "machine_time": 0.48,
@@ -251,17 +229,6 @@
             "price": 18.49,
             "unit_quantity": 1,
             "modified_date": "2 quantity added at February 27 Monday 2023 02:37:18 PM",
-            "group": null
-        },
-        "PY-TFT-03_": {
-            "current_quantity": 4,
-            "machine_time": 0.37,
-            "gauge": "1\/2",
-            "material": "Mild Steel",
-            "weight": 0.471,
-            "price": 1.23,
-            "unit_quantity": 1,
-            "modified_date": "Added at March 03 Friday 2023 05:19:24 PM",
             "group": null
         },
         "central air": {
@@ -383,259 +350,6 @@
             "price": 24.02,
             "unit_quantity": 1,
             "modified_date": "Added at March 03 Friday 2023 05:19:24 PM",
-            "group": null
-        },
-        "PY-TFT-11_": {
-            "current_quantity": 1,
-            "machine_time": 0.42,
-            "gauge": "1\/2",
-            "material": "Mild Steel",
-            "weight": 1.028,
-            "price": 1.71,
-            "unit_quantity": 1,
-            "modified_date": "Added at March 03 Friday 2023 05:19:24 PM",
-            "group": null
-        },
-        "PY-TFT-12_": {
-            "current_quantity": 1,
-            "machine_time": 0.43,
-            "gauge": "1\/2",
-            "material": "Mild Steel",
-            "weight": 3.017,
-            "price": 3.01,
-            "unit_quantity": 1,
-            "modified_date": "Added at March 03 Friday 2023 05:19:24 PM",
-            "group": null
-        },
-        "PY-TFT-13_": {
-            "current_quantity": 1,
-            "machine_time": 0.38,
-            "gauge": "1\/2",
-            "material": "Mild Steel",
-            "weight": 0.577,
-            "price": 1.32,
-            "unit_quantity": 1,
-            "modified_date": "Added at March 03 Friday 2023 05:19:24 PM",
-            "group": null
-        },
-        "01 Anchor 12g x64": {
-            "current_quantity": 1,
-            "machine_time": 0.42,
-            "gauge": "12 Gauge",
-            "material": "Mild Steel",
-            "weight": 1.791,
-            "price": 2.2,
-            "unit_quantity": 1,
-            "modified_date": "Added at March 04 Saturday 2023 01:43:50 PM",
-            "group": null
-        },
-        "02 Double Post 12g x72": {
-            "current_quantity": 1,
-            "machine_time": 1.25,
-            "gauge": "12 Gauge",
-            "material": "Mild Steel",
-            "weight": 8.885,
-            "price": 8.81,
-            "unit_quantity": 1,
-            "modified_date": "Added at March 04 Saturday 2023 01:43:50 PM",
-            "group": null
-        },
-        "03 Single Post 12g x35": {
-            "current_quantity": 1,
-            "machine_time": 1.37,
-            "gauge": "12 Gauge",
-            "material": "Mild Steel",
-            "weight": 8.195,
-            "price": 8.67,
-            "unit_quantity": 1,
-            "modified_date": "Added at March 04 Saturday 2023 01:43:50 PM",
-            "group": null
-        },
-        "04 Single Post Small Gate 12g x2": {
-            "current_quantity": 1,
-            "machine_time": 1.57,
-            "gauge": "12 Gauge",
-            "material": "Mild Steel",
-            "weight": 8.116,
-            "price": 9.12,
-            "unit_quantity": 1,
-            "modified_date": "Added at March 04 Saturday 2023 01:43:50 PM",
-            "group": null
-        },
-        "05 Bottom Support 12g x65": {
-            "current_quantity": 1,
-            "machine_time": 0.42,
-            "gauge": "12 Gauge",
-            "material": "Mild Steel",
-            "weight": 2.373,
-            "price": 2.57,
-            "unit_quantity": 1,
-            "modified_date": "Added at March 04 Saturday 2023 01:43:50 PM",
-            "group": null
-        },
-        "06 Middle PurlingL 12g x72": {
-            "current_quantity": 1,
-            "machine_time": 0.27,
-            "gauge": "12 Gauge",
-            "material": "Mild Steel",
-            "weight": 0.735,
-            "price": 1.15,
-            "unit_quantity": 1,
-            "modified_date": "Added at March 04 Saturday 2023 01:43:50 PM",
-            "group": null
-        },
-        "06 Middle PurlingM 12g x72": {
-            "current_quantity": 1,
-            "machine_time": 0.42,
-            "gauge": "12 Gauge",
-            "material": "Mild Steel",
-            "weight": 1.51,
-            "price": 2.02,
-            "unit_quantity": 1,
-            "modified_date": "Added at March 04 Saturday 2023 01:43:50 PM",
-            "group": null
-        },
-        "06 Middle PurlingR 12g x72": {
-            "current_quantity": 1,
-            "machine_time": 0.27,
-            "gauge": "12 Gauge",
-            "material": "Mild Steel",
-            "weight": 0.807,
-            "price": 1.19,
-            "unit_quantity": 1,
-            "modified_date": "Added at March 04 Saturday 2023 01:43:50 PM",
-            "group": null
-        },
-        "13 Top PurlingL 12g x30": {
-            "current_quantity": 1,
-            "machine_time": 0.27,
-            "gauge": "12 Gauge",
-            "material": "Mild Steel",
-            "weight": 1.068,
-            "price": 1.36,
-            "unit_quantity": 1,
-            "modified_date": "Added at March 04 Saturday 2023 01:43:50 PM",
-            "group": null
-        },
-        "13 Top PurlingM 12g x30": {
-            "current_quantity": 1,
-            "machine_time": 0.33,
-            "gauge": "12 Gauge",
-            "material": "Mild Steel",
-            "weight": 1.99,
-            "price": 2.1,
-            "unit_quantity": 1,
-            "modified_date": "Added at March 04 Saturday 2023 01:43:50 PM",
-            "group": null
-        },
-        "17 Far End middle purlingL 12g x48": {
-            "current_quantity": 1,
-            "machine_time": 0.27,
-            "gauge": "12 Gauge",
-            "material": "Mild Steel",
-            "weight": 0.758,
-            "price": 1.16,
-            "unit_quantity": 1,
-            "modified_date": "Added at March 04 Saturday 2023 01:43:50 PM",
-            "group": null
-        },
-        "17 Far End middle purlingM 12g x48": {
-            "current_quantity": 1,
-            "machine_time": 0.4,
-            "gauge": "12 Gauge",
-            "material": "Mild Steel",
-            "weight": 1.289,
-            "price": 1.82,
-            "unit_quantity": 1,
-            "modified_date": "Added at March 04 Saturday 2023 01:43:50 PM",
-            "group": null
-        },
-        "17 Far End middle purlingR 12g x48": {
-            "current_quantity": 1,
-            "machine_time": 0.27,
-            "gauge": "12 Gauge",
-            "material": "Mild Steel",
-            "weight": 0.756,
-            "price": 1.16,
-            "unit_quantity": 1,
-            "modified_date": "Added at March 04 Saturday 2023 01:43:50 PM",
-            "group": null
-        },
-        "18 Far End top purling with extL 12g x8": {
-            "current_quantity": 1,
-            "machine_time": 0.27,
-            "gauge": "12 Gauge",
-            "material": "Mild Steel",
-            "weight": 0.961,
-            "price": 1.29,
-            "unit_quantity": 1,
-            "modified_date": "Added at March 04 Saturday 2023 01:43:50 PM",
-            "group": null
-        },
-        "18 Far End top purling with extM 12g x8": {
-            "current_quantity": 1,
-            "machine_time": 0.43,
-            "gauge": "12 Gauge",
-            "material": "Mild Steel",
-            "weight": 2.194,
-            "price": 2.48,
-            "unit_quantity": 1,
-            "modified_date": "Added at March 04 Saturday 2023 01:43:50 PM",
-            "group": null
-        },
-        "32 Long Double PostL 12g x68": {
-            "current_quantity": 1,
-            "machine_time": 0.42,
-            "gauge": "12 Gauge",
-            "material": "Mild Steel",
-            "weight": 2.01,
-            "price": 2.34,
-            "unit_quantity": 1,
-            "modified_date": "Added at March 04 Saturday 2023 01:43:51 PM",
-            "group": null
-        },
-        "32 Long Double PostR 12g x68": {
-            "current_quantity": 1,
-            "machine_time": 0.47,
-            "gauge": "12 Gauge",
-            "material": "Mild Steel",
-            "weight": 2.407,
-            "price": 2.72,
-            "unit_quantity": 1,
-            "modified_date": "Added at March 04 Saturday 2023 01:43:51 PM",
-            "group": null
-        },
-        "33 Long Single PostL 12g x28": {
-            "current_quantity": 1,
-            "machine_time": 0.42,
-            "gauge": "12 Gauge",
-            "material": "Mild Steel",
-            "weight": 1.79,
-            "price": 2.2,
-            "unit_quantity": 1,
-            "modified_date": "Added at March 04 Saturday 2023 01:43:51 PM",
-            "group": null
-        },
-        "33 Long Single PostR 12g x28": {
-            "current_quantity": 1,
-            "machine_time": 0.53,
-            "gauge": "12 Gauge",
-            "material": "Mild Steel",
-            "weight": 2.281,
-            "price": 2.78,
-            "unit_quantity": 1,
-            "modified_date": "Added at March 04 Saturday 2023 01:43:51 PM",
-            "group": null
-        },
-        "34 Top Long Support 12g x64": {
-            "current_quantity": 1,
-            "machine_time": 0.87,
-            "gauge": "12 Gauge",
-            "material": "Mild Steel",
-            "weight": 7.012,
-            "price": 6.66,
-            "unit_quantity": 1,
-            "modified_date": "Added at March 04 Saturday 2023 01:43:51 PM",
             "group": null
         },
         "Pail Holder x1": {
@@ -2091,7 +1805,295 @@
             "group": null
         }
     },
-    "Farm\/Colony": {},
+    "Farm\/Colony": {
+        "01 Anchor 12g x64": {
+            "current_quantity": 1,
+            "machine_time": 0.42,
+            "gauge": "12 Gauge",
+            "material": "Mild Steel",
+            "weight": 1.791,
+            "price": 2.2,
+            "unit_quantity": 1,
+            "modified_date": "Added at March 04 Saturday 2023 01:43:50 PM",
+            "group": null
+        },
+        "02 Double Post 12g x72": {
+            "current_quantity": 1,
+            "machine_time": 1.25,
+            "gauge": "12 Gauge",
+            "material": "Mild Steel",
+            "weight": 8.885,
+            "price": 8.81,
+            "unit_quantity": 1,
+            "modified_date": "Added at March 04 Saturday 2023 01:43:50 PM",
+            "group": null
+        },
+        "03 Single Post 12g x35": {
+            "current_quantity": 1,
+            "machine_time": 1.37,
+            "gauge": "12 Gauge",
+            "material": "Mild Steel",
+            "weight": 8.195,
+            "price": 8.67,
+            "unit_quantity": 1,
+            "modified_date": "Added at March 04 Saturday 2023 01:43:50 PM",
+            "group": null
+        },
+        "04 Single Post Small Gate 12g x2": {
+            "current_quantity": 1,
+            "machine_time": 1.57,
+            "gauge": "12 Gauge",
+            "material": "Mild Steel",
+            "weight": 8.116,
+            "price": 9.12,
+            "unit_quantity": 1,
+            "modified_date": "Added at March 04 Saturday 2023 01:43:50 PM",
+            "group": null
+        },
+        "05 Bottom Support 12g x65": {
+            "current_quantity": 1,
+            "machine_time": 0.42,
+            "gauge": "12 Gauge",
+            "material": "Mild Steel",
+            "weight": 2.373,
+            "price": 2.57,
+            "unit_quantity": 1,
+            "modified_date": "Added at March 04 Saturday 2023 01:43:50 PM",
+            "group": null
+        },
+        "06 Middle PurlingL 12g x72": {
+            "current_quantity": 1,
+            "machine_time": 0.27,
+            "gauge": "12 Gauge",
+            "material": "Mild Steel",
+            "weight": 0.735,
+            "price": 1.15,
+            "unit_quantity": 1,
+            "modified_date": "Added at March 04 Saturday 2023 01:43:50 PM",
+            "group": null
+        },
+        "06 Middle PurlingM 12g x72": {
+            "current_quantity": 1,
+            "machine_time": 0.42,
+            "gauge": "12 Gauge",
+            "material": "Mild Steel",
+            "weight": 1.51,
+            "price": 2.02,
+            "unit_quantity": 1,
+            "modified_date": "Added at March 04 Saturday 2023 01:43:50 PM",
+            "group": null
+        },
+        "06 Middle PurlingR 12g x72": {
+            "current_quantity": 1,
+            "machine_time": 0.27,
+            "gauge": "12 Gauge",
+            "material": "Mild Steel",
+            "weight": 0.807,
+            "price": 1.19,
+            "unit_quantity": 1,
+            "modified_date": "Added at March 04 Saturday 2023 01:43:50 PM",
+            "group": null
+        },
+        "13 Top PurlingL 12g x30": {
+            "current_quantity": 1,
+            "machine_time": 0.27,
+            "gauge": "12 Gauge",
+            "material": "Mild Steel",
+            "weight": 1.068,
+            "price": 1.36,
+            "unit_quantity": 1,
+            "modified_date": "Added at March 04 Saturday 2023 01:43:50 PM",
+            "group": null
+        },
+        "13 Top PurlingM 12g x30": {
+            "current_quantity": 1,
+            "machine_time": 0.33,
+            "gauge": "12 Gauge",
+            "material": "Mild Steel",
+            "weight": 1.99,
+            "price": 2.1,
+            "unit_quantity": 1,
+            "modified_date": "Added at March 04 Saturday 2023 01:43:50 PM",
+            "group": null
+        },
+        "17 Far End middle purlingL 12g x48": {
+            "current_quantity": 1,
+            "machine_time": 0.27,
+            "gauge": "12 Gauge",
+            "material": "Mild Steel",
+            "weight": 0.758,
+            "price": 1.16,
+            "unit_quantity": 1,
+            "modified_date": "Added at March 04 Saturday 2023 01:43:50 PM",
+            "group": null
+        },
+        "17 Far End middle purlingM 12g x48": {
+            "current_quantity": 1,
+            "machine_time": 0.4,
+            "gauge": "12 Gauge",
+            "material": "Mild Steel",
+            "weight": 1.289,
+            "price": 1.82,
+            "unit_quantity": 1,
+            "modified_date": "Added at March 04 Saturday 2023 01:43:50 PM",
+            "group": null
+        },
+        "17 Far End middle purlingR 12g x48": {
+            "current_quantity": 1,
+            "machine_time": 0.27,
+            "gauge": "12 Gauge",
+            "material": "Mild Steel",
+            "weight": 0.756,
+            "price": 1.16,
+            "unit_quantity": 1,
+            "modified_date": "Added at March 04 Saturday 2023 01:43:50 PM",
+            "group": null
+        },
+        "18 Far End top purling with extL 12g x8": {
+            "current_quantity": 1,
+            "machine_time": 0.27,
+            "gauge": "12 Gauge",
+            "material": "Mild Steel",
+            "weight": 0.961,
+            "price": 1.29,
+            "unit_quantity": 1,
+            "modified_date": "Added at March 04 Saturday 2023 01:43:50 PM",
+            "group": null
+        },
+        "18 Far End top purling with extM 12g x8": {
+            "current_quantity": 1,
+            "machine_time": 0.43,
+            "gauge": "12 Gauge",
+            "material": "Mild Steel",
+            "weight": 2.194,
+            "price": 2.48,
+            "unit_quantity": 1,
+            "modified_date": "Added at March 04 Saturday 2023 01:43:50 PM",
+            "group": null
+        },
+        "32 Long Double PostL 12g x68": {
+            "current_quantity": 1,
+            "machine_time": 0.42,
+            "gauge": "12 Gauge",
+            "material": "Mild Steel",
+            "weight": 2.01,
+            "price": 2.34,
+            "unit_quantity": 1,
+            "modified_date": "Added at March 04 Saturday 2023 01:43:51 PM",
+            "group": null
+        },
+        "32 Long Double PostR 12g x68": {
+            "current_quantity": 1,
+            "machine_time": 0.47,
+            "gauge": "12 Gauge",
+            "material": "Mild Steel",
+            "weight": 2.407,
+            "price": 2.72,
+            "unit_quantity": 1,
+            "modified_date": "Added at March 04 Saturday 2023 01:43:51 PM",
+            "group": null
+        },
+        "33 Long Single PostL 12g x28": {
+            "current_quantity": 1,
+            "machine_time": 0.42,
+            "gauge": "12 Gauge",
+            "material": "Mild Steel",
+            "weight": 1.79,
+            "price": 2.2,
+            "unit_quantity": 1,
+            "modified_date": "Added at March 04 Saturday 2023 01:43:51 PM",
+            "group": null
+        },
+        "33 Long Single PostR 12g x28": {
+            "current_quantity": 1,
+            "machine_time": 0.53,
+            "gauge": "12 Gauge",
+            "material": "Mild Steel",
+            "weight": 2.281,
+            "price": 2.78,
+            "unit_quantity": 1,
+            "modified_date": "Added at March 04 Saturday 2023 01:43:51 PM",
+            "group": null
+        },
+        "34 Top Long Support 12g x64": {
+            "current_quantity": 1,
+            "machine_time": 0.87,
+            "gauge": "12 Gauge",
+            "material": "Mild Steel",
+            "weight": 7.012,
+            "price": 6.66,
+            "unit_quantity": 1,
+            "modified_date": "Added at March 04 Saturday 2023 01:43:51 PM",
+            "group": null
+        }
+    },
     "LCB300 Boiler\/Chip Bin": {},
-    "Piney MFG": {}
+    "Piney MFG": {
+        "PY-TFT-01_": {
+            "current_quantity": 12,
+            "machine_time": 0.22,
+            "gauge": "1\/2",
+            "material": "Mild Steel",
+            "weight": 0.298,
+            "price": 0.74,
+            "unit_quantity": 1,
+            "modified_date": "Added at March 03 Friday 2023 05:19:24 PM",
+            "group": null
+        },
+        "PY-TFT-02_": {
+            "current_quantity": 10,
+            "machine_time": 0.18,
+            "gauge": "1\/2",
+            "material": "Mild Steel",
+            "weight": 0.158,
+            "price": 0.55,
+            "unit_quantity": 1,
+            "modified_date": "Added at March 03 Friday 2023 05:19:24 PM",
+            "group": null
+        },
+        "PY-TFT-03_": {
+            "current_quantity": 4,
+            "machine_time": 0.37,
+            "gauge": "1\/2",
+            "material": "Mild Steel",
+            "weight": 0.471,
+            "price": 1.23,
+            "unit_quantity": 1,
+            "modified_date": "Added at March 03 Friday 2023 05:19:24 PM",
+            "group": null
+        },
+        "PY-TFT-11_": {
+            "current_quantity": 1,
+            "machine_time": 0.42,
+            "gauge": "1\/2",
+            "material": "Mild Steel",
+            "weight": 1.028,
+            "price": 1.71,
+            "unit_quantity": 1,
+            "modified_date": "Added at March 03 Friday 2023 05:19:24 PM",
+            "group": null
+        },
+        "PY-TFT-12_": {
+            "current_quantity": 1,
+            "machine_time": 0.43,
+            "gauge": "1\/2",
+            "material": "Mild Steel",
+            "weight": 3.017,
+            "price": 3.01,
+            "unit_quantity": 1,
+            "modified_date": "Added at March 03 Friday 2023 05:19:24 PM",
+            "group": null
+        },
+        "PY-TFT-13_": {
+            "current_quantity": 1,
+            "machine_time": 0.38,
+            "gauge": "1\/2",
+            "material": "Mild Steel",
+            "weight": 0.577,
+            "price": 1.32,
+            "unit_quantity": 1,
+            "modified_date": "Added at March 03 Friday 2023 05:19:24 PM",
+            "group": null
+        }
+    }
 }
