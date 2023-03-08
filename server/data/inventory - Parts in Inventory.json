@@ -1,16 +1,5 @@
 {
     "Custom": {
-        "SFM-01 BL28": {
-            "current_quantity": 55,
-            "machine_time": 0.3,
-            "gauge": "12 Gauge",
-            "material": "Mild Steel",
-            "weight": 0.606,
-            "price": 1.14,
-            "unit_quantity": 1,
-            "modified_date": "Added at March 04 Saturday 2023 01:43:51 PM",
-            "group": null
-        },
         "SFM-02 BL34": {
             "current_quantity": 55,
             "machine_time": 0.32,
@@ -154,17 +143,6 @@
             "modified_date": "Added at March 07 Tuesday 2023 08:27:23 AM",
             "group": null
         },
-        "central air plate": {
-            "current_quantity": 3,
-            "machine_time": 0.37,
-            "gauge": "18 Gauge",
-            "material": "304 SS",
-            "weight": 4.343,
-            "price": 11.92,
-            "unit_quantity": 1,
-            "modified_date": "Added at February 25 Saturday 2023 09:10:26 AM",
-            "group": null
-        },
         "Flat pattern - P-008": {
             "current_quantity": 2,
             "machine_time": 0.27,
@@ -196,17 +174,6 @@
             "price": 4.8,
             "unit_quantity": 1,
             "modified_date": "Added at March 03 Friday 2023 05:19:24 PM",
-            "group": null
-        },
-        "13 Top PurlingR 12g x30": {
-            "current_quantity": 2,
-            "machine_time": 0.27,
-            "gauge": "12 Gauge",
-            "material": "Mild Steel",
-            "weight": 1.035,
-            "price": 1.34,
-            "unit_quantity": 1,
-            "modified_date": "Added at March 04 Saturday 2023 01:43:50 PM",
             "group": null
         },
         "Flat pattern - SP": {
@@ -402,6 +369,17 @@
             "price": 15.36,
             "unit_quantity": 1,
             "modified_date": "Added at March 03 Friday 2023 03:46:38 PM",
+            "group": null
+        },
+        "SFM-01 BL28": {
+            "current_quantity": 55,
+            "machine_time": 0.3,
+            "gauge": "12 Gauge",
+            "material": "Mild Steel",
+            "weight": 0.606,
+            "price": 1.14,
+            "unit_quantity": 1,
+            "modified_date": "Added at March 04 Saturday 2023 01:43:51 PM",
             "group": null
         }
     },
@@ -2002,6 +1980,28 @@
             "price": 1.71,
             "unit_quantity": 1,
             "modified_date": "Added at March 04 Saturday 2023 01:43:51 PM",
+            "group": null
+        },
+        "13 Top PurlingR 12g x30": {
+            "current_quantity": 2,
+            "machine_time": 0.27,
+            "gauge": "12 Gauge",
+            "material": "Mild Steel",
+            "weight": 1.035,
+            "price": 1.34,
+            "unit_quantity": 1,
+            "modified_date": "Added at March 04 Saturday 2023 01:43:50 PM",
+            "group": null
+        },
+        "central air plate": {
+            "current_quantity": 3,
+            "machine_time": 0.37,
+            "gauge": "18 Gauge",
+            "material": "304 SS",
+            "weight": 4.343,
+            "price": 11.92,
+            "unit_quantity": 1,
+            "modified_date": "Added at February 25 Saturday 2023 09:10:26 AM",
             "group": null
         }
     },
