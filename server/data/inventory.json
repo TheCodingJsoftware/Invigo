@@ -2328,19 +2328,6 @@
             "latest_change_priority": "Item added\nItsme\nJuly 07 Thursday 2022 03-57-46 PM",
             "latest_change_notes": "Latest Change:\nfrom: \"Vendor: A.Adams Supply\nDescription: mc master car\"\nto: \"Vendor: A.Adams Supply\nDescription: mc master carr\"\nItsme\nJanuary 10 Tuesday 2023 04:18:46 PM"
         },
-        "300 ML General Purpose Black Silicone 300ML ": {
-            "part_number": "30203",
-            "unit_quantity": 1,
-            "current_quantity": 57,
-            "price": 9.7,
-            "use_exchange_rate": false,
-            "priority": 3,
-            "notes": "Vendor: Rantec\nRachel@rantec.ca\nDescription: ",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 57\nto: 57\nItsme\nFebruary 14 Tuesday 2023 11:07:18 AM",
-            "latest_change_price": "Latest Change:\nfrom: 9.7\nto: 9.7\nItsme\nJuly 07 Thursday 2022 03:59:16 PM",
-            "latest_change_part_number": "Latest Change:\nfrom: 3020\nto: 30203\nItsme\nNovember 03 Thursday 2022 10:02:36 AM",
-            "latest_change_name": "Latest Change:\nfrom: \"300 ML General Purpos Black Silicone 300ML \"\nto: \"300 ML General Purpose Black Silicone 300ML \"\nItsme\nNovember 03 Thursday 2022 10:03:03 AM"
-        },
         "38100 Front MNT Snap-In SCR TERM": {
             "part_number": "38100",
             "unit_quantity": 1,
@@ -2991,6 +2978,21 @@
             "latest_change_use_exchange_price": "Item added\nItsme\nJuly 05 Tuesday 2022 10-52-34 AM",
             "latest_change_priority": "Item added\nItsme\nJuly 05 Tuesday 2022 10-52-34 AM",
             "latest_change_notes": "Latest Change:\nfrom: \"Vendor: Sierra Pacific Engeneering and Products\nDescription: \nGoes With 12BK as 1 ass\"\nto: \"Vendor: Sierra Pacific Engeneering and Products\nDescription: \nGoes With 12BK as 1 assy\"\nItsme\nJuly 07 Thursday 2022 04:08:20 PM"
+        },
+        "300 ML General Purpose Black Silicone 300ML ": {
+            "part_number": "30203",
+            "unit_quantity": 2.0,
+            "current_quantity": 357,
+            "price": 9.7,
+            "use_exchange_rate": false,
+            "priority": 3,
+            "notes": "Vendor: Rantec\nRachel@rantec.ca\nDescription: Grunthal lumber\nGeneral purpose sil;icaon",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 357\nto: 357\nLynden\nMarch 08 Wednesday 2023 11:21:25 AM",
+            "latest_change_price": "Latest Change:\nfrom: 9.7\nto: 9.7\nItsme\nJuly 07 Thursday 2022 03:59:16 PM",
+            "latest_change_part_number": "Latest Change:\nfrom: 3020\nto: 30203\nItsme\nNovember 03 Thursday 2022 10:02:36 AM",
+            "latest_change_name": "Latest Change:\nfrom: \"300 ML General Purpos Black Silicone 300ML \"\nto: \"300 ML General Purpose Black Silicone 300ML \"\nItsme\nNovember 03 Thursday 2022 10:03:03 AM",
+            "latest_change_unit_quantity": "Latest Change:\nfrom: 0.0\nto: 2.0\nLynden\nMarch 08 Wednesday 2023 11:20:03 AM",
+            "latest_change_notes": "Latest Change:\nfrom: \"Vendor: Rantec\nRachel@rantec.ca\nDescription: Grunthal lumber\nGeneral purpose sil;icao\"\nto: \"Vendor: Rantec\nRachel@rantec.ca\nDescription: Grunthal lumber\nGeneral purpose sil;icaon\"\nLynden\nMarch 08 Wednesday 2023 11:20:21 AM"
         },
         "Hexagon Head Machined Screw 5\/16   10-32x1\/2 ": {
             "part_number": "776",
