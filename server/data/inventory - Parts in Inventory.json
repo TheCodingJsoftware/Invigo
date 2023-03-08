@@ -1,16 +1,5 @@
 {
     "Custom": {
-        "2840-92": {
-            "current_quantity": 50,
-            "machine_time": 0.53,
-            "gauge": "18 Gauge",
-            "material": "Galvanneal",
-            "weight": 2.248,
-            "price": 4.07,
-            "unit_quantity": 1,
-            "modified_date": "Added at March 07 Tuesday 2023 01:28:02 PM",
-            "group": null
-        },
         "BIA-019x2": {
             "current_quantity": 40,
             "machine_time": 0.1,
@@ -141,72 +130,6 @@
             "price": 2.1,
             "unit_quantity": 1,
             "modified_date": "Added at February 25 Saturday 2023 09:10:26 AM",
-            "group": null
-        },
-        "central air filter mesh": {
-            "current_quantity": 4,
-            "machine_time": 1.18,
-            "gauge": "18 Gauge",
-            "material": "304 SS",
-            "weight": 1.447,
-            "price": 8.37,
-            "unit_quantity": 1,
-            "modified_date": "Added at February 25 Saturday 2023 09:10:26 AM",
-            "group": null
-        },
-        "plates for everything Volkswagon": {
-            "current_quantity": 4,
-            "machine_time": 0.68,
-            "gauge": "18 Gauge",
-            "material": "304 SS",
-            "weight": 0.398,
-            "price": 3.78,
-            "unit_quantity": 1,
-            "modified_date": "Added at February 25 Saturday 2023 09:10:26 AM",
-            "group": null
-        },
-        "LCB300M-CB103": {
-            "current_quantity": 4,
-            "machine_time": 1.5,
-            "gauge": "12 Gauge",
-            "material": "Galvanized",
-            "weight": 12.287,
-            "price": 18.49,
-            "unit_quantity": 1,
-            "modified_date": "2 quantity added at February 27 Monday 2023 02:37:18 PM",
-            "group": null
-        },
-        "central air": {
-            "current_quantity": 3,
-            "machine_time": 1.45,
-            "gauge": "18 Gauge",
-            "material": "304 SS",
-            "weight": 17.37,
-            "price": 47.56,
-            "unit_quantity": 1,
-            "modified_date": "Added at February 25 Saturday 2023 09:10:26 AM",
-            "group": null
-        },
-        "central air plate": {
-            "current_quantity": 3,
-            "machine_time": 0.37,
-            "gauge": "18 Gauge",
-            "material": "304 SS",
-            "weight": 4.343,
-            "price": 11.92,
-            "unit_quantity": 1,
-            "modified_date": "Added at February 25 Saturday 2023 09:10:26 AM",
-            "group": null
-        },
-        "2840-Shaker-64x2": {
-            "current_quantity": 3,
-            "machine_time": 1.67,
-            "gauge": "3\/8",
-            "material": "Mild Steel",
-            "weight": 17.471,
-            "price": 15.36,
-            "unit_quantity": 1,
-            "modified_date": "Added at March 03 Friday 2023 03:46:38 PM",
             "group": null
         },
         "Flat pattern - P-008": {
@@ -413,6 +336,28 @@
             "price": 1.14,
             "unit_quantity": 1,
             "modified_date": "Added at March 04 Saturday 2023 01:43:51 PM",
+            "group": null
+        },
+        "2840-92": {
+            "current_quantity": 50,
+            "machine_time": 0.53,
+            "gauge": "18 Gauge",
+            "material": "Galvanneal",
+            "weight": 2.248,
+            "price": 4.07,
+            "unit_quantity": 1,
+            "modified_date": "Added at March 07 Tuesday 2023 01:28:02 PM",
+            "group": null
+        },
+        "2840-Shaker-64x2": {
+            "current_quantity": 3,
+            "machine_time": 1.67,
+            "gauge": "3\/8",
+            "material": "Mild Steel",
+            "weight": 17.471,
+            "price": 15.36,
+            "unit_quantity": 1,
+            "modified_date": "Added at March 03 Friday 2023 03:46:38 PM",
             "group": null
         }
     },
@@ -2025,9 +1970,65 @@
             "unit_quantity": 1,
             "modified_date": "Added at March 04 Saturday 2023 01:43:51 PM",
             "group": null
+        },
+        "central air filter mesh": {
+            "current_quantity": 3.0,
+            "machine_time": 1.18,
+            "gauge": "18 Gauge",
+            "material": "304 SS",
+            "weight": 1.447,
+            "price": 8.37,
+            "unit_quantity": 1,
+            "modified_date": "Manually set to 3.0 quantity at March 08 Wednesday 2023 09:26:01 AM",
+            "group": null
+        },
+        "plates for everything Volkswagon": {
+            "current_quantity": 4.0,
+            "machine_time": 0.68,
+            "gauge": "18 Gauge",
+            "material": "304 SS",
+            "weight": 0.398,
+            "price": 3.78,
+            "unit_quantity": 1,
+            "modified_date": "Manually set to 4.0 quantity at March 08 Wednesday 2023 09:26:06 AM",
+            "group": null
+        },
+        "central air": {
+            "current_quantity": 2.0,
+            "machine_time": 1.45,
+            "gauge": "18 Gauge",
+            "material": "304 SS",
+            "weight": 17.37,
+            "price": 47.56,
+            "unit_quantity": 1,
+            "modified_date": "Manually set to 2.0 quantity at March 08 Wednesday 2023 09:26:03 AM",
+            "group": null
+        },
+        "central air plate": {
+            "current_quantity": 2.0,
+            "machine_time": 0.37,
+            "gauge": "18 Gauge",
+            "material": "304 SS",
+            "weight": 4.343,
+            "price": 11.92,
+            "unit_quantity": 1,
+            "modified_date": "Manually set to 2.0 quantity at March 08 Wednesday 2023 09:26:08 AM",
+            "group": null
         }
     },
-    "LCB300 Boiler\/Chip Bin": {},
+    "LCB300 Boiler\/Chip Bin": {
+        "LCB300M-CB103": {
+            "current_quantity": 4,
+            "machine_time": 1.5,
+            "gauge": "12 Gauge",
+            "material": "Galvanized",
+            "weight": 12.287,
+            "price": 18.49,
+            "unit_quantity": 1,
+            "modified_date": "2 quantity added at February 27 Monday 2023 02:37:18 PM",
+            "group": null
+        }
+    },
     "Piney MFG": {
         "PY-TFT-01_": {
             "current_quantity": 12,
