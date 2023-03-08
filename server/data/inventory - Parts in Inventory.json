@@ -1,27 +1,5 @@
 {
     "Custom": {
-        "G2Plus-Firechamber-Skirting-Mount Pinx9": {
-            "current_quantity": 140,
-            "machine_time": 0.1,
-            "gauge": "3\/8",
-            "material": "Mild Steel",
-            "weight": 0.131,
-            "price": 0.33,
-            "unit_quantity": 1,
-            "modified_date": "Added at March 08 Wednesday 2023 02:06:30 PM",
-            "group": null
-        },
-        "G2Plus-Primary Air Delivery Penetration Flangex6": {
-            "current_quantity": 60,
-            "machine_time": 0.32,
-            "gauge": "3\/8",
-            "material": "Mild Steel",
-            "weight": 1.004,
-            "price": 1.44,
-            "unit_quantity": 1,
-            "modified_date": "Added at March 08 Wednesday 2023 02:06:30 PM",
-            "group": null
-        },
         "S30-37": {
             "current_quantity": 20,
             "machine_time": 0.4,
@@ -42,17 +20,6 @@
             "price": 0.69,
             "unit_quantity": 1,
             "modified_date": "Added at March 04 Saturday 2023 01:43:51 PM",
-            "group": null
-        },
-        "G2Plus-Ceramics-Secondary Plate-part1x2": {
-            "current_quantity": 20,
-            "machine_time": 2.2,
-            "gauge": "3\/8",
-            "material": "Mild Steel",
-            "weight": 4.702,
-            "price": 8.51,
-            "unit_quantity": 1,
-            "modified_date": "Added at March 08 Wednesday 2023 02:06:30 PM",
             "group": null
         },
         "BIA-018": {
@@ -1633,6 +1600,39 @@
             "price": 2.4,
             "unit_quantity": 1,
             "modified_date": "Added at March 03 Friday 2023 08:51:40 AM",
+            "group": null
+        },
+        "G2Plus-Firechamber-Skirting-Mount Pinx9": {
+            "current_quantity": 140,
+            "machine_time": 0.1,
+            "gauge": "3\/8",
+            "material": "Mild Steel",
+            "weight": 0.131,
+            "price": 0.33,
+            "unit_quantity": 1,
+            "modified_date": "Added at March 08 Wednesday 2023 02:06:30 PM",
+            "group": null
+        },
+        "G2Plus-Primary Air Delivery Penetration Flangex6": {
+            "current_quantity": 60,
+            "machine_time": 0.32,
+            "gauge": "3\/8",
+            "material": "Mild Steel",
+            "weight": 1.004,
+            "price": 1.44,
+            "unit_quantity": 1,
+            "modified_date": "Added at March 08 Wednesday 2023 02:06:30 PM",
+            "group": null
+        },
+        "G2Plus-Ceramics-Secondary Plate-part1x2": {
+            "current_quantity": 20,
+            "machine_time": 2.2,
+            "gauge": "3\/8",
+            "material": "Mild Steel",
+            "weight": 4.702,
+            "price": 8.51,
+            "unit_quantity": 1,
+            "modified_date": "Added at March 08 Wednesday 2023 02:06:30 PM",
             "group": null
         }
     },
