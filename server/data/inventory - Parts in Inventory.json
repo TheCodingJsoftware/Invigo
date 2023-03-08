@@ -524,6 +524,17 @@
             "unit_quantity": 1,
             "modified_date": "Added at March 04 Saturday 2023 01:43:51 PM",
             "group": null
+        },
+        "2840-92": {
+            "current_quantity": 50,
+            "machine_time": 0.53,
+            "gauge": "18 Gauge",
+            "material": "Galvanneal",
+            "weight": 2.248,
+            "price": 4.07,
+            "unit_quantity": 1,
+            "modified_date": "Added at March 07 Tuesday 2023 01:28:02 PM",
+            "group": null
         }
     },
     "BL34": {
