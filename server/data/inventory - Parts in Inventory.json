@@ -1,38 +1,5 @@
 {
     "Custom": {
-        "SFM-02 BL34": {
-            "current_quantity": 55,
-            "machine_time": 0.32,
-            "gauge": "12 Gauge",
-            "material": "Mild Steel",
-            "weight": 0.559,
-            "price": 1.16,
-            "unit_quantity": 1,
-            "modified_date": "Added at March 04 Saturday 2023 01:43:51 PM",
-            "group": null
-        },
-        "BIA-019x2": {
-            "current_quantity": 40,
-            "machine_time": 0.1,
-            "gauge": "10 Gauge",
-            "material": "Mild Steel",
-            "weight": 0.18,
-            "price": 0.37,
-            "unit_quantity": 2.0,
-            "modified_date": "Added at March 03 Friday 2023 08:51:40 AM",
-            "group": null
-        },
-        "BIA-023": {
-            "current_quantity": 40,
-            "machine_time": 0.05,
-            "gauge": "10 Gauge",
-            "material": "Mild Steel",
-            "weight": 0.037,
-            "price": 0.15,
-            "unit_quantity": 1,
-            "modified_date": "Added at March 03 Friday 2023 08:51:40 AM",
-            "group": null
-        },
         "S30-37": {
             "current_quantity": 20,
             "machine_time": 0.4,
@@ -55,17 +22,6 @@
             "modified_date": "Added at March 04 Saturday 2023 01:43:51 PM",
             "group": null
         },
-        "BIA-024": {
-            "current_quantity": 15,
-            "machine_time": 0.23,
-            "gauge": "18 Gauge",
-            "material": "Galvanneal",
-            "weight": 1.417,
-            "price": 2.3,
-            "unit_quantity": 1,
-            "modified_date": "10 quantity added at March 07 Tuesday 2023 01:28:02 PM",
-            "group": null
-        },
         "BIA-018": {
             "current_quantity": 10,
             "machine_time": 0.22,
@@ -73,39 +29,6 @@
             "material": "Mild Steel",
             "weight": 1.071,
             "price": 1.24,
-            "unit_quantity": 1,
-            "modified_date": "Added at March 03 Friday 2023 08:51:40 AM",
-            "group": null
-        },
-        "BIA-031": {
-            "current_quantity": 10,
-            "machine_time": 0.23,
-            "gauge": "10 Gauge",
-            "material": "Mild Steel",
-            "weight": 1.191,
-            "price": 1.34,
-            "unit_quantity": 1,
-            "modified_date": "Added at March 03 Friday 2023 08:51:40 AM",
-            "group": null
-        },
-        "BIA-032": {
-            "current_quantity": 10,
-            "machine_time": 0.28,
-            "gauge": "10 Gauge",
-            "material": "Mild Steel",
-            "weight": 2.175,
-            "price": 2.09,
-            "unit_quantity": 1,
-            "modified_date": "Added at March 03 Friday 2023 08:51:40 AM",
-            "group": null
-        },
-        "BIA-036": {
-            "current_quantity": 10,
-            "machine_time": 0.37,
-            "gauge": "10 Gauge",
-            "material": "Mild Steel",
-            "weight": 2.303,
-            "price": 2.4,
             "unit_quantity": 1,
             "modified_date": "Added at March 03 Friday 2023 08:51:40 AM",
             "group": null
@@ -130,83 +53,6 @@
             "price": 2.03,
             "unit_quantity": 1,
             "modified_date": "Added at March 03 Friday 2023 08:51:40 AM",
-            "group": null
-        },
-        "ring for chimm": {
-            "current_quantity": 5,
-            "machine_time": 0.15,
-            "gauge": "18 Gauge",
-            "material": "Galvanneal",
-            "weight": 0.167,
-            "price": 0.58,
-            "unit_quantity": 1,
-            "modified_date": "Added at March 07 Tuesday 2023 08:27:23 AM",
-            "group": null
-        },
-        "Flat pattern - P-008": {
-            "current_quantity": 2,
-            "machine_time": 0.27,
-            "gauge": "1\/2",
-            "material": "Mild Steel",
-            "weight": 0.383,
-            "price": 0.92,
-            "unit_quantity": 1,
-            "modified_date": "Added at March 03 Friday 2023 05:19:24 PM",
-            "group": null
-        },
-        "Flat pattern - P-009": {
-            "current_quantity": 2,
-            "machine_time": 0.33,
-            "gauge": "1\/2",
-            "material": "Mild Steel",
-            "weight": 1.42,
-            "price": 1.73,
-            "unit_quantity": 1,
-            "modified_date": "Added at March 03 Friday 2023 05:19:24 PM",
-            "group": null
-        },
-        "Flat pattern - SP1": {
-            "current_quantity": 2,
-            "machine_time": 0.6,
-            "gauge": "1\/2",
-            "material": "Mild Steel",
-            "weight": 5.162,
-            "price": 4.8,
-            "unit_quantity": 1,
-            "modified_date": "Added at March 03 Friday 2023 05:19:24 PM",
-            "group": null
-        },
-        "Flat pattern - SP": {
-            "current_quantity": 1,
-            "machine_time": 2.38,
-            "gauge": "1\/2",
-            "material": "Mild Steel",
-            "weight": 28.227,
-            "price": 24.02,
-            "unit_quantity": 1,
-            "modified_date": "Added at March 03 Friday 2023 05:19:24 PM",
-            "group": null
-        },
-        "Rolled part no holes x1": {
-            "current_quantity": 1,
-            "machine_time": 0.25,
-            "gauge": "12 Gauge",
-            "material": "Mild Steel",
-            "weight": 0.574,
-            "price": 0.99,
-            "unit_quantity": 1,
-            "modified_date": "Added at March 04 Saturday 2023 01:43:51 PM",
-            "group": null
-        },
-        "Rolled part x1": {
-            "current_quantity": 1,
-            "machine_time": 0.3,
-            "gauge": "12 Gauge",
-            "material": "Mild Steel",
-            "weight": 0.567,
-            "price": 1.11,
-            "unit_quantity": 1,
-            "modified_date": "Added at March 04 Saturday 2023 01:43:51 PM",
             "group": null
         }
     },
@@ -404,6 +250,17 @@
             "price": 37.3,
             "unit_quantity": 1,
             "modified_date": "10 quantity added at February 25 Saturday 2023 10:15:58 AM",
+            "group": null
+        },
+        "SFM-02 BL34": {
+            "current_quantity": 55,
+            "machine_time": 0.32,
+            "gauge": "12 Gauge",
+            "material": "Mild Steel",
+            "weight": 0.559,
+            "price": 1.16,
+            "unit_quantity": 1,
+            "modified_date": "Added at March 04 Saturday 2023 01:43:51 PM",
             "group": null
         }
     },
@@ -813,6 +670,17 @@
             "material": "Galvanneal",
             "weight": 0.059,
             "price": 0.27,
+            "unit_quantity": 1,
+            "modified_date": "Added at March 07 Tuesday 2023 08:27:23 AM",
+            "group": null
+        },
+        "ring for chimm": {
+            "current_quantity": 5,
+            "machine_time": 0.15,
+            "gauge": "18 Gauge",
+            "material": "Galvanneal",
+            "weight": 0.167,
+            "price": 0.58,
             "unit_quantity": 1,
             "modified_date": "Added at March 07 Tuesday 2023 08:27:23 AM",
             "group": null
@@ -1601,6 +1469,72 @@
             "unit_quantity": 1,
             "modified_date": "Added at March 07 Tuesday 2023 01:28:02 PM",
             "group": null
+        },
+        "BIA-031": {
+            "current_quantity": 10,
+            "machine_time": 0.23,
+            "gauge": "10 Gauge",
+            "material": "Mild Steel",
+            "weight": 1.191,
+            "price": 1.34,
+            "unit_quantity": 1,
+            "modified_date": "Added at March 03 Friday 2023 08:51:40 AM",
+            "group": null
+        },
+        "BIA-032": {
+            "current_quantity": 10,
+            "machine_time": 0.28,
+            "gauge": "10 Gauge",
+            "material": "Mild Steel",
+            "weight": 2.175,
+            "price": 2.09,
+            "unit_quantity": 1,
+            "modified_date": "Added at March 03 Friday 2023 08:51:40 AM",
+            "group": null
+        },
+        "BIA-036": {
+            "current_quantity": 10,
+            "machine_time": 0.37,
+            "gauge": "10 Gauge",
+            "material": "Mild Steel",
+            "weight": 2.303,
+            "price": 2.4,
+            "unit_quantity": 1,
+            "modified_date": "Added at March 03 Friday 2023 08:51:40 AM",
+            "group": null
+        },
+        "BIA-019x2": {
+            "current_quantity": 40,
+            "machine_time": 0.1,
+            "gauge": "10 Gauge",
+            "material": "Mild Steel",
+            "weight": 0.18,
+            "price": 0.37,
+            "unit_quantity": 1,
+            "modified_date": "Added at March 03 Friday 2023 08:51:40 AM",
+            "group": null
+        },
+        "BIA-023": {
+            "current_quantity": 40,
+            "machine_time": 0.05,
+            "gauge": "10 Gauge",
+            "material": "Mild Steel",
+            "weight": 0.037,
+            "price": 0.15,
+            "unit_quantity": 1,
+            "modified_date": "Added at March 03 Friday 2023 08:51:40 AM",
+            "group": null
+        },
+        "BIA-024": {
+            "current_quantity": 15,
+            "machine_time": 0.23,
+            "gauge": "18 Gauge",
+            "material": "Galvanneal",
+            "weight": 1.417,
+            "price": 2.3,
+            "unit_quantity": 1,
+            "modified_date": "10 quantity added at March 07 Tuesday 2023 01:28:02 PM",
+            "group": null
         }
     },
     "Overhead Door Part's": {
@@ -2003,6 +1937,28 @@
             "unit_quantity": 1,
             "modified_date": "Added at February 25 Saturday 2023 09:10:26 AM",
             "group": null
+        },
+        "Rolled part no holes x1": {
+            "current_quantity": 1,
+            "machine_time": 0.25,
+            "gauge": "12 Gauge",
+            "material": "Mild Steel",
+            "weight": 0.574,
+            "price": 0.99,
+            "unit_quantity": 1,
+            "modified_date": "Added at March 04 Saturday 2023 01:43:51 PM",
+            "group": null
+        },
+        "Rolled part x1": {
+            "current_quantity": 1,
+            "machine_time": 0.3,
+            "gauge": "12 Gauge",
+            "material": "Mild Steel",
+            "weight": 0.567,
+            "price": 1.11,
+            "unit_quantity": 1,
+            "modified_date": "Added at March 04 Saturday 2023 01:43:51 PM",
+            "group": null
         }
     },
     "LCB300 Boiler\/Chip Bin": {
@@ -2094,6 +2050,50 @@
             "price": 0.36,
             "unit_quantity": 1,
             "modified_date": "Added at February 27 Monday 2023 10:55:22 AM",
+            "group": null
+        },
+        "Flat pattern - P-008": {
+            "current_quantity": 2,
+            "machine_time": 0.27,
+            "gauge": "1\/2",
+            "material": "Mild Steel",
+            "weight": 0.383,
+            "price": 0.92,
+            "unit_quantity": 1,
+            "modified_date": "Added at March 03 Friday 2023 05:19:24 PM",
+            "group": null
+        },
+        "Flat pattern - P-009": {
+            "current_quantity": 2,
+            "machine_time": 0.33,
+            "gauge": "1\/2",
+            "material": "Mild Steel",
+            "weight": 1.42,
+            "price": 1.73,
+            "unit_quantity": 1,
+            "modified_date": "Added at March 03 Friday 2023 05:19:24 PM",
+            "group": null
+        },
+        "Flat pattern - SP1": {
+            "current_quantity": 2,
+            "machine_time": 0.6,
+            "gauge": "1\/2",
+            "material": "Mild Steel",
+            "weight": 5.162,
+            "price": 4.8,
+            "unit_quantity": 1,
+            "modified_date": "Added at March 03 Friday 2023 05:19:24 PM",
+            "group": null
+        },
+        "Flat pattern - SP": {
+            "current_quantity": 1,
+            "machine_time": 2.38,
+            "gauge": "1\/2",
+            "material": "Mild Steel",
+            "weight": 28.227,
+            "price": 24.02,
+            "unit_quantity": 1,
+            "modified_date": "Added at March 03 Friday 2023 05:19:24 PM",
             "group": null
         }
     }
