@@ -640,9 +640,10 @@
             "price": 68.45,
             "use_exchange_rate": false,
             "priority": 0,
-            "notes": "Vendor: Jan-Air Illinois\nDescription: ",
+            "notes": "Vendor: Jan-Air Illinois\nDescription: Customer item #\nSB0993225C2RA ",
             "latest_change_current_quantity": "Latest Change:\nfrom: 41\nto: 41\nLynden\nMarch 08 Wednesday 2023 02:09:49 PM",
-            "latest_change_price": "Latest Change:\nfrom: 68.45\nto: 68.45\nItsme\nSeptember 06 Tuesday 2022 11:12:17 AM"
+            "latest_change_price": "Latest Change:\nfrom: 68.45\nto: 68.45\nItsme\nSeptember 06 Tuesday 2022 11:12:17 AM",
+            "latest_change_notes": "Latest Change:\nfrom: Vendor: Jan-Air Illinois\nDescription: Customer item #\nSB0993225C2RA\nto: Vendor: Jan-Air Illinois\nDescription: Customer item #\nSB0993225C2RA \nLynden\nMarch 09 Thursday 2023 03:34:27 PM"
         },
         "WeatherStripping NDA- .5\" x 3\/16\" x 50'": {
             "part_number": "WSNDA",
@@ -2283,12 +2284,13 @@
             "price": 68.45,
             "use_exchange_rate": true,
             "priority": 3,
-            "notes": "Vendor: Jan-Air Illinois\nDescription: ",
+            "notes": "Vendor: Jan-Air Illinois\nDescription: Customer item #\nSB0993225C2RA ",
             "latest_change_current_quantity": "Latest Change:\nfrom: 41\nto: 41\nLynden\nMarch 08 Wednesday 2023 02:09:48 PM",
             "latest_change_priority": "Latest Change:\nfrom: 0\nto: 3\nItsme\nSeptember 05 Monday 2022 09:49:27 AM",
             "latest_change_price": "Latest Change:\nfrom: 68.45\nto: 68.45\nItsme\nSeptember 06 Tuesday 2022 11:12:17 AM",
             "latest_change_use_exchange_rate": "Latest Change:\nfrom: CAD\nto: USD\nItsme\nDecember 16 Friday 2022 09:36:46 AM",
-            "group": "Eon Motor Fan Assy"
+            "group": "Eon Motor Fan Assy",
+            "latest_change_notes": "Latest Change:\nfrom: \"Vendor: Jan-Air Illinois\nDescription: Customer item #\nSB0993225C2RA\"\nto: \"Vendor: Jan-Air Illinois\nDescription: Customer item #\nSB0993225C2RA \"\nLynden\nMarch 09 Thursday 2023 03:34:27 PM"
         },
         "WeatherStripping NDA- .5\" x 3\/16\" x 50'": {
             "part_number": "WSNDA",
@@ -3955,10 +3957,11 @@
             "price": 68.45,
             "use_exchange_rate": false,
             "priority": 3,
-            "notes": "Vendor: Jan-Air Illinois\nDescription: ",
+            "notes": "Vendor: Jan-Air Illinois\nDescription: Customer item #\nSB0993225C2RA ",
             "latest_change_current_quantity": "Latest Change:\nfrom: 41\nto: 41\nLynden\nMarch 08 Wednesday 2023 02:09:49 PM",
             "latest_change_price": "Latest Change:\nfrom: 68.45\nto: 68.45\nItsme\nSeptember 06 Tuesday 2022 11:12:17 AM",
-            "latest_change_priority": "Latest Change:\nfrom: 0\nto: 3\nItsme\nOctober 24 Monday 2022 08:34:48 AM"
+            "latest_change_priority": "Latest Change:\nfrom: 0\nto: 3\nItsme\nOctober 24 Monday 2022 08:34:48 AM",
+            "latest_change_notes": "Latest Change:\nfrom: Vendor: Jan-Air Illinois\nDescription: Customer item #\nSB0993225C2RA\nto: Vendor: Jan-Air Illinois\nDescription: Customer item #\nSB0993225C2RA \nLynden\nMarch 09 Thursday 2023 03:34:27 PM"
         },
         "WeatherStripping NDA- .5\" x 3\/16\" x 50'": {
             "part_number": "WSNDA",
