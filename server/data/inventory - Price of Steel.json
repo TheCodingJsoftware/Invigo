@@ -86,7 +86,7 @@
             "latest_change_current_quantity": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-09-47 PM"
         },
         "1\/4 Mild Steel 120.000x60.000": {
-            "current_quantity": 73.0,
+            "current_quantity": 60.0,
             "sheet_dimension": "120.000x60.000",
             "thickness": "1\/4",
             "material": "Mild Steel",
@@ -346,7 +346,7 @@
             "latest_change_current_quantity": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-49-43 PM"
         },
         "3\/16 304 SS 120.000x60.000": {
-            "current_quantity": 12.0,
+            "current_quantity": 8.0,
             "sheet_dimension": "120.000x60.000",
             "thickness": "3\/16",
             "material": "304 SS",
