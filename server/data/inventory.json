@@ -2473,7 +2473,7 @@
             "current_quantity": 72,
             "price": 7.0,
             "use_exchange_rate": true,
-            "priority": 0,
+            "priority": 3,
             "notes": "Vendor: Revcor  Revolutionary Air Flow\nDescription:  \n9 inch fan-motor and 5\" includes full assembly\n",
             "latest_change_name": "Item added\nItsme\nJuly 07 Thursday 2022 11-29-44 AM",
             "latest_change_part_number": "Item added\nItsme\nJuly 07 Thursday 2022 11-29-44 AM",
@@ -2481,7 +2481,7 @@
             "latest_change_current_quantity": "Latest Change:\nfrom: 72\nto: 72\nLynden\nMarch 08 Wednesday 2023 02:09:11 PM",
             "latest_change_price": "Latest Change:\nfrom: 7.0\nto: 7.0\nItsme\nFebruary 07 Tuesday 2023 02:38:22 PM",
             "latest_change_use_exchange_price": "Item added\nItsme\nJuly 07 Thursday 2022 11-29-44 AM",
-            "latest_change_priority": "Item added\nItsme\nJuly 07 Thursday 2022 11-29-44 AM",
+            "latest_change_priority": "Latest Change:\nfrom: 0\nto: 3\nLynden\nMarch 09 Thursday 2023 03:47:54 PM",
             "latest_change_notes": "Latest Change:\nfrom: \"Vendor: Revcor  Revolutionary Air Flow\nDescription:  \n9 inch fan-motor and 5\" includes full assembly\"\nto: \"Vendor: Revcor  Revolutionary Air Flow\nDescription:  \n9 inch fan-motor and 5\" includes full assembly\n\"\nItsme\nFebruary 11 Saturday 2023 10:18:54 AM",
             "latest_change_use_exchange_rate": "Latest Change:\nfrom: CAD\nto: USD\nItsme\nAugust 04 Thursday 2022 08:56:53 AM",
             "group": "Eon Motor Fan Assy"
