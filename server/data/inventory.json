@@ -187,6 +187,23 @@
             "latest_change_notes": "Latest Change:\nfrom: Vendor: HD Graphics In\nDescription: \nto: Vendor: HD Graphics Inc\nDescription: \nItsme\nFebruary 23 Thursday 2023 09:14:29 AM",
             "latest_change_price": "Latest Change:\nfrom: 3.58\nto: 3.58\nItsme\nFebruary 23 Thursday 2023 09:34:22 AM"
         },
+        "2.875 x .203 HS Round A500C Polar Fluse Pipe": {
+            "part_number": "24368",
+            "unit_quantity": 23.0,
+            "current_quantity": 0,
+            "price": 6.1,
+            "use_exchange_rate": false,
+            "priority": 0,
+            "notes": "Vendor: Russel Metals\nDescription:\n Item Price is Per foot\n21 Foot Per Length\nCurrent Quantity is in feet\n24 Feet Per Boiler\n29 Length per bundle @ 609 Feet",
+            "latest_change_name": "Item added\nLynden\nMarch 10 Friday 2023 01-24-02 PM",
+            "latest_change_part_number": "Item added\nLynden\nMarch 10 Friday 2023 01-24-02 PM",
+            "latest_change_unit_quantity": "Item added\nLynden\nMarch 10 Friday 2023 01-24-02 PM",
+            "latest_change_current_quantity": "Item added\nLynden\nMarch 10 Friday 2023 01-24-02 PM",
+            "latest_change_price": "Latest Change:\nfrom: 6.1\nto: 6.1\nLynden\nMarch 10 Friday 2023 01:25:47 PM",
+            "latest_change_use_exchange_price": "Item added\nLynden\nMarch 10 Friday 2023 01-24-02 PM",
+            "latest_change_priority": "Item added\nLynden\nMarch 10 Friday 2023 01-24-02 PM",
+            "latest_change_notes": "Item added\nLynden\nMarch 10 Friday 2023 01-24-02 PM"
+        },
         "1\" x 1\" Narrow Slot Gray Duct": {
             "part_number": "PDTF1X1LG6",
             "unit_quantity": 26,
@@ -1190,23 +1207,6 @@
             "notes": "Vendor: \nDescription: ",
             "latest_change_current_quantity": "Latest Change:\nfrom: 170\nto: 170\nItsme\nFebruary 17 Friday 2023 11:07:58 AM"
         },
-        "Spring Washer 3\/16 ": {
-            "part_number": "514-010",
-            "unit_quantity": 4,
-            "current_quantity": 200,
-            "price": 10.0,
-            "use_exchange_rate": false,
-            "priority": 0,
-            "notes": "Vendor: Greenline Hose and Fitting\nDescription: ",
-            "latest_change_name": "Item added\nItsme\nAugust 19 Friday 2022 10-21-44 AM",
-            "latest_change_part_number": "Item added\nItsme\nAugust 19 Friday 2022 10-21-44 AM",
-            "latest_change_unit_quantity": "Item added\nItsme\nAugust 19 Friday 2022 10-21-44 AM",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 200\nto: 200\nItsme\nFebruary 17 Friday 2023 11:07:58 AM",
-            "latest_change_price": "Item added\nItsme\nAugust 19 Friday 2022 10-21-44 AM",
-            "latest_change_use_exchange_price": "Item added\nItsme\nAugust 19 Friday 2022 10-21-44 AM",
-            "latest_change_priority": "Item added\nItsme\nAugust 19 Friday 2022 10-21-44 AM",
-            "latest_change_notes": "Item added\nItsme\nAugust 19 Friday 2022 10-21-44 AM"
-        },
         "1\/4 Nialon Plastic Shaft- Float assy": {
             "part_number": "14NPS",
             "unit_quantity": 1,
@@ -1223,6 +1223,23 @@
             "latest_change_use_exchange_price": "Item added\nItsme\nOctober 17 Monday 2022 08-12-59 AM",
             "latest_change_priority": "Item added\nItsme\nOctober 17 Monday 2022 08-12-59 AM",
             "latest_change_notes": "Item added\nItsme\nOctober 17 Monday 2022 08-12-59 AM"
+        },
+        "Spring Washer 3\/16 ": {
+            "part_number": "514-010",
+            "unit_quantity": 4,
+            "current_quantity": 200,
+            "price": 10.0,
+            "use_exchange_rate": false,
+            "priority": 0,
+            "notes": "Vendor: Greenline Hose and Fitting\nDescription: ",
+            "latest_change_name": "Item added\nItsme\nAugust 19 Friday 2022 10-21-44 AM",
+            "latest_change_part_number": "Item added\nItsme\nAugust 19 Friday 2022 10-21-44 AM",
+            "latest_change_unit_quantity": "Item added\nItsme\nAugust 19 Friday 2022 10-21-44 AM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 200\nto: 200\nItsme\nFebruary 17 Friday 2023 11:07:58 AM",
+            "latest_change_price": "Item added\nItsme\nAugust 19 Friday 2022 10-21-44 AM",
+            "latest_change_use_exchange_price": "Item added\nItsme\nAugust 19 Friday 2022 10-21-44 AM",
+            "latest_change_priority": "Item added\nItsme\nAugust 19 Friday 2022 10-21-44 AM",
+            "latest_change_notes": "Item added\nItsme\nAugust 19 Friday 2022 10-21-44 AM"
         },
         "Plastic Offset Lift-off hinge with Threaded Holes": {
             "part_number": "ML23P",
@@ -1339,23 +1356,6 @@
             "latest_change_priority": "Item added\nItsme\nJuly 19 Tuesday 2022 04-16-30 PM",
             "latest_change_notes": "Item added\nItsme\nJuly 19 Tuesday 2022 04-16-30 PM"
         },
-        " 12C6 CAM, .177 OFFSET OUT, ZINC PLATED": {
-            "part_number": "12C6",
-            "unit_quantity": 4,
-            "current_quantity": 346,
-            "price": 2.0,
-            "use_exchange_rate": false,
-            "priority": 0,
-            "notes": "Vendor: Sierra Pacific Engeneering and Products\nDescription: \nGoes With 12BK as 1 assy",
-            "latest_change_name": "Item added\nItsme\nJuly 05 Tuesday 2022 10-52-34 AM",
-            "latest_change_part_number": "Item added\nItsme\nJuly 05 Tuesday 2022 10-52-34 AM",
-            "latest_change_unit_quantity": "Item added\nItsme\nJuly 05 Tuesday 2022 10-52-34 AM",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 346\nto: 346\nItsme\nFebruary 17 Friday 2023 02:21:32 PM",
-            "latest_change_price": "Latest Change:\nfrom: 20.0\nto: 2.0\nItsme\nJuly 06 Wednesday 2022 10:10:57 AM",
-            "latest_change_use_exchange_price": "Item added\nItsme\nJuly 05 Tuesday 2022 10-52-34 AM",
-            "latest_change_priority": "Item added\nItsme\nJuly 05 Tuesday 2022 10-52-34 AM",
-            "latest_change_notes": "Latest Change:\nfrom: \"Vendor: Sierra Pacific Engeneering and Products\nDescription: \nGoes With 12BK as 1 ass\"\nto: \"Vendor: Sierra Pacific Engeneering and Products\nDescription: \nGoes With 12BK as 1 assy\"\nItsme\nJuly 07 Thursday 2022 04:08:20 PM"
-        },
         "Float Bubble plastic 1.5x4, 1\/4 NAT": {
             "part_number": "PF154-NT",
             "unit_quantity": 1,
@@ -1372,6 +1372,23 @@
             "latest_change_use_exchange_price": "Item added\nItsme\nJuly 25 Monday 2022 02-41-01 PM",
             "latest_change_priority": "Item added\nItsme\nJuly 25 Monday 2022 02-41-01 PM",
             "latest_change_notes": "Latest Change:\nfrom: \"Vendor: Controle Devices LLC\nDescription: <TChampion@cdivalve.com\"\nto: \"Vendor: Controle Devices LLC\nDescription:Tiffane Champion <TChampion@cdivalve.com\"\nItsme\nJuly 25 Monday 2022 03:36:48 PM"
+        },
+        " 12C6 CAM, .177 OFFSET OUT, ZINC PLATED": {
+            "part_number": "12C6",
+            "unit_quantity": 4,
+            "current_quantity": 346,
+            "price": 2.0,
+            "use_exchange_rate": false,
+            "priority": 0,
+            "notes": "Vendor: Sierra Pacific Engeneering and Products\nDescription: \nGoes With 12BK as 1 assy",
+            "latest_change_name": "Item added\nItsme\nJuly 05 Tuesday 2022 10-52-34 AM",
+            "latest_change_part_number": "Item added\nItsme\nJuly 05 Tuesday 2022 10-52-34 AM",
+            "latest_change_unit_quantity": "Item added\nItsme\nJuly 05 Tuesday 2022 10-52-34 AM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 346\nto: 346\nItsme\nFebruary 17 Friday 2023 02:21:32 PM",
+            "latest_change_price": "Latest Change:\nfrom: 20.0\nto: 2.0\nItsme\nJuly 06 Wednesday 2022 10:10:57 AM",
+            "latest_change_use_exchange_price": "Item added\nItsme\nJuly 05 Tuesday 2022 10-52-34 AM",
+            "latest_change_priority": "Item added\nItsme\nJuly 05 Tuesday 2022 10-52-34 AM",
+            "latest_change_notes": "Latest Change:\nfrom: \"Vendor: Sierra Pacific Engeneering and Products\nDescription: \nGoes With 12BK as 1 ass\"\nto: \"Vendor: Sierra Pacific Engeneering and Products\nDescription: \nGoes With 12BK as 1 assy\"\nItsme\nJuly 07 Thursday 2022 04:08:20 PM"
         },
         "Hexagon Head Machined Screw 5\/16   10-32x1\/2 ": {
             "part_number": "776",
@@ -1452,23 +1469,6 @@
             "latest_change_current_quantity": "Latest Change:\nfrom: 413\nto: 413\nItsme\nFebruary 17 Friday 2023 11:07:58 AM",
             "latest_change_price": "Latest Change:\nfrom: 7.0\nto: 71.0\nItsme\nNovember 03 Thursday 2022 04:30:00 PM"
         },
-        "5\/16x5\/8 starlock push on Locking washer": {
-            "part_number": "SPOLW",
-            "unit_quantity": 8,
-            "current_quantity": 428,
-            "price": 0.06,
-            "use_exchange_rate": false,
-            "priority": 0,
-            "notes": "Vendor: A. Adams Supply\nDescription: ",
-            "latest_change_name": "Item added\nItsme\nJuly 13 Wednesday 2022 09-10-18 AM",
-            "latest_change_part_number": "Item added\nItsme\nJuly 13 Wednesday 2022 09-10-18 AM",
-            "latest_change_unit_quantity": "Item added\nItsme\nJuly 13 Wednesday 2022 09-10-18 AM",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 428\nto: 428\nItsme\nFebruary 21 Tuesday 2023 03:37:06 PM",
-            "latest_change_price": "Item added\nItsme\nJuly 13 Wednesday 2022 09-10-18 AM",
-            "latest_change_use_exchange_price": "Item added\nItsme\nJuly 13 Wednesday 2022 09-10-18 AM",
-            "latest_change_priority": "Item added\nItsme\nJuly 13 Wednesday 2022 09-10-18 AM",
-            "latest_change_notes": "Item added\nItsme\nJuly 13 Wednesday 2022 09-10-18 AM"
-        },
         "Float Clamp  G1SS-11.3 7\/16 One Ear Stainless": {
             "part_number": "G1SS-11.3",
             "unit_quantity": 1,
@@ -1485,6 +1485,23 @@
             "latest_change_use_exchange_price": "Item added\nItsme\nAugust 29 Monday 2022 03-48-06 PM",
             "latest_change_priority": "Item added\nItsme\nAugust 29 Monday 2022 03-48-06 PM",
             "latest_change_notes": "Item added\nItsme\nAugust 29 Monday 2022 03-48-06 PM"
+        },
+        "5\/16x5\/8 starlock push on Locking washer": {
+            "part_number": "SPOLW",
+            "unit_quantity": 8,
+            "current_quantity": 428,
+            "price": 0.06,
+            "use_exchange_rate": false,
+            "priority": 0,
+            "notes": "Vendor: A. Adams Supply\nDescription: ",
+            "latest_change_name": "Item added\nItsme\nJuly 13 Wednesday 2022 09-10-18 AM",
+            "latest_change_part_number": "Item added\nItsme\nJuly 13 Wednesday 2022 09-10-18 AM",
+            "latest_change_unit_quantity": "Item added\nItsme\nJuly 13 Wednesday 2022 09-10-18 AM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 428\nto: 428\nItsme\nFebruary 21 Tuesday 2023 03:37:06 PM",
+            "latest_change_price": "Item added\nItsme\nJuly 13 Wednesday 2022 09-10-18 AM",
+            "latest_change_use_exchange_price": "Item added\nItsme\nJuly 13 Wednesday 2022 09-10-18 AM",
+            "latest_change_priority": "Item added\nItsme\nJuly 13 Wednesday 2022 09-10-18 AM",
+            "latest_change_notes": "Item added\nItsme\nJuly 13 Wednesday 2022 09-10-18 AM"
         },
         "3\" x 3\/8 Carr BLT ": {
             "part_number": "338CB",
@@ -10323,7 +10340,7 @@
             "latest_change_part_number": "Item added\nItsme\nJanuary 02 Monday 2023 02-08-24 PM",
             "latest_change_unit_quantity": "Item added\nItsme\nJanuary 02 Monday 2023 02-08-24 PM",
             "latest_change_current_quantity": "Item added\nItsme\nJanuary 02 Monday 2023 02-08-24 PM",
-            "latest_change_price": "Item added\nItsme\nJanuary 02 Monday 2023 02-08-24 PM",
+            "latest_change_price": "Latest Change:\nfrom: 6.1\nto: 6.1\nLynden\nMarch 10 Friday 2023 01:25:47 PM",
             "latest_change_use_exchange_price": "Item added\nItsme\nJanuary 02 Monday 2023 02-08-24 PM",
             "latest_change_priority": "Item added\nItsme\nJanuary 02 Monday 2023 02-08-24 PM",
             "latest_change_notes": "Item added\nItsme\nJanuary 02 Monday 2023 02-08-24 PM"
