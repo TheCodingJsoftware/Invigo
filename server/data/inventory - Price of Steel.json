@@ -412,7 +412,7 @@
             "latest_change_current_quantity": "Latest Change:\nfrom: 7\nto: 17.0\nLaser Pc\nFebruary 25 Saturday 2023 10:14:45 AM"
         },
         "18 Gauge 304 SS 120.000x60.000": {
-            "current_quantity": 16,
+            "current_quantity": 16.0,
             "sheet_dimension": "120.000x60.000",
             "thickness": "18 Gauge",
             "material": "304 SS",
@@ -420,10 +420,10 @@
             "latest_change_material": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-54-33 PM",
             "latest_sheet_dimension": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-54-33 PM",
             "latest_change_thickness": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-54-33 PM",
-            "latest_change_current_quantity": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-54-33 PM"
+            "latest_change_current_quantity": "Latest Change:\nfrom: 15.0\nto: 16.0\nLaser Pc\nMarch 10 Friday 2023 08:59:44 AM"
         },
         "20 Gauge 304 SS 120.000x60.000": {
-            "current_quantity": 20,
+            "current_quantity": 18.0,
             "sheet_dimension": "120.000x60.000",
             "thickness": "20 Gauge",
             "material": "304 SS",
@@ -431,7 +431,7 @@
             "latest_change_material": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-54-48 PM",
             "latest_sheet_dimension": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-54-48 PM",
             "latest_change_thickness": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-54-48 PM",
-            "latest_change_current_quantity": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-54-48 PM"
+            "latest_change_current_quantity": "Latest Change:\nfrom: 19.0\nto: 18.0\nLaser Pc\nMarch 10 Friday 2023 08:59:49 AM"
         },
         "20 Gauge 304 SS 120.000x48.000": {
             "current_quantity": 20,
@@ -546,7 +546,7 @@
             "group": "Galvanized"
         },
         "14 Gauge Galvanized 120.000x60.000": {
-            "current_quantity": 10.0,
+            "current_quantity": 7.0,
             "sheet_dimension": "120.000x60.000",
             "thickness": "14 Gauge",
             "material": "Galvanized",
