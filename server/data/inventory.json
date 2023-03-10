@@ -561,24 +561,24 @@
         "535 Blacl Silicone 300ML ": {
             "part_number": "32390",
             "unit_quantity": 1,
-            "current_quantity": 36,
+            "current_quantity": 336,
             "price": 9.7,
             "use_exchange_rate": false,
             "priority": 3,
             "notes": "Vendor: Anchor Products\nGrunthal Lumber\nDescription: General Purpose Silicone black\n",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 36\nto: 36\nItsme\nFebruary 24 Friday 2023 04:33:14 PM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 336\nto: 336\nLynden\nMarch 10 Friday 2023 04:36:52 PM",
             "latest_change_price": "Latest Change:\nfrom: 9.7\nto: 9.7\nItsme\nJuly 07 Thursday 2022 03:59:16 PM",
             "latest_change_notes": "Latest Change:\nfrom: \"Vendor: Anchor Products\nGrunthal Lumber\nDescription: General Purpose Silicone black\"\nto: \"Vendor: Anchor Products\nGrunthal Lumber\nDescription: General Purpose Silicone black\n\"\nItsme\nFebruary 28 Tuesday 2023 11:22:12 AM"
         },
         "3\/4 Brass Ball Valve": {
             "part_number": "34BV",
             "unit_quantity": 1,
-            "current_quantity": 37,
+            "current_quantity": 34,
             "price": 9.72,
             "use_exchange_rate": false,
             "priority": 0,
             "notes": "Vendor: GreenLine\nDescription: 204-694-0332\nPart # V202-075 ",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 37\nto: 37\nLynden\nMarch 03 Friday 2023 09:32:59 AM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 34\nto: 34\nLynden\nMarch 10 Friday 2023 04:36:13 PM",
             "latest_change_price": "Latest Change:\nfrom: 9.72\nto: 9.72\nItsme\nJanuary 17 Tuesday 2023 09:03:36 AM",
             "latest_change_notes": "Latest Change:\nfrom: Vendor: GreenLine\nDescription: 204-694-0332\nPart # V202-075\nto: Vendor: GreenLine\nDescription: 204-694-0332\nPart # V202-075 \nItsme\nJanuary 17 Tuesday 2023 09:11:14 AM"
         },
@@ -2234,12 +2234,12 @@
         "3\/4 Brass Ball Valve": {
             "part_number": "34BV",
             "unit_quantity": 1,
-            "current_quantity": 37,
+            "current_quantity": 34,
             "price": 9.72,
             "use_exchange_rate": false,
             "priority": 0,
             "notes": "Vendor: GreenLine\nDescription: 204-694-0332\nPart # V202-075 ",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 37\nto: 37\nLynden\nMarch 03 Friday 2023 09:32:59 AM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 34\nto: 34\nLynden\nMarch 10 Friday 2023 04:36:13 PM",
             "latest_change_price": "Latest Change:\nfrom: 9.72\nto: 9.72\nItsme\nJanuary 17 Tuesday 2023 09:03:36 AM",
             "latest_change_notes": "Latest Change:\nfrom: \"Vendor: GreenLine\nDescription: 204-694-0332\nPart # V202-075\"\nto: \"Vendor: GreenLine\nDescription: 204-694-0332\nPart # V202-075 \"\nItsme\nJanuary 17 Tuesday 2023 09:11:14 AM"
         },
@@ -3841,6 +3841,18 @@
             "latest_change_priority": "Item added\nItsme\nFebruary 23 Thursday 2023 10-49-58 AM",
             "latest_change_notes": "Item added\nItsme\nFebruary 23 Thursday 2023 10-49-58 AM"
         },
+        "3\/4 Brass Ball Valve": {
+            "part_number": "34BV",
+            "unit_quantity": 1,
+            "current_quantity": 34,
+            "price": 9.72,
+            "use_exchange_rate": false,
+            "priority": 0,
+            "notes": "Vendor: GreenLine\nDescription: 204-694-0332\nPart # V202-075 ",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 34\nto: 34\nLynden\nMarch 10 Friday 2023 04:36:13 PM",
+            "latest_change_price": "Latest Change:\nfrom: 9.72\nto: 9.72\nItsme\nJanuary 17 Tuesday 2023 09:03:36 AM",
+            "latest_change_notes": "Latest Change:\nfrom: Vendor: GreenLine\nDescription: 204-694-0332\nPart # V202-075\nto: Vendor: GreenLine\nDescription: 204-694-0332\nPart # V202-075 \nItsme\nJanuary 17 Tuesday 2023 09:11:14 AM"
+        },
         "Hose Industrial G322-125 1-1\/4 ": {
             "part_number": "G322-125",
             "unit_quantity": 1,
@@ -3862,30 +3874,6 @@
             "notes": "Vendor: \nDescription: ",
             "latest_change_current_quantity": "Latest Change:\nfrom: 36\nto: 36\nItsme\nFebruary 17 Friday 2023 11:07:57 AM",
             "latest_change_price": "Latest Change:\nfrom: 4.04\nto: 4.04\nItsme\nFebruary 23 Thursday 2023 09:31:34 AM"
-        },
-        "535 Blacl Silicone 300ML ": {
-            "part_number": "32390",
-            "unit_quantity": 1,
-            "current_quantity": 36,
-            "price": 9.7,
-            "use_exchange_rate": false,
-            "priority": 3,
-            "notes": "Vendor: Anchor Products\nGrunthal Lumber\nDescription: General Purpose Silicone black\n",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 36\nto: 36\nItsme\nFebruary 24 Friday 2023 04:33:14 PM",
-            "latest_change_price": "Latest Change:\nfrom: 9.7\nto: 9.7\nItsme\nJuly 07 Thursday 2022 03:59:16 PM",
-            "latest_change_notes": "Latest Change:\nfrom: Vendor: Anchor Products\nGrunthal Lumber\nDescription: General Purpose Silicone black\nto: Vendor: Anchor Products\nGrunthal Lumber\nDescription: General Purpose Silicone black\n\nItsme\nFebruary 28 Tuesday 2023 11:22:12 AM"
-        },
-        "3\/4 Brass Ball Valve": {
-            "part_number": "34BV",
-            "unit_quantity": 1,
-            "current_quantity": 37,
-            "price": 9.72,
-            "use_exchange_rate": false,
-            "priority": 0,
-            "notes": "Vendor: GreenLine\nDescription: 204-694-0332\nPart # V202-075 ",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 37\nto: 37\nLynden\nMarch 03 Friday 2023 09:32:59 AM",
-            "latest_change_price": "Latest Change:\nfrom: 9.72\nto: 9.72\nItsme\nJanuary 17 Tuesday 2023 09:03:36 AM",
-            "latest_change_notes": "Latest Change:\nfrom: Vendor: GreenLine\nDescription: 204-694-0332\nPart # V202-075\nto: Vendor: GreenLine\nDescription: 204-694-0332\nPart # V202-075 \nItsme\nJanuary 17 Tuesday 2023 09:11:14 AM"
         },
         "Compression Spring, 1.5\" Long, 0.313\" OD, 0.269\" ID  Spring Rate Peep Hole": {
             "part_number": "18",
@@ -4689,6 +4677,18 @@
             "latest_change_priority": "Item added\nItsme\nJuly 19 Tuesday 2022 04-16-30 PM",
             "latest_change_notes": "Item added\nItsme\nJuly 19 Tuesday 2022 04-16-30 PM"
         },
+        "535 Blacl Silicone 300ML ": {
+            "part_number": "32390",
+            "unit_quantity": 1,
+            "current_quantity": 336,
+            "price": 9.7,
+            "use_exchange_rate": false,
+            "priority": 3,
+            "notes": "Vendor: Anchor Products\nGrunthal Lumber\nDescription: General Purpose Silicone black\n",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 336\nto: 336\nLynden\nMarch 10 Friday 2023 04:36:52 PM",
+            "latest_change_price": "Latest Change:\nfrom: 9.7\nto: 9.7\nItsme\nJuly 07 Thursday 2022 03:59:16 PM",
+            "latest_change_notes": "Latest Change:\nfrom: Vendor: Anchor Products\nGrunthal Lumber\nDescription: General Purpose Silicone black\nto: Vendor: Anchor Products\nGrunthal Lumber\nDescription: General Purpose Silicone black\n\nItsme\nFebruary 28 Tuesday 2023 11:22:12 AM"
+        },
         " 12C6 CAM, .177 OFFSET OUT, ZINC PLATED": {
             "part_number": "12C6",
             "unit_quantity": 4,
@@ -5132,7 +5132,7 @@
         "535 Blacl Silicone 300ML ": {
             "part_number": "32390",
             "unit_quantity": 1,
-            "current_quantity": 36,
+            "current_quantity": 336,
             "price": 9.7,
             "use_exchange_rate": false,
             "priority": 2,
@@ -5140,7 +5140,7 @@
             "latest_change_name": "Item added\nItsme\nAugust 04 Thursday 2022 09-08-31 AM",
             "latest_change_part_number": "Item added\nItsme\nAugust 04 Thursday 2022 09-08-31 AM",
             "latest_change_unit_quantity": "Item added\nItsme\nAugust 04 Thursday 2022 09-08-31 AM",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 36\nto: 36\nItsme\nFebruary 24 Friday 2023 04:33:14 PM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 336\nto: 336\nLynden\nMarch 10 Friday 2023 04:36:52 PM",
             "latest_change_price": "Item added\nItsme\nAugust 04 Thursday 2022 09-08-31 AM",
             "latest_change_use_exchange_price": "Item added\nItsme\nAugust 04 Thursday 2022 09-08-31 AM",
             "latest_change_priority": "Latest Change:\nfrom: 1\nto: 2\nItsme\nOctober 21 Friday 2022 04:31:05 PM",
