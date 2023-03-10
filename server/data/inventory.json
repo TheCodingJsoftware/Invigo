@@ -59,7 +59,7 @@
         "A19ABC-11 Mechanical Thermostat": {
             "part_number": "A19ABC-11",
             "unit_quantity": 2.0,
-            "current_quantity": -17,
+            "current_quantity": 83,
             "price": 93.24,
             "use_exchange_rate": false,
             "priority": 0,
@@ -67,7 +67,7 @@
             "latest_change_name": "Item added\nItsme\nDecember 12 Monday 2022 08-26-00 AM",
             "latest_change_part_number": "Item added\nItsme\nDecember 12 Monday 2022 08-26-00 AM",
             "latest_change_unit_quantity": "Item added\nItsme\nDecember 12 Monday 2022 08-26-00 AM",
-            "latest_change_current_quantity": "Latest Change:\nfrom: -17.0\nto: -17\nItsme\nFebruary 17 Friday 2023 11:07:56 AM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 83\nto: 83\nLynden\nMarch 10 Friday 2023 01:34:52 PM",
             "latest_change_price": "Latest Change:\nfrom: 93.24\nto: 93.24\nItsme\nFebruary 28 Tuesday 2023 10:03:12 AM",
             "latest_change_use_exchange_price": "Item added\nItsme\nDecember 12 Monday 2022 08-26-00 AM",
             "latest_change_priority": "Item added\nItsme\nDecember 12 Monday 2022 08-26-00 AM",
@@ -1735,7 +1735,7 @@
         "A19ABC-11 Mechanical Thermostat": {
             "part_number": "A19ABC-11",
             "unit_quantity": 2.0,
-            "current_quantity": -17,
+            "current_quantity": 83,
             "price": 93.24,
             "use_exchange_rate": false,
             "priority": 0,
@@ -1743,7 +1743,7 @@
             "latest_change_name": "Item added\nItsme\nDecember 12 Monday 2022 08-25-35 AM",
             "latest_change_part_number": "Item added\nItsme\nDecember 12 Monday 2022 08-25-35 AM",
             "latest_change_unit_quantity": "Item added\nItsme\nDecember 12 Monday 2022 08-25-35 AM",
-            "latest_change_current_quantity": "Latest Change:\nfrom: -17.0\nto: -17\nItsme\nFebruary 17 Friday 2023 11:07:56 AM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 83\nto: 83\nLynden\nMarch 10 Friday 2023 01:34:52 PM",
             "latest_change_price": "Latest Change:\nfrom: 93.24\nto: 93.24\nItsme\nFebruary 28 Tuesday 2023 10:03:12 AM",
             "latest_change_use_exchange_price": "Item added\nItsme\nDecember 12 Monday 2022 08-25-35 AM",
             "latest_change_priority": "Item added\nItsme\nDecember 12 Monday 2022 08-25-35 AM",
@@ -3337,7 +3337,7 @@
         }
     },
     "Polar G2+": {
-        "Terminal BlockPluggable ": {
+        "Terminal Block Pluggable ": {
             "part_number": "222-412 Wago 2 pos",
             "unit_quantity": 9.0,
             "current_quantity": -125,
@@ -3345,7 +3345,7 @@
             "use_exchange_rate": false,
             "priority": 0,
             "notes": "Vendor: Westburn \nDescription: ",
-            "latest_change_name": "Item added\nItsme\nJanuary 09 Monday 2023 01-28-00 PM",
+            "latest_change_name": "Latest Change:\nfrom: \"Terminal BlockPluggable \"\nto: \"Terminal Block Pluggable \"\nLynden\nMarch 10 Friday 2023 01:33:48 PM",
             "latest_change_part_number": "Item added\nItsme\nJanuary 09 Monday 2023 01-28-00 PM",
             "latest_change_unit_quantity": "Item added\nItsme\nJanuary 09 Monday 2023 01-28-00 PM",
             "latest_change_current_quantity": "Latest Change:\nfrom: -125\nto: -125\nItsme\nFebruary 17 Friday 2023 11:07:56 AM",
@@ -3392,23 +3392,6 @@
             "latest_change_use_exchange_price": "Item added\nItsme\nSeptember 16 Friday 2022 02-18-33 PM",
             "latest_change_priority": "Item added\nItsme\nSeptember 16 Friday 2022 02-18-33 PM",
             "latest_change_notes": "Item added\nItsme\nSeptember 16 Friday 2022 02-18-33 PM"
-        },
-        "A19ABC-11 Mechanical Thermostat": {
-            "part_number": "A19ABC-11",
-            "unit_quantity": 2.0,
-            "current_quantity": -17,
-            "price": 93.24,
-            "use_exchange_rate": false,
-            "priority": 0,
-            "notes": "Vendor: Johnson Controle\nDescription: ",
-            "latest_change_name": "Item added\nItsme\nDecember 12 Monday 2022 08-24-50 AM",
-            "latest_change_part_number": "Item added\nItsme\nDecember 12 Monday 2022 08-24-50 AM",
-            "latest_change_unit_quantity": "Item added\nItsme\nDecember 12 Monday 2022 08-24-50 AM",
-            "latest_change_current_quantity": "Latest Change:\nfrom: -17\nto: -17\nItsme\nFebruary 17 Friday 2023 11:07:56 AM",
-            "latest_change_price": "Latest Change:\nfrom: 93.24\nto: 93.24\nItsme\nFebruary 28 Tuesday 2023 10:03:12 AM",
-            "latest_change_use_exchange_price": "Item added\nItsme\nDecember 12 Monday 2022 08-24-50 AM",
-            "latest_change_priority": "Item added\nItsme\nDecember 12 Monday 2022 08-24-50 AM",
-            "latest_change_notes": "Item added\nItsme\nDecember 12 Monday 2022 08-24-50 AM"
         },
         "Sticker #342 Bilingual Caution Notice Decal ": {
             "part_number": "342",
@@ -4232,6 +4215,23 @@
             "latest_change_use_exchange_price": "Item added\nItsme\nJanuary 16 Monday 2023 01-10-23 PM",
             "latest_change_priority": "Item added\nItsme\nJanuary 16 Monday 2023 01-10-23 PM",
             "latest_change_notes": "Item added\nItsme\nJanuary 16 Monday 2023 01-10-23 PM"
+        },
+        "A19ABC-11 Mechanical Thermostat": {
+            "part_number": "A19ABC-11",
+            "unit_quantity": 2.0,
+            "current_quantity": 83,
+            "price": 93.24,
+            "use_exchange_rate": false,
+            "priority": 0,
+            "notes": "Vendor: Johnson Controle\nDescription: ",
+            "latest_change_name": "Item added\nItsme\nDecember 12 Monday 2022 08-24-50 AM",
+            "latest_change_part_number": "Item added\nItsme\nDecember 12 Monday 2022 08-24-50 AM",
+            "latest_change_unit_quantity": "Item added\nItsme\nDecember 12 Monday 2022 08-24-50 AM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 83\nto: 83\nLynden\nMarch 10 Friday 2023 01:34:52 PM",
+            "latest_change_price": "Latest Change:\nfrom: 93.24\nto: 93.24\nItsme\nFebruary 28 Tuesday 2023 10:03:12 AM",
+            "latest_change_use_exchange_price": "Item added\nItsme\nDecember 12 Monday 2022 08-24-50 AM",
+            "latest_change_priority": "Item added\nItsme\nDecember 12 Monday 2022 08-24-50 AM",
+            "latest_change_notes": "Item added\nItsme\nDecember 12 Monday 2022 08-24-50 AM"
         },
         "Grundfos Pump Flange 1 1\/4 ": {
             "part_number": "519603",
