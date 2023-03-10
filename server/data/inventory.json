@@ -275,12 +275,12 @@
         "2\" ThermaxSF-450": {
             "part_number": "THERMAXSF450",
             "unit_quantity": 1.0,
-            "current_quantity": 12,
+            "current_quantity": 62,
             "price": 49.94,
             "use_exchange_rate": true,
             "priority": 1,
             "notes": "Vendor: Neux Hearth Products\nDescription: Jim.willes@neux.com \n",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 12.0\nto: 12\nItsme\nFebruary 17 Friday 2023 11:07:56 AM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 62\nto: 62\nLynden\nMarch 10 Friday 2023 02:18:35 PM",
             "latest_change_use_exchange_rate": "Latest Change:\nfrom: CAD\nto: USD\nItsme\nNovember 17 Thursday 2022 09:31:23 AM"
         },
         "Vapor Thermometer": {
@@ -386,13 +386,13 @@
         "3\" Thermax SF- 600 Brick Slabs 1000x610x75": {
             "part_number": "THERMAXSF600",
             "unit_quantity": 1,
-            "current_quantity": 20,
+            "current_quantity": 30,
             "price": 104.5,
             "use_exchange_rate": false,
             "priority": 0,
             "notes": "Vendor: Nuex Hearth Ptoducts\nDescription: Jim.willes@neux.com ",
             "latest_change_price": "Latest Change:\nfrom: 104.5\nto: 104.5\nItsme\nJuly 07 Thursday 2022 08:54:01 AM",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 20\nto: 20\nItsme\nFebruary 17 Friday 2023 11:07:56 AM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 30\nto: 30\nLynden\nMarch 10 Friday 2023 02:17:27 PM",
             "latest_change_name": "Latest Change:\nfrom: \"3\" Thermax SF- 600 Brick Slabs 1000x610x7\"\nto: \"3\" Thermax SF- 600 Brick Slabs 1000x610x75\"\nItsme\nJuly 11 Monday 2022 09:45:53 AM"
         },
         "Flat Head Solid S.S Rivet 18-8 1\/4\" Diameter for .25\" material thickness. ": {
@@ -1969,12 +1969,12 @@
         "2\" ThermaxSF-450": {
             "part_number": "THERMAXSF450",
             "unit_quantity": 1.0,
-            "current_quantity": 12,
+            "current_quantity": 62,
             "price": 49.94,
             "use_exchange_rate": false,
             "priority": 1,
             "notes": "Vendor: Neux Hearth Products\nDescription: Jim.willes@neux.com \n",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 12.0\nto: 12\nItsme\nFebruary 17 Friday 2023 11:07:56 AM"
+            "latest_change_current_quantity": "Latest Change:\nfrom: 62\nto: 62\nLynden\nMarch 10 Friday 2023 02:18:35 PM"
         },
         "Vapor Thermometer": {
             "part_number": "20UB8-220FC-4111-03FT                        ",
@@ -2061,13 +2061,13 @@
         "3\" Thermax SF- 600 Brick Slabs 1000x610x75": {
             "part_number": "THERMAXSF600",
             "unit_quantity": 1,
-            "current_quantity": 20,
+            "current_quantity": 30,
             "price": 104.5,
             "use_exchange_rate": false,
             "priority": 0,
             "notes": "Vendor: Nuex Hearth Ptoducts\nDescription: Jim.willes@neux.com ",
             "latest_change_price": "Latest Change:\nfrom: 104.5\nto: 104.5\nItsme\nJuly 07 Thursday 2022 08:54:01 AM",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 20\nto: 20\nItsme\nFebruary 17 Friday 2023 11:07:56 AM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 30\nto: 30\nLynden\nMarch 10 Friday 2023 02:17:27 PM",
             "latest_change_name": "Latest Change:\nfrom: \"3\" Thermax SF- 600 Brick Slabs 1000x610x7\"\nto: \"3\" Thermax SF- 600 Brick Slabs 1000x610x75\"\nItsme\nJuly 11 Monday 2022 09:45:53 AM"
         },
         "Flat Head Solid S.S Rivet 18-8 1\/4\" Diameter for .25\" material thickness. ": {
@@ -3592,16 +3592,6 @@
             "latest_change_priority": "Item added\nItsme\nJuly 12 Tuesday 2022 09-29-24 AM",
             "latest_change_notes": "Item added\nItsme\nJuly 12 Tuesday 2022 09-29-24 AM"
         },
-        "2\" ThermaxSF-450": {
-            "part_number": "THERMAXSF450",
-            "unit_quantity": 1.0,
-            "current_quantity": 12,
-            "price": 49.94,
-            "use_exchange_rate": false,
-            "priority": 1,
-            "notes": "Vendor: Neux Hearth Products\nDescription: Jim.willes@neux.com \n",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 12\nto: 12\nItsme\nFebruary 17 Friday 2023 11:07:56 AM"
-        },
         "Vapor Thermometer": {
             "part_number": "20UB8-220FC-4111-03FT                        ",
             "unit_quantity": 1,
@@ -3699,18 +3689,6 @@
             "latest_change_price": "Latest Change:\nfrom: 3.3\nto: 3.0\nItsme\nAugust 03 Wednesday 2022 08:50:27 AM",
             "latest_change_name": "Latest Change:\nfrom: \"Barb Hose Adapter fitting 1 1\/\"\nto: \"Barb Hose Adapter fitting 1 1\/4\"\nItsme\nJanuary 16 Monday 2023 09:57:56 AM",
             "latest_change_notes": "Latest Change:\nfrom: Vendor: GreenLine\nDescription: 204-694-0332\nPart # G33G-12\nto: Vendor: GreenLine\nDescription: 204-694-0332\nPart # G33G-125\nItsme\nJanuary 17 Tuesday 2023 09:09:11 AM"
-        },
-        "3\" Thermax SF- 600 Brick Slabs 1000x610x75": {
-            "part_number": "THERMAXSF600",
-            "unit_quantity": 1,
-            "current_quantity": 20,
-            "price": 104.5,
-            "use_exchange_rate": false,
-            "priority": 0,
-            "notes": "Vendor: Nuex Hearth Ptoducts\nDescription: Jim.willes@neux.com ",
-            "latest_change_price": "Latest Change:\nfrom: 104.5\nto: 104.5\nItsme\nJuly 07 Thursday 2022 08:54:01 AM",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 20\nto: 20\nItsme\nFebruary 17 Friday 2023 11:07:56 AM",
-            "latest_change_name": "Latest Change:\nfrom: \"3\" Thermax SF- 600 Brick Slabs 1000x610x7\"\nto: \"3\" Thermax SF- 600 Brick Slabs 1000x610x75\"\nItsme\nJuly 11 Monday 2022 09:45:53 AM"
         },
         "Flat Head Solid S.S Rivet 18-8 1\/4\" Diameter for .25\" material thickness. ": {
             "part_number": "97386A341",
@@ -3819,6 +3797,18 @@
             "latest_change_use_exchange_price": "Item added\nItsme\nJuly 13 Wednesday 2022 09-11-15 AM",
             "latest_change_priority": "Item added\nItsme\nJuly 13 Wednesday 2022 09-11-15 AM",
             "latest_change_notes": "Latest Change:\nfrom: \"Vendor: A.Adams Suppl\nDescription: \"\nto: \"Vendor: A.Adams Supply\nDescription: \"\nItsme\nJuly 13 Wednesday 2022 09:11:29 AM"
+        },
+        "3\" Thermax SF- 600 Brick Slabs 1000x610x75": {
+            "part_number": "THERMAXSF600",
+            "unit_quantity": 1,
+            "current_quantity": 30,
+            "price": 104.5,
+            "use_exchange_rate": false,
+            "priority": 0,
+            "notes": "Vendor: Nuex Hearth Ptoducts\nDescription: Jim.willes@neux.com ",
+            "latest_change_price": "Latest Change:\nfrom: 104.5\nto: 104.5\nItsme\nJuly 07 Thursday 2022 08:54:01 AM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 30\nto: 30\nLynden\nMarch 10 Friday 2023 02:17:27 PM",
+            "latest_change_name": "Latest Change:\nfrom: \"3\" Thermax SF- 600 Brick Slabs 1000x610x7\"\nto: \"3\" Thermax SF- 600 Brick Slabs 1000x610x75\"\nItsme\nJuly 11 Monday 2022 09:45:53 AM"
         },
         "Compression Spring, 1\" Long, 1.225\" OD, 1.055\" ID 35lbs damper adjust": {
             "part_number": "1141RE",
@@ -4050,6 +4040,16 @@
             "latest_change_use_exchange_price": "Item added\nItsme\nOctober 27 Thursday 2022 04-27-14 PM",
             "latest_change_priority": "Item added\nItsme\nOctober 27 Thursday 2022 04-27-14 PM",
             "latest_change_notes": "Item added\nItsme\nOctober 27 Thursday 2022 04-27-14 PM"
+        },
+        "2\" ThermaxSF-450": {
+            "part_number": "THERMAXSF450",
+            "unit_quantity": 1.0,
+            "current_quantity": 62,
+            "price": 49.94,
+            "use_exchange_rate": false,
+            "priority": 1,
+            "notes": "Vendor: Neux Hearth Products\nDescription: Jim.willes@neux.com \n",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 62\nto: 62\nLynden\nMarch 10 Friday 2023 02:18:35 PM"
         },
         "UKC 2\"  Open Cell Foam G-Class-Fan": {
             "part_number": "UKC2",
