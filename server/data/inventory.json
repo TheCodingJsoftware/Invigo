@@ -2,7 +2,7 @@
     "Polar G2": {
         "Terminal BlockPluggable ": {
             "part_number": "222-412 Wago 2 pos",
-            "unit_quantity": 9.0,
+            "unit_quantity": 3.0,
             "current_quantity": -125,
             "price": 0.8,
             "use_exchange_rate": false,
@@ -10,7 +10,7 @@
             "notes": "Vendor: Westburn \nDescription: ",
             "latest_change_name": "Item added\nItsme\nJanuary 09 Monday 2023 01-29-56 PM",
             "latest_change_part_number": "Item added\nItsme\nJanuary 09 Monday 2023 01-29-56 PM",
-            "latest_change_unit_quantity": "Item added\nItsme\nJanuary 09 Monday 2023 01-29-56 PM",
+            "latest_change_unit_quantity": "Latest Change:\nfrom: 0.0\nto: 3.0\nLynden\nMarch 11 Saturday 2023 09:38:02 AM",
             "latest_change_current_quantity": "Latest Change:\nfrom: -125.0\nto: -125\nItsme\nFebruary 17 Friday 2023 11:07:56 AM",
             "latest_change_price": "Item added\nItsme\nJanuary 09 Monday 2023 01-29-56 PM",
             "latest_change_use_exchange_price": "Item added\nItsme\nJanuary 09 Monday 2023 01-29-56 PM",
@@ -1712,7 +1712,7 @@
     "Polar G3": {
         "Terminal BlockPluggable ": {
             "part_number": "222-412 Wago 2 pos",
-            "unit_quantity": 9.0,
+            "unit_quantity": 3.0,
             "current_quantity": -125,
             "price": 0.8,
             "use_exchange_rate": false,
@@ -1720,7 +1720,7 @@
             "notes": "Vendor: Westburn \nDescription: ",
             "latest_change_name": "Item added\nItsme\nJanuary 09 Monday 2023 01-29-39 PM",
             "latest_change_part_number": "Item added\nItsme\nJanuary 09 Monday 2023 01-29-39 PM",
-            "latest_change_unit_quantity": "Item added\nItsme\nJanuary 09 Monday 2023 01-29-39 PM",
+            "latest_change_unit_quantity": "Latest Change:\nfrom: 0.0\nto: 3.0\nLynden\nMarch 11 Saturday 2023 09:37:55 AM",
             "latest_change_current_quantity": "Latest Change:\nfrom: -125.0\nto: -125\nItsme\nFebruary 17 Friday 2023 11:07:56 AM",
             "latest_change_price": "Item added\nItsme\nJanuary 09 Monday 2023 01-29-39 PM",
             "latest_change_use_exchange_price": "Item added\nItsme\nJanuary 09 Monday 2023 01-29-39 PM",
@@ -3407,7 +3407,7 @@
     "Polar G2+": {
         "Terminal Block Pluggable ": {
             "part_number": "222-412 Wago 2 pos",
-            "unit_quantity": 9.0,
+            "unit_quantity": 3.0,
             "current_quantity": -125,
             "price": 0.8,
             "use_exchange_rate": false,
@@ -3415,7 +3415,7 @@
             "notes": "Vendor: Westburn \nDescription: ",
             "latest_change_name": "Latest Change:\nfrom: \"Terminal BlockPluggable \"\nto: \"Terminal Block Pluggable \"\nLynden\nMarch 10 Friday 2023 01:33:48 PM",
             "latest_change_part_number": "Item added\nItsme\nJanuary 09 Monday 2023 01-28-00 PM",
-            "latest_change_unit_quantity": "Item added\nItsme\nJanuary 09 Monday 2023 01-28-00 PM",
+            "latest_change_unit_quantity": "Latest Change:\nfrom: 0.0\nto: 3.0\nLynden\nMarch 11 Saturday 2023 09:37:46 AM",
             "latest_change_current_quantity": "Latest Change:\nfrom: -125\nto: -125\nItsme\nFebruary 17 Friday 2023 11:07:56 AM",
             "latest_change_price": "Item added\nItsme\nJanuary 09 Monday 2023 01-28-00 PM",
             "latest_change_use_exchange_price": "Item added\nItsme\nJanuary 09 Monday 2023 01-28-00 PM",
