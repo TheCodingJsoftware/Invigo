@@ -1239,7 +1239,7 @@
         "1\"x 3\/8\"  Bolt ": {
             "part_number": "138",
             "unit_quantity": 18,
-            "current_quantity": -20,
+            "current_quantity": 480,
             "price": 0.3,
             "use_exchange_rate": false,
             "priority": 3,
@@ -1247,7 +1247,7 @@
             "latest_change_name": "Item added\nItsme\nJuly 19 Tuesday 2022 03-52-41 PM",
             "latest_change_part_number": "Item added\nItsme\nJuly 19 Tuesday 2022 03-52-41 PM",
             "latest_change_unit_quantity": "Item added\nItsme\nJuly 19 Tuesday 2022 03-52-41 PM",
-            "latest_change_current_quantity": "Latest Change:\nfrom: -20\nto: -20\nLynden\nMarch 13 Monday 2023 08:30:46 AM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 480\nto: 480\nLynden\nMarch 13 Monday 2023 08:41:48 AM",
             "latest_change_price": "Item added\nItsme\nJuly 19 Tuesday 2022 03-52-41 PM",
             "latest_change_use_exchange_price": "Item added\nItsme\nJuly 19 Tuesday 2022 03-52-41 PM",
             "latest_change_priority": "Latest Change:\nfrom: 0\nto: 3\nItsme\nNovember 02 Wednesday 2022 10:01:17 AM",
@@ -1953,23 +1953,6 @@
             "latest_change_priority": "Item added\nItsme\nAugust 01 Monday 2022 03-41-17 PM",
             "latest_change_notes": "Item added\nItsme\nAugust 01 Monday 2022 03-41-17 PM"
         },
-        "1\"x 3\/8\"  Bolt ": {
-            "part_number": "138",
-            "unit_quantity": 18,
-            "current_quantity": -20,
-            "price": 0.3,
-            "use_exchange_rate": false,
-            "priority": 0,
-            "notes": "Vendor: A.Adams Supply\nDescription: ",
-            "latest_change_name": "Item added\nItsme\nJuly 19 Tuesday 2022 03-52-41 PM",
-            "latest_change_part_number": "Item added\nItsme\nJuly 19 Tuesday 2022 03-52-41 PM",
-            "latest_change_unit_quantity": "Item added\nItsme\nJuly 19 Tuesday 2022 03-52-41 PM",
-            "latest_change_current_quantity": "Latest Change:\nfrom: -20\nto: -20\nLynden\nMarch 13 Monday 2023 08:30:46 AM",
-            "latest_change_price": "Item added\nItsme\nJuly 19 Tuesday 2022 03-52-41 PM",
-            "latest_change_use_exchange_price": "Item added\nItsme\nJuly 19 Tuesday 2022 03-52-41 PM",
-            "latest_change_priority": "Item added\nItsme\nJuly 19 Tuesday 2022 03-52-41 PM",
-            "latest_change_notes": "Item added\nItsme\nJuly 19 Tuesday 2022 03-52-41 PM"
-        },
         "Sticker #341 Bilingual Danger Warning Decal": {
             "part_number": "341",
             "unit_quantity": 1.0,
@@ -2033,6 +2016,19 @@
             "latest_change_use_exchange_price": "Item added\nItsme\nOctober 27 Thursday 2022 04-30-41 PM",
             "latest_change_priority": "Item added\nItsme\nOctober 27 Thursday 2022 04-30-41 PM",
             "latest_change_notes": "Item added\nItsme\nOctober 27 Thursday 2022 04-30-41 PM"
+        },
+        "1 1\/4 Closed Nipple   ": {
+            "part_number": "114CN",
+            "unit_quantity": 3.0,
+            "current_quantity": -7,
+            "price": 1.21,
+            "use_exchange_rate": false,
+            "priority": 0,
+            "notes": "Vendor: Greenline\nDescription: 204-694-0332\nPart # G1616-125",
+            "latest_change_current_quantity": "Latest Change:\nfrom: -7\nto: -7\nLynden\nMarch 13 Monday 2023 08:30:45 AM",
+            "latest_change_price": "Latest Change:\nfrom: 1.2\nto: 1.21\nItsme\nAugust 03 Wednesday 2022 08:50:13 AM",
+            "latest_change_notes": "Latest Change:\nfrom: \"Vendor: Greenline\nDescription: 204-694-0332\nPart # G1616-12\"\nto: \"Vendor: Greenline\nDescription: 204-694-0332\nPart # G1616-125\"\nItsme\nJanuary 17 Tuesday 2023 09:14:55 AM",
+            "latest_change_name": "Latest Change:\nfrom: \"1 1\/4 Closed Nipple  \"\nto: \"1 1\/4 Closed Nipple   \"\nLynden\nMarch 13 Monday 2023 08:37:30 AM"
         },
         "1 1\/4 Full Port ball Valve": {
             "part_number": "114BV",
@@ -3293,6 +3289,23 @@
             "latest_change_priority": "Item added\nItsme\nJuly 19 Tuesday 2022 04-53-23 PM",
             "latest_change_notes": "Item added\nItsme\nJuly 19 Tuesday 2022 04-53-23 PM"
         },
+        "1\"x 3\/8\"  Bolt ": {
+            "part_number": "138",
+            "unit_quantity": 18,
+            "current_quantity": 480,
+            "price": 0.3,
+            "use_exchange_rate": false,
+            "priority": 0,
+            "notes": "Vendor: A.Adams Supply\nDescription: ",
+            "latest_change_name": "Item added\nItsme\nJuly 19 Tuesday 2022 03-52-41 PM",
+            "latest_change_part_number": "Item added\nItsme\nJuly 19 Tuesday 2022 03-52-41 PM",
+            "latest_change_unit_quantity": "Item added\nItsme\nJuly 19 Tuesday 2022 03-52-41 PM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 480\nto: 480\nLynden\nMarch 13 Monday 2023 08:41:48 AM",
+            "latest_change_price": "Item added\nItsme\nJuly 19 Tuesday 2022 03-52-41 PM",
+            "latest_change_use_exchange_price": "Item added\nItsme\nJuly 19 Tuesday 2022 03-52-41 PM",
+            "latest_change_priority": "Item added\nItsme\nJuly 19 Tuesday 2022 03-52-41 PM",
+            "latest_change_notes": "Item added\nItsme\nJuly 19 Tuesday 2022 03-52-41 PM"
+        },
         "Grundfos 26-99FC 115V 9H": {
             "part_number": "26-99FC",
             "unit_quantity": 1,
@@ -3458,19 +3471,6 @@
             "latest_change_use_exchange_price": "Item added\nItsme\nJuly 19 Tuesday 2022 03-54-38 PM",
             "latest_change_priority": "Item added\nItsme\nJuly 19 Tuesday 2022 03-54-38 PM",
             "latest_change_notes": "Item added\nItsme\nJuly 19 Tuesday 2022 03-54-38 PM"
-        },
-        "1 1\/4 Closed Nipple   ": {
-            "part_number": "114CN",
-            "unit_quantity": 3.0,
-            "current_quantity": -7,
-            "price": 1.21,
-            "use_exchange_rate": false,
-            "priority": 0,
-            "notes": "Vendor: Greenline\nDescription: 204-694-0332\nPart # G1616-125",
-            "latest_change_current_quantity": "Latest Change:\nfrom: -7\nto: -7\nLynden\nMarch 13 Monday 2023 08:30:45 AM",
-            "latest_change_price": "Latest Change:\nfrom: 1.2\nto: 1.21\nItsme\nAugust 03 Wednesday 2022 08:50:13 AM",
-            "latest_change_notes": "Latest Change:\nfrom: \"Vendor: Greenline\nDescription: 204-694-0332\nPart # G1616-12\"\nto: \"Vendor: Greenline\nDescription: 204-694-0332\nPart # G1616-125\"\nItsme\nJanuary 17 Tuesday 2023 09:14:55 AM",
-            "latest_change_name": "Latest Change:\nfrom: \"1 1\/4 Closed Nipple  \"\nto: \"1 1\/4 Closed Nipple   \"\nLynden\nMarch 13 Monday 2023 08:37:30 AM"
         }
     },
     "Polar G2+": {
@@ -4692,7 +4692,7 @@
         "1\"x 3\/8\"  Bolt ": {
             "part_number": "138",
             "unit_quantity": 18,
-            "current_quantity": -20,
+            "current_quantity": 480,
             "price": 0.3,
             "use_exchange_rate": false,
             "priority": 0,
@@ -4700,7 +4700,7 @@
             "latest_change_name": "Item added\nItsme\nJuly 19 Tuesday 2022 03-52-41 PM",
             "latest_change_part_number": "Item added\nItsme\nJuly 19 Tuesday 2022 03-52-41 PM",
             "latest_change_unit_quantity": "Item added\nItsme\nJuly 19 Tuesday 2022 03-52-41 PM",
-            "latest_change_current_quantity": "Latest Change:\nfrom: -20\nto: -20\nLynden\nMarch 13 Monday 2023 08:30:46 AM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 480\nto: 480\nLynden\nMarch 13 Monday 2023 08:41:48 AM",
             "latest_change_price": "Item added\nItsme\nJuly 19 Tuesday 2022 03-52-41 PM",
             "latest_change_use_exchange_price": "Item added\nItsme\nJuly 19 Tuesday 2022 03-52-41 PM",
             "latest_change_priority": "Item added\nItsme\nJuly 19 Tuesday 2022 03-52-41 PM",
