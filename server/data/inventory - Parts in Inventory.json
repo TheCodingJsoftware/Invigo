@@ -253,6 +253,28 @@
             "modified_date": "Added at March 13 Monday 2023 05:24:50 PM",
             "group": null
         },
+        "3444-12": {
+            "current_quantity": 10,
+            "machine_time": 2.52,
+            "gauge": "3\/16",
+            "material": "Mild Steel",
+            "weight": 60.731,
+            "price": 45.17,
+            "unit_quantity": 1,
+            "modified_date": "Added at March 13 Monday 2023 06:04:21 PM",
+            "group": null
+        },
+        "3444-13": {
+            "current_quantity": 10,
+            "machine_time": 2.12,
+            "gauge": "3\/16",
+            "material": "Mild Steel",
+            "weight": 80.21,
+            "price": 56.63,
+            "unit_quantity": 1,
+            "modified_date": "Added at March 13 Monday 2023 06:04:21 PM",
+            "group": null
+        },
         "Flat pattern - Table Stand Base-part 7- .25g x1": {
             "current_quantity": 3,
             "machine_time": 0.67,
