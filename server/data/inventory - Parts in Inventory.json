@@ -33,17 +33,6 @@
             "modified_date": "Added at March 13 Monday 2023 05:24:50 PM",
             "group": null
         },
-        "Jakes WASHER": {
-            "current_quantity": 36,
-            "machine_time": 0.08,
-            "gauge": "1\/4",
-            "material": "Mild Steel",
-            "weight": 0.052,
-            "price": 0.23,
-            "unit_quantity": 1,
-            "modified_date": "Added at March 13 Monday 2023 05:24:04 PM",
-            "group": null
-        },
         "3444-24": {
             "current_quantity": 20,
             "machine_time": 0.58,
@@ -273,17 +262,6 @@
             "price": 56.63,
             "unit_quantity": 1,
             "modified_date": "Added at March 13 Monday 2023 06:04:21 PM",
-            "group": null
-        },
-        "Flat pattern - Table Stand Base-part 7- .25g x1": {
-            "current_quantity": 3,
-            "machine_time": 0.67,
-            "gauge": "1\/4",
-            "material": "Mild Steel",
-            "weight": 3.719,
-            "price": 4.06,
-            "unit_quantity": 1,
-            "modified_date": "Added at March 13 Monday 2023 05:24:04 PM",
             "group": null
         },
         "LCB300M-CB0200": {
@@ -2806,6 +2784,28 @@
             "price": 19.36,
             "unit_quantity": 1,
             "modified_date": "Added at March 09 Thursday 2023 09:41:14 AM",
+            "group": null
+        },
+        "Jakes WASHER": {
+            "current_quantity": 36,
+            "machine_time": 0.08,
+            "gauge": "1\/4",
+            "material": "Mild Steel",
+            "weight": 0.052,
+            "price": 0.23,
+            "unit_quantity": 1,
+            "modified_date": "Added at March 13 Monday 2023 05:24:04 PM",
+            "group": null
+        },
+        "Flat pattern - Table Stand Base-part 7- .25g x1": {
+            "current_quantity": 3,
+            "machine_time": 0.67,
+            "gauge": "1\/4",
+            "material": "Mild Steel",
+            "weight": 3.719,
+            "price": 4.06,
+            "unit_quantity": 1,
+            "modified_date": "Added at March 13 Monday 2023 05:24:04 PM",
             "group": null
         }
     },
