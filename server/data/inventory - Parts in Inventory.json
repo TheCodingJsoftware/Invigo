@@ -1,28 +1,5 @@
 {
-    "Custom": {
-        "LCB300M-CB0200": {
-            "current_quantity": 1,
-            "machine_time": 0.35,
-            "gauge": "1\/4",
-            "material": "Mild Steel",
-            "weight": 0.417,
-            "price": 1.14,
-            "unit_quantity": 1,
-            "modified_date": "Added at March 13 Monday 2023 05:24:04 PM",
-            "group": null
-        },
-        "LCB300M-CB0201": {
-            "current_quantity": 1,
-            "machine_time": 0.33,
-            "gauge": "1\/4",
-            "material": "Mild Steel",
-            "weight": 0.383,
-            "price": 1.07,
-            "unit_quantity": 1,
-            "modified_date": "Added at March 13 Monday 2023 05:24:04 PM",
-            "group": null
-        }
-    },
+    "Custom": {},
     "Recut": {
         "2534-327": {
             "current_quantity": 10,
@@ -2830,6 +2807,28 @@
             "price": 18.49,
             "unit_quantity": 1,
             "modified_date": "2 quantity added at February 27 Monday 2023 02:37:18 PM",
+            "group": null
+        },
+        "LCB300M-CB0200": {
+            "current_quantity": 1,
+            "machine_time": 0.35,
+            "gauge": "1\/4",
+            "material": "Mild Steel",
+            "weight": 0.417,
+            "price": 1.14,
+            "unit_quantity": 1,
+            "modified_date": "Added at March 13 Monday 2023 05:24:04 PM",
+            "group": null
+        },
+        "LCB300M-CB0201": {
+            "current_quantity": 1,
+            "machine_time": 0.33,
+            "gauge": "1\/4",
+            "material": "Mild Steel",
+            "weight": 0.383,
+            "price": 1.07,
+            "unit_quantity": 1,
+            "modified_date": "Added at March 13 Monday 2023 05:24:04 PM",
             "group": null
         }
     },
