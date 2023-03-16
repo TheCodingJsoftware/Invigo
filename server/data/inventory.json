@@ -32,12 +32,12 @@
         "3\"x48\"x96\" FSK Insulation Sheet": {
             "part_number": "FSK3",
             "unit_quantity": 3.0,
-            "current_quantity": -54.0,
+            "current_quantity": 126.0,
             "price": 124.99,
             "use_exchange_rate": false,
             "priority": 0,
             "notes": "Vendor: BrockWhite\nevandenberg@brockwhite.com\n",
-            "latest_change_current_quantity": "Latest Change:\nfrom: -24\nto: -54.0\nLynden\nMarch 13 Monday 2023 08:30:45 AM"
+            "latest_change_current_quantity": "Latest Change:\nfrom: 126.0\nto: 126.0\nLynden\nMarch 16 Thursday 2023 12:59:10 PM"
         },
         "1 1\/2 x 1 1\/4 Elbow": {
             "part_number": "112E",
@@ -1795,16 +1795,6 @@
             "latest_change_priority": "Item added\nItsme\nJanuary 09 Monday 2023 01-29-39 PM",
             "latest_change_notes": "Item added\nItsme\nJanuary 09 Monday 2023 01-29-39 PM"
         },
-        "3\"x48\"x96\" FSK Insulation Sheet": {
-            "part_number": "FSK3",
-            "unit_quantity": 3.0,
-            "current_quantity": -54.0,
-            "price": 124.99,
-            "use_exchange_rate": false,
-            "priority": 0,
-            "notes": "Vendor: BrockWhite\nevandenberg@brockwhite.com\n",
-            "latest_change_current_quantity": "Latest Change:\nfrom: -24\nto: -54.0\nLynden\nMarch 13 Monday 2023 08:30:45 AM"
-        },
         "rivet  3\/4x 5\/16 DIA ": {
             "part_number": "Rivet516",
             "unit_quantity": 8,
@@ -2924,6 +2914,16 @@
             "latest_change_notes": "Latest Change:\nfrom: \"Vendor: Rante\nDescription: \"\nto: \"Vendor: Rantec\nDescription: \"\nItsme\nAugust 23 Tuesday 2022 02:48:25 PM",
             "group": "Eon Motor Fan Assy"
         },
+        "3\"x48\"x96\" FSK Insulation Sheet": {
+            "part_number": "FSK3",
+            "unit_quantity": 3.0,
+            "current_quantity": 126.0,
+            "price": 124.99,
+            "use_exchange_rate": false,
+            "priority": 0,
+            "notes": "Vendor: BrockWhite\nevandenberg@brockwhite.com\n",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 126.0\nto: 126.0\nLynden\nMarch 16 Thursday 2023 12:59:10 PM"
+        },
         "Knob 3\/4 DIA. 7\/16 Bore. Press-On Black Phenlic Round Knob": {
             "part_number": "POK-10",
             "unit_quantity": 1,
@@ -3528,12 +3528,12 @@
         "3\"x48\"x96\" FSK Insulation Sheet": {
             "part_number": "FSK3",
             "unit_quantity": 3.0,
-            "current_quantity": -54.0,
+            "current_quantity": 126.0,
             "price": 124.99,
             "use_exchange_rate": false,
             "priority": 0,
             "notes": "Vendor: BrockWhite\nevandenberg@brockwhite.com\n",
-            "latest_change_current_quantity": "Latest Change:\nfrom: -24\nto: -54.0\nLynden\nMarch 13 Monday 2023 08:30:45 AM"
+            "latest_change_current_quantity": "Latest Change:\nfrom: 126.0\nto: 126.0\nLynden\nMarch 16 Thursday 2023 12:59:10 PM"
         },
         "rivet  3\/4x 5\/16 DIA ": {
             "part_number": "Rivet516",
