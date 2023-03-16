@@ -259,12 +259,12 @@
         "1 1\/4 Full Port ball Valve": {
             "part_number": "114BV",
             "unit_quantity": 2,
-            "current_quantity": -6,
+            "current_quantity": 34,
             "price": 20.5,
             "use_exchange_rate": false,
             "priority": 0,
             "notes": "Vendor: Greenline\nDescription: 204-694-0332\nPart # V202-125",
-            "latest_change_current_quantity": "Latest Change:\nfrom: -6\nto: -6\nLynden\nMarch 13 Monday 2023 08:30:45 AM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 34\nto: 34\nLynden\nMarch 16 Thursday 2023 02:32:15 PM",
             "latest_change_price": "Latest Change:\nfrom: 20.0\nto: 20.5\nItsme\nAugust 03 Wednesday 2022 08:49:45 AM",
             "latest_change_notes": "Latest Change:\nfrom: Vendor: Greenline\nDescription: 204-694-0332\nPart # V202-12\nto: Vendor: Greenline\nDescription: 204-694-0332\nPart # V202-125\nItsme\nJanuary 17 Tuesday 2023 09:09:45 AM"
         },
@@ -329,12 +329,12 @@
         "Barb Hose Adapter fitting": {
             "part_number": "BIA-020",
             "unit_quantity": 2,
-            "current_quantity": 0,
+            "current_quantity": 20,
             "price": 3.0,
             "use_exchange_rate": false,
             "priority": 0,
             "notes": "Vendor: GreenLine\nDescription: 204-694-0332\nPart # G33G-125",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 0\nto: 0\nLynden\nMarch 13 Monday 2023 08:30:45 AM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 20\nto: 20\nLynden\nMarch 16 Thursday 2023 02:32:50 PM",
             "latest_change_price": "Latest Change:\nfrom: 3.3\nto: 3.0\nItsme\nAugust 03 Wednesday 2022 08:50:27 AM",
             "latest_change_notes": "Latest Change:\nfrom: Vendor: GreenLine\nDescription: 204-694-0332\nPart # G33G-12\nto: Vendor: GreenLine\nDescription: 204-694-0332\nPart # G33G-125\nItsme\nJanuary 17 Tuesday 2023 09:09:11 AM"
         },
@@ -392,12 +392,12 @@
         "1 1\/4 Closed Nipple ": {
             "part_number": "114CN",
             "unit_quantity": 3.0,
-            "current_quantity": -7,
+            "current_quantity": 33,
             "price": 1.21,
             "use_exchange_rate": false,
             "priority": 0,
             "notes": "Vendor: Greenline\nDescription: 204-694-0332\nPart # G1616-125",
-            "latest_change_current_quantity": "Latest Change:\nfrom: -7.0\nto: -7\nLynden\nMarch 13 Monday 2023 08:30:45 AM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 33\nto: 33\nLynden\nMarch 16 Thursday 2023 02:31:56 PM",
             "latest_change_price": "Latest Change:\nfrom: 1.2\nto: 1.21\nItsme\nAugust 03 Wednesday 2022 08:50:13 AM",
             "latest_change_notes": "Latest Change:\nfrom: Vendor: Greenline\nDescription: 204-694-0332\nPart # G1616-12\nto: Vendor: Greenline\nDescription: 204-694-0332\nPart # G1616-125\nItsme\nJanuary 17 Tuesday 2023 09:14:55 AM"
         },
@@ -1922,31 +1922,6 @@
             "latest_change_priority": "Item added\nItsme\nOctober 27 Thursday 2022 04-30-41 PM",
             "latest_change_notes": "Item added\nItsme\nOctober 27 Thursday 2022 04-30-41 PM"
         },
-        "1 1\/4 Closed Nipple   ": {
-            "part_number": "114CN",
-            "unit_quantity": 3.0,
-            "current_quantity": -7,
-            "price": 1.21,
-            "use_exchange_rate": false,
-            "priority": 0,
-            "notes": "Vendor: Greenline\nDescription: 204-694-0332\nPart # G1616-125",
-            "latest_change_current_quantity": "Latest Change:\nfrom: -7\nto: -7\nLynden\nMarch 13 Monday 2023 08:30:45 AM",
-            "latest_change_price": "Latest Change:\nfrom: 1.2\nto: 1.21\nItsme\nAugust 03 Wednesday 2022 08:50:13 AM",
-            "latest_change_notes": "Latest Change:\nfrom: \"Vendor: Greenline\nDescription: 204-694-0332\nPart # G1616-12\"\nto: \"Vendor: Greenline\nDescription: 204-694-0332\nPart # G1616-125\"\nItsme\nJanuary 17 Tuesday 2023 09:14:55 AM",
-            "latest_change_name": "Latest Change:\nfrom: \"1 1\/4 Closed Nipple  \"\nto: \"1 1\/4 Closed Nipple   \"\nLynden\nMarch 13 Monday 2023 08:37:30 AM"
-        },
-        "1 1\/4 Full Port ball Valve": {
-            "part_number": "114BV",
-            "unit_quantity": 2,
-            "current_quantity": -6,
-            "price": 20.5,
-            "use_exchange_rate": false,
-            "priority": 0,
-            "notes": "Vendor: Greenline\nDescription: 204-694-0332\nPart # V202-125",
-            "latest_change_current_quantity": "Latest Change:\nfrom: -6\nto: -6\nLynden\nMarch 13 Monday 2023 08:30:45 AM",
-            "latest_change_price": "Latest Change:\nfrom: 20.0\nto: 20.5\nItsme\nAugust 03 Wednesday 2022 08:49:45 AM",
-            "latest_change_notes": "Latest Change:\nfrom: \"Vendor: Greenline\nDescription: 204-694-0332\nPart # V202-12\"\nto: \"Vendor: Greenline\nDescription: 204-694-0332\nPart # V202-125\"\nItsme\nJanuary 17 Tuesday 2023 09:09:45 AM"
-        },
         "Terminal Block 1492-H7": {
             "part_number": "ALB1492H7",
             "unit_quantity": 1.0,
@@ -1997,19 +1972,6 @@
             "latest_change_use_exchange_price": "Item added\nItsme\nJanuary 27 Friday 2023 01-32-27 PM",
             "latest_change_priority": "Item added\nItsme\nJanuary 27 Friday 2023 01-32-27 PM",
             "latest_change_notes": "Item added\nItsme\nJanuary 27 Friday 2023 01-32-27 PM"
-        },
-        "Barb Hose Adapter fitting 1 1\/4": {
-            "part_number": "BIA-020",
-            "unit_quantity": 2,
-            "current_quantity": 0,
-            "price": 3.0,
-            "use_exchange_rate": false,
-            "priority": 0,
-            "notes": "Vendor: GreenLine\nDescription: 204-694-0332\nPart # G33G-125",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 0\nto: 0\nLynden\nMarch 13 Monday 2023 08:30:45 AM",
-            "latest_change_price": "Latest Change:\nfrom: 3.3\nto: 3.0\nItsme\nAugust 03 Wednesday 2022 08:50:27 AM",
-            "latest_change_name": "Latest Change:\nfrom: \"Barb Hose Adapter fitting 1 1\/\"\nto: \"Barb Hose Adapter fitting 1 1\/4\"\nItsme\nJanuary 16 Monday 2023 09:57:20 AM",
-            "latest_change_notes": "Latest Change:\nfrom: \"Vendor: GreenLine\nDescription: 204-694-0332\nPart # G33G-12\"\nto: \"Vendor: GreenLine\nDescription: 204-694-0332\nPart # G33G-125\"\nItsme\nJanuary 17 Tuesday 2023 09:09:11 AM"
         },
         "BKMDL3R BUSSMANN 3A FUSE (slow Burn Fuse) ": {
             "part_number": "BUSBKMDL3R",
@@ -2246,6 +2208,19 @@
             "latest_change_current_quantity": "Latest Change:\nfrom: 16\nto: 16\nLynden\nMarch 13 Monday 2023 08:30:45 AM",
             "latest_change_price": "Latest Change:\nfrom: 0.9\nto: 0.9\nItsme\nFebruary 23 Thursday 2023 09:35:20 AM"
         },
+        "Barb Hose Adapter fitting 1 1\/4": {
+            "part_number": "BIA-020",
+            "unit_quantity": 2,
+            "current_quantity": 20,
+            "price": 3.0,
+            "use_exchange_rate": false,
+            "priority": 0,
+            "notes": "Vendor: GreenLine\nDescription: 204-694-0332\nPart # G33G-125",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 20\nto: 20\nLynden\nMarch 16 Thursday 2023 02:32:50 PM",
+            "latest_change_price": "Latest Change:\nfrom: 3.3\nto: 3.0\nItsme\nAugust 03 Wednesday 2022 08:50:27 AM",
+            "latest_change_name": "Latest Change:\nfrom: \"Barb Hose Adapter fitting 1 1\/\"\nto: \"Barb Hose Adapter fitting 1 1\/4\"\nItsme\nJanuary 16 Monday 2023 09:57:20 AM",
+            "latest_change_notes": "Latest Change:\nfrom: \"Vendor: GreenLine\nDescription: 204-694-0332\nPart # G33G-12\"\nto: \"Vendor: GreenLine\nDescription: 204-694-0332\nPart # G33G-125\"\nItsme\nJanuary 17 Tuesday 2023 09:09:11 AM"
+        },
         "3\" Thermax SF- 600 Brick Slabs 1000x610x75": {
             "part_number": "THERMAXSF600",
             "unit_quantity": 1,
@@ -2374,6 +2349,31 @@
             "latest_change_use_exchange_price": "Item added\nItsme\nNovember 08 Tuesday 2022 03-01-10 PM",
             "latest_change_priority": "Item added\nItsme\nNovember 08 Tuesday 2022 03-01-10 PM",
             "latest_change_notes": "Item added\nItsme\nNovember 08 Tuesday 2022 03-01-10 PM"
+        },
+        "1 1\/4 Closed Nipple   ": {
+            "part_number": "114CN",
+            "unit_quantity": 3.0,
+            "current_quantity": 33,
+            "price": 1.21,
+            "use_exchange_rate": false,
+            "priority": 0,
+            "notes": "Vendor: Greenline\nDescription: 204-694-0332\nPart # G1616-125",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 33\nto: 33\nLynden\nMarch 16 Thursday 2023 02:31:56 PM",
+            "latest_change_price": "Latest Change:\nfrom: 1.2\nto: 1.21\nItsme\nAugust 03 Wednesday 2022 08:50:13 AM",
+            "latest_change_notes": "Latest Change:\nfrom: \"Vendor: Greenline\nDescription: 204-694-0332\nPart # G1616-12\"\nto: \"Vendor: Greenline\nDescription: 204-694-0332\nPart # G1616-125\"\nItsme\nJanuary 17 Tuesday 2023 09:14:55 AM",
+            "latest_change_name": "Latest Change:\nfrom: \"1 1\/4 Closed Nipple  \"\nto: \"1 1\/4 Closed Nipple   \"\nLynden\nMarch 13 Monday 2023 08:37:30 AM"
+        },
+        "1 1\/4 Full Port ball Valve": {
+            "part_number": "114BV",
+            "unit_quantity": 2,
+            "current_quantity": 34,
+            "price": 20.5,
+            "use_exchange_rate": false,
+            "priority": 0,
+            "notes": "Vendor: Greenline\nDescription: 204-694-0332\nPart # V202-125",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 34\nto: 34\nLynden\nMarch 16 Thursday 2023 02:32:15 PM",
+            "latest_change_price": "Latest Change:\nfrom: 20.0\nto: 20.5\nItsme\nAugust 03 Wednesday 2022 08:49:45 AM",
+            "latest_change_notes": "Latest Change:\nfrom: \"Vendor: Greenline\nDescription: 204-694-0332\nPart # V202-12\"\nto: \"Vendor: Greenline\nDescription: 204-694-0332\nPart # V202-125\"\nItsme\nJanuary 17 Tuesday 2023 09:09:45 AM"
         },
         "Shaft Collar 7\/16 with Set Screw": {
             "part_number": "BRA0420",
@@ -3698,24 +3698,24 @@
         "1 1\/4 Closed Nipple ": {
             "part_number": "114CN",
             "unit_quantity": 3.0,
-            "current_quantity": -7,
+            "current_quantity": 33,
             "price": 1.21,
             "use_exchange_rate": false,
             "priority": 0,
             "notes": "Vendor: Greenline\nDescription: 204-694-0332\nPart # G1616-125",
-            "latest_change_current_quantity": "Latest Change:\nfrom: -7.0\nto: -7\nLynden\nMarch 13 Monday 2023 08:30:45 AM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 33\nto: 33\nLynden\nMarch 16 Thursday 2023 02:31:56 PM",
             "latest_change_price": "Latest Change:\nfrom: 1.2\nto: 1.21\nItsme\nAugust 03 Wednesday 2022 08:50:13 AM",
             "latest_change_notes": "Latest Change:\nfrom: Vendor: Greenline\nDescription: 204-694-0332\nPart # G1616-12\nto: Vendor: Greenline\nDescription: 204-694-0332\nPart # G1616-125\nItsme\nJanuary 17 Tuesday 2023 09:14:55 AM"
         },
         "1 1\/4 Full Port ball Valve": {
             "part_number": "114BV",
             "unit_quantity": 2,
-            "current_quantity": -6,
+            "current_quantity": 34,
             "price": 20.5,
             "use_exchange_rate": false,
             "priority": 0,
             "notes": "Vendor: Greenline\nDescription: 204-694-0332\nPart # V202-125",
-            "latest_change_current_quantity": "Latest Change:\nfrom: -6\nto: -6\nLynden\nMarch 13 Monday 2023 08:30:45 AM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 34\nto: 34\nLynden\nMarch 16 Thursday 2023 02:32:15 PM",
             "latest_change_price": "Latest Change:\nfrom: 20.0\nto: 20.5\nItsme\nAugust 03 Wednesday 2022 08:49:45 AM",
             "latest_change_notes": "Latest Change:\nfrom: Vendor: Greenline\nDescription: 204-694-0332\nPart # V202-12\nto: Vendor: Greenline\nDescription: 204-694-0332\nPart # V202-125\nItsme\nJanuary 17 Tuesday 2023 09:09:45 AM"
         },
@@ -3756,12 +3756,12 @@
         "Barb Hose Adapter fitting 1 1\/4": {
             "part_number": "BIA-020",
             "unit_quantity": 2,
-            "current_quantity": 0,
+            "current_quantity": 20,
             "price": 3.0,
             "use_exchange_rate": false,
             "priority": 0,
             "notes": "Vendor: GreenLine\nDescription: 204-694-0332\nPart # G33G-125",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 0\nto: 0\nLynden\nMarch 13 Monday 2023 08:30:45 AM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 20\nto: 20\nLynden\nMarch 16 Thursday 2023 02:32:50 PM",
             "latest_change_price": "Latest Change:\nfrom: 3.3\nto: 3.0\nItsme\nAugust 03 Wednesday 2022 08:50:27 AM",
             "latest_change_name": "Latest Change:\nfrom: \"Barb Hose Adapter fitting 1 1\/\"\nto: \"Barb Hose Adapter fitting 1 1\/4\"\nItsme\nJanuary 16 Monday 2023 09:57:56 AM",
             "latest_change_notes": "Latest Change:\nfrom: Vendor: GreenLine\nDescription: 204-694-0332\nPart # G33G-12\nto: Vendor: GreenLine\nDescription: 204-694-0332\nPart # G33G-125\nItsme\nJanuary 17 Tuesday 2023 09:09:11 AM"
@@ -6241,7 +6241,7 @@
         "1 1\/4 Full Port ball Valve": {
             "part_number": "114BV",
             "unit_quantity": 2,
-            "current_quantity": -6,
+            "current_quantity": 34,
             "price": 20.5,
             "use_exchange_rate": false,
             "priority": 0,
@@ -6249,7 +6249,7 @@
             "latest_change_name": "Item added\nItsme\nAugust 03 Wednesday 2022 08-49-20 AM",
             "latest_change_part_number": "Item added\nItsme\nAugust 03 Wednesday 2022 08-49-20 AM",
             "latest_change_unit_quantity": "Item added\nItsme\nAugust 03 Wednesday 2022 08-49-20 AM",
-            "latest_change_current_quantity": "Latest Change:\nfrom: -6\nto: -6\nLynden\nMarch 13 Monday 2023 08:30:45 AM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 34\nto: 34\nLynden\nMarch 16 Thursday 2023 02:32:15 PM",
             "latest_change_price": "Latest Change:\nfrom: 20.0\nto: 20.5\nItsme\nAugust 03 Wednesday 2022 08:49:45 AM",
             "latest_change_use_exchange_price": "Item added\nItsme\nAugust 03 Wednesday 2022 08-49-20 AM",
             "latest_change_priority": "Item added\nItsme\nAugust 03 Wednesday 2022 08-49-20 AM",
@@ -6258,7 +6258,7 @@
         "1 1\/4 Closed Nipple ": {
             "part_number": "114CN",
             "unit_quantity": 3,
-            "current_quantity": -7,
+            "current_quantity": 33,
             "price": 1.21,
             "use_exchange_rate": false,
             "priority": 0,
@@ -6266,7 +6266,7 @@
             "latest_change_name": "Item added\nItsme\nAugust 03 Wednesday 2022 08-48-01 AM",
             "latest_change_part_number": "Item added\nItsme\nAugust 03 Wednesday 2022 08-48-01 AM",
             "latest_change_unit_quantity": "Item added\nItsme\nAugust 03 Wednesday 2022 08-48-01 AM",
-            "latest_change_current_quantity": "Latest Change:\nfrom: -7.0\nto: -7\nLynden\nMarch 13 Monday 2023 08:30:45 AM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 33\nto: 33\nLynden\nMarch 16 Thursday 2023 02:31:56 PM",
             "latest_change_price": "Latest Change:\nfrom: 1.2\nto: 1.21\nItsme\nAugust 03 Wednesday 2022 08:50:13 AM",
             "latest_change_use_exchange_price": "Item added\nItsme\nAugust 03 Wednesday 2022 08-48-01 AM",
             "latest_change_priority": "Item added\nItsme\nAugust 03 Wednesday 2022 08-48-01 AM",
@@ -6292,7 +6292,7 @@
         "Barb Hose Adapter fitting": {
             "part_number": "BIA-020",
             "unit_quantity": 2,
-            "current_quantity": 0,
+            "current_quantity": 20,
             "price": 3.0,
             "use_exchange_rate": false,
             "priority": 0,
@@ -6300,7 +6300,7 @@
             "latest_change_name": "Item added\nItsme\nAugust 03 Wednesday 2022 08-47-07 AM",
             "latest_change_part_number": "Item added\nItsme\nAugust 03 Wednesday 2022 08-47-07 AM",
             "latest_change_unit_quantity": "Item added\nItsme\nAugust 03 Wednesday 2022 08-47-07 AM",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 0\nto: 0\nLynden\nMarch 13 Monday 2023 08:30:45 AM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 20\nto: 20\nLynden\nMarch 16 Thursday 2023 02:32:50 PM",
             "latest_change_price": "Latest Change:\nfrom: 3.3\nto: 3.0\nItsme\nAugust 03 Wednesday 2022 08:50:27 AM",
             "latest_change_use_exchange_price": "Item added\nItsme\nAugust 03 Wednesday 2022 08-47-07 AM",
             "latest_change_priority": "Item added\nItsme\nAugust 03 Wednesday 2022 08-47-07 AM",
