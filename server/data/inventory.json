@@ -59,7 +59,7 @@
         "Sticker #342 Bilingual Caution Notice Decal ": {
             "part_number": "342",
             "unit_quantity": 1.0,
-            "current_quantity": -25.0,
+            "current_quantity": 77.0,
             "price": 5.37,
             "use_exchange_rate": false,
             "priority": 0,
@@ -67,7 +67,7 @@
             "latest_change_name": "Item added\nItsme\nFebruary 17 Friday 2023 10-37-30 AM",
             "latest_change_part_number": "Item added\nItsme\nFebruary 17 Friday 2023 10-37-30 AM",
             "latest_change_unit_quantity": "Item added\nItsme\nFebruary 17 Friday 2023 10-37-30 AM",
-            "latest_change_current_quantity": "Latest Change:\nfrom: -15\nto: -25.0\nLynden\nMarch 13 Monday 2023 08:30:45 AM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 77.0\nto: 77.0\nLynden\nMarch 16 Thursday 2023 12:59:56 PM",
             "latest_change_price": "Latest Change:\nfrom: 5.37\nto: 5.37\nItsme\nFebruary 23 Thursday 2023 09:33:48 AM",
             "latest_change_use_exchange_price": "Item added\nItsme\nFebruary 17 Friday 2023 10-37-30 AM",
             "latest_change_priority": "Item added\nItsme\nFebruary 17 Friday 2023 10-37-30 AM",
@@ -1841,23 +1841,6 @@
             "latest_change_priority": "Item added\nItsme\nSeptember 16 Friday 2022 02-18-09 PM",
             "latest_change_notes": "Item added\nItsme\nSeptember 16 Friday 2022 02-18-09 PM"
         },
-        "Sticker #342 Bilingual Caution Notice Decal ": {
-            "part_number": "342",
-            "unit_quantity": 1.0,
-            "current_quantity": -25.0,
-            "price": 5.37,
-            "use_exchange_rate": false,
-            "priority": 0,
-            "notes": "Vendor: HD Graphics Inc\nDescription: ",
-            "latest_change_name": "Item added\nItsme\nFebruary 17 Friday 2023 10-36-35 AM",
-            "latest_change_part_number": "Item added\nItsme\nFebruary 17 Friday 2023 10-36-35 AM",
-            "latest_change_unit_quantity": "Item added\nItsme\nFebruary 17 Friday 2023 10-36-35 AM",
-            "latest_change_current_quantity": "Latest Change:\nfrom: -15\nto: -25.0\nLynden\nMarch 13 Monday 2023 08:30:45 AM",
-            "latest_change_price": "Latest Change:\nfrom: 5.37\nto: 5.37\nItsme\nFebruary 23 Thursday 2023 09:33:48 AM",
-            "latest_change_use_exchange_price": "Item added\nItsme\nFebruary 17 Friday 2023 10-36-35 AM",
-            "latest_change_priority": "Item added\nItsme\nFebruary 17 Friday 2023 10-36-35 AM",
-            "latest_change_notes": "Item added\nItsme\nFebruary 17 Friday 2023 10-36-35 AM"
-        },
         "G Class Ash Shovel Small": {
             "part_number": "GCASS",
             "unit_quantity": 1.0,
@@ -2751,6 +2734,23 @@
             "latest_change_notes": "Latest Change:\nfrom: \"Vendor: HD GRaphics\nDescription: \"\nto: \"Vendor: HD GRaphics\n\nDescription: \"\nItsme\nFebruary 23 Thursday 2023 09:32:53 AM",
             "latest_change_price": "Latest Change:\nfrom: 2.47\nto: 6.93\nItsme\nFebruary 23 Thursday 2023 09:33:05 AM"
         },
+        "Sticker #342 Bilingual Caution Notice Decal ": {
+            "part_number": "342",
+            "unit_quantity": 1.0,
+            "current_quantity": 77.0,
+            "price": 5.37,
+            "use_exchange_rate": false,
+            "priority": 0,
+            "notes": "Vendor: HD Graphics Inc\nDescription: ",
+            "latest_change_name": "Item added\nItsme\nFebruary 17 Friday 2023 10-36-35 AM",
+            "latest_change_part_number": "Item added\nItsme\nFebruary 17 Friday 2023 10-36-35 AM",
+            "latest_change_unit_quantity": "Item added\nItsme\nFebruary 17 Friday 2023 10-36-35 AM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 77.0\nto: 77.0\nLynden\nMarch 16 Thursday 2023 12:59:56 PM",
+            "latest_change_price": "Latest Change:\nfrom: 5.37\nto: 5.37\nItsme\nFebruary 23 Thursday 2023 09:33:48 AM",
+            "latest_change_use_exchange_price": "Item added\nItsme\nFebruary 17 Friday 2023 10-36-35 AM",
+            "latest_change_priority": "Item added\nItsme\nFebruary 17 Friday 2023 10-36-35 AM",
+            "latest_change_notes": "Item added\nItsme\nFebruary 17 Friday 2023 10-36-35 AM"
+        },
         "Knob 2 3\/8 DIA. 1\/2-13. Fluted Black Plastic": {
             "part_number": "DK-122",
             "unit_quantity": 2,
@@ -3584,7 +3584,7 @@
         "Sticker #342 Bilingual Caution Notice Decal ": {
             "part_number": "342",
             "unit_quantity": 1.0,
-            "current_quantity": -25.0,
+            "current_quantity": 77.0,
             "price": 5.37,
             "use_exchange_rate": false,
             "priority": 0,
@@ -3592,7 +3592,7 @@
             "latest_change_name": "Item added\nItsme\nFebruary 17 Friday 2023 10-38-00 AM",
             "latest_change_part_number": "Item added\nItsme\nFebruary 17 Friday 2023 10-38-00 AM",
             "latest_change_unit_quantity": "Item added\nItsme\nFebruary 17 Friday 2023 10-38-00 AM",
-            "latest_change_current_quantity": "Latest Change:\nfrom: -15\nto: -25.0\nLynden\nMarch 13 Monday 2023 08:30:45 AM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 77.0\nto: 77.0\nLynden\nMarch 16 Thursday 2023 12:59:56 PM",
             "latest_change_price": "Latest Change:\nfrom: 5.37\nto: 5.37\nItsme\nFebruary 23 Thursday 2023 09:33:48 AM",
             "latest_change_use_exchange_price": "Item added\nItsme\nFebruary 17 Friday 2023 10-38-00 AM",
             "latest_change_priority": "Item added\nItsme\nFebruary 17 Friday 2023 10-38-00 AM",
