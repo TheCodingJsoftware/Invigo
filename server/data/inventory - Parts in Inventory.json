@@ -1,5 +1,204 @@
 {
-    "Custom": {},
+    "Custom": {
+        "Flat pattern - Hog Barn Latch": {
+            "current_quantity": 583,
+            "machine_time": 0.22,
+            "gauge": "1\/4",
+            "material": "304 SS",
+            "weight": 0.252,
+            "price": 1.52,
+            "unit_quantity": 1,
+            "modified_date": "Added at March 17 Friday 2023 02:13:08 PM",
+            "group": null
+        },
+        "Head Plate 9 inch": {
+            "current_quantity": 203,
+            "machine_time": 0.85,
+            "gauge": "10 Gauge",
+            "material": "Galvanized",
+            "weight": 2.53,
+            "price": 5.16,
+            "unit_quantity": 1,
+            "modified_date": "Added at March 17 Friday 2023 02:12:11 PM",
+            "group": null
+        },
+        "G2-3-Secondary Air Delivery-tube-part1x2": {
+            "current_quantity": 11,
+            "machine_time": 0.62,
+            "gauge": "14 Gauge",
+            "material": "304 SS",
+            "weight": 7.591,
+            "price": 20.73,
+            "unit_quantity": 1,
+            "modified_date": "Added at March 17 Friday 2023 02:17:02 PM",
+            "group": null
+        },
+        "G2-3-Primary Air Delivery-tube-part1x2": {
+            "current_quantity": 10,
+            "machine_time": 0.77,
+            "gauge": "14 Gauge",
+            "material": "304 SS",
+            "weight": 9.991,
+            "price": 27.09,
+            "unit_quantity": 1,
+            "modified_date": "Added at March 17 Friday 2023 02:17:02 PM",
+            "group": null
+        },
+        "G2-3-Primary Air Delivery-tube-part2x2": {
+            "current_quantity": 10,
+            "machine_time": 0.75,
+            "gauge": "14 Gauge",
+            "material": "304 SS",
+            "weight": 6.046,
+            "price": 17.57,
+            "unit_quantity": 1,
+            "modified_date": "Added at March 17 Friday 2023 02:17:02 PM",
+            "group": null
+        },
+        "G2-3-Secondary Air Delivery-tube-part2x2": {
+            "current_quantity": 10,
+            "machine_time": 0.63,
+            "gauge": "14 Gauge",
+            "material": "304 SS",
+            "weight": 4.825,
+            "price": 14.16,
+            "unit_quantity": 1,
+            "modified_date": "Added at March 17 Friday 2023 02:17:02 PM",
+            "group": null
+        },
+        "WTSR-04": {
+            "current_quantity": 8,
+            "machine_time": 0.67,
+            "gauge": "14 Gauge",
+            "material": "304 SS",
+            "weight": 7.283,
+            "price": 20.2,
+            "unit_quantity": 1,
+            "modified_date": "Added at March 17 Friday 2023 02:17:03 PM",
+            "group": null
+        },
+        "WTSR-01": {
+            "current_quantity": 4,
+            "machine_time": 0.65,
+            "gauge": "14 Gauge",
+            "material": "304 SS",
+            "weight": 10.524,
+            "price": 27.86,
+            "unit_quantity": 1,
+            "modified_date": "Added at March 17 Friday 2023 02:17:02 PM",
+            "group": null
+        },
+        "WTSR-03": {
+            "current_quantity": 4,
+            "machine_time": 0.65,
+            "gauge": "14 Gauge",
+            "material": "304 SS",
+            "weight": 7.003,
+            "price": 19.45,
+            "unit_quantity": 1,
+            "modified_date": "Added at March 17 Friday 2023 02:17:02 PM",
+            "group": null
+        },
+        "2840-86x2": {
+            "current_quantity": 3,
+            "machine_time": 0.53,
+            "gauge": "14 Gauge",
+            "material": "304 SS",
+            "weight": 3.587,
+            "price": 10.78,
+            "unit_quantity": 1,
+            "modified_date": "Added at March 17 Friday 2023 02:17:02 PM",
+            "group": null
+        },
+        "3444-91x2": {
+            "current_quantity": 3,
+            "machine_time": 0.58,
+            "gauge": "14 Gauge",
+            "material": "304 SS",
+            "weight": 3.764,
+            "price": 11.41,
+            "unit_quantity": 1,
+            "modified_date": "Added at March 17 Friday 2023 02:17:02 PM",
+            "group": null
+        },
+        "WTSR-02": {
+            "current_quantity": 2,
+            "machine_time": 0.63,
+            "gauge": "14 Gauge",
+            "material": "304 SS",
+            "weight": 6.892,
+            "price": 19.1,
+            "unit_quantity": 1,
+            "modified_date": "Added at March 17 Friday 2023 02:17:02 PM",
+            "group": null
+        },
+        "3444-90x2": {
+            "current_quantity": 1,
+            "machine_time": 0.6,
+            "gauge": "14 Gauge",
+            "material": "304 SS",
+            "weight": 3.946,
+            "price": 11.93,
+            "unit_quantity": 1,
+            "modified_date": "Added at March 17 Friday 2023 02:17:02 PM",
+            "group": null
+        },
+        "Radius Gauge 48-64": {
+            "current_quantity": 1,
+            "machine_time": 1.02,
+            "gauge": "14 Gauge",
+            "material": "304 SS",
+            "weight": 1.057,
+            "price": 6.78,
+            "unit_quantity": 1,
+            "modified_date": "Added at March 17 Friday 2023 02:17:02 PM",
+            "group": null
+        },
+        "Radius Gauge 48-64_1.25": {
+            "current_quantity": 1,
+            "machine_time": 1.1,
+            "gauge": "14 Gauge",
+            "material": "304 SS",
+            "weight": 1.869,
+            "price": 9.05,
+            "unit_quantity": 1,
+            "modified_date": "Added at March 17 Friday 2023 02:17:02 PM",
+            "group": null
+        },
+        "Radius Gauge 48-64_25": {
+            "current_quantity": 1,
+            "machine_time": 0.52,
+            "gauge": "14 Gauge",
+            "material": "304 SS",
+            "weight": 0.066,
+            "price": 2.32,
+            "unit_quantity": 1,
+            "modified_date": "Added at March 17 Friday 2023 02:17:02 PM",
+            "group": null
+        },
+        "Radius Gauge 48-64_5": {
+            "current_quantity": 1,
+            "machine_time": 0.7,
+            "gauge": "14 Gauge",
+            "material": "304 SS",
+            "weight": 0.264,
+            "price": 3.55,
+            "unit_quantity": 1,
+            "modified_date": "Added at March 17 Friday 2023 02:17:02 PM",
+            "group": null
+        },
+        "Radius Gauge 48-64_75": {
+            "current_quantity": 1,
+            "machine_time": 0.92,
+            "gauge": "14 Gauge",
+            "material": "304 SS",
+            "weight": 0.595,
+            "price": 5.26,
+            "unit_quantity": 1,
+            "modified_date": "Added at March 17 Friday 2023 02:17:02 PM",
+            "group": null
+        }
+    },
     "Recut": {
         "2534-327": {
             "current_quantity": 10,
@@ -127,6 +326,17 @@
             "price": 1.75,
             "unit_quantity": 4.0,
             "modified_date": "Removed 40.0 quantity at March 14 Tuesday 2023 04:49:05 PM",
+            "group": null
+        },
+        "2840-87x2": {
+            "current_quantity": 20.0,
+            "machine_time": 0.47,
+            "gauge": "16 Gauge",
+            "material": "304 SS",
+            "weight": 2.417,
+            "price": 7.73,
+            "unit_quantity": 1,
+            "modified_date": "20 quantity added at March 17 Friday 2023 02:17:02 PM",
             "group": null
         },
         "3044 Ashpan": {
@@ -391,17 +601,6 @@
             "price": 2.38,
             "unit_quantity": 1,
             "modified_date": "Manually set to 0.0 quantity at March 14 Tuesday 2023 04:49:14 PM",
-            "group": null
-        },
-        "2840-87x2": {
-            "current_quantity": 0.0,
-            "machine_time": 0.47,
-            "gauge": "16 Gauge",
-            "material": "304 SS",
-            "weight": 2.417,
-            "price": 7.73,
-            "unit_quantity": 1,
-            "modified_date": "Manually set to 0.0 quantity at March 14 Tuesday 2023 04:49:16 PM",
             "group": null
         },
         "2840-63": {
@@ -1337,14 +1536,14 @@
             "group": null
         },
         "G2Plus-Secondary Air Delivery-tube-part1x2": {
-            "current_quantity": 20.0,
+            "current_quantity": 24.0,
             "machine_time": 0.63,
             "gauge": "14 Gauge",
             "material": "304 SS",
             "weight": 8.762,
             "price": 23.57,
             "unit_quantity": 2.0,
-            "modified_date": "Removed 20.0 quantity at March 14 Tuesday 2023 04:53:43 PM",
+            "modified_date": "2 quantity added at March 17 Friday 2023 02:17:02 PM",
             "group": null
         },
         "G2Plus-Secondary Air Delivery-tube-part2x2": {
@@ -2064,6 +2263,17 @@
             "modified_date": "Added at March 03 Friday 2023 08:51:40 AM",
             "group": null
         },
+        "G2Plus-Secondary Air Delivery-tube-part1x2": {
+            "current_quantity": 34,
+            "machine_time": 0.63,
+            "gauge": "14 Gauge",
+            "material": "304 SS",
+            "weight": 8.762,
+            "price": 23.57,
+            "unit_quantity": 1,
+            "modified_date": "2 quantity added at March 17 Friday 2023 02:17:02 PM",
+            "group": null
+        },
         "G2Plus-Primary Air Delivery-Tube-Cleanout-Cover-Inner": {
             "current_quantity": 30.0,
             "machine_time": 0.1,
@@ -2071,17 +2281,6 @@
             "material": "304 SS",
             "weight": 0.092,
             "price": 0.64,
-            "unit_quantity": 1,
-            "modified_date": "Removed 10 quantity at March 14 Tuesday 2023 04:53:43 PM",
-            "group": null
-        },
-        "G2Plus-Secondary Air Delivery-tube-part1x2": {
-            "current_quantity": 30,
-            "machine_time": 0.63,
-            "gauge": "14 Gauge",
-            "material": "304 SS",
-            "weight": 8.762,
-            "price": 23.57,
             "unit_quantity": 1,
             "modified_date": "Removed 10 quantity at March 14 Tuesday 2023 04:53:43 PM",
             "group": null
@@ -2308,6 +2507,17 @@
             "modified_date": "1085 quantity added at March 10 Friday 2023 08:59:20 AM",
             "group": null
         },
+        "PM - SS HINGE A-A also used in 3 quarter hinge": {
+            "current_quantity": 1178,
+            "machine_time": 0.13,
+            "gauge": "14 Gauge",
+            "material": "Galvanized",
+            "weight": 0.088,
+            "price": 0.43,
+            "unit_quantity": 1,
+            "modified_date": "96 quantity added at March 17 Friday 2023 02:17:02 PM",
+            "group": null
+        },
         "PM - SS HINGE A-Style B": {
             "current_quantity": 1085,
             "machine_time": 0.15,
@@ -2317,17 +2527,6 @@
             "price": 0.52,
             "unit_quantity": 1,
             "modified_date": "Added at March 10 Friday 2023 08:50:36 AM",
-            "group": null
-        },
-        "PM - SS HINGE A-A also used in 3 quarter hinge": {
-            "current_quantity": 1082,
-            "machine_time": 0.13,
-            "gauge": "14 Gauge",
-            "material": "Galvanized",
-            "weight": 0.088,
-            "price": 0.43,
-            "unit_quantity": 1,
-            "modified_date": "1080 quantity added at March 10 Friday 2023 08:50:36 AM",
             "group": null
         },
         "PM - SS HINGE 1-7pcs": {
