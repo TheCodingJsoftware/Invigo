@@ -1,5 +1,16 @@
 {
     "Custom": {
+        "Flat pattern - 2.7in Wacher": {
+            "current_quantity": 882,
+            "machine_time": 0.17,
+            "gauge": "1\/4",
+            "material": "Mild Steel",
+            "weight": 0.336,
+            "price": 0.64,
+            "unit_quantity": 1,
+            "modified_date": "Added at March 18 Saturday 2023 11:17:12 AM",
+            "group": null
+        },
         "Flat pattern - Hog Barn Latch": {
             "current_quantity": 583,
             "machine_time": 0.22,
@@ -20,6 +31,28 @@
             "price": 5.16,
             "unit_quantity": 1,
             "modified_date": "Added at March 17 Friday 2023 02:12:11 PM",
+            "group": null
+        },
+        "G3-1-Side door 2 - inner shel": {
+            "current_quantity": 15,
+            "machine_time": 0.32,
+            "gauge": "12 Gauge",
+            "material": "Mild Steel",
+            "weight": 2.336,
+            "price": 2.3,
+            "unit_quantity": 1,
+            "modified_date": "Added at March 18 Saturday 2023 11:22:33 AM",
+            "group": null
+        },
+        "G3-1-Side door 2-outer shell": {
+            "current_quantity": 15,
+            "machine_time": 0.35,
+            "gauge": "12 Gauge",
+            "material": "Mild Steel",
+            "weight": 3.05,
+            "price": 2.83,
+            "unit_quantity": 1,
+            "modified_date": "Added at March 18 Saturday 2023 11:22:33 AM",
             "group": null
         },
         "G2-3-Secondary Air Delivery-tube-part1x2": {
@@ -64,6 +97,28 @@
             "price": 14.16,
             "unit_quantity": 1,
             "modified_date": "Added at March 17 Friday 2023 02:17:02 PM",
+            "group": null
+        },
+        "3444-337": {
+            "current_quantity": 10,
+            "machine_time": 0.45,
+            "gauge": "12 Gauge",
+            "material": "Mild Steel",
+            "weight": 3.158,
+            "price": 3.15,
+            "unit_quantity": 1,
+            "modified_date": "Added at March 18 Saturday 2023 11:22:33 AM",
+            "group": null
+        },
+        "3444-339": {
+            "current_quantity": 10,
+            "machine_time": 0.35,
+            "gauge": "12 Gauge",
+            "material": "Mild Steel",
+            "weight": 2.455,
+            "price": 2.45,
+            "unit_quantity": 1,
+            "modified_date": "Added at March 18 Saturday 2023 11:22:33 AM",
             "group": null
         },
         "WTSR-04": {
@@ -119,6 +174,17 @@
             "price": 11.41,
             "unit_quantity": 1,
             "modified_date": "Added at March 17 Friday 2023 02:17:02 PM",
+            "group": null
+        },
+        "G2Plus-Flues access-lid": {
+            "current_quantity": 3,
+            "machine_time": 0.52,
+            "gauge": "12 Gauge",
+            "material": "Mild Steel",
+            "weight": 6.003,
+            "price": 5.14,
+            "unit_quantity": 1,
+            "modified_date": "Added at March 18 Saturday 2023 11:22:33 AM",
             "group": null
         },
         "WTSR-02": {
@@ -372,6 +438,17 @@
             "modified_date": "Removed 10 quantity at March 14 Tuesday 2023 04:49:05 PM",
             "group": null
         },
+        "2840-56": {
+            "current_quantity": 2.0,
+            "machine_time": 0.32,
+            "gauge": "12 Gauge",
+            "material": "Mild Steel",
+            "weight": 2.468,
+            "price": 2.38,
+            "unit_quantity": 1,
+            "modified_date": "2 quantity added at March 18 Saturday 2023 11:22:33 AM",
+            "group": null
+        },
         "2840-24x2": {
             "current_quantity": 0.0,
             "machine_time": 0.55,
@@ -590,17 +667,6 @@
             "price": 3.1,
             "unit_quantity": 1,
             "modified_date": "Manually set to 0.0 quantity at March 14 Tuesday 2023 04:49:11 PM",
-            "group": null
-        },
-        "2840-56": {
-            "current_quantity": 0.0,
-            "machine_time": 0.32,
-            "gauge": "12 Gauge",
-            "material": "Mild Steel",
-            "weight": 2.468,
-            "price": 2.38,
-            "unit_quantity": 1,
-            "modified_date": "Manually set to 0.0 quantity at March 14 Tuesday 2023 04:49:14 PM",
             "group": null
         },
         "2840-63": {
@@ -2710,25 +2776,25 @@
             "group": null
         },
         "01 Anchor 12g x64": {
-            "current_quantity": 1,
+            "current_quantity": 2,
             "machine_time": 0.42,
             "gauge": "12 Gauge",
             "material": "Mild Steel",
             "weight": 1.791,
             "price": 2.2,
             "unit_quantity": 1,
-            "modified_date": "Added at March 04 Saturday 2023 01:43:50 PM",
+            "modified_date": "1 quantity added at March 18 Saturday 2023 11:22:33 AM",
             "group": null
         },
         "02 Double Post 12g x72": {
-            "current_quantity": 1,
+            "current_quantity": 2,
             "machine_time": 1.25,
             "gauge": "12 Gauge",
             "material": "Mild Steel",
             "weight": 8.885,
             "price": 8.81,
             "unit_quantity": 1,
-            "modified_date": "Added at March 04 Saturday 2023 01:43:50 PM",
+            "modified_date": "1 quantity added at March 18 Saturday 2023 11:22:33 AM",
             "group": null
         },
         "03 Single Post 12g x35": {
