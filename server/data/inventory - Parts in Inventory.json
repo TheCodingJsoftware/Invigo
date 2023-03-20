@@ -793,47 +793,47 @@
             "group": null
         },
         "3444 Ash Pan": {
-            "current_quantity": 10,
+            "current_quantity": 10.0,
             "machine_time": 0.73,
             "gauge": "16 Gauge",
             "material": "304 SS",
             "weight": 14.336,
             "price": 37.3,
             "unit_quantity": 1,
-            "modified_date": "Removed 10 quantity at March 16 Thursday 2023 01:30:52 PM",
+            "modified_date": "Manually set to 10.0 quantity at March 20 Monday 2023 10:36:38 AM",
             "group": null
         },
         "3444-24": {
-            "current_quantity": 10,
+            "current_quantity": 0.0,
             "machine_time": 0.58,
             "gauge": "1\/4",
             "material": "Mild Steel",
             "weight": 3.251,
             "price": 3.53,
             "unit_quantity": 1,
-            "modified_date": "Removed 10 quantity at March 16 Thursday 2023 01:30:52 PM",
+            "modified_date": "Manually set to 0.0 quantity at March 20 Monday 2023 10:36:31 AM",
             "group": null
         },
         "304475": {
-            "current_quantity": 10,
+            "current_quantity": 0.0,
             "machine_time": 0.42,
             "gauge": "1\/4",
             "material": "Mild Steel",
             "weight": 0.606,
             "price": 1.44,
             "unit_quantity": 1,
-            "modified_date": "Removed 10 quantity at March 16 Thursday 2023 01:30:52 PM",
+            "modified_date": "Manually set to 0.0 quantity at March 20 Monday 2023 10:36:28 AM",
             "group": null
         },
         "364475": {
-            "current_quantity": 10,
+            "current_quantity": 0.0,
             "machine_time": 0.42,
             "gauge": "1\/4",
             "material": "Mild Steel",
             "weight": 0.606,
             "price": 1.44,
             "unit_quantity": 1,
-            "modified_date": "Removed 10 quantity at March 16 Thursday 2023 01:30:52 PM",
+            "modified_date": "Manually set to 0.0 quantity at March 20 Monday 2023 10:36:21 AM",
             "group": null
         },
         "3444-02": {
