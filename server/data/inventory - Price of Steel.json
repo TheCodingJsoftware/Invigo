@@ -196,7 +196,7 @@
             "group": "10G Mild Steel"
         },
         "12 Gauge Mild Steel 120.000x60.000": {
-            "current_quantity": 13.0,
+            "current_quantity": 33.0,
             "sheet_dimension": "120.000x60.000",
             "thickness": "12 Gauge",
             "material": "Mild Steel",
@@ -204,7 +204,7 @@
             "latest_change_material": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-30-46 PM",
             "latest_sheet_dimension": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-30-46 PM",
             "latest_change_thickness": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-30-46 PM",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 19.0\nto: 18.0\nJusti\nFebruary 25 Saturday 2023 10:54:04 AM"
+            "latest_change_current_quantity": "Latest Change:\nfrom: 3.0\nto: 33.0\nLaser Pc\nMarch 20 Monday 2023 08:30:10 AM"
         },
         "14 Gauge Mild Steel 120.000x60.000": {
             "current_quantity": 17.0,
