@@ -21,61 +21,6 @@
             "unit_quantity": 1,
             "modified_date": "Added at March 17 Friday 2023 02:13:08 PM",
             "group": null
-        },
-        "G3-1-Side door 2 - inner shel": {
-            "current_quantity": 15,
-            "machine_time": 0.32,
-            "gauge": "12 Gauge",
-            "material": "Mild Steel",
-            "weight": 2.336,
-            "price": 2.3,
-            "unit_quantity": 1,
-            "modified_date": "Added at March 18 Saturday 2023 11:22:33 AM",
-            "group": null
-        },
-        "G3-1-Side door 2-outer shell": {
-            "current_quantity": 15,
-            "machine_time": 0.35,
-            "gauge": "12 Gauge",
-            "material": "Mild Steel",
-            "weight": 3.05,
-            "price": 2.83,
-            "unit_quantity": 1,
-            "modified_date": "Added at March 18 Saturday 2023 11:22:33 AM",
-            "group": null
-        },
-        "WTSR-04": {
-            "current_quantity": 8,
-            "machine_time": 0.67,
-            "gauge": "14 Gauge",
-            "material": "304 SS",
-            "weight": 7.283,
-            "price": 20.2,
-            "unit_quantity": 1,
-            "modified_date": "Added at March 17 Friday 2023 02:17:03 PM",
-            "group": null
-        },
-        "WTSR-01": {
-            "current_quantity": 4,
-            "machine_time": 0.65,
-            "gauge": "14 Gauge",
-            "material": "304 SS",
-            "weight": 10.524,
-            "price": 27.86,
-            "unit_quantity": 1,
-            "modified_date": "Added at March 17 Friday 2023 02:17:02 PM",
-            "group": null
-        },
-        "WTSR-03": {
-            "current_quantity": 4,
-            "machine_time": 0.65,
-            "gauge": "14 Gauge",
-            "material": "304 SS",
-            "weight": 7.003,
-            "price": 19.45,
-            "unit_quantity": 1,
-            "modified_date": "Added at March 17 Friday 2023 02:17:02 PM",
-            "group": null
         }
     },
     "Recut": {
@@ -2635,6 +2580,28 @@
             "price": 8.51,
             "unit_quantity": 1,
             "modified_date": "Removed 10 quantity at March 14 Tuesday 2023 04:53:43 PM",
+            "group": null
+        },
+        "G3-1-Side door 2 - inner shel": {
+            "current_quantity": 15,
+            "machine_time": 0.32,
+            "gauge": "12 Gauge",
+            "material": "Mild Steel",
+            "weight": 2.336,
+            "price": 2.3,
+            "unit_quantity": 1,
+            "modified_date": "Added at March 18 Saturday 2023 11:22:33 AM",
+            "group": null
+        },
+        "G3-1-Side door 2-outer shell": {
+            "current_quantity": 15,
+            "machine_time": 0.35,
+            "gauge": "12 Gauge",
+            "material": "Mild Steel",
+            "weight": 3.05,
+            "price": 2.83,
+            "unit_quantity": 1,
+            "modified_date": "Added at March 18 Saturday 2023 11:22:33 AM",
             "group": null
         }
     },
