@@ -99,28 +99,6 @@
             "modified_date": "Added at March 17 Friday 2023 02:17:02 PM",
             "group": null
         },
-        "3444-337": {
-            "current_quantity": 10,
-            "machine_time": 0.45,
-            "gauge": "12 Gauge",
-            "material": "Mild Steel",
-            "weight": 3.158,
-            "price": 3.15,
-            "unit_quantity": 1,
-            "modified_date": "Added at March 18 Saturday 2023 11:22:33 AM",
-            "group": null
-        },
-        "3444-339": {
-            "current_quantity": 10,
-            "machine_time": 0.35,
-            "gauge": "12 Gauge",
-            "material": "Mild Steel",
-            "weight": 2.455,
-            "price": 2.45,
-            "unit_quantity": 1,
-            "modified_date": "Added at March 18 Saturday 2023 11:22:33 AM",
-            "group": null
-        },
         "WTSR-04": {
             "current_quantity": 8,
             "machine_time": 0.67,
@@ -154,17 +132,6 @@
             "modified_date": "Added at March 17 Friday 2023 02:17:02 PM",
             "group": null
         },
-        "2840-86x2": {
-            "current_quantity": 3,
-            "machine_time": 0.53,
-            "gauge": "14 Gauge",
-            "material": "304 SS",
-            "weight": 3.587,
-            "price": 10.78,
-            "unit_quantity": 1,
-            "modified_date": "Added at March 17 Friday 2023 02:17:02 PM",
-            "group": null
-        },
         "3444-91x2": {
             "current_quantity": 3,
             "machine_time": 0.58,
@@ -185,83 +152,6 @@
             "price": 5.14,
             "unit_quantity": 1,
             "modified_date": "Added at March 18 Saturday 2023 11:22:33 AM",
-            "group": null
-        },
-        "WTSR-02": {
-            "current_quantity": 2,
-            "machine_time": 0.63,
-            "gauge": "14 Gauge",
-            "material": "304 SS",
-            "weight": 6.892,
-            "price": 19.1,
-            "unit_quantity": 1,
-            "modified_date": "Added at March 17 Friday 2023 02:17:02 PM",
-            "group": null
-        },
-        "3444-90x2": {
-            "current_quantity": 1,
-            "machine_time": 0.6,
-            "gauge": "14 Gauge",
-            "material": "304 SS",
-            "weight": 3.946,
-            "price": 11.93,
-            "unit_quantity": 1,
-            "modified_date": "Added at March 17 Friday 2023 02:17:02 PM",
-            "group": null
-        },
-        "Radius Gauge 48-64": {
-            "current_quantity": 1,
-            "machine_time": 1.02,
-            "gauge": "14 Gauge",
-            "material": "304 SS",
-            "weight": 1.057,
-            "price": 6.78,
-            "unit_quantity": 1,
-            "modified_date": "Added at March 17 Friday 2023 02:17:02 PM",
-            "group": null
-        },
-        "Radius Gauge 48-64_1.25": {
-            "current_quantity": 1,
-            "machine_time": 1.1,
-            "gauge": "14 Gauge",
-            "material": "304 SS",
-            "weight": 1.869,
-            "price": 9.05,
-            "unit_quantity": 1,
-            "modified_date": "Added at March 17 Friday 2023 02:17:02 PM",
-            "group": null
-        },
-        "Radius Gauge 48-64_25": {
-            "current_quantity": 1,
-            "machine_time": 0.52,
-            "gauge": "14 Gauge",
-            "material": "304 SS",
-            "weight": 0.066,
-            "price": 2.32,
-            "unit_quantity": 1,
-            "modified_date": "Added at March 17 Friday 2023 02:17:02 PM",
-            "group": null
-        },
-        "Radius Gauge 48-64_5": {
-            "current_quantity": 1,
-            "machine_time": 0.7,
-            "gauge": "14 Gauge",
-            "material": "304 SS",
-            "weight": 0.264,
-            "price": 3.55,
-            "unit_quantity": 1,
-            "modified_date": "Added at March 17 Friday 2023 02:17:02 PM",
-            "group": null
-        },
-        "Radius Gauge 48-64_75": {
-            "current_quantity": 1,
-            "machine_time": 0.92,
-            "gauge": "14 Gauge",
-            "material": "304 SS",
-            "weight": 0.595,
-            "price": 5.26,
-            "unit_quantity": 1,
-            "modified_date": "Added at March 17 Friday 2023 02:17:02 PM",
             "group": null
         }
     },
@@ -712,6 +602,17 @@
             "unit_quantity": 2.0,
             "modified_date": "Manually set to 0.0 quantity at March 14 Tuesday 2023 04:49:30 PM",
             "group": null
+        },
+        "2840-86x2": {
+            "current_quantity": 3,
+            "machine_time": 0.53,
+            "gauge": "14 Gauge",
+            "material": "304 SS",
+            "weight": 3.587,
+            "price": 10.78,
+            "unit_quantity": 1,
+            "modified_date": "Added at March 17 Friday 2023 02:17:02 PM",
+            "group": null
         }
     },
     "BL34": {
@@ -1032,6 +933,39 @@
             "price": 56.63,
             "unit_quantity": 1,
             "modified_date": "Removed 10 quantity at March 16 Thursday 2023 01:30:52 PM",
+            "group": null
+        },
+        "3444-90x2": {
+            "current_quantity": 1,
+            "machine_time": 0.6,
+            "gauge": "14 Gauge",
+            "material": "304 SS",
+            "weight": 3.946,
+            "price": 11.93,
+            "unit_quantity": 1,
+            "modified_date": "Added at March 17 Friday 2023 02:17:02 PM",
+            "group": null
+        },
+        "3444-337": {
+            "current_quantity": 10,
+            "machine_time": 0.45,
+            "gauge": "12 Gauge",
+            "material": "Mild Steel",
+            "weight": 3.158,
+            "price": 3.15,
+            "unit_quantity": 1,
+            "modified_date": "Added at March 18 Saturday 2023 11:22:33 AM",
+            "group": null
+        },
+        "3444-339": {
+            "current_quantity": 10,
+            "machine_time": 0.35,
+            "gauge": "12 Gauge",
+            "material": "Mild Steel",
+            "weight": 2.455,
+            "price": 2.45,
+            "unit_quantity": 1,
+            "modified_date": "Added at March 18 Saturday 2023 11:22:33 AM",
             "group": null
         }
     },
@@ -3049,6 +2983,50 @@
             "unit_quantity": 1,
             "modified_date": "Added at March 09 Thursday 2023 09:41:14 AM",
             "group": null
+        },
+        "WTSR-02": {
+            "current_quantity": 2,
+            "machine_time": 0.63,
+            "gauge": "14 Gauge",
+            "material": "304 SS",
+            "weight": 6.892,
+            "price": 19.1,
+            "unit_quantity": 1,
+            "modified_date": "Added at March 17 Friday 2023 02:17:02 PM",
+            "group": null
+        },
+        "WTSR-04": {
+            "current_quantity": 8,
+            "machine_time": 0.67,
+            "gauge": "14 Gauge",
+            "material": "304 SS",
+            "weight": 7.283,
+            "price": 20.2,
+            "unit_quantity": 1,
+            "modified_date": "Added at March 17 Friday 2023 02:17:03 PM",
+            "group": null
+        },
+        "WTSR-01": {
+            "current_quantity": 4,
+            "machine_time": 0.65,
+            "gauge": "14 Gauge",
+            "material": "304 SS",
+            "weight": 10.524,
+            "price": 27.86,
+            "unit_quantity": 1,
+            "modified_date": "Added at March 17 Friday 2023 02:17:02 PM",
+            "group": null
+        },
+        "WTSR-03": {
+            "current_quantity": 4,
+            "machine_time": 0.65,
+            "gauge": "14 Gauge",
+            "material": "304 SS",
+            "weight": 7.003,
+            "price": 19.45,
+            "unit_quantity": 1,
+            "modified_date": "Added at March 17 Friday 2023 02:17:02 PM",
+            "group": null
         }
     },
     "LCB300 Boiler\/Chip Bin": {
@@ -3228,6 +3206,61 @@
             "price": 24.02,
             "unit_quantity": 1,
             "modified_date": "Added at March 03 Friday 2023 05:19:24 PM",
+            "group": null
+        },
+        "Radius Gauge 48-64": {
+            "current_quantity": 1,
+            "machine_time": 1.02,
+            "gauge": "14 Gauge",
+            "material": "304 SS",
+            "weight": 1.057,
+            "price": 6.78,
+            "unit_quantity": 1,
+            "modified_date": "Added at March 17 Friday 2023 02:17:02 PM",
+            "group": null
+        },
+        "Radius Gauge 48-64_1.25": {
+            "current_quantity": 1,
+            "machine_time": 1.1,
+            "gauge": "14 Gauge",
+            "material": "304 SS",
+            "weight": 1.869,
+            "price": 9.05,
+            "unit_quantity": 1,
+            "modified_date": "Added at March 17 Friday 2023 02:17:02 PM",
+            "group": null
+        },
+        "Radius Gauge 48-64_25": {
+            "current_quantity": 1,
+            "machine_time": 0.52,
+            "gauge": "14 Gauge",
+            "material": "304 SS",
+            "weight": 0.066,
+            "price": 2.32,
+            "unit_quantity": 1,
+            "modified_date": "Added at March 17 Friday 2023 02:17:02 PM",
+            "group": null
+        },
+        "Radius Gauge 48-64_5": {
+            "current_quantity": 1,
+            "machine_time": 0.7,
+            "gauge": "14 Gauge",
+            "material": "304 SS",
+            "weight": 0.264,
+            "price": 3.55,
+            "unit_quantity": 1,
+            "modified_date": "Added at March 17 Friday 2023 02:17:02 PM",
+            "group": null
+        },
+        "Radius Gauge 48-64_75": {
+            "current_quantity": 1,
+            "machine_time": 0.92,
+            "gauge": "14 Gauge",
+            "material": "304 SS",
+            "weight": 0.595,
+            "price": 5.26,
+            "unit_quantity": 1,
+            "modified_date": "Added at March 17 Friday 2023 02:17:02 PM",
             "group": null
         }
     }
