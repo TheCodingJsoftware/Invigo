@@ -22,17 +22,6 @@
             "modified_date": "Added at March 17 Friday 2023 02:13:08 PM",
             "group": null
         },
-        "Head Plate 9 inch": {
-            "current_quantity": 203,
-            "machine_time": 0.85,
-            "gauge": "10 Gauge",
-            "material": "Galvanized",
-            "weight": 2.53,
-            "price": 5.16,
-            "unit_quantity": 1,
-            "modified_date": "Added at March 17 Friday 2023 02:12:11 PM",
-            "group": null
-        },
         "G3-1-Side door 2 - inner shel": {
             "current_quantity": 15,
             "machine_time": 0.32,
@@ -128,17 +117,6 @@
             "material": "304 SS",
             "weight": 7.003,
             "price": 19.45,
-            "unit_quantity": 1,
-            "modified_date": "Added at March 17 Friday 2023 02:17:02 PM",
-            "group": null
-        },
-        "3444-91x2": {
-            "current_quantity": 3,
-            "machine_time": 0.58,
-            "gauge": "14 Gauge",
-            "material": "304 SS",
-            "weight": 3.764,
-            "price": 11.41,
             "unit_quantity": 1,
             "modified_date": "Added at March 17 Friday 2023 02:17:02 PM",
             "group": null
@@ -326,6 +304,17 @@
             "price": 2.28,
             "unit_quantity": 1,
             "modified_date": "Removed 10 quantity at March 14 Tuesday 2023 04:49:05 PM",
+            "group": null
+        },
+        "2840-86x2": {
+            "current_quantity": 3,
+            "machine_time": 0.53,
+            "gauge": "14 Gauge",
+            "material": "304 SS",
+            "weight": 3.587,
+            "price": 10.78,
+            "unit_quantity": 1,
+            "modified_date": "Added at March 17 Friday 2023 02:17:02 PM",
             "group": null
         },
         "2840-56": {
@@ -602,17 +591,6 @@
             "unit_quantity": 2.0,
             "modified_date": "Manually set to 0.0 quantity at March 14 Tuesday 2023 04:49:30 PM",
             "group": null
-        },
-        "2840-86x2": {
-            "current_quantity": 3,
-            "machine_time": 0.53,
-            "gauge": "14 Gauge",
-            "material": "304 SS",
-            "weight": 3.587,
-            "price": 10.78,
-            "unit_quantity": 1,
-            "modified_date": "Added at March 17 Friday 2023 02:17:02 PM",
-            "group": null
         }
     },
     "BL34": {
@@ -702,6 +680,39 @@
             "price": 37.3,
             "unit_quantity": 1,
             "modified_date": "Manually set to 10.0 quantity at March 20 Monday 2023 10:36:38 AM",
+            "group": null
+        },
+        "3444-337": {
+            "current_quantity": 10,
+            "machine_time": 0.45,
+            "gauge": "12 Gauge",
+            "material": "Mild Steel",
+            "weight": 3.158,
+            "price": 3.15,
+            "unit_quantity": 1,
+            "modified_date": "Added at March 18 Saturday 2023 11:22:33 AM",
+            "group": null
+        },
+        "3444-339": {
+            "current_quantity": 10,
+            "machine_time": 0.35,
+            "gauge": "12 Gauge",
+            "material": "Mild Steel",
+            "weight": 2.455,
+            "price": 2.45,
+            "unit_quantity": 1,
+            "modified_date": "Added at March 18 Saturday 2023 11:22:33 AM",
+            "group": null
+        },
+        "3444-90x2": {
+            "current_quantity": 1,
+            "machine_time": 0.6,
+            "gauge": "14 Gauge",
+            "material": "304 SS",
+            "weight": 3.946,
+            "price": 11.93,
+            "unit_quantity": 1,
+            "modified_date": "Added at March 17 Friday 2023 02:17:02 PM",
             "group": null
         },
         "3444-24": {
@@ -935,37 +946,15 @@
             "modified_date": "Removed 10 quantity at March 16 Thursday 2023 01:30:52 PM",
             "group": null
         },
-        "3444-90x2": {
-            "current_quantity": 1,
-            "machine_time": 0.6,
+        "3444-91x2": {
+            "current_quantity": 3,
+            "machine_time": 0.58,
             "gauge": "14 Gauge",
             "material": "304 SS",
-            "weight": 3.946,
-            "price": 11.93,
+            "weight": 3.764,
+            "price": 11.41,
             "unit_quantity": 1,
             "modified_date": "Added at March 17 Friday 2023 02:17:02 PM",
-            "group": null
-        },
-        "3444-337": {
-            "current_quantity": 10,
-            "machine_time": 0.45,
-            "gauge": "12 Gauge",
-            "material": "Mild Steel",
-            "weight": 3.158,
-            "price": 3.15,
-            "unit_quantity": 1,
-            "modified_date": "Added at March 18 Saturday 2023 11:22:33 AM",
-            "group": null
-        },
-        "3444-339": {
-            "current_quantity": 10,
-            "machine_time": 0.35,
-            "gauge": "12 Gauge",
-            "material": "Mild Steel",
-            "weight": 2.455,
-            "price": 2.45,
-            "unit_quantity": 1,
-            "modified_date": "Added at March 18 Saturday 2023 11:22:33 AM",
             "group": null
         }
     },
@@ -2561,6 +2550,28 @@
             "unit_quantity": 1,
             "modified_date": "1 quantity added at March 06 Monday 2023 09:33:21 AM",
             "group": null
+        },
+        "Head Plate 9 inch": {
+            "current_quantity": 203,
+            "machine_time": 0.85,
+            "gauge": "10 Gauge",
+            "material": "Galvanized",
+            "weight": 2.53,
+            "price": 5.16,
+            "unit_quantity": 1,
+            "modified_date": "Added at March 17 Friday 2023 02:12:11 PM",
+            "group": null
+        },
+        "6in spring plate .048 tab long holes also 10G or 12 Galv": {
+            "current_quantity": 198,
+            "machine_time": 0.68,
+            "gauge": "10 Gauge",
+            "material": "Galvanized",
+            "weight": 1.217,
+            "price": 3.16,
+            "unit_quantity": 1,
+            "modified_date": "Added at March 20 Monday 2023 10:42:44 AM",
+            "group": null
         }
     },
     "Honey Comb Wagon": {
@@ -2632,6 +2643,17 @@
             "modified_date": "Added at March 04 Saturday 2023 01:43:51 PM",
             "group": null
         },
+        "WTSR-04": {
+            "current_quantity": 8,
+            "machine_time": 0.67,
+            "gauge": "14 Gauge",
+            "material": "304 SS",
+            "weight": 7.283,
+            "price": 20.2,
+            "unit_quantity": 1,
+            "modified_date": "Added at March 17 Friday 2023 02:17:03 PM",
+            "group": null
+        },
         "Flat pattern - Bins Power Box Lid": {
             "current_quantity": 7,
             "machine_time": 0.12,
@@ -2663,6 +2685,28 @@
             "price": 3.78,
             "unit_quantity": 1,
             "modified_date": "Added at February 25 Saturday 2023 09:10:26 AM",
+            "group": null
+        },
+        "WTSR-01": {
+            "current_quantity": 4,
+            "machine_time": 0.65,
+            "gauge": "14 Gauge",
+            "material": "304 SS",
+            "weight": 10.524,
+            "price": 27.86,
+            "unit_quantity": 1,
+            "modified_date": "Added at March 17 Friday 2023 02:17:02 PM",
+            "group": null
+        },
+        "WTSR-03": {
+            "current_quantity": 4,
+            "machine_time": 0.65,
+            "gauge": "14 Gauge",
+            "material": "304 SS",
+            "weight": 7.003,
+            "price": 19.45,
+            "unit_quantity": 1,
+            "modified_date": "Added at March 17 Friday 2023 02:17:02 PM",
             "group": null
         },
         "central air": {
@@ -2729,6 +2773,17 @@
             "price": 8.81,
             "unit_quantity": 1,
             "modified_date": "1 quantity added at March 18 Saturday 2023 11:22:33 AM",
+            "group": null
+        },
+        "WTSR-02": {
+            "current_quantity": 2,
+            "machine_time": 0.63,
+            "gauge": "14 Gauge",
+            "material": "304 SS",
+            "weight": 6.892,
+            "price": 19.1,
+            "unit_quantity": 1,
+            "modified_date": "Added at March 17 Friday 2023 02:17:02 PM",
             "group": null
         },
         "03 Single Post 12g x35": {
@@ -2982,50 +3037,6 @@
             "price": 19.36,
             "unit_quantity": 1,
             "modified_date": "Added at March 09 Thursday 2023 09:41:14 AM",
-            "group": null
-        },
-        "WTSR-02": {
-            "current_quantity": 2,
-            "machine_time": 0.63,
-            "gauge": "14 Gauge",
-            "material": "304 SS",
-            "weight": 6.892,
-            "price": 19.1,
-            "unit_quantity": 1,
-            "modified_date": "Added at March 17 Friday 2023 02:17:02 PM",
-            "group": null
-        },
-        "WTSR-04": {
-            "current_quantity": 8,
-            "machine_time": 0.67,
-            "gauge": "14 Gauge",
-            "material": "304 SS",
-            "weight": 7.283,
-            "price": 20.2,
-            "unit_quantity": 1,
-            "modified_date": "Added at March 17 Friday 2023 02:17:03 PM",
-            "group": null
-        },
-        "WTSR-01": {
-            "current_quantity": 4,
-            "machine_time": 0.65,
-            "gauge": "14 Gauge",
-            "material": "304 SS",
-            "weight": 10.524,
-            "price": 27.86,
-            "unit_quantity": 1,
-            "modified_date": "Added at March 17 Friday 2023 02:17:02 PM",
-            "group": null
-        },
-        "WTSR-03": {
-            "current_quantity": 4,
-            "machine_time": 0.65,
-            "gauge": "14 Gauge",
-            "material": "304 SS",
-            "weight": 7.003,
-            "price": 19.45,
-            "unit_quantity": 1,
-            "modified_date": "Added at March 17 Friday 2023 02:17:02 PM",
             "group": null
         }
     },
