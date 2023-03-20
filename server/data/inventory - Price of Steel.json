@@ -86,7 +86,7 @@
             "latest_change_current_quantity": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-09-47 PM"
         },
         "1\/4 Mild Steel 120.000x60.000": {
-            "current_quantity": 51.0,
+            "current_quantity": 65.0,
             "sheet_dimension": "120.000x60.000",
             "thickness": "1\/4",
             "material": "Mild Steel",
@@ -94,7 +94,7 @@
             "latest_change_material": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-10-35 PM",
             "latest_sheet_dimension": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-10-35 PM",
             "latest_change_thickness": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-10-35 PM",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 52.0\nto: 51.0\nLaser Pc\nMarch 10 Friday 2023 09:32:23 AM"
+            "latest_change_current_quantity": "Latest Change:\nfrom: 66.0\nto: 65.0\nLaser Pc\nMarch 20 Monday 2023 08:24:36 AM"
         },
         "1\/4 Mild Steel 96.000x48.000": {
             "current_quantity": 37.0,
@@ -196,7 +196,7 @@
             "group": "10G Mild Steel"
         },
         "12 Gauge Mild Steel 120.000x60.000": {
-            "current_quantity": 14.0,
+            "current_quantity": 13.0,
             "sheet_dimension": "120.000x60.000",
             "thickness": "12 Gauge",
             "material": "Mild Steel",
@@ -390,7 +390,7 @@
             "latest_change_current_quantity": "Latest Change:\nfrom: 23.0\nto: 24.0\nLaser Pc\nFebruary 27 Monday 2023 02:39:31 PM"
         },
         "14 Gauge 304 SS 120.000x60.000": {
-            "current_quantity": 16.0,
+            "current_quantity": 12.0,
             "sheet_dimension": "120.000x60.000",
             "thickness": "14 Gauge",
             "material": "304 SS",
@@ -524,7 +524,7 @@
             "group": "Galvanized"
         },
         "10 Gauge Galvanized 120.000x60.000": {
-            "current_quantity": 8,
+            "current_quantity": 5,
             "sheet_dimension": "120.000x60.000",
             "thickness": "10 Gauge",
             "material": "Galvanized",
