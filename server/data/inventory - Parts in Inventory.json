@@ -22,83 +22,6 @@
             "modified_date": "Added at March 17 Friday 2023 02:13:08 PM",
             "group": null
         },
-        "2840-25x4": {
-            "current_quantity": 40,
-            "machine_time": 0.55,
-            "gauge": "1\/4",
-            "material": "Mild Steel",
-            "weight": 3.473,
-            "price": 3.6,
-            "unit_quantity": 1,
-            "modified_date": "Added at March 20 Monday 2023 02:02:06 PM",
-            "group": null
-        },
-        "2840-00x2": {
-            "current_quantity": 20,
-            "machine_time": 0.1,
-            "gauge": "1\/4",
-            "material": "Mild Steel",
-            "weight": 0.128,
-            "price": 0.33,
-            "unit_quantity": 1,
-            "modified_date": "Added at March 20 Monday 2023 02:02:06 PM",
-            "group": null
-        },
-        "2840-05": {
-            "current_quantity": 20,
-            "machine_time": 1.78,
-            "gauge": "1\/4",
-            "material": "Mild Steel",
-            "weight": 69.744,
-            "price": 49.09,
-            "unit_quantity": 1,
-            "modified_date": "Added at March 20 Monday 2023 02:02:06 PM",
-            "group": null
-        },
-        "2840-103x2": {
-            "current_quantity": 20,
-            "machine_time": 0.15,
-            "gauge": "1\/4",
-            "material": "Mild Steel",
-            "weight": 0.285,
-            "price": 0.56,
-            "unit_quantity": 1,
-            "modified_date": "Added at March 20 Monday 2023 02:02:06 PM",
-            "group": null
-        },
-        "2840-57x2": {
-            "current_quantity": 20,
-            "machine_time": 0.15,
-            "gauge": "1\/4",
-            "material": "Mild Steel",
-            "weight": 0.263,
-            "price": 0.54,
-            "unit_quantity": 1,
-            "modified_date": "Added at March 20 Monday 2023 02:02:06 PM",
-            "group": null
-        },
-        "2840-58x2": {
-            "current_quantity": 20,
-            "machine_time": 0.13,
-            "gauge": "1\/4",
-            "material": "Mild Steel",
-            "weight": 0.231,
-            "price": 0.47,
-            "unit_quantity": 1,
-            "modified_date": "Added at March 20 Monday 2023 02:02:06 PM",
-            "group": null
-        },
-        "2840-59x2": {
-            "current_quantity": 20,
-            "machine_time": 0.12,
-            "gauge": "1\/4",
-            "material": "Mild Steel",
-            "weight": 0.441,
-            "price": 0.58,
-            "unit_quantity": 1,
-            "modified_date": "Added at March 20 Monday 2023 02:02:07 PM",
-            "group": null
-        },
         "G3-1-Side door 2 - inner shel": {
             "current_quantity": 15,
             "machine_time": 0.32,
@@ -119,127 +42,6 @@
             "price": 2.83,
             "unit_quantity": 1,
             "modified_date": "Added at March 18 Saturday 2023 11:22:33 AM",
-            "group": null
-        },
-        "G2-3-Secondary Air Delivery-tube-part1x2": {
-            "current_quantity": 11,
-            "machine_time": 0.62,
-            "gauge": "14 Gauge",
-            "material": "304 SS",
-            "weight": 7.591,
-            "price": 20.73,
-            "unit_quantity": 1,
-            "modified_date": "Added at March 17 Friday 2023 02:17:02 PM",
-            "group": null
-        },
-        "G2-3-Primary Air Delivery-tube-part1x2": {
-            "current_quantity": 10,
-            "machine_time": 0.77,
-            "gauge": "14 Gauge",
-            "material": "304 SS",
-            "weight": 9.991,
-            "price": 27.09,
-            "unit_quantity": 1,
-            "modified_date": "Added at March 17 Friday 2023 02:17:02 PM",
-            "group": null
-        },
-        "G2-3-Primary Air Delivery-tube-part2x2": {
-            "current_quantity": 10,
-            "machine_time": 0.75,
-            "gauge": "14 Gauge",
-            "material": "304 SS",
-            "weight": 6.046,
-            "price": 17.57,
-            "unit_quantity": 1,
-            "modified_date": "Added at March 17 Friday 2023 02:17:02 PM",
-            "group": null
-        },
-        "G2-3-Secondary Air Delivery-tube-part2x2": {
-            "current_quantity": 10,
-            "machine_time": 0.63,
-            "gauge": "14 Gauge",
-            "material": "304 SS",
-            "weight": 4.825,
-            "price": 14.16,
-            "unit_quantity": 1,
-            "modified_date": "Added at March 17 Friday 2023 02:17:02 PM",
-            "group": null
-        },
-        "2840-08": {
-            "current_quantity": 10,
-            "machine_time": 1.43,
-            "gauge": "1\/4",
-            "material": "Mild Steel",
-            "weight": 34.532,
-            "price": 25.68,
-            "unit_quantity": 1,
-            "modified_date": "Added at March 20 Monday 2023 02:02:06 PM",
-            "group": null
-        },
-        "2840-23": {
-            "current_quantity": 10,
-            "machine_time": 0.6,
-            "gauge": "1\/4",
-            "material": "Mild Steel",
-            "weight": 9.562,
-            "price": 7.62,
-            "unit_quantity": 1,
-            "modified_date": "Added at March 20 Monday 2023 02:02:06 PM",
-            "group": null
-        },
-        "2840-64": {
-            "current_quantity": 10,
-            "machine_time": 0.42,
-            "gauge": "1\/4",
-            "material": "Mild Steel",
-            "weight": 1.747,
-            "price": 2.17,
-            "unit_quantity": 1,
-            "modified_date": "Added at March 20 Monday 2023 02:02:07 PM",
-            "group": null
-        },
-        "2840-72": {
-            "current_quantity": 10,
-            "machine_time": 0.3,
-            "gauge": "1\/4",
-            "material": "Mild Steel",
-            "weight": 1.24,
-            "price": 1.54,
-            "unit_quantity": 1,
-            "modified_date": "Added at March 20 Monday 2023 02:02:07 PM",
-            "group": null
-        },
-        "2840-Shaker-04": {
-            "current_quantity": 10,
-            "machine_time": 1.8,
-            "gauge": "1\/4",
-            "material": "Mild Steel",
-            "weight": 73.452,
-            "price": 51.51,
-            "unit_quantity": 1,
-            "modified_date": "Added at March 20 Monday 2023 02:02:07 PM",
-            "group": null
-        },
-        "2840-Shaker-07": {
-            "current_quantity": 10,
-            "machine_time": 1.6,
-            "gauge": "1\/4",
-            "material": "Mild Steel",
-            "weight": 34.069,
-            "price": 25.8,
-            "unit_quantity": 1,
-            "modified_date": "Added at March 20 Monday 2023 02:02:07 PM",
-            "group": null
-        },
-        "2840-Shaker-104": {
-            "current_quantity": 10,
-            "machine_time": 0.12,
-            "gauge": "1\/4",
-            "material": "Mild Steel",
-            "weight": 0.173,
-            "price": 0.41,
-            "unit_quantity": 1,
-            "modified_date": "Added at March 20 Monday 2023 02:02:07 PM",
             "group": null
         },
         "WTSR-04": {
@@ -273,17 +75,6 @@
             "price": 19.45,
             "unit_quantity": 1,
             "modified_date": "Added at March 17 Friday 2023 02:17:02 PM",
-            "group": null
-        },
-        "G2Plus-Flues access-lid": {
-            "current_quantity": 3,
-            "machine_time": 0.52,
-            "gauge": "12 Gauge",
-            "material": "Mild Steel",
-            "weight": 6.003,
-            "price": 5.14,
-            "unit_quantity": 1,
-            "modified_date": "Added at March 18 Saturday 2023 11:22:33 AM",
             "group": null
         }
     },
@@ -744,6 +535,160 @@
             "price": 15.36,
             "unit_quantity": 2.0,
             "modified_date": "Manually set to 0.0 quantity at March 14 Tuesday 2023 04:49:30 PM",
+            "group": null
+        },
+        "2840-25x4": {
+            "current_quantity": 40,
+            "machine_time": 0.55,
+            "gauge": "1\/4",
+            "material": "Mild Steel",
+            "weight": 3.473,
+            "price": 3.6,
+            "unit_quantity": 1,
+            "modified_date": "Added at March 20 Monday 2023 02:02:06 PM",
+            "group": null
+        },
+        "2840-00x2": {
+            "current_quantity": 20,
+            "machine_time": 0.1,
+            "gauge": "1\/4",
+            "material": "Mild Steel",
+            "weight": 0.128,
+            "price": 0.33,
+            "unit_quantity": 1,
+            "modified_date": "Added at March 20 Monday 2023 02:02:06 PM",
+            "group": null
+        },
+        "2840-05": {
+            "current_quantity": 20,
+            "machine_time": 1.78,
+            "gauge": "1\/4",
+            "material": "Mild Steel",
+            "weight": 69.744,
+            "price": 49.09,
+            "unit_quantity": 1,
+            "modified_date": "Added at March 20 Monday 2023 02:02:06 PM",
+            "group": null
+        },
+        "2840-103x2": {
+            "current_quantity": 20,
+            "machine_time": 0.15,
+            "gauge": "1\/4",
+            "material": "Mild Steel",
+            "weight": 0.285,
+            "price": 0.56,
+            "unit_quantity": 1,
+            "modified_date": "Added at March 20 Monday 2023 02:02:06 PM",
+            "group": null
+        },
+        "2840-57x2": {
+            "current_quantity": 20,
+            "machine_time": 0.15,
+            "gauge": "1\/4",
+            "material": "Mild Steel",
+            "weight": 0.263,
+            "price": 0.54,
+            "unit_quantity": 1,
+            "modified_date": "Added at March 20 Monday 2023 02:02:06 PM",
+            "group": null
+        },
+        "2840-58x2": {
+            "current_quantity": 20,
+            "machine_time": 0.13,
+            "gauge": "1\/4",
+            "material": "Mild Steel",
+            "weight": 0.231,
+            "price": 0.47,
+            "unit_quantity": 1,
+            "modified_date": "Added at March 20 Monday 2023 02:02:06 PM",
+            "group": null
+        },
+        "2840-59x2": {
+            "current_quantity": 20,
+            "machine_time": 0.12,
+            "gauge": "1\/4",
+            "material": "Mild Steel",
+            "weight": 0.441,
+            "price": 0.58,
+            "unit_quantity": 1,
+            "modified_date": "Added at March 20 Monday 2023 02:02:07 PM",
+            "group": null
+        },
+        "2840-08": {
+            "current_quantity": 10,
+            "machine_time": 1.43,
+            "gauge": "1\/4",
+            "material": "Mild Steel",
+            "weight": 34.532,
+            "price": 25.68,
+            "unit_quantity": 1,
+            "modified_date": "Added at March 20 Monday 2023 02:02:06 PM",
+            "group": null
+        },
+        "2840-23": {
+            "current_quantity": 10,
+            "machine_time": 0.6,
+            "gauge": "1\/4",
+            "material": "Mild Steel",
+            "weight": 9.562,
+            "price": 7.62,
+            "unit_quantity": 1,
+            "modified_date": "Added at March 20 Monday 2023 02:02:06 PM",
+            "group": null
+        },
+        "2840-64": {
+            "current_quantity": 10,
+            "machine_time": 0.42,
+            "gauge": "1\/4",
+            "material": "Mild Steel",
+            "weight": 1.747,
+            "price": 2.17,
+            "unit_quantity": 1,
+            "modified_date": "Added at March 20 Monday 2023 02:02:07 PM",
+            "group": null
+        },
+        "2840-72": {
+            "current_quantity": 10,
+            "machine_time": 0.3,
+            "gauge": "1\/4",
+            "material": "Mild Steel",
+            "weight": 1.24,
+            "price": 1.54,
+            "unit_quantity": 1,
+            "modified_date": "Added at March 20 Monday 2023 02:02:07 PM",
+            "group": null
+        },
+        "2840-Shaker-04": {
+            "current_quantity": 10,
+            "machine_time": 1.8,
+            "gauge": "1\/4",
+            "material": "Mild Steel",
+            "weight": 73.452,
+            "price": 51.51,
+            "unit_quantity": 1,
+            "modified_date": "Added at March 20 Monday 2023 02:02:07 PM",
+            "group": null
+        },
+        "2840-Shaker-07": {
+            "current_quantity": 10,
+            "machine_time": 1.6,
+            "gauge": "1\/4",
+            "material": "Mild Steel",
+            "weight": 34.069,
+            "price": 25.8,
+            "unit_quantity": 1,
+            "modified_date": "Added at March 20 Monday 2023 02:02:07 PM",
+            "group": null
+        },
+        "2840-Shaker-104": {
+            "current_quantity": 10,
+            "machine_time": 0.12,
+            "gauge": "1\/4",
+            "material": "Mild Steel",
+            "weight": 0.173,
+            "price": 0.41,
+            "unit_quantity": 1,
+            "modified_date": "Added at March 20 Monday 2023 02:02:07 PM",
             "group": null
         }
     },
@@ -1608,6 +1553,61 @@
             "price": 1.44,
             "unit_quantity": 6.0,
             "modified_date": "Removed 60.0 quantity at March 14 Tuesday 2023 04:53:43 PM",
+            "group": null
+        },
+        "G2-3-Secondary Air Delivery-tube-part1x2": {
+            "current_quantity": 11,
+            "machine_time": 0.62,
+            "gauge": "14 Gauge",
+            "material": "304 SS",
+            "weight": 7.591,
+            "price": 20.73,
+            "unit_quantity": 1,
+            "modified_date": "Added at March 17 Friday 2023 02:17:02 PM",
+            "group": null
+        },
+        "G2-3-Primary Air Delivery-tube-part1x2": {
+            "current_quantity": 10,
+            "machine_time": 0.77,
+            "gauge": "14 Gauge",
+            "material": "304 SS",
+            "weight": 9.991,
+            "price": 27.09,
+            "unit_quantity": 1,
+            "modified_date": "Added at March 17 Friday 2023 02:17:02 PM",
+            "group": null
+        },
+        "G2-3-Primary Air Delivery-tube-part2x2": {
+            "current_quantity": 10,
+            "machine_time": 0.75,
+            "gauge": "14 Gauge",
+            "material": "304 SS",
+            "weight": 6.046,
+            "price": 17.57,
+            "unit_quantity": 1,
+            "modified_date": "Added at March 17 Friday 2023 02:17:02 PM",
+            "group": null
+        },
+        "G2-3-Secondary Air Delivery-tube-part2x2": {
+            "current_quantity": 10,
+            "machine_time": 0.63,
+            "gauge": "14 Gauge",
+            "material": "304 SS",
+            "weight": 4.825,
+            "price": 14.16,
+            "unit_quantity": 1,
+            "modified_date": "Added at March 17 Friday 2023 02:17:02 PM",
+            "group": null
+        },
+        "G2Plus-Flues access-lid": {
+            "current_quantity": 3,
+            "machine_time": 0.52,
+            "gauge": "12 Gauge",
+            "material": "Mild Steel",
+            "weight": 6.003,
+            "price": 5.14,
+            "unit_quantity": 1,
+            "modified_date": "Added at March 18 Saturday 2023 11:22:33 AM",
             "group": null
         }
     },
