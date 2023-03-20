@@ -5334,6 +5334,23 @@
             "latest_change_priority": "Item added\nItsme\nAugust 03 Wednesday 2022 11-10-33 AM",
             "latest_change_notes": "Item added\nItsme\nAugust 03 Wednesday 2022 11-10-33 AM"
         },
+        " 6A2 1\/2 Rigid Offset Nipple Zinc": {
+            "part_number": "ARL6A2",
+            "unit_quantity": 200.0,
+            "current_quantity": 40,
+            "price": 3.93,
+            "use_exchange_rate": false,
+            "priority": 0,
+            "notes": "Vendor: Westburn Electric\nDescription: ",
+            "latest_change_name": "Item added\nLynden\nMarch 20 Monday 2023 01-59-32 PM",
+            "latest_change_part_number": "Item added\nLynden\nMarch 20 Monday 2023 01-59-32 PM",
+            "latest_change_unit_quantity": "Item added\nLynden\nMarch 20 Monday 2023 01-59-32 PM",
+            "latest_change_current_quantity": "Item added\nLynden\nMarch 20 Monday 2023 01-59-32 PM",
+            "latest_change_price": "Item added\nLynden\nMarch 20 Monday 2023 01-59-32 PM",
+            "latest_change_use_exchange_price": "Item added\nLynden\nMarch 20 Monday 2023 01-59-32 PM",
+            "latest_change_priority": "Item added\nLynden\nMarch 20 Monday 2023 01-59-32 PM",
+            "latest_change_notes": "Item added\nLynden\nMarch 20 Monday 2023 01-59-32 PM"
+        },
         "6\" Chimney T 6Tl12-PM": {
             "part_number": "208800",
             "unit_quantity": 1,
