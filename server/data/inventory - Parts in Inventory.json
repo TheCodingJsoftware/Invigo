@@ -522,7 +522,7 @@
             "material": "Mild Steel",
             "weight": 0.285,
             "price": 0.56,
-            "unit_quantity": 1,
+            "unit_quantity": 2.0,
             "modified_date": "Added at March 20 Monday 2023 02:02:06 PM",
             "group": null
         },
@@ -544,7 +544,7 @@
             "material": "Mild Steel",
             "weight": 0.231,
             "price": 0.47,
-            "unit_quantity": 1,
+            "unit_quantity": 2.0,
             "modified_date": "Added at March 20 Monday 2023 02:02:06 PM",
             "group": null
         },
@@ -555,7 +555,7 @@
             "material": "Mild Steel",
             "weight": 0.441,
             "price": 0.58,
-            "unit_quantity": 1,
+            "unit_quantity": 2.0,
             "modified_date": "Added at March 20 Monday 2023 02:02:07 PM",
             "group": null
         },
