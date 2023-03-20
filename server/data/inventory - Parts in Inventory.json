@@ -423,7 +423,7 @@
             "material": "304 SS",
             "weight": 3.587,
             "price": 10.78,
-            "unit_quantity": 1,
+            "unit_quantity": 2.0,
             "modified_date": "Added at March 17 Friday 2023 02:17:02 PM",
             "group": null
         },
@@ -533,7 +533,7 @@
             "material": "Mild Steel",
             "weight": 3.473,
             "price": 3.6,
-            "unit_quantity": 1,
+            "unit_quantity": 4.0,
             "modified_date": "Added at March 20 Monday 2023 02:02:06 PM",
             "group": null
         },
@@ -544,7 +544,7 @@
             "material": "Mild Steel",
             "weight": 0.128,
             "price": 0.33,
-            "unit_quantity": 1,
+            "unit_quantity": 2.0,
             "modified_date": "Added at March 20 Monday 2023 02:02:06 PM",
             "group": null
         },
@@ -643,7 +643,7 @@
             "material": "Mild Steel",
             "weight": 0.285,
             "price": 0.56,
-            "unit_quantity": 1,
+            "unit_quantity": 2.0,
             "modified_date": "Added at March 20 Monday 2023 02:02:06 PM",
             "group": null
         },
@@ -654,7 +654,7 @@
             "material": "Mild Steel",
             "weight": 0.263,
             "price": 0.54,
-            "unit_quantity": 1,
+            "unit_quantity": 2.0,
             "modified_date": "Added at March 20 Monday 2023 02:02:06 PM",
             "group": null
         },
@@ -665,7 +665,7 @@
             "material": "Mild Steel",
             "weight": 0.231,
             "price": 0.47,
-            "unit_quantity": 1,
+            "unit_quantity": 2.0,
             "modified_date": "Added at March 20 Monday 2023 02:02:06 PM",
             "group": null
         },
@@ -676,7 +676,7 @@
             "material": "Mild Steel",
             "weight": 0.441,
             "price": 0.58,
-            "unit_quantity": 1,
+            "unit_quantity": 2.0,
             "modified_date": "Added at March 20 Monday 2023 02:02:07 PM",
             "group": null
         }
