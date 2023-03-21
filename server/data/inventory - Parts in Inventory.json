@@ -709,7 +709,7 @@
             "material": "Mild Steel",
             "weight": 0.205,
             "price": 0.51,
-            "unit_quantity": 1,
+            "unit_quantity": 2.0,
             "modified_date": "Added at March 21 Tuesday 2023 11:16:24 AM",
             "group": null
         }
