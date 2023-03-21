@@ -21,6 +21,39 @@
             "unit_quantity": 1,
             "modified_date": "Added at March 17 Friday 2023 02:13:08 PM",
             "group": null
+        },
+        "LEVELGUSET": {
+            "current_quantity": 200,
+            "machine_time": 0.2,
+            "gauge": "3\/16",
+            "material": "Mild Steel",
+            "weight": 0.572,
+            "price": 0.87,
+            "unit_quantity": 1,
+            "modified_date": "Added at March 21 Tuesday 2023 11:05:02 AM",
+            "group": null
+        },
+        "2840-62x2": {
+            "current_quantity": 54,
+            "machine_time": 0.15,
+            "gauge": "3\/8",
+            "material": "Mild Steel",
+            "weight": 0.205,
+            "price": 0.51,
+            "unit_quantity": 1,
+            "modified_date": "Added at March 21 Tuesday 2023 11:16:24 AM",
+            "group": null
+        },
+        "3444-11": {
+            "current_quantity": 10,
+            "machine_time": 2.93,
+            "gauge": "3\/16",
+            "material": "Mild Steel",
+            "weight": 269.716,
+            "price": 179.94,
+            "unit_quantity": 1,
+            "modified_date": "Added at March 21 Tuesday 2023 11:05:02 AM",
+            "group": null
         }
     },
     "Recut": {
@@ -84,6 +117,50 @@
             "modified_date": "10 quantity added at February 25 Saturday 2023 10:15:58 AM",
             "group": null
         },
+        "2840-103x2": {
+            "current_quantity": 20,
+            "machine_time": 0.15,
+            "gauge": "1\/4",
+            "material": "Mild Steel",
+            "weight": 0.285,
+            "price": 0.56,
+            "unit_quantity": 2.0,
+            "modified_date": "Added at March 20 Monday 2023 02:02:06 PM",
+            "group": null
+        },
+        "2840-57x2": {
+            "current_quantity": 20,
+            "machine_time": 0.15,
+            "gauge": "1\/4",
+            "material": "Mild Steel",
+            "weight": 0.263,
+            "price": 0.54,
+            "unit_quantity": 2.0,
+            "modified_date": "Added at March 20 Monday 2023 02:02:06 PM",
+            "group": null
+        },
+        "2840-58x2": {
+            "current_quantity": 20,
+            "machine_time": 0.13,
+            "gauge": "1\/4",
+            "material": "Mild Steel",
+            "weight": 0.231,
+            "price": 0.47,
+            "unit_quantity": 2.0,
+            "modified_date": "Added at March 20 Monday 2023 02:02:06 PM",
+            "group": null
+        },
+        "2840-59x2": {
+            "current_quantity": 20,
+            "machine_time": 0.12,
+            "gauge": "1\/4",
+            "material": "Mild Steel",
+            "weight": 0.441,
+            "price": 0.58,
+            "unit_quantity": 2.0,
+            "modified_date": "Added at March 20 Monday 2023 02:02:07 PM",
+            "group": null
+        },
         "2534-043x2": {
             "current_quantity": 10,
             "machine_time": 1.58,
@@ -104,6 +181,107 @@
             "price": 37.84,
             "unit_quantity": 1,
             "modified_date": "Added at March 09 Thursday 2023 09:41:14 AM",
+            "group": null
+        }
+    },
+    "BL28": {
+        "Level Gauge": {
+            "current_quantity": 324,
+            "machine_time": 0.27,
+            "gauge": "16 Gauge",
+            "material": "304 SS",
+            "weight": 0.209,
+            "price": 1.62,
+            "unit_quantity": 1,
+            "modified_date": "Removed 10 quantity at March 16 Thursday 2023 01:31:47 PM",
+            "group": null
+        },
+        "SFM-01 BL28": {
+            "current_quantity": 45,
+            "machine_time": 0.3,
+            "gauge": "12 Gauge",
+            "material": "Mild Steel",
+            "weight": 0.606,
+            "price": 1.14,
+            "unit_quantity": 1,
+            "modified_date": "Removed 10 quantity at March 14 Tuesday 2023 04:49:05 PM",
+            "group": null
+        },
+        "2840-92": {
+            "current_quantity": 40,
+            "machine_time": 0.53,
+            "gauge": "18 Gauge",
+            "material": "Galvanneal",
+            "weight": 2.248,
+            "price": 4.07,
+            "unit_quantity": 1,
+            "modified_date": "Removed 10 quantity at March 14 Tuesday 2023 04:49:05 PM",
+            "group": null
+        },
+        "2840-25x4": {
+            "current_quantity": 40,
+            "machine_time": 0.55,
+            "gauge": "1\/4",
+            "material": "Mild Steel",
+            "weight": 3.473,
+            "price": 3.6,
+            "unit_quantity": 4.0,
+            "modified_date": "Added at March 20 Monday 2023 02:02:06 PM",
+            "group": null
+        },
+        "2840-51x4": {
+            "current_quantity": 20.0,
+            "machine_time": 0.4,
+            "gauge": "14 Gauge",
+            "material": "Mild Steel",
+            "weight": 1.175,
+            "price": 1.75,
+            "unit_quantity": 4.0,
+            "modified_date": "Removed 40.0 quantity at March 14 Tuesday 2023 04:49:05 PM",
+            "group": null
+        },
+        "2840-87x2": {
+            "current_quantity": 20.0,
+            "machine_time": 0.47,
+            "gauge": "16 Gauge",
+            "material": "304 SS",
+            "weight": 2.417,
+            "price": 7.73,
+            "unit_quantity": 2.0,
+            "modified_date": "20 quantity added at March 17 Friday 2023 02:17:02 PM",
+            "group": null
+        },
+        "2840-24x2": {
+            "current_quantity": 20.0,
+            "machine_time": 0.55,
+            "gauge": "1\/4",
+            "material": "Mild Steel",
+            "weight": 2.57,
+            "price": 3.02,
+            "unit_quantity": 2.0,
+            "modified_date": "20 quantity added at March 20 Monday 2023 02:02:06 PM",
+            "group": null
+        },
+        "2840-00x2": {
+            "current_quantity": 20,
+            "machine_time": 0.1,
+            "gauge": "1\/4",
+            "material": "Mild Steel",
+            "weight": 0.128,
+            "price": 0.33,
+            "unit_quantity": 2.0,
+            "modified_date": "Added at March 20 Monday 2023 02:02:06 PM",
+            "group": null
+        },
+        "2840-05": {
+            "current_quantity": 20,
+            "machine_time": 1.78,
+            "gauge": "1\/4",
+            "material": "Mild Steel",
+            "weight": 69.744,
+            "price": 49.09,
+            "unit_quantity": 1,
+            "modified_date": "Added at March 20 Monday 2023 02:02:06 PM",
             "group": null
         },
         "2840-103x2": {
@@ -148,74 +326,6 @@
             "price": 0.58,
             "unit_quantity": 2.0,
             "modified_date": "Added at March 20 Monday 2023 02:02:07 PM",
-            "group": null
-        }
-    },
-    "BL28": {
-        "Level Gauge": {
-            "current_quantity": 324,
-            "machine_time": 0.27,
-            "gauge": "16 Gauge",
-            "material": "304 SS",
-            "weight": 0.209,
-            "price": 1.62,
-            "unit_quantity": 1,
-            "modified_date": "Removed 10 quantity at March 16 Thursday 2023 01:31:47 PM",
-            "group": null
-        },
-        "SFM-01 BL28": {
-            "current_quantity": 45,
-            "machine_time": 0.3,
-            "gauge": "12 Gauge",
-            "material": "Mild Steel",
-            "weight": 0.606,
-            "price": 1.14,
-            "unit_quantity": 1,
-            "modified_date": "Removed 10 quantity at March 14 Tuesday 2023 04:49:05 PM",
-            "group": null
-        },
-        "2840-92": {
-            "current_quantity": 40,
-            "machine_time": 0.53,
-            "gauge": "18 Gauge",
-            "material": "Galvanneal",
-            "weight": 2.248,
-            "price": 4.07,
-            "unit_quantity": 1,
-            "modified_date": "Removed 10 quantity at March 14 Tuesday 2023 04:49:05 PM",
-            "group": null
-        },
-        "2840-51x4": {
-            "current_quantity": 20.0,
-            "machine_time": 0.4,
-            "gauge": "14 Gauge",
-            "material": "Mild Steel",
-            "weight": 1.175,
-            "price": 1.75,
-            "unit_quantity": 4.0,
-            "modified_date": "Removed 40.0 quantity at March 14 Tuesday 2023 04:49:05 PM",
-            "group": null
-        },
-        "2840-87x2": {
-            "current_quantity": 20.0,
-            "machine_time": 0.47,
-            "gauge": "16 Gauge",
-            "material": "304 SS",
-            "weight": 2.417,
-            "price": 7.73,
-            "unit_quantity": 2.0,
-            "modified_date": "20 quantity added at March 17 Friday 2023 02:17:02 PM",
-            "group": null
-        },
-        "2840-24x2": {
-            "current_quantity": 20.0,
-            "machine_time": 0.55,
-            "gauge": "1\/4",
-            "material": "Mild Steel",
-            "weight": 2.57,
-            "price": 3.02,
-            "unit_quantity": 2.0,
-            "modified_date": "20 quantity added at March 20 Monday 2023 02:02:06 PM",
             "group": null
         },
         "3044 Ashpan": {
@@ -394,6 +504,83 @@
             "modified_date": "10 quantity added at March 20 Monday 2023 02:02:06 PM",
             "group": null
         },
+        "2840-08": {
+            "current_quantity": 10,
+            "machine_time": 1.43,
+            "gauge": "1\/4",
+            "material": "Mild Steel",
+            "weight": 34.532,
+            "price": 25.68,
+            "unit_quantity": 1,
+            "modified_date": "Added at March 20 Monday 2023 02:02:06 PM",
+            "group": null
+        },
+        "2840-23": {
+            "current_quantity": 10,
+            "machine_time": 0.6,
+            "gauge": "1\/4",
+            "material": "Mild Steel",
+            "weight": 9.562,
+            "price": 7.62,
+            "unit_quantity": 1,
+            "modified_date": "Added at March 20 Monday 2023 02:02:06 PM",
+            "group": null
+        },
+        "2840-64": {
+            "current_quantity": 10,
+            "machine_time": 0.42,
+            "gauge": "1\/4",
+            "material": "Mild Steel",
+            "weight": 1.747,
+            "price": 2.17,
+            "unit_quantity": 1,
+            "modified_date": "Added at March 20 Monday 2023 02:02:07 PM",
+            "group": null
+        },
+        "2840-72": {
+            "current_quantity": 10,
+            "machine_time": 0.3,
+            "gauge": "1\/4",
+            "material": "Mild Steel",
+            "weight": 1.24,
+            "price": 1.54,
+            "unit_quantity": 1,
+            "modified_date": "Added at March 20 Monday 2023 02:02:07 PM",
+            "group": null
+        },
+        "2840-Shaker-04": {
+            "current_quantity": 10,
+            "machine_time": 1.8,
+            "gauge": "1\/4",
+            "material": "Mild Steel",
+            "weight": 73.452,
+            "price": 51.51,
+            "unit_quantity": 1,
+            "modified_date": "Added at March 20 Monday 2023 02:02:07 PM",
+            "group": null
+        },
+        "2840-Shaker-07": {
+            "current_quantity": 10,
+            "machine_time": 1.6,
+            "gauge": "1\/4",
+            "material": "Mild Steel",
+            "weight": 34.069,
+            "price": 25.8,
+            "unit_quantity": 1,
+            "modified_date": "Added at March 20 Monday 2023 02:02:07 PM",
+            "group": null
+        },
+        "2840-Shaker-104": {
+            "current_quantity": 10,
+            "machine_time": 0.12,
+            "gauge": "1\/4",
+            "material": "Mild Steel",
+            "weight": 0.173,
+            "price": 0.41,
+            "unit_quantity": 1,
+            "modified_date": "Added at March 20 Monday 2023 02:02:07 PM",
+            "group": null
+        },
         "2840-337": {
             "current_quantity": 3,
             "machine_time": 0.43,
@@ -525,160 +712,6 @@
             "unit_quantity": 2.0,
             "modified_date": "Manually set to 0.0 quantity at March 14 Tuesday 2023 04:49:30 PM",
             "group": null
-        },
-        "2840-25x4": {
-            "current_quantity": 40,
-            "machine_time": 0.55,
-            "gauge": "1\/4",
-            "material": "Mild Steel",
-            "weight": 3.473,
-            "price": 3.6,
-            "unit_quantity": 4.0,
-            "modified_date": "Added at March 20 Monday 2023 02:02:06 PM",
-            "group": null
-        },
-        "2840-00x2": {
-            "current_quantity": 20,
-            "machine_time": 0.1,
-            "gauge": "1\/4",
-            "material": "Mild Steel",
-            "weight": 0.128,
-            "price": 0.33,
-            "unit_quantity": 2.0,
-            "modified_date": "Added at March 20 Monday 2023 02:02:06 PM",
-            "group": null
-        },
-        "2840-05": {
-            "current_quantity": 20,
-            "machine_time": 1.78,
-            "gauge": "1\/4",
-            "material": "Mild Steel",
-            "weight": 69.744,
-            "price": 49.09,
-            "unit_quantity": 1,
-            "modified_date": "Added at March 20 Monday 2023 02:02:06 PM",
-            "group": null
-        },
-        "2840-08": {
-            "current_quantity": 10,
-            "machine_time": 1.43,
-            "gauge": "1\/4",
-            "material": "Mild Steel",
-            "weight": 34.532,
-            "price": 25.68,
-            "unit_quantity": 1,
-            "modified_date": "Added at March 20 Monday 2023 02:02:06 PM",
-            "group": null
-        },
-        "2840-23": {
-            "current_quantity": 10,
-            "machine_time": 0.6,
-            "gauge": "1\/4",
-            "material": "Mild Steel",
-            "weight": 9.562,
-            "price": 7.62,
-            "unit_quantity": 1,
-            "modified_date": "Added at March 20 Monday 2023 02:02:06 PM",
-            "group": null
-        },
-        "2840-64": {
-            "current_quantity": 10,
-            "machine_time": 0.42,
-            "gauge": "1\/4",
-            "material": "Mild Steel",
-            "weight": 1.747,
-            "price": 2.17,
-            "unit_quantity": 1,
-            "modified_date": "Added at March 20 Monday 2023 02:02:07 PM",
-            "group": null
-        },
-        "2840-72": {
-            "current_quantity": 10,
-            "machine_time": 0.3,
-            "gauge": "1\/4",
-            "material": "Mild Steel",
-            "weight": 1.24,
-            "price": 1.54,
-            "unit_quantity": 1,
-            "modified_date": "Added at March 20 Monday 2023 02:02:07 PM",
-            "group": null
-        },
-        "2840-Shaker-04": {
-            "current_quantity": 10,
-            "machine_time": 1.8,
-            "gauge": "1\/4",
-            "material": "Mild Steel",
-            "weight": 73.452,
-            "price": 51.51,
-            "unit_quantity": 1,
-            "modified_date": "Added at March 20 Monday 2023 02:02:07 PM",
-            "group": null
-        },
-        "2840-Shaker-07": {
-            "current_quantity": 10,
-            "machine_time": 1.6,
-            "gauge": "1\/4",
-            "material": "Mild Steel",
-            "weight": 34.069,
-            "price": 25.8,
-            "unit_quantity": 1,
-            "modified_date": "Added at March 20 Monday 2023 02:02:07 PM",
-            "group": null
-        },
-        "2840-Shaker-104": {
-            "current_quantity": 10,
-            "machine_time": 0.12,
-            "gauge": "1\/4",
-            "material": "Mild Steel",
-            "weight": 0.173,
-            "price": 0.41,
-            "unit_quantity": 1,
-            "modified_date": "Added at March 20 Monday 2023 02:02:07 PM",
-            "group": null
-        },
-        "2840-103x2": {
-            "current_quantity": 20,
-            "machine_time": 0.15,
-            "gauge": "1\/4",
-            "material": "Mild Steel",
-            "weight": 0.285,
-            "price": 0.56,
-            "unit_quantity": 2.0,
-            "modified_date": "Added at March 20 Monday 2023 02:02:06 PM",
-            "group": null
-        },
-        "2840-57x2": {
-            "current_quantity": 20,
-            "machine_time": 0.15,
-            "gauge": "1\/4",
-            "material": "Mild Steel",
-            "weight": 0.263,
-            "price": 0.54,
-            "unit_quantity": 2.0,
-            "modified_date": "Added at March 20 Monday 2023 02:02:06 PM",
-            "group": null
-        },
-        "2840-58x2": {
-            "current_quantity": 20,
-            "machine_time": 0.13,
-            "gauge": "1\/4",
-            "material": "Mild Steel",
-            "weight": 0.231,
-            "price": 0.47,
-            "unit_quantity": 2.0,
-            "modified_date": "Added at March 20 Monday 2023 02:02:06 PM",
-            "group": null
-        },
-        "2840-59x2": {
-            "current_quantity": 20,
-            "machine_time": 0.12,
-            "gauge": "1\/4",
-            "material": "Mild Steel",
-            "weight": 0.441,
-            "price": 0.58,
-            "unit_quantity": 2.0,
-            "modified_date": "Added at March 20 Monday 2023 02:02:07 PM",
-            "group": null
         }
     },
     "BL34": {
@@ -746,6 +779,50 @@
             "price": 1.87,
             "unit_quantity": 1,
             "modified_date": "Removed 10 quantity at March 16 Thursday 2023 01:30:52 PM",
+            "group": null
+        },
+        "2840-103x2": {
+            "current_quantity": 20,
+            "machine_time": 0.15,
+            "gauge": "1\/4",
+            "material": "Mild Steel",
+            "weight": 0.285,
+            "price": 0.56,
+            "unit_quantity": 1,
+            "modified_date": "Added at March 20 Monday 2023 02:02:06 PM",
+            "group": null
+        },
+        "2840-57x2": {
+            "current_quantity": 20,
+            "machine_time": 0.15,
+            "gauge": "1\/4",
+            "material": "Mild Steel",
+            "weight": 0.263,
+            "price": 0.54,
+            "unit_quantity": 1,
+            "modified_date": "Added at March 20 Monday 2023 02:02:06 PM",
+            "group": null
+        },
+        "2840-58x2": {
+            "current_quantity": 20,
+            "machine_time": 0.13,
+            "gauge": "1\/4",
+            "material": "Mild Steel",
+            "weight": 0.231,
+            "price": 0.47,
+            "unit_quantity": 1,
+            "modified_date": "Added at March 20 Monday 2023 02:02:06 PM",
+            "group": null
+        },
+        "2840-59x2": {
+            "current_quantity": 20,
+            "machine_time": 0.12,
+            "gauge": "1\/4",
+            "material": "Mild Steel",
+            "weight": 0.441,
+            "price": 0.58,
+            "unit_quantity": 1,
+            "modified_date": "Added at March 20 Monday 2023 02:02:07 PM",
             "group": null
         },
         "3444 -Ash Pan Handle": {
@@ -1044,6 +1121,19 @@
             "unit_quantity": 1,
             "modified_date": "Removed 10 quantity at March 16 Thursday 2023 01:30:52 PM",
             "group": null
+        }
+    },
+    "BL40": {
+        "Level Gauge": {
+            "current_quantity": 324,
+            "machine_time": 0.27,
+            "gauge": "16 Gauge",
+            "material": "304 SS",
+            "weight": 0.209,
+            "price": 1.62,
+            "unit_quantity": 1,
+            "modified_date": "Removed 10 quantity at March 16 Thursday 2023 01:31:47 PM",
+            "group": null
         },
         "2840-103x2": {
             "current_quantity": 20,
@@ -1087,19 +1177,6 @@
             "price": 0.58,
             "unit_quantity": 1,
             "modified_date": "Added at March 20 Monday 2023 02:02:07 PM",
-            "group": null
-        }
-    },
-    "BL40": {
-        "Level Gauge": {
-            "current_quantity": 324,
-            "machine_time": 0.27,
-            "gauge": "16 Gauge",
-            "material": "304 SS",
-            "weight": 0.209,
-            "price": 1.62,
-            "unit_quantity": 1,
-            "modified_date": "Removed 10 quantity at March 16 Thursday 2023 01:31:47 PM",
             "group": null
         },
         "S30-37": {
@@ -1189,50 +1266,6 @@
             "unit_quantity": 1,
             "modified_date": "Manually set to 0.0 quantity at March 16 Thursday 2023 01:31:50 PM",
             "group": null
-        },
-        "2840-103x2": {
-            "current_quantity": 20,
-            "machine_time": 0.15,
-            "gauge": "1\/4",
-            "material": "Mild Steel",
-            "weight": 0.285,
-            "price": 0.56,
-            "unit_quantity": 1,
-            "modified_date": "Added at March 20 Monday 2023 02:02:06 PM",
-            "group": null
-        },
-        "2840-57x2": {
-            "current_quantity": 20,
-            "machine_time": 0.15,
-            "gauge": "1\/4",
-            "material": "Mild Steel",
-            "weight": 0.263,
-            "price": 0.54,
-            "unit_quantity": 1,
-            "modified_date": "Added at March 20 Monday 2023 02:02:06 PM",
-            "group": null
-        },
-        "2840-58x2": {
-            "current_quantity": 20,
-            "machine_time": 0.13,
-            "gauge": "1\/4",
-            "material": "Mild Steel",
-            "weight": 0.231,
-            "price": 0.47,
-            "unit_quantity": 1,
-            "modified_date": "Added at March 20 Monday 2023 02:02:06 PM",
-            "group": null
-        },
-        "2840-59x2": {
-            "current_quantity": 20,
-            "machine_time": 0.12,
-            "gauge": "1\/4",
-            "material": "Mild Steel",
-            "weight": 0.441,
-            "price": 0.58,
-            "unit_quantity": 1,
-            "modified_date": "Added at March 20 Monday 2023 02:02:07 PM",
-            "group": null
         }
     },
     "Polar G2": {
@@ -1258,6 +1291,17 @@
             "modified_date": "Removed 5 quantity at March 14 Tuesday 2023 04:51:26 PM",
             "group": null
         },
+        "G2-3-Secondary Air Delivery-tube-part1x2": {
+            "current_quantity": 11,
+            "machine_time": 0.62,
+            "gauge": "14 Gauge",
+            "material": "304 SS",
+            "weight": 7.591,
+            "price": 20.73,
+            "unit_quantity": 1,
+            "modified_date": "Added at March 17 Friday 2023 02:17:02 PM",
+            "group": null
+        },
         "G2-3-Housing-Outer Door- limit switch": {
             "current_quantity": 10,
             "machine_time": 0.13,
@@ -1280,6 +1324,39 @@
             "modified_date": "Removed 5 quantity at March 14 Tuesday 2023 04:51:26 PM",
             "group": null
         },
+        "G2-3-Primary Air Delivery-tube-part1x2": {
+            "current_quantity": 10,
+            "machine_time": 0.77,
+            "gauge": "14 Gauge",
+            "material": "304 SS",
+            "weight": 9.991,
+            "price": 27.09,
+            "unit_quantity": 1,
+            "modified_date": "Added at March 17 Friday 2023 02:17:02 PM",
+            "group": null
+        },
+        "G2-3-Primary Air Delivery-tube-part2x2": {
+            "current_quantity": 10,
+            "machine_time": 0.75,
+            "gauge": "14 Gauge",
+            "material": "304 SS",
+            "weight": 6.046,
+            "price": 17.57,
+            "unit_quantity": 1,
+            "modified_date": "Added at March 17 Friday 2023 02:17:02 PM",
+            "group": null
+        },
+        "G2-3-Secondary Air Delivery-tube-part2x2": {
+            "current_quantity": 10,
+            "machine_time": 0.63,
+            "gauge": "14 Gauge",
+            "material": "304 SS",
+            "weight": 4.825,
+            "price": 14.16,
+            "unit_quantity": 1,
+            "modified_date": "Added at March 17 Friday 2023 02:17:02 PM",
+            "group": null
+        },
         "G2Plus-Firechamber-Skirting-Mount Pinx9": {
             "current_quantity": 5.0,
             "machine_time": 0.1,
@@ -1289,6 +1366,17 @@
             "price": 0.33,
             "unit_quantity": 9.0,
             "modified_date": "Removed 90.0 quantity at March 14 Tuesday 2023 04:53:43 PM",
+            "group": null
+        },
+        "G2Plus-Flues access-lid": {
+            "current_quantity": 3,
+            "machine_time": 0.52,
+            "gauge": "12 Gauge",
+            "material": "Mild Steel",
+            "weight": 6.003,
+            "price": 5.14,
+            "unit_quantity": 1,
+            "modified_date": "Added at March 18 Saturday 2023 11:22:33 AM",
             "group": null
         },
         "G2-3-Housing-Front Insulation cover insert 03x3": {
@@ -1630,61 +1718,6 @@
             "price": 1.44,
             "unit_quantity": 6.0,
             "modified_date": "Removed 60.0 quantity at March 14 Tuesday 2023 04:53:43 PM",
-            "group": null
-        },
-        "G2-3-Secondary Air Delivery-tube-part1x2": {
-            "current_quantity": 11,
-            "machine_time": 0.62,
-            "gauge": "14 Gauge",
-            "material": "304 SS",
-            "weight": 7.591,
-            "price": 20.73,
-            "unit_quantity": 1,
-            "modified_date": "Added at March 17 Friday 2023 02:17:02 PM",
-            "group": null
-        },
-        "G2-3-Primary Air Delivery-tube-part1x2": {
-            "current_quantity": 10,
-            "machine_time": 0.77,
-            "gauge": "14 Gauge",
-            "material": "304 SS",
-            "weight": 9.991,
-            "price": 27.09,
-            "unit_quantity": 1,
-            "modified_date": "Added at March 17 Friday 2023 02:17:02 PM",
-            "group": null
-        },
-        "G2-3-Primary Air Delivery-tube-part2x2": {
-            "current_quantity": 10,
-            "machine_time": 0.75,
-            "gauge": "14 Gauge",
-            "material": "304 SS",
-            "weight": 6.046,
-            "price": 17.57,
-            "unit_quantity": 1,
-            "modified_date": "Added at March 17 Friday 2023 02:17:02 PM",
-            "group": null
-        },
-        "G2-3-Secondary Air Delivery-tube-part2x2": {
-            "current_quantity": 10,
-            "machine_time": 0.63,
-            "gauge": "14 Gauge",
-            "material": "304 SS",
-            "weight": 4.825,
-            "price": 14.16,
-            "unit_quantity": 1,
-            "modified_date": "Added at March 17 Friday 2023 02:17:02 PM",
-            "group": null
-        },
-        "G2Plus-Flues access-lid": {
-            "current_quantity": 3,
-            "machine_time": 0.52,
-            "gauge": "12 Gauge",
-            "material": "Mild Steel",
-            "weight": 6.003,
-            "price": 5.14,
-            "unit_quantity": 1,
-            "modified_date": "Added at March 18 Saturday 2023 11:22:33 AM",
             "group": null
         }
     },
@@ -2582,6 +2615,28 @@
             "modified_date": "10 quantity added at March 07 Tuesday 2023 01:28:02 PM",
             "group": null
         },
+        "G3-1-Side door 2 - inner shel": {
+            "current_quantity": 15,
+            "machine_time": 0.32,
+            "gauge": "12 Gauge",
+            "material": "Mild Steel",
+            "weight": 2.336,
+            "price": 2.3,
+            "unit_quantity": 1,
+            "modified_date": "Added at March 18 Saturday 2023 11:22:33 AM",
+            "group": null
+        },
+        "G3-1-Side door 2-outer shell": {
+            "current_quantity": 15,
+            "machine_time": 0.35,
+            "gauge": "12 Gauge",
+            "material": "Mild Steel",
+            "weight": 3.05,
+            "price": 2.83,
+            "unit_quantity": 1,
+            "modified_date": "Added at March 18 Saturday 2023 11:22:33 AM",
+            "group": null
+        },
         "G3-1-Firechamber-Skirting-Jam-Bottom": {
             "current_quantity": 10,
             "machine_time": 0.45,
@@ -2712,28 +2767,6 @@
             "price": 8.51,
             "unit_quantity": 1,
             "modified_date": "Removed 10 quantity at March 14 Tuesday 2023 04:53:43 PM",
-            "group": null
-        },
-        "G3-1-Side door 2 - inner shel": {
-            "current_quantity": 15,
-            "machine_time": 0.32,
-            "gauge": "12 Gauge",
-            "material": "Mild Steel",
-            "weight": 2.336,
-            "price": 2.3,
-            "unit_quantity": 1,
-            "modified_date": "Added at March 18 Saturday 2023 11:22:33 AM",
-            "group": null
-        },
-        "G3-1-Side door 2-outer shell": {
-            "current_quantity": 15,
-            "machine_time": 0.35,
-            "gauge": "12 Gauge",
-            "material": "Mild Steel",
-            "weight": 3.05,
-            "price": 2.83,
-            "unit_quantity": 1,
-            "modified_date": "Added at March 18 Saturday 2023 11:22:33 AM",
             "group": null
         }
     },
