@@ -6529,6 +6529,23 @@
             "latest_change_priority": "Item added\nItsme\nNovember 03 Thursday 2022 09-43-36 AM",
             "latest_change_notes": "Item added\nItsme\nNovember 03 Thursday 2022 09-43-36 AM"
         },
+        "Tec Top Round Flange Motor 18KW-324-1800-D63-B5 ": {
+            "part_number": " MTP63B4D-B5",
+            "unit_quantity": 1.0,
+            "current_quantity": 4,
+            "price": 252.0,
+            "use_exchange_rate": false,
+            "priority": 0,
+            "notes": "Vendor: Rantec\nDescription: Motor For Stoker Gearbox or Coal Burner",
+            "latest_change_name": "Item added\nItsme\nDecember 14 Wednesday 2022 04-49-04 PM",
+            "latest_change_part_number": "Item added\nItsme\nDecember 14 Wednesday 2022 04-49-04 PM",
+            "latest_change_unit_quantity": "Item added\nItsme\nDecember 14 Wednesday 2022 04-49-04 PM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 4\nto: 4\nLynden\nMarch 22 Wednesday 2023 04:03:41 PM",
+            "latest_change_price": "Item added\nItsme\nDecember 14 Wednesday 2022 04-49-04 PM",
+            "latest_change_use_exchange_price": "Item added\nItsme\nDecember 14 Wednesday 2022 04-49-04 PM",
+            "latest_change_priority": "Item added\nItsme\nDecember 14 Wednesday 2022 04-49-04 PM",
+            "latest_change_notes": "Item added\nItsme\nDecember 14 Wednesday 2022 04-49-04 PM"
+        },
         "WHITE DTM Polyure Enamel 3.78L": {
             "part_number": "83500k01",
             "unit_quantity": 1,
@@ -6545,23 +6562,6 @@
             "latest_change_use_exchange_price": "Item added\nItsme\nAugust 22 Monday 2022 03-47-31 PM",
             "latest_change_priority": "Item added\nItsme\nAugust 22 Monday 2022 03-47-31 PM",
             "latest_change_notes": "Item added\nItsme\nAugust 22 Monday 2022 03-47-31 PM"
-        },
-        "Tec Top Round Flange Motor 18KW-324-1800-D63-B5 ": {
-            "part_number": " MTP63B4D-B5",
-            "unit_quantity": 1.0,
-            "current_quantity": 5,
-            "price": 252.0,
-            "use_exchange_rate": false,
-            "priority": 0,
-            "notes": "Vendor: Rantec\nDescription: Motor For Stoker Gearbox or Coal Burner",
-            "latest_change_name": "Item added\nItsme\nDecember 14 Wednesday 2022 04-49-04 PM",
-            "latest_change_part_number": "Item added\nItsme\nDecember 14 Wednesday 2022 04-49-04 PM",
-            "latest_change_unit_quantity": "Item added\nItsme\nDecember 14 Wednesday 2022 04-49-04 PM",
-            "latest_change_current_quantity": "Item added\nItsme\nDecember 14 Wednesday 2022 04-49-04 PM",
-            "latest_change_price": "Item added\nItsme\nDecember 14 Wednesday 2022 04-49-04 PM",
-            "latest_change_use_exchange_price": "Item added\nItsme\nDecember 14 Wednesday 2022 04-49-04 PM",
-            "latest_change_priority": "Item added\nItsme\nDecember 14 Wednesday 2022 04-49-04 PM",
-            "latest_change_notes": "Item added\nItsme\nDecember 14 Wednesday 2022 04-49-04 PM"
         },
         "SM Cyclo Motor 1\/3HP-15\/1-117 Output": {
             "part_number": "RNYM03-1220YB-15",
