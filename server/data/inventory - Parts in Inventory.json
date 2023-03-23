@@ -3058,14 +3058,14 @@
             "group": null
         },
         "6in spring plate .048 tab long holes also 10G or 12 Galv": {
-            "current_quantity": 198,
+            "current_quantity": 196.0,
             "machine_time": 0.68,
             "gauge": "10 Gauge",
             "material": "Galvanized",
             "weight": 1.217,
             "price": 3.16,
             "unit_quantity": 1,
-            "modified_date": "Added at March 20 Monday 2023 10:42:44 AM",
+            "modified_date": "Manually set to 196.0 quantity at March 23 Thursday 2023 08:48:25 AM",
             "group": null
         },
         "PM - SS HINGE 1 3 quarter hinge": {
