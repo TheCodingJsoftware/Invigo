@@ -17,23 +17,6 @@
             "latest_change_priority": "Item added\nLynden\nMarch 10 Friday 2023 01-24-02 PM",
             "latest_change_notes": "Item added\nLynden\nMarch 10 Friday 2023 01-24-02 PM"
         },
-        "rivet  3\/4x 5\/16 DIA ": {
-            "part_number": "Rivet516",
-            "unit_quantity": 8,
-            "current_quantity": -52,
-            "price": 1.0,
-            "use_exchange_rate": false,
-            "priority": 0,
-            "notes": "Vendor: A.Adams Supply\nDescription: mc master carr\n",
-            "latest_change_name": "Item added\nItsme\nJuly 13 Wednesday 2022 09-11-15 AM",
-            "latest_change_part_number": "Item added\nItsme\nJuly 13 Wednesday 2022 09-11-15 AM",
-            "latest_change_unit_quantity": "Item added\nItsme\nJuly 13 Wednesday 2022 09-11-15 AM",
-            "latest_change_current_quantity": "Latest Change:\nfrom: -52\nto: -52\nLynden\nMarch 13 Monday 2023 08:30:45 AM",
-            "latest_change_price": "Item added\nItsme\nJuly 13 Wednesday 2022 09-11-15 AM",
-            "latest_change_use_exchange_price": "Item added\nItsme\nJuly 13 Wednesday 2022 09-11-15 AM",
-            "latest_change_priority": "Item added\nItsme\nJuly 13 Wednesday 2022 09-11-15 AM",
-            "latest_change_notes": "Latest Change:\nfrom: Vendor: A.Adams Supply\nDescription: mc master carr\nto: Vendor: A.Adams Supply\nDescription: mc master carr\n\nLynden\nMarch 13 Monday 2023 09:28:16 AM"
-        },
         "Sticker 310 Polar G2 & G3 Caution Pinch Hazard 4.5\"x2.75\"": {
             "part_number": "310",
             "unit_quantity": 2,
@@ -127,7 +110,7 @@
             "latest_change_price": "Latest Change:\nfrom: 3.58\nto: 3.58\nItsme\nFebruary 23 Thursday 2023 09:34:22 AM"
         },
         "Terminal BlockPluggable ": {
-            "part_number": "222-412 Wago 2 pos",
+            "part_number": "222-413 Wago 3 pos",
             "unit_quantity": 3.0,
             "current_quantity": -15,
             "price": 0.8,
@@ -135,7 +118,7 @@
             "priority": 0,
             "notes": "Vendor: Westburn \nDescription: ",
             "latest_change_name": "Item added\nItsme\nJanuary 09 Monday 2023 01-29-56 PM",
-            "latest_change_part_number": "Item added\nItsme\nJanuary 09 Monday 2023 01-29-56 PM",
+            "latest_change_part_number": "Latest Change:\nfrom: 222-413 Wago  pos\nto: 222-413 Wago 3 pos\nLynden\nMarch 23 Thursday 2023 09:53:36 AM",
             "latest_change_unit_quantity": "Latest Change:\nfrom: 0.0\nto: 3.0\nLynden\nMarch 11 Saturday 2023 09:38:02 AM",
             "latest_change_current_quantity": "Latest Change:\nfrom: -15\nto: -15\nLynden\nMarch 23 Thursday 2023 09:48:23 AM",
             "latest_change_price": "Item added\nItsme\nJanuary 09 Monday 2023 01-29-56 PM",
@@ -193,6 +176,23 @@
             "latest_change_use_exchange_price": "Item added\nItsme\nJuly 12 Tuesday 2022 09-29-24 AM",
             "latest_change_priority": "Item added\nItsme\nJuly 12 Tuesday 2022 09-29-24 AM",
             "latest_change_notes": "Item added\nItsme\nJuly 12 Tuesday 2022 09-29-24 AM"
+        },
+        "rivet  3\/4x 5\/16 DIA ": {
+            "part_number": "Rivet516",
+            "unit_quantity": 8,
+            "current_quantity": 0,
+            "price": 1.0,
+            "use_exchange_rate": false,
+            "priority": 0,
+            "notes": "Vendor: A.Adams Supply\nDescription: mc master carr\n",
+            "latest_change_name": "Item added\nItsme\nJuly 13 Wednesday 2022 09-11-15 AM",
+            "latest_change_part_number": "Item added\nItsme\nJuly 13 Wednesday 2022 09-11-15 AM",
+            "latest_change_unit_quantity": "Item added\nItsme\nJuly 13 Wednesday 2022 09-11-15 AM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 0\nto: 0\nLynden\nMarch 23 Thursday 2023 09:53:11 AM",
+            "latest_change_price": "Item added\nItsme\nJuly 13 Wednesday 2022 09-11-15 AM",
+            "latest_change_use_exchange_price": "Item added\nItsme\nJuly 13 Wednesday 2022 09-11-15 AM",
+            "latest_change_priority": "Item added\nItsme\nJuly 13 Wednesday 2022 09-11-15 AM",
+            "latest_change_notes": "Latest Change:\nfrom: Vendor: A.Adams Supply\nDescription: mc master carr\nto: Vendor: A.Adams Supply\nDescription: mc master carr\n\nLynden\nMarch 13 Monday 2023 09:28:16 AM"
         },
         "Barb Hose Adapter fitting": {
             "part_number": "BIA-020",
@@ -1764,7 +1764,7 @@
         "rivet  3\/4x 5\/16 DIA ": {
             "part_number": "Rivet516",
             "unit_quantity": 8,
-            "current_quantity": -52,
+            "current_quantity": 0,
             "price": 1.0,
             "use_exchange_rate": false,
             "priority": 0,
@@ -1772,7 +1772,7 @@
             "latest_change_name": "Item added\nItsme\nJuly 13 Wednesday 2022 09-11-15 AM",
             "latest_change_part_number": "Item added\nItsme\nJuly 13 Wednesday 2022 09-11-15 AM",
             "latest_change_unit_quantity": "Item added\nItsme\nJuly 13 Wednesday 2022 09-11-15 AM",
-            "latest_change_current_quantity": "Latest Change:\nfrom: -52\nto: -52\nLynden\nMarch 13 Monday 2023 08:30:45 AM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 0\nto: 0\nLynden\nMarch 23 Thursday 2023 09:53:11 AM",
             "latest_change_price": "Item added\nItsme\nJuly 13 Wednesday 2022 09-11-15 AM",
             "latest_change_use_exchange_price": "Item added\nItsme\nJuly 13 Wednesday 2022 09-11-15 AM",
             "latest_change_priority": "Item added\nItsme\nJuly 13 Wednesday 2022 09-11-15 AM",
@@ -3504,7 +3504,7 @@
         "rivet  3\/4x 5\/16 DIA ": {
             "part_number": "Rivet516",
             "unit_quantity": 8,
-            "current_quantity": -52,
+            "current_quantity": 0,
             "price": 1.0,
             "use_exchange_rate": false,
             "priority": 0,
@@ -3512,7 +3512,7 @@
             "latest_change_name": "Item added\nItsme\nJuly 13 Wednesday 2022 09-11-15 AM",
             "latest_change_part_number": "Item added\nItsme\nJuly 13 Wednesday 2022 09-11-15 AM",
             "latest_change_unit_quantity": "Item added\nItsme\nJuly 13 Wednesday 2022 09-11-15 AM",
-            "latest_change_current_quantity": "Latest Change:\nfrom: -52\nto: -52\nLynden\nMarch 13 Monday 2023 08:30:45 AM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 0\nto: 0\nLynden\nMarch 23 Thursday 2023 09:53:11 AM",
             "latest_change_price": "Item added\nItsme\nJuly 13 Wednesday 2022 09-11-15 AM",
             "latest_change_use_exchange_price": "Item added\nItsme\nJuly 13 Wednesday 2022 09-11-15 AM",
             "latest_change_priority": "Item added\nItsme\nJuly 13 Wednesday 2022 09-11-15 AM",
