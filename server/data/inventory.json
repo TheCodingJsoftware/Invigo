@@ -10605,23 +10605,6 @@
             "latest_change_priority": "Item added\nItsme\nNovember 14 Monday 2022 02-56-00 PM",
             "latest_change_notes": "Item added\nItsme\nNovember 14 Monday 2022 02-56-00 PM"
         },
-        "3\/4\" CF Round GR 1018 ": {
-            "part_number": "11376",
-            "unit_quantity": 1.0,
-            "current_quantity": 20,
-            "price": 47.85,
-            "use_exchange_rate": false,
-            "priority": 0,
-            "notes": "Vendor: Russel Metals\nPrice is per 20' leangth\nDescription: ",
-            "latest_change_name": "Item added\nItsme\nJanuary 19 Thursday 2023 10-25-33 AM",
-            "latest_change_part_number": "Item added\nItsme\nJanuary 19 Thursday 2023 10-25-33 AM",
-            "latest_change_unit_quantity": "Item added\nItsme\nJanuary 19 Thursday 2023 10-25-33 AM",
-            "latest_change_current_quantity": "Item added\nItsme\nJanuary 19 Thursday 2023 10-25-33 AM",
-            "latest_change_price": "Item added\nItsme\nJanuary 19 Thursday 2023 10-25-33 AM",
-            "latest_change_use_exchange_price": "Item added\nItsme\nJanuary 19 Thursday 2023 10-25-33 AM",
-            "latest_change_priority": "Item added\nItsme\nJanuary 19 Thursday 2023 10-25-33 AM",
-            "latest_change_notes": "Item added\nItsme\nJanuary 19 Thursday 2023 10-25-33 AM"
-        },
         "1 1\/4 x .25 DOM A513 ": {
             "part_number": "75990",
             "unit_quantity": 1.0,
@@ -10740,6 +10723,23 @@
             "latest_change_use_exchange_price": "Item added\nItsme\nJanuary 02 Monday 2023 02-12-36 PM",
             "latest_change_priority": "Item added\nItsme\nJanuary 02 Monday 2023 02-12-36 PM",
             "latest_change_notes": "Item added\nItsme\nJanuary 02 Monday 2023 02-12-36 PM"
+        },
+        "3\/4\" CR Round GR 1018 ": {
+            "part_number": "11376",
+            "unit_quantity": 1.0,
+            "current_quantity": 20,
+            "price": 47.85,
+            "use_exchange_rate": false,
+            "priority": 0,
+            "notes": "Vendor: Russel Metals\nPrice is per 20' leangth\nDescription: ",
+            "latest_change_name": "Latest Change:\nfrom: \"3\/4\" C Round GR 1018 \"\nto: \"3\/4\" CR Round GR 1018 \"\nLynden\nMarch 23 Thursday 2023 04:55:45 PM",
+            "latest_change_part_number": "Item added\nItsme\nJanuary 19 Thursday 2023 10-25-33 AM",
+            "latest_change_unit_quantity": "Item added\nItsme\nJanuary 19 Thursday 2023 10-25-33 AM",
+            "latest_change_current_quantity": "Item added\nItsme\nJanuary 19 Thursday 2023 10-25-33 AM",
+            "latest_change_price": "Item added\nItsme\nJanuary 19 Thursday 2023 10-25-33 AM",
+            "latest_change_use_exchange_price": "Item added\nItsme\nJanuary 19 Thursday 2023 10-25-33 AM",
+            "latest_change_priority": "Item added\nItsme\nJanuary 19 Thursday 2023 10-25-33 AM",
+            "latest_change_notes": "Item added\nItsme\nJanuary 19 Thursday 2023 10-25-33 AM"
         }
     },
     "Honeycomb Wagon": {
