@@ -17,23 +17,6 @@
             "latest_change_priority": "Item added\nLynden\nMarch 10 Friday 2023 01-24-02 PM",
             "latest_change_notes": "Item added\nLynden\nMarch 10 Friday 2023 01-24-02 PM"
         },
-        "Terminal BlockPluggable ": {
-            "part_number": "222-412 Wago 2 pos",
-            "unit_quantity": 3.0,
-            "current_quantity": -65,
-            "price": 0.8,
-            "use_exchange_rate": false,
-            "priority": 0,
-            "notes": "Vendor: Westburn \nDescription: ",
-            "latest_change_name": "Item added\nItsme\nJanuary 09 Monday 2023 01-29-56 PM",
-            "latest_change_part_number": "Item added\nItsme\nJanuary 09 Monday 2023 01-29-56 PM",
-            "latest_change_unit_quantity": "Latest Change:\nfrom: 0.0\nto: 3.0\nLynden\nMarch 11 Saturday 2023 09:38:02 AM",
-            "latest_change_current_quantity": "Latest Change:\nfrom: -65.0\nto: -65\nLynden\nMarch 13 Monday 2023 08:30:45 AM",
-            "latest_change_price": "Item added\nItsme\nJanuary 09 Monday 2023 01-29-56 PM",
-            "latest_change_use_exchange_price": "Item added\nItsme\nJanuary 09 Monday 2023 01-29-56 PM",
-            "latest_change_priority": "Item added\nItsme\nJanuary 09 Monday 2023 01-29-56 PM",
-            "latest_change_notes": "Item added\nItsme\nJanuary 09 Monday 2023 01-29-56 PM"
-        },
         "rivet  3\/4x 5\/16 DIA ": {
             "part_number": "Rivet516",
             "unit_quantity": 8,
@@ -143,6 +126,23 @@
             "latest_change_notes": "Latest Change:\nfrom: Vendor: HD Graphics In\nDescription: \nto: Vendor: HD Graphics Inc\nDescription: \nItsme\nFebruary 23 Thursday 2023 09:14:29 AM",
             "latest_change_price": "Latest Change:\nfrom: 3.58\nto: 3.58\nItsme\nFebruary 23 Thursday 2023 09:34:22 AM"
         },
+        "Terminal BlockPluggable ": {
+            "part_number": "222-412 Wago 2 pos",
+            "unit_quantity": 3.0,
+            "current_quantity": -15,
+            "price": 0.8,
+            "use_exchange_rate": false,
+            "priority": 0,
+            "notes": "Vendor: Westburn \nDescription: ",
+            "latest_change_name": "Item added\nItsme\nJanuary 09 Monday 2023 01-29-56 PM",
+            "latest_change_part_number": "Item added\nItsme\nJanuary 09 Monday 2023 01-29-56 PM",
+            "latest_change_unit_quantity": "Latest Change:\nfrom: 0.0\nto: 3.0\nLynden\nMarch 11 Saturday 2023 09:38:02 AM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: -15\nto: -15\nLynden\nMarch 23 Thursday 2023 09:48:23 AM",
+            "latest_change_price": "Item added\nItsme\nJanuary 09 Monday 2023 01-29-56 PM",
+            "latest_change_use_exchange_price": "Item added\nItsme\nJanuary 09 Monday 2023 01-29-56 PM",
+            "latest_change_priority": "Item added\nItsme\nJanuary 09 Monday 2023 01-29-56 PM",
+            "latest_change_notes": "Item added\nItsme\nJanuary 09 Monday 2023 01-29-56 PM"
+        },
         "1\" x 1\" Narrow Slot Gray Duct": {
             "part_number": "PDTF1X1LG6",
             "unit_quantity": 26,
@@ -167,7 +167,7 @@
             "price": 8.0,
             "use_exchange_rate": false,
             "priority": 0,
-            "notes": "Vendor: Westburn\nDescription: ",
+            "notes": "Vendor: Westburn\nDescription: black",
             "latest_change_name": "Item added\nItsme\nNovember 30 Wednesday 2022 09-37-45 AM",
             "latest_change_part_number": "Item added\nItsme\nNovember 30 Wednesday 2022 09-37-45 AM",
             "latest_change_unit_quantity": "Item added\nItsme\nNovember 30 Wednesday 2022 09-37-45 AM",
@@ -175,7 +175,7 @@
             "latest_change_price": "Item added\nItsme\nNovember 30 Wednesday 2022 09-37-45 AM",
             "latest_change_use_exchange_price": "Item added\nItsme\nNovember 30 Wednesday 2022 09-37-45 AM",
             "latest_change_priority": "Item added\nItsme\nNovember 30 Wednesday 2022 09-37-45 AM",
-            "latest_change_notes": "Item added\nItsme\nNovember 30 Wednesday 2022 09-37-45 AM"
+            "latest_change_notes": "Latest Change:\nfrom: \"Vendor: Westburn\nDescription: blac\"\nto: \"Vendor: Westburn\nDescription: black\"\nLynden\nMarch 23 Thursday 2023 09:46:47 AM"
         },
         "Borosilicate Glass Disc": {
             "part_number": "8477K28",
@@ -1747,7 +1747,7 @@
         "Terminal BlockPluggable ": {
             "part_number": "222-412 Wago 2 pos",
             "unit_quantity": 3.0,
-            "current_quantity": -65,
+            "current_quantity": -15,
             "price": 0.8,
             "use_exchange_rate": false,
             "priority": 0,
@@ -1755,7 +1755,7 @@
             "latest_change_name": "Item added\nItsme\nJanuary 09 Monday 2023 01-29-39 PM",
             "latest_change_part_number": "Item added\nItsme\nJanuary 09 Monday 2023 01-29-39 PM",
             "latest_change_unit_quantity": "Latest Change:\nfrom: 0.0\nto: 3.0\nLynden\nMarch 11 Saturday 2023 09:37:55 AM",
-            "latest_change_current_quantity": "Latest Change:\nfrom: -65\nto: -65\nLynden\nMarch 13 Monday 2023 08:30:45 AM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: -15\nto: -15\nLynden\nMarch 23 Thursday 2023 09:48:23 AM",
             "latest_change_price": "Item added\nItsme\nJanuary 09 Monday 2023 01-29-39 PM",
             "latest_change_use_exchange_price": "Item added\nItsme\nJanuary 09 Monday 2023 01-29-39 PM",
             "latest_change_priority": "Item added\nItsme\nJanuary 09 Monday 2023 01-29-39 PM",
@@ -1912,7 +1912,7 @@
             "price": 8.0,
             "use_exchange_rate": false,
             "priority": 0,
-            "notes": "Vendor: Westburn\nDescription: ",
+            "notes": "Vendor: Westburn\nDescription: black",
             "latest_change_name": "Item added\nItsme\nNovember 30 Wednesday 2022 09-40-57 AM",
             "latest_change_part_number": "Item added\nItsme\nNovember 30 Wednesday 2022 09-40-57 AM",
             "latest_change_unit_quantity": "Item added\nItsme\nNovember 30 Wednesday 2022 09-40-57 AM",
@@ -1920,7 +1920,7 @@
             "latest_change_price": "Item added\nItsme\nNovember 30 Wednesday 2022 09-40-57 AM",
             "latest_change_use_exchange_price": "Item added\nItsme\nNovember 30 Wednesday 2022 09-40-57 AM",
             "latest_change_priority": "Item added\nItsme\nNovember 30 Wednesday 2022 09-40-57 AM",
-            "latest_change_notes": "Item added\nItsme\nNovember 30 Wednesday 2022 09-40-57 AM"
+            "latest_change_notes": "Latest Change:\nfrom: Vendor: Westburn\nDescription: blac\nto: Vendor: Westburn\nDescription: black\nLynden\nMarch 23 Thursday 2023 09:46:47 AM"
         },
         "Borosilicate Glass Disc": {
             "part_number": "8477K28",
@@ -3477,7 +3477,7 @@
         "Terminal Block Pluggable ": {
             "part_number": "222-412 Wago 2 pos",
             "unit_quantity": 3.0,
-            "current_quantity": -65,
+            "current_quantity": -15,
             "price": 0.8,
             "use_exchange_rate": false,
             "priority": 0,
@@ -3485,7 +3485,7 @@
             "latest_change_name": "Latest Change:\nfrom: \"Terminal BlockPluggable \"\nto: \"Terminal Block Pluggable \"\nLynden\nMarch 10 Friday 2023 01:33:48 PM",
             "latest_change_part_number": "Item added\nItsme\nJanuary 09 Monday 2023 01-28-00 PM",
             "latest_change_unit_quantity": "Latest Change:\nfrom: 0.0\nto: 3.0\nLynden\nMarch 11 Saturday 2023 09:37:46 AM",
-            "latest_change_current_quantity": "Latest Change:\nfrom: -65.0\nto: -65\nLynden\nMarch 13 Monday 2023 08:30:45 AM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: -15\nto: -15\nLynden\nMarch 23 Thursday 2023 09:48:23 AM",
             "latest_change_price": "Item added\nItsme\nJanuary 09 Monday 2023 01-28-00 PM",
             "latest_change_use_exchange_price": "Item added\nItsme\nJanuary 09 Monday 2023 01-28-00 PM",
             "latest_change_priority": "Item added\nItsme\nJanuary 09 Monday 2023 01-28-00 PM",
@@ -3692,7 +3692,7 @@
             "price": 8.0,
             "use_exchange_rate": false,
             "priority": 0,
-            "notes": "Vendor: Westburn\nDescription: ",
+            "notes": "Vendor: Westburn\nDescription: black",
             "latest_change_name": "Item added\nItsme\nNovember 30 Wednesday 2022 09-41-24 AM",
             "latest_change_part_number": "Item added\nItsme\nNovember 30 Wednesday 2022 09-41-24 AM",
             "latest_change_unit_quantity": "Item added\nItsme\nNovember 30 Wednesday 2022 09-41-24 AM",
@@ -3700,7 +3700,7 @@
             "latest_change_price": "Item added\nItsme\nNovember 30 Wednesday 2022 09-41-24 AM",
             "latest_change_use_exchange_price": "Item added\nItsme\nNovember 30 Wednesday 2022 09-41-24 AM",
             "latest_change_priority": "Item added\nItsme\nNovember 30 Wednesday 2022 09-41-24 AM",
-            "latest_change_notes": "Item added\nItsme\nNovember 30 Wednesday 2022 09-41-24 AM"
+            "latest_change_notes": "Latest Change:\nfrom: Vendor: Westburn\nDescription: blac\nto: Vendor: Westburn\nDescription: black\nLynden\nMarch 23 Thursday 2023 09:46:47 AM"
         },
         "Borosilicate Glass Disc": {
             "part_number": "8477K28",
