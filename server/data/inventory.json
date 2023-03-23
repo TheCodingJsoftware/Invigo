@@ -738,12 +738,12 @@
         "UKC 2\"  Open Cell Foam G-Class-Fan": {
             "part_number": "UKC2",
             "unit_quantity": 1.0,
-            "current_quantity": 51,
+            "current_quantity": 50,
             "price": 12.94,
             "use_exchange_rate": false,
             "priority": 0,
             "notes": "Vendor: Industrial  Rubber Supply\nDescription: ",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 51.0\nto: 51\nLynden\nMarch 13 Monday 2023 08:30:46 AM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 50\nto: 50\nLynden\nMarch 23 Thursday 2023 09:01:59 AM",
             "latest_change_price": "Latest Change:\nfrom: 9.0\nto: 12.94\nItsme\nFebruary 02 Thursday 2023 04:22:00 PM"
         },
         "2\" ThermaxSF-450": {
@@ -2468,12 +2468,12 @@
         "UKC 2\"  Open Cell Foam G-Class-Fan": {
             "part_number": "UKC2",
             "unit_quantity": 1.0,
-            "current_quantity": 51,
+            "current_quantity": 50,
             "price": 12.94,
             "use_exchange_rate": false,
             "priority": 0,
             "notes": "Vendor: Industrial  Rubber Supply\nDescription: ",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 51\nto: 51\nLynden\nMarch 13 Monday 2023 08:30:46 AM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 50\nto: 50\nLynden\nMarch 23 Thursday 2023 09:01:59 AM",
             "latest_change_price": "Latest Change:\nfrom: 9.0\nto: 12.94\nItsme\nFebruary 02 Thursday 2023 04:22:00 PM"
         },
         "2\" ThermaxSF-450": {
@@ -3271,7 +3271,7 @@
         "G3 Turbulator  HELxRx 2.25 x 1.5 x 1.25 x .135 x 38\" ": {
             "part_number": "G3T44",
             "unit_quantity": 21.0,
-            "current_quantity": 616,
+            "current_quantity": 595,
             "price": 2.78,
             "use_exchange_rate": true,
             "priority": 0,
@@ -3279,7 +3279,7 @@
             "latest_change_name": "Latest Change:\nfrom: \"G3 Turbulator  HELxRx 2.25 x 1.5 x 1.25 x .135 x 3\" \"\nto: \"G3 Turbulator  HELxRx 2.25 x 1.5 x 1.25 x .135 x 38\" \"\nItsme\nJanuary 25 Wednesday 2023 04:39:54 PM",
             "latest_change_part_number": "Item added\nItsme\nDecember 28 Wednesday 2022 03-19-58 PM",
             "latest_change_unit_quantity": "Latest Change:\nfrom: 21.0\nto: 21.0\nItsme\nJanuary 25 Wednesday 2023 04:49:53 PM",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 616\nto: 616\nLynden\nMarch 13 Monday 2023 08:30:46 AM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 595\nto: 595\nLynden\nMarch 23 Thursday 2023 08:58:52 AM",
             "latest_change_price": "Item added\nItsme\nDecember 28 Wednesday 2022 03-19-58 PM",
             "latest_change_use_exchange_price": "Item added\nItsme\nDecember 28 Wednesday 2022 03-19-58 PM",
             "latest_change_priority": "Item added\nItsme\nDecember 28 Wednesday 2022 03-19-58 PM",
@@ -4237,12 +4237,12 @@
         "UKC 2\"  Open Cell Foam G-Class-Fan": {
             "part_number": "UKC2",
             "unit_quantity": 1.0,
-            "current_quantity": 51,
+            "current_quantity": 50,
             "price": 12.94,
             "use_exchange_rate": false,
             "priority": 0,
             "notes": "Vendor: Industrial  Rubber Supply\nDescription: ",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 51.0\nto: 51\nLynden\nMarch 13 Monday 2023 08:30:46 AM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 50\nto: 50\nLynden\nMarch 23 Thursday 2023 09:01:59 AM",
             "latest_change_price": "Latest Change:\nfrom: 9.0\nto: 12.94\nItsme\nFebruary 02 Thursday 2023 04:22:00 PM"
         },
         "2\" ThermaxSF-450": {
@@ -5371,7 +5371,7 @@
         "6 x 36\" Chimney 6L36": {
             "part_number": "206800",
             "unit_quantity": 1,
-            "current_quantity": 77,
+            "current_quantity": 72,
             "price": 149.43,
             "use_exchange_rate": false,
             "priority": 3,
@@ -5379,7 +5379,7 @@
             "latest_change_name": "Item added\nItsme\nAugust 03 Wednesday 2022 11-11-13 AM",
             "latest_change_part_number": "Item added\nItsme\nAugust 03 Wednesday 2022 11-11-13 AM",
             "latest_change_unit_quantity": "Item added\nItsme\nAugust 03 Wednesday 2022 11-11-13 AM",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 77\nto: 77\nItsme\nFebruary 07 Tuesday 2023 01:29:23 PM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 72\nto: 72\nLynden\nMarch 23 Thursday 2023 08:59:55 AM",
             "latest_change_price": "Latest Change:\nfrom: 149.43\nto: 149.43\nItsme\nOctober 04 Tuesday 2022 01:54:56 PM",
             "latest_change_use_exchange_price": "Item added\nItsme\nAugust 03 Wednesday 2022 11-11-13 AM",
             "latest_change_priority": "Latest Change:\nfrom: 0\nto: 3\nItsme\nOctober 21 Friday 2022 04:30:25 PM",
@@ -6994,7 +6994,7 @@
         "6 x 36\" Chimney 6L36": {
             "part_number": "206800",
             "unit_quantity": 1,
-            "current_quantity": 77,
+            "current_quantity": 72,
             "price": 149.43,
             "use_exchange_rate": false,
             "priority": 0,
@@ -7002,7 +7002,7 @@
             "latest_change_name": "Item added\nItsme\nAugust 03 Wednesday 2022 11-00-24 AM",
             "latest_change_part_number": "Item added\nItsme\nAugust 03 Wednesday 2022 11-00-24 AM",
             "latest_change_unit_quantity": "Item added\nItsme\nAugust 03 Wednesday 2022 11-00-24 AM",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 77\nto: 77\nItsme\nFebruary 07 Tuesday 2023 01:29:23 PM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 72\nto: 72\nLynden\nMarch 23 Thursday 2023 08:59:55 AM",
             "latest_change_price": "Latest Change:\nfrom: 149.43\nto: 149.43\nItsme\nOctober 04 Tuesday 2022 01:54:56 PM",
             "latest_change_use_exchange_price": "Item added\nItsme\nAugust 03 Wednesday 2022 11-00-24 AM",
             "latest_change_priority": "Item added\nItsme\nAugust 03 Wednesday 2022 11-00-24 AM",
@@ -7732,7 +7732,7 @@
         "6 x 36\" Chimney 6L36": {
             "part_number": "206800",
             "unit_quantity": 1,
-            "current_quantity": 77,
+            "current_quantity": 72,
             "price": 149.43,
             "use_exchange_rate": false,
             "priority": 0,
@@ -7740,7 +7740,7 @@
             "latest_change_name": "Item added\nItsme\nAugust 03 Wednesday 2022 11-00-24 AM",
             "latest_change_part_number": "Item added\nItsme\nAugust 03 Wednesday 2022 11-00-24 AM",
             "latest_change_unit_quantity": "Item added\nItsme\nAugust 03 Wednesday 2022 11-00-24 AM",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 77\nto: 77\nItsme\nFebruary 07 Tuesday 2023 01:29:23 PM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 72\nto: 72\nLynden\nMarch 23 Thursday 2023 08:59:55 AM",
             "latest_change_price": "Latest Change:\nfrom: 149.43\nto: 149.43\nItsme\nOctober 04 Tuesday 2022 01:54:56 PM",
             "latest_change_use_exchange_price": "Item added\nItsme\nAugust 03 Wednesday 2022 11-00-24 AM",
             "latest_change_priority": "Item added\nItsme\nAugust 03 Wednesday 2022 11-00-24 AM",
