@@ -196,7 +196,7 @@
             "group": "10G Mild Steel"
         },
         "12 Gauge Mild Steel 120.000x60.000": {
-            "current_quantity": 33.0,
+            "current_quantity": 32.0,
             "sheet_dimension": "120.000x60.000",
             "thickness": "12 Gauge",
             "material": "Mild Steel",
