@@ -32,127 +32,6 @@
             "unit_quantity": 1,
             "modified_date": "69 quantity added at March 21 Tuesday 2023 04:35:32 PM",
             "group": null
-        },
-        "1inch ring 12SS": {
-            "current_quantity": 247,
-            "machine_time": 0.05,
-            "gauge": "12 Gauge",
-            "material": "304 SS",
-            "weight": 0.012,
-            "price": 0.24,
-            "unit_quantity": 1,
-            "modified_date": "Added at March 22 Wednesday 2023 11:20:40 AM",
-            "group": null
-        },
-        "Polar Spiral": {
-            "current_quantity": 134,
-            "machine_time": 0.25,
-            "gauge": "3\/16",
-            "material": "Mild Steel",
-            "weight": 0.272,
-            "price": 0.8,
-            "unit_quantity": 1,
-            "modified_date": "Added at March 21 Tuesday 2023 04:35:32 PM",
-            "group": null
-        },
-        "2840-Shaker-66x6": {
-            "current_quantity": 129,
-            "machine_time": 0.28,
-            "gauge": "3\/8",
-            "material": "Mild Steel",
-            "weight": 0.554,
-            "price": 1.05,
-            "unit_quantity": 1,
-            "modified_date": "Added at March 22 Wednesday 2023 11:22:26 AM",
-            "group": null
-        },
-        "2840-34x4": {
-            "current_quantity": 40,
-            "machine_time": 0.85,
-            "gauge": "3\/16",
-            "material": "Mild Steel",
-            "weight": 13.706,
-            "price": 10.9,
-            "unit_quantity": 1,
-            "modified_date": "Added at March 21 Tuesday 2023 04:35:32 PM",
-            "group": null
-        },
-        "Flat pattern - Skull Support Pcs-part 6- .188g x2": {
-            "current_quantity": 20,
-            "machine_time": 0.07,
-            "gauge": "3\/16",
-            "material": "Mild Steel",
-            "weight": 0.064,
-            "price": 0.22,
-            "unit_quantity": 1,
-            "modified_date": "Added at March 21 Tuesday 2023 04:35:32 PM",
-            "group": null
-        },
-        "2840-67": {
-            "current_quantity": 10,
-            "machine_time": 1.18,
-            "gauge": "3\/16",
-            "material": "Mild Steel",
-            "weight": 2.0,
-            "price": 4.23,
-            "unit_quantity": 1,
-            "modified_date": "Added at March 21 Tuesday 2023 04:35:32 PM",
-            "group": null
-        },
-        "2840-Shaker-67": {
-            "current_quantity": 10,
-            "machine_time": 2.07,
-            "gauge": "3\/8",
-            "material": "Mild Steel",
-            "weight": 4.89,
-            "price": 8.3,
-            "unit_quantity": 1,
-            "modified_date": "Added at March 22 Wednesday 2023 11:22:26 AM",
-            "group": null
-        },
-        "3444-25x4": {
-            "current_quantity": 8,
-            "machine_time": 0.57,
-            "gauge": "1\/4",
-            "material": "Mild Steel",
-            "weight": 4.047,
-            "price": 4.02,
-            "unit_quantity": 1,
-            "modified_date": "Added at March 23 Thursday 2023 08:26:08 PM",
-            "group": null
-        },
-        "Flat pattern - Skull Hook Pcs-part 9- 10g x2": {
-            "current_quantity": 5,
-            "machine_time": 0.27,
-            "gauge": "3\/16",
-            "material": "Mild Steel",
-            "weight": 0.105,
-            "price": 0.74,
-            "unit_quantity": 1,
-            "modified_date": "Added at March 21 Tuesday 2023 04:35:32 PM",
-            "group": null
-        },
-        "3444-05x2": {
-            "current_quantity": 3,
-            "machine_time": 1.97,
-            "gauge": "1\/4",
-            "material": "Mild Steel",
-            "weight": 86.201,
-            "price": 60.09,
-            "unit_quantity": 1,
-            "modified_date": "Added at March 23 Thursday 2023 08:26:08 PM",
-            "group": null
-        },
-        "9.39in sprocket": {
-            "current_quantity": 1,
-            "machine_time": 0.95,
-            "gauge": "3\/16",
-            "material": "Mild Steel",
-            "weight": 2.608,
-            "price": 4.04,
-            "unit_quantity": 1,
-            "modified_date": "Added at March 21 Tuesday 2023 04:35:32 PM",
-            "group": null
         }
     },
     "Recut": {
@@ -291,6 +170,17 @@
             "price": 37.84,
             "unit_quantity": 1,
             "modified_date": "Added at March 09 Thursday 2023 09:41:14 AM",
+            "group": null
+        },
+        "2840-Shaker-66x6": {
+            "current_quantity": 129,
+            "machine_time": 0.28,
+            "gauge": "3\/8",
+            "material": "Mild Steel",
+            "weight": 0.554,
+            "price": 1.05,
+            "unit_quantity": 1,
+            "modified_date": "Added at March 22 Wednesday 2023 11:22:26 AM",
             "group": null
         }
     },
@@ -833,6 +723,50 @@
             "unit_quantity": 2.0,
             "modified_date": "Manually set to 0.0 quantity at March 14 Tuesday 2023 04:49:26 PM",
             "group": null
+        },
+        "2840-34x4": {
+            "current_quantity": 40,
+            "machine_time": 0.85,
+            "gauge": "3\/16",
+            "material": "Mild Steel",
+            "weight": 13.706,
+            "price": 10.9,
+            "unit_quantity": 1,
+            "modified_date": "Added at March 21 Tuesday 2023 04:35:32 PM",
+            "group": null
+        },
+        "2840-67": {
+            "current_quantity": 10,
+            "machine_time": 1.18,
+            "gauge": "3\/16",
+            "material": "Mild Steel",
+            "weight": 2.0,
+            "price": 4.23,
+            "unit_quantity": 1,
+            "modified_date": "Added at March 21 Tuesday 2023 04:35:32 PM",
+            "group": null
+        },
+        "2840-Shaker-67": {
+            "current_quantity": 10,
+            "machine_time": 2.07,
+            "gauge": "3\/8",
+            "material": "Mild Steel",
+            "weight": 4.89,
+            "price": 8.3,
+            "unit_quantity": 1,
+            "modified_date": "Added at March 22 Wednesday 2023 11:22:26 AM",
+            "group": null
+        },
+        "2840-Shaker-66x6": {
+            "current_quantity": 129,
+            "machine_time": 0.28,
+            "gauge": "3\/8",
+            "material": "Mild Steel",
+            "weight": 0.554,
+            "price": 1.05,
+            "unit_quantity": 1,
+            "modified_date": "Added at March 22 Wednesday 2023 11:22:26 AM",
+            "group": null
         }
     },
     "BL34": {
@@ -1264,6 +1198,39 @@
             "unit_quantity": 1,
             "modified_date": "Removed 10 quantity at March 16 Thursday 2023 01:30:52 PM",
             "group": null
+        },
+        "3444-25x4": {
+            "current_quantity": 8,
+            "machine_time": 0.57,
+            "gauge": "1\/4",
+            "material": "Mild Steel",
+            "weight": 4.047,
+            "price": 4.02,
+            "unit_quantity": 1,
+            "modified_date": "Added at March 23 Thursday 2023 08:26:08 PM",
+            "group": null
+        },
+        "3444-05x2": {
+            "current_quantity": 3,
+            "machine_time": 1.97,
+            "gauge": "1\/4",
+            "material": "Mild Steel",
+            "weight": 86.201,
+            "price": 60.09,
+            "unit_quantity": 1,
+            "modified_date": "Added at March 23 Thursday 2023 08:26:08 PM",
+            "group": null
+        },
+        "2840-Shaker-66x6": {
+            "current_quantity": 129,
+            "machine_time": 0.28,
+            "gauge": "3\/8",
+            "material": "Mild Steel",
+            "weight": 0.554,
+            "price": 1.05,
+            "unit_quantity": 1,
+            "modified_date": "Added at March 22 Wednesday 2023 11:22:26 AM",
+            "group": null
         }
     },
     "BL40": {
@@ -1419,6 +1386,17 @@
             "price": 44.7,
             "unit_quantity": 1,
             "modified_date": "Manually set to 0.0 quantity at March 16 Thursday 2023 01:31:50 PM",
+            "group": null
+        },
+        "2840-Shaker-66x6": {
+            "current_quantity": 129,
+            "machine_time": 0.28,
+            "gauge": "3\/8",
+            "material": "Mild Steel",
+            "weight": 0.554,
+            "price": 1.05,
+            "unit_quantity": 1,
+            "modified_date": "Added at March 22 Wednesday 2023 11:22:26 AM",
             "group": null
         }
     },
@@ -1872,6 +1850,28 @@
             "price": 1.44,
             "unit_quantity": 6.0,
             "modified_date": "Removed 60.0 quantity at March 14 Tuesday 2023 04:53:43 PM",
+            "group": null
+        },
+        "1inch ring 12SS": {
+            "current_quantity": 247,
+            "machine_time": 0.05,
+            "gauge": "12 Gauge",
+            "material": "304 SS",
+            "weight": 0.012,
+            "price": 0.24,
+            "unit_quantity": 1,
+            "modified_date": "Added at March 22 Wednesday 2023 11:20:40 AM",
+            "group": null
+        },
+        "Polar Spiral": {
+            "current_quantity": 134,
+            "machine_time": 0.25,
+            "gauge": "3\/16",
+            "material": "Mild Steel",
+            "weight": 0.272,
+            "price": 0.8,
+            "unit_quantity": 1,
+            "modified_date": "Added at March 21 Tuesday 2023 04:35:32 PM",
             "group": null
         }
     },
@@ -2546,6 +2546,28 @@
             "unit_quantity": 1,
             "modified_date": "Removed 10 quantity at March 14 Tuesday 2023 04:53:43 PM",
             "group": null
+        },
+        "1inch ring 12SS": {
+            "current_quantity": 247,
+            "machine_time": 0.05,
+            "gauge": "12 Gauge",
+            "material": "304 SS",
+            "weight": 0.012,
+            "price": 0.24,
+            "unit_quantity": 1,
+            "modified_date": "Added at March 22 Wednesday 2023 11:20:40 AM",
+            "group": null
+        },
+        "Polar Spiral": {
+            "current_quantity": 134,
+            "machine_time": 0.25,
+            "gauge": "3\/16",
+            "material": "Mild Steel",
+            "weight": 0.272,
+            "price": 0.8,
+            "unit_quantity": 1,
+            "modified_date": "Added at March 21 Tuesday 2023 04:35:32 PM",
+            "group": null
         }
     },
     "Polar G3": {
@@ -2921,6 +2943,28 @@
             "price": 8.51,
             "unit_quantity": 1,
             "modified_date": "Removed 10 quantity at March 14 Tuesday 2023 04:53:43 PM",
+            "group": null
+        },
+        "1inch ring 12SS": {
+            "current_quantity": 247,
+            "machine_time": 0.05,
+            "gauge": "12 Gauge",
+            "material": "304 SS",
+            "weight": 0.012,
+            "price": 0.24,
+            "unit_quantity": 1,
+            "modified_date": "Added at March 22 Wednesday 2023 11:20:40 AM",
+            "group": null
+        },
+        "Polar Spiral": {
+            "current_quantity": 134,
+            "machine_time": 0.25,
+            "gauge": "3\/16",
+            "material": "Mild Steel",
+            "weight": 0.272,
+            "price": 0.8,
+            "unit_quantity": 1,
+            "modified_date": "Added at March 21 Tuesday 2023 04:35:32 PM",
             "group": null
         }
     },
@@ -3477,6 +3521,39 @@
             "price": 19.36,
             "unit_quantity": 1,
             "modified_date": "Added at March 09 Thursday 2023 09:41:14 AM",
+            "group": null
+        },
+        "9.39in sprocket": {
+            "current_quantity": 1,
+            "machine_time": 0.95,
+            "gauge": "3\/16",
+            "material": "Mild Steel",
+            "weight": 2.608,
+            "price": 4.04,
+            "unit_quantity": 1,
+            "modified_date": "Added at March 21 Tuesday 2023 04:35:32 PM",
+            "group": null
+        },
+        "Flat pattern - Skull Support Pcs-part 6- .188g x2": {
+            "current_quantity": 20,
+            "machine_time": 0.07,
+            "gauge": "3\/16",
+            "material": "Mild Steel",
+            "weight": 0.064,
+            "price": 0.22,
+            "unit_quantity": 1,
+            "modified_date": "Added at March 21 Tuesday 2023 04:35:32 PM",
+            "group": null
+        },
+        "Flat pattern - Skull Hook Pcs-part 9- 10g x2": {
+            "current_quantity": 5,
+            "machine_time": 0.27,
+            "gauge": "3\/16",
+            "material": "Mild Steel",
+            "weight": 0.105,
+            "price": 0.74,
+            "unit_quantity": 1,
+            "modified_date": "Added at March 21 Tuesday 2023 04:35:32 PM",
             "group": null
         }
     },
