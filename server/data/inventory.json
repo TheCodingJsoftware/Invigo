@@ -17,18 +17,6 @@
             "latest_change_priority": "Item added\nLynden\nMarch 10 Friday 2023 01-24-02 PM",
             "latest_change_notes": "Item added\nLynden\nMarch 10 Friday 2023 01-24-02 PM"
         },
-        "Sticker 310 Polar G2 & G3 Caution Pinch Hazard 4.5\"x2.75\"": {
-            "part_number": "310",
-            "unit_quantity": 2,
-            "current_quantity": -50,
-            "price": 1.05,
-            "use_exchange_rate": false,
-            "priority": 0,
-            "notes": "Vendor: HC Graphic Screen Printing\nDescription: orders@hdcraphicsinc.com",
-            "latest_change_current_quantity": "Latest Change:\nfrom: -30\nto: -50\nLynden\nMarch 13 Monday 2023 08:30:45 AM",
-            "latest_change_notes": "Latest Change:\nfrom: \"Vendor: HC Graphic Screen Printing\nDescription: orders@hdcraphicsinc.co\"\nto: \"Vendor: HC Graphic Screen Printing\nDescription: orders@hdcraphicsinc.com\"\nItsme\nFebruary 07 Tuesday 2023 03:13:57 PM",
-            "latest_change_price": "Latest Change:\nfrom: 1.05\nto: 1.05\nItsme\nFebruary 23 Thursday 2023 09:33:33 AM"
-        },
         "G Class Ash Shovel Small": {
             "part_number": "GCASS",
             "unit_quantity": 1.0,
@@ -46,23 +34,6 @@
             "latest_change_priority": "Item added\nItsme\nJanuary 30 Monday 2023 02-33-47 PM",
             "latest_change_notes": "Item added\nItsme\nJanuary 30 Monday 2023 02-33-47 PM"
         },
-        "Sticker #341 Bilingual Danger Warning Decal": {
-            "part_number": "341",
-            "unit_quantity": 1.0,
-            "current_quantity": -18,
-            "price": 5.06,
-            "use_exchange_rate": false,
-            "priority": 0,
-            "notes": "Vendor: HD Graphics Inc\nDescription: ",
-            "latest_change_name": "Item added\nItsme\nFebruary 17 Friday 2023 10-37-09 AM",
-            "latest_change_part_number": "Item added\nItsme\nFebruary 17 Friday 2023 10-37-09 AM",
-            "latest_change_unit_quantity": "Item added\nItsme\nFebruary 17 Friday 2023 10-37-09 AM",
-            "latest_change_current_quantity": "Latest Change:\nfrom: -18.0\nto: -18\nLynden\nMarch 13 Monday 2023 08:30:45 AM",
-            "latest_change_price": "Latest Change:\nfrom: 3.0\nto: 5.06\nItsme\nFebruary 23 Thursday 2023 09:34:06 AM",
-            "latest_change_use_exchange_price": "Item added\nItsme\nFebruary 17 Friday 2023 10-37-09 AM",
-            "latest_change_priority": "Item added\nItsme\nFebruary 17 Friday 2023 10-37-09 AM",
-            "latest_change_notes": "Item added\nItsme\nFebruary 17 Friday 2023 10-37-09 AM"
-        },
         "1\" Plug": {
             "part_number": "G1600M",
             "unit_quantity": 6,
@@ -79,18 +50,6 @@
             "latest_change_use_exchange_price": "Item added\nItsme\nOctober 11 Tuesday 2022 01-58-02 PM",
             "latest_change_priority": "Item added\nItsme\nOctober 11 Tuesday 2022 01-58-02 PM",
             "latest_change_notes": "Latest Change:\nfrom: Vendor:  GreenLine \nDescription: \nPart # G1600M-10\nto: Vendor:  GreenLine \nDescription: \nPart # G1600M-100\nItsme\nJanuary 17 Tuesday 2023 09:14:29 AM"
-        },
-        "Sticker 312 Polar G2 & G3 G series Wiring 8\"x10\"": {
-            "part_number": "312",
-            "unit_quantity": 1,
-            "current_quantity": -16,
-            "price": 3.58,
-            "use_exchange_rate": false,
-            "priority": 0,
-            "notes": "Vendor: HD Graphics Inc\nDescription: ",
-            "latest_change_current_quantity": "Latest Change:\nfrom: -16\nto: -16\nLynden\nMarch 13 Monday 2023 08:30:45 AM",
-            "latest_change_notes": "Latest Change:\nfrom: Vendor: HD Graphics In\nDescription: \nto: Vendor: HD Graphics Inc\nDescription: \nItsme\nFebruary 23 Thursday 2023 09:14:29 AM",
-            "latest_change_price": "Latest Change:\nfrom: 3.58\nto: 3.58\nItsme\nFebruary 23 Thursday 2023 09:34:22 AM"
         },
         "Terminal BlockPluggable ": {
             "part_number": "222-413 Wago 3 pos",
@@ -129,7 +88,7 @@
         "Terminal Block 1492-H7": {
             "part_number": "ALB1492H7",
             "unit_quantity": 1.0,
-            "current_quantity": -4,
+            "current_quantity": 96,
             "price": 8.0,
             "use_exchange_rate": false,
             "priority": 0,
@@ -137,7 +96,7 @@
             "latest_change_name": "Item added\nItsme\nNovember 30 Wednesday 2022 09-37-45 AM",
             "latest_change_part_number": "Item added\nItsme\nNovember 30 Wednesday 2022 09-37-45 AM",
             "latest_change_unit_quantity": "Item added\nItsme\nNovember 30 Wednesday 2022 09-37-45 AM",
-            "latest_change_current_quantity": "Latest Change:\nfrom: -4.0\nto: -4\nLynden\nMarch 13 Monday 2023 08:30:45 AM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 96\nto: 96\nLynden\nMarch 24 Friday 2023 08:57:25 AM",
             "latest_change_price": "Item added\nItsme\nNovember 30 Wednesday 2022 09-37-45 AM",
             "latest_change_use_exchange_price": "Item added\nItsme\nNovember 30 Wednesday 2022 09-37-45 AM",
             "latest_change_priority": "Item added\nItsme\nNovember 30 Wednesday 2022 09-37-45 AM",
@@ -240,30 +199,6 @@
             "latest_change_use_exchange_price": "Item added\nItsme\nAugust 01 Monday 2022 03-40-45 PM",
             "latest_change_priority": "Item added\nItsme\nAugust 01 Monday 2022 03-40-45 PM",
             "latest_change_notes": "Item added\nItsme\nAugust 01 Monday 2022 03-40-45 PM"
-        },
-        "Sticker 322 G2 and G3 Remove Label ": {
-            "part_number": "322",
-            "unit_quantity": 1,
-            "current_quantity": 6,
-            "price": 3.29,
-            "use_exchange_rate": false,
-            "priority": 0,
-            "notes": "Vendor: HC Graphic Screen Printing\nDescription: ",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 6\nto: 6\nLynden\nMarch 13 Monday 2023 08:30:45 AM",
-            "latest_change_notes": "Latest Change:\nfrom: \"Vendor: HC Graphic Screen Printin\nDescription: \"\nto: \"Vendor: HC Graphic Screen Printing\nDescription: \"\nItsme\nJuly 29 Friday 2022 04:12:22 PM",
-            "latest_change_price": "Latest Change:\nfrom: 3.29\nto: 3.29\nItsme\nFebruary 23 Thursday 2023 09:34:46 AM"
-        },
-        "Sticker   #306 Polar Furnace with Polar Bear  11\"x14\" ": {
-            "part_number": "403",
-            "unit_quantity": 1,
-            "current_quantity": 6,
-            "price": 4.76,
-            "use_exchange_rate": false,
-            "priority": 0,
-            "notes": "Vendor: HC grphic Screen Printing\nDescription: ",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 6\nto: 6\nLynden\nMarch 13 Monday 2023 08:30:45 AM",
-            "latest_change_notes": "Latest Change:\nfrom: \"Vendor: HC grphic Screen Printin\nDescription: \"\nto: \"Vendor: HC grphic Screen Printing\nDescription: \"\nItsme\nJuly 29 Friday 2022 04:10:56 PM",
-            "latest_change_price": "Latest Change:\nfrom: 4.76\nto: 4.76\nItsme\nFebruary 23 Thursday 2023 09:35:03 AM"
         },
         "Base Relay ( Allen- Bradley)": {
             "part_number": "700-HF32A1 SQ  ",
@@ -398,17 +333,17 @@
             "latest_change_priority": "Item added\nItsme\nJanuary 30 Monday 2023 02-32-45 PM",
             "latest_change_notes": "Item added\nItsme\nJanuary 30 Monday 2023 02-32-45 PM"
         },
-        " Sticker 309 Polar G2 & G3 Caution Disconnect Power 4.5\"x2\"": {
-            "part_number": "309",
-            "unit_quantity": 1.0,
-            "current_quantity": 16,
-            "price": 0.9,
+        "Sticker 310 Polar G2 & G3 Caution Pinch Hazard 4.5\"x2.75\"": {
+            "part_number": "310",
+            "unit_quantity": 2,
+            "current_quantity": 15,
+            "price": 1.05,
             "use_exchange_rate": false,
             "priority": 0,
-            "notes": "Vendor: HC Graphic Screen Printing\nDescription: ",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 16.0\nto: 16\nLynden\nMarch 13 Monday 2023 08:30:45 AM",
-            "latest_change_notes": "Latest Change:\nfrom: \"Vendor: HC Graphic Screen Printin\nDescription: \"\nto: \"Vendor: HC Graphic Screen Printing\nDescription: \"\nItsme\nJuly 29 Friday 2022 04:11:06 PM",
-            "latest_change_price": "Latest Change:\nfrom: 0.9\nto: 0.9\nItsme\nFebruary 23 Thursday 2023 09:35:20 AM"
+            "notes": "Vendor: HC Graphic Screen Printing\nDescription: orders@hdcraphicsinc.com",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 15\nto: 15\nLynden\nMarch 24 Friday 2023 08:28:38 AM",
+            "latest_change_notes": "Latest Change:\nfrom: \"Vendor: HC Graphic Screen Printing\nDescription: orders@hdcraphicsinc.co\"\nto: \"Vendor: HC Graphic Screen Printing\nDescription: orders@hdcraphicsinc.com\"\nItsme\nFebruary 07 Tuesday 2023 03:13:57 PM",
+            "latest_change_price": "Latest Change:\nfrom: 1.05\nto: 1.05\nItsme\nFebruary 23 Thursday 2023 09:33:33 AM"
         },
         "Tempered Glass 1 1\/4\" X 1 1\/4\" X 3\/16\" NEO Ceram Robax": {
             "part_number": "TG113",
@@ -512,18 +447,6 @@
             "notes": "Vendor: GreenLine \nDescription: 204-694-0332",
             "latest_change_current_quantity": "Latest Change:\nfrom: 25\nto: 25\nLynden\nMarch 13 Monday 2023 08:30:45 AM",
             "latest_change_price": "Latest Change:\nfrom: 5.13\nto: 5.64\nItsme\nJanuary 17 Tuesday 2023 09:04:10 AM"
-        },
-        "Sticker  319  easy Sweep": {
-            "part_number": "319",
-            "unit_quantity": 1,
-            "current_quantity": 26,
-            "price": 4.04,
-            "use_exchange_rate": false,
-            "priority": 0,
-            "notes": "Vendor: HC Graphic Screen Printing\nDescription: ",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 26\nto: 26\nLynden\nMarch 13 Monday 2023 08:30:45 AM",
-            "latest_change_notes": "Latest Change:\nfrom: \"Vendor: HC Graphic Screen Printin\nDescription: \"\nto: \"Vendor: HC Graphic Screen Printing\nDescription: \"\nItsme\nJuly 29 Friday 2022 04:11:34 PM",
-            "latest_change_price": "Latest Change:\nfrom: 4.04\nto: 4.04\nItsme\nFebruary 23 Thursday 2023 09:31:34 AM"
         },
         "Blower Wheel 9-15\/16\" X 2-1\/4 BI Steel 1\/2 #2-106CI CW \"A\" 1800R": {
             "part_number": "2-106CI CW",
@@ -700,6 +623,18 @@
             "latest_change_use_exchange_price": "Item added\nItsme\nAugust 12 Friday 2022 11-27-27 AM",
             "latest_change_priority": "Item added\nItsme\nAugust 12 Friday 2022 11-27-27 AM",
             "latest_change_notes": "Item added\nItsme\nAugust 12 Friday 2022 11-27-27 AM"
+        },
+        "Sticker 312 Polar G2 & G3 G series Wiring 8\"x10\"": {
+            "part_number": "312",
+            "unit_quantity": 1,
+            "current_quantity": 49,
+            "price": 3.58,
+            "use_exchange_rate": false,
+            "priority": 0,
+            "notes": "Vendor: HD Graphics Inc\nDescription: ",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 49\nto: 49\nLynden\nMarch 24 Friday 2023 08:30:36 AM",
+            "latest_change_notes": "Latest Change:\nfrom: Vendor: HD Graphics In\nDescription: \nto: Vendor: HD Graphics Inc\nDescription: \nItsme\nFebruary 23 Thursday 2023 09:14:29 AM",
+            "latest_change_price": "Latest Change:\nfrom: 3.58\nto: 3.58\nItsme\nFebruary 23 Thursday 2023 09:34:22 AM"
         },
         "38100 Front MNT Snap-In SCR TERM": {
             "part_number": "38100",
@@ -907,18 +842,6 @@
             "latest_change_price": "Latest Change:\nfrom: 17.38\nto: 17.38\nItsme\nFebruary 02 Thursday 2023 11:07:28 AM",
             "latest_change_notes": "Latest Change:\nfrom: Vendor: Grundfos Canada\nDescription: \nsupport-ca@sales.grundfos.co\nto: Vendor: Grundfos Canada\nDescription: \nsupport-ca@sales.grundfos.com\nItsme\nFebruary 02 Thursday 2023 11:20:34 AM"
         },
-        "Sticker 320 Water Temperture 5\"x9.5\"": {
-            "part_number": "320",
-            "unit_quantity": 1,
-            "current_quantity": 76,
-            "price": 6.93,
-            "use_exchange_rate": false,
-            "priority": 0,
-            "notes": "Vendor: HD GRaphics\n\nDescription: ",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 76\nto: 76\nLynden\nMarch 13 Monday 2023 08:30:46 AM",
-            "latest_change_notes": "Latest Change:\nfrom: Vendor: HD GRaphics\nDescription: \nto: Vendor: HD GRaphics\n\nDescription: \nItsme\nFebruary 23 Thursday 2023 09:32:53 AM",
-            "latest_change_price": "Latest Change:\nfrom: 2.47\nto: 6.93\nItsme\nFebruary 23 Thursday 2023 09:33:05 AM"
-        },
         "Sticker #342 Bilingual Caution Notice Decal ": {
             "part_number": "342",
             "unit_quantity": 1.0,
@@ -952,6 +875,18 @@
             "latest_change_use_exchange_price": "Item added\nItsme\nJuly 21 Thursday 2022 08-45-25 AM",
             "latest_change_priority": "Item added\nItsme\nJuly 21 Thursday 2022 08-45-25 AM",
             "latest_change_notes": "Item added\nItsme\nJuly 21 Thursday 2022 08-45-25 AM"
+        },
+        " Sticker 309 Polar G2 & G3 Caution Disconnect Power 4.5\"x2\"": {
+            "part_number": "309",
+            "unit_quantity": 1.0,
+            "current_quantity": 81,
+            "price": 0.9,
+            "use_exchange_rate": false,
+            "priority": 0,
+            "notes": "Vendor: HC Graphic Screen Printing\nDescription: ",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 81\nto: 81\nLynden\nMarch 24 Friday 2023 08:32:25 AM",
+            "latest_change_notes": "Latest Change:\nfrom: \"Vendor: HC Graphic Screen Printin\nDescription: \"\nto: \"Vendor: HC Graphic Screen Printing\nDescription: \"\nItsme\nJuly 29 Friday 2022 04:11:06 PM",
+            "latest_change_price": "Latest Change:\nfrom: 0.9\nto: 0.9\nItsme\nFebruary 23 Thursday 2023 09:35:20 AM"
         },
         "Knob 2 3\/8 DIA. 1\/2-13. Fluted Black Plastic": {
             "part_number": "DK-122",
@@ -987,6 +922,23 @@
             "latest_change_priority": "Item added\nItsme\nJanuary 19 Thursday 2023 09-57-46 AM",
             "latest_change_notes": "Item added\nItsme\nJanuary 19 Thursday 2023 09-57-46 AM"
         },
+        "Sticker #341 Bilingual Danger Warning Decal": {
+            "part_number": "341",
+            "unit_quantity": 1.0,
+            "current_quantity": 84,
+            "price": 5.06,
+            "use_exchange_rate": false,
+            "priority": 0,
+            "notes": "Vendor: HD Graphics Inc\nDescription: ",
+            "latest_change_name": "Item added\nItsme\nFebruary 17 Friday 2023 10-37-09 AM",
+            "latest_change_part_number": "Item added\nItsme\nFebruary 17 Friday 2023 10-37-09 AM",
+            "latest_change_unit_quantity": "Item added\nItsme\nFebruary 17 Friday 2023 10-37-09 AM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 84\nto: 84\nLynden\nMarch 24 Friday 2023 08:29:16 AM",
+            "latest_change_price": "Latest Change:\nfrom: 3.0\nto: 5.06\nItsme\nFebruary 23 Thursday 2023 09:34:06 AM",
+            "latest_change_use_exchange_price": "Item added\nItsme\nFebruary 17 Friday 2023 10-37-09 AM",
+            "latest_change_priority": "Item added\nItsme\nFebruary 17 Friday 2023 10-37-09 AM",
+            "latest_change_notes": "Item added\nItsme\nFebruary 17 Friday 2023 10-37-09 AM"
+        },
         "1\/8 Hight Temp Rubber- Orange": {
             "part_number": "1460N44",
             "unit_quantity": 4,
@@ -1017,7 +969,7 @@
         "Snap-Tite Romex C 1\/2\" 841ST": {
             "part_number": "ARL841ST",
             "unit_quantity": 1.0,
-            "current_quantity": 90,
+            "current_quantity": 290,
             "price": 0.7,
             "use_exchange_rate": false,
             "priority": 0,
@@ -1025,7 +977,7 @@
             "latest_change_name": "Item added\nItsme\nNovember 28 Monday 2022 11-02-32 AM",
             "latest_change_part_number": "Item added\nItsme\nNovember 28 Monday 2022 11-02-32 AM",
             "latest_change_unit_quantity": "Item added\nItsme\nNovember 28 Monday 2022 11-02-32 AM",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 90.0\nto: 90\nLynden\nMarch 13 Monday 2023 08:30:46 AM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 290\nto: 290\nLynden\nMarch 24 Friday 2023 08:58:35 AM",
             "latest_change_price": "Item added\nItsme\nNovember 28 Monday 2022 11-02-32 AM",
             "latest_change_use_exchange_price": "Item added\nItsme\nNovember 28 Monday 2022 11-02-32 AM",
             "latest_change_priority": "Item added\nItsme\nNovember 28 Monday 2022 11-02-32 AM",
@@ -1076,6 +1028,18 @@
             "latest_change_current_quantity": "Latest Change:\nfrom: 92\nto: 92\nLynden\nMarch 13 Monday 2023 08:30:46 AM",
             "latest_change_price": "Latest Change:\nfrom: 0.85\nto: 0.85\nItsme\nOctober 06 Thursday 2022 09:11:22 AM"
         },
+        "Sticker 320 Water Temperture 5\"x9.5\"": {
+            "part_number": "320",
+            "unit_quantity": 1,
+            "current_quantity": 96,
+            "price": 6.93,
+            "use_exchange_rate": false,
+            "priority": 0,
+            "notes": "Vendor: HD GRaphics\n\nDescription: ",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 96\nto: 96\nLynden\nMarch 24 Friday 2023 08:34:36 AM",
+            "latest_change_notes": "Latest Change:\nfrom: Vendor: HD GRaphics\nDescription: \nto: Vendor: HD GRaphics\n\nDescription: \nItsme\nFebruary 23 Thursday 2023 09:32:53 AM",
+            "latest_change_price": "Latest Change:\nfrom: 2.47\nto: 6.93\nItsme\nFebruary 23 Thursday 2023 09:33:05 AM"
+        },
         "Sticker 308 CSA Polar G2 10\"x 6\" Silver Foil ": {
             "part_number": "308",
             "unit_quantity": 1,
@@ -1103,6 +1067,30 @@
             "latest_change_use_exchange_price": "Item added\nLynden\nMarch 06 Monday 2023 07-00-33 PM",
             "latest_change_priority": "Item added\nLynden\nMarch 06 Monday 2023 07-00-33 PM",
             "latest_change_notes": "Item added\nLynden\nMarch 06 Monday 2023 07-00-33 PM"
+        },
+        "Sticker 322 G2 and G3 Remove Label ": {
+            "part_number": "322",
+            "unit_quantity": 1,
+            "current_quantity": 113,
+            "price": 3.29,
+            "use_exchange_rate": false,
+            "priority": 0,
+            "notes": "Vendor: HC Graphic Screen Printing\nDescription: ",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 113\nto: 113\nLynden\nMarch 24 Friday 2023 08:31:08 AM",
+            "latest_change_notes": "Latest Change:\nfrom: \"Vendor: HC Graphic Screen Printin\nDescription: \"\nto: \"Vendor: HC Graphic Screen Printing\nDescription: \"\nItsme\nJuly 29 Friday 2022 04:12:22 PM",
+            "latest_change_price": "Latest Change:\nfrom: 3.29\nto: 3.29\nItsme\nFebruary 23 Thursday 2023 09:34:46 AM"
+        },
+        "Sticker   #306 Polar Furnace with Polar Bear  11\"x14\" ": {
+            "part_number": "403",
+            "unit_quantity": 1,
+            "current_quantity": 114,
+            "price": 4.76,
+            "use_exchange_rate": false,
+            "priority": 0,
+            "notes": "Vendor: HC grphic Screen Printing\nDescription: ",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 114\nto: 114\nLynden\nMarch 24 Friday 2023 08:31:33 AM",
+            "latest_change_notes": "Latest Change:\nfrom: \"Vendor: HC grphic Screen Printin\nDescription: \"\nto: \"Vendor: HC grphic Screen Printing\nDescription: \"\nItsme\nJuly 29 Friday 2022 04:10:56 PM",
+            "latest_change_price": "Latest Change:\nfrom: 4.76\nto: 4.76\nItsme\nFebruary 23 Thursday 2023 09:35:03 AM"
         },
         "Micro Switch 1DM21 HoneyWell": {
             "part_number": "1DM21",
@@ -1174,6 +1162,18 @@
             "priority": 0,
             "notes": "Vendor: \nDescription: ",
             "latest_change_current_quantity": "Latest Change:\nfrom: 126\nto: 126\nLynden\nMarch 13 Monday 2023 08:30:46 AM"
+        },
+        "Sticker  319  easy Sweep": {
+            "part_number": "319",
+            "unit_quantity": 1,
+            "current_quantity": 134,
+            "price": 4.04,
+            "use_exchange_rate": false,
+            "priority": 0,
+            "notes": "Vendor: HC Graphic Screen Printing\nDescription: ",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 134\nto: 134\nLynden\nMarch 24 Friday 2023 08:33:01 AM",
+            "latest_change_notes": "Latest Change:\nfrom: \"Vendor: HC Graphic Screen Printin\nDescription: \"\nto: \"Vendor: HC Graphic Screen Printing\nDescription: \"\nItsme\nJuly 29 Friday 2022 04:11:34 PM",
+            "latest_change_price": "Latest Change:\nfrom: 4.04\nto: 4.04\nItsme\nFebruary 23 Thursday 2023 09:31:34 AM"
         },
         "1\"x25\"x48\" FSK 300 Certainteed Insulation": {
             "part_number": "FSK1",
@@ -1744,52 +1744,6 @@
             "latest_change_priority": "Item added\nLynden\nMarch 10 Friday 2023 01-26-48 PM",
             "latest_change_notes": "Item added\nLynden\nMarch 10 Friday 2023 01-26-48 PM"
         },
-        "Terminal BlockPluggable ": {
-            "part_number": "222-412 Wago 2 pos",
-            "unit_quantity": 3.0,
-            "current_quantity": -15,
-            "price": 0.8,
-            "use_exchange_rate": false,
-            "priority": 0,
-            "notes": "Vendor: Westburn \nDescription: ",
-            "latest_change_name": "Item added\nItsme\nJanuary 09 Monday 2023 01-29-39 PM",
-            "latest_change_part_number": "Item added\nItsme\nJanuary 09 Monday 2023 01-29-39 PM",
-            "latest_change_unit_quantity": "Latest Change:\nfrom: 0.0\nto: 3.0\nLynden\nMarch 11 Saturday 2023 09:37:55 AM",
-            "latest_change_current_quantity": "Latest Change:\nfrom: -15\nto: -15\nLynden\nMarch 23 Thursday 2023 09:48:23 AM",
-            "latest_change_price": "Item added\nItsme\nJanuary 09 Monday 2023 01-29-39 PM",
-            "latest_change_use_exchange_price": "Item added\nItsme\nJanuary 09 Monday 2023 01-29-39 PM",
-            "latest_change_priority": "Item added\nItsme\nJanuary 09 Monday 2023 01-29-39 PM",
-            "latest_change_notes": "Item added\nItsme\nJanuary 09 Monday 2023 01-29-39 PM"
-        },
-        "rivet  3\/4x 5\/16 DIA ": {
-            "part_number": "Rivet516",
-            "unit_quantity": 8,
-            "current_quantity": 0,
-            "price": 1.0,
-            "use_exchange_rate": false,
-            "priority": 0,
-            "notes": "Vendor: A.Adams Supply\nDescription: mc master carr\n",
-            "latest_change_name": "Item added\nItsme\nJuly 13 Wednesday 2022 09-11-15 AM",
-            "latest_change_part_number": "Item added\nItsme\nJuly 13 Wednesday 2022 09-11-15 AM",
-            "latest_change_unit_quantity": "Item added\nItsme\nJuly 13 Wednesday 2022 09-11-15 AM",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 0\nto: 0\nLynden\nMarch 23 Thursday 2023 09:53:11 AM",
-            "latest_change_price": "Item added\nItsme\nJuly 13 Wednesday 2022 09-11-15 AM",
-            "latest_change_use_exchange_price": "Item added\nItsme\nJuly 13 Wednesday 2022 09-11-15 AM",
-            "latest_change_priority": "Item added\nItsme\nJuly 13 Wednesday 2022 09-11-15 AM",
-            "latest_change_notes": "Latest Change:\nfrom: Vendor: A.Adams Supply\nDescription: mc master carr\nto: Vendor: A.Adams Supply\nDescription: mc master carr\n\nLynden\nMarch 13 Monday 2023 09:28:16 AM"
-        },
-        "Sticker 310 Polar G2 & G3 Caution Pinch Hazard 4.5\"x2.75\"": {
-            "part_number": "310",
-            "unit_quantity": 2,
-            "current_quantity": -50,
-            "price": 1.05,
-            "use_exchange_rate": false,
-            "priority": 0,
-            "notes": "Vendor: HC Graphic Screen Printing\nDescription: orders@hdcraphicsinc.com",
-            "latest_change_current_quantity": "Latest Change:\nfrom: -30\nto: -50\nLynden\nMarch 13 Monday 2023 08:30:45 AM",
-            "latest_change_notes": "Latest Change:\nfrom: Vendor: HC Graphic Screen Printing\nDescription: orders@hdcraphicsinc.co\nto: Vendor: HC Graphic Screen Printing\nDescription: orders@hdcraphicsinc.com\nItsme\nFebruary 07 Tuesday 2023 03:13:57 PM",
-            "latest_change_price": "Latest Change:\nfrom: 1.05\nto: 1.05\nItsme\nFebruary 23 Thursday 2023 09:33:33 AM"
-        },
         "G Class Ash Shovel Small": {
             "part_number": "GCASS",
             "unit_quantity": 1.0,
@@ -1806,40 +1760,6 @@
             "latest_change_use_exchange_price": "Item added\nItsme\nJanuary 30 Monday 2023 02-35-04 PM",
             "latest_change_priority": "Item added\nItsme\nJanuary 30 Monday 2023 02-35-04 PM",
             "latest_change_notes": "Item added\nItsme\nJanuary 30 Monday 2023 02-35-04 PM"
-        },
-        "Boiler Treatment 1.9L ": {
-            "part_number": "BT19L",
-            "unit_quantity": 1,
-            "current_quantity": -1,
-            "price": 12.35,
-            "use_exchange_rate": false,
-            "priority": 0,
-            "notes": "Vendor: Ike Chemical Enterprise \nDescription: ",
-            "latest_change_name": "Item added\nItsme\nOctober 10 Monday 2022 03-57-58 PM",
-            "latest_change_part_number": "Item added\nItsme\nOctober 10 Monday 2022 03-57-58 PM",
-            "latest_change_unit_quantity": "Item added\nItsme\nOctober 10 Monday 2022 03-57-58 PM",
-            "latest_change_current_quantity": "Latest Change:\nfrom: -1\nto: -1\nLynden\nMarch 23 Thursday 2023 10:08:30 AM",
-            "latest_change_price": "Item added\nItsme\nOctober 10 Monday 2022 03-57-58 PM",
-            "latest_change_use_exchange_price": "Item added\nItsme\nOctober 10 Monday 2022 03-57-58 PM",
-            "latest_change_priority": "Item added\nItsme\nOctober 10 Monday 2022 03-57-58 PM",
-            "latest_change_notes": "Item added\nItsme\nOctober 10 Monday 2022 03-57-58 PM"
-        },
-        "Sticker #341 Bilingual Danger Warning Decal": {
-            "part_number": "341",
-            "unit_quantity": 1.0,
-            "current_quantity": -18,
-            "price": 5.06,
-            "use_exchange_rate": false,
-            "priority": 0,
-            "notes": "Vendor: HD Graphics Inc\nDescription: ",
-            "latest_change_name": "Item added\nItsme\nFebruary 17 Friday 2023 10-35-31 AM",
-            "latest_change_part_number": "Item added\nItsme\nFebruary 17 Friday 2023 10-35-31 AM",
-            "latest_change_unit_quantity": "Item added\nItsme\nFebruary 17 Friday 2023 10-35-31 AM",
-            "latest_change_current_quantity": "Latest Change:\nfrom: -18\nto: -18\nLynden\nMarch 13 Monday 2023 08:30:45 AM",
-            "latest_change_price": "Latest Change:\nfrom: 3.0\nto: 5.06\nItsme\nFebruary 23 Thursday 2023 09:34:06 AM",
-            "latest_change_use_exchange_price": "Item added\nItsme\nFebruary 17 Friday 2023 10-35-31 AM",
-            "latest_change_priority": "Item added\nItsme\nFebruary 17 Friday 2023 10-35-31 AM",
-            "latest_change_notes": "Item added\nItsme\nFebruary 17 Friday 2023 10-35-31 AM"
         },
         "1\" Plug": {
             "part_number": "G1600M",
@@ -1858,17 +1778,22 @@
             "latest_change_priority": "Item added\nItsme\nOctober 06 Thursday 2022 09-10-38 AM",
             "latest_change_notes": "Latest Change:\nfrom: \"Vendor:  GreenLine \nDescription: \nPart # G1600M-10\"\nto: \"Vendor:  GreenLine \nDescription: \nPart # G1600M-100\"\nItsme\nJanuary 17 Tuesday 2023 09:14:29 AM"
         },
-        "Sticker 312 Polar G2 & G3 G series Wiring 8\"x10\"": {
-            "part_number": "312",
-            "unit_quantity": 1,
-            "current_quantity": -16,
-            "price": 3.58,
+        "Terminal BlockPluggable ": {
+            "part_number": "222-412 Wago 2 pos",
+            "unit_quantity": 3.0,
+            "current_quantity": -15,
+            "price": 0.8,
             "use_exchange_rate": false,
             "priority": 0,
-            "notes": "Vendor: HD Graphics Inc\nDescription: ",
-            "latest_change_current_quantity": "Latest Change:\nfrom: -16\nto: -16\nLynden\nMarch 13 Monday 2023 08:30:45 AM",
-            "latest_change_notes": "Latest Change:\nfrom: \"Vendor: HD Graphics In\nDescription: \"\nto: \"Vendor: HD Graphics Inc\nDescription: \"\nItsme\nFebruary 23 Thursday 2023 09:14:29 AM",
-            "latest_change_price": "Latest Change:\nfrom: 3.58\nto: 3.58\nItsme\nFebruary 23 Thursday 2023 09:34:22 AM"
+            "notes": "Vendor: Westburn \nDescription: ",
+            "latest_change_name": "Item added\nItsme\nJanuary 09 Monday 2023 01-29-39 PM",
+            "latest_change_part_number": "Item added\nItsme\nJanuary 09 Monday 2023 01-29-39 PM",
+            "latest_change_unit_quantity": "Latest Change:\nfrom: 0.0\nto: 3.0\nLynden\nMarch 11 Saturday 2023 09:37:55 AM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: -15\nto: -15\nLynden\nMarch 23 Thursday 2023 09:48:23 AM",
+            "latest_change_price": "Item added\nItsme\nJanuary 09 Monday 2023 01-29-39 PM",
+            "latest_change_use_exchange_price": "Item added\nItsme\nJanuary 09 Monday 2023 01-29-39 PM",
+            "latest_change_priority": "Item added\nItsme\nJanuary 09 Monday 2023 01-29-39 PM",
+            "latest_change_notes": "Item added\nItsme\nJanuary 09 Monday 2023 01-29-39 PM"
         },
         "G3 Brick Set": {
             "part_number": "G3BS",
@@ -1905,23 +1830,6 @@
             "latest_change_priority": "Item added\nItsme\nOctober 27 Thursday 2022 04-30-41 PM",
             "latest_change_notes": "Item added\nItsme\nOctober 27 Thursday 2022 04-30-41 PM"
         },
-        "Terminal Block 1492-H7": {
-            "part_number": "ALB1492H7",
-            "unit_quantity": 1.0,
-            "current_quantity": -4,
-            "price": 8.0,
-            "use_exchange_rate": false,
-            "priority": 0,
-            "notes": "Vendor: Westburn\nDescription: black",
-            "latest_change_name": "Item added\nItsme\nNovember 30 Wednesday 2022 09-40-57 AM",
-            "latest_change_part_number": "Item added\nItsme\nNovember 30 Wednesday 2022 09-40-57 AM",
-            "latest_change_unit_quantity": "Item added\nItsme\nNovember 30 Wednesday 2022 09-40-57 AM",
-            "latest_change_current_quantity": "Latest Change:\nfrom: -4\nto: -4\nLynden\nMarch 13 Monday 2023 08:30:45 AM",
-            "latest_change_price": "Item added\nItsme\nNovember 30 Wednesday 2022 09-40-57 AM",
-            "latest_change_use_exchange_price": "Item added\nItsme\nNovember 30 Wednesday 2022 09-40-57 AM",
-            "latest_change_priority": "Item added\nItsme\nNovember 30 Wednesday 2022 09-40-57 AM",
-            "latest_change_notes": "Latest Change:\nfrom: Vendor: Westburn\nDescription: blac\nto: Vendor: Westburn\nDescription: black\nLynden\nMarch 23 Thursday 2023 09:46:47 AM"
-        },
         "Borosilicate Glass Disc": {
             "part_number": "8477K28",
             "unit_quantity": 1,
@@ -1938,6 +1846,40 @@
             "latest_change_use_exchange_price": "Item added\nItsme\nJuly 12 Tuesday 2022 09-29-24 AM",
             "latest_change_priority": "Item added\nItsme\nJuly 12 Tuesday 2022 09-29-24 AM",
             "latest_change_notes": "Item added\nItsme\nJuly 12 Tuesday 2022 09-29-24 AM"
+        },
+        "Boiler Treatment 1.9L ": {
+            "part_number": "BT19L",
+            "unit_quantity": 1,
+            "current_quantity": -1,
+            "price": 12.35,
+            "use_exchange_rate": false,
+            "priority": 0,
+            "notes": "Vendor: Ike Chemical Enterprise \nDescription: ",
+            "latest_change_name": "Item added\nItsme\nOctober 10 Monday 2022 03-57-58 PM",
+            "latest_change_part_number": "Item added\nItsme\nOctober 10 Monday 2022 03-57-58 PM",
+            "latest_change_unit_quantity": "Item added\nItsme\nOctober 10 Monday 2022 03-57-58 PM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: -1\nto: -1\nLynden\nMarch 23 Thursday 2023 10:08:30 AM",
+            "latest_change_price": "Item added\nItsme\nOctober 10 Monday 2022 03-57-58 PM",
+            "latest_change_use_exchange_price": "Item added\nItsme\nOctober 10 Monday 2022 03-57-58 PM",
+            "latest_change_priority": "Item added\nItsme\nOctober 10 Monday 2022 03-57-58 PM",
+            "latest_change_notes": "Item added\nItsme\nOctober 10 Monday 2022 03-57-58 PM"
+        },
+        "rivet  3\/4x 5\/16 DIA ": {
+            "part_number": "Rivet516",
+            "unit_quantity": 8,
+            "current_quantity": 0,
+            "price": 1.0,
+            "use_exchange_rate": false,
+            "priority": 0,
+            "notes": "Vendor: A.Adams Supply\nDescription: mc master carr\n",
+            "latest_change_name": "Item added\nItsme\nJuly 13 Wednesday 2022 09-11-15 AM",
+            "latest_change_part_number": "Item added\nItsme\nJuly 13 Wednesday 2022 09-11-15 AM",
+            "latest_change_unit_quantity": "Item added\nItsme\nJuly 13 Wednesday 2022 09-11-15 AM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 0\nto: 0\nLynden\nMarch 23 Thursday 2023 09:53:11 AM",
+            "latest_change_price": "Item added\nItsme\nJuly 13 Wednesday 2022 09-11-15 AM",
+            "latest_change_use_exchange_price": "Item added\nItsme\nJuly 13 Wednesday 2022 09-11-15 AM",
+            "latest_change_priority": "Item added\nItsme\nJuly 13 Wednesday 2022 09-11-15 AM",
+            "latest_change_notes": "Latest Change:\nfrom: Vendor: A.Adams Supply\nDescription: mc master carr\nto: Vendor: A.Adams Supply\nDescription: mc master carr\n\nLynden\nMarch 13 Monday 2023 09:28:16 AM"
         },
         "RAL 3007 Beige Gloss": {
             "part_number": "7600205",
@@ -2003,28 +1945,6 @@
             "latest_change_use_exchange_price": "Item added\nItsme\nAugust 01 Monday 2022 03-41-17 PM",
             "latest_change_priority": "Item added\nItsme\nAugust 01 Monday 2022 03-41-17 PM",
             "latest_change_notes": "Item added\nItsme\nAugust 01 Monday 2022 03-41-17 PM"
-        },
-        "Sticker 322 G2 and G3 Remove Label ": {
-            "part_number": "322",
-            "unit_quantity": 1,
-            "current_quantity": 6,
-            "price": 3.29,
-            "use_exchange_rate": false,
-            "priority": 0,
-            "notes": "Vendor: \nDescription: ",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 6\nto: 6\nLynden\nMarch 13 Monday 2023 08:30:45 AM",
-            "latest_change_price": "Latest Change:\nfrom: 3.29\nto: 3.29\nItsme\nFebruary 23 Thursday 2023 09:34:46 AM"
-        },
-        "Sticker   #306 Polar Furnace with Polar Bear  11\"x14\" ": {
-            "part_number": "403",
-            "unit_quantity": 1,
-            "current_quantity": 6,
-            "price": 4.76,
-            "use_exchange_rate": false,
-            "priority": 0,
-            "notes": "Vendor: \nDescription: ",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 6\nto: 6\nLynden\nMarch 13 Monday 2023 08:30:45 AM",
-            "latest_change_price": "Latest Change:\nfrom: 4.76\nto: 4.76\nItsme\nFebruary 23 Thursday 2023 09:35:03 AM"
         },
         "Base Relay ( Allen- Bradley)": {
             "part_number": "700-HF32A1 SQ  ",
@@ -2159,16 +2079,17 @@
             "latest_change_priority": "Item added\nItsme\nJanuary 30 Monday 2023 02-34-37 PM",
             "latest_change_notes": "Item added\nItsme\nJanuary 30 Monday 2023 02-34-37 PM"
         },
-        " Sticker 309 Polar G2 & G3 Caution Disconnect Power 4.5\"x2\"": {
-            "part_number": "309",
-            "unit_quantity": 1.0,
-            "current_quantity": 16,
-            "price": 0.9,
+        "Sticker 310 Polar G2 & G3 Caution Pinch Hazard 4.5\"x2.75\"": {
+            "part_number": "310",
+            "unit_quantity": 2,
+            "current_quantity": 15,
+            "price": 1.05,
             "use_exchange_rate": false,
             "priority": 0,
-            "notes": "Vendor: \nDescription: ",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 16\nto: 16\nLynden\nMarch 13 Monday 2023 08:30:45 AM",
-            "latest_change_price": "Latest Change:\nfrom: 0.9\nto: 0.9\nItsme\nFebruary 23 Thursday 2023 09:35:20 AM"
+            "notes": "Vendor: HC Graphic Screen Printing\nDescription: orders@hdcraphicsinc.com",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 15\nto: 15\nLynden\nMarch 24 Friday 2023 08:28:38 AM",
+            "latest_change_notes": "Latest Change:\nfrom: Vendor: HC Graphic Screen Printing\nDescription: orders@hdcraphicsinc.co\nto: Vendor: HC Graphic Screen Printing\nDescription: orders@hdcraphicsinc.com\nItsme\nFebruary 07 Tuesday 2023 03:13:57 PM",
+            "latest_change_price": "Latest Change:\nfrom: 1.05\nto: 1.05\nItsme\nFebruary 23 Thursday 2023 09:33:33 AM"
         },
         "3\" Thermax SF- 600 Brick Slabs 1000x610x75": {
             "part_number": "THERMAXSF600",
@@ -2255,17 +2176,6 @@
             "notes": "Vendor: GreenLine \nDescription: 204-694-0332",
             "latest_change_current_quantity": "Latest Change:\nfrom: 25\nto: 25\nLynden\nMarch 13 Monday 2023 08:30:45 AM",
             "latest_change_price": "Latest Change:\nfrom: 5.13\nto: 5.64\nItsme\nJanuary 17 Tuesday 2023 09:04:10 AM"
-        },
-        "Sticker  319  easy Sweep": {
-            "part_number": "319",
-            "unit_quantity": 1,
-            "current_quantity": 26,
-            "price": 4.04,
-            "use_exchange_rate": false,
-            "priority": 0,
-            "notes": "Vendor: \nDescription: ",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 26\nto: 26\nLynden\nMarch 13 Monday 2023 08:30:45 AM",
-            "latest_change_price": "Latest Change:\nfrom: 4.04\nto: 4.04\nItsme\nFebruary 23 Thursday 2023 09:31:34 AM"
         },
         "Blower Wheel 9-15\/16\" X 2-1\/4 BI Steel 1\/2 #2-106CI CW \"A\" 1800R": {
             "part_number": "2-106CI CW",
@@ -2447,6 +2357,18 @@
             "latest_change_use_exchange_price": "Item added\nItsme\nAugust 12 Friday 2022 11-27-45 AM",
             "latest_change_priority": "Latest Change:\nfrom: 1\nto: 2\nItsme\nNovember 03 Thursday 2022 11:01:43 AM",
             "latest_change_notes": "Item added\nItsme\nAugust 12 Friday 2022 11-27-45 AM"
+        },
+        "Sticker 312 Polar G2 & G3 G series Wiring 8\"x10\"": {
+            "part_number": "312",
+            "unit_quantity": 1,
+            "current_quantity": 49,
+            "price": 3.58,
+            "use_exchange_rate": false,
+            "priority": 0,
+            "notes": "Vendor: HD Graphics Inc\nDescription: ",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 49\nto: 49\nLynden\nMarch 24 Friday 2023 08:30:36 AM",
+            "latest_change_notes": "Latest Change:\nfrom: \"Vendor: HD Graphics In\nDescription: \"\nto: \"Vendor: HD Graphics Inc\nDescription: \"\nItsme\nFebruary 23 Thursday 2023 09:14:29 AM",
+            "latest_change_price": "Latest Change:\nfrom: 3.58\nto: 3.58\nItsme\nFebruary 23 Thursday 2023 09:34:22 AM"
         },
         "38100 Front MNT Snap-In SCR TERM": {
             "part_number": "38100",
@@ -2654,18 +2576,6 @@
             "latest_change_price": "Latest Change:\nfrom: 17.38\nto: 17.38\nItsme\nFebruary 02 Thursday 2023 11:07:28 AM",
             "latest_change_notes": "Latest Change:\nfrom: \"Vendor: Grundfos Canada\nDescription: \nsupport-ca@sales.grundfos.co\"\nto: \"Vendor: Grundfos Canada\nDescription: \nsupport-ca@sales.grundfos.com\"\nItsme\nFebruary 02 Thursday 2023 11:20:34 AM"
         },
-        "Sticker 320 Water Temperture 5\"x9.5\"": {
-            "part_number": "320",
-            "unit_quantity": 1,
-            "current_quantity": 76,
-            "price": 6.93,
-            "use_exchange_rate": false,
-            "priority": 0,
-            "notes": "Vendor: HD GRaphics\n\nDescription: ",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 76\nto: 76\nLynden\nMarch 13 Monday 2023 08:30:46 AM",
-            "latest_change_notes": "Latest Change:\nfrom: \"Vendor: HD GRaphics\nDescription: \"\nto: \"Vendor: HD GRaphics\n\nDescription: \"\nItsme\nFebruary 23 Thursday 2023 09:32:53 AM",
-            "latest_change_price": "Latest Change:\nfrom: 2.47\nto: 6.93\nItsme\nFebruary 23 Thursday 2023 09:33:05 AM"
-        },
         "Sticker #342 Bilingual Caution Notice Decal ": {
             "part_number": "342",
             "unit_quantity": 1.0,
@@ -2682,6 +2592,17 @@
             "latest_change_use_exchange_price": "Item added\nItsme\nFebruary 17 Friday 2023 10-36-35 AM",
             "latest_change_priority": "Item added\nItsme\nFebruary 17 Friday 2023 10-36-35 AM",
             "latest_change_notes": "Item added\nItsme\nFebruary 17 Friday 2023 10-36-35 AM"
+        },
+        " Sticker 309 Polar G2 & G3 Caution Disconnect Power 4.5\"x2\"": {
+            "part_number": "309",
+            "unit_quantity": 1.0,
+            "current_quantity": 81,
+            "price": 0.9,
+            "use_exchange_rate": false,
+            "priority": 0,
+            "notes": "Vendor: \nDescription: ",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 81\nto: 81\nLynden\nMarch 24 Friday 2023 08:32:25 AM",
+            "latest_change_price": "Latest Change:\nfrom: 0.9\nto: 0.9\nItsme\nFebruary 23 Thursday 2023 09:35:20 AM"
         },
         "Knob 2 3\/8 DIA. 1\/2-13. Fluted Black Plastic": {
             "part_number": "DK-122",
@@ -2711,6 +2632,23 @@
             "latest_change_use_exchange_price": "Item added\nItsme\nJanuary 19 Thursday 2023 09-57-27 AM",
             "latest_change_priority": "Item added\nItsme\nJanuary 19 Thursday 2023 09-57-27 AM",
             "latest_change_notes": "Item added\nItsme\nJanuary 19 Thursday 2023 09-57-27 AM"
+        },
+        "Sticker #341 Bilingual Danger Warning Decal": {
+            "part_number": "341",
+            "unit_quantity": 1.0,
+            "current_quantity": 84,
+            "price": 5.06,
+            "use_exchange_rate": false,
+            "priority": 0,
+            "notes": "Vendor: HD Graphics Inc\nDescription: ",
+            "latest_change_name": "Item added\nItsme\nFebruary 17 Friday 2023 10-35-31 AM",
+            "latest_change_part_number": "Item added\nItsme\nFebruary 17 Friday 2023 10-35-31 AM",
+            "latest_change_unit_quantity": "Item added\nItsme\nFebruary 17 Friday 2023 10-35-31 AM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 84\nto: 84\nLynden\nMarch 24 Friday 2023 08:29:16 AM",
+            "latest_change_price": "Latest Change:\nfrom: 3.0\nto: 5.06\nItsme\nFebruary 23 Thursday 2023 09:34:06 AM",
+            "latest_change_use_exchange_price": "Item added\nItsme\nFebruary 17 Friday 2023 10-35-31 AM",
+            "latest_change_priority": "Item added\nItsme\nFebruary 17 Friday 2023 10-35-31 AM",
+            "latest_change_notes": "Item added\nItsme\nFebruary 17 Friday 2023 10-35-31 AM"
         },
         "1\/8 Hight Temp Rubber- Orange": {
             "part_number": "1460N44",
@@ -2742,7 +2680,7 @@
         "Snap-Tite Romex C 1\/2\" 841ST": {
             "part_number": "ARL841ST",
             "unit_quantity": 1.0,
-            "current_quantity": 90,
+            "current_quantity": 290,
             "price": 0.7,
             "use_exchange_rate": false,
             "priority": 0,
@@ -2750,7 +2688,7 @@
             "latest_change_name": "Item added\nItsme\nNovember 28 Monday 2022 11-03-05 AM",
             "latest_change_part_number": "Item added\nItsme\nNovember 28 Monday 2022 11-03-05 AM",
             "latest_change_unit_quantity": "Item added\nItsme\nNovember 28 Monday 2022 11-03-05 AM",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 90\nto: 90\nLynden\nMarch 13 Monday 2023 08:30:46 AM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 290\nto: 290\nLynden\nMarch 24 Friday 2023 08:58:35 AM",
             "latest_change_price": "Item added\nItsme\nNovember 28 Monday 2022 11-03-05 AM",
             "latest_change_use_exchange_price": "Item added\nItsme\nNovember 28 Monday 2022 11-03-05 AM",
             "latest_change_priority": "Item added\nItsme\nNovember 28 Monday 2022 11-03-05 AM",
@@ -2801,6 +2739,35 @@
             "latest_change_current_quantity": "Latest Change:\nfrom: 92\nto: 92\nLynden\nMarch 13 Monday 2023 08:30:46 AM",
             "latest_change_price": "Latest Change:\nfrom: 0.85\nto: 0.85\nItsme\nOctober 06 Thursday 2022 09:11:22 AM"
         },
+        "Terminal Block 1492-H7": {
+            "part_number": "ALB1492H7",
+            "unit_quantity": 1.0,
+            "current_quantity": 96,
+            "price": 8.0,
+            "use_exchange_rate": false,
+            "priority": 0,
+            "notes": "Vendor: Westburn\nDescription: black",
+            "latest_change_name": "Item added\nItsme\nNovember 30 Wednesday 2022 09-40-57 AM",
+            "latest_change_part_number": "Item added\nItsme\nNovember 30 Wednesday 2022 09-40-57 AM",
+            "latest_change_unit_quantity": "Item added\nItsme\nNovember 30 Wednesday 2022 09-40-57 AM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 96\nto: 96\nLynden\nMarch 24 Friday 2023 08:57:25 AM",
+            "latest_change_price": "Item added\nItsme\nNovember 30 Wednesday 2022 09-40-57 AM",
+            "latest_change_use_exchange_price": "Item added\nItsme\nNovember 30 Wednesday 2022 09-40-57 AM",
+            "latest_change_priority": "Item added\nItsme\nNovember 30 Wednesday 2022 09-40-57 AM",
+            "latest_change_notes": "Latest Change:\nfrom: Vendor: Westburn\nDescription: blac\nto: Vendor: Westburn\nDescription: black\nLynden\nMarch 23 Thursday 2023 09:46:47 AM"
+        },
+        "Sticker 320 Water Temperture 5\"x9.5\"": {
+            "part_number": "320",
+            "unit_quantity": 1,
+            "current_quantity": 96,
+            "price": 6.93,
+            "use_exchange_rate": false,
+            "priority": 0,
+            "notes": "Vendor: HD GRaphics\n\nDescription: ",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 96\nto: 96\nLynden\nMarch 24 Friday 2023 08:34:36 AM",
+            "latest_change_notes": "Latest Change:\nfrom: \"Vendor: HD GRaphics\nDescription: \"\nto: \"Vendor: HD GRaphics\n\nDescription: \"\nItsme\nFebruary 23 Thursday 2023 09:32:53 AM",
+            "latest_change_price": "Latest Change:\nfrom: 2.47\nto: 6.93\nItsme\nFebruary 23 Thursday 2023 09:33:05 AM"
+        },
         "Sticker 308 CSA Polar G2 10\"x 6\" Silver Foil ": {
             "part_number": "308",
             "unit_quantity": 1,
@@ -2827,6 +2794,28 @@
             "latest_change_use_exchange_price": "Item added\nLynden\nMarch 06 Monday 2023 07-00-46 PM",
             "latest_change_priority": "Item added\nLynden\nMarch 06 Monday 2023 07-00-46 PM",
             "latest_change_notes": "Item added\nLynden\nMarch 06 Monday 2023 07-00-46 PM"
+        },
+        "Sticker 322 G2 and G3 Remove Label ": {
+            "part_number": "322",
+            "unit_quantity": 1,
+            "current_quantity": 113,
+            "price": 3.29,
+            "use_exchange_rate": false,
+            "priority": 0,
+            "notes": "Vendor: \nDescription: ",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 113\nto: 113\nLynden\nMarch 24 Friday 2023 08:31:08 AM",
+            "latest_change_price": "Latest Change:\nfrom: 3.29\nto: 3.29\nItsme\nFebruary 23 Thursday 2023 09:34:46 AM"
+        },
+        "Sticker   #306 Polar Furnace with Polar Bear  11\"x14\" ": {
+            "part_number": "403",
+            "unit_quantity": 1,
+            "current_quantity": 114,
+            "price": 4.76,
+            "use_exchange_rate": false,
+            "priority": 0,
+            "notes": "Vendor: \nDescription: ",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 114\nto: 114\nLynden\nMarch 24 Friday 2023 08:31:33 AM",
+            "latest_change_price": "Latest Change:\nfrom: 4.76\nto: 4.76\nItsme\nFebruary 23 Thursday 2023 09:35:03 AM"
         },
         "bushing 786-251 Bronze Insert Bushing ": {
             "part_number": "786-251",
@@ -2882,6 +2871,17 @@
             "priority": 0,
             "notes": "Vendor: \nDescription: ",
             "latest_change_current_quantity": "Latest Change:\nfrom: 126\nto: 126\nLynden\nMarch 13 Monday 2023 08:30:46 AM"
+        },
+        "Sticker  319  easy Sweep": {
+            "part_number": "319",
+            "unit_quantity": 1,
+            "current_quantity": 134,
+            "price": 4.04,
+            "use_exchange_rate": false,
+            "priority": 0,
+            "notes": "Vendor: \nDescription: ",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 134\nto: 134\nLynden\nMarch 24 Friday 2023 08:33:01 AM",
+            "latest_change_price": "Latest Change:\nfrom: 4.04\nto: 4.04\nItsme\nFebruary 23 Thursday 2023 09:31:34 AM"
         },
         "1\"x25\"x48\" FSK 300 Certainteed Insulation": {
             "part_number": "FSK1",
@@ -3521,12 +3521,12 @@
         "Sticker 310 Polar G2 & G3 Caution Pinch Hazard 4.5\"x2.75\"": {
             "part_number": "310",
             "unit_quantity": 2,
-            "current_quantity": -50,
+            "current_quantity": 15,
             "price": 1.05,
             "use_exchange_rate": false,
             "priority": 0,
             "notes": "Vendor: HC Graphic Screen Printing\nDescription: orders@hdcraphicsinc.com",
-            "latest_change_current_quantity": "Latest Change:\nfrom: -30\nto: -50\nLynden\nMarch 13 Monday 2023 08:30:45 AM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 15\nto: 15\nLynden\nMarch 24 Friday 2023 08:28:38 AM",
             "latest_change_notes": "Latest Change:\nfrom: Vendor: HC Graphic Screen Printing\nDescription: orders@hdcraphicsinc.co\nto: Vendor: HC Graphic Screen Printing\nDescription: orders@hdcraphicsinc.com\nItsme\nFebruary 07 Tuesday 2023 03:13:57 PM",
             "latest_change_price": "Latest Change:\nfrom: 1.05\nto: 1.05\nItsme\nFebruary 23 Thursday 2023 09:33:33 AM"
         },
@@ -3601,7 +3601,7 @@
         "Sticker #341 Bilingual Danger Warning Decal": {
             "part_number": "341",
             "unit_quantity": 1.0,
-            "current_quantity": -18,
+            "current_quantity": 84,
             "price": 5.06,
             "use_exchange_rate": false,
             "priority": 0,
@@ -3609,7 +3609,7 @@
             "latest_change_name": "Item added\nItsme\nFebruary 17 Friday 2023 10-38-27 AM",
             "latest_change_part_number": "Item added\nItsme\nFebruary 17 Friday 2023 10-38-27 AM",
             "latest_change_unit_quantity": "Item added\nItsme\nFebruary 17 Friday 2023 10-38-27 AM",
-            "latest_change_current_quantity": "Latest Change:\nfrom: -18.0\nto: -18\nLynden\nMarch 13 Monday 2023 08:30:45 AM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 84\nto: 84\nLynden\nMarch 24 Friday 2023 08:29:16 AM",
             "latest_change_price": "Latest Change:\nfrom: 3.0\nto: 5.06\nItsme\nFebruary 23 Thursday 2023 09:34:06 AM",
             "latest_change_use_exchange_price": "Item added\nItsme\nFebruary 17 Friday 2023 10-38-27 AM",
             "latest_change_priority": "Item added\nItsme\nFebruary 17 Friday 2023 10-38-27 AM",
@@ -3618,12 +3618,12 @@
         "Sticker 312 Polar G2 & G3 G series Wiring 8\"x10\"": {
             "part_number": "312",
             "unit_quantity": 1,
-            "current_quantity": -16,
+            "current_quantity": 49,
             "price": 3.58,
             "use_exchange_rate": false,
             "priority": 0,
             "notes": "Vendor: HD Graphics Inc\nDescription: ",
-            "latest_change_current_quantity": "Latest Change:\nfrom: -16\nto: -16\nLynden\nMarch 13 Monday 2023 08:30:45 AM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 49\nto: 49\nLynden\nMarch 24 Friday 2023 08:30:36 AM",
             "latest_change_notes": "Latest Change:\nfrom: Vendor: HD Graphics In\nDescription: \nto: Vendor: HD Graphics Inc\nDescription: \nItsme\nFebruary 23 Thursday 2023 09:14:29 AM",
             "latest_change_price": "Latest Change:\nfrom: 3.58\nto: 3.58\nItsme\nFebruary 23 Thursday 2023 09:34:22 AM"
         },
@@ -3688,7 +3688,7 @@
         "Terminal Block 1492-H7": {
             "part_number": "ALB1492H7",
             "unit_quantity": 1.0,
-            "current_quantity": -4,
+            "current_quantity": 96,
             "price": 8.0,
             "use_exchange_rate": false,
             "priority": 0,
@@ -3696,7 +3696,7 @@
             "latest_change_name": "Item added\nItsme\nNovember 30 Wednesday 2022 09-41-24 AM",
             "latest_change_part_number": "Item added\nItsme\nNovember 30 Wednesday 2022 09-41-24 AM",
             "latest_change_unit_quantity": "Item added\nItsme\nNovember 30 Wednesday 2022 09-41-24 AM",
-            "latest_change_current_quantity": "Latest Change:\nfrom: -4.0\nto: -4\nLynden\nMarch 13 Monday 2023 08:30:45 AM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 96\nto: 96\nLynden\nMarch 24 Friday 2023 08:57:25 AM",
             "latest_change_price": "Item added\nItsme\nNovember 30 Wednesday 2022 09-41-24 AM",
             "latest_change_use_exchange_price": "Item added\nItsme\nNovember 30 Wednesday 2022 09-41-24 AM",
             "latest_change_priority": "Item added\nItsme\nNovember 30 Wednesday 2022 09-41-24 AM",
@@ -3803,23 +3803,23 @@
         "Sticker 322 G2 and G3 Remove Label ": {
             "part_number": "322",
             "unit_quantity": 1,
-            "current_quantity": 6,
+            "current_quantity": 113,
             "price": 3.29,
             "use_exchange_rate": false,
             "priority": 0,
             "notes": "Vendor: \nDescription: ",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 6\nto: 6\nLynden\nMarch 13 Monday 2023 08:30:45 AM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 113\nto: 113\nLynden\nMarch 24 Friday 2023 08:31:08 AM",
             "latest_change_price": "Latest Change:\nfrom: 3.29\nto: 3.29\nItsme\nFebruary 23 Thursday 2023 09:34:46 AM"
         },
         "Sticker   #306 Polar Furnace with Polar Bear  11\"x14\" ": {
             "part_number": "403",
             "unit_quantity": 1,
-            "current_quantity": 6,
+            "current_quantity": 114,
             "price": 4.76,
             "use_exchange_rate": false,
             "priority": 0,
             "notes": "Vendor: \nDescription: ",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 6\nto: 6\nLynden\nMarch 13 Monday 2023 08:30:45 AM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 114\nto: 114\nLynden\nMarch 24 Friday 2023 08:31:33 AM",
             "latest_change_price": "Latest Change:\nfrom: 4.76\nto: 4.76\nItsme\nFebruary 23 Thursday 2023 09:35:03 AM"
         },
         "Base Relay ( Allen- Bradley)": {
@@ -3928,12 +3928,12 @@
         " Sticker 309 Polar G2 & G3 Caution Disconnect Power 4.5\"x2\"": {
             "part_number": "309",
             "unit_quantity": 1.0,
-            "current_quantity": 16,
+            "current_quantity": 81,
             "price": 0.9,
             "use_exchange_rate": false,
             "priority": 0,
             "notes": "Vendor: \nDescription: ",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 16.0\nto: 16\nLynden\nMarch 13 Monday 2023 08:30:45 AM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 81\nto: 81\nLynden\nMarch 24 Friday 2023 08:32:25 AM",
             "latest_change_price": "Latest Change:\nfrom: 0.9\nto: 0.9\nItsme\nFebruary 23 Thursday 2023 09:35:20 AM"
         },
         "Tempered Glass 1 1\/4\" X 1 1\/4\" X 3\/16\" NEO Ceram Robax": {
@@ -4042,12 +4042,12 @@
         "Sticker  319  easy Sweep": {
             "part_number": "319",
             "unit_quantity": 1,
-            "current_quantity": 26,
+            "current_quantity": 134,
             "price": 4.04,
             "use_exchange_rate": false,
             "priority": 0,
             "notes": "Vendor: \nDescription: ",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 26\nto: 26\nLynden\nMarch 13 Monday 2023 08:30:45 AM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 134\nto: 134\nLynden\nMarch 24 Friday 2023 08:33:01 AM",
             "latest_change_price": "Latest Change:\nfrom: 4.04\nto: 4.04\nItsme\nFebruary 23 Thursday 2023 09:31:34 AM"
         },
         "Blower Wheel 9-15\/16\" X 2-1\/4 BI Steel 1\/2 #2-106CI CW \"A\" 1800R": {
@@ -4425,12 +4425,12 @@
         "Sticker 320 Water Temperture 5\"x9.5\"": {
             "part_number": "320",
             "unit_quantity": 1,
-            "current_quantity": 76,
+            "current_quantity": 96,
             "price": 6.93,
             "use_exchange_rate": false,
             "priority": 0,
             "notes": "Vendor: HD GRaphics\n\nDescription: ",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 76\nto: 76\nLynden\nMarch 13 Monday 2023 08:30:46 AM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 96\nto: 96\nLynden\nMarch 24 Friday 2023 08:34:36 AM",
             "latest_change_notes": "Latest Change:\nfrom: Vendor: HD GRaphics\nDescription: \nto: Vendor: HD GRaphics\n\nDescription: \nItsme\nFebruary 23 Thursday 2023 09:32:53 AM",
             "latest_change_price": "Latest Change:\nfrom: 2.47\nto: 6.93\nItsme\nFebruary 23 Thursday 2023 09:33:05 AM"
         },
@@ -4498,7 +4498,7 @@
         "Snap-Tite Romex C 1\/2\" 841ST": {
             "part_number": "ARL841ST",
             "unit_quantity": 1.0,
-            "current_quantity": 90,
+            "current_quantity": 290,
             "price": 0.7,
             "use_exchange_rate": false,
             "priority": 0,
@@ -4506,7 +4506,7 @@
             "latest_change_name": "Item added\nItsme\nNovember 28 Monday 2022 11-04-08 AM",
             "latest_change_part_number": "Item added\nItsme\nNovember 28 Monday 2022 11-04-08 AM",
             "latest_change_unit_quantity": "Item added\nItsme\nNovember 28 Monday 2022 11-04-08 AM",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 90.0\nto: 90\nLynden\nMarch 13 Monday 2023 08:30:46 AM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 290\nto: 290\nLynden\nMarch 24 Friday 2023 08:58:35 AM",
             "latest_change_price": "Item added\nItsme\nNovember 28 Monday 2022 11-04-08 AM",
             "latest_change_use_exchange_price": "Item added\nItsme\nNovember 28 Monday 2022 11-04-08 AM",
             "latest_change_priority": "Item added\nItsme\nNovember 28 Monday 2022 11-04-08 AM",
@@ -5213,23 +5213,6 @@
             "latest_change_priority": "Item added\nItsme\nJanuary 18 Wednesday 2023 08-58-36 AM",
             "latest_change_notes": "Item added\nItsme\nJanuary 18 Wednesday 2023 08-58-36 AM"
         },
-        "BC52171-K 4\" SQ BOX 2-1\/8\" DEE": {
-            "part_number": "THSBC52171K",
-            "unit_quantity": 1,
-            "current_quantity": 15,
-            "price": 7.0,
-            "use_exchange_rate": false,
-            "priority": 0,
-            "notes": "Vendor: Westburne\nDescription: ",
-            "latest_change_name": "Item added\nItsme\nNovember 02 Wednesday 2022 03-23-58 PM",
-            "latest_change_part_number": "Item added\nItsme\nNovember 02 Wednesday 2022 03-23-58 PM",
-            "latest_change_unit_quantity": "Item added\nItsme\nNovember 02 Wednesday 2022 03-23-58 PM",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 15\nto: 15\nItsme\nFebruary 07 Tuesday 2023 01:29:23 PM",
-            "latest_change_price": "Item added\nItsme\nNovember 02 Wednesday 2022 03-23-58 PM",
-            "latest_change_use_exchange_price": "Item added\nItsme\nNovember 02 Wednesday 2022 03-23-58 PM",
-            "latest_change_priority": "Item added\nItsme\nNovember 02 Wednesday 2022 03-23-58 PM",
-            "latest_change_notes": "Item added\nItsme\nNovember 02 Wednesday 2022 03-23-58 PM"
-        },
         "BL 25 Shaker Brick Set ": {
             "part_number": "BL25BS",
             "unit_quantity": 1,
@@ -5300,6 +5283,23 @@
             "latest_change_priority": "Item added\nItsme\nAugust 03 Wednesday 2022 11-10-33 AM",
             "latest_change_notes": "Item added\nItsme\nAugust 03 Wednesday 2022 11-10-33 AM"
         },
+        "Single Pole Switch 1301W": {
+            "part_number": "CWD1301W",
+            "unit_quantity": 1.0,
+            "current_quantity": 35,
+            "price": 1.0,
+            "use_exchange_rate": false,
+            "priority": 0,
+            "notes": "Vendor: Westburn \nDescription: ",
+            "latest_change_name": "Item added\nItsme\nNovember 28 Monday 2022 10-38-44 AM",
+            "latest_change_part_number": "Item added\nItsme\nNovember 28 Monday 2022 10-38-44 AM",
+            "latest_change_unit_quantity": "Item added\nItsme\nNovember 28 Monday 2022 10-38-44 AM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 35\nto: 35\nLynden\nMarch 22 Wednesday 2023 10:25:09 AM",
+            "latest_change_price": "Item added\nItsme\nNovember 28 Monday 2022 10-38-44 AM",
+            "latest_change_use_exchange_price": "Item added\nItsme\nNovember 28 Monday 2022 10-38-44 AM",
+            "latest_change_priority": "Item added\nItsme\nNovember 28 Monday 2022 10-38-44 AM",
+            "latest_change_notes": "Item added\nItsme\nNovember 28 Monday 2022 10-38-44 AM"
+        },
         " 6A2 1\/2 Rigid Offset Nipple Zinc": {
             "part_number": "ARL6A2",
             "unit_quantity": 2.0,
@@ -5351,22 +5351,22 @@
             "latest_change_priority": "Item added\nItsme\nSeptember 06 Tuesday 2022 08-51-38 AM",
             "latest_change_notes": "Latest Change:\nfrom: Vendor:Heat Savers Distributers \nDescription: 1 Box Equals 11 pieces           Item# 3DFA-35\n3\" x 35' DuraFlex\n204) 694-3305\n\nto: Vendor:Heat Savers Distributers \nDescription: 1 Box Equals 11 pieces           Item# 3DFA-35\n3\" x 35' DuraFlex\n(204) 694-3305\n\nItsme\nFebruary 15 Wednesday 2023 09:31:06 AM"
         },
-        "Single Pole Switch 1301W": {
-            "part_number": "CWD1301W",
-            "unit_quantity": 1.0,
-            "current_quantity": 35,
-            "price": 1.0,
+        "BC52171-K 4\" SQ BOX 2-1\/8\" DEE": {
+            "part_number": "THSBC52171K",
+            "unit_quantity": 1,
+            "current_quantity": 65,
+            "price": 7.0,
             "use_exchange_rate": false,
             "priority": 0,
-            "notes": "Vendor: Westburn \nDescription: ",
-            "latest_change_name": "Item added\nItsme\nNovember 28 Monday 2022 10-38-44 AM",
-            "latest_change_part_number": "Item added\nItsme\nNovember 28 Monday 2022 10-38-44 AM",
-            "latest_change_unit_quantity": "Item added\nItsme\nNovember 28 Monday 2022 10-38-44 AM",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 35\nto: 35\nLynden\nMarch 22 Wednesday 2023 10:25:09 AM",
-            "latest_change_price": "Item added\nItsme\nNovember 28 Monday 2022 10-38-44 AM",
-            "latest_change_use_exchange_price": "Item added\nItsme\nNovember 28 Monday 2022 10-38-44 AM",
-            "latest_change_priority": "Item added\nItsme\nNovember 28 Monday 2022 10-38-44 AM",
-            "latest_change_notes": "Item added\nItsme\nNovember 28 Monday 2022 10-38-44 AM"
+            "notes": "Vendor: Westburne\nDescription: ",
+            "latest_change_name": "Item added\nItsme\nNovember 02 Wednesday 2022 03-23-58 PM",
+            "latest_change_part_number": "Item added\nItsme\nNovember 02 Wednesday 2022 03-23-58 PM",
+            "latest_change_unit_quantity": "Item added\nItsme\nNovember 02 Wednesday 2022 03-23-58 PM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 65\nto: 65\nLynden\nMarch 24 Friday 2023 08:58:52 AM",
+            "latest_change_price": "Item added\nItsme\nNovember 02 Wednesday 2022 03-23-58 PM",
+            "latest_change_use_exchange_price": "Item added\nItsme\nNovember 02 Wednesday 2022 03-23-58 PM",
+            "latest_change_priority": "Item added\nItsme\nNovember 02 Wednesday 2022 03-23-58 PM",
+            "latest_change_notes": "Item added\nItsme\nNovember 02 Wednesday 2022 03-23-58 PM"
         },
         "6 x 36\" Chimney 6L36": {
             "part_number": "206800",
@@ -5418,23 +5418,6 @@
             "latest_change_use_exchange_price": "Item added\nItsme\nOctober 21 Friday 2022 04-16-12 PM",
             "latest_change_priority": "Item added\nItsme\nOctober 21 Friday 2022 04-16-12 PM",
             "latest_change_notes": "Item added\nItsme\nOctober 21 Friday 2022 04-16-12 PM"
-        },
-        "Snap-Tite Romex C 1\/2\" 841ST": {
-            "part_number": "ARL841ST",
-            "unit_quantity": 4.0,
-            "current_quantity": 90,
-            "price": 0.7,
-            "use_exchange_rate": false,
-            "priority": 0,
-            "notes": "Vendor: Westburne\nDescription: ",
-            "latest_change_name": "Item added\nItsme\nNovember 28 Monday 2022 11-05-28 AM",
-            "latest_change_part_number": "Item added\nItsme\nNovember 28 Monday 2022 11-05-28 AM",
-            "latest_change_unit_quantity": "Item added\nItsme\nNovember 28 Monday 2022 11-05-28 AM",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 90.0\nto: 90\nLynden\nMarch 13 Monday 2023 08:30:46 AM",
-            "latest_change_price": "Item added\nItsme\nNovember 28 Monday 2022 11-05-28 AM",
-            "latest_change_use_exchange_price": "Item added\nItsme\nNovember 28 Monday 2022 11-05-28 AM",
-            "latest_change_priority": "Item added\nItsme\nNovember 28 Monday 2022 11-05-28 AM",
-            "latest_change_notes": "Item added\nItsme\nNovember 28 Monday 2022 11-05-28 AM"
         },
         "100-Coffee Brown HT ProRib- 36\"": {
             "part_number": "1328GA",
@@ -5622,6 +5605,23 @@
             "latest_change_use_exchange_price": "Item added\nItsme\nOctober 14 Friday 2022 10-42-30 AM",
             "latest_change_priority": "Item added\nItsme\nOctober 14 Friday 2022 10-42-30 AM",
             "latest_change_notes": "Item added\nItsme\nOctober 14 Friday 2022 10-42-30 AM"
+        },
+        "Snap-Tite Romex C 1\/2\" 841ST": {
+            "part_number": "ARL841ST",
+            "unit_quantity": 4.0,
+            "current_quantity": 290,
+            "price": 0.7,
+            "use_exchange_rate": false,
+            "priority": 0,
+            "notes": "Vendor: Westburne\nDescription: ",
+            "latest_change_name": "Item added\nItsme\nNovember 28 Monday 2022 11-05-28 AM",
+            "latest_change_part_number": "Item added\nItsme\nNovember 28 Monday 2022 11-05-28 AM",
+            "latest_change_unit_quantity": "Item added\nItsme\nNovember 28 Monday 2022 11-05-28 AM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 290\nto: 290\nLynden\nMarch 24 Friday 2023 08:58:35 AM",
+            "latest_change_price": "Item added\nItsme\nNovember 28 Monday 2022 11-05-28 AM",
+            "latest_change_use_exchange_price": "Item added\nItsme\nNovember 28 Monday 2022 11-05-28 AM",
+            "latest_change_priority": "Item added\nItsme\nNovember 28 Monday 2022 11-05-28 AM",
+            "latest_change_notes": "Item added\nItsme\nNovember 28 Monday 2022 11-05-28 AM"
         },
         "Brass Insert ( milled in house)": {
             "part_number": "BI",
@@ -6823,7 +6823,7 @@
         "BC52171-K 4\" SQ BOX 2-1\/8\" DEE": {
             "part_number": "THSBC52171K",
             "unit_quantity": 1,
-            "current_quantity": 15,
+            "current_quantity": 65,
             "price": 7.0,
             "use_exchange_rate": false,
             "priority": 0,
@@ -6831,7 +6831,7 @@
             "latest_change_name": "Item added\nItsme\nNovember 02 Wednesday 2022 03-24-12 PM",
             "latest_change_part_number": "Item added\nItsme\nNovember 02 Wednesday 2022 03-24-12 PM",
             "latest_change_unit_quantity": "Item added\nItsme\nNovember 02 Wednesday 2022 03-24-12 PM",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 15\nto: 15\nItsme\nFebruary 07 Tuesday 2023 01:29:23 PM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 65\nto: 65\nLynden\nMarch 24 Friday 2023 08:58:52 AM",
             "latest_change_price": "Item added\nItsme\nNovember 02 Wednesday 2022 03-24-12 PM",
             "latest_change_use_exchange_price": "Item added\nItsme\nNovember 02 Wednesday 2022 03-24-12 PM",
             "latest_change_priority": "Item added\nItsme\nNovember 02 Wednesday 2022 03-24-12 PM",
@@ -7045,7 +7045,7 @@
         "Snap-Tite Romex C 1\/2\" 841ST": {
             "part_number": "ARL841ST",
             "unit_quantity": 4.0,
-            "current_quantity": 90,
+            "current_quantity": 290,
             "price": 0.7,
             "use_exchange_rate": false,
             "priority": 0,
@@ -7053,7 +7053,7 @@
             "latest_change_name": "Item added\nItsme\nNovember 28 Monday 2022 11-05-52 AM",
             "latest_change_part_number": "Item added\nItsme\nNovember 28 Monday 2022 11-05-52 AM",
             "latest_change_unit_quantity": "Item added\nItsme\nNovember 28 Monday 2022 11-05-52 AM",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 90.0\nto: 90\nLynden\nMarch 13 Monday 2023 08:30:46 AM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 290\nto: 290\nLynden\nMarch 24 Friday 2023 08:58:35 AM",
             "latest_change_price": "Item added\nItsme\nNovember 28 Monday 2022 11-05-52 AM",
             "latest_change_use_exchange_price": "Item added\nItsme\nNovember 28 Monday 2022 11-05-52 AM",
             "latest_change_priority": "Item added\nItsme\nNovember 28 Monday 2022 11-05-52 AM",
@@ -7578,7 +7578,7 @@
         "BC52171-K 4\" SQ BOX 2-1\/8\" DEE": {
             "part_number": "THSBC52171K",
             "unit_quantity": 1,
-            "current_quantity": 15,
+            "current_quantity": 65,
             "price": 7.0,
             "use_exchange_rate": false,
             "priority": 0,
@@ -7586,7 +7586,7 @@
             "latest_change_name": "Item added\nItsme\nNovember 02 Wednesday 2022 03-24-24 PM",
             "latest_change_part_number": "Item added\nItsme\nNovember 02 Wednesday 2022 03-24-24 PM",
             "latest_change_unit_quantity": "Item added\nItsme\nNovember 02 Wednesday 2022 03-24-24 PM",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 15\nto: 15\nItsme\nFebruary 07 Tuesday 2023 01:29:23 PM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 65\nto: 65\nLynden\nMarch 24 Friday 2023 08:58:52 AM",
             "latest_change_price": "Item added\nItsme\nNovember 02 Wednesday 2022 03-24-24 PM",
             "latest_change_use_exchange_price": "Item added\nItsme\nNovember 02 Wednesday 2022 03-24-24 PM",
             "latest_change_priority": "Item added\nItsme\nNovember 02 Wednesday 2022 03-24-24 PM",
@@ -7784,7 +7784,7 @@
         "Snap-Tite Romex C 1\/2\" 841ST": {
             "part_number": "ARL841ST",
             "unit_quantity": 4.0,
-            "current_quantity": 90,
+            "current_quantity": 290,
             "price": 0.7,
             "use_exchange_rate": false,
             "priority": 0,
@@ -7792,7 +7792,7 @@
             "latest_change_name": "Item added\nItsme\nNovember 28 Monday 2022 11-06-10 AM",
             "latest_change_part_number": "Item added\nItsme\nNovember 28 Monday 2022 11-06-10 AM",
             "latest_change_unit_quantity": "Item added\nItsme\nNovember 28 Monday 2022 11-06-10 AM",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 90.0\nto: 90\nLynden\nMarch 13 Monday 2023 08:30:46 AM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 290\nto: 290\nLynden\nMarch 24 Friday 2023 08:58:35 AM",
             "latest_change_price": "Item added\nItsme\nNovember 28 Monday 2022 11-06-10 AM",
             "latest_change_use_exchange_price": "Item added\nItsme\nNovember 28 Monday 2022 11-06-10 AM",
             "latest_change_priority": "Item added\nItsme\nNovember 28 Monday 2022 11-06-10 AM",
@@ -8319,7 +8319,7 @@
         "BC52171-K 4\" SQ BOX 2-1\/8\" DEE": {
             "part_number": "THSBC52171K",
             "unit_quantity": 1,
-            "current_quantity": 15,
+            "current_quantity": 65,
             "price": 7.0,
             "use_exchange_rate": false,
             "priority": 0,
@@ -8327,7 +8327,7 @@
             "latest_change_name": "Item added\nItsme\nNovember 02 Wednesday 2022 03-24-32 PM",
             "latest_change_part_number": "Item added\nItsme\nNovember 02 Wednesday 2022 03-24-32 PM",
             "latest_change_unit_quantity": "Item added\nItsme\nNovember 02 Wednesday 2022 03-24-32 PM",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 15\nto: 15\nItsme\nFebruary 07 Tuesday 2023 01:29:23 PM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 65\nto: 65\nLynden\nMarch 24 Friday 2023 08:58:52 AM",
             "latest_change_price": "Item added\nItsme\nNovember 02 Wednesday 2022 03-24-32 PM",
             "latest_change_use_exchange_price": "Item added\nItsme\nNovember 02 Wednesday 2022 03-24-32 PM",
             "latest_change_priority": "Item added\nItsme\nNovember 02 Wednesday 2022 03-24-32 PM",
@@ -8490,7 +8490,7 @@
         "Snap-Tite Romex C 1\/2\" 841ST": {
             "part_number": "ARL841ST",
             "unit_quantity": 4.0,
-            "current_quantity": 90,
+            "current_quantity": 290,
             "price": 0.7,
             "use_exchange_rate": false,
             "priority": 0,
@@ -8498,7 +8498,7 @@
             "latest_change_name": "Item added\nItsme\nNovember 28 Monday 2022 11-06-33 AM",
             "latest_change_part_number": "Item added\nItsme\nNovember 28 Monday 2022 11-06-33 AM",
             "latest_change_unit_quantity": "Item added\nItsme\nNovember 28 Monday 2022 11-06-33 AM",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 90.0\nto: 90\nLynden\nMarch 13 Monday 2023 08:30:46 AM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 290\nto: 290\nLynden\nMarch 24 Friday 2023 08:58:35 AM",
             "latest_change_price": "Item added\nItsme\nNovember 28 Monday 2022 11-06-33 AM",
             "latest_change_use_exchange_price": "Item added\nItsme\nNovember 28 Monday 2022 11-06-33 AM",
             "latest_change_priority": "Item added\nItsme\nNovember 28 Monday 2022 11-06-33 AM",
@@ -9054,7 +9054,7 @@
         "BC52171-K 4\" SQ BOX 2-1\/8\" DEE": {
             "part_number": "THSBC52171K",
             "unit_quantity": 1,
-            "current_quantity": 15,
+            "current_quantity": 65,
             "price": 7.0,
             "use_exchange_rate": false,
             "priority": 0,
@@ -9062,7 +9062,7 @@
             "latest_change_name": "Item added\nItsme\nNovember 02 Wednesday 2022 03-25-19 PM",
             "latest_change_part_number": "Item added\nItsme\nNovember 02 Wednesday 2022 03-25-19 PM",
             "latest_change_unit_quantity": "Item added\nItsme\nNovember 02 Wednesday 2022 03-25-19 PM",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 15\nto: 15\nItsme\nFebruary 07 Tuesday 2023 01:29:23 PM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 65\nto: 65\nLynden\nMarch 24 Friday 2023 08:58:52 AM",
             "latest_change_price": "Item added\nItsme\nNovember 02 Wednesday 2022 03-25-19 PM",
             "latest_change_use_exchange_price": "Item added\nItsme\nNovember 02 Wednesday 2022 03-25-19 PM",
             "latest_change_priority": "Item added\nItsme\nNovember 02 Wednesday 2022 03-25-19 PM",
@@ -9224,7 +9224,7 @@
         "Snap-Tite Romex C 1\/2\" 841ST": {
             "part_number": "ARL841ST",
             "unit_quantity": 4.0,
-            "current_quantity": 90,
+            "current_quantity": 290,
             "price": 0.7,
             "use_exchange_rate": false,
             "priority": 0,
@@ -9232,7 +9232,7 @@
             "latest_change_name": "Item added\nItsme\nNovember 28 Monday 2022 11-06-48 AM",
             "latest_change_part_number": "Item added\nItsme\nNovember 28 Monday 2022 11-06-48 AM",
             "latest_change_unit_quantity": "Item added\nItsme\nNovember 28 Monday 2022 11-06-48 AM",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 90.0\nto: 90\nLynden\nMarch 13 Monday 2023 08:30:46 AM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 290\nto: 290\nLynden\nMarch 24 Friday 2023 08:58:35 AM",
             "latest_change_price": "Item added\nItsme\nNovember 28 Monday 2022 11-06-48 AM",
             "latest_change_use_exchange_price": "Item added\nItsme\nNovember 28 Monday 2022 11-06-48 AM",
             "latest_change_priority": "Item added\nItsme\nNovember 28 Monday 2022 11-06-48 AM",
@@ -9805,7 +9805,7 @@
         "BC52171-K 4\" SQ BOX 2-1\/8\" DEE": {
             "part_number": "THSBC52171K",
             "unit_quantity": 1,
-            "current_quantity": 15,
+            "current_quantity": 65,
             "price": 7.0,
             "use_exchange_rate": false,
             "priority": 0,
@@ -9813,7 +9813,7 @@
             "latest_change_name": "Item added\nItsme\nNovember 02 Wednesday 2022 03-25-30 PM",
             "latest_change_part_number": "Item added\nItsme\nNovember 02 Wednesday 2022 03-25-30 PM",
             "latest_change_unit_quantity": "Item added\nItsme\nNovember 02 Wednesday 2022 03-25-30 PM",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 15\nto: 15\nItsme\nFebruary 07 Tuesday 2023 01:29:23 PM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 65\nto: 65\nLynden\nMarch 24 Friday 2023 08:58:52 AM",
             "latest_change_price": "Item added\nItsme\nNovember 02 Wednesday 2022 03-25-30 PM",
             "latest_change_use_exchange_price": "Item added\nItsme\nNovember 02 Wednesday 2022 03-25-30 PM",
             "latest_change_priority": "Item added\nItsme\nNovember 02 Wednesday 2022 03-25-30 PM",
@@ -9993,7 +9993,7 @@
         "Snap-Tite Romex C 1\/2\" 841ST": {
             "part_number": "ARL841ST",
             "unit_quantity": 4.0,
-            "current_quantity": 90,
+            "current_quantity": 290,
             "price": 0.7,
             "use_exchange_rate": false,
             "priority": 0,
@@ -10001,7 +10001,7 @@
             "latest_change_name": "Item added\nItsme\nNovember 28 Monday 2022 11-07-36 AM",
             "latest_change_part_number": "Item added\nItsme\nNovember 28 Monday 2022 11-07-36 AM",
             "latest_change_unit_quantity": "Item added\nItsme\nNovember 28 Monday 2022 11-07-36 AM",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 90.0\nto: 90\nLynden\nMarch 13 Monday 2023 08:30:46 AM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 290\nto: 290\nLynden\nMarch 24 Friday 2023 08:58:35 AM",
             "latest_change_price": "Item added\nItsme\nNovember 28 Monday 2022 11-07-36 AM",
             "latest_change_use_exchange_price": "Item added\nItsme\nNovember 28 Monday 2022 11-07-36 AM",
             "latest_change_priority": "Item added\nItsme\nNovember 28 Monday 2022 11-07-36 AM",
