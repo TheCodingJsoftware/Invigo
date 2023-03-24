@@ -1831,25 +1831,25 @@
             "group": null
         },
         "G2Plus-Ceramics-Secondary Plate-part1x2": {
-            "current_quantity": -10.0,
+            "current_quantity": 0.0,
             "machine_time": 2.2,
             "gauge": "3\/8",
             "material": "Mild Steel",
             "weight": 4.702,
             "price": 8.51,
             "unit_quantity": 2.0,
-            "modified_date": "Removed 20.0 quantity at March 14 Tuesday 2023 04:53:43 PM",
+            "modified_date": "Manually set to 0.0 quantity at March 24 Friday 2023 11:02:54 AM",
             "group": null
         },
         "G2Plus-Primary Air Delivery Penetration Flangex6": {
-            "current_quantity": -30.0,
+            "current_quantity": 0.0,
             "machine_time": 0.32,
             "gauge": "3\/8",
             "material": "Mild Steel",
             "weight": 1.004,
             "price": 1.44,
             "unit_quantity": 6.0,
-            "modified_date": "Removed 60.0 quantity at March 14 Tuesday 2023 04:53:43 PM",
+            "modified_date": "Manually set to 0.0 quantity at March 24 Friday 2023 11:02:51 AM",
             "group": null
         },
         "1inch ring 12SS": {
@@ -2515,36 +2515,36 @@
             "group": null
         },
         "G2Plus-Primary Air Delivery Penetration Flangex6": {
-            "current_quantity": -5.0,
+            "current_quantity": 0.0,
             "machine_time": 0.32,
             "gauge": "3\/8",
             "material": "Mild Steel",
             "weight": 1.004,
             "price": 1.44,
             "unit_quantity": 6.0,
-            "modified_date": "Removed 60.0 quantity at March 14 Tuesday 2023 04:53:43 PM",
+            "modified_date": "Manually set to 0.0 quantity at March 24 Friday 2023 11:02:51 AM",
             "group": null
         },
         "G2Plus-Ceramics-Secondary Plate-part1x2": {
-            "current_quantity": -5.0,
+            "current_quantity": 0.0,
             "machine_time": 2.2,
             "gauge": "3\/8",
             "material": "Mild Steel",
             "weight": 4.702,
             "price": 8.51,
             "unit_quantity": 2.0,
-            "modified_date": "Removed 20.0 quantity at March 14 Tuesday 2023 04:53:43 PM",
+            "modified_date": "Manually set to 0.0 quantity at March 24 Friday 2023 11:02:54 AM",
             "group": null
         },
         "G2Plus-Side door 2-outer shell": {
-            "current_quantity": -5,
+            "current_quantity": 0.0,
             "machine_time": 0.32,
             "gauge": "12 Gauge",
             "material": "Mild Steel",
             "weight": 2.726,
             "price": 2.54,
             "unit_quantity": 1,
-            "modified_date": "Removed 10 quantity at March 14 Tuesday 2023 04:53:43 PM",
+            "modified_date": "Manually set to 0.0 quantity at March 24 Friday 2023 11:02:55 AM",
             "group": null
         },
         "1inch ring 12SS": {
@@ -2649,14 +2649,14 @@
             "group": null
         },
         "G2Plus-Primary Air Delivery Penetration Flangex6": {
-            "current_quantity": 45,
+            "current_quantity": 0.0,
             "machine_time": 0.32,
             "gauge": "3\/8",
             "material": "Mild Steel",
             "weight": 1.004,
             "price": 1.44,
             "unit_quantity": 1,
-            "modified_date": "Removed 10 quantity at March 14 Tuesday 2023 04:53:43 PM",
+            "modified_date": "Manually set to 0.0 quantity at March 24 Friday 2023 11:02:51 AM",
             "group": null
         },
         "G2Plus-Fan Motor-inner condensation shield": {
@@ -2935,14 +2935,14 @@
             "group": null
         },
         "G2Plus-Ceramics-Secondary Plate-part1x2": {
-            "current_quantity": 5,
+            "current_quantity": 0.0,
             "machine_time": 2.2,
             "gauge": "3\/8",
             "material": "Mild Steel",
             "weight": 4.702,
             "price": 8.51,
             "unit_quantity": 1,
-            "modified_date": "Removed 10 quantity at March 14 Tuesday 2023 04:53:43 PM",
+            "modified_date": "Manually set to 0.0 quantity at March 24 Friday 2023 11:02:54 AM",
             "group": null
         },
         "1inch ring 12SS": {
