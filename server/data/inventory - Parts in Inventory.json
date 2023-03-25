@@ -1431,14 +1431,14 @@
             "group": null
         },
         "3444-72": {
-            "current_quantity": 10,
+            "current_quantity": 20.0,
             "machine_time": 0.75,
             "gauge": "3\/16",
             "material": "304 SS",
             "weight": 16.647,
             "price": 42.91,
             "unit_quantity": 1,
-            "modified_date": "4 quantity added at March 25 Saturday 2023 02:18:35 PM",
+            "modified_date": "Manually set to 20.0 quantity at March 25 Saturday 2023 02:40:55 PM",
             "group": "3\/16SS"
         }
     },
