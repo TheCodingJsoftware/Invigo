@@ -33,6 +33,17 @@
             "modified_date": "69 quantity added at March 21 Tuesday 2023 04:35:32 PM",
             "group": null
         },
+        "3444-91x2 TO TAB": {
+            "current_quantity": 14,
+            "machine_time": 0.6,
+            "gauge": "14 Gauge",
+            "material": "304 SS",
+            "weight": 3.764,
+            "price": 11.5,
+            "unit_quantity": 1,
+            "modified_date": "Added at March 25 Saturday 2023 05:04:07 PM",
+            "group": null
+        },
         "WTSR-05": {
             "current_quantity": 10,
             "machine_time": 0.28,
@@ -44,6 +55,17 @@
             "modified_date": "Added at March 25 Saturday 2023 02:08:25 PM",
             "group": null
         },
+        "3444 chimneyx4": {
+            "current_quantity": 10,
+            "machine_time": 0.88,
+            "gauge": "14 Gauge",
+            "material": "304 SS",
+            "weight": 8.89,
+            "price": 24.91,
+            "unit_quantity": 1,
+            "modified_date": "Added at March 25 Saturday 2023 05:04:07 PM",
+            "group": null
+        },
         "WTS-13_": {
             "current_quantity": 6,
             "machine_time": 0.22,
@@ -53,6 +75,28 @@
             "price": 3.38,
             "unit_quantity": 1,
             "modified_date": "Added at March 25 Saturday 2023 02:08:25 PM",
+            "group": null
+        },
+        "304471 chimneyx4": {
+            "current_quantity": 6,
+            "machine_time": 0.77,
+            "gauge": "14 Gauge",
+            "material": "304 SS",
+            "weight": 6.658,
+            "price": 19.12,
+            "unit_quantity": 1,
+            "modified_date": "Added at March 25 Saturday 2023 05:04:07 PM",
+            "group": null
+        },
+        "3444-71 chimney": {
+            "current_quantity": 4,
+            "machine_time": 0.28,
+            "gauge": "14 Gauge",
+            "material": "304 SS",
+            "weight": 2.237,
+            "price": 6.51,
+            "unit_quantity": 1,
+            "modified_date": "Added at March 25 Saturday 2023 05:04:07 PM",
             "group": null
         }
     },
@@ -295,6 +339,28 @@
             "modified_date": "Added at March 21 Tuesday 2023 04:35:32 PM",
             "group": null
         },
+        "2840-87x2": {
+            "current_quantity": 40.0,
+            "machine_time": 0.47,
+            "gauge": "16 Gauge",
+            "material": "304 SS",
+            "weight": 2.417,
+            "price": 7.73,
+            "unit_quantity": 2.0,
+            "modified_date": "20 quantity added at March 25 Saturday 2023 05:04:07 PM",
+            "group": null
+        },
+        "2840-86x2": {
+            "current_quantity": 23,
+            "machine_time": 0.53,
+            "gauge": "14 Gauge",
+            "material": "304 SS",
+            "weight": 3.587,
+            "price": 10.78,
+            "unit_quantity": 2.0,
+            "modified_date": "20 quantity added at March 25 Saturday 2023 05:04:07 PM",
+            "group": null
+        },
         "2840-51x4": {
             "current_quantity": 20.0,
             "machine_time": 0.4,
@@ -304,17 +370,6 @@
             "price": 1.75,
             "unit_quantity": 4.0,
             "modified_date": "Removed 40.0 quantity at March 14 Tuesday 2023 04:49:05 PM",
-            "group": null
-        },
-        "2840-87x2": {
-            "current_quantity": 20.0,
-            "machine_time": 0.47,
-            "gauge": "16 Gauge",
-            "material": "304 SS",
-            "weight": 2.417,
-            "price": 7.73,
-            "unit_quantity": 2.0,
-            "modified_date": "20 quantity added at March 17 Friday 2023 02:17:02 PM",
             "group": null
         },
         "2840-24x2": {
@@ -790,16 +845,16 @@
             "modified_date": "Added at March 24 Friday 2023 05:39:24 PM",
             "group": null
         },
-        "2840-86x2": {
-            "current_quantity": 3,
-            "machine_time": 0.53,
-            "gauge": "14 Gauge",
+        "2840-29": {
+            "current_quantity": 10.0,
+            "machine_time": 0.75,
+            "gauge": "3\/16",
             "material": "304 SS",
-            "weight": 3.587,
-            "price": 10.78,
-            "unit_quantity": 2.0,
-            "modified_date": "Added at March 17 Friday 2023 02:17:02 PM",
-            "group": null
+            "weight": 15.382,
+            "price": 39.89,
+            "unit_quantity": 1,
+            "modified_date": "Manually set to 10.0 quantity at March 25 Saturday 2023 02:53:37 PM",
+            "group": "3\/16SS"
         },
         "2840-60x2": {
             "current_quantity": 0.0,
@@ -811,17 +866,6 @@
             "unit_quantity": 2.0,
             "modified_date": "Manually set to 0.0 quantity at March 14 Tuesday 2023 04:49:26 PM",
             "group": null
-        },
-        "2840-29": {
-            "current_quantity": 10.0,
-            "machine_time": 0.75,
-            "gauge": "3\/16",
-            "material": "304 SS",
-            "weight": 15.382,
-            "price": 39.89,
-            "unit_quantity": 1,
-            "modified_date": "Manually set to 10.0 quantity at March 25 Saturday 2023 02:53:37 PM",
-            "group": "3\/16SS"
         }
     },
     "BL34": {
@@ -957,6 +1001,17 @@
             "modified_date": "Added at March 24 Friday 2023 05:48:16 PM",
             "group": null
         },
+        "3444-90x2": {
+            "current_quantity": 41,
+            "machine_time": 0.6,
+            "gauge": "14 Gauge",
+            "material": "304 SS",
+            "weight": 3.946,
+            "price": 11.93,
+            "unit_quantity": 1,
+            "modified_date": "40 quantity added at March 25 Saturday 2023 05:04:07 PM",
+            "group": null
+        },
         "3444-337": {
             "current_quantity": 40,
             "machine_time": 0.45,
@@ -999,6 +1054,17 @@
             "price": 1.87,
             "unit_quantity": 1,
             "modified_date": "Removed 10 quantity at March 16 Thursday 2023 01:30:52 PM",
+            "group": null
+        },
+        "3444-91x2": {
+            "current_quantity": 29,
+            "machine_time": 0.58,
+            "gauge": "14 Gauge",
+            "material": "304 SS",
+            "weight": 3.764,
+            "price": 11.41,
+            "unit_quantity": 1,
+            "modified_date": "26 quantity added at March 25 Saturday 2023 05:04:07 PM",
             "group": null
         },
         "2840-103x2": {
@@ -1232,17 +1298,6 @@
             "modified_date": "4 quantity added at March 23 Thursday 2023 08:26:08 PM",
             "group": null
         },
-        "3444-91x2": {
-            "current_quantity": 3,
-            "machine_time": 0.58,
-            "gauge": "14 Gauge",
-            "material": "304 SS",
-            "weight": 3.764,
-            "price": 11.41,
-            "unit_quantity": 1,
-            "modified_date": "Added at March 17 Friday 2023 02:17:02 PM",
-            "group": null
-        },
         "3444-10": {
             "current_quantity": 3,
             "machine_time": 0.55,
@@ -1307,17 +1362,6 @@
             "price": 60.09,
             "unit_quantity": 1,
             "modified_date": "Added at March 23 Thursday 2023 08:26:08 PM",
-            "group": null
-        },
-        "3444-90x2": {
-            "current_quantity": 1,
-            "machine_time": 0.6,
-            "gauge": "14 Gauge",
-            "material": "304 SS",
-            "weight": 3.946,
-            "price": 11.93,
-            "unit_quantity": 1,
-            "modified_date": "Added at March 17 Friday 2023 02:17:02 PM",
             "group": null
         },
         "3444-24": {
