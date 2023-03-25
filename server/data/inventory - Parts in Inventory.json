@@ -813,14 +813,14 @@
             "group": null
         },
         "2840-29": {
-            "current_quantity": 1,
+            "current_quantity": 10.0,
             "machine_time": 0.75,
             "gauge": "3\/16",
             "material": "304 SS",
             "weight": 15.382,
             "price": 39.89,
             "unit_quantity": 1,
-            "modified_date": "Added at March 25 Saturday 2023 02:52:30 PM",
+            "modified_date": "Manually set to 10.0 quantity at March 25 Saturday 2023 02:53:37 PM",
             "group": "3\/16SS"
         }
     },
