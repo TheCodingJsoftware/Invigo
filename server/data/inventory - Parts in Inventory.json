@@ -32,171 +32,6 @@
             "unit_quantity": 1,
             "modified_date": "69 quantity added at March 21 Tuesday 2023 04:35:32 PM",
             "group": null
-        },
-        "3444-34": {
-            "current_quantity": 80,
-            "machine_time": 0.93,
-            "gauge": "3\/16",
-            "material": "Mild Steel",
-            "weight": 14.695,
-            "price": 11.73,
-            "unit_quantity": 1,
-            "modified_date": "Added at March 24 Friday 2023 01:55:57 PM",
-            "group": null
-        },
-        "3444-62": {
-            "current_quantity": 66,
-            "machine_time": 0.17,
-            "gauge": "3\/8",
-            "material": "Mild Steel",
-            "weight": 0.205,
-            "price": 0.56,
-            "unit_quantity": 1,
-            "modified_date": "Added at March 24 Friday 2023 05:48:16 PM",
-            "group": null
-        },
-        "3444-60": {
-            "current_quantity": 52,
-            "machine_time": 0.27,
-            "gauge": "3\/8",
-            "material": "Mild Steel",
-            "weight": 0.357,
-            "price": 0.9,
-            "unit_quantity": 1,
-            "modified_date": "12 quantity added at March 24 Friday 2023 05:48:36 PM",
-            "group": null
-        },
-        "3444-97": {
-            "current_quantity": 42,
-            "machine_time": 0.25,
-            "gauge": "3\/8",
-            "material": "Mild Steel",
-            "weight": 0.223,
-            "price": 0.77,
-            "unit_quantity": 1,
-            "modified_date": "Added at March 24 Friday 2023 05:48:16 PM",
-            "group": null
-        },
-        "3444-64": {
-            "current_quantity": 40,
-            "machine_time": 1.73,
-            "gauge": "3\/8",
-            "material": "Mild Steel",
-            "weight": 19.308,
-            "price": 16.68,
-            "unit_quantity": 1,
-            "modified_date": "14 quantity added at March 24 Friday 2023 05:48:36 PM",
-            "group": null
-        },
-        "3444-95": {
-            "current_quantity": 20,
-            "machine_time": 0.97,
-            "gauge": "3\/16",
-            "material": "Mild Steel",
-            "weight": 25.161,
-            "price": 18.53,
-            "unit_quantity": 1,
-            "modified_date": "Added at March 24 Friday 2023 01:55:12 PM",
-            "group": null
-        },
-        "3444-99": {
-            "current_quantity": 20,
-            "machine_time": 1.05,
-            "gauge": "3\/16",
-            "material": "Mild Steel",
-            "weight": 24.226,
-            "price": 18.13,
-            "unit_quantity": 1,
-            "modified_date": "Added at March 24 Friday 2023 01:55:12 PM",
-            "group": null
-        },
-        "3444-98": {
-            "current_quantity": 20,
-            "machine_time": 1.2,
-            "gauge": "3\/16",
-            "material": "Mild Steel",
-            "weight": 2.0,
-            "price": 4.28,
-            "unit_quantity": 1,
-            "modified_date": "Added at March 24 Friday 2023 01:55:58 PM",
-            "group": null
-        },
-        "3444-55": {
-            "current_quantity": 20,
-            "machine_time": 0.47,
-            "gauge": "12 Gauge",
-            "material": "Mild Steel",
-            "weight": 4.396,
-            "price": 3.99,
-            "unit_quantity": 1,
-            "modified_date": "Added at March 24 Friday 2023 05:39:24 PM",
-            "group": null
-        },
-        "3444-56": {
-            "current_quantity": 20,
-            "machine_time": 0.35,
-            "gauge": "12 Gauge",
-            "material": "Mild Steel",
-            "weight": 3.578,
-            "price": 3.16,
-            "unit_quantity": 1,
-            "modified_date": "Added at March 24 Friday 2023 05:39:24 PM",
-            "group": null
-        },
-        "3444-74": {
-            "current_quantity": 20,
-            "machine_time": 0.8,
-            "gauge": "12 Gauge",
-            "material": "Mild Steel",
-            "weight": 2.658,
-            "price": 3.7,
-            "unit_quantity": 1,
-            "modified_date": "Added at March 24 Friday 2023 05:39:24 PM",
-            "group": null
-        },
-        "3444-87": {
-            "current_quantity": 20,
-            "machine_time": 0.5,
-            "gauge": "12 Gauge",
-            "material": "Mild Steel",
-            "weight": 3.797,
-            "price": 3.68,
-            "unit_quantity": 1,
-            "modified_date": "Added at March 24 Friday 2023 05:39:24 PM",
-            "group": null
-        },
-        "2840-107": {
-            "current_quantity": 10,
-            "machine_time": 0.53,
-            "gauge": "12 Gauge",
-            "material": "Mild Steel",
-            "weight": 3.797,
-            "price": 3.76,
-            "unit_quantity": 1,
-            "modified_date": "Added at March 24 Friday 2023 05:39:24 PM",
-            "group": null
-        },
-        "2840-74": {
-            "current_quantity": 10,
-            "machine_time": 0.68,
-            "gauge": "12 Gauge",
-            "material": "Mild Steel",
-            "weight": 2.078,
-            "price": 3.03,
-            "unit_quantity": 1,
-            "modified_date": "Added at March 24 Friday 2023 05:39:24 PM",
-            "group": null
-        },
-        "3444-67": {
-            "current_quantity": 10,
-            "machine_time": 2.18,
-            "gauge": "3\/8",
-            "material": "Mild Steel",
-            "weight": 5.341,
-            "price": 8.87,
-            "unit_quantity": 1,
-            "modified_date": "Added at March 24 Friday 2023 05:48:16 PM",
-            "group": null
         }
     },
     "Recut": {
@@ -932,6 +767,28 @@
             "unit_quantity": 2.0,
             "modified_date": "Manually set to 0.0 quantity at March 14 Tuesday 2023 04:49:26 PM",
             "group": null
+        },
+        "2840-107": {
+            "current_quantity": 10,
+            "machine_time": 0.53,
+            "gauge": "12 Gauge",
+            "material": "Mild Steel",
+            "weight": 3.797,
+            "price": 3.76,
+            "unit_quantity": 1,
+            "modified_date": "Added at March 24 Friday 2023 05:39:24 PM",
+            "group": null
+        },
+        "2840-74": {
+            "current_quantity": 10,
+            "machine_time": 0.68,
+            "gauge": "12 Gauge",
+            "material": "Mild Steel",
+            "weight": 2.078,
+            "price": 3.03,
+            "unit_quantity": 1,
+            "modified_date": "Added at March 24 Friday 2023 05:39:24 PM",
+            "group": null
         }
     },
     "BL34": {
@@ -1398,14 +1255,157 @@
             "group": null
         },
         "3444-65": {
-            "current_quantity": 104,
+            "current_quantity": 160.0,
             "machine_time": 2.08,
             "gauge": "3\/4",
             "material": "Laser Grade Plate",
             "weight": 14.539,
             "price": 26.28,
+            "unit_quantity": 6.0,
+            "modified_date": "Manually set to 160.0 quantity at March 25 Saturday 2023 10:26:52 AM",
+            "group": null
+        },
+        "3444-34": {
+            "current_quantity": 80,
+            "machine_time": 0.93,
+            "gauge": "3\/16",
+            "material": "Mild Steel",
+            "weight": 14.695,
+            "price": 11.73,
             "unit_quantity": 1,
-            "modified_date": "52 quantity added at March 25 Saturday 2023 09:12:21 AM",
+            "modified_date": "Added at March 24 Friday 2023 01:55:57 PM",
+            "group": null
+        },
+        "3444-62": {
+            "current_quantity": 66,
+            "machine_time": 0.17,
+            "gauge": "3\/8",
+            "material": "Mild Steel",
+            "weight": 0.205,
+            "price": 0.56,
+            "unit_quantity": 1,
+            "modified_date": "Added at March 24 Friday 2023 05:48:16 PM",
+            "group": null
+        },
+        "3444-60": {
+            "current_quantity": 52,
+            "machine_time": 0.27,
+            "gauge": "3\/8",
+            "material": "Mild Steel",
+            "weight": 0.357,
+            "price": 0.9,
+            "unit_quantity": 1,
+            "modified_date": "12 quantity added at March 24 Friday 2023 05:48:36 PM",
+            "group": null
+        },
+        "3444-97": {
+            "current_quantity": 42,
+            "machine_time": 0.25,
+            "gauge": "3\/8",
+            "material": "Mild Steel",
+            "weight": 0.223,
+            "price": 0.77,
+            "unit_quantity": 1,
+            "modified_date": "Added at March 24 Friday 2023 05:48:16 PM",
+            "group": null
+        },
+        "3444-64": {
+            "current_quantity": 40,
+            "machine_time": 1.73,
+            "gauge": "3\/8",
+            "material": "Mild Steel",
+            "weight": 19.308,
+            "price": 16.68,
+            "unit_quantity": 1,
+            "modified_date": "14 quantity added at March 24 Friday 2023 05:48:36 PM",
+            "group": null
+        },
+        "3444-95": {
+            "current_quantity": 20,
+            "machine_time": 0.97,
+            "gauge": "3\/16",
+            "material": "Mild Steel",
+            "weight": 25.161,
+            "price": 18.53,
+            "unit_quantity": 1,
+            "modified_date": "Added at March 24 Friday 2023 01:55:12 PM",
+            "group": null
+        },
+        "3444-99": {
+            "current_quantity": 20,
+            "machine_time": 1.05,
+            "gauge": "3\/16",
+            "material": "Mild Steel",
+            "weight": 24.226,
+            "price": 18.13,
+            "unit_quantity": 1,
+            "modified_date": "Added at March 24 Friday 2023 01:55:12 PM",
+            "group": null
+        },
+        "3444-98": {
+            "current_quantity": 20,
+            "machine_time": 1.2,
+            "gauge": "3\/16",
+            "material": "Mild Steel",
+            "weight": 2.0,
+            "price": 4.28,
+            "unit_quantity": 1,
+            "modified_date": "Added at March 24 Friday 2023 01:55:58 PM",
+            "group": null
+        },
+        "3444-55": {
+            "current_quantity": 20,
+            "machine_time": 0.47,
+            "gauge": "12 Gauge",
+            "material": "Mild Steel",
+            "weight": 4.396,
+            "price": 3.99,
+            "unit_quantity": 1,
+            "modified_date": "Added at March 24 Friday 2023 05:39:24 PM",
+            "group": null
+        },
+        "3444-56": {
+            "current_quantity": 20,
+            "machine_time": 0.35,
+            "gauge": "12 Gauge",
+            "material": "Mild Steel",
+            "weight": 3.578,
+            "price": 3.16,
+            "unit_quantity": 1,
+            "modified_date": "Added at March 24 Friday 2023 05:39:24 PM",
+            "group": null
+        },
+        "3444-74": {
+            "current_quantity": 20,
+            "machine_time": 0.8,
+            "gauge": "12 Gauge",
+            "material": "Mild Steel",
+            "weight": 2.658,
+            "price": 3.7,
+            "unit_quantity": 1,
+            "modified_date": "Added at March 24 Friday 2023 05:39:24 PM",
+            "group": null
+        },
+        "3444-87": {
+            "current_quantity": 20,
+            "machine_time": 0.5,
+            "gauge": "12 Gauge",
+            "material": "Mild Steel",
+            "weight": 3.797,
+            "price": 3.68,
+            "unit_quantity": 1,
+            "modified_date": "Added at March 24 Friday 2023 05:39:24 PM",
+            "group": null
+        },
+        "3444-67": {
+            "current_quantity": 10,
+            "machine_time": 2.18,
+            "gauge": "3\/8",
+            "material": "Mild Steel",
+            "weight": 5.341,
+            "price": 8.87,
+            "unit_quantity": 1,
+            "modified_date": "Added at March 24 Friday 2023 05:48:16 PM",
             "group": null
         }
     },
