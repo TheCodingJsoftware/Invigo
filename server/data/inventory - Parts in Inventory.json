@@ -44,17 +44,6 @@
             "modified_date": "Added at March 25 Saturday 2023 02:08:25 PM",
             "group": null
         },
-        "3444-72": {
-            "current_quantity": 6,
-            "machine_time": 0.75,
-            "gauge": "3\/16",
-            "material": "304 SS",
-            "weight": 16.647,
-            "price": 42.91,
-            "unit_quantity": 1,
-            "modified_date": "Added at March 25 Saturday 2023 02:08:25 PM",
-            "group": null
-        },
         "WTS-13_": {
             "current_quantity": 6,
             "machine_time": 0.22,
@@ -1440,6 +1429,17 @@
             "unit_quantity": 1,
             "modified_date": "Removed 10 quantity at March 16 Thursday 2023 01:30:52 PM",
             "group": null
+        },
+        "3444-72": {
+            "current_quantity": 10,
+            "machine_time": 0.75,
+            "gauge": "3\/16",
+            "material": "304 SS",
+            "weight": 16.647,
+            "price": 42.91,
+            "unit_quantity": 1,
+            "modified_date": "4 quantity added at March 25 Saturday 2023 02:18:35 PM",
+            "group": "3\/16SS"
         }
     },
     "BL40": {
