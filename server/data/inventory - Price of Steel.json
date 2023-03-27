@@ -401,7 +401,7 @@
             "latest_change_current_quantity": "Latest Change:\nfrom: 19.0\nto: 20.0\nLaser Pc\nMarch 16 Thursday 2023 01:24:58 PM"
         },
         "16 Gauge 304 SS 120.000x60.000": {
-            "current_quantity": 16.0,
+            "current_quantity": 13.0,
             "sheet_dimension": "120.000x60.000",
             "thickness": "16 Gauge",
             "material": "304 SS",
