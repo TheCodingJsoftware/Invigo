@@ -1419,7 +1419,7 @@
             "price": 2.5,
             "use_exchange_rate": false,
             "priority": 0,
-            "notes": "Vendor: Mid Mountain Materials\t\nDescription:  (206) 762-7600",
+            "notes": "Vendor: Mid Mountain Materials\t\nDescription:  (206) 762-7600\n",
             "latest_change_name": "Item added\nItsme\nJuly 07 Thursday 2022 09-48-03 AM",
             "latest_change_part_number": "Item added\nItsme\nJuly 07 Thursday 2022 09-48-03 AM",
             "latest_change_unit_quantity": "Item added\nItsme\nJuly 07 Thursday 2022 09-48-03 AM",
@@ -1427,7 +1427,7 @@
             "latest_change_price": "Item added\nItsme\nJuly 07 Thursday 2022 09-48-03 AM",
             "latest_change_use_exchange_price": "Item added\nItsme\nJuly 07 Thursday 2022 09-48-03 AM",
             "latest_change_priority": "Item added\nItsme\nJuly 07 Thursday 2022 09-48-03 AM",
-            "latest_change_notes": "Item added\nItsme\nJuly 07 Thursday 2022 09-48-03 AM"
+            "latest_change_notes": "Latest Change:\nfrom: Vendor: Mid Mountain Materials\t\nDescription:  (206) 762-7600\nto: Vendor: Mid Mountain Materials\t\nDescription:  (206) 762-7600\n\nLynden\nMarch 27 Monday 2023 04:51:13 PM"
         },
         "Hexagon Head Machined Screw 5\/16   10-32x1\/2 ": {
             "part_number": "776",
@@ -3112,7 +3112,7 @@
             "price": 2.5,
             "use_exchange_rate": false,
             "priority": 2,
-            "notes": "Vendor: Mid Mountain Materials\t\nDescription:  (206) 762-7600",
+            "notes": "Vendor: Mid Mountain Materials\t\nDescription:  (206) 762-7600\n",
             "latest_change_name": "Item added\nItsme\nJuly 07 Thursday 2022 09-48-03 AM",
             "latest_change_part_number": "Item added\nItsme\nJuly 07 Thursday 2022 09-48-03 AM",
             "latest_change_unit_quantity": "Item added\nItsme\nJuly 07 Thursday 2022 09-48-03 AM",
@@ -3120,7 +3120,7 @@
             "latest_change_price": "Item added\nItsme\nJuly 07 Thursday 2022 09-48-03 AM",
             "latest_change_use_exchange_price": "Item added\nItsme\nJuly 07 Thursday 2022 09-48-03 AM",
             "latest_change_priority": "Latest Change:\nfrom: 0\nto: 2\nItsme\nJanuary 24 Tuesday 2023 05:14:23 PM",
-            "latest_change_notes": "Item added\nItsme\nJuly 07 Thursday 2022 09-48-03 AM"
+            "latest_change_notes": "Latest Change:\nfrom: \"Vendor: Mid Mountain Materials\t\nDescription:  (206) 762-7600\"\nto: \"Vendor: Mid Mountain Materials\t\nDescription:  (206) 762-7600\n\"\nLynden\nMarch 27 Monday 2023 04:51:13 PM"
         },
         "Hexagon Head Machined Screw 5\/16   10-32x1\/2 ": {
             "part_number": "776",
@@ -4856,7 +4856,7 @@
             "price": 2.5,
             "use_exchange_rate": false,
             "priority": 0,
-            "notes": "Vendor: Mid Mountain Materials\t\nDescription:  (206) 762-7600",
+            "notes": "Vendor: Mid Mountain Materials\t\nDescription:  (206) 762-7600\n",
             "latest_change_name": "Item added\nItsme\nJuly 07 Thursday 2022 09-48-03 AM",
             "latest_change_part_number": "Item added\nItsme\nJuly 07 Thursday 2022 09-48-03 AM",
             "latest_change_unit_quantity": "Item added\nItsme\nJuly 07 Thursday 2022 09-48-03 AM",
@@ -4864,7 +4864,7 @@
             "latest_change_price": "Item added\nItsme\nJuly 07 Thursday 2022 09-48-03 AM",
             "latest_change_use_exchange_price": "Item added\nItsme\nJuly 07 Thursday 2022 09-48-03 AM",
             "latest_change_priority": "Item added\nItsme\nJuly 07 Thursday 2022 09-48-03 AM",
-            "latest_change_notes": "Item added\nItsme\nJuly 07 Thursday 2022 09-48-03 AM"
+            "latest_change_notes": "Latest Change:\nfrom: Vendor: Mid Mountain Materials\t\nDescription:  (206) 762-7600\nto: Vendor: Mid Mountain Materials\t\nDescription:  (206) 762-7600\n\nLynden\nMarch 27 Monday 2023 04:51:13 PM"
         },
         "Hexagon Head Machined Screw 5\/16   10-32x1\/2 ": {
             "part_number": "776",
