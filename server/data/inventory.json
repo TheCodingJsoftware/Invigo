@@ -2541,10 +2541,11 @@
             "current_quantity": 68,
             "price": 102.3,
             "use_exchange_rate": false,
-            "priority": 2,
+            "priority": 3,
             "notes": "Vendor: Security Chimneys\n\nDescription: ",
             "latest_change_current_quantity": "Latest Change:\nfrom: 68\nto: 68\nLynden\nMarch 13 Monday 2023 08:30:46 AM",
-            "latest_change_price": "Latest Change:\nfrom: 102.3\nto: 102.3\nItsme\nJanuary 13 Friday 2023 02:05:00 PM"
+            "latest_change_price": "Latest Change:\nfrom: 102.3\nto: 102.3\nItsme\nJanuary 13 Friday 2023 02:05:00 PM",
+            "latest_change_priority": "Latest Change:\nfrom: 2\nto: 3\nLynden\nMarch 27 Monday 2023 10:27:52 AM"
         },
         "Hubble Plug-in  CR15WHI HUB REC Duplex 125V 15A WHT ": {
             "part_number": "CR15WHI",
@@ -9244,7 +9245,7 @@
             "current_quantity": 77,
             "price": 210.3,
             "use_exchange_rate": false,
-            "priority": 0,
+            "priority": 3,
             "notes": "Vendor: Security Chimneys\nDescription: ",
             "latest_change_name": "Item added\nItsme\nAugust 03 Wednesday 2022 11-04-02 AM",
             "latest_change_part_number": "Item added\nItsme\nAugust 03 Wednesday 2022 11-04-02 AM",
@@ -9252,7 +9253,7 @@
             "latest_change_current_quantity": "Latest Change:\nfrom: 77\nto: 77\nLynden\nMarch 24 Friday 2023 11:29:12 AM",
             "latest_change_price": "Latest Change:\nfrom: 210.0\nto: 210.3\nItsme\nOctober 04 Tuesday 2022 01:53:52 PM",
             "latest_change_use_exchange_price": "Item added\nItsme\nAugust 03 Wednesday 2022 11-04-02 AM",
-            "latest_change_priority": "Item added\nItsme\nAugust 03 Wednesday 2022 11-04-02 AM",
+            "latest_change_priority": "Latest Change:\nfrom: 2\nto: 3\nLynden\nMarch 27 Monday 2023 10:27:31 AM",
             "latest_change_notes": "Item added\nItsme\nAugust 03 Wednesday 2022 11-04-02 AM"
         },
         "8 x36\" Chimney ": {
@@ -9261,7 +9262,7 @@
             "current_quantity": 82,
             "price": 177.4,
             "use_exchange_rate": false,
-            "priority": 0,
+            "priority": 3,
             "notes": "Vendor: Security Chimney\nDescription: ",
             "latest_change_name": "Item added\nItsme\nAugust 03 Wednesday 2022 11-05-12 AM",
             "latest_change_part_number": "Item added\nItsme\nAugust 03 Wednesday 2022 11-05-12 AM",
@@ -9269,7 +9270,7 @@
             "latest_change_current_quantity": "Latest Change:\nfrom: 82\nto: 82\nLynden\nMarch 24 Friday 2023 11:29:12 AM",
             "latest_change_price": "Latest Change:\nfrom: 177.0\nto: 177.4\nItsme\nOctober 04 Tuesday 2022 01:52:55 PM",
             "latest_change_use_exchange_price": "Item added\nItsme\nAugust 03 Wednesday 2022 11-05-12 AM",
-            "latest_change_priority": "Item added\nItsme\nAugust 03 Wednesday 2022 11-05-12 AM",
+            "latest_change_priority": "Latest Change:\nfrom: 0\nto: 3\nLynden\nMarch 27 Monday 2023 10:27:33 AM",
             "latest_change_notes": "Item added\nItsme\nAugust 03 Wednesday 2022 11-05-12 AM"
         },
         "D500 Blower Fan": {
