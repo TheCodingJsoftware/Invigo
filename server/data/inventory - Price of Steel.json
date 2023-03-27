@@ -346,7 +346,7 @@
             "latest_change_current_quantity": "Latest Change:\nfrom: 1\nto: 0.0\nLaser Pc\nMarch 21 Tuesday 2023 01:53:11 PM"
         },
         "3\/16 304 SS 120.000x60.000": {
-            "current_quantity": 8.0,
+            "current_quantity": 7.0,
             "sheet_dimension": "120.000x60.000",
             "thickness": "3\/16",
             "material": "304 SS",
