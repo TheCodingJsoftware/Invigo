@@ -1847,23 +1847,6 @@
             "latest_change_priority": "Item added\nItsme\nOctober 27 Thursday 2022 04-30-41 PM",
             "latest_change_notes": "Item added\nItsme\nOctober 27 Thursday 2022 04-30-41 PM"
         },
-        "Borosilicate Glass Disc": {
-            "part_number": "8477K28",
-            "unit_quantity": 1,
-            "current_quantity": 47,
-            "price": 11.22,
-            "use_exchange_rate": false,
-            "priority": 0,
-            "notes": "Vendor: Mc Master Carr\nDescription: ",
-            "latest_change_name": "Item added\nItsme\nJuly 12 Tuesday 2022 09-29-24 AM",
-            "latest_change_part_number": "Item added\nItsme\nJuly 12 Tuesday 2022 09-29-24 AM",
-            "latest_change_unit_quantity": "Item added\nItsme\nJuly 12 Tuesday 2022 09-29-24 AM",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 47\nto: 47\nLynden\nMarch 27 Monday 2023 01:43:10 PM",
-            "latest_change_price": "Item added\nItsme\nJuly 12 Tuesday 2022 09-29-24 AM",
-            "latest_change_use_exchange_price": "Item added\nItsme\nJuly 12 Tuesday 2022 09-29-24 AM",
-            "latest_change_priority": "Item added\nItsme\nJuly 12 Tuesday 2022 09-29-24 AM",
-            "latest_change_notes": "Item added\nItsme\nJuly 12 Tuesday 2022 09-29-24 AM"
-        },
         "rivet  3\/4x 5\/16 DIA ": {
             "part_number": "Rivet516",
             "unit_quantity": 8,
@@ -2340,6 +2323,23 @@
             "latest_change_use_exchange_price": "Item added\nItsme\nJuly 19 Tuesday 2022 05-07-40 PM",
             "latest_change_priority": "Item added\nItsme\nJuly 19 Tuesday 2022 05-07-40 PM",
             "latest_change_notes": "Item added\nItsme\nJuly 19 Tuesday 2022 05-07-40 PM"
+        },
+        "Borosilicate Glass Disc": {
+            "part_number": "8477K28",
+            "unit_quantity": 1,
+            "current_quantity": 47,
+            "price": 11.22,
+            "use_exchange_rate": false,
+            "priority": 0,
+            "notes": "Vendor: Mc Master Carr\nDescription: ",
+            "latest_change_name": "Item added\nItsme\nJuly 12 Tuesday 2022 09-29-24 AM",
+            "latest_change_part_number": "Item added\nItsme\nJuly 12 Tuesday 2022 09-29-24 AM",
+            "latest_change_unit_quantity": "Item added\nItsme\nJuly 12 Tuesday 2022 09-29-24 AM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 47\nto: 47\nLynden\nMarch 27 Monday 2023 01:43:10 PM",
+            "latest_change_price": "Item added\nItsme\nJuly 12 Tuesday 2022 09-29-24 AM",
+            "latest_change_use_exchange_price": "Item added\nItsme\nJuly 12 Tuesday 2022 09-29-24 AM",
+            "latest_change_priority": "Item added\nItsme\nJuly 12 Tuesday 2022 09-29-24 AM",
+            "latest_change_notes": "Item added\nItsme\nJuly 12 Tuesday 2022 09-29-24 AM"
         },
         "Sticker 312 Polar G2 & G3 G series Wiring 8\"x10\"": {
             "part_number": "312",
