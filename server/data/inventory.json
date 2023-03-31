@@ -169,7 +169,7 @@
         "1 1\/2 x 1 1\/4 Elbow": {
             "part_number": "112E",
             "unit_quantity": 2,
-            "current_quantity": 7,
+            "current_quantity": 18,
             "price": 4.0,
             "use_exchange_rate": false,
             "priority": 0,
@@ -177,7 +177,7 @@
             "latest_change_name": "Item added\nItsme\nJuly 21 Thursday 2022 09-23-42 AM",
             "latest_change_part_number": "Item added\nItsme\nJuly 21 Thursday 2022 09-23-42 AM",
             "latest_change_unit_quantity": "Item added\nItsme\nJuly 21 Thursday 2022 09-23-42 AM",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 7\nto: 7\nLynden\nMarch 16 Thursday 2023 01:58:35 PM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 18\nto: 18\nLynden\nMarch 31 Friday 2023 09:41:16 AM",
             "latest_change_price": "Latest Change:\nfrom: 0.0\nto: 4.0\nItsme\nJuly 21 Thursday 2022 09:25:24 AM",
             "latest_change_use_exchange_price": "Item added\nItsme\nJuly 21 Thursday 2022 09-23-42 AM",
             "latest_change_priority": "Item added\nItsme\nJuly 21 Thursday 2022 09-23-42 AM",
@@ -1899,23 +1899,6 @@
             "latest_change_priority": "Item added\nItsme\nNovember 30 Wednesday 2022 09-47-00 AM",
             "latest_change_notes": "Item added\nItsme\nNovember 30 Wednesday 2022 09-47-00 AM"
         },
-        "1 1\/2 x 1 1\/4 Elbow": {
-            "part_number": "112E",
-            "unit_quantity": 2,
-            "current_quantity": 7,
-            "price": 4.0,
-            "use_exchange_rate": false,
-            "priority": 0,
-            "notes": "Vendor: Greenline Hose and fitting\nDescription: ",
-            "latest_change_name": "Item added\nItsme\nSeptember 16 Friday 2022 02-18-08 PM",
-            "latest_change_part_number": "Item added\nItsme\nSeptember 16 Friday 2022 02-18-08 PM",
-            "latest_change_unit_quantity": "Item added\nItsme\nSeptember 16 Friday 2022 02-18-08 PM",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 7\nto: 7\nLynden\nMarch 16 Thursday 2023 01:58:35 PM",
-            "latest_change_price": "Item added\nItsme\nSeptember 16 Friday 2022 02-18-08 PM",
-            "latest_change_use_exchange_price": "Item added\nItsme\nSeptember 16 Friday 2022 02-18-09 PM",
-            "latest_change_priority": "Item added\nItsme\nSeptember 16 Friday 2022 02-18-09 PM",
-            "latest_change_notes": "Item added\nItsme\nSeptember 16 Friday 2022 02-18-09 PM"
-        },
         "1-1\/4 Half Coupling": {
             "part_number": "G0008MC-125",
             "unit_quantity": 1,
@@ -2009,6 +1992,23 @@
             "latest_change_current_quantity": "Latest Change:\nfrom: 15\nto: 15\nLynden\nMarch 24 Friday 2023 08:28:38 AM",
             "latest_change_notes": "Latest Change:\nfrom: Vendor: HC Graphic Screen Printing\nDescription: orders@hdcraphicsinc.co\nto: Vendor: HC Graphic Screen Printing\nDescription: orders@hdcraphicsinc.com\nItsme\nFebruary 07 Tuesday 2023 03:13:57 PM",
             "latest_change_price": "Latest Change:\nfrom: 1.05\nto: 1.05\nItsme\nFebruary 23 Thursday 2023 09:33:33 AM"
+        },
+        "1 1\/2 x 1 1\/4 Elbow": {
+            "part_number": "112E",
+            "unit_quantity": 2,
+            "current_quantity": 18,
+            "price": 4.0,
+            "use_exchange_rate": false,
+            "priority": 0,
+            "notes": "Vendor: Greenline Hose and fitting\nDescription: ",
+            "latest_change_name": "Item added\nItsme\nSeptember 16 Friday 2022 02-18-08 PM",
+            "latest_change_part_number": "Item added\nItsme\nSeptember 16 Friday 2022 02-18-08 PM",
+            "latest_change_unit_quantity": "Item added\nItsme\nSeptember 16 Friday 2022 02-18-08 PM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 18\nto: 18\nLynden\nMarch 31 Friday 2023 09:41:16 AM",
+            "latest_change_price": "Item added\nItsme\nSeptember 16 Friday 2022 02-18-08 PM",
+            "latest_change_use_exchange_price": "Item added\nItsme\nSeptember 16 Friday 2022 02-18-09 PM",
+            "latest_change_priority": "Item added\nItsme\nSeptember 16 Friday 2022 02-18-09 PM",
+            "latest_change_notes": "Item added\nItsme\nSeptember 16 Friday 2022 02-18-09 PM"
         },
         "3\" Thermax SF- 600 Brick Slabs 1000x610x75": {
             "part_number": "THERMAXSF600",
@@ -3628,7 +3628,7 @@
         "1 1\/2 x 1 1\/4 Elbow": {
             "part_number": "112E",
             "unit_quantity": 2,
-            "current_quantity": 7,
+            "current_quantity": 18,
             "price": 4.0,
             "use_exchange_rate": false,
             "priority": 0,
@@ -3636,7 +3636,7 @@
             "latest_change_name": "Item added\nItsme\nSeptember 16 Friday 2022 02-18-33 PM",
             "latest_change_part_number": "Item added\nItsme\nSeptember 16 Friday 2022 02-18-33 PM",
             "latest_change_unit_quantity": "Item added\nItsme\nSeptember 16 Friday 2022 02-18-33 PM",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 7\nto: 7\nLynden\nMarch 16 Thursday 2023 01:58:35 PM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 18\nto: 18\nLynden\nMarch 31 Friday 2023 09:41:16 AM",
             "latest_change_price": "Item added\nItsme\nSeptember 16 Friday 2022 02-18-33 PM",
             "latest_change_use_exchange_price": "Item added\nItsme\nSeptember 16 Friday 2022 02-18-33 PM",
             "latest_change_priority": "Item added\nItsme\nSeptember 16 Friday 2022 02-18-33 PM",
