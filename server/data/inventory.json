@@ -203,7 +203,7 @@
         "Cotter Pin 3\/32x 3\/4 ": {
             "part_number": " CP332",
             "unit_quantity": 4,
-            "current_quantity": 10,
+            "current_quantity": 110,
             "price": 0.08,
             "use_exchange_rate": false,
             "priority": 0,
@@ -211,7 +211,7 @@
             "latest_change_name": "Item added\nItsme\nJuly 19 Tuesday 2022 04-48-12 PM",
             "latest_change_part_number": "Item added\nItsme\nJuly 19 Tuesday 2022 04-48-12 PM",
             "latest_change_unit_quantity": "Item added\nItsme\nJuly 19 Tuesday 2022 04-48-12 PM",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 10\nto: 10\nLynden\nMarch 13 Monday 2023 09:27:00 AM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 110\nto: 110\nLynden\nMarch 31 Friday 2023 09:59:48 AM",
             "latest_change_price": "Item added\nItsme\nJuly 19 Tuesday 2022 04-48-12 PM",
             "latest_change_use_exchange_price": "Item added\nItsme\nJuly 19 Tuesday 2022 04-48-12 PM",
             "latest_change_priority": "Item added\nItsme\nJuly 19 Tuesday 2022 04-48-12 PM",
@@ -1916,23 +1916,6 @@
             "latest_change_priority": "Item added\nItsme\nJuly 07 Thursday 2022 10-23-19 AM",
             "latest_change_notes": "Latest Change:\nfrom: \"Vendor: Greenline\nDescription: \"\nto: \"Vendor: Greenline\nDescription: 204-694-0332\"\nItsme\nJuly 07 Thursday 2022 11:22:22 AM"
         },
-        "Cotter Pin 3\/32x 3\/4 ": {
-            "part_number": " CP332",
-            "unit_quantity": 4,
-            "current_quantity": 10,
-            "price": 0.08,
-            "use_exchange_rate": false,
-            "priority": 0,
-            "notes": "Vendor:  A.Adams Supply\nDescription: ",
-            "latest_change_name": "Item added\nItsme\nJuly 19 Tuesday 2022 04-48-12 PM",
-            "latest_change_part_number": "Item added\nItsme\nJuly 19 Tuesday 2022 04-48-12 PM",
-            "latest_change_unit_quantity": "Item added\nItsme\nJuly 19 Tuesday 2022 04-48-12 PM",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 10\nto: 10\nLynden\nMarch 13 Monday 2023 09:27:00 AM",
-            "latest_change_price": "Item added\nItsme\nJuly 19 Tuesday 2022 04-48-12 PM",
-            "latest_change_use_exchange_price": "Item added\nItsme\nJuly 19 Tuesday 2022 04-48-12 PM",
-            "latest_change_priority": "Item added\nItsme\nJuly 19 Tuesday 2022 04-48-12 PM",
-            "latest_change_notes": "Item added\nItsme\nJuly 19 Tuesday 2022 04-48-12 PM"
-        },
         "Compression Spring, 1\" Long, 1.225\" OD, 1.055\" ID 35lbs damper adjust": {
             "part_number": "9657k545",
             "unit_quantity": 2,
@@ -2727,6 +2710,23 @@
             "latest_change_use_exchange_price": "Item added\nLynden\nMarch 06 Monday 2023 07-00-46 PM",
             "latest_change_priority": "Item added\nLynden\nMarch 06 Monday 2023 07-00-46 PM",
             "latest_change_notes": "Item added\nLynden\nMarch 06 Monday 2023 07-00-46 PM"
+        },
+        "Cotter Pin 3\/32x 3\/4 ": {
+            "part_number": " CP332",
+            "unit_quantity": 4,
+            "current_quantity": 110,
+            "price": 0.08,
+            "use_exchange_rate": false,
+            "priority": 0,
+            "notes": "Vendor:  A.Adams Supply\nDescription: ",
+            "latest_change_name": "Item added\nItsme\nJuly 19 Tuesday 2022 04-48-12 PM",
+            "latest_change_part_number": "Item added\nItsme\nJuly 19 Tuesday 2022 04-48-12 PM",
+            "latest_change_unit_quantity": "Item added\nItsme\nJuly 19 Tuesday 2022 04-48-12 PM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 110\nto: 110\nLynden\nMarch 31 Friday 2023 09:59:48 AM",
+            "latest_change_price": "Item added\nItsme\nJuly 19 Tuesday 2022 04-48-12 PM",
+            "latest_change_use_exchange_price": "Item added\nItsme\nJuly 19 Tuesday 2022 04-48-12 PM",
+            "latest_change_priority": "Item added\nItsme\nJuly 19 Tuesday 2022 04-48-12 PM",
+            "latest_change_notes": "Item added\nItsme\nJuly 19 Tuesday 2022 04-48-12 PM"
         },
         "Sticker 322 G2 and G3 Remove Label ": {
             "part_number": "322",
@@ -3662,7 +3662,7 @@
         "Cotter Pin 3\/32x 3\/4 ": {
             "part_number": " CP332",
             "unit_quantity": 4,
-            "current_quantity": 10,
+            "current_quantity": 110,
             "price": 0.08,
             "use_exchange_rate": false,
             "priority": 0,
@@ -3670,7 +3670,7 @@
             "latest_change_name": "Item added\nItsme\nJuly 19 Tuesday 2022 04-48-12 PM",
             "latest_change_part_number": "Item added\nItsme\nJuly 19 Tuesday 2022 04-48-12 PM",
             "latest_change_unit_quantity": "Item added\nItsme\nJuly 19 Tuesday 2022 04-48-12 PM",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 10\nto: 10\nLynden\nMarch 13 Monday 2023 09:27:00 AM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 110\nto: 110\nLynden\nMarch 31 Friday 2023 09:59:48 AM",
             "latest_change_price": "Item added\nItsme\nJuly 19 Tuesday 2022 04-48-12 PM",
             "latest_change_use_exchange_price": "Item added\nItsme\nJuly 19 Tuesday 2022 04-48-12 PM",
             "latest_change_priority": "Item added\nItsme\nJuly 19 Tuesday 2022 04-48-12 PM",
@@ -10795,6 +10795,23 @@
             "latest_change_use_exchange_price": "Item added\nItsme\nFebruary 11 Saturday 2023 08-51-29 AM",
             "latest_change_priority": "Item added\nItsme\nFebruary 11 Saturday 2023 08-51-29 AM",
             "latest_change_notes": "Item added\nItsme\nFebruary 11 Saturday 2023 08-51-29 AM"
+        },
+        "Flange Nut Serrated NC ZP 3\/8-16": {
+            "part_number": "159-037",
+            "unit_quantity": 40.0,
+            "current_quantity": 4000,
+            "price": 0.3,
+            "use_exchange_rate": false,
+            "priority": 0,
+            "notes": "Vendor: A.Adams Supply\nDescription: ",
+            "latest_change_name": "Item added\nLynden\nMarch 31 Friday 2023 09-58-16 AM",
+            "latest_change_part_number": "Item added\nLynden\nMarch 31 Friday 2023 09-58-16 AM",
+            "latest_change_unit_quantity": "Item added\nLynden\nMarch 31 Friday 2023 09-58-16 AM",
+            "latest_change_current_quantity": "Item added\nLynden\nMarch 31 Friday 2023 09-58-16 AM",
+            "latest_change_price": "Item added\nLynden\nMarch 31 Friday 2023 09-58-16 AM",
+            "latest_change_use_exchange_price": "Item added\nLynden\nMarch 31 Friday 2023 09-58-16 AM",
+            "latest_change_priority": "Item added\nLynden\nMarch 31 Friday 2023 09-58-16 AM",
+            "latest_change_notes": "Item added\nLynden\nMarch 31 Friday 2023 09-58-16 AM"
         }
     },
     "EGOR 218 Composter (mini)": {
@@ -11037,6 +11054,23 @@
             "latest_change_use_exchange_price": "Item added\nLynden\nMarch 03 Friday 2023 09-25-32 AM",
             "latest_change_priority": "Item added\nLynden\nMarch 03 Friday 2023 09-25-32 AM",
             "latest_change_notes": "Item added\nLynden\nMarch 03 Friday 2023 09-25-33 AM"
+        },
+        "SAFD206-20G Bearing ": {
+            "part_number": "SAFD206-20G",
+            "unit_quantity": 9.0,
+            "current_quantity": 18,
+            "price": 24.46,
+            "use_exchange_rate": false,
+            "priority": 0,
+            "notes": "Vendor: Rantec Industrial \nDescription: ",
+            "latest_change_name": "Item added\nLynden\nMarch 31 Friday 2023 09-56-34 AM",
+            "latest_change_part_number": "Item added\nLynden\nMarch 31 Friday 2023 09-56-34 AM",
+            "latest_change_unit_quantity": "Item added\nLynden\nMarch 31 Friday 2023 09-56-34 AM",
+            "latest_change_current_quantity": "Item added\nLynden\nMarch 31 Friday 2023 09-56-34 AM",
+            "latest_change_price": "Item added\nLynden\nMarch 31 Friday 2023 09-56-34 AM",
+            "latest_change_use_exchange_price": "Item added\nLynden\nMarch 31 Friday 2023 09-56-34 AM",
+            "latest_change_priority": "Item added\nLynden\nMarch 31 Friday 2023 09-56-34 AM",
+            "latest_change_notes": "Item added\nLynden\nMarch 31 Friday 2023 09-56-34 AM"
         },
         "LCB Chip Bin Flighting ( 4.125\"OD x 4.125\" Pitch x 1.25\"ID 120\" RH 10GA Flighting ": {
             "part_number": "10R412412125",
