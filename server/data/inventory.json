@@ -10902,23 +10902,6 @@
         }
     },
     "LCB ": {
-        "Gear Box Only C414NUFA4500": {
-            "part_number": "C414NUFA45N56C",
-            "unit_quantity": 1.0,
-            "current_quantity": 1,
-            "price": 986.0,
-            "use_exchange_rate": false,
-            "priority": 0,
-            "notes": "Vendor: Rantec\nDescription: Gearbox only, motor is seperate.\nalso used on enviro 500 bin ",
-            "latest_change_name": "Item added\nItsme\nJanuary 27 Friday 2023 02-07-00 PM",
-            "latest_change_part_number": "Item added\nItsme\nJanuary 27 Friday 2023 02-07-00 PM",
-            "latest_change_unit_quantity": "Item added\nItsme\nJanuary 27 Friday 2023 02-07-00 PM",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 1\nto: 1\nItsme\nFebruary 09 Thursday 2023 10:29:15 AM",
-            "latest_change_price": "Item added\nItsme\nJanuary 27 Friday 2023 02-07-00 PM",
-            "latest_change_use_exchange_price": "Item added\nItsme\nJanuary 27 Friday 2023 02-07-00 PM",
-            "latest_change_priority": "Item added\nItsme\nJanuary 27 Friday 2023 02-07-00 PM",
-            "latest_change_notes": "Item added\nItsme\nJanuary 27 Friday 2023 02-07-00 PM"
-        },
         "Wall Mount Panel CSD24308 Type 4\/12 ENCL(77470  Hoffman": {
             "part_number": "HOFCSD24308",
             "unit_quantity": 1.0,
@@ -10986,6 +10969,23 @@
             "latest_change_use_exchange_price": "Item added\nItsme\nFebruary 03 Friday 2023 01-35-09 PM",
             "latest_change_priority": "Item added\nItsme\nFebruary 03 Friday 2023 01-35-09 PM",
             "latest_change_notes": "Item added\nItsme\nFebruary 03 Friday 2023 01-35-09 PM"
+        },
+        "Gear Box Only C414NUFA4500": {
+            "part_number": "C414NUFA45N56C",
+            "unit_quantity": 1.0,
+            "current_quantity": 6,
+            "price": 986.0,
+            "use_exchange_rate": false,
+            "priority": 0,
+            "notes": "Vendor: Rantec\nDescription: Gearbox only, motor is seperate.\nalso used on enviro 500 bin \nand LCB",
+            "latest_change_name": "Item added\nItsme\nJanuary 27 Friday 2023 02-07-00 PM",
+            "latest_change_part_number": "Item added\nItsme\nJanuary 27 Friday 2023 02-07-00 PM",
+            "latest_change_unit_quantity": "Item added\nItsme\nJanuary 27 Friday 2023 02-07-00 PM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 6\nto: 6\nLynden\nMarch 31 Friday 2023 09:53:57 AM",
+            "latest_change_price": "Item added\nItsme\nJanuary 27 Friday 2023 02-07-00 PM",
+            "latest_change_use_exchange_price": "Item added\nItsme\nJanuary 27 Friday 2023 02-07-00 PM",
+            "latest_change_priority": "Item added\nItsme\nJanuary 27 Friday 2023 02-07-00 PM",
+            "latest_change_notes": "Latest Change:\nfrom: \"Vendor: Rantec\nDescription: Gearbox only, motor is seperate.\nalso used on enviro 500 bin \nand LC\"\nto: \"Vendor: Rantec\nDescription: Gearbox only, motor is seperate.\nalso used on enviro 500 bin \nand LCB\"\nLynden\nMarch 31 Friday 2023 09:54:53 AM"
         },
         "VFD 22F-A2P5N103 PF4M 240V 1PH .5HP": {
             "part_number": "ALB22FA2P5N103",
