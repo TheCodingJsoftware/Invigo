@@ -37,7 +37,7 @@
         "1\" Plug": {
             "part_number": "G1600M",
             "unit_quantity": 6,
-            "current_quantity": -17,
+            "current_quantity": 192,
             "price": 0.66,
             "use_exchange_rate": false,
             "priority": 0,
@@ -45,7 +45,7 @@
             "latest_change_name": "Item added\nItsme\nOctober 11 Tuesday 2022 01-58-02 PM",
             "latest_change_part_number": "Item added\nItsme\nOctober 11 Tuesday 2022 01-58-02 PM",
             "latest_change_unit_quantity": "Item added\nItsme\nOctober 11 Tuesday 2022 01-58-02 PM",
-            "latest_change_current_quantity": "Latest Change:\nfrom: -17\nto: -17\nLynden\nMarch 16 Thursday 2023 01:53:36 PM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 192\nto: 192\nLynden\nMarch 31 Friday 2023 09:40:39 AM",
             "latest_change_price": "Item added\nItsme\nOctober 11 Tuesday 2022 01-58-02 PM",
             "latest_change_use_exchange_price": "Item added\nItsme\nOctober 11 Tuesday 2022 01-58-02 PM",
             "latest_change_priority": "Item added\nItsme\nOctober 11 Tuesday 2022 01-58-02 PM",
@@ -105,12 +105,12 @@
         "Barb Hose Adapter fitting": {
             "part_number": "BIA-020",
             "unit_quantity": 2,
-            "current_quantity": 0,
+            "current_quantity": 40,
             "price": 3.0,
             "use_exchange_rate": false,
             "priority": 0,
             "notes": "Vendor: GreenLine\nDescription: 204-694-0332\nPart # G33G-125",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 0\nto: 0\nLynden\nMarch 17 Friday 2023 09:16:20 AM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 40\nto: 40\nLynden\nMarch 31 Friday 2023 09:39:41 AM",
             "latest_change_price": "Latest Change:\nfrom: 3.3\nto: 3.0\nItsme\nAugust 03 Wednesday 2022 08:50:27 AM",
             "latest_change_notes": "Latest Change:\nfrom: Vendor: GreenLine\nDescription: 204-694-0332\nPart # G33G-12\nto: Vendor: GreenLine\nDescription: 204-694-0332\nPart # G33G-125\nItsme\nJanuary 17 Tuesday 2023 09:09:11 AM"
         },
@@ -1761,23 +1761,6 @@
             "latest_change_priority": "Item added\nItsme\nJanuary 30 Monday 2023 02-35-04 PM",
             "latest_change_notes": "Item added\nItsme\nJanuary 30 Monday 2023 02-35-04 PM"
         },
-        "1\" Plug": {
-            "part_number": "G1600M",
-            "unit_quantity": 6,
-            "current_quantity": -17,
-            "price": 0.66,
-            "use_exchange_rate": false,
-            "priority": 0,
-            "notes": "Vendor:  GreenLine \nDescription: \nPart # G1600M-100",
-            "latest_change_name": "Item added\nItsme\nOctober 06 Thursday 2022 09-10-38 AM",
-            "latest_change_part_number": "Item added\nItsme\nOctober 06 Thursday 2022 09-10-38 AM",
-            "latest_change_unit_quantity": "Item added\nItsme\nOctober 06 Thursday 2022 09-10-38 AM",
-            "latest_change_current_quantity": "Latest Change:\nfrom: -17\nto: -17\nLynden\nMarch 16 Thursday 2023 01:53:36 PM",
-            "latest_change_price": "Item added\nItsme\nOctober 06 Thursday 2022 09-10-38 AM",
-            "latest_change_use_exchange_price": "Item added\nItsme\nOctober 06 Thursday 2022 09-10-38 AM",
-            "latest_change_priority": "Item added\nItsme\nOctober 06 Thursday 2022 09-10-38 AM",
-            "latest_change_notes": "Latest Change:\nfrom: \"Vendor:  GreenLine \nDescription: \nPart # G1600M-10\"\nto: \"Vendor:  GreenLine \nDescription: \nPart # G1600M-100\"\nItsme\nJanuary 17 Tuesday 2023 09:14:29 AM"
-        },
         "G3 Brick Set": {
             "part_number": "G3BS",
             "unit_quantity": 1,
@@ -1863,19 +1846,6 @@
             "latest_change_use_exchange_price": "Item added\nItsme\nJanuary 27 Friday 2023 01-32-27 PM",
             "latest_change_priority": "Item added\nItsme\nJanuary 27 Friday 2023 01-32-27 PM",
             "latest_change_notes": "Item added\nItsme\nJanuary 27 Friday 2023 01-32-27 PM"
-        },
-        "Barb Hose Adapter fitting 1 1\/4": {
-            "part_number": "BIA-020",
-            "unit_quantity": 2,
-            "current_quantity": 0,
-            "price": 3.0,
-            "use_exchange_rate": false,
-            "priority": 0,
-            "notes": "Vendor: GreenLine\nDescription: 204-694-0332\nPart # G33G-125",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 0\nto: 0\nLynden\nMarch 17 Friday 2023 09:16:20 AM",
-            "latest_change_price": "Latest Change:\nfrom: 3.3\nto: 3.0\nItsme\nAugust 03 Wednesday 2022 08:50:27 AM",
-            "latest_change_name": "Latest Change:\nfrom: \"Barb Hose Adapter fitting 1 1\/\"\nto: \"Barb Hose Adapter fitting 1 1\/4\"\nItsme\nJanuary 16 Monday 2023 09:57:20 AM",
-            "latest_change_notes": "Latest Change:\nfrom: \"Vendor: GreenLine\nDescription: 204-694-0332\nPart # G33G-12\"\nto: \"Vendor: GreenLine\nDescription: 204-694-0332\nPart # G33G-125\"\nItsme\nJanuary 17 Tuesday 2023 09:09:11 AM"
         },
         "Vapor Thermometer": {
             "part_number": "20UB8-220FC-4111-03FT                        ",
@@ -2221,6 +2191,19 @@
             "priority": 0,
             "notes": "Vendor: Industrial Rubber Supply\nDescription: ",
             "latest_change_current_quantity": "Latest Change:\nfrom: 36\nto: 36\nLynden\nMarch 13 Monday 2023 08:30:45 AM"
+        },
+        "Barb Hose Adapter fitting 1 1\/4": {
+            "part_number": "BIA-020",
+            "unit_quantity": 2,
+            "current_quantity": 40,
+            "price": 3.0,
+            "use_exchange_rate": false,
+            "priority": 0,
+            "notes": "Vendor: GreenLine\nDescription: 204-694-0332\nPart # G33G-125",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 40\nto: 40\nLynden\nMarch 31 Friday 2023 09:39:41 AM",
+            "latest_change_price": "Latest Change:\nfrom: 3.3\nto: 3.0\nItsme\nAugust 03 Wednesday 2022 08:50:27 AM",
+            "latest_change_name": "Latest Change:\nfrom: \"Barb Hose Adapter fitting 1 1\/\"\nto: \"Barb Hose Adapter fitting 1 1\/4\"\nItsme\nJanuary 16 Monday 2023 09:57:20 AM",
+            "latest_change_notes": "Latest Change:\nfrom: \"Vendor: GreenLine\nDescription: 204-694-0332\nPart # G33G-12\"\nto: \"Vendor: GreenLine\nDescription: 204-694-0332\nPart # G33G-125\"\nItsme\nJanuary 17 Tuesday 2023 09:09:11 AM"
         },
         "Circuit Grounding Terminal 1492-JG4 IEC": {
             "part_number": "ALB1492JG4",
@@ -2969,6 +2952,23 @@
             "latest_change_priority": "Item added\nLynden\nMarch 30 Thursday 2023 08-50-59 AM",
             "latest_change_notes": "Item added\nLynden\nMarch 30 Thursday 2023 08-50-59 AM"
         },
+        "1\" Plug": {
+            "part_number": "G1600M",
+            "unit_quantity": 6,
+            "current_quantity": 192,
+            "price": 0.66,
+            "use_exchange_rate": false,
+            "priority": 0,
+            "notes": "Vendor:  GreenLine \nDescription: \nPart # G1600M-100",
+            "latest_change_name": "Item added\nItsme\nOctober 06 Thursday 2022 09-10-38 AM",
+            "latest_change_part_number": "Item added\nItsme\nOctober 06 Thursday 2022 09-10-38 AM",
+            "latest_change_unit_quantity": "Item added\nItsme\nOctober 06 Thursday 2022 09-10-38 AM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 192\nto: 192\nLynden\nMarch 31 Friday 2023 09:40:39 AM",
+            "latest_change_price": "Item added\nItsme\nOctober 06 Thursday 2022 09-10-38 AM",
+            "latest_change_use_exchange_price": "Item added\nItsme\nOctober 06 Thursday 2022 09-10-38 AM",
+            "latest_change_priority": "Item added\nItsme\nOctober 06 Thursday 2022 09-10-38 AM",
+            "latest_change_notes": "Latest Change:\nfrom: \"Vendor:  GreenLine \nDescription: \nPart # G1600M-10\"\nto: \"Vendor:  GreenLine \nDescription: \nPart # G1600M-100\"\nItsme\nJanuary 17 Tuesday 2023 09:14:29 AM"
+        },
         "RAL 3007 Beige": {
             "part_number": "RD9XP773",
             "unit_quantity": 3.0,
@@ -3479,7 +3479,7 @@
         "1\" Plug": {
             "part_number": "G1600M",
             "unit_quantity": 6,
-            "current_quantity": -17,
+            "current_quantity": 192,
             "price": 0.66,
             "use_exchange_rate": false,
             "priority": 0,
@@ -3487,7 +3487,7 @@
             "latest_change_name": "Item added\nItsme\nOctober 11 Tuesday 2022 01-58-34 PM",
             "latest_change_part_number": "Item added\nItsme\nOctober 11 Tuesday 2022 01-58-34 PM",
             "latest_change_unit_quantity": "Item added\nItsme\nOctober 11 Tuesday 2022 01-58-34 PM",
-            "latest_change_current_quantity": "Latest Change:\nfrom: -17\nto: -17\nLynden\nMarch 16 Thursday 2023 01:53:36 PM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 192\nto: 192\nLynden\nMarch 31 Friday 2023 09:40:39 AM",
             "latest_change_price": "Item added\nItsme\nOctober 11 Tuesday 2022 01-58-34 PM",
             "latest_change_use_exchange_price": "Item added\nItsme\nOctober 11 Tuesday 2022 01-58-34 PM",
             "latest_change_priority": "Item added\nItsme\nOctober 11 Tuesday 2022 01-58-34 PM",
@@ -3564,12 +3564,12 @@
         "Barb Hose Adapter fitting 1 1\/4": {
             "part_number": "BIA-020",
             "unit_quantity": 2,
-            "current_quantity": 0,
+            "current_quantity": 40,
             "price": 3.0,
             "use_exchange_rate": false,
             "priority": 0,
             "notes": "Vendor: GreenLine\nDescription: 204-694-0332\nPart # G33G-125",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 0\nto: 0\nLynden\nMarch 17 Friday 2023 09:16:20 AM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 40\nto: 40\nLynden\nMarch 31 Friday 2023 09:39:41 AM",
             "latest_change_price": "Latest Change:\nfrom: 3.3\nto: 3.0\nItsme\nAugust 03 Wednesday 2022 08:50:27 AM",
             "latest_change_name": "Latest Change:\nfrom: \"Barb Hose Adapter fitting 1 1\/\"\nto: \"Barb Hose Adapter fitting 1 1\/4\"\nItsme\nJanuary 16 Monday 2023 09:57:56 AM",
             "latest_change_notes": "Latest Change:\nfrom: Vendor: GreenLine\nDescription: 204-694-0332\nPart # G33G-12\nto: Vendor: GreenLine\nDescription: 204-694-0332\nPart # G33G-125\nItsme\nJanuary 17 Tuesday 2023 09:09:11 AM"
@@ -6260,7 +6260,7 @@
         "1\" Plug": {
             "part_number": "G1600M",
             "unit_quantity": 6,
-            "current_quantity": -17,
+            "current_quantity": 192,
             "price": 0.66,
             "use_exchange_rate": false,
             "priority": 0,
@@ -6268,7 +6268,7 @@
             "latest_change_name": "Item added\nItsme\nOctober 11 Tuesday 2022 02-23-29 PM",
             "latest_change_part_number": "Item added\nItsme\nOctober 11 Tuesday 2022 02-23-29 PM",
             "latest_change_unit_quantity": "Item added\nItsme\nOctober 11 Tuesday 2022 02-23-29 PM",
-            "latest_change_current_quantity": "Latest Change:\nfrom: -17\nto: -17\nLynden\nMarch 16 Thursday 2023 01:53:36 PM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 192\nto: 192\nLynden\nMarch 31 Friday 2023 09:40:39 AM",
             "latest_change_price": "Item added\nItsme\nOctober 11 Tuesday 2022 02-23-29 PM",
             "latest_change_use_exchange_price": "Item added\nItsme\nOctober 11 Tuesday 2022 02-23-29 PM",
             "latest_change_priority": "Item added\nItsme\nOctober 11 Tuesday 2022 02-23-29 PM",
@@ -6277,7 +6277,7 @@
         "Barb Hose Adapter fitting": {
             "part_number": "BIA-020",
             "unit_quantity": 2,
-            "current_quantity": 0,
+            "current_quantity": 40,
             "price": 3.0,
             "use_exchange_rate": false,
             "priority": 0,
@@ -6285,7 +6285,7 @@
             "latest_change_name": "Item added\nItsme\nAugust 03 Wednesday 2022 08-47-07 AM",
             "latest_change_part_number": "Item added\nItsme\nAugust 03 Wednesday 2022 08-47-07 AM",
             "latest_change_unit_quantity": "Item added\nItsme\nAugust 03 Wednesday 2022 08-47-07 AM",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 0\nto: 0\nLynden\nMarch 17 Friday 2023 09:16:20 AM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 40\nto: 40\nLynden\nMarch 31 Friday 2023 09:39:41 AM",
             "latest_change_price": "Latest Change:\nfrom: 3.3\nto: 3.0\nItsme\nAugust 03 Wednesday 2022 08:50:27 AM",
             "latest_change_use_exchange_price": "Item added\nItsme\nAugust 03 Wednesday 2022 08-47-07 AM",
             "latest_change_priority": "Item added\nItsme\nAugust 03 Wednesday 2022 08-47-07 AM",
