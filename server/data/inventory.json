@@ -1761,24 +1761,6 @@
             "latest_change_priority": "Item added\nItsme\nJanuary 30 Monday 2023 02-35-04 PM",
             "latest_change_notes": "Item added\nItsme\nJanuary 30 Monday 2023 02-35-04 PM"
         },
-        "G3 Brick Set": {
-            "part_number": "G3BS",
-            "unit_quantity": 1,
-            "current_quantity": -10,
-            "price": 764.2,
-            "use_exchange_rate": true,
-            "priority": 0,
-            "notes": "Vendor: Reftec Insudtries\nDescription: ",
-            "latest_change_name": "Item added\nItsme\nJuly 28 Thursday 2022 04-39-31 PM",
-            "latest_change_part_number": "Latest Change:\nfrom: G3B\nto: G3BS\nItsme\nJuly 28 Thursday 2022 04:39:58 PM",
-            "latest_change_unit_quantity": "Item added\nItsme\nJuly 28 Thursday 2022 04-39-31 PM",
-            "latest_change_current_quantity": "Latest Change:\nfrom: -10\nto: -10\nLynden\nMarch 13 Monday 2023 08:30:45 AM",
-            "latest_change_price": "Latest Change:\nfrom: 764.2\nto: 764.2\nLynden\nMarch 03 Friday 2023 05:16:17 PM",
-            "latest_change_use_exchange_price": "Item added\nItsme\nJuly 28 Thursday 2022 04-39-31 PM",
-            "latest_change_priority": "Item added\nItsme\nJuly 28 Thursday 2022 04-39-31 PM",
-            "latest_change_notes": "Latest Change:\nfrom: \"Vendor: Reftec Insudtrie\nDescription: \"\nto: \"Vendor: Reftec Insudtries\nDescription: \"\nItsme\nJuly 28 Thursday 2022 04:40:40 PM",
-            "latest_change_use_exchange_rate": "Latest Change:\nfrom: CAD\nto: USD\nItsme\nSeptember 15 Thursday 2022 09:23:50 AM"
-        },
         "1\" x 1\" Narrow Slot Gray Duct": {
             "part_number": "PDTF1X1LG6",
             "unit_quantity": 1.0,
@@ -1992,6 +1974,24 @@
             "latest_change_use_exchange_price": "Item added\nItsme\nSeptember 16 Friday 2022 02-18-09 PM",
             "latest_change_priority": "Item added\nItsme\nSeptember 16 Friday 2022 02-18-09 PM",
             "latest_change_notes": "Item added\nItsme\nSeptember 16 Friday 2022 02-18-09 PM"
+        },
+        "G3 Brick Set": {
+            "part_number": "G3BS",
+            "unit_quantity": 1,
+            "current_quantity": 20,
+            "price": 764.2,
+            "use_exchange_rate": true,
+            "priority": 0,
+            "notes": "Vendor: Reftec Insudtries\nDescription: ",
+            "latest_change_name": "Item added\nItsme\nJuly 28 Thursday 2022 04-39-31 PM",
+            "latest_change_part_number": "Latest Change:\nfrom: G3B\nto: G3BS\nItsme\nJuly 28 Thursday 2022 04:39:58 PM",
+            "latest_change_unit_quantity": "Item added\nItsme\nJuly 28 Thursday 2022 04-39-31 PM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 20\nto: 20\nLynden\nMarch 31 Friday 2023 01:06:46 PM",
+            "latest_change_price": "Latest Change:\nfrom: 764.2\nto: 764.2\nLynden\nMarch 03 Friday 2023 05:16:17 PM",
+            "latest_change_use_exchange_price": "Item added\nItsme\nJuly 28 Thursday 2022 04-39-31 PM",
+            "latest_change_priority": "Item added\nItsme\nJuly 28 Thursday 2022 04-39-31 PM",
+            "latest_change_notes": "Latest Change:\nfrom: \"Vendor: Reftec Insudtrie\nDescription: \"\nto: \"Vendor: Reftec Insudtries\nDescription: \"\nItsme\nJuly 28 Thursday 2022 04:40:40 PM",
+            "latest_change_use_exchange_rate": "Latest Change:\nfrom: CAD\nto: USD\nItsme\nSeptember 15 Thursday 2022 09:23:50 AM"
         },
         "3\" Thermax SF- 600 Brick Slabs 1000x610x75": {
             "part_number": "THERMAXSF600",
@@ -3496,7 +3496,7 @@
         "G3 Brick Set": {
             "part_number": "G3BS",
             "unit_quantity": 1,
-            "current_quantity": -10,
+            "current_quantity": 20,
             "price": 764.2,
             "use_exchange_rate": false,
             "priority": 0,
@@ -3504,7 +3504,7 @@
             "latest_change_name": "Item added\nItsme\nAugust 12 Friday 2022 11-21-54 AM",
             "latest_change_part_number": "Item added\nItsme\nAugust 12 Friday 2022 11-21-54 AM",
             "latest_change_unit_quantity": "Item added\nItsme\nAugust 12 Friday 2022 11-21-54 AM",
-            "latest_change_current_quantity": "Latest Change:\nfrom: -10\nto: -10\nLynden\nMarch 13 Monday 2023 08:30:45 AM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 20\nto: 20\nLynden\nMarch 31 Friday 2023 01:06:46 PM",
             "latest_change_price": "Latest Change:\nfrom: 764.2\nto: 764.2\nLynden\nMarch 03 Friday 2023 05:16:17 PM",
             "latest_change_use_exchange_price": "Item added\nItsme\nAugust 12 Friday 2022 11-21-54 AM",
             "latest_change_priority": "Item added\nItsme\nAugust 12 Friday 2022 11-21-54 AM",
