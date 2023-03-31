@@ -86,7 +86,7 @@
             "latest_change_current_quantity": "Latest Change:\nfrom: 2.0\nto: 1.0\nLaser Pc\nMarch 25 Saturday 2023 11:09:04 AM"
         },
         "1\/4 Mild Steel 120.000x60.000": {
-            "current_quantity": 0.0,
+            "current_quantity": -20.0,
             "sheet_dimension": "120.000x60.000",
             "thickness": "1\/4",
             "material": "Mild Steel",
