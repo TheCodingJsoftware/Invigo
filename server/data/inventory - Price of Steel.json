@@ -86,7 +86,7 @@
             "latest_change_current_quantity": "Latest Change:\nfrom: 2.0\nto: 1.0\nLaser Pc\nMarch 25 Saturday 2023 11:09:04 AM"
         },
         "1\/4 Mild Steel 120.000x60.000": {
-            "current_quantity": 52.0,
+            "current_quantity": 53.0,
             "sheet_dimension": "120.000x60.000",
             "thickness": "1\/4",
             "material": "Mild Steel",
@@ -94,7 +94,7 @@
             "latest_change_material": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-10-35 PM",
             "latest_sheet_dimension": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-10-35 PM",
             "latest_change_thickness": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-10-35 PM",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 53.0\nto: 52.0\nLaser Pc\nApril 01 Saturday 2023 09:40:48 AM"
+            "latest_change_current_quantity": "Latest Change:\nfrom: 52.0\nto: 53.0\nLaser Pc\nApril 01 Saturday 2023 09:43:44 AM"
         },
         "1\/4 Mild Steel 96.000x48.000": {
             "current_quantity": 44.0,
@@ -185,14 +185,14 @@
             "latest_change_current_quantity": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-26-08 PM"
         },
         "10 Gauge Mild Steel 96.000x60.000": {
-            "current_quantity": 34.0,
+            "current_quantity": 40.0,
             "sheet_dimension": "96.000x60.000",
             "thickness": "10 Gauge",
             "material": "Mild Steel",
             "latest_change_material": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-28-06 PM",
             "latest_sheet_dimension": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-28-06 PM",
             "latest_change_thickness": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-28-06 PM",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 34.0\nto: 34.0\nLaser Pc\nMarch 20 Monday 2023 08:27:53 AM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 39.0\nto: 40.0\nLaser Pc\nApril 01 Saturday 2023 09:43:53 AM",
             "group": "10G Mild Steel"
         },
         "12 Gauge Mild Steel 120.000x60.000": {
