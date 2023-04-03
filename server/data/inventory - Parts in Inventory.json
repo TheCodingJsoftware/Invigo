@@ -1,5 +1,16 @@
 {
     "Custom": {
+        "ReV- Sn-Der-Al-08": {
+            "current_quantity": 1404,
+            "machine_time": 0.53,
+            "gauge": "14 Gauge",
+            "material": "Aluminium",
+            "weight": 1.585,
+            "price": 6.73,
+            "unit_quantity": 1,
+            "modified_date": "Added at April 03 Monday 2023 02:59:50 PM",
+            "group": null
+        },
         "Flat pattern - 2.7in Wacher": {
             "current_quantity": 882,
             "machine_time": 0.17,
@@ -383,6 +394,17 @@
             "modified_date": "Added at March 20 Monday 2023 02:02:07 PM",
             "group": null
         },
+        "2840-11": {
+            "current_quantity": 20,
+            "machine_time": 2.6,
+            "gauge": "3\/16",
+            "material": "Mild Steel",
+            "weight": 210.774,
+            "price": 168.8,
+            "unit_quantity": 1,
+            "modified_date": "10 quantity added at April 01 Saturday 2023 01:35:05 PM",
+            "group": null
+        },
         "3044 Ashpan": {
             "current_quantity": 10,
             "machine_time": 0.55,
@@ -680,17 +702,6 @@
             "modified_date": "10 quantity added at March 21 Tuesday 2023 04:35:32 PM",
             "group": null
         },
-        "2840-11": {
-            "current_quantity": 10,
-            "machine_time": 2.6,
-            "gauge": "3\/16",
-            "material": "Mild Steel",
-            "weight": 210.774,
-            "price": 168.8,
-            "unit_quantity": 1,
-            "modified_date": "10 quantity added at March 21 Tuesday 2023 04:36:13 PM",
-            "group": null
-        },
         "2840-67": {
             "current_quantity": 10,
             "machine_time": 1.18,
@@ -979,6 +990,28 @@
             "modified_date": "10 quantity added at March 23 Thursday 2023 08:25:22 PM",
             "group": null
         },
+        "3444-91x2": {
+            "current_quantity": 10.0,
+            "machine_time": 0.58,
+            "gauge": "14 Gauge",
+            "material": "304 SS",
+            "weight": 3.764,
+            "price": 11.41,
+            "unit_quantity": 1,
+            "modified_date": "Manually set to 10.0 quantity at March 31 Friday 2023 04:02:09 PM",
+            "group": null
+        },
+        "3444-90x2": {
+            "current_quantity": 10.0,
+            "machine_time": 0.6,
+            "gauge": "14 Gauge",
+            "material": "304 SS",
+            "weight": 3.946,
+            "price": 11.93,
+            "unit_quantity": 1,
+            "modified_date": "Manually set to 10.0 quantity at March 31 Friday 2023 04:02:17 PM",
+            "group": null
+        },
         "3444-25x4": {
             "current_quantity": 8,
             "machine_time": 0.57,
@@ -999,17 +1032,6 @@
             "price": 13.99,
             "unit_quantity": 1,
             "modified_date": "4 quantity added at March 23 Thursday 2023 08:26:08 PM",
-            "group": null
-        },
-        "3444-91x2": {
-            "current_quantity": 10.0,
-            "machine_time": 0.58,
-            "gauge": "14 Gauge",
-            "material": "304 SS",
-            "weight": 3.764,
-            "price": 11.41,
-            "unit_quantity": 1,
-            "modified_date": "Manually set to 10.0 quantity at March 31 Friday 2023 04:02:09 PM",
             "group": null
         },
         "3444-10": {
@@ -1076,17 +1098,6 @@
             "price": 71.3,
             "unit_quantity": 1,
             "modified_date": "Manually set to 0.0 quantity at March 31 Friday 2023 03:58:43 PM",
-            "group": null
-        },
-        "3444-90x2": {
-            "current_quantity": 10.0,
-            "machine_time": 0.6,
-            "gauge": "14 Gauge",
-            "material": "304 SS",
-            "weight": 3.946,
-            "price": 11.93,
-            "unit_quantity": 1,
-            "modified_date": "Manually set to 10.0 quantity at March 31 Friday 2023 04:02:17 PM",
             "group": null
         },
         "3444-24": {
@@ -1522,6 +1533,28 @@
             "modified_date": "Added at March 17 Friday 2023 02:17:02 PM",
             "group": null
         },
+        "small scoop G": {
+            "current_quantity": 10,
+            "machine_time": 0.18,
+            "gauge": "16 Gauge",
+            "material": "Mild Steel",
+            "weight": 1.058,
+            "price": 1.26,
+            "unit_quantity": 1,
+            "modified_date": "Added at March 27 Monday 2023 03:37:47 PM",
+            "group": null
+        },
+        "G2Plus-Door Stay-part1": {
+            "current_quantity": 10,
+            "machine_time": 0.58,
+            "gauge": "10 Gauge",
+            "material": "Mild Steel",
+            "weight": 1.465,
+            "price": 2.58,
+            "unit_quantity": 1,
+            "modified_date": "Added at March 28 Tuesday 2023 02:36:56 PM",
+            "group": null
+        },
         "G2Plus-Flues access-lid": {
             "current_quantity": 6,
             "machine_time": 0.52,
@@ -1542,6 +1575,17 @@
             "price": 0.35,
             "unit_quantity": 9.0,
             "modified_date": "Removed 90.0 quantity at March 14 Tuesday 2023 04:53:43 PM",
+            "group": null
+        },
+        "G-Class-Ash Shovel-part 1": {
+            "current_quantity": 4,
+            "machine_time": 0.35,
+            "gauge": "16 Gauge",
+            "material": "Mild Steel",
+            "weight": 3.618,
+            "price": 3.66,
+            "unit_quantity": 1,
+            "modified_date": "Added at March 27 Monday 2023 03:37:47 PM",
             "group": null
         },
         "G2-3-Housing-Front Insulation cover insert 03x3": {
@@ -1884,39 +1928,6 @@
             "unit_quantity": 6.0,
             "modified_date": "Manually set to 0.0 quantity at March 24 Friday 2023 11:02:51 AM",
             "group": null
-        },
-        "small scoop G": {
-            "current_quantity": 10,
-            "machine_time": 0.18,
-            "gauge": "16 Gauge",
-            "material": "Mild Steel",
-            "weight": 1.058,
-            "price": 1.26,
-            "unit_quantity": 1,
-            "modified_date": "Added at March 27 Monday 2023 03:37:47 PM",
-            "group": null
-        },
-        "G2Plus-Door Stay-part1": {
-            "current_quantity": 10,
-            "machine_time": 0.58,
-            "gauge": "10 Gauge",
-            "material": "Mild Steel",
-            "weight": 1.465,
-            "price": 2.58,
-            "unit_quantity": 1,
-            "modified_date": "Added at March 28 Tuesday 2023 02:36:56 PM",
-            "group": null
-        },
-        "G-Class-Ash Shovel-part 1": {
-            "current_quantity": 4,
-            "machine_time": 0.35,
-            "gauge": "16 Gauge",
-            "material": "Mild Steel",
-            "weight": 3.618,
-            "price": 3.66,
-            "unit_quantity": 1,
-            "modified_date": "Added at March 27 Monday 2023 03:37:47 PM",
-            "group": null
         }
     },
     "Polar G2+": {
@@ -2171,6 +2182,28 @@
             "price": 19.65,
             "unit_quantity": 2.0,
             "modified_date": "Removed 20.0 quantity at March 14 Tuesday 2023 04:53:43 PM",
+            "group": null
+        },
+        "small scoop G": {
+            "current_quantity": 10,
+            "machine_time": 0.18,
+            "gauge": "16 Gauge",
+            "material": "Mild Steel",
+            "weight": 1.058,
+            "price": 1.26,
+            "unit_quantity": 1,
+            "modified_date": "Added at March 27 Monday 2023 03:37:47 PM",
+            "group": null
+        },
+        "G2Plus-Door Stay-part1": {
+            "current_quantity": 10,
+            "machine_time": 0.58,
+            "gauge": "10 Gauge",
+            "material": "Mild Steel",
+            "weight": 1.465,
+            "price": 2.58,
+            "unit_quantity": 1,
+            "modified_date": "Added at March 28 Tuesday 2023 02:36:56 PM",
             "group": null
         },
         "G2Plus-Side door 2 - inner shel": {
@@ -2612,28 +2645,6 @@
             "unit_quantity": 1,
             "modified_date": "Manually set to 0.0 quantity at March 24 Friday 2023 11:02:55 AM",
             "group": null
-        },
-        "small scoop G": {
-            "current_quantity": 10,
-            "machine_time": 0.18,
-            "gauge": "16 Gauge",
-            "material": "Mild Steel",
-            "weight": 1.058,
-            "price": 1.26,
-            "unit_quantity": 1,
-            "modified_date": "Added at March 27 Monday 2023 03:37:47 PM",
-            "group": null
-        },
-        "G2Plus-Door Stay-part1": {
-            "current_quantity": 10,
-            "machine_time": 0.58,
-            "gauge": "10 Gauge",
-            "material": "Mild Steel",
-            "weight": 1.465,
-            "price": 2.58,
-            "unit_quantity": 1,
-            "modified_date": "Added at March 28 Tuesday 2023 02:36:56 PM",
-            "group": null
         }
     },
     "Polar G3": {
@@ -2989,6 +3000,28 @@
             "modified_date": "Added at March 09 Thursday 2023 09:41:14 AM",
             "group": null
         },
+        "small scoop G": {
+            "current_quantity": 10,
+            "machine_time": 0.18,
+            "gauge": "16 Gauge",
+            "material": "Mild Steel",
+            "weight": 1.058,
+            "price": 1.26,
+            "unit_quantity": 1,
+            "modified_date": "Added at March 27 Monday 2023 03:37:47 PM",
+            "group": null
+        },
+        "G2Plus-Door Stay-part1": {
+            "current_quantity": 10,
+            "machine_time": 0.58,
+            "gauge": "10 Gauge",
+            "material": "Mild Steel",
+            "weight": 1.465,
+            "price": 2.58,
+            "unit_quantity": 1,
+            "modified_date": "Added at March 28 Tuesday 2023 02:36:56 PM",
+            "group": null
+        },
         "G3-1-Firechamber-front jams-left side": {
             "current_quantity": 9,
             "machine_time": 1.8,
@@ -3031,28 +3064,6 @@
             "price": 9.12,
             "unit_quantity": 1,
             "modified_date": "Manually set to 0.0 quantity at March 24 Friday 2023 11:02:54 AM",
-            "group": null
-        },
-        "small scoop G": {
-            "current_quantity": 10,
-            "machine_time": 0.18,
-            "gauge": "16 Gauge",
-            "material": "Mild Steel",
-            "weight": 1.058,
-            "price": 1.26,
-            "unit_quantity": 1,
-            "modified_date": "Added at March 27 Monday 2023 03:37:47 PM",
-            "group": null
-        },
-        "G2Plus-Door Stay-part1": {
-            "current_quantity": 10,
-            "machine_time": 0.58,
-            "gauge": "10 Gauge",
-            "material": "Mild Steel",
-            "weight": 1.465,
-            "price": 2.58,
-            "unit_quantity": 1,
-            "modified_date": "Added at March 28 Tuesday 2023 02:36:56 PM",
             "group": null
         }
     },
