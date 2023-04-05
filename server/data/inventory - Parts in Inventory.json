@@ -54,6 +54,17 @@
             "unit_quantity": 1,
             "modified_date": "Added at March 27 Monday 2023 03:37:47 PM",
             "group": null
+        },
+        "Aluminum Shelf 2x8": {
+            "current_quantity": 1,
+            "machine_time": 2.13,
+            "gauge": "11 Gauge",
+            "material": "Aluminium",
+            "weight": 53.505,
+            "price": 161.36,
+            "unit_quantity": 6.0,
+            "modified_date": "Added at April 05 Wednesday 2023 10:09:33 AM",
+            "group": null
         }
     },
     "Recut": {
