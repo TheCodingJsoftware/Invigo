@@ -43,28 +43,6 @@
             "unit_quantity": 1,
             "modified_date": "69 quantity added at March 21 Tuesday 2023 04:35:32 PM",
             "group": null
-        },
-        "Paulwanyes Welding Peg board": {
-            "current_quantity": 1,
-            "machine_time": 62.8,
-            "gauge": "16 Gauge",
-            "material": "Mild Steel",
-            "weight": 81.234,
-            "price": 208.99,
-            "unit_quantity": 1,
-            "modified_date": "Added at March 27 Monday 2023 03:37:47 PM",
-            "group": null
-        },
-        "Aluminum Shelf 2x8": {
-            "current_quantity": 1,
-            "machine_time": 2.13,
-            "gauge": "11 Gauge",
-            "material": "Aluminium",
-            "weight": 53.505,
-            "price": 161.36,
-            "unit_quantity": 6.0,
-            "modified_date": "Added at April 05 Wednesday 2023 10:09:33 AM",
-            "group": null
         }
     },
     "Recut": {
@@ -3665,6 +3643,17 @@
             "unit_quantity": 1,
             "modified_date": "Added at March 21 Tuesday 2023 04:35:32 PM",
             "group": null
+        },
+        "Aluminum Shelf 2x8": {
+            "current_quantity": 6.0,
+            "machine_time": 2.13,
+            "gauge": "11 Gauge",
+            "material": "Aluminium",
+            "weight": 53.505,
+            "price": 161.36,
+            "unit_quantity": 1,
+            "modified_date": "Manually set to 6.0 quantity at April 05 Wednesday 2023 11:01:37 AM",
+            "group": null
         }
     },
     "LCB300 Boiler\/Chip Bin": {
@@ -3899,6 +3888,17 @@
             "price": 5.26,
             "unit_quantity": 1,
             "modified_date": "Added at March 17 Friday 2023 02:17:02 PM",
+            "group": null
+        },
+        "Paulwanyes Welding Peg board": {
+            "current_quantity": 1,
+            "machine_time": 62.8,
+            "gauge": "16 Gauge",
+            "material": "Mild Steel",
+            "weight": 81.234,
+            "price": 219.55,
+            "unit_quantity": 1,
+            "modified_date": "Added at March 27 Monday 2023 03:37:47 PM",
             "group": null
         }
     }
