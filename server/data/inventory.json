@@ -186,7 +186,7 @@
         "1-1\/4 Half Coupling": {
             "part_number": "G0008MC-125",
             "unit_quantity": 1,
-            "current_quantity": 8,
+            "current_quantity": -9,
             "price": 2.4,
             "use_exchange_rate": false,
             "priority": 0,
@@ -194,7 +194,7 @@
             "latest_change_name": "Item added\nItsme\nJuly 07 Thursday 2022 10-23-19 AM",
             "latest_change_part_number": "Item added\nItsme\nJuly 07 Thursday 2022 10-23-19 AM",
             "latest_change_unit_quantity": "Item added\nItsme\nJuly 07 Thursday 2022 10-23-19 AM",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 8\nto: 8\nLynden\nMarch 13 Monday 2023 08:30:45 AM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: -9\nto: -9\nLynden\nApril 05 Wednesday 2023 09:11:08 AM",
             "latest_change_price": "Latest Change:\nfrom: 2.0\nto: 2.4\nItsme\nSeptember 03 Saturday 2022 02:45:54 PM",
             "latest_change_use_exchange_price": "Item added\nItsme\nJuly 07 Thursday 2022 10-23-19 AM",
             "latest_change_priority": "Item added\nItsme\nJuly 07 Thursday 2022 10-23-19 AM",
@@ -1761,6 +1761,23 @@
             "latest_change_priority": "Item added\nItsme\nJanuary 30 Monday 2023 02-35-04 PM",
             "latest_change_notes": "Item added\nItsme\nJanuary 30 Monday 2023 02-35-04 PM"
         },
+        "1-1\/4 Half Coupling": {
+            "part_number": "G0008MC-125",
+            "unit_quantity": 1,
+            "current_quantity": -9,
+            "price": 2.4,
+            "use_exchange_rate": false,
+            "priority": 0,
+            "notes": "Vendor: Greenline\nDescription: 204-694-0332",
+            "latest_change_name": "Item added\nItsme\nJuly 07 Thursday 2022 10-23-19 AM",
+            "latest_change_part_number": "Item added\nItsme\nJuly 07 Thursday 2022 10-23-19 AM",
+            "latest_change_unit_quantity": "Item added\nItsme\nJuly 07 Thursday 2022 10-23-19 AM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: -9\nto: -9\nLynden\nApril 05 Wednesday 2023 09:11:08 AM",
+            "latest_change_price": "Latest Change:\nfrom: 2.0\nto: 2.4\nItsme\nSeptember 03 Saturday 2022 02:45:54 PM",
+            "latest_change_use_exchange_price": "Item added\nItsme\nJuly 07 Thursday 2022 10-23-19 AM",
+            "latest_change_priority": "Item added\nItsme\nJuly 07 Thursday 2022 10-23-19 AM",
+            "latest_change_notes": "Latest Change:\nfrom: \"Vendor: Greenline\nDescription: \"\nto: \"Vendor: Greenline\nDescription: 204-694-0332\"\nItsme\nJuly 07 Thursday 2022 11:22:22 AM"
+        },
         "1\" x 1\" Narrow Slot Gray Duct": {
             "part_number": "PDTF1X1LG6",
             "unit_quantity": 1.0,
@@ -1880,23 +1897,6 @@
             "latest_change_use_exchange_price": "Item added\nItsme\nNovember 30 Wednesday 2022 09-47-00 AM",
             "latest_change_priority": "Item added\nItsme\nNovember 30 Wednesday 2022 09-47-00 AM",
             "latest_change_notes": "Item added\nItsme\nNovember 30 Wednesday 2022 09-47-00 AM"
-        },
-        "1-1\/4 Half Coupling": {
-            "part_number": "G0008MC-125",
-            "unit_quantity": 1,
-            "current_quantity": 8,
-            "price": 2.4,
-            "use_exchange_rate": false,
-            "priority": 0,
-            "notes": "Vendor: Greenline\nDescription: 204-694-0332",
-            "latest_change_name": "Item added\nItsme\nJuly 07 Thursday 2022 10-23-19 AM",
-            "latest_change_part_number": "Item added\nItsme\nJuly 07 Thursday 2022 10-23-19 AM",
-            "latest_change_unit_quantity": "Item added\nItsme\nJuly 07 Thursday 2022 10-23-19 AM",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 8\nto: 8\nLynden\nMarch 13 Monday 2023 08:30:45 AM",
-            "latest_change_price": "Latest Change:\nfrom: 2.0\nto: 2.4\nItsme\nSeptember 03 Saturday 2022 02:45:54 PM",
-            "latest_change_use_exchange_price": "Item added\nItsme\nJuly 07 Thursday 2022 10-23-19 AM",
-            "latest_change_priority": "Item added\nItsme\nJuly 07 Thursday 2022 10-23-19 AM",
-            "latest_change_notes": "Latest Change:\nfrom: \"Vendor: Greenline\nDescription: \"\nto: \"Vendor: Greenline\nDescription: 204-694-0332\"\nItsme\nJuly 07 Thursday 2022 11:22:22 AM"
         },
         "Compression Spring, 1\" Long, 1.225\" OD, 1.055\" ID 35lbs damper adjust": {
             "part_number": "9657k545",
@@ -2205,6 +2205,23 @@
             "latest_change_priority": "Item added\nLynden\nMarch 11 Saturday 2023 09-26-22 AM",
             "latest_change_notes": "Item added\nLynden\nMarch 11 Saturday 2023 09-26-22 AM"
         },
+        "Aluminum Float Cap ( 2\" )": {
+            "part_number": "Float cap",
+            "unit_quantity": 1.0,
+            "current_quantity": 41,
+            "price": 9.39,
+            "use_exchange_rate": false,
+            "priority": 0,
+            "notes": "Vendor: Made by Piney MFO. from 2 inch aluminum shaft\nDescription: ",
+            "latest_change_name": "Item added\nItsme\nJanuary 19 Thursday 2023 09-57-27 AM",
+            "latest_change_part_number": "Item added\nItsme\nJanuary 19 Thursday 2023 09-57-27 AM",
+            "latest_change_unit_quantity": "Item added\nItsme\nJanuary 19 Thursday 2023 09-57-27 AM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 41.0\nto: 41\nLynden\nApril 04 Tuesday 2023 08:39:25 AM",
+            "latest_change_price": "Item added\nItsme\nJanuary 19 Thursday 2023 09-57-27 AM",
+            "latest_change_use_exchange_price": "Item added\nItsme\nJanuary 19 Thursday 2023 09-57-27 AM",
+            "latest_change_priority": "Item added\nItsme\nJanuary 19 Thursday 2023 09-57-27 AM",
+            "latest_change_notes": "Item added\nItsme\nJanuary 19 Thursday 2023 09-57-27 AM"
+        },
         "Gasket 3\/16\" Thick 5\"OD x 3.75\"ID EPDM Sponge Adhesive Back": {
             "part_number": "1000-795",
             "unit_quantity": 2.0,
@@ -2312,23 +2329,6 @@
             "notes": "Vendor: Industrial  Rubber Supply\nDescription: ",
             "latest_change_current_quantity": "Latest Change:\nfrom: 50\nto: 50\nLynden\nMarch 23 Thursday 2023 09:01:59 AM",
             "latest_change_price": "Latest Change:\nfrom: 9.0\nto: 12.94\nItsme\nFebruary 02 Thursday 2023 04:22:00 PM"
-        },
-        "Aluminum Float Cap ( 2\" )": {
-            "part_number": "Float cap",
-            "unit_quantity": 1.0,
-            "current_quantity": 41,
-            "price": 9.39,
-            "use_exchange_rate": false,
-            "priority": 0,
-            "notes": "Vendor: Made by Piney MFO. from 2 inch aluminum shaft\nDescription: ",
-            "latest_change_name": "Item added\nItsme\nJanuary 19 Thursday 2023 09-57-27 AM",
-            "latest_change_part_number": "Item added\nItsme\nJanuary 19 Thursday 2023 09-57-27 AM",
-            "latest_change_unit_quantity": "Item added\nItsme\nJanuary 19 Thursday 2023 09-57-27 AM",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 41.0\nto: 41\nLynden\nApril 04 Tuesday 2023 08:39:25 AM",
-            "latest_change_price": "Item added\nItsme\nJanuary 19 Thursday 2023 09-57-27 AM",
-            "latest_change_use_exchange_price": "Item added\nItsme\nJanuary 19 Thursday 2023 09-57-27 AM",
-            "latest_change_priority": "Item added\nItsme\nJanuary 19 Thursday 2023 09-57-27 AM",
-            "latest_change_notes": "Item added\nItsme\nJanuary 19 Thursday 2023 09-57-27 AM"
         },
         "2\" ThermaxSF-450": {
             "part_number": "THERMAXSF450",
@@ -2805,6 +2805,40 @@
             "notes": "Vendor: \nDescription: ",
             "latest_change_current_quantity": "Latest Change:\nfrom: 126\nto: 126\nLynden\nMarch 13 Monday 2023 08:30:46 AM"
         },
+        "1\/4 Nialon Plastic Shaft- Float assy": {
+            "part_number": "14NPS",
+            "unit_quantity": 1,
+            "current_quantity": 130,
+            "price": 3.24,
+            "use_exchange_rate": false,
+            "priority": 0,
+            "notes": "Vendor: MCmaster Carr and Johnsons Plastic\nDescription: ",
+            "latest_change_name": "Item added\nItsme\nOctober 17 Monday 2022 08-12-48 AM",
+            "latest_change_part_number": "Item added\nItsme\nOctober 17 Monday 2022 08-12-48 AM",
+            "latest_change_unit_quantity": "Item added\nItsme\nOctober 17 Monday 2022 08-12-48 AM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 130\nto: 130\nLynden\nApril 04 Tuesday 2023 08:39:25 AM",
+            "latest_change_price": "Latest Change:\nfrom: 3.0\nto: 3.24\nItsme\nJanuary 17 Tuesday 2023 03:52:53 PM",
+            "latest_change_use_exchange_price": "Item added\nItsme\nOctober 17 Monday 2022 08-12-48 AM",
+            "latest_change_priority": "Item added\nItsme\nOctober 17 Monday 2022 08-12-48 AM",
+            "latest_change_notes": "Item added\nItsme\nOctober 17 Monday 2022 08-12-48 AM"
+        },
+        "Snap-Tite Romex C 1\/2\" 841ST": {
+            "part_number": "ARL841ST",
+            "unit_quantity": 1.0,
+            "current_quantity": 130,
+            "price": 0.7,
+            "use_exchange_rate": false,
+            "priority": 0,
+            "notes": "Vendor: Westburne\nDescription: ",
+            "latest_change_name": "Item added\nItsme\nNovember 28 Monday 2022 11-03-05 AM",
+            "latest_change_part_number": "Item added\nItsme\nNovember 28 Monday 2022 11-03-05 AM",
+            "latest_change_unit_quantity": "Item added\nItsme\nNovember 28 Monday 2022 11-03-05 AM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 130.0\nto: 130\nLynden\nApril 04 Tuesday 2023 08:39:25 AM",
+            "latest_change_price": "Item added\nItsme\nNovember 28 Monday 2022 11-03-05 AM",
+            "latest_change_use_exchange_price": "Item added\nItsme\nNovember 28 Monday 2022 11-03-05 AM",
+            "latest_change_priority": "Item added\nItsme\nNovember 28 Monday 2022 11-03-05 AM",
+            "latest_change_notes": "Item added\nItsme\nNovember 28 Monday 2022 11-03-05 AM"
+        },
         "Sticker  319  easy Sweep": {
             "part_number": "319",
             "unit_quantity": 1,
@@ -2828,23 +2862,6 @@
             "latest_change_notes": "Latest Change:\nfrom: Vendor: BrockWhite\nDescription: \nrjackmann@brockwhite.com\nis measured in square feet\n15.04$ per shee\nprice per square foot\nto: Vendor: BrockWhite\nDescription: \nrjackmann@brockwhite.com\nis measured in square feet\n15.04$ per sheet\nprice per square foot\nItsme\nJanuary 31 Tuesday 2023 08:34:08 AM",
             "latest_change_unit_quantity": "Latest Change:\nfrom: 1.0\nto: 18.0\nItsme\nJanuary 31 Tuesday 2023 08:34:34 AM",
             "latest_change_price": "Latest Change:\nfrom: 15.04\nto: 1.88\nItsme\nJanuary 31 Tuesday 2023 08:33:50 AM"
-        },
-        "1\/4 Nialon Plastic Shaft- Float assy": {
-            "part_number": "14NPS",
-            "unit_quantity": 1,
-            "current_quantity": 130,
-            "price": 3.24,
-            "use_exchange_rate": false,
-            "priority": 0,
-            "notes": "Vendor: MCmaster Carr and Johnsons Plastic\nDescription: ",
-            "latest_change_name": "Item added\nItsme\nOctober 17 Monday 2022 08-12-48 AM",
-            "latest_change_part_number": "Item added\nItsme\nOctober 17 Monday 2022 08-12-48 AM",
-            "latest_change_unit_quantity": "Item added\nItsme\nOctober 17 Monday 2022 08-12-48 AM",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 130\nto: 130\nLynden\nApril 04 Tuesday 2023 08:39:25 AM",
-            "latest_change_price": "Latest Change:\nfrom: 3.0\nto: 3.24\nItsme\nJanuary 17 Tuesday 2023 03:52:53 PM",
-            "latest_change_use_exchange_price": "Item added\nItsme\nOctober 17 Monday 2022 08-12-48 AM",
-            "latest_change_priority": "Item added\nItsme\nOctober 17 Monday 2022 08-12-48 AM",
-            "latest_change_notes": "Item added\nItsme\nOctober 17 Monday 2022 08-12-48 AM"
         },
         "Hytex 1000 Rope Knit 1\" High Density White": {
             "part_number": "RK0100",
@@ -2900,23 +2917,6 @@
             "latest_change_use_exchange_price": "Item added\nItsme\nAugust 19 Friday 2022 10-21-10 AM",
             "latest_change_priority": "Item added\nItsme\nAugust 19 Friday 2022 10-21-10 AM",
             "latest_change_notes": "Item added\nItsme\nAugust 19 Friday 2022 10-21-10 AM"
-        },
-        "Snap-Tite Romex C 1\/2\" 841ST": {
-            "part_number": "ARL841ST",
-            "unit_quantity": 1.0,
-            "current_quantity": 130,
-            "price": 0.7,
-            "use_exchange_rate": false,
-            "priority": 0,
-            "notes": "Vendor: Westburne\nDescription: ",
-            "latest_change_name": "Item added\nItsme\nNovember 28 Monday 2022 11-03-05 AM",
-            "latest_change_part_number": "Item added\nItsme\nNovember 28 Monday 2022 11-03-05 AM",
-            "latest_change_unit_quantity": "Item added\nItsme\nNovember 28 Monday 2022 11-03-05 AM",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 130.0\nto: 130\nLynden\nApril 04 Tuesday 2023 08:39:25 AM",
-            "latest_change_price": "Item added\nItsme\nNovember 28 Monday 2022 11-03-05 AM",
-            "latest_change_use_exchange_price": "Item added\nItsme\nNovember 28 Monday 2022 11-03-05 AM",
-            "latest_change_priority": "Item added\nItsme\nNovember 28 Monday 2022 11-03-05 AM",
-            "latest_change_notes": "Item added\nItsme\nNovember 28 Monday 2022 11-03-05 AM"
         },
         "Plastic Offset Lift-off hinge with Threaded Holes": {
             "part_number": "ML23P",
@@ -3123,21 +3123,6 @@
             "latest_change_priority": "Item added\nItsme\nJuly 19 Tuesday 2022 07-10-49 PM",
             "latest_change_notes": "Item added\nItsme\nJuly 19 Tuesday 2022 07-10-49 PM"
         },
-        "300 ML General Purpose Black Silicone 300ML ": {
-            "part_number": "30203",
-            "unit_quantity": 2.0,
-            "current_quantity": 337,
-            "price": 9.7,
-            "use_exchange_rate": false,
-            "priority": 3,
-            "notes": "Vendor: Rantec\nRachel@rantec.ca\nDescription: Grunthal lumber\nGeneral purpose sil;icaon",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 337\nto: 337\nLynden\nMarch 13 Monday 2023 08:30:46 AM",
-            "latest_change_price": "Latest Change:\nfrom: 9.7\nto: 9.7\nItsme\nJuly 07 Thursday 2022 03:59:16 PM",
-            "latest_change_part_number": "Latest Change:\nfrom: 3020\nto: 30203\nItsme\nNovember 03 Thursday 2022 10:02:36 AM",
-            "latest_change_name": "Latest Change:\nfrom: \"300 ML General Purpos Black Silicone 300ML \"\nto: \"300 ML General Purpose Black Silicone 300ML \"\nItsme\nNovember 03 Thursday 2022 10:03:03 AM",
-            "latest_change_unit_quantity": "Latest Change:\nfrom: 0.0\nto: 2.0\nLynden\nMarch 08 Wednesday 2023 11:20:03 AM",
-            "latest_change_notes": "Latest Change:\nfrom: \"Vendor: Rantec\nRachel@rantec.ca\nDescription: Grunthal lumber\nGeneral purpose sil;icao\"\nto: \"Vendor: Rantec\nRachel@rantec.ca\nDescription: Grunthal lumber\nGeneral purpose sil;icaon\"\nLynden\nMarch 08 Wednesday 2023 11:20:21 AM"
-        },
         "Float Clamp  G1SS-11.3 7\/16 One Ear Stainless": {
             "part_number": "G1SS-11.3",
             "unit_quantity": 1,
@@ -3154,6 +3139,21 @@
             "latest_change_use_exchange_price": "Item added\nItsme\nAugust 29 Monday 2022 03-46-48 PM",
             "latest_change_priority": "Item added\nItsme\nAugust 29 Monday 2022 03-46-48 PM",
             "latest_change_notes": "Item added\nItsme\nAugust 29 Monday 2022 03-46-48 PM"
+        },
+        "300 ML General Purpose Black Silicone 300ML ": {
+            "part_number": "30203",
+            "unit_quantity": 2.0,
+            "current_quantity": 337,
+            "price": 9.7,
+            "use_exchange_rate": false,
+            "priority": 3,
+            "notes": "Vendor: Rantec\nRachel@rantec.ca\nDescription: Grunthal lumber\nGeneral purpose sil;icaon",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 337\nto: 337\nLynden\nMarch 13 Monday 2023 08:30:46 AM",
+            "latest_change_price": "Latest Change:\nfrom: 9.7\nto: 9.7\nItsme\nJuly 07 Thursday 2022 03:59:16 PM",
+            "latest_change_part_number": "Latest Change:\nfrom: 3020\nto: 30203\nItsme\nNovember 03 Thursday 2022 10:02:36 AM",
+            "latest_change_name": "Latest Change:\nfrom: \"300 ML General Purpos Black Silicone 300ML \"\nto: \"300 ML General Purpose Black Silicone 300ML \"\nItsme\nNovember 03 Thursday 2022 10:03:03 AM",
+            "latest_change_unit_quantity": "Latest Change:\nfrom: 0.0\nto: 2.0\nLynden\nMarch 08 Wednesday 2023 11:20:03 AM",
+            "latest_change_notes": "Latest Change:\nfrom: \"Vendor: Rantec\nRachel@rantec.ca\nDescription: Grunthal lumber\nGeneral purpose sil;icao\"\nto: \"Vendor: Rantec\nRachel@rantec.ca\nDescription: Grunthal lumber\nGeneral purpose sil;icaon\"\nLynden\nMarch 08 Wednesday 2023 11:20:21 AM"
         },
         " 12BK SLOTTED QUARTER-TURN LATCH, DIE CST, UL FACE SEAL & INTERNAL O-RING, BODY NUT, NO CAM, BLACK POWDER COATED": {
             "part_number": "12BK",
@@ -3304,23 +3304,6 @@
             "latest_change_priority": "Item added\nItsme\nFebruary 16 Thursday 2023 11-01-51 AM",
             "latest_change_notes": "Item added\nItsme\nFebruary 16 Thursday 2023 11-01-51 AM"
         },
-        "SCR MACH PH PHIL ZP 10-32 x 1\/2 ": {
-            "part_number": "397-1032-0050",
-            "unit_quantity": 16,
-            "current_quantity": 1004,
-            "price": 0.1,
-            "use_exchange_rate": false,
-            "priority": 0,
-            "notes": "Vendor: A.Adams Supply\nDescription: ",
-            "latest_change_name": "Item added\nItsme\nAugust 15 Monday 2022 08-58-53 AM",
-            "latest_change_part_number": "Item added\nItsme\nAugust 15 Monday 2022 08-58-53 AM",
-            "latest_change_unit_quantity": "Item added\nItsme\nAugust 15 Monday 2022 08-58-53 AM",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 1004\nto: 1004\nLynden\nMarch 13 Monday 2023 08:30:46 AM",
-            "latest_change_price": "Item added\nItsme\nAugust 15 Monday 2022 08-58-53 AM",
-            "latest_change_use_exchange_price": "Item added\nItsme\nAugust 15 Monday 2022 08-58-53 AM",
-            "latest_change_priority": "Item added\nItsme\nAugust 15 Monday 2022 08-58-53 AM",
-            "latest_change_notes": "Item added\nItsme\nAugust 15 Monday 2022 08-58-53 AM"
-        },
         "3\/8 X 1.25\" Bolt ": {
             "part_number": "38125",
             "unit_quantity": 4,
@@ -3337,6 +3320,23 @@
             "latest_change_use_exchange_price": "Item added\nItsme\nSeptember 06 Tuesday 2022 10-18-37 AM",
             "latest_change_priority": "Item added\nItsme\nSeptember 06 Tuesday 2022 10-18-37 AM",
             "latest_change_notes": "Item added\nItsme\nSeptember 06 Tuesday 2022 10-18-37 AM"
+        },
+        "SCR MACH PH PHIL ZP 10-32 x 1\/2 ": {
+            "part_number": "397-1032-0050",
+            "unit_quantity": 16,
+            "current_quantity": 1004,
+            "price": 0.1,
+            "use_exchange_rate": false,
+            "priority": 0,
+            "notes": "Vendor: A.Adams Supply\nDescription: ",
+            "latest_change_name": "Item added\nItsme\nAugust 15 Monday 2022 08-58-53 AM",
+            "latest_change_part_number": "Item added\nItsme\nAugust 15 Monday 2022 08-58-53 AM",
+            "latest_change_unit_quantity": "Item added\nItsme\nAugust 15 Monday 2022 08-58-53 AM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 1004\nto: 1004\nLynden\nMarch 13 Monday 2023 08:30:46 AM",
+            "latest_change_price": "Item added\nItsme\nAugust 15 Monday 2022 08-58-53 AM",
+            "latest_change_use_exchange_price": "Item added\nItsme\nAugust 15 Monday 2022 08-58-53 AM",
+            "latest_change_priority": "Item added\nItsme\nAugust 15 Monday 2022 08-58-53 AM",
+            "latest_change_notes": "Item added\nItsme\nAugust 15 Monday 2022 08-58-53 AM"
         },
         "NU SKT HD CP NC 8\/32 x 3 1\/2\"": {
             "part_number": "700-0832-0350",
@@ -3645,7 +3645,7 @@
         "1-1\/4 Half Coupling": {
             "part_number": "G0008MC-125",
             "unit_quantity": 1,
-            "current_quantity": 8,
+            "current_quantity": -9,
             "price": 2.4,
             "use_exchange_rate": false,
             "priority": 0,
@@ -3653,7 +3653,7 @@
             "latest_change_name": "Item added\nItsme\nJuly 07 Thursday 2022 10-23-19 AM",
             "latest_change_part_number": "Item added\nItsme\nJuly 07 Thursday 2022 10-23-19 AM",
             "latest_change_unit_quantity": "Item added\nItsme\nJuly 07 Thursday 2022 10-23-19 AM",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 8\nto: 8\nLynden\nMarch 13 Monday 2023 08:30:45 AM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: -9\nto: -9\nLynden\nApril 05 Wednesday 2023 09:11:08 AM",
             "latest_change_price": "Latest Change:\nfrom: 2.0\nto: 2.4\nItsme\nSeptember 03 Saturday 2022 02:45:54 PM",
             "latest_change_use_exchange_price": "Item added\nItsme\nJuly 07 Thursday 2022 10-23-19 AM",
             "latest_change_priority": "Item added\nItsme\nJuly 07 Thursday 2022 10-23-19 AM",
@@ -6107,7 +6107,7 @@
         "1-1\/4 Half Coupling": {
             "part_number": "G0008MC-125",
             "unit_quantity": 1,
-            "current_quantity": 8,
+            "current_quantity": -9,
             "price": 2.4,
             "use_exchange_rate": false,
             "priority": 0,
@@ -6115,7 +6115,7 @@
             "latest_change_name": "Item added\nItsme\nAugust 04 Thursday 2022 09-05-57 AM",
             "latest_change_part_number": "Item added\nItsme\nAugust 04 Thursday 2022 09-05-57 AM",
             "latest_change_unit_quantity": "Item added\nItsme\nAugust 04 Thursday 2022 09-05-57 AM",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 8\nto: 8\nLynden\nMarch 13 Monday 2023 08:30:45 AM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: -9\nto: -9\nLynden\nApril 05 Wednesday 2023 09:11:08 AM",
             "latest_change_price": "Latest Change:\nfrom: 2.0\nto: 2.4\nItsme\nSeptember 03 Saturday 2022 02:45:54 PM",
             "latest_change_use_exchange_price": "Item added\nItsme\nAugust 04 Thursday 2022 09-05-57 AM",
             "latest_change_priority": "Item added\nItsme\nAugust 04 Thursday 2022 09-05-57 AM",
