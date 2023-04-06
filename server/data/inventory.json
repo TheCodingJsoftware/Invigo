@@ -10830,6 +10830,23 @@
             "latest_change_priority": "Item added\nItsme\nDecember 31 Saturday 2022 11-02-21 AM",
             "latest_change_notes": "Item added\nItsme\nDecember 31 Saturday 2022 11-02-21 AM"
         },
+        "RAL 7012 Dark Grey": {
+            "part_number": "GY9XP805",
+            "unit_quantity": 5.0,
+            "current_quantity": 275,
+            "price": 10.0,
+            "use_exchange_rate": false,
+            "priority": 0,
+            "notes": "Vendor: Cloverdale \nDescription: \nDescription: Powder is per pound. and price is also per pound\n25KG per 55lbs. \n22x25= $550 per box\n550 Devide 55=$10 per pound\n",
+            "latest_change_name": "Item added\nLynden\nApril 06 Thursday 2023 09-05-23 AM",
+            "latest_change_part_number": "Item added\nLynden\nApril 06 Thursday 2023 09-05-24 AM",
+            "latest_change_unit_quantity": "Item added\nLynden\nApril 06 Thursday 2023 09-05-24 AM",
+            "latest_change_current_quantity": "Item added\nLynden\nApril 06 Thursday 2023 09-05-24 AM",
+            "latest_change_price": "Item added\nLynden\nApril 06 Thursday 2023 09-05-24 AM",
+            "latest_change_use_exchange_price": "Item added\nLynden\nApril 06 Thursday 2023 09-05-24 AM",
+            "latest_change_priority": "Item added\nLynden\nApril 06 Thursday 2023 09-05-24 AM",
+            "latest_change_notes": "Latest Change:\nfrom: \"Vendor: Cloverdale \nDescription: \n\n\"\nto: \"Vendor: Cloverdale \nDescription: \nDescription: Powder is per pound. and price is also per pound\n25KG per 55lbs. \n22x25= $550 per box\n550 Devide 55=$10 per pound\n\"\nLynden\nApril 06 Thursday 2023 09:05:36 AM"
+        },
         "RAL 7004 Powder   Light Grey": {
             "part_number": "GY9XP1161",
             "unit_quantity": 4.0,
@@ -11156,6 +11173,23 @@
             "latest_change_use_exchange_price": "Item added\nItsme\nJanuary 13 Friday 2023 01-44-42 PM",
             "latest_change_priority": "Item added\nItsme\nJanuary 13 Friday 2023 01-44-42 PM",
             "latest_change_notes": "Item added\nItsme\nJanuary 13 Friday 2023 01-44-42 PM"
+        },
+        "RAL 7004 Powder   Light Grey": {
+            "part_number": "GY9XP1161",
+            "unit_quantity": 10.0,
+            "current_quantity": 313,
+            "price": 10.0,
+            "use_exchange_rate": false,
+            "priority": 0,
+            "notes": "Vendor: Gloverdale Paint\n\nDescription: Powder is per pound. and price is also per pound\n25KG per 55lbs. \n22x25= $550 per box\n550 Devide 55=$10 per pound",
+            "latest_change_name": "Item added\nLynden\nApril 06 Thursday 2023 09-06-45 AM",
+            "latest_change_part_number": "Item added\nLynden\nApril 06 Thursday 2023 09-06-45 AM",
+            "latest_change_unit_quantity": "Latest Change:\nfrom: 1.0\nto: 10.0\nLynden\nApril 06 Thursday 2023 09:06:58 AM",
+            "latest_change_current_quantity": "Item added\nLynden\nApril 06 Thursday 2023 09-06-45 AM",
+            "latest_change_price": "Item added\nLynden\nApril 06 Thursday 2023 09-06-45 AM",
+            "latest_change_use_exchange_price": "Item added\nLynden\nApril 06 Thursday 2023 09-06-45 AM",
+            "latest_change_priority": "Item added\nLynden\nApril 06 Thursday 2023 09-06-45 AM",
+            "latest_change_notes": "Item added\nLynden\nApril 06 Thursday 2023 09-06-45 AM"
         }
     }
 }
