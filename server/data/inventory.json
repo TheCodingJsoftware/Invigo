@@ -10832,20 +10832,20 @@
         },
         "RAL 7004 Powder   Light Grey": {
             "part_number": "GY9XP1161",
-            "unit_quantity": 0.2,
+            "unit_quantity": 4.0,
             "current_quantity": 313,
-            "price": 22.0,
+            "price": 10.0,
             "use_exchange_rate": false,
             "priority": 0,
-            "notes": "Vendor: Gloverdale Paint\n\nDescription: Powder is per pound. and price is also per pound\n25KG per ",
+            "notes": "Vendor: Gloverdale Paint\n\nDescription: Powder is per pound. and price is also per pound\n25KG per 55lbs. \n22x25= $550 per box\n550 Devide 55=$10 per pound",
             "latest_change_name": "Item added\nItsme\nFebruary 11 Saturday 2023 08-51-29 AM",
             "latest_change_part_number": "Item added\nItsme\nFebruary 11 Saturday 2023 08-51-29 AM",
-            "latest_change_unit_quantity": "Latest Change:\nfrom: 0.0\nto: 0.2\nLynden\nMarch 06 Monday 2023 08:35:27 AM",
+            "latest_change_unit_quantity": "Latest Change:\nfrom: 0.0\nto: 4.0\nLynden\nApril 06 Thursday 2023 08:36:41 AM",
             "latest_change_current_quantity": "Latest Change:\nfrom: 313\nto: 313\nLynden\nApril 06 Thursday 2023 08:27:38 AM",
-            "latest_change_price": "Latest Change:\nfrom: 0.0\nto: 22.0\nItsme\nFebruary 11 Saturday 2023 08:55:17 AM",
+            "latest_change_price": "Latest Change:\nfrom: 22.0\nto: 10.0\nLynden\nApril 06 Thursday 2023 08:36:10 AM",
             "latest_change_use_exchange_price": "Item added\nItsme\nFebruary 11 Saturday 2023 08-51-29 AM",
             "latest_change_priority": "Item added\nItsme\nFebruary 11 Saturday 2023 08-51-29 AM",
-            "latest_change_notes": "Latest Change:\nfrom: \"Vendor: Gloverdale Paint\n\nDescription: Powder is per pound. and price is also per pound\n25KG per\"\nto: \"Vendor: Gloverdale Paint\n\nDescription: Powder is per pound. and price is also per pound\n25KG per \"\nLynden\nApril 06 Thursday 2023 08:33:43 AM"
+            "latest_change_notes": "Latest Change:\nfrom: \"Vendor: Gloverdale Paint\n\nDescription: Powder is per pound. and price is also per pound\n25KG per 55lbs. \n22x25= $550 per box\n550 Devide 55=$10 per poun\"\nto: \"Vendor: Gloverdale Paint\n\nDescription: Powder is per pound. and price is also per pound\n25KG per 55lbs. \n22x25= $550 per box\n550 Devide 55=$10 per pound\"\nLynden\nApril 06 Thursday 2023 08:35:57 AM"
         },
         "Flange Nut Serrated NC ZP 3\/8-16": {
             "part_number": "159-037",
