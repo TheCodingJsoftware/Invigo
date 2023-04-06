@@ -33,6 +33,17 @@
             "modified_date": "Added at March 17 Friday 2023 02:13:08 PM",
             "group": null
         },
+        "Flat pattern - G2Plus-Air Gate Adjust - part 1 NEW": {
+            "current_quantity": 512,
+            "machine_time": 1.15,
+            "gauge": "10 Gauge",
+            "material": "304 SS",
+            "weight": 0.387,
+            "price": 5.72,
+            "unit_quantity": 1,
+            "modified_date": "Added at April 06 Thursday 2023 08:36:50 AM",
+            "group": null
+        },
         "LEVELGUSET": {
             "current_quantity": 269,
             "machine_time": 0.2,
@@ -3248,6 +3259,17 @@
             "modified_date": "Added at February 25 Saturday 2023 09:10:26 AM",
             "group": null
         },
+        "Aluminum Shelf 2x8": {
+            "current_quantity": 6.0,
+            "machine_time": 2.13,
+            "gauge": "11 Gauge",
+            "material": "Aluminium",
+            "weight": 53.505,
+            "price": 161.36,
+            "unit_quantity": 1,
+            "modified_date": "Manually set to 6.0 quantity at April 05 Wednesday 2023 11:01:37 AM",
+            "group": null
+        },
         "Flat pattern - Skull Hook Pcs-part 9- 10g x2": {
             "current_quantity": 5,
             "machine_time": 0.27,
@@ -3642,17 +3664,6 @@
             "price": 4.38,
             "unit_quantity": 1,
             "modified_date": "Added at March 21 Tuesday 2023 04:35:32 PM",
-            "group": null
-        },
-        "Aluminum Shelf 2x8": {
-            "current_quantity": 6.0,
-            "machine_time": 2.13,
-            "gauge": "11 Gauge",
-            "material": "Aluminium",
-            "weight": 53.505,
-            "price": 161.36,
-            "unit_quantity": 1,
-            "modified_date": "Manually set to 6.0 quantity at April 05 Wednesday 2023 11:01:37 AM",
             "group": null
         }
     },
