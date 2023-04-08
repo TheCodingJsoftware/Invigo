@@ -263,14 +263,14 @@
             "group": null
         },
         "2840-05": {
-            "current_quantity": 10,
+            "current_quantity": 1.0,
             "machine_time": 1.78,
             "gauge": "1\/4",
             "material": "Mild Steel",
             "weight": 69.744,
             "price": 58.15,
             "unit_quantity": 1,
-            "modified_date": "Removed 10 quantity at April 08 Saturday 2023 10:54:59 AM",
+            "modified_date": "Manually set to 1.0 quantity at April 08 Saturday 2023 10:56:42 AM",
             "group": null
         },
         "2840-25x4": {
