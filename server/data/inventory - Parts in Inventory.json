@@ -43,28 +43,6 @@
             "unit_quantity": 1,
             "modified_date": "69 quantity added at March 21 Tuesday 2023 04:35:32 PM",
             "group": null
-        },
-        "2840-107": {
-            "current_quantity": 10,
-            "machine_time": 0.53,
-            "gauge": "12 Gauge",
-            "material": "Mild Steel",
-            "weight": 3.797,
-            "price": 4.25,
-            "unit_quantity": 1,
-            "modified_date": "Added at April 12 Wednesday 2023 02:43:04 PM",
-            "group": null
-        },
-        "2840-74": {
-            "current_quantity": 10,
-            "machine_time": 0.68,
-            "gauge": "12 Gauge",
-            "material": "Mild Steel",
-            "weight": 2.078,
-            "price": 3.3,
-            "unit_quantity": 1,
-            "modified_date": "Added at April 12 Wednesday 2023 02:43:04 PM",
-            "group": null
         }
     },
     "Recut": {
@@ -920,6 +898,28 @@
             "price": 1.9,
             "unit_quantity": 4.0,
             "modified_date": "Manually set to 0.0 quantity at April 08 Saturday 2023 10:56:31 AM",
+            "group": null
+        },
+        "2840-74": {
+            "current_quantity": 10,
+            "machine_time": 0.68,
+            "gauge": "12 Gauge",
+            "material": "Mild Steel",
+            "weight": 2.078,
+            "price": 3.3,
+            "unit_quantity": 1,
+            "modified_date": "Added at April 12 Wednesday 2023 02:43:04 PM",
+            "group": null
+        },
+        "2840-107": {
+            "current_quantity": 10,
+            "machine_time": 0.53,
+            "gauge": "12 Gauge",
+            "material": "Mild Steel",
+            "weight": 3.797,
+            "price": 4.25,
+            "unit_quantity": 1,
+            "modified_date": "Added at April 12 Wednesday 2023 02:43:04 PM",
             "group": null
         }
     },
@@ -2071,6 +2071,17 @@
             "unit_quantity": 6.0,
             "modified_date": "Manually set to 0.0 quantity at March 24 Friday 2023 11:02:51 AM",
             "group": null
+        },
+        "G-Class - sight Glass -new base plateA": {
+            "current_quantity": 238,
+            "machine_time": 0.15,
+            "gauge": "12 Gauge",
+            "material": "Mild Steel",
+            "weight": 0.371,
+            "price": 0.66,
+            "unit_quantity": 1,
+            "modified_date": "Added at April 12 Wednesday 2023 04:26:36 PM",
+            "group": null
         }
     },
     "Polar G2+": {
@@ -2798,6 +2809,17 @@
             "price": 2.9,
             "unit_quantity": 1,
             "modified_date": "Manually set to 0.0 quantity at March 24 Friday 2023 11:02:55 AM",
+            "group": null
+        },
+        "G-Class - sight Glass -new base plateA": {
+            "current_quantity": 238,
+            "machine_time": 0.15,
+            "gauge": "12 Gauge",
+            "material": "Mild Steel",
+            "weight": 0.371,
+            "price": 0.66,
+            "unit_quantity": 1,
+            "modified_date": "Added at April 12 Wednesday 2023 04:26:36 PM",
             "group": null
         }
     },
@@ -3549,6 +3571,17 @@
             "unit_quantity": 1,
             "modified_date": "Manually set to 0.0 quantity at March 24 Friday 2023 11:02:54 AM",
             "group": null
+        },
+        "G-Class - sight Glass -new base plateA": {
+            "current_quantity": 238,
+            "machine_time": 0.15,
+            "gauge": "12 Gauge",
+            "material": "Mild Steel",
+            "weight": 0.371,
+            "price": 0.66,
+            "unit_quantity": 1,
+            "modified_date": "Added at April 12 Wednesday 2023 04:26:36 PM",
+            "group": null
         }
     },
     "Overhead Door Part's": {
@@ -4149,6 +4182,17 @@
             "unit_quantity": 1,
             "modified_date": "Added at March 21 Tuesday 2023 04:35:32 PM",
             "group": null
+        },
+        "Auger Fix": {
+            "current_quantity": 1,
+            "machine_time": 0.85,
+            "gauge": "12 Gauge",
+            "material": "Mild Steel",
+            "weight": 22.866,
+            "price": 19.73,
+            "unit_quantity": 1,
+            "modified_date": "Added at April 12 Wednesday 2023 04:26:36 PM",
+            "group": null
         }
     },
     "LCB300 Boiler\/Chip Bin": {
@@ -4394,6 +4438,17 @@
             "price": 219.55,
             "unit_quantity": 1,
             "modified_date": "Added at March 27 Monday 2023 03:37:47 PM",
+            "group": null
+        },
+        "23 x 48 12G": {
+            "current_quantity": 1,
+            "machine_time": 0.97,
+            "gauge": "12 Gauge",
+            "material": "Mild Steel",
+            "weight": 31.354,
+            "price": 26.57,
+            "unit_quantity": 1,
+            "modified_date": "Added at April 12 Wednesday 2023 04:26:36 PM",
             "group": null
         }
     }
