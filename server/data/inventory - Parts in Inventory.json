@@ -43,6 +43,237 @@
             "unit_quantity": 1,
             "modified_date": "69 quantity added at March 21 Tuesday 2023 04:35:32 PM",
             "group": null
+        },
+        "2840-47x2": {
+            "current_quantity": 20,
+            "machine_time": 0.4,
+            "gauge": "18 Gauge",
+            "material": "Galvanneal",
+            "weight": 3.236,
+            "price": 4.95,
+            "unit_quantity": 1,
+            "modified_date": "Added at April 12 Wednesday 2023 05:02:53 PM",
+            "group": null
+        },
+        "2840-30": {
+            "current_quantity": 10,
+            "machine_time": 0.72,
+            "gauge": "18 Gauge",
+            "material": "Galvanneal",
+            "weight": 6.158,
+            "price": 9.31,
+            "unit_quantity": 1,
+            "modified_date": "Added at April 12 Wednesday 2023 05:02:53 PM",
+            "group": null
+        },
+        "2840-31": {
+            "current_quantity": 10,
+            "machine_time": 0.53,
+            "gauge": "18 Gauge",
+            "material": "Galvanneal",
+            "weight": 4.102,
+            "price": 6.33,
+            "unit_quantity": 1,
+            "modified_date": "Added at April 12 Wednesday 2023 05:02:53 PM",
+            "group": null
+        },
+        "2840-32": {
+            "current_quantity": 10,
+            "machine_time": 0.67,
+            "gauge": "18 Gauge",
+            "material": "Galvanneal",
+            "weight": 9.533,
+            "price": 13.31,
+            "unit_quantity": 1,
+            "modified_date": "Added at April 12 Wednesday 2023 05:02:53 PM",
+            "group": null
+        },
+        "2840-35": {
+            "current_quantity": 10,
+            "machine_time": 0.92,
+            "gauge": "18 Gauge",
+            "material": "Galvanneal",
+            "weight": 9.978,
+            "price": 14.47,
+            "unit_quantity": 1,
+            "modified_date": "Added at April 12 Wednesday 2023 05:02:53 PM",
+            "group": null
+        },
+        "2840-36": {
+            "current_quantity": 10,
+            "machine_time": 0.92,
+            "gauge": "18 Gauge",
+            "material": "Galvanneal",
+            "weight": 10.008,
+            "price": 14.51,
+            "unit_quantity": 1,
+            "modified_date": "Added at April 12 Wednesday 2023 05:02:53 PM",
+            "group": null
+        },
+        "2840-37": {
+            "current_quantity": 10,
+            "machine_time": 0.55,
+            "gauge": "18 Gauge",
+            "material": "Galvanneal",
+            "weight": 5.757,
+            "price": 8.4,
+            "unit_quantity": 1,
+            "modified_date": "Added at April 12 Wednesday 2023 05:02:53 PM",
+            "group": null
+        },
+        "2840-38": {
+            "current_quantity": 10,
+            "machine_time": 0.58,
+            "gauge": "18 Gauge",
+            "material": "Galvanneal",
+            "weight": 5.748,
+            "price": 8.46,
+            "unit_quantity": 1,
+            "modified_date": "Added at April 12 Wednesday 2023 05:02:53 PM",
+            "group": null
+        },
+        "2840-39": {
+            "current_quantity": 10,
+            "machine_time": 0.57,
+            "gauge": "18 Gauge",
+            "material": "Galvanneal",
+            "weight": 5.696,
+            "price": 8.37,
+            "unit_quantity": 1,
+            "modified_date": "Added at April 12 Wednesday 2023 05:02:53 PM",
+            "group": null
+        },
+        "2840-40": {
+            "current_quantity": 10,
+            "machine_time": 0.53,
+            "gauge": "18 Gauge",
+            "material": "Galvanneal",
+            "weight": 5.512,
+            "price": 8.05,
+            "unit_quantity": 1,
+            "modified_date": "Added at April 12 Wednesday 2023 05:02:53 PM",
+            "group": null
+        },
+        "2840-41": {
+            "current_quantity": 10,
+            "machine_time": 0.98,
+            "gauge": "18 Gauge",
+            "material": "Galvanneal",
+            "weight": 5.242,
+            "price": 8.85,
+            "unit_quantity": 1,
+            "modified_date": "Added at April 12 Wednesday 2023 05:02:53 PM",
+            "group": null
+        },
+        "2840-42": {
+            "current_quantity": 10,
+            "machine_time": 0.63,
+            "gauge": "18 Gauge",
+            "material": "Galvanneal",
+            "weight": 5.526,
+            "price": 8.32,
+            "unit_quantity": 1,
+            "modified_date": "Added at April 12 Wednesday 2023 05:02:53 PM",
+            "group": null
+        },
+        "2840-43": {
+            "current_quantity": 10,
+            "machine_time": 0.48,
+            "gauge": "18 Gauge",
+            "material": "Galvanneal",
+            "weight": 7.642,
+            "price": 10.52,
+            "unit_quantity": 1,
+            "modified_date": "Added at April 12 Wednesday 2023 05:02:53 PM",
+            "group": null
+        },
+        "2840-45": {
+            "current_quantity": 10,
+            "machine_time": 0.62,
+            "gauge": "18 Gauge",
+            "material": "Galvanneal",
+            "weight": 5.775,
+            "price": 8.6,
+            "unit_quantity": 1,
+            "modified_date": "Added at April 12 Wednesday 2023 05:02:53 PM",
+            "group": null
+        },
+        "2840-48": {
+            "current_quantity": 10,
+            "machine_time": 0.67,
+            "gauge": "18 Gauge",
+            "material": "Galvanneal",
+            "weight": 11.572,
+            "price": 15.79,
+            "unit_quantity": 1,
+            "modified_date": "Added at April 12 Wednesday 2023 05:02:53 PM",
+            "group": null
+        },
+        "2840-49A": {
+            "current_quantity": 10,
+            "machine_time": 0.9,
+            "gauge": "18 Gauge",
+            "material": "Galvanneal",
+            "weight": 22.319,
+            "price": 29.48,
+            "unit_quantity": 1,
+            "modified_date": "Added at April 12 Wednesday 2023 05:02:53 PM",
+            "group": null
+        },
+        "2840-49B": {
+            "current_quantity": 10,
+            "machine_time": 1.0,
+            "gauge": "18 Gauge",
+            "material": "Galvanneal",
+            "weight": 24.001,
+            "price": 31.78,
+            "unit_quantity": 1,
+            "modified_date": "Added at April 12 Wednesday 2023 05:02:53 PM",
+            "group": null
+        },
+        "2840-50": {
+            "current_quantity": 10,
+            "machine_time": 0.78,
+            "gauge": "18 Gauge",
+            "material": "Galvanneal",
+            "weight": 16.501,
+            "price": 22.08,
+            "unit_quantity": 1,
+            "modified_date": "Added at April 12 Wednesday 2023 05:02:53 PM",
+            "group": null
+        },
+        "2840-52": {
+            "current_quantity": 10,
+            "machine_time": 0.35,
+            "gauge": "18 Gauge",
+            "material": "Galvanneal",
+            "weight": 1.052,
+            "price": 2.16,
+            "unit_quantity": 1,
+            "modified_date": "Added at April 12 Wednesday 2023 05:02:53 PM",
+            "group": null
+        },
+        "2840-90 Wood": {
+            "current_quantity": 10,
+            "machine_time": 0.47,
+            "gauge": "18 Gauge",
+            "material": "Galvanneal",
+            "weight": 2.259,
+            "price": 3.93,
+            "unit_quantity": 1,
+            "modified_date": "Added at April 12 Wednesday 2023 05:02:53 PM",
+            "group": null
+        },
+        "2840-91": {
+            "current_quantity": 10,
+            "machine_time": 1.13,
+            "gauge": "18 Gauge",
+            "material": "Galvanneal",
+            "weight": 9.037,
+            "price": 13.85,
+            "unit_quantity": 1,
+            "modified_date": "Added at April 12 Wednesday 2023 05:02:53 PM",
+            "group": null
         }
     },
     "Recut": {
@@ -218,6 +449,17 @@
             "modified_date": "Removed 60.0 quantity at April 08 Saturday 2023 10:54:59 AM",
             "group": null
         },
+        "2840-92": {
+            "current_quantity": 40,
+            "machine_time": 0.53,
+            "gauge": "18 Gauge",
+            "material": "Galvanneal",
+            "weight": 2.248,
+            "price": 4.07,
+            "unit_quantity": 1,
+            "modified_date": "10 quantity added at April 12 Wednesday 2023 05:02:53 PM",
+            "group": null
+        },
         "SFM-01 BL28": {
             "current_quantity": 35,
             "machine_time": 0.3,
@@ -240,202 +482,213 @@
             "modified_date": "Removed 20.0 quantity at April 08 Saturday 2023 10:54:59 AM",
             "group": null
         },
-        "2840-92": {
-            "current_quantity": 30,
-            "machine_time": 0.53,
-            "gauge": "18 Gauge",
-            "material": "Galvanneal",
-            "weight": 2.248,
-            "price": 4.07,
-            "unit_quantity": 1,
-            "modified_date": "Removed 10 quantity at April 08 Saturday 2023 10:54:59 AM",
-            "group": null
-        },
         "2840-Shaker-64x2": {
-            "current_quantity": 20.0,
+            "current_quantity": 0.0,
             "machine_time": 1.67,
             "gauge": "3\/8",
             "material": "Mild Steel",
             "weight": 17.471,
             "price": 17.63,
             "unit_quantity": 2.0,
-            "modified_date": "Removed 20.0 quantity at April 08 Saturday 2023 10:54:59 AM",
+            "modified_date": "Manually set to 0.0 quantity at April 12 Wednesday 2023 05:09:53 PM",
             "group": null
         },
         "BL2840-104x2": {
-            "current_quantity": 20.0,
+            "current_quantity": 0.0,
             "machine_time": 0.3,
             "gauge": "18 Gauge",
             "material": "Galvanized",
             "weight": 0.656,
             "price": 1.54,
-            "unit_quantity": 1,
-            "modified_date": "Manually set to 20.0 quantity at April 08 Saturday 2023 11:00:58 AM",
+            "unit_quantity": 2.0,
+            "modified_date": "Manually set to 0.0 quantity at April 12 Wednesday 2023 05:09:45 PM",
             "group": null
         },
         "BL2840-105x2": {
-            "current_quantity": 20,
+            "current_quantity": 0.0,
             "machine_time": 0.37,
             "gauge": "18 Gauge",
             "material": "Galvanized",
             "weight": 1.674,
             "price": 2.93,
-            "unit_quantity": 1,
-            "modified_date": "Added at April 08 Saturday 2023 10:59:23 AM",
+            "unit_quantity": 2.0,
+            "modified_date": "Manually set to 0.0 quantity at April 12 Wednesday 2023 05:09:37 PM",
             "group": null
         },
         "2840-337": {
-            "current_quantity": 11.0,
+            "current_quantity": 0.0,
             "machine_time": 0.43,
             "gauge": "12 Gauge",
             "material": "Mild Steel",
             "weight": 2.955,
             "price": 3.35,
             "unit_quantity": 1,
-            "modified_date": "11 quantity added at April 12 Wednesday 2023 02:43:04 PM",
+            "modified_date": "Manually set to 0.0 quantity at April 12 Wednesday 2023 05:09:27 PM",
             "group": null
         },
         "2840-55": {
-            "current_quantity": 10.0,
+            "current_quantity": 0.0,
             "machine_time": 0.43,
             "gauge": "12 Gauge",
             "material": "Mild Steel",
             "weight": 3.158,
             "price": 3.51,
             "unit_quantity": 1,
-            "modified_date": "10 quantity added at April 12 Wednesday 2023 02:43:04 PM",
+            "modified_date": "Manually set to 0.0 quantity at April 12 Wednesday 2023 05:09:23 PM",
             "group": null
         },
         "2840-56": {
-            "current_quantity": 10.0,
+            "current_quantity": 0.0,
             "machine_time": 0.32,
             "gauge": "12 Gauge",
             "material": "Mild Steel",
             "weight": 2.468,
             "price": 2.7,
             "unit_quantity": 1,
-            "modified_date": "10 quantity added at April 12 Wednesday 2023 02:43:04 PM",
+            "modified_date": "Manually set to 0.0 quantity at April 12 Wednesday 2023 05:09:20 PM",
             "group": null
         },
         "2840-339": {
-            "current_quantity": 10.0,
+            "current_quantity": 0.0,
             "machine_time": 0.33,
             "gauge": "12 Gauge",
             "material": "Mild Steel",
             "weight": 2.281,
             "price": 2.58,
             "unit_quantity": 1,
-            "modified_date": "10 quantity added at April 12 Wednesday 2023 02:43:04 PM",
+            "modified_date": "Manually set to 0.0 quantity at April 12 Wednesday 2023 05:09:16 PM",
             "group": null
         },
         "2840-108": {
-            "current_quantity": 10,
+            "current_quantity": 0.0,
             "machine_time": 0.57,
             "gauge": "18 Gauge",
             "material": "Galvanized",
             "weight": 14.021,
             "price": 18.25,
             "unit_quantity": 1,
-            "modified_date": "Added at April 08 Saturday 2023 10:59:23 AM",
+            "modified_date": "Manually set to 0.0 quantity at April 12 Wednesday 2023 05:09:13 PM",
             "group": null
         },
         "2840-33": {
-            "current_quantity": 10,
+            "current_quantity": 0.0,
             "machine_time": 1.38,
             "gauge": "18 Gauge",
             "material": "Galvanized",
             "weight": 25.316,
             "price": 33.83,
             "unit_quantity": 1,
-            "modified_date": "Added at April 08 Saturday 2023 10:59:23 AM",
+            "modified_date": "Manually set to 0.0 quantity at April 12 Wednesday 2023 05:09:10 PM",
             "group": null
         },
         "BL2840-100": {
-            "current_quantity": 10,
+            "current_quantity": 0.0,
             "machine_time": 0.58,
             "gauge": "18 Gauge",
             "material": "Galvanized",
             "weight": 2.969,
             "price": 5.01,
             "unit_quantity": 1,
-            "modified_date": "Added at April 08 Saturday 2023 10:59:23 AM",
+            "modified_date": "Manually set to 0.0 quantity at April 12 Wednesday 2023 05:08:59 PM",
             "group": null
         },
         "BL2840-101": {
-            "current_quantity": 10,
+            "current_quantity": 0.0,
             "machine_time": 0.77,
             "gauge": "18 Gauge",
             "material": "Galvanized",
             "weight": 5.245,
             "price": 8.22,
             "unit_quantity": 1,
-            "modified_date": "Added at April 08 Saturday 2023 10:59:23 AM",
+            "modified_date": "Manually set to 0.0 quantity at April 12 Wednesday 2023 05:08:51 PM",
             "group": null
         },
         "BL2840-102": {
-            "current_quantity": 10,
+            "current_quantity": 0.0,
             "machine_time": 0.78,
             "gauge": "18 Gauge",
             "material": "Galvanized",
             "weight": 5.259,
             "price": 8.26,
             "unit_quantity": 1,
-            "modified_date": "Added at April 08 Saturday 2023 10:59:23 AM",
+            "modified_date": "Manually set to 0.0 quantity at April 12 Wednesday 2023 05:08:48 PM",
             "group": null
         },
         "BL2840-103": {
-            "current_quantity": 10,
+            "current_quantity": 0.0,
             "machine_time": 0.52,
             "gauge": "18 Gauge",
             "material": "Galvanized",
             "weight": 2.511,
             "price": 4.31,
             "unit_quantity": 1,
-            "modified_date": "Added at April 08 Saturday 2023 10:59:23 AM",
+            "modified_date": "Manually set to 0.0 quantity at April 12 Wednesday 2023 05:08:45 PM",
             "group": null
         },
         "BL2840-106": {
-            "current_quantity": 10,
+            "current_quantity": 0.0,
             "machine_time": 0.78,
             "gauge": "18 Gauge",
             "material": "Galvanized",
             "weight": 11.166,
             "price": 15.35,
             "unit_quantity": 1,
-            "modified_date": "Added at April 08 Saturday 2023 10:59:23 AM",
+            "modified_date": "Manually set to 0.0 quantity at April 12 Wednesday 2023 05:08:42 PM",
             "group": null
         },
         "BL2840-107": {
-            "current_quantity": 10,
+            "current_quantity": 0.0,
             "machine_time": 0.78,
             "gauge": "18 Gauge",
             "material": "Galvanized",
             "weight": 9.907,
             "price": 13.84,
             "unit_quantity": 1,
-            "modified_date": "Added at April 08 Saturday 2023 10:59:23 AM",
+            "modified_date": "Manually set to 0.0 quantity at April 12 Wednesday 2023 05:08:39 PM",
             "group": null
         },
         "BL2840-108": {
-            "current_quantity": 10,
+            "current_quantity": 0.0,
             "machine_time": 0.38,
             "gauge": "18 Gauge",
             "material": "Galvanized",
             "weight": 2.015,
             "price": 3.37,
             "unit_quantity": 1,
-            "modified_date": "Added at April 08 Saturday 2023 10:59:23 AM",
+            "modified_date": "Manually set to 0.0 quantity at April 12 Wednesday 2023 05:08:36 PM",
+            "group": null
+        },
+        "2840-74": {
+            "current_quantity": 0.0,
+            "machine_time": 0.68,
+            "gauge": "12 Gauge",
+            "material": "Mild Steel",
+            "weight": 2.078,
+            "price": 3.3,
+            "unit_quantity": 1,
+            "modified_date": "Manually set to 0.0 quantity at April 12 Wednesday 2023 05:08:33 PM",
+            "group": null
+        },
+        "2840-107": {
+            "current_quantity": 0.0,
+            "machine_time": 0.53,
+            "gauge": "12 Gauge",
+            "material": "Mild Steel",
+            "weight": 3.797,
+            "price": 4.25,
+            "unit_quantity": 1,
+            "modified_date": "Manually set to 0.0 quantity at April 12 Wednesday 2023 05:08:28 PM",
             "group": null
         },
         "3044 Ashpan": {
-            "current_quantity": 9,
+            "current_quantity": 0.0,
             "machine_time": 0.55,
             "gauge": "16 Gauge",
             "material": "304 SS",
             "weight": 11.347,
             "price": 29.41,
             "unit_quantity": 1,
-            "modified_date": "9 quantity added at April 08 Saturday 2023 10:59:23 AM",
+            "modified_date": "Manually set to 0.0 quantity at April 12 Wednesday 2023 05:08:24 PM",
             "group": null
         },
         "2840-05": {
@@ -898,28 +1151,6 @@
             "price": 1.9,
             "unit_quantity": 4.0,
             "modified_date": "Manually set to 0.0 quantity at April 08 Saturday 2023 10:56:31 AM",
-            "group": null
-        },
-        "2840-74": {
-            "current_quantity": 10,
-            "machine_time": 0.68,
-            "gauge": "12 Gauge",
-            "material": "Mild Steel",
-            "weight": 2.078,
-            "price": 3.3,
-            "unit_quantity": 1,
-            "modified_date": "Added at April 12 Wednesday 2023 02:43:04 PM",
-            "group": null
-        },
-        "2840-107": {
-            "current_quantity": 10,
-            "machine_time": 0.53,
-            "gauge": "12 Gauge",
-            "material": "Mild Steel",
-            "weight": 3.797,
-            "price": 4.25,
-            "unit_quantity": 1,
-            "modified_date": "Added at April 12 Wednesday 2023 02:43:04 PM",
             "group": null
         }
     },
@@ -1588,6 +1819,17 @@
             "modified_date": "Added at March 22 Wednesday 2023 11:20:40 AM",
             "group": null
         },
+        "G-Class - sight Glass -new base plateA": {
+            "current_quantity": 238,
+            "machine_time": 0.15,
+            "gauge": "12 Gauge",
+            "material": "Mild Steel",
+            "weight": 0.371,
+            "price": 0.66,
+            "unit_quantity": 1,
+            "modified_date": "Added at April 12 Wednesday 2023 04:26:36 PM",
+            "group": null
+        },
         "Polar Spiral": {
             "current_quantity": 134,
             "machine_time": 0.25,
@@ -2071,17 +2313,6 @@
             "unit_quantity": 6.0,
             "modified_date": "Manually set to 0.0 quantity at March 24 Friday 2023 11:02:51 AM",
             "group": null
-        },
-        "G-Class - sight Glass -new base plateA": {
-            "current_quantity": 238,
-            "machine_time": 0.15,
-            "gauge": "12 Gauge",
-            "material": "Mild Steel",
-            "weight": 0.371,
-            "price": 0.66,
-            "unit_quantity": 1,
-            "modified_date": "Added at April 12 Wednesday 2023 04:26:36 PM",
-            "group": null
         }
     },
     "Polar G2+": {
@@ -2116,6 +2347,17 @@
             "price": 0.24,
             "unit_quantity": 1,
             "modified_date": "Added at March 22 Wednesday 2023 11:20:40 AM",
+            "group": null
+        },
+        "G-Class - sight Glass -new base plateA": {
+            "current_quantity": 238,
+            "machine_time": 0.15,
+            "gauge": "12 Gauge",
+            "material": "Mild Steel",
+            "weight": 0.371,
+            "price": 0.66,
+            "unit_quantity": 1,
+            "modified_date": "Added at April 12 Wednesday 2023 04:26:36 PM",
             "group": null
         },
         "Polar Spiral": {
@@ -2810,17 +3052,6 @@
             "unit_quantity": 1,
             "modified_date": "Manually set to 0.0 quantity at March 24 Friday 2023 11:02:55 AM",
             "group": null
-        },
-        "G-Class - sight Glass -new base plateA": {
-            "current_quantity": 238,
-            "machine_time": 0.15,
-            "gauge": "12 Gauge",
-            "material": "Mild Steel",
-            "weight": 0.371,
-            "price": 0.66,
-            "unit_quantity": 1,
-            "modified_date": "Added at April 12 Wednesday 2023 04:26:36 PM",
-            "group": null
         }
     },
     "Polar G3": {
@@ -2855,6 +3086,17 @@
             "price": 0.24,
             "unit_quantity": 1,
             "modified_date": "Added at March 22 Wednesday 2023 11:20:40 AM",
+            "group": null
+        },
+        "G-Class - sight Glass -new base plateA": {
+            "current_quantity": 238,
+            "machine_time": 0.15,
+            "gauge": "12 Gauge",
+            "material": "Mild Steel",
+            "weight": 0.371,
+            "price": 0.66,
+            "unit_quantity": 1,
+            "modified_date": "Added at April 12 Wednesday 2023 04:26:36 PM",
             "group": null
         },
         "Polar Spiral": {
@@ -3570,17 +3812,6 @@
             "price": 9.12,
             "unit_quantity": 1,
             "modified_date": "Manually set to 0.0 quantity at March 24 Friday 2023 11:02:54 AM",
-            "group": null
-        },
-        "G-Class - sight Glass -new base plateA": {
-            "current_quantity": 238,
-            "machine_time": 0.15,
-            "gauge": "12 Gauge",
-            "material": "Mild Steel",
-            "weight": 0.371,
-            "price": 0.66,
-            "unit_quantity": 1,
-            "modified_date": "Added at April 12 Wednesday 2023 04:26:36 PM",
             "group": null
         }
     },
