@@ -8056,23 +8056,6 @@
             "latest_change_priority": "Item added\nItsme\nOctober 19 Wednesday 2022 02-48-01 PM",
             "latest_change_notes": "Item added\nItsme\nOctober 19 Wednesday 2022 02-48-01 PM"
         },
-        " 6A2 1\/2 Rigid Offset Nipple Zinc": {
-            "part_number": "ARL6A2",
-            "unit_quantity": 2.0,
-            "current_quantity": 280,
-            "price": 3.93,
-            "use_exchange_rate": false,
-            "priority": 0,
-            "notes": "Vendor: Westburn Electric\nDescription: ",
-            "latest_change_name": "Item added\nLynden\nMarch 20 Monday 2023 02-01-12 PM",
-            "latest_change_part_number": "Item added\nLynden\nMarch 20 Monday 2023 02-01-12 PM",
-            "latest_change_unit_quantity": "Item added\nLynden\nMarch 20 Monday 2023 02-01-12 PM",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 280\nto: 280\nLynden\nApril 05 Wednesday 2023 11:28:27 AM",
-            "latest_change_price": "Item added\nLynden\nMarch 20 Monday 2023 02-01-12 PM",
-            "latest_change_use_exchange_price": "Item added\nLynden\nMarch 20 Monday 2023 02-01-12 PM",
-            "latest_change_priority": "Item added\nLynden\nMarch 20 Monday 2023 02-01-12 PM",
-            "latest_change_notes": "Item added\nLynden\nMarch 20 Monday 2023 02-01-12 PM"
-        },
         "Float Bubble plastic 1.5x4, 1\/4 NAT": {
             "part_number": "PF154-NT",
             "unit_quantity": 1,
@@ -8090,6 +8073,23 @@
             "latest_change_priority": "Latest Change:\nfrom: 0\nto: 1\nItsme\nOctober 21 Friday 2022 10:04:22 AM",
             "latest_change_notes": "Item added\nItsme\nAugust 04 Thursday 2022 10-23-09 AM",
             "group": "Float Assy"
+        },
+        " 6A2 1\/2 Rigid Offset Nipple Zinc": {
+            "part_number": "ARL6A2",
+            "unit_quantity": 2.0,
+            "current_quantity": 280,
+            "price": 3.93,
+            "use_exchange_rate": false,
+            "priority": 0,
+            "notes": "Vendor: Westburn Electric\nDescription: ",
+            "latest_change_name": "Item added\nLynden\nMarch 20 Monday 2023 02-01-12 PM",
+            "latest_change_part_number": "Item added\nLynden\nMarch 20 Monday 2023 02-01-12 PM",
+            "latest_change_unit_quantity": "Item added\nLynden\nMarch 20 Monday 2023 02-01-12 PM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 280\nto: 280\nLynden\nApril 05 Wednesday 2023 11:28:27 AM",
+            "latest_change_price": "Item added\nLynden\nMarch 20 Monday 2023 02-01-12 PM",
+            "latest_change_use_exchange_price": "Item added\nLynden\nMarch 20 Monday 2023 02-01-12 PM",
+            "latest_change_priority": "Item added\nLynden\nMarch 20 Monday 2023 02-01-12 PM",
+            "latest_change_notes": "Item added\nLynden\nMarch 20 Monday 2023 02-01-12 PM"
         },
         "Float Clamp  G1SS-11.3 7\/16 One Ear Stainless": {
             "part_number": "G1SS-11.3",
