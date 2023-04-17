@@ -85,6 +85,23 @@
             "latest_change_priority": "Item added\nItsme\nJuly 13 Wednesday 2022 09-11-15 AM",
             "latest_change_notes": "Latest Change:\nfrom: Vendor: A.Adams Supply\nDescription: mc master carr\nto: Vendor: A.Adams Supply\nDescription: mc master carr\n\nLynden\nMarch 13 Monday 2023 09:28:16 AM"
         },
+        "38100 Front MNT Snap-In SCR TERM": {
+            "part_number": "38100",
+            "unit_quantity": 1,
+            "current_quantity": 0,
+            "price": 11.99,
+            "use_exchange_rate": false,
+            "priority": 0,
+            "notes": "Vendor: Westburn and stanpro\n\nDescription: e 26 base \nGrand brass lamp parts for 3$",
+            "latest_change_name": "Item added\nItsme\nOctober 27 Thursday 2022 04-26-51 PM",
+            "latest_change_part_number": "Item added\nItsme\nOctober 27 Thursday 2022 04-26-51 PM",
+            "latest_change_unit_quantity": "Item added\nItsme\nOctober 27 Thursday 2022 04-26-51 PM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 0\nto: 0\nLynden\nApril 17 Monday 2023 04:59:03 PM",
+            "latest_change_price": "Item added\nItsme\nOctober 27 Thursday 2022 04-26-51 PM",
+            "latest_change_use_exchange_price": "Item added\nItsme\nOctober 27 Thursday 2022 04-26-51 PM",
+            "latest_change_priority": "Item added\nItsme\nOctober 27 Thursday 2022 04-26-51 PM",
+            "latest_change_notes": "Latest Change:\nfrom: \"Vendor: Westburn and stanpro\n\nDescription: e 26 base \nGrand brass lamp parts for 3\"\nto: \"Vendor: Westburn and stanpro\n\nDescription: e 26 base \nGrand brass lamp parts for 3$\"\nLynden\nApril 17 Monday 2023 02:16:30 PM"
+        },
         "Vapor Thermometer": {
             "part_number": "20UB8-220FC-4111-03FT                        ",
             "unit_quantity": 1,
@@ -550,23 +567,6 @@
             "latest_change_current_quantity": "Latest Change:\nfrom: 49\nto: 49\nLynden\nMarch 24 Friday 2023 08:30:36 AM",
             "latest_change_notes": "Latest Change:\nfrom: Vendor: HD Graphics In\nDescription: \nto: Vendor: HD Graphics Inc\nDescription: \nItsme\nFebruary 23 Thursday 2023 09:14:29 AM",
             "latest_change_price": "Latest Change:\nfrom: 3.58\nto: 3.58\nItsme\nFebruary 23 Thursday 2023 09:34:22 AM"
-        },
-        "38100 Front MNT Snap-In SCR TERM": {
-            "part_number": "38100",
-            "unit_quantity": 1,
-            "current_quantity": 50,
-            "price": 11.99,
-            "use_exchange_rate": false,
-            "priority": 0,
-            "notes": "Vendor: Westburn and stanpro\n\nDescription: e 26 base \nGrand brass lamp parts for 3$",
-            "latest_change_name": "Item added\nItsme\nOctober 27 Thursday 2022 04-26-51 PM",
-            "latest_change_part_number": "Item added\nItsme\nOctober 27 Thursday 2022 04-26-51 PM",
-            "latest_change_unit_quantity": "Item added\nItsme\nOctober 27 Thursday 2022 04-26-51 PM",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 50\nto: 50\nLynden\nMarch 13 Monday 2023 08:30:45 AM",
-            "latest_change_price": "Item added\nItsme\nOctober 27 Thursday 2022 04-26-51 PM",
-            "latest_change_use_exchange_price": "Item added\nItsme\nOctober 27 Thursday 2022 04-26-51 PM",
-            "latest_change_priority": "Item added\nItsme\nOctober 27 Thursday 2022 04-26-51 PM",
-            "latest_change_notes": "Latest Change:\nfrom: \"Vendor: Westburn and stanpro\n\nDescription: e 26 base \nGrand brass lamp parts for 3\"\nto: \"Vendor: Westburn and stanpro\n\nDescription: e 26 base \nGrand brass lamp parts for 3$\"\nLynden\nApril 17 Monday 2023 02:16:30 PM"
         },
         "UKC 2\"  Open Cell Foam G-Class-Fan": {
             "part_number": "UKC2",
@@ -2339,7 +2339,7 @@
         "38100 Front MNT Snap-In SCR TERM": {
             "part_number": "38100",
             "unit_quantity": 1,
-            "current_quantity": 50,
+            "current_quantity": 0,
             "price": 11.99,
             "use_exchange_rate": false,
             "priority": 0,
@@ -2347,7 +2347,7 @@
             "latest_change_name": "Item added\nItsme\nOctober 27 Thursday 2022 04-27-04 PM",
             "latest_change_part_number": "Item added\nItsme\nOctober 27 Thursday 2022 04-27-04 PM",
             "latest_change_unit_quantity": "Item added\nItsme\nOctober 27 Thursday 2022 04-27-04 PM",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 50\nto: 50\nLynden\nMarch 13 Monday 2023 08:30:45 AM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 0\nto: 0\nLynden\nApril 17 Monday 2023 04:59:03 PM",
             "latest_change_price": "Item added\nItsme\nOctober 27 Thursday 2022 04-27-04 PM",
             "latest_change_use_exchange_price": "Item added\nItsme\nOctober 27 Thursday 2022 04-27-04 PM",
             "latest_change_priority": "Item added\nItsme\nOctober 27 Thursday 2022 04-27-04 PM",
@@ -4083,7 +4083,7 @@
         "38100 Front MNT Snap-In SCR TERM": {
             "part_number": "38100",
             "unit_quantity": 1,
-            "current_quantity": 50,
+            "current_quantity": 0,
             "price": 11.99,
             "use_exchange_rate": false,
             "priority": 0,
@@ -4091,7 +4091,7 @@
             "latest_change_name": "Item added\nItsme\nOctober 27 Thursday 2022 04-27-14 PM",
             "latest_change_part_number": "Item added\nItsme\nOctober 27 Thursday 2022 04-27-14 PM",
             "latest_change_unit_quantity": "Item added\nItsme\nOctober 27 Thursday 2022 04-27-14 PM",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 50\nto: 50\nLynden\nMarch 13 Monday 2023 08:30:45 AM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 0\nto: 0\nLynden\nApril 17 Monday 2023 04:59:03 PM",
             "latest_change_price": "Item added\nItsme\nOctober 27 Thursday 2022 04-27-14 PM",
             "latest_change_use_exchange_price": "Item added\nItsme\nOctober 27 Thursday 2022 04-27-14 PM",
             "latest_change_priority": "Item added\nItsme\nOctober 27 Thursday 2022 04-27-14 PM",
