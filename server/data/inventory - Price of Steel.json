@@ -97,7 +97,7 @@
             "latest_change_current_quantity": "Latest Change:\nfrom: 52.0\nto: 53.0\nLaser Pc\nApril 01 Saturday 2023 09:43:44 AM"
         },
         "1\/4 Mild Steel 96.000x48.000": {
-            "current_quantity": 105.0,
+            "current_quantity": 104.0,
             "sheet_dimension": "96.000x48.000",
             "thickness": "1\/4",
             "material": "Mild Steel",
@@ -357,7 +357,7 @@
             "latest_change_current_quantity": "Latest Change:\nfrom: 11.0\nto: 12.0\nJusti\nFebruary 25 Saturday 2023 10:58:57 AM"
         },
         "10 Gauge 304 SS 120.000x60.000": {
-            "current_quantity": 8.0,
+            "current_quantity": 7.0,
             "sheet_dimension": "120.000x60.000",
             "thickness": "10 Gauge",
             "material": "304 SS",
@@ -568,7 +568,7 @@
             "group": "Galvanized"
         },
         "18 Gauge Galvanized 120.000x60.000": {
-            "current_quantity": 178.0,
+            "current_quantity": 151.0,
             "sheet_dimension": "120.000x60.000",
             "thickness": "18 Gauge",
             "material": "Galvanized",
