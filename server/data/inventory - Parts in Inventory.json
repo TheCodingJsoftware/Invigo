@@ -99,17 +99,6 @@
             "modified_date": "Added at April 17 Monday 2023 09:17:04 AM",
             "group": null
         },
-        "Flat pattern - Motor Mount": {
-            "current_quantity": 3,
-            "machine_time": 0.37,
-            "gauge": "1\/4",
-            "material": "Mild Steel",
-            "weight": 1.564,
-            "price": 2.13,
-            "unit_quantity": 1,
-            "modified_date": "Added at April 17 Monday 2023 09:17:03 AM",
-            "group": null
-        },
         "PY-WFJ-04": {
             "current_quantity": 2,
             "machine_time": 0.3,
@@ -4907,6 +4896,17 @@
             "price": 19.73,
             "unit_quantity": 1,
             "modified_date": "Added at April 12 Wednesday 2023 04:26:36 PM",
+            "group": null
+        },
+        "Flat pattern - Motor Mount": {
+            "current_quantity": 3,
+            "machine_time": 0.37,
+            "gauge": "1\/4",
+            "material": "Mild Steel",
+            "weight": 1.564,
+            "price": 2.13,
+            "unit_quantity": 1,
+            "modified_date": "Added at April 17 Monday 2023 09:17:03 AM",
             "group": null
         }
     },
