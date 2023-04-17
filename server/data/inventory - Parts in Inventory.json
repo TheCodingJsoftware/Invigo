@@ -44,17 +44,6 @@
             "modified_date": "69 quantity added at March 21 Tuesday 2023 04:35:32 PM",
             "group": null
         },
-        "PM - SS HINGE 3 B_1pcs": {
-            "current_quantity": 104,
-            "machine_time": 0.32,
-            "gauge": "10 Gauge",
-            "material": "304 SS",
-            "weight": 0.425,
-            "price": 2.35,
-            "unit_quantity": 1,
-            "modified_date": "Added at April 17 Monday 2023 10:29:53 AM",
-            "group": null
-        },
         "2 inch pin cap": {
             "current_quantity": 51,
             "machine_time": 0.17,
@@ -4386,6 +4375,17 @@
             "price": 0.68,
             "unit_quantity": 1,
             "modified_date": "1 quantity added at March 06 Monday 2023 09:33:21 AM",
+            "group": null
+        },
+        "PM - SS HINGE 3 B_1pcs": {
+            "current_quantity": 104,
+            "machine_time": 0.32,
+            "gauge": "10 Gauge",
+            "material": "304 SS",
+            "weight": 0.425,
+            "price": 2.35,
+            "unit_quantity": 1,
+            "modified_date": "Added at April 17 Monday 2023 10:29:53 AM",
             "group": null
         }
     },
