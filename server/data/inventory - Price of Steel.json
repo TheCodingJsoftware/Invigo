@@ -86,7 +86,7 @@
             "latest_change_current_quantity": "Latest Change:\nfrom: 4.0\nto: 5.0\nLaser Pc\nApril 12 Wednesday 2023 09:10:51 AM"
         },
         "1\/4 Mild Steel 120.000x60.000": {
-            "current_quantity": 53.0,
+            "current_quantity": 39.0,
             "sheet_dimension": "120.000x60.000",
             "thickness": "1\/4",
             "material": "Mild Steel",
@@ -141,7 +141,7 @@
             "latest_change_current_quantity": "Latest Change:\nfrom: 6.0\nto: 86.0\nLaser Pc\nMarch 20 Monday 2023 08:26:28 AM"
         },
         "3\/16 Mild Steel 86.000x60.000": {
-            "current_quantity": 25.0,
+            "current_quantity": 5.0,
             "sheet_dimension": "86.000x60.000",
             "thickness": "3\/16",
             "material": "Mild Steel",
@@ -357,7 +357,7 @@
             "latest_change_current_quantity": "Latest Change:\nfrom: 11.0\nto: 12.0\nJusti\nFebruary 25 Saturday 2023 10:58:57 AM"
         },
         "10 Gauge 304 SS 120.000x60.000": {
-            "current_quantity": 7.0,
+            "current_quantity": 2.0,
             "sheet_dimension": "120.000x60.000",
             "thickness": "10 Gauge",
             "material": "304 SS",
