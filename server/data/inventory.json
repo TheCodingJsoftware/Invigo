@@ -71,19 +71,19 @@
         "rivet  3\/4x 5\/16 DIA ": {
             "part_number": "Rivet516",
             "unit_quantity": 8,
-            "current_quantity": -80,
+            "current_quantity": 20,
             "price": 1.0,
             "use_exchange_rate": false,
             "priority": 0,
-            "notes": "Vendor: A.Adams Supply\nDescription: mc master carr\nfor front doors\nstainless steel domed head rivet\n\n",
+            "notes": "Vendor: A.Adams Supply\nDescription: mc master carr\nfor front doors\nstainless steel domed head rivet\n97387A361 \n",
             "latest_change_name": "Item added\nItsme\nJuly 13 Wednesday 2022 09-11-15 AM",
             "latest_change_part_number": "Item added\nItsme\nJuly 13 Wednesday 2022 09-11-15 AM",
             "latest_change_unit_quantity": "Item added\nItsme\nJuly 13 Wednesday 2022 09-11-15 AM",
-            "latest_change_current_quantity": "Latest Change:\nfrom: -80\nto: -80\nLynden\nApril 21 Friday 2023 01:29:32 PM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 20\nto: 20\nLynden\nApril 21 Friday 2023 01:45:02 PM",
             "latest_change_price": "Item added\nItsme\nJuly 13 Wednesday 2022 09-11-15 AM",
             "latest_change_use_exchange_price": "Item added\nItsme\nJuly 13 Wednesday 2022 09-11-15 AM",
             "latest_change_priority": "Item added\nItsme\nJuly 13 Wednesday 2022 09-11-15 AM",
-            "latest_change_notes": "Latest Change:\nfrom: Vendor: A.Adams Supply\nDescription: mc master carr\nfor front doors\nstainless steel domed head rivet\n\nto: Vendor: A.Adams Supply\nDescription: mc master carr\nfor front doors\nstainless steel domed head rivet\n\n\nLynden\nApril 21 Friday 2023 01:44:29 PM"
+            "latest_change_notes": "Latest Change:\nfrom: Vendor: A.Adams Supply\nDescription: mc master carr\nfor front doors\nstainless steel domed head rivet\n97387A361\n\nto: Vendor: A.Adams Supply\nDescription: mc master carr\nfor front doors\nstainless steel domed head rivet\n97387A361 \n\nLynden\nApril 21 Friday 2023 01:44:46 PM"
         },
         "38100 Front MNT Snap-In SCR TERM": {
             "part_number": "38100",
@@ -1815,19 +1815,19 @@
         "rivet  3\/4x 5\/16 DIA ": {
             "part_number": "Rivet516",
             "unit_quantity": 8,
-            "current_quantity": -80,
+            "current_quantity": 20,
             "price": 1.0,
             "use_exchange_rate": false,
             "priority": 0,
-            "notes": "Vendor: A.Adams Supply\nDescription: mc master carr\nfor front doors\nstainless steel domed head rivet\n\n",
+            "notes": "Vendor: A.Adams Supply\nDescription: mc master carr\nfor front doors\nstainless steel domed head rivet\n97387A361 \n",
             "latest_change_name": "Item added\nItsme\nJuly 13 Wednesday 2022 09-11-15 AM",
             "latest_change_part_number": "Item added\nItsme\nJuly 13 Wednesday 2022 09-11-15 AM",
             "latest_change_unit_quantity": "Item added\nItsme\nJuly 13 Wednesday 2022 09-11-15 AM",
-            "latest_change_current_quantity": "Latest Change:\nfrom: -80\nto: -80\nLynden\nApril 21 Friday 2023 01:29:32 PM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 20\nto: 20\nLynden\nApril 21 Friday 2023 01:45:02 PM",
             "latest_change_price": "Item added\nItsme\nJuly 13 Wednesday 2022 09-11-15 AM",
             "latest_change_use_exchange_price": "Item added\nItsme\nJuly 13 Wednesday 2022 09-11-15 AM",
             "latest_change_priority": "Item added\nItsme\nJuly 13 Wednesday 2022 09-11-15 AM",
-            "latest_change_notes": "Latest Change:\nfrom: Vendor: A.Adams Supply\nDescription: mc master carr\nfor front doors\nstainless steel domed head rivet\n\nto: Vendor: A.Adams Supply\nDescription: mc master carr\nfor front doors\nstainless steel domed head rivet\n\n\nLynden\nApril 21 Friday 2023 01:44:29 PM"
+            "latest_change_notes": "Latest Change:\nfrom: Vendor: A.Adams Supply\nDescription: mc master carr\nfor front doors\nstainless steel domed head rivet\n97387A361\n\nto: Vendor: A.Adams Supply\nDescription: mc master carr\nfor front doors\nstainless steel domed head rivet\n97387A361 \n\nLynden\nApril 21 Friday 2023 01:44:46 PM"
         },
         "RAL 3007 Beige Gloss": {
             "part_number": "7600205",
@@ -3510,23 +3510,6 @@
         }
     },
     "Polar G2+": {
-        "rivet  3\/4x 5\/16 DIA ": {
-            "part_number": "Rivet516",
-            "unit_quantity": 8,
-            "current_quantity": -80,
-            "price": 1.0,
-            "use_exchange_rate": false,
-            "priority": 0,
-            "notes": "Vendor: A.Adams Supply\nDescription: mc master carr\nfor front doors\nstainless steel domed head rivet\n\n",
-            "latest_change_name": "Item added\nItsme\nJuly 13 Wednesday 2022 09-11-15 AM",
-            "latest_change_part_number": "Item added\nItsme\nJuly 13 Wednesday 2022 09-11-15 AM",
-            "latest_change_unit_quantity": "Item added\nItsme\nJuly 13 Wednesday 2022 09-11-15 AM",
-            "latest_change_current_quantity": "Latest Change:\nfrom: -80\nto: -80\nLynden\nApril 21 Friday 2023 01:29:32 PM",
-            "latest_change_price": "Item added\nItsme\nJuly 13 Wednesday 2022 09-11-15 AM",
-            "latest_change_use_exchange_price": "Item added\nItsme\nJuly 13 Wednesday 2022 09-11-15 AM",
-            "latest_change_priority": "Item added\nItsme\nJuly 13 Wednesday 2022 09-11-15 AM",
-            "latest_change_notes": "Latest Change:\nfrom: \"Vendor: A.Adams Supply\nDescription: mc master carr\nfor front doors\nstainless steel domed head rivet\n\"\nto: \"Vendor: A.Adams Supply\nDescription: mc master carr\nfor front doors\nstainless steel domed head rivet\n\n\"\nLynden\nApril 21 Friday 2023 01:44:29 PM"
-        },
         "Thumb Screw 5\/16 DIAx 3\/4 Long x1\/2 FLG": {
             "part_number": "TS535",
             "unit_quantity": 10,
@@ -3955,6 +3938,23 @@
             "latest_change_price": "Latest Change:\nfrom: 68.45\nto: 68.45\nItsme\nSeptember 06 Tuesday 2022 11:12:17 AM",
             "latest_change_priority": "Latest Change:\nfrom: 0\nto: 3\nItsme\nOctober 24 Monday 2022 08:34:48 AM",
             "latest_change_notes": "Latest Change:\nfrom: Vendor: Jan-Air Illinois\nDescription: Customer item #\nSB0993225C2RA\nto: Vendor: Jan-Air Illinois\nDescription: Customer item #\nSB0993225C2RA \nLynden\nMarch 09 Thursday 2023 03:34:27 PM"
+        },
+        "rivet  3\/4x 5\/16 DIA ": {
+            "part_number": "Rivet516",
+            "unit_quantity": 8,
+            "current_quantity": 20,
+            "price": 1.0,
+            "use_exchange_rate": false,
+            "priority": 0,
+            "notes": "Vendor: A.Adams Supply\nDescription: mc master carr\nfor front doors\nstainless steel domed head rivet\n97387A361 \n",
+            "latest_change_name": "Item added\nItsme\nJuly 13 Wednesday 2022 09-11-15 AM",
+            "latest_change_part_number": "Item added\nItsme\nJuly 13 Wednesday 2022 09-11-15 AM",
+            "latest_change_unit_quantity": "Item added\nItsme\nJuly 13 Wednesday 2022 09-11-15 AM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 20\nto: 20\nLynden\nApril 21 Friday 2023 01:45:02 PM",
+            "latest_change_price": "Item added\nItsme\nJuly 13 Wednesday 2022 09-11-15 AM",
+            "latest_change_use_exchange_price": "Item added\nItsme\nJuly 13 Wednesday 2022 09-11-15 AM",
+            "latest_change_priority": "Item added\nItsme\nJuly 13 Wednesday 2022 09-11-15 AM",
+            "latest_change_notes": "Latest Change:\nfrom: \"Vendor: A.Adams Supply\nDescription: mc master carr\nfor front doors\nstainless steel domed head rivet\n97387A361\n\"\nto: \"Vendor: A.Adams Supply\nDescription: mc master carr\nfor front doors\nstainless steel domed head rivet\n97387A361 \n\"\nLynden\nApril 21 Friday 2023 01:44:46 PM"
         },
         "Compression Spring, 1.5\" Long, 0.313\" OD, 0.269\" ID  Spring Rate Peep Hole": {
             "part_number": "18",
