@@ -535,7 +535,7 @@
             "group": "Galvanized"
         },
         "12 Gauge Galvanized 120.000x60.000": {
-            "current_quantity": 4.0,
+            "current_quantity": 3.0,
             "sheet_dimension": "120.000x60.000",
             "thickness": "12 Gauge",
             "material": "Galvanized",
