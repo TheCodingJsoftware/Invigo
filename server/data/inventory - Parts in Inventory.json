@@ -1407,7 +1407,7 @@
             "material": "Mild Steel",
             "weight": 0.285,
             "price": 0.59,
-            "unit_quantity": 1,
+            "unit_quantity": 2.0,
             "modified_date": "20 quantity added at April 20 Thursday 2023 10:45:26 AM",
             "group": null
         },
@@ -1418,7 +1418,7 @@
             "material": "Mild Steel",
             "weight": 0.263,
             "price": 0.58,
-            "unit_quantity": 1,
+            "unit_quantity": 2.0,
             "modified_date": "20 quantity added at April 20 Thursday 2023 10:45:26 AM",
             "group": null
         },
@@ -1429,7 +1429,7 @@
             "material": "Mild Steel",
             "weight": 0.231,
             "price": 0.5,
-            "unit_quantity": 1,
+            "unit_quantity": 2.0,
             "modified_date": "20 quantity added at April 20 Thursday 2023 10:45:26 AM",
             "group": null
         },
@@ -1440,7 +1440,7 @@
             "material": "Mild Steel",
             "weight": 0.441,
             "price": 0.64,
-            "unit_quantity": 1,
+            "unit_quantity": 2.0,
             "modified_date": "20 quantity added at April 20 Thursday 2023 10:45:26 AM",
             "group": null
         },
@@ -1451,7 +1451,7 @@
             "material": "Mild Steel",
             "weight": 4.047,
             "price": 4.54,
-            "unit_quantity": 1,
+            "unit_quantity": 4.0,
             "modified_date": "40 quantity added at April 20 Thursday 2023 10:45:26 AM",
             "group": null
         },
@@ -1473,7 +1473,7 @@
             "material": "Mild Steel",
             "weight": 0.451,
             "price": 1.1,
-            "unit_quantity": 1,
+            "unit_quantity": 2.0,
             "modified_date": "Added at April 17 Monday 2023 05:06:22 PM",
             "group": null
         },
@@ -1561,7 +1561,7 @@
             "material": "304 SS",
             "weight": 3.764,
             "price": 11.41,
-            "unit_quantity": 1,
+            "unit_quantity": 2.0,
             "modified_date": "20 quantity added at April 20 Thursday 2023 02:48:34 PM",
             "group": null
         },
@@ -1572,7 +1572,7 @@
             "material": "304 SS",
             "weight": 3.946,
             "price": 11.93,
-            "unit_quantity": 1,
+            "unit_quantity": 2.0,
             "modified_date": "20 quantity added at April 20 Thursday 2023 02:48:34 PM",
             "group": null
         },
@@ -1583,7 +1583,7 @@
             "material": "Mild Steel",
             "weight": 0.223,
             "price": 0.8,
-            "unit_quantity": 1,
+            "unit_quantity": 2.0,
             "modified_date": "Added at April 17 Monday 2023 05:06:22 PM",
             "group": null
         },
