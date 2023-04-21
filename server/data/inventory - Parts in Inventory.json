@@ -88,17 +88,6 @@
             "modified_date": "Added at April 17 Monday 2023 09:17:04 AM",
             "group": null
         },
-        "G2Plus-Flues Access Lid- Inner": {
-            "current_quantity": 10,
-            "machine_time": 0.48,
-            "gauge": "12 Gauge",
-            "material": "Mild Steel",
-            "weight": 5.677,
-            "price": 5.57,
-            "unit_quantity": 1,
-            "modified_date": "Added at April 20 Thursday 2023 02:47:28 PM",
-            "group": null
-        },
         "PY-WFJ-03": {
             "current_quantity": 6,
             "machine_time": 0.32,
@@ -4000,6 +3989,17 @@
             "price": 9.12,
             "unit_quantity": 2.0,
             "modified_date": "Manually set to 0.0 quantity at March 24 Friday 2023 11:02:54 AM",
+            "group": null
+        },
+        "G2Plus-Flues Access Lid- Inner": {
+            "current_quantity": 10,
+            "machine_time": 0.48,
+            "gauge": "12 Gauge",
+            "material": "Mild Steel",
+            "weight": 5.677,
+            "price": 5.57,
+            "unit_quantity": 1,
+            "modified_date": "Added at April 20 Thursday 2023 02:47:28 PM",
             "group": null
         }
     },
