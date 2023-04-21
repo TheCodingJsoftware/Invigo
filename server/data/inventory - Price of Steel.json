@@ -632,6 +632,16 @@
             "latest_sheet_dimension": "Item added\nLaser Pc\nApril 21 Friday 2023 04-02-00 PM",
             "latest_change_thickness": "Item added\nLaser Pc\nApril 21 Friday 2023 04-02-00 PM",
             "latest_change_current_quantity": "Item added\nLaser Pc\nApril 21 Friday 2023 04-02-00 PM"
+        },
+        "12 Gauge Galvanized 62.620x60.000": {
+            "current_quantity": 1,
+            "sheet_dimension": "62.620x60.000",
+            "thickness": "12 Gauge",
+            "material": "Galvanized",
+            "latest_change_material": "Item added\nLaser Pc\nApril 21 Friday 2023 04-49-34 PM",
+            "latest_sheet_dimension": "Item added\nLaser Pc\nApril 21 Friday 2023 04-49-34 PM",
+            "latest_change_thickness": "Item added\nLaser Pc\nApril 21 Friday 2023 04-49-34 PM",
+            "latest_change_current_quantity": "Item added\nLaser Pc\nApril 21 Friday 2023 04-49-34 PM"
         }
     }
 }
