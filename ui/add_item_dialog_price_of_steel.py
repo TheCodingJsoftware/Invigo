@@ -7,6 +7,7 @@ from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import QDialog, QPushButton
 
 from ui.custom_widgets import set_default_dialog_button_stylesheet
+from ui.theme import set_theme
 from utils.dialog_buttons import DialogButtons
 from utils.dialog_icons import Icons
 from utils.json_file import JsonFile
@@ -82,12 +83,7 @@ class AddItemDialogPriceOfSteel(QDialog):
         """
         It loads the stylesheet.qss file from the theme folder
         """
-        stylesheet_file = QFile(
-            f"ui/BreezeStyleSheets/dist/qrc/{self.theme}/stylesheet.qss"
-        )
-        stylesheet_file.open(QFile.ReadOnly | QFile.Text)
-        stream = QTextStream(stylesheet_file)
-        self.setStyleSheet(stream.readAll())
+        set_theme(self, theme='dark')
 
     def get_icon(self, path_to_icon: str) -> QtSvg.QSvgWidget:
         """

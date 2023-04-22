@@ -4,7 +4,7 @@ __copyright__ = "Copyright 2022, TheCodingJ's"
 __credits__: "list[str]" = ["Jared Gross"]
 __license__ = "MIT"
 __name__ = "Inventory Manager"
-__version__ = "v1.5.6"
+__version__ = "v1.5.7"
 __updated__ = "2023-02-25 16:52:57"
 __maintainer__ = "Jared Gross"
 __email__ = "jared@pinelandfarms.ca"
@@ -26,6 +26,7 @@ from functools import partial
 from typing import Any
 
 import requests
+from ui.theme import set_theme
 from forex_python.converter import CurrencyRates
 from PyQt5 import QtTest, uic
 from PyQt5.QtCore import QFile, QPoint, Qt, QTextStream, QTimer
@@ -53,6 +54,7 @@ from PyQt5.QtWidgets import (
     QPushButton,
     QScrollArea,
     QSpinBox,
+    QWidgetItem,
     QStyle,
     QTableWidgetItem,
     QTabWidget,
@@ -81,6 +83,7 @@ from ui.custom_widgets import (
     DragableLayout,
     ExchangeRateComboBox,
     HeaderScrollArea,
+    ItemCheckBox,
     HumbleComboBox,
     HumbleDoubleSpinBox,
     HumbleSpinBox,
@@ -956,6 +959,8 @@ class MainWindow(QMainWindow):
         elif self.tabWidget.currentIndex() == 1:
             self.pushButton_add_new_sheet.setEnabled(True)
         if self.tabWidget.currentIndex() == 0:
+            
+            self.datetime1 = datetime.now()
             self._timer = QTimer(
                 interval=0, timeout=partial(self.load_item, tab, tab_index, category_data)
             )
@@ -1036,12 +1041,13 @@ class MainWindow(QMainWindow):
                 self.group_layouts["__main__"] = tab
 
             layout = QHBoxLayout()
-            check_box = QCheckBox(self)
+            check_box = ItemCheckBox(self)
             check_box.setObjectName("checkbox")
             check_box.setStyleSheet(
-                "QCheckBox#checkbox:indicator{width: 30px; height: 30px}"
+                "QCheckBox#checkbox:indicator{width: 20px; height: 20px}"
             )
             check_box.setFixedWidth(30)
+            check_box.clicked.connect(partial(self.item_check_box_press, check_box))
             layout.addWidget(check_box)
             item = list(category_data.keys())[row_index]
             self.check_box_selections[item] = check_box
@@ -1145,6 +1151,7 @@ class MainWindow(QMainWindow):
                 icon=QIcon(f"ui/BreezeStyleSheets/dist/pyqt6/{self.theme}/trash.png"),
             )
             btn_delete.clicked.connect(partial(self.delete_item, self.category, item))
+            btn_delete.setFixedSize(26,26)
             layout.addWidget(btn_delete)
 
             try:
@@ -1386,6 +1393,7 @@ class MainWindow(QMainWindow):
                     tool_tip=f"Delete {item} permanently from {self.category}",
                     icon=QIcon(f"ui/BreezeStyleSheets/dist/pyqt6/{self.theme}/trash.png"),
                 )
+                btn_delete.setFixedSize(26,26)
                 btn_delete.clicked.connect(partial(self.delete_item, self.category, item))
                 layout.addWidget(btn_delete)
 
@@ -1411,6 +1419,9 @@ class MainWindow(QMainWindow):
             row_index = next(self._iter)
             # QApplication.setOverrideCursor(Qt.BusyCursor)
         except StopIteration:
+            datetime2 = datetime.now()
+            difference = datetime2 - self.datetime1
+            print(f"The time difference between the 2 time is: {difference}")
             self._timer.stop()
             set_status_button_stylesheet(button=self.status_button, color="#3daee9")
             self.load_item_context_menu()
@@ -1902,6 +1913,44 @@ class MainWindow(QMainWindow):
             # )
             # )
 
+    def item_check_box_press(self, this_checkbox) -> None:
+        """
+        This function checks or unchecks a group of checkboxes based on the state of a specific checkbox
+        and whether the shift key is pressed.
+        
+        Args:
+          this_checkbox: This parameter is a reference to the checkbox that was just pressed by the
+        user.
+        """
+        tab_index: int = self.tab_widget.currentIndex()
+        tab: QVBoxLayout = self.tabs[tab_index]
+        checkboxes: list[QCheckBox] = []
+        for i in range(tab.count()):
+            layout = tab.itemAt(i)
+            if isinstance(layout, QHBoxLayout):
+                for j in range(layout.layout().count()):
+                    widget = layout.layout().itemAt(j).widget()
+                    if isinstance(widget, ItemCheckBox):
+                        checkboxes.append(widget)
+            elif isinstance(layout, QWidgetItem):
+                for j in range(layout.widget().layout().count()):
+                    group_layout = layout.widget().layout().itemAt(j)
+                    for k in range(group_layout.count()):
+                        widget = group_layout.itemAt(k).widget()
+                        if isinstance(widget, ItemCheckBox):
+                            checkboxes.append(widget)
+        start_checking: bool = False
+        if QApplication.keyboardModifiers() == Qt.ShiftModifier:
+            if this_checkbox.isChecked():
+                for checkbox in checkboxes:
+                    if checkbox == this_checkbox:
+                        break
+                    if not start_checking:
+                        if checkbox.isChecked():
+                            start_checking = True
+                    if start_checking:
+                        checkbox.setChecked(True)
+
     def create_new_category(self, event=None) -> None:
         """
         It creates a new category
@@ -2207,6 +2256,142 @@ class MainWindow(QMainWindow):
             )
         self.load_categories()
 
+    def copy_to_category(self, item_name: QComboBox, category: str) -> None:
+        """
+        I'm trying to move an item from one category to another.
+        I'm using a QComboBox to select the item I want to move, and then I'm using a string to select
+        the category I want to move it to.
+        I'm using a function called get_data() to get the data from the category I want to move the item
+        from.
+        I'm using a function called remove_object_item() to remove the item from the category I want to
+        move it from.
+        I'm using a function called add_item_in_object() to add the item to the category I want to move
+        it to.
+        I'm using a function called change_object_in_object_item() to change the item's data in the
+        category I want to move it to.
+        I'm using a function called load_categories() to reload the categories.
+        I'm using a function called get_data() to get the data from the category I
+
+        Args:
+          item_name (QComboBox): QComboBox
+          category (str): str = "category"
+        """
+        if self.are_parts_checked():
+            checked_parts = self.get_all_checked_parts()
+            for checked_part in checked_parts:
+                copy_of_item = parts_in_inventory.get_data()[self.category][checked_part]
+                # parts_in_inventory.remove_object_item(self.category, checked_part)
+                parts_in_inventory.add_item_in_object(category, checked_part)
+                parts_in_inventory.change_object_in_object_item(
+                    category,
+                    checked_part,
+                    "current_quantity",
+                    copy_of_item["current_quantity"],
+                )
+                parts_in_inventory.change_object_in_object_item(
+                    category,
+                    checked_part,
+                    "machine_time",
+                    copy_of_item["machine_time"],
+                )
+                parts_in_inventory.change_object_in_object_item(
+                    category,
+                    checked_part,
+                    "gauge",
+                    copy_of_item["gauge"],
+                )
+                parts_in_inventory.change_object_in_object_item(
+                    category,
+                    checked_part,
+                    "material",
+                    copy_of_item["material"],
+                )
+                parts_in_inventory.change_object_in_object_item(
+                    category,
+                    checked_part,
+                    "weight",
+                    copy_of_item["weight"],
+                )
+                parts_in_inventory.change_object_in_object_item(
+                    category,
+                    checked_part,
+                    "price",
+                    copy_of_item["price"],
+                )
+                parts_in_inventory.change_object_in_object_item(
+                    category,
+                    checked_part,
+                    "unit_quantity",
+                    1,
+                )
+                parts_in_inventory.change_object_in_object_item(
+                    category,
+                    checked_part,
+                    "modified_date",
+                    copy_of_item["modified_date"],
+                )
+                parts_in_inventory.change_object_in_object_item(
+                    category, checked_part, "group", copy_of_item["group"]
+                )
+        else:
+            copy_of_item = parts_in_inventory.get_data()[self.category][
+                item_name.currentText()
+            ]
+            # parts_in_inventory.remove_object_item(self.category, item_name.currentText())
+            parts_in_inventory.add_item_in_object(category, item_name.currentText())
+            parts_in_inventory.change_object_in_object_item(
+                category,
+                item_name.currentText(),
+                "current_quantity",
+                copy_of_item["current_quantity"],
+            )
+            parts_in_inventory.change_object_in_object_item(
+                category,
+                item_name.currentText(),
+                "machine_time",
+                copy_of_item["machine_time"],
+            )
+            parts_in_inventory.change_object_in_object_item(
+                category,
+                item_name.currentText(),
+                "gauge",
+                copy_of_item["gauge"],
+            )
+            parts_in_inventory.change_object_in_object_item(
+                category,
+                item_name.currentText(),
+                "material",
+                copy_of_item["material"],
+            )
+            parts_in_inventory.change_object_in_object_item(
+                category,
+                item_name.currentText(),
+                "weight",
+                copy_of_item["weight"],
+            )
+            parts_in_inventory.change_object_in_object_item(
+                category,
+                item_name.currentText(),
+                "price",
+                copy_of_item["price"],
+            )
+            parts_in_inventory.change_object_in_object_item(
+                category,
+                item_name.currentText(),
+                "unit_quantity",
+                1,
+            )
+            parts_in_inventory.change_object_in_object_item(
+                category,
+                item_name.currentText(),
+                "modified_date",
+                copy_of_item["modified_date"],
+            )
+            parts_in_inventory.change_object_in_object_item(
+                category, item_name.currentText(), "group", copy_of_item["group"]
+            )
+        # self.load_categories()
+
     def add_to_group(self, item_name: QComboBox, group: str) -> None:
         """
         It takes the name of a QComboBox and a string, and if the string is "Create", it opens a dialog
@@ -2260,9 +2445,17 @@ class MainWindow(QMainWindow):
           item_name (QComboBox): QComboBox
           group (str): str = The group name
         """
-        self.active_json_file.change_object_in_object_item(
-            self.category, item_name.currentText(), "group", None
-        )
+        
+        if self.tabWidget.currentIndex() == 2 and self.are_parts_checked():
+            checked_parts = self.get_all_checked_parts()
+            for checked_part in checked_parts:
+                self.active_json_file.change_object_in_object_item(
+                    self.category, checked_part, "group", None
+                )
+        else:
+            self.active_json_file.change_object_in_object_item(
+                self.category, item_name.currentText(), "group", None
+            )
         self.load_categories()
 
     def load_item_context_menu(self) -> None:
@@ -2300,6 +2493,21 @@ class MainWindow(QMainWindow):
                     action = QAction(self)
                     action.triggered.connect(
                         partial(self.move_to_category, item_name, category)
+                    )
+                    action.setText(category)
+                    categories.addAction(action)
+                menu.addMenu(categories)
+                
+                categories = QMenu(menu)
+                categories.setTitle("Copy to category")
+                for i, category in enumerate(parts_in_inventory.get_keys()):
+                    if self.category == category or category == "Recut":
+                        continue
+                    if i == 1:
+                        categories.addSeparator()
+                    action = QAction(self)
+                    action.triggered.connect(
+                        partial(self.copy_to_category, item_name, category)
                     )
                     action.setText(category)
                     categories.addAction(action)
@@ -4386,10 +4594,11 @@ class MainWindow(QMainWindow):
         It reads the stylesheet.qss file from the theme folder and sets it as the stylesheet for the
         application
         """
-        file = QFile(f"ui/BreezeStyleSheets/dist/qrc/{self.theme}/stylesheet.qss")
-        file.open(QFile.ReadOnly | QFile.Text)
-        stream = QTextStream(file)
-        self.setStyleSheet(stream.readAll())
+        # file = QFile(f"ui/BreezeStyleSheets/dist/qrc/{self.theme}/stylesheet.qss")
+        # file.open(QFile.ReadOnly | QFile.Text)
+        # stream = QTextStream(file)
+        # self.setStyleSheet(stream.readAll())
+        
 
     def update_sorting_status_text(self) -> None:
         """
@@ -5159,6 +5368,7 @@ def main() -> None:
     app = QApplication([])
     load_window = LoadWindow()
     app.processEvents()
+    set_theme(app, theme='dark')
     window = MainWindow()
     window.show()
     load_window.close()

@@ -25,19 +25,21 @@ class FileChanges:
             self.client_file.replace(".json", "").replace("data/", "").title()
         )
 
-    def get_time_difference(self) -> str:
+    def get_time_difference(self) -> float:
         """
         It compares the last modified date of a file on the server to the last modified date of a file
         on the client
         If difference is negative, that means the server file was modified last.
         If difference is positive, that means the client file was modified last.
         Returns:
-          A string
+          A float
         """
-
-        server_file_modified_date = datetime.strptime(
-            pathlib.Path(self.server_file).read_text(), "%m/%d/%Y %I:%M:%S %p"
-        )
+        try:
+            server_file_modified_date = datetime.strptime(
+                pathlib.Path(self.server_file).read_text(), "%m/%d/%Y %I:%M:%S %p"
+            )
+        except FileNotFoundError:
+            return -1
         client_file_modified_date = datetime.strptime(
             str(
                 time.strftime(

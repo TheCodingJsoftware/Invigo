@@ -3,6 +3,7 @@ from PyQt5.QtCore import QFile, Qt, QTextStream
 from PyQt5.QtGui import QIcon, QPixmap
 from PyQt5.QtWidgets import QWidget
 
+from ui.theme import set_theme
 from utils.dialog_icons import Icons
 from utils.json_file import JsonFile
 
@@ -58,13 +59,9 @@ class AboutDialog(QWidget):
 
         self.load_theme()
 
+    
     def load_theme(self) -> None:
         """
         It loads the stylesheet.qss file from the theme folder
         """
-        stylesheet_file = QFile(
-            f"ui/BreezeStyleSheets/dist/qrc/{self.theme}/stylesheet.qss"
-        )
-        stylesheet_file.open(QFile.ReadOnly | QFile.Text)
-        stream = QTextStream(stylesheet_file)
-        self.setStyleSheet(stream.readAll())
+        set_theme(self, theme='dark')

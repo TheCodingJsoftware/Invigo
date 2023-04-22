@@ -63,7 +63,6 @@ Recordings
 logs/
 *.vscode
 __pycache__
-test.py
 settings.json
 data
 backups

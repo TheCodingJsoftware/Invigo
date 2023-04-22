@@ -21,8 +21,21 @@ from PyQt5.QtWidgets import (
     QTreeWidgetItem,
     QVBoxLayout,
     QWidget,
+    QCheckBox
 )
-
+class ItemCheckBox(QCheckBox):
+    def mousePressEvent(self, event):
+        """
+        This function checks if the pressed key is the Shift key and if so, calls the parent class's
+        keyPressEvent method, otherwise it does nothing.
+        
+        :param event: The event parameter in this code refers to a key press event that is triggered
+        when a key on the keyboard is pressed. It contains information about the key that was pressed,
+        such as the key code and whether any modifier keys (such as Shift or Ctrl) were also pressed.
+        The code checks if the
+        """
+        if event.button() == Qt.LeftButton:
+            super().mousePressEvent(event)
 
 class ItemNameComboBox(QComboBox):
     """This class is a QComboBox that is populated with the names of items in the database"""
@@ -44,7 +57,7 @@ class ItemNameComboBox(QComboBox):
         self.setToolTip(tool_tip)
         self.setEditable(True)
         self.wheelEvent = lambda event: None
-        self.setMinimumWidth(170)
+        # self.setMinimumWidth(170)
         self.setMaximumWidth(500)
 
 
@@ -68,7 +81,7 @@ class PartNumberComboBox(QComboBox):
         self.setToolTip(tool_tip)
         self.setEditable(True)
         self.wheelEvent = lambda event: None
-        self.setFixedWidth(120)
+        #self.setFixedWidth(120)
 
 
 class PriorityComboBox(QComboBox):
@@ -89,7 +102,7 @@ class PriorityComboBox(QComboBox):
         self.setCurrentIndex(selected_item)
         self.setToolTip(tool_tip)
         self.wheelEvent = lambda event: None
-        self.setFixedWidth(60)
+        # #self.setFixedWidth(60)
 
 
 class ExchangeRateComboBox(QComboBox):
@@ -112,7 +125,7 @@ class ExchangeRateComboBox(QComboBox):
         self.setCurrentText(selected_item)
         self.setToolTip(tool_tip)
         self.wheelEvent = lambda event: None
-        self.setFixedWidth(40)
+        # #self.setFixedWidth(40)
 
 
 class CostLineEdit(QLineEdit):
@@ -131,7 +144,7 @@ class CostLineEdit(QLineEdit):
           suffix (str): The suffix of the text.
         """
         QLineEdit.__init__(self, parent)
-        self.setFixedWidth(100)
+        #self.setFixedWidth(100)
         self.setReadOnly(True)
         round_number = lambda x, n: eval(
             '"%.'
@@ -161,7 +174,7 @@ class NotesPlainTextEdit(QPlainTextEdit):
         """
         QPlainTextEdit.__init__(self, parent)
         self.setMinimumWidth(100)
-        self.setMaximumWidth(200)
+        # self.setMaximumWidth(200)
         self.setFixedHeight(60)
         self.setPlainText(text)
         self.setToolTip(tool_tip)
@@ -179,7 +192,7 @@ class POPushButton(QPushButton):
           parent: The parent widget.
         """
         QPushButton.__init__(self, parent)
-        self.setFixedSize(36, 26)
+        # self.setFixedSize(36, 26)
         self.setText("PO")
         self.setToolTip("Open a new purchase order")
 
@@ -195,7 +208,7 @@ class DeletePushButton(QPushButton):
           parent: The parent widget.
         """
         QPushButton.__init__(self, parent)
-        self.setFixedSize(26, 26)
+        # self.setFixedSize(26, 26)
         self.setIcon(icon)
         self.setToolTip(tool_tip)
 
@@ -284,7 +297,7 @@ class HumbleDoubleSpinBox(QDoubleSpinBox):
         """
         super(HumbleDoubleSpinBox, self).__init__(*args)
         self.setFocusPolicy(Qt.StrongFocus)
-        self.setFixedWidth(100)
+        #self.setFixedWidth(100)
         self.setMaximum(99999999)
         self.setMinimum(-99999999)
         self.setAccelerated(True)
@@ -337,7 +350,7 @@ class HumbleSpinBox(QSpinBox):
         """
         super(HumbleSpinBox, self).__init__(*args)
         self.setFocusPolicy(Qt.StrongFocus)
-        self.setFixedWidth(100)
+        #self.setFixedWidth(100)
         self.setMaximum(99999999)
         self.setMinimum(-99999999)
         self.setAccelerated(True)
@@ -390,7 +403,7 @@ class CurrentQuantitySpinBox(QSpinBox):
         """
         super(CurrentQuantitySpinBox, self).__init__(*args)
         self.setFocusPolicy(Qt.StrongFocus)
-        self.setFixedWidth(100)
+        #self.setFixedWidth(100)
         self.setMaximum(99999999)
         self.setMinimum(-99999999)
         self.setAccelerated(True)
