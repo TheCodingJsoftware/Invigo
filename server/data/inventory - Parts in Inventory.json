@@ -2347,47 +2347,47 @@
             "group": null
         },
         "3444 chimneyx3": {
-            "current_quantity": 1,
+            "current_quantity": 12.0,
             "machine_time": 0.68,
             "gauge": "14 Gauge",
             "material": "304 SS",
             "weight": 6.71,
             "price": 18.87,
             "unit_quantity": 1,
-            "modified_date": "Added at April 20 Thursday 2023 02:48:34 PM",
+            "modified_date": "Manually set to 12.0 quantity at April 22 Saturday 2023 10:22:35 AM",
             "group": null
         },
         "3444-71 chimney": {
-            "current_quantity": 1,
+            "current_quantity": 10.0,
             "machine_time": 0.28,
             "gauge": "14 Gauge",
             "material": "304 SS",
             "weight": 2.237,
             "price": 6.51,
             "unit_quantity": 1,
-            "modified_date": "Added at April 20 Thursday 2023 02:48:34 PM",
+            "modified_date": "Manually set to 10.0 quantity at April 22 Saturday 2023 10:22:24 AM",
             "group": null
         },
         "3444-05x2": {
-            "current_quantity": 0.0,
+            "current_quantity": 10.0,
             "machine_time": 1.97,
             "gauge": "1\/4",
             "material": "Mild Steel",
             "weight": 86.201,
             "price": 71.3,
             "unit_quantity": 1,
-            "modified_date": "Manually set to 0.0 quantity at March 31 Friday 2023 03:58:43 PM",
+            "modified_date": "Manually set to 10.0 quantity at April 22 Saturday 2023 10:22:21 AM",
             "group": null
         },
         "304475": {
-            "current_quantity": 0.0,
+            "current_quantity": 10.0,
             "machine_time": 0.42,
             "gauge": "1\/4",
             "material": "Mild Steel",
             "weight": 0.606,
             "price": 1.52,
             "unit_quantity": 1,
-            "modified_date": "Manually set to 0.0 quantity at March 20 Monday 2023 10:36:28 AM",
+            "modified_date": "Manually set to 10.0 quantity at April 22 Saturday 2023 10:22:18 AM",
             "group": null
         }
     },
