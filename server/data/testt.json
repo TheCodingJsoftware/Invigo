@@ -285,12 +285,12 @@
         "1 1\/4 Closed Nipple ": {
             "part_number": "114CN",
             "unit_quantity": 3.0,
-            "current_quantity": -27.0,
+            "current_quantity": -28.0,
             "price": 1.21,
             "use_exchange_rate": false,
             "priority": 0,
             "notes": "Vendor: Greenline\nDescription: 204-694-0332\nPart # G1616-125",
-            "latest_change_current_quantity": "Latest Change:\nfrom: -27.0\nto: -27.0\nJared\nApril 24 Monday 2023 10:19:34 AM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: -28.0\nto: -28.0\nJared\nApril 24 Monday 2023 10:24:57 AM",
             "latest_change_price": "Latest Change:\nfrom: 1.2\nto: 1.21\nItsme\nAugust 03 Wednesday 2022 08:50:13 AM",
             "latest_change_notes": "Latest Change:\nfrom: Vendor: Greenline\nDescription: 204-694-0332\nPart # G1616-12\nto: Vendor: Greenline\nDescription: 204-694-0332\nPart # G1616-125\nItsme\nJanuary 17 Tuesday 2023 09:14:55 AM"
         },
@@ -1834,6 +1834,18 @@
             "latest_change_priority": "Item added\nItsme\nJuly 19 Tuesday 2022 04-48-12 PM",
             "latest_change_notes": "Item added\nItsme\nJuly 19 Tuesday 2022 04-48-12 PM"
         },
+        "1 1\/4 Closed Nipple ": {
+            "part_number": "114CN",
+            "unit_quantity": 3.0,
+            "current_quantity": -28.0,
+            "price": 1.21,
+            "use_exchange_rate": false,
+            "priority": 0,
+            "notes": "Vendor: Greenline\nDescription: 204-694-0332\nPart # G1616-125",
+            "latest_change_current_quantity": "Latest Change:\nfrom: -28.0\nto: -28.0\nJared\nApril 24 Monday 2023 10:24:57 AM",
+            "latest_change_price": "Latest Change:\nfrom: 1.2\nto: 1.21\nItsme\nAugust 03 Wednesday 2022 08:50:13 AM",
+            "latest_change_notes": "Latest Change:\nfrom: \"Vendor: Greenline\nDescription: 204-694-0332\nPart # G1616-12\"\nto: \"Vendor: Greenline\nDescription: 204-694-0332\nPart # G1616-125\"\nItsme\nJanuary 17 Tuesday 2023 09:14:55 AM"
+        },
         "A19ABC-11 Mechanical Thermostat": {
             "part_number": "A19ABC-11",
             "unit_quantity": 2.0,
@@ -1850,18 +1862,6 @@
             "latest_change_use_exchange_price": "Item added\nItsme\nDecember 12 Monday 2022 08-25-35 AM",
             "latest_change_priority": "Item added\nItsme\nDecember 12 Monday 2022 08-25-35 AM",
             "latest_change_notes": "Item added\nItsme\nDecember 12 Monday 2022 08-25-35 AM"
-        },
-        "1 1\/4 Closed Nipple ": {
-            "part_number": "114CN",
-            "unit_quantity": 3.0,
-            "current_quantity": -27.0,
-            "price": 1.21,
-            "use_exchange_rate": false,
-            "priority": 0,
-            "notes": "Vendor: Greenline\nDescription: 204-694-0332\nPart # G1616-125",
-            "latest_change_current_quantity": "Latest Change:\nfrom: -27.0\nto: -27.0\nJared\nApril 24 Monday 2023 10:19:34 AM",
-            "latest_change_price": "Latest Change:\nfrom: 1.2\nto: 1.21\nItsme\nAugust 03 Wednesday 2022 08:50:13 AM",
-            "latest_change_notes": "Latest Change:\nfrom: \"Vendor: Greenline\nDescription: 204-694-0332\nPart # G1616-12\"\nto: \"Vendor: Greenline\nDescription: 204-694-0332\nPart # G1616-125\"\nItsme\nJanuary 17 Tuesday 2023 09:14:55 AM"
         },
         "Barb Hose Adapter fitting 1 1\/4": {
             "part_number": "BIA-020",
@@ -3541,12 +3541,12 @@
         "1 1\/4 Closed Nipple ": {
             "part_number": "114CN",
             "unit_quantity": 3.0,
-            "current_quantity": -27.0,
+            "current_quantity": -28.0,
             "price": 1.21,
             "use_exchange_rate": false,
             "priority": 0,
             "notes": "Vendor: Greenline\nDescription: 204-694-0332\nPart # G1616-125",
-            "latest_change_current_quantity": "Latest Change:\nfrom: -27.0\nto: -27.0\nJared\nApril 24 Monday 2023 10:19:34 AM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: -28.0\nto: -28.0\nJared\nApril 24 Monday 2023 10:24:57 AM",
             "latest_change_price": "Latest Change:\nfrom: 1.2\nto: 1.21\nItsme\nAugust 03 Wednesday 2022 08:50:13 AM",
             "latest_change_notes": "Latest Change:\nfrom: Vendor: Greenline\nDescription: 204-694-0332\nPart # G1616-12\nto: Vendor: Greenline\nDescription: 204-694-0332\nPart # G1616-125\nItsme\nJanuary 17 Tuesday 2023 09:14:55 AM"
         },
@@ -5784,7 +5784,7 @@
         "1 1\/4 Closed Nipple ": {
             "part_number": "114CN",
             "unit_quantity": 3,
-            "current_quantity": -27,
+            "current_quantity": -28,
             "price": 1.21,
             "use_exchange_rate": false,
             "priority": 0,
@@ -5792,7 +5792,7 @@
             "latest_change_name": "Item added\nItsme\nAugust 03 Wednesday 2022 08-48-01 AM",
             "latest_change_part_number": "Item added\nItsme\nAugust 03 Wednesday 2022 08-48-01 AM",
             "latest_change_unit_quantity": "Item added\nItsme\nAugust 03 Wednesday 2022 08-48-01 AM",
-            "latest_change_current_quantity": "Latest Change:\nfrom: -27\nto: -27\nJared\nApril 24 Monday 2023 10:19:34 AM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: -28\nto: -28\nJared\nApril 24 Monday 2023 10:24:57 AM",
             "latest_change_price": "Latest Change:\nfrom: 1.2\nto: 1.21\nItsme\nAugust 03 Wednesday 2022 08:50:13 AM",
             "latest_change_use_exchange_price": "Item added\nItsme\nAugust 03 Wednesday 2022 08-48-01 AM",
             "latest_change_priority": "Item added\nItsme\nAugust 03 Wednesday 2022 08-48-01 AM",
