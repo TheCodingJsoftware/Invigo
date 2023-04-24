@@ -15,7 +15,7 @@
             "latest_change_price": "Latest Change:\nfrom: 0.1\nto: 0.1\nJared\nFebruary 23 Thursday 2023 02:05:00 PM",
             "latest_change_use_exchange_price": "Item added\nItsme\nAugust 15 Monday 2022 08-58-38 AM",
             "latest_change_priority": "Item added\nItsme\nAugust 15 Monday 2022 08-58-38 AM",
-            "latest_change_notes": "Item added\nItsme\nAugust 15 Monday 2022 08-58-38 AM"
+            "latest_change_notes": "Latest Change:\nfrom: Vendor: A.Adams Supply\nDescription: testss\nto: Vendor: A.Adams Supply\nDescription: \nJared\nApril 24 Monday 2023 03:54:48 PM"
         },
         "Terminal BlockPluggable ": {
             "part_number": "222-412 Wago 2 pos",
@@ -869,7 +869,8 @@
             "use_exchange_rate": false,
             "priority": 0,
             "notes": "Vendor: Industrial Rubber Supply\nDescription: ",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 41\nto: 41\nJared\nApril 24 Monday 2023 02:22:59 PM"
+            "latest_change_current_quantity": "Latest Change:\nfrom: 41\nto: 41\nJared\nApril 24 Monday 2023 02:22:59 PM",
+            "latest_change_price": "Latest Change:\nfrom: 10.0\nto: 10.0\nJared\nApril 24 Monday 2023 03:49:06 PM"
         },
         "Blower Wheel 9-15\/16\" X 2-1\/4 BI Steel 1\/2 #2-106CI CW \"A\" 1800R": {
             "part_number": "2-106CI CW",
@@ -1624,7 +1625,7 @@
             "latest_change_price": "Latest Change:\nfrom: 0.1\nto: 0.1\nJared\nFebruary 23 Thursday 2023 02:05:00 PM",
             "latest_change_use_exchange_price": "Item added\nItsme\nAugust 15 Monday 2022 08-58-53 AM",
             "latest_change_priority": "Item added\nItsme\nAugust 15 Monday 2022 08-58-53 AM",
-            "latest_change_notes": "Item added\nItsme\nAugust 15 Monday 2022 08-58-53 AM"
+            "latest_change_notes": "Latest Change:\nfrom: \"Vendor: A.Adams Supply\nDescription: testss\"\nto: \"Vendor: A.Adams Supply\nDescription: \"\nJared\nApril 24 Monday 2023 03:54:48 PM"
         },
         "Terminal BlockPluggable ": {
             "part_number": "222-412 Wago 2 pos",
@@ -2466,7 +2467,9 @@
             "use_exchange_rate": false,
             "priority": 0,
             "notes": "Vendor: Industrial Rubber Supply\nDescription: ",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 41\nto: 41\nJared\nApril 24 Monday 2023 02:22:59 PM"
+            "latest_change_current_quantity": "Latest Change:\nfrom: 41\nto: 41\nJared\nApril 24 Monday 2023 02:22:59 PM",
+            "latest_change_price": "Latest Change:\nfrom: 10.0\nto: 10.0\nJared\nApril 24 Monday 2023 03:49:06 PM",
+            "latest_change_use_exchange_rate": "Latest Change:\nfrom: USD\nto: CAD\nJared\nApril 24 Monday 2023 03:49:09 PM"
         },
         "Blower Wheel 9-15\/16\" X 2-1\/4 BI Steel 1\/2 #2-106CI CW \"A\" 1800R": {
             "part_number": "2-106CI CW",
@@ -3219,7 +3222,7 @@
             "latest_change_price": "Latest Change:\nfrom: 0.1\nto: 0.1\nJared\nFebruary 23 Thursday 2023 02:05:00 PM",
             "latest_change_use_exchange_price": "Item added\nItsme\nAugust 15 Monday 2022 08-59-04 AM",
             "latest_change_priority": "Item added\nItsme\nAugust 15 Monday 2022 08-59-04 AM",
-            "latest_change_notes": "Item added\nItsme\nAugust 15 Monday 2022 08-59-04 AM"
+            "latest_change_notes": "Latest Change:\nfrom: Vendor: A.Adams Supply\nDescription: testss\nto: Vendor: A.Adams Supply\nDescription: \nJared\nApril 24 Monday 2023 03:54:48 PM"
         },
         "Terminal BlockPluggable ": {
             "part_number": "222-412 Wago 2 pos",
@@ -4070,7 +4073,8 @@
             "use_exchange_rate": false,
             "priority": 0,
             "notes": "Vendor: Industrial Rubber Supply\nDescription: ",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 41\nto: 41\nJared\nApril 24 Monday 2023 02:22:59 PM"
+            "latest_change_current_quantity": "Latest Change:\nfrom: 41\nto: 41\nJared\nApril 24 Monday 2023 02:22:59 PM",
+            "latest_change_price": "Latest Change:\nfrom: 10.0\nto: 10.0\nJared\nApril 24 Monday 2023 03:49:06 PM"
         },
         "Blower Wheel 9-15\/16\" X 2-1\/4 BI Steel 1\/2 #2-106CI CW \"A\" 1800R": {
             "part_number": "2-106CI CW",
