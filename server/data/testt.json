@@ -285,12 +285,12 @@
         "1 1\/4 Closed Nipple ": {
             "part_number": "114CN",
             "unit_quantity": 3.0,
-            "current_quantity": -22.0,
+            "current_quantity": -24.0,
             "price": 1.21,
             "use_exchange_rate": false,
             "priority": 0,
             "notes": "Vendor: Greenline\nDescription: 204-694-0332\nPart # G1616-125",
-            "latest_change_current_quantity": "Latest Change:\nfrom: -22.0\nto: -22.0\nJared\nApril 24 Monday 2023 10:06:26 AM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: -24.0\nto: -24.0\nJared\nApril 24 Monday 2023 10:06:51 AM",
             "latest_change_price": "Latest Change:\nfrom: 1.2\nto: 1.21\nItsme\nAugust 03 Wednesday 2022 08:50:13 AM",
             "latest_change_notes": "Latest Change:\nfrom: Vendor: Greenline\nDescription: 204-694-0332\nPart # G1616-12\nto: Vendor: Greenline\nDescription: 204-694-0332\nPart # G1616-125\nItsme\nJanuary 17 Tuesday 2023 09:14:55 AM"
         },
@@ -1864,6 +1864,18 @@
             "latest_change_name": "Latest Change:\nfrom: \"Barb Hose Adapter fitting 1 1\/\"\nto: \"Barb Hose Adapter fitting 1 1\/4\"\nItsme\nJanuary 16 Monday 2023 09:57:20 AM",
             "latest_change_notes": "Latest Change:\nfrom: \"Vendor: GreenLine\nDescription: 204-694-0332\nPart # G33G-12\"\nto: \"Vendor: GreenLine\nDescription: 204-694-0332\nPart # G33G-125\"\nItsme\nJanuary 17 Tuesday 2023 09:09:11 AM"
         },
+        "1 1\/4 Closed Nipple ": {
+            "part_number": "114CN",
+            "unit_quantity": 3.0,
+            "current_quantity": -24.0,
+            "price": 1.21,
+            "use_exchange_rate": false,
+            "priority": 0,
+            "notes": "Vendor: Greenline\nDescription: 204-694-0332\nPart # G1616-125",
+            "latest_change_current_quantity": "Latest Change:\nfrom: -24.0\nto: -24.0\nJared\nApril 24 Monday 2023 10:06:51 AM",
+            "latest_change_price": "Latest Change:\nfrom: 1.2\nto: 1.21\nItsme\nAugust 03 Wednesday 2022 08:50:13 AM",
+            "latest_change_notes": "Latest Change:\nfrom: \"Vendor: Greenline\nDescription: 204-694-0332\nPart # G1616-12\"\nto: \"Vendor: Greenline\nDescription: 204-694-0332\nPart # G1616-125\"\nItsme\nJanuary 17 Tuesday 2023 09:14:55 AM"
+        },
         "Cooling fan Blade 5\" Dia Fan  10BL5.0CCW35, 1\/2IN": {
             "part_number": "10BL5.0CCW35",
             "unit_quantity": 1,
@@ -1881,18 +1893,6 @@
             "latest_change_priority": "Item added\nItsme\nJuly 07 Thursday 2022 11-29-44 AM",
             "latest_change_notes": "Latest Change:\nfrom: \"Vendor: Revcor  Revolutionary Air Flow\nDescription:  \n9 inch fan-motor and 5\" includes full assembly\"\nto: \"Vendor: Revcor  Revolutionary Air Flow\nDescription:  \n9 inch fan-motor and 5\" includes full assembly\n\"\nItsme\nFebruary 11 Saturday 2023 10:18:54 AM",
             "latest_change_use_exchange_rate": "Latest Change:\nfrom: CAD\nto: USD\nItsme\nAugust 04 Thursday 2022 08:56:53 AM"
-        },
-        "1 1\/4 Closed Nipple ": {
-            "part_number": "114CN",
-            "unit_quantity": 3.0,
-            "current_quantity": -22.0,
-            "price": 1.21,
-            "use_exchange_rate": false,
-            "priority": 0,
-            "notes": "Vendor: Greenline\nDescription: 204-694-0332\nPart # G1616-125",
-            "latest_change_current_quantity": "Latest Change:\nfrom: -22.0\nto: -22.0\nJared\nApril 24 Monday 2023 10:06:26 AM",
-            "latest_change_price": "Latest Change:\nfrom: 1.2\nto: 1.21\nItsme\nAugust 03 Wednesday 2022 08:50:13 AM",
-            "latest_change_notes": "Latest Change:\nfrom: \"Vendor: Greenline\nDescription: 204-694-0332\nPart # G1616-12\"\nto: \"Vendor: Greenline\nDescription: 204-694-0332\nPart # G1616-125\"\nItsme\nJanuary 17 Tuesday 2023 09:14:55 AM"
         },
         "Sticker #342 Bilingual Caution Notice Decal ": {
             "part_number": "342",
@@ -3541,12 +3541,12 @@
         "1 1\/4 Closed Nipple ": {
             "part_number": "114CN",
             "unit_quantity": 3.0,
-            "current_quantity": -22.0,
+            "current_quantity": -24.0,
             "price": 1.21,
             "use_exchange_rate": false,
             "priority": 0,
             "notes": "Vendor: Greenline\nDescription: 204-694-0332\nPart # G1616-125",
-            "latest_change_current_quantity": "Latest Change:\nfrom: -22.0\nto: -22.0\nJared\nApril 24 Monday 2023 10:06:26 AM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: -24.0\nto: -24.0\nJared\nApril 24 Monday 2023 10:06:51 AM",
             "latest_change_price": "Latest Change:\nfrom: 1.2\nto: 1.21\nItsme\nAugust 03 Wednesday 2022 08:50:13 AM",
             "latest_change_notes": "Latest Change:\nfrom: Vendor: Greenline\nDescription: 204-694-0332\nPart # G1616-12\nto: Vendor: Greenline\nDescription: 204-694-0332\nPart # G1616-125\nItsme\nJanuary 17 Tuesday 2023 09:14:55 AM"
         },
@@ -5784,7 +5784,7 @@
         "1 1\/4 Closed Nipple ": {
             "part_number": "114CN",
             "unit_quantity": 3,
-            "current_quantity": -22,
+            "current_quantity": -24,
             "price": 1.21,
             "use_exchange_rate": false,
             "priority": 0,
@@ -5792,7 +5792,7 @@
             "latest_change_name": "Item added\nItsme\nAugust 03 Wednesday 2022 08-48-01 AM",
             "latest_change_part_number": "Item added\nItsme\nAugust 03 Wednesday 2022 08-48-01 AM",
             "latest_change_unit_quantity": "Item added\nItsme\nAugust 03 Wednesday 2022 08-48-01 AM",
-            "latest_change_current_quantity": "Latest Change:\nfrom: -22\nto: -22\nJared\nApril 24 Monday 2023 10:06:26 AM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: -24\nto: -24\nJared\nApril 24 Monday 2023 10:06:51 AM",
             "latest_change_price": "Latest Change:\nfrom: 1.2\nto: 1.21\nItsme\nAugust 03 Wednesday 2022 08:50:13 AM",
             "latest_change_use_exchange_price": "Item added\nItsme\nAugust 03 Wednesday 2022 08-48-01 AM",
             "latest_change_priority": "Item added\nItsme\nAugust 03 Wednesday 2022 08-48-01 AM",
