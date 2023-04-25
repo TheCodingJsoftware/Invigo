@@ -227,7 +227,7 @@
             "weight": 0.209,
             "price": 1.62,
             "unit_quantity": 1,
-            "modified_date": "Manually set to 313.0 quantity at April 12 Wednesday 2023 05:10:22 PM",
+            "modified_date": "Removed 0 quantity at April 25 Tuesday 2023 10:55:19 AM",
             "group": null
         },
         "2840-62x2": {
@@ -238,7 +238,7 @@
             "weight": 0.205,
             "price": 0.53,
             "unit_quantity": 1,
-            "modified_date": "39 quantity added at April 17 Monday 2023 05:06:22 PM",
+            "modified_date": "Removed 0 quantity at April 25 Tuesday 2023 10:55:19 AM",
             "group": null
         },
         "2840-Shaker-66x6": {
@@ -249,7 +249,7 @@
             "weight": 0.554,
             "price": 1.13,
             "unit_quantity": 1,
-            "modified_date": "Removed 10 quantity at April 08 Saturday 2023 10:54:59 AM",
+            "modified_date": "Removed 0 quantity at April 25 Tuesday 2023 10:55:19 AM",
             "group": null
         },
         "2840-103x2": {
@@ -260,7 +260,7 @@
             "weight": 0.285,
             "price": 0.59,
             "unit_quantity": 2.0,
-            "modified_date": "20 quantity added at April 20 Thursday 2023 10:45:26 AM",
+            "modified_date": "Removed 0.0 quantity at April 25 Tuesday 2023 10:55:19 AM",
             "group": null
         },
         "2840-57x2": {
@@ -271,7 +271,7 @@
             "weight": 0.263,
             "price": 0.58,
             "unit_quantity": 2.0,
-            "modified_date": "20 quantity added at April 20 Thursday 2023 10:45:26 AM",
+            "modified_date": "Removed 0.0 quantity at April 25 Tuesday 2023 10:55:19 AM",
             "group": null
         },
         "2840-58x2": {
@@ -282,7 +282,7 @@
             "weight": 0.231,
             "price": 0.5,
             "unit_quantity": 2.0,
-            "modified_date": "20 quantity added at April 20 Thursday 2023 10:45:26 AM",
+            "modified_date": "Removed 0.0 quantity at April 25 Tuesday 2023 10:55:19 AM",
             "group": null
         },
         "2840-59x2": {
@@ -293,7 +293,7 @@
             "weight": 0.441,
             "price": 0.64,
             "unit_quantity": 2.0,
-            "modified_date": "20 quantity added at April 20 Thursday 2023 10:45:26 AM",
+            "modified_date": "Removed 0.0 quantity at April 25 Tuesday 2023 10:55:19 AM",
             "group": null
         },
         "2840-65x2": {
@@ -304,7 +304,7 @@
             "weight": 0.451,
             "price": 1.1,
             "unit_quantity": 1,
-            "modified_date": "Added at April 17 Monday 2023 05:06:22 PM",
+            "modified_date": "Removed 0 quantity at April 25 Tuesday 2023 10:55:19 AM",
             "group": null
         },
         "2840-66x2": {
@@ -315,7 +315,7 @@
             "weight": 0.223,
             "price": 0.8,
             "unit_quantity": 1,
-            "modified_date": "Added at April 17 Monday 2023 05:06:22 PM",
+            "modified_date": "Removed 0 quantity at April 25 Tuesday 2023 10:55:19 AM",
             "group": null
         },
         "2534-Ashpan": {
@@ -326,18 +326,18 @@
             "weight": 9.934,
             "price": 25.91,
             "unit_quantity": 1,
-            "modified_date": "10 quantity added at February 25 Saturday 2023 10:15:58 AM",
+            "modified_date": "Removed 0 quantity at April 25 Tuesday 2023 10:55:19 AM",
             "group": null
         },
         "2534-043x2": {
-            "current_quantity": 10,
+            "current_quantity": 10.0,
             "machine_time": 1.58,
             "gauge": "3\/8",
             "material": "Mild Steel",
             "weight": 15.178,
             "price": 15.64,
             "unit_quantity": 2.0,
-            "modified_date": "Added at March 03 Friday 2023 03:46:38 PM",
+            "modified_date": "Removed 0.0 quantity at April 25 Tuesday 2023 10:55:19 AM",
             "group": null
         },
         "2534-061": {
@@ -348,7 +348,7 @@
             "weight": 14.524,
             "price": 37.84,
             "unit_quantity": 1,
-            "modified_date": "Added at March 09 Thursday 2023 09:41:14 AM",
+            "modified_date": "Removed 0 quantity at April 25 Tuesday 2023 10:55:19 AM",
             "group": null
         }
     },
@@ -361,7 +361,7 @@
             "weight": 0.209,
             "price": 1.62,
             "unit_quantity": 1,
-            "modified_date": "Manually set to 313.0 quantity at April 12 Wednesday 2023 05:10:22 PM",
+            "modified_date": "Removed 0 quantity at April 25 Tuesday 2023 10:55:19 AM",
             "group": null
         },
         "2840-62x2": {
@@ -372,7 +372,7 @@
             "weight": 0.205,
             "price": 0.53,
             "unit_quantity": 2.0,
-            "modified_date": "39 quantity added at April 17 Monday 2023 05:06:22 PM",
+            "modified_date": "Removed 0.0 quantity at April 25 Tuesday 2023 10:55:19 AM",
             "group": null
         },
         "2840-103x2": {
@@ -383,7 +383,7 @@
             "weight": 0.285,
             "price": 0.59,
             "unit_quantity": 5.0,
-            "modified_date": "20 quantity added at April 20 Thursday 2023 10:45:26 AM",
+            "modified_date": "Removed 0.0 quantity at April 25 Tuesday 2023 10:55:19 AM",
             "group": null
         },
         "2840-57x2": {
@@ -394,7 +394,7 @@
             "weight": 0.263,
             "price": 0.58,
             "unit_quantity": 2.0,
-            "modified_date": "20 quantity added at April 20 Thursday 2023 10:45:26 AM",
+            "modified_date": "Removed 0.0 quantity at April 25 Tuesday 2023 10:55:19 AM",
             "group": null
         },
         "2840-58x2": {
@@ -405,7 +405,7 @@
             "weight": 0.231,
             "price": 0.5,
             "unit_quantity": 2.0,
-            "modified_date": "20 quantity added at April 20 Thursday 2023 10:45:26 AM",
+            "modified_date": "Removed 0.0 quantity at April 25 Tuesday 2023 10:55:19 AM",
             "group": null
         },
         "2840-59x2": {
@@ -416,7 +416,7 @@
             "weight": 0.441,
             "price": 0.64,
             "unit_quantity": 2.0,
-            "modified_date": "20 quantity added at April 20 Thursday 2023 10:45:26 AM",
+            "modified_date": "Removed 0.0 quantity at April 25 Tuesday 2023 10:55:19 AM",
             "group": null
         },
         "2840-Shaker-66x6": {
@@ -427,7 +427,7 @@
             "weight": 0.554,
             "price": 1.13,
             "unit_quantity": 6.0,
-            "modified_date": "Removed 60.0 quantity at April 08 Saturday 2023 10:54:59 AM",
+            "modified_date": "Removed 0.0 quantity at April 25 Tuesday 2023 10:55:19 AM",
             "group": null
         },
         "2840-65x2": {
@@ -438,7 +438,7 @@
             "weight": 0.451,
             "price": 1.1,
             "unit_quantity": 1,
-            "modified_date": "Added at April 17 Monday 2023 05:06:22 PM",
+            "modified_date": "Removed 0 quantity at April 25 Tuesday 2023 10:55:19 AM",
             "group": null
         },
         "2840-60x2": {
@@ -482,7 +482,7 @@
             "weight": 0.223,
             "price": 0.8,
             "unit_quantity": 1,
-            "modified_date": "Added at April 17 Monday 2023 05:06:22 PM",
+            "modified_date": "Removed 0 quantity at April 25 Tuesday 2023 10:55:19 AM",
             "group": null
         },
         "2840-00x2": {
@@ -1342,7 +1342,7 @@
             "weight": 0.209,
             "price": 1.62,
             "unit_quantity": 1,
-            "modified_date": "Manually set to 313.0 quantity at April 12 Wednesday 2023 05:10:22 PM",
+            "modified_date": "Removed 0 quantity at April 25 Tuesday 2023 10:55:19 AM",
             "group": null
         },
         "3444-00": {
@@ -1364,7 +1364,7 @@
             "weight": 0.205,
             "price": 0.53,
             "unit_quantity": 1,
-            "modified_date": "39 quantity added at April 17 Monday 2023 05:06:22 PM",
+            "modified_date": "Removed 0 quantity at April 25 Tuesday 2023 10:55:19 AM",
             "group": null
         },
         "2840-Shaker-66x6": {
@@ -1375,7 +1375,7 @@
             "weight": 0.554,
             "price": 1.13,
             "unit_quantity": 1,
-            "modified_date": "Removed 10 quantity at April 08 Saturday 2023 10:54:59 AM",
+            "modified_date": "Removed 0 quantity at April 25 Tuesday 2023 10:55:19 AM",
             "group": null
         },
         "3444-57": {
@@ -1401,47 +1401,47 @@
             "group": null
         },
         "2840-103x2": {
-            "current_quantity": 90,
+            "current_quantity": 90.0,
             "machine_time": 0.15,
             "gauge": "1\/4",
             "material": "Mild Steel",
             "weight": 0.285,
             "price": 0.59,
             "unit_quantity": 2.0,
-            "modified_date": "20 quantity added at April 20 Thursday 2023 10:45:26 AM",
+            "modified_date": "Removed 0.0 quantity at April 25 Tuesday 2023 10:55:19 AM",
             "group": null
         },
         "2840-57x2": {
-            "current_quantity": 90,
+            "current_quantity": 90.0,
             "machine_time": 0.15,
             "gauge": "1\/4",
             "material": "Mild Steel",
             "weight": 0.263,
             "price": 0.58,
             "unit_quantity": 2.0,
-            "modified_date": "20 quantity added at April 20 Thursday 2023 10:45:26 AM",
+            "modified_date": "Removed 0.0 quantity at April 25 Tuesday 2023 10:55:19 AM",
             "group": null
         },
         "2840-58x2": {
-            "current_quantity": 90,
+            "current_quantity": 90.0,
             "machine_time": 0.13,
             "gauge": "1\/4",
             "material": "Mild Steel",
             "weight": 0.231,
             "price": 0.5,
             "unit_quantity": 2.0,
-            "modified_date": "20 quantity added at April 20 Thursday 2023 10:45:26 AM",
+            "modified_date": "Removed 0.0 quantity at April 25 Tuesday 2023 10:55:19 AM",
             "group": null
         },
         "2840-59x2": {
-            "current_quantity": 90,
+            "current_quantity": 90.0,
             "machine_time": 0.12,
             "gauge": "1\/4",
             "material": "Mild Steel",
             "weight": 0.441,
             "price": 0.64,
             "unit_quantity": 2.0,
-            "modified_date": "20 quantity added at April 20 Thursday 2023 10:45:26 AM",
+            "modified_date": "Removed 0.0 quantity at April 25 Tuesday 2023 10:55:19 AM",
             "group": null
         },
         "3444-25x4": {
@@ -1467,14 +1467,14 @@
             "group": null
         },
         "2840-65x2": {
-            "current_quantity": 44,
+            "current_quantity": 44.0,
             "machine_time": 0.3,
             "gauge": "3\/8",
             "material": "Mild Steel",
             "weight": 0.451,
             "price": 1.1,
             "unit_quantity": 2.0,
-            "modified_date": "Added at April 17 Monday 2023 05:06:22 PM",
+            "modified_date": "Removed 0.0 quantity at April 25 Tuesday 2023 10:55:19 AM",
             "group": null
         },
         "3444-34": {
@@ -1577,14 +1577,14 @@
             "group": null
         },
         "2840-66x2": {
-            "current_quantity": 24,
+            "current_quantity": 24.0,
             "machine_time": 0.25,
             "gauge": "3\/8",
             "material": "Mild Steel",
             "weight": 0.223,
             "price": 0.8,
             "unit_quantity": 2.0,
-            "modified_date": "Added at April 17 Monday 2023 05:06:22 PM",
+            "modified_date": "Removed 0.0 quantity at April 25 Tuesday 2023 10:55:19 AM",
             "group": null
         },
         "3444-33": {
@@ -2005,6 +2005,17 @@
             "modified_date": "10 quantity added at April 20 Thursday 2023 10:45:26 AM",
             "group": null
         },
+        "3444 chimneyx3": {
+            "current_quantity": 12.0,
+            "machine_time": 0.68,
+            "gauge": "14 Gauge",
+            "material": "304 SS",
+            "weight": 6.71,
+            "price": 18.87,
+            "unit_quantity": 1,
+            "modified_date": "Manually set to 12.0 quantity at April 22 Saturday 2023 10:22:35 AM",
+            "group": null
+        },
         "3444-01": {
             "current_quantity": 10,
             "machine_time": 4.1,
@@ -2346,17 +2357,6 @@
             "modified_date": "Added at April 20 Thursday 2023 02:47:28 PM",
             "group": null
         },
-        "3444 chimneyx3": {
-            "current_quantity": 12.0,
-            "machine_time": 0.68,
-            "gauge": "14 Gauge",
-            "material": "304 SS",
-            "weight": 6.71,
-            "price": 18.87,
-            "unit_quantity": 1,
-            "modified_date": "Manually set to 12.0 quantity at April 22 Saturday 2023 10:22:35 AM",
-            "group": null
-        },
         "3444-71 chimney": {
             "current_quantity": 10.0,
             "machine_time": 0.28,
@@ -2400,7 +2400,7 @@
             "weight": 0.209,
             "price": 1.62,
             "unit_quantity": 1,
-            "modified_date": "Manually set to 313.0 quantity at April 12 Wednesday 2023 05:10:22 PM",
+            "modified_date": "Removed 0 quantity at April 25 Tuesday 2023 10:55:19 AM",
             "group": null
         },
         "2840-62x2": {
@@ -2411,7 +2411,7 @@
             "weight": 0.205,
             "price": 0.53,
             "unit_quantity": 1,
-            "modified_date": "39 quantity added at April 17 Monday 2023 05:06:22 PM",
+            "modified_date": "Removed 0 quantity at April 25 Tuesday 2023 10:55:19 AM",
             "group": null
         },
         "2840-Shaker-66x6": {
@@ -2422,7 +2422,7 @@
             "weight": 0.554,
             "price": 1.13,
             "unit_quantity": 1,
-            "modified_date": "Removed 10 quantity at April 08 Saturday 2023 10:54:59 AM",
+            "modified_date": "Removed 0 quantity at April 25 Tuesday 2023 10:55:19 AM",
             "group": null
         },
         "2840-103x2": {
@@ -2433,7 +2433,7 @@
             "weight": 0.285,
             "price": 0.59,
             "unit_quantity": 1,
-            "modified_date": "20 quantity added at April 20 Thursday 2023 10:45:26 AM",
+            "modified_date": "Removed 0 quantity at April 25 Tuesday 2023 10:55:19 AM",
             "group": null
         },
         "2840-57x2": {
@@ -2444,7 +2444,7 @@
             "weight": 0.263,
             "price": 0.58,
             "unit_quantity": 1,
-            "modified_date": "20 quantity added at April 20 Thursday 2023 10:45:26 AM",
+            "modified_date": "Removed 0 quantity at April 25 Tuesday 2023 10:55:19 AM",
             "group": null
         },
         "2840-58x2": {
@@ -2455,7 +2455,7 @@
             "weight": 0.231,
             "price": 0.5,
             "unit_quantity": 1,
-            "modified_date": "20 quantity added at April 20 Thursday 2023 10:45:26 AM",
+            "modified_date": "Removed 0 quantity at April 25 Tuesday 2023 10:55:19 AM",
             "group": null
         },
         "2840-59x2": {
@@ -2466,7 +2466,7 @@
             "weight": 0.441,
             "price": 0.64,
             "unit_quantity": 1,
-            "modified_date": "20 quantity added at April 20 Thursday 2023 10:45:26 AM",
+            "modified_date": "Removed 0 quantity at April 25 Tuesday 2023 10:55:19 AM",
             "group": null
         },
         "2840-65x2": {
@@ -2477,7 +2477,7 @@
             "weight": 0.451,
             "price": 1.1,
             "unit_quantity": 1,
-            "modified_date": "Added at April 17 Monday 2023 05:06:22 PM",
+            "modified_date": "Removed 0 quantity at April 25 Tuesday 2023 10:55:19 AM",
             "group": null
         },
         "2840-66x2": {
@@ -2488,7 +2488,7 @@
             "weight": 0.223,
             "price": 0.8,
             "unit_quantity": 1,
-            "modified_date": "Added at April 17 Monday 2023 05:06:22 PM",
+            "modified_date": "Removed 0 quantity at April 25 Tuesday 2023 10:55:19 AM",
             "group": null
         },
         "S30-37": {
@@ -4912,6 +4912,17 @@
         }
     },
     "Farm\/Colony": {
+        "WTSS 202318": {
+            "current_quantity": 72,
+            "machine_time": 0.05,
+            "gauge": "10 Gauge",
+            "material": "304 SS",
+            "weight": 0.017,
+            "price": 0.25,
+            "unit_quantity": 1,
+            "modified_date": "Added at April 21 Friday 2023 10:49:04 AM",
+            "group": null
+        },
         "Jakes WASHER": {
             "current_quantity": 36,
             "machine_time": 0.08,
@@ -5031,6 +5042,17 @@
             "price": 19.45,
             "unit_quantity": 1,
             "modified_date": "Added at March 17 Friday 2023 02:17:02 PM",
+            "group": null
+        },
+        "WTSS 202306": {
+            "current_quantity": 4,
+            "machine_time": 0.22,
+            "gauge": "10 Gauge",
+            "material": "304 SS",
+            "weight": 0.344,
+            "price": 1.74,
+            "unit_quantity": 1,
+            "modified_date": "Added at April 21 Friday 2023 10:49:04 AM",
             "group": null
         },
         "central air": {
@@ -5394,28 +5416,6 @@
             "price": 19.73,
             "unit_quantity": 1,
             "modified_date": "Added at April 12 Wednesday 2023 04:26:36 PM",
-            "group": null
-        },
-        "WTSS 202318": {
-            "current_quantity": 72,
-            "machine_time": 0.05,
-            "gauge": "10 Gauge",
-            "material": "304 SS",
-            "weight": 0.017,
-            "price": 0.25,
-            "unit_quantity": 1,
-            "modified_date": "Added at April 21 Friday 2023 10:49:04 AM",
-            "group": null
-        },
-        "WTSS 202306": {
-            "current_quantity": 4,
-            "machine_time": 0.22,
-            "gauge": "10 Gauge",
-            "material": "304 SS",
-            "weight": 0.344,
-            "price": 1.74,
-            "unit_quantity": 1,
-            "modified_date": "Added at April 21 Friday 2023 10:49:04 AM",
             "group": null
         },
         "WTSS 202302": {
