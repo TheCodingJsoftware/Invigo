@@ -1856,9 +1856,9 @@ class MainWindow(QMainWindow):
             # layout.addWidget(btn_delete)
             tab.setCellWidget(row_index, col_index, btn_delete)
             if current_quantity <= 10:
-                self.set_table_row_color(tab, row_index, "#722f37")
+                self.set_table_row_color(tab, row_index, "#3F1E25")
             elif current_quantity <= 20:
-                self.set_table_row_color(tab, row_index, "#8C7853")
+                self.set_table_row_color(tab, row_index, "#413C28")
 
         QApplication.restoreOverrideCursor()
         datetime2 = datetime.now()
