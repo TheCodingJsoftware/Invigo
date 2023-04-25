@@ -314,12 +314,12 @@
         "6L12  ASHT 6\"X12\" Section": {
             "part_number": "6L12",
             "unit_quantity": 1.0,
-            "current_quantity": 10,
+            "current_quantity": 110,
             "price": 60.3,
             "use_exchange_rate": false,
             "priority": 2,
             "notes": "Vendor: Security Chimneys\ndmorris@duraventgroup.com\nDescription: ",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 10.0\nto: 10\nLynden\nApril 21 Friday 2023 01:29:33 PM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 110\nto: 110\nLynden\nApril 25 Tuesday 2023 09:12:39 AM",
             "latest_change_price": "Latest Change:\nfrom: 60.3\nto: 60.3\nItsme\nOctober 04 Tuesday 2022 01:57:08 PM"
         },
         "Transformer (White Rogers) Class 2 120V 50\/60HZ Multimount": {
@@ -684,12 +684,12 @@
         "6L24 ASHT 6\"X24\" Section": {
             "part_number": "6L24",
             "unit_quantity": 1,
-            "current_quantity": 58,
+            "current_quantity": 88,
             "price": 102.3,
             "use_exchange_rate": false,
             "priority": 1,
             "notes": "Vendor: Security Chimneys\n\nDescription: ",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 58\nto: 58\nLynden\nApril 21 Friday 2023 01:29:33 PM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 88\nto: 88\nLynden\nApril 25 Tuesday 2023 09:13:02 AM",
             "latest_change_priority": "Latest Change:\nfrom: 2\nto: 1\nItsme\nAugust 03 Wednesday 2022 11:22:18 AM",
             "latest_change_price": "Latest Change:\nfrom: 102.3\nto: 102.3\nItsme\nJanuary 13 Friday 2023 02:05:00 PM"
         },
@@ -2082,18 +2082,6 @@
             "latest_change_current_quantity": "Latest Change:\nfrom: 10\nto: 10\nLynden\nApril 21 Friday 2023 01:29:33 PM",
             "latest_change_name": "Latest Change:\nfrom: \"3\" Thermax SF- 600 Brick Slabs 1000x610x7\"\nto: \"3\" Thermax SF- 600 Brick Slabs 1000x610x75\"\nItsme\nJuly 11 Monday 2022 09:45:53 AM"
         },
-        "6L12  ASHT 6\"X12\" Section": {
-            "part_number": "6L12",
-            "unit_quantity": 1.0,
-            "current_quantity": 10,
-            "price": 60.3,
-            "use_exchange_rate": false,
-            "priority": 3,
-            "notes": "Vendor: Security Chimneys\ndmorris@duraventgroup.com\nDescription: ",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 10.0\nto: 10\nLynden\nApril 21 Friday 2023 01:29:33 PM",
-            "latest_change_price": "Latest Change:\nfrom: 60.3\nto: 60.3\nItsme\nOctober 04 Tuesday 2022 01:57:08 PM",
-            "latest_change_priority": "Latest Change:\nfrom: 2\nto: 3\nItsme\nDecember 05 Monday 2022 02:46:47 PM"
-        },
         "Transformer (White Rogers) Class 2 120V 50\/60HZ Multimount": {
             "part_number": "90-T40M1",
             "unit_quantity": 1.0,
@@ -2241,6 +2229,23 @@
             "latest_change_use_exchange_price": "Item added\nItsme\nJanuary 19 Thursday 2023 09-57-27 AM",
             "latest_change_priority": "Item added\nItsme\nJanuary 19 Thursday 2023 09-57-27 AM",
             "latest_change_notes": "Item added\nItsme\nJanuary 19 Thursday 2023 09-57-27 AM"
+        },
+        "Snap in Flush Pull, Large, Black Plastic, For Panel Thickness .040- .055": {
+            "part_number": "91-19BK02",
+            "unit_quantity": 3,
+            "current_quantity": 20,
+            "price": 5.0,
+            "use_exchange_rate": false,
+            "priority": 0,
+            "notes": "Vendor: Sierra Pacific Engineering and Products\nDescription: ",
+            "latest_change_name": "Latest Change:\nfrom: \"snap in Flush Pull, Large, Black Plastic, For Panel Thickness .040- .055\"\nto: \"Snap in Flush Pull, Large, Black Plastic, For Panel Thickness .040- .055\"\nLynden\nApril 24 Monday 2023 10:50:05 AM",
+            "latest_change_part_number": "Item added\nItsme\nJuly 19 Tuesday 2022 01-59-38 PM",
+            "latest_change_unit_quantity": "Latest Change:\nfrom: 3\nto: 3\nItsme\nOctober 17 Monday 2022 10:50:18 AM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 20\nto: 20\nLynden\nApril 24 Monday 2023 11:02:45 AM",
+            "latest_change_price": "Item added\nItsme\nJuly 19 Tuesday 2022 01-59-38 PM",
+            "latest_change_use_exchange_price": "Item added\nItsme\nJuly 19 Tuesday 2022 01-59-38 PM",
+            "latest_change_priority": "Item added\nItsme\nJuly 19 Tuesday 2022 01-59-38 PM",
+            "latest_change_notes": "Item added\nItsme\nJuly 19 Tuesday 2022 01-59-38 PM"
         },
         "Gasket 3\/16\" Thick 5\"OD x 3.75\"ID EPDM Sponge Adhesive Back": {
             "part_number": "1000-795",
@@ -2478,18 +2483,6 @@
             "latest_change_current_quantity": "Latest Change:\nfrom: 51\nto: 51\nLynden\nApril 21 Friday 2023 01:29:33 PM",
             "latest_change_unit_quantity": "Latest Change:\nfrom: 15\nto: 1\nItsme\nJuly 19 Tuesday 2022 01:36:56 PM",
             "latest_change_price": "Latest Change:\nfrom: 1.81\nto: 0.81\nItsme\nNovember 08 Tuesday 2022 09:37:09 AM"
-        },
-        "6L24 ASHT 6\"X24\" Section": {
-            "part_number": "6L24",
-            "unit_quantity": 1,
-            "current_quantity": 58,
-            "price": 102.3,
-            "use_exchange_rate": false,
-            "priority": 3,
-            "notes": "Vendor: Security Chimneys\n\nDescription: ",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 58\nto: 58\nLynden\nApril 21 Friday 2023 01:29:33 PM",
-            "latest_change_price": "Latest Change:\nfrom: 102.3\nto: 102.3\nItsme\nJanuary 13 Friday 2023 02:05:00 PM",
-            "latest_change_priority": "Latest Change:\nfrom: 2\nto: 3\nLynden\nMarch 27 Monday 2023 10:27:52 AM"
         },
         "Hubble Plug-in  CR15WHI HUB REC Duplex 125V 15A WHT ": {
             "part_number": "CR15WHI",
@@ -2775,6 +2768,18 @@
             "notes": "Vendor: \nDescription: ",
             "latest_change_current_quantity": "Latest Change:\nfrom: 86\nto: 86\nLynden\nApril 21 Friday 2023 01:29:34 PM"
         },
+        "6L24 ASHT 6\"X24\" Section": {
+            "part_number": "6L24",
+            "unit_quantity": 1,
+            "current_quantity": 88,
+            "price": 102.3,
+            "use_exchange_rate": false,
+            "priority": 3,
+            "notes": "Vendor: Security Chimneys\n\nDescription: ",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 88\nto: 88\nLynden\nApril 25 Tuesday 2023 09:13:02 AM",
+            "latest_change_price": "Latest Change:\nfrom: 102.3\nto: 102.3\nItsme\nJanuary 13 Friday 2023 02:05:00 PM",
+            "latest_change_priority": "Latest Change:\nfrom: 2\nto: 3\nLynden\nMarch 27 Monday 2023 10:27:52 AM"
+        },
         "1\/2 x 6.5\" Long Bolt      with bend added after": {
             "part_number": "106-050-0650",
             "unit_quantity": 1.0,
@@ -2857,6 +2862,18 @@
             "latest_change_use_exchange_price": "Item added\nItsme\nOctober 17 Monday 2022 08-12-48 AM",
             "latest_change_priority": "Item added\nItsme\nOctober 17 Monday 2022 08-12-48 AM",
             "latest_change_notes": "Item added\nItsme\nOctober 17 Monday 2022 08-12-48 AM"
+        },
+        "6L12  ASHT 6\"X12\" Section": {
+            "part_number": "6L12",
+            "unit_quantity": 1.0,
+            "current_quantity": 110,
+            "price": 60.3,
+            "use_exchange_rate": false,
+            "priority": 3,
+            "notes": "Vendor: Security Chimneys\ndmorris@duraventgroup.com\nDescription: ",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 110\nto: 110\nLynden\nApril 25 Tuesday 2023 09:12:39 AM",
+            "latest_change_price": "Latest Change:\nfrom: 60.3\nto: 60.3\nItsme\nOctober 04 Tuesday 2022 01:57:08 PM",
+            "latest_change_priority": "Latest Change:\nfrom: 2\nto: 3\nItsme\nDecember 05 Monday 2022 02:46:47 PM"
         },
         "Eon Motor 1\/3 HP 5660": {
             "part_number": "5SAB39DLV5000-P",
@@ -3490,23 +3507,6 @@
             "latest_change_use_exchange_price": "Item added\nItsme\nJuly 19 Tuesday 2022 03-54-38 PM",
             "latest_change_priority": "Item added\nItsme\nJuly 19 Tuesday 2022 03-54-38 PM",
             "latest_change_notes": "Item added\nItsme\nJuly 19 Tuesday 2022 03-54-38 PM"
-        },
-        "Snap in Flush Pull, Large, Black Plastic, For Panel Thickness .040- .055": {
-            "part_number": "91-19BK02",
-            "unit_quantity": 3,
-            "current_quantity": 20,
-            "price": 5.0,
-            "use_exchange_rate": false,
-            "priority": 0,
-            "notes": "Vendor: Sierra Pacific Engineering and Products\nDescription: ",
-            "latest_change_name": "Latest Change:\nfrom: \"snap in Flush Pull, Large, Black Plastic, For Panel Thickness .040- .055\"\nto: \"Snap in Flush Pull, Large, Black Plastic, For Panel Thickness .040- .055\"\nLynden\nApril 24 Monday 2023 10:50:05 AM",
-            "latest_change_part_number": "Item added\nItsme\nJuly 19 Tuesday 2022 01-59-38 PM",
-            "latest_change_unit_quantity": "Latest Change:\nfrom: 3\nto: 3\nItsme\nOctober 17 Monday 2022 10:50:18 AM",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 20\nto: 20\nLynden\nApril 24 Monday 2023 11:02:45 AM",
-            "latest_change_price": "Item added\nItsme\nJuly 19 Tuesday 2022 01-59-38 PM",
-            "latest_change_use_exchange_price": "Item added\nItsme\nJuly 19 Tuesday 2022 01-59-38 PM",
-            "latest_change_priority": "Item added\nItsme\nJuly 19 Tuesday 2022 01-59-38 PM",
-            "latest_change_notes": "Item added\nItsme\nJuly 19 Tuesday 2022 01-59-38 PM"
         }
     },
     "Polar G2+": {
@@ -3817,12 +3817,12 @@
         "6L12  ASHT 6\"X12\" Section": {
             "part_number": "6L12",
             "unit_quantity": 1.0,
-            "current_quantity": 10,
+            "current_quantity": 110,
             "price": 60.3,
             "use_exchange_rate": false,
             "priority": 2,
             "notes": "Vendor: Security Chimneys\ndmorris@duraventgroup.com\nDescription: ",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 10\nto: 10\nLynden\nApril 21 Friday 2023 01:29:33 PM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 110\nto: 110\nLynden\nApril 25 Tuesday 2023 09:12:39 AM",
             "latest_change_price": "Latest Change:\nfrom: 60.3\nto: 60.3\nItsme\nOctober 04 Tuesday 2022 01:57:08 PM"
         },
         "Compression Spring, 1\" Long, 1.225\" OD, 1.055\" ID 35lbs damper adjust": {
@@ -4241,12 +4241,12 @@
         "6L24 ASHT 6\"X24\" Section": {
             "part_number": "6L24",
             "unit_quantity": 1,
-            "current_quantity": 58,
+            "current_quantity": 88,
             "price": 102.3,
             "use_exchange_rate": false,
             "priority": 1,
             "notes": "Vendor: Security Chimneys\n\nDescription: ",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 58\nto: 58\nLynden\nApril 21 Friday 2023 01:29:33 PM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 88\nto: 88\nLynden\nApril 25 Tuesday 2023 09:13:02 AM",
             "latest_change_priority": "Latest Change:\nfrom: 2\nto: 1\nItsme\nAugust 03 Wednesday 2022 11:23:30 AM",
             "latest_change_price": "Latest Change:\nfrom: 102.3\nto: 102.3\nItsme\nJanuary 13 Friday 2023 02:05:00 PM"
         },
@@ -5491,7 +5491,7 @@
         "6 x 36\" Chimney 6L36": {
             "part_number": "206800",
             "unit_quantity": 1,
-            "current_quantity": 52,
+            "current_quantity": 102,
             "price": 149.43,
             "use_exchange_rate": false,
             "priority": 3,
@@ -5499,7 +5499,7 @@
             "latest_change_name": "Item added\nItsme\nAugust 03 Wednesday 2022 11-11-13 AM",
             "latest_change_part_number": "Item added\nItsme\nAugust 03 Wednesday 2022 11-11-13 AM",
             "latest_change_unit_quantity": "Item added\nItsme\nAugust 03 Wednesday 2022 11-11-13 AM",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 52\nto: 52\nLynden\nApril 04 Tuesday 2023 08:39:25 AM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 102\nto: 102\nLynden\nApril 25 Tuesday 2023 09:11:57 AM",
             "latest_change_price": "Latest Change:\nfrom: 149.43\nto: 149.43\nItsme\nOctober 04 Tuesday 2022 01:54:56 PM",
             "latest_change_use_exchange_price": "Item added\nItsme\nAugust 03 Wednesday 2022 11-11-13 AM",
             "latest_change_priority": "Latest Change:\nfrom: 0\nto: 3\nItsme\nOctober 21 Friday 2022 04:30:25 PM",
@@ -7166,7 +7166,7 @@
         "6 x 36\" Chimney 6L36": {
             "part_number": "206800",
             "unit_quantity": 1,
-            "current_quantity": 52,
+            "current_quantity": 102,
             "price": 149.43,
             "use_exchange_rate": false,
             "priority": 0,
@@ -7174,7 +7174,7 @@
             "latest_change_name": "Item added\nItsme\nAugust 03 Wednesday 2022 11-00-24 AM",
             "latest_change_part_number": "Item added\nItsme\nAugust 03 Wednesday 2022 11-00-24 AM",
             "latest_change_unit_quantity": "Item added\nItsme\nAugust 03 Wednesday 2022 11-00-24 AM",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 52\nto: 52\nLynden\nApril 04 Tuesday 2023 08:39:25 AM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 102\nto: 102\nLynden\nApril 25 Tuesday 2023 09:11:57 AM",
             "latest_change_price": "Latest Change:\nfrom: 149.43\nto: 149.43\nItsme\nOctober 04 Tuesday 2022 01:54:56 PM",
             "latest_change_use_exchange_price": "Item added\nItsme\nAugust 03 Wednesday 2022 11-00-24 AM",
             "latest_change_priority": "Item added\nItsme\nAugust 03 Wednesday 2022 11-00-24 AM",
@@ -7868,23 +7868,6 @@
             "latest_change_priority": "Item added\nItsme\nSeptember 06 Tuesday 2022 08-52-05 AM",
             "latest_change_notes": "Latest Change:\nfrom: Vendor:Heat Savers Distributers \nDescription: 1 Box Equals 11 pieces           Item# 3DFA-35\n3\" x 35' DuraFlex\n(204) 694-3305\n$278- 35'\n$40\nto: Vendor:Heat Savers Distributers \nDescription: 1 Box Equals 11 pieces           Item# 3DFA-35\n3\" x 35' DuraFlex\n(204) 694-3305\n$278- 35'\n$400\nLynden\nMarch 31 Friday 2023 10:38:52 AM"
         },
-        "6 x 36\" Chimney 6L36": {
-            "part_number": "206800",
-            "unit_quantity": 1,
-            "current_quantity": 52,
-            "price": 149.43,
-            "use_exchange_rate": false,
-            "priority": 0,
-            "notes": "Vendor: Security Chimney\nDescription: ",
-            "latest_change_name": "Item added\nItsme\nAugust 03 Wednesday 2022 11-00-24 AM",
-            "latest_change_part_number": "Item added\nItsme\nAugust 03 Wednesday 2022 11-00-24 AM",
-            "latest_change_unit_quantity": "Item added\nItsme\nAugust 03 Wednesday 2022 11-00-24 AM",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 52\nto: 52\nLynden\nApril 04 Tuesday 2023 08:39:25 AM",
-            "latest_change_price": "Latest Change:\nfrom: 149.43\nto: 149.43\nItsme\nOctober 04 Tuesday 2022 01:54:56 PM",
-            "latest_change_use_exchange_price": "Item added\nItsme\nAugust 03 Wednesday 2022 11-00-24 AM",
-            "latest_change_priority": "Item added\nItsme\nAugust 03 Wednesday 2022 11-00-24 AM",
-            "latest_change_notes": "Item added\nItsme\nAugust 03 Wednesday 2022 11-00-24 AM"
-        },
         "Die Cast Zinc Hinge, 1.57 Open x 1.57 Long, 4 Csunk Holes, SS Pin, Black Powder Coated": {
             "part_number": "H2080-02",
             "unit_quantity": 4,
@@ -7986,6 +7969,23 @@
             "latest_change_use_exchange_price": "Item added\nItsme\nDecember 05 Monday 2022 02-50-26 PM",
             "latest_change_priority": "Item added\nItsme\nDecember 05 Monday 2022 02-50-26 PM",
             "latest_change_notes": "Item added\nItsme\nDecember 05 Monday 2022 02-50-26 PM"
+        },
+        "6 x 36\" Chimney 6L36": {
+            "part_number": "206800",
+            "unit_quantity": 1,
+            "current_quantity": 102,
+            "price": 149.43,
+            "use_exchange_rate": false,
+            "priority": 0,
+            "notes": "Vendor: Security Chimney\nDescription: ",
+            "latest_change_name": "Item added\nItsme\nAugust 03 Wednesday 2022 11-00-24 AM",
+            "latest_change_part_number": "Item added\nItsme\nAugust 03 Wednesday 2022 11-00-24 AM",
+            "latest_change_unit_quantity": "Item added\nItsme\nAugust 03 Wednesday 2022 11-00-24 AM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 102\nto: 102\nLynden\nApril 25 Tuesday 2023 09:11:57 AM",
+            "latest_change_price": "Latest Change:\nfrom: 149.43\nto: 149.43\nItsme\nOctober 04 Tuesday 2022 01:54:56 PM",
+            "latest_change_use_exchange_price": "Item added\nItsme\nAugust 03 Wednesday 2022 11-00-24 AM",
+            "latest_change_priority": "Item added\nItsme\nAugust 03 Wednesday 2022 11-00-24 AM",
+            "latest_change_notes": "Item added\nItsme\nAugust 03 Wednesday 2022 11-00-24 AM"
         },
         "1\/4 Nialon Plastic Shaft- Float assy": {
             "part_number": "14NPS",
@@ -8608,23 +8608,6 @@
             "latest_change_priority": "Item added\nItsme\nSeptember 06 Tuesday 2022 08-52-17 AM",
             "latest_change_notes": "Latest Change:\nfrom: Vendor:Heat Savers Distributers \nDescription: 1 Box Equals 11 pieces           Item# 3DFA-35\n3\" x 35' DuraFlex\n(204) 694-3305\n$278- 35'\n$40\nto: Vendor:Heat Savers Distributers \nDescription: 1 Box Equals 11 pieces           Item# 3DFA-35\n3\" x 35' DuraFlex\n(204) 694-3305\n$278- 35'\n$400\nLynden\nMarch 31 Friday 2023 10:38:52 AM"
         },
-        "8\" Chimney T  8TL14-PM": {
-            "part_number": "210800",
-            "unit_quantity": 1,
-            "current_quantity": 67,
-            "price": 210.3,
-            "use_exchange_rate": false,
-            "priority": 0,
-            "notes": "Vendor: Security Chimneys\nDescription: ",
-            "latest_change_name": "Item added\nItsme\nAugust 03 Wednesday 2022 11-04-02 AM",
-            "latest_change_part_number": "Item added\nItsme\nAugust 03 Wednesday 2022 11-04-02 AM",
-            "latest_change_unit_quantity": "Item added\nItsme\nAugust 03 Wednesday 2022 11-04-02 AM",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 67\nto: 67\nLynden\nApril 21 Friday 2023 10:47:46 AM",
-            "latest_change_price": "Latest Change:\nfrom: 210.0\nto: 210.3\nItsme\nOctober 04 Tuesday 2022 01:53:52 PM",
-            "latest_change_use_exchange_price": "Item added\nItsme\nAugust 03 Wednesday 2022 11-04-02 AM",
-            "latest_change_priority": "Item added\nItsme\nAugust 03 Wednesday 2022 11-04-02 AM",
-            "latest_change_notes": "Item added\nItsme\nAugust 03 Wednesday 2022 11-04-02 AM"
-        },
         "Die Cast Zinc Hinge, 1.57 Open x 1.57 Long, 4 Csunk Holes, SS Pin, Black Powder Coated": {
             "part_number": "H2080-02",
             "unit_quantity": 4,
@@ -8760,6 +8743,23 @@
             "latest_change_use_exchange_price": "Item added\nItsme\nDecember 05 Monday 2022 02-56-19 PM",
             "latest_change_priority": "Item added\nItsme\nDecember 05 Monday 2022 02-56-19 PM",
             "latest_change_notes": "Item added\nItsme\nDecember 05 Monday 2022 02-56-19 PM"
+        },
+        "8\" Chimney T  8TL14-PM": {
+            "part_number": "210800",
+            "unit_quantity": 1,
+            "current_quantity": 107,
+            "price": 210.3,
+            "use_exchange_rate": false,
+            "priority": 0,
+            "notes": "Vendor: Security Chimneys\nDescription: ",
+            "latest_change_name": "Item added\nItsme\nAugust 03 Wednesday 2022 11-04-02 AM",
+            "latest_change_part_number": "Item added\nItsme\nAugust 03 Wednesday 2022 11-04-02 AM",
+            "latest_change_unit_quantity": "Item added\nItsme\nAugust 03 Wednesday 2022 11-04-02 AM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 107\nto: 107\nLynden\nApril 25 Tuesday 2023 09:11:12 AM",
+            "latest_change_price": "Latest Change:\nfrom: 210.0\nto: 210.3\nItsme\nOctober 04 Tuesday 2022 01:53:52 PM",
+            "latest_change_use_exchange_price": "Item added\nItsme\nAugust 03 Wednesday 2022 11-04-02 AM",
+            "latest_change_priority": "Item added\nItsme\nAugust 03 Wednesday 2022 11-04-02 AM",
+            "latest_change_notes": "Item added\nItsme\nAugust 03 Wednesday 2022 11-04-02 AM"
         },
         "1\/4 Nialon Plastic Shaft- Float assy": {
             "part_number": "14NPS",
@@ -9379,7 +9379,7 @@
         "8\" Chimney T  8TL14-PM": {
             "part_number": "210800",
             "unit_quantity": 1,
-            "current_quantity": 67,
+            "current_quantity": 107,
             "price": 210.3,
             "use_exchange_rate": false,
             "priority": 3,
@@ -9387,7 +9387,7 @@
             "latest_change_name": "Item added\nItsme\nAugust 03 Wednesday 2022 11-04-02 AM",
             "latest_change_part_number": "Item added\nItsme\nAugust 03 Wednesday 2022 11-04-02 AM",
             "latest_change_unit_quantity": "Item added\nItsme\nAugust 03 Wednesday 2022 11-04-02 AM",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 67\nto: 67\nLynden\nApril 21 Friday 2023 10:47:46 AM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 107\nto: 107\nLynden\nApril 25 Tuesday 2023 09:11:12 AM",
             "latest_change_price": "Latest Change:\nfrom: 210.0\nto: 210.3\nItsme\nOctober 04 Tuesday 2022 01:53:52 PM",
             "latest_change_use_exchange_price": "Item added\nItsme\nAugust 03 Wednesday 2022 11-04-02 AM",
             "latest_change_priority": "Latest Change:\nfrom: 2\nto: 3\nLynden\nMarch 27 Monday 2023 10:27:31 AM",
@@ -10182,7 +10182,7 @@
         "8\" Chimney T  8TL14-PM": {
             "part_number": "210800",
             "unit_quantity": 1,
-            "current_quantity": 67,
+            "current_quantity": 107,
             "price": 210.3,
             "use_exchange_rate": false,
             "priority": 0,
@@ -10190,7 +10190,7 @@
             "latest_change_name": "Item added\nItsme\nAugust 03 Wednesday 2022 11-04-02 AM",
             "latest_change_part_number": "Item added\nItsme\nAugust 03 Wednesday 2022 11-04-02 AM",
             "latest_change_unit_quantity": "Item added\nItsme\nAugust 03 Wednesday 2022 11-04-02 AM",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 67\nto: 67\nLynden\nApril 21 Friday 2023 10:47:46 AM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 107\nto: 107\nLynden\nApril 25 Tuesday 2023 09:11:12 AM",
             "latest_change_price": "Latest Change:\nfrom: 210.0\nto: 210.3\nItsme\nOctober 04 Tuesday 2022 01:53:52 PM",
             "latest_change_use_exchange_price": "Item added\nItsme\nAugust 03 Wednesday 2022 11-04-02 AM",
             "latest_change_priority": "Item added\nItsme\nAugust 03 Wednesday 2022 11-04-02 AM",
