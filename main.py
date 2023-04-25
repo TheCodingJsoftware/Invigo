@@ -5,13 +5,12 @@ __credits__: "list[str]" = ["Jared Gross"]
 __license__ = "MIT"
 __name__ = "Inventory Manager"
 __version__ = "v1.5.7"
-__updated__ = "2023-02-25 16:52:57"
+__updated__ = "2023-04-24 22:48:16"
 __maintainer__ = "Jared Gross"
 __email__ = "jared@pinelandfarms.ca"
 __status__ = "Production"
 
 import contextlib
-import itertools
 import logging
 import os
 import shutil
@@ -26,70 +25,56 @@ from functools import partial
 from typing import Any
 
 import requests
-from ui.theme import set_theme
-from forex_python.converter import CurrencyRates
-from PyQt5 import QtTest, uic
-from PyQt5.QtCore import QFile, QPoint, Qt, QTextStream, QTimer
-from PyQt5.QtGui import QCursor, QFont, QIcon, QPixmap
+from PyQt5 import uic
+from PyQt5.QtCore import Qt, QTimer
+from PyQt5.QtGui import QColor, QCursor, QFont, QIcon, QPixmap
 from PyQt5.QtWidgets import (
+    QAbstractItemView,
     QAction,
     QApplication,
     QCheckBox,
     QComboBox,
     QCompleter,
-    QDialog,
-    QDockWidget,
     QDoubleSpinBox,
     QFileDialog,
     QGridLayout,
     QGroupBox,
     QHBoxLayout,
-    QHeaderView,
     QLabel,
     QLineEdit,
     QMainWindow,
     QMenu,
     QPlainTextEdit,
-    QProgressBar,
     QPushButton,
     QScrollArea,
     QSpinBox,
-    QWidgetItem,
     QStyle,
+    QTableWidget,
     QTableWidgetItem,
     QTabWidget,
-    QTextEdit,
-    QToolTip,
     QVBoxLayout,
     QWidget,
+    QWidgetItem,
     qApp,
 )
-QApplication.setAttribute(Qt.AA_EnableHighDpiScaling, True)
 
-import ui.BreezeStyleSheets.breeze_resources
 from threads.changes_thread import ChangesThread
 from threads.download_thread import DownloadThread
 from threads.remove_quantity import RemoveQuantityThread
-from threads.ui_threads import ProcessItemSelectedThread, SetStyleSheetThread
 from threads.upload_thread import UploadThread
 from ui.about_dialog import AboutDialog
 from ui.add_item_dialog import AddItemDialog
 from ui.add_item_dialog_price_of_steel import AddItemDialogPriceOfSteel
 from ui.custom_widgets import (
-    ClickableLabel,
     CostLineEdit,
-    CurrentQuantitySpinBox,
     DeletePushButton,
-    DragableLayout,
     ExchangeRateComboBox,
     HeaderScrollArea,
-    ItemCheckBox,
-    HumbleComboBox,
     HumbleDoubleSpinBox,
-    HumbleSpinBox,
+    ItemCheckBox,
     ItemNameComboBox,
+    NoScrollTabWidget,
     NotesPlainTextEdit,
-    PartNumberComboBox,
     POPushButton,
     PriorityComboBox,
     RichTextPushButton,
@@ -101,6 +86,7 @@ from ui.input_dialog import InputDialog
 from ui.load_window import LoadWindow
 from ui.message_dialog import MessageDialog
 from ui.select_item_dialog import SelectItemDialog
+from ui.theme import set_theme
 from ui.web_scrape_results_dialog import WebScrapeResultsDialog
 from utils.compress import compress_database, compress_folder
 from utils.dialog_buttons import DialogButtons
@@ -118,11 +104,13 @@ from utils.trusted_users import get_trusted_users
 from web_scrapers.ebay_scraper import EbayScraper
 from web_scrapers.exchange_rate import ExchangeRate
 
+QApplication.setAttribute(Qt.AA_EnableHighDpiScaling, True)
+
 
 def default_settings() -> None:
     """
-    It checks if a setting exists in the settings file, and if it doesn't, it creates it with a default
-    value
+    It checks if a setting exists in the settings file, and if it doesn't, it creates
+    it with a default value
     """
     check_setting(setting="exchange_rate", default_value=1.0)
     check_setting(setting="dark_mode", default_value=True)
@@ -291,7 +279,7 @@ class MainWindow(QMainWindow):
         self.files_downloaded_count: int = 0
         self.tabs: list[QVBoxLayout] = []
         self.last_item_selected_index: int = 0
-        self.last_item_selected_text: str = None
+        self.last_item_selected_name: str = None
         self.check_box_selections: dict = {}
         self.item_layouts: list[QHBoxLayout] = []
         self.group_layouts: dict[str, QVBoxLayout] = {}
@@ -312,6 +300,8 @@ class MainWindow(QMainWindow):
             "Priority": 60,
             "Notes": 170,
         }
+        self.margins = (15, 15, 5, 5)  # top, bottom, left, right
+        self.margin_format = f"margin-top: {self.margins[0]}%; margin-bottom: {self.margins[1]}%; margin-left: {self.margins[2]}%; margin-right: {self.margins[3]}%;"
 
         self.download_all_files()
         self.start_changes_thread(
@@ -322,11 +312,12 @@ class MainWindow(QMainWindow):
             ]
         )
         self.__load_ui()
+        self.check_trusted_user()
         self.tool_box_menu_changed()
         self.quantities_change()
         self.start_exchange_rate_thread()
-        self.check_trusted_user()
         self.show()
+        self.tab_widget.setEnabled(False)
         if geometry.get_value("x") == 0 and geometry.get_value("y") == 0:
             self.showMaximized()
         else:
@@ -766,6 +757,9 @@ class MainWindow(QMainWindow):
         settings_file.add_item("last_toolbox_tab", self.tabWidget.currentIndex())
 
     def download_all_files(self) -> None:
+        """
+        This function downloads three JSON files related to inventory and steel prices.
+        """
         self.download_file(
             [
                 f"data/{settings_file.get_value(item_name='inventory_file_name')} - Parts in Inventory.json",
@@ -789,13 +783,13 @@ class MainWindow(QMainWindow):
             return
         self.set_layout_message("", "Loading...", "", 120)
 
-        inventory = JsonFile(
+        JsonFile(
             file_name=f"data/{settings_file.get_value(item_name='inventory_file_name')}"
         )
-        price_of_steel_inventory = JsonFile(
+        JsonFile(
             file_name=f"data/{settings_file.get_value(item_name='inventory_file_name')} - Price of Steel"
         )
-        parts_in_inventory = JsonFile(
+        JsonFile(
             file_name=f"data/{settings_file.get_value(item_name='inventory_file_name')} - Parts in Inventory"
         )
         # QApplication.setOverrideCursor(Qt.BusyCursor)
@@ -816,12 +810,12 @@ class MainWindow(QMainWindow):
             action.triggered.connect(partial(self.quick_load_category, i))
             action.setText(category)
             self.menuOpen_Category.addAction(action)
-        self.tab_widget = QTabWidget(self)
+        self.tab_widget = NoScrollTabWidget(self)
         self.tab_widget.setStyleSheet(
             "QTabBar::tab::disabled {width: 0; height: 0; margin: 0; padding: 0; border: none;} "
         )
         self.tab_widget.tabBarDoubleClicked.connect(self.rename_category)
-        self.tab_widget.setMovable(True)
+        self.tab_widget.setMovable(False)
         self.tab_widget.setDocumentMode(True)
         i: int = -1
         for i, category in enumerate(self.categories):
@@ -833,24 +827,34 @@ class MainWindow(QMainWindow):
                 self.pushButton_add_new_sheet.setEnabled(False)
             elif self.tabWidget.currentIndex() == 1:
                 self.headers: dict[dict[str, int]] = {
-                    "Name": 500,
-                    "Sheet Cost": 150,
-                    "Quantity": 150,
-                    "Total Cost in Stock": 150,
+                    "Name": 270,
+                    "Sheet Cost": 80,
+                    "Quantity": 60,
+                    "Total Cost in Stock": 100,
+                    "Notes": 170,
                 }
                 self.pushButton_add_new_sheet.setEnabled(True)
-            tab = HeaderScrollArea(
-                self.headers,
-                self,
-            )
-            self.scroll_areas.append(tab)
-            content_widget = QWidget()
-            content_widget.setObjectName("tab")
-            tab.setWidget(content_widget)
-            tab.setWidgetResizable(True)
-            layout = QVBoxLayout(content_widget)
-            layout.setAlignment(Qt.AlignTop)
-            self.tabs.append(layout)
+            if self.tabWidget.currentIndex() == 0:
+                tab = QTableWidget(self)
+                self.scroll_areas.append(tab)
+                # content_widget = QWidget()
+                # content_widget.setObjectName("tab")
+                # tab.setWidget(content_widget)
+                # tab.setWidgetResizable(True)
+                # layout = QVBoxLayout(content_widget)
+                # layout.setAlignment(Qt.AlignTop)
+                self.tabs.append(tab)
+                # self.tab_widget.addTab(tab, category)
+            else:
+                tab = HeaderScrollArea(self.headers, self)
+                self.scroll_areas.append(tab)
+                content_widget = QWidget()
+                content_widget.setObjectName("tab")
+                tab.setWidget(content_widget)
+                tab.setWidgetResizable(True)
+                layout = QVBoxLayout(content_widget)
+                layout.setAlignment(Qt.AlignTop)
+                self.tabs.append(layout)
             self.tab_widget.addTab(tab, category)
 
         if i == -1:
@@ -884,7 +888,7 @@ class MainWindow(QMainWindow):
         tab_index: int = self.tab_widget.currentIndex()
         self.category = self.tab_widget.tabText(tab_index)
         self.inventory_prices_objects.clear()
-        self.last_item_selected_index = 0
+        # self.last_item_selected_index = 0
         self.po_buttons.clear()
         self.item_layouts.clear()
         self.group_layouts.clear()
@@ -928,17 +932,20 @@ class MainWindow(QMainWindow):
             )
         # self.load_item(tab, tab_index, category_data)
 
-        if inventory.check_if_value_exists_less_then(
-            category=self.category, value_to_check=10
-        ):
-            group_box = QGroupBox()
-            group_box.setObjectName("group")
-            group_box.setTitle("Low in Quantity")
-            group_layout = QVBoxLayout()
-            group_layout.setAlignment(Qt.AlignTop)
-            self.group_layouts["Low in Quantity"] = group_layout
-            group_box.setLayout(group_layout)
-            tab.addWidget(group_box)
+        # if (
+        #     inventory.check_if_value_exists_less_then(
+        #         category=self.category, value_to_check=10
+        #     )
+        #     and self.tabWidget.currentIndex() == 0
+        # ):
+        #     group_box = QGroupBox()
+        #     group_box.setObjectName("group")
+        #     group_box.setTitle("Low in Quantity")
+        #     group_layout = QVBoxLayout()
+        #     group_layout.setAlignment(Qt.AlignTop)
+        #     self.group_layouts["Low in Quantity"] = group_layout
+        #     group_box.setLayout(group_layout)
+        #     tab.addWidget(group_box)
         self._row_index: int = 0
         try:
             self._iter = iter(range(len(list(category_data.keys()))))
@@ -959,21 +966,22 @@ class MainWindow(QMainWindow):
         elif self.tabWidget.currentIndex() == 1:
             self.pushButton_add_new_sheet.setEnabled(True)
         if self.tabWidget.currentIndex() == 0:
-            
             self.datetime1 = datetime.now()
-            self._timer = QTimer(
-                interval=0, timeout=partial(self.load_item, tab, tab_index, category_data)
-            )
-            self._timer.start()
+            # self._timer = QTimer(
+            # interval=10,
+            # timeout=partial(self.load_item, tab, tab_index, category_data),
+            # )
+            # self._timer.start()
+            self.load_item(tab, tab_index, category_data)
         elif self.tabWidget.currentIndex() == 1:
             self._timer = QTimer(
-                interval=0,
+                interval=10,
                 timeout=partial(self.price_of_steel_item, tab, tab_index, category_data),
             )
             self._timer.start()
         elif self.tabWidget.currentIndex() == 2:
             self._timer = QTimer(
-                interval=0,
+                interval=10,
                 timeout=partial(self.load_inventory_part, tab, tab_index, category_data),
             )
             self._timer.start()
@@ -1004,12 +1012,14 @@ class MainWindow(QMainWindow):
                 % {"start": str(__start), "middle": str(__middle), "end": str(__end)}
             )
             col_index: int = 0
-            round_number = lambda x, n: eval(
-                '"%.'
-                + str(int(n))
-                + 'f" % '
-                + repr(int(x) + round(float("." + str(float(x)).split(".")[1]), n))
-            )
+
+            def round_number(x, n):
+                return eval(
+                    '"%.'
+                    + str(int(n))
+                    + 'f" % '
+                    + repr(int(x) + round(float("." + str(float(x)).split(".")[1]), n))
+                )
 
             item = list(category_data.keys())[row_index]
             current_quantity: int = self.get_value_from_category(
@@ -1022,7 +1032,7 @@ class MainWindow(QMainWindow):
             modified_date: str = self.get_value_from_category(
                 item_name=item, key="modified_date"
             )
-            group = self.get_value_from_category(item_name=item, key="group")
+            group = self.get_value_from_category(item_name=item, key="gauge")
 
             if group:
                 try:
@@ -1151,7 +1161,7 @@ class MainWindow(QMainWindow):
                 icon=QIcon(f"ui/BreezeStyleSheets/dist/pyqt6/{self.theme}/trash.png"),
             )
             btn_delete.clicked.connect(partial(self.delete_item, self.category, item))
-            btn_delete.setFixedSize(26,26)
+            btn_delete.setFixedSize(26, 26)
             layout.addWidget(btn_delete)
 
             try:
@@ -1187,6 +1197,7 @@ class MainWindow(QMainWindow):
             col_index: int = 0
             if self.category == "Price Per Pound":
                 layout = QHBoxLayout()
+                layout.setAlignment(Qt.AlignLeft)
                 item = list(category_data.keys())[row_index]
                 price: float = self.get_value_from_category(item_name=item, key="price")
                 latest_change_price: float = self.get_value_from_category(
@@ -1202,12 +1213,15 @@ class MainWindow(QMainWindow):
                 col_index += 1
 
                 # PRICE
-                round_number = lambda x, n: eval(
-                    '"%.'
-                    + str(int(n))
-                    + 'f" % '
-                    + repr(int(x) + round(float("." + str(float(x)).split(".")[1]), n))
-                )
+                def round_number(x, n):
+                    return eval(
+                        '"%.'
+                        + str(int(n))
+                        + 'f" % '
+                        + repr(
+                            int(x) + round(float("." + str(float(x)).split(".")[1]), n)
+                        )
+                    )
 
                 spin_price = HumbleDoubleSpinBox(self)
                 spin_price.setToolTip(latest_change_price)
@@ -1225,12 +1239,17 @@ class MainWindow(QMainWindow):
                 layout.addWidget(spin_price)
                 tab.addLayout(layout)
             else:
-                round_number = lambda x, n: eval(
-                    '"%.'
-                    + str(int(n))
-                    + 'f" % '
-                    + repr(int(x) + round(float("." + str(float(x)).split(".")[1]), n))
-                )
+
+                def round_number(x, n):
+                    return eval(
+                        '"%.'
+                        + str(int(n))
+                        + 'f" % '
+                        + repr(
+                            int(x) + round(float("." + str(float(x)).split(".")[1]), n)
+                        )
+                    )
+
                 item = list(category_data.keys())[row_index]
                 current_quantity: int = self.get_value_from_category(
                     item_name=item, key="current_quantity"
@@ -1245,13 +1264,11 @@ class MainWindow(QMainWindow):
                     item_name=item, key="material"
                 )
                 group = self.get_value_from_category(item_name=item, key="group")
-                latest_change_material: str = self.get_value_from_category(
-                    item_name=item, key="latest_change_material"
-                )
-                latest_sheet_dimension: str = self.get_value_from_category(
-                    item_name=item, key="latest_sheet_dimension"
-                )
-                latest_change_thickness: str = self.get_value_from_category(
+                notes: str = self.get_value_from_category(item_name=item, key="notes")
+                notes = "" if notes is None else notes
+                self.get_value_from_category(item_name=item, key="latest_change_material")
+                self.get_value_from_category(item_name=item, key="latest_sheet_dimension")
+                self.get_value_from_category(
                     item_name=item, key="latest_change_thickness"
                 )
                 latest_change_current_quantity: str = self.get_value_from_category(
@@ -1275,6 +1292,7 @@ class MainWindow(QMainWindow):
                     self.group_layouts["__main__"] = tab
 
                 layout = QHBoxLayout()
+                layout.setAlignment(Qt.AlignLeft)
                 item = list(category_data.keys())[row_index]
                 # NAME
                 item_name = ItemNameComboBox(
@@ -1284,6 +1302,7 @@ class MainWindow(QMainWindow):
                     tool_tip="Right click to change group",
                 )
                 item_name.setContextMenuPolicy(Qt.CustomContextMenu)
+                item_name.setFixedWidth(260)
                 self.inventory_prices_objects[item_name] = {}
                 layout.addWidget(item_name)
 
@@ -1342,13 +1361,13 @@ class MainWindow(QMainWindow):
                     text=f"{format(float(round_number(cost_per_sheet,2)),',')}",
                     suffix="",
                 )
-                spin_cost_per_sheet.setFixedWidth(150)
+                spin_cost_per_sheet.setFixedWidth(70)
                 layout.addWidget(spin_cost_per_sheet)
                 col_index += 1
                 # QUANTITY
                 spin_quantity = HumbleDoubleSpinBox(self)
                 spin_quantity.setValue(current_quantity)
-                spin_quantity.setFixedWidth(150)
+                spin_quantity.setFixedWidth(70)
                 spin_quantity.setToolTip(latest_change_current_quantity)
 
                 if current_quantity <= 4:
@@ -1373,7 +1392,7 @@ class MainWindow(QMainWindow):
                     text=f"{format(float(total_cost),',')}",
                     suffix="",
                 )
-                spin_total_cost.setFixedWidth(150)
+                spin_total_cost.setFixedWidth(70)
                 spin_quantity.valueChanged.connect(
                     partial(
                         self.sheet_quantity_change,
@@ -1386,6 +1405,19 @@ class MainWindow(QMainWindow):
                 )
                 layout.addWidget(spin_total_cost)
                 col_index += 1
+                # NOTES
+                text_notes = NotesPlainTextEdit(parent=self, text=notes, tool_tip="")
+                text_notes.textChanged.connect(
+                    partial(
+                        self.sheet_notes_changed,
+                        self.category,
+                        item,
+                        text_notes,
+                    )
+                )
+                layout.addWidget(text_notes)
+
+                col_index += 1
 
                 # DELETE
                 btn_delete = DeletePushButton(
@@ -1393,7 +1425,7 @@ class MainWindow(QMainWindow):
                     tool_tip=f"Delete {item} permanently from {self.category}",
                     icon=QIcon(f"ui/BreezeStyleSheets/dist/pyqt6/{self.theme}/trash.png"),
                 )
-                btn_delete.setFixedSize(26,26)
+                btn_delete.setFixedSize(26, 26)
                 btn_delete.clicked.connect(partial(self.delete_item, self.category, item))
                 layout.addWidget(btn_delete)
 
@@ -1402,7 +1434,26 @@ class MainWindow(QMainWindow):
                 except KeyError:
                     tab.addLayout(layout)
 
-    def load_item(self, tab: QVBoxLayout, tab_index: int, category_data: dict) -> None:
+    def set_table_row_color(self, table, row_index, color):
+        """
+        This function sets the background color of a row in a table widget in PyQt5.
+
+        Args:
+          table: The table parameter is a QTableWidget object, which represents a table widget in PyQt5.
+        It contains rows and columns of cells, each of which can contain a QTableWidgetItem object.
+          row_index: The index of the row in the table that you want to set the background color for.
+          color: The color parameter is a string that represents the color that the row should be set
+        to. It can be any valid color name or a hexadecimal value representing the color. For example,
+        "red", "#FF0000", or "rgb(255, 0, 0)" could all be valid
+        """
+        for j in range(table.columnCount()):
+            item = table.item(row_index, j)
+            if not item:
+                item = QTableWidgetItem()
+                table.setItem(row_index, j, item)
+            item.setBackground(QColor(color))
+
+    def load_item(self, tab: QTableWidget, tab_index: int, category_data: dict) -> None:
         """
         It creates a bunch of widgets and adds them to a layout.
 
@@ -1414,19 +1465,30 @@ class MainWindow(QMainWindow):
         Returns:
           A list of all the items in the inventory.
         """
-        MINIMUM_WIDTH: int = 170
-        try:
-            row_index = next(self._iter)
-            # QApplication.setOverrideCursor(Qt.BusyCursor)
-        except StopIteration:
-            datetime2 = datetime.now()
-            difference = datetime2 - self.datetime1
-            print(f"The time difference between the 2 time is: {difference}")
-            self._timer.stop()
-            set_status_button_stylesheet(button=self.status_button, color="#3daee9")
-            self.load_item_context_menu()
-            # QApplication.restoreOverrideCursor()
-        else:
+        # try:
+        # row_index = next(self._iter)
+        tab.setEnabled(False)
+        tab.clear()
+        tab.setShowGrid(False)
+        tab.setColumnCount(12)
+        tab.setRowCount(0)
+        tab.setSortingEnabled(False)
+        tab.setSelectionBehavior(1)
+        tab.setSelectionMode(1)
+        tab.setVerticalScrollMode(QAbstractItemView.ScrollPerPixel)
+        tab.setHorizontalHeaderLabels(
+            (
+                "Part Name;Part Number;Quantity Per Unit;Quantity in Stock;Item Price;USD/CAD;Total Cost in Stock;Total Unit Cost;Priority;Notes;PO;DEL;"
+            ).split(";")
+        )
+        QApplication.setOverrideCursor(Qt.BusyCursor)
+        # except StopIteration:
+
+        # else:
+        po_menu = QMenu(self)
+        for po in get_all_po():
+            po_menu.addAction(po, partial(self.open_po, po))
+        for row_index in range(len(list(category_data.keys()))):
             __start: float = (row_index + 1) / len(list(category_data.keys()))
             __middle: float = __start + 0.001 if __start <= 1 - 0.001 else 1.0
             __end: float = __start + 0.0011 if __start <= 1 - 0.0011 else 1.0
@@ -1439,42 +1501,22 @@ class MainWindow(QMainWindow):
             part_number: str = self.get_value_from_category(
                 item_name=item, key="part_number"
             )
-            group = self.get_value_from_category(item_name=item, key="group")
-            try:
-                current_quantity: int = int(
-                    self.get_value_from_category(item_name=item, key="current_quantity")
-                )
-            except TypeError:
-                self._timer.stop()
-                return
-            if current_quantity <= 10:
-                group = "Low in Quantity"
-
-            if group:
-                try:
-                    layout = self.group_layouts[group]
-                except KeyError:
-                    group_box = QGroupBox()
-                    group_box.setObjectName("group")
-                    group_box.setTitle(group)
-                    group_layout = QVBoxLayout()
-                    group_layout.setAlignment(Qt.AlignTop)
-                    self.group_layouts[group] = group_layout
-                    group_box.setLayout(group_layout)
-                    tab.addWidget(group_box)
-            else:
-                # Might appear that this does nothing, your wrong.
-                self.group_layouts["__main__"] = tab
-
-            layout = QHBoxLayout()
-            # Checking if the item is in the inventory.
-            if (
+            self.get_value_from_category(item_name=item, key="group")
+            # try:
+            current_quantity: int = int(
                 self.get_value_from_category(item_name=item, key="current_quantity")
-                is None
-            ):
-                return
+            )
+            # except TypeError:
+            #     self._timer.stop()
+            #     return
+            # Checking if the item is in the inventory.
+            # if (
+            #     self.get_value_from_category(item_name=item, key="current_quantity")
+            #     is None
+            # ):
+            #     return
 
-            self.item_layouts.append(layout)
+            # self.item_layouts.append(layout)
             unit_quantity: float = float(
                 self.get_value_from_category(item_name=item, key="unit_quantity")
             )
@@ -1489,13 +1531,11 @@ class MainWindow(QMainWindow):
             if total_cost_in_stock < 0:
                 total_cost_in_stock = 0
             total_unit_cost: float = unit_quantity * price * exchange_rate
-            latest_change_part_number: str = self.get_value_from_category(
-                item_name=item, key="latest_change_part_number"
-            )
+            self.get_value_from_category(item_name=item, key="latest_change_part_number")
             latest_change_unit_quantity: str = self.get_value_from_category(
                 item_name=item, key="latest_change_unit_quantity"
             )
-            latest_change_current_quantity: str = self.get_value_from_category(
+            self.get_value_from_category(
                 item_name=item, key="latest_change_current_quantity"
             )
             latest_change_price: str = self.get_value_from_category(
@@ -1510,49 +1550,65 @@ class MainWindow(QMainWindow):
             latest_change_notes: str = self.get_value_from_category(
                 item_name=item, key="latest_change_notes"
             )
-            latest_change_name: str = self.get_value_from_category(
-                item_name=item, key="latest_change_name"
-            )
+            self.get_value_from_category(item_name=item, key="latest_change_name")
 
             col_index: int = 0
+            tab.insertRow(row_index)
+            tab.setRowHeight(row_index, 60)
 
             # PART NAME
-            item_name = ItemNameComboBox(
-                parent=self,
-                selected_item=item,
-                items=self.get_all_part_names(),
-                tool_tip=latest_change_name,
+            # item_name = ItemNameComboBox(
+            #     parent=self,
+            #     selected_item=item,
+            #     items=self.get_all_part_names(),
+            #     tool_tip=latest_change_name,
+            # )
+            # item_name.setContextMenuPolicy(Qt.CustomContextMenu)
+            # item_name.currentTextChanged.connect(
+            #     partial(
+            #         self.name_change,
+            #         self.category,
+            #         item_name.currentText(),
+            #         item_name,
+            #     )
+            # )
+            # item_name.setStyleSheet(self.margin_format)
+            # layout.addWidget(item_name)
+            # tab.setCellWidget(row_index, col_index, item_name)
+            tab.setItem(row_index, col_index, QTableWidgetItem(item))
+            # tab.item(row_index, col_index).setTextAlignment(Qt.AlignCenter)
+            # tab.item(row_index, col_index).setFlags()
+            tab.item(row_index, col_index).setTextAlignment(
+                Qt.AlignCenter | Qt.AlignVCenter | Qt.TextWrapAnywhere
             )
-            item_name.setContextMenuPolicy(Qt.CustomContextMenu)
-            item_name.currentTextChanged.connect(
-                partial(
-                    self.name_change,
-                    self.category,
-                    item_name.currentText(),
-                    item_name,
-                )
-            )
-            layout.addWidget(item_name)
-
+            # PART NUMBER
             col_index += 1
 
             # PART NUMBER
-            line_edit_part_number = PartNumberComboBox(
-                parent=self,
-                selected_item=part_number,
-                items=self.get_all_part_numbers(),
-                tool_tip=latest_change_part_number,
+            # line_edit_part_number = PartNumberComboBox(
+            #     parent=self,
+            #     selected_item=part_number,
+            #     items=self.get_all_part_numbers(),
+            #     tool_tip=latest_change_part_number,
+            # )
+            # line_edit_part_number.currentTextChanged.connect(
+            #     partial(
+            #         self.part_number_change,
+            #         self.category,
+            #         item_name,
+            #         "part_number",
+            #         line_edit_part_number,
+            #     )
+            # )
+            # line_edit_part_number.setStyleSheet(self.margin_format)
+            # layout.addWidget(line_edit_part_number)
+            # tab.setCellWidget(row_index, col_index, line_edit_part_number)
+            tab.setItem(row_index, col_index, QTableWidgetItem(part_number))
+            # tab.item(row_index, col_index).setTextAlignment(Qt.AlignCenter)
+            # tab.item(row_index, col_index).setFlags(Qt.ItemIsSelectable|Qt.ItemIsEnabled|Qt.ItemIsEditable)
+            tab.item(row_index, col_index).setTextAlignment(
+                Qt.AlignCenter | Qt.AlignVCenter | Qt.TextWrapAnywhere
             )
-            line_edit_part_number.currentTextChanged.connect(
-                partial(
-                    self.part_number_change,
-                    self.category,
-                    item_name,
-                    "part_number",
-                    line_edit_part_number,
-                )
-            )
-            layout.addWidget(line_edit_part_number)
 
             col_index += 1
 
@@ -1565,50 +1621,65 @@ class MainWindow(QMainWindow):
                 partial(
                     self.unit_quantity_change,
                     self.category,
-                    item_name,
+                    item,
                     "unit_quantity",
                     spin_unit_quantity,
                 )
             )
-            layout.addWidget(spin_unit_quantity)
+            spin_unit_quantity.setStyleSheet(self.margin_format)
+            # layout.addWidget(spin_unit_quantity)
+            tab.setCellWidget(row_index, col_index, spin_unit_quantity)
 
             col_index += 1
 
             # ITEM QUANTITY
-            spin_current_quantity = CurrentQuantitySpinBox(self)
-            spin_current_quantity.setToolTip(latest_change_current_quantity)
-            spin_current_quantity.setValue(current_quantity)
-            if current_quantity <= 10:
-                quantity_color = "red"
-            elif current_quantity <= 20:
-                quantity_color = "yellow"
+            # spin_current_quantity = CurrentQuantitySpinBox(self)
+            # spin_current_quantity.setToolTip(latest_change_current_quantity)
+            # spin_current_quantity.setValue(current_quantity)
+            # if current_quantity <= 10:
+            #     quantity_color = "red"
+            # elif current_quantity <= 20:
+            #     quantity_color = "yellow"
 
-            if current_quantity > 20:
-                spin_current_quantity.setStyleSheet("")
-            else:
-                spin_current_quantity.setStyleSheet(
-                    f"color: {quantity_color}; border-color: {quantity_color};"
-                )
-            spin_current_quantity.valueChanged.connect(
-                partial(
-                    self.current_quantity_change,
-                    self.category,
-                    item_name,
-                    "current_quantity",
-                    spin_current_quantity,
-                )
+            # if current_quantity > 20:
+            #     spin_current_quantity.setStyleSheet(self.margin_format)
+            # else:
+            #     spin_current_quantity.setStyleSheet(
+            #         f"color: {quantity_color}; border-color: {quantity_color}; {self.margin_format}"
+            #     )
+            # spin_current_quantity.valueChanged.connect(
+            #     partial(
+            #         self.current_quantity_change,
+            #         self.category,
+            #         item_name,
+            #         "current_quantity",
+            #         spin_current_quantity,
+            #     )
+            # )
+            # layout.addWidget(spin_current_quantity)
+            # tab.setCellWidget(row_index, col_index, spin_current_quantity)
+            item_current_quantity = QTableWidgetItem(str(current_quantity))
+            font = QFont()
+            font.setPointSize(14)
+            item_current_quantity.setFont(font)
+            tab.setItem(row_index, col_index, item_current_quantity)
+            # tab.item(row_index, col_index).setTextAlignment(Qt.AlignCenter)
+            # tab.item(row_index, col_index).setFlags(Qt.ItemIsSelectable|Qt.ItemIsEnabled|Qt.ItemIsEditable)
+            tab.item(row_index, col_index).setTextAlignment(
+                Qt.AlignCenter | Qt.AlignVCenter | Qt.TextWrapAnywhere
             )
-            layout.addWidget(spin_current_quantity)
 
             col_index += 1
 
             # PRICE
-            round_number = lambda x, n: eval(
-                '"%.'
-                + str(int(n))
-                + 'f" % '
-                + repr(int(x) + round(float("." + str(float(x)).split(".")[1]), n))
-            )
+            def round_number(x, n):
+                return eval(
+                    '"%.'
+                    + str(int(n))
+                    + 'f" % '
+                    + repr(int(x) + round(float("." + str(float(x)).split(".")[1]), n))
+                )
+
             converted_price: float = (
                 price * self.get_exchange_rate()
                 if use_exchange_rate
@@ -1632,9 +1703,11 @@ class MainWindow(QMainWindow):
             spin_price.setPrefix("$")
             spin_price.setSuffix(" USD" if use_exchange_rate else " CAD")
             spin_price.editingFinished.connect(
-                partial(self.price_change, self.category, item_name, "price", spin_price)
+                partial(self.price_change, self.category, item, "price", spin_price)
             )
-            layout.addWidget(spin_price)
+            spin_price.setStyleSheet(self.margin_format)
+            # layout.addWidget(spin_price)
+            tab.setCellWidget(row_index, col_index, spin_price)
 
             col_index += 1
 
@@ -1648,42 +1721,72 @@ class MainWindow(QMainWindow):
                 partial(
                     self.use_exchange_rate_change,
                     self.category,
-                    item_name,
+                    item,
                     "use_exchange_rate",
                     combo_exchange_rate,
                 )
             )
-            layout.addWidget(combo_exchange_rate)
+            combo_exchange_rate.setStyleSheet(self.margin_format)
+            # layout.addWidget(combo_exchange_rate)
+            tab.setCellWidget(row_index, col_index, combo_exchange_rate)
 
             col_index += 1
 
             # TOTAL COST
-            spin_total_cost = CostLineEdit(
-                parent=self,
-                prefix="$",
-                text=total_cost_in_stock,
-                suffix=combo_exchange_rate.currentText(),
+            # spin_total_cost = CostLineEdit(
+            #     parent=self,
+            #     prefix="$",
+            #     text=total_cost_in_stock,
+            #     suffix=combo_exchange_rate.currentText(),
+            # )
+            # spin_total_cost.setStyleSheet(self.margin_format)
+            # layout.addWidget(spin_total_cost)
+            # tab.setCellWidget(row_index, col_index, spin_total_cost)
+            tab.setItem(
+                row_index,
+                col_index,
+                QTableWidgetItem(
+                    "$" + str(total_cost_in_stock) + combo_exchange_rate.currentText()
+                ),
             )
-            layout.addWidget(spin_total_cost)
+            # tab.item(row_index, col_index).setTextAlignment(Qt.AlignCenter)
+            # tab.item(row_index, col_index).setFlags(Qt.ItemIsSelectable|Qt.ItemIsEnabled|Qt.ItemIsEditable)
+            tab.item(row_index, col_index).setTextAlignment(
+                Qt.AlignCenter | Qt.AlignVCenter | Qt.TextWrapAnywhere
+            )
 
             col_index += 1
 
-            # TOTALE UNIT COST
-            spin_total_unit_cost = CostLineEdit(
-                parent=self,
-                prefix="$",
-                text=total_unit_cost,
-                suffix=combo_exchange_rate.currentText(),
+            # TOTAL UNIT COST
+            # spin_total_unit_cost = CostLineEdit(
+            #     parent=self,
+            #     prefix="$",
+            #     text=total_unit_cost,
+            #     suffix=combo_exchange_rate.currentText(),
+            # )
+            # spin_total_unit_cost.setStyleSheet(self.margin_format)
+            # layout.addWidget(spin_total_unit_cost)
+            # tab.setCellWidget(row_index, col_index, spin_total_unit_cost)
+            tab.setItem(
+                row_index,
+                col_index,
+                QTableWidgetItem(
+                    "$" + str(total_unit_cost) + combo_exchange_rate.currentText()
+                ),
             )
-            layout.addWidget(spin_total_unit_cost)
+            # tab.item(row_index, col_index).setTextAlignment(Qt.AlignCenter)
+            # tab.item(row_index, col_index).setFlags(Qt.ItemIsSelectable|Qt.ItemIsEnabled|Qt.ItemIsEditable)
+            tab.item(row_index, col_index).setTextAlignment(
+                Qt.AlignCenter | Qt.AlignVCenter | Qt.TextWrapAnywhere
+            )
 
-            self.inventory_prices_objects[item_name] = {
-                "current_quantity": spin_current_quantity,
+            self.inventory_prices_objects[item] = {
+                "current_quantity": current_quantity,
                 "unit_quantity": spin_unit_quantity,
                 "price": spin_price,
                 "use_exchange_rate": combo_exchange_rate,
-                "total_cost": spin_total_cost,
-                "total_unit_cost": spin_total_unit_cost,
+                "total_cost": total_cost_in_stock,
+                "total_unit_cost": total_unit_cost,
             }
 
             col_index += 1
@@ -1693,19 +1796,26 @@ class MainWindow(QMainWindow):
                 parent=self, selected_item=priority, tool_tip=latest_change_priority
             )
             if combo_priority.currentText() == "Medium":
-                combo_priority.setStyleSheet("color: yellow; border-color: yellow;")
+                combo_priority.setStyleSheet(
+                    f"color: yellow; border-color: yellow;{self.margin_format}"
+                )
             elif combo_priority.currentText() == "High":
-                combo_priority.setStyleSheet("color: red; border-color: red;")
+                combo_priority.setStyleSheet(
+                    f"color: red; border-color: red;{self.margin_format}"
+                )
+            else:
+                combo_priority.setStyleSheet(self.margin_format)
             combo_priority.currentIndexChanged.connect(
                 partial(
                     self.priority_change,
                     self.category,
-                    item_name,
+                    item,
                     "priority",
                     combo_priority,
                 )
             )
-            layout.addWidget(combo_priority)
+            # layout.addWidget(combo_priority)
+            tab.setCellWidget(row_index, col_index, combo_priority)
 
             col_index += 1
 
@@ -1714,19 +1824,23 @@ class MainWindow(QMainWindow):
                 parent=self, text=notes, tool_tip=latest_change_notes
             )
             text_notes.textChanged.connect(
-                partial(self.notes_changed, self.category, item_name, "notes", text_notes)
+                partial(self.notes_changed, self.category, item, "notes", text_notes)
             )
-            layout.addWidget(text_notes)
+            text_notes.setStyleSheet(
+                "margin-top: 1%; margin-bottom: 1%; margin-left: 1%; margin-right: 1%;"
+            )
+            # layout.addWidget(text_notes)
+            tab.setCellWidget(row_index, col_index, text_notes)
+            # tab.setItem(row_index, col_index, QTableWidgetItem(str("$"+total_cost_in_stock)) + combo_exchange_rate.currentText())
 
             col_index += 1
 
             # PURCHASE ORDER
-            po_menu = QMenu(self)
-            for po in get_all_po():
-                po_menu.addAction(po, partial(self.open_po, po))
             btn_po = POPushButton(parent=self)
             btn_po.setMenu(po_menu)
-            layout.addWidget(btn_po)
+            btn_po.setStyleSheet(self.margin_format)
+            # layout.addWidget(btn_po)
+            tab.setCellWidget(row_index, col_index, btn_po)
             self.po_buttons.append(btn_po)
 
             col_index += 1
@@ -1734,18 +1848,49 @@ class MainWindow(QMainWindow):
             # DELETE
             btn_delete = DeletePushButton(
                 parent=self,
-                tool_tip=f"Delete {item_name.currentText()} permanently from {self.category}",
+                tool_tip=f"Delete {item} permanently from {self.category}",
                 icon=QIcon(f"ui/BreezeStyleSheets/dist/pyqt6/{self.theme}/trash.png"),
             )
-            btn_delete.clicked.connect(
-                partial(self.delete_item, self.category, item_name)
-            )
-            layout.addWidget(btn_delete)
+            btn_delete.clicked.connect(partial(self.delete_item, self.category, item))
+            btn_delete.setStyleSheet(self.margin_format)
+            # layout.addWidget(btn_delete)
+            tab.setCellWidget(row_index, col_index, btn_delete)
+            if current_quantity <= 10:
+                self.set_table_row_color(tab, row_index, "#722f37")
+            elif current_quantity <= 20:
+                self.set_table_row_color(tab, row_index, "#8C7853")
 
-            try:
-                self.group_layouts[group].addLayout(layout)
-            except KeyError:
-                tab.addLayout(layout)
+        QApplication.restoreOverrideCursor()
+        datetime2 = datetime.now()
+        difference = datetime2 - self.datetime1
+        print(f"The time difference between the 2 time is: {difference}")
+        # self._timer.stop()
+        set_status_button_stylesheet(button=self.status_button, color="#3daee9")
+        # self.load_item_context_menu()
+        # tab.resizeRowsToContents()
+        tab.resizeColumnsToContents()
+        tab.setColumnWidth(0, 250)
+        tab.setColumnWidth(1, 150)
+        tab.setEnabled(True)
+        self.tab_widget.currentIndex()
+        # tab: QTableWidget = self.scroll_areas[tab_index]
+        print(self.last_item_selected_index)
+        # last_selected_item_name = list(category_data.keys())[
+        #     self.last_item_selected_index
+        # ]
+        try:
+            self.last_item_selected_index = list(category_data.keys()).index(
+                self.last_item_selected_name
+            )
+            tab.scrollTo(tab.model().index(self.last_item_selected_index, 0))
+            tab.selectRow(self.last_item_selected_index)
+            self.listWidget_itemnames.setCurrentRow(self.last_item_selected_index)
+        except Exception:
+            pass
+            # try:
+            #     self.group_layouts[group].addLayout(layout)
+            # except KeyError:
+            #     tab.addLayout(layout)
 
     def update_list_widget(self) -> None:
         """
@@ -1777,48 +1922,51 @@ class MainWindow(QMainWindow):
         """
         for item_name in list(self.inventory_prices_objects.keys()):
             try:
-                spin_current_quantity = self.inventory_prices_objects[item_name][
-                    "current_quantity"
-                ]
+                self.inventory_prices_objects[item_name]["current_quantity"]
             except KeyError:
                 return
-            spin_unit_quantity = self.inventory_prices_objects[item_name]["unit_quantity"]
+            self.inventory_prices_objects[item_name]["unit_quantity"]
             spin_price = self.inventory_prices_objects[item_name]["price"]
             combo_exchange_rate = self.inventory_prices_objects[item_name][
                 "use_exchange_rate"
             ]
             spin_price.setSuffix(f" {combo_exchange_rate.currentText()}")
-            spin_total_cost = self.inventory_prices_objects[item_name]["total_cost"]
-            spin_total_unit_cost = self.inventory_prices_objects[item_name][
-                "total_unit_cost"
-            ]
+            self.inventory_prices_objects[item_name]["total_cost"]
+            self.inventory_prices_objects[item_name]["total_unit_cost"]
             use_exchange_rate: bool = combo_exchange_rate.currentText() == "USD"
-            exchange_rate: float = self.get_exchange_rate() if use_exchange_rate else 1
-            round_number = lambda x, n: eval(
-                '"%.'
-                + str(int(n))
-                + 'f" % '
-                + repr(int(x) + round(float("." + str(float(x)).split(".")[1]), n))
-            )
-            spin_total_cost.setText(
-                f"${round_number(spin_current_quantity.value() * spin_price.value() * exchange_rate, 2)} {combo_exchange_rate.currentText()}"
-            )
+            self.get_exchange_rate() if use_exchange_rate else 1
 
-            spin_total_unit_cost.setText(
-                f"${round_number(spin_unit_quantity.value() * spin_price.value() * exchange_rate, 2)} {combo_exchange_rate.currentText()}"
-            )
+            def round_number(x, n):
+                return eval(
+                    '"%.'
+                    + str(int(n))
+                    + 'f" % '
+                    + repr(int(x) + round(float("." + str(float(x)).split(".")[1]), n))
+                )
+
+            # ! NOTE FIX
+            # spin_total_cost.setText(
+            #     f"${round_number(spin_current_quantity.value() * spin_price.value() * exchange_rate, 2)} {combo_exchange_rate.currentText()}"
+            # )
+
+            # spin_total_unit_cost.setText(
+            #     f"${round_number(spin_unit_quantity.value() * spin_price.value() * exchange_rate, 2)} {combo_exchange_rate.currentText()}"
+            # )
 
     def update_category_total_stock_costs(self) -> None:
         """
         It takes a list of categories, and then sums up the total cost of all items in those categories
         """
         total_stock_costs = {}
-        round_number = lambda x, n: eval(
-            '"%.'
-            + str(int(n))
-            + 'f" % '
-            + repr(int(x) + round(float("." + str(float(x)).split(".")[1]), n))
-        )
+
+        def round_number(x, n):
+            return eval(
+                '"%.'
+                + str(int(n))
+                + 'f" % '
+                + repr(int(x) + round(float("." + str(float(x)).split(".")[1]), n))
+            )
+
         categories = inventory.get_data()
         for category in list(categories.keys()):
             total_category_stock_cost: float = 0.0
@@ -1874,12 +2022,14 @@ class MainWindow(QMainWindow):
         It takes the weight and machine time of a part, and uses that to calculate the price of the part
         """
 
-        round_number = lambda x, n: eval(
-            '"%.'
-            + str(int(n))
-            + 'f" % '
-            + repr(int(x) + round(float("." + str(float(x)).split(".")[1]), n))
-        )
+        def round_number(x, n):
+            return eval(
+                '"%.'
+                + str(int(n))
+                + 'f" % '
+                + repr(int(x) + round(float("." + str(float(x)).split(".")[1]), n))
+            )
+
         data = parts_in_inventory.get_data()
         for category in list(data.keys()):
             if category == "Custom" or category == "Recut":
@@ -1917,7 +2067,7 @@ class MainWindow(QMainWindow):
         """
         This function checks or unchecks a group of checkboxes based on the state of a specific checkbox
         and whether the shift key is pressed.
-        
+
         Args:
           this_checkbox: This parameter is a reference to the checkbox that was just pressed by the
         user.
@@ -2005,7 +2155,7 @@ class MainWindow(QMainWindow):
                 ):
                     self.show_error_dialog(
                         "no",
-                        f"Cannot delete this category, it is special. ;)",
+                        "Cannot delete this category, it is special. ;)",
                         dialog_buttons=DialogButtons.ok,
                     )
                     return
@@ -2046,7 +2196,7 @@ class MainWindow(QMainWindow):
                         ):
                             self.show_error_dialog(
                                 "no",
-                                f"Cannot clone this category, it is special. ;)",
+                                "Cannot clone this category, it is special. ;)",
                                 dialog_buttons=DialogButtons.ok,
                             )
                             return
@@ -2445,7 +2595,7 @@ class MainWindow(QMainWindow):
           item_name (QComboBox): QComboBox
           group (str): str = The group name
         """
-        
+
         if self.tabWidget.currentIndex() == 2 and self.are_parts_checked():
             checked_parts = self.get_all_checked_parts()
             for checked_part in checked_parts:
@@ -2464,9 +2614,7 @@ class MainWindow(QMainWindow):
         """
         parts_in_inventory.load_data()
         for item_name in list(self.inventory_prices_objects.keys()):
-            group = self.get_value_from_category(
-                item_name=item_name.currentText(), key="group"
-            )
+            group = self.get_value_from_category(item_name=item_name, key="group")
             menu = QMenu(self)
             groups = QMenu(menu)
             groups.setTitle("Move to group")
@@ -2497,7 +2645,7 @@ class MainWindow(QMainWindow):
                     action.setText(category)
                     categories.addAction(action)
                 menu.addMenu(categories)
-                
+
                 categories = QMenu(menu)
                 categories.setTitle("Copy to category")
                 for i, category in enumerate(parts_in_inventory.get_keys()):
@@ -2538,12 +2686,15 @@ class MainWindow(QMainWindow):
         value_before = price_of_steel_inventory.get_value(item_name=category)[item_name][
             "price"
         ]
-        round_number = lambda x, n: eval(
-            '"%.'
-            + str(int(n))
-            + 'f" % '
-            + repr(int(x) + round(float("." + str(float(x)).split(".")[1]), n))
-        )
+
+        def round_number(x, n):
+            return eval(
+                '"%.'
+                + str(int(n))
+                + 'f" % '
+                + repr(int(x) + round(float("." + str(float(x)).split(".")[1]), n))
+            )
+
         price_of_steel_inventory.change_object_in_object_item(
             category,
             item_name,
@@ -2658,13 +2809,16 @@ class MainWindow(QMainWindow):
           cost_per_sheet (float): float
           spin_total_cost (CostLineEdit): CostLineEdit
         """
-        round_number = lambda x, n: eval(
-            '"%.'
-            + str(int(n))
-            + 'f" % '
-            + repr(int(x) + round(float("." + str(float(x)).split(".")[1]), n))
-        )
-        data = price_of_steel_inventory.get_data()
+
+        def round_number(x, n):
+            return eval(
+                '"%.'
+                + str(int(n))
+                + 'f" % '
+                + repr(int(x) + round(float("." + str(float(x)).split(".")[1]), n))
+            )
+
+        price_of_steel_inventory.get_data()
         value_before = price_of_steel_inventory.get_value(item_name=category)[name][
             "current_quantity"
         ]
@@ -2697,6 +2851,25 @@ class MainWindow(QMainWindow):
         spin_total_cost.setText(f"${format(float(total_cost),',')}")
         self.calculuate_price_of_steel_summary()
 
+    def sheet_notes_changed(self, category: str, item: str, note: QPlainTextEdit) -> None:
+        """
+        It takes the category, item name, value name, and note as parameters and then calls the
+        value_change function with the category, item name, value name, and note as parameters
+
+        Args:
+          category (str): str = The category of the item.
+          item_name (QLineEdit): QLineEdit
+          value_name (str): str = The name of the value that is being changed.
+          note (QPlainTextEdit): QPlainTextEdit
+        """
+        price_of_steel_inventory.get_data()
+        price_of_steel_inventory.change_object_in_object_item(
+            category,
+            item,
+            "notes",
+            note.toPlainText(),
+        )
+
     def save_value_for_inventory_part(
         self,
         category: str,
@@ -2713,13 +2886,16 @@ class MainWindow(QMainWindow):
           value_name (str): str = "value"
           spin_box (HumbleDoubleSpinBox): HumbleDoubleSpinBox
         """
+
         # category_data = parts_in_inventory.get_data()
-        round_number = lambda x, n: eval(
-            '"%.'
-            + str(int(n))
-            + 'f" % '
-            + repr(int(x) + round(float("." + str(float(x)).split(".")[1]), n))
-        )
+        def round_number(x, n):
+            return eval(
+                '"%.'
+                + str(int(n))
+                + 'f" % '
+                + repr(int(x) + round(float("." + str(float(x)).split(".")[1]), n))
+            )
+
         parts_in_inventory.change_object_in_object_item(
             object_name=category,
             item_name=part_name,
@@ -2755,12 +2931,15 @@ class MainWindow(QMainWindow):
           cost_per_sheet (float): float
           spin_total_cost (CostLineEdit): CostLineEdit
         """
-        round_number = lambda x, n: eval(
-            '"%.'
-            + str(int(n))
-            + 'f" % '
-            + repr(int(x) + round(float("." + str(float(x)).split(".")[1]), n))
-        )
+
+        def round_number(x, n):
+            return eval(
+                '"%.'
+                + str(int(n))
+                + 'f" % '
+                + repr(int(x) + round(float("." + str(float(x)).split(".")[1]), n))
+            )
+
         category_data = parts_in_inventory.get_data()
         parts_in_inventory.change_object_in_object_item(
             object_name=self.category,
@@ -2817,12 +2996,15 @@ class MainWindow(QMainWindow):
         sheet, and then adds it to the total cost of the category.
         """
         category_data = price_of_steel_inventory.get_data()
-        round_number = lambda x, n: eval(
-            '"%.'
-            + str(int(n))
-            + 'f" % '
-            + repr(int(x) + round(float("." + str(float(x)).split(".")[1]), n))
-        )
+
+        def round_number(x, n):
+            return eval(
+                '"%.'
+                + str(int(n))
+                + 'f" % '
+                + repr(int(x) + round(float("." + str(float(x)).split(".")[1]), n))
+            )
+
         total: float = 0.0
         i: int = 0
         for category in list(category_data.keys()):
@@ -2891,12 +3073,15 @@ class MainWindow(QMainWindow):
             # i.e.:   aList.append(widget.someId)
             widget.deleteLater()
         category_data = parts_in_inventory.get_data()
-        round_number = lambda x, n: eval(
-            '"%.'
-            + str(int(n))
-            + 'f" % '
-            + repr(int(x) + round(float("." + str(float(x)).split(".")[1]), n))
-        )
+
+        def round_number(x, n):
+            return eval(
+                '"%.'
+                + str(int(n))
+                + 'f" % '
+                + repr(int(x) + round(float("." + str(float(x)).split(".")[1]), n))
+            )
+
         i: int = 0
         parts_in_inventory_total = {}
         for category in list(category_data.keys()):
@@ -2946,12 +3131,14 @@ class MainWindow(QMainWindow):
         It removes a quantity of parts from the inventory
         """
 
-        round_number = lambda x, n: eval(
-            '"%.'
-            + str(int(n))
-            + 'f" % '
-            + repr(int(x) + round(float("." + str(float(x)).split(".")[1]), n))
-        )
+        def round_number(x, n):
+            return eval(
+                '"%.'
+                + str(int(n))
+                + 'f" % '
+                + repr(int(x) + round(float("." + str(float(x)).split(".")[1]), n))
+            )
+
         batch_multiplier: int = self.spinBox_quantity_for_inventory.value()
         are_you_sure_dialog = self.show_message_dialog(
             title="Are you sure?",
@@ -2999,7 +3186,7 @@ class MainWindow(QMainWindow):
                 "modified_date"
             ] = f'Removed {unit_quantity*batch_multiplier} quantity at {str(datetime.now().strftime("%B %d %A %Y %I:%M:%S %p"))}'
         for category in list(category_data.keys()):
-            if category == "Recut" or category == self.category:
+            if category in ["Recut", self.category]:
                 continue
             for part_name in list(category_data[category].keys()):
                 if part_name in part_names_to_check:
@@ -3089,7 +3276,7 @@ class MainWindow(QMainWindow):
         )
 
     # ! \/ FOR INVENTORY JSON FILE ONLY \/
-    def name_change(self, category: str, old_name: str, name: QLineEdit) -> None:
+    def name_change(self, category: str, old_name: str, name: str) -> None:
         """
         It checks if the name is the same as any other name in the category, and if it is, it sets the
         name back to the old name and displays an error message
@@ -3102,36 +3289,44 @@ class MainWindow(QMainWindow):
         Returns:
           The return value is the result of the last expression evaluated in the function.
         """
-        category_data = inventory.get_value(item_name=category)
-        for item in list(category_data.keys()):
-            if name.currentText() == item:
-                self.show_error_dialog(
-                    "Invalid name",
-                    f"'{name.currentText()}'\nis an invalid item name.\n\nCan't be the same as other names.",
-                    dialog_buttons=DialogButtons.ok,
-                )
-                name.setCurrentText(old_name)
-                # name.selectAll()
-                return
+        self.show_error_dialog(
+            "No can do",
+            "Cant change names of parts anymore, it is a discontinued feature.",
+            dialog_buttons=DialogButtons.ok,
+        )
+        # category_data = inventory.get_value(item_name=category)
+        # for item in list(category_data.keys()):
+        #     if name == item:
+        #         self.show_error_dialog(
+        #             "Invalid name",
+        #             f"'{name}'\nis an invalid item name.\n\nCan't be the same as other names.",
+        #             dialog_buttons=DialogButtons.ok,
+        #         )
+        #         name.setCurrentText(old_name)
+        #         # name.selectAll()
+        #         return
 
-        inventory.change_object_in_object_item(
-            category,
-            old_name,
-            "latest_change_name",
-            f"Latest Change:\nfrom: \"{old_name}\"\nto: \"{name.currentText()}\"\n{self.username}\n{datetime.now().strftime('%B %d %A %Y %I:%M:%S %p')}",
-        )
-        name.setToolTip(
-            f"Latest Change:\nfrom: \"{old_name}\"\nto: \"{name.currentText()}\"\n{self.username}\n{datetime.now().strftime('%B %d %A %Y %I:%M:%S %p')}",
-        )
-        inventory.change_item_name(category, old_name, name.currentText())
-        name.disconnect()
-        name.currentTextChanged.connect(
-            partial(self.name_change, category, name.currentText(), name)
-        )
-        self.update_list_widget()
+        # inventory.change_object_in_object_item(
+        #     category,
+        #     old_name,
+        #     "latest_change_name",
+        #     f"Latest Change:\nfrom: \"{old_name}\"\nto: \"{name}\"\n{self.username}\n{datetime.now().strftime('%B %d %A %Y %I:%M:%S %p')}",
+        # )
+        # name.setToolTip(
+        #     f"Latest Change:\nfrom: \"{old_name}\"\nto: \"{name}\"\n{self.username}\n{datetime.now().strftime('%B %d %A %Y %I:%M:%S %p')}",
+        # )
+        # inventory.change_item_name(category, old_name, name)
+        # name.disconnect()
+        # name.currentTextChanged.connect(partial(self.name_change, category, name, name))
+        # self.update_list_widget()
 
     def part_number_change(
-        self, category: str, item_name: QComboBox, value_name: str, part_number: QLineEdit
+        self,
+        category: str,
+        item_name: str,
+        sort_inventory,
+        value_name: str,
+        part_number: QLineEdit,
     ) -> None:
         """
         It takes a category, item name, value name, and quantity, and changes the value of the item in
@@ -3143,24 +3338,20 @@ class MainWindow(QMainWindow):
         value_name (str): str = The name of the value you want to change.
         quantity (QLineEdit): QLineEdit
         """
-        value_before = inventory.get_value(item_name=category)[item_name.currentText()][
-            "part_number"
-        ]
+        value_before = inventory.get_value(item_name=category)[item_name]["part_number"]
         inventory.change_object_in_object_item(
             category,
-            item_name.currentText(),
+            item_name,
             "latest_change_part_number",
             f"Latest Change:\nfrom: {value_before}\nto: {part_number.currentText()}\n{self.username}\n{datetime.now().strftime('%B %d %A %Y %I:%M:%S %p')}",
         )
         part_number.setToolTip(
             f"Latest Change:\nfrom: {value_before}\nto: {part_number.currentText()}\n{self.username}\n{datetime.now().strftime('%B %d %A %Y %I:%M:%S %p')}",
         )
-        self.value_change(
-            category, item_name.currentText(), value_name, part_number.currentText()
-        )
+        self.value_change(category, item_name, value_name, part_number.currentText())
 
     def current_quantity_change(
-        self, category: str, item_name: QComboBox, value_name: str, quantity: QSpinBox
+        self, category: str, item_name: str, value_name: str, quantity: QSpinBox
     ) -> None:
         """
         It takes a category, item name, value name, and quantity, and changes the value of the item in
@@ -3173,20 +3364,20 @@ class MainWindow(QMainWindow):
         quantity (QSpinBox): QSpinBox
         """
         data = inventory.get_data()
-        value_before = inventory.get_value(item_name=category)[item_name.currentText()][
+        value_before = inventory.get_value(item_name=category)[item_name][
             "current_quantity"
         ]
-        part_number: str = data[self.category][item_name.currentText()]["part_number"]
+        part_number: str = data[self.category][item_name]["part_number"]
         inventory.change_object_in_object_item(
             category,
-            item_name.currentText(),
+            item_name,
             "latest_change_current_quantity",
             f"Latest Change:\nfrom: {value_before}\nto: {quantity.value()}\n{self.username}\n{datetime.now().strftime('%B %d %A %Y %I:%M:%S %p')}",
         )
         quantity.setToolTip(
             f"Latest Change:\nfrom: {value_before}\nto: {quantity.value()}\n{self.username}\n{datetime.now().strftime('%B %d %A %Y %I:%M:%S %p')}",
         )
-        self.value_change(category, item_name.currentText(), value_name, quantity.value())
+        self.value_change(category, item_name, value_name, quantity.value())
         for category in list(data.keys()):
             if category == self.category:
                 continue
@@ -3212,7 +3403,7 @@ class MainWindow(QMainWindow):
         self.update_stock_costs()
 
     def unit_quantity_change(
-        self, category: str, item_name: QComboBox, value_name: str, quantity: QSpinBox
+        self, category: str, item_name: str, value_name: str, quantity: QSpinBox
     ) -> None:
         """
         It takes a category, item name, value name, and quantity, and changes the value of the item in
@@ -3220,27 +3411,25 @@ class MainWindow(QMainWindow):
 
         Args:
           category (str): str - The category of the item.
-          item_name (QLineEdit): QLineEdit
+          item_name (str): str
           value_name (str): str = The name of the value you want to change.
           quantity (QSpinBox): QSpinBox
         """
-        value_before = inventory.get_value(item_name=category)[item_name.currentText()][
-            "unit_quantity"
-        ]
+        value_before = inventory.get_value(item_name=category)[item_name]["unit_quantity"]
         inventory.change_object_in_object_item(
             category,
-            item_name.currentText(),
+            item_name,
             "latest_change_unit_quantity",
             f"Latest Change:\nfrom: {value_before}\nto: {quantity.value()}\n{self.username}\n{datetime.now().strftime('%B %d %A %Y %I:%M:%S %p')}",
         )
         quantity.setToolTip(
             f"Latest Change:\nfrom: {value_before}\nto: {quantity.value()}\n{self.username}\n{datetime.now().strftime('%B %d %A %Y %I:%M:%S %p')}",
         )
-        self.value_change(category, item_name.currentText(), value_name, quantity.value())
+        self.value_change(category, item_name, value_name, quantity.value())
         self.update_stock_costs()
 
     def price_change(
-        self, category: str, item_name: QComboBox, value_name: str, price: QDoubleSpinBox
+        self, category: str, item_name: str, value_name: str, price: QDoubleSpinBox
     ) -> None:
         """
         It takes a category, item name, value name, and price, and then calls the value_change function
@@ -3254,32 +3443,33 @@ class MainWindow(QMainWindow):
         """
 
         data = inventory.get_data()
-        part_number: str = data[self.category][item_name.currentText()]["part_number"]
-        value_before = inventory.get_value(item_name=category)[item_name.currentText()][
-            "price"
-        ]
+        part_number: str = data[self.category][item_name]["part_number"]
+        value_before = inventory.get_value(item_name=category)[item_name]["price"]
         price_history_file = PriceHistoryFile(
             file_name=f"{settings_file.get_value(item_name='price_history_file_name')}.xlsx"
         )
         price_history_file.add_new(
             date=datetime.now().strftime("%B %d %A %Y %I:%M:%S %p"),
-            part_name=item_name.currentText(),
+            part_name=item_name,
             part_number=part_number,
             old_price=value_before,
             new_price=price.value(),
         )
         inventory.change_object_in_object_item(
             category,
-            item_name.currentText(),
+            item_name,
             "latest_change_price",
             f"Latest Change:\nfrom: {value_before}\nto: {price.value()}\n{self.username}\n{datetime.now().strftime('%B %d %A %Y %I:%M:%S %p')}",
         )
-        round_number = lambda x, n: eval(
-            '"%.'
-            + str(int(n))
-            + 'f" % '
-            + repr(int(x) + round(float("." + str(float(x)).split(".")[1]), n))
-        )
+
+        def round_number(x, n):
+            return eval(
+                '"%.'
+                + str(int(n))
+                + 'f" % '
+                + repr(int(x) + round(float("." + str(float(x)).split(".")[1]), n))
+            )
+
         converted_price: float = (
             price.value() * self.get_exchange_rate()
             if price.suffix() == " USD"
@@ -3288,7 +3478,7 @@ class MainWindow(QMainWindow):
         price.setToolTip(
             f"${str(round_number(converted_price,2))} {'CAD' if price.suffix() == ' USD' else 'USD'}\nLatest Change:\nfrom: {value_before}\nto: {price.value()}\n{self.username}\n{datetime.now().strftime('%B %d %A %Y %I:%M:%S %p')}",
         )
-        self.value_change(category, item_name.currentText(), value_name, price.value())
+        self.value_change(category, item_name, value_name, price.value())
         for category in list(data.keys()):
             if category == self.category:
                 continue
@@ -3303,12 +3493,15 @@ class MainWindow(QMainWindow):
         inventory.load_data()
         self.update_stock_costs()
         self.update_category_total_stock_costs()
-        round_number = lambda x, n: eval(
-            '"%.'
-            + str(int(n))
-            + 'f" % '
-            + repr(int(x) + round(float("." + str(float(x)).split(".")[1]), n))
-        )
+
+        def round_number(x, n):
+            return eval(
+                '"%.'
+                + str(int(n))
+                + 'f" % '
+                + repr(int(x) + round(float("." + str(float(x)).split(".")[1]), n))
+            )
+
         self.label_total_unit_cost.setText(
             f"Total Unit Cost: ${format(float(round_number(inventory.get_total_unit_cost(self.category, self.get_exchange_rate()),2)),',')}"
         )
@@ -3325,13 +3518,13 @@ class MainWindow(QMainWindow):
           value_name (str): str = The name of the value to change
           combo (QComboBox): QComboBox
         """
-        value_before = inventory.get_value(item_name=category)[item_name.currentText()][
+        value_before = inventory.get_value(item_name=category)[item_name][
             "use_exchange_rate"
         ]
         usd = combo.currentText() == "USD"
         inventory.change_object_in_object_item(
             category,
-            item_name.currentText(),
+            item_name,
             "latest_change_use_exchange_rate",
             f"Latest Change:\nfrom: {'USD' if value_before else 'CAD'}\nto: {combo.currentText()}\n{self.username}\n{datetime.now().strftime('%B %d %A %Y %I:%M:%S %p')}",
         )
@@ -3341,14 +3534,14 @@ class MainWindow(QMainWindow):
 
         self.value_change(
             category,
-            item_name.currentText(),
+            item_name,
             value_name,
             usd,
         )
         self.update_stock_costs()
 
     def priority_change(
-        self, category: str, item_name: QComboBox, value_name: str, combo: QComboBox
+        self, category: str, item_name: str, value_name: str, combo: QComboBox
     ) -> None:
         """
         It changes the priority of a task
@@ -3360,12 +3553,10 @@ class MainWindow(QMainWindow):
           combo (QComboBox): QComboBox
         """
 
-        value_before = inventory.get_value(item_name=category)[item_name.currentText()][
-            "priority"
-        ]
+        value_before = inventory.get_value(item_name=category)[item_name]["priority"]
         inventory.change_object_in_object_item(
             category,
-            item_name.currentText(),
+            item_name,
             "latest_change_priority",
             f"Latest Change:\nfrom: {value_before}\nto: {combo.currentIndex()}\n{self.username}\n{datetime.now().strftime('%B %d %A %Y %I:%M:%S %p')}",
         )
@@ -3373,9 +3564,7 @@ class MainWindow(QMainWindow):
             f"Latest Change:\nfrom: {value_before}\nto: {combo.currentIndex()}\n{self.username}\n{datetime.now().strftime('%B %d %A %Y %I:%M:%S %p')}",
         )
 
-        self.value_change(
-            category, item_name.currentText(), value_name, combo.currentIndex()
-        )
+        self.value_change(category, item_name, value_name, combo.currentIndex())
         if combo.currentText() == "Medium":
             combo.setStyleSheet("color: yellow; border-color: yellow;")
         elif combo.currentText() == "High":
@@ -3384,7 +3573,7 @@ class MainWindow(QMainWindow):
             combo.setStyleSheet("")
 
     def notes_changed(
-        self, category: str, item_name: QComboBox, value_name: str, note: QPlainTextEdit
+        self, category: str, item_name: str, value_name: str, note: QPlainTextEdit
     ) -> None:
         """
         It takes the category, item name, value name, and note as parameters and then calls the
@@ -3397,22 +3586,18 @@ class MainWindow(QMainWindow):
           note (QPlainTextEdit): QPlainTextEdit
         """
         data = inventory.get_data()
-        part_number: str = data[self.category][item_name.currentText()]["part_number"]
-        value_before = inventory.get_value(item_name=category)[item_name.currentText()][
-            "notes"
-        ]
+        part_number: str = data[self.category][item_name]["part_number"]
+        value_before = inventory.get_value(item_name=category)[item_name]["notes"]
         inventory.change_object_in_object_item(
             category,
-            item_name.currentText(),
+            item_name,
             "latest_change_notes",
             f"Latest Change:\nfrom: \"{value_before}\"\nto: \"{note.toPlainText()}\"\n{self.username}\n{datetime.now().strftime('%B %d %A %Y %I:%M:%S %p')}",
         )
         note.setToolTip(
             f"Latest Change:\nfrom: \"{value_before}\"\nto: \"{note.toPlainText()}\"\n{self.username}\n{datetime.now().strftime('%B %d %A %Y %I:%M:%S %p')}",
         )
-        self.value_change(
-            category, item_name.currentText(), value_name, note.toPlainText()
-        )
+        self.value_change(category, item_name, value_name, note.toPlainText())
         for category in list(data.keys()):
             if category == self.category:
                 continue
@@ -3548,7 +3733,7 @@ class MainWindow(QMainWindow):
             elif response == DialogButtons.cancel:
                 return
 
-    def delete_item(self, category: str, item_name: QComboBox) -> None:
+    def delete_item(self, category: str, item_name: str) -> None:
         """
         It removes an item from the inventory
 
@@ -3556,10 +3741,7 @@ class MainWindow(QMainWindow):
           category (str): str
           item_name (QLineEdit): QLineEdit
         """
-        try:
-            self.active_json_file.remove_object_item(category, item_name.currentText())
-        except:
-            self.active_json_file.remove_object_item(category, item_name)
+        self.active_json_file.remove_object_item(category, item_name)
         self.load_tab()
 
     def quantities_change(self) -> None:
@@ -3589,7 +3771,6 @@ class MainWindow(QMainWindow):
             )
             self.spinBox_quantity.setValue(0)
         else:
-
             # try:
             # _ = self.listWidget_itemnames.currentItem().text()
             # self.pushButton_remove_quantity.setEnabled(True)
@@ -3682,34 +3863,34 @@ class MainWindow(QMainWindow):
             inventory.load_data()
             set_status_button_stylesheet(button=self.status_button, color="#33b833")
             self.highlight_color = "#BE2525"
-            for item in list(self.inventory_prices_objects.keys()):
-                spin_current_quantity = self.inventory_prices_objects[item][
-                    "current_quantity"
-                ]
-                spin_current_quantity.setStyleSheet(
-                    f"background-color: {self.highlight_color}; {'color: red; border-color: red;' if spin_current_quantity.value() <= 0 else 'color: white;'} border: 1px solid {self.highlight_color};"
-                )
+            # for item in list(self.inventory_prices_objects.keys()):
+            #     spin_current_quantity = self.inventory_prices_objects[item][
+            #         "current_quantity"
+            #     ]
+            #     spin_current_quantity.setStyleSheet(
+            #         f"background-color: {self.highlight_color}; {'color: red; border-color: red;' if spin_current_quantity.value() <= 0 else 'color: white;'} border: 1px solid {self.highlight_color};"
+            #     )
             self.status_button.setText("Done!")
 
-            self.highlight_color = "#3daee9"
-            QtTest.QTest.qWait(1750)
-            for item in list(self.inventory_prices_objects.keys()):
-                spin_current_quantity = self.inventory_prices_objects[item][
-                    "current_quantity"
-                ]
-                if spin_current_quantity.value() <= 10:
-                    quantity_color = "red"
-                elif spin_current_quantity.value() <= 20:
-                    quantity_color = "yellow"
+            # self.highlight_color = "#3daee9"
+            # QtTest.QTest.qWait(1750)
+            # for item in list(self.inventory_prices_objects.keys()):
+            #     spin_current_quantity = self.inventory_prices_objects[item][
+            #         "current_quantity"
+            #     ]
+            #     if spin_current_quantity.value() <= 10:
+            #         quantity_color = "red"
+            #     elif spin_current_quantity.value() <= 20:
+            #         quantity_color = "yellow"
 
-                if spin_current_quantity.value() > 20:
-                    self.inventory_prices_objects[item]["current_quantity"].setStyleSheet(
-                        ""
-                    )
-                else:
-                    self.inventory_prices_objects[item]["current_quantity"].setStyleSheet(
-                        f"color: {quantity_color}; border-color: {quantity_color};"
-                    )
+            #     if spin_current_quantity.value() > 20:
+            #         self.inventory_prices_objects[item]["current_quantity"].setStyleSheet(
+            #             ""
+            #         )
+            #     else:
+            #         self.inventory_prices_objects[item]["current_quantity"].setStyleSheet(
+            #             f"color: {quantity_color}; border-color: {quantity_color};"
+            #         )
             self.pushButton_add_quantity.setEnabled(False)
             self.pushButton_remove_quantity.setEnabled(True)
             self.radioButton_category.setEnabled(True)
@@ -3736,30 +3917,30 @@ class MainWindow(QMainWindow):
         part_number: str = data[self.category][item_name]["part_number"]
         current_quantity: int = data[self.category][item_name]["current_quantity"]
         for object_item in list(self.inventory_prices_objects.keys()):
-            if object_item.currentText() == item_name:
+            if object_item == item_name:
                 self.inventory_prices_objects[object_item][
                     "current_quantity"
                 ].disconnect()
-                self.inventory_prices_objects[object_item]["current_quantity"].setValue(
-                    int(current_quantity + self.spinBox_quantity.value())
-                )
+                # self.inventory_prices_objects[object_item]["current_quantity"].setValue(
+                #     int(current_quantity + self.spinBox_quantity.value())
+                # )
                 self.value_change(
                     self.category,
                     item_name,
                     "current_quantity",
                     current_quantity + self.spinBox_quantity.value(),
                 )
-                self.inventory_prices_objects[object_item][
-                    "current_quantity"
-                ].valueChanged.connect(
-                    partial(
-                        self.current_quantity_change,
-                        self.category,
-                        item_name,
-                        "current_quantity",
-                        self.inventory_prices_objects[object_item]["current_quantity"],
-                    )
-                )
+                # self.inventory_prices_objects[object_item][
+                #     "current_quantity"
+                # ].valueChanged.connect(
+                #     partial(
+                #         self.current_quantity_change,
+                #         self.category,
+                #         item_name,
+                #         "current_quantity",
+                #         self.inventory_prices_objects[object_item]["current_quantity"],
+                #     )
+                # )
 
         for category in list(data.keys()):
             if category == self.category:
@@ -3814,30 +3995,30 @@ class MainWindow(QMainWindow):
         part_number: str = data[self.category][item_name]["part_number"]
         current_quantity: int = data[self.category][item_name]["current_quantity"]
         for object_item in list(self.inventory_prices_objects.keys()):
-            if object_item.currentText() == item_name:
-                self.inventory_prices_objects[object_item][
-                    "current_quantity"
-                ].disconnect()
-                self.inventory_prices_objects[object_item]["current_quantity"].setValue(
-                    int(current_quantity - self.spinBox_quantity.value())
-                )
+            if object_item == item_name:
+                # self.inventory_prices_objects[object_item][
+                #     "current_quantity"
+                # ].disconnect()
+                # self.inventory_prices_objects[object_item]["current_quantity"].setValue(
+                #     int(current_quantity - self.spinBox_quantity.value())
+                # )
                 self.value_change(
                     self.category,
                     item_name,
                     "current_quantity",
                     current_quantity - self.spinBox_quantity.value(),
                 )
-                self.inventory_prices_objects[object_item][
-                    "current_quantity"
-                ].valueChanged.connect(
-                    partial(
-                        self.current_quantity_change,
-                        self.category,
-                        item_name,
-                        "current_quantity",
-                        self.inventory_prices_objects[object_item]["current_quantity"],
-                    )
-                )
+                # self.inventory_prices_objects[object_item][
+                #     "current_quantity"
+                # ].valueChanged.connect(
+                #     partial(
+                #         self.current_quantity_change,
+                #         self.category,
+                #         item_name,
+                #         "current_quantity",
+                #         self.inventory_prices_objects[object_item]["current_quantity"],
+                #     )
+                # )
         for category in list(data.keys()):
             if category == self.category:
                 continue
@@ -3863,12 +4044,9 @@ class MainWindow(QMainWindow):
         It's a function that changes the color of a QComboBox and QDoubleSpinBox when the user clicks on
         an item in a QListWidget.
         """
-
-        tab_index: int = self.tab_widget.currentIndex()
-        scroll_area: QVBoxLayout = self.scroll_areas[tab_index]
-
         try:
             selected_item: str = self.listWidget_itemnames.currentItem().text()
+            self.last_item_selected_name = self.listWidget_itemnames.currentItem().text()
         except AttributeError:
             self.pushButton_add_quantity.setEnabled(False)
             self.pushButton_remove_quantity.setEnabled(False)
@@ -3876,70 +4054,69 @@ class MainWindow(QMainWindow):
         category_data = inventory.get_value(item_name=self.category)
         try:
             quantity: int = category_data[selected_item]["current_quantity"]
-            item_name: QComboBox = list(self.inventory_prices_objects.keys())[
-                self.last_item_selected_index
-            ]
-            current_quantity: QDoubleSpinBox = self.inventory_prices_objects[item_name][
-                "current_quantity"
-            ]
+        #     item_name: str = list(self.inventory_prices_objects.keys())[
+        #         self.last_item_selected_index
+        #     ]
+        #     current_quantity: int = self.inventory_prices_objects[item_name][
+        #         "current_quantity"
+        #     ]
         except (KeyError, IndexError, TypeError):
             return
-        item_name.setStyleSheet(f"")
+        # if current_quantity.value() <= 10:
+        #     quantity_color = "red"
+        # elif current_quantity.value() <= 20:
+        #     quantity_color = "yellow"
 
-        if current_quantity.value() <= 10:
-            quantity_color = "red"
-        elif current_quantity.value() <= 20:
-            quantity_color = "yellow"
-
-        if current_quantity.value() > 20:
-            current_quantity.setStyleSheet("")
-        else:
-            current_quantity.setStyleSheet(
-                f"color: {quantity_color}; border-color: {quantity_color};"
-            )
+        # if current_quantity.value() > 20:
+        #     current_quantity.setStyleSheet(self.margin_format)
+        # else:
+        #     current_quantity.setStyleSheet(
+        #         f"color: {quantity_color}; border-color: {quantity_color}; {self.margin_format}"
+        #     )
 
         # self.last_item_selected_index = self.listWidget_itemnames.currentRow()
         try:
             self.last_item_selected_index = [
-                item.currentText() for item in list(self.inventory_prices_objects.keys())
+                item for item in list(self.inventory_prices_objects.keys())
             ].index(self.listWidget_itemnames.currentItem().text())
         except ValueError:
             return
 
-        item_name: QComboBox = list(self.inventory_prices_objects.keys())[
-            self.last_item_selected_index
-        ]
-        current_quantity: QDoubleSpinBox = self.inventory_prices_objects[item_name][
-            "current_quantity"
-        ]
-        scroll_area.verticalScrollBar().setValue(
-            item_name.pos().y() - int(scroll_area.size().height() / 2) + 30
-        )
-        if self.highlight_color == "#3daee9":
-            item_name.setStyleSheet(
-                f"background-color: {self.highlight_color}; border: 1px solid {self.highlight_color};"
-            )
-            if current_quantity.value() <= 10:
-                quantity_color = "red"
-            elif current_quantity.value() <= 20:
-                quantity_color = "yellow"
+        # item_name: str = list(self.inventory_prices_objects.keys())[
+        #     self.last_item_selected_index
+        # ]
+        # current_quantity: QDoubleSpinBox = self.inventory_prices_objects[item_name][
+        #     "current_quantity"
+        # ]
+        # scroll_area.verticalScrollBar().setValue(
+        #     item_name.pos().y() - int(scroll_area.size().height() / 2) + 30
+        # )
+        tab_index: int = self.tab_widget.currentIndex()
+        scroll_area: QTableWidget = self.scroll_areas[tab_index]
+        scroll_area.scrollTo(scroll_area.model().index(self.last_item_selected_index, 0))
+        scroll_area.selectRow(self.last_item_selected_index)
+        # if self.highlight_color == "#3daee9":
+        #     if current_quantity.value() <= 10:
+        #         quantity_color = "red"
+        #     elif current_quantity.value() <= 20:
+        #         quantity_color = "yellow"
 
-            if current_quantity.value() > 20:
-                current_quantity.setStyleSheet("")
-            else:
-                current_quantity.setStyleSheet(
-                    f"color: {quantity_color}; border-color: {quantity_color};"
-                )
-        else:
-            if current_quantity.value() <= 10:
-                quantity_color = "red"
-            elif current_quantity.value() <= 20:
-                quantity_color = "yellow"
+        #     if current_quantity.value() > 20:
+        #         current_quantity.setStyleSheet(self.margin_format)
+        #     else:
+        #         current_quantity.setStyleSheet(
+        #             f"color: {quantity_color}; border-color: {quantity_color}; {self.margin_format}"
+        #         )
+        # else:
+        #     if current_quantity.value() <= 10:
+        #         quantity_color = "red"
+        #     elif current_quantity.value() <= 20:
+        #         quantity_color = "yellow"
 
-            current_quantity.setStyleSheet(
-                f"background-color: {self.highlight_color}; border: 1px solid {self.highlight_color}; {'color: {quantity_color}; border-color: {quantity_color};' if current_quantity.value() <= 20 else ''}"
-            )
-            self.highlight_color = "#3daee9"
+        #     current_quantity.setStyleSheet(
+        #         f"background-color: {self.highlight_color}; border: 1px solid {self.highlight_color}; {'color: {quantity_color}; border-color: {quantity_color}; {self.margin_format}' if current_quantity.value() <= 20 else self.margin_format}"
+        #     )
+        # self.highlight_color = "#3daee9"
         if self.radioButton_single.isChecked():
             self.pushButton_add_quantity.setEnabled(True)
             self.pushButton_remove_quantity.setEnabled(True)
@@ -4598,7 +4775,6 @@ class MainWindow(QMainWindow):
         # file.open(QFile.ReadOnly | QFile.Text)
         # stream = QTextStream(file)
         # self.setStyleSheet(stream.readAll())
-        
 
     def update_sorting_status_text(self) -> None:
         """
@@ -4884,6 +5060,16 @@ class MainWindow(QMainWindow):
         )
 
     def get_all_checked_parts(self) -> list[str]:
+        """
+        This function returns a list of all the checked parts from a dictionary of checkbox selections.
+
+        Returns:
+          The function `get_all_checked_parts` returns a list of strings, which are the names of all the
+        parts that have been checked in a dictionary of checkboxes called `check_box_selections`. The
+        function iterates through the keys of the dictionary and checks if the corresponding checkbox is
+        checked. If it is checked, the name of the part is added to the list of checked parts. Finally,
+        the function
+        """
         checked_parts: list[str] = [
             part_name
             for part_name in list(self.check_box_selections.keys())
@@ -4953,7 +5139,7 @@ class MainWindow(QMainWindow):
                 partial(
                     self.show_message_dialog,
                     title="Changes",
-                    message=f"Successfully uploaded",
+                    message="Successfully uploaded",
                 )
             )
         if data == "Successfully uploaded" and self.refresh_pressed:
@@ -4979,7 +5165,7 @@ class MainWindow(QMainWindow):
                 partial(
                     self.show_message_dialog,
                     title="Changes",
-                    message=f"Successfully uploaded",
+                    message="Successfully uploaded",
                 )
             )
         if not self.finished_downloading_all_files:
@@ -4994,6 +5180,7 @@ class MainWindow(QMainWindow):
                 f'<p style="color:green;">Downloaded all files. - {datetime.now().strftime("%r")}</p>'
             )
             set_status_button_stylesheet(button=self.status_button, color="green")
+            self.tab_widget.setEnabled(True)
 
     def start_changes_thread(self, files_to_download: list[str]) -> None:
         """
@@ -5002,7 +5189,7 @@ class MainWindow(QMainWindow):
         Args:
           files_to_download (list[str]): list[str]
         """
-        changes_thread = ChangesThread(files_to_download, 60*5)  # 5 minutes
+        changes_thread = ChangesThread(files_to_download, 60 * 5)  # 5 minutes
         changes_thread.signal.connect(self.changes_response)
         self.threads.append(changes_thread)
         changes_thread.start()
@@ -5025,12 +5212,14 @@ class MainWindow(QMainWindow):
           exchange_rate (float): float
         """
 
-        round_number = lambda x, n: eval(
-            '"%.'
-            + str(int(n))
-            + 'f" % '
-            + repr(int(x) + round(float("." + str(float(x)).split(".")[1]), n))
-        )
+        def round_number(x, n):
+            return eval(
+                '"%.'
+                + str(int(n))
+                + 'f" % '
+                + repr(int(x) + round(float("." + str(float(x)).split(".")[1]), n))
+            )
+
         self.label_exchange_price.setText(
             f"1.00 USD: {exchange_rate} CAD - {datetime.now().strftime('%r')}"
         )
@@ -5169,14 +5358,17 @@ class MainWindow(QMainWindow):
         Args:
           layout: The layout to be cleared
         """
-        if layout is not None:
-            while layout.count():
-                item = layout.takeAt(0)
-                widget = item.widget()
-                if widget is not None:
-                    widget.deleteLater()
-                else:
-                    self.clear_layout(item.layout())
+        try:
+            if layout is not None:
+                while layout.count():
+                    item = layout.takeAt(0)
+                    widget = item.widget()
+                    if widget is not None:
+                        widget.deleteLater()
+                    else:
+                        self.clear_layout(item.layout())
+        except AttributeError:
+            pass
 
     def open_folder(self, path: str) -> None:
         """
@@ -5366,9 +5558,9 @@ def main() -> None:
     QApplication
     """
     app = QApplication([])
+    set_theme(app, theme="dark")
     load_window = LoadWindow()
     app.processEvents()
-    set_theme(app, theme='dark')
     window = MainWindow()
     window.show()
     load_window.close()

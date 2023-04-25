@@ -1,22 +1,11 @@
 import math
-import sys
-import time
 from functools import partial
 
 from PyQt5 import *
-from PyQt5 import QtCore, QtWidgets, uic
 from PyQt5.QtCore import *
-from PyQt5.QtCore import QSize, QThread, pyqtSignal
 from PyQt5.QtGui import *
 from PyQt5.QtWidgets import *
-from PyQt5.QtWidgets import (
-    QDialog,
-    QGridLayout,
-    QLabel,
-    QMainWindow,
-    QProgressBar,
-    QWidget,
-)
+from PyQt5.QtWidgets import QDialog
 
 
 class LoadWindow(QDialog):
@@ -52,7 +41,7 @@ class LoadWindow(QDialog):
             elif (self.counter) % amount_of_circles == i - 8:
                 painter.setBrush(QBrush(QColor(61, 174, 233)))
             else:
-                painter.setBrush(QBrush(QColor(50, 50, 50)))
+                painter.setBrush(QBrush(QColor(40, 40, 40)))
             # else: painter.setBrush(QBrush(QColor(127, 127, 127)))
             painter.drawEllipse(
                 int(

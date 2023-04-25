@@ -1,12 +1,12 @@
-import sys
 import json
-from datetime import datetime
+import sys
 import time
+from datetime import datetime
 from functools import partial
-from ui.theme import set_theme
+
 from PyQt5 import QtTest, uic
-from PyQt5.QtCore import QFile, QPoint, Qt, QTextStream, QTimer, QAbstractListModel
-from PyQt5.QtGui import QCursor, QFont, QIcon, QPixmap, QImage
+from PyQt5.QtCore import QAbstractListModel, QFile, QPoint, Qt, QTextStream, QTimer
+from PyQt5.QtGui import QColor, QCursor, QFont, QIcon, QImage, QPalette, QPixmap
 from PyQt5.QtWidgets import (
     QAction,
     QApplication,
@@ -30,7 +30,6 @@ from PyQt5.QtWidgets import (
     QPushButton,
     QScrollArea,
     QSpinBox,
-    QWidgetItem,
     QStyle,
     QTableWidget,
     QTableWidgetItem,
@@ -39,10 +38,15 @@ from PyQt5.QtWidgets import (
     QToolTip,
     QVBoxLayout,
     QWidget,
+    QWidgetItem,
     qApp,
 )
-from PyQt5.QtGui import QPalette, QColor
+
+from ui.theme import set_theme
+
 QApplication.setAttribute(Qt.AA_EnableHighDpiScaling, True)
+from functools import partial
+
 from ui.custom_widgets import (
     ClickableLabel,
     CostLineEdit,
@@ -51,10 +55,10 @@ from ui.custom_widgets import (
     DragableLayout,
     ExchangeRateComboBox,
     HeaderScrollArea,
-    ItemCheckBox,
     HumbleComboBox,
     HumbleDoubleSpinBox,
     HumbleSpinBox,
+    ItemCheckBox,
     ItemNameComboBox,
     NotesPlainTextEdit,
     PartNumberComboBox,
@@ -69,98 +73,70 @@ from ui.custom_widgets import (
 qt_creator_file = "test.ui"
 Ui_MainWindow, QtBaseClass = uic.loadUiType(qt_creator_file)
 
+from PyQt5.QtCore import QObject, QRunnable, QThreadPool, pyqtSignal
+
+
 class MainWindow(QMainWindow, Ui_MainWindow):
     def __init__(self):
         super(MainWindow, self).__init__()
         self.setupUi(self)
-        self.margins = (15, 15, 5, 5) # top, bottom, left, right
-        self.margin_format = f'margin-top: {self.margins[0]}%; margin-bottom: {self.margins[1]}%; margin-left: {self.margins[2]}%; margin-right: {self.margins[3]}%;'
+        self.margins = (15, 15, 5, 5)  # top, bottom, left, right
+        self.margin_format = f"margin-top: {self.margins[0]}%; margin-bottom: {self.margins[1]}%; margin-left: {self.margins[2]}%; margin-right: {self.margins[3]}%;"
         # LOAD TABLE
         self.tableWidget = QTableWidget(self)
-        self.tableWidget.setShowGrid(False)
+        self.tableWidget.setShowGrid(True)
         self.tableWidget.setColumnCount(12)
-        self.tableWidget.setSelectionBehavior(1)
-        self.tableWidget.setSelectionMode(1)
+        self.tableWidget.setAlternatingRowColors(True)
+        self.tableWidget.setSelectionBehavior(0)
+        self.tableWidget.setSelectionMode(0)
         self.tableWidget.setHorizontalHeaderLabels(
-            ("Part Name;Part Number;Quantity Per Unit;Quantity in Stock;Item Price;USD/CAD;Total Cost in Stock;Total Unit Cost;Priority;Notes;PO;DEL;").split(";")
+            (
+                "Part Name;Part Number;Quantity Per Unit;Quantity in Stock;Item Price;USD/CAD;Total Cost in Stock;Total Unit Cost;Priority;Notes;PO;DEL;"
+            ).split(";")
         )
         self.verticalLayout_2.addWidget(self.tableWidget)
-        with open(r'data\testt.json', 'r') as f:
-            data = json.load(f)
-        self._iter = iter(range(len(list(data['Polar G2'].keys()))))
-        self._timer = QTimer(
-            interval=0, timeout=partial(self.load_item, data)
-        )
-        self._timer.start()
-    def load_item(self, data) -> None:
-        # PART NAME
-        try:
-            i = next(self._iter)
-            self.tableWidget.setEnabled(False)
-            # QApplication.setOverrideCursor(Qt.BusyCursor)
-        except StopIteration:
-            self._timer.stop()
-            self.tableWidget.resizeRowsToContents()
-            self.tableWidget.resizeColumnsToContents()
-            self.tableWidget.setEnabled(True)
-        else:
+        with open(r"data\testt.json", "r") as f:
+            self.data = json.load(f)
+        self.load_item()
+
+    def load_item(self):
+
+        for i in range(len(list(self.data["Polar G2"].keys()))):
             self.tableWidget.insertRow(i)
             self.tableWidget.setRowHeight(i, 60)
-            item: str = list(data['Polar G2'].keys())[i]
-            item_name = ItemNameComboBox(
-                parent=self,
-                selected_item=item,
-                items=[item],
-                tool_tip='latest_change_name',
-            )
-            item_name.setContextMenuPolicy(Qt.CustomContextMenu)
-            item_name.setStyleSheet(self.margin_format)
-            self.tableWidget.setCellWidget(i, 0, item_name)
-            # PART NUMBER
-            line_edit_part_number = PartNumberComboBox(
-                parent=self,
-                selected_item=data['Polar G2'][item]['part_number'],
-                items=[data['Polar G2'][item]['part_number']],
-                tool_tip='latest_change_part_number',
-            )
-            line_edit_part_number.setStyleSheet(self.margin_format)
-            self.tableWidget.setCellWidget(i, 1, line_edit_part_number)
-            # UNIT QUANTITY
-            unit_quantity=data['Polar G2'][item]['unit_quantity']
-            spin_unit_quantity = HumbleDoubleSpinBox(self)
-            spin_unit_quantity.setValue(unit_quantity)
-            spin_unit_quantity.setStyleSheet(self.margin_format)
-            self.tableWidget.setCellWidget(i, 2, spin_unit_quantity)
-            # ITEM QUANTITY
-            current_quantity=data['Polar G2'][item]['current_quantity']
-            spin_current_quantity = CurrentQuantitySpinBox(self)
-            spin_current_quantity.setToolTip('latest_change_current_quantity')
-            spin_current_quantity.setValue(int(current_quantity))
-            if current_quantity <= 10:
-                quantity_color = "red"
-            elif current_quantity <= 20:
-                quantity_color = "yellow"
+            item: str = list(self.data["Polar G2"].keys())[i]
 
-            if current_quantity > 20:
-                spin_current_quantity.setStyleSheet(self.margin_format)
-            else:
-                spin_current_quantity.setStyleSheet(
-                    f"color: {quantity_color}; border-color: {quantity_color}; {self.margin_format}"
-                )
-            self.tableWidget.setCellWidget(i, 3, spin_current_quantity)
+            self.tableWidget.setItem(i, 0, QTableWidgetItem(item))
+            # PART NUMBER
+
+            self.tableWidget.setItem(
+                i, 1, QTableWidgetItem(self.data["Polar G2"][item]["part_number"])
+            )
+            # UNIT QUANTITY
+            unit_quantity = self.data["Polar G2"][item]["unit_quantity"]
+
+            self.tableWidget.setItem(
+                i, 2, QTableWidgetItem(str(self.data["Polar G2"][item]["unit_quantity"]))
+            )
+            # ITEM QUANTITY
+            current_quantity = self.data["Polar G2"][item]["current_quantity"]
+
+            self.tableWidget.setItem(
+                i,
+                3,
+                QTableWidgetItem(str(self.data["Polar G2"][item]["current_quantity"])),
+            )
             # PRICE
-            price = data['Polar G2'][item]['price']
-            spin_price = HumbleDoubleSpinBox(self)
-            spin_price.setValue(price)
-            spin_price.setPrefix("$")
-            spin_price.setSuffix(" USD" if True else " CAD")
-            spin_price.setStyleSheet(self.margin_format)
-            self.tableWidget.setCellWidget(i, 4, spin_price)
+            price = self.data["Polar G2"][item]["price"]
+
+            self.tableWidget.setItem(
+                i, 4, QTableWidgetItem(str(self.data["Polar G2"][item]["price"]))
+            )
             # EXCHANGE RATE
             combo_exchange_rate = ExchangeRateComboBox(
                 parent=self,
                 selected_item="USD" if True else "CAD",
-                tool_tip='latest_change_use_exchange_rate',
+                tool_tip="latest_change_use_exchange_rate",
             )
             combo_exchange_rate.setStyleSheet(self.margin_format)
             self.tableWidget.setCellWidget(i, 5, combo_exchange_rate)
@@ -168,28 +144,18 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             total_cost_in_stock: float = current_quantity * price
             if total_cost_in_stock < 0:
                 total_cost_in_stock = 0
-            spin_total_cost = CostLineEdit(
-                parent=self,
-                prefix="$",
-                text=total_cost_in_stock,
-                suffix=combo_exchange_rate.currentText(),
-            )
-            spin_total_cost.setStyleSheet(self.margin_format)
-            self.tableWidget.setCellWidget(i, 6, spin_total_cost)
+
+            self.tableWidget.setItem(i, 6, QTableWidgetItem(str(total_cost_in_stock)))
             # TOTALE UNIT COST
             total_unit_cost: float = unit_quantity * price
-            spin_total_unit_cost = CostLineEdit(
-                parent=self,
-                prefix="$",
-                text=total_unit_cost,
-                suffix=combo_exchange_rate.currentText(),
-            )
-            spin_total_unit_cost.setStyleSheet(self.margin_format)
-            self.tableWidget.setCellWidget(i, 7, spin_total_unit_cost)
+
+            self.tableWidget.setItem(i, 7, QTableWidgetItem(str(total_unit_cost)))
             # PRIORITY
-            priority=data['Polar G2'][item]['priority']
+            priority = self.data["Polar G2"][item]["priority"]
             combo_priority = PriorityComboBox(
-                parent=self, selected_item=priority, tool_tip='latest_change_priority'
+                parent=self,
+                selected_item=priority,
+                tool_tip="latest_change_priority",
             )
             if combo_priority.currentText() == "Medium":
                 combo_priority.setStyleSheet("color: yellow; border-color: yellow;")
@@ -198,12 +164,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             combo_priority.setStyleSheet(self.margin_format)
             self.tableWidget.setCellWidget(i, 8, combo_priority)
             # NOTES
-            notes=data['Polar G2'][item]['notes']
-            text_notes = NotesPlainTextEdit(
-                parent=self, text=notes, tool_tip='latest_change_notes'
-            )
-            text_notes.setStyleSheet('margin-top: 1%; margin-bottom: 1%; margin-left: 1%; margin-right: 1%;')
-            self.tableWidget.setCellWidget(i, 9, text_notes)
+            notes = self.data["Polar G2"][item]["notes"]
+
+            self.tableWidget.setItem(i, 9, QTableWidgetItem(notes))
             # PURCHASE ORDER
             po_menu = QMenu(self)
             btn_po = POPushButton(parent=self)
@@ -213,13 +176,23 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             # DELETE
             btn_delete = DeletePushButton(
                 parent=self,
-                tool_tip=f"Delete {item_name.currentText()} permanently from Polar G2",
+                tool_tip=f"Delete {item} permanently from Polar G2",
                 icon=QIcon(f"ui/BreezeStyleSheets/dist/pyqt6/dark/trash.png"),
             )
+            # !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+            btn_delete.clicked.connect(partial(self.delete, item))
             btn_delete.setStyleSheet(self.margin_format)
             self.tableWidget.setCellWidget(i, 11, btn_delete)
+
+        # self.tableWidget.resizeRowsToContents()
+        self.tableWidget.resizeColumnsToContents()
+
+    def delete(self, name):
+        print(name)
+
+
 app = QApplication(sys.argv)
-set_theme(app, theme='dark')
+set_theme(app, theme="dark")
 
 # apply_stylesheet(app, theme='dark_blue.xml')
 window = MainWindow()

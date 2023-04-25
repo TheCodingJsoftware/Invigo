@@ -37,10 +37,30 @@ QFrame {
     background-color: rgb(44, 44, 44);
 }
 
-QGroupBox {
-    color: rgb(144, 144, 144);
+QGroupBox
+{
+    /* Need to make sure the groupbox doesn't compress below the title. */
+    /* min-height: 1.2em; */
+    border: 1px solid #76797c;
+    border-radius: 5px;
+    font-size: 24px;
+    /**
+     * This gives us enough space at the top to ensure we can move the
+     * title to be inside the guidelines, and the padding at the top
+     * ensures we have space below the title.
+     */
+    margin-top: 0.5em;
+    padding-top: 0.6em;
 }
-
+QGroupBox::title
+{
+    /* We need to move 0.6em up to be inside the lines, +1em for padding. */
+    top: -2.4em;
+    subcontrol-origin: content;
+    subcontrol-position: top center;
+    padding-left: 0.2em;
+    padding-right: 0.2em;
+}
 QScrollArea {
     border: 1px solid rgb(65, 65, 65);
     background: rgb(44, 44, 44);
@@ -152,6 +172,8 @@ QScrollBar::add-page:horizontal, QScrollBar::sub-page:horizontal {
 /* Display Widgets */
 
 QLabel {
+    font-size: 11px;
+    font-family: monospace;
     border-radius: 0px;
     border: 0px solid rgb(82, 82, 82);
     background-color: transparent;
@@ -339,7 +361,7 @@ QTreeWidget::item:selected {
     background-color: rgba(110, 120, 125, 200);
 }
 
-QTableWidget {
+/* QTableWidget {
     border: 0px solid rgb(65, 65, 65);
     background: rgb(44, 44, 44);
     border-radius: 4px;
@@ -348,20 +370,24 @@ QTableWidget {
 QTableCornerButton::section {
     border: 1px solid rgb(57, 57, 57);
     background: rgb(57, 57, 57);
-    border-radius: 4px;
+    border-radius: 0px;
 }
 
 QTableWidget:hover {
     border: 0px solid rgb(82, 82, 82);
     background: rgb(44, 44, 44);
     border-radius: 4px;
+} */
+QTableWidget::item:selected{
+    background: #3daee9;
+    border-radius: 0px;
 }
 
-QTableWidget:item {
+/* QTableWidget:item {
     border: 0px solid rgb(65, 65, 65);
     color: rgb(240, 240, 240);
     border-radius: 4px;
-}
+}  */
 
 /* Input Widgets */
 
