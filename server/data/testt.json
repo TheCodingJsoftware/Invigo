@@ -587,7 +587,8 @@
             "latest_change_current_quantity": "Latest Change:\nfrom: 11\nto: 11\nJared\nApril 24 Monday 2023 02:22:59 PM",
             "latest_change_notes": "Latest Change:\nfrom: \"Vendor: HC Graphic Screen Printin\nDescription: \"\nto: \"Vendor: HC Graphic Screen Printing\nDescription: \"\nItsme\nJuly 29 Friday 2022 04:12:22 PM",
             "red_limit": 5.0,
-            "yellow_limit": 10.0
+            "yellow_limit": 10.0,
+            "latest_change_price": "Latest Change:\nfrom: 1.81\nto: 1.81\nJared\nApril 26 Wednesday 2023 05:16:11 PM"
         },
         "Sticker   #306 Polar Furnace with Polar Bear  11\"x14\" ": {
             "part_number": "403",
@@ -2222,7 +2223,8 @@
             "use_exchange_rate": false,
             "priority": 0,
             "notes": "Vendor: \nDescription: ",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 11\nto: 11\nJared\nApril 24 Monday 2023 02:22:59 PM"
+            "latest_change_current_quantity": "Latest Change:\nfrom: 11\nto: 11\nJared\nApril 24 Monday 2023 02:22:59 PM",
+            "latest_change_price": "Latest Change:\nfrom: 1.81\nto: 1.81\nJared\nApril 26 Wednesday 2023 05:16:11 PM"
         },
         "Sticker   #306 Polar Furnace with Polar Bear  11\"x14\" ": {
             "part_number": "403",
@@ -3810,7 +3812,8 @@
             "use_exchange_rate": false,
             "priority": 0,
             "notes": "Vendor: \nDescription: ",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 11\nto: 11\nJared\nApril 24 Monday 2023 02:22:59 PM"
+            "latest_change_current_quantity": "Latest Change:\nfrom: 11\nto: 11\nJared\nApril 24 Monday 2023 02:22:59 PM",
+            "latest_change_price": "Latest Change:\nfrom: 1.81\nto: 1.81\nJared\nApril 26 Wednesday 2023 05:16:11 PM"
         },
         "Sticker   #306 Polar Furnace with Polar Bear  11\"x14\" ": {
             "part_number": "403",
