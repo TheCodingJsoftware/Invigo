@@ -142,6 +142,39 @@
             "unit_quantity": 1,
             "modified_date": "Added at April 17 Monday 2023 09:17:03 AM",
             "group": null
+        },
+        "PM - SS HINGE 6 B_1pcs": {
+            "current_quantity": 1,
+            "machine_time": 0.27,
+            "gauge": "12G\"",
+            "material": "304 SS",
+            "weight": 0.361,
+            "price": 1.99,
+            "unit_quantity": 1,
+            "modified_date": "Added at April 26 Wednesday 2023 09:52:45 AM",
+            "group": null
+        },
+        "PM - SS HINGE 7 B_1pcs": {
+            "current_quantity": 1,
+            "machine_time": 0.27,
+            "gauge": "12G\"",
+            "material": "304 SS",
+            "weight": 0.382,
+            "price": 2.04,
+            "unit_quantity": 1,
+            "modified_date": "Added at April 26 Wednesday 2023 09:52:45 AM",
+            "group": null
+        },
+        "PM - SS HINGE 8 B_1pcs": {
+            "current_quantity": 1,
+            "machine_time": 0.28,
+            "gauge": "12G\"",
+            "material": "304 SS",
+            "weight": 0.404,
+            "price": 2.13,
+            "unit_quantity": 1,
+            "modified_date": "Added at April 26 Wednesday 2023 09:52:45 AM",
+            "group": null
         }
     },
     "Recut": {
@@ -215,6 +248,42 @@
             "weight": 2.242,
             "unit_quantity": 1,
             "modified_date": "Added at April 21 Friday 2023 10:40:06 AM",
+            "group": null
+        },
+        "PM - SS HINGE 3 B_1pcs": {
+            "current_quantity": 1,
+            "price": 1.77,
+            "recut_count": 0,
+            "machine_time": 0.25,
+            "gauge": "12G\"",
+            "material": "304 SS",
+            "weight": 0.304,
+            "unit_quantity": 1,
+            "modified_date": "Added at April 26 Wednesday 2023 09:52:45 AM",
+            "group": null
+        },
+        "PM - SS HINGE 4 B_1pcs": {
+            "current_quantity": 1,
+            "price": 1.89,
+            "recut_count": 0,
+            "machine_time": 0.27,
+            "gauge": "12G\"",
+            "material": "304 SS",
+            "weight": 0.322,
+            "unit_quantity": 1,
+            "modified_date": "Added at April 26 Wednesday 2023 09:52:45 AM",
+            "group": null
+        },
+        "PM - SS HINGE 5 B_1pcs": {
+            "current_quantity": 1,
+            "price": 1.86,
+            "recut_count": 0,
+            "machine_time": 0.25,
+            "gauge": "12G\"",
+            "material": "304 SS",
+            "weight": 0.341,
+            "unit_quantity": 1,
+            "modified_date": "Added at April 26 Wednesday 2023 09:52:45 AM",
             "group": null
         }
     },
@@ -2005,6 +2074,17 @@
             "modified_date": "10 quantity added at April 20 Thursday 2023 10:45:26 AM",
             "group": null
         },
+        "3444 chimneyx3": {
+            "current_quantity": 12.0,
+            "machine_time": 0.68,
+            "gauge": "14 Gauge",
+            "material": "304 SS",
+            "weight": 6.71,
+            "price": 18.87,
+            "unit_quantity": 1,
+            "modified_date": "Manually set to 12.0 quantity at April 22 Saturday 2023 10:22:35 AM",
+            "group": null
+        },
         "3444-01": {
             "current_quantity": 10,
             "machine_time": 4.1,
@@ -2344,17 +2424,6 @@
             "price": 4.22,
             "unit_quantity": 1,
             "modified_date": "Added at April 20 Thursday 2023 02:47:28 PM",
-            "group": null
-        },
-        "3444 chimneyx3": {
-            "current_quantity": 12.0,
-            "machine_time": 0.68,
-            "gauge": "14 Gauge",
-            "material": "304 SS",
-            "weight": 6.71,
-            "price": 18.87,
-            "unit_quantity": 1,
-            "modified_date": "Manually set to 12.0 quantity at April 22 Saturday 2023 10:22:35 AM",
             "group": null
         },
         "3444-71 chimney": {
@@ -4912,6 +4981,17 @@
         }
     },
     "Farm\/Colony": {
+        "WTSS 202318": {
+            "current_quantity": 72,
+            "machine_time": 0.05,
+            "gauge": "10 Gauge",
+            "material": "304 SS",
+            "weight": 0.017,
+            "price": 0.25,
+            "unit_quantity": 1,
+            "modified_date": "Added at April 21 Friday 2023 10:49:04 AM",
+            "group": null
+        },
         "Jakes WASHER": {
             "current_quantity": 36,
             "machine_time": 0.08,
@@ -5031,6 +5111,17 @@
             "price": 19.45,
             "unit_quantity": 1,
             "modified_date": "Added at March 17 Friday 2023 02:17:02 PM",
+            "group": null
+        },
+        "WTSS 202306": {
+            "current_quantity": 4,
+            "machine_time": 0.22,
+            "gauge": "10 Gauge",
+            "material": "304 SS",
+            "weight": 0.344,
+            "price": 1.74,
+            "unit_quantity": 1,
+            "modified_date": "Added at April 21 Friday 2023 10:49:04 AM",
             "group": null
         },
         "central air": {
@@ -5394,28 +5485,6 @@
             "price": 19.73,
             "unit_quantity": 1,
             "modified_date": "Added at April 12 Wednesday 2023 04:26:36 PM",
-            "group": null
-        },
-        "WTSS 202318": {
-            "current_quantity": 72,
-            "machine_time": 0.05,
-            "gauge": "10 Gauge",
-            "material": "304 SS",
-            "weight": 0.017,
-            "price": 0.25,
-            "unit_quantity": 1,
-            "modified_date": "Added at April 21 Friday 2023 10:49:04 AM",
-            "group": null
-        },
-        "WTSS 202306": {
-            "current_quantity": 4,
-            "machine_time": 0.22,
-            "gauge": "10 Gauge",
-            "material": "304 SS",
-            "weight": 0.344,
-            "price": 1.74,
-            "unit_quantity": 1,
-            "modified_date": "Added at April 21 Friday 2023 10:49:04 AM",
             "group": null
         },
         "WTSS 202302": {
