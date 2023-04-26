@@ -220,14 +220,14 @@
     },
     "BL25": {
         "Level Gauge": {
-            "current_quantity": 313.0,
+            "current_quantity": 312.0,
             "machine_time": 0.27,
             "gauge": "16 Gauge",
             "material": "304 SS",
             "weight": 0.209,
             "price": 1.62,
             "unit_quantity": 1,
-            "modified_date": "Removed 0 quantity at April 25 Tuesday 2023 10:55:19 AM",
+            "modified_date": "Removed 1 quantity at April 26 Wednesday 2023 08:32:39 AM",
             "group": null
         },
         "2840-62x2": {
@@ -319,14 +319,14 @@
             "group": null
         },
         "2534-Ashpan": {
-            "current_quantity": 20,
+            "current_quantity": 19,
             "machine_time": 0.52,
             "gauge": "16 Gauge",
             "material": "304 SS",
             "weight": 9.934,
             "price": 25.91,
             "unit_quantity": 1,
-            "modified_date": "Removed 0 quantity at April 25 Tuesday 2023 10:55:19 AM",
+            "modified_date": "Removed 1 quantity at April 26 Wednesday 2023 08:32:39 AM",
             "group": null
         },
         "2534-043x2": {
@@ -354,14 +354,14 @@
     },
     "BL28": {
         "Level Gauge": {
-            "current_quantity": 313.0,
+            "current_quantity": 312.0,
             "machine_time": 0.27,
             "gauge": "16 Gauge",
             "material": "304 SS",
             "weight": 0.209,
             "price": 1.62,
             "unit_quantity": 1,
-            "modified_date": "Removed 0 quantity at April 25 Tuesday 2023 10:55:19 AM",
+            "modified_date": "Removed 1 quantity at April 26 Wednesday 2023 08:32:39 AM",
             "group": null
         },
         "2840-62x2": {
@@ -1335,14 +1335,14 @@
     },
     "BL34": {
         "Level Gauge": {
-            "current_quantity": 313.0,
+            "current_quantity": 312.0,
             "machine_time": 0.27,
             "gauge": "16 Gauge",
             "material": "304 SS",
             "weight": 0.209,
             "price": 1.62,
             "unit_quantity": 1,
-            "modified_date": "Removed 0 quantity at April 25 Tuesday 2023 10:55:19 AM",
+            "modified_date": "Removed 1 quantity at April 26 Wednesday 2023 08:32:39 AM",
             "group": null
         },
         "3444-00": {
@@ -2393,14 +2393,14 @@
     },
     "BL40": {
         "Level Gauge": {
-            "current_quantity": 313.0,
+            "current_quantity": 312.0,
             "machine_time": 0.27,
             "gauge": "16 Gauge",
             "material": "304 SS",
             "weight": 0.209,
             "price": 1.62,
             "unit_quantity": 1,
-            "modified_date": "Removed 0 quantity at April 25 Tuesday 2023 10:55:19 AM",
+            "modified_date": "Removed 1 quantity at April 26 Wednesday 2023 08:32:39 AM",
             "group": null
         },
         "2840-62x2": {
