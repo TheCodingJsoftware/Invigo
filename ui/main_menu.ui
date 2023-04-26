@@ -8,7 +8,7 @@
     <x>0</x>
     <y>0</y>
     <width>1133</width>
-    <height>1006</height>
+    <height>1096</height>
    </rect>
   </property>
   <property name="acceptDrops">
@@ -52,10 +52,13 @@
          <enum>QTabWidget::Triangular</enum>
         </property>
         <property name="currentIndex">
-         <number>1</number>
+         <number>2</number>
         </property>
         <property name="elideMode">
          <enum>Qt::ElideNone</enum>
+        </property>
+        <property name="usesScrollButtons">
+         <bool>true</bool>
         </property>
         <property name="tabBarAutoHide">
          <bool>false</bool>

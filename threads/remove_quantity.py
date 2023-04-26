@@ -57,18 +57,18 @@ class RemoveQuantityThread(QThread):
                 unit_quantity: int = inventory[self.category][item]["unit_quantity"]
                 current_quantity: int = inventory[self.category][item]["current_quantity"]
                 part_numbers.append(inventory[self.category][item]["part_number"])
-                spin_current_quantity = self.inventory_prices_objects[object_item][
-                    "current_quantity"
-                ]
+                # spin_current_quantity = self.inventory_prices_objects[object_item][
+                #     "current_quantity"
+                # ]
                 inventory[self.category][item]["current_quantity"] = current_quantity - (
                     unit_quantity * self.multiplier
                 )
                 inventory[self.category][item][
                     "latest_change_current_quantity"
                 ] = f"Latest Change:\nfrom: {current_quantity}\nto: {current_quantity - (unit_quantity * self.multiplier)}\n{self.username}\n{datetime.now().strftime('%B %d %A %Y %I:%M:%S %p')}"
-                spin_current_quantity.setValue(
-                    int(current_quantity - (unit_quantity * self.multiplier))
-                )
+                # spin_current_quantity.setValue(
+                #     int(current_quantity - (unit_quantity * self.multiplier))
+                # )
                 self.completion_count += 1
                 self.signal.emit(f"{self.completion_count}, {self.max_item_count}")
             part_numbers = list(set(part_numbers))
