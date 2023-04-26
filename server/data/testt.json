@@ -585,7 +585,9 @@
             "priority": 0,
             "notes": "Vendor: HC Graphic Screen Printing\nDescription: ",
             "latest_change_current_quantity": "Latest Change:\nfrom: 11\nto: 11\nJared\nApril 24 Monday 2023 02:22:59 PM",
-            "latest_change_notes": "Latest Change:\nfrom: \"Vendor: HC Graphic Screen Printin\nDescription: \"\nto: \"Vendor: HC Graphic Screen Printing\nDescription: \"\nItsme\nJuly 29 Friday 2022 04:12:22 PM"
+            "latest_change_notes": "Latest Change:\nfrom: \"Vendor: HC Graphic Screen Printin\nDescription: \"\nto: \"Vendor: HC Graphic Screen Printing\nDescription: \"\nItsme\nJuly 29 Friday 2022 04:12:22 PM",
+            "red_limit": 5.0,
+            "yellow_limit": 10.0
         },
         "Sticker   #306 Polar Furnace with Polar Bear  11\"x14\" ": {
             "part_number": "403",
