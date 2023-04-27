@@ -423,8 +423,8 @@
             "latest_change_thickness": "Item added\nLaser Pc\nFebruary 24 Friday 2023 05-11-02 PM",
             "latest_change_current_quantity": "Latest Change:\nfrom: 71.0\nto: 72.0\nLaser Pc\nFebruary 25 Saturday 2023 09:53:52 AM",
             "group": "Galvanized",
-            "red_limit": 5.0,
-            "yellow_limit": 10.0,
+            "red_limit": 10.0,
+            "yellow_limit": 15.0,
             "notes": "Usual Order 30 sheets "
         },
         "20 Gauge Galvanized 120.000x60.000": {
