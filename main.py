@@ -1327,8 +1327,11 @@ class MainWindow(QMainWindow):
                 except KeyError:
                     pounds_per_square_foot: float = 0.0
                 # POUNDS PER SHEET
-                sheet_length = float(sheet_dimension.split("x")[0])
-                sheet_width = float(sheet_dimension.split("x")[1])
+                try:
+                    sheet_length = float(sheet_dimension.split("x")[0])
+                    sheet_width = float(sheet_dimension.split("x")[1])
+                except AttributeError:
+                    return
                 try:
                     pounds_per_sheet: float = (
                         (sheet_length * sheet_width) / 144
