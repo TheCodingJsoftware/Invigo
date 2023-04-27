@@ -1,3 +1,4 @@
+import contextlib
 import logging
 import os
 import socket
@@ -263,7 +264,7 @@ class Server:
                 )
 
 def __check_low_sheet_quantities() -> None:
-    if datetime.today().strftime('%A') == 'Monday':
+    if datetime.now().strftime('%A') == 'Friday':
         sheets_low_in_quantity: int = 0
         message_to_send: str = '''
 <div class="tg-wrap"><table style="table-layout: fixed; width: 633px; border-collapse: collapse; border: 1px solid; text-align: center; vertical-align: middle;">
@@ -275,6 +276,7 @@ def __check_low_sheet_quantities() -> None:
 <thead>
 <tr>
 <th>Sheet Name</th>
+<th>Order Status</th>
 <th>Current Quantity</th>
 <th>Description</th>
 </tr>
@@ -290,16 +292,16 @@ def __check_low_sheet_quantities() -> None:
                 try:
                     red_limit: int = data[material][sheet_name]['red_limit']
                     yellow_limit: int = data[material][sheet_name]['yellow_limit']
-                except:
+                except Exception:
+                    # Default values
                     red_limit: int = 10
                     yellow_limit: int = 20
-
+                order_pending: str = "Order is NOT pending"
+                with contextlib.suppress(KeyError):
+                    order_pending = "Order is pending" if data[material][sheet_name]['is_order_pending'] is not None else "Order is NOT pending"
                 notes: str = 'Nothing here'
-                try:
+                with contextlib.suppress(Exception):
                     notes: str = data[material][sheet_name]['notes']
-                except:
-                    pass
-
                 current_quantity: int = data[material][sheet_name]['current_quantity']
                 color: str = 'black'
                 if current_quantity <= red_limit:
@@ -311,6 +313,7 @@ def __check_low_sheet_quantities() -> None:
                     message_to_send += f'''
 <tr style="border: 1px solid">
 <td style="color: {color}">{sheet_name}</td>
+<td style="color: {color}">{order_pending}</td>
 <td style="color: {color}">{current_quantity}</td>
 <td style="color: {color}">{notes}</td>
 </tr>'''
@@ -319,10 +322,10 @@ def __check_low_sheet_quantities() -> None:
 </table></div>
 '''
         if sheets_low_in_quantity == 0:
-            send('Nothing low in quantity, Wheww! Have a marvelous Monday.')
+            send('Nothing low in quantity, Whew! Have a marvelous Monday.')
         else:
             send(message_to_send)
-                    
+
 
     def __backup_inventroy_files(self):
         """
