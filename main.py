@@ -5,7 +5,7 @@ __credits__: "list[str]" = ["Jared Gross"]
 __license__ = "MIT"
 __name__ = "Inventory Manager"
 __version__ = "v1.6.0"
-__updated__ = "2023-04-26 21:18:16"
+__updated__ = "2023-04-27 12:29:33"
 __maintainer__ = "Jared Gross"
 __email__ = "jared@pinelandfarms.ca"
 __status__ = "Production"
@@ -1935,7 +1935,7 @@ class MainWindow(QMainWindow):
                     ),
                 )
 
-    def item_check_box_press(self, this_checkbox) -> None:
+    def item_check_box_press(self, this_checkbox: QCheckBox) -> None:
         """
         This function checks or unchecks a group of checkboxes based on the state of a specific checkbox
         and whether the shift key is pressed.
@@ -3922,9 +3922,14 @@ class MainWindow(QMainWindow):
         else:
             item_name = item_name.currentText()
 
+        red_limit: int = self.get_value_from_category(item_name=item_name, key='red_limit')
+        yellow_limit: int = self.get_value_from_category(item_name=item_name, key='yellow_limit')
+
         set_custom_limit_dialog = SetCustomLimitDialog(
             title="Set Custom Quantity Limit",
             message=f'Set a Custom Color Quantity Limit for:\n"{item_name}"',
+            red_limit=red_limit,
+            yellow_limit=yellow_limit
         )
 
         if set_custom_limit_dialog.exec_():
