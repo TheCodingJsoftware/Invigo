@@ -254,14 +254,14 @@
     },
     "Aluminium": {
         "3\/8 Aluminium 144.000x48.000": {
-            "current_quantity": 2,
+            "current_quantity": 2.0,
             "sheet_dimension": "144.000x48.000",
             "thickness": "3\/8",
             "material": "Aluminium",
             "latest_change_material": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-44-01 PM",
             "latest_sheet_dimension": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-44-01 PM",
             "latest_change_thickness": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-44-01 PM",
-            "latest_change_current_quantity": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-44-01 PM"
+            "latest_change_current_quantity": "Latest Change:\nfrom: 3.0\nto: 2.0\nJared\nApril 27 Thursday 2023 05:36:30 PM"
         },
         "1\/4 Aluminium 120.000x60.000": {
             "current_quantity": 2,
