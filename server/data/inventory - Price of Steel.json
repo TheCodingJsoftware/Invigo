@@ -78,7 +78,9 @@
             "latest_change_material": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-06-23 PM",
             "latest_sheet_dimension": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-06-23 PM",
             "latest_change_thickness": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-06-23 PM",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 4.0\nto: 3.0\nJusti\nFebruary 25 Saturday 2023 10:37:24 AM"
+            "latest_change_current_quantity": "Latest Change:\nfrom: 4.0\nto: 3.0\nJusti\nFebruary 25 Saturday 2023 10:37:24 AM",
+            "red_limit": 1.0,
+            "yellow_limit": 2.0
         },
         "3\/8 Mild Steel 120.000x60.000": {
             "current_quantity": 4.0,
@@ -90,8 +92,8 @@
             "latest_sheet_dimension": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-09-47 PM",
             "latest_change_thickness": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-09-47 PM",
             "latest_change_current_quantity": "Latest Change:\nfrom: 4.0\nto: 5.0\nLaser Pc\nApril 12 Wednesday 2023 09:10:51 AM",
-            "red_limit": 10.0,
-            "yellow_limit": 20.0
+            "red_limit": 2.0,
+            "yellow_limit": 4.0
         },
         "1\/4 Mild Steel 120.000x60.000": {
             "current_quantity": 49.0,
@@ -154,7 +156,9 @@
             "latest_change_material": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-17-35 PM",
             "latest_sheet_dimension": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-17-35 PM",
             "latest_change_thickness": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-17-35 PM",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 6.0\nto: 86.0\nLaser Pc\nMarch 20 Monday 2023 08:26:28 AM"
+            "latest_change_current_quantity": "Latest Change:\nfrom: 6.0\nto: 86.0\nLaser Pc\nMarch 20 Monday 2023 08:26:28 AM",
+            "red_limit": 10.0,
+            "yellow_limit": 20.0
         },
         "3\/16 Mild Steel 86.000x60.000": {
             "current_quantity": 68.0,
