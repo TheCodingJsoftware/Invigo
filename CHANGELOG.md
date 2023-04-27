@@ -1,3 +1,17 @@
+<h1>v1.6.0</h1>
+&bull; Added an option on right-click to set a custom limit where red or yellow colors will be shown based on this limits<br>
+&bull; Code improvements, and bugs.<br>
+&bull; New material based dark theme.<br>
+&bull; Main Inventory tab.<br>
+    &bull; Way faster loading times.<br>
+    &bull; Removed groups.<br>
+    &bull; Changed colors.<br>
+    &bull; If single item quantities are removed the item that was selected will remain in focus.<br>
+&bull; Parts in Inventory tab<br>
+    &bull; Parts are automatically put into groups based on thickness.<br>
+    &bull; Checkboxes now work as intended.<br>
+    &bull; Remove quantities based on which items have been checkmarked.<br>
+
 <h1>v1.5.0</h1>
 &bull; Improved auto saving to cloud.<br>
 &bull; Server is reliable and quicker.<br>

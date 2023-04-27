@@ -84,9 +84,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.margin_format = f"margin-top: {self.margins[0]}%; margin-bottom: {self.margins[1]}%; margin-left: {self.margins[2]}%; margin-right: {self.margins[3]}%;"
         # LOAD TABLE
         self.tableWidget = QTableWidget(self)
-        self.tableWidget.setShowGrid(True)
+        self.tableWidget.setShowGrid(False)
         self.tableWidget.setColumnCount(12)
-        self.tableWidget.setAlternatingRowColors(True)
+        # self.tableWidget.setAlternatingRowColors(True)
         self.tableWidget.setSelectionBehavior(0)
         self.tableWidget.setSelectionMode(0)
         self.tableWidget.setHorizontalHeaderLabels(
@@ -100,7 +100,6 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.load_item()
 
     def load_item(self):
-
         for i in range(len(list(self.data["Polar G2"].keys()))):
             self.tableWidget.insertRow(i)
             self.tableWidget.setRowHeight(i, 60)

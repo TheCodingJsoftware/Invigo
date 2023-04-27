@@ -172,8 +172,6 @@ QScrollBar::add-page:horizontal, QScrollBar::sub-page:horizontal {
 /* Display Widgets */
 
 QLabel {
-    font-size: 11px;
-    font-family: monospace;
     border-radius: 0px;
     border: 0px solid rgb(82, 82, 82);
     background-color: transparent;
@@ -247,13 +245,14 @@ QToolButton:disabled {
 
 QCheckBox {
     color: rgb(144, 144, 144);
+    border-radius: 7px;
 }
 
 QCheckBox::indicator {
     border: 2px solid rgb(57, 57, 57);
     width: 10px;
     height: 10px;
-    border-radius: 5px;
+    border-radius: 7px;
     background: rgb(49, 49, 49);
 }
 
@@ -263,7 +262,7 @@ QCheckBox::indicator:hover {
 
 QCheckBox::indicator:checked {
     background: 5px solid #58d3ff;
-    border: 2px solid rgb(49, 60, 69);
+    border: 2px solid rgb(22, 22, 22);
 }
 
 QCheckBox:hover {
@@ -383,11 +382,13 @@ QTableWidget::item:selected{
     border-radius: 0px;
 }
 
-/* QTableWidget:item {
-    border: 0px solid rgb(65, 65, 65);
-    color: rgb(240, 240, 240);
-    border-radius: 4px;
-}  */
+/* QTableWidget:item { */
+    /* border: 0px solid rgb(65, 65, 65); */
+    /* border-bottom: 1px solid white; */
+    /* background-color: transparent; */
+    /* color: rgb(240, 240, 240); */
+    /* border-radius: 4px; */
+/* } */
 
 /* Input Widgets */
 

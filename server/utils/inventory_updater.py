@@ -28,11 +28,13 @@ def update_inventory(file_path: str) -> None:
     subtract_sheet_count(
         sheet_name_to_update=name_of_sheet, sheet_count=total_sheet_count
     )
-    print(total_sheet_count)
-    print(name_of_sheet)
+    print(f'total_sheet_count: {total_sheet_count}')
+    print(f'name_of_sheet: {name_of_sheet}')
     recut_parts: list[str] = get_recut_parts(batch_data=new_laser_batch_data)
+    print(f'recut_parts: {recut_parts}')
     add_recut_parts(batch_data=new_laser_batch_data, recut_parts=recut_parts)
     no_recut_parts: list[str] = get_no_recut_parts(batch_data=new_laser_batch_data)
+    print(f'norecut_parts: {no_recut_parts}')
     add_parts(batch_data=new_laser_batch_data, parts_to_add=no_recut_parts)
     sort_inventory()
 
@@ -169,7 +171,6 @@ def add_recut_parts(batch_data: dict, recut_parts: list[str]) -> None:
         name = recut_part
         recut_count: int = 0
         if part_exists(category="Recut", part_name_to_find=recut_part):
-
             recut_count = (
                 parts_in_inventory.get_data()["Recut"][recut_part]["recut_count"] + 1
             )
@@ -297,7 +298,7 @@ def get_recut_parts(batch_data) -> list[str]:
     recut_parts: list[str] = []
     for part_name in list(batch_data.keys()):
         with contextlib.suppress(KeyError):
-            if batch_data[part_name]["recut"] == True:
+            if batch_data[part_name]["recut"] is True:
                 recut_parts.append(part_name)
     return recut_parts
 
@@ -316,7 +317,7 @@ def get_no_recut_parts(batch_data) -> list[str]:
     no_recut_parts: list[str] = []
     for part_name in list(batch_data.keys()):
         with contextlib.suppress(KeyError):
-            if batch_data[part_name]["recut"] == False:
+            if batch_data[part_name]["recut"] is False:
                 no_recut_parts.append(part_name)
     return no_recut_parts
 

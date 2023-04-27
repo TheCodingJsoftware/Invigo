@@ -1096,7 +1096,7 @@ QPushButton#pushButton_add_new_sheet:disabled{
              </size>
             </property>
             <property name="text">
-             <string>Remove Quantity</string>
+             <string>Remove Quantities from whole Category</string>
             </property>
            </widget>
           </item>
