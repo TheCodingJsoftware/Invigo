@@ -1,10 +1,8 @@
 import contextlib
 import json
-import os
-import shutil
-import sys
 from datetime import datetime
 
+from utils.colors import Colors
 from utils.json_file import JsonFile
 
 inventory = JsonFile(file_name="data/inventory")
@@ -28,13 +26,9 @@ def update_inventory(file_path: str) -> None:
     subtract_sheet_count(
         sheet_name_to_update=name_of_sheet, sheet_count=total_sheet_count
     )
-    print(f'total_sheet_count: {total_sheet_count}')
-    print(f'name_of_sheet: {name_of_sheet}')
     recut_parts: list[str] = get_recut_parts(batch_data=new_laser_batch_data)
-    print(f'recut_parts: {recut_parts}')
     add_recut_parts(batch_data=new_laser_batch_data, recut_parts=recut_parts)
     no_recut_parts: list[str] = get_no_recut_parts(batch_data=new_laser_batch_data)
-    print(f'norecut_parts: {no_recut_parts}')
     add_parts(batch_data=new_laser_batch_data, parts_to_add=no_recut_parts)
     sort_inventory()
 
@@ -57,12 +51,14 @@ def add_parts(batch_data: dict, parts_to_add: list[str]):
                     part_name_to_update=part_to_add,
                     quantity=batch_data[part_to_add]["quantity"],
                 )
+                print(f"{Colors.BOLD}{datetime.now()}{Colors.ENDC}\t\t{Colors.OKGREEN}[+] Added {batch_data[part_to_add]['quantity']} quantites to {part_to_add}{Colors.ENDC}")
                 with contextlib.suppress(ValueError):
                     parts_updated.remove(part_to_add)
     for part_to_add_to_custom in parts_updated:
         add_part_to_inventory(
             category="Custom", part_to_add=part_to_add_to_custom, batch_data=batch_data
         )
+        print(f"{Colors.BOLD}{datetime.now()}{Colors.ENDC}\t\t{Colors.OKGREEN}[+] Added {part_to_add_to_custom} to Custom{Colors.ENDC}")
 
 
 def add_part_to_inventory(category, part_to_add, batch_data) -> None:
@@ -171,6 +167,7 @@ def add_recut_parts(batch_data: dict, recut_parts: list[str]) -> None:
         name = recut_part
         recut_count: int = 0
         if part_exists(category="Recut", part_name_to_find=recut_part):
+
             recut_count = (
                 parts_in_inventory.get_data()["Recut"][recut_part]["recut_count"] + 1
             )
@@ -237,6 +234,7 @@ def add_recut_parts(batch_data: dict, recut_parts: list[str]) -> None:
             "Added at " + str(datetime.now().strftime("%B %d %A %Y %I:%M:%S %p")),
         )
         parts_in_inventory.change_object_in_object_item("Recut", name, "group", None)
+        print(f"{Colors.BOLD}{datetime.now()}{Colors.ENDC}\t\t{Colors.OKGREEN}[+] Added {recut_part} to Recut{Colors.ENDC}")
 
 
 def calculate_price(batch_data: dict, part_name: str) -> float:
@@ -263,7 +261,6 @@ def calculate_price(batch_data: dict, part_name: str) -> float:
     ]["price"]
     cost_for_laser: float = 250 if material in {"304 SS", "409 SS", "Aluminium"} else 150
     return float(
-        # Rounding the number to 2 decimal places.
         round_number(
             (machine_time * (cost_for_laser / 60)) + (weight * price_per_pound), 2
         )
@@ -298,7 +295,7 @@ def get_recut_parts(batch_data) -> list[str]:
     recut_parts: list[str] = []
     for part_name in list(batch_data.keys()):
         with contextlib.suppress(KeyError):
-            if batch_data[part_name]["recut"] is True:
+            if batch_data[part_name]["recut"] == True:
                 recut_parts.append(part_name)
     return recut_parts
 
@@ -317,7 +314,7 @@ def get_no_recut_parts(batch_data) -> list[str]:
     no_recut_parts: list[str] = []
     for part_name in list(batch_data.keys()):
         with contextlib.suppress(KeyError):
-            if batch_data[part_name]["recut"] is False:
+            if batch_data[part_name]["recut"] == False:
                 no_recut_parts.append(part_name)
     return no_recut_parts
 
@@ -340,10 +337,10 @@ def subtract_sheet_count(sheet_name_to_update: str, sheet_count: int) -> None:
                 old_quantity: int = category_data[category][sheet_name][
                     "current_quantity"
                 ]
-                print(old_quantity)
                 price_of_steel_inventory.change_object_in_object_item(
                     category, sheet_name, "current_quantity", old_quantity - sheet_count
                 )
+                print(f"{Colors.BOLD}{datetime.now()}{Colors.ENDC}\t\t{Colors.OKGREEN}[+] Subtracted {sheet_count} quantities from {sheet_name_to_update}{Colors.ENDC}")
 
 
 def get_sheet_name(batch_data: dict) -> str:
@@ -387,6 +384,7 @@ def sort_inventory() -> None:
         parts_in_inventory.sort(
             category=category, item_name="current_quantity", ascending=True
         )
+    print(f"{Colors.BOLD}{datetime.now()}{Colors.ENDC}\t\t{Colors.OKGREEN}[+] Sorted inventory{Colors.ENDC}")
 
 
 if __name__ == "__main__":
