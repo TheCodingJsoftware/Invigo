@@ -141,7 +141,9 @@
             "latest_change_material": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-16-54 PM",
             "latest_sheet_dimension": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-16-54 PM",
             "latest_change_thickness": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-16-54 PM",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 9.0\nto: 97.0\nLaser Pc\nApril 27 Thursday 2023 10:52:59 AM"
+            "latest_change_current_quantity": "Latest Change:\nfrom: 9.0\nto: 97.0\nLaser Pc\nApril 27 Thursday 2023 10:52:59 AM",
+            "red_limit": 10.0,
+            "yellow_limit": 20.0
         },
         "3\/16 Mild Steel 96.000x48.000": {
             "current_quantity": 66.0,
