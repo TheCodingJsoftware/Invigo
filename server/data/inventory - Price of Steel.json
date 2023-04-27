@@ -251,8 +251,8 @@
             "latest_sheet_dimension": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-49-43 PM",
             "latest_change_thickness": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-49-43 PM",
             "latest_change_current_quantity": "Latest Change:\nfrom: 1\nto: 0.0\nLaser Pc\nMarch 21 Tuesday 2023 01:53:11 PM",
-            "red_limit": 0.0,
-            "yellow_limit": 0.0
+            "red_limit": 0.5,
+            "yellow_limit": 0.5
         },
         "3\/16 304 SS 120.000x60.000": {
             "current_quantity": 7.0,
