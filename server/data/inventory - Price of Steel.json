@@ -358,7 +358,8 @@
             "latest_change_current_quantity": "Item added\nLaser Pc\nFebruary 24 Friday 2023 05-10-11 PM",
             "group": "Galvanized",
             "red_limit": 2.0,
-            "yellow_limit": 4.0
+            "yellow_limit": 4.0,
+            "notes": "Usual Ordery 10 sheets "
         },
         "12 Gauge Galvanized 120.000x60.000": {
             "current_quantity": 3.0,
@@ -371,7 +372,8 @@
             "latest_change_current_quantity": "Latest Change:\nfrom: 3.0\nto: 4.0\nLaser Pc\nFebruary 27 Monday 2023 02:32:35 PM",
             "group": "Galvanized",
             "red_limit": 2.0,
-            "yellow_limit": 5.0
+            "yellow_limit": 5.0,
+            "notes": "Usual Ordery 15 sheets "
         },
         "14 Gauge Galvanized 120.000x60.000": {
             "current_quantity": 7.0,
@@ -384,7 +386,8 @@
             "latest_change_current_quantity": "Latest Change:\nfrom: 12.0\nto: 11.0\nLaser Pc\nFebruary 24 Friday 2023 05:12:24 PM",
             "group": "Galvanized",
             "red_limit": 2.0,
-            "yellow_limit": 5.0
+            "yellow_limit": 5.0,
+            "notes": "Usual Ordery 10 sheets "
         },
         "16 Gauge Galvanized 120.000x60.000": {
             "current_quantity": 62.0,
@@ -397,7 +400,8 @@
             "latest_change_current_quantity": "Latest Change:\nfrom: 71.0\nto: 72.0\nLaser Pc\nFebruary 25 Saturday 2023 09:53:52 AM",
             "group": "Galvanized",
             "red_limit": 5.0,
-            "yellow_limit": 10.0
+            "yellow_limit": 10.0,
+            "notes": "Usual Ordery 30 sheets "
         },
         "20 Gauge Galvanized 120.000x60.000": {
             "current_quantity": 0,
@@ -410,7 +414,8 @@
             "latest_change_current_quantity": "Item added\nLaser Pc\nFebruary 24 Friday 2023 05-12-02 PM",
             "group": "Galvanized",
             "red_limit": 10.0,
-            "yellow_limit": 20.0
+            "yellow_limit": 20.0,
+            "notes": "Usual Ordery 80 sheets "
         },
         "18 Gauge Galvanneal 120.000x60.000": {
             "current_quantity": 198.0,
@@ -424,7 +429,7 @@
             "latest_change_current_quantity": "Latest Change:\nfrom: 221.0\nto: 220.0\nLaser Pc\nApril 08 Saturday 2023 10:02:28 AM",
             "red_limit": 30.0,
             "yellow_limit": 60.0,
-            "notes": "200 sheets"
+            "notes": "Usual Ordery 200 sheets "
         }
     },
     "Cutoff": {
