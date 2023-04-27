@@ -181,7 +181,7 @@ class CostLineEdit(QLineEdit):
         self.setStyleSheet("border: 0.09em solid #76797c; background-color: #222222;")
         try:
             self.setText(f"{prefix}{str(round_number(text, 2))} {suffix}")
-        except:
+        except Exception:
             self.setText(f"{prefix}{text} {suffix}")
 
 

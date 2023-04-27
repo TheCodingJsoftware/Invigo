@@ -1,24 +1,32 @@
+from PyQt5.QtGui import QColor
 from PyQt5.QtWidgets import QApplication, QMainWindow, QTableWidget, QTableWidgetItem
 
 app = QApplication([])
+window = QMainWindow()
 
-# Create a QTableWidget with 2 rows and 3 columns
-table_widget = QTableWidget(2, 3)
+table = QTableWidget()
+table.setRowCount(2)
+table.setColumnCount(2)
 
-# Set the flags to show only horizontal grid lines
-table_widget.setShowGrid(True)
-table_widget.setGridStyle(6)
-table_widget.setVerticalScrollBarPolicy(1)
+cell1 = QTableWidgetItem("1")
+cell2 = QTableWidgetItem("2")
+cell3 = QTableWidgetItem("3")
+cell4 = QTableWidgetItem("4")
 
-# Add some dummy data to the table
-table_widget.setItem(0, 0, QTableWidgetItem("Row 1, Column 1"))
-table_widget.setItem(0, 1, QTableWidgetItem("Row 1, Column 2"))
-table_widget.setItem(0, 2, QTableWidgetItem("Row 1, Column 3"))
-table_widget.setItem(1, 0, QTableWidgetItem("Row 2, Column 1"))
-table_widget.setItem(1, 1, QTableWidgetItem("Row 2, Column 2"))
-table_widget.setItem(1, 2, QTableWidgetItem("Row 2, Column 3"))
+table.setItem(0, 0, cell1)
+table.setItem(0, 1, cell2)
+table.setItem(1, 0, cell3)
+table.setItem(1, 1, cell4)
 
-# Show the table
-table_widget.show()
+# Set style for specific cell
+cell1.setBackgroundColor(QColor("green"))
 
+# Set style for all cells
+table.setStyleSheet(
+    "QTableWidget::item:selected { background-color: blue; }"
+    "QTableWidget::item:!selected { background-color: red; }"
+)
+
+window.setCentralWidget(table)
+window.show()
 app.exec_()
