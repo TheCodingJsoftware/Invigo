@@ -300,7 +300,9 @@
             "latest_change_material": "Item added\nLaser Pc\nApril 27 Thursday 2023 04-35-59 PM",
             "latest_sheet_dimension": "Item added\nLaser Pc\nApril 27 Thursday 2023 04-35-59 PM",
             "latest_change_thickness": "Item added\nLaser Pc\nApril 27 Thursday 2023 04-35-59 PM",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 439.0\nto: 439.0\nLaser Pc\nApril 27 Thursday 2023 04:36:50 PM"
+            "latest_change_current_quantity": "Latest Change:\nfrom: 439.0\nto: 439.0\nLaser Pc\nApril 27 Thursday 2023 04:36:50 PM",
+            "red_limit": 0.5,
+            "yellow_limit": 0.5
         },
         "11 Gauge 304 SS 96.000x48.000": {
             "current_quantity": 691.0,
@@ -563,7 +565,7 @@
             "group": "304 SS"
         },
         "11 Gauge 304 SS 120.000x60.000": {
-            "current_quantity": 15,
+            "current_quantity": 10.0,
             "sheet_dimension": "120.000x60.000",
             "thickness": "11 Gauge",
             "material": "304 SS",
@@ -571,7 +573,7 @@
             "latest_change_material": "Item added\nLaser Pc\nApril 27 Thursday 2023 04-49-55 PM",
             "latest_sheet_dimension": "Item added\nLaser Pc\nApril 27 Thursday 2023 04-49-55 PM",
             "latest_change_thickness": "Item added\nLaser Pc\nApril 27 Thursday 2023 04-49-55 PM",
-            "latest_change_current_quantity": "Item added\nLaser Pc\nApril 27 Thursday 2023 04-49-55 PM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 11.0\nto: 10.0\nLaser Pc\nApril 27 Thursday 2023 04:51:08 PM",
             "red_limit": 0.5,
             "yellow_limit": 0.5
         }
