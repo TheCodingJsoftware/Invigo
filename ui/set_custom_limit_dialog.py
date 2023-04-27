@@ -27,6 +27,8 @@ class SetCustomLimitDialog(QDialog):
         button_names: str = DialogButtons.set_cancel,
         title: str = __name__,
         message: str = "",
+        red_limit: int=10,
+        yellow_limit: int=20,
     ) -> None:
         """
         It's a constructor for a class that inherits from QDialog. It takes in a bunch of arguments and
@@ -55,6 +57,10 @@ class SetCustomLimitDialog(QDialog):
 
         self.lblTitle.setText(self.title)
         self.lblMessage.setText(self.message)
+
+        if red_limit is not None or yellow_limit is not None:
+            self.doubleSpinBox_red_limit.setValue(red_limit)
+            self.doubleSpinBox_yellow_limit.setValue(yellow_limit)
 
         self.doubleSpinBox_red_limit.valueChanged.connect(self.check_quantity_values)
         self.doubleSpinBox_yellow_limit.valueChanged.connect(self.check_quantity_values)

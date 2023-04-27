@@ -1,8 +1,9 @@
 
 import os
+
 from PyQt5 import QtGui
 
-THEME_PATH = os.path.dirname(os.path.abspath(__file__))
+THEME_PATH = f"{os.getcwd()}/ui/"
 
 STYLE_SHEET_PATH_DICT = {
     'dark': os.path.join(THEME_PATH, 'dark_theme.css')
@@ -48,7 +49,7 @@ def set_theme(app, theme: str = 'default') -> None:
         # set dark theme style sheet
         with open(STYLE_SHEET_PATH_DICT[theme], 'r') as style_sheet:
             app.setStyleSheet(style_sheet.read().replace(DEFAULT_ICON_PATH, CURRENT_ICON_PATH))
-    
+
     # Check if the theme is set to 'default'
     elif theme == 'default':
         # Set the application style to an empty string, which resets it to the default style
