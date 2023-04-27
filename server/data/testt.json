@@ -599,7 +599,9 @@
             "priority": 0,
             "notes": "Vendor: HC grphic Screen Printing\nDescription: ",
             "latest_change_current_quantity": "Latest Change:\nfrom: 11\nto: 11\nJared\nApril 24 Monday 2023 02:22:59 PM",
-            "latest_change_notes": "Latest Change:\nfrom: \"Vendor: HC grphic Screen Printin\nDescription: \"\nto: \"Vendor: HC grphic Screen Printing\nDescription: \"\nItsme\nJuly 29 Friday 2022 04:10:56 PM"
+            "latest_change_notes": "Latest Change:\nfrom: \"Vendor: HC grphic Screen Printin\nDescription: \"\nto: \"Vendor: HC grphic Screen Printing\nDescription: \"\nItsme\nJuly 29 Friday 2022 04:10:56 PM",
+            "red_limit": 10.0,
+            "yellow_limit": 19.0
         },
         "Tempered Glass 1 1\/4\" X 1 1\/4\" X 3\/16\" NEO Ceram Robax": {
             "part_number": "TG113",
