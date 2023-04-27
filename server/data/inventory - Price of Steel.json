@@ -239,34 +239,8 @@
             "yellow_limit": 0.0
         }
     },
-    "Aluminium": {
-        "16 Gauge Aluminium 96.000x48.000": {
-            "current_quantity": 0,
-            "sheet_dimension": "96.000x48.000",
-            "thickness": "16 Gauge",
-            "material": "Aluminium",
-            "latest_change_material": "Item added\nLaser Pc\nApril 27 Thursday 2023 02-47-15 PM",
-            "latest_sheet_dimension": "Item added\nLaser Pc\nApril 27 Thursday 2023 02-47-15 PM",
-            "latest_change_thickness": "Item added\nLaser Pc\nApril 27 Thursday 2023 02-47-15 PM",
-            "latest_change_current_quantity": "Item added\nLaser Pc\nApril 27 Thursday 2023 02-47-15 PM",
-            "red_limit": 5.0,
-            "yellow_limit": 5.0
-        }
-    },
+    "Aluminium": {},
     "Stainless": {
-        "3\/8 304 SS 120.000x60.000": {
-            "current_quantity": 2,
-            "sheet_dimension": "120.000x60.000",
-            "thickness": "3\/8",
-            "material": "304 SS",
-            "group": null,
-            "latest_change_material": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-48-19 PM",
-            "latest_sheet_dimension": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-48-19 PM",
-            "latest_change_thickness": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-48-19 PM",
-            "latest_change_current_quantity": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-48-19 PM",
-            "red_limit": 1.0,
-            "yellow_limit": 1.0
-        },
         "1\/4 304 SS 120.000x60.000": {
             "current_quantity": 0.0,
             "sheet_dimension": "120.000x60.000",
