@@ -593,7 +593,9 @@
             "latest_sheet_dimension": "Item added\nLaser Pc\nFebruary 24 Friday 2023 05-09-52 PM",
             "latest_change_thickness": "Item added\nLaser Pc\nFebruary 24 Friday 2023 05-09-52 PM",
             "latest_change_current_quantity": "Item added\nLaser Pc\nFebruary 24 Friday 2023 05-09-52 PM",
-            "group": "Galvanized"
+            "group": "Galvanized",
+            "red_limit": 0.0,
+            "yellow_limit": 0.0
         },
         "10 Gauge Galvanized 120.000x60.000": {
             "current_quantity": 5,
@@ -604,7 +606,9 @@
             "latest_sheet_dimension": "Item added\nLaser Pc\nFebruary 24 Friday 2023 05-10-11 PM",
             "latest_change_thickness": "Item added\nLaser Pc\nFebruary 24 Friday 2023 05-10-11 PM",
             "latest_change_current_quantity": "Item added\nLaser Pc\nFebruary 24 Friday 2023 05-10-11 PM",
-            "group": "Galvanized"
+            "group": "Galvanized",
+            "red_limit": 2.0,
+            "yellow_limit": 4.0
         },
         "12 Gauge Galvanized 120.000x60.000": {
             "current_quantity": 3.0,
@@ -615,7 +619,9 @@
             "latest_sheet_dimension": "Item added\nLaser Pc\nFebruary 24 Friday 2023 05-10-27 PM",
             "latest_change_thickness": "Item added\nLaser Pc\nFebruary 24 Friday 2023 05-10-27 PM",
             "latest_change_current_quantity": "Latest Change:\nfrom: 3.0\nto: 4.0\nLaser Pc\nFebruary 27 Monday 2023 02:32:35 PM",
-            "group": "Galvanized"
+            "group": "Galvanized",
+            "red_limit": 2.0,
+            "yellow_limit": 5.0
         },
         "14 Gauge Galvanized 120.000x60.000": {
             "current_quantity": 7.0,
@@ -626,7 +632,9 @@
             "latest_sheet_dimension": "Item added\nLaser Pc\nFebruary 24 Friday 2023 05-10-41 PM",
             "latest_change_thickness": "Item added\nLaser Pc\nFebruary 24 Friday 2023 05-10-41 PM",
             "latest_change_current_quantity": "Latest Change:\nfrom: 12.0\nto: 11.0\nLaser Pc\nFebruary 24 Friday 2023 05:12:24 PM",
-            "group": "Galvanized"
+            "group": "Galvanized",
+            "red_limit": 2.0,
+            "yellow_limit": 5.0
         },
         "16 Gauge Galvanized 120.000x60.000": {
             "current_quantity": 62.0,
@@ -637,7 +645,9 @@
             "latest_sheet_dimension": "Item added\nLaser Pc\nFebruary 24 Friday 2023 05-11-02 PM",
             "latest_change_thickness": "Item added\nLaser Pc\nFebruary 24 Friday 2023 05-11-02 PM",
             "latest_change_current_quantity": "Latest Change:\nfrom: 71.0\nto: 72.0\nLaser Pc\nFebruary 25 Saturday 2023 09:53:52 AM",
-            "group": "Galvanized"
+            "group": "Galvanized",
+            "red_limit": 5.0,
+            "yellow_limit": 10.0
         },
         "18 Gauge Galvanized 120.000x60.000": {
             "current_quantity": 151.0,
