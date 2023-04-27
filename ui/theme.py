@@ -2,7 +2,7 @@
 import os
 from PyQt5 import QtGui
 
-THEME_PATH = os.path.dirname(os.path.abspath(__file__))
+THEME_PATH = os.getcwd() + "/ui/"
 
 STYLE_SHEET_PATH_DICT = {
     'dark': os.path.join(THEME_PATH, 'dark_theme.css')
