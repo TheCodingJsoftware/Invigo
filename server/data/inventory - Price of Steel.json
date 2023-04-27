@@ -436,8 +436,8 @@
             "latest_sheet_dimension": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-52-33 PM",
             "latest_change_thickness": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-52-33 PM",
             "latest_change_current_quantity": "Latest Change:\nfrom: 23.0\nto: 24.0\nLaser Pc\nFebruary 27 Monday 2023 02:39:31 PM",
-            "red_limit": 2.0,
-            "yellow_limit": 5.0
+            "red_limit": 5.0,
+            "yellow_limit": 10.0
         },
         "14 Gauge 304 SS 120.000x60.000": {
             "current_quantity": 8.0,
