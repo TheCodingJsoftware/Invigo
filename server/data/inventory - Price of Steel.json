@@ -321,8 +321,8 @@
             "latest_sheet_dimension": "Item added\nLaser Pc\nApril 27 Thursday 2023 04-37-31 PM",
             "latest_change_thickness": "Item added\nLaser Pc\nApril 27 Thursday 2023 04-37-31 PM",
             "latest_change_current_quantity": "Item added\nLaser Pc\nApril 27 Thursday 2023 04-37-31 PM",
-            "red_limit": 0.0,
-            "yellow_limit": 0.0
+            "red_limit": 0.5,
+            "yellow_limit": 0.5
         },
         "1\/4 Aluminium 120.000x60.000": {
             "current_quantity": 2,
@@ -332,7 +332,9 @@
             "latest_change_material": "Item added\nLaser Pc\nApril 27 Thursday 2023 04-37-57 PM",
             "latest_sheet_dimension": "Item added\nLaser Pc\nApril 27 Thursday 2023 04-37-57 PM",
             "latest_change_thickness": "Item added\nLaser Pc\nApril 27 Thursday 2023 04-37-57 PM",
-            "latest_change_current_quantity": "Item added\nLaser Pc\nApril 27 Thursday 2023 04-37-57 PM"
+            "latest_change_current_quantity": "Item added\nLaser Pc\nApril 27 Thursday 2023 04-37-57 PM",
+            "red_limit": 0.5,
+            "yellow_limit": 0.5
         },
         "3\/8 Aluminium 120.000x60.000": {
             "current_quantity": 2,
@@ -342,7 +344,9 @@
             "latest_change_material": "Item added\nLaser Pc\nApril 27 Thursday 2023 04-38-13 PM",
             "latest_sheet_dimension": "Item added\nLaser Pc\nApril 27 Thursday 2023 04-38-13 PM",
             "latest_change_thickness": "Item added\nLaser Pc\nApril 27 Thursday 2023 04-38-13 PM",
-            "latest_change_current_quantity": "Item added\nLaser Pc\nApril 27 Thursday 2023 04-38-13 PM"
+            "latest_change_current_quantity": "Item added\nLaser Pc\nApril 27 Thursday 2023 04-38-13 PM",
+            "red_limit": 0.5,
+            "yellow_limit": 0.5
         }
     },
     "Stainless": {
