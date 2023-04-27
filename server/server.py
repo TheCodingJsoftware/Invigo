@@ -1,3 +1,4 @@
+import contextlib
 import logging
 import os
 import socket
@@ -11,7 +12,10 @@ from git import Repo
 
 from utils.colors import Colors
 from utils.inventory_updater import update_inventory
+from utils.json_file import JsonFile
+from utils.send_email import send
 
+price_of_steel_inventory = JsonFile(file_name="data/inventory - Price of Steel")
 
 class Server:
     """
@@ -34,6 +38,7 @@ class Server:
         self.check_folders(folders=["data", "logs", "backups"])
         self.config_logs()
         self.__backup_inventroy_files()
+        self.__check_low_sheet_quantities()
         self.start_server()
 
     def config_logs(self) -> None:
@@ -257,6 +262,70 @@ class Server:
                 print(
                     f"{Colors.BOLD}{datetime.now()}{Colors.ENDC} - {Colors.OKGREEN}{os.path.dirname(os.path.realpath(__file__))}/{folder} Created.{Colors.ENDC}"
                 )
+
+def __check_low_sheet_quantities() -> None:
+    if datetime.now().strftime('%A') == 'Friday':
+        sheets_low_in_quantity: int = 0
+        message_to_send: str = '''
+<div class="tg-wrap"><table style="table-layout: fixed; width: 633px; border-collapse: collapse; border: 1px solid; text-align: center; vertical-align: middle;">
+<colgroup>
+<col style="width: 187px">
+<col style="width: 146px">
+<col style="width: 340px">
+</colgroup>
+<thead>
+<tr>
+<th>Sheet Name</th>
+<th>Order Status</th>
+<th>Current Quantity</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+'''
+        data = price_of_steel_inventory.get_data()
+
+        for material in list(data.keys()):
+            if material == 'Price Per Pound':
+                continue
+            for sheet_name in list(data[material].keys()):
+                try:
+                    red_limit: int = data[material][sheet_name]['red_limit']
+                    yellow_limit: int = data[material][sheet_name]['yellow_limit']
+                except Exception:
+                    # Default values
+                    red_limit: int = 10
+                    yellow_limit: int = 20
+                order_pending: str = "Order is NOT pending"
+                with contextlib.suppress(KeyError):
+                    order_pending = "Order is pending" if data[material][sheet_name]['is_order_pending'] is not None else "Order is NOT pending"
+                notes: str = 'Nothing here'
+                with contextlib.suppress(Exception):
+                    notes: str = data[material][sheet_name]['notes']
+                current_quantity: int = data[material][sheet_name]['current_quantity']
+                color: str = 'black'
+                if current_quantity <= red_limit:
+                    color = 'red'
+                elif current_quantity <= yellow_limit:
+                    color = 'yellow'
+                if current_quantity <= red_limit or current_quantity <= yellow_limit:
+                    sheets_low_in_quantity += 1
+                    message_to_send += f'''
+<tr style="border: 1px solid">
+<td style="color: {color}">{sheet_name}</td>
+<td style="color: {color}">{order_pending}</td>
+<td style="color: {color}">{current_quantity}</td>
+<td style="color: {color}">{notes}</td>
+</tr>'''
+        message_to_send += '''
+</tbody>
+</table></div>
+'''
+        if sheets_low_in_quantity == 0:
+            send('Nothing low in quantity, Whew! Have a marvelous Monday.')
+        else:
+            send(message_to_send)
+
 
     def __backup_inventroy_files(self):
         """

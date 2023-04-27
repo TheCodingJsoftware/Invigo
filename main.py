@@ -5,13 +5,15 @@ __credits__: "list[str]" = ["Jared Gross"]
 __license__ = "MIT"
 __name__ = "Inventory Manager"
 __version__ = "v1.6.0"
-__updated__ = "2023-04-27 12:29:33"
+__updated__ = "2023-04-27 18:34:10"
 __maintainer__ = "Jared Gross"
 __email__ = "jared@pinelandfarms.ca"
 __status__ = "Production"
 
+import ast
 import contextlib
 import logging
+import operator as op
 import os
 import shutil
 import subprocess
@@ -23,6 +25,11 @@ import winsound
 from datetime import datetime
 from functools import partial
 from typing import Any
+
+# supported operators
+operators = {ast.Add: op.add, ast.Sub: op.sub, ast.Mult: op.mul,
+             ast.Div: op.truediv, ast.Pow: op.pow, ast.BitXor: op.xor,
+             ast.USub: op.neg}
 
 import requests
 from PyQt5 import uic
@@ -75,6 +82,7 @@ from ui.custom_widgets import (
     ItemNameComboBox,
     NoScrollTabWidget,
     NotesPlainTextEdit,
+    OrderStatusButton,
     POPushButton,
     PriorityComboBox,
     RichTextPushButton,
@@ -1254,9 +1262,7 @@ class MainWindow(QMainWindow):
                     )
 
                 item = list(category_data.keys())[row_index]
-                current_quantity: int = self.get_value_from_category(
-                    item_name=item, key="current_quantity"
-                )
+                current_quantity: int = float(self.get_value_from_category(item_name=item, key="current_quantity"))
                 sheet_dimension: str = self.get_value_from_category(
                     item_name=item, key="sheet_dimension"
                 )
@@ -1275,6 +1281,9 @@ class MainWindow(QMainWindow):
                 group = self.get_value_from_category(item_name=item, key="group")
                 notes: str = self.get_value_from_category(item_name=item, key="notes")
                 notes = "" if notes is None else notes
+                is_order_pending = self.get_value_from_category(item_name=item, key='is_order_pending')
+                if is_order_pending is None:
+                    is_order_pending = False
                 self.get_value_from_category(item_name=item, key="latest_change_material")
                 self.get_value_from_category(item_name=item, key="latest_sheet_dimension")
                 self.get_value_from_category(
@@ -1360,8 +1369,8 @@ class MainWindow(QMainWindow):
                 layout.addWidget(spin_cost_per_sheet)
                 col_index += 1
                 # QUANTITY
-                spin_quantity = HumbleDoubleSpinBox(self)
-                spin_quantity.setValue(current_quantity)
+                spin_quantity = QLineEdit(self)
+                spin_quantity.setText(str(current_quantity))
                 spin_quantity.setFixedWidth(70)
                 spin_quantity.setToolTip(latest_change_current_quantity)
 
@@ -1377,6 +1386,8 @@ class MainWindow(QMainWindow):
                     )
                 layout.addWidget(spin_quantity)
                 col_index += 1
+                # ORDER STATUS BUTTON HERE
+                order_status_button = OrderStatusButton(self)
                 # TOTAL COST
                 total_cost: float = float(
                     round_number(current_quantity * cost_per_sheet, 2)
@@ -1388,7 +1399,7 @@ class MainWindow(QMainWindow):
                     suffix="",
                 )
                 spin_total_cost.setFixedWidth(70)
-                spin_quantity.valueChanged.connect(
+                spin_quantity.returnPressed.connect(
                     partial(
                         self.sheet_quantity_change,
                         self.category,
@@ -1396,6 +1407,7 @@ class MainWindow(QMainWindow):
                         spin_quantity,
                         cost_per_sheet,
                         spin_total_cost,
+                        order_status_button,
                     )
                 )
                 layout.addWidget(spin_total_cost)
@@ -1413,7 +1425,12 @@ class MainWindow(QMainWindow):
                 layout.addWidget(text_notes)
 
                 col_index += 1
+                # ORDER STATUS
+                order_status_button.setChecked(is_order_pending)
+                order_status_button.clicked.connect(partial(self.order_status_button, item, order_status_button))
+                layout.addWidget(order_status_button)
 
+                col_index +=1
                 # DELETE
                 btn_delete = DeletePushButton(
                     parent=self,
@@ -2699,9 +2716,10 @@ class MainWindow(QMainWindow):
         self,
         category: str,
         name: str,
-        spin_quantity: HumbleDoubleSpinBox,
+        spin_quantity: QLineEdit,
         cost_per_sheet: float,
         spin_total_cost: CostLineEdit,
+        order_status_button: OrderStatusButton
     ) -> None:
         """
         This function is called when the user changes the quantity of a sheet in the GUI.
@@ -2722,38 +2740,123 @@ class MainWindow(QMainWindow):
                 + repr(int(x) + round(float("." + str(float(x)).split(".")[1]), n))
             )
 
+        try:
+            new_value = float(self.eval_expr(spin_quantity.text()))
+        except SyntaxError:
+            return
+
         price_of_steel_inventory.get_data()
         value_before = price_of_steel_inventory.get_value(item_name=category)[name][
             "current_quantity"
         ]
+
+        spin_quantity.setText(str(new_value))
         price_of_steel_inventory.change_object_in_object_item(
             category,
             name,
             "latest_change_current_quantity",
-            f"Latest Change:\nfrom: {value_before}\nto: {spin_quantity.value()}\n{self.username}\n{datetime.now().strftime('%B %d %A %Y %I:%M:%S %p')}",
+            f"Latest Change:\nfrom: {value_before}\nto: {new_value}\n{self.username}\n{datetime.now().strftime('%B %d %A %Y %I:%M:%S %p')}",
         )
         price_of_steel_inventory.change_object_in_object_item(
             object_name=category,
             item_name=name,
             value_name="current_quantity",
-            new_value=float(round_number(spin_quantity.value(), 2)),
+            new_value=float(round_number(new_value, 2)),
         )
         spin_quantity.setToolTip(
-            f"Latest Change:\nfrom: {value_before}\nto: {spin_quantity.value()}\n{self.username}\n{datetime.now().strftime('%B %d %A %Y %I:%M:%S %p')}",
+            f"Latest Change:\nfrom: {value_before}\nto: {new_value}\n{self.username}\n{datetime.now().strftime('%B %d %A %Y %I:%M:%S %p')}",
         )
-        if spin_quantity.value() <= 4:
+        red_limit: int = price_of_steel_inventory.get_value(item_name=category)[name][
+            "red_limit"
+        ]
+        yellow_limit: int = price_of_steel_inventory.get_value(item_name=category)[name][
+            "yellow_limit"
+        ]
+        if red_limit is None or yellow_limit is None:
+            red_limit = 10
+            yellow_limit = 20
+
+        if float(spin_quantity.text()) <= red_limit:
             quantity_color = "red"
-        elif spin_quantity.value() <= 10:
+        elif float(spin_quantity.text()) <= yellow_limit:
             quantity_color = "yellow"
-        if spin_quantity.value() > 10:
+        if float(spin_quantity.text()) > yellow_limit:
             spin_quantity.setStyleSheet("")
+            order_status_button.setChecked(False)
+            price_of_steel_inventory.change_object_in_object_item(
+            object_name=self.category,
+            item_name=name,
+            value_name="is_order_pending",
+            new_value=False,
+        )
         else:
             spin_quantity.setStyleSheet(
                 f"color: {quantity_color}; border-color: {quantity_color};"
             )
-        total_cost: float = float(round_number(spin_quantity.value() * cost_per_sheet, 2))
+        total_cost: float = float(round_number(float(spin_quantity.text()) * cost_per_sheet, 2))
         spin_total_cost.setText(f"${format(total_cost, ',')}")
         self.calculuate_price_of_steel_summary()
+
+    def order_status_button(self, item_name: str, button: OrderStatusButton) -> None:
+        """
+        This function updates the "is_order_pending" value of an item in a steel inventory object based
+        on the status of an order status button.
+
+        Args:
+          item_name (str): A string representing the name of the item for which the order status button
+        is being updated.
+          button (OrderStatusButton): The button parameter is an instance of
+        the OrderStatusButton class, which is a graphical user interface (GUI) element that allows the
+        user to toggle the status of an order. The isChecked() method of the OrderStatusButton class
+        returns a boolean value indicating whether the button is currently checked or not
+        """
+        price_of_steel_inventory.change_object_in_object_item(
+            object_name=self.category,
+            item_name=item_name,
+            value_name="is_order_pending",
+            new_value=button.isChecked(),
+        )
+
+    def eval_expr(self, expr):
+        """
+        This function evaluates a given expression using the ast module in Python.
+
+        Args:
+          expr: The expression to be evaluated as a string.
+
+        Returns:
+          The `eval_expr` method is returning the result of evaluating the expression passed as an
+        argument. The expression is first parsed using the `ast.parse` method with the mode set to
+        `'eval'`, which means that the expression is expected to be a single expression that can be
+        evaluated. The resulting AST (Abstract Syntax Tree) is then evaluated using the `eval_` method
+        (which is not shown
+        """
+        return self.eval_(ast.parse(expr, mode='eval').body)
+
+    def eval_(self, node):
+        """
+        This function evaluates mathematical expressions represented as an abstract syntax tree in
+        Python.
+
+        Args:
+          node: a node in the abstract syntax tree (AST) of a Python program. The AST is a tree-like
+        data structure that represents the structure of the program's code.
+
+        Returns:
+          The function `eval_` returns the evaluated value of the given AST node. If the node is a
+        number, it returns the number itself. If the node is a binary operation, it evaluates the left
+        and right operands and applies the corresponding operator to them. If the node is a unary
+        operation, it applies the corresponding operator to the operand. If the node is not one of these
+        types, it
+        """
+        if isinstance(node, ast.Num): # <number>
+            return node.n
+        elif isinstance(node, ast.BinOp): # <left> <operator> <right>
+            return operators[type(node.op)](self.eval_(node.left), self.eval_(node.right))
+        elif isinstance(node, ast.UnaryOp): # <operator> <operand> e.g., -1
+            return operators[type(node.op)](self.eval_(node.operand))
+        else:
+            raise TypeError(node)
 
     def sheet_notes_changed(self, category: str, item: str, note: QPlainTextEdit) -> None:
         """
@@ -2908,7 +3011,7 @@ class MainWindow(QMainWindow):
                 + 'f" % '
                 + repr(int(x) + round(float("." + str(float(x)).split(".")[1]), n))
             )
-
+        self.clear_layout(self.gridLayout_price_of_steel)
         total: float = 0.0
         i: int = 0
         for category in list(category_data.keys()):

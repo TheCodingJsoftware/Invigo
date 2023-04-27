@@ -26,6 +26,22 @@ from PyQt5.QtWidgets import (
 )
 
 
+class OrderStatusButton(QPushButton):
+    def __init__(self, parent=None):
+        """
+        This function initializes a QPushButton with specific properties and sets its object name to
+        "order_status".
+
+        Args:
+          parent: The parent widget of the QPushButton. If no parent is specified, the button will be a
+        top-level window.
+        """
+        super(QPushButton, self).__init__(parent)
+        self.setCheckable(True)
+        self.setText("Order Pending")
+        self.setFixedWidth(100)
+        self.setObjectName("order_status")
+
 class NoScrollTabWidget(QTabWidget):
     """This is a custom class that inherits from QTabWidget and disables scrolling functionality."""
 
@@ -626,9 +642,9 @@ class ViewTree(QTreeWidget):
             elif isinstance(value, (list, tuple)):
                 for val in value:
                     text = (
-                        str(val)
-                        if not isinstance(val, (dict, list, tuple))
-                        else "[%s]" % type(val).__name__
+                        f"[{type(val).__name__}]"
+                        if isinstance(val, (dict, list, tuple))
+                        else str(val)
                     )
                     new_item(item, text, val)
 
