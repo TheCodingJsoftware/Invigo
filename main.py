@@ -10,6 +10,7 @@ __maintainer__ = "Jared Gross"
 __email__ = "jared@pinelandfarms.ca"
 __status__ = "Production"
 
+import ast
 import contextlib
 import logging
 import os
@@ -20,9 +21,15 @@ import threading
 import time
 import webbrowser
 import winsound
+import operator as op
 from datetime import datetime
 from functools import partial
 from typing import Any
+
+# supported operators
+operators = {ast.Add: op.add, ast.Sub: op.sub, ast.Mult: op.mul,
+             ast.Div: op.truediv, ast.Pow: op.pow, ast.BitXor: op.xor,
+             ast.USub: op.neg}
 
 import requests
 from PyQt5 import uic
@@ -1254,9 +1261,7 @@ class MainWindow(QMainWindow):
                     )
 
                 item = list(category_data.keys())[row_index]
-                current_quantity: int = self.get_value_from_category(
-                    item_name=item, key="current_quantity"
-                )
+                current_quantity: int = float(self.get_value_from_category(item_name=item, key="current_quantity"))
                 sheet_dimension: str = self.get_value_from_category(
                     item_name=item, key="sheet_dimension"
                 )
@@ -1360,8 +1365,8 @@ class MainWindow(QMainWindow):
                 layout.addWidget(spin_cost_per_sheet)
                 col_index += 1
                 # QUANTITY
-                spin_quantity = HumbleDoubleSpinBox(self)
-                spin_quantity.setValue(current_quantity)
+                spin_quantity = QLineEdit(self)
+                spin_quantity.setText(str(current_quantity))
                 spin_quantity.setFixedWidth(70)
                 spin_quantity.setToolTip(latest_change_current_quantity)
 
@@ -1388,7 +1393,7 @@ class MainWindow(QMainWindow):
                     suffix="",
                 )
                 spin_total_cost.setFixedWidth(70)
-                spin_quantity.valueChanged.connect(
+                spin_quantity.returnPressed.connect(
                     partial(
                         self.sheet_quantity_change,
                         self.category,
@@ -2699,7 +2704,7 @@ class MainWindow(QMainWindow):
         self,
         category: str,
         name: str,
-        spin_quantity: HumbleDoubleSpinBox,
+        spin_quantity: QLineEdit,
         cost_per_sheet: float,
         spin_total_cost: CostLineEdit,
     ) -> None:
@@ -2722,39 +2727,87 @@ class MainWindow(QMainWindow):
                 + repr(int(x) + round(float("." + str(float(x)).split(".")[1]), n))
             )
 
+        try:
+            new_value = float(self.eval_expr(spin_quantity.text()))
+        except SyntaxError:
+            return
+
         price_of_steel_inventory.get_data()
         value_before = price_of_steel_inventory.get_value(item_name=category)[name][
             "current_quantity"
         ]
+        
+        spin_quantity.setText(str(new_value))
         price_of_steel_inventory.change_object_in_object_item(
             category,
             name,
             "latest_change_current_quantity",
-            f"Latest Change:\nfrom: {value_before}\nto: {spin_quantity.value()}\n{self.username}\n{datetime.now().strftime('%B %d %A %Y %I:%M:%S %p')}",
+            f"Latest Change:\nfrom: {value_before}\nto: {new_value}\n{self.username}\n{datetime.now().strftime('%B %d %A %Y %I:%M:%S %p')}",
         )
         price_of_steel_inventory.change_object_in_object_item(
             object_name=category,
             item_name=name,
             value_name="current_quantity",
-            new_value=float(round_number(spin_quantity.value(), 2)),
+            new_value=float(round_number(new_value, 2)),
         )
         spin_quantity.setToolTip(
-            f"Latest Change:\nfrom: {value_before}\nto: {spin_quantity.value()}\n{self.username}\n{datetime.now().strftime('%B %d %A %Y %I:%M:%S %p')}",
+            f"Latest Change:\nfrom: {value_before}\nto: {new_value}\n{self.username}\n{datetime.now().strftime('%B %d %A %Y %I:%M:%S %p')}",
         )
-        if spin_quantity.value() <= 4:
+        if float(spin_quantity.text()) <= 4:
             quantity_color = "red"
-        elif spin_quantity.value() <= 10:
+        elif float(spin_quantity.text()) <= 10:
             quantity_color = "yellow"
-        if spin_quantity.value() > 10:
+        if float(spin_quantity.text()) > 10:
             spin_quantity.setStyleSheet("")
         else:
             spin_quantity.setStyleSheet(
                 f"color: {quantity_color}; border-color: {quantity_color};"
             )
-        total_cost: float = float(round_number(spin_quantity.value() * cost_per_sheet, 2))
+        total_cost: float = float(round_number(float(spin_quantity.text()) * cost_per_sheet, 2))
         spin_total_cost.setText(f"${format(total_cost, ',')}")
         self.calculuate_price_of_steel_summary()
 
+    def eval_expr(self, expr):
+        """
+        This function evaluates a given expression using the ast module in Python.
+        
+        Args:
+          expr: The expression to be evaluated as a string.
+        
+        Returns:
+          The `eval_expr` method is returning the result of evaluating the expression passed as an
+        argument. The expression is first parsed using the `ast.parse` method with the mode set to
+        `'eval'`, which means that the expression is expected to be a single expression that can be
+        evaluated. The resulting AST (Abstract Syntax Tree) is then evaluated using the `eval_` method
+        (which is not shown
+        """
+        return self.eval_(ast.parse(expr, mode='eval').body)
+
+    def eval_(self, node):
+        """
+        This function evaluates mathematical expressions represented as an abstract syntax tree in
+        Python.
+        
+        Args:
+          node: a node in the abstract syntax tree (AST) of a Python program. The AST is a tree-like
+        data structure that represents the structure of the program's code.
+        
+        Returns:
+          The function `eval_` returns the evaluated value of the given AST node. If the node is a
+        number, it returns the number itself. If the node is a binary operation, it evaluates the left
+        and right operands and applies the corresponding operator to them. If the node is a unary
+        operation, it applies the corresponding operator to the operand. If the node is not one of these
+        types, it
+        """
+        if isinstance(node, ast.Num): # <number>
+            return node.n
+        elif isinstance(node, ast.BinOp): # <left> <operator> <right>
+            return operators[type(node.op)](self.eval_(node.left), self.eval_(node.right))
+        elif isinstance(node, ast.UnaryOp): # <operator> <operand> e.g., -1
+            return operators[type(node.op)](self.eval_(node.operand))
+        else:
+            raise TypeError(node)
+        
     def sheet_notes_changed(self, category: str, item: str, note: QPlainTextEdit) -> None:
         """
         It takes the category, item name, value name, and note as parameters and then calls the
@@ -2908,7 +2961,7 @@ class MainWindow(QMainWindow):
                 + 'f" % '
                 + repr(int(x) + round(float("." + str(float(x)).split(".")[1]), n))
             )
-
+        self.clear_layout(self.gridLayout_price_of_steel)
         total: float = 0.0
         i: int = 0
         for category in list(category_data.keys()):
