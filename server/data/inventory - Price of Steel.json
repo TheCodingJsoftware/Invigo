@@ -223,7 +223,7 @@
             "latest_change_current_quantity": "Latest Change:\nfrom: 39.0\nto: 40.0\nLaser Pc\nApril 01 Saturday 2023 09:43:53 AM",
             "group": "10G Mild Steel",
             "red_limit": 10.0,
-            "yellow_limit": 20.0
+            "yellow_limit": 15.0
         },
         "12 Gauge Mild Steel 120.000x60.000": {
             "current_quantity": 29.0,
