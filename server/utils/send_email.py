@@ -4,9 +4,6 @@ from email.mime import multipart, text
 
 
 def send(body: str, email_addresses: list[str] = None):
-# `price_of_steel_inventory` is creating an instance of the `JsonFile` class and initializing it with
-# the file path "server/data/inventory - Price of Steel.json". This suggests that the file contains
-# data related to the inventory and prices of steel.
     """
     This function sends an email with a specified body to a list of email addresses using Gmail's SMTP
     server.
