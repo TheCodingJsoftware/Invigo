@@ -30,19 +30,6 @@
         }
     },
     "Mild Steel": {
-        "1 Laser Grade Plate 120.000x60.000": {
-            "current_quantity": 2,
-            "sheet_dimension": "120.000x60.000",
-            "thickness": "1",
-            "material": "Laser Grade Plate",
-            "latest_change_material": "Item added\nLaser Pc\nFebruary 24 Friday 2023 03-58-02 PM",
-            "latest_sheet_dimension": "Item added\nLaser Pc\nFebruary 24 Friday 2023 03-58-02 PM",
-            "latest_change_thickness": "Item added\nLaser Pc\nFebruary 24 Friday 2023 03-58-02 PM",
-            "latest_change_current_quantity": "Item added\nLaser Pc\nFebruary 24 Friday 2023 03-58-02 PM",
-            "group": "Laser Grade Plate",
-            "red_limit": 0.0,
-            "yellow_limit": 0.0
-        },
         "3\/4 Laser Grade Plate 120.000x60.000": {
             "current_quantity": 5.0,
             "sheet_dimension": "120.000x60.000",
@@ -55,19 +42,6 @@
             "latest_change_current_quantity": "Latest Change:\nfrom: 6.0\nto: 5.0\nLaser Pc\nApril 12 Wednesday 2023 09:10:36 AM",
             "red_limit": 1.0,
             "yellow_limit": 3.0
-        },
-        "5\/8 Laser Grade Plate 120.000x60.000": {
-            "current_quantity": 2,
-            "sheet_dimension": "120.000x60.000",
-            "thickness": "5\/8",
-            "material": "Laser Grade Plate",
-            "group": "Laser Grade Plate",
-            "latest_change_material": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-04-39 PM",
-            "latest_sheet_dimension": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-04-39 PM",
-            "latest_change_thickness": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-04-39 PM",
-            "latest_change_current_quantity": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-04-39 PM",
-            "red_limit": 0.0,
-            "yellow_limit": 0.0
         },
         "1\/2 Laser Grade Plate 120.000x60.000": {
             "current_quantity": 3.0,
@@ -263,104 +237,9 @@
             "latest_change_current_quantity": "Latest Change:\nfrom: 10.0\nto: 9.0\nJusti\nFebruary 25 Saturday 2023 10:56:21 AM",
             "red_limit": 0.0,
             "yellow_limit": 0.0
-        },
-        "18 Gauge Mild Steel 120.000x48.000": {
-            "current_quantity": 4,
-            "sheet_dimension": "120.000x48.000",
-            "thickness": "18 Gauge",
-            "material": "Mild Steel",
-            "group": "18G Mild Steel",
-            "latest_change_material": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-33-02 PM",
-            "latest_sheet_dimension": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-33-02 PM",
-            "latest_change_thickness": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-33-02 PM",
-            "latest_change_current_quantity": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-33-02 PM"
-        },
-        "5\/16 Mild Steel 120.000x60.000": {
-            "current_quantity": 47,
-            "sheet_dimension": "120.000x60.000",
-            "thickness": "5\/16",
-            "material": "Mild Steel",
-            "latest_change_material": "Item added\nLaser Pc\nFebruary 24 Friday 2023 05-15-58 PM",
-            "latest_sheet_dimension": "Item added\nLaser Pc\nFebruary 24 Friday 2023 05-15-58 PM",
-            "latest_change_thickness": "Item added\nLaser Pc\nFebruary 24 Friday 2023 05-15-58 PM",
-            "latest_change_current_quantity": "Item added\nLaser Pc\nFebruary 24 Friday 2023 05-15-58 PM",
-            "red_limit": 0.0,
-            "yellow_limit": 0.0
         }
     },
     "Aluminium": {
-        "3\/8 Aluminium 144.000x48.000": {
-            "current_quantity": 2,
-            "sheet_dimension": "144.000x48.000",
-            "thickness": "3\/8",
-            "material": "Aluminium",
-            "latest_change_material": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-44-01 PM",
-            "latest_sheet_dimension": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-44-01 PM",
-            "latest_change_thickness": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-44-01 PM",
-            "latest_change_current_quantity": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-44-01 PM",
-            "red_limit": 0.0,
-            "yellow_limit": 0.0
-        },
-        "1\/4 Aluminium 120.000x60.000": {
-            "current_quantity": 2,
-            "sheet_dimension": "120.000x60.000",
-            "thickness": "1\/4",
-            "material": "Aluminium",
-            "latest_change_material": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-45-06 PM",
-            "latest_sheet_dimension": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-45-06 PM",
-            "latest_change_thickness": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-45-06 PM",
-            "latest_change_current_quantity": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-45-06 PM",
-            "red_limit": 0.0,
-            "yellow_limit": 0.0
-        },
-        "3\/16 Aluminium 120.000x60.000": {
-            "current_quantity": 2,
-            "sheet_dimension": "120.000x60.000",
-            "thickness": "3\/16",
-            "material": "Aluminium",
-            "latest_change_material": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-45-26 PM",
-            "latest_sheet_dimension": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-45-26 PM",
-            "latest_change_thickness": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-45-26 PM",
-            "latest_change_current_quantity": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-45-26 PM",
-            "red_limit": 0.0,
-            "yellow_limit": 0.0
-        },
-        "11 Gauge Aluminium 98.000x48.000": {
-            "current_quantity": 691,
-            "sheet_dimension": "98.000x48.000",
-            "thickness": "11 Gauge",
-            "material": "Aluminium",
-            "latest_change_material": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-46-09 PM",
-            "latest_sheet_dimension": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-46-09 PM",
-            "latest_change_thickness": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-46-09 PM",
-            "latest_change_current_quantity": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-46-09 PM",
-            "red_limit": 0.0,
-            "yellow_limit": 0.0
-        },
-        "14 Gauge Aluminium 96.000x48.000": {
-            "current_quantity": 439.0,
-            "sheet_dimension": "96.000x48.000",
-            "thickness": "14 Gauge",
-            "material": "Aluminium",
-            "latest_change_material": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-46-34 PM",
-            "latest_sheet_dimension": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-46-34 PM",
-            "latest_change_thickness": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-46-34 PM",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 439.0\nto: 439.0\nLaser Pc\nApril 22 Saturday 2023 10:20:17 AM",
-            "red_limit": 0.0,
-            "yellow_limit": 0.0
-        },
-        "18 Gauge Aluminium 120.000x60.000": {
-            "current_quantity": 8,
-            "sheet_dimension": "120.000x60.000",
-            "thickness": "18 Gauge",
-            "material": "Aluminium",
-            "latest_change_material": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-47-20 PM",
-            "latest_sheet_dimension": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-47-20 PM",
-            "latest_change_thickness": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-47-20 PM",
-            "latest_change_current_quantity": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-47-20 PM",
-            "red_limit": 0.0,
-            "yellow_limit": 0.0
-        },
         "16 Gauge Aluminium 96.000x48.000": {
             "current_quantity": 0,
             "sheet_dimension": "96.000x48.000",
@@ -385,8 +264,8 @@
             "latest_sheet_dimension": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-48-19 PM",
             "latest_change_thickness": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-48-19 PM",
             "latest_change_current_quantity": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-48-19 PM",
-            "red_limit": 0.0,
-            "yellow_limit": 0.0
+            "red_limit": 1.0,
+            "yellow_limit": 1.0
         },
         "1\/4 304 SS 120.000x60.000": {
             "current_quantity": 0.0,
