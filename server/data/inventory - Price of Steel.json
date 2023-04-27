@@ -291,7 +291,58 @@
             "yellow_limit": 0.5
         }
     },
-    "Aluminium": {},
+    "Aluminium": {
+        "14 Gauge Aluminium 96.000x48.000": {
+            "current_quantity": 439.0,
+            "sheet_dimension": "96.000x48.000",
+            "thickness": "14 Gauge",
+            "material": "Aluminium",
+            "latest_change_material": "Item added\nLaser Pc\nApril 27 Thursday 2023 04-35-59 PM",
+            "latest_sheet_dimension": "Item added\nLaser Pc\nApril 27 Thursday 2023 04-35-59 PM",
+            "latest_change_thickness": "Item added\nLaser Pc\nApril 27 Thursday 2023 04-35-59 PM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 439.0\nto: 439.0\nLaser Pc\nApril 27 Thursday 2023 04:36:50 PM"
+        },
+        "11 Gauge 304 SS 96.000x48.000": {
+            "current_quantity": 691.0,
+            "sheet_dimension": "96.000x48.000",
+            "thickness": "11 Gauge",
+            "material": "304 SS",
+            "latest_change_material": "Item added\nLaser Pc\nApril 27 Thursday 2023 04-36-41 PM",
+            "latest_sheet_dimension": "Item added\nLaser Pc\nApril 27 Thursday 2023 04-36-41 PM",
+            "latest_change_thickness": "Item added\nLaser Pc\nApril 27 Thursday 2023 04-36-41 PM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 69.0\nto: 691.0\nLaser Pc\nApril 27 Thursday 2023 04:36:55 PM"
+        },
+        "3\/16 Aluminium 120.000x60.000": {
+            "current_quantity": 1,
+            "sheet_dimension": "120.000x60.000",
+            "thickness": "3\/16",
+            "material": "Aluminium",
+            "latest_change_material": "Item added\nLaser Pc\nApril 27 Thursday 2023 04-37-31 PM",
+            "latest_sheet_dimension": "Item added\nLaser Pc\nApril 27 Thursday 2023 04-37-31 PM",
+            "latest_change_thickness": "Item added\nLaser Pc\nApril 27 Thursday 2023 04-37-31 PM",
+            "latest_change_current_quantity": "Item added\nLaser Pc\nApril 27 Thursday 2023 04-37-31 PM"
+        },
+        "1\/4 Aluminium 120.000x60.000": {
+            "current_quantity": 2,
+            "sheet_dimension": "120.000x60.000",
+            "thickness": "1\/4",
+            "material": "Aluminium",
+            "latest_change_material": "Item added\nLaser Pc\nApril 27 Thursday 2023 04-37-57 PM",
+            "latest_sheet_dimension": "Item added\nLaser Pc\nApril 27 Thursday 2023 04-37-57 PM",
+            "latest_change_thickness": "Item added\nLaser Pc\nApril 27 Thursday 2023 04-37-57 PM",
+            "latest_change_current_quantity": "Item added\nLaser Pc\nApril 27 Thursday 2023 04-37-57 PM"
+        },
+        "3\/8 Aluminium 120.000x60.000": {
+            "current_quantity": 2,
+            "sheet_dimension": "120.000x60.000",
+            "thickness": "3\/8",
+            "material": "Aluminium",
+            "latest_change_material": "Item added\nLaser Pc\nApril 27 Thursday 2023 04-38-13 PM",
+            "latest_sheet_dimension": "Item added\nLaser Pc\nApril 27 Thursday 2023 04-38-13 PM",
+            "latest_change_thickness": "Item added\nLaser Pc\nApril 27 Thursday 2023 04-38-13 PM",
+            "latest_change_current_quantity": "Item added\nLaser Pc\nApril 27 Thursday 2023 04-38-13 PM"
+        }
+    },
     "Stainless": {
         "1\/4 304 SS 120.000x60.000": {
             "current_quantity": 0.0,
@@ -501,6 +552,17 @@
             "latest_change_thickness": "Item added\nLaser Pc\nApril 27 Thursday 2023 04-27-27 PM",
             "latest_change_current_quantity": "Item added\nLaser Pc\nApril 27 Thursday 2023 04-27-27 PM",
             "group": "Galvanized"
+        },
+        "20 Gauge Galvanneal 120.000x48.000": {
+            "current_quantity": 23,
+            "sheet_dimension": "120.000x48.000",
+            "thickness": "20 Gauge",
+            "material": "Galvanneal",
+            "latest_change_material": "Item added\nLaser Pc\nApril 27 Thursday 2023 04-35-24 PM",
+            "latest_sheet_dimension": "Item added\nLaser Pc\nApril 27 Thursday 2023 04-35-24 PM",
+            "latest_change_thickness": "Item added\nLaser Pc\nApril 27 Thursday 2023 04-35-24 PM",
+            "latest_change_current_quantity": "Item added\nLaser Pc\nApril 27 Thursday 2023 04-35-24 PM",
+            "group": "Galvanneal"
         }
     },
     "Cutoff": {
