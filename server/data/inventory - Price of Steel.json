@@ -297,7 +297,9 @@
             "latest_change_material": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-44-01 PM",
             "latest_sheet_dimension": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-44-01 PM",
             "latest_change_thickness": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-44-01 PM",
-            "latest_change_current_quantity": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-44-01 PM"
+            "latest_change_current_quantity": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-44-01 PM",
+            "red_limit": 0.0,
+            "yellow_limit": 0.0
         },
         "1\/4 Aluminium 120.000x60.000": {
             "current_quantity": 2,
@@ -307,7 +309,9 @@
             "latest_change_material": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-45-06 PM",
             "latest_sheet_dimension": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-45-06 PM",
             "latest_change_thickness": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-45-06 PM",
-            "latest_change_current_quantity": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-45-06 PM"
+            "latest_change_current_quantity": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-45-06 PM",
+            "red_limit": 0.0,
+            "yellow_limit": 0.0
         },
         "3\/16 Aluminium 120.000x60.000": {
             "current_quantity": 2,
@@ -317,7 +321,9 @@
             "latest_change_material": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-45-26 PM",
             "latest_sheet_dimension": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-45-26 PM",
             "latest_change_thickness": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-45-26 PM",
-            "latest_change_current_quantity": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-45-26 PM"
+            "latest_change_current_quantity": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-45-26 PM",
+            "red_limit": 0.0,
+            "yellow_limit": 0.0
         },
         "11 Gauge Aluminium 98.000x48.000": {
             "current_quantity": 691,
@@ -327,7 +333,9 @@
             "latest_change_material": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-46-09 PM",
             "latest_sheet_dimension": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-46-09 PM",
             "latest_change_thickness": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-46-09 PM",
-            "latest_change_current_quantity": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-46-09 PM"
+            "latest_change_current_quantity": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-46-09 PM",
+            "red_limit": 0.0,
+            "yellow_limit": 0.0
         },
         "14 Gauge Aluminium 96.000x48.000": {
             "current_quantity": 439.0,
@@ -337,7 +345,9 @@
             "latest_change_material": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-46-34 PM",
             "latest_sheet_dimension": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-46-34 PM",
             "latest_change_thickness": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-46-34 PM",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 439.0\nto: 439.0\nLaser Pc\nApril 22 Saturday 2023 10:20:17 AM"
+            "latest_change_current_quantity": "Latest Change:\nfrom: 439.0\nto: 439.0\nLaser Pc\nApril 22 Saturday 2023 10:20:17 AM",
+            "red_limit": 0.0,
+            "yellow_limit": 0.0
         },
         "16 Gauge Aluminium 120.000x60.000": {
             "current_quantity": 9,
@@ -357,7 +367,9 @@
             "latest_change_material": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-47-20 PM",
             "latest_sheet_dimension": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-47-20 PM",
             "latest_change_thickness": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-47-20 PM",
-            "latest_change_current_quantity": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-47-20 PM"
+            "latest_change_current_quantity": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-47-20 PM",
+            "red_limit": 0.0,
+            "yellow_limit": 0.0
         }
     },
     "Stainless": {
