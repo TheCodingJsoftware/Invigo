@@ -234,7 +234,7 @@
         "Tempered Glass 1 1\/4\" X 1 1\/4\" X 3\/16\" NEO Ceram Robax": {
             "part_number": "TG113",
             "unit_quantity": 1,
-            "current_quantity": 7,
+            "current_quantity": 47,
             "price": 11.33,
             "use_exchange_rate": false,
             "priority": 0,
@@ -242,7 +242,7 @@
             "latest_change_name": "Item added\nItsme\nJuly 07 Thursday 2022 11-27-45 AM",
             "latest_change_part_number": "Item added\nItsme\nJuly 07 Thursday 2022 11-27-45 AM",
             "latest_change_unit_quantity": "Item added\nItsme\nJuly 07 Thursday 2022 11-27-45 AM",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 7\nto: 7\nLynden\nApril 21 Friday 2023 01:29:33 PM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 47\nto: 47\nLynden\nApril 27 Thursday 2023 11:21:50 AM",
             "latest_change_price": "Latest Change:\nfrom: 11.3\nto: 11.33\nItsme\nAugust 24 Wednesday 2022 03:56:44 PM",
             "latest_change_use_exchange_price": "Item added\nItsme\nJuly 07 Thursday 2022 11-27-45 AM",
             "latest_change_priority": "Item added\nItsme\nJuly 07 Thursday 2022 11-27-45 AM",
@@ -1220,7 +1220,7 @@
             "latest_change_part_number": "Item added\nItsme\nAugust 19 Friday 2022 10-21-44 AM",
             "latest_change_unit_quantity": "Item added\nItsme\nAugust 19 Friday 2022 10-21-44 AM",
             "latest_change_current_quantity": "Latest Change:\nfrom: 120\nto: 120\nLynden\nApril 21 Friday 2023 01:29:34 PM",
-            "latest_change_price": "Latest Change:\nfrom: 10.0\nto: 10.0\nLynden\nApril 27 Thursday 2023 11:16:35 AM",
+            "latest_change_price": "Latest Change:\nfrom: 10.0\nto: 10.0\nLynden\nApril 27 Thursday 2023 11:21:38 AM",
             "latest_change_use_exchange_price": "Item added\nItsme\nAugust 19 Friday 2022 10-21-44 AM",
             "latest_change_priority": "Item added\nItsme\nAugust 19 Friday 2022 10-21-44 AM",
             "latest_change_notes": "Item added\nItsme\nAugust 19 Friday 2022 10-21-44 AM"
@@ -2915,7 +2915,7 @@
             "latest_change_part_number": "Item added\nItsme\nAugust 19 Friday 2022 10-21-10 AM",
             "latest_change_unit_quantity": "Item added\nItsme\nAugust 19 Friday 2022 10-21-10 AM",
             "latest_change_current_quantity": "Latest Change:\nfrom: 120\nto: 120\nLynden\nApril 21 Friday 2023 01:29:34 PM",
-            "latest_change_price": "Latest Change:\nfrom: 10.0\nto: 10.0\nLynden\nApril 27 Thursday 2023 11:16:35 AM",
+            "latest_change_price": "Latest Change:\nfrom: 10.0\nto: 10.0\nLynden\nApril 27 Thursday 2023 11:21:38 AM",
             "latest_change_use_exchange_price": "Item added\nItsme\nAugust 19 Friday 2022 10-21-10 AM",
             "latest_change_priority": "Item added\nItsme\nAugust 19 Friday 2022 10-21-10 AM",
             "latest_change_notes": "Item added\nItsme\nAugust 19 Friday 2022 10-21-10 AM"
@@ -3751,23 +3751,6 @@
             "latest_change_price": "Latest Change:\nfrom: 1.2\nto: 1.21\nItsme\nAugust 03 Wednesday 2022 08:50:13 AM",
             "latest_change_notes": "Latest Change:\nfrom: Vendor: Greenline\nDescription: 204-694-0332\nPart # G1616-12\nto: Vendor: Greenline\nDescription: 204-694-0332\nPart # G1616-125\nItsme\nJanuary 17 Tuesday 2023 09:14:55 AM"
         },
-        "Tempered Glass 1 1\/4\" X 1 1\/4\" X 3\/16\" NEO Ceram Robax": {
-            "part_number": "TG113",
-            "unit_quantity": 1,
-            "current_quantity": 7,
-            "price": 11.33,
-            "use_exchange_rate": false,
-            "priority": 0,
-            "notes": "Vendor: Mc Master Carr\nDescription: ",
-            "latest_change_name": "Item added\nItsme\nJuly 07 Thursday 2022 11-27-45 AM",
-            "latest_change_part_number": "Item added\nItsme\nJuly 07 Thursday 2022 11-27-45 AM",
-            "latest_change_unit_quantity": "Item added\nItsme\nJuly 07 Thursday 2022 11-27-45 AM",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 7\nto: 7\nLynden\nApril 21 Friday 2023 01:29:33 PM",
-            "latest_change_price": "Latest Change:\nfrom: 11.3\nto: 11.33\nItsme\nAugust 24 Wednesday 2022 03:56:44 PM",
-            "latest_change_use_exchange_price": "Item added\nItsme\nJuly 07 Thursday 2022 11-27-45 AM",
-            "latest_change_priority": "Item added\nItsme\nJuly 07 Thursday 2022 11-27-45 AM",
-            "latest_change_notes": "Latest Change:\nfrom: \"Vendor: Mc Master Car\nDescription: \"\nto: \"Vendor: Mc Master Carr\nDescription: \"\nItsme\nJuly 18 Monday 2022 02:01:12 PM"
-        },
         "G3 Brick Set": {
             "part_number": "G3BS",
             "unit_quantity": 1,
@@ -4153,6 +4136,23 @@
             "latest_change_use_exchange_price": "Item added\nItsme\nFebruary 02 Thursday 2023 09-47-06 AM",
             "latest_change_priority": "Item added\nItsme\nFebruary 02 Thursday 2023 09-47-06 AM",
             "latest_change_notes": "Latest Change:\nfrom: Vendor: Revcor  Revolutionary Air Flow\nDescription:  \n9 inch fan-motor and 5\" includes full assembly\nto: Vendor: Revcor  Revolutionary Air Flow\nDescription:  \n9 inch fan-motor and 5\" includes full assembly\n\nItsme\nFebruary 11 Saturday 2023 10:18:54 AM"
+        },
+        "Tempered Glass 1 1\/4\" X 1 1\/4\" X 3\/16\" NEO Ceram Robax": {
+            "part_number": "TG113",
+            "unit_quantity": 1,
+            "current_quantity": 47,
+            "price": 11.33,
+            "use_exchange_rate": false,
+            "priority": 0,
+            "notes": "Vendor: Mc Master Carr\nDescription: ",
+            "latest_change_name": "Item added\nItsme\nJuly 07 Thursday 2022 11-27-45 AM",
+            "latest_change_part_number": "Item added\nItsme\nJuly 07 Thursday 2022 11-27-45 AM",
+            "latest_change_unit_quantity": "Item added\nItsme\nJuly 07 Thursday 2022 11-27-45 AM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 47\nto: 47\nLynden\nApril 27 Thursday 2023 11:21:50 AM",
+            "latest_change_price": "Latest Change:\nfrom: 11.3\nto: 11.33\nItsme\nAugust 24 Wednesday 2022 03:56:44 PM",
+            "latest_change_use_exchange_price": "Item added\nItsme\nJuly 07 Thursday 2022 11-27-45 AM",
+            "latest_change_priority": "Item added\nItsme\nJuly 07 Thursday 2022 11-27-45 AM",
+            "latest_change_notes": "Latest Change:\nfrom: \"Vendor: Mc Master Car\nDescription: \"\nto: \"Vendor: Mc Master Carr\nDescription: \"\nItsme\nJuly 18 Monday 2022 02:01:12 PM"
         },
         "Rocker Switch SPST 20A 125V ": {
             "part_number": "KGC2ANB1BBD",
@@ -4644,7 +4644,7 @@
             "latest_change_part_number": "Item added\nItsme\nAugust 19 Friday 2022 10-21-31 AM",
             "latest_change_unit_quantity": "Item added\nItsme\nAugust 19 Friday 2022 10-21-31 AM",
             "latest_change_current_quantity": "Latest Change:\nfrom: 120\nto: 120\nLynden\nApril 21 Friday 2023 01:29:34 PM",
-            "latest_change_price": "Latest Change:\nfrom: 10.0\nto: 10.0\nLynden\nApril 27 Thursday 2023 11:16:35 AM",
+            "latest_change_price": "Latest Change:\nfrom: 10.0\nto: 10.0\nLynden\nApril 27 Thursday 2023 11:21:38 AM",
             "latest_change_use_exchange_price": "Item added\nItsme\nAugust 19 Friday 2022 10-21-31 AM",
             "latest_change_priority": "Item added\nItsme\nAugust 19 Friday 2022 10-21-31 AM",
             "latest_change_notes": "Item added\nItsme\nAugust 19 Friday 2022 10-21-31 AM"
