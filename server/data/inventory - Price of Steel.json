@@ -347,6 +347,18 @@
             "latest_change_current_quantity": "Item added\nLaser Pc\nApril 27 Thursday 2023 04-38-13 PM",
             "red_limit": 0.5,
             "yellow_limit": 0.5
+        },
+        "16 Gauge Aluminium 120.000x60.000": {
+            "current_quantity": 9.0,
+            "sheet_dimension": "120.000x60.000",
+            "thickness": "16 Gauge",
+            "material": "Aluminium",
+            "latest_change_material": "Item added\nLaser Pc\nApril 27 Thursday 2023 04-39-48 PM",
+            "latest_sheet_dimension": "Item added\nLaser Pc\nApril 27 Thursday 2023 04-39-48 PM",
+            "latest_change_thickness": "Item added\nLaser Pc\nApril 27 Thursday 2023 04-39-48 PM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 9.0\nto: 9.0\nLaser Pc\nApril 27 Thursday 2023 04:39:55 PM",
+            "red_limit": 5.0,
+            "yellow_limit": 5.0
         }
     },
     "Stainless": {
