@@ -41,7 +41,8 @@
             "latest_change_current_quantity": "Item added\nLaser Pc\nFebruary 24 Friday 2023 03-58-02 PM",
             "group": "Laser Grade Plate",
             "red_limit": 10.0,
-            "yellow_limit": 20.0
+            "yellow_limit": 20.0,
+            "is_order_pending": true
         },
         "3\/4 Laser Grade Plate 120.000x60.000": {
             "current_quantity": 5.0,
