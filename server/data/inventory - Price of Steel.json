@@ -41,7 +41,8 @@
             "latest_change_thickness": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-04-03 PM",
             "latest_change_current_quantity": "Latest Change:\nfrom: 6.0\nto: 5.0\nLaser Pc\nApril 12 Wednesday 2023 09:10:36 AM",
             "red_limit": 1.0,
-            "yellow_limit": 3.0
+            "yellow_limit": 3.0,
+            "notes": "Usual Order 1 sheet "
         },
         "1\/2 Laser Grade Plate 120.000x60.000": {
             "current_quantity": 3.0,
@@ -54,7 +55,8 @@
             "latest_change_thickness": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-06-23 PM",
             "latest_change_current_quantity": "Latest Change:\nfrom: 4.0\nto: 3.0\nJusti\nFebruary 25 Saturday 2023 10:37:24 AM",
             "red_limit": 1.0,
-            "yellow_limit": 2.0
+            "yellow_limit": 2.0,
+            "notes": "Usual Order 1 sheet "
         },
         "3\/8 Mild Steel 120.000x60.000": {
             "current_quantity": 4.0,
@@ -67,7 +69,8 @@
             "latest_change_thickness": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-09-47 PM",
             "latest_change_current_quantity": "Latest Change:\nfrom: 4.0\nto: 5.0\nLaser Pc\nApril 12 Wednesday 2023 09:10:51 AM",
             "red_limit": 2.0,
-            "yellow_limit": 4.0
+            "yellow_limit": 4.0,
+            "notes": "Usual Order 1 sheet "
         },
         "1\/4 Mild Steel 120.000x60.000": {
             "current_quantity": 49.0,
@@ -80,7 +83,8 @@
             "latest_change_thickness": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-10-35 PM",
             "latest_change_current_quantity": "Latest Change:\nfrom: 48.0\nto: 49.0\nLaser Pc\nApril 19 Wednesday 2023 10:28:19 AM",
             "red_limit": 20.0,
-            "yellow_limit": 40.0
+            "yellow_limit": 40.0,
+            "notes": "Usual Order 1 sheet "
         },
         "1\/4 Mild Steel 96.000x48.000": {
             "current_quantity": 138.0,
@@ -93,7 +97,8 @@
             "latest_change_thickness": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-13-13 PM",
             "latest_change_current_quantity": "Latest Change:\nfrom: 1.0\nto: 138.0\nLaser Pc\nApril 27 Thursday 2023 10:54:07 AM",
             "red_limit": 10.0,
-            "yellow_limit": 20.0
+            "yellow_limit": 20.0,
+            "notes": "Usual Order 1 sheet "
         },
         "3\/16 Mild Steel 120.000x60.000": {
             "current_quantity": 97.0,
@@ -106,7 +111,8 @@
             "latest_change_thickness": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-14-45 PM",
             "latest_change_current_quantity": "Latest Change:\nfrom: 97.0\nto: 97.0\nLaser Pc\nApril 27 Thursday 2023 10:52:23 AM",
             "red_limit": 10.0,
-            "yellow_limit": 15.0
+            "yellow_limit": 15.0,
+            "notes": "Usual Order 1 sheet "
         },
         "3\/16 Mild Steel 120.000x48.000": {
             "current_quantity": 97.0,
@@ -119,7 +125,8 @@
             "latest_change_thickness": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-16-54 PM",
             "latest_change_current_quantity": "Latest Change:\nfrom: 9.0\nto: 97.0\nLaser Pc\nApril 27 Thursday 2023 10:52:59 AM",
             "red_limit": 15.0,
-            "yellow_limit": 30.0
+            "yellow_limit": 30.0,
+            "notes": "Usual Order 1 sheet "
         },
         "3\/16 Mild Steel 96.000x48.000": {
             "current_quantity": 66.0,
@@ -132,7 +139,8 @@
             "latest_change_thickness": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-17-35 PM",
             "latest_change_current_quantity": "Latest Change:\nfrom: 6.0\nto: 86.0\nLaser Pc\nMarch 20 Monday 2023 08:26:28 AM",
             "red_limit": 10.0,
-            "yellow_limit": 20.0
+            "yellow_limit": 20.0,
+            "notes": "Usual Order 1 sheet "
         },
         "3\/16 Mild Steel 86.000x60.000": {
             "current_quantity": 68.0,
@@ -145,7 +153,8 @@
             "latest_change_thickness": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-18-54 PM",
             "latest_change_current_quantity": "Latest Change:\nfrom: 68.0\nto: 68.0\nLaser Pc\nApril 27 Thursday 2023 10:51:30 AM",
             "red_limit": 20.0,
-            "yellow_limit": 40.0
+            "yellow_limit": 40.0,
+            "notes": "Usual Order 1 sheet "
         },
         "3\/16 Mild Steel 84.000x48.000": {
             "current_quantity": 71.0,
@@ -158,7 +167,8 @@
             "latest_change_thickness": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-22-11 PM",
             "latest_change_current_quantity": "Latest Change:\nfrom: 71.0\nto: 71.0\nLaser Pc\nApril 27 Thursday 2023 10:53:24 AM",
             "red_limit": 10.0,
-            "yellow_limit": 20.0
+            "yellow_limit": 20.0,
+            "notes": "Usual Order 1 sheet "
         },
         "3\/16 Mild Steel 67.000x48.000": {
             "current_quantity": 53.0,
@@ -171,7 +181,8 @@
             "latest_change_thickness": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-24-43 PM",
             "latest_change_current_quantity": "Latest Change:\nfrom: 13.0\nto: 53.0\nLaser Pc\nMarch 25 Saturday 2023 11:09:28 AM",
             "red_limit": 20.0,
-            "yellow_limit": 40.0
+            "yellow_limit": 40.0,
+            "notes": "Usual Order 1 sheet "
         },
         "10 Gauge Mild Steel 120.000x60.000": {
             "current_quantity": 7,
@@ -184,7 +195,8 @@
             "latest_change_thickness": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-26-08 PM",
             "latest_change_current_quantity": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-26-08 PM",
             "red_limit": 10.0,
-            "yellow_limit": 20.0
+            "yellow_limit": 20.0,
+            "notes": "Usual Order 40 sheet "
         },
         "10 Gauge Mild Steel 96.000x60.000": {
             "current_quantity": 40.0,
@@ -197,7 +209,8 @@
             "latest_change_current_quantity": "Latest Change:\nfrom: 39.0\nto: 40.0\nLaser Pc\nApril 01 Saturday 2023 09:43:53 AM",
             "group": "10G Mild Steel",
             "red_limit": 10.0,
-            "yellow_limit": 15.0
+            "yellow_limit": 15.0,
+            "notes": "Usual Order 20 sheet "
         },
         "12 Gauge Mild Steel 120.000x60.000": {
             "current_quantity": 29.0,
@@ -210,7 +223,8 @@
             "latest_change_thickness": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-30-46 PM",
             "latest_change_current_quantity": "Latest Change:\nfrom: 30.0\nto: 31.0\nLaser Pc\nMarch 25 Saturday 2023 11:09:52 AM",
             "red_limit": 5.0,
-            "yellow_limit": 10.0
+            "yellow_limit": 10.0,
+            "notes": "Usual Order 30 sheet "
         },
         "14 Gauge Mild Steel 120.000x60.000": {
             "current_quantity": 20.0,
@@ -223,7 +237,8 @@
             "latest_change_thickness": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-31-20 PM",
             "latest_change_current_quantity": "Latest Change:\nfrom: 19.0\nto: 20.0\nLaser Pc\nMarch 25 Saturday 2023 11:10:02 AM",
             "red_limit": 5.0,
-            "yellow_limit": 10.0
+            "yellow_limit": 10.0,
+            "notes": "Usual Order 30 sheet "
         },
         "16 Gauge Mild Steel 120.000x60.000": {
             "current_quantity": 8.0,
@@ -236,7 +251,8 @@
             "latest_change_thickness": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-32-00 PM",
             "latest_change_current_quantity": "Latest Change:\nfrom: 10.0\nto: 9.0\nJusti\nFebruary 25 Saturday 2023 10:56:21 AM",
             "red_limit": 0.0,
-            "yellow_limit": 0.0
+            "yellow_limit": 0.0,
+            "notes": "Usual Order 10 sheet "
         }
     },
     "Aluminium": {},
@@ -253,7 +269,7 @@
             "latest_change_current_quantity": "Latest Change:\nfrom: 1\nto: 0.0\nLaser Pc\nMarch 21 Tuesday 2023 01:53:11 PM",
             "red_limit": 0.5,
             "yellow_limit": 0.5,
-            "notes": "Usual Order 200 sheets "
+            "notes": "Usual Order 1 sheet "
         },
         "3\/16 304 SS 120.000x60.000": {
             "current_quantity": 7.0,
@@ -267,7 +283,7 @@
             "latest_change_current_quantity": "Latest Change:\nfrom: 11.0\nto: 12.0\nJusti\nFebruary 25 Saturday 2023 10:58:57 AM",
             "red_limit": 3.0,
             "yellow_limit": 6.0,
-            "notes": "Usual Order 200 sheets "
+            "notes": "Usual Order 20 sheets "
         },
         "10 Gauge 304 SS 120.000x60.000": {
             "current_quantity": 2.0,
@@ -281,7 +297,7 @@
             "latest_change_current_quantity": "Latest Change:\nfrom: 14.0\nto: 15.0\nJusti\nFebruary 25 Saturday 2023 11:00:11 AM",
             "red_limit": 5.0,
             "yellow_limit": 10.0,
-            "notes": "Usual Order 200 sheets "
+            "notes": "Usual Order 30 sheets "
         },
         "12 Gauge 304 SS 120.000x60.000": {
             "current_quantity": 24.0,
@@ -295,7 +311,7 @@
             "latest_change_current_quantity": "Latest Change:\nfrom: 23.0\nto: 24.0\nLaser Pc\nFebruary 27 Monday 2023 02:39:31 PM",
             "red_limit": 5.0,
             "yellow_limit": 10.0,
-            "notes": "Usual Order 200 sheets "
+            "notes": "Usual Order 15 sheets "
         },
         "14 Gauge 304 SS 120.000x60.000": {
             "current_quantity": 8.0,
@@ -309,7 +325,7 @@
             "latest_change_current_quantity": "Latest Change:\nfrom: 19.0\nto: 20.0\nLaser Pc\nMarch 16 Thursday 2023 01:24:58 PM",
             "red_limit": 5.0,
             "yellow_limit": 10.0,
-            "notes": "Usual Order 200 sheets "
+            "notes": "Usual Order 20 sheets "
         },
         "16 Gauge 304 SS 120.000x60.000": {
             "current_quantity": 13.0,
@@ -323,7 +339,7 @@
             "latest_change_current_quantity": "Latest Change:\nfrom: 7\nto: 17.0\nLaser Pc\nFebruary 25 Saturday 2023 10:14:45 AM",
             "red_limit": 3.0,
             "yellow_limit": 6.0,
-            "notes": "Usual Order 200 sheets "
+            "notes": "Usual Order 20 sheets "
         },
         "18 Gauge 304 SS 120.000x60.000": {
             "current_quantity": 16.0,
@@ -337,7 +353,7 @@
             "latest_change_current_quantity": "Latest Change:\nfrom: 15.0\nto: 16.0\nLaser Pc\nMarch 10 Friday 2023 08:59:44 AM",
             "red_limit": 3.0,
             "yellow_limit": 6.0,
-            "notes": "Usual Order 200 sheets "
+            "notes": "Usual Order 20 sheets "
         },
         "20 Gauge 304 SS 120.000x60.000": {
             "current_quantity": 18.0,
@@ -351,7 +367,7 @@
             "latest_change_current_quantity": "Latest Change:\nfrom: 19.0\nto: 18.0\nLaser Pc\nMarch 10 Friday 2023 08:59:49 AM",
             "red_limit": 2.0,
             "yellow_limit": 4.0,
-            "notes": "Usual Order 200 sheets "
+            "notes": "Usual Order 15 sheets "
         }
     },
     "Galvanized\/Galvanneal": {
