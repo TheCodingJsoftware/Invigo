@@ -353,7 +353,7 @@
             "latest_change_current_quantity": "Latest Change:\nfrom: 15.0\nto: 16.0\nLaser Pc\nMarch 10 Friday 2023 08:59:44 AM",
             "red_limit": 3.0,
             "yellow_limit": 6.0,
-            "notes": "Usual Order 20 sheets "
+            "notes": "Usual Order 15 sheets "
         },
         "20 Gauge 304 SS 120.000x60.000": {
             "current_quantity": 18.0,
@@ -367,7 +367,7 @@
             "latest_change_current_quantity": "Latest Change:\nfrom: 19.0\nto: 18.0\nLaser Pc\nMarch 10 Friday 2023 08:59:49 AM",
             "red_limit": 2.0,
             "yellow_limit": 4.0,
-            "notes": "Usual Order 15 sheets "
+            "notes": "Usual Order 10 sheets "
         }
     },
     "Galvanized\/Galvanneal": {
