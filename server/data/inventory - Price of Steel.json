@@ -658,7 +658,9 @@
             "latest_sheet_dimension": "Item added\nLaser Pc\nFebruary 24 Friday 2023 05-11-18 PM",
             "latest_change_thickness": "Item added\nLaser Pc\nFebruary 24 Friday 2023 05-11-18 PM",
             "latest_change_current_quantity": "Latest Change:\nfrom: 177.0\nto: 178.0\nLaser Pc\nApril 08 Saturday 2023 10:59:43 AM",
-            "group": "Galvanized"
+            "group": "Galvanized",
+            "red_limit": 0.0,
+            "yellow_limit": 0.0
         },
         "20 Gauge Galvanized 120.000x60.000": {
             "current_quantity": 0,
@@ -669,7 +671,9 @@
             "latest_sheet_dimension": "Item added\nLaser Pc\nFebruary 24 Friday 2023 05-12-02 PM",
             "latest_change_thickness": "Item added\nLaser Pc\nFebruary 24 Friday 2023 05-12-02 PM",
             "latest_change_current_quantity": "Item added\nLaser Pc\nFebruary 24 Friday 2023 05-12-02 PM",
-            "group": "Galvanized"
+            "group": "Galvanized",
+            "red_limit": 10.0,
+            "yellow_limit": 20.0
         },
         "18 Gauge Galvanneal 120.000x60.000": {
             "current_quantity": 198.0,
@@ -680,7 +684,9 @@
             "latest_change_material": "Item added\nLaser Pc\nFebruary 24 Friday 2023 05-19-31 PM",
             "latest_sheet_dimension": "Item added\nLaser Pc\nFebruary 24 Friday 2023 05-19-31 PM",
             "latest_change_thickness": "Item added\nLaser Pc\nFebruary 24 Friday 2023 05-19-31 PM",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 221.0\nto: 220.0\nLaser Pc\nApril 08 Saturday 2023 10:02:28 AM"
+            "latest_change_current_quantity": "Latest Change:\nfrom: 221.0\nto: 220.0\nLaser Pc\nApril 08 Saturday 2023 10:02:28 AM",
+            "red_limit": 30.0,
+            "yellow_limit": 60.0
         },
         "20 Gauge Galvanneal 120.000x60.000": {
             "current_quantity": 23,
@@ -691,7 +697,9 @@
             "latest_change_material": "Item added\nLaser Pc\nFebruary 24 Friday 2023 05-20-22 PM",
             "latest_sheet_dimension": "Item added\nLaser Pc\nFebruary 24 Friday 2023 05-20-22 PM",
             "latest_change_thickness": "Item added\nLaser Pc\nFebruary 24 Friday 2023 05-20-22 PM",
-            "latest_change_current_quantity": "Item added\nLaser Pc\nFebruary 24 Friday 2023 05-20-22 PM"
+            "latest_change_current_quantity": "Item added\nLaser Pc\nFebruary 24 Friday 2023 05-20-22 PM",
+            "red_limit": 0.0,
+            "yellow_limit": 0.0
         }
     },
     "Cutoff": {
