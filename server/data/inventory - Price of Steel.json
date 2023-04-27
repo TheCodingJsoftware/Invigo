@@ -252,7 +252,8 @@
             "latest_change_thickness": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-49-43 PM",
             "latest_change_current_quantity": "Latest Change:\nfrom: 1\nto: 0.0\nLaser Pc\nMarch 21 Tuesday 2023 01:53:11 PM",
             "red_limit": 0.5,
-            "yellow_limit": 0.5
+            "yellow_limit": 0.5,
+            "notes": "Usual Order 200 sheets "
         },
         "3\/16 304 SS 120.000x60.000": {
             "current_quantity": 7.0,
@@ -265,7 +266,8 @@
             "latest_change_thickness": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-50-54 PM",
             "latest_change_current_quantity": "Latest Change:\nfrom: 11.0\nto: 12.0\nJusti\nFebruary 25 Saturday 2023 10:58:57 AM",
             "red_limit": 3.0,
-            "yellow_limit": 6.0
+            "yellow_limit": 6.0,
+            "notes": "Usual Order 200 sheets "
         },
         "10 Gauge 304 SS 120.000x60.000": {
             "current_quantity": 2.0,
@@ -278,7 +280,8 @@
             "latest_change_thickness": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-51-47 PM",
             "latest_change_current_quantity": "Latest Change:\nfrom: 14.0\nto: 15.0\nJusti\nFebruary 25 Saturday 2023 11:00:11 AM",
             "red_limit": 5.0,
-            "yellow_limit": 10.0
+            "yellow_limit": 10.0,
+            "notes": "Usual Order 200 sheets "
         },
         "12 Gauge 304 SS 120.000x60.000": {
             "current_quantity": 24.0,
@@ -291,7 +294,8 @@
             "latest_change_thickness": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-52-33 PM",
             "latest_change_current_quantity": "Latest Change:\nfrom: 23.0\nto: 24.0\nLaser Pc\nFebruary 27 Monday 2023 02:39:31 PM",
             "red_limit": 5.0,
-            "yellow_limit": 10.0
+            "yellow_limit": 10.0,
+            "notes": "Usual Order 200 sheets "
         },
         "14 Gauge 304 SS 120.000x60.000": {
             "current_quantity": 8.0,
@@ -304,7 +308,8 @@
             "latest_change_thickness": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-53-24 PM",
             "latest_change_current_quantity": "Latest Change:\nfrom: 19.0\nto: 20.0\nLaser Pc\nMarch 16 Thursday 2023 01:24:58 PM",
             "red_limit": 5.0,
-            "yellow_limit": 10.0
+            "yellow_limit": 10.0,
+            "notes": "Usual Order 200 sheets "
         },
         "16 Gauge 304 SS 120.000x60.000": {
             "current_quantity": 13.0,
@@ -317,7 +322,8 @@
             "latest_change_thickness": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-54-12 PM",
             "latest_change_current_quantity": "Latest Change:\nfrom: 7\nto: 17.0\nLaser Pc\nFebruary 25 Saturday 2023 10:14:45 AM",
             "red_limit": 3.0,
-            "yellow_limit": 6.0
+            "yellow_limit": 6.0,
+            "notes": "Usual Order 200 sheets "
         },
         "18 Gauge 304 SS 120.000x60.000": {
             "current_quantity": 16.0,
@@ -330,7 +336,8 @@
             "latest_change_thickness": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-54-33 PM",
             "latest_change_current_quantity": "Latest Change:\nfrom: 15.0\nto: 16.0\nLaser Pc\nMarch 10 Friday 2023 08:59:44 AM",
             "red_limit": 3.0,
-            "yellow_limit": 6.0
+            "yellow_limit": 6.0,
+            "notes": "Usual Order 200 sheets "
         },
         "20 Gauge 304 SS 120.000x60.000": {
             "current_quantity": 18.0,
@@ -343,7 +350,8 @@
             "latest_change_thickness": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-54-48 PM",
             "latest_change_current_quantity": "Latest Change:\nfrom: 19.0\nto: 18.0\nLaser Pc\nMarch 10 Friday 2023 08:59:49 AM",
             "red_limit": 2.0,
-            "yellow_limit": 4.0
+            "yellow_limit": 4.0,
+            "notes": "Usual Order 200 sheets "
         }
     },
     "Galvanized\/Galvanneal": {
@@ -359,7 +367,7 @@
             "group": "Galvanized",
             "red_limit": 2.0,
             "yellow_limit": 4.0,
-            "notes": "Usual Ordery 10 sheets "
+            "notes": "Usual Order 10 sheets "
         },
         "12 Gauge Galvanized 120.000x60.000": {
             "current_quantity": 3.0,
@@ -373,7 +381,7 @@
             "group": "Galvanized",
             "red_limit": 2.0,
             "yellow_limit": 5.0,
-            "notes": "Usual Ordery 15 sheets "
+            "notes": "Usual Order 15 sheets "
         },
         "14 Gauge Galvanized 120.000x60.000": {
             "current_quantity": 7.0,
@@ -387,7 +395,7 @@
             "group": "Galvanized",
             "red_limit": 2.0,
             "yellow_limit": 5.0,
-            "notes": "Usual Ordery 10 sheets "
+            "notes": "Usual Order 10 sheets "
         },
         "16 Gauge Galvanized 120.000x60.000": {
             "current_quantity": 62.0,
@@ -401,7 +409,7 @@
             "group": "Galvanized",
             "red_limit": 5.0,
             "yellow_limit": 10.0,
-            "notes": "Usual Ordery 30 sheets "
+            "notes": "Usual Order 30 sheets "
         },
         "20 Gauge Galvanized 120.000x60.000": {
             "current_quantity": 0,
@@ -415,7 +423,7 @@
             "group": "Galvanized",
             "red_limit": 10.0,
             "yellow_limit": 20.0,
-            "notes": "Usual Ordery 80 sheets "
+            "notes": "Usual Order 80 sheets "
         },
         "18 Gauge Galvanneal 120.000x60.000": {
             "current_quantity": 198.0,
@@ -429,7 +437,7 @@
             "latest_change_current_quantity": "Latest Change:\nfrom: 221.0\nto: 220.0\nLaser Pc\nApril 08 Saturday 2023 10:02:28 AM",
             "red_limit": 30.0,
             "yellow_limit": 60.0,
-            "notes": "Usual Ordery 200 sheets "
+            "notes": "Usual Order 200 sheets "
         }
     },
     "Cutoff": {
