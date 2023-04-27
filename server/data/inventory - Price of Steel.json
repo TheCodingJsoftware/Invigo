@@ -423,20 +423,8 @@
             "latest_change_thickness": "Item added\nLaser Pc\nFebruary 24 Friday 2023 05-19-31 PM",
             "latest_change_current_quantity": "Latest Change:\nfrom: 221.0\nto: 220.0\nLaser Pc\nApril 08 Saturday 2023 10:02:28 AM",
             "red_limit": 30.0,
-            "yellow_limit": 60.0
-        },
-        "20 Gauge Galvanneal 120.000x60.000": {
-            "current_quantity": 23,
-            "sheet_dimension": "120.000x60.000",
-            "thickness": "20 Gauge",
-            "material": "Galvanneal",
-            "group": "Galvanneal",
-            "latest_change_material": "Item added\nLaser Pc\nFebruary 24 Friday 2023 05-20-22 PM",
-            "latest_sheet_dimension": "Item added\nLaser Pc\nFebruary 24 Friday 2023 05-20-22 PM",
-            "latest_change_thickness": "Item added\nLaser Pc\nFebruary 24 Friday 2023 05-20-22 PM",
-            "latest_change_current_quantity": "Item added\nLaser Pc\nFebruary 24 Friday 2023 05-20-22 PM",
-            "red_limit": 0.0,
-            "yellow_limit": 0.0
+            "yellow_limit": 60.0,
+            "notes": "200 sheets"
         }
     },
     "Cutoff": {
