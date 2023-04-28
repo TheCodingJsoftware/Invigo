@@ -187,6 +187,28 @@
             "modified_date": "Added at April 17 Monday 2023 09:17:04 AM",
             "group": null
         },
+        "404461": {
+            "current_quantity": 4,
+            "machine_time": 0.67,
+            "gauge": "3\/8",
+            "material": "Mild Steel",
+            "weight": 6.412,
+            "price": 6.8,
+            "unit_quantity": 1,
+            "modified_date": "Added at April 28 Friday 2023 02:41:34 PM",
+            "group": null
+        },
+        "swivels 4 needed": {
+            "current_quantity": 4,
+            "machine_time": 0.25,
+            "gauge": "3\/8",
+            "material": "Mild Steel",
+            "weight": 0.384,
+            "price": 0.93,
+            "unit_quantity": 1,
+            "modified_date": "Added at April 28 Friday 2023 02:41:34 PM",
+            "group": null
+        },
         "PY-WFJ-04": {
             "current_quantity": 2,
             "machine_time": 0.3,
@@ -385,6 +407,17 @@
             "modified_date": "Added at April 28 Friday 2023 02:03:40 PM",
             "group": null
         },
+        "centre top hookup": {
+            "current_quantity": 2,
+            "machine_time": 0.3,
+            "gauge": "3\/8",
+            "material": "Mild Steel",
+            "weight": 0.901,
+            "price": 1.47,
+            "unit_quantity": 1,
+            "modified_date": "Added at April 28 Friday 2023 02:41:34 PM",
+            "group": null
+        },
         "PY-WFJ-01": {
             "current_quantity": 1,
             "machine_time": 3.55,
@@ -394,6 +427,17 @@
             "price": 92.78,
             "unit_quantity": 1,
             "modified_date": "Added at April 17 Monday 2023 09:17:03 AM",
+            "group": null
+        },
+        "front cutting blade": {
+            "current_quantity": 1,
+            "machine_time": 0.77,
+            "gauge": "3\/8",
+            "material": "Mild Steel",
+            "weight": 14.793,
+            "price": 13.76,
+            "unit_quantity": 1,
+            "modified_date": "Added at April 28 Friday 2023 02:41:34 PM",
             "group": null
         }
     },
@@ -590,6 +634,17 @@
             "modified_date": "39 quantity added at April 17 Monday 2023 05:06:22 PM",
             "group": null
         },
+        "2840-66x2": {
+            "current_quantity": 132,
+            "machine_time": 0.25,
+            "gauge": "3\/8",
+            "material": "Mild Steel",
+            "weight": 0.223,
+            "price": 0.8,
+            "unit_quantity": 1,
+            "modified_date": "27 quantity added at April 28 Friday 2023 02:41:34 PM",
+            "group": null
+        },
         "2840-Shaker-66x6": {
             "current_quantity": 119,
             "machine_time": 0.28,
@@ -656,17 +711,6 @@
             "modified_date": "Added at April 17 Monday 2023 05:06:22 PM",
             "group": null
         },
-        "2840-66x2": {
-            "current_quantity": 24,
-            "machine_time": 0.25,
-            "gauge": "3\/8",
-            "material": "Mild Steel",
-            "weight": 0.223,
-            "price": 0.8,
-            "unit_quantity": 1,
-            "modified_date": "Added at April 17 Monday 2023 05:06:22 PM",
-            "group": null
-        },
         "2534-Ashpan": {
             "current_quantity": 20,
             "machine_time": 0.52,
@@ -722,6 +766,17 @@
             "price": 0.54,
             "unit_quantity": 2.0,
             "modified_date": "39 quantity added at April 17 Monday 2023 05:06:22 PM",
+            "group": null
+        },
+        "2840-66x2": {
+            "current_quantity": 132,
+            "machine_time": 0.25,
+            "gauge": "3\/8",
+            "material": "Mild Steel",
+            "weight": 0.223,
+            "price": 0.8,
+            "unit_quantity": 1,
+            "modified_date": "27 quantity added at April 28 Friday 2023 02:41:34 PM",
             "group": null
         },
         "2840-103x2": {
@@ -821,17 +876,6 @@
             "price": 1.23,
             "unit_quantity": 1,
             "modified_date": "Manually set to 25.0 quantity at April 12 Wednesday 2023 05:10:09 PM",
-            "group": null
-        },
-        "2840-66x2": {
-            "current_quantity": 24,
-            "machine_time": 0.25,
-            "gauge": "3\/8",
-            "material": "Mild Steel",
-            "weight": 0.223,
-            "price": 0.8,
-            "unit_quantity": 1,
-            "modified_date": "Added at April 17 Monday 2023 05:06:22 PM",
             "group": null
         },
         "2840-00x2": {
@@ -1716,6 +1760,17 @@
             "modified_date": "39 quantity added at April 17 Monday 2023 05:06:22 PM",
             "group": null
         },
+        "2840-66x2": {
+            "current_quantity": 132,
+            "machine_time": 0.25,
+            "gauge": "3\/8",
+            "material": "Mild Steel",
+            "weight": 0.223,
+            "price": 0.8,
+            "unit_quantity": 2.0,
+            "modified_date": "27 quantity added at April 28 Friday 2023 02:41:34 PM",
+            "group": null
+        },
         "2840-Shaker-66x6": {
             "current_quantity": 119,
             "machine_time": 0.28,
@@ -1923,17 +1978,6 @@
             "price": 10.98,
             "unit_quantity": 2.0,
             "modified_date": "20 quantity added at April 20 Thursday 2023 02:48:34 PM",
-            "group": null
-        },
-        "2840-66x2": {
-            "current_quantity": 24,
-            "machine_time": 0.25,
-            "gauge": "3\/8",
-            "material": "Mild Steel",
-            "weight": 0.223,
-            "price": 0.8,
-            "unit_quantity": 2.0,
-            "modified_date": "Added at April 17 Monday 2023 05:06:22 PM",
             "group": null
         },
         "3444-33": {
@@ -2763,6 +2807,17 @@
             "modified_date": "39 quantity added at April 17 Monday 2023 05:06:22 PM",
             "group": null
         },
+        "2840-66x2": {
+            "current_quantity": 132,
+            "machine_time": 0.25,
+            "gauge": "3\/8",
+            "material": "Mild Steel",
+            "weight": 0.223,
+            "price": 0.8,
+            "unit_quantity": 1,
+            "modified_date": "27 quantity added at April 28 Friday 2023 02:41:34 PM",
+            "group": null
+        },
         "2840-Shaker-66x6": {
             "current_quantity": 119,
             "machine_time": 0.28,
@@ -2825,17 +2880,6 @@
             "material": "Mild Steel",
             "weight": 0.451,
             "price": 1.11,
-            "unit_quantity": 1,
-            "modified_date": "Added at April 17 Monday 2023 05:06:22 PM",
-            "group": null
-        },
-        "2840-66x2": {
-            "current_quantity": 24,
-            "machine_time": 0.25,
-            "gauge": "3\/8",
-            "material": "Mild Steel",
-            "weight": 0.223,
-            "price": 0.8,
             "unit_quantity": 1,
             "modified_date": "Added at April 17 Monday 2023 05:06:22 PM",
             "group": null
