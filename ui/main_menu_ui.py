@@ -14,7 +14,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
-        MainWindow.resize(1133, 1096)
+        MainWindow.resize(1133, 1099)
         MainWindow.setAcceptDrops(True)
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
@@ -133,7 +133,7 @@ class Ui_MainWindow(object):
         self.verticalLayout_2.addLayout(self.verticalLayout_status)
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar(MainWindow)
-        self.menubar.setGeometry(QtCore.QRect(0, 0, 1133, 21))
+        self.menubar.setGeometry(QtCore.QRect(0, 0, 1133, 22))
         self.menubar.setObjectName("menubar")
         self.menuFile = QtWidgets.QMenu(self.menubar)
         self.menuFile.setObjectName("menuFile")
@@ -161,7 +161,7 @@ class Ui_MainWindow(object):
         MainWindow.setStatusBar(self.statusbar)
         self.dockWidget_create_add_remove = QtWidgets.QDockWidget(MainWindow)
         self.dockWidget_create_add_remove.setEnabled(True)
-        self.dockWidget_create_add_remove.setMinimumSize(QtCore.QSize(330, 483))
+        self.dockWidget_create_add_remove.setMinimumSize(QtCore.QSize(330, 492))
         self.dockWidget_create_add_remove.setFloating(False)
         self.dockWidget_create_add_remove.setFeatures(QtWidgets.QDockWidget.DockWidgetFloatable|QtWidgets.QDockWidget.DockWidgetMovable)
         self.dockWidget_create_add_remove.setAllowedAreas(QtCore.Qt.LeftDockWidgetArea|QtCore.Qt.RightDockWidgetArea)
@@ -256,9 +256,11 @@ class Ui_MainWindow(object):
         self.horizontalLayout_2 = QtWidgets.QHBoxLayout()
         self.horizontalLayout_2.setObjectName("horizontalLayout_2")
         self.pushButton_add_quantity = QtWidgets.QPushButton(self.dockWidgetContents)
+        self.pushButton_add_quantity.setMinimumSize(QtCore.QSize(0, 30))
         self.pushButton_add_quantity.setObjectName("pushButton_add_quantity")
         self.horizontalLayout_2.addWidget(self.pushButton_add_quantity)
         self.pushButton_remove_quantity = QtWidgets.QPushButton(self.dockWidgetContents)
+        self.pushButton_remove_quantity.setMinimumSize(QtCore.QSize(0, 30))
         self.pushButton_remove_quantity.setObjectName("pushButton_remove_quantity")
         self.horizontalLayout_2.addWidget(self.pushButton_remove_quantity)
         self.verticalLayout_3.addLayout(self.horizontalLayout_2)
@@ -321,11 +323,35 @@ class Ui_MainWindow(object):
         self.pushButton_refresh_price_of_steel = QtWidgets.QPushButton(self.dockWidgetContents_price_of_steel)
         self.pushButton_refresh_price_of_steel.setMinimumSize(QtCore.QSize(100, 40))
         self.pushButton_refresh_price_of_steel.setMaximumSize(QtCore.QSize(120, 40))
+        self.pushButton_refresh_price_of_steel.setStyleSheet("QPushButton#pushButton_refresh_price_of_steel {\n"
+"    background-color: #AD7BE9;\n"
+"    border-radius: 5px;\n"
+"    border: 0px solid;\n"
+"}\n"
+"QPushButton:hover#pushButton_refresh_price_of_steel {\n"
+"    background-color: #B382E9;\n"
+"}\n"
+"QPushButton:pressed#pushButton_refresh_price_of_steel {\n"
+"    color: #E0CFE1;\n"
+"    background-color: #BA8FE9;\n"
+"}")
         self.pushButton_refresh_price_of_steel.setObjectName("pushButton_refresh_price_of_steel")
         self.horizontalLayout_9.addWidget(self.pushButton_refresh_price_of_steel)
         self.pushButton_update_price_of_steel = QtWidgets.QPushButton(self.dockWidgetContents_price_of_steel)
         self.pushButton_update_price_of_steel.setMinimumSize(QtCore.QSize(100, 40))
         self.pushButton_update_price_of_steel.setMaximumSize(QtCore.QSize(120, 40))
+        self.pushButton_update_price_of_steel.setStyleSheet("QPushButton#pushButton_update_price_of_steel {\n"
+"    background-color: #477874;\n"
+"    border-radius: 5px;\n"
+"     border: 0px solid;\n"
+"}\n"
+"QPushButton:hover#pushButton_update_price_of_steel {\n"
+"    background-color: #507875;\n"
+"}\n"
+"QPushButton:pressed#pushButton_update_price_of_steel {\n"
+"    background-color: #5F7D79;\n"
+"    color: #F1FFFD;\n"
+"}")
         self.pushButton_update_price_of_steel.setObjectName("pushButton_update_price_of_steel")
         self.horizontalLayout_9.addWidget(self.pushButton_update_price_of_steel)
         self.verticalLayout_15.addLayout(self.horizontalLayout_9)
@@ -418,12 +444,36 @@ class Ui_MainWindow(object):
         self.pushButton_refresh_parts_in_inventory = QtWidgets.QPushButton(self.dockWidgetContents_2)
         self.pushButton_refresh_parts_in_inventory.setMinimumSize(QtCore.QSize(0, 40))
         self.pushButton_refresh_parts_in_inventory.setMaximumSize(QtCore.QSize(120, 40))
+        self.pushButton_refresh_parts_in_inventory.setStyleSheet("QPushButton#pushButton_refresh_parts_in_inventory {\n"
+"    background-color: #AD7BE9;\n"
+"    border-radius: 5px;\n"
+"    border: 0px solid;\n"
+"}\n"
+"QPushButton:hover#pushButton_refresh_parts_in_inventory {\n"
+"    background-color: #B382E9;\n"
+"}\n"
+"QPushButton:pressed#pushButton_refresh_parts_in_inventory {\n"
+"    color: #E0CFE1;\n"
+"    background-color: #BA8FE9;\n"
+"}")
         self.pushButton_refresh_parts_in_inventory.setFlat(False)
         self.pushButton_refresh_parts_in_inventory.setObjectName("pushButton_refresh_parts_in_inventory")
         self.horizontalLayout_5.addWidget(self.pushButton_refresh_parts_in_inventory)
         self.pushButton_update_parts_in_inventory = QtWidgets.QPushButton(self.dockWidgetContents_2)
         self.pushButton_update_parts_in_inventory.setMinimumSize(QtCore.QSize(0, 40))
         self.pushButton_update_parts_in_inventory.setMaximumSize(QtCore.QSize(120, 40))
+        self.pushButton_update_parts_in_inventory.setStyleSheet("QPushButton#pushButton_update_parts_in_inventory {\n"
+"    background-color: #477874;\n"
+"    border-radius: 5px;\n"
+"     border: 0px solid;\n"
+"}\n"
+"QPushButton:hover#pushButton_update_parts_in_inventory {\n"
+"    background-color: #507875;\n"
+"}\n"
+"QPushButton:pressed#pushButton_update_parts_in_inventory {\n"
+"    background-color: #5F7D79;\n"
+"    color: #F1FFFD;\n"
+"}")
         self.pushButton_update_parts_in_inventory.setObjectName("pushButton_update_parts_in_inventory")
         self.horizontalLayout_5.addWidget(self.pushButton_update_parts_in_inventory)
         self.verticalLayout_20.addLayout(self.horizontalLayout_5)
@@ -705,7 +755,7 @@ class Ui_MainWindow(object):
         self.dockWidget_price_of_steel.setWindowTitle(_translate("MainWindow", "Sheets in Inventory"))
         self.pushButton_refresh_price_of_steel.setToolTip(_translate("MainWindow", "Downloads and refreshes  sheets in inventory"))
         self.pushButton_refresh_price_of_steel.setStatusTip(_translate("MainWindow", "Downloads and refreshes  sheets in inventory"))
-        self.pushButton_refresh_price_of_steel.setText(_translate("MainWindow", "Get Changes"))
+        self.pushButton_refresh_price_of_steel.setText(_translate("MainWindow", "Download Changes"))
         self.pushButton_update_price_of_steel.setToolTip(_translate("MainWindow", "Uploads sheets in inventory"))
         self.pushButton_update_price_of_steel.setStatusTip(_translate("MainWindow", "Uploads sheets in inventory"))
         self.pushButton_update_price_of_steel.setText(_translate("MainWindow", "Upload Changes"))
@@ -714,7 +764,7 @@ class Ui_MainWindow(object):
         self.dockWidget_parts_in_inventory.setWindowTitle(_translate("MainWindow", "Parts in Inventory"))
         self.pushButton_refresh_parts_in_inventory.setToolTip(_translate("MainWindow", "Downloads and refreshes parts in inventory"))
         self.pushButton_refresh_parts_in_inventory.setStatusTip(_translate("MainWindow", "Downloads and refreshes parts in inventory"))
-        self.pushButton_refresh_parts_in_inventory.setText(_translate("MainWindow", "Get Changes"))
+        self.pushButton_refresh_parts_in_inventory.setText(_translate("MainWindow", "Download Changes"))
         self.pushButton_update_parts_in_inventory.setToolTip(_translate("MainWindow", "Uploads parts in inventory"))
         self.pushButton_update_parts_in_inventory.setStatusTip(_translate("MainWindow", "Uploads parts in inventory"))
         self.pushButton_update_parts_in_inventory.setText(_translate("MainWindow", "Upload Changes"))

@@ -194,7 +194,7 @@ class CostLineEdit(QLineEdit):
             + 'f" % '
             + repr(int(x) + round(float("." + str(float(x)).split(".")[1]), n))
         )
-        self.setStyleSheet("border: 0.09em solid #76797c; background-color: #222222;")
+        self.setStyleSheet("border: 0.09em solid rgb(57, 57, 57); background-color: #222222;")
         try:
             self.setText(f"{prefix}{str(round_number(text, 2))} {suffix}")
         except Exception:
@@ -251,6 +251,7 @@ class DeletePushButton(QPushButton):
         """
         QPushButton.__init__(self, parent)
         # self.setFixedSize(26, 26)
+        self.setObjectName("delete_button")
         self.setIcon(icon)
         self.setToolTip(tool_tip)
 

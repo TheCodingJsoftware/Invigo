@@ -8,7 +8,7 @@
     <x>0</x>
     <y>0</y>
     <width>1133</width>
-    <height>1096</height>
+    <height>1099</height>
    </rect>
   </property>
   <property name="acceptDrops">
@@ -232,7 +232,7 @@
      <x>0</x>
      <y>0</y>
      <width>1133</width>
-     <height>21</height>
+     <height>22</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
@@ -355,7 +355,7 @@
    <property name="minimumSize">
     <size>
      <width>330</width>
-     <height>483</height>
+     <height>492</height>
     </size>
    </property>
    <property name="floating">
@@ -586,6 +586,12 @@
         <layout class="QHBoxLayout" name="horizontalLayout_2">
          <item>
           <widget class="QPushButton" name="pushButton_add_quantity">
+           <property name="minimumSize">
+            <size>
+             <width>0</width>
+             <height>30</height>
+            </size>
+           </property>
            <property name="statusTip">
             <string>Adds to the currently selected item</string>
            </property>
@@ -596,6 +602,12 @@
          </item>
          <item>
           <widget class="QPushButton" name="pushButton_remove_quantity">
+           <property name="minimumSize">
+            <size>
+             <width>0</width>
+             <height>30</height>
+            </size>
+           </property>
            <property name="statusTip">
             <string>Removes from the currently selected item</string>
            </property>
@@ -730,8 +742,22 @@ QPushButton#pushButton_create_new:disabled{
          <property name="statusTip">
           <string>Downloads and refreshes  sheets in inventory</string>
          </property>
+         <property name="styleSheet">
+          <string notr="true">QPushButton#pushButton_refresh_price_of_steel {
+    background-color: #AD7BE9;
+	border-radius: 5px;
+	border: 0px solid;
+}
+QPushButton:hover#pushButton_refresh_price_of_steel {
+    background-color: #B382E9;
+}
+QPushButton:pressed#pushButton_refresh_price_of_steel {
+    color: #E0CFE1;
+    background-color: #BA8FE9;
+}</string>
+         </property>
          <property name="text">
-          <string>Get Changes</string>
+          <string>Download Changes</string>
          </property>
         </widget>
        </item>
@@ -754,6 +780,20 @@ QPushButton#pushButton_create_new:disabled{
          </property>
          <property name="statusTip">
           <string>Uploads sheets in inventory</string>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">QPushButton#pushButton_update_price_of_steel {
+    background-color: #477874;
+    border-radius: 5px;
+	 border: 0px solid;
+}
+QPushButton:hover#pushButton_update_price_of_steel {
+    background-color: #507875;
+}
+QPushButton:pressed#pushButton_update_price_of_steel {
+    background-color: #5F7D79;
+	color: #F1FFFD;
+}</string>
          </property>
          <property name="text">
           <string>Upload Changes</string>
@@ -963,8 +1003,22 @@ QPushButton#pushButton_add_new_sheet:disabled{
            <property name="statusTip">
             <string>Downloads and refreshes parts in inventory</string>
            </property>
+           <property name="styleSheet">
+            <string notr="true">QPushButton#pushButton_refresh_parts_in_inventory {
+    background-color: #AD7BE9;
+	border-radius: 5px;
+	border: 0px solid;
+}
+QPushButton:hover#pushButton_refresh_parts_in_inventory {
+    background-color: #B382E9;
+}
+QPushButton:pressed#pushButton_refresh_parts_in_inventory {
+    color: #E0CFE1;
+    background-color: #BA8FE9;
+}</string>
+           </property>
            <property name="text">
-            <string>Get Changes</string>
+            <string>Download Changes</string>
            </property>
            <property name="flat">
             <bool>false</bool>
@@ -990,6 +1044,20 @@ QPushButton#pushButton_add_new_sheet:disabled{
            </property>
            <property name="statusTip">
             <string>Uploads parts in inventory</string>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">QPushButton#pushButton_update_parts_in_inventory {
+    background-color: #477874;
+    border-radius: 5px;
+	 border: 0px solid;
+}
+QPushButton:hover#pushButton_update_parts_in_inventory {
+    background-color: #507875;
+}
+QPushButton:pressed#pushButton_update_parts_in_inventory {
+    background-color: #5F7D79;
+	color: #F1FFFD;
+}</string>
            </property>
            <property name="text">
             <string>Upload Changes</string>

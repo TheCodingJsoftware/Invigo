@@ -219,14 +219,38 @@ QPushButton:checked {
     border: 1px solid rgb(125, 134, 138);
     color: rgb(144, 144, 144);
 }
+
 QPushButton:checked#order_status{
     color: lime;
     border-color: green;
     background-color: darkgreen;
 }
+
 QPushButton:!checked#order_status{
     color: gray;
 }
+
+QPushButton#delete_button{
+    color: #ff0000; 
+    border-color: #8b0000; 
+    background-color: #682727; 
+    border-radius: 5px;
+}
+
+QPushButton:hover#delete_button{
+    color: #ff0000; 
+    border-color: #6f0000; 
+    background-color: #642a2a; 
+    border-radius: 5px;
+}
+
+QPushButton:pressed#delete_button{
+    color: #ff0000; 
+    border-color: #5c0000; 
+    background-color: #461f1f; 
+    border-radius: 5px;
+}
+
 QToolTip {
     background-color: rgb(24, 24, 24);
     color: white;
@@ -234,6 +258,7 @@ QToolTip {
     border: 1px solid;
     border-color: white;
 }
+
 QToolButton {
     border-radius: 5px;
     background-color: transparent;
@@ -259,24 +284,30 @@ QToolButton:disabled {
 
 QCheckBox {
     color: rgb(144, 144, 144);
-    border-radius: 7px;
+    border-radius: 5px;
 }
 
 QCheckBox::indicator {
-    border: 2px solid rgb(57, 57, 57);
+    border: 1px solid rgb(57, 57, 57);
     width: 10px;
     height: 10px;
-    border-radius: 7px;
+    border-radius: 5px;
     background: rgb(49, 49, 49);
 }
 
 QCheckBox::indicator:hover {
-    border: 2px solid rgb(67, 71, 74);
+    background: 5px solid #3c5863;
+    border: 1px solid rgb(57, 77, 82);
+}
+
+QCheckBox::indicator:pressed {
+    background: 5px solid #588495;
+    border: 1px solid #57bfc1;
 }
 
 QCheckBox::indicator:checked {
-    background: 5px solid #58d3ff;
-    border: 2px solid rgb(22, 22, 22);
+    background: 5px solid #3daee9;
+    border: 1px solid #00fbff;
 }
 
 QCheckBox:hover {
@@ -333,7 +364,7 @@ QListWidget:disabled {
 QTreeWidget {
     border: 1px solid rgb(65, 65, 65);
     background-color: rgb(29, 29, 29);
-    border-radius: 5px;
+    border-radius: 0px;
     padding: 0px;
     padding-bottom: 6px;
     color: rgb(210, 210, 210);
@@ -342,7 +373,7 @@ QTreeWidget {
 QTreeWidget::indicator {
     background-color: rgba(78, 78, 78, 57);
     border: 1px solid rgba(57, 57, 57, 57);
-    border-radius: 4px;
+    border-radius: 0px;
 }
 
 QTreeWidget::indicator:checked {
@@ -352,7 +383,7 @@ QTreeWidget::indicator:checked {
 
 QTreeWidget::indicator:hover {
     border: 1px solid rgba(78, 78, 78);
-    border-radius: 4px;
+    border-radius: 0px;
 }
 
 QTreeWidget:disabled {
@@ -367,13 +398,15 @@ QTreeWidget::item {
     padding-top: 0px;
     padding-bottom: 0px;
     border: 1px solid rgb(44, 44, 44);
-    border-radius: 4px;
+    border-radius: 0px;
 }
 
 QTreeWidget::item:selected {
     background-color: rgba(110, 120, 125, 200);
 }
-
+QListWidget::item:selected {
+    background-color: #3daee9;
+}
 /* QTableWidget {
     border: 0px solid rgb(65, 65, 65);
     background: rgb(44, 44, 44);
@@ -392,7 +425,8 @@ QTableWidget:hover {
     border-radius: 4px;
 } */
 QTableWidget::item:selected{
-    background: #3daee9;
+    background: #99D9EA;
+    color: black;
     border-radius: 0px;
 }
 

@@ -342,6 +342,7 @@ class MainWindow(QMainWindow):
         """
         It loads the UI
         """
+        
         self.update_theme()
 
         # Dockable Widget
@@ -1891,7 +1892,7 @@ class MainWindow(QMainWindow):
             inventory.get_total_stock_cost_for_similar_categories("BL"), 2
         )
         total_stock_costs = dict(sorted(total_stock_costs.items()))
-
+        self.clear_layout(self.gridLayout_Categor_Stock_Prices)
         lbl = QLabel("Stock Costs:", self)
         self.gridLayout_Categor_Stock_Prices.addWidget(lbl, 0, 0)
         for i, stock_cost in enumerate(total_stock_costs, start=1):
@@ -5013,7 +5014,6 @@ class MainWindow(QMainWindow):
           data: the data received from the server
         """
 
-        # QApplication.restoreOverrideCursor()
         if data == "Successfully uploaded" and self.get_upload_file_response:
             self.show_message_dialog(
                 title=data,
@@ -5051,11 +5051,6 @@ class MainWindow(QMainWindow):
             self.pushButton_refresh_parts_in_inventory.setEnabled(True)
             self.pushButton_update_parts_in_inventory.setEnabled(True)
             QApplication.restoreOverrideCursor()
-        # if self.refresh_pressed:
-        #     self.pushButton_refresh_price_of_steel.setEnabled(True)
-        #     self.pushButton_update_price_of_steel.setEnabled(True)
-        #     self.pushButton_refresh_parts_in_inventory.setEnabled(True)
-        #     self.pushButton_update_parts_in_inventory.setEnabled(True)
         if data == "Successfully uploaded":
             self.status_button.setText(
                 f'<p style="color:lime;"> <b>{data}</b> - Up to date. - {datetime.now().strftime("%r")}</p>'
