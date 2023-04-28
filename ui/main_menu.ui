@@ -8,7 +8,7 @@
     <x>0</x>
     <y>0</y>
     <width>1133</width>
-    <height>1099</height>
+    <height>1105</height>
    </rect>
   </property>
   <property name="acceptDrops">
@@ -232,7 +232,7 @@
      <x>0</x>
      <y>0</y>
      <width>1133</width>
-     <height>22</height>
+     <height>21</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
@@ -703,7 +703,7 @@ QPushButton#pushButton_create_new:disabled{
    <property name="minimumSize">
     <size>
      <width>330</width>
-     <height>234</height>
+     <height>270</height>
     </size>
    </property>
    <property name="features">
@@ -719,6 +719,9 @@ QPushButton#pushButton_create_new:disabled{
     <number>2</number>
    </attribute>
    <widget class="QWidget" name="dockWidgetContents_price_of_steel">
+    <property name="layoutDirection">
+     <enum>Qt::LeftToRight</enum>
+    </property>
     <layout class="QVBoxLayout" name="verticalLayout_15">
      <item>
       <layout class="QHBoxLayout" name="horizontalLayout_9">
@@ -820,7 +823,7 @@ QPushButton:pressed#pushButton_update_price_of_steel {
           <x>0</x>
           <y>0</y>
           <width>310</width>
-          <height>89</height>
+          <height>69</height>
          </rect>
         </property>
         <property name="maximumSize">
@@ -877,6 +880,43 @@ QPushButton:pressed#pushButton_update_price_of_steel {
          </item>
         </layout>
        </widget>
+      </widget>
+     </item>
+     <item>
+      <widget class="Line" name="line_6">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <layout class="QHBoxLayout" name="horizontalLayout_4">
+       <item>
+        <widget class="QPushButton" name="pushButton_send_sheet_report">
+         <property name="minimumSize">
+          <size>
+           <width>0</width>
+           <height>30</height>
+          </size>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>150</width>
+           <height>16777215</height>
+          </size>
+         </property>
+         <property name="text">
+          <string>Send Sheet Report</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </item>
+     <item>
+      <widget class="Line" name="line_5">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
       </widget>
      </item>
      <item>

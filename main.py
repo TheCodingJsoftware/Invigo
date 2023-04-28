@@ -5,7 +5,7 @@ __credits__: "list[str]" = ["Jared Gross"]
 __license__ = "MIT"
 __name__ = "Inventory Manager"
 __version__ = "v1.6.1"
-__updated__ = "2023-04-27 22:01:57"
+__updated__ = "2023-04-28 17:43:49"
 __maintainer__ = "Jared Gross"
 __email__ = "jared@pinelandfarms.ca"
 __status__ = "Production"
@@ -68,6 +68,7 @@ from PyQt5.QtWidgets import (
 from threads.changes_thread import ChangesThread
 from threads.download_thread import DownloadThread
 from threads.remove_quantity import RemoveQuantityThread
+from threads.send_sheet_report_thread import SendReportThread
 from threads.upload_thread import UploadThread
 from ui.about_dialog import AboutDialog
 from ui.add_item_dialog import AddItemDialog
@@ -342,7 +343,7 @@ class MainWindow(QMainWindow):
         """
         It loads the UI
         """
-        
+
         self.update_theme()
 
         # Dockable Widget
@@ -5150,6 +5151,12 @@ class MainWindow(QMainWindow):
         )
         settings_file.change_item(item_name="exchange_rate", new_value=exchange_rate)
         self.update_stock_costs()
+
+    def send_sheet_report(self) -> None:
+        thread = SendReportThread()
+        # if get_response:
+        # QApplication.setOverrideCursor(Qt.BusyCursor)
+        self.start_thread(thread)
 
     def upload_file(self, files_to_upload: list[str], get_response: bool = True) -> None:
         """

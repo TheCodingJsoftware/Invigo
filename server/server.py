@@ -230,7 +230,8 @@ class Server:
                         f"{Colors.BOLD}{datetime.now()}{Colors.ENDC}\t\t{Colors.OKGREEN}[+] Succesfully send modified date. {Colors.ENDC}"
                     )
                     logging.info("Succesfully send modified date")
-
+                if "send_sheet_report" in data:
+                    self.generate_sheet_report()
                 print(
                     f"{Colors.BOLD}{datetime.now()}{Colors.ENDC}\t{Colors.OKGREEN}[+] Process finished!{Colors.ENDC}"
                 )
@@ -264,8 +265,22 @@ class Server:
                 )
 
     def __check_low_sheet_quantities(self) -> None:
+        """
+        This function checks if the current day is Monday and generates a sheet report if it is.
+
+        Returns:
+          If the current day of the week is not Monday, the function will return nothing (None). If it
+        is Monday, the function will call the method `generate_sheet_report()` and return nothing
+        (None).
+        """
         if datetime.now().strftime('%A') != 'Monday':
             return
+        self.generate_sheet_report()
+
+    def generate_sheet_report(self) -> None:
+        """
+        This function generates a report of sheets low in quantity and sends it as an email.
+        """
         print(f'{Colors.BOLD}{datetime.now()}{Colors.ENDC} - {Colors.OKGREEN}[ ] Sending sheet quantity report as an email{Colors.ENDC}')
         sheets_low_in_quantity: int = 0
         message_to_send: str = '<div class="tg-wrap"><table style="table-layout: fixed; width: 633px; border-collapse: collapse; border: 1px solid; text-align: center; vertical-align: middle;"><colgroup><col style="width: 187px"><col style="width: 146px"><col style="width: 146px"><col style="width: 340px"></colgroup><thead><tr><th>Sheet Name</th><th>Order Status</th><th>Current Quantity</th><th>Description</th></tr></thead><tbody>'
@@ -283,19 +298,23 @@ class Server:
                     red_limit: int = 4
                     yellow_limit: int = 10
                 current_quantity: int = data[material][sheet_name]['current_quantity']
-                if current_quantity <= red_limit or current_quantity <= yellow_limit:
-                    order_pending: str = "No order pending"
-                    notes: str = 'Nothing here'
-                    is_order_pending: bool = False
+                if (
+                    current_quantity <= red_limit
+                    or current_quantity <= yellow_limit
+                ):
                     sheets_low_in_quantity += 1
+                    notes: str = 'Nothing here'
                     with contextlib.suppress(Exception):
                         notes: str = data[material][sheet_name]['notes']
-                    if current_quantity <= red_limit:
-                        stylesheet = 'color: red; border-color: darkred; background-color: #3F1E25;'
-                    elif current_quantity <= yellow_limit:
-                        stylesheet = 'color: yellow; border-color: gold; background-color: #413C28;'
+                    is_order_pending: bool = False
                     with contextlib.suppress(KeyError):
                         is_order_pending = data[material][sheet_name]['is_order_pending']
+                    stylesheet = (
+                        'color: red; border-color: darkred; background-color: #3F1E25;'
+                        if current_quantity <= red_limit
+                        else 'color: yellow; border-color: gold; background-color: #413C28;'
+                    )
+                    order_pending: str = "No order pending"
                     if is_order_pending:
                         order_pending = "Order is pending"
                         stylesheet = 'color: lime; border-color: green; background-color: darkgreen;'
