@@ -220,16 +220,18 @@ QPushButton:checked {
     color: rgb(144, 144, 144);
 }
 QPushButton:checked#order_status{
-    color: green;
-    border-color: darkgreen;
+    color: lime;
+    border-color: green;
+    background-color: darkgreen;
 }
 QPushButton:!checked#order_status{
     color: gray;
 }
 QToolTip {
-    background-color: black;
+    background-color: rgb(24, 24, 24);
     color: white;
-    border-radius: 3px;
+    border-radius: 5px;
+    border: 1px solid;
     border-color: white;
 }
 QToolButton {

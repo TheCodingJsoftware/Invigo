@@ -1,6 +1,7 @@
 import smtplib
-from datetime import datetime
 from email.mime import multipart, text
+
+import ujson as json
 
 
 def send(body: str, email_addresses: list[str] = None):
@@ -16,10 +17,12 @@ def send(body: str, email_addresses: list[str] = None):
     """
     if email_addresses is None:
         email_addresses = ['jaredgrozz@gmail.com', 'lynden@pineymfg.com']
-    USERNAME: str = 'jaredgrozz@gmail.com'
-    PASSWORD = 'iadiqglipqjhdgvq'
-    for email_address in email_addresses:
 
+    with open("credentials.json", "r") as credentialsFile:
+        credentials = json.load(credentialsFile)
+    USERNAME: str = credentials["username"]
+    PASSWORD = credentials["password"]
+    for email_address in email_addresses:
         msg = multipart.MIMEMultipart()
 
         msg['From'] = USERNAME

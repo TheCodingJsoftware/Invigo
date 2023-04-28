@@ -4,8 +4,8 @@ __copyright__ = "Copyright 2022, TheCodingJ's"
 __credits__: "list[str]" = ["Jared Gross"]
 __license__ = "MIT"
 __name__ = "Inventory Manager"
-__version__ = "v1.6.0"
-__updated__ = "2023-04-27 18:34:10"
+__version__ = "v1.6.1"
+__updated__ = "2023-04-27 22:01:57"
 __maintainer__ = "Jared Gross"
 __email__ = "jared@pinelandfarms.ca"
 __status__ = "Production"
@@ -1125,8 +1125,14 @@ class MainWindow(QMainWindow):
             spin_quantity.setFixedWidth(150)
             if current_quantity <= red_limit:
                 spin_quantity.setStyleSheet(
-                    "color: red; border-color: red;"
+                    "color: red; border-color: darkred; background-color: #3F1E25;"
                 )
+            elif current_quantity <= yellow_limit:
+                spin_quantity.setStyleSheet(
+                    "color: yellow; border-color: gold; background-color: #413C28;"
+                )
+            else:
+                spin_quantity.setStyleSheet("")
             layout.addWidget(spin_quantity)
 
             col_index += 1
@@ -1375,15 +1381,16 @@ class MainWindow(QMainWindow):
                 spin_quantity.setToolTip(latest_change_current_quantity)
 
                 if current_quantity <= red_limit:
-                    quantity_color = "red"
-                elif current_quantity <= yellow_limit:
-                    quantity_color = "yellow"
-                if current_quantity > yellow_limit:
-                    spin_quantity.setStyleSheet("")
-                else:
                     spin_quantity.setStyleSheet(
-                        f"color: {quantity_color}; border-color: {quantity_color};"
+                        "color: red; border-color: darkred; background-color: #3F1E25;"
                     )
+                elif current_quantity <= yellow_limit:
+                    spin_quantity.setStyleSheet(
+                        "color: yellow; border-color: gold; background-color: #413C28;"
+                    )
+                else:
+                    spin_quantity.setStyleSheet("")
+
                 layout.addWidget(spin_quantity)
                 col_index += 1
                 # ORDER STATUS BUTTON HERE
@@ -1711,11 +1718,11 @@ class MainWindow(QMainWindow):
             )
             if combo_priority.currentText() == "Medium":
                 combo_priority.setStyleSheet(
-                    f"color: yellow; border-color: yellow;{self.margin_format}"
+                    f"color: yellow; border-color: gold; background-color: #413C28;{self.margin_format}"
                 )
             elif combo_priority.currentText() == "High":
                 combo_priority.setStyleSheet(
-                    f"color: red; border-color: red;{self.margin_format}"
+                    f"color: red; border-color: darkred; background-color: #3F1E25;{self.margin_format}"
                 )
             else:
                 combo_priority.setStyleSheet(self.margin_format)
@@ -2776,22 +2783,22 @@ class MainWindow(QMainWindow):
             red_limit = 10
             yellow_limit = 20
 
-        if float(spin_quantity.text()) <= red_limit:
-            quantity_color = "red"
-        elif float(spin_quantity.text()) <= yellow_limit:
-            quantity_color = "yellow"
-        if float(spin_quantity.text()) > yellow_limit:
+        if new_value <= red_limit:
+            spin_quantity.setStyleSheet(
+                "color: red; border-color: darkred; background-color: #3F1E25;"
+            )
+        elif new_value <= yellow_limit:
+            spin_quantity.setStyleSheet(
+                "color: yellow; border-color: gold; background-color: #413C28;"
+            )
+        else:
             spin_quantity.setStyleSheet("")
             order_status_button.setChecked(False)
             price_of_steel_inventory.change_object_in_object_item(
-            object_name=self.category,
-            item_name=name,
-            value_name="is_order_pending",
-            new_value=False,
-        )
-        else:
-            spin_quantity.setStyleSheet(
-                f"color: {quantity_color}; border-color: {quantity_color};"
+                object_name=self.category,
+                item_name=name,
+                value_name="is_order_pending",
+                new_value=False,
             )
         total_cost: float = float(round_number(float(spin_quantity.text()) * cost_per_sheet, 2))
         spin_total_cost.setText(f"${format(total_cost, ',')}")
@@ -2968,13 +2975,11 @@ class MainWindow(QMainWindow):
         )
 
         if spin_quantity.value() <= 2:
-            quantity_color = "red"
-        if spin_quantity.value() > 2:
-            spin_quantity.setStyleSheet("")
-        else:
             spin_quantity.setStyleSheet(
-                f"color: {quantity_color}; border-color: {quantity_color};"
+                "color: red; border-color: darkred; background-color: #3F1E25;"
             )
+        else:
+            spin_quantity.setStyleSheet("")
 
         for category in list(category_data.keys()):
             if category in ["Recut", self.category]:
@@ -3432,17 +3437,17 @@ class MainWindow(QMainWindow):
                     ] = f"Latest Change:\nfrom: {value_before}\nto: {quantity.value()}\n{self.username}\n{datetime.now().strftime('%B %d %A %Y %I:%M:%S %p')}"
         inventory.save_data(data)
         inventory.load_data()
-        if quantity.value() <= 10:
-            quantity_color = "red"
-        elif quantity.value() <= 20:
-            quantity_color = "yellow"
 
-        if quantity.value() > 20:
-            quantity.setStyleSheet("")
-        else:
+        if quantity.value() <= 10:
             quantity.setStyleSheet(
-                f"color: {quantity_color}; border-color: {quantity_color};"
+                "color: red; border-color: darkred; background-color: #3F1E25;"
             )
+        elif quantity.value() <= 20:
+            quantity.setStyleSheet(
+                "color: yellow; border-color: gold; background-color: #413C28;"
+            )
+        else:
+            quantity.setStyleSheet("")
         self.update_stock_costs()
 
     def unit_quantity_change(
@@ -3609,9 +3614,9 @@ class MainWindow(QMainWindow):
 
         self.value_change(category, item_name, value_name, combo.currentIndex())
         if combo.currentText() == "Medium":
-            combo.setStyleSheet(f"color: yellow; border-color: yellow;{self.margin_format}")
+            combo.setStyleSheet(f"color: yellow; border-color: gold; background-color: #413C28;{self.margin_format}")
         elif combo.currentText() == "High":
-            combo.setStyleSheet(f"color: red; border-color: red;{self.margin_format}")
+            combo.setStyleSheet(f"color: red; border-color: darkred; background-color: #3F1E25;{self.margin_format}")
         else:
             combo.setStyleSheet(self.margin_format)
 
@@ -5053,9 +5058,9 @@ class MainWindow(QMainWindow):
         #     self.pushButton_update_parts_in_inventory.setEnabled(True)
         if data == "Successfully uploaded":
             self.status_button.setText(
-                f'<p style="color:green;"> <b>{data}</b> - Up to date. - {datetime.now().strftime("%r")}</p>'
+                f'<p style="color:lime;"> <b>{data}</b> - Up to date. - {datetime.now().strftime("%r")}</p>'
             )
-            set_status_button_stylesheet(button=self.status_button, color="green")
+            set_status_button_stylesheet(button=self.status_button, color="lime")
             self.status_button.disconnect()
             self.status_button.clicked.connect(
                 partial(
@@ -5079,9 +5084,9 @@ class MainWindow(QMainWindow):
             self.load_categories()
             self.should_reload_categories = False
             self.status_button.setText(
-                f'<p style="color:green;"> <b>{data}</b> - Up to date. - {datetime.now().strftime("%r")}</p>'
+                f'<p style="color:lime;"> <b>{data}</b> - Up to date. - {datetime.now().strftime("%r")}</p>'
             )
-            set_status_button_stylesheet(button=self.status_button, color="green")
+            set_status_button_stylesheet(button=self.status_button, color="lime")
             self.status_button.disconnect()
             self.status_button.clicked.connect(
                 partial(
@@ -5099,9 +5104,9 @@ class MainWindow(QMainWindow):
             parts_in_inventory.load_data()
             self.load_categories()
             self.status_button.setText(
-                f'<p style="color:green;">Downloaded all files. - {datetime.now().strftime("%r")}</p>'
+                f'<p style="color:lime;">Downloaded all files. - {datetime.now().strftime("%r")}</p>'
             )
-            set_status_button_stylesheet(button=self.status_button, color="green")
+            set_status_button_stylesheet(button=self.status_button, color="lime")
             self.tab_widget.setEnabled(True)
 
     def start_changes_thread(self, files_to_download: list[str]) -> None:

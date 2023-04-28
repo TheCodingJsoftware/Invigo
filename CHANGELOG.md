@@ -1,3 +1,9 @@
+<h1>v1.6.1</h1>
+&bull; Color changes<br>
+&bull; Bug fixes and improvements<br>
+&bull; Server changes<br>
+&bull; Added order pending button for sheets<br>
+
 <h1>v1.6.0</h1>
 &bull; Added an option on right-click to set a custom limit where red or yellow colors will be shown based on this limits<br>
 &bull; Code improvements, and bugs.<br>
