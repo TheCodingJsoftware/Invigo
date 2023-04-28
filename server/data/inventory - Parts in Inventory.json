@@ -66,28 +66,6 @@
             "modified_date": "Added at April 17 Monday 2023 05:06:22 PM",
             "group": null
         },
-        "PM - SS HINGE 4 B_1pcs": {
-            "current_quantity": 16,
-            "machine_time": 0.27,
-            "gauge": "12G\"",
-            "material": "304 SS",
-            "weight": 0.322,
-            "price": 1.89,
-            "unit_quantity": 1,
-            "modified_date": "1 quantity added at April 26 Wednesday 2023 01:03:16 PM",
-            "group": null
-        },
-        "PM - SS HINGE 6 B_1pcs": {
-            "current_quantity": 14,
-            "machine_time": 0.27,
-            "gauge": "12G\"",
-            "material": "304 SS",
-            "weight": 0.361,
-            "price": 1.99,
-            "unit_quantity": 1,
-            "modified_date": "1 quantity added at April 26 Wednesday 2023 01:03:16 PM",
-            "group": null
-        },
         "PY-WFJ-02": {
             "current_quantity": 12,
             "machine_time": 0.18,
@@ -97,39 +75,6 @@
             "price": 1.02,
             "unit_quantity": 1,
             "modified_date": "Added at April 17 Monday 2023 09:17:04 AM",
-            "group": null
-        },
-        "PM - SS HINGE 7 B_1pcs": {
-            "current_quantity": 12,
-            "machine_time": 0.27,
-            "gauge": "12G\"",
-            "material": "304 SS",
-            "weight": 0.382,
-            "price": 2.04,
-            "unit_quantity": 1,
-            "modified_date": "1 quantity added at April 26 Wednesday 2023 01:03:16 PM",
-            "group": null
-        },
-        "PM - SS HINGE 8 B_1pcs": {
-            "current_quantity": 10,
-            "machine_time": 0.28,
-            "gauge": "12G\"",
-            "material": "304 SS",
-            "weight": 0.404,
-            "price": 2.13,
-            "unit_quantity": 1,
-            "modified_date": "1 quantity added at April 26 Wednesday 2023 01:03:16 PM",
-            "group": null
-        },
-        "PM - SS HINGE 5 B_1pcs": {
-            "current_quantity": 9,
-            "machine_time": 0.25,
-            "gauge": "12G\"",
-            "material": "304 SS",
-            "weight": 0.341,
-            "price": 1.86,
-            "unit_quantity": 1,
-            "modified_date": "1 quantity added at April 26 Wednesday 2023 01:03:16 PM",
             "group": null
         },
         "PY-WFJ-03": {
@@ -5233,6 +5178,61 @@
             "price": 0.68,
             "unit_quantity": 1,
             "modified_date": "1 quantity added at March 06 Monday 2023 09:33:21 AM",
+            "group": null
+        },
+        "PM - SS HINGE 4 B_1pcs": {
+            "current_quantity": 16,
+            "machine_time": 0.27,
+            "gauge": "12G\"",
+            "material": "304 SS",
+            "weight": 0.322,
+            "price": 1.82,
+            "unit_quantity": 1,
+            "modified_date": "1 quantity added at April 26 Wednesday 2023 01:03:16 PM",
+            "group": null
+        },
+        "PM - SS HINGE 6 B_1pcs": {
+            "current_quantity": 14,
+            "machine_time": 0.27,
+            "gauge": "12G\"",
+            "material": "304 SS",
+            "weight": 0.361,
+            "price": 1.9,
+            "unit_quantity": 1,
+            "modified_date": "1 quantity added at April 26 Wednesday 2023 01:03:16 PM",
+            "group": null
+        },
+        "PM - SS HINGE 7 B_1pcs": {
+            "current_quantity": 12,
+            "machine_time": 0.27,
+            "gauge": "12G\"",
+            "material": "304 SS",
+            "weight": 0.382,
+            "price": 1.95,
+            "unit_quantity": 1,
+            "modified_date": "1 quantity added at April 26 Wednesday 2023 01:03:16 PM",
+            "group": null
+        },
+        "PM - SS HINGE 8 B_1pcs": {
+            "current_quantity": 10,
+            "machine_time": 0.28,
+            "gauge": "12G\"",
+            "material": "304 SS",
+            "weight": 0.404,
+            "price": 2.04,
+            "unit_quantity": 1,
+            "modified_date": "1 quantity added at April 26 Wednesday 2023 01:03:16 PM",
+            "group": null
+        },
+        "PM - SS HINGE 5 B_1pcs": {
+            "current_quantity": 9,
+            "machine_time": 0.25,
+            "gauge": "12G\"",
+            "material": "304 SS",
+            "weight": 0.341,
+            "price": 1.77,
+            "unit_quantity": 1,
+            "modified_date": "1 quantity added at April 26 Wednesday 2023 01:03:16 PM",
             "group": null
         }
     },
