@@ -1451,14 +1451,14 @@
             "group": null
         },
         "2840-90": {
-            "current_quantity": 1,
+            "current_quantity": 10.0,
             "machine_time": 0.57,
             "gauge": "18 Gauge",
             "material": "Galvanneal",
             "weight": 2.234,
             "price": 4.15,
             "unit_quantity": 1,
-            "modified_date": "Added at April 28 Friday 2023 04:31:24 PM",
+            "modified_date": "Manually set to 10.0 quantity at April 28 Friday 2023 04:35:06 PM",
             "group": null
         },
         "2840-Shaker-89": {
