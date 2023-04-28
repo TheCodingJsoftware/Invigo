@@ -2520,14 +2520,14 @@
             "group": null
         },
         "3444-89": {
-            "current_quantity": 0,
+            "current_quantity": 12.0,
             "machine_time": 0.47,
             "gauge": "18 Gauge",
             "material": "Galvanneal",
             "weight": 2.998,
             "price": 4.83,
             "unit_quantity": 1,
-            "modified_date": "Removed 20 quantity at April 28 Friday 2023 04:45:58 PM",
+            "modified_date": "Manually set to 12.0 quantity at April 28 Friday 2023 04:51:21 PM",
             "group": null
         }
     },
