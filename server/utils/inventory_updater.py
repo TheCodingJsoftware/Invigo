@@ -2,8 +2,10 @@ import contextlib
 import json
 from datetime import datetime
 
-from utils.colors import Colors
-from utils.json_file import JsonFile
+# from utils.colors import Colors
+# from utils.json_file import JsonFile
+from colors import Colors
+from json_file import JsonFile
 
 inventory = JsonFile(file_name="data/inventory")
 price_of_steel_inventory = JsonFile(file_name="data/inventory - Price of Steel")
@@ -21,11 +23,11 @@ def update_inventory(file_path: str) -> None:
     price_of_steel_inventory.load_data()
     with open(file_path) as json_file:
         new_laser_batch_data = json.load(json_file)
-    total_sheet_count: int = get_total_sheet_count(batch_data=new_laser_batch_data)
-    name_of_sheet: str = get_sheet_name(batch_data=new_laser_batch_data)
-    subtract_sheet_count(
-        sheet_name_to_update=name_of_sheet, sheet_count=total_sheet_count
-    )
+    sheet_count_and_type: dict = get_sheet_information(batch_data=new_laser_batch_data)
+    for sheet in sheet_count_and_type:
+        subtract_sheet_count(
+            sheet_name_to_update=sheet, sheet_count=sheet_count_and_type[sheet]
+        )
     recut_parts: list[str] = get_recut_parts(batch_data=new_laser_batch_data)
     add_recut_parts(batch_data=new_laser_batch_data, recut_parts=recut_parts)
     no_recut_parts: list[str] = get_no_recut_parts(batch_data=new_laser_batch_data)
@@ -342,38 +344,30 @@ def subtract_sheet_count(sheet_name_to_update: str, sheet_count: int) -> None:
                 )
                 print(f"{Colors.BOLD}{datetime.now()}{Colors.ENDC}\t\t{Colors.OKGREEN}[+] Subtracted {sheet_count} quantities from {sheet_name_to_update}{Colors.ENDC}")
 
-
-def get_sheet_name(batch_data: dict) -> str:
+def get_sheet_information(batch_data: dict) -> dict:
     """
-    It takes a dictionary of dictionaries, and returns a string that is the concatenation of the values
-    of the keys 'gauge', 'material', and 'sheet_dim' of the first dictionary in the dictionary
-
+    The function takes in a dictionary of batch data and returns a dictionary of sheet information based
+    on certain keys in the batch data.
+    
     Args:
-      batch_data (dict): a dictionary of dictionaries. The keys are the batch numbers, and the values
-    are dictionaries of the batch data.
-
+      batch_data (dict): A dictionary containing information about a batch of items, where each key
+    represents an item and its value is a dictionary containing information about that item. The keys in
+    the item dictionary include 'gauge', 'material', 'sheet_dim', and 'quantity_multiplier'.
+    
     Returns:
-      The sheet name is being returned.
+      The function `get_sheet_information` returns a dictionary containing information about the sheets
+    used in a batch of production. The keys of the dictionary are strings representing the sheet names,
+    and the values are integers representing the total quantity of each sheet used in the batch.
     """
-    return f"{batch_data[list(batch_data.keys())[0]]['gauge']} {batch_data[list(batch_data.keys())[0]]['material']} {batch_data[list(batch_data.keys())[0]]['sheet_dim']}"
-
-
-def get_total_sheet_count(batch_data: dict) -> int:
-    """
-    > It opens the JSON file, loads the data, and then sums the quantity_multiplier
-
-    Args:
-      json_file_path: The path to the JSON file that contains the data for the parts.
-
-    Returns:
-      The total number of sheets in the json file.
-    """
-    sheet_count: int = sum(
-        batch_data[part_name]["quantity_multiplier"]
-        for part_name in list(batch_data.keys())
-        if part_name[0] == "_"
-    )
-    return sheet_count
+    sheet_information = {}
+    for item in list(batch_data.keys()):
+        if item[0] == '_':
+            sheet_name =f"{batch_data[item]['gauge']} {batch_data[item]['material']} {batch_data[item]['sheet_dim']}"
+            try:
+                sheet_information[sheet_name] += batch_data[item]['quantity_multiplier']
+            except KeyError:
+                sheet_information[sheet_name] = batch_data[item]['quantity_multiplier']
+    return sheet_information
 
 
 def sort_inventory() -> None:
@@ -389,5 +383,5 @@ def sort_inventory() -> None:
 
 if __name__ == "__main__":
     update_inventory(
-        r"F:\Code\Python-Projects\Inventory Manager\server\data\laser_parts_new_batch.json"
+        r"C:\Users\jared\Documents\Code\Inventory-Manager\server\utils\2023-04-28-10-16-09.json"
     )
