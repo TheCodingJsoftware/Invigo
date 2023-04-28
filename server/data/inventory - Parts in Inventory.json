@@ -2157,14 +2157,14 @@
             "group": null
         },
         "3444-33": {
-            "current_quantity": 1,
+            "current_quantity": 0.0,
             "machine_time": 1.5,
             "gauge": "18 Gauge",
             "material": "Galvanized",
             "weight": 31.62,
             "price": 41.69,
             "unit_quantity": 1,
-            "modified_date": "Removed 20 quantity at April 28 Friday 2023 04:45:58 PM",
+            "modified_date": "Manually set to 0.0 quantity at April 28 Friday 2023 04:49:33 PM",
             "group": null
         },
         "3444-53": {
