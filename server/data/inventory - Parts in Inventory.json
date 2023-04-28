@@ -55,17 +55,6 @@
             "modified_date": "Added at April 17 Monday 2023 05:06:22 PM",
             "group": null
         },
-        "12x12": {
-            "current_quantity": 36,
-            "machine_time": 0.27,
-            "gauge": "1\/4",
-            "material": "Mild Steel",
-            "weight": 1.09,
-            "price": 1.55,
-            "unit_quantity": 1,
-            "modified_date": "12 quantity added at April 28 Friday 2023 04:15:13 PM",
-            "group": null
-        },
         "A-13786 R0": {
             "current_quantity": 18,
             "machine_time": 0.52,
@@ -75,17 +64,6 @@
             "price": 2.73,
             "unit_quantity": 1,
             "modified_date": "Added at April 17 Monday 2023 05:06:22 PM",
-            "group": null
-        },
-        "6x6": {
-            "current_quantity": 18,
-            "machine_time": 0.28,
-            "gauge": "1\/4",
-            "material": "Mild Steel",
-            "weight": 0.964,
-            "price": 1.47,
-            "unit_quantity": 1,
-            "modified_date": "6 quantity added at April 28 Friday 2023 04:15:14 PM",
             "group": null
         },
         "PM - SS HINGE 4 B_1pcs": {
@@ -5864,6 +5842,28 @@
             "price": 28.33,
             "unit_quantity": 1,
             "modified_date": "2 quantity added at April 28 Friday 2023 04:15:13 PM",
+            "group": null
+        },
+        "12x12": {
+            "current_quantity": 36,
+            "machine_time": 0.27,
+            "gauge": "1\/4",
+            "material": "Mild Steel",
+            "weight": 1.09,
+            "price": 1.55,
+            "unit_quantity": 1,
+            "modified_date": "12 quantity added at April 28 Friday 2023 04:15:13 PM",
+            "group": null
+        },
+        "6x6": {
+            "current_quantity": 18,
+            "machine_time": 0.28,
+            "gauge": "1\/4",
+            "material": "Mild Steel",
+            "weight": 0.964,
+            "price": 1.47,
+            "unit_quantity": 1,
+            "modified_date": "6 quantity added at April 28 Friday 2023 04:15:14 PM",
             "group": null
         }
     },
