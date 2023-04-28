@@ -2,10 +2,8 @@ import contextlib
 import json
 from datetime import datetime
 
-# from utils.colors import Colors
-# from utils.json_file import JsonFile
-from colors import Colors
-from json_file import JsonFile
+from utils.colors import Colors
+from utils.json_file import JsonFile
 
 inventory = JsonFile(file_name="data/inventory")
 price_of_steel_inventory = JsonFile(file_name="data/inventory - Price of Steel")
