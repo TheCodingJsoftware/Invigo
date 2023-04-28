@@ -21,8 +21,8 @@
             "latest_change_price": "Latest Change:\nfrom: 1.20\nto: 1.20\nJared\nFebruary 21 Tuesday 2023 06:12:23 PM"
         },
         "Aluminium": {
-            "price": 2.85,
-            "latest_change_price": "Latest Change:\nfrom: 2.85\nto: 2.85\nJared\nFebruary 21 Tuesday 2023 06:12:23 PM"
+            "price": 3.85,
+            "latest_change_price": "Latest Change:\nfrom: 2.85\nto: 3.85\nJared\nApril 28 Friday 2023 03:25:50 PM"
         },
         "Laser Grade Plate": {
             "price": 1.45,
@@ -641,7 +641,8 @@
             "latest_sheet_dimension": "Item added\nLaser Pc\nApril 21 Friday 2023 04-02-00 PM",
             "latest_change_thickness": "Item added\nLaser Pc\nApril 21 Friday 2023 04-02-00 PM",
             "latest_change_current_quantity": "Item added\nLaser Pc\nApril 21 Friday 2023 04-02-00 PM",
-            "notes": "te"
+            "notes": "te",
+            "is_order_pending": false
         },
         "12 Gauge Galvanized 62.620x60.000": {
             "current_quantity": 1,
