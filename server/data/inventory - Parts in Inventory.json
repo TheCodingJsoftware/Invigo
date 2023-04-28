@@ -1649,14 +1649,14 @@
             "group": null
         },
         "2840-45": {
-            "current_quantity": 0.0,
+            "current_quantity": 7.0,
             "machine_time": 0.62,
             "gauge": "18 Gauge",
             "material": "Galvanneal",
             "weight": 5.775,
             "price": 8.6,
             "unit_quantity": 1,
-            "modified_date": "Manually set to 0.0 quantity at April 12 Wednesday 2023 05:11:48 PM",
+            "modified_date": "Manually set to 7.0 quantity at April 28 Friday 2023 02:56:45 PM",
             "group": null
         },
         "2840-48": {
