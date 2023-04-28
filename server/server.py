@@ -264,8 +264,9 @@ class Server:
                 )
 
     def __check_low_sheet_quantities(self) -> None:
-        if datetime.now().strftime('%A') != 'Friday':
+        if datetime.now().strftime('%A') != 'Monday':
             return
+        print(f'{Colors.BOLD}{datetime.now()}{Colors.ENDC} - {Colors.OKGREEN}[ ] Sending sheet quantity report as an email{Colors.ENDC}')
         sheets_low_in_quantity: int = 0
         message_to_send: str = '<div class="tg-wrap"><table style="table-layout: fixed; width: 633px; border-collapse: collapse; border: 1px solid; text-align: center; vertical-align: middle;"><colgroup><col style="width: 187px"><col style="width: 146px"><col style="width: 146px"><col style="width: 340px"></colgroup><thead><tr><th>Sheet Name</th><th>Order Status</th><th>Current Quantity</th><th>Description</th></tr></thead><tbody>'
         data = price_of_steel_inventory.get_data()
@@ -301,7 +302,7 @@ class Server:
                     else:
                         order_pending = "No order is pending"
                     message_to_send += f'<tr style="border: 1px solid; {stylesheet}"><td>{sheet_name}</td><td style="{"font-weight: bold;" if is_order_pending else ""}">{order_pending}</td><td>{current_quantity}</td><td>{notes}</td></tr>'
-        message_to_send += '</tbody></table></div><br>Don\'t forget to update the Pending Status in Sheet Inventory!<br>'
+        message_to_send += '</tbody></table></div><br>Don\'t forget to update the pending status button in the Sheet Inventory tab when you sent a purchase order.<br>Have a fabulous week!'
         if sheets_low_in_quantity == 0:
             send('Nothing low in quantity, Whew! Have a marvelous Monday.')
         else:

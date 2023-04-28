@@ -1,8 +1,10 @@
 import smtplib
+from datetime import datetime
 from email.mime import multipart, text
 
 import ujson as json
 
+from utils.colors import Colors
 
 def send(body: str, email_addresses: list[str] = None):
     """
@@ -37,4 +39,5 @@ def send(body: str, email_addresses: list[str] = None):
         server.ehlo()
         server.login(USERNAME, PASSWORD)
         server.sendmail(USERNAME, email_address, msg.as_string())
-        print(f'send to {email_address}')
+        
+        print(f'{Colors.BOLD}{datetime.now()}{Colors.ENDC} - {Colors.OKGREEN}[+] Sheet quantity report sent to {email_address}{Colors.ENDC}')
