@@ -59,7 +59,7 @@
             "notes": "Usual Order 2 sheets "
         },
         "3\/8 Mild Steel 120.000x60.000": {
-            "current_quantity": 4.0,
+            "current_quantity": 3.0,
             "sheet_dimension": "120.000x60.000",
             "thickness": "3\/8",
             "material": "Mild Steel",
@@ -87,7 +87,7 @@
             "notes": "Usual Order 100 sheets "
         },
         "1\/4 Mild Steel 96.000x48.000": {
-            "current_quantity": 138.0,
+            "current_quantity": 133.0,
             "sheet_dimension": "96.000x48.000",
             "thickness": "1\/4",
             "material": "Mild Steel",
