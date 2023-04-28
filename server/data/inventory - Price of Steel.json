@@ -95,10 +95,11 @@
             "latest_change_material": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-13-13 PM",
             "latest_sheet_dimension": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-13-13 PM",
             "latest_change_thickness": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-13-13 PM",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 1.0\nto: 138.0\nLaser Pc\nApril 27 Thursday 2023 10:54:07 AM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 128.0\nto: 133.0\nLaser Pc\nApril 28 Friday 2023 04:16:01 PM",
             "red_limit": 10.0,
             "yellow_limit": 20.0,
-            "notes": "Usual Order 40 sheets "
+            "notes": "Usual Order 40 sheets ",
+            "is_order_pending": false
         },
         "3\/16 Mild Steel 120.000x60.000": {
             "current_quantity": 97.0,
