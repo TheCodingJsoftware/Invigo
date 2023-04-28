@@ -1640,14 +1640,14 @@
             "group": null
         },
         "3444-27": {
-            "current_quantity": 30,
+            "current_quantity": 10.0,
             "machine_time": 0.42,
             "gauge": "14 Gauge",
             "material": "Mild Steel",
             "weight": 1.276,
             "price": 2.07,
             "unit_quantity": 1,
-            "modified_date": "Removed 10 quantity at March 16 Thursday 2023 01:30:52 PM",
+            "modified_date": "Manually set to 10.0 quantity at April 28 Friday 2023 04:48:18 PM",
             "group": null
         },
         "3444 -Ash Pan Handle": {
@@ -1695,25 +1695,25 @@
             "group": null
         },
         "3444-91x2": {
-            "current_quantity": 30.0,
+            "current_quantity": 20.0,
             "machine_time": 0.58,
             "gauge": "14 Gauge",
             "material": "304 SS",
             "weight": 3.764,
             "price": 10.51,
             "unit_quantity": 2.0,
-            "modified_date": "20 quantity added at April 20 Thursday 2023 02:48:34 PM",
+            "modified_date": "Manually set to 20.0 quantity at April 28 Friday 2023 04:48:23 PM",
             "group": null
         },
         "3444-90x2": {
-            "current_quantity": 30.0,
+            "current_quantity": 20.0,
             "machine_time": 0.6,
             "gauge": "14 Gauge",
             "material": "304 SS",
             "weight": 3.946,
             "price": 10.98,
             "unit_quantity": 2.0,
-            "modified_date": "20 quantity added at April 20 Thursday 2023 02:48:34 PM",
+            "modified_date": "Manually set to 20.0 quantity at April 28 Friday 2023 04:48:26 PM",
             "group": null
         },
         "3444-47": {
