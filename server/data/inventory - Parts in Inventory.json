@@ -857,14 +857,14 @@
             "group": null
         },
         "2840-92": {
-            "current_quantity": 30.0,
+            "current_quantity": 51.0,
             "machine_time": 0.53,
             "gauge": "18 Gauge",
             "material": "Galvanneal",
             "weight": 2.248,
             "price": 4.07,
             "unit_quantity": 1,
-            "modified_date": "Manually set to 30.0 quantity at April 12 Wednesday 2023 05:10:16 PM",
+            "modified_date": "Manually set to 51.0 quantity at April 28 Friday 2023 02:58:58 PM",
             "group": null
         },
         "SFM-01 BL28": {
