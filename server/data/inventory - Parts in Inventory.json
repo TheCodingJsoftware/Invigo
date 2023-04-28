@@ -2344,14 +2344,14 @@
             "group": null
         },
         "3444-36": {
-            "current_quantity": 0,
+            "current_quantity": 6.0,
             "machine_time": 1.0,
             "gauge": "18 Gauge",
             "material": "Galvanneal",
             "weight": 13.826,
             "price": 19.37,
             "unit_quantity": 1,
-            "modified_date": "Removed 20 quantity at April 28 Friday 2023 04:45:58 PM",
+            "modified_date": "Manually set to 6.0 quantity at April 28 Friday 2023 04:50:43 PM",
             "group": null
         },
         "3444-36-MIR": {
