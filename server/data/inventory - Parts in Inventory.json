@@ -66,17 +66,6 @@
             "modified_date": "12 quantity added at April 28 Friday 2023 04:15:13 PM",
             "group": null
         },
-        "2840-Shaker-89": {
-            "current_quantity": 20,
-            "machine_time": 0.08,
-            "gauge": "18 Gauge",
-            "material": "Galvanneal",
-            "weight": 0.047,
-            "price": 0.26,
-            "unit_quantity": 1,
-            "modified_date": "Added at April 21 Friday 2023 10:40:06 AM",
-            "group": null
-        },
         "A-13786 R0": {
             "current_quantity": 18,
             "machine_time": 0.52,
@@ -1723,6 +1712,28 @@
             "price": 13.85,
             "unit_quantity": 1,
             "modified_date": "Manually set to 0.0 quantity at April 12 Wednesday 2023 05:12:11 PM",
+            "group": null
+        },
+        "2840-90": {
+            "current_quantity": 1,
+            "machine_time": 0.57,
+            "gauge": "18 Gauge",
+            "material": "Galvanneal",
+            "weight": 2.234,
+            "price": 4.15,
+            "unit_quantity": 1,
+            "modified_date": "Added at April 28 Friday 2023 04:31:24 PM",
+            "group": null
+        },
+        "2840-Shaker-89": {
+            "current_quantity": 20,
+            "machine_time": 0.08,
+            "gauge": "18 Gauge",
+            "material": "Galvanneal",
+            "weight": 0.047,
+            "price": 0.26,
+            "unit_quantity": 1,
+            "modified_date": "Added at April 21 Friday 2023 10:40:06 AM",
             "group": null
         }
     },
