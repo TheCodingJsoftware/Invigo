@@ -267,7 +267,7 @@ class Server:
         if datetime.now().strftime('%A') != 'Friday':
             return
         sheets_low_in_quantity: int = 0
-        message_to_send: str = '<div class="tg-wrap"><table style="table-layout: fixed; width: 633px; border-collapse: collapse; border: 1px solid; text-align: center; vertical-align: middle;"><colgroup><col style="width: 187px"><col style="width: 146px"><col style="width: 340px"></colgroup><thead><tr><th>Sheet Name</th><th>Order Status</th><th>Current Quantity</th><th>Description</th></tr></thead><tbody>'
+        message_to_send: str = '<div class="tg-wrap"><table style="table-layout: fixed; width: 633px; border-collapse: collapse; border: 1px solid; text-align: center; vertical-align: middle;"><colgroup><col style="width: 187px"><col style="width: 146px"><col style="width: 146px"><col style="width: 340px"></colgroup><thead><tr><th>Sheet Name</th><th>Order Status</th><th>Current Quantity</th><th>Description</th></tr></thead><tbody>'
         data = price_of_steel_inventory.get_data()
 
         for material in list(data.keys()):
@@ -281,27 +281,31 @@ class Server:
                     # Default values
                     red_limit: int = 4
                     yellow_limit: int = 10
-                order_pending: str = "No order pending"
-                with contextlib.suppress(KeyError):
-                    order_pending = "Order is pending" if data[material][sheet_name]['is_order_pending'] is not None else "No order pending"
-                notes: str = 'Nothing here'
-                with contextlib.suppress(Exception):
-                    notes: str = data[material][sheet_name]['notes']
                 current_quantity: int = data[material][sheet_name]['current_quantity']
-                color: str = 'black'
-                if current_quantity <= red_limit:
-                    color = 'red'
-                elif current_quantity <= yellow_limit:
-                    color = 'yellow'
                 if current_quantity <= red_limit or current_quantity <= yellow_limit:
+                    order_pending: str = "No order pending"
+                    notes: str = 'Nothing here'
+                    is_order_pending: bool = False
                     sheets_low_in_quantity += 1
-                    message_to_send += f'<tr style="border: 1px solid"><td style="color: {color}">{sheet_name}</td><td style="color: {color}">{order_pending}</td><td style="color: {color}">{current_quantity}</td><td style="color: {color}">{notes}</td></tr>'''
-        message_to_send += '</tbody></table></div>\nDon\'t forget to update the Pending Status in Sheet Inventory!\n:)'
+                    with contextlib.suppress(Exception):
+                        notes: str = data[material][sheet_name]['notes']
+                    if current_quantity <= red_limit:
+                        stylesheet = 'color: red; border-color: darkred; background-color: #3F1E25;'
+                    elif current_quantity <= yellow_limit:
+                        stylesheet = 'color: yellow; border-color: gold; background-color: #413C28;'
+                    with contextlib.suppress(KeyError):
+                        is_order_pending = data[material][sheet_name]['is_order_pending']
+                    if is_order_pending:
+                        order_pending = "Order is pending"
+                        stylesheet = 'color: lime; border-color: green; background-color: darkgreen;'
+                    else:
+                        order_pending = "No order is pending"
+                    message_to_send += f'<tr style="border: 1px solid; {stylesheet}"><td>{sheet_name}</td><td style="{"font-weight: bold;" if is_order_pending else ""}">{order_pending}</td><td>{current_quantity}</td><td>{notes}</td></tr>'
+        message_to_send += '</tbody></table></div><br>Don\'t forget to update the Pending Status in Sheet Inventory!<br>'
         if sheets_low_in_quantity == 0:
             send('Nothing low in quantity, Whew! Have a marvelous Monday.')
         else:
             send(message_to_send)
-
 
     def __backup_inventroy_files(self):
         """
