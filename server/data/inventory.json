@@ -5167,7 +5167,7 @@
             "unit_quantity": 17,
             "current_quantity": 972,
             "price": 1.97,
-            "use_exchange_rate": false,
+            "use_exchange_rate": true,
             "priority": 0,
             "notes": "Vendor: Mid Mountain Materials\nDescription: (206) 762-7600",
             "latest_change_name": "Item added\nItsme\nJuly 07 Thursday 2022 09-40-05 AM",
@@ -5177,14 +5177,15 @@
             "latest_change_price": "Latest Change:\nfrom: 1.97\nto: 1.97\nLynden\nMarch 29 Wednesday 2023 11:20:54 AM",
             "latest_change_use_exchange_price": "Item added\nItsme\nJuly 07 Thursday 2022 09-40-05 AM",
             "latest_change_priority": "Item added\nItsme\nJuly 07 Thursday 2022 09-40-05 AM",
-            "latest_change_notes": "Latest Change:\nfrom: \"Vendor: Mid Mountain Materials\nDescription: (206) 762-760\"\nto: \"Vendor: Mid Mountain Materials\nDescription: (206) 762-7600\"\nItsme\nJuly 07 Thursday 2022 09:41:13 AM"
+            "latest_change_notes": "Latest Change:\nfrom: \"Vendor: Mid Mountain Materials\nDescription: (206) 762-760\"\nto: \"Vendor: Mid Mountain Materials\nDescription: (206) 762-7600\"\nItsme\nJuly 07 Thursday 2022 09:41:13 AM",
+            "latest_change_use_exchange_rate": "Latest Change:\nfrom: CAD\nto: USD\nLynden\nApril 28 Friday 2023 10:03:42 AM"
         },
         "Hytex 1000 Rope Knit 3\/4 High Density White": {
             "part_number": "RK0101",
             "unit_quantity": 15,
             "current_quantity": 1166,
             "price": 1.61,
-            "use_exchange_rate": false,
+            "use_exchange_rate": true,
             "priority": 0,
             "notes": "Vendor: Mid Mountain Materials\t\nDescription:  (206) 762-7600\n",
             "latest_change_name": "Item added\nItsme\nJuly 07 Thursday 2022 09-48-03 AM",
@@ -5194,7 +5195,8 @@
             "latest_change_price": "Latest Change:\nfrom: 2.0\nto: 1.61\nLynden\nMarch 29 Wednesday 2023 11:19:57 AM",
             "latest_change_use_exchange_price": "Item added\nItsme\nJuly 07 Thursday 2022 09-48-03 AM",
             "latest_change_priority": "Item added\nItsme\nJuly 07 Thursday 2022 09-48-03 AM",
-            "latest_change_notes": "Latest Change:\nfrom: Vendor: Mid Mountain Materials\t\nDescription:  (206) 762-7600\nto: Vendor: Mid Mountain Materials\t\nDescription:  (206) 762-7600\n\nLynden\nMarch 27 Monday 2023 04:51:13 PM"
+            "latest_change_notes": "Latest Change:\nfrom: Vendor: Mid Mountain Materials\t\nDescription:  (206) 762-7600\nto: Vendor: Mid Mountain Materials\t\nDescription:  (206) 762-7600\n\nLynden\nMarch 27 Monday 2023 04:51:13 PM",
+            "latest_change_use_exchange_rate": "Latest Change:\nfrom: CAD\nto: USD\nLynden\nApril 28 Friday 2023 10:03:45 AM"
         },
         "NU SKT HD CP NC 8\/32 x 3 1\/2\"": {
             "part_number": "700-0832-0350",
