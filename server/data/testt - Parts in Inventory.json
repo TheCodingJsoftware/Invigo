@@ -728,14 +728,14 @@
             "group": null
         },
         "2840-107": {
-            "current_quantity": 0.0,
+            "current_quantity": 1.0,
             "machine_time": 0.53,
             "gauge": "12 Gauge",
             "material": "Mild Steel",
             "weight": 3.797,
             "price": 4.25,
             "unit_quantity": 1,
-            "modified_date": "Manually set to 0.0 quantity at April 12 Wednesday 2023 05:08:28 PM",
+            "modified_date": "Manually set to 1.0 quantity at April 27 Thursday 2023 08:08:39 PM",
             "group": null
         },
         "3044 Ashpan": {

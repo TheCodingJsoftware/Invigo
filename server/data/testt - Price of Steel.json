@@ -41,7 +41,8 @@
             "latest_change_current_quantity": "Item added\nLaser Pc\nFebruary 24 Friday 2023 03-58-02 PM",
             "group": "Laser Grade Plate",
             "red_limit": 10.0,
-            "yellow_limit": 20.0
+            "yellow_limit": 20.0,
+            "is_order_pending": true
         },
         "3\/4 Laser Grade Plate 120.000x60.000": {
             "current_quantity": 5.0,
@@ -254,14 +255,14 @@
     },
     "Aluminium": {
         "3\/8 Aluminium 144.000x48.000": {
-            "current_quantity": 2,
+            "current_quantity": 2.0,
             "sheet_dimension": "144.000x48.000",
             "thickness": "3\/8",
             "material": "Aluminium",
             "latest_change_material": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-44-01 PM",
             "latest_sheet_dimension": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-44-01 PM",
             "latest_change_thickness": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-44-01 PM",
-            "latest_change_current_quantity": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-44-01 PM"
+            "latest_change_current_quantity": "Latest Change:\nfrom: 3.0\nto: 2.0\nJared\nApril 27 Thursday 2023 05:36:30 PM"
         },
         "1\/4 Aluminium 120.000x60.000": {
             "current_quantity": 2,
@@ -356,7 +357,8 @@
             "latest_change_material": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-50-54 PM",
             "latest_sheet_dimension": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-50-54 PM",
             "latest_change_thickness": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-50-54 PM",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 11.0\nto: 12.0\nJusti\nFebruary 25 Saturday 2023 10:58:57 AM"
+            "latest_change_current_quantity": "Latest Change:\nfrom: 11.0\nto: 12.0\nJusti\nFebruary 25 Saturday 2023 10:58:57 AM",
+            "is_order_pending": true
         },
         "10 Gauge 304 SS 120.000x60.000": {
             "current_quantity": 2.0,
@@ -378,7 +380,8 @@
             "latest_change_material": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-52-12 PM",
             "latest_sheet_dimension": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-52-12 PM",
             "latest_change_thickness": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-52-12 PM",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 11.0\nto: 10.0\nJusti\nFebruary 25 Saturday 2023 10:57:38 AM"
+            "latest_change_current_quantity": "Latest Change:\nfrom: 11.0\nto: 10.0\nJusti\nFebruary 25 Saturday 2023 10:57:38 AM",
+            "is_order_pending": true
         },
         "12 Gauge 304 SS 120.000x60.000": {
             "current_quantity": 24.0,
@@ -389,7 +392,9 @@
             "latest_change_material": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-52-33 PM",
             "latest_sheet_dimension": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-52-33 PM",
             "latest_change_thickness": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-52-33 PM",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 23.0\nto: 24.0\nLaser Pc\nFebruary 27 Monday 2023 02:39:31 PM"
+            "latest_change_current_quantity": "Latest Change:\nfrom: 23.0\nto: 24.0\nLaser Pc\nFebruary 27 Monday 2023 02:39:31 PM",
+            "is_order_pending": true,
+            "notes": "test"
         },
         "14 Gauge 304 SS 120.000x60.000": {
             "current_quantity": 8.0,
@@ -400,7 +405,8 @@
             "latest_change_material": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-53-24 PM",
             "latest_sheet_dimension": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-53-24 PM",
             "latest_change_thickness": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-53-24 PM",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 19.0\nto: 20.0\nLaser Pc\nMarch 16 Thursday 2023 01:24:58 PM"
+            "latest_change_current_quantity": "Latest Change:\nfrom: 19.0\nto: 20.0\nLaser Pc\nMarch 16 Thursday 2023 01:24:58 PM",
+            "is_order_pending": true
         },
         "16 Gauge 304 SS 120.000x60.000": {
             "current_quantity": 13.0,
