@@ -11,9 +11,6 @@ from utils.ip_utils import (
     get_server_timeout,
     get_system_ip_address,
 )
-from utils.json_file import JsonFile
-
-settings_file = JsonFile(file_name="settings")
 
 
 class SendReportThread(QThread):
@@ -46,7 +43,8 @@ class SendReportThread(QThread):
 
     def run(self) -> None:
         """
-        It connects to a server, sends a message, and then sends the file
+        This function attempts to connect to a server, send a message, and then close the connection,
+        emitting a success signal if successful or an error signal if not.
         """
         try:
             self.server = (self.SERVER_IP, self.SERVER_PORT)

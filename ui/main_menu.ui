@@ -905,8 +905,11 @@ QPushButton:pressed#pushButton_update_price_of_steel {
            <height>16777215</height>
           </size>
          </property>
+         <property name="statusTip">
+          <string>Will send then sheets that are low in quantity to Lynden by email.</string>
+         </property>
          <property name="text">
-          <string>Send Sheet Report</string>
+          <string>   Send Sheet Report</string>
          </property>
         </widget>
        </item>

@@ -231,23 +231,23 @@ QPushButton:!checked#order_status{
 }
 
 QPushButton#delete_button{
-    color: #ff0000; 
-    border-color: #8b0000; 
-    background-color: #682727; 
+    color: #ff0000;
+    border-color: #8b0000;
+    background-color: #682727;
     border-radius: 5px;
 }
 
 QPushButton:hover#delete_button{
-    color: #ff0000; 
-    border-color: #6f0000; 
-    background-color: #642a2a; 
+    color: #ff0000;
+    border-color: #6f0000;
+    background-color: #642a2a;
     border-radius: 5px;
 }
 
 QPushButton:pressed#delete_button{
-    color: #ff0000; 
-    border-color: #5c0000; 
-    background-color: #461f1f; 
+    color: #ff0000;
+    border-color: #5c0000;
+    background-color: #461f1f;
     border-radius: 5px;
 }
 

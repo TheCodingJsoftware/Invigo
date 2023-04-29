@@ -1,3 +1,8 @@
+<h1>v1.6.2</h1>
+&bull; Color changes<br>
+&bull; Fixed bug in inventroy updater for server<br>
+&bull; Added send sheet report button<br>
+
 <h1>v1.6.1</h1>
 &bull; Color changes<br>
 &bull; Bug fixes and improvements<br>

@@ -4,8 +4,8 @@ __copyright__ = "Copyright 2022, TheCodingJ's"
 __credits__: "list[str]" = ["Jared Gross"]
 __license__ = "MIT"
 __name__ = "Inventory Manager"
-__version__ = "v1.6.1"
-__updated__ = "2023-04-28 17:43:49"
+__version__ = "v1.6.2"
+__updated__ = "2023-04-28 21:40:49"
 __maintainer__ = "Jared Gross"
 __email__ = "jared@pinelandfarms.ca"
 __status__ = "Production"
@@ -366,6 +366,12 @@ class MainWindow(QMainWindow):
             settings_file.get_value(item_name="last_toolbox_tab")
         )
         self.tabWidget.currentChanged.connect(self.tool_box_menu_changed)
+
+        # Send report button
+        self.pushButton_send_sheet_report.clicked.connect(self.send_sheet_report)
+        self.pushButton_send_sheet_report.setIcon(
+            QIcon("ui/BreezeStyleSheets/dist/pyqt6/dark/send_email.png")
+        )
 
         # Refresh
         self.pushButton_refresh_parts_in_inventory.clicked.connect(
@@ -1567,7 +1573,11 @@ class MainWindow(QMainWindow):
             tab.setRowHeight(row_index, 60)
 
             # PART NAME
-            tab.setItem(row_index, col_index, QTableWidgetItem(item))
+            table_item = QTableWidgetItem(item)
+            font = QFont()
+            font.setPointSize(11)
+            table_item.setFont(font)
+            tab.setItem(row_index, col_index, table_item)
             tab.item(row_index, col_index).setTextAlignment(
 
                 Qt.AlignCenter | Qt.AlignVCenter | Qt.TextWrapAnywhere
@@ -1575,7 +1585,11 @@ class MainWindow(QMainWindow):
             col_index += 1
 
             # PART NUMBER
-            tab.setItem(row_index, col_index, QTableWidgetItem(part_number))
+            part_number_item = QTableWidgetItem(part_number)
+            font = QFont()
+            font.setPointSize(11)
+            part_number_item.setFont(font)
+            tab.setItem(row_index, col_index, part_number_item)
             tab.item(row_index, col_index).setTextAlignment(
                 Qt.AlignCenter | Qt.AlignVCenter | Qt.TextWrapAnywhere
             )
