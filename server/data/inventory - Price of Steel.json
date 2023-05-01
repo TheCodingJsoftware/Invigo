@@ -602,14 +602,14 @@
             "notes": "Usual Order 10 sheets "
         },
         "12 Gauge Galvanized 120.000x60.000": {
-            "current_quantity": 3.0,
+            "current_quantity": 3.5,
             "sheet_dimension": "120.000x60.000",
             "thickness": "12 Gauge",
             "material": "Galvanized",
             "latest_change_material": "Item added\nLaser Pc\nFebruary 24 Friday 2023 05-10-27 PM",
             "latest_sheet_dimension": "Item added\nLaser Pc\nFebruary 24 Friday 2023 05-10-27 PM",
             "latest_change_thickness": "Item added\nLaser Pc\nFebruary 24 Friday 2023 05-10-27 PM",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 3.0\nto: 4.0\nLaser Pc\nFebruary 27 Monday 2023 02:32:35 PM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 3.0\nto: 3.5\nLaser Pc\nMay 01 Monday 2023 02:57:32 PM",
             "group": "Galvanized",
             "red_limit": 2.0,
             "yellow_limit": 5.0,
