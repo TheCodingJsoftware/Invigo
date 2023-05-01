@@ -616,32 +616,34 @@
             "notes": "Usual Order 15 sheets "
         },
         "14 Gauge Galvanized 120.000x60.000": {
-            "current_quantity": 7.0,
+            "current_quantity": 8.0,
             "sheet_dimension": "120.000x60.000",
             "thickness": "14 Gauge",
             "material": "Galvanized",
             "latest_change_material": "Item added\nLaser Pc\nFebruary 24 Friday 2023 05-10-41 PM",
             "latest_sheet_dimension": "Item added\nLaser Pc\nFebruary 24 Friday 2023 05-10-41 PM",
             "latest_change_thickness": "Item added\nLaser Pc\nFebruary 24 Friday 2023 05-10-41 PM",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 12.0\nto: 11.0\nLaser Pc\nFebruary 24 Friday 2023 05:12:24 PM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 7.0\nto: 8.0\nLaser Pc\nMay 01 Monday 2023 02:57:47 PM",
             "group": "Galvanized",
             "red_limit": 2.0,
             "yellow_limit": 5.0,
-            "notes": "Usual Order 10 sheets "
+            "notes": "Usual Order 10 sheets ",
+            "is_order_pending": false
         },
         "16 Gauge Galvanized 120.000x60.000": {
-            "current_quantity": 62.0,
+            "current_quantity": 61.0,
             "sheet_dimension": "120.000x60.000",
             "thickness": "16 Gauge",
             "material": "Galvanized",
             "latest_change_material": "Item added\nLaser Pc\nFebruary 24 Friday 2023 05-11-02 PM",
             "latest_sheet_dimension": "Item added\nLaser Pc\nFebruary 24 Friday 2023 05-11-02 PM",
             "latest_change_thickness": "Item added\nLaser Pc\nFebruary 24 Friday 2023 05-11-02 PM",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 71.0\nto: 72.0\nLaser Pc\nFebruary 25 Saturday 2023 09:53:52 AM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 62.0\nto: 61.0\nLaser Pc\nMay 01 Monday 2023 02:57:55 PM",
             "group": "Galvanized",
             "red_limit": 15.0,
             "yellow_limit": 20.0,
-            "notes": "Usual Order 40 sheets "
+            "notes": "Usual Order 40 sheets ",
+            "is_order_pending": false
         },
         "20 Gauge Galvanized 120.000x60.000": {
             "current_quantity": 0,
