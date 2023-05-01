@@ -588,14 +588,14 @@
     },
     "Galvanized\/Galvanneal": {
         "10 Gauge Galvanized 120.000x60.000": {
-            "current_quantity": 5,
+            "current_quantity": 4.0,
             "sheet_dimension": "120.000x60.000",
             "thickness": "10 Gauge",
             "material": "Galvanized",
             "latest_change_material": "Item added\nLaser Pc\nFebruary 24 Friday 2023 05-10-11 PM",
             "latest_sheet_dimension": "Item added\nLaser Pc\nFebruary 24 Friday 2023 05-10-11 PM",
             "latest_change_thickness": "Item added\nLaser Pc\nFebruary 24 Friday 2023 05-10-11 PM",
-            "latest_change_current_quantity": "Item added\nLaser Pc\nFebruary 24 Friday 2023 05-10-11 PM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 5\nto: 4.0\nLaser Pc\nMay 01 Monday 2023 02:57:18 PM",
             "group": "Galvanized",
             "red_limit": 2.0,
             "yellow_limit": 4.0,
