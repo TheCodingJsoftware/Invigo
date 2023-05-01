@@ -398,7 +398,7 @@
             "notes": "Usual Order 1 sheet "
         },
         "3\/16 304 SS 120.000x60.000": {
-            "current_quantity": 7.0,
+            "current_quantity": 4.0,
             "sheet_dimension": "120.000x60.000",
             "thickness": "3\/16",
             "material": "304 SS",
@@ -406,7 +406,7 @@
             "latest_change_material": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-50-54 PM",
             "latest_sheet_dimension": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-50-54 PM",
             "latest_change_thickness": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-50-54 PM",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 11.0\nto: 12.0\nJusti\nFebruary 25 Saturday 2023 10:58:57 AM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 7.0\nto: 4.0\nLaser Pc\nMay 01 Monday 2023 02:46:44 PM",
             "red_limit": 3.0,
             "yellow_limit": 6.0,
             "notes": "Usual Order 20 sheets "
