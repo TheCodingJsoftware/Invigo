@@ -426,7 +426,7 @@
             "notes": "Usual Order 30 sheets "
         },
         "12 Gauge 304 SS 120.000x60.000": {
-            "current_quantity": 24.0,
+            "current_quantity": 19.0,
             "sheet_dimension": "120.000x60.000",
             "thickness": "12 Gauge",
             "material": "304 SS",
@@ -434,10 +434,11 @@
             "latest_change_material": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-52-33 PM",
             "latest_sheet_dimension": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-52-33 PM",
             "latest_change_thickness": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-52-33 PM",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 23.0\nto: 24.0\nLaser Pc\nFebruary 27 Monday 2023 02:39:31 PM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 24.0\nto: 19.0\nLaser Pc\nMay 01 Monday 2023 02:47:06 PM",
             "red_limit": 5.0,
             "yellow_limit": 10.0,
-            "notes": "Usual Order 15 sheets "
+            "notes": "Usual Order 15 sheets ",
+            "is_order_pending": false
         },
         "14 Gauge 304 SS 120.000x60.000": {
             "current_quantity": 8.0,
