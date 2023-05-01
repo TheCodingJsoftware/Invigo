@@ -187,7 +187,7 @@
             "is_order_pending": false
         },
         "10 Gauge Mild Steel 120.000x60.000": {
-            "current_quantity": 7,
+            "current_quantity": 8.0,
             "sheet_dimension": "120.000x60.000",
             "thickness": "10 Gauge",
             "material": "Mild Steel",
@@ -195,7 +195,7 @@
             "latest_change_material": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-26-08 PM",
             "latest_sheet_dimension": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-26-08 PM",
             "latest_change_thickness": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-26-08 PM",
-            "latest_change_current_quantity": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-26-08 PM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 7\nto: 8.0\nLaser Pc\nMay 01 Monday 2023 02:42:40 PM",
             "red_limit": 10.0,
             "yellow_limit": 20.0,
             "notes": "Usual Order 40 sheets "
@@ -215,7 +215,7 @@
             "notes": "Pending"
         },
         "12 Gauge Mild Steel 120.000x60.000": {
-            "current_quantity": 29.0,
+            "current_quantity": 27.0,
             "sheet_dimension": "120.000x60.000",
             "thickness": "12 Gauge",
             "material": "Mild Steel",
@@ -223,13 +223,14 @@
             "latest_change_material": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-30-46 PM",
             "latest_sheet_dimension": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-30-46 PM",
             "latest_change_thickness": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-30-46 PM",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 30.0\nto: 31.0\nLaser Pc\nMarch 25 Saturday 2023 11:09:52 AM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 29.0\nto: 27.0\nLaser Pc\nMay 01 Monday 2023 02:42:51 PM",
             "red_limit": 5.0,
             "yellow_limit": 10.0,
-            "notes": "Usual Order 30 sheets "
+            "notes": "Usual Order 30 sheets ",
+            "is_order_pending": false
         },
         "14 Gauge Mild Steel 120.000x60.000": {
-            "current_quantity": 20.0,
+            "current_quantity": 19.0,
             "sheet_dimension": "120.000x60.000",
             "thickness": "14 Gauge",
             "material": "Mild Steel",
@@ -237,10 +238,11 @@
             "latest_change_material": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-31-20 PM",
             "latest_sheet_dimension": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-31-20 PM",
             "latest_change_thickness": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-31-20 PM",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 19.0\nto: 20.0\nLaser Pc\nMarch 25 Saturday 2023 11:10:02 AM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 20.0\nto: 19.0\nLaser Pc\nMay 01 Monday 2023 02:43:00 PM",
             "red_limit": 5.0,
             "yellow_limit": 10.0,
-            "notes": "Usual Order 30 sheets "
+            "notes": "Usual Order 30 sheets ",
+            "is_order_pending": false
         },
         "16 Gauge Mild Steel 120.000x60.000": {
             "current_quantity": 8.0,
