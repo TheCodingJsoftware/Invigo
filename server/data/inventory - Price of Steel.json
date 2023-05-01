@@ -172,7 +172,7 @@
             "notes": "Usual Order 40 sheets "
         },
         "3\/16 Mild Steel 67.000x48.000": {
-            "current_quantity": 53.0,
+            "current_quantity": 52.0,
             "sheet_dimension": "67.000x48.000",
             "thickness": "3\/16",
             "material": "Mild Steel",
@@ -180,10 +180,11 @@
             "latest_change_material": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-24-43 PM",
             "latest_sheet_dimension": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-24-43 PM",
             "latest_change_thickness": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-24-43 PM",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 13.0\nto: 53.0\nLaser Pc\nMarch 25 Saturday 2023 11:09:28 AM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 53.0\nto: 52.0\nLaser Pc\nMay 01 Monday 2023 02:41:03 PM",
             "red_limit": 20.0,
             "yellow_limit": 40.0,
-            "notes": "Usual Order 80 sheets "
+            "notes": "Usual Order 80 sheets ",
+            "is_order_pending": false
         },
         "10 Gauge Mild Steel 120.000x60.000": {
             "current_quantity": 7,
