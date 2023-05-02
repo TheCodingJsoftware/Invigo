@@ -662,7 +662,7 @@
             "notes": "Usual Order 100 sheets "
         },
         "18 Gauge Galvanneal 120.000x60.000": {
-            "current_quantity": 194.0,
+            "current_quantity": 188.0,
             "sheet_dimension": "120.000x60.000",
             "thickness": "18 Gauge",
             "material": "Galvanneal",
