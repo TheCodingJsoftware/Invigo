@@ -110,6 +110,17 @@
             "modified_date": "Added at April 28 Friday 2023 02:41:34 PM",
             "group": null
         },
+        "5X10": {
+            "current_quantity": 4,
+            "machine_time": 0.28,
+            "gauge": "1\/4",
+            "material": "Mild Steel",
+            "weight": 3.55,
+            "price": 3.54,
+            "unit_quantity": 1,
+            "modified_date": "Added at May 02 Tuesday 2023 04:57:07 PM",
+            "group": null
+        },
         "PY-WFJ-04": {
             "current_quantity": 2,
             "machine_time": 0.3,
@@ -141,6 +152,17 @@
             "price": 1.47,
             "unit_quantity": 1,
             "modified_date": "Added at April 28 Friday 2023 02:41:34 PM",
+            "group": null
+        },
+        "6X14": {
+            "current_quantity": 2,
+            "machine_time": 0.37,
+            "gauge": "1\/4",
+            "material": "Mild Steel",
+            "weight": 5.964,
+            "price": 5.7,
+            "unit_quantity": 1,
+            "modified_date": "Added at May 02 Tuesday 2023 04:57:07 PM",
             "group": null
         },
         "PY-WFJ-01": {
@@ -489,6 +511,18 @@
             "weight": 19.991,
             "unit_quantity": 1,
             "modified_date": "Added at May 02 Tuesday 2023 03:59:39 PM",
+            "group": null
+        },
+        "404418": {
+            "current_quantity": 1,
+            "price": 14.79,
+            "recut_count": 0,
+            "machine_time": 1.32,
+            "gauge": "1\/4",
+            "material": "Mild Steel",
+            "weight": 14.36,
+            "unit_quantity": 1,
+            "modified_date": "Added at May 02 Tuesday 2023 04:57:07 PM",
             "group": null
         }
     },
