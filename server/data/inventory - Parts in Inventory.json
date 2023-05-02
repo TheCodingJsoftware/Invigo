@@ -214,6 +214,18 @@
             "modified_date": "Added at April 21 Friday 2023 10:40:06 AM",
             "group": null
         },
+        "G2Plus-Housing-Right Side_Rear Panel - (Recut 1 time(s))": {
+            "current_quantity": 6,
+            "price": 70.38,
+            "recut_count": 1,
+            "machine_time": 1.73,
+            "gauge": "18 Gauge",
+            "material": "Galvanneal",
+            "weight": 54.141,
+            "unit_quantity": 1,
+            "modified_date": "Added at May 02 Tuesday 2023 09:58:54 AM",
+            "group": null
+        },
         "3444-43 - (Recut 1 time(s))": {
             "current_quantity": 5,
             "price": 13.85,
@@ -277,7 +289,7 @@
         "G2Plus-Housing-Right Side_Rear Panel": {
             "current_quantity": 2,
             "price": 70.38,
-            "recut_count": 0,
+            "recut_count": 1,
             "machine_time": 1.73,
             "gauge": "18 Gauge",
             "material": "Galvanneal",
@@ -2216,6 +2228,39 @@
             "modified_date": "Manually set to 10.0 quantity at April 22 Saturday 2023 10:22:18 AM",
             "group": null
         },
+        "3444-47": {
+            "current_quantity": 10.0,
+            "machine_time": 0.35,
+            "gauge": "18 Gauge",
+            "material": "Galvanneal",
+            "weight": 3.244,
+            "price": 4.83,
+            "unit_quantity": 1,
+            "modified_date": "10 quantity added at May 02 Tuesday 2023 09:58:54 AM",
+            "group": null
+        },
+        "3444-30": {
+            "current_quantity": 10,
+            "machine_time": 0.75,
+            "gauge": "18 Gauge",
+            "material": "Galvanneal",
+            "weight": 7.306,
+            "price": 10.79,
+            "unit_quantity": 1,
+            "modified_date": "10 quantity added at May 02 Tuesday 2023 09:58:54 AM",
+            "group": null
+        },
+        "3444-31": {
+            "current_quantity": 10,
+            "machine_time": 0.6,
+            "gauge": "18 Gauge",
+            "material": "Galvanneal",
+            "weight": 5.855,
+            "price": 8.64,
+            "unit_quantity": 1,
+            "modified_date": "10 quantity added at May 02 Tuesday 2023 09:58:54 AM",
+            "group": null
+        },
         "3444-71 chimney": {
             "current_quantity": 8.0,
             "machine_time": 0.28,
@@ -2258,17 +2303,6 @@
             "price": 10.75,
             "unit_quantity": 1,
             "modified_date": "Manually set to 3.0 quantity at April 28 Friday 2023 04:50:59 PM",
-            "group": null
-        },
-        "3444-47": {
-            "current_quantity": 0.0,
-            "machine_time": 0.35,
-            "gauge": "18 Gauge",
-            "material": "Galvanneal",
-            "weight": 3.244,
-            "price": 4.83,
-            "unit_quantity": 1,
-            "modified_date": "Manually set to 0.0 quantity at April 28 Friday 2023 04:46:37 PM",
             "group": null
         },
         "3444-33": {
@@ -2421,28 +2455,6 @@
             "material": "Galvanneal",
             "weight": 0.063,
             "price": 0.28,
-            "unit_quantity": 1,
-            "modified_date": "Removed 20 quantity at April 28 Friday 2023 04:45:58 PM",
-            "group": null
-        },
-        "3444-30": {
-            "current_quantity": 0,
-            "machine_time": 0.75,
-            "gauge": "18 Gauge",
-            "material": "Galvanneal",
-            "weight": 7.306,
-            "price": 10.79,
-            "unit_quantity": 1,
-            "modified_date": "Removed 20 quantity at April 28 Friday 2023 04:45:58 PM",
-            "group": null
-        },
-        "3444-31": {
-            "current_quantity": 0,
-            "machine_time": 0.6,
-            "gauge": "18 Gauge",
-            "material": "Galvanneal",
-            "weight": 5.855,
-            "price": 8.64,
             "unit_quantity": 1,
             "modified_date": "Removed 20 quantity at April 28 Friday 2023 04:45:58 PM",
             "group": null
@@ -2746,6 +2758,17 @@
             "modified_date": "Added at April 28 Friday 2023 02:41:34 PM",
             "group": null
         },
+        "404500": {
+            "current_quantity": 4.0,
+            "machine_time": 0.8,
+            "gauge": "3\/16",
+            "material": "304 SS",
+            "weight": 17.307,
+            "price": 40.54,
+            "unit_quantity": 1,
+            "modified_date": "Manually set to 4.0 quantity at May 02 Tuesday 2023 09:15:40 AM",
+            "group": null
+        },
         "404402": {
             "current_quantity": 2.0,
             "machine_time": 2.62,
@@ -2953,17 +2976,6 @@
             "price": 11.39,
             "unit_quantity": 1,
             "modified_date": "Removed 10 quantity at March 16 Thursday 2023 01:31:47 PM",
-            "group": null
-        },
-        "404500": {
-            "current_quantity": 4.0,
-            "machine_time": 0.8,
-            "gauge": "3\/16",
-            "material": "304 SS",
-            "weight": 17.307,
-            "price": 40.54,
-            "unit_quantity": 1,
-            "modified_date": "Manually set to 4.0 quantity at May 02 Tuesday 2023 09:15:40 AM",
             "group": null
         }
     },
