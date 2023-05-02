@@ -194,13 +194,37 @@
         "G2Plus-Housing-Left Side_Rear Panel": {
             "current_quantity": 10,
             "price": 71.8,
-            "recut_count": 0,
+            "recut_count": 1,
             "machine_time": 1.52,
             "gauge": "18 Gauge",
             "material": "Galvanneal",
             "weight": 55.741,
             "unit_quantity": 1,
             "modified_date": "Added at April 21 Friday 2023 10:40:06 AM",
+            "group": null
+        },
+        "2840-42": {
+            "current_quantity": 10,
+            "price": 8.37,
+            "recut_count": 0,
+            "machine_time": 0.65,
+            "gauge": "18 Gauge",
+            "material": "Galvanneal",
+            "weight": 5.526,
+            "unit_quantity": 1,
+            "modified_date": "Added at May 02 Tuesday 2023 03:59:39 PM",
+            "group": null
+        },
+        "2840-40 - (Recut 1 time(s))": {
+            "current_quantity": 8,
+            "price": 8.11,
+            "recut_count": 1,
+            "machine_time": 0.55,
+            "gauge": "18 Gauge",
+            "material": "Galvanneal",
+            "weight": 5.518,
+            "unit_quantity": 1,
+            "modified_date": "Added at May 02 Tuesday 2023 03:59:39 PM",
             "group": null
         },
         "G2Plus-Housing-Right Side_Rear Panel - (Recut 1 time(s))": {
@@ -213,6 +237,18 @@
             "weight": 54.141,
             "unit_quantity": 1,
             "modified_date": "Added at May 02 Tuesday 2023 09:58:54 AM",
+            "group": null
+        },
+        "G2Plus-Housing-Left Side_Rear Panel - (Recut 1 time(s))": {
+            "current_quantity": 6,
+            "price": 71.57,
+            "recut_count": 1,
+            "machine_time": 1.52,
+            "gauge": "18 Gauge",
+            "material": "Galvanneal",
+            "weight": 55.546,
+            "unit_quantity": 1,
+            "modified_date": "Added at May 02 Tuesday 2023 03:59:39 PM",
             "group": null
         },
         "3444-43 - (Recut 1 time(s))": {
@@ -239,10 +275,22 @@
             "modified_date": "Added at April 26 Wednesday 2023 01:16:16 PM",
             "group": null
         },
+        "2840-49A": {
+            "current_quantity": 3,
+            "price": 29.55,
+            "recut_count": 0,
+            "machine_time": 0.93,
+            "gauge": "18 Gauge",
+            "material": "Galvanneal",
+            "weight": 22.319,
+            "unit_quantity": 1,
+            "modified_date": "Added at May 02 Tuesday 2023 03:59:39 PM",
+            "group": null
+        },
         "2840-40": {
             "current_quantity": 2,
             "price": 8.05,
-            "recut_count": 0,
+            "recut_count": 1,
             "machine_time": 0.53,
             "gauge": "18 Gauge",
             "material": "Galvanneal",
@@ -278,13 +326,25 @@
         "G2Plus-Housing-Right Side_Rear Panel": {
             "current_quantity": 2,
             "price": 70.38,
-            "recut_count": 1,
+            "recut_count": 2,
             "machine_time": 1.73,
             "gauge": "18 Gauge",
             "material": "Galvanneal",
             "weight": 54.141,
             "unit_quantity": 1,
             "modified_date": "Added at May 02 Tuesday 2023 08:20:37 AM",
+            "group": null
+        },
+        "G2Plus-Housing-Right Side_Rear Panel - (Recut 2 time(s))": {
+            "current_quantity": 2,
+            "price": 70.48,
+            "recut_count": 2,
+            "machine_time": 1.77,
+            "gauge": "18 Gauge",
+            "material": "Galvanneal",
+            "weight": 54.141,
+            "unit_quantity": 1,
+            "modified_date": "Added at May 02 Tuesday 2023 03:59:39 PM",
             "group": null
         },
         "404431": {
@@ -405,6 +465,30 @@
             "weight": 2.977,
             "unit_quantity": 1,
             "modified_date": "Added at May 02 Tuesday 2023 08:20:37 AM",
+            "group": null
+        },
+        "2534-088": {
+            "current_quantity": 1,
+            "price": 27.15,
+            "recut_count": 0,
+            "machine_time": 1.0,
+            "gauge": "18 Gauge",
+            "material": "Galvanneal",
+            "weight": 20.201,
+            "unit_quantity": 1,
+            "modified_date": "Added at May 02 Tuesday 2023 03:59:39 PM",
+            "group": null
+        },
+        "G2-3-Housing-Roof-Front": {
+            "current_quantity": 1,
+            "price": 26.64,
+            "recut_count": 0,
+            "machine_time": 0.9,
+            "gauge": "18 Gauge",
+            "material": "Galvanneal",
+            "weight": 19.991,
+            "unit_quantity": 1,
+            "modified_date": "Added at May 02 Tuesday 2023 03:59:39 PM",
             "group": null
         }
     },
@@ -2692,6 +2776,17 @@
             "modified_date": "20 quantity added at April 20 Thursday 2023 10:45:26 AM",
             "group": null
         },
+        "404477x9": {
+            "current_quantity": 45,
+            "machine_time": 0.38,
+            "gauge": "1\/4",
+            "material": "Mild Steel",
+            "weight": 2.059,
+            "price": 2.6,
+            "unit_quantity": 1,
+            "modified_date": "Added at May 02 Tuesday 2023 03:53:31 PM",
+            "group": null
+        },
         "2840-65x2": {
             "current_quantity": 44,
             "machine_time": 0.3,
@@ -2701,6 +2796,50 @@
             "price": 1.11,
             "unit_quantity": 1,
             "modified_date": "Added at April 17 Monday 2023 05:06:22 PM",
+            "group": null
+        },
+        "404471x6": {
+            "current_quantity": 30,
+            "machine_time": 0.23,
+            "gauge": "1\/4",
+            "material": "Mild Steel",
+            "weight": 0.701,
+            "price": 1.14,
+            "unit_quantity": 1,
+            "modified_date": "Added at May 02 Tuesday 2023 03:53:31 PM",
+            "group": null
+        },
+        "404425": {
+            "current_quantity": 20,
+            "machine_time": 0.7,
+            "gauge": "1\/4",
+            "material": "Mild Steel",
+            "weight": 5.874,
+            "price": 6.45,
+            "unit_quantity": 1,
+            "modified_date": "Added at May 02 Tuesday 2023 03:53:31 PM",
+            "group": null
+        },
+        "404434": {
+            "current_quantity": 20,
+            "machine_time": 1.4,
+            "gauge": "1\/4",
+            "material": "Mild Steel",
+            "weight": 32.605,
+            "price": 29.58,
+            "unit_quantity": 1,
+            "modified_date": "Added at May 02 Tuesday 2023 03:53:31 PM",
+            "group": null
+        },
+        "PY-WFJ-02": {
+            "current_quantity": 12,
+            "machine_time": 0.18,
+            "gauge": "1\/4",
+            "material": "Mild Steel",
+            "weight": 0.741,
+            "price": 1.04,
+            "unit_quantity": 1,
+            "modified_date": "Added at April 17 Monday 2023 09:17:04 AM",
             "group": null
         },
         "S30-37": {
@@ -2723,6 +2862,28 @@
             "price": 0.79,
             "unit_quantity": 1,
             "modified_date": "Removed 10 quantity at March 16 Thursday 2023 01:31:47 PM",
+            "group": null
+        },
+        "404405x2": {
+            "current_quantity": 10,
+            "machine_time": 2.22,
+            "gauge": "1\/4",
+            "material": "Mild Steel",
+            "weight": 105.955,
+            "price": 90.31,
+            "unit_quantity": 1,
+            "modified_date": "Added at May 02 Tuesday 2023 03:53:30 PM",
+            "group": null
+        },
+        "404424": {
+            "current_quantity": 10,
+            "machine_time": 0.57,
+            "gauge": "1\/4",
+            "material": "Mild Steel",
+            "weight": 3.303,
+            "price": 4.07,
+            "unit_quantity": 1,
+            "modified_date": "Added at May 02 Tuesday 2023 03:53:30 PM",
             "group": null
         },
         "404402": {
@@ -2879,171 +3040,6 @@
             "modified_date": "5 quantity added at May 02 Tuesday 2023 03:53:30 PM",
             "group": null
         },
-        "404424x2": {
-            "current_quantity": 4.0,
-            "machine_time": 0.57,
-            "gauge": "1\/4",
-            "material": "Mild Steel",
-            "weight": 3.303,
-            "price": 4.07,
-            "unit_quantity": 2.0,
-            "modified_date": "Manually set to 4.0 quantity at April 28 Friday 2023 05:01:39 PM",
-            "group": null
-        },
-        "404461": {
-            "current_quantity": 4,
-            "machine_time": 0.67,
-            "gauge": "3\/8",
-            "material": "Mild Steel",
-            "weight": 6.412,
-            "price": 6.8,
-            "unit_quantity": 1,
-            "modified_date": "Added at April 28 Friday 2023 02:41:34 PM",
-            "group": null
-        },
-        "404500": {
-            "current_quantity": 4.0,
-            "machine_time": 0.8,
-            "gauge": "3\/16",
-            "material": "304 SS",
-            "weight": 17.307,
-            "price": 40.54,
-            "unit_quantity": 1,
-            "modified_date": "Manually set to 4.0 quantity at May 02 Tuesday 2023 09:15:40 AM",
-            "group": null
-        },
-        "4044 Ash Pan": {
-            "current_quantity": 0.0,
-            "machine_time": 0.78,
-            "gauge": "16 Gauge",
-            "material": "304 SS",
-            "weight": 17.901,
-            "price": 41.74,
-            "unit_quantity": 1,
-            "modified_date": "Removed 10 quantity at March 16 Thursday 2023 01:31:47 PM",
-            "group": null
-        },
-        "4044 Ash Pan Handle": {
-            "current_quantity": 0.0,
-            "machine_time": 0.18,
-            "gauge": "16 Gauge",
-            "material": "304 SS",
-            "weight": 0.311,
-            "price": 1.42,
-            "unit_quantity": 1,
-            "modified_date": "Removed 10 quantity at March 16 Thursday 2023 01:31:47 PM",
-            "group": null
-        },
-        "404480": {
-            "current_quantity": 0.0,
-            "machine_time": 1.77,
-            "gauge": "16 Gauge",
-            "material": "304 SS",
-            "weight": 44.621,
-            "price": 103.31,
-            "unit_quantity": 1,
-            "modified_date": "Removed 10 quantity at March 16 Thursday 2023 01:31:47 PM",
-            "group": null
-        },
-        "404437": {
-            "current_quantity": 0,
-            "machine_time": 0.62,
-            "gauge": "18 Gauge",
-            "material": "Galvanneal",
-            "weight": 10.808,
-            "price": 14.74,
-            "unit_quantity": 1,
-            "modified_date": "Removed 10 quantity at March 16 Thursday 2023 01:31:47 PM",
-            "group": null
-        },
-        "404440": {
-            "current_quantity": 0,
-            "machine_time": 0.62,
-            "gauge": "18 Gauge",
-            "material": "Galvanneal",
-            "weight": 8.064,
-            "price": 11.39,
-            "unit_quantity": 1,
-            "modified_date": "Removed 10 quantity at March 16 Thursday 2023 01:31:47 PM",
-            "group": null
-        },
-        "404477x9": {
-            "current_quantity": 45,
-            "machine_time": 0.38,
-            "gauge": "1\/4",
-            "material": "Mild Steel",
-            "weight": 2.059,
-            "price": 2.6,
-            "unit_quantity": 1,
-            "modified_date": "Added at May 02 Tuesday 2023 03:53:31 PM",
-            "group": null
-        },
-        "404471x6": {
-            "current_quantity": 30,
-            "machine_time": 0.23,
-            "gauge": "1\/4",
-            "material": "Mild Steel",
-            "weight": 0.701,
-            "price": 1.14,
-            "unit_quantity": 1,
-            "modified_date": "Added at May 02 Tuesday 2023 03:53:31 PM",
-            "group": null
-        },
-        "404425": {
-            "current_quantity": 20,
-            "machine_time": 0.7,
-            "gauge": "1\/4",
-            "material": "Mild Steel",
-            "weight": 5.874,
-            "price": 6.45,
-            "unit_quantity": 1,
-            "modified_date": "Added at May 02 Tuesday 2023 03:53:31 PM",
-            "group": null
-        },
-        "404434": {
-            "current_quantity": 20,
-            "machine_time": 1.4,
-            "gauge": "1\/4",
-            "material": "Mild Steel",
-            "weight": 32.605,
-            "price": 29.58,
-            "unit_quantity": 1,
-            "modified_date": "Added at May 02 Tuesday 2023 03:53:31 PM",
-            "group": null
-        },
-        "PY-WFJ-02": {
-            "current_quantity": 12,
-            "machine_time": 0.18,
-            "gauge": "1\/4",
-            "material": "Mild Steel",
-            "weight": 0.741,
-            "price": 1.04,
-            "unit_quantity": 1,
-            "modified_date": "Added at April 17 Monday 2023 09:17:04 AM",
-            "group": null
-        },
-        "404405x2": {
-            "current_quantity": 10,
-            "machine_time": 2.22,
-            "gauge": "1\/4",
-            "material": "Mild Steel",
-            "weight": 105.955,
-            "price": 90.31,
-            "unit_quantity": 1,
-            "modified_date": "Added at May 02 Tuesday 2023 03:53:30 PM",
-            "group": null
-        },
-        "404424": {
-            "current_quantity": 10,
-            "machine_time": 0.57,
-            "gauge": "1\/4",
-            "material": "Mild Steel",
-            "weight": 3.303,
-            "price": 4.07,
-            "unit_quantity": 1,
-            "modified_date": "Added at May 02 Tuesday 2023 03:53:30 PM",
-            "group": null
-        },
         "PY-WFJ-03": {
             "current_quantity": 6,
             "machine_time": 0.32,
@@ -3130,6 +3126,94 @@
             "price": 2.42,
             "unit_quantity": 1,
             "modified_date": "Added at May 02 Tuesday 2023 03:53:31 PM",
+            "group": null
+        },
+        "404424x2": {
+            "current_quantity": 4.0,
+            "machine_time": 0.57,
+            "gauge": "1\/4",
+            "material": "Mild Steel",
+            "weight": 3.303,
+            "price": 4.07,
+            "unit_quantity": 2.0,
+            "modified_date": "Manually set to 4.0 quantity at April 28 Friday 2023 05:01:39 PM",
+            "group": null
+        },
+        "404461": {
+            "current_quantity": 4,
+            "machine_time": 0.67,
+            "gauge": "3\/8",
+            "material": "Mild Steel",
+            "weight": 6.412,
+            "price": 6.8,
+            "unit_quantity": 1,
+            "modified_date": "Added at April 28 Friday 2023 02:41:34 PM",
+            "group": null
+        },
+        "404500": {
+            "current_quantity": 4.0,
+            "machine_time": 0.8,
+            "gauge": "3\/16",
+            "material": "304 SS",
+            "weight": 17.307,
+            "price": 40.54,
+            "unit_quantity": 1,
+            "modified_date": "Manually set to 4.0 quantity at May 02 Tuesday 2023 09:15:40 AM",
+            "group": null
+        },
+        "4044 Ash Pan": {
+            "current_quantity": 0.0,
+            "machine_time": 0.78,
+            "gauge": "16 Gauge",
+            "material": "304 SS",
+            "weight": 17.901,
+            "price": 41.74,
+            "unit_quantity": 1,
+            "modified_date": "Removed 10 quantity at March 16 Thursday 2023 01:31:47 PM",
+            "group": null
+        },
+        "4044 Ash Pan Handle": {
+            "current_quantity": 0.0,
+            "machine_time": 0.18,
+            "gauge": "16 Gauge",
+            "material": "304 SS",
+            "weight": 0.311,
+            "price": 1.42,
+            "unit_quantity": 1,
+            "modified_date": "Removed 10 quantity at March 16 Thursday 2023 01:31:47 PM",
+            "group": null
+        },
+        "404480": {
+            "current_quantity": 0.0,
+            "machine_time": 1.77,
+            "gauge": "16 Gauge",
+            "material": "304 SS",
+            "weight": 44.621,
+            "price": 103.31,
+            "unit_quantity": 1,
+            "modified_date": "Removed 10 quantity at March 16 Thursday 2023 01:31:47 PM",
+            "group": null
+        },
+        "404437": {
+            "current_quantity": 0,
+            "machine_time": 0.62,
+            "gauge": "18 Gauge",
+            "material": "Galvanneal",
+            "weight": 10.808,
+            "price": 14.74,
+            "unit_quantity": 1,
+            "modified_date": "Removed 10 quantity at March 16 Thursday 2023 01:31:47 PM",
+            "group": null
+        },
+        "404440": {
+            "current_quantity": 0,
+            "machine_time": 0.62,
+            "gauge": "18 Gauge",
+            "material": "Galvanneal",
+            "weight": 8.064,
+            "price": 11.39,
+            "unit_quantity": 1,
+            "modified_date": "Removed 10 quantity at March 16 Thursday 2023 01:31:47 PM",
             "group": null
         }
     },
