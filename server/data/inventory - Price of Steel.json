@@ -118,7 +118,7 @@
             "is_order_pending": false
         },
         "3\/16 Mild Steel 120.000x48.000": {
-            "current_quantity": 73.0,
+            "current_quantity": 67.0,
             "sheet_dimension": "120.000x48.000",
             "thickness": "3\/16",
             "material": "Mild Steel",
@@ -444,7 +444,7 @@
             "is_order_pending": false
         },
         "14 Gauge 304 SS 120.000x60.000": {
-            "current_quantity": 8.0,
+            "current_quantity": 7.0,
             "sheet_dimension": "120.000x60.000",
             "thickness": "14 Gauge",
             "material": "304 SS",
