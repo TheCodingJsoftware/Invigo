@@ -66,6 +66,28 @@
             "modified_date": "Added at April 17 Monday 2023 05:06:22 PM",
             "group": null
         },
+        "G3-1-Shipping pallet bracket Ax2": {
+            "current_quantity": 40,
+            "machine_time": 0.47,
+            "gauge": "3\/16",
+            "material": "Mild Steel",
+            "weight": 3.131,
+            "price": 3.68,
+            "unit_quantity": 1,
+            "modified_date": "Added at May 03 Wednesday 2023 01:49:31 PM",
+            "group": null
+        },
+        "G3-1-Shipping pallet bracket Bx2": {
+            "current_quantity": 40,
+            "machine_time": 0.52,
+            "gauge": "3\/16",
+            "material": "Mild Steel",
+            "weight": 4.21,
+            "price": 4.67,
+            "unit_quantity": 1,
+            "modified_date": "Added at May 03 Wednesday 2023 01:49:31 PM",
+            "group": null
+        },
         "Flat pattern - door hinge shim18 fix": {
             "current_quantity": 30,
             "machine_time": 0.05,
@@ -97,6 +119,28 @@
             "price": 2.73,
             "unit_quantity": 1,
             "modified_date": "Added at April 17 Monday 2023 05:06:22 PM",
+            "group": null
+        },
+        "404498x2": {
+            "current_quantity": 8,
+            "machine_time": 0.63,
+            "gauge": "14 Gauge",
+            "material": "304 SS",
+            "weight": 4.265,
+            "price": 11.79,
+            "unit_quantity": 1,
+            "modified_date": "Added at May 03 Wednesday 2023 01:47:00 PM",
+            "group": null
+        },
+        "404499x2": {
+            "current_quantity": 8,
+            "machine_time": 0.65,
+            "gauge": "14 Gauge",
+            "material": "304 SS",
+            "weight": 4.217,
+            "price": 11.77,
+            "unit_quantity": 1,
+            "modified_date": "Added at May 03 Wednesday 2023 01:47:00 PM",
             "group": null
         },
         "404457": {
@@ -152,6 +196,61 @@
             "price": 3.83,
             "unit_quantity": 1,
             "modified_date": "Added at May 03 Wednesday 2023 01:25:16 PM",
+            "group": null
+        },
+        "404460SS": {
+            "current_quantity": 5,
+            "machine_time": 0.63,
+            "gauge": "14 Gauge",
+            "material": "304 SS",
+            "weight": 11.625,
+            "price": 27.62,
+            "unit_quantity": 1,
+            "modified_date": "Added at May 03 Wednesday 2023 01:47:00 PM",
+            "group": null
+        },
+        "404412": {
+            "current_quantity": 5,
+            "machine_time": 2.78,
+            "gauge": "3\/16",
+            "material": "Mild Steel",
+            "weight": 80.798,
+            "price": 71.59,
+            "unit_quantity": 1,
+            "modified_date": "Added at May 03 Wednesday 2023 01:49:31 PM",
+            "group": null
+        },
+        "404413": {
+            "current_quantity": 5,
+            "machine_time": 2.4,
+            "gauge": "3\/16",
+            "material": "Mild Steel",
+            "weight": 102.073,
+            "price": 87.66,
+            "unit_quantity": 1,
+            "modified_date": "Added at May 03 Wednesday 2023 01:49:31 PM",
+            "group": null
+        },
+        "404459": {
+            "current_quantity": 5,
+            "machine_time": 1.02,
+            "gauge": "3\/16",
+            "material": "Mild Steel",
+            "weight": 28.098,
+            "price": 25.03,
+            "unit_quantity": 1,
+            "modified_date": "Added at May 03 Wednesday 2023 01:49:31 PM",
+            "group": null
+        },
+        "404460": {
+            "current_quantity": 5,
+            "machine_time": 1.08,
+            "gauge": "3\/16",
+            "material": "Mild Steel",
+            "weight": 26.077,
+            "price": 23.56,
+            "unit_quantity": 1,
+            "modified_date": "Added at May 03 Wednesday 2023 01:49:31 PM",
             "group": null
         },
         "PY-WFJ-05": {
@@ -262,6 +361,17 @@
             "price": 13.76,
             "unit_quantity": 1,
             "modified_date": "Added at April 28 Friday 2023 02:41:34 PM",
+            "group": null
+        },
+        "Flat pattern - Reefer Light Mount": {
+            "current_quantity": 1,
+            "machine_time": 0.95,
+            "gauge": "14 Gauge",
+            "material": "304 SS",
+            "weight": 8.105,
+            "price": 21.38,
+            "unit_quantity": 1,
+            "modified_date": "Added at May 03 Wednesday 2023 01:47:00 PM",
             "group": null
         }
     },
@@ -2468,14 +2578,14 @@
             "group": null
         },
         "3444 chimneyx3": {
-            "current_quantity": 4.0,
+            "current_quantity": 5.0,
             "machine_time": 0.68,
             "gauge": "14 Gauge",
             "material": "304 SS",
             "weight": 6.71,
             "price": 17.26,
             "unit_quantity": 1,
-            "modified_date": "Manually set to 4.0 quantity at April 28 Friday 2023 04:47:51 PM",
+            "modified_date": "1 quantity added at May 03 Wednesday 2023 01:47:00 PM",
             "group": null
         },
         "3444-37": {
