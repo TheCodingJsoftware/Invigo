@@ -73,7 +73,7 @@
             "notes": "Usual Order 8 sheets "
         },
         "1\/4 Mild Steel 120.000x60.000": {
-            "current_quantity": 13.0,
+            "current_quantity": 83.0,
             "sheet_dimension": "120.000x60.000",
             "thickness": "1\/4",
             "material": "Mild Steel",
@@ -81,11 +81,11 @@
             "latest_change_material": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-10-35 PM",
             "latest_sheet_dimension": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-10-35 PM",
             "latest_change_thickness": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-10-35 PM",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 47.0\nto: 28.0\nLaser Pc\nMay 01 Monday 2023 02:39:13 PM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 13.0\nto: 83.0\nLaser Pc\nMay 03 Wednesday 2023 04:37:21 PM",
             "red_limit": 20.0,
             "yellow_limit": 40.0,
             "notes": "Usual Order 100 sheets ",
-            "is_order_pending": true
+            "is_order_pending": false
         },
         "1\/4 Mild Steel 96.000x48.000": {
             "current_quantity": 135.0,
@@ -118,7 +118,7 @@
             "is_order_pending": false
         },
         "3\/16 Mild Steel 120.000x48.000": {
-            "current_quantity": 67.0,
+            "current_quantity": 73.0,
             "sheet_dimension": "120.000x48.000",
             "thickness": "3\/16",
             "material": "Mild Steel",
@@ -218,7 +218,7 @@
             "notes": "Pending"
         },
         "12 Gauge Mild Steel 120.000x60.000": {
-            "current_quantity": 26.0,
+            "current_quantity": 27.0,
             "sheet_dimension": "120.000x60.000",
             "thickness": "12 Gauge",
             "material": "Mild Steel",
@@ -444,7 +444,7 @@
             "is_order_pending": false
         },
         "14 Gauge 304 SS 120.000x60.000": {
-            "current_quantity": 7.0,
+            "current_quantity": 8.0,
             "sheet_dimension": "120.000x60.000",
             "thickness": "14 Gauge",
             "material": "304 SS",
