@@ -77,6 +77,17 @@
             "modified_date": "Added at May 02 Tuesday 2023 08:20:37 AM",
             "group": null
         },
+        "404451": {
+            "current_quantity": 20,
+            "machine_time": 0.45,
+            "gauge": "14 Gauge",
+            "material": "Mild Steel",
+            "weight": 2.391,
+            "price": 3.04,
+            "unit_quantity": 1,
+            "modified_date": "Added at May 03 Wednesday 2023 01:25:16 PM",
+            "group": null
+        },
         "A-13786 R0": {
             "current_quantity": 18,
             "machine_time": 0.52,
@@ -86,6 +97,61 @@
             "price": 2.73,
             "unit_quantity": 1,
             "modified_date": "Added at April 17 Monday 2023 05:06:22 PM",
+            "group": null
+        },
+        "404457": {
+            "current_quantity": 7,
+            "machine_time": 0.43,
+            "gauge": "12 Gauge",
+            "material": "Mild Steel",
+            "weight": 3.204,
+            "price": 3.64,
+            "unit_quantity": 1,
+            "modified_date": "Added at May 03 Wednesday 2023 01:25:16 PM",
+            "group": null
+        },
+        "404458": {
+            "current_quantity": 7,
+            "machine_time": 0.33,
+            "gauge": "12 Gauge",
+            "material": "Mild Steel",
+            "weight": 2.565,
+            "price": 2.88,
+            "unit_quantity": 1,
+            "modified_date": "Added at May 03 Wednesday 2023 01:25:16 PM",
+            "group": null
+        },
+        "404455": {
+            "current_quantity": 5,
+            "machine_time": 0.48,
+            "gauge": "12 Gauge",
+            "material": "Mild Steel",
+            "weight": 4.784,
+            "price": 5.03,
+            "unit_quantity": 1,
+            "modified_date": "Added at May 03 Wednesday 2023 01:25:16 PM",
+            "group": null
+        },
+        "404456": {
+            "current_quantity": 5,
+            "machine_time": 0.37,
+            "gauge": "12 Gauge",
+            "material": "Mild Steel",
+            "weight": 4.044,
+            "price": 4.16,
+            "unit_quantity": 1,
+            "modified_date": "Added at May 03 Wednesday 2023 01:25:16 PM",
+            "group": null
+        },
+        "404474": {
+            "current_quantity": 5,
+            "machine_time": 0.83,
+            "gauge": "12 Gauge",
+            "material": "Mild Steel",
+            "weight": 2.189,
+            "price": 3.83,
+            "unit_quantity": 1,
+            "modified_date": "Added at May 03 Wednesday 2023 01:25:16 PM",
             "group": null
         },
         "PY-WFJ-05": {
@@ -163,6 +229,17 @@
             "price": 5.7,
             "unit_quantity": 1,
             "modified_date": "Added at May 02 Tuesday 2023 04:57:07 PM",
+            "group": null
+        },
+        "Dremil Wrench 0,426": {
+            "current_quantity": 2,
+            "machine_time": 0.1,
+            "gauge": "12 Gauge",
+            "material": "Mild Steel",
+            "weight": 0.082,
+            "price": 0.32,
+            "unit_quantity": 1,
+            "modified_date": "Added at May 03 Wednesday 2023 01:25:16 PM",
             "group": null
         },
         "PY-WFJ-01": {
@@ -749,6 +826,17 @@
             "modified_date": "Removed 60.0 quantity at April 08 Saturday 2023 10:54:59 AM",
             "group": null
         },
+        "2840-51x4": {
+            "current_quantity": 54.0,
+            "machine_time": 0.4,
+            "gauge": "14 Gauge",
+            "material": "Mild Steel",
+            "weight": 1.175,
+            "price": 1.94,
+            "unit_quantity": 4.0,
+            "modified_date": "54 quantity added at May 03 Wednesday 2023 01:25:15 PM",
+            "group": null
+        },
         "2840-92": {
             "current_quantity": 51.0,
             "machine_time": 0.53,
@@ -912,6 +1000,17 @@
             "price": 8.6,
             "unit_quantity": 1,
             "modified_date": "Manually set to 7.0 quantity at April 28 Friday 2023 02:56:45 PM",
+            "group": null
+        },
+        "2840-107": {
+            "current_quantity": 5.0,
+            "machine_time": 0.53,
+            "gauge": "12 Gauge",
+            "material": "Mild Steel",
+            "weight": 3.797,
+            "price": 4.36,
+            "unit_quantity": 1,
+            "modified_date": "5 quantity added at May 03 Wednesday 2023 01:25:15 PM",
             "group": null
         },
         "2840-32": {
@@ -1132,17 +1231,6 @@
             "price": 3.36,
             "unit_quantity": 1,
             "modified_date": "Manually set to 0.0 quantity at April 12 Wednesday 2023 05:08:33 PM",
-            "group": null
-        },
-        "2840-107": {
-            "current_quantity": 0.0,
-            "machine_time": 0.53,
-            "gauge": "12 Gauge",
-            "material": "Mild Steel",
-            "weight": 3.797,
-            "price": 4.36,
-            "unit_quantity": 1,
-            "modified_date": "Manually set to 0.0 quantity at April 12 Wednesday 2023 05:08:28 PM",
             "group": null
         },
         "3044 Ashpan": {
@@ -1506,17 +1594,6 @@
             "price": 9.09,
             "unit_quantity": 1,
             "modified_date": "Removed 10 quantity at April 08 Saturday 2023 10:54:59 AM",
-            "group": null
-        },
-        "2840-51x4": {
-            "current_quantity": 0.0,
-            "machine_time": 0.4,
-            "gauge": "14 Gauge",
-            "material": "Mild Steel",
-            "weight": 1.175,
-            "price": 1.94,
-            "unit_quantity": 4.0,
-            "modified_date": "Manually set to 0.0 quantity at April 08 Saturday 2023 10:56:31 AM",
             "group": null
         },
         "2840-47x2": {
@@ -3252,6 +3329,17 @@
         }
     },
     "Polar G2": {
+        "G-Class - sight Glass -new base plateA": {
+            "current_quantity": 538,
+            "machine_time": 0.15,
+            "gauge": "12 Gauge",
+            "material": "Mild Steel",
+            "weight": 0.371,
+            "price": 0.67,
+            "unit_quantity": 1,
+            "modified_date": "100 quantity added at May 03 Wednesday 2023 01:25:16 PM",
+            "group": null
+        },
         "Flat pattern - G2Plus-Air Gate Adjust - part 1 NEW": {
             "current_quantity": 512,
             "machine_time": 1.15,
@@ -3283,17 +3371,6 @@
             "price": 0.23,
             "unit_quantity": 1,
             "modified_date": "Added at March 22 Wednesday 2023 11:20:40 AM",
-            "group": null
-        },
-        "G-Class - sight Glass -new base plateA": {
-            "current_quantity": 238,
-            "machine_time": 0.15,
-            "gauge": "12 Gauge",
-            "material": "Mild Steel",
-            "weight": 0.371,
-            "price": 0.67,
-            "unit_quantity": 1,
-            "modified_date": "Added at April 12 Wednesday 2023 04:26:36 PM",
             "group": null
         },
         "Polar Spiral": {
@@ -3782,6 +3859,17 @@
         }
     },
     "Polar G2+": {
+        "G-Class - sight Glass -new base plateA": {
+            "current_quantity": 538,
+            "machine_time": 0.15,
+            "gauge": "12 Gauge",
+            "material": "Mild Steel",
+            "weight": 0.371,
+            "price": 0.67,
+            "unit_quantity": 1,
+            "modified_date": "100 quantity added at May 03 Wednesday 2023 01:25:16 PM",
+            "group": null
+        },
         "Flat pattern - G2Plus-Air Gate Adjust - part 1 NEW": {
             "current_quantity": 512,
             "machine_time": 1.15,
@@ -3813,17 +3901,6 @@
             "price": 0.23,
             "unit_quantity": 1,
             "modified_date": "Added at March 22 Wednesday 2023 11:20:40 AM",
-            "group": null
-        },
-        "G-Class - sight Glass -new base plateA": {
-            "current_quantity": 238,
-            "machine_time": 0.15,
-            "gauge": "12 Gauge",
-            "material": "Mild Steel",
-            "weight": 0.371,
-            "price": 0.67,
-            "unit_quantity": 1,
-            "modified_date": "Added at April 12 Wednesday 2023 04:26:36 PM",
             "group": null
         },
         "G-Class-Catch1-Base": {
@@ -4675,6 +4752,17 @@
         }
     },
     "Polar G3": {
+        "G-Class - sight Glass -new base plateA": {
+            "current_quantity": 538,
+            "machine_time": 0.15,
+            "gauge": "12 Gauge",
+            "material": "Mild Steel",
+            "weight": 0.371,
+            "price": 0.67,
+            "unit_quantity": 1,
+            "modified_date": "100 quantity added at May 03 Wednesday 2023 01:25:16 PM",
+            "group": null
+        },
         "Flat pattern - G2Plus-Air Gate Adjust - part 1 NEW": {
             "current_quantity": 512,
             "machine_time": 1.15,
@@ -4706,17 +4794,6 @@
             "price": 0.23,
             "unit_quantity": 1,
             "modified_date": "Added at March 22 Wednesday 2023 11:20:40 AM",
-            "group": null
-        },
-        "G-Class - sight Glass -new base plateA": {
-            "current_quantity": 238,
-            "machine_time": 0.15,
-            "gauge": "12 Gauge",
-            "material": "Mild Steel",
-            "weight": 0.371,
-            "price": 0.67,
-            "unit_quantity": 1,
-            "modified_date": "Added at April 12 Wednesday 2023 04:26:36 PM",
             "group": null
         },
         "G-Class-Catch1-Base": {
@@ -5902,6 +5979,17 @@
             "modified_date": "Added at March 17 Friday 2023 02:17:02 PM",
             "group": null
         },
+        "04 Single Post Small Gate 12g x2": {
+            "current_quantity": 2,
+            "machine_time": 1.57,
+            "gauge": "12 Gauge",
+            "material": "Mild Steel",
+            "weight": 8.116,
+            "price": 10.42,
+            "unit_quantity": 1,
+            "modified_date": "1 quantity added at May 03 Wednesday 2023 01:25:16 PM",
+            "group": null
+        },
         "03 Single Post 12g x35": {
             "current_quantity": 1,
             "machine_time": 1.37,
@@ -5909,17 +5997,6 @@
             "material": "Mild Steel",
             "weight": 8.195,
             "price": 9.98,
-            "unit_quantity": 1,
-            "modified_date": "Added at March 04 Saturday 2023 01:43:50 PM",
-            "group": null
-        },
-        "04 Single Post Small Gate 12g x2": {
-            "current_quantity": 1,
-            "machine_time": 1.57,
-            "gauge": "12 Gauge",
-            "material": "Mild Steel",
-            "weight": 8.116,
-            "price": 10.42,
             "unit_quantity": 1,
             "modified_date": "Added at March 04 Saturday 2023 01:43:50 PM",
             "group": null
