@@ -84,7 +84,8 @@
             "latest_change_current_quantity": "Latest Change:\nfrom: 47.0\nto: 28.0\nLaser Pc\nMay 01 Monday 2023 02:39:13 PM",
             "red_limit": 20.0,
             "yellow_limit": 40.0,
-            "notes": "Usual Order 100 sheets "
+            "notes": "Usual Order 100 sheets ",
+            "is_order_pending": true
         },
         "1\/4 Mild Steel 96.000x48.000": {
             "current_quantity": 135.0,
