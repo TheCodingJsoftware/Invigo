@@ -323,12 +323,12 @@
         "Blower Wheel 9-15\/16\" X 2-1\/4 BI Steel 1\/2 #2-106CI CW \"A\" 1800R": {
             "part_number": "2-106CI CW",
             "unit_quantity": 1,
-            "current_quantity": 16,
+            "current_quantity": 66,
             "price": 68.45,
             "use_exchange_rate": false,
             "priority": 0,
             "notes": "Vendor: Jan-Air Illinois\nDescription: Customer item #\nSB0993225C2RA ",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 16\nto: 16\nLynden\nApril 21 Friday 2023 01:29:33 PM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 66\nto: 66\nLynden\nMay 04 Thursday 2023 03:46:32 PM",
             "latest_change_price": "Latest Change:\nfrom: 68.45\nto: 68.45\nItsme\nSeptember 06 Tuesday 2022 11:12:17 AM",
             "latest_change_notes": "Latest Change:\nfrom: Vendor: Jan-Air Illinois\nDescription: Customer item #\nSB0993225C2RA\nto: Vendor: Jan-Air Illinois\nDescription: Customer item #\nSB0993225C2RA \nLynden\nMarch 09 Thursday 2023 03:34:27 PM"
         },
@@ -2117,21 +2117,6 @@
             "latest_change_current_quantity": "Latest Change:\nfrom: 15\nto: 15\nLynden\nApril 21 Friday 2023 01:29:33 PM",
             "latest_change_price": "Latest Change:\nfrom: 5.13\nto: 5.64\nItsme\nJanuary 17 Tuesday 2023 09:04:10 AM"
         },
-        "Blower Wheel 9-15\/16\" X 2-1\/4 BI Steel 1\/2 #2-106CI CW \"A\" 1800R": {
-            "part_number": "2-106CI CW",
-            "unit_quantity": 1,
-            "current_quantity": 16,
-            "price": 68.45,
-            "use_exchange_rate": true,
-            "priority": 3,
-            "notes": "Vendor: Jan-Air Illinois\nDescription: Customer item #\nSB0993225C2RA ",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 16\nto: 16\nLynden\nApril 21 Friday 2023 01:29:33 PM",
-            "latest_change_priority": "Latest Change:\nfrom: 0\nto: 3\nItsme\nSeptember 05 Monday 2022 09:49:27 AM",
-            "latest_change_price": "Latest Change:\nfrom: 68.45\nto: 68.45\nItsme\nSeptember 06 Tuesday 2022 11:12:17 AM",
-            "latest_change_use_exchange_rate": "Latest Change:\nfrom: CAD\nto: USD\nItsme\nDecember 16 Friday 2022 09:36:46 AM",
-            "group": "Eon Motor Fan Assy",
-            "latest_change_notes": "Latest Change:\nfrom: \"Vendor: Jan-Air Illinois\nDescription: Customer item #\nSB0993225C2RA\"\nto: \"Vendor: Jan-Air Illinois\nDescription: Customer item #\nSB0993225C2RA \"\nLynden\nMarch 09 Thursday 2023 03:34:27 PM"
-        },
         "Compression Spring, 1.5\" Long, 0.313\" OD, 0.269\" ID  Spring Rate Peep Hole": {
             "part_number": "18",
             "unit_quantity": 1,
@@ -2543,6 +2528,21 @@
             "latest_change_use_exchange_price": "Item added\nItsme\nAugust 12 Friday 2022 11-27-45 AM",
             "latest_change_priority": "Latest Change:\nfrom: 2\nto: 3\nLynden\nMarch 27 Monday 2023 10:48:35 AM",
             "latest_change_notes": "Item added\nItsme\nAugust 12 Friday 2022 11-27-45 AM"
+        },
+        "Blower Wheel 9-15\/16\" X 2-1\/4 BI Steel 1\/2 #2-106CI CW \"A\" 1800R": {
+            "part_number": "2-106CI CW",
+            "unit_quantity": 1,
+            "current_quantity": 66,
+            "price": 68.45,
+            "use_exchange_rate": true,
+            "priority": 3,
+            "notes": "Vendor: Jan-Air Illinois\nDescription: Customer item #\nSB0993225C2RA ",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 66\nto: 66\nLynden\nMay 04 Thursday 2023 03:46:32 PM",
+            "latest_change_priority": "Latest Change:\nfrom: 0\nto: 3\nItsme\nSeptember 05 Monday 2022 09:49:27 AM",
+            "latest_change_price": "Latest Change:\nfrom: 68.45\nto: 68.45\nItsme\nSeptember 06 Tuesday 2022 11:12:17 AM",
+            "latest_change_use_exchange_rate": "Latest Change:\nfrom: CAD\nto: USD\nItsme\nDecember 16 Friday 2022 09:36:46 AM",
+            "group": "Eon Motor Fan Assy",
+            "latest_change_notes": "Latest Change:\nfrom: \"Vendor: Jan-Air Illinois\nDescription: Customer item #\nSB0993225C2RA\"\nto: \"Vendor: Jan-Air Illinois\nDescription: Customer item #\nSB0993225C2RA \"\nLynden\nMarch 09 Thursday 2023 03:34:27 PM"
         },
         "Sticker #342 Bilingual Caution Notice Decal ": {
             "part_number": "342",
@@ -3883,12 +3883,12 @@
         "Blower Wheel 9-15\/16\" X 2-1\/4 BI Steel 1\/2 #2-106CI CW \"A\" 1800R": {
             "part_number": "2-106CI CW",
             "unit_quantity": 1,
-            "current_quantity": 16,
+            "current_quantity": 66,
             "price": 68.45,
             "use_exchange_rate": false,
             "priority": 3,
             "notes": "Vendor: Jan-Air Illinois\nDescription: Customer item #\nSB0993225C2RA ",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 16\nto: 16\nLynden\nApril 21 Friday 2023 01:29:33 PM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 66\nto: 66\nLynden\nMay 04 Thursday 2023 03:46:32 PM",
             "latest_change_price": "Latest Change:\nfrom: 68.45\nto: 68.45\nItsme\nSeptember 06 Tuesday 2022 11:12:17 AM",
             "latest_change_priority": "Latest Change:\nfrom: 0\nto: 3\nItsme\nOctober 24 Monday 2022 08:34:48 AM",
             "latest_change_notes": "Latest Change:\nfrom: Vendor: Jan-Air Illinois\nDescription: Customer item #\nSB0993225C2RA\nto: Vendor: Jan-Air Illinois\nDescription: Customer item #\nSB0993225C2RA \nLynden\nMarch 09 Thursday 2023 03:34:27 PM"
