@@ -5791,36 +5791,36 @@
     },
     "Honey Comb Wagon": {
         "HCC-1105x4": {
-            "current_quantity": 40,
+            "current_quantity": 80,
             "machine_time": 1.22,
             "gauge": "10 Gauge",
             "material": "Mild Steel",
             "weight": 18.075,
             "price": 17.51,
             "unit_quantity": 4.0,
-            "modified_date": "Added at March 03 Friday 2023 04:55:19 PM",
+            "modified_date": "40 quantity added at May 05 Friday 2023 04:07:10 PM",
             "group": null
         },
         "HCC-1101x2": {
-            "current_quantity": 20,
+            "current_quantity": 40,
             "machine_time": 3.25,
             "gauge": "10 Gauge",
             "material": "Mild Steel",
             "weight": 81.431,
             "price": 73.27,
             "unit_quantity": 2.0,
-            "modified_date": "Added at March 03 Friday 2023 04:55:19 PM",
+            "modified_date": "20 quantity added at May 05 Friday 2023 04:07:10 PM",
             "group": null
         },
         "HCC-1103x2": {
-            "current_quantity": 20,
+            "current_quantity": 40,
             "machine_time": 3.1,
             "gauge": "10 Gauge",
             "material": "Mild Steel",
             "weight": 47.441,
             "price": 45.7,
             "unit_quantity": 2.0,
-            "modified_date": "Added at March 03 Friday 2023 04:55:19 PM",
+            "modified_date": "20 quantity added at May 05 Friday 2023 04:07:10 PM",
             "group": null
         },
         "HCC-1104": {
