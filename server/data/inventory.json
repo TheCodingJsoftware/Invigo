@@ -6601,6 +6601,23 @@
             "latest_change_priority": "Item added\nItsme\nJanuary 27 Friday 2023 01-35-39 PM",
             "latest_change_notes": "Item added\nItsme\nJanuary 27 Friday 2023 01-35-39 PM"
         },
+        "Helium Lasel 4 UN1046 ": {
+            "part_number": "lasel4",
+            "unit_quantity": 1.0,
+            "current_quantity": 1,
+            "price": 605.0,
+            "use_exchange_rate": false,
+            "priority": 0,
+            "notes": "Vendor: Air liquid\nDescription: Fernando At 1833-935-3252\nor Paul Waite email",
+            "latest_change_name": "Item added\nLynden\nMay 05 Friday 2023 09-22-13 AM",
+            "latest_change_part_number": "Item added\nLynden\nMay 05 Friday 2023 09-22-13 AM",
+            "latest_change_unit_quantity": "Item added\nLynden\nMay 05 Friday 2023 09-22-13 AM",
+            "latest_change_current_quantity": "Item added\nLynden\nMay 05 Friday 2023 09-22-13 AM",
+            "latest_change_price": "Item added\nLynden\nMay 05 Friday 2023 09-22-13 AM",
+            "latest_change_use_exchange_price": "Item added\nLynden\nMay 05 Friday 2023 09-22-13 AM",
+            "latest_change_priority": "Item added\nLynden\nMay 05 Friday 2023 09-22-13 AM",
+            "latest_change_notes": "Item added\nLynden\nMay 05 Friday 2023 09-22-13 AM"
+        },
         "MEP 2HP-324-18T-56C C\/W BASE MQRP-204CH ": {
             "part_number": "MQRP-204CW",
             "unit_quantity": 1,
@@ -6651,6 +6668,23 @@
             "latest_change_use_exchange_price": "Item added\nItsme\nNovember 24 Thursday 2022 09-10-07 AM",
             "latest_change_priority": "Item added\nItsme\nNovember 24 Thursday 2022 09-10-07 AM",
             "latest_change_notes": "Item added\nItsme\nNovember 24 Thursday 2022 09-10-07 AM"
+        },
+        "Black primer scoat 713 ": {
+            "part_number": "7133505",
+            "unit_quantity": 0.2,
+            "current_quantity": 2,
+            "price": 273.0,
+            "use_exchange_rate": false,
+            "priority": 0,
+            "notes": "Vendor: Cloverdale paint\nDescription: 5 gallon pails, one boiler uses .2 of a pail",
+            "latest_change_name": "Item added\nItsme\nDecember 05 Monday 2022 10-53-08 AM",
+            "latest_change_part_number": "Item added\nItsme\nDecember 05 Monday 2022 10-53-08 AM",
+            "latest_change_unit_quantity": "Item added\nItsme\nDecember 05 Monday 2022 10-53-08 AM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 2.0\nto: 2\nLynden\nApril 21 Friday 2023 10:47:46 AM",
+            "latest_change_price": "Item added\nItsme\nDecember 05 Monday 2022 10-53-08 AM",
+            "latest_change_use_exchange_price": "Item added\nItsme\nDecember 05 Monday 2022 10-53-08 AM",
+            "latest_change_priority": "Item added\nItsme\nDecember 05 Monday 2022 10-53-08 AM",
+            "latest_change_notes": "Item added\nItsme\nDecember 05 Monday 2022 10-53-08 AM"
         },
         "M16 Bolt ( Rear tire Assy Electric Fork Lift": {
             "part_number": "M16x50 ",
@@ -6719,23 +6753,6 @@
             "latest_change_use_exchange_price": "Item added\nItsme\nFebruary 07 Tuesday 2023 10-05-54 AM",
             "latest_change_priority": "Item added\nItsme\nFebruary 07 Tuesday 2023 10-05-54 AM",
             "latest_change_notes": "Item added\nItsme\nFebruary 07 Tuesday 2023 10-05-54 AM"
-        },
-        "Black primer scoat 713 ": {
-            "part_number": "7133505",
-            "unit_quantity": 0.2,
-            "current_quantity": 2,
-            "price": 273.0,
-            "use_exchange_rate": false,
-            "priority": 0,
-            "notes": "Vendor: Cloverdale paint\nDescription: 5 gallon pails, one boiler uses .2 of a pail",
-            "latest_change_name": "Item added\nItsme\nDecember 05 Monday 2022 10-53-08 AM",
-            "latest_change_part_number": "Item added\nItsme\nDecember 05 Monday 2022 10-53-08 AM",
-            "latest_change_unit_quantity": "Item added\nItsme\nDecember 05 Monday 2022 10-53-08 AM",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 2.0\nto: 2\nLynden\nApril 21 Friday 2023 10:47:46 AM",
-            "latest_change_price": "Item added\nItsme\nDecember 05 Monday 2022 10-53-08 AM",
-            "latest_change_use_exchange_price": "Item added\nItsme\nDecember 05 Monday 2022 10-53-08 AM",
-            "latest_change_priority": "Item added\nItsme\nDecember 05 Monday 2022 10-53-08 AM",
-            "latest_change_notes": "Item added\nItsme\nDecember 05 Monday 2022 10-53-08 AM"
         },
         "E-Weld Sprayer ": {
             "part_number": "WA-53-F203",
