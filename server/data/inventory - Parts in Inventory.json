@@ -121,6 +121,17 @@
             "modified_date": "Added at April 17 Monday 2023 05:06:22 PM",
             "group": null
         },
+        "Coat Hook3": {
+            "current_quantity": 11,
+            "machine_time": 2.28,
+            "gauge": "12 Gauge",
+            "material": "Mild Steel",
+            "weight": 6.33,
+            "price": 10.76,
+            "unit_quantity": 1,
+            "modified_date": "Added at May 05 Friday 2023 11:13:42 AM",
+            "group": null
+        },
         "404498x2": {
             "current_quantity": 8,
             "machine_time": 0.63,
@@ -4288,28 +4299,6 @@
             "modified_date": "10 quantity added at April 20 Thursday 2023 02:47:27 PM",
             "group": null
         },
-        "small scoop G": {
-            "current_quantity": 10,
-            "machine_time": 0.18,
-            "gauge": "16 Gauge",
-            "material": "Mild Steel",
-            "weight": 1.058,
-            "price": 1.3,
-            "unit_quantity": 1,
-            "modified_date": "Added at March 27 Monday 2023 03:37:47 PM",
-            "group": null
-        },
-        "G2Plus-Door Stay-part1": {
-            "current_quantity": 10,
-            "machine_time": 0.58,
-            "gauge": "10 Gauge",
-            "material": "Mild Steel",
-            "weight": 1.465,
-            "price": 2.62,
-            "unit_quantity": 1,
-            "modified_date": "Added at March 28 Tuesday 2023 02:36:56 PM",
-            "group": null
-        },
         "G2Plus-Fan Housing-Top": {
             "current_quantity": 11.0,
             "machine_time": 0.57,
@@ -4451,6 +4440,28 @@
             "price": 2.71,
             "unit_quantity": 1,
             "modified_date": "Manually set to 11.0 quantity at May 04 Thursday 2023 08:47:48 AM",
+            "group": null
+        },
+        "small scoop G": {
+            "current_quantity": 10,
+            "machine_time": 0.18,
+            "gauge": "16 Gauge",
+            "material": "Mild Steel",
+            "weight": 1.058,
+            "price": 1.3,
+            "unit_quantity": 1,
+            "modified_date": "Added at March 27 Monday 2023 03:37:47 PM",
+            "group": null
+        },
+        "G2Plus-Door Stay-part1": {
+            "current_quantity": 10,
+            "machine_time": 0.58,
+            "gauge": "10 Gauge",
+            "material": "Mild Steel",
+            "weight": 1.465,
+            "price": 2.62,
+            "unit_quantity": 1,
+            "modified_date": "Added at March 28 Tuesday 2023 02:36:56 PM",
             "group": null
         },
         "G2Plus-Flues Access Lid- Inner": {
@@ -6001,6 +6012,17 @@
             "modified_date": "Added at April 21 Friday 2023 10:49:04 AM",
             "group": null
         },
+        "02 Double Post 12g x72": {
+            "current_quantity": 4,
+            "machine_time": 1.25,
+            "gauge": "12 Gauge",
+            "material": "Mild Steel",
+            "weight": 8.885,
+            "price": 10.23,
+            "unit_quantity": 1,
+            "modified_date": "1 quantity added at May 05 Friday 2023 11:13:42 AM",
+            "group": null
+        },
         "central air": {
             "current_quantity": 3,
             "machine_time": 1.45,
@@ -6041,17 +6063,6 @@
             "material": "Mild Steel",
             "weight": 1.791,
             "price": 2.48,
-            "unit_quantity": 1,
-            "modified_date": "1 quantity added at March 24 Friday 2023 11:27:35 AM",
-            "group": null
-        },
-        "02 Double Post 12g x72": {
-            "current_quantity": 3,
-            "machine_time": 1.25,
-            "gauge": "12 Gauge",
-            "material": "Mild Steel",
-            "weight": 8.885,
-            "price": 10.23,
             "unit_quantity": 1,
             "modified_date": "1 quantity added at March 24 Friday 2023 11:27:35 AM",
             "group": null
