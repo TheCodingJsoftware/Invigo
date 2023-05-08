@@ -11,39 +11,6 @@
             "modified_date": "Added at April 04 Tuesday 2023 10:26:25 AM",
             "group": null
         },
-        "Flat pattern - 2.7in Wacher": {
-            "current_quantity": 882,
-            "machine_time": 0.17,
-            "gauge": "1\/4",
-            "material": "Mild Steel",
-            "weight": 0.336,
-            "price": 0.64,
-            "unit_quantity": 1,
-            "modified_date": "Added at March 18 Saturday 2023 11:17:12 AM",
-            "group": null
-        },
-        "Flat pattern - Hog Barn Latch": {
-            "current_quantity": 583,
-            "machine_time": 0.22,
-            "gauge": "1\/4",
-            "material": "304 SS",
-            "weight": 0.252,
-            "price": 1.52,
-            "unit_quantity": 1,
-            "modified_date": "Added at March 17 Friday 2023 02:13:08 PM",
-            "group": null
-        },
-        "Flat pattern - 5x12 plate": {
-            "current_quantity": 505,
-            "machine_time": 0.53,
-            "gauge": "1\/4",
-            "material": "Mild Steel",
-            "weight": 4.047,
-            "price": 4.56,
-            "unit_quantity": 1,
-            "modified_date": "Added at May 02 Tuesday 2023 03:53:31 PM",
-            "group": null
-        },
         "LEVELGUSET": {
             "current_quantity": 269,
             "machine_time": 0.2,
@@ -132,28 +99,6 @@
             "modified_date": "Added at May 05 Friday 2023 11:13:42 AM",
             "group": null
         },
-        "Flat pattern - WT C .25g x25": {
-            "current_quantity": 10,
-            "machine_time": 0.18,
-            "gauge": "1\/4",
-            "material": "Mild Steel",
-            "weight": 0.356,
-            "price": 0.73,
-            "unit_quantity": 1,
-            "modified_date": "Added at May 06 Saturday 2023 01:47:50 PM",
-            "group": null
-        },
-        "Flat pattern - WT D .25g x25": {
-            "current_quantity": 10,
-            "machine_time": 0.3,
-            "gauge": "1\/4",
-            "material": "Mild Steel",
-            "weight": 1.307,
-            "price": 1.8,
-            "unit_quantity": 1,
-            "modified_date": "Added at May 06 Saturday 2023 01:47:50 PM",
-            "group": null
-        },
         "404457": {
             "current_quantity": 7,
             "machine_time": 0.43,
@@ -174,17 +119,6 @@
             "price": 2.88,
             "unit_quantity": 1,
             "modified_date": "Added at May 03 Wednesday 2023 01:25:16 PM",
-            "group": null
-        },
-        "Flat pattern - WT C2 .25g x25": {
-            "current_quantity": 6,
-            "machine_time": 0.18,
-            "gauge": "1\/4",
-            "material": "Mild Steel",
-            "weight": 0.395,
-            "price": 0.77,
-            "unit_quantity": 1,
-            "modified_date": "Added at May 06 Saturday 2023 01:47:50 PM",
             "group": null
         },
         "404455": {
@@ -218,61 +152,6 @@
             "price": 3.83,
             "unit_quantity": 1,
             "modified_date": "Added at May 03 Wednesday 2023 01:25:16 PM",
-            "group": null
-        },
-        "404412": {
-            "current_quantity": 5,
-            "machine_time": 2.78,
-            "gauge": "3\/16",
-            "material": "Mild Steel",
-            "weight": 80.798,
-            "price": 71.59,
-            "unit_quantity": 1,
-            "modified_date": "Added at May 03 Wednesday 2023 01:49:31 PM",
-            "group": null
-        },
-        "404413": {
-            "current_quantity": 5,
-            "machine_time": 2.4,
-            "gauge": "3\/16",
-            "material": "Mild Steel",
-            "weight": 102.073,
-            "price": 87.66,
-            "unit_quantity": 1,
-            "modified_date": "Added at May 03 Wednesday 2023 01:49:31 PM",
-            "group": null
-        },
-        "404459": {
-            "current_quantity": 5,
-            "machine_time": 1.02,
-            "gauge": "3\/16",
-            "material": "Mild Steel",
-            "weight": 28.098,
-            "price": 25.03,
-            "unit_quantity": 1,
-            "modified_date": "Added at May 03 Wednesday 2023 01:49:31 PM",
-            "group": null
-        },
-        "404460": {
-            "current_quantity": 5,
-            "machine_time": 1.08,
-            "gauge": "3\/16",
-            "material": "Mild Steel",
-            "weight": 26.077,
-            "price": 23.56,
-            "unit_quantity": 1,
-            "modified_date": "Added at May 03 Wednesday 2023 01:49:31 PM",
-            "group": null
-        },
-        "PY-WFJ-05": {
-            "current_quantity": 4,
-            "machine_time": 0.37,
-            "gauge": "1\/4",
-            "material": "Mild Steel",
-            "weight": 1.904,
-            "price": 2.39,
-            "unit_quantity": 1,
-            "modified_date": "Added at April 17 Monday 2023 09:17:04 AM",
             "group": null
         },
         "swivels 4 needed": {
@@ -471,50 +350,6 @@
             "price": 10.16,
             "unit_quantity": 1,
             "modified_date": "Added at May 06 Saturday 2023 01:45:04 PM",
-            "group": null
-        },
-        "WTSS 202309": {
-            "current_quantity": 1,
-            "machine_time": 0.07,
-            "gauge": "14 Gauge",
-            "material": "304 SS",
-            "weight": 0.054,
-            "price": 0.41,
-            "unit_quantity": 1,
-            "modified_date": "Added at May 06 Saturday 2023 01:45:23 PM",
-            "group": null
-        },
-        "WTSS 202310": {
-            "current_quantity": 1,
-            "machine_time": 0.05,
-            "gauge": "14 Gauge",
-            "material": "304 SS",
-            "weight": 0.037,
-            "price": 0.29,
-            "unit_quantity": 1,
-            "modified_date": "Added at May 06 Saturday 2023 01:45:23 PM",
-            "group": null
-        },
-        "WTSS 202311": {
-            "current_quantity": 1,
-            "machine_time": 0.1,
-            "gauge": "14 Gauge",
-            "material": "304 SS",
-            "weight": 0.041,
-            "price": 0.5,
-            "unit_quantity": 1,
-            "modified_date": "Added at May 06 Saturday 2023 01:45:49 PM",
-            "group": null
-        },
-        "WTSS 202313": {
-            "current_quantity": 1,
-            "machine_time": 0.1,
-            "gauge": "14 Gauge",
-            "material": "304 SS",
-            "weight": 0.414,
-            "price": 1.31,
-            "unit_quantity": 1,
-            "modified_date": "Added at May 06 Saturday 2023 01:45:49 PM",
             "group": null
         },
         "lock.25 x1": {
@@ -3634,6 +3469,50 @@
             "unit_quantity": 1,
             "modified_date": "Added at May 03 Wednesday 2023 01:47:00 PM",
             "group": null
+        },
+        "404412": {
+            "current_quantity": 5,
+            "machine_time": 2.78,
+            "gauge": "3\/16",
+            "material": "Mild Steel",
+            "weight": 80.798,
+            "price": 71.59,
+            "unit_quantity": 1,
+            "modified_date": "Added at May 03 Wednesday 2023 01:49:31 PM",
+            "group": null
+        },
+        "404413": {
+            "current_quantity": 5,
+            "machine_time": 2.4,
+            "gauge": "3\/16",
+            "material": "Mild Steel",
+            "weight": 102.073,
+            "price": 87.66,
+            "unit_quantity": 1,
+            "modified_date": "Added at May 03 Wednesday 2023 01:49:31 PM",
+            "group": null
+        },
+        "404459": {
+            "current_quantity": 5,
+            "machine_time": 1.02,
+            "gauge": "3\/16",
+            "material": "Mild Steel",
+            "weight": 28.098,
+            "price": 25.03,
+            "unit_quantity": 1,
+            "modified_date": "Added at May 03 Wednesday 2023 01:49:31 PM",
+            "group": null
+        },
+        "404460": {
+            "current_quantity": 5,
+            "machine_time": 1.08,
+            "gauge": "3\/16",
+            "material": "Mild Steel",
+            "weight": 26.077,
+            "price": 23.56,
+            "unit_quantity": 1,
+            "modified_date": "Added at May 03 Wednesday 2023 01:49:31 PM",
+            "group": null
         }
     },
     "Polar G2": {
@@ -6604,6 +6483,127 @@
             "price": 0.19,
             "unit_quantity": 1,
             "modified_date": "Added at April 21 Friday 2023 10:49:04 AM",
+            "group": null
+        },
+        "WTSS 202309": {
+            "current_quantity": 1,
+            "machine_time": 0.07,
+            "gauge": "14 Gauge",
+            "material": "304 SS",
+            "weight": 0.054,
+            "price": 0.41,
+            "unit_quantity": 1,
+            "modified_date": "Added at May 06 Saturday 2023 01:45:23 PM",
+            "group": null
+        },
+        "WTSS 202310": {
+            "current_quantity": 1,
+            "machine_time": 0.05,
+            "gauge": "14 Gauge",
+            "material": "304 SS",
+            "weight": 0.037,
+            "price": 0.29,
+            "unit_quantity": 1,
+            "modified_date": "Added at May 06 Saturday 2023 01:45:23 PM",
+            "group": null
+        },
+        "WTSS 202311": {
+            "current_quantity": 1,
+            "machine_time": 0.1,
+            "gauge": "14 Gauge",
+            "material": "304 SS",
+            "weight": 0.041,
+            "price": 0.5,
+            "unit_quantity": 1,
+            "modified_date": "Added at May 06 Saturday 2023 01:45:49 PM",
+            "group": null
+        },
+        "WTSS 202313": {
+            "current_quantity": 1,
+            "machine_time": 0.1,
+            "gauge": "14 Gauge",
+            "material": "304 SS",
+            "weight": 0.414,
+            "price": 1.31,
+            "unit_quantity": 1,
+            "modified_date": "Added at May 06 Saturday 2023 01:45:49 PM",
+            "group": null
+        },
+        "Flat pattern - 2.7in Wacher": {
+            "current_quantity": 882,
+            "machine_time": 0.17,
+            "gauge": "1\/4",
+            "material": "Mild Steel",
+            "weight": 0.336,
+            "price": 0.69,
+            "unit_quantity": 1,
+            "modified_date": "Added at March 18 Saturday 2023 11:17:12 AM",
+            "group": null
+        },
+        "Flat pattern - Hog Barn Latch": {
+            "current_quantity": 583,
+            "machine_time": 0.22,
+            "gauge": "1\/4",
+            "material": "304 SS",
+            "weight": 0.252,
+            "price": 1.46,
+            "unit_quantity": 1,
+            "modified_date": "Added at March 17 Friday 2023 02:13:08 PM",
+            "group": null
+        },
+        "Flat pattern - 5x12 plate": {
+            "current_quantity": 505,
+            "machine_time": 0.53,
+            "gauge": "1\/4",
+            "material": "Mild Steel",
+            "weight": 4.047,
+            "price": 4.56,
+            "unit_quantity": 1,
+            "modified_date": "Added at May 02 Tuesday 2023 03:53:31 PM",
+            "group": null
+        },
+        "Flat pattern - WT C .25g x25": {
+            "current_quantity": 10,
+            "machine_time": 0.18,
+            "gauge": "1\/4",
+            "material": "Mild Steel",
+            "weight": 0.356,
+            "price": 0.73,
+            "unit_quantity": 1,
+            "modified_date": "Added at May 06 Saturday 2023 01:47:50 PM",
+            "group": null
+        },
+        "Flat pattern - WT D .25g x25": {
+            "current_quantity": 10,
+            "machine_time": 0.3,
+            "gauge": "1\/4",
+            "material": "Mild Steel",
+            "weight": 1.307,
+            "price": 1.8,
+            "unit_quantity": 1,
+            "modified_date": "Added at May 06 Saturday 2023 01:47:50 PM",
+            "group": null
+        },
+        "Flat pattern - WT C2 .25g x25": {
+            "current_quantity": 6,
+            "machine_time": 0.18,
+            "gauge": "1\/4",
+            "material": "Mild Steel",
+            "weight": 0.395,
+            "price": 0.77,
+            "unit_quantity": 1,
+            "modified_date": "Added at May 06 Saturday 2023 01:47:50 PM",
+            "group": null
+        },
+        "PY-WFJ-05": {
+            "current_quantity": 4,
+            "machine_time": 0.37,
+            "gauge": "1\/4",
+            "material": "Mild Steel",
+            "weight": 1.904,
+            "price": 2.45,
+            "unit_quantity": 1,
+            "modified_date": "Added at April 17 Monday 2023 09:17:04 AM",
             "group": null
         }
     },
