@@ -1917,6 +1917,28 @@
             "modified_date": "20 quantity added at April 20 Thursday 2023 10:45:26 AM",
             "group": null
         },
+        "3444 -Ash Pan Handle": {
+            "current_quantity": 50,
+            "machine_time": 0.17,
+            "gauge": "16 Gauge",
+            "material": "304 SS",
+            "weight": 0.257,
+            "price": 1.26,
+            "unit_quantity": 1,
+            "modified_date": "20 quantity added at May 09 Tuesday 2023 09:53:13 AM",
+            "group": null
+        },
+        "3444 Ash Pan": {
+            "current_quantity": 50.0,
+            "machine_time": 0.73,
+            "gauge": "16 Gauge",
+            "material": "304 SS",
+            "weight": 14.336,
+            "price": 33.86,
+            "unit_quantity": 1,
+            "modified_date": "20 quantity added at May 09 Tuesday 2023 09:53:13 AM",
+            "group": null
+        },
         "3444-25x4": {
             "current_quantity": 48,
             "machine_time": 0.57,
@@ -1961,28 +1983,6 @@
             "modified_date": "Added at April 20 Thursday 2023 11:26:24 AM",
             "group": null
         },
-        "3444 -Ash Pan Handle": {
-            "current_quantity": 30,
-            "machine_time": 0.17,
-            "gauge": "16 Gauge",
-            "material": "304 SS",
-            "weight": 0.257,
-            "price": 1.26,
-            "unit_quantity": 1,
-            "modified_date": "20 quantity added at April 14 Friday 2023 04:18:52 PM",
-            "group": null
-        },
-        "3444 Ash Pan": {
-            "current_quantity": 30.0,
-            "machine_time": 0.73,
-            "gauge": "16 Gauge",
-            "material": "304 SS",
-            "weight": 14.336,
-            "price": 33.86,
-            "unit_quantity": 1,
-            "modified_date": "20 quantity added at April 14 Friday 2023 04:18:52 PM",
-            "group": null
-        },
         "3444-337": {
             "current_quantity": 30,
             "machine_time": 0.45,
@@ -2025,6 +2025,17 @@
             "price": 1.53,
             "unit_quantity": 1,
             "modified_date": "5 quantity added at May 02 Tuesday 2023 03:53:30 PM",
+            "group": null
+        },
+        "3444-33": {
+            "current_quantity": 21.0,
+            "machine_time": 1.5,
+            "gauge": "18 Gauge",
+            "material": "Galvanized",
+            "weight": 31.62,
+            "price": 41.69,
+            "unit_quantity": 1,
+            "modified_date": "21 quantity added at May 09 Tuesday 2023 09:53:13 AM",
             "group": null
         },
         "3444-91x2": {
@@ -2091,6 +2102,138 @@
             "price": 4.83,
             "unit_quantity": 1,
             "modified_date": "10 quantity added at May 08 Monday 2023 04:24:57 PM",
+            "group": null
+        },
+        "3444-53": {
+            "current_quantity": 20,
+            "machine_time": 0.53,
+            "gauge": "18 Gauge",
+            "material": "Galvanized",
+            "weight": 2.973,
+            "price": 4.89,
+            "unit_quantity": 1,
+            "modified_date": "20 quantity added at May 09 Tuesday 2023 09:53:13 AM",
+            "group": null
+        },
+        "3444-63": {
+            "current_quantity": 20,
+            "machine_time": 0.78,
+            "gauge": "18 Gauge",
+            "material": "Galvanized",
+            "weight": 13.292,
+            "price": 17.9,
+            "unit_quantity": 1,
+            "modified_date": "20 quantity added at May 09 Tuesday 2023 09:53:13 AM",
+            "group": null
+        },
+        "3444-65": {
+            "current_quantity": 20,
+            "machine_time": 0.6,
+            "gauge": "18 Gauge",
+            "material": "Galvanized",
+            "weight": 18.109,
+            "price": 23.23,
+            "unit_quantity": 1,
+            "modified_date": "20 quantity added at May 09 Tuesday 2023 09:53:13 AM",
+            "group": null
+        },
+        "3444-66": {
+            "current_quantity": 20,
+            "machine_time": 0.83,
+            "gauge": "18 Gauge",
+            "material": "Galvanized",
+            "weight": 7.33,
+            "price": 10.87,
+            "unit_quantity": 1,
+            "modified_date": "20 quantity added at May 09 Tuesday 2023 09:53:13 AM",
+            "group": null
+        },
+        "3444-67": {
+            "current_quantity": 20,
+            "machine_time": 0.82,
+            "gauge": "18 Gauge",
+            "material": "Galvanized",
+            "weight": 6.509,
+            "price": 9.86,
+            "unit_quantity": 1,
+            "modified_date": "20 quantity added at May 09 Tuesday 2023 09:53:13 AM",
+            "group": null
+        },
+        "3444-80": {
+            "current_quantity": 20,
+            "machine_time": 0.52,
+            "gauge": "18 Gauge",
+            "material": "Galvanized",
+            "weight": 2.879,
+            "price": 4.75,
+            "unit_quantity": 1,
+            "modified_date": "20 quantity added at May 09 Tuesday 2023 09:53:13 AM",
+            "group": null
+        },
+        "3444-82": {
+            "current_quantity": 20,
+            "machine_time": 0.22,
+            "gauge": "18 Gauge",
+            "material": "Galvanized",
+            "weight": 0.309,
+            "price": 0.92,
+            "unit_quantity": 1,
+            "modified_date": "20 quantity added at May 09 Tuesday 2023 09:53:13 AM",
+            "group": null
+        },
+        "3444-83": {
+            "current_quantity": 20,
+            "machine_time": 0.28,
+            "gauge": "18 Gauge",
+            "material": "Galvanized",
+            "weight": 1.02,
+            "price": 1.92,
+            "unit_quantity": 1,
+            "modified_date": "20 quantity added at May 09 Tuesday 2023 09:53:13 AM",
+            "group": null
+        },
+        "3444-84": {
+            "current_quantity": 20,
+            "machine_time": 0.33,
+            "gauge": "18 Gauge",
+            "material": "Galvanized",
+            "weight": 2.026,
+            "price": 3.26,
+            "unit_quantity": 1,
+            "modified_date": "20 quantity added at May 09 Tuesday 2023 09:53:13 AM",
+            "group": null
+        },
+        "3444-85": {
+            "current_quantity": 20,
+            "machine_time": 0.72,
+            "gauge": "18 Gauge",
+            "material": "Galvanized",
+            "weight": 12.743,
+            "price": 17.09,
+            "unit_quantity": 1,
+            "modified_date": "20 quantity added at May 09 Tuesday 2023 09:53:13 AM",
+            "group": null
+        },
+        "3444-86": {
+            "current_quantity": 20,
+            "machine_time": 0.32,
+            "gauge": "18 Gauge",
+            "material": "Galvanized",
+            "weight": 1.832,
+            "price": 3.0,
+            "unit_quantity": 1,
+            "modified_date": "20 quantity added at May 09 Tuesday 2023 09:53:13 AM",
+            "group": null
+        },
+        "3444-92": {
+            "current_quantity": 20,
+            "machine_time": 0.25,
+            "gauge": "18 Gauge",
+            "material": "Galvanized",
+            "weight": 0.673,
+            "price": 1.43,
+            "unit_quantity": 1,
+            "modified_date": "20 quantity added at May 09 Tuesday 2023 09:53:13 AM",
             "group": null
         },
         "3444-18": {
@@ -2687,169 +2830,26 @@
             "modified_date": "1 quantity added at May 03 Wednesday 2023 01:47:00 PM",
             "group": null
         },
-        "3444-33": {
-            "current_quantity": 0.0,
-            "machine_time": 1.5,
-            "gauge": "18 Gauge",
-            "material": "Galvanized",
-            "weight": 31.62,
-            "price": 41.69,
-            "unit_quantity": 1,
-            "modified_date": "Manually set to 0.0 quantity at April 28 Friday 2023 04:49:33 PM",
-            "group": null
-        },
-        "3444-53": {
-            "current_quantity": 0,
-            "machine_time": 0.53,
-            "gauge": "18 Gauge",
-            "material": "Galvanized",
-            "weight": 2.973,
-            "price": 4.89,
-            "unit_quantity": 1,
-            "modified_date": "Removed 20 quantity at April 28 Friday 2023 04:45:58 PM",
-            "group": null
-        },
-        "3444-63": {
-            "current_quantity": 0,
-            "machine_time": 0.78,
-            "gauge": "18 Gauge",
-            "material": "Galvanized",
-            "weight": 13.292,
-            "price": 17.9,
-            "unit_quantity": 1,
-            "modified_date": "Removed 20 quantity at April 28 Friday 2023 04:45:58 PM",
-            "group": null
-        },
-        "3444-65": {
-            "current_quantity": 0,
-            "machine_time": 0.6,
-            "gauge": "18 Gauge",
-            "material": "Galvanized",
-            "weight": 18.109,
-            "price": 23.23,
-            "unit_quantity": 1,
-            "modified_date": "Removed 20 quantity at April 28 Friday 2023 04:45:58 PM",
-            "group": null
-        },
-        "3444-66": {
-            "current_quantity": 0,
-            "machine_time": 0.83,
-            "gauge": "18 Gauge",
-            "material": "Galvanized",
-            "weight": 7.33,
-            "price": 10.87,
-            "unit_quantity": 1,
-            "modified_date": "Removed 20 quantity at April 28 Friday 2023 04:45:58 PM",
-            "group": null
-        },
-        "3444-67": {
-            "current_quantity": 0,
-            "machine_time": 0.82,
-            "gauge": "18 Gauge",
-            "material": "Galvanized",
-            "weight": 6.509,
-            "price": 9.86,
-            "unit_quantity": 1,
-            "modified_date": "Removed 20 quantity at April 28 Friday 2023 04:45:58 PM",
-            "group": null
-        },
-        "3444-80": {
-            "current_quantity": 0,
-            "machine_time": 0.52,
-            "gauge": "18 Gauge",
-            "material": "Galvanized",
-            "weight": 2.879,
-            "price": 4.75,
-            "unit_quantity": 1,
-            "modified_date": "Removed 20 quantity at April 28 Friday 2023 04:45:58 PM",
-            "group": null
-        },
-        "3444-82": {
-            "current_quantity": 0,
-            "machine_time": 0.22,
-            "gauge": "18 Gauge",
-            "material": "Galvanized",
-            "weight": 0.309,
-            "price": 0.92,
-            "unit_quantity": 1,
-            "modified_date": "Removed 20 quantity at April 28 Friday 2023 04:45:58 PM",
-            "group": null
-        },
-        "3444-83": {
-            "current_quantity": 0,
-            "machine_time": 0.28,
-            "gauge": "18 Gauge",
-            "material": "Galvanized",
-            "weight": 1.02,
-            "price": 1.92,
-            "unit_quantity": 1,
-            "modified_date": "Removed 20 quantity at April 28 Friday 2023 04:45:58 PM",
-            "group": null
-        },
-        "3444-84": {
-            "current_quantity": 0,
-            "machine_time": 0.33,
-            "gauge": "18 Gauge",
-            "material": "Galvanized",
-            "weight": 2.026,
-            "price": 3.26,
-            "unit_quantity": 1,
-            "modified_date": "Removed 20 quantity at April 28 Friday 2023 04:45:58 PM",
-            "group": null
-        },
-        "3444-85": {
-            "current_quantity": 0,
-            "machine_time": 0.72,
-            "gauge": "18 Gauge",
-            "material": "Galvanized",
-            "weight": 12.743,
-            "price": 17.09,
-            "unit_quantity": 1,
-            "modified_date": "Removed 20 quantity at April 28 Friday 2023 04:45:58 PM",
-            "group": null
-        },
-        "3444-86": {
-            "current_quantity": 0,
-            "machine_time": 0.32,
-            "gauge": "18 Gauge",
-            "material": "Galvanized",
-            "weight": 1.832,
-            "price": 3.0,
-            "unit_quantity": 1,
-            "modified_date": "Removed 20 quantity at April 28 Friday 2023 04:45:58 PM",
-            "group": null
-        },
-        "3444-92": {
-            "current_quantity": 0,
-            "machine_time": 0.25,
-            "gauge": "18 Gauge",
-            "material": "Galvanized",
-            "weight": 0.673,
-            "price": 1.43,
-            "unit_quantity": 1,
-            "modified_date": "Removed 20 quantity at April 28 Friday 2023 04:45:58 PM",
-            "group": null
-        },
         "3444-104": {
-            "current_quantity": 0,
+            "current_quantity": 10.0,
             "machine_time": 0.08,
             "gauge": "18 Gauge",
             "material": "Galvanneal",
             "weight": 0.063,
             "price": 0.28,
             "unit_quantity": 1,
-            "modified_date": "Removed 20 quantity at April 28 Friday 2023 04:45:58 PM",
+            "modified_date": "Manually set to 10.0 quantity at May 09 Tuesday 2023 09:54:11 AM",
             "group": null
         },
         "3444-88": {
-            "current_quantity": 0,
+            "current_quantity": 10.0,
             "machine_time": 0.55,
             "gauge": "18 Gauge",
             "material": "Galvanneal",
             "weight": 2.987,
             "price": 5.02,
             "unit_quantity": 1,
-            "modified_date": "Removed 20 quantity at April 28 Friday 2023 04:45:58 PM",
+            "modified_date": "Manually set to 10.0 quantity at May 09 Tuesday 2023 09:54:28 AM",
             "group": null
         }
     },
@@ -3239,6 +3239,28 @@
             "modified_date": "5 quantity added at May 02 Tuesday 2023 03:53:30 PM",
             "group": null
         },
+        "404457": {
+            "current_quantity": 7,
+            "machine_time": 0.43,
+            "gauge": "12 Gauge",
+            "material": "Mild Steel",
+            "weight": 3.204,
+            "price": 3.64,
+            "unit_quantity": 1,
+            "modified_date": "Added at May 03 Wednesday 2023 01:25:16 PM",
+            "group": null
+        },
+        "404458": {
+            "current_quantity": 7,
+            "machine_time": 0.33,
+            "gauge": "12 Gauge",
+            "material": "Mild Steel",
+            "weight": 2.565,
+            "price": 2.88,
+            "unit_quantity": 1,
+            "modified_date": "Added at May 03 Wednesday 2023 01:25:16 PM",
+            "group": null
+        },
         "PY-WFJ-03": {
             "current_quantity": 6,
             "machine_time": 0.32,
@@ -3382,6 +3404,39 @@
             "modified_date": "Added at May 03 Wednesday 2023 01:49:31 PM",
             "group": null
         },
+        "404455": {
+            "current_quantity": 5,
+            "machine_time": 0.48,
+            "gauge": "12 Gauge",
+            "material": "Mild Steel",
+            "weight": 4.784,
+            "price": 5.03,
+            "unit_quantity": 1,
+            "modified_date": "Added at May 03 Wednesday 2023 01:25:16 PM",
+            "group": null
+        },
+        "404456": {
+            "current_quantity": 5,
+            "machine_time": 0.37,
+            "gauge": "12 Gauge",
+            "material": "Mild Steel",
+            "weight": 4.044,
+            "price": 4.16,
+            "unit_quantity": 1,
+            "modified_date": "Added at May 03 Wednesday 2023 01:25:16 PM",
+            "group": null
+        },
+        "404474": {
+            "current_quantity": 5,
+            "machine_time": 0.83,
+            "gauge": "12 Gauge",
+            "material": "Mild Steel",
+            "weight": 2.189,
+            "price": 3.83,
+            "unit_quantity": 1,
+            "modified_date": "Added at May 03 Wednesday 2023 01:25:16 PM",
+            "group": null
+        },
         "404424x2": {
             "current_quantity": 4.0,
             "machine_time": 0.57,
@@ -3468,61 +3523,6 @@
             "price": 11.39,
             "unit_quantity": 1,
             "modified_date": "Removed 10 quantity at March 16 Thursday 2023 01:31:47 PM",
-            "group": null
-        },
-        "404457": {
-            "current_quantity": 7,
-            "machine_time": 0.43,
-            "gauge": "12 Gauge",
-            "material": "Mild Steel",
-            "weight": 3.204,
-            "price": 3.64,
-            "unit_quantity": 1,
-            "modified_date": "Added at May 03 Wednesday 2023 01:25:16 PM",
-            "group": null
-        },
-        "404458": {
-            "current_quantity": 7,
-            "machine_time": 0.33,
-            "gauge": "12 Gauge",
-            "material": "Mild Steel",
-            "weight": 2.565,
-            "price": 2.88,
-            "unit_quantity": 1,
-            "modified_date": "Added at May 03 Wednesday 2023 01:25:16 PM",
-            "group": null
-        },
-        "404455": {
-            "current_quantity": 5,
-            "machine_time": 0.48,
-            "gauge": "12 Gauge",
-            "material": "Mild Steel",
-            "weight": 4.784,
-            "price": 5.03,
-            "unit_quantity": 1,
-            "modified_date": "Added at May 03 Wednesday 2023 01:25:16 PM",
-            "group": null
-        },
-        "404456": {
-            "current_quantity": 5,
-            "machine_time": 0.37,
-            "gauge": "12 Gauge",
-            "material": "Mild Steel",
-            "weight": 4.044,
-            "price": 4.16,
-            "unit_quantity": 1,
-            "modified_date": "Added at May 03 Wednesday 2023 01:25:16 PM",
-            "group": null
-        },
-        "404474": {
-            "current_quantity": 5,
-            "machine_time": 0.83,
-            "gauge": "12 Gauge",
-            "material": "Mild Steel",
-            "weight": 2.189,
-            "price": 3.83,
-            "unit_quantity": 1,
-            "modified_date": "Added at May 03 Wednesday 2023 01:25:16 PM",
             "group": null
         }
     },
