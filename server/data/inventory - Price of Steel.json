@@ -191,7 +191,7 @@
             "is_order_pending": false
         },
         "10 Gauge Mild Steel 120.000x60.000": {
-            "current_quantity": 8.0,
+            "current_quantity": 7.0,
             "sheet_dimension": "120.000x60.000",
             "thickness": "10 Gauge",
             "material": "Mild Steel",
