@@ -99,17 +99,6 @@
             "modified_date": "Added at May 05 Friday 2023 11:13:42 AM",
             "group": null
         },
-        "3444-88Wood": {
-            "current_quantity": 10,
-            "machine_time": 0.58,
-            "gauge": "18 Gauge",
-            "material": "Galvanneal",
-            "weight": 3.0,
-            "price": 5.11,
-            "unit_quantity": 1,
-            "modified_date": "Added at May 08 Monday 2023 04:24:57 PM",
-            "group": null
-        },
         "swivels 4 needed": {
             "current_quantity": 4,
             "machine_time": 0.25,
@@ -264,6 +253,17 @@
             "modified_date": "Added at May 06 Saturday 2023 01:48:13 PM",
             "group": null
         },
+        "Flat pattern - Part26^Pin Aling Jig": {
+            "current_quantity": 2,
+            "machine_time": 0.15,
+            "gauge": "10 Gauge",
+            "material": "Mild Steel",
+            "weight": 0.247,
+            "price": 0.57,
+            "unit_quantity": 1,
+            "modified_date": "Added at May 09 Tuesday 2023 04:06:26 PM",
+            "group": null
+        },
         "PY-WFJ-01": {
             "current_quantity": 1,
             "machine_time": 3.55,
@@ -381,6 +381,18 @@
             "modified_date": "Added at May 02 Tuesday 2023 03:59:39 PM",
             "group": null
         },
+        "G3-1-Housing-right side panel": {
+            "current_quantity": 7,
+            "price": 33.12,
+            "recut_count": 0,
+            "machine_time": 1.43,
+            "gauge": "18 Gauge",
+            "material": "Galvanneal",
+            "weight": 24.218,
+            "unit_quantity": 1,
+            "modified_date": "Added at May 10 Wednesday 2023 08:42:07 AM",
+            "group": null
+        },
         "G2Plus-Housing-Right Side_Rear Panel - (Recut 1 time(s))": {
             "current_quantity": 6,
             "price": 70.38,
@@ -403,6 +415,18 @@
             "weight": 55.546,
             "unit_quantity": 1,
             "modified_date": "Added at May 02 Tuesday 2023 03:59:39 PM",
+            "group": null
+        },
+        "G3-1-Housing-left side panel": {
+            "current_quantity": 6,
+            "price": 32.43,
+            "recut_count": 0,
+            "machine_time": 1.12,
+            "gauge": "18 Gauge",
+            "material": "Galvanneal",
+            "weight": 24.288,
+            "unit_quantity": 1,
+            "modified_date": "Added at May 10 Wednesday 2023 08:42:07 AM",
             "group": null
         },
         "3444-43 - (Recut 1 time(s))": {
@@ -439,6 +463,30 @@
             "weight": 22.319,
             "unit_quantity": 1,
             "modified_date": "Added at May 02 Tuesday 2023 03:59:39 PM",
+            "group": null
+        },
+        "3444-36": {
+            "current_quantity": 3,
+            "price": 19.31,
+            "recut_count": 0,
+            "machine_time": 1.0,
+            "gauge": "18 Gauge",
+            "material": "Galvanneal",
+            "weight": 13.778,
+            "unit_quantity": 1,
+            "modified_date": "Added at May 10 Wednesday 2023 08:42:07 AM",
+            "group": null
+        },
+        "G3-1-Housing-Access Cover-Top": {
+            "current_quantity": 3,
+            "price": 14.85,
+            "recut_count": 0,
+            "machine_time": 0.52,
+            "gauge": "18 Gauge",
+            "material": "Galvanneal",
+            "weight": 11.108,
+            "unit_quantity": 1,
+            "modified_date": "Added at May 10 Wednesday 2023 08:42:07 AM",
             "group": null
         },
         "2840-40": {
@@ -2005,17 +2053,6 @@
             "modified_date": "Removed 10 quantity at May 09 Tuesday 2023 02:02:12 PM",
             "group": null
         },
-        "3444-43": {
-            "current_quantity": 0.0,
-            "machine_time": 0.58,
-            "gauge": "18 Gauge",
-            "material": "Galvanneal",
-            "weight": 10.014,
-            "price": 13.67,
-            "unit_quantity": 1,
-            "modified_date": "Manually set to 0.0 quantity at May 09 Tuesday 2023 02:03:36 PM",
-            "group": null
-        },
         "3444-24": {
             "current_quantity": 10.0,
             "machine_time": 0.58,
@@ -2091,6 +2128,17 @@
             "price": 14.4,
             "unit_quantity": 1,
             "modified_date": "Removed 10 quantity at May 09 Tuesday 2023 02:02:12 PM",
+            "group": null
+        },
+        "3444-43": {
+            "current_quantity": 0.0,
+            "machine_time": 0.58,
+            "gauge": "18 Gauge",
+            "material": "Galvanneal",
+            "weight": 10.014,
+            "price": 13.67,
+            "unit_quantity": 1,
+            "modified_date": "Manually set to 0.0 quantity at May 09 Tuesday 2023 02:03:36 PM",
             "group": null
         },
         "3444-89": {
@@ -2851,6 +2899,17 @@
             "unit_quantity": 1,
             "modified_date": "Removed 10 quantity at May 09 Tuesday 2023 02:02:12 PM",
             "group": null
+        },
+        "3444-88Wood": {
+            "current_quantity": 10,
+            "machine_time": 0.58,
+            "gauge": "18 Gauge",
+            "material": "Galvanneal",
+            "weight": 3.0,
+            "price": 5.11,
+            "unit_quantity": 1,
+            "modified_date": "Added at May 08 Monday 2023 04:24:57 PM",
+            "group": null
         }
     },
     "BL40": {
@@ -3524,6 +3583,83 @@
             "unit_quantity": 1,
             "modified_date": "Removed 10 quantity at March 16 Thursday 2023 01:31:47 PM",
             "group": null
+        },
+        "404447x2": {
+            "current_quantity": 9,
+            "machine_time": 0.38,
+            "gauge": "18 Gauge",
+            "material": "Galvanneal",
+            "weight": 3.154,
+            "price": 4.8,
+            "unit_quantity": 1,
+            "modified_date": "Added at May 10 Wednesday 2023 08:42:07 AM",
+            "group": null
+        },
+        "404443": {
+            "current_quantity": 5,
+            "machine_time": 0.75,
+            "gauge": "18 Gauge",
+            "material": "Galvanneal",
+            "weight": 14.736,
+            "price": 19.85,
+            "unit_quantity": 1,
+            "modified_date": "Added at May 10 Wednesday 2023 08:42:07 AM",
+            "group": null
+        },
+        "404482": {
+            "current_quantity": 5,
+            "machine_time": 0.5,
+            "gauge": "18 Gauge",
+            "material": "Galvanneal",
+            "weight": 2.431,
+            "price": 4.22,
+            "unit_quantity": 1,
+            "modified_date": "Added at May 10 Wednesday 2023 08:42:07 AM",
+            "group": null
+        },
+        "404483": {
+            "current_quantity": 5,
+            "machine_time": 0.5,
+            "gauge": "18 Gauge",
+            "material": "Galvanneal",
+            "weight": 2.459,
+            "price": 4.25,
+            "unit_quantity": 1,
+            "modified_date": "Added at May 10 Wednesday 2023 08:42:07 AM",
+            "group": null
+        },
+        "404448 PUNCHED": {
+            "current_quantity": 3,
+            "machine_time": 0.68,
+            "gauge": "18 Gauge",
+            "material": "Galvanneal",
+            "weight": 14.932,
+            "price": 19.92,
+            "unit_quantity": 1,
+            "modified_date": "Added at May 10 Wednesday 2023 08:42:07 AM",
+            "group": null
+        },
+        "404432": {
+            "current_quantity": 1,
+            "machine_time": 0.75,
+            "gauge": "18 Gauge",
+            "material": "Galvanneal",
+            "weight": 14.432,
+            "price": 19.48,
+            "unit_quantity": 1,
+            "modified_date": "Added at May 10 Wednesday 2023 08:42:07 AM",
+            "group": null
+        },
+        "404454": {
+            "current_quantity": 1,
+            "machine_time": 0.87,
+            "gauge": "18 Gauge",
+            "material": "Galvanneal",
+            "weight": 24.941,
+            "price": 32.6,
+            "unit_quantity": 1,
+            "modified_date": "Added at May 10 Wednesday 2023 08:42:07 AM",
+            "group": null
         }
     },
     "Polar G2": {
@@ -4145,6 +4281,17 @@
             "modified_date": "Removed 10 quantity at March 14 Tuesday 2023 04:53:43 PM",
             "group": null
         },
+        "G2Plus-Firechamber-Skirting-part 1-version Y2x6": {
+            "current_quantity": 66.0,
+            "machine_time": 0.92,
+            "gauge": "10 Gauge",
+            "material": "Mild Steel",
+            "weight": 12.42,
+            "price": 12.24,
+            "unit_quantity": 6.0,
+            "modified_date": "6 quantity added at May 09 Tuesday 2023 04:06:26 PM",
+            "group": null
+        },
         "G2-3-Air Gate-Adjusting lever": {
             "current_quantity": 62,
             "machine_time": 0.25,
@@ -4154,17 +4301,6 @@
             "price": 1.38,
             "unit_quantity": 1,
             "modified_date": "Removed 10 quantity at March 14 Tuesday 2023 04:53:43 PM",
-            "group": null
-        },
-        "G2Plus-Firechamber-Skirting-part 1-version Y2x6": {
-            "current_quantity": 60.0,
-            "machine_time": 0.92,
-            "gauge": "10 Gauge",
-            "material": "Mild Steel",
-            "weight": 12.42,
-            "price": 12.24,
-            "unit_quantity": 6.0,
-            "modified_date": "60 quantity added at April 27 Thursday 2023 08:57:36 AM",
             "group": null
         },
         "G2Plus-Fan Motor-inner condensation shield": {
@@ -4179,124 +4315,124 @@
             "group": null
         },
         "G2Plus-Middle Door-Gasket Stop 2": {
-            "current_quantity": 38.0,
+            "current_quantity": 39.0,
             "machine_time": 0.08,
             "gauge": "10 Gauge",
             "material": "Mild Steel",
             "weight": 0.135,
             "price": 0.31,
             "unit_quantity": 1.0,
-            "modified_date": "10 quantity added at April 27 Thursday 2023 08:57:36 AM",
+            "modified_date": "1 quantity added at May 09 Tuesday 2023 04:06:26 PM",
             "group": null
         },
         "G2Plus-Bottom Door-Gasket Stop 1": {
-            "current_quantity": 34,
+            "current_quantity": 35,
             "machine_time": 0.25,
             "gauge": "10 Gauge",
             "material": "Mild Steel",
             "weight": 0.58,
             "price": 1.09,
             "unit_quantity": 1,
-            "modified_date": "10 quantity added at April 27 Thursday 2023 08:57:36 AM",
+            "modified_date": "1 quantity added at May 09 Tuesday 2023 04:06:26 PM",
             "group": null
         },
         "G2Plus-Bottom Door-Gasket Stop 2": {
-            "current_quantity": 34,
+            "current_quantity": 35,
             "machine_time": 0.23,
             "gauge": "10 Gauge",
             "material": "Mild Steel",
             "weight": 0.394,
             "price": 0.89,
             "unit_quantity": 1,
-            "modified_date": "10 quantity added at April 27 Thursday 2023 08:57:36 AM",
+            "modified_date": "1 quantity added at May 09 Tuesday 2023 04:06:26 PM",
             "group": null
         },
         "G2Plus- Middle Door-Gasket Stop 1": {
-            "current_quantity": 30,
+            "current_quantity": 31,
             "machine_time": 0.1,
             "gauge": "10 Gauge",
             "material": "Mild Steel",
             "weight": 0.217,
             "price": 0.42,
             "unit_quantity": 1,
-            "modified_date": "10 quantity added at April 27 Thursday 2023 08:57:36 AM",
+            "modified_date": "1 quantity added at May 09 Tuesday 2023 04:06:25 PM",
             "group": null
         },
         "G2Plus-Bottom Door-Outer": {
-            "current_quantity": 30,
+            "current_quantity": 31,
             "machine_time": 0.93,
             "gauge": "10 Gauge",
             "material": "Mild Steel",
             "weight": 15.174,
             "price": 14.46,
             "unit_quantity": 1,
-            "modified_date": "10 quantity added at April 27 Thursday 2023 08:57:36 AM",
+            "modified_date": "1 quantity added at May 09 Tuesday 2023 04:06:26 PM",
             "group": null
         },
         "G2Plus-Load Door-Gasket Retainer 1": {
-            "current_quantity": 30,
+            "current_quantity": 31,
             "machine_time": 0.3,
             "gauge": "10 Gauge",
             "material": "Mild Steel",
             "weight": 0.496,
             "price": 1.15,
             "unit_quantity": 1,
-            "modified_date": "10 quantity added at April 27 Thursday 2023 08:57:36 AM",
+            "modified_date": "1 quantity added at May 09 Tuesday 2023 04:06:26 PM",
             "group": null
         },
         "G2Plus-Load Door-Gasket Retainer 2": {
-            "current_quantity": 30,
+            "current_quantity": 31,
             "machine_time": 0.32,
             "gauge": "10 Gauge",
             "material": "Mild Steel",
             "weight": 0.728,
             "price": 1.38,
             "unit_quantity": 1,
-            "modified_date": "10 quantity added at April 27 Thursday 2023 08:57:36 AM",
+            "modified_date": "1 quantity added at May 09 Tuesday 2023 04:06:26 PM",
             "group": null
         },
         "G2Plus-Load Door-Inner Shell": {
-            "current_quantity": 30,
+            "current_quantity": 31,
             "machine_time": 0.77,
             "gauge": "10 Gauge",
             "material": "Mild Steel",
             "weight": 13.263,
             "price": 12.54,
             "unit_quantity": 1,
-            "modified_date": "10 quantity added at April 27 Thursday 2023 08:57:36 AM",
+            "modified_date": "1 quantity added at May 09 Tuesday 2023 04:06:26 PM",
             "group": null
         },
         "G2Plus-Load Door-Outer": {
-            "current_quantity": 30,
+            "current_quantity": 31,
             "machine_time": 0.93,
             "gauge": "10 Gauge",
             "material": "Mild Steel",
             "weight": 18.598,
             "price": 17.2,
             "unit_quantity": 1,
-            "modified_date": "10 quantity added at April 27 Thursday 2023 08:57:36 AM",
+            "modified_date": "1 quantity added at May 09 Tuesday 2023 04:06:26 PM",
             "group": null
         },
         "G2Plus-Middle Door-Heat Shield": {
-            "current_quantity": 30,
+            "current_quantity": 31,
             "machine_time": 0.4,
             "gauge": "10 Gauge",
             "material": "Mild Steel",
             "weight": 5.185,
             "price": 5.15,
             "unit_quantity": 1,
-            "modified_date": "10 quantity added at April 27 Thursday 2023 08:57:36 AM",
+            "modified_date": "1 quantity added at May 09 Tuesday 2023 04:06:26 PM",
             "group": null
         },
         "G2Plus-MiddleDoor-Outer": {
-            "current_quantity": 30,
+            "current_quantity": 31,
             "machine_time": 0.67,
             "gauge": "10 Gauge",
             "material": "Mild Steel",
             "weight": 6.743,
             "price": 7.07,
             "unit_quantity": 1,
-            "modified_date": "10 quantity added at April 27 Thursday 2023 08:57:36 AM",
+            "modified_date": "1 quantity added at May 09 Tuesday 2023 04:06:26 PM",
             "group": null
         },
         "G2Plus-Secondary Air Delivery-tube-part1x2": {
@@ -4310,6 +4446,28 @@
             "modified_date": "2 quantity added at March 17 Friday 2023 02:17:02 PM",
             "group": null
         },
+        "G2Plus-Firechamber-Skirting-Front Left Cornerx2": {
+            "current_quantity": 22.0,
+            "machine_time": 0.58,
+            "gauge": "10 Gauge",
+            "material": "Mild Steel",
+            "weight": 5.59,
+            "price": 5.92,
+            "unit_quantity": 2.0,
+            "modified_date": "2 quantity added at May 09 Tuesday 2023 04:06:26 PM",
+            "group": null
+        },
+        "G2Plus-Firechamber-Skirting-part 2x2": {
+            "current_quantity": 22.0,
+            "machine_time": 0.7,
+            "gauge": "10 Gauge",
+            "material": "Mild Steel",
+            "weight": 11.962,
+            "price": 11.32,
+            "unit_quantity": 2.0,
+            "modified_date": "2 quantity added at May 09 Tuesday 2023 04:06:26 PM",
+            "group": null
+        },
         "G2Plus-Secondary Air Delivery-tube-part2x2": {
             "current_quantity": 20.0,
             "machine_time": 0.7,
@@ -4319,28 +4477,6 @@
             "price": 14.89,
             "unit_quantity": 2.0,
             "modified_date": "Removed 20.0 quantity at March 14 Tuesday 2023 04:53:43 PM",
-            "group": null
-        },
-        "G2Plus-Firechamber-Skirting-Front Left Cornerx2": {
-            "current_quantity": 20.0,
-            "machine_time": 0.58,
-            "gauge": "10 Gauge",
-            "material": "Mild Steel",
-            "weight": 5.59,
-            "price": 5.92,
-            "unit_quantity": 2.0,
-            "modified_date": "20 quantity added at April 27 Thursday 2023 08:57:36 AM",
-            "group": null
-        },
-        "G2Plus-Firechamber-Skirting-part 2x2": {
-            "current_quantity": 20.0,
-            "machine_time": 0.7,
-            "gauge": "10 Gauge",
-            "material": "Mild Steel",
-            "weight": 11.962,
-            "price": 11.32,
-            "unit_quantity": 2.0,
-            "modified_date": "20 quantity added at April 27 Thursday 2023 08:57:36 AM",
             "group": null
         },
         "G2Plus-Primary Air Delivery-tube-part1x2": {
@@ -4519,6 +4655,28 @@
             "modified_date": "Manually set to 11.0 quantity at May 04 Thursday 2023 08:47:48 AM",
             "group": null
         },
+        "G2Plus-Firechamber-Skirting-Jam-Bottom": {
+            "current_quantity": 11,
+            "machine_time": 0.42,
+            "gauge": "10 Gauge",
+            "material": "Mild Steel",
+            "weight": 4.063,
+            "price": 4.3,
+            "unit_quantity": 1,
+            "modified_date": "1 quantity added at May 09 Tuesday 2023 04:06:26 PM",
+            "group": null
+        },
+        "G2Plus-Firechamber-Skirting-Jam-Top": {
+            "current_quantity": 11,
+            "machine_time": 0.48,
+            "gauge": "10 Gauge",
+            "material": "Mild Steel",
+            "weight": 5.926,
+            "price": 5.94,
+            "unit_quantity": 1,
+            "modified_date": "1 quantity added at May 09 Tuesday 2023 04:06:26 PM",
+            "group": null
+        },
         "small scoop G": {
             "current_quantity": 10,
             "machine_time": 0.18,
@@ -4552,28 +4710,6 @@
             "modified_date": "Added at April 20 Thursday 2023 02:47:28 PM",
             "group": null
         },
-        "G2Plus-Firechamber-Skirting-Jam-Bottom": {
-            "current_quantity": 10,
-            "machine_time": 0.42,
-            "gauge": "10 Gauge",
-            "material": "Mild Steel",
-            "weight": 4.063,
-            "price": 4.3,
-            "unit_quantity": 1,
-            "modified_date": "10 quantity added at April 27 Thursday 2023 08:57:36 AM",
-            "group": null
-        },
-        "G2Plus-Firechamber-Skirting-Jam-Top": {
-            "current_quantity": 10,
-            "machine_time": 0.48,
-            "gauge": "10 Gauge",
-            "material": "Mild Steel",
-            "weight": 5.926,
-            "price": 5.94,
-            "unit_quantity": 1,
-            "modified_date": "10 quantity added at April 27 Thursday 2023 08:57:36 AM",
-            "group": null
-        },
         "G2Plus-Side door 2-outer shell": {
             "current_quantity": 2.0,
             "machine_time": 0.32,
@@ -4583,6 +4719,39 @@
             "price": 2.98,
             "unit_quantity": 1,
             "modified_date": "2 quantity added at April 20 Thursday 2023 02:47:27 PM",
+            "group": null
+        },
+        "BIA-018": {
+            "current_quantity": 1,
+            "machine_time": 0.22,
+            "gauge": "10 Gauge",
+            "material": "Mild Steel",
+            "weight": 1.071,
+            "price": 1.41,
+            "unit_quantity": 1,
+            "modified_date": "1 quantity added at May 09 Tuesday 2023 04:06:25 PM",
+            "group": null
+        },
+        "BIA-041": {
+            "current_quantity": 1,
+            "machine_time": 0.25,
+            "gauge": "10 Gauge",
+            "material": "Mild Steel",
+            "weight": 1.7,
+            "price": 1.98,
+            "unit_quantity": 1,
+            "modified_date": "1 quantity added at May 09 Tuesday 2023 04:06:25 PM",
+            "group": null
+        },
+        "BIA-042": {
+            "current_quantity": 1,
+            "machine_time": 0.32,
+            "gauge": "10 Gauge",
+            "material": "Mild Steel",
+            "weight": 1.923,
+            "price": 2.34,
+            "unit_quantity": 1,
+            "modified_date": "1 quantity added at May 09 Tuesday 2023 04:06:25 PM",
             "group": null
         },
         "G2Plus-Primary Air Delivery-Tube-Cleanout-Cover-Inner": {
@@ -4893,39 +5062,6 @@
             "modified_date": "Removed 10 quantity at March 14 Tuesday 2023 04:53:43 PM",
             "group": null
         },
-        "BIA-018": {
-            "current_quantity": 0,
-            "machine_time": 0.22,
-            "gauge": "10 Gauge",
-            "material": "Mild Steel",
-            "weight": 1.071,
-            "price": 1.41,
-            "unit_quantity": 1,
-            "modified_date": "Removed 10 quantity at March 14 Tuesday 2023 04:53:43 PM",
-            "group": null
-        },
-        "BIA-041": {
-            "current_quantity": 0,
-            "machine_time": 0.25,
-            "gauge": "10 Gauge",
-            "material": "Mild Steel",
-            "weight": 1.7,
-            "price": 1.98,
-            "unit_quantity": 1,
-            "modified_date": "Removed 10 quantity at March 14 Tuesday 2023 04:53:43 PM",
-            "group": null
-        },
-        "BIA-042": {
-            "current_quantity": 0,
-            "machine_time": 0.32,
-            "gauge": "10 Gauge",
-            "material": "Mild Steel",
-            "weight": 1.923,
-            "price": 2.34,
-            "unit_quantity": 1,
-            "modified_date": "Removed 10 quantity at March 14 Tuesday 2023 04:53:43 PM",
-            "group": null
-        },
         "G2Plus-Primary Air Delivery Penetration Flangex6": {
             "current_quantity": 0.0,
             "machine_time": 0.32,
@@ -5061,14 +5197,14 @@
             "group": null
         },
         "BIA-023": {
-            "current_quantity": 79,
+            "current_quantity": 87,
             "machine_time": 0.05,
             "gauge": "10 Gauge",
             "material": "Mild Steel",
             "weight": 0.037,
             "price": 0.15,
             "unit_quantity": 1,
-            "modified_date": "39 quantity added at March 28 Tuesday 2023 02:36:56 PM",
+            "modified_date": "8 quantity added at May 09 Tuesday 2023 04:06:26 PM",
             "group": null
         },
         "G2-3-Air Gate-Adjusting lever": {
@@ -5083,14 +5219,14 @@
             "group": null
         },
         "BIA-019x2": {
-            "current_quantity": 60,
+            "current_quantity": 62,
             "machine_time": 0.1,
             "gauge": "10 Gauge",
             "material": "Mild Steel",
             "weight": 0.18,
             "price": 0.39,
             "unit_quantity": 1,
-            "modified_date": "20 quantity added at March 28 Tuesday 2023 02:36:56 PM",
+            "modified_date": "2 quantity added at May 09 Tuesday 2023 04:06:26 PM",
             "group": null
         },
         "G3-1-Firechamber-Skirting-part 2x3": {
@@ -5313,6 +5449,17 @@
             "modified_date": "10 quantity added at March 07 Tuesday 2023 01:28:02 PM",
             "group": null
         },
+        "G3-1-Housing-Access Cover-Bottom": {
+            "current_quantity": 12,
+            "machine_time": 0.72,
+            "gauge": "18 Gauge",
+            "material": "Galvanneal",
+            "weight": 25.823,
+            "price": 33.3,
+            "unit_quantity": 1,
+            "modified_date": "2 quantity added at May 10 Wednesday 2023 08:42:07 AM",
+            "group": null
+        },
         "G3-1-Firechamber-HE Top-part 2": {
             "current_quantity": 10,
             "machine_time": 1.87,
@@ -5397,17 +5544,6 @@
             "material": "Galvanneal",
             "weight": 31.446,
             "price": 41.04,
-            "unit_quantity": 1,
-            "modified_date": "Added at April 06 Thursday 2023 11:25:56 AM",
-            "group": null
-        },
-        "G3-1-Housing-Access Cover-Bottom": {
-            "current_quantity": 10,
-            "machine_time": 0.72,
-            "gauge": "18 Gauge",
-            "material": "Galvanneal",
-            "weight": 25.823,
-            "price": 33.3,
             "unit_quantity": 1,
             "modified_date": "Added at April 06 Thursday 2023 11:25:56 AM",
             "group": null
