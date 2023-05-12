@@ -8853,7 +8853,7 @@
             "unit_quantity": 1,
             "current_quantity": 42,
             "price": 1.7,
-            "use_exchange_rate": false,
+            "use_exchange_rate": true,
             "priority": 0,
             "notes": "Vendor: Controle Devices LLC\nDescription:Tiffane Champion <TChampion@cdivalve.com",
             "latest_change_name": "Item added\nItsme\nAugust 04 Thursday 2022 10-23-20 AM",
@@ -8863,7 +8863,8 @@
             "latest_change_price": "Item added\nItsme\nAugust 04 Thursday 2022 10-23-20 AM",
             "latest_change_use_exchange_price": "Item added\nItsme\nAugust 04 Thursday 2022 10-23-20 AM",
             "latest_change_priority": "Item added\nItsme\nAugust 04 Thursday 2022 10-23-20 AM",
-            "latest_change_notes": "Item added\nItsme\nAugust 04 Thursday 2022 10-23-20 AM"
+            "latest_change_notes": "Item added\nItsme\nAugust 04 Thursday 2022 10-23-20 AM",
+            "latest_change_use_exchange_rate": "Latest Change:\nfrom: CAD\nto: USD\nLynden\nMay 12 Friday 2023 01:55:14 PM"
         },
         "Die Cast Zinc Hinge, 1.57 Open x 1.57 Long, 4 Csunk Holes, SS Pin, Black Powder Coated": {
             "part_number": "H2080-02",
