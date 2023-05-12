@@ -22,10 +22,7 @@ def update_inventory(file_path: str) -> None:
     with open(file_path) as json_file:
         new_laser_batch_data = json.load(json_file)
     sheet_count_and_type: dict = get_sheet_information(batch_data=new_laser_batch_data)
-    for sheet in sheet_count_and_type:
-        subtract_sheet_count(
-            sheet_name_to_update=sheet, sheet_count=sheet_count_and_type[sheet]
-        )
+    remove_sheet_quantities(sheets_information=sheet_count_and_type)
     recut_parts: list[str] = get_recut_parts(batch_data=new_laser_batch_data)
     add_recut_parts(batch_data=new_laser_batch_data, recut_parts=recut_parts)
     no_recut_parts: list[str] = get_no_recut_parts(batch_data=new_laser_batch_data)
@@ -317,6 +314,21 @@ def get_no_recut_parts(batch_data) -> list[str]:
             if batch_data[part_name]["recut"] == False:
                 no_recut_parts.append(part_name)
     return no_recut_parts
+    
+    
+def remove_sheet_quantities(sheets_information) -> None:
+    """
+    This function removes sheet quantities from a dictionary of sheets information by calling another
+    function to subtract the sheet count.
+    
+    Args:
+      sheets_information: A dictionary containing information about the sheets, where the keys are the
+    names of the sheets and the values are the quantities of each sheet.
+    """
+    for sheet in sheets_information:
+        subtract_sheet_count(
+            sheet_name_to_update=sheet, sheet_count=sheets_information[sheet]
+        )
 
 
 def subtract_sheet_count(sheet_name_to_update: str, sheet_count: int) -> None:
@@ -341,6 +353,7 @@ def subtract_sheet_count(sheet_name_to_update: str, sheet_count: int) -> None:
                     category, sheet_name, "current_quantity", old_quantity - sheet_count
                 )
                 print(f"{Colors.BOLD}{datetime.now()}{Colors.ENDC}\t\t{Colors.OKGREEN}[+] Subtracted {sheet_count} quantities from {sheet_name_to_update}{Colors.ENDC}")
+
 
 def get_sheet_information(batch_data: dict) -> dict:
     """
