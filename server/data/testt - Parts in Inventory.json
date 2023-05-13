@@ -142,6 +142,17 @@
             "unit_quantity": 1,
             "modified_date": "Added at April 17 Monday 2023 09:17:03 AM",
             "group": null
+        },
+        "PM - SS HINGE A-B": {
+            "current_quantity": 1,
+            "machine_time": 0.15,
+            "gauge": "0.08\"",
+            "material": "304 SS",
+            "weight": 0.118,
+            "price": 0.91,
+            "unit_quantity": 1,
+            "modified_date": "Added at May 13 Saturday 2023 04:21:56 PM",
+            "group": null
         }
     },
     "Recut": {
