@@ -22,6 +22,28 @@
             "modified_date": "69 quantity added at March 21 Tuesday 2023 04:35:32 PM",
             "group": null
         },
+        "PM - SS DOOR PART D_1pcs Heavy Duty Bottom Bracket": {
+            "current_quantity": 88,
+            "machine_time": 0.45,
+            "gauge": "10 Gauge",
+            "material": "304 SS",
+            "weight": 1.458,
+            "price": 5.01,
+            "unit_quantity": 1,
+            "modified_date": "Added at May 15 Monday 2023 10:20:19 AM",
+            "group": null
+        },
+        "PM - SS DOOR PART C_1pcs Heavy Duty Bottom Bracket": {
+            "current_quantity": 82,
+            "machine_time": 0.32,
+            "gauge": "10 Gauge",
+            "material": "304 SS",
+            "weight": 0.367,
+            "price": 2.12,
+            "unit_quantity": 1,
+            "modified_date": "Added at May 15 Monday 2023 10:20:19 AM",
+            "group": null
+        },
         "2 inch pin cap": {
             "current_quantity": 51,
             "machine_time": 0.17,
@@ -42,28 +64,6 @@
             "price": 0.54,
             "unit_quantity": 1,
             "modified_date": "24 quantity added at May 06 Saturday 2023 01:47:13 PM",
-            "group": null
-        },
-        "G3-1-Shipping pallet bracket Ax2": {
-            "current_quantity": 40,
-            "machine_time": 0.47,
-            "gauge": "3\/16",
-            "material": "Mild Steel",
-            "weight": 3.131,
-            "price": 3.68,
-            "unit_quantity": 1,
-            "modified_date": "Added at May 03 Wednesday 2023 01:49:31 PM",
-            "group": null
-        },
-        "G3-1-Shipping pallet bracket Bx2": {
-            "current_quantity": 40,
-            "machine_time": 0.52,
-            "gauge": "3\/16",
-            "material": "Mild Steel",
-            "weight": 4.21,
-            "price": 4.67,
-            "unit_quantity": 1,
-            "modified_date": "Added at May 03 Wednesday 2023 01:49:31 PM",
             "group": null
         },
         "Flat pattern - door hinge shim18 fix": {
@@ -2086,6 +2086,17 @@
             "modified_date": "Removed 10 quantity at May 09 Tuesday 2023 02:02:12 PM",
             "group": null
         },
+        "3444-88Wood": {
+            "current_quantity": 10,
+            "machine_time": 0.58,
+            "gauge": "18 Gauge",
+            "material": "Galvanneal",
+            "weight": 3.0,
+            "price": 5.11,
+            "unit_quantity": 1,
+            "modified_date": "Added at May 08 Monday 2023 04:24:57 PM",
+            "group": null
+        },
         "3444-25x4": {
             "current_quantity": 8.0,
             "machine_time": 0.57,
@@ -2899,17 +2910,6 @@
             "unit_quantity": 1,
             "modified_date": "Removed 10 quantity at May 09 Tuesday 2023 02:02:12 PM",
             "group": null
-        },
-        "3444-88Wood": {
-            "current_quantity": 10,
-            "machine_time": 0.58,
-            "gauge": "18 Gauge",
-            "material": "Galvanneal",
-            "weight": 3.0,
-            "price": 5.11,
-            "unit_quantity": 1,
-            "modified_date": "Added at May 08 Monday 2023 04:24:57 PM",
-            "group": null
         }
     },
     "BL40": {
@@ -3120,6 +3120,17 @@
             "price": 4.07,
             "unit_quantity": 1,
             "modified_date": "Added at May 02 Tuesday 2023 03:53:30 PM",
+            "group": null
+        },
+        "404447x2": {
+            "current_quantity": 9,
+            "machine_time": 0.38,
+            "gauge": "18 Gauge",
+            "material": "Galvanneal",
+            "weight": 3.154,
+            "price": 4.8,
+            "unit_quantity": 1,
+            "modified_date": "Added at May 10 Wednesday 2023 08:42:07 AM",
             "group": null
         },
         "404498x2": {
@@ -3496,6 +3507,39 @@
             "modified_date": "Added at May 03 Wednesday 2023 01:25:16 PM",
             "group": null
         },
+        "404443": {
+            "current_quantity": 5,
+            "machine_time": 0.75,
+            "gauge": "18 Gauge",
+            "material": "Galvanneal",
+            "weight": 14.736,
+            "price": 19.85,
+            "unit_quantity": 1,
+            "modified_date": "Added at May 10 Wednesday 2023 08:42:07 AM",
+            "group": null
+        },
+        "404482": {
+            "current_quantity": 5,
+            "machine_time": 0.5,
+            "gauge": "18 Gauge",
+            "material": "Galvanneal",
+            "weight": 2.431,
+            "price": 4.22,
+            "unit_quantity": 1,
+            "modified_date": "Added at May 10 Wednesday 2023 08:42:07 AM",
+            "group": null
+        },
+        "404483": {
+            "current_quantity": 5,
+            "machine_time": 0.5,
+            "gauge": "18 Gauge",
+            "material": "Galvanneal",
+            "weight": 2.459,
+            "price": 4.25,
+            "unit_quantity": 1,
+            "modified_date": "Added at May 10 Wednesday 2023 08:42:07 AM",
+            "group": null
+        },
         "404424x2": {
             "current_quantity": 4.0,
             "machine_time": 0.57,
@@ -3527,6 +3571,39 @@
             "price": 40.54,
             "unit_quantity": 1,
             "modified_date": "Manually set to 4.0 quantity at May 02 Tuesday 2023 09:15:40 AM",
+            "group": null
+        },
+        "404448 PUNCHED": {
+            "current_quantity": 3,
+            "machine_time": 0.68,
+            "gauge": "18 Gauge",
+            "material": "Galvanneal",
+            "weight": 14.932,
+            "price": 19.92,
+            "unit_quantity": 1,
+            "modified_date": "Added at May 10 Wednesday 2023 08:42:07 AM",
+            "group": null
+        },
+        "404432": {
+            "current_quantity": 1,
+            "machine_time": 0.75,
+            "gauge": "18 Gauge",
+            "material": "Galvanneal",
+            "weight": 14.432,
+            "price": 19.48,
+            "unit_quantity": 1,
+            "modified_date": "Added at May 10 Wednesday 2023 08:42:07 AM",
+            "group": null
+        },
+        "404454": {
+            "current_quantity": 1,
+            "machine_time": 0.87,
+            "gauge": "18 Gauge",
+            "material": "Galvanneal",
+            "weight": 24.941,
+            "price": 32.6,
+            "unit_quantity": 1,
+            "modified_date": "Added at May 10 Wednesday 2023 08:42:07 AM",
             "group": null
         },
         "4044 Ash Pan": {
@@ -3582,83 +3659,6 @@
             "price": 11.39,
             "unit_quantity": 1,
             "modified_date": "Removed 10 quantity at March 16 Thursday 2023 01:31:47 PM",
-            "group": null
-        },
-        "404447x2": {
-            "current_quantity": 9,
-            "machine_time": 0.38,
-            "gauge": "18 Gauge",
-            "material": "Galvanneal",
-            "weight": 3.154,
-            "price": 4.8,
-            "unit_quantity": 1,
-            "modified_date": "Added at May 10 Wednesday 2023 08:42:07 AM",
-            "group": null
-        },
-        "404443": {
-            "current_quantity": 5,
-            "machine_time": 0.75,
-            "gauge": "18 Gauge",
-            "material": "Galvanneal",
-            "weight": 14.736,
-            "price": 19.85,
-            "unit_quantity": 1,
-            "modified_date": "Added at May 10 Wednesday 2023 08:42:07 AM",
-            "group": null
-        },
-        "404482": {
-            "current_quantity": 5,
-            "machine_time": 0.5,
-            "gauge": "18 Gauge",
-            "material": "Galvanneal",
-            "weight": 2.431,
-            "price": 4.22,
-            "unit_quantity": 1,
-            "modified_date": "Added at May 10 Wednesday 2023 08:42:07 AM",
-            "group": null
-        },
-        "404483": {
-            "current_quantity": 5,
-            "machine_time": 0.5,
-            "gauge": "18 Gauge",
-            "material": "Galvanneal",
-            "weight": 2.459,
-            "price": 4.25,
-            "unit_quantity": 1,
-            "modified_date": "Added at May 10 Wednesday 2023 08:42:07 AM",
-            "group": null
-        },
-        "404448 PUNCHED": {
-            "current_quantity": 3,
-            "machine_time": 0.68,
-            "gauge": "18 Gauge",
-            "material": "Galvanneal",
-            "weight": 14.932,
-            "price": 19.92,
-            "unit_quantity": 1,
-            "modified_date": "Added at May 10 Wednesday 2023 08:42:07 AM",
-            "group": null
-        },
-        "404432": {
-            "current_quantity": 1,
-            "machine_time": 0.75,
-            "gauge": "18 Gauge",
-            "material": "Galvanneal",
-            "weight": 14.432,
-            "price": 19.48,
-            "unit_quantity": 1,
-            "modified_date": "Added at May 10 Wednesday 2023 08:42:07 AM",
-            "group": null
-        },
-        "404454": {
-            "current_quantity": 1,
-            "machine_time": 0.87,
-            "gauge": "18 Gauge",
-            "material": "Galvanneal",
-            "weight": 24.941,
-            "price": 32.6,
-            "unit_quantity": 1,
-            "modified_date": "Added at May 10 Wednesday 2023 08:42:07 AM",
             "group": null
         }
     },
@@ -4189,6 +4189,28 @@
             "price": 1.6,
             "unit_quantity": 6.0,
             "modified_date": "Manually set to 0.0 quantity at March 24 Friday 2023 11:02:51 AM",
+            "group": null
+        },
+        "G3-1-Shipping pallet bracket Ax2": {
+            "current_quantity": 40,
+            "machine_time": 0.47,
+            "gauge": "3\/16",
+            "material": "Mild Steel",
+            "weight": 3.131,
+            "price": 3.68,
+            "unit_quantity": 1,
+            "modified_date": "Added at May 03 Wednesday 2023 01:49:31 PM",
+            "group": null
+        },
+        "G3-1-Shipping pallet bracket Bx2": {
+            "current_quantity": 40,
+            "machine_time": 0.52,
+            "gauge": "3\/16",
+            "material": "Mild Steel",
+            "weight": 4.21,
+            "price": 4.67,
+            "unit_quantity": 1,
+            "modified_date": "Added at May 03 Wednesday 2023 01:49:31 PM",
             "group": null
         }
     },
@@ -5083,6 +5105,28 @@
             "unit_quantity": 2.0,
             "modified_date": "Manually set to 0.0 quantity at March 24 Friday 2023 11:02:54 AM",
             "group": null
+        },
+        "G3-1-Shipping pallet bracket Ax2": {
+            "current_quantity": 40,
+            "machine_time": 0.47,
+            "gauge": "3\/16",
+            "material": "Mild Steel",
+            "weight": 3.131,
+            "price": 3.68,
+            "unit_quantity": 1,
+            "modified_date": "Added at May 03 Wednesday 2023 01:49:31 PM",
+            "group": null
+        },
+        "G3-1-Shipping pallet bracket Bx2": {
+            "current_quantity": 40,
+            "machine_time": 0.52,
+            "gauge": "3\/16",
+            "material": "Mild Steel",
+            "weight": 4.21,
+            "price": 4.67,
+            "unit_quantity": 1,
+            "modified_date": "Added at May 03 Wednesday 2023 01:49:31 PM",
+            "group": null
         }
     },
     "Polar G3": {
@@ -5843,6 +5887,28 @@
             "price": 9.26,
             "unit_quantity": 1,
             "modified_date": "Manually set to 0.0 quantity at March 24 Friday 2023 11:02:54 AM",
+            "group": null
+        },
+        "G3-1-Shipping pallet bracket Ax2": {
+            "current_quantity": 40,
+            "machine_time": 0.47,
+            "gauge": "3\/16",
+            "material": "Mild Steel",
+            "weight": 3.131,
+            "price": 3.68,
+            "unit_quantity": 1,
+            "modified_date": "Added at May 03 Wednesday 2023 01:49:31 PM",
+            "group": null
+        },
+        "G3-1-Shipping pallet bracket Bx2": {
+            "current_quantity": 40,
+            "machine_time": 0.52,
+            "gauge": "3\/16",
+            "material": "Mild Steel",
+            "weight": 4.21,
+            "price": 4.67,
+            "unit_quantity": 1,
+            "modified_date": "Added at May 03 Wednesday 2023 01:49:31 PM",
             "group": null
         }
     },
