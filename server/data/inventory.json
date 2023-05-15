@@ -1334,7 +1334,7 @@
             "price": 1.7,
             "use_exchange_rate": false,
             "priority": 0,
-            "notes": "Vendor: Controle Devices LLC\nDescription:Tiffane Champion <TChampion@cdivalve.com",
+            "notes": "Vendor: Controle Devices LLC\nDescription:Tiffane Champion <TChampion@cdivalve.com\norder@cdivalve.com\njdugan@CDIVALVE.COM",
             "latest_change_name": "Item added\nItsme\nJuly 25 Monday 2022 02-41-01 PM",
             "latest_change_part_number": "Item added\nItsme\nJuly 25 Monday 2022 02-41-01 PM",
             "latest_change_unit_quantity": "Item added\nItsme\nJuly 25 Monday 2022 02-41-01 PM",
@@ -1342,7 +1342,7 @@
             "latest_change_price": "Latest Change:\nfrom: 1.0\nto: 1.7\nItsme\nJuly 25 Monday 2022 03:37:17 PM",
             "latest_change_use_exchange_price": "Item added\nItsme\nJuly 25 Monday 2022 02-41-01 PM",
             "latest_change_priority": "Item added\nItsme\nJuly 25 Monday 2022 02-41-01 PM",
-            "latest_change_notes": "Latest Change:\nfrom: \"Vendor: Controle Devices LLC\nDescription: <TChampion@cdivalve.com\"\nto: \"Vendor: Controle Devices LLC\nDescription:Tiffane Champion <TChampion@cdivalve.com\"\nItsme\nJuly 25 Monday 2022 03:36:48 PM"
+            "latest_change_notes": "Latest Change:\nfrom: Vendor: Controle Devices LLC\nDescription:Tiffane Champion <TChampion@cdivalve.com\norder@cdivalve.com\njdugan@CDIVALVE.CO\nto: Vendor: Controle Devices LLC\nDescription:Tiffane Champion <TChampion@cdivalve.com\norder@cdivalve.com\njdugan@CDIVALVE.COM\nLynden\nMay 15 Monday 2023 01:31:04 PM"
         },
         "5\/16x5\/8 starlock push on Locking washer": {
             "part_number": "SPOLW",
@@ -2008,7 +2008,7 @@
             "price": 764.2,
             "use_exchange_rate": true,
             "priority": 0,
-            "notes": "Vendor: Reftec Insudtries\nDescription: ",
+            "notes": "Vendor: Reftec Insudtries\nDescription: G2Plus brick set\n",
             "latest_change_name": "Item added\nItsme\nJuly 28 Thursday 2022 04-39-31 PM",
             "latest_change_part_number": "Latest Change:\nfrom: G3B\nto: G3BS\nItsme\nJuly 28 Thursday 2022 04:39:58 PM",
             "latest_change_unit_quantity": "Item added\nItsme\nJuly 28 Thursday 2022 04-39-31 PM",
@@ -2016,7 +2016,7 @@
             "latest_change_price": "Latest Change:\nfrom: 764.2\nto: 764.2\nLynden\nMarch 03 Friday 2023 05:16:17 PM",
             "latest_change_use_exchange_price": "Item added\nItsme\nJuly 28 Thursday 2022 04-39-31 PM",
             "latest_change_priority": "Item added\nItsme\nJuly 28 Thursday 2022 04-39-31 PM",
-            "latest_change_notes": "Latest Change:\nfrom: \"Vendor: Reftec Insudtrie\nDescription: \"\nto: \"Vendor: Reftec Insudtries\nDescription: \"\nItsme\nJuly 28 Thursday 2022 04:40:40 PM",
+            "latest_change_notes": "Latest Change:\nfrom: Vendor: Reftec Insudtries\nDescription: G2Plus brick set\nto: Vendor: Reftec Insudtries\nDescription: G2Plus brick set\n\nLynden\nMay 15 Monday 2023 01:28:22 PM",
             "latest_change_use_exchange_rate": "Latest Change:\nfrom: CAD\nto: USD\nItsme\nSeptember 15 Thursday 2022 09:23:50 AM"
         },
         "3\" Thermax SF- 600 Brick Slabs 1000x610x75": {
@@ -3608,23 +3608,6 @@
             "latest_change_priority": "Item added\nItsme\nNovember 28 Monday 2022 10-51-07 AM",
             "latest_change_notes": "Item added\nItsme\nNovember 28 Monday 2022 10-51-07 AM"
         },
-        "3\/8 x 4 Carr BLT ": {
-            "part_number": "38384",
-            "unit_quantity": 6,
-            "current_quantity": 486,
-            "price": 0.8,
-            "use_exchange_rate": false,
-            "priority": 0,
-            "notes": "Vendor: A.Adams Supply\nDescription: ",
-            "latest_change_name": "Item added\nItsme\nJuly 19 Tuesday 2022 04-14-31 PM",
-            "latest_change_part_number": "Item added\nItsme\nJuly 19 Tuesday 2022 04-14-32 PM",
-            "latest_change_unit_quantity": "Item added\nItsme\nJuly 19 Tuesday 2022 04-14-32 PM",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 486\nto: 486\nLynden\nMay 03 Wednesday 2023 09:21:44 AM",
-            "latest_change_price": "Item added\nItsme\nJuly 19 Tuesday 2022 04-14-32 PM",
-            "latest_change_use_exchange_price": "Item added\nItsme\nJuly 19 Tuesday 2022 04-14-32 PM",
-            "latest_change_priority": "Item added\nItsme\nJuly 19 Tuesday 2022 04-14-32 PM",
-            "latest_change_notes": "Item added\nItsme\nJuly 19 Tuesday 2022 04-14-32 PM"
-        },
         "38100 Front MNT Snap-In SCR TERM": {
             "part_number": "38100",
             "unit_quantity": 1,
@@ -3722,23 +3705,6 @@
             "latest_change_priority": "Item added\nItsme\nJuly 19 Tuesday 2022 04-50-50 PM",
             "latest_change_notes": "Item added\nItsme\nJuly 19 Tuesday 2022 04-50-50 PM"
         },
-        "1-1\/4 Half Coupling": {
-            "part_number": "G0008MC-125",
-            "unit_quantity": 1,
-            "current_quantity": 34,
-            "price": 2.4,
-            "use_exchange_rate": false,
-            "priority": 0,
-            "notes": "Vendor: Greenline\nDescription: 204-694-0332",
-            "latest_change_name": "Item added\nItsme\nJuly 07 Thursday 2022 10-23-19 AM",
-            "latest_change_part_number": "Item added\nItsme\nJuly 07 Thursday 2022 10-23-19 AM",
-            "latest_change_unit_quantity": "Item added\nItsme\nJuly 07 Thursday 2022 10-23-19 AM",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 34\nto: 34\nLynden\nMay 08 Monday 2023 08:35:07 AM",
-            "latest_change_price": "Latest Change:\nfrom: 2.0\nto: 2.4\nItsme\nSeptember 03 Saturday 2022 02:45:54 PM",
-            "latest_change_use_exchange_price": "Item added\nItsme\nJuly 07 Thursday 2022 10-23-19 AM",
-            "latest_change_priority": "Item added\nItsme\nJuly 07 Thursday 2022 10-23-19 AM",
-            "latest_change_notes": "Latest Change:\nfrom: \"Vendor: Greenline\nDescription: \"\nto: \"Vendor: Greenline\nDescription: 204-694-0332\"\nItsme\nJuly 07 Thursday 2022 11:22:22 AM"
-        },
         "G Class Ash Shovel Large": {
             "part_number": "GCASL",
             "unit_quantity": 1.0,
@@ -3775,7 +3741,7 @@
             "price": 764.2,
             "use_exchange_rate": false,
             "priority": 0,
-            "notes": "Vendor: Reftec Insudtries\nDescription: ",
+            "notes": "Vendor: Reftec Insudtries\nDescription: G2Plus brick set\n",
             "latest_change_name": "Item added\nItsme\nAugust 12 Friday 2022 11-21-54 AM",
             "latest_change_part_number": "Item added\nItsme\nAugust 12 Friday 2022 11-21-54 AM",
             "latest_change_unit_quantity": "Item added\nItsme\nAugust 12 Friday 2022 11-21-54 AM",
@@ -3783,7 +3749,7 @@
             "latest_change_price": "Latest Change:\nfrom: 764.2\nto: 764.2\nLynden\nMarch 03 Friday 2023 05:16:17 PM",
             "latest_change_use_exchange_price": "Item added\nItsme\nAugust 12 Friday 2022 11-21-54 AM",
             "latest_change_priority": "Item added\nItsme\nAugust 12 Friday 2022 11-21-54 AM",
-            "latest_change_notes": "Item added\nItsme\nAugust 12 Friday 2022 11-21-54 AM"
+            "latest_change_notes": "Latest Change:\nfrom: \"Vendor: Reftec Insudtries\nDescription: G2Plus brick set\"\nto: \"Vendor: Reftec Insudtries\nDescription: G2Plus brick set\n\"\nLynden\nMay 15 Monday 2023 01:28:22 PM"
         },
         "3\" Thermax SF- 600 Brick Slabs 1000x610x75": {
             "part_number": "THERMAXSF600",
@@ -3827,6 +3793,23 @@
             "latest_change_use_exchange_price": "Item added\nItsme\nFebruary 23 Thursday 2023 10-49-58 AM",
             "latest_change_priority": "Item added\nItsme\nFebruary 23 Thursday 2023 10-49-58 AM",
             "latest_change_notes": "Item added\nItsme\nFebruary 23 Thursday 2023 10-49-58 AM"
+        },
+        "Aluminum Float Cap ( 2\" )": {
+            "part_number": "Float cap",
+            "unit_quantity": 1.0,
+            "current_quantity": 13.0,
+            "price": 9.39,
+            "use_exchange_rate": false,
+            "priority": 0,
+            "notes": "Vendor: Made by Piney MFO. from 2 inch aluminum shaft\nDescription: ",
+            "latest_change_name": "Item added\nItsme\nJanuary 19 Thursday 2023 09-57-04 AM",
+            "latest_change_part_number": "Item added\nItsme\nJanuary 19 Thursday 2023 09-57-04 AM",
+            "latest_change_unit_quantity": "Item added\nItsme\nJanuary 19 Thursday 2023 09-57-04 AM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 18\nto: 13.0\nLynden\nMay 10 Wednesday 2023 01:25:02 PM",
+            "latest_change_price": "Item added\nItsme\nJanuary 19 Thursday 2023 09-57-04 AM",
+            "latest_change_use_exchange_price": "Item added\nItsme\nJanuary 19 Thursday 2023 09-57-04 AM",
+            "latest_change_priority": "Item added\nItsme\nJanuary 19 Thursday 2023 09-57-04 AM",
+            "latest_change_notes": "Item added\nItsme\nJanuary 19 Thursday 2023 09-57-04 AM"
         },
         "3\/4 Brass Ball Valve": {
             "part_number": "34BV",
@@ -3880,19 +3863,6 @@
             "latest_change_current_quantity": "Latest Change:\nfrom: 15\nto: 15\nLynden\nApril 21 Friday 2023 01:29:33 PM",
             "latest_change_price": "Latest Change:\nfrom: 5.13\nto: 5.64\nItsme\nJanuary 17 Tuesday 2023 09:04:10 AM"
         },
-        "Blower Wheel 9-15\/16\" X 2-1\/4 BI Steel 1\/2 #2-106CI CW \"A\" 1800R": {
-            "part_number": "2-106CI CW",
-            "unit_quantity": 1,
-            "current_quantity": 66,
-            "price": 68.45,
-            "use_exchange_rate": false,
-            "priority": 3,
-            "notes": "Vendor: Jan-Air Illinois\nDescription: Customer item #\nSB0993225C2RA ",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 66\nto: 66\nLynden\nMay 04 Thursday 2023 03:46:32 PM",
-            "latest_change_price": "Latest Change:\nfrom: 68.45\nto: 68.45\nItsme\nSeptember 06 Tuesday 2022 11:12:17 AM",
-            "latest_change_priority": "Latest Change:\nfrom: 0\nto: 3\nItsme\nOctober 24 Monday 2022 08:34:48 AM",
-            "latest_change_notes": "Latest Change:\nfrom: Vendor: Jan-Air Illinois\nDescription: Customer item #\nSB0993225C2RA\nto: Vendor: Jan-Air Illinois\nDescription: Customer item #\nSB0993225C2RA \nLynden\nMarch 09 Thursday 2023 03:34:27 PM"
-        },
         "Snap in Flush Pull, Large, Black Plastic, For Panel Thickness .040- .055": {
             "part_number": "91-19BK02",
             "unit_quantity": 3,
@@ -3940,23 +3910,6 @@
             "latest_change_price": "Latest Change:\nfrom: 3.3\nto: 3.0\nItsme\nAugust 03 Wednesday 2022 08:50:27 AM",
             "latest_change_name": "Latest Change:\nfrom: \"Barb Hose Adapter fitting 1 1\/\"\nto: \"Barb Hose Adapter fitting 1 1\/4\"\nItsme\nJanuary 16 Monday 2023 09:57:56 AM",
             "latest_change_notes": "Latest Change:\nfrom: Vendor: GreenLine\nDescription: 204-694-0332\nPart # G33G-12\nto: Vendor: GreenLine\nDescription: 204-694-0332\nPart # G33G-125\nItsme\nJanuary 17 Tuesday 2023 09:09:11 AM"
-        },
-        "Aluminum Float Cap ( 2\" )": {
-            "part_number": "Float cap",
-            "unit_quantity": 1.0,
-            "current_quantity": 13.0,
-            "price": 9.39,
-            "use_exchange_rate": false,
-            "priority": 0,
-            "notes": "Vendor: Made by Piney MFO. from 2 inch aluminum shaft\nDescription: ",
-            "latest_change_name": "Item added\nItsme\nJanuary 19 Thursday 2023 09-57-04 AM",
-            "latest_change_part_number": "Item added\nItsme\nJanuary 19 Thursday 2023 09-57-04 AM",
-            "latest_change_unit_quantity": "Item added\nItsme\nJanuary 19 Thursday 2023 09-57-04 AM",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 18\nto: 13.0\nLynden\nMay 10 Wednesday 2023 01:25:02 PM",
-            "latest_change_price": "Item added\nItsme\nJanuary 19 Thursday 2023 09-57-04 AM",
-            "latest_change_use_exchange_price": "Item added\nItsme\nJanuary 19 Thursday 2023 09-57-04 AM",
-            "latest_change_priority": "Item added\nItsme\nJanuary 19 Thursday 2023 09-57-04 AM",
-            "latest_change_notes": "Item added\nItsme\nJanuary 19 Thursday 2023 09-57-04 AM"
         },
         "Gasket 3\/16\" Thick 5\"OD x 3.75\"ID EPDM Sponge Adhesive Back": {
             "part_number": "1000-795",
@@ -4019,6 +3972,23 @@
             "latest_change_priority": "Item added\nLynden\nMarch 11 Saturday 2023 09-26-50 AM",
             "latest_change_notes": "Item added\nLynden\nMarch 11 Saturday 2023 09-26-50 AM"
         },
+        "1-1\/4 Half Coupling": {
+            "part_number": "G0008MC-125",
+            "unit_quantity": 1,
+            "current_quantity": 34,
+            "price": 2.4,
+            "use_exchange_rate": false,
+            "priority": 0,
+            "notes": "Vendor: Greenline\nDescription: 204-694-0332",
+            "latest_change_name": "Item added\nItsme\nJuly 07 Thursday 2022 10-23-19 AM",
+            "latest_change_part_number": "Item added\nItsme\nJuly 07 Thursday 2022 10-23-19 AM",
+            "latest_change_unit_quantity": "Item added\nItsme\nJuly 07 Thursday 2022 10-23-19 AM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 34\nto: 34\nLynden\nMay 08 Monday 2023 08:35:07 AM",
+            "latest_change_price": "Latest Change:\nfrom: 2.0\nto: 2.4\nItsme\nSeptember 03 Saturday 2022 02:45:54 PM",
+            "latest_change_use_exchange_price": "Item added\nItsme\nJuly 07 Thursday 2022 10-23-19 AM",
+            "latest_change_priority": "Item added\nItsme\nJuly 07 Thursday 2022 10-23-19 AM",
+            "latest_change_notes": "Latest Change:\nfrom: \"Vendor: Greenline\nDescription: \"\nto: \"Vendor: Greenline\nDescription: 204-694-0332\"\nItsme\nJuly 07 Thursday 2022 11:22:22 AM"
+        },
         "Borosilicate Glass Disc": {
             "part_number": "8477K28",
             "unit_quantity": 1,
@@ -4068,23 +4038,6 @@
             "priority": 1,
             "notes": "Vendor: Neux Hearth Products\nDescription: Jim.willes@neux.com \n",
             "latest_change_current_quantity": "Latest Change:\nfrom: 42\nto: 42\nLynden\nApril 21 Friday 2023 01:29:33 PM"
-        },
-        "A19ABC-11 Mechanical Thermostat": {
-            "part_number": "A19ABC-11",
-            "unit_quantity": 2.0,
-            "current_quantity": 84,
-            "price": 93.24,
-            "use_exchange_rate": false,
-            "priority": 0,
-            "notes": "Vendor: Johnson Controle\nDescription: ",
-            "latest_change_name": "Item added\nItsme\nDecember 12 Monday 2022 08-24-50 AM",
-            "latest_change_part_number": "Item added\nItsme\nDecember 12 Monday 2022 08-24-50 AM",
-            "latest_change_unit_quantity": "Item added\nItsme\nDecember 12 Monday 2022 08-24-50 AM",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 84\nto: 84\nLynden\nMay 10 Wednesday 2023 03:52:43 PM",
-            "latest_change_price": "Latest Change:\nfrom: 93.24\nto: 93.24\nItsme\nFebruary 28 Tuesday 2023 10:03:12 AM",
-            "latest_change_use_exchange_price": "Item added\nItsme\nDecember 12 Monday 2022 08-24-50 AM",
-            "latest_change_priority": "Item added\nItsme\nDecember 12 Monday 2022 08-24-50 AM",
-            "latest_change_notes": "Item added\nItsme\nDecember 12 Monday 2022 08-24-50 AM"
         },
         "1\/8 Hight Temp Rubber- Orange": {
             "part_number": "1460N44",
@@ -4187,6 +4140,23 @@
             "latest_change_use_exchange_price": "Item added\nItsme\nJuly 19 Tuesday 2022 04-11-52 PM",
             "latest_change_priority": "Item added\nItsme\nJuly 19 Tuesday 2022 04-11-52 PM",
             "latest_change_notes": "Latest Change:\nfrom: Vendor: Fastenal Canada\nDescription: Steinbeck Location\n204 326-249\nto: Vendor: Fastenal Canada\nDescription: Steinbeck Location\n204 326-2498\nItsme\nFebruary 23 Thursday 2023 02:27:00 PM"
+        },
+        "Actuator M9203-BUA-2\n": {
+            "part_number": "M9203",
+            "unit_quantity": 2,
+            "current_quantity": 50,
+            "price": 174.98,
+            "use_exchange_rate": false,
+            "priority": 0,
+            "notes": "Vendor: Johnson controle\nDescription: ",
+            "latest_change_name": "Item added\nItsme\nJuly 28 Thursday 2022 10-32-50 AM",
+            "latest_change_part_number": "Item added\nItsme\nJuly 28 Thursday 2022 10-32-50 AM",
+            "latest_change_unit_quantity": "Item added\nItsme\nJuly 28 Thursday 2022 10-32-50 AM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 50\nto: 50\nLynden\nMay 10 Wednesday 2023 01:08:01 PM",
+            "latest_change_price": "Latest Change:\nfrom: 174.9\nto: 174.98\nItsme\nNovember 23 Wednesday 2022 09:50:39 AM",
+            "latest_change_use_exchange_price": "Item added\nItsme\nJuly 28 Thursday 2022 10-32-50 AM",
+            "latest_change_priority": "Item added\nItsme\nJuly 28 Thursday 2022 10-32-50 AM",
+            "latest_change_notes": "Item added\nItsme\nJuly 28 Thursday 2022 10-32-50 AM"
         },
         "Sticker #304  Polar Furnace 3.65\"x 37.79\" ": {
             "part_number": "404",
@@ -4309,22 +4279,18 @@
             "latest_change_price": "Latest Change:\nfrom: 17.38\nto: 17.38\nItsme\nFebruary 02 Thursday 2023 11:07:28 AM",
             "latest_change_notes": "Latest Change:\nfrom: Vendor: Grundfos Canada\nDescription: \nsupport-ca@sales.grundfos.co\nto: Vendor: Grundfos Canada\nDescription: \nsupport-ca@sales.grundfos.com\nItsme\nFebruary 02 Thursday 2023 11:20:34 AM"
         },
-        "Actuator M9203-BUA-2\n": {
-            "part_number": "M9203",
-            "unit_quantity": 2,
-            "current_quantity": 50,
-            "price": 174.98,
+        "Blower Wheel 9-15\/16\" X 2-1\/4 BI Steel 1\/2 #2-106CI CW \"A\" 1800R": {
+            "part_number": "2-106CI CW",
+            "unit_quantity": 1,
+            "current_quantity": 66,
+            "price": 68.45,
             "use_exchange_rate": false,
-            "priority": 0,
-            "notes": "Vendor: Johnson controle\nDescription: ",
-            "latest_change_name": "Item added\nItsme\nJuly 28 Thursday 2022 10-32-50 AM",
-            "latest_change_part_number": "Item added\nItsme\nJuly 28 Thursday 2022 10-32-50 AM",
-            "latest_change_unit_quantity": "Item added\nItsme\nJuly 28 Thursday 2022 10-32-50 AM",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 50\nto: 50\nLynden\nMay 10 Wednesday 2023 01:08:01 PM",
-            "latest_change_price": "Latest Change:\nfrom: 174.9\nto: 174.98\nItsme\nNovember 23 Wednesday 2022 09:50:39 AM",
-            "latest_change_use_exchange_price": "Item added\nItsme\nJuly 28 Thursday 2022 10-32-50 AM",
-            "latest_change_priority": "Item added\nItsme\nJuly 28 Thursday 2022 10-32-50 AM",
-            "latest_change_notes": "Item added\nItsme\nJuly 28 Thursday 2022 10-32-50 AM"
+            "priority": 3,
+            "notes": "Vendor: Jan-Air Illinois\nDescription: Customer item #\nSB0993225C2RA ",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 66\nto: 66\nLynden\nMay 04 Thursday 2023 03:46:32 PM",
+            "latest_change_price": "Latest Change:\nfrom: 68.45\nto: 68.45\nItsme\nSeptember 06 Tuesday 2022 11:12:17 AM",
+            "latest_change_priority": "Latest Change:\nfrom: 0\nto: 3\nItsme\nOctober 24 Monday 2022 08:34:48 AM",
+            "latest_change_notes": "Latest Change:\nfrom: Vendor: Jan-Air Illinois\nDescription: Customer item #\nSB0993225C2RA\nto: Vendor: Jan-Air Illinois\nDescription: Customer item #\nSB0993225C2RA \nLynden\nMarch 09 Thursday 2023 03:34:27 PM"
         },
         "Sticker #342 Bilingual Caution Notice Decal ": {
             "part_number": "342",
@@ -4416,6 +4382,23 @@
             "latest_change_priority": "Item added\nItsme\nFebruary 17 Friday 2023 10-38-27 AM",
             "latest_change_notes": "Item added\nItsme\nFebruary 17 Friday 2023 10-38-27 AM"
         },
+        "Snap-Tite Romex C 1\/2\" 841ST": {
+            "part_number": "ARL841ST",
+            "unit_quantity": 1.0,
+            "current_quantity": 75.0,
+            "price": 0.7,
+            "use_exchange_rate": false,
+            "priority": 0,
+            "notes": "Vendor: Westburne\nDescription: ",
+            "latest_change_name": "Item added\nItsme\nNovember 28 Monday 2022 11-04-08 AM",
+            "latest_change_part_number": "Item added\nItsme\nNovember 28 Monday 2022 11-04-08 AM",
+            "latest_change_unit_quantity": "Item added\nItsme\nNovember 28 Monday 2022 11-04-08 AM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 80\nto: 75.0\nLynden\nMay 10 Wednesday 2023 01:25:02 PM",
+            "latest_change_price": "Item added\nItsme\nNovember 28 Monday 2022 11-04-08 AM",
+            "latest_change_use_exchange_price": "Item added\nItsme\nNovember 28 Monday 2022 11-04-08 AM",
+            "latest_change_priority": "Item added\nItsme\nNovember 28 Monday 2022 11-04-08 AM",
+            "latest_change_notes": "Item added\nItsme\nNovember 28 Monday 2022 11-04-08 AM"
+        },
         "10mm Isoplan  Fan Mount insulation": {
             "part_number": "10IFMI",
             "unit_quantity": 1,
@@ -4477,22 +4460,22 @@
             "latest_change_priority": "Item added\nLynden\nMarch 06 Monday 2023 07-01-06 PM",
             "latest_change_notes": "Item added\nLynden\nMarch 06 Monday 2023 07-01-06 PM"
         },
-        "Snap-Tite Romex C 1\/2\" 841ST": {
-            "part_number": "ARL841ST",
-            "unit_quantity": 1.0,
-            "current_quantity": 75.0,
-            "price": 0.7,
+        "A19ABC-11 Mechanical Thermostat": {
+            "part_number": "A19ABC-11",
+            "unit_quantity": 2.0,
+            "current_quantity": 84,
+            "price": 93.24,
             "use_exchange_rate": false,
             "priority": 0,
-            "notes": "Vendor: Westburne\nDescription: ",
-            "latest_change_name": "Item added\nItsme\nNovember 28 Monday 2022 11-04-08 AM",
-            "latest_change_part_number": "Item added\nItsme\nNovember 28 Monday 2022 11-04-08 AM",
-            "latest_change_unit_quantity": "Item added\nItsme\nNovember 28 Monday 2022 11-04-08 AM",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 80\nto: 75.0\nLynden\nMay 10 Wednesday 2023 01:25:02 PM",
-            "latest_change_price": "Item added\nItsme\nNovember 28 Monday 2022 11-04-08 AM",
-            "latest_change_use_exchange_price": "Item added\nItsme\nNovember 28 Monday 2022 11-04-08 AM",
-            "latest_change_priority": "Item added\nItsme\nNovember 28 Monday 2022 11-04-08 AM",
-            "latest_change_notes": "Item added\nItsme\nNovember 28 Monday 2022 11-04-08 AM"
+            "notes": "Vendor: Johnson Controle\nDescription: ",
+            "latest_change_name": "Item added\nItsme\nDecember 12 Monday 2022 08-24-50 AM",
+            "latest_change_part_number": "Item added\nItsme\nDecember 12 Monday 2022 08-24-50 AM",
+            "latest_change_unit_quantity": "Item added\nItsme\nDecember 12 Monday 2022 08-24-50 AM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 84\nto: 84\nLynden\nMay 10 Wednesday 2023 03:52:43 PM",
+            "latest_change_price": "Latest Change:\nfrom: 93.24\nto: 93.24\nItsme\nFebruary 28 Tuesday 2023 10:03:12 AM",
+            "latest_change_use_exchange_price": "Item added\nItsme\nDecember 12 Monday 2022 08-24-50 AM",
+            "latest_change_priority": "Item added\nItsme\nDecember 12 Monday 2022 08-24-50 AM",
+            "latest_change_notes": "Item added\nItsme\nDecember 12 Monday 2022 08-24-50 AM"
         },
         "Terminal Block 1492-H7": {
             "part_number": "ALB1492H7",
@@ -4610,23 +4593,6 @@
             "notes": "Vendor: \nDescription: ",
             "latest_change_current_quantity": "Latest Change:\nfrom: 104\nto: 104\nLynden\nApril 21 Friday 2023 01:29:34 PM",
             "latest_change_price": "Latest Change:\nfrom: 4.76\nto: 4.76\nItsme\nFebruary 23 Thursday 2023 09:35:03 AM"
-        },
-        "1\/4 Nialon Plastic Shaft- Float assy": {
-            "part_number": "14NPS",
-            "unit_quantity": 1,
-            "current_quantity": 320,
-            "price": 3.24,
-            "use_exchange_rate": false,
-            "priority": 0,
-            "notes": "Vendor: MCmaster Carr and Johnsons Plastic\nDescription: ",
-            "latest_change_name": "Item added\nItsme\nOctober 17 Monday 2022 08-12-36 AM",
-            "latest_change_part_number": "Item added\nItsme\nOctober 17 Monday 2022 08-12-36 AM",
-            "latest_change_unit_quantity": "Item added\nItsme\nOctober 17 Monday 2022 08-12-36 AM",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 320\nto: 320\nLynden\nMay 12 Friday 2023 08:33:13 AM",
-            "latest_change_price": "Latest Change:\nfrom: 3.0\nto: 3.24\nItsme\nJanuary 17 Tuesday 2023 03:52:53 PM",
-            "latest_change_use_exchange_price": "Item added\nItsme\nOctober 17 Monday 2022 08-12-36 AM",
-            "latest_change_priority": "Item added\nItsme\nOctober 17 Monday 2022 08-12-36 AM",
-            "latest_change_notes": "Item added\nItsme\nOctober 17 Monday 2022 08-12-36 AM"
         },
         "6L12  ASHT 6\"X12\" Section": {
             "part_number": "6L12",
@@ -4935,6 +4901,23 @@
             "latest_change_priority": "Item added\nItsme\nDecember 28 Wednesday 2022 03-58-12 PM",
             "latest_change_notes": "Item added\nItsme\nDecember 28 Wednesday 2022 03-58-12 PM"
         },
+        "Float Clamp  G1SS-11.3 7\/16 One Ear Stainless": {
+            "part_number": "G1SS-11.3",
+            "unit_quantity": 1,
+            "current_quantity": 297,
+            "price": 0.25,
+            "use_exchange_rate": false,
+            "priority": 0,
+            "notes": "Vendor: GreenLine Hose and Fittings\nDescription: ",
+            "latest_change_name": "Item added\nItsme\nAugust 18 Thursday 2022 09-53-03 AM",
+            "latest_change_part_number": "Item added\nItsme\nAugust 18 Thursday 2022 09-53-03 AM",
+            "latest_change_unit_quantity": "Item added\nItsme\nAugust 18 Thursday 2022 09-53-03 AM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 302\nto: 297\nLynden\nMay 10 Wednesday 2023 01:25:02 PM",
+            "latest_change_price": "Latest Change:\nfrom: 0.25\nto: 0.25\nItsme\nAugust 29 Monday 2022 03:42:18 PM",
+            "latest_change_use_exchange_price": "Item added\nItsme\nAugust 18 Thursday 2022 09-53-03 AM",
+            "latest_change_priority": "Item added\nItsme\nAugust 18 Thursday 2022 09-53-03 AM",
+            "latest_change_notes": "Item added\nItsme\nAugust 18 Thursday 2022 09-53-03 AM"
+        },
         "1\"x 3\/8\"  Bolt ": {
             "part_number": "138",
             "unit_quantity": 18,
@@ -4969,22 +4952,22 @@
             "latest_change_priority": "Item added\nItsme\nJuly 05 Tuesday 2022 10-28-43 AM",
             "latest_change_notes": "Latest Change:\nfrom: \"Vendor: Sierra Pacific Engeneering and Products\nDescription: \nGoes With 12C6 as 1 ass\"\nto: \"Vendor: Sierra Pacific Engeneering and Products\nDescription: \nGoes With 12C6 as 1 assy\"\nItsme\nJuly 07 Thursday 2022 04:08:41 PM"
         },
-        "Float Clamp  G1SS-11.3 7\/16 One Ear Stainless": {
-            "part_number": "G1SS-11.3",
+        "1\/4 Nialon Plastic Shaft- Float assy": {
+            "part_number": "14NPS",
             "unit_quantity": 1,
-            "current_quantity": 297,
-            "price": 0.25,
+            "current_quantity": 320,
+            "price": 3.24,
             "use_exchange_rate": false,
             "priority": 0,
-            "notes": "Vendor: GreenLine Hose and Fittings\nDescription: ",
-            "latest_change_name": "Item added\nItsme\nAugust 18 Thursday 2022 09-53-03 AM",
-            "latest_change_part_number": "Item added\nItsme\nAugust 18 Thursday 2022 09-53-03 AM",
-            "latest_change_unit_quantity": "Item added\nItsme\nAugust 18 Thursday 2022 09-53-03 AM",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 302\nto: 297\nLynden\nMay 10 Wednesday 2023 01:25:02 PM",
-            "latest_change_price": "Latest Change:\nfrom: 0.25\nto: 0.25\nItsme\nAugust 29 Monday 2022 03:42:18 PM",
-            "latest_change_use_exchange_price": "Item added\nItsme\nAugust 18 Thursday 2022 09-53-03 AM",
-            "latest_change_priority": "Item added\nItsme\nAugust 18 Thursday 2022 09-53-03 AM",
-            "latest_change_notes": "Item added\nItsme\nAugust 18 Thursday 2022 09-53-03 AM"
+            "notes": "Vendor: MCmaster Carr and Johnsons Plastic\nDescription: ",
+            "latest_change_name": "Item added\nItsme\nOctober 17 Monday 2022 08-12-36 AM",
+            "latest_change_part_number": "Item added\nItsme\nOctober 17 Monday 2022 08-12-36 AM",
+            "latest_change_unit_quantity": "Item added\nItsme\nOctober 17 Monday 2022 08-12-36 AM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 320\nto: 320\nLynden\nMay 12 Friday 2023 08:33:13 AM",
+            "latest_change_price": "Latest Change:\nfrom: 3.0\nto: 3.24\nItsme\nJanuary 17 Tuesday 2023 03:52:53 PM",
+            "latest_change_use_exchange_price": "Item added\nItsme\nOctober 17 Monday 2022 08-12-36 AM",
+            "latest_change_priority": "Item added\nItsme\nOctober 17 Monday 2022 08-12-36 AM",
+            "latest_change_notes": "Item added\nItsme\nOctober 17 Monday 2022 08-12-36 AM"
         },
         "535 Blacl Silicone 300ML ": {
             "part_number": "32390",
@@ -5076,6 +5059,23 @@
             "notes": "Vendor: Grundfos Canada\nDescription: ",
             "latest_change_current_quantity": "Latest Change:\nfrom: 371\nto: 371\nLynden\nMay 09 Tuesday 2023 12:55:23 PM",
             "latest_change_price": "Latest Change:\nfrom: 7.0\nto: 71.0\nItsme\nNovember 03 Thursday 2022 04:30:00 PM"
+        },
+        "3\/8 x 4 Carr BLT ": {
+            "part_number": "38384",
+            "unit_quantity": 6,
+            "current_quantity": 486,
+            "price": 0.8,
+            "use_exchange_rate": false,
+            "priority": 0,
+            "notes": "Vendor: A.Adams Supply\nDescription: ",
+            "latest_change_name": "Item added\nItsme\nJuly 19 Tuesday 2022 04-14-31 PM",
+            "latest_change_part_number": "Item added\nItsme\nJuly 19 Tuesday 2022 04-14-32 PM",
+            "latest_change_unit_quantity": "Item added\nItsme\nJuly 19 Tuesday 2022 04-14-32 PM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 486\nto: 486\nLynden\nMay 03 Wednesday 2023 09:21:44 AM",
+            "latest_change_price": "Item added\nItsme\nJuly 19 Tuesday 2022 04-14-32 PM",
+            "latest_change_use_exchange_price": "Item added\nItsme\nJuly 19 Tuesday 2022 04-14-32 PM",
+            "latest_change_priority": "Item added\nItsme\nJuly 19 Tuesday 2022 04-14-32 PM",
+            "latest_change_notes": "Item added\nItsme\nJuly 19 Tuesday 2022 04-14-32 PM"
         },
         "Lock Pin 5\/16\"x 1 3\/8\" ": {
             "part_number": "LP516138",
@@ -5872,7 +5872,7 @@
             "price": 1.7,
             "use_exchange_rate": false,
             "priority": 0,
-            "notes": "Vendor: Controle Devices LLC\nDescription:Tiffane Champion <TChampion@cdivalve.com",
+            "notes": "Vendor: Controle Devices LLC\nDescription:Tiffane Champion <TChampion@cdivalve.com\norder@cdivalve.com\njdugan@CDIVALVE.COM",
             "latest_change_name": "Item added\nItsme\nAugust 04 Thursday 2022 10-23-00 AM",
             "latest_change_part_number": "Item added\nItsme\nAugust 04 Thursday 2022 10-23-00 AM",
             "latest_change_unit_quantity": "Item added\nItsme\nAugust 04 Thursday 2022 10-23-00 AM",
@@ -5880,7 +5880,7 @@
             "latest_change_price": "Item added\nItsme\nAugust 04 Thursday 2022 10-23-00 AM",
             "latest_change_use_exchange_price": "Item added\nItsme\nAugust 04 Thursday 2022 10-23-00 AM",
             "latest_change_priority": "Item added\nItsme\nAugust 04 Thursday 2022 10-23-00 AM",
-            "latest_change_notes": "Item added\nItsme\nAugust 04 Thursday 2022 10-23-00 AM"
+            "latest_change_notes": "Latest Change:\nfrom: \"Vendor: Controle Devices LLC\nDescription:Tiffane Champion <TChampion@cdivalve.com\norder@cdivalve.com\njdugan@CDIVALVE.CO\"\nto: \"Vendor: Controle Devices LLC\nDescription:Tiffane Champion <TChampion@cdivalve.com\norder@cdivalve.com\njdugan@CDIVALVE.COM\"\nLynden\nMay 15 Monday 2023 01:31:04 PM"
         },
         "Float Clamp  G1SS-11.3 7\/16 One Ear Stainless": {
             "part_number": "G1SS-11.3",
@@ -7598,7 +7598,7 @@
             "price": 1.7,
             "use_exchange_rate": false,
             "priority": 0,
-            "notes": "Vendor: Controle Devices LLC\nDescription:Tiffane Champion <TChampion@cdivalve.com",
+            "notes": "Vendor: Controle Devices LLC\nDescription:Tiffane Champion <TChampion@cdivalve.com\norder@cdivalve.com\njdugan@CDIVALVE.COM",
             "latest_change_name": "Item added\nItsme\nAugust 04 Thursday 2022 10-23-09 AM",
             "latest_change_part_number": "Item added\nItsme\nAugust 04 Thursday 2022 10-23-09 AM",
             "latest_change_unit_quantity": "Item added\nItsme\nAugust 04 Thursday 2022 10-23-09 AM",
@@ -7606,7 +7606,7 @@
             "latest_change_price": "Item added\nItsme\nAugust 04 Thursday 2022 10-23-09 AM",
             "latest_change_use_exchange_price": "Item added\nItsme\nAugust 04 Thursday 2022 10-23-09 AM",
             "latest_change_priority": "Item added\nItsme\nAugust 04 Thursday 2022 10-23-09 AM",
-            "latest_change_notes": "Item added\nItsme\nAugust 04 Thursday 2022 10-23-09 AM"
+            "latest_change_notes": "Latest Change:\nfrom: Vendor: Controle Devices LLC\nDescription:Tiffane Champion <TChampion@cdivalve.com\norder@cdivalve.com\njdugan@CDIVALVE.CO\nto: Vendor: Controle Devices LLC\nDescription:Tiffane Champion <TChampion@cdivalve.com\norder@cdivalve.com\njdugan@CDIVALVE.COM\nLynden\nMay 15 Monday 2023 01:31:04 PM"
         },
         "Float Clamp  G1SS-11.3 7\/16 One Ear Stainless": {
             "part_number": "G1SS-11.3",
@@ -8081,7 +8081,7 @@
             "price": 1.7,
             "use_exchange_rate": false,
             "priority": 1,
-            "notes": "Vendor: Controle Devices LLC\nDescription:Tiffane Champion <TChampion@cdivalve.com",
+            "notes": "Vendor: Controle Devices LLC\nDescription:Tiffane Champion <TChampion@cdivalve.com\norder@cdivalve.com\njdugan@CDIVALVE.COM",
             "latest_change_name": "Item added\nItsme\nAugust 04 Thursday 2022 10-23-09 AM",
             "latest_change_part_number": "Item added\nItsme\nAugust 04 Thursday 2022 10-23-09 AM",
             "latest_change_unit_quantity": "Item added\nItsme\nAugust 04 Thursday 2022 10-23-09 AM",
@@ -8089,7 +8089,7 @@
             "latest_change_price": "Item added\nItsme\nAugust 04 Thursday 2022 10-23-09 AM",
             "latest_change_use_exchange_price": "Item added\nItsme\nAugust 04 Thursday 2022 10-23-09 AM",
             "latest_change_priority": "Latest Change:\nfrom: 0\nto: 1\nItsme\nOctober 21 Friday 2022 10:04:22 AM",
-            "latest_change_notes": "Item added\nItsme\nAugust 04 Thursday 2022 10-23-09 AM",
+            "latest_change_notes": "Latest Change:\nfrom: Vendor: Controle Devices LLC\nDescription:Tiffane Champion <TChampion@cdivalve.com\norder@cdivalve.com\njdugan@CDIVALVE.CO\nto: Vendor: Controle Devices LLC\nDescription:Tiffane Champion <TChampion@cdivalve.com\norder@cdivalve.com\njdugan@CDIVALVE.COM\nLynden\nMay 15 Monday 2023 01:31:04 PM",
             "group": "Float Assy"
         },
         "Die Cast Zinc Hinge, 1.57 Open x 1.57 Long, 4 Csunk Holes, SS Pin, Black Powder Coated": {
@@ -8872,7 +8872,7 @@
             "price": 1.7,
             "use_exchange_rate": true,
             "priority": 0,
-            "notes": "Vendor: Controle Devices LLC\nDescription:Tiffane Champion <TChampion@cdivalve.com",
+            "notes": "Vendor: Controle Devices LLC\nDescription:Tiffane Champion <TChampion@cdivalve.com\norder@cdivalve.com\njdugan@CDIVALVE.COM",
             "latest_change_name": "Item added\nItsme\nAugust 04 Thursday 2022 10-23-20 AM",
             "latest_change_part_number": "Item added\nItsme\nAugust 04 Thursday 2022 10-23-20 AM",
             "latest_change_unit_quantity": "Item added\nItsme\nAugust 04 Thursday 2022 10-23-20 AM",
@@ -8880,7 +8880,7 @@
             "latest_change_price": "Item added\nItsme\nAugust 04 Thursday 2022 10-23-20 AM",
             "latest_change_use_exchange_price": "Item added\nItsme\nAugust 04 Thursday 2022 10-23-20 AM",
             "latest_change_priority": "Item added\nItsme\nAugust 04 Thursday 2022 10-23-20 AM",
-            "latest_change_notes": "Item added\nItsme\nAugust 04 Thursday 2022 10-23-20 AM",
+            "latest_change_notes": "Latest Change:\nfrom: Vendor: Controle Devices LLC\nDescription:Tiffane Champion <TChampion@cdivalve.com\norder@cdivalve.com\njdugan@CDIVALVE.CO\nto: Vendor: Controle Devices LLC\nDescription:Tiffane Champion <TChampion@cdivalve.com\norder@cdivalve.com\njdugan@CDIVALVE.COM\nLynden\nMay 15 Monday 2023 01:31:04 PM",
             "latest_change_use_exchange_rate": "Latest Change:\nfrom: CAD\nto: USD\nLynden\nMay 12 Friday 2023 01:55:14 PM"
         },
         "Die Cast Zinc Hinge, 1.57 Open x 1.57 Long, 4 Csunk Holes, SS Pin, Black Powder Coated": {
@@ -10015,7 +10015,7 @@
             "price": 1.7,
             "use_exchange_rate": false,
             "priority": 0,
-            "notes": "Vendor: Controle Devices LLC\nDescription:Tiffane Champion <TChampion@cdivalve.com",
+            "notes": "Vendor: Controle Devices LLC\nDescription:Tiffane Champion <TChampion@cdivalve.com\norder@cdivalve.com\njdugan@CDIVALVE.COM",
             "latest_change_name": "Item added\nItsme\nAugust 04 Thursday 2022 10-23-20 AM",
             "latest_change_part_number": "Item added\nItsme\nAugust 04 Thursday 2022 10-23-20 AM",
             "latest_change_unit_quantity": "Item added\nItsme\nAugust 04 Thursday 2022 10-23-20 AM",
@@ -10023,7 +10023,7 @@
             "latest_change_price": "Item added\nItsme\nAugust 04 Thursday 2022 10-23-20 AM",
             "latest_change_use_exchange_price": "Item added\nItsme\nAugust 04 Thursday 2022 10-23-20 AM",
             "latest_change_priority": "Item added\nItsme\nAugust 04 Thursday 2022 10-23-20 AM",
-            "latest_change_notes": "Item added\nItsme\nAugust 04 Thursday 2022 10-23-20 AM"
+            "latest_change_notes": "Latest Change:\nfrom: Vendor: Controle Devices LLC\nDescription:Tiffane Champion <TChampion@cdivalve.com\norder@cdivalve.com\njdugan@CDIVALVE.CO\nto: Vendor: Controle Devices LLC\nDescription:Tiffane Champion <TChampion@cdivalve.com\norder@cdivalve.com\njdugan@CDIVALVE.COM\nLynden\nMay 15 Monday 2023 01:31:04 PM"
         },
         "Float Clamp  G1SS-11.3 7\/16 One Ear Stainless": {
             "part_number": "G1SS-11.3",
@@ -10801,7 +10801,7 @@
             "price": 1.7,
             "use_exchange_rate": false,
             "priority": 0,
-            "notes": "Vendor: Controle Devices LLC\nDescription:Tiffane Champion <TChampion@cdivalve.com",
+            "notes": "Vendor: Controle Devices LLC\nDescription:Tiffane Champion <TChampion@cdivalve.com\norder@cdivalve.com\njdugan@CDIVALVE.COM",
             "latest_change_name": "Item added\nItsme\nAugust 04 Thursday 2022 10-23-20 AM",
             "latest_change_part_number": "Item added\nItsme\nAugust 04 Thursday 2022 10-23-20 AM",
             "latest_change_unit_quantity": "Item added\nItsme\nAugust 04 Thursday 2022 10-23-20 AM",
@@ -10809,7 +10809,7 @@
             "latest_change_price": "Item added\nItsme\nAugust 04 Thursday 2022 10-23-20 AM",
             "latest_change_use_exchange_price": "Item added\nItsme\nAugust 04 Thursday 2022 10-23-20 AM",
             "latest_change_priority": "Item added\nItsme\nAugust 04 Thursday 2022 10-23-20 AM",
-            "latest_change_notes": "Item added\nItsme\nAugust 04 Thursday 2022 10-23-20 AM"
+            "latest_change_notes": "Latest Change:\nfrom: Vendor: Controle Devices LLC\nDescription:Tiffane Champion <TChampion@cdivalve.com\norder@cdivalve.com\njdugan@CDIVALVE.CO\nto: Vendor: Controle Devices LLC\nDescription:Tiffane Champion <TChampion@cdivalve.com\norder@cdivalve.com\njdugan@CDIVALVE.COM\nLynden\nMay 15 Monday 2023 01:31:04 PM"
         },
         "Float Clamp  G1SS-11.3 7\/16 One Ear Stainless": {
             "part_number": "G1SS-11.3",
