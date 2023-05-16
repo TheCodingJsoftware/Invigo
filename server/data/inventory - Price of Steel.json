@@ -635,7 +635,7 @@
             "is_order_pending": false
         },
         "16 Gauge Galvanized 120.000x60.000": {
-            "current_quantity": 61.0,
+            "current_quantity": 56.0,
             "sheet_dimension": "120.000x60.000",
             "thickness": "16 Gauge",
             "material": "Galvanized",
