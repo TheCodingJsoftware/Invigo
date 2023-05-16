@@ -88,6 +88,17 @@
             "modified_date": "Added at April 17 Monday 2023 05:06:22 PM",
             "group": null
         },
+        "P102_": {
+            "current_quantity": 15,
+            "machine_time": 0.87,
+            "gauge": "12 Gauge",
+            "material": "Mild Steel",
+            "weight": 28.696,
+            "price": 25.13,
+            "unit_quantity": 1,
+            "modified_date": "Added at May 16 Tuesday 2023 05:10:36 PM",
+            "group": null
+        },
         "Coat Hook3": {
             "current_quantity": 11,
             "machine_time": 2.28,
@@ -97,6 +108,149 @@
             "price": 10.76,
             "unit_quantity": 1,
             "modified_date": "Added at May 05 Friday 2023 11:13:42 AM",
+            "group": null
+        },
+        "404490": {
+            "current_quantity": 10,
+            "machine_time": 0.2,
+            "gauge": "18 Gauge",
+            "material": "Galvanized",
+            "weight": 0.227,
+            "price": 0.77,
+            "unit_quantity": 1,
+            "modified_date": "Added at May 16 Tuesday 2023 05:09:15 PM",
+            "group": null
+        },
+        "404491": {
+            "current_quantity": 10,
+            "machine_time": 0.27,
+            "gauge": "18 Gauge",
+            "material": "Galvanized",
+            "weight": 0.958,
+            "price": 1.82,
+            "unit_quantity": 1,
+            "modified_date": "Added at May 16 Tuesday 2023 05:09:15 PM",
+            "group": null
+        },
+        "P106_": {
+            "current_quantity": 7,
+            "machine_time": 0.87,
+            "gauge": "12 Gauge",
+            "material": "Mild Steel",
+            "weight": 28.782,
+            "price": 25.2,
+            "unit_quantity": 1,
+            "modified_date": "Added at May 16 Tuesday 2023 05:10:36 PM",
+            "group": null
+        },
+        "404465": {
+            "current_quantity": 5,
+            "machine_time": 0.65,
+            "gauge": "18 Gauge",
+            "material": "Galvanized",
+            "weight": 22.451,
+            "price": 28.57,
+            "unit_quantity": 1,
+            "modified_date": "Added at May 16 Tuesday 2023 05:09:15 PM",
+            "group": null
+        },
+        "404485": {
+            "current_quantity": 5,
+            "machine_time": 0.55,
+            "gauge": "18 Gauge",
+            "material": "Galvanized",
+            "weight": 3.195,
+            "price": 5.21,
+            "unit_quantity": 1,
+            "modified_date": "Added at May 16 Tuesday 2023 05:09:15 PM",
+            "group": null
+        },
+        "404486": {
+            "current_quantity": 5,
+            "machine_time": 0.92,
+            "gauge": "18 Gauge",
+            "material": "Galvanized",
+            "weight": 9.734,
+            "price": 13.98,
+            "unit_quantity": 1,
+            "modified_date": "Added at May 16 Tuesday 2023 05:09:15 PM",
+            "group": null
+        },
+        "404487": {
+            "current_quantity": 5,
+            "machine_time": 0.93,
+            "gauge": "18 Gauge",
+            "material": "Galvanized",
+            "weight": 8.987,
+            "price": 13.11,
+            "unit_quantity": 1,
+            "modified_date": "Added at May 16 Tuesday 2023 05:09:15 PM",
+            "group": null
+        },
+        "404488": {
+            "current_quantity": 5,
+            "machine_time": 0.53,
+            "gauge": "18 Gauge",
+            "material": "Galvanized",
+            "weight": 3.056,
+            "price": 4.99,
+            "unit_quantity": 1,
+            "modified_date": "Added at May 16 Tuesday 2023 05:09:15 PM",
+            "group": null
+        },
+        "404489": {
+            "current_quantity": 5,
+            "machine_time": 0.25,
+            "gauge": "18 Gauge",
+            "material": "Galvanized",
+            "weight": 0.628,
+            "price": 1.38,
+            "unit_quantity": 1,
+            "modified_date": "Added at May 16 Tuesday 2023 05:09:15 PM",
+            "group": null
+        },
+        "404492": {
+            "current_quantity": 5,
+            "machine_time": 0.32,
+            "gauge": "18 Gauge",
+            "material": "Galvanized",
+            "weight": 1.728,
+            "price": 2.87,
+            "unit_quantity": 1,
+            "modified_date": "Added at May 16 Tuesday 2023 05:09:15 PM",
+            "group": null
+        },
+        "404493": {
+            "current_quantity": 5,
+            "machine_time": 0.83,
+            "gauge": "18 Gauge",
+            "material": "Galvanized",
+            "weight": 15.414,
+            "price": 20.57,
+            "unit_quantity": 1,
+            "modified_date": "Added at May 16 Tuesday 2023 05:09:15 PM",
+            "group": null
+        },
+        "404495": {
+            "current_quantity": 5,
+            "machine_time": 0.73,
+            "gauge": "18 Gauge",
+            "material": "Galvanized",
+            "weight": 14.979,
+            "price": 19.8,
+            "unit_quantity": 1,
+            "modified_date": "Added at May 16 Tuesday 2023 05:09:15 PM",
+            "group": null
+        },
+        "404496": {
+            "current_quantity": 5,
+            "machine_time": 0.32,
+            "gauge": "18 Gauge",
+            "material": "Galvanized",
+            "weight": 1.828,
+            "price": 2.99,
+            "unit_quantity": 1,
+            "modified_date": "Added at May 16 Tuesday 2023 05:09:16 PM",
             "group": null
         },
         "swivels 4 needed": {
@@ -264,6 +418,17 @@
             "modified_date": "Added at May 09 Tuesday 2023 04:06:26 PM",
             "group": null
         },
+        "P103_": {
+            "current_quantity": 2,
+            "machine_time": 0.87,
+            "gauge": "12 Gauge",
+            "material": "Mild Steel",
+            "weight": 28.703,
+            "price": 25.14,
+            "unit_quantity": 1,
+            "modified_date": "Added at May 16 Tuesday 2023 05:10:36 PM",
+            "group": null
+        },
         "PY-WFJ-01": {
             "current_quantity": 1,
             "machine_time": 3.55,
@@ -317,6 +482,50 @@
             "price": 0.75,
             "unit_quantity": 1,
             "modified_date": "Added at May 06 Saturday 2023 01:47:50 PM",
+            "group": null
+        },
+        "P101_": {
+            "current_quantity": 1,
+            "machine_time": 0.72,
+            "gauge": "12 Gauge",
+            "material": "Mild Steel",
+            "weight": 11.123,
+            "price": 10.7,
+            "unit_quantity": 1,
+            "modified_date": "Added at May 16 Tuesday 2023 05:10:36 PM",
+            "group": null
+        },
+        "P104_": {
+            "current_quantity": 1,
+            "machine_time": 0.92,
+            "gauge": "12 Gauge",
+            "material": "Mild Steel",
+            "weight": 33.645,
+            "price": 29.22,
+            "unit_quantity": 1,
+            "modified_date": "Added at May 16 Tuesday 2023 05:10:36 PM",
+            "group": null
+        },
+        "P105_": {
+            "current_quantity": 1,
+            "machine_time": 0.9,
+            "gauge": "12 Gauge",
+            "material": "Mild Steel",
+            "weight": 33.731,
+            "price": 29.23,
+            "unit_quantity": 1,
+            "modified_date": "Added at May 16 Tuesday 2023 05:10:36 PM",
+            "group": null
+        },
+        "P107_": {
+            "current_quantity": 1,
+            "machine_time": 0.82,
+            "gauge": "12 Gauge",
+            "material": "Mild Steel",
+            "weight": 28.703,
+            "price": 25.01,
+            "unit_quantity": 1,
+            "modified_date": "Added at May 16 Tuesday 2023 05:10:36 PM",
             "group": null
         }
     },
@@ -3741,14 +3950,14 @@
             "group": null
         },
         "G2Plus-Flues access-lid": {
-            "current_quantity": 16,
+            "current_quantity": 17,
             "machine_time": 0.52,
             "gauge": "12 Gauge",
             "material": "Mild Steel",
             "weight": 6.003,
             "price": 6.1,
             "unit_quantity": 1,
-            "modified_date": "10 quantity added at April 20 Thursday 2023 02:47:27 PM",
+            "modified_date": "1 quantity added at May 16 Tuesday 2023 05:10:36 PM",
             "group": null
         },
         "G2-3-Housing-Access Cover-Top": {
@@ -4546,14 +4755,14 @@
             "group": null
         },
         "G2Plus-Side door 2 - inner shel": {
-            "current_quantity": 11,
+            "current_quantity": 12,
             "machine_time": 0.27,
             "gauge": "12 Gauge",
             "material": "Mild Steel",
             "weight": 2.112,
             "price": 2.36,
             "unit_quantity": 1,
-            "modified_date": "10 quantity added at April 20 Thursday 2023 02:47:27 PM",
+            "modified_date": "1 quantity added at May 16 Tuesday 2023 05:10:36 PM",
             "group": null
         },
         "G2Plus-Fan Housing-Top": {
@@ -4721,6 +4930,28 @@
             "modified_date": "1 quantity added at May 09 Tuesday 2023 04:06:26 PM",
             "group": null
         },
+        "G2Plus-Flues Access Lid- Inner": {
+            "current_quantity": 11,
+            "machine_time": 0.48,
+            "gauge": "12 Gauge",
+            "material": "Mild Steel",
+            "weight": 5.677,
+            "price": 5.74,
+            "unit_quantity": 1,
+            "modified_date": "1 quantity added at May 16 Tuesday 2023 05:10:36 PM",
+            "group": null
+        },
+        "G2Plus-Side door 2-outer shell": {
+            "current_quantity": 11.0,
+            "machine_time": 0.32,
+            "gauge": "12 Gauge",
+            "material": "Mild Steel",
+            "weight": 2.726,
+            "price": 2.98,
+            "unit_quantity": 1,
+            "modified_date": "9 quantity added at May 16 Tuesday 2023 05:10:36 PM",
+            "group": null
+        },
         "small scoop G": {
             "current_quantity": 10,
             "machine_time": 0.18,
@@ -4741,28 +4972,6 @@
             "price": 2.62,
             "unit_quantity": 1,
             "modified_date": "Added at March 28 Tuesday 2023 02:36:56 PM",
-            "group": null
-        },
-        "G2Plus-Flues Access Lid- Inner": {
-            "current_quantity": 10,
-            "machine_time": 0.48,
-            "gauge": "12 Gauge",
-            "material": "Mild Steel",
-            "weight": 5.677,
-            "price": 5.74,
-            "unit_quantity": 1,
-            "modified_date": "Added at April 20 Thursday 2023 02:47:28 PM",
-            "group": null
-        },
-        "G2Plus-Side door 2-outer shell": {
-            "current_quantity": 2.0,
-            "machine_time": 0.32,
-            "gauge": "12 Gauge",
-            "material": "Mild Steel",
-            "weight": 2.726,
-            "price": 2.98,
-            "unit_quantity": 1,
-            "modified_date": "2 quantity added at April 20 Thursday 2023 02:47:27 PM",
             "group": null
         },
         "BIA-018": {
