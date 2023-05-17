@@ -1,10 +1,20 @@
-from PyQt5.QtCore import QMargins, QMimeData, Qt, pyqtSignal
+import os
+
+from PyQt5.QtCore import (
+    QMargins,
+    QMimeData,
+    QModelIndex,
+    QSortFilterProxyModel,
+    Qt,
+    pyqtSignal,
+)
 from PyQt5.QtGui import QDrag, QIcon, QPalette, QPixmap
 from PyQt5.QtWidgets import (
     QAbstractSpinBox,
     QCheckBox,
     QComboBox,
     QDoubleSpinBox,
+    QFileSystemModel,
     QGridLayout,
     QHBoxLayout,
     QLabel,
@@ -18,12 +28,150 @@ from PyQt5.QtWidgets import (
     QStyledItemDelegate,
     QStyleOptionComboBox,
     QStylePainter,
+    QTableWidget,
     QTabWidget,
+    QTreeView,
     QTreeWidget,
     QTreeWidgetItem,
     QVBoxLayout,
     QWidget,
 )
+
+
+class PdfFilterProxyModel(QSortFilterProxyModel):
+    def __init__(self, parent=None):
+        super().__init__(parent)
+        self.sort_order = Qt.DescendingOrder
+
+    def filterAcceptsRow(self, row, parent):
+        """
+        This function filters rows based on whether they contain a file with a .pdf extension.
+
+        Args:
+          row: The row number of the item being filtered in the view.
+          parent: The parent index of the current index being filtered. It represents the parent item in
+        the model hierarchy.
+
+        Returns:
+          a boolean value indicating whether the row should be included in the filtered view or not.
+        """
+        index = self.sourceModel().index(row, 0, parent)
+        if not index.isValid():
+            return False
+        if self.sourceModel().isDir(index):
+            return any(
+                file.lower().endswith('.pdf')
+                for file in os.listdir(self.sourceModel().filePath(index))
+            )
+        filename = self.sourceModel().fileName(index)
+        return filename.lower().endswith('.pdf')
+
+    def lessThan(self, left_index, right_index):
+        """
+        This function overrides the lessThan method to sort a specific column in a QAbstractTableModel
+        based on the sort order.
+
+        Args:
+          left_index: The QModelIndex object representing the left item being compared in the sorting
+        operation.
+          right_index: The index of the item on the right side of the comparison being made in the
+        model. In other words, it is the index of the item that is being compared to the item at the
+        left_index.
+
+        Returns:
+          The method `lessThan` is returning a boolean value indicating whether the data at the
+        `left_index` is less than the data at the `right_index`. If the columns of the indices are not
+        2, it calls the `lessThan` method of the parent class. If the sort order is descending, it
+        returns `left_data > right_data`, otherwise it returns `left_data < right
+        """
+        if left_index.column() != 2 or right_index.column() != 2:
+            return super().lessThan(left_index, right_index)
+        left_data = self.sourceModel().data(left_index, Qt.UserRole)
+        right_data = self.sourceModel().data(right_index, Qt.UserRole)
+        return left_data > right_data if self.sort_order == Qt.DescendingOrder else left_data < right_data
+
+    def sort(self, column, order):
+        """
+        This function sorts a table by a specified column and order, and updates the sort order
+        attribute if the column is the second column.
+
+        Args:
+          column: The column number that the data should be sorted by.
+          order: The order parameter specifies the sorting order, which can be either Qt.AscendingOrder
+        or Qt.DescendingOrder. Qt.AscendingOrder sorts the items in ascending order, while
+        Qt.DescendingOrder sorts the items in descending order.
+        """
+        if column == 2:
+            self.sort_order = order
+        super().sort(column, order)
+
+
+class PdfTreeView(QTreeView):
+    def __init__(self, path: str):
+        super().__init__()
+        self.model = QFileSystemModel()
+        self.model.setRootPath('')
+        self.setModel(self.model)
+        self.filterModel = PdfFilterProxyModel()
+        self.filterModel.setSourceModel(self.model)
+        self.setModel(self.filterModel)
+        self.filterModel.setFilterRegExp('')
+        self.filterModel.setFilterKeyColumn(0)
+        self.setRootIndex(
+            self.filterModel.mapFromSource(self.model.index(path)))
+        self.header().resizeSection(0, 170)
+        self.setSelectionMode(4)
+        self.header().hideSection(1)
+        self.header().hideSection(2)
+        self.expandAll()
+        self.selected_indexes = []
+        self.selected_items = []
+
+        self.selectionModel().selectionChanged.connect(self.on_selection_changed)
+
+    def on_selection_changed(self, selected, deselected):
+        self.selected_indexes = self.selectionModel().selectedIndexes()
+        self.selected_items = [
+            index.data() for index in self.selected_indexes if '.pdf' in index.data()
+        ]
+
+
+class CustomTableWidget(QTableWidget):
+    def __init__(self, parent=None):
+        super().__init__(parent)
+        self.editable_column_indexes = []
+
+    def edit(self, index, trigger, event):
+        """
+        This function checks if a column is editable and allows editing if it is, otherwise it returns
+        False.
+
+        Args:
+          index: The index of the item in the model that is being edited.
+          trigger: The trigger parameter is an event that causes the editor to be opened for editing the
+        cell. It can be one of the following values:
+          event: The event parameter in the edit() method is an instance of QEvent class. It represents
+        an event that occurred on the widget. The event parameter is used to determine the type of event
+        that occurred, such as a mouse click or a key press, and to handle the event accordingly.
+
+        Returns:
+          If the column index of the given index is in the list of editable_column_indexes, then the
+        super().edit() method is called and its return value is returned. Otherwise, False is returned.
+        """
+        if index.column() in self.editable_column_indexes:
+            return super().edit(index, trigger, event)
+        else:
+            return False
+
+    def set_editable_column_index(self, columns: list[int]):
+        """
+        This function sets the indexes of columns that are editable in a table.
+
+        Args:
+          columns (list[int]): A list of integers representing the indexes of the columns that should be
+        editable in a table or spreadsheet.
+        """
+        self.editable_column_indexes = columns
 
 
 class OrderStatusButton(QPushButton):
@@ -41,6 +189,7 @@ class OrderStatusButton(QPushButton):
         self.setText("Order Pending")
         self.setFixedWidth(100)
         self.setObjectName("order_status")
+
 
 class NoScrollTabWidget(QTabWidget):
     """This is a custom class that inherits from QTabWidget and disables scrolling functionality."""
@@ -188,13 +337,15 @@ class CostLineEdit(QLineEdit):
         QLineEdit.__init__(self, parent)
         # self.setFixedWidth(100)
         self.setReadOnly(True)
-        round_number = lambda x, n: eval(
+
+        def round_number(x, n): return eval(
             '"%.'
             + str(int(n))
             + 'f" % '
             + repr(int(x) + round(float("." + str(float(x)).split(".")[1]), n))
         )
-        self.setStyleSheet("border: 0.09em solid rgb(57, 57, 57); background-color: #222222;")
+        self.setStyleSheet(
+            "border: 0.09em solid rgb(57, 57, 57); background-color: #222222;")
         try:
             self.setText(f"{prefix}{str(round_number(text, 2))} {suffix}")
         except Exception:
@@ -296,8 +447,10 @@ class RichTextPushButton(QPushButton):
         self.__layout.setSpacing(0)
         self.setLayout(self.__layout)
         self.__lbl.setAttribute(Qt.WA_TranslucentBackground)  # type: ignore
-        self.__lbl.setAlignment(Qt.AlignCenter | Qt.AlignVCenter)  # type: ignore
-        self.__lbl.setAttribute(Qt.WA_TransparentForMouseEvents)  # type: ignore
+        self.__lbl.setAlignment(
+            Qt.AlignCenter | Qt.AlignVCenter)  # type: ignore
+        self.__lbl.setAttribute(
+            Qt.WA_TransparentForMouseEvents)  # type: ignore
         self.__lbl.setSizePolicy(
             QSizePolicy.Expanding,
             QSizePolicy.Expanding,
@@ -829,25 +982,36 @@ def set_status_button_stylesheet(button: QPushButton, color: str) -> None:
     Args:
         button (QPushButton): QPushButton
     """
+    background_color = 'rgb(71, 71, 71)'
+    border_color = 'rgb(71, 71, 71)'
+    if color == 'lime':
+        background_color = 'darkgreen'
+        border_color = 'green'
+    elif color == 'yellow':
+        background_color = '#413C28'
+        border_color = 'gold'
+    elif color == 'red':
+        background_color = '#3F1E25'
+        border_color = 'darkred'
     button.setStyleSheet(
         """
         QPushButton#status_button:flat {
             border: none;
         }
         QPushButton#status_button{
-            border: 0.04em solid  %(color)s;
+            border: 0.04em solid  %(background_color)s;
+            background-color: %(background_color)s;
             border-radius: 5px;
+            color: %(color)s;
         }
         QPushButton#status_button:hover{
-            border: 0.04em solid  %(color)s;
+            border: 0.04em solid  %(border_color)s;
             border-radius: 5px;
         }
         QPushButton#status_button:pressed{
-            background-color: black;
-            border: 0.04em solid  %(color)s;
+            border: 0.15em solid  %(border_color)s;
             border-radius: 5px;
-            color: white;
         }
         """
-        % {"color": color}
+        % {"color": color, "border_color": border_color, "background_color": background_color}
     )

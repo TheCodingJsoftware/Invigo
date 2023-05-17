@@ -8,6 +8,7 @@ import json
 import os
 import threading
 import time
+from datetime import datetime
 
 import requests
 from flask import Flask, render_template
@@ -16,25 +17,38 @@ from forex_python.converter import CurrencyRates
 app = Flask(__name__)
 
 
+def write_log(log: str) -> None:
+    pass
+    # with open(f"{os.path.dirname(os.path.realpath(__file__))}/log.txt", 'a') as f:
+    #     f.write(log +'\n')
+
 @app.route("/")
 def index() -> None:
     """
     It renders the index.html template with the variables downloadableRecordings, searchValue,
     colonySearchList, monthsList, daysList, and recordingStatus
-
     Returns:
       The webpage
     """
-    inventory = sort_groups(get_inventory_data())
-    return render_template(
-        "index.html",
-        search_term="",
-        inventory=inventory,
-        part_names=get_all_part_names(),
-        part_numbers=get_all_part_numbers(),
-        unit_costs=get_all_unit_cost(),
-        price_of_steel=get_price_of_steel(),
-    )
+    write_log('Loading website')
+    try:
+        #return f"<span style='color:red'>{os.path.dirname(os.path.realpath(__file__))}</span>"
+        downloadDatabase()
+        inventory = sort_groups(get_inventory_data())
+        #return render_template("index.html")
+        #inventory = {}
+        return render_template(
+            "index.html",
+            search_term="",
+            inventory=inventory,
+            part_names=get_all_part_names(),
+            part_numbers=get_all_part_numbers(),
+            unit_costs=get_all_unit_cost(),
+            last_updated=str(time.strftime('Database last updated on %A %B %d %Y at %I:%M:%S %p',time.localtime(os.path.getmtime(f"{os.path.dirname(os.path.realpath(__file__))}/inventory.json")))),
+            price_of_steel=get_price_of_steel(),
+        )
+    except Exception as e:
+        write_log(f"<span style='color:red'>{e}</span>")
 
 
 @app.route("/<search_term>")
@@ -43,6 +57,7 @@ def search(search_term):
     Returns:
         _type_: webpage
     """
+    downloadDatabase()
     inventory = sort_groups(get_inventory_data())
     search_term = search_term.replace("_", " ")
     for category in list(inventory.keys()):
@@ -77,6 +92,7 @@ def search(search_term):
         part_names=get_all_part_names(),
         part_numbers=get_all_part_numbers(),
         unit_costs=get_all_unit_cost(),
+        last_updated=str(time.strftime('Database last updated on %A %B %d %Y at %I:%M:%S %p',time.localtime(os.path.getmtime(f"{os.path.dirname(os.path.realpath(__file__))}/inventory.json")))),
         price_of_steel=get_price_of_steel(),
     )
 
@@ -90,7 +106,7 @@ def get_price_of_steel() -> dict:
       A dictionary of the price of steel.
     """
     price_of_steel = {}
-    with open("inventory - Price of Steel.json", "r") as f:
+    with open(f"{os.path.dirname(os.path.realpath(__file__))}/inventory - Price of Steel.json", "r") as f:
         data = json.load(f)
     return data["Price Per Pound"]
 
@@ -99,10 +115,8 @@ def sort_groups(category: dict) -> dict:
     """
     It takes a dictionary of dictionaries, and returns a dictionary of dictionaries, where the keys
     of the returned dictionary are the values of the "group" key in the original dictionary
-
     Args:
         category (dict): dict
-
     Returns:
         A dictionary with the keys being the group names and the values being a dictionary of the
     items in that group.
@@ -128,26 +142,17 @@ def sort_groups(category: dict) -> dict:
 
 
 def get_all_unit_cost() -> dict:
-    """
-    It takes a dictionary of dictionaries of dictionaries and returns a dictionary of dictionaries of
-    floats
-
-    Returns:
-      A dictionary of dictionaries.
-    """
     data = get_inventory_data()
     currency_rates = CurrencyRates()
     try:
         last_exchange_rate = currency_rates.get_rate("USD", "CAD")
     except:
         last_exchange_rate = 1.3608673726676752  # just a guess
-    unit_costs = {}
     round_number = lambda x, n: eval(
-        '"%.'
-        + str(int(n))
-        + 'f" % '
+        f'"%.{int(n)}f" % '
         + repr(int(x) + round(float("." + str(float(x)).split(".")[1]), n))
     )
+    unit_costs = {}
     for category in list(data.keys()):
         total_cost: float = 0
         unit_costs[category] = {}
@@ -166,7 +171,6 @@ def get_all_part_names() -> list[str]:
     """
     It takes the data from the self.inventory module, loops through the data, and returns a list of all
     the part names
-
     Returns:
       A list of all the part names in the self.inventory.
     """
@@ -177,15 +181,13 @@ def get_all_part_names() -> list[str]:
             item.replace(" ", "_").replace("/", "⁄")
             for item in list(data[category].keys())
         )
-    part_names = list(set(part_names))
-    return part_names
+    return list(set(part_names))
 
 
 def get_all_part_numbers() -> list[str]:
     """
     It takes the data from the self.inventory module, loops through the data, and returns a list of all
     the part numbers
-
     Returns:
       A list of all the part numbers in the self.inventory.
     """
@@ -209,9 +211,13 @@ def get_inventory_data() -> dict:
     Returns:
         dict: json file for all the download links
     """
-    with open("inventory.json", "r") as inventory_file:
-        data = json.load(inventory_file)
-    return data
+    try:
+        with open(f"{os.path.dirname(os.path.realpath(__file__))}/inventory.json", "r") as inventory_file:
+            data = json.load(inventory_file)
+        return data
+    except Exception as e:
+        write_log(f'Failed to load inventory.json - {e}')
+        return {}
 
 
 def downloadDatabase() -> None:
@@ -221,12 +227,16 @@ def downloadDatabase() -> None:
         "inventory - Price of Steel.json": "https://raw.githubusercontent.com/TheCodingJsoftware/Inventory-Manager/master/server/data/inventory - Price of Steel.json",
     }
     for file in list(files_to_download.keys()):
-        req = requests.get(files_to_download[file])
-        if req.status_code == requests.codes.ok:
-            data = req.json()  # the response is a JSON
-            with open(f"{file}", "w+") as f:
-                json.dump(data, f, ensure_ascii=False, indent=4)
-
+        print(f'Downloading {file}')
+        try:
+            req = requests.get(files_to_download[file])
+            if req.status_code == requests.codes.ok:
+                data = req.json()  # the response is a JSON
+                with open(f"{os.path.dirname(os.path.realpath(__file__))}/{file}", "w+") as f:
+                    json.dump(data, f, ensure_ascii=False, indent=4)
+        except Exception as e:
+            write_log(f'{e}')
+    write_log('download database')
 
 def downloadThread() -> None:
     """update database every 5 minutes"""
@@ -235,5 +245,6 @@ def downloadThread() -> None:
         time.sleep(300)
 
 
-threading.Thread(target=downloadThread).start()
-# app.run(host="10.0.0.217", port=5000, debug=False, threaded=True)
+#downloadThread()
+#threading.Thread(target=downloadThread).start()
+app.run(host="10.0.0.217", port=5000, debug=False, threaded=True)

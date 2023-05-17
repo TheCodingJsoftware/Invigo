@@ -1,7 +1,5 @@
 import contextlib
-from codecs import ignore_errors
 from datetime import datetime
-from distutils.fancy_getopt import wrap_text
 
 import xlsxwriter
 

@@ -74,3 +74,6 @@ Piney MFG
 *.xlsx
 *.xls
 credentials.json
+images/
+test2.py
+test.py

@@ -69,7 +69,7 @@ class SelectItemDialog(QDialog):
         svg_icon.setFixedSize(62, 50)
         self.iconHolder.addWidget(svg_icon)
 
-        self.resize(300, 250)
+        self.resize(320, 250)
 
         self.load_theme()
 
