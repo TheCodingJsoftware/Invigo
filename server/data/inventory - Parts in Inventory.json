@@ -3219,14 +3219,14 @@
             "group": null
         },
         "404447x2": {
-            "current_quantity": 14,
+            "current_quantity": 0.0,
             "machine_time": 0.38,
             "gauge": "18 Gauge",
             "material": "Galvanneal",
             "weight": 3.154,
             "price": 4.8,
-            "unit_quantity": 1,
-            "modified_date": "Removed 5 quantity at May 17 Wednesday 2023 10:03:53 AM",
+            "unit_quantity": 2.0,
+            "modified_date": "Manually set to 0.0 quantity at May 17 Wednesday 2023 10:09:26 AM",
             "group": null
         },
         "PY-WFJ-02": {
@@ -3285,58 +3285,58 @@
             "group": null
         },
         "404443": {
-            "current_quantity": 5,
+            "current_quantity": 0.0,
             "machine_time": 0.75,
             "gauge": "18 Gauge",
             "material": "Galvanneal",
             "weight": 14.736,
             "price": 19.85,
             "unit_quantity": 1,
-            "modified_date": "Removed 5 quantity at May 17 Wednesday 2023 10:03:53 AM",
+            "modified_date": "Manually set to 0.0 quantity at May 17 Wednesday 2023 10:08:18 AM",
             "group": null
         },
         "404482": {
-            "current_quantity": 5,
+            "current_quantity": 0.0,
             "machine_time": 0.5,
             "gauge": "18 Gauge",
             "material": "Galvanneal",
             "weight": 2.431,
             "price": 4.22,
             "unit_quantity": 1,
-            "modified_date": "Removed 5 quantity at May 17 Wednesday 2023 10:03:53 AM",
+            "modified_date": "Manually set to 0.0 quantity at May 17 Wednesday 2023 10:08:16 AM",
             "group": null
         },
         "404483": {
-            "current_quantity": 5,
+            "current_quantity": 0.0,
             "machine_time": 0.5,
             "gauge": "18 Gauge",
             "material": "Galvanneal",
             "weight": 2.459,
             "price": 4.25,
             "unit_quantity": 1,
-            "modified_date": "Removed 5 quantity at May 17 Wednesday 2023 10:03:53 AM",
+            "modified_date": "Manually set to 0.0 quantity at May 17 Wednesday 2023 10:08:15 AM",
             "group": null
         },
         "404490": {
-            "current_quantity": 5,
+            "current_quantity": 0.0,
             "machine_time": 0.2,
             "gauge": "18 Gauge",
             "material": "Galvanized",
             "weight": 0.227,
             "price": 0.77,
             "unit_quantity": 1,
-            "modified_date": "Removed 5 quantity at May 17 Wednesday 2023 10:03:53 AM",
+            "modified_date": "Manually set to 0.0 quantity at May 17 Wednesday 2023 10:08:13 AM",
             "group": null
         },
         "404491": {
-            "current_quantity": 5,
+            "current_quantity": 0.0,
             "machine_time": 0.27,
             "gauge": "18 Gauge",
             "material": "Galvanized",
             "weight": 0.958,
             "price": 1.82,
             "unit_quantity": 1,
-            "modified_date": "Removed 5 quantity at May 17 Wednesday 2023 10:03:53 AM",
+            "modified_date": "Manually set to 0.0 quantity at May 17 Wednesday 2023 10:08:10 AM",
             "group": null
         },
         "404498x2": {
@@ -3362,14 +3362,14 @@
             "group": null
         },
         "404448 PUNCHED": {
-            "current_quantity": 3,
+            "current_quantity": 0.0,
             "machine_time": 0.68,
             "gauge": "18 Gauge",
             "material": "Galvanneal",
             "weight": 14.932,
             "price": 19.92,
             "unit_quantity": 1,
-            "modified_date": "Removed 5 quantity at May 17 Wednesday 2023 10:03:53 AM",
+            "modified_date": "Manually set to 0.0 quantity at May 17 Wednesday 2023 10:08:04 AM",
             "group": null
         },
         "404402": {
@@ -4000,14 +4000,14 @@
             "group": null
         },
         "404481": {
-            "current_quantity": 0,
+            "current_quantity": 1.0,
             "machine_time": 1.32,
             "gauge": "18 Gauge",
             "material": "Galvanneal",
             "weight": 15.622,
             "price": 22.36,
             "unit_quantity": 1,
-            "modified_date": "Removed 5 quantity at May 17 Wednesday 2023 10:03:53 AM",
+            "modified_date": "Manually set to 1.0 quantity at May 17 Wednesday 2023 10:07:44 AM",
             "group": null
         },
         "404461": {
