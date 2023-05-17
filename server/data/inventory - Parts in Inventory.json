@@ -22,28 +22,6 @@
             "modified_date": "69 quantity added at March 21 Tuesday 2023 04:35:32 PM",
             "group": null
         },
-        "PM - SS DOOR PART D_1pcs Heavy Duty Bottom Bracket": {
-            "current_quantity": 88,
-            "machine_time": 0.45,
-            "gauge": "10 Gauge",
-            "material": "304 SS",
-            "weight": 1.458,
-            "price": 5.01,
-            "unit_quantity": 1,
-            "modified_date": "Added at May 15 Monday 2023 10:20:19 AM",
-            "group": null
-        },
-        "PM - SS DOOR PART C_1pcs Heavy Duty Bottom Bracket": {
-            "current_quantity": 82,
-            "machine_time": 0.32,
-            "gauge": "10 Gauge",
-            "material": "304 SS",
-            "weight": 0.367,
-            "price": 2.12,
-            "unit_quantity": 1,
-            "modified_date": "Added at May 15 Monday 2023 10:20:19 AM",
-            "group": null
-        },
         "2 inch pin cap": {
             "current_quantity": 51,
             "machine_time": 0.17,
@@ -317,17 +295,6 @@
             "price": 13.76,
             "unit_quantity": 1,
             "modified_date": "Added at April 28 Friday 2023 02:41:34 PM",
-            "group": null
-        },
-        "Flat pattern - Reefer Light Mount": {
-            "current_quantity": 1,
-            "machine_time": 0.95,
-            "gauge": "14 Gauge",
-            "material": "304 SS",
-            "weight": 8.105,
-            "price": 21.38,
-            "unit_quantity": 1,
-            "modified_date": "Added at May 03 Wednesday 2023 01:47:00 PM",
             "group": null
         },
         "Flat pattern - HFPIN-03": {
@@ -6275,6 +6242,28 @@
             "unit_quantity": 1,
             "modified_date": "1 quantity added at March 06 Monday 2023 09:33:21 AM",
             "group": null
+        },
+        "PM - SS DOOR PART D_1pcs Heavy Duty Bottom Bracket": {
+            "current_quantity": 88,
+            "machine_time": 0.45,
+            "gauge": "10 Gauge",
+            "material": "304 SS",
+            "weight": 1.458,
+            "price": 5.01,
+            "unit_quantity": 1,
+            "modified_date": "Added at May 15 Monday 2023 10:20:19 AM",
+            "group": null
+        },
+        "PM - SS DOOR PART C_1pcs Heavy Duty Bottom Bracket": {
+            "current_quantity": 82,
+            "machine_time": 0.32,
+            "gauge": "10 Gauge",
+            "material": "304 SS",
+            "weight": 0.367,
+            "price": 2.12,
+            "unit_quantity": 1,
+            "modified_date": "Added at May 15 Monday 2023 10:20:19 AM",
+            "group": null
         }
     },
     "Honey Comb Wagon": {
@@ -7026,6 +7015,17 @@
             "price": 1.31,
             "unit_quantity": 1,
             "modified_date": "Added at May 06 Saturday 2023 01:45:49 PM",
+            "group": null
+        },
+        "Flat pattern - Reefer Light Mount": {
+            "current_quantity": 1,
+            "machine_time": 0.95,
+            "gauge": "14 Gauge",
+            "material": "304 SS",
+            "weight": 8.105,
+            "price": 21.38,
+            "unit_quantity": 1,
+            "modified_date": "Added at May 03 Wednesday 2023 01:47:00 PM",
             "group": null
         }
     },
