@@ -219,7 +219,7 @@
             "notes": "Pending"
         },
         "12 Gauge Mild Steel 120.000x60.000": {
-            "current_quantity": 26.0,
+            "current_quantity": 20.0,
             "sheet_dimension": "120.000x60.000",
             "thickness": "12 Gauge",
             "material": "Mild Steel",
@@ -664,7 +664,7 @@
             "notes": "Usual Order 100 sheets "
         },
         "18 Gauge Galvanneal 120.000x60.000": {
-            "current_quantity": 60.0,
+            "current_quantity": 37.0,
             "sheet_dimension": "120.000x60.000",
             "thickness": "18 Gauge",
             "material": "Galvanneal",
@@ -679,7 +679,7 @@
             "is_order_pending": false
         },
         "18 Gauge Galvanized 120.000x60.000": {
-            "current_quantity": 121,
+            "current_quantity": 115,
             "sheet_dimension": "120.000x60.000",
             "thickness": "18 Gauge",
             "material": "Galvanized",
