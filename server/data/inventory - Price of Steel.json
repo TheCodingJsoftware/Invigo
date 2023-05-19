@@ -606,7 +606,8 @@
             "group": "Galvanized",
             "red_limit": 2.0,
             "yellow_limit": 4.0,
-            "notes": "Usual Order 10 sheets "
+            "notes": "Usual Order 10 sheets ",
+            "is_order_pending": true
         },
         "12 Gauge Galvanized 120.000x60.000": {
             "current_quantity": 2.5,
@@ -620,7 +621,8 @@
             "group": "Galvanized",
             "red_limit": 2.0,
             "yellow_limit": 5.0,
-            "notes": "Usual Order 15 sheets "
+            "notes": "Usual Order 15 sheets ",
+            "is_order_pending": true
         },
         "14 Gauge Galvanized 120.000x60.000": {
             "current_quantity": 8.0,
