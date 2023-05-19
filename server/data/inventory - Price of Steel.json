@@ -219,7 +219,7 @@
             "notes": "Pending"
         },
         "12 Gauge Mild Steel 120.000x60.000": {
-            "current_quantity": 20.0,
+            "current_quantity": 26.0,
             "sheet_dimension": "120.000x60.000",
             "thickness": "12 Gauge",
             "material": "Mild Steel",
@@ -399,7 +399,8 @@
             "latest_change_current_quantity": "Latest Change:\nfrom: 1\nto: 0.0\nLaser Pc\nMarch 21 Tuesday 2023 01:53:11 PM",
             "red_limit": 0.5,
             "yellow_limit": 0.5,
-            "notes": "Usual Order 1 sheet "
+            "notes": "Usual Order 1 sheet ",
+            "is_order_pending": true
         },
         "3\/16 304 SS 120.000x60.000": {
             "current_quantity": 4.0,
@@ -413,7 +414,8 @@
             "latest_change_current_quantity": "Latest Change:\nfrom: 7.0\nto: 4.0\nLaser Pc\nMay 01 Monday 2023 02:46:44 PM",
             "red_limit": 3.0,
             "yellow_limit": 6.0,
-            "notes": "Usual Order 20 sheets "
+            "notes": "Usual Order 20 sheets ",
+            "is_order_pending": true
         },
         "10 Gauge 304 SS 120.000x60.000": {
             "current_quantity": 3.0,
@@ -427,7 +429,8 @@
             "latest_change_current_quantity": "Latest Change:\nfrom: 2.0\nto: 3.0\nLaser Pc\nMay 01 Monday 2023 02:46:53 PM",
             "red_limit": 5.0,
             "yellow_limit": 10.0,
-            "notes": "Usual Order 30 sheets "
+            "notes": "Usual Order 30 sheets ",
+            "is_order_pending": true
         },
         "12 Gauge 304 SS 120.000x60.000": {
             "current_quantity": 19.0,
@@ -635,7 +638,7 @@
             "is_order_pending": false
         },
         "16 Gauge Galvanized 120.000x60.000": {
-            "current_quantity": 56.0,
+            "current_quantity": 61.0,
             "sheet_dimension": "120.000x60.000",
             "thickness": "16 Gauge",
             "material": "Galvanized",
@@ -664,7 +667,7 @@
             "notes": "Usual Order 100 sheets "
         },
         "18 Gauge Galvanneal 120.000x60.000": {
-            "current_quantity": 37.0,
+            "current_quantity": 60.0,
             "sheet_dimension": "120.000x60.000",
             "thickness": "18 Gauge",
             "material": "Galvanneal",
@@ -679,7 +682,7 @@
             "is_order_pending": false
         },
         "18 Gauge Galvanized 120.000x60.000": {
-            "current_quantity": 115,
+            "current_quantity": 121,
             "sheet_dimension": "120.000x60.000",
             "thickness": "18 Gauge",
             "material": "Galvanized",
@@ -702,6 +705,16 @@
         }
     },
     "Cutoff": {
+        "1\/4 304 SS 60.000x52.500": {
+            "current_quantity": 0.0,
+            "sheet_dimension": "60.000x52.500",
+            "thickness": "1\/4",
+            "material": "304 SS",
+            "latest_change_material": "Item added\nLaser Pc\nFebruary 25 Saturday 2023 09-05-21 AM",
+            "latest_sheet_dimension": "Item added\nLaser Pc\nFebruary 25 Saturday 2023 09-05-21 AM",
+            "latest_change_thickness": "Item added\nLaser Pc\nFebruary 25 Saturday 2023 09-05-21 AM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 1\nto: 0.0\nLaser Pc\nApril 21 Friday 2023 04:01:24 PM"
+        },
         "12 Gauge Galvanized 62.620x60.000": {
             "current_quantity": 1,
             "sheet_dimension": "62.620x60.000",
