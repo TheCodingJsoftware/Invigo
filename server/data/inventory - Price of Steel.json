@@ -1,8 +1,8 @@
 {
     "Price Per Pound": {
         "304 SS": {
-            "price": 2.15,
-            "latest_change_price": "Latest Change:\nfrom: 2.15\nto: 2.15\nLynden\nApril 28 Friday 2023 10:12:58 AM"
+            "price": 2.08,
+            "latest_change_price": "Latest Change:\nfrom: 2.08\nto: 2.08\nLynden\nMay 19 Friday 2023 10:55:01 AM"
         },
         "409 SS": {
             "price": 2.22,
@@ -13,12 +13,12 @@
             "latest_change_price": "Latest Change:\nfrom: 0.80\nto: 0.80\nLynden\nApril 28 Friday 2023 10:10:49 AM"
         },
         "Galvanneal": {
-            "price": 1.22,
-            "latest_change_price": "Latest Change:\nfrom: 1.22\nto: 1.22\nJared\nFebruary 21 Tuesday 2023 06:12:23 PM"
+            "price": 1.08,
+            "latest_change_price": "Latest Change:\nfrom: 1.08\nto: 1.08\nLynden\nMay 19 Friday 2023 10:54:13 AM"
         },
         "Galvanized": {
-            "price": 1.2,
-            "latest_change_price": "Latest Change:\nfrom: 1.20\nto: 1.20\nJared\nFebruary 21 Tuesday 2023 06:12:23 PM"
+            "price": 1.17,
+            "latest_change_price": "Latest Change:\nfrom: 1.17\nto: 1.17\nLynden\nMay 19 Friday 2023 10:54:04 AM"
         },
         "Aluminium": {
             "price": 2.85,
