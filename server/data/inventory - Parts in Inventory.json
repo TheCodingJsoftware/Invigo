@@ -44,6 +44,17 @@
             "modified_date": "24 quantity added at May 06 Saturday 2023 01:47:13 PM",
             "group": null
         },
+        "Flat pattern - Heavy Duty Swivel 10gss x10": {
+            "current_quantity": 42,
+            "machine_time": 0.08,
+            "gauge": "10 Gauge",
+            "material": "304 SS",
+            "weight": 0.093,
+            "price": 0.53,
+            "unit_quantity": 1,
+            "modified_date": "Added at May 19 Friday 2023 10:28:55 AM",
+            "group": null
+        },
         "Flat pattern - door hinge shim18 fix": {
             "current_quantity": 30,
             "machine_time": 0.05,
@@ -185,6 +196,17 @@
             "price": 0.83,
             "unit_quantity": 1,
             "modified_date": "Added at May 06 Saturday 2023 01:47:51 PM",
+            "group": null
+        },
+        "G2Plus-Latch1-Base": {
+            "current_quantity": 4,
+            "machine_time": 0.22,
+            "gauge": "10 Gauge",
+            "material": "304 SS",
+            "weight": 0.183,
+            "price": 1.31,
+            "unit_quantity": 1,
+            "modified_date": "Added at May 19 Friday 2023 10:28:55 AM",
             "group": null
         },
         "Flat pattern - WT C1 .25g x25": {
@@ -4696,6 +4718,17 @@
             "modified_date": "Added at March 21 Tuesday 2023 04:35:32 PM",
             "group": null
         },
+        "G2Plus-Air Damper": {
+            "current_quantity": 132,
+            "machine_time": 0.1,
+            "gauge": "12 Gauge",
+            "material": "304 SS",
+            "weight": 0.181,
+            "price": 0.81,
+            "unit_quantity": 1,
+            "modified_date": "21 quantity added at May 19 Friday 2023 10:28:55 AM",
+            "group": null
+        },
         "G2Plus-Firechamber-Skirting-Mount Pinx9": {
             "current_quantity": 125,
             "machine_time": 0.1,
@@ -4703,17 +4736,6 @@
             "material": "Mild Steel",
             "weight": 0.131,
             "price": 0.35,
-            "unit_quantity": 1,
-            "modified_date": "Removed 10 quantity at March 14 Tuesday 2023 04:53:43 PM",
-            "group": null
-        },
-        "G2Plus-Air Damper": {
-            "current_quantity": 90,
-            "machine_time": 0.1,
-            "gauge": "12 Gauge",
-            "material": "304 SS",
-            "weight": 0.181,
-            "price": 0.81,
             "unit_quantity": 1,
             "modified_date": "Removed 10 quantity at March 14 Tuesday 2023 04:53:43 PM",
             "group": null
@@ -5622,6 +5644,17 @@
             "modified_date": "Added at March 21 Tuesday 2023 04:35:32 PM",
             "group": null
         },
+        "G2Plus-Air Damper": {
+            "current_quantity": 132,
+            "machine_time": 0.1,
+            "gauge": "12 Gauge",
+            "material": "304 SS",
+            "weight": 0.181,
+            "price": 0.81,
+            "unit_quantity": 1,
+            "modified_date": "21 quantity added at May 19 Friday 2023 10:28:55 AM",
+            "group": null
+        },
         "G2Plus-Firechamber-Skirting-Mount Pinx9": {
             "current_quantity": 125,
             "machine_time": 0.1,
@@ -5642,17 +5675,6 @@
             "price": 13.39,
             "unit_quantity": 1,
             "modified_date": "60 quantity added at March 28 Tuesday 2023 02:36:56 PM",
-            "group": null
-        },
-        "G2Plus-Air Damper": {
-            "current_quantity": 90,
-            "machine_time": 0.1,
-            "gauge": "12 Gauge",
-            "material": "304 SS",
-            "weight": 0.181,
-            "price": 0.81,
-            "unit_quantity": 1,
-            "modified_date": "Removed 10 quantity at March 14 Tuesday 2023 04:53:43 PM",
             "group": null
         },
         "BIA-023": {
@@ -6596,6 +6618,28 @@
             "modified_date": "20 quantity added at May 06 Saturday 2023 01:45:23 PM",
             "group": null
         },
+        "WTSS 202315": {
+            "current_quantity": 47,
+            "machine_time": 0.03,
+            "gauge": "10 Gauge",
+            "material": "304 SS",
+            "weight": 0.03,
+            "price": 0.19,
+            "unit_quantity": 1,
+            "modified_date": "46 quantity added at May 19 Friday 2023 10:28:55 AM",
+            "group": null
+        },
+        "WTSS 202306": {
+            "current_quantity": 40,
+            "machine_time": 0.22,
+            "gauge": "10 Gauge",
+            "material": "304 SS",
+            "weight": 0.344,
+            "price": 1.66,
+            "unit_quantity": 1,
+            "modified_date": "36 quantity added at May 19 Friday 2023 10:28:55 AM",
+            "group": null
+        },
         "Jakes WASHER": {
             "current_quantity": 36,
             "machine_time": 0.08,
@@ -6783,17 +6827,6 @@
             "modified_date": "Added at March 17 Friday 2023 02:17:02 PM",
             "group": null
         },
-        "WTSS 202306": {
-            "current_quantity": 4,
-            "machine_time": 0.22,
-            "gauge": "10 Gauge",
-            "material": "304 SS",
-            "weight": 0.344,
-            "price": 1.66,
-            "unit_quantity": 1,
-            "modified_date": "Added at April 21 Friday 2023 10:49:04 AM",
-            "group": null
-        },
         "02 Double Post 12g x72": {
             "current_quantity": 4,
             "machine_time": 1.25,
@@ -6869,6 +6902,28 @@
             "price": 2.18,
             "unit_quantity": 1,
             "modified_date": "Added at April 17 Monday 2023 09:17:03 AM",
+            "group": null
+        },
+        "WTSS 202302": {
+            "current_quantity": 3,
+            "machine_time": 0.42,
+            "gauge": "10 Gauge",
+            "material": "304 SS",
+            "weight": 0.839,
+            "price": 3.55,
+            "unit_quantity": 1,
+            "modified_date": "2 quantity added at May 19 Friday 2023 10:28:55 AM",
+            "group": null
+        },
+        "WTSS 202303": {
+            "current_quantity": 3,
+            "machine_time": 0.23,
+            "gauge": "10 Gauge",
+            "material": "304 SS",
+            "weight": 0.342,
+            "price": 1.69,
+            "unit_quantity": 1,
+            "modified_date": "2 quantity added at May 19 Friday 2023 10:28:55 AM",
             "group": null
         },
         "13 Top PurlingR 12g x30": {
@@ -7168,28 +7223,6 @@
             "modified_date": "Added at April 12 Wednesday 2023 04:26:36 PM",
             "group": null
         },
-        "WTSS 202302": {
-            "current_quantity": 1,
-            "machine_time": 0.42,
-            "gauge": "10 Gauge",
-            "material": "304 SS",
-            "weight": 0.839,
-            "price": 3.55,
-            "unit_quantity": 1,
-            "modified_date": "Added at April 21 Friday 2023 10:49:04 AM",
-            "group": null
-        },
-        "WTSS 202303": {
-            "current_quantity": 1,
-            "machine_time": 0.23,
-            "gauge": "10 Gauge",
-            "material": "304 SS",
-            "weight": 0.342,
-            "price": 1.69,
-            "unit_quantity": 1,
-            "modified_date": "Added at April 21 Friday 2023 10:49:04 AM",
-            "group": null
-        },
         "WTSS 202314": {
             "current_quantity": 1,
             "machine_time": 0.05,
@@ -7197,17 +7230,6 @@
             "material": "304 SS",
             "weight": 0.05,
             "price": 0.32,
-            "unit_quantity": 1,
-            "modified_date": "Added at April 21 Friday 2023 10:49:04 AM",
-            "group": null
-        },
-        "WTSS 202315": {
-            "current_quantity": 1,
-            "machine_time": 0.03,
-            "gauge": "10 Gauge",
-            "material": "304 SS",
-            "weight": 0.03,
-            "price": 0.19,
             "unit_quantity": 1,
             "modified_date": "Added at April 21 Friday 2023 10:49:04 AM",
             "group": null
