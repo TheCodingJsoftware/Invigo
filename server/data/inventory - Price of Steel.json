@@ -74,7 +74,7 @@
             "is_order_pending": true
         },
         "1\/4 Mild Steel 120.000x60.000": {
-            "current_quantity": 83.0,
+            "current_quantity": 63.0,
             "sheet_dimension": "120.000x60.000",
             "thickness": "1\/4",
             "material": "Mild Steel",
@@ -671,7 +671,7 @@
             "notes": "Usual Order 100 sheets "
         },
         "18 Gauge Galvanneal 120.000x60.000": {
-            "current_quantity": 60.0,
+            "current_quantity": 45.0,
             "sheet_dimension": "120.000x60.000",
             "thickness": "18 Gauge",
             "material": "Galvanneal",
@@ -679,7 +679,7 @@
             "latest_change_material": "Item added\nLaser Pc\nFebruary 24 Friday 2023 05-19-31 PM",
             "latest_sheet_dimension": "Item added\nLaser Pc\nFebruary 24 Friday 2023 05-19-31 PM",
             "latest_change_thickness": "Item added\nLaser Pc\nFebruary 24 Friday 2023 05-19-31 PM",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 180.0\nto: 92.0\nLaser Pc\nMay 02 Tuesday 2023 04:01:30 PM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 35.0\nto: 45.0\nLaser Pc\nMay 19 Friday 2023 04:59:23 PM",
             "red_limit": 30.0,
             "yellow_limit": 60.0,
             "notes": "Usual Order 200 sheets ",
