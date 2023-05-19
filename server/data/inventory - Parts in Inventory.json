@@ -88,17 +88,6 @@
             "modified_date": "Added at May 19 Friday 2023 09:57:54 AM",
             "group": null
         },
-        "2840-26": {
-            "current_quantity": 20,
-            "machine_time": 1.8,
-            "gauge": "1\/4",
-            "material": "Mild Steel",
-            "weight": 69.125,
-            "price": 59.8,
-            "unit_quantity": 1,
-            "modified_date": "Added at May 19 Friday 2023 01:37:44 PM",
-            "group": null
-        },
         "A-13786 R0": {
             "current_quantity": 18,
             "machine_time": 0.52,
@@ -2090,6 +2079,17 @@
             "price": 1.14,
             "unit_quantity": 6.0,
             "modified_date": "Removed 30.0 quantity at May 17 Wednesday 2023 10:03:53 AM",
+            "group": null
+        },
+        "2840-26": {
+            "current_quantity": 20,
+            "machine_time": 1.8,
+            "gauge": "1\/4",
+            "material": "Mild Steel",
+            "weight": 69.125,
+            "price": 59.8,
+            "unit_quantity": 1,
+            "modified_date": "Added at May 19 Friday 2023 01:37:44 PM",
             "group": null
         }
     },
