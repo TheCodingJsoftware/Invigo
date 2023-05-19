@@ -681,7 +681,7 @@
             "red_limit": 30.0,
             "yellow_limit": 60.0,
             "notes": "Usual Order 200 sheets ",
-            "is_order_pending": false
+            "is_order_pending": true
         },
         "18 Gauge Galvanized 120.000x60.000": {
             "current_quantity": 121,
