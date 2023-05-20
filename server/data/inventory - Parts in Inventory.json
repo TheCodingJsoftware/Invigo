@@ -22,6 +22,17 @@
             "modified_date": "69 quantity added at March 21 Tuesday 2023 04:35:32 PM",
             "group": null
         },
+        "2840-Shaker-65x6": {
+            "current_quantity": 117,
+            "machine_time": 1.57,
+            "gauge": "3\/4",
+            "material": "Laser Grade Plate",
+            "weight": 9.858,
+            "price": 16.35,
+            "unit_quantity": 1,
+            "modified_date": "Added at May 20 Saturday 2023 02:54:33 PM",
+            "group": null
+        },
         "2 inch pin cap": {
             "current_quantity": 51,
             "machine_time": 0.17,
@@ -1289,6 +1300,17 @@
             "modified_date": "20 quantity added at May 19 Friday 2023 01:37:44 PM",
             "group": null
         },
+        "2840-26": {
+            "current_quantity": 20,
+            "machine_time": 1.8,
+            "gauge": "1\/4",
+            "material": "Mild Steel",
+            "weight": 69.125,
+            "price": 59.8,
+            "unit_quantity": 1,
+            "modified_date": "Added at May 19 Friday 2023 01:37:44 PM",
+            "group": null
+        },
         "2840-49B": {
             "current_quantity": 16.0,
             "machine_time": 1.0,
@@ -2079,17 +2101,6 @@
             "price": 1.14,
             "unit_quantity": 6.0,
             "modified_date": "Removed 30.0 quantity at May 17 Wednesday 2023 10:03:53 AM",
-            "group": null
-        },
-        "2840-26": {
-            "current_quantity": 20,
-            "machine_time": 1.8,
-            "gauge": "1\/4",
-            "material": "Mild Steel",
-            "weight": 69.125,
-            "price": 59.8,
-            "unit_quantity": 1,
-            "modified_date": "Added at May 19 Friday 2023 01:37:44 PM",
             "group": null
         }
     },
