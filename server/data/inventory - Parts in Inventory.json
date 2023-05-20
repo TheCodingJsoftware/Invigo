@@ -952,7 +952,7 @@
             "gauge": "16 Gauge",
             "material": "304 SS",
             "weight": 0.209,
-            "price": 1.57,
+            "price": 1.56,
             "unit_quantity": 1,
             "modified_date": "Removed 5 quantity at May 17 Wednesday 2023 10:03:53 AM",
             "group": null
@@ -1051,7 +1051,7 @@
             "gauge": "16 Gauge",
             "material": "304 SS",
             "weight": 9.934,
-            "price": 23.52,
+            "price": 22.83,
             "unit_quantity": 1,
             "modified_date": "5 quantity added at May 16 Tuesday 2023 08:51:29 AM",
             "group": null
@@ -1073,7 +1073,7 @@
             "gauge": "3\/16",
             "material": "304 SS",
             "weight": 14.524,
-            "price": 34.35,
+            "price": 33.33,
             "unit_quantity": 1,
             "modified_date": "Added at March 09 Thursday 2023 09:41:14 AM",
             "group": null
@@ -1086,7 +1086,7 @@
             "gauge": "16 Gauge",
             "material": "304 SS",
             "weight": 0.209,
-            "price": 1.57,
+            "price": 1.56,
             "unit_quantity": 1,
             "modified_date": "Removed 5 quantity at May 17 Wednesday 2023 10:03:53 AM",
             "group": null
@@ -1185,7 +1185,7 @@
             "gauge": "18 Gauge",
             "material": "Galvanneal",
             "weight": 2.248,
-            "price": 4.07,
+            "price": 3.75,
             "unit_quantity": 1,
             "modified_date": "Manually set to 51.0 quantity at April 28 Friday 2023 02:58:58 PM",
             "group": null
@@ -1229,7 +1229,7 @@
             "gauge": "18 Gauge",
             "material": "Galvanneal",
             "weight": 5.748,
-            "price": 8.46,
+            "price": 7.66,
             "unit_quantity": 1,
             "modified_date": "Manually set to 27.0 quantity at April 28 Friday 2023 02:55:17 PM",
             "group": null
@@ -1251,7 +1251,7 @@
             "gauge": "18 Gauge",
             "material": "Galvanneal",
             "weight": 1.052,
-            "price": 2.16,
+            "price": 2.01,
             "unit_quantity": 1,
             "modified_date": "5 quantity added at May 17 Wednesday 2023 09:56:36 AM",
             "group": null
@@ -1262,7 +1262,7 @@
             "gauge": "16 Gauge",
             "material": "304 SS",
             "weight": 2.417,
-            "price": 7.15,
+            "price": 6.99,
             "unit_quantity": 2.0,
             "modified_date": "20 quantity added at April 20 Thursday 2023 02:48:34 PM",
             "group": null
@@ -1273,7 +1273,7 @@
             "gauge": "18 Gauge",
             "material": "Galvanneal",
             "weight": 0.047,
-            "price": 0.26,
+            "price": 0.25,
             "unit_quantity": 1,
             "modified_date": "Added at April 21 Friday 2023 10:40:06 AM",
             "group": null
@@ -1295,7 +1295,7 @@
             "gauge": "18 Gauge",
             "material": "Galvanneal",
             "weight": 24.001,
-            "price": 31.78,
+            "price": 28.42,
             "unit_quantity": 1,
             "modified_date": "Manually set to 16.0 quantity at April 28 Friday 2023 02:57:21 PM",
             "group": null
@@ -1306,7 +1306,7 @@
             "gauge": "14 Gauge",
             "material": "304 SS",
             "weight": 3.587,
-            "price": 9.92,
+            "price": 9.67,
             "unit_quantity": 2.0,
             "modified_date": "14 quantity added at April 20 Thursday 2023 02:48:34 PM",
             "group": null
@@ -1317,7 +1317,7 @@
             "gauge": "18 Gauge",
             "material": "Galvanneal",
             "weight": 2.234,
-            "price": 4.15,
+            "price": 3.84,
             "unit_quantity": 1,
             "modified_date": "Manually set to 10.0 quantity at April 28 Friday 2023 04:35:06 PM",
             "group": null
@@ -1570,7 +1570,7 @@
             "gauge": "18 Gauge",
             "material": "Galvanneal",
             "weight": 5.757,
-            "price": 8.4,
+            "price": 7.59,
             "unit_quantity": 1,
             "modified_date": "Manually set to 8.0 quantity at April 28 Friday 2023 02:55:00 PM",
             "group": null
@@ -1581,7 +1581,7 @@
             "gauge": "18 Gauge",
             "material": "Galvanneal",
             "weight": 7.642,
-            "price": 10.52,
+            "price": 9.45,
             "unit_quantity": 1,
             "modified_date": "Manually set to 7.0 quantity at April 28 Friday 2023 02:56:22 PM",
             "group": null
@@ -1592,7 +1592,7 @@
             "gauge": "18 Gauge",
             "material": "Galvanneal",
             "weight": 5.775,
-            "price": 8.6,
+            "price": 7.79,
             "unit_quantity": 1,
             "modified_date": "Manually set to 7.0 quantity at April 28 Friday 2023 02:56:45 PM",
             "group": null
@@ -1614,7 +1614,7 @@
             "gauge": "16 Gauge",
             "material": "304 SS",
             "weight": 11.347,
-            "price": 26.69,
+            "price": 25.89,
             "unit_quantity": 1,
             "modified_date": "5 quantity added at May 16 Tuesday 2023 08:51:29 AM",
             "group": null
@@ -1625,7 +1625,7 @@
             "gauge": "18 Gauge",
             "material": "Galvanneal",
             "weight": 9.533,
-            "price": 13.31,
+            "price": 11.97,
             "unit_quantity": 1,
             "modified_date": "Manually set to 3.0 quantity at April 28 Friday 2023 02:54:47 PM",
             "group": null
@@ -1636,7 +1636,7 @@
             "gauge": "18 Gauge",
             "material": "Galvanneal",
             "weight": 5.512,
-            "price": 8.05,
+            "price": 7.28,
             "unit_quantity": 1,
             "modified_date": "Manually set to 2.0 quantity at April 28 Friday 2023 02:55:52 PM",
             "group": null
@@ -1669,7 +1669,7 @@
             "gauge": "18 Gauge",
             "material": "Galvanized",
             "weight": 0.656,
-            "price": 1.54,
+            "price": 1.52,
             "unit_quantity": 2.0,
             "modified_date": "Manually set to 0.0 quantity at April 12 Wednesday 2023 05:09:45 PM",
             "group": null
@@ -1680,7 +1680,7 @@
             "gauge": "18 Gauge",
             "material": "Galvanized",
             "weight": 1.674,
-            "price": 2.93,
+            "price": 2.88,
             "unit_quantity": 2.0,
             "modified_date": "Manually set to 0.0 quantity at April 12 Wednesday 2023 05:09:37 PM",
             "group": null
@@ -1735,7 +1735,7 @@
             "gauge": "18 Gauge",
             "material": "Galvanized",
             "weight": 14.021,
-            "price": 18.25,
+            "price": 17.83,
             "unit_quantity": 1,
             "modified_date": "Manually set to 0.0 quantity at April 12 Wednesday 2023 05:09:13 PM",
             "group": null
@@ -1746,7 +1746,7 @@
             "gauge": "18 Gauge",
             "material": "Galvanized",
             "weight": 25.316,
-            "price": 33.83,
+            "price": 33.07,
             "unit_quantity": 1,
             "modified_date": "Manually set to 0.0 quantity at April 12 Wednesday 2023 05:09:10 PM",
             "group": null
@@ -1757,7 +1757,7 @@
             "gauge": "18 Gauge",
             "material": "Galvanized",
             "weight": 2.969,
-            "price": 5.01,
+            "price": 4.92,
             "unit_quantity": 1,
             "modified_date": "Manually set to 0.0 quantity at April 12 Wednesday 2023 05:08:59 PM",
             "group": null
@@ -1768,7 +1768,7 @@
             "gauge": "18 Gauge",
             "material": "Galvanized",
             "weight": 5.245,
-            "price": 8.22,
+            "price": 8.06,
             "unit_quantity": 1,
             "modified_date": "Manually set to 0.0 quantity at April 12 Wednesday 2023 05:08:51 PM",
             "group": null
@@ -1779,7 +1779,7 @@
             "gauge": "18 Gauge",
             "material": "Galvanized",
             "weight": 5.259,
-            "price": 8.26,
+            "price": 8.1,
             "unit_quantity": 1,
             "modified_date": "Manually set to 0.0 quantity at April 12 Wednesday 2023 05:08:48 PM",
             "group": null
@@ -1790,7 +1790,7 @@
             "gauge": "18 Gauge",
             "material": "Galvanized",
             "weight": 2.511,
-            "price": 4.31,
+            "price": 4.24,
             "unit_quantity": 1,
             "modified_date": "Manually set to 0.0 quantity at April 12 Wednesday 2023 05:08:45 PM",
             "group": null
@@ -1801,7 +1801,7 @@
             "gauge": "18 Gauge",
             "material": "Galvanized",
             "weight": 11.166,
-            "price": 15.35,
+            "price": 15.01,
             "unit_quantity": 1,
             "modified_date": "Manually set to 0.0 quantity at April 12 Wednesday 2023 05:08:42 PM",
             "group": null
@@ -1812,7 +1812,7 @@
             "gauge": "18 Gauge",
             "material": "Galvanized",
             "weight": 9.907,
-            "price": 13.84,
+            "price": 13.54,
             "unit_quantity": 1,
             "modified_date": "Manually set to 0.0 quantity at April 12 Wednesday 2023 05:08:39 PM",
             "group": null
@@ -1823,7 +1823,7 @@
             "gauge": "18 Gauge",
             "material": "Galvanized",
             "weight": 2.015,
-            "price": 3.37,
+            "price": 3.31,
             "unit_quantity": 1,
             "modified_date": "Manually set to 0.0 quantity at April 12 Wednesday 2023 05:08:36 PM",
             "group": null
@@ -1933,7 +1933,7 @@
             "gauge": "18 Gauge",
             "material": "Galvanneal",
             "weight": 3.236,
-            "price": 4.95,
+            "price": 4.49,
             "unit_quantity": 1,
             "modified_date": "Manually set to 0.0 quantity at April 12 Wednesday 2023 05:11:13 PM",
             "group": null
@@ -1944,7 +1944,7 @@
             "gauge": "18 Gauge",
             "material": "Galvanneal",
             "weight": 6.158,
-            "price": 9.31,
+            "price": 8.45,
             "unit_quantity": 1,
             "modified_date": "Manually set to 0.0 quantity at April 12 Wednesday 2023 05:11:16 PM",
             "group": null
@@ -1955,7 +1955,7 @@
             "gauge": "18 Gauge",
             "material": "Galvanneal",
             "weight": 4.102,
-            "price": 6.33,
+            "price": 5.76,
             "unit_quantity": 1,
             "modified_date": "Manually set to 0.0 quantity at April 12 Wednesday 2023 05:11:18 PM",
             "group": null
@@ -1966,7 +1966,7 @@
             "gauge": "18 Gauge",
             "material": "Galvanneal",
             "weight": 9.978,
-            "price": 14.47,
+            "price": 13.08,
             "unit_quantity": 1,
             "modified_date": "Manually set to 0.0 quantity at April 12 Wednesday 2023 05:11:23 PM",
             "group": null
@@ -1977,7 +1977,7 @@
             "gauge": "18 Gauge",
             "material": "Galvanneal",
             "weight": 10.008,
-            "price": 14.51,
+            "price": 13.11,
             "unit_quantity": 1,
             "modified_date": "Manually set to 0.0 quantity at April 12 Wednesday 2023 05:11:26 PM",
             "group": null
@@ -1988,7 +1988,7 @@
             "gauge": "18 Gauge",
             "material": "Galvanneal",
             "weight": 5.696,
-            "price": 8.37,
+            "price": 7.58,
             "unit_quantity": 1,
             "modified_date": "Manually set to 0.0 quantity at April 12 Wednesday 2023 05:11:33 PM",
             "group": null
@@ -1999,7 +1999,7 @@
             "gauge": "18 Gauge",
             "material": "Galvanneal",
             "weight": 5.242,
-            "price": 8.85,
+            "price": 8.11,
             "unit_quantity": 1,
             "modified_date": "Manually set to 0.0 quantity at April 12 Wednesday 2023 05:11:39 PM",
             "group": null
@@ -2010,7 +2010,7 @@
             "gauge": "18 Gauge",
             "material": "Galvanneal",
             "weight": 5.526,
-            "price": 8.32,
+            "price": 7.54,
             "unit_quantity": 1,
             "modified_date": "Manually set to 0.0 quantity at April 12 Wednesday 2023 05:11:42 PM",
             "group": null
@@ -2021,7 +2021,7 @@
             "gauge": "18 Gauge",
             "material": "Galvanneal",
             "weight": 11.572,
-            "price": 15.79,
+            "price": 14.17,
             "unit_quantity": 1,
             "modified_date": "Manually set to 0.0 quantity at April 12 Wednesday 2023 05:11:52 PM",
             "group": null
@@ -2032,7 +2032,7 @@
             "gauge": "18 Gauge",
             "material": "Galvanneal",
             "weight": 22.319,
-            "price": 29.48,
+            "price": 26.35,
             "unit_quantity": 1,
             "modified_date": "Manually set to 0.0 quantity at April 12 Wednesday 2023 05:11:55 PM",
             "group": null
@@ -2043,7 +2043,7 @@
             "gauge": "18 Gauge",
             "material": "Galvanneal",
             "weight": 16.501,
-            "price": 22.08,
+            "price": 19.77,
             "unit_quantity": 1,
             "modified_date": "Manually set to 0.0 quantity at April 12 Wednesday 2023 05:12:02 PM",
             "group": null
@@ -2054,7 +2054,7 @@
             "gauge": "18 Gauge",
             "material": "Galvanneal",
             "weight": 2.259,
-            "price": 3.93,
+            "price": 3.61,
             "unit_quantity": 1,
             "modified_date": "Manually set to 0.0 quantity at April 12 Wednesday 2023 05:12:08 PM",
             "group": null
@@ -2065,7 +2065,7 @@
             "gauge": "18 Gauge",
             "material": "Galvanneal",
             "weight": 9.037,
-            "price": 13.85,
+            "price": 12.58,
             "unit_quantity": 1,
             "modified_date": "Manually set to 0.0 quantity at April 12 Wednesday 2023 05:12:11 PM",
             "group": null
@@ -2100,7 +2100,7 @@
             "gauge": "16 Gauge",
             "material": "304 SS",
             "weight": 0.209,
-            "price": 1.57,
+            "price": 1.56,
             "unit_quantity": 1,
             "modified_date": "Removed 5 quantity at May 17 Wednesday 2023 10:03:53 AM",
             "group": null
@@ -2221,7 +2221,7 @@
             "gauge": "16 Gauge",
             "material": "304 SS",
             "weight": 0.257,
-            "price": 1.26,
+            "price": 1.24,
             "unit_quantity": 1,
             "modified_date": "5 quantity added at May 16 Tuesday 2023 08:51:29 AM",
             "group": null
@@ -2232,7 +2232,7 @@
             "gauge": "16 Gauge",
             "material": "304 SS",
             "weight": 14.336,
-            "price": 33.86,
+            "price": 32.86,
             "unit_quantity": 1,
             "modified_date": "5 quantity added at May 16 Tuesday 2023 08:51:29 AM",
             "group": null
@@ -2342,7 +2342,7 @@
             "gauge": "18 Gauge",
             "material": "Galvanneal",
             "weight": 3.0,
-            "price": 5.11,
+            "price": 4.69,
             "unit_quantity": 1,
             "modified_date": "Added at May 08 Monday 2023 04:24:57 PM",
             "group": null
@@ -2364,7 +2364,7 @@
             "gauge": "14 Gauge",
             "material": "304 SS",
             "weight": 2.237,
-            "price": 5.98,
+            "price": 5.82,
             "unit_quantity": 1,
             "modified_date": "Manually set to 8.0 quantity at May 09 Tuesday 2023 02:02:23 PM",
             "group": null
@@ -2375,7 +2375,7 @@
             "gauge": "14 Gauge",
             "material": "304 SS",
             "weight": 6.71,
-            "price": 17.26,
+            "price": 16.79,
             "unit_quantity": 1,
             "modified_date": "Manually set to 5.0 quantity at May 09 Tuesday 2023 02:02:26 PM",
             "group": null
@@ -2397,7 +2397,7 @@
             "gauge": "18 Gauge",
             "material": "Galvanneal",
             "weight": 10.014,
-            "price": 13.67,
+            "price": 12.27,
             "unit_quantity": 1,
             "modified_date": "Manually set to 0.0 quantity at May 09 Tuesday 2023 02:03:36 PM",
             "group": null
@@ -2408,7 +2408,7 @@
             "gauge": "18 Gauge",
             "material": "Galvanneal",
             "weight": 2.998,
-            "price": 4.83,
+            "price": 4.41,
             "unit_quantity": 1,
             "modified_date": "Manually set to 0.0 quantity at May 09 Tuesday 2023 02:03:38 PM",
             "group": null
@@ -2419,7 +2419,7 @@
             "gauge": "18 Gauge",
             "material": "Galvanized",
             "weight": 31.62,
-            "price": 41.69,
+            "price": 40.75,
             "unit_quantity": 1,
             "modified_date": "Manually set to 0.0 quantity at May 09 Tuesday 2023 02:03:39 PM",
             "group": null
@@ -2430,7 +2430,7 @@
             "gauge": "18 Gauge",
             "material": "Galvanneal",
             "weight": 3.244,
-            "price": 4.83,
+            "price": 4.38,
             "unit_quantity": 1,
             "modified_date": "Removed 10 quantity at May 09 Tuesday 2023 02:03:26 PM",
             "group": null
@@ -2441,7 +2441,7 @@
             "gauge": "18 Gauge",
             "material": "Galvanized",
             "weight": 2.973,
-            "price": 4.89,
+            "price": 4.8,
             "unit_quantity": 1,
             "modified_date": "Removed 10 quantity at May 09 Tuesday 2023 02:03:26 PM",
             "group": null
@@ -2452,7 +2452,7 @@
             "gauge": "18 Gauge",
             "material": "Galvanized",
             "weight": 13.292,
-            "price": 17.9,
+            "price": 17.5,
             "unit_quantity": 1,
             "modified_date": "Removed 10 quantity at May 09 Tuesday 2023 02:03:26 PM",
             "group": null
@@ -2463,7 +2463,7 @@
             "gauge": "18 Gauge",
             "material": "Galvanized",
             "weight": 18.109,
-            "price": 23.23,
+            "price": 22.69,
             "unit_quantity": 1,
             "modified_date": "Removed 10 quantity at May 09 Tuesday 2023 02:03:26 PM",
             "group": null
@@ -2474,7 +2474,7 @@
             "gauge": "18 Gauge",
             "material": "Galvanized",
             "weight": 7.33,
-            "price": 10.87,
+            "price": 10.65,
             "unit_quantity": 1,
             "modified_date": "Removed 10 quantity at May 09 Tuesday 2023 02:03:26 PM",
             "group": null
@@ -2485,7 +2485,7 @@
             "gauge": "18 Gauge",
             "material": "Galvanized",
             "weight": 6.509,
-            "price": 9.86,
+            "price": 9.67,
             "unit_quantity": 1,
             "modified_date": "Removed 10 quantity at May 09 Tuesday 2023 02:03:26 PM",
             "group": null
@@ -2496,7 +2496,7 @@
             "gauge": "18 Gauge",
             "material": "Galvanized",
             "weight": 2.879,
-            "price": 4.75,
+            "price": 4.67,
             "unit_quantity": 1,
             "modified_date": "Removed 10 quantity at May 09 Tuesday 2023 02:03:26 PM",
             "group": null
@@ -2507,7 +2507,7 @@
             "gauge": "18 Gauge",
             "material": "Galvanized",
             "weight": 0.309,
-            "price": 0.92,
+            "price": 0.91,
             "unit_quantity": 1,
             "modified_date": "Removed 10 quantity at May 09 Tuesday 2023 02:03:26 PM",
             "group": null
@@ -2518,7 +2518,7 @@
             "gauge": "18 Gauge",
             "material": "Galvanized",
             "weight": 1.02,
-            "price": 1.92,
+            "price": 1.89,
             "unit_quantity": 1,
             "modified_date": "Removed 10 quantity at May 09 Tuesday 2023 02:03:26 PM",
             "group": null
@@ -2529,7 +2529,7 @@
             "gauge": "18 Gauge",
             "material": "Galvanized",
             "weight": 2.026,
-            "price": 3.26,
+            "price": 3.2,
             "unit_quantity": 1,
             "modified_date": "Removed 10 quantity at May 09 Tuesday 2023 02:03:26 PM",
             "group": null
@@ -2540,7 +2540,7 @@
             "gauge": "18 Gauge",
             "material": "Galvanized",
             "weight": 12.743,
-            "price": 17.09,
+            "price": 16.71,
             "unit_quantity": 1,
             "modified_date": "Removed 10 quantity at May 09 Tuesday 2023 02:03:26 PM",
             "group": null
@@ -2551,7 +2551,7 @@
             "gauge": "18 Gauge",
             "material": "Galvanized",
             "weight": 1.832,
-            "price": 3.0,
+            "price": 2.94,
             "unit_quantity": 1,
             "modified_date": "Removed 10 quantity at May 09 Tuesday 2023 02:03:26 PM",
             "group": null
@@ -2562,7 +2562,7 @@
             "gauge": "18 Gauge",
             "material": "Galvanized",
             "weight": 0.673,
-            "price": 1.43,
+            "price": 1.41,
             "unit_quantity": 1,
             "modified_date": "Removed 10 quantity at May 09 Tuesday 2023 02:03:26 PM",
             "group": null
@@ -2573,7 +2573,7 @@
             "gauge": "14 Gauge",
             "material": "304 SS",
             "weight": 3.764,
-            "price": 10.51,
+            "price": 10.25,
             "unit_quantity": 2.0,
             "modified_date": "Removed 20.0 quantity at May 09 Tuesday 2023 02:02:12 PM",
             "group": null
@@ -2584,7 +2584,7 @@
             "gauge": "14 Gauge",
             "material": "304 SS",
             "weight": 3.946,
-            "price": 10.98,
+            "price": 10.71,
             "unit_quantity": 2.0,
             "modified_date": "Removed 20.0 quantity at May 09 Tuesday 2023 02:02:12 PM",
             "group": null
@@ -2958,7 +2958,7 @@
             "gauge": "18 Gauge",
             "material": "Galvanneal",
             "weight": 7.306,
-            "price": 10.79,
+            "price": 9.77,
             "unit_quantity": 1,
             "modified_date": "Removed 10 quantity at May 09 Tuesday 2023 02:02:12 PM",
             "group": null
@@ -2969,7 +2969,7 @@
             "gauge": "18 Gauge",
             "material": "Galvanneal",
             "weight": 5.855,
-            "price": 8.64,
+            "price": 7.82,
             "unit_quantity": 1,
             "modified_date": "Removed 10 quantity at May 09 Tuesday 2023 02:02:12 PM",
             "group": null
@@ -2980,7 +2980,7 @@
             "gauge": "18 Gauge",
             "material": "Galvanneal",
             "weight": 13.826,
-            "price": 19.37,
+            "price": 17.43,
             "unit_quantity": 1,
             "modified_date": "Removed 10 quantity at May 09 Tuesday 2023 02:02:12 PM",
             "group": null
@@ -2991,7 +2991,7 @@
             "gauge": "18 Gauge",
             "material": "Galvanneal",
             "weight": 10.022,
-            "price": 13.9,
+            "price": 12.5,
             "unit_quantity": 1,
             "modified_date": "Removed 10 quantity at May 09 Tuesday 2023 02:02:12 PM",
             "group": null
@@ -3002,7 +3002,7 @@
             "gauge": "18 Gauge",
             "material": "Galvanneal",
             "weight": 13.826,
-            "price": 19.37,
+            "price": 17.43,
             "unit_quantity": 1,
             "modified_date": "Removed 10 quantity at May 09 Tuesday 2023 02:02:12 PM",
             "group": null
@@ -3013,7 +3013,7 @@
             "gauge": "18 Gauge",
             "material": "Galvanneal",
             "weight": 9.108,
-            "price": 12.86,
+            "price": 11.59,
             "unit_quantity": 1,
             "modified_date": "Removed 10 quantity at May 09 Tuesday 2023 02:02:12 PM",
             "group": null
@@ -3024,7 +3024,7 @@
             "gauge": "18 Gauge",
             "material": "Galvanneal",
             "weight": 9.108,
-            "price": 12.81,
+            "price": 11.54,
             "unit_quantity": 1,
             "modified_date": "Removed 10 quantity at May 09 Tuesday 2023 02:02:12 PM",
             "group": null
@@ -3035,7 +3035,7 @@
             "gauge": "18 Gauge",
             "material": "Galvanneal",
             "weight": 6.51,
-            "price": 9.14,
+            "price": 8.23,
             "unit_quantity": 1,
             "modified_date": "Removed 10 quantity at May 09 Tuesday 2023 02:02:12 PM",
             "group": null
@@ -3046,7 +3046,7 @@
             "gauge": "18 Gauge",
             "material": "Galvanneal",
             "weight": 6.445,
-            "price": 11.31,
+            "price": 10.41,
             "unit_quantity": 1,
             "modified_date": "Removed 10 quantity at May 09 Tuesday 2023 02:02:12 PM",
             "group": null
@@ -3057,7 +3057,7 @@
             "gauge": "18 Gauge",
             "material": "Galvanneal",
             "weight": 6.519,
-            "price": 9.4,
+            "price": 8.49,
             "unit_quantity": 1,
             "modified_date": "Removed 10 quantity at May 09 Tuesday 2023 02:02:12 PM",
             "group": null
@@ -3068,7 +3068,7 @@
             "gauge": "18 Gauge",
             "material": "Galvanneal",
             "weight": 7.591,
-            "price": 10.71,
+            "price": 9.65,
             "unit_quantity": 1,
             "modified_date": "Removed 10 quantity at May 09 Tuesday 2023 02:02:12 PM",
             "group": null
@@ -3079,7 +3079,7 @@
             "gauge": "18 Gauge",
             "material": "Galvanneal",
             "weight": 11.851,
-            "price": 17.33,
+            "price": 15.67,
             "unit_quantity": 1,
             "modified_date": "Removed 10 quantity at May 09 Tuesday 2023 02:02:12 PM",
             "group": null
@@ -3090,7 +3090,7 @@
             "gauge": "18 Gauge",
             "material": "Galvanneal",
             "weight": 14.402,
-            "price": 19.07,
+            "price": 17.05,
             "unit_quantity": 1,
             "modified_date": "Removed 10 quantity at May 09 Tuesday 2023 02:02:12 PM",
             "group": null
@@ -3101,7 +3101,7 @@
             "gauge": "18 Gauge",
             "material": "Galvanneal",
             "weight": 27.429,
-            "price": 36.16,
+            "price": 32.32,
             "unit_quantity": 1,
             "modified_date": "Removed 10 quantity at May 09 Tuesday 2023 02:02:12 PM",
             "group": null
@@ -3112,7 +3112,7 @@
             "gauge": "18 Gauge",
             "material": "Galvanneal",
             "weight": 29.489,
-            "price": 38.85,
+            "price": 34.72,
             "unit_quantity": 1,
             "modified_date": "Removed 10 quantity at May 09 Tuesday 2023 02:02:12 PM",
             "group": null
@@ -3123,7 +3123,7 @@
             "gauge": "18 Gauge",
             "material": "Galvanneal",
             "weight": 20.473,
-            "price": 26.8,
+            "price": 23.94,
             "unit_quantity": 1,
             "modified_date": "Removed 10 quantity at May 09 Tuesday 2023 02:02:12 PM",
             "group": null
@@ -3134,7 +3134,7 @@
             "gauge": "18 Gauge",
             "material": "Galvanneal",
             "weight": 7.58,
-            "price": 10.75,
+            "price": 9.69,
             "unit_quantity": 1,
             "modified_date": "Removed 10 quantity at May 09 Tuesday 2023 02:02:12 PM",
             "group": null
@@ -3145,7 +3145,7 @@
             "gauge": "18 Gauge",
             "material": "Galvanneal",
             "weight": 0.063,
-            "price": 0.28,
+            "price": 0.27,
             "unit_quantity": 1,
             "modified_date": "Removed 10 quantity at May 09 Tuesday 2023 02:02:12 PM",
             "group": null
@@ -3156,7 +3156,7 @@
             "gauge": "18 Gauge",
             "material": "Galvanneal",
             "weight": 2.987,
-            "price": 5.02,
+            "price": 4.6,
             "unit_quantity": 1,
             "modified_date": "Removed 10 quantity at May 09 Tuesday 2023 02:02:12 PM",
             "group": null
@@ -3169,7 +3169,7 @@
             "gauge": "16 Gauge",
             "material": "304 SS",
             "weight": 0.209,
-            "price": 1.57,
+            "price": 1.56,
             "unit_quantity": 1,
             "modified_date": "Removed 5 quantity at May 17 Wednesday 2023 10:03:53 AM",
             "group": null
@@ -3268,7 +3268,7 @@
             "gauge": "18 Gauge",
             "material": "Galvanneal",
             "weight": 8.064,
-            "price": 11.39,
+            "price": 10.26,
             "unit_quantity": 1,
             "modified_date": "Removed 5 quantity at May 17 Wednesday 2023 10:03:53 AM",
             "group": null
@@ -3323,7 +3323,7 @@
             "gauge": "14 Gauge",
             "material": "304 SS",
             "weight": 4.265,
-            "price": 11.79,
+            "price": 11.5,
             "unit_quantity": 1,
             "modified_date": "Removed 5 quantity at May 17 Wednesday 2023 10:03:53 AM",
             "group": null
@@ -3334,7 +3334,7 @@
             "gauge": "14 Gauge",
             "material": "304 SS",
             "weight": 4.217,
-            "price": 11.77,
+            "price": 11.48,
             "unit_quantity": 1,
             "modified_date": "Removed 5 quantity at May 17 Wednesday 2023 10:03:53 AM",
             "group": null
@@ -3367,7 +3367,7 @@
             "gauge": "18 Gauge",
             "material": "Galvanneal",
             "weight": 14.432,
-            "price": 19.48,
+            "price": 17.46,
             "unit_quantity": 1,
             "modified_date": "Removed 5 quantity at May 17 Wednesday 2023 10:03:53 AM",
             "group": null
@@ -3378,7 +3378,7 @@
             "gauge": "18 Gauge",
             "material": "Galvanneal",
             "weight": 24.941,
-            "price": 32.6,
+            "price": 29.11,
             "unit_quantity": 1,
             "modified_date": "Removed 5 quantity at May 17 Wednesday 2023 10:03:53 AM",
             "group": null
@@ -3389,7 +3389,7 @@
             "gauge": "18 Gauge",
             "material": "Galvanneal",
             "weight": 15.622,
-            "price": 22.36,
+            "price": 20.17,
             "unit_quantity": 1,
             "modified_date": "Manually set to 1.0 quantity at May 17 Wednesday 2023 10:07:44 AM",
             "group": null
@@ -3444,7 +3444,7 @@
             "gauge": "18 Gauge",
             "material": "Galvanneal",
             "weight": 3.154,
-            "price": 4.8,
+            "price": 4.36,
             "unit_quantity": 2.0,
             "modified_date": "Manually set to 0.0 quantity at May 17 Wednesday 2023 10:09:26 AM",
             "group": null
@@ -3477,7 +3477,7 @@
             "gauge": "18 Gauge",
             "material": "Galvanneal",
             "weight": 14.736,
-            "price": 19.85,
+            "price": 17.79,
             "unit_quantity": 1,
             "modified_date": "Manually set to 0.0 quantity at May 17 Wednesday 2023 10:08:18 AM",
             "group": null
@@ -3488,7 +3488,7 @@
             "gauge": "18 Gauge",
             "material": "Galvanneal",
             "weight": 2.431,
-            "price": 4.22,
+            "price": 3.88,
             "unit_quantity": 1,
             "modified_date": "Manually set to 0.0 quantity at May 17 Wednesday 2023 10:08:16 AM",
             "group": null
@@ -3499,7 +3499,7 @@
             "gauge": "18 Gauge",
             "material": "Galvanneal",
             "weight": 2.459,
-            "price": 4.25,
+            "price": 3.91,
             "unit_quantity": 1,
             "modified_date": "Manually set to 0.0 quantity at May 17 Wednesday 2023 10:08:15 AM",
             "group": null
@@ -3521,7 +3521,7 @@
             "gauge": "18 Gauge",
             "material": "Galvanized",
             "weight": 0.958,
-            "price": 1.82,
+            "price": 1.8,
             "unit_quantity": 1,
             "modified_date": "Manually set to 0.0 quantity at May 17 Wednesday 2023 10:08:10 AM",
             "group": null
@@ -3532,7 +3532,7 @@
             "gauge": "18 Gauge",
             "material": "Galvanneal",
             "weight": 14.932,
-            "price": 19.92,
+            "price": 17.83,
             "unit_quantity": 1,
             "modified_date": "Manually set to 0.0 quantity at May 17 Wednesday 2023 10:08:04 AM",
             "group": null
@@ -3785,7 +3785,7 @@
             "gauge": "14 Gauge",
             "material": "304 SS",
             "weight": 11.625,
-            "price": 27.62,
+            "price": 26.81,
             "unit_quantity": 1,
             "modified_date": "Removed 5 quantity at May 17 Wednesday 2023 10:03:53 AM",
             "group": null
@@ -3873,7 +3873,7 @@
             "gauge": "16 Gauge",
             "material": "304 SS",
             "weight": 17.901,
-            "price": 41.74,
+            "price": 40.48,
             "unit_quantity": 1,
             "modified_date": "Removed 5 quantity at May 17 Wednesday 2023 10:03:53 AM",
             "group": null
@@ -3884,7 +3884,7 @@
             "gauge": "16 Gauge",
             "material": "304 SS",
             "weight": 0.311,
-            "price": 1.42,
+            "price": 1.4,
             "unit_quantity": 1,
             "modified_date": "Removed 5 quantity at May 17 Wednesday 2023 10:03:53 AM",
             "group": null
@@ -3895,7 +3895,7 @@
             "gauge": "16 Gauge",
             "material": "304 SS",
             "weight": 44.621,
-            "price": 103.31,
+            "price": 100.19,
             "unit_quantity": 1,
             "modified_date": "Removed 5 quantity at May 17 Wednesday 2023 10:03:53 AM",
             "group": null
@@ -3906,7 +3906,7 @@
             "gauge": "18 Gauge",
             "material": "Galvanneal",
             "weight": 10.808,
-            "price": 14.74,
+            "price": 13.22,
             "unit_quantity": 1,
             "modified_date": "Removed 5 quantity at May 17 Wednesday 2023 10:03:53 AM",
             "group": null
@@ -3917,7 +3917,7 @@
             "gauge": "18 Gauge",
             "material": "Galvanized",
             "weight": 22.451,
-            "price": 28.57,
+            "price": 27.89,
             "unit_quantity": 1,
             "modified_date": "Removed 5 quantity at May 17 Wednesday 2023 10:03:53 AM",
             "group": null
@@ -3928,7 +3928,7 @@
             "gauge": "18 Gauge",
             "material": "Galvanized",
             "weight": 3.195,
-            "price": 5.21,
+            "price": 5.11,
             "unit_quantity": 1,
             "modified_date": "Removed 5 quantity at May 17 Wednesday 2023 10:03:53 AM",
             "group": null
@@ -3939,7 +3939,7 @@
             "gauge": "18 Gauge",
             "material": "Galvanized",
             "weight": 9.734,
-            "price": 13.98,
+            "price": 13.69,
             "unit_quantity": 1,
             "modified_date": "Removed 5 quantity at May 17 Wednesday 2023 10:03:53 AM",
             "group": null
@@ -3950,7 +3950,7 @@
             "gauge": "18 Gauge",
             "material": "Galvanized",
             "weight": 8.987,
-            "price": 13.11,
+            "price": 12.84,
             "unit_quantity": 1,
             "modified_date": "Removed 5 quantity at May 17 Wednesday 2023 10:03:53 AM",
             "group": null
@@ -3961,7 +3961,7 @@
             "gauge": "18 Gauge",
             "material": "Galvanized",
             "weight": 3.056,
-            "price": 4.99,
+            "price": 4.9,
             "unit_quantity": 1,
             "modified_date": "Removed 5 quantity at May 17 Wednesday 2023 10:03:53 AM",
             "group": null
@@ -3972,7 +3972,7 @@
             "gauge": "18 Gauge",
             "material": "Galvanized",
             "weight": 0.628,
-            "price": 1.38,
+            "price": 1.36,
             "unit_quantity": 1,
             "modified_date": "Removed 5 quantity at May 17 Wednesday 2023 10:03:53 AM",
             "group": null
@@ -3983,7 +3983,7 @@
             "gauge": "18 Gauge",
             "material": "Galvanized",
             "weight": 1.728,
-            "price": 2.87,
+            "price": 2.82,
             "unit_quantity": 1,
             "modified_date": "Removed 5 quantity at May 17 Wednesday 2023 10:03:53 AM",
             "group": null
@@ -3994,7 +3994,7 @@
             "gauge": "18 Gauge",
             "material": "Galvanized",
             "weight": 15.414,
-            "price": 20.57,
+            "price": 20.11,
             "unit_quantity": 1,
             "modified_date": "Removed 5 quantity at May 17 Wednesday 2023 10:03:53 AM",
             "group": null
@@ -4005,7 +4005,7 @@
             "gauge": "18 Gauge",
             "material": "Galvanized",
             "weight": 14.979,
-            "price": 19.8,
+            "price": 19.35,
             "unit_quantity": 1,
             "modified_date": "Removed 5 quantity at May 17 Wednesday 2023 10:03:53 AM",
             "group": null
@@ -4016,7 +4016,7 @@
             "gauge": "18 Gauge",
             "material": "Galvanized",
             "weight": 1.828,
-            "price": 2.99,
+            "price": 2.94,
             "unit_quantity": 1,
             "modified_date": "Removed 5 quantity at May 17 Wednesday 2023 10:03:53 AM",
             "group": null
@@ -4038,7 +4038,7 @@
             "gauge": "18 Gauge",
             "material": "Galvanneal",
             "weight": 16.243,
-            "price": 22.49,
+            "price": 20.22,
             "unit_quantity": 1,
             "modified_date": "Removed 5 quantity at May 17 Wednesday 2023 10:03:53 AM",
             "group": null
@@ -4049,7 +4049,7 @@
             "gauge": "18 Gauge",
             "material": "Galvanneal",
             "weight": 16.243,
-            "price": 22.44,
+            "price": 20.17,
             "unit_quantity": 1,
             "modified_date": "Removed 5 quantity at May 17 Wednesday 2023 10:03:53 AM",
             "group": null
@@ -4060,7 +4060,7 @@
             "gauge": "18 Gauge",
             "material": "Galvanneal",
             "weight": 11.421,
-            "price": 15.61,
+            "price": 14.01,
             "unit_quantity": 1,
             "modified_date": "Removed 5 quantity at May 17 Wednesday 2023 10:03:53 AM",
             "group": null
@@ -4071,7 +4071,7 @@
             "gauge": "18 Gauge",
             "material": "Galvanneal",
             "weight": 11.309,
-            "price": 15.47,
+            "price": 13.89,
             "unit_quantity": 1,
             "modified_date": "Removed 5 quantity at May 17 Wednesday 2023 10:03:53 AM",
             "group": null
@@ -4082,7 +4082,7 @@
             "gauge": "18 Gauge",
             "material": "Galvanneal",
             "weight": 8.368,
-            "price": 13.88,
+            "price": 12.71,
             "unit_quantity": 1,
             "modified_date": "Removed 5 quantity at May 17 Wednesday 2023 10:03:53 AM",
             "group": null
@@ -4093,7 +4093,7 @@
             "gauge": "18 Gauge",
             "material": "Galvanneal",
             "weight": 8.081,
-            "price": 11.61,
+            "price": 10.48,
             "unit_quantity": 1,
             "modified_date": "Removed 5 quantity at May 17 Wednesday 2023 10:03:53 AM",
             "group": null
@@ -4104,7 +4104,7 @@
             "gauge": "18 Gauge",
             "material": "Galvanneal",
             "weight": 34.555,
-            "price": 45.03,
+            "price": 40.19,
             "unit_quantity": 1,
             "modified_date": "Removed 5 quantity at May 17 Wednesday 2023 10:03:53 AM",
             "group": null
@@ -4115,7 +4115,7 @@
             "gauge": "18 Gauge",
             "material": "Galvanneal",
             "weight": 36.49,
-            "price": 47.52,
+            "price": 42.41,
             "unit_quantity": 1,
             "modified_date": "Removed 5 quantity at May 17 Wednesday 2023 10:03:53 AM",
             "group": null
@@ -4126,7 +4126,7 @@
             "gauge": "3\/16",
             "material": "304 SS",
             "weight": 17.307,
-            "price": 40.54,
+            "price": 39.33,
             "unit_quantity": 1,
             "modified_date": "Manually set to 0.0 quantity at May 17 Wednesday 2023 10:07:02 AM",
             "group": null
@@ -4161,7 +4161,7 @@
             "gauge": "10 Gauge",
             "material": "304 SS",
             "weight": 0.387,
-            "price": 5.62,
+            "price": 5.6,
             "unit_quantity": 2.0,
             "modified_date": "Added at April 06 Thursday 2023 08:36:50 AM",
             "group": null
@@ -4238,7 +4238,7 @@
             "gauge": "18 Gauge",
             "material": "Galvanneal",
             "weight": 9.539,
-            "price": 12.76,
+            "price": 11.43,
             "unit_quantity": 1,
             "modified_date": "Removed 5 quantity at March 14 Tuesday 2023 04:51:26 PM",
             "group": null
@@ -4249,7 +4249,7 @@
             "gauge": "14 Gauge",
             "material": "304 SS",
             "weight": 7.591,
-            "price": 18.9,
+            "price": 18.37,
             "unit_quantity": 1,
             "modified_date": "Added at March 17 Friday 2023 02:17:02 PM",
             "group": null
@@ -4260,7 +4260,7 @@
             "gauge": "18 Gauge",
             "material": "Galvanneal",
             "weight": 0.149,
-            "price": 0.51,
+            "price": 0.49,
             "unit_quantity": 1,
             "modified_date": "Removed 5 quantity at March 14 Tuesday 2023 04:51:26 PM",
             "group": null
@@ -4271,7 +4271,7 @@
             "gauge": "18 Gauge",
             "material": "Galvanneal",
             "weight": 2.23,
-            "price": 5.05,
+            "price": 4.73,
             "unit_quantity": 1,
             "modified_date": "Removed 5 quantity at March 14 Tuesday 2023 04:51:26 PM",
             "group": null
@@ -4282,7 +4282,7 @@
             "gauge": "14 Gauge",
             "material": "304 SS",
             "weight": 9.991,
-            "price": 24.69,
+            "price": 23.99,
             "unit_quantity": 1,
             "modified_date": "Added at March 17 Friday 2023 02:17:02 PM",
             "group": null
@@ -4293,7 +4293,7 @@
             "gauge": "14 Gauge",
             "material": "304 SS",
             "weight": 6.046,
-            "price": 16.12,
+            "price": 15.7,
             "unit_quantity": 1,
             "modified_date": "Added at March 17 Friday 2023 02:17:02 PM",
             "group": null
@@ -4304,7 +4304,7 @@
             "gauge": "14 Gauge",
             "material": "304 SS",
             "weight": 4.825,
-            "price": 13.0,
+            "price": 12.66,
             "unit_quantity": 1,
             "modified_date": "Added at March 17 Friday 2023 02:17:02 PM",
             "group": null
@@ -4337,7 +4337,7 @@
             "gauge": "18 Gauge",
             "material": "Galvanneal",
             "weight": 0.059,
-            "price": 0.27,
+            "price": 0.26,
             "unit_quantity": 1,
             "modified_date": "10 quantity added at April 06 Thursday 2023 11:25:56 AM",
             "group": null
@@ -4370,7 +4370,7 @@
             "gauge": "18 Gauge",
             "material": "Galvanneal",
             "weight": 0.442,
-            "price": 0.99,
+            "price": 0.93,
             "unit_quantity": 3.0,
             "modified_date": "Removed 15.0 quantity at March 14 Tuesday 2023 04:51:26 PM",
             "group": null
@@ -4381,7 +4381,7 @@
             "gauge": "18 Gauge",
             "material": "Galvanneal",
             "weight": 1.124,
-            "price": 2.05,
+            "price": 1.89,
             "unit_quantity": 2.0,
             "modified_date": "Removed 10.0 quantity at March 14 Tuesday 2023 04:51:26 PM",
             "group": null
@@ -4392,7 +4392,7 @@
             "gauge": "18 Gauge",
             "material": "Galvanneal",
             "weight": 20.916,
-            "price": 28.09,
+            "price": 25.16,
             "unit_quantity": 1,
             "modified_date": "Removed 5 quantity at March 14 Tuesday 2023 04:51:26 PM",
             "group": null
@@ -4403,7 +4403,7 @@
             "gauge": "18 Gauge",
             "material": "Galvanneal",
             "weight": 26.247,
-            "price": 33.77,
+            "price": 30.1,
             "unit_quantity": 1,
             "modified_date": "Removed 5 quantity at March 14 Tuesday 2023 04:51:26 PM",
             "group": null
@@ -4414,7 +4414,7 @@
             "gauge": "18 Gauge",
             "material": "Galvanneal",
             "weight": 18.169,
-            "price": 23.67,
+            "price": 21.12,
             "unit_quantity": 1,
             "modified_date": "Removed 5 quantity at March 14 Tuesday 2023 04:51:26 PM",
             "group": null
@@ -4425,7 +4425,7 @@
             "gauge": "18 Gauge",
             "material": "Galvanneal",
             "weight": 5.828,
-            "price": 8.86,
+            "price": 8.04,
             "unit_quantity": 1,
             "modified_date": "Removed 5 quantity at March 14 Tuesday 2023 04:51:26 PM",
             "group": null
@@ -4436,7 +4436,7 @@
             "gauge": "18 Gauge",
             "material": "Galvanneal",
             "weight": 1.501,
-            "price": 2.63,
+            "price": 2.42,
             "unit_quantity": 1,
             "modified_date": "Removed 5 quantity at March 14 Tuesday 2023 04:51:26 PM",
             "group": null
@@ -4447,7 +4447,7 @@
             "gauge": "18 Gauge",
             "material": "Galvanneal",
             "weight": 4.489,
-            "price": 6.98,
+            "price": 6.35,
             "unit_quantity": 1,
             "modified_date": "Removed 5 quantity at March 14 Tuesday 2023 04:51:26 PM",
             "group": null
@@ -4458,7 +4458,7 @@
             "gauge": "18 Gauge",
             "material": "Galvanneal",
             "weight": 4.263,
-            "price": 6.0,
+            "price": 5.4,
             "unit_quantity": 1,
             "modified_date": "Removed 5 quantity at March 14 Tuesday 2023 04:51:26 PM",
             "group": null
@@ -4469,7 +4469,7 @@
             "gauge": "18 Gauge",
             "material": "Galvanneal",
             "weight": 18.033,
-            "price": 31.3,
+            "price": 28.78,
             "unit_quantity": 1,
             "modified_date": "Removed 5 quantity at March 14 Tuesday 2023 04:51:26 PM",
             "group": null
@@ -4480,7 +4480,7 @@
             "gauge": "18 Gauge",
             "material": "Galvanneal",
             "weight": 0.51,
-            "price": 1.07,
+            "price": 1.0,
             "unit_quantity": 1,
             "modified_date": "Removed 5 quantity at March 14 Tuesday 2023 04:51:26 PM",
             "group": null
@@ -4491,7 +4491,7 @@
             "gauge": "18 Gauge",
             "material": "Galvanneal",
             "weight": 5.377,
-            "price": 7.88,
+            "price": 7.13,
             "unit_quantity": 1,
             "modified_date": "Removed 5 quantity at March 14 Tuesday 2023 04:51:26 PM",
             "group": null
@@ -4502,7 +4502,7 @@
             "gauge": "18 Gauge",
             "material": "Galvanneal",
             "weight": 45.73,
-            "price": 59.12,
+            "price": 52.71,
             "unit_quantity": 1,
             "modified_date": "Removed 5 quantity at March 14 Tuesday 2023 04:51:26 PM",
             "group": null
@@ -4513,7 +4513,7 @@
             "gauge": "18 Gauge",
             "material": "Galvanneal",
             "weight": 26.781,
-            "price": 38.35,
+            "price": 34.6,
             "unit_quantity": 1,
             "modified_date": "Removed 5 quantity at March 14 Tuesday 2023 04:51:26 PM",
             "group": null
@@ -4524,7 +4524,7 @@
             "gauge": "18 Gauge",
             "material": "Galvanneal",
             "weight": 2.723,
-            "price": 4.12,
+            "price": 3.74,
             "unit_quantity": 1,
             "modified_date": "Removed 5 quantity at March 14 Tuesday 2023 04:51:26 PM",
             "group": null
@@ -4535,7 +4535,7 @@
             "gauge": "18 Gauge",
             "material": "Galvanneal",
             "weight": 44.366,
-            "price": 58.13,
+            "price": 51.92,
             "unit_quantity": 1,
             "modified_date": "Removed 5 quantity at March 14 Tuesday 2023 04:51:26 PM",
             "group": null
@@ -4546,7 +4546,7 @@
             "gauge": "18 Gauge",
             "material": "Galvanneal",
             "weight": 19.991,
-            "price": 26.64,
+            "price": 23.84,
             "unit_quantity": 1,
             "modified_date": "Removed 5 quantity at March 14 Tuesday 2023 04:51:26 PM",
             "group": null
@@ -4557,7 +4557,7 @@
             "gauge": "18 Gauge",
             "material": "Galvanneal",
             "weight": 7.094,
-            "price": 9.45,
+            "price": 8.46,
             "unit_quantity": 1,
             "modified_date": "Removed 5 quantity at March 14 Tuesday 2023 04:51:26 PM",
             "group": null
@@ -4568,7 +4568,7 @@
             "gauge": "18 Gauge",
             "material": "Galvanneal",
             "weight": 21.021,
-            "price": 28.4,
+            "price": 25.45,
             "unit_quantity": 1,
             "modified_date": "Removed 5 quantity at March 14 Tuesday 2023 04:51:26 PM",
             "group": null
@@ -4579,7 +4579,7 @@
             "gauge": "18 Gauge",
             "material": "Galvanneal",
             "weight": 0.172,
-            "price": 0.53,
+            "price": 0.51,
             "unit_quantity": 1,
             "modified_date": "Removed 5 quantity at March 14 Tuesday 2023 04:51:26 PM",
             "group": null
@@ -4590,7 +4590,7 @@
             "gauge": "18 Gauge",
             "material": "Galvanneal",
             "weight": 20.825,
-            "price": 28.83,
+            "price": 25.92,
             "unit_quantity": 1,
             "modified_date": "Removed 5 quantity at March 14 Tuesday 2023 04:51:26 PM",
             "group": null
@@ -4601,7 +4601,7 @@
             "gauge": "18 Gauge",
             "material": "Galvanneal",
             "weight": 1.54,
-            "price": 3.05,
+            "price": 2.84,
             "unit_quantity": 1,
             "modified_date": "Removed 5 quantity at March 14 Tuesday 2023 04:51:26 PM",
             "group": null
@@ -4612,7 +4612,7 @@
             "gauge": "18 Gauge",
             "material": "Galvanneal",
             "weight": 0.24,
-            "price": 0.72,
+            "price": 0.68,
             "unit_quantity": 1,
             "modified_date": "Removed 5 quantity at March 14 Tuesday 2023 04:51:26 PM",
             "group": null
@@ -4623,7 +4623,7 @@
             "gauge": "18 Gauge",
             "material": "Galvanneal",
             "weight": 11.835,
-            "price": 16.11,
+            "price": 14.46,
             "unit_quantity": 1,
             "modified_date": "Removed 5 quantity at March 14 Tuesday 2023 04:51:26 PM",
             "group": null
@@ -4634,7 +4634,7 @@
             "gauge": "18 Gauge",
             "material": "Galvanneal",
             "weight": 6.429,
-            "price": 11.17,
+            "price": 10.27,
             "unit_quantity": 1,
             "modified_date": "Removed 5 quantity at March 14 Tuesday 2023 04:51:26 PM",
             "group": null
@@ -4645,7 +4645,7 @@
             "gauge": "18 Gauge",
             "material": "Galvanneal",
             "weight": 0.485,
-            "price": 2.54,
+            "price": 2.47,
             "unit_quantity": 1,
             "modified_date": "Removed 5 quantity at March 14 Tuesday 2023 04:51:26 PM",
             "group": null
@@ -4656,7 +4656,7 @@
             "gauge": "18 Gauge",
             "material": "Galvanneal",
             "weight": 0.123,
-            "price": 0.48,
+            "price": 0.46,
             "unit_quantity": 1,
             "modified_date": "Removed 5 quantity at March 14 Tuesday 2023 04:51:26 PM",
             "group": null
@@ -4667,7 +4667,7 @@
             "gauge": "18 Gauge",
             "material": "Galvanneal",
             "weight": 0.167,
-            "price": 0.58,
+            "price": 0.56,
             "unit_quantity": 1,
             "modified_date": "Removed 5 quantity at March 14 Tuesday 2023 04:51:26 PM",
             "group": null
@@ -4713,7 +4713,7 @@
             "gauge": "10 Gauge",
             "material": "304 SS",
             "weight": 0.387,
-            "price": 5.62,
+            "price": 5.6,
             "unit_quantity": 2.0,
             "modified_date": "Added at April 06 Thursday 2023 08:36:50 AM",
             "group": null
@@ -4746,7 +4746,7 @@
             "gauge": "10 Gauge",
             "material": "304 SS",
             "weight": 0.502,
-            "price": 2.54,
+            "price": 2.5,
             "unit_quantity": 3.0,
             "modified_date": "48 quantity added at April 21 Friday 2023 10:49:04 AM",
             "group": null
@@ -4768,7 +4768,7 @@
             "gauge": "12 Gauge",
             "material": "304 SS",
             "weight": 0.181,
-            "price": 0.81,
+            "price": 0.79,
             "unit_quantity": 1,
             "modified_date": "21 quantity added at May 19 Friday 2023 10:28:55 AM",
             "group": null
@@ -4801,7 +4801,7 @@
             "gauge": "12 Gauge",
             "material": "304 SS",
             "weight": 0.156,
-            "price": 1.38,
+            "price": 1.37,
             "unit_quantity": 1,
             "modified_date": "Removed 10 quantity at March 14 Tuesday 2023 04:53:43 PM",
             "group": null
@@ -4812,7 +4812,7 @@
             "gauge": "14 Gauge",
             "material": "304 SS",
             "weight": 2.49,
-            "price": 6.4,
+            "price": 6.22,
             "unit_quantity": 1,
             "modified_date": "Removed 10 quantity at March 14 Tuesday 2023 04:53:43 PM",
             "group": null
@@ -4966,7 +4966,7 @@
             "gauge": "14 Gauge",
             "material": "304 SS",
             "weight": 8.762,
-            "price": 21.46,
+            "price": 20.85,
             "unit_quantity": 2.0,
             "modified_date": "2 quantity added at March 17 Friday 2023 02:17:02 PM",
             "group": null
@@ -4999,7 +4999,7 @@
             "gauge": "14 Gauge",
             "material": "304 SS",
             "weight": 5.571,
-            "price": 14.89,
+            "price": 14.5,
             "unit_quantity": 2.0,
             "modified_date": "Removed 20.0 quantity at March 14 Tuesday 2023 04:53:43 PM",
             "group": null
@@ -5010,7 +5010,7 @@
             "gauge": "14 Gauge",
             "material": "304 SS",
             "weight": 10.639,
-            "price": 26.12,
+            "price": 25.38,
             "unit_quantity": 2.0,
             "modified_date": "Removed 20.0 quantity at March 14 Tuesday 2023 04:53:43 PM",
             "group": null
@@ -5021,7 +5021,7 @@
             "gauge": "14 Gauge",
             "material": "304 SS",
             "weight": 6.791,
-            "price": 18.02,
+            "price": 17.54,
             "unit_quantity": 2.0,
             "modified_date": "Removed 20.0 quantity at March 14 Tuesday 2023 04:53:43 PM",
             "group": null
@@ -5296,7 +5296,7 @@
             "gauge": "18 Gauge",
             "material": "Galvanneal",
             "weight": 0.442,
-            "price": 0.99,
+            "price": 0.93,
             "unit_quantity": 3.0,
             "modified_date": "Removed 30.0 quantity at March 14 Tuesday 2023 04:53:43 PM",
             "group": null
@@ -5307,7 +5307,7 @@
             "gauge": "18 Gauge",
             "material": "Galvanneal",
             "weight": 23.887,
-            "price": 32.02,
+            "price": 28.67,
             "unit_quantity": 1,
             "modified_date": "Removed 10 quantity at March 14 Tuesday 2023 04:53:43 PM",
             "group": null
@@ -5318,7 +5318,7 @@
             "gauge": "18 Gauge",
             "material": "Galvanneal",
             "weight": 29.686,
-            "price": 39.14,
+            "price": 34.99,
             "unit_quantity": 1,
             "modified_date": "Removed 10 quantity at March 14 Tuesday 2023 04:53:43 PM",
             "group": null
@@ -5329,7 +5329,7 @@
             "gauge": "18 Gauge",
             "material": "Galvanneal",
             "weight": 21.947,
-            "price": 28.4,
+            "price": 25.33,
             "unit_quantity": 1,
             "modified_date": "Removed 10 quantity at March 14 Tuesday 2023 04:53:43 PM",
             "group": null
@@ -5340,7 +5340,7 @@
             "gauge": "18 Gauge",
             "material": "Galvanneal",
             "weight": 10.708,
-            "price": 14.24,
+            "price": 12.74,
             "unit_quantity": 1,
             "modified_date": "Removed 10 quantity at March 14 Tuesday 2023 04:53:43 PM",
             "group": null
@@ -5351,7 +5351,7 @@
             "gauge": "18 Gauge",
             "material": "Galvanneal",
             "weight": 6.442,
-            "price": 9.66,
+            "price": 8.76,
             "unit_quantity": 1,
             "modified_date": "Removed 10 quantity at March 14 Tuesday 2023 04:53:43 PM",
             "group": null
@@ -5362,7 +5362,7 @@
             "gauge": "18 Gauge",
             "material": "Galvanneal",
             "weight": 1.617,
-            "price": 2.77,
+            "price": 2.55,
             "unit_quantity": 1,
             "modified_date": "Removed 10 quantity at March 14 Tuesday 2023 04:53:43 PM",
             "group": null
@@ -5373,7 +5373,7 @@
             "gauge": "18 Gauge",
             "material": "Galvanneal",
             "weight": 4.455,
-            "price": 6.89,
+            "price": 6.26,
             "unit_quantity": 1,
             "modified_date": "Removed 10 quantity at March 14 Tuesday 2023 04:53:43 PM",
             "group": null
@@ -5384,7 +5384,7 @@
             "gauge": "18 Gauge",
             "material": "Galvanneal",
             "weight": 4.341,
-            "price": 6.1,
+            "price": 5.49,
             "unit_quantity": 1,
             "modified_date": "Removed 10 quantity at March 14 Tuesday 2023 04:53:43 PM",
             "group": null
@@ -5395,7 +5395,7 @@
             "gauge": "18 Gauge",
             "material": "Galvanneal",
             "weight": 20.716,
-            "price": 34.57,
+            "price": 31.67,
             "unit_quantity": 1,
             "modified_date": "Removed 10 quantity at March 14 Tuesday 2023 04:53:43 PM",
             "group": null
@@ -5406,7 +5406,7 @@
             "gauge": "18 Gauge",
             "material": "Galvanneal",
             "weight": 1.102,
-            "price": 2.02,
+            "price": 1.87,
             "unit_quantity": 1,
             "modified_date": "Removed 10 quantity at March 14 Tuesday 2023 04:53:43 PM",
             "group": null
@@ -5417,7 +5417,7 @@
             "gauge": "18 Gauge",
             "material": "Galvanneal",
             "weight": 0.51,
-            "price": 1.07,
+            "price": 1.0,
             "unit_quantity": 1,
             "modified_date": "Removed 10 quantity at March 14 Tuesday 2023 04:53:43 PM",
             "group": null
@@ -5428,7 +5428,7 @@
             "gauge": "18 Gauge",
             "material": "Galvanneal",
             "weight": 1.35,
-            "price": 2.35,
+            "price": 2.16,
             "unit_quantity": 1,
             "modified_date": "Removed 10 quantity at March 14 Tuesday 2023 04:53:43 PM",
             "group": null
@@ -5439,7 +5439,7 @@
             "gauge": "18 Gauge",
             "material": "Galvanneal",
             "weight": 5.869,
-            "price": 8.54,
+            "price": 7.71,
             "unit_quantity": 1,
             "modified_date": "Removed 10 quantity at March 14 Tuesday 2023 04:53:43 PM",
             "group": null
@@ -5450,7 +5450,7 @@
             "gauge": "18 Gauge",
             "material": "Galvanneal",
             "weight": 55.546,
-            "price": 71.57,
+            "price": 63.79,
             "unit_quantity": 1,
             "modified_date": "Removed 10 quantity at March 14 Tuesday 2023 04:53:43 PM",
             "group": null
@@ -5461,7 +5461,7 @@
             "gauge": "18 Gauge",
             "material": "Galvanneal",
             "weight": 32.752,
-            "price": 45.76,
+            "price": 41.17,
             "unit_quantity": 1,
             "modified_date": "Removed 10 quantity at March 14 Tuesday 2023 04:53:43 PM",
             "group": null
@@ -5472,7 +5472,7 @@
             "gauge": "18 Gauge",
             "material": "Galvanneal",
             "weight": 2.806,
-            "price": 4.22,
+            "price": 3.83,
             "unit_quantity": 1,
             "modified_date": "Removed 10 quantity at March 14 Tuesday 2023 04:53:43 PM",
             "group": null
@@ -5483,7 +5483,7 @@
             "gauge": "18 Gauge",
             "material": "Galvanneal",
             "weight": 54.141,
-            "price": 70.3,
+            "price": 62.72,
             "unit_quantity": 1,
             "modified_date": "Removed 10 quantity at March 14 Tuesday 2023 04:53:43 PM",
             "group": null
@@ -5494,7 +5494,7 @@
             "gauge": "18 Gauge",
             "material": "Galvanneal",
             "weight": 25.445,
-            "price": 33.54,
+            "price": 29.98,
             "unit_quantity": 1,
             "modified_date": "Removed 10 quantity at March 14 Tuesday 2023 04:53:43 PM",
             "group": null
@@ -5505,7 +5505,7 @@
             "gauge": "18 Gauge",
             "material": "Galvanneal",
             "weight": 7.759,
-            "price": 10.34,
+            "price": 9.25,
             "unit_quantity": 1,
             "modified_date": "Removed 10 quantity at March 14 Tuesday 2023 04:53:43 PM",
             "group": null
@@ -5516,7 +5516,7 @@
             "gauge": "18 Gauge",
             "material": "Galvanneal",
             "weight": 21.949,
-            "price": 29.4,
+            "price": 26.33,
             "unit_quantity": 1,
             "modified_date": "Removed 10 quantity at March 14 Tuesday 2023 04:53:43 PM",
             "group": null
@@ -5527,7 +5527,7 @@
             "gauge": "18 Gauge",
             "material": "Galvanneal",
             "weight": 0.26,
-            "price": 0.69,
+            "price": 0.66,
             "unit_quantity": 1,
             "modified_date": "Removed 10 quantity at March 14 Tuesday 2023 04:53:43 PM",
             "group": null
@@ -5538,7 +5538,7 @@
             "gauge": "18 Gauge",
             "material": "Galvanneal",
             "weight": 21.909,
-            "price": 30.18,
+            "price": 27.11,
             "unit_quantity": 1,
             "modified_date": "Removed 10 quantity at March 14 Tuesday 2023 04:53:43 PM",
             "group": null
@@ -5549,7 +5549,7 @@
             "gauge": "18 Gauge",
             "material": "Galvanneal",
             "weight": 1.54,
-            "price": 3.05,
+            "price": 2.84,
             "unit_quantity": 1,
             "modified_date": "Removed 10 quantity at March 14 Tuesday 2023 04:53:43 PM",
             "group": null
@@ -5560,7 +5560,7 @@
             "gauge": "18 Gauge",
             "material": "Galvanneal",
             "weight": 12.995,
-            "price": 17.65,
+            "price": 15.83,
             "unit_quantity": 1,
             "modified_date": "Removed 10 quantity at March 14 Tuesday 2023 04:53:43 PM",
             "group": null
@@ -5571,7 +5571,7 @@
             "gauge": "18 Gauge",
             "material": "Galvanneal",
             "weight": 7.113,
-            "price": 12.23,
+            "price": 11.23,
             "unit_quantity": 1,
             "modified_date": "Removed 10 quantity at March 14 Tuesday 2023 04:53:43 PM",
             "group": null
@@ -5582,7 +5582,7 @@
             "gauge": "18 Gauge",
             "material": "Galvanneal",
             "weight": 0.476,
-            "price": 2.53,
+            "price": 2.46,
             "unit_quantity": 1,
             "modified_date": "Removed 10 quantity at March 14 Tuesday 2023 04:53:43 PM",
             "group": null
@@ -5628,7 +5628,7 @@
             "gauge": "10 Gauge",
             "material": "304 SS",
             "weight": 0.387,
-            "price": 5.62,
+            "price": 5.6,
             "unit_quantity": 2.0,
             "modified_date": "Added at April 06 Thursday 2023 08:36:50 AM",
             "group": null
@@ -5661,7 +5661,7 @@
             "gauge": "10 Gauge",
             "material": "304 SS",
             "weight": 0.502,
-            "price": 2.54,
+            "price": 2.5,
             "unit_quantity": 1,
             "modified_date": "48 quantity added at April 21 Friday 2023 10:49:04 AM",
             "group": null
@@ -5672,7 +5672,7 @@
             "gauge": "3\/16",
             "material": "304 SS",
             "weight": 0.32,
-            "price": 2.23,
+            "price": 2.21,
             "unit_quantity": 1,
             "modified_date": "5 quantity added at May 19 Friday 2023 09:57:54 AM",
             "group": null
@@ -5694,7 +5694,7 @@
             "gauge": "12 Gauge",
             "material": "304 SS",
             "weight": 0.181,
-            "price": 0.81,
+            "price": 0.79,
             "unit_quantity": 1,
             "modified_date": "21 quantity added at May 19 Friday 2023 10:28:55 AM",
             "group": null
@@ -5738,7 +5738,7 @@
             "gauge": "12 Gauge",
             "material": "304 SS",
             "weight": 0.156,
-            "price": 1.38,
+            "price": 1.37,
             "unit_quantity": 1,
             "modified_date": "Removed 10 quantity at March 14 Tuesday 2023 04:53:43 PM",
             "group": null
@@ -5771,7 +5771,7 @@
             "gauge": "14 Gauge",
             "material": "304 SS",
             "weight": 2.49,
-            "price": 6.4,
+            "price": 6.22,
             "unit_quantity": 1,
             "modified_date": "Removed 10 quantity at March 14 Tuesday 2023 04:53:43 PM",
             "group": null
@@ -5815,7 +5815,7 @@
             "gauge": "14 Gauge",
             "material": "304 SS",
             "weight": 8.762,
-            "price": 21.46,
+            "price": 20.85,
             "unit_quantity": 1,
             "modified_date": "2 quantity added at March 17 Friday 2023 02:17:02 PM",
             "group": null
@@ -5837,7 +5837,7 @@
             "gauge": "14 Gauge",
             "material": "304 SS",
             "weight": 5.571,
-            "price": 14.89,
+            "price": 14.5,
             "unit_quantity": 1,
             "modified_date": "Removed 10 quantity at March 14 Tuesday 2023 04:53:43 PM",
             "group": null
@@ -5870,7 +5870,7 @@
             "gauge": "18 Gauge",
             "material": "Galvanneal",
             "weight": 0.442,
-            "price": 1.09,
+            "price": 1.03,
             "unit_quantity": 1,
             "modified_date": "Added at April 06 Thursday 2023 11:25:57 AM",
             "group": null
@@ -5881,7 +5881,7 @@
             "gauge": "14 Gauge",
             "material": "304 SS",
             "weight": 10.639,
-            "price": 26.12,
+            "price": 25.38,
             "unit_quantity": 1,
             "modified_date": "Removed 10 quantity at March 14 Tuesday 2023 04:53:43 PM",
             "group": null
@@ -5892,7 +5892,7 @@
             "gauge": "14 Gauge",
             "material": "304 SS",
             "weight": 6.791,
-            "price": 18.02,
+            "price": 17.54,
             "unit_quantity": 1,
             "modified_date": "Removed 10 quantity at March 14 Tuesday 2023 04:53:43 PM",
             "group": null
@@ -5903,7 +5903,7 @@
             "gauge": "3\/16",
             "material": "304 SS",
             "weight": 1.462,
-            "price": 5.43,
+            "price": 5.33,
             "unit_quantity": 1,
             "modified_date": "Added at March 09 Thursday 2023 09:41:14 AM",
             "group": null
@@ -5969,7 +5969,7 @@
             "gauge": "18 Gauge",
             "material": "Galvanneal",
             "weight": 0.24,
-            "price": 0.72,
+            "price": 0.68,
             "unit_quantity": 1,
             "modified_date": "10 quantity added at April 06 Thursday 2023 11:25:56 AM",
             "group": null
@@ -5980,7 +5980,7 @@
             "gauge": "18 Gauge",
             "material": "Galvanneal",
             "weight": 1.102,
-            "price": 2.09,
+            "price": 1.94,
             "unit_quantity": 1,
             "modified_date": "Added at April 06 Thursday 2023 11:25:56 AM",
             "group": null
@@ -5991,7 +5991,7 @@
             "gauge": "18 Gauge",
             "material": "Galvanneal",
             "weight": 1.417,
-            "price": 2.3,
+            "price": 2.11,
             "unit_quantity": 1,
             "modified_date": "10 quantity added at March 07 Tuesday 2023 01:28:02 PM",
             "group": null
@@ -6002,7 +6002,7 @@
             "gauge": "18 Gauge",
             "material": "Galvanneal",
             "weight": 25.823,
-            "price": 33.3,
+            "price": 29.69,
             "unit_quantity": 1,
             "modified_date": "2 quantity added at May 10 Wednesday 2023 08:42:07 AM",
             "group": null
@@ -6013,7 +6013,7 @@
             "gauge": "3\/16",
             "material": "304 SS",
             "weight": 14.994,
-            "price": 40.03,
+            "price": 38.98,
             "unit_quantity": 1,
             "modified_date": "Added at March 09 Thursday 2023 09:41:14 AM",
             "group": null
@@ -6024,7 +6024,7 @@
             "gauge": "3\/16",
             "material": "304 SS",
             "weight": 8.625,
-            "price": 21.04,
+            "price": 20.44,
             "unit_quantity": 1,
             "modified_date": "Added at March 09 Thursday 2023 09:41:14 AM",
             "group": null
@@ -6035,7 +6035,7 @@
             "gauge": "3\/16",
             "material": "304 SS",
             "weight": 12.463,
-            "price": 29.59,
+            "price": 28.71,
             "unit_quantity": 1,
             "modified_date": "Added at March 09 Thursday 2023 09:41:14 AM",
             "group": null
@@ -6068,7 +6068,7 @@
             "gauge": "18 Gauge",
             "material": "Galvanneal",
             "weight": 2.694,
-            "price": 4.04,
+            "price": 3.66,
             "unit_quantity": 1,
             "modified_date": "Added at April 06 Thursday 2023 11:25:56 AM",
             "group": null
@@ -6079,7 +6079,7 @@
             "gauge": "18 Gauge",
             "material": "Galvanneal",
             "weight": 25.465,
-            "price": 33.52,
+            "price": 29.95,
             "unit_quantity": 1,
             "modified_date": "Added at April 06 Thursday 2023 11:25:56 AM",
             "group": null
@@ -6090,7 +6090,7 @@
             "gauge": "18 Gauge",
             "material": "Galvanneal",
             "weight": 31.446,
-            "price": 41.04,
+            "price": 36.64,
             "unit_quantity": 1,
             "modified_date": "Added at April 06 Thursday 2023 11:25:56 AM",
             "group": null
@@ -6101,7 +6101,7 @@
             "gauge": "18 Gauge",
             "material": "Galvanneal",
             "weight": 11.108,
-            "price": 14.85,
+            "price": 13.3,
             "unit_quantity": 1,
             "modified_date": "Added at April 06 Thursday 2023 11:25:56 AM",
             "group": null
@@ -6112,7 +6112,7 @@
             "gauge": "18 Gauge",
             "material": "Galvanneal",
             "weight": 6.811,
-            "price": 10.18,
+            "price": 9.23,
             "unit_quantity": 1,
             "modified_date": "Added at April 06 Thursday 2023 11:25:56 AM",
             "group": null
@@ -6123,7 +6123,7 @@
             "gauge": "18 Gauge",
             "material": "Galvanneal",
             "weight": 1.617,
-            "price": 2.8,
+            "price": 2.57,
             "unit_quantity": 1,
             "modified_date": "Added at April 06 Thursday 2023 11:25:56 AM",
             "group": null
@@ -6134,7 +6134,7 @@
             "gauge": "18 Gauge",
             "material": "Galvanneal",
             "weight": 4.444,
-            "price": 6.97,
+            "price": 6.35,
             "unit_quantity": 1,
             "modified_date": "Added at April 06 Thursday 2023 11:25:56 AM",
             "group": null
@@ -6145,7 +6145,7 @@
             "gauge": "18 Gauge",
             "material": "Galvanneal",
             "weight": 4.323,
-            "price": 6.15,
+            "price": 5.54,
             "unit_quantity": 1,
             "modified_date": "Added at April 06 Thursday 2023 11:25:56 AM",
             "group": null
@@ -6156,7 +6156,7 @@
             "gauge": "18 Gauge",
             "material": "Galvanneal",
             "weight": 22.805,
-            "price": 37.37,
+            "price": 34.18,
             "unit_quantity": 1,
             "modified_date": "Added at April 06 Thursday 2023 11:25:56 AM",
             "group": null
@@ -6167,7 +6167,7 @@
             "gauge": "18 Gauge",
             "material": "Galvanneal",
             "weight": 0.51,
-            "price": 1.17,
+            "price": 1.1,
             "unit_quantity": 1,
             "modified_date": "Added at April 06 Thursday 2023 11:25:56 AM",
             "group": null
@@ -6178,7 +6178,7 @@
             "gauge": "18 Gauge",
             "material": "Galvanneal",
             "weight": 1.35,
-            "price": 2.45,
+            "price": 2.26,
             "unit_quantity": 1,
             "modified_date": "Added at April 06 Thursday 2023 11:25:56 AM",
             "group": null
@@ -6189,7 +6189,7 @@
             "gauge": "18 Gauge",
             "material": "Galvanneal",
             "weight": 6.355,
-            "price": 9.33,
+            "price": 8.44,
             "unit_quantity": 1,
             "modified_date": "Added at April 06 Thursday 2023 11:25:57 AM",
             "group": null
@@ -6200,7 +6200,7 @@
             "gauge": "18 Gauge",
             "material": "Galvanneal",
             "weight": 58.292,
-            "price": 74.99,
+            "price": 66.83,
             "unit_quantity": 1,
             "modified_date": "Added at April 06 Thursday 2023 11:25:57 AM",
             "group": null
@@ -6211,7 +6211,7 @@
             "gauge": "18 Gauge",
             "material": "Galvanneal",
             "weight": 34.213,
-            "price": 47.54,
+            "price": 42.75,
             "unit_quantity": 1,
             "modified_date": "Added at April 06 Thursday 2023 11:25:57 AM",
             "group": null
@@ -6222,7 +6222,7 @@
             "gauge": "18 Gauge",
             "material": "Galvanneal",
             "weight": 0.149,
-            "price": 0.51,
+            "price": 0.49,
             "unit_quantity": 1,
             "modified_date": "Added at April 06 Thursday 2023 11:25:57 AM",
             "group": null
@@ -6233,7 +6233,7 @@
             "gauge": "18 Gauge",
             "material": "Galvanneal",
             "weight": 2.786,
-            "price": 4.27,
+            "price": 3.88,
             "unit_quantity": 1,
             "modified_date": "Added at April 06 Thursday 2023 11:25:57 AM",
             "group": null
@@ -6244,7 +6244,7 @@
             "gauge": "18 Gauge",
             "material": "Galvanneal",
             "weight": 56.811,
-            "price": 73.63,
+            "price": 65.68,
             "unit_quantity": 1,
             "modified_date": "Added at April 06 Thursday 2023 11:25:57 AM",
             "group": null
@@ -6255,7 +6255,7 @@
             "gauge": "18 Gauge",
             "material": "Galvanneal",
             "weight": 26.814,
-            "price": 35.26,
+            "price": 31.51,
             "unit_quantity": 1,
             "modified_date": "Added at April 06 Thursday 2023 11:25:57 AM",
             "group": null
@@ -6266,7 +6266,7 @@
             "gauge": "18 Gauge",
             "material": "Galvanneal",
             "weight": 8.235,
-            "price": 11.0,
+            "price": 9.84,
             "unit_quantity": 1,
             "modified_date": "Added at April 06 Thursday 2023 11:25:57 AM",
             "group": null
@@ -6277,7 +6277,7 @@
             "gauge": "18 Gauge",
             "material": "Galvanneal",
             "weight": 24.288,
-            "price": 32.43,
+            "price": 29.03,
             "unit_quantity": 1,
             "modified_date": "Added at April 06 Thursday 2023 11:25:57 AM",
             "group": null
@@ -6288,7 +6288,7 @@
             "gauge": "18 Gauge",
             "material": "Galvanneal",
             "weight": 0.263,
-            "price": 0.77,
+            "price": 0.73,
             "unit_quantity": 1,
             "modified_date": "Added at April 06 Thursday 2023 11:25:57 AM",
             "group": null
@@ -6299,7 +6299,7 @@
             "gauge": "18 Gauge",
             "material": "Galvanneal",
             "weight": 24.218,
-            "price": 33.12,
+            "price": 29.73,
             "unit_quantity": 1,
             "modified_date": "Added at April 06 Thursday 2023 11:25:57 AM",
             "group": null
@@ -6310,7 +6310,7 @@
             "gauge": "18 Gauge",
             "material": "Galvanneal",
             "weight": 1.623,
-            "price": 3.23,
+            "price": 3.0,
             "unit_quantity": 1,
             "modified_date": "Added at April 06 Thursday 2023 11:25:57 AM",
             "group": null
@@ -6321,7 +6321,7 @@
             "gauge": "18 Gauge",
             "material": "Galvanneal",
             "weight": 13.816,
-            "price": 18.73,
+            "price": 16.8,
             "unit_quantity": 1,
             "modified_date": "Added at April 06 Thursday 2023 11:25:57 AM",
             "group": null
@@ -6332,7 +6332,7 @@
             "gauge": "18 Gauge",
             "material": "Galvanneal",
             "weight": 7.624,
-            "price": 12.3,
+            "price": 11.23,
             "unit_quantity": 1,
             "modified_date": "Added at April 06 Thursday 2023 11:25:57 AM",
             "group": null
@@ -6343,7 +6343,7 @@
             "gauge": "18 Gauge",
             "material": "Galvanneal",
             "weight": 0.485,
-            "price": 2.84,
+            "price": 2.77,
             "unit_quantity": 1,
             "modified_date": "Added at April 06 Thursday 2023 11:25:57 AM",
             "group": null
@@ -6354,7 +6354,7 @@
             "gauge": "3\/16",
             "material": "304 SS",
             "weight": 22.423,
-            "price": 55.71,
+            "price": 54.14,
             "unit_quantity": 1,
             "modified_date": "Added at March 09 Thursday 2023 09:41:14 AM",
             "group": null
@@ -6365,7 +6365,7 @@
             "gauge": "3\/16",
             "material": "304 SS",
             "weight": 22.32,
-            "price": 55.57,
+            "price": 54.01,
             "unit_quantity": 1,
             "modified_date": "Added at March 09 Thursday 2023 09:41:14 AM",
             "group": null
@@ -6400,7 +6400,7 @@
             "gauge": "18 Gauge",
             "material": "304 SS",
             "weight": 0.072,
-            "price": 0.28,
+            "price": 0.27,
             "unit_quantity": 1,
             "modified_date": "1085 quantity added at March 10 Friday 2023 08:59:20 AM",
             "group": null
@@ -6422,7 +6422,7 @@
             "gauge": "14 Gauge",
             "material": "Galvanized",
             "weight": 0.118,
-            "price": 0.52,
+            "price": 0.51,
             "unit_quantity": 1,
             "modified_date": "Added at March 10 Friday 2023 08:50:36 AM",
             "group": null
@@ -6444,7 +6444,7 @@
             "gauge": "12 Gauge",
             "material": "Galvanized",
             "weight": 0.26,
-            "price": 0.76,
+            "price": 0.75,
             "unit_quantity": 1,
             "modified_date": "156 quantity added at March 10 Friday 2023 08:51:25 AM",
             "group": "Galvanized Hinges"
@@ -6455,7 +6455,7 @@
             "gauge": "10 Gauge",
             "material": "Galvanized",
             "weight": 2.53,
-            "price": 5.16,
+            "price": 5.09,
             "unit_quantity": 1,
             "modified_date": "Added at March 17 Friday 2023 02:12:11 PM",
             "group": null
@@ -6466,7 +6466,7 @@
             "gauge": "10 Gauge",
             "material": "Galvanized",
             "weight": 1.217,
-            "price": 3.16,
+            "price": 3.12,
             "unit_quantity": 1,
             "modified_date": "Added at March 20 Monday 2023 10:42:44 AM",
             "group": null
@@ -6477,7 +6477,7 @@
             "gauge": "10 Gauge",
             "material": "304 SS",
             "weight": 0.425,
-            "price": 2.25,
+            "price": 2.22,
             "unit_quantity": 1,
             "modified_date": "1 quantity added at April 26 Wednesday 2023 01:03:16 PM",
             "group": null
@@ -6488,7 +6488,7 @@
             "gauge": "10 Gauge",
             "material": "304 SS",
             "weight": 1.458,
-            "price": 5.01,
+            "price": 4.91,
             "unit_quantity": 1,
             "modified_date": "Added at May 15 Monday 2023 10:20:19 AM",
             "group": null
@@ -6499,7 +6499,7 @@
             "gauge": "10 Gauge",
             "material": "304 SS",
             "weight": 0.367,
-            "price": 2.12,
+            "price": 2.1,
             "unit_quantity": 1,
             "modified_date": "Added at May 15 Monday 2023 10:20:19 AM",
             "group": null
@@ -6510,7 +6510,7 @@
             "gauge": "12G\"",
             "material": "304 SS",
             "weight": 0.322,
-            "price": 1.82,
+            "price": 1.79,
             "unit_quantity": 1,
             "modified_date": "1 quantity added at April 26 Wednesday 2023 01:03:16 PM",
             "group": null
@@ -6521,7 +6521,7 @@
             "gauge": "12G\"",
             "material": "304 SS",
             "weight": 0.361,
-            "price": 1.9,
+            "price": 1.88,
             "unit_quantity": 1,
             "modified_date": "1 quantity added at April 26 Wednesday 2023 01:03:16 PM",
             "group": null
@@ -6532,7 +6532,7 @@
             "gauge": "12G\"",
             "material": "304 SS",
             "weight": 0.382,
-            "price": 1.95,
+            "price": 1.92,
             "unit_quantity": 1,
             "modified_date": "1 quantity added at April 26 Wednesday 2023 01:03:16 PM",
             "group": null
@@ -6543,7 +6543,7 @@
             "gauge": "12G\"",
             "material": "304 SS",
             "weight": 0.404,
-            "price": 2.04,
+            "price": 2.01,
             "unit_quantity": 1,
             "modified_date": "1 quantity added at April 26 Wednesday 2023 01:03:16 PM",
             "group": null
@@ -6554,7 +6554,7 @@
             "gauge": "12G\"",
             "material": "304 SS",
             "weight": 0.341,
-            "price": 1.77,
+            "price": 1.75,
             "unit_quantity": 1,
             "modified_date": "1 quantity added at April 26 Wednesday 2023 01:03:16 PM",
             "group": null
@@ -6565,7 +6565,7 @@
             "gauge": "14 Gauge",
             "material": "Galvanized",
             "weight": 0.212,
-            "price": 0.68,
+            "price": 0.67,
             "unit_quantity": 1,
             "modified_date": "1 quantity added at March 06 Monday 2023 09:33:21 AM",
             "group": null
@@ -6635,7 +6635,7 @@
             "gauge": "1\/4",
             "material": "304 SS",
             "weight": 0.252,
-            "price": 1.46,
+            "price": 1.44,
             "unit_quantity": 1,
             "modified_date": "Added at March 17 Friday 2023 02:13:08 PM",
             "group": null
@@ -6679,7 +6679,7 @@
             "gauge": "10 Gauge",
             "material": "304 SS",
             "weight": 0.344,
-            "price": 1.66,
+            "price": 1.63,
             "unit_quantity": 1,
             "modified_date": "36 quantity added at May 19 Friday 2023 10:28:55 AM",
             "group": null
@@ -6767,7 +6767,7 @@
             "gauge": "14 Gauge",
             "material": "304 SS",
             "weight": 7.283,
-            "price": 18.45,
+            "price": 17.94,
             "unit_quantity": 1,
             "modified_date": "Added at March 17 Friday 2023 02:17:03 PM",
             "group": null
@@ -6778,7 +6778,7 @@
             "gauge": "18 Gauge",
             "material": "304 SS",
             "weight": 0.669,
-            "price": 1.94,
+            "price": 1.89,
             "unit_quantity": 1,
             "modified_date": "Added at February 25 Saturday 2023 09:10:26 AM",
             "group": null
@@ -6833,7 +6833,7 @@
             "gauge": "18 Gauge",
             "material": "304 SS",
             "weight": 1.447,
-            "price": 8.03,
+            "price": 7.93,
             "unit_quantity": 1,
             "modified_date": "Added at February 25 Saturday 2023 09:10:26 AM",
             "group": null
@@ -6844,7 +6844,7 @@
             "gauge": "18 Gauge",
             "material": "304 SS",
             "weight": 0.398,
-            "price": 3.69,
+            "price": 3.66,
             "unit_quantity": 1,
             "modified_date": "Added at February 25 Saturday 2023 09:10:26 AM",
             "group": null
@@ -6855,7 +6855,7 @@
             "gauge": "14 Gauge",
             "material": "304 SS",
             "weight": 10.524,
-            "price": 25.33,
+            "price": 24.6,
             "unit_quantity": 1,
             "modified_date": "Added at March 17 Friday 2023 02:17:02 PM",
             "group": null
@@ -6866,7 +6866,7 @@
             "gauge": "14 Gauge",
             "material": "304 SS",
             "weight": 7.003,
-            "price": 17.76,
+            "price": 17.27,
             "unit_quantity": 1,
             "modified_date": "Added at March 17 Friday 2023 02:17:02 PM",
             "group": null
@@ -6899,7 +6899,7 @@
             "gauge": "18 Gauge",
             "material": "304 SS",
             "weight": 17.37,
-            "price": 43.39,
+            "price": 42.17,
             "unit_quantity": 1,
             "modified_date": "Added at February 25 Saturday 2023 09:10:26 AM",
             "group": null
@@ -6910,7 +6910,7 @@
             "gauge": "18 Gauge",
             "material": "304 SS",
             "weight": 4.343,
-            "price": 10.88,
+            "price": 10.58,
             "unit_quantity": 1,
             "modified_date": "Added at February 25 Saturday 2023 09:10:26 AM",
             "group": null
@@ -6954,7 +6954,7 @@
             "gauge": "10 Gauge",
             "material": "304 SS",
             "weight": 0.839,
-            "price": 3.55,
+            "price": 3.5,
             "unit_quantity": 1,
             "modified_date": "2 quantity added at May 19 Friday 2023 10:28:55 AM",
             "group": null
@@ -6965,7 +6965,7 @@
             "gauge": "10 Gauge",
             "material": "304 SS",
             "weight": 0.342,
-            "price": 1.69,
+            "price": 1.67,
             "unit_quantity": 1,
             "modified_date": "2 quantity added at May 19 Friday 2023 10:28:55 AM",
             "group": null
@@ -6987,7 +6987,7 @@
             "gauge": "14 Gauge",
             "material": "304 SS",
             "weight": 6.892,
-            "price": 17.44,
+            "price": 16.96,
             "unit_quantity": 1,
             "modified_date": "Added at March 17 Friday 2023 02:17:02 PM",
             "group": null
@@ -7196,7 +7196,7 @@
             "gauge": "18 Gauge",
             "material": "304 SS",
             "weight": 2.07,
-            "price": 5.91,
+            "price": 5.76,
             "unit_quantity": 1,
             "modified_date": "Added at February 25 Saturday 2023 09:10:26 AM",
             "group": null
@@ -7240,7 +7240,7 @@
             "gauge": "3\/16",
             "material": "304 SS",
             "weight": 6.355,
-            "price": 17.83,
+            "price": 17.39,
             "unit_quantity": 1,
             "modified_date": "Added at March 09 Thursday 2023 09:41:14 AM",
             "group": null
@@ -7273,7 +7273,7 @@
             "gauge": "10 Gauge",
             "material": "304 SS",
             "weight": 0.05,
-            "price": 0.32,
+            "price": 0.31,
             "unit_quantity": 1,
             "modified_date": "Added at April 21 Friday 2023 10:49:04 AM",
             "group": null
@@ -7284,7 +7284,7 @@
             "gauge": "14 Gauge",
             "material": "304 SS",
             "weight": 0.054,
-            "price": 0.41,
+            "price": 0.4,
             "unit_quantity": 1,
             "modified_date": "Added at May 06 Saturday 2023 01:45:23 PM",
             "group": null
@@ -7317,7 +7317,7 @@
             "gauge": "14 Gauge",
             "material": "304 SS",
             "weight": 0.414,
-            "price": 1.31,
+            "price": 1.28,
             "unit_quantity": 1,
             "modified_date": "Added at May 06 Saturday 2023 01:45:49 PM",
             "group": null
@@ -7328,7 +7328,7 @@
             "gauge": "14 Gauge",
             "material": "304 SS",
             "weight": 8.105,
-            "price": 21.38,
+            "price": 20.82,
             "unit_quantity": 1,
             "modified_date": "Added at May 03 Wednesday 2023 01:47:00 PM",
             "group": null
@@ -7341,7 +7341,7 @@
             "gauge": "10 Gauge",
             "material": "304 SS",
             "weight": 1.13,
-            "price": 3.76,
+            "price": 3.68,
             "unit_quantity": 1,
             "modified_date": "Added at March 13 Monday 2023 08:55:13 AM",
             "group": null
@@ -7352,7 +7352,7 @@
             "gauge": "12 Gauge",
             "material": "Galvanized",
             "weight": 12.287,
-            "price": 18.49,
+            "price": 18.13,
             "unit_quantity": 1,
             "modified_date": "2 quantity added at February 27 Monday 2023 02:37:18 PM",
             "group": null
@@ -7519,7 +7519,7 @@
             "gauge": "14 Gauge",
             "material": "304 SS",
             "weight": 1.057,
-            "price": 6.52,
+            "price": 6.45,
             "unit_quantity": 1,
             "modified_date": "Added at March 17 Friday 2023 02:17:02 PM",
             "group": null
@@ -7530,7 +7530,7 @@
             "gauge": "14 Gauge",
             "material": "304 SS",
             "weight": 1.869,
-            "price": 8.6,
+            "price": 8.47,
             "unit_quantity": 1,
             "modified_date": "Added at March 17 Friday 2023 02:17:02 PM",
             "group": null
@@ -7541,7 +7541,7 @@
             "gauge": "14 Gauge",
             "material": "304 SS",
             "weight": 0.066,
-            "price": 2.31,
+            "price": 2.3,
             "unit_quantity": 1,
             "modified_date": "Added at March 17 Friday 2023 02:17:02 PM",
             "group": null
@@ -7552,7 +7552,7 @@
             "gauge": "14 Gauge",
             "material": "304 SS",
             "weight": 0.264,
-            "price": 3.48,
+            "price": 3.47,
             "unit_quantity": 1,
             "modified_date": "Added at March 17 Friday 2023 02:17:02 PM",
             "group": null
@@ -7563,7 +7563,7 @@
             "gauge": "14 Gauge",
             "material": "304 SS",
             "weight": 0.595,
-            "price": 5.11,
+            "price": 5.07,
             "unit_quantity": 1,
             "modified_date": "Added at March 17 Friday 2023 02:17:02 PM",
             "group": null
