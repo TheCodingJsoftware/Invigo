@@ -6,7 +6,7 @@ app = Flask(__name__)
 
 @app.route('/<file_name>')
 def get_log(file_name):
-    with open(f'/data/{file_name}.json') as file:
+    with open(f'C:/Users/joe/Documents/Inventory-Manager/server/data/{file_name}.json') as file:
         lines = file.readlines()
         lines = [line.rstrip() for line in lines]
         lines = lines[::-1]
