@@ -957,6 +957,17 @@
         }
     },
     "BL25": {
+        "2840-Shaker-66x6": {
+            "current_quantity": 432.0,
+            "machine_time": 0.28,
+            "gauge": "3\/8",
+            "material": "Mild Steel",
+            "weight": 0.554,
+            "price": 1.14,
+            "unit_quantity": 1,
+            "modified_date": "108 quantity added at May 22 Monday 2023 10:23:45 AM",
+            "group": null
+        },
         "Level Gauge": {
             "current_quantity": 298.0,
             "machine_time": 0.27,
@@ -1034,26 +1045,15 @@
             "modified_date": "Removed 5 quantity at May 17 Wednesday 2023 10:03:53 AM",
             "group": null
         },
-        "2840-Shaker-66x6": {
-            "current_quantity": 0.0,
-            "machine_time": 0.28,
-            "gauge": "3\/8",
-            "material": "Mild Steel",
-            "weight": 0.554,
-            "price": 1.14,
-            "unit_quantity": 1,
-            "modified_date": "Manually set to 0.0 quantity at May 22 Monday 2023 08:55:51 AM",
-            "group": null
-        },
         "2840-65x2": {
-            "current_quantity": 29,
+            "current_quantity": 45,
             "machine_time": 0.3,
             "gauge": "3\/8",
             "material": "Mild Steel",
             "weight": 0.451,
             "price": 1.11,
             "unit_quantity": 1,
-            "modified_date": "Removed 5 quantity at May 17 Wednesday 2023 10:03:53 AM",
+            "modified_date": "4 quantity added at May 22 Monday 2023 10:23:45 AM",
             "group": null
         },
         "2534-Ashpan": {
@@ -1091,6 +1091,17 @@
         }
     },
     "BL28": {
+        "2840-Shaker-66x6": {
+            "current_quantity": 432.0,
+            "machine_time": 0.28,
+            "gauge": "3\/8",
+            "material": "Mild Steel",
+            "weight": 0.554,
+            "price": 1.14,
+            "unit_quantity": 6.0,
+            "modified_date": "108 quantity added at May 22 Monday 2023 10:23:45 AM",
+            "group": null
+        },
         "Level Gauge": {
             "current_quantity": 298.0,
             "machine_time": 0.27,
@@ -1201,6 +1212,17 @@
             "modified_date": "Manually set to 51.0 quantity at April 28 Friday 2023 02:58:58 PM",
             "group": null
         },
+        "2840-65x2": {
+            "current_quantity": 45,
+            "machine_time": 0.3,
+            "gauge": "3\/8",
+            "material": "Mild Steel",
+            "weight": 0.451,
+            "price": 1.11,
+            "unit_quantity": 1,
+            "modified_date": "4 quantity added at May 22 Monday 2023 10:23:45 AM",
+            "group": null
+        },
         "2840-25x4": {
             "current_quantity": 40.0,
             "machine_time": 0.55,
@@ -1221,17 +1243,6 @@
             "price": 0.96,
             "unit_quantity": 2.0,
             "modified_date": "31 quantity added at April 17 Monday 2023 05:06:22 PM",
-            "group": null
-        },
-        "2840-65x2": {
-            "current_quantity": 29,
-            "machine_time": 0.3,
-            "gauge": "3\/8",
-            "material": "Mild Steel",
-            "weight": 0.451,
-            "price": 1.11,
-            "unit_quantity": 1,
-            "modified_date": "Removed 5 quantity at May 17 Wednesday 2023 10:03:53 AM",
             "group": null
         },
         "2840-38": {
@@ -1586,6 +1597,17 @@
             "modified_date": "10 quantity added at May 19 Friday 2023 01:37:44 PM",
             "group": null
         },
+        "2840-Shaker-67": {
+            "current_quantity": 10,
+            "machine_time": 2.07,
+            "gauge": "3\/8",
+            "material": "Mild Steel",
+            "weight": 4.89,
+            "price": 9.09,
+            "unit_quantity": 1,
+            "modified_date": "10 quantity added at May 22 Monday 2023 10:23:45 AM",
+            "group": null
+        },
         "2840-37": {
             "current_quantity": 8.0,
             "machine_time": 0.55,
@@ -1938,17 +1960,6 @@
             "modified_date": "Removed 10 quantity at April 08 Saturday 2023 10:54:59 AM",
             "group": null
         },
-        "2840-Shaker-67": {
-            "current_quantity": 0,
-            "machine_time": 2.07,
-            "gauge": "3\/8",
-            "material": "Mild Steel",
-            "weight": 4.89,
-            "price": 9.09,
-            "unit_quantity": 1,
-            "modified_date": "Removed 10 quantity at April 08 Saturday 2023 10:54:59 AM",
-            "group": null
-        },
         "2840-47x2": {
             "current_quantity": 0.0,
             "machine_time": 0.4,
@@ -2091,20 +2102,20 @@
             "unit_quantity": 1,
             "modified_date": "Manually set to 0.0 quantity at April 12 Wednesday 2023 05:12:11 PM",
             "group": null
-        },
+        }
+    },
+    "BL34": {
         "2840-Shaker-66x6": {
-            "current_quantity": 0.0,
+            "current_quantity": 432.0,
             "machine_time": 0.28,
             "gauge": "3\/8",
             "material": "Mild Steel",
             "weight": 0.554,
             "price": 1.14,
-            "unit_quantity": 6.0,
-            "modified_date": "Manually set to 0.0 quantity at May 22 Monday 2023 08:55:51 AM",
+            "unit_quantity": 1,
+            "modified_date": "108 quantity added at May 22 Monday 2023 10:23:45 AM",
             "group": null
-        }
-    },
-    "BL34": {
+        },
         "Level Gauge": {
             "current_quantity": 298.0,
             "machine_time": 0.27,
@@ -2180,17 +2191,6 @@
             "price": 0.65,
             "unit_quantity": 2.0,
             "modified_date": "20 quantity added at May 19 Friday 2023 01:37:44 PM",
-            "group": null
-        },
-        "2840-Shaker-66x6": {
-            "current_quantity": 0.0,
-            "machine_time": 0.28,
-            "gauge": "3\/8",
-            "material": "Mild Steel",
-            "weight": 0.554,
-            "price": 1.14,
-            "unit_quantity": 1,
-            "modified_date": "Manually set to 0.0 quantity at May 22 Monday 2023 08:55:51 AM",
             "group": null
         },
         "2840-66x2": {
@@ -2270,6 +2270,17 @@
             "modified_date": "Removed 10 quantity at May 09 Tuesday 2023 02:02:12 PM",
             "group": null
         },
+        "2840-65x2": {
+            "current_quantity": 30.0,
+            "machine_time": 0.3,
+            "gauge": "3\/8",
+            "material": "Mild Steel",
+            "weight": 0.451,
+            "price": 1.11,
+            "unit_quantity": 2.0,
+            "modified_date": "4 quantity added at May 22 Monday 2023 10:23:45 AM",
+            "group": null
+        },
         "3444-337": {
             "current_quantity": 20,
             "machine_time": 0.45,
@@ -2290,17 +2301,6 @@
             "price": 2.84,
             "unit_quantity": 1,
             "modified_date": "Removed 10 quantity at May 09 Tuesday 2023 02:02:12 PM",
-            "group": null
-        },
-        "2840-65x2": {
-            "current_quantity": 14.0,
-            "machine_time": 0.3,
-            "gauge": "3\/8",
-            "material": "Mild Steel",
-            "weight": 0.451,
-            "price": 1.11,
-            "unit_quantity": 2.0,
-            "modified_date": "Removed 10.0 quantity at May 17 Wednesday 2023 10:03:53 AM",
             "group": null
         },
         "364475": {
@@ -3174,6 +3174,17 @@
         }
     },
     "BL40": {
+        "2840-Shaker-66x6": {
+            "current_quantity": 432.0,
+            "machine_time": 0.28,
+            "gauge": "3\/8",
+            "material": "Mild Steel",
+            "weight": 0.554,
+            "price": 1.14,
+            "unit_quantity": 1,
+            "modified_date": "108 quantity added at May 22 Monday 2023 10:23:45 AM",
+            "group": null
+        },
         "Level Gauge": {
             "current_quantity": 298.0,
             "machine_time": 0.27,
@@ -3251,26 +3262,15 @@
             "modified_date": "Removed 5 quantity at May 17 Wednesday 2023 10:03:53 AM",
             "group": null
         },
-        "2840-Shaker-66x6": {
-            "current_quantity": 0.0,
-            "machine_time": 0.28,
-            "gauge": "3\/8",
-            "material": "Mild Steel",
-            "weight": 0.554,
-            "price": 1.14,
-            "unit_quantity": 1,
-            "modified_date": "Manually set to 0.0 quantity at May 22 Monday 2023 08:55:51 AM",
-            "group": null
-        },
         "2840-65x2": {
-            "current_quantity": 29,
+            "current_quantity": 45,
             "machine_time": 0.3,
             "gauge": "3\/8",
             "material": "Mild Steel",
             "weight": 0.451,
             "price": 1.11,
             "unit_quantity": 1,
-            "modified_date": "Removed 5 quantity at May 17 Wednesday 2023 10:03:53 AM",
+            "modified_date": "4 quantity added at May 22 Monday 2023 10:23:45 AM",
             "group": null
         },
         "404440": {
