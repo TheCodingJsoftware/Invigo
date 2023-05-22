@@ -22,6 +22,17 @@
             "modified_date": "69 quantity added at March 21 Tuesday 2023 04:35:32 PM",
             "group": null
         },
+        "G3-1-Ceramic-Secondary Seal All in One-Part4": {
+            "current_quantity": 125,
+            "machine_time": 0.23,
+            "gauge": "3\/16",
+            "material": "Mild Steel",
+            "weight": 0.247,
+            "price": 0.77,
+            "unit_quantity": 1,
+            "modified_date": "Added at May 22 Monday 2023 02:54:58 PM",
+            "group": null
+        },
         "2 inch pin cap": {
             "current_quantity": 51,
             "machine_time": 0.17,
@@ -3571,6 +3582,28 @@
             "modified_date": "Added at March 21 Tuesday 2023 04:35:32 PM",
             "group": null
         },
+        "G3-1-Shipping pallet bracket Ax2": {
+            "current_quantity": 52,
+            "machine_time": 0.47,
+            "gauge": "3\/16",
+            "material": "Mild Steel",
+            "weight": 3.131,
+            "price": 3.68,
+            "unit_quantity": 2.0,
+            "modified_date": "12 quantity added at May 22 Monday 2023 11:18:21 AM",
+            "group": null
+        },
+        "G3-1-Shipping pallet bracket Bx2": {
+            "current_quantity": 52,
+            "machine_time": 0.52,
+            "gauge": "3\/16",
+            "material": "Mild Steel",
+            "weight": 4.21,
+            "price": 4.67,
+            "unit_quantity": 2.0,
+            "modified_date": "12 quantity added at May 22 Monday 2023 11:18:21 AM",
+            "group": null
+        },
         "G2Plus-Flues access-lid": {
             "current_quantity": 16,
             "machine_time": 0.52,
@@ -4043,28 +4076,6 @@
             "unit_quantity": 6.0,
             "modified_date": "Manually set to 0.0 quantity at March 24 Friday 2023 11:02:51 AM",
             "group": null
-        },
-        "G3-1-Shipping pallet bracket Ax2": {
-            "current_quantity": 52,
-            "machine_time": 0.47,
-            "gauge": "3\/16",
-            "material": "Mild Steel",
-            "weight": 3.131,
-            "price": 3.68,
-            "unit_quantity": 2.0,
-            "modified_date": "12 quantity added at May 22 Monday 2023 11:18:21 AM",
-            "group": null
-        },
-        "G3-1-Shipping pallet bracket Bx2": {
-            "current_quantity": 52,
-            "machine_time": 0.52,
-            "gauge": "3\/16",
-            "material": "Mild Steel",
-            "weight": 4.21,
-            "price": 4.67,
-            "unit_quantity": 2.0,
-            "modified_date": "12 quantity added at May 22 Monday 2023 11:18:21 AM",
-            "group": null
         }
     },
     "Polar G2+": {
@@ -4176,6 +4187,28 @@
             "price": 12.24,
             "unit_quantity": 6.0,
             "modified_date": "60 quantity added at April 27 Thursday 2023 08:57:36 AM",
+            "group": null
+        },
+        "G3-1-Shipping pallet bracket Ax2": {
+            "current_quantity": 52,
+            "machine_time": 0.47,
+            "gauge": "3\/16",
+            "material": "Mild Steel",
+            "weight": 3.131,
+            "price": 3.68,
+            "unit_quantity": 2.0,
+            "modified_date": "12 quantity added at May 22 Monday 2023 11:18:21 AM",
+            "group": null
+        },
+        "G3-1-Shipping pallet bracket Bx2": {
+            "current_quantity": 52,
+            "machine_time": 0.52,
+            "gauge": "3\/16",
+            "material": "Mild Steel",
+            "weight": 4.21,
+            "price": 4.67,
+            "unit_quantity": 2.0,
+            "modified_date": "12 quantity added at May 22 Monday 2023 11:18:21 AM",
             "group": null
         },
         "G2Plus-Fan Motor-inner condensation shield": {
@@ -4958,28 +4991,6 @@
             "unit_quantity": 2.0,
             "modified_date": "Manually set to 0.0 quantity at March 24 Friday 2023 11:02:54 AM",
             "group": null
-        },
-        "G3-1-Shipping pallet bracket Ax2": {
-            "current_quantity": 52,
-            "machine_time": 0.47,
-            "gauge": "3\/16",
-            "material": "Mild Steel",
-            "weight": 3.131,
-            "price": 3.68,
-            "unit_quantity": 2.0,
-            "modified_date": "12 quantity added at May 22 Monday 2023 11:18:21 AM",
-            "group": null
-        },
-        "G3-1-Shipping pallet bracket Bx2": {
-            "current_quantity": 52,
-            "machine_time": 0.52,
-            "gauge": "3\/16",
-            "material": "Mild Steel",
-            "weight": 4.21,
-            "price": 4.67,
-            "unit_quantity": 2.0,
-            "modified_date": "12 quantity added at May 22 Monday 2023 11:18:21 AM",
-            "group": null
         }
     },
     "Polar G3": {
@@ -5135,6 +5146,28 @@
             "price": 10.81,
             "unit_quantity": 1,
             "modified_date": "30 quantity added at March 28 Tuesday 2023 02:36:56 PM",
+            "group": null
+        },
+        "G3-1-Shipping pallet bracket Ax2": {
+            "current_quantity": 52,
+            "machine_time": 0.47,
+            "gauge": "3\/16",
+            "material": "Mild Steel",
+            "weight": 3.131,
+            "price": 3.68,
+            "unit_quantity": 2.0,
+            "modified_date": "12 quantity added at May 22 Monday 2023 11:18:21 AM",
+            "group": null
+        },
+        "G3-1-Shipping pallet bracket Bx2": {
+            "current_quantity": 52,
+            "machine_time": 0.52,
+            "gauge": "3\/16",
+            "material": "Mild Steel",
+            "weight": 4.21,
+            "price": 4.67,
+            "unit_quantity": 2.0,
+            "modified_date": "12 quantity added at May 22 Monday 2023 11:18:21 AM",
             "group": null
         },
         "G2Plus-Fan Motor-inner condensation shield": {
@@ -5740,28 +5773,6 @@
             "price": 9.26,
             "unit_quantity": 1,
             "modified_date": "Manually set to 0.0 quantity at March 24 Friday 2023 11:02:54 AM",
-            "group": null
-        },
-        "G3-1-Shipping pallet bracket Ax2": {
-            "current_quantity": 52,
-            "machine_time": 0.47,
-            "gauge": "3\/16",
-            "material": "Mild Steel",
-            "weight": 3.131,
-            "price": 3.68,
-            "unit_quantity": 2.0,
-            "modified_date": "12 quantity added at May 22 Monday 2023 11:18:21 AM",
-            "group": null
-        },
-        "G3-1-Shipping pallet bracket Bx2": {
-            "current_quantity": 52,
-            "machine_time": 0.52,
-            "gauge": "3\/16",
-            "material": "Mild Steel",
-            "weight": 4.21,
-            "price": 4.67,
-            "unit_quantity": 2.0,
-            "modified_date": "12 quantity added at May 22 Monday 2023 11:18:21 AM",
             "group": null
         }
     },
