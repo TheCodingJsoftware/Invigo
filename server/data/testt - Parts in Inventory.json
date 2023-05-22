@@ -5510,28 +5510,6 @@
         }
     },
     "Piney MFG": {
-        "PY-TFT-01_": {
-            "current_quantity": 12,
-            "machine_time": 0.22,
-            "gauge": "1\/2",
-            "material": "Mild Steel",
-            "weight": 0.298,
-            "price": 0.78,
-            "unit_quantity": 1,
-            "modified_date": "Added at March 03 Friday 2023 05:19:24 PM",
-            "group": null
-        },
-        "PY-TFT-02_": {
-            "current_quantity": 10,
-            "machine_time": 0.18,
-            "gauge": "1\/2",
-            "material": "Mild Steel",
-            "weight": 0.158,
-            "price": 0.57,
-            "unit_quantity": 1,
-            "modified_date": "Added at March 03 Friday 2023 05:19:24 PM",
-            "group": null
-        },
         "kent trigger_1": {
             "current_quantity": 10,
             "machine_time": 0.05,
@@ -5717,6 +5695,28 @@
             "price": 26.57,
             "unit_quantity": 1,
             "modified_date": "Added at April 12 Wednesday 2023 04:26:36 PM",
+            "group": null
+        },
+        "PY-TFT-01_": {
+            "current_quantity": 12,
+            "machine_time": 0.22,
+            "gauge": "1\/2",
+            "material": "Mild Steel",
+            "weight": 0.298,
+            "price": 0.78,
+            "unit_quantity": 1,
+            "modified_date": "Added at March 03 Friday 2023 05:19:24 PM",
+            "group": null
+        },
+        "PY-TFT-02_": {
+            "current_quantity": 10,
+            "machine_time": 0.18,
+            "gauge": "1\/2",
+            "material": "Mild Steel",
+            "weight": 0.158,
+            "price": 0.57,
+            "unit_quantity": 1,
+            "modified_date": "Added at March 03 Friday 2023 05:19:24 PM",
             "group": null
         }
     }
