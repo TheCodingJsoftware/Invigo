@@ -1035,14 +1035,14 @@
             "group": null
         },
         "2840-Shaker-66x6": {
-            "current_quantity": 104,
+            "current_quantity": 0.0,
             "machine_time": 0.28,
             "gauge": "3\/8",
             "material": "Mild Steel",
             "weight": 0.554,
             "price": 1.14,
             "unit_quantity": 1,
-            "modified_date": "Removed 5 quantity at May 17 Wednesday 2023 10:03:53 AM",
+            "modified_date": "Manually set to 0.0 quantity at May 22 Monday 2023 08:55:51 AM",
             "group": null
         },
         "2840-65x2": {
@@ -2093,14 +2093,14 @@
             "group": null
         },
         "2840-Shaker-66x6": {
-            "current_quantity": -21.0,
+            "current_quantity": 0.0,
             "machine_time": 0.28,
             "gauge": "3\/8",
             "material": "Mild Steel",
             "weight": 0.554,
             "price": 1.14,
             "unit_quantity": 6.0,
-            "modified_date": "Removed 30.0 quantity at May 17 Wednesday 2023 10:03:53 AM",
+            "modified_date": "Manually set to 0.0 quantity at May 22 Monday 2023 08:55:51 AM",
             "group": null
         }
     },
@@ -2183,14 +2183,14 @@
             "group": null
         },
         "2840-Shaker-66x6": {
-            "current_quantity": 104,
+            "current_quantity": 0.0,
             "machine_time": 0.28,
             "gauge": "3\/8",
             "material": "Mild Steel",
             "weight": 0.554,
             "price": 1.14,
             "unit_quantity": 1,
-            "modified_date": "Removed 5 quantity at May 17 Wednesday 2023 10:03:53 AM",
+            "modified_date": "Manually set to 0.0 quantity at May 22 Monday 2023 08:55:51 AM",
             "group": null
         },
         "2840-66x2": {
@@ -3252,14 +3252,14 @@
             "group": null
         },
         "2840-Shaker-66x6": {
-            "current_quantity": 104,
+            "current_quantity": 0.0,
             "machine_time": 0.28,
             "gauge": "3\/8",
             "material": "Mild Steel",
             "weight": 0.554,
             "price": 1.14,
             "unit_quantity": 1,
-            "modified_date": "Removed 5 quantity at May 17 Wednesday 2023 10:03:53 AM",
+            "modified_date": "Manually set to 0.0 quantity at May 22 Monday 2023 08:55:51 AM",
             "group": null
         },
         "2840-65x2": {
