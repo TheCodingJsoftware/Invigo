@@ -22,28 +22,6 @@
             "modified_date": "69 quantity added at March 21 Tuesday 2023 04:35:32 PM",
             "group": null
         },
-        "G3-1-Shipping pallet bracket Ax2": {
-            "current_quantity": 52,
-            "machine_time": 0.47,
-            "gauge": "3\/16",
-            "material": "Mild Steel",
-            "weight": 3.131,
-            "price": 3.68,
-            "unit_quantity": 1,
-            "modified_date": "12 quantity added at May 22 Monday 2023 11:18:21 AM",
-            "group": null
-        },
-        "G3-1-Shipping pallet bracket Bx2": {
-            "current_quantity": 52,
-            "machine_time": 0.52,
-            "gauge": "3\/16",
-            "material": "Mild Steel",
-            "weight": 4.21,
-            "price": 4.67,
-            "unit_quantity": 1,
-            "modified_date": "12 quantity added at May 22 Monday 2023 11:18:21 AM",
-            "group": null
-        },
         "2 inch pin cap": {
             "current_quantity": 51,
             "machine_time": 0.17,
@@ -1443,14 +1421,14 @@
             "group": null
         },
         "2840-05": {
-            "current_quantity": 1.0,
+            "current_quantity": 0.0,
             "machine_time": 1.78,
             "gauge": "1\/4",
             "material": "Mild Steel",
             "weight": 69.744,
             "price": 60.25,
             "unit_quantity": 1,
-            "modified_date": "Manually set to 1.0 quantity at April 08 Saturday 2023 10:56:42 AM",
+            "modified_date": "Manually set to 0.0 quantity at May 22 Monday 2023 11:23:58 AM",
             "group": null
         },
         "2840-Shaker-64x2": {
@@ -4073,7 +4051,7 @@
             "material": "Mild Steel",
             "weight": 3.131,
             "price": 3.68,
-            "unit_quantity": 1,
+            "unit_quantity": 2.0,
             "modified_date": "12 quantity added at May 22 Monday 2023 11:18:21 AM",
             "group": null
         },
@@ -4084,7 +4062,7 @@
             "material": "Mild Steel",
             "weight": 4.21,
             "price": 4.67,
-            "unit_quantity": 1,
+            "unit_quantity": 2.0,
             "modified_date": "12 quantity added at May 22 Monday 2023 11:18:21 AM",
             "group": null
         }
@@ -4988,7 +4966,7 @@
             "material": "Mild Steel",
             "weight": 3.131,
             "price": 3.68,
-            "unit_quantity": 1,
+            "unit_quantity": 2.0,
             "modified_date": "12 quantity added at May 22 Monday 2023 11:18:21 AM",
             "group": null
         },
@@ -4999,7 +4977,7 @@
             "material": "Mild Steel",
             "weight": 4.21,
             "price": 4.67,
-            "unit_quantity": 1,
+            "unit_quantity": 2.0,
             "modified_date": "12 quantity added at May 22 Monday 2023 11:18:21 AM",
             "group": null
         }
@@ -5771,7 +5749,7 @@
             "material": "Mild Steel",
             "weight": 3.131,
             "price": 3.68,
-            "unit_quantity": 1,
+            "unit_quantity": 2.0,
             "modified_date": "12 quantity added at May 22 Monday 2023 11:18:21 AM",
             "group": null
         },
@@ -5782,7 +5760,7 @@
             "material": "Mild Steel",
             "weight": 4.21,
             "price": 4.67,
-            "unit_quantity": 1,
+            "unit_quantity": 2.0,
             "modified_date": "12 quantity added at May 22 Monday 2023 11:18:21 AM",
             "group": null
         }
