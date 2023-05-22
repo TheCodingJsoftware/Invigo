@@ -22,6 +22,28 @@
             "modified_date": "69 quantity added at March 21 Tuesday 2023 04:35:32 PM",
             "group": null
         },
+        "G3-1-Shipping pallet bracket Ax2": {
+            "current_quantity": 52,
+            "machine_time": 0.47,
+            "gauge": "3\/16",
+            "material": "Mild Steel",
+            "weight": 3.131,
+            "price": 3.68,
+            "unit_quantity": 1,
+            "modified_date": "12 quantity added at May 22 Monday 2023 11:18:21 AM",
+            "group": null
+        },
+        "G3-1-Shipping pallet bracket Bx2": {
+            "current_quantity": 52,
+            "machine_time": 0.52,
+            "gauge": "3\/16",
+            "material": "Mild Steel",
+            "weight": 4.21,
+            "price": 4.67,
+            "unit_quantity": 1,
+            "modified_date": "12 quantity added at May 22 Monday 2023 11:18:21 AM",
+            "group": null
+        },
         "2 inch pin cap": {
             "current_quantity": 51,
             "machine_time": 0.17,
@@ -42,28 +64,6 @@
             "price": 0.54,
             "unit_quantity": 1,
             "modified_date": "24 quantity added at May 06 Saturday 2023 01:47:13 PM",
-            "group": null
-        },
-        "G3-1-Shipping pallet bracket Ax2": {
-            "current_quantity": 40,
-            "machine_time": 0.47,
-            "gauge": "3\/16",
-            "material": "Mild Steel",
-            "weight": 3.131,
-            "price": 3.68,
-            "unit_quantity": 1,
-            "modified_date": "Added at May 03 Wednesday 2023 01:49:31 PM",
-            "group": null
-        },
-        "G3-1-Shipping pallet bracket Bx2": {
-            "current_quantity": 40,
-            "machine_time": 0.52,
-            "gauge": "3\/16",
-            "material": "Mild Steel",
-            "weight": 4.21,
-            "price": 4.67,
-            "unit_quantity": 1,
-            "modified_date": "Added at May 03 Wednesday 2023 01:49:31 PM",
             "group": null
         },
         "Flat pattern - door hinge shim18 fix": {
@@ -925,6 +925,17 @@
             "modified_date": "40 quantity added at May 22 Monday 2023 11:13:20 AM",
             "group": null
         },
+        "2840-34x4": {
+            "current_quantity": 40.0,
+            "machine_time": 0.85,
+            "gauge": "3\/16",
+            "material": "Mild Steel",
+            "weight": 13.706,
+            "price": 13.09,
+            "unit_quantity": 4.0,
+            "modified_date": "40 quantity added at May 22 Monday 2023 11:18:22 AM",
+            "group": null
+        },
         "2840-65x2": {
             "current_quantity": 34,
             "machine_time": 0.3,
@@ -1288,6 +1299,72 @@
             "modified_date": "10 quantity added at May 22 Monday 2023 11:13:20 AM",
             "group": null
         },
+        "2840-12": {
+            "current_quantity": 10,
+            "machine_time": 2.22,
+            "gauge": "3\/16",
+            "material": "Mild Steel",
+            "weight": 42.587,
+            "price": 39.62,
+            "unit_quantity": 1,
+            "modified_date": "10 quantity added at May 22 Monday 2023 11:18:21 AM",
+            "group": null
+        },
+        "2840-13": {
+            "current_quantity": 10,
+            "machine_time": 1.88,
+            "gauge": "3\/16",
+            "material": "Mild Steel",
+            "weight": 58.333,
+            "price": 51.37,
+            "unit_quantity": 1,
+            "modified_date": "10 quantity added at May 22 Monday 2023 11:18:21 AM",
+            "group": null
+        },
+        "2840-63": {
+            "current_quantity": 10.0,
+            "machine_time": 0.92,
+            "gauge": "3\/16",
+            "material": "Mild Steel",
+            "weight": 19.872,
+            "price": 18.2,
+            "unit_quantity": 1,
+            "modified_date": "10 quantity added at May 22 Monday 2023 11:18:22 AM",
+            "group": null
+        },
+        "2840-68": {
+            "current_quantity": 10.0,
+            "machine_time": 0.98,
+            "gauge": "3\/16",
+            "material": "Mild Steel",
+            "weight": 18.913,
+            "price": 17.58,
+            "unit_quantity": 1,
+            "modified_date": "10 quantity added at May 22 Monday 2023 11:18:22 AM",
+            "group": null
+        },
+        "2840-67": {
+            "current_quantity": 10,
+            "machine_time": 1.18,
+            "gauge": "3\/16",
+            "material": "Mild Steel",
+            "weight": 2.0,
+            "price": 4.55,
+            "unit_quantity": 1,
+            "modified_date": "10 quantity added at May 22 Monday 2023 11:18:22 AM",
+            "group": null
+        },
+        "2840-11": {
+            "current_quantity": 10,
+            "machine_time": 2.6,
+            "gauge": "3\/16",
+            "material": "Mild Steel",
+            "weight": 210.774,
+            "price": 175.12,
+            "unit_quantity": 1,
+            "modified_date": "10 quantity added at May 22 Monday 2023 11:18:41 AM",
+            "group": null
+        },
         "2840-Shaker-66x6": {
             "current_quantity": 9.0,
             "machine_time": 0.28,
@@ -1572,83 +1649,6 @@
             "price": 25.89,
             "unit_quantity": 1,
             "modified_date": "Manually set to 0.0 quantity at April 12 Wednesday 2023 05:08:24 PM",
-            "group": null
-        },
-        "2840-34x4": {
-            "current_quantity": 0.0,
-            "machine_time": 0.85,
-            "gauge": "3\/16",
-            "material": "Mild Steel",
-            "weight": 13.706,
-            "price": 13.09,
-            "unit_quantity": 4.0,
-            "modified_date": "Removed 40.0 quantity at April 08 Saturday 2023 10:54:59 AM",
-            "group": null
-        },
-        "2840-12": {
-            "current_quantity": 0,
-            "machine_time": 2.22,
-            "gauge": "3\/16",
-            "material": "Mild Steel",
-            "weight": 42.587,
-            "price": 39.62,
-            "unit_quantity": 1,
-            "modified_date": "Removed 10 quantity at April 08 Saturday 2023 10:54:59 AM",
-            "group": null
-        },
-        "2840-13": {
-            "current_quantity": 0,
-            "machine_time": 1.88,
-            "gauge": "3\/16",
-            "material": "Mild Steel",
-            "weight": 58.333,
-            "price": 51.37,
-            "unit_quantity": 1,
-            "modified_date": "Removed 10 quantity at April 08 Saturday 2023 10:54:59 AM",
-            "group": null
-        },
-        "2840-63": {
-            "current_quantity": 0.0,
-            "machine_time": 0.92,
-            "gauge": "3\/16",
-            "material": "Mild Steel",
-            "weight": 19.872,
-            "price": 18.2,
-            "unit_quantity": 1,
-            "modified_date": "Removed 10 quantity at April 08 Saturday 2023 10:54:59 AM",
-            "group": null
-        },
-        "2840-68": {
-            "current_quantity": 0.0,
-            "machine_time": 0.98,
-            "gauge": "3\/16",
-            "material": "Mild Steel",
-            "weight": 18.913,
-            "price": 17.58,
-            "unit_quantity": 1,
-            "modified_date": "Removed 10 quantity at April 08 Saturday 2023 10:54:59 AM",
-            "group": null
-        },
-        "2840-11": {
-            "current_quantity": 0,
-            "machine_time": 2.6,
-            "gauge": "3\/16",
-            "material": "Mild Steel",
-            "weight": 210.774,
-            "price": 175.12,
-            "unit_quantity": 1,
-            "modified_date": "Removed 10 quantity at April 08 Saturday 2023 10:54:59 AM",
-            "group": null
-        },
-        "2840-67": {
-            "current_quantity": 0,
-            "machine_time": 1.18,
-            "gauge": "3\/16",
-            "material": "Mild Steel",
-            "weight": 2.0,
-            "price": 4.55,
-            "unit_quantity": 1,
-            "modified_date": "Removed 10 quantity at April 08 Saturday 2023 10:54:59 AM",
             "group": null
         },
         "2840-Shaker-67": {
@@ -4065,6 +4065,28 @@
             "unit_quantity": 6.0,
             "modified_date": "Manually set to 0.0 quantity at March 24 Friday 2023 11:02:51 AM",
             "group": null
+        },
+        "G3-1-Shipping pallet bracket Ax2": {
+            "current_quantity": 52,
+            "machine_time": 0.47,
+            "gauge": "3\/16",
+            "material": "Mild Steel",
+            "weight": 3.131,
+            "price": 3.68,
+            "unit_quantity": 1,
+            "modified_date": "12 quantity added at May 22 Monday 2023 11:18:21 AM",
+            "group": null
+        },
+        "G3-1-Shipping pallet bracket Bx2": {
+            "current_quantity": 52,
+            "machine_time": 0.52,
+            "gauge": "3\/16",
+            "material": "Mild Steel",
+            "weight": 4.21,
+            "price": 4.67,
+            "unit_quantity": 1,
+            "modified_date": "12 quantity added at May 22 Monday 2023 11:18:21 AM",
+            "group": null
         }
     },
     "Polar G2+": {
@@ -4958,6 +4980,28 @@
             "unit_quantity": 2.0,
             "modified_date": "Manually set to 0.0 quantity at March 24 Friday 2023 11:02:54 AM",
             "group": null
+        },
+        "G3-1-Shipping pallet bracket Ax2": {
+            "current_quantity": 52,
+            "machine_time": 0.47,
+            "gauge": "3\/16",
+            "material": "Mild Steel",
+            "weight": 3.131,
+            "price": 3.68,
+            "unit_quantity": 1,
+            "modified_date": "12 quantity added at May 22 Monday 2023 11:18:21 AM",
+            "group": null
+        },
+        "G3-1-Shipping pallet bracket Bx2": {
+            "current_quantity": 52,
+            "machine_time": 0.52,
+            "gauge": "3\/16",
+            "material": "Mild Steel",
+            "weight": 4.21,
+            "price": 4.67,
+            "unit_quantity": 1,
+            "modified_date": "12 quantity added at May 22 Monday 2023 11:18:21 AM",
+            "group": null
         }
     },
     "Polar G3": {
@@ -5718,6 +5762,28 @@
             "price": 9.26,
             "unit_quantity": 1,
             "modified_date": "Manually set to 0.0 quantity at March 24 Friday 2023 11:02:54 AM",
+            "group": null
+        },
+        "G3-1-Shipping pallet bracket Ax2": {
+            "current_quantity": 52,
+            "machine_time": 0.47,
+            "gauge": "3\/16",
+            "material": "Mild Steel",
+            "weight": 3.131,
+            "price": 3.68,
+            "unit_quantity": 1,
+            "modified_date": "12 quantity added at May 22 Monday 2023 11:18:21 AM",
+            "group": null
+        },
+        "G3-1-Shipping pallet bracket Bx2": {
+            "current_quantity": 52,
+            "machine_time": 0.52,
+            "gauge": "3\/16",
+            "material": "Mild Steel",
+            "weight": 4.21,
+            "price": 4.67,
+            "unit_quantity": 1,
+            "modified_date": "12 quantity added at May 22 Monday 2023 11:18:21 AM",
             "group": null
         }
     },
