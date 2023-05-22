@@ -74,7 +74,7 @@
             "is_order_pending": true
         },
         "1\/4 Mild Steel 120.000x60.000": {
-            "current_quantity": 63.0,
+            "current_quantity": 43.0,
             "sheet_dimension": "120.000x60.000",
             "thickness": "1\/4",
             "material": "Mild Steel",
@@ -104,7 +104,7 @@
             "is_order_pending": false
         },
         "3\/16 Mild Steel 120.000x60.000": {
-            "current_quantity": 33.0,
+            "current_quantity": 26.0,
             "sheet_dimension": "120.000x60.000",
             "thickness": "3\/16",
             "material": "Mild Steel",
@@ -134,7 +134,7 @@
             "is_order_pending": false
         },
         "3\/16 Mild Steel 96.000x48.000": {
-            "current_quantity": 56.0,
+            "current_quantity": 46.0,
             "sheet_dimension": "96.000x48.000",
             "thickness": "3\/16",
             "material": "Mild Steel",
