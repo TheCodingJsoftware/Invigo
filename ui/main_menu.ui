@@ -7,8 +7,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1127</width>
-    <height>601</height>
+    <width>974</width>
+    <height>590</height>
    </rect>
   </property>
   <property name="acceptDrops">
@@ -22,8 +22,11 @@
   </property>
   <widget class="QWidget" name="centralwidget">
    <layout class="QVBoxLayout" name="verticalLayout_2">
+    <property name="topMargin">
+     <number>3</number>
+    </property>
     <property name="rightMargin">
-     <number>9</number>
+     <number>0</number>
     </property>
     <item>
      <layout class="QHBoxLayout" name="horizontalLayout_7">
@@ -33,407 +36,448 @@
       <property name="rightMargin">
        <number>0</number>
       </property>
-      <item>
-       <widget class="QTabWidget" name="tabWidget">
-        <property name="minimumSize">
-         <size>
-          <width>300</width>
-          <height>0</height>
-         </size>
+     </layout>
+    </item>
+    <item>
+     <widget class="QTabWidget" name="tabWidget">
+      <property name="minimumSize">
+       <size>
+        <width>300</width>
+        <height>0</height>
+       </size>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>8</pointsize>
+        <weight>75</weight>
+        <bold>true</bold>
+       </font>
+      </property>
+      <property name="tabPosition">
+       <enum>QTabWidget::North</enum>
+      </property>
+      <property name="tabShape">
+       <enum>QTabWidget::Rounded</enum>
+      </property>
+      <property name="currentIndex">
+       <number>5</number>
+      </property>
+      <property name="elideMode">
+       <enum>Qt::ElideNone</enum>
+      </property>
+      <property name="usesScrollButtons">
+       <bool>false</bool>
+      </property>
+      <property name="documentMode">
+       <bool>false</bool>
+      </property>
+      <property name="movable">
+       <bool>true</bool>
+      </property>
+      <property name="tabBarAutoHide">
+       <bool>false</bool>
+      </property>
+      <widget class="QWidget" name="inventory_tab">
+       <attribute name="title">
+        <string>Edit Inventory</string>
+       </attribute>
+       <layout class="QVBoxLayout" name="verticalLayout_7">
+        <property name="leftMargin">
+         <number>9</number>
         </property>
-        <property name="font">
-         <font>
-          <pointsize>8</pointsize>
-          <weight>75</weight>
-          <bold>true</bold>
-         </font>
+        <property name="topMargin">
+         <number>3</number>
         </property>
-        <property name="tabPosition">
-         <enum>QTabWidget::North</enum>
+        <property name="rightMargin">
+         <number>9</number>
         </property>
-        <property name="tabShape">
-         <enum>QTabWidget::Triangular</enum>
-        </property>
-        <property name="currentIndex">
+        <property name="bottomMargin">
          <number>0</number>
         </property>
-        <property name="elideMode">
-         <enum>Qt::ElideNone</enum>
-        </property>
-        <property name="usesScrollButtons">
-         <bool>true</bool>
-        </property>
-        <property name="tabBarAutoHide">
-         <bool>false</bool>
-        </property>
-        <widget class="QWidget" name="inventory_tab">
-         <attribute name="title">
-          <string>  Edit Inventory  </string>
-         </attribute>
-         <layout class="QVBoxLayout" name="verticalLayout_7">
+        <item>
+         <layout class="QHBoxLayout" name="horizontalLayout_16" stretch="1,0">
+          <property name="rightMargin">
+           <number>0</number>
+          </property>
           <item>
-           <layout class="QHBoxLayout" name="horizontalLayout_16" stretch="1,0">
+           <layout class="QVBoxLayout" name="verticalLayout"/>
+          </item>
+          <item>
+           <layout class="QVBoxLayout" name="verticalLayout_3">
             <item>
-             <layout class="QVBoxLayout" name="verticalLayout"/>
+             <widget class="QLabel" name="label_exchange_price">
+              <property name="text">
+               <string>Getting exchange rate...</string>
+              </property>
+             </widget>
             </item>
             <item>
-             <layout class="QVBoxLayout" name="verticalLayout_3">
-              <item>
-               <widget class="QLabel" name="label_exchange_price">
-                <property name="text">
-                 <string>Getting exchange rate...</string>
+             <widget class="QLabel" name="label_category_name">
+              <property name="text">
+               <string>Category: </string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLabel" name="label_total_unit_cost">
+              <property name="text">
+               <string>Total Cost: </string>
+              </property>
+              <property name="textInteractionFlags">
+               <set>Qt::LinksAccessibleByMouse|Qt::TextSelectableByMouse</set>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="Line" name="line_2">
+              <property name="orientation">
+               <enum>Qt::Horizontal</enum>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QScrollArea" name="scrollArea">
+              <property name="widgetResizable">
+               <bool>true</bool>
+              </property>
+              <widget class="QWidget" name="scrollAreaWidgetContents">
+               <property name="geometry">
+                <rect>
+                 <x>0</x>
+                 <y>0</y>
+                 <width>261</width>
+                 <height>69</height>
+                </rect>
+               </property>
+               <property name="maximumSize">
+                <size>
+                 <width>16777215</width>
+                 <height>500</height>
+                </size>
+               </property>
+               <layout class="QVBoxLayout" name="verticalLayout_6">
+                <property name="spacing">
+                 <number>0</number>
                 </property>
-               </widget>
-              </item>
-              <item>
-               <widget class="QLabel" name="label_category_name">
-                <property name="text">
-                 <string>Category: </string>
+                <property name="leftMargin">
+                 <number>0</number>
                 </property>
-               </widget>
-              </item>
-              <item>
-               <widget class="QLabel" name="label_total_unit_cost">
-                <property name="text">
-                 <string>Total Cost: </string>
+                <property name="topMargin">
+                 <number>0</number>
                 </property>
-                <property name="textInteractionFlags">
-                 <set>Qt::LinksAccessibleByMouse|Qt::TextSelectableByMouse</set>
+                <property name="rightMargin">
+                 <number>0</number>
                 </property>
-               </widget>
-              </item>
-              <item>
-               <widget class="Line" name="line_2">
-                <property name="orientation">
-                 <enum>Qt::Horizontal</enum>
+                <property name="bottomMargin">
+                 <number>0</number>
                 </property>
-               </widget>
-              </item>
-              <item>
-               <widget class="QScrollArea" name="scrollArea">
-                <property name="widgetResizable">
-                 <bool>true</bool>
-                </property>
-                <widget class="QWidget" name="scrollAreaWidgetContents">
-                 <property name="geometry">
-                  <rect>
-                   <x>0</x>
-                   <y>0</y>
-                   <width>265</width>
-                   <height>69</height>
-                  </rect>
-                 </property>
-                 <property name="maximumSize">
-                  <size>
-                   <width>16777215</width>
-                   <height>500</height>
-                  </size>
-                 </property>
-                 <layout class="QVBoxLayout" name="verticalLayout_6">
-                  <property name="spacing">
+                <item>
+                 <layout class="QGridLayout" name="gridLayout_Categor_Stock_Prices">
+                  <property name="horizontalSpacing">
                    <number>0</number>
                   </property>
-                  <property name="leftMargin">
-                   <number>0</number>
+                  <property name="verticalSpacing">
+                   <number>6</number>
                   </property>
-                  <property name="topMargin">
-                   <number>0</number>
-                  </property>
-                  <property name="rightMargin">
-                   <number>0</number>
-                  </property>
-                  <property name="bottomMargin">
-                   <number>0</number>
-                  </property>
-                  <item>
-                   <layout class="QGridLayout" name="gridLayout_Categor_Stock_Prices">
-                    <property name="horizontalSpacing">
-                     <number>0</number>
-                    </property>
-                    <property name="verticalSpacing">
-                     <number>6</number>
-                    </property>
-                   </layout>
-                  </item>
                  </layout>
-                </widget>
-               </widget>
-              </item>
-              <item>
-               <widget class="Line" name="line">
-                <property name="orientation">
-                 <enum>Qt::Horizontal</enum>
-                </property>
-               </widget>
-              </item>
-              <item>
-               <widget class="QLabel" name="label_2">
-                <property name="text">
-                 <string>Search:</string>
-                </property>
-               </widget>
-              </item>
-              <item>
-               <widget class="QLineEdit" name="lineEdit_search_items">
-                <property name="statusTip">
-                 <string>Search items in this category</string>
-                </property>
-                <property name="inputMask">
-                 <string/>
-                </property>
-                <property name="dragEnabled">
-                 <bool>false</bool>
-                </property>
-                <property name="placeholderText">
-                 <string>Search for items...</string>
-                </property>
-                <property name="clearButtonEnabled">
-                 <bool>true</bool>
-                </property>
-               </widget>
-              </item>
-              <item>
-               <widget class="QListWidget" name="listWidget_itemnames">
-                <property name="statusTip">
-                 <string>All items from this category</string>
-                </property>
-                <property name="styleSheet">
-                 <string notr="true"/>
-                </property>
-               </widget>
-              </item>
-              <item>
-               <widget class="QGroupBox" name="groupBox">
-                <property name="minimumSize">
-                 <size>
-                  <width>0</width>
-                  <height>60</height>
-                 </size>
-                </property>
-                <property name="title">
-                 <string>Change Quantities by</string>
-                </property>
-                <layout class="QHBoxLayout" name="horizontalLayout_6">
+                </item>
+               </layout>
+              </widget>
+             </widget>
+            </item>
+            <item>
+             <widget class="Line" name="line">
+              <property name="orientation">
+               <enum>Qt::Horizontal</enum>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLabel" name="label_2">
+              <property name="text">
+               <string>Search:</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLineEdit" name="lineEdit_search_items">
+              <property name="statusTip">
+               <string>Search items in this category</string>
+              </property>
+              <property name="inputMask">
+               <string/>
+              </property>
+              <property name="dragEnabled">
+               <bool>false</bool>
+              </property>
+              <property name="placeholderText">
+               <string>Search for items...</string>
+              </property>
+              <property name="clearButtonEnabled">
+               <bool>true</bool>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QListWidget" name="listWidget_itemnames">
+              <property name="statusTip">
+               <string>All items from this category</string>
+              </property>
+              <property name="styleSheet">
+               <string notr="true"/>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QGroupBox" name="groupBox">
+              <property name="minimumSize">
+               <size>
+                <width>0</width>
+                <height>60</height>
+               </size>
+              </property>
+              <property name="title">
+               <string>Change Quantities by</string>
+              </property>
+              <layout class="QHBoxLayout" name="horizontalLayout_6">
+               <property name="topMargin">
+                <number>0</number>
+               </property>
+               <property name="bottomMargin">
+                <number>9</number>
+               </property>
+               <item>
+                <layout class="QGridLayout" name="gridLayout">
+                 <property name="leftMargin">
+                  <number>0</number>
+                 </property>
                  <property name="topMargin">
                   <number>0</number>
                  </property>
-                 <property name="bottomMargin">
-                  <number>9</number>
+                 <property name="rightMargin">
+                  <number>0</number>
                  </property>
-                 <item>
-                  <layout class="QGridLayout" name="gridLayout">
-                   <property name="leftMargin">
-                    <number>0</number>
+                 <property name="bottomMargin">
+                  <number>0</number>
+                 </property>
+                 <property name="spacing">
+                  <number>0</number>
+                 </property>
+                 <item row="0" column="0">
+                  <widget class="QRadioButton" name="radioButton_category">
+                   <property name="text">
+                    <string>All Items in Category</string>
                    </property>
-                   <property name="topMargin">
-                    <number>0</number>
+                   <property name="checked">
+                    <bool>true</bool>
                    </property>
-                   <property name="rightMargin">
-                    <number>0</number>
+                  </widget>
+                 </item>
+                 <item row="0" column="1">
+                  <widget class="QRadioButton" name="radioButton_single">
+                   <property name="text">
+                    <string>Selected Item</string>
                    </property>
-                   <property name="bottomMargin">
-                    <number>0</number>
-                   </property>
-                   <property name="spacing">
-                    <number>0</number>
-                   </property>
-                   <item row="0" column="0">
-                    <widget class="QRadioButton" name="radioButton_category">
-                     <property name="text">
-                      <string>All Items in Category</string>
-                     </property>
-                     <property name="checked">
-                      <bool>true</bool>
-                     </property>
-                    </widget>
-                   </item>
-                   <item row="0" column="1">
-                    <widget class="QRadioButton" name="radioButton_single">
-                     <property name="text">
-                      <string>Selected Item</string>
-                     </property>
-                    </widget>
-                   </item>
-                  </layout>
+                  </widget>
                  </item>
                 </layout>
+               </item>
+              </layout>
+             </widget>
+            </item>
+            <item>
+             <layout class="QHBoxLayout" name="horizontalLayout_3">
+              <item>
+               <widget class="QLabel" name="label">
+                <property name="text">
+                 <string>Batches Multiplier:</string>
+                </property>
                </widget>
               </item>
               <item>
-               <layout class="QHBoxLayout" name="horizontalLayout_3">
-                <item>
-                 <widget class="QLabel" name="label">
-                  <property name="text">
-                   <string>Batches Multiplier:</string>
-                  </property>
-                 </widget>
-                </item>
-                <item>
-                 <widget class="QSpinBox" name="spinBox_quantity">
-                  <property name="statusTip">
-                   <string>Quantity you want to add/remove to the selected item/category</string>
-                  </property>
-                  <property name="accelerated">
-                   <bool>true</bool>
-                  </property>
-                  <property name="maximum">
-                   <number>99999999</number>
-                  </property>
-                 </widget>
-                </item>
-               </layout>
-              </item>
-              <item>
-               <layout class="QHBoxLayout" name="horizontalLayout_2">
-                <item>
-                 <widget class="QPushButton" name="pushButton_add_quantity">
-                  <property name="minimumSize">
-                   <size>
-                    <width>0</width>
-                    <height>30</height>
-                   </size>
-                  </property>
-                  <property name="statusTip">
-                   <string>Adds to the currently selected item</string>
-                  </property>
-                  <property name="text">
-                   <string>Add Quantity</string>
-                  </property>
-                 </widget>
-                </item>
-                <item>
-                 <widget class="QPushButton" name="pushButton_remove_quantity">
-                  <property name="minimumSize">
-                   <size>
-                    <width>0</width>
-                    <height>30</height>
-                   </size>
-                  </property>
-                  <property name="statusTip">
-                   <string>Removes from the currently selected item</string>
-                  </property>
-                  <property name="text">
-                   <string>Remove Quantity</string>
-                  </property>
-                 </widget>
-                </item>
-               </layout>
-              </item>
-              <item>
-               <widget class="QPushButton" name="pushButton_create_new">
-                <property name="sizePolicy">
-                 <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
-                  <horstretch>0</horstretch>
-                  <verstretch>0</verstretch>
-                 </sizepolicy>
-                </property>
-                <property name="minimumSize">
-                 <size>
-                  <width>0</width>
-                  <height>40</height>
-                 </size>
-                </property>
-                <property name="maximumSize">
-                 <size>
-                  <width>16777215</width>
-                  <height>40</height>
-                 </size>
-                </property>
-                <property name="font">
-                 <font>
-                  <pointsize>10</pointsize>
-                 </font>
-                </property>
-                <property name="cursor">
-                 <cursorShape>ArrowCursor</cursorShape>
-                </property>
-                <property name="toolTip">
-                 <string/>
-                </property>
+               <widget class="QSpinBox" name="spinBox_quantity">
                 <property name="statusTip">
-                 <string>Create a new item</string>
+                 <string>Quantity you want to add/remove to the selected item/category</string>
                 </property>
-                <property name="styleSheet">
-                 <string notr="true">
-        QPushButton#pushButton_create_new{
-            background-color: #3daee9;
-            border: 0.04em solid  #3daee9;
-            border-radius: 5px;
-        }
-        QPushButton#pushButton_create_new:hover{
-            background-color: #49b3eb;
-            border: 0.04em solid  #49b3eb;
-            border-radius: 5px;
-        }
-        QPushButton#pushButton_create_new:pressed{
-            background-color: #5cbaed;
-            color: #bae2f8;
-            border: 0.04em solid  #5cbaed;
-            border-radius: 5px;
-        }
-QPushButton#pushButton_create_new:disabled{
-            background-color: #222222;
-            color: gray;
-            border: 0.04em solid  gray;
-            border-radius: 1px;
-        }</string>
+                <property name="accelerated">
+                 <bool>true</bool>
                 </property>
-                <property name="text">
-                 <string>Add New Item</string>
-                </property>
-                <property name="checkable">
-                 <bool>false</bool>
-                </property>
-                <property name="default">
-                 <bool>false</bool>
-                </property>
-                <property name="flat">
-                 <bool>false</bool>
+                <property name="maximum">
+                 <number>99999999</number>
                 </property>
                </widget>
               </item>
              </layout>
             </item>
+            <item>
+             <layout class="QHBoxLayout" name="horizontalLayout_2">
+              <item>
+               <widget class="QPushButton" name="pushButton_add_quantity">
+                <property name="minimumSize">
+                 <size>
+                  <width>0</width>
+                  <height>30</height>
+                 </size>
+                </property>
+                <property name="statusTip">
+                 <string>Adds to the currently selected item</string>
+                </property>
+                <property name="text">
+                 <string>Add Quantity</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QPushButton" name="pushButton_remove_quantity">
+                <property name="minimumSize">
+                 <size>
+                  <width>0</width>
+                  <height>30</height>
+                 </size>
+                </property>
+                <property name="statusTip">
+                 <string>Removes from the currently selected item</string>
+                </property>
+                <property name="text">
+                 <string>Remove Quantity</string>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </item>
+            <item>
+             <widget class="QPushButton" name="pushButton_create_new">
+              <property name="enabled">
+               <bool>true</bool>
+              </property>
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="minimumSize">
+               <size>
+                <width>0</width>
+                <height>40</height>
+               </size>
+              </property>
+              <property name="maximumSize">
+               <size>
+                <width>16777215</width>
+                <height>40</height>
+               </size>
+              </property>
+              <property name="font">
+               <font>
+                <weight>75</weight>
+                <bold>true</bold>
+               </font>
+              </property>
+              <property name="cursor">
+               <cursorShape>ArrowCursor</cursorShape>
+              </property>
+              <property name="toolTip">
+               <string/>
+              </property>
+              <property name="statusTip">
+               <string>Create a new item</string>
+              </property>
+              <property name="styleSheet">
+               <string notr="true">QPushButton#pushButton_create_new{
+	color: #ffffff;
+	background-color: #3daee9;
+	border: 2px solid #3daee9;
+	border-radius: 5px;
+	padding: 8px 16px;
+	font-weight: bold;
+}
+QPushButton#pushButton_create_new:hover{
+	background-color: #48b6ed;
+	border-color: #48b6ed;
+}
+QPushButton#pushButton_create_new:pressed{
+	background-color: #2b92c5;
+	border-color: #2b92c5;
+}
+QPushButton#pushButton_create_new:disabled{
+	background-color: rgb(44, 44, 44);
+	border: 1px solid rgb(57, 57, 57);
+	color: rgb(144, 144, 144);
+	border-radius: 0px;
+}</string>
+              </property>
+              <property name="text">
+               <string>Add New Item</string>
+              </property>
+              <property name="checkable">
+               <bool>false</bool>
+              </property>
+              <property name="default">
+               <bool>false</bool>
+              </property>
+              <property name="flat">
+               <bool>false</bool>
+              </property>
+             </widget>
+            </item>
            </layout>
           </item>
          </layout>
-        </widget>
-        <widget class="QWidget" name="tab_5">
-         <attribute name="title">
-          <string>  Sheets in Inventory  </string>
-         </attribute>
-         <layout class="QVBoxLayout" name="verticalLayout_13">
+        </item>
+       </layout>
+      </widget>
+      <widget class="QWidget" name="tab_5">
+       <attribute name="title">
+        <string>Sheets in Inventory</string>
+       </attribute>
+       <layout class="QVBoxLayout" name="verticalLayout_13">
+        <property name="leftMargin">
+         <number>9</number>
+        </property>
+        <property name="topMargin">
+         <number>3</number>
+        </property>
+        <property name="rightMargin">
+         <number>9</number>
+        </property>
+        <property name="bottomMargin">
+         <number>0</number>
+        </property>
+        <item>
+         <layout class="QHBoxLayout" name="horizontalLayout_17" stretch="1,0">
+          <property name="rightMargin">
+           <number>0</number>
+          </property>
           <item>
-           <layout class="QHBoxLayout" name="horizontalLayout_17" stretch="1,0">
+           <layout class="QVBoxLayout" name="verticalLayout_10"/>
+          </item>
+          <item>
+           <layout class="QVBoxLayout" name="verticalLayout_23">
             <item>
-             <layout class="QVBoxLayout" name="verticalLayout_10"/>
-            </item>
-            <item>
-             <layout class="QVBoxLayout" name="verticalLayout_23">
+             <layout class="QHBoxLayout" name="horizontalLayout_9">
               <item>
-               <layout class="QHBoxLayout" name="horizontalLayout_9">
-                <item>
-                 <widget class="QPushButton" name="pushButton_refresh_price_of_steel">
-                  <property name="minimumSize">
-                   <size>
-                    <width>100</width>
-                    <height>40</height>
-                   </size>
-                  </property>
-                  <property name="maximumSize">
-                   <size>
-                    <width>120</width>
-                    <height>40</height>
-                   </size>
-                  </property>
-                  <property name="toolTip">
-                   <string>Downloads and refreshes  sheets in inventory</string>
-                  </property>
-                  <property name="statusTip">
-                   <string>Downloads and refreshes  sheets in inventory</string>
-                  </property>
-                  <property name="styleSheet">
-                   <string notr="true">QPushButton#pushButton_refresh_price_of_steel {
+               <widget class="QPushButton" name="pushButton_refresh_price_of_steel">
+                <property name="minimumSize">
+                 <size>
+                  <width>120</width>
+                  <height>40</height>
+                 </size>
+                </property>
+                <property name="maximumSize">
+                 <size>
+                  <width>120</width>
+                  <height>40</height>
+                 </size>
+                </property>
+                <property name="toolTip">
+                 <string>Downloads and refreshes  sheets in inventory</string>
+                </property>
+                <property name="statusTip">
+                 <string>Downloads and refreshes  sheets in inventory</string>
+                </property>
+                <property name="styleSheet">
+                 <string notr="true">QPushButton#pushButton_refresh_price_of_steel {
     background-color: #AD7BE9;
 	border-radius: 5px;
 	border: 0px solid;
@@ -445,34 +489,34 @@ QPushButton:pressed#pushButton_refresh_price_of_steel {
     color: #E0CFE1;
     background-color: #BA8FE9;
 }</string>
-                  </property>
-                  <property name="text">
-                   <string>Download Changes</string>
-                  </property>
-                 </widget>
-                </item>
-                <item>
-                 <widget class="QPushButton" name="pushButton_update_price_of_steel">
-                  <property name="minimumSize">
-                   <size>
-                    <width>100</width>
-                    <height>40</height>
-                   </size>
-                  </property>
-                  <property name="maximumSize">
-                   <size>
-                    <width>120</width>
-                    <height>40</height>
-                   </size>
-                  </property>
-                  <property name="toolTip">
-                   <string>Uploads sheets in inventory</string>
-                  </property>
-                  <property name="statusTip">
-                   <string>Uploads sheets in inventory</string>
-                  </property>
-                  <property name="styleSheet">
-                   <string notr="true">QPushButton#pushButton_update_price_of_steel {
+                </property>
+                <property name="text">
+                 <string>Download Changes</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QPushButton" name="pushButton_update_price_of_steel">
+                <property name="minimumSize">
+                 <size>
+                  <width>120</width>
+                  <height>40</height>
+                 </size>
+                </property>
+                <property name="maximumSize">
+                 <size>
+                  <width>120</width>
+                  <height>40</height>
+                 </size>
+                </property>
+                <property name="toolTip">
+                 <string>Uploads sheets in inventory</string>
+                </property>
+                <property name="statusTip">
+                 <string>Uploads sheets in inventory</string>
+                </property>
+                <property name="styleSheet">
+                 <string notr="true">QPushButton#pushButton_update_price_of_steel {
     background-color: #477874;
     border-radius: 5px;
 	 border: 0px solid;
@@ -484,142 +528,244 @@ QPushButton:pressed#pushButton_update_price_of_steel {
     background-color: #5F7D79;
 	color: #F1FFFD;
 }</string>
-                  </property>
-                  <property name="text">
-                   <string>Upload Changes</string>
-                  </property>
-                 </widget>
-                </item>
-               </layout>
-              </item>
-              <item>
-               <widget class="Line" name="line_5">
-                <property name="orientation">
-                 <enum>Qt::Horizontal</enum>
+                </property>
+                <property name="text">
+                 <string>Upload Changes</string>
                 </property>
                </widget>
               </item>
-              <item>
-               <widget class="QScrollArea" name="scrollArea_2">
-                <property name="widgetResizable">
-                 <bool>true</bool>
+             </layout>
+            </item>
+            <item>
+             <widget class="Line" name="line_5">
+              <property name="orientation">
+               <enum>Qt::Horizontal</enum>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QScrollArea" name="scrollArea_2">
+              <property name="widgetResizable">
+               <bool>true</bool>
+              </property>
+              <widget class="QWidget" name="scrollAreaWidgetContents_2">
+               <property name="geometry">
+                <rect>
+                 <x>0</x>
+                 <y>0</y>
+                 <width>246</width>
+                 <height>321</height>
+                </rect>
+               </property>
+               <property name="maximumSize">
+                <size>
+                 <width>16777215</width>
+                 <height>16777215</height>
+                </size>
+               </property>
+               <layout class="QVBoxLayout" name="verticalLayout_16">
+                <property name="spacing">
+                 <number>0</number>
                 </property>
-                <widget class="QWidget" name="scrollAreaWidgetContents_2">
-                 <property name="geometry">
-                  <rect>
-                   <x>0</x>
-                   <y>0</y>
-                   <width>206</width>
-                   <height>327</height>
-                  </rect>
-                 </property>
-                 <property name="maximumSize">
-                  <size>
-                   <width>16777215</width>
-                   <height>16777215</height>
-                  </size>
-                 </property>
-                 <layout class="QVBoxLayout" name="verticalLayout_16">
+                <property name="leftMargin">
+                 <number>0</number>
+                </property>
+                <property name="topMargin">
+                 <number>0</number>
+                </property>
+                <property name="rightMargin">
+                 <number>0</number>
+                </property>
+                <property name="bottomMargin">
+                 <number>0</number>
+                </property>
+                <item>
+                 <layout class="QVBoxLayout" name="verticalLayout_14">
                   <property name="spacing">
                    <number>0</number>
                   </property>
-                  <property name="leftMargin">
-                   <number>0</number>
-                  </property>
-                  <property name="topMargin">
-                   <number>0</number>
-                  </property>
-                  <property name="rightMargin">
-                   <number>0</number>
-                  </property>
-                  <property name="bottomMargin">
-                   <number>0</number>
-                  </property>
                   <item>
-                   <layout class="QVBoxLayout" name="verticalLayout_14">
-                    <property name="spacing">
+                   <layout class="QGridLayout" name="gridLayout_price_of_steel">
+                    <property name="horizontalSpacing">
                      <number>0</number>
                     </property>
-                    <item>
-                     <layout class="QGridLayout" name="gridLayout_price_of_steel">
-                      <property name="horizontalSpacing">
-                       <number>0</number>
-                      </property>
-                      <property name="verticalSpacing">
-                       <number>6</number>
-                      </property>
-                     </layout>
-                    </item>
+                    <property name="verticalSpacing">
+                     <number>6</number>
+                    </property>
                    </layout>
                   </item>
-                  <item>
-                   <spacer name="verticalSpacer">
-                    <property name="orientation">
-                     <enum>Qt::Vertical</enum>
-                    </property>
-                    <property name="sizeHint" stdset="0">
-                     <size>
-                      <width>20</width>
-                      <height>40</height>
-                     </size>
-                    </property>
-                   </spacer>
-                  </item>
                  </layout>
-                </widget>
-               </widget>
-              </item>
-              <item>
-               <widget class="Line" name="line_6">
-                <property name="orientation">
-                 <enum>Qt::Horizontal</enum>
-                </property>
-               </widget>
-              </item>
-              <item>
-               <layout class="QHBoxLayout" name="horizontalLayout_4">
+                </item>
                 <item>
-                 <widget class="QPushButton" name="pushButton_send_sheet_report">
-                  <property name="minimumSize">
+                 <spacer name="verticalSpacer">
+                  <property name="orientation">
+                   <enum>Qt::Vertical</enum>
+                  </property>
+                  <property name="sizeHint" stdset="0">
                    <size>
-                    <width>0</width>
-                    <height>30</height>
+                    <width>20</width>
+                    <height>40</height>
                    </size>
                   </property>
-                  <property name="maximumSize">
-                   <size>
-                    <width>150</width>
-                    <height>16777215</height>
-                   </size>
-                  </property>
-                  <property name="statusTip">
-                   <string>Will send then sheets that are low in quantity to Lynden by email.</string>
-                  </property>
-                  <property name="text">
-                   <string>   Send Sheet Report</string>
-                  </property>
-                 </widget>
+                 </spacer>
                 </item>
                </layout>
-              </item>
+              </widget>
+             </widget>
+            </item>
+            <item>
+             <widget class="Line" name="line_6">
+              <property name="orientation">
+               <enum>Qt::Horizontal</enum>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <layout class="QHBoxLayout" name="horizontalLayout_4">
               <item>
-               <widget class="Line" name="line_4">
-                <property name="orientation">
-                 <enum>Qt::Horizontal</enum>
+               <widget class="QPushButton" name="pushButton_send_sheet_report">
+                <property name="minimumSize">
+                 <size>
+                  <width>0</width>
+                  <height>30</height>
+                 </size>
+                </property>
+                <property name="maximumSize">
+                 <size>
+                  <width>150</width>
+                  <height>16777215</height>
+                 </size>
+                </property>
+                <property name="statusTip">
+                 <string>Will send then sheets that are low in quantity to Lynden by email.</string>
+                </property>
+                <property name="text">
+                 <string>   Send Sheet Report</string>
                 </property>
                </widget>
               </item>
+             </layout>
+            </item>
+            <item>
+             <widget class="Line" name="line_4">
+              <property name="orientation">
+               <enum>Qt::Horizontal</enum>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QPushButton" name="pushButton_add_new_sheet">
+              <property name="enabled">
+               <bool>true</bool>
+              </property>
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="minimumSize">
+               <size>
+                <width>0</width>
+                <height>40</height>
+               </size>
+              </property>
+              <property name="maximumSize">
+               <size>
+                <width>16777215</width>
+                <height>40</height>
+               </size>
+              </property>
+              <property name="font">
+               <font>
+                <weight>75</weight>
+                <bold>true</bold>
+               </font>
+              </property>
+              <property name="cursor">
+               <cursorShape>ArrowCursor</cursorShape>
+              </property>
+              <property name="toolTip">
+               <string/>
+              </property>
+              <property name="statusTip">
+               <string>Create a new item</string>
+              </property>
+              <property name="styleSheet">
+               <string notr="true">QPushButton#pushButton_add_new_sheet{
+	color: #ffffff;
+	background-color: #3daee9;
+	border: 2px solid #3daee9;
+	border-radius: 5px;
+	padding: 8px 16px;
+	font-weight: bold;
+}
+QPushButton#pushButton_add_new_sheet:hover{
+	background-color: #48b6ed;
+	border-color: #48b6ed;
+}
+QPushButton#pushButton_add_new_sheet:pressed{
+	background-color: #2b92c5;
+	border-color: #2b92c5;
+}
+QPushButton#pushButton_add_new_sheet:disabled{
+	background-color: rgb(44, 44, 44);
+	border: 1px solid rgb(57, 57, 57);
+	color: rgb(144, 144, 144);
+	border-radius: 0px;
+}</string>
+              </property>
+              <property name="text">
+               <string>Add New Sheet</string>
+              </property>
+              <property name="checkable">
+               <bool>false</bool>
+              </property>
+              <property name="default">
+               <bool>false</bool>
+              </property>
+              <property name="flat">
+               <bool>false</bool>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+         </layout>
+        </item>
+       </layout>
+      </widget>
+      <widget class="QWidget" name="tab">
+       <attribute name="title">
+        <string>Parts in Inventory</string>
+       </attribute>
+       <layout class="QVBoxLayout" name="verticalLayout_12">
+        <property name="leftMargin">
+         <number>9</number>
+        </property>
+        <property name="topMargin">
+         <number>3</number>
+        </property>
+        <property name="rightMargin">
+         <number>9</number>
+        </property>
+        <property name="bottomMargin">
+         <number>0</number>
+        </property>
+        <item>
+         <layout class="QHBoxLayout" name="horizontalLayout_18" stretch="1,0">
+          <property name="rightMargin">
+           <number>0</number>
+          </property>
+          <item>
+           <layout class="QVBoxLayout" name="verticalLayout_11"/>
+          </item>
+          <item>
+           <layout class="QVBoxLayout" name="verticalLayout_20">
+            <item>
+             <layout class="QHBoxLayout" name="horizontalLayout_5">
               <item>
-               <widget class="QPushButton" name="pushButton_add_new_sheet">
-                <property name="enabled">
-                 <bool>true</bool>
-                </property>
-                <property name="sizePolicy">
-                 <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
-                  <horstretch>0</horstretch>
-                  <verstretch>0</verstretch>
-                 </sizepolicy>
-                </property>
+               <widget class="QPushButton" name="pushButton_refresh_parts_in_inventory">
                 <property name="minimumSize">
                  <size>
                   <width>0</width>
@@ -628,105 +774,18 @@ QPushButton:pressed#pushButton_update_price_of_steel {
                 </property>
                 <property name="maximumSize">
                  <size>
-                  <width>16777215</width>
+                  <width>120</width>
                   <height>40</height>
                  </size>
                 </property>
-                <property name="font">
-                 <font>
-                  <pointsize>10</pointsize>
-                 </font>
-                </property>
-                <property name="cursor">
-                 <cursorShape>ArrowCursor</cursorShape>
-                </property>
                 <property name="toolTip">
-                 <string/>
+                 <string>Downloads and refreshes parts in inventory</string>
                 </property>
                 <property name="statusTip">
-                 <string>Create a new item</string>
+                 <string>Downloads and refreshes parts in inventory</string>
                 </property>
                 <property name="styleSheet">
-                 <string notr="true">
-        QPushButton#pushButton_add_new_sheet{
-            background-color: #3daee9;
-            border: 0.04em solid  #3daee9;
-            border-radius: 5px;
-        }
-        QPushButton#pushButton_add_new_sheet:hover{
-            background-color: #49b3eb;
-            border: 0.04em solid  #49b3eb;
-            border-radius: 5px;
-        }
-        QPushButton#pushButton_add_new_sheet:pressed{
-            background-color: #5cbaed;
-            color: #bae2f8;
-            border: 0.04em solid  #5cbaed;
-            border-radius: 5px;
-        }
-QPushButton#pushButton_add_new_sheet:disabled{
-            background-color: #222222;
-            color: gray;
-            border: 0.04em solid  gray;
-            border-radius: 1px;
-        }</string>
-                </property>
-                <property name="text">
-                 <string>Add New Sheet</string>
-                </property>
-                <property name="checkable">
-                 <bool>false</bool>
-                </property>
-                <property name="default">
-                 <bool>false</bool>
-                </property>
-                <property name="flat">
-                 <bool>false</bool>
-                </property>
-               </widget>
-              </item>
-             </layout>
-            </item>
-           </layout>
-          </item>
-         </layout>
-        </widget>
-        <widget class="QWidget" name="tab">
-         <attribute name="title">
-          <string>  Parts in Inventory  </string>
-         </attribute>
-         <layout class="QVBoxLayout" name="verticalLayout_12">
-          <item>
-           <layout class="QHBoxLayout" name="horizontalLayout_18" stretch="1,0">
-            <item>
-             <layout class="QVBoxLayout" name="verticalLayout_11"/>
-            </item>
-            <item>
-             <layout class="QVBoxLayout" name="verticalLayout_20">
-              <item>
-               <layout class="QHBoxLayout" name="horizontalLayout_5">
-                <item>
-                 <widget class="QPushButton" name="pushButton_refresh_parts_in_inventory">
-                  <property name="minimumSize">
-                   <size>
-                    <width>0</width>
-                    <height>40</height>
-                   </size>
-                  </property>
-                  <property name="maximumSize">
-                   <size>
-                    <width>120</width>
-                    <height>40</height>
-                   </size>
-                  </property>
-                  <property name="toolTip">
-                   <string>Downloads and refreshes parts in inventory</string>
-                  </property>
-                  <property name="statusTip">
-                   <string>Downloads and refreshes parts in inventory</string>
-                  </property>
-                  <property name="styleSheet">
-                   <string notr="true">QPushButton#pushButton_refresh_parts_in_inventory {
+                 <string notr="true">QPushButton#pushButton_refresh_parts_in_inventory {
     background-color: #AD7BE9;
 	border-radius: 5px;
 	border: 0px solid;
@@ -738,37 +797,37 @@ QPushButton:pressed#pushButton_refresh_parts_in_inventory {
     color: #E0CFE1;
     background-color: #BA8FE9;
 }</string>
-                  </property>
-                  <property name="text">
-                   <string>Download Changes</string>
-                  </property>
-                  <property name="flat">
-                   <bool>false</bool>
-                  </property>
-                 </widget>
-                </item>
-                <item>
-                 <widget class="QPushButton" name="pushButton_update_parts_in_inventory">
-                  <property name="minimumSize">
-                   <size>
-                    <width>0</width>
-                    <height>40</height>
-                   </size>
-                  </property>
-                  <property name="maximumSize">
-                   <size>
-                    <width>120</width>
-                    <height>40</height>
-                   </size>
-                  </property>
-                  <property name="toolTip">
-                   <string>Uploads parts in inventory</string>
-                  </property>
-                  <property name="statusTip">
-                   <string>Uploads parts in inventory</string>
-                  </property>
-                  <property name="styleSheet">
-                   <string notr="true">QPushButton#pushButton_update_parts_in_inventory {
+                </property>
+                <property name="text">
+                 <string>Download Changes</string>
+                </property>
+                <property name="flat">
+                 <bool>false</bool>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QPushButton" name="pushButton_update_parts_in_inventory">
+                <property name="minimumSize">
+                 <size>
+                  <width>0</width>
+                  <height>40</height>
+                 </size>
+                </property>
+                <property name="maximumSize">
+                 <size>
+                  <width>120</width>
+                  <height>40</height>
+                 </size>
+                </property>
+                <property name="toolTip">
+                 <string>Uploads parts in inventory</string>
+                </property>
+                <property name="statusTip">
+                 <string>Uploads parts in inventory</string>
+                </property>
+                <property name="styleSheet">
+                 <string notr="true">QPushButton#pushButton_update_parts_in_inventory {
     background-color: #477874;
     border-radius: 5px;
 	 border: 0px solid;
@@ -780,192 +839,426 @@ QPushButton:pressed#pushButton_update_parts_in_inventory {
     background-color: #5F7D79;
 	color: #F1FFFD;
 }</string>
-                  </property>
-                  <property name="text">
-                   <string>Upload Changes</string>
-                  </property>
-                 </widget>
-                </item>
-               </layout>
-              </item>
-              <item>
-               <widget class="Line" name="line_3">
-                <property name="orientation">
-                 <enum>Qt::Horizontal</enum>
                 </property>
-               </widget>
-              </item>
-              <item>
-               <widget class="QLabel" name="label_4">
                 <property name="text">
-                 <string>Total Cost in Stock</string>
+                 <string>Upload Changes</string>
                 </property>
                </widget>
               </item>
-              <item>
-               <widget class="QScrollArea" name="scrollArea_3">
-                <property name="widgetResizable">
-                 <bool>true</bool>
+             </layout>
+            </item>
+            <item>
+             <widget class="Line" name="line_3">
+              <property name="orientation">
+               <enum>Qt::Horizontal</enum>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLabel" name="label_4">
+              <property name="text">
+               <string>Total Cost in Stock</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QScrollArea" name="scrollArea_3">
+              <property name="widgetResizable">
+               <bool>true</bool>
+              </property>
+              <widget class="QWidget" name="scrollAreaWidgetContents_3">
+               <property name="geometry">
+                <rect>
+                 <x>0</x>
+                 <y>0</y>
+                 <width>251</width>
+                 <height>307</height>
+                </rect>
+               </property>
+               <layout class="QVBoxLayout" name="verticalLayout_21">
+                <property name="leftMargin">
+                 <number>0</number>
                 </property>
-                <widget class="QWidget" name="scrollAreaWidgetContents_3">
-                 <property name="geometry">
-                  <rect>
-                   <x>0</x>
-                   <y>0</y>
-                   <width>255</width>
-                   <height>267</height>
-                  </rect>
-                 </property>
-                 <layout class="QVBoxLayout" name="verticalLayout_21">
-                  <property name="leftMargin">
-                   <number>0</number>
-                  </property>
-                  <property name="topMargin">
-                   <number>0</number>
-                  </property>
-                  <property name="rightMargin">
-                   <number>0</number>
-                  </property>
-                  <property name="bottomMargin">
-                   <number>0</number>
-                  </property>
+                <property name="topMargin">
+                 <number>0</number>
+                </property>
+                <property name="rightMargin">
+                 <number>0</number>
+                </property>
+                <property name="bottomMargin">
+                 <number>0</number>
+                </property>
+                <item>
+                 <layout class="QVBoxLayout" name="verticalLayout_17">
                   <item>
-                   <layout class="QVBoxLayout" name="verticalLayout_17">
-                    <item>
-                     <layout class="QGridLayout" name="gridLayout_parts_in_inventory_summary">
-                      <property name="horizontalSpacing">
-                       <number>0</number>
-                      </property>
-                     </layout>
-                    </item>
+                   <layout class="QGridLayout" name="gridLayout_parts_in_inventory_summary">
+                    <property name="horizontalSpacing">
+                     <number>0</number>
+                    </property>
                    </layout>
                   </item>
-                  <item>
-                   <spacer name="verticalSpacer_2">
-                    <property name="orientation">
-                     <enum>Qt::Vertical</enum>
-                    </property>
-                    <property name="sizeHint" stdset="0">
-                     <size>
-                      <width>20</width>
-                      <height>40</height>
-                     </size>
-                    </property>
-                   </spacer>
-                  </item>
                  </layout>
-                </widget>
-               </widget>
-              </item>
-              <item>
-               <widget class="QGroupBox" name="groupBox_5">
-                <property name="title">
-                 <string>Remove Quantities</string>
-                </property>
-                <layout class="QVBoxLayout" name="verticalLayout_19">
-                 <item>
-                  <layout class="QGridLayout" name="gridLayout_2">
-                   <item row="0" column="0">
-                    <widget class="QLabel" name="label_3">
-                     <property name="text">
-                      <string>Batches Multiplier:</string>
-                     </property>
-                    </widget>
-                   </item>
-                   <item row="0" column="1">
-                    <widget class="QSpinBox" name="spinBox_quantity_for_inventory"/>
-                   </item>
-                  </layout>
-                 </item>
-                 <item>
-                  <widget class="QPushButton" name="pushButton_remove_quantities_from_inventory">
-                   <property name="minimumSize">
-                    <size>
-                     <width>0</width>
-                     <height>30</height>
-                    </size>
-                   </property>
+                </item>
+                <item>
+                 <spacer name="verticalSpacer_2">
+                  <property name="orientation">
+                   <enum>Qt::Vertical</enum>
+                  </property>
+                  <property name="sizeHint" stdset="0">
+                   <size>
+                    <width>20</width>
+                    <height>40</height>
+                   </size>
+                  </property>
+                 </spacer>
+                </item>
+               </layout>
+              </widget>
+             </widget>
+            </item>
+            <item>
+             <widget class="QGroupBox" name="groupBox_5">
+              <property name="title">
+               <string>Remove Quantities</string>
+              </property>
+              <layout class="QVBoxLayout" name="verticalLayout_19">
+               <item>
+                <layout class="QGridLayout" name="gridLayout_2">
+                 <item row="0" column="0">
+                  <widget class="QLabel" name="label_3">
                    <property name="text">
-                    <string>Remove Quantities from whole Category</string>
+                    <string>Batches Multiplier:</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="0" column="1">
+                  <widget class="QSpinBox" name="spinBox_quantity_for_inventory"/>
+                 </item>
+                </layout>
+               </item>
+               <item>
+                <widget class="QPushButton" name="pushButton_remove_quantities_from_inventory">
+                 <property name="minimumSize">
+                  <size>
+                   <width>0</width>
+                   <height>30</height>
+                  </size>
+                 </property>
+                 <property name="text">
+                  <string>Remove Quantities from whole Category</string>
+                 </property>
+                </widget>
+               </item>
+              </layout>
+             </widget>
+            </item>
+           </layout>
+          </item>
+         </layout>
+        </item>
+       </layout>
+      </widget>
+      <widget class="QWidget" name="laser_quote_tab">
+       <attribute name="title">
+        <string>Quote Generator</string>
+       </attribute>
+       <layout class="QHBoxLayout" name="horizontalLayout_19">
+        <property name="leftMargin">
+         <number>9</number>
+        </property>
+        <property name="topMargin">
+         <number>0</number>
+        </property>
+        <property name="rightMargin">
+         <number>9</number>
+        </property>
+        <property name="bottomMargin">
+         <number>0</number>
+        </property>
+        <item>
+         <layout class="QHBoxLayout" name="horizontalLayout_15" stretch="4,10,4">
+          <property name="rightMargin">
+           <number>0</number>
+          </property>
+          <item>
+           <layout class="QVBoxLayout" name="verticalLayout_26" stretch="0,0">
+            <property name="spacing">
+             <number>6</number>
+            </property>
+            <item>
+             <widget class="QGroupBox" name="groupBox_6">
+              <property name="minimumSize">
+               <size>
+                <width>0</width>
+                <height>120</height>
+               </size>
+              </property>
+              <property name="maximumSize">
+               <size>
+                <width>16777215</width>
+                <height>120</height>
+               </size>
+              </property>
+              <property name="title">
+               <string>Global Settings</string>
+              </property>
+              <layout class="QGridLayout" name="gridLayout_4">
+               <item row="1" column="0">
+                <layout class="QGridLayout" name="gridLayout_3">
+                 <item row="0" column="1">
+                  <widget class="QComboBox" name="comboBox_global_sheet_material">
+                   <property name="focusPolicy">
+                    <enum>Qt::ClickFocus</enum>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="0" column="0">
+                  <widget class="QLabel" name="label_5">
+                   <property name="text">
+                    <string>Sheet Material:</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="1" column="0">
+                  <widget class="QLabel" name="label_6">
+                   <property name="text">
+                    <string>Sheet Thickness:</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="1" column="1">
+                  <widget class="QComboBox" name="comboBox_global_sheet_thickness">
+                   <property name="focusPolicy">
+                    <enum>Qt::ClickFocus</enum>
                    </property>
                   </widget>
                  </item>
                 </layout>
+               </item>
+               <item row="0" column="0">
+                <widget class="QLabel" name="label_7">
+                 <property name="minimumSize">
+                  <size>
+                   <width>0</width>
+                   <height>20</height>
+                  </size>
+                 </property>
+                 <property name="maximumSize">
+                  <size>
+                   <width>16777215</width>
+                   <height>20</height>
+                  </size>
+                 </property>
+                 <property name="font">
+                  <font>
+                   <weight>50</weight>
+                   <italic>true</italic>
+                   <bold>false</bold>
+                  </font>
+                 </property>
+                 <property name="text">
+                  <string>* These will overide everything</string>
+                 </property>
+                 <property name="scaledContents">
+                  <bool>false</bool>
+                 </property>
+                 <property name="alignment">
+                  <set>Qt::AlignCenter</set>
+                 </property>
+                </widget>
+               </item>
+              </layout>
+             </widget>
+            </item>
+            <item>
+             <widget class="QGroupBox" name="groupBox_8">
+              <property name="title">
+               <string>Sheet Settings</string>
+              </property>
+              <layout class="QVBoxLayout" name="verticalLayout_31">
+               <property name="leftMargin">
+                <number>3</number>
+               </property>
+               <property name="rightMargin">
+                <number>3</number>
+               </property>
+               <property name="bottomMargin">
+                <number>3</number>
+               </property>
+               <item>
+                <layout class="QVBoxLayout" name="verticalLayout_30">
+                 <item>
+                  <widget class="QScrollArea" name="scrollArea_4">
+                   <property name="styleSheet">
+                    <string notr="true">border: none;</string>
+                   </property>
+                   <property name="widgetResizable">
+                    <bool>true</bool>
+                   </property>
+                   <widget class="QWidget" name="scrollAreaWidgetContents_4">
+                    <property name="geometry">
+                     <rect>
+                      <x>0</x>
+                      <y>0</y>
+                      <width>194</width>
+                      <height>330</height>
+                     </rect>
+                    </property>
+                    <property name="styleSheet">
+                     <string notr="true">border: none;</string>
+                    </property>
+                    <layout class="QVBoxLayout" name="verticalLayout_33">
+                     <property name="spacing">
+                      <number>0</number>
+                     </property>
+                     <property name="leftMargin">
+                      <number>0</number>
+                     </property>
+                     <property name="topMargin">
+                      <number>0</number>
+                     </property>
+                     <property name="rightMargin">
+                      <number>0</number>
+                     </property>
+                     <property name="bottomMargin">
+                      <number>0</number>
+                     </property>
+                     <item>
+                      <layout class="QVBoxLayout" name="verticalLayout_sheets">
+                       <item>
+                        <widget class="QLabel" name="label_8">
+                         <property name="text">
+                          <string>Empty</string>
+                         </property>
+                         <property name="alignment">
+                          <set>Qt::AlignCenter</set>
+                         </property>
+                        </widget>
+                       </item>
+                      </layout>
+                     </item>
+                    </layout>
+                   </widget>
+                  </widget>
+                 </item>
+                </layout>
+               </item>
+              </layout>
+             </widget>
+            </item>
+           </layout>
+          </item>
+          <item>
+           <layout class="QVBoxLayout" name="verticalLayout_25">
+            <property name="sizeConstraint">
+             <enum>QLayout::SetDefaultConstraint</enum>
+            </property>
+           </layout>
+          </item>
+          <item>
+           <layout class="QVBoxLayout" name="verticalLayout_nest_directories" stretch="0,1,0,0">
+            <item>
+             <layout class="QHBoxLayout" name="horizontalLayout_20">
+              <item>
+               <widget class="QPushButton" name="pushButton_clear_selections">
+                <property name="text">
+                 <string>Clear All Selections</string>
+                </property>
                </widget>
               </item>
               <item>
-               <widget class="QPushButton" name="pushButton_add_new_item_to_inventory">
+               <widget class="QPushButton" name="pushButton_refresh_directories">
+                <property name="text">
+                 <string>Refresh Lists</string>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </item>
+            <item>
+             <widget class="QGroupBox" name="groupBox_7">
+              <property name="title">
+               <string>Nest Directories</string>
+              </property>
+              <layout class="QVBoxLayout" name="verticalLayout_29">
+               <property name="leftMargin">
+                <number>3</number>
+               </property>
+               <property name="rightMargin">
+                <number>3</number>
+               </property>
+               <property name="bottomMargin">
+                <number>3</number>
+               </property>
+               <item>
+                <layout class="QVBoxLayout" name="verticalLayout_28">
+                 <item>
+                  <layout class="QVBoxLayout" name="verticalLayout_24"/>
+                 </item>
+                </layout>
+               </item>
+              </layout>
+             </widget>
+            </item>
+            <item>
+             <widget class="Line" name="line_7">
+              <property name="orientation">
+               <enum>Qt::Horizontal</enum>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <layout class="QVBoxLayout" name="verticalLayout_27">
+              <item>
+               <widget class="QPushButton" name="pushButton_load_nests">
                 <property name="enabled">
-                 <bool>true</bool>
+                 <bool>false</bool>
                 </property>
-                <property name="sizePolicy">
-                 <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
-                  <horstretch>0</horstretch>
-                  <verstretch>0</verstretch>
-                 </sizepolicy>
+                <property name="text">
+                 <string>Load 0 Nests</string>
                 </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QPushButton" name="pushButton_generate_quote">
                 <property name="minimumSize">
                  <size>
                   <width>0</width>
-                  <height>40</height>
-                 </size>
-                </property>
-                <property name="maximumSize">
-                 <size>
-                  <width>16777215</width>
                   <height>40</height>
                  </size>
                 </property>
                 <property name="font">
                  <font>
-                  <pointsize>10</pointsize>
+                  <weight>75</weight>
+                  <bold>true</bold>
                  </font>
                 </property>
-                <property name="cursor">
-                 <cursorShape>ArrowCursor</cursorShape>
-                </property>
-                <property name="toolTip">
-                 <string/>
-                </property>
-                <property name="statusTip">
-                 <string>Create a new item</string>
-                </property>
                 <property name="styleSheet">
-                 <string notr="true">
-             QPushButton#pushButton_add_new_item_to_inventory{
-                 background-color: #3daee9;
-                 border: 0.04em solid  #3daee9;
-                 border-radius: 5px;
-             }
-             QPushButton#pushButton_add_new_item_to_inventory:hover{
-                 background-color: #49b3eb;
-                 border: 0.04em solid  #49b3eb;
-                 border-radius: 5px;
-             }
-             QPushButton#pushButton_add_new_item_to_inventory:pressed{
-                 background-color: #5cbaed;
-                 color: #bae2f8;
-                 border: 0.04em solid  #5cbaed;
-                 border-radius: 5px;
-             }
-     QPushButton#pushButton_add_new_item_to_inventory:disabled{
-                 background-color: #222222;
-                 color: gray;
-                 border: 0.04em solid  gray;
-                 border-radius: 1px;
-             }</string>
+                 <string notr="true">QPushButton#pushButton_generate_quote{
+	color: #ffffff;
+	background-color: #3daee9;
+	border: 2px solid #3daee9;
+	border-radius: 5px;
+	padding: 8px 16px;
+	font-weight: bold;
+}
+QPushButton#pushButton_generate_quote:hover{
+	background-color: #48b6ed;
+	border-color: #48b6ed;
+}
+QPushButton#pushButton_generate_quote:pressed{
+	background-color: #2b92c5;
+	border-color: #2b92c5;
+}
+QPushButton#pushButton_generate_quote:disabled{
+	background-color: rgb(44, 44, 44);
+	border: 1px solid rgb(57, 57, 57);
+	color: rgb(144, 144, 144);
+	border-radius: 0px;
+}</string>
                 </property>
                 <property name="text">
-                 <string>Add New Item</string>
-                </property>
-                <property name="checkable">
-                 <bool>false</bool>
-                </property>
-                <property name="default">
-                 <bool>false</bool>
-                </property>
-                <property name="flat">
-                 <bool>false</bool>
+                 <string>Generate</string>
                 </property>
                </widget>
               </item>
@@ -974,421 +1267,121 @@ QPushButton:pressed#pushButton_update_parts_in_inventory {
            </layout>
           </item>
          </layout>
-        </widget>
-        <widget class="QWidget" name="laser_quote_tab">
-         <attribute name="title">
-          <string>Quote Generator</string>
-         </attribute>
-         <layout class="QHBoxLayout" name="horizontalLayout_19">
+        </item>
+       </layout>
+      </widget>
+      <widget class="QWidget" name="view_inventory_tab">
+       <attribute name="title">
+        <string>View Inventory (Read Only)</string>
+       </attribute>
+       <layout class="QHBoxLayout" name="horizontalLayout_14">
+        <property name="leftMargin">
+         <number>9</number>
+        </property>
+        <property name="topMargin">
+         <number>0</number>
+        </property>
+        <property name="rightMargin">
+         <number>9</number>
+        </property>
+        <property name="bottomMargin">
+         <number>0</number>
+        </property>
+        <item>
+         <layout class="QVBoxLayout" name="verticalLayout_4">
+          <property name="rightMargin">
+           <number>0</number>
+          </property>
           <item>
-           <layout class="QHBoxLayout" name="horizontalLayout_15" stretch="4,10,3">
-            <item>
-             <layout class="QVBoxLayout" name="verticalLayout_26" stretch="0,0">
-              <property name="spacing">
-               <number>6</number>
-              </property>
-              <item>
-               <widget class="QGroupBox" name="groupBox_6">
-                <property name="minimumSize">
-                 <size>
-                  <width>0</width>
-                  <height>100</height>
-                 </size>
-                </property>
-                <property name="maximumSize">
-                 <size>
-                  <width>16777215</width>
-                  <height>100</height>
-                 </size>
-                </property>
-                <property name="title">
-                 <string>Global Settings</string>
-                </property>
-                <layout class="QGridLayout" name="gridLayout_4">
-                 <item row="1" column="0">
-                  <layout class="QGridLayout" name="gridLayout_3">
-                   <item row="0" column="1">
-                    <widget class="QComboBox" name="comboBox_global_sheet_material">
-                     <property name="focusPolicy">
-                      <enum>Qt::ClickFocus</enum>
-                     </property>
-                    </widget>
-                   </item>
-                   <item row="0" column="0">
-                    <widget class="QLabel" name="label_5">
-                     <property name="text">
-                      <string>Sheet Material:</string>
-                     </property>
-                    </widget>
-                   </item>
-                   <item row="0" column="2">
-                    <widget class="QLabel" name="label_6">
-                     <property name="text">
-                      <string>Sheet Thickness:</string>
-                     </property>
-                    </widget>
-                   </item>
-                   <item row="0" column="3">
-                    <widget class="QComboBox" name="comboBox_global_sheet_thickness">
-                     <property name="focusPolicy">
-                      <enum>Qt::ClickFocus</enum>
-                     </property>
-                    </widget>
-                   </item>
-                  </layout>
-                 </item>
-                 <item row="0" column="0">
-                  <widget class="QLabel" name="label_7">
-                   <property name="minimumSize">
-                    <size>
-                     <width>0</width>
-                     <height>20</height>
-                    </size>
-                   </property>
-                   <property name="maximumSize">
-                    <size>
-                     <width>16777215</width>
-                     <height>20</height>
-                    </size>
-                   </property>
-                   <property name="font">
-                    <font>
-                     <weight>50</weight>
-                     <italic>true</italic>
-                     <bold>false</bold>
-                    </font>
-                   </property>
-                   <property name="text">
-                    <string>* These will overide everything</string>
-                   </property>
-                   <property name="scaledContents">
-                    <bool>false</bool>
-                   </property>
-                   <property name="alignment">
-                    <set>Qt::AlignCenter</set>
-                   </property>
-                  </widget>
-                 </item>
-                </layout>
-               </widget>
-              </item>
-              <item>
-               <widget class="QGroupBox" name="groupBox_8">
-                <property name="title">
-                 <string>Sheet Settings</string>
-                </property>
-                <layout class="QVBoxLayout" name="verticalLayout_31">
-                 <property name="leftMargin">
-                  <number>3</number>
-                 </property>
-                 <property name="rightMargin">
-                  <number>3</number>
-                 </property>
-                 <property name="bottomMargin">
-                  <number>3</number>
-                 </property>
-                 <item>
-                  <layout class="QVBoxLayout" name="verticalLayout_30">
-                   <item>
-                    <widget class="QScrollArea" name="scrollArea_4">
-                     <property name="widgetResizable">
-                      <bool>true</bool>
-                     </property>
-                     <widget class="QWidget" name="scrollAreaWidgetContents_4">
-                      <property name="geometry">
-                       <rect>
-                        <x>0</x>
-                        <y>0</y>
-                        <width>361</width>
-                        <height>351</height>
-                       </rect>
-                      </property>
-                      <layout class="QVBoxLayout" name="verticalLayout_33">
-                       <property name="spacing">
-                        <number>0</number>
-                       </property>
-                       <property name="leftMargin">
-                        <number>0</number>
-                       </property>
-                       <property name="topMargin">
-                        <number>0</number>
-                       </property>
-                       <property name="rightMargin">
-                        <number>0</number>
-                       </property>
-                       <property name="bottomMargin">
-                        <number>0</number>
-                       </property>
-                       <item>
-                        <layout class="QVBoxLayout" name="verticalLayout_32">
-                         <item>
-                          <layout class="QVBoxLayout" name="verticalLayout_sheets">
-                           <property name="spacing">
-                            <number>0</number>
-                           </property>
-                           <item>
-                            <widget class="QLabel" name="label_8">
-                             <property name="text">
-                              <string>Empty</string>
-                             </property>
-                             <property name="alignment">
-                              <set>Qt::AlignCenter</set>
-                             </property>
-                            </widget>
-                           </item>
-                          </layout>
-                         </item>
-                        </layout>
-                       </item>
-                      </layout>
-                     </widget>
-                    </widget>
-                   </item>
-                  </layout>
-                 </item>
-                </layout>
-               </widget>
-              </item>
-             </layout>
-            </item>
-            <item>
-             <layout class="QVBoxLayout" name="verticalLayout_25">
-              <property name="sizeConstraint">
-               <enum>QLayout::SetDefaultConstraint</enum>
-              </property>
-             </layout>
-            </item>
-            <item>
-             <layout class="QVBoxLayout" name="verticalLayout_nest_directories" stretch="0,1,0,0">
-              <item>
-               <layout class="QHBoxLayout" name="horizontalLayout_20">
-                <item>
-                 <widget class="QPushButton" name="pushButton_clear_selections">
-                  <property name="text">
-                   <string>Clear All Selections</string>
-                  </property>
-                 </widget>
-                </item>
-                <item>
-                 <widget class="QPushButton" name="pushButton_refresh_directories">
-                  <property name="text">
-                   <string>Refresh Lists</string>
-                  </property>
-                 </widget>
-                </item>
-               </layout>
-              </item>
-              <item>
-               <widget class="QGroupBox" name="groupBox_7">
-                <property name="title">
-                 <string>Nest Directories</string>
-                </property>
-                <layout class="QVBoxLayout" name="verticalLayout_29">
-                 <property name="leftMargin">
-                  <number>3</number>
-                 </property>
-                 <property name="rightMargin">
-                  <number>3</number>
-                 </property>
-                 <property name="bottomMargin">
-                  <number>3</number>
-                 </property>
-                 <item>
-                  <layout class="QVBoxLayout" name="verticalLayout_28">
-                   <item>
-                    <layout class="QVBoxLayout" name="verticalLayout_24"/>
-                   </item>
-                  </layout>
-                 </item>
-                </layout>
-               </widget>
-              </item>
-              <item>
-               <widget class="Line" name="line_7">
-                <property name="orientation">
-                 <enum>Qt::Horizontal</enum>
-                </property>
-               </widget>
-              </item>
-              <item>
-               <layout class="QVBoxLayout" name="verticalLayout_27">
-                <item>
-                 <widget class="QPushButton" name="pushButton_load_nests">
-                  <property name="enabled">
-                   <bool>false</bool>
-                  </property>
-                  <property name="text">
-                   <string>Load 0 Nests</string>
-                  </property>
-                 </widget>
-                </item>
-                <item>
-                 <widget class="QPushButton" name="pushButton_generate_quote">
-                  <property name="minimumSize">
-                   <size>
-                    <width>0</width>
-                    <height>40</height>
-                   </size>
-                  </property>
-                  <property name="font">
-                   <font>
-                    <pointsize>8</pointsize>
-                   </font>
-                  </property>
-                  <property name="styleSheet">
-                   <string notr="true">
-             QPushButton#pushButton_generate_quote{
-                 background-color: #3daee9;
-                 border: 0.04em solid  #3daee9;
-                 border-radius: 5px;
-             }
-             QPushButton#pushButton_generate_quote:hover{
-                 background-color: #49b3eb;
-                 border: 0.04em solid  #49b3eb;
-                 border-radius: 5px;
-             }
-             QPushButton#pushButton_generate_quote:pressed{
-                 background-color: #5cbaed;
-                 color: #bae2f8;
-                 border: 0.04em solid  #5cbaed;
-                 border-radius: 5px;
-             }
-     QPushButton#pushButton_generate_quote:disabled{
-                 background-color: #222222;
-                 color: gray;
-                 border: 0.04em solid  gray;
-                 border-radius: 1px;
-             }</string>
-                  </property>
-                  <property name="text">
-                   <string>Generate</string>
-                  </property>
-                 </widget>
-                </item>
-               </layout>
-              </item>
-             </layout>
-            </item>
-           </layout>
+           <layout class="QGridLayout" name="search_layout"/>
           </item>
          </layout>
-        </widget>
-        <widget class="QWidget" name="view_inventory_tab">
-         <attribute name="title">
-          <string>  View Inventory (Read Only)  </string>
-         </attribute>
-         <layout class="QHBoxLayout" name="horizontalLayout_14">
+        </item>
+       </layout>
+      </widget>
+      <widget class="QWidget" name="tab_3">
+       <attribute name="title">
+        <string>View Removed Quantities History (Read Only)</string>
+       </attribute>
+       <layout class="QVBoxLayout" name="verticalLayout_8">
+        <property name="leftMargin">
+         <number>9</number>
+        </property>
+        <property name="topMargin">
+         <number>0</number>
+        </property>
+        <property name="rightMargin">
+         <number>9</number>
+        </property>
+        <property name="bottomMargin">
+         <number>0</number>
+        </property>
+        <item>
+         <layout class="QVBoxLayout" name="verticalLayout_5">
+          <property name="rightMargin">
+           <number>0</number>
+          </property>
           <item>
-           <layout class="QVBoxLayout" name="verticalLayout_4">
+           <layout class="QHBoxLayout" name="horizontalLayout_11">
             <item>
-             <layout class="QGridLayout" name="search_layout"/>
-            </item>
-           </layout>
-          </item>
-         </layout>
-        </widget>
-        <widget class="QWidget" name="tab_3">
-         <attribute name="title">
-          <string>  View Removed Quantites History (Read Only)  </string>
-         </attribute>
-         <layout class="QVBoxLayout" name="verticalLayout_8">
-          <item>
-           <layout class="QVBoxLayout" name="verticalLayout_5">
-            <item>
-             <layout class="QHBoxLayout" name="horizontalLayout_11">
-              <item>
-               <widget class="QGroupBox" name="groupBox_2">
-                <property name="title">
-                 <string>Category History</string>
-                </property>
-                <layout class="QHBoxLayout" name="horizontalLayout_12">
-                 <item>
-                  <widget class="QTableWidget" name="categoryHistoryTable">
-                   <property name="enabled">
-                    <bool>true</bool>
-                   </property>
-                   <property name="rowCount">
-                    <number>0</number>
-                   </property>
-                   <property name="columnCount">
-                    <number>2</number>
-                   </property>
-                   <attribute name="horizontalHeaderDefaultSectionSize">
-                    <number>500</number>
-                   </attribute>
-                   <attribute name="horizontalHeaderMinimumSectionSize">
-                    <number>42</number>
-                   </attribute>
-                   <attribute name="verticalHeaderDefaultSectionSize">
-                    <number>30</number>
-                   </attribute>
-                   <attribute name="verticalHeaderMinimumSectionSize">
-                    <number>28</number>
-                   </attribute>
-                   <column/>
-                   <column/>
-                  </widget>
-                 </item>
-                </layout>
-               </widget>
-              </item>
-              <item>
-               <widget class="QGroupBox" name="groupBox_3">
-                <property name="title">
-                 <string>Single Item History</string>
-                </property>
-                <layout class="QHBoxLayout" name="horizontalLayout_13">
-                 <item>
-                  <widget class="QTableWidget" name="singleItemHistoryTable">
-                   <property name="enabled">
-                    <bool>true</bool>
-                   </property>
-                   <property name="rowCount">
-                    <number>0</number>
-                   </property>
-                   <property name="columnCount">
-                    <number>2</number>
-                   </property>
-                   <attribute name="horizontalHeaderDefaultSectionSize">
-                    <number>500</number>
-                   </attribute>
-                   <attribute name="horizontalHeaderMinimumSectionSize">
-                    <number>42</number>
-                   </attribute>
-                   <column/>
-                   <column/>
-                  </widget>
-                 </item>
-                </layout>
-               </widget>
-              </item>
-             </layout>
-            </item>
-           </layout>
-          </item>
-         </layout>
-        </widget>
-        <widget class="QWidget" name="tab_4">
-         <attribute name="title">
-          <string>  View Price Changes History (Read Only)  </string>
-         </attribute>
-         <layout class="QVBoxLayout" name="verticalLayout_9">
-          <item>
-           <layout class="QHBoxLayout" name="horizontalLayout_8">
-            <item>
-             <widget class="QGroupBox" name="groupBox_4">
+             <widget class="QGroupBox" name="groupBox_2">
               <property name="title">
-               <string>Price History</string>
+               <string>Category History</string>
               </property>
-              <layout class="QHBoxLayout" name="horizontalLayout_10">
+              <layout class="QHBoxLayout" name="horizontalLayout_12">
                <item>
-                <widget class="QTableWidget" name="priceHistoryTable">
-                 <property name="columnCount">
-                  <number>5</number>
+                <widget class="QTableWidget" name="categoryHistoryTable">
+                 <property name="enabled">
+                  <bool>true</bool>
                  </property>
+                 <property name="rowCount">
+                  <number>0</number>
+                 </property>
+                 <property name="columnCount">
+                  <number>2</number>
+                 </property>
+                 <attribute name="horizontalHeaderDefaultSectionSize">
+                  <number>500</number>
+                 </attribute>
+                 <attribute name="horizontalHeaderMinimumSectionSize">
+                  <number>42</number>
+                 </attribute>
+                 <attribute name="verticalHeaderDefaultSectionSize">
+                  <number>30</number>
+                 </attribute>
+                 <attribute name="verticalHeaderMinimumSectionSize">
+                  <number>28</number>
+                 </attribute>
                  <column/>
                  <column/>
-                 <column/>
+                </widget>
+               </item>
+              </layout>
+             </widget>
+            </item>
+            <item>
+             <widget class="QGroupBox" name="groupBox_3">
+              <property name="title">
+               <string>Single Item History</string>
+              </property>
+              <layout class="QHBoxLayout" name="horizontalLayout_13">
+               <item>
+                <widget class="QTableWidget" name="singleItemHistoryTable">
+                 <property name="enabled">
+                  <bool>true</bool>
+                 </property>
+                 <property name="rowCount">
+                  <number>0</number>
+                 </property>
+                 <property name="columnCount">
+                  <number>2</number>
+                 </property>
+                 <attribute name="horizontalHeaderDefaultSectionSize">
+                  <number>500</number>
+                 </attribute>
+                 <attribute name="horizontalHeaderMinimumSectionSize">
+                  <number>42</number>
+                 </attribute>
                  <column/>
                  <column/>
                 </widget>
@@ -1399,15 +1392,65 @@ QPushButton:pressed#pushButton_update_parts_in_inventory {
            </layout>
           </item>
          </layout>
-        </widget>
-       </widget>
-      </item>
-     </layout>
+        </item>
+       </layout>
+      </widget>
+      <widget class="QWidget" name="tab_4">
+       <attribute name="title">
+        <string>View Price Changes History (Read Only)</string>
+       </attribute>
+       <layout class="QVBoxLayout" name="verticalLayout_9">
+        <property name="leftMargin">
+         <number>9</number>
+        </property>
+        <property name="topMargin">
+         <number>0</number>
+        </property>
+        <property name="rightMargin">
+         <number>9</number>
+        </property>
+        <property name="bottomMargin">
+         <number>0</number>
+        </property>
+        <item>
+         <layout class="QHBoxLayout" name="horizontalLayout_8">
+          <property name="rightMargin">
+           <number>0</number>
+          </property>
+          <item>
+           <widget class="QGroupBox" name="groupBox_4">
+            <property name="title">
+             <string>Price History</string>
+            </property>
+            <layout class="QHBoxLayout" name="horizontalLayout_10">
+             <item>
+              <widget class="QTableWidget" name="priceHistoryTable">
+               <property name="columnCount">
+                <number>5</number>
+               </property>
+               <column/>
+               <column/>
+               <column/>
+               <column/>
+               <column/>
+              </widget>
+             </item>
+            </layout>
+           </widget>
+          </item>
+         </layout>
+        </item>
+       </layout>
+      </widget>
+     </widget>
     </item>
     <item>
      <layout class="QVBoxLayout" name="verticalLayout_status">
       <property name="leftMargin">
        <number>6</number>
+      </property>
+      <property name="topMargin">
+       <number>3</number>
       </property>
       <property name="rightMargin">
        <number>6</number>
@@ -1424,8 +1467,8 @@ QPushButton:pressed#pushButton_update_parts_in_inventory {
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1127</width>
-     <height>21</height>
+     <width>974</width>
+     <height>22</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
@@ -1539,6 +1582,9 @@ QPushButton:pressed#pushButton_update_parts_in_inventory {
     </property>
     <addaction name="actionAdd_Nest_Directory"/>
     <addaction name="actionRemove_Nest_Directory"/>
+    <addaction name="separator"/>
+    <addaction name="actionOpen_Quotes_Directory"/>
+    <addaction name="actionOpen_Workorders_Directory"/>
    </widget>
    <addaction name="menuFile"/>
    <addaction name="menuSettings"/>
@@ -1641,8 +1687,14 @@ QPushButton:pressed#pushButton_update_parts_in_inventory {
    <property name="text">
     <string>Ebay</string>
    </property>
+   <property name="iconText">
+    <string>Ebay</string>
+   </property>
    <property name="statusTip">
     <string>Search ebay for prices (beta &amp; deprecated)</string>
+   </property>
+   <property name="iconVisibleInMenu">
+    <bool>false</bool>
    </property>
   </action>
   <action name="actionLoad_Backup">
@@ -1840,10 +1892,35 @@ QPushButton:pressed#pushButton_update_parts_in_inventory {
    <property name="text">
     <string>Add Nest Directory</string>
    </property>
+   <property name="menuRole">
+    <enum>QAction::TextHeuristicRole</enum>
+   </property>
+   <property name="iconVisibleInMenu">
+    <bool>false</bool>
+   </property>
   </action>
   <action name="actionRemove_Nest_Directory">
    <property name="text">
     <string>Remove Nest Directory</string>
+   </property>
+   <property name="iconVisibleInMenu">
+    <bool>false</bool>
+   </property>
+  </action>
+  <action name="actionOpen_Quotes_Directory">
+   <property name="text">
+    <string>Open Quotes Directory</string>
+   </property>
+   <property name="iconVisibleInMenu">
+    <bool>false</bool>
+   </property>
+  </action>
+  <action name="actionOpen_Workorders_Directory">
+   <property name="text">
+    <string>Open Workorders Directory</string>
+   </property>
+   <property name="iconVisibleInMenu">
+    <bool>false</bool>
    </property>
   </action>
  </widget>

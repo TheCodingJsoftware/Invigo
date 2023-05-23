@@ -321,7 +321,7 @@ class Server:
                     else:
                         order_pending = "No order is pending"
                     message_to_send += f'<tr style="border: 1px solid; {stylesheet}"><td>{sheet_name}</td><td style="{"font-weight: bold;" if is_order_pending else ""}">{order_pending}</td><td>{current_quantity}</td><td>{notes}</td></tr>'
-        message_to_send += '</tbody></table></div><br><p style="font-family: sans-serif;">Don\'t forget to update the pending status button in the Sheet Inventory tab when you sent a purchase order.<br>Have a fabulous week!</p>!'
+        message_to_send += '</tbody></table></div><br><p style="font-family: sans-serif;">Don\'t forget to update the pending status button in the Sheet Inventory tab when you sent a purchase order.<br>Have a fabulous week!</p>'
         if sheets_low_in_quantity == 0:
             send('Nothing low in quantity, Whew! Have a marvelous Monday.')
         else:

@@ -187,7 +187,10 @@ class LoadNests(QThread):
         This is a Python function that extracts data from PDF files and stores it in a dictionary.
         """
         try:
-            shutil.rmtree(f"{self.program_directory}/images")
+            try:
+                shutil.rmtree(f"{self.program_directory}/images")
+            except:
+                pass
             Path(f"{self.program_directory}/images").mkdir(parents=True, exist_ok=True)
             self.extract_images_from_pdf(self.nests)
             image_index: int = 0

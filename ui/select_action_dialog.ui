@@ -147,7 +147,7 @@ border: 1px solid  rgb(0,120,212);
                <x>0</x>
                <y>0</y>
                <width>328</width>
-               <height>69</height>
+               <height>236</height>
               </rect>
              </property>
              <layout class="QVBoxLayout" name="verticalLayout_4">
@@ -192,7 +192,7 @@ border: 1px solid  rgb(0,120,212);
          </layout>
         </item>
         <item>
-         <widget class="QListWidget" name="listWidget"/>
+         <layout class="QGridLayout" name="gridLayout"/>
         </item>
         <item>
          <layout class="QHBoxLayout" name="buttonsLayout"/>

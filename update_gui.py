@@ -22,6 +22,8 @@ from PyQt5.QtWidgets import QApplication, QLabel, QVBoxLayout, QWidget
 
 from utils.json_file import JsonFile
 
+QApplication.setAttribute(Qt.AA_EnableHighDpiScaling, True)
+
 settings_file = JsonFile(file_name="settings")
 
 
@@ -40,16 +42,16 @@ class DownloadThread(QThread):
         It downloads a zip file, extracts it, and then deletes the zip file.
         """
         try:
-            self.signal.emit("Do. NOT. close. this. window. >:(")
+            self.signal.emit("Update starting, do not cancel this operation.")
             QApplication.setOverrideCursor(Qt.WaitCursor)
             time.sleep(2)
-            self.signal.emit("Downloading.. :|")
+            self.signal.emit("Downloading update..")
             QApplication.setOverrideCursor(Qt.WaitCursor)
             self.download()
-            self.signal.emit("Download finished... :)")
+            self.signal.emit("Download finished!")
             time.sleep(1)
             QApplication.setOverrideCursor(Qt.WaitCursor)
-            self.signal.emit("Installing.... :O")
+            self.signal.emit("Installing...")
             QApplication.setOverrideCursor(Qt.WaitCursor)
             extracted: bool = False
             while not extracted:
@@ -61,15 +63,14 @@ class DownloadThread(QThread):
                     if "update.exe" in str(e):
                         extracted = True
                     if "Inventory Manager.exe" in str(e):
-                        self.signal.emit("Close Inventory Manager.exe (NOT THIS WINDOW)")
+                        self.signal.emit("Close Inventory Manager.exe to finish installing")
                 time.sleep(1)
             os.remove(self.file_name)
-
-            self.signal.emit("Finished. :D")
+            self.signal.emit("Updated successfully!")
             QApplication.setOverrideCursor(Qt.WaitCursor)
             time.sleep(1)
-            self.signal.emit("Closing. >:)")
-            time.sleep(1)
+            self.signal.emit("Have a great day! :)")
+            time.sleep(2)
             self.signal.emit("")
         except Exception as e:
             self.signal.emit(e)
@@ -112,11 +113,12 @@ class Window(QWidget):
         self.setFixedSize(WIDTH, HEIGHT)
         self.setWindowTitle("Inventory Manager Update")
         self.setWindowFlags(Qt.Window | Qt.FramelessWindowHint)
+        self.setAttribute(Qt.WA_TranslucentBackground, True)
         widget = QWidget(self)
         widget.resize(WIDTH, HEIGHT)
         widget.setObjectName("widget")
         widget.setStyleSheet(
-            "QWidget#widget{border-top-left-radius:10px; border-bottom-left-radius:10px; border-top-right-radius:10px; border-bottom-right-radius:10px; border: 1px solid  rgb(0,120,212);}"
+            "QWidget#widget{border-top-left-radius:10px; border-bottom-left-radius:10px; border-top-right-radius:10px; border-bottom-right-radius:10px; border: 1px solid  rgb(0,120,212);background-color: #2c2c2c;}"
         )
         self.progress_text = QLabel(widget)
         self.progress_text.setFixedSize(WIDTH - 20, 20)
@@ -141,14 +143,14 @@ class Window(QWidget):
 
         self.progress_bar = QWidget(widget)
         self.progress_bar.setStyleSheet(
-            f"background-color: {PROGRESS_BAR_COLOR}; border-radius: 3px"
+            f"background-color: {PROGRESS_BAR_COLOR}; border-radius: 5px"
         )
         self.progress_bar.resize(0, PROGRESS_BAR_HEIGHT)
 
         self.anim = QPropertyAnimation(self.progress_bar, b"pos")
         self.anim.setEasingCurve(QEasingCurve.InOutCubic)
         self.anim.setStartValue(QPoint(OFFSET, HEIGHT - OFFSET))
-        self.anim.setEndValue(QPoint(WIDTH - (40 * 2) + 30, HEIGHT - OFFSET))
+        self.anim.setEndValue(QPoint(WIDTH - (40 * 2) + 30-2, HEIGHT - OFFSET))
         self.anim.setDuration(ANIMATION_DURATION)
 
         self.anim_2 = QPropertyAnimation(self.progress_bar, b"size")
@@ -157,7 +159,8 @@ class Window(QWidget):
         self.anim_2.setEasingCurve(QEasingCurve.InOutCubic)
         self.anim_2.setKeyValueAt(0.0, QSize(0, PROGRESS_BAR_HEIGHT))
         self.anim_2.setKeyValueAt(0.1, QSize(40, PROGRESS_BAR_HEIGHT))
-        self.anim_2.setKeyValueAt(0.6, QSize(MAX_PROGRESS_BAR_WIDTH, PROGRESS_BAR_HEIGHT))
+        self.anim_2.setKeyValueAt(0.4, QSize(MAX_PROGRESS_BAR_WIDTH, PROGRESS_BAR_HEIGHT))
+        self.anim_2.setKeyValueAt(0.8, QSize(40, PROGRESS_BAR_HEIGHT))
         self.anim_2.setEndValue(QSize(0, PROGRESS_BAR_HEIGHT))
 
         self.anim_group = QParallelAnimationGroup(widget)
@@ -176,19 +179,6 @@ class Window(QWidget):
         )
         QApplication.setOverrideCursor(Qt.WaitCursor)
         self.start_thread(download_thread)
-
-        self.load_theme()
-
-    def load_theme(self) -> None:
-        """
-        It loads the stylesheet.qss file from the theme folder
-        """
-        stylesheet_file = QFile(
-            f"ui/BreezeStyleSheets/dist/qrc/{self.theme}/stylesheet.qss"
-        )
-        stylesheet_file.open(QFile.ReadOnly | QFile.Text)
-        stream = QTextStream(stylesheet_file)
-        self.setStyleSheet(stream.readAll())
 
     def start_thread(self, thread) -> None:
         """

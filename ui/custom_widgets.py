@@ -7,8 +7,9 @@ from PyQt5.QtCore import (
     QSortFilterProxyModel,
     Qt,
     pyqtSignal,
+    QEvent,
 )
-from PyQt5.QtGui import QDrag, QIcon, QPalette, QPixmap
+from PyQt5.QtGui import QDrag, QIcon, QPalette, QPixmap, QCursor
 from PyQt5.QtWidgets import (
     QAbstractSpinBox,
     QCheckBox,
@@ -16,6 +17,7 @@ from PyQt5.QtWidgets import (
     QDoubleSpinBox,
     QFileSystemModel,
     QGridLayout,
+    QGroupBox,
     QHBoxLayout,
     QLabel,
     QLineEdit,
@@ -35,8 +37,182 @@ from PyQt5.QtWidgets import (
     QTreeWidgetItem,
     QVBoxLayout,
     QWidget,
+    QTabBar,
+    QToolBox,
 )
 
+
+class MultiToolBox(QWidget):
+    '''The class MultiToolBox is a QWidget.'''
+    def __init__(self, parent=None):
+        super(MultiToolBox, self).__init__(parent)
+        self.widgets = []
+        self.buttons = []
+        main_layout = QVBoxLayout(self)
+        main_layout.setAlignment(Qt.AlignTop)
+        self.setLayout(main_layout)
+
+    def addItem(self, widget: QWidget, title: str):
+        """
+        This function adds a widget with a title and a toggle button to a layout.
+        
+        Args:
+          widget (QWidget): QWidget - This is the widget that will be added to the sheet. It can be any
+        type of QWidget, such as a QLabel, QComboBox, or even another layout.
+          title (str): A string representing the title of the widget that will be added to the layout.
+        """
+        button = QPushButton()
+        button.setObjectName("sheet_nest_button")
+        button.setText(title)
+        button.setChecked(True)
+        button.setCheckable(True)
+        button.clicked.connect(lambda checked, w=widget: self.toggle_widget_visibility(w))
+
+        layout = QVBoxLayout()
+        layout.setContentsMargins(0, 3, 0, 0) 
+        layout.addWidget(button)
+        layout.addWidget(widget)
+
+        self.buttons.append(button)
+        self.widgets.append(widget)
+
+        self.layout().addLayout(layout)
+
+    def setItemText(self, index: int, new_name: str):
+        """
+        This function sets the text of a button at a given index to a new name.
+        
+        Args:
+          index (int): an integer representing the index of the button whose text needs to be changed.
+          new_name (str): A string representing the new text that will be set for the button at the
+        specified index.
+        """
+        if 0 <= index < len(self.buttons):
+            self.buttons[index].setText(new_name)
+            
+    def setItemIcon(self, index: int, icon_path: str):
+        """
+        This function sets the icon of a button at a given index with the icon located at a specified
+        file path.
+        
+        Args:
+          index (int): An integer representing the index of the button in the list of buttons.
+          icon_path (str): The path to the icon file that will be used as the button's icon.
+        """
+        if 0 <= index < len(self.buttons):
+            button = self.buttons[index]
+            icon = QIcon(icon_path)
+            button.setIcon(icon)
+    
+    def getWidget(self, index):
+        """
+        This function returns the widget at the specified index if it exists, otherwise it returns None.
+        
+        Args:
+          index: The index parameter is an integer value that represents the position of the widget in
+        the list of widgets. It is used to retrieve a specific widget from the list of widgets.
+        
+        Returns:
+          The method `getWidget` returns either the widget at the specified index in the `self.widgets`
+        list, or `None` if the index is out of range.
+        """
+        if 0 <= index < len(self.widgets):
+            return self.widgets[index]
+        return None
+    
+    def count(self) -> int:
+        """
+        The function returns the number of widgets in a class.
+        
+        Returns:
+          The function `count()` is returning an integer value which represents the length of the
+        `widgets` list.
+        """
+        return len(self.widgets)
+
+    def toggle_widget_visibility(self, widget):
+        """
+        This function toggles the visibility of a widget in a Python GUI.
+        
+        Args:
+          widget: The widget parameter is a reference to a graphical user interface (GUI) widget object.
+        The function toggles the visibility of this widget, i.e., if the widget is currently visible, it
+        will be hidden, and if it is currently hidden, it will be made visible. The widget object could
+        be
+        """
+        widget.setVisible(not widget.isVisible())
+    
+    
+class CustomTabWidget(QTabWidget):
+    def __init__(self, parent=None):
+        super(CustomTabWidget, self).__init__(parent)
+        self.tab_order = []  # Stores the current order of tabs as strings
+        self.tabBar().installEventFilter(self)
+        self.wheelEvent = lambda event: None
+        
+    def dragMoveEvent(self, event):
+        # Check if it's a tab being dragged
+        if event.source() == self.tabBar():
+            event.ignore()  # Ignore the drag move event
+        else:
+            super().dragMoveEvent(event)
+
+    def wheelEvent(self, event):
+        """
+        This function ignores the wheel event.
+
+        Args:
+          event: The event parameter in this code refers to a QWheelEvent object, which is an event that
+        occurs when the user rotates the mouse wheel. This function is a method of a class that inherits
+        from QWidget, and it is used to handle the wheel event when it occurs on the widget.
+        """
+        event.ignore()
+    
+    def update_tab_order(self):
+        """
+        This function updates the tab order of a widget by creating a list of tab texts in the order
+        they appear.
+        """
+        self.tab_order = [self.tabText(i) for i in range(self.count())]
+
+    def get_tab_order(self) -> list[str]:
+        """
+        This function returns a list of strings representing the tab order of a QTabWidget.
+        
+        Returns:
+          A list of strings representing the tab order.
+        """
+        self.update_tab_order()
+        return self.tab_order
+
+    def set_tab_order(self, order):
+        """
+        This function sets the tab order of a tab bar based on a given list of tab names.
+        
+        Args:
+          order: A list of tab names in the desired order. The function will reorder the tabs in the tab
+        bar based on this order.
+        """
+        for tab_name in order:
+            index = self.find_tab_by_name(tab_name)
+            if index != -1:
+                self.tabBar().moveTab(index, order.index(tab_name))
+
+    def find_tab_by_name(self, name: str) -> int:
+        """
+        This function finds the index of a tab in a tab widget by its name.
+        
+        Args:
+          name (str): A string representing the name of the tab that needs to be found.
+        
+        Returns:
+          an integer value which represents the index of the tab with the given name in the tab widget.
+        If the tab is not found, it returns -1.
+        """
+        for i in range(self.count()):
+            if self.tabText(i) == name:
+                return i
+        return -1
 
 class PdfFilterProxyModel(QSortFilterProxyModel):
     def __init__(self, parent=None):
@@ -136,6 +312,38 @@ class PdfTreeView(QTreeView):
         ]
 
 
+class RecutButton(QPushButton):
+    def __init__(self, parent=None):
+        """
+        This function initializes a checkable and clickable button with the text "No Recut" and a fixed
+        width of 100.
+        
+        Args:
+          parent: The parent parameter is used to specify the parent widget of the current widget. If a
+        parent widget is specified, the current widget becomes a child of the parent widget and is
+        displayed within it. If no parent widget is specified, the current widget becomes a top-level
+        widget and is displayed independently. In this
+        """
+        super().__init__(parent)
+        self.setCheckable(True)
+        self.setChecked(False)
+        self.setObjectName("recut_button")
+        self.setFixedWidth(100)
+        self.setFlat(True)
+        self.setText("No Recut")
+        self.clicked.connect(self.toggle_state)
+
+    def toggle_state(self):
+        """
+        This function toggles the text of a button between "Recut" and "No Recut" based on its current
+        state.
+        """
+        if self.isChecked():
+            self.setText("Recut")
+        else:
+            self.setText("No Recut")
+
+
 class CustomTableWidget(QTableWidget):
     def __init__(self, parent=None):
         super().__init__(parent)
@@ -189,26 +397,6 @@ class OrderStatusButton(QPushButton):
         self.setText("Order Pending")
         self.setFixedWidth(100)
         self.setObjectName("order_status")
-
-
-class NoScrollTabWidget(QTabWidget):
-    """This is a custom class that inherits from QTabWidget and disables scrolling functionality."""
-
-    def __init__(self, parent=None):
-        super(NoScrollTabWidget, self).__init__(parent)
-        self.tabBar().installEventFilter(self)
-        self.wheelEvent = lambda event: None
-
-    def wheelEvent(self, event):
-        """
-        This function ignores the wheel event.
-
-        Args:
-          event: The event parameter in this code refers to a QWheelEvent object, which is an event that
-        occurs when the user rotates the mouse wheel. This function is a method of a class that inherits
-        from QWidget, and it is used to handle the wheel event when it occurs on the widget.
-        """
-        event.ignore()
 
 
 class ItemCheckBox(QCheckBox):
@@ -408,27 +596,13 @@ class DeletePushButton(QPushButton):
 
 
 class ClickableLabel(QLabel):
-    """It's a QLabel that emits a signal when it's clicked"""
+    clicked = pyqtSignal()  # Signal emitted when the label is clicked
+    def __init__(self, parent=None):
+        super(ClickableLabel, self).__init__(parent)
+        self.setCursor(QCursor(Qt.PointingHandCursor))
 
-    def __init__(self, clicked, parent=None):
-        """
-        The function __init__ is a constructor that initializes the class
-
-        Args:
-          clicked: a function that will be called when the label is clicked.
-          parent: The parent widget.
-        """
-        QLabel.__init__(self, parent)
-        self.__clicked = clicked
-
-    def mouseReleaseEvent(self, event):
-        """
-        The function is called when the mouse is released
-
-        Args:
-          event: QMouseEvent
-        """
-        self.__clicked(event)
+    def mousePressEvent(self, event):
+        self.clicked.emit()  # Emit the clicked signal
 
 
 class RichTextPushButton(QPushButton):
@@ -993,6 +1167,9 @@ def set_status_button_stylesheet(button: QPushButton, color: str) -> None:
     elif color == 'red':
         background_color = '#3F1E25'
         border_color = 'darkred'
+    elif color == '#3daee9':
+        background_color = '#1E363F'
+        border_color = "#3E8C99"
     button.setStyleSheet(
         """
         QPushButton#status_button:flat {

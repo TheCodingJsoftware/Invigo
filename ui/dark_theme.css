@@ -194,7 +194,7 @@ QLabel:focus {
 /* Buttons */
 
 QPushButton {
-    background-color: rgb(71, 71, 71);
+    background-color: #474747;
     border: 1px solid rgb(76, 76, 76);
     border-radius: 5px;
     padding: 3px 3px;
@@ -225,12 +225,78 @@ QPushButton:checked {
 }
 
 QPushButton:checked#order_status {
-    color: lime;
-    border-color: green;
-    background-color: darkgreen;
+        color: #ffffff;
+        background-color: #2ea44f;
+        border: 1px solid #2ea44f;
 }
 
+QPushButton:checked:hover#order_status {
+    background-color: #3bba6d;
+    border-color: #3bba6d;
+}
+QPushButton:checked:pressed#order_status {
+    background-color: #1d703e;
+    border-color: #1d703e;
+}
 QPushButton:!checked#order_status {
+    color: gray;
+}
+
+QPushButton:checked#recut_button {
+    color: #ffffff;
+    background-color: #2ea44f;
+    border: 1px solid #2ea44f;
+    border-radius: 5px;
+}
+
+QPushButton:checked:hover#recut_button {
+    background-color: #3bba6d;
+    border-color: #3bba6d;
+}
+QPushButton:checked:pressed#recut_button {
+    background-color: #1d703e;
+    border-color: #1d703e;
+}
+
+QPushButton#sheet_nest_button {
+    background-color: rgb(71, 71, 71);
+    border: 1px solid rgb(76, 76, 76);
+    border-radius: 5px;
+    color: rgb(210, 210, 210);
+    text-align: left; 
+    padding-left: 3px;
+}
+QPushButton:hover#sheet_nest_button {
+    background-color: rgb(76, 76, 76);
+    border: 1px solid rgb(71, 76, 88);
+}
+
+QPushButton:pressed#sheet_nest_button {
+    background-color: rgb(39, 39, 39);
+    border: 1px solid rgb(47, 50, 57);
+    color: rgb(132, 132, 132);
+}
+QPushButton:checked#sheet_nest_button {
+    color: gray;
+}
+QPushButton:!checked#sheet_nest_button {
+    color: white;
+    background-color: #3daee9;
+    border: 0.01em solid #3daee9;
+    border-top-right-radius: 5px;
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 0.01em;
+    border-bottom-right-radius: 0.01em;
+}
+QPushButton:!checked:hover#sheet_nest_button {
+	background-color: #48b6ed;
+	border-color: #48b6ed;
+}
+QPushButton:!checked:pressed#sheet_nest_button {
+	background-color: #2b92c5;
+	border-color: #2b92c5;
+}
+QPushButton:!checked#recut_button {
     color: gray;
 }
 
@@ -254,7 +320,27 @@ QPushButton:pressed#delete_button {
     background-color: #461f1f;
     border-radius: 5px;
 }
+QRadioButton::indicator#option {
+    width: 20px;
+    height: 20px;
+    border-radius: 11px;
+    border: 1px solid #5b5b5b;
+    background: #474747;
+}
 
+QRadioButton::indicator:hover#option {
+    border-color: #3daee9;
+}
+
+QRadioButton::indicator:pressed#option {
+    border-color: #3daee9;
+    background: #3daee9;
+}
+
+QRadioButton::indicator:checked#option {
+    border-color: #3daee9;
+    background: #3daee9;
+}
 QToolTip {
     background-color: rgb(24, 24, 24);
     color: white;
@@ -271,8 +357,7 @@ QToolBox::tab{
 
 }
 QToolBox::tab:hover{
-
-        background-color: rgb(76, 76, 76);
+    background-color: rgb(76, 76, 76);
     border: 1px solid rgb(71, 76, 88);
 }
 QToolBox::tab:pressed {
@@ -281,18 +366,18 @@ QToolBox::tab:pressed {
     color: rgb(132, 132, 132);
 }
 QToolBox::tab:selected {
-	color: white;
-                background-color: #3daee9;
-                border: 0.01em solid #3daee9;
-                border-top-right-radius: 5px;
-        border-top-left-radius: 5px;
-        	  border-bottom-left-radius: 0.2em;
-        	  border-bottom-right-radius: 0.2em;
-        	margin-bottom: -1px;
+    color: white;
+    background-color: #3daee9;
+    border: 0.01em solid #3daee9;
+    border-top-right-radius: 5px;
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 0.2em;
+    border-bottom-right-radius: 0.2em;
+    margin-bottom: -1px;
 }
 
 QToolBox {
-                border: 0px solid  gray;
+    border: 0px solid  gray;
 	icon-size: 20px;
 }
 QToolButton {
@@ -325,26 +410,25 @@ QCheckBox {
 }
 
 QCheckBox::indicator {
-    border: 1px solid rgb(57, 57, 57);
     width: 10px;
     height: 10px;
     border-radius: 5px;
-    background: rgb(49, 49, 49);
+    border: 1px solid #5b5b5b;
+    background: #474747;
 }
 
 QCheckBox::indicator:hover {
-    background: 5px solid #3c5863;
-    border: 1px solid rgb(57, 77, 82);
+    border-color: #3daee9;
 }
 
 QCheckBox::indicator:pressed {
-    background: 5px solid #588495;
-    border: 1px solid #57bfc1;
+    border-color: #3daee9;
+    background: #3daee9;
 }
 
 QCheckBox::indicator:checked {
-    background: 5px solid #3daee9;
-    border: 1px solid #00fbff;
+    border-color: #3daee9;
+    background: #3daee9;
 }
 
 QCheckBox:hover {
@@ -446,6 +530,48 @@ QListWidget::item:selected {
     background-color: #3daee9;
 }
 
+QTabBar::tab{
+    background-color: rgb(80, 80, 80);
+    border: 1px solid rgb(70, 70, 70);
+    /* border-radius: 1px; */
+    color: rgb(210, 210, 210);
+    padding-top: 2px;
+    padding-bottom: 2px;
+    padding-left: 5px;
+    padding-right: 5px;
+    margin-bottom: 2px;
+    /* margin-right: 0.037em;
+    margin-left: 0.037em; */
+}
+QTabBar::tab:hover{
+    background-color: rgb(76, 76, 76);
+    border: 1px solid rgb(71, 76, 88);
+}
+QTabBar::tab:disabled {
+    background-color: rgb(39, 39, 39);
+    border: 1px solid rgb(47, 50, 57);
+    color: rgb(132, 132, 132);
+}
+QTabBar::tab:!selected {
+    margin-top: 3px; /* make non-selected tabs look smaller */
+}
+QTabBar::tab:!selected:hover {
+    margin-top: 0.01em; /* make non-selected tabs look smaller */
+    border-top-right-radius: 5px;
+    border-top-left-radius: 5px;
+}
+
+QTabBar::tab:selected {
+	color: white;
+    background-color: #3daee9;
+    border: 0.01em solid #3daee9;
+    border-top-right-radius: 5px;
+    border-top-left-radius: 5px;
+    /*border-bottom-left-radius: 0.2em;
+    border-bottom-right-radius: 0.2em; */
+    /* padding-right: 5px; */
+    /* padding-left: 5px; */
+}
 /* QTableWidget {
     border: 0px solid rgb(65, 65, 65);
     background: rgb(44, 44, 44);

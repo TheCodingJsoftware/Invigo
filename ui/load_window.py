@@ -5,18 +5,20 @@ from PyQt5 import *
 from PyQt5.QtCore import *
 from PyQt5.QtGui import *
 from PyQt5.QtWidgets import *
-from PyQt5.QtWidgets import QDialog
+
+QApplication.setAttribute(Qt.AA_EnableHighDpiScaling, True)
 
 
-class LoadWindow(QDialog):
+class LoadWindow(QWidget):
     """Loading animation window"""
 
-    def __init__(self):
-        QDialog.__init__(self)
+    def __init__(self, parent=None):
+        super().__init__(parent)
         palette = QPalette(self.palette())
         palette.setColor(palette.Background, Qt.transparent)
+        self.setAttribute(Qt.WA_TranslucentBackground, True)
         self.setPalette(palette)
-        self.setFixedSize(1024, 600)
+        self.setFixedSize(300, 300)
         self.setWindowFlags(Qt.Window | Qt.FramelessWindowHint)
         self.show()
 
@@ -24,7 +26,7 @@ class LoadWindow(QDialog):
         painter = QPainter()
         painter.begin(self)
         painter.setRenderHint(QPainter.Antialiasing)
-        painter.fillRect(event.rect(), QBrush(QColor(39, 44, 49, 180)))
+        # painter.fillRect(event.rect(), QBrush(QColor(44, 44, 44, 180)))
 
         amount_of_circles = 12
 
@@ -46,31 +48,31 @@ class LoadWindow(QDialog):
                 self.draw_outline(painter, i, amount_of_circles)
                 painter.setBrush(QBrush(QColor(61, 174, 233)))
             else:
-                painter.setBrush(QBrush(QColor(30, 30, 30)))
+                painter.setBrush(QBrush(QColor(39, 39, 39)))
             # else: painter.setBrush(QBrush(QColor(127, 127, 127)))
             painter.drawEllipse(
                 int(
                     self.width() / 2
                     + 50 * math.cos(2 * math.pi * i / amount_of_circles)
-                    - 20
+                    - 20 + 10
                 ),
                 int(
                     self.height() / 2.2
                     + 50 * math.sin(2 * math.pi * i / amount_of_circles)
-                    - 20
+                    - 20 + 10
                 ),
                 20,
                 20,
             )
-            painter.setPen(QPen(QColor(100, 100, 100), 1))
-            painter.setFont(QFont("Arial", 20, 0))
+            painter.setPen(QPen(QColor(250, 250, 250), 0))
+            painter.setFont(QFont("Calbri", 20, 0))
             painter.drawText(
                 int(self.width() / 2 - 80),
-                int(self.height() / 1.5),
+                int(self.height() / 1.3),
                 200,
                 50,
                 Qt.AlignLeft | Qt.AlignLeft,
-                "I am loading",
+                f"I am loading{'.'*(self.counter%4)}",
             )
 
         painter.end()
@@ -87,8 +89,8 @@ class LoadWindow(QDialog):
         """
         painter.setBrush(QBrush(QColor(0, 251, 255)))
         painter.drawEllipse(
-            int(self.width() / 2 + 50 * math.cos(2 * math.pi * i / amount_of_circles) - 21), 
-            int(self.height() / 2.2 + 50 * math.sin(2 * math.pi * i / amount_of_circles) - 21),
+            int(self.width() / 2 + 50 * math.cos(2 * math.pi * i / amount_of_circles) - 21) + 10, 
+            int(self.height() / 2.2 + 50 * math.sin(2 * math.pi * i / amount_of_circles) - 21) + 10,
             22,
             22,
         )
@@ -102,4 +104,6 @@ class LoadWindow(QDialog):
         self.update()
 
 if __name__ == '__main__':
-    LoadWindow()
+    app = QApplication([])
+    load_window = LoadWindow()
+    app.exec_()
