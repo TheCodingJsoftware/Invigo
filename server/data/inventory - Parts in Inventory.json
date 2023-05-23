@@ -22,6 +22,17 @@
             "modified_date": "69 quantity added at March 21 Tuesday 2023 04:35:32 PM",
             "group": null
         },
+        "PD-P01G": {
+            "current_quantity": 136,
+            "machine_time": 0.4,
+            "gauge": "12 Gauge",
+            "material": "Galvanized",
+            "weight": 0.79,
+            "price": 1.92,
+            "unit_quantity": 1,
+            "modified_date": "Added at May 23 Tuesday 2023 04:31:25 PM",
+            "group": null
+        },
         "G3-1-Ceramic-Secondary Seal All in One-Part4": {
             "current_quantity": 125,
             "machine_time": 0.23,
