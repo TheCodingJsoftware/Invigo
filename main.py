@@ -31,6 +31,7 @@ from PyQt5.QtWidgets import (
     QSpacerItem,
     QSpinBox,
     QStyle,
+    QSplashScreen,
     QTableWidget,
     QTableWidgetItem,
     QTabWidget,
@@ -50,23 +51,27 @@ from threads.send_sheet_report_thread import SendReportThread
 from threads.upload_quoted_inventory import UploadBatch
 from threads.upload_thread import UploadThread
 from ui.about_dialog import AboutDialog
+from ui.image_viewer import QImageViewer
 from ui.add_item_dialog import AddItemDialog
 from ui.add_item_dialog_price_of_steel import AddItemDialogPriceOfSteel
 from ui.custom_widgets import (
+    MultiToolBox,
+    ClickableLabel,
     CostLineEdit,
     CustomTableWidget,
+    CustomTabWidget,
     DeletePushButton,
     ExchangeRateComboBox,
     HeaderScrollArea,
     HumbleDoubleSpinBox,
     ItemCheckBox,
     ItemNameComboBox,
-    NoScrollTabWidget,
     NotesPlainTextEdit,
     OrderStatusButton,
     PdfTreeView,
     POPushButton,
     PriorityComboBox,
+    RecutButton,
     RichTextPushButton,
     ViewTree,
     set_default_dialog_button_stylesheet,
@@ -76,6 +81,7 @@ from ui.input_dialog import InputDialog
 from ui.load_window import LoadWindow
 from ui.message_dialog import MessageDialog
 from ui.select_item_dialog import SelectItemDialog
+from ui.select_action_dialog import SelectActionDialog
 from ui.set_custom_limit_dialog import SetCustomLimitDialog
 from ui.theme import set_theme
 from ui.web_scrape_results_dialog import WebScrapeResultsDialog
@@ -97,7 +103,7 @@ from web_scrapers.ebay_scraper import EbayScraper
 from web_scrapers.exchange_rate import ExchangeRate
 
 __author__ = "Jared Gross"
-__copyright__ = "Copyright 2022, TheCodingJ's"
+__copyright__ = "Copyright 2022-2023, TheCodingJ's"
 __credits__: "list[str]" = ["Jared Gross"]
 __license__ = "MIT"
 __name__ = "Inventory Manager"
@@ -125,9 +131,15 @@ from functools import partial
 from typing import Any
 
 # supported operators
-operators = {ast.Add: op.add, ast.Sub: op.sub, ast.Mult: op.mul,
-             ast.Div: op.truediv, ast.Pow: op.pow, ast.BitXor: op.xor,
-             ast.USub: op.neg}
+operators = {
+    ast.Add: op.add,
+    ast.Sub: op.sub,
+    ast.Mult: op.mul,
+    ast.Div: op.truediv,
+    ast.Pow: op.pow,
+    ast.BitXor: op.xor,
+    ast.USub: op.neg,
+}
 
 
 QApplication.setAttribute(Qt.AA_EnableHighDpiScaling, True)
@@ -162,10 +174,29 @@ def default_settings() -> None:
     check_setting(setting="last_dock_location", default_value=2)
     check_setting(setting="change_quantities_by", default_value="Category")
     check_setting(setting="inventory_file_name", default_value="inventory")
-    check_setting(setting="trusted_users", default_value=[
-                  "itsme", "jared", "joseph"])
+    check_setting(setting="trusted_users", default_value=["itsme", "jared", "joseph"])
     check_setting(setting="quote_nest_directories", default_value=[])
     check_setting(setting="auto_backup_to_cloud", default_value=False)
+    check_setting(
+        setting="menu_tabs_order",
+        default_value=[
+            "Edit Inventory",
+            "Sheets in Inventory",
+            "Parts in Inventory",
+            "Quote Generator",
+            "View Inventory (Read Only)",
+            "View Removed Quantities History (Read Only)",
+            "View Price Changes History (Read Only)",
+        ],
+    )
+    check_setting(
+        setting="category_tabs_order",
+        default_value={
+            "Edit Inventory": [],
+            "Sheets in Inventory": [],
+            "Parts in Inventory": [],
+        },
+    )
     check_setting(
         setting="price_history_file_name",
         default_value=str(datetime.now().strftime("%B %d %A %Y")),
@@ -238,9 +269,12 @@ price_of_steel_inventory = JsonFile(
 parts_in_inventory = JsonFile(
     file_name=f"data/{settings_file.get_value(item_name='inventory_file_name')} - Parts in Inventory"
 )
-price_of_steel_information = JsonFile(
-    file_name="price_of_steel_information.json")
+price_of_steel_information = JsonFile(file_name="price_of_steel_information.json")
+
 geometry = JsonObject(JsonFile=settings_file, object_name="geometry")
+category_tabs_order = JsonObject(
+    JsonFile=settings_file, object_name="category_tabs_order"
+)
 
 history_file_date = datetime.strptime(
     settings_file.get_value("price_history_file_name"), "%B %d %A %Y"
@@ -271,8 +305,7 @@ class MainWindow(QMainWindow):
             "days_until_new_price_history_assessment"
         ):
             settings_file.add_item(
-                "price_history_file_name", str(
-                    datetime.now().strftime("%B %d %A %Y"))
+                "price_history_file_name", str(datetime.now().strftime("%B %d %A %Y"))
             )
             self.show_message_dialog(
                 title="Price Assessment",
@@ -281,8 +314,7 @@ class MainWindow(QMainWindow):
 
         # VARIABLES
         self.theme: str = (
-            "dark" if settings_file.get_value(
-                item_name="dark_mode") else "light"
+            "dark" if settings_file.get_value(item_name="dark_mode") else "light"
         )
 
         self.inventory_prices_objects: dict[
@@ -300,7 +332,6 @@ class MainWindow(QMainWindow):
         self.po_buttons: list[QPushButton] = []
         self.categories: list[str] = []
         self.scroll_areas: list[QScrollArea | QTableWidget] = []
-        self.highlight_color: str = "#3daee9"
         self.active_layout: QVBoxLayout = None
         self.active_json_file: JsonFile = None
         self.category: str = ""
@@ -308,9 +339,10 @@ class MainWindow(QMainWindow):
         self.should_reload_categories: bool = False
         self.finished_downloading_all_files: bool = False
         self.files_downloaded_count: int = 0
-        self.tabs: list[QVBoxLayout] = []
+        self.tabs = {}
         self.last_item_selected_index: int = 0
         self.last_item_selected_name: str = None
+        self.last_selected_menu_tab: str = settings_file.get_value('menu_tabs_order')[settings_file.get_value('last_toolbox_tab')]
         self.check_box_selections: dict = {}
         self.item_layouts: list[QHBoxLayout] = []
         self.group_layouts: dict[str, QVBoxLayout] = {}
@@ -320,6 +352,7 @@ class MainWindow(QMainWindow):
         ] = []
         self.quote_nest_directories_list_widgets = {}
         self.quote_nest_information = {}
+        self.sheet_nests_toolbox: MultiToolBox = None
         self.get_upload_file_response: bool = True
         self.headers: dict[dict[str, int]] = {
             "Part Name": 486,
@@ -335,8 +368,7 @@ class MainWindow(QMainWindow):
         }
         self.margins = (15, 15, 5, 5)  # top, bottom, left, right
         self.margin_format = f"margin-top: {self.margins[0]}%; margin-bottom: {self.margins[1]}%; margin-left: {self.margins[2]}%; margin-right: {self.margins[3]}%;"
-
-        # self.download_all_files()
+        self.download_all_files()
         self.start_changes_thread(
             [
                 f"data/{settings_file.get_value(item_name='inventory_file_name')}.json",
@@ -344,14 +376,14 @@ class MainWindow(QMainWindow):
                 f"data/{settings_file.get_value(item_name='inventory_file_name')} - Parts in Inventory.json",
             ]
         )
-        self.__load_ui()
         self.check_trusted_user()
+        self.__load_ui()
         self.tool_box_menu_changed()
         self.quantities_change()
         self.start_exchange_rate_thread()
         self.show()
         with contextlib.suppress(AttributeError):
-            self.tab_widget.setEnabled(False)
+            self.centralwidget.setEnabled(False)
         if geometry.get_value("x") == 0 and geometry.get_value("y") == 0:
             self.showMaximized()
         else:
@@ -367,6 +399,12 @@ class MainWindow(QMainWindow):
         """
         It loads the UI
         """
+
+        menu_tabs_order = settings_file.get_value(item_name="menu_tabs_order")
+        for tab_name in menu_tabs_order:
+            index = self.get_tab_from_name(tab_name)
+            if index != -1:
+                self.tabWidget.tabBar().moveTab(index, menu_tabs_order.index(tab_name))
 
         self.lineEdit_search_items.textChanged.connect(self.update_list_widget)
         self.radioButton_category.toggled.connect(self.quantities_change)
@@ -386,8 +424,7 @@ class MainWindow(QMainWindow):
         self.tabWidget.currentChanged.connect(self.tool_box_menu_changed)
 
         # Send report button
-        self.pushButton_send_sheet_report.clicked.connect(
-            self.send_sheet_report)
+        self.pushButton_send_sheet_report.clicked.connect(self.send_sheet_report)
         self.pushButton_send_sheet_report.setIcon(
             QIcon("ui/BreezeStyleSheets/dist/pyqt6/dark/send_email.png")
         )
@@ -412,21 +449,24 @@ class MainWindow(QMainWindow):
         self.pushButton_update_parts_in_inventory.setIcon(
             QIcon(f"ui/BreezeStyleSheets/dist/pyqt6/{self.theme}/upload.png")
         )
-        self.pushButton_update_price_of_steel.clicked.connect(
-            self.update_price_of_steel)
+        self.pushButton_update_price_of_steel.clicked.connect(self.update_price_of_steel)
 
         # Load Nests
         self.comboBox_global_sheet_thickness.addItems(
-            price_of_steel_information.get_value('thicknesses'))
+            price_of_steel_information.get_value("thicknesses")
+        )
         self.comboBox_global_sheet_thickness.wheelEvent = lambda event: None
         self.comboBox_global_sheet_thickness.activated.connect(
-            self.global_nest_thickness_change)
+            self.global_nest_thickness_change
+        )
         self.comboBox_global_sheet_thickness.setEnabled(False)
         self.comboBox_global_sheet_material.addItems(
-            price_of_steel_information.get_value('materials'))
+            price_of_steel_information.get_value("materials")
+        )
         self.comboBox_global_sheet_material.wheelEvent = lambda event: None
         self.comboBox_global_sheet_material.activated.connect(
-            self.global_nest_material_change)
+            self.global_nest_material_change
+        )
         self.comboBox_global_sheet_material.setEnabled(False)
 
         self.tableWidget_quote_items = CustomTableWidget(self)
@@ -435,47 +475,38 @@ class MainWindow(QMainWindow):
         self.tableWidget_quote_items.setEnabled(False)
         self.tableWidget_quote_items.horizontalHeader().setStretchLastSection(True)
         self.tableWidget_quote_items.setShowGrid(False)
-        self.tableWidget_quote_items.setColumnCount(6)
+        self.tableWidget_quote_items.setColumnCount(7)
         # tab.setAlternatingRowColors(True)
         self.tableWidget_quote_items.setSortingEnabled(False)
         self.tableWidget_quote_items.setSelectionBehavior(1)
         self.tableWidget_quote_items.setSelectionMode(1)
         self.tableWidget_quote_items.setVerticalScrollMode(
-            QAbstractItemView.ScrollPerPixel)
+            QAbstractItemView.ScrollPerPixel
+        )
         self.tableWidget_quote_items.setHorizontalHeaderLabels(
-            (
-                "Item;Part name;Material;Thickness;Qty;;"
-            ).split(";")
+            ("Item;Part name;Material;Thickness;Qty;Recut;;").split(";")
         )
         self.clear_layout(self.verticalLayout_25)
         self.verticalLayout_25.addWidget(self.tableWidget_quote_items)
 
         self.pushButton_load_nests.clicked.connect(self.process_selected_nests)
-        self.pushButton_clear_selections.clicked.connect(
-            self.clear_nest_selections)
-        self.pushButton_refresh_directories.clicked.connect(
-            self.refresh_nest_directories)
+        self.pushButton_clear_selections.clicked.connect(self.clear_nest_selections)
+        self.pushButton_refresh_directories.clicked.connect(self.refresh_nest_directories)
         self.pushButton_generate_quote.clicked.connect(self.generate_quote)
         self.pushButton_generate_quote.setEnabled(False)
 
         self.pushButton_update_price_of_steel.setIcon(
             QIcon(f"ui/BreezeStyleSheets/dist/pyqt6/{self.theme}/upload.png")
         )
-        self.pushButton_add_new_item_to_inventory.clicked.connect(
-            self.open_im_useless_message
-        )
         # Status
         self.status_button = RichTextPushButton(
             self, '<p style="color:red;">Downloading all files... Please wait!</p>'
         )
-        set_status_button_stylesheet(button=self.status_button, color="red")
         self.status_button.setObjectName("status_button")
         self.status_button.setFlat(True)
-        self.status_button.setFixedHeight(20)
-        self.status_button.setStatusTip(
-            "View additions and removals from the inventory file."
-        )
+        self.status_button.setFixedHeight(25)
         self.verticalLayout_status.addWidget(self.status_button)
+        set_status_button_stylesheet(button=self.status_button, color="red")
 
         # Tab widget
         # self.load_categories()
@@ -489,12 +520,10 @@ class MainWindow(QMainWindow):
         self.pushButton_remove_quantity.clicked.connect(self.remove_quantity)
         # self.pushButton_remove_quantity.setEnabled(False)
         self.pushButton_remove_quantity.setIcon(
-            QIcon(
-                f"ui/BreezeStyleSheets/dist/pyqt6/{self.theme}/list_remove.png")
+            QIcon(f"ui/BreezeStyleSheets/dist/pyqt6/{self.theme}/list_remove.png")
         )
         self.pushButton_remove_quantities_from_inventory.setIcon(
-            QIcon(
-                f"ui/BreezeStyleSheets/dist/pyqt6/{self.theme}/list_remove.png")
+            QIcon(f"ui/BreezeStyleSheets/dist/pyqt6/{self.theme}/list_remove.png")
         )
         self.listWidget_itemnames.itemSelectionChanged.connect(
             self.listWidget_item_changed
@@ -518,11 +547,9 @@ class MainWindow(QMainWindow):
         self.actionAbout.setIcon(
             QIcon(f"ui/BreezeStyleSheets/dist/pyqt6/{self.theme}/about.png")
         )
-        self.actionRelease_Notes.triggered.connect(
-            partial(self.show_whats_new, True))
+        self.actionRelease_Notes.triggered.connect(partial(self.show_whats_new, True))
         self.actionRelease_Notes.setIcon(
-            QIcon(
-                f"ui/BreezeStyleSheets/dist/pyqt6/{self.theme}/release_notes.png")
+            QIcon(f"ui/BreezeStyleSheets/dist/pyqt6/{self.theme}/release_notes.png")
         )
         self.actionWebsite.triggered.connect(self.open_website)
         self.actionWebsite.setIcon(
@@ -532,8 +559,7 @@ class MainWindow(QMainWindow):
         self.actionPrint_Inventory.triggered.connect(self.print_inventory)
 
         # SETTINGS
-        self.actionDarkmode.setChecked(
-            settings_file.get_value(item_name="dark_mode"))
+        self.actionDarkmode.setChecked(settings_file.get_value(item_name="dark_mode"))
         self.actionDarkmode.triggered.connect(self.toggle_dark_mode)
 
         self.actionAuto_back_up_to_cloud.setChecked(
@@ -589,15 +615,13 @@ class MainWindow(QMainWindow):
                 ],
             )
         )
-        self.actionPriority.setChecked(
-            settings_file.get_value(item_name="sort_priority"))
+        self.actionPriority.setChecked(settings_file.get_value(item_name="sort_priority"))
         self.actionPriority.setEnabled(
             not settings_file.get_value(item_name="sort_priority")
         )
         self.actionAscending.triggered.connect(
             partial(
-                self.action_group, "order", [
-                    self.actionAscending, self.actionDescending]
+                self.action_group, "order", [self.actionAscending, self.actionDescending]
             )
         )
         self.actionAscending.setChecked(
@@ -608,8 +632,7 @@ class MainWindow(QMainWindow):
         )
         self.actionDescending.triggered.connect(
             partial(
-                self.action_group, "order", [
-                    self.actionAscending, self.actionDescending]
+                self.action_group, "order", [self.actionAscending, self.actionDescending]
             )
         )
         self.actionDescending.setChecked(
@@ -626,16 +649,12 @@ class MainWindow(QMainWindow):
             partial(self.add_po_templates, [], True)
         )
         self.actionRemove_Purchase_Order.triggered.connect(self.delete_po)
-        self.actionOpen_Purchase_Order.triggered.connect(
-            partial(self.open_po, None))
-        self.actionOpen_Folder.triggered.connect(
-            partial(self.open_folder, "PO's"))
+        self.actionOpen_Purchase_Order.triggered.connect(partial(self.open_po, None))
+        self.actionOpen_Folder.triggered.connect(partial(self.open_folder, "PO's"))
 
         # QUOTE GENERATOR
-        self.actionAdd_Nest_Directory.triggered.connect(
-            self.add_nest_directory)
-        self.actionRemove_Nest_Directory.triggered.connect(
-            self.remove_nest_directory)
+        self.actionAdd_Nest_Directory.triggered.connect(self.add_nest_directory)
+        self.actionRemove_Nest_Directory.triggered.connect(self.remove_nest_directory)
         # FILE
         self.menuOpen_Category.setIcon(
             QIcon(f"ui/BreezeStyleSheets/dist/pyqt6/{self.theme}/folder.png")
@@ -658,42 +677,45 @@ class MainWindow(QMainWindow):
         )
         self.actionDelete_Category.triggered.connect(self.delete_category)
         self.actionDelete_Category.setIcon(
-            QIcon(
-                f"ui/BreezeStyleSheets/dist/pyqt6/{self.theme}/list_remove.png")
+            QIcon(f"ui/BreezeStyleSheets/dist/pyqt6/{self.theme}/list_remove.png")
         )
         self.actionClone_Category.triggered.connect(self.clone_category)
         self.actionClone_Category.setIcon(
-            QIcon(
-                f"ui/BreezeStyleSheets/dist/pyqt6/{self.theme}/tab_duplicate.png")
+            QIcon(f"ui/BreezeStyleSheets/dist/pyqt6/{self.theme}/tab_duplicate.png")
         )
 
         self.actionBackup.triggered.connect(self.backup_database)
         self.actionBackup.setIcon(
             QIcon(f"ui/BreezeStyleSheets/dist/pyqt6/{self.theme}/backup.png")
         )
-        self.actionLoad_Backup.triggered.connect(
-            partial(self.load_backup, None))
+        self.actionLoad_Backup.triggered.connect(partial(self.load_backup, None))
 
         self.actionOpen_Item_History.triggered.connect(self.open_item_history)
 
         self.actionExit.triggered.connect(self.close)
         self.actionExit.setIcon(
-            QIcon(
-                f"ui/BreezeStyleSheets/dist/pyqt6/{self.theme}/tab_close.png")
+            QIcon(f"ui/BreezeStyleSheets/dist/pyqt6/{self.theme}/tab_close.png")
         )
 
         # SEARCH
         self.actionEbay.triggered.connect(self.search_ebay)
+        
+        if not self.trusted_user:
+            self.tabWidget.setTabEnabled(settings_file.get_value('menu_tabs_order').index("Edit Inventory"), False)
+            self.tabWidget.setTabEnabled(settings_file.get_value('menu_tabs_order').index("View Price Changes History (Read Only)"), False)
+            self.tabWidget.setTabEnabled(settings_file.get_value('menu_tabs_order').index("View Removed Quantities History (Read Only)"), False)
 
     # ! \/ SLOTS & SIGNALS \/
-    def quick_load_category(self, index: int) -> None:
+    # NOTE DOES NOT WORK SINCE TABS ARE MOVEABLE
+    def quick_load_category(self, name: str) -> None:
         """
-        It sets the current tab to the index passed in, then calls the load_tab function
-
+        This function sets the current tab index of a tab widget based on the name of a category and
+        then loads the tab.
+        
         Args:
-          index (int): int - The index of the tab to load
+          name (str): The name of the category that needs to be loaded.
         """
-        self.tab_widget.setCurrentIndex(index)
+        self.tab_widget.setCurrentIndex(category_tabs_order.get_value(self.tabWidget.tabText(self.tabWidget.currentIndex())).index(name))
         self.load_tab()
 
     def tool_box_menu_changed(self) -> None:
@@ -701,19 +723,23 @@ class MainWindow(QMainWindow):
 
         If the toolbox is not on the first tab, hide the dock widget
         """
-        if self.tabWidget.currentIndex() == 4:  # View Inventory (Read Only)
-            if not self.trusted_user:
-                self.show_not_trusted_user()
-                self.tabWidget.setCurrentIndex(1)
-                return
+        if (
+            self.tabWidget.tabText(self.tabWidget.currentIndex())
+            == "View Inventory (Read Only)"
+        ):  # View Inventory (Read Only)
+            self.menuSort.setEnabled(False)
+            self.menuOpen_Category.setEnabled(False)
             self.active_layout = self.verticalLayout_4
             self.load_tree_view(inventory)
             self.status_button.setHidden(True)
-        elif self.tabWidget.currentIndex() == 0:  # Edit Inventory
+        elif (
+            self.tabWidget.tabText(self.tabWidget.currentIndex()) == "Edit Inventory"
+        ):  # Edit Inventory
             if not self.trusted_user:
                 self.show_not_trusted_user()
-                self.tabWidget.setCurrentIndex(1)
                 return
+            self.menuSort.setEnabled(True)
+            self.menuOpen_Category.setEnabled(True)
             self.headers: dict[dict[str, int]] = {
                 "Part Name": 486,
                 "Part Number": 120,
@@ -750,10 +776,14 @@ class MainWindow(QMainWindow):
             )
             self.load_categories()
             self.status_button.setHidden(False)
-        elif self.tabWidget.currentIndex() == 1:  # Sheets in Inventory
+        elif (
+            self.tabWidget.tabText(self.tabWidget.currentIndex()) == "Sheets in Inventory"
+        ):  # Sheets in Inventory
+            self.menuSort.setEnabled(True)
+            self.menuOpen_Category.setEnabled(True)
             self.active_json_file = price_of_steel_inventory
             self.active_layout = self.verticalLayout_10
-            self.menuInventory.setTitle("Price of Steel")
+            self.menuInventory.setTitle("Sheets in Inventory")
             self.actionDownloadInventory.disconnect()
             self.actionUploadInventory.disconnect()
             self.actionDownloadInventory.triggered.connect(
@@ -775,7 +805,11 @@ class MainWindow(QMainWindow):
             )
             self.load_categories()
             self.status_button.setHidden(False)
-        elif self.tabWidget.currentIndex() == 2:  # Parts in Inventory
+        elif (
+            self.tabWidget.tabText(self.tabWidget.currentIndex()) == "Parts in Inventory"
+        ):  # Parts in Inventory
+            self.menuSort.setEnabled(True)
+            self.menuOpen_Category.setEnabled(True)
             self.headers: dict[dict[str, int]] = {
                 "Part Number": 410,
                 "Price": 150,
@@ -808,27 +842,39 @@ class MainWindow(QMainWindow):
             )
             self.load_categories()
             self.status_button.setHidden(False)
-        elif self.tabWidget.currentIndex() == 3:  # Quote Generator
+        elif (
+            self.tabWidget.tabText(self.tabWidget.currentIndex()) == "Quote Generator"
+        ):  # Quote Generator
+            self.menuSort.setEnabled(False)
+            self.menuOpen_Category.setEnabled(False)
             self.load_quote_generator_ui()
             self.status_button.setHidden(False)
-        elif self.tabWidget.currentIndex() == 5:  # View Removed Quantities History (Read Only)
+        elif (
+            self.tabWidget.tabText(self.tabWidget.currentIndex())
+            == "View Removed Quantities History (Read Only)"
+        ):  # View Removed Quantities History (Read Only)
+            self.menuSort.setEnabled(False)
+            self.menuOpen_Category.setEnabled(False)
             if not self.trusted_user:
                 self.show_not_trusted_user()
-                self.tabWidget.setCurrentIndex(1)
                 return
             self.active_layout = self.verticalLayout_5
             self.load_history_view()
             self.status_button.setHidden(True)
-        elif self.tabWidget.currentIndex() == 6:  # View Price Changes History (Read Only)
+        elif (
+            self.tabWidget.tabText(self.tabWidget.currentIndex())
+            == "View Price Changes History (Read Only)"
+        ):  # View Price Changes History (Read Only)
+            self.menuSort.setEnabled(False)
+            self.menuOpen_Category.setEnabled(False)
             if not self.trusted_user:
                 self.show_not_trusted_user()
-                self.tabWidget.setCurrentIndex(1)
                 return
             self.active_layout = self.horizontalLayout_8
             self.load_price_history_view()
             self.status_button.setHidden(True)
-        settings_file.add_item(
-            "last_toolbox_tab", self.tabWidget.currentIndex())
+        settings_file.add_item("last_toolbox_tab", self.tabWidget.currentIndex())
+        self.last_selected_menu_tab = self.tabWidget.tabText(self.tabWidget.currentIndex())
 
     def item_check_box_press(self, this_checkbox: QCheckBox) -> None:
         """
@@ -847,8 +893,9 @@ class MainWindow(QMainWindow):
             self.pushButton_remove_quantities_from_inventory.setText(
                 "Remove Quantities from whole Category"
             )
-        tab_index: int = self.tab_widget.currentIndex()
-        tab: QVBoxLayout = self.tabs[tab_index]
+        tab: QVBoxLayout = self.tabs[
+            self.tab_widget.tabText(self.tab_widget.currentIndex())
+        ]
         checkboxes: list[QCheckBox] = []
         for i in range(tab.count()):
             layout = tab.itemAt(i)
@@ -900,10 +947,8 @@ class MainWindow(QMainWindow):
         if self.are_parts_checked():
             checked_parts = self.get_all_checked_parts()
             for checked_part in checked_parts:
-                copy_of_item = parts_in_inventory.get_data()[
-                    self.category][checked_part]
-                parts_in_inventory.remove_object_item(
-                    self.category, checked_part)
+                copy_of_item = parts_in_inventory.get_data()[self.category][checked_part]
+                parts_in_inventory.remove_object_item(self.category, checked_part)
                 parts_in_inventory.add_item_in_object(category, checked_part)
                 parts_in_inventory.change_object_in_object_item(
                     category,
@@ -960,10 +1005,8 @@ class MainWindow(QMainWindow):
             copy_of_item = parts_in_inventory.get_data()[self.category][
                 item_name.currentText()
             ]
-            parts_in_inventory.remove_object_item(
-                self.category, item_name.currentText())
-            parts_in_inventory.add_item_in_object(
-                category, item_name.currentText())
+            parts_in_inventory.remove_object_item(self.category, item_name.currentText())
+            parts_in_inventory.add_item_in_object(category, item_name.currentText())
             parts_in_inventory.change_object_in_object_item(
                 category,
                 item_name.currentText(),
@@ -1013,8 +1056,7 @@ class MainWindow(QMainWindow):
                 copy_of_item["modified_date"],
             )
             parts_in_inventory.change_object_in_object_item(
-                category, item_name.currentText(
-                ), "group", copy_of_item["group"]
+                category, item_name.currentText(), "group", copy_of_item["group"]
             )
         self.load_categories()
 
@@ -1041,8 +1083,7 @@ class MainWindow(QMainWindow):
         if self.are_parts_checked():
             checked_parts = self.get_all_checked_parts()
             for checked_part in checked_parts:
-                copy_of_item = parts_in_inventory.get_data()[
-                    self.category][checked_part]
+                copy_of_item = parts_in_inventory.get_data()[self.category][checked_part]
                 # parts_in_inventory.remove_object_item(self.category, checked_part)
                 parts_in_inventory.add_item_in_object(category, checked_part)
                 parts_in_inventory.change_object_in_object_item(
@@ -1101,8 +1142,7 @@ class MainWindow(QMainWindow):
                 item_name.currentText()
             ]
             # parts_in_inventory.remove_object_item(self.category, item_name.currentText())
-            parts_in_inventory.add_item_in_object(
-                category, item_name.currentText())
+            parts_in_inventory.add_item_in_object(category, item_name.currentText())
             parts_in_inventory.change_object_in_object_item(
                 category,
                 item_name.currentText(),
@@ -1152,8 +1192,7 @@ class MainWindow(QMainWindow):
                 copy_of_item["modified_date"],
             )
             parts_in_inventory.change_object_in_object_item(
-                category, item_name.currentText(
-                ), "group", copy_of_item["group"]
+                category, item_name.currentText(), "group", copy_of_item["group"]
             )
         # self.load_categories()
 
@@ -1176,7 +1215,11 @@ class MainWindow(QMainWindow):
                 response = input_dialog.get_response()
                 if response == DialogButtons.ok:
                     input_text = input_dialog.inputText
-                    if self.tabWidget.currentIndex() == 2 and self.are_parts_checked():
+                    if (
+                        self.tabWidget.tabText(self.tabWidget.currentIndex())
+                        == "Parts in Inventory"
+                        and self.are_parts_checked()
+                    ):
                         checked_parts = self.get_all_checked_parts()
                         for checked_part in checked_parts:
                             self.active_json_file.change_object_in_object_item(
@@ -1190,7 +1233,11 @@ class MainWindow(QMainWindow):
                 elif response == DialogButtons.cancel:
                     return
         else:
-            if self.tabWidget.currentIndex() == 2 and self.are_parts_checked():
+            if (
+                self.tabWidget.tabText(self.tabWidget.currentIndex())
+                == "Parts in Inventory"
+                and self.are_parts_checked()
+            ):
                 checked_parts = self.get_all_checked_parts()
                 for checked_part in checked_parts:
                     self.active_json_file.change_object_in_object_item(
@@ -1211,7 +1258,10 @@ class MainWindow(QMainWindow):
           group (str): str = The group name
         """
 
-        if self.tabWidget.currentIndex() == 2 and self.are_parts_checked():
+        if (
+            self.tabWidget.tabText(self.tabWidget.currentIndex()) == "Parts in Inventory"
+            and self.are_parts_checked()
+        ):
             checked_parts = self.get_all_checked_parts()
             for checked_part in checked_parts:
                 self.active_json_file.change_object_in_object_item(
@@ -1230,21 +1280,26 @@ class MainWindow(QMainWindow):
         groups.
         """
         parts_in_inventory.load_data()
-        if self.tabWidget.currentIndex() != 0:
+        if self.tabWidget.tabText(self.tabWidget.currentIndex()) != "Edit Inventory":
             for item_name in list(self.inventory_prices_objects.keys()):
                 menu = QMenu(self)
                 action = QAction(self)
                 action.triggered.connect(
-                    partial(self.set_custom_quantity_limit, item_name))
+                    partial(self.set_custom_quantity_limit, item_name)
+                )
                 action.setText("Set Custom Quantity Limit")
                 menu.addAction(action)
                 menu.addSeparator()
-                group = self.get_value_from_category(
-                    item_name=item_name, key="group")
-                if self.tabWidget.currentIndex() != 2:
+                group = self.get_value_from_category(item_name=item_name, key="group")
+                if (
+                    self.tabWidget.tabText(self.tabWidget.currentIndex())
+                    != "Parts in Inventory"
+                ):
                     groups = QMenu(menu)
                     groups.setTitle("Move to group")
-                    for i, group_name in enumerate(["Create group"] + self.get_all_groups()):
+                    for i, group_name in enumerate(
+                        ["Create group"] + self.get_all_groups()
+                    ):
                         if group == group_name or group_name == "__main__":
                             continue
                         if i == 1:
@@ -1256,7 +1311,11 @@ class MainWindow(QMainWindow):
                         action.setText(group_name)
                         groups.addAction(action)
                     menu.addMenu(groups)
-                if self.tabWidget.currentIndex() == 2 and self.category != "Recut":
+                if (
+                    self.tabWidget.tabText(self.tabWidget.currentIndex())
+                    == "Parts in Inventory"
+                    and self.category != "Recut"
+                ):
                     categories = QMenu(menu)
                     categories.setTitle("Move to category")
                     for i, category in enumerate(parts_in_inventory.get_keys()):
@@ -1286,7 +1345,10 @@ class MainWindow(QMainWindow):
                         action.setText(category)
                         categories.addAction(action)
                     menu.addMenu(categories)
-                if self.tabWidget.currentIndex() != 2:
+                if (
+                    self.tabWidget.tabText(self.tabWidget.currentIndex())
+                    != "Parts in Inventory"
+                ):
                     remove_from_group = QAction("Remove from group", self)
                     remove_from_group.triggered.connect(
                         partial(self.remove_from_group, item_name, group)
@@ -1296,13 +1358,13 @@ class MainWindow(QMainWindow):
                     partial(self.open_group_menu, menu)
                 )
         else:
-            tab_index: int = self.tab_widget.currentIndex()
-            table_widget: QTableWidget = self.scroll_areas[tab_index]
+            table_widget: QTableWidget = self.scroll_areas[self.tab_widget.currentIndex()]
             table_widget.setContextMenuPolicy(Qt.CustomContextMenu)
             menu = QMenu(self)
             action = QAction(self)
             action.triggered.connect(
-                partial(self.set_custom_quantity_limit, '[TABLE_WIDGET]'))
+                partial(self.set_custom_quantity_limit, "[TABLE_WIDGET]")
+            )
             action.setText("Set Custom Quantity Limit")
             menu.addAction(action)
             menu.addSeparator()
@@ -1333,8 +1395,7 @@ class MainWindow(QMainWindow):
                 '"%.'
                 + str(int(n))
                 + 'f" % '
-                + repr(int(x) +
-                       round(float("." + str(float(x)).split(".")[1]), n))
+                + repr(int(x) + round(float("." + str(float(x)).split(".")[1]), n))
             )
 
         price_of_steel_inventory.change_object_in_object_item(
@@ -1381,8 +1442,7 @@ class MainWindow(QMainWindow):
                         )
                         return
 
-                price_of_steel_inventory.add_item_in_object(
-                    self.category, name)
+                price_of_steel_inventory.add_item_in_object(self.category, name)
                 material: str = add_item_dialog.get_material()
                 sheet_dimension: str = add_item_dialog.get_sheet_dimension()
                 thickness: str = add_item_dialog.get_thickness()
@@ -1441,7 +1501,7 @@ class MainWindow(QMainWindow):
         spin_quantity: QLineEdit,
         cost_per_sheet: float,
         spin_total_cost: CostLineEdit,
-        order_status_button: OrderStatusButton
+        order_status_button: OrderStatusButton,
     ) -> None:
         """
         This function is called when the user changes the quantity of a sheet in the GUI.
@@ -1459,8 +1519,7 @@ class MainWindow(QMainWindow):
                 '"%.'
                 + str(int(n))
                 + 'f" % '
-                + repr(int(x) +
-                       round(float("." + str(float(x)).split(".")[1]), n))
+                + repr(int(x) + round(float("." + str(float(x)).split(".")[1]), n))
             )
 
         try:
@@ -1516,8 +1575,9 @@ class MainWindow(QMainWindow):
                 value_name="is_order_pending",
                 new_value=False,
             )
-        total_cost: float = float(round_number(
-            float(spin_quantity.text()) * cost_per_sheet, 2))
+        total_cost: float = float(
+            round_number(float(spin_quantity.text()) * cost_per_sheet, 2)
+        )
         spin_total_cost.setText(f"${format(total_cost, ',')}")
         self.calculuate_price_of_steel_summary()
 
@@ -1603,8 +1663,7 @@ class MainWindow(QMainWindow):
         value_name (str): str = The name of the value you want to change.
         quantity (QLineEdit): QLineEdit
         """
-        value_before = inventory.get_value(item_name=category)[
-            item_name]["part_number"]
+        value_before = inventory.get_value(item_name=category)[item_name]["part_number"]
         inventory.change_object_in_object_item(
             category,
             item_name,
@@ -1614,8 +1673,7 @@ class MainWindow(QMainWindow):
         part_number.setToolTip(
             f"Latest Change:\nfrom: {value_before}\nto: {part_number.currentText()}\n{self.username}\n{datetime.now().strftime('%B %d %A %Y %I:%M:%S %p')}",
         )
-        self.value_change(category, item_name, value_name,
-                          part_number.currentText())
+        self.value_change(category, item_name, value_name, part_number.currentText())
 
     def current_quantity_change(
         self, category: str, item_name: str, value_name: str, quantity: QSpinBox
@@ -1682,8 +1740,7 @@ class MainWindow(QMainWindow):
           value_name (str): str = The name of the value you want to change.
           quantity (QSpinBox): QSpinBox
         """
-        value_before = inventory.get_value(item_name=category)[
-            item_name]["unit_quantity"]
+        value_before = inventory.get_value(item_name=category)[item_name]["unit_quantity"]
         inventory.change_object_in_object_item(
             category,
             item_name,
@@ -1712,8 +1769,7 @@ class MainWindow(QMainWindow):
 
         data = inventory.get_data()
         part_number: str = data[self.category][item_name]["part_number"]
-        value_before = inventory.get_value(item_name=category)[
-            item_name]["price"]
+        value_before = inventory.get_value(item_name=category)[item_name]["price"]
         price_history_file = PriceHistoryFile(
             file_name=f"{settings_file.get_value(item_name='price_history_file_name')}.xlsx"
         )
@@ -1736,8 +1792,7 @@ class MainWindow(QMainWindow):
                 '"%.'
                 + str(int(n))
                 + 'f" % '
-                + repr(int(x) +
-                       round(float("." + str(float(x)).split(".")[1]), n))
+                + repr(int(x) + round(float("." + str(float(x)).split(".")[1]), n))
             )
 
         converted_price: float = (
@@ -1769,8 +1824,7 @@ class MainWindow(QMainWindow):
                 '"%.'
                 + str(int(n))
                 + 'f" % '
-                + repr(int(x) +
-                       round(float("." + str(float(x)).split(".")[1]), n))
+                + repr(int(x) + round(float("." + str(float(x)).split(".")[1]), n))
             )
 
         self.label_total_unit_cost.setText(
@@ -1824,8 +1878,7 @@ class MainWindow(QMainWindow):
           combo (QComboBox): QComboBox
         """
 
-        value_before = inventory.get_value(item_name=category)[
-            item_name]["priority"]
+        value_before = inventory.get_value(item_name=category)[item_name]["priority"]
         inventory.change_object_in_object_item(
             category,
             item_name,
@@ -1836,14 +1889,15 @@ class MainWindow(QMainWindow):
             f"Latest Change:\nfrom: {value_before}\nto: {combo.currentIndex()}\n{self.username}\n{datetime.now().strftime('%B %d %A %Y %I:%M:%S %p')}",
         )
 
-        self.value_change(category, item_name, value_name,
-                          combo.currentIndex())
+        self.value_change(category, item_name, value_name, combo.currentIndex())
         if combo.currentText() == "Medium":
             combo.setStyleSheet(
-                f"color: yellow; border-color: gold; background-color: #413C28;{self.margin_format}")
+                f"color: yellow; border-color: gold; background-color: #413C28;{self.margin_format}"
+            )
         elif combo.currentText() == "High":
             combo.setStyleSheet(
-                f"color: red; border-color: darkred; background-color: #3F1E25;{self.margin_format}")
+                f"color: red; border-color: darkred; background-color: #3F1E25;{self.margin_format}"
+            )
         else:
             combo.setStyleSheet(self.margin_format)
 
@@ -1862,8 +1916,7 @@ class MainWindow(QMainWindow):
         """
         data = inventory.get_data()
         part_number: str = data[self.category][item_name]["part_number"]
-        value_before = inventory.get_value(item_name=category)[
-            item_name]["notes"]
+        value_before = inventory.get_value(item_name=category)[item_name]["notes"]
         inventory.change_object_in_object_item(
             category,
             item_name,
@@ -1907,8 +1960,7 @@ class MainWindow(QMainWindow):
             self.label.setText("Batches Multiplier:")
             self.pushButton_add_quantity.setText("Add Quantities")
             self.pushButton_remove_quantity.setText("Remove Quantities")
-            settings_file.add_item(
-                item_name="change_quantities_by", value="Category")
+            settings_file.add_item(item_name="change_quantities_by", value="Category")
             # self.listWidget_itemnames.setEnabled(False)
             self.listWidget_itemnames.clearSelection()
             self.pushButton_add_quantity.setEnabled(False)
@@ -1928,8 +1980,7 @@ class MainWindow(QMainWindow):
             self.label.setText("Quantity:")
             self.pushButton_add_quantity.setText("Add Quantity")
             self.pushButton_remove_quantity.setText("Remove Quantity")
-            settings_file.add_item(
-                item_name="change_quantities_by", value="Item")
+            settings_file.add_item(item_name="change_quantities_by", value="Item")
 
     def remove_quantity_from_category(self) -> None:
         """
@@ -1965,7 +2016,7 @@ class MainWindow(QMainWindow):
         self.pushButton_add_quantity.setEnabled(False)
         self.pushButton_remove_quantity.setEnabled(False)
         self.pushButton_create_new.setEnabled(False)
-        self.tab_widget.setEnabled(False)
+        self.centralwidget.setEnabled(False)
         self.listWidget_itemnames.setEnabled(False)
         self.status_button.setText("This may take awhile, please wait...")
         remove_quantity_thread = RemoveQuantityThread(
@@ -1974,8 +2025,7 @@ class MainWindow(QMainWindow):
             self.inventory_prices_objects,
             self.spinBox_quantity.value(),
         )
-        remove_quantity_thread.signal.connect(
-            self.remove_quantity_thread_response)
+        remove_quantity_thread.signal.connect(self.remove_quantity_thread_response)
         self.threads.append(remove_quantity_thread)
         remove_quantity_thread.start()
 
@@ -1996,7 +2046,6 @@ class MainWindow(QMainWindow):
         )
         if are_you_sure_dialog in [DialogButtons.no, DialogButtons.cancel]:
             return
-        self.highlight_color = "#33b833"
         data = inventory.get_data()
         part_number: str = data[self.category][item_name]["part_number"]
         current_quantity: int = data[self.category][item_name]["current_quantity"]
@@ -2056,7 +2105,6 @@ class MainWindow(QMainWindow):
                 description=f'Removed {self.spinBox_quantity.value()} quantity from "{item_name}"',
             )
 
-        self.highlight_color = "#BE2525"
         data = inventory.get_data()
         part_number: str = data[self.category][item_name]["part_number"]
         current_quantity: int = data[self.category][item_name]["current_quantity"]
@@ -2111,10 +2159,10 @@ class MainWindow(QMainWindow):
             ).index(self.listWidget_itemnames.currentItem().text())
         except ValueError:
             return
-        tab_index: int = self.tab_widget.currentIndex()
-        table_widget: QTableWidget = self.scroll_areas[tab_index]
-        table_widget.scrollTo(table_widget.model().index(
-            self.last_item_selected_index, 0))
+        table_widget: QTableWidget = self.scroll_areas[self.tab_widget.currentIndex()]
+        table_widget.scrollTo(
+            table_widget.model().index(self.last_item_selected_index, 0)
+        )
         table_widget.selectRow(self.last_item_selected_index)
         if self.radioButton_single.isChecked():
             self.pushButton_add_quantity.setEnabled(True)
@@ -2270,8 +2318,11 @@ class MainWindow(QMainWindow):
         file paths based on selected items, and starting a thread to process the filtered file paths.
         """
         selected_items = self.get_all_selected_nests()
-        file_paths = [file for directory in self.quote_nest_directories_list_widgets.keys(
-        ) for file in self.get_all_files_from_directory(directory, '.pdf')]
+        file_paths = [
+            file
+            for directory in self.quote_nest_directories_list_widgets.keys()
+            for file in self.get_all_files_from_directory(directory, ".pdf")
+        ]
         if selected_nests_paths := [
             file_path
             for file_path in file_paths
@@ -2292,13 +2343,25 @@ class MainWindow(QMainWindow):
         """
         new_material = self.comboBox_global_sheet_material.currentText()
         for row in range(self.tableWidget_quote_items.rowCount()):
-            self.tableWidget_quote_items.setItem(
-                row, 2, QTableWidgetItem(new_material))
+            self.tableWidget_quote_items.setItem(row, 2, QTableWidgetItem(new_material))
             self.tableWidget_quote_items.item(row, 2).setTextAlignment(
                 Qt.AlignCenter | Qt.AlignVCenter | Qt.TextWrapAnywhere
             )
         for item in list(self.quote_nest_information.keys()):
-            self.quote_nest_information[item]['material'] = new_material
+            self.quote_nest_information[item]["material"] = new_material
+        toolbox_index: int = 0
+        for nest_name in list(self.quote_nest_information.keys()):
+            if nest_name[0] != "_":
+                continue
+            self.sheet_nests_toolbox.setItemText(
+                toolbox_index,
+                f"{self.quote_nest_information[nest_name]['gauge']} {self.quote_nest_information[nest_name]['material']} {self.quote_nest_information[nest_name]['sheet_dim']} - {nest_name.split('/')[-1].replace('.pdf', '')}",
+            )
+            combobox_material: QComboBox = self.sheet_nests_toolbox.getWidget(
+                toolbox_index
+            ).findChildren(QComboBox)[0]
+            combobox_material.setCurrentText(new_material)
+            toolbox_index += 1
 
     def global_nest_thickness_change(self) -> None:
         """
@@ -2307,21 +2370,32 @@ class MainWindow(QMainWindow):
         """
         new_thickness = self.comboBox_global_sheet_thickness.currentText()
         for row in range(self.tableWidget_quote_items.rowCount()):
-            self.tableWidget_quote_items.setItem(
-                row, 3, QTableWidgetItem(new_thickness))
+            self.tableWidget_quote_items.setItem(row, 3, QTableWidgetItem(new_thickness))
             self.tableWidget_quote_items.item(row, 3).setTextAlignment(
                 Qt.AlignCenter | Qt.AlignVCenter | Qt.TextWrapAnywhere
             )
         for item in list(self.quote_nest_information.keys()):
-            self.quote_nest_information[item]['gauge'] = new_thickness
+            self.quote_nest_information[item]["gauge"] = new_thickness
+        toolbox_index: int = 0
+        for nest_name in list(self.quote_nest_information.keys()):
+            if nest_name[0] != "_":
+                continue
+            self.sheet_nests_toolbox.setItemText(
+                toolbox_index,
+                f"{self.quote_nest_information[nest_name]['gauge']} {self.quote_nest_information[nest_name]['material']} {self.quote_nest_information[nest_name]['sheet_dim']} - {nest_name.split('/')[-1].replace('.pdf', '')}",
+            )
+            combobox_thickness: QComboBox = self.sheet_nests_toolbox.getWidget(
+                toolbox_index
+            ).findChildren(QComboBox)[1]
+            combobox_thickness.setCurrentText(new_thickness)
+            toolbox_index += 1
 
     def sheet_nest_item_change(
         self,
-        toolbox: QToolBox,
         toolbox_index: int,
         inputMethod: QComboBox | HumbleDoubleSpinBox,
         nest_name_to_update: str,
-        item_to_change: str
+        item_to_change: str,
     ) -> None:
         """
         This function updates a specific item in a nested dictionary based on user input from a
@@ -2344,15 +2418,20 @@ class MainWindow(QMainWindow):
         for item in list(self.quote_nest_information.keys()):
             if item[0] == "_":
                 continue
-            nest_name = '_' + \
-                self.quote_nest_information[item]['file_name'].replace(
-                    '\\', '/')
-            if nest_name == nest_name_to_update and type(inputMethod) != HumbleDoubleSpinBox:
+            nest_name = "_" + self.quote_nest_information[item]["file_name"].replace(
+                "\\", "/"
+            )
+            if (
+                nest_name == nest_name_to_update
+                and type(inputMethod) != HumbleDoubleSpinBox
+            ):
                 self.quote_nest_information[item][item_to_change] = current_value
         self.quote_nest_information[nest_name_to_update][item_to_change] = current_value
-        nest_name = nest_name_to_update.split('/')[-1].replace('.pdf', '')
-        toolbox.setItemText(
-            toolbox_index, f"{self.quote_nest_information[nest_name_to_update]['gauge']} {self.quote_nest_information[nest_name_to_update]['material']} {self.quote_nest_information[nest_name_to_update]['sheet_dim']} - {nest_name}")
+        nest_name = nest_name_to_update.split("/")[-1].replace(".pdf", "")
+        self.sheet_nests_toolbox.setItemText(
+            toolbox_index,
+            f"{self.quote_nest_information[nest_name_to_update]['gauge']} {self.quote_nest_information[nest_name_to_update]['material']} {self.quote_nest_information[nest_name_to_update]['sheet_dim']} - {nest_name}",
+        )
         self.load_quote_table()
 
     # ! /\ SLOTS & SIGNALS /\
@@ -2371,7 +2450,7 @@ class MainWindow(QMainWindow):
         evaluated. The resulting AST (Abstract Syntax Tree) is then evaluated using the `eval_` method
         (which is not shown
         """
-        return self.eval_(ast.parse(expr, mode='eval').body)
+        return self.eval_(ast.parse(expr, mode="eval").body)
 
     def eval_(self, node):
         """
@@ -2410,9 +2489,9 @@ class MainWindow(QMainWindow):
                 '"%.'
                 + str(int(n))
                 + 'f" % '
-                + repr(int(x) +
-                       round(float("." + str(float(x)).split(".")[1]), n))
+                + repr(int(x) + round(float("." + str(float(x)).split(".")[1]), n))
             )
+
         self.clear_layout(self.gridLayout_price_of_steel)
         total: float = 0.0
         i: int = 0
@@ -2456,19 +2535,16 @@ class MainWindow(QMainWindow):
                 category_total += total_cost
             lbl = QLabel(f"{category}:", self)
             self.gridLayout_price_of_steel.addWidget(lbl, i, 0)
-            lbl = QLabel(
-                f"${format(float(round_number(category_total,2)),',')}", self)
+            lbl = QLabel(f"${format(float(round_number(category_total,2)),',')}", self)
             lbl.setTextInteractionFlags(Qt.TextSelectableByMouse)
             self.gridLayout_price_of_steel.addWidget(lbl, i, 1)
             total += category_total
             i += 1
         lbl = QLabel("Total:", self)
-        lbl.setStyleSheet(
-            "border-top: 1px solid grey; border-bottom: 1px solid grey")
+        lbl.setStyleSheet("border-top: 1px solid grey; border-bottom: 1px solid grey")
         self.gridLayout_price_of_steel.addWidget(lbl, i + 1, 0)
         lbl = QLabel(f"${format(float(round_number(total,2)),',')}", self)
-        lbl.setStyleSheet(
-            "border-top: 1px solid grey; border-bottom: 1px solid grey")
+        lbl.setStyleSheet("border-top: 1px solid grey; border-bottom: 1px solid grey")
         self.gridLayout_price_of_steel.addWidget(lbl, i + 1, 1)
 
     def calculate_parts_in_inventory_summary(self) -> None:
@@ -2491,8 +2567,7 @@ class MainWindow(QMainWindow):
                 '"%.'
                 + str(int(n))
                 + 'f" % '
-                + repr(int(x) +
-                       round(float("." + str(float(x)).split(".")[1]), n))
+                + repr(int(x) + round(float("." + str(float(x)).split(".")[1]), n))
             )
 
         i: int = 0
@@ -2533,12 +2608,10 @@ class MainWindow(QMainWindow):
             quantity = parts_in_inventory_total[part_name]["current_quantity"]
             total += price * quantity
         lbl = QLabel("Total Stoves in Inventory:", self)
-        lbl.setStyleSheet(
-            "border-top: 1px solid grey; border-bottom: 1px solid grey")
+        lbl.setStyleSheet("border-top: 1px solid grey; border-bottom: 1px solid grey")
         self.gridLayout_parts_in_inventory_summary.addWidget(lbl, i + 1, 0)
         lbl = QLabel(f"${format(float(round_number(total,2)),',')}", self)
-        lbl.setStyleSheet(
-            "border-top: 1px solid grey; border-bottom: 1px solid grey")
+        lbl.setStyleSheet("border-top: 1px solid grey; border-bottom: 1px solid grey")
         self.gridLayout_parts_in_inventory_summary.addWidget(lbl, i + 1, 1)
 
     # ! /\ CALCULATION /\
@@ -2584,8 +2657,7 @@ class MainWindow(QMainWindow):
                 '"%.'
                 + str(int(n))
                 + 'f" % '
-                + repr(int(x) +
-                       round(float("." + str(float(x)).split(".")[1]), n))
+                + repr(int(x) + round(float("." + str(float(x)).split(".")[1]), n))
             )
 
         parts_in_inventory.change_object_in_object_item(
@@ -2629,8 +2701,7 @@ class MainWindow(QMainWindow):
                 '"%.'
                 + str(int(n))
                 + 'f" % '
-                + repr(int(x) +
-                       round(float("." + str(float(x)).split(".")[1]), n))
+                + repr(int(x) + round(float("." + str(float(x)).split(".")[1]), n))
             )
 
         category_data = parts_in_inventory.get_data()
@@ -2647,8 +2718,7 @@ class MainWindow(QMainWindow):
             new_value=f'Manually set to {spin_quantity.value()} quantity at {str(datetime.now().strftime("%B %d %A %Y %I:%M:%S %p"))}',
         )
 
-        total_cost: float = float(round_number(
-            spin_quantity.value() * cost_per_sheet, 2))
+        total_cost: float = float(round_number(spin_quantity.value() * cost_per_sheet, 2))
         spin_total_cost.setText(f"${format(total_cost, ',')}")
         modified_date_label.setText(
             f'Manually set to {spin_quantity.value()} quantity at {str(datetime.now().strftime("%B %d %A %Y %I:%M:%S %p"))}'
@@ -2696,8 +2766,7 @@ class MainWindow(QMainWindow):
                 '"%.'
                 + str(int(n))
                 + 'f" % '
-                + repr(int(x) +
-                       round(float("." + str(float(x)).split(".")[1]), n))
+                + repr(int(x) + round(float("." + str(float(x)).split(".")[1]), n))
             )
 
         batch_multiplier: int = self.spinBox_quantity_for_inventory.value()
@@ -2722,8 +2791,7 @@ class MainWindow(QMainWindow):
                     current_quantity: int = category_data[self.category][part_name][
                         "current_quantity"
                     ]
-                    new_quantity = current_quantity - \
-                        (unit_quantity * batch_multiplier)
+                    new_quantity = current_quantity - (unit_quantity * batch_multiplier)
                     category_data[self.category][part_name][
                         "current_quantity"
                     ] = new_quantity
@@ -2770,8 +2838,7 @@ class MainWindow(QMainWindow):
                 current_quantity: int = category_data[self.category][part_name][
                     "current_quantity"
                 ]
-                new_quantity = current_quantity - \
-                    (unit_quantity * batch_multiplier)
+                new_quantity = current_quantity - (unit_quantity * batch_multiplier)
                 category_data[self.category][part_name]["current_quantity"] = new_quantity
                 category_data[self.category][part_name][
                     "modified_date"
@@ -3000,8 +3067,7 @@ class MainWindow(QMainWindow):
                     '"%.'
                     + str(int(n))
                     + 'f" % '
-                    + repr(int(x) +
-                           round(float("." + str(float(x)).split(".")[1]), n))
+                    + repr(int(x) + round(float("." + str(float(x)).split(".")[1]), n))
                 )
 
             # ! NOTE FIX
@@ -3024,8 +3090,7 @@ class MainWindow(QMainWindow):
                 '"%.'
                 + str(int(n))
                 + 'f" % '
-                + repr(int(x) +
-                       round(float("." + str(float(x)).split(".")[1]), n))
+                + repr(int(x) + round(float("." + str(float(x)).split(".")[1]), n))
             )
 
         categories = inventory.get_data()
@@ -3042,8 +3107,7 @@ class MainWindow(QMainWindow):
                 current_quantity: int = categories[category][item]["current_quantity"]
                 price = max(current_quantity * price * exchange_rate, 0)
                 total_category_stock_cost += price
-            total_stock_costs[category] = round_number(
-                total_category_stock_cost, 2)
+            total_stock_costs[category] = round_number(total_category_stock_cost, 2)
         total_stock_costs["Polar Total Stock Cost"] = round_number(
             inventory.get_total_stock_cost_for_similar_categories("Polar"), 2
         )
@@ -3061,8 +3125,7 @@ class MainWindow(QMainWindow):
                     "border-top: 1px solid grey; border-bottom: 1px solid grey"
                 )
             self.gridLayout_Categor_Stock_Prices.addWidget(lbl, i, 0)
-            lbl = QLabel(
-                f"${format(float(total_stock_costs[stock_cost]),',')}", self)
+            lbl = QLabel(f"${format(float(total_stock_costs[stock_cost]),',')}", self)
             lbl.setTextInteractionFlags(Qt.TextSelectableByMouse)
             if "Total" in stock_cost:
                 lbl.setStyleSheet(
@@ -3090,8 +3153,7 @@ class MainWindow(QMainWindow):
                 '"%.'
                 + str(int(n))
                 + 'f" % '
-                + repr(int(x) +
-                       round(float("." + str(float(x)).split(".")[1]), n))
+                + repr(int(x) + round(float("." + str(float(x)).split(".")[1]), n))
             )
 
         data = parts_in_inventory.get_data()
@@ -3106,8 +3168,7 @@ class MainWindow(QMainWindow):
                     "Price Per Pound"
                 ][material]["price"]
                 cost_for_laser: float = (
-                    250 if material in {
-                        "304 SS", "409 SS", "Aluminium"} else 150
+                    250 if material in {"304 SS", "409 SS", "Aluminium"} else 150
                 )
                 parts_in_inventory.change_object_in_object_item(
                     object_name=category,
@@ -3150,22 +3211,26 @@ class MainWindow(QMainWindow):
             tree_view.clearSelection()
 
     def nest_directory_item_selected(self) -> None:
+        # self.process_selected_nests()
         selected_nests = len(self.get_all_selected_nests())
         if selected_nests == 0:
             self.pushButton_load_nests.setEnabled(False)
         else:
             self.pushButton_load_nests.setEnabled(True)
         self.pushButton_load_nests.setText(
-            f"Load {selected_nests} Nest{'' if selected_nests == 1 else 's'}")
+            f"Load {selected_nests} Nest{'' if selected_nests == 1 else 's'}"
+        )
 
-    def quote_table_save_quantities(self) -> None:
+    def save_quote_table_values(self) -> None:
         """
         This function saves the quantities of items in a quote table to a dictionary.
         """
         for row in range(self.tableWidget_quote_items.rowCount()):
             item_name = self.tableWidget_quote_items.item(row, 1).text()
             quantity = int(self.tableWidget_quote_items.item(row, 4).text())
-            self.quote_nest_information[item_name]['quantity'] = quantity
+            recut_button: RecutButton = self.tableWidget_quote_items.cellWidget(row, 5)
+            self.quote_nest_information[item_name]["quantity"] = quantity
+            self.quote_nest_information[item_name]["recut"] = recut_button.isChecked()
 
     # ! /\ UPDATE UI ELEMENTS /\
 
@@ -3183,7 +3248,7 @@ class MainWindow(QMainWindow):
         elif self.actionAlphabatical.isChecked():
             sorting_method = "alphabet"
 
-        inventory.sort(
+        self.active_json_file.sort(
             self.category, sorting_method, not self.actionAscending.isChecked()
         )
         self.load_tab()
@@ -3273,7 +3338,9 @@ class MainWindow(QMainWindow):
         Returns:
           a list of file names that end with the specified suffix in the specified folder path.
         """
-        return [folder_path + '/' + f for f in os.listdir(folder_path) if f.endswith(suffix)]
+        return [
+            folder_path + "/" + f for f in os.listdir(folder_path) if f.endswith(suffix)
+        ]
 
     def get_index_from_quote_table(self, item_name: str) -> int:
         """
@@ -3305,13 +3372,13 @@ class MainWindow(QMainWindow):
         `quantity_multiplier` value of the `item_name` key in the `quote_nest_information` dictionary,
         or 1 if the `item_name` key is not found in the dictionary.
         """
-        items_nest = '_' + \
-            self.quote_nest_information[item_name]['file_name'].replace(
-                '\\', '/')
+        items_nest = "_" + self.quote_nest_information[item_name]["file_name"].replace(
+            "\\", "/"
+        )
         if matches := {
             k: v for k, v in self.quote_nest_information.items() if k == items_nest
         }:
-            return int(matches[items_nest]['quantity_multiplier'])
+            return int(matches[items_nest]["quantity_multiplier"])
         else:
             return 1
 
@@ -3352,6 +3419,25 @@ class MainWindow(QMainWindow):
         ]
         return checked_parts
 
+    def get_menu_tab_order(self) -> list[str]:
+        return [self.tabWidget.tabText(i) for i in range(self.tabWidget.count())]
+
+    def get_tab_from_name(self, name: str) -> int:
+        """
+        This function finds the index of a tab in a tab widget by its name.
+
+        Args:
+          name (str): A string representing the name of the tab that needs to be found.
+
+        Returns:
+          an integer value which represents the index of the tab with the given name in the tab widget.
+        If the tab is not found, it returns -1.
+        """
+        for i in range(self.tabWidget.count()):
+            if self.tabWidget.tabText(i) == name:
+                return i
+        return -1
+
     # ! /\ GETTERS /\
     def save_geometry(self) -> None:
         """
@@ -3361,6 +3447,11 @@ class MainWindow(QMainWindow):
         geometry.set_value(item_name="y", value=max(self.pos().y(), 0))
         geometry.set_value(item_name="width", value=self.size().width())
         geometry.set_value(item_name="height", value=self.size().height())
+
+    def save_menu_tab_order(self) -> None:
+        settings_file.add_item(
+            item_name="menu_tabs_order", value=self.get_menu_tab_order()
+        )
 
     # ! \/ Dialogs \/
     def show_about_dialog(self) -> None:
@@ -3476,19 +3567,11 @@ class MainWindow(QMainWindow):
         """
         It shows a message dialog with a title and a message
         """
-        # self.tabWidget.currentChanged.disconnect()
-        self.tabWidget.setCurrentIndex(1)
-        # self.tabWidget.currentChanged.connect(self.show_not_trusted_user)
+        self.tabWidget.setCurrentIndex(settings_file.get_value('menu_tabs_order').index(self.last_selected_menu_tab))
         self.show_message_dialog(
             title="Permission error",
             message="You don't have permission to change inventory items.\n\nnot sorry \n\n(:",
         )
-
-    def open_im_useless_message(self) -> None:
-        """
-        This function opens a message dialog box that says "I am a useless button. :("
-        """
-        self.show_message_dialog("Add Item", "I am a useless button. :(")
 
     def add_item(self) -> None:
         """
@@ -3623,24 +3706,25 @@ class MainWindow(QMainWindow):
         the dropdown menu for selecting the item.
         """
         with contextlib.suppress(AttributeError):
-            tab_index: int = self.tab_widget.currentIndex()
-            table_widget: QTableWidget = self.scroll_areas[tab_index]
+            table_widget: QTableWidget = self.scroll_areas[self.tab_widget.currentIndex()]
             selected_index = table_widget.selectedIndexes()[0].row()
-        if item_name == '[TABLE_WIDGET]':
+        if item_name == "[TABLE_WIDGET]":
             item_name = table_widget.item(selected_index, 0).text()
         else:
             item_name = item_name.currentText()
 
         red_limit: int = self.get_value_from_category(
-            item_name=item_name, key='red_limit')
+            item_name=item_name, key="red_limit"
+        )
         yellow_limit: int = self.get_value_from_category(
-            item_name=item_name, key='yellow_limit')
+            item_name=item_name, key="yellow_limit"
+        )
 
         set_custom_limit_dialog = SetCustomLimitDialog(
             title="Set Custom Quantity Limit",
             message=f'Set a Custom Color Quantity Limit for:\n"{item_name}"',
             red_limit=red_limit,
-            yellow_limit=yellow_limit
+            yellow_limit=yellow_limit,
         )
 
         if set_custom_limit_dialog.exec_():
@@ -3654,18 +3738,19 @@ class MainWindow(QMainWindow):
                 self.active_json_file.change_object_in_object_item(
                     self.category, item_name, "yellow_limit", yellow_limit
                 )
-                if self.tabWidget.currentIndex() == 0:
+                if (
+                    self.tabWidget.tabText(self.tabWidget.currentIndex())
+                    == "Edit Inventory"
+                ):
                     current_quantity = self.get_value_from_category(
-                        item_name=item_name, key='current_quantity')
+                        item_name=item_name, key="current_quantity"
+                    )
                     if current_quantity <= red_limit:
-                        self.set_table_row_color(
-                            table_widget, selected_index, "#3F1E25")
+                        self.set_table_row_color(table_widget, selected_index, "#3F1E25")
                     elif current_quantity <= yellow_limit:
-                        self.set_table_row_color(
-                            table_widget, selected_index, "#413C28")
+                        self.set_table_row_color(table_widget, selected_index, "#413C28")
                     else:
-                        self.set_table_row_color(
-                            table_widget, selected_index, "#2c2c2c")
+                        self.set_table_row_color(table_widget, selected_index, "#2c2c2c")
                 else:
                     self.load_categories()
 
@@ -3698,16 +3783,14 @@ class MainWindow(QMainWindow):
         Returns:
           The response is a DialogButtons enum.
         """
-        input_dialog = InputDialog(
-            title="Search Ebay", message="Search for anything")
+        input_dialog = InputDialog(title="Search Ebay", message="Search for anything")
         if input_dialog.exec_():
             response = input_dialog.get_response()
             if response == DialogButtons.ok:
                 input_text = input_dialog.inputText
                 ebay_scraper_thread = EbayScraper(item_to_search=input_text)
                 # QApplication.setOverrideCursor(Qt.BusyCursor)
-                ebay_scraper_thread.signal.connect(
-                    self.show_web_scrape_results)
+                ebay_scraper_thread.signal.connect(self.show_web_scrape_results)
                 self.threads.append(ebay_scraper_thread)
                 ebay_scraper_thread.start()
             elif response == DialogButtons.cancel:
@@ -3845,13 +3928,14 @@ class MainWindow(QMainWindow):
         """
         if (
             self.tab_widget.tabText(0) == ""
-            or self.category == "Price Per Pound"
-            or self.category == "Recut"
-            or self.category == "Custom"
+            or self.tab_widget.tabText(index) == "Price Per Pound"
+            or self.tab_widget.tabText(index) == "Recut"
+            or self.tab_widget.tabText(index) == "Custom"
         ):
             return
         input_dialog = InputDialog(
-            title="Rename category", message=f"Enter a new name for '{self.category}'."
+            title="Rename category",
+            message=f"Enter a new name for '{self.tab_widget.tabText(index)}'.",
         )
 
         if input_dialog.exec_():
@@ -3886,14 +3970,14 @@ class MainWindow(QMainWindow):
         """
         This function adds a new directory to a list of quote nest directories and refreshes the list.
         """
-        nest_directories: list[str] = settings_file.get_value(
-            'quote_nest_directories')
+        nest_directories: list[str] = settings_file.get_value("quote_nest_directories")
         if new_nest_directory := QFileDialog.getExistingDirectory(
-            self, 'Open directory', '/'
+            self, "Open directory", "/"
         ):
             nest_directories.append(new_nest_directory)
             settings_file.add_item(
-                item_name="quote_nest_directories", value=nest_directories)
+                item_name="quote_nest_directories", value=nest_directories
+            )
             self.refresh_nest_directories()
 
     def remove_nest_directory(self) -> None:
@@ -3901,8 +3985,7 @@ class MainWindow(QMainWindow):
         This function removes a selected nest directory from a list of nest directories and updates the
         settings file.
         """
-        nest_directories: list[str] = settings_file.get_value(
-            'quote_nest_directories')
+        nest_directories: list[str] = settings_file.get_value("quote_nest_directories")
         select_item_dialog = SelectItemDialog(
             button_names=DialogButtons.discard_cancel,
             title="Remove Nest Directory",
@@ -3915,22 +3998,23 @@ class MainWindow(QMainWindow):
             if response == DialogButtons.discard:
                 nest_directories.remove(select_item_dialog.get_selected_item())
                 settings_file.add_item(
-                    item_name="quote_nest_directories", value=nest_directories)
+                    item_name="quote_nest_directories", value=nest_directories
+                )
                 self.refresh_nest_directories()
             elif response == DialogButtons.cancel:
                 return
 
     def generate_quote(self) -> None:
-        select_item_dialog = SelectItemDialog(
+        select_item_dialog = SelectActionDialog(
             button_names=DialogButtons.go_cancel,
             title="Quote Generator",
             message="Pick one",
-            items=[
-                    'Generate Quote',
-                    'Generate Workorder & Update Inventory',
-                    'Generate Workorder & NOT Update Inventory',
-                    'Generate Quote & Workorder & Update Inventory',
-                    'Generate Quote & Workorder & NOT Update Inventory'
+            options=[
+                "Generate Quote",
+                "Generate Workorder & Update Inventory",
+                "Generate Workorder & NOT Update Inventory",
+                "Generate Quote & Workorder & Update Inventory",
+                "Generate Quote & Workorder & NOT Update Inventory",
             ],
         )
 
@@ -3941,18 +4025,26 @@ class MainWindow(QMainWindow):
                     action = select_item_dialog.get_selected_item()
                 except AttributeError:
                     return
-                self.quote_table_save_quantities()
-                generate_quote = GenerateQuote(
-                    action, self.quote_nest_information)
-                set_status_button_stylesheet(
-                    button=self.status_button, color="lime")
-                button_status = f'<p style="color:lime;">Option "{action}" was completed successfully</p>'
+                self.save_quote_table_values()
+                try:
+                    generate_quote = GenerateQuote(action, self.quote_nest_information)
+                except FileNotFoundError:
+                    self.show_error_dialog(
+                        "File not found, aborted",
+                        'Invalid paths set for "path_to_sheet_prices" or "price_of_steel_information" in config file "laser_quote_variables.cfg"\n\nGenerating Quote Aborted.',
+                    )
+                    return
+                set_status_button_stylesheet(button=self.status_button, color="lime")
+                button_status = f'<p style="color:lime;">Action: "{action}" was completed successfully</p>'
                 self.status_button.setText(button_status)
-                self.show_message_dialog(action, 'Done!')
                 if generate_quote.should_update_inventory:
                     self.upload_batch_to_inventory_thread()
             elif response == DialogButtons.cancel:
                 return
+
+    def open_image(self, path: str, title: str) -> None:
+        image_viewer = QImageViewer(self, path, title)
+        image_viewer.show()
 
     # ! /\ Dialogs /\
     # ! \/ Load UI \/
@@ -3974,11 +4066,9 @@ class MainWindow(QMainWindow):
             history_file.get_data_from_category()["Date"],
             history_file.get_data_from_category()["Description"],
         ):
-            self.categoryHistoryTable.insertRow(
-                self.categoryHistoryTable.rowCount())
+            self.categoryHistoryTable.insertRow(self.categoryHistoryTable.rowCount())
             self.categoryHistoryTable.setItem(i, 0, QTableWidgetItem(date))
-            self.categoryHistoryTable.setItem(
-                i, 1, QTableWidgetItem(description))
+            self.categoryHistoryTable.setItem(i, 1, QTableWidgetItem(description))
         # SINGLE ITEM HISTORY
         self.singleItemHistoryTable.clear()
         self.singleItemHistoryTable.setRowCount(0)
@@ -3992,11 +4082,9 @@ class MainWindow(QMainWindow):
             history_file.get_data_from_single_item()["Date"],
             history_file.get_data_from_single_item()["Description"],
         ):
-            self.singleItemHistoryTable.insertRow(
-                self.singleItemHistoryTable.rowCount())
+            self.singleItemHistoryTable.insertRow(self.singleItemHistoryTable.rowCount())
             self.singleItemHistoryTable.setItem(i, 0, QTableWidgetItem(date))
-            self.singleItemHistoryTable.setItem(
-                i, 1, QTableWidgetItem(description))
+            self.singleItemHistoryTable.setItem(i, 1, QTableWidgetItem(description))
 
     def load_price_history_view(self) -> None:
         """
@@ -4024,16 +4112,11 @@ class MainWindow(QMainWindow):
             if i == 0:
                 continue
             self.priceHistoryTable.insertRow(self.priceHistoryTable.rowCount())
-            self.priceHistoryTable.setItem(
-                i - 1, 0, QTableWidgetItem(str(date)))
-            self.priceHistoryTable.setItem(
-                i - 1, 1, QTableWidgetItem(str(part_name)))
-            self.priceHistoryTable.setItem(
-                i - 1, 2, QTableWidgetItem(str(part_number)))
-            self.priceHistoryTable.setItem(
-                i - 1, 3, QTableWidgetItem(str(old_price)))
-            self.priceHistoryTable.setItem(
-                i - 1, 4, QTableWidgetItem(str(new_price)))
+            self.priceHistoryTable.setItem(i - 1, 0, QTableWidgetItem(str(date)))
+            self.priceHistoryTable.setItem(i - 1, 1, QTableWidgetItem(str(part_name)))
+            self.priceHistoryTable.setItem(i - 1, 2, QTableWidgetItem(str(part_number)))
+            self.priceHistoryTable.setItem(i - 1, 3, QTableWidgetItem(str(old_price)))
+            self.priceHistoryTable.setItem(i - 1, 4, QTableWidgetItem(str(new_price)))
 
     def load_tree_view(self, inventory: JsonFile):
         """
@@ -4052,11 +4135,18 @@ class MainWindow(QMainWindow):
         """
         if (
             not self.trusted_user
-            and self.tabWidget.currentIndex() != 1
-            and self.tabWidget.currentIndex() != 2
+            and self.tabWidget.tabText(self.tabWidget.currentIndex())
+            != "Sheets in Inventory"
+            and self.tabWidget.tabText(self.tabWidget.currentIndex())
+            != "Parts in Inventory"
+            and self.tabWidget.tabText(self.tabWidget.currentIndex())
+            != "View Inventory (Read Only)"
         ):
-            self.show_not_trusted_user()
-            self.tabWidget.setCurrentIndex(1)
+            # print(self.last_selected_menu_tab)
+            # self.tabWidget.setCurrentIndex(settings_file.get_value('menu_tabs_order').index(self.last_selected_menu_tab))
+            # self.show_not_trusted_user()
+            
+            self.set_layout_message("Insufficient Privileges, Access Denied", "", "", 220)
             return
         self.set_layout_message("", "Loading...", "", 120)
 
@@ -4082,28 +4172,34 @@ class MainWindow(QMainWindow):
         for i, category in enumerate(self.categories):
             action = QAction(self)
             action.setIcon(
-                QIcon(
-                    f"ui/BreezeStyleSheets/dist/pyqt6/{self.theme}/project_open.png")
+                QIcon(f"ui/BreezeStyleSheets/dist/pyqt6/{self.theme}/project_open.png")
             )
-            action.triggered.connect(partial(self.quick_load_category, i))
+            action.triggered.connect(partial(self.quick_load_category, category))
             action.setText(category)
             self.menuOpen_Category.addAction(action)
-        self.tab_widget = NoScrollTabWidget(self)
+        self.tab_widget = CustomTabWidget(self)
         self.tab_widget.setStyleSheet(
             "QTabBar::tab::disabled {width: 0; height: 0; margin: 0; padding: 0; border: none;} "
         )
         self.tab_widget.tabBarDoubleClicked.connect(self.rename_category)
-        self.tab_widget.setMovable(False)
+        self.tab_widget.setMovable(True)
         self.tab_widget.setDocumentMode(True)
         i: int = -1
         for i, category in enumerate(self.categories):
-            if category == "Price Per Pound" and self.tabWidget.currentIndex() == 1:
+            if (
+                category == "Price Per Pound"
+                and self.tabWidget.tabText(self.tabWidget.currentIndex())
+                == "Sheets in Inventory"
+            ):
                 self.headers: dict[dict[str, int]] = {
                     "Name": 150,
                     "Price": 120,
                 }
                 self.pushButton_add_new_sheet.setEnabled(False)
-            elif self.tabWidget.currentIndex() == 1:
+            elif (
+                self.tabWidget.tabText(self.tabWidget.currentIndex())
+                == "Sheets in Inventory"
+            ):
                 self.headers: dict[dict[str, int]] = {
                     "Name": 270,
                     "Sheet Cost": 80,
@@ -4112,7 +4208,7 @@ class MainWindow(QMainWindow):
                     "Notes": 170,
                 }
                 self.pushButton_add_new_sheet.setEnabled(True)
-            if self.tabWidget.currentIndex() == 0:
+            if self.tabWidget.tabText(self.tabWidget.currentIndex()) == "Edit Inventory":
                 tab = CustomTableWidget(self)
                 self.scroll_areas.append(tab)
                 # content_widget = QWidget()
@@ -4121,7 +4217,7 @@ class MainWindow(QMainWindow):
                 # tab.setWidgetResizable(True)
                 # layout = QVBoxLayout(content_widget)
                 # layout.setAlignment(Qt.AlignTop)
-                self.tabs.append(tab)
+                self.tabs[category] = tab
                 # self.tab_widget.addTab(tab, category)
             else:
                 tab = HeaderScrollArea(self.headers, self)
@@ -4132,7 +4228,7 @@ class MainWindow(QMainWindow):
                 tab.setWidgetResizable(True)
                 layout = QVBoxLayout(content_widget)
                 layout.setAlignment(Qt.AlignTop)
-                self.tabs.append(layout)
+                self.tabs[category] = layout
             self.tab_widget.addTab(tab, category)
 
         if i == -1:
@@ -4144,12 +4240,18 @@ class MainWindow(QMainWindow):
             tab.setWidgetResizable(True)
             layout = QVBoxLayout(content_widget)
             layout.setAlignment(Qt.AlignTop)
-            self.tabs.append(layout)
+            self.tabs[category] = layout
             self.tab_widget.addTab(tab, "")
             i += 1
-
-        self.tab_widget.setCurrentIndex(
-            settings_file.get_value("last_category_tab"))
+        try:
+            self.tab_widget.set_tab_order(
+                category_tabs_order.get_value(
+                    self.tabWidget.tabText(self.tabWidget.currentIndex())
+                )
+            )
+        except:
+            pass
+        self.tab_widget.setCurrentIndex(settings_file.get_value("last_category_tab"))
         self.tab_widget.currentChanged.connect(self.load_tab)
         self.active_layout.addWidget(self.tab_widget)
         self.update_category_total_stock_costs()
@@ -4164,8 +4266,7 @@ class MainWindow(QMainWindow):
         Returns:
           The return value is a list of QWidget objects.
         """
-        tab_index: int = self.tab_widget.currentIndex()
-        self.category = self.tab_widget.tabText(tab_index)
+        self.category = self.tab_widget.tabText(self.tab_widget.currentIndex())
         self.inventory_prices_objects.clear()
         # self.last_item_selected_index = 0
         self.po_buttons.clear()
@@ -4179,13 +4280,12 @@ class MainWindow(QMainWindow):
         self.radioButton_single.setEnabled(True)
 
         try:
-            self.clear_layout(self.tabs[tab_index])
+            self.clear_layout(self.tabs[self.category])
         except IndexError:
             return
-        settings_file.add_item("last_category_tab", tab_index)
-        tab: QVBoxLayout = self.tabs[tab_index]
-        category_data = self.active_json_file.get_value(
-            item_name=self.category)
+        settings_file.add_item("last_category_tab", self.tab_widget.currentIndex())
+        tab: QVBoxLayout = self.tabs[self.category]
+        category_data = self.active_json_file.get_value(item_name=self.category)
         autofill_search_options = self.get_all_part_names() + self.get_all_part_numbers()
         completer = QCompleter(autofill_search_options)
         completer.setCaseSensitivity(Qt.CaseInsensitive)
@@ -4241,59 +4341,71 @@ class MainWindow(QMainWindow):
             # QApplication.restoreOverrideCursor()
             return
 
-        if self.category == "Price Per Pound" and self.tabWidget.currentIndex() == 1:
+        if (
+            self.category == "Price Per Pound"
+            and self.tabWidget.tabText(self.tabWidget.currentIndex())
+            == "Sheets in Inventory"
+        ):
             self.pushButton_add_new_sheet.setEnabled(False)
-        elif self.tabWidget.currentIndex() == 1:
+        elif (
+            self.tabWidget.tabText(self.tabWidget.currentIndex()) == "Sheets in Inventory"
+        ):
             self.pushButton_add_new_sheet.setEnabled(True)
-        if self.tabWidget.currentIndex() == 0:
+        if self.tabWidget.tabText(self.tabWidget.currentIndex()) == "Edit Inventory":
             self.datetime1 = datetime.now()
             # self._timer = QTimer(
             # interval=10,
             # timeout=partial(self.load_item, tab, tab_index, category_data),
             # )
             # self._timer.start()
-            self.load_item(tab, tab_index, category_data)
-        elif self.tabWidget.currentIndex() == 1:
+            self.load_item(tab, category_data)
+        elif (
+            self.tabWidget.tabText(self.tabWidget.currentIndex()) == "Sheets in Inventory"
+        ):
             self._timer = QTimer(
                 interval=10,
-                timeout=partial(self.price_of_steel_item, tab,
-                                tab_index, category_data),
+                timeout=partial(self.price_of_steel_item, tab, category_data),
             )
             self._timer.start()
-        elif self.tabWidget.currentIndex() == 2:
+        elif (
+            self.tabWidget.tabText(self.tabWidget.currentIndex()) == "Parts in Inventory"
+        ):
             self._timer = QTimer(
                 interval=10,
-                timeout=partial(self.load_inventory_part, tab,
-                                tab_index, category_data),
+                timeout=partial(self.load_inventory_part, tab, category_data),
             )
             self._timer.start()
+        category_tabs_order.set_value(
+            self.tabWidget.tabText(self.tabWidget.currentIndex()),
+            value=self.tabWidget.currentWidget()
+            .findChildren(CustomTabWidget)[0]
+            .get_tab_order(),
+        )
 
-    def load_inventory_part(
-        self, tab: QVBoxLayout, tab_index: int, category_data: dict
-    ) -> None:
+    def load_inventory_part(self, tab: QVBoxLayout, category_data: dict) -> None:
         """
         This function takes a QVBoxLayout, an int, and a dict and returns None.
 
         Args:
           tab (QVBoxLayout): QVBoxLayout
-          tab_index (int): int
           category_data (dict): dict = {
         """
         try:
             row_index = next(self._iter)
         except StopIteration:
             self._timer.stop()
-            set_status_button_stylesheet(
-                button=self.status_button, color="#3daee9")
+            set_status_button_stylesheet(button=self.status_button, color="#3daee9")
+            self.status_button.setText(f'<p style="color:white;"><b>Done!</b></p>')
             self.load_item_context_menu()
         else:
             __start: float = (row_index + 1) / len(list(category_data.keys()))
             __middle: float = __start + 0.001 if __start <= 1 - 0.001 else 1.0
             __end: float = __start + 0.0011 if __start <= 1 - 0.0011 else 1.0
             self.status_button.setStyleSheet(
-                """QPushButton#status_button {background: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0,stop:%(start)s #3daee9,stop:%(middle)s #3daee9,stop:%(end)s #222222)}"""
+                """QPushButton#status_button {background: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0,stop:%(start)s #3daee9,stop:%(middle)s #3daee9,stop:%(end)s #1E363F); border: none;}"""
                 % {"start": str(__start), "middle": str(__middle), "end": str(__end)}
             )
+            self.status_button.setText(f'<p style="color:white;"><b>Loading...</b></p>')
             col_index: int = 0
 
             def round_number(x, n):
@@ -4301,8 +4413,7 @@ class MainWindow(QMainWindow):
                     '"%.'
                     + str(int(n))
                     + 'f" % '
-                    + repr(int(x) +
-                           round(float("." + str(float(x)).split(".")[1]), n))
+                    + repr(int(x) + round(float("." + str(float(x)).split(".")[1]), n))
                 )
 
             item = list(category_data.keys())[row_index]
@@ -4312,17 +4423,18 @@ class MainWindow(QMainWindow):
             unit_quantity: int = self.get_value_from_category(
                 item_name=item, key="unit_quantity"
             )
-            price: float = self.get_value_from_category(
-                item_name=item, key="price")
+            price: float = self.get_value_from_category(item_name=item, key="price")
             modified_date: str = self.get_value_from_category(
                 item_name=item, key="modified_date"
             )
             red_limit: float = self.get_value_from_category(
-                item_name=item, key='red_limit')
+                item_name=item, key="red_limit"
+            )
             if red_limit is None:
                 red_limit = 2
             yellow_limit: float = self.get_value_from_category(
-                item_name=item, key='yellow_limit')
+                item_name=item, key="yellow_limit"
+            )
             if yellow_limit is None:
                 yellow_limit = 5
             group = self.get_value_from_category(item_name=item, key="gauge")
@@ -4350,8 +4462,7 @@ class MainWindow(QMainWindow):
                 "QCheckBox#checkbox:indicator{width: 20px; height: 20px}"
             )
             check_box.setFixedWidth(30)
-            check_box.clicked.connect(
-                partial(self.item_check_box_press, check_box))
+            check_box.clicked.connect(partial(self.item_check_box_press, check_box))
             layout.addWidget(check_box)
             item = list(category_data.keys())[row_index]
             self.check_box_selections[item] = check_box
@@ -4454,11 +4565,9 @@ class MainWindow(QMainWindow):
             btn_delete = DeletePushButton(
                 parent=self,
                 tool_tip=f"Delete {item} permanently from {self.category}",
-                icon=QIcon(
-                    f"ui/BreezeStyleSheets/dist/pyqt6/{self.theme}/trash.png"),
+                icon=QIcon(f"ui/BreezeStyleSheets/dist/pyqt6/{self.theme}/trash.png"),
             )
-            btn_delete.clicked.connect(
-                partial(self.delete_item, self.category, item))
+            btn_delete.clicked.connect(partial(self.delete_item, self.category, item))
             btn_delete.setFixedSize(26, 26)
             layout.addWidget(btn_delete)
 
@@ -4467,39 +4576,37 @@ class MainWindow(QMainWindow):
             except KeyError:
                 tab.addLayout(layout)
 
-    def price_of_steel_item(
-        self, tab: QVBoxLayout, tab_index: int, category_data: dict
-    ) -> None:
+    def price_of_steel_item(self, tab: QVBoxLayout, category_data: dict) -> None:
         """
         This function takes a QVBoxLayout, an int, and a dict and returns None.
 
         Args:
           tab (QVBoxLayout): QVBoxLayout
-          tab_index (int): int
           category_data (dict): dict = {
         """
         try:
             row_index = next(self._iter)
         except StopIteration:
             self._timer.stop()
-            set_status_button_stylesheet(
-                button=self.status_button, color="#3daee9")
+            set_status_button_stylesheet(button=self.status_button, color="#3daee9")
+            self.status_button.setText(f'<p style="color:white;"><b>Done!</b></p>')
             self.load_item_context_menu()
         else:
             __start: float = (row_index + 1) / len(list(category_data.keys()))
             __middle: float = __start + 0.001 if __start <= 1 - 0.001 else 1.0
             __end: float = __start + 0.0011 if __start <= 1 - 0.0011 else 1.0
             self.status_button.setStyleSheet(
-                """QPushButton#status_button {background: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0,stop:%(start)s #3daee9,stop:%(middle)s #3daee9,stop:%(end)s #222222)}"""
+                """QPushButton#status_button {background: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0,stop:%(start)s #3daee9,stop:%(middle)s #3daee9,stop:%(end)s #1E363F)}"""
                 % {"start": str(__start), "middle": str(__middle), "end": str(__end)}
             )
+            # self.status_button.palette().color(self.status_button.backgroundRole()).name()
+            self.status_button.setText(f'<p style="color:white;"><b>Loading...</b></p>')
             col_index: int = 0
             if self.category == "Price Per Pound":
                 layout = QHBoxLayout()
                 layout.setAlignment(Qt.AlignLeft)
                 item = list(category_data.keys())[row_index]
-                price: float = self.get_value_from_category(
-                    item_name=item, key="price")
+                price: float = self.get_value_from_category(item_name=item, key="price")
                 latest_change_price: float = self.get_value_from_category(
                     item_name=item, key="latest_change_price"
                 )
@@ -4519,8 +4626,7 @@ class MainWindow(QMainWindow):
                         + str(int(n))
                         + 'f" % '
                         + repr(
-                            int(x) + round(float("." +
-                                                 str(float(x)).split(".")[1]), n)
+                            int(x) + round(float("." + str(float(x)).split(".")[1]), n)
                         )
                     )
 
@@ -4547,14 +4653,14 @@ class MainWindow(QMainWindow):
                         + str(int(n))
                         + 'f" % '
                         + repr(
-                            int(x) + round(float("." +
-                                                 str(float(x)).split(".")[1]), n)
+                            int(x) + round(float("." + str(float(x)).split(".")[1]), n)
                         )
                     )
 
                 item = list(category_data.keys())[row_index]
-                current_quantity: int = float(self.get_value_from_category(
-                    item_name=item, key="current_quantity"))
+                current_quantity: int = float(
+                    self.get_value_from_category(item_name=item, key="current_quantity")
+                )
                 sheet_dimension: str = self.get_value_from_category(
                     item_name=item, key="sheet_dimension"
                 )
@@ -4565,26 +4671,25 @@ class MainWindow(QMainWindow):
                     item_name=item, key="material"
                 )
                 red_limit: float = self.get_value_from_category(
-                    item_name=item, key='red_limit')
+                    item_name=item, key="red_limit"
+                )
                 if red_limit is None:
                     red_limit = 4
                 yellow_limit: float = self.get_value_from_category(
-                    item_name=item, key='yellow_limit')
+                    item_name=item, key="yellow_limit"
+                )
                 if yellow_limit is None:
                     yellow_limit = 10
-                group = self.get_value_from_category(
-                    item_name=item, key="group")
-                notes: str = self.get_value_from_category(
-                    item_name=item, key="notes")
+                group = self.get_value_from_category(item_name=item, key="group")
+                notes: str = self.get_value_from_category(item_name=item, key="notes")
                 notes = "" if notes is None else notes
                 is_order_pending = self.get_value_from_category(
-                    item_name=item, key='is_order_pending')
+                    item_name=item, key="is_order_pending"
+                )
                 if is_order_pending is None:
                     is_order_pending = False
-                self.get_value_from_category(
-                    item_name=item, key="latest_change_material")
-                self.get_value_from_category(
-                    item_name=item, key="latest_sheet_dimension")
+                self.get_value_from_category(item_name=item, key="latest_change_material")
+                self.get_value_from_category(item_name=item, key="latest_sheet_dimension")
                 self.get_value_from_category(
                     item_name=item, key="latest_change_thickness"
                 )
@@ -4713,8 +4818,7 @@ class MainWindow(QMainWindow):
                 layout.addWidget(spin_total_cost)
                 col_index += 1
                 # NOTES
-                text_notes = NotesPlainTextEdit(
-                    parent=self, text=notes, tool_tip="")
+                text_notes = NotesPlainTextEdit(parent=self, text=notes, tool_tip="")
                 text_notes.textChanged.connect(
                     partial(
                         self.sheet_notes_changed,
@@ -4729,7 +4833,8 @@ class MainWindow(QMainWindow):
                 # ORDER STATUS
                 order_status_button.setChecked(is_order_pending)
                 order_status_button.clicked.connect(
-                    partial(self.order_status_button, item, order_status_button))
+                    partial(self.order_status_button, item, order_status_button)
+                )
                 layout.addWidget(order_status_button)
 
                 col_index += 1
@@ -4737,12 +4842,10 @@ class MainWindow(QMainWindow):
                 btn_delete = DeletePushButton(
                     parent=self,
                     tool_tip=f"Delete {item} permanently from {self.category}",
-                    icon=QIcon(
-                        f"ui/BreezeStyleSheets/dist/pyqt6/{self.theme}/trash.png"),
+                    icon=QIcon(f"ui/BreezeStyleSheets/dist/pyqt6/{self.theme}/trash.png"),
                 )
                 btn_delete.setFixedSize(26, 26)
-                btn_delete.clicked.connect(
-                    partial(self.delete_item, self.category, item))
+                btn_delete.clicked.connect(partial(self.delete_item, self.category, item))
                 layout.addWidget(btn_delete)
 
                 try:
@@ -4750,13 +4853,12 @@ class MainWindow(QMainWindow):
                 except KeyError:
                     tab.addLayout(layout)
 
-    def load_item(self, tab: QTableWidget, tab_index: int, category_data: dict) -> None:
+    def load_item(self, tab: QTableWidget, category_data: dict) -> None:
         """
         This function loads data into a QTableWidget for a specific category.
 
         Args:
           tab (QTableWidget): The QTableWidget object that is being loaded with data.
-          tab_index (int): The index of the tab in the QTabWidget where the items will be loaded.
           category_data (dict): The `category_data` parameter is a dictionary containing information
         about the items in a particular category. The keys of the dictionary are the names of the items,
         and the values are dictionaries containing various information about each item, such as its part
@@ -4792,20 +4894,15 @@ class MainWindow(QMainWindow):
             self.get_value_from_category(item_name=item, key="group")
 
             current_quantity: int = int(
-                self.get_value_from_category(
-                    item_name=item, key="current_quantity")
+                self.get_value_from_category(item_name=item, key="current_quantity")
             )
 
             unit_quantity: float = float(
-                self.get_value_from_category(
-                    item_name=item, key="unit_quantity")
+                self.get_value_from_category(item_name=item, key="unit_quantity")
             )
-            priority: int = self.get_value_from_category(
-                item_name=item, key="priority")
-            price: float = self.get_value_from_category(
-                item_name=item, key="price")
-            notes: str = self.get_value_from_category(
-                item_name=item, key="notes")
+            priority: int = self.get_value_from_category(item_name=item, key="priority")
+            price: float = self.get_value_from_category(item_name=item, key="price")
+            notes: str = self.get_value_from_category(item_name=item, key="notes")
             use_exchange_rate: bool = self.get_value_from_category(
                 item_name=item, key="use_exchange_rate"
             )
@@ -4814,8 +4911,7 @@ class MainWindow(QMainWindow):
             if total_cost_in_stock < 0:
                 total_cost_in_stock = 0
             total_unit_cost: float = unit_quantity * price * exchange_rate
-            self.get_value_from_category(
-                item_name=item, key="latest_change_part_number")
+            self.get_value_from_category(item_name=item, key="latest_change_part_number")
             latest_change_unit_quantity: str = self.get_value_from_category(
                 item_name=item, key="latest_change_unit_quantity"
             )
@@ -4834,15 +4930,16 @@ class MainWindow(QMainWindow):
             latest_change_notes: str = self.get_value_from_category(
                 item_name=item, key="latest_change_notes"
             )
-            self.get_value_from_category(
-                item_name=item, key="latest_change_name")
+            self.get_value_from_category(item_name=item, key="latest_change_name")
 
             red_limit: float = self.get_value_from_category(
-                item_name=item, key='red_limit')
+                item_name=item, key="red_limit"
+            )
             if red_limit is None:
                 red_limit = 10
             yellow_limit: float = self.get_value_from_category(
-                item_name=item, key='yellow_limit')
+                item_name=item, key="yellow_limit"
+            )
             if yellow_limit is None:
                 yellow_limit = 20
 
@@ -4858,7 +4955,6 @@ class MainWindow(QMainWindow):
             table_item.setFont(font)
             tab.setItem(row_index, col_index, table_item)
             tab.item(row_index, col_index).setTextAlignment(
-
                 Qt.AlignCenter | Qt.AlignVCenter | Qt.TextWrapAnywhere
             )
             col_index += 1
@@ -4911,8 +5007,7 @@ class MainWindow(QMainWindow):
                     '"%.'
                     + str(int(n))
                     + 'f" % '
-                    + repr(int(x) +
-                           round(float("." + str(float(x)).split(".")[1]), n))
+                    + repr(int(x) + round(float("." + str(float(x)).split(".")[1]), n))
                 )
 
             converted_price: float = (
@@ -4938,8 +5033,7 @@ class MainWindow(QMainWindow):
             spin_price.setPrefix("$")
             spin_price.setSuffix(" USD" if use_exchange_rate else " CAD")
             spin_price.editingFinished.connect(
-                partial(self.price_change, self.category,
-                        item, "price", spin_price)
+                partial(self.price_change, self.category, item, "price", spin_price)
             )
             spin_price.setStyleSheet(self.margin_format)
             # layout.addWidget(spin_price)
@@ -4973,11 +5067,7 @@ class MainWindow(QMainWindow):
                 f"${str(round_number(total_cost_in_stock, 2))} {combo_exchange_rate.currentText()}"
             )
             item_total_cost_in_stock.setFont(font)
-            tab.setItem(
-                row_index,
-                col_index,
-                item_total_cost_in_stock
-            )
+            tab.setItem(row_index, col_index, item_total_cost_in_stock)
             tab.item(row_index, col_index).setTextAlignment(
                 Qt.AlignCenter | Qt.AlignVCenter | Qt.TextWrapAnywhere
             )
@@ -5041,8 +5131,7 @@ class MainWindow(QMainWindow):
                 parent=self, text=notes, tool_tip=latest_change_notes
             )
             text_notes.textChanged.connect(
-                partial(self.notes_changed, self.category,
-                        item, "notes", text_notes)
+                partial(self.notes_changed, self.category, item, "notes", text_notes)
             )
             text_notes.setStyleSheet(
                 "margin-top: 1%; margin-bottom: 1%; margin-left: 1%; margin-right: 1%;"
@@ -5064,11 +5153,9 @@ class MainWindow(QMainWindow):
             btn_delete = DeletePushButton(
                 parent=self,
                 tool_tip=f"Delete {item} permanently from {self.category}",
-                icon=QIcon(
-                    f"ui/BreezeStyleSheets/dist/pyqt6/{self.theme}/trash.png"),
+                icon=QIcon(f"ui/BreezeStyleSheets/dist/pyqt6/{self.theme}/trash.png"),
             )
-            btn_delete.clicked.connect(
-                partial(self.delete_item, self.category, item))
+            btn_delete.clicked.connect(partial(self.delete_item, self.category, item))
             btn_delete.setStyleSheet(self.margin_format)
             tab.setCellWidget(row_index, col_index, btn_delete)
             if current_quantity <= red_limit:
@@ -5079,8 +5166,7 @@ class MainWindow(QMainWindow):
         QApplication.restoreOverrideCursor()
         datetime2 = datetime.now()
         difference = datetime2 - self.datetime1
-        set_status_button_stylesheet(
-            button=self.status_button, color="#3daee9")
+        set_status_button_stylesheet(button=self.status_button, color="#3daee9")
         self.load_item_context_menu()
         tab.resizeColumnsToContents()
         tab.setColumnWidth(0, 250)
@@ -5092,8 +5178,7 @@ class MainWindow(QMainWindow):
             )
             tab.scrollTo(tab.model().index(self.last_item_selected_index, 0))
             tab.selectRow(self.last_item_selected_index)
-            self.listWidget_itemnames.setCurrentRow(
-                self.last_item_selected_index)
+            self.listWidget_itemnames.setCurrentRow(self.last_item_selected_index)
 
     def load_quote_generator_ui(self) -> None:
         self.refresh_nest_directories()
@@ -5101,17 +5186,17 @@ class MainWindow(QMainWindow):
     def refresh_nest_directories(self) -> None:
         self.clear_layout(self.verticalLayout_24)
         self.quote_nest_directories_list_widgets.clear()
-        nest_directories: list[str] = settings_file.get_value(
-            'quote_nest_directories')
+        nest_directories: list[str] = settings_file.get_value("quote_nest_directories")
         toolbox = QToolBox(self)
         toolbox.setLineWidth(0)
         toolbox.layout().setSpacing(0)
         self.verticalLayout_24.addWidget(toolbox)
-        for tab_index, nest_directory in enumerate(nest_directories):
-            nest_directory_name: str = nest_directory.split('/')[-1]
+        for nest_directory in nest_directories:
+            nest_directory_name: str = nest_directory.split("/")[-1]
             tree_view = PdfTreeView(nest_directory)
             tree_view.selectionModel().selectionChanged.connect(
-                self.nest_directory_item_selected)
+                self.nest_directory_item_selected
+            )
 
             self.quote_nest_directories_list_widgets[nest_directory] = tree_view
             toolbox.addItem(tree_view, nest_directory_name)
@@ -5126,62 +5211,91 @@ class MainWindow(QMainWindow):
         self.pushButton_generate_quote.setEnabled(True)
         self.comboBox_global_sheet_thickness.setEnabled(True)
         self.comboBox_global_sheet_material.setEnabled(True)
-        toolbox = QToolBox(self)
-        toolbox.setLineWidth(0)
-        toolbox.layout().setSpacing(0)
-        self.verticalLayout_sheets.addWidget(toolbox)
+        self.sheet_nests_toolbox = MultiToolBox(self)
+        self.sheet_nests_toolbox.layout().setSpacing(0)
+        self.verticalLayout_sheets.addWidget(self.sheet_nests_toolbox)
         row_index: int = 0
         tab_index: int = 0
         for item in list(self.quote_nest_information.keys()):
             if item[0] == "_":
-                nest_name = item.split('/')[-1].replace('.pdf', '')
+                nest_name = item.split("/")[-1].replace(".pdf", "")
                 widget = QWidget(self)
                 widget.setMinimumHeight(90)
-                widget.setObjectName('nest_widget')
+                widget.setMaximumHeight(90)
+                widget.setObjectName("nest_widget")
                 widget.setStyleSheet(
-                    'QWidget#nest_widget{border: 0.04em solid  #3daee9; border-bottom-left-radius: 4px;border-bottom-right-radius: 4px; border-top: 0px solid #3daee9; margin-top: -1px; background-color: rgba(29, 29, 29, 57);}')
+                    "QWidget#nest_widget{border: 0.04em solid  #3daee9; border-bottom-left-radius: 4px;border-bottom-right-radius: 4px; border-top: 0px solid #3daee9; margin-top: -1px; background-color: rgba(29, 29, 29, 57);}"
+                )
                 grid_layout = QGridLayout(widget)
-                labels = ["Sheet Count:",
-                          "Sheet Material:", "Sheet Thickness:"]
+                labels = ["Sheet Count:", "Sheet Material:", "Sheet Thickness:"]
                 for i, label in enumerate(labels):
                     label = QLabel(label, self)
                     grid_layout.addWidget(label, i, 0)
 
                 spinBox_sheet_count = HumbleDoubleSpinBox(self)
                 spinBox_sheet_count.setValue(
-                    self.quote_nest_information[item]['quantity_multiplier'])
-                spinBox_sheet_count.valueChanged.connect(partial(
-                    self.sheet_nest_item_change, toolbox, tab_index, spinBox_sheet_count, item, 'quantity_multiplier'))
+                    self.quote_nest_information[item]["quantity_multiplier"]
+                )
+                spinBox_sheet_count.valueChanged.connect(
+                    partial(
+                        self.sheet_nest_item_change,
+                        tab_index,
+                        spinBox_sheet_count,
+                        item,
+                        "quantity_multiplier",
+                    )
+                )
 
                 grid_layout.addWidget(spinBox_sheet_count, 0, 1)
 
                 comboBox_sheet_material = QComboBox(self)
                 comboBox_sheet_material.wheelEvent = lambda event: None
                 comboBox_sheet_material.addItems(
-                    price_of_steel_information.get_value('materials'))
+                    price_of_steel_information.get_value("materials")
+                )
                 comboBox_sheet_material.setCurrentText(
-                    self.quote_nest_information[item]['material'])
-                comboBox_sheet_material.activated.connect(partial(
-                    self.sheet_nest_item_change, toolbox, tab_index,  comboBox_sheet_material, item, 'material'))
+                    self.quote_nest_information[item]["material"]
+                )
+                comboBox_sheet_material.activated.connect(
+                    partial(
+                        self.sheet_nest_item_change,
+                        tab_index,
+                        comboBox_sheet_material,
+                        item,
+                        "material",
+                    )
+                )
                 grid_layout.addWidget(comboBox_sheet_material, 1, 1)
 
                 comboBox_sheet_thickness = QComboBox(self)
                 comboBox_sheet_thickness.wheelEvent = lambda event: None
                 comboBox_sheet_thickness.addItems(
-                    price_of_steel_information.get_value('thicknesses'))
+                    price_of_steel_information.get_value("thicknesses")
+                )
                 comboBox_sheet_thickness.setCurrentText(
-                    self.quote_nest_information[item]['gauge'])
-                comboBox_sheet_thickness.activated.connect(partial(
-                    self.sheet_nest_item_change, toolbox, tab_index, comboBox_sheet_thickness, item, 'gauge'))
+                    self.quote_nest_information[item]["gauge"]
+                )
+                comboBox_sheet_thickness.activated.connect(
+                    partial(
+                        self.sheet_nest_item_change,
+                        tab_index,
+                        comboBox_sheet_thickness,
+                        item,
+                        "gauge",
+                    )
+                )
                 grid_layout.addWidget(comboBox_sheet_thickness, 2, 1)
-                spacer = QSpacerItem(
-                    20, 40, QSizePolicy.Minimum, QSizePolicy.Expanding)
+                spacer = QSpacerItem(20, 40, QSizePolicy.Minimum, QSizePolicy.Expanding)
                 grid_layout.addItem(spacer, 3, 0)
 
-                toolbox.addItem(
-                    widget, f"{self.quote_nest_information[item]['gauge']} {self.quote_nest_information[item]['material']} {self.quote_nest_information[item]['sheet_dim']} - {nest_name}")
-                toolbox.setItemIcon(tab_index, QIcon(
-                    r'ui\BreezeStyleSheets\dist\pyqt6\dark\project_open.png'))
+                self.sheet_nests_toolbox.addItem(
+                    widget,
+                    f"{self.quote_nest_information[item]['gauge']} {self.quote_nest_information[item]['material']} {self.quote_nest_information[item]['sheet_dim']} - {nest_name}",
+                )
+                self.sheet_nests_toolbox.setItemIcon(
+                    tab_index,
+                    QIcon(r"ui\BreezeStyleSheets\dist\pyqt6\dark\project_open.png"),
+                )
                 tab_index += 1
         self.load_quote_table()
         self.tableWidget_quote_items.setEnabled(True)
@@ -5200,38 +5314,67 @@ class MainWindow(QMainWindow):
             if item[0] != "_":
                 self.tableWidget_quote_items.insertRow(row_index)
                 self.tableWidget_quote_items.setRowHeight(row_index, 50)
-                label = QLabel()
+                label = ClickableLabel(self)
+                label.setToolTip("Click to make bigger.")
                 label.setFixedSize(50, 50)
                 pixmap = QPixmap(
-                    f"images/{self.quote_nest_information[item]['image_index']}.jpeg")
+                    f"images/{self.quote_nest_information[item]['image_index']}.jpeg"
+                )
                 scaled_pixmap = pixmap.scaled(
-                    label.size(), aspectRatioMode=Qt.KeepAspectRatio)
+                    label.size(), aspectRatioMode=Qt.KeepAspectRatio
+                )
                 label.setPixmap(scaled_pixmap)
+                label.clicked.connect(
+                    partial(
+                        self.open_image,
+                        f"images/{self.quote_nest_information[item]['image_index']}.jpeg",
+                        item,
+                    )
+                )
                 self.tableWidget_quote_items.setCellWidget(row_index, 0, label)
 
-                self.tableWidget_quote_items.setItem(
-                    row_index, 1, QTableWidgetItem(item))
+                self.tableWidget_quote_items.setItem(row_index, 1, QTableWidgetItem(item))
                 self.tableWidget_quote_items.item(row_index, 1).setTextAlignment(
                     Qt.AlignCenter | Qt.AlignVCenter | Qt.TextWrapAnywhere
                 )
 
-                self.tableWidget_quote_items.setItem(row_index, 2, QTableWidgetItem(
-                    self.quote_nest_information[item]['material']))
+                self.tableWidget_quote_items.setItem(
+                    row_index,
+                    2,
+                    QTableWidgetItem(self.quote_nest_information[item]["material"]),
+                )
                 self.tableWidget_quote_items.item(row_index, 2).setTextAlignment(
                     Qt.AlignCenter | Qt.AlignVCenter | Qt.TextWrapAnywhere
                 )
 
-                self.tableWidget_quote_items.setItem(row_index, 3, QTableWidgetItem(
-                    self.quote_nest_information[item]['gauge']))
+                self.tableWidget_quote_items.setItem(
+                    row_index,
+                    3,
+                    QTableWidgetItem(self.quote_nest_information[item]["gauge"]),
+                )
                 self.tableWidget_quote_items.item(row_index, 3).setTextAlignment(
                     Qt.AlignCenter | Qt.AlignVCenter | Qt.TextWrapAnywhere
                 )
 
-                self.tableWidget_quote_items.setItem(row_index, 4, QTableWidgetItem(str(int(
-                    self.quote_nest_information[item]['quantity'])*self.get_quantity_multiplier(item))))
+                self.tableWidget_quote_items.setItem(
+                    row_index,
+                    4,
+                    QTableWidgetItem(
+                        str(
+                            int(self.quote_nest_information[item]["quantity"])
+                            * self.get_quantity_multiplier(item)
+                        )
+                    ),
+                )
                 self.tableWidget_quote_items.item(row_index, 4).setTextAlignment(
                     Qt.AlignCenter | Qt.AlignVCenter | Qt.TextWrapAnywhere
                 )
+
+                recut_button = RecutButton(self)
+
+                recut_button.setStyleSheet("margin: 5%;")
+                self.tableWidget_quote_items.setCellWidget(row_index, 5, recut_button)
+
                 row_index += 1
 
     # ! /\ Load UI /\
@@ -5274,14 +5417,13 @@ class MainWindow(QMainWindow):
         If the user is not in the trusted_users list, then the user is not trusted
         """
         trusted_users = get_trusted_users()
-        check_trusted_user = (
-            user for user in trusted_users if not self.trusted_user)
+        check_trusted_user = (user for user in trusted_users if not self.trusted_user)
         for user in check_trusted_user:
             self.trusted_user = self.username.lower() == user.lower()
 
-        if not self.trusted_user:
-            self.menuSort.setEnabled(False)
-            self.menuOpen_Category.setEnabled(False)
+        # if not self.trusted_user:
+        # self.menuSort.setEnabled(False)
+        # self.menuOpen_Category.setEnabled(False)
 
     def are_parts_checked(self) -> bool:
         """
@@ -5343,8 +5485,7 @@ class MainWindow(QMainWindow):
             response = input_dialog.get_response()
             if response == DialogButtons.discard:
                 try:
-                    os.remove(
-                        f"PO's/templates/{input_dialog.get_selected_item()}.xlsx")
+                    os.remove(f"PO's/templates/{input_dialog.get_selected_item()}.xlsx")
                     self.show_message_dialog(
                         title="Success", message="Successfully removed template."
                     )
@@ -5462,8 +5603,7 @@ class MainWindow(QMainWindow):
         """
         It toggles the dark mode setting in the settings file and updates the theme
         """
-        self.show_message_dialog(
-            'Toggle Theme', 'There is no light theme, only dark.')
+        self.show_message_dialog("Toggle Theme", "There is no light theme, only dark.")
 
     # ! /\ THEMING /\
 
@@ -5515,8 +5655,7 @@ class MainWindow(QMainWindow):
         with open(f"{output_directory}/error.log", "w", encoding="utf-8") as error_log:
             error_log.write(message_dialog.message)
         shutil.copyfile("logs/app.log", f"{output_directory}/app.log")
-        compress_folder(foldername=output_directory,
-                        target_dir=output_directory)
+        compress_folder(foldername=output_directory, target_dir=output_directory)
         shutil.rmtree(output_directory)
 
     def play_celebrate_sound(self) -> None:
@@ -5542,17 +5681,17 @@ class MainWindow(QMainWindow):
             __middle: float = __start + 0.001 if __start <= 1 - 0.001 else 1.0
             __end: float = __start + 0.0011 if __start <= 1 - 0.0011 else 1.0
             self.status_button.setStyleSheet(
-                """QPushButton#status_button {background: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0,stop:%(start)s #3daee9,stop:%(middle)s #3daee9,stop:%(end)s #222222)}"""
+                """QPushButton#status_button {background: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0,stop:%(start)s #3daee9,stop:%(middle)s #3daee9,stop:%(end)s #1E363F)}"""
                 % {"start": str(__start), "middle": str(__middle), "end": str(__end)}
             )
+            self.status_button.setText(f'<p style="color:white;"><b>Loading...</b></p>')
         else:
-            self.tab_widget.setEnabled(True)
+            self.centralwidget.setEnabled(True)
             self.listWidget_itemnames.setEnabled(True)
             self.pushButton_create_new.setEnabled(True)
             inventory.load_data()
-            set_status_button_stylesheet(
-                button=self.status_button, color="#33b833")
-            self.highlight_color = "#BE2525"
+            set_status_button_stylesheet(button=self.status_button, color="#33b833")
+            self.status_button.setText(f'<p style="color: white;"><b>Done!</b></p>')
             self.status_button.setText("Done!")
             self.pushButton_add_quantity.setEnabled(False)
             self.pushButton_remove_quantity.setEnabled(True)
@@ -5570,82 +5709,55 @@ class MainWindow(QMainWindow):
         file_name_to_upload: str = (
             f"data/{settings_file.get_value(item_name='inventory_file_name')}"
         )
-        if self.tabWidget.currentIndex() == 0:
+        if self.tabWidget.tabText(self.tabWidget.currentIndex()) == "Edit Inventory":
             file_name_to_upload: str = (
                 f"data/{settings_file.get_value(item_name='inventory_file_name')}"
             )
-        elif self.tabWidget.currentIndex() == 1:
+        elif (
+            self.tabWidget.tabText(self.tabWidget.currentIndex()) == "Sheets in Inventory"
+        ):
             file_name_to_upload: str = f"data/{settings_file.get_value(item_name='inventory_file_name')} - Price of Steel"
-        elif self.tabWidget.currentIndex() == 2:
+        elif (
+            self.tabWidget.tabText(self.tabWidget.currentIndex()) == "Parts in Inventory"
+        ):
             file_name_to_upload: str = f"data/{settings_file.get_value(item_name='inventory_file_name')} - Parts in Inventory"
         try:
             file_change = FileChanges(
                 from_file=f"{file_name_to_upload} - Compare.json",
                 to_file=f"{file_name_to_upload}.json",
             )
-            self.status_button.disconnect()
-
-            if self.tabWidget.currentIndex() in [1, 2]:
+            if self.tabWidget.tabText(self.tabWidget.currentIndex()) in [
+                "Sheets in Inventory",
+                "Parts in Inventory",
+            ]:
                 if file_change.get_time_difference() > 0:
                     self.upload_file([f"{file_name_to_upload}.json"], False)
-                    self.status_button.clicked.connect(
-                        partial(
-                            self.show_file_changes,
-                            title="Changes",
-                            message="Local file has changes that are not uploaded to the server.",
-                        )
-                    )
+
                 else:
-                    self.status_button.clicked.connect(
-                        partial(
-                            self.show_file_changes,
-                            title="Changes",
-                            message="Server file has changes that will be downloaded",
-                        )
-                    )
                     self.should_reload_categories = True
                     if self.are_parts_checked():
                         return
                     self.download_file([f"{file_name_to_upload}.json"], False)
-                set_status_button_stylesheet(
-                    button=self.status_button, color="yellow")
+                set_status_button_stylesheet(button=self.status_button, color="yellow")
                 button_status = (
                     f'<p style="color:yellow;">Local changes are not uploaded. (Uploading) - {datetime.now().strftime("%r")}</p>'
                     if file_change.get_time_difference() > 0
                     else f'<p style="color:yellow;">Server changes are not downloaded. (Downloading) - {datetime.now().strftime("%r")}</p>'
                 )
                 self.status_button.setText(button_status)
-            elif self.tabWidget.currentIndex() == 0:
+            elif (
+                self.tabWidget.tabText(self.tabWidget.currentIndex()) == "Edit Inventory"
+            ):
                 self.upload_file([f"{file_name_to_upload}.json"], False)
-                self.status_button.clicked.connect(
-                    partial(
-                        self.show_file_changes,
-                        title="Changes",
-                        message="Local file has changes that are not uploaded to the server.",
-                    )
-                )
-                set_status_button_stylesheet(
-                    button=self.status_button, color="yellow")
+                set_status_button_stylesheet(button=self.status_button, color="yellow")
                 button_status = f'<p style="color:yellow;">Uploading - {datetime.now().strftime("%r")}</p>'
                 self.status_button.setText(button_status)
             os.remove(f"{file_name_to_upload} - Compare.json")
         except (TypeError, FileNotFoundError) as error:
             logging.critical(error)
+            set_status_button_stylesheet(button=self.status_button, color="red")
             self.status_button.setText(
                 f'<p style="color:red;"><b>{file_name_to_upload.replace("data/","").title()}</b> - Failed to get changes. - {datetime.now().strftime("%r")}</p>'
-            )
-            set_status_button_stylesheet(
-                button=self.status_button, color="red")
-            try:
-                self.status_button.disconnect()
-            except TypeError:
-                return
-            self.status_button.clicked.connect(
-                partial(
-                    self.show_error_dialog,
-                    title="Error",
-                    message=f"Could not get changes.\n\n{str(error)}",
-                )
             )
 
     def data_received(self, data) -> None:
@@ -5695,18 +5807,9 @@ class MainWindow(QMainWindow):
             self.pushButton_update_parts_in_inventory.setEnabled(True)
             QApplication.restoreOverrideCursor()
         if data == "Successfully uploaded":
+            set_status_button_stylesheet(button=self.status_button, color="lime")
             self.status_button.setText(
                 f'<p style="color:lime;"> <b>{data}</b> - Up to date. - {datetime.now().strftime("%r")}</p>'
-            )
-            set_status_button_stylesheet(
-                button=self.status_button, color="lime")
-            self.status_button.disconnect()
-            self.status_button.clicked.connect(
-                partial(
-                    self.show_message_dialog,
-                    title="Changes",
-                    message="Successfully uploaded",
-                )
             )
         if data == "Successfully uploaded" and self.refresh_pressed:
             self.refresh_pressed = False
@@ -5722,18 +5825,9 @@ class MainWindow(QMainWindow):
             parts_in_inventory.load_data()
             self.load_categories()
             self.should_reload_categories = False
+            set_status_button_stylesheet(button=self.status_button, color="lime")
             self.status_button.setText(
                 f'<p style="color:lime;"> <b>{data}</b> - Up to date. - {datetime.now().strftime("%r")}</p>'
-            )
-            set_status_button_stylesheet(
-                button=self.status_button, color="lime")
-            self.status_button.disconnect()
-            self.status_button.clicked.connect(
-                partial(
-                    self.show_message_dialog,
-                    title="Changes",
-                    message="Successfully uploaded",
-                )
             )
         if not self.finished_downloading_all_files:
             self.files_downloaded_count += 1
@@ -5746,9 +5840,8 @@ class MainWindow(QMainWindow):
             self.status_button.setText(
                 f'<p style="color:lime;">Downloaded all files. - {datetime.now().strftime("%r")}</p>'
             )
-            set_status_button_stylesheet(
-                button=self.status_button, color="lime")
-            self.tab_widget.setEnabled(True)
+            set_status_button_stylesheet(button=self.status_button, color="lime")
+            self.centralwidget.setEnabled(True)
 
     def start_changes_thread(self, files_to_download: list[str]) -> None:
         """
@@ -5785,8 +5878,7 @@ class MainWindow(QMainWindow):
                 '"%.'
                 + str(int(n))
                 + 'f" % '
-                + repr(int(x) +
-                       round(float("." + str(float(x)).split(".")[1]), n))
+                + repr(int(x) + round(float("." + str(float(x)).split(".")[1]), n))
             )
 
         self.label_exchange_price.setText(
@@ -5795,8 +5887,7 @@ class MainWindow(QMainWindow):
         self.label_total_unit_cost.setText(
             f"Total Unit Cost: ${format(float(round_number(inventory.get_total_unit_cost(self.category, self.get_exchange_rate()),2)),',')}"
         )
-        settings_file.change_item(
-            item_name="exchange_rate", new_value=exchange_rate)
+        settings_file.change_item(item_name="exchange_rate", new_value=exchange_rate)
         self.update_stock_costs()
 
     def send_sheet_report(self) -> None:
@@ -5863,7 +5954,6 @@ class MainWindow(QMainWindow):
         self.status_button.setText(button_status)
         QApplication.setOverrideCursor(Qt.BusyCursor)
         self.pushButton_load_nests.setEnabled(False)
-        self.quote_nest_information.clear()
         load_nest_thread = LoadNests(nests)
         load_nest_thread.signal.connect(self.response_from_load_nest_thread)
         self.threads.append(load_nest_thread)
@@ -5871,30 +5961,28 @@ class MainWindow(QMainWindow):
 
     def response_from_load_nest_thread(self, data) -> None:
         if "ERROR!" in data:
-            set_status_button_stylesheet(
-                button=self.status_button, color="red")
+            set_status_button_stylesheet(button=self.status_button, color="red")
             button_status = '<p style="color:red;">Encountered error processing pdfs.</p>'
             self.status_button.setText(button_status)
             self.pushButton_load_nests.setEnabled(True)
             QApplication.restoreOverrideCursor()
-            self.show_error_dialog(
-                'oh no. Encountered error processing pdfs.', data)
+            self.show_error_dialog("oh no. Encountered error processing pdfs.", data)
             return
         if type(data) == dict:
+            self.quote_nest_information.clear()
             self.quote_nest_information = data
             self.pushButton_load_nests.setEnabled(True)
             self.load_nests()
-            set_status_button_stylesheet(
-                button=self.status_button, color="lime")
+            set_status_button_stylesheet(button=self.status_button, color="lime")
             button_status = f'<p style="color:lime;">Successfully Loaded {len(self.get_all_selected_nests())} nests</p>'
             self.status_button.setText(button_status)
             QApplication.restoreOverrideCursor()
 
     def upload_batch_to_inventory_thread(self) -> None:
         QApplication.setOverrideCursor(Qt.BusyCursor)
-        with open('parts_batch_to_upload.json', "w") as f:
+        with open("parts_batch_to_upload.json", "w") as f:
             json.dump(self.quote_nest_information, f, sort_keys=True, indent=4)
-        upload_batch = UploadBatch('parts_batch_to_upload.json')
+        upload_batch = UploadBatch("parts_batch_to_upload.json")
         upload_batch.signal.connect(self.upload_batch_to_inventory_response)
         self.threads.append(upload_batch)
         set_status_button_stylesheet(button=self.status_button, color="yellow")
@@ -5904,21 +5992,18 @@ class MainWindow(QMainWindow):
 
     def upload_batch_to_inventory_response(self, response) -> None:
         if response == "Batch sent successfully":
-            set_status_button_stylesheet(
-                button=self.status_button, color="lime")
+            set_status_button_stylesheet(button=self.status_button, color="lime")
             button_status = '<p style="color:lime;">Batch was sent successfully</p>'
             self.status_button.setText(button_status)
             QApplication.restoreOverrideCursor()
             # self.show_message_dialog('Success', 'Batch was sent successfully')
         else:
-            set_status_button_stylesheet(
-                button=self.status_button, color="red")
+            set_status_button_stylesheet(button=self.status_button, color="red")
             button_status = '<p style="color:red;">Batch Failed to send.</p>'
             self.status_button.setText(button_status)
             QApplication.restoreOverrideCursor()
-            self.show_error_dialog(
-                'Error', f'Something went wrong.\n\n{response}')
-        os.remove('parts_batch_to_upload.json')
+            self.show_error_dialog("Error", f"Something went wrong.\n\n{response}")
+        os.remove("parts_batch_to_upload.json")
 
     # ! /\ THREADS /\
 
@@ -5955,8 +6040,7 @@ class MainWindow(QMainWindow):
         compress_database(
             path_to_file=f"data/{settings_file.get_value(item_name='inventory_file_name')}.json"
         )
-        self.show_message_dialog(
-            title="Success", message="Backup was successful!")
+        self.show_message_dialog(title="Success", message="Backup was successful!")
 
     # ! /\ BACKUP ACTIONS /\
     def clear_layout(self, layout) -> None:
@@ -6009,7 +6093,7 @@ class MainWindow(QMainWindow):
         tab.setWidget(content_widget)
         grid_layout = QGridLayout(content_widget)
         tab.setWidgetResizable(True)
-        self.tabs.append(grid_layout)
+        self.tabs["layout_message"] = grid_layout
         self.tab_widget.addTab(tab, "")
 
         lbl1 = QLabel(left_label)
@@ -6040,8 +6124,7 @@ class MainWindow(QMainWindow):
             lbl2.setAlignment(Qt.AlignLeft | Qt.AlignVCenter)
         lbl2.setStyleSheet("font:30px")
 
-        tab_index: int = self.tab_widget.currentIndex()
-        tab = self.tabs[tab_index]
+        tab = self.tabs["layout_message"]
         tab.addWidget(lbl1, 0, 0)
         tab.addWidget(btn, 0, 1)
         tab.addWidget(lbl2, 0, 2)
@@ -6107,15 +6190,13 @@ class MainWindow(QMainWindow):
             event.accept()
             for url in event.mimeData().urls():
                 if str(url.toLocalFile()).endswith(".xlsx"):
-                    files = [str(url.toLocalFile())
-                             for url in event.mimeData().urls()]
+                    files = [str(url.toLocalFile()) for url in event.mimeData().urls()]
                     # self.load_categories()
                     self.add_po_templates(files)
                     break
                 elif str(url.toLocalFile()).endswith(".zip"):
                     self.load_backup(
-                        [str(url.toLocalFile())
-                         for url in event.mimeData().urls()][0]
+                        [str(url.toLocalFile()) for url in event.mimeData().urls()][0]
                     )
             event.ignore()
 
@@ -6131,6 +6212,7 @@ class MainWindow(QMainWindow):
         #     on_close=True,
         # )
         self.save_geometry()
+        self.save_menu_tab_order()
         super().closeEvent(event)
 
     # ! /\ OVERIDDEN UI EVENTS /\
@@ -6143,11 +6225,18 @@ def main() -> None:
     """
     app = QApplication([])
     set_theme(app, theme="dark")
-    load_window = LoadWindow()
+    loading_window = LoadWindow()
+    loading_screen = QSplashScreen(loading_window)
+    # The above code is incomplete, but it appears to be creating a QSplashScreen object in a
+    # loading_window. QSplashScreen is a class in the PyQt5 library that provides a splash screen for
+    # applications. The purpose of a splash screen is to display a loading or introductory screen
+    # while the application is loading or initializing.
+    # loading_screen.show()
     app.processEvents()
     window = MainWindow()
     window.show()
-    load_window.close()
+    loading_screen.close()
+    loading_window.close()
     app.exec_()
 
 
