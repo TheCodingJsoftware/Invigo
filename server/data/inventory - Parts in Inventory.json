@@ -33,6 +33,17 @@
             "modified_date": "Added at May 22 Monday 2023 02:54:58 PM",
             "group": null
         },
+        "WTSS 202312": {
+            "current_quantity": 60,
+            "machine_time": 0.03,
+            "gauge": "12 Gauge",
+            "material": "304 SS",
+            "weight": 0.005,
+            "price": 0.14,
+            "unit_quantity": 1,
+            "modified_date": "Added at May 23 Tuesday 2023 01:53:26 PM",
+            "group": null
+        },
         "2 inch pin cap": {
             "current_quantity": 51,
             "machine_time": 0.17,
@@ -42,6 +53,17 @@
             "price": 0.94,
             "unit_quantity": 1,
             "modified_date": "Added at April 17 Monday 2023 05:06:22 PM",
+            "group": null
+        },
+        "PDP0812": {
+            "current_quantity": 50,
+            "machine_time": 0.85,
+            "gauge": "12 Gauge",
+            "material": "304 SS",
+            "weight": 2.53,
+            "price": 8.8,
+            "unit_quantity": 1,
+            "modified_date": "Added at May 23 Tuesday 2023 01:53:26 PM",
             "group": null
         },
         "2 INCH WASHER": {
@@ -55,6 +77,17 @@
             "modified_date": "24 quantity added at May 06 Saturday 2023 01:47:13 PM",
             "group": null
         },
+        "PM - SS DOOR PART D_1pcs Heavy Duty Bottom Bracket": {
+            "current_quantity": 44,
+            "machine_time": 0.45,
+            "gauge": "12 Gauge",
+            "material": "304 SS",
+            "weight": 1.458,
+            "price": 4.91,
+            "unit_quantity": 1,
+            "modified_date": "Added at May 23 Tuesday 2023 01:53:26 PM",
+            "group": null
+        },
         "Flat pattern - door hinge shim18 fix": {
             "current_quantity": 30,
             "machine_time": 0.05,
@@ -64,6 +97,17 @@
             "price": 0.14,
             "unit_quantity": 1,
             "modified_date": "Added at May 02 Tuesday 2023 08:20:37 AM",
+            "group": null
+        },
+        "PM - SS HINGE 2 B_1pcs": {
+            "current_quantity": 26,
+            "machine_time": 0.32,
+            "gauge": "12 Gauge",
+            "material": "304 SS",
+            "weight": 0.401,
+            "price": 2.17,
+            "unit_quantity": 1,
+            "modified_date": "Added at May 23 Tuesday 2023 01:53:26 PM",
             "group": null
         },
         "2840-26": {
@@ -108,6 +152,17 @@
             "price": 5.11,
             "unit_quantity": 1,
             "modified_date": "Added at May 08 Monday 2023 04:24:57 PM",
+            "group": null
+        },
+        "PM - SS DOOR PART C_1pcs Heavy Duty Bottom Bracket": {
+            "current_quantity": 8,
+            "machine_time": 0.32,
+            "gauge": "12 Gauge",
+            "material": "304 SS",
+            "weight": 0.367,
+            "price": 2.1,
+            "unit_quantity": 1,
+            "modified_date": "Added at May 23 Tuesday 2023 01:53:26 PM",
             "group": null
         },
         "swivels 4 needed": {
@@ -5811,14 +5866,14 @@
             "group": null
         },
         "PM - SS HINGE 1-7pcs": {
-            "current_quantity": 418.0,
+            "current_quantity": 578.0,
             "machine_time": 0.18,
             "gauge": "12 Gauge",
             "material": "Galvanized",
             "weight": 0.244,
             "price": 0.74,
             "unit_quantity": 1,
-            "modified_date": "104 quantity added at March 10 Friday 2023 08:51:25 AM",
+            "modified_date": "160 quantity added at May 23 Tuesday 2023 01:53:26 PM",
             "group": "Galvanized Hinges"
         },
         "PM - SS HINGE 1 B_1pcs": {
@@ -5855,47 +5910,58 @@
             "group": null
         },
         "PM - SS HINGE 3 B_1pcs": {
-            "current_quantity": 147,
+            "current_quantity": 173,
             "machine_time": 0.32,
             "gauge": "10 Gauge",
             "material": "304 SS",
             "weight": 0.425,
             "price": 2.22,
             "unit_quantity": 1,
-            "modified_date": "1 quantity added at April 26 Wednesday 2023 01:03:16 PM",
+            "modified_date": "26 quantity added at May 23 Tuesday 2023 01:53:26 PM",
             "group": null
         },
         "PM - SS HINGE 4 B_1pcs": {
-            "current_quantity": 16,
+            "current_quantity": 42,
             "machine_time": 0.27,
             "gauge": "12G\"",
             "material": "304 SS",
             "weight": 0.322,
             "price": 1.79,
             "unit_quantity": 1,
-            "modified_date": "1 quantity added at April 26 Wednesday 2023 01:03:16 PM",
+            "modified_date": "26 quantity added at May 23 Tuesday 2023 01:53:26 PM",
             "group": null
         },
         "PM - SS HINGE 6 B_1pcs": {
-            "current_quantity": 14,
+            "current_quantity": 40,
             "machine_time": 0.27,
             "gauge": "12G\"",
             "material": "304 SS",
             "weight": 0.361,
             "price": 1.88,
             "unit_quantity": 1,
-            "modified_date": "1 quantity added at April 26 Wednesday 2023 01:03:16 PM",
+            "modified_date": "26 quantity added at May 23 Tuesday 2023 01:53:26 PM",
             "group": null
         },
         "PM - SS HINGE 7 B_1pcs": {
-            "current_quantity": 12,
+            "current_quantity": 36,
             "machine_time": 0.27,
             "gauge": "12G\"",
             "material": "304 SS",
             "weight": 0.382,
             "price": 1.92,
             "unit_quantity": 1,
-            "modified_date": "1 quantity added at April 26 Wednesday 2023 01:03:16 PM",
+            "modified_date": "24 quantity added at May 23 Tuesday 2023 01:53:26 PM",
+            "group": null
+        },
+        "PM - SS HINGE 5 B_1pcs": {
+            "current_quantity": 35,
+            "machine_time": 0.25,
+            "gauge": "12G\"",
+            "material": "304 SS",
+            "weight": 0.341,
+            "price": 1.75,
+            "unit_quantity": 1,
+            "modified_date": "26 quantity added at May 23 Tuesday 2023 01:53:26 PM",
             "group": null
         },
         "PM - SS HINGE 8 B_1pcs": {
@@ -5905,17 +5971,6 @@
             "material": "304 SS",
             "weight": 0.404,
             "price": 2.01,
-            "unit_quantity": 1,
-            "modified_date": "1 quantity added at April 26 Wednesday 2023 01:03:16 PM",
-            "group": null
-        },
-        "PM - SS HINGE 5 B_1pcs": {
-            "current_quantity": 9,
-            "machine_time": 0.25,
-            "gauge": "12G\"",
-            "material": "304 SS",
-            "weight": 0.341,
-            "price": 1.75,
             "unit_quantity": 1,
             "modified_date": "1 quantity added at April 26 Wednesday 2023 01:03:16 PM",
             "group": null
@@ -6045,6 +6100,17 @@
             "modified_date": "12 quantity added at April 28 Friday 2023 04:15:13 PM",
             "group": null
         },
+        "WTSS 202314": {
+            "current_quantity": 34,
+            "machine_time": 0.05,
+            "gauge": "10 Gauge",
+            "material": "304 SS",
+            "weight": 0.05,
+            "price": 0.31,
+            "unit_quantity": 1,
+            "modified_date": "33 quantity added at May 23 Tuesday 2023 01:53:26 PM",
+            "group": null
+        },
         "Flat pattern - Skull Support Pcs-part 6- .188g x2": {
             "current_quantity": 20,
             "machine_time": 0.07,
@@ -6065,6 +6131,28 @@
             "price": 1.47,
             "unit_quantity": 1,
             "modified_date": "6 quantity added at April 28 Friday 2023 04:15:14 PM",
+            "group": null
+        },
+        "WTSS 202309": {
+            "current_quantity": 17,
+            "machine_time": 0.07,
+            "gauge": "14 Gauge",
+            "material": "304 SS",
+            "weight": 0.054,
+            "price": 0.4,
+            "unit_quantity": 1,
+            "modified_date": "16 quantity added at May 23 Tuesday 2023 01:53:26 PM",
+            "group": null
+        },
+        "WTSS 202310": {
+            "current_quantity": 16,
+            "machine_time": 0.05,
+            "gauge": "14 Gauge",
+            "material": "304 SS",
+            "weight": 0.037,
+            "price": 0.29,
+            "unit_quantity": 1,
+            "modified_date": "15 quantity added at May 23 Tuesday 2023 01:53:26 PM",
             "group": null
         },
         "Flat pattern - Door Hanger": {
@@ -6617,17 +6705,6 @@
             "modified_date": "Added at April 21 Friday 2023 10:49:04 AM",
             "group": null
         },
-        "WTSS 202314": {
-            "current_quantity": 1,
-            "machine_time": 0.05,
-            "gauge": "10 Gauge",
-            "material": "304 SS",
-            "weight": 0.05,
-            "price": 0.31,
-            "unit_quantity": 1,
-            "modified_date": "Added at April 21 Friday 2023 10:49:04 AM",
-            "group": null
-        },
         "WTSS 202315": {
             "current_quantity": 1,
             "machine_time": 0.03,
@@ -6637,28 +6714,6 @@
             "price": 0.19,
             "unit_quantity": 1,
             "modified_date": "Added at April 21 Friday 2023 10:49:04 AM",
-            "group": null
-        },
-        "WTSS 202309": {
-            "current_quantity": 1,
-            "machine_time": 0.07,
-            "gauge": "14 Gauge",
-            "material": "304 SS",
-            "weight": 0.054,
-            "price": 0.4,
-            "unit_quantity": 1,
-            "modified_date": "Added at May 06 Saturday 2023 01:45:23 PM",
-            "group": null
-        },
-        "WTSS 202310": {
-            "current_quantity": 1,
-            "machine_time": 0.05,
-            "gauge": "14 Gauge",
-            "material": "304 SS",
-            "weight": 0.037,
-            "price": 0.29,
-            "unit_quantity": 1,
-            "modified_date": "Added at May 06 Saturday 2023 01:45:23 PM",
             "group": null
         },
         "WTSS 202311": {
