@@ -435,7 +435,7 @@
             "is_order_pending": true
         },
         "12 Gauge 304 SS 120.000x60.000": {
-            "current_quantity": 19.0,
+            "current_quantity": 17.0,
             "sheet_dimension": "120.000x60.000",
             "thickness": "12 Gauge",
             "material": "304 SS",
@@ -612,7 +612,7 @@
             "is_order_pending": true
         },
         "12 Gauge Galvanized 120.000x60.000": {
-            "current_quantity": 2.5,
+            "current_quantity": 1.5,
             "sheet_dimension": "120.000x60.000",
             "thickness": "12 Gauge",
             "material": "Galvanized",
