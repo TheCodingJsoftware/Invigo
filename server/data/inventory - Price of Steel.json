@@ -82,7 +82,7 @@
             "latest_change_material": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-10-35 PM",
             "latest_sheet_dimension": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-10-35 PM",
             "latest_change_thickness": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-10-35 PM",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 13.0\nto: 83.0\nLaser Pc\nMay 03 Wednesday 2023 04:37:21 PM",
+            "latest_change_current_quantity": "Latest Change:\nfrom: 63.0\nto: 43.0\nLaser Pc\nMay 24 Wednesday 2023 09:13:25 AM",
             "red_limit": 20.0,
             "yellow_limit": 40.0,
             "notes": "Usual Order 100 sheets ",
@@ -104,7 +104,7 @@
             "is_order_pending": false
         },
         "3\/16 Mild Steel 120.000x60.000": {
-            "current_quantity": 26.0,
+            "current_quantity": 33.0,
             "sheet_dimension": "120.000x60.000",
             "thickness": "3\/16",
             "material": "Mild Steel",
@@ -134,7 +134,7 @@
             "is_order_pending": false
         },
         "3\/16 Mild Steel 96.000x48.000": {
-            "current_quantity": 46.0,
+            "current_quantity": 56.0,
             "sheet_dimension": "96.000x48.000",
             "thickness": "3\/16",
             "material": "Mild Steel",
@@ -435,7 +435,7 @@
             "is_order_pending": true
         },
         "12 Gauge 304 SS 120.000x60.000": {
-            "current_quantity": 17.0,
+            "current_quantity": 19.0,
             "sheet_dimension": "120.000x60.000",
             "thickness": "12 Gauge",
             "material": "304 SS",
@@ -612,7 +612,7 @@
             "is_order_pending": true
         },
         "12 Gauge Galvanized 120.000x60.000": {
-            "current_quantity": 1.5,
+            "current_quantity": 2.5,
             "sheet_dimension": "120.000x60.000",
             "thickness": "12 Gauge",
             "material": "Galvanized",
