@@ -30,8 +30,8 @@ from PyQt5.QtWidgets import (
     QSizePolicy,
     QSpacerItem,
     QSpinBox,
-    QStyle,
     QSplashScreen,
+    QStyle,
     QTableWidget,
     QTableWidgetItem,
     QTabWidget,
@@ -51,11 +51,9 @@ from threads.send_sheet_report_thread import SendReportThread
 from threads.upload_quoted_inventory import UploadBatch
 from threads.upload_thread import UploadThread
 from ui.about_dialog import AboutDialog
-from ui.image_viewer import QImageViewer
 from ui.add_item_dialog import AddItemDialog
 from ui.add_item_dialog_price_of_steel import AddItemDialogPriceOfSteel
 from ui.custom_widgets import (
-    MultiToolBox,
     ClickableLabel,
     CostLineEdit,
     CustomTableWidget,
@@ -66,6 +64,7 @@ from ui.custom_widgets import (
     HumbleDoubleSpinBox,
     ItemCheckBox,
     ItemNameComboBox,
+    MultiToolBox,
     NotesPlainTextEdit,
     OrderStatusButton,
     PdfTreeView,
@@ -77,11 +76,12 @@ from ui.custom_widgets import (
     set_default_dialog_button_stylesheet,
     set_status_button_stylesheet,
 )
+from ui.image_viewer import QImageViewer
 from ui.input_dialog import InputDialog
 from ui.load_window import LoadWindow
 from ui.message_dialog import MessageDialog
-from ui.select_item_dialog import SelectItemDialog
 from ui.select_action_dialog import SelectActionDialog
+from ui.select_item_dialog import SelectItemDialog
 from ui.set_custom_limit_dialog import SetCustomLimitDialog
 from ui.theme import set_theme
 from ui.web_scrape_results_dialog import WebScrapeResultsDialog
@@ -108,7 +108,7 @@ __credits__: "list[str]" = ["Jared Gross"]
 __license__ = "MIT"
 __name__ = "Inventory Manager"
 __version__ = "v1.6.2"
-__updated__ = "2023-05-13 22:49:18"
+__updated__ = "2023-05-24 07:52:28"
 __maintainer__ = "Jared Gross"
 __email__ = "jared@pinelandfarms.ca"
 __status__ = "Production"
@@ -342,7 +342,9 @@ class MainWindow(QMainWindow):
         self.tabs = {}
         self.last_item_selected_index: int = 0
         self.last_item_selected_name: str = None
-        self.last_selected_menu_tab: str = settings_file.get_value('menu_tabs_order')[settings_file.get_value('last_toolbox_tab')]
+        self.last_selected_menu_tab: str = settings_file.get_value("menu_tabs_order")[
+            settings_file.get_value("last_toolbox_tab")
+        ]
         self.check_box_selections: dict = {}
         self.item_layouts: list[QHBoxLayout] = []
         self.group_layouts: dict[str, QVBoxLayout] = {}
@@ -699,11 +701,23 @@ class MainWindow(QMainWindow):
 
         # SEARCH
         self.actionEbay.triggered.connect(self.search_ebay)
-        
+
         if not self.trusted_user:
-            self.tabWidget.setTabEnabled(settings_file.get_value('menu_tabs_order').index("Edit Inventory"), False)
-            self.tabWidget.setTabEnabled(settings_file.get_value('menu_tabs_order').index("View Price Changes History (Read Only)"), False)
-            self.tabWidget.setTabEnabled(settings_file.get_value('menu_tabs_order').index("View Removed Quantities History (Read Only)"), False)
+            self.tabWidget.setTabEnabled(
+                settings_file.get_value("menu_tabs_order").index("Edit Inventory"), False
+            )
+            self.tabWidget.setTabEnabled(
+                settings_file.get_value("menu_tabs_order").index(
+                    "View Price Changes History (Read Only)"
+                ),
+                False,
+            )
+            self.tabWidget.setTabEnabled(
+                settings_file.get_value("menu_tabs_order").index(
+                    "View Removed Quantities History (Read Only)"
+                ),
+                False,
+            )
 
     # ! \/ SLOTS & SIGNALS \/
     # NOTE DOES NOT WORK SINCE TABS ARE MOVEABLE
@@ -711,11 +725,15 @@ class MainWindow(QMainWindow):
         """
         This function sets the current tab index of a tab widget based on the name of a category and
         then loads the tab.
-        
+
         Args:
           name (str): The name of the category that needs to be loaded.
         """
-        self.tab_widget.setCurrentIndex(category_tabs_order.get_value(self.tabWidget.tabText(self.tabWidget.currentIndex())).index(name))
+        self.tab_widget.setCurrentIndex(
+            category_tabs_order.get_value(
+                self.tabWidget.tabText(self.tabWidget.currentIndex())
+            ).index(name)
+        )
         self.load_tab()
 
     def tool_box_menu_changed(self) -> None:
@@ -874,7 +892,9 @@ class MainWindow(QMainWindow):
             self.load_price_history_view()
             self.status_button.setHidden(True)
         settings_file.add_item("last_toolbox_tab", self.tabWidget.currentIndex())
-        self.last_selected_menu_tab = self.tabWidget.tabText(self.tabWidget.currentIndex())
+        self.last_selected_menu_tab = self.tabWidget.tabText(
+            self.tabWidget.currentIndex()
+        )
 
     def item_check_box_press(self, this_checkbox: QCheckBox) -> None:
         """
@@ -3567,7 +3587,9 @@ class MainWindow(QMainWindow):
         """
         It shows a message dialog with a title and a message
         """
-        self.tabWidget.setCurrentIndex(settings_file.get_value('menu_tabs_order').index(self.last_selected_menu_tab))
+        self.tabWidget.setCurrentIndex(
+            settings_file.get_value("menu_tabs_order").index(self.last_selected_menu_tab)
+        )
         self.show_message_dialog(
             title="Permission error",
             message="You don't have permission to change inventory items.\n\nnot sorry \n\n(:",
@@ -4145,7 +4167,7 @@ class MainWindow(QMainWindow):
             # print(self.last_selected_menu_tab)
             # self.tabWidget.setCurrentIndex(settings_file.get_value('menu_tabs_order').index(self.last_selected_menu_tab))
             # self.show_not_trusted_user()
-            
+
             self.set_layout_message("Insufficient Privileges, Access Denied", "", "", 220)
             return
         self.set_layout_message("", "Loading...", "", 120)

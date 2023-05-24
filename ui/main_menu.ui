@@ -60,7 +60,7 @@
        <enum>QTabWidget::Rounded</enum>
       </property>
       <property name="currentIndex">
-       <number>5</number>
+       <number>3</number>
       </property>
       <property name="elideMode">
        <enum>Qt::ElideNone</enum>
@@ -145,7 +145,7 @@
                 <rect>
                  <x>0</x>
                  <y>0</y>
-                 <width>261</width>
+                 <width>265</width>
                  <height>69</height>
                 </rect>
                </property>
@@ -553,8 +553,8 @@ QPushButton:pressed#pushButton_update_price_of_steel {
                 <rect>
                  <x>0</x>
                  <y>0</y>
-                 <width>246</width>
-                 <height>321</height>
+                 <width>98</width>
+                 <height>28</height>
                 </rect>
                </property>
                <property name="maximumSize">
@@ -871,8 +871,8 @@ QPushButton:pressed#pushButton_update_parts_in_inventory {
                 <rect>
                  <x>0</x>
                  <y>0</y>
-                 <width>251</width>
-                 <height>307</height>
+                 <width>98</width>
+                 <height>28</height>
                 </rect>
                </property>
                <layout class="QVBoxLayout" name="verticalLayout_21">
@@ -1101,7 +1101,7 @@ QPushButton:pressed#pushButton_update_parts_in_inventory {
                       <x>0</x>
                       <y>0</y>
                       <width>194</width>
-                      <height>330</height>
+                      <height>332</height>
                      </rect>
                     </property>
                     <property name="styleSheet">
@@ -1159,6 +1159,9 @@ QPushButton:pressed#pushButton_update_parts_in_inventory {
            <layout class="QVBoxLayout" name="verticalLayout_nest_directories" stretch="0,1,0,0">
             <item>
              <layout class="QHBoxLayout" name="horizontalLayout_20">
+              <property name="topMargin">
+               <number>6</number>
+              </property>
               <item>
                <widget class="QPushButton" name="pushButton_clear_selections">
                 <property name="text">
@@ -1468,7 +1471,7 @@ QPushButton#pushButton_generate_quote:disabled{
      <x>0</x>
      <y>0</y>
      <width>974</width>
-     <height>22</height>
+     <height>21</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">

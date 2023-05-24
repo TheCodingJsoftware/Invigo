@@ -231,13 +231,13 @@ class GenerateQuote():
         excel_document.set_cell_width(cell="A1", width=15)
         excel_document.set_cell_width(cell="B1", width=22)
         excel_document.set_cell_width(cell="E1", width=12)
-        excel_document.set_cell_width(cell="G1", width=11)
+        excel_document.set_cell_width(cell="G1", width=9)
         excel_document.set_cell_width(cell="O1", width=17)
         excel_document.set_cell_width(cell="S1", width=17)
         excel_document.set_cell_width(cell="F1", width=12)
         excel_document.set_cell_width(cell="J1", width=12)
         excel_document.set_cell_width(cell="K1", width=12)
-        excel_document.set_cell_width(cell="P1", width=12)
+        excel_document.set_cell_width(cell="P1", width=15)
         excel_document.set_cell_width(cell="R1", width=12)
 
         excel_document.set_col_hidden(cell="C1", hidden=True)
@@ -266,6 +266,10 @@ class GenerateQuote():
                 nest_count_index += 1
             excel_document.set_pagebreak(STARTING_ROW+nest_count_index)
             nest_count_index += 2
+        excel_document.add_item(
+            cell=f"P{nest_count_index+3}", item="Sheets:", totals=False)
+        excel_document.add_item(
+            cell=f"Q{nest_count_index+3}", item=self.get_total_sheet_count(), totals=False)
         index: int = nest_count_index
         for item in list(self.quote_data.keys()):
             if item[0] == '_':
@@ -375,10 +379,6 @@ class GenerateQuote():
         excel_document.add_item(
             cell=f"F{index+STARTING_ROW+1}", item="", totals=True)
         excel_document.add_item(
-            cell=f"P{index+STARTING_ROW+1}", item="Sheets:", totals=False)
-        excel_document.add_item(
-            cell=f"Q{index+STARTING_ROW+1}", item=self.get_total_sheet_count(), totals=False)
-        excel_document.add_item(
             cell=f"C{index+STARTING_ROW+1}",
             item="=SUMPRODUCT(Table1[Machining time (min)],Table1[Qty])",
             totals=True,
@@ -478,6 +478,13 @@ class GenerateQuote():
 
         excel_document.add_macro(
             macro_path=f"{self.program_directory}/macro.bin")
+        '''
+        Macro Code:
+        Private Sub Workbook_Open()
+            Application.Iteration = True
+            Application.MaxIterations = 1
+        End Sub
+        '''
 
         if self.should_generate_workorder:
             excel_document.set_col_hidden("J1", True)
