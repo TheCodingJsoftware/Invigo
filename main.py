@@ -106,9 +106,9 @@ __author__ = "Jared Gross"
 __copyright__ = "Copyright 2022-2023, TheCodingJ's"
 __credits__: "list[str]" = ["Jared Gross"]
 __license__ = "MIT"
-__name__ = "Inventory Manager"
+__name__ = "Invigo"
 __version__ = "v1.6.2"
-__updated__ = "2023-05-24 07:52:28"
+__updated__ = "2023-05-25 22:08:08"
 __maintainer__ = "Jared Gross"
 __email__ = "jared@pinelandfarms.ca"
 __status__ = "Production"
@@ -287,7 +287,7 @@ days_from_last_price_history_assessment: int = int(
 class MainWindow(QMainWindow):
     """The class MainWindow inherits from the class QMainWindow"""
 
-    def __init__(self):
+    def __init__(self, loading_window: LoadWindow):
         """
         It loads the UI and starts a thread that checks for changes in a JSON file.
         """
@@ -297,6 +297,7 @@ class MainWindow(QMainWindow):
         self.trusted_user: bool = False
         self.setWindowTitle(f"{__name__} - {__version__} - {self.username}")
         self.setWindowIcon(QIcon(Icons.icon))
+        self.loading_window = loading_window
 
         check_po_directories()
         self.check_for_updates(on_start_up=True)
@@ -339,7 +340,7 @@ class MainWindow(QMainWindow):
         self.should_reload_categories: bool = False
         self.finished_downloading_all_files: bool = False
         self.files_downloaded_count: int = 0
-        self.tabs = {}
+        self.tabs: dict[str, CustomTableWidget] = {}
         self.last_item_selected_index: int = 0
         self.last_item_selected_name: str = None
         self.last_selected_menu_tab: str = settings_file.get_value("menu_tabs_order")[
@@ -356,26 +357,14 @@ class MainWindow(QMainWindow):
         self.quote_nest_information = {}
         self.sheet_nests_toolbox: MultiToolBox = None
         self.get_upload_file_response: bool = True
-        self.headers: dict[dict[str, int]] = {
-            "Part Name": 486,
-            "Part Number": 120,
-            "Quantity Per Unit": 100,
-            "Quantity in Stock": 100,
-            "Item Price": 100,
-            "": 40,  # USD/CAD
-            "Total Cost in Stock": 100,
-            "Total Unit Cost": 100,
-            "Priority": 60,
-            "Notes": 170,
-        }
         self.margins = (15, 15, 5, 5)  # top, bottom, left, right
         self.margin_format = f"margin-top: {self.margins[0]}%; margin-bottom: {self.margins[1]}%; margin-left: {self.margins[2]}%; margin-right: {self.margins[3]}%;"
         self.download_all_files()
         self.start_changes_thread(
             [
-                f"data/{settings_file.get_value(item_name='inventory_file_name')}.json",
-                f"data/{settings_file.get_value(item_name='inventory_file_name')} - Price of Steel.json",
-                f"data/{settings_file.get_value(item_name='inventory_file_name')} - Parts in Inventory.json",
+                f"{settings_file.get_value(item_name='inventory_file_name')}.json",
+                f"{settings_file.get_value(item_name='inventory_file_name')} - Price of Steel.json",
+                f"{settings_file.get_value(item_name='inventory_file_name')} - Parts in Inventory.json",
             ]
         )
         self.check_trusted_user()
@@ -720,7 +709,6 @@ class MainWindow(QMainWindow):
             )
 
     # ! \/ SLOTS & SIGNALS \/
-    # NOTE DOES NOT WORK SINCE TABS ARE MOVEABLE
     def quick_load_category(self, name: str) -> None:
         """
         This function sets the current tab index of a tab widget based on the name of a category and
@@ -734,13 +722,15 @@ class MainWindow(QMainWindow):
                 self.tabWidget.tabText(self.tabWidget.currentIndex())
             ).index(name)
         )
-        self.load_tab()
+        self.load_active_tab()
 
     def tool_box_menu_changed(self) -> None:
         """
-
-        If the toolbox is not on the first tab, hide the dock widget
+        This function changes the active layout and menu options based on the selected tab in a GUI.
         """
+        inventory.load_data()
+        price_of_steel_inventory.load_data()
+        parts_in_inventory.load_data()
         if (
             self.tabWidget.tabText(self.tabWidget.currentIndex())
             == "View Inventory (Read Only)"
@@ -758,18 +748,6 @@ class MainWindow(QMainWindow):
                 return
             self.menuSort.setEnabled(True)
             self.menuOpen_Category.setEnabled(True)
-            self.headers: dict[dict[str, int]] = {
-                "Part Name": 486,
-                "Part Number": 120,
-                "Quantity Per Unit": 100,
-                "Quantity in Stock": 100,
-                "Item Price": 100,
-                "": 40,  # USD/CAD
-                "Total Cost in Stock": 100,
-                "Total Unit Cost": 100,
-                "Priority": 60,
-                "Notes": 170,
-            }
             self.active_json_file = inventory
             self.active_layout = self.verticalLayout
             self.menuInventory.setTitle("Inventory")
@@ -779,7 +757,7 @@ class MainWindow(QMainWindow):
                 partial(
                     self.download_file,
                     [
-                        f"data/{settings_file.get_value(item_name='inventory_file_name')}.json",
+                        f"{settings_file.get_value(item_name='inventory_file_name')}.json",
                     ],
                 )
             )
@@ -787,7 +765,7 @@ class MainWindow(QMainWindow):
                 partial(
                     self.upload_file,
                     [
-                        f"data/{settings_file.get_value(item_name='inventory_file_name')}.json",
+                        f"{settings_file.get_value(item_name='inventory_file_name')}.json",
                     ],
                     True,
                 )
@@ -808,7 +786,7 @@ class MainWindow(QMainWindow):
                 partial(
                     self.download_file,
                     [
-                        f"data/{settings_file.get_value(item_name='inventory_file_name')} - Price of Steel.json",
+                        f"{settings_file.get_value(item_name='inventory_file_name')} - Price of Steel.json",
                     ],
                 )
             )
@@ -816,7 +794,7 @@ class MainWindow(QMainWindow):
                 partial(
                     self.upload_file,
                     [
-                        f"data/{settings_file.get_value(item_name='inventory_file_name')} - Price of Steel.json",
+                        f"{settings_file.get_value(item_name='inventory_file_name')} - Price of Steel.json",
                     ],
                     True,
                 )
@@ -828,14 +806,6 @@ class MainWindow(QMainWindow):
         ):  # Parts in Inventory
             self.menuSort.setEnabled(True)
             self.menuOpen_Category.setEnabled(True)
-            self.headers: dict[dict[str, int]] = {
-                "Part Number": 410,
-                "Price": 150,
-                "Quantity per": 150,
-                "Inventory": 150,
-                "Total Cost": 150,
-                "Modified Date": 100,
-            }
             self.active_json_file = parts_in_inventory
             self.active_layout = self.verticalLayout_11
             self.menuInventory.setTitle("Parts in Inventory")
@@ -845,7 +815,7 @@ class MainWindow(QMainWindow):
                 partial(
                     self.download_file,
                     [
-                        f"data/{settings_file.get_value(item_name='inventory_file_name')} - Parts in Inventory.json",
+                        f"{settings_file.get_value(item_name='inventory_file_name')} - Parts in Inventory.json",
                     ],
                 )
             )
@@ -853,7 +823,7 @@ class MainWindow(QMainWindow):
                 partial(
                     self.upload_file,
                     [
-                        f"data/{settings_file.get_value(item_name='inventory_file_name')} - Parts in Inventory.json",
+                        f"{settings_file.get_value(item_name='inventory_file_name')} - Parts in Inventory.json",
                     ],
                     True,
                 )
@@ -896,325 +866,140 @@ class MainWindow(QMainWindow):
             self.tabWidget.currentIndex()
         )
 
-    def item_check_box_press(self, this_checkbox: QCheckBox) -> None:
+    def move_to_category(self, tab: CustomTableWidget, category: str) -> None:
         """
-        This function checks or unchecks a group of checkboxes based on the state of a specific checkbox
-        and whether the shift key is pressed.
+        This function moves selected parts from one category to another in an inventory system and
+        updates their attributes accordingly.
 
         Args:
-          this_checkbox: This parameter is a reference to the checkbox that was just pressed by the
-        user.
+          tab (CustomTableWidget): CustomTableWidget object representing the table where the selected
+        parts are located.
+          category (str): A string representing the category to which the selected parts will be moved.
         """
-        if self.are_parts_checked():
-            self.pushButton_remove_quantities_from_inventory.setText(
-                "Remove Quantities from Selected Items"
-            )
-        else:
-            self.pushButton_remove_quantities_from_inventory.setText(
-                "Remove Quantities from whole Category"
-            )
-        tab: QVBoxLayout = self.tabs[
-            self.tab_widget.tabText(self.tab_widget.currentIndex())
-        ]
-        checkboxes: list[QCheckBox] = []
-        for i in range(tab.count()):
-            layout = tab.itemAt(i)
-            if isinstance(layout, QHBoxLayout):
-                for j in range(layout.layout().count()):
-                    widget = layout.layout().itemAt(j).widget()
-                    if isinstance(widget, ItemCheckBox):
-                        checkboxes.append(widget)
-            elif isinstance(layout, QWidgetItem):
-                for j in range(layout.widget().layout().count()):
-                    group_layout = layout.widget().layout().itemAt(j)
-                    for k in range(group_layout.count()):
-                        widget = group_layout.itemAt(k).widget()
-                        if isinstance(widget, ItemCheckBox):
-                            checkboxes.append(widget)
-        start_checking: bool = False
-        if (
-            QApplication.keyboardModifiers() == Qt.ShiftModifier
-            and this_checkbox.isChecked()
-        ):
-            for checkbox in checkboxes:
-                if checkbox == this_checkbox:
-                    break
-                if not start_checking and checkbox.isChecked():
-                    start_checking = True
-                if start_checking:
-                    checkbox.setChecked(True)
-
-    def move_to_category(self, item_name: QComboBox, category: str) -> None:
-        """
-        I'm trying to move an item from one category to another.
-        I'm using a QComboBox to select the item I want to move, and then I'm using a string to select
-        the category I want to move it to.
-        I'm using a function called get_data() to get the data from the category I want to move the item
-        from.
-        I'm using a function called remove_object_item() to remove the item from the category I want to
-        move it from.
-        I'm using a function called add_item_in_object() to add the item to the category I want to move
-        it to.
-        I'm using a function called change_object_in_object_item() to change the item's data in the
-        category I want to move it to.
-        I'm using a function called load_categories() to reload the categories.
-        I'm using a function called get_data() to get the data from the category I
-
-        Args:
-          item_name (QComboBox): QComboBox
-          category (str): str = "category"
-        """
-        if self.are_parts_checked():
-            checked_parts = self.get_all_checked_parts()
-            for checked_part in checked_parts:
-                copy_of_item = parts_in_inventory.get_data()[self.category][checked_part]
-                parts_in_inventory.remove_object_item(self.category, checked_part)
-                parts_in_inventory.add_item_in_object(category, checked_part)
-                parts_in_inventory.change_object_in_object_item(
-                    category,
-                    checked_part,
-                    "current_quantity",
-                    copy_of_item["current_quantity"],
-                )
-                parts_in_inventory.change_object_in_object_item(
-                    category,
-                    checked_part,
-                    "machine_time",
-                    copy_of_item["machine_time"],
-                )
-                parts_in_inventory.change_object_in_object_item(
-                    category,
-                    checked_part,
-                    "gauge",
-                    copy_of_item["gauge"],
-                )
-                parts_in_inventory.change_object_in_object_item(
-                    category,
-                    checked_part,
-                    "material",
-                    copy_of_item["material"],
-                )
-                parts_in_inventory.change_object_in_object_item(
-                    category,
-                    checked_part,
-                    "weight",
-                    copy_of_item["weight"],
-                )
-                parts_in_inventory.change_object_in_object_item(
-                    category,
-                    checked_part,
-                    "price",
-                    copy_of_item["price"],
-                )
-                parts_in_inventory.change_object_in_object_item(
-                    category,
-                    checked_part,
-                    "unit_quantity",
-                    1,
-                )
-                parts_in_inventory.change_object_in_object_item(
-                    category,
-                    checked_part,
-                    "modified_date",
-                    copy_of_item["modified_date"],
-                )
-                parts_in_inventory.change_object_in_object_item(
-                    category, checked_part, "group", copy_of_item["group"]
-                )
-        else:
-            copy_of_item = parts_in_inventory.get_data()[self.category][
-                item_name.currentText()
-            ]
-            parts_in_inventory.remove_object_item(self.category, item_name.currentText())
-            parts_in_inventory.add_item_in_object(category, item_name.currentText())
+        selected_parts = self.get_all_selected_parts(tab)
+        for selected_part in selected_parts:
+            copy_of_item = parts_in_inventory.get_data()[self.category][selected_part]
+            parts_in_inventory.remove_object_item(self.category, selected_part)
+            parts_in_inventory.add_item_in_object(category, selected_part)
             parts_in_inventory.change_object_in_object_item(
                 category,
-                item_name.currentText(),
+                selected_part,
                 "current_quantity",
                 copy_of_item["current_quantity"],
             )
             parts_in_inventory.change_object_in_object_item(
                 category,
-                item_name.currentText(),
+                selected_part,
                 "machine_time",
                 copy_of_item["machine_time"],
             )
             parts_in_inventory.change_object_in_object_item(
                 category,
-                item_name.currentText(),
+                selected_part,
                 "gauge",
                 copy_of_item["gauge"],
             )
             parts_in_inventory.change_object_in_object_item(
                 category,
-                item_name.currentText(),
+                selected_part,
                 "material",
                 copy_of_item["material"],
             )
             parts_in_inventory.change_object_in_object_item(
                 category,
-                item_name.currentText(),
+                selected_part,
                 "weight",
                 copy_of_item["weight"],
             )
             parts_in_inventory.change_object_in_object_item(
                 category,
-                item_name.currentText(),
+                selected_part,
                 "price",
                 copy_of_item["price"],
             )
             parts_in_inventory.change_object_in_object_item(
                 category,
-                item_name.currentText(),
+                selected_part,
                 "unit_quantity",
                 1,
             )
             parts_in_inventory.change_object_in_object_item(
                 category,
-                item_name.currentText(),
+                selected_part,
                 "modified_date",
                 copy_of_item["modified_date"],
             )
             parts_in_inventory.change_object_in_object_item(
-                category, item_name.currentText(), "group", copy_of_item["group"]
+                category, selected_part, "group", copy_of_item["group"]
             )
-        self.load_categories()
+        self.load_active_tab()
 
-    def copy_to_category(self, item_name: QComboBox, category: str) -> None:
+    def copy_to_category(self, tab: CustomTableWidget, category: str) -> None:
         """
-        I'm trying to move an item from one category to another.
-        I'm using a QComboBox to select the item I want to move, and then I'm using a string to select
-        the category I want to move it to.
-        I'm using a function called get_data() to get the data from the category I want to move the item
-        from.
-        I'm using a function called remove_object_item() to remove the item from the category I want to
-        move it from.
-        I'm using a function called add_item_in_object() to add the item to the category I want to move
-        it to.
-        I'm using a function called change_object_in_object_item() to change the item's data in the
-        category I want to move it to.
-        I'm using a function called load_categories() to reload the categories.
-        I'm using a function called get_data() to get the data from the category I
+        This function copies selected parts from one category to another in an inventory management
+        system.
 
         Args:
-          item_name (QComboBox): QComboBox
-          category (str): str = "category"
+          tab (CustomTableWidget): CustomTableWidget object representing the table where the selected
+        parts are located.
+          category (str): A string representing the category to which the selected parts will be copied
+        to.
         """
-        if self.are_parts_checked():
-            checked_parts = self.get_all_checked_parts()
-            for checked_part in checked_parts:
-                copy_of_item = parts_in_inventory.get_data()[self.category][checked_part]
-                # parts_in_inventory.remove_object_item(self.category, checked_part)
-                parts_in_inventory.add_item_in_object(category, checked_part)
-                parts_in_inventory.change_object_in_object_item(
-                    category,
-                    checked_part,
-                    "current_quantity",
-                    copy_of_item["current_quantity"],
-                )
-                parts_in_inventory.change_object_in_object_item(
-                    category,
-                    checked_part,
-                    "machine_time",
-                    copy_of_item["machine_time"],
-                )
-                parts_in_inventory.change_object_in_object_item(
-                    category,
-                    checked_part,
-                    "gauge",
-                    copy_of_item["gauge"],
-                )
-                parts_in_inventory.change_object_in_object_item(
-                    category,
-                    checked_part,
-                    "material",
-                    copy_of_item["material"],
-                )
-                parts_in_inventory.change_object_in_object_item(
-                    category,
-                    checked_part,
-                    "weight",
-                    copy_of_item["weight"],
-                )
-                parts_in_inventory.change_object_in_object_item(
-                    category,
-                    checked_part,
-                    "price",
-                    copy_of_item["price"],
-                )
-                parts_in_inventory.change_object_in_object_item(
-                    category,
-                    checked_part,
-                    "unit_quantity",
-                    1,
-                )
-                parts_in_inventory.change_object_in_object_item(
-                    category,
-                    checked_part,
-                    "modified_date",
-                    copy_of_item["modified_date"],
-                )
-                parts_in_inventory.change_object_in_object_item(
-                    category, checked_part, "group", copy_of_item["group"]
-                )
-        else:
-            copy_of_item = parts_in_inventory.get_data()[self.category][
-                item_name.currentText()
-            ]
-            # parts_in_inventory.remove_object_item(self.category, item_name.currentText())
-            parts_in_inventory.add_item_in_object(category, item_name.currentText())
+        selected_parts = self.get_all_selected_parts(tab)
+        for selected_part in selected_parts:
+            copy_of_item = parts_in_inventory.get_data()[self.category][selected_part]
+            parts_in_inventory.add_item_in_object(category, selected_part)
             parts_in_inventory.change_object_in_object_item(
                 category,
-                item_name.currentText(),
+                selected_part,
                 "current_quantity",
                 copy_of_item["current_quantity"],
             )
             parts_in_inventory.change_object_in_object_item(
                 category,
-                item_name.currentText(),
+                selected_part,
                 "machine_time",
                 copy_of_item["machine_time"],
             )
             parts_in_inventory.change_object_in_object_item(
                 category,
-                item_name.currentText(),
+                selected_part,
                 "gauge",
                 copy_of_item["gauge"],
             )
             parts_in_inventory.change_object_in_object_item(
                 category,
-                item_name.currentText(),
+                selected_part,
                 "material",
                 copy_of_item["material"],
             )
             parts_in_inventory.change_object_in_object_item(
                 category,
-                item_name.currentText(),
+                selected_part,
                 "weight",
                 copy_of_item["weight"],
             )
             parts_in_inventory.change_object_in_object_item(
                 category,
-                item_name.currentText(),
+                selected_part,
                 "price",
                 copy_of_item["price"],
             )
             parts_in_inventory.change_object_in_object_item(
                 category,
-                item_name.currentText(),
+                selected_part,
                 "unit_quantity",
                 1,
             )
             parts_in_inventory.change_object_in_object_item(
                 category,
-                item_name.currentText(),
+                selected_part,
                 "modified_date",
                 copy_of_item["modified_date"],
             )
             parts_in_inventory.change_object_in_object_item(
-                category, item_name.currentText(), "group", copy_of_item["group"]
+                category, selected_part, "group", copy_of_item["group"]
             )
-        # self.load_categories()
 
     def add_to_group(self, item_name: QComboBox, group: str) -> None:
         """
@@ -1300,97 +1085,100 @@ class MainWindow(QMainWindow):
         groups.
         """
         parts_in_inventory.load_data()
-        if self.tabWidget.tabText(self.tabWidget.currentIndex()) != "Edit Inventory":
-            for item_name in list(self.inventory_prices_objects.keys()):
-                menu = QMenu(self)
-                action = QAction(self)
-                action.triggered.connect(
-                    partial(self.set_custom_quantity_limit, item_name)
-                )
-                action.setText("Set Custom Quantity Limit")
-                menu.addAction(action)
-                menu.addSeparator()
-                group = self.get_value_from_category(item_name=item_name, key="group")
-                if (
-                    self.tabWidget.tabText(self.tabWidget.currentIndex())
-                    != "Parts in Inventory"
-                ):
-                    groups = QMenu(menu)
-                    groups.setTitle("Move to group")
-                    for i, group_name in enumerate(
-                        ["Create group"] + self.get_all_groups()
-                    ):
-                        if group == group_name or group_name == "__main__":
-                            continue
-                        if i == 1:
-                            groups.addSeparator()
-                        action = QAction(self)
-                        action.triggered.connect(
-                            partial(self.add_to_group, item_name, group_name)
-                        )
-                        action.setText(group_name)
-                        groups.addAction(action)
-                    menu.addMenu(groups)
-                if (
-                    self.tabWidget.tabText(self.tabWidget.currentIndex())
-                    == "Parts in Inventory"
-                    and self.category != "Recut"
-                ):
-                    categories = QMenu(menu)
-                    categories.setTitle("Move to category")
-                    for i, category in enumerate(parts_in_inventory.get_keys()):
-                        if self.category == category or category == "Recut":
-                            continue
-                        if i == 1:
-                            categories.addSeparator()
-                        action = QAction(self)
-                        action.triggered.connect(
-                            partial(self.move_to_category, item_name, category)
-                        )
-                        action.setText(category)
-                        categories.addAction(action)
-                    menu.addMenu(categories)
+        # for item_name in list(self.inventory_prices_objects.keys()):
+        #     menu = QMenu(self)
+        #     action = QAction(self)
+        #     action.triggered.connect(
+        #         partial(self.set_custom_quantity_limit, item_name)
+        #     )
+        #     action.setText("Set Custom Quantity Limit")
+        #     menu.addAction(action)
+        #     menu.addSeparator()
+        #     group = self.get_value_from_category(item_name=item_name, key="group")
+        #     if (
+        #         self.tabWidget.tabText(self.tabWidget.currentIndex())
+        #         != "Parts in Inventory"
+        #     ):
+        #         groups = QMenu(menu)
+        #         groups.setTitle("Move to group")
+        #         for i, group_name in enumerate(
+        #             ["Create group"] + self.get_all_groups()
+        #         ):
+        #             if group == group_name or group_name == "__main__":
+        #                 continue
+        #             if i == 1:
+        #                 groups.addSeparator()
+        #             action = QAction(self)
+        #             action.triggered.connect(
+        #                 partial(self.add_to_group, item_name, group_name)
+        #             )
+        #             action.setText(group_name)
+        #             groups.addAction(action)
+        #         menu.addMenu(groups)
+        #     if (
+        #         self.tabWidget.tabText(self.tabWidget.currentIndex())
+        #         == "Parts in Inventory"
+        #         and self.category != "Recut"
+        #     ):
+        #         categories = QMenu(menu)
+        #         categories.setTitle("Move to category")
+        #         for i, category in enumerate(parts_in_inventory.get_keys()):
+        #             if self.category == category or category == "Recut":
+        #                 continue
+        #             if i == 1:
+        #                 categories.addSeparator()
+        #             action = QAction(self)
+        #             action.triggered.connect(
+        #                 partial(self.move_to_category, item_name, category)
+        #             )
+        #             action.setText(category)
+        #             categories.addAction(action)
+        #         menu.addMenu(categories)
 
-                    categories = QMenu(menu)
-                    categories.setTitle("Copy to category")
-                    for i, category in enumerate(parts_in_inventory.get_keys()):
-                        if self.category == category or category == "Recut":
-                            continue
-                        if i == 1:
-                            categories.addSeparator()
-                        action = QAction(self)
-                        action.triggered.connect(
-                            partial(self.copy_to_category, item_name, category)
-                        )
-                        action.setText(category)
-                        categories.addAction(action)
-                    menu.addMenu(categories)
-                if (
-                    self.tabWidget.tabText(self.tabWidget.currentIndex())
-                    != "Parts in Inventory"
-                ):
-                    remove_from_group = QAction("Remove from group", self)
-                    remove_from_group.triggered.connect(
-                        partial(self.remove_from_group, item_name, group)
-                    )
-                    menu.addAction(remove_from_group)
-                item_name.customContextMenuRequested.connect(
-                    partial(self.open_group_menu, menu)
-                )
-        else:
-            table_widget: QTableWidget = self.scroll_areas[self.tab_widget.currentIndex()]
-            table_widget.setContextMenuPolicy(Qt.CustomContextMenu)
-            menu = QMenu(self)
-            action = QAction(self)
-            action.triggered.connect(
-                partial(self.set_custom_quantity_limit, "[TABLE_WIDGET]")
-            )
-            action.setText("Set Custom Quantity Limit")
-            menu.addAction(action)
-            menu.addSeparator()
-            table_widget.customContextMenuRequested.connect(
-                partial(self.open_group_menu, menu)
-            )
+        #         categories = QMenu(menu)
+        #         categories.setTitle("Copy to category")
+        #         for i, category in enumerate(parts_in_inventory.get_keys()):
+        #             if self.category == category or category == "Recut":
+        #                 continue
+        #             if i == 1:
+        #                 categories.addSeparator()
+        #             action = QAction(self)
+        #             action.triggered.connect(
+        #                 partial(self.copy_to_category, item_name, category)
+        #             )
+        #             action.setText(category)
+        #             categories.addAction(action)
+        #         menu.addMenu(categories)
+        #     if (
+        #         self.tabWidget.tabText(self.tabWidget.currentIndex())
+        #         != "Parts in Inventory"
+        #     ):
+        #         remove_from_group = QAction("Remove from group", self)
+        #         remove_from_group.triggered.connect(
+        #             partial(self.remove_from_group, item_name, group)
+        #         )
+        #         menu.addAction(remove_from_group)
+        #     item_name.customContextMenuRequested.connect(
+        #         partial(self.open_group_menu, menu)
+        #     )
+        # if self.tabWidget.tabText(self.tabWidget.currentIndex()) == "Edit Inventory":
+        table_widget: CustomTableWidget = self.scroll_areas[
+            self.tab_widget.currentIndex()
+        ]
+        if table_widget.contextMenuPolicy() == Qt.CustomContextMenu:
+            table_widget.setContextMenuPolicy(Qt.DefaultContextMenu)
+        table_widget.setContextMenuPolicy(Qt.CustomContextMenu)
+        menu = QMenu(self)
+        action = QAction(self)
+        action.triggered.connect(
+            partial(self.set_custom_quantity_limit, "[TABLE_WIDGET]")
+        )
+        action.setText("Set Custom Quantity Limit")
+        menu.addAction(action)
+        menu.addSeparator()
+        table_widget.customContextMenuRequested.connect(
+            partial(self.open_group_menu, menu)
+        )
 
     def steel_price_per_pound_change(
         self, category: str, item_name: str, value_name: str, price: QDoubleSpinBox
@@ -1510,7 +1298,7 @@ class MainWindow(QMainWindow):
                     f"Item added\n{self.username}\n{datetime.now().strftime('%B %d %A %Y %I-%M-%S %p')}",
                 )
                 # self.sort_inventory()
-                self.load_tab()
+                self.load_active_tab()
             elif response == DialogButtons.cancel:
                 return
 
@@ -1621,7 +1409,8 @@ class MainWindow(QMainWindow):
             new_value=button.isChecked(),
         )
 
-    def name_change(self, category: str, old_name: str, name: str) -> None:
+    # TODO MAKE THIS WORK FOR EDIT INVENTORY
+    def name_change(self, tab: CustomTableWidget) -> None:
         """
         It checks if the name is the same as any other name in the category, and if it is, it sets the
         name back to the old name and displays an error message
@@ -1634,12 +1423,9 @@ class MainWindow(QMainWindow):
         Returns:
           The return value is the result of the last expression evaluated in the function.
         """
-        self.show_error_dialog(
-            "No can do",
-            "Cant change names of parts anymore, it is a discontinued feature.",
-            dialog_buttons=DialogButtons.ok,
-        )
-        # category_data = inventory.get_value(item_name=category)
+        old_name = self.get_all_selected_parts(tab)[0]
+        print(old_name)
+        # category_data = inventory.get_value(item_name=self.category)
         # for item in list(category_data.keys()):
         #     if name == item:
         #         self.show_error_dialog(
@@ -1969,7 +1755,7 @@ class MainWindow(QMainWindow):
           item_name (QLineEdit): QLineEdit
         """
         self.active_json_file.remove_object_item(category, item_name)
-        self.load_tab()
+        self.load_active_tab()
 
     def quantities_change(self) -> None:
         """
@@ -2051,6 +1837,7 @@ class MainWindow(QMainWindow):
 
         self.spinBox_quantity.setValue(0)
 
+    # NOTE for EDIT INVENTORY
     def add_quantity(self, item_name: str, old_quantity: int) -> None:
         """
         It adds the value of the spinbox to the quantity of the item selected in the listwidget
@@ -2091,12 +1878,13 @@ class MainWindow(QMainWindow):
                     )
         self.pushButton_add_quantity.setEnabled(False)
         self.pushButton_remove_quantity.setEnabled(False)
-        # self.load_tab()
+        # self.load_active_tab()
         self.listWidget_itemnames.setCurrentRow(self.last_item_selected_index)
         self.listWidget_item_changed()
         self.update_category_total_stock_costs()
         self.sort_inventory()
 
+    # NOTE for EDIT INVENTORY
     def remove_quantity(self, item_name: str, old_quantity: int) -> None:
         """
         It removes the quantity of an item from the inventory
@@ -2150,7 +1938,7 @@ class MainWindow(QMainWindow):
                     )
         self.pushButton_add_quantity.setEnabled(False)
         self.pushButton_remove_quantity.setEnabled(False)
-        # self.load_tab()
+        # self.load_active_tab()
         self.listWidget_itemnames.setCurrentRow(self.last_item_selected_index)
         self.listWidget_item_changed()
         self.update_category_total_stock_costs()
@@ -2179,7 +1967,9 @@ class MainWindow(QMainWindow):
             ).index(self.listWidget_itemnames.currentItem().text())
         except ValueError:
             return
-        table_widget: QTableWidget = self.scroll_areas[self.tab_widget.currentIndex()]
+        table_widget: CustomTableWidget = self.scroll_areas[
+            self.tab_widget.currentIndex()
+        ]
         table_widget.scrollTo(
             table_widget.model().index(self.last_item_selected_index, 0)
         )
@@ -2454,6 +2244,24 @@ class MainWindow(QMainWindow):
         )
         self.load_quote_table()
 
+    def parts_in_inventory_cell_changed(self, tab: CustomTableWidget):
+        """
+        This function changes the text of a button based on the number of selected items in a table.
+
+        Args:
+          tab (CustomTableWidget): CustomTableWidget object representing the table widget where the
+        inventory parts are displayed.
+        """
+        selected_items_count = len(self.get_all_selected_parts(tab))
+        if selected_items_count == 0:
+            self.pushButton_remove_quantities_from_inventory.setText(
+                "Remove Quantities from whole Category"
+            )
+        else:
+            self.pushButton_remove_quantities_from_inventory.setText(
+                f"Remove Quantities from Selected ({selected_items_count}) Items"
+            )
+
     # ! /\ SLOTS & SIGNALS /\
     # ! \/ CALCULATION \/
     def eval_expr(self, expr):
@@ -2654,124 +2462,6 @@ class MainWindow(QMainWindow):
             note.toPlainText(),
         )
 
-    def save_value_for_inventory_part(
-        self,
-        category: str,
-        part_name: str,
-        value_name: str,
-        spin_box: HumbleDoubleSpinBox,
-    ) -> None:
-        """
-        It saves the value for the inventory part.
-
-        Args:
-          category (str): str
-          part_name (str): str = The name of the part.
-          value_name (str): str = "value"
-          spin_box (HumbleDoubleSpinBox): HumbleDoubleSpinBox
-        """
-
-        # category_data = parts_in_inventory.get_data()
-        def round_number(x, n):
-            return eval(
-                '"%.'
-                + str(int(n))
-                + 'f" % '
-                + repr(int(x) + round(float("." + str(float(x)).split(".")[1]), n))
-            )
-
-        parts_in_inventory.change_object_in_object_item(
-            object_name=category,
-            item_name=part_name,
-            value_name=value_name,
-            new_value=float(round_number(spin_box.value(), 2)),
-        )
-        # for category in list(category_data.keys()):
-        #     if category == "Recut" or category == self.category:
-        #         continue
-        #     if part_name in list(parts_in_inventory.get_data()[category].keys()):
-        #         parts_in_inventory.change_object_in_object_item(
-        #             object_name=category,
-        #             item_name=part_name,
-        #             value_name=value_name,
-        #             new_value=spin_box.value(),
-        #         )
-
-    def inventory_part_quantity_change(
-        self,
-        name: str,
-        spin_quantity: HumbleDoubleSpinBox,
-        cost_per_sheet: float,
-        spin_total_cost: CostLineEdit,
-        modified_date_label: QLabel,
-    ) -> None:
-        """
-        This function is called when the user changes the quantity of a sheet in the GUI.
-
-        Args:
-          category (str): str
-          name (str): str = the name of the item
-          spin_quantity (HumbleDoubleSpinBox): HumbleDoubleSpinBox
-          cost_per_sheet (float): float
-          spin_total_cost (CostLineEdit): CostLineEdit
-        """
-
-        def round_number(x, n):
-            return eval(
-                '"%.'
-                + str(int(n))
-                + 'f" % '
-                + repr(int(x) + round(float("." + str(float(x)).split(".")[1]), n))
-            )
-
-        category_data = parts_in_inventory.get_data()
-        parts_in_inventory.change_object_in_object_item(
-            object_name=self.category,
-            item_name=name,
-            value_name="current_quantity",
-            new_value=float(round_number(spin_quantity.value(), 2)),
-        )
-        parts_in_inventory.change_object_in_object_item(
-            object_name=self.category,
-            item_name=name,
-            value_name="modified_date",
-            new_value=f'Manually set to {spin_quantity.value()} quantity at {str(datetime.now().strftime("%B %d %A %Y %I:%M:%S %p"))}',
-        )
-
-        total_cost: float = float(round_number(spin_quantity.value() * cost_per_sheet, 2))
-        spin_total_cost.setText(f"${format(total_cost, ',')}")
-        modified_date_label.setText(
-            f'Manually set to {spin_quantity.value()} quantity at {str(datetime.now().strftime("%B %d %A %Y %I:%M:%S %p"))}'
-        )
-
-        if spin_quantity.value() <= 2:
-            spin_quantity.setStyleSheet(
-                "color: red; border-color: darkred; background-color: #3F1E25;"
-            )
-        else:
-            spin_quantity.setStyleSheet("")
-
-        for category in list(category_data.keys()):
-            if category in ["Recut", self.category]:
-                continue
-            if name in list(parts_in_inventory.get_data()[category].keys()):
-                # for part_name in list(category_data[category].keys()):
-                # if part_name in name:
-
-                parts_in_inventory.change_object_in_object_item(
-                    object_name=category,
-                    item_name=name,
-                    value_name="current_quantity",
-                    new_value=float(round_number(spin_quantity.value(), 2)),
-                )
-                parts_in_inventory.change_object_in_object_item(
-                    object_name=category,
-                    item_name=name,
-                    value_name="modified_date",
-                    new_value=f'Manually set to {spin_quantity.value()} quantity at {str(datetime.now().strftime("%B %d %A %Y %I:%M:%S %p"))}',
-                )
-        self.calculate_parts_in_inventory_summary()
-
     def remove_quantity_from_part_inventory(self) -> None:
         """
         This function removes a specified quantity of parts from the inventory and updates the inventory
@@ -2790,10 +2480,11 @@ class MainWindow(QMainWindow):
             )
 
         batch_multiplier: int = self.spinBox_quantity_for_inventory.value()
-        if self.are_parts_checked():
+        selected_parts = self.get_all_selected_parts(self.tabs[self.category])
+        if len(selected_parts) > 0:
             are_you_sure_dialog = self.show_message_dialog(
                 title="Are you sure?",
-                message=f'Removing quantities from the selected items.\n\nAre you sure you want to remove a multiple of {batch_multiplier} quantities from each selected item in "{self.category}"?',
+                message=f'Removing quantities from the selected ({len(self.get_all_selected_parts(self.tabs[self.category]))}) items.\n\nAre you sure you want to remove a multiple of {batch_multiplier} quantities from each selected item in "{self.category}"?',
                 dialog_buttons=DialogButtons.no_yes_cancel,
             )
             if are_you_sure_dialog in [DialogButtons.no, DialogButtons.cancel]:
@@ -2802,22 +2493,20 @@ class MainWindow(QMainWindow):
             self.spinBox_quantity_for_inventory.setValue(0)
             category_data = parts_in_inventory.get_data()
             part_names_to_check = []
-            for part_name in self.check_box_selections:
-                if self.check_box_selections[part_name].isChecked():
-                    part_names_to_check.append(part_name)
-                    unit_quantity: int = category_data[self.category][part_name][
-                        "unit_quantity"
-                    ]
-                    current_quantity: int = category_data[self.category][part_name][
-                        "current_quantity"
-                    ]
-                    new_quantity = current_quantity - (unit_quantity * batch_multiplier)
-                    category_data[self.category][part_name][
-                        "current_quantity"
-                    ] = new_quantity
-                    category_data[self.category][part_name][
-                        "modified_date"
-                    ] = f'Removed {unit_quantity*batch_multiplier} quantity at {str(datetime.now().strftime("%B %d %A %Y %I:%M:%S %p"))}'
+
+            for part_name in selected_parts:
+                part_names_to_check.append(part_name)
+                unit_quantity: int = category_data[self.category][part_name][
+                    "unit_quantity"
+                ]
+                current_quantity: int = category_data[self.category][part_name][
+                    "current_quantity"
+                ]
+                new_quantity = current_quantity - (unit_quantity * batch_multiplier)
+                category_data[self.category][part_name]["current_quantity"] = new_quantity
+                category_data[self.category][part_name][
+                    "modified_date"
+                ] = f'Removed {unit_quantity*batch_multiplier} quantity at {str(datetime.now().strftime("%B %d %A %Y %I:%M:%S %p"))}'
             for category in list(category_data.keys()):
                 if category in ["Recut", self.category]:
                     continue
@@ -2896,6 +2585,12 @@ class MainWindow(QMainWindow):
         self.pushButton_remove_quantities_from_inventory.setEnabled(True)
         self.load_categories()
         self.calculate_parts_in_inventory_summary()
+        self.upload_file(
+            [
+                f"{settings_file.get_value(item_name='inventory_file_name')} - Parts in Inventory.json"
+            ],
+            False,
+        )
 
     # ! \/ UPDATE UI ELEMENTS \/
     def refresh_parts_in_inventory(self) -> None:
@@ -2908,7 +2603,7 @@ class MainWindow(QMainWindow):
         self.refresh_pressed = True
         self.download_file(
             [
-                f"data/{settings_file.get_value(item_name='inventory_file_name')} - Parts in Inventory.json"
+                f"{settings_file.get_value(item_name='inventory_file_name')} - Parts in Inventory.json"
             ],
             False,
         )
@@ -2923,7 +2618,7 @@ class MainWindow(QMainWindow):
         self.refresh_pressed = True
         self.download_file(
             [
-                f"data/{settings_file.get_value(item_name='inventory_file_name')} - Price of Steel.json"
+                f"{settings_file.get_value(item_name='inventory_file_name')} - Price of Steel.json"
             ],
             False,
         )
@@ -2938,7 +2633,7 @@ class MainWindow(QMainWindow):
         self.refresh_pressed = True
         self.upload_file(
             [
-                f"data/{settings_file.get_value(item_name='inventory_file_name')} - Parts in Inventory.json"
+                f"{settings_file.get_value(item_name='inventory_file_name')} - Parts in Inventory.json"
             ],
             True,
         )
@@ -2953,7 +2648,7 @@ class MainWindow(QMainWindow):
         self.refresh_pressed = True
         self.upload_file(
             [
-                f"data/{settings_file.get_value(item_name='inventory_file_name')} - Price of Steel.json"
+                f"{settings_file.get_value(item_name='inventory_file_name')} - Price of Steel.json"
             ],
             True,
         )
@@ -3222,6 +2917,24 @@ class MainWindow(QMainWindow):
                 table.setItem(row_index, j, item)
             item.setBackground(QColor(color))
 
+    def set_table_row_text_color(self, table, row_index, color):
+        """
+        This function sets the text color of a specific row in a table widget in PyQt5.
+
+        Args:
+          table: a QTableWidget object representing the table widget
+          row_index: The index of the row in the table where the text color needs to be set.
+          color: The color parameter is a string that represents the color that you want to set for the
+        text in the table row. It can be any valid color name or a hexadecimal value representing the
+        color. For example, "red", "#FF0000", "blue", "#0000FF", etc.
+        """
+        for j in range(table.columnCount()):
+            item = table.item(row_index, j)
+            if not item:
+                item = QTableWidgetItem()
+                table.setItem(row_index, j, item)
+            item.setForeground(QColor(color))
+
     def clear_nest_selections(self) -> None:
         """
         This function clears the selection of all list widgets in a dictionary of quote nest
@@ -3254,7 +2967,6 @@ class MainWindow(QMainWindow):
 
     # ! /\ UPDATE UI ELEMENTS /\
 
-    # ! \/ FOR INVENTORY JSON FILE ONLY \/
     def sort_inventory(self) -> None:
         """
         It sorts the inventory based on the sorting method selected by the user
@@ -3271,9 +2983,8 @@ class MainWindow(QMainWindow):
         self.active_json_file.sort(
             self.category, sorting_method, not self.actionAscending.isChecked()
         )
-        self.load_tab()
+        self.load_active_tab()
 
-    # ! /\ FOR INVENTORY JSON FILE ONLY /\
     # ! \/ GETTERS \/
     def get_all_part_numbers(self) -> list[str]:
         """
@@ -3453,10 +3164,53 @@ class MainWindow(QMainWindow):
           an integer value which represents the index of the tab with the given name in the tab widget.
         If the tab is not found, it returns -1.
         """
-        for i in range(self.tabWidget.count()):
-            if self.tabWidget.tabText(i) == name:
-                return i
-        return -1
+        return next(
+            (
+                i
+                for i in range(self.tabWidget.count())
+                if self.tabWidget.tabText(i) == name
+            ),
+            -1,
+        )
+
+    def get_all_gauges(self) -> list[str]:
+        """
+        This function retrieves a list of all gauges from the inventory data.
+
+        Returns:
+          A list of unique gauge values extracted from the "gauge" key of each item in the inventory
+        data.
+        """
+        data = parts_in_inventory.get_data()
+        gauges = []
+        for category in list(data.keys()):
+            try:
+                gauges.extend(
+                    data[category][item]["gauge"] for item in list(data[category].keys())
+                )
+            except KeyError:
+                continue
+        return list(set(gauges))
+
+    def get_all_selected_parts(self, tab: CustomTableWidget) -> list[str]:
+        """
+        This function returns a list of all selected items in the first column of a custom table widget.
+
+        Args:
+          tab (CustomTableWidget): CustomTableWidget - a custom widget that displays a table of data and
+        allows for user interaction such as selecting rows and columns.
+
+        Returns:
+          a list of strings, which are the text values of the selected items in the first column of a
+        CustomTableWidget.
+        """
+        selected_rows = tab.selectedItems()
+        all_gauges = self.get_all_gauges()
+        return [
+            item.text()
+            for item in selected_rows
+            if item.column() == 0 and item.text() not in all_gauges
+        ]
 
     # ! /\ GETTERS /\
     def save_geometry(self) -> None:
@@ -3713,7 +3467,7 @@ class MainWindow(QMainWindow):
                     f"Item added\n{self.username}\n{datetime.now().strftime('%B %d %A %Y %I-%M-%S %p')}",
                 )
                 self.sort_inventory()
-                # self.load_tab()
+                # self.load_active_tab()
             elif response == DialogButtons.cancel:
                 return
 
@@ -3728,8 +3482,11 @@ class MainWindow(QMainWindow):
         the dropdown menu for selecting the item.
         """
         with contextlib.suppress(AttributeError):
-            table_widget: QTableWidget = self.scroll_areas[self.tab_widget.currentIndex()]
+            table_widget: CustomTableWidget = self.tabs[self.category]
+            # try:
             selected_index = table_widget.selectedIndexes()[0].row()
+            # except IndexError:
+            # return
         if item_name == "[TABLE_WIDGET]":
             item_name = table_widget.item(selected_index, 0).text()
         else:
@@ -4069,6 +3826,100 @@ class MainWindow(QMainWindow):
         image_viewer.show()
 
     # ! /\ Dialogs /\
+
+    # ! \/ INVENTORY TABLE CHANGES \/
+    def edit_inventory_item_changes(
+        self, item: QTableWidgetItem, tab: CustomTableWidget, category
+    ) -> None:
+        print(item.text())
+
+    def parts_in_inventory_item_changes(self, item: QTableWidgetItem) -> None:
+        category_data = parts_in_inventory.get_data()
+        tab = self.tabs[self.category]
+        tab.blockSignals(True)
+        item_name: str = tab.item(item.row(), 0).text()
+        try:
+            item_price: float = float(
+                tab.item(item.row(), 1).text().replace("$", "").replace(" ", "")
+            )
+            unit_quantity: float = float(tab.item(item.row(), 2).text())
+            current_quantity: float = float(tab.item(item.row(), 3).text())
+            new_modified_date: str = f'Manually set to {current_quantity} quantity at {str(datetime.now().strftime("%B %d %A %Y %I:%M:%S %p"))}'
+        except (ValueError, TypeError) as e:
+            set_status_button_stylesheet(button=self.status_button, color="red")
+            item.setForeground(QColor('red'))
+            self.status_button.setText(
+                f'<p style="color:red;"><b>{item_name}: Enter a valid number, aborted!</b></p>'
+            )
+            return
+
+        item.setForeground(QColor('white'))
+
+        if item.column() == 3:
+            tab.setItem(item.row(), 5, QTableWidgetItem(new_modified_date))
+            parts_in_inventory.change_object_in_object_item(
+                self.category, item_name, "modified_date", new_modified_date
+            )
+
+        red_limit: float = self.get_value_from_category(
+            item_name=item_name, key="red_limit"
+        )
+        if red_limit is None:
+            red_limit = 2
+        yellow_limit: float = self.get_value_from_category(
+            item_name=item_name, key="yellow_limit"
+        )
+        if yellow_limit is None:
+            yellow_limit = 5
+
+        if current_quantity <= red_limit:
+            self.set_table_row_color(tab, item.row(), "#3F1E25")
+        elif current_quantity <= yellow_limit:
+            self.set_table_row_color(tab, item.row(), "#413C28")
+
+        tab.blockSignals(False)
+
+        set_status_button_stylesheet(button=self.status_button, color="lime")
+        self.status_button.setText('<p style="color:lime;">Saving</p>')
+        for category in list(category_data.keys()):
+            if category in ["Recut", self.category]:
+                continue
+            if item_name in list(parts_in_inventory.get_data()[category].keys()):
+                parts_in_inventory.change_object_in_object_item(
+                    object_name=category,
+                    item_name=item_name,
+                    value_name="current_quantity",
+                    new_value=current_quantity,
+                )
+                parts_in_inventory.change_object_in_object_item(
+                    object_name=category,
+                    item_name=item_name,
+                    value_name="modified_date",
+                    new_value=new_modified_date,
+                )
+        parts_in_inventory.change_object_in_object_item(
+            self.category, item_name, "unit_quantity", unit_quantity
+        )
+        parts_in_inventory.change_object_in_object_item(
+            self.category, item_name, "price", item_price
+        )
+        parts_in_inventory.change_object_in_object_item(
+            self.category, item_name, "current_quantity", current_quantity
+        )
+
+        self.calculate_parts_in_inventory_summary()
+
+        set_status_button_stylesheet(button=self.status_button, color="lime")
+        self.status_button.setText('<p style="color:lime;">Syncing</p>')
+        self.upload_file(
+            [
+                f"{settings_file.get_value(item_name='inventory_file_name')} - Parts in Inventory.json"
+            ],
+            False,
+        )
+
+    # ! /\ INVENTORY TABLE CHANGES /\
+
     # ! \/ Load UI \/
     def load_history_view(self) -> None:
         """
@@ -4168,9 +4019,8 @@ class MainWindow(QMainWindow):
             # self.tabWidget.setCurrentIndex(settings_file.get_value('menu_tabs_order').index(self.last_selected_menu_tab))
             # self.show_not_trusted_user()
 
-            self.set_layout_message("Insufficient Privileges, Access Denied", "", "", 220)
+            self.set_layout_message("Insufficient Privileges, Access Denied", "", "", 0)
             return
-        self.set_layout_message("", "Loading...", "", 120)
 
         JsonFile(
             file_name=f"data/{settings_file.get_value(item_name='inventory_file_name')}"
@@ -4222,35 +4072,32 @@ class MainWindow(QMainWindow):
                 self.tabWidget.tabText(self.tabWidget.currentIndex())
                 == "Sheets in Inventory"
             ):
-                self.headers: dict[dict[str, int]] = {
-                    "Name": 270,
-                    "Sheet Cost": 80,
-                    "Quantity": 60,
-                    "Total Cost in Stock": 100,
-                    "Notes": 170,
-                }
                 self.pushButton_add_new_sheet.setEnabled(True)
-            if self.tabWidget.tabText(self.tabWidget.currentIndex()) == "Edit Inventory":
-                tab = CustomTableWidget(self)
-                self.scroll_areas.append(tab)
-                # content_widget = QWidget()
-                # content_widget.setObjectName("tab")
-                # tab.setWidget(content_widget)
-                # tab.setWidgetResizable(True)
-                # layout = QVBoxLayout(content_widget)
-                # layout.setAlignment(Qt.AlignTop)
-                self.tabs[category] = tab
-                # self.tab_widget.addTab(tab, category)
-            else:
-                tab = HeaderScrollArea(self.headers, self)
-                self.scroll_areas.append(tab)
-                content_widget = QWidget()
-                content_widget.setObjectName("tab")
-                tab.setWidget(content_widget)
-                tab.setWidgetResizable(True)
-                layout = QVBoxLayout(content_widget)
-                layout.setAlignment(Qt.AlignTop)
-                self.tabs[category] = layout
+            # if self.tabWidget.tabText(self.tabWidget.currentIndex()) == "Edit Inventory":
+            #     tab = CustomTableWidget(self)
+            #     self.scroll_areas.append(tab)
+            #     self.tabs[category] = tab
+            # else:
+            # tab = HeaderScrollArea(self.headers, self)
+            # self.scroll_areas.append(tab)
+            # content_widget = QWidget()
+            # content_widget.setObjectName("tab")
+            # tab.setWidget(content_widget)
+            # tab.setWidgetResizable(True)
+            # layout = QVBoxLayout(content_widget)
+            # layout.setAlignment(Qt.AlignTop)
+            # self.tabs[category] = layout
+            tab = CustomTableWidget(self)
+            if (
+                self.tabWidget.tabText(self.tabWidget.currentIndex())
+                == "Parts in Inventory"
+            ):
+                tab.itemSelectionChanged.connect(
+                    partial(self.parts_in_inventory_cell_changed, tab)
+                )
+                tab.itemChanged.connect(self.parts_in_inventory_item_changes)
+            self.scroll_areas.append(tab)
+            self.tabs[category] = tab
             self.tab_widget.addTab(tab, category)
 
         if i == -1:
@@ -4274,14 +4121,14 @@ class MainWindow(QMainWindow):
         except:
             pass
         self.tab_widget.setCurrentIndex(settings_file.get_value("last_category_tab"))
-        self.tab_widget.currentChanged.connect(self.load_tab)
+        self.tab_widget.currentChanged.connect(self.load_active_tab)
         self.active_layout.addWidget(self.tab_widget)
         self.update_category_total_stock_costs()
         self.update_all_parts_in_inventory_price()
         self.calculate_parts_in_inventory_summary()
-        self.load_tab()
+        self.load_active_tab()
 
-    def load_tab(self) -> None:
+    def load_active_tab(self) -> None:
         """
         It loads the data from the inventory file and displays it in the GUI
 
@@ -4295,7 +4142,7 @@ class MainWindow(QMainWindow):
         self.item_layouts.clear()
         self.group_layouts.clear()
         # self.inventory_parts_quantity.clear()
-        # self.tab_widget.currentChanged.connect(self.load_tab)
+        # self.tab_widget.currentChanged.connect(self.load_active_tab)
         # self.tab_widget.tabBarDoubleClicked.connect(self.rename_category)
         self.pushButton_create_new.setEnabled(True)
         self.radioButton_category.setEnabled(True)
@@ -4306,7 +4153,7 @@ class MainWindow(QMainWindow):
         except IndexError:
             return
         settings_file.add_item("last_category_tab", self.tab_widget.currentIndex())
-        tab: QVBoxLayout = self.tabs[self.category]
+        tab: CustomTableWidget = self.tabs[self.category]
         category_data = self.active_json_file.get_value(item_name=self.category)
         autofill_search_options = self.get_all_part_names() + self.get_all_part_numbers()
         completer = QCompleter(autofill_search_options)
@@ -4332,7 +4179,7 @@ class MainWindow(QMainWindow):
             self.set_layout_message(
                 "You need to", "create", "a category", 120, self.create_new_category
             )
-        # self.load_item(tab, tab_index, category_data)
+        # self.load_inventory_items(tab, tab_index, category_data)
 
         # if (
         #     inventory.check_if_value_exists_less_then(
@@ -4374,13 +4221,7 @@ class MainWindow(QMainWindow):
         ):
             self.pushButton_add_new_sheet.setEnabled(True)
         if self.tabWidget.tabText(self.tabWidget.currentIndex()) == "Edit Inventory":
-            self.datetime1 = datetime.now()
-            # self._timer = QTimer(
-            # interval=10,
-            # timeout=partial(self.load_item, tab, tab_index, category_data),
-            # )
-            # self._timer.start()
-            self.load_item(tab, category_data)
+            self.load_inventory_items(tab, category_data)
         elif (
             self.tabWidget.tabText(self.tabWidget.currentIndex()) == "Sheets in Inventory"
         ):
@@ -4392,212 +4233,197 @@ class MainWindow(QMainWindow):
         elif (
             self.tabWidget.tabText(self.tabWidget.currentIndex()) == "Parts in Inventory"
         ):
-            self._timer = QTimer(
-                interval=10,
-                timeout=partial(self.load_inventory_part, tab, category_data),
+            # self._timer = QTimer(
+            #     interval=10,
+            #     timeout=partial(self.load_inventory_parts, tab, category_data),
+            # )
+            # self._timer.start()
+            self.load_inventory_parts(tab, category_data)
+        with contextlib.suppress(IndexError):
+            category_tabs_order.set_value(
+                self.tabWidget.tabText(self.tabWidget.currentIndex()),
+                value=self.tabWidget.currentWidget()
+                .findChildren(CustomTabWidget)[0]
+                .get_tab_order(),
             )
-            self._timer.start()
-        category_tabs_order.set_value(
-            self.tabWidget.tabText(self.tabWidget.currentIndex()),
-            value=self.tabWidget.currentWidget()
-            .findChildren(CustomTabWidget)[0]
-            .get_tab_order(),
-        )
 
-    def load_inventory_part(self, tab: QVBoxLayout, category_data: dict) -> None:
+    # NOTE PARTS IN INVENTYORY
+    def load_inventory_parts(self, tab: CustomTableWidget, category_data: dict) -> None:
         """
-        This function takes a QVBoxLayout, an int, and a dict and returns None.
+        This function loads inventory parts data into a custom table widget in a graphical user
+        interface.
 
         Args:
-          tab (QVBoxLayout): QVBoxLayout
-          category_data (dict): dict = {
+          tab (CustomTableWidget): The tab parameter is a CustomTableWidget object, which is a custom
+        widget used to display data in a table format.
+          category_data (dict): A dictionary containing data for items in a specific category. The keys
+        of the dictionary are the names of the items, and the values are dictionaries containing various
+        information about the item such as its current quantity, unit quantity, price, modified date,
+        and limits for quantity levels.
         """
-        try:
-            row_index = next(self._iter)
-        except StopIteration:
-            self._timer.stop()
-            set_status_button_stylesheet(button=self.status_button, color="#3daee9")
-            self.status_button.setText(f'<p style="color:white;"><b>Done!</b></p>')
-            self.load_item_context_menu()
-        else:
-            __start: float = (row_index + 1) / len(list(category_data.keys()))
-            __middle: float = __start + 0.001 if __start <= 1 - 0.001 else 1.0
-            __end: float = __start + 0.0011 if __start <= 1 - 0.0011 else 1.0
-            self.status_button.setStyleSheet(
-                """QPushButton#status_button {background: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0,stop:%(start)s #3daee9,stop:%(middle)s #3daee9,stop:%(end)s #1E363F); border: none;}"""
-                % {"start": str(__start), "middle": str(__middle), "end": str(__end)}
-            )
-            self.status_button.setText(f'<p style="color:white;"><b>Loading...</b></p>')
-            col_index: int = 0
+        tab.blockSignals(True)
+        tab.set_editable_column_index([1, 2, 3])
+        tab.setEnabled(False)
+        tab.clear()
+        tab.setShowGrid(False)
+        tab.setColumnCount(7)
+        # tab.setAlternatingRowColors(True)
+        tab.setRowCount(0)
+        tab.setSortingEnabled(False)
+        tab.setSelectionBehavior(1)
+        tab.setSelectionMode(3)
+        tab.setVerticalScrollMode(QAbstractItemView.ScrollPerPixel)
+        tab.setHorizontalHeaderLabels(
+            (
+                "Part Name;Item Price;Quantity Per Unit;Quantity in Stock;Cost in Stock;Modified Date;DEL;"
+            ).split(";")
+        )
 
-            def round_number(x, n):
-                return eval(
-                    '"%.'
-                    + str(int(n))
-                    + 'f" % '
-                    + repr(int(x) + round(float("." + str(float(x)).split(".")[1]), n))
+        def round_number(x, n):
+            return eval(
+                '"%.'
+                + str(int(n))
+                + 'f" % '
+                + repr(int(x) + round(float("." + str(float(x)).split(".")[1]), n))
+            )
+
+        grouped_data = parts_in_inventory.sort_by_groups(
+            category=category_data, groups_id="gauge"
+        )
+        row_index: int = 0
+        for group in list(grouped_data.keys()):
+            tab.insertRow(row_index)
+            item = QTableWidgetItem(group)
+            item.setTextAlignment(4)  # Align text center
+            font = QFont()
+            font.setPointSize(15)
+            item.setFont(font)
+            tab.setItem(row_index, 0, item)
+            tab.setSpan(row_index, 0, 1, tab.columnCount())
+            self.set_table_row_color(tab, row_index, "#292929")
+            row_index += 1
+            for item in list(grouped_data[group].keys()):
+                col_index: int = 0
+                tab.insertRow(row_index)
+                current_quantity: int = self.get_value_from_category(
+                    item_name=item, key="current_quantity"
+                )
+                unit_quantity: int = self.get_value_from_category(
+                    item_name=item, key="unit_quantity"
+                )
+                price: float = self.get_value_from_category(item_name=item, key="price")
+                modified_date: str = self.get_value_from_category(
+                    item_name=item, key="modified_date"
+                )
+                red_limit: float = self.get_value_from_category(
+                    item_name=item, key="red_limit"
+                )
+                if red_limit is None:
+                    red_limit = 2
+                yellow_limit: float = self.get_value_from_category(
+                    item_name=item, key="yellow_limit"
+                )
+                if yellow_limit is None:
+                    yellow_limit = 5
+                tab.setItem(row_index, col_index, QTableWidgetItem(f"{item}"))
+
+                col_index += 1
+                # PRICE
+                tab.setItem(row_index, col_index, QTableWidgetItem(f"{price}"))
+                tab.item(row_index, col_index).setTextAlignment(
+                    Qt.AlignCenter | Qt.AlignVCenter | Qt.TextWrapAnywhere
                 )
 
-            item = list(category_data.keys())[row_index]
-            current_quantity: int = self.get_value_from_category(
-                item_name=item, key="current_quantity"
-            )
-            unit_quantity: int = self.get_value_from_category(
-                item_name=item, key="unit_quantity"
-            )
-            price: float = self.get_value_from_category(item_name=item, key="price")
-            modified_date: str = self.get_value_from_category(
-                item_name=item, key="modified_date"
-            )
-            red_limit: float = self.get_value_from_category(
-                item_name=item, key="red_limit"
-            )
-            if red_limit is None:
-                red_limit = 2
-            yellow_limit: float = self.get_value_from_category(
-                item_name=item, key="yellow_limit"
-            )
-            if yellow_limit is None:
-                yellow_limit = 5
-            group = self.get_value_from_category(item_name=item, key="gauge")
-
-            if group:
-                try:
-                    layout = self.group_layouts[group]
-                except KeyError:
-                    group_box = QGroupBox()
-                    group_box.setObjectName("group")
-                    group_box.setTitle(group)
-                    group_layout = QVBoxLayout()
-                    group_layout.setAlignment(Qt.AlignTop)
-                    self.group_layouts[group] = group_layout
-                    group_box.setLayout(group_layout)
-                    tab.addWidget(group_box)
-            else:
-                # Might appear that this does nothing, your wrong.
-                self.group_layouts["__main__"] = tab
-
-            layout = QHBoxLayout()
-            check_box = ItemCheckBox(self)
-            check_box.setObjectName("checkbox")
-            check_box.setStyleSheet(
-                "QCheckBox#checkbox:indicator{width: 20px; height: 20px}"
-            )
-            check_box.setFixedWidth(30)
-            check_box.clicked.connect(partial(self.item_check_box_press, check_box))
-            layout.addWidget(check_box)
-            item = list(category_data.keys())[row_index]
-            self.check_box_selections[item] = check_box
-            col_index += 1
-            # NAME
-            item_name = ItemNameComboBox(
-                parent=self,
-                selected_item=item,
-                items=[item],
-                tool_tip=f'Material: {self.get_value_from_category(item_name=item, key="material")}\nGauge: {self.get_value_from_category(item_name=item, key="gauge")}\nWeight: {self.get_value_from_category(item_name=item, key="weight")}\nMachine Time: {self.get_value_from_category(item_name=item, key="machine_time")}',
-            )
-            item_name.setFixedWidth(350)
-            item_name.setContextMenuPolicy(Qt.CustomContextMenu)
-            self.inventory_prices_objects[item_name] = {}
-            layout.addWidget(item_name)
-
-            col_index += 1
-            # PRICE
-            spin_price = CostLineEdit(
-                parent=self,
-                prefix="$",
-                text=f"{price}",
-                suffix="",
-            )
-            spin_price.setFixedWidth(150)
-            layout.addWidget(spin_price)
-
-            col_index += 1
-            # UNIT QUANTITY
-            spin_unit_quantity = HumbleDoubleSpinBox(self)
-            spin_unit_quantity.setValue(unit_quantity)
-            spin_unit_quantity.setFixedWidth(150)
-            spin_unit_quantity.setMinimum(0)
-            spin_unit_quantity.valueChanged.connect(
-                partial(
-                    self.save_value_for_inventory_part,
-                    self.category,
-                    item,
-                    "unit_quantity",
-                    spin_unit_quantity,
+                col_index += 1
+                # UNIT QUANTITY
+                tab.setItem(row_index, col_index, QTableWidgetItem(f"{unit_quantity}"))
+                tab.item(row_index, col_index).setTextAlignment(
+                    Qt.AlignCenter | Qt.AlignVCenter | Qt.TextWrapAnywhere
                 )
-            )
 
-            layout.addWidget(spin_unit_quantity)
-
-            col_index += 1
-            # QUANTITY
-            spin_quantity = HumbleDoubleSpinBox(self)
-            spin_quantity.setValue(current_quantity)
-            spin_quantity.setFixedWidth(150)
-            if current_quantity <= red_limit:
-                spin_quantity.setStyleSheet(
-                    "color: red; border-color: darkred; background-color: #3F1E25;"
+                col_index += 1
+                # QUANTITY
+                tab.setItem(row_index, col_index, QTableWidgetItem(f"{current_quantity}"))
+                tab.item(row_index, col_index).setTextAlignment(
+                    Qt.AlignCenter | Qt.AlignVCenter | Qt.TextWrapAnywhere
                 )
-            elif current_quantity <= yellow_limit:
-                spin_quantity.setStyleSheet(
-                    "color: yellow; border-color: gold; background-color: #413C28;"
+
+                col_index += 1
+                # TOTAL COST
+                tab.setItem(
+                    row_index,
+                    col_index,
+                    QTableWidgetItem(
+                        f"{format(float(round_number(price*current_quantity,2)),',')}"
+                    ),
                 )
-            else:
-                spin_quantity.setStyleSheet("")
-            layout.addWidget(spin_quantity)
-
-            col_index += 1
-            # TOTAL COST
-            spin_total_cost = CostLineEdit(
-                parent=self,
-                prefix="$",
-                text=f"{format(float(round_number(price*current_quantity,2)),',')}",
-                suffix="",
-            )
-            spin_total_cost.setFixedWidth(150)
-
-            layout.addWidget(spin_total_cost)
-
-            col_index += 1
-            # MODFIED DATE
-            modified_date_label = QLabel(self)
-            modified_date_label.setText(modified_date)
-            modified_date_label.setFixedWidth(400)
-            spin_quantity.valueChanged.connect(
-                partial(
-                    self.inventory_part_quantity_change,
-                    item,
-                    spin_quantity,
-                    price,
-                    spin_total_cost,
-                    modified_date_label,
+                tab.item(row_index, col_index).setTextAlignment(
+                    Qt.AlignCenter | Qt.AlignVCenter | Qt.TextWrapAnywhere
                 )
+
+                col_index += 1
+                # MODFIED DATE
+                tab.setItem(row_index, col_index, QTableWidgetItem(modified_date))
+
+                col_index += 1
+                # DELETE
+                btn_delete = DeletePushButton(
+                    parent=self,
+                    tool_tip=f"Delete {item} permanently from {self.category}",
+                    icon=QIcon(f"ui/BreezeStyleSheets/dist/pyqt6/{self.theme}/trash.png"),
+                )
+                btn_delete.setStyleSheet(
+                    "margin-top: 3%; margin-bottom: 3%; margin-left: 10%; margin-right: 10%;"
+                )
+                btn_delete.clicked.connect(partial(self.delete_item, self.category, item))
+                tab.setCellWidget(row_index, col_index, btn_delete)
+                if current_quantity <= red_limit:
+                    self.set_table_row_color(tab, row_index, "#3F1E25")
+                elif current_quantity <= yellow_limit:
+                    self.set_table_row_color(tab, row_index, "#413C28")
+                row_index += 1
+        tab.setEnabled(True)
+        tab.resizeColumnsToContents()
+        # self.load_item_context_menu()
+        if tab.contextMenuPolicy() != Qt.CustomContextMenu:
+            tab.setContextMenuPolicy(Qt.CustomContextMenu)
+            menu = QMenu(self)
+            action = QAction(self)
+            action.triggered.connect(
+                partial(self.set_custom_quantity_limit, "[TABLE_WIDGET]")
             )
-            # self.inventory_parts_quantity[item] = {
-            #     "spin_quantity": spin_quantity,
-            #     "price": price,
-            #     "spin_total_cost": spin_total_cost,
-            #     "modified_date_label": modified_date_label,
-            # }
-            layout.addWidget(modified_date_label)
+            action.setText("Set Custom Quantity Limit")
+            menu.addAction(action)
+            menu.addSeparator()
+            categories = QMenu(menu)
+            categories.setTitle("Move to category")
+            for i, category in enumerate(parts_in_inventory.get_keys()):
+                if self.category == category or category == "Recut":
+                    continue
+                if i == 1:
+                    categories.addSeparator()
+                action = QAction(self)
+                action.triggered.connect(partial(self.move_to_category, tab, category))
+                action.setText(category)
+                categories.addAction(action)
+            menu.addMenu(categories)
 
-            col_index += 1
-            # DELETE
-            btn_delete = DeletePushButton(
-                parent=self,
-                tool_tip=f"Delete {item} permanently from {self.category}",
-                icon=QIcon(f"ui/BreezeStyleSheets/dist/pyqt6/{self.theme}/trash.png"),
-            )
-            btn_delete.clicked.connect(partial(self.delete_item, self.category, item))
-            btn_delete.setFixedSize(26, 26)
-            layout.addWidget(btn_delete)
+            categories = QMenu(menu)
+            categories.setTitle("Copy to category")
+            for i, category in enumerate(parts_in_inventory.get_keys()):
+                if self.category == category or category == "Recut":
+                    continue
+                if i == 1:
+                    categories.addSeparator()
+                action = QAction(self)
+                action.triggered.connect(partial(self.copy_to_category, tab, category))
+                action.setText(category)
+                categories.addAction(action)
+            menu.addMenu(categories)
+            tab.customContextMenuRequested.connect(partial(self.open_group_menu, menu))
+        tab.blockSignals(False)
 
-            try:
-                self.group_layouts[group].addLayout(layout)
-            except KeyError:
-                tab.addLayout(layout)
-
+    # NOTE SHEETS IN INVENTORY
     def price_of_steel_item(self, tab: QVBoxLayout, category_data: dict) -> None:
         """
         This function takes a QVBoxLayout, an int, and a dict and returns None.
@@ -4611,7 +4437,7 @@ class MainWindow(QMainWindow):
         except StopIteration:
             self._timer.stop()
             set_status_button_stylesheet(button=self.status_button, color="#3daee9")
-            self.status_button.setText(f'<p style="color:white;"><b>Done!</b></p>')
+            self.status_button.setText('<p style="color:white;"><b>Done!</b></p>')
             self.load_item_context_menu()
         else:
             __start: float = (row_index + 1) / len(list(category_data.keys()))
@@ -4622,7 +4448,7 @@ class MainWindow(QMainWindow):
                 % {"start": str(__start), "middle": str(__middle), "end": str(__end)}
             )
             # self.status_button.palette().color(self.status_button.backgroundRole()).name()
-            self.status_button.setText(f'<p style="color:white;"><b>Loading...</b></p>')
+            self.status_button.setText('<p style="color:white;"><b>Loading...</b></p>')
             col_index: int = 0
             if self.category == "Price Per Pound":
                 layout = QHBoxLayout()
@@ -4875,7 +4701,8 @@ class MainWindow(QMainWindow):
                 except KeyError:
                     tab.addLayout(layout)
 
-    def load_item(self, tab: QTableWidget, category_data: dict) -> None:
+    # NOTE EDIT INVENTORY
+    def load_inventory_items(self, tab: QTableWidget, category_data: dict) -> None:
         """
         This function loads data into a QTableWidget for a specific category.
 
@@ -5186,10 +5013,22 @@ class MainWindow(QMainWindow):
                 self.set_table_row_color(tab, row_index, "#413C28")
 
         QApplication.restoreOverrideCursor()
-        datetime2 = datetime.now()
-        difference = datetime2 - self.datetime1
-        set_status_button_stylesheet(button=self.status_button, color="#3daee9")
-        self.load_item_context_menu()
+        # set context menu
+        if tab.contextMenuPolicy() != Qt.CustomContextMenu:
+            tab.setContextMenuPolicy(Qt.CustomContextMenu)
+            menu = QMenu(self)
+            action = QAction(self)
+            action.triggered.connect(
+                partial(self.set_custom_quantity_limit, "[TABLE_WIDGET]")
+            )
+            action.setText("Set Custom Quantity Limit")
+            menu.addAction(action)
+            menu.addSeparator()
+            action = QAction(self)
+            action.triggered.connect(partial(self.name_change, tab))
+            action.setText("Change item name")
+            menu.addAction(action)
+            tab.customContextMenuRequested.connect(partial(self.open_group_menu, menu))
         tab.resizeColumnsToContents()
         tab.setColumnWidth(0, 250)
         tab.setColumnWidth(1, 150)
@@ -5721,66 +5560,21 @@ class MainWindow(QMainWindow):
             self.radioButton_single.setEnabled(True)
             self.sort_inventory()
 
-    def changes_response(self, data) -> None:
-        """
-        It compares two files, and if they are different, it displays a message in a label
-
-        Args:
-          data: The data that is returned from the server.
-        """
-        file_name_to_upload: str = (
-            f"data/{settings_file.get_value(item_name='inventory_file_name')}"
+    def changes_response(self, response: str) -> None:
+        set_status_button_stylesheet(button=self.status_button, color="yellow")
+        self.status_button.setText(
+            f'<p style="color:yellow;">Syncing - {datetime.now().strftime("%r")}</p>'
         )
-        if self.tabWidget.tabText(self.tabWidget.currentIndex()) == "Edit Inventory":
-            file_name_to_upload: str = (
-                f"data/{settings_file.get_value(item_name='inventory_file_name')}"
-            )
-        elif (
-            self.tabWidget.tabText(self.tabWidget.currentIndex()) == "Sheets in Inventory"
-        ):
-            file_name_to_upload: str = f"data/{settings_file.get_value(item_name='inventory_file_name')} - Price of Steel"
-        elif (
-            self.tabWidget.tabText(self.tabWidget.currentIndex()) == "Parts in Inventory"
-        ):
-            file_name_to_upload: str = f"data/{settings_file.get_value(item_name='inventory_file_name')} - Parts in Inventory"
-        try:
-            file_change = FileChanges(
-                from_file=f"{file_name_to_upload} - Compare.json",
-                to_file=f"{file_name_to_upload}.json",
-            )
-            if self.tabWidget.tabText(self.tabWidget.currentIndex()) in [
-                "Sheets in Inventory",
-                "Parts in Inventory",
-            ]:
-                if file_change.get_time_difference() > 0:
-                    self.upload_file([f"{file_name_to_upload}.json"], False)
-
-                else:
-                    self.should_reload_categories = True
-                    if self.are_parts_checked():
-                        return
-                    self.download_file([f"{file_name_to_upload}.json"], False)
-                set_status_button_stylesheet(button=self.status_button, color="yellow")
-                button_status = (
-                    f'<p style="color:yellow;">Local changes are not uploaded. (Uploading) - {datetime.now().strftime("%r")}</p>'
-                    if file_change.get_time_difference() > 0
-                    else f'<p style="color:yellow;">Server changes are not downloaded. (Downloading) - {datetime.now().strftime("%r")}</p>'
-                )
-                self.status_button.setText(button_status)
-            elif (
-                self.tabWidget.tabText(self.tabWidget.currentIndex()) == "Edit Inventory"
-            ):
-                self.upload_file([f"{file_name_to_upload}.json"], False)
-                set_status_button_stylesheet(button=self.status_button, color="yellow")
-                button_status = f'<p style="color:yellow;">Uploading - {datetime.now().strftime("%r")}</p>'
-                self.status_button.setText(button_status)
-            os.remove(f"{file_name_to_upload} - Compare.json")
-        except (TypeError, FileNotFoundError) as error:
-            logging.critical(error)
-            set_status_button_stylesheet(button=self.status_button, color="red")
-            self.status_button.setText(
-                f'<p style="color:red;"><b>{file_name_to_upload.replace("data/","").title()}</b> - Failed to get changes. - {datetime.now().strftime("%r")}</p>'
-            )
+        self.download_all_files()
+        inventory.load_data()
+        price_of_steel_inventory.load_data()
+        parts_in_inventory.load_data()
+        if self.tabWidget.tabText(self.tabWidget.currentIndex()) != "Quote Generator":
+            self.load_categories()
+        set_status_button_stylesheet(button=self.status_button, color="green")
+        self.status_button.setText(
+            f'<p style="color:lime;">Synched - {datetime.now().strftime("%r")}</p>'
+        )
 
     def data_received(self, data) -> None:
         """
@@ -5790,7 +5584,6 @@ class MainWindow(QMainWindow):
         Args:
           data: the data received from the server
         """
-
         if data == "Successfully uploaded" and self.get_upload_file_response:
             self.show_message_dialog(
                 title=data,
@@ -5803,11 +5596,15 @@ class MainWindow(QMainWindow):
                 message=f"{data}\n\nFile successfully downloaded.",
             )
             logging.info(f"Server: {data}")
-            inventory.load_data()
-            price_of_steel_inventory.load_data()
-            parts_in_inventory.load_data()
-            self.load_categories()
-        elif str(data) == "timed out" and self.get_upload_file_response:
+            if self.tabWidget.tabText(self.tabWidget.currentIndex()) in [
+                "Parts in Inventory",
+                "Sheets in Inventory",
+            ]:
+                inventory.load_data()
+                price_of_steel_inventory.load_data()
+                parts_in_inventory.load_data()
+                self.load_categories()
+        elif "timed out" in str(data) and self.get_upload_file_response:
             self.show_error_dialog(
                 title="Time out",
                 message="Server is either offline or try again. \n\nMake sure VPN's are disabled, else\n\ncontact server administrator.\n\n",
@@ -5864,6 +5661,7 @@ class MainWindow(QMainWindow):
             )
             set_status_button_stylesheet(button=self.status_button, color="lime")
             self.centralwidget.setEnabled(True)
+            self.loading_window.close()
 
     def start_changes_thread(self, files_to_download: list[str]) -> None:
         """
@@ -5872,7 +5670,7 @@ class MainWindow(QMainWindow):
         Args:
           files_to_download (list[str]): list[str]
         """
-        changes_thread = ChangesThread(files_to_download, 60 * 5)  # 5 minutes
+        changes_thread = ChangesThread(files_to_download)  # 5 minutes
         changes_thread.signal.connect(self.changes_response)
         self.threads.append(changes_thread)
         changes_thread.start()
@@ -5914,8 +5712,6 @@ class MainWindow(QMainWindow):
 
     def send_sheet_report(self) -> None:
         thread = SendReportThread()
-        # if get_response:
-        # QApplication.setOverrideCursor(Qt.BusyCursor)
         self.start_thread(thread)
 
     def upload_file(self, files_to_upload: list[str], get_response: bool = True) -> None:
@@ -5963,9 +5759,9 @@ class MainWindow(QMainWindow):
         """
         self.download_file(
             [
-                f"data/{settings_file.get_value(item_name='inventory_file_name')} - Parts in Inventory.json",
-                f"data/{settings_file.get_value(item_name='inventory_file_name')} - Price of Steel.json",
-                f"data/{settings_file.get_value(item_name='inventory_file_name')}.json",
+                f"{settings_file.get_value(item_name='inventory_file_name')} - Parts in Inventory.json",
+                f"{settings_file.get_value(item_name='inventory_file_name')} - Price of Steel.json",
+                f"{settings_file.get_value(item_name='inventory_file_name')}.json",
             ],
             False,
         )
@@ -6245,20 +6041,15 @@ def main() -> None:
     It creates a QApplication, creates a MainWindow, shows the MainWindow, and then runs the
     QApplication
     """
-    app = QApplication([])
+    app = QApplication(sys.argv)
     set_theme(app, theme="dark")
     loading_window = LoadWindow()
     loading_screen = QSplashScreen(loading_window)
-    # The above code is incomplete, but it appears to be creating a QSplashScreen object in a
-    # loading_window. QSplashScreen is a class in the PyQt5 library that provides a splash screen for
-    # applications. The purpose of a splash screen is to display a loading or introductory screen
-    # while the application is loading or initializing.
-    # loading_screen.show()
     app.processEvents()
-    window = MainWindow()
+    window = MainWindow(loading_window)
     window.show()
-    loading_screen.close()
-    loading_window.close()
+    # loading_screen.close()
+    # loading_window.close()
     app.exec_()
 
 
