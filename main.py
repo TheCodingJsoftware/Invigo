@@ -108,7 +108,7 @@ __credits__: "list[str]" = ["Jared Gross"]
 __license__ = "MIT"
 __name__ = "Invigo"
 __version__ = "v1.6.2"
-__updated__ = "2023-05-25 22:08:08"
+__updated__ = "2023-05-26 09:14:04"
 __maintainer__ = "Jared Gross"
 __email__ = "jared@pinelandfarms.ca"
 __status__ = "Production"
@@ -337,6 +337,7 @@ class MainWindow(QMainWindow):
         self.active_json_file: JsonFile = None
         self.category: str = ""
         self.refresh_pressed: bool = False
+        self.downloading_changes: bool = False
         self.should_reload_categories: bool = False
         self.finished_downloading_all_files: bool = False
         self.files_downloaded_count: int = 0
@@ -5565,13 +5566,14 @@ class MainWindow(QMainWindow):
         self.status_button.setText(
             f'<p style="color:yellow;">Syncing - {datetime.now().strftime("%r")}</p>'
         )
+        self.downloading_changes = True
         self.download_all_files()
-        inventory.load_data()
-        price_of_steel_inventory.load_data()
-        parts_in_inventory.load_data()
-        if self.tabWidget.tabText(self.tabWidget.currentIndex()) != "Quote Generator":
-            self.load_categories()
-        set_status_button_stylesheet(button=self.status_button, color="green")
+        # inventory.load_data()
+        # price_of_steel_inventory.load_data()
+        # parts_in_inventory.load_data()
+        # if self.tabWidget.tabText(self.tabWidget.currentIndex()) != "Quote Generator":
+        #     self.load_categories()
+        set_status_button_stylesheet(button=self.status_button, color="lime")
         self.status_button.setText(
             f'<p style="color:lime;">Synched - {datetime.now().strftime("%r")}</p>'
         )
@@ -5584,18 +5586,24 @@ class MainWindow(QMainWindow):
         Args:
           data: the data received from the server
         """
-        if data == "Successfully uploaded" and self.get_upload_file_response:
-            self.show_message_dialog(
-                title=data,
-                message=f"{data}\n\nFile successfully sent.\nWill take roughly 5 minutes to update database",
+        # if data == "Successfully uploaded" and self.get_upload_file_response:
+        #     self.show_message_dialog(
+        #         title=data,
+        #         message=f"{data}\n\nFile successfully sent.\nWill take roughly 5 minutes to update database",
+        #     )
+        #     logging.info(f"Server: {data}")
+        # elif data == "Successfully downloaded" and self.get_upload_file_response:
+        #     self.show_message_dialog(
+        #         title=data,
+        #         message=f"{data}\n\nFile successfully downloaded.",
+        #     )
+        #     logging.info(f"Server: {data}")
+        if "timed out" in str(data):
+            self.show_error_dialog(
+                title="Time out",
+                message=f"Server is either offline or try again or not connected to internet. Make sure VPN's are disabled, else contact server or netowrk administrator.\n\n{str(data)}",
             )
-            logging.info(f"Server: {data}")
-        elif data == "Successfully downloaded" and self.get_upload_file_response:
-            self.show_message_dialog(
-                title=data,
-                message=f"{data}\n\nFile successfully downloaded.",
-            )
-            logging.info(f"Server: {data}")
+        if self.downloading_changes and data == "Successfully downloaded":
             if self.tabWidget.tabText(self.tabWidget.currentIndex()) in [
                 "Parts in Inventory",
                 "Sheets in Inventory",
@@ -5604,32 +5612,23 @@ class MainWindow(QMainWindow):
                 price_of_steel_inventory.load_data()
                 parts_in_inventory.load_data()
                 self.load_categories()
-        elif "timed out" in str(data) and self.get_upload_file_response:
-            self.show_error_dialog(
-                title="Time out",
-                message="Server is either offline or try again. \n\nMake sure VPN's are disabled, else\n\ncontact server administrator.\n\n",
-            )
-        elif self.get_upload_file_response:
-            self.show_error_dialog(
-                title="error",
-                message=str(data),
-            )
-        if data == "Successfully downloaded" and self.refresh_pressed:
-            inventory.load_data()
-            price_of_steel_inventory.load_data()
-            parts_in_inventory.load_data()
-            self.load_categories()
-            self.refresh_pressed = False
-            self.pushButton_refresh_price_of_steel.setEnabled(True)
-            self.pushButton_update_price_of_steel.setEnabled(True)
-            self.pushButton_refresh_parts_in_inventory.setEnabled(True)
-            self.pushButton_update_parts_in_inventory.setEnabled(True)
-            QApplication.restoreOverrideCursor()
-        if data == "Successfully uploaded":
-            set_status_button_stylesheet(button=self.status_button, color="lime")
-            self.status_button.setText(
-                f'<p style="color:lime;"> <b>{data}</b> - Up to date. - {datetime.now().strftime("%r")}</p>'
-            )
+            self.downloading_changes = False
+        # if data == "Successfully downloaded" and self.refresh_pressed:
+        #     inventory.load_data()
+        #     price_of_steel_inventory.load_data()
+        #     parts_in_inventory.load_data()
+        #     self.load_categories()
+        #     self.refresh_pressed = False
+        #     self.pushButton_refresh_price_of_steel.setEnabled(True)
+        #     self.pushButton_update_price_of_steel.setEnabled(True)
+        #     self.pushButton_refresh_parts_in_inventory.setEnabled(True)
+        #     self.pushButton_update_parts_in_inventory.setEnabled(True)
+        #     QApplication.restoreOverrideCursor()
+        # if data == "Successfully uploaded":
+        #     set_status_button_stylesheet(button=self.status_button, color="lime")
+        #     self.status_button.setText(
+        #         f'<p style="color:lime;"> <b>{data}</b> - Up to date. - {datetime.now().strftime("%r")}</p>'
+        #     )
         if data == "Successfully uploaded" and self.refresh_pressed:
             self.refresh_pressed = False
             self.pushButton_refresh_price_of_steel.setEnabled(True)
@@ -5638,16 +5637,6 @@ class MainWindow(QMainWindow):
             self.pushButton_update_parts_in_inventory.setEnabled(True)
             QApplication.restoreOverrideCursor()
 
-        if data == "Successfully downloaded" and self.should_reload_categories:
-            inventory.load_data()
-            price_of_steel_inventory.load_data()
-            parts_in_inventory.load_data()
-            self.load_categories()
-            self.should_reload_categories = False
-            set_status_button_stylesheet(button=self.status_button, color="lime")
-            self.status_button.setText(
-                f'<p style="color:lime;"> <b>{data}</b> - Up to date. - {datetime.now().strftime("%r")}</p>'
-            )
         if not self.finished_downloading_all_files:
             self.files_downloaded_count += 1
         if self.files_downloaded_count == 1 and not self.finished_downloading_all_files:
