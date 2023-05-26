@@ -77,3 +77,5 @@ credentials.json
 images/
 test2.py
 test.py
+*.dxf
+*.DXF

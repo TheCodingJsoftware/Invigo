@@ -46,24 +46,12 @@ class ExcelFile:
         money_format.set_align("center")
         money_format.set_align("vcenter")
         total_format = self.workbook.add_format({"num_format": "$#,##0.00"})
-        total_format.set_align("center")
-        total_format.set_align("vcenter")
-        total_format.set_bold()
-        total_format.set_top(6)
-        total_format.set_bottom(1)
+        self.set_cell_format(total_format)
         total_format_right = self.workbook.add_format({"num_format": "$#,##0.00"})
-        total_format_right.set_align("center")
-        total_format_right.set_align("vcenter")
-        total_format_right.set_bold()
-        total_format_right.set_top(6)
-        total_format_right.set_bottom(1)
+        self.set_cell_format(total_format_right)
         total_format_right.set_right(1)
         total_format_left = self.workbook.add_format({"num_format": "$#,##0.00"})
-        total_format_left.set_align("center")
-        total_format_left.set_align("vcenter")
-        total_format_left.set_bold()
-        total_format_left.set_top(6)
-        total_format_left.set_bottom(1)
+        self.set_cell_format(total_format_left)
         total_format_left.set_left(1)
         group_header_format = self.workbook.add_format(
             {
@@ -137,32 +125,42 @@ class ExcelFile:
             )
             worksheet.print_area(f"A1:E{row}")
 
-    def __sort_groups(self, category: dict) -> dict:
+    def set_cell_format(self, cell):
         """
-        It takes a dictionary of dictionaries, and returns a dictionary of dictionaries, where the keys
-        of the returned dictionary are the values of the "group" key in the original dictionary
+        This function sets various formatting options for a given cell in a spreadsheet.
 
         Args:
-          category (dict): dict
+          cell: This parameter represents the cell object that we want to format.
+        """
+        cell.set_align("center")
+        cell.set_align("vcenter")
+        cell.set_bold()
+        cell.set_top(6)
+        cell.set_bottom(1)
+
+    def __sort_groups(self, category: dict) -> dict:
+        """
+        This function sorts a dictionary of categories into groups based on a "group" key and returns
+        the grouped dictionary.
+
+        Args:
+          category (dict): The `category` parameter is a dictionary containing items that need to be
+        grouped based on their `group` attribute. Each item in the dictionary represents a category and
+        has a unique key. The value of each key is another dictionary containing information about the
+        category, including its name, description, and group (
 
         Returns:
-          A dictionary with the keys being the group names and the values being a dictionary of the
-        items in that group.
+          a dictionary that groups the items in the input dictionary 'category' based on their 'group'
+        value. If an item does not have a 'group' value, it is placed in the "Everything else" group.
         """
-        grouped_category: dict = {}
-        for item in category.items():
-            with contextlib.suppress(KeyError):
-                if item[1]["group"] and item[1]["group"] != "":
-                    grouped_category[item[1]["group"]] = {}
+        grouped_category: dict = {"Everything else": {}}
 
-        grouped_category["Everything else"] = {}
-
-        for item in category.items():
-            try:
-                if item[1]["group"] and item[1]["group"] != "":
-                    grouped_category[item[1]["group"]][item[0]] = item[1]
-            except Exception:
-                grouped_category["Everything else"][item[0]] = item[1]
+        for key, value in category.items():
+            if group_name := value.get("group", ""):
+                grouped_category.setdefault(group_name, {})
+                grouped_category[group_name][key] = value
+            else:
+                grouped_category["Everything else"][key] = value
 
         return grouped_category
 

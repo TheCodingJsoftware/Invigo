@@ -1,118 +1,57 @@
-import json
-import sys
-import time
-from datetime import datetime
-from functools import partial
 
-from PyQt5 import QtTest, uic
-from PyQt5.QtCore import QAbstractListModel, QFile, QPoint, Qt, QTextStream, QTimer
-from PyQt5.QtGui import QColor, QCursor, QFont, QIcon, QImage, QPalette, QPixmap
+from PyQt5.QtCore import Qt, QTimer
 from PyQt5.QtWidgets import (
     QAction,
     QApplication,
-    QCheckBox,
-    QComboBox,
-    QCompleter,
-    QDialog,
-    QDockWidget,
-    QDoubleSpinBox,
-    QFileDialog,
-    QGridLayout,
-    QGroupBox,
-    QHBoxLayout,
-    QHeaderView,
-    QLabel,
-    QLineEdit,
     QMainWindow,
     QMenu,
-    QPlainTextEdit,
-    QProgressBar,
-    QPushButton,
-    QScrollArea,
-    QSpinBox,
-    QStyle,
     QTableWidget,
     QTableWidgetItem,
-    QTabWidget,
-    QTextEdit,
-    QToolTip,
-    QVBoxLayout,
-    QWidget,
-    QWidgetItem,
-    qApp,
 )
 
-from ui.theme import set_theme
 
-QApplication.setAttribute(Qt.AA_EnableHighDpiScaling, True)
-from functools import partial
-
-from ui.custom_widgets import (
-    ClickableLabel,
-    CostLineEdit,
-    CurrentQuantitySpinBox,
-    DeletePushButton,
-    DragableLayout,
-    ExchangeRateComboBox,
-    HeaderScrollArea,
-    HumbleComboBox,
-    HumbleDoubleSpinBox,
-    HumbleSpinBox,
-    ItemCheckBox,
-    ItemNameComboBox,
-    NotesPlainTextEdit,
-    PartNumberComboBox,
-    POPushButton,
-    PriorityComboBox,
-    RichTextPushButton,
-    ViewTree,
-    set_default_dialog_button_stylesheet,
-    set_status_button_stylesheet,
-)
-
-qt_creator_file = "test.ui"
-Ui_MainWindow, QtBaseClass = uic.loadUiType(qt_creator_file)
-import ast
-import operator as op
-
-# supported operators
-operators = {ast.Add: op.add, ast.Sub: op.sub, ast.Mult: op.mul,
-             ast.Div: op.truediv, ast.Pow: op.pow, ast.BitXor: op.xor,
-             ast.USub: op.neg}
-from PyQt5.QtCore import QObject, QRunnable, QThreadPool, pyqtSignal
-
-
-class MainWindow(QMainWindow, Ui_MainWindow):
+class MainWindow(QMainWindow):
     def __init__(self):
-        super(MainWindow, self).__init__()
-        self.setupUi(self)
+        super().__init__()
 
-        input_box = QLineEdit(self)
-        input_box.returnPressed.connect(partial(self.value_change, input_box))
+        self.tableWidget = QTableWidget(4, 4)
+        self.setCentralWidget(self.tableWidget)
 
-    def value_change(self, input_box: QLineEdit):
-        try:
-            input_box.setText(str(self.eval_expr(input_box.text())))
-        except SyntaxError:
-            return
+        # Set table headers
+        self.tableWidget.setHorizontalHeaderLabels(["Column 1", "Column 2", "Column 3", "Column 4"])
 
-    def eval_expr(self, expr):
-        return self.eval_(ast.parse(expr, mode='eval').body)
+        # Create a custom context menu
+        self.createContextMenu()
 
-    def eval_(self, node):
-        if isinstance(node, ast.Num): # <number>
-            return node.n
-        elif isinstance(node, ast.BinOp): # <left> <operator> <right>
-            return operators[type(node.op)](self.eval_(node.left), self.eval_(node.right))
-        elif isinstance(node, ast.UnaryOp): # <operator> <operand> e.g., -1
-            return operators[type(node.op)](self.eval_(node.operand))
-        else:
-            raise TypeError(node)
+        # Load table data
+        self.loadTable()
 
-app = QApplication(sys.argv)
-set_theme(app, theme="dark")
+    def createContextMenu(self):
+        # Clear any existing context menu
+        if self.tableWidget.contextMenuPolicy() == Qt.CustomContextMenu:
+            self.tableWidget.setContextMenuPolicy(Qt.DefaultContextMenu)
 
-# apply_stylesheet(app, theme='dark_blue.xml')
-window = MainWindow()
-window.show()
-app.exec_()
+        # Create a new custom context menu
+        self.contextMenu = QMenu(self)
+        action1 = QAction("Action 1", self)
+        action2 = QAction("Action 2", self)
+        self.contextMenu.addAction(action1)
+        self.contextMenu.addAction(action2)
+
+        # Set custom context menu policy
+        self.tableWidget.setContextMenuPolicy(Qt.CustomContextMenu)
+        self.tableWidget.customContextMenuRequested.connect(self.showContextMenu)
+
+    def showContextMenu(self, pos):
+        globalPos = self.tableWidget.mapToGlobal(pos)
+        self.contextMenu.exec_(globalPos)
+
+    def loadTable(self):
+        # Load table data here
+        pass
+
+if __name__ == '__main__':
+    app = QApplication([])
+    mainWindow = MainWindow()
+    mainWindow.show()
+    app.exec_()

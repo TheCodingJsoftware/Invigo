@@ -7,7 +7,6 @@ from openpyxl.utils.cell import column_index_from_string, get_column_letter
 
 
 class ExcelFile:
-    """Create excel files easier with openpyxl"""
 
     def __init__(self, file_name: str, generate_quote: bool) -> None:
         self.workbook = xlsxwriter.Workbook(file_name)

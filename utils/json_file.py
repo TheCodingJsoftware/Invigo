@@ -401,6 +401,33 @@ class JsonFile:
                     return True
         return False
 
+    def sort_by_groups(self, category: dict, groups_id: str) -> dict:
+        """
+        This function sorts a dictionary of categories into groups based on a specified group ID.
+
+        Args:
+          category (dict): A dictionary containing items to be sorted into groups. Each key-value pair
+        represents an item, where the key is a unique identifier for the item and the value is a
+        dictionary containing information about the item.
+          groups_id (str): The `groups_id` parameter is a string that represents the key in the
+        `category` dictionary that contains the group name for each item. The function uses this key to
+        group the items in the `category` dictionary into a new dictionary based on their group names.
+
+        Returns:
+          a dictionary that groups the items in the input `category` dictionary based on the value of
+        the `groups_id` key. The keys of the returned dictionary are the unique values of the
+        `groups_id` key in the input dictionary, and the values are dictionaries containing the items
+        from the input dictionary that have the same value for the `groups_id` key.
+        """
+        grouped_category: dict = {}
+
+        for key, value in category.items():
+            if group_name := value.get(groups_id, ""):
+                grouped_category.setdefault(group_name, {})
+                grouped_category[group_name][key] = value
+
+        return grouped_category
+
     def sort(self, category: str, item_name: str, ascending: bool) -> None:
         """
         It sorts the data in the data.json file by the category and item_name specified by the user
