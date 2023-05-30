@@ -188,10 +188,10 @@ class LoadNests(QThread):
         This is a Python function that extracts data from PDF files and stores it in a dictionary.
         """
         try:
-            try:
-                shutil.rmtree(f"{self.program_directory}/images")
-            except:
-                pass
+            # try:
+            #     shutil.rmtree(f"{self.program_directory}/images")
+            # except:
+            #     pass
             Path(f"{self.program_directory}/images").mkdir(parents=True, exist_ok=True)
             self.extract_images_from_pdf(self.nests)
             image_index: int = 0
@@ -282,13 +282,20 @@ class LoadNests(QThread):
                     }
                     image_index += 1
             os.remove(f"{self.program_directory}/output.txt")
+            for item in list(self.data.keys()):
+                if item[0] == "_":
+                    continue
+                image_path: str = f"images/{self.data[item]['image_index']}.jpeg"
+                new_image_path = f'images/{item}.jpeg'
+                self.data[item]['image_index'] = item
+                shutil.move(image_path, new_image_path)
             self.signal.emit(self.data)
         except Exception as e:
             try:
                 self.signal.emit(
-                    f"ERROR! !\n{e}\n If the error still persists, send me an email of the pdf your trying nesting.\n{nest}"
+                    f"ERROR! !\n{e}\nIf the error still persists, send me an email of the pdf your trying nesting.\n{nest}"
                 )
             except UnboundLocalError:
                 self.signal.emit(
-                    f"ERROR! !\n{e}\n If the error still persists, send me an email of the pdf your trying nesting.\n{self.nests[0]}"
+                    f"ERROR! !\n{e}\nIf the error still persists, send me an email of the pdf your trying nesting.\n{self.nests[0]}"
                 )

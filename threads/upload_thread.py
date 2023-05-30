@@ -32,19 +32,23 @@ class UploadThread(QThread):
 
     def run(self) -> None:
         """
-        It connects to a server, sends a message, and then sends the file
+        This function uploads files to a server using a POST request and emits a signal indicating
+        success or failure.
         """
         try:
             for file_to_upload in self.files_to_upload:
-
                 # Send the file as a POST request to the server
-                with open(f'data/{file_to_upload}', 'rb') as file:
-                    files = {'file': file}
-                    response = requests.post(self.upload_url, files=files)
-
+                if file_to_upload.endswith('.json'):
+                    with open(f'data/{file_to_upload}', 'rb') as file:
+                        files = {'file': (file_to_upload, file.read())}
+                elif file_to_upload.endswith('.jpeg'):
+                    with open(f'images/{file_to_upload}', 'rb') as file:
+                        files = {'file': (file_to_upload, file.read())}
+                response = requests.post(self.upload_url, files=files)
                 if response.status_code == 200:
                     self.signal.emit("Successfully uploaded")
                 else:
                     self.signal.emit(response.status_code)
         except Exception as e:
             self.signal.emit(e)
+            print(e)

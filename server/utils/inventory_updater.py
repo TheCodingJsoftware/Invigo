@@ -1,22 +1,30 @@
 import contextlib
 import json
+import os
 from datetime import datetime
 
 from utils.colors import Colors
+from utils.custom_print import CustomPrint
 from utils.json_file import JsonFile
 
-inventory = JsonFile(file_name="data/inventory")
-price_of_steel_inventory = JsonFile(file_name="data/inventory - Price of Steel")
-parts_in_inventory = JsonFile(file_name="data/inventory - Parts in Inventory")
+inventory_file_name: str = 'testt'
 
+inventory = JsonFile(file_name=f"data/{inventory_file_name}")
+price_of_steel_inventory = JsonFile(file_name=f"data/{inventory_file_name} - Price of Steel")
+parts_in_inventory = JsonFile(file_name=f"data/{inventory_file_name} - Parts in Inventory")
 
-def update_inventory(file_path: str) -> None:
+connected_clients = set()
+
+def update_inventory(file_path: str, clients) -> None:
     """
     It takes a json file, parses it, and updates a google sheet with the data
 
     Args:
       file_path (str): str = "data/testt - Laser Batch Data.json"
     """
+    global connected_clients
+    connected_clients = clients
+    CustomPrint.print(f"INFO - Updating inventory", connected_clients=connected_clients)
     parts_in_inventory.load_data()
     price_of_steel_inventory.load_data()
     with open(file_path) as json_file:
@@ -28,6 +36,15 @@ def update_inventory(file_path: str) -> None:
     no_recut_parts: list[str] = get_no_recut_parts(batch_data=new_laser_batch_data)
     add_parts(batch_data=new_laser_batch_data, parts_to_add=no_recut_parts)
     sort_inventory()
+    try:
+        os.rename(file_path, f'{file_path.replace(".json", "").replace("parts_batch_to_upload", "").replace("data", "parts batch to upload history")}{datetime.now().strftime("%Y-%m-%d_%H-%M-%S")}.json')
+    except FileExistsError:
+        CustomPrint.print(
+            f"ERROR - Can't replace parts_batch_to_updoad.json file with an existing archive.",
+            connected_clients=connected_clients,
+        )
+    CustomPrint.print(f"INFO - Updated Inventory & archived batch", connected_clients=connected_clients)
+    signal_clients_for_changes(clients)
 
 
 def add_parts(batch_data: dict, parts_to_add: list[str]):
@@ -45,17 +62,18 @@ def add_parts(batch_data: dict, parts_to_add: list[str]):
         for part_to_add in parts_to_add:
             if part_exists(category=category, part_name_to_find=part_to_add):
                 update_quantity(
+                    batch_data=batch_data,
                     part_name_to_update=part_to_add,
                     quantity=batch_data[part_to_add]["quantity"],
                 )
-                print(f"{Colors.BOLD}{datetime.now()}{Colors.ENDC}\t\t{Colors.OKGREEN}[+] Added {batch_data[part_to_add]['quantity']} quantites to {part_to_add}{Colors.ENDC}")
+                CustomPrint.print(f"INFO - Added {batch_data[part_to_add]['quantity']} quantites to {part_to_add} from {category}", connected_clients=connected_clients)
                 with contextlib.suppress(ValueError):
                     parts_updated.remove(part_to_add)
     for part_to_add_to_custom in parts_updated:
         add_part_to_inventory(
             category="Custom", part_to_add=part_to_add_to_custom, batch_data=batch_data
         )
-        print(f"{Colors.BOLD}{datetime.now()}{Colors.ENDC}\t\t{Colors.OKGREEN}[+] Added {part_to_add_to_custom} to Custom{Colors.ENDC}")
+        CustomPrint.print(f"INFO - Added {part_to_add_to_custom} to Custom", connected_clients=connected_clients)
 
 
 def add_part_to_inventory(category, part_to_add, batch_data) -> None:
@@ -68,58 +86,14 @@ def add_part_to_inventory(category, part_to_add, batch_data) -> None:
       batch_data: This is the data that is being imported.
     """
     parts_in_inventory.add_item_in_object(category, part_to_add)
-    parts_in_inventory.change_object_in_object_item(
-        category,
-        part_to_add,
-        "current_quantity",
-        batch_data[part_to_add]["quantity"],
-    )
-    parts_in_inventory.change_object_in_object_item(
-        category,
-        part_to_add,
-        "machine_time",
-        batch_data[part_to_add]["machine_time"],
-    )
-    parts_in_inventory.change_object_in_object_item(
-        category,
-        part_to_add,
-        "gauge",
-        batch_data[part_to_add]["gauge"],
-    )
-    parts_in_inventory.change_object_in_object_item(
-        category,
-        part_to_add,
-        "material",
-        batch_data[part_to_add]["material"],
-    )
-    parts_in_inventory.change_object_in_object_item(
-        category,
-        part_to_add,
-        "weight",
-        batch_data[part_to_add]["weight"],
-    )
-    parts_in_inventory.change_object_in_object_item(
-        category,
-        part_to_add,
-        "price",
-        calculate_price(batch_data, part_to_add),
-    )
-    parts_in_inventory.change_object_in_object_item(
-        category,
-        part_to_add,
-        "unit_quantity",
-        1,
-    )
-    parts_in_inventory.change_object_in_object_item(
-        category,
-        part_to_add,
-        "modified_date",
-        "Added at " + str(datetime.now().strftime("%B %d %A %Y %I:%M:%S %p")),
-    )
-    parts_in_inventory.change_object_in_object_item(category, part_to_add, "group", None)
+    batch_data[part_to_add]['modified_date'] = f'Added at {datetime.now().strftime("%B %d %A %Y %I:%M:%S %p")}'
+    batch_data[part_to_add]['current_quantity'] = batch_data[part_to_add]["quantity"]
+    batch_data[part_to_add]['unit_quantity'] =  1
+    batch_data[part_to_add]['price'] = calculate_price(batch_data, part_to_add)
+    parts_in_inventory.change_object_item(category, part_to_add, batch_data[part_to_add])
 
 
-def update_quantity(part_name_to_update: str, quantity: int) -> None:
+def update_quantity(batch_data: dict, part_name_to_update: str, quantity: int) -> None:
     """
     It takes a category, part name, and quantity as arguments, and then adds the quantity to the current
     quantity of the part in the category
@@ -136,19 +110,11 @@ def update_quantity(part_name_to_update: str, quantity: int) -> None:
             current_quantity: int = parts_in_inventory.get_data()[category][
                 part_name_to_update
             ]["current_quantity"]
-            parts_in_inventory.change_object_in_object_item(
-                category,
-                part_name_to_update,
-                "current_quantity",
-                current_quantity + quantity,
-            )
-            parts_in_inventory.change_object_in_object_item(
-                category,
-                part_name_to_update,
-                "modified_date",
-                f"{quantity} quantity added at "
-                + str(datetime.now().strftime("%B %d %A %Y %I:%M:%S %p")),
-            )
+            batch_data[part_name_to_update]['current_quantity'] = current_quantity + quantity
+            batch_data[part_name_to_update]['unit_quantity'] =  parts_in_inventory.get_data()[category][part_name_to_update]["unit_quantity"]
+            batch_data[part_name_to_update]['modified_date'] = f'{quantity} quantity added at {datetime.now().strftime("%B %d %A %Y %I:%M:%S %p")}'
+            batch_data[part_name_to_update]['price'] = calculate_price(batch_data, part_name_to_update)
+            parts_in_inventory.change_object_item(category, part_name_to_update, batch_data[part_name_to_update])
 
 
 def add_recut_parts(batch_data: dict, recut_parts: list[str]) -> None:
@@ -164,7 +130,6 @@ def add_recut_parts(batch_data: dict, recut_parts: list[str]) -> None:
         name = recut_part
         recut_count: int = 0
         if part_exists(category="Recut", part_name_to_find=recut_part):
-
             recut_count = (
                 parts_in_inventory.get_data()["Recut"][recut_part]["recut_count"] + 1
             )
@@ -174,64 +139,17 @@ def add_recut_parts(batch_data: dict, recut_parts: list[str]) -> None:
                 "recut_count",
                 recut_count,
             )
+            batch_data[recut_part]['recut_count'] = recut_count
             name = f"{recut_part} - (Recut {recut_count} time(s))"
+        else:
+            batch_data[recut_part]['recut_count'] = recut_count
         parts_in_inventory.add_item_in_object("Recut", name)
-        parts_in_inventory.change_object_in_object_item(
-            "Recut",
-            name,
-            "current_quantity",
-            batch_data[recut_part]["quantity"],
-        )
-        parts_in_inventory.change_object_in_object_item(
-            "Recut",
-            name,
-            "price",
-            calculate_price(batch_data, recut_part),
-        )
-        parts_in_inventory.change_object_in_object_item(
-            "Recut",
-            name,
-            "recut_count",
-            recut_count,
-        )
-        parts_in_inventory.change_object_in_object_item(
-            "Recut",
-            name,
-            "machine_time",
-            batch_data[recut_part]["machine_time"],
-        )
-        parts_in_inventory.change_object_in_object_item(
-            "Recut",
-            name,
-            "gauge",
-            batch_data[recut_part]["gauge"],
-        )
-        parts_in_inventory.change_object_in_object_item(
-            "Recut",
-            name,
-            "material",
-            batch_data[recut_part]["material"],
-        )
-        parts_in_inventory.change_object_in_object_item(
-            "Recut",
-            name,
-            "weight",
-            batch_data[recut_part]["weight"],
-        )
-        parts_in_inventory.change_object_in_object_item(
-            "Recut",
-            name,
-            "unit_quantity",
-            1,
-        )
-        parts_in_inventory.change_object_in_object_item(
-            "Recut",
-            name,
-            "modified_date",
-            "Added at " + str(datetime.now().strftime("%B %d %A %Y %I:%M:%S %p")),
-        )
-        parts_in_inventory.change_object_in_object_item("Recut", name, "group", None)
-        print(f"{Colors.BOLD}{datetime.now()}{Colors.ENDC}\t\t{Colors.OKGREEN}[+] Added {recut_part} to Recut{Colors.ENDC}")
+        batch_data[recut_part]['price'] = calculate_price(batch_data, recut_part)
+        batch_data[recut_part]['modified_date'] =  f'Added at {datetime.now().strftime("%B %d %A %Y %I:%M:%S %p")}'
+        batch_data[recut_part]['current_quantity'] =  batch_data[recut_part]['quantity']
+        batch_data[recut_part]['unit_quantity'] =  1
+        parts_in_inventory.change_object_item("Recut", name, batch_data[recut_part])
+        CustomPrint.print(f"INFO - Added {recut_part} to Recut", connected_clients=connected_clients)
 
 
 def calculate_price(batch_data: dict, part_name: str) -> float:
@@ -246,22 +164,12 @@ def calculate_price(batch_data: dict, part_name: str) -> float:
     Returns:
       The price of the part.
     """
-    round_number = lambda x, n: eval(
-        f'"%.{int(n)}f" % '
-        + repr(int(x) + round(float("." + str(float(x)).split(".")[1]), n))
-    )
     weight: float = batch_data[part_name]["weight"]
     machine_time: float = batch_data[part_name]["machine_time"]
     material: str = batch_data[part_name]["material"]
-    price_per_pound: float = price_of_steel_inventory.get_data()["Price Per Pound"][
-        material
-    ]["price"]
+    price_per_pound: float = price_of_steel_inventory.get_data()["Price Per Pound"][material]["price"]
     cost_for_laser: float = 250 if material in {"304 SS", "409 SS", "Aluminium"} else 150
-    return float(
-        round_number(
-            (machine_time * (cost_for_laser / 60)) + (weight * price_per_pound), 2
-        )
-    )
+    return float((machine_time * (cost_for_laser / 60)) + (weight * price_per_pound))
 
 
 def part_exists(category: str, part_name_to_find: str) -> bool:
@@ -352,7 +260,10 @@ def subtract_sheet_count(sheet_name_to_update: str, sheet_count: int) -> None:
                 price_of_steel_inventory.change_object_in_object_item(
                     category, sheet_name, "current_quantity", old_quantity - sheet_count
                 )
-                print(f"{Colors.BOLD}{datetime.now()}{Colors.ENDC}\t\t{Colors.OKGREEN}[+] Subtracted {sheet_count} quantities from {sheet_name_to_update}{Colors.ENDC}")
+                price_of_steel_inventory.change_object_in_object_item(
+                    category, sheet_name, "latest_change_current_quantity", f'Removed {sheet_count} at {datetime.now().strftime("%B %d %A %Y %I:%M:%S %p")}'
+                )
+                CustomPrint.print(f"INFO - Subtracted {sheet_count} quantities from {sheet_name_to_update}", connected_clients=connected_clients)
 
 
 def get_sheet_information(batch_data: dict) -> dict:
@@ -389,7 +300,15 @@ def sort_inventory() -> None:
         parts_in_inventory.sort(
             category=category, item_name="current_quantity", ascending=True
         )
-    print(f"{Colors.BOLD}{datetime.now()}{Colors.ENDC}\t\t{Colors.OKGREEN}[+] Sorted inventory{Colors.ENDC}")
+    CustomPrint.print(f"INFO - Sorted inventory", connected_clients=connected_clients)
+
+
+def signal_clients_for_changes(connected_clients) -> None:
+    CustomPrint.print(f'INFO - Signaling {len(connected_clients)} clients', connected_clients=connected_clients)
+    for client in connected_clients:
+        if client.ws_connection and client.ws_connection.stream.socket:
+            client.write_message('download changes')
+            CustomPrint.print(f'INFO - Signaling {client.request.remote_ip} to download changes', connected_clients=connected_clients)
 
 
 if __name__ == "__main__":

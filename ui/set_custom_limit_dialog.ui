@@ -43,7 +43,7 @@
 	border-bottom-left-radius:10px;
 	border-top-right-radius:10px;
 	border-bottom-right-radius:10px;
-	border: 1px solid  rgb(0,120,212);;
+	border: 1px solid #3daee9;
 }</string>
      </property>
      <layout class="QVBoxLayout" name="verticalLayout_3" stretch="0,0">
@@ -79,11 +79,10 @@
          </font>
         </property>
         <property name="styleSheet">
-         <string notr="true">background-color: rgb(0,120,212);
-border-top-left-radius:10px;
+         <string notr="true">border-top-left-radius:10px;
 border-top-right-radius:10px;
-border: 1px solid  rgb(0,120,212);
-</string>
+border: 1px solid  #3daee9;
+border-bottom: none;</string>
         </property>
         <property name="frameShape">
          <enum>QFrame::Box</enum>
@@ -95,7 +94,7 @@ border: 1px solid  rgb(0,120,212);
          <string>TextLabel</string>
         </property>
         <property name="alignment">
-         <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+         <set>Qt::AlignHCenter|Qt::AlignTop</set>
         </property>
        </widget>
       </item>

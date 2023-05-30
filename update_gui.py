@@ -1,30 +1,23 @@
+import sys
 import os
 import time
-import urllib.request
 import zipfile
-from turtle import width
 
 import requests
 from PyQt5.QtCore import (
     QEasingCurve,
-    QFile,
     QParallelAnimationGroup,
     QPoint,
     QPropertyAnimation,
     QSize,
     Qt,
-    QTextStream,
     QThread,
     pyqtSignal,
 )
-from PyQt5.QtGui import QIcon, QPixmap
 from PyQt5.QtWidgets import QApplication, QLabel, QVBoxLayout, QWidget
 
-from utils.json_file import JsonFile
 
 QApplication.setAttribute(Qt.AA_EnableHighDpiScaling, True)
-
-settings_file = JsonFile(file_name="settings")
 
 
 class DownloadThread(QThread):
@@ -42,14 +35,9 @@ class DownloadThread(QThread):
         It downloads a zip file, extracts it, and then deletes the zip file.
         """
         try:
-            self.signal.emit("Update starting, do not cancel this operation.")
-            QApplication.setOverrideCursor(Qt.WaitCursor)
-            time.sleep(2)
             self.signal.emit("Downloading update..")
             QApplication.setOverrideCursor(Qt.WaitCursor)
             self.download()
-            self.signal.emit("Download finished!")
-            time.sleep(1)
             QApplication.setOverrideCursor(Qt.WaitCursor)
             self.signal.emit("Installing...")
             QApplication.setOverrideCursor(Qt.WaitCursor)
@@ -66,10 +54,8 @@ class DownloadThread(QThread):
                         self.signal.emit("Close Invigo.exe to finish installing")
                 time.sleep(1)
             os.remove(self.file_name)
-            self.signal.emit("Updated successfully!")
+            self.signal.emit("Updated successfully, have a wonderful day! :)")
             QApplication.setOverrideCursor(Qt.WaitCursor)
-            time.sleep(1)
-            self.signal.emit("Have a great day! :)")
             time.sleep(2)
             self.signal.emit("")
         except Exception as e:
@@ -84,31 +70,30 @@ class DownloadThread(QThread):
         """
         try:
             get_response = requests.get(self.url, stream=True)
+            content_length = int(get_response.headers.get("content-length", 0))
             self.file_name = self.url.split("/")[-1]
-            total_download: int = 0
+            total_downloaded: int = 0
             with open(self.file_name, "wb") as f:
-                for chunk in get_response.iter_content(chunk_size=1024):
+                for chunk in get_response.iter_content(chunk_size=8192):
                     if chunk:
-                        total_download += len(chunk)
+                        total_downloaded += len(chunk)
                         f.write(chunk)
+                        self.signal.emit(f"Downloading update... {((total_downloaded/content_length)*100):.2f}%")
         except Exception as e:
-            print(f"{str(e)} ABORTING..")
+            self.signal.emit(f"{str(e)} ABORTING..")
 
 
 class Window(QWidget):
     def __init__(self):
         super().__init__()
         WIDTH, HEIGHT = 440, 120
-        BORDER_THICKNESS: int = 1
+        BORDER_THICKNESS: int = 2
         OFFSET: int = 50
         PROGRESS_BAR_HEIGHT: int = 20
         MAX_PROGRESS_BAR_WIDTH: int = 120
         PROGRESS_BAR_COLOR: str = "#3daee9"
         ANIMATION_DURATION: int = 2000
-        LOOP_DELAY: int = 2000
-        self.theme: str = (
-            "dark" if settings_file.get_value(item_name="dark_mode") else "light"
-        )
+        LOOP_DELAY: int = -1
 
         self.setFixedSize(WIDTH, HEIGHT)
         self.setWindowTitle("Inventory Manager Update")
@@ -118,50 +103,43 @@ class Window(QWidget):
         widget.resize(WIDTH, HEIGHT)
         widget.setObjectName("widget")
         widget.setStyleSheet(
-            "QWidget#widget{border-top-left-radius:10px; border-bottom-left-radius:10px; border-top-right-radius:10px; border-bottom-right-radius:10px; border: 1px solid  rgb(0,120,212);background-color: #2c2c2c;}"
+            "QWidget#widget{border-top-left-radius:10px; border-bottom-left-radius:10px; border-top-right-radius:10px; border-bottom-right-radius:10px; border: 1px solid  rgb(0,120,212); background-color: #292929;}"
         )
         self.progress_text = QLabel(widget)
+        self.progress_text.setStyleSheet("color: white;")
+        self.progress_text.setText("Invigo Updater")
         self.progress_text.setFixedSize(WIDTH - 20, 20)
         self.progress_text.setAlignment(Qt.AlignHCenter | Qt.AlignVCenter)
 
         self.background = QWidget(widget)
-        if self.theme == "dark":
-            self.background.setStyleSheet(
-                "background-color: #626568; border: {BORDER_THICKNESS}px solid #222222; border-radius: 3px;"
-            )
-        else:
-            self.background.setStyleSheet(
-                "background-color: rgba(106, 105, 105, 0.7); border: {BORDER_THICKNESS}px solid  #eff0f1; border-radius: 3px;"
-            )
-        self.background.move(
-            QPoint(OFFSET - BORDER_THICKNESS, HEIGHT - OFFSET - (BORDER_THICKNESS))
-        )
+        self.background.setStyleSheet("background-color: #404040; border: {BORDER_THICKNESS}px solid #191919; border-radius: 5px;")
+        self.background.move(QPoint(OFFSET - BORDER_THICKNESS, HEIGHT - OFFSET - (BORDER_THICKNESS)))
         self.background.resize(
             WIDTH - ((OFFSET - BORDER_THICKNESS) * 2),
             PROGRESS_BAR_HEIGHT + BORDER_THICKNESS * 2,
         )
 
         self.progress_bar = QWidget(widget)
-        self.progress_bar.setStyleSheet(
-            f"background-color: {PROGRESS_BAR_COLOR}; border-radius: 5px"
-        )
+        self.progress_bar.setStyleSheet(f"background-color: {PROGRESS_BAR_COLOR}; border-radius: 5px;")
         self.progress_bar.resize(0, PROGRESS_BAR_HEIGHT)
 
         self.anim = QPropertyAnimation(self.progress_bar, b"pos")
-        self.anim.setEasingCurve(QEasingCurve.InOutCubic)
-        self.anim.setStartValue(QPoint(OFFSET, HEIGHT - OFFSET))
-        self.anim.setEndValue(QPoint(WIDTH - (40 * 2) + 30-2, HEIGHT - OFFSET))
         self.anim.setDuration(ANIMATION_DURATION)
+        self.anim.setEasingCurve(QEasingCurve.OutBounce)
+        self.anim.setStartValue(QPoint(OFFSET, HEIGHT - OFFSET))
+        self.anim.setKeyValueAt(0.5, QPoint(WIDTH - OFFSET - 60, HEIGHT - OFFSET))
+        # self.anim.setEndValue(QPoint(OFFSET, HEIGHT - OFFSET))
+        # self.anim.setEndValue(QPoint(OFFSET, HEIGHT - OFFSET))
+        self.anim.setEndValue(QPoint(OFFSET, HEIGHT - OFFSET))
 
         self.anim_2 = QPropertyAnimation(self.progress_bar, b"size")
         self.anim_2.setDuration(ANIMATION_DURATION)
-        self.anim_2.setStartValue(QSize(0, PROGRESS_BAR_HEIGHT))
-        self.anim_2.setEasingCurve(QEasingCurve.InOutCubic)
-        self.anim_2.setKeyValueAt(0.0, QSize(0, PROGRESS_BAR_HEIGHT))
-        self.anim_2.setKeyValueAt(0.1, QSize(40, PROGRESS_BAR_HEIGHT))
-        self.anim_2.setKeyValueAt(0.4, QSize(MAX_PROGRESS_BAR_WIDTH, PROGRESS_BAR_HEIGHT))
-        self.anim_2.setKeyValueAt(0.8, QSize(40, PROGRESS_BAR_HEIGHT))
-        self.anim_2.setEndValue(QSize(0, PROGRESS_BAR_HEIGHT))
+        self.anim_2.setEasingCurve(QEasingCurve.BezierSpline)
+        self.anim_2.setStartValue(QSize(60, PROGRESS_BAR_HEIGHT))
+        # self.anim_2.setKeyValueAt(0.15, QSize(60, PROGRESS_BAR_HEIGHT))
+        self.anim_2.setKeyValueAt(0.5, QSize(60, PROGRESS_BAR_HEIGHT))
+        # self.anim_2.setKeyValueAt(0.85, QSize(60, PROGRESS_BAR_HEIGHT))
+        self.anim_2.setEndValue(QSize(60, PROGRESS_BAR_HEIGHT))
 
         self.anim_group = QParallelAnimationGroup(widget)
         self.anim_group.addAnimation(self.anim)
@@ -174,9 +152,7 @@ class Window(QWidget):
         widget.setLayout(self.layout)
         self.threads = []
 
-        download_thread = DownloadThread(
-            url="https://github.com/TheCodingJsoftware/Inventory-Manager/releases/latest/download/Inventory.Manager.zip"
-        )
+        download_thread = DownloadThread(url="https://github.com/TheCodingJsoftware/Inventory-Manager/releases/latest/download/Invigo.zip")
         QApplication.setOverrideCursor(Qt.WaitCursor)
         self.start_thread(download_thread)
 
@@ -200,15 +176,13 @@ class Window(QWidget):
         Args:
           data: the data received from the server
         """
-        self.progress_text.setText(data + "\n")
-        QApplication.restoreOverrideCursor()
+        self.progress_text.setText(data)
         if data == "":
+            QApplication.restoreOverrideCursor()
             self.close()
 
 
 if __name__ == "__main__":
-    import sys
-
     app = QApplication(sys.argv)
     wizard = Window()
     wizard.show()

@@ -5,39 +5,27 @@ import sys
 from datetime import datetime
 
 from utils.quote_excel_file import ExcelFile
+from utils.json_file import JsonFile
+
+settings_file = JsonFile(file_name="settings")
 
 
-class GenerateQuote():
-    def __init__(self, action: str, quote_data: dict) -> None:
-        action_mapping = {
-            'Generate Quote': (True, False, False),
-            'Generate Workorder & Update Inventory': (False, True, True),
-            'Generate Workorder & NOT Update Inventory': (False, True, False),
-            'Generate Quote & Workorder & Update Inventory': (True, True, True),
-            'Generate Quote & Workorder & NOT Update Inventory': (True, True, False)
-        }
+class GenerateQuote:
+    def __init__(self, action: tuple[bool, bool, bool, bool], quote_data: dict) -> None:
         self.program_directory = os.path.dirname(os.path.realpath(sys.argv[0]))
 
         config = configparser.ConfigParser()
         config.read(f"{self.program_directory}/laser_quote_variables.cfg")
-        self.nitrogen_cost_per_hour: int = float(
-            config.get("GLOBAL VARIABLES", "nitrogen_cost_per_hour"))
-        self.co2_cost_per_hour: int = float(
-            config.get("GLOBAL VARIABLES", "co2_cost_per_hour"))
-        self.PROFIT_MARGIN: float = float(
-            config.get("GLOBAL VARIABLES", "profit_margin"))
-        self.OVERHEAD: float = float(
-            config.get("GLOBAL VARIABLES", "overhead"))
-        self.path_to_save_quotes = config.get(
-            "GLOBAL VARIABLES", "path_to_save_quotes")
-        self.path_to_save_workorders = config.get(
-            "GLOBAL VARIABLES", "path_to_save_workorders")
-        self.price_of_steel_information_path = config.get(
-            "GLOBAL VARIABLES", "price_of_steel_information")
+        self.nitrogen_cost_per_hour: int = float(config.get("GLOBAL VARIABLES", "nitrogen_cost_per_hour"))
+        self.co2_cost_per_hour: int = float(config.get("GLOBAL VARIABLES", "co2_cost_per_hour"))
+        self.PROFIT_MARGIN: float = float(config.get("GLOBAL VARIABLES", "profit_margin"))
+        self.OVERHEAD: float = float(config.get("GLOBAL VARIABLES", "overhead"))
+        self.path_to_save_quotes = config.get("GLOBAL VARIABLES", "path_to_save_quotes")
+        self.path_to_save_workorders = config.get("GLOBAL VARIABLES", "path_to_save_workorders")
+        self.price_of_steel_information_path = config.get("GLOBAL VARIABLES", "price_of_steel_information")
         with open(self.price_of_steel_information_path, "r") as f:
             self.price_of_steel_information = json.load(f)
-        self.path_to_sheet_prices = config.get(
-            "GLOBAL VARIABLES", "path_to_sheet_prices")
+        self.path_to_sheet_prices = config.get("GLOBAL VARIABLES", "path_to_sheet_prices")
         with open(self.path_to_sheet_prices, "r") as f:
             self.sheet_prices = json.load(f)
         self.materials = config.get("GLOBAL VARIABLES", "materials")
@@ -51,9 +39,8 @@ class GenerateQuote():
         self.file_name = datetime.now().strftime("%Y-%m-%d-%H-%M-%S")
         self.quote_data = quote_data
         self.nests = self.get_nests()
-        self.should_generate_quote, self.should_generate_workorder, self.should_update_inventory = action_mapping[
-            action]
-        if self.should_generate_quote:
+        self.should_generate_quote, self.should_generate_workorder, self.should_update_inventory, self.should_generate_packing_slip = action
+        if self.should_generate_quote or self.should_generate_packing_slip:
             self.generate_quote()
         if self.should_generate_workorder:
             self.generate_workorder()
@@ -65,7 +52,8 @@ class GenerateQuote():
         """
         excel_document = ExcelFile(
             file_name=f"{self.path_to_save_quotes}/{self.file_name}.xlsm",
-            generate_quote=True
+            generate_quote=True,
+            should_generate_packing_slip=self.should_generate_packing_slip,
         )
         self.generate(excel_document)
 
@@ -75,7 +63,8 @@ class GenerateQuote():
         """
         excel_document = ExcelFile(
             file_name=f"{self.path_to_save_workorders}/{self.file_name}.xlsm",
-            generate_quote=False
+            generate_quote=False,
+            should_generate_packing_slip=self.should_generate_packing_slip,
         )
         self.generate(excel_document)
 
@@ -90,9 +79,7 @@ class GenerateQuote():
         """
         excel_document.add_list_to_sheet(cell="A1", items=self.materials)
         excel_document.add_list_to_sheet(cell="A2", items=self.gauges)
-        excel_document.add_list_to_sheet(
-            cell="A3", items=["Nitrogen", "CO2", "Packing Slip", "Quote", "Work Order"]
-        )
+        excel_document.add_list_to_sheet(cell="A3", items=["Nitrogen", "CO2", "Packing Slip", "Quote", "Work Order"])
         excel_document.add_list_to_sheet(
             cell="A4",
             items=[self.nitrogen_cost_per_hour, self.co2_cost_per_hour],
@@ -103,10 +90,7 @@ class GenerateQuote():
         )
         excel_document.add_list_to_sheet(
             cell="A6",
-            items=[
-                self.sheet_prices["Price Per Pound"][sheet_name]["price"]
-                for sheet_name in list(self.sheet_prices["Price Per Pound"].keys())
-            ],
+            items=[self.sheet_prices["Price Per Pound"][sheet_name]["price"] for sheet_name in list(self.sheet_prices["Price Per Pound"].keys())],
         )
         excel_document.set_row_hidden_sheet(cell="A1", hidden=True)
         excel_document.set_row_hidden_sheet(cell="A2", hidden=True)
@@ -180,20 +164,21 @@ class GenerateQuote():
             cell="A14",
             item=f"{len(self.nests)} files loaded",
         )
+        excel_document.add_list_to_sheet(cell="A15", items=self.nests, horizontal=False)
         excel_document.add_list_to_sheet(
-            cell="A15", items=self.nests, horizontal=False)
-        excel_document.add_list_to_sheet(cell=f"A{15+len(self.nests)}", items=['Gauge'] + list(
-            self.price_of_steel_information['pounds_per_square_foot'].keys()), horizontal=True)
-        excel_document.add_list_to_sheet(cell=f"A{16+len(self.nests)}", items=list(
-            self.price_of_steel_information['pounds_per_square_foot']['304 SS'].keys()), horizontal=False)
+            cell=f"A{15+len(self.nests)}", items=["Gauge"] + list(self.price_of_steel_information["pounds_per_square_foot"].keys()), horizontal=True
+        )
+        excel_document.add_list_to_sheet(
+            cell=f"A{16+len(self.nests)}", items=list(self.price_of_steel_information["pounds_per_square_foot"]["304 SS"].keys()), horizontal=False
+        )
         temp_col = {0: "B", 1: "C", 2: "D", 3: "E", 4: "F", 5: "G", 6: "H"}
-        for i, sheet_name in enumerate(list(self.price_of_steel_information['pounds_per_square_foot'].keys())):
-            for j, thickness in enumerate(self.price_of_steel_information['pounds_per_square_foot'][sheet_name]):
+        for i, sheet_name in enumerate(list(self.price_of_steel_information["pounds_per_square_foot"].keys())):
+            for j, thickness in enumerate(self.price_of_steel_information["pounds_per_square_foot"][sheet_name]):
                 excel_document.add_item_to_sheet(
-                    cell=f"{temp_col[i]}{16+len(self.nests)+j}", item=self.price_of_steel_information['pounds_per_square_foot'][sheet_name][thickness])
+                    cell=f"{temp_col[i]}{16+len(self.nests)+j}", item=self.price_of_steel_information["pounds_per_square_foot"][sheet_name][thickness]
+                )
 
-        excel_document.add_image(
-            cell="A1", path_to_image=f"{self.program_directory}/ui/logo.png")
+        excel_document.add_image(cell="A1", path_to_image=f"{self.program_directory}/ui/logo.png")
         excel_document.set_cell_height(cell="A1", height=33)
         excel_document.set_cell_height(cell="A2", height=34)
         excel_document.set_cell_height(cell="A3", height=34)
@@ -202,10 +187,8 @@ class GenerateQuote():
         # else:
         #     excel_document.add_item(cell="E1", item="Packing Slip")
         excel_document.add_item(cell="E2", item="Order #")
-        excel_document.add_list(
-            cell="F1", items=["", "", "", "", "", "", "", "", ""])
-        excel_document.add_list(
-            cell="F2", items=["", "", "", "", "", "", "", "", ""])
+        excel_document.add_list(cell="F1", items=["", "", "", "", "", "", "", "", ""])
+        excel_document.add_list(cell="F2", items=["", "", "", "", "", "", "", "", ""])
         excel_document.add_list(cell="F3", items=["", ""])
         excel_document.add_item(cell="A3", item="Date Shipped:")
         excel_document.add_item(cell="E3", item="Ship To:")
@@ -250,71 +233,45 @@ class GenerateQuote():
         excel_document.set_col_hidden(cell="O1", hidden=True)
 
         excel_document.add_item(cell="P2", item="Laser cutting:")
-        excel_document.add_item(cell="Q2", item='CO2')
-        excel_document.add_dropdown_selection(
-            cell="Q2", type="list", location="'info'!$A$3:$B$3"
-        )
-        excel_document.add_dropdown_selection(
-            cell="E1", type="list", location="'info'!$C$3:$E$3"
-        )
+        excel_document.add_item(cell="Q2", item="CO2")
+        excel_document.add_dropdown_selection(cell="Q2", type="list", location="'info'!$A$3:$B$3")
+        excel_document.add_dropdown_selection(cell="E1", type="list", location="'info'!$C$3:$E$3")
+
+        if self.should_generate_packing_slip:
+            excel_document.add_item("F2", f"{self.get_order_number()}")
+
         STARTING_ROW: int = 5
         nest_count_index: int = 0
         if self.should_generate_workorder:
             for nest in self.nests:
                 excel_document.add_item(
-                    cell=f"A{STARTING_ROW+nest_count_index}", item=f"{nest.split('/')[-1].replace('.pdf', '')} - {self.quote_data[nest]['gauge']} {self.quote_data[nest]['material']} {self.quote_data[nest]['sheet_dim']} - Scrap: {self.quote_data[nest]['scrap_percentage']}% - Sheet Count: {self.quote_data[nest]['quantity_multiplier']}")
+                    cell=f"A{STARTING_ROW+nest_count_index}",
+                    item=f"{nest.split('/')[-1].replace('.pdf', '')} - {self.quote_data[nest]['gauge']} {self.quote_data[nest]['material']} {self.quote_data[nest]['sheet_dim']} - Scrap: {self.quote_data[nest]['scrap_percentage']}% - Sheet Count: {self.quote_data[nest]['quantity_multiplier']}",
+                )
                 nest_count_index += 1
-            excel_document.set_pagebreak(STARTING_ROW+nest_count_index)
+            excel_document.set_pagebreak(STARTING_ROW + nest_count_index)
             nest_count_index += 2
-        excel_document.add_item(
-            cell=f"P{nest_count_index+3}", item="Sheets:", totals=False)
-        excel_document.add_item(
-            cell=f"Q{nest_count_index+3}", item=self.get_total_sheet_count(), totals=False)
+        excel_document.add_item(cell=f"P{nest_count_index+3}", item="Sheets:", totals=False)
+        excel_document.add_item(cell=f"Q{nest_count_index+3}", item=self.get_total_sheet_count(), totals=False)
         index: int = nest_count_index
         for item in list(self.quote_data.keys()):
-            if item[0] == '_':
+            if item[0] == "_":
                 continue
             row: int = index + STARTING_ROW
-            excel_document.add_dropdown_selection(
-                cell=f"E{row}", type="list", location="'info'!$A$1:$H$1"
-            )
-            excel_document.add_dropdown_selection(
-                cell=f"F{row}", type="list", location="'info'!$A$2:$K$2"
-            )
+            excel_document.add_dropdown_selection(cell=f"E{row}", type="list", location="'info'!$A$1:$H$1")
+            excel_document.add_dropdown_selection(cell=f"F{row}", type="list", location="'info'!$A$2:$K$2")
 
-            excel_document.add_item(
-                cell=f"B{row}", item=item
-            )  # File name B
-            excel_document.add_item(
-                cell=f"C{row}", item=self.quote_data[item]['machine_time']
-            )  # Machine Time C
-            excel_document.add_item(
-                cell=f"D{row}", item=self.quote_data[item]['weight']
-            )  # Weight D
-            excel_document.add_item(
-                cell=f"E{row}", item=self.quote_data[item]['material']
-            )  # Material Type E
-            excel_document.add_item(
-                cell=f"F{row}", item=self.quote_data[item]['gauge']
-            )  # Gauge Selection F
-            excel_document.add_item(
-                cell=f"G{row}", item=self.quote_data[item]['quantity']
-            )  # Quantity G
-            excel_document.add_item(
-                cell=f"L{row}", item=self.quote_data[item]['surface_area']
-            )  # Cutting Length L
-            excel_document.add_item(
-                cell=f"M{row}", item=self.quote_data[item]['cutting_length']
-            )  # Surface Area M
-            excel_document.add_item(
-                cell=f"N{row}", item=self.quote_data[item]['piercing_time']
-            )  # Piercing Time N
-            cost_for_weight = (
-                f"INDEX(info!$A$6:$G$6,MATCH($E${row},info!$A$5:$G$5,0))*$D${row}"
-            )
-            cost_for_time = (
-                f"(INDEX('info'!$A$4:$B$4,MATCH($Q$2,'info'!$A$3:$B$3,0))/60)*$C${row}"
-            )
+            excel_document.add_item(cell=f"B{row}", item=item)  # File name B
+            excel_document.add_item(cell=f"C{row}", item=self.quote_data[item]["machine_time"])  # Machine Time C
+            excel_document.add_item(cell=f"D{row}", item=self.quote_data[item]["weight"])  # Weight D
+            excel_document.add_item(cell=f"E{row}", item=self.quote_data[item]["material"])  # Material Type E
+            excel_document.add_item(cell=f"F{row}", item=self.quote_data[item]["gauge"])  # Gauge Selection F
+            excel_document.add_item(cell=f"G{row}", item=self.quote_data[item]["quantity"])  # Quantity G
+            excel_document.add_item(cell=f"L{row}", item=self.quote_data[item]["surface_area"])  # Cutting Length L
+            excel_document.add_item(cell=f"M{row}", item=self.quote_data[item]["cutting_length"])  # Surface Area M
+            excel_document.add_item(cell=f"N{row}", item=self.quote_data[item]["piercing_time"])  # Piercing Time N
+            cost_for_weight = f"INDEX(info!$A$6:$G$6,MATCH($E${row},info!$A$5:$G$5,0))*$D${row}"
+            cost_for_time = f"(INDEX('info'!$A$4:$B$4,MATCH($Q$2,'info'!$A$3:$B$3,0))/60)*$C${row}"
             quantity = f"$G{row}"
             excel_document.add_item(
                 cell=f"H{row}",
@@ -366,18 +323,12 @@ class GenerateQuote():
             headers=headers,
         )
         index -= nest_count_index + 1
-        excel_document.add_item(
-            cell=f"A{index+STARTING_ROW+1}", item="", totals=True)
-        excel_document.add_item(
-            cell=f"B{index+STARTING_ROW+1}", item="", totals=True)
-        excel_document.add_item(
-            cell=f"C{index+STARTING_ROW+1}", item="", totals=True)
-        excel_document.add_item(
-            cell=f"D{index+STARTING_ROW+1}", item="", totals=True)
-        excel_document.add_item(
-            cell=f"E{index+STARTING_ROW+1}", item="", totals=True)
-        excel_document.add_item(
-            cell=f"F{index+STARTING_ROW+1}", item="", totals=True)
+        excel_document.add_item(cell=f"A{index+STARTING_ROW+1}", item="", totals=True)
+        excel_document.add_item(cell=f"B{index+STARTING_ROW+1}", item="", totals=True)
+        excel_document.add_item(cell=f"C{index+STARTING_ROW+1}", item="", totals=True)
+        excel_document.add_item(cell=f"D{index+STARTING_ROW+1}", item="", totals=True)
+        excel_document.add_item(cell=f"E{index+STARTING_ROW+1}", item="", totals=True)
+        excel_document.add_item(cell=f"F{index+STARTING_ROW+1}", item="", totals=True)
         excel_document.add_item(
             cell=f"C{index+STARTING_ROW+1}",
             item="=SUMPRODUCT(Table1[Machining time (min)],Table1[Qty])",
@@ -388,19 +339,20 @@ class GenerateQuote():
             item="=SUMPRODUCT(Table1[Weight (lb)],Table1[Qty])",
             totals=True,
         )
-        excel_document.add_item(
-            cell=f"R{index+STARTING_ROW+1}", item="Total:", totals=False)
+        excel_document.add_item(cell=f"R{index+STARTING_ROW+1}", item="Total:", totals=False)
         sheet_dim_left = f'TEXTAFTER("{self.quote_data[self.nests[0]]["sheet_dim"]}", " x ")'
         sheet_dim_right = f'TEXTBEFORE("{self.quote_data[self.nests[0]]["sheet_dim"]}", " x ")'
         price_per_pound = "INDEX(info!$A$6:$G$6,MATCH($E${6+nest_count_index}, info!$A$5:$G$5,0))"
-        pounds_per_sheet = f'INDEX(info!$B${16+len(self.nests)}:$H${16+len(self.nests)+15},MATCH($F${6+nest_count_index},info!$A${16+len(self.nests)}:$A${16+len(self.nests)+15},0),MATCH($E${6+nest_count_index},info!$B${15+len(self.nests)}:$H${15+len(self.nests)},0))'
-        sheet_quantity = f'Q{index+STARTING_ROW+1}'
+        pounds_per_sheet = f"INDEX(info!$B${16+len(self.nests)}:$H${16+len(self.nests)+15},MATCH($F${6+nest_count_index},info!$A${16+len(self.nests)}:$A${16+len(self.nests)+15},0),MATCH($E${6+nest_count_index},info!$B${15+len(self.nests)}:$H${15+len(self.nests)},0))"
+        sheet_quantity = f"Q{index+STARTING_ROW+1}"
         excel_document.add_item(
-            cell=f"S{index+STARTING_ROW+1}", item=f'={sheet_dim_right}*{sheet_dim_left}/144*{price_per_pound}*{pounds_per_sheet}*{sheet_quantity}', number_format="$#,##0.00", totals=False)
-        excel_document.add_item(
-            cell=f"G{index+STARTING_ROW+1}", item="", totals=True)
-        excel_document.add_item(
-            cell=f"J{index+STARTING_ROW+1}", item="Total: ", totals=True)
+            cell=f"S{index+STARTING_ROW+1}",
+            item=f"={sheet_dim_right}*{sheet_dim_left}/144*{price_per_pound}*{pounds_per_sheet}*{sheet_quantity}",
+            number_format="$#,##0.00",
+            totals=False,
+        )
+        excel_document.add_item(cell=f"G{index+STARTING_ROW+1}", item="", totals=True)
+        excel_document.add_item(cell=f"J{index+STARTING_ROW+1}", item="Total: ", totals=True)
         excel_document.add_item(
             cell=f"H{index+STARTING_ROW+1}",
             item="=SUM(Table1[COGS])",
@@ -419,8 +371,7 @@ class GenerateQuote():
             number_format="$#,##0.00",
             totals=True,
         )
-        excel_document.add_item(
-            cell=f"K{index+STARTING_ROW+2}", item="No Tax Included")
+        excel_document.add_item(cell=f"K{index+STARTING_ROW+2}", item="No Tax Included")
         if self.should_generate_quote:
             excel_document.add_item(
                 cell=f"B{index+STARTING_ROW+2}",
@@ -464,27 +415,24 @@ class GenerateQuote():
             totals=True,
         )
         excel_document.add_item(cell="S1", item="Overhead:")
-        excel_document.add_item(
-            cell="T1", item=self.OVERHEAD, number_format="0%")
+        excel_document.add_item(cell="T1", item=self.OVERHEAD, number_format="0%")
 
         excel_document.add_item(cell="S2", item="Profit Margin:")
-        excel_document.add_item(
-            cell="T2", item=self.PROFIT_MARGIN, number_format="0%")
+        excel_document.add_item(cell="T2", item=self.PROFIT_MARGIN, number_format="0%")
 
         if self.should_generate_quote:
             excel_document.set_print_area(cell=f"A1:K{index + STARTING_ROW+6}")
         else:
             excel_document.set_print_area(cell=f"A1:Q{index + STARTING_ROW+1}")
 
-        excel_document.add_macro(
-            macro_path=f"{self.program_directory}/macro.bin")
-        '''
+        excel_document.add_macro(macro_path=f"{self.program_directory}/macro.bin")
+        """
         Macro Code:
         Private Sub Workbook_Open()
             Application.Iteration = True
             Application.MaxIterations = 1
         End Sub
-        '''
+        """
 
         if self.should_generate_workorder:
             excel_document.set_col_hidden("J1", True)
@@ -495,7 +443,7 @@ class GenerateQuote():
         excel_document.save()
 
     def get_nests(self) -> list[str]:
-        return [item for item in list(self.quote_data.keys()) if item[0] == '_']
+        return [item for item in list(self.quote_data.keys()) if item[0] == "_"]
 
     def get_total_sheet_count(self) -> int:
         """
@@ -506,10 +454,7 @@ class GenerateQuote():
           The function `get_total_sheet_count` is returning an integer value which is the sum of the
         `quantity_multiplier` values for all the nests in the `quote_data` dictionary.
         """
-        return sum(
-            self.quote_data[nest]['quantity_multiplier']
-            for nest in self.get_nests()
-        )
+        return sum(self.quote_data[nest]["quantity_multiplier"] for nest in self.get_nests())
 
     def get_cutting_method(self, material: str) -> str:
         """
@@ -527,3 +472,20 @@ class GenerateQuote():
         with open(f"{self.program_directory}/material_id.json", "r") as material_id_file:
             data = json.load(material_id_file)
         return data[material]["cut"]
+
+    def get_order_number(self) -> int:
+        """
+        This function retrieves an order number from a JSON file, increments it by 1, updates the JSON
+        file with the new order number, and returns the original order number.
+
+        Returns:
+          an integer value which is the order number.
+        """
+        with open(settings_file.get_value("path_to_order_number")) as f:
+            order_number_data = json.load(f)
+        order_number: int = order_number_data["order_number"]
+        settings_file.change_item("order_number", order_number + 1)
+        order_number_data["order_number"] = order_number + 1
+        with open(settings_file.get_value("path_to_order_number"), "w", encoding="utf-8") as json_file:
+            json.dump(order_number_data, json_file, ensure_ascii=False, indent=4)
+        return order_number

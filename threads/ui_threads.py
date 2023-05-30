@@ -10,7 +10,6 @@ from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import QMenu
 
 from ui.custom_widgets import (
-    CostLineEdit,
     CurrentQuantitySpinBox,
     DeletePushButton,
     ExchangeRateComboBox,

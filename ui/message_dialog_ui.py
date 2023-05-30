@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'f:\Code\Python-Projects\Inventory Manager\ui\set_custom_limit_dialog.ui'
+# Form implementation generated from reading ui file 'f:\Code\Python-Projects\Inventory Manager\ui\message_dialog.ui'
 #
 # Created by: PyQt5 UI code generator 5.15.9
 #
@@ -14,7 +14,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class Ui_Form(object):
     def setupUi(self, Form):
         Form.setObjectName("Form")
-        Form.resize(287, 185)
+        Form.resize(460, 330)
         self.horizontalLayout = QtWidgets.QHBoxLayout(Form)
         self.horizontalLayout.setContentsMargins(0, 0, 0, 0)
         self.horizontalLayout.setSpacing(0)
@@ -27,14 +27,13 @@ class Ui_Form(object):
 "    border-bottom-left-radius:10px;\n"
 "    border-top-right-radius:10px;\n"
 "    border-bottom-right-radius:10px;\n"
-"    border: 1px solid #3daee9;\n"
+"    border: 1px solid  #3daee9;\n"
 "}")
         self.widget.setObjectName("widget")
         self.verticalLayout_3 = QtWidgets.QVBoxLayout(self.widget)
         self.verticalLayout_3.setContentsMargins(0, 0, 0, 0)
         self.verticalLayout_3.setObjectName("verticalLayout_3")
         self.lblTitle = QtWidgets.QLabel(self.widget)
-        self.lblTitle.setMinimumSize(QtCore.QSize(0, 30))
         self.lblTitle.setMaximumSize(QtCore.QSize(16777215, 16777215))
         font = QtGui.QFont()
         font.setPointSize(12)
@@ -67,48 +66,20 @@ class Ui_Form(object):
         self.scrollArea.setWidgetResizable(True)
         self.scrollArea.setObjectName("scrollArea")
         self.scrollAreaWidgetContents = QtWidgets.QWidget()
-        self.scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, 0, 237, 69))
+        self.scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, 0, 410, 266))
         self.scrollAreaWidgetContents.setObjectName("scrollAreaWidgetContents")
         self.verticalLayout_4 = QtWidgets.QVBoxLayout(self.scrollAreaWidgetContents)
         self.verticalLayout_4.setContentsMargins(0, 0, 0, 0)
         self.verticalLayout_4.setSpacing(0)
         self.verticalLayout_4.setObjectName("verticalLayout_4")
         self.lblMessage = QtWidgets.QLabel(self.scrollAreaWidgetContents)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Minimum)
-        sizePolicy.setHorizontalStretch(0)
-        sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.lblMessage.sizePolicy().hasHeightForWidth())
-        self.lblMessage.setSizePolicy(sizePolicy)
         self.lblMessage.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignTop)
+        self.lblMessage.setWordWrap(True)
         self.lblMessage.setObjectName("lblMessage")
         self.verticalLayout_4.addWidget(self.lblMessage)
         self.scrollArea.setWidget(self.scrollAreaWidgetContents)
         self.horizontalLayout_4.addWidget(self.scrollArea)
         self.verticalLayout.addLayout(self.horizontalLayout_4)
-        self.gridLayout = QtWidgets.QGridLayout()
-        self.gridLayout.setObjectName("gridLayout")
-        self.label_3 = QtWidgets.QLabel(self.widget)
-        self.label_3.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
-        self.label_3.setObjectName("label_3")
-        self.gridLayout.addWidget(self.label_3, 1, 0, 1, 1)
-        self.doubleSpinBox_red_limit = QtWidgets.QDoubleSpinBox(self.widget)
-        self.doubleSpinBox_red_limit.setAccelerated(True)
-        self.doubleSpinBox_red_limit.setDecimals(2)
-        self.doubleSpinBox_red_limit.setMaximum(1000000000.0)
-        self.doubleSpinBox_red_limit.setProperty("value", 10.0)
-        self.doubleSpinBox_red_limit.setObjectName("doubleSpinBox_red_limit")
-        self.gridLayout.addWidget(self.doubleSpinBox_red_limit, 0, 3, 1, 1)
-        self.label_7 = QtWidgets.QLabel(self.widget)
-        self.label_7.setObjectName("label_7")
-        self.gridLayout.addWidget(self.label_7, 0, 0, 1, 1)
-        self.doubleSpinBox_yellow_limit = QtWidgets.QDoubleSpinBox(self.widget)
-        self.doubleSpinBox_yellow_limit.setAccelerated(True)
-        self.doubleSpinBox_yellow_limit.setDecimals(2)
-        self.doubleSpinBox_yellow_limit.setMaximum(1000000000.0)
-        self.doubleSpinBox_yellow_limit.setProperty("value", 20.0)
-        self.doubleSpinBox_yellow_limit.setObjectName("doubleSpinBox_yellow_limit")
-        self.gridLayout.addWidget(self.doubleSpinBox_yellow_limit, 1, 3, 1, 1)
-        self.verticalLayout.addLayout(self.gridLayout)
         self.buttonsLayout = QtWidgets.QHBoxLayout()
         self.buttonsLayout.setObjectName("buttonsLayout")
         self.verticalLayout.addLayout(self.buttonsLayout)
@@ -123,5 +94,3 @@ class Ui_Form(object):
         Form.setWindowTitle(_translate("Form", "Form"))
         self.lblTitle.setText(_translate("Form", "TextLabel"))
         self.lblMessage.setText(_translate("Form", "TextLabel"))
-        self.label_3.setText(_translate("Form", "Yellow Quantity Limit:"))
-        self.label_7.setText(_translate("Form", "Red Quantity Limit:"))

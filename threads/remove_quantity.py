@@ -19,7 +19,6 @@ class RemoveQuantityThread(QThread):
         self,
         inventory: JsonFile,
         category: str,
-        inventory_prices_objects: dict,
         multiplier: int,
     ) -> None:
         """
@@ -35,12 +34,12 @@ class RemoveQuantityThread(QThread):
         QThread.__init__(self)
         self.username = os.getlogin().title()
         self.category = category
-        self.inventory_prices_objects = inventory_prices_objects
         self.completion_count: int = 0
         self.multiplier: int = multiplier
         self.max_item_count = inventory.get_sum_of_items()
         self.inventory = inventory
 
+    # TODO MAKE BETTER
     def run(self) -> None:
         """
         It takes the current quantity of an item, subtracts the unit quantity of the item multiplied by
@@ -50,48 +49,36 @@ class RemoveQuantityThread(QThread):
         try:
             inventory = self.inventory.get_data()
             part_numbers = []
-            for item, object_item in zip(
-                list(inventory[self.category].keys()),
-                list(self.inventory_prices_objects.keys()),
-            ):
+            for item in list(inventory[self.category].keys()):
                 unit_quantity: int = inventory[self.category][item]["unit_quantity"]
                 current_quantity: int = inventory[self.category][item]["current_quantity"]
                 part_numbers.append(inventory[self.category][item]["part_number"])
-                # spin_current_quantity = self.inventory_prices_objects[object_item][
-                #     "current_quantity"
-                # ]
-                inventory[self.category][item]["current_quantity"] = current_quantity - (
-                    unit_quantity * self.multiplier
-                )
+                inventory[self.category][item]["current_quantity"] = current_quantity - (unit_quantity * self.multiplier)
                 inventory[self.category][item][
                     "latest_change_current_quantity"
-                ] = f"Latest Change:\nfrom: {current_quantity}\nto: {current_quantity - (unit_quantity * self.multiplier)}\n{self.username}\n{datetime.now().strftime('%B %d %A %Y %I:%M:%S %p')}"
-                # spin_current_quantity.setValue(
-                #     int(current_quantity - (unit_quantity * self.multiplier))
-                # )
+                ] = f"{self.username} - Changed from {current_quantity} to {current_quantity - (unit_quantity * self.multiplier)} at {datetime.now().strftime('%B %d %A %Y %I-%M-%S %p')}"
                 self.completion_count += 1
                 self.signal.emit(f"{self.completion_count}, {self.max_item_count}")
             part_numbers = list(set(part_numbers))
-            for category in list(inventory.keys()):
+            for category in self.inventory.get_keys():
                 if category == self.category:
                     continue
                 self.max_item_count += len(list(inventory[category].keys())) * len(
                     part_numbers
                 )
+            for category in self.inventory.get_keys():
+                if category == self.category:
+                    continue
                 for item, part_number in itertools.product(
                     list(inventory[category].keys()), part_numbers
                 ):
                     if part_number == inventory[category][item]["part_number"]:
                         unit_quantity: int = inventory[category][item]["unit_quantity"]
-                        current_quantity: int = inventory[category][item][
-                            "current_quantity"
-                        ]
-                        inventory[category][item][
-                            "current_quantity"
-                        ] = current_quantity - (unit_quantity * self.multiplier)
+                        current_quantity: int = inventory[category][item]["current_quantity"]
+                        inventory[category][item]["current_quantity"] = current_quantity - (unit_quantity * self.multiplier)
                         inventory[category][item][
                             "latest_change_current_quantity"
-                        ] = f"Latest Change:\nfrom: {current_quantity}\nto: {current_quantity - (unit_quantity * self.multiplier)}\n{self.username}\n{datetime.now().strftime('%B %d %A %Y %I:%M:%S %p')}"
+                        ] = f"{self.username} - Changed from {current_quantity} to {current_quantity - (unit_quantity * self.multiplier)} at {datetime.now().strftime('%B %d %A %Y %I-%M-%S %p')}"
                     self.completion_count += 1
                     self.signal.emit(f"{self.completion_count}, {self.max_item_count}")
             self.inventory.save_data(inventory)

@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'f:\Code\Python-Projects\Inventory Manager\ui\select_action_dialog.ui'
+# Form implementation generated from reading ui file 'f:\Code\Python-Projects\Inventory Manager\ui\input_dialog.ui'
 #
 # Created by: PyQt5 UI code generator 5.15.9
 #
@@ -14,7 +14,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class Ui_Form(object):
     def setupUi(self, Form):
         Form.setObjectName("Form")
-        Form.resize(500, 310)
+        Form.resize(380, 222)
         self.horizontalLayout = QtWidgets.QHBoxLayout(Form)
         self.horizontalLayout.setContentsMargins(0, 0, 0, 0)
         self.horizontalLayout.setSpacing(0)
@@ -27,7 +27,7 @@ class Ui_Form(object):
 "    border-bottom-left-radius:10px;\n"
 "    border-top-right-radius:10px;\n"
 "    border-bottom-right-radius:10px;\n"
-"    border: 1px solid  rgb(0,120,212);;\n"
+"    border: 1px solid  #3daee9;\n"
 "}")
         self.widget.setObjectName("widget")
         self.verticalLayout_3 = QtWidgets.QVBoxLayout(self.widget)
@@ -38,14 +38,13 @@ class Ui_Form(object):
         font = QtGui.QFont()
         font.setPointSize(12)
         self.lblTitle.setFont(font)
-        self.lblTitle.setStyleSheet("background-color: rgb(0,120,212);\n"
-"border-top-left-radius:10px;\n"
+        self.lblTitle.setStyleSheet("border-top-left-radius:10px;\n"
 "border-top-right-radius:10px;\n"
-"border: 1px solid  rgb(0,120,212);\n"
-"")
+"border: 1px solid  #3daee9;\n"
+"border-bottom: none;")
         self.lblTitle.setFrameShape(QtWidgets.QFrame.Box)
         self.lblTitle.setFrameShadow(QtWidgets.QFrame.Sunken)
-        self.lblTitle.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignTop)
+        self.lblTitle.setAlignment(QtCore.Qt.AlignHCenter|QtCore.Qt.AlignTop)
         self.lblTitle.setObjectName("lblTitle")
         self.verticalLayout_3.addWidget(self.lblTitle)
         self.verticalLayout = QtWidgets.QVBoxLayout()
@@ -67,7 +66,7 @@ class Ui_Form(object):
         self.scrollArea.setWidgetResizable(True)
         self.scrollArea.setObjectName("scrollArea")
         self.scrollAreaWidgetContents = QtWidgets.QWidget()
-        self.scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, 0, 328, 236))
+        self.scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, 0, 330, 132))
         self.scrollAreaWidgetContents.setObjectName("scrollAreaWidgetContents")
         self.verticalLayout_4 = QtWidgets.QVBoxLayout(self.scrollAreaWidgetContents)
         self.verticalLayout_4.setContentsMargins(0, 0, 0, 0)
@@ -86,9 +85,9 @@ class Ui_Form(object):
         self.scrollArea.setWidget(self.scrollAreaWidgetContents)
         self.horizontalLayout_4.addWidget(self.scrollArea)
         self.verticalLayout.addLayout(self.horizontalLayout_4)
-        self.gridLayout = QtWidgets.QGridLayout()
-        self.gridLayout.setObjectName("gridLayout")
-        self.verticalLayout.addLayout(self.gridLayout)
+        self.lineEditInput = QtWidgets.QLineEdit(self.widget)
+        self.lineEditInput.setObjectName("lineEditInput")
+        self.verticalLayout.addWidget(self.lineEditInput)
         self.buttonsLayout = QtWidgets.QHBoxLayout()
         self.buttonsLayout.setObjectName("buttonsLayout")
         self.verticalLayout.addLayout(self.buttonsLayout)

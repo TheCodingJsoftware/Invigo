@@ -15,7 +15,7 @@ from utils.json_file import JsonFile
 settings_file = JsonFile(file_name="settings")
 
 
-class SelectActionDialog(QDialog):
+class GenerateQuoteDialog(QDialog):
     """
     Select dialog
     """
@@ -42,19 +42,15 @@ class SelectActionDialog(QDialog):
         """
         if options is None:
             options = []
-        super(SelectActionDialog, self).__init__(parent)
-        uic.loadUi("ui/select_action_dialog.ui", self)
+        super(GenerateQuoteDialog, self).__init__(parent)
+        uic.loadUi("ui/generate_quote_dialog.ui", self)
 
         self.icon_name = icon_name
         self.button_names = button_names
         self.title = title
         self.message = message
         self.inputText: str = ""
-        self.theme: str = (
-            "dark" if settings_file.get_value(item_name="dark_mode") else "light"
-        )
-        self.options = []
-        self.go_button = None
+        self.theme: str = "dark" if settings_file.get_value(item_name="dark_mode") else "light"
 
         self.setWindowFlags(Qt.Window | Qt.FramelessWindowHint)
         self.setWindowIcon(QIcon("icons/icon.png"))
@@ -63,10 +59,26 @@ class SelectActionDialog(QDialog):
         self.lblMessage.setText(self.message)
 
         self.load_dialog_buttons()
-
-        # self.gridLayout.addItems(self.options)
-        self.add_items(options)
-
+        self.pushButton_update_inventory.clicked.connect(
+            lambda: self.pushButton_update_inventory.setText("Add Parts to Inventory")
+            if self.pushButton_update_inventory.isChecked()
+            else self.pushButton_update_inventory.setText("Do NOT Add Parts to Inventory")
+        )
+        self.pushButton_quote.clicked.connect(
+            lambda: self.pushButton_quote.setText("Generate Quote")
+            if self.pushButton_quote.isChecked()
+            else self.pushButton_quote.setText("Do NOT Generate Quote")
+        )
+        self.pushButton_workorder.clicked.connect(
+            lambda: self.pushButton_workorder.setText("Generate Workorder")
+            if self.pushButton_workorder.isChecked()
+            else self.pushButton_workorder.setText("Do NOT Generate Workorder")
+        )
+        self.pushButton_packingslip.clicked.connect(
+            lambda: self.pushButton_packingslip.setText("Generate Packing Slip")
+            if self.pushButton_packingslip.isChecked()
+            else self.pushButton_packingslip.setText("Do NOT Generate Packing Slip")
+        )
         svg_icon = self.get_icon(icon_name)
         svg_icon.setFixedSize(62, 50)
         self.iconHolder.addWidget(svg_icon)
@@ -75,25 +87,11 @@ class SelectActionDialog(QDialog):
 
         self.load_theme()
 
-    def add_items(self, options) -> None:
-        for index, item in enumerate(options):
-            row = index // 1  # Calculate the row index
-            column = index % 1  # Calculate the column index
-
-            radio_button = QRadioButton(item.replace('&', '&&'))
-            radio_button.toggled.connect(self.enable_go_button)
-            radio_button.setObjectName('option')
-            self.gridLayout.addWidget(radio_button, row, column)
-            self.options.append(radio_button)
-
-    def enable_go_button(self) -> None:
-        self.go_button.setEnabled(True)
-
     def load_theme(self) -> None:
         """
         It loads the stylesheet.qss file from the theme folder
         """
-        set_theme(self, theme='dark')
+        set_theme(self, theme="dark")
 
     def get_icon(self, path_to_icon: str) -> QtSvg.QSvgWidget:
         """
@@ -105,9 +103,7 @@ class SelectActionDialog(QDialog):
         Returns:
           A QSvgWidget object.
         """
-        return QtSvg.QSvgWidget(
-            f"ui/BreezeStyleSheets/dist/pyqt6/{self.theme}/{path_to_icon}"
-        )
+        return QtSvg.QSvgWidget(f"ui/BreezeStyleSheets/dist/pyqt6/{self.theme}/{path_to_icon}")
 
     def button_press(self, button) -> None:
         """
@@ -129,23 +125,12 @@ class SelectActionDialog(QDialog):
         for index, name in enumerate(button_names):
             if name == DialogButtons.clone:
                 button = QPushButton(f"  {name}")
-                button.setIcon(
-                    QIcon(f"ui/BreezeStyleSheets/dist/pyqt6/{self.theme}/dialog_ok.svg")
-                )
-            elif os.path.isfile(
-                f"ui/BreezeStyleSheets/dist/pyqt6/{self.theme}/dialog_{name.lower()}.svg"
-            ):
+                button.setIcon(QIcon(f"ui/BreezeStyleSheets/dist/pyqt6/{self.theme}/dialog_ok.svg"))
+            elif os.path.isfile(f"ui/BreezeStyleSheets/dist/pyqt6/{self.theme}/dialog_{name.lower()}.svg"):
                 button = QPushButton(f"  {name}")
-                button.setIcon(
-                    QIcon(
-                        f"ui/BreezeStyleSheets/dist/pyqt6/{self.theme}/dialog_{name.lower()}.svg"
-                    )
-                )
+                button.setIcon(QIcon(f"ui/BreezeStyleSheets/dist/pyqt6/{self.theme}/dialog_{name.lower()}.svg"))
             else:
                 button = QPushButton(name)
-                if name == 'Go':
-                    button.setEnabled(False)
-                    self.go_button = button
             if index == 0:
                 button.setObjectName("default_dialog_button")
                 set_default_dialog_button_stylesheet(button)
@@ -166,14 +151,17 @@ class SelectActionDialog(QDialog):
         """
         return self.response.replace(" ", "")
 
-    def get_selected_item(self) -> str:
+    def get_selected_item(self) -> tuple[bool, bool, bool, bool]:
         """
-        It returns the text of the currently selected item in the list widget
+        This function returns a tuple of boolean values indicating which push buttons are checked.
 
         Returns:
-          The text of the current item in the list widget.
+          A tuple containing three boolean values representing whether the corresponding push button
+        (quote, work order, update inventory) is checked or not.
         """
-        for radio_button in self.options:
-            if radio_button.isChecked():
-                return radio_button.text().replace('&&', '&')
-        # return self.listWidget.currentItem().text()
+        return (
+            self.pushButton_quote.isChecked(),
+            self.pushButton_workorder.isChecked(),
+            self.pushButton_update_inventory.isChecked(),
+            self.pushButton_packingslip.isChecked(),
+        )

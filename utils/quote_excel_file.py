@@ -7,8 +7,7 @@ from openpyxl.utils.cell import column_index_from_string, get_column_letter
 
 
 class ExcelFile:
-
-    def __init__(self, file_name: str, generate_quote: bool) -> None:
+    def __init__(self, file_name: str, generate_quote: bool, should_generate_packing_slip: bool) -> None:
         self.workbook = xlsxwriter.Workbook(file_name)
         self.workbook.set_properties(
             {
@@ -30,6 +29,7 @@ class ExcelFile:
         footer = "&RPage &P of &N"
         self.worksheet.set_footer(footer)
         self.generate_quote: bool = generate_quote
+        self.should_generate_packing_slip: bool = should_generate_packing_slip
 
         self.cell_regex = r"^([A-Z]+)([1-9]\d*)$"
         self.file_name = file_name
@@ -93,15 +93,12 @@ class ExcelFile:
         self.info_worksheet.set_column("L:L", 12)
         with contextlib.suppress(Exception):
             if "NOW" in item:
-                cell_format = self.workbook.add_format(
-                    {"num_format": "hh:mm:ss AM/PM"})
+                cell_format = self.workbook.add_format({"num_format": "hh:mm:ss AM/PM"})
         try:
             if item.is_integer():
-                self.info_worksheet.write(
-                    f"{col}{row}", int(item), cell_format)
+                self.info_worksheet.write(f"{col}{row}", int(item), cell_format)
             elif not item.is_integer():
-                self.info_worksheet.write(
-                    f"{col}{row}", float(item), cell_format)
+                self.info_worksheet.write(f"{col}{row}", float(item), cell_format)
         except AttributeError:
             self.info_worksheet.write(f"{col}{row}", item, cell_format)
 
@@ -146,18 +143,11 @@ class ExcelFile:
         col, row = self.parse_cell(cell=cell)
 
         if number_format is None:
-            cell_format = self.workbook.add_format(
-                {"font_name": self.FONT_NAME})
+            cell_format = self.workbook.add_format({"font_name": self.FONT_NAME})
         else:
-            cell_format = self.workbook.add_format(
-                {"num_format": number_format, "font_name": self.FONT_NAME}
-            )
-        if (
-            "Payment" not in str(item)
-            and "Received" not in str(item)
-            and "__" not in str(item)
-        ):
-            if 'Sheet Count:' not in str(item):
+            cell_format = self.workbook.add_format({"num_format": number_format, "font_name": self.FONT_NAME})
+        if "Payment" not in str(item) and "Received" not in str(item) and "__" not in str(item):
+            if "Sheet Count:" not in str(item):
                 cell_format.set_align("center")
                 cell_format.set_align("vcenter")
                 cell_format.set_text_wrap()
@@ -174,7 +164,7 @@ class ExcelFile:
             cell_format.set_bold()
         if col == "K" and row > 2 and "Tax" not in str(item):
             cell_format.set_right(1)
-        if col == 'G' and not self.generate_quote and row > 4:
+        if col == "G" and not self.generate_quote and row > 4:
             cell_format.set_right(1)
         if totals:
             cell_format.set_top(6)
@@ -234,13 +224,9 @@ class ExcelFile:
             formula (str): the location of where the list is located such as: "A1:C1"
         """
         col, row = self.parse_cell(cell=cell)
-        self.worksheet.data_validation(
-            f"${col}${row}", {"validate": type, "source": location}
-        )
+        self.worksheet.data_validation(f"${col}${row}", {"validate": type, "source": location})
 
-    def add_table(
-        self, display_name: str, theme: str, location: str, headers: list
-    ) -> None:
+    def add_table(self, display_name: str, theme: str, location: str, headers: list) -> None:
         """Add a table to the excel sheet
 
         Args:
@@ -300,16 +286,10 @@ class ExcelFile:
 
     def save(self) -> None:
         """Save excel file."""
-        merge_format = self.workbook.add_format(
-            {"align": "top", "valign": "right", "font_name": self.FONT_NAME}
-        )
+        merge_format = self.workbook.add_format({"align": "top", "valign": "right", "font_name": self.FONT_NAME})
         merge_format.set_text_wrap()
-        self.worksheet.merge_range(
-            "J1:K1", f"{datetime.now().strftime('%B %d, %A, %Y')}", merge_format
-        )
-        merge_format = self.workbook.add_format(
-            {"align": "center", "valign": "center", "font_name": self.FONT_NAME}
-        )
+        self.worksheet.merge_range("J1:K1", f"{datetime.now().strftime('%B %d, %A, %Y')}", merge_format)
+        merge_format = self.workbook.add_format({"align": "center", "valign": "center", "font_name": self.FONT_NAME})
         merge_format.set_bold()
         merge_format.set_font_size(18)
         merge_format.set_bottom(1)
@@ -317,5 +297,7 @@ class ExcelFile:
         if not self.generate_quote:
             self.worksheet.merge_range("E1:G1", "Work Order", merge_format)
         else:
+            self.worksheet.merge_range("E1:G1", "Quote", merge_format)
+        if self.should_generate_packing_slip:
             self.worksheet.merge_range("E1:G1", "Packing Slip", merge_format)
         self.workbook.close()
