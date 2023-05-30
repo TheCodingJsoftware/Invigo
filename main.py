@@ -2502,14 +2502,14 @@ class MainWindow(QMainWindow):
 
     def generate_quote(self) -> None:
         select_item_dialog = GenerateQuoteDialog(
-            button_names=DialogButtons.go_cancel,
+            button_names=DialogButtons.generate_cancel,
             title="Quote Generator",
-            message="Active which ever you need.\n\nPress Go when ready.",
+            message="Select which ever you need.\n\nPress Generate when ready.",
         )
 
         if select_item_dialog.exec_():
             response = select_item_dialog.get_response()
-            if response == DialogButtons.go:
+            if response == DialogButtons.generate:
                 try:
                     action = select_item_dialog.get_selected_item()
                 except AttributeError:
@@ -2762,6 +2762,7 @@ class MainWindow(QMainWindow):
 
         self.calculate_parts_in_inventory_summary()
         self.sync_changes()
+        QApplication.restoreOverrideCursor()
 
     # NOTE for Sheets in Inventory
     def sheets_in_inventory_item_changes(self, item: QTableWidgetItem) -> None:
@@ -2806,6 +2807,7 @@ class MainWindow(QMainWindow):
         self.load_active_tab()
         tab.blockSignals(False)
         self.sync_changes()
+        QApplication.restoreOverrideCursor()
 
     # ! /\ INVENTORY TABLE CHANGES /\
 
@@ -3204,6 +3206,7 @@ class MainWindow(QMainWindow):
                 menu.addAction(action)
             tab.customContextMenuRequested.connect(partial(self.open_group_menu, menu))
         tab.blockSignals(False)
+        QApplication.restoreOverrideCursor()
 
     # NOTE SHEETS IN INVENTORY
     def price_of_steel_item(self, tab: CustomTableWidget, category_data: dict) -> None:
@@ -3372,7 +3375,6 @@ class MainWindow(QMainWindow):
             tab.setColumnWidth(1, 200)
         else:
             tab.setColumnWidth(5, 200)
-        QApplication.setOverrideCursor(Qt.BusyCursor)
         if tab.contextMenuPolicy() != Qt.CustomContextMenu:
             tab.setContextMenuPolicy(Qt.CustomContextMenu)
             menu = QMenu(self)
@@ -3381,6 +3383,7 @@ class MainWindow(QMainWindow):
             action.setText("Set Custom Quantity Limit")
             menu.addAction(action)
             tab.customContextMenuRequested.connect(partial(self.open_group_menu, menu))
+        QApplication.restoreOverrideCursor()
 
     # NOTE EDIT INVENTORY
     def load_inventory_items(self, tab: CustomTableWidget, category_data: dict) -> None:
@@ -3577,7 +3580,6 @@ class MainWindow(QMainWindow):
                 self.set_table_row_color(tab, row_index, "#413C28")
 
         self.update_stock_costs()
-        QApplication.restoreOverrideCursor()
         # set context menu
         if tab.contextMenuPolicy() != Qt.CustomContextMenu:
             tab.setContextMenuPolicy(Qt.CustomContextMenu)
@@ -3602,6 +3604,7 @@ class MainWindow(QMainWindow):
             tab.scrollTo(tab.model().index(self.last_item_selected_index, 0))
             tab.selectRow(self.last_item_selected_index)
             self.listWidget_itemnames.setCurrentRow(self.last_item_selected_index)
+        QApplication.restoreOverrideCursor()
 
     def load_quote_generator_ui(self) -> None:
         self.refresh_nest_directories()
@@ -4232,6 +4235,7 @@ class MainWindow(QMainWindow):
                 message=f"Server is either offline, try again or not connected to internet. Make sure VPN's are disabled, else contact server or netowrk administrator.\n\n{str(data)}",
             )
             self.status_button.setText("Cannot connect to server", "red")
+        QApplication.restoreOverrideCursor()
 
     def start_changes_thread(self, files_to_download: list[str]) -> None:
         """
@@ -4334,7 +4338,6 @@ class MainWindow(QMainWindow):
         if "ERROR!" in data:
             self.status_button.setText("Encountered error processing pdfs", "red")
             self.pushButton_load_nests.setEnabled(True)
-            QApplication.restoreOverrideCursor()
             self.show_error_dialog("oh no. Encountered error processing pdfs.", data)
             return
         if type(data) == dict:
@@ -4343,7 +4346,7 @@ class MainWindow(QMainWindow):
             self.pushButton_load_nests.setEnabled(True)
             self.load_nests()
             self.status_button.setText(f"Successfully loaded {len(self.get_all_selected_nests())} nests", "lime")
-            QApplication.restoreOverrideCursor()
+        QApplication.restoreOverrideCursor()
 
     def upload_part_to_inventory_thread(self, item_name: str, send_part_to_inventory: QPushButton) -> None:
         send_part_to_inventory.setEnabled(False)
@@ -4373,12 +4376,11 @@ class MainWindow(QMainWindow):
     def upload_batch_to_inventory_response(self, response) -> None:
         if response == "Batch sent successfully":
             self.status_button.setText("Batch was sent successfully", "lime")
-            QApplication.restoreOverrideCursor()
             # self.show_message_dialog('Success', 'Batch was sent successfully')
         else:
             self.status_button.setText("Batch Failed to send", "red")
-            QApplication.restoreOverrideCursor()
             self.show_error_dialog("Error", f"Something went wrong.\n\n{response}")
+        QApplication.restoreOverrideCursor()
         os.remove("parts_batch_to_upload.json")
 
     # ! /\ THREADS /\

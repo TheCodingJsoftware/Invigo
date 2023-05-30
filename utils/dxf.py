@@ -1,4 +1,3 @@
-import matplotlib.pyplot as plt
 import ezdxf
 from ezdxf import recover
 from ezdxf.addons.drawing import matplotlib
@@ -7,24 +6,27 @@ ezdxf.addons.drawing.properties.MODEL_SPACE_BG_COLOR = "#FFFFFF"
 import math
 
 
-'''
+"""
 "quantity": DONE
-"machine_time": ????????
-"weight": ?????????
+"machine_time": CUTTING_LENGTH/100 (100 is 100 inches per minute cut time (roughly))
+"weight": USER DETERMINED
 "part_number": DONE
 "image_index": DONE
 "surface_area": ??????? USING PART_DIM????
 "cutting_length": DONE
 "file_name": DONE
 "piercing_time": ???????????THE BOOK
-"gauge": ?????? USER DETERMINED
-"material": ??????? USER DETERMINED
+"gauge": USER DETERMINED
+"material": USER DETERMINED
 "recut": DONE
 "sheet_dim": DONE
-"part_dim": DONE,
-'''
+"part_dim": USER DETERMINED,
+"""
+
+
 class DXF:
-    '''The class DXF is defined in Python.'''
+    """The class DXF is defined in Python."""
+
     def __init__(self, file_path: str) -> None:
         """
         This function initializes a class instance with various attributes related to a CAD file, such
@@ -38,9 +40,10 @@ class DXF:
         self.modelspace = self.doc.modelspace()
 
         self.part_dimension: str = self.get_part_dimensions()
-        self.surface_area: float = self.get_surface_area() # Aproximation, i.e., using part_dim
+        self.surface_area: float = self.get_surface_area()  # Aproximation, i.e., using part_dim
         self.entity_types: set[str] = self._get_entity_types()
         self.cutting_length: float = self.get_cutting_length()
+        self.machine_time: float = self.cutting_length / 100
         self.thickness: float = self.get_thickness()
 
     def _get_entity_types(self) -> set[str]:
@@ -49,39 +52,13 @@ class DXF:
 
         Returns:
           A set of strings representing the DXF types of all entities in the modelspace of the object.
-        # """
-        return {entity.dxftype() for entity in self.modelspace}
+        #"""
+        entity_counts = {}
+        for entity in self.modelspace:
+            entity_type = entity.dxftype()
+            entity_counts[entity_type] = entity_counts.get(entity_type, 0) + 1
 
-    def calculate_line_length(self, line) -> float:
-        """
-        This function calculates the length of a line in AutoCAD using its start and end points.
-
-        Args:
-          line: The "line" parameter is an object representing a line in a 2D drawing. It has attributes
-        such as "dxf.start" and "dxf.end" which represent the start and end points of the line in the
-        drawing. The function "calculate_line_length" takes this line object as
-
-        Returns:
-          the length of a line, which is calculated by subtracting the start point from the end point of
-        the line. The returned value is a float.
-        """
-        return line.dxf.end - line.dxf.start
-
-    def calculate_arc_length(self, arc) -> float:
-        """
-        This Python function calculates the arc length of a given arc based on its radius and angle.
-
-        Args:
-          arc: The "arc" parameter is an object that represents a circular arc in a CAD drawing. It
-        contains information about the arc's radius and start/end angles.
-
-        Returns:
-          the arc length of a given arc object, which is calculated using the radius and the angle
-        between the start and end points of the arc.
-        """
-        radius = arc.dxf.radius
-        angle = math.radians(arc.dxf.end_angle - arc.dxf.start_angle)
-        return radius * angle
+        return entity_counts
 
     def get_surface_area(self) -> float:
         """
@@ -93,8 +70,7 @@ class DXF:
         the results for all entities in the modelspace. The return value is a float representing the
         total surface area.
         """
-        return math.prod([float(num) for num in self.part_dimension.split('x')])
-
+        return math.prod([float(num) for num in self.part_dimension.split("x")])
 
     def get_thickness(self) -> float:
         """
@@ -106,12 +82,12 @@ class DXF:
         Z-coordinates of all the LINE entities in the modelspace. The returned value is a float
         representing the thickness of the object.
         """
-        min_z = float('inf')
-        max_z = float('-inf')
+        min_z = float("inf")
+        max_z = float("-inf")
 
         # Iterate through the entities in the modelspace
         for entity in self.modelspace:
-            if entity.dxftype() == 'LINE':
+            if entity.dxftype() == "LINE":
                 start_z = entity.dxf.start.z
                 end_z = entity.dxf.end.z
                 # Update the minimum and maximum Z-coordinates
@@ -119,7 +95,6 @@ class DXF:
                 max_z = max(max_z, start_z, end_z)
 
         return max_z - min_z
-
 
     def get_cutting_length(self):
         """
@@ -131,17 +106,21 @@ class DXF:
         """
         total_length = 0
         for entity in self.modelspace:
-            if entity.dxftype() == 'LINE':
+            if entity.dxftype() == "LINE":
                 start_point = entity.dxf.start[:2]
                 end_point = entity.dxf.end[:2]
                 line_length = math.sqrt((end_point[0] - start_point[0]) ** 2 + (end_point[1] - start_point[1]) ** 2)
                 total_length += line_length
-            elif entity.dxftype() == 'ARC':
+            elif entity.dxftype() == "ARC":
                 radius = entity.dxf.radius
-                start_angle = math.radians(entity.dxf.start_angle)
-                end_angle = math.radians(entity.dxf.end_angle)
+                start_angle = math.degrees(entity.dxf.start_angle)
+                end_angle = math.degrees(entity.dxf.end_angle)
                 arc_length = abs(radius) * abs(end_angle - start_angle)
                 total_length += arc_length
+            elif entity.dxftype() == "CIRCLE":
+                total_length += entity.dxf.radius * 2 * math.pi  # Formula: 2 * π * radius
+            else:
+                print(f"{entity.dxftype()} is not being calculated in cutting length")
 
         return total_length
 
@@ -182,6 +161,5 @@ class DXF:
 
 
 if __name__ == "__main__":
-    dxf = DXF(r"dxf test files\IS.DXF")
-    print(dxf.cutting_length)
+    dxf = DXF(r"dxf test files\12x12 PART.DXF")
     dxf.generate_thumbnail()

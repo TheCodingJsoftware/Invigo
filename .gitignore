@@ -85,3 +85,5 @@ parts in inventory images/
 received_file.json
 *.dxf
 *.DXF
+inventory_file_to_use.txt
+*.pdf
