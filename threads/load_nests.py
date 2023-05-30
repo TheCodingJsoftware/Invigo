@@ -6,6 +6,7 @@ import re
 import shutil
 import sys
 from pathlib import Path
+import traceback
 
 import fitz  # PyMuPDF
 from PIL import Image
@@ -128,7 +129,7 @@ class LoadNests(QThread):
 
         with open(f"{self.program_directory}/output.txt", "w") as f:
             f.write(all_text.replace(" \n", " "))
-        return all_text.replace("\n", "")
+        return all_text.replace(" \n", " ")
 
     def get_values_from_text(self, text: str, regex: str) -> any:
         """
