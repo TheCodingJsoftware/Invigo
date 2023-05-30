@@ -1,6 +1,6 @@
 from colorama import Fore, init
 
-init(convert=True)
+init()
 
 
 class Colors:

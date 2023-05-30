@@ -4,9 +4,10 @@ from email.mime import multipart, text
 
 import ujson as json
 
-from utils.colors import Colors
+from utils.custom_print import CustomPrint
 
-def send(body: str, email_addresses: list[str] = None):
+
+def send(body: str, email_addresses: list[str], connected_clients):
     """
     This function sends an email with a specified body to a list of email addresses using Gmail's SMTP
     server.
@@ -39,5 +40,4 @@ def send(body: str, email_addresses: list[str] = None):
         server.ehlo()
         server.login(USERNAME, PASSWORD)
         server.sendmail(USERNAME, email_address, msg.as_string())
-        
-        print(f'{Colors.BOLD}{datetime.now()}{Colors.ENDC} - {Colors.OKGREEN}[+] Sheet quantity report sent to {email_address}{Colors.ENDC}')
+        CustomPrint.print(f'INFO - Email sent to "{email_address}"', connected_clients=connected_clients)
