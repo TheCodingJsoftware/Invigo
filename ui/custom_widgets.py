@@ -1,19 +1,24 @@
 import os
+import sys
 
 from PyQt5.QtCore import (
+    QAbstractItemModel,
+    QAbstractTableModel,
+    QEvent,
     QMargins,
     QMimeData,
     QModelIndex,
     QSortFilterProxyModel,
     Qt,
     pyqtSignal,
-    QEvent,
 )
-from PyQt5.QtGui import QDrag, QIcon, QPalette, QPixmap, QCursor
+from PyQt5.QtGui import QCursor, QDrag, QIcon, QPalette, QPixmap
 from PyQt5.QtWidgets import (
     QAbstractSpinBox,
+    QApplication,
     QCheckBox,
     QComboBox,
+    QDialog,
     QDoubleSpinBox,
     QFileSystemModel,
     QGridLayout,
@@ -30,16 +35,124 @@ from PyQt5.QtWidgets import (
     QStyledItemDelegate,
     QStyleOptionComboBox,
     QStylePainter,
+    QTabBar,
+    QTableView,
     QTableWidget,
     QTabWidget,
+    QToolBox,
     QTreeView,
     QTreeWidget,
     QTreeWidgetItem,
     QVBoxLayout,
+    QTableWidgetItem,
     QWidget,
-    QTabBar,
-    QToolBox,
 )
+
+
+class DictionaryTableModel(QAbstractTableModel):
+    def __init__(self, dictionary, parent=None):
+        super().__init__(parent)
+        self.keys = list(dictionary.keys())
+        self.dictionary = dictionary
+
+    def rowCount(self, parent=None):
+        """
+        This function returns the number of keys in a dictionary.
+
+        Args:
+          parent: The parent parameter is an optional argument that specifies the parent item of the
+        current item. In this case, it is set to None, which means that the current item has no parent.
+
+        Returns:
+          The function `rowCount` is returning the length of the `keys` attribute of the object.
+        """
+        return len(self.keys)
+
+    def columnCount(self, parent=None):
+        """
+        This function returns the value 2 as the number of columns in a table or grid.
+
+        Args:
+          parent: The parent widget of the current widget. It is an optional parameter and if not
+        specified, the current widget will be a top-level widget.
+
+        Returns:
+          the integer value 2.
+        """
+        return 2
+
+    def data(self, index, role=Qt.DisplayRole):
+        """
+        This function returns the data for a given index and role in a dictionary model.
+
+        Args:
+          index: The index of the item in the model that the view is requesting data for.
+          role: The role parameter is used to specify the type of data that is being requested. In this
+        case, it is set to Qt.DisplayRole, which means that the data is being requested for display
+        purposes. Other possible roles include Qt.EditRole (for editing data) and Qt.ToolTipRole (for
+        providing tooltip
+
+        Returns:
+          The method `data()` returns the data to be displayed in a specific cell of a table view. If
+        the `role` parameter is `Qt.DisplayRole`, it returns the data to be displayed as a string. If
+        the `index` parameter refers to the first column, it returns the key of the dictionary at the
+        corresponding row. If the `index` parameter refers to the second column, it
+        """
+        if role == Qt.DisplayRole:
+            key = self.keys[index.row()]
+            value = self.dictionary[key]
+
+            if index.column() == 0:
+                return key
+            elif index.column() == 1:
+                return str(value)
+
+        return None
+
+    def headerData(self, section, orientation, role=Qt.DisplayRole):
+        """
+        This function returns the header data for a table view in a specific format based on the section,
+        orientation, and role.
+
+        Args:
+          section: The index of the section for which header data is being requested. For example, if the
+        header is for the first column, section would be 0.
+          orientation: The orientation parameter specifies whether the header is for the horizontal axis
+        (columns) or the vertical axis (rows) of a table or other data structure. It can have two possible
+        values: Qt.Horizontal or Qt.Vertical.
+          role: The role parameter is used to specify the type of data that is being requested. In this
+        case, the function is checking if the role is equal to Qt.DisplayRole, which means that the data is
+        being requested for display purposes.
+
+        Returns:
+          If the role is `Qt.DisplayRole`, the method returns the header data for the specified section and
+        orientation. If the orientation is horizontal, it returns "Key" for section 0 and "Value" for
+        section 1. If the orientation is vertical, it returns the section number as a string. If the role is
+        not `Qt.DisplayRole`, it returns `None`.
+        """
+        if role == Qt.DisplayRole:
+            if orientation == Qt.Horizontal:
+                return ["Key", "Value"][section]
+            elif orientation == Qt.Vertical:
+                return str(section + 1)
+
+        return None
+
+
+class PartInformationViewer(QDialog):
+    def __init__(self, title: str, dictionary: dict, parent=None):
+        super().__init__(parent)
+
+        self.setWindowTitle(title)
+
+        layout = QVBoxLayout(self)
+        self.table_view = QTableView(self)
+        layout.addWidget(self.table_view)
+
+        model = DictionaryTableModel(dictionary, self)
+        self.table_view.setModel(model)
+        self.table_view.resizeColumnsToContents()
+        self.setMinimumSize(450, 700)
 
 
 class MultiToolBox(QWidget):
@@ -55,7 +168,7 @@ class MultiToolBox(QWidget):
     def addItem(self, widget: QWidget, title: str):
         """
         This function adds a widget with a title and a toggle button to a layout.
-        
+
         Args:
           widget (QWidget): QWidget - This is the widget that will be added to the sheet. It can be any
         type of QWidget, such as a QLabel, QComboBox, or even another layout.
@@ -69,7 +182,7 @@ class MultiToolBox(QWidget):
         button.clicked.connect(lambda checked, w=widget: self.toggle_widget_visibility(w))
 
         layout = QVBoxLayout()
-        layout.setContentsMargins(0, 3, 0, 0) 
+        layout.setContentsMargins(0, 3, 0, 0)
         layout.addWidget(button)
         layout.addWidget(widget)
 
@@ -81,7 +194,7 @@ class MultiToolBox(QWidget):
     def setItemText(self, index: int, new_name: str):
         """
         This function sets the text of a button at a given index to a new name.
-        
+
         Args:
           index (int): an integer representing the index of the button whose text needs to be changed.
           new_name (str): A string representing the new text that will be set for the button at the
@@ -89,12 +202,12 @@ class MultiToolBox(QWidget):
         """
         if 0 <= index < len(self.buttons):
             self.buttons[index].setText(new_name)
-            
+
     def setItemIcon(self, index: int, icon_path: str):
         """
         This function sets the icon of a button at a given index with the icon located at a specified
         file path.
-        
+
         Args:
           index (int): An integer representing the index of the button in the list of buttons.
           icon_path (str): The path to the icon file that will be used as the button's icon.
@@ -103,27 +216,25 @@ class MultiToolBox(QWidget):
             button = self.buttons[index]
             icon = QIcon(icon_path)
             button.setIcon(icon)
-    
+
     def getWidget(self, index):
         """
         This function returns the widget at the specified index if it exists, otherwise it returns None.
-        
+
         Args:
           index: The index parameter is an integer value that represents the position of the widget in
         the list of widgets. It is used to retrieve a specific widget from the list of widgets.
-        
+
         Returns:
           The method `getWidget` returns either the widget at the specified index in the `self.widgets`
         list, or `None` if the index is out of range.
         """
-        if 0 <= index < len(self.widgets):
-            return self.widgets[index]
-        return None
-    
+        return self.widgets[index] if 0 <= index < len(self.widgets) else None
+
     def count(self) -> int:
         """
         The function returns the number of widgets in a class.
-        
+
         Returns:
           The function `count()` is returning an integer value which represents the length of the
         `widgets` list.
@@ -133,7 +244,7 @@ class MultiToolBox(QWidget):
     def toggle_widget_visibility(self, widget):
         """
         This function toggles the visibility of a widget in a Python GUI.
-        
+
         Args:
           widget: The widget parameter is a reference to a graphical user interface (GUI) widget object.
         The function toggles the visibility of this widget, i.e., if the widget is currently visible, it
@@ -141,15 +252,15 @@ class MultiToolBox(QWidget):
         be
         """
         widget.setVisible(not widget.isVisible())
-    
-    
+
+
 class CustomTabWidget(QTabWidget):
     def __init__(self, parent=None):
         super(CustomTabWidget, self).__init__(parent)
         self.tab_order = []  # Stores the current order of tabs as strings
         self.tabBar().installEventFilter(self)
         self.wheelEvent = lambda event: None
-        
+
     def dragMoveEvent(self, event):
         # Check if it's a tab being dragged
         if event.source() == self.tabBar():
@@ -167,7 +278,7 @@ class CustomTabWidget(QTabWidget):
         from QWidget, and it is used to handle the wheel event when it occurs on the widget.
         """
         event.ignore()
-    
+
     def update_tab_order(self):
         """
         This function updates the tab order of a widget by creating a list of tab texts in the order
@@ -178,7 +289,7 @@ class CustomTabWidget(QTabWidget):
     def get_tab_order(self) -> list[str]:
         """
         This function returns a list of strings representing the tab order of a QTabWidget.
-        
+
         Returns:
           A list of strings representing the tab order.
         """
@@ -188,7 +299,7 @@ class CustomTabWidget(QTabWidget):
     def set_tab_order(self, order):
         """
         This function sets the tab order of a tab bar based on a given list of tab names.
-        
+
         Args:
           order: A list of tab names in the desired order. The function will reorder the tabs in the tab
         bar based on this order.
@@ -201,10 +312,10 @@ class CustomTabWidget(QTabWidget):
     def find_tab_by_name(self, name: str) -> int:
         """
         This function finds the index of a tab in a tab widget by its name.
-        
+
         Args:
           name (str): A string representing the name of the tab that needs to be found.
-        
+
         Returns:
           an integer value which represents the index of the tab with the given name in the tab widget.
         If the tab is not found, it returns -1.
@@ -213,6 +324,7 @@ class CustomTabWidget(QTabWidget):
             if self.tabText(i) == name:
                 return i
         return -1
+
 
 class PdfFilterProxyModel(QSortFilterProxyModel):
     def __init__(self, parent=None):
@@ -317,7 +429,7 @@ class RecutButton(QPushButton):
         """
         This function initializes a checkable and clickable button with the text "No Recut" and a fixed
         width of 100.
-        
+
         Args:
           parent: The parent parameter is used to specify the parent widget of the current widget. If a
         parent widget is specified, the current widget becomes a child of the parent widget and is
@@ -466,7 +578,7 @@ class PartNumberComboBox(QComboBox):
 class PriorityComboBox(QComboBox):
     """This class is a QComboBox that is populated with the names of items in the database"""
 
-    def __init__(self, parent, selected_item: int, tool_tip: str):
+    def __init__(self, parent, selected_item: int):
         """
         It's a function that creates a dropdown menu with a list of items, and the selected item is the
         one that is displayed when the dropdown menu is first created
@@ -479,7 +591,6 @@ class PriorityComboBox(QComboBox):
         QComboBox.__init__(self, parent)
         self.addItems(["Default", "Low", "Medium", "High"])
         self.setCurrentIndex(selected_item)
-        self.setToolTip(tool_tip)
         self.wheelEvent = lambda event: None
         # #self.setFixedWidth(60)
 
@@ -487,7 +598,7 @@ class PriorityComboBox(QComboBox):
 class ExchangeRateComboBox(QComboBox):
     """This class is a QComboBox that is populated with the names of items in the database"""
 
-    def __init__(self, parent, selected_item: int, tool_tip: str):
+    def __init__(self, parent, selected_item: int):
         """
         The function takes in a parent, a selected item, and a tool tip. It then creates a QComboBox
         object, adds items to the combo box, sets the current text to the selected item, sets the tool
@@ -502,42 +613,9 @@ class ExchangeRateComboBox(QComboBox):
         QComboBox.__init__(self, parent)
         self.addItems(["CAD", "USD"])
         self.setCurrentText(selected_item)
-        self.setToolTip(tool_tip)
         self.wheelEvent = lambda event: None
         # #self.setFixedWidth(40)
 
-
-class CostLineEdit(QLineEdit):
-    """This class is a subclass of QLineEdit that has a custom validator that only allows numbers and a
-    decimal point"""
-
-    def __init__(self, parent, prefix: str, text: str, suffix: str):
-        """
-        It takes a number, rounds it to the nearest 2 decimal places, and returns a string with the
-        number rounded to 2 decimal places
-
-        Args:
-          parent: The parent widget
-          prefix (str): The prefix of the text.
-          text (str): The text to be displayed in the QLineEdit
-          suffix (str): The suffix of the text.
-        """
-        QLineEdit.__init__(self, parent)
-        # self.setFixedWidth(100)
-        self.setReadOnly(True)
-
-        def round_number(x, n): return eval(
-            '"%.'
-            + str(int(n))
-            + 'f" % '
-            + repr(int(x) + round(float("." + str(float(x)).split(".")[1]), n))
-        )
-        self.setStyleSheet(
-            "border: 0.09em solid rgb(57, 57, 57); background-color: #222222;")
-        try:
-            self.setText(f"{prefix}{str(round_number(text, 2))} {suffix}")
-        except Exception:
-            self.setText(f"{prefix}{text} {suffix}")
 
 
 class NotesPlainTextEdit(QPlainTextEdit):
@@ -555,6 +633,8 @@ class NotesPlainTextEdit(QPlainTextEdit):
         """
         QPlainTextEdit.__init__(self, parent)
         self.setMinimumWidth(100)
+        self.setObjectName('notes')
+        self.setStyleSheet('QPlainTextEdit:!focus#notes{background-color: transparent; border: none; color: white;} QPlainTextEdit:focus#notes{color: white;}')
         self.setMaximumWidth(200)
         self.setFixedHeight(60)
         self.setPlainText(text)
@@ -575,6 +655,7 @@ class POPushButton(QPushButton):
         QPushButton.__init__(self, parent)
         # self.setFixedSize(36, 26)
         self.setText("PO")
+        self.setStyleSheet('background-color: transparent; border: none;')
         self.setToolTip("Open a new purchase order")
 
 
@@ -633,13 +714,21 @@ class RichTextPushButton(QPushButton):
         self.__layout.addWidget(self.__lbl)
         return
 
-    def setText(self, text) -> None:
+    def setText(self, text: str, color: str) -> None:
         """
         > Sets the text of the widget to the given text
 
         Args:
           text: The text to be displayed in the label.
         """
+        set_status_button_stylesheet(button=self, color=color)
+        if color == 'lime':
+            color = '#cef4d9'
+        elif color == 'yellow':
+            color = '#ffffe0'
+        elif color == 'red':
+            color = 'lightpink'
+        text = f'<p style="color:{color};">{text}</p>'
         self.__lbl.setText(text)
         self.updateGeometry()
         return

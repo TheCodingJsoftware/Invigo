@@ -27,6 +27,7 @@ class InputDialog(QDialog):
         button_names: str = DialogButtons.ok_cancel,
         title: str = __name__,
         message: str = "",
+        placeholder_text: str = "",
     ) -> None:
         """
         It's a function that takes in a bunch of arguments and sets them to variables
@@ -46,16 +47,16 @@ class InputDialog(QDialog):
         self.button_names = button_names
         self.title = title
         self.message = message
-        self.inputText: str = ""
-        self.theme: str = (
-            "dark" if settings_file.get_value(item_name="dark_mode") else "light"
-        )
+        self.inputText: str | int = ""
+        self.theme: str = "dark" if settings_file.get_value(item_name="dark_mode") else "light"
 
         self.setWindowFlags(Qt.Window | Qt.FramelessWindowHint)
         self.setWindowIcon(QIcon("icons/icon.png"))
 
         self.lblTitle.setText(self.title)
         self.lblMessage.setText(self.message)
+        self.lineEditInput.setText(str(placeholder_text))
+        self.lineEditInput.setPlaceholderText(message)
         self.lineEditInput.returnPressed.connect(self.input_enter_pressed)
 
         self.load_dialog_buttons()
@@ -74,7 +75,7 @@ class InputDialog(QDialog):
         """
         It loads the stylesheet.qss file from the theme folder
         """
-        set_theme(self, theme='dark')
+        set_theme(self, theme="dark")
 
     def get_icon(self, path_to_icon: str) -> QtSvg.QSvgWidget:
         """
@@ -86,9 +87,7 @@ class InputDialog(QDialog):
         Returns:
           A QSvgWidget object.
         """
-        return QtSvg.QSvgWidget(
-            f"ui/BreezeStyleSheets/dist/pyqt6/{self.theme}/{path_to_icon}"
-        )
+        return QtSvg.QSvgWidget(f"ui/BreezeStyleSheets/dist/pyqt6/{self.theme}/{path_to_icon}")
 
     def button_press(self, button) -> None:
         """
@@ -117,15 +116,9 @@ class InputDialog(QDialog):
         """
         button_names = self.button_names.split(", ")
         for index, name in enumerate(button_names):
-            if os.path.isfile(
-                f"ui/BreezeStyleSheets/dist/pyqt6/{self.theme}/dialog_{name.lower()}.svg"
-            ):
+            if os.path.isfile(f"ui/BreezeStyleSheets/dist/pyqt6/{self.theme}/dialog_{name.lower()}.svg"):
                 button = QPushButton(f"  {name}")
-                button.setIcon(
-                    QIcon(
-                        f"ui/BreezeStyleSheets/dist/pyqt6/{self.theme}/dialog_{name.lower()}.svg"
-                    )
-                )
+                button.setIcon(QIcon(f"ui/BreezeStyleSheets/dist/pyqt6/{self.theme}/dialog_{name.lower()}.svg"))
             else:
                 button = QPushButton(name)
             if index == 0:

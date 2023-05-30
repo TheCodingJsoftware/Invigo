@@ -154,4 +154,7 @@ class SelectItemDialog(QDialog):
         Returns:
           The text of the current item in the list widget.
         """
-        return self.listWidget.currentItem().text()
+        try:
+            return self.listWidget.currentItem().text()
+        except AttributeError:
+            return None

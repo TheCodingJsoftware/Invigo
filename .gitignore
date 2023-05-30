@@ -77,6 +77,11 @@ credentials.json
 images/
 test2.py
 test.py
+test.png
+test.jpeg
+test_ui.py
 parts batch to upload history/
 parts in inventory images/
 received_file.json
+*.dxf
+*.DXF

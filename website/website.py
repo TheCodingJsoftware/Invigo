@@ -146,12 +146,8 @@ def get_all_unit_cost() -> dict:
     currency_rates = CurrencyRates()
     try:
         last_exchange_rate = currency_rates.get_rate("USD", "CAD")
-    except:
+    except Exception:
         last_exchange_rate = 1.3608673726676752  # just a guess
-    round_number = lambda x, n: eval(
-        f'"%.{int(n)}f" % '
-        + repr(int(x) + round(float("." + str(float(x)).split(".")[1]), n))
-    )
     unit_costs = {}
     for category in list(data.keys()):
         total_cost: float = 0
@@ -163,7 +159,7 @@ def get_all_unit_cost() -> dict:
                 price: float = data[category][item]["price"]
                 unit_quantity: int = data[category][item]["unit_quantity"]
                 total_cost += price * unit_quantity * exchange_rate
-            unit_costs[category] = round(total_cost, 2)
+            unit_costs[category] = f'{total_cost:,.2f}'
     return unit_costs
 
 
@@ -202,8 +198,7 @@ def get_all_part_numbers() -> list[str]:
         except KeyError:
             continue
 
-    part_numbers = list(set(part_numbers))
-    return part_numbers
+    return list(set(part_numbers))
 
 
 def get_inventory_data() -> dict:
