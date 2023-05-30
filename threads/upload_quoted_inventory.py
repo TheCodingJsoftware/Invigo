@@ -37,21 +37,21 @@ class UploadBatch(QThread):
         self.SERVER_PORT: int = get_server_port()
 
         self.json_file_path = json_file_path
-        self.upload_url = f'http://{self.SERVER_IP}:{self.SERVER_PORT}/upload'
+        self.upload_url = f"http://{self.SERVER_IP}:{self.SERVER_PORT}/upload"
 
     def run(self) -> None:
         """
         It connects to a server, sends a message, and then sends the file
         """
         try:
-                # Send the file as a POST request to the server
-                with open(self.json_file_path, 'rb') as file:
-                    files = {'file': file}
-                    response = requests.post(self.upload_url, files=files)
+            # Send the file as a POST request to the server
+            with open(self.json_file_path, "rb") as file:
+                files = {"file": (self.json_file_path, file.read(), "application/json")}
+                response = requests.post(self.upload_url, files=files)
 
-                if response.status_code == 200:
-                    self.signal.emit("Batch sent successfully")
-                else:
-                    self.signal.emit(response.status_code)
+            if response.status_code == 200:
+                self.signal.emit("Batch sent successfully")
+            else:
+                self.signal.emit(response.status_code)
         except Exception as e:
             self.signal.emit(e)

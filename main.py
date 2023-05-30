@@ -102,7 +102,7 @@ __copyright__: str = "Copyright 2022-2023, TheCodingJ's"
 __credits__: list[str] = ["Jared Gross"]
 __license__: str = "MIT"
 __name__: str = "Invigo"
-__version__: str = "v2.0.0"
+__version__: str = "v2.0.1"
 __updated__: str = "2023-05-27 12:32:51"
 __maintainer__: str = "Jared Gross"
 __email__: str = "jared@pinelandfarms.ca"
@@ -411,7 +411,7 @@ class MainWindow(QMainWindow):
         self.tableWidget_quote_items.setSelectionBehavior(1)
         self.tableWidget_quote_items.setSelectionMode(1)
         self.tableWidget_quote_items.setVerticalScrollMode(QAbstractItemView.ScrollPerPixel)
-        self.tableWidget_quote_items.setHorizontalHeaderLabels(("Item;Part name;Material;Thickness;Qty;Recut;;").split(";"))
+        self.tableWidget_quote_items.setHorizontalHeaderLabels(("Item;Part name;Material;Thickness;Qty;Recut;Add Part to Inventory;;").split(";"))
         self.clear_layout(self.verticalLayout_25)
         self.verticalLayout_25.addWidget(self.tableWidget_quote_items)
 
@@ -2092,9 +2092,11 @@ class MainWindow(QMainWindow):
         If the latest version of the program is newer than the last time the program was opened, show
         the changelog.
         """
+
         def markdown_to_html(markdown_text):
             html = markdown.markdown(markdown_text)
             return html
+
         try:
             response = requests.get("https://api.github.com/repos/thecodingjsoftware/Inventory-Manager/releases/latest")
             version: str = response.json()["name"].replace(" ", "")
@@ -3819,6 +3821,7 @@ class MainWindow(QMainWindow):
                 send_part_to_inventory = QPushButton(self)
                 send_part_to_inventory.setText("Add Part to Inventory")
                 send_part_to_inventory.setStyleSheet("margin: 5%;")
+                send_part_to_inventory.setFixedWidth(150)
                 send_part_to_inventory.clicked.connect(partial(self.upload_part_to_inventory_thread, item, send_part_to_inventory))
                 self.tableWidget_quote_items.setCellWidget(row_index, 6, send_part_to_inventory)
 
@@ -4031,12 +4034,15 @@ class MainWindow(QMainWindow):
         Args:
           path: The path to the folder
         """
-        if sys.platform == "win32":
-            os.startfile(path)
-        elif sys.platform == "darwin":
-            subprocess.Popen(["open", path])
-        else:
-            subprocess.Popen(["xdg-open", path])
+        try:
+            if sys.platform == "win32":
+                os.startfile(path)
+            elif sys.platform == "darwin":
+                subprocess.Popen(["open", path])
+            else:
+                subprocess.Popen(["xdg-open", path])
+        except Exception as e:
+            self.show_error_dialog("Error opening folder", f"{e}\n\nPlatform: {sys.platform}")
 
     def generate_error_log(self, message_dialog: MessageDialog) -> None:
         """
