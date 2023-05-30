@@ -1,21 +1,12 @@
-import os
-import socket
-import time
-
+import requests
 from PyQt5.QtCore import QThread, pyqtSignal
 
-from utils.ip_utils import (
-    get_buffer_size,
-    get_server_ip_address,
-    get_server_port,
-    get_server_timeout,
-    get_system_ip_address,
-)
+from utils.ip_utils import get_server_ip_address, get_server_port
 
 
 class SendReportThread(QThread):
     """
-    Uploads client data to the server
+    The SendReportThread class is a subclass of QThread in Python.
     """
 
     signal = pyqtSignal(object)
@@ -29,33 +20,23 @@ class SendReportThread(QThread):
           file_to_upload (list[str]): list[str] = list of files to upload
         """
         QThread.__init__(self)
-        # Declaring server IP and port
         self.SERVER_IP: str = get_server_ip_address()
         self.SERVER_PORT: int = get_server_port()
-
-        # Declaring clients IP and port
-        self.CLIENT_IP: str = get_system_ip_address()
-        self.CLIENT_PORT: int = 4005
-
-        self.BUFFER_SIZE = get_buffer_size()
-        self.SEPARATOR = "<SEPARATOR>"
-
+        self.command_url = f'http://{self.SERVER_IP}:{self.SERVER_PORT}/command'
+        self.data = {'command': 'send_sheet_report'}
 
     def run(self) -> None:
         """
-        This function attempts to connect to a server, send a message, and then close the connection,
-        emitting a success signal if successful or an error signal if not.
+        This function sends a POST request to a specified URL with provided data and emits a signal
+        indicating success or failure.
         """
         try:
-            self.server = (self.SERVER_IP, self.SERVER_PORT)
-            self.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-            self.socket.settimeout(get_server_timeout())
-            self.socket.connect(self.server)
-            self.socket.send("send_sheet_report".encode())
-            time.sleep(0.5)  # ! IMPORTANT
-            self.socket.shutdown(2)
-            self.socket.close()
-            time.sleep(0.5)
-            self.signal.emit("Successfully uploaded")
+            response = requests.post(self.command_url, data= self.data)
+
+            if response.status_code == 200:
+                # Process the received response
+                self.signal.emit("Successfully uploaded")
+            else:
+                self.signal.emit(f'Error sending command:{response.status_code}')
         except Exception as e:
             self.signal.emit(e)

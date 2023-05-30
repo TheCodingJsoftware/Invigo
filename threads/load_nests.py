@@ -39,32 +39,31 @@ class LoadNests(QThread):
 
         config = configparser.ConfigParser()
         config.read(f"{self.program_directory}/laser_quote_variables.cfg")
-        self.size_of_picture = int(config.get(
-            "GLOBAL VARIABLES", "size_of_picture"))
+        self.size_of_picture = int(config.get("GLOBAL VARIABLES", "size_of_picture"))
 
         # REGEX VARIABLEAS
         self.part_path_regex = config.get("REGEX", "part_path_regex", raw=True)
         self.machinging_time_regex = config.get(
-            "REGEX", "machinging_time_regex", raw=True)
+            "REGEX", "machinging_time_regex", raw=True
+        )
         self.weight_regex = config.get("REGEX", "weight_regex", raw=True)
-        self.surface_area_regex = config.get(
-            "REGEX", "surface_area_regex", raw=True)
-        self.cutting_length_regex = config.get(
-            "REGEX", "cutting_length_regex", raw=True)
+        self.surface_area_regex = config.get("REGEX", "surface_area_regex", raw=True)
+        self.cutting_length_regex = config.get("REGEX", "cutting_length_regex", raw=True)
         self.quantity_regex = config.get("REGEX", "quantity_regex", raw=True)
-        self.part_number_regex = config.get(
-            "REGEX", "part_number_regex", raw=True)
-        self.sheet_quantity_regex = config.get(
-            "REGEX", "sheet_quantity_regex", raw=True)
+        self.part_number_regex = config.get("REGEX", "part_number_regex", raw=True)
+        self.sheet_quantity_regex = config.get("REGEX", "sheet_quantity_regex", raw=True)
         self.scrap_percentage_regex = config.get(
-            "REGEX", "scrap_percentage_regex", raw=True)
-        self.piercing_time_regex = config.get(
-            "REGEX", "piercing_time_regex", raw=True)
-        self.material_id_regex = config.get(
-            "REGEX", "material_id_regex", raw=True)
+            "REGEX", "scrap_percentage_regex", raw=True
+        )
+        self.piercing_time_regex = config.get("REGEX", "piercing_time_regex", raw=True)
+        self.material_id_regex = config.get("REGEX", "material_id_regex", raw=True)
         self.gauge_regex = config.get("REGEX", "gauge_regex", raw=True)
         self.sheet_dimension_regex = config.get(
-            "REGEX", "sheet_dimension_regex", raw=True)
+            "REGEX", "sheet_dimension_regex", raw=True
+        )
+        self.part_dimensions_regex = config.get(
+            "REGEX", "part_dimension_regex", raw=True
+        )
 
     def extract_images_from_pdf(self, pdf_paths: list[str]) -> None:
         """
@@ -91,12 +90,14 @@ class LoadNests(QThread):
                     if image.size[0] == 48 and image.size[1] == 48:
                         continue
                     image = image.resize(
-                        (self.size_of_picture,
-                         self.size_of_picture), Image.Resampling.LANCZOS
+                        (self.size_of_picture, self.size_of_picture),
+                        Image.Resampling.LANCZOS,
                     )
                     image.save(
                         open(
-                            f"{self.program_directory}/images/{image_count}.{image_ext}", "wb")
+                            f"{self.program_directory}/images/{image_count}.{image_ext}",
+                            "wb",
+                        )
                     )
                     image_count += 1
 
@@ -127,7 +128,7 @@ class LoadNests(QThread):
 
         with open(f"{self.program_directory}/output.txt", "w") as f:
             f.write(all_text.replace(" \n", " "))
-        return all_text.replace('\n', '')
+        return all_text.replace("\n", "")
 
     def get_values_from_text(self, text: str, regex: str) -> any:
         """
@@ -197,36 +198,53 @@ class LoadNests(QThread):
             for nest in self.nests:
                 # variables
                 nest_data = self.convert_pdf_to_text(nest)
-                quantity_multiplier: int = int(self.get_values_from_text(
-                    nest_data, self.sheet_quantity_regex)[0])
-                scrap_percentage: float = float(self.get_values_from_text(
-                    nest_data, self.scrap_percentage_regex)[0])
+                quantity_multiplier: int = int(
+                    self.get_values_from_text(nest_data, self.sheet_quantity_regex)[0]
+                )
+                scrap_percentage: float = float(
+                    self.get_values_from_text(nest_data, self.scrap_percentage_regex)[0]
+                )
                 sheet_dimension: str = self.get_values_from_text(
-                    nest_data, self.sheet_dimension_regex)[0]
+                    nest_data, self.sheet_dimension_regex
+                )[0]
                 sheet_material: str = self.material_id_to_name(
-                    self.get_values_from_text(nest_data, self.material_id_regex)[0])
-                sheet_gauge: str = self.get_values_from_text(
-                    nest_data, self.gauge_regex)[0]
+                    self.get_values_from_text(nest_data, self.material_id_regex)[0]
+                )
+                sheet_gauge: str = self.get_values_from_text(nest_data, self.gauge_regex)[
+                    0
+                ]
 
                 # lists
                 _quantities: list[str] = self.get_values_from_text(
-                    nest_data, self.quantity_regex)
+                    nest_data, self.quantity_regex
+                )
                 quantities: list[int] = [
-                    int(quantity) * quantity_multiplier for quantity in _quantities]
+                    int(quantity) * quantity_multiplier for quantity in _quantities
+                ]
                 machining_times: list[str] = self.get_values_from_text(
-                    nest_data, self.machinging_time_regex)
+                    nest_data, self.machinging_time_regex
+                )
                 weights: list[str] = self.get_values_from_text(
-                    nest_data, self.weight_regex)
+                    nest_data, self.weight_regex
+                )
                 surface_areas: list[str] = self.get_values_from_text(
-                    nest_data, self.surface_area_regex)
+                    nest_data, self.surface_area_regex
+                )
+                part_dimensions: list[str] = self.get_values_from_text(
+                    nest_data, self.part_dimensions_regex
+                )
                 cutting_lengths: list[str] = self.get_values_from_text(
-                    nest_data, self.cutting_length_regex)
+                    nest_data, self.cutting_length_regex
+                )
                 piercing_times: list[str] = self.get_values_from_text(
-                    nest_data, self.piercing_time_regex)
+                    nest_data, self.piercing_time_regex
+                )
                 part_numbers: list[str] = self.get_values_from_text(
-                    nest_data, self.part_number_regex)
+                    nest_data, self.part_number_regex
+                )
                 parts: list[str] = self.get_values_from_text(
-                    nest_data, self.part_path_regex)
+                    nest_data, self.part_path_regex
+                )
                 # Sheet information:
                 if int(sheet_gauge) >= 50:  # 1/2 inch
                     sheet_material = "Laser Grade Plate"
@@ -236,7 +254,7 @@ class LoadNests(QThread):
                     "gauge": sheet_gauge,
                     "material": sheet_material,
                     "sheet_dim": sheet_dimension,
-                    'scrap_percentage': scrap_percentage,
+                    "scrap_percentage": scrap_percentage,
                 }
                 for i, part_name in enumerate(parts):
                     part_name = (
@@ -260,6 +278,7 @@ class LoadNests(QThread):
                         "material": sheet_material,
                         "recut": False,
                         "sheet_dim": sheet_dimension,
+                        "part_dim": part_dimensions[i],
                     }
                     image_index += 1
             os.remove(f"{self.program_directory}/output.txt")
@@ -267,7 +286,9 @@ class LoadNests(QThread):
         except Exception as e:
             try:
                 self.signal.emit(
-                    f"ERROR! !\n{e}\n If the error still persists, send me an email of the pdf your trying nesting.\n{nest}")
+                    f"ERROR! !\n{e}\n If the error still persists, send me an email of the pdf your trying nesting.\n{nest}"
+                )
             except UnboundLocalError:
                 self.signal.emit(
-                    f"ERROR! !\n{e}\n If the error still persists, send me an email of the pdf your trying nesting.\n{self.nests[0]}")
+                    f"ERROR! !\n{e}\n If the error still persists, send me an email of the pdf your trying nesting.\n{self.nests[0]}"
+                )

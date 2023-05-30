@@ -62,8 +62,8 @@ class DownloadThread(QThread):
                 except Exception as e:
                     if "update.exe" in str(e):
                         extracted = True
-                    if "Inventory Manager.exe" in str(e):
-                        self.signal.emit("Close Inventory Manager.exe to finish installing")
+                    if "Invigo.exe" in str(e):
+                        self.signal.emit("Close Invigo.exe to finish installing")
                 time.sleep(1)
             os.remove(self.file_name)
             self.signal.emit("Updated successfully!")

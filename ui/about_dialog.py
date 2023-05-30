@@ -39,7 +39,7 @@ class AboutDialog(QWidget):
         pixmap = QPixmap("icons/icon.png")
         scaled_pixmap = pixmap.scaled(self.lblIcon.size(), Qt.KeepAspectRatio)
 
-        self.lblIcon.setFixedSize(100, 100)
+        self.lblIcon.setFixedSize(128, 128)
         self.lblIcon.setPixmap(scaled_pixmap)
 
         self.lblVersion.setText(f"Build time: {updated}")
@@ -59,7 +59,7 @@ class AboutDialog(QWidget):
 
         self.load_theme()
 
-    
+
     def load_theme(self) -> None:
         """
         It loads the stylesheet.qss file from the theme folder
