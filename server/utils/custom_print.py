@@ -1,0 +1,67 @@
+import os
+from datetime import datetime
+
+from utils.colors import Colors
+
+messages = []
+connected_clients = []
+expected_clients: dict = {
+    '10.0.0.217': 'Jared',
+    '10.0.0.155': 'Laser',
+    '10.0.0.5': 'Lynden'
+}
+
+
+def convert_set_to_list(s):
+    return list(map(lambda x: x, s))
+
+
+class CustomPrint:
+    @staticmethod
+    def print(*args, **kwargs):
+        global messages, connected_clients
+        try:
+            connected_clients = convert_set_to_list(kwargs["connected_clients"])
+            connected_clients = [connected_client.request.remote_ip for connected_client in connected_clients]
+        except:
+            connected_clients = []
+        text = " ".join(str(arg) for arg in args)
+        formatted_text = f'{Colors.BOLD}{str(datetime.now()) + " - " + text}{Colors.ENDC}'
+        formatted_text = formatted_text.replace(
+            "INFO", f"{Colors.OKGREEN}INFO{Colors.BOLD}"
+        )  # Green
+        formatted_text = formatted_text.replace(
+            "ERROR", f"{Colors.ERROR}ERROR{Colors.BOLD}"
+        )  # Red
+        formatted_text = formatted_text.replace(
+            "WARN", f"{Colors.WARNING}WARN{Colors.BOLD}"
+        )  # Yellow
+        # messages.append(formatted_text)
+        # if len(messages) > 50:
+        #     messages = messages[50:]
+        print(formatted_text)
+        # print_clients()
+
+
+def print_clients():
+    # os.system("cls" if os.name == "nt" else "clear")
+    # connected_clients.insert(0, f"{Colors.BOLD}Connected clients: ({len(connected_clients)}){Colors.ENDC}")
+    all_clients = list(set(list(expected_clients.keys()) + connected_clients))
+    all_clients.insert(0, f"{Colors.BOLD}Connected clients: ({len(connected_clients)}){Colors.ENDC}")
+    string = ''
+    for i, client in enumerate(all_clients):
+        try:
+            if client in all_clients and client in connected_clients:
+                client = f"{Colors.OKGREEN}{client:<10s} {expected_clients[client]:<10s} Connected{Colors.BOLD}"
+            elif client in all_clients and client not in connected_clients:
+                client = f"{Colors.ERROR}{client:<10s} {expected_clients[client]:<10s} Disconnected{Colors.BOLD}"
+        except IndexError:
+            client = "index error"
+        except KeyError:
+            if "Connected clients:" in client:
+                pass
+            else:
+                client = f"{Colors.WARNING}{client:<10s} {'UNKNOWN':<10s} Connected{Colors.BOLD}"
+        # print(f"{client:>10s}")
+        string += f'{client:>10s}\n'
+    return string + '\n'

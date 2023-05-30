@@ -77,5 +77,6 @@ credentials.json
 images/
 test2.py
 test.py
-*.dxf
-*.DXF
+parts batch to upload history/
+parts in inventory images/
+received_file.json
