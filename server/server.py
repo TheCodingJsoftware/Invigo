@@ -124,7 +124,7 @@ class FileUploadHandler(tornado.web.RequestHandler):
 
             if file_name == "parts_batch_to_upload.json":
                 self.write("Batch sent successfully")
-                update_inventory("data/{file_name}", connected_clients)
+                update_inventory(f"data/{file_name}", connected_clients)
             else:
                 self.write("File uploaded successfully.")
             should_signal_connect_clients = True
