@@ -45,7 +45,7 @@ class Ui_Form(object):
 "")
         self.lblTitle.setFrameShape(QtWidgets.QFrame.Box)
         self.lblTitle.setFrameShadow(QtWidgets.QFrame.Sunken)
-        self.lblTitle.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignTop)
+        self.lblTitle.setAlignment(QtCore.Qt.AlignHCenter|QtCore.Qt.AlignTop)
         self.lblTitle.setObjectName("lblTitle")
         self.verticalLayout_3.addWidget(self.lblTitle)
         self.verticalLayout = QtWidgets.QVBoxLayout()

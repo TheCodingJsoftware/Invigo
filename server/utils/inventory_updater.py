@@ -7,7 +7,8 @@ from utils.colors import Colors
 from utils.custom_print import CustomPrint
 from utils.json_file import JsonFile
 
-inventory_file_name: str = 'testt'
+with open('utils/inventory_file_to_use.txt', 'r') as f:
+    inventory_file_name: str = f.read()
 
 inventory = JsonFile(file_name=f"data/{inventory_file_name}")
 price_of_steel_inventory = JsonFile(file_name=f"data/{inventory_file_name} - Price of Steel")

@@ -11,6 +11,7 @@ class DialogButtons:
     add: str = "Add"
     delete: str = "Delete"
     discard: str = "Discard"
+    generate: str = "Generate"
     update: str = "Update"
     open: str = "Open"
     set: str = "Set"
@@ -18,6 +19,7 @@ class DialogButtons:
     set_cancel: str = ", ".join([set, cancel])
     ok_cancel: str = ", ".join([ok, cancel])
     go_cancel: str = ", ".join([go, cancel])
+    generate_cancel: str = ", ".join([generate, cancel])
     no_yes_cancel: str = ", ".join([no, yes, cancel])
     delete_cancel: str = ", ".join([delete, cancel])
     discard_cancel: str = ", ".join([discard, cancel])
