@@ -367,7 +367,7 @@ class GenerateQuote:
         )
         excel_document.add_item(
             cell=f"K{index+STARTING_ROW+1}",
-            item="=SUM(Table1[Price])",
+            item=f"=SUM(K{STARTING_ROW}:K{index+STARTING_ROW})",
             number_format="$#,##0.00",
             totals=True,
         )

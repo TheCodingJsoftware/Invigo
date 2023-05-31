@@ -102,7 +102,7 @@ __copyright__: str = "Copyright 2022-2023, TheCodingJ's"
 __credits__: list[str] = ["Jared Gross"]
 __license__: str = "MIT"
 __name__: str = "Invigo"
-__version__: str = "v2.0.1"
+__version__: str = "v2.0.2"
 __updated__: str = "2023-05-27 12:32:51"
 __maintainer__: str = "Jared Gross"
 __email__: str = "jared@pinelandfarms.ca"
@@ -320,6 +320,7 @@ class MainWindow(QMainWindow):
         self.tables_font.setWeight(settings_file.get_value("tables_font")["weight"])
         self.tables_font.setItalic(settings_file.get_value("tables_font")["italic"])
         self.tabs: dict[str, CustomTableWidget] = {}
+        self.inventory_file_name: str = settings_file.get_value(item_name="inventory_file_name")
         self.last_item_selected_index: int = 0
         self.last_item_selected_name: str = None
         self.last_selected_menu_tab: str = settings_file.get_value("menu_tabs_order")[settings_file.get_value("last_toolbox_tab")]
@@ -335,9 +336,9 @@ class MainWindow(QMainWindow):
         self.download_all_files()
         self.start_changes_thread(
             [
-                f"{settings_file.get_value(item_name='inventory_file_name')}.json",
-                f"{settings_file.get_value(item_name='inventory_file_name')} - Price of Steel.json",
-                f"{settings_file.get_value(item_name='inventory_file_name')} - Parts in Inventory.json",
+                f"{self.inventory_file_name}.json",
+                f"{self.inventory_file_name} - Price of Steel.json",
+                f"{self.inventory_file_name} - Parts in Inventory.json",
             ]
         )
         self.check_trusted_user()
@@ -1191,11 +1192,8 @@ class MainWindow(QMainWindow):
         """
         self.is_nest_generated_from_parts_in_inventory = False
         selected_items = self.get_all_selected_nests()
-        file_paths = [
-            file for directory in self.quote_nest_directories_list_widgets.keys() for file in self.get_all_files_from_directory(directory, ".pdf")
-        ]
-        if selected_nests_paths := [file_path for file_path in file_paths if any(item in file_path for item in selected_items)]:
-            self.start_process_nest_thread(selected_nests_paths)
+        if selected_items:
+            self.start_process_nest_thread(selected_items)
 
     def quote_table_cell_changed(self, row: int, col: int) -> None:
         if col != 4:
@@ -1939,14 +1937,9 @@ class MainWindow(QMainWindow):
         `self.quote_nest_directories_list_widgets`.
         """
         selected_nests = []
-        # for tree_view in self.quote_nest_directories_list_widgets.values():
-        #     try:
-        #         selected_nests.append(tree_view.selectionModel().selectedIndexes()[0].data(Qt.DisplayRole))
-        #     except IndexError:
-        #         pass
         for tree_view in self.quote_nest_directories_list_widgets.values():
-            selected_nests.extend(tree_view.selected_items)
-        return selected_nests
+            selected_nests.extend(tree_view.full_paths)
+        return list(set(selected_nests))
 
     def get_menu_tab_order(self) -> list[str]:
         return [self.tabWidget.tabText(i) for i in range(self.tabWidget.count())]
@@ -2903,9 +2896,9 @@ class MainWindow(QMainWindow):
             return
 
         # No idea what this is supposed to do, but im too scared to delete it - Jared
-        JsonFile(file_name=f"data/{settings_file.get_value(item_name='inventory_file_name')}")
-        JsonFile(file_name=f"data/{settings_file.get_value(item_name='inventory_file_name')} - Price of Steel")
-        JsonFile(file_name=f"data/{settings_file.get_value(item_name='inventory_file_name')} - Parts in Inventory")
+        JsonFile(file_name=f"data/{self.inventory_file_name}")
+        JsonFile(file_name=f"data/{self.inventory_file_name} - Price of Steel")
+        JsonFile(file_name=f"data/{self.inventory_file_name} - Parts in Inventory")
         # QApplication.setOverrideCursor(Qt.BusyCursor)
         if self.tabWidget.tabText(self.tabWidget.currentIndex()) not in [
             "Edit Inventory",
@@ -4080,16 +4073,15 @@ class MainWindow(QMainWindow):
             self.status_button.setText(f'Synching - {datetime.now().strftime("%r")}', "lime")
             self.upload_file(
                 [
-                    f"{settings_file.get_value(item_name='inventory_file_name')}.json",
+                    f"{self.inventory_file_name}.json",
                 ],
                 False,
             )
-            # todo
         elif self.tabWidget.tabText(self.tabWidget.currentIndex()) == "Parts in Inventory":
             self.status_button.setText(f'Synching - {datetime.now().strftime("%r")}', "lime")
             self.upload_file(
                 [
-                    f"{settings_file.get_value(item_name='inventory_file_name')} - Parts in Inventory.json",
+                    f"{self.inventory_file_name} - Parts in Inventory.json",
                 ],
                 False,
             )
@@ -4097,7 +4089,7 @@ class MainWindow(QMainWindow):
             self.status_button.setText(f'Synching - {datetime.now().strftime("%r")}', "lime")
             self.upload_file(
                 [
-                    f"{settings_file.get_value(item_name='inventory_file_name')} - Price of Steel.json",
+                    f"{self.inventory_file_name} - Price of Steel.json",
                 ],
                 False,
             )
@@ -4318,9 +4310,9 @@ class MainWindow(QMainWindow):
         """
         self.download_file(
             [
-                f"{settings_file.get_value(item_name='inventory_file_name')} - Parts in Inventory.json",
-                f"{settings_file.get_value(item_name='inventory_file_name')} - Price of Steel.json",
-                f"{settings_file.get_value(item_name='inventory_file_name')}.json",
+                f"{self.inventory_file_name} - Parts in Inventory.json",
+                f"{self.inventory_file_name} - Price of Steel.json",
+                f"{self.inventory_file_name}.json",
             ],
             False,
         )
@@ -4411,7 +4403,7 @@ class MainWindow(QMainWindow):
         """
         This function compresses the database file and shows a message dialog to the user
         """
-        compress_database(path_to_file=f"data/{settings_file.get_value(item_name='inventory_file_name')}.json")
+        compress_database(path_to_file=f"data/{self.inventory_file_name}.json")
         self.show_message_dialog(
             title="Success",
             message="Backup was successful!\n\nNote! Loading a backup will not sync changes. Syncing is being done under the hood consistently, and there is no need for creating local backups anymore.",
@@ -4577,7 +4569,7 @@ class MainWindow(QMainWindow):
           event: the event that triggered the close_event() method
         """
         # compress_database(
-        #     path_to_file=f"data/{settings_file.get_value(item_name='inventory_file_name')}.json",
+        #     path_to_file=f"data/{self.inventory_file_name}.json",
         #     on_close=True,
         # )
         self.save_geometry()
