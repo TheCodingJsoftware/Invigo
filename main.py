@@ -1,3 +1,4 @@
+# sourcery skip: avoid-builtin-shadow
 import requests
 from PyQt5 import uic
 from PyQt5.QtCore import Qt, QTimer
@@ -102,7 +103,7 @@ __copyright__: str = "Copyright 2022-2023, TheCodingJ's"
 __credits__: list[str] = ["Jared Gross"]
 __license__: str = "MIT"
 __name__: str = "Invigo"
-__version__: str = "v2.0.2"
+__version__: str = "v2.0.3"
 __updated__: str = "2023-05-27 12:32:51"
 __maintainer__: str = "Jared Gross"
 __email__: str = "jared@pinelandfarms.ca"

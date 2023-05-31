@@ -87,3 +87,4 @@ received_file.json
 *.DXF
 inventory_file_to_use.txt
 *.pdf
+output.txt

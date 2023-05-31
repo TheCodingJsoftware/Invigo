@@ -48,7 +48,7 @@ class LoadNests(QThread):
         self.weight_regex = config.get("REGEX", "weight_regex", raw=True)
         self.surface_area_regex = config.get("REGEX", "surface_area_regex", raw=True)
         self.cutting_length_regex = config.get("REGEX", "cutting_length_regex", raw=True)
-        self.quantity_regex = config.get("REGEX", "quantity_regex", raw=True)
+        self.quantity_regex = "  " + config.get("REGEX", "quantity_regex", raw=True)
         self.part_number_regex = config.get("REGEX", "part_number_regex", raw=True)
         self.sheet_quantity_regex = config.get("REGEX", "sheet_quantity_regex", raw=True)
         self.scrap_percentage_regex = config.get("REGEX", "scrap_percentage_regex", raw=True)
@@ -117,11 +117,11 @@ class LoadNests(QThread):
                     f.write(page_lines)
 
         with open(f"{self.program_directory}/output.txt", "r") as f:
-            all_text = f.read()
+            all_text = f.read().replace(" \n", " ")
 
         with open(f"{self.program_directory}/output.txt", "w") as f:
-            f.write(all_text.replace(" \n", " "))
-        return all_text.replace(" \n", " ")
+            f.write(all_text)
+        return all_text
 
     def get_values_from_text(self, text: str, regex: str) -> any:
         """
@@ -238,7 +238,7 @@ class LoadNests(QThread):
                         "part_dim": part_dimensions[i],
                     }
                     image_index += 1
-            os.remove(f"{self.program_directory}/output.txt")
+            # os.remove(f"{self.program_directory}/output.txt")
             for item in list(self.data.keys()):
                 if item[0] == "_":
                     continue
