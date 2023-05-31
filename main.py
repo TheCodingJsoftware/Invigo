@@ -82,6 +82,7 @@ from ui.select_item_dialog import SelectItemDialog
 from ui.set_custom_limit_dialog import SetCustomLimitDialog
 from ui.theme import set_theme
 from ui.web_scrape_results_dialog import WebScrapeResultsDialog
+from utils.calulations import calculate_overhead
 from utils.compress import compress_database, compress_folder
 from utils.dialog_buttons import DialogButtons
 from utils.dialog_icons import Icons
@@ -103,7 +104,7 @@ __copyright__: str = "Copyright 2022-2023, TheCodingJ's"
 __credits__: list[str] = ["Jared Gross"]
 __license__: str = "MIT"
 __name__: str = "Invigo"
-__version__: str = "v2.0.3"
+__version__: str = "v2.0.4"
 __updated__: str = "2023-05-27 12:32:51"
 __maintainer__: str = "Jared Gross"
 __email__: str = "jared@pinelandfarms.ca"
@@ -407,13 +408,15 @@ class MainWindow(QMainWindow):
         self.tableWidget_quote_items.setEnabled(False)
         self.tableWidget_quote_items.horizontalHeader().setStretchLastSection(True)
         self.tableWidget_quote_items.setShowGrid(False)
-        self.tableWidget_quote_items.setColumnCount(7)
+        self.tableWidget_quote_items.setColumnCount(9)
         # tab.setAlternatingRowColors(True)
         self.tableWidget_quote_items.setSortingEnabled(False)
         self.tableWidget_quote_items.setSelectionBehavior(1)
         self.tableWidget_quote_items.setSelectionMode(1)
         self.tableWidget_quote_items.setVerticalScrollMode(QAbstractItemView.ScrollPerPixel)
-        self.tableWidget_quote_items.setHorizontalHeaderLabels(("Item;Part name;Material;Thickness;Qty;Recut;Add Part to Inventory;;").split(";"))
+        self.tableWidget_quote_items.setHorizontalHeaderLabels(
+            ("Item;Part name;Material;Thickness;Qty;Unit Price;Price;Recut;Add Part to Inventory;;").split(";")
+        )
         self.clear_layout(self.verticalLayout_25)
         self.verticalLayout_25.addWidget(self.tableWidget_quote_items)
 
@@ -529,6 +532,10 @@ class MainWindow(QMainWindow):
         self.actionRemove_Nest_Directory.triggered.connect(self.remove_nest_directory)
         self.actionOpen_Quotes_Directory.triggered.connect(partial(self.open_folder, self.path_to_save_quotes))
         self.actionOpen_Workorders_Directory.triggered.connect(partial(self.open_folder, self.path_to_save_workorders))
+
+        self.comboBox_laser_cutting.currentIndexChanged.connect(self.update_quote_price)
+        self.spinBox_overhead.valueChanged.connect(self.update_quote_price)
+        self.spinBox_profit_margin.valueChanged.connect(self.update_quote_price)
         # FILE
         self.menuOpen_Category.setIcon(QIcon(f"ui/BreezeStyleSheets/dist/pyqt6/{self.theme}/folder.png"))
         self.actionCreate_Category.triggered.connect(self.create_new_category)
@@ -1200,6 +1207,7 @@ class MainWindow(QMainWindow):
         if col != 4:
             return
         item = self.tableWidget_quote_items.item(row, col)
+        self.update_quote_price()
 
     def global_nest_material_change(self) -> None:
         """
@@ -1213,6 +1221,10 @@ class MainWindow(QMainWindow):
         for item in list(self.quote_nest_information.keys()):
             self.quote_nest_information[item]["material"] = new_material
         toolbox_index: int = 0
+        if new_material in {"304 SS", "409 SS", "Aluminium"}:
+            self.comboBox_laser_cutting.setCurrentText("Nitrogen")
+        else:
+            self.comboBox_laser_cutting.setCurrentText("CO2")
         for nest_name in list(self.quote_nest_information.keys()):
             if nest_name[0] != "_":
                 continue
@@ -1223,6 +1235,7 @@ class MainWindow(QMainWindow):
             combobox_material: QComboBox = self.sheet_nests_toolbox.getWidget(toolbox_index).findChildren(QComboBox)[0]
             combobox_material.setCurrentText(new_material)
             toolbox_index += 1
+        self.update_quote_price()
 
     def global_nest_thickness_change(self) -> None:
         """
@@ -1246,6 +1259,7 @@ class MainWindow(QMainWindow):
             combobox_thickness: QComboBox = self.sheet_nests_toolbox.getWidget(toolbox_index).findChildren(QComboBox)[1]
             combobox_thickness.setCurrentText(new_thickness)
             toolbox_index += 1
+        self.update_quote_price()
 
     def sheet_nest_item_change(
         self,
@@ -1293,6 +1307,7 @@ class MainWindow(QMainWindow):
             f"{self.quote_nest_information[nest_name_to_update]['gauge']} {self.quote_nest_information[nest_name_to_update]['material']} {self.quote_nest_information[nest_name_to_update]['sheet_dim'].replace('x', ' x ')} - {nest_name}",
         )
         self.load_quote_table()
+        self.update_quote_price()
 
     def inventory_cell_changed(self, tab: CustomTableWidget):
         """
@@ -1795,9 +1810,43 @@ class MainWindow(QMainWindow):
         for row in range(self.tableWidget_quote_items.rowCount()):
             item_name = self.tableWidget_quote_items.item(row, 1).text()
             quantity = int(self.tableWidget_quote_items.item(row, 4).text())
-            recut_button: RecutButton = self.tableWidget_quote_items.cellWidget(row, 5)
+            recut_button: RecutButton = self.tableWidget_quote_items.cellWidget(row, 7)
             self.quote_nest_information[item_name]["quantity"] = quantity
             self.quote_nest_information[item_name]["recut"] = recut_button.isChecked()
+
+    def update_quote_price(self) -> None:
+        self.tableWidget_quote_items.blockSignals(True)
+        for row in range(self.tableWidget_quote_items.rowCount()):
+            item_name = self.tableWidget_quote_items.item(row, 1).text()
+            quantity = int(self.tableWidget_quote_items.item(row, 4).text())
+            unit_price_item: QTableWidgetItem = self.tableWidget_quote_items.item(row, 5)
+            price_item: QTableWidgetItem = self.tableWidget_quote_items.item(row, 6)
+            try:
+                unit_price: float = float(unit_price_item.text().replace("$", "").replace(",", ""))
+            except AttributeError:
+                self.tableWidget_quote_items.blockSignals(False)
+                return
+            except ValueError:
+                pass
+            try:
+                weight: float = self.quote_nest_information[item_name]["weight"]
+            except KeyError:
+                return
+            machine_time: float = self.quote_nest_information[item_name]["machine_time"]
+            material: str = self.quote_nest_information[item_name]["material"]
+            price_per_pound: float = price_of_steel_inventory.get_data()["Price Per Pound"][material]["price"]
+            cost_for_laser: float = 250 if self.comboBox_laser_cutting.currentText() == "Nitrogen" else 150
+            COGS: float = float((machine_time * (cost_for_laser / 60)) + (weight * price_per_pound))
+
+            unit_price = calculate_overhead(COGS, self.spinBox_profit_margin.value() / 100, self.spinBox_overhead.value() / 100)
+            price = unit_price * quantity
+
+            unit_price_item.setText(f"${unit_price:,.2f}")
+            price_item.setText(f"${price:,.2f}")
+            self.quote_nest_information[item_name]["quoting_unit_price"] = unit_price
+            self.quote_nest_information[item_name]["quoting_price"] = price
+        self.tableWidget_quote_items.resizeColumnsToContents()
+        self.tableWidget_quote_items.blockSignals(False)
 
     # ! /\ UPDATE UI ELEMENTS /\
     def sort_inventory(self) -> None:
@@ -2073,7 +2122,7 @@ class MainWindow(QMainWindow):
         Args:
           data: a list of dictionaries
         """
-        # QApplication.restoreOverrideCursor()
+        # # QApplication.restoreOverrideCursor()
         results = WebScrapeResultsDialog(title="Results", message="Ebay search results", data=data)
         if results.exec_():
             response = results.get_response()
@@ -2287,7 +2336,7 @@ class MainWindow(QMainWindow):
             if response == DialogButtons.ok:
                 input_text = input_dialog.inputText
                 ebay_scraper_thread = EbayScraper(item_to_search=input_text)
-                # QApplication.setOverrideCursor(Qt.BusyCursor)
+                # # QApplication.setOverrideCursor(Qt.BusyCursor)
                 ebay_scraper_thread.signal.connect(self.show_web_scrape_results)
                 self.threads.append(ebay_scraper_thread)
                 ebay_scraper_thread.start()
@@ -2647,7 +2696,7 @@ class MainWindow(QMainWindow):
             self.status_button.setText(f"{item_name}: Enter a valid number, aborted!", "red")
             tab.blockSignals(False)
             return
-        QApplication.setOverrideCursor(Qt.BusyCursor)
+        # QApplication.setOverrideCursor(Qt.BusyCursor)
         if col_index == 1:  # Part Number
             inventory.change_object_in_object_item(self.category, item_name, "part_number", new_part_number)
             for category, items in inventory.get_data().items():
@@ -2700,7 +2749,7 @@ class MainWindow(QMainWindow):
         tab.blockSignals(False)
         if col_index != 3:
             self.sync_changes()
-        QApplication.restoreOverrideCursor()
+        # QApplication.restoreOverrideCursor()
 
     # NOTE for Parts in Inventory
     def parts_in_inventory_item_changes(self, item: QTableWidgetItem) -> None:
@@ -2755,7 +2804,7 @@ class MainWindow(QMainWindow):
 
         self.calculate_parts_in_inventory_summary()
         self.sync_changes()
-        QApplication.restoreOverrideCursor()
+        # QApplication.restoreOverrideCursor()
 
     # NOTE for Sheets in Inventory
     def sheets_in_inventory_item_changes(self, item: QTableWidgetItem) -> None:
@@ -2800,7 +2849,7 @@ class MainWindow(QMainWindow):
         self.load_active_tab()
         tab.blockSignals(False)
         self.sync_changes()
-        QApplication.restoreOverrideCursor()
+        # QApplication.restoreOverrideCursor()
 
     # ! /\ INVENTORY TABLE CHANGES /\
 
@@ -2899,7 +2948,7 @@ class MainWindow(QMainWindow):
         JsonFile(file_name=f"data/{self.inventory_file_name}")
         JsonFile(file_name=f"data/{self.inventory_file_name} - Price of Steel")
         JsonFile(file_name=f"data/{self.inventory_file_name} - Parts in Inventory")
-        # QApplication.setOverrideCursor(Qt.BusyCursor)
+        # # QApplication.setOverrideCursor(Qt.BusyCursor)
         if self.tabWidget.tabText(self.tabWidget.currentIndex()) not in [
             "Edit Inventory",
             "Parts in Inventory",
@@ -3003,7 +3052,7 @@ class MainWindow(QMainWindow):
                 self.pushButton_remove_quantity.setEnabled(False)
                 self.radioButton_category.setEnabled(False)
                 self.radioButton_single.setEnabled(False)
-                # QApplication.restoreOverrideCursor()
+                # # QApplication.restoreOverrideCursor()
                 return
         except AttributeError:
             self.set_layout_message("You need to", "create", "a category", 120, self.create_new_category)
@@ -3016,7 +3065,7 @@ class MainWindow(QMainWindow):
             self.pushButton_remove_quantity.setEnabled(False)
             self.radioButton_category.setEnabled(False)
             self.radioButton_single.setEnabled(False)
-            # QApplication.restoreOverrideCursor()
+            # # QApplication.restoreOverrideCursor()
             return
 
         if self.category == "Price Per Pound" and self.tabWidget.tabText(self.tabWidget.currentIndex()) == "Sheets in Inventory":
@@ -3199,7 +3248,7 @@ class MainWindow(QMainWindow):
                 menu.addAction(action)
             tab.customContextMenuRequested.connect(partial(self.open_group_menu, menu))
         tab.blockSignals(False)
-        QApplication.restoreOverrideCursor()
+        # QApplication.restoreOverrideCursor()
 
     # NOTE SHEETS IN INVENTORY
     def price_of_steel_item(self, tab: CustomTableWidget, category_data: dict) -> None:
@@ -3214,13 +3263,12 @@ class MainWindow(QMainWindow):
         tab.setEnabled(False)
         tab.clear()
         tab.setShowGrid(False)
-        tab.setStyleSheet("QTableView::item#group { border-bottom: 2px solid %s; }" % QColor(0, 0, 0, 0).name())
         tab.setRowCount(0)
         tab.setSortingEnabled(False)
         tab.setSelectionBehavior(1)
         tab.setSelectionMode(1)
         tab.setVerticalScrollMode(QAbstractItemView.ScrollPerPixel)
-        QApplication.setOverrideCursor(Qt.BusyCursor)
+        # QApplication.setOverrideCursor(Qt.BusyCursor)
         row_index: int = 0
         if self.category == "Price Per Pound":
             tab.setColumnCount(3)
@@ -3376,7 +3424,7 @@ class MainWindow(QMainWindow):
             action.setText("Set Custom Quantity Limit")
             menu.addAction(action)
             tab.customContextMenuRequested.connect(partial(self.open_group_menu, menu))
-        QApplication.restoreOverrideCursor()
+        # QApplication.restoreOverrideCursor()
 
     # NOTE EDIT INVENTORY
     def load_inventory_items(self, tab: CustomTableWidget, category_data: dict) -> None:
@@ -3672,6 +3720,10 @@ class MainWindow(QMainWindow):
                 comboBox_sheet_material.wheelEvent = lambda event: None
                 comboBox_sheet_material.addItems(price_of_steel_information.get_value("materials"))
                 comboBox_sheet_material.setCurrentText(self.quote_nest_information[item]["material"])
+                if self.quote_nest_information[item]["material"] in {"304 SS", "409 SS", "Aluminium"}:
+                    self.comboBox_laser_cutting.setCurrentText("Nitrogen")
+                else:
+                    self.comboBox_laser_cutting.setCurrentText("CO2")
                 comboBox_sheet_material.activated.connect(
                     partial(
                         self.sheet_nest_item_change,
@@ -3746,7 +3798,8 @@ class MainWindow(QMainWindow):
         self.tableWidget_quote_items.setEnabled(True)
         self.tableWidget_quote_items.resizeColumnsToContents()
         self.tableWidget_quote_items.setColumnWidth(1, 250)
-        # self.tableWidget_quote_items.cellChanged.connect(self.quote_table_cell_changed)
+        self.update_quote_price()
+        self.tableWidget_quote_items.cellChanged.connect(self.quote_table_cell_changed)
 
     def load_quote_table(self) -> None:
         """
@@ -3810,20 +3863,35 @@ class MainWindow(QMainWindow):
                 )
                 self.tableWidget_quote_items.item(row_index, 4).setTextAlignment(Qt.AlignCenter | Qt.AlignVCenter | Qt.TextWrapAnywhere)
 
+                self.tableWidget_quote_items.setItem(
+                    row_index,
+                    5,
+                    QTableWidgetItem("$"),
+                )
+                self.tableWidget_quote_items.item(row_index, 5).setTextAlignment(Qt.AlignCenter | Qt.AlignVCenter | Qt.TextWrapAnywhere)
+
+                self.tableWidget_quote_items.setItem(
+                    row_index,
+                    6,
+                    QTableWidgetItem("$"),
+                )
+                self.tableWidget_quote_items.item(row_index, 6).setTextAlignment(Qt.AlignCenter | Qt.AlignVCenter | Qt.TextWrapAnywhere)
+
                 recut_button = RecutButton(self)
                 recut_button.setStyleSheet("margin: 5%;")
-                self.tableWidget_quote_items.setCellWidget(row_index, 5, recut_button)
+                self.tableWidget_quote_items.setCellWidget(row_index, 7, recut_button)
 
                 send_part_to_inventory = QPushButton(self)
                 send_part_to_inventory.setText("Add Part to Inventory")
                 send_part_to_inventory.setStyleSheet("margin: 5%;")
                 send_part_to_inventory.setFixedWidth(150)
                 send_part_to_inventory.clicked.connect(partial(self.upload_part_to_inventory_thread, item, send_part_to_inventory))
-                self.tableWidget_quote_items.setCellWidget(row_index, 6, send_part_to_inventory)
+                self.tableWidget_quote_items.setCellWidget(row_index, 8, send_part_to_inventory)
 
                 if not does_part_exist:
                     self.set_table_row_color(self.tableWidget_quote_items, row_index, "#3F1E25")
                 row_index += 1
+        self.tableWidget_quote_items.resizeColumnsToContents()
 
     # ! /\ Load UI /\
     # ! \/ CHECKERS \/
@@ -4227,7 +4295,7 @@ class MainWindow(QMainWindow):
                 message=f"Server is either offline, try again or not connected to internet. Make sure VPN's are disabled, else contact server or netowrk administrator.\n\n{str(data)}",
             )
             self.status_button.setText("Cannot connect to server", "red")
-        QApplication.restoreOverrideCursor()
+        # QApplication.restoreOverrideCursor()
 
     def start_changes_thread(self, files_to_download: list[str]) -> None:
         """
@@ -4277,7 +4345,7 @@ class MainWindow(QMainWindow):
         self.get_upload_file_response = get_response
         upload_thread = UploadThread(files_to_upload)
         # if get_response:
-        # QApplication.setOverrideCursor(Qt.BusyCursor)
+        # # QApplication.setOverrideCursor(Qt.BusyCursor)
         self.start_thread(upload_thread)
 
     def download_file(self, files_to_download: list[str], get_response: bool = True) -> None:
@@ -4289,7 +4357,7 @@ class MainWindow(QMainWindow):
         """
         self.get_upload_file_response = get_response
         download_thread = DownloadThread(files_to_download)
-        # QApplication.setOverrideCursor(Qt.BusyCursor)
+        # # QApplication.setOverrideCursor(Qt.BusyCursor)
         self.start_thread(download_thread)
 
     def start_thread(self, thread) -> None:
@@ -4319,7 +4387,7 @@ class MainWindow(QMainWindow):
 
     def start_process_nest_thread(self, nests: list[str]) -> None:
         self.status_button.setText("Loadings Nests", "yellow")
-        QApplication.setOverrideCursor(Qt.BusyCursor)
+        # QApplication.setOverrideCursor(Qt.BusyCursor)
         self.pushButton_load_nests.setEnabled(False)
         load_nest_thread = LoadNests(self, nests)
         self.threads.append(load_nest_thread)
@@ -4338,13 +4406,13 @@ class MainWindow(QMainWindow):
             self.pushButton_load_nests.setEnabled(True)
             self.load_nests()
             self.status_button.setText(f"Successfully loaded {len(self.get_all_selected_nests())} nests", "lime")
-        QApplication.restoreOverrideCursor()
+        # QApplication.restoreOverrideCursor()
 
     def upload_part_to_inventory_thread(self, item_name: str, send_part_to_inventory: QPushButton) -> None:
         send_part_to_inventory.setEnabled(False)
-        self.save_quote_table_values()
+        # self.save_quote_table_values()
         data = {item_name: self.quote_nest_information[item_name]}
-        QApplication.setOverrideCursor(Qt.BusyCursor)
+        # QApplication.setOverrideCursor(Qt.BusyCursor)
         with open("parts_batch_to_upload.json", "w") as f:
             json.dump(data, f, sort_keys=True, indent=4)
         upload_batch = UploadBatch("parts_batch_to_upload.json")
@@ -4356,7 +4424,7 @@ class MainWindow(QMainWindow):
         send_part_to_inventory.setEnabled(True)
 
     def upload_batch_to_inventory_thread(self) -> None:
-        QApplication.setOverrideCursor(Qt.BusyCursor)
+        # QApplication.setOverrideCursor(Qt.BusyCursor)
         with open("parts_batch_to_upload.json", "w") as f:
             json.dump(self.quote_nest_information, f, sort_keys=True, indent=4)
         upload_batch = UploadBatch("parts_batch_to_upload.json")
@@ -4372,7 +4440,7 @@ class MainWindow(QMainWindow):
         else:
             self.status_button.setText("Batch Failed to send", "red")
             self.show_error_dialog("Error", f"Something went wrong.\n\n{response}")
-        QApplication.restoreOverrideCursor()
+        # QApplication.restoreOverrideCursor()
         os.remove("parts_batch_to_upload.json")
 
     # ! /\ THREADS /\

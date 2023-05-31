@@ -288,16 +288,16 @@ class ExcelFile:
         """Save excel file."""
         merge_format = self.workbook.add_format({"align": "top", "valign": "right", "font_name": self.FONT_NAME})
         merge_format.set_text_wrap()
-        self.worksheet.merge_range("J1:K1", f"{datetime.now().strftime('%B %d, %A, %Y')}", merge_format)
+        self.worksheet.merge_range("F1:G1", f"{datetime.now().strftime('%B %d, %A, %Y')}", merge_format)
         merge_format = self.workbook.add_format({"align": "center", "valign": "center", "font_name": self.FONT_NAME})
         merge_format.set_bold()
         merge_format.set_font_size(18)
         merge_format.set_bottom(1)
 
         if not self.generate_quote:
-            self.worksheet.merge_range("E1:G1", "Work Order", merge_format)
+            self.worksheet.merge_range("C1:D1", "Work Order", merge_format)
         else:
-            self.worksheet.merge_range("E1:G1", "Quote", merge_format)
+            self.worksheet.merge_range("C1:D1", "Quote", merge_format)
         if self.should_generate_packing_slip:
-            self.worksheet.merge_range("E1:G1", "Packing Slip", merge_format)
+            self.worksheet.merge_range("C1:D1", "Packing Slip", merge_format)
         self.workbook.close()
