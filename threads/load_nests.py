@@ -24,7 +24,7 @@ class LoadNests(QThread):
 
     signal = pyqtSignal(object)
 
-    def __init__(self, nests: list[str]) -> None:
+    def __init__(self, parent, nests: list[str]) -> None:
         """
         The function is a constructor for a class that inherits from QThread. It takes a list of strings
         as an argument and returns None
@@ -248,19 +248,12 @@ class LoadNests(QThread):
                 shutil.move(image_path, new_image_path)
             self.signal.emit(self.data)
         except Exception as e:
+            print(e)
             try:
-                try:
-                    self.signal.emit(
-                        f"ERROR!\nException: {e}\nTrace stack:\n{traceback.print_exc()}\n\nIf the error still persists, send me an email of the pdf your trying nesting.\n{nest}"
-                    )
-                except UnboundLocalError:
-                    self.signal.emit(
-                        f"ERROR!\nException: {e}\nTrace stack:\n{traceback.print_exc()}\n\nIf the error still persists, send me an email of the pdf your trying nesting.\n{self.nests[0]}"
-                    )
-            except Exception:
-                try:
-                    self.signal.emit(f"ERROR!\nException: {e}\nIf the error still persists, send me an email of the pdf your trying nesting.\n{nest}")
-                except UnboundLocalError:
-                    self.signal.emit(
-                        f"ERROR!\nException: {e}\nIf the error still persists, send me an email of the pdf your trying nesting.\n{self.nests[0]}"
-                    )
+                self.signal.emit(
+                    f"ERROR!\nException: {e}\nTrace stack:\n{traceback.print_exc()}\n\nIf the error still persists, send me an email of the pdf your trying nesting.\n{nest}"
+                )
+            except (UnboundLocalError, Exception):
+                self.signal.emit(
+                    f"ERROR!\nException: {e}\nTrace stack:\n{traceback.print_exc()}\n\nIf the error still persists, send me an email of the pdf your trying nesting.\n{self.nests[0]}"
+                )

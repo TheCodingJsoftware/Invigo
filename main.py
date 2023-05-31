@@ -1199,7 +1199,6 @@ class MainWindow(QMainWindow):
         if col != 4:
             return
         item = self.tableWidget_quote_items.item(row, col)
-        print(row, col, item.text())
 
     def global_nest_material_change(self) -> None:
         """
@@ -4321,9 +4320,9 @@ class MainWindow(QMainWindow):
         self.status_button.setText("Loadings Nests", "yellow")
         QApplication.setOverrideCursor(Qt.BusyCursor)
         self.pushButton_load_nests.setEnabled(False)
-        load_nest_thread = LoadNests(nests)
-        load_nest_thread.signal.connect(self.response_from_load_nest_thread)
+        load_nest_thread = LoadNests(self, nests)
         self.threads.append(load_nest_thread)
+        load_nest_thread.signal.connect(self.response_from_load_nest_thread)
         load_nest_thread.start()
 
     def response_from_load_nest_thread(self, data) -> None:
@@ -4584,7 +4583,7 @@ def main() -> None:
     It creates a QApplication, creates a MainWindow, shows the MainWindow, and then runs the
     QApplication
     """
-    app = QApplication(sys.argv)
+    app = QApplication([])
     loading_window = LoadWindow()
     loading_screen = QSplashScreen(loading_window)
     app.processEvents()
@@ -4593,9 +4592,9 @@ def main() -> None:
     timer.setSingleShot(True)
     timer.timeout.connect(lambda: loading_window.close())
     timer.timeout.connect(lambda: loading_screen.close())
-    timer.timeout.connect(lambda: MainWindow().show())
     timer.start(1500)
-
+    m = MainWindow()
+    m.show()
     app.exec_()
 
 
