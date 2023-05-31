@@ -1,4 +1,3 @@
-
 import contextlib
 from datetime import datetime
 
@@ -10,6 +9,7 @@ from utils.send_email import send
 
 sheets_in_inventory = JsonFile(file_name="data/inventory - Price of Steel")
 connected_clients = set()
+
 
 def generate_sheet_report(clients) -> None:
     """
@@ -54,15 +54,12 @@ def generate_sheet_report(clients) -> None:
                     order_pending = "No order is pending"
                 message_to_send += f'<tr style="border: 1px solid; {stylesheet}"><td>{sheet_name}</td><td style="{"font-weight: bold;" if is_order_pending else ""}">{order_pending}</td><td>{current_quantity}</td><td>{notes}</td></tr>'
     message_to_send += '</tbody></table></div><br><p style="font-family: sans-serif;">Don\'t forget to update the pending status button in the Sheet Inventory tab when you sent a purchase order.<br>Have a fabulous week!</p>'
-    CustomPrint.print(f'INFO - Sheet report generated', connected_clients=connected_clients)
+    CustomPrint.print("INFO - Sheet report generated", connected_clients=connected_clients)
     if sheets_low_in_quantity == 0:
         send(
             "Nothing low in quantity, Whew! Have a marvelous week.",
-            email_addresses=["jaredgrozz@gmail.com"], 
+            email_addresses=["jaredgrozz@gmail.com"],
             connected_clients=connected_clients,
         )
     else:
-        send(message_to_send, 
-             email_addresses=["jaredgrozz@gmail.com"], 
-             connected_clients=connected_clients
-        )
+        send(message_to_send, email_addresses=["jaredgrozz@gmail.com"], connected_clients=connected_clients)

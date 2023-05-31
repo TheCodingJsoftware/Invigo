@@ -23,6 +23,9 @@ connected_clients = set()
 
 class MainHandler(tornado.web.RequestHandler):
     def get(self):
+        """
+        This function gets logs, converts them to HTML format, marks them as safe HTML, and writes them.
+        """
         logs = print_clients() + sys.stdout.getvalue()
         converter = Ansi2HTMLConverter()
         logs = converter.convert(logs)
@@ -32,6 +35,10 @@ class MainHandler(tornado.web.RequestHandler):
 
 class FileSenderHandler(tornado.websocket.WebSocketHandler):
     def open(self):
+        """
+        This function adds a client to a set of connected clients and prints information about the
+        connection.
+        """
         connected_clients.add(self)
 
         CustomPrint.print(
@@ -40,6 +47,10 @@ class FileSenderHandler(tornado.websocket.WebSocketHandler):
         )
 
     def on_close(self):
+        """
+        This function removes a disconnected client from a list of connected clients and prints
+        information about the disconnection.
+        """
         connected_clients.remove(self)
         CustomPrint.print(
             f"INFO - Connection ended with: {self.request.remote_ip} - Connected clients: {len(connected_clients)}",
@@ -50,6 +61,14 @@ class FileSenderHandler(tornado.websocket.WebSocketHandler):
 class FileReceiveHandler(tornado.web.RequestHandler):
     # this downloads file per request of the client
     def get(self, filename):
+        """
+        This function checks if a requested file exists, and if it does, sends it as a response with
+        appropriate headers, otherwise returns a 404 error.
+
+        Args:
+          filename: a string representing the name of the file that the client is requesting to
+        download.
+        """
         # Check if the requested file exists
         file_path = f"data/{filename}"
         try:
@@ -80,6 +99,10 @@ class FileReceiveHandler(tornado.web.RequestHandler):
 class FileUploadHandler(tornado.web.RequestHandler):
     # this saves a file that the client uploads
     async def post(self):
+        """
+        This is an asynchronous function that receives a file, saves it to a local location, and updates
+        inventory if the file is a JSON batch file.
+        """
         file_info = self.request.files.get("file")
         should_signal_connect_clients: bool = False
         if file_info:
@@ -101,22 +124,26 @@ class FileUploadHandler(tornado.web.RequestHandler):
 
             if file_name == "parts_batch_to_upload.json":
                 self.write("Batch sent successfully")
-                update_inventory(f"data/{file_name}", connected_clients)
-                should_signal_connect_clients = True
+                update_inventory("data/{file_name}", connected_clients)
             else:
                 self.write("File uploaded successfully.")
-                should_signal_connect_clients = True
+            should_signal_connect_clients = True
             if should_signal_connect_clients and get_file_type(file_name) == "JSON":
                 signal_clients_for_changes(client_to_ignore=self.request.remote_ip)
         else:
             self.write("No file received.")
-            CustomPrint.print(
-                f"ERROR - No file received.", connected_clients=connected_clients
-            )
+            CustomPrint.print("ERROR - No file received.", connected_clients=connected_clients)
 
 
 class ImageHandler(tornado.web.RequestHandler):
     def get(self, image_name):
+        """
+        This function retrieves an image file and sends it as a response to a client's request, or
+        returns a 404 error if the file does not exist.
+
+        Args:
+          image_name: A string representing the name of the image file that the client is requesting.
+        """
         filepath = os.path.join("parts in inventory images", image_name)
         if os.path.exists(filepath):
             with open(filepath, "rb") as f:
@@ -132,6 +159,10 @@ class ImageHandler(tornado.web.RequestHandler):
 
 class CommandHandler(tornado.web.RequestHandler):
     def post(self):
+        """
+        This is a Python function that receives a command from a client, checks if it is
+        "send_sheet_report", and if so, generates a sheet report and sends it to connected clients.
+        """
         # Receive the command from the client
         command = self.get_argument("command")
         CustomPrint.print(
@@ -147,6 +178,13 @@ class CommandHandler(tornado.web.RequestHandler):
 
 
 def signal_clients_for_changes(client_to_ignore) -> None:
+    """
+    This function signals connected clients to download changes, except for the client specified to be
+    ignored.
+
+    Args:
+      client_to_ignore: The IP address of a client that should be ignored and not signaled for changes.
+    """
     CustomPrint.print(
         f"INFO - Signaling {len(connected_clients)} clients",
         connected_clients=connected_clients,
@@ -186,7 +224,9 @@ def backup_inventroy_files():
     logging.info("Backing up inventory files")
     files = os.listdir(f"{os.path.dirname(os.path.realpath(__file__))}/data")
     for file_path in files:
-        path_to_zip_file: str = f"{os.path.dirname(os.path.realpath(__file__))}/backups/{file_path} - {datetime.now().strftime('%B %d %A %Y %I-%M-%S %p')}.zip"
+        path_to_zip_file: str = (
+            f"{os.path.dirname(os.path.realpath(__file__))}/backups/{file_path} - {datetime.now().strftime('%B %d %A %Y %I-%M-%S %p')}.zip"
+        )
         file = zipfile.ZipFile(path_to_zip_file, mode="w")
         file.write(
             f"{os.path.dirname(os.path.realpath(__file__))}/data/{file_path}",
@@ -195,40 +235,41 @@ def backup_inventroy_files():
         )
         file.close()
     logging.info("Inventory file backed up")
-    CustomPrint.print(f"INFO - Backup complete", connected_clients=connected_clients)
-
+    CustomPrint.print("INFO - Backup complete", connected_clients=connected_clients)
 
 
 if __name__ == "__main__":
     coloredlogs.install(level="INFO")  # Enable colored logs
     sys.stdout = StringIO()
-    CustomPrint.print("""
+    CustomPrint.print(
+        """
 
-                                      **//*                                     
-                            *&&&&&&&&&&&&&&&%%%%%%           
-                        %&&&&&&&&&&&&&&&&&&%%%%    #%%%%%(                                     ████████████████████                                                                 
-                     &&&&&&&&&&&&%%%(           *%%%%%%((/                                    ████████████████████                                                                  
-                  *&&&&&&&&&&&&%%(            %%%%%%(((    (##/                              ██▀                ██                                                                  
-                 &&&&&&&&&&&&&%%           %%%%%%#((     #######                 ▄████████                     ██                                 ██                               
-               &&&&&&&&& #&&&%&          %%%%%#((*       %########             ▄█▀      ▀███▄▄████▄▄▄         ██                                                                    
-              &&&&&&&&   %&&%%%       %%%%%%(((           (#####(((           █▀          ██████    ▀█▄      ▄█            ▄▄   ▄▄█▄    ▄▄▄▄▄    ██          ▄███▄        ▄▄▄▄▄     
-             &&&&&&&&    %%%%%%     %%%%%#((                ##((((((         ██          █▀   ████    █     ██  ▀█▄██  ▄██████    ███  ██████ ▄████      ▄███▀   ▀     ▄▄█████▀▀      
-            %&&&&&&%     %%%%%%      ##((                    (((((((/        █          ▄█       ███  █    ██     ███▄██▀ ███     ███ █   ██   ███     ██▀   ▄       ▄█▀ ▄▄▄▄▄     
-            &&&&&&%      %%%%%%                    ###((((((((((((///        ██         ██        █████  ▄█▀      ████▀  ███     ███▀    ██   ███     █     ██      ██  █   ███     
-           *&&&&&&       %%%%%%                   /(##(((((((((//////         ██        ▀█          ██ ▄█▀       ███▀   ███      ██    ▄█▀   ███    ██     ███     ██      ▄██      
-           (&&&&&&       %%%%%%                   /((((           ///          ██                    ▄██▀       ███    ███      ███  ▄██▀   ███    ██    ██ ██    ███     ▄██       
-            &&&&&%#      %%%%%#        %%%%#(     /((((         ***//           ▀██▄▄            ▄▄██▀         ███     ██       ████▀▀     ▄██    ███   ██ ███    ██    ▄▄█▀        
-            %%%&%%%       %%%#      /%%%%#((/     /((((      **//////             ▀▀██████████████▀           ███     ████     ▄█▀         ███▀   ▀█████▀ ███     ▀██████▀           
-             %%%%%%%              %%%%##((        /////    *////////                                                                                      ██                        
-             *%%%%%%%%         #%%%%#((/          *////   /////////                                                                                      ██                         
-               %%%%%%%%#     %%%%#(((             ///// //////////                                                                                      ██                          
-                %%%%%%%%%*%%%%##((*              ///////////////                                                                                      ▄██                           
-                  %%%%%%%%%##((/               ///////////////*                                                                               ▀█▄   ▄█▀                             
-                    #%####(((    #(          ///////////////                                                                                    ▀███▀                                                      
-                            (####(((((((((//////////*                           
-                                      ****                                      
-                                                    
-""")
+                                      **//*
+                            *&&&&&&&&&&&&&&&%%%%%%
+                        %&&&&&&&&&&&&&&&&&&%%%%    #%%%%%(                                     ████████████████████
+                     &&&&&&&&&&&&%%%(           *%%%%%%((/                                    ████████████████████
+                  *&&&&&&&&&&&&%%(            %%%%%%(((    (##/                              ██▀                ██
+                 &&&&&&&&&&&&&%%           %%%%%%#((     #######                 ▄████████                     ██                                 ██
+               &&&&&&&&& #&&&%&          %%%%%#((*       %########             ▄█▀      ▀███▄▄████▄▄▄         ██
+              &&&&&&&&   %&&%%%       %%%%%%(((           (#####(((           █▀          ██████    ▀█▄      ▄█            ▄▄   ▄▄█▄    ▄▄▄▄▄    ██          ▄███▄        ▄▄▄▄▄
+             &&&&&&&&    %%%%%%     %%%%%#((                ##((((((         ██          █▀   ████    █     ██  ▀█▄██  ▄██████    ███  ██████ ▄████      ▄███▀   ▀     ▄▄█████▀▀
+            %&&&&&&%     %%%%%%      ##((                    (((((((/        █          ▄█       ███  █    ██     ███▄██▀ ███     ███ █   ██   ███     ██▀   ▄       ▄█▀ ▄▄▄▄▄
+            &&&&&&%      %%%%%%                    ###((((((((((((///        ██         ██        █████  ▄█▀      ████▀  ███     ███▀    ██   ███     █     ██      ██  █   ███
+           *&&&&&&       %%%%%%                   /(##(((((((((//////         ██        ▀█          ██ ▄█▀       ███▀   ███      ██    ▄█▀   ███    ██     ███     ██      ▄██
+           (&&&&&&       %%%%%%                   /((((           ///          ██                    ▄██▀       ███    ███      ███  ▄██▀   ███    ██    ██ ██    ███     ▄██
+            &&&&&%#      %%%%%#        %%%%#(     /((((         ***//           ▀██▄▄            ▄▄██▀         ███     ██       ████▀▀     ▄██    ███   ██ ███    ██    ▄▄█▀
+            %%%&%%%       %%%#      /%%%%#((/     /((((      **//////             ▀▀██████████████▀           ███     ████     ▄█▀         ███▀   ▀█████▀ ███     ▀██████▀
+             %%%%%%%              %%%%##((        /////    *////////                                                                                      ██
+             *%%%%%%%%         #%%%%#((/          *////   /////////                                                                                      ██
+               %%%%%%%%#     %%%%#(((             ///// //////////                                                                                      ██
+                %%%%%%%%%*%%%%##((*              ///////////////                                                                                      ▄██
+                  %%%%%%%%%##((/               ///////////////*                                                                               ▀█▄   ▄█▀
+                    #%####(((    #(          ///////////////                                                                                    ▀███▀
+                            (####(((((((((//////////*
+                                      ****
+
+"""
+    )
 
     config_logs()
     # backup_inventroy_files()
@@ -243,5 +284,5 @@ if __name__ == "__main__":
         ]
     )
     app.listen(80)
-    CustomPrint.print(f"INFO - Server started")
+    CustomPrint.print("INFO - Server started")
     tornado.ioloop.IOLoop.current().start()
