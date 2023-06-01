@@ -1,7 +1,7 @@
 # sourcery skip: avoid-builtin-shadow
 import requests
 from PyQt5 import uic
-from PyQt5.QtCore import Qt, QTimer
+from PyQt5.QtCore import Qt, QTimer, QEventLoop
 from PyQt5.QtGui import QColor, QCursor, QFont, QIcon, QPixmap, QPalette
 from PyQt5.QtWidgets import (
     QAbstractItemView,
@@ -50,6 +50,8 @@ from threads.remove_quantity import RemoveQuantityThread
 from threads.send_sheet_report_thread import SendReportThread
 from threads.upload_quoted_inventory import UploadBatch
 from threads.upload_thread import UploadThread
+from threads.get_order_number_thread import GetOrderNumberThread
+from threads.set_order_number_thread import SetOrderNumberThread
 from ui.about_dialog import AboutDialog
 from ui.add_item_dialog import AddItemDialog
 from ui.add_item_dialog_price_of_steel import AddItemDialogPriceOfSteel
@@ -104,7 +106,7 @@ __copyright__: str = "Copyright 2022-2023, TheCodingJ's"
 __credits__: list[str] = ["Jared Gross"]
 __license__: str = "MIT"
 __name__: str = "Invigo"
-__version__: str = "v2.0.4"
+__version__: str = "v2.0.5"
 __updated__: str = "2023-05-27 12:32:51"
 __maintainer__: str = "Jared Gross"
 __email__: str = "jared@pinelandfarms.ca"
@@ -307,6 +309,7 @@ class MainWindow(QMainWindow):
         # VARIABLES
         self.theme: str = "dark"
 
+        self.order_number: int = None
         self.po_buttons: list[QPushButton] = []
         self.categories: list[str] = []
         self.active_layout: QVBoxLayout = None
@@ -408,15 +411,14 @@ class MainWindow(QMainWindow):
         self.tableWidget_quote_items.setEnabled(False)
         self.tableWidget_quote_items.horizontalHeader().setStretchLastSection(True)
         self.tableWidget_quote_items.setShowGrid(False)
-        self.tableWidget_quote_items.setColumnCount(9)
         # tab.setAlternatingRowColors(True)
         self.tableWidget_quote_items.setSortingEnabled(False)
         self.tableWidget_quote_items.setSelectionBehavior(1)
         self.tableWidget_quote_items.setSelectionMode(1)
         self.tableWidget_quote_items.setVerticalScrollMode(QAbstractItemView.ScrollPerPixel)
-        self.tableWidget_quote_items.setHorizontalHeaderLabels(
-            ("Item;Part name;Material;Thickness;Qty;Unit Price;Price;Recut;Add Part to Inventory;;").split(";")
-        )
+        headers: list[str] = ["Item", "Part name", "Material", "Thickness", "Qty", "Unit Price", "Price", "Recut", "Add Part to Inventory"]
+        self.tableWidget_quote_items.setColumnCount(len(headers))
+        self.tableWidget_quote_items.setHorizontalHeaderLabels(headers)
         self.clear_layout(self.verticalLayout_25)
         self.verticalLayout_25.addWidget(self.tableWidget_quote_items)
 
@@ -565,7 +567,7 @@ class MainWindow(QMainWindow):
                 False,
             )
 
-    # ! \/ SLOTS & SIGNALS \/
+    # * \/ SLOTS & SIGNALS \/
     def quick_load_category(self, name: str) -> None:
         """
         This function sets the current tab index of a tab widget based on the name of a category and
@@ -791,7 +793,7 @@ class MainWindow(QMainWindow):
         self.active_json_file.change_item_name(self.category, old_name, new_name)
         self.sort_inventory()
 
-    def use_exchange_rate_change(self, category: str, item_name: str, value_name: str, combo: QComboBox) -> None:
+    def use_exchange_rate_change(self, item_name: str, value_name: str, combo: QComboBox) -> None:
         """
         It changes the exchange rate
 
@@ -802,7 +804,7 @@ class MainWindow(QMainWindow):
           combo (QComboBox): QComboBox
         """
         self.value_change(
-            category,
+            self.category,
             item_name,
             value_name,
             combo.currentText() == "USD",
@@ -830,7 +832,7 @@ class MainWindow(QMainWindow):
         self.update_stock_costs()
         self.sync_changes()
 
-    def priority_change(self, category: str, item_name: str, value_name: str, combo: QComboBox) -> None:
+    def priority_change(self, item_name: str, value_name: str, combo: QComboBox) -> None:
         """
         It changes the priority of a task
 
@@ -841,7 +843,7 @@ class MainWindow(QMainWindow):
           combo (QComboBox): QComboBox
         """
 
-        self.value_change(category, item_name, value_name, combo.currentIndex())
+        self.value_change(self.category, item_name, value_name, combo.currentIndex())
         if combo.currentText() == "Medium":
             combo.setStyleSheet(f"color: yellow; border-color: gold; background-color: #413C28;{self.margin_format}")
         elif combo.currentText() == "High":
@@ -850,7 +852,7 @@ class MainWindow(QMainWindow):
             combo.setStyleSheet(self.margin_format)
         self.sync_changes()
 
-    def notes_changed(self, category: str, item_name: str, value_name: str, note: QPlainTextEdit) -> None:
+    def notes_changed(self, item_name: str, value_name: str, note: QPlainTextEdit) -> None:
         """
         It takes the category, item name, value name, and note as parameters and then calls the
         value_change function with the category, item name, value name, and note as parameters
@@ -873,7 +875,7 @@ class MainWindow(QMainWindow):
                     inventory.change_object_in_object_item(object_name=category, item_name=item, value_name="notes", new_value=note.toPlainText())
         self.sync_changes()
 
-    def delete_item(self, category: str, item_name: str) -> None:
+    def delete_item(self, item_name: str) -> None:
         """
         It removes an item from the inventory
 
@@ -881,7 +883,7 @@ class MainWindow(QMainWindow):
           category (str): str
           item_name (QLineEdit): QLineEdit
         """
-        self.active_json_file.remove_object_item(category, item_name)
+        self.active_json_file.remove_object_item(self.category, item_name)
         self.load_active_tab()
         self.sync_changes()
 
@@ -1337,8 +1339,8 @@ class MainWindow(QMainWindow):
         else:
             self.pushButton_remove_quantities_from_inventory.setText(f"Remove Quantities from Selected ({selected_items_count}) Items")
 
-    # ! /\ SLOTS & SIGNALS /\
-    # ! \/ CALCULATION \/
+    # * /\ SLOTS & SIGNALS /\
+    # * \/ CALCULATION \/
     def eval_expr(self, expr):
         """
         This function evaluates a given expression using the ast module in Python.
@@ -1476,25 +1478,7 @@ class MainWindow(QMainWindow):
         lbl.setStyleSheet("border-top: 1px solid grey; border-bottom: 1px solid grey")
         self.gridLayout_parts_in_inventory_summary.addWidget(lbl, i + 1, 1)
 
-    # ! /\ CALCULATION /\
-    def sheet_notes_changed(self, category: str, item: str, note: QPlainTextEdit) -> None:
-        """
-        It takes the category, item name, value name, and note as parameters and then calls the
-        value_change function with the category, item name, value name, and note as parameters
-
-        Args:
-          category (str): str = The category of the item.
-          item_name (QLineEdit): QLineEdit
-          value_name (str): str = The name of the value that is being changed.
-          note (QPlainTextEdit): QPlainTextEdit
-        """
-        price_of_steel_inventory.get_data()
-        price_of_steel_inventory.change_object_in_object_item(
-            category,
-            item,
-            "notes",
-            note.toPlainText(),
-        )
+    # * /\ CALCULATION /\
 
     def remove_quantity_from_part_inventory(self) -> None:
         """
@@ -1584,7 +1568,7 @@ class MainWindow(QMainWindow):
         self.calculate_parts_in_inventory_summary()
         self.sync_changes()
 
-    # ! \/ UPDATE UI ELEMENTS \/
+    # * \/ UPDATE UI ELEMENTS \/
     def change_tables_font(self) -> None:
         font, ok = QFontDialog.getFont()
         if ok:
@@ -1710,6 +1694,7 @@ class MainWindow(QMainWindow):
         self.clear_layout(self.gridLayout_Categor_Stock_Prices)
         lbl = QLabel("Stock Costs:", self)
         self.gridLayout_Categor_Stock_Prices.addWidget(lbl, 0, 0)
+        i: int = 0
         for i, stock_cost in enumerate(total_stock_costs, start=1):
             lbl = QLabel(stock_cost, self)
             if "Total" in stock_cost:
@@ -1848,7 +1833,7 @@ class MainWindow(QMainWindow):
         self.tableWidget_quote_items.resizeColumnsToContents()
         self.tableWidget_quote_items.blockSignals(False)
 
-    # ! /\ UPDATE UI ELEMENTS /\
+    # * /\ UPDATE UI ELEMENTS /\
     def sort_inventory(self) -> None:
         """
         It sorts the inventory based on the sorting method selected by the user
@@ -1866,7 +1851,7 @@ class MainWindow(QMainWindow):
         self.sync_changes()
         self.load_active_tab()
 
-    # ! \/ GETTERS \/
+    # * \/ GETTERS \/
     def get_all_part_numbers(self) -> list[str]:
         """
         It takes the data from the inventory module, loops through the data, and returns a list of all
@@ -2042,7 +2027,7 @@ class MainWindow(QMainWindow):
         all_gauges = self.get_all_gauges()
         return [item.text() for item in selected_rows if item.column() == 0 and item.text() not in all_gauges]
 
-    # ! /\ GETTERS /\
+    # * /\ GETTERS /\
     def save_geometry(self) -> None:
         """
         It saves the geometry of the window to the settings file
@@ -2055,7 +2040,7 @@ class MainWindow(QMainWindow):
     def save_menu_tab_order(self) -> None:
         settings_file.add_item(item_name="menu_tabs_order", value=self.get_menu_tab_order())
 
-    # ! \/ Dialogs \/
+    # * \/ Dialogs \/
     def show_about_dialog(self) -> None:
         """
         It creates an AboutDialog object and shows it.
@@ -2556,9 +2541,17 @@ class MainWindow(QMainWindow):
                     action = select_item_dialog.get_selected_item()
                 except AttributeError:
                     return
+                should_generate_quote, should_generate_workorder, should_update_inventory, should_generate_packing_slip = action
+                if should_generate_packing_slip:
+                    self.get_order_number_thread()
+                    loop = QEventLoop()
+                    QTimer.singleShot(200, loop.quit)
+                    loop.exec_()
+                    self.set_order_number_thread(self.order_number + 1)
+
                 self.save_quote_table_values()
                 try:
-                    generate_quote = GenerateQuote(action, self.quote_nest_information)
+                    generate_quote = GenerateQuote(action, self.quote_nest_information, self.order_number)
                 except FileNotFoundError:
                     self.show_error_dialog(
                         "File not found, aborted",
@@ -2645,22 +2638,23 @@ class MainWindow(QMainWindow):
         Returns:
           None.
         """
-        with open(settings_file.get_value("path_to_order_number")) as json_file:
-            order_number_data = json.load(json_file)
+        self.get_order_number_thread()
+        loop = QEventLoop()
+        QTimer.singleShot(200, loop.quit)
+        loop.exec_()
+
         input_dialog = InputDialog(
             title="Set a Order Number",
             message="Enter a Order Number as a integer",
             button_names=DialogButtons.set_cancel,
-            placeholder_text=order_number_data["order_number"],
+            placeholder_text=self.order_number,
         )
         if input_dialog.exec_():
             response = input_dialog.get_response()
             if response in [DialogButtons.set, DialogButtons.ok]:
                 try:
                     input_number = int(input_dialog.inputText)
-                    order_number_data["order_number"] = input_number
-                    with open(settings_file.get_value("path_to_order_number"), "w", encoding="utf-8") as json_file:
-                        json.dump(order_number_data, json_file, ensure_ascii=False, indent=4)
+                    self.set_order_number_thread(input_number)
                 except Exception:
                     self.show_error_dialog(
                         title="Invalid number",
@@ -2671,9 +2665,9 @@ class MainWindow(QMainWindow):
             elif response == DialogButtons.cancel:
                 return
 
-    # ! /\ Dialogs /\
+    # * /\ Dialogs /\
 
-    # ! \/ INVENTORY TABLE CHANGES \/
+    # * \/ INVENTORY TABLE CHANGES \/
     # NOTE for Edit Inventory
     def edit_inventory_item_changes(self, item: QTableWidgetItem) -> None:
         tab = self.tabs[self.category]
@@ -2851,9 +2845,9 @@ class MainWindow(QMainWindow):
         self.sync_changes()
         # QApplication.restoreOverrideCursor()
 
-    # ! /\ INVENTORY TABLE CHANGES /\
+    # * /\ INVENTORY TABLE CHANGES /\
 
-    # ! \/ Load UI \/
+    # * \/ Load UI \/
     def load_history_view(self) -> None:
         """
         It loads the history view of the application.
@@ -3103,15 +3097,15 @@ class MainWindow(QMainWindow):
         tab.setEnabled(False)
         tab.clear()
         tab.setShowGrid(False)
-        tab.setColumnCount(7)
-        # tab.setAlternatingRowColors(True)
         tab.setRowCount(0)
         tab.setSortingEnabled(False)
         tab.setSelectionBehavior(1)
         tab.setSelectionMode(3)
         tab.setVerticalScrollMode(QAbstractItemView.ScrollPerPixel)
-        tab.setHorizontalHeaderLabels(("Part Name;Item Price;Quantity Per Unit;Quantity in Stock;Cost in Stock;Modified Date;DEL;").split(";"))
 
+        headers: list[str] = ["Part Name", "Item Price", "Quantity Per Unit", "Quantity in Stock", "Cost in Stock", "Modified Date", "DEL"]
+        tab.setColumnCount(len(headers))
+        tab.setHorizontalHeaderLabels(headers)
         grouped_data = parts_in_inventory.sort_by_groups(category=category_data, groups_id="gauge")
         row_index: int = 0
         for group in list(grouped_data.keys()):
@@ -3191,7 +3185,7 @@ class MainWindow(QMainWindow):
                     icon=QIcon(f"ui/BreezeStyleSheets/dist/pyqt6/{self.theme}/trash.png"),
                 )
                 btn_delete.setStyleSheet("margin-top: 3%; margin-bottom: 3%; margin-left: 10%; margin-right: 10%;")
-                btn_delete.clicked.connect(partial(self.delete_item, self.category, item))
+                btn_delete.clicked.connect(partial(self.delete_item, item))
                 tab.setCellWidget(row_index, col_index, btn_delete)
                 if self.category != "Recut":
                     if current_quantity <= red_limit:
@@ -3271,8 +3265,9 @@ class MainWindow(QMainWindow):
         # QApplication.setOverrideCursor(Qt.BusyCursor)
         row_index: int = 0
         if self.category == "Price Per Pound":
-            tab.setColumnCount(3)
-            tab.setHorizontalHeaderLabels(("Material;Price;Modified Date;").split(";"))
+            headers: list[str] = ["Material", "Price", "Modified Date"]
+            tab.setColumnCount(len(headers))
+            tab.setHorizontalHeaderLabels(headers)
             tab.horizontalHeader().setStretchLastSection(True)
             tab.set_editable_column_index([1])
             for material in list(price_of_steel_inventory.get_data()[self.category].keys()):
@@ -3291,10 +3286,18 @@ class MainWindow(QMainWindow):
                 tab.item(row_index, 2).setFont(self.tables_font)
                 row_index += 1
         else:
-            tab.setColumnCount(8)
-            tab.setHorizontalHeaderLabels(
-                ("Sheet Name;Cost per Sheet;Quantity in Stock;Total Cost in Stock;Order Status;Notes;Modified Date;DEL;").split(";")
-            )
+            headers: list[str] = [
+                "Sheet Name",
+                "Cost per Sheet",
+                "Quantity in Stock",
+                "Total Cost in Stock",
+                "Order Status",
+                "Notes",
+                "Modified Date",
+                "DEL",
+            ]
+            tab.setColumnCount(len(headers))
+            tab.setHorizontalHeaderLabels(headers)
             tab.set_editable_column_index([2, 5])
             grouped_data = price_of_steel_inventory.sort_by_groups(category=category_data, groups_id="material")
             for group in list(grouped_data.keys()):
@@ -3398,7 +3401,7 @@ class MainWindow(QMainWindow):
                         icon=QIcon(f"ui/BreezeStyleSheets/dist/pyqt6/{self.theme}/trash.png"),
                     )
                     # btn_delete.setFixedSize(26, 26)
-                    btn_delete.clicked.connect(partial(self.delete_item, self.category, item))
+                    btn_delete.clicked.connect(partial(self.delete_item, item))
                     btn_delete.setStyleSheet("margin-top: 3%; margin-bottom: 3%; margin-left: 10%; margin-right: 10%;")
                     tab.setCellWidget(row_index, col_index, btn_delete)
                     if current_quantity <= red_limit:
@@ -3442,7 +3445,6 @@ class MainWindow(QMainWindow):
         tab.setEnabled(False)
         tab.clear()
         tab.setShowGrid(False)
-        tab.setColumnCount(12)
         # tab.setAlternatingRowColors(True)
         tab.setRowCount(0)
         tab.setSortingEnabled(False)
@@ -3450,11 +3452,22 @@ class MainWindow(QMainWindow):
         tab.setSelectionMode(1)
         tab.set_editable_column_index([1, 2, 3, 4])
         tab.setVerticalScrollMode(QAbstractItemView.ScrollPerPixel)
-        tab.setHorizontalHeaderLabels(
-            (
-                "Part Name;Part Number;Quantity Per Unit;Quantity in Stock;Item Price;USD/CAD;Total Cost in Stock;Total Unit Cost;Priority;Notes;PO;DEL;"
-            ).split(";")
-        )
+        headers: list[str] = [
+            "Part Name",
+            "Part Number",
+            "Quantity Per Unit",
+            "Quantity in Stock",
+            "Item Price",
+            "USD/CAD",
+            "Total Cost in Stock",
+            "Total Unit Cost",
+            "Priority",
+            "Notes",
+            "PO",
+            "DEL",
+        ]
+        tab.setColumnCount(len(headers))
+        tab.setHorizontalHeaderLabels(headers)
         QApplication.setOverrideCursor(Qt.BusyCursor)
 
         # else:
@@ -3544,7 +3557,6 @@ class MainWindow(QMainWindow):
             combo_exchange_rate.currentIndexChanged.connect(
                 partial(
                     self.use_exchange_rate_change,
-                    self.category,
                     item,
                     "use_exchange_rate",
                     combo_exchange_rate,
@@ -3581,7 +3593,6 @@ class MainWindow(QMainWindow):
             combo_priority.currentIndexChanged.connect(
                 partial(
                     self.priority_change,
-                    self.category,
                     item,
                     "priority",
                     combo_priority,
@@ -3593,7 +3604,7 @@ class MainWindow(QMainWindow):
 
             # NOTES
             text_notes = NotesPlainTextEdit(self, notes, "")
-            text_notes.textChanged.connect(partial(self.notes_changed, self.category, item, "notes", text_notes))
+            text_notes.textChanged.connect(partial(self.notes_changed, item, "notes", text_notes))
             tab.setCellWidget(row_index, col_index, text_notes)
             col_index += 1
 
@@ -3612,7 +3623,7 @@ class MainWindow(QMainWindow):
                 tool_tip=f"Delete {item} permanently from {self.category}",
                 icon=QIcon(f"ui/BreezeStyleSheets/dist/pyqt6/{self.theme}/trash.png"),
             )
-            btn_delete.clicked.connect(partial(self.delete_item, self.category, item))
+            btn_delete.clicked.connect(partial(self.delete_item, item))
             btn_delete.setStyleSheet(self.margin_format)
             tab.setCellWidget(row_index, col_index, btn_delete)
             if current_quantity <= red_limit:
@@ -3893,8 +3904,8 @@ class MainWindow(QMainWindow):
                 row_index += 1
         self.tableWidget_quote_items.resizeColumnsToContents()
 
-    # ! /\ Load UI /\
-    # ! \/ CHECKERS \/
+    # * /\ Load UI /\
+    # * \/ CHECKERS \/
     def check_for_updates(self, on_start_up: bool = False) -> None:
         """
         It checks for updates on GitHub and displays a message dialog if there is a new update available
@@ -3939,9 +3950,9 @@ class MainWindow(QMainWindow):
         # self.menuSort.setEnabled(False)
         # self.menuOpen_Category.setEnabled(False)
 
-    # ! /\ CHECKERS /\
+    # * /\ CHECKERS /\
 
-    # ! \/ Purchase Order \/
+    # * \/ Purchase Order \/
     def open_po(self, po_name: str = None) -> None:
         """
         It opens a dialog box with a list of items
@@ -4043,7 +4054,7 @@ class MainWindow(QMainWindow):
                 po_menu.addAction(po, partial(self.open_po, po))
             po_button.setMenu(po_menu)
 
-    # ! /\ Purchase Order /\
+    # * /\ Purchase Order /\
     def print_inventory(self) -> None:
         """
         It takes a file path as an argument, opens the file, generates an excel file, and saves it
@@ -4078,7 +4089,7 @@ class MainWindow(QMainWindow):
             )
             return
 
-    # !  \/ External Actions \/
+    # * \/ External Actions \/
     def open_website(self) -> None:
         """
         This function opens the website in the default browser.
@@ -4134,8 +4145,8 @@ class MainWindow(QMainWindow):
         """
         threading.Thread(target=_play_celebrate_sound).start()
 
-    # !  /\ External Actions /\
-    # ! \/ THREADS \/
+    # * /\ External Actions /\
+    # * \/ THREADS \/
     def sync_changes(self) -> None:
         if self.tabWidget.tabText(self.tabWidget.currentIndex()) == "Edit Inventory":
             self.status_button.setText(f'Synching - {datetime.now().strftime("%r")}', "lime")
@@ -4443,9 +4454,58 @@ class MainWindow(QMainWindow):
         # QApplication.restoreOverrideCursor()
         os.remove("parts_batch_to_upload.json")
 
-    # ! /\ THREADS /\
+    def set_order_number_thread(self, order_number: int) -> None:
+        """
+        This function creates a new thread to set an order number and connects it to a response
+        function.
 
-    # ! \/ BACKUP ACTIONS \/
+        Args:
+          order_number (int): An integer representing the order number that needs to be set.
+        """
+        set_order_number_thread = SetOrderNumberThread(order_number)
+        set_order_number_thread.signal.connect(self.set_order_number_thread_response)
+        self.threads.append(set_order_number_thread)
+        set_order_number_thread.start()
+
+    def get_order_number_thread(self) -> None:
+        """
+        This function creates and starts a thread to get an order number and connects its signal to a
+        response function.
+        """
+        get_order_number_thread = GetOrderNumberThread()
+        get_order_number_thread.signal.connect(self.get_order_number_thread_response)
+        self.threads.append(get_order_number_thread)
+        get_order_number_thread.start()
+
+    def set_order_number_thread_response(self, response) -> None:
+        """
+        This function sets an order number and shows an error dialog if there is an error.
+
+        Args:
+          response: The response parameter is a string that indicates the result of a function call. If
+        the response is not equal to "success", an error dialog will be displayed with the response
+        message.
+        """
+        if response != "success":
+            self.show_error_dialog("oh no. Encountered error when setting order number.", str(response))
+
+    def get_order_number_thread_response(self, order_number: int) -> None:
+        """
+        This function takes an order number as input, converts it to an integer, and displays an error
+        message if there is an exception.
+
+        Args:
+          order_number (int): The order number parameter is an integer that represents the unique
+        identifier of an order.
+        """
+        try:
+            self.order_number = int(order_number)
+        except Exception:
+            self.show_error_dialog("oh no. Encountered error when fetching order number.", str(order_number))
+
+    # * /\ THREADS /\
+
+    # * \/ BACKUP ACTIONS \/
     def load_backup(self, file_path: str = None) -> None:
         """
         It opens a file dialog, and if the user selects a file, it extracts the file and then loads the
@@ -4477,7 +4537,7 @@ class MainWindow(QMainWindow):
             message="Backup was successful!\n\nNote! Loading a backup will not sync changes. Syncing is being done under the hood consistently, and there is no need for creating local backups anymore.",
         )
 
-    # ! /\ BACKUP ACTIONS /\
+    # * /\ BACKUP ACTIONS /\
     def clear_layout(self, layout) -> None:
         """
         If the layout is not None, while the layout has items, take the first item, get the widget, if
@@ -4514,6 +4574,7 @@ class MainWindow(QMainWindow):
           highlighted_message_width (int): int = The width of the highlighted message
           button_pressed_event: The function to be called when the button is pressed.
         """
+
         self.clear_layout(self.active_layout)
         self.tabs.clear()
 
@@ -4562,7 +4623,7 @@ class MainWindow(QMainWindow):
         tab.addWidget(btn, 0, 1)
         tab.addWidget(lbl2, 0, 2)
 
-    # ! \/ OVERIDDEN UI EVENTS \/
+    # * \/ OVERIDDEN UI EVENTS \/
     def dragEnterEvent(self, event) -> None:
         """
         If the event has a URL, accept it, otherwise ignore it.
@@ -4644,7 +4705,14 @@ class MainWindow(QMainWindow):
         self.save_menu_tab_order()
         super().closeEvent(event)
 
-    # ! /\ OVERIDDEN UI EVENTS /\
+    # * /\ OVERIDDEN UI EVENTS /\
+
+
+def start_program(loading_window, loading_screen) -> None:
+    loading_window.close()
+    loading_screen.close()
+    mainwindow = MainWindow()
+    mainwindow.show()
 
 
 def main() -> None:
@@ -4659,11 +4727,8 @@ def main() -> None:
     set_theme(app, theme="dark")
     timer = QTimer()
     timer.setSingleShot(True)
-    timer.timeout.connect(lambda: loading_window.close())
-    timer.timeout.connect(lambda: loading_screen.close())
+    timer.timeout.connect(partial(start_program, loading_window, loading_screen))
     timer.start(1500)
-    m = MainWindow()
-    m.show()
     app.exec_()
 
 

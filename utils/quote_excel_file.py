@@ -7,7 +7,7 @@ from openpyxl.utils.cell import column_index_from_string, get_column_letter
 
 
 class ExcelFile:
-    def __init__(self, file_name: str, generate_quote: bool, should_generate_packing_slip: bool) -> None:
+    def __init__(self, file_name: str, generate_quote: bool, should_generate_packing_slip: bool, should_generate_workorder: bool) -> None:
         self.workbook = xlsxwriter.Workbook(file_name)
         self.workbook.set_properties(
             {
@@ -30,6 +30,7 @@ class ExcelFile:
         self.worksheet.set_footer(footer)
         self.generate_quote: bool = generate_quote
         self.should_generate_packing_slip: bool = should_generate_packing_slip
+        self.should_generate_workorder: bool = should_generate_workorder
 
         self.cell_regex = r"^([A-Z]+)([1-9]\d*)$"
         self.file_name = file_name
@@ -164,7 +165,7 @@ class ExcelFile:
             cell_format.set_bold()
         if col == "K" and row > 2 and "Tax" not in str(item):
             cell_format.set_right(1)
-        if col == "G" and not self.generate_quote and row > 4:
+        if col == "G" and not (self.generate_quote or self.should_generate_packing_slip) and row > 4:
             cell_format.set_right(1)
         if totals:
             cell_format.set_top(6)
@@ -294,9 +295,9 @@ class ExcelFile:
         merge_format.set_font_size(18)
         merge_format.set_bottom(1)
 
-        if not self.generate_quote:
+        if self.should_generate_workorder:
             self.worksheet.merge_range("C1:D1", "Work Order", merge_format)
-        else:
+        if self.generate_quote:
             self.worksheet.merge_range("C1:D1", "Quote", merge_format)
         if self.should_generate_packing_slip:
             self.worksheet.merge_range("C1:D1", "Packing Slip", merge_format)

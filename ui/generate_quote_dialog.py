@@ -74,7 +74,15 @@ class GenerateQuoteDialog(QDialog):
             else self.pushButton_quote.setText("Do NOT Generate Quote")
         )
         self.pushButton_workorder.clicked.connect(
-            lambda: self.pushButton_workorder.setText("Generate Workorder")
+            lambda: (
+                self.pushButton_workorder.setText("Generate Workorder"),
+                self.pushButton_update_inventory.setChecked(True),
+                self.pushButton_update_inventory.setText("Add Parts to Inventory"),
+                self.pushButton_packingslip.setChecked(False),
+                self.pushButton_packingslip.setText("Do NOT Generate Packing Slip"),
+                self.pushButton_quote.setChecked(False),
+                self.pushButton_quote.setText("Do NOT Generate Quote"),
+            )
             if self.pushButton_workorder.isChecked()
             else self.pushButton_workorder.setText("Do NOT Generate Workorder")
         )

@@ -11,9 +11,9 @@ settings_file = JsonFile(file_name="settings")
 
 
 class GenerateQuote:
-    def __init__(self, action: tuple[bool, bool, bool, bool], quote_data: dict) -> None:
+    def __init__(self, action: tuple[bool, bool, bool, bool], quote_data: dict, order_number: int) -> None:
         self.program_directory = os.path.dirname(os.path.realpath(sys.argv[0]))
-
+        self.order_number: int = order_number
         config = configparser.ConfigParser()
         config.read(f"{self.program_directory}/laser_quote_variables.cfg")
         self.nitrogen_cost_per_hour: int = float(config.get("GLOBAL VARIABLES", "nitrogen_cost_per_hour"))
@@ -52,8 +52,9 @@ class GenerateQuote:
         """
         excel_document = ExcelFile(
             file_name=f"{self.path_to_save_quotes}/{self.file_name}.xlsx",
-            generate_quote=True,
+            generate_quote=self.should_generate_quote,
             should_generate_packing_slip=self.should_generate_packing_slip,
+            should_generate_workorder=self.should_generate_workorder,
         )
         self.generate(excel_document)
 
@@ -63,8 +64,9 @@ class GenerateQuote:
         """
         excel_document = ExcelFile(
             file_name=f"{self.path_to_save_workorders}/{self.file_name}.xlsx",
-            generate_quote=False,
+            generate_quote=self.should_generate_quote,
             should_generate_packing_slip=self.should_generate_packing_slip,
+            should_generate_workorder=self.should_generate_workorder,
         )
         self.generate(excel_document)
 
@@ -142,7 +144,7 @@ class GenerateQuote:
         excel_document.set_cell_width(cell="G1", width=12)
 
         if self.should_generate_packing_slip:
-            excel_document.add_item("C2", f"{self.get_order_number()}")
+            excel_document.add_item("F2", f"{self.order_number:05}")
 
         STARTING_ROW: int = 5
         nest_count_index: int = 0
@@ -221,7 +223,7 @@ class GenerateQuote:
             totals=True,
         )
         excel_document.add_item(cell=f"G{index+STARTING_ROW+2}", item="No Tax Included")
-        if self.should_generate_quote:
+        if self.should_generate_quote or self.should_generate_packing_slip:
             excel_document.add_item(
                 cell=f"A{index+STARTING_ROW+2}",
                 item="Payment past due date will receive 1.5% interest rate per month of received goods.",
@@ -243,7 +245,7 @@ class GenerateQuote:
                 item="______________________________",
             )
 
-        if self.should_generate_quote:
+        if self.should_generate_quote or self.should_generate_packing_slip:
             excel_document.set_print_area(cell=f"A1:G{index + STARTING_ROW+6}")
         else:
             excel_document.set_print_area(cell=f"A1:E{index + STARTING_ROW+1}")
@@ -295,20 +297,3 @@ class GenerateQuote:
         with open(f"{self.program_directory}/material_id.json", "r") as material_id_file:
             data = json.load(material_id_file)
         return data[material]["cut"]
-
-    def get_order_number(self) -> int:
-        """
-        This function retrieves an order number from a JSON file, increments it by 1, updates the JSON
-        file with the new order number, and returns the original order number.
-
-        Returns:
-          an integer value which is the order number.
-        """
-        with open(settings_file.get_value("path_to_order_number")) as f:
-            order_number_data = json.load(f)
-        order_number: int = order_number_data["order_number"]
-        settings_file.change_item("order_number", order_number + 1)
-        order_number_data["order_number"] = order_number + 1
-        with open(settings_file.get_value("path_to_order_number"), "w", encoding="utf-8") as json_file:
-            json.dump(order_number_data, json_file, ensure_ascii=False, indent=4)
-        return order_number
