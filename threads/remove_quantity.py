@@ -39,7 +39,6 @@ class RemoveQuantityThread(QThread):
         self.max_item_count = inventory.get_sum_of_items()
         self.inventory = inventory
 
-    # TODO MAKE BETTER
     def run(self) -> None:
         """
         It takes the current quantity of an item, subtracts the unit quantity of the item multiplied by
@@ -63,15 +62,11 @@ class RemoveQuantityThread(QThread):
             for category in self.inventory.get_keys():
                 if category == self.category:
                     continue
-                self.max_item_count += len(list(inventory[category].keys())) * len(
-                    part_numbers
-                )
+                self.max_item_count += len(list(inventory[category].keys())) * len(part_numbers)
             for category in self.inventory.get_keys():
                 if category == self.category:
                     continue
-                for item, part_number in itertools.product(
-                    list(inventory[category].keys()), part_numbers
-                ):
+                for item, part_number in itertools.product(list(inventory[category].keys()), part_numbers):
                     if part_number == inventory[category][item]["part_number"]:
                         unit_quantity: int = inventory[category][item]["unit_quantity"]
                         current_quantity: int = inventory[category][item]["current_quantity"]

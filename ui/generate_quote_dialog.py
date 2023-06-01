@@ -65,17 +65,33 @@ class GenerateQuoteDialog(QDialog):
             else self.pushButton_update_inventory.setText("Do NOT Add Parts to Inventory")
         )
         self.pushButton_quote.clicked.connect(
-            lambda: self.pushButton_quote.setText("Generate Quote")
+            lambda: (
+                self.pushButton_quote.setText("Generate Quote"),
+                self.pushButton_packingslip.setChecked(False),
+                self.pushButton_packingslip.setText("Do NOT Generate Packing Slip"),
+            )
             if self.pushButton_quote.isChecked()
             else self.pushButton_quote.setText("Do NOT Generate Quote")
         )
         self.pushButton_workorder.clicked.connect(
-            lambda: self.pushButton_workorder.setText("Generate Workorder")
+            lambda: (
+                self.pushButton_workorder.setText("Generate Workorder"),
+                self.pushButton_update_inventory.setChecked(True),
+                self.pushButton_update_inventory.setText("Add Parts to Inventory"),
+                self.pushButton_packingslip.setChecked(False),
+                self.pushButton_packingslip.setText("Do NOT Generate Packing Slip"),
+                self.pushButton_quote.setChecked(False),
+                self.pushButton_quote.setText("Do NOT Generate Quote"),
+            )
             if self.pushButton_workorder.isChecked()
             else self.pushButton_workorder.setText("Do NOT Generate Workorder")
         )
         self.pushButton_packingslip.clicked.connect(
-            lambda: self.pushButton_packingslip.setText("Generate Packing Slip")
+            lambda: (
+                self.pushButton_packingslip.setText("Generate Packing Slip"),
+                self.pushButton_quote.setChecked(False),
+                self.pushButton_quote.setText("Do NOT Generate Quote"),
+            )
             if self.pushButton_packingslip.isChecked()
             else self.pushButton_packingslip.setText("Do NOT Generate Packing Slip")
         )

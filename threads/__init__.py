@@ -9,3 +9,5 @@ from threads.ui_threads import (
 )
 from threads.upload_quoted_inventory import UploadBatch
 from threads.upload_thread import UploadThread
+from threads.get_order_number_thread import GetOrderNumberThread
+from threads.set_order_number_thread import SetOrderNumberThread

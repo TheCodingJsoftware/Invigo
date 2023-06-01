@@ -156,7 +156,8 @@ class PartInformationViewer(QDialog):
 
 
 class MultiToolBox(QWidget):
-    '''The class MultiToolBox is a QWidget.'''
+    """The class MultiToolBox is a QWidget."""
+
     def __init__(self, parent=None):
         super(MultiToolBox, self).__init__(parent)
         self.widgets = []
@@ -347,12 +348,9 @@ class PdfFilterProxyModel(QSortFilterProxyModel):
         if not index.isValid():
             return False
         if self.sourceModel().isDir(index):
-            return any(
-                file.lower().endswith('.pdf')
-                for file in os.listdir(self.sourceModel().filePath(index))
-            )
+            return any(file.lower().endswith(".pdf") for file in os.listdir(self.sourceModel().filePath(index)))
         filename = self.sourceModel().fileName(index)
-        return filename.lower().endswith('.pdf')
+        return filename.lower().endswith(".pdf")
 
     def lessThan(self, left_index, right_index):
         """
@@ -398,15 +396,14 @@ class PdfTreeView(QTreeView):
     def __init__(self, path: str):
         super().__init__()
         self.model = QFileSystemModel()
-        self.model.setRootPath('')
+        self.model.setRootPath("")
         self.setModel(self.model)
         self.filterModel = PdfFilterProxyModel()
         self.filterModel.setSourceModel(self.model)
         self.setModel(self.filterModel)
-        self.filterModel.setFilterRegExp('')
+        self.filterModel.setFilterRegExp("")
         self.filterModel.setFilterKeyColumn(0)
-        self.setRootIndex(
-            self.filterModel.mapFromSource(self.model.index(path)))
+        self.setRootIndex(self.filterModel.mapFromSource(self.model.index(path)))
         self.header().resizeSection(0, 170)
         self.setSelectionMode(4)
         self.header().hideSection(1)
@@ -414,14 +411,17 @@ class PdfTreeView(QTreeView):
         self.expandAll()
         self.selected_indexes = []
         self.selected_items = []
+        self.full_paths = []
 
         self.selectionModel().selectionChanged.connect(self.on_selection_changed)
 
     def on_selection_changed(self, selected, deselected):
         self.selected_indexes = self.selectionModel().selectedIndexes()
-        self.selected_items = [
-            index.data() for index in self.selected_indexes if '.pdf' in index.data()
-        ]
+        self.selected_items = [index.data() for index in self.selected_indexes if ".pdf" in index.data()]
+        self.full_paths.clear()
+        for index in self.selected_indexes:
+            source_index = self.filterModel.mapToSource(index)
+            self.full_paths.append(self.model.filePath(source_index))
 
 
 class RecutButton(QPushButton):
@@ -617,7 +617,6 @@ class ExchangeRateComboBox(QComboBox):
         # #self.setFixedWidth(40)
 
 
-
 class NotesPlainTextEdit(QPlainTextEdit):
     """It's a QPlainTextEdit that has a context menu with a "Copy" and "Paste" option"""
 
@@ -633,8 +632,10 @@ class NotesPlainTextEdit(QPlainTextEdit):
         """
         QPlainTextEdit.__init__(self, parent)
         self.setMinimumWidth(100)
-        self.setObjectName('notes')
-        self.setStyleSheet('QPlainTextEdit:!focus#notes{background-color: transparent; border: none; color: white;} QPlainTextEdit:focus#notes{color: white;}')
+        self.setObjectName("notes")
+        self.setStyleSheet(
+            "QPlainTextEdit:!focus#notes{background-color: transparent; border: none; color: white;} QPlainTextEdit:focus#notes{color: white;}"
+        )
         self.setMaximumWidth(200)
         self.setFixedHeight(60)
         self.setPlainText(text)
@@ -655,7 +656,7 @@ class POPushButton(QPushButton):
         QPushButton.__init__(self, parent)
         # self.setFixedSize(36, 26)
         self.setText("PO")
-        self.setStyleSheet('background-color: transparent; border: none;')
+        self.setStyleSheet("background-color: transparent; border: none;")
         self.setToolTip("Open a new purchase order")
 
 
@@ -678,6 +679,7 @@ class DeletePushButton(QPushButton):
 
 class ClickableLabel(QLabel):
     clicked = pyqtSignal()  # Signal emitted when the label is clicked
+
     def __init__(self, parent=None):
         super(ClickableLabel, self).__init__(parent)
         self.setCursor(QCursor(Qt.PointingHandCursor))
@@ -702,10 +704,8 @@ class RichTextPushButton(QPushButton):
         self.__layout.setSpacing(0)
         self.setLayout(self.__layout)
         self.__lbl.setAttribute(Qt.WA_TranslucentBackground)  # type: ignore
-        self.__lbl.setAlignment(
-            Qt.AlignCenter | Qt.AlignVCenter)  # type: ignore
-        self.__lbl.setAttribute(
-            Qt.WA_TransparentForMouseEvents)  # type: ignore
+        self.__lbl.setAlignment(Qt.AlignCenter | Qt.AlignVCenter)  # type: ignore
+        self.__lbl.setAttribute(Qt.WA_TransparentForMouseEvents)  # type: ignore
         self.__lbl.setSizePolicy(
             QSizePolicy.Expanding,
             QSizePolicy.Expanding,
@@ -722,12 +722,12 @@ class RichTextPushButton(QPushButton):
           text: The text to be displayed in the label.
         """
         set_status_button_stylesheet(button=self, color=color)
-        if color == 'lime':
-            color = '#cef4d9'
-        elif color == 'yellow':
-            color = '#ffffe0'
-        elif color == 'red':
-            color = 'lightpink'
+        if color == "lime":
+            color = "#cef4d9"
+        elif color == "yellow":
+            color = "#ffffe0"
+        elif color == "red":
+            color = "lightpink"
         text = f'<p style="color:{color};">{text}</p>'
         self.__lbl.setText(text)
         self.updateGeometry()
@@ -1058,11 +1058,7 @@ class ViewTree(QTreeWidget):
                     new_item(item, str(key), val)
             elif isinstance(value, (list, tuple)):
                 for val in value:
-                    text = (
-                        f"[{type(val).__name__}]"
-                        if isinstance(val, (dict, list, tuple))
-                        else str(val)
-                    )
+                    text = f"[{type(val).__name__}]" if isinstance(val, (dict, list, tuple)) else str(val)
                     new_item(item, text, val)
 
         fill_item(self.invisibleRootItem(), self.data)
@@ -1118,9 +1114,7 @@ class HeaderScrollArea(QScrollArea):
           event: QResizeEvent
         """
         rect = self.viewport().geometry()
-        self.headings_widget.setGeometry(
-            rect.x(), rect.y() - self.margins.top(), rect.width(), self.margins.top()
-        )
+        self.headings_widget.setGeometry(rect.x(), rect.y() - self.margins.top(), rect.width(), self.margins.top())
         QScrollArea.resizeEvent(self, event)
 
 
@@ -1245,19 +1239,19 @@ def set_status_button_stylesheet(button: QPushButton, color: str) -> None:
     Args:
         button (QPushButton): QPushButton
     """
-    background_color = 'rgb(71, 71, 71)'
-    border_color = 'rgb(71, 71, 71)'
-    if color == 'lime':
-        background_color = 'darkgreen'
-        border_color = 'green'
-    elif color == 'yellow':
-        background_color = '#413C28'
-        border_color = 'gold'
-    elif color == 'red':
-        background_color = '#3F1E25'
-        border_color = 'darkred'
-    elif color == '#3daee9':
-        background_color = '#1E363F'
+    background_color = "rgb(71, 71, 71)"
+    border_color = "rgb(71, 71, 71)"
+    if color == "lime":
+        background_color = "darkgreen"
+        border_color = "green"
+    elif color == "yellow":
+        background_color = "#413C28"
+        border_color = "gold"
+    elif color == "red":
+        background_color = "#3F1E25"
+        border_color = "darkred"
+    elif color == "#3daee9":
+        background_color = "#1E363F"
         border_color = "#3E8C99"
     button.setStyleSheet(
         """
