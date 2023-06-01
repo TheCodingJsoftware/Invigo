@@ -1,3 +1,4 @@
+import json
 import logging
 import os
 import sys
@@ -177,6 +178,39 @@ class CommandHandler(tornado.web.RequestHandler):
         self.finish()
 
 
+class SetOrderNumberHandler(tornado.web.RequestHandler):
+    def post(self):
+        order_number = self.get_argument("order_number")
+        if order_number is not None:
+            # Process the received integer value
+            with open("order_number.json", 'r') as file:
+                json_file = json.load(file)
+                json_file["order_number"] = int(order_number)
+
+            with open("order_number.json", 'w') as file:
+                json.dump(json_file, file)
+                
+            CustomPrint.print(
+                f'INFO - {self.request.remote_ip} set order number to {order_number}',
+                connected_clients=connected_clients,
+            )
+        else:
+            self.set_status(400)  # Bad request status code
+
+
+class GetOrderNumberHandler(tornado.web.RequestHandler):
+    def get(self):
+        # Retrieve the order number from wherever it is stored
+        with open("order_number.json", 'r') as file:
+            order_number = json.load(file)["order_number"]
+        # Return the order number as a response
+        self.write({"order_number": order_number})
+        CustomPrint.print(
+            f'INFO - Sent order number to {self.request.remote_ip}',
+            connected_clients=connected_clients,
+        )
+
+
 def signal_clients_for_changes(client_to_ignore) -> None:
     """
     This function signals connected clients to download changes, except for the client specified to be
@@ -244,29 +278,29 @@ if __name__ == "__main__":
     CustomPrint.print(
         """
 
-                                      **//*
-                            *&&&&&&&&&&&&&&&%%%%%%
-                        %&&&&&&&&&&&&&&&&&&%%%%    #%%%%%(                                     ████████████████████
-                     &&&&&&&&&&&&%%%(           *%%%%%%((/                                    ████████████████████
-                  *&&&&&&&&&&&&%%(            %%%%%%(((    (##/                              ██▀                ██
-                 &&&&&&&&&&&&&%%           %%%%%%#((     #######                 ▄████████                     ██                                 ██
-               &&&&&&&&& #&&&%&          %%%%%#((*       %########             ▄█▀      ▀███▄▄████▄▄▄         ██
-              &&&&&&&&   %&&%%%       %%%%%%(((           (#####(((           █▀          ██████    ▀█▄      ▄█            ▄▄   ▄▄█▄    ▄▄▄▄▄    ██          ▄███▄        ▄▄▄▄▄
-             &&&&&&&&    %%%%%%     %%%%%#((                ##((((((         ██          █▀   ████    █     ██  ▀█▄██  ▄██████    ███  ██████ ▄████      ▄███▀   ▀     ▄▄█████▀▀
-            %&&&&&&%     %%%%%%      ##((                    (((((((/        █          ▄█       ███  █    ██     ███▄██▀ ███     ███ █   ██   ███     ██▀   ▄       ▄█▀ ▄▄▄▄▄
-            &&&&&&%      %%%%%%                    ###((((((((((((///        ██         ██        █████  ▄█▀      ████▀  ███     ███▀    ██   ███     █     ██      ██  █   ███
-           *&&&&&&       %%%%%%                   /(##(((((((((//////         ██        ▀█          ██ ▄█▀       ███▀   ███      ██    ▄█▀   ███    ██     ███     ██      ▄██
-           (&&&&&&       %%%%%%                   /((((           ///          ██                    ▄██▀       ███    ███      ███  ▄██▀   ███    ██    ██ ██    ███     ▄██
-            &&&&&%#      %%%%%#        %%%%#(     /((((         ***//           ▀██▄▄            ▄▄██▀         ███     ██       ████▀▀     ▄██    ███   ██ ███    ██    ▄▄█▀
-            %%%&%%%       %%%#      /%%%%#((/     /((((      **//////             ▀▀██████████████▀           ███     ████     ▄█▀         ███▀   ▀█████▀ ███     ▀██████▀
-             %%%%%%%              %%%%##((        /////    *////////                                                                                      ██
-             *%%%%%%%%         #%%%%#((/          *////   /////////                                                                                      ██
-               %%%%%%%%#     %%%%#(((             ///// //////////                                                                                      ██
-                %%%%%%%%%*%%%%##((*              ///////////////                                                                                      ▄██
-                  %%%%%%%%%##((/               ///////////////*                                                                               ▀█▄   ▄█▀
-                    #%####(((    #(          ///////////////                                                                                    ▀███▀
-                            (####(((((((((//////////*
-                                      ****
+                           **//*
+                 *&&&&&&&&&&&&&&&%%%%%%
+             %&&&&&&&&&&&&&&&&&&%%%%    #%%%%%(                                   ████████████████████
+          &&&&&&&&&&&&%%%(           *%%%%%%((/                                  ████████████████████
+       *&&&&&&&&&&&&%%(            %%%%%%(((    (##/                            ██▀                ██
+      &&&&&&&&&&&&&%%           %%%%%%#((     #######               ▄████████                     ██                                 ██
+    &&&&&&&&& #&&&%&          %%%%%#((*       %########           ▄█▀      ▀███▄▄████▄▄▄         ██
+   &&&&&&&&   %&&%%%       %%%%%%(((           (#####(((         █▀          ██████    ▀█▄      ▄█            ▄▄   ▄▄█▄    ▄▄▄▄▄    ██          ▄███▄        ▄▄▄▄▄▄
+  &&&&&&&&    %%%%%%     %%%%%#((                ##((((((       ██          █▀   ████    █     ██  ▀█▄██  ▄██████    ███  ██████ ▄████      ▄███▀   ▀     ▄▄██▀▀▀  
+ %&&&&&&%     %%%%%%      ##((                    (((((((/      █          ▄█       ███  █    ██     ███▄██▀ ███     ███ █   ██   ███    ▄██▀   ▄       ▄█▀ ▄▄▄▄▄
+ &&&&&&%      %%%%%%                    ###((((((((((((///      ██         ██        █████  ▄█▀      ████▀  ███     ███▀    ██   ███    ▄█     ██      ██  █▀  ███
+*&&&&&&       %%%%%%                   /(##(((((((((//////       ██        ▀█          ██ ▄█▀       ███▀   ███      ██    ▄█▀   ███    ██     ███     ██      ▄██
+(&&&&&&       %%%%%%                   /((((           ///        ██                    ▄██▀       ███    ███      ███  ▄██▀   ███    ██    ██ ██    ███     ▄██
+ &&&&&%#      %%%%%#        %%%%#(     /((((         ***//         ▀██▄▄            ▄▄██▀         ███     ██       ████▀▀     ▄██     ██   ██ ███    ██    ▄▄█▀
+ %%%&%%%       %%%#      /%%%%#((/     /((((      **//////           ▀▀██████████████▀           ███     ████     ▄█▀         ███▀    ▀████▀ ███     ▀██████▀
+  %%%%%%%              %%%%##((        /////    *////////                                                                                    ██
+  *%%%%%%%%         #%%%%#((/          *////   /////////                                                                                    ██
+    %%%%%%%%#     %%%%#(((             ///// //////////                                                                                    ██
+     %%%%%%%%%*%%%%##((*              ///////////////                                                                                    ▄██
+       %%%%%%%%%##((/               ///////////////*                                                                             ▀█▄   ▄█▀
+         #%####(((    #(          ///////////////                                                                                  ▀███▀
+                 (####(((((((((//////////*
+                           ****
 
 """
     )
@@ -281,6 +315,8 @@ if __name__ == "__main__":
             (r"/upload", FileUploadHandler),
             (r"/ws", FileSenderHandler),
             (r"/image/(.*)", ImageHandler),
+            (r"/set_order_number", SetOrderNumberHandler),
+            (r"/get_order_number", GetOrderNumberHandler),
         ]
     )
     app.listen(80)
