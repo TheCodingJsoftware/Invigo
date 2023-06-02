@@ -107,7 +107,7 @@ __copyright__: str = "Copyright 2022-2023, TheCodingJ's"
 __credits__: list[str] = ["Jared Gross"]
 __license__: str = "MIT"
 __name__: str = "Invigo"
-__version__: str = "v2.0.5"
+__version__: str = "v2.0.6"
 __updated__: str = "2023-05-27 12:32:51"
 __maintainer__: str = "Jared Gross"
 __email__: str = "jared@pinelandfarms.ca"
@@ -421,7 +421,6 @@ class MainWindow(QMainWindow):
         headers: list[str] = ["Item", "Part name", "Material", "Thickness", "Qty", "Unit Price", "Price", "Recut", "Add Part to Inventory"]
         self.tableWidget_quote_items.setColumnCount(len(headers))
         self.tableWidget_quote_items.setHorizontalHeaderLabels(headers)
-        self.tableWidget_quote_items.setSortingEnabled(True)
         self.clear_layout(self.verticalLayout_25)
         self.verticalLayout_25.addWidget(self.tableWidget_quote_items)
 
@@ -1303,12 +1302,13 @@ class MainWindow(QMainWindow):
             current_value = f"{input_method[0].value():.3f}x{input_method[1].value():.3f}"
         else:
             return
-        for item in list(self.quote_nest_information.keys()):
-            if item[0] == "_":
+        for batch_name in list(self.quote_nest_information.keys()):
+            if batch_name[0] == "_":
                 continue
-            nest_name = "_" + self.quote_nest_information[item]["file_name"].replace("\\", "/")
-            if nest_name == nest_name_to_update and type(input_method) != HumbleDoubleSpinBox:
-                self.quote_nest_information[item][item_to_change] = current_value
+            for item in list(self.quote_nest_information[batch_name].keys()):
+                nest_name = "_" + self.quote_nest_information[batch_name][item]["file_name"].replace("\\", "/")
+                if nest_name == nest_name_to_update and type(input_method) != HumbleDoubleSpinBox:
+                    self.quote_nest_information[batch_name][item][item_to_change] = current_value
         self.quote_nest_information[nest_name_to_update][item_to_change] = current_value
         nest_name = nest_name_to_update.split("/")[-1].replace(".pdf", "")
         self.sheet_nests_toolbox.setItemText(
@@ -1799,18 +1799,38 @@ class MainWindow(QMainWindow):
         """
         This function saves the quantities of items in a quote table to a dictionary.
         """
+        nest_name: str = ""
         for row in range(self.tableWidget_quote_items.rowCount()):
             item_name = self.tableWidget_quote_items.item(row, 1).text()
-            quantity = int(self.tableWidget_quote_items.item(row, 4).text())
+            try:
+                quantity = int(self.tableWidget_quote_items.item(row, 4).text())
+            except (ValueError):  # A merged cell
+                nest_name = self.tableWidget_quote_items.item(row, 0).text() + ".pdf"
+                continue
             recut_button: RecutButton = self.tableWidget_quote_items.cellWidget(row, 7)
-            self.quote_nest_information[item_name]["quantity"] = quantity
-            self.quote_nest_information[item_name]["recut"] = recut_button.isChecked()
+            self.quote_nest_information[nest_name][item_name]["quantity"] = quantity
+            self.quote_nest_information[nest_name][item_name]["recut"] = recut_button.isChecked()
 
     def update_quote_price(self) -> None:
+        """
+        This function updates the unit price and total price of items in a table based on their weight,
+        machine time, material, and other factors.
+
+        Returns:
+          Nothing is being returned, as the return statement is only executed if a KeyError is raised in
+        the try-except block.
+        """
         self.tableWidget_quote_items.blockSignals(True)
+        nest_name: str = ""
         for row in range(self.tableWidget_quote_items.rowCount()):
             item_name = self.tableWidget_quote_items.item(row, 1).text()
-            quantity = int(self.tableWidget_quote_items.item(row, 4).text())
+            try:
+                quantity = int(self.tableWidget_quote_items.item(row, 4).text())
+            except (ValueError):  # A merged cell
+                nest_name = self.tableWidget_quote_items.item(row, 0).text() + ".pdf"
+                continue
+            except AttributeError:
+                return
             unit_price_item: QTableWidgetItem = self.tableWidget_quote_items.item(row, 5)
             price_item: QTableWidgetItem = self.tableWidget_quote_items.item(row, 6)
             try:
@@ -1821,11 +1841,11 @@ class MainWindow(QMainWindow):
             except ValueError:
                 pass
             try:
-                weight: float = self.quote_nest_information[item_name]["weight"]
+                weight: float = self.quote_nest_information[nest_name][item_name]["weight"]
             except KeyError:
                 return
-            machine_time: float = self.quote_nest_information[item_name]["machine_time"]
-            material: str = self.quote_nest_information[item_name]["material"]
+            machine_time: float = self.quote_nest_information[nest_name][item_name]["machine_time"]
+            material: str = self.quote_nest_information[nest_name][item_name]["material"]
             price_per_pound: float = price_of_steel_inventory.get_data()["Price Per Pound"][material]["price"]
             cost_for_laser: float = 250 if self.comboBox_laser_cutting.currentText() == "Nitrogen" else 150
             COGS: float = float((machine_time * (cost_for_laser / 60)) + (weight * price_per_pound))
@@ -1835,8 +1855,8 @@ class MainWindow(QMainWindow):
 
             unit_price_item.setText(f"${unit_price:,.2f}")
             price_item.setText(f"${price:,.2f}")
-            self.quote_nest_information[item_name]["quoting_unit_price"] = unit_price
-            self.quote_nest_information[item_name]["quoting_price"] = price
+            self.quote_nest_information[nest_name][item_name]["quoting_unit_price"] = unit_price
+            self.quote_nest_information[nest_name][item_name]["quoting_price"] = price
         self.tableWidget_quote_items.resizeColumnsToContents()
         self.tableWidget_quote_items.blockSignals(False)
 
@@ -1949,7 +1969,7 @@ class MainWindow(QMainWindow):
             # Handle case where target string was not found
             row_index = None
 
-    def get_quantity_multiplier(self, item_name: str) -> int:
+    def get_quantity_multiplier(self, item_name: str, nest_name: str) -> int:
         """
         This Python function returns the quantity multiplier of an item based on its name and file
         location in a dictionary.
@@ -1962,7 +1982,8 @@ class MainWindow(QMainWindow):
         `quantity_multiplier` value of the `item_name` key in the `quote_nest_information` dictionary,
         or 1 if the `item_name` key is not found in the dictionary.
         """
-        items_nest = "_" + self.quote_nest_information[item_name]["file_name"].replace("\\", "/")
+        items_nest = "_" + self.quote_nest_information[nest_name][item_name]["file_name"].replace("\\", "/")
+
         if matches := {k: v for k, v in self.quote_nest_information.items() if k == items_nest}:
             return int(matches[items_nest]["quantity_multiplier"])
         else:
@@ -2534,7 +2555,49 @@ class MainWindow(QMainWindow):
             elif response == DialogButtons.cancel:
                 return
 
+    def _get_quoted_parts_list_information(self) -> dict:
+        """
+        This function calculates the quoting unit price and quoting price for each item in a batch based
+        on its weight, quantity, machine time, material, and overhead costs.
+
+        Returns:
+          A dictionary containing information about quoted parts list.
+        """
+        batch_data = {}
+        for nest_name in list(self.quote_nest_information.keys()):
+            if nest_name[0] == "_":
+                batch_data[nest_name] = self.quote_nest_information[nest_name]
+            else:
+                for item in self.quote_nest_information[nest_name]:
+                    try:
+                        batch_data[item]["quantity"] += self.quote_nest_information[nest_name][item]["quantity"]
+                    except KeyError:
+                        batch_data[item] = self.quote_nest_information[nest_name][item]
+        for item_name in list(batch_data.keys()):
+            if item_name[0] == "_":
+                continue
+            weight: float = batch_data[item_name]["weight"]
+            quantity: float = batch_data[item_name]["quantity"]
+            machine_time: float = batch_data[item_name]["machine_time"]
+            material: str = batch_data[item_name]["material"]
+            price_per_pound: float = price_of_steel_inventory.get_data()["Price Per Pound"][material]["price"]
+            cost_for_laser: float = 250 if self.comboBox_laser_cutting.currentText() == "Nitrogen" else 150
+            COGS: float = float((machine_time * (cost_for_laser / 60)) + (weight * price_per_pound))
+
+            unit_price = calculate_overhead(COGS, self.spinBox_profit_margin.value() / 100, self.spinBox_overhead.value() / 100)
+            price = unit_price * quantity
+            batch_data[item_name]["quoting_unit_price"] = unit_price
+            batch_data[item_name]["quoting_price"] = price
+        return batch_data
+
     def generate_quote(self) -> None:
+        """
+        This function generates a quote, work order, or packing slip based on user input and updates
+        inventory if necessary.
+
+        Returns:
+          The function does not have a return statement, so it returns None by default.
+        """
         select_item_dialog = GenerateQuoteDialog(
             button_names=DialogButtons.generate_cancel,
             title="Quote Generator",
@@ -2557,6 +2620,7 @@ class MainWindow(QMainWindow):
                     self.set_order_number_thread(self.order_number + 1)
 
                 self.save_quote_table_values()
+                batch_data = self._get_quoted_parts_list_information()
                 option_string: str = ""
                 if should_generate_quote:
                     option_string = "Quote"
@@ -2567,7 +2631,7 @@ class MainWindow(QMainWindow):
 
                 file_name: str = f'{option_string} - {datetime.now().strftime("%A, %d %B %Y %H-%M-%S-%f")}'
                 try:
-                    generate_quote = GenerateQuote(action, file_name, self.quote_nest_information, self.order_number)
+                    generate_quote = GenerateQuote(action, file_name, batch_data, self.order_number)
                 except FileNotFoundError:
                     self.show_error_dialog(
                         "File not found, aborted",
@@ -2575,9 +2639,9 @@ class MainWindow(QMainWindow):
                     )
                     return
                 if should_update_inventory:
-                    self.upload_batch_to_inventory_thread()
+                    self.upload_batch_to_inventory_thread(batch_data)
                     if not self.is_nest_generated_from_parts_in_inventory:
-                        self.upload_batched_parts_images(self.quote_nest_information)
+                        self.upload_batched_parts_images(batch_data)
                 self.status_button.setText("Generating complete", "lime")
                 if should_generate_workorder:
                     config = configparser.ConfigParser()
@@ -2605,34 +2669,19 @@ class MainWindow(QMainWindow):
         except IndexError:  # No item selected
             return
         self.quote_nest_information.clear()
-        self.quote_nest_information["_/CUSTOM NEST"] = {
+        self.quote_nest_information["_/CUSTOM NEST.pdf"] = {
             "quantity_multiplier": 1,  # Sheet count
             "gauge": sheet_gauge,
             "material": sheet_material,
             "sheet_dim": "0.000x0.000" if sheet_dimension is None else sheet_dimension,
             "scrap_percentage": 0.0,
         }
+        self.quote_nest_information["/CUSTOM NEST.pdf"] = {}
         for part_name in selected_parts:
-            self.quote_nest_information[part_name] = {
-                "quantity": self.get_value_from_category(item_name=part_name, key="current_quantity"),
-                "machine_time": self.get_value_from_category(item_name=part_name, key="machine_time"),
-                "weight": self.get_value_from_category(item_name=part_name, key="weight"),
-                "part_number": self.get_value_from_category(item_name=part_name, key="part_number"),
-                "image_index": part_name,
-                "surface_area": self.get_value_from_category(item_name=part_name, key="surface_area"),
-                "cutting_length": self.get_value_from_category(item_name=part_name, key="cutting_length"),
-                "file_name": "/CUSTOM NEST",
-                "piercing_time": self.get_value_from_category(item_name=part_name, key="piercing_time"),
-                "gauge": self.get_value_from_category(item_name=part_name, key="gauge"),
-                "material": self.get_value_from_category(item_name=part_name, key="material"),
-                "recut": False,
-                "sheet_dim": "0.000x0.000"
-                if self.get_value_from_category(item_name=part_name, key="sheet_dim") is None
-                else self.get_value_from_category(item_name=part_name, key="sheet_dim"),
-                "part_dim": self.get_value_from_category(item_name=part_name, key="part_dim"),
-            }
+            self.quote_nest_information["/CUSTOM NEST.pdf"][part_name] = parts_in_inventory.get_data()[self.category].get(part_name)
+            self.quote_nest_information["/CUSTOM NEST.pdf"][part_name]["file_name"] = "/CUSTOM NEST.pdf"
         self.tabWidget.setCurrentIndex(self.get_menu_tab_order().index("Quote Generator"))
-        self.download_required_images(self.quote_nest_information)
+        self.download_required_images(self.quote_nest_information["/CUSTOM NEST.pdf"])
         # self.load_nests()
 
     def open_image(self, path: str, title: str) -> None:
@@ -3720,8 +3769,7 @@ class MainWindow(QMainWindow):
         row_index: int = 0
         tab_index: int = 0
         for nest_name in list(self.quote_nest_information.keys()):
-            if item[0] == "_":
-                # nest_name = item.split("/")[-1].replace(".pdf", "")
+            if nest_name[0] == "_":
                 widget = QWidget(self)
                 widget.setMinimumHeight(120)
                 widget.setMaximumHeight(120)
@@ -3741,13 +3789,13 @@ class MainWindow(QMainWindow):
                     grid_layout.addWidget(label, i, 0)
 
                 spinBox_sheet_count = HumbleDoubleSpinBox(self)
-                spinBox_sheet_count.setValue(self.quote_nest_information[item]["quantity_multiplier"])
+                spinBox_sheet_count.setValue(self.quote_nest_information[nest_name]["quantity_multiplier"])
                 spinBox_sheet_count.valueChanged.connect(
                     partial(
                         self.sheet_nest_item_change,
                         tab_index,
                         spinBox_sheet_count,
-                        item,
+                        nest_name,
                         "quantity_multiplier",
                     )
                 )
@@ -3757,8 +3805,8 @@ class MainWindow(QMainWindow):
                 comboBox_sheet_material = QComboBox(self)
                 comboBox_sheet_material.wheelEvent = lambda event: None
                 comboBox_sheet_material.addItems(price_of_steel_information.get_value("materials"))
-                comboBox_sheet_material.setCurrentText(self.quote_nest_information[item]["material"])
-                if self.quote_nest_information[item]["material"] in {"304 SS", "409 SS", "Aluminium"}:
+                comboBox_sheet_material.setCurrentText(self.quote_nest_information[nest_name]["material"])
+                if self.quote_nest_information[nest_name]["material"] in {"304 SS", "409 SS", "Aluminium"}:
                     self.comboBox_laser_cutting.setCurrentText("Nitrogen")
                 else:
                     self.comboBox_laser_cutting.setCurrentText("CO2")
@@ -3767,7 +3815,7 @@ class MainWindow(QMainWindow):
                         self.sheet_nest_item_change,
                         tab_index,
                         comboBox_sheet_material,
-                        item,
+                        nest_name,
                         "material",
                     )
                 )
@@ -3776,13 +3824,13 @@ class MainWindow(QMainWindow):
                 comboBox_sheet_thickness = QComboBox(self)
                 comboBox_sheet_thickness.wheelEvent = lambda event: None
                 comboBox_sheet_thickness.addItems(price_of_steel_information.get_value("thicknesses"))
-                comboBox_sheet_thickness.setCurrentText(self.quote_nest_information[item]["gauge"])
+                comboBox_sheet_thickness.setCurrentText(self.quote_nest_information[nest_name]["gauge"])
                 comboBox_sheet_thickness.activated.connect(
                     partial(
                         self.sheet_nest_item_change,
                         tab_index,
                         comboBox_sheet_thickness,
-                        item,
+                        nest_name,
                         "gauge",
                     )
                 )
@@ -3790,7 +3838,7 @@ class MainWindow(QMainWindow):
                 lineEdit_sheet_size_x = HumbleDoubleSpinBox(self)
                 lineEdit_sheet_size_x.setDecimals(3)
                 try:
-                    lineEdit_sheet_size_x.setValue(float(self.quote_nest_information[item]["sheet_dim"].replace(" x ", "x").split("x")[0]))
+                    lineEdit_sheet_size_x.setValue(float(self.quote_nest_information[nest_name]["sheet_dim"].replace(" x ", "x").split("x")[0]))
                 except AttributeError:
                     lineEdit_sheet_size_x.setValue(0.0)
                 grid_layout.addWidget(lineEdit_sheet_size_x, 4, 0)
@@ -3800,7 +3848,7 @@ class MainWindow(QMainWindow):
                 lineEdit_sheet_size_y = HumbleDoubleSpinBox(self)
                 lineEdit_sheet_size_y.setDecimals(3)
                 try:
-                    lineEdit_sheet_size_y.setValue(float(self.quote_nest_information[item]["sheet_dim"].replace(" x ", "x").split("x")[1]))
+                    lineEdit_sheet_size_y.setValue(float(self.quote_nest_information[nest_name]["sheet_dim"].replace(" x ", "x").split("x")[1]))
                 except AttributeError:
                     lineEdit_sheet_size_y.setValue(0.0)
                 grid_layout.addWidget(lineEdit_sheet_size_y, 4, 2)
@@ -3809,7 +3857,7 @@ class MainWindow(QMainWindow):
                         self.sheet_nest_item_change,
                         tab_index,
                         (lineEdit_sheet_size_x, lineEdit_sheet_size_y),
-                        item,
+                        nest_name,
                         "sheet_dim",
                     )
                 )
@@ -3818,14 +3866,14 @@ class MainWindow(QMainWindow):
                         self.sheet_nest_item_change,
                         tab_index,
                         (lineEdit_sheet_size_x, lineEdit_sheet_size_y),
-                        item,
+                        nest_name,
                         "sheet_dim",
                     )
                 )
 
                 self.sheet_nests_toolbox.addItem(
                     widget,
-                    f"{self.quote_nest_information[item]['gauge']} {self.quote_nest_information[item]['material']} {self.quote_nest_information[item]['sheet_dim']} - {nest_name}",
+                    f"{self.quote_nest_information[nest_name]['gauge']} {self.quote_nest_information[nest_name]['material']} {self.quote_nest_information[nest_name]['sheet_dim']} - {nest_name.split('/')[-1].replace('.pdf', '')}",
                 )
                 self.sheet_nests_toolbox.setItemIcon(
                     tab_index,
@@ -3846,89 +3894,102 @@ class MainWindow(QMainWindow):
         """
         row_index: int = 0
         self.tableWidget_quote_items.setRowCount(0)
-        for item in list(self.quote_nest_information.keys()):
-            if item[0] != "_":
+        for nest_name in list(self.quote_nest_information.keys()):
+            if nest_name[0] != "_":
                 self.tableWidget_quote_items.insertRow(row_index)
-                self.tableWidget_quote_items.setRowHeight(row_index, 50)
-                label = ClickableLabel(self)
-                label.setToolTip("Click to make bigger.")
-                label.setFixedSize(50, 50)
-                pixmap = QPixmap(f"images/{self.quote_nest_information[item]['image_index']}.jpeg")
-                does_part_exist: bool = True
-                if pixmap.isNull():
-                    does_part_exist = False
-                    pixmap = QPixmap("images/404.png")
-                    label.clicked.connect(
-                        partial(
-                            self.open_image,
-                            "images/404.png",
-                            "Part does not exist",
-                        )
-                    )
-                else:
-                    label.clicked.connect(
-                        partial(
-                            self.open_image,
-                            f"images/{self.quote_nest_information[item]['image_index']}.jpeg",
-                            item,
-                        )
-                    )
-                scaled_pixmap = pixmap.scaled(label.size(), aspectRatioMode=Qt.KeepAspectRatio)
-                label.setPixmap(scaled_pixmap)
-                self.tableWidget_quote_items.setCellWidget(row_index, 0, label)
-
-                self.tableWidget_quote_items.setItem(row_index, 1, QTableWidgetItem(item))
-                self.tableWidget_quote_items.item(row_index, 1).setTextAlignment(Qt.AlignCenter | Qt.AlignVCenter | Qt.TextWrapAnywhere)
-
-                self.tableWidget_quote_items.setItem(
-                    row_index,
-                    2,
-                    QTableWidgetItem(self.quote_nest_information[item]["material"]),
-                )
-                self.tableWidget_quote_items.item(row_index, 2).setTextAlignment(Qt.AlignCenter | Qt.AlignVCenter | Qt.TextWrapAnywhere)
-
-                self.tableWidget_quote_items.setItem(
-                    row_index,
-                    3,
-                    QTableWidgetItem(self.quote_nest_information[item]["gauge"]),
-                )
-                self.tableWidget_quote_items.item(row_index, 3).setTextAlignment(Qt.AlignCenter | Qt.AlignVCenter | Qt.TextWrapAnywhere)
-
-                self.tableWidget_quote_items.setItem(
-                    row_index,
-                    4,
-                    QTableWidgetItem(str(int(self.quote_nest_information[item]["quantity"]) * self.get_quantity_multiplier(item))),
-                )
-                self.tableWidget_quote_items.item(row_index, 4).setTextAlignment(Qt.AlignCenter | Qt.AlignVCenter | Qt.TextWrapAnywhere)
-
-                self.tableWidget_quote_items.setItem(
-                    row_index,
-                    5,
-                    QTableWidgetItem("$"),
-                )
-                self.tableWidget_quote_items.item(row_index, 5).setTextAlignment(Qt.AlignCenter | Qt.AlignVCenter | Qt.TextWrapAnywhere)
-
-                self.tableWidget_quote_items.setItem(
-                    row_index,
-                    6,
-                    QTableWidgetItem("$"),
-                )
-                self.tableWidget_quote_items.item(row_index, 6).setTextAlignment(Qt.AlignCenter | Qt.AlignVCenter | Qt.TextWrapAnywhere)
-
-                recut_button = RecutButton(self)
-                recut_button.setStyleSheet("margin: 5%;")
-                self.tableWidget_quote_items.setCellWidget(row_index, 7, recut_button)
-
-                send_part_to_inventory = QPushButton(self)
-                send_part_to_inventory.setText("Add Part to Inventory")
-                send_part_to_inventory.setStyleSheet("margin: 5%;")
-                send_part_to_inventory.setFixedWidth(150)
-                send_part_to_inventory.clicked.connect(partial(self.upload_part_to_inventory_thread, item, send_part_to_inventory))
-                self.tableWidget_quote_items.setCellWidget(row_index, 8, send_part_to_inventory)
-
-                if not does_part_exist:
-                    self.set_table_row_color(self.tableWidget_quote_items, row_index, "#3F1E25")
+                item = QTableWidgetItem(nest_name.replace(".pdf", ""))
+                item.setTextAlignment(4)
+                font = QFont()
+                font.setPointSize(15)
+                item.setFont(font)
+                self.tableWidget_quote_items.setItem(row_index, 0, item)
+                self.tableWidget_quote_items.setSpan(row_index, 0, 1, self.tableWidget_quote_items.columnCount())
+                self.set_table_row_color(self.tableWidget_quote_items, row_index, "#292929")
                 row_index += 1
+                for item in list(self.quote_nest_information[nest_name].keys()):
+                    self.tableWidget_quote_items.insertRow(row_index)
+                    self.tableWidget_quote_items.setRowHeight(row_index, 50)
+                    label = ClickableLabel(self)
+                    label.setToolTip("Click to make bigger.")
+                    label.setFixedSize(50, 50)
+                    pixmap = QPixmap(f"images/{self.quote_nest_information[nest_name][item]['image_index']}.jpeg")
+                    does_part_exist: bool = True
+                    if pixmap.isNull():
+                        does_part_exist = False
+                        pixmap = QPixmap("images/404.png")
+                        label.clicked.connect(
+                            partial(
+                                self.open_image,
+                                "images/404.png",
+                                "Part does not exist",
+                            )
+                        )
+                    else:
+                        label.clicked.connect(
+                            partial(
+                                self.open_image,
+                                f"images/{self.quote_nest_information[nest_name][item]['image_index']}.jpeg",
+                                item,
+                            )
+                        )
+                    scaled_pixmap = pixmap.scaled(label.size(), aspectRatioMode=Qt.KeepAspectRatio)
+                    label.setPixmap(scaled_pixmap)
+                    self.tableWidget_quote_items.setCellWidget(row_index, 0, label)
+
+                    self.tableWidget_quote_items.setItem(row_index, 1, QTableWidgetItem(item))
+                    self.tableWidget_quote_items.item(row_index, 1).setTextAlignment(Qt.AlignCenter | Qt.AlignVCenter | Qt.TextWrapAnywhere)
+
+                    self.tableWidget_quote_items.setItem(
+                        row_index,
+                        2,
+                        QTableWidgetItem(self.quote_nest_information[nest_name][item]["material"]),
+                    )
+                    self.tableWidget_quote_items.item(row_index, 2).setTextAlignment(Qt.AlignCenter | Qt.AlignVCenter | Qt.TextWrapAnywhere)
+
+                    self.tableWidget_quote_items.setItem(
+                        row_index,
+                        3,
+                        QTableWidgetItem(self.quote_nest_information[nest_name][item]["gauge"]),
+                    )
+                    self.tableWidget_quote_items.item(row_index, 3).setTextAlignment(Qt.AlignCenter | Qt.AlignVCenter | Qt.TextWrapAnywhere)
+
+                    self.tableWidget_quote_items.setItem(
+                        row_index,
+                        4,
+                        QTableWidgetItem(
+                            str(int(self.quote_nest_information[nest_name][item]["quantity"]) * self.get_quantity_multiplier(item, nest_name))
+                        ),
+                    )
+                    self.tableWidget_quote_items.item(row_index, 4).setTextAlignment(Qt.AlignCenter | Qt.AlignVCenter | Qt.TextWrapAnywhere)
+
+                    self.tableWidget_quote_items.setItem(
+                        row_index,
+                        5,
+                        QTableWidgetItem("$"),
+                    )
+                    self.tableWidget_quote_items.item(row_index, 5).setTextAlignment(Qt.AlignCenter | Qt.AlignVCenter | Qt.TextWrapAnywhere)
+
+                    self.tableWidget_quote_items.setItem(
+                        row_index,
+                        6,
+                        QTableWidgetItem("$"),
+                    )
+                    self.tableWidget_quote_items.item(row_index, 6).setTextAlignment(Qt.AlignCenter | Qt.AlignVCenter | Qt.TextWrapAnywhere)
+
+                    recut_button = RecutButton(self)
+                    recut_button.setStyleSheet("margin: 5%;")
+                    self.tableWidget_quote_items.setCellWidget(row_index, 7, recut_button)
+
+                    send_part_to_inventory = QPushButton(self)
+                    send_part_to_inventory.setText("Add Part to Inventory")
+                    send_part_to_inventory.setStyleSheet("margin: 5%;")
+                    send_part_to_inventory.setFixedWidth(150)
+                    send_part_to_inventory.clicked.connect(partial(self.upload_part_to_inventory_thread, item, nest_name, send_part_to_inventory))
+                    self.tableWidget_quote_items.setCellWidget(row_index, 8, send_part_to_inventory)
+
+                    if not does_part_exist:
+                        self.set_table_row_color(self.tableWidget_quote_items, row_index, "#3F1E25")
+                    row_index += 1
         self.tableWidget_quote_items.resizeColumnsToContents()
 
     # * /\ Load UI /\
@@ -4446,10 +4507,10 @@ class MainWindow(QMainWindow):
             self.status_button.setText(f"Successfully loaded {len(self.get_all_selected_nests())} nests", "lime")
         # QApplication.restoreOverrideCursor()
 
-    def upload_part_to_inventory_thread(self, item_name: str, send_part_to_inventory: QPushButton) -> None:
+    def upload_part_to_inventory_thread(self, item_name: str, nest_name: str, send_part_to_inventory: QPushButton) -> None:
         send_part_to_inventory.setEnabled(False)
-        # self.save_quote_table_values()
-        data = {item_name: self.quote_nest_information[item_name]}
+        self.save_quote_table_values()
+        data = {item_name: self.quote_nest_information[nest_name][item_name]}
         # QApplication.setOverrideCursor(Qt.BusyCursor)
         with open("parts_batch_to_upload.json", "w") as f:
             json.dump(data, f, sort_keys=True, indent=4)
@@ -4461,10 +4522,10 @@ class MainWindow(QMainWindow):
         self.upload_batched_parts_images(data)
         send_part_to_inventory.setEnabled(True)
 
-    def upload_batch_to_inventory_thread(self) -> None:
+    def upload_batch_to_inventory_thread(self, batch_data: dict) -> None:
         # QApplication.setOverrideCursor(Qt.BusyCursor)
         with open("parts_batch_to_upload.json", "w") as f:
-            json.dump(self.quote_nest_information, f, sort_keys=True, indent=4)
+            json.dump(batch_data, f, sort_keys=True, indent=4)
         upload_batch = UploadBatch("parts_batch_to_upload.json")
         upload_batch.signal.connect(self.upload_batch_to_inventory_response)
         self.threads.append(upload_batch)
@@ -4752,7 +4813,7 @@ def main() -> None:
     # loading_screen = QSplashScreen(loading_window)
     app.processEvents()
     set_theme(app, theme="dark")
-    
+
     mainwindow = MainWindow()
     mainwindow.show()
     # timer = QTimer()

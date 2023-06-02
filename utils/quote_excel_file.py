@@ -163,9 +163,9 @@ class ExcelFile:
             or "TEXTAFTER" in str(item)
         ):
             cell_format.set_bold()
-        if col == "K" and row > 2 and "Tax" not in str(item):
+        if col == "G" and row > 2 and "Tax" not in str(item):
             cell_format.set_right(1)
-        if col == "G" and not (self.generate_quote or self.should_generate_packing_slip) and row > 4:
+        if col == "E" and not (self.generate_quote or self.should_generate_packing_slip) and row > 4:
             cell_format.set_right(1)
         if totals:
             cell_format.set_top(6)
