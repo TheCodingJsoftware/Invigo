@@ -330,7 +330,6 @@ class CustomTabWidget(QTabWidget):
 class PdfFilterProxyModel(QSortFilterProxyModel):
     def __init__(self, parent=None):
         super().__init__(parent)
-        self.sort_order = Qt.DescendingOrder
 
     def filterAcceptsRow(self, row, parent):
         """
@@ -352,45 +351,6 @@ class PdfFilterProxyModel(QSortFilterProxyModel):
         filename = self.sourceModel().fileName(index)
         return filename.lower().endswith(".pdf")
 
-    def lessThan(self, left_index, right_index):
-        """
-        This function overrides the lessThan method to sort a specific column in a QAbstractTableModel
-        based on the sort order.
-
-        Args:
-          left_index: The QModelIndex object representing the left item being compared in the sorting
-        operation.
-          right_index: The index of the item on the right side of the comparison being made in the
-        model. In other words, it is the index of the item that is being compared to the item at the
-        left_index.
-
-        Returns:
-          The method `lessThan` is returning a boolean value indicating whether the data at the
-        `left_index` is less than the data at the `right_index`. If the columns of the indices are not
-        2, it calls the `lessThan` method of the parent class. If the sort order is descending, it
-        returns `left_data > right_data`, otherwise it returns `left_data < right
-        """
-        if left_index.column() != 2 or right_index.column() != 2:
-            return super().lessThan(left_index, right_index)
-        left_data = self.sourceModel().data(left_index, Qt.UserRole)
-        right_data = self.sourceModel().data(right_index, Qt.UserRole)
-        return left_data > right_data if self.sort_order == Qt.DescendingOrder else left_data < right_data
-
-    def sort(self, column, order):
-        """
-        This function sorts a table by a specified column and order, and updates the sort order
-        attribute if the column is the second column.
-
-        Args:
-          column: The column number that the data should be sorted by.
-          order: The order parameter specifies the sorting order, which can be either Qt.AscendingOrder
-        or Qt.DescendingOrder. Qt.AscendingOrder sorts the items in ascending order, while
-        Qt.DescendingOrder sorts the items in descending order.
-        """
-        if column == 2:
-            self.sort_order = order
-        super().sort(column, order)
-
 
 class PdfTreeView(QTreeView):
     def __init__(self, path: str):
@@ -406,16 +366,27 @@ class PdfTreeView(QTreeView):
         self.setRootIndex(self.filterModel.mapFromSource(self.model.index(path)))
         self.header().resizeSection(0, 170)
         self.setSelectionMode(4)
-        self.header().hideSection(1)
-        self.header().hideSection(2)
-        self.expandAll()
+        self.header().hideSection(1)  # Size
+        self.header().hideSection(2)  # File type
         self.selected_indexes = []
         self.selected_items = []
         self.full_paths = []
+        self.setSortingEnabled(True)
+        # Connect the header's sectionClicked signal to handle sorting
 
         self.selectionModel().selectionChanged.connect(self.on_selection_changed)
 
     def on_selection_changed(self, selected, deselected):
+        """
+        This function updates a list of selected items and their full file paths when the selection in a
+        model/view is changed.
+
+        Args:
+          selected: A list of QModelIndex objects representing the newly selected items in the view.
+          deselected: The deselected parameter is a list of QModelIndex objects that represent the
+        indexes that were previously selected but are no longer selected after the selection has
+        changed.
+        """
         self.selected_indexes = self.selectionModel().selectedIndexes()
         self.selected_items = [index.data() for index in self.selected_indexes if ".pdf" in index.data()]
         self.full_paths.clear()

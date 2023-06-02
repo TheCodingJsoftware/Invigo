@@ -82,6 +82,7 @@ from ui.load_window import LoadWindow
 from ui.message_dialog import MessageDialog
 from ui.select_item_dialog import SelectItemDialog
 from ui.set_custom_limit_dialog import SetCustomLimitDialog
+from ui.job_sorter_dialog import JobSorterDialog
 from ui.theme import set_theme
 from ui.web_scrape_results_dialog import WebScrapeResultsDialog
 from utils.calulations import calculate_overhead
@@ -538,6 +539,10 @@ class MainWindow(QMainWindow):
         self.comboBox_laser_cutting.currentIndexChanged.connect(self.update_quote_price)
         self.spinBox_overhead.valueChanged.connect(self.update_quote_price)
         self.spinBox_profit_margin.valueChanged.connect(self.update_quote_price)
+
+        # JOB SORTER
+        self.actionOpenMenu.triggered.connect(self.open_job_sorter)
+
         # FILE
         self.menuOpen_Category.setIcon(QIcon(f"ui/BreezeStyleSheets/dist/pyqt6/{self.theme}/folder.png"))
         self.actionCreate_Category.triggered.connect(self.create_new_category)
@@ -2550,19 +2555,33 @@ class MainWindow(QMainWindow):
                     self.set_order_number_thread(self.order_number + 1)
 
                 self.save_quote_table_values()
+                option_string: str = ""
+                if should_generate_quote:
+                    option_string = "Quote"
+                elif should_generate_workorder:
+                    option_string = "Workorder"
+                elif should_generate_packing_slip:
+                    option_string = "Packing sSlip"
+
+                file_name: str = f'{option_string} - {datetime.now().strftime("%A, %d %B %Y %H-%M-%S-%f")}'
                 try:
-                    generate_quote = GenerateQuote(action, self.quote_nest_information, self.order_number)
+                    generate_quote = GenerateQuote(action, file_name, self.quote_nest_information, self.order_number)
                 except FileNotFoundError:
                     self.show_error_dialog(
                         "File not found, aborted",
                         'Invalid paths set for "path_to_sheet_prices" or "price_of_steel_information" in config file "laser_quote_variables.cfg"\n\nGenerating Quote Aborted.',
                     )
                     return
-                if generate_quote.should_update_inventory:
+                if should_update_inventory:
                     self.upload_batch_to_inventory_thread()
                     if not self.is_nest_generated_from_parts_in_inventory:
                         self.upload_batched_parts_images(self.quote_nest_information)
                 self.status_button.setText("Generating complete", "lime")
+                if should_generate_workorder:
+                    config = configparser.ConfigParser()
+                    config.read("laser_quote_variables.cfg")
+                    path_to_save_workorders = config.get("GLOBAL VARIABLES", "path_to_save_workorders")
+                    self.open_folder(f"{path_to_save_workorders}/{file_name}.xlsx")
             elif response == DialogButtons.cancel:
                 return
 
@@ -2664,6 +2683,10 @@ class MainWindow(QMainWindow):
                     return
             elif response == DialogButtons.cancel:
                 return
+
+    def open_job_sorter(self) -> None:
+        job_sorter_menu = JobSorterDialog(self, title="Job Sorter", message="Make sure all paths are set properly before pressing Sort, this is irreversible.")
+        job_sorter_menu.show()
 
     # * /\ Dialogs /\
 

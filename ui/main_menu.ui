@@ -1100,7 +1100,7 @@ QPushButton#pushButton_add_new_sheet:disabled{
                 <property name="minimumSize">
                  <size>
                   <width>0</width>
-                  <height>40</height>
+                  <height>0</height>
                  </size>
                 </property>
                 <property name="font">
@@ -1435,11 +1435,18 @@ QPushButton#pushButton_generate_quote:disabled{
     <addaction name="actionOpen_Quotes_Directory"/>
     <addaction name="actionOpen_Workorders_Directory"/>
    </widget>
+   <widget class="QMenu" name="menuJobSorter">
+    <property name="title">
+     <string>Job Sorter</string>
+    </property>
+    <addaction name="actionOpenMenu"/>
+   </widget>
    <addaction name="menuFile"/>
    <addaction name="menuSettings"/>
    <addaction name="menuSort"/>
    <addaction name="menuPurchase_Orders"/>
    <addaction name="menuQuote_Generator"/>
+   <addaction name="menuJobSorter"/>
    <addaction name="menuHelp"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
@@ -1782,6 +1789,11 @@ QPushButton#pushButton_generate_quote:disabled{
   <action name="actionSet_Order_Number">
    <property name="text">
     <string>Set Order Number</string>
+   </property>
+  </action>
+  <action name="actionOpenMenu">
+   <property name="text">
+    <string>Open Menu</string>
    </property>
   </action>
  </widget>
