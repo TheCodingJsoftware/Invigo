@@ -32,7 +32,7 @@ class LoadNests(QThread):
         Args:
           file_to_upload (list[str]): list[str] = list of files to upload
         """
-        QThread.__init__(self)
+        QThread.__init__(self, parent)
         self.nests = nests
         self.data = {}
 
@@ -190,6 +190,7 @@ class LoadNests(QThread):
             image_index: int = 0
             for nest in self.nests:
                 # variables
+                nest_name: str = os.path.basename(nest)
                 nest_data = self.convert_pdf_to_text(nest)
                 quantity_multiplier: int = int(self.get_values_from_text(nest_data, self.sheet_quantity_regex)[0])
                 scrap_percentage: float = float(self.get_values_from_text(nest_data, self.scrap_percentage_regex)[0])
@@ -219,9 +220,10 @@ class LoadNests(QThread):
                     "sheet_dim": sheet_dimension,
                     "scrap_percentage": scrap_percentage,
                 }
+                self.data[nest_name] = {}
                 for i, part_name in enumerate(parts):
                     part_name = part_name.split("\\")[-1].replace("\n", "").replace(".GEO", "").replace(".geo", "").strip()
-                    self.data[part_name] = {
+                    self.data[nest_name][part_name] = {
                         "quantity": int(quantities[i]),
                         "machine_time": float(machining_times[i]),
                         "weight": float(weights[i]),
@@ -239,13 +241,14 @@ class LoadNests(QThread):
                     }
                     image_index += 1
             # os.remove(f"{self.program_directory}/output.txt")
-            for item in list(self.data.keys()):
-                if item[0] == "_":
+            for nest_name in list(self.data.keys()):
+                if nest_name[0] == "_":
                     continue
-                image_path: str = f"images/{self.data[item]['image_index']}.jpeg"
-                new_image_path = f"images/{item}.jpeg"
-                self.data[item]["image_index"] = item
-                shutil.move(image_path, new_image_path)
+                for item in list(self.data[nest_name].keys()):
+                    image_path: str = f"images/{self.data[nest_name][item]['image_index']}.jpeg"
+                    new_image_path = f"images/{item}.jpeg"
+                    self.data[nest_name][item]["image_index"] = item
+                    shutil.move(image_path, new_image_path)
             self.signal.emit(self.data)
         except Exception as e:
             print(e)

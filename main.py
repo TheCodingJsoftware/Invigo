@@ -3719,9 +3719,9 @@ class MainWindow(QMainWindow):
         self.verticalLayout_sheets.addWidget(self.sheet_nests_toolbox)
         row_index: int = 0
         tab_index: int = 0
-        for item in list(self.quote_nest_information.keys()):
+        for nest_name in list(self.quote_nest_information.keys()):
             if item[0] == "_":
-                nest_name = item.split("/")[-1].replace(".pdf", "")
+                # nest_name = item.split("/")[-1].replace(".pdf", "")
                 widget = QWidget(self)
                 widget.setMinimumHeight(120)
                 widget.setMaximumHeight(120)
@@ -4748,14 +4748,17 @@ def main() -> None:
     QApplication
     """
     app = QApplication([])
-    loading_window = LoadWindow()
-    loading_screen = QSplashScreen(loading_window)
+    # loading_window = LoadWindow()
+    # loading_screen = QSplashScreen(loading_window)
     app.processEvents()
     set_theme(app, theme="dark")
-    timer = QTimer()
-    timer.setSingleShot(True)
-    timer.timeout.connect(partial(start_program, loading_window, loading_screen))
-    timer.start(1500)
+    
+    mainwindow = MainWindow()
+    mainwindow.show()
+    # timer = QTimer()
+    # timer.setSingleShot(True)
+    # timer.timeout.connect(partial(start_program, loading_window, loading_screen))
+    # timer.start(1500)
     app.exec_()
 
 
