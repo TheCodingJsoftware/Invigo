@@ -39,7 +39,6 @@
       <property name="font">
        <font>
         <pointsize>8</pointsize>
-        <weight>75</weight>
         <bold>true</bold>
        </font>
       </property>
@@ -128,8 +127,8 @@
                 <rect>
                  <x>0</x>
                  <y>0</y>
-                 <width>261</width>
-                 <height>69</height>
+                 <width>254</width>
+                 <height>68</height>
                 </rect>
                </property>
                <property name="maximumSize">
@@ -346,7 +345,7 @@
               </property>
               <property name="font">
                <font>
-                <weight>75</weight>
+                <pointsize>8</pointsize>
                 <bold>true</bold>
                </font>
               </property>
@@ -447,8 +446,8 @@ QPushButton#pushButton_create_new:disabled{
                 <rect>
                  <x>0</x>
                  <y>0</y>
-                 <width>121</width>
-                 <height>386</height>
+                 <width>118</width>
+                 <height>382</height>
                 </rect>
                </property>
                <property name="maximumSize">
@@ -558,7 +557,7 @@ QPushButton#pushButton_create_new:disabled{
               </property>
               <property name="font">
                <font>
-                <weight>75</weight>
+                <pointsize>8</pointsize>
                 <bold>true</bold>
                </font>
               </property>
@@ -659,8 +658,8 @@ QPushButton#pushButton_add_new_sheet:disabled{
                 <rect>
                  <x>0</x>
                  <y>0</y>
-                 <width>251</width>
-                 <height>374</height>
+                 <width>241</width>
+                 <height>356</height>
                 </rect>
                </property>
                <layout class="QVBoxLayout" name="verticalLayout_21">
@@ -841,7 +840,7 @@ QPushButton#pushButton_add_new_sheet:disabled{
                    </property>
                    <property name="font">
                     <font>
-                     <weight>50</weight>
+                     <pointsize>8</pointsize>
                      <italic>true</italic>
                      <bold>false</bold>
                     </font>
@@ -865,6 +864,7 @@ QPushButton#pushButton_add_new_sheet:disabled{
                 <property name="font">
                  <font>
                   <pointsize>8</pointsize>
+                  <bold>true</bold>
                  </font>
                 </property>
                 <property name="title">
@@ -980,8 +980,8 @@ QPushButton#pushButton_add_new_sheet:disabled{
                      <rect>
                       <x>0</x>
                       <y>0</y>
-                      <width>406</width>
-                      <height>338</height>
+                      <width>392</width>
+                      <height>319</height>
                      </rect>
                     </property>
                     <property name="styleSheet">
@@ -1111,7 +1111,7 @@ QPushButton#pushButton_add_new_sheet:disabled{
                 </property>
                 <property name="font">
                  <font>
-                  <weight>75</weight>
+                  <pointsize>8</pointsize>
                   <bold>true</bold>
                  </font>
                 </property>
@@ -1314,17 +1314,17 @@ QPushButton#pushButton_generate_quote:disabled{
                  <property name="columnCount">
                   <number>2</number>
                  </property>
-                 <attribute name="horizontalHeaderDefaultSectionSize">
-                  <number>500</number>
-                 </attribute>
                  <attribute name="horizontalHeaderMinimumSectionSize">
                   <number>42</number>
                  </attribute>
-                 <attribute name="verticalHeaderDefaultSectionSize">
-                  <number>30</number>
+                 <attribute name="horizontalHeaderDefaultSectionSize">
+                  <number>500</number>
                  </attribute>
                  <attribute name="verticalHeaderMinimumSectionSize">
                   <number>28</number>
+                 </attribute>
+                 <attribute name="verticalHeaderDefaultSectionSize">
+                  <number>30</number>
                  </attribute>
                  <column/>
                  <column/>
@@ -1350,11 +1350,11 @@ QPushButton#pushButton_generate_quote:disabled{
                  <property name="columnCount">
                   <number>2</number>
                  </property>
-                 <attribute name="horizontalHeaderDefaultSectionSize">
-                  <number>500</number>
-                 </attribute>
                  <attribute name="horizontalHeaderMinimumSectionSize">
                   <number>42</number>
+                 </attribute>
+                 <attribute name="horizontalHeaderDefaultSectionSize">
+                  <number>500</number>
                  </attribute>
                  <column/>
                  <column/>
@@ -1442,7 +1442,7 @@ QPushButton#pushButton_generate_quote:disabled{
      <x>0</x>
      <y>0</y>
      <width>893</width>
-     <height>22</height>
+     <height>21</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
@@ -1898,6 +1898,12 @@ QPushButton#pushButton_generate_quote:disabled{
   <action name="action_Set_User_Workspace">
    <property name="text">
     <string>Set User Workspace</string>
+   </property>
+   <property name="font">
+    <font>
+     <family>MS Shell Dlg 2</family>
+     <stylestrategy>PreferDefault</stylestrategy>
+    </font>
    </property>
   </action>
  </widget>

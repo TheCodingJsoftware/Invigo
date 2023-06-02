@@ -1,8 +1,8 @@
 # sourcery skip: avoid-builtin-shadow
 import requests
 from PyQt5 import uic
-from PyQt5.QtCore import Qt, QTimer, QEventLoop
-from PyQt5.QtGui import QColor, QCursor, QFont, QIcon, QPixmap, QPalette
+from PyQt5.QtCore import QEventLoop, Qt, QTimer
+from PyQt5.QtGui import QColor, QCursor, QFont, QIcon, QPalette, QPixmap
 from PyQt5.QtWidgets import (
     QAbstractItemView,
     QAction,
@@ -13,6 +13,7 @@ from PyQt5.QtWidgets import (
     QDoubleSpinBox,
     QFileDialog,
     QFileSystemModel,
+    QFontDialog,
     QFormLayout,
     QGridLayout,
     QGroupBox,
@@ -27,7 +28,6 @@ from PyQt5.QtWidgets import (
     QScrollArea,
     QSizePolicy,
     QSpacerItem,
-    QFontDialog,
     QSpinBox,
     QSplashScreen,
     QStyle,
@@ -45,13 +45,13 @@ from PyQt5.QtWidgets import (
 from threads.changes_thread import ChangesThread
 from threads.download_images_thread import DownloadImagesThread
 from threads.download_thread import DownloadThread
+from threads.get_order_number_thread import GetOrderNumberThread
 from threads.load_nests import LoadNests
 from threads.remove_quantity import RemoveQuantityThread
 from threads.send_sheet_report_thread import SendReportThread
+from threads.set_order_number_thread import SetOrderNumberThread
 from threads.upload_quoted_inventory import UploadBatch
 from threads.upload_thread import UploadThread
-from threads.get_order_number_thread import GetOrderNumberThread
-from threads.set_order_number_thread import SetOrderNumberThread
 from ui.about_dialog import AboutDialog
 from ui.add_item_dialog import AddItemDialog
 from ui.add_item_dialog_price_of_steel import AddItemDialogPriceOfSteel
@@ -78,11 +78,11 @@ from ui.custom_widgets import (
 from ui.generate_quote_dialog import GenerateQuoteDialog
 from ui.image_viewer import QImageViewer
 from ui.input_dialog import InputDialog
+from ui.job_sorter_dialog import JobSorterDialog
 from ui.load_window import LoadWindow
 from ui.message_dialog import MessageDialog
 from ui.select_item_dialog import SelectItemDialog
 from ui.set_custom_limit_dialog import SetCustomLimitDialog
-from ui.job_sorter_dialog import JobSorterDialog
 from ui.theme import set_theme
 from ui.web_scrape_results_dialog import WebScrapeResultsDialog
 from utils.calulations import calculate_overhead
@@ -114,8 +114,8 @@ __email__: str = "jared@pinelandfarms.ca"
 __status__: str = "Production"
 
 import ast
-import contextlib
 import configparser
+import contextlib
 import json
 import logging
 import operator as op
@@ -125,12 +125,13 @@ import subprocess
 import sys
 import threading
 import time
-import markdown
 import webbrowser
 import winsound
 from datetime import datetime
 from functools import partial
 from typing import Any
+
+import markdown
 
 operators: dict = {
     ast.Add: op.add,
@@ -310,7 +311,7 @@ class MainWindow(QMainWindow):
         # VARIABLES
         self.theme: str = "dark"
 
-        self.order_number: int = None
+        self.order_number: int = -1
         self.po_buttons: list[QPushButton] = []
         self.categories: list[str] = []
         self.active_layout: QVBoxLayout = None
@@ -420,6 +421,7 @@ class MainWindow(QMainWindow):
         headers: list[str] = ["Item", "Part name", "Material", "Thickness", "Qty", "Unit Price", "Price", "Recut", "Add Part to Inventory"]
         self.tableWidget_quote_items.setColumnCount(len(headers))
         self.tableWidget_quote_items.setHorizontalHeaderLabels(headers)
+        self.tableWidget_quote_items.setSortingEnabled(True)
         self.clear_layout(self.verticalLayout_25)
         self.verticalLayout_25.addWidget(self.tableWidget_quote_items)
 
@@ -2685,7 +2687,9 @@ class MainWindow(QMainWindow):
                 return
 
     def open_job_sorter(self) -> None:
-        job_sorter_menu = JobSorterDialog(self, title="Job Sorter", message="Make sure all paths are set properly before pressing Sort, this is irreversible.")
+        job_sorter_menu = JobSorterDialog(
+            self, title="Job Sorter", message="Make sure all paths are set properly before pressing Sort, this is irreversible."
+        )
         job_sorter_menu.show()
 
     # * /\ Dialogs /\
