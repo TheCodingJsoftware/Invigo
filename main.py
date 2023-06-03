@@ -4008,13 +4008,13 @@ class MainWindow(QMainWindow):
                 return
             version: str = response.json()["name"].replace(" ", "")
             if version != __version__:
-                message_dialog = self.show_message_dialog(
-                    title=__name__,
-                    message=f"There is a new update available.\n\nNew Version: {version}\n\nMake sure to make a backup\nbefore installing new version.",
-                    dialog_buttons=DialogButtons.ok_update,
-                )
-                if message_dialog == DialogButtons.update:
-                    subprocess.Popen("start update.exe", shell=True)
+                # message_dialog = self.show_message_dialog(
+                #     title=__name__,
+                #     message=f"There is a new update available.\n\nNew Version: {version}\n\nMake sure to make a backup\nbefore installing new version.",
+                #     dialog_buttons=DialogButtons.ok_update,
+                # )
+                # if message_dialog == DialogButtons.update:
+                subprocess.Popen("start update.exe", shell=True)
                     # sys.exit()
             elif not on_start_up:
                 self.show_message_dialog(
@@ -4799,8 +4799,8 @@ class MainWindow(QMainWindow):
 def start_program(loading_window, loading_screen) -> None:
     loading_window.close()
     loading_screen.close()
-    mainwindow = MainWindow()
-    mainwindow.show()
+    # mainwindow = MainWindow()
+    # mainwindow.show()
 
 
 def main() -> None:
@@ -4809,17 +4809,17 @@ def main() -> None:
     QApplication
     """
     app = QApplication([])
-    # loading_window = LoadWindow()
-    # loading_screen = QSplashScreen(loading_window)
+    loading_window = LoadWindow()
+    loading_screen = QSplashScreen(loading_window)
     app.processEvents()
     set_theme(app, theme="dark")
 
+    timer = QTimer()
+    timer.setSingleShot(True)
+    timer.timeout.connect(partial(start_program, loading_window, loading_screen))
+    timer.start(1500)
     mainwindow = MainWindow()
     mainwindow.show()
-    # timer = QTimer()
-    # timer.setSingleShot(True)
-    # timer.timeout.connect(partial(start_program, loading_window, loading_screen))
-    # timer.start(1500)
     app.exec_()
 
 
