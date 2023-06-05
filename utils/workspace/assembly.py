@@ -1,0 +1,208 @@
+from utils.workspace.item import Item
+from typing import Union
+import copy
+
+
+class Assembly:
+    def __init__(self, **kwargs: Union[str, list["Assembly"], list[Item]]) -> None:
+        """
+        This is the constructor for a class called "Assembly" that initializes its attributes based on
+        the keyword arguments passed in.
+
+        Args:
+           (Union[str, list["Assembly"], list[Item]]): This is the initialization method for a class
+        called "Assembly". It takes in keyword arguments (kwargs) that can include the following:
+        """
+        self.name = kwargs.get("name")
+        self.assembly_data: dict[str, object] = kwargs.get("assembly_data")
+        self.sub_assemblies: list["Assembly"] = kwargs.get("sub_assemblies")
+        self.items: list[Item] = kwargs.get("items")
+        if not self.items:
+            self.items = []
+        if not self.sub_assemblies:
+            self.sub_assemblies = []
+        if not self.assembly_data:
+            self.assembly_data = {}
+        self.data = {"assembly_data": self.assembly_data, "sub_assemblies": self.sub_assemblies, "items": self.items}
+
+    def set_item(self, item: Item) -> None:
+        """
+        This function adds an item to a list of items in an object.
+
+        Args:
+          item (Item): The parameter "item" is of type "Item", which means it is expecting an object of
+        the class "Item" to be passed as an argument. The method "set_item" is designed to add this item
+        to a list of items stored in the object that the method is called on.
+        """
+        self.items.append(item)
+
+    def add_item(self, item: Item) -> None:
+        """
+        This function adds an item to a list of items in an object.
+
+        Args:
+          item (Item): The parameter "item" is of type "Item", which means it is expecting an object of
+        the class "Item" to be passed as an argument. The method "set_item" is designed to add this item
+        to a list of items stored in the object that the method is called on.
+        """
+        self.items.append(item)
+
+    def set_assembly_data(self, key: str, value: object) -> None:
+        """
+        This function sets a value for a given key in a dictionary called "assembly_data".
+
+        Args:
+          key (str): The key parameter is a string that represents the name of the data that is being
+        stored in the assembly_data dictionary. It is used as the key to access the corresponding value
+        in the dictionary.
+          value (object): The value parameter is an object that can be of any data type (e.g. int, str,
+        list, dict, etc.) that the user wants to store in the assembly_data dictionary.
+        """
+        self.assembly_data[key] = value
+
+    def set_sub_assembly(self, assembly: "Assembly") -> list["Assembly"]:
+        """
+        This function adds an assembly to a list of sub-assemblies for a given assembly.
+
+        Args:
+          assembly ("Assembly"): The "assembly" parameter is of type "Assembly", which means it expects
+        an object of the "Assembly" class to be passed as an argument. This method is likely a part of a
+        larger class that deals with assemblies and sub-assemblies, and this particular method is used
+        to add a sub-
+        """
+        self.sub_assemblies.append(assembly)
+
+    def add_sub_assembly(self, assembly: "Assembly") -> list["Assembly"]:
+        """
+        This function adds an assembly to a list of sub-assemblies for a given assembly.
+
+        Args:
+          assembly ("Assembly"): The "assembly" parameter is of type "Assembly", which means it expects
+        an object of the "Assembly" class to be passed as an argument. This method is likely a part of a
+        larger class that deals with assemblies and sub-assemblies, and this particular method is used
+        to add a sub-
+        """
+        self.sub_assemblies.append(assembly)
+
+    def get_sub_assemblies(self) -> list:
+        """
+        This function returns a list of sub-assemblies.
+
+        Returns:
+          The method `get_sub_assemblies` is returning a list of sub-assemblies. The specific content of
+        the list depends on the implementation of the `sub_assemblies` attribute in the class.
+        """
+        return self.sub_assemblies
+
+    def get_sub_assembly(self, assembly_name: str) -> "Assembly":
+        """
+        This function returns a sub-assembly object with a given name from a list of sub-assemblies.
+
+        Args:
+          assembly_name (str): a string representing the name of the sub-assembly that is being searched
+        for.
+
+        Returns:
+          an instance of the "Assembly" class that matches the given "assembly_name" parameter. If no
+        matching assembly is found, the function returns "None".
+        """
+        for sub_assembly in self.sub_assemblies:
+            if sub_assembly.name == assembly_name:
+                return sub_assembly
+        return None
+
+    def copy_sub_assembly(self, assembly_name: Union[str, "Assembly"]) -> "Assembly":
+        """
+        This function copies a sub-assembly and renames it with "(Copy)" appended to the original name.
+
+        Args:
+          assembly_name (Union[str, "Assembly"]): The name of the sub-assembly that needs to be copied.
+        It can be either a string or an instance of the "Assembly" class.
+
+        Returns:
+          The method returns an instance of the "Assembly" class that is a copy of a sub-assembly with
+        the specified name. If no sub-assembly with the specified name is found, the method returns
+        None.
+        """
+        if type(assembly_name) == Assembly:
+            assembly_name = assembly_name.name
+        for sub_assembly in self.sub_assemblies:
+            if sub_assembly.name == assembly_name:
+                sub_assembly = copy.deepcopy(sub_assembly)
+                sub_assembly.rename(f"{sub_assembly.name} - (Copy)")
+                return sub_assembly
+        return None
+
+    def rename(self, new_name: str) -> None:
+        """
+        This function takes a new name as input and sets it as the name attribute of an object.
+
+        Args:
+          new_name (str): new_name is a parameter of type string that represents the new name that we
+        want to assign to an object. This parameter is used in the method "rename" to update the name
+        attribute of the object with the new name provided as an argument.
+        """
+        self.name = new_name
+
+    def to_dict(self, processed_assemblies: set = None) -> dict:
+        """
+        This function converts an assembly object and its sub-assemblies and items into a dictionary
+        format.
+
+        Args:
+          processed_assemblies (set): processed_assemblies is a set that keeps track of the assemblies
+        that have already been processed to avoid infinite recursion. It is an optional parameter with a
+        default value of None. If it is not provided, a new empty set is created.
+
+        Returns:
+          A dictionary containing information about the assembly and its sub-assemblies and items.
+        """
+        if processed_assemblies is None:
+            processed_assemblies = set()
+        processed_assemblies.add(self)
+
+        data = {}
+        data["items"] = {}
+        data["assembly_data"] = self.assembly_data
+        data["sub_assemblies"] = {}
+
+        for sub_assembly in self.sub_assemblies:
+            if sub_assembly not in processed_assemblies:  # Check if the sub-assembly is already processed
+                data["sub_assemblies"][sub_assembly.name] = sub_assembly.to_dict(processed_assemblies)
+        for item in self.items:
+            data["items"][item.name] = item.to_dict()
+        return data
+
+    def get_item(self, item_name: str) -> Item | None:
+        """
+        This function searches for an item in a data dictionary by name and returns it if found,
+        otherwise it returns None.
+
+        Args:
+          item_name (str): A string representing the name of the item that needs to be retrieved.
+
+        Returns:
+          an instance of the `Item` class or `None` if the item with the given name is not found in the
+        list of items.
+        """
+        for item in self.data["items"]:
+            if item.name == item_name:
+                return item
+        return None
+
+    def copy_item(self, item_name: str) -> Item | None:
+        """
+        This Python function searches for an item with a given name in a list of items and returns a
+        deep copy of the item if found, or None if not found.
+
+        Args:
+          item_name (str): A string representing the name of the item that needs to be copied.
+
+        Returns:
+          either a deep copy of an item with the specified name (if it exists in the list of items), or
+        None if no such item exists.
+        """
+        return copy.deepcopy(self.get_item(item_name))
+
+    def get_data(self) -> dict:
+        return self.data

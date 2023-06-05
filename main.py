@@ -99,6 +99,9 @@ from utils.po import check_po_directories, get_all_po
 from utils.po_template import POTemplate
 from utils.price_history_file import PriceHistoryFile
 from utils.trusted_users import get_trusted_users
+from utils.workspace.assembly import Assembly
+from utils.workspace.item import Item
+from utils.workspace.workspace import Workspace
 from web_scrapers.ebay_scraper import EbayScraper
 from web_scrapers.exchange_rate import ExchangeRate
 
@@ -276,6 +279,8 @@ inventory = JsonFile(file_name=f"data/{settings_file.get_value(item_name='invent
 price_of_steel_inventory = JsonFile(file_name=f"data/{settings_file.get_value(item_name='inventory_file_name')} - Price of Steel")
 parts_in_inventory = JsonFile(file_name=f"data/{settings_file.get_value(item_name='inventory_file_name')} - Parts in Inventory")
 price_of_steel_information = JsonFile(file_name="price_of_steel_information.json")
+user_workspace = Workspace("workspace - User")
+admin_workspace = Workspace("workspace - Admin")
 
 geometry = JsonObject(JsonFile=settings_file, object_name="geometry")
 category_tabs_order = JsonObject(JsonFile=settings_file, object_name="category_tabs_order")
@@ -649,6 +654,11 @@ class MainWindow(QMainWindow):
             self.active_layout = self.horizontalLayout_8
             self.load_price_history_view()
             self.status_button.setHidden(True)
+        elif self.tabWidget.tabText(self.tabWidget.currentIndex()) == "Workspace":
+            self.menuSort.setEnabled(False)
+            self.menuOpen_Category.setEnabled(False)
+            self.active_layout = self.workspace_layout
+            self.load_categories()
         settings_file.add_item("last_toolbox_tab", self.tabWidget.currentIndex())
         self.last_selected_menu_tab = self.tabWidget.tabText(self.tabWidget.currentIndex())
 
@@ -2921,6 +2931,10 @@ class MainWindow(QMainWindow):
         self.sync_changes()
         # QApplication.restoreOverrideCursor()
 
+    # NOTE for workspace
+    def workspace_item_changed(self, item: QTableWidgetItem) -> None:
+        pass
+
     # * /\ INVENTORY TABLE CHANGES /\
 
     # * \/ Load UI \/
@@ -3019,18 +3033,15 @@ class MainWindow(QMainWindow):
         JsonFile(file_name=f"data/{self.inventory_file_name} - Price of Steel")
         JsonFile(file_name=f"data/{self.inventory_file_name} - Parts in Inventory")
         # # QApplication.setOverrideCursor(Qt.BusyCursor)
-        if self.tabWidget.tabText(self.tabWidget.currentIndex()) not in [
-            "Edit Inventory",
-            "Parts in Inventory",
-            "Sheets in Inventory",
-        ]:
+        if self.tabWidget.tabText(self.tabWidget.currentIndex()) not in ["Edit Inventory", "Parts in Inventory", "Sheets in Inventory", "Workspace"]:
             return
         self.clear_layout(self.active_layout)
         self.tabs.clear()
-        if self.active_json_file is None:
-            return
-        else:
-            self.categories = self.active_json_file.get_keys()
+        if self.tabWidget.tabText(self.tabWidget.currentIndex()) != "Workspace":
+            if self.active_json_file is None:
+                return
+            else:
+                self.categories = self.active_json_file.get_keys()
         self.menuOpen_Category.clear()
         for i, category in enumerate(self.categories):
             action = QAction(self)
@@ -3044,22 +3055,31 @@ class MainWindow(QMainWindow):
         self.tab_widget.setMovable(True)
         self.tab_widget.setDocumentMode(True)
         i: int = -1
-        for i, category in enumerate(self.categories):
-            tab = CustomTableWidget(self)
-            if category == "Price Per Pound" and self.tabWidget.tabText(self.tabWidget.currentIndex()) == "Sheets in Inventory":
-                self.pushButton_add_new_sheet.setEnabled(False)
-            elif self.tabWidget.tabText(self.tabWidget.currentIndex()) == "Sheets in Inventory":
-                self.pushButton_add_new_sheet.setEnabled(True)
-            if self.tabWidget.tabText(self.tabWidget.currentIndex()) == "Edit Inventory":
-                tab.itemSelectionChanged.connect(partial(self.inventory_cell_changed, tab))
-                tab.itemChanged.connect(self.edit_inventory_item_changes)
-            if self.tabWidget.tabText(self.tabWidget.currentIndex()) == "Sheets in Inventory":
-                tab.itemChanged.connect(self.sheets_in_inventory_item_changes)
-            if self.tabWidget.tabText(self.tabWidget.currentIndex()) == "Parts in Inventory":
-                tab.itemSelectionChanged.connect(partial(self.parts_in_inventory_cell_changed, tab))
-                tab.itemChanged.connect(self.parts_in_inventory_item_changes)
-            self.tabs[category] = tab
-            self.tab_widget.addTab(tab, category)
+        if self.tabWidget.tabText(self.tabWidget.currentIndex()) == "Workspace":
+            admin_workspace.load_data()
+            user_workspace.load_data()
+            for i, category in enumerate(["Edit Inventory"] + admin_workspace.get_all_assembly_names()):
+                tab = CustomTableWidget(self)
+                tab.itemChanged.connect(self.workspace_item_changed)
+                self.tabs[category] = tab
+                self.tab_widget.addTab(tab, category)
+        else:
+            for i, category in enumerate(self.categories):
+                tab = CustomTableWidget(self)
+                if category == "Price Per Pound" and self.tabWidget.tabText(self.tabWidget.currentIndex()) == "Sheets in Inventory":
+                    self.pushButton_add_new_sheet.setEnabled(False)
+                elif self.tabWidget.tabText(self.tabWidget.currentIndex()) == "Sheets in Inventory":
+                    self.pushButton_add_new_sheet.setEnabled(True)
+                if self.tabWidget.tabText(self.tabWidget.currentIndex()) == "Edit Inventory":
+                    tab.itemSelectionChanged.connect(partial(self.inventory_cell_changed, tab))
+                    tab.itemChanged.connect(self.edit_inventory_item_changes)
+                if self.tabWidget.tabText(self.tabWidget.currentIndex()) == "Sheets in Inventory":
+                    tab.itemChanged.connect(self.sheets_in_inventory_item_changes)
+                if self.tabWidget.tabText(self.tabWidget.currentIndex()) == "Parts in Inventory":
+                    tab.itemSelectionChanged.connect(partial(self.parts_in_inventory_cell_changed, tab))
+                    tab.itemChanged.connect(self.parts_in_inventory_item_changes)
+                self.tabs[category] = tab
+                self.tab_widget.addTab(tab, category)
 
         if i == -1:
             tab = QScrollArea(self)
@@ -3103,56 +3123,54 @@ class MainWindow(QMainWindow):
             return
         settings_file.add_item("last_category_tab", self.tab_widget.currentIndex())
         tab: CustomTableWidget = self.tabs[self.category]
-        category_data = self.active_json_file.get_value(item_name=self.category)
-        autofill_search_options = self.get_all_part_names() + self.get_all_part_numbers()
-        completer = QCompleter(autofill_search_options)
-        completer.setCaseSensitivity(Qt.CaseInsensitive)
-        self.lineEdit_search_items.setCompleter(completer)
+        if self.tabWidget.tabText(self.tabWidget.currentIndex()) != "Workspace":
+            category_data = self.active_json_file.get_value(item_name=self.category)
+            autofill_search_options = self.get_all_part_names() + self.get_all_part_numbers()
+            completer = QCompleter(autofill_search_options)
+            completer.setCaseSensitivity(Qt.CaseInsensitive)
+            self.lineEdit_search_items.setCompleter(completer)
 
-        self.update_list_widget()
-        self.update_category_total_stock_costs()
-        self.calculuate_price_of_steel_summary()
-        self.label_category_name.setText(f"Category: {self.category}")
-        self.quantities_change()
-
-        try:
-            if not list(category_data.keys()):
-                self.pushButton_create_new.setEnabled(True)
+            self.update_list_widget()
+            self.update_category_total_stock_costs()
+            self.calculuate_price_of_steel_summary()
+            self.label_category_name.setText(f"Category: {self.category}")
+            self.quantities_change()
+            try:
+                if not list(category_data.keys()):
+                    self.pushButton_create_new.setEnabled(True)
+                    self.pushButton_add_quantity.setEnabled(False)
+                    self.pushButton_remove_quantity.setEnabled(False)
+                    self.radioButton_category.setEnabled(False)
+                    self.radioButton_single.setEnabled(False)
+                    # # QApplication.restoreOverrideCursor()
+                    return
+            except AttributeError:
+                self.set_layout_message("You need to", "create", "a category", 120, self.create_new_category)
+                self.pushButton_create_new.setEnabled(False)
                 self.pushButton_add_quantity.setEnabled(False)
                 self.pushButton_remove_quantity.setEnabled(False)
                 self.radioButton_category.setEnabled(False)
                 self.radioButton_single.setEnabled(False)
                 # # QApplication.restoreOverrideCursor()
                 return
-        except AttributeError:
-            self.set_layout_message("You need to", "create", "a category", 120, self.create_new_category)
-        try:
-            self._iter = iter(range(len(list(category_data.keys()))))
-        except AttributeError:
-            self.set_layout_message("You need to", "create", "a category", 120, self.create_new_category)
-            self.pushButton_create_new.setEnabled(False)
-            self.pushButton_add_quantity.setEnabled(False)
-            self.pushButton_remove_quantity.setEnabled(False)
-            self.radioButton_category.setEnabled(False)
-            self.radioButton_single.setEnabled(False)
-            # # QApplication.restoreOverrideCursor()
-            return
 
-        if self.category == "Price Per Pound" and self.tabWidget.tabText(self.tabWidget.currentIndex()) == "Sheets in Inventory":
-            self.pushButton_add_new_sheet.setEnabled(False)
-        elif self.tabWidget.tabText(self.tabWidget.currentIndex()) == "Sheets in Inventory":
-            self.pushButton_add_new_sheet.setEnabled(True)
-        if self.tabWidget.tabText(self.tabWidget.currentIndex()) == "Edit Inventory":
-            self.load_inventory_items(tab, category_data)
-        elif self.tabWidget.tabText(self.tabWidget.currentIndex()) == "Sheets in Inventory":
-            self.price_of_steel_item(tab, category_data)
-        elif self.tabWidget.tabText(self.tabWidget.currentIndex()) == "Parts in Inventory":
-            self.load_inventory_parts(tab, category_data)
-        with contextlib.suppress(IndexError):
-            category_tabs_order.set_value(
-                self.tabWidget.tabText(self.tabWidget.currentIndex()),
-                value=self.tabWidget.currentWidget().findChildren(CustomTabWidget)[0].get_tab_order(),
-            )
+            if self.category == "Price Per Pound" and self.tabWidget.tabText(self.tabWidget.currentIndex()) == "Sheets in Inventory":
+                self.pushButton_add_new_sheet.setEnabled(False)
+            elif self.tabWidget.tabText(self.tabWidget.currentIndex()) == "Sheets in Inventory":
+                self.pushButton_add_new_sheet.setEnabled(True)
+            if self.tabWidget.tabText(self.tabWidget.currentIndex()) == "Edit Inventory":
+                self.load_inventory_items(tab, category_data)
+            elif self.tabWidget.tabText(self.tabWidget.currentIndex()) == "Sheets in Inventory":
+                self.price_of_steel_item(tab, category_data)
+            elif self.tabWidget.tabText(self.tabWidget.currentIndex()) == "Parts in Inventory":
+                self.load_inventory_parts(tab, category_data)
+            with contextlib.suppress(IndexError):
+                category_tabs_order.set_value(
+                    self.tabWidget.tabText(self.tabWidget.currentIndex()),
+                    value=self.tabWidget.currentWidget().findChildren(CustomTabWidget)[0].get_tab_order(),
+                )
+        if self.tabWidget.tabText(self.tabWidget.currentIndex()) == "Workspace":
+            self.load_workspace(tab)
 
     # NOTE PARTS IN INVENTYORY
     def load_inventory_parts(self, tab: CustomTableWidget, category_data: dict) -> None:
@@ -3733,6 +3751,163 @@ class MainWindow(QMainWindow):
             tab.selectRow(self.last_item_selected_index)
             self.listWidget_itemnames.setCurrentRow(self.last_item_selected_index)
         QApplication.restoreOverrideCursor()
+
+    def add_sub_assembly(
+        self, assembly: Assembly, assembly_layout: QVBoxLayout, assembly_groupbox: QGroupBox, assemblies_toolbox: MultiToolBox
+    ) -> None:
+        input_dialog = InputDialog(
+            title="Add Assembly",
+            message="Enter a name for a new sub assembly",
+            placeholder_text="",
+        )
+
+        if input_dialog.exec_():
+            response = input_dialog.get_response()
+            if response == DialogButtons.ok:
+                input_text = input_dialog.inputText
+                new_assembly: Assembly = Assembly(name=input_text)
+                assembly.add_sub_assembly(new_assembly)
+                admin_workspace.save()
+                # self.sync_changes()
+                # self.load_categories()
+            elif response == DialogButtons.cancel:
+                return
+
+    def load_assembly_items_table(self, assembly: Assembly) -> CustomTableWidget:
+        table = CustomTableWidget()
+        headers: list[str] = [
+            "Part Name",
+            "Part Number",
+            "Quantity Per Unit",
+            "Quantity in Stock",
+        ]
+        table.setColumnCount(len(headers))
+        table.setHorizontalHeaderLabels(headers)
+        row_index = 0
+        for row_index, item in enumerate(assembly.items):
+            table.insertRow(row_index)
+            table.setItem(row_index, 0, QTableWidgetItem(item.name))
+        table.insertRow(row_index + 1)
+        return table
+
+    def load_assembly_widget(self, multi_tool_box: MultiToolBox, assembly: Assembly) -> QWidget:
+        widget = QWidget()
+        layout = QVBoxLayout(widget)
+
+        # Create the "Items" group box
+        items_groupbox = QGroupBox("Items")
+        items_layout = QVBoxLayout()
+        items_groupbox.setLayout(items_layout)
+
+        # Create and configure the table widget
+        table_widget = self.load_assembly_items_table(assembly)
+
+        # Add the table widget to the "Items" group box
+        items_layout.addWidget(table_widget)
+
+        # Add the "Items" group box to the main layout
+        layout.addWidget(items_groupbox)
+
+        # Create the "Add Sub Assembly" button
+        pushButton_add_sub_assembly = QPushButton("Add Sub Assembly")
+        layout.addWidget(pushButton_add_sub_assembly)
+
+        # Create the group box for sub assemblies
+        sub_assemblies_groupbox = QGroupBox("Sub Assemblies")
+        sub_assemblies_layout = QVBoxLayout()
+        sub_assemblies_groupbox.setLayout(sub_assemblies_layout)
+
+        # Add the sub assemblies group box to the main layout
+        layout.addWidget(sub_assemblies_groupbox)
+
+        # Add the main widget to the MultiToolBox
+        multi_tool_box.addItem(widget, assembly.name)
+
+        for sub_assembly in assembly.sub_assemblies:
+            # Load the sub assembly recursively
+            sub_assembly_widget = self.load_assembly_widget(multi_tool_box, sub_assembly)
+
+            # Add the sub assembly widget to the sub assemblies group box
+            sub_assemblies_layout.addWidget(sub_assembly_widget)
+
+        return widget
+
+    def load_edit_assembly_tab(self) -> None:
+        self.clear_layout(self.workspace_layout)
+        scroll_area = QScrollArea()
+        scroll_area.setWidgetResizable(True)
+        scroll_content = QWidget(self)
+        scroll_layout = QVBoxLayout(scroll_content)
+        scroll_area.setWidget(scroll_content)
+
+        multi_tool_box = MultiToolBox(scroll_content)
+        workspace_data = admin_workspace.get_data()
+
+        for assembly in workspace_data:
+            assembly_widget = self.load_assembly_widget(multi_tool_box, assembly)
+            # widget = QWidget()
+            # layout = QVBoxLayout(widget)
+            # widget.setLayout(layout)
+            # table_widget = self.load_assembly_items_table(assembly)
+            # table_items_groupbox = QGroupBox("Items")
+            # table_items_layout = QVBoxLayout()
+            # table_items_layout.addWidget(table_widget)
+            # table_items_groupbox.setLayout(table_items_layout)
+            # layout.addWidget(table_items_groupbox)
+            # pushButton_add_sub_assembly = QPushButton()
+            # pushButton_add_sub_assembly.setFixedWidth(150)
+            # pushButton_add_sub_assembly.setText("Add Sub Assembly")
+            # layout.addWidget(pushButton_add_sub_assembly)
+            # sub_assembly_groupbox = QGroupBox("Sub Assemblies")
+            # sub_assembly_layout = QVBoxLayout()
+            # sub_assembly_groupbox.setLayout(sub_assembly_layout)
+            # sub_assembly_tool_box = MultiToolBox()
+            # sub_assembly_layout.addWidget(sub_assembly_tool_box)
+            # layout.addWidget(sub_assembly_groupbox)
+            # pushButton_add_sub_assembly.clicked.connect(
+            #     partial(self.add_sub_assembly, assembly, sub_assembly_layout, sub_assembly_groupbox, sub_assembly_tool_box)
+            # )
+            # if len(assembly.sub_assemblies) > 0:
+            #     self.load_assembly_widget(sub_assembly_layout, assembly)
+            # else:
+            #     sub_assembly_groupbox.setVisible(False)
+
+            multi_tool_box.addItem(assembly_widget, assembly.name)
+        scroll_layout.addWidget(multi_tool_box)
+
+        self.workspace_layout.addWidget(scroll_area)
+
+    # NOTE WORKSPACE
+    def load_workspace(self, tab: CustomTableWidget) -> None:
+
+        tab.blockSignals(True)
+        tab.setEnabled(False)
+        tab.clear()
+        tab.setShowGrid(False)
+        # tab.setAlternatingRowColors(True)
+        tab.setRowCount(0)
+        tab.setSortingEnabled(False)
+        tab.setSelectionBehavior(1)
+        tab.setSelectionMode(1)
+        tab.set_editable_column_index([1, 2, 3, 4])
+        tab.setVerticalScrollMode(QAbstractItemView.ScrollPerPixel)
+        headers: list[str] = [
+            "Part Name",
+            "Part Number",
+            "Quantity Per Unit",
+            "Quantity in Stock",
+            "Item Price",
+            "USD/CAD",
+            "Total Cost in Stock",
+            "Total Unit Cost",
+            "Priority",
+            "Notes",
+            "PO",
+            "DEL",
+        ]
+        tab.setColumnCount(len(headers))
+        tab.setHorizontalHeaderLabels(headers)
+        self.load_edit_assembly_tab()
 
     def load_quote_generator_ui(self) -> None:
         self.refresh_nest_directories()

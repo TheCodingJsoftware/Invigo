@@ -39,6 +39,7 @@
       <property name="font">
        <font>
         <pointsize>8</pointsize>
+        <weight>75</weight>
         <bold>true</bold>
        </font>
       </property>
@@ -127,8 +128,8 @@
                 <rect>
                  <x>0</x>
                  <y>0</y>
-                 <width>254</width>
-                 <height>68</height>
+                 <width>265</width>
+                 <height>69</height>
                 </rect>
                </property>
                <property name="maximumSize">
@@ -345,7 +346,7 @@
               </property>
               <property name="font">
                <font>
-                <pointsize>8</pointsize>
+                <weight>75</weight>
                 <bold>true</bold>
                </font>
               </property>
@@ -446,8 +447,8 @@ QPushButton#pushButton_create_new:disabled{
                 <rect>
                  <x>0</x>
                  <y>0</y>
-                 <width>118</width>
-                 <height>382</height>
+                 <width>123</width>
+                 <height>389</height>
                 </rect>
                </property>
                <property name="maximumSize">
@@ -557,7 +558,7 @@ QPushButton#pushButton_create_new:disabled{
               </property>
               <property name="font">
                <font>
-                <pointsize>8</pointsize>
+                <weight>75</weight>
                 <bold>true</bold>
                </font>
               </property>
@@ -658,8 +659,8 @@ QPushButton#pushButton_add_new_sheet:disabled{
                 <rect>
                  <x>0</x>
                  <y>0</y>
-                 <width>241</width>
-                 <height>356</height>
+                 <width>255</width>
+                 <height>376</height>
                 </rect>
                </property>
                <layout class="QVBoxLayout" name="verticalLayout_21">
@@ -840,7 +841,7 @@ QPushButton#pushButton_add_new_sheet:disabled{
                    </property>
                    <property name="font">
                     <font>
-                     <pointsize>8</pointsize>
+                     <weight>50</weight>
                      <italic>true</italic>
                      <bold>false</bold>
                     </font>
@@ -864,7 +865,6 @@ QPushButton#pushButton_add_new_sheet:disabled{
                 <property name="font">
                  <font>
                   <pointsize>8</pointsize>
-                  <bold>true</bold>
                  </font>
                 </property>
                 <property name="title">
@@ -980,8 +980,8 @@ QPushButton#pushButton_add_new_sheet:disabled{
                      <rect>
                       <x>0</x>
                       <y>0</y>
-                      <width>392</width>
-                      <height>319</height>
+                      <width>401</width>
+                      <height>340</height>
                      </rect>
                     </property>
                     <property name="styleSheet">
@@ -1111,7 +1111,7 @@ QPushButton#pushButton_add_new_sheet:disabled{
                 </property>
                 <property name="font">
                  <font>
-                  <pointsize>8</pointsize>
+                  <weight>75</weight>
                   <bold>true</bold>
                  </font>
                 </property>
@@ -1154,9 +1154,9 @@ QPushButton#pushButton_generate_quote:disabled{
       </widget>
       <widget class="QWidget" name="workspace_tab">
        <attribute name="title">
-        <string>Workspace [USERS_ROLE]</string>
+        <string>Workspace</string>
        </attribute>
-       <layout class="QVBoxLayout" name="verticalLayout_15" stretch="0,1">
+       <layout class="QVBoxLayout" name="verticalLayout_15" stretch="1">
         <property name="leftMargin">
          <number>9</number>
         </property>
@@ -1170,77 +1170,22 @@ QPushButton#pushButton_generate_quote:disabled{
          <number>0</number>
         </property>
         <item>
-         <layout class="QHBoxLayout" name="horizontalLayout_7">
+         <layout class="QHBoxLayout" name="horizontalLayout_5" stretch="6,1">
           <item>
-           <widget class="QLabel" name="label_13">
-            <property name="text">
-             <string>User:</string>
-            </property>
-           </widget>
+           <layout class="QVBoxLayout" name="workspace_layout"/>
           </item>
           <item>
-           <widget class="QComboBox" name="comboBox_current_workspace_user">
+           <layout class="QVBoxLayout" name="workspace_side_panel">
             <item>
-             <property name="text">
-              <string>View All</string>
-             </property>
+             <widget class="QLabel" name="label_13">
+              <property name="text">
+               <string>Filter</string>
+              </property>
+             </widget>
             </item>
-            <item>
-             <property name="text">
-              <string>Laser</string>
-             </property>
-            </item>
-            <item>
-             <property name="text">
-              <string>Recuts</string>
-             </property>
-            </item>
-            <item>
-             <property name="text">
-              <string>Part Picking</string>
-             </property>
-            </item>
-            <item>
-             <property name="text">
-              <string>Bending</string>
-             </property>
-            </item>
-            <item>
-             <property name="text">
-              <string>Welding</string>
-             </property>
-            </item>
-            <item>
-             <property name="text">
-              <string>Painting</string>
-             </property>
-            </item>
-           </widget>
-          </item>
-          <item>
-           <widget class="QPushButton" name="pushButton_filter">
-            <property name="text">
-             <string>Filter Items</string>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <spacer name="horizontalSpacer">
-            <property name="orientation">
-             <enum>Qt::Horizontal</enum>
-            </property>
-            <property name="sizeHint" stdset="0">
-             <size>
-              <width>40</width>
-              <height>20</height>
-             </size>
-            </property>
-           </spacer>
+           </layout>
           </item>
          </layout>
-        </item>
-        <item>
-         <layout class="QHBoxLayout" name="workspace_layout"/>
         </item>
        </layout>
       </widget>
@@ -1314,17 +1259,17 @@ QPushButton#pushButton_generate_quote:disabled{
                  <property name="columnCount">
                   <number>2</number>
                  </property>
-                 <attribute name="horizontalHeaderMinimumSectionSize">
-                  <number>42</number>
-                 </attribute>
                  <attribute name="horizontalHeaderDefaultSectionSize">
                   <number>500</number>
                  </attribute>
-                 <attribute name="verticalHeaderMinimumSectionSize">
-                  <number>28</number>
+                 <attribute name="horizontalHeaderMinimumSectionSize">
+                  <number>42</number>
                  </attribute>
                  <attribute name="verticalHeaderDefaultSectionSize">
                   <number>30</number>
+                 </attribute>
+                 <attribute name="verticalHeaderMinimumSectionSize">
+                  <number>28</number>
                  </attribute>
                  <column/>
                  <column/>
@@ -1350,11 +1295,11 @@ QPushButton#pushButton_generate_quote:disabled{
                  <property name="columnCount">
                   <number>2</number>
                  </property>
-                 <attribute name="horizontalHeaderMinimumSectionSize">
-                  <number>42</number>
-                 </attribute>
                  <attribute name="horizontalHeaderDefaultSectionSize">
                   <number>500</number>
+                 </attribute>
+                 <attribute name="horizontalHeaderMinimumSectionSize">
+                  <number>42</number>
                  </attribute>
                  <column/>
                  <column/>

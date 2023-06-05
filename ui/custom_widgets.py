@@ -160,8 +160,8 @@ class MultiToolBox(QWidget):
 
     def __init__(self, parent=None):
         super(MultiToolBox, self).__init__(parent)
-        self.widgets = []
-        self.buttons = []
+        self.widgets: list[QWidget] = []
+        self.buttons: list[QPushButton] = []
         main_layout = QVBoxLayout(self)
         main_layout.setAlignment(Qt.AlignTop)
         self.setLayout(main_layout)
@@ -253,6 +253,12 @@ class MultiToolBox(QWidget):
         be
         """
         widget.setVisible(not widget.isVisible())
+
+    def close_all(self) -> None:
+        for button, widget in zip(self.buttons, self.widgets):
+            button.click()
+            # button.setChecked(False)
+            widget.setVisible(False)
 
 
 class CustomTabWidget(QTabWidget):

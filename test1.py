@@ -1,38 +1,25 @@
 from utils.workspace.workspace import Workspace
-from utils.workspace.batch import Batch
+from utils.workspace.assembly import Assembly
 from utils.workspace.item import Item
 from rich import print
 
 # Create a workspace
 workspace = Workspace("Admin")
+# a = Assembly(name="Assembly 1")
+# a.set_item(Item(name='Item 1', data={"quanitty": 3}))
+# a.set_item(Item(name='Item 2', data={"quanitty": 3}))
+# workspace.set_assembly(a)
+a = workspace.get_assembly("Assembly 1")
 
+sa = a.get_sub_assembly("Copy 1 - (Copy)")
 
-batch1 = Batch("Batch1")
-batch2 = Batch("BL 2i9")
-workspace.set_batch(batch1)
-workspace.set_batch(batch2)
+ssa = sa.get_sub_assembly("Copy 1 - (Copy)")
 
-# Create items and add them to the batch
-item1 = Item("Bolt")
-item2 = Item("Item 2")
+new: Assembly = Assembly(name="TEST")
+new.set_assembly_data("quantity", 999)
+new.set_item(Item(name="NUTS AND BOLDS", data={"quantity": -1}))
 
-# Set values for items
-item1.set_data({"quantity": 2, "unit_quantity": 1})
-item2.set_data(20)
+ssa.set_sub_assembly(new)
 
-batch1.set_item(item1)
-batch2.set_item(item2)
-
-batch1.rename("TEST ")
-item2.rename("I AM NEW NAME")
-
-# Add the batch to the workspace
-
-b: Batch = workspace.copy_batch("TEST ")
-b.rename("asdhjfcsdFNlasnfiodsnj")
-t: Item = b.get_item("Bolt")
-t.rename("ashjiashdnjsiodjasiojd")
 
 workspace.save()
-# workspace.save_data()
-# print(workspace.get_batch("Batch1").get_item("Item 1").get_value('num'))

@@ -1,52 +1,59 @@
-import sys
-
-from PyQt5.QtGui import QTextCursor
-from PyQt5.QtWidgets import QApplication, QHBoxLayout, QMainWindow, QTextEdit, QWidget
-
-
-class SplitTerminal(QWidget):
-    def __init__(self, parent=None):
-        super().__init__(parent)
-
-        layout = QHBoxLayout(self)
-        self.left_text_edit = QTextEdit(self)
-        self.right_text_edit = QTextEdit(self)
-
-        layout.addWidget(self.left_text_edit)
-        layout.addWidget(self.right_text_edit)
-
-        self.left_text_edit.setReadOnly(True)
-        self.right_text_edit.setReadOnly(True)
-
-        sys.stdout = TerminalWriter(self.left_text_edit)
-        self.right_text_edit.append("Connected Clients:")
+import json
+from PyQt5.QtWidgets import QApplication, QTreeWidget, QTreeWidgetItem
+from PyQt5.QtCore import Qt
+from PyQt5.QtCore import pyqtSignal
+from PyQt5.QtWidgets import QApplication, QTreeWidget, QTreeWidgetItem
 
 
-class TerminalWriter:
-    def __init__(self, text_edit):
-        self.text_edit = text_edit
+class CustomTreeWidgetItem(QTreeWidgetItem):
+    itemChanged = pyqtSignal(QTreeWidgetItem, int)
 
-    def write(self, text):
-        cursor = self.text_edit.textCursor()
-        cursor.movePosition(QTextCursor.End)
-        cursor.insertText(text)
-        self.text_edit.setTextCursor(cursor)
-        self.text_edit.ensureCursorVisible()
-
-    def flush(self):
-        pass
+    def setData(self, column, role, value):
+        super().setData(column, role, value)
+        if role == Qt.EditRole:
+            self.itemChanged.emit(self, column)
 
 
-if __name__ == '__main__':
-    app = QApplication(sys.argv)
+def load_json_data(data, parent_item):
+    for key, value in data.items():
+        if isinstance(value, dict):
+            child_item = CustomTreeWidgetItem(parent_item)
+            child_item.setText(0, str(key))
+            load_json_data(value, child_item)
+        elif isinstance(value, list):
+            for item in value:
+                child_item = CustomTreeWidgetItem(parent_item)
+                child_item.setText(0, str(item))
+        else:
+            child_item = CustomTreeWidgetItem(parent_item)
+            child_item.setText(0, str(key))
+            child_item.setText(1, str(value))
+            child_item.setFlags(child_item.flags() | Qt.ItemIsEditable)
 
-    window = QMainWindow()
-    terminal = SplitTerminal(window)
-    window.setCentralWidget(terminal)
 
-    window.show()
+# Load JSON data from file
+with open("data/workspace.json") as file:
+    json_data = json.load(file)
 
-    print("This is a print statement")
-    print("Another print statement")
+# Create the application
+app = QApplication([])
 
-    sys.exit(app.exec_())
+# Create the tree widget
+tree_widget = QTreeWidget()
+tree_widget.setHeaderLabels(["Key", "Value"])
+tree_widget.setEditTriggers(QTreeWidget.DoubleClicked | QTreeWidget.EditKeyPressed)
+
+# Connect the signal to a custom slot
+def onItemChanged(item, column):
+    print("Item changed:", item.text(column))
+
+
+tree_widget.itemChanged.connect(onItemChanged)
+# Load the JSON data into the tree widget
+load_json_data(json_data, tree_widget)
+
+# Show the tree widget
+tree_widget.show()
+
+# Run the application
+app.exec_()
