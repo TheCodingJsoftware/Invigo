@@ -130,6 +130,7 @@ __maintainer__: str = "Jared Gross"
 __email__: str = "jared@pinelandfarms.ca"
 __status__: str = "Production"
 
+
 def default_settings() -> None:
     """
     It checks if a setting exists in the settings file, and if it doesn't, it creates
@@ -3086,19 +3087,12 @@ class MainWindow(QMainWindow):
         if self.tabWidget.tabText(self.tabWidget.currentIndex()) == "Workspace":
             admin_workspace.load_data()
             user_workspace.load_data()
-            for i, category in enumerate(["Edit Inventory"] + workspace_tags.get_value("all_tags")):
-                if category != "Edit Inventory":
-                    tab = CustomTableWidget(self)
-                    tab.itemChanged.connect(self.workspace_item_changed)
-                    self.tabs[category] = tab
-                    self.tab_widget.addTab(tab, category)
-                else:
-                    tab = QWidget(self)
-                    layout = QVBoxLayout(tab)
-                    tab.setLayout(layout)
-                    self.tabs[category] = tab
-                    self.tab_widget.addTab(tab, category)
-
+            for i, category in enumerate(["Staging"] + workspace_tags.get_value("all_tags")):
+                tab = QWidget(self)
+                layout = QVBoxLayout(tab)
+                tab.setLayout(layout)
+                self.tabs[category] = tab
+                self.tab_widget.addTab(tab, category)
         else:
             for i, category in enumerate(self.categories):
                 tab = CustomTableWidget(self)
@@ -4020,21 +4014,6 @@ class MainWindow(QMainWindow):
             else:
                 button_color.setCurrentText("Set Color")
                 button_color.setStyleSheet("border-radius: 0.001em; ")
-            # button_color.clicked.connect(
-            #     lambda: (
-            #         item.set_value(key="paint_color", value=get_color()),
-            #         admin_workspace.save(),
-            #         self.sync_changes(),
-            #         button_color.setStyleSheet(f'border-radius: 0.001em; background-color: {item.data["paint_color"]}')
-            #         if item.data["paint_color"]
-            #         else None,
-            #         button_color.setText(
-            #             item.data["paint_color"],
-            #         )
-            #         if item.data["paint_color"]
-            #         else None,
-            #     )
-            # )
             button_color.currentTextChanged.connect(partial(select_color, item, button_color))
             table.setCellWidget(row_index, col_index, button_color)
             col_index += 1
@@ -4080,6 +4059,8 @@ class MainWindow(QMainWindow):
                     "parts_per": 0,
                     "flow_tag": [],
                     "timers": {},
+                    "customer": "",
+                    "ship_to": "",
                 },
             )
             add_item(table.rowCount() - 1, item)
@@ -4132,35 +4113,94 @@ class MainWindow(QMainWindow):
         """
         widget = QWidget()
         layout = QVBoxLayout(widget)
-
+        h_layout = QHBoxLayout()
+        h_layout.setAlignment(Qt.AlignmentFlag.AlignLeft)
+        layout.addLayout(h_layout)
+        # widget.setLayout(h_layout)
+        timer_widget = QWidget()
+        timer_layout = QHBoxLayout(timer_widget)
+        timer_layout.setContentsMargins(0, 0, 0, 0)
+        timer_widget.setLayout(timer_layout)
         # Create the "Items" group box
-        items_groupbox = QGroupBox("Items")
-        items_groupbox.setMinimumHeight(500)
-        items_layout = QVBoxLayout()
-        items_groupbox.setLayout(items_layout)
+        if assembly.get_assembly_data("has_items"):
+            items_groupbox = QGroupBox("Items")
+            items_groupbox.setMinimumHeight(500)
+            items_layout = QVBoxLayout()
+            items_groupbox.setLayout(items_layout)
 
         # Create and configure the table widget
-        table_widget = self.load_assembly_items_table(assembly)
+        if assembly.get_assembly_data("has_items"):
+            table_widget = self.load_assembly_items_table(assembly)
 
-        # Add the table widget to the "Items" group box
-        time_box = TimeSpinBox(widget)
-        try:
+        def add_timers(timer_layout: QHBoxLayout) -> None:
+            self.clear_layout(timer_layout)
+            workspace_tags.load_data()
+            for flow_tag in assembly.get_assembly_data("flow_tag"):
+                try:
+                    workspace_tags.get_value("is_timer_enabled")[flow_tag]
+                except (KeyError, TypeError):
+                    continue
+                if workspace_tags.get_value("is_timer_enabled")[flow_tag]:
+                    widget = QWidget()
+                    layout = QVBoxLayout(widget)
+                    widget.setLayout(layout)
+                    layout.setContentsMargins(0, 0, 0, 0)
+                    layout.addWidget(QLabel(flow_tag))
+                    timer_box = TimeSpinBox(widget)
+                    with contextlib.suppress(KeyError):
+                        timer_box.setValue(assembly.assembly_data["timers"][flow_tag])
+                    timer_box.editingFinished.connect(
+                        lambda flow_tag=flow_tag, timer_box=timer_box: (
+                            assembly.set_timer(flow_tag=flow_tag, time=timer_box),
+                            admin_workspace.save(),
+                            self.sync_changes(),
+                        )
+                    )
+                    layout.addWidget(timer_box)
+                    timer_layout.addWidget(widget)
+
+        def flow_tag_change(timer_layout: QHBoxLayout, flow_tag_combobox: QComboBox):
+            assembly.set_assembly_data("flow_tag", workspace_tags.get_data()["flow_tags"][flow_tag_combobox.currentIndex()])
+            admin_workspace.save()
+            self.sync_changes()
+            add_timers(timer_layout)
+
+        def get_grid_widget() -> QWidget:
+            # Add the table widget to the "Items" group box
+            grid_widget = QWidget(widget)
+            grid = QGridLayout(grid_widget)
+            time_box = TimeSpinBox(widget)
             time_box.setValue(assembly.get_assembly_data(key="time_to_complete"))
-        except KeyError:
-            time_box.setValue(0.0)
-        time_box.editingFinished.connect(
-            lambda: (assembly.set_assembly_data(key="time_to_complete", value=time_box.value()), admin_workspace.save(), self.sync_changes())
-        )
-        grid_widget = QWidget(widget)
-        grid = QGridLayout(grid_widget)
-        grid.setAlignment(Qt.AlignmentFlag.AlignLeft)
-        grid.addWidget(QLabel("Time to Complete:"), 0, 0)
-        grid.addWidget(time_box, 0, 1)
-        items_layout.addWidget(grid_widget)
-        items_layout.addWidget(table_widget)
+            time_box.editingFinished.connect(
+                lambda: (assembly.set_assembly_data(key="time_to_complete", value=time_box.value()), admin_workspace.save(), self.sync_changes())
+            )
+            grid.setAlignment(Qt.AlignmentFlag.AlignLeft)
+            flow_tag_combobox = QComboBox(widget)
+            flow_tag_combobox.wheelEvent = lambda event: None
+            flow_tag_combobox.addItems(self.get_all_flow_tags())
+            flow_tag_combobox.setCurrentText(" -> ".join(assembly.get_assembly_data("flow_tag")))
+            flow_tag_combobox.currentTextChanged.connect(partial(flow_tag_change, timer_layout, flow_tag_combobox))
+            grid.addWidget(QLabel("Time to Complete:"), 0, 0)
+            grid.addWidget(time_box, 0, 1)
+            grid.addWidget(QLabel("Flow Tag:"), 1, 0)
+            grid.addWidget(flow_tag_combobox, 1, 1)
+            # grid.addWidget(QLabel("Timers:"), 0, 2)
+            # grid.addWidget(timer_widget, 1, 2)
+            return grid_widget
+
+        grid_widget = get_grid_widget()
+        add_timers(timer_layout)
+
+        if assembly.get_assembly_data("has_items"):
+            h_layout.addWidget(grid_widget)
+            items_layout.addWidget(table_widget)
+        else:
+            h_layout.addWidget(grid_widget)
+        h_layout.addWidget(timer_widget)
 
         # Add the "Items" group box to the main layout
-        layout.addWidget(items_groupbox)
+        if assembly.get_assembly_data("has_items"):
+            layout.addWidget(items_groupbox)
 
         # Create the "Add Sub Assembly" button
         pushButton_add_sub_assembly = QPushButton("Add Sub Assembly")
@@ -4184,7 +4224,9 @@ class MainWindow(QMainWindow):
                 response = input_dialog.get_response()
                 if response == DialogButtons.ok:
                     input_text = input_dialog.inputText
-                    new_assembly: Assembly = Assembly(name=input_text, assembly_data={"time_to_complete": 0.0})
+                    new_assembly: Assembly = Assembly(
+                        name=input_text, assembly_data={"time_to_complete": 0.0, "has_items": True, "flow_tag": [], "timers": {}}
+                    )
                     assembly.add_sub_assembly(new_assembly)
                     admin_workspace.save()
                     self.sync_changes()
@@ -4255,7 +4297,9 @@ class MainWindow(QMainWindow):
                 response = input_dialog.get_response()
                 if response == DialogButtons.ok:
                     input_text = input_dialog.inputText
-                    new_assembly: Assembly = Assembly(name=input_text, assembly_data={"time_to_complete": 0.0})
+                    new_assembly: Assembly = Assembly(
+                        name=input_text, assembly_data={"time_to_complete": 0.0, "has_items": False, "flow_tag": [], "timers": {}}
+                    )
                     admin_workspace.add_assembly(new_assembly)
                     admin_workspace.save()
                     self.sync_changes()
@@ -4301,7 +4345,9 @@ class MainWindow(QMainWindow):
         scroll_layout.addWidget(pushButton_add_assembly)
         self.tab_widget.currentWidget().layout().addWidget(scroll_area)
 
+    # TODO
     def copy_selected_items_to(self, table_items_from: CustomTableWidget, assembly_to_copy_to: Assembly) -> None:
+        # needs assembly from
         pass
 
     def load_edit_assembly_context_menus(self) -> None:
@@ -4343,10 +4389,10 @@ class MainWindow(QMainWindow):
                 table.customContextMenuRequested.connect(partial(self.open_group_menu, menu))
 
     # NOTE WORKSPACE
-    def load_workspace(self, tab: CustomTableWidget) -> None:
+    def load_workspace(self, tab: QWidget) -> None:
         admin_workspace.load_data()
         user_workspace.load_data()
-        if self.category == "Edit Inventory":
+        if self.category == "Staging":
             self.workspace_tables.clear()
             QApplication.setOverrideCursor(Qt.CursorShape.BusyCursor)
             self.tab_widget.widget(self.tab_widget.currentIndex())
@@ -4355,35 +4401,36 @@ class MainWindow(QMainWindow):
             self.load_edit_assembly_context_menus()
             QApplication.restoreOverrideCursor()
         else:
-            tab.blockSignals(True)
-            tab.setEnabled(False)
-            tab.clear()
-            tab.setShowGrid(True)
-            # tab.setAlternatingRowColors(True)
-            tab.setRowCount(0)
-            tab.setSortingEnabled(False)
+            self.tab_widget.currentWidget().layout().addWidget(QLabel("TO BE"))
+            # tab.blockSignals(True)
+            # tab.setEnabled(False)
+            # tab.clear()
+            # tab.setShowGrid(True)
+            # # tab.setAlternatingRowColors(True)
+            # tab.setRowCount(0)
+            # tab.setSortingEnabled(False)
 
-            tab.setSelectionBehavior(QAbstractItemView.SelectionBehavior.SelectRows)
-            tab.setSelectionMode(QAbstractItemView.SelectionMode.ExtendedSelection)
-            tab.setVerticalScrollMode(QAbstractItemView.ScrollMode.ScrollPerPixel)
-            tab.setHorizontalScrollMode(QAbstractItemView.ScrollMode.ScrollPerPixel)
-            tab.set_editable_column_index([1, 2, 3, 4])
-            headers: list[str] = [
-                "Part Name",
-                "Part Number",
-                "Quantity Per Unit",
-                "Quantity in Stock",
-                "Item Price",
-                "USD/CAD",
-                "Total Cost in Stock",
-                "Total Unit Cost",
-                "Priority",
-                "Notes",
-                "PO",
-                "DEL",
-            ]
-            tab.setColumnCount(len(headers))
-            tab.setHorizontalHeaderLabels(headers)
+            # tab.setSelectionBehavior(QAbstractItemView.SelectionBehavior.SelectRows)
+            # tab.setSelectionMode(QAbstractItemView.SelectionMode.ExtendedSelection)
+            # tab.setVerticalScrollMode(QAbstractItemView.ScrollMode.ScrollPerPixel)
+            # tab.setHorizontalScrollMode(QAbstractItemView.ScrollMode.ScrollPerPixel)
+            # tab.set_editable_column_index([1, 2, 3, 4])
+            # headers: list[str] = [
+            #     "Part Name",
+            #     "Part Number",
+            #     "Quantity Per Unit",
+            #     "Quantity in Stock",
+            #     "Item Price",
+            #     "USD/CAD",
+            #     "Total Cost in Stock",
+            #     "Total Unit Cost",
+            #     "Priority",
+            #     "Notes",
+            #     "PO",
+            #     "DEL",
+            # ]
+            # tab.setColumnCount(len(headers))
+            # tab.setHorizontalHeaderLabels(headers)
 
     def load_quote_generator_ui(self) -> None:
         self.refresh_nest_directories()

@@ -62,9 +62,35 @@ class Assembly:
         self.assembly_data[key] = value
 
     def get_assembly_data(self, key: str) -> Any:
+        """
+        This function returns the value associated with a given key in a dictionary called
+        "assembly_data".
+
+        Args:
+          key (str): The key parameter is a string that represents the key of the value that we want to
+        retrieve from the assembly_data dictionary.
+
+        Returns:
+          the value associated with the input key in the assembly_data dictionary. The type of the
+        returned value is not specified, but it will be of the same type as the value stored in the
+        dictionary for the given key.
+        """
         return self.assembly_data[key]
 
     def delete_sub_assembly(self, assembly) -> "Assembly":
+        """
+        This function removes a sub-assembly from an assembly and returns a copy of the removed
+        sub-assembly.
+
+        Args:
+          assembly: The parameter "assembly" is an object of the class "Assembly" that represents a
+        sub-assembly. The method "delete_sub_assembly" takes this object as input and removes it from
+        the list of sub-assemblies of the current object (which is also an instance of the class
+        "Assembly").
+
+        Returns:
+          The method is returning a copy of the sub-assembly that was removed from the main assembly.
+        """
         copy = self.copy_sub_assembly(assembly)
         self.sub_assemblies.remove(assembly)
         return copy
@@ -226,6 +252,9 @@ class Assembly:
 
     def get_data(self) -> dict:
         return self.data
+
+    def set_timer(self, flow_tag: str, time: object) -> None:
+        self.assembly_data["timers"][flow_tag] = time.value()
 
     def set_quantities_to_all_items(self, sub_assembly: "Assembly" = None, quantity_multiplier: float = 0) -> None:
         for item in self.items:
