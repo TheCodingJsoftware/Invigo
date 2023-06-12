@@ -1,11 +1,11 @@
-from openpyxl import load_workbook
-from itertools import islice
-import shutil
 import os
 import re
-import tabula
+import shutil
+from itertools import islice
 
 import PyPDF2
+import tabula
+from openpyxl import load_workbook
 
 
 def _make_name_safe(name: str):

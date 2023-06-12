@@ -7,9 +7,14 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>893</width>
-    <height>592</height>
+    <width>945</width>
+    <height>658</height>
    </rect>
+  </property>
+  <property name="font">
+   <font>
+    <pointsize>10</pointsize>
+   </font>
   </property>
   <property name="acceptDrops">
    <bool>true</bool>
@@ -38,9 +43,12 @@
       </property>
       <property name="font">
        <font>
-        <pointsize>8</pointsize>
+        <family>Montserrat</family>
+        <pointsize>12</pointsize>
         <weight>75</weight>
         <bold>true</bold>
+        <stylestrategy>PreferAntialias</stylestrategy>
+        <kerning>true</kerning>
        </font>
       </property>
       <property name="tabPosition">
@@ -89,11 +97,17 @@
           <property name="rightMargin">
            <number>0</number>
           </property>
+          <property name="bottomMargin">
+           <number>6</number>
+          </property>
           <item>
            <layout class="QVBoxLayout" name="verticalLayout"/>
           </item>
           <item>
            <layout class="QVBoxLayout" name="verticalLayout_3">
+            <property name="bottomMargin">
+             <number>0</number>
+            </property>
             <item>
              <widget class="QLabel" name="label_exchange_price">
               <property name="text">
@@ -128,7 +142,7 @@
                 <rect>
                  <x>0</x>
                  <y>0</y>
-                 <width>265</width>
+                 <width>369</width>
                  <height>69</height>
                 </rect>
                </property>
@@ -236,7 +250,10 @@
                  <property name="bottomMargin">
                   <number>0</number>
                  </property>
-                 <property name="spacing">
+                 <property name="horizontalSpacing">
+                  <number>9</number>
+                 </property>
+                 <property name="verticalSpacing">
                   <number>0</number>
                  </property>
                  <item row="0" column="0">
@@ -364,7 +381,7 @@
 	color: #ffffff;
 	background-color: #3daee9;
 	border: 2px solid #3daee9;
-	border-radius: 5px;
+	border-radius: 8px;
 	padding: 8px 16px;
 	font-weight: bold;
 }
@@ -377,10 +394,10 @@ QPushButton#pushButton_create_new:pressed{
 	border-color: #2b92c5;
 }
 QPushButton#pushButton_create_new:disabled{
-	background-color: rgb(44, 44, 44);
-	border: 1px solid rgb(57, 57, 57);
+	background-color: rgba(44, 44, 44, 130);
+	border: 1px solid rgba(57, 57, 57, 130);
 	color: rgb(144, 144, 144);
-	border-radius: 0px;
+	border-radius: 4px;
 }</string>
               </property>
               <property name="text">
@@ -425,11 +442,17 @@ QPushButton#pushButton_create_new:disabled{
           <property name="rightMargin">
            <number>0</number>
           </property>
+          <property name="bottomMargin">
+           <number>6</number>
+          </property>
           <item>
            <layout class="QVBoxLayout" name="verticalLayout_10"/>
           </item>
           <item>
            <layout class="QVBoxLayout" name="verticalLayout_23">
+            <property name="bottomMargin">
+             <number>0</number>
+            </property>
             <item>
              <widget class="QLabel" name="label_9">
               <property name="text">
@@ -447,8 +470,8 @@ QPushButton#pushButton_create_new:disabled{
                 <rect>
                  <x>0</x>
                  <y>0</y>
-                 <width>123</width>
-                 <height>389</height>
+                 <width>164</width>
+                 <height>432</height>
                 </rect>
                </property>
                <property name="maximumSize">
@@ -576,7 +599,7 @@ QPushButton#pushButton_create_new:disabled{
 	color: #ffffff;
 	background-color: #3daee9;
 	border: 2px solid #3daee9;
-	border-radius: 5px;
+	border-radius: 8px;
 	padding: 8px 16px;
 	font-weight: bold;
 }
@@ -589,10 +612,10 @@ QPushButton#pushButton_add_new_sheet:pressed{
 	border-color: #2b92c5;
 }
 QPushButton#pushButton_add_new_sheet:disabled{
-	background-color: rgb(44, 44, 44);
-	border: 1px solid rgb(57, 57, 57);
+	background-color: rgba(44, 44, 44, 130);
+	border: 1px solid rgba(57, 57, 57, 130);
 	color: rgb(144, 144, 144);
-	border-radius: 0px;
+	border-radius: 4px;
 }</string>
               </property>
               <property name="text">
@@ -637,11 +660,17 @@ QPushButton#pushButton_add_new_sheet:disabled{
           <property name="rightMargin">
            <number>0</number>
           </property>
+          <property name="bottomMargin">
+           <number>6</number>
+          </property>
           <item>
            <layout class="QVBoxLayout" name="verticalLayout_11"/>
           </item>
           <item>
            <layout class="QVBoxLayout" name="verticalLayout_20">
+            <property name="bottomMargin">
+             <number>0</number>
+            </property>
             <item>
              <widget class="QLabel" name="label_4">
               <property name="text">
@@ -659,8 +688,8 @@ QPushButton#pushButton_add_new_sheet:disabled{
                 <rect>
                  <x>0</x>
                  <y>0</y>
-                 <width>255</width>
-                 <height>376</height>
+                 <width>373</width>
+                 <height>402</height>
                 </rect>
                </property>
                <layout class="QVBoxLayout" name="verticalLayout_21">
@@ -767,6 +796,9 @@ QPushButton#pushButton_add_new_sheet:disabled{
          <layout class="QHBoxLayout" name="horizontalLayout_15" stretch="4,10,4">
           <property name="rightMargin">
            <number>0</number>
+          </property>
+          <property name="bottomMargin">
+           <number>6</number>
           </property>
           <item>
            <layout class="QVBoxLayout" name="verticalLayout_26" stretch="0,0">
@@ -980,8 +1012,8 @@ QPushButton#pushButton_add_new_sheet:disabled{
                      <rect>
                       <x>0</x>
                       <y>0</y>
-                      <width>401</width>
-                      <height>340</height>
+                      <width>521</width>
+                      <height>383</height>
                      </rect>
                     </property>
                     <property name="styleSheet">
@@ -1037,6 +1069,9 @@ QPushButton#pushButton_add_new_sheet:disabled{
           </item>
           <item>
            <layout class="QVBoxLayout" name="verticalLayout_nest_directories" stretch="0,1,0">
+            <property name="bottomMargin">
+             <number>0</number>
+            </property>
             <item>
              <layout class="QHBoxLayout" name="horizontalLayout_20">
               <property name="topMargin">
@@ -1076,7 +1111,20 @@ QPushButton#pushButton_add_new_sheet:disabled{
                <item>
                 <layout class="QVBoxLayout" name="verticalLayout_28">
                  <item>
-                  <layout class="QVBoxLayout" name="verticalLayout_24"/>
+                  <layout class="QVBoxLayout" name="verticalLayout_24">
+                   <property name="leftMargin">
+                    <number>9</number>
+                   </property>
+                   <property name="topMargin">
+                    <number>9</number>
+                   </property>
+                   <property name="rightMargin">
+                    <number>9</number>
+                   </property>
+                   <property name="bottomMargin">
+                    <number>9</number>
+                   </property>
+                  </layout>
                  </item>
                 </layout>
                </item>
@@ -1120,7 +1168,7 @@ QPushButton#pushButton_add_new_sheet:disabled{
 	color: #ffffff;
 	background-color: #3daee9;
 	border: 2px solid #3daee9;
-	border-radius: 5px;
+	border-radius: 8px;
 	padding: 8px 16px;
 	font-weight: bold;
 }
@@ -1133,10 +1181,10 @@ QPushButton#pushButton_generate_quote:pressed{
 	border-color: #2b92c5;
 }
 QPushButton#pushButton_generate_quote:disabled{
-	background-color: rgb(44, 44, 44);
-	border: 1px solid rgb(57, 57, 57);
+	background-color: rgba(44, 44, 44, 130);
+	border: 1px solid rgba(57, 57, 57, 130);
 	color: rgb(144, 144, 144);
-	border-radius: 0px;
+	border-radius: 4px;
 }</string>
                 </property>
                 <property name="text">
@@ -1171,6 +1219,9 @@ QPushButton#pushButton_generate_quote:disabled{
         </property>
         <item>
          <layout class="QHBoxLayout" name="horizontalLayout_5" stretch="6,1">
+          <property name="bottomMargin">
+           <number>6</number>
+          </property>
           <item>
            <layout class="QVBoxLayout" name="workspace_layout"/>
           </item>
@@ -1386,7 +1437,7 @@ QPushButton#pushButton_generate_quote:disabled{
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>893</width>
+     <width>945</width>
      <height>21</height>
     </rect>
    </property>
@@ -1485,11 +1536,19 @@ QPushButton#pushButton_generate_quote:disabled{
     </property>
     <addaction name="actionOpenMenu"/>
    </widget>
+   <widget class="QMenu" name="menuWorkspace">
+    <property name="title">
+     <string>Workspace</string>
+    </property>
+    <addaction name="actionEditTags"/>
+    <addaction name="actionEditStatuses"/>
+   </widget>
    <addaction name="menuFile"/>
    <addaction name="menuSettings"/>
    <addaction name="menuSort"/>
    <addaction name="menuPurchase_Orders"/>
    <addaction name="menuQuote_Generator"/>
+   <addaction name="menuWorkspace"/>
    <addaction name="menuJobSorter"/>
    <addaction name="menuHelp"/>
   </widget>
@@ -1845,10 +1904,17 @@ QPushButton#pushButton_generate_quote:disabled{
     <string>Set User Workspace</string>
    </property>
    <property name="font">
-    <font>
-     <family>MS Shell Dlg 2</family>
-     <stylestrategy>PreferDefault</stylestrategy>
-    </font>
+    <font/>
+   </property>
+  </action>
+  <action name="actionEditTags">
+   <property name="text">
+    <string>Edit Tags</string>
+   </property>
+  </action>
+  <action name="actionEditStatuses">
+   <property name="text">
+    <string>Edit Statuses</string>
    </property>
   </action>
  </widget>

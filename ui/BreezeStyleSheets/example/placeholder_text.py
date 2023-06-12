@@ -33,8 +33,9 @@
     and palette edits correctly affect styles in Qt5, but not Qt6.
 '''
 
-import shared
 import sys
+
+import shared
 
 parser = shared.create_parser()
 parser.add_argument(

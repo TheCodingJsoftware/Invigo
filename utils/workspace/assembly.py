@@ -1,6 +1,7 @@
-from utils.workspace.item import Item
-from typing import Union
 import copy
+from typing import Any, Union
+
+from utils.workspace.item import Item
 
 
 class Assembly:
@@ -47,7 +48,7 @@ class Assembly:
         """
         self.items.append(item)
 
-    def set_assembly_data(self, key: str, value: object) -> None:
+    def set_assembly_data(self, key: str, value: Any) -> None:
         """
         This function sets a value for a given key in a dictionary called "assembly_data".
 
@@ -59,6 +60,14 @@ class Assembly:
         list, dict, etc.) that the user wants to store in the assembly_data dictionary.
         """
         self.assembly_data[key] = value
+
+    def get_assembly_data(self, key: str) -> Any:
+        return self.assembly_data[key]
+
+    def delete_sub_assembly(self, assembly) -> "Assembly":
+        copy = self.copy_sub_assembly(assembly)
+        self.sub_assemblies.remove(assembly)
+        return copy
 
     def set_sub_assembly(self, assembly: "Assembly") -> list["Assembly"]:
         """
@@ -84,7 +93,7 @@ class Assembly:
         """
         self.sub_assemblies.append(assembly)
 
-    def get_sub_assemblies(self) -> list:
+    def get_sub_assemblies(self) -> list["Assembly"]:
         """
         This function returns a list of sub-assemblies.
 
@@ -106,10 +115,10 @@ class Assembly:
           an instance of the "Assembly" class that matches the given "assembly_name" parameter. If no
         matching assembly is found, the function returns "None".
         """
-        for sub_assembly in self.sub_assemblies:
-            if sub_assembly.name == assembly_name:
-                return sub_assembly
-        return None
+        return next(
+            (sub_assembly for sub_assembly in self.sub_assemblies if sub_assembly.name == assembly_name),
+            None,
+        )
 
     def copy_sub_assembly(self, assembly_name: Union[str, "Assembly"]) -> "Assembly":
         """
@@ -161,17 +170,16 @@ class Assembly:
             processed_assemblies = set()
         processed_assemblies.add(self)
 
-        data = {}
-        data["items"] = {}
-        data["assembly_data"] = self.assembly_data
-        data["sub_assemblies"] = {}
-
+        data = {"items": {}, "assembly_data": self.assembly_data, "sub_assemblies": {}}
         for sub_assembly in self.sub_assemblies:
             if sub_assembly not in processed_assemblies:  # Check if the sub-assembly is already processed
                 data["sub_assemblies"][sub_assembly.name] = sub_assembly.to_dict(processed_assemblies)
         for item in self.items:
-            data["items"][item.name] = item.to_dict()
+            data["items"][item.name] = item.data
         return data
+
+    def exists(self, other: Item) -> bool:
+        return any(other.name == item.name for item in self.items)
 
     def get_item(self, item_name: str) -> Item | None:
         """
@@ -185,10 +193,22 @@ class Assembly:
           an instance of the `Item` class or `None` if the item with the given name is not found in the
         list of items.
         """
-        for item in self.data["items"]:
-            if item.name == item_name:
-                return item
-        return None
+        return next((item for item in self.items if item.name == item_name), None)
+
+    def get_item_by_index(self, index: int) -> Item:
+        """
+        This function returns an item from a list based on its index.
+
+        Args:
+          index (int): The index parameter is an integer that represents the position of the item in the
+        list that we want to retrieve. The first item in the list has an index of 0, the second item has
+        an index of 1, and so on.
+
+        Returns:
+          an item from the list of items stored in the object, based on the index provided as an
+        argument. The returned value is an instance of the Item class.
+        """
+        return self.items[index]
 
     def copy_item(self, item_name: str) -> Item | None:
         """
@@ -206,3 +226,40 @@ class Assembly:
 
     def get_data(self) -> dict:
         return self.data
+
+    def set_quantities_to_all_items(self, sub_assembly: "Assembly" = None, quantity_multiplier: float = 0) -> None:
+        for item in self.items:
+            unit_quantity = item.get_value(key="parts_per")
+            item.set_value(key="current_quantity", value=unit_quantity * quantity_multiplier)
+        if sub_assembly != None:
+            for sub_assembly in self.sub_assemblies:
+                for item in sub_assembly.items:
+                    unit_quantity = item.get_value(key="parts_per")
+                    item.set_value(key="current_quantity", value=unit_quantity * quantity_multiplier)
+                self.set_quantities_to_all_items(sub_assembly=sub_assembly, quantity_multiplier=quantity_multiplier)
+
+    def _set_default_value_to_all_items(self, sub_assembly: "Assembly", key: str, value: str) -> None:
+        for item in self.items:
+            item.set_value(key=key, value=value)
+        if sub_assembly != None:
+            for sub_assembly in self.sub_assemblies:
+                for item in sub_assembly.items:
+                    item.set_value(key=key, value=value)
+                self._set_default_value_to_all_items(sub_assembly=sub_assembly, key=key, value=value)
+
+    def set_default_value_to_all_items(self, key: str, value: str) -> None:
+        for item in self.items:
+            item.set_value(key=key, value=value)
+        for sub_assembly in self.sub_assemblies:
+            for item in sub_assembly.items:
+                item.set_value(key=key, value=value)
+            self._set_default_value_to_all_items(sub_assembly=sub_assembly, key=key, value=value)
+
+    def setup_timers_for_all_items(self) -> None:
+        # for item in self.items:
+        #     item.set_value(key=key, value=value)
+        # for sub_assembly in self.sub_assemblies:
+        #     for item in sub_assembly.items:
+        #         item.set_value(key=key, value=value)
+        #     self._set_default_value_to_all_items(sub_assembly=sub_assembly, key=key, value=value)
+        pass

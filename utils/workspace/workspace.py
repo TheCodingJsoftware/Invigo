@@ -1,12 +1,13 @@
 import contextlib
+import copy
 import math
 import os
-import copy
+from typing import Union
+
+import ujson as json
 
 from utils.workspace.assembly import Assembly
 from utils.workspace.item import Item
-from typing import Union
-import ujson as json
 
 
 class Workspace:
@@ -112,8 +113,7 @@ class Workspace:
         """
         data = {}
         for assembly in self.data:
-            processed_sub_assemblies = set()
-            processed_sub_assemblies.add(assembly)
+            processed_sub_assemblies = {assembly}
             data[assembly.name] = assembly.to_dict(processed_assemblies=processed_sub_assemblies)
         return data
 
@@ -148,10 +148,10 @@ class Workspace:
         """
         if type(assembly_name) == Assembly:
             assembly_name = assembly_name.name
-        for assembly in self.data:
-            if assembly.name == assembly_name:
-                return copy.deepcopy(assembly)
-        return None
+        return next(
+            (copy.deepcopy(assembly) for assembly in self.data if assembly.name == assembly_name),
+            None,
+        )
 
     def set_assembly(self, assembly: Assembly) -> None:
         """
@@ -187,10 +187,15 @@ class Workspace:
           an instance of the `Assembly` class if an assembly with the specified name is found in the
         `self.data` list. If no assembly is found, the function returns `None`.
         """
-        for assembly in self.data:
-            if assembly.name == assembly_name:
-                return assembly
-        return None
+        return next(
+            (assembly for assembly in self.data if assembly.name == assembly_name),
+            None,
+        )
+
+    def remove_assembly(self, assembly: Assembly) -> Assembly:
+        copy = self.copy(assembly)
+        self.data.pop(assembly)
+        return copy
 
     def get_all_assembly_names(self) -> list[str]:
         return [assembly.name for assembly in self.data]

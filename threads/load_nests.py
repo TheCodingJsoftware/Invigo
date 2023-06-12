@@ -5,12 +5,13 @@ import os
 import re
 import shutil
 import sys
-from pathlib import Path
 import traceback
+from pathlib import Path
 
 import fitz  # PyMuPDF
+from natsort import natsorted
 from PIL import Image
-from PyQt5.QtCore import QThread, pyqtSignal
+from PyQt6.QtCore import QThread, pyqtSignal
 
 from utils.json_file import JsonFile
 
@@ -200,7 +201,7 @@ class LoadNests(QThread):
 
                 # lists
                 _quantities: list[str] = self.get_values_from_text(nest_data, self.quantity_regex)
-                quantities: list[int] = [int(quantity) * quantity_multiplier for quantity in _quantities]
+                quantities: list[int] = [int(quantity) for quantity in _quantities]
                 machining_times: list[str] = self.get_values_from_text(nest_data, self.machinging_time_regex)
                 weights: list[str] = self.get_values_from_text(nest_data, self.weight_regex)
                 surface_areas: list[str] = self.get_values_from_text(nest_data, self.surface_area_regex)
@@ -249,7 +250,9 @@ class LoadNests(QThread):
                     new_image_path = f"images/{item}.jpeg"
                     self.data[nest_name][item]["image_index"] = item
                     shutil.move(image_path, new_image_path)
-            self.signal.emit(self.data)
+            sorted_keys = natsorted(self.data.keys())
+            sorted_dict = {key: self.data[key] for key in sorted_keys}
+            self.signal.emit(sorted_dict)
         except Exception as e:
             print(e)
             try:

@@ -5,7 +5,6 @@ from ezdxf.addons.drawing import matplotlib
 ezdxf.addons.drawing.properties.MODEL_SPACE_BG_COLOR = "#FFFFFF"
 import math
 
-
 """
 "quantity": DONE
 "machine_time": CUTTING_LENGTH/100 (100 is 100 inches per minute cut time (roughly))

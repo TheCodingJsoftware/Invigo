@@ -1,31 +1,50 @@
+import contextlib
 import os
 import sys
+import typing
+from datetime import datetime, timedelta
 
-from PyQt5.QtCore import (
+from PyQt6.QtCore import (
     QAbstractItemModel,
     QAbstractTableModel,
+    QDateTime,
     QEvent,
     QMargins,
     QMimeData,
     QModelIndex,
+    QRegularExpression,
     QSortFilterProxyModel,
     Qt,
+    QTime,
+    QUrl,
     pyqtSignal,
 )
-from PyQt5.QtGui import QCursor, QDrag, QIcon, QPalette, QPixmap
-from PyQt5.QtWidgets import (
+from PyQt6.QtGui import (
+    QCursor,
+    QDrag,
+    QDragEnterEvent,
+    QDragLeaveEvent,
+    QDropEvent,
+    QFileSystemModel,
+    QIcon,
+    QPalette,
+    QPixmap,
+    QRegularExpressionValidator,
+)
+from PyQt6.QtWidgets import (
+    QAbstractItemView,
     QAbstractSpinBox,
     QApplication,
     QCheckBox,
     QComboBox,
     QDialog,
     QDoubleSpinBox,
-    QFileSystemModel,
     QGridLayout,
     QGroupBox,
     QHBoxLayout,
     QLabel,
     QLineEdit,
+    QMainWindow,
     QPlainTextEdit,
     QPushButton,
     QScrollArea,
@@ -38,15 +57,322 @@ from PyQt5.QtWidgets import (
     QTabBar,
     QTableView,
     QTableWidget,
+    QTableWidgetItem,
     QTabWidget,
     QToolBox,
     QTreeView,
     QTreeWidget,
     QTreeWidgetItem,
     QVBoxLayout,
-    QTableWidgetItem,
     QWidget,
 )
+from natsort import natsorted
+from utils.workspace.assembly import Assembly
+from utils.workspace.item import Item
+
+
+class TimeSpinBox(QDoubleSpinBox):
+    # ! IF VALUE IS SET TO 1, THAT IS 1 DAY
+    def __init__(self, parent=None):
+        super(TimeSpinBox, self).__init__(parent)
+        self.setRange(0, 99999999)
+        self.setSingleStep(0.001)
+        self.setDecimals(9)
+        self.setFixedWidth(200)
+        self.setWrapping(True)
+        self.setAccelerated(True)
+        self.setFocusPolicy(Qt.FocusPolicy.StrongFocus)
+
+        regex = QRegularExpression(r"\d+.\d{2}")
+        validator = QRegularExpressionValidator(regex, self)
+        self.lineEdit().setValidator(validator)
+
+        self.installEventFilter(self)
+
+    def focusInEvent(self, event):
+        """
+        When the user clicks on the spinbox, the focus policy is changed to allow the mouse wheel to be
+        used to change the value
+
+        Args:
+          event: QFocusEvent
+        """
+        self.setFocusPolicy(Qt.FocusPolicy.WheelFocus)
+        super(TimeSpinBox, self).focusInEvent(event)
+
+    def focusOutEvent(self, event):
+        """
+        When the user clicks on the spinbox, the focus policy is changed to StrongFocus, and then the
+        focusOutEvent is called
+
+        Args:
+          event: QFocusEvent
+        """
+        self.setFocusPolicy(Qt.FocusPolicy.StrongFocus)
+        super(TimeSpinBox, self).focusOutEvent(event)
+
+    def wheelEvent(self, event):
+        """
+        If the spinbox has focus, then it will behave as normal. If it doesn't have focus, then the
+        wheel event will be ignored
+
+        Args:
+          event: The event object
+
+        Returns:
+          The super class of the HumbleSpinBox class.
+        """
+        if self.hasFocus():
+            return super(TimeSpinBox, self).wheelEvent(event)
+        else:
+            event.ignore()
+
+    def eventFilter(self, obj, event):
+        """
+        This function filters events and changes the value based on the wheel event.
+
+        Args:
+          obj: The object that is being filtered for events.
+          event: The event parameter is an instance of the QEvent class, which represents an event that
+        occurred in the application. It contains information about the type of event, its source, and
+        any additional data associated with it. In this case, the code is checking if the event type is
+        a wheel event, which
+
+        Returns:
+          a boolean value indicating whether the event has been handled or not. If the event type is a
+        wheel event, the function returns True after calling the `changeValue()` method. If the event
+        type is not a wheel event, the function calls the `eventFilter()` method of the parent class and
+        returns the value returned by that method.
+        """
+        if event.type() == QEvent.Type.Wheel and self.hasFocus():
+            delta = event.angleDelta().y() / 120
+            self.changeValue(delta)
+            return True
+
+        return super().eventFilter(obj, event)
+
+    def changeValue(self, delta):
+        """
+        This function changes the value of a variable based on a given delta, with different increments
+        depending on the current value.
+
+        Args:
+          delta: The amount by which the value of the object should be changed. It can be a positive or
+        negative number.
+        """
+        current_value = self.value()
+
+        if delta > 0:
+            # Increase the value
+            if current_value >= 1:  # day
+                self.setValue(current_value + 1)
+            elif current_value >= 0.5:
+                self.setValue(current_value + 0.0416666666666667)
+            else:
+                self.setValue(current_value + 0.000694444444444444)
+        elif delta < 0:
+            # Decrease the value
+            if current_value >= 1:
+                self.setValue(current_value - 1)
+            elif current_value >= 0.5:
+                self.setValue(current_value - 0.0416666666666667)
+            else:
+                self.setValue(current_value - 0.000694444444444444)
+
+    def textFromValue(self, value):
+        """
+        This function converts a decimal value representing days, hours, and minutes into a formatted
+        string.
+
+        Args:
+          value: A float value representing a duration in hours.
+
+        Returns:
+          a formatted string that represents the input value as a number of days, hours, and minutes.
+        The input value is first converted to an integer number of days, and then the remaining hours
+        and minutes are calculated and added to the string. The string includes pluralization of the
+        units based on whether the value is singular or plural.
+        """
+        days = int(value)
+        hours = int((value - days) * 24)
+        minutes = int(((value - days) * 24 - hours) * 60)
+        return f"{days} day{'s' if days != 1 else ''} {hours:02d} hour{'s' if hours != 1 else ''} {minutes:02d} minute{'s' if minutes != 1 else ''}"
+
+    def valueFromText(self, text):
+        """
+        The function takes a string of time in days, hours, and minutes and returns the total value in
+        days.
+
+        Args:
+          text: a string containing a time value in the format "X days Y hours Z minutes", where X, Y,
+        and Z are integers.
+
+        Returns:
+          a float value that represents the total number of days, including fractions of a day,
+        represented by the input text. The input text is expected to be in the format "X days Y hours Z
+        minutes", where X, Y, and Z are integers. The function calculates the total number of days by
+        adding the number of days, the fraction of a day represented by the number of
+        """
+        time_parts = text.split(" ")
+        days = int(time_parts[0])
+        hours = int(time_parts[2])
+        minutes = int(time_parts[4])
+        return days + hours / 24 + minutes / (24 * 60)
+
+    def fixup(self, text):
+        """
+        The function takes in a string of time in days, hours, and minutes format and adds a leading
+        zero to the days, hours, or minutes if they are equal to 1.
+
+        Args:
+          text: The input text that needs to be fixed up. It is expected to be a string containing time
+        information in the format "X days Y hours Z minutes". The function will check if the number of
+        parts in the string is 6, and if so, it will extract the number of days, hours
+
+        Returns:
+          a string that is either the original input `text` or a modified version of it with leading
+        zeros added to the days, hours, or minutes if they are equal to 1.
+        """
+        time_parts = text.split(" ")
+        if len(time_parts) == 6:
+            days = int(time_parts[0])
+            hours = int(time_parts[2])
+            minutes = int(time_parts[4])
+            if days == 1:
+                time_parts[0] = f"0{time_parts[0]}"
+            if hours == 1:
+                time_parts[2] = f"0{time_parts[2]}"
+            if minutes == 1:
+                time_parts[4] = f"0{time_parts[4]}"
+            return " ".join(time_parts)
+
+        return text
+
+    def get_time_delta(self) -> datetime:
+        """
+        This function calculates the time difference between the current date and time and a future date
+        and time based on a given value in days, hours, and minutes.
+
+        Returns:
+          A datetime.timedelta object is being returned.
+        """
+        value = self.value()
+
+        days = int(value)
+        hours = int((value - days) * 24)
+        minutes = int(((value - days) * 24 - hours) * 60)
+
+        current_date_time = QDateTime.currentDateTime()
+        end_date_time = current_date_time.addDays(days).addSecs(hours * 3600 + minutes * 60)
+
+        time_delta = end_date_time.toSecsSinceEpoch() - current_date_time.toSecsSinceEpoch()
+        return timedelta(seconds=time_delta)
+
+
+class DraggableButton(QPushButton):
+    buttonClicked = pyqtSignal()
+    longDragThreshold = 30
+
+    def __init__(self, parent=None):
+        super(QPushButton, self).__init__(parent)
+        self.setAcceptDrops(True)
+        self.dragging = False
+        self.file = None
+        self.drag_start_position = None
+        self.setCursor(Qt.CursorShape.PointingHandCursor)
+
+    def setFile(self, file: str) -> None:
+        self.file = file
+
+    def mouseMoveEvent(self, event):
+        if self.dragging:
+            return
+        try:
+            distance = (event.pos() - self.drag_start_position).manhattanLength()
+        except TypeError:
+            return
+        if distance >= self.longDragThreshold:
+            self.dragging = True
+            mime_data = QMimeData()
+            url = QUrl.fromLocalFile(self.file)  # Replace with the actual file path
+            mime_data.setUrls([url])
+
+            drag = QDrag(self)
+            drag.setMimeData(mime_data)
+
+            # Start the drag operation
+            drag.exec(Qt.DropAction.CopyAction)
+            super().mousePressEvent(event)
+
+    def mousePressEvent(self, event):
+        self.dragging = False
+        if event.button() == Qt.MouseButton.LeftButton:
+            self.drag_start_position = event.pos()
+        super().mousePressEvent(event)
+
+    def mouseReleaseEvent(self, event):
+        if not self.dragging:
+            self.buttonClicked.emit()
+        self.dragging = False
+        super().mouseReleaseEvent(event)
+
+
+class DropWidget(QWidget):
+    def __init__(self, parent, assembly: Assembly, item: Item, files_layout: QHBoxLayout, file_category: str):
+        super().__init__()
+        self.parent = parent
+        self.setAcceptDrops(True)
+        self.assembly = assembly
+        self.item = item
+        self.files_layout = files_layout
+        self.file_category = file_category
+        self.setMaximumWidth(1000)
+        layout = QVBoxLayout(self)
+        layout.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        layout.setContentsMargins(0, 0, 0, 0)
+        self.setLayout(layout)
+
+        self.label = QLabel("Drag Here", self)
+        self.label.setMaximumWidth(1000)
+        self.label.setMinimumHeight(40)
+        self.label.setStyleSheet("background-color: rgba(30,30,30,100);")
+        layout.addWidget(self.label)
+
+    def dragEnterEvent(self, event: QDragEnterEvent):
+        if event.mimeData().hasUrls():
+            self.label.setText("Drop Me")
+            self.label.setStyleSheet("background-color: rgba(70,210,110, 100);")
+            event.accept()
+        else:
+            self.label.setText("Drag Here")
+            self.label.setStyleSheet("background-color: rgba(30,30,30,100);")
+
+            event.ignore()
+
+    def dragLeaveEvent(self, event: QDragEnterEvent):
+        self.label.setText("Drag Here")
+        self.label.setStyleSheet("background-color: rgba(30,30,30,100);")
+        event.accept()
+
+    def dropEvent(self, event: QDropEvent):
+        if event.mimeData().hasUrls():
+            urls = event.mimeData().urls()
+            file_paths = [url.toLocalFile() for url in urls]
+            allowed_extensions = [".pdf", ".dxf", ".jpeg", ".geo", ".png", ".jpg", "sldprt"]  # Allowed file extensions
+            valid_files = all(file_path.lower().endswith(tuple(allowed_extensions)) for file_path in file_paths)
+            if valid_files:
+                self.label.setText("Processing")
+                self.label.setStyleSheet("background-color: rgba(70,210,110, 100);")
+                self.parent.handle_dropped_file(self.label, file_paths, self.assembly, self.item, self.files_layout, self.file_category)
+
+                event.accept()
+            else:
+                self.label.setText("Not allowed")
+                self.label.setStyleSheet("background-color: rgba(210,70,60, 100);")
+                event.ignore()
+
+        else:
+            event.ignore()
 
 
 class DictionaryTableModel(QAbstractTableModel):
@@ -81,7 +407,7 @@ class DictionaryTableModel(QAbstractTableModel):
         """
         return 2
 
-    def data(self, index, role=Qt.DisplayRole):
+    def data(self, index, role=Qt.ItemDataRole.DisplayRole):
         """
         This function returns the data for a given index and role in a dictionary model.
 
@@ -98,7 +424,7 @@ class DictionaryTableModel(QAbstractTableModel):
         the `index` parameter refers to the first column, it returns the key of the dictionary at the
         corresponding row. If the `index` parameter refers to the second column, it
         """
-        if role == Qt.DisplayRole:
+        if role == Qt.ItemDataRole.DisplayRole:
             key = self.keys[index.row()]
             value = self.dictionary[key]
 
@@ -109,7 +435,7 @@ class DictionaryTableModel(QAbstractTableModel):
 
         return None
 
-    def headerData(self, section, orientation, role=Qt.DisplayRole):
+    def headerData(self, section, orientation, role=Qt.ItemDataRole.DisplayRole):
         """
         This function returns the header data for a table view in a specific format based on the section,
         orientation, and role.
@@ -130,10 +456,10 @@ class DictionaryTableModel(QAbstractTableModel):
         section 1. If the orientation is vertical, it returns the section number as a string. If the role is
         not `Qt.DisplayRole`, it returns `None`.
         """
-        if role == Qt.DisplayRole:
-            if orientation == Qt.Horizontal:
+        if role == Qt.ItemDataRole.DisplayRole:
+            if orientation == Qt.Orientation.Horizontal:
                 return ["Key", "Value"][section]
-            elif orientation == Qt.Vertical:
+            elif orientation == Qt.Orientation.Vertical:
                 return str(section + 1)
 
         return None
@@ -155,6 +481,185 @@ class PartInformationViewer(QDialog):
         self.setMinimumSize(450, 700)
 
 
+class AssemblyMultiToolBox(QWidget):
+    """The class MultiToolBox is a QWidget."""
+
+    def __init__(self, parent=None):
+        super(AssemblyMultiToolBox, self).__init__(parent)
+        self.widgets: list[QWidget] = []
+        self.buttons: list[QPushButton] = []
+        self.delete_buttons: list[DeletePushButton] = []
+        self.duplicate_buttons: list[QPushButton] = []
+        main_layout = QVBoxLayout(self)
+        main_layout.setAlignment(Qt.AlignmentFlag.AlignTop)
+        self.setStyleSheet("QWidget#assembly_widget{border: 1px solid gray;}")
+        self.setLayout(main_layout)
+
+    def addItem(self, widget: QWidget, title: str):
+        """
+        This function adds a widget with a title and a toggle button to a layout.
+
+        Args:
+          widget (QWidget): QWidget - This is the widget that will be added to the sheet. It can be any
+        type of QWidget, such as a QLabel, QComboBox, or even another layout.
+          title (str): A string representing the title of the widget that will be added to the layout.
+        """
+        button = QPushButton()
+        button.setObjectName("sheet_nest_button")
+        button.setText(title)
+        button.setChecked(True)
+        button.setCheckable(True)
+        button.clicked.connect(lambda checked, w=widget: self.toggle_widget_visibility(w))
+
+        delete_button = DeletePushButton(
+            parent=None, tool_tip=f"Delete {title} forever", icon=QIcon("ui/BreezeStyleSheets/dist/pyqt6/dark/trash.png")
+        )
+        delete_button.setFixedWidth(23)
+        duplicate_button = QPushButton()
+        duplicate_button.setIcon(QIcon(r"F:\Code\Python-Projects\Inventory Manager\ui\BreezeStyleSheets\dist\pyqt6\dark\duplicate.png"))
+        duplicate_button.setFixedWidth(23)
+        duplicate_button.setToolTip(f"Clone {title}")
+
+        # widget.setMinimumHeight(100)
+
+        hlaout = QHBoxLayout()
+        hlaout.addWidget(button)
+        hlaout.addWidget(duplicate_button)
+        hlaout.addWidget(delete_button)
+        hlaout.setContentsMargins(0, 0, 0, 0)
+        layout = QVBoxLayout()
+        layout.setContentsMargins(0, 0, 0, 0)
+        layout.addLayout(hlaout)
+        layout.addWidget(widget)
+        widget.setObjectName("multi_tool_box_widget")
+
+        self.buttons.append(button)
+        self.delete_buttons.append(delete_button)
+        self.widgets.append(widget)
+        self.duplicate_buttons.append(duplicate_button)
+
+        self.layout().addLayout(layout)
+
+    def removeItem(self, widget_to_delete: QWidget) -> None:
+        main_layout = self.layout()  # Get the reference to the main layout
+        for i in reversed(range(main_layout.count())):
+            layout_item = main_layout.itemAt(i)
+            if layout_item.itemAt(1).widget() == widget_to_delete:  # Check if the layout's widget matches the given widget
+                self.delete_buttons[i].disconnect()
+                self.buttons[i].disconnect()
+                self.buttons.pop(i)
+                self.delete_buttons.pop(i)
+                self.duplicate_buttons.pop(i)
+                self.widgets.pop(i)
+                layout = layout_item.layout()
+                self.clear_layout(layout)
+                while layout.count():
+                    item = layout.takeAt(0)
+                    if item_widget := item.widget():
+                        item_widget.deleteLater()
+                main_layout.removeItem(layout_item)
+                del layout
+                break
+
+    def getDeleteButton(self, index: int) -> "DeletePushButton":
+        return self.delete_buttons[index]
+
+    def getLastDeleteButton(self) -> "DeletePushButton":
+        return self.delete_buttons[-1]
+
+    def getDuplicateButton(self, index: int) -> QPushButton:
+        return self.duplicate_buttons[index]
+
+    def getLastDuplicateButton(self) -> QPushButton:
+        return self.duplicate_buttons[-1]
+
+    def setItemText(self, index: int, new_name: str):
+        """
+        This function sets the text of a button at a given index to a new name.
+
+        Args:
+          index (int): an integer representing the index of the button whose text needs to be changed.
+          new_name (str): A string representing the new text that will be set for the button at the
+        specified index.
+        """
+        if 0 <= index < len(self.buttons):
+            self.buttons[index].setText(new_name)
+
+    def setItemIcon(self, index: int, icon_path: str):
+        """
+        This function sets the icon of a button at a given index with the icon located at a specified
+        file path.
+
+        Args:
+          index (int): An integer representing the index of the button in the list of buttons.
+          icon_path (str): The path to the icon file that will be used as the button's icon.
+        """
+        if 0 <= index < len(self.buttons):
+            button = self.buttons[index]
+            icon = QIcon(icon_path)
+            button.setIcon(icon)
+
+    def getWidget(self, index):
+        """
+        This function returns the widget at the specified index if it exists, otherwise it returns None.
+
+        Args:
+          index: The index parameter is an integer value that represents the position of the widget in
+        the list of widgets. It is used to retrieve a specific widget from the list of widgets.
+
+        Returns:
+          The method `getWidget` returns either the widget at the specified index in the `self.widgets`
+        list, or `None` if the index is out of range.
+        """
+        return self.widgets[index] if 0 <= index < len(self.widgets) else None
+
+    def count(self) -> int:
+        """
+        The function returns the number of widgets in a class.
+
+        Returns:
+          The function `count()` is returning an integer value which represents the length of the
+        `widgets` list.
+        """
+        return len(self.widgets)
+
+    def toggle_widget_visibility(self, widget):
+        """
+        This function toggles the visibility of a widget in a Python GUI.
+
+        Args:
+          widget: The widget parameter is a reference to a graphical user interface (GUI) widget object.
+        The function toggles the visibility of this widget, i.e., if the widget is currently visible, it
+        will be hidden, and if it is currently hidden, it will be made visible. The widget object could
+        be
+        """
+        widget.setVisible(not widget.isVisible())
+
+    def close_all(self) -> None:
+        for button, widget in zip(self.buttons, self.widgets):
+            button.click()
+            # button.setChecked(False)
+            widget.setVisible(False)
+
+    def clear_layout(self, layout) -> None:
+        """
+        If the layout is not None, while the layout has items, take the first item, get the widget, if
+        the widget is not None, delete it, otherwise clear the layout
+
+        Args:
+          layout: The layout to be cleared
+        """
+        with contextlib.suppress(AttributeError):
+            if layout is not None:
+                while layout.count():
+                    item = layout.takeAt(0)
+                    widget = item.widget()
+                    if widget is not None:
+                        widget.deleteLater()
+                    else:
+                        self.clear_layout(item.layout())
+
+
 class MultiToolBox(QWidget):
     """The class MultiToolBox is a QWidget."""
 
@@ -163,7 +668,7 @@ class MultiToolBox(QWidget):
         self.widgets: list[QWidget] = []
         self.buttons: list[QPushButton] = []
         main_layout = QVBoxLayout(self)
-        main_layout.setAlignment(Qt.AlignTop)
+        main_layout.setAlignment(Qt.AlignmentFlag.AlignTop)
         self.setLayout(main_layout)
 
     def addItem(self, widget: QWidget, title: str):
@@ -186,6 +691,8 @@ class MultiToolBox(QWidget):
         layout.setContentsMargins(0, 3, 0, 0)
         layout.addWidget(button)
         layout.addWidget(widget)
+        widget.setObjectName("nest_widget")
+        widget.setStyleSheet("QWidget#nest_widget{border: 1px solid #3daee9; background-color: rgb(33, 33, 33);}")
 
         self.buttons.append(button)
         self.widgets.append(widget)
@@ -367,11 +874,10 @@ class PdfTreeView(QTreeView):
         self.filterModel = PdfFilterProxyModel()
         self.filterModel.setSourceModel(self.model)
         self.setModel(self.filterModel)
-        self.filterModel.setFilterRegExp("")
         self.filterModel.setFilterKeyColumn(0)
         self.setRootIndex(self.filterModel.mapFromSource(self.model.index(path)))
         self.header().resizeSection(0, 170)
-        self.setSelectionMode(4)
+        self.setSelectionMode(QAbstractItemView.SelectionMode.ExtendedSelection)
         self.header().hideSection(1)  # Size
         self.header().hideSection(2)  # File type
         self.selected_indexes = []
@@ -399,6 +905,8 @@ class PdfTreeView(QTreeView):
         for index in self.selected_indexes:
             source_index = self.filterModel.mapToSource(index)
             self.full_paths.append(self.model.filePath(source_index))
+        self.full_paths = natsorted(self.full_paths)
+        self.selected_items = natsorted(self.selected_items)
 
 
 class RecutButton(QPushButton):
@@ -611,7 +1119,7 @@ class NotesPlainTextEdit(QPlainTextEdit):
         self.setMinimumWidth(100)
         self.setObjectName("notes")
         self.setStyleSheet(
-            "QPlainTextEdit:!focus#notes{background-color: transparent; border: none; color: white;} QPlainTextEdit:focus#notes{color: white;}"
+            "QPlainTextEdit:!focus#notes{background-color: rgba(32,32,32,130); border: none; border-radius: 0.001em; color: white;} QPlainTextEdit:focus#notes{background-color: rgba(32,32,32,130); border: none; border-radius: 0.001em; color: white;}"
         )
         self.setMaximumWidth(200)
         self.setFixedHeight(60)
@@ -633,7 +1141,6 @@ class POPushButton(QPushButton):
         QPushButton.__init__(self, parent)
         # self.setFixedSize(36, 26)
         self.setText("PO")
-        self.setStyleSheet("background-color: transparent; border: none;")
         self.setToolTip("Open a new purchase order")
 
 
@@ -659,7 +1166,7 @@ class ClickableLabel(QLabel):
 
     def __init__(self, parent=None):
         super(ClickableLabel, self).__init__(parent)
-        self.setCursor(QCursor(Qt.PointingHandCursor))
+        self.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
 
     def mousePressEvent(self, event):
         self.clicked.emit()  # Emit the clicked signal
@@ -680,14 +1187,14 @@ class RichTextPushButton(QPushButton):
         self.__layout.setContentsMargins(0, 0, 0, 0)
         self.__layout.setSpacing(0)
         self.setLayout(self.__layout)
-        self.__lbl.setAttribute(Qt.WA_TranslucentBackground)  # type: ignore
-        self.__lbl.setAlignment(Qt.AlignCenter | Qt.AlignVCenter)  # type: ignore
-        self.__lbl.setAttribute(Qt.WA_TransparentForMouseEvents)  # type: ignore
+        self.__lbl.setAttribute(Qt.WidgetAttribute.WA_TranslucentBackground)  # type: ignore
+        self.__lbl.setAlignment(Qt.AlignmentFlag.AlignCenter | Qt.AlignmentFlag.AlignVCenter)  # type: ignore
+        self.__lbl.setAttribute(Qt.WidgetAttribute.WA_TransparentForMouseEvents)  # type: ignore
         self.__lbl.setSizePolicy(
-            QSizePolicy.Expanding,
-            QSizePolicy.Expanding,
+            QSizePolicy.Policy.Expanding,
+            QSizePolicy.Policy.Expanding,
         )
-        self.__lbl.setTextFormat(Qt.RichText)  # type: ignore
+        self.__lbl.setTextFormat(Qt.TextFormat.RichText)  # type: ignore
         self.__layout.addWidget(self.__lbl)
         return
 
@@ -732,7 +1239,7 @@ class HumbleDoubleSpinBox(QDoubleSpinBox):
         The function sets the focus policy of the spinbox to strong focus
         """
         super(HumbleDoubleSpinBox, self).__init__(*args)
-        self.setFocusPolicy(Qt.StrongFocus)
+        self.setFocusPolicy(Qt.FocusPolicy.StrongFocus)
         # self.setFixedWidth(100)
         self.setMaximum(99999999)
         self.setMinimum(-99999999)
@@ -746,7 +1253,7 @@ class HumbleDoubleSpinBox(QDoubleSpinBox):
         Args:
           event: QFocusEvent
         """
-        self.setFocusPolicy(Qt.WheelFocus)
+        self.setFocusPolicy(Qt.FocusPolicy.WheelFocus)
         super(HumbleDoubleSpinBox, self).focusInEvent(event)
 
     def focusOutEvent(self, event):
@@ -757,7 +1264,7 @@ class HumbleDoubleSpinBox(QDoubleSpinBox):
         Args:
           event: QFocusEvent
         """
-        self.setFocusPolicy(Qt.StrongFocus)
+        self.setFocusPolicy(Qt.FocusPolicy.StrongFocus)
         super(HumbleDoubleSpinBox, self).focusOutEvent(event)
 
     def wheelEvent(self, event):
@@ -785,7 +1292,7 @@ class HumbleSpinBox(QSpinBox):
         The function sets the focus policy of the spinbox to strong focus
         """
         super(HumbleSpinBox, self).__init__(*args)
-        self.setFocusPolicy(Qt.StrongFocus)
+        self.setFocusPolicy(Qt.FocusPolicy.StrongFocus)
         # self.setFixedWidth(60)
         self.setMaximum(99999999)
         self.setMinimum(-99999999)
@@ -799,7 +1306,7 @@ class HumbleSpinBox(QSpinBox):
         Args:
           event: QFocusEvent
         """
-        self.setFocusPolicy(Qt.WheelFocus)
+        self.setFocusPolicy(Qt.FocusPolicy.WheelFocus)
         super(HumbleSpinBox, self).focusInEvent(event)
 
     def focusOutEvent(self, event):
@@ -810,7 +1317,7 @@ class HumbleSpinBox(QSpinBox):
         Args:
           event: QFocusEvent
         """
-        self.setFocusPolicy(Qt.StrongFocus)
+        self.setFocusPolicy(Qt.FocusPolicy.StrongFocus)
         super(HumbleSpinBox, self).focusOutEvent(event)
 
     def wheelEvent(self, event):
@@ -838,7 +1345,7 @@ class CurrentQuantitySpinBox(QSpinBox):
         The function sets the focus policy of the spinbox to strong focus
         """
         super(CurrentQuantitySpinBox, self).__init__(*args)
-        self.setFocusPolicy(Qt.StrongFocus)
+        self.setFocusPolicy(Qt.FocusPolicy.StrongFocus)
         # self.setFixedWidth(100)
         self.setMaximum(99999999)
         self.setMinimum(-99999999)
@@ -854,7 +1361,7 @@ class CurrentQuantitySpinBox(QSpinBox):
         Args:
           event: QFocusEvent
         """
-        self.setFocusPolicy(Qt.WheelFocus)
+        self.setFocusPolicy(Qt.FocusPolicy.WheelFocus)
         super(CurrentQuantitySpinBox, self).focusInEvent(event)
 
     def focusOutEvent(self, event):
@@ -865,7 +1372,7 @@ class CurrentQuantitySpinBox(QSpinBox):
         Args:
           event: QFocusEvent
         """
-        self.setFocusPolicy(Qt.StrongFocus)
+        self.setFocusPolicy(Qt.FocusPolicy.StrongFocus)
         super(CurrentQuantitySpinBox, self).focusOutEvent(event)
 
     def wheelEvent(self, event):
@@ -887,7 +1394,7 @@ class HumbleComboBox(QComboBox):
         """
         super(HumbleComboBox, self).__init__(*args, **kwargs)
         self.scrollWidget = scrollWidget
-        self.setFocusPolicy(Qt.StrongFocus)
+        self.setFocusPolicy(Qt.FocusPolicy.StrongFocus)
 
     def wheelEvent(self, *args, **kwargs):
         """
@@ -986,7 +1493,7 @@ class ViewTree(QTreeWidget):
         self.setColumnWidth(4, 50)
         self.setColumnWidth(5, 40)
         self.setSortingEnabled(True)
-        self.sortByColumn(0, Qt.AscendingOrder)
+        self.sortByColumn(0, Qt.SortOrder.AscendingOrder)
         self.setAlternatingRowColors(True)
         delegate = StyledItemDelegate(self)
         self.setItemDelegate(delegate)
@@ -1071,7 +1578,7 @@ class HeaderScrollArea(QScrollArea):
         self.headings_widget = QWidget(self)
         self.headings_widget.setStyleSheet("border-bottom: 1px solid #3daee9;")
         self.headings_layout = QGridLayout()
-        self.headings_layout.setAlignment(Qt.AlignLeft)
+        self.headings_layout.setAlignment(Qt.AlignmentFlag.AlignLeft)
         self.headings_widget.setLayout(self.headings_layout)
         self.headings_layout.setContentsMargins(0, 0, 0, 0)
         self.headings_layout.columnStretch(0)
@@ -1186,24 +1693,22 @@ def set_default_dialog_button_stylesheet(button: QPushButton) -> None:
         QPushButton#default_dialog_button{
             background-color: #3daee9;
             border: 0.04em solid  #3daee9;
-            border-radius: 5px;
+            border-radius: 8px;
         }
         QPushButton#default_dialog_button:hover{
             background-color: #49b3eb;
             border: 0.04em solid  #49b3eb;
-            border-radius: 5px;
         }
         QPushButton#default_dialog_button:pressed{
             background-color: #5cbaed;
             color: #bae2f8;
             border: 0.04em solid  #5cbaed;
-            border-radius: 5px;
         }
         QPushButton#default_dialog_button:disabled{
-            background-color: #222222;
+            background-color: rgba(32,32,32,130);
             color: gray;
             border: 0.04em solid  gray;
-            border-radius: 1px;
+            border-radius: 4px;
         }
         """
     )
@@ -1219,8 +1724,8 @@ def set_status_button_stylesheet(button: QPushButton, color: str) -> None:
     background_color = "rgb(71, 71, 71)"
     border_color = "rgb(71, 71, 71)"
     if color == "lime":
-        background_color = "darkgreen"
-        border_color = "green"
+        background_color = "#315432"
+        border_color = "darkgreen"
     elif color == "yellow":
         background_color = "#413C28"
         border_color = "gold"

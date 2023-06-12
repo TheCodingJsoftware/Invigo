@@ -1,5 +1,4 @@
-from typing import Union
-import copy
+from typing import Any, Union
 
 
 class Item:
@@ -14,8 +13,8 @@ class Item:
         to be passed in. The expected keyword arguments are "name" and "data". The method uses the get()
         method to retrieve the values of these
         """
-        self.name = kwargs.get("name")
-        self.data = kwargs.get("data")
+        self.name: str = kwargs.get("name")
+        self.data: dict = kwargs.get("data")
 
     def set_data(self, data: object) -> None:
         """
@@ -29,6 +28,35 @@ class Item:
         """
         self.data = data
 
+    def set_value(self, key: str, value: Any) -> None:
+        """
+        This function sets a value in a dictionary with a given key.
+
+        Args:
+          key (str): The key parameter is a string that represents the key of the data that we want to
+        set the value for. In other words, it is the identifier that we use to access the value in the
+        dictionary.
+          value (Any): The value that needs to be assigned to the key in the dictionary. It can be of
+        any data type.
+        """
+        self.data[key] = value
+
+    def get_value(self, key: str) -> Any:
+        """
+        This function takes a key as input and returns the corresponding value from a dictionary-like
+        object.
+
+        Args:
+          key (str): The parameter "key" is a string that represents the key of the value that we want
+        to retrieve from the data dictionary.
+
+        Returns:
+          The function `get_value` is returning the value associated with the given `key` in the `data`
+        dictionary of the object. The type of the returned value is `Any`, which means it can be any
+        Python object.
+        """
+        return self.data[key]
+
     def rename(self, new_name: str) -> None:
         """
         This function takes a new name as input and sets it as the name attribute of an object.
@@ -40,6 +68,12 @@ class Item:
         """
         self.name = new_name
 
+    def set_timer(self, flow_tag: str, time: object) -> None:
+        self.data["timers"][flow_tag]["time_to_complete"] = time.value()
+
+    def get_timer(self, flow_tag: str) -> float:
+        self.data["timers"][flow_tag]['time_to_complete"']
+
     def to_dict(self) -> dict[str, object]:
         """
         The function returns a deep copy of the data attribute as a dictionary.
@@ -48,4 +82,4 @@ class Item:
           A dictionary containing a deep copy of the `data` attribute of the object. The keys of the
         dictionary are strings and the values are objects.
         """
-        return copy.deepcopy(self.data)
+        return self.data

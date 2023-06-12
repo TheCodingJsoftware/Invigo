@@ -1,10 +1,11 @@
 import os.path
 from functools import partial
 
-from PyQt5 import QtSvg, uic
-from PyQt5.QtCore import QFile, Qt, QTextStream
-from PyQt5.QtGui import QIcon
-from PyQt5.QtWidgets import QDialog, QPushButton
+from PyQt6 import uic
+from PyQt6.QtCore import QFile, Qt, QTextStream
+from PyQt6.QtGui import QIcon
+from PyQt6.QtSvgWidgets import QSvgWidget
+from PyQt6.QtWidgets import QDialog, QPushButton
 
 from ui.custom_widgets import set_default_dialog_button_stylesheet
 from ui.theme import set_theme
@@ -50,7 +51,7 @@ class InputDialog(QDialog):
         self.inputText: str | int = ""
         self.theme: str = "dark" if settings_file.get_value(item_name="dark_mode") else "light"
 
-        self.setWindowFlags(Qt.Window | Qt.FramelessWindowHint)
+        self.setWindowFlags(Qt.WindowType.Window | Qt.WindowType.FramelessWindowHint)
         self.setWindowIcon(QIcon("icons/icon.png"))
 
         self.lblTitle.setText(self.title)
@@ -65,7 +66,7 @@ class InputDialog(QDialog):
         svg_icon.setFixedSize(62, 50)
         self.iconHolder.addWidget(svg_icon)
 
-        self.resize(300, 150)
+        # self.resize(300, 150)
 
         self.load_theme()
 
@@ -77,7 +78,7 @@ class InputDialog(QDialog):
         """
         set_theme(self, theme="dark")
 
-    def get_icon(self, path_to_icon: str) -> QtSvg.QSvgWidget:
+    def get_icon(self, path_to_icon: str) -> QSvgWidget:
         """
         It returns a QSvgWidget object that is initialized with a path to an SVG icon
 
@@ -87,7 +88,7 @@ class InputDialog(QDialog):
         Returns:
           A QSvgWidget object.
         """
-        return QtSvg.QSvgWidget(f"ui/BreezeStyleSheets/dist/pyqt6/{self.theme}/{path_to_icon}")
+        return QSvgWidget(f"ui/BreezeStyleSheets/dist/pyqt6/{self.theme}/{path_to_icon}")
 
     def button_press(self, button) -> None:
         """

@@ -1,10 +1,11 @@
 import os.path
 from functools import partial
 
-from PyQt5 import QtSvg, uic
-from PyQt5.QtCore import QFile, Qt, QTextStream
-from PyQt5.QtGui import QIcon
-from PyQt5.QtWidgets import QDialog, QPushButton, QRadioButton, QFileDialog
+from PyQt6 import uic
+from PyQt6.QtCore import QFile, Qt, QTextStream
+from PyQt6.QtGui import QIcon
+from PyQt6.QtSvgWidgets import QSvgWidget
+from PyQt6.QtWidgets import QDialog, QFileDialog, QPushButton, QRadioButton
 
 from threads.job_sorter_thread import JobSorterThread
 from ui.custom_widgets import set_default_dialog_button_stylesheet
@@ -104,9 +105,9 @@ class JobSorterDialog(QDialog):
         file_dialog = QFileDialog()
         file_dialog.setNameFilter("Excel Files (*.xlsx *.xls)")
         file_dialog.setWindowTitle("Select Excel File")
-        file_dialog.setFileMode(QFileDialog.ExistingFile)
+        file_dialog.setFileMode(QFileDialog.FileMode.ExistingFile)
 
-        if file_dialog.exec_() == QFileDialog.Accepted:
+        if file_dialog.exec() == QFileDialog.DialogCode.Accepted:
             selected_file = file_dialog.selectedFiles()[0]
             self.excel_file_path = selected_file
             self.lineEdit_path_to_data_file.setText(selected_file)
@@ -114,9 +115,9 @@ class JobSorterDialog(QDialog):
     def set_sorting_directory(self) -> None:
         file_dialog = QFileDialog()
         file_dialog.setWindowTitle("Select Folder")
-        file_dialog.setFileMode(QFileDialog.Directory)
+        file_dialog.setFileMode(QFileDialog.FileMode.Directory)
 
-        if file_dialog.exec_() == QFileDialog.Accepted:
+        if file_dialog.exec() == QFileDialog.DialogCode.Accepted:
             selected_folder = file_dialog.selectedFiles()[0]
             self.directory_to_sort = selected_folder
             self.lineEdit_directory_to_sort.setText(selected_folder)
@@ -124,9 +125,9 @@ class JobSorterDialog(QDialog):
     def set_output_directory(self) -> None:
         file_dialog = QFileDialog()
         file_dialog.setWindowTitle("Select Folder")
-        file_dialog.setFileMode(QFileDialog.Directory)
+        file_dialog.setFileMode(QFileDialog.FileMode.Directory)
 
-        if file_dialog.exec_() == QFileDialog.Accepted:
+        if file_dialog.exec() == QFileDialog.DialogCode.Accepted:
             selected_folder = file_dialog.selectedFiles()[0]
             self.output_directory = selected_folder
             self.lineEdit_output_directory.setText(selected_folder)
@@ -137,7 +138,7 @@ class JobSorterDialog(QDialog):
         """
         set_theme(self, theme="dark")
 
-    def get_icon(self, path_to_icon: str) -> QtSvg.QSvgWidget:
+    def get_icon(self, path_to_icon: str) -> QSvgWidget:
         """
         It returns a QSvgWidget object that is initialized with a path to an SVG icon
 
@@ -147,4 +148,4 @@ class JobSorterDialog(QDialog):
         Returns:
           A QSvgWidget object.
         """
-        return QtSvg.QSvgWidget(f"ui/BreezeStyleSheets/dist/pyqt6/{self.theme}/{path_to_icon}")
+        return QSvgWidget(f"ui/BreezeStyleSheets/dist/pyqt6/{self.theme}/{path_to_icon}")

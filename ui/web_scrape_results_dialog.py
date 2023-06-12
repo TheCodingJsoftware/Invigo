@@ -2,10 +2,11 @@ import os.path
 import webbrowser
 from functools import partial
 
-from PyQt5 import QtSvg, uic
-from PyQt5.QtCore import QFile, Qt, QTextStream
-from PyQt5.QtGui import QIcon
-from PyQt5.QtWidgets import (
+from PyQt6 import uic
+from PyQt6.QtCore import QFile, Qt, QTextStream
+from PyQt6.QtGui import QIcon
+from PyQt6.QtSvgWidgets import QSvgWidget
+from PyQt6.QtWidgets import (
     QDialog,
     QGridLayout,
     QGroupBox,
@@ -45,9 +46,7 @@ class WebScrapeResultsDialog(QDialog):
         self.title = f"{title} (Alpha)"
         self.message = message
         self.inputText: str = ""
-        self.theme: str = (
-            "dark" if settings_file.get_value(item_name="dark_mode") else "light"
-        )
+        self.theme: str = "dark" if settings_file.get_value(item_name="dark_mode") else "light"
 
         self.setWindowFlags(Qt.Window | Qt.FramelessWindowHint)
         self.setWindowIcon(QIcon("icons/icon.png"))
@@ -92,9 +91,9 @@ class WebScrapeResultsDialog(QDialog):
         """
         It loads the stylesheet.qss file from the theme folder
         """
-        set_theme(self, theme='dark')
+        set_theme(self, theme="dark")
 
-    def get_icon(self, path_to_icon: str) -> QtSvg.QSvgWidget:
+    def get_icon(self, path_to_icon: str) -> QSvgWidget:
         """
         It returns a QSvgWidget object that is initialized with a path to an SVG icon
 
@@ -104,9 +103,7 @@ class WebScrapeResultsDialog(QDialog):
         Returns:
           A QSvgWidget object.
         """
-        return QtSvg.QSvgWidget(
-            f"ui/BreezeStyleSheets/dist/pyqt6/{self.theme}/{path_to_icon}"
-        )
+        return QSvgWidget(f"ui/BreezeStyleSheets/dist/pyqt6/{self.theme}/{path_to_icon}")
 
     def open_url(self, url: str) -> None:
         """
@@ -135,15 +132,9 @@ class WebScrapeResultsDialog(QDialog):
         """
         button_names = self.button_names.split(", ")
         for index, name in enumerate(button_names):
-            if os.path.isfile(
-                f"ui/BreezeStyleSheets/dist/pyqt6/{self.theme}/dialog_{name.lower()}.svg"
-            ):
+            if os.path.isfile(f"ui/BreezeStyleSheets/dist/pyqt6/{self.theme}/dialog_{name.lower()}.svg"):
                 button = QPushButton(f"  {name}")
-                button.setIcon(
-                    QIcon(
-                        f"ui/BreezeStyleSheets/dist/pyqt6/{self.theme}/dialog_{name.lower()}.svg"
-                    )
-                )
+                button.setIcon(QIcon(f"ui/BreezeStyleSheets/dist/pyqt6/{self.theme}/dialog_{name.lower()}.svg"))
             else:
                 button = QPushButton(name)
             if index == 0:

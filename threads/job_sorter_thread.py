@@ -1,12 +1,12 @@
-from openpyxl import load_workbook
-from itertools import islice
-import shutil
 import os
 import re
+import shutil
 import traceback
+from itertools import islice
 
+from openpyxl import load_workbook
 from PIL import Image
-from PyQt5.QtCore import QThread, pyqtSignal
+from PyQt6.QtCore import QThread, pyqtSignal
 
 
 class JobSorterThread(QThread):

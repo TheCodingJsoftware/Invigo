@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>579</width>
-    <height>296</height>
+    <width>538</width>
+    <height>516</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -38,15 +38,9 @@
       <bool>false</bool>
      </property>
      <property name="styleSheet">
-      <string notr="true">QWidget#widget{
-	border-top-left-radius:10px;
-	border-bottom-left-radius:10px;
-	border-top-right-radius:10px;
-	border-bottom-right-radius:10px;
-	border: 1px solid  rgb(0,120,212);;
-}</string>
+      <string notr="true"/>
      </property>
-     <layout class="QVBoxLayout" name="verticalLayout_3" stretch="0,0">
+     <layout class="QVBoxLayout" name="verticalLayout_3" stretch="0">
       <property name="leftMargin">
        <number>0</number>
       </property>
@@ -60,41 +54,7 @@
        <number>0</number>
       </property>
       <item>
-       <widget class="QLabel" name="lblTitle">
-        <property name="maximumSize">
-         <size>
-          <width>16777215</width>
-          <height>16777215</height>
-         </size>
-        </property>
-        <property name="font">
-         <font>
-          <pointsize>12</pointsize>
-         </font>
-        </property>
-        <property name="styleSheet">
-         <string notr="true">background-color: rgb(0,120,212);
-border-top-left-radius:10px;
-border-top-right-radius:10px;
-border: 1px solid  rgb(0,120,212);
-</string>
-        </property>
-        <property name="frameShape">
-         <enum>QFrame::Box</enum>
-        </property>
-        <property name="frameShadow">
-         <enum>QFrame::Sunken</enum>
-        </property>
-        <property name="text">
-         <string>TextLabel</string>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <layout class="QVBoxLayout" name="verticalLayout" stretch="0,1,0">
+       <layout class="QVBoxLayout" name="verticalLayout">
         <property name="leftMargin">
          <number>9</number>
         </property>
@@ -138,6 +98,12 @@ border: 1px solid  rgb(0,120,212);
           </item>
           <item>
            <widget class="QScrollArea" name="scrollArea">
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>100</height>
+             </size>
+            </property>
             <property name="widgetResizable">
              <bool>true</bool>
             </property>
@@ -146,8 +112,8 @@ border: 1px solid  rgb(0,120,212);
               <rect>
                <x>0</x>
                <y>0</y>
-               <width>529</width>
-               <height>69</height>
+               <width>488</width>
+               <height>196</height>
               </rect>
              </property>
              <layout class="QVBoxLayout" name="verticalLayout_4">
@@ -180,6 +146,9 @@ border: 1px solid  rgb(0,120,212);
                 <property name="alignment">
                  <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
                 </property>
+                <property name="wordWrap">
+                 <bool>true</bool>
+                </property>
                </widget>
               </item>
              </layout>
@@ -189,41 +158,56 @@ border: 1px solid  rgb(0,120,212);
          </layout>
         </item>
         <item>
+         <widget class="QLabel" name="label">
+          <property name="text">
+           <string>Flow Tag:</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QComboBox" name="comboBox_current_status"/>
+        </item>
+        <item>
+         <widget class="QLabel" name="label_2">
+          <property name="text">
+           <string>Statuses:</string>
+          </property>
+         </widget>
+        </item>
+        <item>
          <widget class="QScrollArea" name="scrollArea_2">
-          <property name="maximumSize">
-           <size>
-            <width>16777215</width>
-            <height>16777215</height>
-           </size>
-          </property>
-          <property name="sizeAdjustPolicy">
-           <enum>QAbstractScrollArea::AdjustToContents</enum>
-          </property>
           <property name="widgetResizable">
            <bool>true</bool>
           </property>
           <property name="alignment">
-           <set>Qt::AlignCenter</set>
+           <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
           </property>
           <widget class="QWidget" name="scrollAreaWidgetContents_2">
            <property name="geometry">
             <rect>
              <x>0</x>
              <y>0</y>
-             <width>559</width>
-             <height>154</height>
+             <width>518</width>
+             <height>197</height>
             </rect>
            </property>
-           <layout class="QVBoxLayout" name="verticalLayout_6">
+           <layout class="QVBoxLayout" name="verticalLayout_5">
             <item>
-             <layout class="QVBoxLayout" name="layout_results"/>
+             <layout class="QHBoxLayout" name="tag_layout"/>
             </item>
            </layout>
           </widget>
          </widget>
         </item>
         <item>
-         <layout class="QHBoxLayout" name="buttonsLayout"/>
+         <widget class="QPushButton" name="pushButton_add_status">
+          <property name="focusPolicy">
+           <enum>Qt::NoFocus</enum>
+          </property>
+          <property name="text">
+           <string>Add Status</string>
+          </property>
+         </widget>
         </item>
        </layout>
       </item>

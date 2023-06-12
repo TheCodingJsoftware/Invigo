@@ -7,14 +7,14 @@ from utils.json_file import JsonFile
 settings_file = JsonFile(file_name="settings")
 
 
-class UploadThread(QThread):
+class WorkspaceUploadThread(QThread):
     """
     Uploads client data to the server
     """
 
     signal = pyqtSignal(object)
 
-    def __init__(self, file_to_upload: list[str]) -> None:
+    def __init__(self, files_to_upload: list[str]) -> None:
         """
         The function is a constructor for a class that inherits from QThread. It takes a list of strings
         as an argument and returns None
@@ -26,9 +26,9 @@ class UploadThread(QThread):
         # Declaring server IP and port
         self.SERVER_IP: str = get_server_ip_address()
         self.SERVER_PORT: int = get_server_port()
-        self.upload_url = f"http://{self.SERVER_IP}:{self.SERVER_PORT}/upload"
+        self.upload_url = f"http://{self.SERVER_IP}:{self.SERVER_PORT}/workspace_upload"
 
-        self.files_to_upload = file_to_upload
+        self.files_to_upload = files_to_upload
 
     def run(self) -> None:
         """
@@ -38,12 +38,9 @@ class UploadThread(QThread):
         try:
             for file_to_upload in self.files_to_upload:
                 # Send the file as a POST request to the server
-                if file_to_upload.endswith(".json"):
-                    with open(f"data/{file_to_upload}", "rb") as file:
-                        files = {"file": (file_to_upload, file.read(), "application/json")}
-                elif file_to_upload.endswith(".jpeg"):
-                    with open(f"images/{file_to_upload}", "rb") as file:
-                        files = {"file": (file_to_upload, file.read(), "image/jpeg")}
+                with open(file_to_upload, "rb") as file:
+                    files = {"file": (file_to_upload, file.read())}
+                    # files = {"file": (file_to_upload, file.read(), "image/jpeg")}
                 response = requests.post(self.upload_url, files=files)
                 if response.status_code == 200:
                     self.signal.emit("Successfully uploaded")

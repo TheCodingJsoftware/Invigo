@@ -1,38 +1,51 @@
 import math
 from functools import partial
 
-from PyQt5 import *
-from PyQt5.QtCore import *
-from PyQt5.QtGui import *
-from PyQt5.QtWidgets import *
-import math
-QApplication.setAttribute(Qt.AA_EnableHighDpiScaling, True)
+from PyQt6 import *
+from PyQt6.QtCore import *
+from PyQt6.QtGui import *
+from PyQt6.QtWidgets import *
+
+# QApplication.setAttribute(Qt.ApplicationAttribute.AA_EnableHighDpiScaling, True)
 
 
 class LoadWindow(QWidget):
     """Loading animation window"""
 
     def __init__(self, parent=None):
-        super().__init__(parent)
+        super(QWidget, self).__init__(parent)
         self.WIDTH, self.HEIGHT = 1000, 400
         self.ANIMATION_DURATION: int = 7000
 
         self.setFixedSize(self.WIDTH, self.HEIGHT)
-        self.setWindowFlags(Qt.Window | Qt.FramelessWindowHint | Qt.WindowStaysOnTopHint)
+        self.setStyleSheet("background-color: transparent;")
+        self.setWindowFlags(
+            self.windowFlags()
+            | Qt.WindowType.Window
+            | Qt.WindowType.FramelessWindowHint
+            | Qt.WindowType.WindowStaysOnTopHint
+            | Qt.WindowType.WindowTransparentForInput
+        )
+        self.setAttribute(Qt.WidgetAttribute.WA_TranslucentBackground)
+        # self.setStyleSheet("QWidget{border-radius: 25px; background-color: rgba:(0,0,0,0);}")
         widget = QWidget(self)
         widget.resize(300, 150)
         widget.setObjectName("widget")
         widget.setStyleSheet(
             "QWidget#widget{ border-top-left-radius:10px; border-bottom-left-radius:10px; border-top-right-radius:10px; border-bottom-right-radius:10px; border: 1px solid #3daee9; background-color: #292929;}"
         )
-        widget.move(QPoint(400,120))
+        widget.move(QPoint(400, 120))
         self.progress_text = QLabel(widget)
         self.progress_text.setStyleSheet("color: white; font-size: 100px; font-family: Vivaldi;")
         self.progress_text.setText("Invigo")
         self.progress_text.setFixedSize(self.WIDTH - 20, 120)
-        self.progress_text.setAlignment(Qt.AlignHCenter | Qt.AlignVCenter)
-        self.progress_text.move(QPoint(-350,10))
-        self.setAttribute(Qt.WA_TranslucentBackground, True)
+        self.progress_text.setAlignment(Qt.AlignmentFlag.AlignHCenter | Qt.AlignmentFlag.AlignVCenter)
+        self.progress_text.move(QPoint(-350, 10))
+        # Set the window flags to achieve a translucent background
+        self.setWindowFlags(Qt.WindowType.FramelessWindowHint | Qt.WindowType.WindowTransparentForInput | Qt.WindowType.WindowStaysOnTopHint)
+
+        # Set a background color with transparency
+
         widget = QWidget(self)
         widget.resize(self.WIDTH, self.HEIGHT)
         self.anim_group = QParallelAnimationGroup(widget)
@@ -41,28 +54,26 @@ class LoadWindow(QWidget):
         starting_value: int = 0
         for _ in range(10):
             progress_bar = QWidget(widget)
-            progress_bar.setStyleSheet(
-                "background-color: #3daee9; border-radius: 15px; border: 3px solid #101010;"
-            )
+            progress_bar.setStyleSheet("background-color: #3daee9; border-radius: 15px; border: 3px solid #101010;")
             progress_bar.resize(CIRCLE_RADIUS, CIRCLE_RADIUS)
             self.anim = QPropertyAnimation(progress_bar, b"pos")
             self.anim.setDuration(self.ANIMATION_DURATION)
-            self.anim.setEasingCurve(QEasingCurve.OutInElastic)
+            self.anim.setEasingCurve(QEasingCurve.Type.OutInElastic)
             self.anim_2 = QPropertyAnimation(progress_bar, b"size")
             self.anim_2.setStartValue(QSize(CIRCLE_RADIUS, CIRCLE_RADIUS))
             self.anim_2.setEndValue(QSize(CIRCLE_RADIUS, CIRCLE_RADIUS))
             self.anim_group.addAnimation(self.anim_2)
             for i in range(DEGREE):
                 angle_radians = math.radians(i) + starting_value
-                x: int = int(math.cos(angle_radians)*80)+200
-                y: int = int(math.sin(angle_radians)*80)+180
+                x: int = int(math.cos(angle_radians) * 80) + 200
+                y: int = int(math.sin(angle_radians) * 80) + 180
                 if i == 0:
                     self.anim.setStartValue(QPoint(x, y))
                 if i % 90 == 0:
-                    self.anim.setKeyValueAt(i/DEGREE, QPoint(x, y))
+                    self.anim.setKeyValueAt(i / DEGREE, QPoint(x, y))
                 # if i%180 == 0:
                 #     self.anim.setKeyValueAt(i/DEGREE, QPoint(int(math.cos(angle_radians)*100)+200, int(math.sin(angle_radians)*100)+200))
-                if i == DEGREE-1:
+                if i == DEGREE - 1:
                     self.anim.setEndValue(QPoint(x, y))
             starting_value += 120
             self.anim_group.addAnimation(self.anim)
@@ -78,7 +89,9 @@ class LoadWindow(QWidget):
     def start_animation(self):
         self.anim_group.start()
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     app = QApplication([])
     load_window = LoadWindow()
-    app.exec_()
+    load_window.show()
+    app.exec()

@@ -1,5 +1,5 @@
 import requests
-from PyQt5.QtCore import QThread, pyqtSignal
+from PyQt6.QtCore import QThread, pyqtSignal
 
 from utils.ip_utils import get_server_ip_address, get_server_port
 

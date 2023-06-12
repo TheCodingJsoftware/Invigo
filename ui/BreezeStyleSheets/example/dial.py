@@ -32,8 +32,9 @@
 '''
 
 import math
-import shared
 import sys
+
+import shared
 
 parser = shared.create_parser()
 parser.add_argument(

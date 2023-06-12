@@ -1,5 +1,5 @@
-import sys
 import os
+import sys
 import time
 import zipfile
 
@@ -15,7 +15,6 @@ from PyQt5.QtCore import (
     pyqtSignal,
 )
 from PyQt5.QtWidgets import QApplication, QLabel, QVBoxLayout, QWidget
-
 
 QApplication.setAttribute(Qt.AA_EnableHighDpiScaling, True)
 
