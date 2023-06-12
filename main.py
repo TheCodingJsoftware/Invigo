@@ -130,9 +130,6 @@ __maintainer__: str = "Jared Gross"
 __email__: str = "jared@pinelandfarms.ca"
 __status__: str = "Production"
 
-os.environ["QT_FONT_DPI"] = "96"  # FIX Problem for High DPI and Scale above 100%
-
-
 def default_settings() -> None:
     """
     It checks if a setting exists in the settings file, and if it doesn't, it creates
@@ -256,7 +253,6 @@ logging.basicConfig(
     datefmt="%d-%b-%y %H:%M:%S",
     level=logging.INFO,
 )
-
 
 settings_file = JsonFile(file_name="settings")
 
@@ -881,12 +877,12 @@ class MainWindow(QMainWindow):
         part_number = self.get_value_from_category(item_name, "part_number")
         self.value_change(self.category, item_name, value_name, note.toPlainText())
 
-        for category, items in data.items():
-            if category == self.category:
-                continue
-            for item, item_data in items.items():
-                if part_number == item_data.get("part_number"):
-                    inventory.change_object_in_object_item(object_name=category, item_name=item, value_name="notes", new_value=note.toPlainText())
+        # for category, items in data.items():
+        #     if category == self.category:
+        #         continue
+        #     for item, item_data in items.items():
+        #         if part_number == item_data.get("part_number"):
+        #             inventory.change_object_in_object_item(object_name=category, item_name=item, value_name="notes", new_value=note.toPlainText())
         self.sync_changes()
 
     def delete_item(self, item_name: str) -> None:
@@ -4305,7 +4301,8 @@ class MainWindow(QMainWindow):
         scroll_layout.addWidget(pushButton_add_assembly)
         self.tab_widget.currentWidget().layout().addWidget(scroll_area)
 
-    def copy_selected_items_to(self, table_items_from: CustomTableWidget, )
+    def copy_selected_items_to(self, table_items_from: CustomTableWidget, assembly_to_copy_to: Assembly) -> None:
+        pass
 
     def load_edit_assembly_context_menus(self) -> None:
         for table, main_assembly in self.workspace_tables.items():
@@ -4320,7 +4317,7 @@ class MainWindow(QMainWindow):
                     if assembly is None:
                         for assembly in admin_workspace.data:
                             assembly_action = QAction(assembly.name, self)
-                            assembly_action.toggled.connect(self.copy_selected_items_to(table, assembly))
+                            # assembly_action.toggled.connect(self.copy_selected_items_to(table, assembly))
                             menu.addAction(assembly_action)
 
                             assembly_menu = menu.addMenu("Sub Assemblies")
