@@ -20,7 +20,7 @@ import requests
 import sympy
 from PyQt6 import QtWebEngineWidgets, uic
 from PyQt6.QtCore import QEventLoop, Qt, QTimer, QUrl
-from PyQt6.QtGui import QAction, QColor, QCursor, QFont, QIcon, QPixmap
+from PyQt6.QtGui import QAction, QColor, QCursor, QFont, QIcon, QPixmap, QStandardItemModel, QStandardItem
 from PyQt6.QtWidgets import (
     QAbstractItemView,
     QApplication,
@@ -40,6 +40,7 @@ from PyQt6.QtWidgets import (
     QPlainTextEdit,
     QPushButton,
     QScrollArea,
+    QHeaderView,
     QTableWidget,
     QTableWidgetItem,
     QTabWidget,
@@ -63,6 +64,7 @@ from threads.workspace_upload_file_thread import WorkspaceUploadThread
 from ui.about_dialog import AboutDialog
 from ui.add_item_dialog import AddItemDialog
 from ui.add_item_dialog_price_of_steel import AddItemDialogPriceOfSteel
+from ui.add_job_dialog import AddJobDialog
 from ui.color_picker_dialog import ColorPicker
 from ui.custom_widgets import (
     AssemblyMultiToolBox,
@@ -84,6 +86,7 @@ from ui.custom_widgets import (
     RecutButton,
     RichTextPushButton,
     TimeSpinBox,
+    CustomStandardItemModel,
     ViewTree,
     set_default_dialog_button_stylesheet,
 )
@@ -3803,6 +3806,7 @@ class MainWindow(QMainWindow):
 
     def assembly_items_table_clicked(self, item: QTableWidgetItem) -> None:
         self.last_selected_assemly_item = item.text()
+        print(self.last_selected_assemly_item)
 
     def assembly_items_table_cell_changed(self, table: CustomTableWidget, assembly: Assembly, item: QTableWidgetItem) -> None:
         item_text = item.text()
@@ -3815,6 +3819,7 @@ class MainWindow(QMainWindow):
         if column == 0:  # Item Name
             if row == table.rowCount() or assembly.exists(Item(name=selected_item_name)):
                 return
+            print(self.last_selected_assemly_item)
             assembly_item = assembly.get_item(self.last_selected_assemly_item)
             assembly_item.rename(item_text)
             admin_workspace.save()
@@ -3863,13 +3868,6 @@ class MainWindow(QMainWindow):
 
     def load_assembly_items_table(self, assembly: Assembly) -> CustomTableWidget:
         workspace_tags.load_data()
-        table = CustomTableWidget()
-
-        table.blockSignals(True)
-        #     table.setStyleSheet(
-        #     f"QTableView {{ gridline-color: white; }} QTableWidget::item {{ border-color: white; }}"
-        # )
-
         headers: list[str] = [
             "Item Name",
             "Bending Files",
@@ -3881,10 +3879,17 @@ class MainWindow(QMainWindow):
             "Parts Per",
             "Flow Tag",
             "Set Timers",
+            "DEL",
         ]
+        #     table.setStyleSheet(
+        #     f"QTableView {{ gridline-color: white; }} QTableWidget::item {{ border-color: white; }}"
+        # )
+
+        table = CustomTableWidget(self)
+        table.blockSignals(True)
         table.setRowCount(0)
-        table.setFont(self.tables_font)
         table.setColumnCount(len(headers))
+        table.setFont(self.tables_font)
         table.setShowGrid(True)
         table.setHorizontalHeaderLabels(headers)
         table.setVerticalScrollMode(QAbstractItemView.ScrollMode.ScrollPerPixel)
@@ -3913,14 +3918,21 @@ class MainWindow(QMainWindow):
                     color_button.addItem("Select Color")
                     color_button.setCurrentText(color_name)
             else:
-                workspace_tags.load_data()
-                for color_name, color_code in workspace_tags.get_value("paint_colors").items():
-                    if color_code == workspace_tags.get_data()["paint_colors"][color_button.currentText()]:
-                        color_button.setCurrentText(color_name)
-                color_button.setStyleSheet(
-                    f'border-radius: 0.001em; background-color: {workspace_tags.get_data()["paint_colors"][color_button.currentText()]}'
-                )
-
+                if color_button.currentText() == "None":
+                    color_button.setStyleSheet("border-radius: 0.001em; background-color: transparent")
+                    color_button.setCurrentText("None")
+                    item.set_value(key="paint_color", value=None)
+                else:
+                    workspace_tags.load_data()
+                    for color_name, color_code in workspace_tags.get_value("paint_colors").items():
+                        if color_code == workspace_tags.get_data()["paint_colors"][color_button.currentText()]:
+                            color_button.setCurrentText(color_name)
+                            item.set_value(key="paint_color", value=color_code)
+                    color_button.setStyleSheet(
+                        f'border-radius: 0.001em; background-color: {workspace_tags.get_data()["paint_colors"][color_button.currentText()]}'
+                    )
+                admin_workspace.save()
+            self.sync_changes()
             color_button.currentTextChanged.connect(partial(select_color, item, color_button))
 
         # def set_timer(timer_box: QComboBox, item: Item) -> None:
@@ -3957,9 +3969,11 @@ class MainWindow(QMainWindow):
                 table.resizeColumnsToContents()
 
         def flow_tag_box_change(table: CustomTableWidget, tag_box: QComboBox, item: Item, timer_layout: QHBoxLayout) -> None:
-            item.set_value(key="flow_tag", value=workspace_tags.get_data()["flow_tags"][tag_box.currentIndex()])
+            if tag_box.currentText() == "Select Flow Tag":
+                return
+            item.set_value(key="flow_tag", value=tag_box.currentText().split(" -> "))
             timers = {}
-            for tag in workspace_tags.get_data()["flow_tags"][tag_box.currentIndex()]:
+            for tag in tag_box.currentText().split(" -> "):
                 timers[tag] = {}
             item.set_value(key="timers", value=timers)
             admin_workspace.save()
@@ -4004,6 +4018,7 @@ class MainWindow(QMainWindow):
             table.setCellWidget(row_index, col_index, material_box)
             col_index += 1
             button_color = QComboBox(self)
+            button_color.addItem("None")
             button_color.addItems(list(workspace_tags.get_value("paint_colors").keys()) or ["Select Color"])
             button_color.addItem("Select Color")
             if item.data["paint_color"] != None:
@@ -4035,12 +4050,26 @@ class MainWindow(QMainWindow):
             tag_box.wheelEvent = lambda event: None
             tag_box.setObjectName("tag_box")
             tag_box.setStyleSheet("QComboBox#tag_box{margin: 2px;}")
+            if not item.data["flow_tag"]:
+                tag_box.addItem("Select Flow Tag")
             tag_box.addItems(self.get_all_flow_tags())
-            tag_box.setCurrentText(" -> ".join(item.data["flow_tag"]))
+            if item.data["flow_tag"]:
+                tag_box.setCurrentText(" -> ".join(item.data["flow_tag"]))
             tag_box.currentTextChanged.connect(partial(flow_tag_box_change, table, tag_box, item, timer_layout))
             table.setCellWidget(row_index, col_index, tag_box)
             col_index += 1
             table.setCellWidget(row_index, col_index, timer_widget)
+            col_index += 1
+            delete_button = DeletePushButton(
+                self,
+                tool_tip=f"Delete {item.name} forever from {assembly.name}",
+                icon=QIcon(f"ui/BreezeStyleSheets/dist/pyqt6/{self.theme}/trash.png"),
+            )
+            delete_button.clicked.connect(
+                lambda: (assembly.remove_item(item=item), table.removeRow(row_index), admin_workspace.save(), self.sync_changes())
+            )
+            delete_button.setStyleSheet("margin-top: 10px; margin-bottom: 10px; margin-right: 4px; margin-left: 4px;")
+            table.setCellWidget(row_index, col_index, delete_button)
 
         for row_index, item in enumerate(assembly.items):
             add_item(row_index, item)
@@ -4090,12 +4119,14 @@ class MainWindow(QMainWindow):
         table.itemChanged.connect(partial(self.assembly_items_table_cell_changed, table, assembly))
         table.itemClicked.connect(self.assembly_items_table_clicked)
 
-        add_item_button(True)
+        add_item_button(on_load=True)
 
         table.set_editable_column_index([0, 7])
         table.blockSignals(False)
         table.resizeColumnsToContents()
         self.workspace_tables[table] = assembly
+        # header = table.horizontalHeader()
+        # header.setSectionResizeMode(0, QHeaderView.ResizeMode.Fixed)  # Set the first column to Fixed
 
         return table
 
@@ -4206,9 +4237,10 @@ class MainWindow(QMainWindow):
         pushButton_add_sub_assembly = QPushButton("Add Sub Assembly")
         pushButton_add_sub_assembly.setFixedWidth(120)
 
-        sub_assembly_groupbox = QGroupBox("Sub Assemblies")
-        sub_assembly_groupbox_layout = QVBoxLayout()
-        sub_assembly_groupbox.setLayout(sub_assembly_groupbox_layout)
+        if assembly.get_assembly_data("has_sub_assemblies"):
+            sub_assembly_groupbox = QGroupBox("Sub Assemblies")
+            sub_assembly_groupbox_layout = QVBoxLayout()
+            sub_assembly_groupbox.setLayout(sub_assembly_groupbox_layout)
 
         # Create the MultiToolBox for sub assemblies
         sub_assemblies_toolbox = AssemblyMultiToolBox()
@@ -4225,7 +4257,8 @@ class MainWindow(QMainWindow):
                 if response == DialogButtons.ok:
                     input_text = input_dialog.inputText
                     new_assembly: Assembly = Assembly(
-                        name=input_text, assembly_data={"time_to_complete": 0.0, "has_items": True, "flow_tag": [], "timers": {}}
+                        name=input_text,
+                        assembly_data={"time_to_complete": 0.0, "has_items": True, "has_sub_assemblies": True, "flow_tag": [], "timers": {}},
                     )
                     assembly.add_sub_assembly(new_assembly)
                     admin_workspace.save()
@@ -4259,21 +4292,22 @@ class MainWindow(QMainWindow):
             duplicate_button = sub_assemblies_toolbox.getLastDuplicateButton()
             duplicate_button.clicked.connect(partial(duplicate_sub_assembly, new_assembly))
 
-        pushButton_add_sub_assembly.clicked.connect(add_sub_assembly)
-        # Add the sub assemblies MultiToolBox to the main layout
-        sub_assembly_groupbox_layout.addWidget(pushButton_add_sub_assembly)
-        sub_assembly_groupbox_layout.addWidget(sub_assemblies_toolbox)
-        layout.addWidget(sub_assembly_groupbox)
-        if len(assembly.sub_assemblies) > 0:
-            for i, sub_assembly in enumerate(assembly.sub_assemblies):
-                # Load the sub assembly recursively and add it to the sub assemblies MultiToolBox
-                sub_assembly_widget = self.load_assembly_widget(sub_assembly)
-                sub_assemblies_toolbox.addItem(sub_assembly_widget, sub_assembly.name)
-                delete_button = sub_assemblies_toolbox.getLastDeleteButton()
-                delete_button.clicked.connect(partial(delete_sub_assembly, sub_assembly, sub_assembly_widget))
-                duplicate_button = sub_assemblies_toolbox.getLastDuplicateButton()
-                duplicate_button.clicked.connect(partial(duplicate_sub_assembly, sub_assembly))
-            sub_assemblies_toolbox.close_all()
+        if assembly.get_assembly_data("has_sub_assemblies"):
+            pushButton_add_sub_assembly.clicked.connect(add_sub_assembly)
+            # Add the sub assemblies MultiToolBox to the main layout
+            sub_assembly_groupbox_layout.addWidget(pushButton_add_sub_assembly)
+            sub_assembly_groupbox_layout.addWidget(sub_assemblies_toolbox)
+            layout.addWidget(sub_assembly_groupbox)
+            if len(assembly.sub_assemblies) > 0:
+                for i, sub_assembly in enumerate(assembly.sub_assemblies):
+                    # Load the sub assembly recursively and add it to the sub assemblies MultiToolBox
+                    sub_assembly_widget = self.load_assembly_widget(sub_assembly)
+                    sub_assemblies_toolbox.addItem(sub_assembly_widget, sub_assembly.name)
+                    delete_button = sub_assemblies_toolbox.getLastDeleteButton()
+                    delete_button.clicked.connect(partial(delete_sub_assembly, sub_assembly, sub_assembly_widget))
+                    duplicate_button = sub_assemblies_toolbox.getLastDuplicateButton()
+                    duplicate_button.clicked.connect(partial(duplicate_sub_assembly, sub_assembly))
+                sub_assemblies_toolbox.close_all()
         return widget
 
     def load_edit_assembly_tab(self) -> None:
@@ -4287,18 +4321,21 @@ class MainWindow(QMainWindow):
         workspace_data = admin_workspace.get_data()
 
         def add_assembly():
-            input_dialog = InputDialog(
-                title="Add Assembly",
-                message="Enter a name for a new assembly",
-                placeholder_text="",
-            )
+            input_dialog = AddJobDialog(title="Add Job", message="Enter a name for a new job")
 
             if input_dialog.exec():
                 response = input_dialog.get_response()
-                if response == DialogButtons.ok:
-                    input_text = input_dialog.inputText
+                if response == DialogButtons.add:
+                    job_name, has_items, has_sub_assemblies = input_dialog.get_selected_items()
                     new_assembly: Assembly = Assembly(
-                        name=input_text, assembly_data={"time_to_complete": 0.0, "has_items": False, "flow_tag": [], "timers": {}}
+                        name=job_name,
+                        assembly_data={
+                            "time_to_complete": 0.0,
+                            "has_items": has_items,
+                            "has_sub_assemblies": has_sub_assemblies,
+                            "flow_tag": [],
+                            "timers": {},
+                        },
                     )
                     admin_workspace.add_assembly(new_assembly)
                     admin_workspace.save()
@@ -4338,11 +4375,11 @@ class MainWindow(QMainWindow):
             delete_button.clicked.connect(partial(delete_assembly, assembly, assembly_widget))
             duplicate_button = multi_tool_box.getDuplicateButton(i)
             duplicate_button.clicked.connect(partial(duplicate_assembly, assembly))
-        pushButton_add_assembly = QPushButton(scroll_content)
-        pushButton_add_assembly.setText("Add Assembly")
-        pushButton_add_assembly.clicked.connect(add_assembly)
+        pushButton_add_job = QPushButton(scroll_content)
+        pushButton_add_job.setText("Add Job")
+        pushButton_add_job.clicked.connect(add_assembly)
         scroll_layout.addWidget(multi_tool_box)
-        scroll_layout.addWidget(pushButton_add_assembly)
+        scroll_layout.addWidget(pushButton_add_job)
         self.tab_widget.currentWidget().layout().addWidget(scroll_area)
 
     # TODO

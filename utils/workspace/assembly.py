@@ -48,6 +48,17 @@ class Assembly:
         """
         self.items.append(item)
 
+    def remove_item(self, item: Item) -> None:
+        """
+        This function removes an item from a list of items if it exists in the list.
+
+        Args:
+          item (Item): The "item" parameter is an instance of the "Item" class that the method is
+        designed to remove from the list of items in the current instance of the class.
+        """
+        if self.exists(item):
+            self.items.remove(item)
+
     def set_assembly_data(self, key: str, value: Any) -> None:
         """
         This function sets a value for a given key in a dictionary called "assembly_data".

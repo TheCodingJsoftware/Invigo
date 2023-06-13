@@ -30,6 +30,8 @@ from PyQt6.QtGui import (
     QPalette,
     QPixmap,
     QRegularExpressionValidator,
+    QStandardItemModel,
+    QStandardItem,
 )
 from PyQt6.QtWidgets import (
     QAbstractItemView,
@@ -43,6 +45,7 @@ from PyQt6.QtWidgets import (
     QGroupBox,
     QHBoxLayout,
     QLabel,
+    QHeaderView,
     QLineEdit,
     QMainWindow,
     QPlainTextEdit,
@@ -941,9 +944,116 @@ class RecutButton(QPushButton):
             self.setText("No Recut")
 
 
+class FreezeTableWidget(QTableView):
+    def __init__(self, model):
+        super(FreezeTableWidget, self).__init__()
+        self.setModel(model)
+        self.frozenTableView = QTableView(self)
+        self.init()
+        self.horizontalHeader().sectionResized.connect(self.updateSectionWidth)
+        self.verticalHeader().sectionResized.connect(self.updateSectionHeight)
+        self.frozenTableView.verticalScrollBar().valueChanged.connect(self.verticalScrollBar().setValue)
+        self.verticalScrollBar().valueChanged.connect(self.frozenTableView.verticalScrollBar().setValue)
+        self.setVerticalScrollMode(QAbstractItemView.ScrollMode.ScrollPerPixel)
+        self.setHorizontalScrollMode(QAbstractItemView.ScrollMode.ScrollPerPixel)
+        self.setSelectionBehavior(QAbstractItemView.SelectionBehavior.SelectRows)
+        self.setSelectionMode(QAbstractItemView.SelectionMode.ExtendedSelection)
+
+    def init(self):
+        self.frozenTableView.setModel(self.model())
+        self.frozenTableView.setFocusPolicy(Qt.FocusPolicy.NoFocus)
+        self.frozenTableView.verticalHeader().hide()
+        self.frozenTableView.horizontalHeader().setSectionResizeMode(QHeaderView.ResizeMode.Fixed)
+        self.viewport().stackUnder(self.frozenTableView)
+
+        self.frozenTableView.setStyleSheet(
+            """
+            QTableView { border: none;
+                         background-color: #8EDE21;
+                         selection-background-color: #999;
+            }"""
+        )  # for demo purposes
+
+        self.frozenTableView.setSelectionModel(self.selectionModel())
+        for col in range(1, self.model().columnCount()):
+            self.frozenTableView.setColumnHidden(col, True)
+        self.frozenTableView.setColumnWidth(0, self.columnWidth(0))
+        self.frozenTableView.setHorizontalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAlwaysOff)
+        self.frozenTableView.setVerticalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAlwaysOff)
+        self.frozenTableView.show()
+        self.updateFrozenTableGeometry()
+        self.setHorizontalScrollMode(self.ScrollMode.ScrollPerPixel)
+        self.setVerticalScrollMode(self.ScrollMode.ScrollPerPixel)
+        self.frozenTableView.setVerticalScrollMode(self.ScrollMode.ScrollPerPixel)
+
+    def updateSectionWidth(self, logicalIndex, oldSize, newSize):
+        self.frozenTableView.setColumnWidth(0, newSize)
+        self.updateFrozenTableGeometry()
+
+    def updateSectionHeight(self, logicalIndex, oldSize, newSize):
+        self.frozenTableView.setRowHeight(logicalIndex, newSize)
+
+    def resizeEvent(self, event):
+        super(FreezeTableWidget, self).resizeEvent(event)
+        self.updateFrozenTableGeometry()
+
+    def moveCursor(self, cursorAction, modifiers):
+        current = super(FreezeTableWidget, self).moveCursor(cursorAction, modifiers)
+        if (
+            cursorAction == self.CursorAction.MoveLeft
+            and self.current.column() > 0
+            and self.visualRect(current).topLeft().x() < self.frozenTableView.columnWidth(0)
+        ):
+            newValue = self.horizontalScrollBar().value() + self.visualRect(current).topLeft().x() - self.frozenTableView.columnWidth(0)
+            self.horizontalScrollBar().setValue(newValue)
+        return current
+
+    def scrollTo(self, index, hint):
+        if index.column() > 0:
+            super(FreezeTableWidget, self).scrollTo(index, hint)
+
+    def updateFrozenTableGeometry(self):
+        self.frozenTableView.setGeometry(
+            self.verticalHeader().width() + self.frameWidth(),
+            self.frameWidth(),
+            self.columnWidth(0),
+            self.viewport().height() + self.horizontalHeader().height(),
+        )
+
+
+class CustomStandardItemModel(QStandardItemModel):
+    itemChanged = pyqtSignal(QStandardItem)
+    itemClicked = pyqtSignal(QStandardItem)
+
+    def setData(self, index: QModelIndex, value, role: int = Qt.ItemDataRole.EditRole):
+        if item := self.itemFromIndex(index):
+            item.setData(value, role)
+            self.itemChanged.emit(item)
+            return True
+        return super(CustomStandardItemModel, self).setData(index, value, role)
+
+    def index(self, row: int, column: int, parent: QModelIndex = QModelIndex()) -> QModelIndex:
+        index = super(CustomStandardItemModel, self).index(row, column, parent)
+        if item := self.itemFromIndex(index):
+            self.itemClicked.emit(item)
+        return index
+
+
+class FrozenTableView(QTableView):
+    itemClicked = pyqtSignal(QStandardItem)
+
+    def mousePressEvent(self, event):
+        index = self.indexAt(event.pos())
+        if index.isValid():
+            item = self.model().item(index.row(), index.column())
+            if item:
+                self.itemClicked.emit(item)
+        return super().mousePressEvent(event)
+
+
 class CustomTableWidget(QTableWidget):
     def __init__(self, parent=None):
-        super().__init__(parent)
+        super(CustomTableWidget, self).__init__()
         self.editable_column_indexes = []
 
     def edit(self, index, trigger, event):
@@ -964,7 +1074,7 @@ class CustomTableWidget(QTableWidget):
         super().edit() method is called and its return value is returned. Otherwise, False is returned.
         """
         if index.column() in self.editable_column_indexes:
-            return super().edit(index, trigger, event)
+            return super(CustomTableWidget, self).edit(index, trigger, event)
         else:
             return False
 
@@ -977,6 +1087,171 @@ class CustomTableWidget(QTableWidget):
         editable in a table or spreadsheet.
         """
         self.editable_column_indexes = columns
+
+
+# class _CustomTableWidget(QTableView):
+#     itemClicked = pyqtSignal(QStandardItem)
+
+#     def __init__(self, parent=None, model: QStandardItemModel = None):
+#         super(CustomTableWidget, self).__init__()
+#         self.editable_column_indexes = []
+#         self.frozenTableView = FrozenTableView(self)
+#         self.frozenTableView.setVerticalScrollMode(QAbstractItemView.ScrollMode.ScrollPerPixel)
+#         self.frozenTableView.setHorizontalScrollMode(QAbstractItemView.ScrollMode.ScrollPerPixel)
+#         self.frozenTableView.setSelectionBehavior(QAbstractItemView.SelectionBehavior.SelectRows)
+#         self.frozenTableView.setSelectionMode(QAbstractItemView.SelectionMode.ExtendedSelection)
+
+#         self.setModel(model)
+#         self.init()
+#         self.horizontalHeader().sectionResized.connect(self.updateSectionWidth)
+#         self.verticalHeader().sectionResized.connect(self.updateSectionHeight)
+#         self.frozenTableView.verticalScrollBar().valueChanged.connect(self.verticalScrollBar().setValue)
+#         self.verticalScrollBar().valueChanged.connect(self.frozenTableView.verticalScrollBar().setValue)
+#         self.setVerticalScrollMode(QAbstractItemView.ScrollMode.ScrollPerPixel)
+#         self.setHorizontalScrollMode(QAbstractItemView.ScrollMode.ScrollPerPixel)
+#         self.setSelectionBehavior(QAbstractItemView.SelectionBehavior.SelectRows)
+#         self.setSelectionMode(QAbstractItemView.SelectionMode.ExtendedSelection)
+
+#     def init(self):
+#         self.frozenTableView.setModel(self.model())
+#         self.frozenTableView.setFocusPolicy(Qt.FocusPolicy.NoFocus)
+#         self.frozenTableView.verticalHeader().hide()
+#         self.frozenTableView.horizontalHeader().setSectionResizeMode(QHeaderView.ResizeMode.Fixed)
+#         self.viewport().stackUnder(self.frozenTableView)
+
+#         for col in range(1, self.model().columnCount()):
+#             self.frozenTableView.setColumnHidden(col, True)
+#         # self.frozenTableView.setStyleSheet(
+#         #     """
+#         #     QTableView { border: none;
+#         #                  background-color: #8EDE21;
+#         #                  selection-background-color: #999;
+#         #     }"""
+#         # )  # for demo purposes
+
+#         self.frozenTableView.setSelectionModel(self.selectionModel())
+#         self.frozenTableView.setHorizontalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAlwaysOff)
+#         self.frozenTableView.setVerticalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAlwaysOff)
+#         self.frozenTableView.show()
+#         self.updateFrozenTableGeometry()
+#         self.setHorizontalScrollMode(self.ScrollMode.ScrollPerPixel)
+#         self.setVerticalScrollMode(self.ScrollMode.ScrollPerPixel)
+#         self.frozenTableView.setVerticalScrollMode(self.ScrollMode.ScrollPerPixel)
+
+#     def edit(self, index, trigger, event):
+#         """
+#         This function checks if a column is editable and allows editing if it is, otherwise it returns
+#         False.
+
+#         Args:
+#           index: The index of the item in the model that is being edited.
+#           trigger: The trigger parameter is an event that causes the editor to be opened for editing the
+#         cell. It can be one of the following values:
+#           event: The event parameter in the edit() method is an instance of QEvent class. It represents
+#         an event that occurred on the widget. The event parameter is used to determine the type of event
+#         that occurred, such as a mouse click or a key press, and to handle the event accordingly.
+
+#         Returns:
+#           If the column index of the given index is in the list of editable_column_indexes, then the
+#         super().edit() method is called and its return value is returned. Otherwise, False is returned.
+#         """
+#         if index.column() in self.editable_column_indexes:
+#             return super(CustomTableWidget, self).edit(index, trigger, event)
+#         else:
+#             return False
+
+#     def set_editable_column_index(self, columns: list[int]):
+#         """
+#         This function sets the indexes of columns that are editable in a table.
+
+#         Args:
+#           columns (list[int]): A list of integers representing the indexes of the columns that should be
+#         editable in a table or spreadsheet.
+#         """
+#         self.editable_column_indexes = columns
+
+#     def updateSectionWidth(self, logicalIndex, oldSize, newSize):
+#         self.frozenTableView.setColumnWidth(0, newSize)
+#         self.updateFrozenTableGeometry()
+
+#     def updateSectionHeight(self, logicalIndex, oldSize, newSize):
+#         self.frozenTableView.setRowHeight(logicalIndex, newSize)
+
+#     def resizeEvent(self, event):
+#         super(CustomTableWidget, self).resizeEvent(event)
+#         self.updateFrozenTableGeometry()
+
+#     def moveCursor(self, cursorAction, modifiers):
+#         current = super(CustomTableWidget, self).moveCursor(cursorAction, modifiers)
+#         if (
+#             cursorAction == self.CursorAction.MoveLeft
+#             and self.current.column() > 0
+#             and self.visualRect(current).topLeft().x() < self.frozenTableView.columnWidth(0)
+#         ):
+#             newValue = self.horizontalScrollBar().value() + self.visualRect(current).topLeft().x() - self.frozenTableView.columnWidth(0)
+#             self.horizontalScrollBar().setValue(newValue)
+#         return current
+
+#     def scrollTo(self, index, hint):
+#         if index.column() > 0:
+#             super(CustomTableWidget, self).scrollTo(index, hint)
+
+#     def updateFrozenTableGeometry(self):
+#         self.frozenTableView.setGeometry(
+#             self.verticalHeader().width() + self.frameWidth(),
+#             self.frameWidth(),
+#             self.columnWidth(0),
+#             self.viewport().height() + self.horizontalHeader().height(),
+#         )
+
+#     def removeCellWidget(self, row, column):
+#         item = self.item(row, column)
+#         if item and isinstance(item, QWidget):
+#             widget = item.widget()
+#             self.takeItem(row, column)
+#             del widget
+
+#     def setCellWidget(self, row, column, widget):
+#         index = self.model().index(row, column)
+#         self.setIndexWidget(index, widget)
+
+#     def cellWidget(self, row, column):
+#         index = self.model().index(row, column)
+#         return self.indexWidget(index)
+
+#     def setItem(self, row, column, item):
+#         model = self.model()
+#         model.setItem(row, column, item)
+
+#     def item(self, row, column):
+#         model = self.model()
+#         return model.item(row, column) if model else None
+
+#     def rowCount(self):
+#         return self.model().rowCount()
+
+#     def insertRow(self, row, items=None):
+#         self.model().insertRow(row, items)
+
+#     def removeRow(self, row):
+#         self.model().removeRow(row - 1)
+
+#     def eventFilter(self, obj, event):
+#         if obj is self.viewport() and event.type() == QEvent.MouseButtonPress:
+#             index = self.indexAt(event.pos())
+#             if index.isValid():
+#                 item = self.model().item(index.row(), index.column())
+#                 if item:
+#                     self.itemClicked.emit(item)
+#         return super().eventFilter(obj, event)
+
+#     def mousePressEvent(self, event):
+#         index = self.indexAt(event.pos())
+#         if index.isValid():
+#             item = self.frozenTableView.model().item(index.row(), 0)
+#             if item:
+#                 self.itemClicked.emit(item)
+#         return super().mousePressEvent(event)
 
 
 class OrderStatusButton(QPushButton):
