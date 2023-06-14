@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>484</width>
-    <height>295</height>
+    <width>497</width>
+    <height>331</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -146,8 +146,8 @@ border-bottom: none;
               <rect>
                <x>0</x>
                <y>0</y>
-               <width>434</width>
-               <height>98</height>
+               <width>447</width>
+               <height>139</height>
               </rect>
              </property>
              <layout class="QVBoxLayout" name="verticalLayout_4">
@@ -257,7 +257,7 @@ border-bottom: none;
 	color: #ffffff;
     background-color: #3daee9;
     border: 0.01em solid #3daee9;
-	border-radius: 5px;
+    border-radius: 8px;
 }
 QPushButton#pushButton_quote:checked{
     background-color: #3daee9;
@@ -273,20 +273,20 @@ QPushButton#pushButton_quote:pressed{
 }
 
 QPushButton#pushButton_quote:!checked {
-    background-color: rgb(71, 71, 71);
-    border: 0.01em solid rgb(76, 76, 76);
-    border-radius: 5px;
+    background-color: rgba(71, 71, 71, 130);
+    border: 0.01em solid rgba(76, 76, 76, 130);
+    border-radius: 8px;
     color: grey;
 }
 
 QPushButton:hover#pushButton_quote:!checked {
-    background-color: rgb(76, 76, 76);
-    border: 0.01em solid rgb(71, 76, 88);
+    background-color: rgba(76, 76, 76, 130);
+    border: 0.01em solid rgba(71, 76, 88, 130);
 }
 
 QPushButton:pressed#pushButton_quote:!checked {
-    background-color: rgb(39, 39, 39);
-    border: 0.01em solid rgb(47, 50, 57);
+    background-color: rgba(39, 39, 39, 130);
+    border: 0.01em solid rgba(47, 50, 57, 130);
 }</string>
                </property>
                <property name="text">
@@ -325,7 +325,7 @@ QPushButton:pressed#pushButton_quote:!checked {
 	color: #ffffff;
     background-color: #3daee9;
     border: 0.01em solid #3daee9;
-	border-radius: 5px;
+    border-radius: 8px;
 }
 QPushButton#pushButton_update_inventory:checked{
     background-color: #3daee9;
@@ -341,20 +341,20 @@ QPushButton#pushButton_update_inventory:pressed{
 }
 
 QPushButton#pushButton_update_inventory:!checked {
-    background-color: rgb(71, 71, 71);
-    border: 0.01em solid rgb(76, 76, 76);
-    border-radius: 5px;
+    background-color: rgba(71, 71, 71, 130);
+    border: 0.01em solid rgba(76, 76, 76, 130);
+    border-radius: 8px;
     color: grey;
 }
 
 QPushButton:hover#pushButton_update_inventory:!checked {
-    background-color: rgb(76, 76, 76);
-    border: 0.01em solid rgb(71, 76, 88);
+    background-color: rgba(76, 76, 76, 130);
+    border: 0.01em solid rgba(71, 76, 88, 130);
 }
 
 QPushButton:pressed#pushButton_update_inventory:!checked {
-    background-color: rgb(39, 39, 39);
-    border: 0.01em solid rgb(47, 50, 57);
+    background-color: rgba(39, 39, 39, 130);
+    border: 0.01em solid rgba(47, 50, 57, 130);
 }</string>
                </property>
                <property name="text">
@@ -387,7 +387,7 @@ QPushButton:pressed#pushButton_update_inventory:!checked {
 	color: #ffffff;
     background-color: #3daee9;
     border: 0.01em solid #3daee9;
-	border-radius: 5px;
+    border-radius: 8px;
 }
 QPushButton#pushButton_workorder:checked{
     background-color: #3daee9;
@@ -403,20 +403,20 @@ QPushButton#pushButton_workorder:pressed{
 }
 
 QPushButton#pushButton_workorder:!checked {
-    background-color: rgb(71, 71, 71);
-    border: 0.01em solid rgb(76, 76, 76);
-    border-radius: 5px;
+    background-color: rgba(71, 71, 71, 130);
+    border: 0.01em solid rgba(76, 76, 76, 130);
+    border-radius: 8px;
     color: grey;
 }
 
 QPushButton:hover#pushButton_workorder:!checked {
-    background-color: rgb(76, 76, 76);
-    border: 0.01em solid rgb(71, 76, 88);
+    background-color: rgba(76, 76, 76, 130);
+    border: 0.01em solid rgba(71, 76, 88, 130);
 }
 
 QPushButton:pressed#pushButton_workorder:!checked {
-    background-color: rgb(39, 39, 39);
-    border: 0.01em solid rgb(47, 50, 57);
+    background-color: rgba(39, 39, 39, 130);
+    border: 0.01em solid rgba(47, 50, 57, 130);
 }</string>
                </property>
                <property name="text">
@@ -440,7 +440,7 @@ QPushButton:pressed#pushButton_workorder:!checked {
 	color: #ffffff;
     background-color: #3daee9;
     border: 0.01em solid #3daee9;
-	border-radius: 5px;
+    border-radius: 8px;
 }
 QPushButton#pushButton_packingslip:checked{
     background-color: #3daee9;
@@ -456,20 +456,20 @@ QPushButton#pushButton_packingslip:pressed{
 }
 
 QPushButton#pushButton_packingslip:!checked {
-    background-color: rgb(71, 71, 71);
-    border: 0.01em solid rgb(76, 76, 76);
-    border-radius: 5px;
+    background-color: rgba(71, 71, 71, 130);
+    border: 0.01em solid rgba(76, 76, 76, 130);
+    border-radius: 8px;
     color: grey;
 }
 
 QPushButton:hover#pushButton_packingslip:!checked {
-    background-color: rgb(76, 76, 76);
-    border: 0.01em solid rgb(71, 76, 88);
+    background-color: rgba(76, 76, 76, 130);
+    border: 0.01em solid rgba(71, 76, 88, 130);
 }
 
 QPushButton:pressed#pushButton_packingslip:!checked {
-    background-color: rgb(39, 39, 39);
-    border: 0.01em solid rgb(47, 50, 57);
+    background-color: rgba(39, 39, 39, 130);
+    border: 0.01em solid rgba(47, 50, 57, 130);
 }</string>
                </property>
                <property name="text">

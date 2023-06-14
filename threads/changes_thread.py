@@ -2,7 +2,7 @@ import contextlib
 import time
 
 import websocket
-from PyQt5.QtCore import QThread, pyqtSignal
+from PyQt6.QtCore import QThread, pyqtSignal
 
 from utils.ip_utils import get_server_ip_address, get_server_port
 
@@ -28,7 +28,7 @@ class ChangesThread(QThread):
         self.SERVER_IP: str = get_server_ip_address()
         self.SERVER_PORT: int = get_server_port()
         self.files_to_download: str = files_to_download
-        self.websocket_url = f'ws://{self.SERVER_IP}:{self.SERVER_PORT}/ws'
+        self.websocket_url = f"ws://{self.SERVER_IP}:{self.SERVER_PORT}/ws"
 
     def run(self) -> None:
         """
@@ -46,6 +46,7 @@ class ChangesThread(QThread):
                     # with open(f'data/{file_name}', 'w') as file:
                     #     file.write(file_data)
                     self.signal.emit(message)
+
                 # Create a WebSocket connection
                 self.websocket = websocket.WebSocketApp(self.websocket_url, on_message=lambda ws, message: handle_file_data(ws, message))
                 self.websocket.run_forever()

@@ -30,8 +30,9 @@
     since it cannot be modified via stylesheets.
 '''
 
-import shared
 import sys
+
+import shared
 
 parser = shared.create_parser()
 args, unknown = shared.parse_args(parser)

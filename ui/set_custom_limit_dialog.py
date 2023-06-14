@@ -1,10 +1,11 @@
 import os.path
 from functools import partial
 
-from PyQt5 import QtSvg, uic
-from PyQt5.QtCore import Qt
-from PyQt5.QtGui import QIcon
-from PyQt5.QtWidgets import QDialog, QPushButton
+from PyQt6 import uic
+from PyQt6.QtCore import Qt
+from PyQt6.QtGui import QIcon
+from PyQt6.QtSvgWidgets import QSvgWidget
+from PyQt6.QtWidgets import QDialog, QPushButton
 
 from ui.custom_widgets import set_default_dialog_button_stylesheet
 from ui.theme import set_theme
@@ -27,8 +28,8 @@ class SetCustomLimitDialog(QDialog):
         button_names: str = DialogButtons.set_cancel,
         title: str = __name__,
         message: str = "",
-        red_limit: int=10,
-        yellow_limit: int=20,
+        red_limit: int = 10,
+        yellow_limit: int = 20,
     ) -> None:
         """
         It's a constructor for a class that inherits from QDialog. It takes in a bunch of arguments and
@@ -48,11 +49,9 @@ class SetCustomLimitDialog(QDialog):
         self.button_names = button_names
         self.title = title
         self.message = message
-        self.theme: str = (
-            "dark" if settings_file.get_value(item_name="dark_mode") else "light"
-        )
+        self.theme: str = "dark" if settings_file.get_value(item_name="dark_mode") else "light"
 
-        self.setWindowFlags(Qt.Window | Qt.FramelessWindowHint)
+        self.setWindowFlags(Qt.WindowType.Window | Qt.WindowType.FramelessWindowHint)
         self.setWindowIcon(QIcon("icons/icon.png"))
 
         self.lblTitle.setText(self.title)
@@ -80,7 +79,7 @@ class SetCustomLimitDialog(QDialog):
         """
         set_theme(self, theme="dark")
 
-    def get_icon(self, path_to_icon: str) -> QtSvg.QSvgWidget:
+    def get_icon(self, path_to_icon: str) -> QSvgWidget:
         """
         It returns a QSvgWidget object that is initialized with a path to an SVG icon
 
@@ -90,9 +89,7 @@ class SetCustomLimitDialog(QDialog):
         Returns:
           A QSvgWidget object.
         """
-        return QtSvg.QSvgWidget(
-            f"ui/BreezeStyleSheets/dist/pyqt6/{self.theme}/{path_to_icon}"
-        )
+        return QSvgWidget(f"ui/BreezeStyleSheets/dist/pyqt6/{self.theme}/{path_to_icon}")
 
     def button_press(self, button) -> None:
         """
@@ -114,18 +111,10 @@ class SetCustomLimitDialog(QDialog):
         for index, name in enumerate(button_names):
             if name == DialogButtons.add:
                 button = QPushButton(f"  {name}")
-                button.setIcon(
-                    QIcon(f"ui/BreezeStyleSheets/dist/pyqt6/{self.theme}/dialog_ok.svg")
-                )
-            elif os.path.isfile(
-                f"ui/BreezeStyleSheets/dist/pyqt6/{self.theme}/dialog_{name.lower()}.svg"
-            ):
+                button.setIcon(QIcon(f"ui/BreezeStyleSheets/dist/pyqt6/{self.theme}/dialog_ok.svg"))
+            elif os.path.isfile(f"ui/BreezeStyleSheets/dist/pyqt6/{self.theme}/dialog_{name.lower()}.svg"):
                 button = QPushButton(f"  {name}")
-                button.setIcon(
-                    QIcon(
-                        f"ui/BreezeStyleSheets/dist/pyqt6/{self.theme}/dialog_{name.lower()}.svg"
-                    )
-                )
+                button.setIcon(QIcon(f"ui/BreezeStyleSheets/dist/pyqt6/{self.theme}/dialog_{name.lower()}.svg"))
             else:
                 button = QPushButton(name)
             if index == 0:

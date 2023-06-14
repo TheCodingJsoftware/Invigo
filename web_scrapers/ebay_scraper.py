@@ -3,7 +3,7 @@ import re
 
 import requests
 from bs4 import BeautifulSoup
-from PyQt5.QtCore import QThread, pyqtSignal
+from PyQt6.QtCore import QThread, pyqtSignal
 
 
 class EbayScraper(QThread):
@@ -24,9 +24,7 @@ class EbayScraper(QThread):
         self.TITLE_REGEX = r'<h3 class="s-item__title">([\w|\W]{1,})<\/h3>'
         self.PRICE_REGEX = r'<span class="s-item__price">\n\s{1,100}(\$\d{1,}\.\d{1,2})'
         self.SHIPPING_REGEX = r'<span class="s-item__shipping s-item__logisticsCost">\n\s{1,100}(\+\$\d{1,}\.\d{1,2})'
-        self.LINK_REGEX = (
-            r'href="(https:\/\/www\.ebay\.com\/itm\/[\W|\w|\S|\s]{1,100})" tabindex'
-        )
+        self.LINK_REGEX = r'href="(https:\/\/www\.ebay\.com\/itm\/[\W|\w|\S|\s]{1,100})" tabindex'
         self.url = f"https://www.ebay.com/sch/i.html?_from=R40&_nkw={self.item_to_search.replace(' ', '+')}&_sacat=0&_ipg=240"
 
     def run(self) -> None:
@@ -72,13 +70,7 @@ class EbayScraper(QThread):
         shipping: str = ""
         link: str = ""
         for match in title_matches:
-            title = (
-                match.group(1)
-                .replace("\n", "")
-                .replace("  ", "")
-                .replace("&amp;", "&")
-                .strip()
-            )
+            title = match.group(1).replace("\n", "").replace("  ", "").replace("&amp;", "&").strip()
 
         for match in price_matches:
             price = match.group(1).strip()

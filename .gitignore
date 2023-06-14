@@ -88,3 +88,5 @@ received_file.json
 inventory_file_to_use.txt
 *.pdf
 output.txt
+test/
+output.csv

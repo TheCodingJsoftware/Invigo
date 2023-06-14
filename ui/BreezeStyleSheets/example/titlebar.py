@@ -70,10 +70,10 @@
 '''
 
 import enum
-import shared
 import sys
-
 from pathlib import Path
+
+import shared
 
 parser = shared.create_parser()
 parser.add_argument(

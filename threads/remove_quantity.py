@@ -4,8 +4,8 @@ import os
 import threading
 from datetime import datetime
 
-from PyQt5 import QtTest
-from PyQt5.QtCore import QThread, pyqtSignal
+from PyQt6 import QtTest
+from PyQt6.QtCore import QThread, pyqtSignal
 
 from utils.json_file import JsonFile
 

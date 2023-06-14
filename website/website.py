@@ -38,7 +38,7 @@ def index() -> None:
         #return render_template("index.html")
         #inventory = {}
         return render_template(
-            "index.html",
+            "index-striped.html",
             search_term="",
             inventory=inventory,
             part_names=get_all_part_names(),

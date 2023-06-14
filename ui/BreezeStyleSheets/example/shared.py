@@ -84,8 +84,8 @@ def import_qt(args):
         QtCore.QDir.addSearchPath(args.stylesheet, f'{dist}/pyqt6/{args.stylesheet}/')
     else:
         sys.path.insert(0, home)
-        from PyQt5 import QtCore, QtGui, QtWidgets
         import breeze_resources
+        from PyQt5 import QtCore, QtGui, QtWidgets
 
     return QtCore, QtGui, QtWidgets
 

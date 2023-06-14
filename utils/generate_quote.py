@@ -4,16 +4,17 @@ import os
 import sys
 from datetime import datetime
 
-from utils.quote_excel_file import ExcelFile
 from utils.json_file import JsonFile
+from utils.quote_excel_file import ExcelFile
 
 settings_file = JsonFile(file_name="settings")
 
 
 class GenerateQuote:
-    def __init__(self, action: tuple[bool, bool, bool, bool], quote_data: dict, order_number: int) -> None:
+    def __init__(self, action: tuple[bool, bool, bool, bool], file_name: str, quote_data: dict, order_number: int) -> None:
         self.program_directory = os.path.dirname(os.path.realpath(sys.argv[0]))
         self.order_number: int = order_number
+        self.file_name = file_name
         config = configparser.ConfigParser()
         config.read(f"{self.program_directory}/laser_quote_variables.cfg")
         self.nitrogen_cost_per_hour: int = float(config.get("GLOBAL VARIABLES", "nitrogen_cost_per_hour"))
@@ -35,8 +36,6 @@ class GenerateQuote:
         AL      Aluminium       Nitrogen
         """
         self.gauges = config.get("GLOBAL VARIABLES", "gauges").split(",")
-
-        self.file_name = datetime.now().strftime("%Y-%m-%d-%H-%M-%S")
         self.quote_data = quote_data
         self.nests = self.get_nests()
         self.should_generate_quote, self.should_generate_workorder, self.should_update_inventory, self.should_generate_packing_slip = action
@@ -52,9 +51,9 @@ class GenerateQuote:
         """
         excel_document = ExcelFile(
             file_name=f"{self.path_to_save_quotes}/{self.file_name}.xlsx",
-            generate_quote=self.should_generate_quote,
+            generate_quote=True,
             should_generate_packing_slip=self.should_generate_packing_slip,
-            should_generate_workorder=self.should_generate_workorder,
+            should_generate_workorder=False,
         )
         self.generate(excel_document)
 
@@ -64,9 +63,9 @@ class GenerateQuote:
         """
         excel_document = ExcelFile(
             file_name=f"{self.path_to_save_workorders}/{self.file_name}.xlsx",
-            generate_quote=self.should_generate_quote,
+            generate_quote=False,
             should_generate_packing_slip=self.should_generate_packing_slip,
-            should_generate_workorder=self.should_generate_workorder,
+            should_generate_workorder=True,
         )
         self.generate(excel_document)
 

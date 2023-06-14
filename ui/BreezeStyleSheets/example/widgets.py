@@ -30,8 +30,9 @@
     Simple example showing numerous built-in widgets.
 '''
 
-import shared
 import sys
+
+import shared
 
 parser = shared.create_parser()
 args, unknown = shared.parse_args(parser)
