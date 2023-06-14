@@ -7,8 +7,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1213</width>
-    <height>658</height>
+    <width>2129</width>
+    <height>928</height>
    </rect>
   </property>
   <property name="font">
@@ -142,8 +142,8 @@
                 <rect>
                  <x>0</x>
                  <y>0</y>
-                 <width>369</width>
-                 <height>69</height>
+                 <width>358</width>
+                 <height>246</height>
                 </rect>
                </property>
                <property name="maximumSize">
@@ -470,8 +470,8 @@ QPushButton#pushButton_create_new:disabled{
                 <rect>
                  <x>0</x>
                  <y>0</y>
-                 <width>164</width>
-                 <height>432</height>
+                 <width>294</width>
+                 <height>705</height>
                 </rect>
                </property>
                <property name="maximumSize">
@@ -688,8 +688,8 @@ QPushButton#pushButton_add_new_sheet:disabled{
                 <rect>
                  <x>0</x>
                  <y>0</y>
-                 <width>373</width>
-                 <height>402</height>
+                 <width>353</width>
+                 <height>682</height>
                 </rect>
                </property>
                <layout class="QVBoxLayout" name="verticalLayout_21">
@@ -1012,8 +1012,8 @@ QPushButton#pushButton_add_new_sheet:disabled{
                      <rect>
                       <x>0</x>
                       <y>0</y>
-                      <width>521</width>
-                      <height>383</height>
+                      <width>490</width>
+                      <height>657</height>
                      </rect>
                     </property>
                     <property name="styleSheet">
@@ -1218,7 +1218,7 @@ QPushButton#pushButton_generate_quote:disabled{
          <number>0</number>
         </property>
         <item>
-         <layout class="QHBoxLayout" name="horizontalLayout_5" stretch="6,1">
+         <layout class="QHBoxLayout" name="horizontalLayout_5" stretch="7,0,2">
           <property name="bottomMargin">
            <number>6</number>
           </property>
@@ -1226,23 +1226,152 @@ QPushButton#pushButton_generate_quote:disabled{
            <layout class="QVBoxLayout" name="workspace_layout"/>
           </item>
           <item>
-           <layout class="QVBoxLayout" name="workspace_side_panel">
-            <item>
-             <widget class="QLineEdit" name="lineEdit">
-              <property name="placeholderText">
-               <string>Search for items...</string>
-              </property>
-              <property name="clearButtonEnabled">
-               <bool>true</bool>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <layout class="QHBoxLayout" name="horizontalLayout_9">
-              <item>
-               <widget class="QPushButton" name="pushButton_show_sub_assembly">
-                <property name="styleSheet">
-                 <string notr="true">QPushButton#pushButton_show_sub_assembly{
+           <widget class="QPushButton" name="pushButton_hide_filter">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Fixed" vsizetype="Expanding">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="minimumSize">
+             <size>
+              <width>15</width>
+              <height>0</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>15</width>
+              <height>16777215</height>
+             </size>
+            </property>
+            <property name="toolTip">
+             <string>Show/Hide Filter</string>
+            </property>
+            <property name="statusTip">
+             <string>Show/Hide Filter</string>
+            </property>
+            <property name="styleSheet">
+             <string notr="true">
+QPushButton {
+    background-color: rgba(71, 71, 71, 130);
+    border: 1px solid rgba(76, 76, 76, 130);
+    border-radius: 8px;
+    padding: 3px 3px;
+    color: rgb(210, 210, 210);
+}
+
+QPushButton:hover {
+    background-color: rgba(76, 76, 76, 160);
+    border: 1px solid rgba(71, 76, 88, 130);
+}
+
+QPushButton:pressed {
+    background-color: rgba(39, 39, 39, 160);
+    border: 1px solid rgba(47, 50, 57, 130);
+    color: rgb(132, 132, 132);
+}</string>
+            </property>
+            <property name="text">
+             <string>&gt;
+
+F
+i
+l
+t
+e
+r
+
+&gt;</string>
+            </property>
+            <property name="checkable">
+             <bool>true</bool>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QWidget" name="workspace_side_panel_2" native="true">
+            <property name="minimumSize">
+             <size>
+              <width>420</width>
+              <height>0</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>420</width>
+              <height>16777215</height>
+             </size>
+            </property>
+            <layout class="QVBoxLayout" name="workspace_side_panel">
+             <item>
+              <widget class="QPushButton" name="pushButton_use_filter">
+               <property name="font">
+                <font>
+                 <pointsize>16</pointsize>
+                </font>
+               </property>
+               <property name="styleSheet">
+                <string notr="true">QPushButton#pushButton_use_filter{
+	color: #ffffff;
+    background-color: #3daee9;
+    border: 0.01em solid #3daee9;
+    border-radius: 8px;
+}
+QPushButton#pushButton_use_filter:checked{
+    background-color: #3daee9;
+    border: 0.01em solid #3daee9;
+}
+QPushButton#pushButton_use_filter:hover{
+    background-color: #48b6ed;
+    border-color: #48b6ed;
+}
+QPushButton#pushButton_use_filter:pressed{
+    background-color: #2b92c5;
+    border-color: #2b92c5;
+}
+
+QPushButton#pushButton_use_filter:!checked {
+    background-color: rgba(71, 71, 71, 130);
+    border: 0.01em solid rgba(76, 76, 76, 130);
+    border-radius: 8px;
+    color: grey;
+}
+
+QPushButton:hover#pushButton_use_filter:!checked {
+    background-color: rgba(76, 76, 76, 130);
+    border: 0.01em solid rgba(71, 76, 88, 130);
+}
+
+QPushButton:pressed#pushButton_use_filter:!checked {
+    background-color: rgba(39, 39, 39, 130);
+    border: 0.01em solid rgba(47, 50, 57, 130);
+}</string>
+               </property>
+               <property name="text">
+                <string>Filter</string>
+               </property>
+               <property name="checkable">
+                <bool>true</bool>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QLineEdit" name="lineEdit_search">
+               <property name="placeholderText">
+                <string>Search for items...</string>
+               </property>
+               <property name="clearButtonEnabled">
+                <bool>true</bool>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <layout class="QHBoxLayout" name="horizontalLayout_9">
+               <item>
+                <widget class="QPushButton" name="pushButton_show_sub_assembly">
+                 <property name="styleSheet">
+                  <string notr="true">QPushButton#pushButton_show_sub_assembly{
 	color: #ffffff;
     background-color: #3daee9;
     border: 0.01em solid #3daee9;
@@ -1277,19 +1406,22 @@ QPushButton:pressed#pushButton_show_sub_assembly:!checked {
     background-color: rgba(39, 39, 39, 130);
     border: 0.01em solid rgba(47, 50, 57, 130);
 }</string>
-                </property>
-                <property name="text">
-                 <string>Show Sub Assemblies</string>
-                </property>
-                <property name="checkable">
-                 <bool>true</bool>
-                </property>
-               </widget>
-              </item>
-              <item>
-               <widget class="QPushButton" name="pushButton_show_item_summary">
-                <property name="styleSheet">
-                 <string notr="true">QPushButton#pushButton_show_item_summary{
+                 </property>
+                 <property name="text">
+                  <string>Show Sub Assemblies</string>
+                 </property>
+                 <property name="checkable">
+                  <bool>true</bool>
+                 </property>
+                 <property name="checked">
+                  <bool>true</bool>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QPushButton" name="pushButton_show_item_summary">
+                 <property name="styleSheet">
+                  <string notr="true">QPushButton#pushButton_show_item_summary{
 	color: #ffffff;
     background-color: #3daee9;
     border: 0.01em solid #3daee9;
@@ -1324,77 +1456,490 @@ QPushButton:pressed#pushButton_show_item_summary:!checked {
     background-color: rgba(39, 39, 39, 130);
     border: 0.01em solid rgba(47, 50, 57, 130);
 }</string>
-                </property>
-                <property name="text">
-                 <string>Show Item Summary</string>
-                </property>
-                <property name="checkable">
-                 <bool>true</bool>
-                </property>
-               </widget>
-              </item>
-             </layout>
-            </item>
-            <item>
-             <widget class="QScrollArea" name="scrollArea_5">
-              <property name="widgetResizable">
-               <bool>true</bool>
-              </property>
-              <widget class="QWidget" name="scrollAreaWidgetContents_5">
-               <property name="geometry">
-                <rect>
-                 <x>0</x>
-                 <y>0</y>
-                 <width>241</width>
-                 <height>472</height>
-                </rect>
+                 </property>
+                 <property name="text">
+                  <string>Show Item Summary</string>
+                 </property>
+                 <property name="checkable">
+                  <bool>true</bool>
+                 </property>
+                </widget>
+               </item>
+              </layout>
+             </item>
+             <item>
+              <widget class="QScrollArea" name="scrollArea_5">
+               <property name="widgetResizable">
+                <bool>true</bool>
                </property>
-               <layout class="QVBoxLayout" name="verticalLayout_22">
-                <item>
-                 <layout class="QHBoxLayout" name="horizontalLayout_7">
-                  <item>
-                   <widget class="QGroupBox" name="groupBox_10">
-                    <property name="title">
-                     <string>Material</string>
-                    </property>
-                    <layout class="QVBoxLayout" name="verticalLayout_32">
-                     <item>
-                      <layout class="QGridLayout" name="gridLayout_7"/>
-                     </item>
-                    </layout>
-                   </widget>
-                  </item>
-                  <item>
-                   <widget class="QGroupBox" name="groupBox_11">
-                    <property name="title">
-                     <string>Thicknesses</string>
-                    </property>
-                    <layout class="QVBoxLayout" name="verticalLayout_18">
-                     <item>
-                      <layout class="QGridLayout" name="gridLayout_9"/>
-                     </item>
-                    </layout>
-                   </widget>
-                  </item>
-                 </layout>
-                </item>
-                <item>
-                 <widget class="QGroupBox" name="groupBox_12">
-                  <property name="title">
-                   <string>Other</string>
-                  </property>
-                  <layout class="QVBoxLayout" name="verticalLayout_34">
+               <widget class="QWidget" name="scrollAreaWidgetContents_5">
+                <property name="geometry">
+                 <rect>
+                  <x>0</x>
+                  <y>0</y>
+                  <width>590</width>
+                  <height>805</height>
+                 </rect>
+                </property>
+                <layout class="QVBoxLayout" name="verticalLayout_22">
+                 <item>
+                  <layout class="QHBoxLayout" name="horizontalLayout_25">
                    <item>
-                    <layout class="QGridLayout" name="gridLayout_8"/>
+                    <widget class="QGroupBox" name="groupBox_10">
+                     <property name="minimumSize">
+                      <size>
+                       <width>0</width>
+                       <height>0</height>
+                      </size>
+                     </property>
+                     <property name="maximumSize">
+                      <size>
+                       <width>16777215</width>
+                       <height>16777215</height>
+                      </size>
+                     </property>
+                     <property name="title">
+                      <string>Materials</string>
+                     </property>
+                     <layout class="QVBoxLayout" name="verticalLayout_32">
+                      <item>
+                       <widget class="QListWidget" name="listWidget_materials">
+                        <property name="minimumSize">
+                         <size>
+                          <width>0</width>
+                          <height>200</height>
+                         </size>
+                        </property>
+                        <property name="maximumSize">
+                         <size>
+                          <width>16777215</width>
+                          <height>200</height>
+                         </size>
+                        </property>
+                        <property name="alternatingRowColors">
+                         <bool>false</bool>
+                        </property>
+                        <property name="selectionMode">
+                         <enum>QAbstractItemView::MultiSelection</enum>
+                        </property>
+                        <property name="selectionBehavior">
+                         <enum>QAbstractItemView::SelectRows</enum>
+                        </property>
+                        <property name="viewMode">
+                         <enum>QListView::ListMode</enum>
+                        </property>
+                       </widget>
+                      </item>
+                      <item>
+                       <layout class="QHBoxLayout" name="horizontalLayout_26">
+                        <item>
+                         <widget class="QPushButton" name="pushButton_materials_select_all">
+                          <property name="text">
+                           <string>Select All</string>
+                          </property>
+                         </widget>
+                        </item>
+                        <item>
+                         <widget class="QPushButton" name="pushButton_materials_clear_selection">
+                          <property name="text">
+                           <string>Clear</string>
+                          </property>
+                         </widget>
+                        </item>
+                       </layout>
+                      </item>
+                     </layout>
+                    </widget>
+                   </item>
+                   <item>
+                    <widget class="QGroupBox" name="groupBox_11">
+                     <property name="minimumSize">
+                      <size>
+                       <width>0</width>
+                       <height>0</height>
+                      </size>
+                     </property>
+                     <property name="maximumSize">
+                      <size>
+                       <width>16777215</width>
+                       <height>16777215</height>
+                      </size>
+                     </property>
+                     <property name="title">
+                      <string>Thicknesses</string>
+                     </property>
+                     <layout class="QVBoxLayout" name="verticalLayout_18">
+                      <item>
+                       <widget class="QListWidget" name="listWidget_thicknesses">
+                        <property name="minimumSize">
+                         <size>
+                          <width>0</width>
+                          <height>200</height>
+                         </size>
+                        </property>
+                        <property name="maximumSize">
+                         <size>
+                          <width>16777215</width>
+                          <height>200</height>
+                         </size>
+                        </property>
+                        <property name="alternatingRowColors">
+                         <bool>false</bool>
+                        </property>
+                        <property name="selectionMode">
+                         <enum>QAbstractItemView::MultiSelection</enum>
+                        </property>
+                        <property name="selectionBehavior">
+                         <enum>QAbstractItemView::SelectRows</enum>
+                        </property>
+                        <property name="viewMode">
+                         <enum>QListView::ListMode</enum>
+                        </property>
+                       </widget>
+                      </item>
+                      <item>
+                       <layout class="QHBoxLayout" name="horizontalLayout_27">
+                        <item>
+                         <widget class="QPushButton" name="pushButton_thicknesses_select_all">
+                          <property name="text">
+                           <string>Select All</string>
+                          </property>
+                         </widget>
+                        </item>
+                        <item>
+                         <widget class="QPushButton" name="pushButton_thicknesses_clear_selection">
+                          <property name="text">
+                           <string>Clear</string>
+                          </property>
+                         </widget>
+                        </item>
+                       </layout>
+                      </item>
+                     </layout>
+                    </widget>
+                   </item>
+                   <item>
+                    <widget class="QGroupBox" name="groupBox_17">
+                     <property name="title">
+                      <string>Paint Colors</string>
+                     </property>
+                     <layout class="QVBoxLayout" name="verticalLayout_41">
+                      <item>
+                       <widget class="QListWidget" name="listWidget_paint_colors">
+                        <property name="selectionMode">
+                         <enum>QAbstractItemView::MultiSelection</enum>
+                        </property>
+                        <property name="selectionBehavior">
+                         <enum>QAbstractItemView::SelectRows</enum>
+                        </property>
+                       </widget>
+                      </item>
+                      <item>
+                       <layout class="QHBoxLayout" name="horizontalLayout_28">
+                        <item>
+                         <widget class="QPushButton" name="pushButton_paint_select_all">
+                          <property name="text">
+                           <string>Select All</string>
+                          </property>
+                         </widget>
+                        </item>
+                        <item>
+                         <widget class="QPushButton" name="pushButton_paint_clear_selection">
+                          <property name="text">
+                           <string>Clear</string>
+                          </property>
+                         </widget>
+                        </item>
+                       </layout>
+                      </item>
+                     </layout>
+                    </widget>
                    </item>
                   </layout>
-                 </widget>
-                </item>
-               </layout>
+                 </item>
+                 <item>
+                  <widget class="QGroupBox" name="groupBox_due_dates">
+                   <property name="minimumSize">
+                    <size>
+                     <width>0</width>
+                     <height>180</height>
+                    </size>
+                   </property>
+                   <property name="maximumSize">
+                    <size>
+                     <width>16777215</width>
+                     <height>180</height>
+                    </size>
+                   </property>
+                   <property name="title">
+                    <string>Due Dates</string>
+                   </property>
+                   <property name="checkable">
+                    <bool>true</bool>
+                   </property>
+                   <property name="checked">
+                    <bool>false</bool>
+                   </property>
+                   <layout class="QVBoxLayout" name="verticalLayout_35">
+                    <item>
+                     <layout class="QGridLayout" name="gridLayout_7">
+                      <item row="0" column="1">
+                       <widget class="QDateTimeEdit" name="dateTimeEdit_after">
+                        <property name="toolTip">
+                         <string>Default date is today</string>
+                        </property>
+                        <property name="calendarPopup">
+                         <bool>true</bool>
+                        </property>
+                       </widget>
+                      </item>
+                      <item row="1" column="1">
+                       <widget class="QDateTimeEdit" name="dateTimeEdit_before">
+                        <property name="buttonSymbols">
+                         <enum>QAbstractSpinBox::UpDownArrows</enum>
+                        </property>
+                        <property name="specialValueText">
+                         <string/>
+                        </property>
+                        <property name="accelerated">
+                         <bool>true</bool>
+                        </property>
+                        <property name="showGroupSeparator" stdset="0">
+                         <bool>false</bool>
+                        </property>
+                        <property name="calendarPopup">
+                         <bool>true</bool>
+                        </property>
+                        <property name="timeSpec">
+                         <enum>Qt::LocalTime</enum>
+                        </property>
+                       </widget>
+                      </item>
+                      <item row="1" column="0">
+                       <widget class="QLabel" name="label_13">
+                        <property name="text">
+                         <string>Before:</string>
+                        </property>
+                       </widget>
+                      </item>
+                      <item row="0" column="0">
+                       <widget class="QLabel" name="label_14">
+                        <property name="text">
+                         <string>After:</string>
+                        </property>
+                       </widget>
+                      </item>
+                     </layout>
+                    </item>
+                    <item>
+                     <widget class="QGroupBox" name="groupBox_16">
+                      <property name="title">
+                       <string>Quick Select</string>
+                      </property>
+                      <layout class="QVBoxLayout" name="verticalLayout_39">
+                       <item>
+                        <layout class="QVBoxLayout" name="verticalLayout_38">
+                         <item>
+                          <layout class="QHBoxLayout" name="horizontalLayout_7">
+                           <item>
+                            <widget class="QLabel" name="label_15">
+                             <property name="minimumSize">
+                              <size>
+                               <width>40</width>
+                               <height>0</height>
+                              </size>
+                             </property>
+                             <property name="maximumSize">
+                              <size>
+                               <width>40</width>
+                               <height>16777215</height>
+                              </size>
+                             </property>
+                             <property name="text">
+                              <string>Due: </string>
+                             </property>
+                            </widget>
+                           </item>
+                           <item>
+                            <widget class="QPushButton" name="pushButton_3">
+                             <property name="text">
+                              <string>Tomorrow</string>
+                             </property>
+                            </widget>
+                           </item>
+                           <item>
+                            <widget class="QPushButton" name="pushButton_2">
+                             <property name="text">
+                              <string>Next Week</string>
+                             </property>
+                            </widget>
+                           </item>
+                           <item>
+                            <widget class="QPushButton" name="pushButton">
+                             <property name="text">
+                              <string>Next Month</string>
+                             </property>
+                            </widget>
+                           </item>
+                          </layout>
+                         </item>
+                        </layout>
+                       </item>
+                      </layout>
+                     </widget>
+                    </item>
+                   </layout>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="QGroupBox" name="groupBox_12">
+                   <property name="title">
+                    <string>Other</string>
+                   </property>
+                   <layout class="QVBoxLayout" name="verticalLayout_34">
+                    <item>
+                     <layout class="QHBoxLayout" name="horizontalLayout_21">
+                      <item>
+                       <widget class="QGroupBox" name="groupBox_14">
+                        <property name="title">
+                         <string>Flow Tags</string>
+                        </property>
+                        <property name="checkable">
+                         <bool>false</bool>
+                        </property>
+                        <layout class="QVBoxLayout" name="verticalLayout_36">
+                         <item>
+                          <layout class="QGridLayout" name="gridLayout_8">
+                           <item row="0" column="0">
+                            <widget class="QListWidget" name="listWidget_flow_tags">
+                             <property name="minimumSize">
+                              <size>
+                               <width>0</width>
+                               <height>200</height>
+                              </size>
+                             </property>
+                             <property name="maximumSize">
+                              <size>
+                               <width>16777215</width>
+                               <height>200</height>
+                              </size>
+                             </property>
+                             <property name="alternatingRowColors">
+                              <bool>false</bool>
+                             </property>
+                             <property name="selectionMode">
+                              <enum>QAbstractItemView::MultiSelection</enum>
+                             </property>
+                             <property name="selectionBehavior">
+                              <enum>QAbstractItemView::SelectRows</enum>
+                             </property>
+                             <property name="viewMode">
+                              <enum>QListView::ListMode</enum>
+                             </property>
+                             <property name="sortingEnabled">
+                              <bool>false</bool>
+                             </property>
+                            </widget>
+                           </item>
+                          </layout>
+                         </item>
+                         <item>
+                          <layout class="QHBoxLayout" name="horizontalLayout_22">
+                           <item>
+                            <widget class="QPushButton" name="pushButton_flow_tags_select_all">
+                             <property name="text">
+                              <string>Select All</string>
+                             </property>
+                            </widget>
+                           </item>
+                           <item>
+                            <widget class="QPushButton" name="pushButton_flow_tags_clear_selection">
+                             <property name="text">
+                              <string>Clear Selection</string>
+                             </property>
+                            </widget>
+                           </item>
+                          </layout>
+                         </item>
+                        </layout>
+                       </widget>
+                      </item>
+                      <item>
+                       <widget class="QGroupBox" name="groupBox_15">
+                        <property name="title">
+                         <string>Statuses</string>
+                        </property>
+                        <property name="checkable">
+                         <bool>false</bool>
+                        </property>
+                        <layout class="QVBoxLayout" name="verticalLayout_37">
+                         <item>
+                          <layout class="QGridLayout" name="gridLayout_9">
+                           <item row="0" column="0">
+                            <widget class="QListWidget" name="listWidget_statuses">
+                             <property name="minimumSize">
+                              <size>
+                               <width>0</width>
+                               <height>200</height>
+                              </size>
+                             </property>
+                             <property name="maximumSize">
+                              <size>
+                               <width>16777215</width>
+                               <height>200</height>
+                              </size>
+                             </property>
+                             <property name="alternatingRowColors">
+                              <bool>false</bool>
+                             </property>
+                             <property name="selectionMode">
+                              <enum>QAbstractItemView::MultiSelection</enum>
+                             </property>
+                             <property name="selectionBehavior">
+                              <enum>QAbstractItemView::SelectRows</enum>
+                             </property>
+                             <property name="viewMode">
+                              <enum>QListView::ListMode</enum>
+                             </property>
+                             <property name="sortingEnabled">
+                              <bool>false</bool>
+                             </property>
+                            </widget>
+                           </item>
+                          </layout>
+                         </item>
+                         <item>
+                          <layout class="QHBoxLayout" name="horizontalLayout_24">
+                           <item>
+                            <widget class="QPushButton" name="pushButton_statuses_select_all">
+                             <property name="text">
+                              <string>Select All</string>
+                             </property>
+                            </widget>
+                           </item>
+                           <item>
+                            <widget class="QPushButton" name="pushButton_statuses_clear_selection">
+                             <property name="text">
+                              <string>Clear Selection</string>
+                             </property>
+                            </widget>
+                           </item>
+                          </layout>
+                         </item>
+                        </layout>
+                       </widget>
+                      </item>
+                     </layout>
+                    </item>
+                   </layout>
+                  </widget>
+                 </item>
+                </layout>
+               </widget>
               </widget>
-             </widget>
-            </item>
-           </layout>
+             </item>
+            </layout>
+           </widget>
           </item>
          </layout>
         </item>
@@ -1597,8 +2142,8 @@ QPushButton:pressed#pushButton_show_item_summary:!checked {
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1213</width>
-     <height>21</height>
+     <width>2129</width>
+     <height>22</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">

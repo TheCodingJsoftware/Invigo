@@ -5,7 +5,7 @@ import os
 from typing import Union
 
 import ujson as json
-
+from PyQt6.QtWidgets import QListWidget, QCheckBox, QDateTimeEdit, QGroupBox, QLineEdit, QPushButton
 from utils.workspace.assembly import Assembly
 from utils.workspace.item import Item
 
@@ -84,16 +84,74 @@ class Workspace:
         # Consider filtering items relevant to the user
         return {}
 
-    # TODO
+    def filter_assemblies(self, sub_assembly: Assembly, filter: dict):
+        lineEdit_search: QLineEdit = filter['search']
+        listWidget_materials: QListWidget = filter['materials']
+        listWidget_thicknesses: QListWidget = filter['thicknesses']
+        listWidget_flow_tags: QListWidget = filter['flow_tags']
+        listWidget_statuses: QListWidget = filter['statuses']
+        groupBox_due_dates: QGroupBox = filter['due_dates']
+        dateTimeEdit_after: QDateTimeEdit = filter['dateTimeEdit_after']
+        dateTimeEdit_before: QDateTimeEdit = filter['dateTimeEdit_before']
+
+        # Recursively filter sub-assemblies
+        for item in sub_assembly.items:
+            # Apply search filter
+            item.set_value(key='show', value=False)
+            search_text = lineEdit_search.text().lower()
+            if search_text and search_text not in item.name.lower():
+                continue
+
+            # Apply materials filter
+            selected_materials = [item.text() for item in listWidget_materials.selectedItems()]
+            if selected_materials:
+                item_materials = item.get_value('material')
+                if item_materials not in selected_materials:
+                    continue
+
+            # Apply thicknesses filter
+            selected_thicknesses = [item.text() for item in listWidget_thicknesses.selectedItems()]
+            if selected_thicknesses:
+                item_thicknesses = item.get_value('thickness')
+                if item_thicknesses not in selected_thicknesses:
+                    continue
+
+            # Apply flow tags filter
+            selected_flow_tags = [item.text() for item in listWidget_flow_tags.selectedItems()]
+            if selected_flow_tags:
+                item_tag = item.get_value('flow_tag')[item.get_value('current_flow_state')]
+                if item_tag not in selected_flow_tags:
+                    continue
+
+            # Apply statuses filter
+            selected_statuses = [item.text() for item in listWidget_statuses.selectedItems()]
+            if selected_statuses:
+                item_status = item.get_value('status')
+                if item_status not in selected_statuses:
+                    continue
+
+            # Apply due dates filter
+            if groupBox_due_dates.isChecked():
+                assembly_due_date = item.get_value('due_date')
+                after_date = dateTimeEdit_after.dateTime().toPyDateTime().date()
+                before_date = dateTimeEdit_before.dateTime().toPyDateTime().date()
+                if assembly_due_date < after_date or assembly_due_date > before_date:
+                    continue
+            item.set_value(key='show', value=True)
+        for _sub_assembly in sub_assembly.sub_assemblies:
+            self.filter_assemblies(sub_assembly=_sub_assembly, filter=filter)
+
     def get_filtered_data(self, filter: dict) -> dict:
-        """
-        filters should be for each tab there is in the prats in inventory
-        {      tag ID     tag name
-            "material": "304 SS",
-            "thickness": "12 Gauge"
-        }
-        """
-        return {}
+        checkBox_use_filter: QPushButton = filter['use_filter']
+
+        if not checkBox_use_filter.isChecked():
+            for assembly in self.data:
+                assembly.set_default_value_to_all_items(key='show', value=True)
+            return self.data
+        else:
+            for assembly in self.data:
+                self.filter_assemblies(sub_assembly=assembly, filter=filter)
+        return self.data
 
     def get_data(self) -> dict:
         """

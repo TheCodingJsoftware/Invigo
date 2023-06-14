@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>579</width>
-    <height>296</height>
+    <width>592</width>
+    <height>332</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -146,7 +146,7 @@ border: 1px solid  rgb(0,120,212);
               <rect>
                <x>0</x>
                <y>0</y>
-               <width>529</width>
+               <width>542</width>
                <height>69</height>
               </rect>
              </property>
@@ -210,8 +210,8 @@ border: 1px solid  rgb(0,120,212);
             <rect>
              <x>0</x>
              <y>0</y>
-             <width>559</width>
-             <height>154</height>
+             <width>572</width>
+             <height>189</height>
             </rect>
            </property>
            <layout class="QVBoxLayout" name="verticalLayout_6">

@@ -212,6 +212,7 @@ class Assembly:
             if sub_assembly not in processed_assemblies:  # Check if the sub-assembly is already processed
                 data["sub_assemblies"][sub_assembly.name] = sub_assembly.to_dict(processed_assemblies)
         for item in self.items:
+            item.delete_value(key='show')
             data["items"][item.name] = item.data
         return data
 
@@ -232,6 +233,12 @@ class Assembly:
         """
         return next((item for item in self.items if item.name == item_name), None)
 
+    def get_all_items(self) -> list[Item]:
+        all_items = self.items.copy()
+        for sub_assembly in self.sub_assemblies:
+            all_items.extend(sub_assembly.get_all_items())
+        return all_items
+    
     def get_item_by_index(self, index: int) -> Item:
         """
         This function returns an item from a list based on its index.
@@ -262,39 +269,97 @@ class Assembly:
         return copy.deepcopy(self.get_item(item_name))
 
     def get_data(self) -> dict:
+        """
+        The function returns a dictionary containing the data.
+        
+        Returns:
+          A dictionary containing the data stored in the object.
+        """
         return self.data
 
     def set_timer(self, flow_tag: str, time: object) -> None:
+        """
+        This function sets a timer value for a specific flow tag in the assembly data dictionary.
+        
+        Args:
+          flow_tag (str): A string that serves as a unique identifier for a specific flow or process in
+        the program.
+          time (object): The "time" parameter is an object that has a method called "value()" which
+        returns the value of the time in seconds. This method is used to set the value of a timer for a
+        specific flow_tag in the assembly_data dictionary.
+        """
         self.assembly_data["timers"][flow_tag] = time.value()
 
-    def set_quantities_to_all_items(self, sub_assembly: "Assembly" = None, quantity_multiplier: float = 0) -> None:
-        for item in self.items:
-            unit_quantity = item.get_value(key="parts_per")
-            item.set_value(key="current_quantity", value=unit_quantity * quantity_multiplier)
-        if sub_assembly != None:
-            for sub_assembly in self.sub_assemblies:
-                for item in sub_assembly.items:
-                    unit_quantity = item.get_value(key="parts_per")
-                    item.set_value(key="current_quantity", value=unit_quantity * quantity_multiplier)
-                self.set_quantities_to_all_items(sub_assembly=sub_assembly, quantity_multiplier=quantity_multiplier)
+    def _set_data_to_all_sub_assemblies(self, sub_assembly: "Assembly", key: str, value: Any) -> None:
+        """
+        This function sets a key-value pair to all sub-assemblies recursively.
+        
+        Args:
+          sub_assembly ("Assembly"): This is an instance of the "Assembly" class, which represents a
+        sub-assembly of the current assembly.
+          key (str): The key is a string that represents the name of the data attribute that is being
+        set for the sub-assemblies. It is used to identify the data attribute when retrieving or
+        updating it later.
+          value (Any): The value that needs to be set for the given key in the sub-assemblies.
+        """
+        sub_assembly.set_assembly_data(key=key, value=value)
+        if sub_assembly.sub_assemblies:
+            for _sub_assembly in sub_assembly.sub_assemblies:
+                self._set_data_to_all_sub_assemblies(sub_assembly=_sub_assembly, key=key, value=value)
+        
+    def set_data_to_all_sub_assemblies(self, key: str, value: Any) -> None:
+        """
+        This function sets a key-value pair to the assembly data and recursively sets the same data to
+        all sub-assemblies.
+        
+        Args:
+          key (str): a string representing the key of the data to be set
+          value (Any): The value that needs to be set for the given key in the assembly_data dictionary
+        and all its sub-assemblies.
+        """
+        self.assembly_data[key] = value
+        for sub_assembly in self.sub_assemblies:
+            self._set_data_to_all_sub_assemblies(sub_assembly=sub_assembly, key=key, value=value)
 
     def _set_default_value_to_all_items(self, sub_assembly: "Assembly", key: str, value: str) -> None:
+        """
+        This function sets a default value to all items in an assembly and its sub-assemblies.
+        
+        Args:
+          sub_assembly ("Assembly"): An instance of the "Assembly" class that represents a sub-assembly
+        within the current assembly.
+          key (str): The key is a string that represents the name of the attribute or property that
+        needs to be set to a default value.
+          value (str): The value to be set as the default value for all items in the assembly and its
+        sub-assemblies.
+        """
         for item in self.items:
             item.set_value(key=key, value=value)
         if sub_assembly != None:
-            for sub_assembly in self.sub_assemblies:
-                for item in sub_assembly.items:
+            for _sub_assembly in sub_assembly.sub_assemblies:
+                for item in _sub_assembly.items:
                     item.set_value(key=key, value=value)
-                self._set_default_value_to_all_items(sub_assembly=sub_assembly, key=key, value=value)
+                if self.sub_assemblies:
+                    self._set_default_value_to_all_items(sub_assembly=_sub_assembly, key=key, value=value)
 
     def set_default_value_to_all_items(self, key: str, value: str) -> None:
+        """
+        This function sets a default value to all items in a given assembly and its sub-assemblies.
+        
+        Args:
+          key (str): a string representing the key for the value to be set
+          value (str): The value that will be set as the default value for all items in the assembly and
+        its sub-assemblies.
+        """
         for item in self.items:
             item.set_value(key=key, value=value)
         for sub_assembly in self.sub_assemblies:
             for item in sub_assembly.items:
                 item.set_value(key=key, value=value)
-            self._set_default_value_to_all_items(sub_assembly=sub_assembly, key=key, value=value)
+            if self.sub_assemblies:
+                self._set_default_value_to_all_items(sub_assembly=sub_assembly, key=key, value=value)
 
+    # TODO
     def setup_timers_for_all_items(self) -> None:
         # for item in self.items:
         #     item.set_value(key=key, value=value)

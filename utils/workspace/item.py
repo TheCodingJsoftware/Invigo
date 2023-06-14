@@ -57,6 +57,25 @@ class Item:
         """
         return self.data[key]
 
+    def delete_value(self, key: str) -> Any:
+        """
+        This function deletes a key-value pair from a dictionary and returns the value that was deleted.
+        
+        Args:
+          key (str): The key parameter is a string that represents the key of the value that needs to be
+        deleted from the data dictionary.
+        
+        Returns:
+          The value associated with the given key is being returned after deleting it from the
+        dictionary.
+        """
+        try:
+            value_copy = self.data[key]
+            del self.data[key]
+            return value_copy
+        except KeyError:
+            return None
+
     def rename(self, new_name: str) -> None:
         """
         This function takes a new name as input and sets it as the name attribute of an object.
