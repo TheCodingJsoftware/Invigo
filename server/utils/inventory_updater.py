@@ -251,6 +251,7 @@ def subtract_sheet_count(sheet_name_to_update: str, sheet_count: int) -> None:
       sheet_name_to_update (str): str = "Sheet Name"
       sheet_count (int): int = the number of sheets to subtract from the inventory
     """
+    sheet_name_to_update = sheet_name_to_update.replace(" x ", "x")
     category_data = price_of_steel_inventory.get_data()
     for category in list(category_data.keys()):
         if category == "Price Per Pound":

@@ -5,6 +5,7 @@ import sys
 import zipfile
 from datetime import datetime
 from io import StringIO
+from pathlib import Path
 
 import coloredlogs
 import tornado.ioloop
@@ -134,6 +135,50 @@ class FileUploadHandler(tornado.web.RequestHandler):
         else:
             self.write("No file received.")
             CustomPrint.print("ERROR - No file received.", connected_clients=connected_clients)
+
+class WorkspaceFileUploader(tornado.web.RequestHandler):
+    # this saves a file that the client uploads
+    async def post(self):
+        file_info = self.request.files.get("file")
+        if file_info:
+            file_data = file_info[0]["body"]
+            file_name = os.path.basename(file_info[0]["filename"])
+            file_ext = os.path.splitext(file_name)[1].upper().replace('.', '')
+            Path(f'data/workspace/{file_ext}').mkdir(parents=True, exist_ok=True)
+            with open(f'data/workspace/{file_ext}/{file_name}', "wb") as file:
+                file.write(file_data)
+            CustomPrint.print(
+                f'INFO - Received "{file_name}" from {self.request.remote_ip}',
+                connected_clients=connected_clients,
+            )
+            self.write("File uploaded successfully.")
+        else:
+            self.write("No file received.")
+            CustomPrint.print("ERROR - No file received.", connected_clients=connected_clients)
+
+class WorkspaceFileHandler(tornado.web.RequestHandler):
+    def get(self, file_name):
+        """
+        This function retrieves an image file and sends it as a response to a client's request, or
+        returns a 404 error if the file does not exist.
+
+        Args:
+          image_name: A string representing the name of the image file that the client is requesting.
+        """
+        file_ext = os.path.splitext(file_name)[1].upper().replace('.', '')
+        file_name = os.path.basename(file_name)
+        filepath = os.path.join("data/workspace", file_ext, file_name)
+        if os.path.exists(filepath):
+            with open(filepath, "rb") as f:
+                # self.set_header("Content-Type", "image/jpeg")
+                self.write(f.read())
+            CustomPrint.print(
+                f'INFO - Sent "{file_name}" to {self.request.remote_ip}',
+                connected_clients=connected_clients,
+            )
+        else:
+            self.set_status(404)
+
 
 
 class ImageHandler(tornado.web.RequestHandler):
@@ -313,6 +358,8 @@ if __name__ == "__main__":
             (r"/file/(.*)", FileReceiveHandler),
             (r"/command", CommandHandler),
             (r"/upload", FileUploadHandler),
+            (r"/workspace_upload", WorkspaceFileUploader),
+            (r"/workspace_get_file/(.*)", WorkspaceFileHandler),
             (r"/ws", FileSenderHandler),
             (r"/image/(.*)", ImageHandler),
             (r"/set_order_number", SetOrderNumberHandler),
