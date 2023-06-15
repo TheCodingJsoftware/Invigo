@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+    <meta name="viewport" content ="width=device-width,initial-scale=1,user-scalable=yes" />
+<head>
+    <style>
+        .content {
+            display: inline-block;
+            margin: 130px 10px;
+            text-align: center;
+            background-color: #222222;
+        }
+        button {
+            color: #ffffff;
+            background-color: #3daee9;
+            border: none;
+            border-radius: 8px;
+            padding: 8px 16px;
+            font-weight: bold;
+            padding: 5% 10%;
+            font-size: 20px;
+        }
+
+        button:focus {
+            background-color: #48b6ed;
+            border-color: #48b6ed;
+        }
+
+        button:after {
+            background-color: #2b92c5;
+            border-color: #2b92c5;
+            color: rgb(132, 132, 132);
+        }
+
+        /* Text */
+        p {
+            font-family: Arial, Helvetica, sans-serif;
+            color: rgb(210, 210, 210);
+            font-size: 26px;
+            margin-bottom: 5px;
+        }
+        h1 {
+            font-family: Arial, Helvetica, sans-serif;
+            color: rgb(210, 210, 210);
+            margin-bottom: 5px;
+            font-size: 28px;
+        }
+        label{
+            font-size: 26px;
+            font-family: Arial, Helvetica, sans-serif;
+            color: rgb(210, 210, 210);
+            margin-bottom: 5px;
+        }
+        input{
+            margin:10px;
+            font-size: 36px;
+            max-width: 100px;
+            display: inline-block;
+        }
+        .form-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+
+        .form-container label,
+        .form-container input,
+        .form-container button {
+            margin-bottom: 10px;
+        }
+        /* Input Dialog */
+        input[type="text"], input[type="number"] {
+            font-family: Arial, Helvetica, sans-serif;
+            background-color: rgba(71, 71, 71, 130);
+            border: 1px solid rgba(76, 76, 76, 130);
+            border-radius: 8px;
+            padding: 3px 3px;
+            color: rgb(210, 210, 210);
+        }
+
+        input[type="text"]:hover, input[type="number"]:hover {
+            color: rgb(210, 210, 210);
+            font-family: Arial, Helvetica, sans-serif;
+            background-color: rgba(76, 76, 76, 160);
+            border: 1px solid rgba(71, 76, 88, 130);
+        }
+
+        input[type="text"]:focus, input[type="number"]:focus {
+            font-family: Arial, Helvetica, sans-serif;
+            outline: none;
+            background-color: rgba(39, 39, 39, 160);
+            border: 1px solid rgba(47, 50, 57, 130);
+            color: rgb(132, 132, 132);
+        }
+    </style>
+    <title>{{ sheet_name }}</title>
+</head>
+<body class="content">
+    <h1>{{ sheet_name }}</h1>
+    <p>Current quantity: {{ quantity }}</p>
+    <form action="/sheets_in_inventory/{{ sheet_name }}" method="post" class="form-container">
+        <label for="new_quantity">New Quantity:</label>
+        <input type="number" name="new_quantity" id="new_quantity" placeholder="0">
+        <button type="submit">Set</button>
+    </form>
+</body>
+</html>

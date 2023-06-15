@@ -295,6 +295,47 @@ def get_sheet_information(batch_data: dict) -> dict:
     return sheet_information
 
 
+def get_sheet_quantity(sheet_name: str) -> float:
+    category_data = price_of_steel_inventory.get_data()
+    for category in list(category_data.keys()):
+        if category == "Price Per Pound":
+            continue
+        for _sheet_name in list(category_data[category].keys()):
+            if sheet_name == _sheet_name:
+                return category_data[category][sheet_name]["current_quantity"]
+
+
+def set_sheet_quantity(sheet_name: str, new_quantity: float, clients) -> None:
+    category_data = price_of_steel_inventory.get_data()
+    for category in list(category_data.keys()):
+        if category == "Price Per Pound":
+            continue
+        for _sheet_name in list(category_data[category].keys()):
+            if sheet_name == _sheet_name:
+                price_of_steel_inventory.change_object_in_object_item(
+                    category,
+                    sheet_name,
+                    "current_quantity",
+                    new_quantity,
+                )
+                price_of_steel_inventory.change_object_in_object_item(
+                    category,
+                    sheet_name,
+                    "latest_change_current_quantity",
+                    f'Set to {new_quantity} with QR code at {datetime.now().strftime("%B %d %A %Y %I:%M:%S %p")}',
+                )
+    signal_clients_for_changes(clients)
+
+def sheet_exists(sheet_name: str) -> bool:
+    category_data = price_of_steel_inventory.get_data()
+    for category in list(category_data.keys()):
+        if category == "Price Per Pound":
+            continue
+        for _sheet_name in list(category_data[category].keys()):
+            if sheet_name == _sheet_name:
+                return True
+    return False
+
 def sort_inventory() -> None:
     """
     This function sorts the parts in inventory by category and then by current quantity

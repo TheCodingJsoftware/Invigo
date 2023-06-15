@@ -8,6 +8,7 @@ from io import StringIO
 from pathlib import Path
 
 import coloredlogs
+import jinja2
 import tornado.ioloop
 import tornado.web
 import tornado.websocket
@@ -16,12 +17,20 @@ from markupsafe import Markup
 
 from utils.custom_print import CustomPrint, print_clients
 from utils.files import get_file_type
-from utils.inventory_updater import update_inventory
+from utils.inventory_updater import (
+    get_sheet_quantity,
+    set_sheet_quantity,
+    sheet_exists,
+    update_inventory,
+)
 from utils.sheet_report import generate_sheet_report
 
 # Store connected clients
 connected_clients = set()
 
+# Configure Jinja2 template environment
+loader = jinja2.FileSystemLoader("templates")
+env = jinja2.Environment(loader=loader)
 
 class MainHandler(tornado.web.RequestHandler):
     def get(self):
@@ -136,6 +145,7 @@ class FileUploadHandler(tornado.web.RequestHandler):
             self.write("No file received.")
             CustomPrint.print("ERROR - No file received.", connected_clients=connected_clients)
 
+
 class WorkspaceFileUploader(tornado.web.RequestHandler):
     # this saves a file that the client uploads
     async def post(self):
@@ -155,6 +165,7 @@ class WorkspaceFileUploader(tornado.web.RequestHandler):
         else:
             self.write("No file received.")
             CustomPrint.print("ERROR - No file received.", connected_clients=connected_clients)
+
 
 class WorkspaceFileHandler(tornado.web.RequestHandler):
     def get(self, file_name):
@@ -178,7 +189,6 @@ class WorkspaceFileHandler(tornado.web.RequestHandler):
             )
         else:
             self.set_status(404)
-
 
 
 class ImageHandler(tornado.web.RequestHandler):
@@ -254,6 +264,45 @@ class GetOrderNumberHandler(tornado.web.RequestHandler):
             f'INFO - Sent order number to {self.request.remote_ip}',
             connected_clients=connected_clients,
         )
+
+
+
+# Define the request handler
+class SheetQuantityHandler(tornado.web.RequestHandler):
+    def get(self, sheet_name):
+        sheet_name = sheet_name.replace('_', ' ')
+        # Check if sheet_name exists in the data dictionary
+        if sheet_exists(sheet_name=sheet_name):
+            # Retrieve the quantity from the data dictionary
+            quantity = get_sheet_quantity(sheet_name=sheet_name)
+            if self.request.remote_ip == "10.0.0.11" or self.request.remote_ip == "10.0.0.64":    
+                
+                # Render the template with the sheet name and quantity
+                template = env.get_template("sheet_template.html")
+                rendered_template = template.render(sheet_name=sheet_name, quantity=quantity)
+            else:
+                template = env.get_template("sheet_template_read_only.html")
+                rendered_template = template.render(sheet_name=sheet_name, quantity=quantity)
+            # Write the rendered template to the response
+            self.write(rendered_template)
+        else:
+            self.write("Sheet not found")
+            self.set_status(404)
+
+    def post(self, sheet_name):
+        # Retrieve the new quantity from the request
+        try:
+            new_quantity = float(self.get_argument("new_quantity"))
+        except ValueError:
+            self.write("Not a number")
+            self.set_status(500)
+            return
+        
+        # Update the data dictionary with the new quantity
+        set_sheet_quantity(sheet_name=sheet_name, new_quantity=new_quantity, clients=connected_clients)
+        
+        # Redirect to the GET request for the same sheet
+        self.redirect(f"/sheets_in_inventory/{sheet_name}")
 
 
 def signal_clients_for_changes(client_to_ignore) -> None:
@@ -364,6 +413,7 @@ if __name__ == "__main__":
             (r"/image/(.*)", ImageHandler),
             (r"/set_order_number", SetOrderNumberHandler),
             (r"/get_order_number", GetOrderNumberHandler),
+            (r"/sheets_in_inventory/(.*)", SheetQuantityHandler)
         ]
     )
     app.listen(80)
