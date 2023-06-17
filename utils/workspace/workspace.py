@@ -8,6 +8,9 @@ import ujson as json
 from PyQt6.QtWidgets import QListWidget, QCheckBox, QDateTimeEdit, QGroupBox, QLineEdit, QPushButton
 from utils.workspace.assembly import Assembly
 from utils.workspace.item import Item
+from utils.json_file import JsonFile
+
+workspace_tags = JsonFile(file_name="data/workspace_settings")
 
 
 class Workspace:
@@ -85,68 +88,75 @@ class Workspace:
         return {}
 
     def filter_assemblies(self, sub_assembly: Assembly, filter: dict):
-        lineEdit_search: QLineEdit = filter['search']
-        listWidget_materials: QListWidget = filter['materials']
-        listWidget_thicknesses: QListWidget = filter['thicknesses']
-        listWidget_flow_tags: QListWidget = filter['flow_tags']
-        listWidget_statuses: QListWidget = filter['statuses']
-        groupBox_due_dates: QGroupBox = filter['due_dates']
-        dateTimeEdit_after: QDateTimeEdit = filter['dateTimeEdit_after']
-        dateTimeEdit_before: QDateTimeEdit = filter['dateTimeEdit_before']
+        lineEdit_search: QLineEdit = filter["search"]
+        listWidget_materials: QListWidget = filter["materials"]
+        listWidget_thicknesses: QListWidget = filter["thicknesses"]
+        listWidget_flow_tags: QListWidget = filter["flow_tags"]
+        listWidget_statuses: QListWidget = filter["statuses"]
+        listWidget_paint_colors: QListWidget = filter["paint"]
+        groupBox_due_dates: QGroupBox = filter["due_dates"]
+        dateTimeEdit_after: QDateTimeEdit = filter["dateTimeEdit_after"]
+        dateTimeEdit_before: QDateTimeEdit = filter["dateTimeEdit_before"]
 
         # Recursively filter sub-assemblies
         for item in sub_assembly.items:
             # Apply search filter
-            item.set_value(key='show', value=False)
+            item.set_value(key="show", value=False)
             search_text = lineEdit_search.text().lower()
             if search_text and search_text not in item.name.lower():
                 continue
 
-            # Apply materials filter
-            selected_materials = [item.text() for item in listWidget_materials.selectedItems()]
-            if selected_materials:
-                item_materials = item.get_value('material')
+            if selected_materials := [item.text() for item in listWidget_materials.selectedItems()]:
+                item_materials = item.get_value("material")
                 if item_materials not in selected_materials:
                     continue
 
-            # Apply thicknesses filter
-            selected_thicknesses = [item.text() for item in listWidget_thicknesses.selectedItems()]
-            if selected_thicknesses:
-                item_thicknesses = item.get_value('thickness')
+            if selected_thicknesses := [item.text() for item in listWidget_thicknesses.selectedItems()]:
+                item_thicknesses = item.get_value("thickness")
                 if item_thicknesses not in selected_thicknesses:
                     continue
 
-            # Apply flow tags filter
-            selected_flow_tags = [item.text() for item in listWidget_flow_tags.selectedItems()]
-            if selected_flow_tags:
-                item_tag = item.get_value('flow_tag')[item.get_value('current_flow_state')]
-                if item_tag not in selected_flow_tags:
+            if selected_flow_tags := [item.text() for item in listWidget_flow_tags.selectedItems()]:
+                with contextlib.suppress(IndexError):  # This means the part is 'completed'
+                    item_flow_tag = item.get_value("flow_tag")[item.get_value("current_flow_state")]
+                    if item_flow_tag not in selected_flow_tags:
+                        continue
+
+            if selected_statuses := [item.text() for item in listWidget_statuses.selectedItems()]:
+                item_status = item.get_value("status")
+                if item_status not in selected_statuses:
                     continue
 
-            # Apply statuses filter
-            selected_statuses = [item.text() for item in listWidget_statuses.selectedItems()]
-            if selected_statuses:
-                item_status = item.get_value('status')
-                if item_status not in selected_statuses:
+            if selected_paint_colors := [item.text() for item in listWidget_paint_colors.selectedItems()]:
+                item_paint = item.get_value("paint_color")
+                if item_paint != None:
+                    for color_name, color_code in workspace_tags.get_value("paint_colors").items():
+                        if color_code == item_paint:
+                            item_paint = color_name
+                            break
+                if item_paint is None:
+                    item_paint = "None"
+                if item_paint not in selected_paint_colors:
                     continue
 
             # Apply due dates filter
             if groupBox_due_dates.isChecked():
-                assembly_due_date = item.get_value('due_date')
+                assembly_due_date = item.get_value("due_date")
                 after_date = dateTimeEdit_after.dateTime().toPyDateTime().date()
                 before_date = dateTimeEdit_before.dateTime().toPyDateTime().date()
                 if assembly_due_date < after_date or assembly_due_date > before_date:
                     continue
-            item.set_value(key='show', value=True)
+            item.set_value(key="show", value=True)
         for _sub_assembly in sub_assembly.sub_assemblies:
             self.filter_assemblies(sub_assembly=_sub_assembly, filter=filter)
 
     def get_filtered_data(self, filter: dict) -> dict:
-        checkBox_use_filter: QPushButton = filter['use_filter']
+        workspace_tags.load_data()
+        checkBox_use_filter: QPushButton = filter["use_filter"]
 
         if not checkBox_use_filter.isChecked():
             for assembly in self.data:
-                assembly.set_default_value_to_all_items(key='show', value=True)
+                assembly.set_default_value_to_all_items(key="show", value=True)
             return self.data
         else:
             for assembly in self.data:
@@ -257,3 +267,29 @@ class Workspace:
 
     def get_all_assembly_names(self) -> list[str]:
         return [assembly.name for assembly in self.data]
+
+    def _get_counts(self, sub_assembly: Assembly) -> tuple[int, int, int, int]:
+        item_count: int = 0 + len(sub_assembly.items)
+        item_completion_count: int = sum(bool(item.get_value("completed")) for item in sub_assembly.items)
+        assembly_count: int = 0 + len(sub_assembly.sub_assemblies)
+        assembly_completion_count: int = sum(bool(sub_assembly.get_assembly_data("completed")) for sub_assembly in sub_assembly.sub_assemblies)
+
+        for _sub_assembly in sub_assembly.sub_assemblies:
+            _item_count, _item_completion_count, _assembly_count, _assembly_completion_count = self._get_counts(sub_assembly=_sub_assembly)
+            item_count += _item_count
+            item_completion_count += _item_completion_count
+            assembly_count += _assembly_count
+            assembly_completion_count += _assembly_completion_count
+        return item_count, item_completion_count, assembly_count, assembly_completion_count
+
+    def get_completion_percentage(self, assembly: Assembly) -> tuple[float, float]:
+        item_count, item_completion_count, assembly_count, assembly_completion_count = self._get_counts(sub_assembly=assembly)
+        try:
+            item_completion_percentage = item_completion_count / item_count
+        except ZeroDivisionError:
+            item_completion_percentage = 0.0
+        try:
+            assembly_completion_percentage = assembly_completion_count / assembly_count
+        except ZeroDivisionError:
+            assembly_completion_percentage = 0.0
+        return item_completion_percentage, assembly_completion_percentage

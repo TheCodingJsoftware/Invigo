@@ -18,6 +18,8 @@ from PyQt6.QtCore import (
     QTime,
     QUrl,
     pyqtSignal,
+    QSettings,
+    QPoint,
 )
 from PyQt6.QtGui import (
     QCursor,
@@ -69,9 +71,107 @@ from PyQt6.QtWidgets import (
     QVBoxLayout,
     QWidget,
 )
+from PyQt6.QtCore import Qt, QTimer
+from PyQt6.QtGui import QPainter, QColor, QBrush
+from PyQt6.QtWidgets import QApplication, QWidget
 from natsort import natsorted
 from utils.workspace.assembly import Assembly
 from utils.workspace.item import Item
+
+from rich import print
+import copy
+
+
+class ScrollPositionManager:
+    def __init__(self, settings: QSettings):
+        self.settings = settings
+        self.scroll_positions = {}
+
+    def save_scroll_position(self, tab_name: str, table: QTableWidget):
+        scroll_position = copy.deepcopy(QPoint(table.horizontalScrollBar().value(), table.verticalScrollBar().value()))
+        if not scroll_position.y():
+            return
+        self.scroll_positions[tab_name] = scroll_position
+
+    def restore_scroll_position(self, tab_name: str, table: QTableWidget):
+        try:
+            scroll_position = self.scroll_positions[tab_name]
+        except KeyError:
+            return
+        if scroll_position is not None:
+            table.horizontalScrollBar().setValue(scroll_position.x())
+            table.verticalScrollBar().setValue(scroll_position.y())
+
+
+class RecordingWidget(QWidget):
+    def __init__(self, parent=None):
+        super().__init__(parent)
+        self.setFixedSize(20, 20)
+        self.recording = True
+        self.recording_color = QColor("red")
+        self.nonrecording_color = QColor("gray")
+        self.current_color = self.nonrecording_color
+        self.scale = 1.0
+        self.scale_factor = 0.01
+        self.scale_direction = 0.1
+        self.animation_duration = 3000
+        self.elapsed_time = 0
+
+        self.timer = QTimer(self)
+        self.timer.timeout.connect(self.updateAnimation)
+        self.timer.start(1)  # Update every 20 milliseconds
+
+    def set_recording(self, recording):
+        self.recording = recording
+
+    def updateAnimation(self):
+        if self.recording:
+            self.elapsed_time += self.timer.interval()
+            if self.elapsed_time >= self.animation_duration:
+                self.elapsed_time = 0
+
+            progress = self.elapsed_time / self.animation_duration
+            scale_progress = 1 - (2 * abs(progress - 0.5) * 0.3)
+            self.scale = scale_progress
+
+            self.current_color = self.interpolateColors(self.recording_color, QColor("darkred"), scale_progress)
+        else:
+            self.elapsed_time = 0
+            self.scale = 1.0
+            self.current_color = self.interpolateColors(self.nonrecording_color, self.recording_color, 1.0)
+
+        self.update()
+
+    def interpolateColors(self, start_color, end_color, progress):
+        red = int(start_color.red() + progress * (end_color.red() - start_color.red()))
+        green = int(start_color.green() + progress * (end_color.green() - start_color.green()))
+        blue = int(start_color.blue() + progress * (end_color.blue() - start_color.blue()))
+
+        return QColor(red, green, blue)
+
+    def paintEvent(self, event):
+        painter = QPainter(self)
+        painter.setPen(Qt.PenStyle.NoPen)
+
+        painter.setRenderHint(QPainter.RenderHint.Antialiasing)
+
+        painter.setBrush(QBrush(self.current_color))
+
+        # Calculate the center of the widget
+        center = self.rect().center()
+
+        # Calculate the radius of the circle based on the widget size
+        radius = int(min(self.rect().width(), self.rect().height()) / 2)
+
+        # Adjust the radius based on the scale
+        radius = int(radius * self.scale)
+
+        # Calculate the top-left corner of the circle bounding rectangle
+        x = center.x() - radius
+        y = center.y() - radius
+
+        # Draw the circle
+        painter.drawEllipse(x, y, 2 * radius, 2 * radius)
 
 
 class TimeSpinBox(QDoubleSpinBox):
@@ -493,6 +593,7 @@ class AssemblyMultiToolBox(QWidget):
         self.buttons: list[QPushButton] = []
         self.delete_buttons: list[DeletePushButton] = []
         self.duplicate_buttons: list[QPushButton] = []
+        self.check_boxes: list[QCheckBox] = []
         main_layout = QVBoxLayout(self)
         main_layout.setAlignment(Qt.AlignmentFlag.AlignTop)
         self.setStyleSheet("QWidget#assembly_widget{border: 1px solid gray;}")
@@ -507,6 +608,10 @@ class AssemblyMultiToolBox(QWidget):
         type of QWidget, such as a QLabel, QComboBox, or even another layout.
           title (str): A string representing the title of the widget that will be added to the layout.
         """
+        checkbox = QCheckBox()
+        checkbox.setStyleSheet("QCheckBox:indicator{width: 20px; height: 20px;}")
+        checkbox.setFixedWidth(22)
+
         button = QPushButton()
         button.setObjectName("sheet_nest_button")
         button.setText(title)
@@ -521,25 +626,27 @@ class AssemblyMultiToolBox(QWidget):
         duplicate_button = QPushButton()
         duplicate_button.setIcon(QIcon(r"F:\Code\Python-Projects\Inventory Manager\ui\BreezeStyleSheets\dist\pyqt6\dark\duplicate.png"))
         duplicate_button.setFixedWidth(23)
-        duplicate_button.setToolTip(f"Clone {title}")
+        duplicate_button.setToolTip(f"Duplicate {title}")
 
         # widget.setMinimumHeight(100)
 
         hlaout = QHBoxLayout()
+        hlaout.setSpacing(3)
+        hlaout.setContentsMargins(0, 3, 0, 0)
+        hlaout.addWidget(checkbox)
         hlaout.addWidget(button)
         hlaout.addWidget(duplicate_button)
         hlaout.addWidget(delete_button)
-        hlaout.setContentsMargins(0, 0, 0, 0)
         layout = QVBoxLayout()
-        layout.setContentsMargins(0, 0, 0, 0)
         layout.addLayout(hlaout)
         layout.addWidget(widget)
-        widget.setObjectName("multi_tool_box_widget")
+        widget.setObjectName("edit_multi_tool_box_widget")
 
         self.buttons.append(button)
         self.delete_buttons.append(delete_button)
         self.widgets.append(widget)
         self.duplicate_buttons.append(duplicate_button)
+        self.check_boxes.append(checkbox)
 
         self.layout().addLayout(layout)
 
@@ -553,6 +660,7 @@ class AssemblyMultiToolBox(QWidget):
                 self.buttons.pop(i)
                 self.delete_buttons.pop(i)
                 self.duplicate_buttons.pop(i)
+                self.check_boxes.pop(i)
                 self.widgets.pop(i)
                 layout = layout_item.layout()
                 self.clear_layout(layout)

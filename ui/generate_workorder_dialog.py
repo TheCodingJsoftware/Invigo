@@ -5,7 +5,7 @@ from PyQt6 import uic
 from PyQt6.QtCore import QFile, Qt, QTextStream
 from PyQt6.QtGui import QIcon
 from PyQt6.QtSvgWidgets import QSvgWidget
-from PyQt6.QtWidgets import QDialog, QPushButton, QAbstractItemView
+from PyQt6.QtWidgets import QDialog, QPushButton, QRadioButton, QWidget, QHBoxLayout, QLabel, QSpinBox
 
 from ui.custom_widgets import set_default_dialog_button_stylesheet
 from ui.theme import set_theme
@@ -16,7 +16,7 @@ from utils.json_file import JsonFile
 settings_file = JsonFile(file_name="settings")
 
 
-class SelectItemDialog(QDialog):
+class GenerateWorkorderDialog(QDialog):
     """
     Select dialog
     """
@@ -28,11 +28,10 @@ class SelectItemDialog(QDialog):
         button_names: str = DialogButtons.ok_cancel,
         title: str = __name__,
         message: str = "",
-        items: list = None,
-        selection_mode=QAbstractItemView.SelectionMode.SingleSelection,
+        job_names: dict[str, int] = {},
     ) -> None:
         """
-        It's a function that takes in a list of items and displays them in a list widget
+        It's a function that takes in a list of options and displays them in a list widget
 
         Args:
           parent: The parent widget of the dialog.
@@ -40,12 +39,10 @@ class SelectItemDialog(QDialog):
           button_names (str): str = DialogButtons.ok_cancel,
           title (str): str = __name__,
           message (str): str = "",
-          items (list): list = None,
+          options (list): list = None,
         """
-        if items is None:
-            items = []
-        super(SelectItemDialog, self).__init__(parent)
-        uic.loadUi("ui/select_item_dialog.ui", self)
+        super(GenerateWorkorderDialog, self).__init__(parent)
+        uic.loadUi("ui/generate_workorder_dialog.ui", self)
 
         self.icon_name = icon_name
         self.button_names = button_names
@@ -53,7 +50,8 @@ class SelectItemDialog(QDialog):
         self.message = message
         self.inputText: str = ""
         self.theme: str = "dark" if settings_file.get_value(item_name="dark_mode") else "light"
-        self.items = items
+        self.workorder = {}
+        self.job_names = job_names
 
         self.setWindowFlags(Qt.WindowType.Window | Qt.WindowType.FramelessWindowHint)
         self.setWindowIcon(QIcon("icons/icon.png"))
@@ -63,16 +61,40 @@ class SelectItemDialog(QDialog):
 
         self.load_dialog_buttons()
 
-        self.listWidget.addItems(self.items)
-        self.listWidget.setSelectionMode(selection_mode)
-
         svg_icon = self.get_icon(icon_name)
         svg_icon.setFixedSize(62, 50)
         self.iconHolder.addWidget(svg_icon)
 
-        # self.resize(320, 250)
+        self.resize(320, 250)
 
         self.load_theme()
+        self.load_jobs()
+        self.verticalLayout_workorders.setAlignment(Qt.AlignmentFlag.AlignTop)
+
+    def load_jobs(self) -> None:
+        for job_name in self.job_names:
+            self.workorder[job_name] = 0
+            widget = QWidget(self)
+            h_layout = QHBoxLayout()
+            h_layout.setSpacing(0)
+            h_layout.setContentsMargins(0, 0, 0, 5)
+            widget.setLayout(h_layout)
+            quantity_spin_box = QSpinBox(self)
+            quantity_spin_box.setValue(0)
+            quantity_spin_box.setMinimum(0)
+
+            def update_quantity(job_name: str, quantity_spin_box: QSpinBox):
+                self.workorder[job_name] = quantity_spin_box.value()
+
+            quantity_spin_box.valueChanged.connect(partial(update_quantity, job_name, quantity_spin_box))
+
+            h_layout.addWidget(QLabel(job_name, self))
+            h_layout.addWidget(quantity_spin_box)
+
+            self.verticalLayout_workorders.addWidget(widget)
+
+    def get_workorder(self) -> dict[str, int]:
+        return self.workorder
 
     def load_theme(self) -> None:
         """
@@ -110,7 +132,7 @@ class SelectItemDialog(QDialog):
         """
         button_names = self.button_names.split(", ")
         for index, name in enumerate(button_names):
-            if name == DialogButtons.clone:
+            if name == DialogButtons.generate:
                 button = QPushButton(f"  {name}")
                 button.setIcon(QIcon(f"ui/BreezeStyleSheets/dist/pyqt6/{self.theme}/dialog_ok.svg"))
             elif os.path.isfile(f"ui/BreezeStyleSheets/dist/pyqt6/{self.theme}/dialog_{name.lower()}.svg"):
@@ -138,26 +160,17 @@ class SelectItemDialog(QDialog):
         """
         return self.response.replace(" ", "")
 
-    def get_selected_item(self) -> str:
+    def get_selected_item(self) -> tuple[bool, bool, bool, bool]:
         """
-        It returns the text of the currently selected item in the list widget
+        This function returns a tuple of boolean values indicating which push buttons are checked.
 
         Returns:
-          The text of the current item in the list widget.
+          A tuple containing three boolean values representing whether the corresponding push button
+        (quote, work order, update inventory) is checked or not.
         """
-        try:
-            return self.listWidget.currentItem().text()
-        except AttributeError:
-            return None
-
-    def get_selected_items(self) -> list[str]:
-        """
-        It returns the text of the currently selected item in the list widget
-
-        Returns:
-          The text of the current item in the list widget.
-        """
-        try:
-            return [item.text() for item in self.listWidget.selectedItems()]
-        except AttributeError:
-            return None
+        return (
+            self.pushButton_quote.isChecked(),
+            self.pushButton_workorder.isChecked(),
+            self.pushButton_update_inventory.isChecked(),
+            self.pushButton_packingslip.isChecked(),
+        )

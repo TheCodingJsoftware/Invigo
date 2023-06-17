@@ -1,130 +1,85 @@
-from PyQt6.QtCore import QFile, QFileInfo, Qt
-from PyQt6.QtGui import QStandardItem, QStandardItemModel
-from PyQt6.QtWidgets import QApplication, QHeaderView, QTableView, QAbstractItemView
+from PyQt6.QtCore import Qt, QTimer
+from PyQt6.QtGui import QPainter, QColor, QBrush
+from PyQt6.QtWidgets import QApplication, QWidget
 
 
-class FreezeTableWidget(QTableView):
-    def __init__(self, model):
-        super().__init__()
-        self.setModel(model)
-        self.frozenTableView = QTableView(self)
-        self.init()
-        self.horizontalHeader().sectionResized.connect(self.updateSectionWidth)
-        self.verticalHeader().sectionResized.connect(self.updateSectionHeight)
-        self.frozenTableView.verticalScrollBar().valueChanged.connect(self.verticalScrollBar().setValue)
-        self.verticalScrollBar().valueChanged.connect(self.frozenTableView.verticalScrollBar().setValue)
-        self.setVerticalScrollMode(QAbstractItemView.ScrollMode.ScrollPerPixel)
-        self.setHorizontalScrollMode(QAbstractItemView.ScrollMode.ScrollPerPixel)
-        self.setSelectionBehavior(QAbstractItemView.SelectionBehavior.SelectRows)
-        self.setSelectionMode(QAbstractItemView.SelectionMode.ExtendedSelection)
+class RecordingWidget(QWidget):
+    def __init__(self, parent=None):
+        super().__init__(parent)
+        self.recording = True
+        self.recording_color = QColor("red")
+        self.nonrecording_color = QColor("gray")
+        self.current_color = self.nonrecording_color
+        self.scale = 1.0
+        self.scale_factor = 0.01
+        self.scale_direction = 0.1
+        self.animation_duration = 3000
+        self.elapsed_time = 0
 
-    def init(self):
-        self.frozenTableView.setModel(self.model())
-        self.frozenTableView.setFocusPolicy(Qt.FocusPolicy.NoFocus)
-        self.frozenTableView.verticalHeader().hide()
-        self.frozenTableView.horizontalHeader().setSectionResizeMode(QHeaderView.ResizeMode.Fixed)
-        self.viewport().stackUnder(self.frozenTableView)
+        self.timer = QTimer(self)
+        self.timer.timeout.connect(self.updateAnimation)
+        self.timer.start(1)  # Update every 20 milliseconds
 
-        self.frozenTableView.setStyleSheet(
-            """
-            QTableView { border: none;
-                         background-color: #8EDE21;
-                         selection-background-color: #999;
-            }"""
-        )  # for demo purposes
+    def set_recording(self, recording):
+        self.recording = recording
 
-        self.frozenTableView.setSelectionModel(self.selectionModel())
-        for col in range(1, self.model().columnCount()):
-            self.frozenTableView.setColumnHidden(col, True)
-        self.frozenTableView.setColumnWidth(0, self.columnWidth(0))
-        self.frozenTableView.setHorizontalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAlwaysOff)
-        self.frozenTableView.setVerticalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAlwaysOff)
-        self.frozenTableView.show()
-        self.updateFrozenTableGeometry()
-        self.setHorizontalScrollMode(self.ScrollMode.ScrollPerPixel)
-        self.setVerticalScrollMode(self.ScrollMode.ScrollPerPixel)
-        self.frozenTableView.setVerticalScrollMode(self.ScrollMode.ScrollPerPixel)
+    def updateAnimation(self):
+        if self.recording:
+            self.elapsed_time += self.timer.interval()
+            if self.elapsed_time >= self.animation_duration:
+                self.elapsed_time = 0
 
-    def updateSectionWidth(self, logicalIndex, oldSize, newSize):
-        self.frozenTableView.setColumnWidth(0, newSize)
-        self.updateFrozenTableGeometry()
+            progress = self.elapsed_time / self.animation_duration
+            scale_progress = 1 - (2 * abs(progress - 0.5) * 0.3)
+            self.scale = scale_progress
 
-    def updateSectionHeight(self, logicalIndex, oldSize, newSize):
-        self.frozenTableView.setRowHeight(logicalIndex, newSize)
+            self.current_color = self.interpolateColors(self.recording_color, QColor("darkred"), scale_progress)
+        else:
+            self.elapsed_time = 0
+            self.scale = 1.0
+            self.current_color = self.interpolateColors(self.nonrecording_color, self.recording_color, 1.0)
 
-    def resizeEvent(self, event):
-        super().resizeEvent(event)
-        self.updateFrozenTableGeometry()
+        self.update()
 
-    def moveCursor(self, cursorAction, modifiers):
-        current = super().moveCursor(cursorAction, modifiers)
-        if (
-            cursorAction == self.CursorAction.MoveLeft
-            and self.current.column() > 0
-            and self.visualRect(current).topLeft().x() < self.frozenTableView.columnWidth(0)
-        ):
-            newValue = self.horizontalScrollBar().value() + self.visualRect(current).topLeft().x() - self.frozenTableView.columnWidth(0)
-            self.horizontalScrollBar().setValue(newValue)
-        return current
+    def interpolateColors(self, start_color, end_color, progress):
+        red = int(start_color.red() + progress * (end_color.red() - start_color.red()))
+        green = int(start_color.green() + progress * (end_color.green() - start_color.green()))
+        blue = int(start_color.blue() + progress * (end_color.blue() - start_color.blue()))
 
-    def scrollTo(self, index, hint):
-        if index.column() > 0:
-            super().scrollTo(index, hint)
+        return QColor(red, green, blue)
 
-    def updateFrozenTableGeometry(self):
-        self.frozenTableView.setGeometry(
-            self.verticalHeader().width() + self.frameWidth(),
-            self.frameWidth(),
-            self.columnWidth(0),
-            self.viewport().height() + self.horizontalHeader().height(),
-        )
+    def paintEvent(self, event):
+        painter = QPainter(self)
+        painter.setPen(Qt.PenStyle.NoPen)
 
-    def setCellWidget(self, row, column, widget):
-        index = self.model().index(row, column)
-        self.setIndexWidget(index, widget)
+        painter.setRenderHint(QPainter.RenderHint.Antialiasing)
 
-    def getRowCount(self):
-        return self.model().rowCount()
+        painter.setBrush(QBrush(self.current_color))
 
-    def insertRow(self, row, items):
-        self.model().insertRow(row, items)
+        # Calculate the center of the widget
+        center = self.rect().center()
 
-    def removeRow(self, row):
-        self.model().removeRow(row - 1)
+        # Calculate the radius of the circle based on the widget size
+        radius = int(min(self.rect().width(), self.rect().height()) / 2)
 
+        # Adjust the radius based on the scale
+        radius = int(radius * self.scale)
 
-def main(args):
-    def split_and_strip(s, splitter):
-        return [s.strip() for s in line.split(splitter)]
+        # Calculate the top-left corner of the circle bounding rectangle
+        x = center.x() - radius
+        y = center.y() - radius
 
-    app = QApplication(args)
-    model = QStandardItemModel()
-    file = QFile(QFileInfo(__file__).absolutePath() + "/grades.txt")
-    if file.open(QFile.OpenModeFlag.ReadOnly):
-        line = file.readLine(200).decode("utf-8")
-        header = split_and_strip(line, ",")
-        model.setHorizontalHeaderLabels(header)
-        row = 0
-        while file.canReadLine():
-            line = file.readLine(200).decode("utf-8")
-            if not line.startswith("#") and "," in line:
-                fields = split_and_strip(line, ",")
-                model.insertRow(row)
-                for col, field in enumerate(fields):
-                    newItem = QStandardItem(field)
-                    model.setItem(row, col, newItem)
-                row += 1
-    file.close()
-    tableView = FreezeTableWidget(model)
-    tableView.setWindowTitle("Frozen Column Example")
-    tableView.resize(560, 680)
-    print(tableView.getRowCount())
-    tableView.removeRow(tableView.getRowCount())
-    tableView.show()
-    return app.exec()
+        # Draw the circle
+        painter.drawEllipse(x, y, 2 * radius, 2 * radius)
 
 
 if __name__ == "__main__":
-    import sys
+    app = QApplication([])
 
-    main(sys.argv)
+    widget = QWidget()
+    recording_widget = RecordingWidget(widget)
+    recording_widget.setGeometry(50, 50, 100, 100)
+
+    widget.show()
+
+    app.exec()

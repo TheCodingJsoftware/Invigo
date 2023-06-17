@@ -85,25 +85,25 @@ class EditStatusesDialog(QDialog):
             for tag in workspace_tags.get_value("all_tags"):
                 workspace_tags.add_item_in_object("flow_tag_statuses", tag)
         self.comboBox_current_status.addItems(workspace_tags.get_value("all_tags"))
-        self.comboBox_current_status.currentTextChanged.connect(self.load)
+        self.comboBox_current_status.currentTextChanged.connect(self.load_statuses)
         button_filter = ButtonFilter()
         self.pushButton_add_status.clicked.connect(self.add_new_status)
         self.pushButton_add_status.installEventFilter(button_filter)
-        self.load()
+        self.load_statuses()
 
     def add_new_status(self) -> None:
         workspace_tags.load_data()
         data = workspace_tags.get_data()
         data["flow_tag_statuses"][self.comboBox_current_status.currentText()]["enter status name"] = {"completed": False}
         workspace_tags.save_data(data)
-        self.load()
+        self.load_statuses()
 
     def delete_status(self, status_line_edit: QLineEdit) -> None:
         workspace_tags.load_data()
         data = workspace_tags.get_data()
         del data["flow_tag_statuses"][self.comboBox_current_status.currentText()][status_line_edit.text()]
         workspace_tags.save_data(data)
-        self.load()
+        self.load_statuses()
 
     def status_name_change(self, old_name: str, status_line_edit: QLineEdit) -> None:
         workspace_tags.load_data()
@@ -122,7 +122,7 @@ class EditStatusesDialog(QDialog):
         data["flow_tag_statuses"][self.comboBox_current_status.currentText()][status_line_edit.text()]["completed"] = rad.isChecked()
         workspace_tags.save_data(data)
 
-    def load(self) -> None:
+    def load_statuses(self) -> None:
         workspace_tags.load_data()
         # tag_layout
         self.clear_layout(self.tag_layout)
@@ -136,6 +136,7 @@ class EditStatusesDialog(QDialog):
             status_line_edit.textChanged.connect(partial(self.status_name_change, status_name, status_line_edit))
             status_layout.addWidget(status_line_edit)
             rad = QRadioButton(self)
+            rad.setText("Moves Tag Forward")
             rad.setChecked(workspace_tags.get_data()["flow_tag_statuses"][self.comboBox_current_status.currentText()][status_name]["completed"])
             rad.toggled.connect(partial(self.status_is_complete_change, status_line_edit, rad))
             rad_layout.addWidget(rad)

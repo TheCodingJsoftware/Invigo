@@ -91,7 +91,7 @@ QDOckWidget::title {
 
 QScrollBar:vertical {
     border: None;
-    background: rgb(44, 44, 44);
+    background: rgb(33, 33, 33);
     width: 12px;
     border-radius: 4px;
     margin: 0;
@@ -107,6 +107,41 @@ QScrollBar:handle:vertical:hover {
     background: rgb(80, 80, 80);
 }
 QScrollBar:handle:vertical:pressed {
+    background: #3daee9;
+}
+
+QScrollBar:horizontal {
+    border: None;
+    background: rgb(44, 44, 44);
+    height: 10px;
+    border-radius: 4px;
+    margin: 0;
+}
+
+QScrollBar:horizontal {
+    border: None;
+    background: rgb(33, 33, 33);
+    width: 12px;
+    border-radius: 4px;
+    margin: 0;
+}
+
+QScrollBar:handle:horizontal {
+    background: rgb(70, 70, 70);
+    min-width: 20px;
+    border-radius: 3px;
+    margin: 2;
+}
+QScrollBar:handle:horizontal {
+    background: rgb(70, 70, 70);
+    min-height: 20px;
+    border-radius: 3px;
+    margin: 2;
+}
+QScrollBar:handle:horizontal:hover {
+    background: rgb(80, 80, 80);
+}
+QScrollBar:handle:horizontal:pressed {
     background: #3daee9;
 }
 
@@ -138,20 +173,6 @@ QScrollBar::sub-page:vertical {
     background: None;
 }
 
-QScrollBar:horizontal {
-    border: None;
-    background: rgb(44, 44, 44);
-    height: 10px;
-    border-radius: 4px;
-    margin: 0;
-}
-
-QScrollBar:handle:horizontal {
-    background: rgb(70, 70, 70);
-    min-width: 20px;
-    border-radius: 3px;
-    margin: 2;
-}
 
 QScrollBar::add-line:horizontal {
     border: None;
@@ -198,6 +219,14 @@ QWidget#multi_tool_box_widget{
 	border-bottom-right-radius: 8px; 
 	border-top-right-radius: 0.01em;
 	border-top-left-radius: 0.01em;
+	background-color: rgba(29, 29, 29, 57);
+}
+QWidget#edit_multi_tool_box_widget{
+	border: 1px solid #3daee9; 
+	border-bottom-left-radius: 8px;
+	border-bottom-right-radius: 8px; 
+	border-top-right-radius: 8px;
+	border-top-left-radius: 8px;
 	background-color: rgba(29, 29, 29, 57);
 }
 QWidget#nest_widget{
@@ -348,6 +377,7 @@ QPushButton:pressed#delete_button {
     background-color: #461f1f;
     border-radius: 8px;
 }
+
 
 QRadioButton {
     color: #ffffff;
@@ -566,8 +596,8 @@ QListWidget:disabled {
 QTreeView{
 	background-color: rgb(33, 33, 33);
     border: 1px solid #3daee9;
-    border-bottom-right-radius: 8px;
-    border-bottom-left-radius: 8px;
+    border-bottom-right-radius: 10px;
+    border-bottom-left-radius: 10px;
     border-top-left-radius: 0.01em;
     border-top-right-radius: 0.01em;
 }

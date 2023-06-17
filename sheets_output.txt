@@ -1,0 +1,51 @@
+=IMAGE("https://quickchart.io/qr?text=http://10.0.0.93/sheets_in_inventory/3/4_Laser_Grade_Plate_120.000x60.000"	3/4 Laser Grade Plate 120.000x60.000
+=IMAGE("https://quickchart.io/qr?text=http://10.0.0.93/sheets_in_inventory/1/2_Laser_Grade_Plate_120.000x60.000"	1/2 Laser Grade Plate 120.000x60.000
+=IMAGE("https://quickchart.io/qr?text=http://10.0.0.93/sheets_in_inventory/3/8_Mild_Steel_120.000x60.000"	3/8 Mild Steel 120.000x60.000
+=IMAGE("https://quickchart.io/qr?text=http://10.0.0.93/sheets_in_inventory/1/4_Mild_Steel_120.000x60.000"	1/4 Mild Steel 120.000x60.000
+=IMAGE("https://quickchart.io/qr?text=http://10.0.0.93/sheets_in_inventory/1/4_Mild_Steel_96.000x48.000"	1/4 Mild Steel 96.000x48.000
+=IMAGE("https://quickchart.io/qr?text=http://10.0.0.93/sheets_in_inventory/3/16_Mild_Steel_120.000x60.000"	3/16 Mild Steel 120.000x60.000
+=IMAGE("https://quickchart.io/qr?text=http://10.0.0.93/sheets_in_inventory/3/16_Mild_Steel_120.000x48.000"	3/16 Mild Steel 120.000x48.000
+=IMAGE("https://quickchart.io/qr?text=http://10.0.0.93/sheets_in_inventory/3/16_Mild_Steel_96.000x48.000"	3/16 Mild Steel 96.000x48.000
+=IMAGE("https://quickchart.io/qr?text=http://10.0.0.93/sheets_in_inventory/3/16_Mild_Steel_86.000x60.000"	3/16 Mild Steel 86.000x60.000
+=IMAGE("https://quickchart.io/qr?text=http://10.0.0.93/sheets_in_inventory/3/16_Mild_Steel_84.000x48.000"	3/16 Mild Steel 84.000x48.000
+=IMAGE("https://quickchart.io/qr?text=http://10.0.0.93/sheets_in_inventory/3/16_Mild_Steel_67.000x48.000"	3/16 Mild Steel 67.000x48.000
+=IMAGE("https://quickchart.io/qr?text=http://10.0.0.93/sheets_in_inventory/10_Gauge_Mild_Steel_120.000x60.000"	10 Gauge Mild Steel 120.000x60.000
+=IMAGE("https://quickchart.io/qr?text=http://10.0.0.93/sheets_in_inventory/10_Gauge_Mild_Steel_96.000x60.000"	10 Gauge Mild Steel 96.000x60.000
+=IMAGE("https://quickchart.io/qr?text=http://10.0.0.93/sheets_in_inventory/12_Gauge_Mild_Steel_120.000x60.000"	12 Gauge Mild Steel 120.000x60.000
+=IMAGE("https://quickchart.io/qr?text=http://10.0.0.93/sheets_in_inventory/14_Gauge_Mild_Steel_120.000x60.000"	14 Gauge Mild Steel 120.000x60.000
+=IMAGE("https://quickchart.io/qr?text=http://10.0.0.93/sheets_in_inventory/16_Gauge_Mild_Steel_120.000x60.000"	16 Gauge Mild Steel 120.000x60.000
+=IMAGE("https://quickchart.io/qr?text=http://10.0.0.93/sheets_in_inventory/5/16_Mild_Steel_120.000x60.000"	5/16 Mild Steel 120.000x60.000
+=IMAGE("https://quickchart.io/qr?text=http://10.0.0.93/sheets_in_inventory/1_Laser_Grade_Plate_120.000x60.000"	1 Laser Grade Plate 120.000x60.000
+=IMAGE("https://quickchart.io/qr?text=http://10.0.0.93/sheets_in_inventory/5/8_Laser_Grade_Plate_120.000x60.000"	5/8 Laser Grade Plate 120.000x60.000
+=IMAGE("https://quickchart.io/qr?text=http://10.0.0.93/sheets_in_inventory/14_Gauge_Aluminium_96.000x48.000"	14 Gauge Aluminium 96.000x48.000
+=IMAGE("https://quickchart.io/qr?text=http://10.0.0.93/sheets_in_inventory/3/16_Aluminium_120.000x60.000"	3/16 Aluminium 120.000x60.000
+=IMAGE("https://quickchart.io/qr?text=http://10.0.0.93/sheets_in_inventory/1/4_Aluminium_120.000x60.000"	1/4 Aluminium 120.000x60.000
+=IMAGE("https://quickchart.io/qr?text=http://10.0.0.93/sheets_in_inventory/3/8_Aluminium_120.000x60.000"	3/8 Aluminium 120.000x60.000
+=IMAGE("https://quickchart.io/qr?text=http://10.0.0.93/sheets_in_inventory/16_Gauge_Aluminium_120.000x60.000"	16 Gauge Aluminium 120.000x60.000
+=IMAGE("https://quickchart.io/qr?text=http://10.0.0.93/sheets_in_inventory/18_Gauge_Aluminium_120.000x60.000"	18 Gauge Aluminium 120.000x60.000
+=IMAGE("https://quickchart.io/qr?text=http://10.0.0.93/sheets_in_inventory/11_Gauge_Aluminium_96.000x48.000"	11 Gauge Aluminium 96.000x48.000
+=IMAGE("https://quickchart.io/qr?text=http://10.0.0.93/sheets_in_inventory/1/4_304_SS_120.000x60.000"	1/4 304 SS 120.000x60.000
+=IMAGE("https://quickchart.io/qr?text=http://10.0.0.93/sheets_in_inventory/3/16_304_SS_120.000x60.000"	3/16 304 SS 120.000x60.000
+=IMAGE("https://quickchart.io/qr?text=http://10.0.0.93/sheets_in_inventory/10_Gauge_304_SS_120.000x60.000"	10 Gauge 304 SS 120.000x60.000
+=IMAGE("https://quickchart.io/qr?text=http://10.0.0.93/sheets_in_inventory/12_Gauge_304_SS_120.000x60.000"	12 Gauge 304 SS 120.000x60.000
+=IMAGE("https://quickchart.io/qr?text=http://10.0.0.93/sheets_in_inventory/14_Gauge_304_SS_120.000x60.000"	14 Gauge 304 SS 120.000x60.000
+=IMAGE("https://quickchart.io/qr?text=http://10.0.0.93/sheets_in_inventory/16_Gauge_304_SS_120.000x60.000"	16 Gauge 304 SS 120.000x60.000
+=IMAGE("https://quickchart.io/qr?text=http://10.0.0.93/sheets_in_inventory/18_Gauge_304_SS_120.000x60.000"	18 Gauge 304 SS 120.000x60.000
+=IMAGE("https://quickchart.io/qr?text=http://10.0.0.93/sheets_in_inventory/20_Gauge_304_SS_120.000x60.000"	20 Gauge 304 SS 120.000x60.000
+=IMAGE("https://quickchart.io/qr?text=http://10.0.0.93/sheets_in_inventory/10_Gauge_409_SS_145.000x60.000"	10 Gauge 409 SS 145.000x60.000
+=IMAGE("https://quickchart.io/qr?text=http://10.0.0.93/sheets_in_inventory/10_Gauge_409_SS_120.000x48.000"	10 Gauge 409 SS 120.000x48.000
+=IMAGE("https://quickchart.io/qr?text=http://10.0.0.93/sheets_in_inventory/12_Gauge_304_SS_120.000x48.000"	12 Gauge 304 SS 120.000x48.000
+=IMAGE("https://quickchart.io/qr?text=http://10.0.0.93/sheets_in_inventory/12_Gauge_304_SS_96.000x48.000"	12 Gauge 304 SS 96.000x48.000
+=IMAGE("https://quickchart.io/qr?text=http://10.0.0.93/sheets_in_inventory/12_Gauge_409_SS_72.000x48.000"	12 Gauge 409 SS 72.000x48.000
+=IMAGE("https://quickchart.io/qr?text=http://10.0.0.93/sheets_in_inventory/22_Gauge_304_SS_120.000x48.000"	22 Gauge 304 SS 120.000x48.000
+=IMAGE("https://quickchart.io/qr?text=http://10.0.0.93/sheets_in_inventory/11_Gauge_304_SS_120.000x60.000"	11 Gauge 304 SS 120.000x60.000
+=IMAGE("https://quickchart.io/qr?text=http://10.0.0.93/sheets_in_inventory/10_Gauge_Galvanized_120.000x60.000"	10 Gauge Galvanized 120.000x60.000
+=IMAGE("https://quickchart.io/qr?text=http://10.0.0.93/sheets_in_inventory/12_Gauge_Galvanized_120.000x60.000"	12 Gauge Galvanized 120.000x60.000
+=IMAGE("https://quickchart.io/qr?text=http://10.0.0.93/sheets_in_inventory/14_Gauge_Galvanized_120.000x60.000"	14 Gauge Galvanized 120.000x60.000
+=IMAGE("https://quickchart.io/qr?text=http://10.0.0.93/sheets_in_inventory/16_Gauge_Galvanized_120.000x60.000"	16 Gauge Galvanized 120.000x60.000
+=IMAGE("https://quickchart.io/qr?text=http://10.0.0.93/sheets_in_inventory/20_Gauge_Galvanized_120.000x60.000"	20 Gauge Galvanized 120.000x60.000
+=IMAGE("https://quickchart.io/qr?text=http://10.0.0.93/sheets_in_inventory/18_Gauge_Galvanneal_120.000x60.000"	18 Gauge Galvanneal 120.000x60.000
+=IMAGE("https://quickchart.io/qr?text=http://10.0.0.93/sheets_in_inventory/18_Gauge_Galvanized_120.000x60.000"	18 Gauge Galvanized 120.000x60.000
+=IMAGE("https://quickchart.io/qr?text=http://10.0.0.93/sheets_in_inventory/20_Gauge_Galvanneal_120.000x48.000"	20 Gauge Galvanneal 120.000x48.000
+=IMAGE("https://quickchart.io/qr?text=http://10.0.0.93/sheets_in_inventory/1/4_304_SS_60.000x52.500"	1/4 304 SS 60.000x52.500
+=IMAGE("https://quickchart.io/qr?text=http://10.0.0.93/sheets_in_inventory/12_Gauge_Galvanized_62.620x60.000"	12 Gauge Galvanized 62.620x60.000

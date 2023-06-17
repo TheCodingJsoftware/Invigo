@@ -124,15 +124,24 @@ class GenerateQuote:
         excel_document.add_list(cell="E2", items=["Order #", ""])
         excel_document.add_list(cell="E3", items=["Ship To:", ""])
 
-        headers = [
-            "Item",
-            "Part name",
-            "Material",
-            "Thickness",
-            "Qty",
-            "Unit Price",
-            "Price",
-        ]
+        if self.should_generate_quote or self.should_generate_packing_slip:
+            headers = [
+                "Item",
+                "Part name",
+                "Material",
+                "Thickness",
+                "Qty",
+                "Unit Price",
+                "Price",
+            ]
+        else:
+            headers = [
+                "Item",
+                "Part name",
+                "Material",
+                "Thickness",
+                "Qty",
+            ]
 
         excel_document.set_cell_width(cell="A1", width=15)
         excel_document.set_cell_width(cell="B1", width=22)
@@ -175,54 +184,64 @@ class GenerateQuote:
             excel_document.add_item(cell=f"C{row}", item=self.quote_data[item]["material"])  # Material Type C
             excel_document.add_item(cell=f"D{row}", item=self.quote_data[item]["gauge"])  # Gauge Selection D
             excel_document.add_item(cell=f"E{row}", item=self.quote_data[item]["quantity"])  # Quantity E
-            excel_document.add_item(
-                cell=f"F{row}",
-                item=self.quote_data[item]["quoting_unit_price"],
-                number_format="$#,##0.00",
-            )  # quoting_unit_price F
-            excel_document.add_item(
-                cell=f"G{row}",
-                item=self.quote_data[item]["quoting_price"],
-                number_format="$#,##0.00",
-            )  # quoting_price G
+
+            if self.should_generate_quote or self.should_generate_packing_slip:
+                excel_document.add_item(
+                    cell=f"F{row}",
+                    item=self.quote_data[item]["quoting_unit_price"],
+                    number_format="$#,##0.00",
+                )  # quoting_unit_price F
+                excel_document.add_item(
+                    cell=f"G{row}",
+                    item=self.quote_data[item]["quoting_price"],
+                    number_format="$#,##0.00",
+                )  # quoting_price G
 
             index += 1
         STARTING_ROW += nest_count_index
-        excel_document.add_table(
-            display_name="Table1",
-            theme="TableStyleLight8",
-            location=f"A{STARTING_ROW-1}:G{index+STARTING_ROW-nest_count_index}",
-            headers=headers,
-        )
+        if self.should_generate_quote or self.should_generate_packing_slip:
+            excel_document.add_table(
+                display_name="Table1",
+                theme="TableStyleLight8",
+                location=f"A{STARTING_ROW-1}:G{index+STARTING_ROW-nest_count_index}",
+                headers=headers,
+            )
+        if self.should_generate_workorder:
+            excel_document.add_table(
+                display_name="Table1",
+                theme="TableStyleLight8",
+                location=f"A{STARTING_ROW-1}:E{index+STARTING_ROW-nest_count_index}",
+                headers=headers,
+            )
         index -= nest_count_index + 1
         excel_document.add_item(cell=f"A{index+STARTING_ROW+1}", item="", totals=True)
         excel_document.add_item(cell=f"B{index+STARTING_ROW+1}", item="", totals=True)
         excel_document.add_item(cell=f"C{index+STARTING_ROW+1}", item="", totals=True)
         excel_document.add_item(cell=f"D{index+STARTING_ROW+1}", item="", totals=True)
         excel_document.add_item(cell=f"E{index+STARTING_ROW+1}", item="", totals=True)
-        excel_document.add_item(cell=f"F{index+STARTING_ROW+1}", item="", totals=True)
-        excel_document.add_item(cell=f"R{index+STARTING_ROW+1}", item="Total:", totals=False)
-        sheet_dim_left = f'TEXTAFTER("{self.quote_data[self.nests[0]]["sheet_dim"]}", " x ")'
-        sheet_dim_right = f'TEXTBEFORE("{self.quote_data[self.nests[0]]["sheet_dim"]}", " x ")'
-        price_per_pound = "INDEX(info!$A$6:$G$6,MATCH($E${6+nest_count_index}, info!$A$5:$G$5,0))"
-        pounds_per_sheet = f"INDEX(info!$B${16+len(self.nests)}:$H${16+len(self.nests)+15},MATCH($F${6+nest_count_index},info!$A${16+len(self.nests)}:$A${16+len(self.nests)+15},0),MATCH($E${6+nest_count_index},info!$B${15+len(self.nests)}:$H${15+len(self.nests)},0))"
-        sheet_quantity = f"Q{index+STARTING_ROW+1}"
-        excel_document.add_item(
-            cell=f"S{index+STARTING_ROW+1}",
-            item=f"={sheet_dim_right}*{sheet_dim_left}/144*{price_per_pound}*{pounds_per_sheet}*{sheet_quantity}",
-            number_format="$#,##0.00",
-            totals=False,
-        )
-        excel_document.add_item(cell=f"G{index+STARTING_ROW+1}", item="", totals=True)
-        excel_document.add_item(cell=f"F{index+STARTING_ROW+1}", item="Total: ", totals=True)
-        excel_document.add_item(
-            cell=f"G{index+STARTING_ROW+1}",
-            item=f"=SUM(G{STARTING_ROW}:G{index+STARTING_ROW})",
-            number_format="$#,##0.00",
-            totals=True,
-        )
-        excel_document.add_item(cell=f"G{index+STARTING_ROW+2}", item="No Tax Included")
         if self.should_generate_quote or self.should_generate_packing_slip:
+            excel_document.add_item(cell=f"F{index+STARTING_ROW+1}", item="", totals=True)
+            excel_document.add_item(cell=f"R{index+STARTING_ROW+1}", item="Total:", totals=False)
+            sheet_dim_left = f'TEXTAFTER("{self.quote_data[self.nests[0]]["sheet_dim"]}", " x ")'
+            sheet_dim_right = f'TEXTBEFORE("{self.quote_data[self.nests[0]]["sheet_dim"]}", " x ")'
+            price_per_pound = "INDEX(info!$A$6:$G$6,MATCH($E${6+nest_count_index}, info!$A$5:$G$5,0))"
+            pounds_per_sheet = f"INDEX(info!$B${16+len(self.nests)}:$H${16+len(self.nests)+15},MATCH($F${6+nest_count_index},info!$A${16+len(self.nests)}:$A${16+len(self.nests)+15},0),MATCH($E${6+nest_count_index},info!$B${15+len(self.nests)}:$H${15+len(self.nests)},0))"
+            sheet_quantity = f"Q{index+STARTING_ROW+1}"
+            excel_document.add_item(
+                cell=f"S{index+STARTING_ROW+1}",
+                item=f"={sheet_dim_right}*{sheet_dim_left}/144*{price_per_pound}*{pounds_per_sheet}*{sheet_quantity}",
+                number_format="$#,##0.00",
+                totals=False,
+            )
+            excel_document.add_item(cell=f"G{index+STARTING_ROW+1}", item="", totals=True)
+            excel_document.add_item(cell=f"F{index+STARTING_ROW+1}", item="Total: ", totals=True)
+            excel_document.add_item(
+                cell=f"G{index+STARTING_ROW+1}",
+                item=f"=SUM(G{STARTING_ROW}:G{index+STARTING_ROW})",
+                number_format="$#,##0.00",
+                totals=True,
+            )
+            excel_document.add_item(cell=f"G{index+STARTING_ROW+2}", item="No Tax Included")
             excel_document.add_item(
                 cell=f"A{index+STARTING_ROW+2}",
                 item="Payment past due date will receive 1.5% interest rate per month of received goods.",
@@ -244,10 +263,7 @@ class GenerateQuote:
                 item="______________________________",
             )
 
-        if self.should_generate_quote or self.should_generate_packing_slip:
-            excel_document.set_print_area(cell=f"A1:G{index + STARTING_ROW+6}")
-        else:
-            excel_document.set_print_area(cell=f"A1:E{index + STARTING_ROW+1}")
+        excel_document.set_print_area(cell=f"A1:G{index + STARTING_ROW+6}")
 
         # excel_document.add_macro(macro_path=f"{self.program_directory}/macro.bin")
         """
@@ -259,8 +275,8 @@ class GenerateQuote:
         """
 
         if self.should_generate_workorder:
-            excel_document.set_col_hidden("F1", True)
-            excel_document.set_col_hidden("G1", True)
+            # excel_document.set_col_hidden("F1", True)
+            # excel_document.set_col_hidden("G1", True)
             excel_document.freeze_pane(STARTING_ROW)
         else:
             excel_document.freeze_pane(5)

@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>555</width>
-    <height>396</height>
+    <width>543</width>
+    <height>399</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -151,7 +151,7 @@ border-bottom: none;</string>
               <rect>
                <x>0</x>
                <y>0</y>
-               <width>505</width>
+               <width>493</width>
                <height>69</height>
               </rect>
              </property>
@@ -230,23 +230,6 @@ border-bottom: none;</string>
               <string>High</string>
              </property>
             </item>
-           </widget>
-          </item>
-          <item row="7" column="0">
-           <widget class="QLabel" name="label_8">
-            <property name="text">
-             <string>Group:</string>
-            </property>
-           </widget>
-          </item>
-          <item row="7" column="3">
-           <widget class="QComboBox" name="comboBox_group">
-            <property name="editable">
-             <bool>true</bool>
-            </property>
-            <property name="currentText">
-             <string/>
-            </property>
            </widget>
           </item>
           <item row="5" column="3">
@@ -344,6 +327,13 @@ border-bottom: none;</string>
             </item>
            </layout>
           </item>
+          <item row="1" column="0">
+           <widget class="QLabel" name="label_6">
+            <property name="text">
+             <string>Part Number:</string>
+            </property>
+           </widget>
+          </item>
           <item row="4" column="0">
            <widget class="QLabel" name="label_3">
             <property name="text">
@@ -354,37 +344,30 @@ border-bottom: none;</string>
             </property>
            </widget>
           </item>
-          <item row="1" column="0">
-           <widget class="QLabel" name="label_6">
+          <item row="7" column="0">
+           <widget class="QLabel" name="label_8">
             <property name="text">
-             <string>Part Number:</string>
+             <string>Group:</string>
             </property>
            </widget>
           </item>
-          <item row="3" column="3">
-           <widget class="QSpinBox" name="spinBox_current_quantity">
-            <property name="accelerated">
+          <item row="7" column="3">
+           <widget class="QComboBox" name="comboBox_group">
+            <property name="editable">
              <bool>true</bool>
             </property>
-            <property name="maximum">
-             <number>9999999</number>
+            <property name="currentText">
+             <string/>
             </property>
            </widget>
           </item>
-          <item row="5" column="0">
-           <widget class="QLabel" name="label_5">
+          <item row="0" column="0">
+           <widget class="QLabel" name="label">
             <property name="text">
-             <string>Item Price:</string>
+             <string>Item name:</string>
             </property>
             <property name="alignment">
              <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
-            </property>
-           </widget>
-          </item>
-          <item row="1" column="3">
-           <widget class="QComboBox" name="lineEdit_part_number">
-            <property name="editable">
-             <bool>true</bool>
             </property>
            </widget>
           </item>
@@ -421,13 +404,30 @@ Description: </string>
             </property>
            </widget>
           </item>
-          <item row="0" column="0">
-           <widget class="QLabel" name="label">
+          <item row="3" column="3">
+           <widget class="QSpinBox" name="spinBox_current_quantity">
+            <property name="accelerated">
+             <bool>true</bool>
+            </property>
+            <property name="maximum">
+             <number>9999999</number>
+            </property>
+           </widget>
+          </item>
+          <item row="5" column="0">
+           <widget class="QLabel" name="label_5">
             <property name="text">
-             <string>Item name:</string>
+             <string>Item Price:</string>
             </property>
             <property name="alignment">
              <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="3">
+           <widget class="QComboBox" name="lineEdit_part_number">
+            <property name="editable">
+             <bool>true</bool>
             </property>
            </widget>
           </item>
