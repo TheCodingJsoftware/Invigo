@@ -79,28 +79,26 @@ from utils.workspace.assembly import Assembly
 from utils.workspace.item import Item
 
 from rich import print
-import copy
 
 
 class ScrollPositionManager:
-    def __init__(self, settings: QSettings):
-        self.settings = settings
-        self.scroll_positions = {}
+    def __init__(self):
+        self.scroll_positions: dict[str, QPoint] = {}
 
-    def save_scroll_position(self, tab_name: str, table: QTableWidget):
-        scroll_position = copy.deepcopy(QPoint(table.horizontalScrollBar().value(), table.verticalScrollBar().value()))
+    def save_scroll_position(self, tab_name: str, scroll: QTableWidget | QScrollArea):
+        scroll_position = QPoint(scroll.horizontalScrollBar().value(), scroll.verticalScrollBar().value())
         if not scroll_position.y():
             return
         self.scroll_positions[tab_name] = scroll_position
 
-    def restore_scroll_position(self, tab_name: str, table: QTableWidget):
+    def restore_scroll_position(self, tab_name: str, scroll: QTableWidget | QScrollArea):
         try:
             scroll_position = self.scroll_positions[tab_name]
         except KeyError:
             return
         if scroll_position is not None:
-            table.horizontalScrollBar().setValue(scroll_position.x())
-            table.verticalScrollBar().setValue(scroll_position.y())
+            scroll.horizontalScrollBar().setValue(scroll_position.x())
+            scroll.verticalScrollBar().setValue(scroll_position.y())
 
 
 class RecordingWidget(QWidget):

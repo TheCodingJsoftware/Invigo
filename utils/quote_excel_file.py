@@ -299,6 +299,6 @@ class ExcelFile:
             self.worksheet.merge_range("C1:D1", "Work Order", merge_format)
         if self.generate_quote:
             self.worksheet.merge_range("C1:D1", "Quote", merge_format)
-        if self.should_generate_packing_slip:
+        elif self.should_generate_packing_slip:
             self.worksheet.merge_range("C1:D1", "Packing Slip", merge_format)
         self.workbook.close()

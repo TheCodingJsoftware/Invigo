@@ -39,8 +39,10 @@ class GenerateQuote:
         self.quote_data = quote_data
         self.nests = self.get_nests()
         self.should_generate_quote, self.should_generate_workorder, self.should_update_inventory, self.should_generate_packing_slip = action
-        if self.should_generate_quote or self.should_generate_packing_slip:
+        if self.should_generate_quote:
             self.generate_quote()
+        elif self.should_generate_packing_slip:
+            self.generate_packingslip()
         if self.should_generate_workorder:
             self.generate_workorder()
 
@@ -52,7 +54,20 @@ class GenerateQuote:
         excel_document = ExcelFile(
             file_name=f"{self.path_to_save_quotes}/{self.file_name}.xlsx",
             generate_quote=True,
-            should_generate_packing_slip=self.should_generate_packing_slip,
+            should_generate_packing_slip=False,
+            should_generate_workorder=False,
+        )
+        self.generate(excel_document)
+
+    def generate_packingslip(self):
+        """
+        This function generates a packingslip by creating an Excel file with the given file name and path and
+        then calling the generate method on it.
+        """
+        excel_document = ExcelFile(
+            file_name=f"{self.path_to_save_quotes}/{self.file_name}.xlsx",
+            generate_quote=False,
+            should_generate_packing_slip=True,
             should_generate_workorder=False,
         )
         self.generate(excel_document)

@@ -325,6 +325,7 @@ class MainWindow(QMainWindow):
         self.is_nest_generated_from_parts_in_inventory: bool = False
         self.downloading_changes: bool = False
         self.finished_downloading_all_files: bool = False
+        self.finished_loading_tabs: bool = False
         self.files_downloaded_count: int = 0
         self.tables_font = QFont()
         self.tables_font.setFamily(settings_file.get_value("tables_font")["family"])
@@ -341,7 +342,7 @@ class MainWindow(QMainWindow):
         self.quote_nest_information = {}
         self.sheet_nests_toolbox: MultiToolBox = None
         self.get_upload_file_response: bool = True
-        self.scroll_position_manager = ScrollPositionManager(self.settings)
+        self.scroll_position_manager = ScrollPositionManager()
         self.margins = (15, 15, 5, 5)  # top, bottom, left, right
         self.margin_format = (
             f"margin-top: {self.margins[0]}%; margin-bottom: {self.margins[1]}%; margin-left: {self.margins[2]}%; margin-right: {self.margins[3]}%;"
@@ -356,7 +357,6 @@ class MainWindow(QMainWindow):
         )
         self.check_trusted_user()
         self.__load_ui()
-        self.load_workspace_filter_tab()
         self.tool_box_menu_changed()
         self.quantities_change()
         self.start_exchange_rate_thread()
@@ -676,6 +676,9 @@ class MainWindow(QMainWindow):
             self.menuOpen_Category.setEnabled(False)
             self.active_layout = self.workspace_layout
             self.load_categories()
+        if not self.finished_loading_tabs:
+            self.finished_loading_tabs = True
+            self.load_workspace_filter_tab()
         settings_file.add_item("last_toolbox_tab", self.tabWidget.currentIndex())
         self.last_selected_menu_tab = self.tabWidget.tabText(self.tabWidget.currentIndex())
 
@@ -2095,7 +2098,30 @@ class MainWindow(QMainWindow):
         return [item.text() for item in selected_rows if item.column() == 0 and item.text() not in all_gauges]
 
     def get_all_flow_tags(self) -> list[str]:
+        """
+        This function returns a list of strings where each string is a combination of flow tags joined
+        by "->".
+        
+        Returns:
+          A list of strings where each string is a concatenation of two or more flow tags separated by "
+        -> ". The flow tags are obtained from the "flow_tags" key in the "workspace_tags" dictionary.
+        """
         return [" -> ".join(flow_tag) for flow_tag in workspace_tags.get_value("flow_tags")]
+
+    def get_all_statuses(self) -> list[str]:
+        """
+        This function retrieves all unique statuses from a dictionary of flow tags.
+        
+        Returns:
+          A list of unique status strings from the `flow_tag_statuses` dictionary obtained from the
+        `workspace_tags` object.
+        """
+        data = workspace_tags.get_value('flow_tag_statuses')
+        statuses = set()
+        for flow_tag in data:
+            for status in data[flow_tag]:
+                statuses.add(status)
+        return list(statuses)
 
     def get_all_job_names(self) -> list[str]:
         admin_workspace.load_data()
@@ -2693,16 +2719,24 @@ class MainWindow(QMainWindow):
                         elif should_generate_packing_slip:
                             option_string = "Packing Slip"
                         file_name: str = f'{option_string} - {datetime.now().strftime("%A, %d %B %Y %H-%M-%S-%f")}'
-                        generate_quote = GenerateQuote(
-                            (should_generate_quote, False, should_update_inventory, should_generate_packing_slip),
-                            file_name,
-                            batch_data,
-                            self.order_number,
-                        )
+                        if should_generate_quote:
+                            generate_quote = GenerateQuote(
+                                (True, False, should_update_inventory, False),
+                                file_name,
+                                batch_data,
+                                self.order_number,
+                            )
+                        elif should_generate_packing_slip:
+                            generate_quote = GenerateQuote(
+                                (False, False, should_update_inventory, True),
+                                file_name,
+                                batch_data,
+                                self.order_number,
+                            )
                     if should_generate_workorder or should_update_inventory:
                         file_name: str = f'Workorder - {datetime.now().strftime("%A, %d %B %Y %H-%M-%S-%f")}'
                         generate_workorder = GenerateQuote(
-                            (False, should_generate_workorder, should_update_inventory, False), file_name, batch_data, self.order_number
+                            (False, True, should_update_inventory, False), file_name, batch_data, self.order_number
                         )
                 except FileNotFoundError:
                     self.show_error_dialog(
@@ -3302,14 +3336,18 @@ class MainWindow(QMainWindow):
                 self.price_of_steel_item(tab, category_data)
             elif self.tabWidget.tabText(self.tabWidget.currentIndex()) == "Parts in Inventory":
                 self.load_inventory_parts(tab, category_data)
-            self.scroll_position_manager.restore_scroll_position(
-                tab_name=f"{self.tabWidget.tabText(self.tabWidget.currentIndex())} {self.category}", table=tab
-            )
 
+            self.scroll_position_manager.restore_scroll_position(
+                tab_name=f"{self.tabWidget.tabText(self.tabWidget.currentIndex())} {self.category}", scroll=tab
+            )
+            
             def save_scroll_position(tab_name: str, tab: CustomTableWidget):
-                self.scroll_position_manager.save_scroll_position(tab_name=tab_name, table=tab)
+                self.scroll_position_manager.save_scroll_position(tab_name=tab_name, scroll=tab)
 
             tab.verticalScrollBar().valueChanged.connect(
+                partial(save_scroll_position, f"{self.tabWidget.tabText(self.tabWidget.currentIndex())} {self.category}", tab)
+            )
+            tab.horizontalScrollBar().valueChanged.connect(
                 partial(save_scroll_position, f"{self.tabWidget.tabText(self.tabWidget.currentIndex())} {self.category}", tab)
             )
             with contextlib.suppress(IndexError):
@@ -4289,13 +4327,15 @@ class MainWindow(QMainWindow):
         # Create the "Items" group box
         if assembly.get_assembly_data("has_items"):
             items_groupbox = QGroupBox("Items")
-            items_groupbox.setMinimumHeight(500)
+            # items_groupbox.setMinimumHeight(500)
             items_layout = QVBoxLayout()
+            items_layout.setAlignment(Qt.AlignmentFlag.AlignTop)
             items_groupbox.setLayout(items_layout)
 
         # Create and configure the table widget
         if assembly.get_assembly_data("has_items"):
             table_widget = self.load_edit_assembly_items_table(assembly)
+            table_widget.setFixedHeight(40*(len(assembly.items) + 2))
 
         def add_timers(timer_layout: QHBoxLayout) -> None:
             self.clear_layout(timer_layout)
@@ -4459,6 +4499,15 @@ class MainWindow(QMainWindow):
     def load_edit_assembly_tab(self) -> None:
         self.listWidget_flow_tags.clearSelection()
         scroll_area = QScrollArea()
+        def save_scroll_position(tab_name: str, tab: CustomTableWidget):
+            self.scroll_position_manager.save_scroll_position(tab_name=tab_name, scroll=tab)
+
+        scroll_area.verticalScrollBar().valueChanged.connect(
+            partial(save_scroll_position, f"{self.tabWidget.tabText(self.tabWidget.currentIndex())} {self.category}", scroll_area)
+        )
+        scroll_area.horizontalScrollBar().valueChanged.connect(
+            partial(save_scroll_position, f"{self.tabWidget.tabText(self.tabWidget.currentIndex())} {self.category}", scroll_area)
+        )
         scroll_area.setWidgetResizable(True)
         scroll_content = QWidget(self)
         scroll_layout = QVBoxLayout(scroll_content)
@@ -4533,6 +4582,10 @@ class MainWindow(QMainWindow):
         self.pushButton_add_job.disconnect()
         self.pushButton_add_job.clicked.connect(add_assembly)
         self.tab_widget.currentWidget().layout().addWidget(scroll_area)
+        self.scroll_position_manager.restore_scroll_position(
+            tab_name=f"{self.tabWidget.tabText(self.tabWidget.currentIndex())} {self.category}", scroll=scroll_area
+        )
+        
 
     # NOTE FOR USERS
     def load_view_assembly_items_table(self, assembly: Assembly) -> CustomTableWidget:
@@ -4747,8 +4800,6 @@ class MainWindow(QMainWindow):
             table.setCellWidget(row_index, col_index, flow_tag_controls_widget)
             col_index += 1
 
-            # ! TIMERS START/STOP NEEDS TO SHOW ONLY IF THE ITEM SHOULD BE TIMED
-
             if workspace_tags.get_value("is_timer_enabled")[item_flow_tag]:
                 timer_widget = QWidget(self)
                 timer_layout = QHBoxLayout(timer_widget)
@@ -4808,13 +4859,15 @@ class MainWindow(QMainWindow):
         # Create the "Items" group box
         if assembly.get_assembly_data("has_items"):
             items_groupbox = QGroupBox("Items")
-            items_groupbox.setMinimumHeight(500)
+            # items_groupbox.setMinimumHeight(500)
             items_layout = QVBoxLayout()
+            items_layout.setAlignment(Qt.AlignmentFlag.AlignTop)
             items_groupbox.setLayout(items_layout)
 
         # Create and configure the table widget
         if assembly.get_assembly_data("has_items"):
             table_widget = self.load_view_assembly_items_table(assembly)
+            table_widget.setFixedHeight(40*(len(assembly.items) + 2))
             # if isinstance(table_widget, QLabel): # Its empty
             #     return QLabel("Empty", self)
 
@@ -4897,7 +4950,10 @@ class MainWindow(QMainWindow):
             scroll_area.setWidget(scroll_content)
             multi_tool_box = MultiToolBox(scroll_content)
             multi_tool_box.layout().setSpacing(0)
-            workspace_data = user_workspace.get_filtered_data(self.workspace_filter)
+            try:
+                workspace_data = user_workspace.get_filtered_data(self.workspace_filter)
+            except KeyError:
+                return
             for i, assembly in enumerate(workspace_data):
                 assembly_widget = self.load_view_assembly_widget(assembly)
                 if isinstance(assembly_widget, QLabel):  # Its empty
@@ -4984,6 +5040,7 @@ class MainWindow(QMainWindow):
         self.pushButton_show_item_summary.clicked.connect(lambda: (self.pushButton_show_sub_assembly.setChecked(False), self.load_workspace()))
         self.listWidget_flow_tags.addItems(["Recut"] + workspace_tags.get_value("all_tags"))
         self.listWidget_materials.addItems(price_of_steel_information.get_value("materials"))
+        self.listWidget_statuses.addItems(self.get_all_statuses())
         self.listWidget_thicknesses.addItems(price_of_steel_information.get_value("thicknesses"))
         self.listWidget_paint_colors.addItems(list(workspace_tags.get_value("paint_colors").keys()))
         self.horizontalLayout_23.setAlignment(Qt.AlignmentFlag.AlignRight)
@@ -5000,12 +5057,12 @@ class MainWindow(QMainWindow):
         self.workspace_filter["dateTimeEdit_before"] = self.dateTimeEdit_before
 
         self.pushButton_use_filter.toggled.connect(self.load_workspace)
-        self.lineEdit_search.returnPressed.connect(lambda: (self.pushButton_use_filter.setChecked(True), self.load_workspace))
-        self.listWidget_materials.itemSelectionChanged.connect(lambda: (self.pushButton_use_filter.setChecked(True), self.load_workspace))
-        self.listWidget_thicknesses.itemSelectionChanged.connect(lambda: (self.pushButton_use_filter.setChecked(True), self.load_workspace))
-        self.listWidget_statuses.itemSelectionChanged.connect(lambda: (self.pushButton_use_filter.setChecked(True), self.load_workspace))
-        self.listWidget_paint_colors.itemSelectionChanged.connect(lambda: (self.pushButton_use_filter.setChecked(True), self.load_workspace))
-        self.groupBox_due_dates.toggled.connect(lambda: (self.pushButton_use_filter.setChecked(True), self.load_workspace))
+        self.lineEdit_search.returnPressed.connect(lambda: (self.pushButton_use_filter.setChecked(True), self.load_workspace()))
+        self.listWidget_materials.itemSelectionChanged.connect(lambda: (self.pushButton_use_filter.setChecked(True), self.load_workspace()))
+        self.listWidget_thicknesses.itemSelectionChanged.connect(lambda: (self.pushButton_use_filter.setChecked(True), self.load_workspace()))
+        self.listWidget_statuses.itemSelectionChanged.connect(lambda: (self.pushButton_use_filter.setChecked(True), self.load_workspace()))
+        self.listWidget_paint_colors.itemSelectionChanged.connect(lambda: (self.pushButton_use_filter.setChecked(True), self.load_workspace()))
+        self.groupBox_due_dates.toggled.connect(lambda: (self.pushButton_use_filter.setChecked(True), self.load_workspace()))
 
     def load_quote_generator_ui(self) -> None:
         self.refresh_nest_directories()
