@@ -139,7 +139,7 @@ __copyright__: str = "Copyright 2022-2023, TheCodingJ's"
 __credits__: list[str] = ["Jared Gross"]
 __license__: str = "MIT"
 __name__: str = "Invigo"
-__version__: str = "v2.1.0"
+__version__: str = "v2.1.1"
 __updated__: str = "2023-06-21 12:32:51"
 __maintainer__: str = "Jared Gross"
 __email__: str = "jared@pinelandfarms.ca"
@@ -1896,7 +1896,7 @@ class MainWindow(QMainWindow):
             except (ValueError):  # A merged cell
                 nest_name = self.tableWidget_quote_items.item(row, 0).text() + ".pdf"
                 continue
-            recut_button: RecutButton = self.tableWidget_quote_items.cellWidget(row, 7)
+            recut_button: RecutButton = self.tableWidget_quote_items.cellWidget(row, 8)
             self.quote_nest_information[nest_name][item_name]["quantity"] = quantity
             self.quote_nest_information[nest_name][item_name]["recut"] = recut_button.isChecked()
 

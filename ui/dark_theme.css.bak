@@ -138,13 +138,13 @@ QScrollBar:handle:horizontal {
     border-radius: 3px;
     margin: 2;
 }
+QScrollBar:handle:horizontal:hover {
+    background: rgb(80, 80, 80);
+}
 QScrollBar:handle:horizontal:pressed {
     background: #3daee9;
 }
 
-QScrollBar:handle:horizontal:hover {
-    background: rgb(80, 80, 80);
-}
 QScrollBar::add-line:vertical {
     border: None;
     background: rgb(44, 44, 44);
@@ -702,7 +702,7 @@ QTabBar::tab:selected {
 }
 
 QTableView {
-    gridline-color: rgba(5,5,5,70);
+    gridline-color: rgba(70,70,70,70);
 }
 QTableWidget{
 	background-color: #222222;
