@@ -17,8 +17,8 @@ class GenerateQuote:
         self.file_name = file_name
         config = configparser.ConfigParser()
         config.read(f"{self.program_directory}/laser_quote_variables.cfg")
-        self.nitrogen_cost_per_hour: int = float(config.get("GLOBAL VARIABLES", "nitrogen_cost_per_hour"))
-        self.co2_cost_per_hour: int = float(config.get("GLOBAL VARIABLES", "co2_cost_per_hour"))
+        self.nitrogen_cost_per_hour: float = float(config.get("GLOBAL VARIABLES", "nitrogen_cost_per_hour"))
+        self.co2_cost_per_hour: float = float(config.get("GLOBAL VARIABLES", "co2_cost_per_hour"))
         self.PROFIT_MARGIN: float = float(config.get("GLOBAL VARIABLES", "profit_margin"))
         self.OVERHEAD: float = float(config.get("GLOBAL VARIABLES", "overhead"))
         self.path_to_save_quotes = config.get("GLOBAL VARIABLES", "path_to_save_quotes")

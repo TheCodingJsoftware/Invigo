@@ -3,10 +3,21 @@ import os.path
 from functools import partial
 
 from PyQt6 import uic
-from PyQt6.QtCore import QFile, Qt, QTextStream, QObject, QEvent
+from PyQt6.QtCore import QEvent, QFile, QObject, Qt, QTextStream
 from PyQt6.QtGui import QIcon
 from PyQt6.QtSvgWidgets import QSvgWidget
-from PyQt6.QtWidgets import QCheckBox, QComboBox, QDialog, QLineEdit, QHBoxLayout, QLabel, QPushButton, QVBoxLayout, QWidget, QRadioButton
+from PyQt6.QtWidgets import (
+    QCheckBox,
+    QComboBox,
+    QDialog,
+    QHBoxLayout,
+    QLabel,
+    QLineEdit,
+    QPushButton,
+    QRadioButton,
+    QVBoxLayout,
+    QWidget,
+)
 
 from ui.theme import set_theme
 from utils.dialog_icons import Icons

@@ -5,10 +5,18 @@ import os
 from typing import Union
 
 import ujson as json
-from PyQt6.QtWidgets import QListWidget, QCheckBox, QDateTimeEdit, QGroupBox, QLineEdit, QPushButton
+from PyQt6.QtWidgets import (
+    QCheckBox,
+    QDateTimeEdit,
+    QGroupBox,
+    QLineEdit,
+    QListWidget,
+    QPushButton,
+)
+
+from utils.json_file import JsonFile
 from utils.workspace.assembly import Assembly
 from utils.workspace.item import Item
-from utils.json_file import JsonFile
 
 workspace_tags = JsonFile(file_name="data/workspace_settings")
 
@@ -65,6 +73,7 @@ class Workspace:
         assembly = Assembly(name=assembly_name, assembly_data=data["assembly_data"])
         for item_name, item_data in data["items"].items():
             item: Item = Item(name=item_name, data=item_data)
+            item.parent_assembly = assembly
             assembly.set_item(item)
         for sub_assembly_name, sub_assembly_data in data["sub_assemblies"].items():
             sub_assembly: Assembly = self.load_assembly(sub_assembly_name, sub_assembly_data)
@@ -79,8 +88,12 @@ class Workspace:
         with open(f"{self.FOLDER_LOCATION}/{self.file_name}.json", "r", encoding="utf-8") as json_file:
             data = json.load(json_file)
         for assembly_name in data:
-            assembly: Assembly = Assembly(name=assembly_name, assembly_data=data[assembly_name]["assembly_data"])
+            # assembly: Assembly = Assembly(name=assembly_name, assembly_data=data[assembly_name]["assembly_data"])
             self.set_assembly(self.load_assembly(assembly_name, data[assembly_name]))
+        # for assembly in self.data:
+        #     assembly.set_default_value_to_all_items(key="show", value=True)
+        #     assembly.set_data_to_all_sub_assemblies(key="show", value=True)
+        #     assembly.set_assembly_data(key="show", value=True)
 
     # TODO
     def get_users_data(self) -> dict:
@@ -88,6 +101,17 @@ class Workspace:
         return {}
 
     def filter_assemblies(self, sub_assembly: Assembly, filter: dict):
+        """
+        This function filters sub-assemblies based on various criteria such as search text, selected
+        materials, thicknesses, flow tags, statuses, paint colors, and due dates.
+
+        Args:
+          sub_assembly (Assembly): The assembly object that needs to be filtered.
+          filter (dict): The `filter` parameter is a dictionary containing various filter options for
+        the assemblies. These options include a search filter, material filter, thickness filter, flow
+        tag filter, status filter, paint color filter, and due date filter. The values for these filters
+        are obtained from various GUI elements such as QLineEdit,
+        """
         lineEdit_search: QLineEdit = filter["search"]
         listWidget_materials: QListWidget = filter["materials"]
         listWidget_thicknesses: QListWidget = filter["thicknesses"]
@@ -99,9 +123,13 @@ class Workspace:
         dateTimeEdit_before: QDateTimeEdit = filter["dateTimeEdit_before"]
 
         # Recursively filter sub-assemblies
+        completed_items = 0
         for item in sub_assembly.items:
             # Apply search filter
             item.set_value(key="show", value=False)
+            if item.get_value(key="completed") == True:
+                completed_items += 1
+                continue
             search_text = lineEdit_search.text().lower()
             if search_text and search_text not in item.name.lower():
                 continue
@@ -147,21 +175,93 @@ class Workspace:
                 if assembly_due_date < after_date or assembly_due_date > before_date:
                     continue
             item.set_value(key="show", value=True)
+            item.parent_assembly.set_parent_assembly_value(key="show", value=True)
+        if completed_items == len(sub_assembly.items):
+            if selected_flow_tags := [item.text() for item in listWidget_flow_tags.selectedItems()]:
+                with contextlib.suppress(IndexError):  # This means the part is 'completed'
+                    assembly_flow_tag = sub_assembly.get_assembly_data("flow_tag")[sub_assembly.get_assembly_data("current_flow_state")]
+                    if assembly_flow_tag in selected_flow_tags:
+                        sub_assembly.set_assembly_data(key="show", value=True)
+                        sub_assembly.set_parent_assembly_value(key="show", value=True)
+                    else:
+                        sub_assembly.set_assembly_data(key="show", value=False)
+            if selected_statuses := [item.text() for item in listWidget_statuses.selectedItems()]:
+                assembly_status = sub_assembly.get_assembly_data("status")
+                if assembly_status is None:
+                    assembly_status = "None"
+                if assembly_status in selected_statuses:
+                    sub_assembly.set_assembly_data(key="show", value=True)
+                    sub_assembly.set_parent_assembly_value(key="show", value=True)
+                else:
+                    sub_assembly.set_assembly_data(key="show", value=False)
         for _sub_assembly in sub_assembly.sub_assemblies:
             self.filter_assemblies(sub_assembly=_sub_assembly, filter=filter)
 
     def get_filtered_data(self, filter: dict) -> dict:
-        workspace_tags.load_data()
-        checkBox_use_filter: QPushButton = filter["use_filter"]
+        """
+        This function filters data based on a given dictionary filter and returns the filtered data.
 
-        if not checkBox_use_filter.isChecked():
+        Args:
+          filter (dict): A dictionary containing filter options. The "use_filter" key contains a
+        QPushButton object that determines whether to apply the filter or not.
+
+        Returns:
+          a dictionary.
+        """
+        workspace_tags.load_data()
+        if not filter:
             for assembly in self.data:
                 assembly.set_default_value_to_all_items(key="show", value=True)
+                assembly.set_data_to_all_sub_assemblies(key="show", value=True)
+                assembly.set_assembly_data(key="show", value=True)
+            return self.data
+        checkbox_use_filter: QPushButton = filter["use_filter"]
+        listWidget_statuses: QListWidget = filter["statuses"]
+        listWidget_flow_tags: QListWidget = filter["flow_tags"]
+
+        if not checkbox_use_filter.isChecked():
+            for assembly in self.data:
+                assembly.set_default_value_to_all_items(key="show", value=True)
+                assembly.set_data_to_all_sub_assemblies(key="show", value=True)
+                assembly.set_assembly_data(key="show", value=True)
             return self.data
         else:
             for assembly in self.data:
                 self.filter_assemblies(sub_assembly=assembly, filter=filter)
+            for assembly in self.data:
+                if not assembly.any_sub_assemblies_to_show():
+                    assembly.set_assembly_data(key="show", value=False)
+                if assembly.all_sub_assemblies_complete():
+                    assembly.set_assembly_data(key="show", value=True)
+                    if selected_flow_tags := [item.text() for item in listWidget_flow_tags.selectedItems()]:
+                        with contextlib.suppress(IndexError):  # This means the part is 'completed'
+                            assembly_flow_tag = assembly.get_assembly_data("flow_tag")[assembly.get_assembly_data("current_flow_state")]
+                            if assembly_flow_tag not in selected_flow_tags:
+                                assembly.set_assembly_data(key="show", value=False)
+                    if selected_statuses := [item.text() for item in listWidget_statuses.selectedItems()]:
+                        assembly_status = assembly.get_assembly_data("status")
+                        if assembly_status is None:
+                            assembly_status = "None"
+                        if assembly_status not in selected_statuses:
+                            assembly.set_assembly_data(key="show", value=False)
         return self.data
+
+    def _gather_sub_assembly_data(self, sub_assembly: Assembly, data: list) -> bool:
+        should_show = any(item.get_value(key="show") for item in sub_assembly.items)
+        data.append(should_show)
+        for _sub_assembly in sub_assembly.sub_assemblies:
+            should_show = any(item.get_value(key="show") for item in _sub_assembly.items)
+            data.append(should_show)
+            # data.extend(self._gather_sub_assembly_data(sub_assembly=_sub_assembly, data=data))
+        return data
+
+    def is_assembly_empty(self, assembly: Assembly) -> bool:
+        data = {assembly: []}
+        should_show = any(item.get_value(key="show") for item in assembly.items)
+        data[assembly].append(should_show)
+        for sub_assembly in assembly.sub_assemblies:
+            data[assembly].extend(self._gather_sub_assembly_data(sub_assembly=sub_assembly, data=data[assembly]))
+        return not any(data[assembly])
 
     def get_data(self) -> dict:
         """
@@ -261,14 +361,45 @@ class Workspace:
         )
 
     def remove_assembly(self, assembly: Assembly) -> Assembly:
+        """
+        This function removes an assembly from a data structure and returns a copy of the removed
+        assembly.
+
+        Args:
+          assembly (Assembly): The "assembly" parameter is an object of the "Assembly" class that is
+        being passed as an argument to the "remove_assembly" method. The method is expected to remove
+        this assembly object from the data stored in the current object and return a copy of the removed
+        assembly object.
+
+        Returns:
+          The method `remove_assembly` returns a copy of the `Assembly` object that was passed as an
+        argument to the method.
+        """
         copy = self.copy(assembly)
         self.data.pop(assembly)
         return copy
 
     def get_all_assembly_names(self) -> list[str]:
+        """
+        This function returns a list of names of all the assemblies in the data.
+
+        Returns:
+          A list of strings containing the names of all the assemblies in the data.
+        """
         return [assembly.name for assembly in self.data]
 
     def _get_counts(self, sub_assembly: Assembly) -> tuple[int, int, int, int]:
+        """
+        The function recursively counts the number of items and sub-assemblies, as well as the number of
+        completed items and sub-assemblies, within a given assembly.
+
+        Args:
+          sub_assembly (Assembly): The sub-assembly for which the counts are being calculated.
+
+        Returns:
+          a tuple of four integers: item_count, item_completion_count, assembly_count, and
+        assembly_completion_count.
+        """
         item_count: int = 0 + len(sub_assembly.items)
         item_completion_count: int = sum(bool(item.get_value("completed")) for item in sub_assembly.items)
         assembly_count: int = 0 + len(sub_assembly.sub_assemblies)
@@ -283,6 +414,18 @@ class Workspace:
         return item_count, item_completion_count, assembly_count, assembly_completion_count
 
     def get_completion_percentage(self, assembly: Assembly) -> tuple[float, float]:
+        """
+        This function calculates the completion percentage of items and assemblies based on their
+        counts.
+
+        Args:
+          assembly (Assembly): The "assembly" parameter is an instance of the "Assembly" class, which is
+        being passed as an argument to the "get_completion_percentage" method.
+
+        Returns:
+          A tuple containing two float values - the completion percentage for items and the completion
+        percentage for assemblies.
+        """
         item_count, item_completion_count, assembly_count, assembly_completion_count = self._get_counts(sub_assembly=assembly)
         try:
             item_completion_percentage = item_completion_count / item_count

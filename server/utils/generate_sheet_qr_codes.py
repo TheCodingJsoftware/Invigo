@@ -1,6 +1,6 @@
-import ujson as json
 import urllib.parse
 
+import ujson as json
 
 with open(r"F:\Code\Python-Projects\Inventory Manager\data\inventory - Price of Steel.json", "r") as f:
     data = json.load(f)

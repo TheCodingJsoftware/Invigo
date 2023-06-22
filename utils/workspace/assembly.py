@@ -18,6 +18,7 @@ class Assembly:
         self.assembly_data: dict[str, object] = kwargs.get("assembly_data")
         self.sub_assemblies: list["Assembly"] = kwargs.get("sub_assemblies")
         self.items: list[Item] = kwargs.get("items")
+        self.parent_assembly: "Assembly" = None
         if not self.items:
             self.items = []
         if not self.sub_assemblies:
@@ -25,6 +26,11 @@ class Assembly:
         if not self.assembly_data:
             self.assembly_data = {}
         self.data = {"assembly_data": self.assembly_data, "sub_assemblies": self.sub_assemblies, "items": self.items}
+
+    def set_parent_assembly_value(self, key: str, value: Any) -> None:
+        self.set_assembly_data(key=key, value=value)
+        if self.parent_assembly is not None:
+            self.parent_assembly.set_assembly_data(key=key, value=value)
 
     def set_item(self, item: Item) -> None:
         """
@@ -46,6 +52,7 @@ class Assembly:
         the class "Item" to be passed as an argument. The method "set_item" is designed to add this item
         to a list of items stored in the object that the method is called on.
         """
+        item.parent_assembly = self
         self.items.append(item)
 
     def remove_item(self, item: Item) -> None:
@@ -86,7 +93,31 @@ class Assembly:
         returned value is not specified, but it will be of the same type as the value stored in the
         dictionary for the given key.
         """
-        return self.assembly_data[key]
+        try:
+            return self.assembly_data[key]
+        except KeyError:
+            return None
+
+    def delete_assembly_value(self, key: str) -> Any:
+        """
+        This function deletes a key-value pair from a dictionary and returns the value of the deleted
+        key, or None if the key does not exist.
+
+        Args:
+          key (str): The key is a string that represents the key of the value that needs to be deleted
+        from the assembly_data dictionary.
+
+        Returns:
+          the value associated with the given key in the assembly_data dictionary, and then deleting the
+        key-value pair from the dictionary. If the key is not found in the dictionary, the function
+        returns None.
+        """
+        try:
+            value_copy = self.assembly_data[key]
+            del self.assembly_data[key]
+            return value_copy
+        except KeyError:
+            return None
 
     def delete_sub_assembly(self, assembly) -> "Assembly":
         """
@@ -116,6 +147,7 @@ class Assembly:
         larger class that deals with assemblies and sub-assemblies, and this particular method is used
         to add a sub-
         """
+        assembly.parent_assembly = self
         self.sub_assemblies.append(assembly)
 
     def add_sub_assembly(self, assembly: "Assembly") -> list["Assembly"]:
@@ -128,6 +160,7 @@ class Assembly:
         larger class that deals with assemblies and sub-assemblies, and this particular method is used
         to add a sub-
         """
+        assembly.parent_assembly = self
         self.sub_assemblies.append(assembly)
 
     def get_sub_assemblies(self) -> list["Assembly"]:
@@ -208,11 +241,13 @@ class Assembly:
         processed_assemblies.add(self)
 
         data = {"items": {}, "assembly_data": self.assembly_data, "sub_assemblies": {}}
+        self.delete_assembly_value(key="show")
         for sub_assembly in self.sub_assemblies:
+            sub_assembly.delete_assembly_value(key="show")
             if sub_assembly not in processed_assemblies:  # Check if the sub-assembly is already processed
                 data["sub_assemblies"][sub_assembly.name] = sub_assembly.to_dict(processed_assemblies)
         for item in self.items:
-            item.delete_value(key='show')
+            item.delete_value(key="show")
             data["items"][item.name] = item.data
         return data
 
@@ -238,7 +273,7 @@ class Assembly:
         for sub_assembly in self.sub_assemblies:
             all_items.extend(sub_assembly.get_all_items())
         return all_items
-    
+
     def get_item_by_index(self, index: int) -> Item:
         """
         This function returns an item from a list based on its index.
@@ -271,7 +306,7 @@ class Assembly:
     def get_data(self) -> dict:
         """
         The function returns a dictionary containing the data.
-        
+
         Returns:
           A dictionary containing the data stored in the object.
         """
@@ -280,7 +315,7 @@ class Assembly:
     def set_timer(self, flow_tag: str, time: object) -> None:
         """
         This function sets a timer value for a specific flow tag in the assembly data dictionary.
-        
+
         Args:
           flow_tag (str): A string that serves as a unique identifier for a specific flow or process in
         the program.
@@ -288,12 +323,12 @@ class Assembly:
         returns the value of the time in seconds. This method is used to set the value of a timer for a
         specific flow_tag in the assembly_data dictionary.
         """
-        self.assembly_data["timers"][flow_tag] = time.value()
+        self.assembly_data["timers"][flow_tag]["time_to_complete"] = time.value()
 
     def _set_data_to_all_sub_assemblies(self, sub_assembly: "Assembly", key: str, value: Any) -> None:
         """
         This function sets a key-value pair to all sub-assemblies recursively.
-        
+
         Args:
           sub_assembly ("Assembly"): This is an instance of the "Assembly" class, which represents a
         sub-assembly of the current assembly.
@@ -306,12 +341,12 @@ class Assembly:
         if sub_assembly.sub_assemblies:
             for _sub_assembly in sub_assembly.sub_assemblies:
                 self._set_data_to_all_sub_assemblies(sub_assembly=_sub_assembly, key=key, value=value)
-        
+
     def set_data_to_all_sub_assemblies(self, key: str, value: Any) -> None:
         """
         This function sets a key-value pair to the assembly data and recursively sets the same data to
         all sub-assemblies.
-        
+
         Args:
           key (str): a string representing the key of the data to be set
           value (Any): The value that needs to be set for the given key in the assembly_data dictionary
@@ -324,7 +359,7 @@ class Assembly:
     def _set_default_value_to_all_items(self, sub_assembly: "Assembly", key: str, value: str) -> None:
         """
         This function sets a default value to all items in an assembly and its sub-assemblies.
-        
+
         Args:
           sub_assembly ("Assembly"): An instance of the "Assembly" class that represents a sub-assembly
         within the current assembly.
@@ -333,19 +368,19 @@ class Assembly:
           value (str): The value to be set as the default value for all items in the assembly and its
         sub-assemblies.
         """
-        for item in self.items:
+        for item in sub_assembly.items:
             item.set_value(key=key, value=value)
         if sub_assembly != None:
             for _sub_assembly in sub_assembly.sub_assemblies:
                 for item in _sub_assembly.items:
                     item.set_value(key=key, value=value)
-                if self.sub_assemblies:
+                if _sub_assembly.sub_assemblies:
                     self._set_default_value_to_all_items(sub_assembly=_sub_assembly, key=key, value=value)
 
     def set_default_value_to_all_items(self, key: str, value: str) -> None:
         """
         This function sets a default value to all items in a given assembly and its sub-assemblies.
-        
+
         Args:
           key (str): a string representing the key for the value to be set
           value (str): The value that will be set as the default value for all items in the assembly and
@@ -358,6 +393,47 @@ class Assembly:
                 item.set_value(key=key, value=value)
             if self.sub_assemblies:
                 self._set_default_value_to_all_items(sub_assembly=sub_assembly, key=key, value=value)
+
+    def any_items_to_show(self) -> bool:
+        for item in self.items:
+            if item.get_value(key="show") and not item.get_value(key="completed"):
+                return True
+        for sub_assembly in self.sub_assemblies:
+            for item in sub_assembly.items:
+                if item.get_value(key="show") and not item.get_value(key="completed"):
+                    return True
+        return False
+
+    def any_sub_assemblies_to_show(self) -> bool:
+        for assembly in self.sub_assemblies:
+            if assembly.get_assembly_data("show") is True:
+                return True
+            for _assembly in assembly.sub_assemblies:
+                if _assembly.get_assembly_data("show") is True:
+                    return True
+        return False
+
+    def all_items_complete(self) -> bool:
+        """
+        This function checks if all items in a list have a "completed" value of True.
+
+        Returns:
+          The function `all_items_complete` is returning a boolean value. It is checking if all the
+        items in the `self.items` list have a value of `True` for the key "completed" using a generator
+        expression with the `all()` function. If all items have a value of `True`, then the function
+        returns `True`, otherwise it returns `False`.
+        """
+        return all(item.get_value("completed") != False for item in self.items)
+
+    def all_sub_assemblies_complete(self) -> bool:
+        """
+        This function checks if all sub-assemblies have been completed.
+
+        Returns:
+          a boolean value indicating whether all sub-assemblies in the object have their "completed"
+        attribute set to a truthy value (i.e. not False).
+        """
+        return all(sub_assembly.get_assembly_data(key="completed") != False for sub_assembly in self.sub_assemblies)
 
     # TODO
     def setup_timers_for_all_items(self) -> None:

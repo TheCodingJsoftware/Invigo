@@ -5,7 +5,15 @@ from PyQt6 import uic
 from PyQt6.QtCore import QFile, Qt, QTextStream
 from PyQt6.QtGui import QIcon
 from PyQt6.QtSvgWidgets import QSvgWidget
-from PyQt6.QtWidgets import QDialog, QPushButton, QRadioButton, QWidget, QHBoxLayout, QLabel, QSpinBox
+from PyQt6.QtWidgets import (
+    QDialog,
+    QHBoxLayout,
+    QLabel,
+    QPushButton,
+    QRadioButton,
+    QSpinBox,
+    QWidget,
+)
 
 from ui.custom_widgets import set_default_dialog_button_stylesheet
 from ui.theme import set_theme

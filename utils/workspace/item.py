@@ -15,6 +15,7 @@ class Item:
         """
         self.name: str = kwargs.get("name")
         self.data: dict = kwargs.get("data")
+        self.parent_assembly = None
 
     def set_data(self, data: object) -> None:
         """
@@ -55,16 +56,19 @@ class Item:
         dictionary of the object. The type of the returned value is `Any`, which means it can be any
         Python object.
         """
-        return self.data[key]
+        try:
+            return self.data[key]
+        except KeyError:
+            return None
 
     def delete_value(self, key: str) -> Any:
         """
         This function deletes a key-value pair from a dictionary and returns the value that was deleted.
-        
+
         Args:
           key (str): The key parameter is a string that represents the key of the value that needs to be
         deleted from the data dictionary.
-        
+
         Returns:
           The value associated with the given key is being returned after deleting it from the
         dictionary.

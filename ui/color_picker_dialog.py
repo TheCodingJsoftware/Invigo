@@ -9,13 +9,14 @@
 #                                       #
 # ------------------------------------- #
 
-import sys
 import colorsys
+import sys
 
 from PyQt6 import uic
 from PyQt6.QtCore import QPoint, Qt, pyqtSignal
 from PyQt6.QtGui import QColor, QMouseEvent
 from PyQt6.QtWidgets import QApplication, QDialog, QMainWindow
+
 from ui.theme import set_theme
 
 

@@ -4,6 +4,7 @@ import sys
 import typing
 from datetime import datetime, timedelta
 
+from natsort import natsorted
 from PyQt6.QtCore import (
     QAbstractItemModel,
     QAbstractTableModel,
@@ -12,16 +13,19 @@ from PyQt6.QtCore import (
     QMargins,
     QMimeData,
     QModelIndex,
+    QPoint,
     QRegularExpression,
+    QSettings,
     QSortFilterProxyModel,
     Qt,
     QTime,
+    QTimer,
     QUrl,
     pyqtSignal,
-    QSettings,
-    QPoint,
 )
 from PyQt6.QtGui import (
+    QBrush,
+    QColor,
     QCursor,
     QDrag,
     QDragEnterEvent,
@@ -29,11 +33,12 @@ from PyQt6.QtGui import (
     QDropEvent,
     QFileSystemModel,
     QIcon,
+    QPainter,
     QPalette,
     QPixmap,
     QRegularExpressionValidator,
-    QStandardItemModel,
     QStandardItem,
+    QStandardItemModel,
 )
 from PyQt6.QtWidgets import (
     QAbstractItemView,
@@ -46,8 +51,8 @@ from PyQt6.QtWidgets import (
     QGridLayout,
     QGroupBox,
     QHBoxLayout,
-    QLabel,
     QHeaderView,
+    QLabel,
     QLineEdit,
     QMainWindow,
     QPlainTextEdit,
@@ -71,14 +76,10 @@ from PyQt6.QtWidgets import (
     QVBoxLayout,
     QWidget,
 )
-from PyQt6.QtCore import Qt, QTimer
-from PyQt6.QtGui import QPainter, QColor, QBrush
-from PyQt6.QtWidgets import QApplication, QWidget
-from natsort import natsorted
+from rich import print
+
 from utils.workspace.assembly import Assembly
 from utils.workspace.item import Item
-
-from rich import print
 
 
 class ScrollPositionManager:
@@ -775,6 +776,7 @@ class MultiToolBox(QWidget):
     def __init__(self, parent=None):
         super(MultiToolBox, self).__init__(parent)
         self.widgets: list[QWidget] = []
+        self.widget_visibility: dict[int, bool] = {}
         self.buttons: list[QPushButton] = []
         main_layout = QVBoxLayout(self)
         main_layout.setAlignment(Qt.AlignmentFlag.AlignTop)
@@ -858,6 +860,32 @@ class MultiToolBox(QWidget):
         """
         return len(self.widgets)
 
+    def get_widget_visibility(self) -> dict[int, bool]:
+        """
+        This function returns a dictionary containing the visibility status of each widget in a list of
+        widgets.
+
+        Returns:
+          A dictionary where the keys are integers representing the index of each widget in a list of
+        widgets, and the values are boolean values indicating whether each widget is currently visible
+        or not.
+        """
+        return {i: widget.isVisible() for i, widget in enumerate(self.widgets)}
+
+    def set_widgets_visibility(self, widgets_visibility: dict[int, bool]) -> None:
+        """
+        This function sets the visibility of widgets based on a dictionary of widget IDs and boolean
+        values, and closes any widgets that are not visible.
+
+        Args:
+          widgets_visibility (dict[int, bool]): A dictionary where the keys are integers representing
+        widget IDs and the values are boolean values indicating whether the widget should be visible or
+        not.
+        """
+        for i, is_visible in widgets_visibility.items():
+            if not is_visible:
+                self.close(i)
+
     def toggle_widget_visibility(self, widget):
         """
         This function toggles the visibility of a widget in a Python GUI.
@@ -869,6 +897,12 @@ class MultiToolBox(QWidget):
         be
         """
         widget.setVisible(not widget.isVisible())
+
+    def close(self, index: int) -> QWidget:
+        if 0 <= index < len(self.buttons):
+            self.buttons[index].click()
+            # button.setChecked(False)
+            self.widgets[index].setVisible(False)
 
     def close_all(self) -> None:
         for button, widget in zip(self.buttons, self.widgets):
