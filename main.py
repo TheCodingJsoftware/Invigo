@@ -57,7 +57,6 @@ from PyQt6.QtWidgets import (
     QVBoxLayout,
     QWidget,
 )
-from rich import print
 
 from threads.changes_thread import ChangesThread
 from threads.download_images_thread import DownloadImagesThread

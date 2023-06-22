@@ -76,7 +76,6 @@ from PyQt6.QtWidgets import (
     QVBoxLayout,
     QWidget,
 )
-from rich import print
 
 from utils.workspace.assembly import Assembly
 from utils.workspace.item import Item
