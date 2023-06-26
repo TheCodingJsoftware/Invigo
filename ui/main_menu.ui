@@ -667,7 +667,7 @@ QPushButton#pushButton_add_new_sheet:disabled{
            <layout class="QVBoxLayout" name="verticalLayout_11"/>
           </item>
           <item>
-           <layout class="QVBoxLayout" name="verticalLayout_20">
+           <layout class="QVBoxLayout" name="verticalLayout_20" stretch="0,0,0,0,1,0">
             <property name="bottomMargin">
              <number>0</number>
             </property>
@@ -680,6 +680,12 @@ QPushButton#pushButton_add_new_sheet:disabled{
             </item>
             <item>
              <widget class="QScrollArea" name="scrollArea_3">
+              <property name="minimumSize">
+               <size>
+                <width>0</width>
+                <height>200</height>
+               </size>
+              </property>
               <property name="widgetResizable">
                <bool>true</bool>
               </property>
@@ -689,7 +695,7 @@ QPushButton#pushButton_add_new_sheet:disabled{
                  <x>0</x>
                  <y>0</y>
                  <width>373</width>
-                 <height>340</height>
+                 <height>198</height>
                 </rect>
                </property>
                <layout class="QVBoxLayout" name="verticalLayout_21">
@@ -732,6 +738,26 @@ QPushButton#pushButton_add_new_sheet:disabled{
                </layout>
               </widget>
              </widget>
+            </item>
+            <item>
+             <widget class="QLabel" name="label_16">
+              <property name="text">
+               <string>Search:</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLineEdit" name="lineEdit_search_parts_in_inventory">
+              <property name="placeholderText">
+               <string>Search for parts...</string>
+              </property>
+              <property name="clearButtonEnabled">
+               <bool>true</bool>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QListWidget" name="listWidget_parts_in_inventory"/>
             </item>
             <item>
              <widget class="QGroupBox" name="groupBox_5">
@@ -1484,7 +1510,7 @@ QPushButton:pressed#pushButton_show_item_summary:!checked {
                     <property name="geometry">
                      <rect>
                       <x>0</x>
-                      <y>-435</y>
+                      <y>0</y>
                       <width>422</width>
                       <height>733</height>
                      </rect>

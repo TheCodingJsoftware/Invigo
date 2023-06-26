@@ -125,6 +125,7 @@ class Workspace:
         # Recursively filter sub-assemblies
         completed_items = 0
         for item in sub_assembly.items:
+            print(item.name)
             # Apply search filter
             item.set_value(key="show", value=False)
             if item.get_value(key="completed") == True:
@@ -168,14 +169,16 @@ class Workspace:
                     continue
 
             # Apply due dates filter
-            if groupBox_due_dates.isChecked():
-                assembly_due_date = item.get_value("due_date")
-                after_date = dateTimeEdit_after.dateTime().toPyDateTime().date()
-                before_date = dateTimeEdit_before.dateTime().toPyDateTime().date()
-                if assembly_due_date < after_date or assembly_due_date > before_date:
-                    continue
+            with contextlib.suppress(TypeError):
+                if groupBox_due_dates.isChecked():
+                    assembly_due_date = item.get_value("due_date")
+                    after_date = dateTimeEdit_after.dateTime().toPyDateTime().date()
+                    before_date = dateTimeEdit_before.dateTime().toPyDateTime().date()
+                    if assembly_due_date < after_date or assembly_due_date > before_date:
+                        continue
             item.set_value(key="show", value=True)
             item.parent_assembly.set_parent_assembly_value(key="show", value=True)
+        # Are all items completed
         if completed_items == len(sub_assembly.items):
             if selected_flow_tags := [item.text() for item in listWidget_flow_tags.selectedItems()]:
                 with contextlib.suppress(IndexError):  # This means the part is 'completed'
@@ -229,21 +232,26 @@ class Workspace:
             for assembly in self.data:
                 self.filter_assemblies(sub_assembly=assembly, filter=filter)
             for assembly in self.data:
-                if not assembly.any_sub_assemblies_to_show():
-                    assembly.set_assembly_data(key="show", value=False)
-                if assembly.all_sub_assemblies_complete():
-                    assembly.set_assembly_data(key="show", value=True)
-                    if selected_flow_tags := [item.text() for item in listWidget_flow_tags.selectedItems()]:
-                        with contextlib.suppress(IndexError):  # This means the part is 'completed'
-                            assembly_flow_tag = assembly.get_assembly_data("flow_tag")[assembly.get_assembly_data("current_flow_state")]
-                            if assembly_flow_tag not in selected_flow_tags:
+                if (
+                    not assembly.get_assembly_data("has_items")
+                    and self.is_assembly_empty(assembly) == True
+                    and assembly.get_assembly_data("has_sub_assemblies")
+                ):
+                    if not assembly.any_sub_assemblies_to_show() and self.is_assembly_empty(assembly) == True:
+                        assembly.set_assembly_data(key="show", value=False)
+                    if assembly.all_sub_assemblies_complete():
+                        assembly.set_assembly_data(key="show", value=True)
+                        if selected_flow_tags := [item.text() for item in listWidget_flow_tags.selectedItems()]:
+                            with contextlib.suppress(IndexError):  # This means the part is 'completed'
+                                assembly_flow_tag = assembly.get_assembly_data("flow_tag")[assembly.get_assembly_data("current_flow_state")]
+                                if assembly_flow_tag not in selected_flow_tags:
+                                    assembly.set_assembly_data(key="show", value=False)
+                        if selected_statuses := [item.text() for item in listWidget_statuses.selectedItems()]:
+                            assembly_status = assembly.get_assembly_data("status")
+                            if assembly_status is None:
+                                assembly_status = "None"
+                            if assembly_status not in selected_statuses:
                                 assembly.set_assembly_data(key="show", value=False)
-                    if selected_statuses := [item.text() for item in listWidget_statuses.selectedItems()]:
-                        assembly_status = assembly.get_assembly_data("status")
-                        if assembly_status is None:
-                            assembly_status = "None"
-                        if assembly_status not in selected_statuses:
-                            assembly.set_assembly_data(key="show", value=False)
         return self.data
 
     def _gather_sub_assembly_data(self, sub_assembly: Assembly, data: list) -> bool:
@@ -436,3 +444,13 @@ class Workspace:
         except ZeroDivisionError:
             assembly_completion_percentage = 0.0
         return item_completion_percentage, assembly_completion_percentage
+
+    def get_all_groups(self) -> list[str]:
+        """
+        This function returns a list of unique group names extracted from a list of assembly data
+        objects.
+
+        Returns:
+          A list of unique group names extracted from the assembly data of the object's data attribute.
+        """
+        return list(set(assembly.get_assembly_data(key="group") for assembly in self.data))

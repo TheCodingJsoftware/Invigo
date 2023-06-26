@@ -3,6 +3,7 @@ import os
 import sys
 import typing
 from datetime import datetime, timedelta
+from functools import partial
 
 from natsort import natsorted
 from PyQt6.QtCore import (
@@ -51,6 +52,7 @@ from PyQt6.QtWidgets import (
     QGridLayout,
     QGroupBox,
     QHBoxLayout,
+    QGraphicsDropShadowEffect,
     QHeaderView,
     QLabel,
     QLineEdit,
@@ -70,6 +72,7 @@ from PyQt6.QtWidgets import (
     QTableWidgetItem,
     QTabWidget,
     QToolBox,
+    QFormLayout,
     QTreeView,
     QTreeWidget,
     QTreeWidgetItem,
@@ -79,6 +82,77 @@ from PyQt6.QtWidgets import (
 
 from utils.workspace.assembly import Assembly
 from utils.workspace.item import Item
+
+
+class FilterTabWidget(QWidget):
+    def __init__(self):
+        super().__init__()
+
+        self.tab_widget = QTabWidget()
+        self.show_all_tab = QWidget()
+        layout = QFormLayout(self.show_all_tab)
+        layout.setFormAlignment(Qt.AlignmentFlag.AlignLeft)  # Set alignment to top-left
+        layout.setFieldGrowthPolicy(QFormLayout.FieldGrowthPolicy.AllNonFixedFieldsGrow)  # Allow fields to grow
+        layout.setLabelAlignment(Qt.AlignmentFlag.AlignLeft)  # Set label alignment to left
+
+        self.tab_widget.addTab(self.show_all_tab, "Show All")
+
+        self.layout = QVBoxLayout()
+        self.layout.addWidget(self.tab_widget)
+        self.setLayout(self.layout)
+
+        self.buttons: list[QPushButton] = []
+
+        self.tabs = {"Show All": []}  # Dictionary to store tabs and their buttons
+        self.tab_widget.currentChanged.connect(self.update_tab_button_visibility)
+
+    def add_tab(self, name):
+        tab_container = QWidget()
+        tab_widget = QWidget()
+        layout = QFormLayout(tab_widget)
+        layout.setContentsMargins(0, 0, 0, 0)
+        layout.setFormAlignment(Qt.AlignmentFlag.AlignLeft)  # Set alignment to top-left
+        layout.setFieldGrowthPolicy(QFormLayout.FieldGrowthPolicy.AllNonFixedFieldsGrow)  # Allow fields to grow
+        layout.setLabelAlignment(Qt.AlignmentFlag.AlignLeft)  # Set label alignment to left
+        tab_widget.setLayout(layout)
+        tab_container_layout = QVBoxLayout(tab_container)
+        tab_container_layout.addWidget(tab_widget)
+        self.tab_widget.addTab(tab_container, name)
+
+        self.tabs[name] = []  # Add tab with an empty list for buttons
+
+        return layout
+
+    def add_button_to_tab(self, tab_name, button_name):
+        buttons = self.tabs.get(tab_name)
+        if buttons is not None:
+            button = QPushButton(button_name, checkable=True)
+            buttons.append(button)  # Add button to the list
+            self.buttons.append(button)
+
+    def get_buttons(self, tab_name):
+        buttons = self.tabs.get(tab_name)
+        if buttons is not None:
+            return buttons
+        return []
+
+    def update_tab_button_visibility(self, tab_index: int):
+        tab_name = self.tab_widget.tabText(tab_index)
+        buttons = self.tabs.get(tab_name)
+        if tab_name == "Show All":
+            layout = self.tab_widget.widget(tab_index).layout()
+            for button in self.buttons:
+                layout.addWidget(button)
+                button.setVisible(True)
+        else:
+            if buttons is not None:
+                layout = self.tab_widget.widget(tab_index).layout()
+                for button in self.buttons:
+                    if button in buttons:
+                        layout.addWidget(button)
+                        button.setVisible(True)
+                    else:
+                        button.setVisible(False)
 
 
 class ScrollPositionManager:
@@ -465,13 +539,11 @@ class DropWidget(QWidget):
                 self.label.setText("Processing")
                 self.label.setStyleSheet("background-color: rgba(70,210,110, 100);")
                 self.parent.handle_dropped_file(self.label, file_paths, self.assembly, self.item, self.files_layout, self.file_category)
-
                 event.accept()
             else:
                 self.label.setText("Not allowed")
                 self.label.setStyleSheet("background-color: rgba(210,70,60, 100);")
                 event.ignore()
-
         else:
             event.ignore()
 
@@ -589,6 +661,7 @@ class AssemblyMultiToolBox(QWidget):
         super(AssemblyMultiToolBox, self).__init__(parent)
         self.widgets: list[QWidget] = []
         self.buttons: list[QPushButton] = []
+        self.input_box: list[QLineEdit] = []
         self.delete_buttons: list[DeletePushButton] = []
         self.duplicate_buttons: list[QPushButton] = []
         self.check_boxes: list[QCheckBox] = []
@@ -606,19 +679,42 @@ class AssemblyMultiToolBox(QWidget):
         type of QWidget, such as a QLabel, QComboBox, or even another layout.
           title (str): A string representing the title of the widget that will be added to the layout.
         """
-        checkbox = QCheckBox()
-        checkbox.setStyleSheet("QCheckBox:indicator{width: 20px; height: 20px;}")
-        checkbox.setFixedWidth(22)
 
-        button = QPushButton()
-        button.setObjectName("sheet_nest_button")
-        button.setText(title)
+        # Apply the drop shadow effect to the widget
+        # checkbox = QCheckBox(widget)
+        # checkbox.setStyleSheet("QCheckBox:indicator{width: 20px; height: 20px;}")
+        # checkbox.setFixedWidth(22)
+        _widget = QWidget(self)
+        _widget.setContentsMargins(0, 0, 0, 0)
+        widget.setParent(_widget)
+        button = QPushButton(_widget)
+        button.setObjectName("edit_sheet_nest_button")
+        button.setFixedWidth(24)
+        button.setFixedHeight(24)
+        button.setCursor(Qt.CursorShape.PointingHandCursor)
+        button.setText(" 🡇")
         button.setChecked(True)
         button.setCheckable(True)
-        button.clicked.connect(lambda checked, w=widget: self.toggle_widget_visibility(w))
+
+        input_box = QLineEdit(widget)
+        button.clicked.connect(
+            lambda checked, w=widget: (
+                self.toggle_widget_visibility(w),
+                button.setText(" 🡇" if w.isVisible() else " 🡆"),
+                input_box.setStyleSheet(
+                    "background-color: #3daee9; border-color: #3daee9; border-bottom-right-radius: 0.01em;"
+                    if w.isVisible()
+                    else "background-color: rgba(71, 71, 71, 110); border-color: rgba(76, 76, 76, 110); border-bottom-right-radius: 8px;"
+                ),
+            )
+        )
+        input_box.setObjectName("input_box_multitoolbox")
+        input_box.setText(title)
+        input_box.setFixedHeight(24)
+        input_box.setStyleSheet("background-color: #3daee9; border-color: #3daee9; border-bottom-right-radius: 0.01em;")
 
         delete_button = DeletePushButton(
-            parent=None, tool_tip=f"Delete {title} forever", icon=QIcon("ui/BreezeStyleSheets/dist/pyqt6/dark/trash.png")
+            parent=widget, tool_tip=f"Delete {title} forever", icon=QIcon("ui/BreezeStyleSheets/dist/pyqt6/dark/trash.png")
         )
         delete_button.setFixedWidth(23)
         duplicate_button = QPushButton()
@@ -628,25 +724,29 @@ class AssemblyMultiToolBox(QWidget):
 
         # widget.setMinimumHeight(100)
 
-        hlaout = QHBoxLayout()
-        hlaout.setSpacing(3)
-        hlaout.setContentsMargins(0, 3, 0, 0)
-        hlaout.addWidget(checkbox)
+        hlaout = QHBoxLayout(widget)
+        hlaout.setSpacing(0)
+        hlaout.setContentsMargins(0, 0, 0, 0)
+        # hlaout.addWidget(checkbox)
         hlaout.addWidget(button)
+        hlaout.addWidget(input_box)
         hlaout.addWidget(duplicate_button)
         hlaout.addWidget(delete_button)
-        layout = QVBoxLayout()
+        layout = QVBoxLayout(_widget)
+        layout.setSpacing(0)
         layout.addLayout(hlaout)
         layout.addWidget(widget)
+        _widget.setLayout(layout)
         widget.setObjectName("edit_multi_tool_box_widget")
 
         self.buttons.append(button)
         self.delete_buttons.append(delete_button)
+        self.input_box.append(input_box)
         self.widgets.append(widget)
         self.duplicate_buttons.append(duplicate_button)
-        self.check_boxes.append(checkbox)
+        # self.check_boxes.append(checkbox)
 
-        self.layout().addLayout(layout)
+        self.layout().addWidget(_widget)
 
     def removeItem(self, widget_to_delete: QWidget) -> None:
         main_layout = self.layout()  # Get the reference to the main layout
@@ -659,6 +759,7 @@ class AssemblyMultiToolBox(QWidget):
                 self.delete_buttons.pop(i)
                 self.duplicate_buttons.pop(i)
                 self.check_boxes.pop(i)
+                self.input_box.pop(i)
                 self.widgets.pop(i)
                 layout = layout_item.layout()
                 self.clear_layout(layout)
@@ -682,6 +783,12 @@ class AssemblyMultiToolBox(QWidget):
     def getLastDuplicateButton(self) -> QPushButton:
         return self.duplicate_buttons[-1]
 
+    def getInputBox(self, index: int) -> QLineEdit:
+        return self.input_box[index]
+
+    def getLastInputBox(self) -> QLineEdit:
+        return self.input_box[-1]
+
     def setItemText(self, index: int, new_name: str):
         """
         This function sets the text of a button at a given index to a new name.
@@ -691,8 +798,8 @@ class AssemblyMultiToolBox(QWidget):
           new_name (str): A string representing the new text that will be set for the button at the
         specified index.
         """
-        if 0 <= index < len(self.buttons):
-            self.buttons[index].setText(new_name)
+        if 0 <= index < len(self.input_box):
+            self.input_box[index].setText(new_name)
 
     def setItemIcon(self, index: int, icon_path: str):
         """
@@ -743,12 +850,26 @@ class AssemblyMultiToolBox(QWidget):
         be
         """
         widget.setVisible(not widget.isVisible())
+        shadow = QGraphicsDropShadowEffect()
+        shadow.setBlurRadius(10)  # Adjust the blur radius as desired
+        if widget.isVisible():
+            shadow.setColor(QColor(61, 174, 233, 255))
+        else:
+            shadow.setColor(QColor(0, 0, 0, 255))
+        shadow.setOffset(0, 0)  # Set the shadow offset (x, y)
+        widget.parentWidget().setGraphicsEffect(shadow)
 
     def close_all(self) -> None:
-        for button, widget in zip(self.buttons, self.widgets):
+        for button, widget, input_box in zip(self.buttons, self.widgets, self.input_box):
             button.click()
             # button.setChecked(False)
             widget.setVisible(False)
+            button.setText(" 🡇" if widget.isVisible() else " 🡆")
+            input_box.setStyleSheet(
+                "background-color: #3daee9; border-color: #3daee9; border-bottom-right-radius: 0.01em;"
+                if widget.isVisible()
+                else "background-color: rgba(71, 71, 71, 110); border-color: rgba(76, 76, 76, 110); border-bottom-right-radius: 8px;"
+            )
 
     def clear_layout(self, layout) -> None:
         """
@@ -767,6 +888,79 @@ class AssemblyMultiToolBox(QWidget):
                         widget.deleteLater()
                     else:
                         self.clear_layout(item.layout())
+
+    def get_widget_visibility(self) -> dict[int, bool]:
+        """
+        This function returns a dictionary containing the visibility status of each widget in a list of
+        widgets.
+
+        Returns:
+          A dictionary where the keys are integers representing the index of each widget in a list of
+        widgets, and the values are boolean values indicating whether each widget is currently visible
+        or not.
+        """
+        return {i: widget.isVisible() for i, widget in enumerate(self.widgets)}
+
+    def set_widgets_visibility(self, widgets_visibility: dict[int, bool]) -> None:
+        """
+        This function sets the visibility of widgets based on a dictionary of widget IDs and boolean
+        values, and closes any widgets that are not visible.
+
+        Args:
+          widgets_visibility (dict[int, bool]): A dictionary where the keys are integers representing
+        widget IDs and the values are boolean values indicating whether the widget should be visible or
+        not.
+        """
+        if len(widgets_visibility.items()) > 0:
+            for i, is_visible in widgets_visibility.items():
+                if is_visible:
+                    self.open(i)
+                else:
+                    self.close(i)
+        else:
+            self.close_all()
+
+    def open(self, index: int) -> QWidget:
+        if 0 <= index < len(self.buttons):
+            self.buttons[index].click()
+            self.buttons[index].setChecked(False)
+            self.buttons[index].setText(" 🡇")
+            self.widgets[index].setVisible(True)
+            shadow = QGraphicsDropShadowEffect(self)
+            shadow.setBlurRadius(10)  # Adjust the blur radius as desired
+            shadow.setColor(QColor(61, 174, 233, 255))
+            shadow.setOffset(0, 0)  # Set the shadow offset (x, y)
+            self.widgets[index].parentWidget().setGraphicsEffect(shadow)
+            self.input_box[index].setStyleSheet("background-color: #3daee9; border-color: #3daee9; border-bottom-right-radius: 0.01em;")
+
+    def close(self, index: int) -> QWidget:
+        if 0 <= index < len(self.buttons):
+            self.buttons[index].click()
+            self.buttons[index].setText(" 🡆")
+            self.buttons[index].setChecked(True)
+            self.widgets[index].setVisible(False)
+            shadow = QGraphicsDropShadowEffect(self)
+            shadow.setBlurRadius(10)  # Adjust the blur radius as desired
+            shadow.setColor(QColor(0, 0, 0, 255))  # Set the shadow color and opacity
+            shadow.setOffset(0, 0)  # Set the shadow offset (x, y)
+            self.widgets[index].parentWidget().setGraphicsEffect(shadow)
+            self.input_box[index].setStyleSheet(
+                "background-color: rgba(71, 71, 71, 110); border-color: rgba(76, 76, 76, 110); border-bottom-right-radius: 8px;"
+            )
+
+    def close_all(self) -> None:
+        for button, widget, input_box in zip(self.buttons, self.widgets, self.input_box):
+            button.click()
+            button.click()
+            button.setChecked(True)
+            button.setText(" 🡆")
+            widget.setVisible(False)
+            shadow = QGraphicsDropShadowEffect(self)
+            shadow.setBlurRadius(10)  # Adjust the blur radius as desired
+            shadow.setColor(QColor(0, 0, 0, 255))  # Set the shadow color and opacity
+            shadow.setOffset(0, 0)  # Set the shadow offset (x, y)
+            widget.parentWidget().setGraphicsEffect(shadow)
+            input_box.setStyleSheet("background-color: rgba(71, 71, 71, 110); border-color: rgba(76, 76, 76, 110); border-bottom-right-radius: 8px;")
 
 
 class MultiToolBox(QWidget):
@@ -790,24 +984,43 @@ class MultiToolBox(QWidget):
         type of QWidget, such as a QLabel, QComboBox, or even another layout.
           title (str): A string representing the title of the widget that will be added to the layout.
         """
-        button = QPushButton()
+
+        _widget = QWidget(self)
+        _widget.setContentsMargins(0, 3, 0, 3)
+        widget.setParent(_widget)
+        button = QPushButton(_widget)
         button.setObjectName("sheet_nest_button")
         button.setText(title)
-        button.setChecked(True)
+        button.setCursor(Qt.CursorShape.PointingHandCursor)
+        button.setChecked(False)
         button.setCheckable(True)
-        button.clicked.connect(lambda checked, w=widget: self.toggle_widget_visibility(w))
+        button.clicked.connect(partial(self.toggle_widget_visibility, widget, button))
 
-        layout = QVBoxLayout()
-        layout.setContentsMargins(0, 3, 0, 0)
+        widget.setVisible(False)
+
+        layout = QVBoxLayout(_widget)
+        layout.setSpacing(0)
+        layout.setContentsMargins(0, 0, 0, 0)
         layout.addWidget(button)
         layout.addWidget(widget)
+        _widget.setLayout(layout)
         widget.setObjectName("nest_widget")
+        widget.setAutoFillBackground(True)
         widget.setStyleSheet("QWidget#nest_widget{border: 1px solid #3daee9; background-color: rgb(33, 33, 33);}")
+
+        shadow = QGraphicsDropShadowEffect()
+        shadow.setBlurRadius(10)  # Adjust the blur radius as desired
+        if widget.isVisible():
+            shadow.setColor(QColor(0, 0, 0, 255))
+        else:
+            shadow.setColor(QColor(61, 174, 233, 255))
+        shadow.setOffset(0, 0)  # Set the shadow offset (x, y)
+        widget.parentWidget().setGraphicsEffect(shadow)
 
         self.buttons.append(button)
         self.widgets.append(widget)
 
-        self.layout().addLayout(layout)
+        self.layout().addWidget(_widget)
 
     def setItemText(self, index: int, new_name: str):
         """
@@ -881,11 +1094,16 @@ class MultiToolBox(QWidget):
         widget IDs and the values are boolean values indicating whether the widget should be visible or
         not.
         """
-        for i, is_visible in widgets_visibility.items():
-            if not is_visible:
-                self.close(i)
+        if len(widgets_visibility.items()) > 0:
+            for i, is_visible in widgets_visibility.items():
+                if is_visible:
+                    self.open(i)
+                else:
+                    self.close(i)
+        else:
+            self.close_all()
 
-    def toggle_widget_visibility(self, widget):
+    def toggle_widget_visibility(self, widget: QWidget, button: QPushButton):
         """
         This function toggles the visibility of a widget in a Python GUI.
 
@@ -896,18 +1114,58 @@ class MultiToolBox(QWidget):
         be
         """
         widget.setVisible(not widget.isVisible())
+        # button.setChecked(not button.isChecked())
+        shadow = QGraphicsDropShadowEffect()
+        shadow.setBlurRadius(10)  # Adjust the blur radius as desired
+        shadow.setOffset(0, 0)  # Set the shadow offset (x, y)
+        if widget.isVisible():
+            shadow.setColor(QColor(61, 174, 233, 255))
+        else:
+            shadow.setColor(QColor(0, 0, 0, 255))
+        widget.parentWidget().setGraphicsEffect(shadow)
+        if button.isChecked():
+            shadow.setColor(QColor(0, 0, 0, 255))
+            button.setGraphicsEffect(shadow)
+        else:
+            shadow.setColor(QColor(61, 174, 233, 255))
+            button.setGraphicsEffect(shadow)
+
+    def open(self, index: int) -> QWidget:
+        if 0 <= index < len(self.buttons):
+            self.buttons[index].click()
+            self.buttons[index].setChecked(False)
+            self.widgets[index].setVisible(True)
+            shadow = QGraphicsDropShadowEffect(self)
+            shadow.setBlurRadius(10)  # Adjust the blur radius as desired
+            shadow.setColor(QColor(61, 174, 233, 255))
+            shadow.setOffset(0, 0)  # Set the shadow offset (x, y)
+            self.widgets[index].parentWidget().setGraphicsEffect(shadow)
+            self.buttons[index].setGraphicsEffect(shadow)
 
     def close(self, index: int) -> QWidget:
         if 0 <= index < len(self.buttons):
             self.buttons[index].click()
-            # button.setChecked(False)
+            self.buttons[index].setChecked(True)
             self.widgets[index].setVisible(False)
+            shadow = QGraphicsDropShadowEffect(self)
+            shadow.setBlurRadius(10)  # Adjust the blur radius as desired
+            shadow.setColor(QColor(0, 0, 0, 255))  # Set the shadow color and opacity
+            shadow.setOffset(0, 0)  # Set the shadow offset (x, y)
+            self.widgets[index].parentWidget().setGraphicsEffect(shadow)
+            self.buttons[index].setGraphicsEffect(shadow)
 
     def close_all(self) -> None:
         for button, widget in zip(self.buttons, self.widgets):
             button.click()
-            # button.setChecked(False)
+            button.click()
+            button.setChecked(True)
             widget.setVisible(False)
+            shadow = QGraphicsDropShadowEffect(self)
+            shadow.setBlurRadius(10)  # Adjust the blur radius as desired
+            shadow.setColor(QColor(0, 0, 0, 255))  # Set the shadow color and opacity
+            shadow.setOffset(0, 0)  # Set the shadow offset (x, y)
+            widget.parentWidget().setGraphicsEffect(shadow)
+            button.setGraphicsEffect(shadow)
 
 
 class CustomTabWidget(QTabWidget):
