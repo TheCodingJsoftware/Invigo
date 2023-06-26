@@ -172,8 +172,9 @@ class Workspace:
                 assembly_due_date = item.get_value("due_date")
                 after_date = dateTimeEdit_after.dateTime().toPyDateTime().date()
                 before_date = dateTimeEdit_before.dateTime().toPyDateTime().date()
-                if assembly_due_date < after_date or assembly_due_date > before_date:
-                    continue
+                with contextlib.suppress(TypeError):
+                    if assembly_due_date < after_date or assembly_due_date > before_date:
+                        continue
             item.set_value(key="show", value=True)
             item.parent_assembly.set_parent_assembly_value(key="show", value=True)
         if completed_items == len(sub_assembly.items):
