@@ -13,6 +13,7 @@ import webbrowser
 import winsound
 from datetime import datetime, timedelta
 from functools import partial
+from natsort import natsorted
 from typing import Any, Union
 
 import markdown
@@ -55,6 +56,7 @@ from PyQt6.QtWidgets import (
     QTabWidget,
     QToolBox,
     QVBoxLayout,
+    QGraphicsDropShadowEffect,
     QWidget,
 )
 
@@ -116,6 +118,7 @@ from ui.theme import set_theme
 from ui.web_scrape_results_dialog import WebScrapeResultsDialog
 from utils.calulations import calculate_overhead
 from utils.compress import compress_database, compress_folder
+from utils.colors import get_random_color
 from utils.dialog_buttons import DialogButtons
 from utils.dialog_icons import Icons
 from utils.extract import extract
@@ -310,7 +313,7 @@ class MainWindow(QMainWindow):
         if days_from_last_price_history_assessment > settings_file.get_value("days_until_new_price_history_assessment"):
             settings_file.add_item("price_history_file_name", str(datetime.now().strftime("%B %d %A %Y")))
             self.show_message_dialog(
-                title="Price Assessment",
+                title="Price Assessment",  # 760a0acf
                 message=f"It has been {settings_file.get_value('days_until_new_price_history_assessment')} days until the last price assessment. A new price history file has been created in the 'Price History Files' directory.",
             )
 
@@ -395,7 +398,8 @@ class MainWindow(QMainWindow):
             if index != -1:
                 self.tabWidget.tabBar().moveTab(index, menu_tabs_order.index(tab_name))
 
-        self.lineEdit_search_items.textChanged.connect(self.update_list_widget)
+        self.lineEdit_search_items.textChanged.connect(self.update_edit_inventory_list_widget)
+        self.lineEdit_search_parts_in_inventory.textChanged.connect(self.update_parts_in_inventory_list_widget)
         self.radioButton_category.toggled.connect(self.quantities_change)
         self.radioButton_single.toggled.connect(self.quantities_change)
 
@@ -416,11 +420,11 @@ class MainWindow(QMainWindow):
 
         # Load Nests
         self.comboBox_global_sheet_thickness.addItems(price_of_steel_information.get_value("thicknesses"))
-        self.comboBox_global_sheet_thickness.wheelEvent = lambda event: None
+        self.comboBox_global_sheet_thickness.wheelEvent = lambda event: event.ignore()
         self.comboBox_global_sheet_thickness.activated.connect(self.global_nest_thickness_change)
         self.comboBox_global_sheet_thickness.setEnabled(False)
         self.comboBox_global_sheet_material.addItems(price_of_steel_information.get_value("materials"))
-        self.comboBox_global_sheet_material.wheelEvent = lambda event: None
+        self.comboBox_global_sheet_material.wheelEvent = lambda event: event.ignore()
         self.comboBox_global_sheet_material.activated.connect(self.global_nest_material_change)
         self.comboBox_global_sheet_material.setEnabled(False)
 
@@ -477,6 +481,7 @@ class MainWindow(QMainWindow):
         # self.pushButton_remove_quantity.setEnabled(False)
         self.pushButton_remove_quantity.setIcon(QIcon(f"ui/BreezeStyleSheets/dist/pyqt6/{self.theme}/list_remove.png"))
         self.listWidget_itemnames.itemSelectionChanged.connect(self.listWidget_item_changed)
+        self.listWidget_parts_in_inventory.itemSelectionChanged.connect(self.listWidget_parts_in_inventory_item_changed)
         self.pushButton_remove_quantities_from_inventory.setIcon(QIcon(f"ui/BreezeStyleSheets/dist/pyqt6/{self.theme}/list_remove.png"))
 
         self.pushButton_remove_quantities_from_inventory.clicked.connect(self.remove_quantity_from_part_inventory)
@@ -901,12 +906,19 @@ class MainWindow(QMainWindow):
         """
 
         self.value_change(self.category, item_name, value_name, combo.currentIndex())
+        shadow = QGraphicsDropShadowEffect()
+        shadow.setBlurRadius(10)  # Adjust the blur radius as desired
+        shadow.setOffset(0, 0)  # Set the shadow offset (x, y)
         if combo.currentText() == "Medium":
             combo.setStyleSheet(f"color: yellow; border-color: gold; background-color: #413C28;{self.margin_format}")
+            shadow.setColor(QColor(255, 215, 0))
         elif combo.currentText() == "High":
             combo.setStyleSheet(f"color: red; border-color: darkred; background-color: #3F1E25;{self.margin_format}")
+            shadow.setColor(QColor(139, 0, 0))
         else:
             combo.setStyleSheet(self.margin_format)
+            shadow.setColor(QColor(0, 0, 0, 255))
+        combo.setGraphicsEffect(shadow)
         self.sync_changes()
 
     def notes_changed(self, item_name: str, value_name: str, note: QPlainTextEdit) -> None:
@@ -1055,6 +1067,7 @@ class MainWindow(QMainWindow):
 
     def generate_workorder(self, work_order: dict[str, int]) -> None:
         # Workspace order begins here
+        date_created: str = str(datetime.now())
         admin_workspace.load_data()
         for job_name, quantity in work_order.items():
             for _ in range(quantity):
@@ -1064,15 +1077,16 @@ class MainWindow(QMainWindow):
                 # Job Assembly Data
                 new_assembly.set_assembly_data(key="display_name", value=job_name)
                 new_assembly.set_assembly_data(key="completed", value=False)
-                new_assembly.set_assembly_data(key="date_started", value=str(datetime.now()))
+                new_assembly.set_assembly_data(key="date_started", value=date_created)
                 new_assembly.set_assembly_data(key="status", value=None)
+                new_assembly.set_assembly_data(key="group", value=f"{job_name} x {quantity} - {date_created}")
                 # Sub-Assembly Data
-                new_assembly.set_data_to_all_sub_assemblies(key="date_started", value=str(datetime.now()))
+                new_assembly.set_data_to_all_sub_assemblies(key="date_started", value=date_created)
                 new_assembly.set_data_to_all_sub_assemblies(key="current_flow_state", value=0)
                 new_assembly.set_data_to_all_sub_assemblies(key="completed", value=False)
                 new_assembly.set_data_to_all_sub_assemblies(key="status", value=None)
                 # All items in Assembly and Sub-Assembly
-                new_assembly.set_default_value_to_all_items(key="date_started", value=str(datetime.now()))
+                new_assembly.set_default_value_to_all_items(key="date_started", value=date_created)
                 new_assembly.set_default_value_to_all_items(key="current_flow_state", value=0)
                 new_assembly.set_default_value_to_all_items(key="recoat", value=False)
                 new_assembly.set_default_value_to_all_items(key="status", value=None)
@@ -1086,8 +1100,6 @@ class MainWindow(QMainWindow):
                 user_workspace.save()
         self.upload_file(
             [
-                "workspace_settings.json",
-                "workspace - Admin.json",
                 "workspace - User.json",
             ],
             False,
@@ -1233,6 +1245,29 @@ class MainWindow(QMainWindow):
             self.pushButton_remove_quantity.clicked.connect(partial(self.remove_quantity, self.last_item_selected_name, quantity))
             self.pushButton_add_quantity.clicked.connect(partial(self.add_quantity, self.last_item_selected_name, quantity))
         self.spinBox_quantity.setValue(0)
+
+    def listWidget_parts_in_inventory_item_changed(self) -> None:
+        """
+        This function selects and scrolls to a row in a table widget based on the currently selected
+        item in a list widget.
+
+        Returns:
+          None.
+        """
+        # self.last_item_selected_name = self.listWidget_parts_in_inventory.currentItem().text()
+        # try:
+        #     self.last_item_selected_index = list(list(parts_in_inventory.get_value(self.category).keys())).index(self.last_item_selected_name)
+        # except (ValueError, KeyError):
+        #     return
+        table_widget: CustomTableWidget = self.tabs[self.category]
+        for row in range(table_widget.rowCount()):
+            item_name = table_widget.item(row, 0)
+            with contextlib.suppress(AttributeError):
+                if item_name is not None:
+                    if item_name.text() == self.listWidget_parts_in_inventory.currentItem().text():
+                        table_widget.scrollTo(table_widget.model().index(row, 0))
+                        table_widget.selectRow(row)
+                        return
 
     def value_change(self, category: str, item_name: str, value_name: str, new_value) -> None:
         """
@@ -1470,6 +1505,14 @@ class MainWindow(QMainWindow):
           tab (CustomTableWidget): CustomTableWidget object representing the table widget where the
         inventory parts are displayed.
         """
+        self.listWidget_parts_in_inventory.disconnect()
+        selected_item = tab.item(tab.currentRow(), 0)
+        if selected_item is not None:
+            self.listWidget_parts_in_inventory.setCurrentRow(tab.currentRow())
+            for row in range(self.listWidget_parts_in_inventory.count()):
+                if selected_item.text() == self.listWidget_parts_in_inventory.item(row).text():
+                    self.listWidget_parts_in_inventory.setCurrentRow(row)
+        self.listWidget_parts_in_inventory.itemSelectionChanged.connect(self.listWidget_parts_in_inventory_item_changed)
         selected_items_count = len(self.get_all_selected_parts(tab))
         if selected_items_count == 0:
             self.pushButton_remove_quantities_from_inventory.setText("Remove Quantities from whole Category")
@@ -1725,7 +1768,7 @@ class MainWindow(QMainWindow):
             self.actionAscending.setStatusTip(f"Sort from {sorting_from_priority} to {sorting_to_priority}")
             self.actionDescending.setStatusTip(f"Sort from {sorting_to_priority} to {sorting_from_priority}")
 
-    def update_list_widget(self) -> None:
+    def update_edit_inventory_list_widget(self) -> None:
         """
         It takes the text from a lineEdit widget and searches for it in a dictionary. If the text is
         found, it adds the key to a listWidget
@@ -1744,6 +1787,15 @@ class MainWindow(QMainWindow):
                     self.listWidget_itemnames.addItem(item)
         except AttributeError:
             return
+
+    def update_parts_in_inventory_list_widget(self) -> None:
+        search_input: str = self.lineEdit_search_parts_in_inventory.text()
+        self.listWidget_parts_in_inventory.clear()
+        with contextlib.suppress(TypeError):
+            data = natsorted(list(parts_in_inventory.get_value(self.category).keys()))
+            for item in data:
+                if search_input.lower() in item.lower():
+                    self.listWidget_parts_in_inventory.addItem(item)
 
     def update_stock_costs(self) -> None:
         """
@@ -3342,12 +3394,19 @@ class MainWindow(QMainWindow):
                 category_data = self.active_json_file.get_value(item_name=self.category)
             except AttributeError:
                 return
-            autofill_search_options = self.get_all_part_names() + self.get_all_part_numbers()
-            completer = QCompleter(autofill_search_options)
-            completer.setCaseSensitivity(Qt.CaseSensitivity.CaseInsensitive)
-            self.lineEdit_search_items.setCompleter(completer)
+            if self.tabWidget.tabText(self.tabWidget.currentIndex()) == "Edit Inventory":
+                autofill_search_options = natsorted(self.get_all_part_names() + self.get_all_part_numbers())
+                completer = QCompleter(autofill_search_options)
+                completer.setCaseSensitivity(Qt.CaseSensitivity.CaseInsensitive)
+                self.lineEdit_search_items.setCompleter(completer)
+            if self.tabWidget.tabText(self.tabWidget.currentIndex()) == "Parts in Inventory":
+                autofill_search_options = natsorted(list(parts_in_inventory.get_value(self.category).keys()))
+                completer = QCompleter(autofill_search_options)
+                completer.setCaseSensitivity(Qt.CaseSensitivity.CaseInsensitive)
+                self.lineEdit_search_parts_in_inventory.setCompleter(completer)
 
-            self.update_list_widget()
+            self.update_edit_inventory_list_widget()
+            self.update_parts_in_inventory_list_widget()
             self.update_category_total_stock_costs()
             self.calculuate_price_of_steel_summary()
             self.label_category_name.setText(f"Category: {self.category}")
@@ -3723,6 +3782,14 @@ class MainWindow(QMainWindow):
                     order_status_button.setChecked(is_order_pending)
                     order_status_button.clicked.connect(partial(self.order_status_button, item, order_status_button, row_index))
                     order_status_button.setStyleSheet("margin-top: 3%; margin-bottom: 3%; margin-left: 5%; margin-right: 5%;")
+                    shadow = QGraphicsDropShadowEffect()
+                    shadow.setBlurRadius(10)  # Adjust the blur radius as desired
+                    if is_order_pending:
+                        shadow.setColor(QColor(46, 164, 79, 255))
+                    else:
+                        shadow.setColor(QColor(0, 0, 0, 255))
+                    shadow.setOffset(0, 0)  # Set the shadow offset (x, y)
+                    order_status_button.setGraphicsEffect(shadow)
                     tab.setCellWidget(row_index, col_index, order_status_button)
                     col_index += 1
                     # NOTES
@@ -3929,12 +3996,19 @@ class MainWindow(QMainWindow):
 
             # PRIORITY
             combo_priority = PriorityComboBox(parent=self, selected_item=priority)
+            shadow = QGraphicsDropShadowEffect()
+            shadow.setBlurRadius(10)  # Adjust the blur radius as desired
+            shadow.setOffset(0, 0)  # Set the shadow offset (x, y)
             if combo_priority.currentText() == "Medium":
                 combo_priority.setStyleSheet(f"color: yellow; border-color: gold; background-color: #413C28;{self.margin_format}")
+                shadow.setColor(QColor(255, 215, 0))
             elif combo_priority.currentText() == "High":
                 combo_priority.setStyleSheet(f"color: red; border-color: darkred; background-color: #3F1E25;{self.margin_format}")
+                shadow.setColor(QColor(139, 0, 0))
             else:
                 combo_priority.setStyleSheet(self.margin_format)
+                shadow.setColor(QColor(0, 0, 0, 255))
+            combo_priority.setGraphicsEffect(shadow)
             combo_priority.currentIndexChanged.connect(
                 partial(
                     self.priority_change,
@@ -4006,7 +4080,6 @@ class MainWindow(QMainWindow):
     # NOTE FOR STAGING
     def assembly_items_table_clicked(self, item: QTableWidgetItem) -> None:
         self.last_selected_assemly_item = item.text()
-        print(self.last_selected_assemly_item)
 
     # NOTE FOR STAGING
     def assembly_items_table_cell_changed(self, table: CustomTableWidget, assembly: Assembly, item: QTableWidgetItem) -> None:
@@ -4020,7 +4093,6 @@ class MainWindow(QMainWindow):
         if column == 0:  # Item Name
             if row == table.rowCount() or assembly.exists(Item(name=selected_item_name)):
                 return
-            print(self.last_selected_assemly_item)
             assembly_item = assembly.get_item(self.last_selected_assemly_item)
             assembly_item.rename(item_text)
             admin_workspace.save()
@@ -4093,7 +4165,7 @@ class MainWindow(QMainWindow):
         #     f"QTableView {{ gridline-color: white; }} QTableWidget::item {{ border-color: white; }}"
         # )
 
-        table = CustomTableWidget(self)
+        table = CustomTableWidget()
         table.blockSignals(True)
         table.setRowCount(0)
         table.setColumnCount(len(headers))
@@ -4204,9 +4276,11 @@ class MainWindow(QMainWindow):
                 table.setCellWidget(row_index, col_index, button_widget)
                 col_index += 1
             thickness_box = QComboBox(self)
-            thickness_box.wheelEvent = lambda event: None
+            thickness_box.wheelEvent = lambda event: event.ignore()
             thickness_box.setObjectName("thickness_box")
             thickness_box.setStyleSheet("QComboBox#thickness_box{margin: 2px;}")
+            if not item.data["thickness"]:
+                thickness_box.addItem("Select Thickness")
             thickness_box.addItems(price_of_steel_information.get_value("thicknesses"))
             thickness_box.setCurrentText(item.data["thickness"])
             thickness_box.currentTextChanged.connect(
@@ -4215,9 +4289,11 @@ class MainWindow(QMainWindow):
             table.setCellWidget(row_index, col_index, thickness_box)
             col_index += 1
             material_box = QComboBox(self)
-            material_box.wheelEvent = lambda event: None
+            material_box.wheelEvent = lambda event: event.ignore()
             material_box.setObjectName("material_box")
             material_box.setStyleSheet("QComboBox#material_box{margin: 2px;}")
+            if not item.data["material"]:
+                material_box.addItem("Select Material")
             material_box.addItems(price_of_steel_information.get_value("materials"))
             material_box.setCurrentText(item.data["material"])
             material_box.currentTextChanged.connect(
@@ -4226,12 +4302,20 @@ class MainWindow(QMainWindow):
             table.setCellWidget(row_index, col_index, material_box)
             col_index += 1
             button_paint_type = QComboBox(self)
+            button_paint_type.wheelEvent = lambda event: event.ignore()
+            if not item.data["paint_type"]:
+                button_paint_type.addItem("Select Paint Type")
             button_paint_type.addItems(["None", "Powder", "Wet Paint"])
             button_paint_type.setCurrentText("None")
             button_paint_type.setStyleSheet("border-radius: 0.001em; ")
+            button_paint_type.currentTextChanged.connect(
+                lambda: (item.set_value(key="paint_type", value=button_paint_type.currentText()), admin_workspace.save(), self.sync_changes())
+            )
+            button_paint_type.setCurrentText(item.data["paint_type"])
             table.setCellWidget(row_index, col_index, button_paint_type)
             col_index += 1
             button_color = QComboBox(self)
+            button_color.wheelEvent = lambda event: event.ignore()
             button_color.addItem("None")
             button_color.addItems(list(workspace_tags.get_value("paint_colors").keys()) or ["Select Color"])
             button_color.addItem("Select Color")
@@ -4261,7 +4345,7 @@ class MainWindow(QMainWindow):
             add_timers(table=table, item=item, timer_layout=timer_layout)
 
             tag_box = QComboBox(self)
-            tag_box.wheelEvent = lambda event: None
+            tag_box.wheelEvent = lambda event: event.ignore()
             tag_box.setObjectName("tag_box")
             tag_box.setStyleSheet("QComboBox#tag_box{margin: 2px;}")
             if not item.data["flow_tag"]:
@@ -4316,7 +4400,9 @@ class MainWindow(QMainWindow):
             assembly.add_item(item)
             admin_workspace.save()
             self.sync_changes()
-            table.resize(table.width(), table.height() + 40)
+            item_group_box: QGroupBox = table.parentWidget()
+            item_group_box.setFixedHeight(item_group_box.height() + 40)
+            table.setFixedHeight(40 * (len(assembly.items) + 2))
             table.blockSignals(False)
 
         def add_item_button(on_load: bool = False):
@@ -4352,7 +4438,7 @@ class MainWindow(QMainWindow):
         return table
 
     # NOTE FOR STAGING
-    def load_edit_assembly_widget(self, assembly: Assembly, parent=None) -> QWidget:
+    def load_edit_assembly_widget(self, assembly: Assembly, workspace_information: dict, parent=None) -> QWidget:
         """
         The load_edit_assembly_widget function is used to create a widget that can be added to the MultiToolBox in the
         load_edit_assembly_items_table function. The load_edit_assembly_widget function takes an assembly as its only argument and returns
@@ -4415,7 +4501,7 @@ class MainWindow(QMainWindow):
                     timer_layout.addWidget(widget)
 
         def flow_tag_change(timer_layout: QHBoxLayout, flow_tag_combobox: QComboBox):
-            assembly.set_assembly_data("flow_tag", workspace_tags.get_data()["flow_tags"][flow_tag_combobox.currentIndex()])
+            assembly.set_assembly_data("flow_tag", flow_tag_combobox.currentText().split(" -> "))
             timers = {}
             for tag in flow_tag_combobox.currentText().split(" -> "):
                 timers[tag] = {}
@@ -4439,7 +4525,9 @@ class MainWindow(QMainWindow):
             )
             grid.setAlignment(Qt.AlignmentFlag.AlignLeft)
             flow_tag_combobox = QComboBox(widget)
-            flow_tag_combobox.wheelEvent = lambda event: None
+            flow_tag_combobox.wheelEvent = lambda event: event.ignore()
+            if not assembly.get_assembly_data("flow_tag"):
+                flow_tag_combobox.addItem("Select Flow Tag")
             flow_tag_combobox.addItems(self.get_all_flow_tags())
             flow_tag_combobox.setCurrentText(" -> ".join(assembly.get_assembly_data("flow_tag")))
             flow_tag_combobox.currentTextChanged.connect(partial(flow_tag_change, timer_layout, flow_tag_combobox))
@@ -4474,6 +4562,12 @@ class MainWindow(QMainWindow):
             sub_assembly_groupbox_layout = QVBoxLayout()
             sub_assembly_groupbox.setLayout(sub_assembly_groupbox_layout)
 
+        workspace_information.setdefault(assembly.name, {"tool_box": None, "sub_assemblies": {}})
+        try:
+            workspace_information[assembly.name]["tool_box"] = workspace_information[assembly.name]["tool_box"].get_widget_visibility()
+            saved_workspace_prefs = True
+        except (AttributeError, RuntimeError):
+            saved_workspace_prefs = False
         # Create the MultiToolBox for sub assemblies
         sub_assemblies_toolbox = AssemblyMultiToolBox()
         sub_assemblies_toolbox.layout().setSpacing(0)
@@ -4508,6 +4602,8 @@ class MainWindow(QMainWindow):
                     delete_button.clicked.connect(partial(delete_sub_assembly, new_assembly, sub_assembly_widget))
                     duplicate_button = sub_assemblies_toolbox.getLastDuplicateButton()
                     duplicate_button.clicked.connect(partial(duplicate_sub_assembly, new_assembly))
+                    input_box = sub_assemblies_toolbox.getLastInputBox()
+                    input_box.editingFinished.connect(partial(rename_sub_assembly, new_assembly, input_box))
                     # self.sync_changes()
                     # self.load_categories()
                 elif response == DialogButtons.cancel:
@@ -4530,6 +4626,13 @@ class MainWindow(QMainWindow):
             delete_button.clicked.connect(partial(delete_sub_assembly, new_assembly, assembly_widget))
             duplicate_button = sub_assemblies_toolbox.getLastDuplicateButton()
             duplicate_button.clicked.connect(partial(duplicate_sub_assembly, new_assembly))
+            input_box = sub_assemblies_toolbox.getLastInputBox()
+            input_box.editingFinished.connect(partial(rename_sub_assembly, new_assembly, input_box))
+
+        def rename_sub_assembly(assembly_to_rename: Assembly, input_box: QLineEdit):
+            assembly_to_rename.rename(input_box.text())
+            admin_workspace.save()
+            self.sync_changes()
 
         if assembly.get_assembly_data("has_sub_assemblies"):
             pushButton_add_sub_assembly.clicked.connect(add_sub_assembly)
@@ -4540,19 +4643,32 @@ class MainWindow(QMainWindow):
             if len(assembly.sub_assemblies) > 0:
                 for i, sub_assembly in enumerate(assembly.sub_assemblies):
                     # Load the sub assembly recursively and add it to the sub assemblies MultiToolBox
-                    sub_assembly_widget = self.load_edit_assembly_widget(sub_assembly)
+                    sub_assembly_widget = self.load_edit_assembly_widget(
+                        sub_assembly, workspace_information=workspace_information[assembly.name]["sub_assemblies"]
+                    )
                     sub_assemblies_toolbox.addItem(sub_assembly_widget, sub_assembly.name)
                     delete_button = sub_assemblies_toolbox.getLastDeleteButton()
                     delete_button.clicked.connect(partial(delete_sub_assembly, sub_assembly, sub_assembly_widget))
                     duplicate_button = sub_assemblies_toolbox.getLastDuplicateButton()
                     duplicate_button.clicked.connect(partial(duplicate_sub_assembly, sub_assembly))
+                    input_box = sub_assemblies_toolbox.getLastInputBox()
+                    input_box.editingFinished.connect(partial(rename_sub_assembly, sub_assembly, input_box))
                 sub_assemblies_toolbox.close_all()
+        if saved_workspace_prefs:
+            sub_assemblies_toolbox.set_widgets_visibility(workspace_information[assembly.name]["tool_box"])
+        workspace_information[assembly.name]["tool_box"] = sub_assemblies_toolbox
         return widget
 
     # NOTE FOR STAGING
     def load_edit_assembly_tab(self) -> None:
         self.listWidget_flow_tags.clearSelection()
-        scroll_area = QScrollArea()
+        self.workspace_information.setdefault("Staging", {"tool_box": None, "sub_assemblies": {}})
+        try:
+            self.workspace_information["Staging"]["tool_box"] = self.workspace_information["Staging"]["tool_box"].get_widget_visibility()
+            saved_workspace_prefs = True
+        except (AttributeError, RuntimeError):
+            saved_workspace_prefs = False
+        scroll_area = QScrollArea(self)
 
         def save_scroll_position(tab_name: str, scroll: QScrollArea):
             self.scroll_position_manager.save_scroll_position(tab_name=tab_name, scroll=scroll)
@@ -4599,6 +4715,8 @@ class MainWindow(QMainWindow):
                     delete_button.clicked.connect(partial(delete_assembly, new_assembly, sub_assembly_widget))
                     duplicate_button = multi_tool_box.getLastDuplicateButton()
                     duplicate_button.clicked.connect(partial(duplicate_assembly, new_assembly))
+                    input_box = multi_tool_box.getLastInputBox()
+                    input_box.editingFinished.connect(partial(rename_sub_assembly, new_assembly, input_box))
                     # self.sync_changes()
                     # self.load_categories()
                 elif response == DialogButtons.cancel:
@@ -4620,22 +4738,39 @@ class MainWindow(QMainWindow):
             delete_button.clicked.connect(partial(delete_assembly, new_assembly, assembly_widget))
             duplicate_button = multi_tool_box.getLastDuplicateButton()
             duplicate_button.clicked.connect(partial(duplicate_assembly, new_assembly))
+            input_box = multi_tool_box.getLastInputBox()
+            input_box.editingFinished.connect(partial(rename_sub_assembly, new_assembly, input_box))
+
+        def rename_sub_assembly(assembly_to_rename: Assembly, input_box: QLineEdit):
+            assembly_to_rename.rename(input_box.text())
+            admin_workspace.save()
+            self.sync_changes()
 
         for i, assembly in enumerate(workspace_data):
-            assembly_widget = self.load_edit_assembly_widget(assembly=assembly)
+            assembly_widget = self.load_edit_assembly_widget(
+                assembly=assembly, workspace_information=self.workspace_information["Staging"]["sub_assemblies"]
+            )
             multi_tool_box.addItem(assembly_widget, assembly.name)
             delete_button = multi_tool_box.getDeleteButton(i)
             delete_button.clicked.connect(partial(delete_assembly, assembly, assembly_widget))
             duplicate_button = multi_tool_box.getDuplicateButton(i)
             duplicate_button.clicked.connect(partial(duplicate_assembly, assembly))
+            input_box = multi_tool_box.getLastInputBox()
+            input_box.editingFinished.connect(partial(rename_sub_assembly, assembly, input_box))
+
+        multi_tool_box.close_all()
+        if saved_workspace_prefs:
+            multi_tool_box.set_widgets_visibility(self.workspace_information["Staging"]["tool_box"])
         # pushButton_add_job = QPushButton(scroll_content)
         # pushButton_add_job.setText("Add Job")
         # pushButton_add_job.clicked.connect(add_assembly)
         scroll_layout.addWidget(multi_tool_box)
+        # multi_tool_box.close_all()
         # scroll_layout.addWidget(pushButton_add_job)
 
         self.pushButton_add_job.disconnect()
         self.pushButton_add_job.clicked.connect(add_assembly)
+        self.workspace_information["Staging"]["tool_box"] = multi_tool_box
         self.tab_widget.currentWidget().layout().addWidget(scroll_area)
         self.scroll_position_manager.restore_scroll_position(
             tab_name=f"{self.tabWidget.tabText(self.tabWidget.currentIndex())} {self.category}", scroll=scroll_area
@@ -4806,7 +4941,7 @@ class MainWindow(QMainWindow):
             # timer_widget.setLayout(timer_layout)
 
             # current_tag = QComboBox(self)
-            # current_tag.wheelEvent = lambda event: None
+            # current_tag.wheelEvent = lambda event: event.ignore()
             # current_tag.setObjectName("tag_box")
             # current_tag.setStyleSheet("QComboBox#tag_box{margin: 2px;}")
             flow_tag_controls_widget = QWidget(self)
@@ -5095,6 +5230,7 @@ class MainWindow(QMainWindow):
                     assembly=sub_assembly, workspace_information=workspace_information[assembly.name]["sub_assemblies"]
                 )
                 sub_assemblies_toolbox.addItem(sub_assembly_widget, sub_assembly.name)
+                # sub_assemblies_toolbox.close(i)
         if saved_workspace_prefs:
             sub_assemblies_toolbox.set_widgets_visibility(workspace_information[assembly.name]["tool_box"])
         workspace_information[assembly.name]["tool_box"] = sub_assemblies_toolbox
@@ -5136,10 +5272,14 @@ class MainWindow(QMainWindow):
             scroll_layout = QVBoxLayout(scroll_content)
             scroll_layout.setContentsMargins(0, 0, 0, 0)
             scroll_area.setWidget(scroll_content)
+            # group_tool_boxes: dict[str, MultiToolBox] = {}
+            # for group in user_workspace.get_all_groups():
+            #     group_tool_box = MultiToolBox(scroll_content)
+            #     group_tool_boxes[group] = group_tool_box
+            # for group in user_workspace.get_all_groups():
             multi_tool_box = MultiToolBox(scroll_content)
             multi_tool_box.layout().setSpacing(0)
             workspace_data = user_workspace.get_filtered_data(self.workspace_filter)
-            print("\n" + selected_tab)
             for i, assembly in enumerate(workspace_data):
                 if assembly.get_assembly_data(key="show") == True and assembly.get_assembly_data(key="completed") == False:
                     assembly_widget = self.load_view_assembly_widget(
@@ -5149,8 +5289,11 @@ class MainWindow(QMainWindow):
                         assembly_widget,
                         f'{assembly.get_assembly_data(key="display_name")} - Items: {user_workspace.get_completion_percentage(assembly)[0]*100}% - Assemblies: {user_workspace.get_completion_percentage(assembly)[1]*100}%',
                     )
+
             if saved_workspace_prefs:
                 multi_tool_box.set_widgets_visibility(self.workspace_information[selected_tab]["tool_box"])
+            # else:
+
             self.workspace_information[selected_tab]["tool_box"] = multi_tool_box
             if len(multi_tool_box.buttons) == 0:
                 scroll_layout.addWidget(QLabel("Nothing to show.", self))
@@ -5234,11 +5377,13 @@ class MainWindow(QMainWindow):
 
         self.pushButton_show_sub_assembly.clicked.connect(lambda: (self.pushButton_show_item_summary.setChecked(False), self.load_workspace()))
         self.pushButton_show_item_summary.clicked.connect(lambda: (self.pushButton_show_sub_assembly.setChecked(False), self.load_workspace()))
+
         self.listWidget_flow_tags.addItems(["Recut"] + workspace_tags.get_value("all_tags"))
         self.listWidget_materials.addItems(price_of_steel_information.get_value("materials"))
         self.listWidget_statuses.addItems(self.get_all_statuses())
         self.listWidget_thicknesses.addItems(price_of_steel_information.get_value("thicknesses"))
         self.listWidget_paint_colors.addItems(list(workspace_tags.get_value("paint_colors").keys()))
+
         self.horizontalLayout_23.setAlignment(Qt.AlignmentFlag.AlignRight)
 
         self.workspace_filter["use_filter"] = self.pushButton_use_filter
@@ -5253,12 +5398,28 @@ class MainWindow(QMainWindow):
         self.workspace_filter["dateTimeEdit_before"] = self.dateTimeEdit_before
 
         self.pushButton_use_filter.toggled.connect(self.load_workspace)
+
         self.lineEdit_search.returnPressed.connect(lambda: (self.pushButton_use_filter.setChecked(True), self.load_workspace()))
         self.listWidget_materials.itemSelectionChanged.connect(lambda: (self.pushButton_use_filter.setChecked(True), self.load_workspace()))
         self.listWidget_thicknesses.itemSelectionChanged.connect(lambda: (self.pushButton_use_filter.setChecked(True), self.load_workspace()))
         self.listWidget_statuses.itemSelectionChanged.connect(lambda: (self.pushButton_use_filter.setChecked(True), self.load_workspace()))
         self.listWidget_paint_colors.itemSelectionChanged.connect(lambda: (self.pushButton_use_filter.setChecked(True), self.load_workspace()))
         self.groupBox_due_dates.toggled.connect(lambda: (self.pushButton_use_filter.setChecked(True), self.load_workspace()))
+
+    def reload_workspace_filter_tab(self) -> None:
+        workspace_tags.load_data()
+        self.listWidget_flow_tags.clear()
+        self.listWidget_materials.clear()
+        self.listWidget_statuses.clear()
+        self.listWidget_thicknesses.clear()
+        self.listWidget_paint_colors.clear()
+
+        self.listWidget_flow_tags.addItems(["Recut"] + workspace_tags.get_value("all_tags"))
+        self.listWidget_materials.addItems(price_of_steel_information.get_value("materials"))
+        self.listWidget_statuses.addItems(self.get_all_statuses())
+        self.listWidget_thicknesses.addItems(price_of_steel_information.get_value("thicknesses"))
+        self.listWidget_paint_colors.addItems(list(workspace_tags.get_value("paint_colors").keys()))
+
 
     def load_quote_generator_ui(self) -> None:
         self.refresh_nest_directories()
@@ -5330,7 +5491,7 @@ class MainWindow(QMainWindow):
                 grid_layout.addWidget(spinBox_sheet_count, 1, 2)
 
                 comboBox_sheet_material = QComboBox(self)
-                comboBox_sheet_material.wheelEvent = lambda event: None
+                comboBox_sheet_material.wheelEvent = lambda event: event.ignore()
                 comboBox_sheet_material.addItems(price_of_steel_information.get_value("materials"))
                 comboBox_sheet_material.setCurrentText(self.quote_nest_information[nest_name]["material"])
                 if self.quote_nest_information[nest_name]["material"] in {"304 SS", "409 SS", "Aluminium"}:
@@ -5349,7 +5510,7 @@ class MainWindow(QMainWindow):
                 grid_layout.addWidget(comboBox_sheet_material, 2, 2)
 
                 comboBox_sheet_thickness = QComboBox(self)
-                comboBox_sheet_thickness.wheelEvent = lambda event: None
+                comboBox_sheet_thickness.wheelEvent = lambda event: event.ignore()
                 comboBox_sheet_thickness.addItems(price_of_steel_information.get_value("thicknesses"))
                 comboBox_sheet_thickness.setCurrentText(self.quote_nest_information[nest_name]["gauge"])
                 comboBox_sheet_thickness.activated.connect(
@@ -5408,6 +5569,7 @@ class MainWindow(QMainWindow):
                 )
                 tab_index += 1
         self.load_quote_table()
+        self.sheet_nests_toolbox.close_all()
         self.tableWidget_quote_items.setEnabled(True)
         self.tableWidget_quote_items.resizeColumnsToContents()
         self.tableWidget_quote_items.setColumnWidth(1, 250)

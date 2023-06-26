@@ -1,85 +1,90 @@
-from PyQt6.QtCore import Qt, QTimer
-from PyQt6.QtGui import QBrush, QColor, QPainter
-from PyQt6.QtWidgets import QApplication, QWidget
+from PyQt6.QtCore import Qt
+from PyQt6.QtWidgets import QApplication, QWidget, QVBoxLayout, QTabWidget, QPushButton, QFormLayout
 
 
-class RecordingWidget(QWidget):
-    def __init__(self, parent=None):
-        super().__init__(parent)
-        self.recording = True
-        self.recording_color = QColor("red")
-        self.nonrecording_color = QColor("gray")
-        self.current_color = self.nonrecording_color
-        self.scale = 1.0
-        self.scale_factor = 0.01
-        self.scale_direction = 0.1
-        self.animation_duration = 3000
-        self.elapsed_time = 0
+class UberButtonTabWidget(QWidget):
+    def __init__(self):
+        super().__init__()
 
-        self.timer = QTimer(self)
-        self.timer.timeout.connect(self.updateAnimation)
-        self.timer.start(1)  # Update every 20 milliseconds
+        self.tab_widget = QTabWidget()
+        self.show_all_tab = QWidget()
+        layout = QFormLayout(self.show_all_tab)
+        layout.setFormAlignment(Qt.AlignmentFlag.AlignLeft)  # Set alignment to top-left
+        layout.setFieldGrowthPolicy(QFormLayout.FieldGrowthPolicy.AllNonFixedFieldsGrow)  # Allow fields to grow
+        layout.setLabelAlignment(Qt.AlignmentFlag.AlignLeft)  # Set label alignment to left
 
-    def set_recording(self, recording):
-        self.recording = recording
+        self.tab_widget.addTab(self.show_all_tab, "Show All")
 
-    def updateAnimation(self):
-        if self.recording:
-            self.elapsed_time += self.timer.interval()
-            if self.elapsed_time >= self.animation_duration:
-                self.elapsed_time = 0
+        self.layout = QVBoxLayout()
+        self.layout.addWidget(self.tab_widget)
+        self.setLayout(self.layout)
 
-            progress = self.elapsed_time / self.animation_duration
-            scale_progress = 1 - (2 * abs(progress - 0.5) * 0.3)
-            self.scale = scale_progress
+        self.buttons: list[QPushButton] = []
 
-            self.current_color = self.interpolateColors(self.recording_color, QColor("darkred"), scale_progress)
+        self.tabs = {"Show All": []}  # Dictionary to store tabs and their buttons
+        self.tab_widget.currentChanged.connect(self.update_tab_button_visibility)
+
+    def add_tab(self, name):
+        tab_container = QWidget()
+        tab_widget = QWidget()
+        layout = QFormLayout(tab_widget)
+        layout.setContentsMargins(0, 0, 0, 0)
+        layout.setFormAlignment(Qt.AlignmentFlag.AlignLeft)  # Set alignment to top-left
+        layout.setFieldGrowthPolicy(QFormLayout.FieldGrowthPolicy.AllNonFixedFieldsGrow)  # Allow fields to grow
+        layout.setLabelAlignment(Qt.AlignmentFlag.AlignLeft)  # Set label alignment to left
+        tab_widget.setLayout(layout)
+        tab_container_layout = QVBoxLayout(tab_container)
+        tab_container_layout.addWidget(tab_widget)
+        self.tab_widget.addTab(tab_container, name)
+
+        self.tabs[name] = []  # Add tab with an empty list for buttons
+
+        return layout
+
+    def add_button_to_tab(self, tab_name, button_name):
+        buttons = self.tabs.get(tab_name)
+        if buttons is not None:
+            button = QPushButton(button_name, checkable=True)
+            buttons.append(button)  # Add button to the list
+            self.buttons.append(button)
+
+    def get_buttons(self, tab_name):
+        buttons = self.tabs.get(tab_name)
+        if buttons is not None:
+            return buttons
+        return []
+
+    def update_tab_button_visibility(self, tab_index: int):
+        tab_name = self.tab_widget.tabText(tab_index)
+        buttons = self.tabs.get(tab_name)
+        if tab_name == "Show All":
+            layout = self.tab_widget.widget(tab_index).layout()
+            for button in self.buttons:
+                layout.addWidget(button)
+                button.setVisible(True)
         else:
-            self.elapsed_time = 0
-            self.scale = 1.0
-            self.current_color = self.interpolateColors(self.nonrecording_color, self.recording_color, 1.0)
-
-        self.update()
-
-    def interpolateColors(self, start_color, end_color, progress):
-        red = int(start_color.red() + progress * (end_color.red() - start_color.red()))
-        green = int(start_color.green() + progress * (end_color.green() - start_color.green()))
-        blue = int(start_color.blue() + progress * (end_color.blue() - start_color.blue()))
-
-        return QColor(red, green, blue)
-
-    def paintEvent(self, event):
-        painter = QPainter(self)
-        painter.setPen(Qt.PenStyle.NoPen)
-
-        painter.setRenderHint(QPainter.RenderHint.Antialiasing)
-
-        painter.setBrush(QBrush(self.current_color))
-
-        # Calculate the center of the widget
-        center = self.rect().center()
-
-        # Calculate the radius of the circle based on the widget size
-        radius = int(min(self.rect().width(), self.rect().height()) / 2)
-
-        # Adjust the radius based on the scale
-        radius = int(radius * self.scale)
-
-        # Calculate the top-left corner of the circle bounding rectangle
-        x = center.x() - radius
-        y = center.y() - radius
-
-        # Draw the circle
-        painter.drawEllipse(x, y, 2 * radius, 2 * radius)
+            if buttons is not None:
+                layout = self.tab_widget.widget(tab_index).layout()
+                for button in self.buttons:
+                    if button in buttons:
+                        layout.addWidget(button)
+                        button.setVisible(True)
+                    else:
+                        button.setVisible(False)
 
 
 if __name__ == "__main__":
     app = QApplication([])
+    window = UberButtonTabWidget()
 
-    widget = QWidget()
-    recording_widget = RecordingWidget(widget)
-    recording_widget.setGeometry(50, 50, 100, 100)
+    tab1_layout = window.add_tab("Tab 1")
+    tab2_layout = window.add_tab("Tab 2")
 
-    widget.show()
+    window.add_button_to_tab("Tab 1", "Button 1")
+    window.add_button_to_tab("Tab 1", "Button 2")
+    window.add_button_to_tab("Tab 2", "Button 3")
 
+    window.update_tab_button_visibility(0)
+
+    window.show()
     app.exec()

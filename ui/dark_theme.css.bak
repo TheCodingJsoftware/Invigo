@@ -226,8 +226,8 @@ QWidget#edit_multi_tool_box_widget{
 	border-bottom-left-radius: 8px;
 	border-bottom-right-radius: 8px; 
 	border-top-right-radius: 8px;
-	border-top-left-radius: 8px;
-	background-color: rgba(29, 29, 29, 57);
+	border-top-left-radius: 0.01em;
+	background-color: rgba(29, 29, 29, 255);
 }
 QWidget#nest_widget{
 	border: 1px solid #3daee9; 
@@ -273,17 +273,16 @@ QPushButton:checked {
 QPushButton:checked#order_status {
     color: #ffffff;
     background-color: #2ea44f;
-    border: 1px solid #2ea44f;
+    border: none;
+	border-radius: px;
 }
 
 QPushButton:checked:hover#order_status {
     background-color: #3bba6d;
-    border-color: #3bba6d;
 }
 
 QPushButton:checked:pressed#order_status {
     background-color: #1d703e;
-    border-color: #1d703e;
 }
 
 QPushButton:!checked#order_status {
@@ -311,25 +310,74 @@ QPushButton:!checked#recut_button {
     color: rgb(210, 210, 210);
 }
 
-QPushButton#sheet_nest_button {
+QLineEdit#input_box_multitoolbox{
     background-color: rgba(71, 71, 71, 110);
-    border: 1px solid rgba(76, 76, 76, 110);
-    border-radius: 8px;
     color: rgb(210, 210, 210);
     text-align: left;
-    padding-left: 3px;
-	padding-bottom: 5px;
-	padding-top: 5px;
+	border: none;
+    border-top-left-radius: 0.01em;
+    border-top-right-radius: 8px;
+    border-bottom-left-radius: 0.01em;
+    border-bottom-right-radius: 8px;
+}
+
+QPushButton#edit_sheet_nest_button {
+	border: none;
+    background-color: rgba(71, 71, 71, 110);
+    border-top-left-radius: 8px;
+    border-top-right-radius: 0.01em;
+    border-bottom-left-radius: 8px;
+    border-bottom-right-radius: 0.01em;
+    color: rgb(210, 210, 210);
+    text-align: left;
+}
+QPushButton:hover#edit_sheet_nest_button {
+    background-color: rgba(76, 76, 76, 110);
+}
+
+QPushButton:pressed#edit_sheet_nest_button {
+    background-color: rgba(39, 39, 39, 110);
+    color: rgb(132, 132, 132);
+}
+
+QPushButton:checked#edit_sheet_nest_button {
+    color: gray;
+}
+
+QPushButton:!checked#edit_sheet_nest_button {
+    color: white;
+    background-color: #3daee9;
+    border-top-left-radius: 8px;
+    border-top-right-radius: 0.01em;
+    border-bottom-left-radius: 0.01em;
+    border-bottom-right-radius: 0.01em;
+}
+
+QPushButton:!checked:hover#edit_sheet_nest_button {
+    background-color: #48b6ed;
+}
+
+QPushButton:!checked:pressed#edit_sheet_nest_button {
+    background-color: #2b92c5;
+}
+
+QPushButton#sheet_nest_button {
+	border: none;
+    background-color: rgba(71, 71, 71, 110);
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+    border-bottom-left-radius: 8px;
+    border-bottom-right-radius: 8px;
+    color: rgb(210, 210, 210);
+    text-align: left;
 }
 
 QPushButton:hover#sheet_nest_button {
     background-color: rgba(76, 76, 76, 110);
-    border: 1px solid rgba(71, 76, 88, 130);
 }
 
 QPushButton:pressed#sheet_nest_button {
     background-color: rgba(39, 39, 39, 110);
-    border: 1px solid rgba(47, 50, 57, 110);
     color: rgb(132, 132, 132);
 }
 
@@ -340,9 +388,8 @@ QPushButton:checked#sheet_nest_button {
 QPushButton:!checked#sheet_nest_button {
     color: white;
     background-color: #3daee9;
-    border: 0.01em solid #3daee9;
-    border-top-right-radius: 8px;
     border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
     border-bottom-left-radius: 0.01em;
     border-bottom-right-radius: 0.01em;
 }
@@ -702,7 +749,7 @@ QTabBar::tab:selected {
 }
 
 QTableView {
-    gridline-color: rgba(70,70,70,70);
+    gridline-color: rgba(120,120,120,70);
 }
 QTableWidget{
 	background-color: #222222;

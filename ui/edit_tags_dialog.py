@@ -174,7 +174,7 @@ class EditTagsDialog(QDialog):
                                     last_tag_box = child_widget
                                 if isinstance(child_widget, QCheckBox):
                                     self.check_boxes[child_widget] = last_tag_box
-                    if len(tags) > 1:
+                    if len(tags) > 0:
                         flow_tags.append(tags)
         for flow_tag_widget in self.tag_boxes:
             used_tags = []
