@@ -48,9 +48,3 @@ def interpolate_color(color1, color2, factor):
 
 def get_random_color() -> str:
     return shift_color_towards_hue(generate_random_color(), 5 / 3)
-
-
-for i in range(10):
-    random_color = generate_random_color()  # Randomly generated color
-    shifted_color = shift_color_towards_hue(random_color, 5 / 3)
-    print(shifted_color)
