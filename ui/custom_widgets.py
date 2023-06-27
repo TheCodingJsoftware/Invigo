@@ -992,7 +992,7 @@ class MultiToolBox(QWidget):
         button.setObjectName("sheet_nest_button")
         button.setText(title)
         button.setCursor(Qt.CursorShape.PointingHandCursor)
-        button.setChecked(False)
+        button.setChecked(True)
         button.setCheckable(True)
         button.clicked.connect(partial(self.toggle_widget_visibility, widget, button))
 

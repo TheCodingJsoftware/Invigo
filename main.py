@@ -142,8 +142,8 @@ __copyright__: str = "Copyright 2022-2023, TheCodingJ's"
 __credits__: list[str] = ["Jared Gross"]
 __license__: str = "MIT"
 __name__: str = "Invigo"
-__version__: str = "v2.1.1"
-__updated__: str = "2023-06-21 12:32:51"
+__version__: str = "v2.1.2"
+__updated__: str = "2023-06-27 12:32:51"
 __maintainer__: str = "Jared Gross"
 __email__: str = "jared@pinelandfarms.ca"
 __status__: str = "Production"
@@ -1073,6 +1073,8 @@ class MainWindow(QMainWindow):
             for _ in range(quantity):
                 user_workspace.load_data()
                 new_assembly: Assembly = admin_workspace.copy(job_name)
+                if new_assembly == None:
+                    continue
                 new_assembly.rename(f"{job_name} - {datetime.now()}")
                 # Job Assembly Data
                 new_assembly.set_assembly_data(key="display_name", value=job_name)
@@ -1782,18 +1784,17 @@ class MainWindow(QMainWindow):
         self.pushButton_add_quantity.setEnabled(False)
         self.pushButton_remove_quantity.setEnabled(False)
         try:
-            for item in list(category_data.keys()):
+            for item in natsorted(list(category_data.keys())):
                 if search_input.lower() in item.lower() or search_input.lower() in category_data[item]["part_number"].lower():
                     self.listWidget_itemnames.addItem(item)
-        except AttributeError:
+        except (AttributeError, TypeError):
             return
 
     def update_parts_in_inventory_list_widget(self) -> None:
         search_input: str = self.lineEdit_search_parts_in_inventory.text()
         self.listWidget_parts_in_inventory.clear()
-        with contextlib.suppress(TypeError):
-            data = natsorted(list(parts_in_inventory.get_value(self.category).keys()))
-            for item in data:
+        with contextlib.suppress(TypeError, AttributeError):
+            for item in natsorted(list(parts_in_inventory.get_value(self.category).keys())):
                 if search_input.lower() in item.lower():
                     self.listWidget_parts_in_inventory.addItem(item)
 
@@ -3395,12 +3396,12 @@ class MainWindow(QMainWindow):
             except AttributeError:
                 return
             if self.tabWidget.tabText(self.tabWidget.currentIndex()) == "Edit Inventory":
-                autofill_search_options = natsorted(self.get_all_part_names() + self.get_all_part_numbers())
+                autofill_search_options = natsorted(list(set(self.get_all_part_names() + self.get_all_part_numbers())))
                 completer = QCompleter(autofill_search_options)
                 completer.setCaseSensitivity(Qt.CaseSensitivity.CaseInsensitive)
                 self.lineEdit_search_items.setCompleter(completer)
             if self.tabWidget.tabText(self.tabWidget.currentIndex()) == "Parts in Inventory":
-                autofill_search_options = natsorted(list(parts_in_inventory.get_value(self.category).keys()))
+                autofill_search_options = natsorted(list(set(parts_in_inventory.get_value(self.category).keys())))
                 completer = QCompleter(autofill_search_options)
                 completer.setCaseSensitivity(Qt.CaseSensitivity.CaseInsensitive)
                 self.lineEdit_search_parts_in_inventory.setCompleter(completer)
@@ -4948,6 +4949,9 @@ class MainWindow(QMainWindow):
             h_layout = QHBoxLayout(flow_tag_controls_widget)
             flow_tag_controls_widget.setLayout(h_layout)
             h_layout.setContentsMargins(0, 0, 0, 0)
+            # ! WHAT TO DO ABOUT RECUT FLOW TAG THAT IS INSERTED BUT NOT A ACTUAL FLOW TAG
+            if item_flow_tag == "Recut":
+                return
             if not list(workspace_tags.get_value("flow_tag_statuses")[item_flow_tag].keys()):
                 try:
                     button_next_flow_state = QPushButton(self)
@@ -5419,7 +5423,6 @@ class MainWindow(QMainWindow):
         self.listWidget_statuses.addItems(self.get_all_statuses())
         self.listWidget_thicknesses.addItems(price_of_steel_information.get_value("thicknesses"))
         self.listWidget_paint_colors.addItems(list(workspace_tags.get_value("paint_colors").keys()))
-
 
     def load_quote_generator_ui(self) -> None:
         self.refresh_nest_directories()
