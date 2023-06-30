@@ -269,6 +269,26 @@ def subtract_sheet_count(sheet_name_to_update: str, sheet_count: int) -> None:
                 CustomPrint.print(f"INFO - Subtracted {sheet_count} quantities from {sheet_name_to_update}", connected_clients=connected_clients)
 
 
+def add_sheet(thickness: str, material: str, sheet_dim: str, sheet_count: float, _connected_clients) -> None:
+    sheet_name: str = f'{thickness} {material} {sheet_dim}'
+    category_name: str = "Cutoff"
+    price_of_steel_inventory.load_data()
+    price_of_steel_inventory.add_item_in_object(category_name, sheet_name)
+    price_of_steel_inventory.change_object_in_object_item(category_name, sheet_name, "current_quantity", sheet_count)
+    price_of_steel_inventory.change_object_in_object_item(category_name, sheet_name, "sheet_dimension", sheet_dim)
+    price_of_steel_inventory.change_object_in_object_item(category_name, sheet_name, "thickness", thickness)
+    price_of_steel_inventory.change_object_in_object_item(category_name, sheet_name, "material", material)
+    price_of_steel_inventory.change_object_in_object_item(category_name, sheet_name, "group", material)
+    price_of_steel_inventory.change_object_in_object_item(
+        category_name,
+        sheet_name,
+        "latest_change_current_quantity",
+        f"Item added at {datetime.now().strftime('%B %d %A %Y %I-%M-%S %p')} via server",
+    )
+    CustomPrint.print(f'Adding "{sheet_name}" to Cutoff', connected_clients=_connected_clients)
+    signal_clients_for_changes(connected_clients=_connected_clients)
+
+
 def get_sheet_information(batch_data: dict) -> dict:
     """
     The function takes in a dictionary of batch data and returns a dictionary of sheet information based
@@ -326,6 +346,7 @@ def set_sheet_quantity(sheet_name: str, new_quantity: float, clients) -> None:
                 )
     signal_clients_for_changes(clients)
 
+
 def sheet_exists(sheet_name: str) -> bool:
     category_data = price_of_steel_inventory.get_data()
     for category in list(category_data.keys()):
@@ -335,6 +356,7 @@ def sheet_exists(sheet_name: str) -> bool:
             if sheet_name == _sheet_name:
                 return True
     return False
+
 
 def sort_inventory() -> None:
     """

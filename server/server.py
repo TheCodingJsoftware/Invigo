@@ -18,6 +18,7 @@ from markupsafe import Markup
 from utils.custom_print import CustomPrint, print_clients
 from utils.files import get_file_type
 from utils.inventory_updater import (
+    add_sheet,
     get_sheet_quantity,
     set_sheet_quantity,
     sheet_exists,
@@ -275,8 +276,7 @@ class SheetQuantityHandler(tornado.web.RequestHandler):
         if sheet_exists(sheet_name=sheet_name):
             # Retrieve the quantity from the data dictionary
             quantity = get_sheet_quantity(sheet_name=sheet_name)
-            if self.request.remote_ip == "10.0.0.11" or self.request.remote_ip == "10.0.0.64":    
-                
+            if self.request.remote_ip in ["10.0.0.11", "10.0.0.64", "10.0.0.217"]:    
                 # Render the template with the sheet name and quantity
                 template = env.get_template("sheet_template.html")
                 rendered_template = template.render(sheet_name=sheet_name, quantity=quantity)
@@ -304,6 +304,29 @@ class SheetQuantityHandler(tornado.web.RequestHandler):
         # Redirect to the GET request for the same sheet
         self.redirect(f"/sheets_in_inventory/{sheet_name}")
 
+class AddCutoffSheetHandler(tornado.web.RequestHandler):
+    def get(self):
+        if self.request.remote_ip in ["10.0.0.11", "10.0.0.64", "10.0.0.217"]:    
+            template = env.get_template("add_cutoff_sheet.html")
+            rendered_template = template.render(thicknesses=["22 Gauge", "20 Gauge", "18 Gauge", "16 Gauge", "14 Gauge", "12 Gauge", "11 Gauge", "10 Gauge", "3/16", "1/4", "5/16", "3/8", "1/2", "5/8", "3/4", "1"], materials=["304 SS", "409 SS", "Mild Steel", "Galvanneal", "Galvanized", "Aluminium", "Laser Grade Plate"])
+            self.write(rendered_template)
+        else:
+            self.write("Access Denied")
+            self.set_status(1020)
+            return
+        
+    def post(self):
+        length: float = float(self.get_argument("length"))
+        width: float = float(self.get_argument("width"))
+        material: str = self.get_argument("material")
+        thickness: str = self.get_argument("thickness")
+        quantity: int = int(self.get_argument("quantity"))
+
+        add_sheet(thickness=thickness, material=material, sheet_dim=f'{length:.3f}x{width:.3f}', sheet_count=quantity, _connected_clients=connected_clients)
+        # Process the form submission and perform the desired actions
+
+        # Redirect the user back to the form
+        self.redirect("/add_cutoff_sheet")
 
 def signal_clients_for_changes(client_to_ignore) -> None:
     """
@@ -413,7 +436,8 @@ if __name__ == "__main__":
             (r"/image/(.*)", ImageHandler),
             (r"/set_order_number", SetOrderNumberHandler),
             (r"/get_order_number", GetOrderNumberHandler),
-            (r"/sheets_in_inventory/(.*)", SheetQuantityHandler)
+            (r"/sheets_in_inventory/(.*)", SheetQuantityHandler),
+            (r"/add_cutoff_sheet", AddCutoffSheetHandler)
         ]
     )
     app.listen(80)
