@@ -306,14 +306,9 @@ class SheetQuantityHandler(tornado.web.RequestHandler):
 
 class AddCutoffSheetHandler(tornado.web.RequestHandler):
     def get(self):
-        if self.request.remote_ip in ["10.0.0.11", "10.0.0.64", "10.0.0.217"]:    
-            template = env.get_template("add_cutoff_sheet.html")
-            rendered_template = template.render(thicknesses=["22 Gauge", "20 Gauge", "18 Gauge", "16 Gauge", "14 Gauge", "12 Gauge", "11 Gauge", "10 Gauge", "3/16", "1/4", "5/16", "3/8", "1/2", "5/8", "3/4", "1"], materials=["304 SS", "409 SS", "Mild Steel", "Galvanneal", "Galvanized", "Aluminium", "Laser Grade Plate"])
-            self.write(rendered_template)
-        else:
-            self.write("Access Denied")
-            self.set_status(1020)
-            return
+        template = env.get_template("add_cutoff_sheet.html")
+        rendered_template = template.render(thicknesses=["22 Gauge", "20 Gauge", "18 Gauge", "16 Gauge", "14 Gauge", "12 Gauge", "11 Gauge", "10 Gauge", "3/16", "1/4", "5/16", "3/8", "1/2", "5/8", "3/4", "1"], materials=["304 SS", "409 SS", "Mild Steel", "Galvanneal", "Galvanized", "Aluminium", "Laser Grade Plate"])
+        self.write(rendered_template)
         
     def post(self):
         length: float = float(self.get_argument("length"))
