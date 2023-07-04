@@ -107,12 +107,16 @@ class ItemGroup:
             for item in items:
                 if item.get_value("completed"):
                     continue
-                try:
-                    item_flow_tag = item.get_value("flow_tag")[item.get_value("current_flow_state")]
-                except IndexError:
-                    continue
-                if item_flow_tag == flow_tag:
-                    filtered_items.append(item)
+                if flow_tag != "Recut":
+                    try:
+                        item_flow_tag = item.get_value("flow_tag")[item.get_value("current_flow_state")]
+                    except IndexError:
+                        continue
+                    if item_flow_tag == flow_tag:
+                        filtered_items.append(item)
+                else:
+                    if item.get_value("recut"):
+                        filtered_items.append(item)
             if filtered_items:
                 filtered_data[group_name] = filtered_items
         self.data = filtered_data

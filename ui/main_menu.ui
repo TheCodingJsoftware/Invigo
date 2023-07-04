@@ -58,7 +58,7 @@
        <enum>QTabWidget::Rounded</enum>
       </property>
       <property name="currentIndex">
-       <number>4</number>
+       <number>3</number>
       </property>
       <property name="elideMode">
        <enum>Qt::ElideNone</enum>
@@ -803,7 +803,7 @@ QPushButton#pushButton_add_new_sheet:disabled{
       </widget>
       <widget class="QWidget" name="laser_quote_tab">
        <attribute name="title">
-        <string>Quote Generator</string>
+        <string>OmniGen</string>
        </attribute>
        <layout class="QHBoxLayout" name="horizontalLayout_19">
         <property name="leftMargin">
@@ -838,21 +838,92 @@ QPushButton#pushButton_add_new_sheet:disabled{
                 <property name="minimumSize">
                  <size>
                   <width>0</width>
-                  <height>120</height>
+                  <height>175</height>
                  </size>
                 </property>
                 <property name="maximumSize">
                  <size>
                   <width>16777215</width>
-                  <height>120</height>
+                  <height>175</height>
                  </size>
                 </property>
                 <property name="title">
                  <string>Global Sheet Settings</string>
                 </property>
                 <layout class="QGridLayout" name="gridLayout_4">
-                 <item row="1" column="0">
+                 <item row="4" column="0">
+                  <layout class="QHBoxLayout" name="horizontalLayout_22">
+                   <property name="spacing">
+                    <number>0</number>
+                   </property>
+                   <item>
+                    <widget class="QDoubleSpinBox" name="doubleSpinBox_global_sheet_length">
+                     <property name="suffix">
+                      <string> in</string>
+                     </property>
+                     <property name="decimals">
+                      <number>3</number>
+                     </property>
+                     <property name="maximum">
+                      <double>9999.000000000000000</double>
+                     </property>
+                     <property name="value">
+                      <double>120.000000000000000</double>
+                     </property>
+                    </widget>
+                   </item>
+                   <item>
+                    <widget class="QLabel" name="label_18">
+                     <property name="minimumSize">
+                      <size>
+                       <width>20</width>
+                       <height>0</height>
+                      </size>
+                     </property>
+                     <property name="maximumSize">
+                      <size>
+                       <width>20</width>
+                       <height>16777214</height>
+                      </size>
+                     </property>
+                     <property name="text">
+                      <string>x</string>
+                     </property>
+                     <property name="alignment">
+                      <set>Qt::AlignCenter</set>
+                     </property>
+                    </widget>
+                   </item>
+                   <item>
+                    <widget class="QDoubleSpinBox" name="doubleSpinBox_global_sheet_width">
+                     <property name="prefix">
+                      <string/>
+                     </property>
+                     <property name="suffix">
+                      <string> in</string>
+                     </property>
+                     <property name="decimals">
+                      <number>3</number>
+                     </property>
+                     <property name="maximum">
+                      <double>9999.000000000000000</double>
+                     </property>
+                     <property name="value">
+                      <double>60.000000000000000</double>
+                     </property>
+                    </widget>
+                   </item>
+                  </layout>
+                 </item>
+                 <item row="2" column="0">
                   <layout class="QGridLayout" name="gridLayout_3">
+                   <item row="1" column="0">
+                    <widget class="QLabel" name="label_6">
+                     <property name="text">
+                      <string>Sheet Thickness:</string>
+                     </property>
+                    </widget>
+                   </item>
                    <item row="0" column="1">
                     <widget class="QComboBox" name="comboBox_global_sheet_material">
                      <property name="focusPolicy">
@@ -867,13 +938,6 @@ QPushButton#pushButton_add_new_sheet:disabled{
                      </property>
                     </widget>
                    </item>
-                   <item row="1" column="0">
-                    <widget class="QLabel" name="label_6">
-                     <property name="text">
-                      <string>Sheet Thickness:</string>
-                     </property>
-                    </widget>
-                   </item>
                    <item row="1" column="1">
                     <widget class="QComboBox" name="comboBox_global_sheet_thickness">
                      <property name="focusPolicy">
@@ -883,7 +947,7 @@ QPushButton#pushButton_add_new_sheet:disabled{
                    </item>
                   </layout>
                  </item>
-                 <item row="0" column="0">
+                 <item row="1" column="0">
                   <widget class="QLabel" name="label_7">
                    <property name="minimumSize">
                     <size>
@@ -915,11 +979,30 @@ QPushButton#pushButton_add_new_sheet:disabled{
                    </property>
                   </widget>
                  </item>
+                 <item row="3" column="0">
+                  <widget class="QLabel" name="label_17">
+                   <property name="text">
+                    <string>Sheet Dimensions (len x wid):</string>
+                   </property>
+                  </widget>
+                 </item>
                 </layout>
                </widget>
               </item>
               <item>
                <widget class="QGroupBox" name="groupBox_9">
+                <property name="minimumSize">
+                 <size>
+                  <width>0</width>
+                  <height>120</height>
+                 </size>
+                </property>
+                <property name="maximumSize">
+                 <size>
+                  <width>16777215</width>
+                  <height>120</height>
+                 </size>
+                </property>
                 <property name="font">
                  <font>
                   <pointsize>8</pointsize>
@@ -1039,7 +1122,7 @@ QPushButton#pushButton_add_new_sheet:disabled{
                       <x>0</x>
                       <y>0</y>
                       <width>521</width>
-                      <height>472</height>
+                      <height>417</height>
                      </rect>
                     </property>
                     <property name="styleSheet">

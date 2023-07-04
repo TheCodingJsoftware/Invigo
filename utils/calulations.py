@@ -24,3 +24,17 @@ def calculate_overhead(cost: float, profit_margin: float = 0.3, overhead_percent
         except ZeroDivisionError:
             unit_price = cost + (unit_price * overhead_percentage) / 0.00000001
     return unit_price
+
+
+def calculate_scrap_percentage(nest_name: str, quote_nest_information: dict):
+    sheet_dim_x, sheet_dim_y = quote_nest_information[nest_name]["sheet_dim"].replace(" x ", "x").split("x")
+    sheet_surface_area: float = float(sheet_dim_x) * float(sheet_dim_y)
+
+    nest_name = nest_name.split("/")[-1]
+    if "CUSTOM NEST" in nest_name:
+        nest_name = f"/{nest_name}"
+    total_item_surface_area: float = 0
+    for _, item_data in quote_nest_information[nest_name].items():
+        total_item_surface_area += item_data["surface_area"] * item_data["quantity"]
+
+    return (1 - (total_item_surface_area / sheet_surface_area)) * 100

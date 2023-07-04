@@ -1,3 +1,4 @@
+import copy
 import contextlib
 import os
 import sys
@@ -1111,7 +1112,7 @@ class MultiToolBox(QWidget):
         _widget.setLayout(layout)
         widget.setObjectName("nest_widget")
         widget.setAutoFillBackground(True)
-        widget.setStyleSheet("QWidget#nest_widget{border: 1px solid #3daee9; background-color: rgb(33, 33, 33);}")
+        widget.setStyleSheet("QWidget#nest_widget{border: 1px solid #3daee9; background-color: rgb(27, 27, 27);}")
 
         shadow = QGraphicsDropShadowEffect()
         shadow.setBlurRadius(10)  # Adjust the blur radius as desired

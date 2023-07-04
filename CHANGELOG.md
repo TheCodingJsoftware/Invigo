@@ -1,3 +1,9 @@
+# v2.0.0 - v2.1.3
+
+- There are alot of changes that I did not record.
+- The most notable is the exception hook and workspace
+- Many changes to quote generator and server changes aswell (QR codes)
+
 # v2.0.0 The **BIG** rewrite and *mini* reset
 
 - This update focuses on overhauling and rewriting the main functionality, that is, loading and multiple client compatablity. This brings a more intuitive and responsive feel to the software.

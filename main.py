@@ -120,7 +120,7 @@ from ui.select_item_dialog import SelectItemDialog
 from ui.set_custom_limit_dialog import SetCustomLimitDialog
 from ui.theme import set_theme
 from ui.web_scrape_results_dialog import WebScrapeResultsDialog
-from utils.calulations import calculate_overhead
+from utils.calulations import calculate_overhead, calculate_scrap_percentage
 from utils.colors import get_random_color
 from utils.compress import compress_database, compress_folder
 from utils.dialog_buttons import DialogButtons
@@ -147,8 +147,8 @@ __copyright__: str = "Copyright 2022-2023, TheCodingJ's"
 __credits__: list[str] = ["Jared Gross"]
 __license__: str = "MIT"
 __name__: str = "Invigo"
-__version__: str = "v2.1.3"
-__updated__: str = "2023-07-03 12:32:51"
+__version__: str = "v2.1.4"
+__updated__: str = "2023-07-04 12:32:51"
 __maintainer__: str = "Jared Gross"
 __email__: str = "jared@pinelandfarms.ca"
 __status__: str = "Production"
@@ -201,7 +201,7 @@ def default_settings() -> None:
             "Edit Inventory",
             "Sheets in Inventory",
             "Parts in Inventory",
-            "Quote Generator",
+            "OmniGen",
             "Workspace",
             "View Inventory (Read Only)",
             "View Removed Quantities History (Read Only)",
@@ -295,7 +295,7 @@ def excepthook(exc_type, exc_value, exc_traceback):
     """
     win32api.MessageBox(
         0,
-        f"Please copy app.log from the logs file and send it to jared@pinelandfarms.ca ASAP! This is a error report.\n\nexc_type:\n{exc_type}\n\nexc_value:\n{exc_value}\n\nexc_traceback:\n{exc_traceback}",
+        f"Please copy app.log from the logs folder and send it to jared@pinelandfarms.ca ASAP! This is a error report.\n\nexc_type:\n{exc_type}\n\nexc_value:\n{exc_value}\n\nexc_traceback:\n{exc_traceback}",
         "Unhandled exception - excepthook detected",
         0x40,
     )  # 0x40 for OK button
@@ -462,6 +462,10 @@ class MainWindow(QMainWindow):
         self.comboBox_global_sheet_material.wheelEvent = lambda event: event.ignore()
         self.comboBox_global_sheet_material.activated.connect(self.global_nest_material_change)
         self.comboBox_global_sheet_material.setEnabled(False)
+        self.doubleSpinBox_global_sheet_length.setEnabled(False)
+        self.doubleSpinBox_global_sheet_length.valueChanged.connect(self.global_nest_sheet_dim_change)
+        self.doubleSpinBox_global_sheet_width.setEnabled(False)
+        self.doubleSpinBox_global_sheet_width.valueChanged.connect(self.global_nest_sheet_dim_change)
 
         self.tableWidget_quote_items = CustomTableWidget(self)
         self.tableWidget_quote_items.set_editable_column_index([4, 7, 8])
@@ -499,11 +503,9 @@ class MainWindow(QMainWindow):
         def save_scroll_position(tab_name: str, tab: CustomTableWidget):
             self.scroll_position_manager.save_scroll_position(tab_name=tab_name, scroll=tab)
 
-        self.tableWidget_quote_items.verticalScrollBar().valueChanged.connect(
-            partial(save_scroll_position, "Quote Generator", self.tableWidget_quote_items)
-        )
+        self.tableWidget_quote_items.verticalScrollBar().valueChanged.connect(partial(save_scroll_position, "OmniGen", self.tableWidget_quote_items))
         self.tableWidget_quote_items.horizontalScrollBar().valueChanged.connect(
-            partial(save_scroll_position, "Quote Generator", self.tableWidget_quote_items)
+            partial(save_scroll_position, "OmniGen", self.tableWidget_quote_items)
         )
         if self.tableWidget_quote_items.contextMenuPolicy() != Qt.ContextMenuPolicy.CustomContextMenu:
             self.tableWidget_quote_items.setContextMenuPolicy(Qt.ContextMenuPolicy.CustomContextMenu)
@@ -728,7 +730,7 @@ class MainWindow(QMainWindow):
             self.active_layout = self.verticalLayout_11
             self.load_categories()
             self.status_button.setHidden(False)
-        elif self.tabWidget.tabText(self.tabWidget.currentIndex()) == "Quote Generator":  # Quote Generator
+        elif self.tabWidget.tabText(self.tabWidget.currentIndex()) == "OmniGen":  # OmniGen
             self.menuSort.setEnabled(False)
             self.menuOpen_Category.setEnabled(False)
             self.load_quote_generator_ui()
@@ -1500,6 +1502,34 @@ class MainWindow(QMainWindow):
             toolbox_index += 1
         self.update_quote_price()
 
+    def global_nest_sheet_dim_change(self) -> None:
+        """
+        The function `global_nest_sheet_dim_change` updates the sheet dimensions in a nested dictionary
+        and updates the values in a GUI toolbox.
+        """
+        sheet_dim: str = f"{self.doubleSpinBox_global_sheet_length.value():.3f} x {self.doubleSpinBox_global_sheet_width.value():.3f}"
+        for item in list(self.quote_nest_information.keys()):
+            if item[0] == "_":
+                self.quote_nest_information[item]["sheet_dim"] = sheet_dim
+            else:
+                for batch_name in list(self.quote_nest_information[item].keys()):
+                    self.quote_nest_information[item][batch_name]["sheet_dim"] = sheet_dim
+        toolbox_index: int = 0
+        for nest_name in list(self.quote_nest_information.keys()):
+            if nest_name[0] != "_":
+                continue
+            self.sheet_nests_toolbox.setItemText(
+                toolbox_index,
+                f"{self.quote_nest_information[nest_name]['gauge']} {self.quote_nest_information[nest_name]['material']} {self.quote_nest_information[nest_name]['sheet_dim']} - {nest_name.split('/')[-1].replace('.pdf', '')}",
+            )
+            doubleSpinBox_sheet_length: HumbleDoubleSpinBox = self.sheet_nests_toolbox.getWidget(toolbox_index).findChildren(HumbleDoubleSpinBox)[1]
+            doubleSpinBox_sheet_length.setValue(self.doubleSpinBox_global_sheet_length.value())
+            doubleSpinBox_sheet_width: HumbleDoubleSpinBox = self.sheet_nests_toolbox.getWidget(toolbox_index).findChildren(HumbleDoubleSpinBox)[2]
+            doubleSpinBox_sheet_width.setValue(self.doubleSpinBox_global_sheet_width.value())
+            toolbox_index += 1
+        self.update_quote_price()
+        self.update_scrap_percentages()
+
     def sheet_nest_item_change(
         self,
         toolbox_index: int,
@@ -1548,6 +1578,7 @@ class MainWindow(QMainWindow):
         )
         self.load_quote_table()
         self.update_quote_price()
+        self.update_scrap_percentages()
 
     def inventory_cell_changed(self, tab: CustomTableWidget):
         """
@@ -2083,6 +2114,18 @@ class MainWindow(QMainWindow):
             self.quote_nest_information[nest_name][item_name]["quoting_price"] = price
         self.tableWidget_quote_items.resizeColumnsToContents()
         self.tableWidget_quote_items.blockSignals(False)
+
+    def update_scrap_percentages(self) -> None:
+        toolbox_index: int = 0
+        for nest_name in list(self.quote_nest_information.keys()):
+            if nest_name[0] != "_":
+                continue
+            self.sheet_nests_toolbox.setItemText(
+                toolbox_index,
+                f"{self.quote_nest_information[nest_name]['gauge']} {self.quote_nest_information[nest_name]['material']} {self.quote_nest_information[nest_name]['sheet_dim']} - {nest_name.split('/')[-1].replace('.pdf', '')}",
+            )
+            label_scrap_percentage: QLabel = self.sheet_nests_toolbox.getWidget(toolbox_index).findChildren(QLabel)[5]
+            label_scrap_percentage.setText(f"{calculate_scrap_percentage(nest_name, self.quote_nest_information):,.2f}%")
 
     # * /\ UPDATE UI ELEMENTS /\
     def sort_inventory(self) -> None:
@@ -2998,7 +3041,7 @@ class MainWindow(QMainWindow):
         for part_name in selected_parts:
             self.quote_nest_information["/CUSTOM NEST.pdf"][part_name] = parts_in_inventory.get_data()[self.category].get(part_name)
             self.quote_nest_information["/CUSTOM NEST.pdf"][part_name]["file_name"] = "/CUSTOM NEST.pdf"
-        self.tabWidget.setCurrentIndex(self.get_menu_tab_order().index("Quote Generator"))
+        self.tabWidget.setCurrentIndex(self.get_menu_tab_order().index("OmniGen"))
         self.download_required_images(self.quote_nest_information["/CUSTOM NEST.pdf"])
         # self.load_nests()
 
@@ -3434,7 +3477,7 @@ class MainWindow(QMainWindow):
         if self.tabWidget.tabText(self.tabWidget.currentIndex()) == "Workspace":
             admin_workspace.load_data()
             user_workspace.load_data()
-            for i, category in enumerate(["Staging"] + workspace_tags.get_value("all_tags")):
+            for i, category in enumerate(["Staging", "Recut"] + workspace_tags.get_value("all_tags")):
                 tab = QWidget(self)
                 layout = QVBoxLayout(tab)
                 tab.setLayout(layout)
@@ -3569,13 +3612,13 @@ class MainWindow(QMainWindow):
             tab.horizontalScrollBar().valueChanged.connect(
                 partial(save_scroll_position, f"{self.tabWidget.tabText(self.tabWidget.currentIndex())} {self.category}", tab)
             )
-            with contextlib.suppress(IndexError):
-                category_tabs_order.set_value(
-                    self.tabWidget.tabText(self.tabWidget.currentIndex()),
-                    value=self.tabWidget.currentWidget().findChildren(CustomTabWidget)[0].get_tab_order(),
-                )
         if self.tabWidget.tabText(self.tabWidget.currentIndex()) == "Workspace":
             self.load_workspace()
+        with contextlib.suppress(IndexError):
+            category_tabs_order.set_value(
+                self.tabWidget.tabText(self.tabWidget.currentIndex()),
+                value=self.tabWidget.currentWidget().findChildren(CustomTabWidget)[0].get_tab_order(),
+            )
 
     # NOTE PARTS IN INVENTYORY
     def load_inventory_parts(self, tab: CustomTableWidget, category_data: dict) -> None:
@@ -4259,7 +4302,7 @@ class MainWindow(QMainWindow):
         label.setStyleSheet("background-color: rgba(30,30,30,100);")
         self.load_assemblies_items_file_layout(file_category=file_category, files_layout=files_layout, assembly=assembly, item=item)
 
-    # NOTE THIS IS STAGING
+    # NOTE FOR STAGING
     def load_edit_assembly_items_table(self, assembly: Assembly) -> CustomTableWidget:
         workspace_tags.load_data()
         headers: list[str] = [
@@ -4811,6 +4854,27 @@ class MainWindow(QMainWindow):
         group_tool_boxes: dict[str, QWidget] = {}
         group_tool_box = AssemblyMultiToolBox(scroll_content)
 
+        def set_assembly_inputbox_context_menu(
+            input_box: QLineEdit, multi_tool_box: AssemblyMultiToolBox, assembly_widget: QWidget, assembly: Assembly
+        ) -> None:
+            input_box.setContextMenuPolicy(Qt.ContextMenuPolicy.CustomContextMenu)
+            menu = QMenu(input_box)
+            groups_menu = QMenu(menu)
+            groups_menu.setTitle("Move to Group")
+            for menu_group in admin_workspace._get_all_groups():
+                if menu_group == assembly.get_assembly_data(key="group"):
+                    continue
+                action = QAction(groups_menu)
+                action.triggered.connect(partial(move_to_group, multi_tool_box, assembly_widget, assembly, menu_group, False))
+                action.setText(menu_group)
+                groups_menu.addAction(action)
+            action = QAction(groups_menu)
+            action.triggered.connect(partial(move_to_group, multi_tool_box, assembly_widget, assembly, "menu_group", True))
+            action.setText("Create Group")
+            groups_menu.addAction(action)
+            menu.addMenu(groups_menu)
+            input_box.customContextMenuRequested.connect(partial(self.open_group_menu, menu))
+
         def add_job():
             input_dialog = AddJobDialog(title="Add Job", message="Enter a name for a new job", group_names=admin_workspace._get_all_groups())
 
@@ -4894,6 +4958,11 @@ class MainWindow(QMainWindow):
             duplicate_button.clicked.connect(partial(duplicate_assembly, multi_tool_box, new_assembly))
             input_box = multi_tool_box.getLastInputBox()
             input_box.editingFinished.connect(partial(rename_sub_assembly, multi_tool_box, new_assembly, input_box))
+            set_assembly_inputbox_context_menu(
+                input_box=input_box, multi_tool_box=multi_tool_box, assembly_widget=assembly_widget, assembly=new_assembly
+            )
+
+            multi_tool_box.close(len(multi_tool_box.buttons) - 1)
 
         def rename_sub_assembly(multi_tool_box: AssemblyMultiToolBox, assembly_to_rename: Assembly, input_box: QLineEdit):
             assembly_to_rename.rename(input_box.text())
@@ -4951,6 +5020,9 @@ class MainWindow(QMainWindow):
                 duplicate_button.clicked.connect(partial(duplicate_assembly, multi_tool_box, assembly))
                 input_box = multi_tool_box.getInputBox(i)
                 input_box.editingFinished.connect(partial(rename_sub_assembly, multi_tool_box, assembly, input_box))
+                set_assembly_inputbox_context_menu(
+                    input_box=input_box, multi_tool_box=multi_tool_box, assembly_widget=assembly_widget, assembly=assembly
+                )
 
             multi_tool_box.close_all()
             # pushButton_add_job = QPushButton(scroll_content)
@@ -4961,10 +5033,69 @@ class MainWindow(QMainWindow):
             # group_tool_box.addItem()
 
         def rename_group(group_tool_box: AssemblyMultiToolBox, group: str, input_box: QLineEdit):
+            admin_workspace.get_filtered_data(self.workspace_filter)
+            grouped_data = admin_workspace.get_grouped_data()
+
             for assembly in grouped_data[group]:
                 assembly.set_assembly_data(key="group", value=input_box.text())
             admin_workspace.save()
             self.sync_changes()
+
+        def move_to_group(
+            multi_tool_box_to_move_from: AssemblyMultiToolBox,
+            assembly_widget_to_move: QWidget,
+            assembly: Assembly,
+            group: str,
+            prompt_group_name: bool = False,
+        ):
+            if prompt_group_name:
+                input_dialog = InputDialog(title="Create group", message="Enter a name for a group.")
+                if input_dialog.exec():
+                    response = input_dialog.get_response()
+                    if response == DialogButtons.ok:
+                        group = input_dialog.inputText
+                    elif response == DialogButtons.cancel:
+                        return
+            assembly.set_assembly_data(key="group", value=group)
+            admin_workspace.save()
+            self.sync_changes()
+            try:
+                multi_tool_box_to_move_to = self.workspace_information["Staging"][group]["tool_box"]
+            except KeyError:  # The group does not exist because the user craeted a new one
+                group_widget = QWidget()
+                group_layout = QVBoxLayout(group_widget)
+                group_widget.setLayout(group_layout)
+                group_tool_box.addItem(group_widget, group)
+                group_tool_box.open(len(group_tool_box.buttons) - 1)
+                delete_button = group_tool_box.getLastDeleteButton()
+                delete_button.clicked.connect(partial(delete_group, group_tool_box, group, group_widget))
+                duplicate_button = group_tool_box.getLastDuplicateButton()
+                duplicate_button.clicked.connect(partial(duplicate_group, group_tool_box, group))
+                input_box = group_tool_box.getLastInputBox()
+                input_box.editingFinished.connect(partial(rename_group, group_tool_box, group, input_box))
+                group_tool_boxes[group] = group_widget
+                self.workspace_information["Staging"].setdefault(group, {"tool_box": None, "sub_assemblies": {}, "group_tool_box": None})
+                multi_tool_box = AssemblyMultiToolBox()
+                multi_tool_box.layout().setSpacing(0)
+                self.workspace_information["Staging"][group]["tool_box"] = multi_tool_box
+                group_tool_boxes[group].layout().addWidget(multi_tool_box)
+                multi_tool_box_to_move_to = multi_tool_box
+
+            assembly_widget = self.load_edit_assembly_widget(
+                assembly=assembly, workspace_information=self.workspace_information["Staging"][group]["sub_assemblies"]
+            )
+            multi_tool_box_to_move_to.addItem(assembly_widget, assembly.name)
+            delete_button = multi_tool_box_to_move_to.getLastDeleteButton()
+            delete_button.clicked.connect(partial(delete_assembly, multi_tool_box_to_move_to, assembly, assembly_widget))
+            duplicate_button = multi_tool_box_to_move_to.getLastDuplicateButton()
+            duplicate_button.clicked.connect(partial(duplicate_assembly, multi_tool_box_to_move_to, assembly))
+            input_box = multi_tool_box_to_move_to.getLastInputBox()
+            input_box.editingFinished.connect(partial(rename_sub_assembly, multi_tool_box_to_move_to, assembly, input_box))
+            set_assembly_inputbox_context_menu(
+                input_box=input_box, multi_tool_box=multi_tool_box_to_move_to, assembly_widget=assembly_widget, assembly=assembly
+            )
+            multi_tool_box_to_move_to.close(len(multi_tool_box_to_move_to.buttons) - 1)
+            multi_tool_box_to_move_from.removeItem(assembly_widget_to_move)
 
         for i, group in enumerate(admin_workspace.get_all_groups()):
             group_widget = QWidget()
@@ -5008,6 +5139,9 @@ class MainWindow(QMainWindow):
                 duplicate_button.clicked.connect(partial(duplicate_assembly, multi_tool_box, assembly))
                 input_box = multi_tool_box.getInputBox(i)
                 input_box.editingFinished.connect(partial(rename_sub_assembly, multi_tool_box, assembly, input_box))
+                set_assembly_inputbox_context_menu(
+                    input_box=input_box, multi_tool_box=multi_tool_box, assembly_widget=assembly_widget, assembly=assembly
+                )
 
             multi_tool_box.close_all()
             if saved_workspace_prefs:
@@ -5496,6 +5630,12 @@ class MainWindow(QMainWindow):
     # NOTE FOR USERS
     def load_view_table_summary(self) -> None:
         selected_tab: str = self.tab_widget.tabText(self.tab_widget.currentIndex())
+        if selected_tab == "Recut":
+            self.workspace_filter["show_recut"] = True
+            with contextlib.suppress(AttributeError):
+                self.filter_tab_widget.clear_selections("Flow Tags")
+        else:
+            self.workspace_filter["show_recut"] = False
         scroll_area = QScrollArea()
 
         def save_scroll_position(tab_name: str, scroll: QScrollArea):
@@ -5792,7 +5932,11 @@ class MainWindow(QMainWindow):
     # NOTE FOR USERS
     def load_view_assembly_tab(self) -> None:
         selected_tab: str = self.tab_widget.tabText(self.tab_widget.currentIndex())
-        # self.workspace_information.setdefault(selected_tab,  {"tool_box": None, "sub_assemblies": {}, "group_tool_box": None})
+        if selected_tab == "Recut":
+            self.workspace_filter["show_recut"] = True
+        else:
+            self.workspace_filter["show_recut"] = False
+
         self.workspace_information.setdefault(selected_tab, {"group_tool_box": None})
         try:
             self.workspace_information[selected_tab]["group_tool_box"] = self.workspace_information[selected_tab][
@@ -6077,6 +6221,7 @@ class MainWindow(QMainWindow):
         self.workspace_filter["due_dates"] = self.groupBox_due_dates
         self.workspace_filter["dateTimeEdit_after"] = self.dateTimeEdit_after
         self.workspace_filter["dateTimeEdit_before"] = self.dateTimeEdit_before
+        self.workspace_filter["show_recut"] = False
 
         self.pushButton_use_filter.toggled.connect(self.load_workspace)
 
@@ -6112,6 +6257,8 @@ class MainWindow(QMainWindow):
         self.pushButton_generate_quote.setEnabled(True)
         self.comboBox_global_sheet_thickness.setEnabled(True)
         self.comboBox_global_sheet_material.setEnabled(True)
+        self.doubleSpinBox_global_sheet_length.setEnabled(True)
+        self.doubleSpinBox_global_sheet_width.setEnabled(True)
         self.sheet_nests_toolbox = MultiToolBox(self)
         self.sheet_nests_toolbox.layout().setSpacing(0)
         self.verticalLayout_sheets.addWidget(self.sheet_nests_toolbox)
@@ -6128,13 +6275,13 @@ class MainWindow(QMainWindow):
                     "Sheet Count:",
                     "Sheet Material:",
                     "Sheet Thickness:",
-                    "Sheet Dimension:",
+                    "Sheet Dimension (len x wid):",
                 ]
                 for i, label in enumerate(labels):
                     label = QLabel(label, self)
                     grid_layout.addWidget(label, i, 0)
 
-                label_scrap_percentage = QLabel(f'{self.quote_nest_information[nest_name]["scrap_percentage"]:,.2f}%', self)
+                label_scrap_percentage = QLabel(f"{calculate_scrap_percentage(nest_name, self.quote_nest_information):,.2f}%", self)
                 grid_layout.addWidget(label_scrap_percentage, 0, 2)
 
                 spinBox_sheet_count = HumbleDoubleSpinBox(self)
@@ -6186,6 +6333,7 @@ class MainWindow(QMainWindow):
                 grid_layout.addWidget(comboBox_sheet_thickness, 3, 2)
                 lineEdit_sheet_size_x = HumbleDoubleSpinBox(self)
                 lineEdit_sheet_size_x.setDecimals(3)
+                lineEdit_sheet_size_x.setSuffix(" in")
                 try:
                     lineEdit_sheet_size_x.setValue(float(self.quote_nest_information[nest_name]["sheet_dim"].replace(" x ", "x").split("x")[0]))
                 except AttributeError:
@@ -6196,6 +6344,7 @@ class MainWindow(QMainWindow):
                 grid_layout.addWidget(label, 6, 1)
                 lineEdit_sheet_size_y = HumbleDoubleSpinBox(self)
                 lineEdit_sheet_size_y.setDecimals(3)
+                lineEdit_sheet_size_y.setSuffix(" in")
                 try:
                     lineEdit_sheet_size_y.setValue(float(self.quote_nest_information[nest_name]["sheet_dim"].replace(" x ", "x").split("x")[1]))
                 except AttributeError:
@@ -6445,7 +6594,7 @@ class MainWindow(QMainWindow):
                         self.set_table_row_color(self.tableWidget_quote_items, row_index, "#3F1E25")
                     row_index += 1
         self.tableWidget_quote_items.resizeColumnsToContents()
-        self.scroll_position_manager.restore_scroll_position(tab_name="Quote Generator", scroll=self.tableWidget_quote_items)
+        self.scroll_position_manager.restore_scroll_position(tab_name="OmniGen", scroll=self.tableWidget_quote_items)
         self.update_quote_price()
         QApplication.restoreOverrideCursor()
 

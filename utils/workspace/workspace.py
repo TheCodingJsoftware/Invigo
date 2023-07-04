@@ -123,6 +123,7 @@ class Workspace:
         groupBox_due_dates: QGroupBox = filter["due_dates"]
         dateTimeEdit_after: QDateTimeEdit = filter["dateTimeEdit_after"]
         dateTimeEdit_before: QDateTimeEdit = filter["dateTimeEdit_before"]
+        show_recut: bool = filter["show_recut"]
 
         # Recursively filter sub-assemblies
         completed_items = 0
@@ -139,6 +140,9 @@ class Workspace:
 
             search_text = lineEdit_search.text().lower()
             if search_text != "" and search_text not in item.name.lower():
+                continue
+
+            if show_recut and item.get_value(key="recut") == False:
                 continue
 
             if selected_materials := [button.text() for button in materials if button.isChecked()]:
@@ -224,9 +228,12 @@ class Workspace:
                 assembly.set_data_to_all_sub_assemblies(key="show", value=True)
                 assembly.set_assembly_data(key="show", value=True)
             return self.data
-        checkbox_use_filter: QPushButton = filter["use_filter"]
-        flow_tags: list[QPushButton] = filter["flow_tags"]
-        statuses: list[QPushButton] = filter["statuses"]
+        try:
+            checkbox_use_filter: QPushButton = filter["use_filter"]
+            flow_tags: list[QPushButton] = filter["flow_tags"]
+            statuses: list[QPushButton] = filter["statuses"]
+        except KeyError:  # For a wierd bug if the filter loads before the gui
+            return {}
 
         if not checkbox_use_filter.isChecked():
             for assembly in self.data:
