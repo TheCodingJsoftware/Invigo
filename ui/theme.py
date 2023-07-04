@@ -5,7 +5,7 @@ from PyQt6 import QtGui
 
 THEME_PATH = f"{os.getcwd()}/ui/"
 
-STYLE_SHEET_PATH_DICT = {"dark": os.path.join(THEME_PATH, "dark_theme.css")}
+STYLE_SHEET_PATH_DICT = {"dark": os.path.join(THEME_PATH, "dark_theme.qss")}
 
 DEFAULT_ICON_PATH = "icons"
 CURRENT_ICON_PATH = os.path.join(THEME_PATH, DEFAULT_ICON_PATH).replace("\\", "/")

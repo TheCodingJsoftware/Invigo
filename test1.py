@@ -1,90 +1,113 @@
-from PyQt6.QtCore import Qt
-from PyQt6.QtWidgets import QApplication, QWidget, QVBoxLayout, QTabWidget, QPushButton, QFormLayout
+import sys
+
+from PyQt6.QtCore import QPoint, QRect, Qt
+from PyQt6.QtGui import QColor, QPainter, QPolygon
+from PyQt6.QtWidgets import QApplication, QWidget
 
 
-class UberButtonTabWidget(QWidget):
+class DraggableRotatableWidget(QWidget):
     def __init__(self):
         super().__init__()
+        self.setWindowFlags(Qt.WindowType.Window | Qt.WindowType.FramelessWindowHint | Qt.WindowType.WindowStaysOnTopHint)
+        self.setAttribute(Qt.WidgetAttribute.WA_TranslucentBackground)
+        self.setFixedHeight(1080 * 3)
+        self.setFixedWidth(1920 * 3)
+        self.ruler_length = 500
+        self.ruler_width = 40
+        self.dragging = False
+        self.rotation = 0
+        self.offset = QPoint()
 
-        self.tab_widget = QTabWidget()
-        self.show_all_tab = QWidget()
-        layout = QFormLayout(self.show_all_tab)
-        layout.setFormAlignment(Qt.AlignmentFlag.AlignLeft)  # Set alignment to top-left
-        layout.setFieldGrowthPolicy(QFormLayout.FieldGrowthPolicy.AllNonFixedFieldsGrow)  # Allow fields to grow
-        layout.setLabelAlignment(Qt.AlignmentFlag.AlignLeft)  # Set label alignment to left
+    def mousePressEvent(self, event):
+        if event.buttons() & Qt.MouseButton.LeftButton:
+            self.dragging = True
+            self.offset = event.pos()
 
-        self.tab_widget.addTab(self.show_all_tab, "Show All")
+    def mouseMoveEvent(self, event):
+        if self.dragging:
+            self.move(self.mapToGlobal(event.pos()) - self.offset)
 
-        self.layout = QVBoxLayout()
-        self.layout.addWidget(self.tab_widget)
-        self.setLayout(self.layout)
+    def mouseReleaseEvent(self, event):
+        if event.button() == Qt.MouseButton.LeftButton:
+            self.dragging = False
 
-        self.buttons: list[QPushButton] = []
-
-        self.tabs = {"Show All": []}  # Dictionary to store tabs and their buttons
-        self.tab_widget.currentChanged.connect(self.update_tab_button_visibility)
-
-    def add_tab(self, name):
-        tab_container = QWidget()
-        tab_widget = QWidget()
-        layout = QFormLayout(tab_widget)
-        layout.setContentsMargins(0, 0, 0, 0)
-        layout.setFormAlignment(Qt.AlignmentFlag.AlignLeft)  # Set alignment to top-left
-        layout.setFieldGrowthPolicy(QFormLayout.FieldGrowthPolicy.AllNonFixedFieldsGrow)  # Allow fields to grow
-        layout.setLabelAlignment(Qt.AlignmentFlag.AlignLeft)  # Set label alignment to left
-        tab_widget.setLayout(layout)
-        tab_container_layout = QVBoxLayout(tab_container)
-        tab_container_layout.addWidget(tab_widget)
-        self.tab_widget.addTab(tab_container, name)
-
-        self.tabs[name] = []  # Add tab with an empty list for buttons
-
-        return layout
-
-    def add_button_to_tab(self, tab_name, button_name):
-        buttons = self.tabs.get(tab_name)
-        if buttons is not None:
-            button = QPushButton(button_name, checkable=True)
-            buttons.append(button)  # Add button to the list
-            self.buttons.append(button)
-
-    def get_buttons(self, tab_name):
-        buttons = self.tabs.get(tab_name)
-        if buttons is not None:
-            return buttons
-        return []
-
-    def update_tab_button_visibility(self, tab_index: int):
-        tab_name = self.tab_widget.tabText(tab_index)
-        buttons = self.tabs.get(tab_name)
-        if tab_name == "Show All":
-            layout = self.tab_widget.widget(tab_index).layout()
-            for button in self.buttons:
-                layout.addWidget(button)
-                button.setVisible(True)
+    def wheelEvent(self, event):
+        if event.modifiers() == Qt.KeyboardModifier.ControlModifier:
+            delta = int(event.angleDelta().y() / 30)  # Get the scroll wheel delta value
+            self.ruler_length += delta  # Adjust the ruler length based on the scroll wheel movement
         else:
-            if buttons is not None:
-                layout = self.tab_widget.widget(tab_index).layout()
-                for button in self.buttons:
-                    if button in buttons:
-                        layout.addWidget(button)
-                        button.setVisible(True)
-                    else:
-                        button.setVisible(False)
+            delta = event.angleDelta().y() / 500
+            self.rotation += delta
+        self.update()
+
+    def paintEvent(self, event):
+        painter = QPainter(self)
+        painter.setRenderHint(QPainter.RenderHint.Antialiasing)
+
+        offset = self.ruler_width // 2
+
+        # Translate the painter to the center of the widget
+        painter.translate(self.width() // 3, self.height() // 3)
+
+        # Rotate the painter by the specified angle
+        painter.rotate(self.rotation)
+        rect = QRect(int(-self.ruler_width / 2), (-self.ruler_length + (self.ruler_width // 2)), self.ruler_width, self.ruler_length)
+
+        # Create a QPolygon based on the rotated rectangle coordinates
+        polygon = QPolygon([rect.topLeft(), rect.topRight(), rect.bottomRight(), rect.bottomLeft()])
+
+        # Set the pen and brush for drawing the polygon
+        pen = painter.pen()
+        pen.setWidth(1)
+        pen.setColor(QColor(255, 255, 255, 140))
+        painter.setPen(pen)
+
+        brush = painter.brush()
+        brush.setStyle(Qt.BrushStyle.SolidPattern)
+        brush.setColor(QColor(255, 255, 255, 1))
+        painter.setBrush(brush)
+
+        # Draw the rotated polygon
+        painter.drawPolygon(polygon)
+        pen = painter.pen()
+        pen.setWidth(1)
+        pen.setColor(QColor(255, 255, 255, 255))
+        painter.setPen(pen)
+        lineStart = QPoint(0, (-self.ruler_length + (self.ruler_width // 2)))
+        lineEnd = QPoint(0, -self.ruler_width // 2)
+        painter.drawLine(lineStart, lineEnd)
+
+        pen = painter.pen()
+        pen.setWidth(1)
+        pen.setColor(QColor(0, 0, 0, 255))
+        painter.setPen(pen)
+
+        lineStart = QPoint((self.ruler_width // 2), 0)
+        lineEnd = QPoint(-(self.ruler_width // 2), 0)
+        painter.drawLine(lineStart, lineEnd)
+
+        lineStart = QPoint(0, (self.ruler_width // 2))
+        lineEnd = QPoint(0, -(self.ruler_width // 2))
+        painter.drawLine(lineStart, lineEnd)
+
+        # Calculate the radius of the circle based on the ruler width
+        circleRadius = self.ruler_width // 2
+
+        brush = painter.brush()
+        brush.setStyle(Qt.BrushStyle.SolidPattern)
+        brush.setColor(QColor(255, 255, 255, 25))
+        painter.setBrush(brush)
+        pen = painter.pen()
+        pen.setWidth(0)
+        painter.setPen(pen)
+
+        # Set the circle thickness
+        # Draw the circle at the rotation point
+        painter.drawEllipse(QPoint(0, 0), circleRadius, circleRadius)
 
 
 if __name__ == "__main__":
-    app = QApplication([])
-    window = UberButtonTabWidget()
-
-    tab1_layout = window.add_tab("Tab 1")
-    tab2_layout = window.add_tab("Tab 2")
-
-    window.add_button_to_tab("Tab 1", "Button 1")
-    window.add_button_to_tab("Tab 1", "Button 2")
-    window.add_button_to_tab("Tab 2", "Button 3")
-
-    window.update_tab_button_visibility(0)
-
-    window.show()
-    app.exec()
+    app = QApplication(sys.argv)
+    widget = DraggableRotatableWidget()
+    widget.show()
+    sys.exit(app.exec())

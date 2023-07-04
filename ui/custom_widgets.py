@@ -17,6 +17,7 @@ from PyQt6.QtCore import (
     QPoint,
     QRegularExpression,
     QSettings,
+    QSize,
     QSortFilterProxyModel,
     Qt,
     QTime,
@@ -49,10 +50,11 @@ from PyQt6.QtWidgets import (
     QComboBox,
     QDialog,
     QDoubleSpinBox,
+    QFormLayout,
+    QGraphicsDropShadowEffect,
     QGridLayout,
     QGroupBox,
     QHBoxLayout,
-    QGraphicsDropShadowEffect,
     QHeaderView,
     QLabel,
     QLineEdit,
@@ -72,7 +74,6 @@ from PyQt6.QtWidgets import (
     QTableWidgetItem,
     QTabWidget,
     QToolBox,
-    QFormLayout,
     QTreeView,
     QTreeWidget,
     QTreeWidgetItem,
@@ -85,17 +86,22 @@ from utils.workspace.item import Item
 
 
 class FilterTabWidget(QWidget):
+    filterButtonPressed = pyqtSignal()
+
     def __init__(self):
         super().__init__()
 
         self.tab_widget = QTabWidget()
-        self.show_all_tab = QWidget()
-        layout = QFormLayout(self.show_all_tab)
-        layout.setFormAlignment(Qt.AlignmentFlag.AlignLeft)  # Set alignment to top-left
-        layout.setFieldGrowthPolicy(QFormLayout.FieldGrowthPolicy.AllNonFixedFieldsGrow)  # Allow fields to grow
-        layout.setLabelAlignment(Qt.AlignmentFlag.AlignLeft)  # Set label alignment to left
+        self.show_all_tab = QWidget(self)
+        layout = QGridLayout(self.show_all_tab)
+        layout.setAlignment(Qt.AlignmentFlag.AlignHCenter | Qt.AlignmentFlag.AlignTop)  # Set horizontal alignment to center
+        self.show_all_tab.setLayout(layout)
 
-        self.tab_widget.addTab(self.show_all_tab, "Show All")
+        scroll_area = QScrollArea()
+        scroll_area.setWidgetResizable(True)
+        scroll_area.setWidget(self.show_all_tab)
+
+        # self.tab_widget.addTab(scroll_area, "Show All")
 
         self.layout = QVBoxLayout()
         self.layout.addWidget(self.tab_widget)
@@ -107,28 +113,79 @@ class FilterTabWidget(QWidget):
         self.tab_widget.currentChanged.connect(self.update_tab_button_visibility)
 
     def add_tab(self, name):
-        tab_container = QWidget()
-        tab_widget = QWidget()
-        layout = QFormLayout(tab_widget)
-        layout.setContentsMargins(0, 0, 0, 0)
-        layout.setFormAlignment(Qt.AlignmentFlag.AlignLeft)  # Set alignment to top-left
-        layout.setFieldGrowthPolicy(QFormLayout.FieldGrowthPolicy.AllNonFixedFieldsGrow)  # Allow fields to grow
-        layout.setLabelAlignment(Qt.AlignmentFlag.AlignLeft)  # Set label alignment to left
+        tab_widget = QWidget(self)
+        layout = QGridLayout(tab_widget)
+        layout.setAlignment(Qt.AlignmentFlag.AlignHCenter | Qt.AlignmentFlag.AlignTop)  # Set horizontal alignment to center
+
+        scroll_area = QScrollArea()
+        scroll_area.setWidgetResizable(True)
+        scroll_area.setWidget(tab_widget)
+
         tab_widget.setLayout(layout)
-        tab_container_layout = QVBoxLayout(tab_container)
-        tab_container_layout.addWidget(tab_widget)
-        self.tab_widget.addTab(tab_container, name)
+        self.tab_widget.addTab(scroll_area, name)
 
         self.tabs[name] = []  # Add tab with an empty list for buttons
 
         return layout
 
+    def clear_selections(self, tab_name: str) -> None:
+        buttons = self.tabs.get(tab_name)
+        if buttons is not None:
+            for button in buttons:
+                button.setChecked(False)
+
+    def clear_all_selections(self) -> None:
+        for button in self.buttons:
+            button.setChecked(False)
+
+    def enable_button(self, button_name: str) -> None:
+        for button in self.buttons:
+            if button.text() == button_name:
+                button.setChecked(True)
+
     def add_button_to_tab(self, tab_name, button_name):
         buttons = self.tabs.get(tab_name)
         if buttons is not None:
             button = QPushButton(button_name, checkable=True)
+            button.clicked.connect(self.filterButtonPressed.emit)
+            button.setStyleSheet(
+                """QPushButton{
+	color: #ffffff;
+    background-color: #3daee9;
+    border: none;
+    border-radius: 8px;
+}
+QPushButton:checked{
+    background-color: #3daee9;
+}
+QPushButton:hover{
+    background-color: #48b6ed;
+}
+QPushButton:pressed{
+    background-color: #2b92c5;
+}
+
+QPushButton:!checked {
+    background-color: rgba(71, 71, 71, 130);
+    color: grey;
+}
+
+QPushButton:hover:!checked {
+    background-color: rgba(76, 76, 76, 130);
+}
+
+QPushButton:pressed:!checked {
+    background-color: rgba(39, 39, 39, 130);
+    border: 0.01em solid rgba(47, 50, 57, 130);
+}"""
+            )
+            button.setFixedSize(QSize(100, button.sizeHint().height()))
             buttons.append(button)  # Add button to the list
             self.buttons.append(button)
+
+    def add_buttons_to_tab(self, tab_name, button_names):
+        for button in button_names:
+            self.add_button_to_tab(tab_name, button)
 
     def get_buttons(self, tab_name):
         buttons = self.tabs.get(tab_name)
@@ -139,20 +196,30 @@ class FilterTabWidget(QWidget):
     def update_tab_button_visibility(self, tab_index: int):
         tab_name = self.tab_widget.tabText(tab_index)
         buttons = self.tabs.get(tab_name)
+        num_columns = 3
         if tab_name == "Show All":
-            layout = self.tab_widget.widget(tab_index).layout()
+            layout: QGridLayout = self.tab_widget.widget(tab_index).widget().layout()
+            row = 0
+            col = 0
             for button in self.buttons:
-                layout.addWidget(button)
+                layout.addWidget(button, row, col)
                 button.setVisible(True)
+                col += 1
+                if col == num_columns:
+                    col = 0
+                    row += 1
         else:
             if buttons is not None:
-                layout = self.tab_widget.widget(tab_index).layout()
-                for button in self.buttons:
-                    if button in buttons:
-                        layout.addWidget(button)
-                        button.setVisible(True)
-                    else:
-                        button.setVisible(False)
+                layout: QGridLayout = self.tab_widget.widget(tab_index).widget().layout()
+                row = 0
+                col = 0
+                for button in buttons:
+                    layout.addWidget(button, row, col)
+                    button.setVisible(True)
+                    col += 1
+                    if col == num_columns:
+                        col = 0
+                        row += 1
 
 
 class ScrollPositionManager:
@@ -684,10 +751,10 @@ class AssemblyMultiToolBox(QWidget):
         # checkbox = QCheckBox(widget)
         # checkbox.setStyleSheet("QCheckBox:indicator{width: 20px; height: 20px;}")
         # checkbox.setFixedWidth(22)
-        _widget = QWidget(self)
+        _widget = QWidget()
         _widget.setContentsMargins(0, 0, 0, 0)
         widget.setParent(_widget)
-        button = QPushButton(_widget)
+        button = QPushButton()
         button.setObjectName("edit_sheet_nest_button")
         button.setFixedWidth(24)
         button.setFixedHeight(24)
@@ -716,15 +783,18 @@ class AssemblyMultiToolBox(QWidget):
         delete_button = DeletePushButton(
             parent=widget, tool_tip=f"Delete {title} forever", icon=QIcon("ui/BreezeStyleSheets/dist/pyqt6/dark/trash.png")
         )
+        delete_button.setStyleSheet("border-radius: 0.001em; border-top-right-radius: 8px; border-bottom-right-radius: 8px;")
         delete_button.setFixedWidth(23)
         duplicate_button = QPushButton()
+        duplicate_button.setFixedHeight(24)
+        duplicate_button.setStyleSheet("border-radius: none; border: none;")
         duplicate_button.setIcon(QIcon(r"F:\Code\Python-Projects\Inventory Manager\ui\BreezeStyleSheets\dist\pyqt6\dark\duplicate.png"))
-        duplicate_button.setFixedWidth(23)
+        duplicate_button.setFixedWidth(25)
         duplicate_button.setToolTip(f"Duplicate {title}")
 
         # widget.setMinimumHeight(100)
 
-        hlaout = QHBoxLayout(widget)
+        hlaout = QHBoxLayout()
         hlaout.setSpacing(0)
         hlaout.setContentsMargins(0, 0, 0, 0)
         # hlaout.addWidget(checkbox)
@@ -736,6 +806,7 @@ class AssemblyMultiToolBox(QWidget):
         layout.setSpacing(0)
         layout.addLayout(hlaout)
         layout.addWidget(widget)
+        # # The above code is creating a widget in Python.
         _widget.setLayout(layout)
         widget.setObjectName("edit_multi_tool_box_widget")
 
@@ -750,25 +821,19 @@ class AssemblyMultiToolBox(QWidget):
 
     def removeItem(self, widget_to_delete: QWidget) -> None:
         main_layout = self.layout()  # Get the reference to the main layout
-        for i in reversed(range(main_layout.count())):
+        for i in range(main_layout.count()):
             layout_item = main_layout.itemAt(i)
-            if layout_item.itemAt(1).widget() == widget_to_delete:  # Check if the layout's widget matches the given widget
+            widget = layout_item.widget().layout().itemAt(1).widget()  # This is what were trying to find
+            # layout = widget.layout()
+            if widget == widget_to_delete:  # Check if the layout's widget matches the given widget
                 self.delete_buttons[i].disconnect()
                 self.buttons[i].disconnect()
                 self.buttons.pop(i)
                 self.delete_buttons.pop(i)
                 self.duplicate_buttons.pop(i)
-                self.check_boxes.pop(i)
                 self.input_box.pop(i)
                 self.widgets.pop(i)
-                layout = layout_item.layout()
-                self.clear_layout(layout)
-                while layout.count():
-                    item = layout.takeAt(0)
-                    if item_widget := item.widget():
-                        item_widget.deleteLater()
-                main_layout.removeItem(layout_item)
-                del layout
+                self.clear_widget(layout_item.widget())
                 break
 
     def getDeleteButton(self, index: int) -> "DeletePushButton":
@@ -839,7 +904,7 @@ class AssemblyMultiToolBox(QWidget):
         """
         return len(self.widgets)
 
-    def toggle_widget_visibility(self, widget):
+    def toggle_widget_visibility(self, widget: QWidget):
         """
         This function toggles the visibility of a widget in a Python GUI.
 
@@ -858,18 +923,55 @@ class AssemblyMultiToolBox(QWidget):
             shadow.setColor(QColor(0, 0, 0, 255))
         shadow.setOffset(0, 0)  # Set the shadow offset (x, y)
         widget.parentWidget().setGraphicsEffect(shadow)
+        for _widget, button, delete_button in zip(self.widgets, self.buttons, self.delete_buttons):
+            if widget == _widget:
+                if button.isChecked():
+                    delete_button.setStyleSheet("border-radius: 0.001em; border-top-right-radius: 8px; border-bottom-right-radius: 8px;")
+                else:
+                    delete_button.setStyleSheet("border-radius: 0.001em; border-top-right-radius: 8px; border-bottom-right-radius: 0.001em;")
 
-    def close_all(self) -> None:
-        for button, widget, input_box in zip(self.buttons, self.widgets, self.input_box):
-            button.click()
-            # button.setChecked(False)
-            widget.setVisible(False)
-            button.setText(" 🡇" if widget.isVisible() else " 🡆")
-            input_box.setStyleSheet(
-                "background-color: #3daee9; border-color: #3daee9; border-bottom-right-radius: 0.01em;"
-                if widget.isVisible()
-                else "background-color: rgba(71, 71, 71, 110); border-color: rgba(76, 76, 76, 110); border-bottom-right-radius: 8px;"
-            )
+    # def close_all(self) -> None:
+    #     for button, widget, input_box, delete_button in zip(self.buttons, self.widgets, self.input_box, self.delete_buttons):
+    #         button.click()
+    #         # button.setChecked(False)
+    #         delete_button.setStyleSheet("border-radius: 0.001em; border-top-right-radius: 8px; border-top-right-radius: 8px;")
+    #         widget.setVisible(False)
+    #         button.setText(" 🡇" if widget.isVisible() else " 🡆")
+    #         input_box.setStyleSheet(
+    #             "background-color: #3daee9; border-color: #3daee9; border-bottom-right-radius: 0.01em;"
+    #             if widget.isVisible()
+    #             else "background-color: rgba(71, 71, 71, 110); border-color: rgba(76, 76, 76, 110); border-bottom-right-radius: 8px;"
+    #         )
+    def clear_widget(self, widget: QWidget):
+        """
+        The function clears a widget and removes it from its parent widget.
+
+        Args:
+          widget (QWidget): The "widget" parameter is an instance of the QWidget class. It represents a
+        graphical user interface element, such as a button, label, or container.
+
+        Returns:
+          None.
+        """
+        if widget is None:
+            return
+
+        layout = widget.layout()
+        if layout is not None:
+            while layout.count():
+                item = layout.takeAt(0)
+                if item.widget():
+                    self.clear_widget(item.widget())
+                    item.widget().deleteLater()
+
+        parent_widget = widget.parent()
+        if parent_widget is not None:
+            parent_layout = parent_widget.layout()
+            if parent_layout is not None:
+                parent_layout.removeWidget(widget)
+
+        widget.setParent(None)
+        widget.deleteLater()
 
     def clear_layout(self, layout) -> None:
         """
@@ -926,6 +1028,7 @@ class AssemblyMultiToolBox(QWidget):
             self.buttons[index].setChecked(False)
             self.buttons[index].setText(" 🡇")
             self.widgets[index].setVisible(True)
+            self.delete_buttons[index].setStyleSheet("border-radius: 0.001em; border-top-right-radius: 8px; border-bottom-right-radius: 0.001em;")
             shadow = QGraphicsDropShadowEffect(self)
             shadow.setBlurRadius(10)  # Adjust the blur radius as desired
             shadow.setColor(QColor(61, 174, 233, 255))
@@ -939,6 +1042,7 @@ class AssemblyMultiToolBox(QWidget):
             self.buttons[index].setText(" 🡆")
             self.buttons[index].setChecked(True)
             self.widgets[index].setVisible(False)
+            self.delete_buttons[index].setStyleSheet("border-radius: 0.001em; border-top-right-radius: 8px; border-bottom-right-radius: 8px;")
             shadow = QGraphicsDropShadowEffect(self)
             shadow.setBlurRadius(10)  # Adjust the blur radius as desired
             shadow.setColor(QColor(0, 0, 0, 255))  # Set the shadow color and opacity
@@ -949,7 +1053,7 @@ class AssemblyMultiToolBox(QWidget):
             )
 
     def close_all(self) -> None:
-        for button, widget, input_box in zip(self.buttons, self.widgets, self.input_box):
+        for button, widget, input_box, delete_button in zip(self.buttons, self.widgets, self.input_box, self.delete_buttons):
             button.click()
             button.click()
             button.setChecked(True)
@@ -961,6 +1065,7 @@ class AssemblyMultiToolBox(QWidget):
             shadow.setOffset(0, 0)  # Set the shadow offset (x, y)
             widget.parentWidget().setGraphicsEffect(shadow)
             input_box.setStyleSheet("background-color: rgba(71, 71, 71, 110); border-color: rgba(76, 76, 76, 110); border-bottom-right-radius: 8px;")
+            delete_button.setStyleSheet("border-radius: 0.001em; border-top-right-radius: 8px; border-bottom-right-radius: 8px;")
 
 
 class MultiToolBox(QWidget):
@@ -994,7 +1099,7 @@ class MultiToolBox(QWidget):
         button.setCursor(Qt.CursorShape.PointingHandCursor)
         button.setChecked(True)
         button.setCheckable(True)
-        button.clicked.connect(partial(self.toggle_widget_visibility, widget, button))
+        button.clicked.connect(partial(self.toggle_widget_visibility, widget))
 
         widget.setVisible(False)
 
@@ -1062,6 +1167,20 @@ class MultiToolBox(QWidget):
         """
         return self.widgets[index] if 0 <= index < len(self.widgets) else None
 
+    def getButton(self, index):
+        """
+        This function returns the widget at the specified index if it exists, otherwise it returns None.
+
+        Args:
+          index: The index parameter is an integer value that represents the position of the widget in
+        the list of widgets. It is used to retrieve a specific widget from the list of widgets.
+
+        Returns:
+          The method `getWidget` returns either the widget at the specified index in the `self.widgets`
+        list, or `None` if the index is out of range.
+        """
+        return self.buttons[index] if 0 <= index < len(self.buttons) else None
+
     def count(self) -> int:
         """
         The function returns the number of widgets in a class.
@@ -1094,16 +1213,19 @@ class MultiToolBox(QWidget):
         widget IDs and the values are boolean values indicating whether the widget should be visible or
         not.
         """
-        if len(widgets_visibility.items()) > 0:
-            for i, is_visible in widgets_visibility.items():
-                if is_visible:
-                    self.open(i)
-                else:
-                    self.close(i)
-        else:
+        try:
+            if len(widgets_visibility.items()) > 0:
+                for i, is_visible in widgets_visibility.items():
+                    if is_visible:
+                        self.open(i)
+                    else:
+                        self.close(i)
+            else:
+                self.close_all()
+        except AttributeError:
             self.close_all()
 
-    def toggle_widget_visibility(self, widget: QWidget, button: QPushButton):
+    def toggle_widget_visibility(self, widget):
         """
         This function toggles the visibility of a widget in a Python GUI.
 
@@ -1114,21 +1236,14 @@ class MultiToolBox(QWidget):
         be
         """
         widget.setVisible(not widget.isVisible())
-        # button.setChecked(not button.isChecked())
         shadow = QGraphicsDropShadowEffect()
         shadow.setBlurRadius(10)  # Adjust the blur radius as desired
-        shadow.setOffset(0, 0)  # Set the shadow offset (x, y)
         if widget.isVisible():
             shadow.setColor(QColor(61, 174, 233, 255))
         else:
             shadow.setColor(QColor(0, 0, 0, 255))
+        shadow.setOffset(0, 0)  # Set the shadow offset (x, y)
         widget.parentWidget().setGraphicsEffect(shadow)
-        if button.isChecked():
-            shadow.setColor(QColor(0, 0, 0, 255))
-            button.setGraphicsEffect(shadow)
-        else:
-            shadow.setColor(QColor(61, 174, 233, 255))
-            button.setGraphicsEffect(shadow)
 
     def open(self, index: int) -> QWidget:
         if 0 <= index < len(self.buttons):
@@ -1140,7 +1255,7 @@ class MultiToolBox(QWidget):
             shadow.setColor(QColor(61, 174, 233, 255))
             shadow.setOffset(0, 0)  # Set the shadow offset (x, y)
             self.widgets[index].parentWidget().setGraphicsEffect(shadow)
-            self.buttons[index].setGraphicsEffect(shadow)
+            # self.buttons[index].setGraphicsEffect(shadow)
 
     def close(self, index: int) -> QWidget:
         if 0 <= index < len(self.buttons):
@@ -1152,7 +1267,7 @@ class MultiToolBox(QWidget):
             shadow.setColor(QColor(0, 0, 0, 255))  # Set the shadow color and opacity
             shadow.setOffset(0, 0)  # Set the shadow offset (x, y)
             self.widgets[index].parentWidget().setGraphicsEffect(shadow)
-            self.buttons[index].setGraphicsEffect(shadow)
+            # self.buttons[index].setGraphicsEffect(shadow)
 
     def close_all(self) -> None:
         for button, widget in zip(self.buttons, self.widgets):
@@ -1165,7 +1280,18 @@ class MultiToolBox(QWidget):
             shadow.setColor(QColor(0, 0, 0, 255))  # Set the shadow color and opacity
             shadow.setOffset(0, 0)  # Set the shadow offset (x, y)
             widget.parentWidget().setGraphicsEffect(shadow)
-            button.setGraphicsEffect(shadow)
+
+    def open_all(self) -> None:
+        for button, widget in zip(self.buttons, self.widgets):
+            button.click()
+            button.click()
+            button.setChecked(False)
+            widget.setVisible(True)
+            shadow = QGraphicsDropShadowEffect(self)
+            shadow.setBlurRadius(10)  # Adjust the blur radius as desired
+            shadow.setColor(QColor(61, 174, 233, 255))
+            shadow.setOffset(0, 0)  # Set the shadow offset (x, y)
+            widget.parentWidget().setGraphicsEffect(shadow)
 
 
 class CustomTabWidget(QTabWidget):

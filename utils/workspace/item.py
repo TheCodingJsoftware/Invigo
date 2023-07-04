@@ -1,3 +1,4 @@
+import copy
 from typing import Any, Union
 
 
@@ -16,6 +17,7 @@ class Item:
         self.name: str = kwargs.get("name")
         self.data: dict = kwargs.get("data")
         self.parent_assembly = None
+        self.master_assembly = None
 
     def set_data(self, data: object) -> None:
         """
@@ -79,6 +81,15 @@ class Item:
             return value_copy
         except KeyError:
             return None
+
+    def copy_data(self) -> dict:
+        """
+        The function `copy_data` returns a deep copy of the `data` attribute of the object.
+
+        Returns:
+          a deep copy of the `self.data` dictionary.
+        """
+        return copy.deepcopy(self.data)
 
     def rename(self, new_name: str) -> None:
         """
