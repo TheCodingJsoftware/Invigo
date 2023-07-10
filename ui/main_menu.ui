@@ -1177,10 +1177,13 @@ QPushButton#pushButton_add_new_sheet:disabled{
            </layout>
           </item>
           <item>
-           <layout class="QVBoxLayout" name="verticalLayout_nest_directories" stretch="0,1,0">
+           <layout class="QVBoxLayout" name="verticalLayout_nest_directories" stretch="0,0,1,0">
             <property name="bottomMargin">
              <number>0</number>
             </property>
+            <item>
+             <layout class="QVBoxLayout" name="verticalLayout_cutoff"/>
+            </item>
             <item>
              <layout class="QHBoxLayout" name="horizontalLayout_20">
               <property name="topMargin">

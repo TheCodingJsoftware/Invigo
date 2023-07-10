@@ -24,7 +24,7 @@ workspace_tags = JsonFile(file_name="data/workspace_settings")
 
 class Workspace:
     def __init__(self, file_name: str) -> None:
-        self.data: dict[Assembly, dict[Item, object]] = {}
+        self.data: list[Assembly] = []
 
         self.file_name: str = file_name
         self.FOLDER_LOCATION: str = f"{os.getcwd()}/data"
@@ -96,6 +96,20 @@ class Workspace:
         #     assembly.set_default_value_to_all_items(key="show", value=True)
         #     assembly.set_data_to_all_sub_assemblies(key="show", value=True)
         #     assembly.set_assembly_data(key="show", value=True)
+        # self.set_assembly_parents()
+
+    # def set_subassembly_parents(self, sub_assembly: Assembly) -> None:
+    #     for _sub_assembly in sub_assembly.sub_assemblies:
+    #         _sub_assembly.parent_assembly = sub_assembly
+    #         self.set_subassembly_parents(_sub_assembly)
+
+    # def set_assembly_parents(self) -> None:
+    #     for assembly in self.data:
+    #         assembly.parent_assembly = None
+    #         assembly.master_assembly = None
+    #         for sub_assembly in assembly.sub_assemblies:
+    #             # sub_assembly.parent_assembly = assembly
+    #             self.set_subassembly_parents(sub_assembly)
 
     # TODO
     def get_users_data(self) -> dict:
@@ -129,8 +143,12 @@ class Workspace:
         completed_items = 0
         for item in sub_assembly.items:
             item.set_value(key="show", value=False)
+            if show_recut and item.get_value(key="recut") == False:
+                continue
             if item.get_value(key="completed") == True:
                 completed_items += 1
+                #     item.parent_assembly.set_parent_assembly_value(key="show", value=True)
+                #     item.set_value(key="show", value=True)
                 continue
 
             if item.name == "":
@@ -140,9 +158,6 @@ class Workspace:
 
             search_text = lineEdit_search.text().lower()
             if search_text != "" and search_text not in item.name.lower():
-                continue
-
-            if show_recut and item.get_value(key="recut") == False:
                 continue
 
             if selected_materials := [button.text() for button in materials if button.isChecked()]:
@@ -188,16 +203,14 @@ class Workspace:
                         continue
             item.set_value(key="show", value=True)
             item.parent_assembly.set_parent_assembly_value(key="show", value=True)
-        # Are all items completed
-        if completed_items == len(sub_assembly.items):
+        if self.get_completion_percentage(assembly=sub_assembly)[0] == 1:
+            sub_assembly.set_assembly_data(key="show", value=False)
             if selected_flow_tags := [button.text() for button in flow_tags if button.isChecked()]:
                 with contextlib.suppress(IndexError):  # This means the part is 'completed'
                     assembly_flow_tag = sub_assembly.get_assembly_data("flow_tag")[sub_assembly.get_assembly_data("current_flow_state")]
                     if assembly_flow_tag in selected_flow_tags:
                         sub_assembly.set_assembly_data(key="show", value=True)
                         sub_assembly.set_parent_assembly_value(key="show", value=True)
-                    else:
-                        sub_assembly.set_assembly_data(key="show", value=False)
             if selected_statuses := [button.text() for button in statuses if button.isChecked()]:
                 assembly_status = sub_assembly.get_assembly_data("status")
                 if assembly_status is None:
@@ -205,8 +218,14 @@ class Workspace:
                 if assembly_status in selected_statuses:
                     sub_assembly.set_assembly_data(key="show", value=True)
                     sub_assembly.set_parent_assembly_value(key="show", value=True)
-                else:
-                    sub_assembly.set_assembly_data(key="show", value=False)
+            with contextlib.suppress(TypeError, IndexError):
+                assembly_flow_tag = sub_assembly.get_assembly_data("flow_tag")[sub_assembly.get_assembly_data("current_flow_state")]
+                if workspace_tags.get_value("attributes")[assembly_flow_tag]["show_all_items"]:
+                    for item in sub_assembly.items:
+                        item.set_value(key="show", value=True)
+            if not (sub_assembly.all_sub_assemblies_complete() and sub_assembly.all_items_complete()):
+                sub_assembly.set_assembly_data(key="show", value=False)
+
         for _sub_assembly in sub_assembly.sub_assemblies:
             self.filter_assemblies(sub_assembly=_sub_assembly, filter=filter)
 
@@ -244,27 +263,21 @@ class Workspace:
         else:
             for assembly in self.data:
                 self.filter_assemblies(sub_assembly=assembly, filter=filter)
-            for assembly in self.data:
-                if (
-                    not assembly.get_assembly_data("has_items")
-                    and self.is_assembly_empty(assembly) == True
-                    and assembly.get_assembly_data("has_sub_assemblies")
-                ):
-                    if not assembly.any_sub_assemblies_to_show() and self.is_assembly_empty(assembly) == True:
-                        assembly.set_assembly_data(key="show", value=False)
-                    if assembly.all_sub_assemblies_complete():
-                        assembly.set_assembly_data(key="show", value=True)
-                        if selected_flow_tags := [button.text() for button in flow_tags if button.isChecked()]:
-                            with contextlib.suppress(IndexError):  # This means the part is 'completed'
-                                assembly_flow_tag = assembly.get_assembly_data("flow_tag")[assembly.get_assembly_data("current_flow_state")]
-                                if assembly_flow_tag not in selected_flow_tags:
-                                    assembly.set_assembly_data(key="show", value=False)
-                        if selected_statuses := [button.text() for button in statuses if button.isChecked()]:
-                            assembly_status = assembly.get_assembly_data("status")
-                            if assembly_status is None:
-                                assembly_status = "None"
-                            if assembly_status not in selected_statuses:
-                                assembly.set_assembly_data(key="show", value=False)
+            # for assembly in self.data:
+            #     if self.is_assembly_empty(assembly) == True and (assembly.any_sub_assemblies_to_show() and assembly.all_sub_assemblies_complete()):
+            #         assembly.set_assembly_data(key="show", value=True)
+            #         if selected_flow_tags := [button.text() for button in flow_tags if button.isChecked()]:
+            #             with contextlib.suppress(IndexError):  # This means the part is 'completed'
+            #                 assembly_flow_tag = assembly.get_assembly_data("flow_tag")[assembly.get_assembly_data("current_flow_state")]
+            #                 if assembly_flow_tag not in selected_flow_tags:
+            #                     assembly.set_assembly_data(key="show", value=False)
+            #         if selected_statuses := [button.text() for button in statuses if button.isChecked()]:
+            #             assembly_status = assembly.get_assembly_data("status")
+            #             if assembly_status is None:
+            #                 assembly_status = "None"
+            #             if assembly_status not in selected_statuses:
+            #                 assembly.set_assembly_data(key="show", value=False)
+            # assembly.set_assembly_data(key="show", value=assembly.any_sub_assemblies_to_show() or assembly.all_sub_assemblies_complete())
         return self.data
 
     def __gather_sub_assembly_data(self, sub_assembly: Assembly, data: list) -> bool:
@@ -359,7 +372,7 @@ class Workspace:
           The method `copy` returns a deep copy of an `Assembly` object with the specified name, or
         `None` if no such object exists in the `data` list.
         """
-        if type(assembly_name) == Assembly:
+        if isinstance(assembly_name, Assembly):
             assembly_name = assembly_name.name
         return next(
             (copy.deepcopy(assembly) for assembly in self.data if assembly.name == assembly_name),
@@ -375,7 +388,9 @@ class Workspace:
         argument to the method "set_assembly". The method is expected to take this assembly object and
         use it to set some data in the "self.data" dictionary.
         """
-        self.data[assembly] = {}
+        assembly.master_assembly = None
+        assembly.parent_assembly = None
+        self.data.append(assembly)
 
     def add_assembly(self, assembly: Assembly) -> None:
         """
@@ -386,7 +401,9 @@ class Workspace:
         argument to the method "set_assembly". The method is expected to take this assembly object and
         use it to set some data in the "self.data" dictionary.
         """
-        self.data[assembly] = {}
+        assembly.master_assembly = None
+        assembly.parent_assembly = None
+        self.data.append(assembly)
 
     def get_assembly(self, assembly_name: str) -> Assembly | None:
         """
@@ -405,7 +422,7 @@ class Workspace:
             None,
         )
 
-    def remove_assembly(self, assembly: Assembly) -> Assembly:
+    def remove_assembly(self, assembly_to_delete: Assembly) -> Assembly:
         """
         This function removes an assembly from a data structure and returns a copy of the removed
         assembly.
@@ -420,8 +437,11 @@ class Workspace:
           The method `remove_assembly` returns a copy of the `Assembly` object that was passed as an
         argument to the method.
         """
-        copy = self.copy(assembly)
-        self.data.pop(assembly)
+        copy = self.copy(assembly_to_delete)
+        for i, assembly in enumerate(self.data):
+            if assembly == assembly_to_delete:
+                self.data.pop(i)
+                break
         return copy
 
     def get_all_assembly_names(self) -> list[str]:
@@ -491,6 +511,12 @@ class Workspace:
           A list of unique group names extracted from the assembly data of the object's data attribute.
         """
         return list(set(assembly.get_assembly_data(key="group") for assembly in self.data if assembly.get_assembly_data("show")))
+
+    def get_group_color(self, group: str) -> str | None:
+        for assembly in self.data:
+            if assembly.get_assembly_data(key="group") == group:
+                return assembly.get_assembly_data(key="group_color")
+        return None
 
     def _get_all_groups(self) -> list[str]:
         """

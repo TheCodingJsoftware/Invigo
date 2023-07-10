@@ -1,113 +1,112 @@
-import sys
-
-from PyQt6.QtCore import QPoint, QRect, Qt
-from PyQt6.QtGui import QColor, QPainter, QPolygon
-from PyQt6.QtWidgets import QApplication, QWidget
+import math
+from sympy import gamma
+import time
 
 
-class DraggableRotatableWidget(QWidget):
-    def __init__(self):
-        super().__init__()
-        self.setWindowFlags(Qt.WindowType.Window | Qt.WindowType.FramelessWindowHint | Qt.WindowType.WindowStaysOnTopHint)
-        self.setAttribute(Qt.WidgetAttribute.WA_TranslucentBackground)
-        self.setFixedHeight(1080 * 3)
-        self.setFixedWidth(1920 * 3)
-        self.ruler_length = 500
-        self.ruler_width = 40
-        self.dragging = False
-        self.rotation = 0
-        self.offset = QPoint()
+def partition(n, m):
+    """
+    The function `partition` generates all possible partitions of a positive integer `n` into `m` parts.
 
-    def mousePressEvent(self, event):
-        if event.buttons() & Qt.MouseButton.LeftButton:
-            self.dragging = True
-            self.offset = event.pos()
+    Args:
+      n: The parameter `n` represents the number that we want to partition. It is the number that we
+    want to break down into smaller parts.
+      m: The parameter `m` represents the number of parts we want to partition `n` into.
+    """
+    if m == 1:
+        yield (n,)
+    else:
+        for i in range(n + 1):
+            for j in partition(n - i, m - 1):
+                yield (i,) + j
 
-    def mouseMoveEvent(self, event):
-        if self.dragging:
-            self.move(self.mapToGlobal(event.pos()) - self.offset)
 
-    def mouseReleaseEvent(self, event):
-        if event.button() == Qt.MouseButton.LeftButton:
-            self.dragging = False
+def E(zeta, epsilon, z):
+    """
+    The function `E` calculates the value of a mathematical expression involving factorials, partitions,
+    and the gamma function.
 
-    def wheelEvent(self, event):
-        if event.modifiers() == Qt.KeyboardModifier.ControlModifier:
-            delta = int(event.angleDelta().y() / 30)  # Get the scroll wheel delta value
-            self.ruler_length += delta  # Adjust the ruler length based on the scroll wheel movement
-        else:
-            delta = event.angleDelta().y() / 500
-            self.rotation += delta
-        self.update()
+    Args:
+      zeta: The parameter `zeta` is a list of integers.
+      epsilon: The parameter `epsilon` is a constant value that is added to the sum of the products of
+    `zeta` and `l_partition`. It is used as an input to the gamma function in the calculation of the
+    result.
+      z: The parameter `z` is a list of values.
 
-    def paintEvent(self, event):
-        painter = QPainter(self)
-        painter.setRenderHint(QPainter.RenderHint.Antialiasing)
+    Returns:
+      the value of the variable "result".
+    """
+    m = len(zeta)
+    result = 0
+    factorials = [math.factorial(i) for i in range(max(zeta) + 1)]  # Cache the factorial values
 
-        offset = self.ruler_width // 2
+    for l in range(40):  # approximate upper bound
+        for l_partition in partition(l, m):
+            if all(map(lambda x: x >= 0, l_partition)):
+                combination = 1
+                for i in range(m):
+                    combination *= factorials[l_partition[i]]  # Use the precomputed factorials
+                combination = factorials[l] // combination  # Use integer division for combinations
+                gaminput = sum(zeta[i] * l_partition[i] for i in range(m)) + epsilon
+                numerator = 1
+                for i in range(m):
+                    numerator *= z[i] ** l_partition[i]
+                result += numerator / math.gamma(gaminput) * combination
+    return result
 
-        # Translate the painter to the center of the widget
-        painter.translate(self.width() // 3, self.height() // 3)
 
-        # Rotate the painter by the specified angle
-        painter.rotate(self.rotation)
-        rect = QRect(int(-self.ruler_width / 2), (-self.ruler_length + (self.ruler_width // 2)), self.ruler_width, self.ruler_length)
+def ME(M, z):  # Matrix Mittag-Leffler function
+    """
+    The function `ME` calculates the Matrix Mittag-Leffler function for a given matrix `M` and a vector
+    `z`.
 
-        # Create a QPolygon based on the rotated rectangle coordinates
-        polygon = QPolygon([rect.topLeft(), rect.topRight(), rect.bottomRight(), rect.bottomLeft()])
+    Args:
+      M: The parameter M is a matrix, represented as a list of lists. Each inner list represents a row
+    of the matrix, and the outer list represents the entire matrix. The matrix can have any number of
+    rows and columns.
+      z: The parameter `z` is a list of complex numbers.
 
-        # Set the pen and brush for drawing the polygon
-        pen = painter.pen()
-        pen.setWidth(1)
-        pen.setColor(QColor(255, 255, 255, 140))
-        painter.setPen(pen)
+    Returns:
+      the value of the Matrix Mittag-Leffler function for the given matrix M and vector z.
+    """
+    m = len(M)
+    zl = len(z)
+    result = 0
+    for l in range(25):  # approximate upper bound
+        for l_partition in partition(l, zl):
+            if all(map(lambda x: x >= 0, l_partition)):
+                combination = 1
+                for i in range(zl):
+                    combination *= math.factorial(l_partition[i])
+                combination = math.factorial(l) / combination
+                gamproduct = 1
+                for i in range(m):
+                    gaminput = sum(M[i][j] * l_partition[j] for j in range(zl)) + M[i][zl]
+                    gamproduct *= gamma(gaminput)
+                numerator = 1
+                for i in range(zl):
+                    numerator *= z[i] ** l_partition[i]
+                result += (numerator / gamproduct) * combination
+    return result
 
-        brush = painter.brush()
-        brush.setStyle(Qt.BrushStyle.SolidPattern)
-        brush.setColor(QColor(255, 255, 255, 1))
-        painter.setBrush(brush)
 
-        # Draw the rotated polygon
-        painter.drawPolygon(polygon)
-        pen = painter.pen()
-        pen.setWidth(1)
-        pen.setColor(QColor(255, 255, 255, 255))
-        painter.setPen(pen)
-        lineStart = QPoint(0, (-self.ruler_length + (self.ruler_width // 2)))
-        lineEnd = QPoint(0, -self.ruler_width // 2)
-        painter.drawLine(lineStart, lineEnd)
+def main():
+    M1 = [
+        [0, 0.5, 0.5, 0, 0.5, 0.5, 0.7, 0.5, 0.5, 0.7, 0.5, 0.5, 0, 1.5],
+    ]
+    z = [0]
+    for i in range(5):
 
-        pen = painter.pen()
-        pen.setWidth(1)
-        pen.setColor(QColor(0, 0, 0, 255))
-        painter.setPen(pen)
+        start_time = time.time()
 
-        lineStart = QPoint((self.ruler_width // 2), 0)
-        lineEnd = QPoint(-(self.ruler_width // 2), 0)
-        painter.drawLine(lineStart, lineEnd)
+        result1 = ME(M1, z)
 
-        lineStart = QPoint(0, (self.ruler_width // 2))
-        lineEnd = QPoint(0, -(self.ruler_width // 2))
-        painter.drawLine(lineStart, lineEnd)
+        end_time = time.time()
+        execution_time = end_time - start_time
 
-        # Calculate the radius of the circle based on the ruler width
-        circleRadius = self.ruler_width // 2
-
-        brush = painter.brush()
-        brush.setStyle(Qt.BrushStyle.SolidPattern)
-        brush.setColor(QColor(255, 255, 255, 25))
-        painter.setBrush(brush)
-        pen = painter.pen()
-        pen.setWidth(0)
-        painter.setPen(pen)
-
-        # Set the circle thickness
-        # Draw the circle at the rotation point
-        painter.drawEllipse(QPoint(0, 0), circleRadius, circleRadius)
+        print(f"Result: {result1}")
+        print(f"Execution time: {execution_time} seconds")
+        z.append(i)
 
 
 if __name__ == "__main__":
-    app = QApplication(sys.argv)
-    widget = DraggableRotatableWidget()
-    widget.show()
-    sys.exit(app.exec())
+    main()

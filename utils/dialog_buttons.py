@@ -16,6 +16,8 @@ class DialogButtons:
     open: str = "Open"
     set: str = "Set"
     go: str = "Go"
+    ignore: str = "Ignore"
+    set_ignore: str = ", ".join([set, ignore])
     set_cancel: str = ", ".join([set, cancel])
     ok_cancel: str = ", ".join([ok, cancel])
     go_cancel: str = ", ".join([go, cancel])

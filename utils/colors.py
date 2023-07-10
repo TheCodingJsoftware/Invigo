@@ -176,6 +176,35 @@ def interpolate_color(color1, color2, factor):
     return tuple(c1 * (1 - factor) + c2 * factor for c1, c2 in zip(color1, color2))
 
 
+def darken_color(hex_color: str) -> str:
+    """
+    The `darken_color` function takes a hex color code as input and returns a darker version of the
+    color.
+
+    Args:
+      hex_color (str): The `hex_color` parameter is a string representing a color in hexadecimal format.
+    It should start with a '#' character followed by six characters representing the RGB values of the
+    color. For example, "#FF0000" represents the color red.
+
+    Returns:
+      The function `darken_color` returns a string representing a darker version of the input hex color.
+    """
+    # Remove the '#' character and convert to RGB values
+    r, g, b = tuple(int(hex_color[i : i + 2], 16) for i in (1, 3, 5))
+
+    # Generate a random darkness value between -65 and -45
+    darkness = random.randint(-65, -50)
+
+    # Adjust the RGB values to make the color darker
+    r = max(r + darkness, 0)
+    g = max(g + darkness, 0)
+    b = max(b + darkness, 0)
+
+    # Convert the RGB values back to a hex color
+    dark_hex_color = "#{:02x}{:02x}{:02x}".format(r, g, b)
+    return dark_hex_color
+
+
 def get_random_color() -> str:
     """
     The function `get_random_color()` generates a random color and then shifts it towards the hue by
@@ -184,4 +213,4 @@ def get_random_color() -> str:
     Returns:
       a string, which represents a random color.
     """
-    return shift_color_towards_hue(generate_random_color(), 5 / 3)
+    return darken_color(shift_color_towards_hue(generate_random_color(), 5 / 3))

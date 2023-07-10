@@ -219,7 +219,7 @@ class JsonFile:
         """
         return list(self.data.keys())
 
-    def get_value(self, item_name: str) -> None:
+    def get_value(self, item_name: str) -> None | dict[str, dict]:
         """
         It loads the data from the file, and then tries to return the value of the item_name key in the
         data dictionary. If the key doesn't exist, it returns None

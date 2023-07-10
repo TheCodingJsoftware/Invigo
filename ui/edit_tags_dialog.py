@@ -3,7 +3,7 @@ import os.path
 from functools import partial
 
 from PyQt6 import uic
-from PyQt6.QtCore import QEvent, QFile, QObject, Qt, QTextStream
+from PyQt6.QtCore import QEvent, QFile, QObject, Qt, QTextStream, pyqtSignal
 from PyQt6.QtGui import QIcon
 from PyQt6.QtSvgWidgets import QSvgWidget
 from PyQt6.QtWidgets import (
@@ -20,6 +20,7 @@ from PyQt6.QtWidgets import (
 )
 
 from ui.theme import set_theme
+from ui.custom_widgets import DeletePushButton
 from utils.dialog_icons import Icons
 from utils.json_file import JsonFile
 
@@ -39,6 +40,8 @@ class EditTagsDialog(QDialog):
     """
     Select dialog
     """
+
+    accepted = pyqtSignal()
 
     def __init__(
         self,
@@ -71,6 +74,7 @@ class EditTagsDialog(QDialog):
         self.theme: str = "dark"
         self.tag_boxes: dict[QWidget, QComboBox] = {}
         self.check_boxes: dict[QCheckBox, QComboBox] = {}
+        self.connections: dict[object, QCheckBox] = {}
 
         self.setWindowIcon(QIcon("icons/icon.png"))
 
@@ -82,8 +86,10 @@ class EditTagsDialog(QDialog):
         self.iconHolder.addWidget(svg_icon)
 
         self.load_theme()
+        button_filter = ButtonFilter()
 
         self.pushButton_create_flow_tag.clicked.connect(self.create_flow_tag)
+        self.pushButton_create_flow_tag.installEventFilter(button_filter)
 
         self.load_done: bool = False
 
@@ -96,29 +102,41 @@ class EditTagsDialog(QDialog):
             workspace_tags.add_item("flow_tag_statuses", {})
             for tag in workspace_tags.get_value("all_tags"):
                 workspace_tags.add_item_in_object("flow_tag_statuses", tag)
-        self.comboBox_current_status.addItems(workspace_tags.get_value("all_tags"))
-        self.comboBox_current_status.currentTextChanged.connect(self.load_statuses)
-        button_filter = ButtonFilter()
+        self.listWidget_selected_flow_tag.addItems(workspace_tags.get_value("all_tags"))
+        self.listWidget_selected_flow_tag.currentItemChanged.connect(self.load_statuses)
         self.pushButton_add_status.clicked.connect(self.add_new_status)
         self.pushButton_add_status.installEventFilter(button_filter)
 
     def load_flow_tags(self) -> None:
         for flow_tag in workspace_tags.get_value("flow_tags"):
             widget, layout, button = self.create_flow_tag_layout(flow_tag[0])
+            if len(flow_tag) == 1:
+                button.setHidden(True)
             self.flow_tag_layout.addWidget(widget)
             for tag in flow_tag[1:]:
                 button.setHidden(True)
+                button_filter = ButtonFilter()
                 tagbox = self.get_tag_box(tag)
-                try:
-                    timer_check_box = self.get_timer_check_box(tagbox, workspace_tags.get_value("is_timer_enabled")[tag])
-                except (KeyError, TypeError, AttributeError):
-                    timer_check_box = self.get_timer_check_box(tagbox, False)
                 lbl = QLabel("➜", self)
                 lbl.setFixedWidth(20)
                 v_widget = QWidget()
-                v_layout = QVBoxLayout(v_widget)
+                v_layout = QHBoxLayout(v_widget)
+                delete_button = DeletePushButton(
+                    parent=self,
+                    tool_tip="Delete this status",
+                    icon=QIcon(f"ui/BreezeStyleSheets/dist/pyqt6/{self.theme}/trash.png"),
+                )
+
+                def delete_tag(lbl, tagbox, delete_button):
+                    tagbox.setCurrentText("None")
+                    tagbox.setHidden(True)
+                    lbl.setHidden(True)
+                    delete_button.setHidden(True)
+
+                delete_button.installEventFilter(button_filter)
+                delete_button.clicked.connect(partial(delete_tag, lbl, tagbox, delete_button))
                 v_layout.addWidget(tagbox)
-                v_layout.addWidget(timer_check_box)
+                v_layout.addWidget(delete_button)
                 v_widget.setLayout(v_layout)
                 layout.addWidget(lbl)
                 layout.addWidget(v_widget)
@@ -151,8 +169,6 @@ class EditTagsDialog(QDialog):
         all_flow_tags = set()
         flow_tags = []
         self.tag_boxes.clear()
-        self.check_boxes.clear()
-        last_tag_box = None
         for i in range(self.flow_tag_layout.count()):
             item = self.flow_tag_layout.itemAt(i)
             if item.widget() is not None:
@@ -162,19 +178,15 @@ class EditTagsDialog(QDialog):
                     self.tag_boxes[widget] = []
                     for j in range(widget.layout().count()):
                         _widget = widget.layout().itemAt(j).widget()
-                        if isinstance(_widget.layout(), QVBoxLayout):
-                            for k in range(_widget.layout().count()):
-                                child_widget = _widget.layout().itemAt(k).widget()
-                                if isinstance(child_widget, QComboBox):
-                                    tag_name = child_widget.currentText()
-                                    self.tag_boxes[widget].append(child_widget)
-                                if isinstance(child_widget, QComboBox) and tag_name != "None":
+                        if isinstance(_widget.layout(), QHBoxLayout):
+                            combo_boxes = _widget.findChildren(QComboBox)
+                            for comobo_box in combo_boxes:
+                                tag_name = comobo_box.currentText()
+                                self.tag_boxes[widget].append(comobo_box)
+                                if tag_name != "None":
                                     tags.append(tag_name)
                                     all_flow_tags.add(tag_name)
-                                    last_tag_box = child_widget
-                                if isinstance(child_widget, QCheckBox):
-                                    self.check_boxes[child_widget] = last_tag_box
-                    if len(tags) > 0:
+                    if tags:
                         flow_tags.append(tags)
         for flow_tag_widget in self.tag_boxes:
             used_tags = []
@@ -191,28 +203,25 @@ class EditTagsDialog(QDialog):
                 tag_box.editTextChanged.connect(self.save_flow_tags)
                 used_tags.append(current_text)
         workspace_tags.add_item("flow_tags", flow_tags)
-        for check_box, tag_box in self.check_boxes.items():
-            check_box.disconnect()
-            with contextlib.suppress(KeyError, TypeError, AttributeError):
-                check_box.setChecked(workspace_tags.get_value("is_timer_enabled")[tag_box.currentText()])
-            check_box.toggled.connect(partial(self.update_timer_enabled, tag_box, check_box))
         workspace_tags.add_item("all_tags", list(all_flow_tags))
         data = workspace_tags.get_data()
+        data.setdefault("attributes", {})
 
         # Initialize flow_tag_statuses and is_timer_enabled for new tags
         for tag in all_flow_tags:
             data.setdefault("flow_tag_statuses", {}).setdefault(tag, {})
-            data.setdefault("is_timer_enabled", {}).setdefault(tag, False)
+            data.setdefault("attributes", {}).setdefault(tag, {}).setdefault("show_all_items", False)
+            data.setdefault("attributes", {}).setdefault(tag, {}).setdefault("is_timer_enabled", False)
 
         # Remove flow_tag_statuses and is_timer_enabled for tags not in all_flow_tags
         data["flow_tag_statuses"] = {tag: data["flow_tag_statuses"][tag] for tag in all_flow_tags if tag in data["flow_tag_statuses"]}
-        data["is_timer_enabled"] = {tag: data["is_timer_enabled"][tag] for tag in all_flow_tags if tag in data["is_timer_enabled"]}
+        data["attributes"] = {tag: data["attributes"][tag] for tag in all_flow_tags if tag in data["attributes"]}
 
         workspace_tags.save_data(data)
-        self.comboBox_current_status.disconnect()
-        self.comboBox_current_status.clear()
-        self.comboBox_current_status.addItems(workspace_tags.get_value("all_tags"))
-        self.comboBox_current_status.currentTextChanged.connect(self.load_statuses)
+        self.listWidget_selected_flow_tag.disconnect()
+        self.listWidget_selected_flow_tag.clear()
+        self.listWidget_selected_flow_tag.addItems(workspace_tags.get_value("all_tags"))
+        self.listWidget_selected_flow_tag.currentItemChanged.connect(self.load_statuses)
         self.clear_layout(self.tag_layout)
 
     def add_flow_tag(self, layout: QHBoxLayout, button: QPushButton, tag_name: str = "None") -> None:
@@ -227,22 +236,34 @@ class EditTagsDialog(QDialog):
           tag_name (str): The name of the tag to be added to the tagbox. If no name is provided, the
         default value is "None". Defaults to None
         """
+        button_filter = ButtonFilter()
         button.setHidden(True)
         tagbox = self.get_tag_box(tag_name)
-        try:
-            timer_check_box = self.get_timer_check_box(tagbox, workspace_tags.get_value("is_timer_enabled")[tag_name])
-        except KeyError:
-            timer_check_box = self.get_timer_check_box(tagbox, False)
         lbl = QLabel("➜", self)
         lbl.setFixedWidth(20)
         add = QPushButton("Add", self)
         add.setFixedWidth(30)
         add.clicked.connect(partial(self.add_flow_tag, layout, add))
         add.clicked.connect(self.save_flow_tags)
+
+        def delete_tag(lbl, tagbox, delete_button):
+            tagbox.setCurrentText("None")
+            tagbox.setHidden(True)
+            lbl.setHidden(True)
+            delete_button.setHidden(True)
+
+        delete_button = DeletePushButton(
+            parent=self,
+            tool_tip="Delete this status",
+            icon=QIcon(f"ui/BreezeStyleSheets/dist/pyqt6/{self.theme}/trash.png"),
+        )
         v_widget = QWidget()
-        v_layout = QVBoxLayout(v_widget)
+        delete_button.installEventFilter(button_filter)
+        delete_button.clicked.connect(partial(delete_tag, lbl, tagbox, delete_button))
+
+        v_layout = QHBoxLayout(v_widget)
         v_layout.addWidget(tagbox)
-        v_layout.addWidget(timer_check_box)
+        v_layout.addWidget(delete_button)
         v_widget.setLayout(v_layout)
         layout.addWidget(lbl)
         layout.addWidget(v_widget)
@@ -262,20 +283,33 @@ class EditTagsDialog(QDialog):
         widget = QWidget(self)
         layout = QHBoxLayout()
         layout.setAlignment(Qt.AlignmentFlag.AlignLeft)  # Set the alignment to left
+        layout.setSpacing(0)
+        layout.setContentsMargins(0, 0, 0, 0)
         widget.setLayout(layout)
         tagbox = self.get_tag_box(tag_name)
-        try:
-            timer_check_box = self.get_timer_check_box(tagbox, workspace_tags.get_value("is_timer_enabled")[tag_name])
-        except (KeyError, TypeError, AttributeError):
-            timer_check_box = self.get_timer_check_box(tagbox, False)
         add = QPushButton("Add", self)
         add.setFixedWidth(30)
         add.clicked.connect(partial(self.add_flow_tag, layout, add))
         add.clicked.connect(self.save_flow_tags)
+        button_filter = ButtonFilter()
+
+        def delete_tag(add, tagbox, delete_button):
+            tagbox.setCurrentText("None")
+            tagbox.setHidden(True)
+            add.setHidden(True)
+            delete_button.setHidden(True)
+
+        delete_button = DeletePushButton(
+            parent=self,
+            tool_tip="Delete this status",
+            icon=QIcon(f"ui/BreezeStyleSheets/dist/pyqt6/{self.theme}/trash.png"),
+        )
         v_widget = QWidget()
-        v_layout = QVBoxLayout(v_widget)
+        delete_button.installEventFilter(button_filter)
+        delete_button.clicked.connect(partial(delete_tag, add, tagbox, delete_button))
+        v_layout = QHBoxLayout(v_widget)
         v_layout.addWidget(tagbox)
-        v_layout.addWidget(timer_check_box)
+        v_layout.addWidget(delete_button)
         v_widget.setLayout(v_layout)
         layout.addWidget(v_widget)
         layout.addWidget(add)
@@ -296,31 +330,14 @@ class EditTagsDialog(QDialog):
         if not tag_name:
             tag_name = "None"
         result = QComboBox(self)
-        result.editTextChanged.connect(self.save_flow_tags)
         result.setFixedWidth(100)
         _list = list(self.get_all_flow_tags())
-        with contextlib.suppress(ValueError):
-            _list.remove(tag_name)
+        # with contextlib.suppress(ValueError):
+        #     _list.remove(tag_name)
         result.addItems(_list)
         result.setEditable(True)
         result.setItemText(0, tag_name)
-        return result
-
-    def update_timer_enabled(self, tag_box: QComboBox, check: QCheckBox):
-        data = workspace_tags.get_data()
-        try:
-            data["is_timer_enabled"][tag_box.currentText()] = check.isChecked()
-        except (KeyError, TypeError, AttributeError):
-            data["is_timer_enabled"] = {}
-            data["is_timer_enabled"][tag_box.currentText()] = check.isChecked()
-        workspace_tags.save_data(data)
-        self.save_flow_tags()
-
-    def get_timer_check_box(self, tag_box: QComboBox, is_checked: bool = False) -> QCheckBox:
-        result = QCheckBox(self)
-        result.setText("Recording")
-        result.setChecked(is_checked)
-        result.toggled.connect(partial(self.update_timer_enabled, tag_box, result))
+        result.editTextChanged.connect(self.save_flow_tags)
         return result
 
     def create_flow_tag(self) -> None:
@@ -333,14 +350,17 @@ class EditTagsDialog(QDialog):
     def add_new_status(self) -> None:
         workspace_tags.load_data()
         data = workspace_tags.get_data()
-        data["flow_tag_statuses"][self.comboBox_current_status.currentText()]["enter status name"] = {"completed": False}
+        data["flow_tag_statuses"][self.listWidget_selected_flow_tag.currentItem().text()]["enter status name"] = {
+            "completed": False,
+            "start_timer": False,
+        }
         workspace_tags.save_data(data)
         self.load_statuses()
 
     def delete_status(self, status_line_edit: QLineEdit) -> None:
         workspace_tags.load_data()
         data = workspace_tags.get_data()
-        del data["flow_tag_statuses"][self.comboBox_current_status.currentText()][status_line_edit.text()]
+        del data["flow_tag_statuses"][self.listWidget_selected_flow_tag.currentItem().text()][status_line_edit.text()]
         workspace_tags.save_data(data)
         self.load_statuses()
 
@@ -348,27 +368,41 @@ class EditTagsDialog(QDialog):
         workspace_tags.load_data()
         status_line_edit.disconnect()
         data = workspace_tags.get_data()
-        data["flow_tag_statuses"][self.comboBox_current_status.currentText()][status_line_edit.text()] = data["flow_tag_statuses"][
-            self.comboBox_current_status.currentText()
+        data["flow_tag_statuses"][self.listWidget_selected_flow_tag.currentItem().text()][status_line_edit.text()] = data["flow_tag_statuses"][
+            self.listWidget_selected_flow_tag.currentItem().text()
         ][old_name]
-        del data["flow_tag_statuses"][self.comboBox_current_status.currentText()][old_name]
+        del data["flow_tag_statuses"][self.listWidget_selected_flow_tag.currentItem().text()][old_name]
         workspace_tags.save_data(data)
         status_line_edit.textChanged.connect(partial(self.status_name_change, status_line_edit.text(), status_line_edit))
 
     def status_is_complete_change(self, status_line_edit: QLineEdit, rad: QRadioButton) -> None:
         workspace_tags.load_data()
         data = workspace_tags.get_data()
-        data["flow_tag_statuses"][self.comboBox_current_status.currentText()][status_line_edit.text()]["completed"] = rad.isChecked()
+        data["flow_tag_statuses"][self.listWidget_selected_flow_tag.currentItem().text()][status_line_edit.text()]["completed"] = rad.isChecked()
+        workspace_tags.save_data(data)
+
+    def status_start_timer_change(self, status_line_edit: QLineEdit, check: QCheckBox) -> None:
+        workspace_tags.load_data()
+        data = workspace_tags.get_data()
+        data["flow_tag_statuses"][self.listWidget_selected_flow_tag.currentItem().text()][status_line_edit.text()]["start_timer"] = check.isChecked()
+        workspace_tags.save_data(data)
+
+    def save_attribute(self, flow_tag: str, key: str, check_box: QCheckBox):
+        workspace_tags.load_data()
+        data = workspace_tags.get_data()
+        data["attributes"][flow_tag][key] = check_box.isChecked()
         workspace_tags.save_data(data)
 
     def load_statuses(self) -> None:
         workspace_tags.load_data()
         # tag_layout
         self.clear_layout(self.tag_layout)
-        status_layout = QVBoxLayout()
-        rad_layout = QVBoxLayout()
-        delete_layout = QVBoxLayout()
-        for status_name in workspace_tags.get_data()["flow_tag_statuses"][self.comboBox_current_status.currentText()]:
+        self.clear_layout(self.attribute_layout)
+        main_layout = QVBoxLayout()
+        for status_name in workspace_tags.get_data()["flow_tag_statuses"][self.listWidget_selected_flow_tag.currentItem().text()]:
+            status_layout = QHBoxLayout()
+            delete_layout = QVBoxLayout()
+            rad_layout = QHBoxLayout()
             button_filter = ButtonFilter()
             status_line_edit = QLineEdit(self)
             status_line_edit.setText(status_name)
@@ -376,16 +410,48 @@ class EditTagsDialog(QDialog):
             status_layout.addWidget(status_line_edit)
             rad = QRadioButton(self)
             rad.setText("Moves Tag Forward")
-            rad.setChecked(workspace_tags.get_data()["flow_tag_statuses"][self.comboBox_current_status.currentText()][status_name]["completed"])
+            rad.setChecked(
+                workspace_tags.get_data()["flow_tag_statuses"][self.listWidget_selected_flow_tag.currentItem().text()][status_name]["completed"]
+            )
             rad.toggled.connect(partial(self.status_is_complete_change, status_line_edit, rad))
+            check = QCheckBox(self)
+            check.setText("Starts Timer")
+            check.setChecked(
+                workspace_tags.get_data()["flow_tag_statuses"][self.listWidget_selected_flow_tag.currentItem().text()][status_name]["start_timer"]
+            )
+            check.toggled.connect(partial(self.status_start_timer_change, status_line_edit, check))
             rad_layout.addWidget(rad)
-            delete_button = QPushButton("DEL", self)
+            rad_layout.addWidget(check)
+            delete_button = DeletePushButton(
+                parent=self,
+                tool_tip="Delete this status",
+                icon=QIcon(f"ui/BreezeStyleSheets/dist/pyqt6/{self.theme}/trash.png"),
+            )
             delete_button.clicked.connect(partial(self.delete_status, status_line_edit))
             delete_button.installEventFilter(button_filter)
             delete_layout.addWidget(delete_button)
-        self.tag_layout.addLayout(status_layout)
-        self.tag_layout.addLayout(rad_layout)
-        self.tag_layout.addLayout(delete_layout)
+            status_layout.addLayout(rad_layout)
+            status_layout.addLayout(delete_layout)
+            main_layout.addLayout(status_layout)
+        self.tag_layout.addLayout(main_layout)
+
+        timer_check_box = QCheckBox(self)
+        timer_check_box.setText("Enable Timer")
+        timer_check_box.setChecked(workspace_tags.get_value("attributes")[self.listWidget_selected_flow_tag.currentItem().text()]["is_timer_enabled"])
+        timer_check_box.toggled.connect(
+            partial(self.save_attribute, self.listWidget_selected_flow_tag.currentItem().text(), "is_timer_enabled", timer_check_box)
+        )
+
+        show_all_items_check_box = QCheckBox(self)
+        show_all_items_check_box.setText("Show All Items")
+        show_all_items_check_box.setChecked(
+            workspace_tags.get_value("attributes")[self.listWidget_selected_flow_tag.currentItem().text()]["show_all_items"]
+        )
+        show_all_items_check_box.toggled.connect(
+            partial(self.save_attribute, self.listWidget_selected_flow_tag.currentItem().text(), "show_all_items", show_all_items_check_box)
+        )
+        self.attribute_layout.addWidget(timer_check_box)
+        self.attribute_layout.addWidget(show_all_items_check_box)
 
     def load_theme(self) -> None:
         """
@@ -422,3 +488,7 @@ class EditTagsDialog(QDialog):
                         widget.deleteLater()
                     else:
                         self.clear_layout(item.layout())
+
+    def closeEvent(self, event):
+        self.accepted.emit()
+        event.accept()
