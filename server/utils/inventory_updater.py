@@ -267,6 +267,10 @@ def subtract_sheet_count(sheet_name_to_update: str, sheet_count: int) -> None:
                     f'Removed {sheet_count} at {datetime.now().strftime("%B %d %A %Y %I:%M:%S %p")}',
                 )
                 CustomPrint.print(f"INFO - Subtracted {sheet_count} quantities from {sheet_name_to_update}", connected_clients=connected_clients)
+                if category == "Cutoff" and old_quantity - sheet_count == 0:
+                    price_of_steel_inventory.remove_object_item(category, sheet_name)
+                    CustomPrint.print(f"INFO - Removed {sheet_name} from Cutoff", connected_clients=connected_clients)
+
 
 
 def add_sheet(thickness: str, material: str, sheet_dim: str, sheet_count: float, _connected_clients) -> None:
