@@ -409,6 +409,18 @@ class JsonFile:
 
         return grouped_category
 
+    def sort_by_multiple_tags(self, category: dict, tags_ids: list[str]) -> dict:
+        grouped_category: dict = {}
+
+        for key, value in category.items():
+            group_name = ""
+            for tag_id in tags_ids:
+                group_name += " " + value.get(tag_id, "")
+            grouped_category.setdefault(group_name, {})
+            grouped_category[group_name][key] = value
+
+        return grouped_category
+
     def sort(self, category: str, item_name: str, ascending: bool) -> None:
         """
         It sorts the data in the data.json file by the category and item_name specified by the user

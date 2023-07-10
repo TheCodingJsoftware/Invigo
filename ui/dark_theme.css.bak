@@ -274,7 +274,7 @@ QPushButton:checked#order_status {
     color: #ffffff;
     background-color: #2ea44f;
     border: none;
-	border-radius: px;
+	border-radius: 8px;
 }
 
 QPushButton:checked:hover#order_status {
@@ -315,10 +315,7 @@ QLineEdit#input_box_multitoolbox{
     color: rgb(210, 210, 210);
     text-align: left;
 	border: none;
-    border-top-left-radius: 0.01em;
-    border-top-right-radius: 8px;
-    border-bottom-left-radius: 0.01em;
-    border-bottom-right-radius: 8px;
+    border-radius: none;
 }
 
 QPushButton#edit_sheet_nest_button {

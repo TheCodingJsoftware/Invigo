@@ -5,6 +5,8 @@ from utils.workspace.item import Item
 
 
 class Assembly:
+    """An assembly that can have child assemblies and items"""
+
     def __init__(self, **kwargs: Union[str, list["Assembly"], list[Item]]) -> None:
         """
         This is the constructor for a class called "Assembly" that initializes its attributes based on
@@ -19,6 +21,7 @@ class Assembly:
         self.sub_assemblies: list["Assembly"] = kwargs.get("sub_assemblies")
         self.items: list[Item] = kwargs.get("items")
         self.parent_assembly: "Assembly" = None
+        self.master_assembly: "Assembly" = None
         if not self.items:
             self.items = []
         if not self.sub_assemblies:
@@ -41,6 +44,7 @@ class Assembly:
         the class "Item" to be passed as an argument. The method "set_item" is designed to add this item
         to a list of items stored in the object that the method is called on.
         """
+        item.parent_assembly = self
         self.items.append(item)
 
     def add_item(self, item: Item) -> None:
@@ -118,6 +122,18 @@ class Assembly:
             return value_copy
         except KeyError:
             return None
+
+    def get_master_assembly(self) -> "Assembly":
+        """
+        The function returns the top-level assembly object by traversing through the parent assemblies.
+
+        Returns:
+          The method `get_master_assembly` returns the master assembly object.
+        """
+        master_assembly = self
+        while master_assembly.parent_assembly is not None:
+            master_assembly = master_assembly.parent_assembly
+        return master_assembly
 
     def delete_sub_assembly(self, assembly) -> "Assembly":
         """
@@ -203,7 +219,7 @@ class Assembly:
         the specified name. If no sub-assembly with the specified name is found, the method returns
         None.
         """
-        if type(assembly_name) == Assembly:
+        if isinstance(assembly_name, Assembly):
             assembly_name = assembly_name.name
         for sub_assembly in self.sub_assemblies:
             if sub_assembly.name == assembly_name:
@@ -247,12 +263,17 @@ class Assembly:
             if sub_assembly not in processed_assemblies:  # Check if the sub-assembly is already processed
                 data["sub_assemblies"][sub_assembly.name] = sub_assembly.to_dict(processed_assemblies)
         for item in self.items:
+            if item.name == "":
+                continue
             item.delete_value(key="show")
             data["items"][item.name] = item.data
         return data
 
-    def exists(self, other: Item) -> bool:
-        return any(other.name == item.name for item in self.items)
+    def exists(self, other: Item | str) -> bool:
+        if isinstance(other, Item):
+            return any(other.name == item.name for item in self.items)
+        elif isinstance(other, str):
+            return any(other == item.name for item in self.items)
 
     def get_item(self, item_name: str) -> Item | None:
         """
@@ -395,6 +416,13 @@ class Assembly:
                 self._set_default_value_to_all_items(sub_assembly=sub_assembly, key=key, value=value)
 
     def any_items_to_show(self) -> bool:
+        """
+        The function checks if there are any items that should be shown and are not completed.
+
+        Returns:
+          a boolean value. It returns True if there are any items to show (items that have the "show"
+        key set to True and the "completed" key set to False), and False otherwise.
+        """
         for item in self.items:
             if item.get_value(key="show") and not item.get_value(key="completed"):
                 return True
@@ -405,6 +433,13 @@ class Assembly:
         return False
 
     def any_sub_assemblies_to_show(self) -> bool:
+        """
+        The function checks if there are any sub-assemblies that have the "show" attribute set to True.
+
+        Returns:
+          a boolean value. It returns True if there are any sub-assemblies that have the "show"
+        attribute set to True, and False otherwise.
+        """
         for assembly in self.sub_assemblies:
             if assembly.get_assembly_data("show") is True:
                 return True

@@ -1,3 +1,4 @@
+from utils import colors, workspace
 from utils.calulations import calculate_overhead
 from utils.compress import compress_database, compress_folder
 from utils.dialog_buttons import DialogButtons
@@ -14,5 +15,3 @@ from utils.po_template import POTemplate
 from utils.price_history_file import PriceHistoryFile
 from utils.quote_excel_file import ExcelFile
 from utils.trusted_users import get_trusted_users
-from utils import colors
-from utils import workspace

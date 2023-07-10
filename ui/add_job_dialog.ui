@@ -147,7 +147,7 @@ border-bottom: none;
                <x>0</x>
                <y>0</y>
                <width>447</width>
-               <height>146</height>
+               <height>90</height>
               </rect>
              </property>
              <layout class="QVBoxLayout" name="verticalLayout_4">
@@ -202,6 +202,20 @@ border-bottom: none;
          <widget class="QLineEdit" name="lineEdit_job_name">
           <property name="placeholderText">
            <string>Enter job name...</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLabel" name="label_2">
+          <property name="text">
+           <string>Group Name:</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QComboBox" name="comboBox_group_name">
+          <property name="editable">
+           <bool>true</bool>
           </property>
          </widget>
         </item>
