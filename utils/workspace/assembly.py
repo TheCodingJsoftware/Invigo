@@ -164,6 +164,7 @@ class Assembly:
         to add a sub-
         """
         assembly.parent_assembly = self
+        assembly.master_assembly = assembly.get_master_assembly()
         self.sub_assemblies.append(assembly)
 
     def add_sub_assembly(self, assembly: "Assembly") -> list["Assembly"]:
@@ -177,6 +178,7 @@ class Assembly:
         to add a sub-
         """
         assembly.parent_assembly = self
+        assembly.master_assembly = assembly.get_master_assembly()
         self.sub_assemblies.append(assembly)
 
     def get_sub_assemblies(self) -> list["Assembly"]:
@@ -432,6 +434,14 @@ class Assembly:
                     return True
         return False
 
+    def _any_sub_assemblies_to_show(self, sub_assembly: "Assembly") -> bool:
+        for _sub_assembly in sub_assembly.sub_assemblies:
+            if _sub_assembly.get_assembly_data("show") is True:
+                return True
+            if _sub_assembly._any_sub_assemblies_to_show(_sub_assembly):
+                return True
+        return False
+
     def any_sub_assemblies_to_show(self) -> bool:
         """
         The function checks if there are any sub-assemblies that have the "show" attribute set to True.
@@ -443,9 +453,9 @@ class Assembly:
         for assembly in self.sub_assemblies:
             if assembly.get_assembly_data("show") is True:
                 return True
-            for _assembly in assembly.sub_assemblies:
-                if _assembly.get_assembly_data("show") is True:
-                    return True
+            # for sub_assembly in assembly.sub_assemblies:
+            #     if sub_assembly._any_sub_assemblies_to_show(sub_assembly):
+            #         return True
         return False
 
     def all_items_complete(self) -> bool:
@@ -469,13 +479,3 @@ class Assembly:
         attribute set to a truthy value (i.e. not False).
         """
         return all(sub_assembly.get_assembly_data(key="completed") != False for sub_assembly in self.sub_assemblies)
-
-    # TODO
-    def setup_timers_for_all_items(self) -> None:
-        # for item in self.items:
-        #     item.set_value(key=key, value=value)
-        # for sub_assembly in self.sub_assemblies:
-        #     for item in sub_assembly.items:
-        #         item.set_value(key=key, value=value)
-        #     self._set_default_value_to_all_items(sub_assembly=sub_assembly, key=key, value=value)
-        pass

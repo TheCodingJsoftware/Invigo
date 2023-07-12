@@ -1,113 +1,71 @@
-import sys
-
-from PyQt6.QtCore import QPoint, QRect, Qt
-from PyQt6.QtGui import QColor, QPainter, QPolygon
-from PyQt6.QtWidgets import QApplication, QWidget
+from PyQt5.QtCore import *
+from PyQt5.QtWidgets import *
+from PyQt5.QtGui import *
 
 
-class DraggableRotatableWidget(QWidget):
+def _create_item(text, is_folder):
+    item = QStandardItem(text)
+    item.setData(is_folder, Qt.UserRole)
+    return item
+
+
+def _folder_row(name, date):
+    return [_create_item(text, True) for text in (name, date)]
+
+
+def _file_row(name, date):
+    return [_create_item(text, False) for text in (name, date)]
+
+
+class _SortProxyModel(QSortFilterProxyModel):
+    """Sorting proxy model that always places folders on top."""
+
+    def __init__(self, model):
+        super().__init__()
+        self.setSourceModel(model)
+
+    def lessThan(self, left, right):
+        """Perform sorting comparison.
+
+        Since we know the sort order, we can ensure that folders always come first.
+        """
+        left_is_folder = left.data(Qt.UserRole)
+        left_data = left.data(Qt.DisplayRole)
+        right_is_folder = right.data(Qt.UserRole)
+        right_data = right.data(Qt.DisplayRole)
+        sort_order = self.sortOrder()
+
+        if left_is_folder and not right_is_folder:
+            result = sort_order == Qt.AscendingOrder
+        elif not left_is_folder and right_is_folder:
+            result = sort_order != Qt.AscendingOrder
+        else:
+            result = left_data < right_data
+        return result
+
+
+class _Window(QMainWindow):
     def __init__(self):
         super().__init__()
-        self.setWindowFlags(Qt.WindowType.Window | Qt.WindowType.FramelessWindowHint | Qt.WindowType.WindowStaysOnTopHint)
-        self.setAttribute(Qt.WidgetAttribute.WA_TranslucentBackground)
-        self.setFixedHeight(1080 * 3)
-        self.setFixedWidth(1920 * 3)
-        self.ruler_length = 500
-        self.ruler_width = 40
-        self.dragging = False
-        self.rotation = 0
-        self.offset = QPoint()
 
-    def mousePressEvent(self, event):
-        if event.buttons() & Qt.MouseButton.LeftButton:
-            self.dragging = True
-            self.offset = event.pos()
+        widget = QWidget()
+        self.__view = QTreeView()
+        layout = QVBoxLayout(widget)
+        layout.addWidget(self.__view)
+        self.setCentralWidget(widget)
 
-    def mouseMoveEvent(self, event):
-        if self.dragging:
-            self.move(self.mapToGlobal(event.pos()) - self.offset)
-
-    def mouseReleaseEvent(self, event):
-        if event.button() == Qt.MouseButton.LeftButton:
-            self.dragging = False
-
-    def wheelEvent(self, event):
-        if event.modifiers() == Qt.KeyboardModifier.ControlModifier:
-            delta = int(event.angleDelta().y() / 30)  # Get the scroll wheel delta value
-            self.ruler_length += delta  # Adjust the ruler length based on the scroll wheel movement
-        else:
-            delta = event.angleDelta().y() / 500
-            self.rotation += delta
-        self.update()
-
-    def paintEvent(self, event):
-        painter = QPainter(self)
-        painter.setRenderHint(QPainter.RenderHint.Antialiasing)
-
-        offset = self.ruler_width // 2
-
-        # Translate the painter to the center of the widget
-        painter.translate(self.width() // 3, self.height() // 3)
-
-        # Rotate the painter by the specified angle
-        painter.rotate(self.rotation)
-        rect = QRect(int(-self.ruler_width / 2), (-self.ruler_length + (self.ruler_width // 2)), self.ruler_width, self.ruler_length)
-
-        # Create a QPolygon based on the rotated rectangle coordinates
-        polygon = QPolygon([rect.topLeft(), rect.topRight(), rect.bottomRight(), rect.bottomLeft()])
-
-        # Set the pen and brush for drawing the polygon
-        pen = painter.pen()
-        pen.setWidth(1)
-        pen.setColor(QColor(255, 255, 255, 140))
-        painter.setPen(pen)
-
-        brush = painter.brush()
-        brush.setStyle(Qt.BrushStyle.SolidPattern)
-        brush.setColor(QColor(255, 255, 255, 1))
-        painter.setBrush(brush)
-
-        # Draw the rotated polygon
-        painter.drawPolygon(polygon)
-        pen = painter.pen()
-        pen.setWidth(1)
-        pen.setColor(QColor(255, 255, 255, 255))
-        painter.setPen(pen)
-        lineStart = QPoint(0, (-self.ruler_length + (self.ruler_width // 2)))
-        lineEnd = QPoint(0, -self.ruler_width // 2)
-        painter.drawLine(lineStart, lineEnd)
-
-        pen = painter.pen()
-        pen.setWidth(1)
-        pen.setColor(QColor(0, 0, 0, 255))
-        painter.setPen(pen)
-
-        lineStart = QPoint((self.ruler_width // 2), 0)
-        lineEnd = QPoint(-(self.ruler_width // 2), 0)
-        painter.drawLine(lineStart, lineEnd)
-
-        lineStart = QPoint(0, (self.ruler_width // 2))
-        lineEnd = QPoint(0, -(self.ruler_width // 2))
-        painter.drawLine(lineStart, lineEnd)
-
-        # Calculate the radius of the circle based on the ruler width
-        circleRadius = self.ruler_width // 2
-
-        brush = painter.brush()
-        brush.setStyle(Qt.BrushStyle.SolidPattern)
-        brush.setColor(QColor(255, 255, 255, 25))
-        painter.setBrush(brush)
-        pen = painter.pen()
-        pen.setWidth(0)
-        painter.setPen(pen)
-
-        # Set the circle thickness
-        # Draw the circle at the rotation point
-        painter.drawEllipse(QPoint(0, 0), circleRadius, circleRadius)
+        model = QStandardItemModel()
+        model.appendRow(_file_row("File #1", "01.09.2014"))
+        model.appendRow(_folder_row("Folder #1", "01.09.2014"))
+        model.appendRow(_folder_row("Folder #2", "02.09.2014"))
+        model.appendRow(_file_row("File #2", "03.09.2014"))
+        model.setHorizontalHeaderLabels(["Name", "Date"])
+        proxy_model = _SortProxyModel(model)
+        self.__view.setModel(proxy_model)
+        self.__view.setSortingEnabled(True)
 
 
-if __name__ == "__main__":
-    app = QApplication(sys.argv)
-    widget = DraggableRotatableWidget()
-    widget.show()
-    sys.exit(app.exec())
+app = QApplication([])
+w = _Window()
+w.show()
+app.exec_()

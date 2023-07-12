@@ -228,15 +228,6 @@ QWidget#multi_tool_box_widget {
     background-color: rgba(29, 29, 29, 57);
 }
 
-QWidget#edit_multi_tool_box_widget {
-    border: 1px solid #3daee9;
-    border-bottom-left-radius: 8px;
-    border-bottom-right-radius: 8px;
-    border-top-right-radius: 0.01em;
-    border-top-left-radius: 0.01em;
-    background-color: rgba(29, 29, 29, 255);
-}
-
 QWidget#nest_widget {
     border: 1px solid #3daee9;
     border-bottom-left-radius: 8px;
@@ -298,6 +289,40 @@ QPushButton:!checked#order_status {
     color: gray;
 }
 
+QPushButton#flow_tag_button {
+    color: #ffffff;
+    background-color: #2ea44f;
+    border: 1px solid #2ea44f;
+    border-radius: 8px;
+}
+
+QPushButton:hover#flow_tag_button {
+    background-color: #3bba6d;
+    border-color: #3bba6d;
+}
+
+QPushButton:pressed#flow_tag_button {
+    background-color: #1d703e;
+    border-color: #1d703e;
+}
+
+QComboBox#flow_tag_status_button {
+    color: #ffffff;
+    background-color: #2ea44f;
+    border: 1px solid #2ea44f;
+    border-radius: 8px;
+}
+
+QComboBox:hover#flow_tag_status_button {
+    background-color: #3bba6d;
+    border-color: #3bba6d;
+}
+
+QComboBox:pressed#flow_tag_status_button {
+    background-color: #1d703e;
+    border-color: #1d703e;
+}
+
 QPushButton:checked#recut_button {
     color: #ffffff;
     background-color: #2ea44f;
@@ -325,90 +350,6 @@ QLineEdit#input_box_multitoolbox {
     text-align: left;
     border: none;
     border-radius: none;
-}
-
-QPushButton#edit_sheet_nest_button {
-    border: none;
-    background-color: rgba(71, 71, 71, 110);
-    border-top-left-radius: 8px;
-    border-top-right-radius: 0.01em;
-    border-bottom-left-radius: 8px;
-    border-bottom-right-radius: 0.01em;
-    color: rgb(210, 210, 210);
-    text-align: left;
-}
-
-QPushButton:hover#edit_sheet_nest_button {
-    background-color: rgba(76, 76, 76, 110);
-}
-
-QPushButton:pressed#edit_sheet_nest_button {
-    background-color: rgba(39, 39, 39, 110);
-    color: rgb(132, 132, 132);
-}
-
-QPushButton:checked#edit_sheet_nest_button {
-    color: gray;
-}
-
-QPushButton:!checked#edit_sheet_nest_button {
-    color: white;
-    background-color: #3daee9;
-    border-top-left-radius: 8px;
-    border-top-right-radius: 0.01em;
-    border-bottom-left-radius: 0.01em;
-    border-bottom-right-radius: 0.01em;
-}
-
-QPushButton:!checked:hover#edit_sheet_nest_button {
-    background-color: #48b6ed;
-}
-
-QPushButton:!checked:pressed#edit_sheet_nest_button {
-    background-color: #2b92c5;
-}
-
-QPushButton#sheet_nest_button {
-    border: none;
-    background-color: rgba(71, 71, 71, 110);
-    border-top-left-radius: 8px;
-    border-top-right-radius: 8px;
-    border-bottom-left-radius: 8px;
-    border-bottom-right-radius: 8px;
-    color: rgb(210, 210, 210);
-    text-align: left;
-}
-
-QPushButton:hover#sheet_nest_button {
-    background-color: rgba(76, 76, 76, 110);
-}
-
-QPushButton:pressed#sheet_nest_button {
-    background-color: rgba(39, 39, 39, 110);
-    color: rgb(132, 132, 132);
-}
-
-QPushButton:checked#sheet_nest_button {
-    color: gray;
-}
-
-QPushButton:!checked#sheet_nest_button {
-    color: white;
-    background-color: #3daee9;
-    border-top-left-radius: 8px;
-    border-top-right-radius: 8px;
-    border-bottom-left-radius: 0.01em;
-    border-bottom-right-radius: 0.01em;
-}
-
-QPushButton:!checked:hover#sheet_nest_button {
-    background-color: #48b6ed;
-    border-color: #48b6ed;
-}
-
-QPushButton:!checked:pressed#sheet_nest_button {
-    background-color: #2b92c5;
-    border-color: #2b92c5;
 }
 
 QPushButton#delete_button {
@@ -999,4 +940,7 @@ QLabel {
     border: none;
     padding: 1px 3px;
     color: rgb(210, 210, 210);
+}
+QMenu{
+	background: rgb(22,22,22);
 }

@@ -219,7 +219,7 @@ class JsonFile:
         """
         return list(self.data.keys())
 
-    def get_value(self, item_name: str) -> None:
+    def get_value(self, item_name: str) -> None | dict[str, dict]:
         """
         It loads the data from the file, and then tries to return the value of the item_name key in the
         data dictionary. If the key doesn't exist, it returns None
@@ -415,7 +415,7 @@ class JsonFile:
         for key, value in category.items():
             group_name = ""
             for tag_id in tags_ids:
-                group_name += " " + value.get(tag_id, "")
+                group_name += value.get(tag_id, "") + ";"
             grouped_category.setdefault(group_name, {})
             grouped_category[group_name][key] = value
 

@@ -39,12 +39,6 @@ class ChangesThread(QThread):
             try:
                 # Callback function for handling received file data
                 def handle_file_data(ws, message):
-                    # Do something with the file data, e.g., save it to a file
-                    # data = json.loads(message.decode())
-                    # file_name = data['name']
-                    # file_data = data['data']
-                    # with open(f'data/{file_name}', 'w') as file:
-                    #     file.write(file_data)
                     self.signal.emit(message)
 
                 # Create a WebSocket connection
@@ -53,4 +47,3 @@ class ChangesThread(QThread):
             except Exception as error:
                 with contextlib.suppress(AttributeError):
                     self.signal.emit(error)
-                    print(error)

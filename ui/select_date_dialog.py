@@ -16,7 +16,7 @@ from utils.json_file import JsonFile
 settings_file = JsonFile(file_name="settings")
 
 
-class SelectItemDialog(QDialog):
+class SelectDateDialog(QDialog):
     """
     Select dialog
     """
@@ -28,8 +28,6 @@ class SelectItemDialog(QDialog):
         button_names: str = DialogButtons.ok_cancel,
         title: str = __name__,
         message: str = "",
-        items: list = None,
-        selection_mode=QAbstractItemView.SelectionMode.SingleSelection,
     ) -> None:
         """
         It's a function that takes in a list of items and displays them in a list widget
@@ -42,10 +40,8 @@ class SelectItemDialog(QDialog):
           message (str): str = "",
           items (list): list = None,
         """
-        if items is None:
-            items = []
-        super(SelectItemDialog, self).__init__(parent)
-        uic.loadUi("ui/select_item_dialog.ui", self)
+        super(SelectDateDialog, self).__init__(parent)
+        uic.loadUi("ui/select_date_dialog.ui", self)
 
         self.icon_name = icon_name
         self.button_names = button_names
@@ -53,7 +49,6 @@ class SelectItemDialog(QDialog):
         self.message = message
         self.inputText: str = ""
         self.theme: str = "dark" if settings_file.get_value(item_name="dark_mode") else "light"
-        self.items = items
 
         self.setWindowFlags(Qt.WindowType.Window | Qt.WindowType.FramelessWindowHint)
         self.setWindowIcon(QIcon("icons/icon.png"))
@@ -62,9 +57,6 @@ class SelectItemDialog(QDialog):
         self.lblMessage.setText(self.message)
 
         self.load_dialog_buttons()
-
-        self.listWidget.addItems(self.items)
-        self.listWidget.setSelectionMode(selection_mode)
 
         svg_icon = self.get_icon(icon_name)
         svg_icon.setFixedSize(62, 50)
@@ -110,7 +102,7 @@ class SelectItemDialog(QDialog):
         """
         button_names = self.button_names.split(", ")
         for index, name in enumerate(button_names):
-            if name in [DialogButtons.clone, DialogButtons.set]:
+            if name == DialogButtons.set:
                 button = QPushButton(f"  {name}")
                 button.setIcon(QIcon(f"ui/BreezeStyleSheets/dist/pyqt6/{self.theme}/dialog_ok.svg"))
             elif os.path.isfile(f"ui/BreezeStyleSheets/dist/pyqt6/{self.theme}/dialog_{name.lower()}.svg"):
@@ -138,7 +130,7 @@ class SelectItemDialog(QDialog):
         """
         return self.response.replace(" ", "")
 
-    def get_selected_item(self) -> str:
+    def get_selected_date(self) -> str:
         """
         It returns the text of the currently selected item in the list widget
 
@@ -146,18 +138,6 @@ class SelectItemDialog(QDialog):
           The text of the current item in the list widget.
         """
         try:
-            return self.listWidget.currentItem().text()
-        except AttributeError:
-            return None
-
-    def get_selected_items(self) -> list[str]:
-        """
-        It returns the text of the currently selected item in the list widget
-
-        Returns:
-          The text of the current item in the list widget.
-        """
-        try:
-            return [item.text() for item in self.listWidget.selectedItems()]
+            return self.calendarWidget.selectedDate().toString("yyyy-M-d")
         except AttributeError:
             return None

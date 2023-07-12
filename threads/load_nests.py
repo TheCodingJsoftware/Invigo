@@ -259,7 +259,7 @@ class LoadNests(QThread):
                 self.signal.emit(
                     f"ERROR!\nException: {e}\nTrace stack:\n{traceback.print_exc()}\n\nIf the error still persists, send me an email of the pdf your trying nesting.\n{nest}"
                 )
-            except (UnboundLocalError, Exception):
+            except Exception:
                 self.signal.emit(
                     f"ERROR!\nException: {e}\nTrace stack:\n{traceback.print_exc()}\n\nIf the error still persists, send me an email of the pdf your trying nesting.\n{self.nests[0]}"
                 )

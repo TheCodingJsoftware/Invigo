@@ -22,7 +22,7 @@ class UploadBatch(QThread):
     Uploads client data to the server
     """
 
-    signal = pyqtSignal(object)
+    signal = pyqtSignal(str, str)
 
     def __init__(self, json_file_path: str) -> None:
         """
@@ -50,8 +50,8 @@ class UploadBatch(QThread):
                 response = requests.post(self.upload_url, files=files)
 
             if response.status_code == 200:
-                self.signal.emit("Batch sent successfully")
+                self.signal.emit("Batch sent successfully", self.json_file_path)
             else:
-                self.signal.emit(response.status_code)
+                self.signal.emit(response.status_code, self.json_file_path)
         except Exception as e:
-            self.signal.emit(e)
+            self.signal.emit(e, self.json_file_path)
