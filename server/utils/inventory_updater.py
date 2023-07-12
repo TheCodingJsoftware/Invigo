@@ -41,7 +41,7 @@ def update_inventory(file_path: str, clients) -> None:
     try:
         os.rename(
             file_path,
-            f'{file_path.replace(".json", "").replace("parts_batch_to_upload", "").replace("data", "parts batch to upload history")}{datetime.now().strftime("%Y-%m-%d_%H-%M-%S")}.json',
+            f'{file_path.replace(".json", "").replace("parts_batch_to_upload_workorder", "").replace("data", "parts batch to upload history")}Workrder {datetime.now().strftime("%Y-%m-%d_%H-%M-%S")}.json',
         )
     except FileExistsError:
         CustomPrint.print(

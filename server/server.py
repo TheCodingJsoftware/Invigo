@@ -133,10 +133,31 @@ class FileUploadHandler(tornado.web.RequestHandler):
                 f'INFO - Received "{file_name}" from {self.request.remote_ip}',
                 connected_clients=connected_clients,
             )
-
-            if file_name == "parts_batch_to_upload.json":
+            # Managing OmniGen's batch uploads
+            if file_name == "parts_batch_to_upload_workorder.json":
                 self.write("Batch sent successfully")
                 update_inventory(f"data/{file_name}", connected_clients)
+            elif file_name == "parts_batch_to_upload_quote.json":
+                self.write("Batch sent successfully")
+                file_path = f"data/{file_name}"
+                os.rename(
+                    file_path,
+                    f'{file_path.replace(".json", "").replace("parts_batch_to_upload_quote", "").replace("data", "parts batch to upload history")}Quote {datetime.now().strftime("%Y-%m-%d_%H-%M-%S")}.json',
+                )
+            elif file_name == "parts_batch_to_upload_packing_slip.json":
+                self.write("Batch sent successfully")
+                file_path = f"data/{file_name}"
+                os.rename(
+                    file_path,
+                    f'{file_path.replace(".json", "").replace("parts_batch_to_upload_packing_slip", "").replace("data", "parts batch to upload history")}Packing Slip {datetime.now().strftime("%Y-%m-%d_%H-%M-%S")}.json',
+                )
+            elif file_name == "parts_batch_to_upload_packing_part.json":
+                self.write("Batch sent successfully")
+                file_path = f"data/{file_name}"
+                os.rename(
+                    file_path,
+                    f'{file_path.replace(".json", "").replace("parts_batch_to_upload_packing_part", "").replace("data", "parts batch to upload history")}Part {datetime.now().strftime("%Y-%m-%d_%H-%M-%S")}.json',
+                )
             else:
                 self.write("File uploaded successfully.")
             should_signal_connect_clients = True
@@ -304,6 +325,7 @@ class SheetQuantityHandler(tornado.web.RequestHandler):
         # Redirect to the GET request for the same sheet
         self.redirect(f"/sheets_in_inventory/{sheet_name}")
 
+
 class AddCutoffSheetHandler(tornado.web.RequestHandler):
     def get(self):
         template = env.get_template("add_cutoff_sheet.html")
@@ -322,6 +344,45 @@ class AddCutoffSheetHandler(tornado.web.RequestHandler):
 
         # Redirect the user back to the form
         self.redirect("/add_cutoff_sheet")
+
+
+class GetPreviousNestsFiles(tornado.web.RequestHandler):
+    def get(self):
+        directory = "parts batch to upload history"  # Specify the directory path
+
+        files = {}
+        for filename in os.listdir(directory):
+            file_path = os.path.join(directory, filename)
+            if os.path.isfile(file_path):
+                file_info = {
+                    "name": filename,
+                    "created_date": os.path.getctime(file_path)
+                }
+                files[filename] = file_info
+
+        self.set_header("Content-Type", "application/json")
+        self.set_status(200)
+        self.write(json.dumps(files))
+
+
+class GetPreviousNestsDataHandler(tornado.web.RequestHandler):
+    def post(self):
+        file_names = self.get_argument("file_names").split(';')
+        # Process the file names received from the client
+        combined_data = {}  # Dictionary to store combined JSON data
+        
+        for file_name in file_names:
+            # Read each file and extract its JSON data
+            with open(f'parts batch to upload history/{file_name}', "r") as file:
+                file_data = json.load(file)
+                
+                # Merge the file data into the combined data
+                combined_data.update(file_data)
+        
+        # Send the combined JSON data back to the client
+        self.set_status(200)
+        self.write(json.dumps(combined_data))
+
 
 def signal_clients_for_changes(client_to_ignore) -> None:
     """
@@ -432,7 +493,9 @@ if __name__ == "__main__":
             (r"/set_order_number", SetOrderNumberHandler),
             (r"/get_order_number", GetOrderNumberHandler),
             (r"/sheets_in_inventory/(.*)", SheetQuantityHandler),
-            (r"/add_cutoff_sheet", AddCutoffSheetHandler)
+            (r"/add_cutoff_sheet", AddCutoffSheetHandler),
+            (r"/get_previous_nests_files", GetPreviousNestsFiles),
+            (r"/get_previous_nests_data", GetPreviousNestsDataHandler),
         ]
     )
     app.listen(80)
