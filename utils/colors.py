@@ -200,9 +200,7 @@ def darken_color(hex_color: str) -> str:
     g = max(g + darkness, 0)
     b = max(b + darkness, 0)
 
-    # Convert the RGB values back to a hex color
-    dark_hex_color = "#{:02x}{:02x}{:02x}".format(r, g, b)
-    return dark_hex_color
+    return "#{:02x}{:02x}{:02x}".format(r, g, b)
 
 
 def get_random_color() -> str:

@@ -944,3 +944,6 @@ QLabel {
 QMenu{
 	background: rgb(22,22,22);
 }
+QTabWidget {
+	background-color: red;
+}

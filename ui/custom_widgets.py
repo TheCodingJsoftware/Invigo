@@ -90,11 +90,12 @@ from utils.colors import lighten_color, darken_color
 class FilterTabWidget(QWidget):
     filterButtonPressed = pyqtSignal()
 
-    def __init__(self):
+    def __init__(self, columns: int):
         super().__init__()
 
         self.tab_widget = QTabWidget()
         self.show_all_tab = QWidget(self)
+        self.num_columns = columns
         layout = QGridLayout(self.show_all_tab)
         layout.setAlignment(Qt.AlignmentFlag.AlignHCenter | Qt.AlignmentFlag.AlignTop)  # Set horizontal alignment to center
         self.show_all_tab.setLayout(layout)
@@ -116,6 +117,10 @@ class FilterTabWidget(QWidget):
 
     def add_tab(self, name):
         tab_widget = QWidget(self)
+        tab_widget.setObjectName("filter_tab_widget")
+        tab_widget.setStyleSheet(
+            "QWidget#filter_tab_widget{background-color: rgba(25, 25, 25, 100); border-bottom-left-radius: 8px; border-bottom-right-radius: 8px;}"
+        )
         layout = QGridLayout(tab_widget)
         layout.setAlignment(Qt.AlignmentFlag.AlignHCenter | Qt.AlignmentFlag.AlignTop)  # Set horizontal alignment to center
 
@@ -196,7 +201,7 @@ QPushButton:pressed:!checked {
     def update_tab_button_visibility(self, tab_index: int):
         tab_name = self.tab_widget.tabText(tab_index)
         buttons = self.tabs.get(tab_name)
-        num_columns = 3
+        num_columns = self.num_columns
         if tab_name == "Show All":
             layout: QGridLayout = self.tab_widget.widget(tab_index).widget().layout()
             row = 0
@@ -1487,8 +1492,9 @@ class CustomTabWidget(QTabWidget):
 
 
 class PdfFilterProxyModel(QSortFilterProxyModel):
-    def __init__(self, parent=None):
+    def __init__(self, model, parent=None):
         super().__init__(parent)
+        self.setSourceModel(model)
 
     def filterAcceptsRow(self, row, parent):
         """
@@ -1510,14 +1516,32 @@ class PdfFilterProxyModel(QSortFilterProxyModel):
         filename = self.sourceModel().fileName(index)
         return filename.lower().endswith(".pdf")
 
+    def lessThan(self, left: QModelIndex, right: QModelIndex):
+        """Perform sorting comparison.
+
+        Since we know the sort order, we can ensure that folders always come first.
+        """
+        left_index = left.sibling(left.row(), 0)
+        right_index = right.sibling(right.row(), 0)
+        left_is_folder = self.sourceModel().isDir(left_index)
+        right_is_folder = self.sourceModel().isDir(right_index)
+
+        if left_is_folder and not right_is_folder or not left_is_folder and right_is_folder:
+            return False  # Folders come first
+        left_modified = self.sourceModel().fileInfo(left_index).lastModified()
+        right_modified = self.sourceModel().fileInfo(right_index).lastModified()
+
+        return left_modified < right_modified
+
 
 class PdfTreeView(QTreeView):
-    def __init__(self, path: str):
-        super().__init__()
-        self.model = QFileSystemModel()
+    def __init__(self, path: str, parent=None):
+        super().__init__(parent)
+        self.parent = parent
+        self.model = QFileSystemModel(self.parent)
         self.model.setRootPath("")
         self.setModel(self.model)
-        self.filterModel = PdfFilterProxyModel()
+        self.filterModel = PdfFilterProxyModel(self.model, self.parent)
         self.filterModel.setSourceModel(self.model)
         self.setModel(self.filterModel)
         self.filterModel.setFilterKeyColumn(0)
@@ -1526,6 +1550,7 @@ class PdfTreeView(QTreeView):
         self.setSelectionMode(QAbstractItemView.SelectionMode.ExtendedSelection)
         self.header().hideSection(1)  # Size
         self.header().hideSection(2)  # File type
+        self.setAnimated(True)
         self.selected_indexes = []
         self.selected_items = []
         self.full_paths = []

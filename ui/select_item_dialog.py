@@ -110,7 +110,7 @@ class SelectItemDialog(QDialog):
         """
         button_names = self.button_names.split(", ")
         for index, name in enumerate(button_names):
-            if name == DialogButtons.clone:
+            if name in [DialogButtons.clone, DialogButtons.set]:
                 button = QPushButton(f"  {name}")
                 button.setIcon(QIcon(f"ui/BreezeStyleSheets/dist/pyqt6/{self.theme}/dialog_ok.svg"))
             elif os.path.isfile(f"ui/BreezeStyleSheets/dist/pyqt6/{self.theme}/dialog_{name.lower()}.svg"):

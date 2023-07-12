@@ -13,3 +13,5 @@ from threads.upload_quoted_inventory import UploadBatch
 from threads.upload_thread import UploadThread
 from threads.workspace_get_file_thread import WorkspaceDownloadFiles
 from threads.workspace_upload_file_thread import WorkspaceUploadThread
+from threads.get_previous_nests_files_thread import GetPreviousNestsFilesThread
+from threads.get_previous_nests_data_thread import GetPreviousNestsDataThread

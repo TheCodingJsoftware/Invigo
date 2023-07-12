@@ -16,13 +16,14 @@ import win32api
 from datetime import datetime, timedelta
 from functools import partial
 from typing import Any, Union
+import re
 
 import markdown
 import requests
 import sympy
 from natsort import natsorted
 from PyQt6 import QtWebEngineWidgets, uic
-from PyQt6.QtCore import QEventLoop, QSettings, Qt, QTimer, QUrl, QDate
+from PyQt6.QtCore import QEventLoop, QSettings, Qt, QTimer, QUrl, QDate, QModelIndex
 from PyQt6.QtGui import (
     QAction,
     QColor,
@@ -40,6 +41,7 @@ from PyQt6.QtWidgets import (
     QComboBox,
     QCompleter,
     QDateEdit,
+    QListWidgetItem,
     QFileDialog,
     QFontDialog,
     QFormLayout,
@@ -59,9 +61,12 @@ from PyQt6.QtWidgets import (
     QTableWidget,
     QTableWidgetItem,
     QTabWidget,
+    QTreeWidget,
+    QTreeWidgetItem,
     QToolBox,
     QVBoxLayout,
     QWidget,
+    QFileIconProvider,
 )
 
 from threads.changes_thread import ChangesThread
@@ -76,6 +81,9 @@ from threads.upload_quoted_inventory import UploadBatch
 from threads.upload_thread import UploadThread
 from threads.workspace_get_file_thread import WorkspaceDownloadFiles
 from threads.workspace_upload_file_thread import WorkspaceUploadThread
+from threads.get_previous_nests_files_thread import GetPreviousNestsFilesThread
+from threads.get_previous_nests_data_thread import GetPreviousNestsDataThread
+
 from ui.about_dialog import AboutDialog
 from ui.add_item_dialog import AddItemDialog
 from ui.add_item_dialog_price_of_steel import AddItemDialogPriceOfSteel
@@ -150,8 +158,8 @@ __copyright__: str = "Copyright 2022-2023, TheCodingJ's"
 __credits__: list[str] = ["Jared Gross"]
 __license__: str = "MIT"
 __name__: str = "Invigo"
-__version__: str = "v2.1.6"
-__updated__: str = "2023-07-10 12:32:51"
+__version__: str = "v2.1.7"
+__updated__: str = "2023-07-12 12:32:51"
 __maintainer__: str = "Jared Gross"
 __email__: str = "jared@pinelandfarms.ca"
 __status__: str = "Production"
@@ -368,6 +376,7 @@ class MainWindow(QMainWindow):
         self.order_number: int = -1
         self.po_buttons: list[QPushButton] = []
         self.workspace_filter = {}
+        self.parts_in_ineventory_filter = {}
         self.categories: list[str] = []
         self.active_layout: QVBoxLayout = None
         self.active_json_file: JsonFile = None
@@ -390,9 +399,9 @@ class MainWindow(QMainWindow):
         self.workspace_tables: dict[CustomTableWidget, Assembly] = {}
         self.workspace_information = {}  # idk the type hint
         self.threads = []
-        self.quote_nest_directories_list_widgets = {}
+        self.quote_nest_directories_list_widgets: dict[str, QTreeWidget] = {}
         self.quote_nest_information = {}
-        self.filter_tab_widget: FilterTabWidget = None
+        self.workspace_filter_tab_widget: FilterTabWidget = None
         self.sheet_nests_toolbox: MultiToolBox = None
         self.get_upload_file_response: bool = True
         self.scroll_position_manager = ScrollPositionManager()
@@ -439,7 +448,7 @@ class MainWindow(QMainWindow):
                 self.tabWidget.tabBar().moveTab(index, menu_tabs_order.index(tab_name))
 
         self.lineEdit_search_items.textChanged.connect(self.update_edit_inventory_list_widget)
-        self.lineEdit_search_parts_in_inventory.textChanged.connect(self.update_parts_in_inventory_list_widget)
+        self.lineEdit_search_parts_in_inventory.textChanged.connect(self.load_active_tab)
         # self.lineEdit_search_parts_in_inventory.returnPressed.connect(self.load_active_tab)
         self.radioButton_category.toggled.connect(self.quantities_change)
         self.radioButton_single.toggled.connect(self.quantities_change)
@@ -473,6 +482,11 @@ class MainWindow(QMainWindow):
         self.doubleSpinBox_global_sheet_width.setEnabled(False)
         self.doubleSpinBox_global_sheet_width.valueChanged.connect(self.global_nest_sheet_dim_change)
 
+        self.tree_model_previous_nests = QStandardItemModel()
+        self.treeView_previous_nests.setModel(self.tree_model_previous_nests)
+        self.pushButton_refresh_previous_nests.clicked.connect(self.load_previous_nests_files_thread)
+        self.pushButton_load_previous_nests.clicked.connect(self.load_selected_previous_nests)
+
         self.tableWidget_quote_items = CustomTableWidget(self)
         self.tableWidget_quote_items.set_editable_column_index([4, 7, 8])
 
@@ -499,7 +513,6 @@ class MainWindow(QMainWindow):
             "Recut",  # 11
             "Add Part to Inventory",  # 12
             "DEL",  # 13
-            "",
         ]
         self.tableWidget_quote_items.setColumnCount(len(headers))
         self.tableWidget_quote_items.setHorizontalHeaderLabels(headers)
@@ -547,7 +560,6 @@ class MainWindow(QMainWindow):
         # self.pushButton_remove_quantity.setEnabled(False)
         self.pushButton_remove_quantity.setIcon(QIcon(f"ui/BreezeStyleSheets/dist/pyqt6/{self.theme}/list_remove.png"))
         self.listWidget_itemnames.itemSelectionChanged.connect(self.listWidget_item_changed)
-        self.listWidget_parts_in_inventory.itemSelectionChanged.connect(self.listWidget_parts_in_inventory_item_changed)
         self.pushButton_remove_quantities_from_inventory.setIcon(QIcon(f"ui/BreezeStyleSheets/dist/pyqt6/{self.theme}/list_remove.png"))
 
         self.pushButton_remove_quantities_from_inventory.clicked.connect(self.remove_quantity_from_part_inventory)
@@ -669,12 +681,12 @@ class MainWindow(QMainWindow):
         self.pushButton_hide_filter.clicked.connect(self.toggle_filter_tab_visibility)
 
         if not self.trusted_user:
-            self.tabWidget.setTabEnabled(settings_file.get_value("menu_tabs_order").index("Edit Inventory"), False)
-            self.tabWidget.setTabEnabled(
+            self.tabWidget.setTabVisible(settings_file.get_value("menu_tabs_order").index("Edit Inventory"), False)
+            self.tabWidget.setTabVisible(
                 settings_file.get_value("menu_tabs_order").index("View Price Changes History (Read Only)"),
                 False,
             )
-            self.tabWidget.setTabEnabled(
+            self.tabWidget.setTabVisible(
                 settings_file.get_value("menu_tabs_order").index("View Removed Quantities History (Read Only)"),
                 False,
             )
@@ -735,6 +747,7 @@ class MainWindow(QMainWindow):
             self.active_json_file = parts_in_inventory
             self.active_layout = self.verticalLayout_11
             self.load_categories()
+            self.load_parts_in_inventory_filter_tab()
             self.status_button.setHidden(False)
         elif self.tabWidget.tabText(self.tabWidget.currentIndex()) == "OmniGen":  # OmniGen
             self.clear_layout(self.verticalLayout_cutoff)
@@ -908,6 +921,15 @@ class MainWindow(QMainWindow):
         self.sync_changes()
 
     def arrival_date_change(self, item_name: str, arrival_date: QDateEdit) -> None:
+        """
+        The function `arrival_date_change` updates the expected arrival time of an item in the steel
+        inventory and then reloads the active tab and syncs the changes.
+
+        Args:
+          item_name (str): The name of the item for which the arrival date is being changed.
+          arrival_date (QDateEdit): The `arrival_date` parameter is a `QDateEdit` object, which is a
+        widget that allows the user to select a date.
+        """
         price_of_steel_inventory.change_object_in_object_item(
             object_name=self.category,
             item_name=item_name,
@@ -1356,28 +1378,6 @@ class MainWindow(QMainWindow):
             self.pushButton_add_quantity.clicked.connect(partial(self.add_quantity, self.last_item_selected_name, quantity))
         self.spinBox_quantity.setValue(0)
 
-    def listWidget_parts_in_inventory_item_changed(self) -> None:
-        """
-        This function selects and scrolls to a row in a table widget based on the currently selected
-        item in a list widget.
-
-        Returns:
-          None.
-        """
-        # self.last_item_selected_name = self.listWidget_parts_in_inventory.currentItem().text()
-        # try:
-        #     self.last_item_selected_index = list(list(parts_in_inventory.get_value(self.category).keys())).index(self.last_item_selected_name)
-        # except (ValueError, KeyError):
-        #     return
-        table_widget: CustomTableWidget = self.tabs[self.category]
-        for row in range(table_widget.rowCount()):
-            item_name = table_widget.item(row, 0)
-            with contextlib.suppress(AttributeError):
-                if item_name is not None and item_name.text() == self.listWidget_parts_in_inventory.currentItem().text():
-                    table_widget.scrollTo(table_widget.model().index(row, 0))
-                    table_widget.selectRow(row)
-                    return
-
     def value_change(self, category: str, item_name: str, value_name: str, new_value) -> None:
         """
         It changes the value of a value in a dictionary in a dictionary in a dictionary.
@@ -1473,9 +1473,27 @@ class MainWindow(QMainWindow):
         This function processes selected nests by getting selected items and file paths, filtering the
         file paths based on selected items, and starting a thread to process the filtered file paths.
         """
-        self.is_nest_generated_from_parts_in_inventory = False
-        if selected_items := self.get_all_selected_nests():
-            self.start_process_nest_thread(selected_items)
+        selected_nests = len(self.get_all_selected_nests())
+        if selected_nests > 0:
+            self.is_nest_generated_from_parts_in_inventory = False
+            if selected_items := self.get_all_selected_nests():
+                self.start_process_nest_thread(selected_items)
+
+    def load_selected_previous_nests(self) -> None:
+        """
+        The function loads selected previous nests data in a separate thread.
+        """
+        self.pushButton_load_previous_nests.setEnabled(False)
+        selected_indexes = self.treeView_previous_nests.selectionModel().selectedIndexes()
+        selected_items = []
+        for index in selected_indexes:
+            try:
+                if ".json" in index.data():
+                    selected_items.append(index.data())
+            except TypeError:
+                continue
+        if selected_items:
+            self.load_previous_nests_data_thread(selected_items)
 
     def quote_table_cell_changed(self, row: int, col: int) -> None:
         if col not in [4, 7, 8]:
@@ -1643,19 +1661,41 @@ class MainWindow(QMainWindow):
           tab (CustomTableWidget): CustomTableWidget object representing the table widget where the
         inventory parts are displayed.
         """
-        self.listWidget_parts_in_inventory.disconnect()
-        selected_item = tab.item(tab.currentRow(), 0)
-        if selected_item is not None:
-            self.listWidget_parts_in_inventory.setCurrentRow(tab.currentRow())
-            for row in range(self.listWidget_parts_in_inventory.count()):
-                if selected_item.text() == self.listWidget_parts_in_inventory.item(row).text():
-                    self.listWidget_parts_in_inventory.setCurrentRow(row)
-        self.listWidget_parts_in_inventory.itemSelectionChanged.connect(self.listWidget_parts_in_inventory_item_changed)
         selected_items_count = len(self.get_all_selected_parts(tab))
         if selected_items_count == 0:
             self.pushButton_remove_quantities_from_inventory.setText("Remove Quantities from whole Category")
         else:
             self.pushButton_remove_quantities_from_inventory.setText(f"Remove Quantities from Selected ({selected_items_count}) Items")
+
+    def cutoff_sheet_double_clicked(self, cutoff_items: QListWidget):
+        """
+        The function `cutoff_sheet_double_clicked` loads data from a steel inventory, retrieves
+        information about a selected cutoff sheet, and updates various GUI elements with the retrieved
+        information.
+
+        Args:
+          cutoff_items (QListWidget): The `cutoff_items` parameter is a QListWidget that contains a list
+        of items representing cutoff sheets.
+
+        Returns:
+          nothing (None).
+        """
+        cutoff_sheets = price_of_steel_inventory.get_value("Cutoff")
+        item_pressed: QListWidgetItem = cutoff_items.selectedItems()[0]
+        for sheet in list(cutoff_sheets.keys()):
+            if item_pressed.text() == sheet:
+                sheet_material = price_of_steel_inventory.get_data()["Cutoff"][sheet]["material"]
+                sheet_thickness = price_of_steel_inventory.get_data()["Cutoff"][sheet]["thickness"]
+                sheet_dim_x = float(price_of_steel_inventory.get_data()["Cutoff"][sheet]["sheet_dimension"].split("x")[0].replace(" ", ""))
+                sheet_dim_y = float(price_of_steel_inventory.get_data()["Cutoff"][sheet]["sheet_dimension"].split("x")[1].replace(" ", ""))
+                self.comboBox_global_sheet_material.setCurrentText(sheet_material)
+                self.comboBox_global_sheet_thickness.setCurrentText(sheet_thickness)
+                self.doubleSpinBox_global_sheet_length.setValue(sheet_dim_x)
+                self.doubleSpinBox_global_sheet_width.setValue(sheet_dim_y)
+                self.global_nest_material_change()
+                self.global_nest_sheet_dim_change()
+                self.global_nest_thickness_change()
+                return
 
     # * /\ SLOTS & SIGNALS /\
     # * \/ CALCULATION \/
@@ -1926,14 +1966,6 @@ class MainWindow(QMainWindow):
         except (AttributeError, TypeError):
             return
 
-    def update_parts_in_inventory_list_widget(self) -> None:
-        search_input: str = self.lineEdit_search_parts_in_inventory.text()
-        self.listWidget_parts_in_inventory.clear()
-        with contextlib.suppress(TypeError, AttributeError):
-            for item in natsorted(list(parts_in_inventory.get_value(self.category).keys())):
-                if search_input.lower() in item.lower():
-                    self.listWidget_parts_in_inventory.addItem(item)
-
     def update_stock_costs(self) -> None:
         """
         It takes the current quantity of an item, multiplies it by the price of the item, and then
@@ -2073,6 +2105,26 @@ class MainWindow(QMainWindow):
             self.pushButton_load_nests.setEnabled(True)
         self.pushButton_load_nests.setText(f"Load {selected_nests} Nest{'' if selected_nests == 1 else 's'}")
 
+    def previous_nest_directory_item_selected(self):
+        """
+        The function selects and counts the number of previous nest directories in a tree view and
+        updates a button's text and enabled state accordingly.
+        """
+        selected_indexes: list[QStandardItem] = self.treeView_previous_nests.selectionModel().selectedIndexes()
+        selected_items: list[str] = []
+        for index in selected_indexes:
+            try:
+                if ".json" in index.data():
+                    selected_items.append(index.data())
+            except TypeError:
+                continue
+        selected_nests = len(selected_items)
+        if selected_nests == 0:
+            self.pushButton_load_previous_nests.setEnabled(False)
+        else:
+            self.pushButton_load_previous_nests.setEnabled(True)
+        self.pushButton_load_previous_nests.setText(f"Load {selected_nests} Previous Nest{'' if selected_nests == 1 else 's'}")
+
     def save_quote_table_values(self) -> None:
         """
         This function saves the quantities of items in a quote table to a dictionary.
@@ -2082,14 +2134,16 @@ class MainWindow(QMainWindow):
             item_name = self.tableWidget_quote_items.item(row, 1).text()
             try:
                 quantity = int(self.tableWidget_quote_items.item(row, 4).text())
-            except (ValueError):  # A merged cell
-                nest_name = self.tableWidget_quote_items.item(row, 0).text() + ".pdf"
+            except ValueError:  # A merged cell
+                nest_name = f"{self.tableWidget_quote_items.item(row, 0).text()}.pdf"
                 continue
             recut_button: RecutButton = self.tableWidget_quote_items.cellWidget(row, 11)
             self.quote_nest_information[nest_name][item_name]["quantity"] = quantity
             self.quote_nest_information[nest_name][item_name]["recut"] = recut_button.isChecked()
-            self.quote_nest_information[nest_name][item_name]["bend_cost"] = self.tableWidget_quote_items.item(row, 8).text()
-            self.quote_nest_information[nest_name][item_name]["labor_cost"] = self.tableWidget_quote_items.item(row, 9).text()
+            self.quote_nest_information[nest_name][item_name]["bend_cost"] = self.tableWidget_quote_items.item(row, 7).text()
+            self.quote_nest_information[nest_name][item_name]["labor_cost"] = self.tableWidget_quote_items.item(row, 8).text()
+            self.quote_nest_information[nest_name][item_name]["unit_price"] = self.tableWidget_quote_items.item(row, 9).text()
+            self.quote_nest_information[nest_name][item_name]["price"] = self.tableWidget_quote_items.item(row, 10).text()
 
     def update_quote_price(self) -> None:
         """
@@ -3038,10 +3092,9 @@ class MainWindow(QMainWindow):
                         'Invalid paths set for "path_to_sheet_prices" or "price_of_steel_information" in config file "laser_quote_variables.cfg"\n\nGenerating Quote Aborted.',
                     )
                     return
-                if should_update_inventory:
-                    self.upload_batch_to_inventory_thread(batch_data)
-                    if not self.is_nest_generated_from_parts_in_inventory:
-                        self.upload_batched_parts_images(batch_data)
+                self.upload_batch_to_inventory_thread(batch_data, should_update_inventory, should_generate_quote)
+                if should_update_inventory and not self.is_nest_generated_from_parts_in_inventory:
+                    self.upload_batched_parts_images(batch_data)
                 self.status_button.setText("Generating complete", "lime")
                 if should_generate_workorder:
                     config = configparser.ConfigParser()
@@ -3062,9 +3115,9 @@ class MainWindow(QMainWindow):
         """
         selected_parts = self.get_all_selected_parts(tab)
         try:
-            sheet_gauge = self.get_value_from_category(item_name=selected_parts[0], key="gauge")
-            sheet_dimension = self.get_value_from_category(item_name=selected_parts[0], key="sheet_dim")
-            sheet_material = self.get_value_from_category(item_name=selected_parts[0], key="material")
+            sheet_gauge: str = self.get_value_from_category(item_name=selected_parts[0], key="gauge")
+            sheet_dimension: str = self.get_value_from_category(item_name=selected_parts[0], key="sheet_dim")
+            sheet_material: str = self.get_value_from_category(item_name=selected_parts[0], key="material")
             self.is_nest_generated_from_parts_in_inventory = True
         except IndexError:  # No item selected
             return
@@ -3602,17 +3655,18 @@ class MainWindow(QMainWindow):
                 return
             if self.tabWidget.tabText(self.tabWidget.currentIndex()) == "Edit Inventory":
                 autofill_search_options = natsorted(list(set(self.get_all_part_names() + self.get_all_part_numbers())))
-                completer = QCompleter(autofill_search_options)
+                completer = QCompleter(autofill_search_options, self)
                 completer.setCaseSensitivity(Qt.CaseSensitivity.CaseInsensitive)
                 self.lineEdit_search_items.setCompleter(completer)
             if self.tabWidget.tabText(self.tabWidget.currentIndex()) == "Parts in Inventory":
-                autofill_search_options = natsorted(list(set(parts_in_inventory.get_value(self.category).keys())))
-                completer = QCompleter(autofill_search_options)
+                autofill_search_options = natsorted(
+                    list(set(parts_in_inventory.get_value(self.tab_widget.tabText(self.tab_widget.currentIndex())).keys()))
+                )
+                completer = QCompleter(autofill_search_options, self)
                 completer.setCaseSensitivity(Qt.CaseSensitivity.CaseInsensitive)
                 self.lineEdit_search_parts_in_inventory.setCompleter(completer)
 
             self.update_edit_inventory_list_widget()
-            self.update_parts_in_inventory_list_widget()
             self.update_category_total_stock_costs()
             self.calculuate_price_of_steel_summary()
             self.label_category_name.setText(f"Category: {self.category}")
@@ -3699,12 +3753,37 @@ class MainWindow(QMainWindow):
         tab.setHorizontalHeaderLabels(headers)
         grouped_data = parts_in_inventory.sort_by_multiple_tags(category=category_data, tags_ids=["material", "gauge"])
         row_index: int = 0
+
+        try:
+            materials: list[QPushButton] = self.parts_in_ineventory_filter["materials"]
+            thicknesses: list[QPushButton] = self.parts_in_ineventory_filter["thicknesses"]
+        except KeyError:  # This is because loading runs before the filter system is loaded.
+            self.load_parts_in_inventory_filter_tab()
+            self.load_inventory_parts(tab, category_data)
+            return
+
         for group in list(grouped_data.keys()):
-            items_to_show = [item for item in list(grouped_data[group].keys()) if self.lineEdit_search_parts_in_inventory.text() in item]
-            if not items_to_show:
+            group_material = group.split(";")[0]
+            group_thickness = group.split(";")[1]
+            group_name = group.replace(";", " ")
+
+            if selected_materials := [button.text() for button in materials if button.isChecked()]:
+                if group_material not in selected_materials:
+                    continue
+
+            if selected_thicknesses := [button.text() for button in thicknesses if button.isChecked()]:
+                if group_thickness not in selected_thicknesses:
+                    continue
+
+            # We check to see if there are any items to show, if not, we dont loop through the group data
+            for item in list(grouped_data[group].keys()):
+                if self.lineEdit_search_parts_in_inventory.text() in item:
+                    break
+            else:
                 continue
+
             tab.insertRow(row_index)
-            item = QTableWidgetItem(group)
+            item = QTableWidgetItem(group_name)
             item.setTextAlignment(4)  # Align text center
             font = QFont()
             font.setPointSize(15)
@@ -3716,9 +3795,21 @@ class MainWindow(QMainWindow):
             for item in list(grouped_data[group].keys()):
                 if self.lineEdit_search_parts_in_inventory.text() not in item:
                     continue
+                item_material: str = self.get_value_from_category(item_name=item, key="material")
+                item_thickness: str = self.get_value_from_category(item_name=item, key="gauge")
+
+                if selected_materials := [button.text() for button in materials if button.isChecked()]:
+                    if item_material not in selected_materials:
+                        continue
+
+                if selected_thicknesses := [button.text() for button in thicknesses if button.isChecked()]:
+                    if item_thickness not in selected_thicknesses:
+                        continue
+
                 col_index: int = 0
                 tab.insertRow(row_index)
                 tab.setRowHeight(row_index, 40)
+
                 current_quantity: int = self.get_value_from_category(item_name=item, key="current_quantity")
                 unit_quantity: int = self.get_value_from_category(item_name=item, key="unit_quantity")
                 price: float = self.get_value_from_category(item_name=item, key="price")
@@ -3792,6 +3883,12 @@ class MainWindow(QMainWindow):
                 row_index += 1
         tab.setEnabled(True)
         tab.resizeColumnsToContents()
+        if tab.rowCount() == 0:
+            tab.insertRow(0)
+            tab.setItem(0, 0, QTableWidgetItem("Nothing to show"))
+            tab.item(0, 0).setFont(self.tables_font)
+            tab.resizeColumnsToContents()
+            return
         if tab.contextMenuPolicy() != Qt.ContextMenuPolicy.CustomContextMenu:
             tab.setContextMenuPolicy(Qt.ContextMenuPolicy.CustomContextMenu)
             menu = QMenu(self)
@@ -5019,7 +5116,7 @@ class MainWindow(QMainWindow):
     # NOTE FOR STAGING
     def load_edit_assembly_tab(self) -> None:
         with contextlib.suppress(AttributeError):
-            self.filter_tab_widget.clear_selections("Flow Tags")
+            self.workspace_filter_tab_widget.clear_selections("Flow Tags")
         self.workspace_information.setdefault("Staging", {"group_tool_box": None})
         try:
             self.workspace_information["Staging"]["group_tool_box"] = self.workspace_information["Staging"]["group_tool_box"].get_widget_visibility()
@@ -5911,7 +6008,7 @@ class MainWindow(QMainWindow):
         if selected_tab == "Recut":
             self.workspace_filter["show_recut"] = True
             with contextlib.suppress(AttributeError):
-                self.filter_tab_widget.clear_selections("Flow Tags")
+                self.workspace_filter_tab_widget.clear_selections("Flow Tags")
         else:
             self.workspace_filter["show_recut"] = False
         scroll_area = QScrollArea()
@@ -6269,8 +6366,8 @@ class MainWindow(QMainWindow):
         except (AttributeError, RuntimeError):
             saved_workspace_prefs = False
         with contextlib.suppress(AttributeError):
-            self.filter_tab_widget.clear_selections("Flow Tags")
-            self.filter_tab_widget.enable_button(selected_tab)
+            self.workspace_filter_tab_widget.clear_selections("Flow Tags")
+            self.workspace_filter_tab_widget.enable_button(selected_tab)
         if self.pushButton_show_sub_assembly.isChecked():
             scroll_area = QScrollArea()
 
@@ -6744,24 +6841,49 @@ class MainWindow(QMainWindow):
             self.load_view_assembly_tab()
             QApplication.restoreOverrideCursor()
 
+    def load_parts_in_inventory_filter_tab(self) -> None:
+        """
+        The function `load_parts_in_inventory_filter_tab` clears and updates the filter tab for parts in
+        inventory.
+        """
+        self.parts_in_ineventory_filter.clear()
+        self.clear_layout(self.verticalLayout_parts_filter)
+
+        self.parts_in_inventory_filter_tab_widget = FilterTabWidget(columns=2)
+        self.parts_in_inventory_filter_tab_widget.add_tab("Materials")
+        self.parts_in_inventory_filter_tab_widget.add_tab("Thicknesses")
+        self.parts_in_inventory_filter_tab_widget.add_buttons_to_tab("Materials", price_of_steel_information.get_value("materials"))
+        self.parts_in_inventory_filter_tab_widget.add_buttons_to_tab("Thicknesses", price_of_steel_information.get_value("thicknesses"))
+        self.parts_in_ineventory_filter["search"] = self.lineEdit_search_parts_in_inventory
+        self.parts_in_ineventory_filter["materials"] = self.parts_in_inventory_filter_tab_widget.get_buttons("Materials")
+        self.parts_in_ineventory_filter["thicknesses"] = self.parts_in_inventory_filter_tab_widget.get_buttons("Thicknesses")
+        self.parts_in_inventory_filter_tab_widget.update_tab_button_visibility(0)
+        self.parts_in_inventory_filter_tab_widget.filterButtonPressed.connect(self.load_active_tab)
+
+        self.verticalLayout_parts_filter.addWidget(self.parts_in_inventory_filter_tab_widget)
+
     def load_workspace_filter_tab(self) -> None:
+        """
+        The function `load_workspace_filter_tab` sets up the filter tab in a workspace by adding tabs
+        and buttons for filtering different categories of items.
+        """
         self.workspace_filter.clear()
         self.clear_layout(self.filter_layout)
 
-        self.filter_tab_widget = FilterTabWidget()
-        self.filter_tab_widget.add_tab("Materials")
-        self.filter_tab_widget.add_tab("Thicknesses")
-        self.filter_tab_widget.add_tab("Paint")
-        self.filter_tab_widget.add_tab("Statuses")
-        self.filter_tab_widget.add_tab("Flow Tags")
-        self.filter_tab_widget.add_buttons_to_tab("Flow Tags", workspace_tags.get_value("all_tags"))
-        self.filter_tab_widget.add_buttons_to_tab("Statuses", self.get_all_statuses())
-        self.filter_tab_widget.add_buttons_to_tab("Materials", price_of_steel_information.get_value("materials"))
-        self.filter_tab_widget.add_buttons_to_tab("Thicknesses", price_of_steel_information.get_value("thicknesses"))
-        self.filter_tab_widget.add_buttons_to_tab("Paint", list(workspace_tags.get_value("paint_colors").keys()))
-        self.filter_tab_widget.update_tab_button_visibility(0)
+        self.workspace_filter_tab_widget = FilterTabWidget(columns=3)
+        self.workspace_filter_tab_widget.add_tab("Materials")
+        self.workspace_filter_tab_widget.add_tab("Thicknesses")
+        self.workspace_filter_tab_widget.add_tab("Paint")
+        self.workspace_filter_tab_widget.add_tab("Statuses")
+        self.workspace_filter_tab_widget.add_tab("Flow Tags")
+        self.workspace_filter_tab_widget.add_buttons_to_tab("Flow Tags", workspace_tags.get_value("all_tags"))
+        self.workspace_filter_tab_widget.add_buttons_to_tab("Statuses", self.get_all_statuses())
+        self.workspace_filter_tab_widget.add_buttons_to_tab("Materials", price_of_steel_information.get_value("materials"))
+        self.workspace_filter_tab_widget.add_buttons_to_tab("Thicknesses", price_of_steel_information.get_value("thicknesses"))
+        self.workspace_filter_tab_widget.add_buttons_to_tab("Paint", list(workspace_tags.get_value("paint_colors").keys()))
+        self.workspace_filter_tab_widget.update_tab_button_visibility(0)
 
-        self.filter_layout.addWidget(self.filter_tab_widget)
+        self.filter_layout.addWidget(self.workspace_filter_tab_widget)
 
         self.lineEdit_search.editingFinished.connect(lambda: (self.pushButton_use_filter.setChecked(True), self.load_workspace()))
         self.lineEdit_search.setCompleter(QCompleter(self.get_all_workspace_item_names(), self))
@@ -6774,11 +6896,11 @@ class MainWindow(QMainWindow):
 
         self.workspace_filter["use_filter"] = self.pushButton_use_filter
         self.workspace_filter["search"] = self.lineEdit_search
-        self.workspace_filter["materials"] = self.filter_tab_widget.get_buttons("Materials")
-        self.workspace_filter["thicknesses"] = self.filter_tab_widget.get_buttons("Thicknesses")
-        self.workspace_filter["flow_tags"] = self.filter_tab_widget.get_buttons("Flow Tags")
-        self.workspace_filter["statuses"] = self.filter_tab_widget.get_buttons("Statuses")
-        self.workspace_filter["paint"] = self.filter_tab_widget.get_buttons("Paint")
+        self.workspace_filter["materials"] = self.workspace_filter_tab_widget.get_buttons("Materials")
+        self.workspace_filter["thicknesses"] = self.workspace_filter_tab_widget.get_buttons("Thicknesses")
+        self.workspace_filter["flow_tags"] = self.workspace_filter_tab_widget.get_buttons("Flow Tags")
+        self.workspace_filter["statuses"] = self.workspace_filter_tab_widget.get_buttons("Statuses")
+        self.workspace_filter["paint"] = self.workspace_filter_tab_widget.get_buttons("Paint")
         self.workspace_filter["due_dates"] = self.groupBox_due_dates
         self.workspace_filter["dateTimeEdit_after"] = self.dateTimeEdit_after
         self.workspace_filter["dateTimeEdit_before"] = self.dateTimeEdit_before
@@ -6786,11 +6908,16 @@ class MainWindow(QMainWindow):
 
         self.pushButton_use_filter.toggled.connect(self.load_workspace)
 
-        self.filter_tab_widget.filterButtonPressed.connect(lambda: (self.pushButton_use_filter.setChecked(True), self.load_workspace()))
+        self.workspace_filter_tab_widget.filterButtonPressed.connect(lambda: (self.pushButton_use_filter.setChecked(True), self.load_workspace()))
 
     def load_quote_generator_ui(self) -> None:
+        """
+        The function "load_quote_generator_ui" refreshes nest directories, loads a cutoff drop-down, and
+        loads previous nest files in a separate thread.
+        """
         self.refresh_nest_directories()
         self.load_cuttoff_drop_down()
+        self.load_previous_nests_files_thread()
 
     def load_cuttoff_drop_down(self) -> None:
         """
@@ -6801,12 +6928,59 @@ class MainWindow(QMainWindow):
             cutoff_items = QListWidget(self)
             price_of_steel_inventory.load_data()
             cutoff_sheets = price_of_steel_inventory.get_value("Cutoff")
-            cutoff_items.addItems(list(cutoff_sheets.keys()))
+            for sheet in list(cutoff_sheets.keys()):
+                cutoff_items.addItem(sheet)
+            cutoff_items.doubleClicked.connect(partial(self.cutoff_sheet_double_clicked, cutoff_items))
             cutoff_widget.addItem(cutoff_items, "Cutoff Sheets")
         cutoff_widget.close_all()
         self.verticalLayout_cutoff.addWidget(cutoff_widget)
 
+    def load_previous_nest_tree_view(self, data: dict[str, dict[str, Any]]) -> None:
+        """
+        The function `load_previous_nest_tree_view` populates a tree view with data from a dictionary,
+        organizing the data into groups based on file names and displaying the file names and their
+        corresponding modified dates.
+
+        Args:
+          data: The `data` parameter is a dictionary that contains information about previous nests.
+        Each key-value pair in the dictionary represents a file name and its corresponding data. The
+        file name is a string, and the data is a dictionary containing information such as the created
+        date of the file.
+        """
+        self.tree_model_previous_nests.clear()
+        self.tree_model_previous_nests.setHorizontalHeaderLabels(["Name", "Date Modified"])
+        # icon_provider =
+        root_item = self.tree_model_previous_nests.invisibleRootItem()
+        groups_dictionary: dict[str, QStandardItem] = {}
+
+        for file_name, file_data in data.items():
+            match = re.match(r"(\w\D+) .+\.json", file_name)
+            if not match:
+                continue
+            group_name = match[1]
+            group_folder = groups_dictionary.get(group_name)
+            if group_folder is None:
+                group_folder = QStandardItem(group_name)
+                group_folder.setIcon(QFileIconProvider().icon(QFileIconProvider().IconType.Folder))
+                groups_dictionary[group_name] = group_folder
+                root_item.appendRow(group_folder)
+
+            file_name = QStandardItem(file_name)
+            file_name.setIcon(QFileIconProvider().icon(QFileIconProvider().IconType.File))
+            date_created = QStandardItem(datetime.fromtimestamp(file_data["created_date"]).strftime("%Y-%m-%d %H:%M:%S"))
+            file_info = [file_name, date_created]
+            group_folder.appendRow(file_info)
+
+        self.treeView_previous_nests.setColumnWidth(0, 200)
+        self.treeView_previous_nests.sortByColumn(1, Qt.SortOrder.DescendingOrder)
+        self.treeView_previous_nests.selectionModel().selectionChanged.connect(self.previous_nest_directory_item_selected)
+
     def refresh_nest_directories(self) -> None:
+        """
+        The function refreshes the nested directories in a GUI by clearing the layout, retrieving the
+        directories from a settings file, creating a QToolBox widget, adding tree views for each
+        directory, and setting icons for the items.
+        """
         self.clear_layout(self.verticalLayout_24)
         self.quote_nest_directories_list_widgets.clear()
         nest_directories: list[str] = settings_file.get_value("quote_nest_directories")
@@ -6816,8 +6990,10 @@ class MainWindow(QMainWindow):
         self.verticalLayout_24.addWidget(toolbox)
         for i, nest_directory in enumerate(nest_directories):
             nest_directory_name: str = nest_directory.split("/")[-1]
-            tree_view = PdfTreeView(nest_directory)
+            tree_view = PdfTreeView(nest_directory, self)
             tree_view.selectionModel().selectionChanged.connect(self.nest_directory_item_selected)
+            # There is an issue where it still calls even tho its a folder
+            tree_view.doubleClicked.connect(self.process_selected_nests)
 
             self.quote_nest_directories_list_widgets[nest_directory] = tree_view
             toolbox.addItem(tree_view, nest_directory_name)
@@ -7111,38 +7287,51 @@ class MainWindow(QMainWindow):
                         f'Surface Area: {self.quote_nest_information[nest_name][item]["surface_area"]}'
                     )
 
+                    # COGS
                     self.tableWidget_quote_items.setItem(
                         row_index,
                         6,
-                        QTableWidgetItem("$"),
+                        QTableWidgetItem("$0.00"),
                     )
                     self.tableWidget_quote_items.item(row_index, 6).setTextAlignment(Qt.AlignmentFlag.AlignCenter | Qt.AlignmentFlag.AlignVCenter)
 
+                    # Bend Cost
+                    try:
+                        bend_cost: str = self.quote_nest_information[nest_name][item]["bend_cost"]
+                    except KeyError:
+                        bend_cost: str = "$0.00"
                     self.tableWidget_quote_items.setItem(
                         row_index,
                         7,
-                        QTableWidgetItem("$0.00"),
+                        QTableWidgetItem(bend_cost),
                     )
                     self.tableWidget_quote_items.item(row_index, 7).setTextAlignment(Qt.AlignmentFlag.AlignCenter | Qt.AlignmentFlag.AlignVCenter)
 
+                    # Labor Cost
+                    try:
+                        labor_cost: str = self.quote_nest_information[nest_name][item]["labor_cost"]
+                    except KeyError:
+                        labor_cost: str = "$0.00"
                     self.tableWidget_quote_items.setItem(
                         row_index,
                         8,
-                        QTableWidgetItem("$0.00"),
+                        QTableWidgetItem(labor_cost),
                     )
                     self.tableWidget_quote_items.item(row_index, 8).setTextAlignment(Qt.AlignmentFlag.AlignCenter | Qt.AlignmentFlag.AlignVCenter)
 
+                    # Unit Price
                     self.tableWidget_quote_items.setItem(
                         row_index,
                         9,
-                        QTableWidgetItem("$"),
+                        QTableWidgetItem("$0.00"),
                     )
                     self.tableWidget_quote_items.item(row_index, 9).setTextAlignment(Qt.AlignmentFlag.AlignCenter | Qt.AlignmentFlag.AlignVCenter)
 
+                    # Price
                     self.tableWidget_quote_items.setItem(
                         row_index,
                         10,
-                        QTableWidgetItem("$"),
+                        QTableWidgetItem("$0.00"),
                     )
                     self.tableWidget_quote_items.item(row_index, 10).setTextAlignment(Qt.AlignmentFlag.AlignCenter | Qt.AlignmentFlag.AlignVCenter)
 
@@ -7586,10 +7775,13 @@ class MainWindow(QMainWindow):
         Args:
           response (str): A string representing the response received from a server or API call.
         """
-        self.status_button.setText(f'Syncing - {datetime.now().strftime("%r")}', "yellow")
-        self.downloading_changes = True
-        self.download_all_files()
-        self.status_button.setText(f'Synched - {datetime.now().strftime("%r")}', "lime")
+        if "download" in response:
+            self.status_button.setText(f'Syncing - {datetime.now().strftime("%r")}', "yellow")
+            self.downloading_changes = True
+            self.download_all_files()
+            self.status_button.setText(f'Synched - {datetime.now().strftime("%r")}', "lime")
+        else:
+            self.status_button.setText(f"Syncing Error - {response}", "red")
 
     def data_received(self, data) -> None:
         """
@@ -7743,7 +7935,7 @@ class MainWindow(QMainWindow):
             self.pushButton_load_nests.setEnabled(True)
 
         select_item_dialog = SelectItemDialog(
-            button_names=DialogButtons.set_ignore,
+            button_names=DialogButtons.set_skip,
             title="Select Material",
             message="Select Material",
             items=price_of_steel_information.get_value("materials"),
@@ -7776,9 +7968,9 @@ class MainWindow(QMainWindow):
         self.save_quote_table_values()
         data = {item_name: self.quote_nest_information[nest_name][item_name]}
         # QApplication.setOverrideCursor(Qt.CursorShape.BusyCursor)
-        with open("parts_batch_to_upload.json", "w") as f:
+        with open("parts_batch_to_upload_part.json", "w") as f:
             json.dump(data, f, sort_keys=True, indent=4)
-        upload_batch = UploadBatch("parts_batch_to_upload.json")
+        upload_batch = UploadBatch("parts_batch_to_upload_part.json")
         upload_batch.signal.connect(self.upload_batch_to_inventory_response)
         self.threads.append(upload_batch)
         self.status_button.setText("Uploading Part", "yellow")
@@ -7786,17 +7978,27 @@ class MainWindow(QMainWindow):
         self.upload_batched_parts_images(data)
         send_part_to_inventory.setEnabled(True)
 
-    def upload_batch_to_inventory_thread(self, batch_data: dict) -> None:
+    def upload_batch_to_inventory_thread(self, batch_data: dict, should_update_inventory: bool, should_generate_quote: bool) -> None:
         # QApplication.setOverrideCursor(Qt.CursorShape.BusyCursor)
-        with open("parts_batch_to_upload.json", "w") as f:
-            json.dump(batch_data, f, sort_keys=True, indent=4)
-        upload_batch = UploadBatch("parts_batch_to_upload.json")
+        if should_update_inventory:
+            with open("parts_batch_to_upload_workorder.json", "w") as f:
+                json.dump(batch_data, f, sort_keys=True, indent=4)
+            upload_batch = UploadBatch("parts_batch_to_upload_workorder.json")
+        else:
+            if should_generate_quote:
+                with open("parts_batch_to_upload_quote.json", "w") as f:
+                    json.dump(batch_data, f, sort_keys=True, indent=4)
+                upload_batch = UploadBatch("parts_batch_to_upload_quote.json")
+            else:
+                with open("parts_batch_to_upload_packing_slip.json", "w") as f:
+                    json.dump(batch_data, f, sort_keys=True, indent=4)
+                upload_batch = UploadBatch("parts_batch_to_upload_packing_slip.json")
         upload_batch.signal.connect(self.upload_batch_to_inventory_response)
         self.threads.append(upload_batch)
         self.status_button.setText("Uploading Batch", "yellow")
         upload_batch.start()
 
-    def upload_batch_to_inventory_response(self, response) -> None:
+    def upload_batch_to_inventory_response(self, response: str, file_name: str) -> None:
         if response == "Batch sent successfully":
             self.status_button.setText("Batch was sent successfully", "lime")
             # self.show_message_dialog('Success', 'Batch was sent successfully')
@@ -7804,7 +8006,7 @@ class MainWindow(QMainWindow):
             self.status_button.setText("Batch Failed to send", "red")
             self.show_error_dialog("Error", f"Something went wrong.\n\n{response}")
         # QApplication.restoreOverrideCursor()
-        os.remove("parts_batch_to_upload.json")
+        os.remove(file_name)
 
     def set_order_number_thread(self, order_number: int) -> None:
         """
@@ -7854,6 +8056,89 @@ class MainWindow(QMainWindow):
             self.order_number = int(order_number)
         except Exception:
             self.show_error_dialog("oh no. Encountered error when fetching order number.", str(order_number))
+
+    def load_previous_nests_files_thread(self) -> None:
+        """
+        The function loads previous nest files in a separate thread and updates the status button with
+        the current time.
+        """
+        self.status_button.setText(f'Fetching previous nests - {datetime.now().strftime("%r")}', "yellow")
+        get_previous_nests_files_thread = GetPreviousNestsFilesThread()
+        self.threads.append(get_previous_nests_files_thread)
+        get_previous_nests_files_thread.signal.connect(self.load_previous_nests_files_response)
+        get_previous_nests_files_thread.start()
+
+    def load_previous_nests_files_response(self, data: dict) -> None:
+        """
+        The function loads previous nests files and updates the status button accordingly.
+
+        Args:
+          data (dict): The `data` parameter is a dictionary containing information about previous nests
+        files.
+        """
+        if isinstance(data, dict):
+            self.status_button.setText(
+                f"Successfully fetched previous nests - {datetime.now().strftime('%r')}",
+                "lime",
+            )
+            self.load_previous_nest_tree_view(data)
+        else:
+            self.status_button.setText(f"Error - {data}", "red")
+
+    def load_previous_nests_data_thread(self, files_to_load: list[str]) -> None:
+        """
+        The function loads previous nests data from a list of files in a separate thread and updates the
+        status button with the current time.
+
+        Args:
+          files_to_load (list[str]): The parameter `files_to_load` is a list of strings that represents
+        the files that need to be loaded. Each string in the list should be the file name or file path
+        of the file to be loaded.
+        """
+        self.status_button.setText(f'Fetching previous nests data - {datetime.now().strftime("%r")}', "yellow")
+        get_previous_nests_data_thread = GetPreviousNestsDataThread(files_to_load)
+        self.threads.append(get_previous_nests_data_thread)
+        get_previous_nests_data_thread.signal.connect(self.load_previous_nests_data_response)
+        get_previous_nests_data_thread.start()
+
+    def load_previous_nests_data_response(self, data: dict[str, dict[str, Any]]) -> None:
+        """
+        The function loads previous nests data, groups it, sorts it, and updates the UI accordingly.
+
+        Args:
+          data (dict[str, dict[str, Any]]): The `data` parameter is a dictionary containing nested
+        dictionaries. The keys of the outer dictionary are strings, and the values are inner
+        dictionaries. The keys of the inner dictionaries are also strings, and the values can be of any
+        type.
+        """
+        if isinstance(data, dict):
+            self.status_button.setText(
+                f"Successfully fetched previous nests data - {datetime.now().strftime('%r')}",
+                "lime",
+            )
+            self.quote_nest_information.clear()
+            grouped_data = {}
+            # Need to group the data by nests again, as the server only saves items, and sheets attributes
+            for item, item_data in data.items():
+                # This is a sheet
+                if item[0] == "_":
+                    nest_name = item.split("/")[-1]
+                    grouped_data[nest_name] = {}
+                    grouped_data[item] = item_data
+            for item, item_data in data.items():
+                if item[0] == "_":  # This is a sheet
+                    continue
+                nest_name = item_data.get("file_name").split("/")[-1]
+                grouped_data[nest_name][item] = item_data
+
+            sorted_keys = natsorted(grouped_data.keys())
+            sorted_dict = {key: grouped_data[key] for key in sorted_keys}
+
+            self.quote_nest_information = sorted_dict
+            self.pushButton_load_previous_nests.setEnabled(True)
+            self.load_nests()
+        else:
+            self.status_button.setText(f"Error - {data}", "red")
 
     # * /\ THREADS /\
 

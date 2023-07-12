@@ -58,7 +58,7 @@
        <enum>QTabWidget::Rounded</enum>
       </property>
       <property name="currentIndex">
-       <number>3</number>
+       <number>2</number>
       </property>
       <property name="elideMode">
        <enum>Qt::ElideNone</enum>
@@ -667,7 +667,7 @@ QPushButton#pushButton_add_new_sheet:disabled{
            <layout class="QVBoxLayout" name="verticalLayout_11"/>
           </item>
           <item>
-           <layout class="QVBoxLayout" name="verticalLayout_20" stretch="0,0,0,0,1,0">
+           <layout class="QVBoxLayout" name="verticalLayout_20" stretch="0,0,0,0,0,0">
             <property name="bottomMargin">
              <number>0</number>
             </property>
@@ -695,7 +695,7 @@ QPushButton#pushButton_add_new_sheet:disabled{
                  <x>0</x>
                  <y>0</y>
                  <width>373</width>
-                 <height>198</height>
+                 <height>421</height>
                 </rect>
                </property>
                <layout class="QVBoxLayout" name="verticalLayout_21">
@@ -757,7 +757,7 @@ QPushButton#pushButton_add_new_sheet:disabled{
              </widget>
             </item>
             <item>
-             <widget class="QListWidget" name="listWidget_parts_in_inventory"/>
+             <layout class="QVBoxLayout" name="verticalLayout_parts_filter"/>
             </item>
             <item>
              <widget class="QGroupBox" name="groupBox_5">
@@ -1177,7 +1177,7 @@ QPushButton#pushButton_add_new_sheet:disabled{
            </layout>
           </item>
           <item>
-           <layout class="QVBoxLayout" name="verticalLayout_nest_directories" stretch="0,0,1,0">
+           <layout class="QVBoxLayout" name="verticalLayout_nest_directories" stretch="0,1,0">
             <property name="bottomMargin">
              <number>0</number>
             </property>
@@ -1185,82 +1185,185 @@ QPushButton#pushButton_add_new_sheet:disabled{
              <layout class="QVBoxLayout" name="verticalLayout_cutoff"/>
             </item>
             <item>
-             <layout class="QHBoxLayout" name="horizontalLayout_20">
-              <property name="topMargin">
-               <number>6</number>
+             <widget class="QTabWidget" name="tabWidget_2">
+              <property name="styleSheet">
+               <string notr="true"/>
               </property>
-              <item>
-               <widget class="QPushButton" name="pushButton_clear_selections">
-                <property name="text">
-                 <string>Clear All Selections</string>
-                </property>
-               </widget>
-              </item>
-              <item>
-               <widget class="QPushButton" name="pushButton_refresh_directories">
-                <property name="text">
-                 <string>Refresh Lists</string>
-                </property>
-               </widget>
-              </item>
-             </layout>
-            </item>
-            <item>
-             <widget class="QGroupBox" name="groupBox_7">
-              <property name="title">
-               <string>Nest Directories</string>
+              <property name="currentIndex">
+               <number>0</number>
               </property>
-              <layout class="QVBoxLayout" name="verticalLayout_29">
-               <property name="leftMargin">
-                <number>3</number>
+              <property name="usesScrollButtons">
+               <bool>false</bool>
+              </property>
+              <widget class="QWidget" name="tab_2">
+               <property name="styleSheet">
+                <string notr="true"/>
                </property>
-               <property name="rightMargin">
-                <number>3</number>
+               <attribute name="title">
+                <string>Nest Directories</string>
+               </attribute>
+               <layout class="QVBoxLayout" name="verticalLayout_22" stretch="1,0,0">
+                <property name="spacing">
+                 <number>3</number>
+                </property>
+                <property name="leftMargin">
+                 <number>3</number>
+                </property>
+                <property name="topMargin">
+                 <number>3</number>
+                </property>
+                <property name="rightMargin">
+                 <number>3</number>
+                </property>
+                <property name="bottomMargin">
+                 <number>3</number>
+                </property>
+                <item>
+                 <layout class="QVBoxLayout" name="verticalLayout_18">
+                  <item>
+                   <layout class="QVBoxLayout" name="verticalLayout_24">
+                    <property name="spacing">
+                     <number>0</number>
+                    </property>
+                    <property name="leftMargin">
+                     <number>0</number>
+                    </property>
+                    <property name="topMargin">
+                     <number>0</number>
+                    </property>
+                    <property name="rightMargin">
+                     <number>0</number>
+                    </property>
+                    <property name="bottomMargin">
+                     <number>0</number>
+                    </property>
+                   </layout>
+                  </item>
+                 </layout>
+                </item>
+                <item>
+                 <layout class="QHBoxLayout" name="horizontalLayout_20">
+                  <property name="topMargin">
+                   <number>6</number>
+                  </property>
+                  <item>
+                   <widget class="QPushButton" name="pushButton_clear_selections">
+                    <property name="text">
+                     <string>Clear All Selections</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QPushButton" name="pushButton_refresh_directories">
+                    <property name="text">
+                     <string>Refresh</string>
+                    </property>
+                   </widget>
+                  </item>
+                 </layout>
+                </item>
+                <item>
+                 <widget class="QPushButton" name="pushButton_load_nests">
+                  <property name="enabled">
+                   <bool>false</bool>
+                  </property>
+                  <property name="minimumSize">
+                   <size>
+                    <width>0</width>
+                    <height>30</height>
+                   </size>
+                  </property>
+                  <property name="text">
+                   <string>Load 0 Nests</string>
+                  </property>
+                 </widget>
+                </item>
+               </layout>
+              </widget>
+              <widget class="QWidget" name="tab_6">
+               <property name="autoFillBackground">
+                <bool>false</bool>
                </property>
-               <property name="bottomMargin">
-                <number>3</number>
+               <property name="styleSheet">
+                <string notr="true"/>
                </property>
-               <item>
-                <layout class="QVBoxLayout" name="verticalLayout_28">
-                 <item>
-                  <layout class="QVBoxLayout" name="verticalLayout_24">
-                   <property name="leftMargin">
-                    <number>9</number>
-                   </property>
-                   <property name="topMargin">
-                    <number>9</number>
-                   </property>
-                   <property name="rightMargin">
-                    <number>9</number>
-                   </property>
-                   <property name="bottomMargin">
-                    <number>9</number>
-                   </property>
-                  </layout>
-                 </item>
-                </layout>
-               </item>
-              </layout>
+               <attribute name="title">
+                <string>Previous Nests</string>
+               </attribute>
+               <layout class="QVBoxLayout" name="verticalLayout_29">
+                <property name="spacing">
+                 <number>3</number>
+                </property>
+                <property name="leftMargin">
+                 <number>3</number>
+                </property>
+                <property name="topMargin">
+                 <number>3</number>
+                </property>
+                <property name="rightMargin">
+                 <number>3</number>
+                </property>
+                <property name="bottomMargin">
+                 <number>3</number>
+                </property>
+                <item>
+                 <layout class="QVBoxLayout" name="verticalLayout_28">
+                  <item>
+                   <widget class="QTreeView" name="treeView_previous_nests">
+                    <property name="editTriggers">
+                     <set>QAbstractItemView::NoEditTriggers</set>
+                    </property>
+                    <property name="selectionMode">
+                     <enum>QAbstractItemView::ExtendedSelection</enum>
+                    </property>
+                    <property name="indentation">
+                     <number>20</number>
+                    </property>
+                    <property name="sortingEnabled">
+                     <bool>true</bool>
+                    </property>
+                    <property name="animated">
+                     <bool>true</bool>
+                    </property>
+                   </widget>
+                  </item>
+                 </layout>
+                </item>
+                <item>
+                 <widget class="QPushButton" name="pushButton_refresh_previous_nests">
+                  <property name="text">
+                   <string>Refresh</string>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QPushButton" name="pushButton_load_previous_nests">
+                  <property name="enabled">
+                   <bool>false</bool>
+                  </property>
+                  <property name="minimumSize">
+                   <size>
+                    <width>0</width>
+                    <height>30</height>
+                   </size>
+                  </property>
+                  <property name="maximumSize">
+                   <size>
+                    <width>16777215</width>
+                    <height>30</height>
+                   </size>
+                  </property>
+                  <property name="text">
+                   <string>Load 0 Previous Nests</string>
+                  </property>
+                 </widget>
+                </item>
+               </layout>
+              </widget>
              </widget>
             </item>
             <item>
              <layout class="QVBoxLayout" name="verticalLayout_27">
-              <item>
-               <widget class="QPushButton" name="pushButton_load_nests">
-                <property name="enabled">
-                 <bool>false</bool>
-                </property>
-                <property name="minimumSize">
-                 <size>
-                  <width>0</width>
-                  <height>30</height>
-                 </size>
-                </property>
-                <property name="text">
-                 <string>Load 0 Nests</string>
-                </property>
-               </widget>
-              </item>
               <item>
                <widget class="QPushButton" name="pushButton_generate_quote">
                 <property name="minimumSize">
@@ -1598,7 +1701,7 @@ QPushButton:pressed#pushButton_show_item_summary:!checked {
                       <x>0</x>
                       <y>0</y>
                       <width>400</width>
-                      <height>244</height>
+                      <height>248</height>
                      </rect>
                     </property>
                     <layout class="QHBoxLayout" name="horizontalLayout_21">
@@ -2084,7 +2187,7 @@ QPushButton#pushButton_generate_workorder:disabled{
    </widget>
    <widget class="QMenu" name="menuQuote_Generator">
     <property name="title">
-     <string>Quote Generator</string>
+     <string>OmniGen</string>
     </property>
     <addaction name="actionAdd_Nest_Directory"/>
     <addaction name="actionRemove_Nest_Directory"/>

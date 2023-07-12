@@ -513,10 +513,10 @@ class Workspace:
         return list(set(assembly.get_assembly_data(key="group") for assembly in self.data if assembly.get_assembly_data("show")))
 
     def get_group_color(self, group: str) -> str | None:
-        for assembly in self.data:
-            if assembly.get_assembly_data(key="group") == group:
-                return assembly.get_assembly_data(key="group_color")
-        return None
+        return next(
+            (assembly.get_assembly_data(key="group_color") for assembly in self.data if assembly.get_assembly_data(key="group") == group),
+            None,
+        )
 
     def _get_all_groups(self) -> list[str]:
         """

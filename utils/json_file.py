@@ -415,7 +415,7 @@ class JsonFile:
         for key, value in category.items():
             group_name = ""
             for tag_id in tags_ids:
-                group_name += " " + value.get(tag_id, "")
+                group_name += value.get(tag_id, "") + ";"
             grouped_category.setdefault(group_name, {})
             grouped_category[group_name][key] = value
 
