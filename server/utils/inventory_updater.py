@@ -6,7 +6,10 @@ from datetime import datetime
 from utils.colors import Colors
 from utils.custom_print import CustomPrint
 from utils.json_file import JsonFile
+from utils.send_email import send
+from utils.sheet_report import generate_single_sheet_report
 
+# This is because of git, and having a test server.
 with open("utils/inventory_file_to_use.txt", "r") as f:
     inventory_file_name: str = f.read()
 
@@ -30,7 +33,24 @@ def update_inventory(file_path: str, clients) -> None:
     parts_in_inventory.load_data()
     price_of_steel_inventory.load_data()
     with open(file_path) as json_file:
-        new_laser_batch_data = json.load(json_file)
+        quote_nest_information = json.load(json_file)
+
+    # Need to combine duplicate items so inventory can be updated quicker and remove group names
+    if "workorder" in file_path:
+        new_laser_batch_data = {}
+        for nest_name in list(quote_nest_information.keys()):
+            if nest_name[0] == "_":
+                new_laser_batch_data[nest_name] = quote_nest_information[nest_name]
+            else:
+                for item in quote_nest_information[nest_name]:
+                    try:
+                        new_laser_batch_data[item]["quantity"] += quote_nest_information[nest_name][item]["quantity"]
+                    except KeyError:
+                        new_laser_batch_data[item] = quote_nest_information[nest_name][item]
+    else:
+        # It is already in the combined format because its just an item
+        new_laser_batch_data = quote_nest_information
+
     sheet_count_and_type: dict = get_sheet_information(batch_data=new_laser_batch_data)
     remove_sheet_quantities(sheets_information=sheet_count_and_type)
     recut_parts: list[str] = get_recut_parts(batch_data=new_laser_batch_data)
@@ -38,20 +58,24 @@ def update_inventory(file_path: str, clients) -> None:
     no_recut_parts: list[str] = get_no_recut_parts(batch_data=new_laser_batch_data)
     add_parts(batch_data=new_laser_batch_data, parts_to_add=no_recut_parts)
     sort_inventory()
-    try:
+    if "workorder" in file_path:
         os.rename(
             file_path,
             f'{file_path.replace(".json", "").replace("parts_batch_to_upload_workorder", "").replace("data", "parts batch to upload history")}Workrder {datetime.now().strftime("%Y-%m-%d_%H-%M-%S")}.json',
         )
-    except FileExistsError:
         CustomPrint.print(
-            "ERROR - Can't replace parts_batch_to_updoad.json file with an existing archive.",
+            "INFO - Updated Inventory & archived batch",
             connected_clients=connected_clients,
         )
-    CustomPrint.print(
-        "INFO - Updated Inventory & archived batch",
-        connected_clients=connected_clients,
-    )
+    elif "part" in file_path:
+        os.rename(
+            file_path,
+            f'{file_path.replace(".json", "").replace("parts_batch_to_upload_part", "").replace("", "").replace("data", "parts batch to upload history")}Part {datetime.now().strftime("%Y-%m-%d_%H-%M-%S")}.json',
+        )
+        CustomPrint.print(
+            "INFO - Added part to inventory",
+            connected_clients=connected_clients,
+        )
     signal_clients_for_changes(clients)
 
 
@@ -259,6 +283,22 @@ def subtract_sheet_count(sheet_name_to_update: str, sheet_count: int) -> None:
         for sheet_name in list(category_data[category].keys()):
             if sheet_name_to_update == sheet_name:
                 old_quantity: int = category_data[category][sheet_name]["current_quantity"]
+                try:
+                    notes: int = category_data[category][sheet_name]["notes"]
+                except KeyError:
+                    notes = "No notes to show..."
+                try:
+                    red_quantity_limit: int = category_data[category][sheet_name]["red_limit"]
+                except KeyError:
+                    red_quantity_limit: int = 4
+                try:
+                    is_order_pending: bool = category_data[category][sheet_name]["is_order_pending"]
+                except KeyError:
+                    is_order_pending: bool = False
+                try:
+                    has_sent_warning: bool = category_data[category][sheet_name]["has_sent_warning"]
+                except KeyError:
+                    has_sent_warning: bool = False
                 price_of_steel_inventory.change_object_in_object_item(category, sheet_name, "current_quantity", old_quantity - sheet_count)
                 price_of_steel_inventory.change_object_in_object_item(
                     category,
@@ -267,10 +307,22 @@ def subtract_sheet_count(sheet_name_to_update: str, sheet_count: int) -> None:
                     f'Removed {sheet_count} at {datetime.now().strftime("%B %d %A %Y %I:%M:%S %p")}',
                 )
                 CustomPrint.print(f"INFO - Subtracted {sheet_count} quantities from {sheet_name_to_update}", connected_clients=connected_clients)
+                if (old_quantity - sheet_count) <= red_quantity_limit:
+                    CustomPrint.print(f"INFO - {sheet_name_to_update} went into RED", connected_clients=connected_clients)
+                    if category != "Cutoff" and is_order_pending == False and has_sent_warning == False:
+                        generate_single_sheet_report(
+                            sheet_name=sheet_name_to_update, 
+                            red_limit=red_quantity_limit, 
+                            old_quantity=old_quantity, 
+                            new_quantity=old_quantity-sheet_count, 
+                            notes=notes, 
+                            clients=connected_clients
+                        )
+                        price_of_steel_inventory.change_object_in_object_item(category, sheet_name_to_update, "has_sent_warning", True)
+
                 if category == "Cutoff" and old_quantity - sheet_count == 0:
                     price_of_steel_inventory.remove_object_item(category, sheet_name)
                     CustomPrint.print(f"INFO - Removed {sheet_name} from Cutoff", connected_clients=connected_clients)
-
 
 
 def add_sheet(thickness: str, material: str, sheet_dim: str, sheet_count: float, _connected_clients) -> None:
@@ -336,6 +388,12 @@ def set_sheet_quantity(sheet_name: str, new_quantity: float, clients) -> None:
             continue
         for _sheet_name in list(category_data[category].keys()):
             if sheet_name == _sheet_name:
+                try:
+                    red_quantity_limit: int = category_data[category][sheet_name]["red_limit"]
+                except KeyError:
+                    red_quantity_limit: int = 4
+                if red_quantity_limit >= new_quantity:
+                    price_of_steel_inventory.change_object_in_object_item(category, sheet_name, "has_sent_warning", False)
                 price_of_steel_inventory.change_object_in_object_item(
                     category,
                     sheet_name,

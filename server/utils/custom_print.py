@@ -5,7 +5,7 @@ from utils.colors import Colors
 
 messages = []
 connected_clients = []
-expected_clients: dict = {"10.0.0.217": "Jared", "10.0.0.155": "Laser", "10.0.0.5": "Lynden"}
+expected_clients: dict = {"10.0.0.75": "Jordan", "10.0.0.155": "Justin", "10.0.0.5": "Lynden"}
 
 
 def convert_set_to_list(s):

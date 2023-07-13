@@ -110,11 +110,10 @@
         function validateForm() {
           var length = document.getElementById("length").value;
           var width = document.getElementById("width").value;
-          var quantity = document.getElementById("quantity").value;
           var material = document.getElementById("material").value;
           var thickness = document.getElementById("thickness").value;
       
-          if (length && width && quantity && material && thickness) {
+          if (length && width && material && thickness) {
             document.getElementById("addButton").disabled = false;
           } else {
             document.getElementById("addButton").disabled = true;
@@ -128,13 +127,13 @@
         <label for="sheet_dim">Sheet Dimension:</label>
         <br>
         <div>
-          <input type="number" id="length" name="length" placeholder="Length" oninput="validateForm()">
+          <input type="number" step="0.001" id="length" name="length" placeholder="Length" oninput="validateForm()">
           <span>X</span>
-          <input type="number" id="width" name="width" placeholder="Width" oninput="validateForm()">
+          <input type="number" step="0.001" id="width" name="width" placeholder="Width" oninput="validateForm()">
         </div>
 
         <label for="thickness">Select Thickness:</label>
-        <select id="thickness" name="thickness">
+        <select id="thickness" name="thickness" oninput="validateForm()">
             <option value="" disabled selected>Select Thickness</option>
             {% for thickness in thicknesses %}
                 <option value="{{ thickness }}">{{ thickness }}</option>
@@ -142,7 +141,7 @@
         </select><br>
         
         <label for="material">Select Material:</label>
-        <select id="material" name="material">
+        <select id="material" name="material" oninput="validateForm()">
             <option value="" disabled selected>Select Material</option>
         {% for material in materials %}
             <option value="{{ material }}">{{ material }}</option>
@@ -150,7 +149,7 @@
         </select><br>
         
         <label for="quantity">Quantity:</label>
-        <input type="number" id="quantity" name="quantity" placeholder="0" oninput="validateForm()"><br>
+        <input type="number" id="quantity" name="quantity" placeholder="1" value="1"><br>
         <button type="submit" id="addButton" disabled>Add</button>
     </form>
     </body>
