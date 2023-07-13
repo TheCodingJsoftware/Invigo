@@ -67,8 +67,7 @@ def generate_sheet_report(clients) -> None:
             connected_clients=connected_clients,
         )
     else:
-<<<<<<< Updated upstream
-        send(message_to_send, email_addresses=["jaredgrozz@gmail.com"], connected_clients=connected_clients)
+        send(message_to_send, email_addresses=["jaredgrozz@gmail.com", "lynden@pineymfg.com"], connected_clients=connected_clients)
 
 def generate_single_sheet_report(sheet_name: str, red_limit: int, old_quantity: int, new_quantity: int, notes: str, clients) -> None:
     connected_clients = clients
@@ -80,7 +79,4 @@ def generate_single_sheet_report(sheet_name: str, red_limit: int, old_quantity: 
         <br>
         <p style="font-family: sans-serif;">Don\'t forget to update the pending status button in the Sheet Inventory tab when you sent a purchase order.<br>Have a fabulous day!</p>
     '''
-    send(message_to_send, email_addresses=["jaredgrozz@gmail.com"], connected_clients=clients)
-=======
-        send(message_to_send, email_addresses=["jaredgrozz@gmail.com", "lynden@pineymfg.com"], connected_clients=connected_clients)
->>>>>>> Stashed changes
+    send(message_to_send, email_addresses=["jaredgrozz@gmail.com", "lynden@pineymfg.com"], connected_clients=connected_clients)
