@@ -90,3 +90,4 @@ inventory_file_to_use.txt
 output.txt
 test/
 output.csv
+server/data/
