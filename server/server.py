@@ -472,7 +472,8 @@ if __name__ == "__main__":
     )
 
     config_logs()
-    # backup_inventroy_files()
+    backup_inventroy_files()
+    generate_sheet_report(clients=connected_clients)
     app = tornado.web.Application(
         [
             (r"/", MainHandler),

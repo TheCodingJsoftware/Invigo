@@ -1,5 +1,6 @@
 {
     "Custom": {
+<<<<<<< HEAD
         "3444-77-Woodx9": {
             "bend_cost": "$0.00",
             "cutting_length": 41.4033,
@@ -134,6 +135,76 @@
             "machine_time": 19.35,
             "material": "Mild Steel",
             "part_dim": "35.547 x 5.000",
+=======
+        "2840-52": {
+            "cutting_length": 47.272,
+            "file_name": "U:\/Nest Jobs\/BL34\/BL34_18GAlDEL_6.pdf",
+            "gauge": "18 Gauge",
+            "image_index": "2840-52",
+            "machine_time": 0.35,
+            "material": "Mild Steel",
+            "part_dim": "6.780 x 11.544",
+            "part_number": "9",
+            "piercing_time": 1.1,
+            "quantity": 55104,
+            "recut": false,
+            "sheet_dim": "120.000 x 60.000",
+            "surface_area": 74.07,
+            "weight": 1.052,
+            "modified_date": "Added at May 30 Tuesday 2023 04:46:11 PM",
+            "current_quantity": 55104,
+            "unit_quantity": 1,
+            "price": 1.68504
+        },
+        "3444-49": {
+            "cutting_length": 213.023,
+            "file_name": "U:\/Nest Jobs\/BL34\/BL34_18GAlDEL_16.pdf",
+            "gauge": "18 Gauge",
+            "image_index": "3444-49",
+            "machine_time": 1.1,
+            "material": "Mild Steel",
+            "part_dim": "61.128 x 31.704",
+            "part_number": "10",
+            "piercing_time": 2.4,
+            "quantity": 375,
+            "recut": false,
+            "sheet_dim": "120.000 x 60.000",
+            "surface_area": 1924.85,
+            "weight": 27.333,
+            "modified_date": "Added at May 30 Tuesday 2023 04:46:23 PM",
+            "current_quantity": 375,
+            "unit_quantity": 1,
+            "price": 23.796409999999998
+        },
+        "3444-48": {
+            "cutting_length": 155.777,
+            "file_name": "U:\/Nest Jobs\/BL34\/BL34_18GAlDEL_13.pdf",
+            "gauge": "18 Gauge",
+            "image_index": "3444-48",
+            "machine_time": 0.67,
+            "material": "Mild Steel",
+            "part_dim": "35.180 x 29.119",
+            "part_number": "11",
+            "piercing_time": 1.1,
+            "quantity": 99,
+            "recut": false,
+            "sheet_dim": "120.000 x 60.000",
+            "surface_area": 1010.68,
+            "weight": 14.352,
+            "modified_date": "Added at May 30 Tuesday 2023 04:46:17 PM",
+            "current_quantity": 99,
+            "unit_quantity": 1,
+            "price": 12.726040000000001
+        },
+        "PM - SS HINGE A-B": {
+            "cutting_length": 20.1736,
+            "file_name": "\/CUSTOM NEST",
+            "gauge": "0.08\"",
+            "image_index": "PM - SS HINGE A-B",
+            "machine_time": 0.15,
+            "material": "304 SS",
+            "part_dim": "4.980 x 1.750",
+>>>>>>> 796e1df70531c1190011b7d9f993409b566bb714
             "part_number": "1",
             "piercing_time": 87.5,
             "price": 77.04056,
@@ -368,6 +439,7 @@
             "current_quantity": 1,
             "unit_quantity": 1
         },
+<<<<<<< HEAD
         "404413": {
             "cutting_length": 256.623,
             "file_name": "F:\/Code\/Python-Projects\/Laser-Quote-Generator\/BL4225 188_14.pdf",
@@ -456,6 +528,74 @@
             "gauge": "3\/4\"",
             "image_index": "B-32154 R0",
             "machine_time": 2.33,
+=======
+        "3444-50": {
+            "cutting_length": 239.092,
+            "file_name": "U:\/Nest Jobs\/BL34\/BL34_18GAlDEL_6.pdf",
+            "gauge": "18 Gauge",
+            "image_index": "3444-50",
+            "machine_time": 1.15,
+            "material": "Mild Steel",
+            "part_dim": "61.128 x 34.707",
+            "part_number": "1",
+            "piercing_time": 2.4,
+            "quantity": 16,
+            "recut": false,
+            "sheet_dim": "120.000 x 60.000",
+            "surface_area": 2069.37,
+            "weight": 29.385,
+            "modified_date": "Added at May 30 Tuesday 2023 04:46:06 PM",
+            "current_quantity": 16,
+            "unit_quantity": 1,
+            "price": 25.501450000000002
+        },
+        "3444-45": {
+            "cutting_length": 139.385,
+            "file_name": "U:\/Nest Jobs\/BL34\/BL34_18GAlDEL_23.pdf",
+            "gauge": "18 Gauge",
+            "image_index": "3444-45",
+            "machine_time": 0.65,
+            "material": "Mild Steel",
+            "part_dim": "50.573 x 13.386",
+            "part_number": "13",
+            "piercing_time": 1.3,
+            "quantity": 13,
+            "recut": false,
+            "sheet_dim": "120.000 x 60.000",
+            "surface_area": 532.69,
+            "weight": 7.564,
+            "modified_date": "Added at May 30 Tuesday 2023 04:47:01 PM",
+            "current_quantity": 13,
+            "unit_quantity": 1,
+            "price": 7.44928
+        },
+        "PYCP02": {
+            "cutting_length": 244.685,
+            "file_name": "U:\/Nest Jobs\/10G_CF_1.pdf",
+            "gauge": "10 Gauge",
+            "image_index": "PYCP02",
+            "machine_time": 1.95,
+            "material": "Mild Steel",
+            "part_dim": "96.000 x 21.023",
+            "part_number": "1",
+            "piercing_time": 1.3,
+            "quantity": 1,
+            "recut": false,
+            "sheet_dim": "120.000 x 60.000",
+            "surface_area": 2017.59,
+            "weight": 80.219,
+            "current_quantity": 4,
+            "unit_quantity": 1,
+            "modified_date": "1 quantity added at May 30 Tuesday 2023 04:54:01 PM",
+            "price": 66.64363
+        },
+        "PM - SS HINGE 8 B_1pcs": {
+            "cutting_length": 36.0691,
+            "file_name": "\/CUSTOM NEST",
+            "gauge": "22 Gauge",
+            "image_index": "PM - SS HINGE 8 B_1pcs",
+            "machine_time": 0.28,
+>>>>>>> 796e1df70531c1190011b7d9f993409b566bb714
             "material": "Laser Grade Plate",
             "part_dim": "18.000 x 3.000",
             "part_number": "1",
@@ -774,6 +914,7 @@
             "modified_date": "Jared - Manually set to 4.0 quantity at June 07 Wednesday 2023 02:52:21 PM",
             "current_quantity": 0,
             "unit_quantity": 1.0,
+<<<<<<< HEAD
             "price": 13.64
         },
         "304440": {
@@ -817,6 +958,30 @@
             "unit_quantity": 1,
             "modified_date": "Jared - Manually set to 36.0 quantity at June 07 Wednesday 2023 11:20:20 AM",
             "price": 19.39709
+=======
+            "modified_date": "Jared - Manually set to 3.0 quantity at May 27 Saturday 2023 10:54:10 PM",
+            "price": 1.29
+        },
+        "4024903": {
+            "cutting_length": 80.9146,
+            "file_name": "U:\/Nest Jobs\/1_2Qoute_1.pdf",
+            "gauge": "1\/2",
+            "image_index": "4024903",
+            "machine_time": 1.67,
+            "material": "Laser Grade Plate",
+            "part_dim": "22.554 x 19.734",
+            "part_number": "1",
+            "piercing_time": 15.0,
+            "quantity": 1,
+            "recut": false,
+            "sheet_dim": "120.000 x 60.000",
+            "surface_area": 112.56,
+            "weight": 15.984,
+            "modified_date": "Added at May 30 Tuesday 2023 04:55:06 PM",
+            "current_quantity": 1,
+            "unit_quantity": 1,
+            "price": 27.3518
+>>>>>>> 796e1df70531c1190011b7d9f993409b566bb714
         }
     },
     "Recut": {
