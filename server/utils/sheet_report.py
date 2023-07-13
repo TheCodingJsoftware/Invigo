@@ -3,7 +3,6 @@ from datetime import datetime
 
 from utils.colors import Colors
 from utils.custom_print import CustomPrint
-from utils.inventory_updater import update_inventory
 from utils.json_file import JsonFile
 from utils.send_email import send
 
@@ -28,7 +27,7 @@ def generate_sheet_report(clients) -> None:
             try:
                 red_limit: int = data[material][sheet_name]["red_limit"]
                 yellow_limit: int = data[material][sheet_name]["yellow_limit"]
-            except Exception:
+            except KeyError:
                 # Default values
                 red_limit: int = 4
                 yellow_limit: int = 10
@@ -63,3 +62,15 @@ def generate_sheet_report(clients) -> None:
         )
     else:
         send(message_to_send, email_addresses=["jaredgrozz@gmail.com"], connected_clients=connected_clients)
+
+def generate_single_sheet_report(sheet_name: str, red_limit: int, old_quantity: int, new_quantity: int, notes: str, clients) -> None:
+    connected_clients = clients
+    message_to_send = f'''
+        <p style="font-family: sans-serif; font-weight: bold;">Heads up!</p>
+        <p style="font-family: sans-serif;">The sheet, <b>"{sheet_name}"</b> just entered the <b style="color: lightpink">red quantity limit which is under {red_limit} sheets</b>.</p>
+        <p style="font-family: sans-serif;">The sheets quantity went from <b>{old_quantity} sheets</b> to <b>{new_quantity} sheets</b>.</p>
+        <p style="font-family: sans-serif;">Notes: {notes}.</p>
+        <br>
+        <p style="font-family: sans-serif;">Don\'t forget to update the pending status button in the Sheet Inventory tab when you sent a purchase order.<br>Have a fabulous day!</p>
+    '''
+    send(message_to_send, email_addresses=["jaredgrozz@gmail.com"], connected_clients=clients)

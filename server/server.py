@@ -134,7 +134,7 @@ class FileUploadHandler(tornado.web.RequestHandler):
                 connected_clients=connected_clients,
             )
             # Managing OmniGen's batch uploads
-            if file_name == "parts_batch_to_upload_workorder.json":
+            if file_name in ["parts_batch_to_upload_workorder.json", "parts_batch_to_upload_part.json"]:
                 self.write("Batch sent successfully")
                 update_inventory(f"data/{file_name}", connected_clients)
             elif file_name == "parts_batch_to_upload_quote.json":
@@ -151,14 +151,8 @@ class FileUploadHandler(tornado.web.RequestHandler):
                     file_path,
                     f'{file_path.replace(".json", "").replace("parts_batch_to_upload_packing_slip", "").replace("data", "parts batch to upload history")}Packing Slip {datetime.now().strftime("%Y-%m-%d_%H-%M-%S")}.json',
                 )
-            elif file_name == "parts_batch_to_upload_packing_part.json":
-                self.write("Batch sent successfully")
-                file_path = f"data/{file_name}"
-                os.rename(
-                    file_path,
-                    f'{file_path.replace(".json", "").replace("parts_batch_to_upload_packing_part", "").replace("data", "parts batch to upload history")}Part {datetime.now().strftime("%Y-%m-%d_%H-%M-%S")}.json',
-                )
             else:
+                # This is other Invigo json files
                 self.write("File uploaded successfully.")
             should_signal_connect_clients = True
             if should_signal_connect_clients and get_file_type(file_name) == "JSON":
@@ -288,8 +282,6 @@ class GetOrderNumberHandler(tornado.web.RequestHandler):
         )
 
 
-
-# Define the request handler
 class SheetQuantityHandler(tornado.web.RequestHandler):
     def get(self, sheet_name):
         sheet_name = sheet_name.replace('_', ' ')
@@ -352,13 +344,14 @@ class GetPreviousNestsFiles(tornado.web.RequestHandler):
 
         files = {}
         for filename in os.listdir(directory):
+            if "Part" in filename:
+                continue
             file_path = os.path.join(directory, filename)
-            if os.path.isfile(file_path):
-                file_info = {
-                    "name": filename,
-                    "created_date": os.path.getctime(file_path)
-                }
-                files[filename] = file_info
+            file_info = {
+                "name": filename,
+                "created_date": os.path.getctime(file_path)
+            }
+            files[filename] = file_info
 
         self.set_header("Content-Type", "application/json")
         self.set_status(200)
