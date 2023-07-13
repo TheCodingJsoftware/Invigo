@@ -16,6 +16,8 @@ def generate_sheet_report(clients) -> None:
     """
     global connected_clients
     connected_clients = clients
+    if datetime.now().strftime('%A') != 'Monday':
+        return
     sheets_low_in_quantity: int = 0
     message_to_send: str = '<div class="tg-wrap"><table style="font-family: sans-serif; table-layout: fixed; width: 633px; border-collapse: collapse; text-align: center; vertical-align: middle; background-color: #222; color: white;"><colgroup><col style="width: 187px"><col style="width: 146px"><col style="width: 146px"><col style="width: 340px"></colgroup><thead><tr><th>Sheet Name</th><th>Order Status</th><th>Current Quantity</th><th>Description</th></tr></thead><tbody>'
     data = sheets_in_inventory.get_data()
@@ -47,7 +49,11 @@ def generate_sheet_report(clients) -> None:
                 )
                 order_pending: str = "No order pending"
                 if is_order_pending:
-                    order_pending = "Order is pending"
+                    order_pending = "Order is Pending"
+                    with contextlib.suppress(KeyError):
+                        expected_arrival_time: str = data[material][sheet_name]["expected_arrival_time"]
+                        order_pending_date: str = data[material][sheet_name]["order_pending_date"]
+                        order_pending = f"Order is pending since {order_pending_date} and expected to arrive at {expected_arrival_time}"
                     stylesheet = "border: 1px solid #222; color: #cef4d9; background-color: #24793c;"
                 else:
                     order_pending = "No order is pending"
@@ -57,10 +63,11 @@ def generate_sheet_report(clients) -> None:
     if sheets_low_in_quantity == 0:
         send(
             "Nothing low in quantity, Whew! Have a marvelous week.",
-            email_addresses=["jaredgrozz@gmail.com"],
+            email_addresses=["jaredgrozz@gmail.com", "lynden@pineymfg.com"],
             connected_clients=connected_clients,
         )
     else:
+<<<<<<< Updated upstream
         send(message_to_send, email_addresses=["jaredgrozz@gmail.com"], connected_clients=connected_clients)
 
 def generate_single_sheet_report(sheet_name: str, red_limit: int, old_quantity: int, new_quantity: int, notes: str, clients) -> None:
@@ -74,3 +81,6 @@ def generate_single_sheet_report(sheet_name: str, red_limit: int, old_quantity: 
         <p style="font-family: sans-serif;">Don\'t forget to update the pending status button in the Sheet Inventory tab when you sent a purchase order.<br>Have a fabulous day!</p>
     '''
     send(message_to_send, email_addresses=["jaredgrozz@gmail.com"], connected_clients=clients)
+=======
+        send(message_to_send, email_addresses=["jaredgrozz@gmail.com", "lynden@pineymfg.com"], connected_clients=connected_clients)
+>>>>>>> Stashed changes
