@@ -27,7 +27,7 @@ class ChangesThread(QThread):
         # Declaring server IP and port
         self.SERVER_IP: str = get_server_ip_address()
         self.SERVER_PORT: int = get_server_port()
-        self.files_to_download: str = files_to_download
+        self.files_to_download: list[str] = files_to_download
         self.websocket_url = f"ws://{self.SERVER_IP}:{self.SERVER_PORT}/ws"
 
     def run(self) -> None:

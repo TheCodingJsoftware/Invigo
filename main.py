@@ -158,7 +158,7 @@ __copyright__: str = "Copyright 2022-2023, TheCodingJ's"
 __credits__: list[str] = ["Jared Gross"]
 __license__: str = "MIT"
 __name__: str = "Invigo"
-__version__: str = "v2.1.7"
+__version__: str = "v2.1.8"
 __updated__: str = "2023-07-12 12:32:51"
 __maintainer__: str = "Jared Gross"
 __email__: str = "jared@pinelandfarms.ca"
@@ -2773,7 +2773,7 @@ class MainWindow(QMainWindow):
                 if self.tabWidget.tabText(self.tabWidget.currentIndex()) == "Sheets in Inventory":
                     self.load_active_tab()
 
-    # NOTE deprecated
+    # ! deprecated
     def search_ebay(self) -> None:
         """
         It opens a dialog box, and if the user clicks ok, it starts a thread that scrapes ebay for the
@@ -3064,10 +3064,7 @@ class MainWindow(QMainWindow):
 
                 try:
                     if should_generate_quote or should_generate_packing_slip:
-                        if should_generate_quote:
-                            option_string = "Quote"
-                        elif should_generate_packing_slip:
-                            option_string = "Packing Slip"
+                        option_string = "Quote" if should_generate_quote else "Packing Slip"
                         file_name: str = f'{option_string} - {datetime.now().strftime("%A, %d %B %Y %H-%M-%S-%f")}'
                         if should_generate_quote:
                             generate_quote = GenerateQuote(
@@ -3092,7 +3089,7 @@ class MainWindow(QMainWindow):
                         'Invalid paths set for "path_to_sheet_prices" or "price_of_steel_information" in config file "laser_quote_variables.cfg"\n\nGenerating Quote Aborted.',
                     )
                     return
-                self.upload_batch_to_inventory_thread(batch_data, should_update_inventory, should_generate_quote)
+                self.upload_batch_to_inventory_thread(self.quote_nest_information, should_update_inventory, should_generate_quote)
                 if should_update_inventory and not self.is_nest_generated_from_parts_in_inventory:
                     self.upload_batched_parts_images(batch_data)
                 self.status_button.setText("Generating complete", "lime")
@@ -3440,6 +3437,11 @@ class MainWindow(QMainWindow):
             modified_date: str = (
                 f"{self.username} - Manually set to {new_quantity} from {old_quantity} at {datetime.now().strftime('%B %d %A %Y %I:%M:%S %p')}"
             )
+            red_quantity_limit: int = self.get_value_from_category(item_name, "red_limit")
+            if red_quantity_limit is None:
+                red_quantity_limit: int = 4
+            if new_quantity > red_quantity_limit:
+                price_of_steel_inventory.change_object_in_object_item(self.category, item_name, "has_sent_warning", False)
             price_of_steel_inventory.change_object_in_object_item(self.category, item_name, "notes", notes)
             price_of_steel_inventory.change_object_in_object_item(self.category, item_name, "current_quantity", new_quantity)
             price_of_steel_inventory.change_object_in_object_item(self.category, item_name, "latest_change_current_quantity", modified_date)
@@ -6993,7 +6995,7 @@ class MainWindow(QMainWindow):
             tree_view = PdfTreeView(nest_directory, self)
             tree_view.selectionModel().selectionChanged.connect(self.nest_directory_item_selected)
             # There is an issue where it still calls even tho its a folder
-            tree_view.doubleClicked.connect(self.process_selected_nests)
+            # tree_view.doubleClicked.connect(self.process_selected_nests)
 
             self.quote_nest_directories_list_widgets[nest_directory] = tree_view
             toolbox.addItem(tree_view, nest_directory_name)
@@ -7981,18 +7983,17 @@ class MainWindow(QMainWindow):
     def upload_batch_to_inventory_thread(self, batch_data: dict, should_update_inventory: bool, should_generate_quote: bool) -> None:
         # QApplication.setOverrideCursor(Qt.CursorShape.BusyCursor)
         if should_update_inventory:
-            with open("parts_batch_to_upload_workorder.json", "w") as f:
-                json.dump(batch_data, f, sort_keys=True, indent=4)
+            with open("parts_batch_to_upload_workorder.json", "w") as file:
+                json.dump(batch_data, file, sort_keys=True, indent=4)
             upload_batch = UploadBatch("parts_batch_to_upload_workorder.json")
+        elif should_generate_quote:
+            with open("parts_batch_to_upload_quote.json", "w") as file:
+                json.dump(batch_data, file, sort_keys=True, indent=4)
+            upload_batch = UploadBatch("parts_batch_to_upload_quote.json")
         else:
-            if should_generate_quote:
-                with open("parts_batch_to_upload_quote.json", "w") as f:
-                    json.dump(batch_data, f, sort_keys=True, indent=4)
-                upload_batch = UploadBatch("parts_batch_to_upload_quote.json")
-            else:
-                with open("parts_batch_to_upload_packing_slip.json", "w") as f:
-                    json.dump(batch_data, f, sort_keys=True, indent=4)
-                upload_batch = UploadBatch("parts_batch_to_upload_packing_slip.json")
+            with open("parts_batch_to_upload_packing_slip.json", "w") as file:
+                json.dump(batch_data, file, sort_keys=True, indent=4)
+            upload_batch = UploadBatch("parts_batch_to_upload_packing_slip.json")
         upload_batch.signal.connect(self.upload_batch_to_inventory_response)
         self.threads.append(upload_batch)
         self.status_button.setText("Uploading Batch", "yellow")
@@ -8117,24 +8118,7 @@ class MainWindow(QMainWindow):
                 "lime",
             )
             self.quote_nest_information.clear()
-            grouped_data = {}
-            # Need to group the data by nests again, as the server only saves items, and sheets attributes
-            for item, item_data in data.items():
-                # This is a sheet
-                if item[0] == "_":
-                    nest_name = item.split("/")[-1]
-                    grouped_data[nest_name] = {}
-                    grouped_data[item] = item_data
-            for item, item_data in data.items():
-                if item[0] == "_":  # This is a sheet
-                    continue
-                nest_name = item_data.get("file_name").split("/")[-1]
-                grouped_data[nest_name][item] = item_data
-
-            sorted_keys = natsorted(grouped_data.keys())
-            sorted_dict = {key: grouped_data[key] for key in sorted_keys}
-
-            self.quote_nest_information = sorted_dict
+            self.quote_nest_information = data
             self.pushButton_load_previous_nests.setEnabled(True)
             self.load_nests()
         else:
