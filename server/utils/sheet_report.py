@@ -53,7 +53,8 @@ def generate_sheet_report(clients) -> None:
                     with contextlib.suppress(KeyError):
                         expected_arrival_time: str = data[material][sheet_name]["expected_arrival_time"]
                         order_pending_date: str = data[material][sheet_name]["order_pending_date"]
-                        order_pending = f"Order is pending since {order_pending_date} and expected to arrive at {expected_arrival_time}"
+                        order_quantity: float = data[material][sheet_name]['order_pending_quantity']
+                        order_pending = f"Order is pending since {order_pending_date} for {order_quantity} sheets and expected to arrive at {expected_arrival_time}"
                     stylesheet = "border: 1px solid #222; color: #cef4d9; background-color: #24793c;"
                 else:
                     order_pending = "No order is pending"
