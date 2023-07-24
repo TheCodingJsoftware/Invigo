@@ -29,6 +29,7 @@ class AboutDialog(QWidget):
         uic.loadUi("ui/about_dialog.ui", self)
 
         self.setWindowFlags(Qt.WindowType.Window | Qt.WindowType.FramelessWindowHint)
+        self.setAttribute(Qt.WidgetAttribute.WA_TranslucentBackground, True)
         self.setWindowIcon(QIcon(Icons.icon))
         self.setFixedSize(550, 400)
 
@@ -45,7 +46,7 @@ class AboutDialog(QWidget):
         with open("LICENSE", "r") as license_file:
             self.lblLicense.setText(license_file.read())
 
-        self.lblTitle.setText(f"{title} {version}")
+        self.lblTitle.setText(f"{version}")
 
         self.lblHome.setText(f"Home: <a style='text-decoration:none;color:yellow'href='{home}'>{home}</a>")
 

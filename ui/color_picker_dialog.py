@@ -34,6 +34,7 @@ class ColorPicker(QDialog):
         _hex = kwargs.pop("hex", None)
 
         self.setWindowFlags(Qt.WindowType.Window | Qt.WindowType.FramelessWindowHint)
+        self.setAttribute(Qt.WidgetAttribute.WA_TranslucentBackground, True)
         # Connect update functions
         self.hue.mouseMoveEvent = self.moveHueSelector
         self.hue.mousePressEvent = self.moveHueSelector

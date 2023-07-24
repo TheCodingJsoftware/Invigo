@@ -13,6 +13,7 @@ from PyQt6.QtWidgets import (
     QListWidget,
     QPushButton,
 )
+from PyQt6.QtCore import QDate
 
 from utils.json_file import JsonFile
 from utils.workspace.assembly import Assembly
@@ -135,8 +136,9 @@ class Workspace:
         statuses: list[QPushButton] = filter["statuses"]
         paint_colors: list[QPushButton] = filter["paint"]
         groupBox_due_dates: QGroupBox = filter["due_dates"]
-        dateTimeEdit_after: QDateTimeEdit = filter["dateTimeEdit_after"]
-        dateTimeEdit_before: QDateTimeEdit = filter["dateTimeEdit_before"]
+        calendar = filter["calendar"]
+        dateTimeEdit_after: QDate = calendar.from_date
+        dateTimeEdit_before: QDate = calendar.to_date
         show_recut: bool = filter["show_recut"]
 
         # Recursively filter sub-assemblies
@@ -197,9 +199,7 @@ class Workspace:
             with contextlib.suppress(TypeError):
                 if groupBox_due_dates.isChecked():
                     assembly_due_date = item.get_value("due_date")
-                    after_date = dateTimeEdit_after.dateTime().toPyDateTime().date()
-                    before_date = dateTimeEdit_before.dateTime().toPyDateTime().date()
-                    if assembly_due_date < after_date or assembly_due_date > before_date:
+                    if assembly_due_date < dateTimeEdit_after or assembly_due_date > dateTimeEdit_before:
                         continue
             item.set_value(key="show", value=True)
             item.parent_assembly.set_parent_assembly_value(key="show", value=True)

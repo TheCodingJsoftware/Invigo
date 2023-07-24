@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>411</width>
-    <height>422</height>
+    <width>347</width>
+    <height>347</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -44,6 +44,7 @@
 	border-top-right-radius:10px;
 	border-bottom-right-radius:10px;
 	border: 1px solid  #3daee9;
+	background-color: #19232D;
 }</string>
      </property>
      <layout class="QVBoxLayout" name="verticalLayout_3" stretch="0,0">
@@ -146,8 +147,8 @@ border-bottom: none;
               <rect>
                <x>0</x>
                <y>0</y>
-               <width>361</width>
-               <height>144</height>
+               <width>297</width>
+               <height>69</height>
               </rect>
              </property>
              <layout class="QVBoxLayout" name="verticalLayout_4">
@@ -243,7 +244,7 @@ border-bottom: none;
                <rect>
                 <x>0</x>
                 <y>0</y>
-                <width>383</width>
+                <width>319</width>
                 <height>177</height>
                </rect>
               </property>

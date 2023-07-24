@@ -44,6 +44,7 @@
 	border-top-right-radius:10px;
 	border-bottom-right-radius:10px;
 	border: 1px solid  #3daee9;
+	background-color: #19232D;
 }</string>
      </property>
      <layout class="QVBoxLayout" name="verticalLayout_3" stretch="0,0">
@@ -246,6 +247,9 @@ border-bottom: none;
           </item>
           <item row="3" column="1">
            <widget class="QSpinBox" name="spinBox_current_quantity">
+            <property name="specialValueText">
+             <string/>
+            </property>
             <property name="accelerated">
              <bool>true</bool>
             </property>

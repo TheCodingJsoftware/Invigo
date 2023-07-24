@@ -52,6 +52,7 @@ class AddItemDialog(QDialog):
         self.theme: str = "dark" if settings_file.get_value(item_name="dark_mode") else "light"
 
         self.setWindowFlags(Qt.WindowType.Window | Qt.WindowType.FramelessWindowHint)
+        self.setAttribute(Qt.WidgetAttribute.WA_TranslucentBackground, True)
         self.setWindowIcon(QIcon("icons/icon.png"))
 
         self.lblTitle.setText(self.title)
@@ -103,7 +104,7 @@ class AddItemDialog(QDialog):
         Returns:
           A QSvgWidget object.
         """
-        return QSvgWidget(f"ui/BreezeStyleSheets/dist/pyqt6/{self.theme}/{path_to_icon}")
+        return QSvgWidget(f"icons/{path_to_icon}")
 
     def button_press(self, button) -> None:
         """
@@ -125,10 +126,10 @@ class AddItemDialog(QDialog):
         for index, name in enumerate(button_names):
             if name == DialogButtons.add:
                 button = QPushButton(f"  {name}")
-                button.setIcon(QIcon(f"ui/BreezeStyleSheets/dist/pyqt6/{self.theme}/dialog_ok.svg"))
-            elif os.path.isfile(f"ui/BreezeStyleSheets/dist/pyqt6/{self.theme}/dialog_{name.lower()}.svg"):
+                button.setIcon(QIcon("icons/dialog_ok.svg"))
+            elif os.path.isfile(f"icons/dialog_{name.lower()}.svg"):
                 button = QPushButton(f"  {name}")
-                button.setIcon(QIcon(f"ui/BreezeStyleSheets/dist/pyqt6/{self.theme}/dialog_{name.lower()}.svg"))
+                button.setIcon(QIcon(f"icons/dialog_{name.lower()}.svg"))
             else:
                 button = QPushButton(name)
             if index == 0:

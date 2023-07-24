@@ -65,6 +65,7 @@
 	border-top-right-radius:10px;
 	border-bottom-right-radius:10px;
 	border: 1px solid  #3daee9;
+	background-color: #19232D;
 }</string>
      </property>
      <layout class="QVBoxLayout" name="verticalLayout_3">

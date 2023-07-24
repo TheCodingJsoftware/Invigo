@@ -5,13 +5,7 @@ import time
 import requests
 from PyQt6.QtCore import QThread, pyqtSignal
 
-from utils.ip_utils import (
-    get_buffer_size,
-    get_server_ip_address,
-    get_server_port,
-    get_server_timeout,
-    get_system_ip_address,
-)
+from utils.ip_utils import get_server_ip_address, get_server_port
 from utils.json_file import JsonFile
 
 settings_file = JsonFile(file_name="settings")
@@ -52,6 +46,6 @@ class UploadBatch(QThread):
             if response.status_code == 200:
                 self.signal.emit("Batch sent successfully", self.json_file_path)
             else:
-                self.signal.emit(response.status_code, self.json_file_path)
+                self.signal.emit(str(response.status_code), self.json_file_path)
         except Exception as e:
-            self.signal.emit(e, self.json_file_path)
+            self.signal.emit(str(e), self.json_file_path)

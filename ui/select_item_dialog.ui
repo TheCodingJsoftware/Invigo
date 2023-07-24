@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>319</width>
-    <height>306</height>
+    <height>255</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -44,6 +44,7 @@
 	border-top-right-radius:10px;
 	border-bottom-right-radius:10px;
 	border: 1px solid  #3daee9;
+	background-color: #19232D;
 }</string>
      </property>
      <layout class="QVBoxLayout" name="verticalLayout_3" stretch="0,0">

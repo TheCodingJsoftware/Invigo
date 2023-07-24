@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>543</width>
+    <width>482</width>
     <height>399</height>
    </rect>
   </property>
@@ -44,6 +44,7 @@
 	border-top-right-radius:10px;
 	border-bottom-right-radius:10px;
 	border: 1px solid  #3daee9;
+	background-color: #19232D;
 }</string>
      </property>
      <layout class="QVBoxLayout" name="verticalLayout_3" stretch="0,0">
@@ -151,7 +152,7 @@ border-bottom: none;</string>
               <rect>
                <x>0</x>
                <y>0</y>
-               <width>493</width>
+               <width>432</width>
                <height>69</height>
               </rect>
              </property>
@@ -241,7 +242,7 @@ border-bottom: none;</string>
              <widget class="QLabel" name="label_9">
               <property name="maximumSize">
                <size>
-                <width>10</width>
+                <width>20</width>
                 <height>16777215</height>
                </size>
               </property>
@@ -404,16 +405,6 @@ Description: </string>
             </property>
            </widget>
           </item>
-          <item row="3" column="3">
-           <widget class="QSpinBox" name="spinBox_current_quantity">
-            <property name="accelerated">
-             <bool>true</bool>
-            </property>
-            <property name="maximum">
-             <number>9999999</number>
-            </property>
-           </widget>
-          </item>
           <item row="5" column="0">
            <widget class="QLabel" name="label_5">
             <property name="text">
@@ -466,6 +457,13 @@ Description: </string>
             </property>
             <property name="maximum">
              <double>999999999.990000009536743</double>
+            </property>
+           </widget>
+          </item>
+          <item row="3" column="3">
+           <widget class="QDoubleSpinBox" name="spinBox_current_quantity">
+            <property name="maximum">
+             <double>999999999.000000000000000</double>
             </property>
            </widget>
           </item>

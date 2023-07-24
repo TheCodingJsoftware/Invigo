@@ -97,9 +97,7 @@ class JobSorterDialog(QDialog):
         self.directory_to_sort: str = self.lineEdit_directory_to_sort.text()
         self.output_directory: str = self.lineEdit_output_directory.text()
         self.job_name: str = self.lineEdit_job_name.text()
-        self.pushButton_sort.setEnabled(
-            True if self.excel_file_path and self.directory_to_sort and self.output_directory and self.job_name else False
-        )
+        self.pushButton_sort.setEnabled(bool(self.excel_file_path and self.directory_to_sort and self.output_directory and self.job_name))
 
     def set_excel_file_path(self) -> None:
         file_dialog = QFileDialog()
@@ -148,4 +146,4 @@ class JobSorterDialog(QDialog):
         Returns:
           A QSvgWidget object.
         """
-        return QSvgWidget(f"ui/BreezeStyleSheets/dist/pyqt6/{self.theme}/{path_to_icon}")
+        return QSvgWidget(f"icons/{path_to_icon}")
