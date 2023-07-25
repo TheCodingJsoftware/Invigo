@@ -52,6 +52,7 @@ from PyQt6.QtWidgets import (
     QAbstractItemView,
     QAbstractSpinBox,
     QApplication,
+    QCalendarWidget,
     QCheckBox,
     QComboBox,
     QDialog,
@@ -80,13 +81,12 @@ from PyQt6.QtWidgets import (
     QTableWidgetItem,
     QTabWidget,
     QToolBox,
+    QToolButton,
     QTreeView,
     QTreeWidget,
     QTreeWidgetItem,
     QVBoxLayout,
     QWidget,
-    QCalendarWidget,
-    QToolButton,
 )
 
 from utils.colors import darken_color, lighten_color
@@ -2060,7 +2060,7 @@ class OrderStatusButton(QPushButton):
         super(QPushButton, self).__init__(parent)
         self.setCheckable(True)
         self.setText("Order Pending")
-        self.setFixedWidth(100)
+        self.setFixedWidth(150)
         self.setObjectName("order_status")
 
 

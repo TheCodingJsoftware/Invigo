@@ -1,7 +1,6 @@
-from ui.select_timeline_dialog import SelectTimeLineDialog
 from PyQt6.QtWidgets import QApplication
 
-
+from ui.select_timeline_dialog import SelectTimeLineDialog
 from ui.theme import set_theme
 
 if __name__ == "__main__":

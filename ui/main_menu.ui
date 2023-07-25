@@ -8,7 +8,7 @@
     <x>0</x>
     <y>0</y>
     <width>1160</width>
-    <height>724</height>
+    <height>725</height>
    </rect>
   </property>
   <property name="font">
@@ -58,7 +58,7 @@
        <enum>QTabWidget::Rounded</enum>
       </property>
       <property name="currentIndex">
-       <number>2</number>
+       <number>4</number>
       </property>
       <property name="elideMode">
        <enum>Qt::ElideNone</enum>
@@ -129,7 +129,7 @@
                  <property name="handleWidth">
                   <number>10</number>
                  </property>
-                 <widget class="QWidget" name="">
+                 <widget class="QWidget" name="layoutWidget">
                   <layout class="QVBoxLayout" name="verticalLayout_42">
                    <item>
                     <widget class="QLabel" name="label_exchange_price">
@@ -207,7 +207,7 @@
                    </item>
                   </layout>
                  </widget>
-                 <widget class="QWidget" name="">
+                 <widget class="QWidget" name="layoutWidget">
                   <layout class="QVBoxLayout" name="verticalLayout_7">
                    <item>
                     <widget class="QLabel" name="label_2">
@@ -509,7 +509,7 @@ QPushButton#pushButton_create_new:disabled{
                  <x>0</x>
                  <y>0</y>
                  <width>159</width>
-                 <height>504</height>
+                 <height>505</height>
                 </rect>
                </property>
                <property name="maximumSize">
@@ -737,7 +737,7 @@ QPushButton#pushButton_add_new_sheet:disabled{
                  <x>0</x>
                  <y>0</y>
                  <width>357</width>
-                 <height>416</height>
+                 <height>417</height>
                 </rect>
                </property>
                <layout class="QVBoxLayout" name="verticalLayout_21">
@@ -1196,7 +1196,7 @@ QPushButton#pushButton_add_new_sheet:disabled{
                           <x>0</x>
                           <y>0</y>
                           <width>482</width>
-                          <height>384</height>
+                          <height>385</height>
                          </rect>
                         </property>
                         <property name="styleSheet">
@@ -1643,7 +1643,7 @@ QPushButton#pushButton_generate_quote:disabled{
          <number>3</number>
         </property>
         <property name="rightMargin">
-         <number>9</number>
+         <number>0</number>
         </property>
         <property name="bottomMargin">
          <number>0</number>
@@ -1920,7 +1920,7 @@ QPushButton:pressed#pushButton_show_item_summary:!checked {
                       <x>0</x>
                       <y>0</y>
                       <width>280</width>
-                      <height>70</height>
+                      <height>71</height>
                      </rect>
                     </property>
                     <layout class="QHBoxLayout" name="horizontalLayout_21">

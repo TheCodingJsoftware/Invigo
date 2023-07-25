@@ -2,10 +2,10 @@ import os.path
 from functools import partial
 
 from PyQt6 import uic
-from PyQt6.QtCore import QFile, Qt, QTextStream, QDate, QDateTime
-from PyQt6.QtGui import QIcon, QTextCharFormat, QColor
+from PyQt6.QtCore import QDate, QDateTime, QFile, Qt, QTextStream
+from PyQt6.QtGui import QColor, QIcon, QTextCharFormat
 from PyQt6.QtSvgWidgets import QSvgWidget
-from PyQt6.QtWidgets import QAbstractItemView, QDialog, QPushButton, QCalendarWidget
+from PyQt6.QtWidgets import QAbstractItemView, QCalendarWidget, QDialog, QPushButton
 
 from ui.custom_widgets import set_default_dialog_button_stylesheet
 from ui.theme import set_theme
@@ -28,6 +28,8 @@ class SelectTimeLineDialog(QDialog):
         button_names: str = DialogButtons.ok_cancel,
         title: str = __name__,
         message: str = "",
+        starting_date: str = None,
+        ending_date: str = None
     ) -> None:
         """
         It's a function that takes in a list of items and displays them in a list widget
@@ -63,6 +65,11 @@ class SelectTimeLineDialog(QDialog):
         self.right_calendar.clicked.connect(self.update_selection)
         self.right_calendar.clicked.connect(self.set_new_days)
         self.days.valueChanged.connect(self.set_days)
+
+        if starting_date is not None:
+            self.left_calendar.setSelectedDate(QDate.fromString(starting_date, "yyyy-M-d"))
+        if ending_date is not None:
+            self.right_calendar.setSelectedDate(QDate.fromString(ending_date, "yyyy-M-d"))
 
         self.from_date: QDate = None
         self.to_date: QDate = None
@@ -255,7 +262,4 @@ class SelectTimeLineDialog(QDialog):
         Returns:
           The text of the current item in the list widget.
         """
-        try:
-            return self.calendarWidget.selectedDate().toString("yyyy-M-d")
-        except AttributeError:
-            return None
+        return (self.left_calendar.selectedDate(), self.right_calendar.selectedDate())

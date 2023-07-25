@@ -25,8 +25,8 @@ from natsort import natsorted
 from PyQt6 import QtWebEngineWidgets, uic
 from PyQt6.QtCore import (
     QDate,
-    QEventLoop,
     QElapsedTimer,
+    QEventLoop,
     QModelIndex,
     QSettings,
     Qt,
@@ -125,8 +125,8 @@ from ui.custom_widgets import (
     RecordingWidget,
     RecutButton,
     RichTextPushButton,
-    SelectRangeCalendar,
     ScrollPositionManager,
+    SelectRangeCalendar,
     TimeSpinBox,
     ViewTree,
     set_default_dialog_button_stylesheet,
@@ -142,9 +142,10 @@ from ui.load_window import LoadWindow
 from ui.message_dialog import MessageDialog
 from ui.recut_dialog import RecutDialog
 from ui.select_date_dialog import SelectDateDialog
-from ui.set_order_pending_dialog import SetOrderPendingDialog
 from ui.select_item_dialog import SelectItemDialog
 from ui.set_custom_limit_dialog import SetCustomLimitDialog
+from ui.set_order_pending_dialog import SetOrderPendingDialog
+from ui.select_timeline_dialog import SelectTimeLineDialog
 from ui.theme import set_theme
 from ui.web_scrape_results_dialog import WebScrapeResultsDialog
 from utils.calulations import calculate_overhead, calculate_scrap_percentage
@@ -347,6 +348,10 @@ price_of_steel_information = JsonFile(file_name="price_of_steel_information.json
 user_workspace = Workspace("workspace - User")
 admin_workspace = Workspace("workspace - Admin")
 history_workspace = Workspace("workspace - History")
+
+# This is for toggling between user and admin workspace for editing purposes
+active_workspace_file: Workspace = admin_workspace
+
 workspace_tags = JsonFile(file_name="data/workspace_settings")
 
 geometry = JsonObject(JsonFile=settings_file, object_name="geometry")
@@ -946,7 +951,10 @@ class MainWindow(QMainWindow):
         returns a boolean value indicating whether the button is currently checked or not
         """
         select_date_dialog = SetOrderPendingDialog(
-            self, button_names=DialogButtons.set_cancel, title="Set Expected Arrival Time & Quantity", message=f"Set an expected arrival time for \"{item_name}\" and the number of sheets ordered"
+            self,
+            button_names=DialogButtons.set_cancel,
+            title="Set Expected Arrival Time & Quantity",
+            message=f'Set an expected arrival time for "{item_name}" and the number of sheets ordered',
         )
         if button.isChecked() == True and select_date_dialog.exec():
             response = select_date_dialog.get_response()
@@ -1259,7 +1267,7 @@ class MainWindow(QMainWindow):
             )
             return
         # Workspace order begins here
-        date_created: str = str(datetime.now())
+        date_created: str = QDate().currentDate().toString("yyyy-M-d")
         admin_workspace.load_data()
         for job_name, quantity in work_order.items():
             for _ in range(quantity):
@@ -1271,17 +1279,20 @@ class MainWindow(QMainWindow):
                 # Job Assembly Data
                 new_assembly.set_assembly_data(key="display_name", value=job_name)
                 new_assembly.set_assembly_data(key="completed", value=False)
-                new_assembly.set_assembly_data(key="date_started", value=date_created)
+                new_assembly.set_assembly_data(key="starting_date", value=date_created)
+                new_assembly.set_assembly_data(key="ending_date", value=date_created)
                 new_assembly.set_assembly_data(key="status", value=None)
-                new_assembly.set_assembly_data(key="group", value=f"{job_name} x {quantity} - {date_created}")
+                new_assembly.set_assembly_data(key="group", value=f"{job_name} x {quantity} - {datetime.now()}")
                 new_assembly.set_assembly_data(key="group_color", value=get_random_color())
                 # Sub-Assembly Data
-                new_assembly.set_data_to_all_sub_assemblies(key="date_started", value=date_created)
+                new_assembly.set_data_to_all_sub_assemblies(key="starting_date", value=date_created)
+                new_assembly.set_data_to_all_sub_assemblies(key="ending_date", value=date_created)
                 new_assembly.set_data_to_all_sub_assemblies(key="current_flow_state", value=0)
                 new_assembly.set_data_to_all_sub_assemblies(key="completed", value=False)
                 new_assembly.set_data_to_all_sub_assemblies(key="status", value=None)
                 # All items in Assembly and Sub-Assembly
-                new_assembly.set_default_value_to_all_items(key="date_started", value=date_created)
+                new_assembly.set_default_value_to_all_items(key="starting_date", value=date_created)
+                new_assembly.set_default_value_to_all_items(key="ending_date", value=date_created)
                 new_assembly.set_default_value_to_all_items(key="current_flow_state", value=0)
                 new_assembly.set_default_value_to_all_items(key="recoat", value=False)
                 new_assembly.set_default_value_to_all_items(key="status", value=None)
@@ -1408,7 +1419,6 @@ class MainWindow(QMainWindow):
         self.sync_changes()
 
     def listWidget_item_changed(self) -> None:
-
         """
         It's a function that changes the color of a QComboBox and QDoubleSpinBox when the user clicks on
         an item in a QListWidget.
@@ -3277,7 +3287,7 @@ class MainWindow(QMainWindow):
         tag_editor = EditTagsDialog(
             self,
             title="Flow Tags",
-            message="Create and edit flow tags.\n\nIf a tag box is left as 'None' it will not be part of the flow.\n\"Starts Timer\" starts the timer if the flow tag has a timer enabled, timers will be stop automatically when flow tag is changed.",
+            message="Create and edit flow tags and set attributes.\n\nIf a tag box is left as 'None' it will not be part of the flow.\n\"Starts Timer\" starts the timer if the flow tag has a timer enabled, timers will be stop automatically when flow tag is changed.\nTags such as, \"Staging\", \"Editing\", and \"Planning\" cannot be used as flow tags, nothing will be checked if you use them, it could break everything, so, don't use them.",
         )
 
         def upload_workspace_settings():
@@ -3657,7 +3667,11 @@ class MainWindow(QMainWindow):
         if self.tabWidget.tabText(self.tabWidget.currentIndex()) == "Workspace":
             admin_workspace.load_data()
             user_workspace.load_data()
-            for i, category in enumerate(["Staging", "Recut"] + workspace_tags.get_value("all_tags")):
+            if self.trusted_user:
+                edit_tabs = ['Staging', 'Planning', 'Editing', 'Recut']
+            else:
+                edit_tabs = ['Recut']
+            for i, category in enumerate(edit_tabs + workspace_tags.get_value("all_tags")):
                 tab = QWidget(self)
                 layout = QVBoxLayout(tab)
                 tab.setLayout(layout)
@@ -4177,6 +4191,7 @@ class MainWindow(QMainWindow):
                             arrival_date = QDateEdit()
                             expected_arrival_time: str = self.get_value_from_category(item_name=item, key="expected_arrival_time")
                             order_quantity: float = self.get_value_from_category(item_name=item, key="order_pending_quantity")
+                            order_status_button.setText(f"Order Pending ({int(order_quantity)})")
                             year, month, day = map(int, expected_arrival_time.split("-"))
                             date = QDate(year, month, day)
                             arrival_date.setDate(date)
@@ -4473,7 +4488,7 @@ class MainWindow(QMainWindow):
             self.listWidget_itemnames.setCurrentRow(self.last_item_selected_index)
         QApplication.restoreOverrideCursor()
 
-    # NOTE FOR STAGING
+    # STAGING
     def assembly_items_table_clicked(self, item: QTableWidgetItem) -> None:
         """
         The function assigns the text of the clicked item in an assembly items table to a variable.
@@ -4484,7 +4499,7 @@ class MainWindow(QMainWindow):
         """
         self.last_selected_assemly_item = item.text()
 
-    # NOTE FOR STAGING
+    # STAGING
     def assembly_items_table_cell_changed(self, table: CustomTableWidget, assembly: Assembly, item: QTableWidgetItem) -> None:
         """
         The function `assembly_items_table_cell_changed` handles changes made to cells in a table,
@@ -4528,7 +4543,7 @@ class MainWindow(QMainWindow):
         plus_button = table.cellWidget(table.rowCount() - 1, 0)
         plus_button.setEnabled(not assembly.exists(""))
 
-    # NOTE FOR STAGING
+    # STAGING
     def load_assemblies_items_file_layout(
         self, file_category: str, files_layout: QHBoxLayout, assembly: Assembly, item: Item, show_dropped_widget: bool = True
     ) -> None:
@@ -4567,7 +4582,7 @@ class MainWindow(QMainWindow):
             drop_widget = DropWidget(self, assembly, item, files_layout, file_category)
             files_layout.addWidget(drop_widget)
 
-    # NOTE FOR STAGING
+    # STAGING
     def handle_dropped_file(
         self, label: QLabel, file_paths: list[str], assembly: Assembly, item: Item, files_layout: QHBoxLayout, file_category: str
     ) -> None:
@@ -4601,6 +4616,7 @@ class MainWindow(QMainWindow):
         label.setStyleSheet("background-color: rgba(30,30,30,100);")
         self.load_assemblies_items_file_layout(file_category=file_category, files_layout=files_layout, assembly=assembly, item=item)
 
+    # STAGING
     def delete_workspace_item(self, assembly: Assembly, table: CustomTableWidget, row_index: int):
         """
         The function deletes an item from an assembly and updates the table and button connections
@@ -4626,7 +4642,7 @@ class MainWindow(QMainWindow):
         admin_workspace.save()
         self.sync_changes()
 
-    # NOTE FOR STAGING
+    # STAGING
     def load_edit_assembly_items_table(self, assembly: Assembly) -> CustomTableWidget:
         workspace_tags.load_data()
         headers: list[str] = [
@@ -4640,7 +4656,7 @@ class MainWindow(QMainWindow):
             "Paint Color",
             "Parts Per",
             "Flow Tag",
-            "Set Timers",
+            "Expected time to complete",
             "DEL",
         ]
         #     table.setStyleSheet(
@@ -4922,7 +4938,7 @@ class MainWindow(QMainWindow):
 
         return table
 
-    # NOTE FOR STAGING
+    # STAGING
     def load_edit_assembly_widget(self, assembly: Assembly, workspace_information: dict, group_color: str, parent=None) -> QWidget:
         """
         The load_edit_assembly_widget function is used to create a widget that can be added to the MultiToolBox in the
@@ -5088,7 +5104,7 @@ class MainWindow(QMainWindow):
             flow_tag_combobox.addItems(self.get_all_flow_tags())
             flow_tag_combobox.setCurrentText(" ➜ ".join(assembly.get_assembly_data("flow_tag")))
             flow_tag_combobox.currentTextChanged.connect(partial(flow_tag_change, timer_layout, color_widget, flow_tag_combobox))
-            grid.addWidget(QLabel("Time to Complete:"), 0, 0)
+            grid.addWidget(QLabel("Expected time to complete:"), 0, 0)
             grid.addWidget(time_box, 0, 1)
             grid.addWidget(QLabel("Flow Tag:"), 1, 0)
             grid.addWidget(flow_tag_combobox, 1, 1)
@@ -5284,7 +5300,7 @@ class MainWindow(QMainWindow):
         workspace_information[assembly.name]["tool_box"] = sub_assemblies_toolbox
         return widget
 
-    # NOTE FOR STAGING
+    # STAGING
     def load_edit_assembly_tab(self) -> None:
         with contextlib.suppress(AttributeError):
             self.workspace_filter_tab_widget.clear_selections("Flow Tags")
@@ -5645,7 +5661,7 @@ class MainWindow(QMainWindow):
             tab_name=f"{self.tabWidget.tabText(self.tabWidget.currentIndex())} {self.category}", scroll=scroll_area
         )
 
-    # NOTE FOR USERS
+    # USER
     def load_view_assembly_items_table(self, assembly: Assembly) -> CustomTableWidget:
         workspace_tags.load_data()
         headers: list[str] = [
@@ -5851,6 +5867,7 @@ class MainWindow(QMainWindow):
                 if not list(workspace_tags.get_value("flow_tag_statuses")[item_flow_tag].keys()):
                     try:
                         button_next_flow_state = QPushButton(self)
+                        button_next_flow_state.setFixedHeight(50)
                         button_next_flow_state.setObjectName("flow_tag_button")
                         button_flow_state_name: str = "Mark as Done!"
                         if "bend" in item_flow_tag.lower():
@@ -5876,6 +5893,7 @@ class MainWindow(QMainWindow):
                         table.item(row_index, col_index).setTextAlignment(Qt.AlignmentFlag.AlignCenter | Qt.AlignmentFlag.AlignVCenter)
                 else:
                     status_box = QComboBox(self)
+                    status_box.setFixedHeight(50)
                     status_box.setObjectName("flow_tag_status_button")
                     status_box.addItems(list(workspace_tags.get_value("flow_tag_statuses")[item_flow_tag].keys()))
                     status_box.setCurrentText(item.get_value("status"))
@@ -5931,7 +5949,7 @@ class MainWindow(QMainWindow):
 
         return table
 
-    # NOTE FOR USERS
+    # USER
     def load_view_assembly_widget(self, assembly: Assembly, workspace_information: dict, group_color: str, parent=None) -> QWidget:
         widget = QWidget(self)
         layout = QVBoxLayout(widget)
@@ -5963,22 +5981,14 @@ class MainWindow(QMainWindow):
             # Add the table widget to the "Items" group box
             grid_widget = QWidget(widget)
             grid = QGridLayout(grid_widget)
-            creation_date = (
-                f"{datetime.strptime(assembly.get_assembly_data(key='date_started'), '%Y-%m-%d %H:%M:%S.%f').strftime('%A, %d %B, %I:%M:%S %p')}"
-            )
 
             timer_widget = QWidget()
             timer_layout = QHBoxLayout(timer_widget)
             timer_layout.setContentsMargins(0, 0, 0, 0)
             timer_widget.setLayout(timer_layout)
 
-            expected_time_to_complete: float = assembly.get_assembly_data(key="expected_time_to_complete")  # days
-            due_date_obj = datetime.strptime(assembly.get_assembly_data(key="date_started"), "%Y-%m-%d %H:%M:%S.%f")
-            delta_time = timedelta(days=expected_time_to_complete)
-            due_date = f"{(due_date_obj+delta_time).strftime('%A, %d %B, %I:%M:%S %p')}"
             grid.setAlignment(Qt.AlignmentFlag.AlignLeft)
-            grid.addWidget(QLabel(f"Job Creation Date: {creation_date}"), 0, 0)
-            grid.addWidget(QLabel(f"Due Date: {due_date}"), 1, 0)
+            grid.addWidget(QLabel(f"Timeline: {assembly.get_assembly_data('starting_date')} to {assembly.get_assembly_data('ending_date')}, ({QDate.fromString(assembly.get_assembly_data('starting_date'), 'yyyy-M-d').daysTo(QDate.fromString(assembly.get_assembly_data('ending_date'), 'yyyy-M-d'))} days)"), 0, 0)
             if assembly.all_sub_assemblies_complete() and assembly.all_items_complete():
                 try:
                     assembly_flow_tag: str = assembly.get_assembly_data(key="flow_tag")[assembly.get_assembly_data(key="current_flow_state")]
@@ -6188,7 +6198,7 @@ class MainWindow(QMainWindow):
             layout.addWidget(sub_assembly_groupbox)
         return widget
 
-    # NOTE FOR USERS
+    # USER
     def load_view_table_summary(self) -> None:
         selected_tab: str = self.tab_widget.tabText(self.tab_widget.currentIndex())
         if selected_tab == "Recut":
@@ -6439,6 +6449,7 @@ class MainWindow(QMainWindow):
                 if not list(workspace_tags.get_value("flow_tag_statuses")[item_flow_tag].keys()):
                     try:
                         button_next_flow_state = QPushButton(self)
+                        button_next_flow_state.setFixedHeight(50)
                         button_next_flow_state.setObjectName("flow_tag_button")
                         button_flow_state_name: str = "Mark as Done!"
                         if "bend" in item_flow_tag.lower():
@@ -6462,6 +6473,7 @@ class MainWindow(QMainWindow):
                         table.item(row_index, col_index).setTextAlignment(Qt.AlignmentFlag.AlignCenter | Qt.AlignmentFlag.AlignVCenter)
                 else:
                     status_box = QComboBox(self)
+                    status_box.setFixedHeight(50)
                     status_box.setObjectName("flow_tag_status_button")
                     status_box.addItems(list(workspace_tags.get_value("flow_tag_statuses")[item_flow_tag].keys()))
                     status_box.setCurrentText(first_item.get_value("status"))
@@ -6538,7 +6550,7 @@ class MainWindow(QMainWindow):
             tab_name=f"{self.tabWidget.tabText(self.tabWidget.currentIndex())} table_summary {self.category}", scroll=scroll_area
         )
 
-    # NOTE FOR USERS
+    # USER
     def load_view_assembly_tab(self) -> None:
         selected_tab: str = self.tab_widget.tabText(self.tab_widget.currentIndex())
         self.workspace_filter["show_recut"] = selected_tab == "Recut"
@@ -6627,8 +6639,316 @@ class MainWindow(QMainWindow):
             self.load_view_table_summary()
         self.load_view_assembly_context_menus()
 
-    #  \/ CONTEXT MENU \/
-    # NOTE FOR USER
+    # PLANNING
+    def load_planning_assembly_items_table(self, assembly: Assembly) -> CustomTableWidget:
+        workspace_tags.load_data()
+        headers: list[str] = ["Name", "Set Date", "Current Timeline"]  # 0  # 1  # 2
+
+        table = CustomTableWidget(self)
+        # table.hideColumn()
+        table.blockSignals(True)
+        table.setRowCount(0)
+        table.setColumnCount(len(headers))
+        table.setFont(self.tables_font)
+        table.setShowGrid(True)
+        table.setHorizontalHeaderLabels(headers)
+        table.setVerticalScrollMode(QAbstractItemView.ScrollMode.ScrollPerPixel)
+        table.setHorizontalScrollMode(QAbstractItemView.ScrollMode.ScrollPerPixel)
+        table.setSelectionBehavior(QAbstractItemView.SelectionBehavior.SelectRows)
+        table.setSelectionMode(QAbstractItemView.SelectionMode.ExtendedSelection)
+
+        item_group = ItemGroup()
+
+        for item in assembly.items:
+            item_group.add_item_to_group(group_name=f'{item.data.get("material")} {item.data.get("thickness")}', item=item)
+
+        def get_date_edit_widget(row_index: int, group_name: str) -> QWidget:
+            widget = QWidget()
+            h_layout = QHBoxLayout(widget)
+            h_layout.setSpacing(0)
+            h_layout.setContentsMargins(0, 0, 0, 0)
+            widget.setLayout(h_layout)
+
+            def set_time_line():
+                timeline_dialog = SelectTimeLineDialog(
+                    self,
+                    button_names=DialogButtons.set_cancel,
+                    title="Set Timeline",
+                    message=f"Set timeline for all items in {group}",
+                    starting_date=item_group.get_item(group).get_value("starting_date"),
+                    ending_date=item_group.get_item(group).get_value("ending_date"),
+                )
+                if timeline_dialog.exec():
+                    if timeline_dialog.get_response() == DialogButtons.set:
+                        timeline = timeline_dialog.get_timeline()
+                        start_time: QDate = timeline[0]
+                        end_time: QDate = timeline[1]
+
+                        string_start_time = start_time.toString("yyyy-M-d")
+                        string_end_time = end_time.toString("yyyy-M-d")
+
+                        for item in item_group.get_item_list(group_name):
+                            item.set_value("starting_date", string_start_time)
+                            item.set_value("ending_date", string_end_time)
+                        user_workspace.save()
+                        self.upload_file(
+                            [
+                                "workspace - User.json",
+                            ],
+                            False,
+                        )
+
+                        table.setItem(
+                            row_index,
+                            2,
+                            QTableWidgetItem(f'{string_start_time} to {string_end_time}, ({start_time.daysTo(end_time)} days)'),
+                        )  # 0
+                    else:
+                        return
+
+            set_date = QPushButton("Set Timeline")
+            set_date.setFixedHeight(50)
+            set_date.setStyleSheet("border-radius: none;")
+            set_date.clicked.connect(set_time_line)
+
+            h_layout.addWidget(set_date)
+
+            return widget
+
+        def add_item(row_index: int, group: str):
+            col_index: int = 0
+            table.insertRow(row_index)
+            table.setRowHeight(row_index, 50)
+            items_count = len(item_group.get_item_list(group))
+            table.setItem(row_index, col_index, QTableWidgetItem(f'{group} - ({items_count} item{"s" if items_count > 1 else ""})'))  # 0
+            items_tool_tip: str = ""
+            for i, item in enumerate(item_group.get_item_list(group), start=1):
+                items_tool_tip += f"{i}. {item.name}\n"
+            table.item(row_index, col_index).setToolTip(items_tool_tip)
+            col_index += 1
+            table.setCellWidget(row_index, col_index, get_date_edit_widget(row_index, group))  # 4
+            col_index += 1
+            table.setItem(
+                row_index,
+                col_index,
+                QTableWidgetItem(f'{item_group.get_item(group).get_value("starting_date")} to {item_group.get_item(group).get_value("ending_date")}, ({QDate.fromString(item_group.get_item(group).get_value("starting_date"), "yyyy-M-d").daysTo(QDate.fromString(item_group.get_item(group).get_value("ending_date"), "yyyy-M-d"))} days)'),
+            )  # 0
+            table.resizeColumnsToContents()
+
+        row_index: int = 0
+        for group in item_group.data:
+            add_item(row_index, group)
+            row_index += 1
+        if row_index == 0:
+            return QLabel("No Items to Show", self)
+
+        table.blockSignals(False)
+        table.resizeColumnsToContents()
+        self.workspace_tables[table] = assembly
+        # header = table.horizontalHeader()
+        # header.setSectionResizeMode(0, QHeaderView.ResizeMode.Fixed)  # Set the first column to Fixed
+
+        return table
+
+    # PLANNING
+    def load_planning_assembly_widget(self, assembly: Assembly, workspace_information: dict, group_color: str, parent=None) -> QWidget:
+        widget = QWidget(self)
+        layout = QVBoxLayout(widget)
+        layout.setSpacing(1)
+        layout.setContentsMargins(1, 1, 1, 1)
+        h_layout = QHBoxLayout()
+        h_layout.setAlignment(Qt.AlignmentFlag.AlignLeft)
+        layout.addLayout(h_layout)
+        # widget.setLayout(h_layout)
+        timer_widget = QWidget()
+        timer_layout = QHBoxLayout(timer_widget)
+        timer_layout.setContentsMargins(0, 0, 0, 0)
+        timer_widget.setLayout(timer_layout)
+        # Create the "Items" group box
+        items_groupbox = QGroupBox("Items")
+        # items_groupbox.setMinimumHeight(500)
+        items_layout = QVBoxLayout()
+        items_layout.setAlignment(Qt.AlignmentFlag.AlignTop)
+        items_groupbox.setLayout(items_layout)
+
+        # Create and configure the table widget
+        if assembly.get_assembly_data("has_items"):
+            table_widget = self.load_planning_assembly_items_table(assembly)
+            table_widget.setFixedHeight(40 * (len(assembly.items) + 2))
+            # if isinstance(table_widget, QLabel): # Its empty
+            #     return QLabel("Empty", self)
+
+        def get_grid_widget() -> QWidget:
+            # Add the table widget to the "Items" group box
+            grid_widget = QWidget(widget)
+            grid = QGridLayout(grid_widget)
+            grid.setAlignment(Qt.AlignmentFlag.AlignLeft)
+            timeline_label = QLabel(f"{assembly.get_assembly_data('starting_date')} to {assembly.get_assembly_data('ending_date')}, ({QDate.fromString(assembly.get_assembly_data('starting_date'), 'yyyy-M-d').daysTo(QDate.fromString(assembly.get_assembly_data('ending_date'), 'yyyy-M-d'))} days)")
+            def set_time_line():
+                timeline_dialog = SelectTimeLineDialog(
+                    self,
+                    button_names=DialogButtons.set_cancel,
+                    title="Set Timeline",
+                    message=f"Set timeline for sub assembly: {assembly.name}",
+                    starting_date=assembly.get_assembly_data("starting_date"),
+                    ending_date=assembly.get_assembly_data("ending_date"),
+                )
+                if timeline_dialog.exec():
+                    if timeline_dialog.get_response() == DialogButtons.set:
+                        timeline = timeline_dialog.get_timeline()
+                        start_time: QDate = timeline[0]
+                        end_time: QDate = timeline[1]
+
+                        string_start_time = start_time.toString("yyyy-M-d")
+                        string_end_time = end_time.toString("yyyy-M-d")
+
+                        assembly.set_assembly_data('starting_date', string_start_time)
+                        assembly.set_assembly_data('ending_date', string_end_time)
+
+                        user_workspace.save()
+                        self.upload_file(
+                            [
+                                "workspace - User.json",
+                            ],
+                            False,
+                        )
+
+                        timeline_label.setText(f"{string_start_time} to {string_end_time}, ({start_time.daysTo(end_time)} days)")
+                    else:
+                        return
+
+            set_date = QPushButton("Set Timeline")
+            set_date.clicked.connect(set_time_line)
+            grid.addWidget(set_date, 0, 1)
+            grid.addWidget(timeline_label, 0, 2)
+
+            return grid_widget
+
+        grid_widget = get_grid_widget()
+
+        if assembly.get_assembly_data("has_items"):
+            items_layout.addWidget(table_widget)
+        h_layout.addWidget(grid_widget)
+        # Create the MultiToolBox for sub assemblies
+        workspace_information.setdefault(assembly.name, {"tool_box": None, "sub_assemblies": {}})
+        try:
+            workspace_information[assembly.name]["tool_box"] = workspace_information[assembly.name]["tool_box"].get_widget_visibility()
+            saved_workspace_prefs = True
+        except (AttributeError, RuntimeError):
+            saved_workspace_prefs = False
+        sub_assemblies_toolbox = MultiToolBox(widget)
+        sub_assemblies_toolbox.layout().setSpacing(0)
+        # if assembly.get_assembly_data("has_sub_assemblies"):
+        sub_assembly_groupbox = QGroupBox("Sub Assemblies")
+        sub_assembly_groupbox_layout = QVBoxLayout()
+        sub_assembly_groupbox.setLayout(sub_assembly_groupbox_layout)
+        # Add the sub assemblies MultiToolBox to the main layout
+        sub_assembly_groupbox_layout.addWidget(sub_assemblies_toolbox)
+        # if len(assembly.sub_assemblies) > 0:
+        if assembly.get_assembly_data("has_items"):
+            layout.addWidget(items_groupbox)
+        # added_items_group_widget = True
+        # if not added_sub_assemblies_group_widget:
+        # added_sub_assemblies_group_widget = True
+        for i, sub_assembly in enumerate(assembly.sub_assemblies):
+            if sub_assembly.get_assembly_data(key="show") == True and sub_assembly.get_assembly_data(key="completed") == False:
+                sub_assembly_widget = self.load_planning_assembly_widget(
+                    assembly=sub_assembly, workspace_information=workspace_information[assembly.name]["sub_assemblies"], group_color=group_color
+                )
+                sub_assemblies_toolbox.addItem(sub_assembly_widget, f"{sub_assembly.name}", base_color=group_color)
+                # sub_assemblies_toolbox.close(i)
+        sub_assemblies_toolbox.close_all()
+        if saved_workspace_prefs:
+            sub_assemblies_toolbox.set_widgets_visibility(workspace_information[assembly.name]["tool_box"])
+        workspace_information[assembly.name]["tool_box"] = sub_assemblies_toolbox
+        if len(sub_assemblies_toolbox.widgets) > 0:
+            layout.addWidget(sub_assembly_groupbox)
+        return widget
+
+    # PLANNING
+    def load_planning_assembly_tab(self) -> None:
+        self.workspace_information.setdefault("Planning", {"group_tool_box": None})
+        try:
+            self.workspace_information["Planning"]["group_tool_box"] = self.workspace_information["Planning"][
+                "group_tool_box"
+            ].get_widget_visibility()
+            saved_workspace_prefs = True
+        except (AttributeError, RuntimeError):
+            saved_workspace_prefs = False
+        with contextlib.suppress(AttributeError):
+            self.workspace_filter_tab_widget.clear_selections("Flow Tags")
+        scroll_area = QScrollArea()
+
+        def save_scroll_position(tab_name: str, scroll: QScrollArea):
+            self.scroll_position_manager.save_scroll_position(tab_name=tab_name, scroll=scroll)
+
+        scroll_area.verticalScrollBar().valueChanged.connect(
+            partial(save_scroll_position, f"{self.tabWidget.tabText(self.tabWidget.currentIndex())} Planning", scroll_area)
+        )
+        scroll_area.horizontalScrollBar().valueChanged.connect(
+            partial(save_scroll_position, f"{self.tabWidget.tabText(self.tabWidget.currentIndex())} Planning", scroll_area)
+        )
+        scroll_area.setWidgetResizable(True)
+        scroll_content = QWidget(self)
+        scroll_layout = QVBoxLayout(scroll_content)
+        scroll_layout.setContentsMargins(0, 0, 0, 0)
+        scroll_layout.setSpacing(1)
+        scroll_area.setWidget(scroll_content)
+        filtered_data = user_workspace.get_filtered_data(self.workspace_filter)
+        group_tool_boxes: dict[str, QWidget] = {}
+        group_tool_box = MultiToolBox(scroll_content)
+        for group in user_workspace.get_all_groups():
+            group_widget = QWidget()
+            group_layout = QVBoxLayout(group_widget)
+            group_widget.setLayout(group_layout)
+            group_tool_box.addItem(group_widget, group, base_color=user_workspace.get_group_color(group))
+            group_tool_boxes[group] = group_widget
+            self.workspace_information["Planning"].setdefault(group, {"tool_box": None, "sub_assemblies": {}, "group_tool_box": None})
+        group_tool_box.close_all()
+        if saved_workspace_prefs:
+            group_tool_box.set_widgets_visibility(self.workspace_information["Planning"]["group_tool_box"])
+        self.workspace_information["Planning"]["group_tool_box"] = group_tool_box
+        if len(group_tool_box.buttons) == 0:
+            scroll_layout.addWidget(QLabel("Nothing to show.", self))
+        else:
+            scroll_layout.addWidget(group_tool_box)
+        grouped_data = user_workspace.get_grouped_data()
+        for group in grouped_data:
+            try:
+                self.workspace_information["Planning"][group]["tool_box"] = self.workspace_information["Planning"][group][
+                    "tool_box"
+                ].get_widget_visibility()
+                saved_workspace_prefs = True
+            except (AttributeError, RuntimeError):
+                saved_workspace_prefs = False
+            multi_tool_box = MultiToolBox()
+            multi_tool_box.layout().setSpacing(0)
+            for assembly in grouped_data[group]:
+                if assembly.get_assembly_data(key="show") == True and assembly.get_assembly_data(key="completed") == False:
+                    assembly_widget = self.load_planning_assembly_widget(
+                        assembly=assembly,
+                        workspace_information=self.workspace_information["Planning"][group]["sub_assemblies"],
+                        group_color=user_workspace.get_group_color(group),
+                    )
+                    multi_tool_box.addItem(
+                        assembly_widget,
+                        f'{assembly.get_assembly_data(key="display_name")} - Items: {user_workspace.get_completion_percentage(assembly)[0]*100}% - Assemblies: {user_workspace.get_completion_percentage(assembly)[1]*100}%',
+                        base_color=user_workspace.get_group_color(group),
+                    )
+            group_tool_boxes[group].layout().addWidget(multi_tool_box)
+            multi_tool_box.close_all()
+            if saved_workspace_prefs:
+                multi_tool_box.set_widgets_visibility(self.workspace_information["Planning"][group]["tool_box"])
+            # else:
+
+            self.workspace_information["Planning"][group]["tool_box"] = multi_tool_box
+        self.tab_widget.currentWidget().layout().addWidget(scroll_area)
+        self.scroll_position_manager.restore_scroll_position(
+            tab_name=f"{self.tabWidget.tabText(self.tabWidget.currentIndex())} Planning", scroll=scroll_area
+        )
+
+    # * \/ CONTEXT MENU \/
+    # USER
     def move_selected_table_items_to_next_flow_state(self, table: CustomTableWidget, assembly: Assembly | ItemGroup) -> None:
         """
         The function moves selected items from a table to the next flow state in an assembly, updating
@@ -6674,6 +6994,7 @@ class MainWindow(QMainWindow):
         self.sync_changes()
         self.load_workspace()
 
+    # USER
     def change_selected_table_items_status(self, table: CustomTableWidget, assembly: Assembly | ItemGroup, status: str) -> None:
         """
         The function `change_selected_table_items_status` updates the status of selected items in a
@@ -6736,6 +7057,7 @@ class MainWindow(QMainWindow):
         self.sync_changes()
         self.load_workspace()
 
+    # USER
     def download_all_selected_items_files(self, table: CustomTableWidget, assembly: Assembly | ItemGroup) -> None:
         selected_items_from_table: list[str] = self.get_all_selected_parts(table)
         if isinstance(assembly, Assembly):
@@ -6747,7 +7069,7 @@ class MainWindow(QMainWindow):
 
         print("in progress")
 
-    # NOTE FOR USERS
+    # USER
     def load_view_assembly_context_menus(self) -> None:
         """
         The function `load_view_assembly_context_menus` sets up custom context menus for tables in a
@@ -6774,9 +7096,7 @@ class MainWindow(QMainWindow):
                     menu.addAction(download_action)
                     table.customContextMenuRequested.connect(partial(self.open_group_menu, menu))
 
-    # /\ CONTEXT MENU /\
-    #  \/ CONTEXT MENU \/
-    # NOTE FOR STAGING
+    # STAGING
     def copy_items_to(self, table: CustomTableWidget, assembly_copy_from: Assembly, assembly_copy_to: Assembly) -> None:
         """
         The function copies selected items from one assembly to another assembly, checking for duplicates and saving the changes.
@@ -6807,7 +7127,7 @@ class MainWindow(QMainWindow):
         self.sync_changes()
         self.load_workspace()
 
-    # NOTE FOR STAGING
+    # STAGING
     def move_items_to(self, table: CustomTableWidget, assembly_copy_from: Assembly, assembly_copy_to: Assembly) -> None:
         """
         The function moves selected items from one assembly to another assembly, checking for duplicates and saving the changes.
@@ -6839,7 +7159,7 @@ class MainWindow(QMainWindow):
         self.sync_changes()
         self.load_workspace()
 
-    # NOTE FOR STAGING
+    # STAGING
     def delete_selected_items_from_workspace(self, table: CustomTableWidget, assembly: Assembly) -> None:
         """
         The function deletes selected items from a workspace by clicking on the delete buttons
@@ -6862,7 +7182,20 @@ class MainWindow(QMainWindow):
         for delete_button in delete_buttons:
             delete_button.click()
 
-    # NOTE FOR STAGING
+    # TODO NOTE FOR STAGING
+    def generate_workorder_with_selected_items(self, table: CustomTableWidget, assembly: Assembly) -> None:
+        selected_indexes = table.selectedIndexes()
+        selected_rows = list({selected_index.row() for selected_index in selected_indexes})
+        selected_items: list[Item] = []
+        for item in assembly.items:
+            for row in selected_rows:
+                if item.name == table.item(row, 0).text():
+                    selected_items.append(item)
+                    continue
+
+        print(selected_items)
+
+    # STAGING
     def set_tables_selected_items_value(self, table: CustomTableWidget, assembly: Assembly, key: str, value: Any) -> None:
         """
         The function sets the value of a specific key for selected items in a table, based on the
@@ -6897,7 +7230,7 @@ class MainWindow(QMainWindow):
         self.sync_changes()
         self.load_workspace()
 
-    # NOTE FOR STAGING
+    # STAGING
     def load_edit_assembly_context_menus(self) -> None:
         """
         The function `load_edit_assembly_context_menus` sets up the context menus for a table in a GUI
@@ -6909,6 +7242,10 @@ class MainWindow(QMainWindow):
                 if table.contextMenuPolicy() != Qt.ContextMenuPolicy.CustomContextMenu:
                     table.setContextMenuPolicy(Qt.ContextMenuPolicy.CustomContextMenu)
                     menu = QMenu(self)
+                    generate_workrder = QAction("Generate Workorder with Selected Items", self)
+                    generate_workrder.triggered.connect(partial(self.generate_workorder_with_selected_items, table, main_assembly))
+                    menu.addSeparator()
+                    menu.addAction(generate_workrder)
                     copy_to_menu = QMenu(self)
                     copy_to_menu.setTitle("Copy items to")
                     move_to_menu = QMenu(self)
@@ -7009,22 +7346,30 @@ class MainWindow(QMainWindow):
                     delete_selected_items.triggered.connect(partial(self.delete_selected_items_from_workspace, table, main_assembly))
                     menu.addSeparator()
                     menu.addAction(delete_selected_items)
+
                     # action = QAction(self)
                     # action.triggered.connect(partial(self.name_change, table))
                     # action.setText("Change part name")
                     # menu.addAction(action)
                     table.customContextMenuRequested.connect(partial(self.open_group_menu, menu))
 
-    # /\ CONTEXT MENU /\
+    # * /\ CONTEXT MENU /\
 
     # NOTE WORKSPACE
     def load_workspace(self) -> None:
         admin_workspace.load_data()
         user_workspace.load_data()
-        if self.category == "Staging":
+        if self.category == "Staging" or self.category == 'Editing':
+            if self.category == 'Staging':
+                active_workspace_file = admin_workspace
+            else:
+                active_workspace_file = user_workspace
             start = datetime.now()
             self.pushButton_add_job.setHidden(False)
+            self.pushButton_generate_workorder.setHidden(False)
             self.pushButton_use_filter.setEnabled(True)
+            self.pushButton_show_item_summary.setEnabled(True)
+            self.pushButton_show_sub_assembly.setEnabled(True)
             self.workspace_tables.clear()
             QApplication.setOverrideCursor(Qt.CursorShape.BusyCursor)
             self.tab_widget.widget(self.tab_widget.currentIndex())
@@ -7033,11 +7378,29 @@ class MainWindow(QMainWindow):
             self.load_edit_assembly_context_menus()
             QApplication.restoreOverrideCursor()
             print(datetime.now() - start)
+        elif self.category == "Planning":
+            self.workspace_tables.clear()
+            self.pushButton_add_job.setHidden(True)
+            self.pushButton_generate_workorder.setHidden(True)
+            self.pushButton_use_filter.setEnabled(False)
+            self.pushButton_use_filter.setChecked(False)
+            self.pushButton_show_item_summary.setEnabled(False)
+            self.pushButton_show_sub_assembly.setEnabled(False)
+            self.pushButton_show_item_summary.setChecked(False)
+            self.pushButton_show_sub_assembly.setChecked(True)
+            QApplication.setOverrideCursor(Qt.CursorShape.BusyCursor)
+            self.tab_widget.widget(self.tab_widget.currentIndex())
+            self.clear_layout(self.tab_widget.currentWidget().layout())
+            self.load_planning_assembly_tab()
+            QApplication.restoreOverrideCursor()
         else:
             self.workspace_tables.clear()
             self.pushButton_add_job.setHidden(True)
+            self.pushButton_generate_workorder.setHidden(True)
             self.pushButton_use_filter.setEnabled(False)
             self.pushButton_use_filter.setChecked(True)
+            self.pushButton_show_item_summary.setEnabled(True)
+            self.pushButton_show_sub_assembly.setEnabled(True)
             QApplication.setOverrideCursor(Qt.CursorShape.BusyCursor)
             self.tab_widget.widget(self.tab_widget.currentIndex())
             self.clear_layout(self.tab_widget.currentWidget().layout())
@@ -7151,8 +7514,11 @@ class MainWindow(QMainWindow):
             cutoff_items.clear()
             price_of_steel_inventory.load_data()
             cutoff_sheets = price_of_steel_inventory.get_value("Cutoff")
-            for sheet in list(cutoff_sheets.keys()):
-                cutoff_items.addItem(sheet)
+            grouped_data = parts_in_inventory.sort_by_multiple_tags(category=cutoff_sheets, tags_ids=["material"])
+            for group in grouped_data:
+                cutoff_items.addItem(f"\t             {group.replace(';', '')}")
+                for sheet in list(grouped_data[group].keys()):
+                    cutoff_items.addItem(sheet)
 
     def load_previous_nest_tree_view(self, data: dict[str, dict[str, Any]]) -> None:
         """

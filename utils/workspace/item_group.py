@@ -7,6 +7,17 @@ class ItemGroup:
     def __init__(self) -> None:
         self.data: dict[str, list[Item]] = {}
 
+    def add_item_to_group(self, group_name: str, item: Item) -> None:
+        """
+        The function adds an item to a group in a data structure.
+
+        Args:
+          group_name (str): A string representing the name of the group to which the item will be added.
+          item (Item): The "item" parameter is of type "Item". It represents the item that you want to
+        add to a group.
+        """
+        self.data.setdefault(group_name, []).append(item)
+
     def add_item(self, item: Item) -> None:
         """
         The function adds an item to a dictionary, using the item's name as the key and appending the
