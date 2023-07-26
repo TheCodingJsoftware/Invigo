@@ -3648,7 +3648,7 @@
         },
         "Washer 5\/16\" Spring Lock": {
             "part_number": "W516SL",
-            "unit_quantity": 3.0,
+            "unit_quantity": 4.0,
             "current_quantity": -100,
             "price": 0.05,
             "use_exchange_rate": false,
