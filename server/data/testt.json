@@ -1895,7 +1895,7 @@
         },
         "1 1\/2 x 1 1\/4 Elbow": {
             "part_number": "112E",
-            "unit_quantity": 1.0,
+            "unit_quantity": 2.0,
             "current_quantity": -2,
             "price": 4.0,
             "use_exchange_rate": false,
