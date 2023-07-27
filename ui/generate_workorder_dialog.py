@@ -62,6 +62,7 @@ class GenerateWorkorderDialog(QDialog):
         self.job_names = job_names
 
         self.setWindowFlags(Qt.WindowType.Window | Qt.WindowType.FramelessWindowHint)
+        self.setAttribute(Qt.WidgetAttribute.WA_TranslucentBackground, True)
         self.setWindowIcon(QIcon("icons/icon.png"))
 
         self.lblTitle.setText(self.title)

@@ -164,7 +164,7 @@ class EditStatusesDialog(QDialog):
         Returns:
           A QSvgWidget object.
         """
-        return QSvgWidget(f"ui/BreezeStyleSheets/dist/pyqt6/{self.theme}/{path_to_icon}")
+        return QSvgWidget(f"icons/{path_to_icon}")
 
     def clear_layout(self, layout) -> None:
         """

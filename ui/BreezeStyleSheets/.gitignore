@@ -1,6 +1,0 @@
-# NOTE: this file is auto-generated via `git.py`
-# DO NOT MANUALLY EDIT THIS FILE.
-__pycache__
-*.pyc
-*.qrc
-!breeze.qrc

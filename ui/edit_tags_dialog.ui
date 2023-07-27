@@ -2,16 +2,22 @@
 <ui version="4.0">
  <class>Form</class>
  <widget class="QDialog" name="Form">
+  <property name="windowModality">
+   <enum>Qt::ApplicationModal</enum>
+  </property>
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>904</width>
-    <height>674</height>
+    <width>1183</width>
+    <height>965</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Form</string>
+  </property>
+  <property name="sizeGripEnabled">
+   <bool>true</bool>
   </property>
   <layout class="QHBoxLayout" name="horizontalLayout">
    <property name="spacing">
@@ -125,7 +131,7 @@
                <rect>
                 <x>0</x>
                 <y>0</y>
-                <width>838</width>
+                <width>1117</width>
                 <height>98</height>
                </rect>
               </property>
@@ -190,6 +196,9 @@
             <property name="title">
              <string>Create Flow Tags</string>
             </property>
+            <property name="alignment">
+             <set>Qt::AlignCenter</set>
+            </property>
             <layout class="QVBoxLayout" name="verticalLayout_7">
              <item alignment="Qt::AlignTop">
               <widget class="QScrollArea" name="scrollArea_2">
@@ -203,14 +212,14 @@
                 <bool>true</bool>
                </property>
                <property name="alignment">
-                <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+                <set>Qt::AlignHCenter|Qt::AlignTop</set>
                </property>
                <widget class="QWidget" name="scrollAreaWidgetContents_2">
                 <property name="geometry">
                  <rect>
                   <x>0</x>
                   <y>0</y>
-                  <width>862</width>
+                  <width>1141</width>
                   <height>548</height>
                  </rect>
                 </property>
@@ -223,17 +232,27 @@
               </widget>
              </item>
              <item>
-              <widget class="QPushButton" name="pushButton_create_flow_tag">
-               <property name="maximumSize">
-                <size>
-                 <width>16777215</width>
-                 <height>16777215</height>
-                </size>
-               </property>
-               <property name="text">
-                <string>Create New Flow Tag</string>
-               </property>
-              </widget>
+              <layout class="QHBoxLayout" name="horizontalLayout_5">
+               <item>
+                <widget class="QPushButton" name="pushButton_create_new_group">
+                 <property name="minimumSize">
+                  <size>
+                   <width>0</width>
+                   <height>0</height>
+                  </size>
+                 </property>
+                 <property name="maximumSize">
+                  <size>
+                   <width>120</width>
+                   <height>16777215</height>
+                  </size>
+                 </property>
+                 <property name="text">
+                  <string>Create New Group</string>
+                 </property>
+                </widget>
+               </item>
+              </layout>
              </item>
             </layout>
            </widget>
@@ -314,14 +333,24 @@
                    </widget>
                   </item>
                   <item>
-                   <widget class="QPushButton" name="pushButton_add_status">
-                    <property name="focusPolicy">
-                     <enum>Qt::NoFocus</enum>
-                    </property>
-                    <property name="text">
-                     <string>Add New Status</string>
-                    </property>
-                   </widget>
+                   <layout class="QHBoxLayout" name="horizontalLayout_6">
+                    <item>
+                     <widget class="QPushButton" name="pushButton_add_status">
+                      <property name="maximumSize">
+                       <size>
+                        <width>100</width>
+                        <height>16777215</height>
+                       </size>
+                      </property>
+                      <property name="focusPolicy">
+                       <enum>Qt::NoFocus</enum>
+                      </property>
+                      <property name="text">
+                       <string>Add New Status</string>
+                      </property>
+                     </widget>
+                    </item>
+                   </layout>
                   </item>
                  </layout>
                 </widget>
@@ -343,7 +372,7 @@
                     <property name="minimumSize">
                      <size>
                       <width>0</width>
-                      <height>120</height>
+                      <height>150</height>
                      </size>
                     </property>
                     <property name="widgetResizable">
@@ -354,8 +383,8 @@
                       <rect>
                        <x>0</x>
                        <y>0</y>
-                       <width>128</width>
-                       <height>118</height>
+                       <width>178</width>
+                       <height>148</height>
                       </rect>
                      </property>
                      <layout class="QVBoxLayout" name="verticalLayout_13">

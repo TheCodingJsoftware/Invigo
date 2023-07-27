@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>428</width>
-    <height>499</height>
+    <width>320</width>
+    <height>468</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -44,6 +44,7 @@
 	border-top-right-radius:10px;
 	border-bottom-right-radius:10px;
 	border: 1px solid  #3daee9;
+	background-color: #19232D;
 }</string>
      </property>
      <layout class="QVBoxLayout" name="verticalLayout_3" stretch="0,0">
@@ -145,7 +146,7 @@ border-bottom: none;</string>
               <rect>
                <x>0</x>
                <y>0</y>
-               <width>378</width>
+               <width>270</width>
                <height>69</height>
               </rect>
              </property>
@@ -191,7 +192,14 @@ border-bottom: none;</string>
          </layout>
         </item>
         <item>
-         <widget class="QCalendarWidget" name="calendarWidget"/>
+         <widget class="QCalendarWidget" name="calendarWidget">
+          <property name="gridVisible">
+           <bool>true</bool>
+          </property>
+          <property name="verticalHeaderFormat">
+           <enum>QCalendarWidget::NoVerticalHeader</enum>
+          </property>
+         </widget>
         </item>
         <item>
          <layout class="QHBoxLayout" name="buttonsLayout"/>

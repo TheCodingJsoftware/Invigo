@@ -14,7 +14,7 @@ class ChangesThread(QThread):
 
     signal = pyqtSignal(object)
 
-    def __init__(self, files_to_download: list[str]) -> None:
+    def __init__(self, parent, files_to_download: list[str]) -> None:
         """
         The function is used to download a file from a server
 
@@ -47,3 +47,6 @@ class ChangesThread(QThread):
             except Exception as error:
                 with contextlib.suppress(AttributeError):
                     self.signal.emit(error)
+
+    def quit(self) -> None:
+        self.websocket.close()

@@ -1,5 +1,6 @@
-import copy
 import contextlib
+import copy
+import itertools
 import os
 import sys
 import typing
@@ -7,9 +8,11 @@ from datetime import datetime, timedelta
 from functools import partial
 
 from natsort import natsorted
+from PyQt6 import QtCore, QtGui
 from PyQt6.QtCore import (
     QAbstractItemModel,
     QAbstractTableModel,
+    QDate,
     QDateTime,
     QEvent,
     QMargins,
@@ -33,6 +36,7 @@ from PyQt6.QtGui import (
     QDrag,
     QDragEnterEvent,
     QDragLeaveEvent,
+    QDragMoveEvent,
     QDropEvent,
     QFileSystemModel,
     QIcon,
@@ -42,11 +46,13 @@ from PyQt6.QtGui import (
     QRegularExpressionValidator,
     QStandardItem,
     QStandardItemModel,
+    QTextCharFormat,
 )
 from PyQt6.QtWidgets import (
     QAbstractItemView,
     QAbstractSpinBox,
     QApplication,
+    QCalendarWidget,
     QCheckBox,
     QComboBox,
     QDialog,
@@ -75,6 +81,7 @@ from PyQt6.QtWidgets import (
     QTableWidgetItem,
     QTabWidget,
     QToolBox,
+    QToolButton,
     QTreeView,
     QTreeWidget,
     QTreeWidgetItem,
@@ -82,17 +89,137 @@ from PyQt6.QtWidgets import (
     QWidget,
 )
 
+from utils.colors import darken_color, lighten_color
 from utils.workspace.assembly import Assembly
 from utils.workspace.item import Item
-from utils.colors import lighten_color, darken_color
+
+
+class SelectRangeCalendar(QCalendarWidget):
+    def __init__(self, parent=None):
+        super(SelectRangeCalendar, self).__init__(parent)
+        self.setObjectName("select_range_calendar")
+        self.setVerticalHeaderFormat(QCalendarWidget.VerticalHeaderFormat.NoVerticalHeader)
+        self.from_date: QDate = None
+        self.to_date: QDate = None
+
+        self.highlighter_format = QTextCharFormat()
+        # get the calendar default highlight setting
+        self.highlighter_format.setBackground(QColor("#3daee9"))
+        self.highlighter_format.setForeground(QColor("white"))
+        self.highlighter_format.setFontWeight(400)
+
+        # this will pass selected date value as a QDate object
+        self.clicked.connect(self.select_range)
+
+        self.load_theme()
+        super().dateTextFormat()
+
+    def get_timeline(self) -> tuple[QDate, QDate]:
+        """
+        The function `get_timeline` returns a tuple containing the `from_date` and `to_date` attributes.
+
+        Returns:
+          A tuple containing the values of `self.from_date` and `self.to_date`.
+        """
+        return (self.from_date, self.to_date)
+
+    def load_theme(self):
+        weekend_format = QTextCharFormat()
+        weekend_format.setForeground(QColor("black"))  # Set the desired color
+        weekend_format.setBackground(QColor(44, 44, 44, 130))
+        weekday_format = QTextCharFormat()
+        weekday_format.setForeground(QColor("white"))  # Set the desired color
+        weekday_format.setBackground(QColor(65, 65, 65, 150))
+
+        self.setWeekdayTextFormat(Qt.DayOfWeek.Sunday, weekend_format)
+        self.setWeekdayTextFormat(Qt.DayOfWeek.Saturday, weekend_format)
+        self.setWeekdayTextFormat(Qt.DayOfWeek.Monday, weekday_format)
+        self.setWeekdayTextFormat(Qt.DayOfWeek.Tuesday, weekday_format)
+        self.setWeekdayTextFormat(Qt.DayOfWeek.Wednesday, weekday_format)
+        self.setWeekdayTextFormat(Qt.DayOfWeek.Thursday, weekday_format)
+        self.setWeekdayTextFormat(Qt.DayOfWeek.Friday, weekday_format)
+
+    def highlight_range(self, format):
+        if self.from_date and self.to_date:
+            d1: QDate = min(self.from_date, self.to_date)
+            d2: QDate = max(self.from_date, self.to_date)
+            while d1 <= d2:
+                self.setDateTextFormat(d1, format)
+                d1 = d1.addDays(1)
+
+    def select_range(self, date_value: QDate):
+        self.highlight_range(QTextCharFormat())
+
+        # check if a keyboard modifer is pressed
+        if QApplication.keyboardModifiers() & Qt.KeyboardModifier.ShiftModifier and self.from_date:
+            self.to_date = date_value
+            if self.to_date < self.from_date:
+                self.to_date, self.from_date = self.from_date, self.to_date
+            self.highlight_range(self.highlighter_format)
+        else:
+            # required
+            self.from_date = date_value
+            self.to_date: QDate = None
+
+    def set_range(self, date_value: QDate):
+        self.highlight_range(QTextCharFormat())
+        self.to_date = date_value
+        if self.to_date < self.from_date:
+            self.to_date, self.from_date = self.from_date, self.to_date
+        self.highlight_range(self.highlighter_format)
+
+
+class ItemsGroupBox(QGroupBox):
+    filesDropped = pyqtSignal(list)
+
+    def __init__(self, parent: QWidget | None = ...) -> None:
+        super(ItemsGroupBox, self).__init__(parent)
+        self.setTitle("Items")
+        self.setObjectName("items_group_box")
+
+    def dragEnterEvent(self, event: QDragEnterEvent) -> None:
+        if event.mimeData().hasUrls:
+            for url in event.mimeData().urls():
+                if str(url.toLocalFile()).endswith(".xlsx"):
+                    self.setStyleSheet("QGroupBox#items_group_box {background-color: rgba(29, 185, 84, 100);}")
+                else:
+                    self.setStyleSheet("QGroupBox#items_group_box {background-color: rgba(229, 9, 20, 100);}")
+            event.accept()
+        else:
+            event.ignore()
+
+    def dragMoveEvent(self, event: QDragMoveEvent) -> None:
+        if event.mimeData().hasUrls:
+            for url in event.mimeData().urls():
+                if str(url.toLocalFile()).endswith(".xlsx"):
+                    event.setDropAction(Qt.DropAction.CopyAction)
+                    event.accept()
+                else:
+                    event.ignore()
+        else:
+            event.ignore()
+
+    def dragLeaveEvent(self, event: QDragLeaveEvent) -> None:
+        self.setStyleSheet("QGroupBox#items_group_box {}")
+        return super().dragLeaveEvent(event)
+
+    def dropEvent(self, event: QDropEvent) -> None:
+        if event.mimeData().hasUrls:
+            event.setDropAction(Qt.DropAction.CopyAction)
+            event.accept()
+            self.setStyleSheet("QGroupBox#items_group_box {}")
+            for url in event.mimeData().urls():
+                if str(url.toLocalFile()).endswith(".xlsx"):
+                    files = [str(url.toLocalFile()) for url in event.mimeData().urls()]
+                    self.filesDropped.emit(files)
+            event.ignore()
 
 
 class FilterTabWidget(QWidget):
     filterButtonPressed = pyqtSignal()
 
-    def __init__(self, columns: int):
-        super().__init__()
-
+    def __init__(self, columns: int, parent: QWidget | None = ...) -> None:
+        super(FilterTabWidget, self).__init__(parent)
         self.tab_widget = QTabWidget()
         self.show_all_tab = QWidget(self)
         self.num_columns = columns
@@ -839,16 +966,14 @@ QPushButton:!checked:pressed#edit_sheet_nest_button {
             % {"base_color": base_color}
         )
 
-        delete_button = DeletePushButton(
-            parent=widget, tool_tip=f"Delete {title} forever", icon=QIcon("ui/BreezeStyleSheets/dist/pyqt6/dark/trash.png")
-        )
+        delete_button = DeletePushButton(parent=widget, tool_tip=f"Delete {title} forever", icon=QIcon("icons/trash.png"))
         delete_button.setStyleSheet("border-radius: 0.001em; border-top-right-radius: 8px; border-bottom-right-radius: 8px;")
         delete_button.setFixedWidth(33)
         delete_button.setFixedHeight(34)
         duplicate_button = QPushButton()
         duplicate_button.setFixedHeight(34)
         duplicate_button.setStyleSheet("border-radius: none; border: none;")
-        duplicate_button.setIcon(QIcon(r"F:\Code\Python-Projects\Inventory Manager\ui\BreezeStyleSheets\dist\pyqt6\dark\duplicate.png"))
+        duplicate_button.setIcon(QIcon("icons/duplicate.png"))
         duplicate_button.setFixedWidth(35)
         duplicate_button.setToolTip(f"Duplicate {title}")
 
@@ -863,6 +988,7 @@ QPushButton:!checked:pressed#edit_sheet_nest_button {
         hlaout.addWidget(duplicate_button)
         hlaout.addWidget(delete_button)
         layout = QVBoxLayout(_widget)
+        layout.setAlignment(Qt.AlignmentFlag.AlignTop)
         layout.setSpacing(0)
         layout.setContentsMargins(0, 0, 0, 0)
         layout.addLayout(hlaout)
@@ -878,7 +1004,7 @@ border-bottom-left-radius: 8px;
 border-bottom-right-radius: 8px;
 border-top-right-radius: 0.01em;
 border-top-left-radius: 0.01em;
-background-color: rgba(29, 29, 29, 255);
+background-color: rgb(29, 29, 29);
 }
 """
             % {"base_color": base_color}
@@ -1283,7 +1409,7 @@ QPushButton:!checked:pressed#sheet_nest_button {
             icon = QIcon(icon_path)
             button.setIcon(icon)
 
-    def getWidget(self, index):
+    def getWidget(self, index) -> QWidget:
         """
         This function returns the widget at the specified index if it exists, otherwise it returns None.
 
@@ -1934,7 +2060,7 @@ class OrderStatusButton(QPushButton):
         super(QPushButton, self).__init__(parent)
         self.setCheckable(True)
         self.setText("Order Pending")
-        self.setFixedWidth(100)
+        self.setFixedWidth(150)
         self.setObjectName("order_status")
 
 
