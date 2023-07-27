@@ -6917,7 +6917,7 @@
         },
         "UB3 OmniDrive Blower fan": {
             "part_number": "UB3",
-            "unit_quantity": 1,
+            "unit_quantity": 2.0,
             "current_quantity": -11,
             "price": 162.0,
             "use_exchange_rate": false,
