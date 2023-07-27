@@ -2501,7 +2501,7 @@
         },
         "Snap-Tite Romex C 1\/2\" 841ST": {
             "part_number": "ARL841ST",
-            "unit_quantity": 1.0,
+            "unit_quantity": 3.0,
             "current_quantity": 64.0,
             "price": 0.7,
             "use_exchange_rate": false,
