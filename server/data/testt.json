@@ -2317,7 +2317,7 @@
         },
         "1\/8 Hight Temp Rubber- Orange": {
             "part_number": "1460N44",
-            "unit_quantity": 4,
+            "unit_quantity": 3.0,
             "current_quantity": 44,
             "price": 2.0,
             "use_exchange_rate": false,
