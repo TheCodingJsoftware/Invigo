@@ -1,7 +1,9 @@
+import concurrent.futures
 import json
 import logging
 import os
 import sys
+import threading
 import zipfile
 from datetime import datetime
 from io import StringIO
@@ -13,6 +15,7 @@ import tornado.ioloop
 import tornado.web
 import tornado.websocket
 from ansi2html import Ansi2HTMLConverter
+from git import Repo
 from markupsafe import Markup
 
 from utils.custom_print import CustomPrint, print_clients
@@ -32,6 +35,10 @@ connected_clients = set()
 # Configure Jinja2 template environment
 loader = jinja2.FileSystemLoader("templates")
 env = jinja2.Environment(loader=loader)
+
+
+with open("utils/inventory_file_to_use.txt", "r") as f:
+    inventory_file_name: str = f.read()
 
 class MainHandler(tornado.web.RequestHandler):
     def get(self):
@@ -108,6 +115,19 @@ class FileReceiveHandler(tornado.web.RequestHandler):
         self.finish()
 
 
+def update_inventory_file_to_github(file_name: str):
+    repo = Repo(
+        "C:/Users/user/Documents/Inventory-Manager"
+    )  # if repo is CWD just do '.'
+    repo.index.add([f"server/data/{file_name}"])
+    repo.index.commit(f"data/{file_name}")
+    origin = repo.remote("origin")
+    origin.push()
+    CustomPrint.print(
+        f'INFO - Updated "{file_name}" to Github',
+        connected_clients=connected_clients,
+    )
+
 class FileUploadHandler(tornado.web.RequestHandler):
     # this saves a file that the client uploads
     async def post(self):
@@ -125,9 +145,11 @@ class FileUploadHandler(tornado.web.RequestHandler):
                 # Save the received file to a local location
                 with open(f"data/{file_name}", "wb") as file:
                     file.write(file_data)
+                if file_name == f'{inventory_file_name}.json': # This needs to be done because the website uses this file
+                    threading.Thread(target=update_inventory_file_to_github, args=(file_name,)).start()
             elif get_file_type(file_name) == "JPEG":
                 # Save the received file to a local location
-                with open(f"parts in inventory images/{file_name}", "wb") as file:
+                with open(f"parts in inventory 1images/{file_name}", "wb") as file:
                     file.write(file_data)
             CustomPrint.print(
                 f'INFO - Received "{file_name}" from {self.request.remote_ip}',
@@ -492,6 +514,8 @@ if __name__ == "__main__":
             (r"/get_previous_nests_data", GetPreviousNestsDataHandler),
         ]
     )
+    executor = concurrent.futures.ThreadPoolExecutor(max_workers=10)
+    app.executor = executor
     app.listen(80)
     CustomPrint.print("INFO - Server started")
     tornado.ioloop.IOLoop.current().start()
