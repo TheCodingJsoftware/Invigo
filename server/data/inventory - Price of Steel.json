@@ -46,7 +46,7 @@
             "expected_arrival_time": "2023-7-27",
             "order_pending_quantity": 6.0,
             "order_pending_date": "2023-07-24",
-            "is_order_pending": true
+            "is_order_pending": false
         },
         "1\/2 Laser Grade Plate 120.000x60.000": {
             "current_quantity": 3.0,
@@ -847,6 +847,14 @@
             "material": "Mild Steel",
             "group": "Mild Steel",
             "latest_change_current_quantity": "Item added at July 27 Thursday 2023 02-03-59 PM via server"
+        },
+        "1\/2 Laser Grade Plate 120.000x34.000": {
+            "current_quantity": 1,
+            "sheet_dimension": "120.000x34.000",
+            "thickness": "1\/2",
+            "material": "Laser Grade Plate",
+            "group": "Laser Grade Plate",
+            "latest_change_current_quantity": "Item added at July 28 Friday 2023 09-55-49 AM via server"
         }
     }
 }
