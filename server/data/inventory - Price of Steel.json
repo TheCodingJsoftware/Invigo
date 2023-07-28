@@ -82,7 +82,7 @@
             "order_pending_date": "2023-07-24"
         },
         "1\/4 Mild Steel 120.000x60.000": {
-            "current_quantity": 5.0,
+            "current_quantity": 105.0,
             "sheet_dimension": "120.000x60.000",
             "thickness": "1\/4",
             "material": "Mild Steel",
@@ -90,12 +90,12 @@
             "latest_change_material": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-10-35 PM",
             "latest_sheet_dimension": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-10-35 PM",
             "latest_change_thickness": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-10-35 PM",
-            "latest_change_current_quantity": "Removed 7 at July 26 Wednesday 2023 04:24:48 PM",
+            "latest_change_current_quantity": "Lynden - Manually set to 105.0 from 5.0 at July 28 Friday 2023 11:23:34 AM",
             "red_limit": 20.0,
             "yellow_limit": 40.0,
             "notes": "Usual Order 100 sheets ",
             "is_order_pending": false,
-            "has_sent_warning": true,
+            "has_sent_warning": false,
             "expected_arrival_time": "2023-7-27",
             "order_pending_quantity": 100.0,
             "order_pending_date": "2023-07-24"
