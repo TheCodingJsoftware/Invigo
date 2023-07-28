@@ -75,7 +75,7 @@
             "red_limit": 2.0,
             "yellow_limit": 4.0,
             "notes": "Usual Order 8 sheets ",
-            "is_order_pending": true,
+            "is_order_pending": false,
             "has_sent_warning": true,
             "expected_arrival_time": "2023-7-27",
             "order_pending_quantity": 8.0,
