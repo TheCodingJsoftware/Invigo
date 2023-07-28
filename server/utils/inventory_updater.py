@@ -371,6 +371,7 @@ def get_sheet_information(batch_data: dict) -> dict:
     return sheet_information
 
 def get_sheet_pending_data(sheet_name: str) -> dict[str, str]:
+    price_of_steel_inventory.load_data()
     category_data = price_of_steel_inventory.get_data()
     for category in list(category_data.keys()):
         if category == "Price Per Pound":
