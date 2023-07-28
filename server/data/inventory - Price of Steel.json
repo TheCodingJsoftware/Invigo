@@ -31,7 +31,7 @@
     },
     "Mild Steel": {
         "3\/4 Laser Grade Plate 120.000x60.000": {
-            "current_quantity": 2.0,
+            "current_quantity": 8.0,
             "sheet_dimension": "120.000x60.000",
             "thickness": "3\/4",
             "material": "Laser Grade Plate",
@@ -39,14 +39,15 @@
             "latest_change_material": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-04-03 PM",
             "latest_sheet_dimension": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-04-03 PM",
             "latest_change_thickness": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-04-03 PM",
-            "latest_change_current_quantity": "Removed 1 at June 30 Friday 2023 04:37:17 PM",
+            "latest_change_current_quantity": "Laser Pc - Manually set to 8.0 from 2.0 at July 28 Friday 2023 11:23:52 AM",
             "red_limit": 1.0,
             "yellow_limit": 3.0,
             "notes": "Usual Order 6 sheets ",
             "expected_arrival_time": "2023-7-27",
             "order_pending_quantity": 6.0,
             "order_pending_date": "2023-07-24",
-            "is_order_pending": false
+            "is_order_pending": false,
+            "has_sent_warning": false
         },
         "1\/2 Laser Grade Plate 120.000x60.000": {
             "current_quantity": 3.0,
@@ -63,7 +64,7 @@
             "notes": "Usual Order 2 sheets "
         },
         "3\/8 Mild Steel 120.000x60.000": {
-            "current_quantity": 9.0,
+            "current_quantity": 1.0,
             "sheet_dimension": "120.000x60.000",
             "thickness": "3\/8",
             "material": "Mild Steel",
@@ -71,18 +72,18 @@
             "latest_change_material": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-09-47 PM",
             "latest_sheet_dimension": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-09-47 PM",
             "latest_change_thickness": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-09-47 PM",
-            "latest_change_current_quantity": "Lynden - Manually set to 9.0 from 1.0 at July 28 Friday 2023 11:23:41 AM",
+            "latest_change_current_quantity": "Removed 1 at July 21 Friday 2023 06:55:46 PM",
             "red_limit": 2.0,
             "yellow_limit": 4.0,
             "notes": "Usual Order 8 sheets ",
             "is_order_pending": false,
-            "has_sent_warning": false,
+            "has_sent_warning": true,
             "expected_arrival_time": "2023-7-27",
             "order_pending_quantity": 8.0,
             "order_pending_date": "2023-07-24"
         },
         "1\/4 Mild Steel 120.000x60.000": {
-            "current_quantity": 105.0,
+            "current_quantity": 5.0,
             "sheet_dimension": "120.000x60.000",
             "thickness": "1\/4",
             "material": "Mild Steel",
@@ -90,12 +91,12 @@
             "latest_change_material": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-10-35 PM",
             "latest_sheet_dimension": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-10-35 PM",
             "latest_change_thickness": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-10-35 PM",
-            "latest_change_current_quantity": "Lynden - Manually set to 105.0 from 5.0 at July 28 Friday 2023 11:23:34 AM",
+            "latest_change_current_quantity": "Removed 7 at July 26 Wednesday 2023 04:24:48 PM",
             "red_limit": 20.0,
             "yellow_limit": 40.0,
             "notes": "Usual Order 100 sheets ",
             "is_order_pending": false,
-            "has_sent_warning": false,
+            "has_sent_warning": true,
             "expected_arrival_time": "2023-7-27",
             "order_pending_quantity": 100.0,
             "order_pending_date": "2023-07-24"
