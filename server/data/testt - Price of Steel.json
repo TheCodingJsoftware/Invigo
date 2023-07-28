@@ -39,9 +39,9 @@
             "latest_change_material": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-04-39 PM",
             "latest_sheet_dimension": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-04-39 PM",
             "latest_change_thickness": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-04-39 PM",
-            "latest_change_current_quantity": "Jared - Manually set to 2.0 from 5.0 at May 27 Saturday 2023 10:23:05 PM",
+            "latest_change_current_quantity": "Jared - Manually set to 2.0 from 2.0 at July 22 Saturday 2023 11:22:26 AM",
             "is_order_pending": false,
-            "notes": ""
+            "notes": "test"
         },
         "1\/2 Laser Grade Plate 120.000x60.000": {
             "current_quantity": 3.0,
@@ -76,7 +76,11 @@
             "latest_change_material": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-33-02 PM",
             "latest_sheet_dimension": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-33-02 PM",
             "latest_change_thickness": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-33-02 PM",
-            "latest_change_current_quantity": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-33-02 PM"
+            "latest_change_current_quantity": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-33-02 PM",
+            "expected_arrival_time": "2023-7-25",
+            "order_pending_date": "2023-07-25",
+            "is_order_pending": true,
+            "order_pending_quantity": 0.0
         },
         "3\/4 Laser Grade Plate 120.000x60.000": {
             "current_quantity": 5.0,
@@ -129,21 +133,22 @@
             "notes": ""
         },
         "1 Laser Grade Plate 120.000x60.000": {
-            "current_quantity": 20,
+            "current_quantity": 20.0,
             "sheet_dimension": "120.000x60.000",
             "thickness": "1",
             "material": "Laser Grade Plate",
             "latest_change_material": "Item added\nLaser Pc\nFebruary 24 Friday 2023 03-58-02 PM",
             "latest_sheet_dimension": "Item added\nLaser Pc\nFebruary 24 Friday 2023 03-58-02 PM",
             "latest_change_thickness": "Item added\nLaser Pc\nFebruary 24 Friday 2023 03-58-02 PM",
-            "latest_change_current_quantity": "Set to 20 with QR code at June 14 Wednesday 2023 10:18:12 PM",
+            "latest_change_current_quantity": "Jared - Manually set to 20.0 from 20 at July 22 Saturday 2023 11:17:41 AM",
             "group": "Laser Grade Plate",
             "red_limit": 10.0,
             "yellow_limit": 20.0,
             "is_order_pending": false,
-            "notes": "asdasdas",
+            "notes": "",
             "order_pending_date": "2023-07-08",
-            "expected_arrival_time": "2023-7-14"
+            "expected_arrival_time": "2023-7-14",
+            "has_sent_warning": false
         },
         "14 Gauge Mild Steel 120.000x60.000": {
             "current_quantity": 20.0,
@@ -383,8 +388,11 @@
             "latest_change_material": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-54-33 PM",
             "latest_sheet_dimension": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-54-33 PM",
             "latest_change_thickness": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-54-33 PM",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 15.0\nto: 16.0\nLaser Pc\nMarch 10 Friday 2023 08:59:44 AM",
-            "is_order_pending": false
+            "latest_change_current_quantity": "Set to 16.0 with QR code at July 28 Friday 2023 11:45:22 AM",
+            "is_order_pending": true,
+            "expected_arrival_time": "2023-7-28",
+            "order_pending_date": "2023-07-28",
+            "order_pending_quantity": 2.0
         },
         "20 Gauge 304 SS 120.000x60.000": {
             "current_quantity": 18.0,
@@ -517,7 +525,7 @@
             "is_order_pending": false
         },
         "10 Gauge Galvanized 120.000x60.000": {
-            "current_quantity": 5,
+            "current_quantity": 8.0,
             "sheet_dimension": "120.000x60.000",
             "thickness": "10 Gauge",
             "material": "Galvanized",
@@ -526,7 +534,10 @@
             "latest_change_thickness": "Item added\nLaser Pc\nFebruary 24 Friday 2023 05-10-11 PM",
             "latest_change_current_quantity": "Item added\nLaser Pc\nFebruary 24 Friday 2023 05-10-11 PM",
             "group": "Galvanized",
-            "is_order_pending": false
+            "is_order_pending": false,
+            "expected_arrival_time": "2023-7-28",
+            "order_pending_quantity": 0.0,
+            "order_pending_date": "2023-07-28"
         },
         "14 Gauge Galvanized 120.000x60.000": {
             "current_quantity": 7.0,
@@ -625,6 +636,22 @@
             "material": "Galvanneal",
             "group": "Galvanneal",
             "latest_change_current_quantity": "Item added at June 30 Friday 2023 02-28-39 PM via server"
+        },
+        "22 Gauge 304 SS 3.000x3.000": {
+            "current_quantity": 1,
+            "sheet_dimension": "3.000x3.000",
+            "thickness": "22 Gauge",
+            "material": "304 SS",
+            "group": "304 SS",
+            "latest_change_current_quantity": "Item added at July 13 Thursday 2023 11-58-00 AM via server"
+        },
+        "20 Gauge Galvanneal 2.000x2.000": {
+            "current_quantity": 1,
+            "sheet_dimension": "2.000x2.000",
+            "thickness": "20 Gauge",
+            "material": "Galvanneal",
+            "group": "Galvanneal",
+            "latest_change_current_quantity": "Item added at July 13 Thursday 2023 01-16-33 PM via server"
         }
     },
     "Aluninium": {
@@ -671,7 +698,7 @@
             "latest_sheet_dimension": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-47-20 PM",
             "latest_change_thickness": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-47-20 PM",
             "latest_change_current_quantity": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-47-20 PM",
-            "is_order_pending": true,
+            "is_order_pending": false,
             "expected_arrival_time": "2023-07-28",
             "order_pending_date": "2023-07-12"
         },
@@ -706,7 +733,7 @@
             "latest_sheet_dimension": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-46-09 PM",
             "latest_change_thickness": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-46-09 PM",
             "latest_change_current_quantity": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-46-09 PM",
-            "is_order_pending": true
+            "is_order_pending": false
         }
     }
 }
