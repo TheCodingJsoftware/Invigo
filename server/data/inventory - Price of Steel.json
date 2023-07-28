@@ -94,7 +94,7 @@
             "red_limit": 20.0,
             "yellow_limit": 40.0,
             "notes": "Usual Order 100 sheets ",
-            "is_order_pending": true,
+            "is_order_pending": false,
             "has_sent_warning": true,
             "expected_arrival_time": "2023-7-27",
             "order_pending_quantity": 100.0,
