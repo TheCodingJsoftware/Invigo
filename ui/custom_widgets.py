@@ -159,7 +159,7 @@ class SelectRangeCalendar(QCalendarWidget):
         else:
             # required
             self.from_date = date_value
-            self.to_date: QDate = None
+            self.to_date = None
 
     def set_range(self, date_value: QDate):
         self.highlight_range(QTextCharFormat())

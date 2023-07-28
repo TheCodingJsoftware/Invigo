@@ -230,6 +230,9 @@ class Assembly:
                 return sub_assembly
         return None
 
+    def copy_assembly(self) -> "Assembly":
+        return copy.deepcopy(self)
+
     def rename(self, new_name: str) -> None:
         """
         This function takes a new name as input and sets it as the name attribute of an object.
