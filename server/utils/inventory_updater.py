@@ -341,7 +341,7 @@ def add_sheet(thickness: str, material: str, sheet_dim: str, sheet_count: float,
         "latest_change_current_quantity",
         f"Item added at {datetime.now().strftime('%B %d %A %Y %I-%M-%S %p')} via server",
     )
-    CustomPrint.print(f'Adding "{sheet_name}" to Cutoff', connected_clients=_connected_clients)
+    CustomPrint.print(f'INFO - Adding "{sheet_name}" to Cutoff', connected_clients=_connected_clients)
     signal_clients_for_changes(connected_clients=_connected_clients)
 
 

@@ -117,7 +117,7 @@ class FileReceiveHandler(tornado.web.RequestHandler):
 
 def update_inventory_file_to_github(file_name: str):
     repo = Repo(
-        "C:/Users/user/Documents/Inventory-Manager"
+        "C:/Users/joe/Documents/Inventory-Manager"
     )  # if repo is CWD just do '.'
     repo.index.add([f"server/data/{file_name}"])
     repo.index.commit(f"data/{file_name}")
@@ -149,7 +149,7 @@ class FileUploadHandler(tornado.web.RequestHandler):
                     threading.Thread(target=update_inventory_file_to_github, args=(file_name,)).start()
             elif get_file_type(file_name) == "JPEG":
                 # Save the received file to a local location
-                with open(f"parts in inventory 1images/{file_name}", "wb") as file:
+                with open(f"parts in inventory images/{file_name}", "wb") as file:
                     file.write(file_data)
             CustomPrint.print(
                 f'INFO - Received "{file_name}" from {self.request.remote_ip}',
@@ -515,7 +515,7 @@ if __name__ == "__main__":
         ]
     )
     executor = concurrent.futures.ThreadPoolExecutor(max_workers=10)
-    app.executor = executor
+    # app.executor = executor
     app.listen(80)
     CustomPrint.print("INFO - Server started")
     tornado.ioloop.IOLoop.current().start()
