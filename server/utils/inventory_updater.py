@@ -370,8 +370,34 @@ def get_sheet_information(batch_data: dict) -> dict:
                 sheet_information[sheet_name] = batch_data[item]["quantity_multiplier"]
     return sheet_information
 
+def get_sheet_pending_data(sheet_name: str) -> dict[str, str]:
+    category_data = price_of_steel_inventory.get_data()
+    for category in list(category_data.keys()):
+        if category == "Price Per Pound":
+            continue
+        for _sheet_name in list(category_data[category].keys()):
+            if sheet_name == _sheet_name:
+                try:
+                    pending_data = {
+                        "is_order_pending": category_data[category][sheet_name]["is_order_pending"],
+                        "expected_arrival_time": category_data[category][sheet_name]["expected_arrival_time"],
+                        "order_pending_date": category_data[category][sheet_name]["order_pending_date"],
+                        "order_pending_quantity": category_data[category][sheet_name]["order_pending_quantity"],
+                        "new_quantity": category_data[category][sheet_name]["order_pending_quantity"] + category_data[category][sheet_name]["current_quantity"]
+                    }
+                except KeyError:
+                    pending_data = {
+                        "is_order_pending": False,
+                        "expected_arrival_time": None,
+                        "order_pending_date": None,
+                        "order_pending_quantity": None,
+                        "new_quantity": 0
+                    }
+                return pending_data
+
 
 def get_sheet_quantity(sheet_name: str) -> float:
+    price_of_steel_inventory.load_data()
     category_data = price_of_steel_inventory.get_data()
     for category in list(category_data.keys()):
         if category == "Price Per Pound":
@@ -382,6 +408,7 @@ def get_sheet_quantity(sheet_name: str) -> float:
 
 
 def set_sheet_quantity(sheet_name: str, new_quantity: float, clients) -> None:
+    price_of_steel_inventory.load_data()
     category_data = price_of_steel_inventory.get_data()
     for category in list(category_data.keys()):
         if category == "Price Per Pound":
@@ -399,6 +426,12 @@ def set_sheet_quantity(sheet_name: str, new_quantity: float, clients) -> None:
                     sheet_name,
                     "current_quantity",
                     new_quantity,
+                )
+                price_of_steel_inventory.change_object_in_object_item(
+                    category,
+                    sheet_name,
+                    "is_order_pending",
+                    False,
                 )
                 price_of_steel_inventory.change_object_in_object_item(
                     category,

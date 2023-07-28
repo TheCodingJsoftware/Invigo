@@ -44,11 +44,46 @@
             margin-bottom: 5px;
             font-size: 28px;
         }
+        h1.order_is_pending {
+            background-color: #3bba6d;
+            padding: 1%;
+            color: white;
+            font-weight: bold;
+            width: 100%;
+            position: fixed;
+            top: 0;
+            left: 0;
+            margin: 0;
+
+        }
+        h1.order_is_not_pending {
+            background-color: gray;
+            padding: 1%;
+            color: white;
+            font-weight: bold;
+            width: 100%;
+            position: fixed;
+            top: 0;
+            left: 0;
+            margin: 0;
+        }
     </style>
     <title>{{ sheet_name }}</title>
 </head>
 <body class="content">
+    
+    {% if pending_data["is_order_pending"] == True %}
+    <h1 class="order_is_pending">Order is Pending</h1>
     <h1>{{ sheet_name }}</h1>
+    <p>Pending Since: {{ pending_data["order_pending_date"] }}
+    <br>
+    Expected Arrival: {{ pending_data["expected_arrival_time"] }}
+    <br>
+    Sheets Ordered: {{ pending_data["order_pending_quantity"] }}</p>
+    {% else %}
+    <h1 class="order_is_not_pending">No Order is Pending</h1>
+    <h1>{{ sheet_name }}</h1>
+    {% endif %}
     <p>Current quantity: {{ quantity }}</p>
 </body>
 </html>

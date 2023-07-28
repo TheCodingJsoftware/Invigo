@@ -22,6 +22,7 @@ from utils.custom_print import CustomPrint, print_clients
 from utils.files import get_file_type
 from utils.inventory_updater import (
     add_sheet,
+    get_sheet_pending_data,
     get_sheet_quantity,
     set_sheet_quantity,
     sheet_exists,
@@ -311,13 +312,14 @@ class SheetQuantityHandler(tornado.web.RequestHandler):
         if sheet_exists(sheet_name=sheet_name):
             # Retrieve the quantity from the data dictionary
             quantity = get_sheet_quantity(sheet_name=sheet_name)
+            pending_data = get_sheet_pending_data(sheet_name=sheet_name)
             if self.request.remote_ip in ["10.0.0.11", "10.0.0.64", "10.0.0.217"]:    
                 # Render the template with the sheet name and quantity
                 template = env.get_template("sheet_template.html")
-                rendered_template = template.render(sheet_name=sheet_name, quantity=quantity)
+                rendered_template = template.render(sheet_name=sheet_name, quantity=quantity, pending_data=pending_data)
             else:
                 template = env.get_template("sheet_template_read_only.html")
-                rendered_template = template.render(sheet_name=sheet_name, quantity=quantity)
+                rendered_template = template.render(sheet_name=sheet_name, quantity=quantity, pending_data=pending_data)
             # Write the rendered template to the response
             self.write(rendered_template)
         else:
