@@ -143,9 +143,9 @@ from ui.message_dialog import MessageDialog
 from ui.recut_dialog import RecutDialog
 from ui.select_date_dialog import SelectDateDialog
 from ui.select_item_dialog import SelectItemDialog
+from ui.select_timeline_dialog import SelectTimeLineDialog
 from ui.set_custom_limit_dialog import SetCustomLimitDialog
 from ui.set_order_pending_dialog import SetOrderPendingDialog
-from ui.select_timeline_dialog import SelectTimeLineDialog
 from ui.theme import set_theme
 from ui.web_scrape_results_dialog import WebScrapeResultsDialog
 from utils.calulations import calculate_overhead, calculate_scrap_percentage
@@ -176,7 +176,7 @@ __copyright__: str = "Copyright 2022-2023, TheCodingJ's"
 __credits__: list[str] = ["Jared Gross"]
 __license__: str = "MIT"
 __name__: str = "Invigo"
-__version__: str = "v2.1.10"
+__version__: str = "v2.1.11"
 __updated__: str = "2023-07-12 12:32:51"
 __maintainer__: str = "Jared Gross"
 __email__: str = "jared@pinelandfarms.ca"
@@ -982,6 +982,34 @@ class MainWindow(QMainWindow):
                 value_name="order_pending_date",
                 new_value=datetime.now().strftime("%Y-%m-%d"),
             )
+        elif button.isChecked() == False:
+            input_dialog = InputDialog(
+                title="Add Sheet Quantity",
+                message=f"Do you want to add the incoming sheet quantity for \"{item_name}\"?",
+                button_names=DialogButtons.add_no,
+                placeholder_text=price_of_steel_inventory.data[self.category][item_name]['order_pending_quantity'],
+            )
+            if input_dialog.exec():
+                response = input_dialog.get_response()
+                if response == DialogButtons.add:
+                    try:
+                        input_number = float(input_dialog.inputText)
+                        new_quantity = price_of_steel_inventory.get_data()[self.category][item_name]['current_quantity'] + input_number
+                        price_of_steel_inventory.change_object_in_object_item(
+                            object_name=self.category,
+                            item_name=item_name,
+                            value_name="current_quantity",
+                            new_value=new_quantity,
+                        )
+                    except Exception:
+                        self.show_error_dialog(
+                            title="Invalid number",
+                            message=f"'{input_dialog.inputText}' is an invalid numnber",
+                            dialog_buttons=DialogButtons.ok,
+                        )
+                        return
+                elif response == DialogButtons.cancel:
+                    return
         price_of_steel_inventory.change_object_in_object_item(
             object_name=self.category,
             item_name=item_name,
@@ -1319,7 +1347,7 @@ class MainWindow(QMainWindow):
         )
 
     # NOTE for EDIT INVENTORY
-    def add_quantity(self, item_name: str, old_quantity: int) -> None:
+    def add_quantity(self) -> None:
         """
         It adds the value of the spinbox to the quantity of the item selected in the listwidget
 
@@ -1327,36 +1355,40 @@ class MainWindow(QMainWindow):
           item_name (str): str = the name of the item
           old_quantity (int): int = the quantity of the item before the change
         """
+        data = inventory.get_data()
+        table = self.tabs[self.category]
+        selected_rows = list(set([item.row() for item in table.selectedItems()]))
+        selected_items = [table.item(row, 0).text() for row in selected_rows]
         are_you_sure_dialog = self.show_message_dialog(
             title="Are you sure?",
-            message=f'Adding quantities to a single item.\n\nAre you sure you want to add {self.spinBox_quantity.value()} quantities to "{item_name}"?',
+            message=f'Adding quantities to a single item.\n\nAre you sure you want to add {self.spinBox_quantity.value()} quantities to "{selected_items}"?',
             dialog_buttons=DialogButtons.no_yes_cancel,
         )
         if are_you_sure_dialog in [DialogButtons.no, DialogButtons.cancel]:
             return
-        data = inventory.get_data()
-        part_number: str = data[self.category][item_name]["part_number"]
-        current_quantity: int = data[self.category][item_name]["current_quantity"]
-        inventory.change_object_in_object_item(self.category, item_name, "current_quantity", current_quantity + self.spinBox_quantity.value())
-        inventory.change_object_in_object_item(
-            self.category,
-            item_name,
-            "latest_change_current_quantity",
-            f"{self.username} - Changed from {current_quantity} to {current_quantity + self.spinBox_quantity.value()} at {datetime.now().strftime('%B %d %A %Y %I-%M-%S %p')}",
-        )
-        for category in inventory.get_keys():
-            if category == self.category:
-                continue
-            for item in list(data[category].keys()):
-                if part_number == data[category][item]["part_number"]:
-                    current_quantity: int = data[category][item]["current_quantity"]
-                    inventory.change_object_in_object_item(category, item, "current_quantity", current_quantity + self.spinBox_quantity.value())
-                    inventory.change_object_in_object_item(
-                        category,
-                        item,
-                        "latest_change_current_quantity",
-                        f"{self.username} - Changed from {current_quantity} to {current_quantity + self.spinBox_quantity.value()} at {datetime.now().strftime('%B %d %A %Y %I-%M-%S %p')}",
-                    )
+        for item_name in selected_items:
+            part_number: str = data[self.category][item_name]["part_number"]
+            current_quantity: int = data[self.category][item_name]["current_quantity"]
+            inventory.change_object_in_object_item(self.category, item_name, "current_quantity", current_quantity + self.spinBox_quantity.value())
+            inventory.change_object_in_object_item(
+                self.category,
+                item_name,
+                "latest_change_current_quantity",
+                f"{self.username} - Changed from {current_quantity} to {current_quantity + self.spinBox_quantity.value()} at {datetime.now().strftime('%B %d %A %Y %I-%M-%S %p')}",
+            )
+            for category in inventory.get_keys():
+                if category == self.category:
+                    continue
+                for item in list(data[category].keys()):
+                    if part_number == data[category][item]["part_number"]:
+                        current_quantity: int = data[category][item]["current_quantity"]
+                        inventory.change_object_in_object_item(category, item, "current_quantity", current_quantity + self.spinBox_quantity.value())
+                        inventory.change_object_in_object_item(
+                            category,
+                            item,
+                            "latest_change_current_quantity",
+                            f"{self.username} - Changed from {current_quantity} to {current_quantity + self.spinBox_quantity.value()} at {datetime.now().strftime('%B %d %A %Y %I-%M-%S %p')}",
+                        )
         self.pushButton_add_quantity.setEnabled(False)
         self.pushButton_remove_quantity.setEnabled(False)
         # self.listWidget_item_changed()
@@ -1366,57 +1398,60 @@ class MainWindow(QMainWindow):
         self.sync_changes()
 
     # NOTE for EDIT INVENTORY
-    def remove_quantity(self, item_name: str, old_quantity: int) -> None:
+    def remove_quantity(self) -> None:
         """
-        It removes the quantity of an item from the inventory
+        The function `remove_quantity` removes a specified quantity from selected items in an inventory
+        system, updates the quantity in the inventory data, and performs other related tasks.
 
-        Args:
-          item_name (str): str = the name of the item
-          old_quantity (int): int = the quantity of the item before the change
+        Returns:
+          The function does not have a return statement, so it returns None.
         """
+        data = inventory.get_data()
+        table = self.tabs[self.category]
+        selected_rows = list(set([item.row() for item in table.selectedItems()]))
+        selected_items = [table.item(row, 0).text() for row in selected_rows]
         are_you_sure_dialog = self.show_message_dialog(
             title="Are you sure?",
-            message=f'Removing quantities from a single item.\n\nAre you sure you want to remove {self.spinBox_quantity.value()} quantities to "{item_name}"?',
+            message=f'Removing quantities from a single item.\n\nAre you sure you want to remove {self.spinBox_quantity.value()} quantities to "{selected_items}"?',
             dialog_buttons=DialogButtons.no_yes_cancel,
         )
         if are_you_sure_dialog in [DialogButtons.no, DialogButtons.cancel]:
             return
+        for item_name in selected_items:
+            history_file = HistoryFile()
+            if self.spinBox_quantity.value() > 1:
+                history_file.add_new_to_single_item(
+                    date=datetime.now().strftime("%B %d %A %Y %I:%M:%S %p"),
+                    description=f'Removed {self.spinBox_quantity.value()} quantities from "{item_name}"',
+                )
+            elif self.spinBox_quantity.value() == 1:
+                history_file.add_new_to_single_item(
+                    date=datetime.now().strftime("%B %d %A %Y %I:%M:%S %p"),
+                    description=f'Removed {self.spinBox_quantity.value()} quantity from "{item_name}"',
+                )
 
-        history_file = HistoryFile()
-        if self.spinBox_quantity.value() > 1:
-            history_file.add_new_to_single_item(
-                date=datetime.now().strftime("%B %d %A %Y %I:%M:%S %p"),
-                description=f'Removed {self.spinBox_quantity.value()} quantities from "{item_name}"',
+            part_number: str = self.get_value_from_category(item_name, "part_number")
+            current_quantity: int = self.get_value_from_category(item_name, "current_quantity")
+            inventory.change_object_in_object_item(self.category, item_name, "current_quantity", current_quantity - self.spinBox_quantity.value())
+            inventory.change_object_in_object_item(
+                self.category,
+                item_name,
+                "latest_change_current_quantity",
+                f"{self.username} - Changed from {current_quantity} to {current_quantity - self.spinBox_quantity.value()} at {datetime.now().strftime('%B %d %A %Y %I-%M-%S %p')}",
             )
-        elif self.spinBox_quantity.value() == 1:
-            history_file.add_new_to_single_item(
-                date=datetime.now().strftime("%B %d %A %Y %I:%M:%S %p"),
-                description=f'Removed {self.spinBox_quantity.value()} quantity from "{item_name}"',
-            )
-
-        data = inventory.get_data()
-        part_number: str = self.get_value_from_category(item_name, "part_number")
-        current_quantity: int = self.get_value_from_category(item_name, "current_quantity")
-        inventory.change_object_in_object_item(self.category, item_name, "current_quantity", current_quantity - self.spinBox_quantity.value())
-        inventory.change_object_in_object_item(
-            self.category,
-            item_name,
-            "latest_change_current_quantity",
-            f"{self.username} - Changed from {current_quantity} to {current_quantity - self.spinBox_quantity.value()} at {datetime.now().strftime('%B %d %A %Y %I-%M-%S %p')}",
-        )
-        for category in inventory.get_keys():
-            if category == self.category:
-                continue
-            for item in list(data[category].keys()):
-                if part_number == data[category][item]["part_number"]:
-                    current_quantity: int = data[category][item]["current_quantity"]
-                    inventory.change_object_in_object_item(category, item, "current_quantity", current_quantity - self.spinBox_quantity.value())
-                    inventory.change_object_in_object_item(
-                        category,
-                        item,
-                        "latest_change_current_quantity",
-                        f"{self.username} - Changed from {current_quantity} to {current_quantity - self.spinBox_quantity.value()} at {datetime.now().strftime('%B %d %A %Y %I-%M-%S %p')}",
-                    )
+            for category in inventory.get_keys():
+                if category == self.category:
+                    continue
+                for item in list(data[category].keys()):
+                    if part_number == data[category][item]["part_number"]:
+                        current_quantity: int = data[category][item]["current_quantity"]
+                        inventory.change_object_in_object_item(category, item, "current_quantity", current_quantity - self.spinBox_quantity.value())
+                        inventory.change_object_in_object_item(
+                            category,
+                            item,
+                            "latest_change_current_quantity",
+                            f"{self.username} - Changed from {current_quantity} to {current_quantity - self.spinBox_quantity.value()} at {datetime.now().strftime('%B %d %A %Y %I-%M-%S %p')}",
+                        )
         self.pushButton_add_quantity.setEnabled(False)
         self.pushButton_remove_quantity.setEnabled(False)
         # self.listWidget_item_changed()
@@ -1454,8 +1489,8 @@ class MainWindow(QMainWindow):
             self.pushButton_add_quantity.disconnect()
             self.pushButton_remove_quantity.disconnect()
 
-            self.pushButton_remove_quantity.clicked.connect(partial(self.remove_quantity, self.last_item_selected_name, quantity))
-            self.pushButton_add_quantity.clicked.connect(partial(self.add_quantity, self.last_item_selected_name, quantity))
+            self.pushButton_remove_quantity.clicked.connect(self.remove_quantity)
+            self.pushButton_add_quantity.clicked.connect(self.add_quantity)
         self.spinBox_quantity.setValue(0)
 
     def value_change(self, category: str, item_name: str, value_name: str, new_value) -> None:
@@ -3291,7 +3326,7 @@ class MainWindow(QMainWindow):
 
         input_dialog = InputDialog(
             title="Set a Order Number",
-            message="Enter a Order Number as a integer",
+            message="Enter a Order Number as an integer",
             button_names=DialogButtons.set_cancel,
             placeholder_text=self.order_number,
         )
@@ -3340,25 +3375,6 @@ class MainWindow(QMainWindow):
 
     # WORKSPACE
     def generate_workorder_dialog(self, job_names: list[str] = None) -> None:
-        # job_name is not used, yet.
-
-        # if not job_names:
-        #     select_item_dialog = SelectItemDialog(
-        #         button_names=DialogButtons.ok_cancel,
-        #         title="Select Jobs",
-        #         message="Select jobs you want to create a workorder for",
-        #         items=self.get_all_job_names(),
-        #         selection_mode=QAbstractItemView.SelectionMode.MultiSelection,
-        #     )
-
-        #     if not select_item_dialog.exec():
-        #         return
-        #     response = select_item_dialog.get_response()
-        #     if response != DialogButtons.ok:
-        #         return
-        #     job_names = select_item_dialog.get_selected_items()
-        #     if len(job_names) == 0:
-        #         return
         workorder = GenerateWorkorderDialog(
             self,
             title="Generate Workorder",
@@ -4305,7 +4321,7 @@ class MainWindow(QMainWindow):
         tab.setSelectionBehavior(QAbstractItemView.SelectionBehavior.SelectRows)
         tab.setVerticalScrollMode(QAbstractItemView.ScrollMode.ScrollPerPixel)
         tab.setHorizontalScrollMode(QAbstractItemView.ScrollMode.ScrollPerPixel)
-        tab.setSelectionMode(QAbstractItemView.SelectionMode.SingleSelection)
+        tab.setSelectionMode(QAbstractItemView.SelectionMode.ExtendedSelection)
         tab.set_editable_column_index([1, 2, 3, 4])
         headers: list[str] = [
             "Part Name",

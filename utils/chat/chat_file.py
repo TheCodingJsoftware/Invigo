@@ -1,6 +1,8 @@
+import os
+
 import ujson as json
 from chat import Chat
-import os
+
 
 class ChatFile:
     def __init__(self, file_name: str) -> None:

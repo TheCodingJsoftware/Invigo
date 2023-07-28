@@ -1,29 +1,30 @@
+import contextlib
 import os.path
 from functools import partial
 
 from PyQt6 import uic
 from PyQt6.QtCore import QFile, Qt, QTextStream
-from PyQt6.QtGui import QIcon, QStandardItemModel, QStandardItem
+from PyQt6.QtGui import QIcon, QStandardItem, QStandardItemModel
 from PyQt6.QtSvgWidgets import QSvgWidget
 from PyQt6.QtWidgets import (
     QDialog,
     QHBoxLayout,
     QLabel,
     QPushButton,
-    QTreeView,
     QRadioButton,
     QSpinBox,
+    QTreeView,
     QTreeWidget,
     QWidget,
 )
-import contextlib
-from ui.custom_widgets import set_default_dialog_button_stylesheet, MultiToolBox
+
+from ui.custom_widgets import MultiToolBox, set_default_dialog_button_stylesheet
 from ui.theme import set_theme
 from utils.dialog_buttons import DialogButtons
 from utils.dialog_icons import Icons
 from utils.json_file import JsonFile
-from utils.workspace.workspace import Workspace
 from utils.workspace.assembly import Assembly
+from utils.workspace.workspace import Workspace
 
 settings_file = JsonFile(file_name="settings")
 admin_workspace = Workspace("workspace - Admin")

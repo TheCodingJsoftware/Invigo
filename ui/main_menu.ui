@@ -58,7 +58,7 @@
        <enum>QTabWidget::Rounded</enum>
       </property>
       <property name="currentIndex">
-       <number>4</number>
+       <number>0</number>
       </property>
       <property name="elideMode">
        <enum>Qt::ElideNone</enum>
@@ -303,7 +303,7 @@
                  <item row="0" column="1">
                   <widget class="QRadioButton" name="radioButton_single">
                    <property name="text">
-                    <string>Selected Item</string>
+                    <string>Selected Items</string>
                    </property>
                   </widget>
                  </item>
