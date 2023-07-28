@@ -1964,7 +1964,7 @@ QPushButton:pressed#pushButton_show_item_summary:!checked {
                     <item>
                      <widget class="QGroupBox" name="groupBox_16">
                       <property name="title">
-                       <string>Quick Select Range</string>
+                       <string>Quick Select Timeline</string>
                       </property>
                       <layout class="QVBoxLayout" name="verticalLayout_39">
                        <item>
@@ -2008,23 +2008,23 @@ QPushButton:pressed#pushButton_show_item_summary:!checked {
                             </widget>
                            </item>
                            <item>
-                            <widget class="QPushButton" name="pushButton_tommorow">
+                            <widget class="QPushButton" name="pushButton_next_2_days">
                              <property name="text">
-                              <string>Tomorrow</string>
+                              <string>Next 2 Days</string>
                              </property>
                             </widget>
                            </item>
                            <item>
-                            <widget class="QPushButton" name="pushButton_next_3_days">
+                            <widget class="QPushButton" name="pushButton_next_4_days">
                              <property name="text">
-                              <string>Next 3 Days</string>
+                              <string>Next 4 Days</string>
                              </property>
                             </widget>
                            </item>
                            <item>
-                            <widget class="QPushButton" name="pushButton_next_7_days">
+                            <widget class="QPushButton" name="pushButton_this_week">
                              <property name="text">
-                              <string>Next 7 Days</string>
+                              <string>This Week</string>
                              </property>
                             </widget>
                            </item>

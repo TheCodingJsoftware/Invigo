@@ -136,9 +136,8 @@ class Workspace:
         statuses: list[QPushButton] = filter["statuses"]
         paint_colors: list[QPushButton] = filter["paint"]
         groupBox_due_dates: QGroupBox = filter["due_dates"]
-        calendar = filter["calendar"]
-        dateTimeEdit_after: QDate = calendar.from_date
-        dateTimeEdit_before: QDate = calendar.to_date
+        calendar: SelectRangeCalendar = filter["calendar"]
+        dateTimeEdit_after,  dateTimeEdit_before = calendar.get_timeline() # end date
         show_recut: bool = filter["show_recut"]
 
         # Recursively filter sub-assemblies
@@ -196,14 +195,19 @@ class Workspace:
                     continue
 
             # Apply due dates filter
-            with contextlib.suppress(TypeError):
-                if groupBox_due_dates.isChecked():
-                    assembly_due_date = item.get_value("due_date")
-                    if assembly_due_date < dateTimeEdit_after or assembly_due_date > dateTimeEdit_before:
+            # with contextlib.suppress(TypeError, AttributeError):
+            if groupBox_due_dates.isChecked():
+                item_start_date = QDate.fromString(item.get_value("starting_date"), "yyyy-M-d")
+                item_ending_date = QDate.fromString(item.get_value("ending_date"), "yyyy-M-d")
+                if dateTimeEdit_after is not None and dateTimeEdit_before is not None:
+                    if not (item_start_date.daysTo(dateTimeEdit_before) >= 0 and item_ending_date.daysTo(dateTimeEdit_after) <= 0):
+                        continue
+                elif dateTimeEdit_after is not None and dateTimeEdit_before is None:
+                    if not (item_start_date.daysTo(dateTimeEdit_after) >= 0 and item_ending_date.daysTo(dateTimeEdit_after) <= 0):
                         continue
             item.set_value(key="show", value=True)
             item.parent_assembly.set_parent_assembly_value(key="show", value=True)
-        if self.get_completion_percentage(assembly=sub_assembly)[0] == 1:
+        if self.get_completion_percentage(assembly=sub_assembly)[0] == 1: # is item completeion 100%
             sub_assembly.set_assembly_data(key="show", value=False)
             if selected_flow_tags := [button.text() for button in flow_tags if button.isChecked()]:
                 with contextlib.suppress(IndexError):  # This means the part is 'completed'
@@ -218,6 +222,21 @@ class Workspace:
                 if assembly_status in selected_statuses:
                     sub_assembly.set_assembly_data(key="show", value=True)
                     sub_assembly.set_parent_assembly_value(key="show", value=True)
+            if groupBox_due_dates.isChecked():
+                assembly_start_date = QDate.fromString(sub_assembly.get_assembly_data("starting_date"), "yyyy-M-d")
+                assembly_ending_date = QDate.fromString(sub_assembly.get_assembly_data("ending_date"), "yyyy-M-d")
+                if dateTimeEdit_after is not None and dateTimeEdit_before is not None:
+                    if assembly_start_date.daysTo(dateTimeEdit_before) >= 0 and assembly_ending_date.daysTo(dateTimeEdit_after) <= 0:
+                        sub_assembly.set_assembly_data(key="show", value=True)
+                        sub_assembly.set_parent_assembly_value(key="show", value=True)
+                    else:
+                        sub_assembly.set_assembly_data(key="show", value=False)
+                elif dateTimeEdit_after is not None and dateTimeEdit_before is None:
+                    if assembly_start_date.daysTo(dateTimeEdit_after) >= 0 and assembly_ending_date.daysTo(dateTimeEdit_after) <= 0:
+                        sub_assembly.set_assembly_data(key="show", value=True)
+                        sub_assembly.set_parent_assembly_value(key="show", value=True)
+                    else:
+                        sub_assembly.set_assembly_data(key="show", value=False)
             with contextlib.suppress(TypeError, IndexError):
                 assembly_flow_tag = sub_assembly.get_assembly_data("flow_tag")[sub_assembly.get_assembly_data("current_flow_state")]
                 if workspace_tags.get_value("attributes")[assembly_flow_tag]["show_all_items"]:
@@ -512,6 +531,16 @@ class Workspace:
         """
         return list(set(assembly.get_assembly_data(key="group") for assembly in self.data if assembly.get_assembly_data("show")))
 
+    def _get_all_groups(self) -> list[str]:
+        """
+        This function returns a list of unique group names extracted from a list of assembly data
+        objects.
+
+        Returns:
+          A list of unique group names extracted from the assembly data of the object's data attribute.
+        """
+        return list(set(assembly.get_assembly_data(key="group") for assembly in self.data))
+
     def get_group_color(self, group: str) -> str | None:
         return next(
             (assembly.get_assembly_data(key="group_color") for assembly in self.data if assembly.get_assembly_data(key="group") == group),
@@ -540,6 +569,24 @@ class Workspace:
         """
         data: dict[str, list[Assembly]] = {}
         for group in self.get_all_groups():
+            data[group] = []
+        for assembly in self.data:
+            with contextlib.suppress(KeyError):
+                data[assembly.get_assembly_data(key="group")].append(assembly)
+        return data
+
+    def _get_grouped_data(self) -> dict[str, list[Assembly]]:
+        """
+        The function `get_grouped_data` takes a list of `Assembly` objects and groups them based on a
+        specified key, returning a dictionary where the keys are the groups and the values are lists of
+        `Assembly` objects belonging to each group.
+
+        Returns:
+          a dictionary where the keys are strings representing groups, and the values are lists of
+        Assembly objects.
+        """
+        data: dict[str, list[Assembly]] = {}
+        for group in self._get_all_groups():
             data[group] = []
         for assembly in self.data:
             with contextlib.suppress(KeyError):

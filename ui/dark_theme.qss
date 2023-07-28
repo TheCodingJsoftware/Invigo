@@ -585,7 +585,7 @@ QListWidget:disabled {
 }
 
 QTreeView {
-    background-color: rgb(33, 33, 33);
+    background-color: rgb(52, 52, 52);
     border: 1px solid #3daee9;
     border-bottom-right-radius: 10px;
     border-bottom-left-radius: 10px;
@@ -593,8 +593,24 @@ QTreeView {
     border-top-right-radius: 0.01em;
 }
 
+QTreeView::indicator {
+    width: 10px;
+    height: 10px;
+    border-radius: 8px;
+    border: 1px solid #5b5b5b;
+    background: #474747;
+}
+
+QTreeView::indicator:checked {
+    border-color: #3daee9;
+    background: #3daee9;
+}
+QTreeView::indicator:hover {
+    border-color: #3daee9;
+}
+
 QTreeWidget {
-    border: 1px solid rgba(65, 65, 65, 150);
+    border: 1px solid rgb(65, 65, 65);
     background-color: transparent;
     border-radius: 0px;
     padding: 0px;
@@ -609,7 +625,7 @@ QTreeWidget::indicator {
 }
 
 QTreeWidget::indicator:checked {
-    background: 3px solid rgb(144, 144, 144);
+    border: 3px solid rgb(144, 144, 144);
     border: 1px solid rgba(67, 71, 77, 57);
 }
 
