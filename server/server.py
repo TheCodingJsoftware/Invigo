@@ -145,7 +145,7 @@ class FileUploadHandler(tornado.web.RequestHandler):
                 # Save the received file to a local location
                 with open(f"data/{file_name}", "wb") as file:
                     file.write(file_data)
-                if file_name == f'{inventory_file_name}.json': # This needs to be done because the website uses this file
+                if file_name == f'{inventory_file_name}.json' or file_name == f'{inventory_file_name} - Price of Steel.json': # This needs to be done because the website uses this file
                     threading.Thread(target=update_inventory_file_to_github, args=(file_name,)).start()
             elif get_file_type(file_name) == "JPEG":
                 # Save the received file to a local location
