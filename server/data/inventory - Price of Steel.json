@@ -398,16 +398,18 @@
             "yellow_limit": 0.5
         },
         "11 Gauge Aluminium 96.000x48.000": {
-            "current_quantity": 691,
+            "current_quantity": 562.0,
             "sheet_dimension": "96.000x48.000",
             "thickness": "11 Gauge",
             "material": "Aluminium",
             "latest_change_material": "Item added\nLaser Pc\nApril 27 Thursday 2023 04-51-47 PM",
             "latest_sheet_dimension": "Item added\nLaser Pc\nApril 27 Thursday 2023 04-51-47 PM",
             "latest_change_thickness": "Item added\nLaser Pc\nApril 27 Thursday 2023 04-51-47 PM",
-            "latest_change_current_quantity": "Item added\nLaser Pc\nApril 27 Thursday 2023 04-51-47 PM",
+            "latest_change_current_quantity": "Lynden - Manually set to 562.0 from 691 at August 01 Tuesday 2023 11:00:46 AM",
             "red_limit": 0.5,
-            "yellow_limit": 0.5
+            "yellow_limit": 0.5,
+            "has_sent_warning": false,
+            "notes": ""
         }
     },
     "Stainless": {
