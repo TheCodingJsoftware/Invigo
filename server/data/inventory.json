@@ -8764,24 +8764,6 @@
             "latest_change_priority": "Item added\nItsme\nJanuary 18 Wednesday 2023 09-25-24 AM",
             "latest_change_notes": "Item added\nItsme\nJanuary 18 Wednesday 2023 09-25-24 AM"
         },
-        "Bl 34 Shaker Brick Set": {
-            "part_number": "BL34S",
-            "unit_quantity": 1,
-            "current_quantity": 0.0,
-            "price": 414.75,
-            "use_exchange_rate": true,
-            "priority": 0,
-            "notes": "Vendor: Reftec\nDescription: ",
-            "latest_change_name": "Latest Change:\nfrom: \"Bl 34 ShakerBrick Set\"\nto: \"Bl 34 Shaker Brick Set\"\nItsme\nSeptember 07 Wednesday 2022 01:15:00 PM",
-            "latest_change_part_number": "Latest Change:\nfrom: BL34\nto: BL34S\nItsme\nAugust 29 Monday 2022 11:02:39 AM",
-            "latest_change_unit_quantity": "Item added\nItsme\nAugust 26 Friday 2022 08-44-24 AM",
-            "latest_change_current_quantity": "Lynden - Changed from 6.0 to 0.0 at July 19 Wednesday 2023 08-24-43 AM",
-            "latest_change_price": "Latest Change:\nfrom: 414.75\nto: 414.75\nItsme\nJanuary 11 Wednesday 2023 04:01:28 PM",
-            "latest_change_use_exchange_price": "Item added\nItsme\nAugust 26 Friday 2022 08-44-24 AM",
-            "latest_change_priority": "Item added\nItsme\nAugust 26 Friday 2022 08-44-24 AM",
-            "latest_change_notes": "Item added\nItsme\nAugust 26 Friday 2022 08-44-24 AM",
-            "latest_change_use_exchange_rate": "Latest Change:\nfrom: CAD\nto: USD\nItsme\nJanuary 11 Wednesday 2023 04:00:35 PM"
-        },
         "Black Gloss 76795 Enamel ": {
             "part_number": "7679505",
             "unit_quantity": 0.1,
@@ -8798,23 +8780,6 @@
             "latest_change_use_exchange_price": "Item added\nItsme\nJanuary 18 Wednesday 2023 03-23-51 PM",
             "latest_change_priority": "Item added\nItsme\nJanuary 18 Wednesday 2023 03-23-51 PM",
             "latest_change_notes": "Item added\nItsme\nJanuary 18 Wednesday 2023 03-23-51 PM"
-        },
-        "3\" Flex Hose": {
-            "part_number": "3FH",
-            "unit_quantity": 1,
-            "current_quantity": 141,
-            "price": 25.3,
-            "use_exchange_rate": false,
-            "priority": 0,
-            "notes": "Vendor:Heat Savers Distributers \nDescription: 1 Box Equals 11 pieces           Item# 3DFA-35\n3\" x 35' DuraFlex\n(204) 694-3305\n$278- 35'\n$400",
-            "latest_change_name": "Item added\nItsme\nSeptember 06 Tuesday 2022 08-52-17 AM",
-            "latest_change_part_number": "Item added\nItsme\nSeptember 06 Tuesday 2022 08-52-17 AM",
-            "latest_change_unit_quantity": "Item added\nItsme\nSeptember 06 Tuesday 2022 08-52-17 AM",
-            "latest_change_current_quantity": "Lynden - Changed from 6 to 141 at July 24 Monday 2023 02-52-13 PM",
-            "latest_change_price": "Latest Change:\nfrom: 25.0\nto: 25.3\nItsme\nDecember 15 Thursday 2022 08:53:13 AM",
-            "latest_change_use_exchange_price": "Item added\nItsme\nSeptember 06 Tuesday 2022 08-52-17 AM",
-            "latest_change_priority": "Item added\nItsme\nSeptember 06 Tuesday 2022 08-52-17 AM",
-            "latest_change_notes": "Latest Change:\nfrom: Vendor:Heat Savers Distributers \nDescription: 1 Box Equals 11 pieces           Item# 3DFA-35\n3\" x 35' DuraFlex\n(204) 694-3305\n$278- 35'\n$40\nto: Vendor:Heat Savers Distributers \nDescription: 1 Box Equals 11 pieces           Item# 3DFA-35\n3\" x 35' DuraFlex\n(204) 694-3305\n$278- 35'\n$400\nLynden\nMarch 31 Friday 2023 10:38:52 AM"
         },
         "1\" Street Elbow- 45": {
             "part_number": "1str45",
@@ -8884,6 +8849,24 @@
             "latest_change_priority": "Item added\nLynden\nApril 25 Tuesday 2023 10-48-59 AM",
             "latest_change_notes": "Item added\nLynden\nApril 25 Tuesday 2023 10-48-59 AM"
         },
+        "Bl 34 Shaker Brick Set": {
+            "part_number": "BL34S",
+            "unit_quantity": 1,
+            "current_quantity": 20.0,
+            "price": 414.75,
+            "use_exchange_rate": true,
+            "priority": 0,
+            "notes": "Vendor: Reftec\nDescription: ",
+            "latest_change_name": "Latest Change:\nfrom: \"Bl 34 ShakerBrick Set\"\nto: \"Bl 34 Shaker Brick Set\"\nItsme\nSeptember 07 Wednesday 2022 01:15:00 PM",
+            "latest_change_part_number": "Latest Change:\nfrom: BL34\nto: BL34S\nItsme\nAugust 29 Monday 2022 11:02:39 AM",
+            "latest_change_unit_quantity": "Item added\nItsme\nAugust 26 Friday 2022 08-44-24 AM",
+            "latest_change_current_quantity": "Lynden - Changed from 0.0 to 20.0 at August 01 Tuesday 2023 08-59-03 AM",
+            "latest_change_price": "Latest Change:\nfrom: 414.75\nto: 414.75\nItsme\nJanuary 11 Wednesday 2023 04:01:28 PM",
+            "latest_change_use_exchange_price": "Item added\nItsme\nAugust 26 Friday 2022 08-44-24 AM",
+            "latest_change_priority": "Item added\nItsme\nAugust 26 Friday 2022 08-44-24 AM",
+            "latest_change_notes": "Item added\nItsme\nAugust 26 Friday 2022 08-44-24 AM",
+            "latest_change_use_exchange_rate": "Latest Change:\nfrom: CAD\nto: USD\nItsme\nJanuary 11 Wednesday 2023 04:00:35 PM"
+        },
         "1\" x4\" Nipple": {
             "part_number": "G1616-100x4",
             "unit_quantity": 2,
@@ -8900,23 +8883,6 @@
             "latest_change_use_exchange_price": "Item added\nItsme\nAugust 29 Monday 2022 08-28-19 AM",
             "latest_change_priority": "Item added\nItsme\nAugust 29 Monday 2022 08-28-19 AM",
             "latest_change_notes": "Item added\nItsme\nAugust 29 Monday 2022 08-28-19 AM"
-        },
-        "3\" Air Tube": {
-            "part_number": "3AT",
-            "unit_quantity": 1.0,
-            "current_quantity": 210.0,
-            "price": 10.5,
-            "use_exchange_rate": false,
-            "priority": 0,
-            "notes": "Vendor: SCMetal Tech \nDescription: ",
-            "latest_change_name": "Item added\nItsme\nDecember 05 Monday 2022 02-50-37 PM",
-            "latest_change_part_number": "Item added\nItsme\nDecember 05 Monday 2022 02-50-37 PM",
-            "latest_change_unit_quantity": "Item added\nItsme\nDecember 05 Monday 2022 02-50-37 PM",
-            "latest_change_current_quantity": "Lynden - Changed from 10.0 to 210.0 at July 28 Friday 2023 09-10-48 AM",
-            "latest_change_price": "Latest Change:\nfrom: 10.5\nto: 10.5\nItsme\nDecember 30 Friday 2022 03:33:55 PM",
-            "latest_change_use_exchange_price": "Item added\nItsme\nDecember 05 Monday 2022 02-50-37 PM",
-            "latest_change_priority": "Item added\nItsme\nDecember 05 Monday 2022 02-50-37 PM",
-            "latest_change_notes": "Item added\nItsme\nDecember 05 Monday 2022 02-50-37 PM"
         },
         "Digital Johnson Controle": {
             "part_number": "A421ABC-02",
@@ -9122,6 +9088,23 @@
             "latest_change_priority": "Item added\nItsme\nNovember 08 Tuesday 2022 04-59-42 PM",
             "latest_change_notes": "Item added\nItsme\nNovember 08 Tuesday 2022 04-59-42 PM"
         },
+        "3\" Flex Hose": {
+            "part_number": "3FH",
+            "unit_quantity": 1,
+            "current_quantity": 141,
+            "price": 25.3,
+            "use_exchange_rate": false,
+            "priority": 0,
+            "notes": "Vendor:Heat Savers Distributers \nDescription: 1 Box Equals 11 pieces           Item# 3DFA-35\n3\" x 35' DuraFlex\n(204) 694-3305\n$278- 35'\n$400",
+            "latest_change_name": "Item added\nItsme\nSeptember 06 Tuesday 2022 08-52-17 AM",
+            "latest_change_part_number": "Item added\nItsme\nSeptember 06 Tuesday 2022 08-52-17 AM",
+            "latest_change_unit_quantity": "Item added\nItsme\nSeptember 06 Tuesday 2022 08-52-17 AM",
+            "latest_change_current_quantity": "Lynden - Changed from 6 to 141 at July 24 Monday 2023 02-52-13 PM",
+            "latest_change_price": "Latest Change:\nfrom: 25.0\nto: 25.3\nItsme\nDecember 15 Thursday 2022 08:53:13 AM",
+            "latest_change_use_exchange_price": "Item added\nItsme\nSeptember 06 Tuesday 2022 08-52-17 AM",
+            "latest_change_priority": "Item added\nItsme\nSeptember 06 Tuesday 2022 08-52-17 AM",
+            "latest_change_notes": "Latest Change:\nfrom: Vendor:Heat Savers Distributers \nDescription: 1 Box Equals 11 pieces           Item# 3DFA-35\n3\" x 35' DuraFlex\n(204) 694-3305\n$278- 35'\n$40\nto: Vendor:Heat Savers Distributers \nDescription: 1 Box Equals 11 pieces           Item# 3DFA-35\n3\" x 35' DuraFlex\n(204) 694-3305\n$278- 35'\n$400\nLynden\nMarch 31 Friday 2023 10:38:52 AM"
+        },
         " 6A2 1\/2 Rigid Offset Nipple Zinc": {
             "part_number": "ARL6A2",
             "unit_quantity": 2.0,
@@ -9190,6 +9173,23 @@
             "latest_change_priority": "Item added\nItsme\nAugust 18 Thursday 2022 09-52-46 AM",
             "latest_change_notes": "Item added\nItsme\nAugust 18 Thursday 2022 09-52-46 AM"
         },
+        "3\" Air Tube": {
+            "part_number": "3AT",
+            "unit_quantity": 1.0,
+            "current_quantity": 210.0,
+            "price": 10.5,
+            "use_exchange_rate": false,
+            "priority": 0,
+            "notes": "Vendor: SCMetal Tech \nDescription: ",
+            "latest_change_name": "Item added\nItsme\nDecember 05 Monday 2022 02-50-37 PM",
+            "latest_change_part_number": "Item added\nItsme\nDecember 05 Monday 2022 02-50-37 PM",
+            "latest_change_unit_quantity": "Item added\nItsme\nDecember 05 Monday 2022 02-50-37 PM",
+            "latest_change_current_quantity": "Lynden - Changed from 10.0 to 210.0 at July 28 Friday 2023 09-10-48 AM",
+            "latest_change_price": "Latest Change:\nfrom: 10.5\nto: 10.5\nItsme\nDecember 30 Friday 2022 03:33:55 PM",
+            "latest_change_use_exchange_price": "Item added\nItsme\nDecember 05 Monday 2022 02-50-37 PM",
+            "latest_change_priority": "Item added\nItsme\nDecember 05 Monday 2022 02-50-37 PM",
+            "latest_change_notes": "Item added\nItsme\nDecember 05 Monday 2022 02-50-37 PM"
+        },
         "8\" Plug cap Twist Lock": {
             "part_number": "8BL",
             "unit_quantity": 1,
@@ -9206,6 +9206,23 @@
             "latest_change_use_exchange_price": "Item added\nItsme\nAugust 03 Wednesday 2022 11-07-00 AM",
             "latest_change_priority": "Item added\nItsme\nAugust 03 Wednesday 2022 11-07-00 AM",
             "latest_change_notes": "Item added\nItsme\nAugust 03 Wednesday 2022 11-07-00 AM"
+        },
+        "1\/4 Nialon Plastic Shaft- Float assy": {
+            "part_number": "14NPS",
+            "unit_quantity": 1,
+            "current_quantity": 216,
+            "price": 3.24,
+            "use_exchange_rate": false,
+            "priority": 0,
+            "notes": "Vendor: MCmaster Carr and Johnsons Plastic\nDescription: ",
+            "latest_change_name": "Item added\nItsme\nOctober 17 Monday 2022 08-11-52 AM",
+            "latest_change_part_number": "Item added\nItsme\nOctober 17 Monday 2022 08-11-52 AM",
+            "latest_change_unit_quantity": "Item added\nItsme\nOctober 17 Monday 2022 08-11-52 AM",
+            "latest_change_current_quantity": "Lynden - Changed from 256 to 216 at July 26 Wednesday 2023 08-42-44 AM",
+            "latest_change_price": "Latest Change:\nfrom: 3.0\nto: 3.24\nItsme\nJanuary 17 Tuesday 2023 03:52:53 PM",
+            "latest_change_use_exchange_price": "Item added\nItsme\nOctober 17 Monday 2022 08-11-52 AM",
+            "latest_change_priority": "Item added\nItsme\nOctober 17 Monday 2022 08-11-52 AM",
+            "latest_change_notes": "Item added\nItsme\nOctober 17 Monday 2022 08-11-52 AM"
         },
         "S.S Wire Coil .156": {
             "part_number": "PIN35467",
@@ -9240,23 +9257,6 @@
             "latest_change_use_exchange_price": "Item added\nItsme\nJanuary 27 Friday 2023 12-55-15 PM",
             "latest_change_priority": "Item added\nItsme\nJanuary 27 Friday 2023 12-55-15 PM",
             "latest_change_notes": "Item added\nItsme\nJanuary 27 Friday 2023 12-55-15 PM"
-        },
-        "1\/4 Nialon Plastic Shaft- Float assy": {
-            "part_number": "14NPS",
-            "unit_quantity": 1,
-            "current_quantity": 216,
-            "price": 3.24,
-            "use_exchange_rate": false,
-            "priority": 0,
-            "notes": "Vendor: MCmaster Carr and Johnsons Plastic\nDescription: ",
-            "latest_change_name": "Item added\nItsme\nOctober 17 Monday 2022 08-11-52 AM",
-            "latest_change_part_number": "Item added\nItsme\nOctober 17 Monday 2022 08-11-52 AM",
-            "latest_change_unit_quantity": "Item added\nItsme\nOctober 17 Monday 2022 08-11-52 AM",
-            "latest_change_current_quantity": "Lynden - Changed from 256 to 216 at July 26 Wednesday 2023 08-42-44 AM",
-            "latest_change_price": "Latest Change:\nfrom: 3.0\nto: 3.24\nItsme\nJanuary 17 Tuesday 2023 03:52:53 PM",
-            "latest_change_use_exchange_price": "Item added\nItsme\nOctober 17 Monday 2022 08-11-52 AM",
-            "latest_change_priority": "Item added\nItsme\nOctober 17 Monday 2022 08-11-52 AM",
-            "latest_change_notes": "Item added\nItsme\nOctober 17 Monday 2022 08-11-52 AM"
         },
         "Die Cast Zinc Hinge, 1.57 Open x 1.57 Long, 4 Csunk Holes, SS Pin, Black Powder Coated": {
             "part_number": "H2080-02",
