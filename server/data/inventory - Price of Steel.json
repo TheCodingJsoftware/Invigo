@@ -547,7 +547,7 @@
             "notes": ""
         },
         "10 Gauge 409 SS 120.000x48.000": {
-            "current_quantity": 169,
+            "current_quantity": 155.0,
             "sheet_dimension": "120.000x48.000",
             "thickness": "10 Gauge",
             "material": "409 SS",
@@ -555,9 +555,11 @@
             "latest_change_material": "Item added\nLaser Pc\nApril 27 Thursday 2023 04-42-05 PM",
             "latest_sheet_dimension": "Item added\nLaser Pc\nApril 27 Thursday 2023 04-42-05 PM",
             "latest_change_thickness": "Item added\nLaser Pc\nApril 27 Thursday 2023 04-42-05 PM",
-            "latest_change_current_quantity": "Item added\nLaser Pc\nApril 27 Thursday 2023 04-42-05 PM",
+            "latest_change_current_quantity": "Lynden - Manually set to 155.0 from 169 at August 01 Tuesday 2023 11:13:20 AM",
             "red_limit": 0.5,
-            "yellow_limit": 0.5
+            "yellow_limit": 0.5,
+            "has_sent_warning": false,
+            "notes": ""
         },
         "12 Gauge 409 SS 72.000x48.000": {
             "current_quantity": 57,
