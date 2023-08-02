@@ -11829,6 +11829,23 @@
             "latest_change_priority": "Item added\nItsme\nJanuary 13 Friday 2023 01-45-16 PM",
             "latest_change_notes": "Item added\nItsme\nJanuary 13 Friday 2023 01-45-16 PM"
         },
+        "4\" SCH 40 BLK A53 Pipe": {
+            "part_number": "17704",
+            "unit_quantity": 3.0,
+            "current_quantity": 21.0,
+            "price": 267.75,
+            "use_exchange_rate": false,
+            "priority": 0,
+            "notes": "Vendor: Russel Metals\nDescription:  item price is full leangth. price per pound is 12.75$\nLCB Pipe on back burner",
+            "latest_change_name": "Item added\nLynden\nAugust 02 Wednesday 2023 11-01-45 AM",
+            "latest_change_part_number": "Item added\nLynden\nAugust 02 Wednesday 2023 11-01-45 AM",
+            "latest_change_unit_quantity": "Item added\nLynden\nAugust 02 Wednesday 2023 11-01-45 AM",
+            "latest_change_current_quantity": "Item added\nLynden\nAugust 02 Wednesday 2023 11-01-45 AM",
+            "latest_change_price": "Item added\nLynden\nAugust 02 Wednesday 2023 11-01-45 AM",
+            "latest_change_use_exchange_price": "Item added\nLynden\nAugust 02 Wednesday 2023 11-01-45 AM",
+            "latest_change_priority": "Item added\nLynden\nAugust 02 Wednesday 2023 11-01-45 AM",
+            "latest_change_notes": "Item added\nLynden\nAugust 02 Wednesday 2023 11-01-45 AM"
+        },
         "LCB 300 Brick Set": {
             "part_number": "LCB300",
             "unit_quantity": 1.0,
