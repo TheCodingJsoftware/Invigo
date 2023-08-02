@@ -824,14 +824,6 @@
             "group": "Mild Steel",
             "latest_change_current_quantity": "Item added at July 27 Thursday 2023 11-24-42 AM via server"
         },
-        "18 Gauge Galvanneal 44.000x18.000": {
-            "current_quantity": 1,
-            "sheet_dimension": "44.000x18.000",
-            "thickness": "18 Gauge",
-            "material": "Galvanneal",
-            "group": "Galvanneal",
-            "latest_change_current_quantity": "Item added at July 29 Saturday 2023 11-08-07 AM via server"
-        },
         "14 Gauge Mild Steel 28.700x26.200": {
             "current_quantity": 1,
             "sheet_dimension": "28.700x26.200",
