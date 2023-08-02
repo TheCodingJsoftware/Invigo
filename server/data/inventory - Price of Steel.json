@@ -800,14 +800,6 @@
             "group": "304 SS",
             "latest_change_current_quantity": "Item added at July 25 Tuesday 2023 01-53-14 PM via server"
         },
-        "1\/4 Mild Steel 32.000x48.500": {
-            "current_quantity": 1,
-            "sheet_dimension": "32.000x48.500",
-            "thickness": "1\/4",
-            "material": "Mild Steel",
-            "group": "Mild Steel",
-            "latest_change_current_quantity": "Item added at July 26 Wednesday 2023 09-04-18 AM via server"
-        },
         "3\/16 Mild Steel 60.000x16.500": {
             "current_quantity": 1,
             "sheet_dimension": "60.000x16.500",
