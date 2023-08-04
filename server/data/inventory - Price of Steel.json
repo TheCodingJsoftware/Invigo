@@ -267,7 +267,10 @@
             "red_limit": 5.0,
             "yellow_limit": 10.0,
             "notes": "Usual Order 30 sheets ",
-            "is_order_pending": false
+            "is_order_pending": true,
+            "expected_arrival_time": "2023-8-15",
+            "order_pending_quantity": 30.0,
+            "order_pending_date": "2023-08-04"
         },
         "14 Gauge Mild Steel 120.000x60.000": {
             "current_quantity": 21.0,
