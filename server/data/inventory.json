@@ -706,7 +706,7 @@
             "use_exchange_rate": false,
             "priority": 0,
             "notes": "Vendor: Jan-Air Illinois\nDescription: Customer item #\nSB0993225C2RA ",
-            "latest_change_current_quantity": "Lynden - Changed from 15.0 to 15.0 at August 04 Friday 2023 04-42-55 PM",
+            "latest_change_current_quantity": "Lynden - Changed from 55 to 15.0 at August 04 Friday 2023 04-42-55 PM",
             "latest_change_price": "Latest Change:\nfrom: 68.45\nto: 68.45\nItsme\nSeptember 06 Tuesday 2022 11:12:17 AM",
             "latest_change_notes": "Latest Change:\nfrom: Vendor: Jan-Air Illinois\nDescription: Customer item #\nSB0993225C2RA\nto: Vendor: Jan-Air Illinois\nDescription: Customer item #\nSB0993225C2RA \nLynden\nMarch 09 Thursday 2023 03:34:27 PM"
         },
@@ -2123,7 +2123,7 @@
             "use_exchange_rate": true,
             "priority": 3,
             "notes": "Vendor: Jan-Air Illinois\nDescription: Customer item #\nSB0993225C2RA ",
-            "latest_change_current_quantity": "Lynden - Changed from 15.0 to 15.0 at August 04 Friday 2023 04-42-55 PM",
+            "latest_change_current_quantity": "Lynden - Changed from 55 to 15.0 at August 04 Friday 2023 04-42-55 PM",
             "latest_change_priority": "Latest Change:\nfrom: 0\nto: 3\nItsme\nSeptember 05 Monday 2022 09:49:27 AM",
             "latest_change_price": "Latest Change:\nfrom: 68.45\nto: 68.45\nItsme\nSeptember 06 Tuesday 2022 11:12:17 AM",
             "latest_change_use_exchange_rate": "Latest Change:\nfrom: CAD\nto: USD\nItsme\nDecember 16 Friday 2022 09:36:46 AM",
@@ -4266,7 +4266,7 @@
             "use_exchange_rate": false,
             "priority": 3,
             "notes": "Vendor: Jan-Air Illinois\nDescription: Customer item #\nSB0993225C2RA ",
-            "latest_change_current_quantity": "Lynden - Changed from 15.0 to 15.0 at August 04 Friday 2023 04-42-55 PM",
+            "latest_change_current_quantity": "Lynden - Changed from 55 to 15.0 at August 04 Friday 2023 04-42-55 PM",
             "latest_change_price": "Latest Change:\nfrom: 68.45\nto: 68.45\nItsme\nSeptember 06 Tuesday 2022 11:12:17 AM",
             "latest_change_priority": "Latest Change:\nfrom: 0\nto: 3\nItsme\nOctober 24 Monday 2022 08:34:48 AM",
             "latest_change_notes": "Latest Change:\nfrom: Vendor: Jan-Air Illinois\nDescription: Customer item #\nSB0993225C2RA\nto: Vendor: Jan-Air Illinois\nDescription: Customer item #\nSB0993225C2RA \nLynden\nMarch 09 Thursday 2023 03:34:27 PM"
