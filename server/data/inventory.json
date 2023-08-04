@@ -701,12 +701,12 @@
         "Blower Wheel 9-15\/16\" X 2-1\/4 BI Steel 1\/2 #2-106CI CW \"A\" 1800R": {
             "part_number": "2-106CI CW",
             "unit_quantity": 1,
-            "current_quantity": 55,
+            "current_quantity": 15.0,
             "price": 68.45,
             "use_exchange_rate": false,
             "priority": 0,
             "notes": "Vendor: Jan-Air Illinois\nDescription: Customer item #\nSB0993225C2RA ",
-            "latest_change_current_quantity": "Lynden - Changed from 60 to 55 at August 01 Tuesday 2023 09-05-01 AM",
+            "latest_change_current_quantity": "Lynden - Changed from 15.0 to 15.0 at August 04 Friday 2023 04-42-55 PM",
             "latest_change_price": "Latest Change:\nfrom: 68.45\nto: 68.45\nItsme\nSeptember 06 Tuesday 2022 11:12:17 AM",
             "latest_change_notes": "Latest Change:\nfrom: Vendor: Jan-Air Illinois\nDescription: Customer item #\nSB0993225C2RA\nto: Vendor: Jan-Air Illinois\nDescription: Customer item #\nSB0993225C2RA \nLynden\nMarch 09 Thursday 2023 03:34:27 PM"
         },
@@ -2115,6 +2115,21 @@
             "latest_change_use_exchange_rate": "Latest Change:\nfrom: CAD\nto: USD\nItsme\nAugust 04 Thursday 2022 08:56:53 AM",
             "group": "Eon Motor Fan Assy"
         },
+        "Blower Wheel 9-15\/16\" X 2-1\/4 BI Steel 1\/2 #2-106CI CW \"A\" 1800R": {
+            "part_number": "2-106CI CW",
+            "unit_quantity": 1,
+            "current_quantity": 15.0,
+            "price": 68.45,
+            "use_exchange_rate": true,
+            "priority": 3,
+            "notes": "Vendor: Jan-Air Illinois\nDescription: Customer item #\nSB0993225C2RA ",
+            "latest_change_current_quantity": "Lynden - Changed from 15.0 to 15.0 at August 04 Friday 2023 04-42-55 PM",
+            "latest_change_priority": "Latest Change:\nfrom: 0\nto: 3\nItsme\nSeptember 05 Monday 2022 09:49:27 AM",
+            "latest_change_price": "Latest Change:\nfrom: 68.45\nto: 68.45\nItsme\nSeptember 06 Tuesday 2022 11:12:17 AM",
+            "latest_change_use_exchange_rate": "Latest Change:\nfrom: CAD\nto: USD\nItsme\nDecember 16 Friday 2022 09:36:46 AM",
+            "group": "Eon Motor Fan Assy",
+            "latest_change_notes": "Latest Change:\nfrom: \"Vendor: Jan-Air Illinois\nDescription: Customer item #\nSB0993225C2RA\"\nto: \"Vendor: Jan-Air Illinois\nDescription: Customer item #\nSB0993225C2RA \"\nLynden\nMarch 09 Thursday 2023 03:34:27 PM"
+        },
         "WeatherStripping NDA- .5\" x 3\/16\" x 50'": {
             "part_number": "WSNDA",
             "unit_quantity": 1,
@@ -2491,21 +2506,6 @@
             "latest_change_part_number": "Latest Change:\nfrom: 51960\nto: 519603\nItsme\nFebruary 02 Thursday 2023 11:05:47 AM",
             "latest_change_price": "Latest Change:\nfrom: 17.38\nto: 17.38\nItsme\nFebruary 02 Thursday 2023 11:07:28 AM",
             "latest_change_notes": "Latest Change:\nfrom: \"Vendor: Grundfos Canada\nDescription: \nsupport-ca@sales.grundfos.co\"\nto: \"Vendor: Grundfos Canada\nDescription: \nsupport-ca@sales.grundfos.com\"\nItsme\nFebruary 02 Thursday 2023 11:20:34 AM"
-        },
-        "Blower Wheel 9-15\/16\" X 2-1\/4 BI Steel 1\/2 #2-106CI CW \"A\" 1800R": {
-            "part_number": "2-106CI CW",
-            "unit_quantity": 1,
-            "current_quantity": 55,
-            "price": 68.45,
-            "use_exchange_rate": true,
-            "priority": 3,
-            "notes": "Vendor: Jan-Air Illinois\nDescription: Customer item #\nSB0993225C2RA ",
-            "latest_change_current_quantity": "Lynden - Changed from 60 to 55 at August 01 Tuesday 2023 09-05-01 AM",
-            "latest_change_priority": "Latest Change:\nfrom: 0\nto: 3\nItsme\nSeptember 05 Monday 2022 09:49:27 AM",
-            "latest_change_price": "Latest Change:\nfrom: 68.45\nto: 68.45\nItsme\nSeptember 06 Tuesday 2022 11:12:17 AM",
-            "latest_change_use_exchange_rate": "Latest Change:\nfrom: CAD\nto: USD\nItsme\nDecember 16 Friday 2022 09:36:46 AM",
-            "group": "Eon Motor Fan Assy",
-            "latest_change_notes": "Latest Change:\nfrom: \"Vendor: Jan-Air Illinois\nDescription: Customer item #\nSB0993225C2RA\"\nto: \"Vendor: Jan-Air Illinois\nDescription: Customer item #\nSB0993225C2RA \"\nLynden\nMarch 09 Thursday 2023 03:34:27 PM"
         },
         "Sticker #342 Bilingual Caution Notice Decal ": {
             "part_number": "342",
@@ -4261,12 +4261,12 @@
         "Blower Wheel 9-15\/16\" X 2-1\/4 BI Steel 1\/2 #2-106CI CW \"A\" 1800R": {
             "part_number": "2-106CI CW",
             "unit_quantity": 1,
-            "current_quantity": 55,
+            "current_quantity": 15.0,
             "price": 68.45,
             "use_exchange_rate": false,
             "priority": 3,
             "notes": "Vendor: Jan-Air Illinois\nDescription: Customer item #\nSB0993225C2RA ",
-            "latest_change_current_quantity": "Lynden - Changed from 60 to 55 at August 01 Tuesday 2023 09-05-01 AM",
+            "latest_change_current_quantity": "Lynden - Changed from 15.0 to 15.0 at August 04 Friday 2023 04-42-55 PM",
             "latest_change_price": "Latest Change:\nfrom: 68.45\nto: 68.45\nItsme\nSeptember 06 Tuesday 2022 11:12:17 AM",
             "latest_change_priority": "Latest Change:\nfrom: 0\nto: 3\nItsme\nOctober 24 Monday 2022 08:34:48 AM",
             "latest_change_notes": "Latest Change:\nfrom: Vendor: Jan-Air Illinois\nDescription: Customer item #\nSB0993225C2RA\nto: Vendor: Jan-Air Illinois\nDescription: Customer item #\nSB0993225C2RA \nLynden\nMarch 09 Thursday 2023 03:34:27 PM"
