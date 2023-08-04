@@ -83,7 +83,7 @@
             "order_pending_date": "2023-07-24"
         },
         "1\/4 Mild Steel 120.000x60.000": {
-            "current_quantity": 72.0,
+            "current_quantity": 59.0,
             "sheet_dimension": "120.000x60.000",
             "thickness": "1\/4",
             "material": "Mild Steel",
@@ -91,7 +91,7 @@
             "latest_change_material": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-10-35 PM",
             "latest_sheet_dimension": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-10-35 PM",
             "latest_change_thickness": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-10-35 PM",
-            "latest_change_current_quantity": "Removed 6 at August 01 Tuesday 2023 10:24:32 AM",
+            "latest_change_current_quantity": "Set to 59.0 with QR code at August 03 Thursday 2023 04:34:10 PM",
             "red_limit": 20.0,
             "yellow_limit": 40.0,
             "notes": "Usual Order 100 sheets ",
@@ -134,7 +134,7 @@
             "order_pending_date": "2023-07-13"
         },
         "3\/16 Mild Steel 120.000x48.000": {
-            "current_quantity": 36.0,
+            "current_quantity": 26.0,
             "sheet_dimension": "120.000x48.000",
             "thickness": "3\/16",
             "material": "Mild Steel",
@@ -142,11 +142,14 @@
             "latest_change_material": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-16-54 PM",
             "latest_sheet_dimension": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-16-54 PM",
             "latest_change_thickness": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-16-54 PM",
-            "latest_change_current_quantity": "Removed 1 at August 01 Tuesday 2023 04:29:19 PM",
+            "latest_change_current_quantity": "Set to 26.0 with QR code at August 03 Thursday 2023 04:32:33 PM",
             "red_limit": 15.0,
             "yellow_limit": 30.0,
             "notes": "Usual Order 50 sheets ",
-            "is_order_pending": false
+            "is_order_pending": true,
+            "expected_arrival_time": "2023-8-15",
+            "order_pending_quantity": 50.0,
+            "order_pending_date": "2023-08-04"
         },
         "3\/16 Mild Steel 96.000x48.000": {
             "current_quantity": 8.0,
@@ -195,7 +198,7 @@
             "is_order_pending": false
         },
         "3\/16 Mild Steel 67.000x48.000": {
-            "current_quantity": 10.0,
+            "current_quantity": 30.0,
             "sheet_dimension": "67.000x48.000",
             "thickness": "3\/16",
             "material": "Mild Steel",
@@ -203,7 +206,7 @@
             "latest_change_material": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-24-43 PM",
             "latest_sheet_dimension": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-24-43 PM",
             "latest_change_thickness": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-24-43 PM",
-            "latest_change_current_quantity": "Removed 40 at August 02 Wednesday 2023 10:08:31 AM",
+            "latest_change_current_quantity": "Set to 30.0 with QR code at August 03 Thursday 2023 04:36:07 PM",
             "red_limit": 20.0,
             "yellow_limit": 40.0,
             "notes": "Usual Order 80 sheets ",
@@ -211,7 +214,7 @@
             "has_sent_warning": true
         },
         "10 Gauge Mild Steel 120.000x60.000": {
-            "current_quantity": 46.0,
+            "current_quantity": 44.0,
             "sheet_dimension": "120.000x60.000",
             "thickness": "10 Gauge",
             "material": "Mild Steel",
@@ -219,7 +222,7 @@
             "latest_change_material": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-26-08 PM",
             "latest_sheet_dimension": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-26-08 PM",
             "latest_change_thickness": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-26-08 PM",
-            "latest_change_current_quantity": "Removed 1 at July 26 Wednesday 2023 10:15:40 AM",
+            "latest_change_current_quantity": "Set to 44.0 with QR code at August 03 Thursday 2023 04:31:27 PM",
             "red_limit": 10.0,
             "yellow_limit": 20.0,
             "notes": "Usual Order 40 sheets ",
@@ -243,7 +246,7 @@
             "is_order_pending": false
         },
         "12 Gauge Mild Steel 120.000x60.000": {
-            "current_quantity": 11.0,
+            "current_quantity": 9.0,
             "sheet_dimension": "120.000x60.000",
             "thickness": "12 Gauge",
             "material": "Mild Steel",
@@ -251,14 +254,14 @@
             "latest_change_material": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-30-46 PM",
             "latest_sheet_dimension": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-30-46 PM",
             "latest_change_thickness": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-30-46 PM",
-            "latest_change_current_quantity": "Removed 4 at July 27 Thursday 2023 04:38:34 PM",
+            "latest_change_current_quantity": "Set to 9.0 with QR code at August 03 Thursday 2023 04:33:04 PM",
             "red_limit": 5.0,
             "yellow_limit": 10.0,
             "notes": "Usual Order 30 sheets ",
             "is_order_pending": false
         },
         "14 Gauge Mild Steel 120.000x60.000": {
-            "current_quantity": 1.0,
+            "current_quantity": 21.0,
             "sheet_dimension": "120.000x60.000",
             "thickness": "14 Gauge",
             "material": "Mild Steel",
@@ -266,11 +269,11 @@
             "latest_change_material": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-31-20 PM",
             "latest_sheet_dimension": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-31-20 PM",
             "latest_change_thickness": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-31-20 PM",
-            "latest_change_current_quantity": "Removed 6 at July 27 Thursday 2023 04:39:50 PM",
+            "latest_change_current_quantity": "Set to 21.0 with QR code at August 03 Thursday 2023 04:13:36 PM",
             "red_limit": 5.0,
             "yellow_limit": 10.0,
             "notes": "Usual Order 30 sheets ",
-            "is_order_pending": true,
+            "is_order_pending": false,
             "has_sent_warning": true,
             "expected_arrival_time": "2023-8-3",
             "order_pending_quantity": 20.0,
@@ -433,7 +436,7 @@
             "is_order_pending": false
         },
         "3\/16 304 SS 120.000x60.000": {
-            "current_quantity": 10.0,
+            "current_quantity": 5.0,
             "sheet_dimension": "120.000x60.000",
             "thickness": "3\/16",
             "material": "304 SS",
@@ -441,14 +444,14 @@
             "latest_change_material": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-50-54 PM",
             "latest_sheet_dimension": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-50-54 PM",
             "latest_change_thickness": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-50-54 PM",
-            "latest_change_current_quantity": "Removed 1 at July 28 Friday 2023 02:09:12 PM",
+            "latest_change_current_quantity": "Removed 5 at August 02 Wednesday 2023 01:56:59 PM",
             "red_limit": 3.0,
             "yellow_limit": 6.0,
             "notes": "Usual Order 20 sheets ",
             "is_order_pending": false
         },
         "10 Gauge 304 SS 120.000x60.000": {
-            "current_quantity": 41.0,
+            "current_quantity": 35.0,
             "sheet_dimension": "120.000x60.000",
             "thickness": "10 Gauge",
             "material": "304 SS",
@@ -456,7 +459,7 @@
             "latest_change_material": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-51-47 PM",
             "latest_sheet_dimension": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-51-47 PM",
             "latest_change_thickness": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-51-47 PM",
-            "latest_change_current_quantity": "Laser Pc - Manually set to 41.0 from 33.0 at June 07 Wednesday 2023 04:29:35 PM",
+            "latest_change_current_quantity": "Removed 6 at August 02 Wednesday 2023 05:14:22 PM",
             "red_limit": 5.0,
             "yellow_limit": 10.0,
             "notes": "Usual Order 30 sheets ",
@@ -478,7 +481,7 @@
             "is_order_pending": false
         },
         "14 Gauge 304 SS 120.000x60.000": {
-            "current_quantity": 12.0,
+            "current_quantity": 10.0,
             "sheet_dimension": "120.000x60.000",
             "thickness": "14 Gauge",
             "material": "304 SS",
@@ -486,7 +489,7 @@
             "latest_change_material": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-53-24 PM",
             "latest_sheet_dimension": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-53-24 PM",
             "latest_change_thickness": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-53-24 PM",
-            "latest_change_current_quantity": "Removed 1 at July 29 Saturday 2023 09:57:26 AM",
+            "latest_change_current_quantity": "Removed 2 at August 03 Thursday 2023 09:15:04 AM",
             "red_limit": 5.0,
             "yellow_limit": 10.0,
             "notes": "",
@@ -820,14 +823,6 @@
             "group": "Mild Steel",
             "latest_change_current_quantity": "Item added at July 26 Wednesday 2023 10-35-48 AM via server"
         },
-        "12 Gauge Mild Steel 29.125x52.000": {
-            "current_quantity": 1,
-            "sheet_dimension": "29.125x52.000",
-            "thickness": "12 Gauge",
-            "material": "Mild Steel",
-            "group": "Mild Steel",
-            "latest_change_current_quantity": "Item added at July 27 Thursday 2023 11-24-42 AM via server"
-        },
         "14 Gauge Mild Steel 28.700x26.200": {
             "current_quantity": 1,
             "sheet_dimension": "28.700x26.200",
@@ -835,6 +830,14 @@
             "material": "Mild Steel",
             "group": "Mild Steel",
             "latest_change_current_quantity": "Item added at August 02 Wednesday 2023 08-33-37 AM via server"
+        },
+        "3\/8 Mild Steel 94.000x60.000": {
+            "current_quantity": 1,
+            "sheet_dimension": "94.000x60.000",
+            "thickness": "3\/8",
+            "material": "Mild Steel",
+            "group": "Mild Steel",
+            "latest_change_current_quantity": "Item added at August 03 Thursday 2023 10-42-21 AM via server"
         }
     }
 }
