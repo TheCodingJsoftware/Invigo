@@ -31,7 +31,7 @@
     },
     "Mild Steel": {
         "3\/4 Laser Grade Plate 120.000x60.000": {
-            "current_quantity": 8.0,
+            "current_quantity": 7.0,
             "sheet_dimension": "120.000x60.000",
             "thickness": "3\/4",
             "material": "Laser Grade Plate",
@@ -39,7 +39,7 @@
             "latest_change_material": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-04-03 PM",
             "latest_sheet_dimension": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-04-03 PM",
             "latest_change_thickness": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-04-03 PM",
-            "latest_change_current_quantity": "Lynden - Manually set to 8.0 from 2.0 at July 28 Friday 2023 11:23:54 AM",
+            "latest_change_current_quantity": "Removed 1 at August 05 Saturday 2023 09:19:09 AM",
             "red_limit": 1.0,
             "yellow_limit": 3.0,
             "notes": "Usual Order 6 sheets ",
@@ -344,16 +344,18 @@
     },
     "Aluminium": {
         "14 Gauge Aluminium 96.000x48.000": {
-            "current_quantity": 439.0,
+            "current_quantity": 45.0,
             "sheet_dimension": "96.000x48.000",
             "thickness": "14 Gauge",
             "material": "Aluminium",
             "latest_change_material": "Item added\nLaser Pc\nApril 27 Thursday 2023 04-35-59 PM",
             "latest_sheet_dimension": "Item added\nLaser Pc\nApril 27 Thursday 2023 04-35-59 PM",
             "latest_change_thickness": "Item added\nLaser Pc\nApril 27 Thursday 2023 04-35-59 PM",
-            "latest_change_current_quantity": "Latest Change:\nfrom: 439.0\nto: 439.0\nLaser Pc\nApril 27 Thursday 2023 04:36:50 PM",
+            "latest_change_current_quantity": "Laser Pc - Manually set to 45.0 from 439.0 at August 05 Saturday 2023 10:50:16 AM",
             "red_limit": 0.5,
-            "yellow_limit": 0.5
+            "yellow_limit": 0.5,
+            "has_sent_warning": false,
+            "notes": ""
         },
         "3\/16 Aluminium 120.000x60.000": {
             "current_quantity": 1,
