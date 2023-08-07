@@ -8640,6 +8640,23 @@
             "latest_change_priority": "Item added\nItsme\nSeptember 22 Thursday 2022 08-31-44 AM",
             "latest_change_notes": "Item added\nItsme\nSeptember 22 Thursday 2022 08-31-44 AM"
         },
+        "Water level Indicator (plastic) ": {
+            "part_number": "WLIP1",
+            "unit_quantity": 1.0,
+            "current_quantity": 400.0,
+            "price": 1.2,
+            "use_exchange_rate": false,
+            "priority": 0,
+            "notes": "Vendor:  milled in house\nDescription: 1\" EPDM Black Plastic ",
+            "latest_change_name": "Item added\nLynden\nAugust 07 Monday 2023 09-24-36 AM",
+            "latest_change_part_number": "Item added\nLynden\nAugust 07 Monday 2023 09-24-36 AM",
+            "latest_change_unit_quantity": "Item added\nLynden\nAugust 07 Monday 2023 09-24-36 AM",
+            "latest_change_current_quantity": "Item added\nLynden\nAugust 07 Monday 2023 09-24-36 AM",
+            "latest_change_price": "Item added\nLynden\nAugust 07 Monday 2023 09-24-36 AM",
+            "latest_change_use_exchange_price": "Item added\nLynden\nAugust 07 Monday 2023 09-24-36 AM",
+            "latest_change_priority": "Item added\nLynden\nAugust 07 Monday 2023 09-24-36 AM",
+            "latest_change_notes": "Item added\nLynden\nAugust 07 Monday 2023 09-24-36 AM"
+        },
         "3\/16 Rivet POP DH Open END ": {
             "part_number": "EM-AD66ABS",
             "unit_quantity": 16,
