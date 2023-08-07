@@ -4,7 +4,6 @@ import logging
 import os
 import sys
 import threading
-from filelock import Timeout, FileLock
 import zipfile
 from datetime import datetime
 from io import StringIO
@@ -16,6 +15,7 @@ import tornado.ioloop
 import tornado.web
 import tornado.websocket
 from ansi2html import Ansi2HTMLConverter
+from filelock import FileLock, Timeout
 from git import Repo
 from markupsafe import Markup
 
@@ -92,7 +92,7 @@ class FileReceiveHandler(tornado.web.RequestHandler):
         """
         # Check if the requested file exists
         file_path = f"data/{filename}"
-        lock = FileLock(file_path, timeout=1)
+        lock = FileLock(f'{file_path}.lock', timeout=1)
         try:
             with lock:
                 with open(file_path, "rb") as file:
@@ -502,7 +502,7 @@ if __name__ == "__main__":
 
     config_logs()
     backup_inventroy_files()
-    generate_sheet_report(clients=connected_clients)
+    # generate_sheet_report(clients=connected_clients)
     app = tornado.web.Application(
         [
             (r"/", MainHandler),
