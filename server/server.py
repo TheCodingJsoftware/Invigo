@@ -4,6 +4,7 @@ import logging
 import os
 import sys
 import threading
+from filelock import Timeout, FileLock
 import zipfile
 from datetime import datetime
 from io import StringIO
@@ -79,8 +80,6 @@ class FileSenderHandler(tornado.websocket.WebSocketHandler):
 
 
 class FileReceiveHandler(tornado.web.RequestHandler):
-    # Create a lock for file access synchronization
-    file_access_lock = threading.Lock()
 
     def get(self, filename):
         """
@@ -93,21 +92,22 @@ class FileReceiveHandler(tornado.web.RequestHandler):
         """
         # Check if the requested file exists
         file_path = f"data/{filename}"
+        lock = FileLock(file_path, timeout=1)
         try:
-            with self.file_access_lock:
+            with lock:
                 with open(file_path, "rb") as file:
                     data = file.read()
 
-                # Set the response headers
-                self.set_header("Content-Type", "application/json")
-                self.set_header("Content-Disposition", f'attachment; filename="{filename}"')
+                    # Set the response headers
+                    self.set_header("Content-Type", "application/json")
+                    self.set_header("Content-Disposition", f'attachment; filename="{filename}"')
 
-                # Send the file as the response
-                self.write(data)
-                CustomPrint.print(
-                    f'INFO - Sent "{filename}" to {self.request.remote_ip}',
-                    connected_clients=connected_clients,
-                )
+                    # Send the file as the response
+                    self.write(data)
+                    CustomPrint.print(
+                        f'INFO - Sent "{filename}" to {self.request.remote_ip}',
+                        connected_clients=connected_clients,
+                    )
         except FileNotFoundError:
             self.set_status(404)
             self.write(f'File "{filename}" not found.')
@@ -115,6 +115,8 @@ class FileReceiveHandler(tornado.web.RequestHandler):
                 f'ERROR - File "{filename}" not found.',
                 connected_clients=connected_clients,
             )
+        finally:
+            lock.release()
 
         self.finish()
 
