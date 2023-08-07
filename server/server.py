@@ -4,7 +4,6 @@ import logging
 import os
 import sys
 import threading
-import queue
 import zipfile
 from datetime import datetime
 from io import StringIO
@@ -79,25 +78,36 @@ class FileSenderHandler(tornado.websocket.WebSocketHandler):
         )
 
 
-
 class FileReceiveHandler(tornado.web.RequestHandler):
-    def initialize(self):
-        # Create a queue for managing file access
-        self.file_access_queue = queue.Queue()
+    # Create a lock for file access synchronization
+    file_access_lock = threading.Lock()
 
-    def process_file_request(self, filename):
+    def get(self, filename):
+        """
+        This function checks if a requested file exists, and if it does, sends it as a response with
+        appropriate headers, otherwise returns a 404 error.
+
+        Args:
+          filename: a string representing the name of the file that the client is requesting to
+        download.
+        """
+        # Check if the requested file exists
+        file_path = f"data/{filename}"
         try:
-            file_path = f"data/{filename}"
-            with open(file_path, "rb") as file:
-                data = file.read()
+            with self.file_access_lock:
+                with open(file_path, "rb") as file:
+                    data = file.read()
 
-            self.set_header("Content-Type", "application/json")
-            self.set_header("Content-Disposition", f'attachment; filename="{filename}"')
-            self.write(data)
-            CustomPrint.print(
-                f'INFO - Sent "{filename}" to {self.request.remote_ip}',
-                connected_clients=connected_clients,
-            )
+                # Set the response headers
+                self.set_header("Content-Type", "application/json")
+                self.set_header("Content-Disposition", f'attachment; filename="{filename}"')
+
+                # Send the file as the response
+                self.write(data)
+                CustomPrint.print(
+                    f'INFO - Sent "{filename}" to {self.request.remote_ip}',
+                    connected_clients=connected_clients,
+                )
         except FileNotFoundError:
             self.set_status(404)
             self.write(f'File "{filename}" not found.')
@@ -107,16 +117,6 @@ class FileReceiveHandler(tornado.web.RequestHandler):
             )
 
         self.finish()
-
-    def get(self, filename):
-        # Add the file request to the queue
-        self.file_access_queue.put(lambda: self.process_file_request(filename))
-
-    def worker(self):
-        while True:
-            file_request_handler = self.file_access_queue.get()
-            file_request_handler()
-            self.file_access_queue.task_done()
 
 
 def update_inventory_file_to_github(file_name: str):
@@ -519,9 +519,6 @@ if __name__ == "__main__":
             (r"/get_previous_nests_data", GetPreviousNestsDataHandler),
         ]
     )
-    handler = FileReceiveHandler()
-    worker_thread = threading.Thread(target=handler.worker)
-    worker_thread.start()
     # executor = concurrent.futures.ThreadPoolExecutor(max_workers=10)
     # app.executor = executor
     app.listen(80)
