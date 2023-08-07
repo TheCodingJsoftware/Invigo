@@ -1812,23 +1812,6 @@
             "latest_change_priority": "Item added\nItsme\nJuly 19 Tuesday 2022 04-11-52 PM",
             "latest_change_notes": "Latest Change:\nfrom: \"Vendor: Fastenal Canada\nDescription: Steinbeck Location\n204 326-249\"\nto: \"Vendor: Fastenal Canada\nDescription: Steinbeck Location\n204 326-2498\"\nItsme\nFebruary 23 Thursday 2023 02:27:00 PM"
         },
-        "Aluminum Float Cap ( 2\" )": {
-            "part_number": "Float cap",
-            "unit_quantity": 1.0,
-            "current_quantity": 80.0,
-            "price": 9.39,
-            "use_exchange_rate": false,
-            "priority": 0,
-            "notes": "Vendor: Made by Piney MFO. from 2 inch aluminum shaft\nDescription: ",
-            "latest_change_name": "Item added\nItsme\nJanuary 19 Thursday 2023 09-57-27 AM",
-            "latest_change_part_number": "Item added\nItsme\nJanuary 19 Thursday 2023 09-57-27 AM",
-            "latest_change_unit_quantity": "Item added\nItsme\nJanuary 19 Thursday 2023 09-57-27 AM",
-            "latest_change_current_quantity": "Lynden - Changed from -47.0 to 80.0 at August 07 Monday 2023 08-57-19 AM",
-            "latest_change_price": "Item added\nItsme\nJanuary 19 Thursday 2023 09-57-27 AM",
-            "latest_change_use_exchange_price": "Item added\nItsme\nJanuary 19 Thursday 2023 09-57-27 AM",
-            "latest_change_priority": "Item added\nItsme\nJanuary 19 Thursday 2023 09-57-27 AM",
-            "latest_change_notes": "Item added\nItsme\nJanuary 19 Thursday 2023 09-57-27 AM"
-        },
         "G Class Ash Shovel Small": {
             "part_number": "GCASS",
             "unit_quantity": 1.0,
@@ -2777,6 +2760,23 @@
             "latest_change_priority": "Latest Change:\nfrom: 2\nto: 3\nLynden\nMarch 27 Monday 2023 10:48:35 AM",
             "latest_change_notes": "Item added\nItsme\nAugust 12 Friday 2022 11-27-45 AM"
         },
+        "Aluminum Float Cap ( 2\" )": {
+            "part_number": "Float cap",
+            "unit_quantity": 1.0,
+            "current_quantity": 80.0,
+            "price": 9.39,
+            "use_exchange_rate": false,
+            "priority": 0,
+            "notes": "Vendor: Made by Piney MFO. from 2 inch aluminum shaft\nDescription: ",
+            "latest_change_name": "Item added\nItsme\nJanuary 19 Thursday 2023 09-57-27 AM",
+            "latest_change_part_number": "Item added\nItsme\nJanuary 19 Thursday 2023 09-57-27 AM",
+            "latest_change_unit_quantity": "Item added\nItsme\nJanuary 19 Thursday 2023 09-57-27 AM",
+            "latest_change_current_quantity": "Lynden - Changed from -47.0 to 80.0 at August 07 Monday 2023 08-57-19 AM",
+            "latest_change_price": "Item added\nItsme\nJanuary 19 Thursday 2023 09-57-27 AM",
+            "latest_change_use_exchange_price": "Item added\nItsme\nJanuary 19 Thursday 2023 09-57-27 AM",
+            "latest_change_priority": "Item added\nItsme\nJanuary 19 Thursday 2023 09-57-27 AM",
+            "latest_change_notes": "Item added\nItsme\nJanuary 19 Thursday 2023 09-57-27 AM"
+        },
         "bushing 786-251 Bronze Insert Bushing ": {
             "part_number": "786-251",
             "unit_quantity": 2,
@@ -3141,6 +3141,23 @@
             "latest_change_use_exchange_price": "Item added\nItsme\nJuly 19 Tuesday 2022 07-10-49 PM",
             "latest_change_priority": "Item added\nItsme\nJuly 19 Tuesday 2022 07-10-49 PM",
             "latest_change_notes": "Item added\nItsme\nJuly 19 Tuesday 2022 07-10-49 PM"
+        },
+        "Brass Float insert (Milled inhouse) ": {
+            "part_number": "BFI1",
+            "unit_quantity": 1.0,
+            "current_quantity": 250.0,
+            "price": 2.0,
+            "use_exchange_rate": false,
+            "priority": 0,
+            "notes": "Vendor: Piney MFG\nDescription: ",
+            "latest_change_name": "Item added\nLynden\nAugust 07 Monday 2023 09-10-28 AM",
+            "latest_change_part_number": "Item added\nLynden\nAugust 07 Monday 2023 09-10-28 AM",
+            "latest_change_unit_quantity": "Item added\nLynden\nAugust 07 Monday 2023 09-10-28 AM",
+            "latest_change_current_quantity": "Item added\nLynden\nAugust 07 Monday 2023 09-10-28 AM",
+            "latest_change_price": "Item added\nLynden\nAugust 07 Monday 2023 09-10-28 AM",
+            "latest_change_use_exchange_price": "Item added\nLynden\nAugust 07 Monday 2023 09-10-28 AM",
+            "latest_change_priority": "Item added\nLynden\nAugust 07 Monday 2023 09-10-28 AM",
+            "latest_change_notes": "Item added\nLynden\nAugust 07 Monday 2023 09-10-28 AM"
         },
         " 12BK SLOTTED QUARTER-TURN LATCH, DIE CST, UL FACE SEAL & INTERNAL O-RING, BODY NUT, NO CAM, BLACK POWDER COATED": {
             "part_number": "12BK",
