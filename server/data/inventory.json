@@ -11085,6 +11085,23 @@
             "latest_change_priority": "Item added\nItsme\nSeptember 05 Monday 2022 08-15-07 AM",
             "latest_change_notes": "Latest Change:\nfrom: Vendor:  Cloverdale Paint Inc.\nDescription: 1 Box equals to 55LB   \n392.43$ A Box \nAlways Order 10 Boxes at a time\nCurrent quantity is by Pounds, unit quantity is how much Powder per Boiler in LBS\nCloverdale paint box onlu,\nDO NOT ORDER SPRECTRU\nto: Vendor:  Cloverdale Paint Inc.\nDescription: 1 Box equals to 55LB   \n392.43$ A Box \nAlways Order 10 Boxes at a time\nCurrent quantity is by Pounds, unit quantity is how much Powder per Boiler in LBS\nCloverdale paint box onlu,\nDO NOT ORDER SPRECTRUM\nLynden\nMay 01 Monday 2023 09:31:58 AM"
         },
+        "Water level Indicator (plastic) ": {
+            "part_number": "WLIP1",
+            "unit_quantity": 1.0,
+            "current_quantity": 400.0,
+            "price": 1.2,
+            "use_exchange_rate": false,
+            "priority": 0,
+            "notes": "Vendor:  milled in house\nDescription: 1\" EPDM Black Plastic ",
+            "latest_change_name": "Item added\nLynden\nAugust 07 Monday 2023 09-24-15 AM",
+            "latest_change_part_number": "Item added\nLynden\nAugust 07 Monday 2023 09-24-15 AM",
+            "latest_change_unit_quantity": "Item added\nLynden\nAugust 07 Monday 2023 09-24-15 AM",
+            "latest_change_current_quantity": "Item added\nLynden\nAugust 07 Monday 2023 09-24-15 AM",
+            "latest_change_price": "Item added\nLynden\nAugust 07 Monday 2023 09-24-15 AM",
+            "latest_change_use_exchange_price": "Item added\nLynden\nAugust 07 Monday 2023 09-24-15 AM",
+            "latest_change_priority": "Item added\nLynden\nAugust 07 Monday 2023 09-24-15 AM",
+            "latest_change_notes": "Item added\nLynden\nAugust 07 Monday 2023 09-24-15 AM"
+        },
         "3\/8 X 1.25\" Bolt ": {
             "part_number": "38125",
             "unit_quantity": 4,
