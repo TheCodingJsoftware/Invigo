@@ -8486,6 +8486,23 @@
             "latest_change_priority": "Item added\nItsme\nJanuary 27 Friday 2023 12-53-46 PM",
             "latest_change_notes": "Item added\nItsme\nJanuary 27 Friday 2023 12-53-46 PM"
         },
+        "Brass Float insert (Milled inhouse) ": {
+            "part_number": "BFI1",
+            "unit_quantity": 1.0,
+            "current_quantity": 250.0,
+            "price": 2.0,
+            "use_exchange_rate": false,
+            "priority": 0,
+            "notes": "Vendor: Piney MFG\nDescription: ",
+            "latest_change_name": "Item added\nLynden\nAugust 07 Monday 2023 09-09-57 AM",
+            "latest_change_part_number": "Item added\nLynden\nAugust 07 Monday 2023 09-09-57 AM",
+            "latest_change_unit_quantity": "Item added\nLynden\nAugust 07 Monday 2023 09-09-57 AM",
+            "latest_change_current_quantity": "Item added\nLynden\nAugust 07 Monday 2023 09-09-57 AM",
+            "latest_change_price": "Item added\nLynden\nAugust 07 Monday 2023 09-09-57 AM",
+            "latest_change_use_exchange_price": "Item added\nLynden\nAugust 07 Monday 2023 09-09-57 AM",
+            "latest_change_priority": "Item added\nLynden\nAugust 07 Monday 2023 09-09-57 AM",
+            "latest_change_notes": "Item added\nLynden\nAugust 07 Monday 2023 09-09-57 AM"
+        },
         "Brass Insert ( milled in house)": {
             "part_number": "BI",
             "unit_quantity": 2,
