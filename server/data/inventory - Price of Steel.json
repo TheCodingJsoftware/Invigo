@@ -21,8 +21,8 @@
             "latest_change_price": "Jordan - Modified from $117.00 to $1.17 at May 31 Wednesday 2023 09:15:23 AM"
         },
         "Aluminium": {
-            "price": 5.25,
-            "latest_change_price": "Lynden - Modified from $2.75 to $5.25 at August 08 Tuesday 2023 11:19:11 AM"
+            "price": 2.75,
+            "latest_change_price": "Lynden - Modified from $5.25 to $2.75 at August 08 Tuesday 2023 03:36:10 PM"
         },
         "Laser Grade Plate": {
             "price": 1.24,
@@ -868,6 +868,14 @@
             "material": "Mild Steel",
             "group": "Mild Steel",
             "latest_change_current_quantity": "Item added at August 08 Tuesday 2023 10-42-30 AM via server"
+        },
+        "1\/2 Laser Grade Plate 34.750x34.750": {
+            "current_quantity": 1,
+            "sheet_dimension": "34.750x34.750",
+            "thickness": "1\/2",
+            "material": "Laser Grade Plate",
+            "group": "Laser Grade Plate",
+            "latest_change_current_quantity": "Item added at August 08 Tuesday 2023 01-20-29 PM via server"
         }
     }
 }
