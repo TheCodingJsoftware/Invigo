@@ -11649,6 +11649,23 @@
             "latest_change_priority": "Item added\nLynden\nApril 27 Thursday 2023 04-09-21 PM",
             "latest_change_notes": "Latest Change:\nfrom: Vendor: New West Metals\nDescription: items are measured in actual size.\nprice is per 1.5\" per piece.\nbushing for polar doors. locking system\nto: Vendor: New West Metals\nDescription: items are measured in actual size.\nprice is per 1.5\" per piece.\nbushing for polar doors. locking system\n\nLynden\nApril 27 Thursday 2023 04:10:34 PM"
         },
+        "1 1\/4\" CF Round GR 1018 Bar": {
+            "part_number": "11456",
+            "unit_quantity": 13.0,
+            "current_quantity": 660.0,
+            "price": 6.36,
+            "use_exchange_rate": false,
+            "priority": 0,
+            "notes": "Vendor:  Russel Metals \nDescription: Price is per foot and quantity is also in feet. ",
+            "latest_change_name": "Item added\nLynden\nAugust 09 Wednesday 2023 08-39-28 AM",
+            "latest_change_part_number": "Item added\nLynden\nAugust 09 Wednesday 2023 08-39-28 AM",
+            "latest_change_unit_quantity": "Item added\nLynden\nAugust 09 Wednesday 2023 08-39-28 AM",
+            "latest_change_current_quantity": "Item added\nLynden\nAugust 09 Wednesday 2023 08-39-28 AM",
+            "latest_change_price": "Item added\nLynden\nAugust 09 Wednesday 2023 08-39-28 AM",
+            "latest_change_use_exchange_price": "Item added\nLynden\nAugust 09 Wednesday 2023 08-39-28 AM",
+            "latest_change_priority": "Item added\nLynden\nAugust 09 Wednesday 2023 08-39-28 AM",
+            "latest_change_notes": "Item added\nLynden\nAugust 09 Wednesday 2023 08-39-28 AM"
+        },
         "2.375 x .154 HS RND A500C": {
             "part_number": "73094",
             "unit_quantity": 1.0,
