@@ -1434,6 +1434,17 @@
             "latest_change_priority": "Item added\nItsme\nJuly 05 Tuesday 2022 10-28-43 AM",
             "latest_change_notes": "Latest Change:\nfrom: \"Vendor: Sierra Pacific Engeneering and Products\nDescription: \nGoes With 12C6 as 1 ass\"\nto: \"Vendor: Sierra Pacific Engeneering and Products\nDescription: \nGoes With 12C6 as 1 assy\"\nItsme\nJuly 07 Thursday 2022 04:08:41 PM"
         },
+        "Grundfos 15-58FC 115V 9H": {
+            "part_number": "15-58FC",
+            "unit_quantity": 1,
+            "current_quantity": 268,
+            "price": 71.0,
+            "use_exchange_rate": false,
+            "priority": 0,
+            "notes": "Vendor: Grundfos Canada\nDescription: ",
+            "latest_change_current_quantity": "Lynden - Changed from 364 to 268 at August 10 Thursday 2023 09-00-07 AM",
+            "latest_change_price": "Latest Change:\nfrom: 7.0\nto: 71.0\nItsme\nNovember 03 Thursday 2022 04:30:00 PM"
+        },
         "Snap in Flush Pull, Large, Black Plastic, For Panel Thickness .040- .055": {
             "part_number": "91-19BK02",
             "unit_quantity": 1.0,
@@ -1547,17 +1558,6 @@
             "latest_change_use_exchange_price": "Item added\nLynden\nMarch 11 Saturday 2023 09-33-45 AM",
             "latest_change_priority": "Item added\nLynden\nMarch 11 Saturday 2023 09-33-45 AM",
             "latest_change_notes": "Item added\nLynden\nMarch 11 Saturday 2023 09-33-45 AM"
-        },
-        "Grundfos 15-58FC 115V 9H": {
-            "part_number": "15-58FC",
-            "unit_quantity": 1,
-            "current_quantity": 364,
-            "price": 71.0,
-            "use_exchange_rate": false,
-            "priority": 0,
-            "notes": "Vendor: Grundfos Canada\nDescription: ",
-            "latest_change_current_quantity": "Lynden - Changed from 369 to 364 at August 01 Tuesday 2023 09-05-01 AM",
-            "latest_change_price": "Latest Change:\nfrom: 7.0\nto: 71.0\nItsme\nNovember 03 Thursday 2022 04:30:00 PM"
         },
         "1\"x25\"x48\" FSK 300 Certainteed Insulation": {
             "part_number": "FSK1",
@@ -5141,12 +5141,12 @@
         "Grundfos 15-58FC 115V 9H": {
             "part_number": "15-58FC",
             "unit_quantity": 1,
-            "current_quantity": 364,
+            "current_quantity": 268,
             "price": 71.0,
             "use_exchange_rate": false,
             "priority": 0,
             "notes": "Vendor: Grundfos Canada\nDescription: ",
-            "latest_change_current_quantity": "Lynden - Changed from 369 to 364 at August 01 Tuesday 2023 09-05-01 AM",
+            "latest_change_current_quantity": "Lynden - Changed from 364 to 268 at August 10 Thursday 2023 09-00-07 AM",
             "latest_change_price": "Latest Change:\nfrom: 7.0\nto: 71.0\nItsme\nNovember 03 Thursday 2022 04:30:00 PM"
         },
         "1\"x25\"x48\" FSK 300 Certainteed Insulation": {
