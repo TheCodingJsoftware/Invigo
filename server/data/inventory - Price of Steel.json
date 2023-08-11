@@ -865,14 +865,6 @@
             "group": "Mild Steel",
             "latest_change_current_quantity": "Item added at August 08 Tuesday 2023 10-42-30 AM via server"
         },
-        "1\/2 Laser Grade Plate 34.750x34.750": {
-            "current_quantity": 1,
-            "sheet_dimension": "34.750x34.750",
-            "thickness": "1\/2",
-            "material": "Laser Grade Plate",
-            "group": "Laser Grade Plate",
-            "latest_change_current_quantity": "Item added at August 08 Tuesday 2023 01-20-29 PM via server"
-        },
         "18 Gauge Galvanized 77.000x17.000": {
             "current_quantity": 1,
             "sheet_dimension": "77.000x17.000",
@@ -912,6 +904,14 @@
             "material": "Mild Steel",
             "group": "Mild Steel",
             "latest_change_current_quantity": "Item added at August 11 Friday 2023 02-29-31 PM via server"
+        },
+        "3\/4 Laser Grade Plate 29.750x7.125": {
+            "current_quantity": 1,
+            "sheet_dimension": "29.750x7.125",
+            "thickness": "3\/4",
+            "material": "Laser Grade Plate",
+            "group": "Laser Grade Plate",
+            "latest_change_current_quantity": "Item added at August 11 Friday 2023 04-00-14 PM via server"
         }
     }
 }
