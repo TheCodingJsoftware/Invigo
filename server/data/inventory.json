@@ -9548,6 +9548,23 @@
             "latest_change_notes": "Latest Change:\nfrom: Vendor: Controle Devices LLC\nDescription:Tiffane Champion <TChampion@cdivalve.com\norder@cdivalve.com\njdugan@CDIVALVE.CO\nto: Vendor: Controle Devices LLC\nDescription:Tiffane Champion <TChampion@cdivalve.com\norder@cdivalve.com\njdugan@CDIVALVE.COM\nLynden\nMay 15 Monday 2023 01:31:04 PM",
             "latest_change_use_exchange_rate": "Latest Change:\nfrom: CAD\nto: USD\nLynden\nMay 12 Friday 2023 01:55:14 PM"
         },
+        "535 Blacl Silicone 300ML ": {
+            "part_number": "32390",
+            "unit_quantity": 1.0,
+            "current_quantity": 321.0,
+            "price": 9.7,
+            "use_exchange_rate": false,
+            "priority": 2,
+            "notes": "Vendor: Anchor Products\nGrunthal Lumber\nDescription: General Purpose Silicone black\n",
+            "latest_change_name": "Item added\nLynden\nAugust 11 Friday 2023 02-13-33 PM",
+            "latest_change_part_number": "Item added\nLynden\nAugust 11 Friday 2023 02-13-33 PM",
+            "latest_change_unit_quantity": "Item added\nLynden\nAugust 11 Friday 2023 02-13-33 PM",
+            "latest_change_current_quantity": "Item added\nLynden\nAugust 11 Friday 2023 02-13-33 PM",
+            "latest_change_price": "Item added\nLynden\nAugust 11 Friday 2023 02-13-33 PM",
+            "latest_change_use_exchange_price": "Item added\nLynden\nAugust 11 Friday 2023 02-13-33 PM",
+            "latest_change_priority": "Item added\nLynden\nAugust 11 Friday 2023 02-13-33 PM",
+            "latest_change_notes": "Item added\nLynden\nAugust 11 Friday 2023 02-13-33 PM"
+        },
         "Damper Box- Aluminum": {
             "part_number": "DBA",
             "unit_quantity": 1,
