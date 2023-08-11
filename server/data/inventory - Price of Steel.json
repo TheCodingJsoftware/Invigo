@@ -134,7 +134,7 @@
             "order_pending_date": "2023-07-13"
         },
         "3\/16 Mild Steel 120.000x48.000": {
-            "current_quantity": 76.0,
+            "current_quantity": 53.0,
             "sheet_dimension": "120.000x48.000",
             "thickness": "3\/16",
             "material": "Mild Steel",
@@ -142,7 +142,7 @@
             "latest_change_material": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-16-54 PM",
             "latest_sheet_dimension": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-16-54 PM",
             "latest_change_thickness": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-16-54 PM",
-            "latest_change_current_quantity": "Set to 76.0 with QR code at August 10 Thursday 2023 10:34:28 AM",
+            "latest_change_current_quantity": "Removed 1 at August 11 Friday 2023 01:29:50 PM",
             "red_limit": 15.0,
             "yellow_limit": 30.0,
             "notes": "Usual Order 50 sheets ",
@@ -793,14 +793,6 @@
             "group": "Mild Steel",
             "latest_change_current_quantity": "Item added at July 13 Thursday 2023 10-48-24 AM via server"
         },
-        "12 Gauge Mild Steel 60.685x29.250": {
-            "current_quantity": 1,
-            "sheet_dimension": "60.685x29.250",
-            "thickness": "12 Gauge",
-            "material": "Mild Steel",
-            "group": "Mild Steel",
-            "latest_change_current_quantity": "Item added at July 13 Thursday 2023 11-17-32 AM via server"
-        },
         "16 Gauge Mild Steel 44.500x39.500": {
             "current_quantity": 1,
             "sheet_dimension": "44.500x39.500",
@@ -920,6 +912,14 @@
             "material": "Aluminium",
             "group": "Aluminium",
             "latest_change_current_quantity": "Item added at August 09 Wednesday 2023 04-47-40 PM via server"
+        },
+        "12 Gauge Mild Steel 55.875x17.375": {
+            "current_quantity": 1,
+            "sheet_dimension": "55.875x17.375",
+            "thickness": "12 Gauge",
+            "material": "Mild Steel",
+            "group": "Mild Steel",
+            "latest_change_current_quantity": "Item added at August 11 Friday 2023 02-29-31 PM via server"
         }
     }
 }
