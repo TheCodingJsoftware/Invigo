@@ -801,14 +801,6 @@
             "group": "Mild Steel",
             "latest_change_current_quantity": "Item added at July 14 Friday 2023 10-45-12 AM via server"
         },
-        "12 Gauge Mild Steel 60.000x29.000": {
-            "current_quantity": 1,
-            "sheet_dimension": "60.000x29.000",
-            "thickness": "12 Gauge",
-            "material": "Mild Steel",
-            "group": "Mild Steel",
-            "latest_change_current_quantity": "Item added at July 14 Friday 2023 11-01-09 AM via server"
-        },
         "16 Gauge 304 SS 33.000x20.500": {
             "current_quantity": 1,
             "sheet_dimension": "33.000x20.500",
