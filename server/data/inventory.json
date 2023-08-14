@@ -561,6 +561,23 @@
             "latest_change_priority": "Item added\nItsme\nOctober 27 Thursday 2022 04-26-51 PM",
             "latest_change_notes": "Latest Change:\nfrom: \"Vendor: Westburn and stanpro\n\nDescription: e 26 base \nGrand brass lamp parts for 3\"\nto: \"Vendor: Westburn and stanpro\n\nDescription: e 26 base \nGrand brass lamp parts for 3$\"\nLynden\nApril 17 Monday 2023 02:16:30 PM"
         },
+        "1\/2 Tank Flange  NPT ": {
+            "part_number": "953 SA-181-70 82D 3M",
+            "unit_quantity": 2,
+            "current_quantity": 40,
+            "price": 2.1,
+            "use_exchange_rate": false,
+            "priority": 0,
+            "notes": "Vendor: GreenLine Hose and Fitting \nDescription: ",
+            "latest_change_name": "Item added\nItsme\nOctober 19 Wednesday 2022 02-47-04 PM",
+            "latest_change_part_number": "Item added\nItsme\nOctober 19 Wednesday 2022 02-47-04 PM",
+            "latest_change_unit_quantity": "Item added\nItsme\nOctober 19 Wednesday 2022 02-47-04 PM",
+            "latest_change_current_quantity": "Lynden - Changed from 60 to 40 at August 11 Friday 2023 02-03-14 PM",
+            "latest_change_price": "Item added\nItsme\nOctober 19 Wednesday 2022 02-47-05 PM",
+            "latest_change_use_exchange_price": "Item added\nItsme\nOctober 19 Wednesday 2022 02-47-05 PM",
+            "latest_change_priority": "Item added\nItsme\nOctober 19 Wednesday 2022 02-47-05 PM",
+            "latest_change_notes": "Item added\nItsme\nOctober 19 Wednesday 2022 02-47-05 PM"
+        },
         "Sticker #304  Polar Furnace 3.65\"x 37.79\" ": {
             "part_number": "404",
             "unit_quantity": 1,
@@ -744,23 +761,6 @@
             "latest_change_priority": "Item added\nLynden\nMarch 06 Monday 2023 07-00-33 PM",
             "latest_change_notes": "Item added\nLynden\nMarch 06 Monday 2023 07-00-33 PM"
         },
-        "1\/2 Tank Flange  NPT ": {
-            "part_number": "953 SA-181-70 82D 3M",
-            "unit_quantity": 2,
-            "current_quantity": 40,
-            "price": 2.1,
-            "use_exchange_rate": false,
-            "priority": 0,
-            "notes": "Vendor: GreenLine Hose and Fitting \nDescription: ",
-            "latest_change_name": "Item added\nItsme\nOctober 19 Wednesday 2022 02-47-04 PM",
-            "latest_change_part_number": "Item added\nItsme\nOctober 19 Wednesday 2022 02-47-04 PM",
-            "latest_change_unit_quantity": "Item added\nItsme\nOctober 19 Wednesday 2022 02-47-04 PM",
-            "latest_change_current_quantity": "Lynden - Changed from 60 to 40 at August 11 Friday 2023 02-03-14 PM",
-            "latest_change_price": "Item added\nItsme\nOctober 19 Wednesday 2022 02-47-05 PM",
-            "latest_change_use_exchange_price": "Item added\nItsme\nOctober 19 Wednesday 2022 02-47-05 PM",
-            "latest_change_priority": "Item added\nItsme\nOctober 19 Wednesday 2022 02-47-05 PM",
-            "latest_change_notes": "Item added\nItsme\nOctober 19 Wednesday 2022 02-47-05 PM"
-        },
         " Sticker 309 Polar G2 & G3 Caution Disconnect Power 4.5\"x2\"": {
             "part_number": "309",
             "unit_quantity": 1.0,
@@ -879,6 +879,23 @@
             "latest_change_priority": "Item added\nLynden\nMarch 11 Saturday 2023 09-46-29 AM",
             "latest_change_notes": "Item added\nLynden\nMarch 11 Saturday 2023 09-46-29 AM"
         },
+        "Aluminum Float Cap ( 2\" )": {
+            "part_number": "Float cap",
+            "unit_quantity": 1.0,
+            "current_quantity": 70.0,
+            "price": 9.39,
+            "use_exchange_rate": false,
+            "priority": 0,
+            "notes": "Vendor: Made by Piney MFO. from 2 inch aluminum shaft\nDescription: ",
+            "latest_change_name": "Item added\nItsme\nJanuary 19 Thursday 2023 09-57-46 AM",
+            "latest_change_part_number": "Item added\nItsme\nJanuary 19 Thursday 2023 09-57-46 AM",
+            "latest_change_unit_quantity": "Item added\nItsme\nJanuary 19 Thursday 2023 09-57-46 AM",
+            "latest_change_current_quantity": "Lynden - Changed from 80.0 to 70.0 at August 11 Friday 2023 02-03-14 PM",
+            "latest_change_price": "Item added\nItsme\nJanuary 19 Thursday 2023 09-57-46 AM",
+            "latest_change_use_exchange_price": "Item added\nItsme\nJanuary 19 Thursday 2023 09-57-46 AM",
+            "latest_change_priority": "Item added\nItsme\nJanuary 19 Thursday 2023 09-57-46 AM",
+            "latest_change_notes": "Item added\nItsme\nJanuary 19 Thursday 2023 09-57-46 AM"
+        },
         "1\" Plug": {
             "part_number": "G1600M",
             "unit_quantity": 6,
@@ -964,23 +981,6 @@
             "latest_change_use_exchange_price": "Item added\nItsme\nAugust 12 Friday 2022 11-27-27 AM",
             "latest_change_priority": "Item added\nItsme\nAugust 12 Friday 2022 11-27-27 AM",
             "latest_change_notes": "Item added\nItsme\nAugust 12 Friday 2022 11-27-27 AM"
-        },
-        "Aluminum Float Cap ( 2\" )": {
-            "part_number": "Float cap",
-            "unit_quantity": 1.0,
-            "current_quantity": 70.0,
-            "price": 9.39,
-            "use_exchange_rate": false,
-            "priority": 0,
-            "notes": "Vendor: Made by Piney MFO. from 2 inch aluminum shaft\nDescription: ",
-            "latest_change_name": "Item added\nItsme\nJanuary 19 Thursday 2023 09-57-46 AM",
-            "latest_change_part_number": "Item added\nItsme\nJanuary 19 Thursday 2023 09-57-46 AM",
-            "latest_change_unit_quantity": "Item added\nItsme\nJanuary 19 Thursday 2023 09-57-46 AM",
-            "latest_change_current_quantity": "Lynden - Changed from 80.0 to 70.0 at August 11 Friday 2023 02-03-14 PM",
-            "latest_change_price": "Item added\nItsme\nJanuary 19 Thursday 2023 09-57-46 AM",
-            "latest_change_use_exchange_price": "Item added\nItsme\nJanuary 19 Thursday 2023 09-57-46 AM",
-            "latest_change_priority": "Item added\nItsme\nJanuary 19 Thursday 2023 09-57-46 AM",
-            "latest_change_notes": "Item added\nItsme\nJanuary 19 Thursday 2023 09-57-46 AM"
         },
         "3\"x24\"x48\" FSK Board": {
             "part_number": "702294",
@@ -1119,6 +1119,23 @@
             "latest_change_priority": "Item added\nItsme\nOctober 11 Tuesday 2022 10-28-01 AM",
             "latest_change_notes": "Item added\nItsme\nOctober 11 Tuesday 2022 10-28-01 AM"
         },
+        "Snap-Tite Romex C 1\/2\" 841ST": {
+            "part_number": "ARL841ST",
+            "unit_quantity": 1.0,
+            "current_quantity": 105.0,
+            "price": 0.7,
+            "use_exchange_rate": false,
+            "priority": 0,
+            "notes": "Vendor: Westburne\nDescription: ",
+            "latest_change_name": "Item added\nItsme\nNovember 28 Monday 2022 11-02-32 AM",
+            "latest_change_part_number": "Item added\nItsme\nNovember 28 Monday 2022 11-02-32 AM",
+            "latest_change_unit_quantity": "Item added\nItsme\nNovember 28 Monday 2022 11-02-32 AM",
+            "latest_change_current_quantity": "Lynden - Changed from 115.0 to 105.0 at August 11 Friday 2023 02-03-14 PM",
+            "latest_change_price": "Item added\nItsme\nNovember 28 Monday 2022 11-02-32 AM",
+            "latest_change_use_exchange_price": "Item added\nItsme\nNovember 28 Monday 2022 11-02-32 AM",
+            "latest_change_priority": "Item added\nItsme\nNovember 28 Monday 2022 11-02-32 AM",
+            "latest_change_notes": "Item added\nItsme\nNovember 28 Monday 2022 11-02-32 AM"
+        },
         "Knob 3\/4 DIA. 7\/16 Bore. Press-On Black Phenlic Round Knob": {
             "part_number": "POK-10",
             "unit_quantity": 1,
@@ -1140,23 +1157,6 @@
             "latest_change_current_quantity": "Lynden - Changed from 119 to 114 at August 01 Tuesday 2023 09-05-01 AM",
             "latest_change_notes": "Latest Change:\nfrom: \"Vendor: HC Graphic Screen Printin\nDescription: \"\nto: \"Vendor: HC Graphic Screen Printing\nDescription: \"\nItsme\nJuly 29 Friday 2022 04:11:34 PM",
             "latest_change_price": "Latest Change:\nfrom: 4.04\nto: 4.04\nItsme\nFebruary 23 Thursday 2023 09:31:34 AM"
-        },
-        "Snap-Tite Romex C 1\/2\" 841ST": {
-            "part_number": "ARL841ST",
-            "unit_quantity": 1.0,
-            "current_quantity": 105.0,
-            "price": 0.7,
-            "use_exchange_rate": false,
-            "priority": 0,
-            "notes": "Vendor: Westburne\nDescription: ",
-            "latest_change_name": "Item added\nItsme\nNovember 28 Monday 2022 11-02-32 AM",
-            "latest_change_part_number": "Item added\nItsme\nNovember 28 Monday 2022 11-02-32 AM",
-            "latest_change_unit_quantity": "Item added\nItsme\nNovember 28 Monday 2022 11-02-32 AM",
-            "latest_change_current_quantity": "Lynden - Changed from 115.0 to 105.0 at August 11 Friday 2023 02-03-14 PM",
-            "latest_change_price": "Item added\nItsme\nNovember 28 Monday 2022 11-02-32 AM",
-            "latest_change_use_exchange_price": "Item added\nItsme\nNovember 28 Monday 2022 11-02-32 AM",
-            "latest_change_priority": "Item added\nItsme\nNovember 28 Monday 2022 11-02-32 AM",
-            "latest_change_notes": "Item added\nItsme\nNovember 28 Monday 2022 11-02-32 AM"
         },
         "Micro Switch 1DM21 HoneyWell": {
             "part_number": "1DM21",
@@ -1298,23 +1298,6 @@
             "latest_change_priority": "Item added\nItsme\nFebruary 02 Thursday 2023 02-07-47 PM",
             "latest_change_notes": "Item added\nItsme\nFebruary 02 Thursday 2023 02-07-47 PM"
         },
-        "5\/16x5\/8 starlock push on Locking washer": {
-            "part_number": "SPOLW",
-            "unit_quantity": 8,
-            "current_quantity": 188,
-            "price": 0.06,
-            "use_exchange_rate": false,
-            "priority": 0,
-            "notes": "Vendor: A. Adams Supply\nDescription: ",
-            "latest_change_name": "Item added\nItsme\nJuly 13 Wednesday 2022 09-10-18 AM",
-            "latest_change_part_number": "Item added\nItsme\nJuly 13 Wednesday 2022 09-10-18 AM",
-            "latest_change_unit_quantity": "Item added\nItsme\nJuly 13 Wednesday 2022 09-10-18 AM",
-            "latest_change_current_quantity": "Lynden - Changed from 228 to 188 at August 01 Tuesday 2023 09-05-01 AM",
-            "latest_change_price": "Item added\nItsme\nJuly 13 Wednesday 2022 09-10-18 AM",
-            "latest_change_use_exchange_price": "Item added\nItsme\nJuly 13 Wednesday 2022 09-10-18 AM",
-            "latest_change_priority": "Item added\nItsme\nJuly 13 Wednesday 2022 09-10-18 AM",
-            "latest_change_notes": "Item added\nItsme\nJuly 13 Wednesday 2022 09-10-18 AM"
-        },
         "1\/4 Nialon Plastic Shaft- Float assy": {
             "part_number": "14NPS",
             "unit_quantity": 1,
@@ -1331,6 +1314,23 @@
             "latest_change_use_exchange_price": "Item added\nItsme\nOctober 17 Monday 2022 08-12-59 AM",
             "latest_change_priority": "Item added\nItsme\nOctober 17 Monday 2022 08-12-59 AM",
             "latest_change_notes": "Item added\nItsme\nOctober 17 Monday 2022 08-12-59 AM"
+        },
+        "5\/16x5\/8 starlock push on Locking washer": {
+            "part_number": "SPOLW",
+            "unit_quantity": 8,
+            "current_quantity": 188,
+            "price": 0.06,
+            "use_exchange_rate": false,
+            "priority": 0,
+            "notes": "Vendor: A. Adams Supply\nDescription: ",
+            "latest_change_name": "Item added\nItsme\nJuly 13 Wednesday 2022 09-10-18 AM",
+            "latest_change_part_number": "Item added\nItsme\nJuly 13 Wednesday 2022 09-10-18 AM",
+            "latest_change_unit_quantity": "Item added\nItsme\nJuly 13 Wednesday 2022 09-10-18 AM",
+            "latest_change_current_quantity": "Lynden - Changed from 228 to 188 at August 01 Tuesday 2023 09-05-01 AM",
+            "latest_change_price": "Item added\nItsme\nJuly 13 Wednesday 2022 09-10-18 AM",
+            "latest_change_use_exchange_price": "Item added\nItsme\nJuly 13 Wednesday 2022 09-10-18 AM",
+            "latest_change_priority": "Item added\nItsme\nJuly 13 Wednesday 2022 09-10-18 AM",
+            "latest_change_notes": "Item added\nItsme\nJuly 13 Wednesday 2022 09-10-18 AM"
         },
         "Float Clamp  G1SS-11.3 7\/16 One Ear Stainless": {
             "part_number": "G1SS-11.3",
@@ -1724,6 +1724,23 @@
             "latest_change_use_exchange_price": "Item added\nItsme\nJuly 07 Thursday 2022 09-48-03 AM",
             "latest_change_priority": "Item added\nItsme\nJuly 07 Thursday 2022 09-48-03 AM",
             "latest_change_notes": "Latest Change:\nfrom: Vendor: Mid Mountain Materials\t\nDescription:  (206) 762-7600\nto: Vendor: Mid Mountain Materials\t\nDescription:  (206) 762-7600\n\nLynden\nMarch 27 Monday 2023 04:51:13 PM"
+        },
+        "5\/8 X .120 DOM A513 1020\/26 Door Latch ": {
+            "part_number": "44188",
+            "unit_quantity": 3.0,
+            "current_quantity": 1260.0,
+            "price": 1.0,
+            "use_exchange_rate": false,
+            "priority": 0,
+            "notes": "Vendor: Russel Metals\n\nDescription: DOM tube for Doors on Polar.  gets zinc plated after cut up into 1.8\" pieces ",
+            "latest_change_name": "Item added\nLynden\nAugust 14 Monday 2023 03-45-07 PM",
+            "latest_change_part_number": "Item added\nLynden\nAugust 14 Monday 2023 03-45-07 PM",
+            "latest_change_unit_quantity": "Item added\nLynden\nAugust 14 Monday 2023 03-45-07 PM",
+            "latest_change_current_quantity": "Item added\nLynden\nAugust 14 Monday 2023 03-45-07 PM",
+            "latest_change_price": "Item added\nLynden\nAugust 14 Monday 2023 03-45-07 PM",
+            "latest_change_use_exchange_price": "Item added\nLynden\nAugust 14 Monday 2023 03-45-07 PM",
+            "latest_change_priority": "Item added\nLynden\nAugust 14 Monday 2023 03-45-07 PM",
+            "latest_change_notes": "Item added\nLynden\nAugust 14 Monday 2023 03-45-07 PM"
         },
         "NU SKT HD CP NC 8\/32 x 3 1\/2\"": {
             "part_number": "700-0832-0350",
