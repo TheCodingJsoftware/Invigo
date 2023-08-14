@@ -11944,25 +11944,6 @@
         }
     },
     "LCB ": {
-        "Turbulators 1.9\" x 3\" Pitch x .9\" ID RH Flight 3\/16 x 47\" Long": {
-            "part_number": "T1947",
-            "unit_quantity": 10.0,
-            "current_quantity": -20.0,
-            "price": 8.23,
-            "use_exchange_rate": true,
-            "priority": 0,
-            "notes": "Vendor: TOP Flight RFS\nDescription: usually order 80 Pieces\n",
-            "latest_change_name": "Item added\nLynden\nJuly 28 Friday 2023 08-43-38 AM",
-            "latest_change_part_number": "Item added\nLynden\nJuly 28 Friday 2023 08-43-38 AM",
-            "latest_change_unit_quantity": "Item added\nLynden\nJuly 28 Friday 2023 08-43-38 AM",
-            "latest_change_current_quantity": "Lynden - Changed from 10.0 to -20.0 at August 01 Tuesday 2023 10-13-36 AM",
-            "latest_change_price": "Item added\nLynden\nJuly 28 Friday 2023 08-43-38 AM",
-            "latest_change_use_exchange_price": "Item added\nLynden\nJuly 28 Friday 2023 08-43-38 AM",
-            "latest_change_priority": "Item added\nLynden\nJuly 28 Friday 2023 08-43-38 AM",
-            "latest_change_notes": "Item added\nLynden\nJuly 28 Friday 2023 08-43-38 AM",
-            "red_limit": 20.0,
-            "yellow_limit": 30.0
-        },
         "VFD 22F-A2P5N103 PF4M 240V 1PH .5HP": {
             "part_number": "ALB22FA2P5N103",
             "unit_quantity": 6.0,
@@ -12166,6 +12147,25 @@
             "latest_change_use_exchange_price": "Item added\nItsme\nJanuary 13 Friday 2023 01-44-42 PM",
             "latest_change_priority": "Item added\nItsme\nJanuary 13 Friday 2023 01-44-42 PM",
             "latest_change_notes": "Item added\nItsme\nJanuary 13 Friday 2023 01-44-42 PM"
+        },
+        "Turbulators 1.9\" x 3\" Pitch x .9\" ID RH Flight 3\/16 x 47\" Long": {
+            "part_number": "T1947",
+            "unit_quantity": 10.0,
+            "current_quantity": 60.0,
+            "price": 8.23,
+            "use_exchange_rate": true,
+            "priority": 0,
+            "notes": "Vendor: TOP Flight RFS\nDescription: usually order 80 Pieces\n",
+            "latest_change_name": "Item added\nLynden\nJuly 28 Friday 2023 08-43-38 AM",
+            "latest_change_part_number": "Item added\nLynden\nJuly 28 Friday 2023 08-43-38 AM",
+            "latest_change_unit_quantity": "Item added\nLynden\nJuly 28 Friday 2023 08-43-38 AM",
+            "latest_change_current_quantity": "Lynden - Changed from -20.0 to 60.0 at August 14 Monday 2023 02-35-11 PM",
+            "latest_change_price": "Item added\nLynden\nJuly 28 Friday 2023 08-43-38 AM",
+            "latest_change_use_exchange_price": "Item added\nLynden\nJuly 28 Friday 2023 08-43-38 AM",
+            "latest_change_priority": "Item added\nLynden\nJuly 28 Friday 2023 08-43-38 AM",
+            "latest_change_notes": "Item added\nLynden\nJuly 28 Friday 2023 08-43-38 AM",
+            "red_limit": 20.0,
+            "yellow_limit": 30.0
         },
         "Turbulators 1.9\" x 3\" Pitch x .9\" ID RH Flight 3\/16 x 40\" Long": {
             "part_number": "T1940",
