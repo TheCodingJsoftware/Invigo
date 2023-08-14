@@ -3663,23 +3663,6 @@
         }
     },
     "Polar G2+": {
-        "3\/8 Coupling Nut 1 3\/4 Long ": {
-            "part_number": "n38134",
-            "unit_quantity": 16,
-            "current_quantity": 590,
-            "price": 0.56,
-            "use_exchange_rate": false,
-            "priority": 0,
-            "notes": "Vendor: Fastenal Canada\nDescription: Steinbeck Location\n204 326-2498",
-            "latest_change_name": "Item added\nItsme\nJuly 19 Tuesday 2022 04-11-52 PM",
-            "latest_change_part_number": "Item added\nItsme\nJuly 19 Tuesday 2022 04-11-52 PM",
-            "latest_change_unit_quantity": "Item added\nItsme\nJuly 19 Tuesday 2022 04-11-52 PM",
-            "latest_change_current_quantity": "Lynden - Changed from -110 to 590 at August 14 Monday 2023 03-49-11 PM",
-            "latest_change_price": "Latest Change:\nfrom: 0.5\nto: 0.56\nItsme\nNovember 30 Wednesday 2022 10:21:19 AM",
-            "latest_change_use_exchange_price": "Item added\nItsme\nJuly 19 Tuesday 2022 04-11-52 PM",
-            "latest_change_priority": "Item added\nItsme\nJuly 19 Tuesday 2022 04-11-52 PM",
-            "latest_change_notes": "Latest Change:\nfrom: Vendor: Fastenal Canada\nDescription: Steinbeck Location\n204 326-249\nto: Vendor: Fastenal Canada\nDescription: Steinbeck Location\n204 326-2498\nItsme\nFebruary 23 Thursday 2023 02:27:00 PM"
-        },
         "G Class Ash Shovel Small": {
             "part_number": "GCASS",
             "unit_quantity": 1.0,
@@ -5263,6 +5246,23 @@
             "latest_change_use_exchange_price": "Item added\nItsme\nFebruary 16 Thursday 2023 11-01-31 AM",
             "latest_change_priority": "Item added\nItsme\nFebruary 16 Thursday 2023 11-01-31 AM",
             "latest_change_notes": "Item added\nItsme\nFebruary 16 Thursday 2023 11-01-31 AM"
+        },
+        "3\/8 Coupling Nut 1 3\/4 Long ": {
+            "part_number": "n38134",
+            "unit_quantity": 16,
+            "current_quantity": 590,
+            "price": 0.56,
+            "use_exchange_rate": false,
+            "priority": 0,
+            "notes": "Vendor: Fastenal Canada\nDescription: Steinbeck Location\n204 326-2498",
+            "latest_change_name": "Item added\nItsme\nJuly 19 Tuesday 2022 04-11-52 PM",
+            "latest_change_part_number": "Item added\nItsme\nJuly 19 Tuesday 2022 04-11-52 PM",
+            "latest_change_unit_quantity": "Item added\nItsme\nJuly 19 Tuesday 2022 04-11-52 PM",
+            "latest_change_current_quantity": "Lynden - Changed from -110 to 590 at August 14 Monday 2023 03-49-11 PM",
+            "latest_change_price": "Latest Change:\nfrom: 0.5\nto: 0.56\nItsme\nNovember 30 Wednesday 2022 10:21:19 AM",
+            "latest_change_use_exchange_price": "Item added\nItsme\nJuly 19 Tuesday 2022 04-11-52 PM",
+            "latest_change_priority": "Item added\nItsme\nJuly 19 Tuesday 2022 04-11-52 PM",
+            "latest_change_notes": "Latest Change:\nfrom: Vendor: Fastenal Canada\nDescription: Steinbeck Location\n204 326-249\nto: Vendor: Fastenal Canada\nDescription: Steinbeck Location\n204 326-2498\nItsme\nFebruary 23 Thursday 2023 02:27:00 PM"
         },
         "T316 SS Pipe Seamless 1\/8\" SCHED 40 X 20' .405\" OD x .068 Wall ": {
             "part_number": "T316PS",
