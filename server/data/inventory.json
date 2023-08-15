@@ -4349,6 +4349,23 @@
             "latest_change_priority": "Item added\nItsme\nJanuary 16 Monday 2023 01-10-23 PM",
             "latest_change_notes": "Item added\nItsme\nJanuary 16 Monday 2023 01-10-23 PM"
         },
+        "G-Class Owners Manual ": {
+            "part_number": "G2G2+G3",
+            "unit_quantity": 1.0,
+            "current_quantity": 51.0,
+            "price": 15.86,
+            "use_exchange_rate": false,
+            "priority": 0,
+            "notes": "Vendor: Derkson Printers\nDescription: Contact Hailie Payette\nLinda Peters or Rob@derkson printers",
+            "latest_change_name": "Item added\nLynden\nAugust 15 Tuesday 2023 01-48-25 PM",
+            "latest_change_part_number": "Item added\nLynden\nAugust 15 Tuesday 2023 01-48-25 PM",
+            "latest_change_unit_quantity": "Item added\nLynden\nAugust 15 Tuesday 2023 01-48-25 PM",
+            "latest_change_current_quantity": "Item added\nLynden\nAugust 15 Tuesday 2023 01-48-25 PM",
+            "latest_change_price": "Item added\nLynden\nAugust 15 Tuesday 2023 01-48-25 PM",
+            "latest_change_use_exchange_price": "Item added\nLynden\nAugust 15 Tuesday 2023 01-48-25 PM",
+            "latest_change_priority": "Item added\nLynden\nAugust 15 Tuesday 2023 01-48-25 PM",
+            "latest_change_notes": "Item added\nLynden\nAugust 15 Tuesday 2023 01-48-25 PM"
+        },
         "Hose Clamp 1 1\/2  S.S": {
             "part_number": "CLAMP112",
             "unit_quantity": 2,
