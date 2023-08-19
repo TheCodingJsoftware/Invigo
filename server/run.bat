@@ -1,0 +1,1 @@
+C:\Users\joe\AppData\Local\Programs\Python\Python310\python.exe C:\Users\joe\Documents\Inventory-Manager\server\server.py %*
