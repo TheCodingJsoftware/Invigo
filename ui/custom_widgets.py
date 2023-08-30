@@ -1423,7 +1423,7 @@ QPushButton:!checked:pressed#sheet_nest_button {
         """
         return self.widgets[index] if 0 <= index < len(self.widgets) else None
 
-    def getButton(self, index):
+    def getButton(self, index) -> QPushButton:
         """
         This function returns the widget at the specified index if it exists, otherwise it returns None.
 
