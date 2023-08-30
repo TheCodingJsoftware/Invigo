@@ -7,8 +7,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1160</width>
-    <height>725</height>
+    <width>1168</width>
+    <height>726</height>
    </rect>
   </property>
   <property name="font">
@@ -58,7 +58,7 @@
        <enum>QTabWidget::Rounded</enum>
       </property>
       <property name="currentIndex">
-       <number>0</number>
+       <number>3</number>
       </property>
       <property name="elideMode">
        <enum>Qt::ElideNone</enum>
@@ -303,7 +303,7 @@
                  <item row="0" column="1">
                   <widget class="QRadioButton" name="radioButton_single">
                    <property name="text">
-                    <string>Selected Items</string>
+                    <string>Selected Item</string>
                    </property>
                   </widget>
                  </item>
@@ -508,8 +508,8 @@ QPushButton#pushButton_create_new:disabled{
                 <rect>
                  <x>0</x>
                  <y>0</y>
-                 <width>159</width>
-                 <height>505</height>
+                 <width>160</width>
+                 <height>506</height>
                 </rect>
                </property>
                <property name="maximumSize">
@@ -737,7 +737,7 @@ QPushButton#pushButton_add_new_sheet:disabled{
                  <x>0</x>
                  <y>0</y>
                  <width>357</width>
-                 <height>417</height>
+                 <height>418</height>
                 </rect>
                </property>
                <layout class="QVBoxLayout" name="verticalLayout_21">
@@ -865,7 +865,7 @@ QPushButton#pushButton_add_new_sheet:disabled{
          <number>0</number>
         </property>
         <item>
-         <layout class="QHBoxLayout" name="horizontalLayout_15" stretch="0,10,0">
+         <layout class="QHBoxLayout" name="horizontalLayout_15" stretch="0,1,0">
           <property name="rightMargin">
            <number>0</number>
           </property>
@@ -902,10 +902,13 @@ QPushButton#pushButton_add_new_sheet:disabled{
                 <property name="spacing">
                  <number>6</number>
                 </property>
+                <property name="bottomMargin">
+                 <number>0</number>
+                </property>
                 <item>
                  <layout class="QHBoxLayout" name="horizontalLayout">
                   <property name="spacing">
-                   <number>0</number>
+                   <number>3</number>
                   </property>
                   <item>
                    <widget class="QGroupBox" name="groupBox_6">
@@ -1168,7 +1171,7 @@ QPushButton#pushButton_add_new_sheet:disabled{
                 <item>
                  <widget class="QGroupBox" name="groupBox_8">
                   <property name="title">
-                   <string>Sheet Settings</string>
+                   <string>Nest Settings</string>
                   </property>
                   <layout class="QVBoxLayout" name="verticalLayout_31">
                    <property name="leftMargin">
@@ -1195,8 +1198,8 @@ QPushButton#pushButton_add_new_sheet:disabled{
                          <rect>
                           <x>0</x>
                           <y>0</y>
-                          <width>482</width>
-                          <height>385</height>
+                          <width>472</width>
+                          <height>395</height>
                          </rect>
                         </property>
                         <property name="styleSheet">
@@ -1312,10 +1315,82 @@ s
            </widget>
           </item>
           <item>
-           <layout class="QVBoxLayout" name="verticalLayout_25">
-            <property name="sizeConstraint">
-             <enum>QLayout::SetDefaultConstraint</enum>
-            </property>
+           <layout class="QVBoxLayout" name="verticalLayout_37" stretch="0">
+            <item>
+             <widget class="QWidget" name="verticalWidget_4" native="true">
+              <layout class="QVBoxLayout" name="verticalLayout_45" stretch="0,0">
+               <item>
+                <widget class="QSplitter" name="splitter_3">
+                 <property name="orientation">
+                  <enum>Qt::Vertical</enum>
+                 </property>
+                 <property name="opaqueResize">
+                  <bool>true</bool>
+                 </property>
+                 <property name="handleWidth">
+                  <number>10</number>
+                 </property>
+                 <property name="childrenCollapsible">
+                  <bool>true</bool>
+                 </property>
+                 <widget class="QWidget" name="layoutWidget">
+                  <layout class="QVBoxLayout" name="verticalLayout_25">
+                   <property name="sizeConstraint">
+                    <enum>QLayout::SetDefaultConstraint</enum>
+                   </property>
+                  </layout>
+                 </widget>
+                 <widget class="QGroupBox" name="groupBox_7">
+                  <property name="title">
+                   <string>Components</string>
+                  </property>
+                  <layout class="QVBoxLayout" name="verticalLayout_44" stretch="1,0">
+                   <item>
+                    <layout class="QVBoxLayout" name="verticalLayout_43"/>
+                   </item>
+                   <item>
+                    <layout class="QHBoxLayout" name="horizontalLayout_16">
+                     <item>
+                      <widget class="QPushButton" name="pushButton_add_component">
+                       <property name="text">
+                        <string>Add Component</string>
+                       </property>
+                      </widget>
+                     </item>
+                     <item>
+                      <widget class="QPushButton" name="pushButton_clear_all_components">
+                       <property name="text">
+                        <string>Clear All Components</string>
+                       </property>
+                      </widget>
+                     </item>
+                    </layout>
+                   </item>
+                  </layout>
+                 </widget>
+                </widget>
+               </item>
+               <item>
+                <layout class="QHBoxLayout" name="horizontalLayout_26">
+                 <item>
+                  <widget class="QLabel" name="label_total_sheet_cost">
+                   <property name="text">
+                    <string>Total Sheet Cost: $0.00</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="QLabel" name="label_total_item_cost">
+                   <property name="text">
+                    <string>Total Item Cost: $0.00</string>
+                   </property>
+                  </widget>
+                 </item>
+                </layout>
+               </item>
+              </layout>
+             </widget>
+            </item>
            </layout>
           </item>
           <item>
@@ -1920,7 +1995,7 @@ QPushButton:pressed#pushButton_show_item_summary:!checked {
                       <x>0</x>
                       <y>0</y>
                       <width>280</width>
-                      <height>71</height>
+                      <height>72</height>
                      </rect>
                     </property>
                     <layout class="QHBoxLayout" name="horizontalLayout_21">
@@ -2323,7 +2398,7 @@ QPushButton#pushButton_generate_workorder:disabled{
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1160</width>
+     <width>1168</width>
      <height>21</height>
     </rect>
    </property>

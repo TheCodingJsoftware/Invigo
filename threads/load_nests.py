@@ -58,6 +58,8 @@ class LoadNests(QThread):
         self.gauge_regex = config.get("REGEX", "gauge_regex", raw=True)
         self.sheet_dimension_regex = config.get("REGEX", "sheet_dimension_regex", raw=True)
         self.part_dimensions_regex = config.get("REGEX", "part_dimension_regex", raw=True)
+        self.piercing_points_regex = config.get("REGEX", "piercing_points_regex", raw=True)
+        self.sheet_cut_time_regex = config.get("REGEX", "sheet_cut_time_regex", raw=True)
 
     def extract_images_from_pdf(self, pdf_paths: list[str]) -> None:
         """
@@ -198,6 +200,9 @@ class LoadNests(QThread):
                 sheet_dimension: str = self.get_values_from_text(nest_data, self.sheet_dimension_regex)[0]
                 sheet_material: str = self.material_id_to_name(self.get_values_from_text(nest_data, self.material_id_regex)[0])
                 sheet_gauge: str = self.get_values_from_text(nest_data, self.gauge_regex)[0]
+                sheet_cut_time: str = self.get_values_from_text(nest_data, self.sheet_cut_time_regex)[0]
+                sheet_cut_time_hours, sheet_cut_time_minutes, sheet_cut_time_seconds = sheet_cut_time.replace(' : ', ":").split(':')
+                total_sheet_cut_time = (float(sheet_cut_time_hours) * 3600) + (float(sheet_cut_time_minutes) * 60) + float(sheet_cut_time_seconds) # seconds
 
                 # lists
                 _quantities: list[str] = self.get_values_from_text(nest_data, self.quantity_regex)
@@ -210,6 +215,7 @@ class LoadNests(QThread):
                 piercing_times: list[str] = self.get_values_from_text(nest_data, self.piercing_time_regex)
                 part_numbers: list[str] = self.get_values_from_text(nest_data, self.part_number_regex)
                 parts: list[str] = self.get_values_from_text(nest_data, self.part_path_regex)
+                piercing_points: list[str] = self.get_values_from_text(nest_data, self.piercing_points_regex)
                 # Sheet information:
                 if int(sheet_gauge) >= 50:  # 1/2 inch
                     sheet_material = "Laser Grade Plate"
@@ -220,6 +226,7 @@ class LoadNests(QThread):
                     "material": sheet_material,
                     "sheet_dim": sheet_dimension,
                     "scrap_percentage": scrap_percentage,
+                    "machining_time": total_sheet_cut_time, # seconds
                 }
                 self.data[nest_name] = {}
                 for i, part_name in enumerate(parts):
@@ -234,6 +241,7 @@ class LoadNests(QThread):
                         "cutting_length": float(cutting_lengths[i]),
                         "file_name": nest,
                         "piercing_time": float(piercing_times[i]),
+                        "piercing_points": int(piercing_points[i]),
                         "gauge": sheet_gauge,
                         "material": sheet_material,
                         "recut": False,

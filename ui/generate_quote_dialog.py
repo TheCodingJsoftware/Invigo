@@ -53,6 +53,17 @@ class GenerateQuoteDialog(QDialog):
         self.inputText: str = ""
         self.theme: str = "dark" if settings_file.get_value(item_name="dark_mode") else "light"
 
+        self.should_open_quote_when_generated: bool = settings_file.get_value(item_name='open_quote_when_generated')
+        self.should_open_workorder_when_generated: bool = settings_file.get_value(item_name='open_workorder_when_generated')
+        self.should_open_packing_slip_when_generated: bool = settings_file.get_value(item_name='open_packing_slip_when_generated')
+
+        self.checkBox_quote.setChecked(self.should_open_quote_when_generated)
+        self.checkBox_quote.toggled.connect(lambda:(settings_file.add_item('open_quote_when_generated', self.checkBox_quote.isChecked())))
+        self.checkBox_workorder.setChecked(self.should_open_workorder_when_generated)
+        self.checkBox_workorder.toggled.connect(lambda:(settings_file.add_item('open_workorder_when_generated', self.checkBox_workorder.isChecked())))
+        self.checkBox_packing_slip.setChecked(self.should_open_packing_slip_when_generated)
+        self.checkBox_packing_slip.toggled.connect(lambda:(settings_file.add_item('open_packing_slip_when_generated', self.checkBox_packing_slip.isChecked())))
+
         self.setWindowFlags(Qt.WindowType.Window | Qt.WindowType.FramelessWindowHint)
         self.setAttribute(Qt.WidgetAttribute.WA_TranslucentBackground, True)
         self.setWindowIcon(QIcon("icons/icon.png"))
