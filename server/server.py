@@ -1,15 +1,19 @@
 # import concurrent.futures
 import json
+import time
 import logging
 import os
+import shutil
 import sys
 import threading
 import zipfile
+from functools import partial
 from datetime import datetime
 from io import StringIO
 from pathlib import Path
 
 import coloredlogs
+import schedule
 import jinja2
 import tornado.ioloop
 import tornado.web
@@ -121,16 +125,10 @@ class FileReceiveHandler(tornado.web.RequestHandler):
         self.finish()
 
 
-def update_inventory_file_to_github(file_name: str):
-    repo = Repo(
-        "C:/Users/joe/Documents/Inventory-Manager"
-    )  # if repo is CWD just do '.'
-    repo.index.add([f"server/data/{file_name}"])
-    repo.index.commit(f"data/{file_name}")
-    origin = repo.remote("origin")
-    origin.push()
+def update_inventory_file_to_pinecone(file_name: str):
+    shutil.copy2(f'data\\{file_name}', f'Z:\\Invigo\\{file_name}')
     CustomPrint.print(
-        f'INFO - Updated "{file_name}" to Github',
+        f'INFO - Updated "{file_name}" to Pinecone',
         connected_clients=connected_clients,
     )
 
@@ -152,7 +150,7 @@ class FileUploadHandler(tornado.web.RequestHandler):
                 with open(f"data/{file_name}", "wb") as file:
                     file.write(file_data)
                 if file_name == f'{inventory_file_name}.json' or file_name == f'{inventory_file_name} - Price of Steel.json': # This needs to be done because the website uses this file
-                    threading.Thread(target=update_inventory_file_to_github, args=(file_name,)).start()
+                    threading.Thread(target=update_inventory_file_to_pinecone, args=(file_name,)).start()
             elif get_file_type(file_name) == "JPEG":
                 # Save the received file to a local location
                 with open(f"parts in inventory images/{file_name}", "wb") as file:
@@ -162,7 +160,7 @@ class FileUploadHandler(tornado.web.RequestHandler):
                 connected_clients=connected_clients,
             )
             # Managing OmniGen's batch uploads
-            if file_name in ["parts_batch_to_upload_workorder.json", "parts_batch_to_upload_part.json"]:
+            if 'parts_batch_to_upload_workorder' in file_name or 'parts_batch_to_upload_part' in file_name:
                 self.write("Batch sent successfully")
                 update_inventory(f"data/{file_name}", connected_clients)
             elif file_name == "parts_batch_to_upload_quote.json":
@@ -466,6 +464,10 @@ def backup_inventroy_files():
     logging.info("Inventory file backed up")
     CustomPrint.print("INFO - Backup complete", connected_clients=connected_clients)
 
+def schedule_thread():
+    while True:
+        schedule.run_pending()
+        time.sleep(5)
 
 if __name__ == "__main__":
     coloredlogs.install(level="INFO")  # Enable colored logs
@@ -503,6 +505,9 @@ if __name__ == "__main__":
     config_logs()
     backup_inventroy_files()
     generate_sheet_report(clients=connected_clients)
+    schedule.every().monday.at("04:00").do(partial(generate_sheet_report, connected_clients))
+    thread = threading.Thread(target=schedule_thread)
+    thread.start()
     app = tornado.web.Application(
         [
             (r"/", MainHandler),
@@ -523,6 +528,6 @@ if __name__ == "__main__":
     )
     # executor = concurrent.futures.ThreadPoolExecutor(max_workers=10)
     # app.executor = executor
-    app.listen(80)
+    app.listen(8080)
     CustomPrint.print("INFO - Server started")
     tornado.ioloop.IOLoop.current().start()
