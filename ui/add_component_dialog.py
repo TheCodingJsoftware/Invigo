@@ -59,8 +59,10 @@ class AddComponentDialog(QDialog):
         self.lblMessage.setText(self.message)
 
         self.lineEdit_name.addItems(self.get_all_part_names())
+        self.comboBox_part_number.addItems(self.get_all_part_numbers())
         self.lineEdit_name.setCurrentText("")
         self.lineEdit_name.lineEdit().textChanged.connect(self.name_changed)
+        self.shelf_number = ""
         # self.lineEdit_part_number.lineEdit().editingFinished.connect(
         #     self.part_number_changed
         # )
@@ -139,6 +141,7 @@ class AddComponentDialog(QDialog):
         for category in list(data.keys()):
             for item in list(data[category].keys()):
                 if item == self.lineEdit_name.currentText():
+                    self.comboBox_part_number.setCurrentText(data[category][item]["part_number"])
                     self._extracted_from_part_number_changed_10(data, category, item)
 
     def name_changed(self) -> None:
@@ -164,6 +167,10 @@ class AddComponentDialog(QDialog):
         self.spinBox_current_quantity.setValue(int(data[category][item]["current_quantity"]))
         self.doubleSpinBox_price.setValue(data[category][item]["price"])
         self.comboBox_exchange_price.setCurrentText("USD" if data[category][item]["use_exchange_rate"] else "CAD")
+        try:
+            self.shelf_number = data[category][item]["shelf_number"]
+        except KeyError:
+            self.shelf_number = ""
 
     def get_response(self) -> str:
         """
@@ -211,6 +218,12 @@ class AddComponentDialog(QDialog):
 
         return self.comboBox_exchange_price.currentText() == "USD"
 
+    def get_part_number(self) -> str:
+        return self.comboBox_part_number.currentText()
+
+    def get_shelf_number(self) -> str:
+        return self.shelf_number
+
     def get_all_part_names(self) -> list[str]:
         """
         This function returns a list of all the part names in the inventory
@@ -223,6 +236,17 @@ class AddComponentDialog(QDialog):
         for category in list(data.keys()):
             part_names.extend(iter(list(data[category].keys())))
         return list(set(part_names))
+
+    def get_all_part_numbers(self) -> list[str]:
+        """
+        This function returns a list of all the unique part numbers in the inventory
+
+        Returns:
+          A list of unique part numbers.
+        """
+        part_numbers = self.get_items_from_inventory("part_number")
+        part_numbers = list(set(part_numbers))
+        return part_numbers
 
     def get_items_from_inventory(self, value_name: str):
         """

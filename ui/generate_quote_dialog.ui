@@ -308,7 +308,7 @@ QPushButton:pressed#pushButton_update_inventory:!checked {
 }</string>
                </property>
                <property name="text">
-                <string>Add Parts to Inventory</string>
+                <string>Add/Update Parts to Inventory</string>
                </property>
                <property name="checkable">
                 <bool>true</bool>

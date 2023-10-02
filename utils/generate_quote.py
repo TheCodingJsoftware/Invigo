@@ -113,7 +113,7 @@ class GenerateQuote:
                 left: 0;
                 right: 0;
                 padding: 10px;
-                height: 150px;
+                height: 100px;
                 background-color: white;
                 z-index: 3;
                 border-bottom: 1px solid #ccc;
@@ -131,10 +131,10 @@ class GenerateQuote:
             /* Style for the logo (image) */
             .logo {
                 position: fixed;
-                width: 270px;
+                width: 189px;
                 top: 10px;
-                height: 86px;
-                right: 40%;
+                height: 60px;
+                left: 0;
             }
 
             /* Style for the title */
@@ -142,8 +142,9 @@ class GenerateQuote:
                 position: fixed;
                 font-size: 36px;
                 font-weight: bold;
-                left: 0;
+                left: 40%;
                 margin: 10px;
+                text-align: center;
                 top: 0;
                 text-decoration: underline;
             }
@@ -188,17 +189,17 @@ class GenerateQuote:
                 margin-bottom: 5px;
                 font-weight: bold;
             }
-        .input-row {
-            display: flex;
-            align-items: center;
-            margin-bottom: 10px; /* Add spacing between rows */
-        }
+            .input-row {
+                display: flex;
+                align-items: center;
+                margin-bottom: 10px; /* Add spacing between rows */
+            }
 
-        .input-row label {
-            flex: 0 0 auto;
-            margin-right: 10px; /* Add spacing between label and input */
-            width: auto; /* Set a fixed width for the label */
-        }
+            .input-row label {
+                flex: 0 0 auto;
+                margin-right: 10px; /* Add spacing between label and input */
+                width: auto; /* Set a fixed width for the label */
+            }
 
             th:first-of-type {
                 border-top-left-radius: 10px;
@@ -303,57 +304,54 @@ class GenerateQuote:
                 border-spacing: 0px;
                 border: solid #ccc 2px;
                 border-radius: 8px;
-        }
+            }
 
-        tr.dlheader {
-        text-align: center;
-        font-weight: bold;
-        border-left: solid #ccc 1px;
-        padding: 2px
-        }
+            tr.dlheader {
+            text-align: center;
+            font-weight: bold;
+            border-left: solid #ccc 1px;
+            padding: 2px
+            }
 
-        td.dlheader {
-        background: #d9d9d9;
-        text-align: center;
-        font-weight: bold;
-        border-left: solid #ccc 1px;
-        border-radius: 0px;
-        padding: 2px
-        }
+            td.dlheader {
+            background: #d9d9d9;
+            text-align: center;
+            font-weight: bold;
+            border-left: solid #ccc 1px;
+            border-radius: 0px;
+            padding: 2px
+            }
 
-        tr.dlinfo,
-        td.dlinfo {
-        text-align: center;
-        border-left: solid #ccc 1px;
-        border-top: solid #ccc 1px;
-        padding: 2px
-        }
+            tr.dlinfo,
+            td.dlinfo {
+            text-align: center;
+            border-left: solid #ccc 1px;
+            border-top: solid #ccc 1px;
+            padding: 2px
+            }
 
-        td.dlinfo:first-child,
-        td.dlheader:first-child {
-        border-left: none;
-        }
+            td.dlinfo:first-child,
+            td.dlheader:first-child {
+            border-left: none;
+            }
 
-        td.dlheader:first-child {
-        border-radius: 5px 0 0 0;
-        }
+            td.dlheader:first-child {
+            border-radius: 5px 0 0 0;
+            }
 
-        td.dlheader:last-child {
-        border-radius: 0 5px 0 0;
-        }
-        .ui-page{
-            background-color: white;
-        }
-        .ui-btn{
-            background-color: white;
-        }
-        .ui-content{
-            margin-top: 200px;
-        }
+            td.dlheader:last-child {
+            border-radius: 0 5px 0 0;
+            }
+            .ui-page{
+                background-color: white;
+            }
+            .ui-btn{
+                background-color: white;
+            }
+            .ui-content{
+                margin-top: 200px;
+            }
             @media print{
-                .logo{
-                    right: 30%;
-                }
                 .ui-table-columntoggle-btn{
                     display: none;
                 }
@@ -378,16 +376,24 @@ class GenerateQuote:
                 function adjustTableOffsets() {
                     var headerRows = document.querySelectorAll("thead tr");
                     var footerRows = document.querySelectorAll("tfoot tr");
+                    var checkbox = document.getElementById("showTotalCost");
+                    var checkboxLabel = document.getElementById("showTotalCostLabel");
+                    var total_cost_div = document.getElementById("total-cost-div");
+                    if (checkbox.checked) {
+                        total_cost_div.style.display = "block";
+                    } else {
+                        total_cost_div.style.display = "none";
+                    }
+                    checkbox.style.display = "none";
+                    checkboxLabel.style.display = "none";
                     for (var i = 0; i < headerRows.length; i++) {
-                        headerRows[i].style.height = "210px";
+                        headerRows[i].style.height = "160px";
                     }
                     for (var i = 0; i < footerRows.length; i++) {
-                        footerRows[i].style.height = "100px";
+                        footerRows[i].style.height = "130px";
                         footerRows[i].style.border = "none";
                     }
                     const detailsElement = document.getElementById("sheets-toggle");
-                    const componentHeading = document.getElementById("components-heading")
-                    componentHeading.style.marginBottom = "-180px";
                     if (detailsElement.open) {
                         detailsElement.style.display = "block";
                     } else {
@@ -395,18 +401,28 @@ class GenerateQuote:
                         const spacerElement = document.getElementById("spacer");
                         spacerElement.style.marginTop = "0";
                     }
+                    const totalCost = document.getElementById("total-cost");
+                    totalCost.style.marginTop = "-20px";
+                    const componentHeading = document.getElementById("components-heading");
+                    componentHeading.style.marginBottom = "-110px";
                 }
                 function resetTableOffsets() {
                     const detailsElement = document.getElementById("sheets-toggle");
                     const spacerElement = document.getElementById("spacer");
-                    const componentHeading = document.getElementById("components-heading")
-                    componentHeading.style.marginBottom = "0px";
-                    spacerElement.style.marginTop = "200px";
+                    spacerElement.style.marginTop = "130px";
                     detailsElement.style.display = "block";
                     var headerRows = document.querySelectorAll("thead tr");
                     for (var i = 0; i < headerRows.length; i++) {
                         headerRows[i].style.height = "40px";
                     }
+                    var checkboxLabel = document.getElementById("showTotalCostLabel");
+                    var total_cost_div = document.getElementById("total-cost-div");
+                    total_cost_div.style.display = "block";
+                    checkboxLabel.style.display = "block";
+                    const totalCost = document.getElementById("total-cost");
+                    totalCost.style.marginTop = "0px";
+                    const componentHeading = document.getElementById("components-heading");
+                    componentHeading.style.marginBottom = "0px";
                 }
                 function clearImageBorders(){
                     window.location.href = "";
@@ -431,28 +447,29 @@ class GenerateQuote:
                         image.style.borderRadius  = '5px';
                         image.style.filter = 'sepia(1)';
                     }
+
             </script>
         <div data-role="page" id="pageone">
             <div data-role="header">
                 <header>
-                <div style="margin-top: 100px;">
+                <div style="margin-top: 70px;">
                     <div>
                         <div class="title">''' + title + '''</div>
                         <img class="logo" src="''' + self.program_directory + '''/icons/logo.png" alt="Logo">
-                        <div class="date">August 25, 2023</div>
+                        <div class="date"> ''' + str(datetime.now().strftime("%B %d, %Y")) + '''</div>
                     </div>
                     <div class="input-container-horizontal" style="columns: 3; padding: 0; transform: scale(0.8);">
                         <div class="input-row">
                             <label>Date Shipped:</label>
-                            <input type="text" class="input-box">
+                            <input type="text" class="input-box" id="date-shipped">
                         </div>
                         <div class="input-row">
                             <label>Ship To:</label>
-                            <input type="text" class="input-box">
+                            <input type="text" class="input-box" id="ship-to">
                         </div>
                         <div class="input-row">
                             <label>Order #</label>
-                            <input type="text" class="input-box" ''' + f'value="{self.order_number if title == "Packing Slip" else ""}"' + '''>
+                            <input type="text" class="input-box" id="order-number" ''' + (f'value="{self.order_number if title == "Packing Slip" else ""}"') + '''>
                         </div>
                     </div>
                 </div>
@@ -470,16 +487,20 @@ class GenerateQuote:
         </details>
 
         <div data-role="main" class="ui-content">
-        <table id="data-table" data-role="table" data-mode="columntoggle" class="ui-responsive" style="border-collapse: collapse; text-align: center; vertical-align: middle;"><thead><tr class="header-table-row"><th data-priority="1" class="ui-table-cell-visible">Picture</th><th data-priority="2" class="ui-table-cell-visible">Part Name</th><th data-priority="6" class="ui-table-cell-visible">Material</th><th data-priority="5" class="ui-table-cell-visible">Thickness</th><th data-priority="4" class="ui-table-cell-visible">Quantity</th><th data-priority="3" class="''' + ("ui-table-cell-hidden" if title == "Workorder" else "ui-table-cell-visible") + '''">Price</th></tr></thead><tbody id="table-body">
+
         '''
 
         html_end = f'''
 
+        </div style="width: 60%;">
+
+            <label for="showTotalCost" id="showTotalCostLabel" style="background-color: white; width: 130px; margin-left: 44%; border: none;">Show Total Cost</label>
+            <div id="total-cost-div">
+            ''' + (f'<input style="background-color: white; display: none;" type="checkbox" id="showTotalCost" {"checked=true" if title == "Quote" else ""}>') + '''
+            ''' + (f'<h2 style="text-align: center;" id="total-cost">Total Cost: ${self.get_total_price():,.2f}</h2>') + '''
+            <p style="text-align: center; text-decoration: underline; font-weight: bold;">No tax is added in this quote.</p>
+            <p style="text-align: center; margin-bottom: 90px;">Payment past due date will receive 1.5% interest rate per month of received goods.</p>
         </div>
-
-        ''' + (f'<h2 style="text-align: center;">Total Cost: ${self.get_total_price():,.2f}</h2>' if title != "Workorder" else "") + '''
-        <p style="text-align: center; margin-bottom: 90px;">Payment past due date will receive 1.5% interest rate per month of received goods.</p>
-
         <footer>
             <div class="input-container-horizontal" style="transform: scale(0.8); padding: 0;">
                 <div class="input-row">
@@ -494,29 +515,46 @@ class GenerateQuote:
         </footer>
         </html>'''
 
+        has_items: bool = False
         html_text = html_start
         for i, (item, item_data) in enumerate(self.quote_data.items()):
             if item[0] != '_' and item != "Components":
+                if i == 0:
+                    html_text += '''<table id="data-table" data-role="table" data-mode="columntoggle" class="ui-responsive" style="border-collapse: collapse; text-align: center; vertical-align: middle;"><thead><tr class="header-table-row"><th data-priority="1" class="ui-table-cell-visible">Picture</th><th data-priority="2" class="ui-table-cell-visible">Part Name</th><th data-priority="7" class="''' + ("ui-table-cell-hidden" if title != "Workorder" else "ui-table-cell-visible") + '''">Shelf Number</th><th data-priority="6" class="ui-table-cell-visible">Material</th><th data-priority="5" class="ui-table-cell-visible">Thickness</th><th data-priority="4" class="ui-table-cell-visible">Quantity</th><th data-priority="9" class="''' + ("ui-table-cell-visible" if title == "Quote" else "ui-table-cell-hidden") + '''">Unit Price</th><th data-priority="3" class="''' + ("ui-table-cell-visible" if title == "Quote" else "ui-table-cell-hidden") + '''">Price</th></tr></thead><tbody id="table-body">'''
+                    has_items = True
                 html_item_data = '<table class="dltrc" style="background:none;"><tbody><tr class="dlheader" style="height: 20px;"><td class="dlheader">Key</td><td class="dlheader">Value</td></tr>'
                 for data in item_data:
                     html_item_data += f'<tr class="dlinfo hover01" style="height: 20px;"><td class="dlinfo hover01">{data.replace("_", " ").title()}</td><td class="dlinfo hover01"> {item_data[data]}</td></tr>'
                 else:
                     html_item_data += '</tbody></table>'
-                html_text += f'<tr><td class="ui-table-cell-visible"><div class="image-container"><a class="popup-trigger" href="#{item}" onclick="highlightImage(\'{item}\', \'images/{item}.jpeg\')"><img src="{self.program_directory}/images/{item}.jpeg" style="height: 100px; width: 100px;" alt="Image" id="images/{item}.jpeg"></a><div class="popup" id="{item}"><div class="input-container-horizontal" style="padding: 5px; align-items: left; display: flex;"><img src="{self.program_directory}/images/{item}.jpeg" style="height: 100px; width: 100px;" alt="Image"><h1 style="margin-left: 20px;">{item}</h1></div>{html_item_data}<a class="close-popup" href="#" onclick="clearImageBorders()">Close</a></div></div></td><td class="ui-table-cell-visible">{item}</td><td class="ui-table-cell-visible">{item_data["material"]}</td><td class="ui-table-cell-visible">{item_data["gauge"]}</td><td class="ui-table-cell-visible">{item_data["quantity"]}</td><td class="{"ui-table-cell-hidden" if title == "Workorder" else "ui-table-cell-visible"}">{item_data["price"]}</td></tr>\n'
+                try:
+                    shelf_number = item_data["shelf_number"]
+                except KeyError:
+                    shelf_number = ""
+                try:
+                    html_text += f'<tr><td class="ui-table-cell-visible"><div class="image-container"><a class="popup-trigger" href="#{item}" onclick="highlightImage(\'{item}\', \'images/{item}.jpeg\')"><img src="{self.program_directory}/images/{item}.jpeg" style="height: 60px; width: 60px;" alt="Image" id="images/{item}.jpeg"></a><div class="popup" id="{item}"><div class="input-container-horizontal" style="padding: 5px; align-items: left; display: flex;"><img src="{self.program_directory}/images/{item}.jpeg" style="height: 100px; width: 100px;" alt="Image"><h1 style="margin-left: 20px;">{item}</h1></div>{html_item_data}<a class="close-popup" href="#" onclick="clearImageBorders()">Close</a></div></div></td><td class="ui-table-cell-visible">{item}</td><td class="{"ui-table-cell-hidden" if title != "Workorder" else "ui-table-cell-visible"}">{shelf_number}</td><td class="ui-table-cell-visible">{item_data["material"]}</td><td class="ui-table-cell-visible">{item_data["gauge"]}</td><td class="ui-table-cell-visible">{item_data["quantity"]}</td><td class="{"ui-table-cell-visible" if title == "Quote" else "ui-table-cell-hidden"}">{item_data["unit_price"]}</td><td class="{"ui-table-cell-visible" if title == "Quote" else "ui-table-cell-hidden"}">{item_data["price"]}</td></tr>\n'
+                except KeyError as e:
+                    print(f"Key Error for {e}")
+                    continue
         else:
-            html_text += f'<tr style="height: 20px;"><td class="ui-table-cell-visible"></td><td class="ui-table-cell-visible"></td><td class="ui-table-cell-visible"></td><td class="ui-table-cell-visible"></td><td class="ui-table-cell-visible">Total:</td><td class="{"ui-table-cell-hidden" if title == "Workorder" else "ui-table-cell-visible"}">{f"${self.get_total_parts_price():,.2f}"}</td></tr>\n'
+            if has_items:
+                html_text += f'<tr style="height: 20px;"><td class="ui-table-cell-visible"></td><td class="ui-table-cell-visible"></td><td class="{"ui-table-cell-hidden" if title != "Workorder" else "ui-table-cell-visible"}"></td><td class="ui-table-cell-visible"></td><td class="ui-table-cell-visible"></td><td class="ui-table-cell-visible"></td><td class="{"ui-table-cell-visible" if title == "Quote" else "ui-table-cell-hidden"}"></td><td class="{"ui-table-cell-visible" if title == "Quote" else "ui-table-cell-hidden"}">{f"Total: ${self.get_total_parts_price():,.2f}"}</td></tr>\n'
 
         html_text += f'''</tbody>
-        <tfoot><tr style="height: 20px;"><td class="ui-table-cell-visible"></td><td class="ui-table-cell-visible"></td><td class="ui-table-cell-visible"></td><td class="ui-table-cell-visible"></td><td class="ui-table-cell-visible"></td><td class="''' + ("ui-table-cell-hidden" if title == "Workorder" else "ui-table-cell-visible") + '''"></td></tr></tfoot>
+        <tfoot><tr style="height: 20px;"><td class="ui-table-cell-visible"></td><td class="ui-table-cell-visible"></td><td class="ui-table-cell-visible"></td><td class="ui-table-cell-visible"></td><td class="ui-table-cell-visible"></td><td class="ui-table-cell-visible"></td><td class="''' + ("ui-table-cell-hidden" if title == "Workorder" else "ui-table-cell-visible") + '''"></td></tr></tfoot>
         </table>'''
 
         if self.quote_data['Components']:
-            html_text += f'''<div class="page-break"></div><h2 id="components-heading" style="margin-top: 200px; margin-bottom: 0px; text-align: center;">Components:</h2><table id="data-table" data-role="table" data-mode="columntoggle" class="ui-responsive" style="border-collapse: collapse; text-align: center; vertical-align: middle;"><thead><tr class="header-table-row"><th data-priority="2" class="ui-table-cell-visible">Item Name</th><th data-priority="3" class="ui-table-cell-visible">Quantity</th><th data-priority="1" class="''' + ("ui-table-cell-hidden" if title == "Workorder" else "ui-table-cell-visible") + '''">Price</th></tr></thead><tbody>'''
+            html_text += f'''<h2 id="components-heading" style="margin-top: 150px; margin-bottom: 0px; text-align: center;"></h2><table id="data-table2" data-role="table" data-mode="columntoggle" class="ui-responsive" style="border-collapse: collapse; text-align: center; vertical-align: middle;"><thead><tr class="header-table-row"><th data-priority="1" class="ui-table-cell-visible">Picture</th><th data-priority="2" class="ui-table-cell-visible">Item Name</th><th data-priority="3" class="ui-table-cell-visible">Item Number</th><th data-priority="8" class="ui-table-cell-visible">Description</th><th data-priority="4" class="''' + ("ui-table-cell-hidden" if title != "Workorder" else "ui-table-cell-visible") + '''">Shelf Number</th><th data-priority="5" class="ui-table-cell-visible">Quantity</th><th data-priority="6" class="''' + ("ui-table-cell-visible" if title == "Quote" else "ui-table-cell-hidden") + '''">Unit Price</th><th data-priority="7" class="''' + ("ui-table-cell-visible" if title == "Quote" else "ui-table-cell-hidden") + '''">Price</th></tr></thead><tbody>'''
 
             for item, item_data in self.quote_data['Components'].items():
-                html_text += f'<tr><td class="ui-table-cell-visible">{item}</td><td class="ui-table-cell-visible">{item_data["quantity"]}</td><td class="' + ("ui-table-cell-hidden" if title == "Workorder" else "ui-table-cell-visible") + f'">${item_data["quoting_price"]:,.2f}</td></tr>'
+                try:
+                    shelf_number = item_data["shelf_number"]
+                except KeyError:
+                    shelf_number = ""
+                html_text += f'<tr><td class="ui-table-cell-visible"><img src="{self.program_directory}/{item_data["image_path"]}" style="height: 60px; width: 60px;" alt="Image" id="/{item_data["image_path"]}"></td><td class="ui-table-cell-visible">{item}</td><td class="ui-table-cell-visible">{item_data["part_number"]}</td><td class="ui-table-cell-visible">{item_data["description"]}</td><td class="{"ui-table-cell-hidden" if title != "Workorder" else "ui-table-cell-visible"}">{shelf_number}</td><td class="ui-table-cell-visible">{item_data["quantity"]}</td><td class="' + ("ui-table-cell-visible" if title == "Quote" else "ui-table-cell-hidden") + f'">${item_data["unit_price"]:,.2f}</td><td class="' + ("ui-table-cell-visible" if title == "Quote" else "ui-table-cell-hidden") + f'">${item_data["quoting_price"]:,.2f}</td></tr>'
             else:
-                html_text += f'<tr style="height: 20px;"><td class="ui-table-cell-visible"></td><td class="ui-table-cell-visible">Total:</td><td class="{"ui-table-cell-hidden" if title == "Workorder" else "ui-table-cell-visible"}">{f"${self.get_total_components_price():,.2f}"}</td></tr>\n'
+                html_text += f'<tr style="height: 20px;"><td class="ui-table-cell-visible"></td><td class="ui-table-cell-visible"></td><td class="ui-table-cell-visible"></td><td class="ui-table-cell-visible"></td><td class="{"ui-table-cell-hidden" if title != "Workorder" else "ui-table-cell-visible"}"></td><td class="ui-table-cell-visible"></td><td class="{"ui-table-cell-visible" if title == "Quote" else "ui-table-cell-hidden"}"></td><td class="{"ui-table-cell-visible" if title == "Quote" else "ui-table-cell-hidden"}">{f"Total: ${self.get_total_components_price():,.2f}"}</td></tr>\n'
             html_text += '</tbody></table>'
         html_text += html_end
 

@@ -51,6 +51,7 @@ class GenerateQuoteDialog(QDialog):
         self.title = title
         self.message = message
         self.inputText: str = ""
+        settings_file.load_data()
         self.theme: str = "dark" if settings_file.get_value(item_name="dark_mode") else "light"
 
         self.should_open_quote_when_generated: bool = settings_file.get_value(item_name='open_quote_when_generated')

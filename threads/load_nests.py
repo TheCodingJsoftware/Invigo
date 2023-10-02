@@ -60,6 +60,7 @@ class LoadNests(QThread):
         self.part_dimensions_regex = config.get("REGEX", "part_dimension_regex", raw=True)
         self.piercing_points_regex = config.get("REGEX", "piercing_points_regex", raw=True)
         self.sheet_cut_time_regex = config.get("REGEX", "sheet_cut_time_regex", raw=True)
+        self.geofile_name = config.get("REGEX", "geofile_name", raw=True)
 
     def extract_images_from_pdf(self, pdf_paths: list[str]) -> None:
         """
@@ -216,6 +217,7 @@ class LoadNests(QThread):
                 part_numbers: list[str] = self.get_values_from_text(nest_data, self.part_number_regex)
                 parts: list[str] = self.get_values_from_text(nest_data, self.part_path_regex)
                 piercing_points: list[str] = self.get_values_from_text(nest_data, self.piercing_points_regex)
+                geofile_names: list[str] = self.get_values_from_text(nest_data, self.geofile_name)
                 # Sheet information:
                 if int(sheet_gauge) >= 50:  # 1/2 inch
                     sheet_material = "Laser Grade Plate"
@@ -226,7 +228,8 @@ class LoadNests(QThread):
                     "material": sheet_material,
                     "sheet_dim": sheet_dimension,
                     "scrap_percentage": scrap_percentage,
-                    "machining_time": total_sheet_cut_time, # seconds
+                    "machining_time": total_sheet_cut_time * quantity_multiplier, # seconds
+                    "single_sheet_machining_time": total_sheet_cut_time, # seconds
                 }
                 self.data[nest_name] = {}
                 for i, part_name in enumerate(parts):
@@ -245,8 +248,10 @@ class LoadNests(QThread):
                         "gauge": sheet_gauge,
                         "material": sheet_material,
                         "recut": False,
+                        "shelf_number": "",
                         "sheet_dim": sheet_dimension,
                         "part_dim": part_dimensions[i],
+                        "geofile_name": geofile_names[i],
                     }
                     image_index += 1
             # os.remove(f"{self.program_directory}/output.txt")

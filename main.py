@@ -105,8 +105,10 @@ from ui.add_job_dialog import AddJobDialog
 from ui.color_picker_dialog import ColorPicker
 from ui.custom_widgets import (
     AssemblyMultiToolBox,
+    LoadingScreen,
     ClickableLabel,
     CustomStandardItemModel,
+    ComponentsCustomTableWidget,
     CustomTableWidget,
     CustomTabWidget,
     DeletePushButton,
@@ -128,6 +130,7 @@ from ui.custom_widgets import (
     RichTextPushButton,
     ScrollPositionManager,
     SelectRangeCalendar,
+    MachineCutTimeSpinBox,
     TimeSpinBox,
     ViewTree,
     set_default_dialog_button_stylesheet,
@@ -177,8 +180,8 @@ __copyright__: str = "Copyright 2022-2023, TheCodingJ's"
 __credits__: list[str] = ["Jared Gross"]
 __license__: str = "MIT"
 __name__: str = "Invigo"
-__version__: str = "v2.1.11"
-__updated__: str = "2023-07-12 12:32:51"
+__version__: str = "v2.2.6"
+__updated__: str = "2023-08-30 12:32:51"
 __maintainer__: str = "Jared Gross"
 __email__: str = "jared@pinelandfarms.ca"
 __status__: str = "Production"
@@ -340,6 +343,8 @@ def excepthook(exc_type, exc_value, exc_traceback):
 
 # Set the exception hook
 sys.excepthook = excepthook
+sys.setrecursionlimit(10**6)
+sys.argv += ["--enable-features=WebComponentsV0Enabled"]
 
 settings_file = JsonFile(file_name="settings")
 
@@ -372,6 +377,8 @@ class MainWindow(QMainWindow):
         It loads the UI and starts a thread that checks for changes in a JSON file.
         """
         super().__init__()
+        self.loading_screen = LoadingScreen()
+        self.loading_screen.hide()
         self.settings = QSettings(__name__, "MainWindow")  # Create QSettings instance
 
         uic.loadUi("ui/main_menu.ui", self)
@@ -451,6 +458,8 @@ class MainWindow(QMainWindow):
         self.margin_format = (
             f"margin-top: {self.margins[0]}%; margin-bottom: {self.margins[1]}%; margin-left: {self.margins[2]}%; margin-right: {self.margins[3]}%;"
         )
+        self.check_trusted_user()
+        self.__load_ui()
         self.download_all_files()
         self.start_changes_thread(
             [
@@ -459,8 +468,6 @@ class MainWindow(QMainWindow):
                 f"{self.inventory_file_name} - Parts in Inventory.json",
             ]
         )
-        self.check_trusted_user()
-        self.__load_ui()
         self.tool_box_menu_changed()
         self.quantities_change()
         self.start_exchange_rate_thread()
@@ -530,7 +537,7 @@ class MainWindow(QMainWindow):
         self.pushButton_load_previous_nests.clicked.connect(self.load_selected_previous_nests)
 
         self.tableWidget_quote_items = CustomTableWidget(self)
-        self.tableWidget_quote_items.set_editable_column_index([4, 7, 8])
+        self.tableWidget_quote_items.set_editable_column_index([4, 7, 8, 11])
 
         self.tableWidget_quote_items.setEnabled(False)
         self.tableWidget_quote_items.horizontalHeader().setStretchLastSection(True)
@@ -552,15 +559,21 @@ class MainWindow(QMainWindow):
             "Labor Cost",  # 8
             "Unit Price",  # 9
             "Price",  # 10
-            "Recut",  # 11
-            "Add Part to Inventory",  # 12
-            "DEL",  # 13
+            "Shelf #", # 11
+            "Recut",  # 12
+            "Add Part to Inventory",  # 13
+            "DEL",  # 14
             "",
         ]
         self.tableWidget_quote_items.setColumnCount(len(headers))
         self.tableWidget_quote_items.setHorizontalHeaderLabels(headers)
         self.clear_layout(self.verticalLayout_25)
         self.verticalLayout_25.addWidget(self.tableWidget_quote_items)
+        clear_quote_items_button = QPushButton("Clear All Nests", self)
+        clear_quote_items_button.setFixedWidth(150)
+        clear_quote_items_button.clicked.connect(self.clear_all_nests)
+        self.verticalLayout_25.addWidget(self.tableWidget_quote_items)
+        self.verticalLayout_25.addWidget(clear_quote_items_button)
         self.tableWidget_quote_items.cellChanged.connect(self.quote_table_cell_changed)
 
         if self.tableWidget_quote_items.contextMenuPolicy() != Qt.ContextMenuPolicy.CustomContextMenu:
@@ -573,8 +586,9 @@ class MainWindow(QMainWindow):
             self.tableWidget_quote_items.customContextMenuRequested.connect(partial(self.open_group_menu, menu))
 
 
-        self.tableWidget_components_items = CustomTableWidget(self)
-        self.tableWidget_components_items.set_editable_column_index([0, 1, 2])
+        self.tableWidget_components_items = ComponentsCustomTableWidget(self)
+        self.tableWidget_components_items.set_editable_column_index([1, 2, 3, 4, 5, 6])
+        self.tableWidget_components_items.imagePasted.connect(self.component_image_pasted)
 
         self.tableWidget_components_items.horizontalHeader().setStretchLastSection(True)
         self.tableWidget_components_items.setShowGrid(True)
@@ -584,11 +598,15 @@ class MainWindow(QMainWindow):
         self.tableWidget_components_items.setSelectionMode(QAbstractItemView.SelectionMode.ExtendedSelection)
         self.tableWidget_components_items.setVerticalScrollMode(QAbstractItemView.ScrollMode.ScrollPerPixel)
         headers: list[str] = [
-            "Part name",  # 0
-            "Qty",  # 1
-            "Unit Price",  # 2
-            "Price",  # 3
-            "DEL",  # 4
+            "Picture", # 0
+            "Part Name",  # 1
+            "Part #", # 2
+            "Shelf #", # 3
+            "Description", # 4
+            "Qty",  # 5
+            "Unit Price",  # 6
+            "Price",  # 7
+            "DEL",  # 8
             "",
         ]
         self.tableWidget_components_items.setColumnCount(len(headers))
@@ -616,7 +634,7 @@ class MainWindow(QMainWindow):
             menu = QMenu(self)
             action = QAction(self)
             action.triggered.connect(self.delete_selected_components)
-            action.setText("Delete Selected Components")
+            action.setText("Delete Selected Items")
             menu.addAction(action)
             self.tableWidget_components_items.customContextMenuRequested.connect(partial(self.open_group_menu, menu))
 
@@ -631,7 +649,6 @@ class MainWindow(QMainWindow):
         self.pushButton_clear_selections.clicked.connect(self.clear_nest_selections)
         self.pushButton_refresh_directories.clicked.connect(self.refresh_nest_directories)
         self.pushButton_generate_quote.clicked.connect(self.generate_quote)
-        self.pushButton_generate_quote.setEnabled(False)
 
         # Filter
         self.pushButton_this_week.clicked.connect(partial(self.set_filter_calendar_day, 7))
@@ -745,9 +762,17 @@ class MainWindow(QMainWindow):
         self.actionOpen_Quotes_Directory.triggered.connect(partial(self.open_folder, self.path_to_save_quotes))
         self.actionOpen_Workorders_Directory.triggered.connect(partial(self.open_folder, self.path_to_save_workorders))
 
-        self.comboBox_laser_cutting.currentIndexChanged.connect(lambda:(self.update_quote_price(), self.update_sheet_prices()))
-        self.spinBox_overhead.valueChanged.connect(lambda:(self.update_components_prices(), self.update_quote_price(), self.update_sheet_prices()))
-        self.spinBox_profit_margin.valueChanged.connect(lambda:(self.update_components_prices(), self.update_quote_price(), self.update_sheet_prices()))
+        self.comboBox_laser_cutting.currentIndexChanged.connect(self.laser_cost_changed)
+        self.doubleSpinBox_cost_for_laser.valueChanged.connect(lambda: (self.update_quote_price(), self.update_sheet_prices()))
+
+        self.spinBox_overhead_items.valueChanged.connect(lambda:(self.update_components_prices(), self.update_quote_price(), self.update_sheet_prices()))
+        self.spinBox_profit_margin_items.valueChanged.connect(lambda:(self.update_components_prices(), self.update_quote_price(), self.update_sheet_prices()))
+
+        self.spinBox_overhead_sheets.valueChanged.connect(lambda:(self.update_components_prices(), self.update_quote_price(), self.update_sheet_prices()))
+        self.spinBox_profit_margin_sheets.valueChanged.connect(lambda:(self.update_components_prices(), self.update_quote_price(), self.update_sheet_prices()))
+
+        self.pushButton_item_to_sheet.clicked.connect(self.match_item_to_sheet_price)
+        self.pushButton_match_sheet_to_item.clicked.connect(self.match_sheet_to_item_price)
 
         # JOB SORTER
         self.actionOpenMenu.triggered.connect(self.open_job_sorter)
@@ -822,6 +847,7 @@ class MainWindow(QMainWindow):
         """
         This function changes the active layout and menu options based on the selected tab in a GUI.
         """
+        self.loading_screen.show()
         inventory.load_data()
         price_of_steel_inventory.load_data()
         parts_in_inventory.load_data()
@@ -897,6 +923,8 @@ class MainWindow(QMainWindow):
             self.load_workspace_filter_tab()
         settings_file.add_item("last_toolbox_tab", self.tabWidget.currentIndex())
         self.last_selected_menu_tab = self.tabWidget.tabText(self.tabWidget.currentIndex())
+
+        self.loading_screen.hide()
 
     def move_to_category(self, tab: CustomTableWidget, category: str) -> None:
         """
@@ -1663,7 +1691,7 @@ class MainWindow(QMainWindow):
 
     # OMNIGEN
     def quote_table_cell_changed(self, row: int, col: int) -> None:
-        if col not in [4, 7, 8]:
+        if col not in [4, 7, 8, 11]:
             return
         item = self.tableWidget_quote_items.item(row, col)
         self.update_quote_price()
@@ -1672,19 +1700,34 @@ class MainWindow(QMainWindow):
     def components_table_cell_changed(self, row: int, col: int) -> None:
         # Renaming item
         self.tableWidget_components_items.blockSignals(True)
-        if col == 0:
+        if col == 1:
             new_item_name = self.tableWidget_components_items.item(row, col).text()
             self.quote_components_information[new_item_name] = self.quote_components_information[self.last_component_selected_name]
             del self.quote_components_information[self.last_component_selected_name]
+        # Part Number
+        elif col == 2:
+            item_name = self.tableWidget_components_items.item(row, 1).text()
+            new_value = self.tableWidget_components_items.item(row, col).text()
+            self.quote_components_information[item_name]['part_number'] = new_value
+        # Shelf Number
+        elif col == 3:
+            item_name = self.tableWidget_components_items.item(row, 1).text()
+            new_value = self.tableWidget_components_items.item(row, col).text()
+            self.quote_components_information[item_name]['shelf_number'] = new_value
+        # Description
+        elif col == 4:
+            item_name = self.tableWidget_components_items.item(row, 1).text()
+            new_value = self.tableWidget_components_items.item(row, col).text()
+            self.quote_components_information[item_name]['description'] = new_value
         # Quantity
-        elif col == 1:
-            item_name = self.tableWidget_components_items.item(row, 0).text()
-            new_value = self.tableWidget_components_items.item(row, 1).text()
+        elif col == 5:
+            item_name = self.tableWidget_components_items.item(row, 1).text()
+            new_value = self.tableWidget_components_items.item(row, col).text()
             self.quote_components_information[item_name]['quantity'] = float(new_value)
         # Unit Price
-        elif col == 2:
-            item_name = self.tableWidget_components_items.item(row, 0).text()
-            new_value = self.tableWidget_components_items.item(row, 2).text().replace('$', '').replace(',', '')
+        elif col == 6:
+            item_name = self.tableWidget_components_items.item(row, 1).text()
+            new_value = self.tableWidget_components_items.item(row, col).text().replace('$', '').replace(',', '')
             self.quote_components_information[item_name]['unit_price'] = float(new_value)
         self.tableWidget_components_items.blockSignals(False)
         self.update_components_prices()
@@ -1704,11 +1747,13 @@ class MainWindow(QMainWindow):
             response = add_item_dialog.get_response()
             if response == DialogButtons.add:
                 name: str = add_item_dialog.get_name()
+                part_number: str= add_item_dialog.get_part_number()
                 quantity: int = add_item_dialog.get_current_quantity()
                 unit_price: float = add_item_dialog.get_item_price()
                 use_exchange_rate: bool = add_item_dialog.get_exchange_rate()
+                shelf_number: str = add_item_dialog.get_shelf_number()
 
-                self.quote_components_information[name] = {'quantity': quantity, 'unit_price': unit_price}
+                self.quote_components_information[name] = {'quantity': quantity, 'unit_price': unit_price, 'shelf_number': shelf_number, 'part_number': part_number, 'image_path': '', 'description': ''}
                 self.load_components_table()
                 self.update_quote_price()
 
@@ -1824,7 +1869,7 @@ class MainWindow(QMainWindow):
     def sheet_nest_item_change(
         self,
         toolbox_index: int,
-        input_method: QComboBox | HumbleDoubleSpinBox | tuple[HumbleDoubleSpinBox, HumbleDoubleSpinBox],
+        input_method: QComboBox | HumbleDoubleSpinBox | tuple[HumbleDoubleSpinBox, HumbleDoubleSpinBox] | MachineCutTimeSpinBox,
         nest_name_to_update: str,
         item_to_change: str,
     ) -> None:
@@ -1848,14 +1893,23 @@ class MainWindow(QMainWindow):
         """
         if type(input_method) == QComboBox:
             current_value = input_method.currentText()
-        elif type(input_method) == HumbleDoubleSpinBox:
+        elif type(input_method) == HumbleDoubleSpinBox or type(input_method) == MachineCutTimeSpinBox:
             current_value = input_method.value()
         elif type(input_method) == tuple:
             current_value = f"{input_method[0].value():.3f}x{input_method[1].value():.3f}"
         else:
             return
         for batch_name in list(self.quote_nest_information.keys()):
+            if batch_name == "Components":
+                continue
             if batch_name[0] == "_":
+                if batch_name == nest_name_to_update and item_to_change == 'single_sheet_machining_time': # This changes a nest not a item in a nest
+                    try:
+                        self.quote_nest_information[nest_name]['single_sheet_machining_time'] = current_value
+                        self.quote_nest_information[nest_name]['machining_time'] = current_value * self.quote_nest_information[nest_name]['quantity_multiplier']
+                    except UnboundLocalError:
+                        self.quote_nest_information[nest_name_to_update]['single_sheet_machining_time'] = current_value
+                        self.quote_nest_information[nest_name_to_update]['machining_time'] = current_value * self.quote_nest_information[nest_name_to_update]['quantity_multiplier']
                 continue
             for item in list(self.quote_nest_information[batch_name].keys()):
                 nest_name = "_" + self.quote_nest_information[batch_name][item]["file_name"].replace("\\", "/")
@@ -2290,7 +2344,7 @@ class MainWindow(QMainWindow):
                 machine_time: float = data[category][part_name]["machine_time"]
                 material: str = data[category][part_name]["material"]
                 price_per_pound: float = price_of_steel_inventory.get_data()["Price Per Pound"][material]["price"]
-                cost_for_laser: float = 250 if material in {"304 SS", "409 SS", "Aluminium"} else 150
+                cost_for_laser: float = self.get_nitrogen_laser_cost() if material in {"304 SS", "409 SS", "Aluminium"} else self.get_co2_laser_cost()
                 parts_in_inventory.change_object_in_object_item(
                     object_name=category,
                     item_name=part_name,
@@ -2335,6 +2389,35 @@ class MainWindow(QMainWindow):
                 table.setItem(row_index, j, item)
             item.setForeground(QColor(color))
 
+    def match_item_to_sheet_price(self) -> None:
+        # changing item price to match sheet price
+        target_value: float = float(self.label_total_sheet_cost.text().replace('Total Cost for Sheets: $', '').replace(',', ''))
+        best_difference = float('inf')
+        best_profit_margin_index = 0
+
+        for profit_margin_index in range(0, 101):
+            new_item_cost: float = self._get_total_item_cost(profit_margin_index, self.spinBox_overhead_items.value())
+            difference = abs(new_item_cost - target_value)
+
+            if difference < best_difference:
+                best_difference = difference
+                best_profit_margin_index = profit_margin_index
+        self.spinBox_profit_margin_items.setValue(best_profit_margin_index)
+
+    def match_sheet_to_item_price(self) -> None:
+        target_value: float = float(self.label_total_item_cost.text().replace('Total Cost for Items: $', '').replace(',', ''))
+        best_difference = float('inf')
+        best_profit_margin_index = 0
+
+        for profit_margin_index in range(0, 101):
+            new_sheet_cost: float = self._get_total_sheet_cost(profit_margin_index, self.spinBox_overhead_sheets.value())
+            difference = abs(new_sheet_cost - target_value)
+
+            if difference < best_difference:
+                best_difference = difference
+                best_profit_margin_index = profit_margin_index
+        self.spinBox_profit_margin_sheets.setValue(best_profit_margin_index)
+
     # OMNIGEN
     def clear_nest_selections(self) -> None:
         """
@@ -2343,6 +2426,13 @@ class MainWindow(QMainWindow):
         """
         for tree_view in self.quote_nest_directories_list_widgets.values():
             tree_view.clearSelection()
+
+    # OMNIGEN
+    def clear_all_nests(self) -> None:
+        self.quote_nest_information.clear()
+        self.clear_layout(self.verticalLayout_sheets)
+        self.update_sheet_prices()
+        self.load_quote_table()
 
     # OMNIGEN
     def nest_directory_item_selected(self) -> None:
@@ -2388,13 +2478,67 @@ class MainWindow(QMainWindow):
             except ValueError:  # A merged cell
                 nest_name = f"{self.tableWidget_quote_items.item(row, 0).text()}.pdf"
                 continue
-            recut_button: RecutButton = self.tableWidget_quote_items.cellWidget(row, 11)
+            recut_button: RecutButton = self.tableWidget_quote_items.cellWidget(row, 12)
             self.quote_nest_information[nest_name][item_name]["quantity"] = quantity
             self.quote_nest_information[nest_name][item_name]["recut"] = recut_button.isChecked()
             self.quote_nest_information[nest_name][item_name]["bend_cost"] = self.tableWidget_quote_items.item(row, 7).text()
             self.quote_nest_information[nest_name][item_name]["labor_cost"] = self.tableWidget_quote_items.item(row, 8).text()
             self.quote_nest_information[nest_name][item_name]["unit_price"] = self.tableWidget_quote_items.item(row, 9).text()
             self.quote_nest_information[nest_name][item_name]["price"] = self.tableWidget_quote_items.item(row, 10).text()
+            self.quote_nest_information[nest_name][item_name]["shelf_number"] = self.tableWidget_quote_items.item(row, 11).text()
+
+    # OMNIGEN
+    def laser_cost_changed(self) -> None:
+        cost_for_laser: float = self.get_nitrogen_laser_cost() if self.comboBox_laser_cutting.currentText() == "Nitrogen" else self.get_co2_laser_cost()
+        self.doubleSpinBox_cost_for_laser.setValue(cost_for_laser)
+
+    # OMNIGEN
+    def _get_total_item_cost(self, profit_margin: int, overhead: int) -> float:
+        total_item_cost: float = 0.0
+
+        for row in range(self.tableWidget_quote_items.rowCount()):
+            item_name = self.tableWidget_quote_items.item(row, 1).text()
+            try:
+                quantity = int(self.tableWidget_quote_items.item(row, 4).text())
+            except ValueError:  # A merged cell
+                nest_name = f"{self.tableWidget_quote_items.item(row, 0).text()}.pdf"
+                continue
+            except AttributeError:
+                return
+            bend_cost_item: QTableWidgetItem = self.tableWidget_quote_items.item(row, 7)
+            labor_cost_item: QTableWidgetItem = self.tableWidget_quote_items.item(row, 8)
+            unit_price_item: QTableWidgetItem = self.tableWidget_quote_items.item(row, 9)
+            bend_cost = 0.0
+            labor_cost = 0.0
+            try:
+                unit_price: float = float(unit_price_item.text().replace("$", "").replace(",", ""))
+                bend_cost: float = float(bend_cost_item.text().replace("$", "").replace(",", ""))
+                labor_cost: float = float(labor_cost_item.text().replace("$", "").replace(",", ""))
+            except AttributeError:
+                return
+            except ValueError:
+                pass
+            try:
+                weight: float = self.quote_nest_information[nest_name][item_name]["weight"]
+            except KeyError:  # This does something important but I dont know exactly what.
+                return
+            machine_time: float = self.quote_nest_information[nest_name][item_name]["machine_time"]
+            material: str = self.quote_nest_information[nest_name][item_name]["material"]
+            price_per_pound: float = price_of_steel_inventory.get_data()["Price Per Pound"][material]["price"]
+            # The above code is declaring a variable named "cost_for_laser" of type float and
+            # assigning it the value of "self.doubleSpinBox_cost_for_laser".
+            cost_for_laser: float = self.doubleSpinBox_cost_for_laser.value()
+            COGS: float = float((machine_time * (cost_for_laser / 60)) + (weight * price_per_pound))
+
+            unit_price = (
+                calculate_overhead(COGS, profit_margin / 100, overhead / 100)
+                + calculate_overhead(bend_cost, profit_margin / 100, overhead / 100)
+                + calculate_overhead(labor_cost, profit_margin / 100, overhead / 100)
+            )
+
+            price = unit_price * quantity
+            total_item_cost += price
+        return total_item_cost
 
     # OMNIGEN
     def update_quote_price(self) -> None:
@@ -2442,13 +2586,13 @@ class MainWindow(QMainWindow):
             machine_time: float = self.quote_nest_information[nest_name][item_name]["machine_time"]
             material: str = self.quote_nest_information[nest_name][item_name]["material"]
             price_per_pound: float = price_of_steel_inventory.get_data()["Price Per Pound"][material]["price"]
-            cost_for_laser: float = 250 if self.comboBox_laser_cutting.currentText() == "Nitrogen" else 150
+            cost_for_laser: float = self.doubleSpinBox_cost_for_laser.value()
             COGS: float = float((machine_time * (cost_for_laser / 60)) + (weight * price_per_pound))
 
             unit_price = (
-                calculate_overhead(COGS, self.spinBox_profit_margin.value() / 100, self.spinBox_overhead.value() / 100)
-                + calculate_overhead(bend_cost, self.spinBox_profit_margin.value() / 100, self.spinBox_overhead.value() / 100)
-                + calculate_overhead(labor_cost, self.spinBox_profit_margin.value() / 100, self.spinBox_overhead.value() / 100)
+                calculate_overhead(COGS, self.spinBox_profit_margin_items.value() / 100, self.spinBox_overhead_items.value() / 100)
+                + calculate_overhead(bend_cost, self.spinBox_profit_margin_items.value() / 100, self.spinBox_overhead_items.value() / 100)
+                + calculate_overhead(labor_cost, self.spinBox_profit_margin_items.value() / 100, self.spinBox_overhead_items.value() / 100)
             )
 
             price = unit_price * quantity
@@ -2463,7 +2607,7 @@ class MainWindow(QMainWindow):
             self.quote_nest_information[nest_name][item_name]["quoting_price"] = price
 
         total_item_cost += self.get_components_prices()
-        self.label_total_item_cost.setText(f"Total Item Cost: ${total_item_cost:,.2f}")
+        self.label_total_item_cost.setText(f"Total Cost for Items: ${total_item_cost:,.2f}")
         self.tableWidget_quote_items.resizeColumnsToContents()
         self.tableWidget_quote_items.blockSignals(False)
 
@@ -2477,9 +2621,20 @@ class MainWindow(QMainWindow):
                 toolbox_index,
                 f"{self.quote_nest_information[nest_name]['gauge']} {self.quote_nest_information[nest_name]['material']} {self.quote_nest_information[nest_name]['sheet_dim']} - {nest_name.split('/')[-1].replace('.pdf', '')}",
             )
-            label_scrap_percentage: QLabel = self.sheet_nests_toolbox.getWidget(toolbox_index).findChildren(QLabel)[8]
+            label_scrap_percentage: QLabel = self.sheet_nests_toolbox.getWidget(toolbox_index).findChildren(QLabel)[9]
             label_scrap_percentage.setText(f"{calculate_scrap_percentage(nest_name, self.quote_nest_information):,.2f}%")
             toolbox_index += 1
+
+    # OMNIGEN
+    def _get_total_sheet_cost(self, profit_margin: int, overhead: int) -> float:
+        total_sheet_cost: float = 0.0
+        for nest_name in list(self.quote_nest_information.keys()):
+            if nest_name[0] != "_":
+                continue
+            sheet_cost = self.get_sheet_cost(nest_name) * self.quote_nest_information[nest_name]['quantity_multiplier']
+            cutting_cost = self.get_cutting_cost(nest_name) * self.quote_nest_information[nest_name]['quantity_multiplier']
+            total_sheet_cost += calculate_overhead((sheet_cost + cutting_cost), profit_margin / 100, overhead / 100)
+        return total_sheet_cost
 
     # OMNIGEN
     def update_sheet_prices(self) -> None:
@@ -2499,21 +2654,21 @@ class MainWindow(QMainWindow):
                 f"{self.quote_nest_information[nest_name]['gauge']} {self.quote_nest_information[nest_name]['material']} {self.quote_nest_information[nest_name]['sheet_dim']} - {nest_name.split('/')[-1].replace('.pdf', '')}",
             )
             try:
-                label_sheet_cost: QLabel = self.sheet_nests_toolbox.getWidget(toolbox_index).findChildren(QLabel)[9]
+                label_sheet_cost: QLabel = self.sheet_nests_toolbox.getWidget(toolbox_index).findChildren(QLabel)[10]
             except AttributeError: # NOTE Because of some not understood reason when a nest is generated and nests haven't been made
                 return
             label_sheet_cost.setText(f"${sheet_cost:,.2f}")
 
-            label_cutting_cost: QLabel = self.sheet_nests_toolbox.getWidget(toolbox_index).findChildren(QLabel)[10]
+            label_cutting_cost: QLabel = self.sheet_nests_toolbox.getWidget(toolbox_index).findChildren(QLabel)[11]
             label_cutting_cost.setText(f"${cutting_cost:,.2f}")
 
-            label_cutting_time: QLabel = self.sheet_nests_toolbox.getWidget(toolbox_index).findChildren(QLabel)[11]
-            cut_time = self.get_cutting_time(nest_name)
+            label_cutting_time: QLabel = self.sheet_nests_toolbox.getWidget(toolbox_index).findChildren(QLabel)[12]
+            cut_time = self.get_total_cutting_time(nest_name)
             label_cutting_time.setText(cut_time)
 
             toolbox_index += 1
 
-            total_sheet_cost += calculate_overhead((sheet_cost + cutting_cost), self.spinBox_profit_margin.value() / 100, self.spinBox_overhead.value() / 100)
+            total_sheet_cost += calculate_overhead((sheet_cost + cutting_cost), self.spinBox_profit_margin_sheets.value() / 100, self.spinBox_overhead_sheets.value() / 100)
         self.label_total_sheet_cost.setText(f"Total Cost for Sheets: ${total_sheet_cost:,.2f}")
 
     # OMNIGEN
@@ -2557,14 +2712,14 @@ class MainWindow(QMainWindow):
         for laser cutting.
         """
         try:
-            machining_time: float = self.quote_nest_information[nest_name]['machining_time'] / 3600
+            machining_time: float = (self.quote_nest_information[nest_name]['single_sheet_machining_time'] * self.quote_nest_information[nest_name]['quantity_multiplier']) / 3600
         except KeyError:
             machining_time = 0
-        cost_for_laser: float = 250 if self.comboBox_laser_cutting.currentText() == "Nitrogen" else 150
+        cost_for_laser: float = self.doubleSpinBox_cost_for_laser.value()
         return machining_time * cost_for_laser
 
     # OMNIGEN
-    def get_cutting_time(self, nest_name: str) -> str:
+    def get_total_cutting_time(self, nest_name: str) -> str:
         """
         The function `get_cutting_time` calculates the total cutting time in hours, minutes, and seconds
         based on the given nest name.
@@ -2577,13 +2732,49 @@ class MainWindow(QMainWindow):
           a formatted string that represents the cutting time in hours, minutes, and seconds.
         """
         try:
-            total_seconds = float(self.quote_nest_information[nest_name]['machining_time']) * self.quote_nest_information[nest_name]['quantity_multiplier']
+            total_seconds = float(self.quote_nest_information[nest_name]['single_sheet_machining_time']) * self.quote_nest_information[nest_name]['quantity_multiplier']
             hours = int(total_seconds // 3600)
             minutes = int((total_seconds % 3600) // 60)
             seconds = int(total_seconds % 60)
             return f"{hours:02d}h {minutes:02d}m {seconds:02d}s"
         except KeyError:
             return "Null"
+
+    # OMNIGEN
+    def get_sheet_cut_time(self, nest_name: str) -> str:
+        """
+        The function `get_cutting_time` calculates the total cutting time in hours, minutes, and seconds
+        based on the given nest name.
+
+        Args:
+          nest_name (str): The `nest_name` parameter is a string that represents the name of the nest
+        for which we want to calculate the cutting time.
+
+        Returns:
+          a formatted string that represents the cutting time in hours, minutes, and seconds.
+        """
+        try:
+            total_seconds = float(self.quote_nest_information[nest_name]['single_sheet_machining_time'])
+            hours = int(total_seconds // 3600)
+            minutes = int((total_seconds % 3600) // 60)
+            seconds = int(total_seconds % 60)
+            return f"{hours:02d}h {minutes:02d}m {seconds:02d}s"
+        except KeyError:
+            return "Null"
+
+    # OMNIGEN
+    def get_nitrogen_laser_cost(self) -> float:
+        program_directory = os.path.dirname(os.path.realpath(sys.argv[0]))
+        config = configparser.ConfigParser()
+        config.read(f"{program_directory}/laser_quote_variables.cfg")
+        return float(config.get("GLOBAL VARIABLES", "nitrogen_cost_per_hour"))
+
+    # OMNIGEN
+    def get_co2_laser_cost(self) -> int:
+        program_directory = os.path.dirname(os.path.realpath(sys.argv[0]))
+        config = configparser.ConfigParser()
+        config.read(f"{program_directory}/laser_quote_variables.cfg")
+        return float(config.get("GLOBAL VARIABLES", "co2_cost_per_hour"))
 
     # * /\ UPDATE UI ELEMENTS /\
     def sort_inventory(self) -> None:
@@ -3392,7 +3583,11 @@ class MainWindow(QMainWindow):
           A dictionary containing information about quoted parts list.
         """
         batch_data = {}
+        from rich import print
+        print(self.quote_nest_information)
         for nest_name in list(self.quote_nest_information.keys()):
+            if nest_name == 'Components':
+                continue
             if nest_name[0] == "_":
                 batch_data[nest_name] = self.quote_nest_information[nest_name]
             else:
@@ -3407,7 +3602,7 @@ class MainWindow(QMainWindow):
         for component in list(batch_data['Components'].keys()):
             unit_price = batch_data['Components'][component]['unit_price']
             quantity = batch_data['Components'][component]['quantity']
-            batch_data['Components'][component]['quoting_price'] = calculate_overhead(unit_price*quantity, self.spinBox_profit_margin.value() / 100, self.spinBox_overhead.value() / 100)
+            batch_data['Components'][component]['quoting_price'] = calculate_overhead(unit_price*quantity, self.spinBox_profit_margin_items.value() / 100, self.spinBox_overhead_items.value() / 100)
         return batch_data
 
     # OMNIGEN
@@ -3481,7 +3676,9 @@ class MainWindow(QMainWindow):
                         'Invalid paths set for "path_to_sheet_prices" or "price_of_steel_information" in config file "laser_quote_variables.cfg"\n\nGenerating Quote Aborted.',
                     )
                     return
-                self.upload_batch_to_inventory_thread(self.quote_nest_information, should_update_inventory, should_generate_quote)
+                batch_data_to_upload = self.quote_nest_information
+                batch_data_to_upload['Components'] = self.quote_components_information
+                self.upload_batch_to_inventory_thread(batch_data_to_upload, should_update_inventory, should_generate_quote)
                 if should_update_inventory and not self.is_nest_generated_from_parts_in_inventory:
                     self.upload_batched_parts_images(batch_data)
                 self.status_button.setText("Generating complete", "lime")
@@ -3512,14 +3709,16 @@ class MainWindow(QMainWindow):
         except IndexError:  # No item selected
             return
         self.quote_nest_information.clear()
+        self.quote_nest_information.setdefault("/CUSTOM NEST.pdf", {})
         self.quote_nest_information.setdefault("_/CUSTOM NEST.pdf", {
             "quantity_multiplier": 1,  # Sheet count
             "gauge": sheet_gauge,
             "material": sheet_material,
             "sheet_dim": "0.000x0.000" if sheet_dimension is None else sheet_dimension,
             "scrap_percentage": 0.0,
+            "single_sheet_machining_time": 0.0,
+            "machining_time": 0.0
         })
-        self.quote_nest_information.setdefault("/CUSTOM NEST.pdf", {})
         for part_name in selected_parts:
             self.quote_nest_information["/CUSTOM NEST.pdf"][part_name] = parts_in_inventory.get_data()[self.category].get(part_name)
             self.quote_nest_information["/CUSTOM NEST.pdf"][part_name]["file_name"] = "/CUSTOM NEST.pdf"
@@ -3547,14 +3746,16 @@ class MainWindow(QMainWindow):
             self.is_nest_generated_from_parts_in_inventory = True
         except IndexError:  # No item selected
             return
+        self.quote_nest_information.setdefault("/CUSTOM NEST.pdf", {})
         self.quote_nest_information.setdefault("_/CUSTOM NEST.pdf", {
             "quantity_multiplier": 1,  # Sheet count
             "gauge": sheet_gauge,
             "material": sheet_material,
             "sheet_dim": "0.000x0.000" if sheet_dimension is None else sheet_dimension,
             "scrap_percentage": 0.0,
+            "single_sheet_machining_time": 0.0,
+            "machining_time": 0.0
         })
-        self.quote_nest_information.setdefault("/CUSTOM NEST.pdf", {})
         for part_name in selected_parts:
             self.quote_nest_information["/CUSTOM NEST.pdf"][part_name] = parts_in_inventory.get_data()[self.category].get(part_name)
             self.quote_nest_information["/CUSTOM NEST.pdf"][part_name]["file_name"] = "/CUSTOM NEST.pdf"
@@ -3581,9 +3782,12 @@ class MainWindow(QMainWindow):
         item_dialog = PartInformationViewer(
             selected_part,
             parts_in_inventory.get_data()[self.category][selected_part],
-            self,
         )
-        item_dialog.show()
+        if item_dialog.exec():
+            if item_dialog.get_response() == 'apply':
+                parts_in_inventory.get_data()[self.category][selected_part] = item_dialog.get_data()
+                self.load_categories()
+
 
     def set_order_number(self) -> None:
         """
@@ -3749,6 +3953,17 @@ class MainWindow(QMainWindow):
                         inventory.change_object_in_object_item(
                             object_name=category, item_name=item, value_name="latest_change_price", new_value=modified_date
                         )
+        elif col_index == 9:  # Shelf Number
+            tab.blockSignals(False)
+            shelf_number = tab.item(row_index, col_index).text()
+            tab.blockSignals(True)
+            inventory.change_object_in_object_item(self.category, item_name, "shelf_number", shelf_number)
+            for category, items in inventory.get_data().items():
+                if category == self.category:
+                    continue
+                for item, item_data in items.items():
+                    if new_part_number == item_data.get("part_number"):
+                        inventory.change_object_in_object_item(category, item_name, "shelf_number", shelf_number)
         tab.blockSignals(False)
         if col_index != 3:
             self.sync_changes()
@@ -3780,8 +3995,12 @@ class MainWindow(QMainWindow):
             price_item = tab.item(row_index, 1)
             tab.blockSignals(True)
             price_item.setText(f"${item_price:,.2f}")
+        elif column_index == 5:
+            shelf_item = tab.item(row_index, 5).text()
+            tab.blockSignals(True)
+            parts_in_inventory.change_object_in_object_item(self.category, item_name, "shelf_number", shelf_item)
         elif column_index == 3:
-            notes_item = tab.item(row_index, 5)
+            notes_item = tab.item(row_index, 6)
             tab.blockSignals(True)
             notes_item.setText(new_modified_date)
             parts_in_inventory.change_object_in_object_item(self.category, item_name, "modified_date", new_modified_date)
@@ -4156,7 +4375,7 @@ class MainWindow(QMainWindow):
         and limits for quantity levels.
         """
         tab.blockSignals(True)
-        tab.set_editable_column_index([2, 3])
+        tab.set_editable_column_index([2, 3, 5])
         tab.setEnabled(False)
         tab.clear()
         tab.setShowGrid(True)
@@ -4167,7 +4386,7 @@ class MainWindow(QMainWindow):
         tab.setHorizontalScrollMode(QAbstractItemView.ScrollMode.ScrollPerPixel)
         tab.setSelectionMode(QAbstractItemView.SelectionMode.ExtendedSelection)
 
-        headers: list[str] = ["Part Name", "Item Price", "Quantity Per Unit", "Quantity in Stock", "Cost in Stock", "Modified Date", "DEL"]
+        headers: list[str] = ["Part Name", "Item Price", "Quantity Per Unit", "Quantity in Stock", "Cost in Stock", "Shelf #", "Modified Date", "DEL"]
         tab.setColumnCount(len(headers))
         tab.setHorizontalHeaderLabels(headers)
         grouped_data = parts_in_inventory.sort_by_multiple_tags(category=category_data, tags_ids=["material", "gauge"])
@@ -4216,6 +4435,9 @@ class MainWindow(QMainWindow):
                     continue
                 item_material: str = self.get_value_from_category(item_name=item, key="material")
                 item_thickness: str = self.get_value_from_category(item_name=item, key="gauge")
+                shelf_number: str = self.get_value_from_category(item_name=item, key="shelf_number")
+                if shelf_number == None:
+                    shelf_number = ""
 
                 if selected_materials := [button.text() for button in materials if button.isChecked()]:
                     if item_material not in selected_materials:
@@ -4238,7 +4460,7 @@ class MainWindow(QMainWindow):
                     machine_time: float = self.get_value_from_category(item_name=item, key="machine_time")
                     material: str = self.get_value_from_category(item_name=item, key="material")
                     price_per_pound: float = price_of_steel_inventory.get_data()["Price Per Pound"][material]["price"]
-                    cost_for_laser: float = 250 if material in {"304 SS", "409 SS", "Aluminium"} else 150
+                    cost_for_laser: float = self.get_nitrogen_laser_cost() if material in {"304 SS", "409 SS", "Aluminium"} else self.get_co2_laser_cost()
                     price = float((machine_time * (cost_for_laser / 60)) + (weight * price_per_pound))
 
                 modified_date: str = self.get_value_from_category(item_name=item, key="modified_date")
@@ -4276,6 +4498,12 @@ class MainWindow(QMainWindow):
                     col_index,
                     QTableWidgetItem(f"${(price*current_quantity):,.2f}"),
                 )
+                tab.item(row_index, col_index).setTextAlignment(Qt.AlignmentFlag.AlignCenter | Qt.AlignmentFlag.AlignVCenter)
+                tab.item(row_index, col_index).setFont(self.tables_font)
+
+                col_index += 1
+                # SHELF NUMBER
+                tab.setItem(row_index, col_index, QTableWidgetItem(shelf_number))
                 tab.item(row_index, col_index).setTextAlignment(Qt.AlignmentFlag.AlignCenter | Qt.AlignmentFlag.AlignVCenter)
                 tab.item(row_index, col_index).setFont(self.tables_font)
 
@@ -4600,7 +4828,7 @@ class MainWindow(QMainWindow):
         tab.setVerticalScrollMode(QAbstractItemView.ScrollMode.ScrollPerPixel)
         tab.setHorizontalScrollMode(QAbstractItemView.ScrollMode.ScrollPerPixel)
         tab.setSelectionMode(QAbstractItemView.SelectionMode.ExtendedSelection)
-        tab.set_editable_column_index([1, 2, 3, 4])
+        tab.set_editable_column_index([1, 2, 3, 4, 9])
         headers: list[str] = [
             "Part Name",
             "Part Number",
@@ -4611,6 +4839,7 @@ class MainWindow(QMainWindow):
             "Total Cost in Stock",
             "Total Unit Cost",
             "Priority",
+            "Shelf #",
             "Notes",
             "PO",
             "DEL",
@@ -4635,6 +4864,7 @@ class MainWindow(QMainWindow):
             priority: int = self.get_value_from_category(item_name=item, key="priority")
             price: float = self.get_value_from_category(item_name=item, key="price")
             notes: str = self.get_value_from_category(item_name=item, key="notes")
+            shelf_number: str = "" if self.get_value_from_category(item_name=item, key="shelf_number") == None else self.get_value_from_category(item_name=item, key="shelf_number")
             use_exchange_rate: bool = self.get_value_from_category(item_name=item, key="use_exchange_rate")
             converted_price: float = price * self.get_exchange_rate() if use_exchange_rate else price / self.get_exchange_rate()
             exchange_rate: float = self.get_exchange_rate() if use_exchange_rate else 1
@@ -4761,7 +4991,12 @@ class MainWindow(QMainWindow):
             tab.setCellWidget(row_index, col_index, combo_priority)
 
             col_index += 1
+            # SHELF NUMBER
+            tab.setItem(row_index, col_index, QTableWidgetItem(shelf_number))
+            tab.item(row_index, col_index).setFont(self.tables_font)
+            tab.item(row_index, col_index).setTextAlignment(Qt.AlignmentFlag.AlignCenter | Qt.AlignmentFlag.AlignVCenter)
 
+            col_index += 1
             # NOTES
             text_notes = NotesPlainTextEdit(self, notes, "")
             text_notes.textChanged.connect(partial(self.notes_changed, item, "notes", text_notes))
@@ -8116,7 +8351,6 @@ class MainWindow(QMainWindow):
         table, and connects signals to update the table when cells are changed.
         """
         self.clear_layout(self.verticalLayout_sheets)
-        self.pushButton_generate_quote.setEnabled(True)
         self.comboBox_global_sheet_thickness.setEnabled(True)
         self.comboBox_global_sheet_material.setEnabled(True)
         self.doubleSpinBox_global_sheet_length.setEnabled(True)
@@ -8129,14 +8363,15 @@ class MainWindow(QMainWindow):
         for nest_name in list(self.quote_nest_information.keys()):
             if nest_name[0] == "_":
                 widget = QWidget(self)
-                widget.setMinimumHeight(240)
-                widget.setMaximumHeight(240)
+                widget.setMinimumHeight(260)
+                widget.setMaximumHeight(260)
                 grid_layout = QGridLayout(widget)
                 labels = [
-                    "Scrap Percentage:",
+                    "Sheet Scrap Percentage:",
                     "Cost for Sheets:",
                     "Cutting Costs:",
-                    "Cutting Time:",
+                    "Sheet Cut Time:",
+                    "Nest Cut Time:",
                     "Sheet Count:",
                     "Sheet Material:",
                     "Sheet Thickness:",
@@ -8155,8 +8390,15 @@ class MainWindow(QMainWindow):
                 label_cutting_cost = QLabel(f'${self.get_cutting_cost(nest_name):,.2f}')
                 grid_layout.addWidget(label_cutting_cost, 2, 2)
 
-                label_cutting_time = QLabel(self.get_cutting_time(nest_name))
-                grid_layout.addWidget(label_cutting_time, 3, 2)
+                sheet_cut_time = MachineCutTimeSpinBox(self)
+                sheet_cut_time.setValue(float(self.quote_nest_information[nest_name]['single_sheet_machining_time']))
+                sheet_cut_time.editingFinished.connect(partial(self.sheet_nest_item_change, tab_index, sheet_cut_time, nest_name, "single_sheet_machining_time"))
+                sheet_cut_time.setToolTip(f'Original: {self.get_sheet_cut_time(nest_name)}')
+                grid_layout.addWidget(sheet_cut_time, 3, 2)
+
+                nest_cut_time = QLabel(self)
+                nest_cut_time.setText(f'{self.get_total_cutting_time(nest_name)}')
+                grid_layout.addWidget(nest_cut_time, 4, 2)
 
                 spinBox_sheet_count = HumbleDoubleSpinBox(self)
                 spinBox_sheet_count.setValue(self.quote_nest_information[nest_name]["quantity_multiplier"])
@@ -8170,7 +8412,7 @@ class MainWindow(QMainWindow):
                     )
                 )
 
-                grid_layout.addWidget(spinBox_sheet_count, 4, 2)
+                grid_layout.addWidget(spinBox_sheet_count, 5, 2)
 
                 comboBox_sheet_material = QComboBox(self)
                 comboBox_sheet_material.wheelEvent = lambda event: event.ignore()
@@ -8189,7 +8431,7 @@ class MainWindow(QMainWindow):
                         "material",
                     )
                 )
-                grid_layout.addWidget(comboBox_sheet_material, 5, 2)
+                grid_layout.addWidget(comboBox_sheet_material, 6, 2)
 
                 comboBox_sheet_thickness = QComboBox(self)
                 comboBox_sheet_thickness.wheelEvent = lambda event: event.ignore()
@@ -8204,7 +8446,7 @@ class MainWindow(QMainWindow):
                         "gauge",
                     )
                 )
-                grid_layout.addWidget(comboBox_sheet_thickness, 6, 2)
+                grid_layout.addWidget(comboBox_sheet_thickness, 7, 2)
                 lineEdit_sheet_size_x = HumbleDoubleSpinBox(self)
                 lineEdit_sheet_size_x.setDecimals(3)
                 lineEdit_sheet_size_x.setSuffix(" in")
@@ -8212,10 +8454,10 @@ class MainWindow(QMainWindow):
                     lineEdit_sheet_size_x.setValue(float(self.quote_nest_information[nest_name]["sheet_dim"].replace(" x ", "x").split("x")[0]))
                 except AttributeError:
                     lineEdit_sheet_size_x.setValue(0.0)
-                grid_layout.addWidget(lineEdit_sheet_size_x, 9, 0)
+                grid_layout.addWidget(lineEdit_sheet_size_x, 10, 0)
                 label = QLabel("x", self)
                 label.setFixedWidth(15)
-                grid_layout.addWidget(label, 9, 1)
+                grid_layout.addWidget(label, 10, 1)
                 lineEdit_sheet_size_y = HumbleDoubleSpinBox(self)
                 lineEdit_sheet_size_y.setDecimals(3)
                 lineEdit_sheet_size_y.setSuffix(" in")
@@ -8223,7 +8465,7 @@ class MainWindow(QMainWindow):
                     lineEdit_sheet_size_y.setValue(float(self.quote_nest_information[nest_name]["sheet_dim"].replace(" x ", "x").split("x")[1]))
                 except AttributeError:
                     lineEdit_sheet_size_y.setValue(0.0)
-                grid_layout.addWidget(lineEdit_sheet_size_y, 9, 2)
+                grid_layout.addWidget(lineEdit_sheet_size_y, 10, 2)
                 lineEdit_sheet_size_x.valueChanged.connect(
                     partial(
                         self.sheet_nest_item_change,
@@ -8292,7 +8534,6 @@ class MainWindow(QMainWindow):
         if refresh_quote_table:
             self.load_quote_table()
             if len(self.quote_nest_information) == 0:
-                self.pushButton_generate_quote.setEnabled(False)
                 self.clear_layout(self.verticalLayout_sheets)
 
     # OMNIGEN
@@ -8318,11 +8559,12 @@ class MainWindow(QMainWindow):
                 continue
 
             if row in selected_rows:
+                if nest_name == "":
+                    nest_name = "/CUSTOM NEST"
                 self.delete_quote_part(item_name=item_name, nest_name=f"{nest_name}.pdf", refresh_quote_table=False)
 
         self.load_quote_table()
         if len(self.quote_nest_information) == 0:
-            self.pushButton_generate_quote.setEnabled(False)
             self.clear_layout(self.verticalLayout_sheets)
 
     # OMNIGEN
@@ -8333,7 +8575,7 @@ class MainWindow(QMainWindow):
     # OMNIGEN
     def delete_selected_components(self) -> None:
         selected_rows = list(set([item.row() for item in self.tableWidget_components_items.selectedItems()]))
-        selected_items = [self.tableWidget_components_items.item(row, 0).text() for row in selected_rows]
+        selected_items = [self.tableWidget_components_items.item(row, 1).text() for row in selected_rows]
         for item_name in selected_items:
             del self.quote_components_information[item_name]
         self.load_components_table()
@@ -8348,6 +8590,8 @@ class MainWindow(QMainWindow):
         row_index: int = 0
         self.tableWidget_quote_items.setRowCount(0)
         for nest_name in list(self.quote_nest_information.keys()):
+            if nest_name == "Components":
+                continue
             if nest_name[0] != "_":
                 self.tableWidget_quote_items.insertRow(row_index)
                 item = QTableWidgetItem(nest_name.replace(".pdf", ""))
@@ -8473,16 +8717,28 @@ class MainWindow(QMainWindow):
                     )
                     self.tableWidget_quote_items.item(row_index, 10).setTextAlignment(Qt.AlignmentFlag.AlignCenter | Qt.AlignmentFlag.AlignVCenter)
 
+                    try:
+                        shelf_number = self.quote_nest_information[nest_name][item]["shelf_number"]
+                    except:
+                        shelf_number = ""
+                    # Shelf Number
+                    self.tableWidget_quote_items.setItem(
+                        row_index,
+                        11,
+                        QTableWidgetItem(shelf_number),
+                    )
+                    self.tableWidget_quote_items.item(row_index, 11).setTextAlignment(Qt.AlignmentFlag.AlignCenter | Qt.AlignmentFlag.AlignVCenter)
+
                     recut_button = RecutButton(self)
                     recut_button.setStyleSheet("margin: 5%;")
-                    self.tableWidget_quote_items.setCellWidget(row_index, 11, recut_button)
+                    self.tableWidget_quote_items.setCellWidget(row_index, 12, recut_button)
 
                     send_part_to_inventory = QPushButton(self)
                     send_part_to_inventory.setText("Add Part to Inventory")
                     send_part_to_inventory.setStyleSheet("margin: 5%;")
                     send_part_to_inventory.setFixedWidth(150)
                     send_part_to_inventory.clicked.connect(partial(self.upload_part_to_inventory_thread, item, nest_name, send_part_to_inventory))
-                    self.tableWidget_quote_items.setCellWidget(row_index, 12, send_part_to_inventory)
+                    self.tableWidget_quote_items.setCellWidget(row_index, 13, send_part_to_inventory)
 
                     delete_button = DeletePushButton(
                         self,
@@ -8491,7 +8747,7 @@ class MainWindow(QMainWindow):
                     )
                     delete_button.clicked.connect(partial(self.delete_quote_part, item, nest_name, True))
                     delete_button.setStyleSheet("margin-top: 10px; margin-bottom: 10px; margin-right: 3px; margin-left: 3px;")
-                    self.tableWidget_quote_items.setCellWidget(row_index, 13, delete_button)
+                    self.tableWidget_quote_items.setCellWidget(row_index, 14, delete_button)
 
                     if not does_part_exist:
                         self.set_table_row_color(self.tableWidget_quote_items, row_index, "#3F1E25")
@@ -8507,15 +8763,26 @@ class MainWindow(QMainWindow):
         self.tableWidget_components_items.setRowCount(0)
         for row_index, (item, item_data) in enumerate(self.quote_components_information.items()):
             self.tableWidget_components_items.insertRow(row_index)
-            self.tableWidget_components_items.setRowHeight(row_index, 50)
-            self.tableWidget_components_items.setItem(row_index, 0, QTableWidgetItem(item))
-            self.tableWidget_components_items.item(row_index, 0).setTextAlignment(Qt.AlignmentFlag.AlignCenter | Qt.AlignmentFlag.AlignVCenter)
-            self.tableWidget_components_items.setItem(row_index, 1, QTableWidgetItem(str(item_data['quantity'])))
-            self.tableWidget_components_items.item(row_index, 1).setTextAlignment(Qt.AlignmentFlag.AlignCenter | Qt.AlignmentFlag.AlignVCenter)
-            self.tableWidget_components_items.setItem(row_index, 2, QTableWidgetItem(f'${item_data["unit_price"]:,.2f}'))
+            self.tableWidget_components_items.setRowHeight(row_index, 60)
+
+            self.tableWidget_components_items.setItem(row_index, 0, QTableWidgetItem(""))
+            self.tableWidget_components_items.item(row_index, 0).setData(Qt.ItemDataRole.DecorationRole, QPixmap(item_data['image_path']))
+            self.tableWidget_components_items.setItem(row_index, 1, QTableWidgetItem(item))
+            try:
+                shelf_number = str(item_data['shelf_number'])
+            except KeyError:
+                shelf_number = ""
+            self.tableWidget_components_items.setItem(row_index, 2, QTableWidgetItem(item_data['part_number']))
             self.tableWidget_components_items.item(row_index, 2).setTextAlignment(Qt.AlignmentFlag.AlignCenter | Qt.AlignmentFlag.AlignVCenter)
-            self.tableWidget_components_items.setItem(row_index, 3, QTableWidgetItem('$0.00'))
+            self.tableWidget_components_items.setItem(row_index, 3, QTableWidgetItem(shelf_number))
             self.tableWidget_components_items.item(row_index, 3).setTextAlignment(Qt.AlignmentFlag.AlignCenter | Qt.AlignmentFlag.AlignVCenter)
+            self.tableWidget_components_items.setItem(row_index, 4, QTableWidgetItem(str(item_data['description'])))
+            self.tableWidget_components_items.setItem(row_index, 5, QTableWidgetItem(str(item_data['quantity'])))
+            self.tableWidget_components_items.item(row_index, 5).setTextAlignment(Qt.AlignmentFlag.AlignCenter | Qt.AlignmentFlag.AlignVCenter)
+            self.tableWidget_components_items.setItem(row_index, 6, QTableWidgetItem(f'${item_data["unit_price"]:,.2f}'))
+            self.tableWidget_components_items.item(row_index, 6).setTextAlignment(Qt.AlignmentFlag.AlignCenter | Qt.AlignmentFlag.AlignVCenter)
+            self.tableWidget_components_items.setItem(row_index, 7, QTableWidgetItem('$0.00'))
+            self.tableWidget_components_items.item(row_index, 7).setTextAlignment(Qt.AlignmentFlag.AlignCenter | Qt.AlignmentFlag.AlignVCenter)
             delete_button = DeletePushButton(
                 self,
                 tool_tip=f"Delete {item} from forever",
@@ -8523,21 +8790,26 @@ class MainWindow(QMainWindow):
             )
             delete_button.clicked.connect(partial(self.delete_component, item))
             delete_button.setStyleSheet("margin-top: 10px; margin-bottom: 10px; margin-right: 3px; margin-left: 3px;")
-            self.tableWidget_components_items.setCellWidget(row_index, 4, delete_button)
+            self.tableWidget_components_items.setCellWidget(row_index, 8, delete_button)
         self.scroll_position_manager.restore_scroll_position(tab_name="OmniGen_Components", scroll=self.tableWidget_components_items)
         self.tableWidget_components_items.blockSignals(False)
         self.update_components_prices()
         self.tableWidget_components_items.resizeColumnsToContents()
-        self.tableWidget_components_items.setColumnWidth(0, 250)
+        self.tableWidget_components_items.setColumnWidth(0, 60)
+        self.tableWidget_components_items.setColumnWidth(1, 250)
+
+    def component_image_pasted(self, image_file_name: str, row: int) -> None:
+        item_name = self.tableWidget_components_items.item(row, 1).text()
+        self.quote_components_information[item_name]['image_path'] = image_file_name
 
     # OMNIGEN
     def update_components_prices(self) -> None:
         self.tableWidget_components_items.blockSignals(True)
         for row in range(self.tableWidget_components_items.rowCount()):
-            quantity = float(self.tableWidget_components_items.item(row, 1).text())
-            unit_price_item = float(self.tableWidget_components_items.item(row, 2).text().replace('$', '').replace(',', ''))
-            price_item = self.tableWidget_components_items.item(row, 3)
-            price_item.setText(f"${calculate_overhead(unit_price_item*quantity, self.spinBox_profit_margin.value() / 100, self.spinBox_overhead.value() / 100):,.2f}")
+            quantity = float(self.tableWidget_components_items.item(row, 5).text())
+            unit_price_item = float(self.tableWidget_components_items.item(row, 6).text().replace('$', '').replace(',', ''))
+            price_item = self.tableWidget_components_items.item(row, 7)
+            price_item.setText(f"${calculate_overhead(unit_price_item*quantity, self.spinBox_profit_margin_items.value() / 100, self.spinBox_overhead_items.value() / 100):,.2f}")
         self.tableWidget_components_items.blockSignals(False)
         self.update_quote_price()
 
@@ -8546,7 +8818,7 @@ class MainWindow(QMainWindow):
         total_cost: float = 0.0
         self.tableWidget_components_items.blockSignals(True)
         for row in range(self.tableWidget_components_items.rowCount()):
-            price_item = float(self.tableWidget_components_items.item(row, 3).text().replace('$', '').replace(',', ''))
+            price_item = float(self.tableWidget_components_items.item(row, 7).text().replace('$', '').replace(',', ''))
             total_cost += price_item
         self.tableWidget_components_items.blockSignals(False)
         return total_cost
@@ -9336,8 +9608,17 @@ class MainWindow(QMainWindow):
             )
             self.quote_nest_information.clear()
             self.quote_nest_information = data
+
+            with contextlib.suppress(KeyError):
+                # This checks if Components are even in the data
+                self.quote_nest_information['Components']
+                self.quote_components_information.clear()
+                self.quote_components_information = data['Components']
+                del self.quote_nest_information['Components']
+
             self.pushButton_load_previous_nests.setEnabled(True)
             self.load_nests()
+            self.load_components_table()
         else:
             self.status_button.setText(f"Error - {data}", "red")
 
@@ -9553,12 +9834,6 @@ class MainWindow(QMainWindow):
     # * /\ OVERIDDEN UI EVENTS /\
 
 
-def start_program(loading_window) -> None:
-    loading_window.close()
-    # mainwindow = MainWindow()
-    # mainwindow.show()
-
-
 def main() -> None:
     """
     It creates a QApplication, creates a MainWindow, shows the MainWindow, and then runs the
@@ -9566,25 +9841,16 @@ def main() -> None:
     """
     app = QApplication(sys.argv)
 
-    sys.argv += ["--enable-features=WebComponentsV0Enabled"]
 
-    loading_window = LoadWindow()
-    loading_window.show()
 
     set_theme(app, theme="dark")
 
-    # loading_screen = QSplashScreen(loading_window)
     font = QFont()
     font.setFamily("Segoe UI")
     font.setWeight(400)
     app.setFont(font)
     app.processEvents()
     mainwindow = MainWindow()
-
-    timer = QTimer()
-    timer.setSingleShot(True)
-    timer.timeout.connect(partial(start_program, loading_window))
-    timer.start(1500)
     mainwindow.show()
     app.exec()
 

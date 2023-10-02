@@ -47,6 +47,8 @@ from PyQt6.QtGui import (
     QStandardItem,
     QStandardItemModel,
     QTextCharFormat,
+    QClipboard,
+    QKeySequence,
 )
 from PyQt6.QtWidgets import (
     QAbstractItemView,
@@ -87,11 +89,20 @@ from PyQt6.QtWidgets import (
     QTreeWidgetItem,
     QVBoxLayout,
     QWidget,
+    QSplashScreen,
 )
 
 from utils.colors import darken_color, lighten_color
 from utils.workspace.assembly import Assembly
 from utils.workspace.item import Item
+
+
+class LoadingScreen(QSplashScreen):
+    def __init__(self):
+        super().__init__()
+        self.setPixmap(QPixmap("icons/loading.png"))  # Load an image for the loading screen
+        self.setWindowFlag(Qt.WindowType.WindowStaysOnTopHint)
+
 
 
 class SelectRangeCalendar(QCalendarWidget):
@@ -442,6 +453,178 @@ class RecordingWidget(QWidget):
 
         # Draw the circle
         painter.drawEllipse(x, y, 2 * radius, 2 * radius)
+
+
+class MachineCutTimeSpinBox(QDoubleSpinBox):
+    # ! IF VALUE IS SET TO 1, THAT IS 1 SECOND
+    def __init__(self, parent=None):
+        super(MachineCutTimeSpinBox, self).__init__(parent)
+        self.setRange(0, 99999999)
+        self.setSingleStep(0.001)
+        self.setDecimals(9)
+        self.setFixedWidth(200)
+        self.setWrapping(True)
+        self.setAccelerated(True)
+        self.setFocusPolicy(Qt.FocusPolicy.StrongFocus)
+
+        regex = QRegularExpression(r"\d+.\d{2}")
+        validator = QRegularExpressionValidator(regex, self)
+        self.lineEdit().setValidator(validator)
+
+        self.installEventFilter(self)
+
+    def focusInEvent(self, event):
+        """
+        When the user clicks on the spinbox, the focus policy is changed to allow the mouse wheel to be
+        used to change the value
+
+        Args:
+          event: QFocusEvent
+        """
+        self.setFocusPolicy(Qt.FocusPolicy.WheelFocus)
+        super(MachineCutTimeSpinBox, self).focusInEvent(event)
+
+    def focusOutEvent(self, event):
+        """
+        When the user clicks on the spinbox, the focus policy is changed to StrongFocus, and then the
+        focusOutEvent is called
+
+        Args:
+          event: QFocusEvent
+        """
+        self.setFocusPolicy(Qt.FocusPolicy.StrongFocus)
+        super(MachineCutTimeSpinBox, self).focusOutEvent(event)
+
+    def wheelEvent(self, event):
+        """
+        If the spinbox has focus, then it will behave as normal. If it doesn't have focus, then the
+        wheel event will be ignored
+
+        Args:
+          event: The event object
+
+        Returns:
+          The super class of the HumbleSpinBox class.
+        """
+        if self.hasFocus():
+            return super(MachineCutTimeSpinBox, self).wheelEvent(event)
+        else:
+            event.ignore()
+
+    def eventFilter(self, obj, event):
+        """
+        This function filters events and changes the value based on the wheel event.
+
+        Args:
+          obj: The object that is being filtered for events.
+          event: The event parameter is an instance of the QEvent class, which represents an event that
+        occurred in the application. It contains information about the type of event, its source, and
+        any additional data associated with it. In this case, the code is checking if the event type is
+        a wheel event, which
+
+        Returns:
+          a boolean value indicating whether the event has been handled or not. If the event type is a
+        wheel event, the function returns True after calling the `changeValue()` method. If the event
+        type is not a wheel event, the function calls the `eventFilter()` method of the parent class and
+        returns the value returned by that method.
+        """
+        if event.type() == QEvent.Type.Wheel and self.hasFocus():
+            delta = event.angleDelta().y() / 120
+            self.changeValue(delta)
+            return True
+
+        return super().eventFilter(obj, event)
+
+    def changeValue(self, delta):
+        """
+        This function changes the value of a variable based on a given delta, with different increments
+        depending on the current value.
+
+        Args:
+          delta: The amount by which the value of the object should be changed. It can be a positive or
+        negative number.
+        """
+        current_value = self.value()
+
+        if delta > 0:
+            # Increase the value
+            if current_value >= 5 * 3600:  # 5 hours
+                self.setValue(current_value + 3600)  # Increase by 1 hour
+            elif current_value >= 3600:  # 1 hour
+                self.setValue(current_value + 60)  # Increase by 1 minute
+            else:
+                self.setValue(current_value + 1)  # Increase by 1 second
+        elif delta < 0:
+            # Decrease the value
+            if current_value >= 5 * 3600:  # 5 hours
+                self.setValue(current_value - 3600)  # Decrease by 1 hour
+            elif current_value >= 3600:  # 1 hour
+                self.setValue(current_value - 60)  # Decrease by 1 minute
+            else:
+                self.setValue(current_value - 1)  # Decrease by 1 second
+
+    def textFromValue(self, value):
+        hours = int(value // 3600)
+        minutes = int((value % 3600) // 60)
+        seconds = int(value % 60)
+        return f"{hours:02d}h {minutes:02d}m {seconds:02d}s"
+
+    def valueFromText(self, text):
+        parts = text.split()
+        hours = int(parts[0][0:2])
+        minutes = int(parts[1][0:2])
+        seconds = int(parts[2][0:2])
+        total_seconds = hours * 3600 + minutes * 60 + seconds
+        return total_seconds
+
+    def fixup(self, text):
+        """
+        The function takes in a string of time in days, hours, and minutes format and adds a leading
+        zero to the days, hours, or minutes if they are equal to 1.
+
+        Args:
+          text: The input text that needs to be fixed up. It is expected to be a string containing time
+        information in the format "X days Y hours Z minutes". The function will check if the number of
+        parts in the string is 6, and if so, it will extract the number of days, hours
+
+        Returns:
+          a string that is either the original input `text` or a modified version of it with leading
+        zeros added to the days, hours, or minutes if they are equal to 1.
+        """
+        time_parts = text.split(" ")
+        if len(time_parts) == 6:
+            days = int(time_parts[0])
+            hours = int(time_parts[2])
+            minutes = int(time_parts[4])
+            if days == 1:
+                time_parts[0] = f"0{time_parts[0]}"
+            if hours == 1:
+                time_parts[2] = f"0{time_parts[2]}"
+            if minutes == 1:
+                time_parts[4] = f"0{time_parts[4]}"
+            return " ".join(time_parts)
+
+        return text
+
+    def get_time_delta(self) -> datetime:
+        """
+        This function calculates the time difference between the current date and time and a future date
+        and time based on a given value in days, hours, and minutes.
+
+        Returns:
+          A datetime.timedelta object is being returned.
+        """
+        value = self.value()
+
+        days = int(value)
+        hours = int((value - days) * 24)
+        minutes = int(((value - days) * 24 - hours) * 60)
+
+        current_date_time = QDateTime.currentDateTime()
+        end_date_time = current_date_time.addDays(days).addSecs(hours * 3600 + minutes * 60)
+
+        time_delta = end_date_time.toSecsSinceEpoch() - current_date_time.toSecsSinceEpoch()
+        return timedelta(seconds=time_delta)
 
 
 class TimeSpinBox(QDoubleSpinBox):
@@ -807,6 +990,44 @@ class DictionaryTableModel(QAbstractTableModel):
 
         return None
 
+    def setData(self, index, value, role=Qt.ItemDataRole.EditRole):
+        """
+        This function updates the data in the model when a cell is edited.
+
+        Args:
+          index: The index of the cell that is being edited.
+          value: The new value that the cell should be updated with.
+          role: The role parameter specifies the type of data that is being set. In this case, it is set to
+        Qt.EditRole, which indicates that the data is being set as a result of editing.
+
+        Returns:
+          If the role is Qt.EditRole and the index column is 1 (value column), the method updates the value
+        in the dictionary and emits the dataChanged signal to notify the view. It returns True to indicate
+        success. For other roles or columns, it returns False.
+        """
+        if role == Qt.ItemDataRole.EditRole and index.isValid() and index.column() == 1:
+            key = self.keys[index.row()]
+            self.dictionary[key] = value
+            self.dataChanged.emit(index, index)
+            return True
+
+        return False
+
+    def flags(self, index):
+        """
+        This function returns the flags that define the behavior of cells in the model.
+
+        Args:
+          index: The index of the cell for which flags are being requested.
+
+        Returns:
+          If the index column is 1 (value column), the method returns the flags with the Qt.ItemIsEditable
+        flag set to allow editing. For other columns, it returns the default flags.
+        """
+        if index.column() == 1:
+            return super().flags(index) | Qt.ItemFlag.ItemIsEditable
+        return super().flags(index)
+
     def headerData(self, section, orientation, role=Qt.ItemDataRole.DisplayRole):
         """
         This function returns the header data for a table view in a specific format based on the section,
@@ -836,21 +1057,52 @@ class DictionaryTableModel(QAbstractTableModel):
 
         return None
 
+    def getUpdatedDictionary(self):
+        """
+        This function returns the updated dictionary with edited values.
+
+        Returns:
+          The method returns the dictionary with the updated values after editing.
+        """
+        return self.dictionary
+
 
 class PartInformationViewer(QDialog):
     def __init__(self, title: str, dictionary: dict, parent=None):
-        super().__init__(parent)
+        super(PartInformationViewer, self).__init__(parent)
 
         self.setWindowTitle(title)
 
         layout = QVBoxLayout(self)
+        self.response = ""
         self.table_view = QTableView(self)
         layout.addWidget(self.table_view)
 
-        model = DictionaryTableModel(dictionary, self)
-        self.table_view.setModel(model)
+        self.model = DictionaryTableModel(dictionary, self)
+        self.table_view.setModel(self.model)
         self.table_view.resizeColumnsToContents()
         self.setMinimumSize(450, 700)
+        btn_apply = QPushButton('Apply Changes', self)
+        btn_apply.clicked.connect(self.apply)
+        layout.addWidget(btn_apply)
+
+        btn_cancel = QPushButton('Cancel', self)
+        btn_cancel.clicked.connect(self.cancel)
+        layout.addWidget(btn_cancel)
+
+    def apply(self) -> None:
+        self.response = "apply"
+        self.accept()
+
+    def cancel(self) -> None:
+        self.response = "cancel"
+        self.accept()
+
+    def get_data(self) -> dict:
+        return self.model.getUpdatedDictionary()
+
+    def get_response(self) -> str:
+        return self.response
 
 
 class AssemblyMultiToolBox(QWidget):
@@ -1880,6 +2132,55 @@ class CustomTableWidget(QTableWidget):
         editable in a table or spreadsheet.
         """
         self.editable_column_indexes = columns
+
+
+class ComponentsCustomTableWidget(CustomTableWidget):
+    imagePasted = pyqtSignal(str, int)
+    def __init__(self, parent=None):
+        super(ComponentsCustomTableWidget, self).__init__(parent)
+
+    def keyPressEvent(self, event):
+        if event.matches(QKeySequence.StandardKey.Paste):
+            # Handle Ctrl+V
+            self.pasteImageFromClipboard()
+        else:
+            # Pass other key events to the base class
+            super().keyPressEvent(event)
+
+    def copySelectedCells(self):
+        # Implement this function to copy selected cells to the clipboard if needed
+        pass
+
+    def pasteImageFromClipboard(self):
+        app = QApplication.instance()
+        clipboard = app.clipboard()
+        image = clipboard.image()
+        if not image.isNull():
+            selected_items = self.selectedItems()
+            for selected_item in selected_items:
+                if selected_item.column() == 0:
+                    item = selected_item
+                    break
+
+            original_width = image.width()
+            original_height = image.height()
+
+            new_height = 60
+            new_width = int(original_width * (new_height / original_height))
+
+            if not os.path.exists('images/items'):
+                os.makedirs('images/items')
+            # Resize the image to fit the specified height while maintaining aspect ratio
+            pixmap = QPixmap.fromImage(image).scaled(new_width, new_height, Qt.AspectRatioMode.KeepAspectRatio)
+            image_path = f'images/items/{datetime.now().strftime("%Y%m%d%H%M%S%f")}.png'
+            pixmap.save(image_path)
+
+            item.setData(Qt.ItemDataRole.DecorationRole, pixmap)
+
+            # Optionally, resize the cell to fit the image
+            self.resizeColumnToContents(item.column())
+            self.resizeRowToContents(item.row())
+            self.imagePasted.emit(image_path, item.row())
 
 
 # class _CustomTableWidget(QTableView):

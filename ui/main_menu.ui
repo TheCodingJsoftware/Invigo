@@ -7,8 +7,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1168</width>
-    <height>726</height>
+    <width>1357</width>
+    <height>791</height>
    </rect>
   </property>
   <property name="font">
@@ -166,7 +166,7 @@
                         <x>0</x>
                         <y>0</y>
                         <width>220</width>
-                        <height>69</height>
+                        <height>90</height>
                        </rect>
                       </property>
                       <property name="maximumSize">
@@ -508,8 +508,8 @@ QPushButton#pushButton_create_new:disabled{
                 <rect>
                  <x>0</x>
                  <y>0</y>
-                 <width>160</width>
-                 <height>506</height>
+                 <width>184</width>
+                 <height>571</height>
                 </rect>
                </property>
                <property name="maximumSize">
@@ -737,7 +737,7 @@ QPushButton#pushButton_add_new_sheet:disabled{
                  <x>0</x>
                  <y>0</y>
                  <width>357</width>
-                 <height>418</height>
+                 <height>483</height>
                 </rect>
                </property>
                <layout class="QVBoxLayout" name="verticalLayout_21">
@@ -915,13 +915,13 @@ QPushButton#pushButton_add_new_sheet:disabled{
                     <property name="minimumSize">
                      <size>
                       <width>0</width>
-                      <height>175</height>
+                      <height>200</height>
                      </size>
                     </property>
                     <property name="maximumSize">
                      <size>
                       <width>16777215</width>
-                      <height>175</height>
+                      <height>200</height>
                      </size>
                     </property>
                     <property name="title">
@@ -994,33 +994,83 @@ QPushButton#pushButton_add_new_sheet:disabled{
                      </item>
                      <item row="2" column="0">
                       <layout class="QGridLayout" name="gridLayout_3">
-                       <item row="1" column="0">
-                        <widget class="QLabel" name="label_6">
-                         <property name="text">
-                          <string>Sheet Thickness:</string>
-                         </property>
-                        </widget>
-                       </item>
-                       <item row="0" column="1">
-                        <widget class="QComboBox" name="comboBox_global_sheet_material">
-                         <property name="focusPolicy">
-                          <enum>Qt::ClickFocus</enum>
-                         </property>
-                        </widget>
-                       </item>
                        <item row="0" column="0">
+                        <widget class="QLabel" name="label_10">
+                         <property name="text">
+                          <string>Laser Cutting:</string>
+                         </property>
+                        </widget>
+                       </item>
+                       <item row="1" column="0">
                         <widget class="QLabel" name="label_5">
                          <property name="text">
                           <string>Sheet Material:</string>
                          </property>
                         </widget>
                        </item>
-                       <item row="1" column="1">
+                       <item row="2" column="0">
+                        <widget class="QLabel" name="label_6">
+                         <property name="text">
+                          <string>Sheet Thickness:</string>
+                         </property>
+                        </widget>
+                       </item>
+                       <item row="1" column="2">
+                        <widget class="QComboBox" name="comboBox_global_sheet_material">
+                         <property name="focusPolicy">
+                          <enum>Qt::ClickFocus</enum>
+                         </property>
+                        </widget>
+                       </item>
+                       <item row="2" column="2">
                         <widget class="QComboBox" name="comboBox_global_sheet_thickness">
                          <property name="focusPolicy">
                           <enum>Qt::ClickFocus</enum>
                          </property>
                         </widget>
+                       </item>
+                       <item row="0" column="2">
+                        <layout class="QHBoxLayout" name="horizontalLayout_27">
+                         <property name="spacing">
+                          <number>3</number>
+                         </property>
+                         <item>
+                          <widget class="QComboBox" name="comboBox_laser_cutting">
+                           <property name="currentText">
+                            <string>CO2</string>
+                           </property>
+                           <item>
+                            <property name="text">
+                             <string>CO2</string>
+                            </property>
+                           </item>
+                           <item>
+                            <property name="text">
+                             <string>Nitrogen</string>
+                            </property>
+                           </item>
+                          </widget>
+                         </item>
+                         <item>
+                          <widget class="QDoubleSpinBox" name="doubleSpinBox_cost_for_laser">
+                           <property name="statusTip">
+                            <string>This number will not be saved, to set a default value go into laser_quote_variables.cfg and change it manually.</string>
+                           </property>
+                           <property name="prefix">
+                            <string>$</string>
+                           </property>
+                           <property name="suffix">
+                            <string> per hour</string>
+                           </property>
+                           <property name="maximum">
+                            <double>9999999.000000000000000</double>
+                           </property>
+                           <property name="value">
+                            <double>150.000000000000000</double>
+                           </property>
+                          </widget>
+                         </item>
+                        </layout>
                        </item>
                       </layout>
                      </item>
@@ -1067,104 +1117,192 @@ QPushButton#pushButton_add_new_sheet:disabled{
                    </widget>
                   </item>
                   <item>
-                   <widget class="QGroupBox" name="groupBox_9">
-                    <property name="minimumSize">
-                     <size>
-                      <width>0</width>
-                      <height>120</height>
-                     </size>
-                    </property>
-                    <property name="maximumSize">
-                     <size>
-                      <width>16777215</width>
-                      <height>120</height>
-                     </size>
-                    </property>
-                    <property name="font">
-                     <font>
-                      <pointsize>8</pointsize>
-                     </font>
-                    </property>
-                    <property name="title">
-                     <string>Quoting Options</string>
-                    </property>
-                    <layout class="QGridLayout" name="gridLayout_6">
-                     <item row="0" column="0">
-                      <layout class="QGridLayout" name="gridLayout_5">
+                   <layout class="QVBoxLayout" name="verticalLayout_46">
+                    <item>
+                     <widget class="QGroupBox" name="groupBox_9">
+                      <property name="minimumSize">
+                       <size>
+                        <width>0</width>
+                        <height>130</height>
+                       </size>
+                      </property>
+                      <property name="maximumSize">
+                       <size>
+                        <width>16777215</width>
+                        <height>130</height>
+                       </size>
+                      </property>
+                      <property name="font">
+                       <font>
+                        <pointsize>8</pointsize>
+                       </font>
+                      </property>
+                      <property name="title">
+                       <string>Item Quoting Options</string>
+                      </property>
+                      <layout class="QGridLayout" name="gridLayout_6">
                        <item row="0" column="0">
-                        <widget class="QLabel" name="label_10">
-                         <property name="text">
-                          <string>Laser Cutting:</string>
-                         </property>
-                        </widget>
-                       </item>
-                       <item row="2" column="0">
-                        <widget class="QLabel" name="label_12">
-                         <property name="text">
-                          <string>Profit Margin (%):</string>
-                         </property>
-                        </widget>
+                        <layout class="QGridLayout" name="gridLayout_5">
+                         <item row="2" column="0">
+                          <widget class="QLabel" name="label_12">
+                           <property name="text">
+                            <string>Profit Margin (%):</string>
+                           </property>
+                          </widget>
+                         </item>
+                         <item row="1" column="0">
+                          <widget class="QLabel" name="label_11">
+                           <property name="text">
+                            <string>Overhead (%):</string>
+                           </property>
+                          </widget>
+                         </item>
+                         <item row="1" column="1">
+                          <widget class="QSpinBox" name="spinBox_overhead_items">
+                           <property name="toolTip">
+                            <string>Default: 18%</string>
+                           </property>
+                           <property name="statusTip">
+                            <string>Default: 18%</string>
+                           </property>
+                           <property name="maximum">
+                            <number>100</number>
+                           </property>
+                           <property name="value">
+                            <number>18</number>
+                           </property>
+                          </widget>
+                         </item>
+                         <item row="2" column="1">
+                          <widget class="QSpinBox" name="spinBox_profit_margin_items">
+                           <property name="toolTip">
+                            <string>Default: 30%</string>
+                           </property>
+                           <property name="statusTip">
+                            <string>Default: 30%</string>
+                           </property>
+                           <property name="maximum">
+                            <number>100</number>
+                           </property>
+                           <property name="value">
+                            <number>30</number>
+                           </property>
+                          </widget>
+                         </item>
+                        </layout>
                        </item>
                        <item row="1" column="0">
-                        <widget class="QLabel" name="label_11">
+                        <widget class="QPushButton" name="pushButton_item_to_sheet">
+                         <property name="maximumSize">
+                          <size>
+                           <width>16777215</width>
+                           <height>16777215</height>
+                          </size>
+                         </property>
+                         <property name="statusTip">
+                          <string>Match item cost to sheet cost</string>
+                         </property>
                          <property name="text">
-                          <string>Overhead (%):</string>
-                         </property>
-                        </widget>
-                       </item>
-                       <item row="0" column="1">
-                        <widget class="QComboBox" name="comboBox_laser_cutting">
-                         <property name="currentText">
-                          <string>CO2</string>
-                         </property>
-                         <item>
-                          <property name="text">
-                           <string>CO2</string>
-                          </property>
-                         </item>
-                         <item>
-                          <property name="text">
-                           <string>Nitrogen</string>
-                          </property>
-                         </item>
-                        </widget>
-                       </item>
-                       <item row="1" column="1">
-                        <widget class="QSpinBox" name="spinBox_overhead">
-                         <property name="toolTip">
-                          <string>Default: 18%</string>
-                         </property>
-                         <property name="statusTip">
-                          <string>Default: 18%</string>
-                         </property>
-                         <property name="maximum">
-                          <number>100</number>
-                         </property>
-                         <property name="value">
-                          <number>18</number>
-                         </property>
-                        </widget>
-                       </item>
-                       <item row="2" column="1">
-                        <widget class="QSpinBox" name="spinBox_profit_margin">
-                         <property name="toolTip">
-                          <string>Default: 30%</string>
-                         </property>
-                         <property name="statusTip">
-                          <string>Default: 30%</string>
-                         </property>
-                         <property name="maximum">
-                          <number>100</number>
-                         </property>
-                         <property name="value">
-                          <number>30</number>
+                          <string>Match Item Cost to Sheet Cost</string>
                          </property>
                         </widget>
                        </item>
                       </layout>
-                     </item>
-                    </layout>
-                   </widget>
+                     </widget>
+                    </item>
+                    <item>
+                     <widget class="QGroupBox" name="groupBox_10">
+                      <property name="minimumSize">
+                       <size>
+                        <width>0</width>
+                        <height>130</height>
+                       </size>
+                      </property>
+                      <property name="maximumSize">
+                       <size>
+                        <width>16777215</width>
+                        <height>130</height>
+                       </size>
+                      </property>
+                      <property name="font">
+                       <font>
+                        <pointsize>8</pointsize>
+                       </font>
+                      </property>
+                      <property name="title">
+                       <string>Sheet Quoting Options</string>
+                      </property>
+                      <layout class="QVBoxLayout" name="verticalLayout_47">
+                       <item>
+                        <layout class="QGridLayout" name="gridLayout_7">
+                         <item row="0" column="0">
+                          <widget class="QLabel" name="label_14">
+                           <property name="text">
+                            <string>Overhead (%):</string>
+                           </property>
+                          </widget>
+                         </item>
+                         <item row="1" column="0">
+                          <widget class="QLabel" name="label_19">
+                           <property name="text">
+                            <string>Profit Margin (%):</string>
+                           </property>
+                          </widget>
+                         </item>
+                         <item row="0" column="1">
+                          <widget class="QSpinBox" name="spinBox_overhead_sheets">
+                           <property name="toolTip">
+                            <string>Default: 18%</string>
+                           </property>
+                           <property name="statusTip">
+                            <string>Default: 18%</string>
+                           </property>
+                           <property name="maximum">
+                            <number>100</number>
+                           </property>
+                           <property name="value">
+                            <number>18</number>
+                           </property>
+                          </widget>
+                         </item>
+                         <item row="1" column="1">
+                          <widget class="QSpinBox" name="spinBox_profit_margin_sheets">
+                           <property name="toolTip">
+                            <string>Default: 30%</string>
+                           </property>
+                           <property name="statusTip">
+                            <string>Default: 30%</string>
+                           </property>
+                           <property name="maximum">
+                            <number>100</number>
+                           </property>
+                           <property name="value">
+                            <number>30</number>
+                           </property>
+                          </widget>
+                         </item>
+                        </layout>
+                       </item>
+                       <item>
+                        <widget class="QPushButton" name="pushButton_match_sheet_to_item">
+                         <property name="maximumSize">
+                          <size>
+                           <width>16777215</width>
+                           <height>16777215</height>
+                          </size>
+                         </property>
+                         <property name="statusTip">
+                          <string>Match sheet cost to item cost</string>
+                         </property>
+                         <property name="text">
+                          <string>Match Sheet Cost to Item Cost</string>
+                         </property>
+                        </widget>
+                       </item>
+                      </layout>
+                     </widget>
+                    </item>
+                   </layout>
                   </item>
                  </layout>
                 </item>
@@ -1199,7 +1337,7 @@ QPushButton#pushButton_add_new_sheet:disabled{
                           <x>0</x>
                           <y>0</y>
                           <width>472</width>
-                          <height>395</height>
+                          <height>367</height>
                          </rect>
                         </property>
                         <property name="styleSheet">
@@ -1321,6 +1459,9 @@ s
               <layout class="QVBoxLayout" name="verticalLayout_45" stretch="0,0">
                <item>
                 <widget class="QSplitter" name="splitter_3">
+                 <property name="layoutDirection">
+                  <enum>Qt::LeftToRight</enum>
+                 </property>
                  <property name="orientation">
                   <enum>Qt::Vertical</enum>
                  </property>
@@ -1342,7 +1483,7 @@ s
                  </widget>
                  <widget class="QGroupBox" name="groupBox_7">
                   <property name="title">
-                   <string>Components</string>
+                   <string>Items</string>
                   </property>
                   <layout class="QVBoxLayout" name="verticalLayout_44" stretch="1,0">
                    <item>
@@ -1374,15 +1515,28 @@ s
                 <layout class="QHBoxLayout" name="horizontalLayout_26">
                  <item>
                   <widget class="QLabel" name="label_total_sheet_cost">
+                   <property name="font">
+                    <font>
+                     <pointsize>14</pointsize>
+                    </font>
+                   </property>
                    <property name="text">
-                    <string>Total Sheet Cost: $0.00</string>
+                    <string>Total Cost for Sheets: $0.00</string>
                    </property>
                   </widget>
                  </item>
                  <item>
+                  <layout class="QVBoxLayout" name="verticalLayout_48"/>
+                 </item>
+                 <item>
                   <widget class="QLabel" name="label_total_item_cost">
+                   <property name="font">
+                    <font>
+                     <pointsize>14</pointsize>
+                    </font>
+                   </property>
                    <property name="text">
-                    <string>Total Item Cost: $0.00</string>
+                    <string>Total Cost for Items: $0.00</string>
                    </property>
                   </widget>
                  </item>
@@ -1995,7 +2149,7 @@ QPushButton:pressed#pushButton_show_item_summary:!checked {
                       <x>0</x>
                       <y>0</y>
                       <width>280</width>
-                      <height>72</height>
+                      <height>137</height>
                      </rect>
                     </property>
                     <layout class="QHBoxLayout" name="horizontalLayout_21">
@@ -2398,7 +2552,7 @@ QPushButton#pushButton_generate_workorder:disabled{
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1168</width>
+     <width>1357</width>
      <height>21</height>
     </rect>
    </property>
