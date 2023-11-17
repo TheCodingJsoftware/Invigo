@@ -5,7 +5,9 @@ from PyQt6 import uic
 from PyQt6.QtCore import QFile, Qt, QTextStream
 from PyQt6.QtGui import QIcon
 from PyQt6.QtSvgWidgets import QSvgWidget
-from PyQt6.QtWidgets import QDialog, QPushButton, QRadioButton
+from PyQt6.QtWidgets import QDialog, QPushButton, QCompleter
+
+from natsort import natsorted
 
 from ui.custom_widgets import set_default_dialog_button_stylesheet
 from ui.theme import set_theme
@@ -16,54 +18,43 @@ from utils.json_file import JsonFile
 settings_file = JsonFile(file_name="settings")
 
 
-class GenerateQuoteDialog(QDialog):
+class AddWorkspaceItem(QDialog):
     """
-    Select dialog
+    Message dialog
     """
 
     def __init__(
         self,
         parent=None,
         icon_name: str = Icons.question,
-        button_names: str = DialogButtons.ok_cancel,
+        button_names: str = DialogButtons.add_cancel,
         title: str = __name__,
         message: str = "",
-        options: list = None,
     ) -> None:
         """
-        It's a function that takes in a list of options and displays them in a list widget
+        It's a constructor for a class that inherits from QDialog. It takes in a bunch of arguments and
+        sets some class variables
 
         Args:
           parent: The parent widget of the dialog.
           icon_name (str): str = Icons.question,
-          button_names (str): str = DialogButtons.ok_cancel,
+          button_names (str): str = DialogButtons.add_cancel,
           title (str): str = __name__,
           message (str): str = "",
-          options (list): list = None,
         """
-        if options is None:
-            options = []
-        super(GenerateQuoteDialog, self).__init__(parent)
-        uic.loadUi("ui/generate_quote_dialog.ui", self)
+        super(AddWorkspaceItem, self).__init__(parent)
+        uic.loadUi("ui/add_workspace_item.ui", self)
+
+        self.inventory = JsonFile(file_name=f"data/{settings_file.get_value(item_name='inventory_file_name')}.json")
+        self.parts_in_inventory = JsonFile(file_name=f"data/{settings_file.get_value(item_name='inventory_file_name')} - Parts in Inventory.json")
 
         self.icon_name = icon_name
         self.button_names = button_names
         self.title = title
         self.message = message
-        self.inputText: str = ""
-        settings_file.load_data()
+        self.thickness = ""
+        self.material = ""
         self.theme: str = "dark" if settings_file.get_value(item_name="dark_mode") else "light"
-
-        self.should_open_quote_when_generated: bool = settings_file.get_value(item_name='open_quote_when_generated')
-        self.should_open_workorder_when_generated: bool = settings_file.get_value(item_name='open_workorder_when_generated')
-        self.should_open_packing_slip_when_generated: bool = settings_file.get_value(item_name='open_packing_slip_when_generated')
-
-        self.checkBox_quote.setChecked(self.should_open_quote_when_generated)
-        self.checkBox_quote.toggled.connect(lambda:(settings_file.add_item('open_quote_when_generated', self.checkBox_quote.isChecked())))
-        self.checkBox_workorder.setChecked(self.should_open_workorder_when_generated)
-        self.checkBox_workorder.toggled.connect(lambda:(settings_file.add_item('open_workorder_when_generated', self.checkBox_workorder.isChecked())))
-        self.checkBox_packing_slip.setChecked(self.should_open_packing_slip_when_generated)
-        self.checkBox_packing_slip.toggled.connect(lambda:(settings_file.add_item('open_packing_slip_when_generated', self.checkBox_packing_slip.isChecked())))
 
         self.setWindowFlags(Qt.WindowType.Window | Qt.WindowType.FramelessWindowHint)
         self.setAttribute(Qt.WidgetAttribute.WA_TranslucentBackground, True)
@@ -72,29 +63,44 @@ class GenerateQuoteDialog(QDialog):
         self.lblTitle.setText(self.title)
         self.lblMessage.setText(self.message)
 
+        all_part_names = natsorted(self.get_all_part_names())
+
+        completer = QCompleter(all_part_names, self)
+        completer.setCaseSensitivity(Qt.CaseSensitivity.CaseInsensitive)
+        self.lineEdit_name.setCompleter(completer)
+        self.lineEdit_name.textChanged.connect(self.name_changed)
+
+        self.listWidget_all_items.itemSelectionChanged.connect(self.listWidget_item_changed)
+        self.listWidget_all_items.addItems(all_part_names)
+
         self.load_dialog_buttons()
-        self.pushButton_quote.clicked.connect(
-            lambda: (self.pushButton_packingslip.setChecked(False),) if self.pushButton_quote.isChecked() else self.pushButton_quote.isChecked()
-        )
-        self.pushButton_workorder.clicked.connect(
-            lambda: (
-                self.pushButton_update_inventory.setChecked(True),
-                self.pushButton_packingslip.setChecked(False),
-                self.pushButton_quote.setChecked(False),
-            )
-            if self.pushButton_workorder.isChecked()
-            else self.pushButton_workorder.isChecked()
-        )
-        self.pushButton_packingslip.clicked.connect(
-            lambda: (self.pushButton_quote.setChecked(False),) if self.pushButton_packingslip.isChecked() else self.pushButton_packingslip.isChecked()
-        )
+
         svg_icon = self.get_icon(icon_name)
         svg_icon.setFixedSize(62, 50)
         self.iconHolder.addWidget(svg_icon)
 
-        self.resize(320, 250)
-
+        # self.resize(300, 150)
         self.load_theme()
+
+    def listWidget_item_changed(self) -> None:
+        self.lineEdit_name.setText(self.listWidget_all_items.currentItem().text())
+        self.thickness = ""
+        self.material = ""
+        try:
+            for category in list(self.parts_in_inventory.data.keys()):
+                for part_name in self.parts_in_inventory.data[category].keys():
+                    if part_name == self.lineEdit_name.text():
+                        self.thickness = self.parts_in_inventory.data[category][part_name]['gauge']
+                        self.material = self.parts_in_inventory.data[category][part_name]['material']
+        except KeyError:
+            pass
+
+    def name_changed(self) -> None:
+        all_part_names = natsorted(self.get_all_part_names())
+        for part_name in all_part_names:
+            if part_name in self.lineEdit_name.text():
+                index = all_part_names.index(part_name)
+                self.listWidget_all_items.setCurrentRow(index)
 
     def load_theme(self) -> None:
         """
@@ -132,9 +138,9 @@ class GenerateQuoteDialog(QDialog):
         """
         button_names = self.button_names.split(", ")
         for index, name in enumerate(button_names):
-            if name == DialogButtons.generate:
+            if name == DialogButtons.add:
                 button = QPushButton(f"  {name}")
-                button.setIcon(QIcon(f"icons/dialog_ok.svg"))
+                button.setIcon(QIcon("icons/dialog_ok.svg"))
             elif os.path.isfile(f"icons/dialog_{name.lower()}.svg"):
                 button = QPushButton(f"  {name}")
                 button.setIcon(QIcon(f"icons/dialog_{name.lower()}.svg"))
@@ -160,18 +166,26 @@ class GenerateQuoteDialog(QDialog):
         """
         return self.response.replace(" ", "")
 
-    def get_selected_item(self) -> tuple[bool, bool, bool, bool, bool]:
+    def get_name(self) -> str:
         """
-        This function returns a tuple of boolean values indicating which push buttons are checked.
+        It returns the text in the lineEdit_name widget
 
         Returns:
-          A tuple containing three boolean values representing whether the corresponding push button
-        (quote, work order, update inventory) is checked or not.
+          The text in the lineEdit_name widget.
         """
-        return (
-            self.pushButton_quote.isChecked(),
-            self.pushButton_workorder.isChecked(),
-            self.pushButton_update_inventory.isChecked(),
-            self.pushButton_packingslip.isChecked(),
-            self.pushButton_group.isChecked(),
-        )
+        return self.lineEdit_name.text().encode("ascii", "ignore").decode()
+
+    def get_all_part_names(self) -> list[str]:
+        """
+        This function returns a list of all the part names in the inventory
+
+        Returns:
+          A list of all the part names in the inventory.
+        """
+        part_names = []
+        for category in list(self.inventory.data.keys()):
+            part_names.extend(iter(list(self.inventory.data[category].keys())))
+        for category in list(self.parts_in_inventory.data.keys()):
+            part_names.extend(iter(list(self.parts_in_inventory.data[category].keys())))
+        return list(set(part_names))
+

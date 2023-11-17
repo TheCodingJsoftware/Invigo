@@ -33,9 +33,13 @@ def calculate_scrap_percentage(nest_name: str, quote_nest_information: dict):
     nest_name = nest_name.split("/")[-1]
     if "CUSTOM NEST" in nest_name:
         nest_name = f"/{nest_name}"
-    total_item_surface_area: float = sum(
-        item_data["surface_area"] * item_data["quantity"] for _, item_data in quote_nest_information[nest_name].items()
-    )
+    # Because of workspace inconsistent item types
+    try:
+        total_item_surface_area: float = sum(
+            item_data["surface_area"] * item_data["quantity"] for _, item_data in quote_nest_information[nest_name].items()
+        )
+    except TypeError:
+        return 0.0
     try:
         return (1 - (total_item_surface_area / sheet_surface_area)) * 100
     except ZeroDivisionError:

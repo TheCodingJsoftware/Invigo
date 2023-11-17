@@ -13,7 +13,7 @@ settings_file = JsonFile(file_name="settings")
 
 
 class GenerateQuote:
-    def __init__(self, action: tuple[bool, bool, bool, bool], file_name: str, quote_data: dict, order_number: int) -> None:
+    def __init__(self, action: tuple[bool, bool, bool, bool, bool], file_name: str, quote_data: dict, order_number: int) -> None:
         self.program_directory = os.path.dirname(os.path.realpath(sys.argv[0]))
         self.order_number: int = order_number
         self.file_name = file_name
@@ -40,7 +40,7 @@ class GenerateQuote:
         self.gauges = config.get("GLOBAL VARIABLES", "gauges").split(",")
         self.quote_data = quote_data
         self.nests = self.get_nests()
-        self.should_generate_quote, self.should_generate_workorder, self.should_update_inventory, self.should_generate_packing_slip = action
+        self.should_generate_quote, self.should_generate_workorder, self.should_update_inventory, self.should_generate_packing_slip, self.should_group_items = action
 
         # if self.should_generate_quote:
         #     self.generate_quote()
@@ -60,7 +60,7 @@ class GenerateQuote:
         for i, (item, item_data) in enumerate(self.quote_data.items()):
             if item[0] == '_':
                 sheet_name = item.split('/')[-1].replace('.pdf', '')
-                sheets_html += f'<p style="text-align: center;">{sheet_name} - {item_data["gauge"]} {item_data["material"]} - {item_data["sheet_dim"]} - Scrap: {item_data["scrap_percentage"]}% - Sheet Count: {item_data["quantity_multiplier"]}</p>'
+                sheets_html += f'<p style="text-align: center;">{sheet_name} - {item_data["gauge"]} {item_data["material"]} - {item_data["sheet_dim"]} - Scrap: {item_data["scrap_percentage"]}% - Quantity: {item_data["quantity_multiplier"]}</p>'
         html_start = '''
         <!DOCTYPE html>
         <html>
@@ -76,15 +76,11 @@ class GenerateQuote:
             html{
                 background-color: white;
             }
-
             .ui-table{
                 background-color: white;
             }
             .page{
                 background-color: white;
-            }
-            .spacer{
-                margin-top: 200px;
             }
             .header-table-row{
                 text-align: bottom;
@@ -104,54 +100,23 @@ class GenerateQuote:
                 text-align: center;
                 vertical-align: middle;
             }
-            header {
-                display: flex;
-                justify-content: space-between;
-                align-items: center;
-                position: fixed;
-                top: 0;
-                left: 0;
-                right: 0;
-                padding: 10px;
-                height: 100px;
-                background-color: white;
-                z-index: 3;
-                border-bottom: 1px solid #ccc;
-            }
-            footer{
-                background-color: white;
-                position: fixed;
-                bottom: 0;
-                height: 60px;
-                z-index: 3;
-                width: 100%;
-                flex-direction: row; /* Display items horizontally */
-                border-top: 1px solid #ccc;
-            }
-            /* Style for the logo (image) */
-            .logo {
-                position: fixed;
-                width: 189px;
-                top: 10px;
-                height: 60px;
-                left: 0;
+            p{
+                margin: 0px 0px;
             }
 
             /* Style for the title */
             .title {
-                position: fixed;
-                font-size: 36px;
+                font-size: 48px;
                 font-weight: bold;
-                left: 40%;
                 margin: 10px;
                 text-align: center;
-                top: 0;
                 text-decoration: underline;
             }
+
             /* Style for the date */
             .date {
                 position: fixed;
-                font-size: 18px;
+                font-size: 16px;
                 top: 0;
                 right: 0;
             }
@@ -170,12 +135,15 @@ class GenerateQuote:
                 background-color: white;
             }
 
+            .input-box{
+                height: 60px;
+                font-size: 36px;
+            }
             .input-container-vertical {
                 background-color: white;
                 padding: 20px;
                 width: 45%;
                 margin: auto;
-                margin-top: 120px;
             }
 
             .input-container-horizontal {
@@ -190,7 +158,7 @@ class GenerateQuote:
                 font-weight: bold;
             }
             .input-row {
-                display: flex;
+                display: inline;
                 align-items: center;
                 margin-bottom: 10px; /* Add spacing between rows */
             }
@@ -199,6 +167,7 @@ class GenerateQuote:
                 flex: 0 0 auto;
                 margin-right: 10px; /* Add spacing between label and input */
                 width: auto; /* Set a fixed width for the label */
+                font-size: 22px;
             }
 
             th:first-of-type {
@@ -307,36 +276,36 @@ class GenerateQuote:
             }
 
             tr.dlheader {
-            text-align: center;
-            font-weight: bold;
-            border-left: solid #ccc 1px;
-            padding: 2px
+                text-align: center;
+                font-weight: bold;
+                border-left: solid #ccc 1px;
+                padding: 2px
             }
 
             td.dlheader {
-            background: #d9d9d9;
-            text-align: center;
-            font-weight: bold;
-            border-left: solid #ccc 1px;
-            border-radius: 0px;
-            padding: 2px
+                background: #d9d9d9;
+                text-align: center;
+                font-weight: bold;
+                border-left: solid #ccc 1px;
+                border-radius: 0px;
+                padding: 2px
             }
 
             tr.dlinfo,
             td.dlinfo {
-            text-align: center;
-            border-left: solid #ccc 1px;
-            border-top: solid #ccc 1px;
-            padding: 2px
+                text-align: center;
+                border-left: solid #ccc 1px;
+                border-top: solid #ccc 1px;
+                padding: 2px
             }
 
             td.dlinfo:first-child,
             td.dlheader:first-child {
-            border-left: none;
+                border-left: none;
             }
 
             td.dlheader:first-child {
-            border-radius: 5px 0 0 0;
+                border-radius: 5px 0 0 0;
             }
 
             td.dlheader:last-child {
@@ -348,18 +317,12 @@ class GenerateQuote:
             .ui-btn{
                 background-color: white;
             }
-            .ui-content{
-                margin-top: 200px;
-            }
             @media print{
                 .ui-table-columntoggle-btn{
                     display: none;
                 }
                 .page-break {
                     page-break-after: always;
-                }
-                .ui-content{
-                    margin-top: 0;
                 }
             }
 
@@ -375,54 +338,46 @@ class GenerateQuote:
                 });
                 function adjustTableOffsets() {
                     var headerRows = document.querySelectorAll("thead tr");
-                    var footerRows = document.querySelectorAll("tfoot tr");
                     var checkbox = document.getElementById("showTotalCost");
                     var checkboxLabel = document.getElementById("showTotalCostLabel");
+                    var checkboxCoverPageLabel = document.getElementById("showCoverPageLabel");
+                    var checkboxCoverPage = document.getElementById("showCoverPage");
                     var total_cost_div = document.getElementById("total-cost-div");
+                    var cover_page_div = document.getElementById("cover-page");
                     if (checkbox.checked) {
                         total_cost_div.style.display = "block";
                     } else {
                         total_cost_div.style.display = "none";
                     }
+                    if (checkboxCoverPage.checked) {
+                        cover_page_div.style.display = "block";
+                    } else {
+                        cover_page_div.style.display = "none";
+                    }
                     checkbox.style.display = "none";
                     checkboxLabel.style.display = "none";
+                    checkboxCoverPageLabel.style.display = "none";
                     for (var i = 0; i < headerRows.length; i++) {
-                        headerRows[i].style.height = "160px";
-                    }
-                    for (var i = 0; i < footerRows.length; i++) {
-                        footerRows[i].style.height = "130px";
-                        footerRows[i].style.border = "none";
+                        headerRows[i].style.height = "50px";
                     }
                     const detailsElement = document.getElementById("sheets-toggle");
                     if (detailsElement.open) {
                         detailsElement.style.display = "block";
                     } else {
                         detailsElement.style.display = "none";
-                        const spacerElement = document.getElementById("spacer");
-                        spacerElement.style.marginTop = "0";
                     }
-                    const totalCost = document.getElementById("total-cost");
-                    totalCost.style.marginTop = "-20px";
-                    const componentHeading = document.getElementById("components-heading");
-                    componentHeading.style.marginBottom = "-110px";
                 }
                 function resetTableOffsets() {
                     const detailsElement = document.getElementById("sheets-toggle");
-                    const spacerElement = document.getElementById("spacer");
-                    spacerElement.style.marginTop = "130px";
                     detailsElement.style.display = "block";
-                    var headerRows = document.querySelectorAll("thead tr");
-                    for (var i = 0; i < headerRows.length; i++) {
-                        headerRows[i].style.height = "40px";
-                    }
                     var checkboxLabel = document.getElementById("showTotalCostLabel");
+                    var checkboxCoverPageLabel = document.getElementById("showCoverPageLabel");
                     var total_cost_div = document.getElementById("total-cost-div");
+                    var cover_page_div = document.getElementById("cover-page");
                     total_cost_div.style.display = "block";
+                    cover_page_div.style.display = "block";
                     checkboxLabel.style.display = "block";
-                    const totalCost = document.getElementById("total-cost");
-                    totalCost.style.marginTop = "0px";
-                    const componentHeading = document.getElementById("components-heading");
-                    componentHeading.style.marginBottom = "0px";
+                    checkboxCoverPageLabel.style.display = "block";
                 }
                 function clearImageBorders(){
                     window.location.href = "";
@@ -450,99 +405,134 @@ class GenerateQuote:
 
             </script>
         <div data-role="page" id="pageone">
-            <div data-role="header">
-                <header>
-                <div style="margin-top: 70px;">
-                    <div>
-                        <div class="title">''' + title + '''</div>
-                        <img class="logo" src="''' + self.program_directory + '''/icons/logo.png" alt="Logo">
-                        <div class="date"> ''' + str(datetime.now().strftime("%B %d, %Y")) + '''</div>
+            <div id="cover-page">
+                <label for="showCoverPage" id="showCoverPageLabel" style="background-color: white; width: 200px; margin-left: 44%; border: none;">Show Cover Page</label>
+                <input style="background-color: white; display: none;" type="checkbox" id="showCoverPage" checked=true>
+                <div>
+                    <div class="title">''' + title + '''</div>
+                    <img class="logo" src="''' + self.program_directory + '''/icons/logo.png" alt="Logo">
+                    <div class="date"> ''' + str(datetime.now().strftime("%I:%M:%S %p %A %B %d, %Y")) + '''</div>
+                </div>
+                <div class="input-container-horizontal" style="columns: 1; padding: 0;">
+                    <div class="input-row">
+                        <label>Date Shipped:</label>
+                        <input type="date" class="input-box" id="date-shipped">
                     </div>
-                    <div class="input-container-horizontal" style="columns: 3; padding: 0; transform: scale(0.8);">
-                        <div class="input-row">
-                            <label>Date Shipped:</label>
-                            <input type="text" class="input-box" id="date-shipped">
-                        </div>
-                        <div class="input-row">
-                            <label>Ship To:</label>
-                            <input type="text" class="input-box" id="ship-to">
-                        </div>
-                        <div class="input-row">
-                            <label>Order #</label>
-                            <input type="text" class="input-box" id="order-number" ''' + (f'value="{self.order_number if title == "Packing Slip" else ""}"') + '''>
-                        </div>
+                    <div class="input-row">
+                        <label>Ship To:</label>
+                        <input type="text" class="input-box" id="ship-to">
+                    </div>
+                    <div class="input-row">
+                        <label>Order #</label>
+                        <input type="text" class="input-box" id="order-number" ''' + (f'value="{self.order_number if title == "Packing Slip" else ""}"') + '''>
+                    </div>
+                    <div class="input-row">
+                        <label>Date Expected:</label>
+                        <input type="date" class="input-box">
+                    </div>
+                    <div class="input-row">
+                        <label>Received in good order by:</label>
+                        <input type="text" class="input-box">
                     </div>
                 </div>
-                </header>
+                <div class="page-break"></div>
             </div>
-
-        <div class="spacer" id="spacer"></div>
         <details id="sheets-toggle" class="sheets-toggle" ''' + ("open=\"true\"" if title == "Workorder" else "") + '''>
-            <summary style="font-size: 24px; text-align: center;">Sheets:</summary>
+            <summary style="font-size: 24px; text-align: center; margin-top: 20px;">Sheets/Nests/Assemblies:</summary>
             ''' + sheets_html + '''
             <p style="text-align: center;">
-            ''' + f'Sheets: {self.get_total_sheet_count()}' +'''
+            ''' + f'Total: {self.get_total_sheet_count()}' +'''
             </p>
             <div class="page-break"></div>
         </details>
-
         <div data-role="main" class="ui-content">
-
         '''
 
         html_end = f'''
-
         </div style="width: 60%;">
-
             <label for="showTotalCost" id="showTotalCostLabel" style="background-color: white; width: 130px; margin-left: 44%; border: none;">Show Total Cost</label>
             <div id="total-cost-div">
             ''' + (f'<input style="background-color: white; display: none;" type="checkbox" id="showTotalCost" {"checked=true" if title == "Quote" else ""}>') + '''
-            ''' + (f'<h2 style="text-align: center;" id="total-cost">Total Cost: ${self.get_total_price():,.2f}</h2>') + '''
+            ''' + (f'<h2 style="text-align: center; margin: 4px 0px;" id="total-cost">Total Cost: ${self.get_total_price():,.2f}</h2>') + '''
             <p style="text-align: center; text-decoration: underline; font-weight: bold;">No tax is added in this quote.</p>
-            <p style="text-align: center; margin-bottom: 90px;">Payment past due date will receive 1.5% interest rate per month of received goods.</p>
+            <p style="text-align: center;">Payment past due date will receive 1.5% interest rate per month of received goods.</p>
         </div>
-        <footer>
-            <div class="input-container-horizontal" style="transform: scale(0.8); padding: 0;">
-                <div class="input-row">
-                    <label>Date Expected:</label>
-                    <input type="text" class="input-box">
-                </div>
-                <div class="input-row">
-                    <label>Received in good order by:</label>
-                    <input type="text" class="input-box">
-                </div>
-            </div>
-        </footer>
         </html>'''
-
-        has_items: bool = False
         html_text = html_start
-        for i, (item, item_data) in enumerate(self.quote_data.items()):
-            if item[0] != '_' and item != "Components":
-                if i == 0:
-                    html_text += '''<table id="data-table" data-role="table" data-mode="columntoggle" class="ui-responsive" style="border-collapse: collapse; text-align: center; vertical-align: middle;"><thead><tr class="header-table-row"><th data-priority="1" class="ui-table-cell-visible">Picture</th><th data-priority="2" class="ui-table-cell-visible">Part Name</th><th data-priority="7" class="''' + ("ui-table-cell-hidden" if title != "Workorder" else "ui-table-cell-visible") + '''">Shelf Number</th><th data-priority="6" class="ui-table-cell-visible">Material</th><th data-priority="5" class="ui-table-cell-visible">Thickness</th><th data-priority="4" class="ui-table-cell-visible">Quantity</th><th data-priority="9" class="''' + ("ui-table-cell-visible" if title == "Quote" else "ui-table-cell-hidden") + '''">Unit Price</th><th data-priority="3" class="''' + ("ui-table-cell-visible" if title == "Quote" else "ui-table-cell-hidden") + '''">Price</th></tr></thead><tbody id="table-body">'''
-                    has_items = True
-                html_item_data = '<table class="dltrc" style="background:none;"><tbody><tr class="dlheader" style="height: 20px;"><td class="dlheader">Key</td><td class="dlheader">Value</td></tr>'
-                for data in item_data:
-                    html_item_data += f'<tr class="dlinfo hover01" style="height: 20px;"><td class="dlinfo hover01">{data.replace("_", " ").title()}</td><td class="dlinfo hover01"> {item_data[data]}</td></tr>'
-                else:
-                    html_item_data += '</tbody></table>'
-                try:
-                    shelf_number = item_data["shelf_number"]
-                except KeyError:
-                    shelf_number = ""
-                try:
-                    html_text += f'<tr><td class="ui-table-cell-visible"><div class="image-container"><a class="popup-trigger" href="#{item}" onclick="highlightImage(\'{item}\', \'images/{item}.jpeg\')"><img src="{self.program_directory}/images/{item}.jpeg" style="height: 60px; width: 60px;" alt="Image" id="images/{item}.jpeg"></a><div class="popup" id="{item}"><div class="input-container-horizontal" style="padding: 5px; align-items: left; display: flex;"><img src="{self.program_directory}/images/{item}.jpeg" style="height: 100px; width: 100px;" alt="Image"><h1 style="margin-left: 20px;">{item}</h1></div>{html_item_data}<a class="close-popup" href="#" onclick="clearImageBorders()">Close</a></div></div></td><td class="ui-table-cell-visible">{item}</td><td class="{"ui-table-cell-hidden" if title != "Workorder" else "ui-table-cell-visible"}">{shelf_number}</td><td class="ui-table-cell-visible">{item_data["material"]}</td><td class="ui-table-cell-visible">{item_data["gauge"]}</td><td class="ui-table-cell-visible">{item_data["quantity"]}</td><td class="{"ui-table-cell-visible" if title == "Quote" else "ui-table-cell-hidden"}">{item_data["unit_price"]}</td><td class="{"ui-table-cell-visible" if title == "Quote" else "ui-table-cell-hidden"}">{item_data["price"]}</td></tr>\n'
-                except KeyError as e:
-                    print(f"Key Error for {e}")
+        if self.should_group_items:
+            for i1, nest in enumerate(list(self.quote_data.keys())):
+                if nest[0] == '_' or nest == "Components":
                     continue
-        else:
-            if has_items:
-                html_text += f'<tr style="height: 20px;"><td class="ui-table-cell-visible"></td><td class="ui-table-cell-visible"></td><td class="{"ui-table-cell-hidden" if title != "Workorder" else "ui-table-cell-visible"}"></td><td class="ui-table-cell-visible"></td><td class="ui-table-cell-visible"></td><td class="ui-table-cell-visible"></td><td class="{"ui-table-cell-visible" if title == "Quote" else "ui-table-cell-hidden"}"></td><td class="{"ui-table-cell-visible" if title == "Quote" else "ui-table-cell-hidden"}">{f"Total: ${self.get_total_parts_price():,.2f}"}</td></tr>\n'
+                has_items: bool = False
+                if i1 >= 1:
+                    html_text += '<div class="page-break"></div>'
+                html_text += f"<h2 style='text-align: center'>{nest.replace('.pdf', '')}</h2><br>"
+                for i, (item, item_data) in enumerate(self.quote_data[nest].items()):
+                    if nest[0] != '_' and nest != "Components":
+                        if i == 0:
+                            html_text += '''<table id="data-table" data-role="table" data-mode="columntoggle" class="ui-responsive" style="border-collapse: collapse; text-align: center; vertical-align: middle;"><thead><tr class="header-table-row"><th data-priority="1" class="ui-table-cell-visible">Picture</th><th data-priority="2" class="ui-table-cell-visible">Part Name</th><th data-priority="7" class="''' + ("ui-table-cell-hidden" if title != "Workorder" else "ui-table-cell-visible") + '''">Shelf Number</th><th data-priority="6" class="ui-table-cell-visible">Material</th><th data-priority="5" class="ui-table-cell-visible">Thickness</th><th data-priority="4" class="ui-table-cell-visible">Quantity</th><th data-priority="10" class="''' + ("ui-table-cell-visible" if title == "Workorder" else "ui-table-cell-hidden") + '''">Notes</th><th data-priority="9" class="''' + ("ui-table-cell-visible" if title == "Quote" else "ui-table-cell-hidden") + '''">Unit Price</th><th data-priority="3" class="''' + ("ui-table-cell-visible" if title == "Quote" else "ui-table-cell-hidden") + '''">Price</th></tr></thead><tbody id="table-body">'''
+                            has_items = True
+                        html_item_data = '<table class="dltrc" style="background:none;"><tbody><tr class="dlheader" style="height: 20px;"><td class="dlheader">Key</td><td class="dlheader">Value</td></tr>'
+                        for data in item_data:
+                            html_item_data += f'<tr class="dlinfo hover01" style="height: 20px;"><td class="dlinfo hover01">{data.replace("_", " ").title()}</td><td class="dlinfo hover01"> {item_data[data]}</td></tr>'
+                        else:
+                            html_item_data += '</tbody></table>'
+                        try:
+                            shelf_number = item_data["shelf_number"]
+                        except KeyError:
+                            shelf_number = ""
+                        try:
+                            flow_tag = " -> ".join(item_data["flow_tag"]) + '<br>'
+                        except KeyError:
+                            flow_tag = ""
+                        try:
+                            notes = f"{flow_tag}{item_data['notes']}"
+                        except KeyError:
+                            notes = f"{flow_tag}"
+                        try:
+                            html_text += f'<tr><td class="ui-table-cell-visible"><div class="image-container"><a class="popup-trigger" href="#{item}" onclick="highlightImage(\'{item}\', \'images/{item}.jpeg\')"><img src="{self.program_directory}/images/{item}.jpeg" style="height: 60px; width: 60px;" alt="Image" id="images/{item}.jpeg"></a><div class="popup" id="{item}"><div class="input-container-horizontal" style="padding: 5px; align-items: left; display: flex;"><img src="{self.program_directory}/images/{item}.jpeg" style="height: 100px; width: 100px;" alt="Image"><h1 style="margin-left: 20px;">{item}</h1></div>{html_item_data}<a class="close-popup" href="#" onclick="clearImageBorders()">Close</a></div></div></td><td class="ui-table-cell-visible">{item}</td><td class="{"ui-table-cell-hidden" if title != "Workorder" else "ui-table-cell-visible"}">{shelf_number}</td><td class="ui-table-cell-visible">{item_data["material"]}</td><td class="ui-table-cell-visible">{item_data["gauge"]}</td><td class="ui-table-cell-visible">{item_data["quantity"]}</td><td class="{"ui-table-cell-visible" if title == "Workorder" else "ui-table-cell-hidden"}">{notes}</td><td class="{"ui-table-cell-visible" if title == "Quote" else "ui-table-cell-hidden"}">{item_data["unit_price"]}</td><td class="{"ui-table-cell-visible" if title == "Quote" else "ui-table-cell-hidden"}">{item_data["price"]}</td></tr>\n'
+                        except KeyError as e:
+                            print(f"Key Error for {e}")
+                            continue
+                else:
+                    if has_items:
+                        html_text += f'<tr style="height: 20px;"><td class="ui-table-cell-visible"></td><td class="ui-table-cell-visible"></td><td class="{"ui-table-cell-hidden" if title != "Workorder" else "ui-table-cell-visible"}"></td><td class="ui-table-cell-visible"></td><td class="ui-table-cell-visible"></td><td class="{"ui-table-cell-visible" if title == "Workorder" else "ui-table-cell-hidden"}"><td class="ui-table-cell-visible"></td><td class="{"ui-table-cell-visible" if title == "Quote" else "ui-table-cell-hidden"}"></td><td class="{"ui-table-cell-visible" if title == "Quote" else "ui-table-cell-hidden"}">{f"Total: ${self.get_total_nest_parts_price(nest_name=nest):,.2f}"}</td></tr>\n'
 
-        html_text += f'''</tbody>
-        <tfoot><tr style="height: 20px;"><td class="ui-table-cell-visible"></td><td class="ui-table-cell-visible"></td><td class="ui-table-cell-visible"></td><td class="ui-table-cell-visible"></td><td class="ui-table-cell-visible"></td><td class="ui-table-cell-visible"></td><td class="''' + ("ui-table-cell-hidden" if title == "Workorder" else "ui-table-cell-visible") + '''"></td></tr></tfoot>
-        </table>'''
+                html_text += '</tbody></table>'
+        else:
+            has_items: bool = False
+            for i, (item, item_data) in enumerate(self.quote_data.items()):
+                if item[0] != '_' and item != "Components":
+                    if i == 0:
+                        html_text += '''<table id="data-table" data-role="table" data-mode="columntoggle" class="ui-responsive" style="border-collapse: collapse; text-align: center; vertical-align: middle;"><thead><tr class="header-table-row"><th data-priority="1" class="ui-table-cell-visible">Picture</th><th data-priority="2" class="ui-table-cell-visible">Part Name</th><th data-priority="7" class="''' + ("ui-table-cell-hidden" if title != "Workorder" else "ui-table-cell-visible") + '''">Shelf Number</th><th data-priority="6" class="ui-table-cell-visible">Material</th><th data-priority="5" class="ui-table-cell-visible">Thickness</th><th data-priority="4" class="ui-table-cell-visible">Quantity</th><th data-priority="10" class="''' + ("ui-table-cell-visible" if title == "Workorder" else "ui-table-cell-hidden") + '''">Notes</th><th data-priority="9" class="''' + ("ui-table-cell-visible" if title == "Quote" else "ui-table-cell-hidden") + '''">Unit Price</th><th data-priority="3" class="''' + ("ui-table-cell-visible" if title == "Quote" else "ui-table-cell-hidden") + '''">Price</th></tr></thead><tbody id="table-body">'''
+                        has_items = True
+                    html_item_data = '<table class="dltrc" style="background:none;"><tbody><tr class="dlheader" style="height: 20px;"><td class="dlheader">Key</td><td class="dlheader">Value</td></tr>'
+                    for data in item_data:
+                        html_item_data += f'<tr class="dlinfo hover01" style="height: 20px;"><td class="dlinfo hover01">{data.replace("_", " ").title()}</td><td class="dlinfo hover01"> {item_data[data]}</td></tr>'
+                    else:
+                        html_item_data += '</tbody></table>'
+                    try:
+                        shelf_number = item_data["shelf_number"]
+                    except KeyError:
+                        shelf_number = ""
+                    try:
+                        flow_tag = " -> ".join(item_data["flow_tag"])
+                    except KeyError:
+                        flow_tag = ""
+                    try:
+                        notes = f"{flow_tag}<br>{item_data['notes']}"
+                    except KeyError:
+                        notes = f"{flow_tag}"
+                    try:
+                        html_text += f'<tr><td class="ui-table-cell-visible"><div class="image-container"><a class="popup-trigger" href="#{item}" onclick="highlightImage(\'{item}\', \'images/{item}.jpeg\')"><img src="{self.program_directory}/images/{item}.jpeg" style="height: 60px; width: 60px;" alt="Image" id="images/{item}.jpeg"></a><div class="popup" id="{item}"><div class="input-container-horizontal" style="padding: 5px; align-items: left; display: flex;"><img src="{self.program_directory}/images/{item}.jpeg" style="height: 100px; width: 100px;" alt="Image"><h1 style="margin-left: 20px;">{item}</h1></div>{html_item_data}<a class="close-popup" href="#" onclick="clearImageBorders()">Close</a></div></div></td><td class="ui-table-cell-visible">{item}</td><td class="{"ui-table-cell-hidden" if title != "Workorder" else "ui-table-cell-visible"}">{shelf_number}</td><td class="ui-table-cell-visible">{item_data["material"]}</td><td class="ui-table-cell-visible">{item_data["gauge"]}</td><td class="ui-table-cell-visible">{item_data["quantity"]}</td><td class="{"ui-table-cell-visible" if title == "Workorder" else "ui-table-cell-hidden"}">{notes}</td><td class="{"ui-table-cell-visible" if title == "Quote" else "ui-table-cell-hidden"}">{item_data["unit_price"]}</td><td class="{"ui-table-cell-visible" if title == "Quote" else "ui-table-cell-hidden"}">{item_data["price"]}</td></tr>\n'
+                    except KeyError as e:
+                        print(f"Key Error for {e}")
+                        continue
+            else:
+                if has_items:
+                    html_text += f'<tr style="height: 20px;"><td class="ui-table-cell-visible"></td><td class="ui-table-cell-visible"></td><td class="{"ui-table-cell-hidden" if title != "Workorder" else "ui-table-cell-visible"}"></td><td class="ui-table-cell-visible"></td><td class="ui-table-cell-visible"></td><td class="{"ui-table-cell-visible" if title == "Workorder" else "ui-table-cell-hidden"}"><td class="ui-table-cell-visible"></td><td class="{"ui-table-cell-visible" if title == "Quote" else "ui-table-cell-hidden"}"></td><td class="{"ui-table-cell-visible" if title == "Quote" else "ui-table-cell-hidden"}">{f"Total: ${self.get_total_parts_price():,.2f}"}</td></tr>\n'
+
+            html_text += '</tbody></table>'
 
         if self.quote_data['Components']:
             html_text += f'''<h2 id="components-heading" style="margin-top: 150px; margin-bottom: 0px; text-align: center;"></h2><table id="data-table2" data-role="table" data-mode="columntoggle" class="ui-responsive" style="border-collapse: collapse; text-align: center; vertical-align: middle;"><thead><tr class="header-table-row"><th data-priority="1" class="ui-table-cell-visible">Picture</th><th data-priority="2" class="ui-table-cell-visible">Item Name</th><th data-priority="3" class="ui-table-cell-visible">Item Number</th><th data-priority="8" class="ui-table-cell-visible">Description</th><th data-priority="4" class="''' + ("ui-table-cell-hidden" if title != "Workorder" else "ui-table-cell-visible") + '''">Shelf Number</th><th data-priority="5" class="ui-table-cell-visible">Quantity</th><th data-priority="6" class="''' + ("ui-table-cell-visible" if title == "Quote" else "ui-table-cell-hidden") + '''">Unit Price</th><th data-priority="7" class="''' + ("ui-table-cell-visible" if title == "Quote" else "ui-table-cell-hidden") + '''">Price</th></tr></thead><tbody>'''
@@ -820,7 +810,15 @@ class GenerateQuote:
         return [item for item in list(self.quote_data.keys()) if item[0] == "_"]
 
     def get_items(self) -> list[str]:
-        return [item for item in list(self.quote_data.keys()) if item[0] != "_" and item != "Components"]
+        if self.should_group_items:
+            items = []
+            for nest in list(self.quote_data.keys()):
+                if nest[0] == '_' or nest == 'Components':
+                    continue
+                items.extend(list(self.quote_data[nest].keys()))
+            return items
+        else:
+            return [item for item in list(self.quote_data.keys()) if item[0] != "_" and item != "Components"]
 
     def get_total_sheet_count(self) -> int:
         """
@@ -834,7 +832,22 @@ class GenerateQuote:
         return sum(self.quote_data[nest]["quantity_multiplier"] for nest in self.get_nests())
 
     def get_total_parts_price(self) -> float:
-        return sum(self.quote_data[nest]["quoting_price"] for nest in self.get_items())
+        if self.should_group_items:
+            total = 0.0
+            for nest in list(self.quote_data.keys()):
+                if nest[0] == '_' or nest == 'Components':
+                    continue
+                for item in list(self.quote_data[nest].keys()):
+                    total += self.quote_data[nest][item]['quoting_price']
+            return total
+        else:
+            return sum(self.quote_data[nest]["quoting_price"] for nest in self.get_items())
+
+    def get_total_nest_parts_price(self, nest_name: str) -> float:
+        total = 0.0
+        for item in list(self.quote_data[nest_name].keys()):
+            total += self.quote_data[nest_name][item]['quoting_price']
+        return total
 
     def get_total_components_price(self) -> float:
         return sum(self.quote_data["Components"][item]["quoting_price"] for item in list(self.quote_data['Components'].keys()))

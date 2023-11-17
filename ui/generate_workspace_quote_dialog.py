@@ -29,7 +29,7 @@ from utils.workspace.workspace import Workspace
 settings_file = JsonFile(file_name="settings")
 admin_workspace = Workspace("workspace - Admin")
 
-class GenerateWorkorderDialog(QDialog):
+class GenerateWorkspaceQuoteDialog(QDialog):
     """
     Select dialog
     """
@@ -54,8 +54,8 @@ class GenerateWorkorderDialog(QDialog):
           message (str): str = "",
           options (list): list = None,
         """
-        super(GenerateWorkorderDialog, self).__init__(parent)
-        uic.loadUi("ui/generate_workorder_dialog.ui", self)
+        super(GenerateWorkspaceQuoteDialog, self).__init__(parent)
+        uic.loadUi("ui/generate_workspace_quote_dialog.ui", self)
         admin_workspace.load_data()
 
         self.icon_name = icon_name
@@ -118,7 +118,6 @@ class GenerateWorkorderDialog(QDialog):
         tree_view.setHeaderHidden(True)
         tree_view.setColumnWidth(0, 1000)  # Adjust the width of the first column
         tree_view.expandAll()
-        tree_view.model().itemChanged.connect(self.update_parent_state)
         tree_view.clicked.connect(self.get_selected_assemblies)
         return tree_view
 
@@ -145,37 +144,6 @@ class GenerateWorkorderDialog(QDialog):
         item.setCheckable(True)
         return item
 
-    def update_child_items(self, item: QStandardItem):
-        check_state = item.checkState()
-        for row in range(item.rowCount()):
-            child_item = item.child(row)
-            child_item.setCheckState(check_state)
-            self.update_child_items(child_item)
-
-    def are_all_children_checked(self, parent_item: QStandardItem) -> bool:
-        for row in range(parent_item.rowCount()):
-            child_item = parent_item.child(row)
-            if child_item.checkState() == Qt.CheckState.Unchecked:
-                return False
-        return True
-
-    def update_parent_state(self, item: QStandardItem):
-        if item.checkState() == Qt.CheckState.Unchecked:
-            if item is None or item.parent() is None:
-                return
-            parent_item = item.parent() if item.parent() is not None else item
-            if self.are_all_children_checked(parent_item):
-                parent_item.setCheckState(Qt.CheckState.Checked)
-                item.setCheckState(Qt.CheckState.Checked)
-            else:
-                parent_item.setCheckState(Qt.CheckState.Unchecked)
-                self.update_parent_state(parent_item)
-        elif item.checkState() == Qt.CheckState.Checked:
-            self.update_child_items(item)
-            if item.parent() is not None:
-                if self.are_all_children_checked(item.parent()):
-                    item.parent().setCheckState(Qt.CheckState.Checked)
-
     def get_topmost_checked_items_rows(self, model: QStandardItemModel) -> list[str]:
         topmost_checked_items: list[QStandardItem] = []
         for row in range(model.rowCount()):
@@ -188,7 +156,7 @@ class GenerateWorkorderDialog(QDialog):
     def find_topmost_checked_items(self, parent_item: QStandardItem, topmost_checked_items: list[str]):
         for row in range(parent_item.rowCount()):
             child_item = parent_item.child(row)
-            if child_item and child_item.checkState() == Qt.CheckState.Checked and child_item.parent().checkState() == Qt.CheckState.Unchecked:
+            if child_item and child_item.checkState() == Qt.CheckState.Checked:
                 topmost_checked_items.append(parent_item.child(row, 1))
             self.find_topmost_checked_items(child_item, topmost_checked_items)
 

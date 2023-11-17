@@ -2100,7 +2100,7 @@ class CustomTableWidget(QTableWidget):
     def __init__(self, parent=None):
         super(CustomTableWidget, self).__init__()
         self.editable_column_indexes = []
-
+        self.setStyleSheet("QScrollBar:horizontal {height: 20px;}")
     def edit(self, index, trigger, event):
         """
         This function checks if a column is editable and allows editing if it is, otherwise it returns

@@ -28,6 +28,7 @@ class SetOrderPendingDialog(QDialog):
         button_names: str = DialogButtons.ok_cancel,
         title: str = __name__,
         message: str = "",
+        label_text: str ="",
     ) -> None:
         """
         It's a function that takes in a list of items and displays them in a list widget
@@ -56,6 +57,7 @@ class SetOrderPendingDialog(QDialog):
 
         self.lblTitle.setText(self.title)
         self.lblMessage.setText(self.message)
+        self.label.setText(label_text)
 
         self.load_dialog_buttons()
 

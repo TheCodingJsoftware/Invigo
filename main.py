@@ -1,4 +1,5 @@
 # sourcery skip: avoid-builtin-shadow
+import cProfile
 import configparser
 import contextlib
 import json
@@ -12,6 +13,7 @@ import threading
 import time
 import traceback
 import webbrowser
+import win32file
 import winsound
 from datetime import datetime, timedelta
 from functools import partial
@@ -102,6 +104,7 @@ from ui.add_component_dialog import AddComponentDialog
 from ui.add_item_dialog import AddItemDialog
 from ui.add_item_dialog_price_of_steel import AddItemDialogPriceOfSteel
 from ui.add_job_dialog import AddJobDialog
+from ui.add_workspace_item import AddWorkspaceItem
 from ui.color_picker_dialog import ColorPicker
 from ui.custom_widgets import (
     AssemblyMultiToolBox,
@@ -139,6 +142,7 @@ from ui.edit_statuses_dialog import EditStatusesDialog
 from ui.edit_tags_dialog import EditTagsDialog
 from ui.generate_quote_dialog import GenerateQuoteDialog
 from ui.generate_workorder_dialog import GenerateWorkorderDialog
+from ui.generate_workspace_quote_dialog import GenerateWorkspaceQuoteDialog
 from ui.image_viewer import QImageViewer
 from ui.input_dialog import InputDialog
 from ui.job_sorter_dialog import JobSorterDialog
@@ -180,7 +184,7 @@ __copyright__: str = "Copyright 2022-2023, TheCodingJ's"
 __credits__: list[str] = ["Jared Gross"]
 __license__: str = "MIT"
 __name__: str = "Invigo"
-__version__: str = "v2.2.6"
+__version__: str = "v2.2.16"
 __updated__: str = "2023-08-30 12:32:51"
 __maintainer__: str = "Jared Gross"
 __email__: str = "jared@pinelandfarms.ca"
@@ -293,6 +297,9 @@ def check_folders(folders: list[str]) -> None:
 def _play_celebrate_sound() -> None:
     winsound.PlaySound("sound.wav", winsound.SND_FILENAME)
 
+def _play_boot_sound() -> None:
+    winsound.PlaySound("boot.wav", winsound.SND_FILENAME)
+
 
 check_folders(
     folders=[
@@ -343,8 +350,11 @@ def excepthook(exc_type, exc_value, exc_traceback):
 
 # Set the exception hook
 sys.excepthook = excepthook
-sys.setrecursionlimit(10**6)
+sys.setrecursionlimit(10**4)
 sys.argv += ["--enable-features=WebComponentsV0Enabled"]
+
+# 2048 is the hard limit
+win32file._setmaxstdio(2048)
 
 settings_file = JsonFile(file_name="settings")
 
@@ -781,6 +791,7 @@ class MainWindow(QMainWindow):
         self.actionEditTags.triggered.connect(self.open_tag_editor)
         self.actionEditStatuses.triggered.connect(self.open_status_editor)
         self.pushButton_generate_workorder.clicked.connect(partial(self.generate_workorder_dialog, []))
+        self.pushButton_generate_workspace_quote.clicked.connect(partial(self.generate_workspace_quote_dialog, []))
 
         # FILE
         self.menuOpen_Category.setIcon(QIcon(f"icons/folder.png"))
@@ -1014,7 +1025,7 @@ class MainWindow(QMainWindow):
                 return
 
     # NOTE SHEETS IN INVENTORY
-    def order_status_button(self, item_name: str, button: OrderStatusButton, row_index: int) -> None:
+    def order_status_button_sheets_in_inventory(self, item_name: str, button: OrderStatusButton, row_index: int) -> None:
         """
         This function updates the "is_order_pending" value of an item in a steel inventory object based
         on the status of an order status button.
@@ -1032,6 +1043,7 @@ class MainWindow(QMainWindow):
             button_names=DialogButtons.set_cancel,
             title="Set Expected Arrival Time & Quantity",
             message=f'Set an expected arrival time for "{item_name}" and the number of sheets ordered',
+            label_text="Sheets Ordered:",
         )
         if button.isChecked() == True and select_date_dialog.exec():
             response = select_date_dialog.get_response()
@@ -1070,7 +1082,7 @@ class MainWindow(QMainWindow):
                 if response == DialogButtons.add:
                     try:
                         input_number = float(input_dialog.inputText)
-                        new_quantity = price_of_steel_inventory.get_data()[self.category][item_name]['current_quantity'] + input_number
+                        new_quantity = price_of_steel_inventory.data[self.category][item_name]['current_quantity'] + input_number
                         price_of_steel_inventory.change_object_in_object_item(
                             object_name=self.category,
                             item_name=item_name,
@@ -1097,7 +1109,7 @@ class MainWindow(QMainWindow):
         self.sync_changes()
 
     # NOTE SHEETS IN INVENTORY
-    def arrival_date_change(self, item_name: str, arrival_date: QDateEdit) -> None:
+    def arrival_date_change_sheets_in_inventory(self, item_name: str, arrival_date: QDateEdit) -> None:
         """
         The function `arrival_date_change` updates the expected arrival time of an item in the steel
         inventory and then reloads the active tab and syncs the changes.
@@ -1114,6 +1126,186 @@ class MainWindow(QMainWindow):
             new_value=arrival_date.date().toString("yyyy-MM-dd"),
         )
 
+        self.load_active_tab()
+        self.sync_changes()
+
+    # NOTE EDIT INVENTORY
+    def order_status_button_edit_inventory(self, item_name: str, button: OrderStatusButton, row_index: int) -> None:
+        """
+        This function updates the "is_order_pending" value of an item in a steel inventory object based
+        on the status of an order status button.
+
+        Args:
+          item_name (str): A string representing the name of the item for which the order status button
+        is being updated.
+          button (OrderStatusButton): The button parameter is an instance of
+        the OrderStatusButton class, which is a graphical user interface (GUI) element that allows the
+        user to toggle the status of an order. The isChecked() method of the OrderStatusButton class
+        returns a boolean value indicating whether the button is currently checked or not
+        """
+        select_date_dialog = SetOrderPendingDialog(
+            self,
+            button_names=DialogButtons.set_cancel,
+            title="Set Expected Arrival Time & Quantity",
+            message=f'Set an expected arrival time for "{item_name}" and the number of parts ordered',
+            label_text="Parts Ordered:",
+        )
+        part_number = self.get_value_from_category(item_name, 'part_number')
+        if button.isChecked() == True and select_date_dialog.exec():
+            response = select_date_dialog.get_response()
+            if response == DialogButtons.set:
+                inventory.change_object_in_object_item(
+                    object_name=self.category,
+                    item_name=item_name,
+                    value_name="expected_arrival_time",
+                    new_value=select_date_dialog.get_selected_date(),
+                )
+                inventory.change_object_in_object_item(
+                    object_name=self.category,
+                    item_name=item_name,
+                    value_name="order_pending_quantity",
+                    new_value=select_date_dialog.get_order_quantity(),
+                )
+                for category in inventory.get_keys():
+                    if category == self.category:
+                        continue
+                    for item in list(inventory.data[category].keys()):
+                        if part_number == inventory.data[category][item]["part_number"]:
+                            inventory.change_object_in_object_item(
+                                object_name=category,
+                                item_name=item,
+                                value_name="expected_arrival_time",
+                                new_value=select_date_dialog.get_selected_date(),
+                            )
+                            inventory.change_object_in_object_item(
+                                object_name=category,
+                                item_name=item,
+                                value_name="order_pending_quantity",
+                                new_value=select_date_dialog.get_order_quantity(),
+                            )
+            else:
+                self.load_active_tab()
+                self.sync_changes()
+                return
+            inventory.change_object_in_object_item(
+                object_name=self.category,
+                item_name=item_name,
+                value_name="order_pending_date",
+                new_value=datetime.now().strftime("%Y-%m-%d"),
+            )
+            for category in inventory.get_keys():
+                if category == self.category:
+                    continue
+                for item in list(inventory.data[category].keys()):
+                    if part_number == inventory.data[category][item]["part_number"]:
+                        inventory.change_object_in_object_item(
+                            object_name=category,
+                            item_name=item,
+                            value_name="order_pending_date",
+                            new_value=datetime.now().strftime("%Y-%m-%d"),
+                        )
+        elif button.isChecked() == False:
+            input_dialog = InputDialog(
+                title="Add Parts Quantity",
+                message=f"Do you want to add the incoming quantity for \"{item_name}\"?",
+                button_names=DialogButtons.add_no,
+                placeholder_text=inventory.data[self.category][item_name]['order_pending_quantity'],
+            )
+            if input_dialog.exec():
+                response = input_dialog.get_response()
+                if response == DialogButtons.add:
+                    try:
+                        input_number = float(input_dialog.inputText)
+                        old_quantity = inventory.data[self.category][item_name]['current_quantity']
+                        new_quantity = old_quantity + input_number
+                        inventory.change_object_in_object_item(
+                            object_name=self.category,
+                            item_name=item_name,
+                            value_name="current_quantity",
+                            new_value=new_quantity,
+                        )
+                        inventory.change_object_in_object_item(
+                            self.category,
+                            item_name,
+                            "latest_change_current_quantity",
+                            f"{self.username} - Changed from {old_quantity} to {new_quantity} at {datetime.now().strftime('%B %d %A %Y %I-%M-%S %p')}",
+                        )
+                        for category in inventory.get_keys():
+                            if category == self.category:
+                                continue
+                            for item in list(inventory.data[category].keys()):
+                                if part_number == inventory.data[category][item]["part_number"]:
+                                    inventory.change_object_in_object_item(
+                                        object_name=category,
+                                        item_name=item,
+                                        value_name="current_quantity",
+                                        new_value=new_quantity,
+                                    )
+                                    inventory.change_object_in_object_item(
+                                        category,
+                                        item,
+                                        "latest_change_current_quantity",
+                                        f"{self.username} - Changed from {old_quantity} to {new_quantity} at {datetime.now().strftime('%B %d %A %Y %I-%M-%S %p')}",
+                                    )
+                    except Exception:
+                        self.show_error_dialog(
+                            title="Invalid number",
+                            message=f"'{input_dialog.inputText}' is an invalid numnber",
+                            dialog_buttons=DialogButtons.ok,
+                        )
+                        return
+                elif response == DialogButtons.cancel:
+                    return
+        inventory.change_object_in_object_item(
+            object_name=self.category,
+            item_name=item_name,
+            value_name="is_order_pending",
+            new_value=button.isChecked(),
+        )
+        for category in inventory.get_keys():
+            if category == self.category:
+                continue
+            for item in list(inventory.data[category].keys()):
+                if part_number == inventory.data[category][item]["part_number"]:
+                    inventory.change_object_in_object_item(
+                        object_name=category,
+                        item_name=item,
+                        value_name="is_order_pending",
+                        new_value=button.isChecked(),
+                    )
+
+        self.load_active_tab()
+        self.sync_changes()
+
+    # NOTE EDIT INVENTORY
+    def arrival_date_change_edit_inventory(self, item_name: str, arrival_date: QDateEdit) -> None:
+        """
+        The function `arrival_date_change` updates the expected arrival time of an item in the steel
+        inventory and then reloads the active tab and syncs the changes.
+
+        Args:
+          item_name (str): The name of the item for which the arrival date is being changed.
+          arrival_date (QDateEdit): The `arrival_date` parameter is a `QDateEdit` object, which is a
+        widget that allows the user to select a date.
+        """
+        inventory.change_object_in_object_item(
+            object_name=self.category,
+            item_name=item_name,
+            value_name="expected_arrival_time",
+            new_value=arrival_date.date().toString("yyyy-MM-dd"),
+        )
+        part_number = self.get_value_from_category(item_name, 'part_number')
+        for category in inventory.get_keys():
+            if category == self.category:
+                continue
+            for item in list(inventory.data[category].keys()):
+                if part_number == inventory.data[category][item]["part_number"]:
+                    inventory.change_object_in_object_item(
+                        object_name=category,
+                        item_name=item_name,
+                        value_name="expected_arrival_time",
+                        new_value=arrival_date.date().toString("yyyy-MM-dd"),
+                    )
         self.load_active_tab()
         self.sync_changes()
 
@@ -1268,7 +1460,8 @@ class MainWindow(QMainWindow):
         """
         selected_parts = self.get_all_selected_parts(tab)
         for selected_part in selected_parts:
-            self.active_json_file.remove_object_item(self.category, selected_part)
+            with contextlib.suppress(KeyError):
+                self.active_json_file.remove_object_item(self.category, selected_part)
         self.load_active_tab()
         self.sync_changes()
 
@@ -1328,22 +1521,7 @@ class MainWindow(QMainWindow):
         if are_you_sure_dialog in [DialogButtons.no, DialogButtons.cancel]:
             return
         self.play_celebrate_sound()
-        history_file = HistoryFile()
-        history_file.add_new_to_category(
-            date=datetime.now().strftime("%B %d %A %Y %I:%M:%S %p"),
-            description=f"Removed a multiple of {self.spinBox_quantity.value()} quantities from each item in {self.category}",
-        )
 
-        if self.spinBox_quantity.value() > 1:
-            history_file.add_new_to_category(
-                date=datetime.now().strftime("%B %d %A %Y %I:%M:%S %p"),
-                description=f"Removed a multiple of {self.spinBox_quantity.value()} quantities from each item in {self.category}",
-            )
-        elif self.spinBox_quantity.value() == 1:
-            history_file.add_new_to_category(
-                date=datetime.now().strftime("%B %d %A %Y %I:%M:%S %p"),
-                description=f"Removed a multiple of {self.spinBox_quantity.value()} quantity from each item in {self.category}",
-            )
 
         self.status_button.setText("This may take awhile, please wait...", "yellow")
         self.radioButton_category.setEnabled(False)
@@ -1359,11 +1537,27 @@ class MainWindow(QMainWindow):
             self.category,
             self.spinBox_quantity.value(),
         )
-        self.generate_workorder(work_order={self.category: self.spinBox_quantity.value()})
+        with contextlib.suppress(AttributeError):
+            self.generate_workorder(work_order={self.category: self.spinBox_quantity.value()})
         remove_quantity_thread.signal.connect(self.remove_quantity_thread_response)
         self.threads.append(remove_quantity_thread)
         remove_quantity_thread.start()
 
+        history_file = HistoryFile()
+        history_file.add_new_to_category(
+            date=datetime.now().strftime("%B %d %A %Y %I:%M:%S %p"),
+            description=f"Removed a multiple of {self.spinBox_quantity.value()} quantities from each item in {self.category}",
+        )
+        if self.spinBox_quantity.value() > 1:
+            history_file.add_new_to_category(
+                date=datetime.now().strftime("%B %d %A %Y %I:%M:%S %p"),
+                description=f"Removed a multiple of {self.spinBox_quantity.value()} quantities from each item in {self.category}",
+            )
+        elif self.spinBox_quantity.value() == 1:
+            history_file.add_new_to_category(
+                date=datetime.now().strftime("%B %d %A %Y %I:%M:%S %p"),
+                description=f"Removed a multiple of {self.spinBox_quantity.value()} quantity from each item in {self.category}",
+            )
         self.spinBox_quantity.setValue(0)
 
     # WORKSPACE
@@ -1379,10 +1573,16 @@ class MainWindow(QMainWindow):
         group_name_date_created = datetime.now()
         admin_workspace.load_data()
         for assembly, quantity in work_order.items():
-            job_name = assembly.name
+            try:
+                job_name = assembly.name
+            except AttributeError:
+                job_name = assembly
             for _ in range(quantity):
                 user_workspace.load_data()
-                new_assembly = assembly.copy_assembly()
+                try:
+                    new_assembly = assembly.copy_assembly()
+                except AttributeError:
+                    continue
                 # new_assembly: Assembly = admin_workspace.copy(job_name)
                 if new_assembly is None:
                     continue
@@ -1469,7 +1669,7 @@ class MainWindow(QMainWindow):
         self.pushButton_add_quantity.setEnabled(False)
         self.pushButton_remove_quantity.setEnabled(False)
         # self.listWidget_item_changed()
-        self.listWidget_itemnames.setCurrentRow(self.last_item_selected_index)
+        # self.listWidget_itemnames.setCurrentRow(self.last_item_selected_index)
         self.update_category_total_stock_costs()
         self.sort_inventory()
         self.sync_changes()
@@ -1494,7 +1694,35 @@ class MainWindow(QMainWindow):
         )
         if are_you_sure_dialog in [DialogButtons.no, DialogButtons.cancel]:
             return
+        logging.error(f"Remove quantity. 1-removing items from {self.category}")
         for item_name in selected_items:
+            part_number: str = self.get_value_from_category(item_name, "part_number")
+            current_quantity: int = self.get_value_from_category(item_name, "current_quantity")
+            inventory.change_object_in_object_item(self.category, item_name, "current_quantity", current_quantity - self.spinBox_quantity.value())
+            inventory.change_object_in_object_item(
+                self.category,
+                item_name,
+                "latest_change_current_quantity",
+                f"{self.username} - Changed from {current_quantity} to {current_quantity - self.spinBox_quantity.value()} at {datetime.now().strftime('%B %d %A %Y %I-%M-%S %p')}",
+            )
+            logging.error("Remove quantity. 1-removing items from inventory")
+            for category in inventory.get_keys():
+                if category == self.category:
+                    continue
+                for item in list(data[category].keys()):
+                    if part_number == data[category][item]["part_number"]:
+                        logging.error(f"Remove quantity. 1-match with {category}-{part_number}")
+                        current_quantity: int = data[category][item]["current_quantity"]
+                        logging.error(f"Remove quantity. 1-removing quantity from {category}-{part_number}")
+                        inventory.change_object_in_object_item(category, item, "current_quantity", current_quantity - self.spinBox_quantity.value())
+                        inventory.change_object_in_object_item(
+                            category,
+                            item,
+                            "latest_change_current_quantity",
+                            f"{self.username} - Changed from {current_quantity} to {current_quantity - self.spinBox_quantity.value()} at {datetime.now().strftime('%B %d %A %Y %I-%M-%S %p')}",
+                        )
+                        logging.error(f"Remove quantity. 1-quantity removed from {category}-{part_number}")
+            logging.error(f"Remove quantity. 1-creating history")
             history_file = HistoryFile()
             if self.spinBox_quantity.value() > 1:
                 history_file.add_new_to_single_item(
@@ -1507,35 +1735,16 @@ class MainWindow(QMainWindow):
                     description=f'Removed {self.spinBox_quantity.value()} quantity from "{item_name}"',
                 )
 
-            part_number: str = self.get_value_from_category(item_name, "part_number")
-            current_quantity: int = self.get_value_from_category(item_name, "current_quantity")
-            inventory.change_object_in_object_item(self.category, item_name, "current_quantity", current_quantity - self.spinBox_quantity.value())
-            inventory.change_object_in_object_item(
-                self.category,
-                item_name,
-                "latest_change_current_quantity",
-                f"{self.username} - Changed from {current_quantity} to {current_quantity - self.spinBox_quantity.value()} at {datetime.now().strftime('%B %d %A %Y %I-%M-%S %p')}",
-            )
-            for category in inventory.get_keys():
-                if category == self.category:
-                    continue
-                for item in list(data[category].keys()):
-                    if part_number == data[category][item]["part_number"]:
-                        current_quantity: int = data[category][item]["current_quantity"]
-                        inventory.change_object_in_object_item(category, item, "current_quantity", current_quantity - self.spinBox_quantity.value())
-                        inventory.change_object_in_object_item(
-                            category,
-                            item,
-                            "latest_change_current_quantity",
-                            f"{self.username} - Changed from {current_quantity} to {current_quantity - self.spinBox_quantity.value()} at {datetime.now().strftime('%B %d %A %Y %I-%M-%S %p')}",
-                        )
+            logging.error("Remove quantity. 1-history made")
         self.pushButton_add_quantity.setEnabled(False)
         self.pushButton_remove_quantity.setEnabled(False)
         # self.listWidget_item_changed()
-        self.listWidget_itemnames.setCurrentRow(self.last_item_selected_index)
+        # self.last_item_selected_index= 200
+        # self.listWidget_itemnames.setCurrentRow(self.last_item_selected_index)
         self.update_category_total_stock_costs()
         self.sort_inventory()
         self.sync_changes()
+        logging.error("Remove quantity. Donee")
 
     def listWidget_item_changed(self) -> None:
         """
@@ -1552,10 +1761,12 @@ class MainWindow(QMainWindow):
             quantity: int = self.get_value_from_category(self.last_item_selected_name, "current_quantity")
         except (KeyError, IndexError, TypeError):
             return
+        # it brings incorrect results
         try:
             self.last_item_selected_index = list(list(inventory.get_data()[self.category].keys())).index(self.last_item_selected_name)
         except (ValueError, KeyError):
             return
+        # self.last_item_selected_index=200
         table_widget: CustomTableWidget = self.tabs[self.category]
         table_widget.scrollTo(table_widget.model().index(self.last_item_selected_index, 0))
         table_widget.selectRow(self.last_item_selected_index)
@@ -2248,6 +2459,7 @@ class MainWindow(QMainWindow):
         """
         search_input: str = self.lineEdit_search_items.text()
         category_data = inventory.get_value(item_name=self.category)
+        self.listWidget_itemnames.disconnect()
         self.listWidget_itemnames.clear()
         self.pushButton_add_quantity.setEnabled(False)
         self.pushButton_remove_quantity.setEnabled(False)
@@ -2255,7 +2467,9 @@ class MainWindow(QMainWindow):
             for item in natsorted(list(category_data.keys())):
                 if search_input.lower() in item.lower() or search_input.lower() in category_data[item]["part_number"].lower():
                     self.listWidget_itemnames.addItem(item)
+            self.listWidget_itemnames.itemSelectionChanged.connect(self.listWidget_item_changed)
         except (AttributeError, TypeError):
+            self.listWidget_itemnames.itemSelectionChanged.connect(self.listWidget_item_changed)
             return
 
     # NOTE EDIT INVENTORY
@@ -2524,11 +2738,16 @@ class MainWindow(QMainWindow):
                 return
             machine_time: float = self.quote_nest_information[nest_name][item_name]["machine_time"]
             material: str = self.quote_nest_information[nest_name][item_name]["material"]
-            price_per_pound: float = price_of_steel_inventory.get_data()["Price Per Pound"][material]["price"]
-            # The above code is declaring a variable named "cost_for_laser" of type float and
-            # assigning it the value of "self.doubleSpinBox_cost_for_laser".
-            cost_for_laser: float = self.doubleSpinBox_cost_for_laser.value()
-            COGS: float = float((machine_time * (cost_for_laser / 60)) + (weight * price_per_pound))
+            if material == 'Null': # Its from Edit Inventory
+                COGS: float = self.quote_nest_information[nest_name][item_name]["price"]
+                if isinstance(COGS, str):
+                    COGS = float(COGS.replace('$',''))
+            else:
+                price_per_pound: float = price_of_steel_inventory.get_data()["Price Per Pound"][material]["price"]
+                # The above code is declaring a variable named "cost_for_laser" of type float and
+                # assigning it the value of "self.doubleSpinBox_cost_for_laser".
+                cost_for_laser: float = self.doubleSpinBox_cost_for_laser.value()
+                COGS: float = float((machine_time * (cost_for_laser / 60)) + (weight * price_per_pound))
 
             unit_price = (
                 calculate_overhead(COGS, profit_margin / 100, overhead / 100)
@@ -2585,9 +2804,15 @@ class MainWindow(QMainWindow):
                 return
             machine_time: float = self.quote_nest_information[nest_name][item_name]["machine_time"]
             material: str = self.quote_nest_information[nest_name][item_name]["material"]
-            price_per_pound: float = price_of_steel_inventory.get_data()["Price Per Pound"][material]["price"]
-            cost_for_laser: float = self.doubleSpinBox_cost_for_laser.value()
-            COGS: float = float((machine_time * (cost_for_laser / 60)) + (weight * price_per_pound))
+            if material == 'Null': # Its from Edit Inventory
+                price_per_pound = 0.0
+                COGS: float = self.quote_nest_information[nest_name][item_name]["price"]
+                if isinstance(COGS, str):
+                    COGS = float(COGS.replace('$',''))
+            else:
+                price_per_pound: float = price_of_steel_inventory.get_data()["Price Per Pound"][material]["price"]
+                cost_for_laser: float = self.doubleSpinBox_cost_for_laser.value()
+                COGS: float = float((machine_time * (cost_for_laser / 60)) + (weight * price_per_pound))
 
             unit_price = (
                 calculate_overhead(COGS, self.spinBox_profit_margin_items.value() / 100, self.spinBox_overhead_items.value() / 100)
@@ -2685,6 +2910,8 @@ class MainWindow(QMainWindow):
         """
         gauge = self.quote_nest_information[nest_name]['gauge']
         material = self.quote_nest_information[nest_name]['material']
+        if gauge == 'Null' or material == "Null":
+            return 0.0
         sheet_dim_x, sheet_dim_y = self.quote_nest_information[nest_name]['sheet_dim'].replace(' x ', 'x').split('x')
         price_per_pound: float = price_of_steel_inventory.get_data()["Price Per Pound"][material]["price"]
         try:
@@ -2789,7 +3016,6 @@ class MainWindow(QMainWindow):
             sorting_method = "priority"
         elif self.actionAlphabatical.isChecked():
             sorting_method = "alphabet"
-
         self.active_json_file.sort(self.category, sorting_method, not self.actionAscending.isChecked())
         self.sync_changes()
         self.load_active_tab()
@@ -2849,7 +3075,7 @@ class MainWindow(QMainWindow):
           The value of the key in the item_name dictionary.
         """
         try:
-            return self.active_json_file.get_data()[self.category][item_name][key]
+            return self.active_json_file.data[self.category][item_name][key]
         except KeyError:
             return "No changes yet." if "latest" in key else None
 
@@ -3583,8 +3809,6 @@ class MainWindow(QMainWindow):
           A dictionary containing information about quoted parts list.
         """
         batch_data = {}
-        from rich import print
-        print(self.quote_nest_information)
         for nest_name in list(self.quote_nest_information.keys()):
             if nest_name == 'Components':
                 continue
@@ -3598,6 +3822,34 @@ class MainWindow(QMainWindow):
                         batch_data[item]['price'] = f'${batch_data[item]["quoting_price"]:,.2f}'
                     except KeyError:
                         batch_data[item] = self.quote_nest_information[nest_name][item]
+        batch_data['Components'] = self.quote_components_information
+        for component in list(batch_data['Components'].keys()):
+            unit_price = batch_data['Components'][component]['unit_price']
+            quantity = batch_data['Components'][component]['quantity']
+            batch_data['Components'][component]['quoting_price'] = calculate_overhead(unit_price*quantity, self.spinBox_profit_margin_items.value() / 100, self.spinBox_overhead_items.value() / 100)
+        return batch_data
+
+    # OMNIGEN
+    def _get_grouped_quoted_parts_list_information(self) -> dict:
+        """
+        This function calculates the quoting unit price and quoting price for each item in a batch based
+        on its weight, quantity, machine time, material, and overhead costs.
+
+        Returns:
+          A dictionary containing information about quoted parts list.
+        """
+        batch_data = {}
+        for nest_name in list(self.quote_nest_information.keys()):
+            if nest_name == 'Components':
+                continue
+            if nest_name[0] == "_":
+                batch_data[nest_name] = self.quote_nest_information[nest_name]
+            else:
+                batch_data[nest_name] = {}
+                for item in self.quote_nest_information[nest_name]:
+                    batch_data[nest_name][item] = self.quote_nest_information[nest_name][item]
+                    batch_data[nest_name][item]['quoting_price'] = batch_data[nest_name][item]["quantity"] * batch_data[nest_name][item]["quoting_unit_price"]
+                    batch_data[nest_name][item]['price'] = f'${batch_data[nest_name][item]["quoting_price"]:,.2f}'
         batch_data['Components'] = self.quote_components_information
         for component in list(batch_data['Components'].keys()):
             unit_price = batch_data['Components'][component]['unit_price']
@@ -3627,7 +3879,7 @@ class MainWindow(QMainWindow):
                     action = select_item_dialog.get_selected_item()
                 except AttributeError:
                     return
-                should_generate_quote, should_generate_workorder, should_update_inventory, should_generate_packing_slip = action
+                should_generate_quote, should_generate_workorder, should_update_inventory, should_generate_packing_slip, should_group_items = action
                 if should_generate_packing_slip:
                     self.get_order_number_thread()
                     loop = QEventLoop()
@@ -3636,7 +3888,11 @@ class MainWindow(QMainWindow):
                     self.set_order_number_thread(self.order_number + 1)
 
                 self.save_quote_table_values()
-                batch_data = self._get_quoted_parts_list_information()
+                if should_group_items:
+                    batch_data = self._get_grouped_quoted_parts_list_information()
+                else:
+                    batch_data = self._get_quoted_parts_list_information()
+                # batch_data = self.quote_nest_information
                 settings_file.load_data()
 
                 option_string: str = ""
@@ -3650,7 +3906,7 @@ class MainWindow(QMainWindow):
                         path_to_save_quotes = config.get("GLOBAL VARIABLES", "path_to_save_quotes")
                         if should_generate_quote:
                             generate_quote = GenerateQuote(
-                                (True, False, should_update_inventory, False),
+                                (True, False, should_update_inventory, False, should_group_items),
                                 file_name,
                                 batch_data,
                                 self.order_number,
@@ -3659,7 +3915,7 @@ class MainWindow(QMainWindow):
                                 self.open_folder(f"{path_to_save_quotes}/{file_name}.html")
                         elif should_generate_packing_slip:
                             generate_quote = GenerateQuote(
-                                (False, False, should_update_inventory, True),
+                                (False, False, should_update_inventory, True, should_group_items),
                                 file_name,
                                 batch_data,
                                 self.order_number,
@@ -3669,7 +3925,7 @@ class MainWindow(QMainWindow):
 
                     if should_generate_workorder or should_update_inventory:
                         file_name: str = f'Workorder - {datetime.now().strftime("%A, %d %B %Y %H-%M-%S-%f")}'
-                        generate_workorder = GenerateQuote((False, True, should_update_inventory, False), file_name, batch_data, self.order_number)
+                        generate_workorder = GenerateQuote((False, True, should_update_inventory, False, should_group_items), file_name, batch_data, self.order_number)
                 except FileNotFoundError:
                     self.show_error_dialog(
                         "File not found, aborted",
@@ -3866,6 +4122,70 @@ class MainWindow(QMainWindow):
                 s = workorder.get_workorder()
                 self.generate_workorder(work_order=workorder.get_workorder())
 
+    # WORKSPACE
+    def generate_workspace_quote_dialog(self, job_names: list[str] = None) -> None:
+        quote = GenerateWorkspaceQuoteDialog(
+            self,
+            title="Generate Quote",
+            message="Set quantity for selected jobs",
+            button_names=DialogButtons.generate_cancel,
+            job_names=job_names,
+        )
+        if quote.exec():
+            response = quote.get_response()
+            if response == DialogButtons.generate:
+                self.quote_nest_information.clear()
+                for assembly, quantity in quote.get_workorder().items():
+                    self.quote_nest_information.setdefault(f"_/{assembly.name}.pdf", {
+                        "quantity_multiplier": quantity,  # Sheet count
+                        "gauge": "Null",
+                        "material": "Null",
+                        "sheet_dim": "0.000x0.000",
+                        "scrap_percentage": 0.0,
+                        "single_sheet_machining_time": 0.0,
+                        "machining_time": 0.0
+                    })
+                    self.quote_nest_information.setdefault(f"{assembly.name}.pdf", {})
+                    for item in assembly.items:
+                        part_name = item.name
+                        self.quote_nest_information[f"{assembly.name}.pdf"].setdefault(part_name, {})
+                        for category in parts_in_inventory.data.keys():
+                            for part in parts_in_inventory.data[category].keys():
+                                if part == part_name:
+                                    self.quote_nest_information[f"{assembly.name}.pdf"][part_name] = parts_in_inventory.get_data()[category].get(part_name)
+                        if not self.quote_nest_information[f"{assembly.name}.pdf"][part_name]:
+                            for category in inventory.data.keys():
+                                for part in inventory.data[category].keys():
+                                    if part == part_name:
+                                        self.quote_nest_information[f"{assembly.name}.pdf"][part_name] = inventory.get_data()[category].get(part_name)
+                        self.quote_nest_information[f"{assembly.name}.pdf"][part_name]["quantity"] = item.get_value('parts_per')
+                        try:
+                            self.quote_nest_information[f"{assembly.name}.pdf"][part_name]["notes"] += f"\n{item.get_value('notes')}"
+                        except KeyError:
+                            self.quote_nest_information[f"{assembly.name}.pdf"][part_name].setdefault("notes", item.get_value('notes'))
+                        self.quote_nest_information[f"{assembly.name}.pdf"][part_name].setdefault("flow_tag", item.get_value('flow_tag'))
+                        self.quote_nest_information[f"{assembly.name}.pdf"][part_name].setdefault("machine_time", 0)
+                        self.quote_nest_information[f"{assembly.name}.pdf"][part_name].setdefault("weight", 0)
+                        self.quote_nest_information[f"{assembly.name}.pdf"][part_name].setdefault("part_number", 0)
+                        self.quote_nest_information[f"{assembly.name}.pdf"][part_name].setdefault("image_index", part_name)
+                        self.quote_nest_information[f"{assembly.name}.pdf"][part_name].setdefault("surface_area", 0)
+                        self.quote_nest_information[f"{assembly.name}.pdf"][part_name].setdefault("cutting_length", 0)
+                        self.quote_nest_information[f"{assembly.name}.pdf"][part_name]["file_name"] = f"{assembly.name}.pdf"
+                        self.quote_nest_information[f"{assembly.name}.pdf"][part_name].setdefault("piercing_time", 0)
+                        self.quote_nest_information[f"{assembly.name}.pdf"][part_name].setdefault("piercing_points", 0)
+                        self.quote_nest_information[f"{assembly.name}.pdf"][part_name].setdefault("gauge", "Null")
+                        self.quote_nest_information[f"{assembly.name}.pdf"][part_name].setdefault("material", "Null")
+                        self.quote_nest_information[f"{assembly.name}.pdf"][part_name].setdefault("recut", False)
+                        self.quote_nest_information[f"{assembly.name}.pdf"][part_name].setdefault("shelf_number", "")
+                        self.quote_nest_information[f"{assembly.name}.pdf"][part_name].setdefault("sheet_dim", "Null")
+                        self.quote_nest_information[f"{assembly.name}.pdf"][part_name].setdefault("part_dim", "Null")
+                        self.quote_nest_information[f"{assembly.name}.pdf"][part_name].setdefault("geofile_name", 'Null')
+                        sorted_keys = natsorted(self.quote_nest_information.keys())
+                        sorted_dict = {key: self.quote_nest_information[key] for key in sorted_keys}
+                        self.quote_nest_information = sorted_dict
+                    self.download_required_images(self.quote_nest_information[f"{assembly.name}.pdf"])
+                self.tabWidget.setCurrentIndex(self.get_menu_tab_order().index("OmniGen"))
+                self.load_nests()
     # * /\ Dialogs /\
 
     # * \/ INVENTORY TABLE CHANGES \/
@@ -4182,9 +4502,9 @@ class MainWindow(QMainWindow):
             return
 
         # No idea what this is supposed to do, but im too scared to delete it - Jared
-        JsonFile(file_name=f"data/{self.inventory_file_name}")
-        JsonFile(file_name=f"data/{self.inventory_file_name} - Price of Steel")
-        JsonFile(file_name=f"data/{self.inventory_file_name} - Parts in Inventory")
+        # JsonFile(file_name=f"data/{self.inventory_file_name}")
+        # JsonFile(file_name=f"data/{self.inventory_file_name} - Price of Steel")
+        # JsonFile(file_name=f"data/{self.inventory_file_name} - Parts in Inventory")
         workspace_tags.load_data()
         admin_workspace.load_data()
         user_workspace.load_data()
@@ -4740,7 +5060,7 @@ class MainWindow(QMainWindow):
                     # ORDER STATUS
                     order_status_button = OrderStatusButton()
                     order_status_button.setChecked(is_order_pending)
-                    order_status_button.clicked.connect(partial(self.order_status_button, item, order_status_button, row_index))
+                    order_status_button.clicked.connect(partial(self.order_status_button_sheets_in_inventory, item, order_status_button, row_index))
                     order_status_button.setStyleSheet("margin-top: 3%; margin-bottom: 3%; margin-left: 5%; margin-right: 5%;")
                     tab.setCellWidget(row_index, col_index, order_status_button)
                     col_index += 1
@@ -4754,7 +5074,7 @@ class MainWindow(QMainWindow):
                             date = QDate(year, month, day)
                             arrival_date.setDate(date)
                             arrival_date.setCalendarPopup(True)
-                            arrival_date.dateChanged.connect(partial(self.arrival_date_change, item, arrival_date))
+                            arrival_date.dateChanged.connect(partial(self.arrival_date_change_sheets_in_inventory, item, arrival_date))
                             tab.setCellWidget(row_index, col_index, arrival_date)
                         order_pending_date: str = self.get_value_from_category(item_name=item, key="order_pending_date")
                         order_status_button.setToolTip(f"Order Pending was set at {order_pending_date} for {order_quantity} sheets")
@@ -4841,6 +5161,8 @@ class MainWindow(QMainWindow):
             "Priority",
             "Shelf #",
             "Notes",
+            "Order Status",
+            "Set Arrival Time",
             "PO",
             "DEL",
         ]
@@ -4871,13 +5193,16 @@ class MainWindow(QMainWindow):
             total_cost_in_stock: float = current_quantity * price * exchange_rate
             total_cost_in_stock = max(total_cost_in_stock, 0)
             total_unit_cost: float = unit_quantity * price * exchange_rate
+            is_order_pending = self.get_value_from_category(item_name=item, key="is_order_pending")
+            if is_order_pending is None:
+                is_order_pending = False
             self.get_value_from_category(item_name=item, key="latest_change_part_number")
-            latest_change_unit_quantity: str = self.get_value_from_category(item_name=item, key="latest_change_unit_quantity")
+            # latest_change_unit_quantity: str = self.get_value_from_category(item_name=item, key="latest_change_unit_quantity")
             latest_change_current_quantity = self.get_value_from_category(item_name=item, key="latest_change_current_quantity")
             latest_change_price: str = self.get_value_from_category(item_name=item, key="latest_change_price")
-            latest_change_use_exchange_rate: str = self.get_value_from_category(item_name=item, key="latest_change_use_exchange_rate")
-            latest_change_priority: str = self.get_value_from_category(item_name=item, key="latest_change_priority")
-            latest_change_notes: str = self.get_value_from_category(item_name=item, key="latest_change_notes")
+            # latest_change_use_exchange_rate: str = self.get_value_from_category(item_name=item, key="latest_change_use_exchange_rate")
+            # latest_change_priority: str = self.get_value_from_category(item_name=item, key="latest_change_priority")
+            # latest_change_notes: str = self.get_value_from_category(item_name=item, key="latest_change_notes")
             self.get_value_from_category(item_name=item, key="latest_change_name")
 
             red_limit: float = self.get_value_from_category(item_name=item, key="red_limit")
@@ -5003,6 +5328,29 @@ class MainWindow(QMainWindow):
             tab.setCellWidget(row_index, col_index, text_notes)
             col_index += 1
 
+            # ORDER STATUS
+            order_status_button = OrderStatusButton()
+            order_status_button.setChecked(is_order_pending)
+            order_status_button.clicked.connect(partial(self.order_status_button_edit_inventory, item, order_status_button, row_index))
+            order_status_button.setStyleSheet("margin-top: 3%; margin-bottom: 3%; margin-left: 5%; margin-right: 5%;")
+            tab.setCellWidget(row_index, col_index, order_status_button)
+            col_index += 1
+            if is_order_pending:
+                with contextlib.suppress(AttributeError):
+                    arrival_date = QDateEdit()
+                    expected_arrival_time: str = self.get_value_from_category(item_name=item, key="expected_arrival_time")
+                    order_quantity: float = self.get_value_from_category(item_name=item, key="order_pending_quantity")
+                    order_status_button.setText(f"Order Pending ({int(order_quantity)})")
+                    year, month, day = map(int, expected_arrival_time.split("-"))
+                    date = QDate(year, month, day)
+                    arrival_date.setDate(date)
+                    arrival_date.setCalendarPopup(True)
+                    arrival_date.dateChanged.connect(partial(self.arrival_date_change_edit_inventory, item, arrival_date))
+                    tab.setCellWidget(row_index, col_index, arrival_date)
+                order_pending_date: str = self.get_value_from_category(item_name=item, key="order_pending_date")
+                order_status_button.setToolTip(f"Order Pending was set at {order_pending_date} for {order_quantity} items")
+
+            col_index += 1
             # PURCHASE ORDER
             btn_po = POPushButton(parent=self)
             btn_po.setMenu(po_menu)
@@ -5025,6 +5373,8 @@ class MainWindow(QMainWindow):
                 self.set_table_row_color(tab, row_index, "#3F1E25")
             elif current_quantity <= yellow_limit:
                 self.set_table_row_color(tab, row_index, "#413C28")
+            if is_order_pending:
+                self.set_table_row_color(tab, row_index, "#29422c")
 
         self.update_stock_costs()
         # set context menu
@@ -5047,10 +5397,10 @@ class MainWindow(QMainWindow):
         tab.setEnabled(True)
         tab.blockSignals(False)
         with contextlib.suppress(Exception):
-            self.last_item_selected_index = list(category_data.keys()).index(self.last_item_selected_name)
+            # self.last_item_selected_index = list(category_data.keys()).index(self.last_item_selected_name)
             tab.scrollTo(tab.model().index(self.last_item_selected_index, 0))
             tab.selectRow(self.last_item_selected_index)
-            self.listWidget_itemnames.setCurrentRow(self.last_item_selected_index)
+            # self.listWidget_itemnames.setCurrentRow(self.last_item_selected_index)
         QApplication.restoreOverrideCursor()
 
     # STAGING/EDITING
@@ -5222,6 +5572,7 @@ class MainWindow(QMainWindow):
             "Parts Per",
             "Flow Tag",
             "Expected time to complete",
+            "Notes",
             "DEL",
         ]
         #     table.setStyleSheet(
@@ -5326,6 +5677,11 @@ class MainWindow(QMainWindow):
             item.set_value(key="timers", value=timers)
             self.active_workspace_file.save()
             add_timers(table, item, timer_layout)
+            self.sync_changes()
+
+        def notes_change(table: CustomTableWidget, notes: NotesPlainTextEdit, item: Item) -> None:
+            item.set_value(key="notes", value=notes.toPlainText())
+            self.active_workspace_file.save()
             self.sync_changes()
 
         def add_item(row_index: int, item: Item):
@@ -5433,6 +5789,11 @@ class MainWindow(QMainWindow):
             col_index += 1
             table.setCellWidget(row_index, col_index, timer_widget)
             col_index += 1
+            notes = NotesPlainTextEdit(self, item.data['notes'], "Add notes...")
+            notes.setFixedHeight(50)
+            notes.textChanged.connect(partial(notes_change, table, notes, item))
+            table.setCellWidget(row_index, col_index, notes)
+            col_index += 1
             delete_button = DeletePushButton(
                 self,
                 tool_tip=f"Delete {item.name} forever from {assembly.name}",
@@ -5450,14 +5811,27 @@ class MainWindow(QMainWindow):
             row_index += 1
 
         def add_new_item():
+            input_dialog = AddWorkspaceItem(
+                title="Add Workspace Item", message="Enter Item Name",
+            )
+
+            if input_dialog.exec():
+                response = input_dialog.get_response()
+                if response == DialogButtons.add:
+                    item_name = input_dialog.get_name()
+                    material = input_dialog.material
+                    thickness = input_dialog.thickness
+                else:
+                    return
             table.blockSignals(True)
+
             if self.category == "Staging":
                 item_data = {
                     "Bending Files": [],
                     "Welding Files": [],
                     "CNC/Milling Files": [],
-                    "thickness": "",
-                    "material": "",
+                    "thickness": thickness,
+                    "material": material,
                     "paint_type": None,
                     "paint_color": None,
                     "parts_per": 0,
@@ -5466,6 +5840,7 @@ class MainWindow(QMainWindow):
                     "customer": "",
                     "ship_to": "",
                     "show": True,
+                    "notes": "",
                 }
             else:  # EDITING
                 date_created: str = QDate().currentDate().toString("yyyy-M-d")
@@ -5473,8 +5848,8 @@ class MainWindow(QMainWindow):
                     "Bending Files": [],
                     "Welding Files": [],
                     "CNC/Milling Files": [],
-                    "thickness": "",
-                    "material": "",
+                    "thickness": thickness,
+                    "material": material,
                     "paint_type": None,
                     "paint_color": None,
                     "parts_per": 0,
@@ -5483,6 +5858,7 @@ class MainWindow(QMainWindow):
                     "customer": "",
                     "ship_to": "",
                     "show": True,
+                    "notes": "",
                     # New stuff
                     "recoat": False,
                     "recut": False,
@@ -5493,7 +5869,7 @@ class MainWindow(QMainWindow):
                     "ending_date": date_created,
                     "status": None,
                 }
-            item = Item(name="", data=item_data)
+            item = Item(name=item_name, data=item_data)
             add_item(table.rowCount() - 1, item)
             assembly.add_item(item)
             self.active_workspace_file.save()
@@ -8104,6 +8480,7 @@ class MainWindow(QMainWindow):
             if self.category == "Staging":  # Staging
                 self.pushButton_add_job.setHidden(False)
                 self.pushButton_generate_workorder.setHidden(False)
+                self.pushButton_generate_workspace_quote.setHidden(False)
                 self.pushButton_show_item_summary.setEnabled(True)
                 self.pushButton_show_sub_assembly.setEnabled(True)
             else:  # Editing
@@ -8111,6 +8488,7 @@ class MainWindow(QMainWindow):
                 self.pushButton_use_filter.setChecked(False)
                 self.pushButton_add_job.setHidden(True)
                 self.pushButton_generate_workorder.setHidden(True)
+                self.pushButton_generate_workspace_quote.setHidden(True)
                 self.pushButton_show_item_summary.setEnabled(False)
                 self.pushButton_show_sub_assembly.setEnabled(False)
             self.pushButton_use_filter.setEnabled(True)
@@ -8127,6 +8505,7 @@ class MainWindow(QMainWindow):
             self.workspace_tables.clear()
             self.pushButton_add_job.setHidden(True)
             self.pushButton_generate_workorder.setHidden(True)
+            self.pushButton_generate_workspace_quote.setHidden(True)
             self.pushButton_use_filter.setEnabled(False)
             self.pushButton_use_filter.setChecked(False)
             self.pushButton_show_item_summary.setEnabled(False)
@@ -8142,6 +8521,7 @@ class MainWindow(QMainWindow):
             self.workspace_tables.clear()
             self.pushButton_add_job.setHidden(True)
             self.pushButton_generate_workorder.setHidden(True)
+            self.pushButton_generate_workspace_quote.setHidden(True)
             self.pushButton_use_filter.setEnabled(False)
             self.pushButton_use_filter.setChecked(True)
             self.pushButton_show_item_summary.setEnabled(True)
@@ -9064,6 +9444,12 @@ class MainWindow(QMainWindow):
         """
         threading.Thread(target=_play_celebrate_sound).start()
 
+    def play_boot_sound(self) -> None:
+        """
+        It starts a new thread that calls the function _play_celebrate_sound
+        """
+        threading.Thread(target=_play_boot_sound).start()
+
     # * /\ External Actions /\
     # * \/ THREADS \/
     def sync_changes(self) -> None:
@@ -9189,10 +9575,13 @@ class MainWindow(QMainWindow):
         """
         if response == "Successfully downloaded":
             self.load_nests()
-            self.status_button.setText(
-                f"Successfully loaded {len(self.get_all_selected_parts(self.tabs[self.category]))} parts",
-                "lime",
-            )
+            with contextlib.suppress(AttributeError):
+                self.status_button.setText(
+                    f"Successfully loaded {len(self.get_all_selected_parts(self.tabs[self.category]))} parts",
+                    "lime",
+                )
+        elif response == "":
+            self.status_button.setText(f"Warning - No images found", "yellow")
         else:
             self.status_button.setText(f"Error - {response}", "red")
 
@@ -9854,5 +10243,5 @@ def main() -> None:
     mainwindow.show()
     app.exec()
 
-
+# cProfile.run('main()')
 main()
