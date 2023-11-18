@@ -184,7 +184,7 @@ __copyright__: str = "Copyright 2022-2023, TheCodingJ's"
 __credits__: list[str] = ["Jared Gross"]
 __license__: str = "MIT"
 __name__: str = "Invigo"
-__version__: str = "v2.2.16"
+__version__: str = "v2.2.17"
 __updated__: str = "2023-08-30 12:32:51"
 __maintainer__: str = "Jared Gross"
 __email__: str = "jared@pinelandfarms.ca"
@@ -2873,7 +2873,7 @@ class MainWindow(QMainWindow):
             if nest_name[0] != "_":
                 continue
             sheet_cost = self.get_sheet_cost(nest_name) * self.quote_nest_information[nest_name]['quantity_multiplier']
-            cutting_cost = self.get_cutting_cost(nest_name) * self.quote_nest_information[nest_name]['quantity_multiplier']
+            cutting_cost = self.get_cutting_cost(nest_name)
             self.sheet_nests_toolbox.setItemText(
                 toolbox_index,
                 f"{self.quote_nest_information[nest_name]['gauge']} {self.quote_nest_information[nest_name]['material']} {self.quote_nest_information[nest_name]['sheet_dim']} - {nest_name.split('/')[-1].replace('.pdf', '')}",
