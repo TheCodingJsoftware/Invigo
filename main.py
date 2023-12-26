@@ -184,7 +184,7 @@ __copyright__: str = "Copyright 2022-2023, TheCodingJ's"
 __credits__: list[str] = ["Jared Gross"]
 __license__: str = "MIT"
 __name__: str = "Invigo"
-__version__: str = "v2.2.17"
+__version__: str = "v2.2.18"
 __updated__: str = "2023-08-30 12:32:51"
 __maintainer__: str = "Jared Gross"
 __email__: str = "jared@pinelandfarms.ca"
@@ -577,13 +577,13 @@ class MainWindow(QMainWindow):
         ]
         self.tableWidget_quote_items.setColumnCount(len(headers))
         self.tableWidget_quote_items.setHorizontalHeaderLabels(headers)
-        self.clear_layout(self.verticalLayout_25)
-        self.verticalLayout_25.addWidget(self.tableWidget_quote_items)
+        self.clear_layout(self.verticalLayout_53)
+        self.verticalLayout_53.addWidget(self.tableWidget_quote_items)
         clear_quote_items_button = QPushButton("Clear All Nests", self)
         clear_quote_items_button.setFixedWidth(150)
         clear_quote_items_button.clicked.connect(self.clear_all_nests)
-        self.verticalLayout_25.addWidget(self.tableWidget_quote_items)
-        self.verticalLayout_25.addWidget(clear_quote_items_button)
+        self.verticalLayout_53.addWidget(self.tableWidget_quote_items)
+        self.verticalLayout_53.addWidget(clear_quote_items_button)
         self.tableWidget_quote_items.cellChanged.connect(self.quote_table_cell_changed)
 
         if self.tableWidget_quote_items.contextMenuPolicy() != Qt.ContextMenuPolicy.CustomContextMenu:
@@ -2136,6 +2136,7 @@ class MainWindow(QMainWindow):
         self.update_quote_price()
         self.update_scrap_percentages()
         self.update_sheet_prices()
+        self.load_nest_summary()
 
     def inventory_cell_changed(self, tab: CustomTableWidget):
         """
@@ -2603,20 +2604,144 @@ class MainWindow(QMainWindow):
                 table.setItem(row_index, j, item)
             item.setForeground(QColor(color))
 
+    # OMNIGEN
+    def _get_item_data(self) -> dict:
+        """
+        The function `_get_item_data` retrieves item data from a table widget and returns it as a
+        dictionary.
+
+        Returns:
+          a dictionary called `item_data`.
+        """
+        self.tableWidget_quote_items.blockSignals(True)
+        nest_name: str = ""
+
+        item_data = {}
+        for row in range(self.tableWidget_quote_items.rowCount()):
+            item_name = self.tableWidget_quote_items.item(row, 1).text()
+            try:
+                quantity = int(self.tableWidget_quote_items.item(row, 4).text())
+            except ValueError:  # A merged cell
+                nest_name = f"{self.tableWidget_quote_items.item(row, 0).text()}.pdf"
+                continue
+            except AttributeError:
+                return
+            bend_cost_item: QTableWidgetItem = self.tableWidget_quote_items.item(row, 7)
+            labor_cost_item: QTableWidgetItem = self.tableWidget_quote_items.item(row, 8)
+            bend_cost = 0.0
+            labor_cost = 0.0
+            try:
+                bend_cost: float = float(bend_cost_item.text().replace("$", "").replace(",", ""))
+                labor_cost: float = float(labor_cost_item.text().replace("$", "").replace(",", ""))
+            except AttributeError:
+                self.tableWidget_quote_items.blockSignals(False)
+                return
+            except ValueError:
+                pass
+            try:
+                weight: float = self.quote_nest_information[nest_name][item_name]["weight"]
+            except KeyError:  # This does something important but I dont know exactly what.
+                self.tableWidget_quote_items.blockSignals(False)
+                return
+            machine_time: float = self.quote_nest_information[nest_name][item_name]["machine_time"]
+            material: str = self.quote_nest_information[nest_name][item_name]["material"]
+            if material == 'Null': # Its from Edit Inventory
+                price_per_pound = 0.0
+                COGS: float = self.quote_nest_information[nest_name][item_name]["price"]
+                if isinstance(COGS, str):
+                    COGS = float(COGS.replace('$',''))
+            else:
+                price_per_pound: float = price_of_steel_inventory.get_data()["Price Per Pound"][material]["price"]
+                cost_for_laser: float = self.doubleSpinBox_cost_for_laser.value()
+                COGS: float = float((machine_time * (cost_for_laser / 60)) + (weight * price_per_pound))
+            item_data.setdefault(item_name, {"bend_cost": 0.0, "labor_cost": 0.0, "COGS": 0.0, "quantity": 0})
+            item_data[item_name]['bend_cost'] = bend_cost
+            item_data[item_name]['labor_cost'] = labor_cost
+            item_data[item_name]['COGS'] = COGS
+            item_data[item_name]['quantity'] += quantity
+        self.tableWidget_quote_items.blockSignals(False)
+        return item_data
+
     def match_item_to_sheet_price(self) -> None:
+        """
+        The function `match_item_to_sheet_price` adjusts the prices of items to match a target sheet
+        price and updates the corresponding values in a table.
+
+        Returns:
+          The function does not have a return statement, so it does not return any value.
+        """
         # changing item price to match sheet price
         target_value: float = float(self.label_total_sheet_cost.text().replace('Total Cost for Sheets: $', '').replace(',', ''))
         best_difference = float('inf')
-        best_profit_margin_index = 0
 
-        for profit_margin_index in range(0, 101):
-            new_item_cost: float = self._get_total_item_cost(profit_margin_index, self.spinBox_overhead_items.value())
-            difference = abs(new_item_cost - target_value)
+        def _calculate_total_cost(item_data: dict) -> float:
+            total_item_cost = 0.0
+            for item, item_data in item_data.items():
+                COGS = item_data['COGS']
+                bend_cost = item_data['bend_cost']
+                labor_cost = item_data['labor_cost']
+                quantity = item_data['quantity']
+                unit_price = (
+                    calculate_overhead(COGS, self.spinBox_profit_margin_items.value() / 100, self.spinBox_overhead_items.value() / 100)
+                    + calculate_overhead(bend_cost, self.spinBox_profit_margin_items.value() / 100, self.spinBox_overhead_items.value() / 100)
+                    + calculate_overhead(labor_cost, self.spinBox_profit_margin_items.value() / 100, self.spinBox_overhead_items.value() / 100)
+                )
+                price = unit_price * quantity
+                total_item_cost += price
+            return total_item_cost
 
-            if difference < best_difference:
-                best_difference = difference
-                best_profit_margin_index = profit_margin_index
-        self.spinBox_profit_margin_items.setValue(best_profit_margin_index)
+        def _adjust_item_price(item_data, amount: float):
+            for item, data in item_data.items():
+                data['COGS'] = data['COGS'] + amount
+            return item_data
+
+        item_data = self._get_item_data()
+        new_item_cost = _calculate_total_cost(item_data)
+        difference = round(new_item_cost - target_value, 2)
+        amount_changed: float = 0
+        while abs(difference) > 0.5:
+            if difference > 0: # Need to decrease cost for items
+                item_data = _adjust_item_price(item_data, -(abs(difference)/1000))
+            else: # Need to increase cost for items
+                item_data = _adjust_item_price(item_data, abs(difference)/1000)
+            new_item_cost = _calculate_total_cost(item_data)
+            amount_changed += abs(difference)/1000
+            difference = round(new_item_cost - target_value, 2)
+
+        self.tableWidget_quote_items.blockSignals(True)
+        nest_name = ''
+        for row in range(self.tableWidget_quote_items.rowCount()):
+            item_name = self.tableWidget_quote_items.item(row, 1).text()
+            try:
+                quantity = int(self.tableWidget_quote_items.item(row, 4).text())
+            except ValueError:  # A merged cell
+                nest_name = f"{self.tableWidget_quote_items.item(row, 0).text()}.pdf"
+                continue
+            except AttributeError:
+                self.tableWidget_quote_items.blockSignals(False)
+                return
+            COGS = item_data[item_name]['COGS']
+            bend_cost = item_data[item_name]['bend_cost']
+            labor_cost = item_data[item_name]['labor_cost']
+            unit_price = (
+                calculate_overhead(COGS, self.spinBox_profit_margin_items.value() / 100, self.spinBox_overhead_items.value() / 100)
+                + calculate_overhead(bend_cost, self.spinBox_profit_margin_items.value() / 100, self.spinBox_overhead_items.value() / 100)
+                + calculate_overhead(labor_cost, self.spinBox_profit_margin_items.value() / 100, self.spinBox_overhead_items.value() / 100)
+            )
+            price = unit_price * quantity
+            COGS_item: QTableWidgetItem = self.tableWidget_quote_items.item(row, 6)
+            unit_price_item: QTableWidgetItem = self.tableWidget_quote_items.item(row, 9)
+            price_item: QTableWidgetItem = self.tableWidget_quote_items.item(row, 10)
+            COGS_item.setText(f"${COGS:,.2f}")
+            unit_price_item.setText(f"${unit_price:,.2f}")
+            price_item.setText(f"${price:,.2f}")
+            self.quote_nest_information[nest_name][item_name]["quoting_unit_price"] = unit_price
+            self.quote_nest_information[nest_name][item_name]["quoting_price"] = price
+        self.tableWidget_quote_items.blockSignals(False)
+        self.status_button.setText(f"Each item price changed ${amount_changed:,.2f}", "lime")
+        total_item_cost = self.get_components_prices() + _calculate_total_cost(item_data)
+        self.label_total_item_cost.setText(f"Total Cost for Items: ${total_item_cost:,.2f}")
+        self.tableWidget_quote_items.resizeColumnsToContents()
 
     def match_sheet_to_item_price(self) -> None:
         target_value: float = float(self.label_total_item_cost.text().replace('Total Cost for Items: $', '').replace(',', ''))
@@ -8875,6 +9000,7 @@ class MainWindow(QMainWindow):
                 )
                 tab_index += 1
         self.load_quote_table()
+        self.load_nest_summary()
         # self.sheet_nests_toolbox.open_all()
         self.sheet_nests_toolbox.close_all()
         self.tableWidget_quote_items.setEnabled(True)
@@ -8882,6 +9008,79 @@ class MainWindow(QMainWindow):
         self.tableWidget_quote_items.setColumnWidth(1, 250)
         self.update_quote_price()
         self.update_sheet_prices()
+
+    def load_nest_summary(self) -> None:
+        """
+        The function `load_nest_summary` creates a summary of sheet names, total sheet count, and total
+        cut time and displays them in a grid layout.
+        """
+        self.clear_layout(self.gridLayout_nest_summary)
+        headers = ["Sheet Name", "Total Sheet Count", "Total Cut Time"]
+        for i, header in enumerate(headers):
+            label = QLabel(header, self)
+            self.gridLayout_nest_summary.addWidget(label, 0, i)
+        for i, (sheet_name, sheet_data) in enumerate(self.get_nest_summary().items()):
+            if " x " not in sheet_name:
+                label_sheet_name = QLabel(sheet_name, self)
+            else:
+                label_sheet_name = QLabel(sheet_name, self)
+            label_sheet_name.setTextInteractionFlags(Qt.TextInteractionFlag.TextSelectableByMouse)
+            if " x " not in sheet_name:
+                label_sheet_name.setStyleSheet("border-top: 1px solid grey; border-bottom: 1px solid grey")
+            self.gridLayout_nest_summary.addWidget(label_sheet_name, i+1, 0)
+
+            if " x " not in sheet_name:
+                label_sheet_count = QLabel(f"Total Cut Time:", self)
+            else:
+                label_sheet_count = QLabel(str(sheet_data['total_sheet_count']), self)
+            label_sheet_count.setTextInteractionFlags(Qt.TextInteractionFlag.TextSelectableByMouse)
+            if " x " not in sheet_name:
+                label_sheet_count.setStyleSheet("border-top: 1px solid grey; border-bottom: 1px solid grey")
+            self.gridLayout_nest_summary.addWidget(label_sheet_count, i+1, 1)
+
+            total_seconds = sheet_data['total_seconds']
+            try:
+                hours = int(total_seconds // 3600)
+                minutes = int((total_seconds % 3600) // 60)
+                seconds = int(total_seconds % 60)
+                total_seconds_string = f"{hours:02d}h {minutes:02d}m {seconds:02d}s"
+            except KeyError:
+                total_seconds_string = "Null"
+
+
+            if " x " not in sheet_name:
+                label_sheet_cuttime = QLabel(f"{total_seconds_string}", self)
+            else:
+                label_sheet_cuttime = QLabel(total_seconds_string, self)
+            label_sheet_cuttime.setTextInteractionFlags(Qt.TextInteractionFlag.TextSelectableByMouse)
+            if " x " not in sheet_name:
+                label_sheet_cuttime.setStyleSheet("border-top: 1px solid grey; border-bottom: 1px solid grey")
+            self.gridLayout_nest_summary.addWidget(label_sheet_cuttime, i+1, 2)
+
+    def get_nest_summary(self) -> dict:
+        """
+        The function `get_nest_summary` calculates the total sheet count and total machining time for
+        each nest in a quote, and returns a summary dictionary sorted by material.
+
+        Returns:
+          a sorted dictionary containing the summary of nest information. The keys of the dictionary are
+        the names of the nests, and the values are dictionaries containing the total sheet count and
+        total seconds for each nest. The dictionary is sorted in descending order based on the keys.
+        """
+        summary = {}
+        for nest_name in list(self.quote_nest_information.keys()):
+            if nest_name[0] == "_":
+                name = f"{self.quote_nest_information[nest_name]['material']} {self.quote_nest_information[nest_name]['gauge']} {self.quote_nest_information[nest_name]['sheet_dim']}"
+                summary.setdefault(name, {"total_sheet_count": 0, "total_seconds": 0})
+                summary.setdefault(f"{self.quote_nest_information[nest_name]['material']}",  {"total_sheet_count": 0, "total_seconds": 0})
+                summary[name]['total_sheet_count'] += self.quote_nest_information[nest_name]["quantity_multiplier"]
+                summary[name]['total_seconds'] += float(self.quote_nest_information[nest_name]['single_sheet_machining_time']) * self.quote_nest_information[nest_name]['quantity_multiplier']
+
+                summary[f"{self.quote_nest_information[nest_name]['material']}"]['total_seconds'] += float(self.quote_nest_information[nest_name]['single_sheet_machining_time']) * self.quote_nest_information[nest_name]['quantity_multiplier']
+                summary[f"{self.quote_nest_information[nest_name]['material']}"]['total_sheet_count'] += self.quote_nest_information[nest_name]["quantity_multiplier"]
+        sorted_keys = natsorted(summary.keys(), reverse=True)
+        sorted_dict = {key: summary[key] for key in sorted_keys}
+        return sorted_dict
 
     # OMNIGEN
     def delete_quote_part(self, item_name: str, nest_name: str, refresh_quote_table: bool = True) -> None:

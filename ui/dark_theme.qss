@@ -445,7 +445,7 @@ QToolTip {
 }
 
 QToolBox {
-    background-color: rgb(32, 33, 36);
+    background-color: rgb(22, 23, 26);
     border: none;
     icon-size: 25px;
 }
@@ -455,9 +455,9 @@ QToolBox::tab {
     border: none;
     border-radius: 8px;
     color: rgb(210, 210, 210);
-    padding-bottom: -1px;
+    padding-bottom: 3px;
     margin-top: 3px;
-    margin-bottom: -1px;
+    margin-bottom: 3px;
 }
 
 QToolBox::tab:hover {
@@ -479,7 +479,7 @@ QToolBox::tab:selected {
     border-top-left-radius: 8px;
     border-bottom-left-radius: 0.01em;
     border-bottom-right-radius: 0.01em;
-    margin-bottom: -1px;
+    margin-bottom: 3px;
 }
 
 

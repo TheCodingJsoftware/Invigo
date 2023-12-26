@@ -116,7 +116,7 @@ class GenerateQuote:
             /* Style for the date */
             .date {
                 position: fixed;
-                font-size: 16px;
+                font-size: 10px;
                 top: 0;
                 right: 0;
             }
@@ -136,8 +136,7 @@ class GenerateQuote:
             }
 
             .input-box{
-                height: 60px;
-                font-size: 36px;
+                font-size: 16px;
             }
             .input-container-vertical {
                 background-color: white;
@@ -157,8 +156,9 @@ class GenerateQuote:
                 margin-bottom: 5px;
                 font-weight: bold;
             }
+
             .input-row {
-                display: inline;
+                display: inline-flex;
                 align-items: center;
                 margin-bottom: 10px; /* Add spacing between rows */
             }
@@ -167,7 +167,6 @@ class GenerateQuote:
                 flex: 0 0 auto;
                 margin-right: 10px; /* Add spacing between label and input */
                 width: auto; /* Set a fixed width for the label */
-                font-size: 22px;
             }
 
             th:first-of-type {
@@ -413,7 +412,7 @@ class GenerateQuote:
                     <img class="logo" src="''' + self.program_directory + '''/icons/logo.png" alt="Logo">
                     <div class="date"> ''' + str(datetime.now().strftime("%I:%M:%S %p %A %B %d, %Y")) + '''</div>
                 </div>
-                <div class="input-container-horizontal" style="columns: 1; padding: 0;">
+                <div class="input-container-horizontal" style="columns: 2; padding: 0;">
                     <div class="input-row">
                         <label>Date Shipped:</label>
                         <input type="date" class="input-box" id="date-shipped">
@@ -430,12 +429,11 @@ class GenerateQuote:
                         <label>Date Expected:</label>
                         <input type="date" class="input-box">
                     </div>
-                    <div class="input-row">
-                        <label>Received in good order by:</label>
-                        <input type="text" class="input-box">
-                    </div>
                 </div>
-                <div class="page-break"></div>
+                <div class="input-row">
+                    <label>Received in good order by:</label>
+                    <input type="text" class="input-box">
+                </div>
             </div>
         <details id="sheets-toggle" class="sheets-toggle" ''' + ("open=\"true\"" if title == "Workorder" else "") + '''>
             <summary style="font-size: 24px; text-align: center; margin-top: 20px;">Sheets/Nests/Assemblies:</summary>

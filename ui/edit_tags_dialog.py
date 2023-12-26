@@ -250,7 +250,10 @@ class EditTagsDialog(QDialog):
             for row_count, flow_tag in enumerate(group_data):
 
                 # for flow_tag in workspace_tags.get_value("flow_tags"):
-                widget, layout, button = self.create_flow_tag_layout(flow_tag[0])
+                try:
+                    widget, layout, button = self.create_flow_tag_layout(flow_tag[0])
+                except IndexError:
+                    continue 
                 if len(flow_tag) == 1:
                     button.setHidden(True)
 
