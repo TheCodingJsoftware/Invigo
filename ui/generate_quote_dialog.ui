@@ -568,6 +568,16 @@ QPushButton:pressed#pushButton_packingslip:!checked {
                </property>
               </widget>
              </item>
+             <item row="4" column="1">
+              <widget class="QCheckBox" name="checkBox_remove_sheet_quantities">
+               <property name="text">
+                <string>Remove Sheet Quantities</string>
+               </property>
+               <property name="checked">
+                <bool>true</bool>
+               </property>
+              </widget>
+             </item>
             </layout>
            </item>
           </layout>

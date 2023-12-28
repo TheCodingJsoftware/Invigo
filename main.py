@@ -2,6 +2,7 @@
 import cProfile
 import configparser
 import contextlib
+import copy
 import json
 import logging
 import os
@@ -184,7 +185,7 @@ __copyright__: str = "Copyright 2022-2023, TheCodingJ's"
 __credits__: list[str] = ["Jared Gross"]
 __license__: str = "MIT"
 __name__: str = "Invigo"
-__version__: str = "v2.2.18"
+__version__: str = "v2.2.19"
 __updated__: str = "2023-08-30 12:32:51"
 __maintainer__: str = "Jared Gross"
 __email__: str = "jared@pinelandfarms.ca"
@@ -4005,6 +4006,7 @@ class MainWindow(QMainWindow):
                 except AttributeError:
                     return
                 should_generate_quote, should_generate_workorder, should_update_inventory, should_generate_packing_slip, should_group_items = action
+                should_remove_sheet_quantities = select_item_dialog.should_remove_sheet_quantities()
                 if should_generate_packing_slip:
                     self.get_order_number_thread()
                     loop = QEventLoop()
@@ -4057,9 +4059,17 @@ class MainWindow(QMainWindow):
                         'Invalid paths set for "path_to_sheet_prices" or "price_of_steel_information" in config file "laser_quote_variables.cfg"\n\nGenerating Quote Aborted.',
                     )
                     return
+
                 batch_data_to_upload = self.quote_nest_information
                 batch_data_to_upload['Components'] = self.quote_components_information
-                self.upload_batch_to_inventory_thread(batch_data_to_upload, should_update_inventory, should_generate_quote)
+
+                batch_data_to_upload_copy = copy.deepcopy(batch_data_to_upload)
+                if not should_remove_sheet_quantities:
+                    for nest, nest_data in batch_data_to_upload.items():
+                        if nest[0] == '_':
+                            print('deleting')
+                            del batch_data_to_upload_copy[nest]
+                self.upload_batch_to_inventory_thread(batch_data_to_upload_copy, should_update_inventory, should_generate_quote)
                 if should_update_inventory and not self.is_nest_generated_from_parts_in_inventory:
                     self.upload_batched_parts_images(batch_data)
                 self.status_button.setText("Generating complete", "lime")

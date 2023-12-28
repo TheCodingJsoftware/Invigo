@@ -175,3 +175,6 @@ class GenerateQuoteDialog(QDialog):
             self.pushButton_packingslip.isChecked(),
             self.pushButton_group.isChecked(),
         )
+
+    def should_remove_sheet_quantities(self) -> bool:
+        return self.checkBox_remove_sheet_quantities.isChecked()
