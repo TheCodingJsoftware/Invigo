@@ -8,7 +8,7 @@
     <x>0</x>
     <y>0</y>
     <width>1357</width>
-    <height>791</height>
+    <height>875</height>
    </rect>
   </property>
   <property name="font">
@@ -165,8 +165,8 @@
                        <rect>
                         <x>0</x>
                         <y>0</y>
-                        <width>220</width>
-                        <height>90</height>
+                        <width>98</width>
+                        <height>28</height>
                        </rect>
                       </property>
                       <property name="maximumSize">
@@ -508,8 +508,8 @@ QPushButton#pushButton_create_new:disabled{
                 <rect>
                  <x>0</x>
                  <y>0</y>
-                 <width>184</width>
-                 <height>571</height>
+                 <width>98</width>
+                 <height>28</height>
                 </rect>
                </property>
                <property name="maximumSize">
@@ -736,8 +736,8 @@ QPushButton#pushButton_add_new_sheet:disabled{
                 <rect>
                  <x>0</x>
                  <y>0</y>
-                 <width>357</width>
-                 <height>483</height>
+                 <width>98</width>
+                 <height>198</height>
                 </rect>
                </property>
                <layout class="QVBoxLayout" name="verticalLayout_21">
@@ -924,7 +924,7 @@ QPushButton#pushButton_add_new_sheet:disabled{
                        <property name="handleWidth">
                         <number>10</number>
                        </property>
-                       <widget class="QWidget" name="">
+                       <widget class="QWidget" name="layoutWidget">
                         <layout class="QHBoxLayout" name="horizontalLayout">
                          <property name="spacing">
                           <number>3</number>
@@ -1226,6 +1226,9 @@ QPushButton#pushButton_add_new_sheet:disabled{
                                 </property>
                                 <property name="text">
                                  <string>Match Item Cost to Sheet Cost</string>
+                                </property>
+                                <property name="checkable">
+                                 <bool>true</bool>
                                 </property>
                                </widget>
                               </item>
@@ -2303,8 +2306,8 @@ QPushButton:pressed#pushButton_show_item_summary:!checked {
                      <rect>
                       <x>0</x>
                       <y>0</y>
-                      <width>280</width>
-                      <height>92</height>
+                      <width>98</width>
+                      <height>28</height>
                      </rect>
                     </property>
                     <layout class="QHBoxLayout" name="horizontalLayout_21">

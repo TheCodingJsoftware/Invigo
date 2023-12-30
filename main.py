@@ -166,6 +166,7 @@ from utils.extract import extract
 from utils.generate_quote import GenerateQuote
 from utils.history_file import HistoryFile
 from utils.inventory_excel_file import ExcelFile
+from utils.ip_utils import get_server_ip_address, get_server_port
 from utils.json_file import JsonFile
 from utils.json_object import JsonObject
 from utils.monday_excel_file import MondayExcelFile
@@ -185,7 +186,7 @@ __copyright__: str = "Copyright 2022-2023, TheCodingJ's"
 __credits__: list[str] = ["Jared Gross"]
 __license__: str = "MIT"
 __name__: str = "Invigo"
-__version__: str = "v2.2.20"
+__version__: str = "v2.2.21"
 __updated__: str = "2023-08-30 12:32:51"
 __maintainer__: str = "Jared Gross"
 __email__: str = "jared@pinelandfarms.ca"
@@ -340,13 +341,24 @@ def excepthook(exc_type, exc_value, exc_traceback):
     """
     win32api.MessageBox(
         0,
-        f"A bug has shown itself. Where the program is located, inside the logs folder there is a app.log file, Please copy and send it to jared@pinelandfarms.ca\n\nexc_type:\n{exc_type}\n\nexc_value:\n{exc_value}\n\nexc_traceback:\n{exc_traceback}",
+        f"A bug has shown itself. This error message has been sent to the server and an email has been sent to {__email__}, please be patient as {__maintainer__} attempts fixes this issue. It will most likely be fixed in the next update; if this error keeps happening then notify {__maintainer__}.\n\nexc_type:\n{exc_type}\n\nexc_value:\n{exc_value}\n\nexc_traceback:\n{exc_traceback}",
         "Unhandled exception - excepthook detected",
         0x40,
     )  # 0x40 for OK button
 
     logging.error("Unhandled exception", exc_info=(exc_type, exc_value, exc_traceback))
     sys.__excepthook__(exc_type, exc_value, exc_traceback)
+    threading.Thread(target=send_error_report, args=(exc_type, exc_value, exc_traceback)).start()
+
+def send_error_report(exc_type, exc_value, exc_traceback):
+    SERVER_IP: str = get_server_ip_address()
+    SERVER_PORT: int = get_server_port()
+    url = f"http://{SERVER_IP}:{SERVER_PORT}/send_error_report"
+    with open('logs/app.log', 'r') as error_log:
+        error_data = error_log.read()
+    data = {"error_log": f"User: {os.getlogin().title()}\nVersion: {__version__}\n\n{error_data}"}
+    with contextlib.suppress(Exception):
+        requests.post(url, data=data)
 
 
 # Set the exception hook
@@ -2673,6 +2685,9 @@ class MainWindow(QMainWindow):
           The function does not have a return statement, so it does not return any value.
         """
         # changing item price to match sheet price
+        if not self.pushButton_item_to_sheet.isChecked():
+            self.update_quote_price()
+            return
         target_value: float = float(self.label_total_sheet_cost.text().replace('Total Cost for Sheets: $', '').replace(',', ''))
 
         def _calculate_total_cost(item_data: dict, include_extra_costs: bool=False) -> float:
@@ -2965,6 +2980,8 @@ class MainWindow(QMainWindow):
         self.label_total_item_cost.setText(f"Total Cost for Items: ${total_item_cost:,.2f}")
         self.tableWidget_quote_items.resizeColumnsToContents()
         self.tableWidget_quote_items.blockSignals(False)
+        if self.pushButton_item_to_sheet.isChecked():
+            self.match_item_to_sheet_price()
 
     # OMNIGEN
     def update_scrap_percentages(self) -> None:
