@@ -185,7 +185,7 @@ __copyright__: str = "Copyright 2022-2023, TheCodingJ's"
 __credits__: list[str] = ["Jared Gross"]
 __license__: str = "MIT"
 __name__: str = "Invigo"
-__version__: str = "v2.2.19"
+__version__: str = "v2.2.20"
 __updated__: str = "2023-08-30 12:32:51"
 __maintainer__: str = "Jared Gross"
 __email__: str = "jared@pinelandfarms.ca"
@@ -2663,6 +2663,7 @@ class MainWindow(QMainWindow):
         self.tableWidget_quote_items.blockSignals(False)
         return item_data
 
+    # OMNIGEN
     def match_item_to_sheet_price(self) -> None:
         """
         The function `match_item_to_sheet_price` adjusts the prices of items to match a target sheet
@@ -2673,20 +2674,22 @@ class MainWindow(QMainWindow):
         """
         # changing item price to match sheet price
         target_value: float = float(self.label_total_sheet_cost.text().replace('Total Cost for Sheets: $', '').replace(',', ''))
-        best_difference = float('inf')
 
-        def _calculate_total_cost(item_data: dict) -> float:
+        def _calculate_total_cost(item_data: dict, include_extra_costs: bool=False) -> float:
             total_item_cost = 0.0
             for item, item_data in item_data.items():
                 COGS = item_data['COGS']
+                quantity = item_data['quantity']
                 bend_cost = item_data['bend_cost']
                 labor_cost = item_data['labor_cost']
-                quantity = item_data['quantity']
-                unit_price = (
-                    calculate_overhead(COGS, self.spinBox_profit_margin_items.value() / 100, self.spinBox_overhead_items.value() / 100)
-                    + calculate_overhead(bend_cost, self.spinBox_profit_margin_items.value() / 100, self.spinBox_overhead_items.value() / 100)
-                    + calculate_overhead(labor_cost, self.spinBox_profit_margin_items.value() / 100, self.spinBox_overhead_items.value() / 100)
-                )
+                if include_extra_costs:
+                    unit_price = (
+                        calculate_overhead(COGS, self.spinBox_profit_margin_items.value() / 100, self.spinBox_overhead_items.value() / 100)
+                        + calculate_overhead(bend_cost, self.spinBox_profit_margin_items.value() / 100, self.spinBox_overhead_items.value() / 100)
+                        + calculate_overhead(labor_cost, self.spinBox_profit_margin_items.value() / 100, self.spinBox_overhead_items.value() / 100)
+                    )
+                else:
+                    unit_price = calculate_overhead(COGS, self.spinBox_profit_margin_items.value() / 100, self.spinBox_overhead_items.value() / 100)
                 price = unit_price * quantity
                 total_item_cost += price
             return total_item_cost
@@ -2706,7 +2709,7 @@ class MainWindow(QMainWindow):
             else: # Need to increase cost for items
                 item_data = _adjust_item_price(item_data, abs(difference)/1000)
             new_item_cost = _calculate_total_cost(item_data)
-            amount_changed += abs(difference)/1000
+            amount_changed += abs(difference) / 1000
             difference = round(new_item_cost - target_value, 2)
 
         self.tableWidget_quote_items.blockSignals(True)
@@ -2740,10 +2743,11 @@ class MainWindow(QMainWindow):
             self.quote_nest_information[nest_name][item_name]["quoting_price"] = price
         self.tableWidget_quote_items.blockSignals(False)
         self.status_button.setText(f"Each item price changed ${amount_changed:,.2f}", "lime")
-        total_item_cost = self.get_components_prices() + _calculate_total_cost(item_data)
+        total_item_cost = self.get_components_prices() + _calculate_total_cost(item_data, include_extra_costs=True)
         self.label_total_item_cost.setText(f"Total Cost for Items: ${total_item_cost:,.2f}")
         self.tableWidget_quote_items.resizeColumnsToContents()
 
+    # OMNIGEN
     def match_sheet_to_item_price(self) -> None:
         target_value: float = float(self.label_total_item_cost.text().replace('Total Cost for Items: $', '').replace(',', ''))
         best_difference = float('inf')
