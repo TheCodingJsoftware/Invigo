@@ -186,7 +186,7 @@ __copyright__: str = "Copyright 2022-2023, TheCodingJ's"
 __credits__: list[str] = ["Jared Gross"]
 __license__: str = "MIT"
 __name__: str = "Invigo"
-__version__: str = "v2.2.21"
+__version__: str = "v2.2.22"
 __updated__: str = "2023-08-30 12:32:51"
 __maintainer__: str = "Jared Gross"
 __email__: str = "jared@pinelandfarms.ca"
@@ -2028,6 +2028,7 @@ class MainWindow(QMainWindow):
             toolbox_index += 1
         self.update_quote_price()
         self.update_sheet_prices()
+        self.load_nest_summary()
 
     # OMNIGEN
     def global_nest_thickness_change(self) -> None:
@@ -2058,6 +2059,7 @@ class MainWindow(QMainWindow):
             toolbox_index += 1
         self.update_quote_price()
         self.update_sheet_prices()
+        self.load_nest_summary()
 
     # OMNIGEN
     def global_nest_sheet_dim_change(self) -> None:
@@ -2088,6 +2090,7 @@ class MainWindow(QMainWindow):
         self.update_quote_price()
         self.update_scrap_percentages()
         self.update_sheet_prices()
+        self.load_nest_summary()
 
     # OMNIGEN
     def sheet_nest_item_change(
