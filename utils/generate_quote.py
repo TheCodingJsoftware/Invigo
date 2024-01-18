@@ -57,10 +57,20 @@ class GenerateQuote:
 
     def generate_html(self, title: str):
         sheets_html = ""
+        total_cuttime: float = 0
         for i, (item, item_data) in enumerate(self.quote_data.items()):
             if item[0] == '_':
+                total_seconds = float(item_data['machining_time'])
+                total_cuttime += total_seconds
+                hours = int(total_seconds // 3600)
+                minutes = int((total_seconds % 3600) // 60)
+                seconds = int(total_seconds % 60)
                 sheet_name = item.split('/')[-1].replace('.pdf', '')
-                sheets_html += f'<p style="text-align: center;">{sheet_name} - {item_data["gauge"]} {item_data["material"]} - {item_data["sheet_dim"]} - Scrap: {item_data["scrap_percentage"]}% - Quantity: {item_data["quantity_multiplier"]}</p>'
+                sheets_html += f'<p style="text-align: center;">{sheet_name} - {item_data["gauge"]} {item_data["material"]} - {item_data["sheet_dim"]} - Scrap: {item_data["scrap_percentage"]}% - Quantity: {item_data["quantity_multiplier"]} - Cut time: {hours:02d}h {minutes:02d}m {seconds:02d}s</p>'
+
+        total_hours = int(total_seconds // 3600)
+        total_minutes = int((total_seconds % 3600) // 60)
+        total_seconds = int(total_seconds % 60)
         html_start = '''
         <!DOCTYPE html>
         <html>
@@ -439,7 +449,7 @@ class GenerateQuote:
             <summary style="font-size: 24px; text-align: center; margin-top: 20px;">Sheets/Nests/Assemblies:</summary>
             ''' + sheets_html + '''
             <p style="text-align: center;">
-            ''' + f'Total: {self.get_total_sheet_count()}' +'''
+            ''' + f'Total Quantity: {self.get_total_sheet_count()} - Total Cut time: {total_hours:02d}h {total_minutes:02d}m {total_seconds:02d}s' +'''
             </p>
             <div class="page-break"></div>
         </details>
