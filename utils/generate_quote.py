@@ -68,9 +68,9 @@ class GenerateQuote:
                 sheet_name = item.split('/')[-1].replace('.pdf', '')
                 sheets_html += f'<p style="text-align: center;">{sheet_name} - {item_data["gauge"]} {item_data["material"]} - {item_data["sheet_dim"]} - Scrap: {item_data["scrap_percentage"]}% - Quantity: {item_data["quantity_multiplier"]} - Cut time: {hours:02d}h {minutes:02d}m {seconds:02d}s</p>'
 
-        total_hours = int(total_seconds // 3600)
-        total_minutes = int((total_seconds % 3600) // 60)
-        total_seconds = int(total_seconds % 60)
+        total_hours = int(total_cuttime // 3600)
+        total_minutes = int((total_cuttime % 3600) // 60)
+        total_seconds = int(total_cuttime % 60)
         html_start = '''
         <!DOCTYPE html>
         <html>
