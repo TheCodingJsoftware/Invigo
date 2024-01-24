@@ -186,7 +186,7 @@ __copyright__: str = "Copyright 2022-2023, TheCodingJ's"
 __credits__: list[str] = ["Jared Gross"]
 __license__: str = "MIT"
 __name__: str = "Invigo"
-__version__: str = "v2.2.24"
+__version__: str = "v2.2.25"
 __updated__: str = "2023-08-30 12:32:51"
 __maintainer__: str = "Jared Gross"
 __email__: str = "jared@pinelandfarms.ca"
@@ -357,8 +357,22 @@ def send_error_report(exc_type, exc_value, exc_traceback):
     with open('logs/app.log', 'r') as error_log:
         error_data = error_log.read()
     data = {"error_log": f"User: {os.getlogin().title()}\nVersion: {__version__}\n\n{error_data}"}
-    with contextlib.suppress(Exception):
+    try:
         requests.post(url, data=data)
+        win32api.MessageBox(
+            0,
+            f"Sent",
+            "Sent",
+            0x40,
+        )  # 0x40 for OK button
+    except Exception as e:
+        logging.error(e)
+        win32api.MessageBox(
+            0,
+            f"Error sending {e}"
+            "Unhandled exception - excepthook detected",
+            0x40,
+        )  # 0x40 for OK button
 
 
 # Set the exception hook
