@@ -186,7 +186,7 @@ __copyright__: str = "Copyright 2022-2023, TheCodingJ's"
 __credits__: list[str] = ["Jared Gross"]
 __license__: str = "MIT"
 __name__: str = "Invigo"
-__version__: str = "v2.2.25"
+__version__: str = "v2.2.26"
 __updated__: str = "2023-08-30 12:32:51"
 __maintainer__: str = "Jared Gross"
 __email__: str = "jared@pinelandfarms.ca"
@@ -3978,6 +3978,7 @@ class MainWindow(QMainWindow):
                 continue
             if nest_name[0] == "_":
                 batch_data[nest_name] = self.quote_nest_information[nest_name]
+                batch_data[nest_name]['machining_time'] = self.quote_nest_information[nest_name]['quantity_multiplier'] * self.quote_nest_information[nest_name]['single_sheet_machining_time']
             else:
                 for item in self.quote_nest_information[nest_name]:
                     try:
@@ -4008,6 +4009,7 @@ class MainWindow(QMainWindow):
                 continue
             if nest_name[0] == "_":
                 batch_data[nest_name] = self.quote_nest_information[nest_name]
+                batch_data[nest_name]['machining_time'] = self.quote_nest_information[nest_name]['quantity_multiplier'] * self.quote_nest_information[nest_name]['single_sheet_machining_time']
             else:
                 batch_data[nest_name] = {}
                 for item in self.quote_nest_information[nest_name]:
