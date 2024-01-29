@@ -56,8 +56,9 @@ class GenerateQuote:
             self.generate_html(title="Workorder")
 
     def generate_html(self, title: str):
-        sheets_html = ""
+        sheets_html = "<table class='ui-responsive' data-mode='' data-role='table' id='data-table' style='border-collapse: collapse; text-align: center; vertical-align: middle; font-size: 12px;'><tr class='header-table-row'><th>Sheet Name</th><th>Thickness</th><th>Material</th><th>Dimension</th><th>Scrap</th><th>Qty</th><th>Cut Time</th></tr>"
         total_cuttime: float = 0
+
         for i, (item, item_data) in enumerate(self.quote_data.items()):
             if item[0] == '_':
                 total_seconds = float(item_data['machining_time'])
@@ -66,11 +67,35 @@ class GenerateQuote:
                 minutes = int((total_seconds % 3600) // 60)
                 seconds = int(total_seconds % 60)
                 sheet_name = item.split('/')[-1].replace('.pdf', '')
-                sheets_html += f'<p style="text-align: center;">{sheet_name} - {item_data["gauge"]} {item_data["material"]} - {item_data["sheet_dim"]} - Scrap: {item_data["scrap_percentage"]}% - Quantity: {item_data["quantity_multiplier"]} - Cut time: {hours:02d}h {minutes:02d}m {seconds:02d}s</p>'
-
-        total_hours = int(total_cuttime // 3600)
+                
+                # Add a new table row for each item
+                sheets_html += (
+                    f'<tr>'
+                    f'<td>{sheet_name}</td>'
+                    f'<td>{item_data["gauge"]}</td>'
+                    f'<td>{item_data["material"]}</td>'
+                    f'<td>{item_data["sheet_dim"]}</td>'
+                    f'<td>{item_data["scrap_percentage"]}%</td>'
+                    f'<td>{item_data["quantity_multiplier"]}</td>'
+                    f'<td>{hours:02d}h {minutes:02d}m {seconds:02d}s</td>'
+                    f'</tr>'
+                )
         total_minutes = int((total_cuttime % 3600) // 60)
         total_seconds = int(total_cuttime % 60)
+        total_hours = int(total_cuttime // 3600)
+        sheets_html += (
+            f'<tr>'
+            f'<td></td>'
+            f'<td></td>'
+            f'<td></td>'
+            f'<td></td>'
+            f'<td></td>'
+            f'<td>{self.get_total_sheet_count()}</td>'
+            f'<td>{total_hours:02d}h {total_minutes:02d}m {total_seconds:02d}s</td>'
+            f'</tr>'
+            )
+
+        sheets_html += "</table>"
         html_start = '''
         <!DOCTYPE html>
         <html>
@@ -83,6 +108,9 @@ class GenerateQuote:
             <script src="https://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
         </head>
         <style>
+            *{
+                font-family: Verdana, Geneva, Tahoma, sans-serif;
+            }
             html{
                 background-color: white;
             }
@@ -116,12 +144,20 @@ class GenerateQuote:
 
             /* Style for the title */
             .title {
-                font-size: 48px;
+                position: absolute;
+                font-size: 34px;
                 font-weight: bold;
-                margin: 10px;
                 text-align: center;
                 text-decoration: underline;
+                width: 50%;
+                top: 15px;
+                position: absolute;
+                left: 50%;
+                -webkit-transform: translate(-50%,-50%);
+                    -ms-transform: translate(-50%,-50%);
+                        transform: translate(-50%,-50%);
             }
+
 
             /* Style for the date */
             .date {
@@ -148,22 +184,8 @@ class GenerateQuote:
             .input-box{
                 font-size: 16px;
             }
-            .input-container-vertical {
-                background-color: white;
-                padding: 20px;
-                width: 45%;
-                margin: auto;
-            }
-
-            .input-container-horizontal {
-                background-color: white;
-                padding: 20px;
-                flex-direction: row; /* Display items horizontally */
-                columns: 2;
-            }
             .label {
                 display: block;
-                margin-bottom: 5px;
                 font-weight: bold;
             }
 
@@ -178,7 +200,9 @@ class GenerateQuote:
                 margin-right: 10px; /* Add spacing between label and input */
                 width: auto; /* Set a fixed width for the label */
             }
-
+            .ui-input-text{
+                margin: 0;
+            }
             th:first-of-type {
                 border-top-left-radius: 10px;
             }
@@ -334,7 +358,6 @@ class GenerateQuote:
                     page-break-after: always;
                 }
             }
-
         </style>
             <script>
                 window.addEventListener("beforeprint", function() {
@@ -415,42 +438,47 @@ class GenerateQuote:
             </script>
         <div data-role="page" id="pageone">
             <div id="cover-page">
-                <label for="showCoverPage" id="showCoverPageLabel" style="background-color: white; width: 200px; margin-left: 44%; border: none;">Show Cover Page</label>
+                <label for="showCoverPage" id="showCoverPageLabel" style="background-color: white; width: 200px; margin-left: 84%; border: none; margin-top: 10px;">
+                 Show Cover Page
+                </label>
                 <input style="background-color: white; display: none;" type="checkbox" id="showCoverPage" checked=true>
-                <div>
-                    <div class="title">''' + title + '''</div>
+                <div style="position: absolute; top: 0;">
                     <img class="logo" src="''' + self.program_directory + '''/icons/logo.png" alt="Logo">
-                    <div class="date"> ''' + str(datetime.now().strftime("%I:%M:%S %p %A %B %d, %Y")) + '''</div>
                 </div>
-                <div class="input-container-horizontal" style="columns: 2; padding: 0;">
-                    <div class="input-row">
-                        <label>Date Shipped:</label>
-                        <input type="date" class="input-box" id="date-shipped">
-                    </div>
-                    <div class="input-row">
-                        <label>Ship To:</label>
-                        <input type="text" class="input-box" id="ship-to">
-                    </div>
-                    <div class="input-row">
-                        <label>Order #</label>
-                        <input type="text" class="input-box" id="order-number" ''' + (f'value="{self.order_number if title == "Packing Slip" else ""}"') + '''>
-                    </div>
-                    <div class="input-row">
-                        <label>Date Expected:</label>
-                        <input type="date" class="input-box">
+                <div class="title">''' + title + '''</div>
+                <div class="input-row" style="top: 60px; position: absolute; right: 0; width: 300px;">
+                    <label>
+                    Order #
+                    </label>
+                    <input type="text" class="input-box" id="order-number" ''' + (f'value="{self.order_number if title == "Packing Slip" else ""}"') + '''>
+                </div>
+                <div style="margin-bottom: 80px;"></div>
+                <div class="date"> ''' + str(datetime.now().strftime("%I:%M:%S %p %A %B %d, %Y")) + '''</div>
+                <div style="border: #cccccc; border-radius: 10px; border-width: 1px; border-style: solid; right: 0; width: 300px;height: 150px; position: absolute; margin: 10px; top: 100px;">
+                    <div style="padding-top: 10px; padding-right: 10px; padding-left: 10px"> 
+                        Ship To:
+                        <div style="height: 30px; border-top: #cccccc; border-top-width: 1px; border-top-style: solid"></div>
+                        <div style="height: 30px; border-top: #cccccc; border-top-width: 1px; border-top-style: solid"></div>
+                        <div style="height: 30px; border-top: #cccccc; border-top-width: 1px; border-top-style: solid"></div>
+                        <div style="height: 30px; border-top: #cccccc; border-top-width: 1px; border-top-style: solid"></div>
                     </div>
                 </div>
-                <div class="input-row">
-                    <label>Received in good order by:</label>
-                    <input type="text" class="input-box">
+                <div style="border: #cccccc; border-radius: 10px; border-width: 1px; border-style: solid; left: 0; width: 400px; height: 150px; position: absolute; margin: 10px; top: 100px;">
+                <div style="padding-top: 10px; padding-right: 10px; padding-left: 10px"> 
+                        Date Shipped:
+                        <div style="height: 15px; border-top: #cccccc; border-top-width: 1px; border-top-style: solid"></div>
+                        Date Expected:
+                        <div style="height: 15px; border-top: #cccccc; border-top-width: 1px; border-top-style: solid"></div>
+                        Received in good order by:
+                        <div style="height: 30px; border-top: #cccccc; border-top-width: 1px;"></div>
+                        <div style="height: 30px; border-top: #cccccc; border-top-width: 1px; border-top-style: solid"></div>
+                    </div>
                 </div>
+                <div style="margin-bottom: 300px;"></div>
             </div>
         <details id="sheets-toggle" class="sheets-toggle" ''' + ("open=\"true\"" if title == "Workorder" else "") + '''>
             <summary style="font-size: 24px; text-align: center; margin-top: 20px;">Sheets/Nests/Assemblies:</summary>
             ''' + sheets_html + '''
-            <p style="text-align: center;">
-            ''' + f'Total Quantity: {self.get_total_sheet_count()} - Total Cut time: {total_hours:02d}h {total_minutes:02d}m {total_seconds:02d}s' +'''
-            </p>
             <div class="page-break"></div>
         </details>
         <div data-role="main" class="ui-content">
