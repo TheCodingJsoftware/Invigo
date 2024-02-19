@@ -186,7 +186,7 @@ __copyright__: str = "Copyright 2022-2023, TheCodingJ's"
 __credits__: list[str] = ["Jared Gross"]
 __license__: str = "MIT"
 __name__: str = "Invigo"
-__version__: str = "v2.2.26"
+__version__: str = "v2.2.27"
 __updated__: str = "2023-08-30 12:32:51"
 __maintainer__: str = "Jared Gross"
 __email__: str = "jared@pinelandfarms.ca"
@@ -495,32 +495,14 @@ class MainWindow(QMainWindow):
         self.margin_format = (
             f"margin-top: {self.margins[0]}%; margin-bottom: {self.margins[1]}%; margin-left: {self.margins[2]}%; margin-right: {self.margins[3]}%;"
         )
+
+        program_directory = os.path.dirname(os.path.realpath(sys.argv[0]))
+        self.config = configparser.ConfigParser()
+        self.config.read(f"{program_directory}/laser_quote_variables.cfg")
+
         self.check_trusted_user()
         self.__load_ui()
         self.download_all_files()
-        self.start_changes_thread(
-            [
-                f"{self.inventory_file_name}.json",
-                f"{self.inventory_file_name} - Price of Steel.json",
-                f"{self.inventory_file_name} - Parts in Inventory.json",
-            ]
-        )
-        self.tool_box_menu_changed()
-        self.quantities_change()
-        self.start_exchange_rate_thread()
-        # self.show()
-        with contextlib.suppress(AttributeError):
-            self.centralwidget.setEnabled(False)
-        if geometry.get_value("x") == 0 and geometry.get_value("y") == 0:
-            self.showMaximized()
-        else:
-            self.setGeometry(
-                geometry.get_value("x"),
-                geometry.get_value("y") + 30,
-                geometry.get_value("width"),
-                geometry.get_value("height") - 7,
-            )
-        self.show_whats_new()
 
     def __load_ui(self) -> None:
         """
@@ -790,10 +772,8 @@ class MainWindow(QMainWindow):
         self.actionOpen_Folder.triggered.connect(partial(self.open_folder, "PO's"))
 
         # QUOTE GENERATOR
-        config = configparser.ConfigParser()
-        config.read("laser_quote_variables.cfg")
-        self.path_to_save_quotes = config.get("GLOBAL VARIABLES", "path_to_save_quotes")
-        self.path_to_save_workorders = config.get("GLOBAL VARIABLES", "path_to_save_workorders")
+        self.path_to_save_quotes = self.config.get("GLOBAL VARIABLES", "path_to_save_quotes")
+        self.path_to_save_workorders = self.config.get("GLOBAL VARIABLES", "path_to_save_workorders")
         self.actionAdd_Nest_Directory.triggered.connect(self.add_nest_directory)
         self.actionRemove_Nest_Directory.triggered.connect(self.remove_nest_directory)
         self.actionOpen_Quotes_Directory.triggered.connect(partial(self.open_folder, self.path_to_save_quotes))
@@ -2572,12 +2552,12 @@ class MainWindow(QMainWindow):
         lbl.setStyleSheet("border-top: 1px solid grey")
         self.gridLayout_Categor_Stock_Prices.addWidget(lbl, i + 1, 1)
 
-    # NOTE SHEETS IN INVENTORY
+    # NOTE PARTS IN INVENTORY
     def update_all_parts_in_inventory_price(self) -> None:
         """
         It takes the weight and machine time of a part, and uses that to calculate the price of the part
         """
-        data = parts_in_inventory.get_data()
+        data = copy.copy(parts_in_inventory.get_data())
         # Idk why it does not exist somtimes
         if not data:
             return
@@ -2590,12 +2570,9 @@ class MainWindow(QMainWindow):
                 material: str = data[category][part_name]["material"]
                 price_per_pound: float = price_of_steel_inventory.get_data()["Price Per Pound"][material]["price"]
                 cost_for_laser: float = self.get_nitrogen_laser_cost() if material in {"304 SS", "409 SS", "Aluminium"} else self.get_co2_laser_cost()
-                parts_in_inventory.change_object_in_object_item(
-                    object_name=category,
-                    item_name=part_name,
-                    value_name="price",
-                    new_value=float((machine_time * (cost_for_laser / 60)) + (weight * price_per_pound)),
-                )
+                data[category][part_name]['price'] = float((machine_time * (cost_for_laser / 60)) + (weight * price_per_pound))
+        parts_in_inventory.save_data(data)
+        parts_in_inventory.load_data()
 
     def set_table_row_color(self, table, row_index, color):
         """
@@ -3155,17 +3132,11 @@ class MainWindow(QMainWindow):
 
     # OMNIGEN
     def get_nitrogen_laser_cost(self) -> float:
-        program_directory = os.path.dirname(os.path.realpath(sys.argv[0]))
-        config = configparser.ConfigParser()
-        config.read(f"{program_directory}/laser_quote_variables.cfg")
-        return float(config.get("GLOBAL VARIABLES", "nitrogen_cost_per_hour"))
+        return float(self.config.get("GLOBAL VARIABLES", "nitrogen_cost_per_hour"))
 
     # OMNIGEN
     def get_co2_laser_cost(self) -> int:
-        program_directory = os.path.dirname(os.path.realpath(sys.argv[0]))
-        config = configparser.ConfigParser()
-        config.read(f"{program_directory}/laser_quote_variables.cfg")
-        return float(config.get("GLOBAL VARIABLES", "co2_cost_per_hour"))
+        return float(self.config.get("GLOBAL VARIABLES", "co2_cost_per_hour"))
 
     # * /\ UPDATE UI ELEMENTS /\
     def sort_inventory(self) -> None:
@@ -4068,9 +4039,7 @@ class MainWindow(QMainWindow):
                     if should_generate_quote or should_generate_packing_slip:
                         option_string = "Quote" if should_generate_quote else "Packing Slip"
                         file_name: str = f'{option_string} - {datetime.now().strftime("%A, %d %B %Y %H-%M-%S-%f")}'
-                        config = configparser.ConfigParser()
-                        config.read("laser_quote_variables.cfg")
-                        path_to_save_quotes = config.get("GLOBAL VARIABLES", "path_to_save_quotes")
+                        path_to_save_quotes = self.config.get("GLOBAL VARIABLES", "path_to_save_quotes")
                         if should_generate_quote:
                             generate_quote = GenerateQuote(
                                 (True, False, should_update_inventory, False, should_group_items),
@@ -4114,9 +4083,7 @@ class MainWindow(QMainWindow):
                     self.upload_batched_parts_images(batch_data)
                 self.status_button.setText("Generating complete", "lime")
                 if should_generate_workorder and settings_file.get_value('open_workorder_when_generated'):
-                    config = configparser.ConfigParser()
-                    config.read("laser_quote_variables.cfg")
-                    path_to_save_workorders = config.get("GLOBAL VARIABLES", "path_to_save_workorders")
+                    path_to_save_workorders = self.config.get("GLOBAL VARIABLES", "path_to_save_workorders")
                     self.open_folder(f"{path_to_save_workorders}/{file_name}.html")
             elif response == DialogButtons.cancel:
                 return
@@ -4704,7 +4671,6 @@ class MainWindow(QMainWindow):
         # self.tab_widget.setStyleSheet("QTabBar::tab::disabled {width: 0; height: 0; margin: 0; padding: 0; border: none;} ")
         self.tab_widget.tabBarDoubleClicked.connect(self.rename_category)
         self.tab_widget.setMovable(True)
-        self.tab_widget.setDocumentMode(True)
         i: int = -1
         if self.tabWidget.tabText(self.tabWidget.currentIndex()) == "Workspace":
             if self.trusted_user:
@@ -4798,7 +4764,6 @@ class MainWindow(QMainWindow):
                 completer = QCompleter(autofill_search_options, self)
                 completer.setCaseSensitivity(Qt.CaseSensitivity.CaseInsensitive)
                 self.lineEdit_search_parts_in_inventory.setCompleter(completer)
-
             self.update_edit_inventory_list_widget()
             self.update_category_total_stock_costs()
             self.calculuate_price_of_steel_summary()
@@ -8917,9 +8882,12 @@ class MainWindow(QMainWindow):
         tab_index: int = 0
         for nest_name in list(self.quote_nest_information.keys()):
             if nest_name[0] == "_":
-                widget = QWidget(self)
-                widget.setMinimumHeight(260)
-                widget.setMaximumHeight(260)
+                layout_widget = QWidget(self)
+                layout = QVBoxLayout(layout_widget)
+                widget = QWidget(layout_widget)
+                layout.addWidget(widget)
+                # layout_widget.setMinimumHeight(600)
+                # layout_widget.setMaximumHeight(600)
                 grid_layout = QGridLayout(widget)
                 labels = [
                     "Sheet Scrap Percentage:",
@@ -9039,9 +9007,23 @@ class MainWindow(QMainWindow):
                         "sheet_dim",
                     )
                 )
+                thumbnail = ClickableLabel(self)
+                thumbnail.setToolTip("Click to make bigger.")
+                thumbnail.setFixedSize(485, 345)
+                pixmap = QPixmap(f"images/{self.quote_nest_information[nest_name]['image_index']}.jpeg")
+                scaled_pixmap = pixmap.scaled(thumbnail.size(), aspectRatioMode=Qt.AspectRatioMode.KeepAspectRatio)
+                thumbnail.setPixmap(scaled_pixmap)
+                layout.addWidget(thumbnail)
+                thumbnail.clicked.connect(
+                    partial(
+                        self.open_image,
+                        f"images/{self.quote_nest_information[nest_name]['image_index']}.jpeg",
+                        nest_name,
+                    )
+                )
 
                 self.sheet_nests_toolbox.addItem(
-                    widget,
+                    layout_widget,
                     f"{self.quote_nest_information[nest_name]['gauge']} {self.quote_nest_information[nest_name]['material']} {self.quote_nest_information[nest_name]['sheet_dim']} - {nest_name.split('/')[-1].replace('.pdf', '')}",
                 )
                 self.sheet_nests_toolbox.setItemIcon(
@@ -9059,6 +9041,7 @@ class MainWindow(QMainWindow):
         self.update_quote_price()
         self.update_sheet_prices()
 
+    # OMNIGEN
     def load_nest_summary(self) -> None:
         """
         The function `load_nest_summary` creates a summary of sheet names, total sheet count, and total
@@ -9107,6 +9090,7 @@ class MainWindow(QMainWindow):
                 label_sheet_cuttime.setStyleSheet("border-top: 1px solid grey; border-bottom: 1px solid grey")
             self.gridLayout_nest_summary.addWidget(label_sheet_cuttime, i+1, 2)
 
+    # OMNIGEN
     def get_nest_summary(self) -> dict:
         """
         The function `get_nest_summary` calculates the total sheet count and total machining time for
@@ -9835,7 +9819,7 @@ class MainWindow(QMainWindow):
             self.status_button.setText(f"Error - {response}", "red")
 
     # OMNIGEN
-    def upload_batched_parts_images(self, batch_data) -> None:
+    def upload_batched_parts_images(self, batch_data: dict[str, dict]) -> None:
         """
         This function uploads a batch of images by extracting their names from a dictionary and
         appending ".jpeg" to them before calling another function to upload the files.
@@ -9844,7 +9828,10 @@ class MainWindow(QMainWindow):
           batch_data: batch_data is a dictionary containing data for a batch of parts. The keys of the
         dictionary are the part names and the values are the corresponding data for each part.
         """
-        images_to_upload: list[str] = [f"{item}.jpeg" for item in list(batch_data.keys()) if item[0] != "_"]
+        images_to_upload: list[str] = [f"{item}.jpeg" for item in list(batch_data.keys()) if item[0] != "_" and item != "Components"]
+        for nest_name, nest_data in batch_data.items():
+            if nest_name[0] == "_":
+                images_to_upload.append(f'{nest_data["image_index"]}.jpeg')
         self.upload_file(images_to_upload)
 
     def remove_quantity_thread_response(self, data) -> None:
@@ -9919,7 +9906,6 @@ class MainWindow(QMainWindow):
                 price_of_steel_inventory.load_data()
                 parts_in_inventory.load_data()
                 self.load_cuttoff_drop_down()
-            self.downloading_changes = False
 
         if not self.finished_downloading_all_files:
             self.files_downloaded_count += 1
@@ -9931,6 +9917,29 @@ class MainWindow(QMainWindow):
             self.load_categories()
             self.status_button.setText(f'Downloaded all files - {datetime.now().strftime("%r")}', "lime")
             self.centralwidget.setEnabled(True)
+            # ON STARTUP
+            self.downloading_changes = False
+            self.start_changes_thread(
+                [
+                    f"{self.inventory_file_name}.json",
+                    f"{self.inventory_file_name} - Price of Steel.json",
+                    f"{self.inventory_file_name} - Parts in Inventory.json",
+                ]
+            )
+            self.tool_box_menu_changed()
+            self.quantities_change()
+            self.start_exchange_rate_thread()
+            if geometry.get_value("x") == 0 and geometry.get_value("y") == 0:
+                self.showMaximized()
+            else:
+                self.setGeometry(
+                    geometry.get_value("x"),
+                    geometry.get_value("y") + 30,
+                    geometry.get_value("width"),
+                    geometry.get_value("height") - 7,
+                )
+            self.show_whats_new()
+
         if "timed out" in str(data).lower() or "fail" in str(data).lower():
             self.show_error_dialog(
                 title="Time out",

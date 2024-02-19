@@ -57,17 +57,20 @@ class GenerateQuote:
 
     def generate_html(self, title: str):
         sheets_html = "<table class='ui-responsive' data-mode='' data-role='table' id='data-table' style='border-collapse: collapse; text-align: center; vertical-align: middle; font-size: 12px;'><tr class='header-table-row'><th>Sheet Name</th><th>Thickness</th><th>Material</th><th>Dimension</th><th>Scrap</th><th>Qty</th><th>Cut Time</th></tr>"
+        sheets_picture_html = '<div class="nests">'
         total_cuttime: float = 0
 
         for i, (item, item_data) in enumerate(self.quote_data.items()):
             if item[0] == '_':
+                sheet_name = item.split('/')[-1].replace('.pdf', '')
                 total_seconds = float(item_data['machining_time'])
                 total_cuttime += total_seconds
                 hours = int(total_seconds // 3600)
                 minutes = int((total_seconds % 3600) // 60)
                 seconds = int(total_seconds % 60)
-                sheet_name = item.split('/')[-1].replace('.pdf', '')
-                
+                if item_data['image_index'] != '404':
+                    sheets_picture_html += f'<div class="nest"><p>{sheet_name}</p><img src="{self.program_directory}/images/{sheet_name}.jpeg" alt="Image" class="nest_image" id="images/{sheet_name}.jpeg"></div>'
+
                 # Add a new table row for each item
                 sheets_html += (
                     f'<tr>'
@@ -94,8 +97,9 @@ class GenerateQuote:
             f'<td>{total_hours:02d}h {total_minutes:02d}m {total_seconds:02d}s</td>'
             f'</tr>'
             )
-
         sheets_html += "</table>"
+        sheets_picture_html += '</div>'
+
         html_start = '''
         <!DOCTYPE html>
         <html>
@@ -258,7 +262,7 @@ class GenerateQuote:
             }
 
             .popup:target {
-            display: block;
+                display: block;
             }
 
             .image-container:target {
@@ -349,6 +353,33 @@ class GenerateQuote:
             }
             .ui-btn{
                 background-color: white;
+            }
+            .nests{
+                columns: 2;
+                display: grid;
+                margin: 25px;
+                grid-template-columns: 320px 320px;
+                grid-template-rows: 200px;
+                margin-left: auto;
+                margin-right: auto;
+                position: relative;
+            }
+            .nest{
+                width: 300px;
+                height: 230px;
+            }
+            .nests p{
+                padding-top: 8px;
+                text-align: center;
+                z-index: 10;
+                position: relative;
+            }
+            .nest_image{
+                height: 220px;
+                width: 290px;
+                position: absolute;
+                padding: 5px;
+                margin-top: -30px;
             }
             @media print{
                 .ui-table-columntoggle-btn{
@@ -455,7 +486,7 @@ class GenerateQuote:
                 <div style="margin-bottom: 80px;"></div>
                 <div class="date"> ''' + str(datetime.now().strftime("%I:%M:%S %p %A %B %d, %Y")) + '''</div>
                 <div style="border: #cccccc; border-radius: 10px; border-width: 1px; border-style: solid; right: 0; width: 300px;height: 150px; position: absolute; margin: 10px; top: 100px;">
-                    <div style="padding-top: 10px; padding-right: 10px; padding-left: 10px"> 
+                    <div style="padding-top: 10px; padding-right: 10px; padding-left: 10px">
                         Ship To:
                         <div style="height: 30px; border-top: #cccccc; border-top-width: 1px; border-top-style: solid"></div>
                         <div style="height: 30px; border-top: #cccccc; border-top-width: 1px; border-top-style: solid"></div>
@@ -464,7 +495,7 @@ class GenerateQuote:
                     </div>
                 </div>
                 <div style="border: #cccccc; border-radius: 10px; border-width: 1px; border-style: solid; left: 0; width: 400px; height: 150px; position: absolute; margin: 10px; top: 100px;">
-                <div style="padding-top: 10px; padding-right: 10px; padding-left: 10px"> 
+                <div style="padding-top: 10px; padding-right: 10px; padding-left: 10px">
                         Date Shipped:
                         <div style="height: 15px; border-top: #cccccc; border-top-width: 1px; border-top-style: solid"></div>
                         Date Expected:
@@ -478,7 +509,7 @@ class GenerateQuote:
             </div>
         <details id="sheets-toggle" class="sheets-toggle" ''' + ("open=\"true\"" if title == "Workorder" else "") + '''>
             <summary style="font-size: 24px; text-align: center; margin-top: 20px;">Sheets/Nests/Assemblies:</summary>
-            ''' + sheets_html + '''
+            ''' + sheets_html + sheets_picture_html + '''
             <div class="page-break"></div>
         </details>
         <div data-role="main" class="ui-content">

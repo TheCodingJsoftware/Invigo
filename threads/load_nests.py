@@ -86,16 +86,24 @@ class LoadNests(QThread):
                     image = Image.open(io.BytesIO(image_bytes))
                     if image.size[0] == 48 and image.size[1] == 48:
                         continue
-                    image = image.resize(
-                        (self.size_of_picture, self.size_of_picture),
-                        Image.Resampling.LANCZOS,
-                    )
-                    image.save(
-                        open(
-                            f"{self.program_directory}/images/{image_count}.{image_ext}",
-                            "wb",
+                    if image.size[0] == 580 and image.size[1] == 440: # A nest picture
+                        image.save(
+                            open(
+                                f"{self.program_directory}/images/nest-{image_count}.{image_ext}",
+                                "wb",
+                            )
                         )
-                    )
+                    else: # A part picture
+                        image = image.resize(
+                            (self.size_of_picture, self.size_of_picture),
+                            Image.Resampling.LANCZOS,
+                        )
+                        image.save(
+                            open(
+                                f"{self.program_directory}/images/part-{image_count}.{image_ext}",
+                                "wb",
+                            )
+                        )
                     image_count += 1
 
     def convert_pdf_to_text(self, pdf_path: str) -> str:
@@ -230,6 +238,7 @@ class LoadNests(QThread):
                     "scrap_percentage": scrap_percentage,
                     "machining_time": total_sheet_cut_time * quantity_multiplier, # seconds
                     "single_sheet_machining_time": total_sheet_cut_time, # seconds
+                    "image_index" : f'nest-{image_index}'
                 }
                 self.data[nest_name] = {}
                 for i, part_name in enumerate(parts):
@@ -239,7 +248,7 @@ class LoadNests(QThread):
                         "machine_time": float(machining_times[i]),
                         "weight": float(weights[i]),
                         "part_number": part_numbers[i],
-                        "image_index": image_index,
+                        "image_index": f'part-{image_index}',
                         "surface_area": float(surface_areas[i]),
                         "cutting_length": float(cutting_lengths[i]),
                         "file_name": nest,
@@ -254,9 +263,19 @@ class LoadNests(QThread):
                         "geofile_name": geofile_names[i],
                     }
                     image_index += 1
+                self.data[f"_{nest}"]["image_index"] = f'nest-{image_index}'
+                image_index += 1
             # os.remove(f"{self.program_directory}/output.txt")
             for nest_name in list(self.data.keys()):
                 if nest_name[0] == "_":
+                    try:
+                        image_name = nest_name.split('/')[-1].replace('.pdf', '')
+                        image_path: str = f"images/{self.data[nest_name]['image_index']}.jpeg"
+                        new_image_path = f"images/{image_name}.jpeg"
+                        self.data[nest_name]["image_index"] = image_name
+                        shutil.move(image_path, new_image_path)
+                    except FileNotFoundError: # Some pdfs may not have the image
+                        self.data[nest_name]["image_index"] = '404'
                     continue
                 for item in list(self.data[nest_name].keys()):
                     image_path: str = f"images/{self.data[nest_name][item]['image_index']}.jpeg"
