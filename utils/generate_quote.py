@@ -381,6 +381,11 @@ class GenerateQuote:
                 padding: 5px;
                 margin-top: -30px;
             }
+            .ui-input-text input, .ui-inpput-search input{
+                min-height: 30px;
+                max-height: 30px;
+                border: none;
+            }
             @media print{
                 .ui-table-columntoggle-btn{
                     display: none;
@@ -485,28 +490,30 @@ class GenerateQuote:
                 </div>
                 <div style="margin-bottom: 80px;"></div>
                 <div class="date"> ''' + str(datetime.now().strftime("%I:%M:%S %p %A %B %d, %Y")) + '''</div>
-                <div style="border: #cccccc; border-radius: 10px; border-width: 1px; border-style: solid; right: 0; width: 300px;height: 150px; position: absolute; margin: 10px; top: 100px;">
+                <div style="border: #cccccc; border-radius: 10px; border-width: 1px; border-style: solid; right: 0; width: 300px;height: 180px; position: absolute; margin: 10px; top: 100px;">
                     <div style="padding-top: 10px; padding-right: 10px; padding-left: 10px">
-                        Ship To:
-                        <div style="height: 30px; border-top: #cccccc; border-top-width: 1px; border-top-style: solid"></div>
-                        <div style="height: 30px; border-top: #cccccc; border-top-width: 1px; border-top-style: solid"></div>
-                        <div style="height: 30px; border-top: #cccccc; border-top-width: 1px; border-top-style: solid"></div>
-                        <div style="height: 30px; border-top: #cccccc; border-top-width: 1px; border-top-style: solid"></div>
+                    Ship To:
+                    <textarea style="resize: none;">
+
+
+
+
+</textarea>
                     </div>
                 </div>
-                <div style="border: #cccccc; border-radius: 10px; border-width: 1px; border-style: solid; left: 0; width: 400px; height: 150px; position: absolute; margin: 10px; top: 100px;">
-                <div style="padding-top: 10px; padding-right: 10px; padding-left: 10px">
-                        Date Shipped:
-                        <div style="height: 15px; border-top: #cccccc; border-top-width: 1px; border-top-style: solid"></div>
-                        Date Expected:
-                        <div style="height: 15px; border-top: #cccccc; border-top-width: 1px; border-top-style: solid"></div>
-                        Received in good order by:
-                        <div style="height: 30px; border-top: #cccccc; border-top-width: 1px;"></div>
-                        <div style="height: 30px; border-top: #cccccc; border-top-width: 1px; border-top-style: solid"></div>
+                <div style="border: #cccccc; border-radius: 10px; border-width: 1px; border-style: solid; left: 0; width: 400px; height: 180px; position: absolute; margin: 10px; top: 100px;">
+                    <div style="padding-top: 10px; padding-right: 10px; padding-left: 10px">
+                    Date Shipped:
+                        <input class="input-box" type="text" value=""></input>
+                    Date Expected:
+                    <input class="input-box" type="text" value=""></input>
+                    Received in good order by:
+                        <input class="input-box" type="text" value=""></input>
                     </div>
                 </div>
-                <div style="margin-bottom: 300px;"></div>
-            </div>
+                <div style="margin-bottom: 300px;">
+                </div>
+                </div>
         <details id="sheets-toggle" class="sheets-toggle" ''' + ("open=\"true\"" if title == "Workorder" else "") + '''>
             <summary style="font-size: 24px; text-align: center; margin-top: 20px;">Sheets/Nests/Assemblies:</summary>
             ''' + sheets_html + sheets_picture_html + '''

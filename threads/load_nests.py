@@ -93,6 +93,7 @@ class LoadNests(QThread):
                                 "wb",
                             )
                         )
+                        image_count += 1
                     else: # A part picture
                         image = image.resize(
                             (self.size_of_picture, self.size_of_picture),
@@ -104,7 +105,7 @@ class LoadNests(QThread):
                                 "wb",
                             )
                         )
-                    image_count += 1
+                        image_count += 1
 
     def convert_pdf_to_text(self, pdf_path: str) -> str:
         """
@@ -263,8 +264,9 @@ class LoadNests(QThread):
                         "geofile_name": geofile_names[i],
                     }
                     image_index += 1
-                self.data[f"_{nest}"]["image_index"] = f'nest-{image_index}'
-                image_index += 1
+                if os.path.isfile(f'./images/nest-{image_index}.jpeg'):
+                    self.data[f"_{nest}"]["image_index"] = f'nest-{image_index}'
+                    image_index += 1
             # os.remove(f"{self.program_directory}/output.txt")
             for nest_name in list(self.data.keys()):
                 if nest_name[0] == "_":
