@@ -5,6 +5,7 @@ import copy
 import cProfile
 import json
 import logging
+import math
 import os
 import re
 import shutil
@@ -186,7 +187,7 @@ __copyright__: str = "Copyright 2022-2023, TheCodingJ's"
 __credits__: list[str] = ["Jared Gross"]
 __license__: str = "MIT"
 __name__: str = "Invigo"
-__version__: str = "v2.2.31"
+__version__: str = "v2.2.32"
 __updated__: str = "2023-08-30 12:32:51"
 __maintainer__: str = "Jared Gross"
 __email__: str = "jared@pinelandfarms.ca"
@@ -996,9 +997,9 @@ class MainWindow(QMainWindow):
         if add_item_dialog.exec():
             response = add_item_dialog.get_response()
             if response == DialogButtons.add:
+                inventory_data = copy.copy(price_of_steel_inventory.get_data())
                 name: str = add_item_dialog.get_name()
-                category_data = price_of_steel_inventory.get_value(item_name=self.category)
-                for item in list(category_data.keys()):
+                for item in list(inventory_data[self.category].keys()):
                     if name == item:
                         self.show_error_dialog(
                             "Invalid name",
@@ -1007,26 +1008,21 @@ class MainWindow(QMainWindow):
                         )
                         return
 
-                price_of_steel_inventory.add_item_in_object(self.category, name)
                 material: str = add_item_dialog.get_material()
                 sheet_dimension: str = add_item_dialog.get_sheet_dimension()
                 thickness: str = add_item_dialog.get_thickness()
                 current_quantity: int = add_item_dialog.get_current_quantity()
                 group: str = add_item_dialog.get_group()
-
-                price_of_steel_inventory.change_object_in_object_item(self.category, name, "current_quantity", current_quantity)
-                price_of_steel_inventory.change_object_in_object_item(self.category, name, "sheet_dimension", sheet_dimension)
-                price_of_steel_inventory.change_object_in_object_item(self.category, name, "thickness", thickness)
-                price_of_steel_inventory.change_object_in_object_item(self.category, name, "material", material)
-                if group != "None":
-                    price_of_steel_inventory.change_object_in_object_item(self.category, name, "group", group)
-                price_of_steel_inventory.change_object_in_object_item(
-                    self.category,
-                    name,
-                    "latest_change_current_quantity",
-                    f"{self.username} - Item added at {datetime.now().strftime('%B %d %A %Y %I-%M-%S %p')}",
-                )
-                # self.sort_inventory()
+                inventory_data[self.category].setdefault(name, {
+                    "current_quantity": current_quantity,
+                    "sheet_dimension": sheet_dimension,
+                    "thickness": thickness,
+                    "material": material,
+                    "group": group,
+                    "latest_change_current_quantity": f"{self.username} - Item added at {datetime.now().strftime('%B %d %A %Y %I-%M-%S %p')}",
+                })
+                price_of_steel_inventory.save_data(inventory_data)
+                price_of_steel_inventory.load_data()
                 self.load_active_tab()
                 self.sync_changes()
             elif response == DialogButtons.cancel:
@@ -1053,31 +1049,18 @@ class MainWindow(QMainWindow):
             message=f'Set an expected arrival time for "{item_name}" and the number of sheets ordered',
             label_text="Sheets Ordered:",
         )
+        inventory_data = copy.copy(price_of_steel_inventory.get_data())
         if button.isChecked() == True and select_date_dialog.exec():
             response = select_date_dialog.get_response()
             if response == DialogButtons.set:
-                price_of_steel_inventory.change_object_in_object_item(
-                    object_name=self.category,
-                    item_name=item_name,
-                    value_name="expected_arrival_time",
-                    new_value=select_date_dialog.get_selected_date(),
-                )
-                price_of_steel_inventory.change_object_in_object_item(
-                    object_name=self.category,
-                    item_name=item_name,
-                    value_name="order_pending_quantity",
-                    new_value=select_date_dialog.get_order_quantity(),
-                )
+                inventory_data[self.category][item_name]["expected_arrival_time"] = select_date_dialog.get_selected_date()
+                inventory_data[self.category][item_name]["order_pending_quantity"] = select_date_dialog.get_order_quantity()
             else:
-                self.load_active_tab()
-                self.sync_changes()
+                button.setChecked(False)
+                # self.load_active_tab()
+                # self.sync_changes()
                 return
-            price_of_steel_inventory.change_object_in_object_item(
-                object_name=self.category,
-                item_name=item_name,
-                value_name="order_pending_date",
-                new_value=datetime.now().strftime("%Y-%m-%d"),
-            )
+            inventory_data[self.category][item_name]["order_pending_date"] = datetime.now().strftime("%Y-%m-%d")
         elif button.isChecked() == False:
             input_dialog = InputDialog(
                 title="Add Sheet Quantity",
@@ -1091,12 +1074,12 @@ class MainWindow(QMainWindow):
                     try:
                         input_number = float(input_dialog.inputText)
                         new_quantity = price_of_steel_inventory.data[self.category][item_name]['current_quantity'] + input_number
-                        price_of_steel_inventory.change_object_in_object_item(
-                            object_name=self.category,
-                            item_name=item_name,
-                            value_name="current_quantity",
-                            new_value=new_quantity,
-                        )
+                        inventory_data[self.category][item_name]["current_quantity"] = new_quantity
+                        inventory_data[self.category][item_name]["is_order_pending"] = button.isChecked()
+                        price_of_steel_inventory.save_data(inventory_data)
+                        price_of_steel_inventory.load_data()
+                        self.load_active_tab()
+                        self.sync_changes()
                     except Exception:
                         self.show_error_dialog(
                             title="Invalid number",
@@ -1104,18 +1087,9 @@ class MainWindow(QMainWindow):
                             dialog_buttons=DialogButtons.ok,
                         )
                         return
-                elif response == DialogButtons.cancel:
+                else:
+                    button.setChecked(True)
                     return
-        price_of_steel_inventory.change_object_in_object_item(
-            object_name=self.category,
-            item_name=item_name,
-            value_name="is_order_pending",
-            new_value=button.isChecked(),
-        )
-
-        self.load_active_tab()
-        self.sync_changes()
-
     # NOTE SHEETS IN INVENTORY
     def arrival_date_change_sheets_in_inventory(self, item_name: str, arrival_date: QDateEdit) -> None:
         """
@@ -1380,13 +1354,6 @@ class MainWindow(QMainWindow):
         data = inventory.get_data()
         part_number = self.get_value_from_category(item_name, "part_number")
         self.value_change(self.category, item_name, value_name, note.toPlainText())
-
-        # for category, items in data.items():
-        #     if category == self.category:
-        #         continue
-        #     for item, item_data in items.items():
-        #         if part_number == item_data.get("part_number"):
-        #             inventory.change_object_in_object_item(object_name=category, item_name=item, value_name="notes", new_value=note.toPlainText())
         self.sync_changes()
 
     def delete_item(self, item_name: str) -> None:
@@ -1411,9 +1378,12 @@ class MainWindow(QMainWindow):
         GUI.
         """
         selected_parts = self.get_all_selected_parts(tab)
+        inventory_data = copy.copy(self.active_json_file.get_data())
         for selected_part in selected_parts:
             with contextlib.suppress(KeyError):
-                self.active_json_file.remove_object_item(self.category, selected_part)
+                del inventory_data[self.category][selected_part]
+        self.active_json_file.save_data(inventory_data)
+        self.active_json_file.load_data()
         self.load_active_tab()
         self.sync_changes()
 
@@ -1427,8 +1397,11 @@ class MainWindow(QMainWindow):
         GUI.
         """
         selected_parts = self.get_all_selected_parts(tab)
+        inventory_data = copy.copy(self.active_json_file.get_data())
         for selected_part in selected_parts:
-            self.active_json_file.change_object_in_object_item(self.category, selected_part, "current_quantity", 0)
+            inventory_data[self.category][selected_part]['current_quantity'] = 0
+        self.active_json_file.save_data(inventory_data)
+        self.active_json_file.load_data()
         self.load_active_tab()
         self.sync_changes()
 
@@ -1724,12 +1697,7 @@ class MainWindow(QMainWindow):
         remove_quantity_state: bool = self.pushButton_remove_quantity.isEnabled()
         self.pushButton_add_quantity.setEnabled(False)
         self.pushButton_remove_quantity.setEnabled(False)
-        inventory.change_object_in_object_item(
-            object_name=category,
-            item_name=item_name,
-            value_name=value_name,
-            new_value=new_value,
-        )
+        inventory.change_object_in_object_item(category, item_name, value_name, new_value)
         self.pushButton_add_quantity.setEnabled(add_quantity_state)
         self.pushButton_remove_quantity.setEnabled(remove_quantity_state)
 
@@ -2604,7 +2572,7 @@ class MainWindow(QMainWindow):
         if not self.pushButton_item_to_sheet.isChecked():
             self.update_quote_price()
             return
-        target_value: float = float(self.label_total_sheet_cost.text().replace('Total Cost for Sheets: $', '').replace(',', ''))
+        target_value = float(self.label_total_sheet_cost.text().replace('Total Cost for Sheets: $', '').replace(',', ''))
 
         def _calculate_total_cost(item_data: dict, include_extra_costs: bool=False) -> float:
             total_item_cost = 0.0
@@ -2634,14 +2602,16 @@ class MainWindow(QMainWindow):
         new_item_cost = _calculate_total_cost(item_data)
         difference = round(new_item_cost - target_value, 2)
         amount_changed: float = 0
-        while abs(difference) > 0.5:
+        while abs(difference) > 1:
             if difference > 0: # Need to decrease cost for items
-                item_data = _adjust_item_price(item_data, -(abs(difference)/1000))
+                item_data = _adjust_item_price(item_data, -(abs(difference)/10000))
             else: # Need to increase cost for items
-                item_data = _adjust_item_price(item_data, abs(difference)/1000)
+                item_data = _adjust_item_price(item_data, abs(difference)/10000)
             new_item_cost = _calculate_total_cost(item_data)
-            amount_changed += abs(difference) / 1000
+            amount_changed += abs(difference) / 10000
             difference = round(new_item_cost - target_value, 2)
+            if (math.isinf(difference) and difference > 0) or (math.isinf(difference) and difference < 0):
+                break
 
         self.tableWidget_quote_items.blockSignals(True)
         nest_name = ''
@@ -3493,8 +3463,8 @@ class MainWindow(QMainWindow):
             response = add_item_dialog.get_response()
             if response == DialogButtons.add:
                 name: str = add_item_dialog.get_name()
-                category_data = inventory.get_value(item_name=self.category)
-                for item in list(category_data.keys()):
+                inventory_data = copy.copy(inventory.get_data())
+                for item in list(inventory_data[self.category].keys()):
                     if name == item:
                         self.show_error_dialog(
                             "Invalid name",
@@ -3513,8 +3483,24 @@ class MainWindow(QMainWindow):
                 group: str = add_item_dialog.get_group()
 
                 try:
-                    inventory.add_item_in_object(self.category, name)
-                    inventory.change_object_in_object_item(self.category, name, "part_number", part_number)
+                    inventory_data[self.category].setdefault(name,{
+                        "part_number": part_number,
+                        "unit_quantity": unit_quantity,
+                        "current_quantity": current_quantity,
+                        "price": price,
+                        "use_exchange_rate": use_exchange_rate,
+                        "priority": priority,
+                        "group": group,
+                        "notes": notes,
+                        "latest_change_name": f"Item added\n{self.username}\n{datetime.now().strftime('%B %d %A %Y %I-%M-%S %p')}",
+                        "latest_change_part_number": f"Item added\n{self.username}\n{datetime.now().strftime('%B %d %A %Y %I-%M-%S %p')}",
+                        "latest_change_unit_quantity": f"Item added\n{self.username}\n{datetime.now().strftime('%B %d %A %Y %I-%M-%S %p')}",
+                        "latest_change_current_quantity": f"Item added\n{self.username}\n{datetime.now().strftime('%B %d %A %Y %I-%M-%S %p')}",
+                        "latest_change_price": f"Item added\n{self.username}\n{datetime.now().strftime('%B %d %A %Y %I-%M-%S %p')}",
+                        "latest_change_use_exchange_price": f"Item added\n{self.username}\n{datetime.now().strftime('%B %d %A %Y %I-%M-%S %p')}",
+                        "latest_change_priority": f"Item added\n{self.username}\n{datetime.now().strftime('%B %d %A %Y %I-%M-%S %p')}",
+                        "latest_change_notes": f"Item added\n{self.username}\n{datetime.now().strftime('%B %d %A %Y %I-%M-%S %p')}",
+                    })
                 except KeyError:
                     self.show_error_dialog(
                         "Invalid characters",
@@ -3522,62 +3508,8 @@ class MainWindow(QMainWindow):
                         dialog_buttons=DialogButtons.ok,
                     )
                     return
-                inventory.change_object_in_object_item(self.category, name, "unit_quantity", unit_quantity)
-                inventory.change_object_in_object_item(self.category, name, "current_quantity", current_quantity)
-                inventory.change_object_in_object_item(self.category, name, "price", price)
-                inventory.change_object_in_object_item(self.category, name, "use_exchange_rate", use_exchange_rate)
-                inventory.change_object_in_object_item(self.category, name, "priority", priority)
-                inventory.change_object_in_object_item(self.category, name, "notes", notes)
-                if group != "None":
-                    inventory.change_object_in_object_item(self.category, name, "group", group)
-                inventory.change_object_in_object_item(
-                    self.category,
-                    name,
-                    "latest_change_name",
-                    f"Item added\n{self.username}\n{datetime.now().strftime('%B %d %A %Y %I-%M-%S %p')}",
-                )
-                inventory.change_object_in_object_item(
-                    self.category,
-                    name,
-                    "latest_change_part_number",
-                    f"Item added\n{self.username}\n{datetime.now().strftime('%B %d %A %Y %I-%M-%S %p')}",
-                )
-                inventory.change_object_in_object_item(
-                    self.category,
-                    name,
-                    "latest_change_unit_quantity",
-                    f"Item added\n{self.username}\n{datetime.now().strftime('%B %d %A %Y %I-%M-%S %p')}",
-                )
-                inventory.change_object_in_object_item(
-                    self.category,
-                    name,
-                    "latest_change_current_quantity",
-                    f"Item added\n{self.username}\n{datetime.now().strftime('%B %d %A %Y %I-%M-%S %p')}",
-                )
-                inventory.change_object_in_object_item(
-                    self.category,
-                    name,
-                    "latest_change_price",
-                    f"Item added\n{self.username}\n{datetime.now().strftime('%B %d %A %Y %I-%M-%S %p')}",
-                )
-                inventory.change_object_in_object_item(
-                    self.category,
-                    name,
-                    "latest_change_use_exchange_price",
-                    f"Item added\n{self.username}\n{datetime.now().strftime('%B %d %A %Y %I-%M-%S %p')}",
-                )
-                inventory.change_object_in_object_item(
-                    self.category,
-                    name,
-                    "latest_change_priority",
-                    f"Item added\n{self.username}\n{datetime.now().strftime('%B %d %A %Y %I-%M-%S %p')}",
-                )
-                inventory.change_object_in_object_item(
-                    self.category,
-                    name,
-                    "latest_change_notes",
-                    f"Item added\n{self.username}\n{datetime.now().strftime('%B %d %A %Y %I-%M-%S %p')}",
-                )
+                inventory.save_data(inventory_data)
+                inventory.load_data()
                 self.sort_inventory()
                 # self.load_active_tab()
             elif response == DialogButtons.cancel:
@@ -4255,23 +4187,24 @@ class MainWindow(QMainWindow):
     # NOTE for Edit Inventory
     def edit_inventory_item_changes(self, item: QTableWidgetItem) -> None:
         tab = self.tabs[self.category]
+        inventory_data = copy.copy(inventory.get_data())
         tab.blockSignals(False)
         row_index = item.row()
         col_index = item.column()
         item_name: str = tab.item(item.row(), 0).text()
         try:
             new_part_number: str = tab.item(item.row(), 1).text()
-            old_part_number = self.get_value_from_category(item_name, "part_number")
+            old_part_number = inventory_data[self.category][item_name]['part_number']
             unit_quantity: float = float(sympy.sympify(tab.item(item.row(), 2).text().replace(" ", "").replace(",", ""), evaluate=True))
             current_quantity: float = float(sympy.sympify(tab.item(item.row(), 3).text().replace(" ", "").replace(",", ""), evaluate=True))
-            old_current_quantity = self.get_value_from_category(item_name, "current_quantity")
+            old_current_quantity = inventory_data[self.category][item_name]["current_quantity"]
             price: float = float(
                 sympy.sympify(
                     tab.item(item.row(), 4).text().replace("$", "").replace("CAD", "").replace("USD", "").replace(" ", "").replace(",", ""),
                     evaluate=True,
                 )
             )
-            old_price = self.get_value_from_category(item_name, "price")
+            old_price = inventory_data[self.category][item_name]["price"]
         except (ValueError, TypeError, SyntaxError) as e:
             print(e)
             item.setForeground(QColor("red"))
@@ -4279,24 +4212,22 @@ class MainWindow(QMainWindow):
             return
         # QApplication.setOverrideCursor(Qt.CursorShape.BusyCursor)
         if col_index == 1:  # Part Number
-            inventory.change_object_in_object_item(self.category, item_name, "part_number", new_part_number)
-            for category, items in inventory.get_data().items():
+            inventory_data[self.category][item_name]["part_number"] = new_part_number
+            for category, items in inventory_data.items():
                 if category == self.category:
                     continue
                 for item, item_data in items.items():
                     if old_part_number == item_data.get("part_number"):
-                        inventory.change_object_in_object_item(
-                            object_name=category, item_name=item, value_name="part_number", new_value=new_part_number
-                        )
+                        inventory_data[category][item]["part_number"] = new_part_number
         elif col_index == 2:  # Quantity per Unit
-            inventory.change_object_in_object_item(self.category, item_name, "unit_quantity", unit_quantity)
+            inventory_data[self.category][item_name]["unit_quantity"] = unit_quantity
             tab.blockSignals(False)
             unit_quantity_item = tab.item(item.row(), 2)
             tab.blockSignals(True)
             unit_quantity_item.setText(str(unit_quantity))
             self.update_stock_costs()
         elif col_index == 3:  # Quantity in Stock
-            inventory.change_object_in_object_item(self.category, item_name, "current_quantity", current_quantity)
+            inventory_data[self.category][item_name]["current_quantity"] = current_quantity
             modified_date: str = (
                 f"{self.username} - Changed from {old_current_quantity} to {current_quantity} at {datetime.now().strftime('%B %d %A %Y %I-%M-%S %p')}"
             )
@@ -4304,19 +4235,19 @@ class MainWindow(QMainWindow):
             tab.blockSignals(False)
             tab.item(row_index, col_index).setToolTip(modified_date)
             tab.blockSignals(True)
-            inventory.change_object_in_object_item(self.category, item_name, "latest_change_current_quantity", modified_date)
+            inventory_data[self.category][item_name]["latest_change_current_quantity"] = modified_date
             for category, items in inventory.get_data().items():
                 if category == self.category:
                     continue
                 for item, item_data in items.items():
                     if new_part_number == item_data.get("part_number"):
-                        inventory.change_object_in_object_item(category, item, "latest_change_current_quantity", modified_date)
-                        inventory.change_object_in_object_item(
-                            object_name=category, item_name=item, value_name="current_quantity", new_value=current_quantity
-                        )
+                        inventory_data[category][item]["latest_change_current_quantity"] = modified_date
+                        inventory_data[category][item]["current_quantity"] = current_quantity
+            inventory.save_data(inventory_data)
+            inventory.load_data()
             self.sort_inventory()
         elif col_index == 4:  # Item Price
-            use_exchange_rate: bool = self.get_value_from_category(item_name=item_name, key="use_exchange_rate")
+            use_exchange_rate: bool = inventory_data[self.category][item_name]["use_exchange_rate"]
             modified_date: str = f"{self.username} - Changed from {old_price} to {price} at {datetime.now().strftime('%B %d %A %Y %I-%M-%S %p')}"
             converted_price: float = price * self.get_exchange_rate() if use_exchange_rate else price / self.get_exchange_rate()
             tab.blockSignals(False)
@@ -4324,37 +4255,37 @@ class MainWindow(QMainWindow):
             tab.blockSignals(True)
             price_item.setText(f'${price:,.2f} {"USD" if use_exchange_rate else "CAD"}')
             price_item.setToolTip(f'${converted_price:,.2f} {"CAD" if use_exchange_rate else "USD"}\n{modified_date}')
-            inventory.change_object_in_object_item(self.category, item_name, "price", price)
-            inventory.change_object_in_object_item(self.category, item_name, "latest_change_price", modified_date)
+            inventory_data[self.category][item_name]["price"] = price
+            inventory_data[self.category][item_name]["latest_change_price"] = modified_date
             self.update_stock_costs()
             for category, items in inventory.get_data().items():
                 if category == self.category:
                     continue
                 for item, item_data in items.items():
                     if new_part_number == item_data.get("part_number"):
-                        inventory.change_object_in_object_item(object_name=category, item_name=item, value_name="price", new_value=price)
-                        inventory.change_object_in_object_item(
-                            object_name=category, item_name=item, value_name="latest_change_price", new_value=modified_date
-                        )
+                        inventory_data[category][item]["price"] = price
+                        inventory_data[category][item]["latest_change_price"] = modified_date
         elif col_index == 9:  # Shelf Number
             tab.blockSignals(False)
             shelf_number = tab.item(row_index, col_index).text()
             tab.blockSignals(True)
-            inventory.change_object_in_object_item(self.category, item_name, "shelf_number", shelf_number)
+            inventory_data[self.category][item_name]["shelf_number"] = shelf_number
             for category, items in inventory.get_data().items():
                 if category == self.category:
                     continue
                 for item, item_data in items.items():
                     if new_part_number == item_data.get("part_number"):
-                        inventory.change_object_in_object_item(category, item_name, "shelf_number", shelf_number)
+                        inventory_data[category][item_name]["shelf_number"] = shelf_number
         tab.blockSignals(False)
         if col_index != 3:
+            inventory.save_data(inventory_data)
+            inventory.load_data()
             self.sync_changes()
         # QApplication.restoreOverrideCursor()
 
     # NOTE for Parts in Inventory
     def parts_in_inventory_item_changes(self, item: QTableWidgetItem) -> None:
-        category_data = parts_in_inventory.get_data()
+        inventory_data = copy.copy(parts_in_inventory.get_data())
         tab = self.tabs[self.category]
         tab.blockSignals(False)
         item_name: str = tab.item(item.row(), 0).text()
@@ -4381,35 +4312,26 @@ class MainWindow(QMainWindow):
         elif column_index == 5:
             shelf_item = tab.item(row_index, 5).text()
             tab.blockSignals(True)
-            parts_in_inventory.change_object_in_object_item(self.category, item_name, "shelf_number", shelf_item)
+            inventory_data[self.category][item_name]['shelf_number'] = shelf_item
         elif column_index == 3:
             notes_item = tab.item(row_index, 6)
             tab.blockSignals(True)
             notes_item.setText(new_modified_date)
-            parts_in_inventory.change_object_in_object_item(self.category, item_name, "modified_date", new_modified_date)
+            inventory_data[self.category][item_name]['modified_date'] = new_modified_date
 
         tab.blockSignals(False)
 
-        for category in list(category_data.keys()):
+        for category in list(inventory_data.keys()):
             if category in ["Recut", self.category]:
                 continue
-            if item_name in list(parts_in_inventory.get_data()[category].keys()):
-                parts_in_inventory.change_object_in_object_item(
-                    object_name=category,
-                    item_name=item_name,
-                    value_name="current_quantity",
-                    new_value=current_quantity,
-                )
-                parts_in_inventory.change_object_in_object_item(
-                    object_name=category,
-                    item_name=item_name,
-                    value_name="modified_date",
-                    new_value=new_modified_date,
-                )
-        parts_in_inventory.change_object_in_object_item(self.category, item_name, "unit_quantity", unit_quantity)
-        parts_in_inventory.change_object_in_object_item(self.category, item_name, "price", item_price)
-        parts_in_inventory.change_object_in_object_item(self.category, item_name, "current_quantity", current_quantity)
-
+            if item_name in list(inventory_data[category].keys()):
+                inventory_data[category][item_name]['current_quantity'] = current_quantity
+                inventory_data[category][item_name]['modified_date'] = new_modified_date
+        inventory_data[self.category][item_name]['unit_quantity'] = unit_quantity
+        inventory_data[self.category][item_name]['price'] = item_price
+        inventory_data[self.category][item_name]['current_quantity'] = current_quantity
+        parts_in_inventory.save_data(inventory_data)
+        parts_in_inventory.load_data()
         self.calculate_parts_in_inventory_summary()
         self.sync_changes()
         self.load_active_tab()
@@ -4417,6 +4339,7 @@ class MainWindow(QMainWindow):
 
     # NOTE for Sheets in Inventory
     def sheets_in_inventory_item_changes(self, item: QTableWidgetItem) -> None:
+        inventory_data = copy.copy(price_of_steel_inventory.get_data())
         tab = self.tabs[self.category]
         tab.blockSignals(False)
         row_index: int = item.row()
@@ -4436,12 +4359,12 @@ class MainWindow(QMainWindow):
             tab.blockSignals(True)
             price_item.setText(f"${new_price:,.2f}")
             tab.blockSignals(False)
-            old_price = self.get_value_from_category(item_name, "price")
+            old_price = inventory_data[self.category][item_name]["price"]
             modified_date: str = (
                 f'{self.username} - Modified from ${old_price:,.2f} to ${new_price:,.2f} at {datetime.now().strftime("%B %d %A %Y %I:%M:%S %p")}'
             )
-            price_of_steel_inventory.change_object_in_object_item(self.category, item_name, "price", new_price)
-            price_of_steel_inventory.change_object_in_object_item(self.category, item_name, "latest_change_price", modified_date)
+            inventory_data[self.category][item_name]['price'] = new_price
+            inventory_data[self.category][item_name]['latest_change_price'] = modified_date
         else:
             try:
                 new_quantity: float = float(sympy.sympify(tab.item(row_index, 2).text().replace(" ", "").replace(",", ""), evaluate=True))
@@ -4450,19 +4373,21 @@ class MainWindow(QMainWindow):
                 self.status_button.setText(f"{item_name}: Enter a valid number, aborted!", "red")
                 return
             notes: str = tab.item(row_index, 6).text()
-            old_quantity: float = self.get_value_from_category(item_name, "current_quantity")
+            old_quantity: float = inventory_data[self.category][item_name]["current_quantity"]
             modified_date: str = (
                 f"{self.username} - Manually set to {new_quantity} from {old_quantity} at {datetime.now().strftime('%B %d %A %Y %I:%M:%S %p')}"
             )
-            red_quantity_limit: int = self.get_value_from_category(item_name, "red_limit")
+            red_quantity_limit: int = inventory_data[self.category][item_name]["red_limit"]
             if red_quantity_limit is None:
                 red_quantity_limit: int = 4
             if new_quantity > red_quantity_limit:
-                price_of_steel_inventory.change_object_in_object_item(self.category, item_name, "has_sent_warning", False)
-            price_of_steel_inventory.change_object_in_object_item(self.category, item_name, "notes", notes)
-            price_of_steel_inventory.change_object_in_object_item(self.category, item_name, "current_quantity", new_quantity)
-            price_of_steel_inventory.change_object_in_object_item(self.category, item_name, "latest_change_current_quantity", modified_date)
+                inventory_data[self.category][item_name]['has_sent_warning'] = False
+            inventory_data[self.category][item_name]['notes'] = notes
+            inventory_data[self.category][item_name]['current_quantity'] = new_quantity
+            inventory_data[self.category][item_name]['latest_change_current_quantity'] = modified_date
         tab.blockSignals(False)
+        price_of_steel_inventory.save_data(inventory_data)
+        price_of_steel_inventory.load_data()
         self.load_active_tab()
         self.sync_changes()
         # QApplication.restoreOverrideCursor()

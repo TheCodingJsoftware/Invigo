@@ -165,8 +165,8 @@
                        <rect>
                         <x>0</x>
                         <y>0</y>
-                        <width>98</width>
-                        <height>28</height>
+                        <width>220</width>
+                        <height>121</height>
                        </rect>
                       </property>
                       <property name="maximumSize">
@@ -508,8 +508,8 @@ QPushButton#pushButton_create_new:disabled{
                 <rect>
                  <x>0</x>
                  <y>0</y>
-                 <width>98</width>
-                 <height>28</height>
+                 <width>184</width>
+                 <height>655</height>
                 </rect>
                </property>
                <property name="maximumSize">
@@ -736,8 +736,8 @@ QPushButton#pushButton_add_new_sheet:disabled{
                 <rect>
                  <x>0</x>
                  <y>0</y>
-                 <width>98</width>
-                 <height>198</height>
+                 <width>357</width>
+                 <height>567</height>
                 </rect>
                </property>
                <layout class="QVBoxLayout" name="verticalLayout_21">
@@ -1223,6 +1223,43 @@ QPushButton#pushButton_add_new_sheet:disabled{
                                 </property>
                                 <property name="statusTip">
                                  <string>Match item cost to sheet cost</string>
+                                </property>
+                                <property name="styleSheet">
+                                 <string notr="true">QPushButton#pushButton_item_to_sheet{
+	color: #ffffff;
+    background-color: #3daee9;
+    border: 0.01em solid #3daee9;
+    border-radius: 8px;
+}
+QPushButton#pushButton_item_to_sheet:checked{
+    background-color: #3daee9;
+    border: 0.01em solid #3daee9;
+}
+QPushButton#pushButton_item_to_sheet:hover{
+    background-color: #48b6ed;
+    border-color: #48b6ed;
+}
+QPushButton#pushButton_item_to_sheet:pressed{
+    background-color: #2b92c5;
+    border-color: #2b92c5;
+}
+
+QPushButton#pushButton_item_to_sheet:!checked {
+    background-color: rgba(71, 71, 71, 130);
+    border: 0.01em solid rgba(76, 76, 76, 130);
+    border-radius: 8px;
+    color: grey;
+}
+
+QPushButton:hover#pushButton_item_to_sheet:!checked {
+    background-color: rgba(76, 76, 76, 130);
+    border: 0.01em solid rgba(71, 76, 88, 130);
+}
+
+QPushButton:pressed#pushButton_item_to_sheet:!checked {
+    background-color: rgba(39, 39, 39, 130);
+    border: 0.01em solid rgba(47, 50, 57, 130);
+}</string>
                                 </property>
                                 <property name="text">
                                  <string>Match Item Cost to Sheet Cost</string>
@@ -2306,8 +2343,8 @@ QPushButton:pressed#pushButton_show_item_summary:!checked {
                      <rect>
                       <x>0</x>
                       <y>0</y>
-                      <width>98</width>
-                      <height>28</height>
+                      <width>280</width>
+                      <height>176</height>
                      </rect>
                     </property>
                     <layout class="QHBoxLayout" name="horizontalLayout_21">
