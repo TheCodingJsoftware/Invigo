@@ -1,8 +1,8 @@
 # sourcery skip: avoid-builtin-shadow
-import cProfile
 import configparser
 import contextlib
 import copy
+import cProfile
 import json
 import logging
 import os
@@ -14,7 +14,6 @@ import threading
 import time
 import traceback
 import webbrowser
-import win32file
 import winsound
 from datetime import datetime, timedelta
 from functools import partial
@@ -24,6 +23,7 @@ import markdown
 import requests
 import sympy
 import win32api
+import win32file
 from natsort import natsorted
 from PyQt6 import QtWebEngineWidgets, uic
 from PyQt6.QtCore import (
@@ -109,10 +109,9 @@ from ui.add_workspace_item import AddWorkspaceItem
 from ui.color_picker_dialog import ColorPicker
 from ui.custom_widgets import (
     AssemblyMultiToolBox,
-    LoadingScreen,
     ClickableLabel,
-    CustomStandardItemModel,
     ComponentsCustomTableWidget,
+    CustomStandardItemModel,
     CustomTableWidget,
     CustomTabWidget,
     DeletePushButton,
@@ -122,6 +121,8 @@ from ui.custom_widgets import (
     FilterTabWidget,
     HumbleDoubleSpinBox,
     ItemsGroupBox,
+    LoadingScreen,
+    MachineCutTimeSpinBox,
     MultiToolBox,
     NotesPlainTextEdit,
     OrderStatusButton,
@@ -134,7 +135,6 @@ from ui.custom_widgets import (
     RichTextPushButton,
     ScrollPositionManager,
     SelectRangeCalendar,
-    MachineCutTimeSpinBox,
     TimeSpinBox,
     ViewTree,
     set_default_dialog_button_stylesheet,
@@ -186,7 +186,7 @@ __copyright__: str = "Copyright 2022-2023, TheCodingJ's"
 __credits__: list[str] = ["Jared Gross"]
 __license__: str = "MIT"
 __name__: str = "Invigo"
-__version__: str = "v2.2.29"
+__version__: str = "v2.2.30"
 __updated__: str = "2023-08-30 12:32:51"
 __maintainer__: str = "Jared Gross"
 __email__: str = "jared@pinelandfarms.ca"
@@ -298,6 +298,7 @@ def check_folders(folders: list[str]) -> None:
 
 def _play_celebrate_sound() -> None:
     winsound.PlaySound("sound.wav", winsound.SND_FILENAME)
+
 
 def _play_boot_sound() -> None:
     winsound.PlaySound("boot.wav", winsound.SND_FILENAME)
@@ -4719,7 +4720,7 @@ class MainWindow(QMainWindow):
                     self.radioButton_category.setEnabled(False)
                     self.radioButton_single.setEnabled(False)
                     # # QApplication.restoreOverrideCursor()
-                    return
+                    # return
             except AttributeError:
                 self.set_layout_message("You need to", "create", "a category", 120, self.create_new_category)
                 self.pushButton_create_new.setEnabled(False)

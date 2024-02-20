@@ -31,6 +31,7 @@ from PyQt6.QtCore import (
 )
 from PyQt6.QtGui import (
     QBrush,
+    QClipboard,
     QColor,
     QCursor,
     QDrag,
@@ -40,6 +41,7 @@ from PyQt6.QtGui import (
     QDropEvent,
     QFileSystemModel,
     QIcon,
+    QKeySequence,
     QPainter,
     QPalette,
     QPixmap,
@@ -47,8 +49,6 @@ from PyQt6.QtGui import (
     QStandardItem,
     QStandardItemModel,
     QTextCharFormat,
-    QClipboard,
-    QKeySequence,
 )
 from PyQt6.QtWidgets import (
     QAbstractItemView,
@@ -73,6 +73,7 @@ from PyQt6.QtWidgets import (
     QScrollArea,
     QSizePolicy,
     QSpinBox,
+    QSplashScreen,
     QStyle,
     QStyledItemDelegate,
     QStyleOptionComboBox,
@@ -89,7 +90,6 @@ from PyQt6.QtWidgets import (
     QTreeWidgetItem,
     QVBoxLayout,
     QWidget,
-    QSplashScreen,
 )
 
 from utils.colors import darken_color, lighten_color

@@ -1,13 +1,12 @@
 import os.path
 from functools import partial
 
+from natsort import natsorted
 from PyQt6 import uic
 from PyQt6.QtCore import QFile, Qt, QTextStream
 from PyQt6.QtGui import QIcon
 from PyQt6.QtSvgWidgets import QSvgWidget
-from PyQt6.QtWidgets import QDialog, QPushButton, QCompleter
-
-from natsort import natsorted
+from PyQt6.QtWidgets import QCompleter, QDialog, QPushButton
 
 from ui.custom_widgets import set_default_dialog_button_stylesheet
 from ui.theme import set_theme
