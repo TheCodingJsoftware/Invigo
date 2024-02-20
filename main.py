@@ -1595,35 +1595,30 @@ class MainWindow(QMainWindow):
         )
         if are_you_sure_dialog in [DialogButtons.no, DialogButtons.cancel]:
             return
+        inventory_data = copy.copy(inventory.get_data())
         for item_name in selected_items:
-            part_number: str = data[self.category][item_name]["part_number"]
-            current_quantity: int = data[self.category][item_name]["current_quantity"]
-            inventory.change_object_in_object_item(self.category, item_name, "current_quantity", current_quantity + self.spinBox_quantity.value())
-            inventory.change_object_in_object_item(
-                self.category,
-                item_name,
-                "latest_change_current_quantity",
-                f"{self.username} - Changed from {current_quantity} to {current_quantity + self.spinBox_quantity.value()} at {datetime.now().strftime('%B %d %A %Y %I-%M-%S %p')}",
-            )
+            part_number: str = self.get_value_from_category(item_name, "part_number")
+            current_quantity: int = self.get_value_from_category(item_name, "current_quantity")
+            inventory_data[self.category][item_name]['current_quantity'] = current_quantity + self.spinBox_quantity.value()
+            inventory_data[self.category][item_name]['latest_change_current_quantity'] = f"{self.username} - Changed from {current_quantity} to {current_quantity + self.spinBox_quantity.value()} at {datetime.now().strftime('%B %d %A %Y %I-%M-%S %p')}"
             for category in inventory.get_keys():
                 if category == self.category:
                     continue
-                for item in list(data[category].keys()):
-                    if part_number == data[category][item]["part_number"]:
-                        current_quantity: int = data[category][item]["current_quantity"]
-                        inventory.change_object_in_object_item(category, item, "current_quantity", current_quantity + self.spinBox_quantity.value())
-                        inventory.change_object_in_object_item(
-                            category,
-                            item,
-                            "latest_change_current_quantity",
-                            f"{self.username} - Changed from {current_quantity} to {current_quantity + self.spinBox_quantity.value()} at {datetime.now().strftime('%B %d %A %Y %I-%M-%S %p')}",
-                        )
+                for item in list(inventory_data[category].keys()):
+                    if part_number == inventory_data[category][item]["part_number"]:
+                        current_quantity: int = inventory_data[category][item]["current_quantity"]
+                        inventory_data[category][item]['current_quantity'] = current_quantity + self.spinBox_quantity.value()
+                        inventory_data[category][item]['latest_change_current_quantity'] = f"{self.username} - Changed from {current_quantity} to {current_quantity + self.spinBox_quantity.value()} at {datetime.now().strftime('%B %d %A %Y %I-%M-%S %p')}"
         self.pushButton_add_quantity.setEnabled(False)
         self.pushButton_remove_quantity.setEnabled(False)
-        # self.listWidget_item_changed()
-        # self.listWidget_itemnames.setCurrentRow(self.last_item_selected_index)
+        inventory.save_data(inventory_data)
+        inventory.load_data()
         self.update_category_total_stock_costs()
         self.sort_inventory()
+        table_widget: CustomTableWidget = self.tabs[self.category]
+        self.last_item_selected_index = list(list(inventory_data[self.category].keys())).index(self.last_item_selected_name)
+        table_widget.scrollTo(table_widget.model().index(self.last_item_selected_index, 0))
+        table_widget.selectRow(self.last_item_selected_index)
 
     # NOTE for EDIT INVENTORY
     def remove_quantity(self) -> None:
@@ -1634,7 +1629,6 @@ class MainWindow(QMainWindow):
         Returns:
           The function does not have a return statement, so it returns None.
         """
-        data = inventory.get_data()
         table = self.tabs[self.category]
         selected_rows = list(set([item.row() for item in table.selectedItems()]))
         selected_items = [table.item(row, 0).text() for row in selected_rows]
@@ -1645,35 +1639,20 @@ class MainWindow(QMainWindow):
         )
         if are_you_sure_dialog in [DialogButtons.no, DialogButtons.cancel]:
             return
-        logging.error(f"Remove quantity. 1-removing items from {self.category}")
+        inventory_data = copy.copy(inventory.get_data())
         for item_name in selected_items:
             part_number: str = self.get_value_from_category(item_name, "part_number")
             current_quantity: int = self.get_value_from_category(item_name, "current_quantity")
-            inventory.change_object_in_object_item(self.category, item_name, "current_quantity", current_quantity - self.spinBox_quantity.value())
-            inventory.change_object_in_object_item(
-                self.category,
-                item_name,
-                "latest_change_current_quantity",
-                f"{self.username} - Changed from {current_quantity} to {current_quantity - self.spinBox_quantity.value()} at {datetime.now().strftime('%B %d %A %Y %I-%M-%S %p')}",
-            )
-            logging.error("Remove quantity. 1-removing items from inventory")
+            inventory_data[self.category][item_name]['current_quantity'] = current_quantity - self.spinBox_quantity.value()
+            inventory_data[self.category][item_name]['latest_change_current_quantity'] = f"{self.username} - Changed from {current_quantity} to {current_quantity - self.spinBox_quantity.value()} at {datetime.now().strftime('%B %d %A %Y %I-%M-%S %p')}"
             for category in inventory.get_keys():
                 if category == self.category:
                     continue
-                for item in list(data[category].keys()):
-                    if part_number == data[category][item]["part_number"]:
-                        logging.error(f"Remove quantity. 1-match with {category}-{part_number}")
-                        current_quantity: int = data[category][item]["current_quantity"]
-                        logging.error(f"Remove quantity. 1-removing quantity from {category}-{part_number}")
-                        inventory.change_object_in_object_item(category, item, "current_quantity", current_quantity - self.spinBox_quantity.value())
-                        inventory.change_object_in_object_item(
-                            category,
-                            item,
-                            "latest_change_current_quantity",
-                            f"{self.username} - Changed from {current_quantity} to {current_quantity - self.spinBox_quantity.value()} at {datetime.now().strftime('%B %d %A %Y %I-%M-%S %p')}",
-                        )
-                        logging.error(f"Remove quantity. 1-quantity removed from {category}-{part_number}")
-            logging.error(f"Remove quantity. 1-creating history")
+                for item in list(inventory_data[category].keys()):
+                    if part_number == inventory_data[category][item]["part_number"]:
+                        current_quantity: int = inventory_data[category][item]["current_quantity"]
+                        inventory_data[category][item]['current_quantity'] = current_quantity - self.spinBox_quantity.value()
+                        inventory_data[category][item]['latest_change_current_quantity'] = f"{self.username} - Changed from {current_quantity} to {current_quantity - self.spinBox_quantity.value()} at {datetime.now().strftime('%B %d %A %Y %I-%M-%S %p')}"
             history_file = HistoryFile()
             if self.spinBox_quantity.value() > 1:
                 history_file.add_new_to_single_item(
@@ -1685,16 +1664,16 @@ class MainWindow(QMainWindow):
                     date=datetime.now().strftime("%B %d %A %Y %I:%M:%S %p"),
                     description=f'Removed {self.spinBox_quantity.value()} quantity from "{item_name}"',
                 )
-
-            logging.error("Remove quantity. 1-history made")
         self.pushButton_add_quantity.setEnabled(False)
         self.pushButton_remove_quantity.setEnabled(False)
-        # self.listWidget_item_changed()
-        # self.last_item_selected_index= 200
-        # self.listWidget_itemnames.setCurrentRow(self.last_item_selected_index)
+        inventory.save_data(inventory_data)
+        inventory.load_data()
         self.update_category_total_stock_costs()
         self.sort_inventory()
-        logging.error("Remove quantity. Donee")
+        table_widget: CustomTableWidget = self.tabs[self.category]
+        self.last_item_selected_index = list(list(inventory_data[self.category].keys())).index(self.last_item_selected_name)
+        table_widget.scrollTo(table_widget.model().index(self.last_item_selected_index, 0))
+        table_widget.selectRow(self.last_item_selected_index)
 
     def listWidget_item_changed(self) -> None:
         """
@@ -4128,7 +4107,6 @@ class MainWindow(QMainWindow):
             if item_dialog.get_response() == 'apply':
                 parts_in_inventory.get_data()[self.category][selected_part] = item_dialog.get_data()
                 self.load_categories()
-
 
     def set_order_number(self) -> None:
         """
