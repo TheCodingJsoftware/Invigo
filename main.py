@@ -186,7 +186,7 @@ __copyright__: str = "Copyright 2022-2023, TheCodingJ's"
 __credits__: list[str] = ["Jared Gross"]
 __license__: str = "MIT"
 __name__: str = "Invigo"
-__version__: str = "v2.2.27"
+__version__: str = "v2.2.28"
 __updated__: str = "2023-08-30 12:32:51"
 __maintainer__: str = "Jared Gross"
 __email__: str = "jared@pinelandfarms.ca"
@@ -1160,129 +1160,80 @@ class MainWindow(QMainWindow):
         part_number = self.get_value_from_category(item_name, 'part_number')
         if button.isChecked() == True and select_date_dialog.exec():
             response = select_date_dialog.get_response()
-            if response == DialogButtons.set:
-                inventory.change_object_in_object_item(
-                    object_name=self.category,
-                    item_name=item_name,
-                    value_name="expected_arrival_time",
-                    new_value=select_date_dialog.get_selected_date(),
-                )
-                inventory.change_object_in_object_item(
-                    object_name=self.category,
-                    item_name=item_name,
-                    value_name="order_pending_quantity",
-                    new_value=select_date_dialog.get_order_quantity(),
-                )
-                for category in inventory.get_keys():
-                    if category == self.category:
-                        continue
-                    for item in list(inventory.data[category].keys()):
-                        if part_number == inventory.data[category][item]["part_number"]:
-                            inventory.change_object_in_object_item(
-                                object_name=category,
-                                item_name=item,
-                                value_name="expected_arrival_time",
-                                new_value=select_date_dialog.get_selected_date(),
-                            )
-                            inventory.change_object_in_object_item(
-                                object_name=category,
-                                item_name=item,
-                                value_name="order_pending_quantity",
-                                new_value=select_date_dialog.get_order_quantity(),
-                            )
-            else:
-                self.load_active_tab()
-                self.sync_changes()
+            if response == DialogButtons.cancel:
+                button.setChecked(False)
                 return
-            inventory.change_object_in_object_item(
-                object_name=self.category,
-                item_name=item_name,
-                value_name="order_pending_date",
-                new_value=datetime.now().strftime("%Y-%m-%d"),
-            )
+            inventory_data = copy.copy(inventory.get_data())
+            inventory_data[self.category][item_name]['expected_arrival_time'] = select_date_dialog.get_selected_date()
+            inventory_data[self.category][item_name]['order_pending_quantity'] = select_date_dialog.get_order_quantity()
+            inventory_data[self.category][item_name]['order_pending_date'] = datetime.now().strftime("%Y-%m-%d")
+            inventory_data[self.category][item_name]['is_order_pending'] = button.isChecked()
             for category in inventory.get_keys():
                 if category == self.category:
                     continue
-                for item in list(inventory.data[category].keys()):
-                    if part_number == inventory.data[category][item]["part_number"]:
-                        inventory.change_object_in_object_item(
-                            object_name=category,
-                            item_name=item,
-                            value_name="order_pending_date",
-                            new_value=datetime.now().strftime("%Y-%m-%d"),
-                        )
+                for item in list(inventory_data[category].keys()):
+                    if part_number == inventory_data[category][item]["part_number"]:
+                        inventory_data[category][item]['expected_arrival_time'] = select_date_dialog.get_selected_date()
+                        inventory_data[category][item]['order_pending_quantity'] = select_date_dialog.get_order_quantity()
+                        inventory_data[category][item]['order_pending_date'] = datetime.now().strftime("%Y-%m-%d")
+                        inventory_data[category][item]['is_order_pending'] = button.isChecked()
+            inventory.save_data(inventory_data)
+            inventory.load_data()
+            self.load_active_tab()
+            self.sync_changes()
+            table_widget: CustomTableWidget = self.tabs[self.category]
+            self.last_item_selected_index = list(list(inventory_data[self.category].keys())).index(self.last_item_selected_name)
+            table_widget.scrollTo(table_widget.model().index(self.last_item_selected_index, 0))
+            table_widget.selectRow(self.last_item_selected_index)
         elif button.isChecked() == False:
+            inventory_data = copy.copy(inventory.get_data())
+            order_pending_quantity: float = inventory_data[self.category][item_name]['order_pending_quantity']
             input_dialog = InputDialog(
                 title="Add Parts Quantity",
                 message=f"Do you want to add the incoming quantity for \"{item_name}\"?",
-                button_names=DialogButtons.add_no,
-                placeholder_text=inventory.data[self.category][item_name]['order_pending_quantity'],
+                button_names=DialogButtons.add_cancel,
+                placeholder_text=str(order_pending_quantity),
             )
             if input_dialog.exec():
                 response = input_dialog.get_response()
-                if response == DialogButtons.add:
-                    try:
-                        input_number = float(input_dialog.inputText)
-                        old_quantity = inventory.data[self.category][item_name]['current_quantity']
-                        new_quantity = old_quantity + input_number
-                        inventory.change_object_in_object_item(
-                            object_name=self.category,
-                            item_name=item_name,
-                            value_name="current_quantity",
-                            new_value=new_quantity,
-                        )
-                        inventory.change_object_in_object_item(
-                            self.category,
-                            item_name,
-                            "latest_change_current_quantity",
-                            f"{self.username} - Changed from {old_quantity} to {new_quantity} at {datetime.now().strftime('%B %d %A %Y %I-%M-%S %p')}",
-                        )
-                        for category in inventory.get_keys():
-                            if category == self.category:
-                                continue
-                            for item in list(inventory.data[category].keys()):
-                                if part_number == inventory.data[category][item]["part_number"]:
-                                    inventory.change_object_in_object_item(
-                                        object_name=category,
-                                        item_name=item,
-                                        value_name="current_quantity",
-                                        new_value=new_quantity,
-                                    )
-                                    inventory.change_object_in_object_item(
-                                        category,
-                                        item,
-                                        "latest_change_current_quantity",
-                                        f"{self.username} - Changed from {old_quantity} to {new_quantity} at {datetime.now().strftime('%B %d %A %Y %I-%M-%S %p')}",
-                                    )
-                    except Exception:
-                        self.show_error_dialog(
-                            title="Invalid number",
-                            message=f"'{input_dialog.inputText}' is an invalid numnber",
-                            dialog_buttons=DialogButtons.ok,
-                        )
-                        return
-                elif response == DialogButtons.cancel:
+                if response == DialogButtons.cancel:
+                    button.setChecked(True)
                     return
-        inventory.change_object_in_object_item(
-            object_name=self.category,
-            item_name=item_name,
-            value_name="is_order_pending",
-            new_value=button.isChecked(),
-        )
-        for category in inventory.get_keys():
-            if category == self.category:
-                continue
-            for item in list(inventory.data[category].keys()):
-                if part_number == inventory.data[category][item]["part_number"]:
-                    inventory.change_object_in_object_item(
-                        object_name=category,
-                        item_name=item,
-                        value_name="is_order_pending",
-                        new_value=button.isChecked(),
-                    )
+                try:
+                    input_number = float(input_dialog.inputText)
+                    remaining_quantity = order_pending_quantity - input_number
+                    old_quantity = inventory_data[self.category][item_name]['current_quantity']
+                    new_quantity = old_quantity + input_number
+                    if order_pending_quantity == input_number:
+                        inventory_data[self.category][item_name]['is_order_pending'] = button.isChecked()
+                    inventory_data[self.category][item_name]['current_quantity'] = new_quantity
+                    inventory_data[self.category][item_name]['latest_change_current_quantity'] = f"{self.username} - Changed from {old_quantity} to {new_quantity} at {datetime.now().strftime('%B %d %A %Y %I-%M-%S %p')}"
+                    inventory_data[self.category][item_name]['order_pending_quantity'] = remaining_quantity
+                    for category in inventory.get_keys():
+                        if category == self.category:
+                            continue
+                        for item in list(inventory_data[category].keys()):
+                            if part_number == inventory_data[category][item]["part_number"]:
+                                inventory_data[category][item]['current_quantity'] = new_quantity
+                                inventory_data[category][item]['latest_change_current_quantity'] = f"{self.username} - Changed from {old_quantity} to {new_quantity} at {datetime.now().strftime('%B %d %A %Y %I-%M-%S %p')}"
+                                inventory_data[category][item]['order_pending_quantity'] = remaining_quantity
+                                if order_pending_quantity == input_number:
+                                    inventory_data[category][item]['is_order_pending'] = button.isChecked()
+                    inventory.save_data(inventory_data)
+                    inventory.load_data()
+                    self.sort_inventory()
 
-        self.load_active_tab()
-        self.sync_changes()
+                    table_widget: CustomTableWidget = self.tabs[self.category]
+                    self.last_item_selected_index = list(list(inventory_data[self.category].keys())).index(self.last_item_selected_name)
+                    table_widget.scrollTo(table_widget.model().index(self.last_item_selected_index, 0))
+                    table_widget.selectRow(self.last_item_selected_index)
+                except Exception:
+                    self.show_error_dialog(
+                        title="Invalid number",
+                        message=f"'{input_dialog.inputText}' is an invalid numnber",
+                        dialog_buttons=DialogButtons.ok,
+                    )
+                    return
 
     # NOTE EDIT INVENTORY
     def arrival_date_change_edit_inventory(self, item_name: str, arrival_date: QDateEdit) -> None:
@@ -1295,24 +1246,17 @@ class MainWindow(QMainWindow):
           arrival_date (QDateEdit): The `arrival_date` parameter is a `QDateEdit` object, which is a
         widget that allows the user to select a date.
         """
-        inventory.change_object_in_object_item(
-            object_name=self.category,
-            item_name=item_name,
-            value_name="expected_arrival_time",
-            new_value=arrival_date.date().toString("yyyy-MM-dd"),
-        )
+        inventory_data = copy.copy(inventory.get_data())
+        inventory_data[self.category][item_name]["expected_arrival_time"] = arrival_date.date().toString("yyyy-MM-dd")
         part_number = self.get_value_from_category(item_name, 'part_number')
         for category in inventory.get_keys():
             if category == self.category:
                 continue
-            for item in list(inventory.data[category].keys()):
-                if part_number == inventory.data[category][item]["part_number"]:
-                    inventory.change_object_in_object_item(
-                        object_name=category,
-                        item_name=item_name,
-                        value_name="expected_arrival_time",
-                        new_value=arrival_date.date().toString("yyyy-MM-dd"),
-                    )
+            for item in list(inventory_data[category].keys()):
+                if part_number == inventory_data[category][item]["part_number"]:
+                    inventory_data[category][item]["expected_arrival_time"] = arrival_date.date().toString("yyyy-MM-dd")
+        inventory.save_data(inventory_data)
+        inventory.load_data()
         self.load_active_tab()
         self.sync_changes()
 
@@ -1679,7 +1623,6 @@ class MainWindow(QMainWindow):
         # self.listWidget_itemnames.setCurrentRow(self.last_item_selected_index)
         self.update_category_total_stock_costs()
         self.sort_inventory()
-        self.sync_changes()
 
     # NOTE for EDIT INVENTORY
     def remove_quantity(self) -> None:
@@ -1750,7 +1693,6 @@ class MainWindow(QMainWindow):
         # self.listWidget_itemnames.setCurrentRow(self.last_item_selected_index)
         self.update_category_total_stock_costs()
         self.sort_inventory()
-        self.sync_changes()
         logging.error("Remove quantity. Donee")
 
     def listWidget_item_changed(self) -> None:
@@ -1770,7 +1712,7 @@ class MainWindow(QMainWindow):
             return
         # it brings incorrect results
         try:
-            self.last_item_selected_index = list(list(inventory.get_data()[self.category].keys())).index(self.last_item_selected_name)
+            self.last_item_selected_index = list(list(inventory.data[self.category].keys())).index(self.last_item_selected_name)
         except (ValueError, KeyError):
             return
         # self.last_item_selected_index=200
@@ -9914,7 +9856,8 @@ class MainWindow(QMainWindow):
             inventory.load_data()
             price_of_steel_inventory.load_data()
             parts_in_inventory.load_data()
-            self.load_categories()
+            self.tool_box_menu_changed()
+            # self.load_categories()
             self.status_button.setText(f'Downloaded all files - {datetime.now().strftime("%r")}', "lime")
             self.centralwidget.setEnabled(True)
             # ON STARTUP
@@ -9926,7 +9869,7 @@ class MainWindow(QMainWindow):
                     f"{self.inventory_file_name} - Parts in Inventory.json",
                 ]
             )
-            self.tool_box_menu_changed()
+            # self.tool_box_menu_changed()
             self.quantities_change()
             self.start_exchange_rate_thread()
             if geometry.get_value("x") == 0 and geometry.get_value("y") == 0:
