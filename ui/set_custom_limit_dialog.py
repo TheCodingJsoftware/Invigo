@@ -17,10 +17,6 @@ settings_file = JsonFile(file_name="settings")
 
 
 class SetCustomLimitDialog(QDialog):
-    """
-    Message dialog
-    """
-
     def __init__(
         self,
         parent=None,
@@ -31,17 +27,6 @@ class SetCustomLimitDialog(QDialog):
         red_limit: int = 10,
         yellow_limit: int = 20,
     ) -> None:
-        """
-        It's a constructor for a class that inherits from QDialog. It takes in a bunch of arguments and
-        sets some class variables
-
-        Args:
-          parent: The parent widget of the dialog.
-          icon_name (str): str = Icons.question,
-          button_names (str): str = DialogButtons.add_cancel,
-          title (str): str = __name__,
-          message (str): str = "",
-        """
         super(SetCustomLimitDialog, self).__init__(parent)
         uic.loadUi("ui/set_custom_limit_dialog.ui", self)
 
@@ -75,39 +60,16 @@ class SetCustomLimitDialog(QDialog):
         self.load_theme()
 
     def load_theme(self) -> None:
-        """
-        It loads the stylesheet.qss file from the theme folder
-        """
         set_theme(self, theme="dark")
 
     def get_icon(self, path_to_icon: str) -> QSvgWidget:
-        """
-        It returns a QSvgWidget object that is initialized with a path to an SVG icon
-
-        Args:
-          path_to_icon (str): The path to the icon you want to use.
-
-        Returns:
-          A QSvgWidget object.
-        """
         return QSvgWidget(f"icons/{path_to_icon}")
 
     def button_press(self, button) -> None:
-        """
-        The function is called when a button is pressed. It sets the response to the text of the button
-        and then closes the dialog
-
-        Args:
-          button: The button that was clicked.
-        """
         self.response = button.text()
         self.accept()
 
     def load_dialog_buttons(self) -> None:
-        """
-        This function loads dialog buttons with icons and tooltips based on their names and sets the
-        default button style.
-        """
         button_names = self.button_names.split(", ")
         for index, name in enumerate(button_names):
             if name == DialogButtons.set:
@@ -130,39 +92,14 @@ class SetCustomLimitDialog(QDialog):
             self.buttonsLayout.addWidget(button)
 
     def check_quantity_values(self) -> None:
-        """
-        This function checks if the red limit value is greater than the yellow limit value and sets the
-        red limit value to the yellow limit value if it is.
-        """
         if self.get_red_limit() > self.get_yellow_limit():
             self.doubleSpinBox_red_limit.setValue(self.doubleSpinBox_yellow_limit.value())
 
     def get_response(self) -> str:
-        """
-        This function returns a string with all spaces removed from the input string.
-
-        Returns:
-          A string is being returned, which is the value of the instance variable `response` with all
-        spaces removed.
-        """
         return self.response.replace(" ", "")
 
     def get_red_limit(self) -> float:
-        """
-        This function returns the value of the red limit from a double spin box.
-
-        Returns:
-          The method `get_red_limit` is returning a float value which is obtained from the `value()`
-        method of a `doubleSpinBox` object named `doubleSpinBox_red_limit`.
-        """
         return self.doubleSpinBox_red_limit.value()
 
     def get_yellow_limit(self) -> float:
-        """
-        This function returns the value of the yellow limit from a double spin box.
-
-        Returns:
-          The method `get_yellow_limit` is returning a float value which is obtained from the `value()`
-        method of a `doubleSpinBox` object named `doubleSpinBox_yellow_limit`.
-        """
         return self.doubleSpinBox_yellow_limit.value()

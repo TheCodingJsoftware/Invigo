@@ -11,20 +11,7 @@ settings_file = JsonFile(file_name="settings")
 
 
 class AboutDialog(QWidget):
-    """
-    About dialog
-    """
-
     def __init__(self, parent, title: str, version: str, updated: str, home: str) -> None:
-        """
-        It's a function that loads the about dialog
-
-        Args:
-          title (str): str = "My App"
-          version (str): str = "0.0.1"
-          updated (str): str = "2020-04-20"
-          home (str): str = "https://github.com/michael-k-zhang/py-pomodoro"
-        """
         super(AboutDialog, self).__init__(parent)
         uic.loadUi("ui/about_dialog.ui", self)
 
@@ -57,7 +44,4 @@ class AboutDialog(QWidget):
         self.load_theme()
 
     def load_theme(self) -> None:
-        """
-        It loads the stylesheet.qss file from the theme folder
-        """
         set_theme(self, theme="dark")

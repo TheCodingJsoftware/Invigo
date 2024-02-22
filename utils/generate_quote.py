@@ -60,7 +60,7 @@ class GenerateQuote:
         sheets_picture_html = '<div class="nests">'
         total_cuttime: float = 0
 
-        for i, (item, item_data) in enumerate(self.quote_data.items()):
+        for item, item_data in self.quote_data.items():
             if item[0] == '_':
                 sheet_name = item.split('/')[-1].replace('.pdf', '')
                 total_seconds = float(item_data['machining_time'])
@@ -522,16 +522,28 @@ class GenerateQuote:
         <div data-role="main" class="ui-content">
         '''
 
-        html_end = f'''
+        html_end = (
+            (
+                (
+                    (
+                        '''
         </div style="width: 60%;">
             <label for="showTotalCost" id="showTotalCostLabel" style="background-color: white; width: 130px; margin-left: 44%; border: none;">Show Total Cost</label>
             <div id="total-cost-div">
-            ''' + (f'<input style="background-color: white; display: none;" type="checkbox" id="showTotalCost" {"checked=true" if title == "Quote" else ""}>') + '''
-            ''' + (f'<h2 style="text-align: center; margin: 4px 0px;" id="total-cost">Total Cost: ${self.get_total_price():,.2f}</h2>') + '''
+            '''
+                        + f'<input style="background-color: white; display: none;" type="checkbox" id="showTotalCost" {"checked=true" if title == "Quote" else ""}>'
+                    )
+                    + '''
+            '''
+                )
+                + f'<h2 style="text-align: center; margin: 4px 0px;" id="total-cost">Total Cost: ${self.get_total_price():,.2f}</h2>'
+            )
+            + '''
             <p style="text-align: center; text-decoration: underline; font-weight: bold;">No tax is added in this quote.</p>
             <p style="text-align: center;">Payment past due date will receive 1.5% interest rate per month of received goods.</p>
         </div>
         </html>'''
+        )
         html_text = html_start
         if self.should_group_items:
             for i1, nest in enumerate(list(self.quote_data.keys())):
@@ -549,8 +561,7 @@ class GenerateQuote:
                         html_item_data = '<table class="dltrc" style="background:none;"><tbody><tr class="dlheader" style="height: 20px;"><td class="dlheader">Key</td><td class="dlheader">Value</td></tr>'
                         for data in item_data:
                             html_item_data += f'<tr class="dlinfo hover01" style="height: 20px;"><td class="dlinfo hover01">{data.replace("_", " ").title()}</td><td class="dlinfo hover01"> {item_data[data]}</td></tr>'
-                        else:
-                            html_item_data += '</tbody></table>'
+                        html_item_data += '</tbody></table>'
                         try:
                             shelf_number = item_data["shelf_number"]
                         except KeyError:
@@ -568,9 +579,8 @@ class GenerateQuote:
                         except KeyError as e:
                             print(f"Key Error for {e}")
                             continue
-                else:
-                    if has_items:
-                        html_text += f'<tr style="height: 20px;"><td class="ui-table-cell-visible"></td><td class="ui-table-cell-visible"></td><td class="{"ui-table-cell-hidden" if title != "Workorder" else "ui-table-cell-visible"}"></td><td class="ui-table-cell-visible"></td><td class="ui-table-cell-visible"></td><td class="{"ui-table-cell-visible" if title == "Workorder" else "ui-table-cell-hidden"}"><td class="ui-table-cell-visible"></td><td class="{"ui-table-cell-visible" if title == "Quote" else "ui-table-cell-hidden"}"></td><td class="{"ui-table-cell-visible" if title == "Quote" else "ui-table-cell-hidden"}">{f"Total: ${self.get_total_nest_parts_price(nest_name=nest):,.2f}"}</td></tr>\n'
+                if has_items:
+                    html_text += f'<tr style="height: 20px;"><td class="ui-table-cell-visible"></td><td class="ui-table-cell-visible"></td><td class="{"ui-table-cell-hidden" if title != "Workorder" else "ui-table-cell-visible"}"></td><td class="ui-table-cell-visible"></td><td class="ui-table-cell-visible"></td><td class="{"ui-table-cell-visible" if title == "Workorder" else "ui-table-cell-hidden"}"><td class="ui-table-cell-visible"></td><td class="{"ui-table-cell-visible" if title == "Quote" else "ui-table-cell-hidden"}"></td><td class="{"ui-table-cell-visible" if title == "Quote" else "ui-table-cell-hidden"}">Total: ${self.get_total_nest_parts_price(nest_name=nest):,.2f}</td></tr>\n'
 
                 html_text += '</tbody></table>'
         else:
@@ -583,8 +593,7 @@ class GenerateQuote:
                     html_item_data = '<table class="dltrc" style="background:none;"><tbody><tr class="dlheader" style="height: 20px;"><td class="dlheader">Key</td><td class="dlheader">Value</td></tr>'
                     for data in item_data:
                         html_item_data += f'<tr class="dlinfo hover01" style="height: 20px;"><td class="dlinfo hover01">{data.replace("_", " ").title()}</td><td class="dlinfo hover01"> {item_data[data]}</td></tr>'
-                    else:
-                        html_item_data += '</tbody></table>'
+                    html_item_data += '</tbody></table>'
                     try:
                         shelf_number = item_data["shelf_number"]
                     except KeyError:
@@ -602,14 +611,33 @@ class GenerateQuote:
                     except KeyError as e:
                         print(f"Key Error for {e}")
                         continue
-            else:
-                if has_items:
-                    html_text += f'<tr style="height: 20px;"><td class="ui-table-cell-visible"></td><td class="ui-table-cell-visible"></td><td class="{"ui-table-cell-hidden" if title != "Workorder" else "ui-table-cell-visible"}"></td><td class="ui-table-cell-visible"></td><td class="ui-table-cell-visible"></td><td class="{"ui-table-cell-visible" if title == "Workorder" else "ui-table-cell-hidden"}"><td class="ui-table-cell-visible"></td><td class="{"ui-table-cell-visible" if title == "Quote" else "ui-table-cell-hidden"}"></td><td class="{"ui-table-cell-visible" if title == "Quote" else "ui-table-cell-hidden"}">{f"Total: ${self.get_total_parts_price():,.2f}"}</td></tr>\n'
+            if has_items:
+                html_text += f'<tr style="height: 20px;"><td class="ui-table-cell-visible"></td><td class="ui-table-cell-visible"></td><td class="{"ui-table-cell-hidden" if title != "Workorder" else "ui-table-cell-visible"}"></td><td class="ui-table-cell-visible"></td><td class="ui-table-cell-visible"></td><td class="{"ui-table-cell-visible" if title == "Workorder" else "ui-table-cell-hidden"}"><td class="ui-table-cell-visible"></td><td class="{"ui-table-cell-visible" if title == "Quote" else "ui-table-cell-hidden"}"></td><td class="{"ui-table-cell-visible" if title == "Quote" else "ui-table-cell-hidden"}">Total: ${self.get_total_parts_price():,.2f}</td></tr>\n'
 
             html_text += '</tbody></table>'
 
         if self.quote_data['Components']:
-            html_text += f'''<h2 id="components-heading" style="margin-top: 150px; margin-bottom: 0px; text-align: center;"></h2><table id="data-table2" data-role="table" data-mode="columntoggle" class="ui-responsive" style="border-collapse: collapse; text-align: center; vertical-align: middle;"><thead><tr class="header-table-row"><th data-priority="1" class="ui-table-cell-visible">Picture</th><th data-priority="2" class="ui-table-cell-visible">Item Name</th><th data-priority="3" class="ui-table-cell-visible">Item Number</th><th data-priority="8" class="ui-table-cell-visible">Description</th><th data-priority="4" class="''' + ("ui-table-cell-hidden" if title != "Workorder" else "ui-table-cell-visible") + '''">Shelf Number</th><th data-priority="5" class="ui-table-cell-visible">Quantity</th><th data-priority="6" class="''' + ("ui-table-cell-visible" if title == "Quote" else "ui-table-cell-hidden") + '''">Unit Price</th><th data-priority="7" class="''' + ("ui-table-cell-visible" if title == "Quote" else "ui-table-cell-hidden") + '''">Price</th></tr></thead><tbody>'''
+            html_text += (
+                '''<h2 id="components-heading" style="margin-top: 150px; margin-bottom: 0px; text-align: center;"></h2><table id="data-table2" data-role="table" data-mode="columntoggle" class="ui-responsive" style="border-collapse: collapse; text-align: center; vertical-align: middle;"><thead><tr class="header-table-row"><th data-priority="1" class="ui-table-cell-visible">Picture</th><th data-priority="2" class="ui-table-cell-visible">Item Name</th><th data-priority="3" class="ui-table-cell-visible">Item Number</th><th data-priority="8" class="ui-table-cell-visible">Description</th><th data-priority="4" class="'''
+                + (
+                    "ui-table-cell-hidden"
+                    if title != "Workorder"
+                    else "ui-table-cell-visible"
+                )
+                + '''">Shelf Number</th><th data-priority="5" class="ui-table-cell-visible">Quantity</th><th data-priority="6" class="'''
+                + (
+                    "ui-table-cell-visible"
+                    if title == "Quote"
+                    else "ui-table-cell-hidden"
+                )
+                + '''">Unit Price</th><th data-priority="7" class="'''
+                + (
+                    "ui-table-cell-visible"
+                    if title == "Quote"
+                    else "ui-table-cell-hidden"
+                )
+                + '''">Price</th></tr></thead><tbody>'''
+            )
 
             for item, item_data in self.quote_data['Components'].items():
                 try:
@@ -617,8 +645,7 @@ class GenerateQuote:
                 except KeyError:
                     shelf_number = ""
                 html_text += f'<tr><td class="ui-table-cell-visible"><img src="{self.program_directory}/{item_data["image_path"]}" style="height: 60px; width: 60px;" alt="Image" id="/{item_data["image_path"]}"></td><td class="ui-table-cell-visible">{item}</td><td class="ui-table-cell-visible">{item_data["part_number"]}</td><td class="ui-table-cell-visible">{item_data["description"]}</td><td class="{"ui-table-cell-hidden" if title != "Workorder" else "ui-table-cell-visible"}">{shelf_number}</td><td class="ui-table-cell-visible">{item_data["quantity"]}</td><td class="' + ("ui-table-cell-visible" if title == "Quote" else "ui-table-cell-hidden") + f'">${item_data["unit_price"]:,.2f}</td><td class="' + ("ui-table-cell-visible" if title == "Quote" else "ui-table-cell-hidden") + f'">${item_data["quoting_price"]:,.2f}</td></tr>'
-            else:
-                html_text += f'<tr style="height: 20px;"><td class="ui-table-cell-visible"></td><td class="ui-table-cell-visible"></td><td class="ui-table-cell-visible"></td><td class="ui-table-cell-visible"></td><td class="{"ui-table-cell-hidden" if title != "Workorder" else "ui-table-cell-visible"}"></td><td class="ui-table-cell-visible"></td><td class="{"ui-table-cell-visible" if title == "Quote" else "ui-table-cell-hidden"}"></td><td class="{"ui-table-cell-visible" if title == "Quote" else "ui-table-cell-hidden"}">{f"Total: ${self.get_total_components_price():,.2f}"}</td></tr>\n'
+            html_text += f'<tr style="height: 20px;"><td class="ui-table-cell-visible"></td><td class="ui-table-cell-visible"></td><td class="ui-table-cell-visible"></td><td class="ui-table-cell-visible"></td><td class="{"ui-table-cell-hidden" if title != "Workorder" else "ui-table-cell-visible"}"></td><td class="ui-table-cell-visible"></td><td class="{"ui-table-cell-visible" if title == "Quote" else "ui-table-cell-hidden"}"></td><td class="{"ui-table-cell-visible" if title == "Quote" else "ui-table-cell-hidden"}">Total: ${self.get_total_components_price():,.2f}</td></tr>\n'
             html_text += '</tbody></table>'
         html_text += html_end
 
@@ -884,15 +911,14 @@ class GenerateQuote:
         return [item for item in list(self.quote_data.keys()) if item[0] == "_"]
 
     def get_items(self) -> list[str]:
-        if self.should_group_items:
-            items = []
-            for nest in list(self.quote_data.keys()):
-                if nest[0] == '_' or nest == 'Components':
-                    continue
-                items.extend(list(self.quote_data[nest].keys()))
-            return items
-        else:
+        if not self.should_group_items:
             return [item for item in list(self.quote_data.keys()) if item[0] != "_" and item != "Components"]
+        items = []
+        for nest in list(self.quote_data.keys()):
+            if nest[0] == '_' or nest == 'Components':
+                continue
+            items.extend(list(self.quote_data[nest].keys()))
+        return items
 
     def get_total_sheet_count(self) -> int:
         """
@@ -906,16 +932,15 @@ class GenerateQuote:
         return sum(self.quote_data[nest]["quantity_multiplier"] for nest in self.get_nests())
 
     def get_total_parts_price(self) -> float:
-        if self.should_group_items:
-            total = 0.0
-            for nest in list(self.quote_data.keys()):
-                if nest[0] == '_' or nest == 'Components':
-                    continue
-                for item in list(self.quote_data[nest].keys()):
-                    total += self.quote_data[nest][item]['quoting_price']
-            return total
-        else:
+        if not self.should_group_items:
             return sum(self.quote_data[nest]["quoting_price"] for nest in self.get_items())
+        total = 0.0
+        for nest in list(self.quote_data.keys()):
+            if nest[0] == '_' or nest == 'Components':
+                continue
+            for item in list(self.quote_data[nest].keys()):
+                total += self.quote_data[nest][item]['quoting_price']
+        return total
 
     def get_total_nest_parts_price(self, nest_name: str) -> float:
         total = 0.0

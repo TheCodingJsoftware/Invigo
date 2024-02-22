@@ -21,16 +21,6 @@ class RemoveQuantityThread(QThread):
         category: str,
         multiplier: int,
     ) -> None:
-        """
-        This function is a constructor for a class that inherits from QThread
-
-        Args:
-          inventory (JsonFile): JsonFile = The inventory object
-          category (str): str = The category of the item.
-          inventory_prices_objects (dict): A dictionary of objects that contain the prices of the items
-        in the inventory.
-          multiplier (int): int = multiplier
-        """
         QThread.__init__(self)
         self.username = os.getlogin().title()
         self.category = category
@@ -40,10 +30,6 @@ class RemoveQuantityThread(QThread):
         self.inventory = inventory
 
     def run(self) -> None:
-        """
-        It takes the current quantity of an item, subtracts the unit quantity of the item multiplied by
-        the multiplier, and then sets the current quantity of the item to the result of the subtraction
-        """
         print('thread running')
         self.signal.emit(f"{self.completion_count}, {self.max_item_count}")
         try:

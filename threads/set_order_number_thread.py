@@ -10,16 +10,6 @@ class SetOrderNumberThread(QThread):
     signal = pyqtSignal(object)
 
     def __init__(self, order_number: int) -> None:
-        """
-        This function initializes a QThread object with a server IP address, port number, URL, and order
-        number data.
-
-        Args:
-          order_number (int): The order number is an integer value that is passed as an argument to the
-        constructor of a class. It is used to create a data dictionary that will be sent to a server
-        using an HTTP request. The order number is a unique identifier for an order that is being
-        processed by the system.
-        """
         QThread.__init__(self)
         self.SERVER_IP: str = get_server_ip_address()
         self.SERVER_PORT: int = get_server_port()
@@ -27,10 +17,6 @@ class SetOrderNumberThread(QThread):
         self.data = {"order_number": order_number}
 
     def run(self) -> None:
-        """
-        This function sends a POST request to a specified URL with provided data and emits a signal
-        indicating success or failure.
-        """
         try:
             response = requests.post(self.url, data=self.data)
 

@@ -8,20 +8,9 @@ from utils.ip_utils import get_server_ip_address, get_server_port
 
 
 class ChangesThread(QThread):
-    """
-    Downloads server data to the client
-    """
-
     signal = pyqtSignal(object)
 
     def __init__(self, parent, files_to_download: list[str]) -> None:
-        """
-        The function is used to download a file from a server
-
-        Args:
-          file_to_download (str): The name of the file to download
-          delay (int): The time to wait before sending the next packet.
-        """
         QThread.__init__(self)
 
         # Declaring server IP and port
@@ -31,9 +20,6 @@ class ChangesThread(QThread):
         self.websocket_url = f"ws://{self.SERVER_IP}:{self.SERVER_PORT}/ws"
 
     def run(self) -> None:
-        """
-        It connects to a server, sends a message, receives a file, and then closes the connection
-        """
         # Give the app time to first download all files on startup
         while True:
             try:

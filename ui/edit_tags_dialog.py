@@ -42,10 +42,6 @@ class ButtonFilter(QObject):
 
 
 class EditTagsDialog(QDialog):
-    """
-    Select dialog
-    """
-
     accepted = pyqtSignal()
 
     def __init__(
@@ -56,17 +52,6 @@ class EditTagsDialog(QDialog):
         message: str = "",
         options: list = None,
     ) -> None:
-        """
-        It's a function that takes in a list of options and displays them in a list widget
-
-        Args:
-          parent: The parent widget of the dialog.
-          icon_name (str): str = Icons.question,
-          button_names (str): str = DialogButtons.ok_cancel,
-          title (str): str = __name__,
-          message (str): str = "",
-          options (list): list = None,
-        """
         super(EditTagsDialog, self).__init__(parent)
         uic.loadUi("ui/edit_tags_dialog.ui", self)
         self.showMaximized()
@@ -253,7 +238,7 @@ class EditTagsDialog(QDialog):
                 try:
                     widget, layout, button = self.create_flow_tag_layout(flow_tag[0])
                 except IndexError:
-                    continue 
+                    continue
                 if len(flow_tag) == 1:
                     button.setHidden(True)
 
@@ -310,21 +295,9 @@ class EditTagsDialog(QDialog):
         self.load_done = True
 
     def get_all_flow_tags(self) -> list[str]:
-        """
-        This function returns a list of all flow tags in the workspace.
-
-        Returns:
-          A list of strings containing all flow tags.
-        """
         return workspace_tags.get_value("all_tags")
 
     def save_flow_tags(self) -> None:
-        """
-        This function saves flow tags and all tags in a workspace.
-
-        Returns:
-          None is being returned.
-        """
         if not self.load_done:
             return
         workspace_tags.load_data()
@@ -403,17 +376,6 @@ class EditTagsDialog(QDialog):
         self.save_flow_tags()
 
     def add_flow_tag(self, layout: QHBoxLayout, button: QPushButton, tag_name: str = "None") -> None:
-        """
-        This function adds a flow tag to a QHBoxLayout with a tag name and an "Add" button.
-
-        Args:
-          layout (QHBoxLayout): QHBoxLayout object representing the layout where the widgets will be
-        added
-          button (QPushButton): The button parameter is a QPushButton object that will be hidden in this
-        function.
-          tag_name (str): The name of the tag to be added to the tagbox. If no name is provided, the
-        default value is "None". Defaults to None
-        """
         button_filter = ButtonFilter()
         button.setHidden(True)
         tagbox = self.get_tag_box(tag_name)
@@ -450,16 +412,6 @@ class EditTagsDialog(QDialog):
         layout.addWidget(add)
 
     def create_flow_tag_layout(self, tag_name: str = "None") -> tuple[QWidget, QHBoxLayout, QPushButton]:
-        """
-        This function creates a layout for a flow tag with a tag box and an "Add" button.
-
-        Args:
-          tag_name (str): A string representing the name of the tag to be displayed in the tag box. If
-        no tag name is provided, the default value is "None". Defaults to None
-
-        Returns:
-          a tuple containing a QWidget object, a QHBoxLayout object, and a QPushButton object.
-        """
         widget = QWidget(self)
         layout = QHBoxLayout(widget)
         layout.setAlignment(Qt.AlignmentFlag.AlignLeft)  # Set the alignment to left
@@ -499,16 +451,6 @@ class EditTagsDialog(QDialog):
         return widget, layout, add
 
     def get_tag_box(self, tag_name: str) -> QComboBox:
-        """
-        This function returns a QComboBox object with a specified tag name and editable text field.
-
-        Args:
-          tag_name (str): A string representing the name of a tag. If it is False, it will be replaced
-        with the string "None".
-
-        Returns:
-          A QComboBox object is being returned.
-        """
         if not tag_name:
             tag_name = "None"
         result = QComboBox(self)
@@ -523,9 +465,6 @@ class EditTagsDialog(QDialog):
         return result
 
     def create_flow_tag(self, table: QTableWidget) -> None:
-        """
-        This function adds a widget to a flow tag layout.
-        """
         row_count = table.rowCount()
 
         if row_count > 0:
@@ -684,31 +623,12 @@ class EditTagsDialog(QDialog):
         self.attribute_layout.addWidget(next_flow_state_text_edit)
 
     def load_theme(self) -> None:
-        """
-        It loads the stylesheet.qss file from the theme folder
-        """
         set_theme(self, theme="dark")
 
     def get_icon(self, path_to_icon: str) -> QSvgWidget:
-        """
-        It returns a QSvgWidget object that is initialized with a path to an SVG icon
-
-        Args:
-          path_to_icon (str): The path to the icon you want to use.
-
-        Returns:
-          A QSvgWidget object.
-        """
         return QSvgWidget(f"icons/{path_to_icon}")
 
     def clear_layout(self, layout) -> None:
-        """
-        If the layout is not None, while the layout has items, take the first item, get the widget, if
-        the widget is not None, delete it, otherwise clear the layout
-
-        Args:
-          layout: The layout to be cleared
-        """
         with contextlib.suppress(AttributeError):
             if layout is not None:
                 while layout.count():
@@ -720,12 +640,6 @@ class EditTagsDialog(QDialog):
                         self.clear_layout(item.layout())
 
     def open_group_menu(self, menu: QMenu) -> None:
-        """
-        It opens a menu at the current cursor position
-
-        Args:
-          menu (QMenu): QMenu
-        """
         menu.exec(QCursor.pos())
 
     def closeEvent(self, event):

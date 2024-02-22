@@ -18,9 +18,6 @@ settings_file = JsonFile(file_name="settings")
 
 
 class JobSorterDialog(QDialog):
-    """
-    Select dialog
-    """
 
     def __init__(
         self,
@@ -31,17 +28,6 @@ class JobSorterDialog(QDialog):
         message: str = "",
         options: list = None,
     ) -> None:
-        """
-        It's a function that takes in a list of options and displays them in a list widget
-
-        Args:
-          parent: The parent widget of the dialog.
-          icon_name (str): str = Icons.question,
-          button_names (str): str = DialogButtons.ok_cancel,
-          title (str): str = __name__,
-          message (str): str = "",
-          options (list): list = None,
-        """
         super(JobSorterDialog, self).__init__(parent)
         uic.loadUi("ui/job_sorter_dialog.ui", self)
         self.parent = parent
@@ -131,19 +117,7 @@ class JobSorterDialog(QDialog):
             self.lineEdit_output_directory.setText(selected_folder)
 
     def load_theme(self) -> None:
-        """
-        It loads the stylesheet.qss file from the theme folder
-        """
         set_theme(self, theme="dark")
 
     def get_icon(self, path_to_icon: str) -> QSvgWidget:
-        """
-        It returns a QSvgWidget object that is initialized with a path to an SVG icon
-
-        Args:
-          path_to_icon (str): The path to the icon you want to use.
-
-        Returns:
-          A QSvgWidget object.
-        """
         return QSvgWidget(f"icons/{path_to_icon}")

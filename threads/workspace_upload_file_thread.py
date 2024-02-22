@@ -8,20 +8,10 @@ settings_file = JsonFile(file_name="settings")
 
 
 class WorkspaceUploadThread(QThread):
-    """
-    Uploads client data to the server
-    """
 
     signal = pyqtSignal(object)
 
     def __init__(self, files_to_upload: list[str]) -> None:
-        """
-        The function is a constructor for a class that inherits from QThread. It takes a list of strings
-        as an argument and returns None
-
-        Args:
-          file_to_upload (list[str]): list[str] = list of files to upload
-        """
         QThread.__init__(self)
         # Declaring server IP and port
         self.SERVER_IP: str = get_server_ip_address()
@@ -31,10 +21,6 @@ class WorkspaceUploadThread(QThread):
         self.files_to_upload = files_to_upload
 
     def run(self) -> None:
-        """
-        This function uploads files to a server using a POST request and emits a signal indicating
-        success or failure.
-        """
         try:
             for file_to_upload in self.files_to_upload:
                 # Send the file as a POST request to the server

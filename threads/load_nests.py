@@ -19,20 +19,10 @@ settings_file = JsonFile(file_name="settings")
 
 
 class LoadNests(QThread):
-    """
-    Uploads client data to the server
-    """
 
     signal = pyqtSignal(object)
 
     def __init__(self, parent, nests: list[str]) -> None:
-        """
-        The function is a constructor for a class that inherits from QThread. It takes a list of strings
-        as an argument and returns None
-
-        Args:
-          file_to_upload (list[str]): list[str] = list of files to upload
-        """
         QThread.__init__(self, parent)
         self.nests = nests
         self.data = {}
@@ -63,14 +53,6 @@ class LoadNests(QThread):
         self.geofile_name = config.get("REGEX", "geofile_name", raw=True)
 
     def extract_images_from_pdf(self, pdf_paths: list[str]) -> None:
-        """
-        It opens a PDF file, extracts all the images from it, resizes them to a specific size, and saves
-        them to a folder
-
-        Args:
-        pdf_paths (list): list = list of paths to the PDF files
-        progress_bar: a function that prints a progress bar
-        """
         image_count: int = 0
         for i, pdf_path in enumerate(pdf_paths, start=1):
             pdf_file = fitz.open(pdf_path)
@@ -93,7 +75,6 @@ class LoadNests(QThread):
                                 "wb",
                             )
                         )
-                        image_count += 1
                     else: # A part picture
                         image = image.resize(
                             (self.size_of_picture, self.size_of_picture),
@@ -105,17 +86,10 @@ class LoadNests(QThread):
                                 "wb",
                             )
                         )
-                        image_count += 1
+
+                    image_count += 1
 
     def convert_pdf_to_text(self, pdf_path: str) -> str:
-        """
-        This function converts a PDF file to text and removes extra spaces.
-
-        Args:
-          pdf_path (str): The file path of the PDF file that needs to be converted to text.
-          progress_bar: It is a function that updates the progress bar to show the progress of the PDF
-        to text conversion. It is called after each page is processed.
-        """
 
         with open(f"{self.program_directory}/output.txt", "w") as f:
             f.write("")
@@ -137,20 +111,6 @@ class LoadNests(QThread):
         return all_text
 
     def get_values_from_text(self, text: str, regex: str) -> any:
-        """
-        The function extracts values from a given text using a regular expression and returns them as a
-        list.
-
-        Args:
-          text (str): The input text string that contains the values to be extracted using the regular
-        expression.
-          regex (str): The regular expression pattern to search for in the given text.
-
-        Returns:
-          a list of values extracted from the input text using the provided regular expression. If only
-        one value is found, it is returned as a single-item list. If multiple values are found, they are
-        returned as a list of items.
-        """
         matches = re.finditer(regex, text, re.MULTILINE)
         items = []
         for match in matches:
@@ -161,38 +121,16 @@ class LoadNests(QThread):
         return [items[0]] if len(items) == 1 else items
 
     def material_id_to_name(self, material: str) -> str:
-        """
-        It opens the file material_id.json, loads the data, and returns the name of the material
-
-        Args:
-        material (str): The material ID of the material you want to convert.
-
-        Returns:
-        The name of the material.
-        """
         with open(f"{self.program_directory}/material_id.json", "r") as material_id_file:
             data = json.load(material_id_file)
         return data[material]["name"]
 
     def material_id_to_number(self, number_id: str) -> str:
-        """
-        It takes a string as an argument, opens a json file, loads the data from the json file, and returns
-        a string
-
-        Args:
-        number_id (str): The material ID number.
-
-        Returns:
-        The thickness of the material.
-        """
         with open(f"{self.program_directory}/material_id.json", "r") as material_id_file:
             data = json.load(material_id_file)
         return data["thickness"][number_id]
 
     def run(self) -> None:
-        """
-        This is a Python function that extracts data from PDF files and stores it in a dictionary.
-        """
         try:
             # try:
             #     shutil.rmtree(f"{self.program_directory}/images")

@@ -58,7 +58,7 @@
        <enum>QTabWidget::Rounded</enum>
       </property>
       <property name="currentIndex">
-       <number>3</number>
+       <number>7</number>
       </property>
       <property name="elideMode">
        <enum>Qt::ElideNone</enum>
@@ -166,7 +166,7 @@
                         <x>0</x>
                         <y>0</y>
                         <width>220</width>
-                        <height>121</height>
+                        <height>124</height>
                        </rect>
                       </property>
                       <property name="maximumSize">
@@ -509,7 +509,7 @@ QPushButton#pushButton_create_new:disabled{
                  <x>0</x>
                  <y>0</y>
                  <width>184</width>
-                 <height>655</height>
+                 <height>661</height>
                 </rect>
                </property>
                <property name="maximumSize">
@@ -737,7 +737,7 @@ QPushButton#pushButton_add_new_sheet:disabled{
                  <x>0</x>
                  <y>0</y>
                  <width>357</width>
-                 <height>567</height>
+                 <height>573</height>
                 </rect>
                </property>
                <layout class="QVBoxLayout" name="verticalLayout_21">
@@ -2344,7 +2344,7 @@ QPushButton:pressed#pushButton_show_item_summary:!checked {
                       <x>0</x>
                       <y>0</y>
                       <width>280</width>
-                      <height>176</height>
+                      <height>182</height>
                      </rect>
                     </property>
                     <layout class="QHBoxLayout" name="horizontalLayout_21">

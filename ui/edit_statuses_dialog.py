@@ -37,25 +37,10 @@ class ButtonFilter(QObject):
 
 
 class EditStatusesDialog(QDialog):
-    """
-    Select dialog
-    """
-
     def __init__(
         self,
         parent=None,
     ) -> None:
-        """
-        It's a function that takes in a list of options and displays them in a list widget
-
-        Args:
-          parent: The parent widget of the dialog.
-          icon_name (str): str = Icons.question,
-          button_names (str): str = DialogButtons.ok_cancel,
-          title (str): str = __name__,
-          message (str): str = "",
-          options (list): list = None,
-        """
         super(EditStatusesDialog, self).__init__(parent)
         uic.loadUi("ui/edit_statuses_dialog.ui", self)
         self.parent = parent
@@ -149,31 +134,12 @@ class EditStatusesDialog(QDialog):
         self.tag_layout.addLayout(delete_layout)
 
     def load_theme(self) -> None:
-        """
-        It loads the stylesheet.qss file from the theme folder
-        """
         set_theme(self, theme="dark")
 
     def get_icon(self, path_to_icon: str) -> QSvgWidget:
-        """
-        It returns a QSvgWidget object that is initialized with a path to an SVG icon
-
-        Args:
-          path_to_icon (str): The path to the icon you want to use.
-
-        Returns:
-          A QSvgWidget object.
-        """
         return QSvgWidget(f"icons/{path_to_icon}")
 
     def clear_layout(self, layout) -> None:
-        """
-        If the layout is not None, while the layout has items, take the first item, get the widget, if
-        the widget is not None, delete it, otherwise clear the layout
-
-        Args:
-          layout: The layout to be cleared
-        """
         with contextlib.suppress(AttributeError):
             if layout is not None:
                 while layout.count():

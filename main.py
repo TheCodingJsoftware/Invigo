@@ -195,10 +195,6 @@ __status__: str = "Production"
 
 
 def default_settings() -> None:
-    """
-    It checks if a setting exists in the settings file, and if it doesn't, it creates
-    it with a default value
-    """
     check_setting(setting="open_quote_when_generated", default_value=True)
     check_setting(setting="open_workorder_when_generated", default_value=True)
     check_setting(setting="open_packing_slip_when_generated", default_value=True)
@@ -272,25 +268,11 @@ def default_settings() -> None:
 
 
 def check_setting(setting: str, default_value) -> None:
-    """
-    If the setting is not in the settings file, add it with the default value
-
-    Args:
-      setting (str): The name of the setting to check.
-      default_value: The default value of the setting.
-    """
     if settings_file.get_value(item_name=setting) is None:
         settings_file.add_item(item_name=setting, value=default_value)
 
 
 def check_folders(folders: list[str]) -> None:
-    """
-    If the folder doesn't exist, create it
-
-    Args:
-      folders (list): list = ["data", "data/images", "data/images/thumbnails", "data/images/fullsize",
-    "data/images/fullsize/temp"]
-    """
     for folder in folders:
         with contextlib.suppress(FileExistsError):
             if not os.path.exists(folder):
@@ -328,19 +310,6 @@ logging.basicConfig(
 
 
 def excepthook(exc_type, exc_value, exc_traceback):
-    """
-    The above function is a custom exception hook that logs unhandled exceptions and then calls the
-    default exception hook.
-
-    Args:
-      exc_type: The type of the exception that was raised. It is a class object representing the type of
-    the exception (e.g., `TypeError`, `ValueError`, etc.).
-      exc_value: The `exc_value` parameter in the `excepthook` function represents the actual exception
-    object that was raised. It contains information about the exception, such as its type, message, and
-    any additional data associated with it.
-      exc_traceback: The traceback object that contains information about the exception's call stack. It
-    includes the line numbers and function names of the code that led to the exception being raised.
-    """
     win32api.MessageBox(
         0,
         f"A bug has shown itself. This error message has been sent to the server and an email has been sent to {__email__}, please be patient as {__maintainer__} attempts fixes this issue. It will most likely be fixed in the next update; if this error keeps happening then notify {__maintainer__}.\n\nexc_type:\n{exc_type}\n\nexc_value:\n{exc_value}\n\nexc_traceback:\n{exc_traceback}",
@@ -361,12 +330,7 @@ def send_error_report(exc_type, exc_value, exc_traceback):
     data = {"error_log": f"User: {os.getlogin().title()}\nVersion: {__version__}\n\n{error_data}"}
     try:
         requests.post(url, data=data)
-        win32api.MessageBox(
-            0,
-            f"Sent",
-            "Sent",
-            0x40,
-        )  # 0x40 for OK button
+        win32api.MessageBox(0, "Sent", "Sent", 0x40)
     except Exception as e:
         logging.error(e)
         win32api.MessageBox(
@@ -412,9 +376,6 @@ class MainWindow(QMainWindow):
     """The class MainWindow inherits from the class QMainWindow"""
 
     def __init__(self):
-        """
-        It loads the UI and starts a thread that checks for changes in a JSON file.
-        """
         super().__init__()
         self.loading_screen = LoadingScreen()
         self.loading_screen.hide()
@@ -507,9 +468,6 @@ class MainWindow(QMainWindow):
         self.download_all_files()
 
     def __load_ui(self) -> None:
-        """
-        It loads the UI
-        """
 
         menu_tabs_order = settings_file.get_value(item_name="menu_tabs_order")
         for tab_name in menu_tabs_order:
@@ -853,20 +811,10 @@ class MainWindow(QMainWindow):
         )
 
     def quick_load_category(self, name: str) -> None:
-        """
-        This function sets the current tab index of a tab widget based on the name of a category and
-        then loads the tab.
-
-        Args:
-          name (str): The name of the category that needs to be loaded.
-        """
         self.tab_widget.setCurrentIndex(category_tabs_order.get_value(self.tabWidget.tabText(self.tabWidget.currentIndex())).index(name))
         self.load_active_tab()
 
     def tool_box_menu_changed(self) -> None:
-        """
-        This function changes the active layout and menu options based on the selected tab in a GUI.
-        """
         self.loading_screen.show()
         inventory.load_data()
         price_of_steel_inventory.load_data()
@@ -947,15 +895,6 @@ class MainWindow(QMainWindow):
         self.loading_screen.hide()
 
     def move_to_category(self, tab: CustomTableWidget, category: str) -> None:
-        """
-        This function moves selected parts from one category to another in a custom table widget and
-        updates the inventory accordingly.
-
-        Args:
-          tab (CustomTableWidget): CustomTableWidget object representing the table widget where the
-        selected parts are located.
-          category (str): A string representing the category to which the selected parts will be moved.
-        """
         selected_parts = self.get_all_selected_parts(tab)
         for selected_part in selected_parts:
             copy_of_item = parts_in_inventory.get_data()[self.category][selected_part]
@@ -966,15 +905,6 @@ class MainWindow(QMainWindow):
         self.sync_changes()
 
     def copy_to_category(self, tab: CustomTableWidget, category: str) -> None:
-        """
-        This function copies selected parts from one category to another in a custom table widget and
-        syncs the changes.
-
-        Args:
-          tab (CustomTableWidget): CustomTableWidget object representing the table widget where the
-        selected parts are located.
-          category (str): A string representing the category to which the selected parts will be copied.
-        """
         selected_parts = self.get_all_selected_parts(tab)
         for selected_part in selected_parts:
             copy_of_item = parts_in_inventory.get_data()[self.category][selected_part]
@@ -983,12 +913,6 @@ class MainWindow(QMainWindow):
         self.sync_changes()
 
     def add_sheet_item(self) -> None:
-        """
-        It adds an item to a category
-
-        Returns:
-          The response from the dialog.
-        """
         add_item_dialog = AddItemDialogPriceOfSteel(
             title=f'Add new sheet to "{self.category}"',
             message=f"Adding a new sheet to \"{self.category}\".\n\nPress 'Add' when finished.",
@@ -1030,18 +954,6 @@ class MainWindow(QMainWindow):
 
     # NOTE SHEETS IN INVENTORY
     def order_status_button_sheets_in_inventory(self, item_name: str, button: OrderStatusButton, row_index: int) -> None:
-        """
-        This function updates the "is_order_pending" value of an item in a steel inventory object based
-        on the status of an order status button.
-
-        Args:
-          item_name (str): A string representing the name of the item for which the order status button
-        is being updated.
-          button (OrderStatusButton): The button parameter is an instance of
-        the OrderStatusButton class, which is a graphical user interface (GUI) element that allows the
-        user to toggle the status of an order. The isChecked() method of the OrderStatusButton class
-        returns a boolean value indicating whether the button is currently checked or not
-        """
         select_date_dialog = SetOrderPendingDialog(
             self,
             button_names=DialogButtons.set_cancel,
@@ -1090,17 +1002,9 @@ class MainWindow(QMainWindow):
                 else:
                     button.setChecked(True)
                     return
+
     # NOTE SHEETS IN INVENTORY
     def arrival_date_change_sheets_in_inventory(self, item_name: str, arrival_date: QDateEdit) -> None:
-        """
-        The function `arrival_date_change` updates the expected arrival time of an item in the steel
-        inventory and then reloads the active tab and syncs the changes.
-
-        Args:
-          item_name (str): The name of the item for which the arrival date is being changed.
-          arrival_date (QDateEdit): The `arrival_date` parameter is a `QDateEdit` object, which is a
-        widget that allows the user to select a date.
-        """
         price_of_steel_inventory.change_object_in_object_item(
             object_name=self.category,
             item_name=item_name,
@@ -1113,18 +1017,6 @@ class MainWindow(QMainWindow):
 
     # NOTE EDIT INVENTORY
     def order_status_button_edit_inventory(self, item_name: str, button: OrderStatusButton, row_index: int) -> None:
-        """
-        This function updates the "is_order_pending" value of an item in a steel inventory object based
-        on the status of an order status button.
-
-        Args:
-          item_name (str): A string representing the name of the item for which the order status button
-        is being updated.
-          button (OrderStatusButton): The button parameter is an instance of
-        the OrderStatusButton class, which is a graphical user interface (GUI) element that allows the
-        user to toggle the status of an order. The isChecked() method of the OrderStatusButton class
-        returns a boolean value indicating whether the button is currently checked or not
-        """
         select_date_dialog = SetOrderPendingDialog(
             self,
             button_names=DialogButtons.set_cancel,
@@ -1212,15 +1104,6 @@ class MainWindow(QMainWindow):
 
     # NOTE EDIT INVENTORY
     def arrival_date_change_edit_inventory(self, item_name: str, arrival_date: QDateEdit) -> None:
-        """
-        The function `arrival_date_change` updates the expected arrival time of an item in the steel
-        inventory and then reloads the active tab and syncs the changes.
-
-        Args:
-          item_name (str): The name of the item for which the arrival date is being changed.
-          arrival_date (QDateEdit): The `arrival_date` parameter is a `QDateEdit` object, which is a
-        widget that allows the user to select a date.
-        """
         inventory_data = copy.copy(inventory.get_data())
         inventory_data[self.category][item_name]["expected_arrival_time"] = arrival_date.date().toString("yyyy-MM-dd")
         part_number = self.get_value_from_category(item_name, 'part_number')
@@ -1236,18 +1119,6 @@ class MainWindow(QMainWindow):
         self.sync_changes()
 
     def name_change(self, tab: CustomTableWidget) -> None:
-        """
-        It checks if the name is the same as any other name in the category, and if it is, it sets the
-        name back to the old name and displays an error message
-
-        Args:
-          category (str): str
-          old_name (str): The name of the item before it was changed.
-          name (QLineEdit): QLineEdit
-
-        Returns:
-          The return value is the result of the last expression evaluated in the function.
-        """
         with contextlib.suppress(IndexError):
             old_name = self.get_all_selected_parts(tab)[0]
             new_name: str = None
@@ -1275,15 +1146,6 @@ class MainWindow(QMainWindow):
             self.sort_inventory()
 
     def use_exchange_rate_change(self, item_name: str, value_name: str, combo: QComboBox) -> None:
-        """
-        It changes the exchange rate
-
-        Args:
-          category (str): str - The category of the item
-          item_name (QLineEdit): QLineEdit
-          value_name (str): str = The name of the value to change
-          combo (QComboBox): QComboBox
-        """
         self.value_change(
             self.category,
             item_name,
@@ -1314,15 +1176,6 @@ class MainWindow(QMainWindow):
         self.sync_changes()
 
     def priority_change(self, item_name: str, value_name: str, combo: QComboBox) -> None:
-        """
-        It changes the priority of a task
-
-        Args:
-          category (str): str - The category of the item
-          item_name (QLineEdit): QLineEdit
-          value_name (str): str = The name of the value to change
-          combo (QComboBox): QComboBox
-        """
 
         self.value_change(self.category, item_name, value_name, combo.currentIndex())
         shadow = QGraphicsDropShadowEffect()
@@ -1341,42 +1194,17 @@ class MainWindow(QMainWindow):
         self.sync_changes()
 
     def notes_changed(self, item_name: str, value_name: str, note: QPlainTextEdit) -> None:
-        """
-        It takes the category, item name, value name, and note as parameters and then calls the
-        value_change function with the category, item name, value name, and note as parameters
-
-        Args:
-          category (str): str = The category of the item.
-          item_name (QLineEdit): QLineEdit
-          value_name (str): str = The name of the value that is being changed.
-          note (QPlainTextEdit): QPlainTextEdit
-        """
         data = inventory.get_data()
         part_number = self.get_value_from_category(item_name, "part_number")
         self.value_change(self.category, item_name, value_name, note.toPlainText())
         self.sync_changes()
 
     def delete_item(self, item_name: str) -> None:
-        """
-        It removes an item from the inventory
-
-        Args:
-          category (str): str
-          item_name (QLineEdit): QLineEdit
-        """
         self.active_json_file.remove_object_item(self.category, item_name)
         self.load_active_tab()
         self.sync_changes()
 
     def delete_selected_items(self, tab: CustomTabWidget) -> None:
-        """
-        This function deletes selected items from a custom tab widget and updates the active JSON file
-        and tab accordingly.
-
-        Args:
-          tab (CustomTabWidget): CustomTabWidget object representing the currently active tab in the
-        GUI.
-        """
         selected_parts = self.get_all_selected_parts(tab)
         inventory_data = copy.copy(self.active_json_file.get_data())
         for selected_part in selected_parts:
@@ -1388,14 +1216,6 @@ class MainWindow(QMainWindow):
         self.sync_changes()
 
     def reset_selected_parts_quantity(self, tab: CustomTabWidget) -> None:
-        """
-        This function sets the current quantity of all selected parts in a custom tab widget to zero and
-        then reloads the active tab and syncs the changes.
-
-        Args:
-          tab (CustomTabWidget): CustomTabWidget object representing the currently active tab in the
-        GUI.
-        """
         selected_parts = self.get_all_selected_parts(tab)
         inventory_data = copy.copy(self.active_json_file.get_data())
         for selected_part in selected_parts:
@@ -1406,10 +1226,6 @@ class MainWindow(QMainWindow):
         self.sync_changes()
 
     def quantities_change(self) -> None:
-        """
-        If the radio button is checked, then the list widget is disabled, the add and remove buttons are
-        enabled, and the add and remove buttons are connected to the add and remove quantity functions
-        """
         if self.radioButton_category.isChecked():
             self.label.setText("Batches Multiplier:")
             self.pushButton_add_quantity.setText("Add Quantities")
@@ -1435,9 +1251,6 @@ class MainWindow(QMainWindow):
             settings_file.add_item(item_name="change_quantities_by", value="Item")
 
     def remove_quantity_from_category(self) -> None:
-        """
-        It removes a quantity of items from a category
-        """
         are_you_sure_dialog = self.show_message_dialog(
             title="Are you sure?",
             message=f'Removing quantities from the whole selected category.\n\nAre you sure you want to remove a multiple of {self.spinBox_quantity.value()} quantities from each item in "{self.category}"?',
@@ -1550,13 +1363,6 @@ class MainWindow(QMainWindow):
 
     # NOTE for EDIT INVENTORY
     def add_quantity(self) -> None:
-        """
-        It adds the value of the spinbox to the quantity of the item selected in the listwidget
-
-        Args:
-          item_name (str): str = the name of the item
-          old_quantity (int): int = the quantity of the item before the change
-        """
         data = inventory.get_data()
         table = self.tabs[self.category]
         selected_rows = list(set([item.row() for item in table.selectedItems()]))
@@ -1595,13 +1401,6 @@ class MainWindow(QMainWindow):
 
     # NOTE for EDIT INVENTORY
     def remove_quantity(self) -> None:
-        """
-        The function `remove_quantity` removes a specified quantity from selected items in an inventory
-        system, updates the quantity in the inventory data, and performs other related tasks.
-
-        Returns:
-          The function does not have a return statement, so it returns None.
-        """
         table = self.tabs[self.category]
         selected_rows = list(set([item.row() for item in table.selectedItems()]))
         selected_items = [table.item(row, 0).text() for row in selected_rows]
@@ -1649,10 +1448,6 @@ class MainWindow(QMainWindow):
         table_widget.selectRow(self.last_item_selected_index)
 
     def listWidget_item_changed(self) -> None:
-        """
-        It's a function that changes the color of a QComboBox and QDoubleSpinBox when the user clicks on
-        an item in a QListWidget.
-        """
         try:
             self.last_item_selected_name = self.listWidget_itemnames.currentItem().text()
         except AttributeError:
@@ -1684,15 +1479,6 @@ class MainWindow(QMainWindow):
         self.spinBox_quantity.setValue(0)
 
     def value_change(self, category: str, item_name: str, value_name: str, new_value) -> None:
-        """
-        It changes the value of a value in a dictionary in a dictionary in a dictionary.
-
-        Args:
-          category (str): str = "category"
-          item_name (str): str = the name of the item
-          value_name (str): str = "current_quantity"
-          new_value: str
-        """
         add_quantity_state: bool = self.pushButton_add_quantity.isEnabled()
         remove_quantity_state: bool = self.pushButton_remove_quantity.isEnabled()
         self.pushButton_add_quantity.setEnabled(False)
@@ -1702,15 +1488,6 @@ class MainWindow(QMainWindow):
         self.pushButton_remove_quantity.setEnabled(remove_quantity_state)
 
     def action_group(self, group_name: str, actions: list[QAction]) -> None:
-        """
-        It's a function that is called when a user clicks on a menu item in a menu bar. The function is
-        supposed to check if the menu item is checked and if it is, it should uncheck the other menu
-        items in the same group
-
-        Args:
-          group_name (str): str
-          actions (list[QAction]): list[QAction]
-        """
         if group_name == "order":
             if actions[0].isChecked() and settings_file.get_value(item_name="sort_descending"):
                 actions[1].setChecked(False)
@@ -1770,10 +1547,6 @@ class MainWindow(QMainWindow):
 
     # OMNIGEN
     def process_selected_nests(self) -> None:
-        """
-        This function processes selected nests by getting selected items and file paths, filtering the
-        file paths based on selected items, and starting a thread to process the filtered file paths.
-        """
         selected_nests = len(self.get_all_selected_nests())
         if selected_nests > 0:
             self.is_nest_generated_from_parts_in_inventory = False
@@ -1782,9 +1555,6 @@ class MainWindow(QMainWindow):
 
     # OMNIGEN
     def load_selected_previous_nests(self) -> None:
-        """
-        The function loads selected previous nests data in a separate thread.
-        """
         self.pushButton_load_previous_nests.setEnabled(False)
         selected_indexes = self.treeView_previous_nests.selectionModel().selectedIndexes()
         selected_items = []
@@ -1881,10 +1651,6 @@ class MainWindow(QMainWindow):
 
     # OMNIGEN
     def global_nest_material_change(self) -> None:
-        """
-        This function changes the material of all items in a table to the selected material from a combo
-        box.
-        """
         new_material = self.comboBox_global_sheet_material.currentText()
         for row in range(self.tableWidget_quote_items.rowCount()):
             self.tableWidget_quote_items.setItem(row, 2, QTableWidgetItem(new_material))
@@ -1916,10 +1682,6 @@ class MainWindow(QMainWindow):
 
     # OMNIGEN
     def global_nest_thickness_change(self) -> None:
-        """
-        This function changes the thickness of all items in a table to a new global thickness selected
-        from a combo box.
-        """
         new_thickness = self.comboBox_global_sheet_thickness.currentText()
         for row in range(self.tableWidget_quote_items.rowCount()):
             self.tableWidget_quote_items.setItem(row, 3, QTableWidgetItem(new_thickness))
@@ -1947,10 +1709,6 @@ class MainWindow(QMainWindow):
 
     # OMNIGEN
     def global_nest_sheet_dim_change(self) -> None:
-        """
-        The function `global_nest_sheet_dim_change` updates the sheet dimensions in a nested dictionary
-        and updates the values in a GUI toolbox.
-        """
         sheet_dim: str = f"{self.doubleSpinBox_global_sheet_length.value():.3f} x {self.doubleSpinBox_global_sheet_width.value():.3f}"
         for item in list(self.quote_nest_information.keys()):
             if item[0] == "_":
@@ -1984,24 +1742,6 @@ class MainWindow(QMainWindow):
         nest_name_to_update: str,
         item_to_change: str,
     ) -> None:
-        """
-        This function updates the information of a specific item in a nested sheet and updates the
-        corresponding toolbox item and quote table.
-
-        Args:
-          toolbox_index (int): The index of the item in the toolbox that needs to be updated.
-          input_method (QComboBox | HumbleDoubleSpinBox | tuple[HumbleDoubleSpinBox,
-        HumbleDoubleSpinBox]): The input method can be one of three types: QComboBox,
-        HumbleDoubleSpinBox, or a tuple of two HumbleDoubleSpinBoxes. This parameter is used to
-        determine the current value of the input method and update the corresponding item in the quote
-        nest information dictionary.
-          nest_name_to_update (str): The name of the nest that needs to be updated.
-          item_to_change (str): The name of the item in the quote nest information dictionary that needs
-        to be updated with the new value.
-
-        Returns:
-          None is being returned.
-        """
         if type(input_method) == QComboBox:
             current_value = input_method.currentText()
         elif type(input_method) == HumbleDoubleSpinBox or type(input_method) == MachineCutTimeSpinBox:
@@ -2039,14 +1779,6 @@ class MainWindow(QMainWindow):
         self.load_nest_summary()
 
     def inventory_cell_changed(self, tab: CustomTableWidget):
-        """
-        This function updates the current item in a list widget based on the selected item in a table
-        widget.
-
-        Args:
-          tab (CustomTableWidget): CustomTableWidget object representing the table widget where the cell
-        change event occurred.
-        """
         with contextlib.suppress(IndexError):
             selected_item = self.tabs[self.category].selectedItems()[0].text()
             if items := self.listWidget_itemnames.findItems(selected_item, Qt.MatchFlag.MatchExactly):
@@ -2054,13 +1786,6 @@ class MainWindow(QMainWindow):
                 self.listWidget_itemnames.setCurrentItem(item)
 
     def parts_in_inventory_cell_changed(self, tab: CustomTableWidget):
-        """
-        This function changes the text of a button based on the number of selected items in a table.
-
-        Args:
-          tab (CustomTableWidget): CustomTableWidget object representing the table widget where the
-        inventory parts are displayed.
-        """
         selected_items_count = len(self.get_all_selected_parts(tab))
         if selected_items_count == 0:
             self.pushButton_remove_quantities_from_inventory.setText("Remove Quantities from whole Category")
@@ -2069,18 +1794,6 @@ class MainWindow(QMainWindow):
 
     # OMNIGEN
     def cutoff_sheet_double_clicked(self, cutoff_items: QListWidget):
-        """
-        The function `cutoff_sheet_double_clicked` loads data from a steel inventory, retrieves
-        information about a selected cutoff sheet, and updates various GUI elements with the retrieved
-        information.
-
-        Args:
-          cutoff_items (QListWidget): The `cutoff_items` parameter is a QListWidget that contains a list
-        of items representing cutoff sheets.
-
-        Returns:
-          nothing (None).
-        """
         cutoff_sheets = price_of_steel_inventory.get_value("Cutoff")
         item_pressed: QListWidgetItem = cutoff_items.selectedItems()[0]
         for sheet in list(cutoff_sheets.keys()):
@@ -2101,10 +1814,6 @@ class MainWindow(QMainWindow):
     # * /\ SLOTS & SIGNALS /\
     # * \/ CALCULATION \/
     def calculuate_price_of_steel_summary(self) -> None:
-        """
-        It takes the current quantity of each item in the inventory, multiplies it by the cost per
-        sheet, and then adds it to the total cost of the category.
-        """
         category_data = price_of_steel_inventory.get_data()
         self.clear_layout(self.gridLayout_price_of_steel)
         total: float = 0.0
@@ -2150,10 +1859,6 @@ class MainWindow(QMainWindow):
         self.gridLayout_price_of_steel.addWidget(lbl, i + 1, 1)
 
     def calculate_parts_in_inventory_summary(self) -> None:
-        """
-        It takes a dictionary of dictionaries of dictionaries and calculates the total value of each
-        category and the total value of all categories.
-        """
 
         while self.gridLayout_parts_in_inventory_summary.count():
             item = self.gridLayout_parts_in_inventory_summary.takeAt(0)
@@ -2202,13 +1907,6 @@ class MainWindow(QMainWindow):
     # * /\ CALCULATION /\
 
     def remove_quantity_from_part_inventory(self) -> None:
-        """
-        This function removes a specified quantity of parts from the inventory and updates the inventory
-        data accordingly.
-
-        Returns:
-          None is being returned.
-        """
         batch_multiplier: int = self.spinBox_quantity_for_inventory.value()
         selected_parts = self.get_all_selected_parts(self.tabs[self.category])
         if len(selected_parts) > 0:
@@ -2307,9 +2005,6 @@ class MainWindow(QMainWindow):
             self.load_active_tab()
 
     def update_sorting_status_text(self) -> None:
-        """
-        It updates the status tip of the sorting actions in the menu bar.
-        """
         sorting_from_alphabet: str = "A"
         sorting_to_alphabet: str = "Z"
 
@@ -2351,13 +2046,6 @@ class MainWindow(QMainWindow):
             self.actionDescending.setStatusTip(f"Sort from {sorting_to_priority} to {sorting_from_priority}")
 
     def update_edit_inventory_list_widget(self) -> None:
-        """
-        It takes the text from a lineEdit widget and searches for it in a dictionary. If the text is
-        found, it adds the key to a listWidget
-
-        Returns:
-          the value of the item_name key in the category_data dictionary.
-        """
         search_input: str = self.lineEdit_search_items.text()
         category_data = inventory.get_value(item_name=self.category)
         self.listWidget_itemnames.disconnect()
@@ -2375,10 +2063,6 @@ class MainWindow(QMainWindow):
 
     # NOTE EDIT INVENTORY
     def update_stock_costs(self) -> None:
-        """
-        It takes the current quantity of an item, multiplies it by the price of the item, and then
-        multiplies that by the exchange rate
-        """
         if self.tabWidget.tabText(self.tabWidget.currentIndex()) != "Edit Inventory":
             return
         self.label_total_unit_cost.setText(f"Total Unit Cost: ${inventory.get_total_unit_cost(self.category, self.get_exchange_rate()):,.2f}")
@@ -2398,9 +2082,6 @@ class MainWindow(QMainWindow):
 
     # NOTE EDIT INVENTORY
     def update_category_total_stock_costs(self) -> None:
-        """
-        It takes a list of categories, and then sums up the total cost of all items in those categories
-        """
         total_stock_costs = {}
 
         categories = inventory.get_data()
@@ -2444,9 +2125,6 @@ class MainWindow(QMainWindow):
 
     # NOTE PARTS IN INVENTORY
     def update_all_parts_in_inventory_price(self) -> None:
-        """
-        It takes the weight and machine time of a part, and uses that to calculate the price of the part
-        """
         data = copy.copy(parts_in_inventory.get_data())
         # Idk why it does not exist somtimes
         if not data:
@@ -2465,17 +2143,6 @@ class MainWindow(QMainWindow):
         parts_in_inventory.load_data()
 
     def set_table_row_color(self, table, row_index, color):
-        """
-        This function sets the background color of a row in a table widget in PyQt6.
-
-        Args:
-          table: The table parameter is a QTableWidget object, which represents a table widget in PyQt6.
-        It contains rows and columns of cells, each of which can contain a QTableWidgetItem object.
-          row_index: The index of the row in the table that you want to set the background color for.
-          color: The color parameter is a string that represents the color that the row should be set
-        to. It can be any valid color name or a hexadecimal value representing the color. For example,
-        "red", "#FF0000", or "rgb(255, 0, 0)" could all be valid
-        """
         for j in range(table.columnCount()):
             item = table.item(row_index, j)
             if not item:
@@ -2484,16 +2151,6 @@ class MainWindow(QMainWindow):
             item.setBackground(QColor(color))
 
     def set_table_row_text_color(self, table, row_index, color):
-        """
-        This function sets the text color of a specific row in a table widget in PyQt6.
-
-        Args:
-          table: a QTableWidget object representing the table widget
-          row_index: The index of the row in the table where the text color needs to be set.
-          color: The color parameter is a string that represents the color that you want to set for the
-        text in the table row. It can be any valid color name or a hexadecimal value representing the
-        color. For example, "red", "#FF0000", "blue", "#0000FF", etc.
-        """
         for j in range(table.columnCount()):
             item = table.item(row_index, j)
             if not item:
@@ -2503,13 +2160,6 @@ class MainWindow(QMainWindow):
 
     # OMNIGEN
     def _get_item_data(self) -> dict:
-        """
-        The function `_get_item_data` retrieves item data from a table widget and returns it as a
-        dictionary.
-
-        Returns:
-          a dictionary called `item_data`.
-        """
         self.tableWidget_quote_items.blockSignals(True)
         nest_name: str = ""
 
@@ -2561,13 +2211,6 @@ class MainWindow(QMainWindow):
 
     # OMNIGEN
     def match_item_to_sheet_price(self) -> None:
-        """
-        The function `match_item_to_sheet_price` adjusts the prices of items to match a target sheet
-        price and updates the corresponding values in a table.
-
-        Returns:
-          The function does not have a return statement, so it does not return any value.
-        """
         # changing item price to match sheet price
         if not self.pushButton_item_to_sheet.isChecked():
             self.update_quote_price()
@@ -2654,7 +2297,7 @@ class MainWindow(QMainWindow):
         best_difference = float('inf')
         best_profit_margin_index = 0
 
-        for profit_margin_index in range(0, 101):
+        for profit_margin_index in range(101):
             new_sheet_cost: float = self._get_total_sheet_cost(profit_margin_index, self.spinBox_overhead_sheets.value())
             difference = abs(new_sheet_cost - target_value)
 
@@ -2665,10 +2308,6 @@ class MainWindow(QMainWindow):
 
     # OMNIGEN
     def clear_nest_selections(self) -> None:
-        """
-        This function clears the selection of all list widgets in a dictionary of quote nest
-        directories.
-        """
         for tree_view in self.quote_nest_directories_list_widgets.values():
             tree_view.clearSelection()
 
@@ -2691,10 +2330,6 @@ class MainWindow(QMainWindow):
 
     # OMNIGEN
     def previous_nest_directory_item_selected(self):
-        """
-        The function selects and counts the number of previous nest directories in a tree view and
-        updates a button's text and enabled state accordingly.
-        """
         selected_indexes: list[QStandardItem] = self.treeView_previous_nests.selectionModel().selectedIndexes()
         selected_items: list[str] = []
         for index in selected_indexes:
@@ -2712,9 +2347,6 @@ class MainWindow(QMainWindow):
 
     # OMNIGEN
     def save_quote_table_values(self) -> None:
-        """
-        This function saves the quantities of items in a quote table to a dictionary.
-        """
         nest_name: str = ""
         for row in range(self.tableWidget_quote_items.rowCount()):
             item_name = self.tableWidget_quote_items.item(row, 1).text()
@@ -2792,14 +2424,6 @@ class MainWindow(QMainWindow):
 
     # OMNIGEN
     def update_quote_price(self) -> None:
-        """
-        This function updates the unit price and total price of items in a table based on their weight,
-        machine time, material, and other factors.
-
-        Returns:
-          Nothing is being returned, as the return statement is only executed if a KeyError is raised in
-        the try-except block.
-        """
         total_item_cost: float = 0.0
         self.tableWidget_quote_items.blockSignals(True)
         nest_name: str = ""
@@ -2896,10 +2520,6 @@ class MainWindow(QMainWindow):
 
     # OMNIGEN
     def update_sheet_prices(self) -> None:
-        """
-        The function `update_sheet_prices` updates the prices of sheets in a toolbox and calculates the
-        total cost for sheets.
-        """
         total_sheet_cost: float = 0.0
         toolbox_index: int = 0
         for nest_name in list(self.quote_nest_information.keys()):
@@ -2931,16 +2551,6 @@ class MainWindow(QMainWindow):
 
     # OMNIGEN
     def get_sheet_cost(self, nest_name: str) -> float:
-        """
-        The function calculates the price of a sheet based on its dimensions, material, gauge, and
-        quantity.
-
-        Args:
-          nest_name (str): The `nest_name` parameter is a string that represents the name of a nest.
-
-        Returns:
-          the calculated price of a sheet based on the given nest name.
-        """
         gauge = self.quote_nest_information[nest_name]['gauge']
         material = self.quote_nest_information[nest_name]['material']
         if gauge == 'Null' or material == "Null":
@@ -2959,18 +2569,6 @@ class MainWindow(QMainWindow):
 
     # OMNIGEN
     def get_cutting_cost(self, nest_name: str) -> float:
-        """
-        The function calculates the cutting cost based on the machining time and the type of laser
-        cutting used.
-
-        Args:
-          nest_name (str): The `nest_name` parameter is a string that represents the name of the nest
-        for which you want to calculate the cutting cost.
-
-        Returns:
-          the cutting cost, which is calculated by multiplying the machining time (in hours) by the cost
-        for laser cutting.
-        """
         try:
             machining_time: float = (self.quote_nest_information[nest_name]['single_sheet_machining_time'] * self.quote_nest_information[nest_name]['quantity_multiplier']) / 3600
         except KeyError:
@@ -2980,17 +2578,6 @@ class MainWindow(QMainWindow):
 
     # OMNIGEN
     def get_total_cutting_time(self, nest_name: str) -> str:
-        """
-        The function `get_cutting_time` calculates the total cutting time in hours, minutes, and seconds
-        based on the given nest name.
-
-        Args:
-          nest_name (str): The `nest_name` parameter is a string that represents the name of the nest
-        for which we want to calculate the cutting time.
-
-        Returns:
-          a formatted string that represents the cutting time in hours, minutes, and seconds.
-        """
         try:
             total_seconds = float(self.quote_nest_information[nest_name]['single_sheet_machining_time']) * self.quote_nest_information[nest_name]['quantity_multiplier']
             hours = int(total_seconds // 3600)
@@ -3002,17 +2589,6 @@ class MainWindow(QMainWindow):
 
     # OMNIGEN
     def get_sheet_cut_time(self, nest_name: str) -> str:
-        """
-        The function `get_cutting_time` calculates the total cutting time in hours, minutes, and seconds
-        based on the given nest name.
-
-        Args:
-          nest_name (str): The `nest_name` parameter is a string that represents the name of the nest
-        for which we want to calculate the cutting time.
-
-        Returns:
-          a formatted string that represents the cutting time in hours, minutes, and seconds.
-        """
         try:
             total_seconds = float(self.quote_nest_information[nest_name]['single_sheet_machining_time'])
             hours = int(total_seconds // 3600)
@@ -3032,9 +2608,6 @@ class MainWindow(QMainWindow):
 
     # * /\ UPDATE UI ELEMENTS /\
     def sort_inventory(self) -> None:
-        """
-        It sorts the inventory based on the sorting method selected by the user
-        """
 
         sorting_method: str = ""
         if self.actionQuantity_in_Stock.isChecked():
@@ -3049,13 +2622,6 @@ class MainWindow(QMainWindow):
 
     # * \/ GETTERS \/
     def get_all_part_numbers(self) -> list[str]:
-        """
-        It takes the data from the inventory module, loops through the data, and returns a list of all
-        the part numbers
-
-        Returns:
-          A list of all the part numbers in the inventory.
-        """
         data = inventory.get_data()
         part_numbers = []
         for category in list(data.keys()):
@@ -3066,13 +2632,6 @@ class MainWindow(QMainWindow):
         return list(set(part_numbers))
 
     def get_all_part_names(self) -> list[str]:
-        """
-        It takes the data from the inventory module, loops through the data, and returns a list of all
-        the part names
-
-        Returns:
-          A list of all the part names in the inventory.
-        """
         data = inventory.get_data()
         part_names = []
         for category in list(data.keys()):
@@ -3081,55 +2640,19 @@ class MainWindow(QMainWindow):
         return part_names
 
     def get_exchange_rate(self) -> float:
-        """
-        It returns the exchange rate from the settings file
-
-        Returns:
-          The exchange rate from the settings file.
-        """
         return settings_file.get_value(item_name="exchange_rate")
 
     def get_value_from_category(self, item_name: str, key: str) -> Any:
-        """
-        It returns the value of a key in a dictionary, if the key exists. If the key doesn't exist, it
-        returns a string
-
-        Args:
-          item_name (str): The name of the item you want to get the data from.
-          key (str): str = The key of the item you want to get.
-
-        Returns:
-          The value of the key in the item_name dictionary.
-        """
         try:
             return self.active_json_file.data[self.category][item_name][key]
         except KeyError:
             return "No changes yet." if "latest" in key else None
 
     def get_all_files_from_directory(self, folder_path: str, suffix: str) -> list[str]:
-        """
-        This function returns a list of all files in a directory that have a specified suffix.
-
-        Args:
-          folder_path (str): The path of the directory from which you want to retrieve files.
-          suffix (str): The suffix parameter is a string that represents the file extension that we want
-        to filter the files by. For example, if we want to get all the files with a ".txt" extension, we
-        would set suffix to ".txt".
-
-        Returns:
-          a list of file names that end with the specified suffix in the specified folder path.
-        """
         return [f"{folder_path}/{f}" for f in os.listdir(folder_path) if f.endswith(suffix)]
 
     # OMNIGEN
     def get_index_from_quote_table(self, item_name: str) -> int:
-        """
-        This function searches for a specific item name in a quote table and returns its row index if
-        found, otherwise it returns None.
-
-        Args:
-          item_name (str): A string representing the name of an item to search for in a table.
-        """
         for row in range(self.tableWidget_quote_items.rowCount()):
             item = self.tableWidget_quote_items.item(row, 1)
             if item is not None and item.text() == item_name:
@@ -3141,18 +2664,6 @@ class MainWindow(QMainWindow):
 
     # OMNIGEN
     def get_quantity_multiplier(self, item_name: str, nest_name: str) -> int:
-        """
-        This Python function returns the quantity multiplier of an item based on its name and file
-        location in a dictionary.
-
-        Args:
-          item_name (str): a string representing the name of an item
-
-        Returns:
-          The function `get_quantity_multiplier` returns an integer value, which is either the
-        `quantity_multiplier` value of the `item_name` key in the `quote_nest_information` dictionary,
-        or 1 if the `item_name` key is not found in the dictionary.
-        """
         items_nest = "_" + self.quote_nest_information[nest_name][item_name]["file_name"].replace("\\", "/")
 
         if matches := {k: v for k, v in self.quote_nest_information.items() if k == items_nest}:
@@ -3162,14 +2673,6 @@ class MainWindow(QMainWindow):
 
     # OMNIGEN
     def get_all_selected_nests(self) -> list[str]:
-        """
-        This function returns a list of strings representing the data of all selected indexes in
-        multiple tree views.
-
-        Returns:
-          A list of strings containing the data from the selected indexes in all the tree views in
-        `self.quote_nest_directories_list_widgets`.
-        """
         selected_nests = []
         for tree_view in self.quote_nest_directories_list_widgets.values():
             selected_nests.extend(tree_view.full_paths)
@@ -3179,29 +2682,12 @@ class MainWindow(QMainWindow):
         return [self.tabWidget.tabText(i) for i in range(self.tabWidget.count())]
 
     def get_tab_from_name(self, name: str) -> int:
-        """
-        This function finds the index of a tab in a tab widget by its name.
-
-        Args:
-          name (str): A string representing the name of the tab that needs to be found.
-
-        Returns:
-          an integer value which represents the index of the tab with the given name in the tab widget.
-        If the tab is not found, it returns -1.
-        """
         return next(
             (i for i in range(self.tabWidget.count()) if self.tabWidget.tabText(i) == name),
             -1,
         )
 
     def get_all_gauges(self) -> list[str]:
-        """
-        This function retrieves a list of all gauges from the inventory data.
-
-        Returns:
-          A list of unique gauge values extracted from the "gauge" key of each item in the inventory
-        data.
-        """
         data = parts_in_inventory.get_data()
         gauges = []
         for category in list(data.keys()):
@@ -3212,13 +2698,6 @@ class MainWindow(QMainWindow):
         return list(set(gauges))
 
     def get_all_materials(self) -> list[str]:
-        """
-        This function retrieves a list of all gauges from the inventory data.
-
-        Returns:
-          A list of unique gauge values extracted from the "gauge" key of each item in the inventory
-        data.
-        """
         data = parts_in_inventory.get_data()
         materials = []
         for category in list(data.keys()):
@@ -3229,19 +2708,6 @@ class MainWindow(QMainWindow):
         return list(set(materials))
 
     def get_all_selected_parts(self, tab: CustomTableWidget) -> list[str]:
-        """
-        This function returns a list of selected items from a custom table widget that do not match any
-        items in two other lists.
-
-        Args:
-          tab (CustomTableWidget): CustomTableWidget object representing the table widget from which the
-        selected items are retrieved.
-
-        Returns:
-          A list of strings containing the text of all selected items in the given CustomTableWidget
-        object, except for those that contain any of the strings in the lists returned by the methods
-        `get_all_materials()` and `get_all_gauges()`.
-        """
         selected_rows = tab.selectedItems()
 
         def check_lists_for_match(item_name: str, list1: list[str], list2: list[str]) -> bool:
@@ -3260,27 +2726,12 @@ class MainWindow(QMainWindow):
         ]
 
     def get_all_flow_tags(self) -> list[str]:
-        """
-        This function returns a list of strings where each string is a combination of flow tags joined
-        by "->".
-
-        Returns:
-          A list of strings where each string is a concatenation of two or more flow tags separated by "
-        -> ". The flow tags are obtained from the "flow_tags" key in the "workspace_tags" dictionary.
-        """
         flow_tags: list[str] = []
         for group, group_data in workspace_tags.get_value("flow_tags").items():
             flow_tags.extend(group_data)
         return [" ➜ ".join(flow_tag) for flow_tag in flow_tags]
 
     def get_all_statuses(self) -> list[str]:
-        """
-        This function retrieves all unique statuses from a dictionary of flow tags.
-
-        Returns:
-          A list of unique status strings from the `flow_tag_statuses` dictionary obtained from the
-        `workspace_tags` object.
-        """
         data = workspace_tags.get_value("flow_tag_statuses")
         statuses = set()
         for flow_tag in data:
@@ -3289,23 +2740,11 @@ class MainWindow(QMainWindow):
         return list(statuses)
 
     def get_all_job_names(self) -> list[str]:
-        """
-        The function `get_all_job_names` retrieves all job names from the admin workspace's data.
-
-        Returns:
-          a list of job names.
-        """
         self.active_workspace_file.load_data()
         job_names: list[str] = [job.name for job in self.active_workspace_file.data]
         return job_names
 
     def get_all_workspace_items(self) -> list[Item]:
-        """
-        The function `get_all_workspace_items` retrieves all items from the admin workspace.
-
-        Returns:
-          a list of items.
-        """
         self.active_workspace_file.load_data()
         all_items: list[Item] = []
         for assembly in self.active_workspace_file.data:
@@ -3313,22 +2752,12 @@ class MainWindow(QMainWindow):
         return all_items
 
     def get_all_workspace_item_names(self) -> list[str]:
-        """
-        The function `get_all_workspace_item_names` returns a list of unique names of all items in a
-        workspace.
-
-        Returns:
-          a list of unique item names from all the workspace items.
-        """
         all_items = self.get_all_workspace_items()
         unique_item_names = {item.name for item in all_items}
         return list(unique_item_names)
 
     # * /\ GETTERS /\
     def save_geometry(self) -> None:
-        """
-        It saves the geometry of the window to the settings file
-        """
         geometry.set_value(item_name="x", value=max(self.pos().x(), 0))
         geometry.set_value(item_name="y", value=max(self.pos().y(), 0))
         geometry.set_value(item_name="width", value=self.size().width())
@@ -3339,9 +2768,6 @@ class MainWindow(QMainWindow):
 
     # * \/ Dialogs \/
     def show_about_dialog(self) -> None:
-        """
-        It creates an AboutDialog object and shows it.
-        """
         dialog = AboutDialog(
             self,
             __name__,
@@ -3352,17 +2778,6 @@ class MainWindow(QMainWindow):
         dialog.show()
 
     def show_message_dialog(self, title: str, message: str, dialog_buttons: str = DialogButtons.ok) -> str:
-        """
-        It creates a message dialog, shows it, and returns the response
-
-        Args:
-          title (str): str = The title of the dialog
-          message (str): str = The message to display in the dialog
-          dialog_buttons (str): str = DialogButtons.ok
-
-        Returns:
-          The response is being returned.
-        """
         message_dialog = MessageDialog(self, Icons.information, dialog_buttons, title, message)
         message_dialog.show()
 
@@ -3374,17 +2789,6 @@ class MainWindow(QMainWindow):
         message: str,
         dialog_buttons: str = DialogButtons.ok_save_copy_cancel,
     ) -> str:
-        """
-        It creates a dialog box with a message and a title, and returns the response
-
-        Args:
-          title (str): str = The title of the dialog
-          message (str): str = The message to be displayed in the dialog.
-          dialog_buttons (str): str = DialogButtons.ok_save_copy_cancel,
-
-        Returns:
-          The response from the dialog.
-        """
         message_dialog = MessageDialog(self, Icons.critical, dialog_buttons, title, message)
         message_dialog.show()
 
@@ -3398,12 +2802,6 @@ class MainWindow(QMainWindow):
         return response
 
     def show_web_scrape_results(self, data) -> None:
-        """
-        Shows results of webscrape
-
-        Args:
-          data: a list of dictionaries
-        """
         # # QApplication.restoreOverrideCursor()
         results = WebScrapeResultsDialog(title="Results", message="Ebay search results", data=data)
         if results.exec():
@@ -3412,10 +2810,6 @@ class MainWindow(QMainWindow):
                 return
 
     def show_whats_new(self, show: bool = False) -> None:
-        """
-        If the latest version of the program is newer than the last time the program was opened, show
-        the changelog.
-        """
 
         def markdown_to_html(markdown_text):
             html = markdown.markdown(markdown_text)
@@ -3438,9 +2832,6 @@ class MainWindow(QMainWindow):
             return
 
     def show_not_trusted_user(self) -> None:
-        """
-        It shows a message dialog with a title and a message
-        """
         self.tabWidget.setCurrentIndex(settings_file.get_value("menu_tabs_order").index(self.last_selected_menu_tab))
         self.show_message_dialog(
             title="Permission error",
@@ -3448,12 +2839,6 @@ class MainWindow(QMainWindow):
         )
 
     def add_item(self) -> None:
-        """
-        It adds an item to a category
-
-        Returns:
-          The response from the dialog.
-        """
         add_item_dialog = AddItemDialog(
             title=f'Add new item to "{self.category}"',
             message=f"Adding a new item to \"{self.category}\".\n\nPress 'Add' when finished.",
@@ -3516,15 +2901,6 @@ class MainWindow(QMainWindow):
                 return
 
     def set_custom_quantity_limit(self, tab: CustomTableWidget) -> None:
-        """
-        This function sets custom quantity limits for an item in a table widget and updates the table
-        row color based on the current quantity and the new limits.
-
-        Args:
-          item_name (QComboBox): The name of the item for which the custom quantity limit is being set.
-        It can be either a string representing the name of the item or a QComboBox object representing
-        the dropdown menu for selecting the item.
-        """
         with contextlib.suppress(AttributeError):
             table_widget: CustomTableWidget = self.tabs[self.category]
             try:
@@ -3567,13 +2943,6 @@ class MainWindow(QMainWindow):
 
     # ! deprecated
     def search_ebay(self) -> None:
-        """
-        It opens a dialog box, and if the user clicks ok, it starts a thread that scrapes ebay for the
-        user's input.
-
-        Returns:
-          The response is a DialogButtons enum.
-        """
         input_dialog = InputDialog(title="Search Ebay", message="Search for anything")
         if input_dialog.exec():
             response = input_dialog.get_response()
@@ -3588,15 +2957,6 @@ class MainWindow(QMainWindow):
                 return
 
     def create_new_category(self, event=None) -> None:
-        """
-        It creates a new category
-
-        Args:
-          event: The event that triggered the function.
-
-        Returns:
-          The return value of the function is None.
-        """
         input_dialog = InputDialog(title="Create category", message="Enter a name for a new category.")
         if input_dialog.exec():
             response = input_dialog.get_response()
@@ -3617,12 +2977,6 @@ class MainWindow(QMainWindow):
                 return
 
     def delete_category(self) -> None:
-        """
-        It's a function that deletes a category from a list of categories
-
-        Returns:
-          The response from the dialog.
-        """
         select_item_dialog = SelectItemDialog(
             button_names=DialogButtons.discard_cancel,
             title="Delete category",
@@ -3655,12 +3009,6 @@ class MainWindow(QMainWindow):
                 return
 
     def clone_category(self) -> None:
-        """
-        It's a function that opens a dialog box that allows the user to select a category to clone
-
-        Returns:
-          The response from the dialog.
-        """
         select_item_dialog = SelectItemDialog(
             button_names=DialogButtons.clone_cancel,
             title="Clone category",
@@ -3700,17 +3048,6 @@ class MainWindow(QMainWindow):
                 return
 
     def rename_category(self, index) -> None:
-        """
-        It takes the index of the tab that was clicked, opens a dialog box, and if the user clicks ok,
-        it renames the tab.
-
-        Args:
-          index: The index of the tab that was clicked.
-
-        Returns:
-          The return value of the function is the return value of the last expression evaluated, or None
-        if no expression was evaluated.
-        """
         if (
             self.tab_widget.tabText(0) == ""
             or self.tab_widget.tabText(index) == "Price Per Pound"
@@ -3743,19 +3080,10 @@ class MainWindow(QMainWindow):
                 return
 
     def open_group_menu(self, menu: QMenu) -> None:
-        """
-        It opens a menu at the current cursor position
-
-        Args:
-          menu (QMenu): QMenu
-        """
         menu.exec(QCursor.pos())
 
     # OMNIGEN
     def add_nest_directory(self) -> None:
-        """
-        This function adds a new directory to a list of quote nest directories and refreshes the list.
-        """
         nest_directories: list[str] = settings_file.get_value("quote_nest_directories")
         if new_nest_directory := QFileDialog.getExistingDirectory(self, "Open directory", "/"):
             nest_directories.append(new_nest_directory)
@@ -3764,10 +3092,6 @@ class MainWindow(QMainWindow):
 
     # OMNIGEN
     def remove_nest_directory(self) -> None:
-        """
-        This function removes a selected nest directory from a list of nest directories and updates the
-        settings file.
-        """
         nest_directories: list[str] = settings_file.get_value("quote_nest_directories")
         select_item_dialog = SelectItemDialog(
             button_names=DialogButtons.discard_cancel,
@@ -3790,13 +3114,6 @@ class MainWindow(QMainWindow):
 
     # OMNIGEN
     def _get_quoted_parts_list_information(self) -> dict:
-        """
-        This function calculates the quoting unit price and quoting price for each item in a batch based
-        on its weight, quantity, machine time, material, and overhead costs.
-
-        Returns:
-          A dictionary containing information about quoted parts list.
-        """
         batch_data = {}
         for nest_name in list(self.quote_nest_information.keys()):
             if nest_name == 'Components':
@@ -3821,13 +3138,6 @@ class MainWindow(QMainWindow):
 
     # OMNIGEN
     def _get_grouped_quoted_parts_list_information(self) -> dict:
-        """
-        This function calculates the quoting unit price and quoting price for each item in a batch based
-        on its weight, quantity, machine time, material, and overhead costs.
-
-        Returns:
-          A dictionary containing information about quoted parts list.
-        """
         batch_data = {}
         for nest_name in list(self.quote_nest_information.keys()):
             if nest_name == 'Components':
@@ -3850,13 +3160,6 @@ class MainWindow(QMainWindow):
 
     # OMNIGEN
     def generate_quote(self) -> None:
-        """
-        This function generates a quote, work order, or packing slip based on user input and updates
-        inventory if necessary.
-
-        Returns:
-          The function does not have a return statement, so it returns None by default.
-        """
         select_item_dialog = GenerateQuoteDialog(
             button_names=DialogButtons.generate_cancel,
             title="Quote Generator",
@@ -3944,14 +3247,6 @@ class MainWindow(QMainWindow):
 
     # NOTE PARTS IN INVENTORY
     def generate_quote_with_selected_parts(self, tab: CustomTableWidget) -> None:
-        """
-        This function generates a quote with selected parts and their corresponding information.
-
-        Args:
-          tab (CustomTableWidget): The parameter `tab` is of type `CustomTableWidget` and is used as an
-        input to the `generate_quote_with_selected_parts` method. It is likely a reference to a table
-        widget object that contains information about selected parts.
-        """
         selected_parts = self.get_all_selected_parts(tab)
         try:
             sheet_gauge: str = self.get_value_from_category(item_name=selected_parts[0], key="gauge")
@@ -3980,16 +3275,6 @@ class MainWindow(QMainWindow):
 
     # NOTE PARTS IN INVENTORY
     def add_selected_parts_to_quote(self, tab: CustomTableWidget) -> None:
-        """
-        The function adds selected parts to a quote and generates a custom nest PDF file.
-
-        Args:
-          tab (CustomTableWidget): The `tab` parameter is of type `CustomTableWidget`.
-
-        Returns:
-          In this code, if no item is selected, the function will return and no further action will be
-        taken.
-        """
         selected_parts = self.get_all_selected_parts(tab)
         try:
             sheet_gauge: str = self.get_value_from_category(item_name=selected_parts[0], key="gauge")
@@ -4035,19 +3320,11 @@ class MainWindow(QMainWindow):
             selected_part,
             parts_in_inventory.get_data()[self.category][selected_part],
         )
-        if item_dialog.exec():
-            if item_dialog.get_response() == 'apply':
-                parts_in_inventory.get_data()[self.category][selected_part] = item_dialog.get_data()
-                self.load_categories()
+        if item_dialog.exec() and item_dialog.get_response() == 'apply':
+            parts_in_inventory.get_data()[self.category][selected_part] = item_dialog.get_data()
+            self.load_categories()
 
     def set_order_number(self) -> None:
-        """
-        This function sets the order number by prompting the user to input a new integer value and
-        updating the corresponding JSON file.
-
-        Returns:
-          None.
-        """
         self.get_order_number_thread()
         loop = QEventLoop()
         QTimer.singleShot(200, loop.quit)
@@ -4400,9 +3677,6 @@ class MainWindow(QMainWindow):
 
     # * \/ Load UI \/
     def load_history_view(self) -> None:
-        """
-        It loads the history view of the application.
-        """
         # CATEOGRY HISTORY
         self.categoryHistoryTable.clear()
         self.categoryHistoryTable.setRowCount(0)
@@ -4434,9 +3708,6 @@ class MainWindow(QMainWindow):
             self.singleItemHistoryTable.setItem(i, 1, QTableWidgetItem(description))
 
     def load_price_history_view(self) -> None:
-        """
-        It loads the history view of the application.
-        """
         # CATEOGRY HISTORY
         self.priceHistoryTable.clear()
         self.priceHistoryTable.setRowCount(0)
@@ -4462,20 +3733,11 @@ class MainWindow(QMainWindow):
             self.priceHistoryTable.setItem(i - 1, 4, QTableWidgetItem(str(new_price)))
 
     def load_tree_view(self, inventory: JsonFile):
-        """
-        > This function loads the inventory into the tree view
-
-        Args:
-          inventory: The inventory object that is being displayed.
-        """
         self.clear_layout(self.search_layout)
         tree_view = ViewTree(data=inventory.get_data())
         self.search_layout.addWidget(tree_view, 0, 0)
 
     def load_categories(self) -> None:
-        """
-        It loads the categories from the inventory file and creates a tab for each category.
-        """
         if (
             not self.trusted_user
             and self.tabWidget.tabText(self.tabWidget.currentIndex()) != "Sheets in Inventory"
@@ -4572,12 +3834,6 @@ class MainWindow(QMainWindow):
         self.load_active_tab()
 
     def load_active_tab(self) -> None:
-        """
-        It loads the data from the inventory file and displays it in the GUI
-
-        Returns:
-          The return value is a list of QWidget objects.
-        """
         try:
             self.category = self.tab_widget.tabText(self.tab_widget.currentIndex())
         except AttributeError:
@@ -4668,18 +3924,6 @@ class MainWindow(QMainWindow):
 
     # NOTE PARTS IN INVENTYORY
     def load_inventory_parts(self, tab: CustomTableWidget, category_data: dict) -> None:
-        """
-        This function loads inventory parts data into a custom table widget in a graphical user
-        interface.
-
-        Args:
-          tab (CustomTableWidget): The tab parameter is a CustomTableWidget object, which is a custom
-        widget used to display data in a table format.
-          category_data (dict): A dictionary containing data for items in a specific category. The keys
-        of the dictionary are the names of the items, and the values are dictionaries containing various
-        information about the item such as its current quantity, unit quantity, price, modified date,
-        and limits for quantity levels.
-        """
         tab.blockSignals(True)
         tab.set_editable_column_index([2, 3, 5])
         tab.setEnabled(False)
@@ -4845,14 +4089,12 @@ class MainWindow(QMainWindow):
         if tab.contextMenuPolicy() != Qt.ContextMenuPolicy.CustomContextMenu:
             tab.setContextMenuPolicy(Qt.ContextMenuPolicy.CustomContextMenu)
             menu = QMenu(self)
-            action = QAction(self)
-            action.setText("View Parts Data")
+            action = QAction("View Parts Data", self)
             action.triggered.connect(partial(self.view_part_information, tab))
             menu.addAction(action)
             menu.addSeparator()
-            action = QAction(self)
+            action = QAction("Set Custom Quantity Limit", self)
             if self.category != "Recut":
-                action.setText("Set Custom Quantity Limit")
                 action.triggered.connect(partial(self.set_custom_quantity_limit, tab))
                 menu.addAction(action)
                 menu.addSeparator()
@@ -4863,8 +4105,7 @@ class MainWindow(QMainWindow):
                     continue
                 if i == 1:
                     categories.addSeparator()
-                action = QAction(self)
-                action.setText(category)
+                action = QAction(category, self)
                 action.triggered.connect(partial(self.move_to_category, tab, category))
                 categories.addAction(action)
             menu.addMenu(categories)
@@ -4876,27 +4117,22 @@ class MainWindow(QMainWindow):
                     continue
                 if i == 1:
                     categories.addSeparator()
-                action = QAction(self)
-                action.setText(category)
+                action = QAction(category, self)
                 action.triggered.connect(partial(self.copy_to_category, tab, category))
                 categories.addAction(action)
             menu.addMenu(categories)
-            action = QAction(self)
-            action.setText("Delete selected parts")
+            action = QAction("Delete selected parts", self)
             action.triggered.connect(partial(self.delete_selected_items, tab))
             menu.addAction(action)
-            action = QAction(self)
-            action.setText("Set selected parts to zero quantity")
+            action = QAction("Set selected parts to zero quantity", self)
             action.triggered.connect(partial(self.reset_selected_parts_quantity, tab))
             menu.addAction(action)
             menu.addSeparator()
             if self.category != "Recut":
-                action1 = QAction(self)
-                action1.setText("Generate Quote with Selected Parts")
+                action1 = QAction("Generate Quote with Selected Parts", self)
                 action1.triggered.connect(partial(self.generate_quote_with_selected_parts, tab))
                 menu.addAction(action1)
-                action2 = QAction(self)
-                action2.setText("Add Selected Parts to Quote")
+                action2 = QAction("Add Selected Parts to Quote", self)
                 action2.triggered.connect(partial(self.add_selected_parts_to_quote, tab))
                 menu.addAction(action2)
             tab.customContextMenuRequested.connect(partial(self.open_group_menu, menu))
@@ -4905,13 +4141,6 @@ class MainWindow(QMainWindow):
 
     # NOTE SHEETS IN INVENTORY
     def price_of_steel_item(self, tab: CustomTableWidget, category_data: dict) -> None:
-        """
-        This function takes a QVBoxLayout, an int, and a dict and returns None.
-
-        Args:
-          tab (QVBoxLayout): QVBoxLayout
-          category_data (dict): dict = {
-        """
         tab.blockSignals(True)
         tab.setEnabled(False)
         tab.clear()
@@ -5113,16 +4342,6 @@ class MainWindow(QMainWindow):
 
     # NOTE EDIT INVENTORY
     def load_inventory_items(self, tab: CustomTableWidget, category_data: dict) -> None:
-        """
-        This function loads data into a QTableWidget for a specific category.
-
-        Args:
-          tab (QTableWidget): The QTableWidget object that is being loaded with data.
-          category_data (dict): The `category_data` parameter is a dictionary containing information
-        about the items in a particular category. The keys of the dictionary are the names of the items,
-        and the values are dictionaries containing various information about each item, such as its part
-        number, current quantity, price, priority, and notes. This
-        """
         tab.blockSignals(True)
         tab.setEnabled(False)
         tab.clear()
@@ -5391,35 +4610,10 @@ class MainWindow(QMainWindow):
 
     # STAGING/EDITING
     def assembly_items_table_clicked(self, item: QTableWidgetItem) -> None:
-        """
-        The function assigns the text of the clicked item in an assembly items table to a variable.
-
-        Args:
-          item (QTableWidgetItem): The parameter "item" is of type QTableWidgetItem. It represents the
-        item that was clicked in the assembly items table.
-        """
         self.last_selected_assemly_item = item.text()
 
     # STAGING/EDITING
     def assembly_items_table_cell_changed(self, table: CustomTableWidget, assembly: Assembly, item: QTableWidgetItem) -> None:
-        """
-        The function `assembly_items_table_cell_changed` handles changes made to cells in a table,
-        specifically for an assembly item table, and updates the corresponding assembly item and saves
-        the changes.
-
-        Args:
-          table (CustomTableWidget): The `table` parameter is a `CustomTableWidget` object, which
-        represents a custom table widget in the user interface.
-          assembly (Assembly): The "assembly" parameter is an instance of the Assembly class, which
-        represents a collection of items. It contains methods and attributes related to managing and
-        manipulating the items in the assembly.
-          item (QTableWidgetItem): The `item` parameter is a QTableWidgetItem object that represents the
-        cell that was changed in the table.
-
-        Returns:
-          In the code snippet provided, the function `assembly_items_table_cell_changed` does not have a
-        return statement. Therefore, it does not explicitly return any value.
-        """
         item_text = item.text()
         row = item.row()
         column = item.column()
@@ -5448,24 +4642,6 @@ class MainWindow(QMainWindow):
     def load_assemblies_items_file_layout(
         self, file_category: str, files_layout: QHBoxLayout, assembly: Assembly, item: Item, show_dropped_widget: bool = True
     ) -> None:
-        """
-        The function `load_assemblies_items_file_layout` loads files associated with an item into a
-        QHBoxLayout and adds them as buttons, with the option to show a drop widget.
-
-        Args:
-          file_category (str): The `file_category` parameter is a string that represents the category of
-        files to be loaded. It is used to retrieve the files from the `item` object.
-          files_layout (QHBoxLayout): The `files_layout` parameter is a QHBoxLayout object that
-        represents the layout where the draggable buttons will be added.
-          assembly (Assembly): The "assembly" parameter is an instance of the Assembly class. It
-        represents an assembly object.
-          item (Item): The "item" parameter is an instance of the Item class. It represents an item in
-        the application and contains various properties and values associated with that item.
-          show_dropped_widget (bool): The parameter "show_dropped_widget" is a boolean flag that
-        determines whether or not to show a "DropWidget" in the layout. If it is set to True, a
-        "DropWidget" will be added to the layout. If it is set to False, the "DropWidget" will. Defaults
-        to True
-        """
         self.clear_layout(files_layout)
         files = item.get_value(key=file_category)
         for file in files:
@@ -5487,24 +4663,6 @@ class MainWindow(QMainWindow):
     def handle_dropped_file(
         self, label: QLabel, file_paths: list[str], assembly: Assembly, item: Item, files_layout: QHBoxLayout, file_category: str
     ) -> None:
-        """
-        The function handles dropped files by adding them to a set, updating the item's value, saving
-        the changes, syncing the changes, uploading the files, updating the status button, and reloading
-        the file layout.
-
-        Args:
-          label (QLabel): The `label` parameter is a QLabel widget that displays the text "Drag Here".
-          file_paths (list[str]): A list of file paths that were dropped onto the label.
-          assembly (Assembly): The "assembly" parameter is an instance of the Assembly class. It
-        represents a collection of related items or components.
-          item (Item): The `item` parameter represents an object or data structure that contains
-        information about an item. It likely has methods to get and set values for different keys or
-        attributes.
-          files_layout (QHBoxLayout): The `files_layout` parameter is a QHBoxLayout object that
-        represents the layout where the files will be displayed.
-          file_category (str): The `file_category` parameter represents the category or type of the file
-        being handled. It is used to identify and categorize the files in the system.
-        """
         files = set(item.get_value(key=file_category))
         for file_path in file_paths:
             files.add(file_path)
@@ -5519,19 +4677,6 @@ class MainWindow(QMainWindow):
 
     # STAGING/EDITING
     def delete_workspace_item(self, assembly: Assembly, table: CustomTableWidget, row_index: int):
-        """
-        The function deletes an item from an assembly and updates the table and button connections
-        accordingly.
-
-        Args:
-          assembly (Assembly): The "assembly" parameter is an instance of the Assembly class. It
-        represents a collection of items.
-          table (CustomTableWidget): The "table" parameter is a CustomTableWidget object, which is a
-        custom widget that represents a table. It is used to display and manipulate data in a tabular
-        format.
-          row_index (int): The `row_index` parameter is an integer that represents the index of the row
-        in the `table` widget that needs to be deleted.
-        """
         item: Item = assembly.get_item(table.item(row_index, 0).text())
         assembly.remove_item(item=item)
         table.removeRow(row_index)
@@ -5898,17 +5043,6 @@ class MainWindow(QMainWindow):
 
     # STAGING/EDITING
     def load_edit_assembly_widget(self, assembly: Assembly, workspace_information: dict, group_color: str, parent=None) -> QWidget:
-        """
-        The load_edit_assembly_widget function is used to create a widget that can be added to the MultiToolBox in the
-        load_edit_assembly_items_table function. The load_edit_assembly_widget function takes an assembly as its only argument and returns
-        a QWidget object. The returned QWidget contains a group box with a table widget for displaying items, and another group box
-        with buttons for adding sub assemblies, deleting sub assemblies, duplicating sub assemblies, etc.
-
-        :param self: Access the other functions in the class
-        :param assembly: Assembly: Pass the assembly object to the function
-        :param parent: Set the parent of the widget
-        :return: A widget that contains a table of items and sub assemblies
-        """
         widget = QWidget()
         layout = QVBoxLayout(widget)
         layout.setContentsMargins(1, 1, 1, 1)
@@ -7982,16 +7116,6 @@ class MainWindow(QMainWindow):
     # * \/ CONTEXT MENU \/
     # USER
     def move_selected_table_items_to_next_flow_state(self, table: CustomTableWidget, assembly: Assembly | ItemGroup) -> None:
-        """
-        The function moves selected items from a table to the next flow state in an assembly, updating
-        their attributes accordingly.
-
-        Args:
-          table (CustomTableWidget): The "table" parameter is of type CustomTableWidget. It represents a
-        custom table widget that contains the selected items.
-          assembly (Assembly): The `assembly` parameter is an instance of the `Assembly` class. It
-        represents a collection of items that need to go through different flow states.
-        """
         selected_items_from_table: list[str] = self.get_all_selected_parts(table)
         if isinstance(assembly, Assembly):
             items_to_update: list[Item] = [item for item in assembly.items if item.name in selected_items_from_table]
@@ -8042,18 +7166,6 @@ class MainWindow(QMainWindow):
 
     # USER
     def change_selected_table_items_status(self, table: CustomTableWidget, assembly: Assembly | ItemGroup, status: str) -> None:
-        """
-        The function `change_selected_table_items_status` updates the status of selected items in a
-        table based on their current flow state and the provided status.
-
-        Args:
-          table (CustomTableWidget): The `table` parameter is of type `CustomTableWidget`. It represents
-        a custom table widget object.
-          assembly (Assembly): The `assembly` parameter represents an assembly object. It is a
-        collection of items that are being processed or worked on.
-          status (str): The "status" parameter in the given function is a string that represents the new
-        status to be assigned to the selected items in the table.
-        """
         selected_items_from_table: list[str] = self.get_all_selected_parts(table)
         if isinstance(assembly, Assembly):
             items_to_update: list[Item] = [item for item in assembly.items if item.name in selected_items_from_table]
@@ -8131,10 +7243,6 @@ class MainWindow(QMainWindow):
 
     # USER
     def load_view_assembly_context_menus(self) -> None:
-        """
-        The function `load_view_assembly_context_menus` sets up custom context menus for tables in a
-        workspace.
-        """
         for table, main_assembly in self.workspace_tables.items():
             # set context menu
             with contextlib.suppress(RuntimeError):
@@ -8158,20 +7266,6 @@ class MainWindow(QMainWindow):
 
     # STAGING/EDITING
     def copy_items_to(self, table: CustomTableWidget, assembly_copy_from: Assembly, assembly_copy_to: Assembly) -> None:
-        """
-        The function copies selected items from one assembly to another assembly, checking for duplicates and saving the changes.
-
-        Args:
-          table (CustomTableWidget): The `table` parameter is of type `CustomTableWidget` and represents
-        the table widget from which the items will be copied.
-          assembly_copy_from (Assembly): The `assembly_copy_from` parameter is an instance of the
-        `Assembly` class. It represents the assembly from which items will be copied.
-          assembly_copy_to (Assembly): `assembly_copy_to` is an instance of the `Assembly` class. It
-        represents the assembly where the items will be copied to.
-
-        Returns:
-          None
-        """
         selected_items_from_table: list[str] = self.get_all_selected_parts(table)
         items_to_copy: list[Item] = [item for item in assembly_copy_from.items if item.name in selected_items_from_table]
 
@@ -8189,20 +7283,6 @@ class MainWindow(QMainWindow):
 
     # STAGING/EDITING
     def move_items_to(self, table: CustomTableWidget, assembly_copy_from: Assembly, assembly_copy_to: Assembly) -> None:
-        """
-        The function moves selected items from one assembly to another assembly, checking for duplicates and saving the changes.
-
-        Args:
-          table (CustomTableWidget): The `table` parameter is of type `CustomTableWidget` and represents
-        the table widget from which the items are selected.
-          assembly_copy_from (Assembly): The parameter `assembly_copy_from` is an instance of the
-        `Assembly` class. It represents the assembly from which the items will be copied/moved.
-          assembly_copy_to (Assembly): The parameter `assembly_copy_to` is an instance of the `Assembly`
-        class. It represents the assembly where the items will be moved to.
-
-        Returns:
-          None
-        """
         selected_items_from_table: list[str] = self.get_all_selected_parts(table)
         items_to_move: list[Item] = [item for item in assembly_copy_from.items if item.name in selected_items_from_table]
 
@@ -8221,18 +7301,6 @@ class MainWindow(QMainWindow):
 
     # STAGING/EDITING
     def delete_selected_items_from_workspace(self, table: CustomTableWidget, assembly: Assembly) -> None:
-        """
-        The function deletes selected items from a workspace by clicking on the delete buttons
-        associated with the selected rows in a table.
-
-        Args:
-          table (CustomTableWidget): The `table` parameter is of type `CustomTableWidget`, which is a
-        custom widget representing a table. It is used to access the selected indexes and widgets in the
-        table.
-          assembly (Assembly): The `assembly` parameter is an instance of the `Assembly` class. It is
-        used as an argument to the function to indicate the specific assembly object that the selected
-        items belong to.
-        """
         selected_indexes = table.selectedIndexes()
         selected_rows = list({selected_index.row() for selected_index in selected_indexes})
         delete_buttons: list[DeletePushButton] = [
@@ -8296,22 +7364,6 @@ class MainWindow(QMainWindow):
 
     # STAGING/EDITING
     def set_tables_selected_items_value(self, table: CustomTableWidget, assembly: Assembly, key: str, value: Any) -> None:
-        """
-        The function sets the value of a specific key for selected items in a table, based on the
-        provided assembly.
-
-        Args:
-          table (CustomTableWidget): The "table" parameter is of type CustomTableWidget. It represents a
-        custom table widget used in the application.
-          assembly (Assembly): The "assembly" parameter is an object of the "Assembly" class. It
-        represents a collection of items that are assembled together.
-          key (str): The `key` parameter is a string that represents the attribute or property of the
-        `Item` objects in the `assembly` that you want to modify. It determines which property of the
-        `Item` objects will be changed.
-          value (Any): The "value" parameter in the given function is a variable that represents the new
-        value to be set for the specified key in the items of the assembly. The type of the "value"
-        parameter can vary depending on the key being set.
-        """
         selected_items_from_table: list[str] = self.get_all_selected_parts(table)
         items_to_change: list[Item] = [item for item in assembly.items if item.name in selected_items_from_table]
 
@@ -8331,10 +7383,6 @@ class MainWindow(QMainWindow):
 
     # STAGING/EDITING
     def load_edit_assembly_context_menus(self) -> None:
-        """
-        The function `load_edit_assembly_context_menus` sets up the context menus for a table in a GUI
-        application.
-        """
         for table, main_assembly in self.workspace_tables.items():
             # set context menu
             with contextlib.suppress(RuntimeError):
@@ -8520,10 +7568,6 @@ class MainWindow(QMainWindow):
 
     # NOTE FOR PARTS IN INVENTORY
     def load_parts_in_inventory_filter_tab(self) -> None:
-        """
-        The function `load_parts_in_inventory_filter_tab` clears and updates the filter tab for parts in
-        inventory.
-        """
         self.parts_in_ineventory_filter.clear()
         self.clear_layout(self.verticalLayout_parts_filter)
 
@@ -8542,14 +7586,6 @@ class MainWindow(QMainWindow):
 
     # WORKSPACE
     def set_filter_calendar_day(self, days: int) -> None:
-        """
-        The function sets the filter for the calendar day by specifying the number of days and updating
-        the calendar accordingly.
-
-        Args:
-          days (int): The `days` parameter is an integer that represents the number of days to set the
-        filter for in the calendar.
-        """
         calendar: SelectRangeCalendar = self.verticalLayout_calendar_select_range.layout().itemAt(0).widget()
         if not calendar.from_date:
             calendar.from_date = QDate().currentDate()
@@ -8565,10 +7601,6 @@ class MainWindow(QMainWindow):
 
     # WORKSPACE
     def load_workspace_filter_tab(self) -> None:
-        """
-        The function `load_workspace_filter_tab` sets up the filter tab in a workspace by adding tabs
-        and buttons for filtering different categories of items.
-        """
         self.workspace_filter.clear()
         self.clear_layout(self.filter_layout)
         self.clear_layout(self.verticalLayout_calendar_select_range)
@@ -8619,19 +7651,12 @@ class MainWindow(QMainWindow):
 
     # OMNIGEN
     def load_quote_generator_ui(self) -> None:
-        """
-        The function "load_quote_generator_ui" refreshes nest directories, loads a cutoff drop-down, and
-        loads previous nest files in a separate thread.
-        """
         self.refresh_nest_directories()
         self.load_cuttoff_drop_down()
         self.load_previous_nests_files_thread()
 
     # OMNIGEN
     def load_cuttoff_drop_down(self) -> None:
-        """
-        The function loads cutoff sheets data and adds it to a dropdown menu in a GUI.
-        """
         with contextlib.suppress(Exception):  # This is just incase the Cutoff tab has never been created
             cutoff_items = self.cutoff_widget.widgets[0]
             cutoff_items.clear()
@@ -8645,17 +7670,6 @@ class MainWindow(QMainWindow):
 
     # OMNIGEN
     def load_previous_nest_tree_view(self, data: dict[str, dict[str, Any]]) -> None:
-        """
-        The function `load_previous_nest_tree_view` populates a tree view with data from a dictionary,
-        organizing the data into groups based on file names and displaying the file names and their
-        corresponding modified dates.
-
-        Args:
-          data: The `data` parameter is a dictionary that contains information about previous nests.
-        Each key-value pair in the dictionary represents a file name and its corresponding data. The
-        file name is a string, and the data is a dictionary containing information such as the created
-        date of the file.
-        """
         self.tree_model_previous_nests.clear()
         self.tree_model_previous_nests.setHorizontalHeaderLabels(["Name", "Date Modified"])
         # icon_provider =
@@ -8686,11 +7700,6 @@ class MainWindow(QMainWindow):
 
     # OMNIGEN
     def refresh_nest_directories(self) -> None:
-        """
-        The function refreshes the nested directories in a GUI by clearing the layout, retrieving the
-        directories from a settings file, creating a QToolBox widget, adding tree views for each
-        directory, and setting icons for the items.
-        """
         self.clear_layout(self.verticalLayout_24)
         self.quote_nest_directories_list_widgets.clear()
         nest_directories: list[str] = settings_file.get_value("quote_nest_directories")
@@ -8712,10 +7721,6 @@ class MainWindow(QMainWindow):
 
     # OMNIGEN
     def load_nests(self) -> None:
-        """
-        This function loads nests and their corresponding information into a QToolBox widget and a
-        table, and connects signals to update the table when cells are changed.
-        """
         self.clear_layout(self.verticalLayout_sheets)
         self.comboBox_global_sheet_thickness.setEnabled(True)
         self.comboBox_global_sheet_material.setEnabled(True)
@@ -8889,10 +7894,6 @@ class MainWindow(QMainWindow):
 
     # OMNIGEN
     def load_nest_summary(self) -> None:
-        """
-        The function `load_nest_summary` creates a summary of sheet names, total sheet count, and total
-        cut time and displays them in a grid layout.
-        """
         self.clear_layout(self.gridLayout_nest_summary)
         headers = ["Sheet Name", "Total Sheet Count", "Total Cut Time"]
         for i, header in enumerate(headers):
@@ -8938,15 +7939,6 @@ class MainWindow(QMainWindow):
 
     # OMNIGEN
     def get_nest_summary(self) -> dict:
-        """
-        The function `get_nest_summary` calculates the total sheet count and total machining time for
-        each nest in a quote, and returns a summary dictionary sorted by material.
-
-        Returns:
-          a sorted dictionary containing the summary of nest information. The keys of the dictionary are
-        the names of the nests, and the values are dictionaries containing the total sheet count and
-        total seconds for each nest. The dictionary is sorted in descending order based on the keys.
-        """
         summary = {}
         for nest_name in list(self.quote_nest_information.keys()):
             if nest_name[0] == "_":
@@ -8964,16 +7956,6 @@ class MainWindow(QMainWindow):
 
     # OMNIGEN
     def delete_quote_part(self, item_name: str, nest_name: str, refresh_quote_table: bool = True) -> None:
-        """
-        The function `delete_quote_part` deletes a specific item from a nested dictionary and performs
-        additional actions if necessary.
-
-        Args:
-          item_name (str): The `item_name` parameter is a string that represents the name of the item to
-        be deleted from the `quote_nest_information` dictionary.
-          nest_name (str): The `nest_name` parameter is a string that represents the name of a nest in
-        the `quote_nest_information` dictionary.
-        """
         del self.quote_nest_information[nest_name][item_name]
         if len(self.quote_nest_information[nest_name]) == 0:
             # Deleting sheets
@@ -8997,10 +7979,6 @@ class MainWindow(QMainWindow):
 
     # OMNIGEN
     def delete_selected_quote_parts(self) -> None:
-        """
-        The function `delete_selected_quote_parts` deletes selected quote parts from a table and updates
-        the quote table.
-        """
         selected_rows = list({item.row() for item in self.tableWidget_quote_items.selectedItems()})
         nest_name: str = ""
         item_name: str = ""
@@ -9041,10 +8019,6 @@ class MainWindow(QMainWindow):
 
     # OMNIGEN
     def load_quote_table(self) -> None:
-        """
-        This function loads a table with information about quotes, including images, item names,
-        materials, gauges, and quantities.
-        """
         QApplication.setOverrideCursor(Qt.CursorShape.BusyCursor)
         row_index: int = 0
         self.tableWidget_quote_items.setRowCount(0)
@@ -9285,12 +8259,6 @@ class MainWindow(QMainWindow):
     # * /\ Load UI /\
     # * \/ CHECKERS \/
     def check_for_updates(self, on_start_up: bool = False) -> None:
-        """
-        It checks for updates on GitHub and displays a message dialog if there is a new update available
-
-        Args:
-          on_start_up (bool): bool = False. Defaults to False
-        """
         try:
             try:
                 response = requests.get("https://api.github.com/repos/thecodingjsoftware/Inventory-Manager/releases/latest")
@@ -9316,9 +8284,6 @@ class MainWindow(QMainWindow):
                 self.show_error_dialog(title=__name__, message=f"Error\n\n{e}")
 
     def check_trusted_user(self) -> None:
-        """
-        If the user is not in the trusted_users list, then the user is not trusted
-        """
         trusted_users = get_trusted_users()
         check_trusted_user = (user for user in trusted_users if not self.trusted_user)
         for user in check_trusted_user:
@@ -9332,9 +8297,6 @@ class MainWindow(QMainWindow):
 
     # * \/ Purchase Order \/
     def open_po(self, po_name: str = None) -> None:
-        """
-        It opens a dialog box with a list of items
-        """
         if po_name is None:
             input_dialog = SelectItemDialog(
                 title="Open PO",
@@ -9359,9 +8321,6 @@ class MainWindow(QMainWindow):
             os.startfile(po_template.get_output_path())
 
     def delete_po(self) -> None:
-        """
-        It opens a dialog box with a list of items
-        """
         input_dialog = SelectItemDialog(
             title="Delete PO",
             message="Select a PO to delete.\n\nThis cannot be undone.",
@@ -9380,13 +8339,6 @@ class MainWindow(QMainWindow):
                 return
 
     def add_po_templates(self, po_file_paths: list[str], open_select_file_dialog: bool = False) -> None:
-        """
-        It takes a list of file paths, copies them to a new directory, and then shows a message dialog
-
-        Args:
-          po_file_paths (list[str]): list[str]
-          open_select_file_dialog (bool): bool = False. Defaults to False
-        """
         if open_select_file_dialog:
             po_file_paths, check = QFileDialog.getOpenFileNames(None, "Add Purchase Order Template", "", "Excel Files (*.xlsx)")
             if not po_file_paths:
@@ -9422,10 +8374,6 @@ class MainWindow(QMainWindow):
         self.reload_po_menu()
 
     def reload_po_menu(self) -> None:
-        """
-        It creates a menu for each button in a list of buttons, and then adds an action to each menu for
-        each item in a list of items
-        """
         for po_button in self.po_buttons:
             po_menu = QMenu(self)
             for po in get_all_po():
@@ -9434,12 +8382,6 @@ class MainWindow(QMainWindow):
 
     # * /\ Purchase Order /\
     def print_inventory(self) -> None:
-        """
-        It takes a file path as an argument, opens the file, generates an excel file, and saves it
-
-        Returns:
-          The return value is None.
-        """
         try:
             file_name = f"excel files/{datetime.now().strftime('%B %d %A %Y %I-%M-%S %p')}"
             excel_file = ExcelFile(inventory, f"{file_name}.xlsx")
@@ -9469,24 +8411,12 @@ class MainWindow(QMainWindow):
 
     # * \/ External Actions \/
     def open_website(self) -> None:
-        """
-        This function opens the website in the default browser.
-        """
         webbrowser.open("http://10.0.0.92:5051", new=0)
 
     def open_item_history(self) -> None:
-        """
-        It opens the inventory history file in the data folder.
-        """
         os.startfile(f"{os.path.dirname(os.path.realpath(sys.argv[0]))}/data/inventory history.xlsx")
 
     def open_folder(self, path: str) -> None:
-        """
-        It opens the folder in the default file browser
-
-        Args:
-          path: The path to the folder
-        """
         try:
             if sys.platform == "win32":
                 os.startfile(path)
@@ -9498,15 +8428,6 @@ class MainWindow(QMainWindow):
             self.show_error_dialog("Error opening folder", f"{e}\n\nPlatform: {sys.platform}")
 
     def generate_error_log(self, message_dialog: MessageDialog) -> None:
-        """
-        It takes a screenshot of the error message dialog, saves it to a folder, writes the error
-        message to a file, copies the app log to the folder, compresses the folder, and deletes the
-        folder
-
-        Args:
-          message_dialog (MessageDialog): MessageDialog = The error message dialog that pops up when an
-        error occurs.
-        """
         output_directory: str = f"logs/ErrorLog_{datetime.now().strftime('%Y-%m-%d-%H-%M')}"
         check_folders([output_directory])
         pixmap = QPixmap(message_dialog.grab())
@@ -9518,15 +8439,9 @@ class MainWindow(QMainWindow):
         shutil.rmtree(output_directory)
 
     def play_celebrate_sound(self) -> None:
-        """
-        It starts a new thread that calls the function _play_celebrate_sound
-        """
         threading.Thread(target=_play_celebrate_sound).start()
 
     def play_boot_sound(self) -> None:
-        """
-        It starts a new thread that calls the function _play_celebrate_sound
-        """
         threading.Thread(target=_play_boot_sound).start()
 
     # * /\ External Actions /\
@@ -9620,19 +8535,6 @@ class MainWindow(QMainWindow):
 
     # OMNIGEN
     def download_required_images(self, batch_data: dict) -> None:
-        """
-        This function downloads required images using a separate thread and emits a signal when the
-        download is complete.
-
-        Args:
-          batch_data (dict): A dictionary containing information about the batch of data being
-        processed. Each key in the dictionary represents an item in the batch, and the corresponding
-        value is a dictionary containing information about that item.
-
-        Returns:
-          The function does not return anything explicitly, but it may return None implicitly if the
-        condition in the if statement is True and the load_nests() method is called.
-        """
         required_images = [batch_data[item]["image_index"] + ".jpeg" for item in list(batch_data.keys()) if item[0] != "_"]
         if not required_images:
             self.load_nests()
@@ -9644,14 +8546,6 @@ class MainWindow(QMainWindow):
 
     # OMNIGEN
     def download_required_images_response(self, response: str) -> None:
-        """
-        This function loads nests if images are successfully downloaded and updates the status button
-        text.
-
-        Args:
-          response (str): A string representing the response received after attempting to download
-        required images.
-        """
         if response == "Successfully downloaded":
             self.load_nests()
             with contextlib.suppress(AttributeError):
@@ -9666,14 +8560,6 @@ class MainWindow(QMainWindow):
 
     # OMNIGEN
     def upload_batched_parts_images(self, batch_data: dict[str, dict]) -> None:
-        """
-        This function uploads a batch of images by extracting their names from a dictionary and
-        appending ".jpeg" to them before calling another function to upload the files.
-
-        Args:
-          batch_data: batch_data is a dictionary containing data for a batch of parts. The keys of the
-        dictionary are the part names and the values are the corresponding data for each part.
-        """
         images_to_upload: list[str] = [f"{item}.jpeg" for item in list(batch_data.keys()) if item[0] != "_" and item != "Components"]
         for nest_name, nest_data in batch_data.items():
             if nest_name[0] == "_":
@@ -9681,13 +8567,6 @@ class MainWindow(QMainWindow):
         self.upload_file(images_to_upload)
 
     def remove_quantity_thread_response(self, data) -> None:
-        """
-        It's a function that is called when a thread is finished. It's purpose is to update the GUI with
-        the results of the thread.
-
-        Args:
-          data: str = "Done" or "count, total"
-        """
         if data != "Done":
             count = int(data.split(", ")[0])
             total = int(data.split(", ")[1])
@@ -9713,13 +8592,6 @@ class MainWindow(QMainWindow):
             self.sync_changes()
 
     def changes_response(self, response: str) -> None:
-        """
-        This function updates the status button text to indicate syncing, downloads all files, and
-        updates the status button text again to indicate completion.
-
-        Args:
-          response (str): A string representing the response received from a server or API call.
-        """
         if "download" in response:
             self.status_button.setText(f'Syncing - {datetime.now().strftime("%r")}', "yellow")
             self.downloading_changes = True
@@ -9729,13 +8601,6 @@ class MainWindow(QMainWindow):
             self.status_button.setText(f"Syncing Error - {response}", "red")
 
     def data_received(self, data) -> None:
-        """
-        This function handles the data received from the server and performs various actions based on
-        the received data.
-
-        Args:
-          data: The data received by the function. It is of type string.
-        """
         if data == "Successfully uploaded":
             self.status_button.setText(f'Synched - {datetime.now().strftime("%r")}', "lime")
         if self.downloading_changes and data == "Successfully downloaded":
@@ -9796,34 +8661,18 @@ class MainWindow(QMainWindow):
         # QApplication.restoreOverrideCursor()
 
     def start_changes_thread(self, files_to_download: list[str]) -> None:
-        """
-        It creates a thread that will run a function that will download a list of files from a server
-
-        Args:
-          files_to_download (list[str]): list[str]
-        """
         changes_thread = ChangesThread(self, files_to_download)  # 5 minutes
         changes_thread.signal.connect(self.changes_response)
         self.threads.append(changes_thread)
         changes_thread.start()
 
     def start_exchange_rate_thread(self) -> None:
-        """
-        It creates an instance of the ExchangeRate class and starts it
-        """
         exchange_rate_thread = ExchangeRate()
         exchange_rate_thread.signal.connect(self.exchange_rate_received)
         self.threads.append(exchange_rate_thread)
         exchange_rate_thread.start()
 
     def exchange_rate_received(self, exchange_rate: float) -> None:
-        """
-        It takes the exchange rate from the API and updates the label on the GUI with the exchange rate
-        and the time it was received
-
-        Args:
-          exchange_rate (float): float
-        """
         self.label_exchange_price.setText(f"1.00 USD: {exchange_rate} CAD - {datetime.now().strftime('%r')}")
         self.label_total_unit_cost.setText(f"Total Unit Cost: ${inventory.get_total_unit_cost(self.category, self.get_exchange_rate()):,.2f}")
         settings_file.change_item(item_name="exchange_rate", new_value=exchange_rate)
@@ -9835,12 +8684,6 @@ class MainWindow(QMainWindow):
         self.start_thread(thread)
 
     def upload_file(self, files_to_upload: list[str], get_response: bool = True) -> None:
-        """
-        It creates a new thread, sets the cursor to wait, and starts the thread
-
-        Args:
-          files_to_upload (str): str - The file to upload
-        """
         self.get_upload_file_response = get_response
         upload_thread = UploadThread(files_to_upload)
         # if get_response:
@@ -9848,33 +8691,17 @@ class MainWindow(QMainWindow):
         self.start_thread(upload_thread)
 
     def download_file(self, files_to_download: list[str], get_response: bool = True) -> None:
-        """
-        It starts a thread that downloads a file from a server
-
-        Args:
-          files_to_download (list[str]): list[str]
-        """
         self.get_upload_file_response = get_response
         download_thread = DownloadThread(files_to_download)
         # # QApplication.setOverrideCursor(Qt.CursorShape.BusyCursor)
         self.start_thread(download_thread)
 
     def start_thread(self, thread) -> None:
-        """
-        It connects the signal from the thread to the data_received function, then appends the thread to
-        the threads list, and finally starts the thread
-
-        Args:
-          thread: The thread to start
-        """
         thread.signal.connect(self.data_received)
         self.threads.append(thread)
         thread.start()
 
     def download_all_files(self) -> None:
-        """
-        This function downloads three JSON files related to inventory and steel prices.
-        """
         self.download_file(
             [
                 f"{self.inventory_file_name} - Parts in Inventory.json",
@@ -9931,16 +8758,6 @@ class MainWindow(QMainWindow):
 
     # OMNIGEN
     def upload_part_to_inventory_thread(self, item_name: str, nest_name: str, send_part_to_inventory: QPushButton) -> None:
-        """
-        The function uploads a part to the inventory and updates the UI accordingly.
-
-        Args:
-          item_name (str): The `item_name` parameter is a string that represents the name of the item
-        being uploaded to the inventory.
-          nest_name (str): The parameter "nest_name" is a string that represents the name of a nest.
-          send_part_to_inventory (QPushButton): QPushButton object that represents the button used to
-        send the part to the inventory.
-        """
         send_part_to_inventory.setEnabled(False)
         self.save_quote_table_values()
         data = {item_name: self.quote_nest_information[nest_name][item_name]}
@@ -9989,49 +8806,22 @@ class MainWindow(QMainWindow):
         os.remove(file_name)
 
     def set_order_number_thread(self, order_number: int) -> None:
-        """
-        This function creates a new thread to set an order number and connects it to a response
-        function.
-
-        Args:
-          order_number (int): An integer representing the order number that needs to be set.
-        """
         set_order_number_thread = SetOrderNumberThread(order_number)
         set_order_number_thread.signal.connect(self.set_order_number_thread_response)
         self.threads.append(set_order_number_thread)
         set_order_number_thread.start()
 
     def get_order_number_thread(self) -> None:
-        """
-        This function creates and starts a thread to get an order number and connects its signal to a
-        response function.
-        """
         get_order_number_thread = GetOrderNumberThread()
         get_order_number_thread.signal.connect(self.get_order_number_thread_response)
         self.threads.append(get_order_number_thread)
         get_order_number_thread.start()
 
     def set_order_number_thread_response(self, response) -> None:
-        """
-        This function sets an order number and shows an error dialog if there is an error.
-
-        Args:
-          response: The response parameter is a string that indicates the result of a function call. If
-        the response is not equal to "success", an error dialog will be displayed with the response
-        message.
-        """
         if response != "success":
             self.show_error_dialog("oh no. Encountered error when setting order number.", str(response))
 
     def get_order_number_thread_response(self, order_number: int) -> None:
-        """
-        This function takes an order number as input, converts it to an integer, and displays an error
-        message if there is an exception.
-
-        Args:
-          order_number (int): The order number parameter is an integer that represents the unique
-        identifier of an order.
-        """
         try:
             self.order_number = int(order_number)
         except Exception:
@@ -10039,10 +8829,6 @@ class MainWindow(QMainWindow):
 
     # OMNIGEN
     def load_previous_nests_files_thread(self) -> None:
-        """
-        The function loads previous nest files in a separate thread and updates the status button with
-        the current time.
-        """
         self.status_button.setText(f'Fetching previous nests - {datetime.now().strftime("%r")}', "yellow")
         get_previous_nests_files_thread = GetPreviousNestsFilesThread()
         self.threads.append(get_previous_nests_files_thread)
@@ -10051,13 +8837,6 @@ class MainWindow(QMainWindow):
 
     # OMNIGEN
     def load_previous_nests_files_response(self, data: dict) -> None:
-        """
-        The function loads previous nests files and updates the status button accordingly.
-
-        Args:
-          data (dict): The `data` parameter is a dictionary containing information about previous nests
-        files.
-        """
         if isinstance(data, dict):
             self.status_button.setText(
                 f"Successfully fetched previous nests - {datetime.now().strftime('%r')}",
@@ -10069,15 +8848,6 @@ class MainWindow(QMainWindow):
 
     # OMNIGEN
     def load_previous_nests_data_thread(self, files_to_load: list[str]) -> None:
-        """
-        The function loads previous nests data from a list of files in a separate thread and updates the
-        status button with the current time.
-
-        Args:
-          files_to_load (list[str]): The parameter `files_to_load` is a list of strings that represents
-        the files that need to be loaded. Each string in the list should be the file name or file path
-        of the file to be loaded.
-        """
         self.status_button.setText(f'Fetching previous nests data - {datetime.now().strftime("%r")}', "yellow")
         get_previous_nests_data_thread = GetPreviousNestsDataThread(files_to_load)
         self.threads.append(get_previous_nests_data_thread)
@@ -10086,15 +8856,6 @@ class MainWindow(QMainWindow):
 
     # OMNIGEN
     def load_previous_nests_data_response(self, data: dict[str, dict[str, Any]]) -> None:
-        """
-        The function loads previous nests data, groups it, sorts it, and updates the UI accordingly.
-
-        Args:
-          data (dict[str, dict[str, Any]]): The `data` parameter is a dictionary containing nested
-        dictionaries. The keys of the outer dictionary are strings, and the values are inner
-        dictionaries. The keys of the inner dictionaries are also strings, and the values can be of any
-        type.
-        """
         if isinstance(data, dict):
             self.status_button.setText(
                 f"Successfully fetched previous nests data - {datetime.now().strftime('%r')}",
@@ -10120,10 +8881,6 @@ class MainWindow(QMainWindow):
 
     # * \/ BACKUP ACTIONS \/
     def load_backup(self, file_path: str = None) -> None:
-        """
-        It opens a file dialog, and if the user selects a file, it extracts the file and then loads the
-        categories
-        """
         if file_path is None:
             backup_file, check = QFileDialog.getOpenFileName(
                 None,
@@ -10141,9 +8898,6 @@ class MainWindow(QMainWindow):
             self.show_message_dialog(title="Success", message="Successfully loaded backup!")
 
     def backup_database(self) -> None:
-        """
-        This function compresses the database file and shows a message dialog to the user
-        """
         compress_database(path_to_file=f"data/{self.inventory_file_name}.json")
         self.show_message_dialog(
             title="Success",
@@ -10152,13 +8906,6 @@ class MainWindow(QMainWindow):
 
     # * /\ BACKUP ACTIONS /\
     def clear_layout(self, layout) -> None:
-        """
-        If the layout is not None, while the layout has items, take the first item, get the widget, if
-        the widget is not None, delete it, otherwise clear the layout
-
-        Args:
-          layout: The layout to be cleared
-        """
         with contextlib.suppress(AttributeError):
             if layout is not None:
                 while layout.count():
@@ -10177,16 +8924,6 @@ class MainWindow(QMainWindow):
         highlighted_message_width: int,
         button_pressed_event=None,
     ) -> None:
-        """
-        It sets the layout of the window to a left label, a highlighted message, and a right label.
-
-        Args:
-          left_label (str): str,
-          highlighted_message (str): str = "Click Me"
-          right_label (str): str = "",
-          highlighted_message_width (int): int = The width of the highlighted message
-          button_pressed_event: The function to be called when the button is pressed.
-        """
 
         self.clear_layout(self.active_layout)
         self.tabs.clear()
@@ -10238,25 +8975,12 @@ class MainWindow(QMainWindow):
 
     # * \/ OVERIDDEN UI EVENTS \/
     def dragEnterEvent(self, event: QDragEnterEvent) -> None:
-        """
-        If the event has a URL, accept it, otherwise ignore it.
-
-        Args:
-          event: This is the event object that is passed to the method.
-        """
         if event.mimeData().hasUrls:
             event.accept()
         else:
             event.ignore()
 
     def dragMoveEvent(self, event: QDragMoveEvent) -> None:
-        """
-        If the file is an Excel file, then accept the drop event and display a message. Otherwise,
-        ignore the drop event.
-
-        Args:
-          event: The event object.
-        """
         if self.tabWidget.tabText(self.tabWidget.currentIndex()) == "Workspace":
             return
         if event.mimeData().hasUrls:
@@ -10275,23 +8999,10 @@ class MainWindow(QMainWindow):
             event.ignore()
 
     def dragLeaveEvent(self, event: QDragLeaveEvent) -> None:
-        """
-        It loads the categories from the database and displays them in the list widget
-
-        Args:
-          event: QDragLeaveEvent
-        """
         # self.load_categories()
         pass
 
     def dropEvent(self, event: QDropEvent) -> None:
-        """
-        If the event has URLs, set the drop action to copy, accept the event, get the local file paths
-        from the URLs, add the PO files to the database, and reload the categories
-
-        Args:
-          event: The event object
-        """
         if self.tabWidget.tabText(self.tabWidget.currentIndex()) == "Workspace":
             return
         if event.mimeData().hasUrls:
@@ -10308,12 +9019,6 @@ class MainWindow(QMainWindow):
             event.ignore()
 
     def closeEvent(self, event) -> None:
-        """
-        The function saves the geometry of the window and then closes the window
-
-        Args:
-          event: the event that triggered the close_event() method
-        """
         # compress_database(
         #     path_to_file=f"data/{self.inventory_file_name}.json",
         #     on_close=True,
@@ -10329,10 +9034,6 @@ class MainWindow(QMainWindow):
 
 
 def main() -> None:
-    """
-    It creates a QApplication, creates a MainWindow, shows the MainWindow, and then runs the
-    QApplication
-    """
     app = QApplication(sys.argv)
 
 
