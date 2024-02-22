@@ -73,18 +73,20 @@ class AddWorkspaceItem(QDialog):
         self.thickness = ""
         self.material = ""
         with contextlib.suppress(KeyError):
-            for category in list(self.parts_in_inventory.data.keys()):
-                for part_name in self.parts_in_inventory.data[category].keys():
-                    if part_name == self.lineEdit_name.text():
-                        self.thickness = self.parts_in_inventory.data[category][part_name]['gauge']
-                        self.material = self.parts_in_inventory.data[category][part_name]['material']
+            for category, category_data in self.parts_in_inventory.get_data().items():
+                for name, part_data in category_data.items():
+                    if name == self.lineEdit_name.text():
+                        self.thickness = part_data['gauge']
+                        self.material = part_data['material']
+                        break
 
     def name_changed(self) -> None:
         all_part_names = natsorted(self.get_all_part_names())
         for part_name in all_part_names:
-            if part_name in self.lineEdit_name.text():
+            if part_name == self.lineEdit_name.text():
                 index = all_part_names.index(part_name)
                 self.listWidget_all_items.setCurrentRow(index)
+                break
 
     def load_theme(self) -> None:
         set_theme(self, theme="dark")

@@ -187,8 +187,8 @@ __copyright__: str = "Copyright 2022-2023, TheCodingJ's"
 __credits__: list[str] = ["Jared Gross"]
 __license__: str = "MIT"
 __name__: str = "Invigo"
-__version__: str = "v2.2.32"
-__updated__: str = "2023-08-30 12:32:51"
+__version__: str = "v2.2.33"
+__updated__: str = "2024-02-22 12:32:51"
 __maintainer__: str = "Jared Gross"
 __email__: str = "jared@pinelandfarms.ca"
 __status__: str = "Production"
@@ -5032,61 +5032,61 @@ class MainWindow(QMainWindow):
                     thickness = input_dialog.thickness
                 else:
                     return
-            table.blockSignals(True)
+                table.blockSignals(True)
 
-            if self.category == "Staging":
-                item_data = {
-                    "Bending Files": [],
-                    "Welding Files": [],
-                    "CNC/Milling Files": [],
-                    "thickness": thickness,
-                    "material": material,
-                    "paint_type": None,
-                    "paint_color": None,
-                    "parts_per": 0,
-                    "flow_tag": [],
-                    "timers": {},
-                    "customer": "",
-                    "ship_to": "",
-                    "show": True,
-                    "notes": "",
-                }
-            else:  # EDITING
-                date_created: str = QDate().currentDate().toString("yyyy-M-d")
-                item_data = {
-                    "Bending Files": [],
-                    "Welding Files": [],
-                    "CNC/Milling Files": [],
-                    "thickness": thickness,
-                    "material": material,
-                    "paint_type": None,
-                    "paint_color": None,
-                    "parts_per": 0,
-                    "flow_tag": [],
-                    "timers": {},
-                    "customer": "",
-                    "ship_to": "",
-                    "show": True,
-                    "notes": "",
-                    # New stuff
-                    "recoat": False,
-                    "recut": False,
-                    "recut_count": 0,
-                    "completed": False,
-                    "current_flow_state": 0,
-                    "starting_date": date_created,
-                    "ending_date": date_created,
-                    "status": None,
-                }
-            item = Item(name=item_name, data=item_data)
-            add_item(table.rowCount() - 1, item)
-            assembly.add_item(item)
-            self.active_workspace_file.save()
-            self.sync_changes()
-            item_group_box: QGroupBox = table.parentWidget()
-            item_group_box.setFixedHeight(item_group_box.height() + 45)
-            table.setFixedHeight(45 * (len(assembly.items) + 3))
-            table.blockSignals(False)
+                if self.category == "Staging":
+                    item_data = {
+                        "Bending Files": [],
+                        "Welding Files": [],
+                        "CNC/Milling Files": [],
+                        "thickness": thickness,
+                        "material": material,
+                        "paint_type": None,
+                        "paint_color": None,
+                        "parts_per": 0,
+                        "flow_tag": [],
+                        "timers": {},
+                        "customer": "",
+                        "ship_to": "",
+                        "show": True,
+                        "notes": "",
+                    }
+                else:  # EDITING
+                    date_created: str = QDate().currentDate().toString("yyyy-M-d")
+                    item_data = {
+                        "Bending Files": [],
+                        "Welding Files": [],
+                        "CNC/Milling Files": [],
+                        "thickness": thickness,
+                        "material": material,
+                        "paint_type": None,
+                        "paint_color": None,
+                        "parts_per": 0,
+                        "flow_tag": [],
+                        "timers": {},
+                        "customer": "",
+                        "ship_to": "",
+                        "show": True,
+                        "notes": "",
+                        # New stuff
+                        "recoat": False,
+                        "recut": False,
+                        "recut_count": 0,
+                        "completed": False,
+                        "current_flow_state": 0,
+                        "starting_date": date_created,
+                        "ending_date": date_created,
+                        "status": None,
+                    }
+                item = Item(name=item_name, data=item_data)
+                add_item(table.rowCount() - 1, item)
+                assembly.add_item(item)
+                self.active_workspace_file.save()
+                self.sync_changes()
+                item_group_box: QGroupBox = table.parentWidget()
+                item_group_box.setFixedHeight(item_group_box.height() + 45)
+                table.setFixedHeight(45 * (len(assembly.items) + 3))
+                table.blockSignals(False)
 
         def add_item_button(on_load: bool = False):
             row_count = table.rowCount()

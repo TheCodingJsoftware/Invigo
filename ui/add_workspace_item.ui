@@ -199,7 +199,14 @@ border-bottom: none;</string>
           <item row="0" column="3">
            <layout class="QHBoxLayout" name="horizontalLayout_5" stretch="0">
             <item>
-             <widget class="QLineEdit" name="lineEdit_name"/>
+             <widget class="QLineEdit" name="lineEdit_name">
+              <property name="placeholderText">
+               <string>Enter item name</string>
+              </property>
+              <property name="clearButtonEnabled">
+               <bool>true</bool>
+              </property>
+             </widget>
             </item>
            </layout>
           </item>
@@ -216,7 +223,11 @@ border-bottom: none;</string>
          </layout>
         </item>
         <item>
-         <widget class="QListWidget" name="listWidget_all_items"/>
+         <widget class="QListWidget" name="listWidget_all_items">
+          <property name="sortingEnabled">
+           <bool>false</bool>
+          </property>
+         </widget>
         </item>
         <item>
          <layout class="QHBoxLayout" name="buttonsLayout"/>
