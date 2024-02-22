@@ -133,9 +133,7 @@ class EditTagsDialog(QDialog):
             new_table_widget.setRowHeight(row_count, 45)
             new_table_widget.setCellWidget(row_count, 0, widget)
             delete_flow_tag_button = DeletePushButton(
-                self,
-                "Delete the entire flow tag",
-                icon=QIcon(f"icons/trash.png"),
+                self, "Delete the entire flow tag", icon=QIcon("icons/trash.png")
             )
             delete_flow_tag_button.clicked.connect(partial(self.delete_flow_tag, new_table_widget, row_count))
             delete_flow_tag_button.setStyleSheet("margin-top: 10%; margin-bottom: 10%; margin-left: 7%; margin-right: 7%;")
@@ -155,7 +153,7 @@ class EditTagsDialog(QDialog):
                 delete_button = DeletePushButton(
                     parent=self,
                     tool_tip="Delete this status",
-                    icon=QIcon(f"icons/trash.png"),
+                    icon=QIcon("icons/trash.png"),
                 )
 
                 def delete_tag(lbl, tagbox, delete_button):
@@ -248,7 +246,7 @@ class EditTagsDialog(QDialog):
                 delete_flow_tag_button = DeletePushButton(
                     self,
                     "Delete the entire flow tag",
-                    icon=QIcon(f"icons/trash.png"),
+                    icon=QIcon("icons/trash.png"),
                 )
                 delete_flow_tag_button.clicked.connect(partial(self.delete_flow_tag, table_widget, row_count))
                 delete_flow_tag_button.setStyleSheet("margin-top: 10%; margin-bottom: 10%; margin-left: 7%; margin-right: 7%;")
@@ -268,7 +266,7 @@ class EditTagsDialog(QDialog):
                     delete_button = DeletePushButton(
                         parent=self,
                         tool_tip="Delete this status",
-                        icon=QIcon(f"icons/trash.png"),
+                        icon=QIcon("icons/trash.png"),
                     )
 
                     def delete_tag(lbl, tagbox, delete_button):
@@ -395,7 +393,7 @@ class EditTagsDialog(QDialog):
         delete_button = DeletePushButton(
             parent=self,
             tool_tip="Delete this status",
-            icon=QIcon(f"icons/trash.png"),
+            icon=QIcon("icons/trash.png"),
         )
         v_widget = QWidget()
         delete_button.installEventFilter(button_filter)
@@ -434,7 +432,7 @@ class EditTagsDialog(QDialog):
         delete_button = DeletePushButton(
             parent=self,
             tool_tip="Delete this status",
-            icon=QIcon(f"icons/trash.png"),
+            icon=QIcon("icons/trash.png"),
         )
         v_widget = QWidget()
         delete_button.installEventFilter(button_filter)
@@ -473,9 +471,7 @@ class EditTagsDialog(QDialog):
         widget, _, _ = self.create_flow_tag_layout()
 
         delete_flow_tag_button = DeletePushButton(
-            self,
-            "Delete the entire flow tag",
-            icon=QIcon(f"icons/trash.png"),
+            self, "Delete the entire flow tag", icon=QIcon("icons/trash.png")
         )
         delete_flow_tag_button.clicked.connect(partial(self.delete_flow_tag, table, row_count - 1))
         delete_flow_tag_button.setStyleSheet("margin-top: 10%; margin-bottom: 10%; margin-left: 7%; margin-right: 7%;")
@@ -573,7 +569,7 @@ class EditTagsDialog(QDialog):
             delete_button = DeletePushButton(
                 parent=self,
                 tool_tip="Delete this status",
-                icon=QIcon(f"icons/trash.png"),
+                icon=QIcon("icons/trash.png"),
             )
             delete_button.clicked.connect(partial(self.delete_status, status_line_edit))
             delete_button.installEventFilter(button_filter)

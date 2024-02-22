@@ -20,8 +20,6 @@ QApplication.setAttribute(Qt.AA_EnableHighDpiScaling, True)
 
 
 class DownloadThread(QThread):
-    """This class is a QThread that downloads a file."""
-
     signal = pyqtSignal(object)
 
     def __init__(self, url) -> None:
@@ -30,9 +28,6 @@ class DownloadThread(QThread):
         self.file_name = ""
 
     def run(self) -> None:
-        """
-        It downloads a zip file, extracts it, and then deletes the zip file.
-        """
         try:
             self.signal.emit("Downloading update..")
             QApplication.setOverrideCursor(Qt.WaitCursor)
@@ -61,12 +56,6 @@ class DownloadThread(QThread):
             self.signal.emit(e)
 
     def download(self):
-        """
-        Downloads a file from a url and displays a progress bar using tqdm
-
-        Args:
-        url: The URL of the file you want to download.
-        """
         try:
             get_response = requests.get(self.url, stream=True)
             content_length = int(get_response.headers.get("content-length", 0))
@@ -156,25 +145,11 @@ class Window(QWidget):
         self.start_thread(download_thread)
 
     def start_thread(self, thread) -> None:
-        """
-        It connects the signal from the thread to the data_received function, then appends the thread to
-        the threads list, and finally starts the thread
-
-        Args:
-          thread: The thread to start
-        """
         thread.signal.connect(self.data_received)
         self.threads.append(thread)
         thread.start()
 
     def data_received(self, data) -> None:
-        """
-        If the data received is "Successfully uploaded" or "Successfully downloaded", then show a
-        message dialog with the title and message
-
-        Args:
-          data: the data received from the server
-        """
         self.progress_text.setText(data)
         if data == "":
             QApplication.restoreOverrideCursor()

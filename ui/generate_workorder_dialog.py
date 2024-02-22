@@ -158,10 +158,8 @@ class GenerateWorkorderDialog(QDialog):
                 self.update_parent_state(parent_item)
         elif item.checkState() == Qt.CheckState.Checked:
             self.update_child_items(item)
-            if item.parent() is not None:
-                if self.are_all_children_checked(item.parent()):
-                    item.parent().setCheckState(Qt.CheckState.Checked)
-
+            if item.parent() is not None and self.are_all_children_checked(item.parent()):
+                item.parent().setCheckState(Qt.CheckState.Checked)
     def get_topmost_checked_items_rows(self, model: QStandardItemModel) -> list[str]:
         topmost_checked_items: list[QStandardItem] = []
         for row in range(model.rowCount()):
@@ -228,7 +226,7 @@ class GenerateWorkorderDialog(QDialog):
         for index, name in enumerate(button_names):
             if name == DialogButtons.generate:
                 button = QPushButton(f"  {name}")
-                button.setIcon(QIcon(f"icons/dialog_ok.svg"))
+                button.setIcon(QIcon("icons/dialog_ok.svg"))
             elif os.path.isfile(f"icons/dialog_{name.lower()}.svg"):
                 button = QPushButton(f"  {name}")
                 button.setIcon(QIcon(f"icons/dialog_{name.lower()}.svg"))

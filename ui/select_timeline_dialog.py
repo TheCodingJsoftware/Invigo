@@ -191,7 +191,7 @@ class SelectTimeLineDialog(QDialog):
         for index, name in enumerate(button_names):
             if name == DialogButtons.set:
                 button = QPushButton(f"  {name}")
-                button.setIcon(QIcon(f"icons/dialog_ok.svg"))
+                button.setIcon(QIcon("icons/dialog_ok.svg"))
             elif os.path.isfile(f"icons/dialog_{name.lower()}.svg"):
                 button = QPushButton(f"  {name}")
                 button.setIcon(QIcon(f"icons/dialog_{name.lower()}.svg"))
