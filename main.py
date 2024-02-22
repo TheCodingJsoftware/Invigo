@@ -4009,6 +4009,7 @@ class MainWindow(QMainWindow):
         grouped_data = parts_in_inventory.sort_by_multiple_tags(category=category_data, tags_ids=["material", "gauge"])
         row_index: int = 0
 
+        QApplication.setOverrideCursor(Qt.CursorShape.BusyCursor)
         try:
             materials: list[QPushButton] = self.parts_in_ineventory_filter["materials"]
             thicknesses: list[QPushButton] = self.parts_in_ineventory_filter["thicknesses"]
@@ -4207,6 +4208,7 @@ class MainWindow(QMainWindow):
             tab.customContextMenuRequested.connect(partial(self.open_group_menu, menu))
         tab.blockSignals(False)
         # QApplication.restoreOverrideCursor()
+        QApplication.setOverrideCursor(Qt.CursorShape.ArrowCursor)
 
     # NOTE SHEETS IN INVENTORY
     def price_of_steel_item(self, tab: CustomTableWidget, category_data: dict) -> None:
@@ -4220,7 +4222,7 @@ class MainWindow(QMainWindow):
         tab.setVerticalScrollMode(QAbstractItemView.ScrollMode.ScrollPerPixel)
         tab.setHorizontalScrollMode(QAbstractItemView.ScrollMode.ScrollPerPixel)
         tab.setSelectionMode(QAbstractItemView.SelectionMode.SingleSelection)
-        # QApplication.setOverrideCursor(Qt.CursorShape.BusyCursor)
+        QApplication.setOverrideCursor(Qt.CursorShape.BusyCursor)
         row_index: int = 0
         if self.category == "Price Per Pound":
             headers: list[str] = ["Material", "Price", "Modified Date"]
@@ -4408,6 +4410,7 @@ class MainWindow(QMainWindow):
             menu.addAction(action)
             tab.customContextMenuRequested.connect(partial(self.open_group_menu, menu))
         # QApplication.restoreOverrideCursor()
+        QApplication.setOverrideCursor(Qt.CursorShape.ArrowCursor)
 
     # NOTE EDIT INVENTORY
     def load_inventory_items(self, tab: CustomTableWidget, category_data: dict) -> None:
@@ -4679,7 +4682,8 @@ class MainWindow(QMainWindow):
             tab.scrollTo(tab.model().index(self.last_item_selected_index, 0))
             tab.selectRow(self.last_item_selected_index)
             # self.listWidget_itemnames.setCurrentRow(self.last_item_selected_index)
-        QApplication.restoreOverrideCursor()
+        # QApplication.restoreOverrideCursor()
+        QApplication.setOverrideCursor(Qt.CursorShape.ArrowCursor)
 
     # STAGING/EDITING
     def assembly_items_table_clicked(self, item: QTableWidgetItem) -> None:
