@@ -16,6 +16,8 @@ from forex_python.converter import CurrencyRates
 
 app = Flask(__name__)
 
+currency_rates = CurrencyRates()
+last_exchange_rate = 1.3608673726676752
 
 def write_log(log: str) -> None:
     with open(f"{os.path.dirname(os.path.realpath(__file__))}/log.txt", 'a') as f:
@@ -68,12 +70,8 @@ def sort_groups(category: dict) -> dict:
 
 
 def get_all_unit_cost() -> dict:
+    global last_exchange_rate
     data = get_inventory_data()
-    currency_rates = CurrencyRates()
-    try:
-        last_exchange_rate = currency_rates.get_rate("USD", "CAD")
-    except Exception:
-        last_exchange_rate = 1.3608673726676752  # just a guess
     unit_costs = {}
     for category in list(data.keys()):
         total_cost: float = 0
@@ -134,5 +132,14 @@ def get_parts_in_inventory_data() -> dict:
         return {}
 
 
-#threading.Thread(target=downloadThread).start()
+def exhange_rate():
+    global last_exchange_rate
+    while True:
+        try:
+            last_exchange_rate = currency_rates.get_rate("USD", "CAD")
+        except Exception:
+            last_exchange_rate = 1.3608673726676752  # just a guess
+        time.sleep(5)
+
+threading.Thread(target=exhange_rate).start()
 app.run(host="10.0.0.217", port=5000, debug=False, threaded=True)
