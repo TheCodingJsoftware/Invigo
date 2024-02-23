@@ -141,5 +141,5 @@ def exhange_rate():
             last_exchange_rate = 1.3608673726676752  # just a guess
         time.sleep(5)
 
-threading.Thread(target=exhange_rate).start()
-app.run(host="10.0.0.217", port=5000, debug=False, threaded=True)
+# threading.Thread(target=exhange_rate).start()
+# app.run(host="10.0.0.217", port=5000, debug=False, threaded=True)
