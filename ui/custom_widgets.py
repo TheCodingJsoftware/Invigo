@@ -814,18 +814,38 @@ class DictionaryTableModel(QAbstractTableModel):
 class PartInformationViewer(QDialog):
     def __init__(self, title: str, dictionary: dict, parent=None):
         super(PartInformationViewer, self).__init__(parent)
-
         self.setWindowTitle(title)
 
         layout = QVBoxLayout(self)
         self.response = ""
-        self.table_view = QTableView(self)
-        layout.addWidget(self.table_view)
 
-        self.model = DictionaryTableModel(dictionary, self)
-        self.table_view.setModel(self.model)
-        self.table_view.resizeColumnsToContents()
-        self.setMinimumSize(450, 700)
+        label = QLabel("Item Name:", self)
+        layout.addWidget(label)
+        self.lineEdit_name = QLineEdit(self)
+        self.lineEdit_name.setText(title)
+        layout.addWidget(self.lineEdit_name)
+
+        label = QLabel("Item Data:", self)
+        layout.addWidget(label)
+
+        self.grid_layout = QGridLayout(self)
+        layout.addLayout(self.grid_layout)
+
+        for row, (title, value) in enumerate(dictionary.items()):
+            label = QLabel(title, self)
+            if isinstance(value, str):
+                line_edit = QLineEdit(self)
+                line_edit.setText(value)
+            elif isinstance(value, float):
+                line_edit = HumbleDoubleSpinBox(self)
+                line_edit.setValue(value)
+            elif isinstance(value, int):
+                line_edit = HumbleSpinBox(self)
+                line_edit.setValue(value)
+
+            self.grid_layout.addWidget(label, row, 0)
+            self.grid_layout.addWidget(line_edit, row, 1)
+
         btn_apply = QPushButton('Apply Changes', self)
         btn_apply.clicked.connect(self.apply)
         layout.addWidget(btn_apply)
@@ -833,6 +853,8 @@ class PartInformationViewer(QDialog):
         btn_cancel = QPushButton('Cancel', self)
         btn_cancel.clicked.connect(self.cancel)
         layout.addWidget(btn_cancel)
+        self.setMinimumWidth(600)
+        self.setLayout(layout)
 
     def apply(self) -> None:
         self.response = "apply"
@@ -843,7 +865,31 @@ class PartInformationViewer(QDialog):
         self.accept()
 
     def get_data(self) -> dict:
-        return self.model.getUpdatedDictionary()
+        data = {}
+        for row in range(self.grid_layout.rowCount()):
+            label_widget = None
+            value_widget = None
+
+            for column in range(self.grid_layout.columnCount()):
+                widget = self.grid_layout.itemAtPosition(row, column).widget()
+
+                if isinstance(widget, QLabel):
+                    label_widget = widget
+                elif isinstance(widget, (QLineEdit, QSpinBox, QDoubleSpinBox)):
+                    value_widget = widget
+
+            if label_widget and value_widget:
+                key = label_widget.text()
+                if isinstance(value_widget, QLineEdit):
+                    value = value_widget.text()
+                elif isinstance(value_widget, (QSpinBox, QDoubleSpinBox)):
+                    value = value_widget.value()
+                else:
+                    continue  # Skip if widget type is not recognized
+
+                data[key] = value
+
+        return data
 
     def get_response(self) -> str:
         return self.response

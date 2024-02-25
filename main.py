@@ -187,7 +187,7 @@ __copyright__: str = "Copyright 2022-2023, TheCodingJ's"
 __credits__: list[str] = ["Jared Gross"]
 __license__: str = "MIT"
 __name__: str = "Invigo"
-__version__: str = "v2.2.33"
+__version__: str = "v2.2.34"
 __updated__: str = "2024-02-22 12:32:51"
 __maintainer__: str = "Jared Gross"
 __email__: str = "jared@pinelandfarms.ca"
@@ -426,6 +426,7 @@ class MainWindow(QMainWindow):
         self.tabs: dict[str, CustomTableWidget] = {}
         self.inventory_file_name: str = settings_file.get_value(item_name="inventory_file_name")
         self.last_item_selected_index: int = 0
+        self.parts_in_inventory_name_lookup: dict[str, int] = {}
         self.last_item_selected_name: str = None
         self.last_component_selected_name: str = None
         self.last_selected_menu_tab: str = settings_file.get_value("menu_tabs_order")[settings_file.get_value("last_toolbox_tab")]
@@ -929,7 +930,7 @@ class MainWindow(QMainWindow):
         if add_item_dialog.exec():
             response = add_item_dialog.get_response()
             if response == DialogButtons.add:
-                inventory_data = copy.copy(price_of_steel_inventory.get_data())
+                inventory_data = copy.deepcopy(price_of_steel_inventory.get_data())
                 name: str = add_item_dialog.get_name()
                 for item in list(inventory_data[self.category].keys()):
                     if name == item:
@@ -972,7 +973,7 @@ class MainWindow(QMainWindow):
             message=f'Set an expected arrival time for "{item_name}" and the number of sheets ordered',
             label_text="Sheets Ordered:",
         )
-        inventory_data = copy.copy(price_of_steel_inventory.get_data())
+        inventory_data = copy.deepcopy(price_of_steel_inventory.get_data())
         if button.isChecked() == True and select_date_dialog.exec():
             response = select_date_dialog.get_response()
             if response == DialogButtons.set:
@@ -1041,7 +1042,7 @@ class MainWindow(QMainWindow):
             if response == DialogButtons.cancel:
                 button.setChecked(False)
                 return
-            inventory_data = copy.copy(inventory.get_data())
+            inventory_data = copy.deepcopy(inventory.get_data())
             inventory_data[self.category][item_name]["expected_arrival_time"] = select_date_dialog.get_selected_date()
             inventory_data[self.category][item_name]["order_pending_quantity"] = select_date_dialog.get_order_quantity()
             inventory_data[self.category][item_name]["order_pending_date"] = datetime.now().strftime("%Y-%m-%d")
@@ -1060,11 +1061,11 @@ class MainWindow(QMainWindow):
             self.load_active_tab()
             self.sync_changes()
             table_widget: CustomTableWidget = self.tabs[self.category]
-            self.last_item_selected_index = list(list(inventory_data[self.category].keys())).index(self.last_item_selected_name)
+            self.last_item_selected_index = list(list(inventory.data[self.category].keys())).index(self.last_item_selected_name)
             table_widget.scrollTo(table_widget.model().index(self.last_item_selected_index, 0))
             table_widget.selectRow(self.last_item_selected_index)
         elif button.isChecked() == False:
-            inventory_data = copy.copy(inventory.get_data())
+            inventory_data = copy.deepcopy(inventory.get_data())
             order_pending_quantity: float = inventory_data[self.category][item_name]["order_pending_quantity"]
             input_dialog = InputDialog(
                 title="Add Parts Quantity",
@@ -1106,7 +1107,7 @@ class MainWindow(QMainWindow):
                     self.sort_inventory()
 
                     table_widget: CustomTableWidget = self.tabs[self.category]
-                    self.last_item_selected_index = list(list(inventory_data[self.category].keys())).index(self.last_item_selected_name)
+                    self.last_item_selected_index = list(list(inventory.data[self.category].keys())).index(self.last_item_selected_name)
                     table_widget.scrollTo(table_widget.model().index(self.last_item_selected_index, 0))
                     table_widget.selectRow(self.last_item_selected_index)
                 except Exception:
@@ -1119,7 +1120,7 @@ class MainWindow(QMainWindow):
 
     # NOTE EDIT INVENTORY
     def arrival_date_change_edit_inventory(self, item_name: str, arrival_date: QDateEdit) -> None:
-        inventory_data = copy.copy(inventory.get_data())
+        inventory_data = copy.deepcopy(inventory.get_data())
         inventory_data[self.category][item_name]["expected_arrival_time"] = arrival_date.date().toString("yyyy-MM-dd")
         part_number = self.get_value_from_category(item_name, "part_number")
         for category in inventory.get_keys():
@@ -1220,7 +1221,7 @@ class MainWindow(QMainWindow):
 
     def delete_selected_items(self, tab: CustomTabWidget) -> None:
         selected_parts = self.get_all_selected_parts(tab)
-        inventory_data = copy.copy(self.active_json_file.get_data())
+        inventory_data = copy.deepcopy(self.active_json_file.get_data())
         for selected_part in selected_parts:
             with contextlib.suppress(KeyError):
                 del inventory_data[self.category][selected_part]
@@ -1231,7 +1232,7 @@ class MainWindow(QMainWindow):
 
     def reset_selected_parts_quantity(self, tab: CustomTabWidget) -> None:
         selected_parts = self.get_all_selected_parts(tab)
-        inventory_data = copy.copy(self.active_json_file.get_data())
+        inventory_data = copy.deepcopy(self.active_json_file.get_data())
         for selected_part in selected_parts:
             inventory_data[self.category][selected_part]["current_quantity"] = 0
         self.active_json_file.save_data(inventory_data)
@@ -1378,7 +1379,7 @@ class MainWindow(QMainWindow):
     def add_quantity(self) -> None:
         data = inventory.get_data()
         table = self.tabs[self.category]
-        selected_rows = list(set([item.row() for item in table.selectedItems()]))
+        selected_rows = list({item.row() for item in table.selectedItems()})
         selected_items = [table.item(row, 0).text() for row in selected_rows]
         are_you_sure_dialog = self.show_message_dialog(
             title="Are you sure?",
@@ -1387,7 +1388,7 @@ class MainWindow(QMainWindow):
         )
         if are_you_sure_dialog in [DialogButtons.no, DialogButtons.cancel]:
             return
-        inventory_data = copy.copy(inventory.get_data())
+        inventory_data = copy.deepcopy(inventory.get_data())
         for item_name in selected_items:
             part_number: str = self.get_value_from_category(item_name, "part_number")
             current_quantity: int = self.get_value_from_category(item_name, "current_quantity")
@@ -1419,7 +1420,7 @@ class MainWindow(QMainWindow):
     # NOTE for EDIT INVENTORY
     def remove_quantity(self) -> None:
         table = self.tabs[self.category]
-        selected_rows = list(set([item.row() for item in table.selectedItems()]))
+        selected_rows = list({item.row() for item in table.selectedItems()})
         selected_items = [table.item(row, 0).text() for row in selected_rows]
         are_you_sure_dialog = self.show_message_dialog(
             title="Are you sure?",
@@ -1428,7 +1429,7 @@ class MainWindow(QMainWindow):
         )
         if are_you_sure_dialog in [DialogButtons.no, DialogButtons.cancel]:
             return
-        inventory_data = copy.copy(inventory.get_data())
+        inventory_data = copy.deepcopy(inventory.get_data())
         for item_name in selected_items:
             part_number: str = self.get_value_from_category(item_name, "part_number")
             current_quantity: int = self.get_value_from_category(item_name, "current_quantity")
@@ -1464,7 +1465,7 @@ class MainWindow(QMainWindow):
         self.update_category_total_stock_costs()
         self.sort_inventory()
         table_widget: CustomTableWidget = self.tabs[self.category]
-        self.last_item_selected_index = list(list(inventory_data[self.category].keys())).index(self.last_item_selected_name)
+        self.last_item_selected_index = list(list(inventory.data[self.category].keys())).index(self.last_item_selected_name)
         table_widget.scrollTo(table_widget.model().index(self.last_item_selected_index, 0))
         table_widget.selectRow(self.last_item_selected_index)
 
@@ -1816,13 +1817,16 @@ class MainWindow(QMainWindow):
             if items := self.listWidget_itemnames.findItems(selected_item, Qt.MatchFlag.MatchExactly):
                 item = items[0]
                 self.listWidget_itemnames.setCurrentItem(item)
+                self.last_item_selected_name = selected_item
 
     def parts_in_inventory_cell_changed(self, tab: CustomTableWidget):
-        selected_items_count = len(self.get_all_selected_parts(tab))
-        if selected_items_count == 0:
+        selected_items = self.get_all_selected_parts(tab)
+        if len(selected_items) == 0:
             self.pushButton_remove_quantities_from_inventory.setText("Remove Quantities from whole Category")
         else:
-            self.pushButton_remove_quantities_from_inventory.setText(f"Remove Quantities from Selected ({selected_items_count}) Items")
+            self.pushButton_remove_quantities_from_inventory.setText(f"Remove Quantities from Selected ({len(selected_items)}) Items")
+            self.last_item_selected_name = selected_items[0]
+
 
     # OMNIGEN
     def cutoff_sheet_double_clicked(self, cutoff_items: QListWidget):
@@ -2156,7 +2160,7 @@ class MainWindow(QMainWindow):
 
     # NOTE PARTS IN INVENTORY
     def update_all_parts_in_inventory_price(self) -> None:
-        data = copy.copy(parts_in_inventory.get_data())
+        data = copy.deepcopy(parts_in_inventory.get_data())
         # Idk why it does not exist somtimes
         if not data:
             return
@@ -2748,21 +2752,13 @@ class MainWindow(QMainWindow):
 
     def get_all_selected_parts(self, tab: CustomTableWidget) -> list[str]:
         selected_rows = tab.selectedItems()
+        all_items = list(self.parts_in_inventory_name_lookup.keys())
 
-        def check_lists_for_match(item_name: str, list1: list[str], list2: list[str]) -> bool:
-            for string1 in list1:
-                if string1 in item_name:
-                    return True
-            for string2 in list2:
-                if string2 in item_name:
-                    return True
-            return False
-
-        return [
-            item.text()
-            for item in selected_rows
-            if not check_lists_for_match(item.text(), self.get_all_materials(), self.get_all_gauges()) and item.column() == 0
-        ]
+        selected_items: list[str] = []
+        for item in selected_rows:
+            if item.text() in all_items and item.column() == 0:
+                selected_items.append(item.text())
+        return selected_items
 
     def get_all_flow_tags(self) -> list[str]:
         flow_tags: list[str] = []
@@ -2886,7 +2882,7 @@ class MainWindow(QMainWindow):
             response = add_item_dialog.get_response()
             if response == DialogButtons.add:
                 name: str = add_item_dialog.get_name()
-                inventory_data = copy.copy(inventory.get_data())
+                inventory_data = copy.deepcopy(inventory.get_data())
                 for item in list(inventory_data[self.category].keys()):
                     if name == item:
                         self.show_error_dialog(
@@ -3382,8 +3378,30 @@ class MainWindow(QMainWindow):
             parts_in_inventory.get_data()[self.category][selected_part],
         )
         if item_dialog.exec() and item_dialog.get_response() == "apply":
-            parts_in_inventory.get_data()[self.category][selected_part] = item_dialog.get_data()
+            inventory_data = copy.deepcopy(parts_in_inventory.get_data())
+            new_item_name = item_dialog.lineEdit_name.text()
+            new_item_data = item_dialog.get_data()
+            if new_item_name == selected_part:
+                for category, category_data in parts_in_inventory.get_data().items():
+                    for item_name, item_data in category_data.items():
+                        if item_name == selected_part:
+                            inventory_data[category][item_name] = new_item_data
+            else:
+                self.last_item_selected_name = new_item_name
+                for category, category_data in parts_in_inventory.get_data().items():
+                    for item_name, item_data in category_data.items():
+                        if item_name == selected_part:
+                            del inventory_data[category][item_name]
+                            inventory_data[category][new_item_name] = new_item_data
+            parts_in_inventory.save_data(inventory_data)
+            parts_in_inventory.load_data()
+            for category in parts_in_inventory.get_data():
+                parts_in_inventory.sort(category, 'current_quantity', True)
+            self.sync_changes()
             self.load_categories()
+            self.last_item_selected_index = self.parts_in_inventory_name_lookup[self.last_item_selected_name]
+            tab.scrollTo(tab.model().index(self.last_item_selected_index, 0))
+            tab.selectRow(self.last_item_selected_index)
 
     def set_order_number(self) -> None:
         self.get_order_number_thread()
@@ -3531,7 +3549,7 @@ class MainWindow(QMainWindow):
     # NOTE for Edit Inventory
     def edit_inventory_item_changes(self, item: QTableWidgetItem) -> None:
         tab = self.tabs[self.category]
-        inventory_data = copy.copy(inventory.get_data())
+        inventory_data = copy.deepcopy(inventory.get_data())
         tab.blockSignals(False)
         row_index = item.row()
         col_index = item.column()
@@ -3629,7 +3647,7 @@ class MainWindow(QMainWindow):
 
     # NOTE for Parts in Inventory
     def parts_in_inventory_item_changes(self, item: QTableWidgetItem) -> None:
-        inventory_data = copy.copy(parts_in_inventory.get_data())
+        inventory_data = copy.deepcopy(parts_in_inventory.get_data())
         tab = self.tabs[self.category]
         tab.blockSignals(False)
         item_name: str = tab.item(item.row(), 0).text()
@@ -3683,7 +3701,7 @@ class MainWindow(QMainWindow):
 
     # NOTE for Sheets in Inventory
     def sheets_in_inventory_item_changes(self, item: QTableWidgetItem) -> None:
-        inventory_data = copy.copy(price_of_steel_inventory.get_data())
+        inventory_data = copy.deepcopy(price_of_steel_inventory.get_data())
         tab = self.tabs[self.category]
         tab.blockSignals(False)
         row_index: int = item.row()
@@ -4008,8 +4026,10 @@ class MainWindow(QMainWindow):
         tab.setHorizontalHeaderLabels(headers)
         grouped_data = parts_in_inventory.sort_by_multiple_tags(category=category_data, tags_ids=["material", "gauge"])
         row_index: int = 0
+        self.parts_in_inventory_name_lookup.clear()
+        self.parts_in_inventory_name_lookup[None] = 0
 
-        QApplication.setOverrideCursor(Qt.CursorShape.BusyCursor)
+        # QApplication.setOverrideCursor(Qt.CursorShape.BusyCursor)
         try:
             materials: list[QPushButton] = self.parts_in_ineventory_filter["materials"]
             thicknesses: list[QPushButton] = self.parts_in_ineventory_filter["thicknesses"]
@@ -4066,6 +4086,7 @@ class MainWindow(QMainWindow):
                         continue
 
                 col_index: int = 0
+                self.parts_in_inventory_name_lookup[item] = row_index
                 tab.insertRow(row_index)
                 tab.setRowHeight(row_index, 40)
 
@@ -4207,8 +4228,13 @@ class MainWindow(QMainWindow):
                 menu.addAction(action2)
             tab.customContextMenuRequested.connect(partial(self.open_group_menu, menu))
         tab.blockSignals(False)
+        with contextlib.suppress(Exception):
+            self.last_item_selected_index = self.parts_in_inventory_name_lookup[self.last_item_selected_name]
+            tab.scrollTo(tab.model().index(self.last_item_selected_index, 0))
+            tab.selectRow(self.last_item_selected_index)
+
         # QApplication.restoreOverrideCursor()
-        QApplication.setOverrideCursor(Qt.CursorShape.ArrowCursor)
+        # QApplication.setOverrideCursor(Qt.CursorShape.ArrowCursor)
 
     # NOTE SHEETS IN INVENTORY
     def price_of_steel_item(self, tab: CustomTableWidget, category_data: dict) -> None:
@@ -4222,7 +4248,7 @@ class MainWindow(QMainWindow):
         tab.setVerticalScrollMode(QAbstractItemView.ScrollMode.ScrollPerPixel)
         tab.setHorizontalScrollMode(QAbstractItemView.ScrollMode.ScrollPerPixel)
         tab.setSelectionMode(QAbstractItemView.SelectionMode.SingleSelection)
-        QApplication.setOverrideCursor(Qt.CursorShape.BusyCursor)
+        # QApplication.setOverrideCursor(Qt.CursorShape.BusyCursor)
         row_index: int = 0
         if self.category == "Price Per Pound":
             headers: list[str] = ["Material", "Price", "Modified Date"]
@@ -4410,7 +4436,7 @@ class MainWindow(QMainWindow):
             menu.addAction(action)
             tab.customContextMenuRequested.connect(partial(self.open_group_menu, menu))
         # QApplication.restoreOverrideCursor()
-        QApplication.setOverrideCursor(Qt.CursorShape.ArrowCursor)
+        # QApplication.setOverrideCursor(Qt.CursorShape.ArrowCursor)
 
     # NOTE EDIT INVENTORY
     def load_inventory_items(self, tab: CustomTableWidget, category_data: dict) -> None:
@@ -4678,7 +4704,7 @@ class MainWindow(QMainWindow):
         tab.setEnabled(True)
         tab.blockSignals(False)
         with contextlib.suppress(Exception):
-            # self.last_item_selected_index = list(category_data.keys()).index(self.last_item_selected_name)
+            self.last_item_selected_index = list(category_data.keys()).index(self.last_item_selected_name)
             tab.scrollTo(tab.model().index(self.last_item_selected_index, 0))
             tab.selectRow(self.last_item_selected_index)
             # self.listWidget_itemnames.setCurrentRow(self.last_item_selected_index)
@@ -7941,7 +7967,11 @@ class MainWindow(QMainWindow):
                 thumbnail = ClickableLabel(self)
                 thumbnail.setToolTip("Click to make bigger.")
                 thumbnail.setFixedSize(485, 345)
-                pixmap = QPixmap(f"images/{self.quote_nest_information[nest_name]['image_index']}.jpeg")
+                try:
+                    pixmap = QPixmap(f"images/{self.quote_nest_information[nest_name]['image_index']}.jpeg")
+                except KeyError:
+                    self.quote_nest_information[nest_name]['image_index'] = '404'
+                    pixmap = QPixmap(f"images/{self.quote_nest_information[nest_name]['image_index']}.jpeg")
                 scaled_pixmap = pixmap.scaled(thumbnail.size(), aspectRatioMode=Qt.AspectRatioMode.KeepAspectRatio)
                 thumbnail.setPixmap(scaled_pixmap)
                 layout.addWidget(thumbnail)
