@@ -98,6 +98,7 @@ from threads.remove_quantity import RemoveQuantityThread
 from threads.send_sheet_report_thread import SendReportThread
 from threads.set_order_number_thread import SetOrderNumberThread
 from threads.upload_quoted_inventory import UploadBatch
+from threads.upload_price_of_steel_information import UploadSheetsSettingsThread
 from threads.upload_thread import UploadThread
 from threads.workspace_get_file_thread import WorkspaceDownloadFiles
 from threads.workspace_upload_file_thread import WorkspaceUploadThread
@@ -156,6 +157,7 @@ from ui.select_item_dialog import SelectItemDialog
 from ui.select_timeline_dialog import SelectTimeLineDialog
 from ui.set_custom_limit_dialog import SetCustomLimitDialog
 from ui.set_order_pending_dialog import SetOrderPendingDialog
+from ui.sheet_editor import SheetEditor
 from ui.theme import set_theme
 from ui.web_scrape_results_dialog import WebScrapeResultsDialog
 from utils.calulations import calculate_overhead, calculate_scrap_percentage
@@ -187,7 +189,7 @@ __copyright__: str = "Copyright 2022-2023, TheCodingJ's"
 __credits__: list[str] = ["Jared Gross"]
 __license__: str = "MIT"
 __name__: str = "Invigo"
-__version__: str = "v2.2.34"
+__version__: str = "v2.2.37"
 __updated__: str = "2024-02-22 12:32:51"
 __maintainer__: str = "Jared Gross"
 __email__: str = "jared@pinelandfarms.ca"
@@ -312,7 +314,7 @@ logging.basicConfig(
 def excepthook(exc_type, exc_value, exc_traceback):
     win32api.MessageBox(
         0,
-        f"A bug has shown itself. This error message has been sent to the server and an email has been sent to {__email__}, please be patient as {__maintainer__} attempts fixes this issue. It will most likely be fixed in the next update; if this error keeps happening then notify {__maintainer__}.\n\nexc_type:\n{exc_type}\n\nexc_value:\n{exc_value}\n\nexc_traceback:\n{exc_traceback}",
+        f"We've encountered an unexpected issue, but don't worry—help is already on the way. The details of this glitch have been automatically reported to {__maintainer__}, and a notification has been sent to {__email__} for immediate attention. Rest assured, {__maintainer__} is on the case and will likely have this resolved with the next update. Your patience and understanding are greatly appreciated. If this problem persists, please don't hesitate to reach out directly to {__maintainer__} for further assistance.\n\nTechnical details for reference:\n- Exception Type: {exc_type}\n- Error Message: {exc_value}\n- Traceback Information: {exc_traceback}",
         "Unhandled exception - excepthook detected",
         0x40,
     )  # 0x40 for OK button
@@ -329,16 +331,11 @@ def send_error_report(exc_type, exc_value, exc_traceback):
     with open("logs/app.log", "r") as error_log:
         error_data = error_log.read()
     data = {"error_log": f"User: {os.getlogin().title()}\nVersion: {__version__}\n\n{error_data}"}
-    try:
-        requests.post(url, data=data)
+    response = requests.post(url, data=data)
+    if response.status_code == 200:
         win32api.MessageBox(0, "Sent", "Sent", 0x40)
-    except Exception as e:
-        logging.error(e)
-        win32api.MessageBox(
-            0,
-            f"Error sending {e}" "Unhandled exception - excepthook detected",
-            0x40,
-        )  # 0x40 for OK button
+    else:
+        win32api.MessageBox(0, f"Did not send email, notify {__maintainer__} ASAP and send them the app.log file in the logs folder!", "oops", 0x40)
 
 
 # Set the exception hook
@@ -618,6 +615,9 @@ class MainWindow(QMainWindow):
             menu.addAction(action)
             self.tableWidget_components_items.customContextMenuRequested.connect(partial(self.open_group_menu, menu))
 
+        self.checkBox_components_use_profit_margin.toggled.connect(self.update_components_prices)
+        self.checkBox_components_use_overhead.toggled.connect(self.update_components_prices)
+
         self.cutoff_widget = MultiToolBox(self)
         self.verticalLayout_cutoff.addWidget(self.cutoff_widget)
         cutoff_items = QListWidget(self)
@@ -676,6 +676,7 @@ class MainWindow(QMainWindow):
         # SETTINGS
         self.actionChange_tables_font.triggered.connect(self.change_tables_font)
         self.actionSet_Order_Number.triggered.connect(self.set_order_number)
+        self.actionEdit_Sheets.triggered.connect(self.open_sheets_editor)
 
         # SORT BY
         self.actionAlphabatical.triggered.connect(
@@ -979,12 +980,21 @@ class MainWindow(QMainWindow):
             if response == DialogButtons.set:
                 inventory_data[self.category][item_name]["expected_arrival_time"] = select_date_dialog.get_selected_date()
                 inventory_data[self.category][item_name]["order_pending_quantity"] = select_date_dialog.get_order_quantity()
+                inventory_data[self.category][item_name]["is_order_pending"] = button.isChecked()
+                price_of_steel_inventory.save_data(inventory_data)
+                price_of_steel_inventory.load_data()
+                self.load_active_tab()
+                self.sync_changes()
             else:
                 button.setChecked(False)
                 # self.load_active_tab()
                 # self.sync_changes()
                 return
             inventory_data[self.category][item_name]["order_pending_date"] = datetime.now().strftime("%Y-%m-%d")
+            price_of_steel_inventory.save_data(inventory_data)
+            price_of_steel_inventory.load_data()
+            self.load_active_tab()
+            self.sync_changes()
         elif button.isChecked() == False:
             input_dialog = InputDialog(
                 title="Add Sheet Quantity",
@@ -3173,9 +3183,14 @@ class MainWindow(QMainWindow):
         for component in list(batch_data["Components"].keys()):
             unit_price = batch_data["Components"][component]["unit_price"]
             quantity = batch_data["Components"][component]["quantity"]
-            batch_data["Components"][component]["quoting_price"] = calculate_overhead(
-                unit_price * quantity, self.spinBox_profit_margin_items.value() / 100, self.spinBox_overhead_items.value() / 100
-            )
+            profit_margin = self.spinBox_profit_margin_items.value() if self.checkBox_components_use_profit_margin.isChecked() else 0
+            overhead = self.spinBox_overhead_items.value() if self.checkBox_components_use_overhead.isChecked() else 0
+            if self.checkBox_components_use_profit_margin.isChecked() or self.checkBox_components_use_overhead.isChecked():
+                batch_data["Components"][component]["quoting_price"] = calculate_overhead(
+                    unit_price * quantity, profit_margin / 100, overhead / 100
+                )
+            else:
+                batch_data["Components"][component]["quoting_price"] = unit_price * quantity
         return batch_data
 
     # OMNIGEN
@@ -3202,9 +3217,14 @@ class MainWindow(QMainWindow):
         for component in list(batch_data["Components"].keys()):
             unit_price = batch_data["Components"][component]["unit_price"]
             quantity = batch_data["Components"][component]["quantity"]
-            batch_data["Components"][component]["quoting_price"] = calculate_overhead(
-                unit_price * quantity, self.spinBox_profit_margin_items.value() / 100, self.spinBox_overhead_items.value() / 100
-            )
+            profit_margin = self.spinBox_profit_margin_items.value() if self.checkBox_components_use_profit_margin.isChecked() else 0
+            overhead = self.spinBox_overhead_items.value() if self.checkBox_components_use_overhead.isChecked() else 0
+            if self.checkBox_components_use_profit_margin.isChecked() or self.checkBox_components_use_overhead.isChecked():
+                batch_data["Components"][component]["quoting_price"] = calculate_overhead(
+                    unit_price * quantity, profit_margin / 100, overhead / 100
+                )
+            else:
+                batch_data["Components"][component]["quoting_price"] = unit_price * quantity
         return batch_data
 
     # OMNIGEN
@@ -3543,6 +3563,10 @@ class MainWindow(QMainWindow):
                 self.tabWidget.setCurrentIndex(self.get_menu_tab_order().index("OmniGen"))
                 self.load_nests()
 
+    def open_sheets_editor(self) -> None:
+        editor = SheetEditor(self)
+        editor.windowClosed.connect(self.start_upload_sheets_thread)
+
     # * /\ Dialogs /\
 
     # * \/ INVENTORY TABLE CHANGES \/
@@ -3739,7 +3763,10 @@ class MainWindow(QMainWindow):
             modified_date: str = (
                 f"{self.username} - Manually set to {new_quantity} from {old_quantity} at {datetime.now().strftime('%B %d %A %Y %I:%M:%S %p')}"
             )
-            red_quantity_limit: int = inventory_data[self.category][item_name]["red_limit"]
+            try:
+                red_quantity_limit: int = inventory_data[self.category][item_name]["red_limit"]
+            except KeyError:
+                red_quantity_limit = None
             if red_quantity_limit is None:
                 red_quantity_limit: int = 4
             if new_quantity > red_quantity_limit:
@@ -8358,10 +8385,17 @@ class MainWindow(QMainWindow):
         for row in range(self.tableWidget_components_items.rowCount()):
             quantity = float(self.tableWidget_components_items.item(row, 5).text())
             unit_price_item = float(self.tableWidget_components_items.item(row, 6).text().replace("$", "").replace(",", ""))
+            profit_margin = self.spinBox_profit_margin_items.value() if self.checkBox_components_use_profit_margin.isChecked() else 0
+            overhead = self.spinBox_overhead_items.value() if self.checkBox_components_use_overhead.isChecked() else 0
             price_item = self.tableWidget_components_items.item(row, 7)
-            price_item.setText(
-                f"${calculate_overhead(unit_price_item*quantity, self.spinBox_profit_margin_items.value() / 100, self.spinBox_overhead_items.value() / 100):,.2f}"
-            )
+            if self.checkBox_components_use_profit_margin.isChecked() or self.checkBox_components_use_overhead.isChecked():
+                price_item.setText(
+                    f"${calculate_overhead(unit_price_item*quantity, profit_margin / 100, overhead / 100):,.2f}"
+                )
+            else:
+                price_item.setText(
+                    f"${unit_price_item*quantity:,.2f}"
+                )
         self.tableWidget_components_items.blockSignals(False)
         self.update_quote_price()
 
@@ -8830,6 +8864,7 @@ class MainWindow(QMainWindow):
                 "workspace - Admin.json",
                 "workspace - User.json",
                 "workspace - History.json",
+                "price_of_steel_information.json"
             ],
             False,
         )
@@ -8995,6 +9030,15 @@ class MainWindow(QMainWindow):
             self.load_components_table()
         else:
             self.status_button.setText(f"Error - {data}", "red")
+
+    def start_upload_sheets_thread(self) -> None:
+        thread = UploadSheetsSettingsThread()
+        thread.signal.connect(self.upload_sheets_thread_response)
+        self.threads.append(thread)
+        thread.start()
+
+    def upload_sheets_thread_response(self) -> None:
+        self.status_button.setText(f'Uploaded sheets settings - {datetime.now().strftime("%r")}', "lime")
 
     # * /\ THREADS /\
 

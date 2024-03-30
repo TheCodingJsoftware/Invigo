@@ -20,8 +20,11 @@ class DownloadThread(QThread):
                 response = requests.get(self.file_url + file_to_download)
 
                 if response.status_code == 200:
-                    # Save the received file to a local location
-                    with open(f"data/{file_to_download}", "wb") as file:
+                    if file_to_download == "price_of_steel_information.json":
+                        filepath = "price_of_steel_information.json"
+                    else:
+                        filepath = f'data/{file_to_download}'
+                    with open(filepath, "wb") as file:
                         file.write(response.content)
                 else:
                     self.signal.emit(response.text)

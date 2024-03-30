@@ -58,7 +58,7 @@
        <enum>QTabWidget::Rounded</enum>
       </property>
       <property name="currentIndex">
-       <number>7</number>
+       <number>3</number>
       </property>
       <property name="elideMode">
        <enum>Qt::ElideNone</enum>
@@ -166,7 +166,7 @@
                         <x>0</x>
                         <y>0</y>
                         <width>220</width>
-                        <height>124</height>
+                        <height>121</height>
                        </rect>
                       </property>
                       <property name="maximumSize">
@@ -509,7 +509,7 @@ QPushButton#pushButton_create_new:disabled{
                  <x>0</x>
                  <y>0</y>
                  <width>184</width>
-                 <height>661</height>
+                 <height>655</height>
                 </rect>
                </property>
                <property name="maximumSize">
@@ -737,7 +737,7 @@ QPushButton#pushButton_add_new_sheet:disabled{
                  <x>0</x>
                  <y>0</y>
                  <width>357</width>
-                 <height>573</height>
+                 <height>567</height>
                 </rect>
                </property>
                <layout class="QVBoxLayout" name="verticalLayout_21">
@@ -1685,7 +1685,25 @@ s
                     <layout class="QVBoxLayout" name="verticalLayout_43"/>
                    </item>
                    <item>
-                    <layout class="QHBoxLayout" name="horizontalLayout_16">
+                    <layout class="QHBoxLayout" name="horizontalLayout_16" stretch="0,1,1">
+                     <item>
+                      <layout class="QVBoxLayout" name="verticalLayout_54">
+                       <item>
+                        <widget class="QCheckBox" name="checkBox_components_use_overhead">
+                         <property name="text">
+                          <string>Use Overhead</string>
+                         </property>
+                        </widget>
+                       </item>
+                       <item>
+                        <widget class="QCheckBox" name="checkBox_components_use_profit_margin">
+                         <property name="text">
+                          <string>Use Profit Margin</string>
+                         </property>
+                        </widget>
+                       </item>
+                      </layout>
+                     </item>
                      <item>
                       <widget class="QPushButton" name="pushButton_add_component">
                        <property name="text">
@@ -2344,7 +2362,7 @@ QPushButton:pressed#pushButton_show_item_summary:!checked {
                       <x>0</x>
                       <y>0</y>
                       <width>280</width>
-                      <height>182</height>
+                      <height>176</height>
                      </rect>
                     </property>
                     <layout class="QHBoxLayout" name="horizontalLayout_21">
@@ -2830,6 +2848,7 @@ QPushButton#pushButton_generate_workspace_quote:disabled{
     <addaction name="actionChange_tables_font"/>
     <addaction name="actionSet_Order_Number"/>
     <addaction name="action_Set_User_Workspace"/>
+    <addaction name="actionEdit_Sheets"/>
    </widget>
    <widget class="QMenu" name="menuHelp">
     <property name="title">
@@ -3262,6 +3281,11 @@ QPushButton#pushButton_generate_workspace_quote:disabled{
   <action name="actionEditStatuses">
    <property name="text">
     <string>Edit Statuses</string>
+   </property>
+  </action>
+  <action name="actionEdit_Sheets">
+   <property name="text">
+    <string>Edit Sheets</string>
    </property>
   </action>
  </widget>

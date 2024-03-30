@@ -5,10 +5,10 @@ and is not intended for the client to use this script.
 
 import contextlib
 import json
+import os
 import threading
 import time
 from datetime import datetime
-import os
 
 import requests
 from flask import Flask, render_template
