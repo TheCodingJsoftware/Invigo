@@ -1457,8 +1457,9 @@ class CustomTabWidget(QTabWidget):
 
 
 class PdfFilterProxyModel(QSortFilterProxyModel):
-    def __init__(self, model, parent=None):
+    def __init__(self, model, parent=None, path=""):
         super().__init__(parent)
+        self.path = path
         self.setSourceModel(model)
 
     def filterAcceptsRow(self, row, parent):
@@ -1466,9 +1467,17 @@ class PdfFilterProxyModel(QSortFilterProxyModel):
         if not index.isValid():
             return False
         if self.sourceModel().isDir(index):
-            return any(file.lower().endswith(".pdf") for file in os.listdir(self.sourceModel().filePath(index)))
+            return self.directoryContainsPdf(self.sourceModel().filePath(index))
         filename = self.sourceModel().fileName(index)
         return filename.lower().endswith(".pdf")
+
+    def directoryContainsPdf(self, directory):
+        if self.path not in directory:
+            return False
+        return any(
+            any(file.lower().endswith('.pdf') for file in files)
+            for root, dirs, files in os.walk(directory)
+        )
 
     def lessThan(self, left: QModelIndex, right: QModelIndex):
         left_index = left.sibling(left.row(), 0)
@@ -1487,14 +1496,15 @@ class PdfFilterProxyModel(QSortFilterProxyModel):
 class PdfTreeView(QTreeView):
     def __init__(self, path: str, parent=None):
         super().__init__(parent)
+        print(path)
         self.parent = parent
         self.model = QFileSystemModel(self.parent)
-        self.model.setRootPath("")
+        self.model.setRootPath(path)
         self.setModel(self.model)
-        self.filterModel = PdfFilterProxyModel(self.model, self.parent)
+        self.filterModel = PdfFilterProxyModel(self.model, self.parent, path)
         self.filterModel.setSourceModel(self.model)
-        self.setModel(self.filterModel)
         self.filterModel.setFilterKeyColumn(0)
+        self.setModel(self.filterModel)
         self.setRootIndex(self.filterModel.mapFromSource(self.model.index(path)))
         self.header().resizeSection(0, 170)
         self.setSelectionMode(QAbstractItemView.SelectionMode.ExtendedSelection)

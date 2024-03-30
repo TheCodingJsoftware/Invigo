@@ -3,7 +3,8 @@ import copy
 import json
 import sys
 from functools import partial
-
+from datetime import datetime
+from utils.json_file import JsonFile
 import ujson as json
 from PyQt6.QtCore import Qt, pyqtSignal
 from PyQt6.QtWidgets import (
@@ -43,6 +44,7 @@ class TableWidget(QTableWidget):
         self.setColumnWidth(1, 100)
 
 
+settings_file = JsonFile(file_name="settings")
 
 class SheetEditor(QMainWindow):
     windowClosed = pyqtSignal()
@@ -54,6 +56,13 @@ class SheetEditor(QMainWindow):
 
         with open('price_of_steel_information.json', 'r', encoding='utf-8') as file:
             self.data = json.load(file)
+
+
+        self.price_of_steel_inventory = JsonFile(file_name=f"data/{settings_file.get_value(item_name='inventory_file_name')} - Price of Steel")
+        with open('price_of_steel_information.json', 'r', encoding='utf-8') as file:
+            self.data = json.load(file)
+
+
 
         self.threads = []
 
@@ -133,6 +142,12 @@ class SheetEditor(QMainWindow):
             del self.data['pounds_per_square_foot'][old_name]
             self.data['pounds_per_square_foot'][new_name] = data_copy
 
+            price_of_steel_data = copy.deepcopy(self.price_of_steel_inventory.get_data())
+            copy_data = copy.deepcopy(price_of_steel_data['Price Per Pound'][old_name])
+            del price_of_steel_data['Price Per Pound'][old_name]
+            price_of_steel_data['Price Per Pound'][new_name] = copy_data
+            self.price_of_steel_inventory.save_data(price_of_steel_data)
+
             self.load_data()
 
     def editThicknessName(self, item: QListWidgetItem):
@@ -164,6 +179,12 @@ class SheetEditor(QMainWindow):
             thicknesses = [self.thicknessesList.item(i).text() for i in range(self.thicknessesList.count())]
             for thickness in thicknesses:
                 self.data['pounds_per_square_foot'][text][thickness] = 0
+            modified_date: str = (
+                            f'Created at {datetime.now().strftime("%B %d %A %Y %I:%M:%S %p")}'
+            )
+            price_of_steel_data = copy.deepcopy(self.price_of_steel_inventory.get_data())
+            price_of_steel_data['Price Per Pound'][text] = {"price": 0.0, "latest_change_price": modified_date}
+            self.price_of_steel_inventory.save_data(price_of_steel_data)
 
             self.load_data()
 
@@ -178,7 +199,6 @@ class SheetEditor(QMainWindow):
 
             self.load_data()
 
-
     def removeMaterial(self):
         materials = [self.materialsList.item(i).text() for i in range(self.materialsList.count())]
         material, ok = QInputDialog.getItem(self, "Remove Material", "Select a material to remove:", materials, 0, False)
@@ -192,6 +212,10 @@ class SheetEditor(QMainWindow):
 
             self.data['materials'].remove(material)
             del self.data['pounds_per_square_foot'][material]
+
+            price_of_steel_data = copy.deepcopy(self.price_of_steel_inventory.get_data())
+            del price_of_steel_data['Price Per Pound'][material]
+            self.price_of_steel_inventory.save_data(price_of_steel_data)
 
             self.load_data()
 

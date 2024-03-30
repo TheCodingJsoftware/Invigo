@@ -157,6 +157,7 @@ from ui.select_item_dialog import SelectItemDialog
 from ui.select_timeline_dialog import SelectTimeLineDialog
 from ui.set_custom_limit_dialog import SetCustomLimitDialog
 from ui.set_order_pending_dialog import SetOrderPendingDialog
+from ui.nest_sheet_verification import NestSheetVerification
 from ui.sheet_editor import SheetEditor
 from ui.theme import set_theme
 from ui.web_scrape_results_dialog import WebScrapeResultsDialog
@@ -189,7 +190,7 @@ __copyright__: str = "Copyright 2022-2023, TheCodingJ's"
 __credits__: list[str] = ["Jared Gross"]
 __license__: str = "MIT"
 __name__: str = "Invigo"
-__version__: str = "v2.2.37"
+__version__: str = "v2.2.38"
 __updated__: str = "2024-02-22 12:32:51"
 __maintainer__: str = "Jared Gross"
 __email__: str = "jared@pinelandfarms.ca"
@@ -312,6 +313,9 @@ logging.basicConfig(
 
 
 def excepthook(exc_type, exc_value, exc_traceback):
+    logging.error("Unhandled exception", exc_info=(exc_type, exc_value, exc_traceback))
+    sys.__excepthook__(exc_type, exc_value, exc_traceback)
+    threading.Thread(target=send_error_report, args=(exc_type, exc_value, exc_traceback)).start()
     win32api.MessageBox(
         0,
         f"We've encountered an unexpected issue, but don't worry—help is already on the way. The details of this glitch have been automatically reported to {__maintainer__}, and a notification has been sent to {__email__} for immediate attention. Rest assured, {__maintainer__} is on the case and will likely have this resolved with the next update. Your patience and understanding are greatly appreciated. If this problem persists, please don't hesitate to reach out directly to {__maintainer__} for further assistance.\n\nTechnical details for reference:\n- Exception Type: {exc_type}\n- Error Message: {exc_value}\n- Traceback Information: {exc_traceback}",
@@ -319,9 +323,6 @@ def excepthook(exc_type, exc_value, exc_traceback):
         0x40,
     )  # 0x40 for OK button
 
-    logging.error("Unhandled exception", exc_info=(exc_type, exc_value, exc_traceback))
-    sys.__excepthook__(exc_type, exc_value, exc_traceback)
-    threading.Thread(target=send_error_report, args=(exc_type, exc_value, exc_traceback)).start()
 
 
 def send_error_report(exc_type, exc_value, exc_traceback):
@@ -332,9 +333,7 @@ def send_error_report(exc_type, exc_value, exc_traceback):
         error_data = error_log.read()
     data = {"error_log": f"User: {os.getlogin().title()}\nVersion: {__version__}\n\n{error_data}"}
     response = requests.post(url, data=data)
-    if response.status_code == 200:
-        win32api.MessageBox(0, "Sent", "Sent", 0x40)
-    else:
+    if response.status_code != 200:
         win32api.MessageBox(0, f"Did not send email, notify {__maintainer__} ASAP and send them the app.log file in the logs folder!", "oops", 0x40)
 
 
@@ -8750,6 +8749,7 @@ class MainWindow(QMainWindow):
             self.downloading_changes = True
             self.download_all_files()
             self.status_button.setText(f'Synched - {datetime.now().strftime("%r")}', "lime")
+            price_of_steel_information.load_data()
         else:
             self.status_button.setText(f"Syncing Error - {response}", "red")
 
@@ -8891,17 +8891,28 @@ class MainWindow(QMainWindow):
             self.quote_nest_information = data
             self.pushButton_load_nests.setEnabled(True)
 
-        select_item_dialog = SelectItemDialog(
+        material = price_of_steel_information.get_value("materials")[0]
+        thickness = price_of_steel_information.get_value("thicknesses")[0]
+
+        for nest in self.quote_nest_information:
+            if nest[0] == '_':
+                material = self.quote_nest_information[nest]['material']
+                thickness = self.quote_nest_information[nest]['gauge']
+                break
+
+        select_item_dialog = NestSheetVerification(
             button_names=DialogButtons.set_skip,
-            title="Select Material",
-            message="Select Material",
-            items=price_of_steel_information.get_value("materials"),
+            title="Verify Sheet Thickness and Material",
+            message=f"The nest sheet settings from pdf are: {thickness} {material}.",
+            thickness=thickness,
+            material=material
         )
 
         if select_item_dialog.exec():
             response = select_item_dialog.get_response()
             if response == DialogButtons.set:
-                self.comboBox_global_sheet_material.setCurrentText(select_item_dialog.get_selected_item())
+                self.comboBox_global_sheet_material.setCurrentText(select_item_dialog.get_selected_material())
+                self.comboBox_global_sheet_thickness.setCurrentText(select_item_dialog.get_selected_thickness())
 
             self.load_nests()
             self.status_button.setText(f"Successfully loaded {len(self.get_all_selected_nests())} nests", "lime")
@@ -9032,10 +9043,22 @@ class MainWindow(QMainWindow):
             self.status_button.setText(f"Error - {data}", "red")
 
     def start_upload_sheets_thread(self) -> None:
+        self.upload_file(
+                [
+                    f"{self.inventory_file_name} - Price of Steel.json",
+                ],
+                False,
+            )
         thread = UploadSheetsSettingsThread()
         thread.signal.connect(self.upload_sheets_thread_response)
         self.threads.append(thread)
         thread.start()
+        price_of_steel_inventory.load_data()
+        price_of_steel_information.load_data()
+        self.comboBox_global_sheet_thickness.clear()
+        self.comboBox_global_sheet_thickness.addItems(price_of_steel_information.get_value("thicknesses"))
+        self.comboBox_global_sheet_material.clear()
+        self.comboBox_global_sheet_material.addItems(price_of_steel_information.get_value("materials"))
 
     def upload_sheets_thread_response(self) -> None:
         self.status_button.setText(f'Uploaded sheets settings - {datetime.now().strftime("%r")}', "lime")
