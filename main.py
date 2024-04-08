@@ -190,7 +190,7 @@ __copyright__: str = "Copyright 2022-2023, TheCodingJ's"
 __credits__: list[str] = ["Jared Gross"]
 __license__: str = "MIT"
 __name__: str = "Invigo"
-__version__: str = "v2.2.38"
+__version__: str = "v2.2.39"
 __updated__: str = "2024-02-22 12:32:51"
 __maintainer__: str = "Jared Gross"
 __email__: str = "jared@pinelandfarms.ca"
@@ -2507,7 +2507,10 @@ class MainWindow(QMainWindow):
             material: str = self.quote_nest_information[nest_name][item_name]["material"]
             if material == "Null":  # Its from Edit Inventory
                 price_per_pound = 0.0
-                COGS: float = self.quote_nest_information[nest_name][item_name]["price"]
+                try:
+                    COGS: float = self.quote_nest_information[nest_name][item_name]["price"]
+                except KeyError:
+                    COGS = 0.0
                 if isinstance(COGS, str):
                     COGS = float(COGS.replace("$", ""))
             else:

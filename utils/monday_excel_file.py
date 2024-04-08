@@ -150,6 +150,7 @@ class MondayExcelFile:
                         "customer": "",
                         "ship_to": "",
                         "show": True,
+                        "notes": "",
                     },
                 )
                 new_data[job_name].append(item)
