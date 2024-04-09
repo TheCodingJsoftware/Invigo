@@ -190,7 +190,7 @@ __copyright__: str = "Copyright 2022-2023, TheCodingJ's"
 __credits__: list[str] = ["Jared Gross"]
 __license__: str = "MIT"
 __name__: str = "Invigo"
-__version__: str = "v2.2.39"
+__version__: str = "v2.2.40"
 __updated__: str = "2024-02-22 12:32:51"
 __maintainer__: str = "Jared Gross"
 __email__: str = "jared@pinelandfarms.ca"
@@ -2276,7 +2276,7 @@ class MainWindow(QMainWindow):
                     )
                 else:
                     unit_price = calculate_overhead(COGS, self.spinBox_profit_margin_items.value() / 100, self.spinBox_overhead_items.value() / 100)
-                price = unit_price * quantity
+                price = round(unit_price, 2) * quantity
                 total_item_cost += price
             return total_item_cost
 
@@ -2320,7 +2320,7 @@ class MainWindow(QMainWindow):
                 + calculate_overhead(bend_cost, self.spinBox_profit_margin_items.value() / 100, self.spinBox_overhead_items.value() / 100)
                 + calculate_overhead(labor_cost, self.spinBox_profit_margin_items.value() / 100, self.spinBox_overhead_items.value() / 100)
             )
-            price = unit_price * quantity
+            price = round(unit_price, 2) * quantity
             COGS_item: QTableWidgetItem = self.tableWidget_quote_items.item(row, 6)
             unit_price_item: QTableWidgetItem = self.tableWidget_quote_items.item(row, 9)
             price_item: QTableWidgetItem = self.tableWidget_quote_items.item(row, 10)
@@ -2464,7 +2464,7 @@ class MainWindow(QMainWindow):
                 + calculate_overhead(labor_cost, profit_margin / 100, overhead / 100)
             )
 
-            price = unit_price * quantity
+            price = round(unit_price, 2) * quantity
             total_item_cost += price
         return total_item_cost
 
@@ -2524,7 +2524,7 @@ class MainWindow(QMainWindow):
                 + calculate_overhead(labor_cost, self.spinBox_profit_margin_items.value() / 100, self.spinBox_overhead_items.value() / 100)
             )
 
-            price = unit_price * quantity
+            price = round(unit_price, 2) * quantity
             total_item_cost += price
 
             COGS_item.setText(f"${COGS:,.2f}")
@@ -3189,7 +3189,7 @@ class MainWindow(QMainWindow):
             overhead = self.spinBox_overhead_items.value() if self.checkBox_components_use_overhead.isChecked() else 0
             if self.checkBox_components_use_profit_margin.isChecked() or self.checkBox_components_use_overhead.isChecked():
                 batch_data["Components"][component]["quoting_price"] = calculate_overhead(
-                    unit_price * quantity, profit_margin / 100, overhead / 100
+                    round(unit_price, 2) * quantity, profit_margin / 100, overhead / 100
                 )
             else:
                 batch_data["Components"][component]["quoting_price"] = unit_price * quantity
@@ -3223,7 +3223,7 @@ class MainWindow(QMainWindow):
             overhead = self.spinBox_overhead_items.value() if self.checkBox_components_use_overhead.isChecked() else 0
             if self.checkBox_components_use_profit_margin.isChecked() or self.checkBox_components_use_overhead.isChecked():
                 batch_data["Components"][component]["quoting_price"] = calculate_overhead(
-                    unit_price * quantity, profit_margin / 100, overhead / 100
+                    round(unit_price, 2) * quantity, profit_margin / 100, overhead / 100
                 )
             else:
                 batch_data["Components"][component]["quoting_price"] = unit_price * quantity
@@ -8392,7 +8392,7 @@ class MainWindow(QMainWindow):
             price_item = self.tableWidget_components_items.item(row, 7)
             if self.checkBox_components_use_profit_margin.isChecked() or self.checkBox_components_use_overhead.isChecked():
                 price_item.setText(
-                    f"${calculate_overhead(unit_price_item*quantity, profit_margin / 100, overhead / 100):,.2f}"
+                    f"${calculate_overhead(round(unit_price_item, 2)*quantity, profit_margin / 100, overhead / 100):,.2f}"
                 )
             else:
                 price_item.setText(

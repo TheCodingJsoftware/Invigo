@@ -6,8 +6,7 @@
         "Galvanneal",
         "Galvanized",
         "Aluminium",
-        "Laser Grade Plate",
-        "NEW"
+        "Laser Grade Plate"
     ],
     "pounds_per_square_foot": {
         "304 SS": {
@@ -142,25 +141,6 @@
             "3\/8": 15.31,
             "5\/16": 12.76,
             "5\/8": 25.5
-        },
-        "NEW": {
-            "0.08\"": 0,
-            "1": 0,
-            "1\/2": 0,
-            "1\/4": 0,
-            "10 Gauge": 0,
-            "11 Gauge": 0,
-            "12 Gauge": 0,
-            "14 Gauge": 0,
-            "16 Gauge": 0,
-            "18 Gauge": 0,
-            "20 Gauge": 0,
-            "22 Gauge": 0,
-            "3\/16": 0,
-            "3\/4": 0,
-            "3\/8": 0,
-            "5\/16": 0,
-            "5\/8": 0
         }
     },
     "thicknesses": [
