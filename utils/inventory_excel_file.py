@@ -126,12 +126,6 @@ class ExcelFile:
             worksheet.print_area(f"A1:E{row}")
 
     def set_cell_format(self, cell):
-        """
-        This function sets various formatting options for a given cell in a spreadsheet.
-
-        Args:
-          cell: This parameter represents the cell object that we want to format.
-        """
         cell.set_align("center")
         cell.set_align("vcenter")
         cell.set_bold()
@@ -139,20 +133,6 @@ class ExcelFile:
         cell.set_bottom(1)
 
     def __sort_groups(self, category: dict) -> dict:
-        """
-        This function sorts a dictionary of categories into groups based on a "group" key and returns
-        the grouped dictionary.
-
-        Args:
-          category (dict): The `category` parameter is a dictionary containing items that need to be
-        grouped based on their `group` attribute. Each item in the dictionary represents a category and
-        has a unique key. The value of each key is another dictionary containing information about the
-        category, including its name, description, and group (
-
-        Returns:
-          a dictionary that groups the items in the input dictionary 'category' based on their 'group'
-        value. If an item does not have a 'group' value, it is placed in the "Everything else" group.
-        """
         grouped_category: dict = {"Everything else": {}}
 
         for key, value in category.items():
@@ -165,16 +145,7 @@ class ExcelFile:
         return grouped_category
 
     def save(self) -> None:
-        """
-        It closes the class workbook
-        """
         self.workbook.close()
 
     def __get_exchange_rate(self) -> float:
-        """
-        It returns the exchange rate from the settings file
-
-        Returns:
-          The exchange rate from the settings file.
-        """
         return settings_file.get_value(item_name="exchange_rate")

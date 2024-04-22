@@ -1,6 +1,4 @@
 class DialogButtons:
-    """A class that contains constants."""
-
     ok: str = "Ok"
     yes: str = "Yes"
     no: str = "No"

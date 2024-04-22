@@ -5,12 +5,6 @@ from os.path import isfile, join
 
 
 def get_all_po() -> list[str]:
-    """
-    It returns a list of all the files in the directory "PO's/templates"
-
-    Returns:
-      A list of strings.
-    """
     return [
         po_file.split(".")[0]
         for po_file in listdir("PO's/templates")
@@ -19,12 +13,6 @@ def get_all_po() -> list[str]:
 
 
 def check_folders(folders: list[str]) -> None:
-    """
-    It creates a folder if it doesn't exist
-
-    Args:
-      folders (list[str]): list[str]
-    """
     for folder in folders:
         with contextlib.suppress(FileExistsError):
             if not os.path.exists(folder):
@@ -32,9 +20,6 @@ def check_folders(folders: list[str]) -> None:
 
 
 def check_po_directories() -> None:
-    """
-    It checks if the folders for the PO's exist, and if they don't, it creates them
-    """
     all_po_files = [
         po_file
         for po_file in listdir("PO's/templates")
