@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>738</width>
-    <height>696</height>
+    <width>973</width>
+    <height>657</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -147,7 +147,7 @@ border-bottom: none;
               <rect>
                <x>0</x>
                <y>0</y>
-               <width>688</width>
+               <width>923</width>
                <height>69</height>
               </rect>
              </property>
@@ -220,7 +220,7 @@ border-bottom: none;
                <widget class="QGroupBox" name="groupBox_2">
                 <property name="minimumSize">
                  <size>
-                  <width>200</width>
+                  <width>500</width>
                   <height>0</height>
                  </size>
                 </property>
@@ -308,8 +308,8 @@ border-bottom: none;
                      <rect>
                       <x>0</x>
                       <y>0</y>
-                      <width>475</width>
-                      <height>514</height>
+                      <width>410</width>
+                      <height>475</height>
                      </rect>
                     </property>
                     <layout class="QVBoxLayout" name="verticalLayout_5">

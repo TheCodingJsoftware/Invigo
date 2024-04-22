@@ -88,18 +88,18 @@ from PyQt6.QtWidgets import (
 )
 
 from threads.changes_thread import ChangesThread
+from threads.check_for_updates_thread import CheckForUpdatesThread
 from threads.download_images_thread import DownloadImagesThread
 from threads.download_thread import DownloadThread
 from threads.get_order_number_thread import GetOrderNumberThread
-from threads.check_for_updates_thread import CheckForUpdatesThread
 from threads.get_previous_nests_data_thread import GetPreviousNestsDataThread
 from threads.get_previous_nests_files_thread import GetPreviousNestsFilesThread
 from threads.load_nests import LoadNests
 from threads.remove_quantity import RemoveQuantityThread
 from threads.send_sheet_report_thread import SendReportThread
 from threads.set_order_number_thread import SetOrderNumberThread
-from threads.upload_quoted_inventory import UploadBatch
 from threads.upload_price_of_steel_information import UploadSheetsSettingsThread
+from threads.upload_quoted_inventory import UploadBatch
 from threads.upload_thread import UploadThread
 from threads.workspace_get_file_thread import WorkspaceDownloadFiles
 from threads.workspace_upload_file_thread import WorkspaceUploadThread
@@ -146,19 +146,19 @@ from ui.edit_statuses_dialog import EditStatusesDialog
 from ui.edit_tags_dialog import EditTagsDialog
 from ui.generate_quote_dialog import GenerateQuoteDialog
 from ui.generate_workorder_dialog import GenerateWorkorderDialog
-from ui.generate_workspace_quote_dialog import GenerateWorkspaceQuoteDialog
+from ui.generate_workspace_printout_dialog import GenerateWorkspacePrintoutDialog
 from ui.image_viewer import QImageViewer
 from ui.input_dialog import InputDialog
 from ui.job_sorter_dialog import JobSorterDialog
 from ui.load_window import LoadWindow
 from ui.message_dialog import MessageDialog
+from ui.nest_sheet_verification import NestSheetVerification
 from ui.recut_dialog import RecutDialog
 from ui.select_date_dialog import SelectDateDialog
 from ui.select_item_dialog import SelectItemDialog
 from ui.select_timeline_dialog import SelectTimeLineDialog
 from ui.set_custom_limit_dialog import SetCustomLimitDialog
 from ui.set_order_pending_dialog import SetOrderPendingDialog
-from ui.nest_sheet_verification import NestSheetVerification
 from ui.sheet_editor import SheetEditor
 from ui.theme import set_theme
 from ui.web_scrape_results_dialog import WebScrapeResultsDialog
@@ -168,20 +168,21 @@ from utils.compress import compress_database, compress_folder
 from utils.dialog_buttons import DialogButtons
 from utils.dialog_icons import Icons
 from utils.extract import extract
-from utils.generate_quote import GenerateQuote
 from utils.history_file import HistoryFile
 from utils.inventory_excel_file import ExcelFile
 from utils.ip_utils import get_server_ip_address, get_server_port
 from utils.json_file import JsonFile
 from utils.json_object import JsonObject
-from utils.monday_excel_file import MondayExcelFile
+from utils.omnigen.generate_quote import GenerateQuote
 from utils.po import check_po_directories, get_all_po
 from utils.po_template import POTemplate
 from utils.price_history_file import PriceHistoryFile
 from utils.trusted_users import get_trusted_users
 from utils.workspace.assembly import Assembly
+from utils.workspace.generate_printout import GeneratePrintout
 from utils.workspace.item import Item
 from utils.workspace.item_group import ItemGroup
+from utils.workspace.monday_excel_file import MondayExcelFile
 from utils.workspace.workspace import Workspace
 from web_scrapers.ebay_scraper import EbayScraper
 from web_scrapers.exchange_rate import ExchangeRate
@@ -770,7 +771,7 @@ class MainWindow(QMainWindow):
         self.actionEditTags.triggered.connect(self.open_tag_editor)
         self.actionEditStatuses.triggered.connect(self.open_status_editor)
         self.pushButton_generate_workorder.clicked.connect(partial(self.generate_workorder_dialog, []))
-        self.pushButton_generate_workspace_quote.clicked.connect(partial(self.generate_workspace_quote_dialog, []))
+        self.pushButton_generate_workspace_quote.clicked.connect(partial(self.generate_workspace_printout_dialog, []))
 
         # FILE
         self.menuOpen_Category.setIcon(QIcon(f"icons/folder.png"))
@@ -2775,6 +2776,14 @@ class MainWindow(QMainWindow):
                 selected_items.append(item.text())
         return selected_items
 
+    def get_all_selected_workspace_parts(self, tab: CustomTableWidget) -> list[str]:
+        selected_rows = tab.selectedItems()
+        selected_items: list[str] = []
+        for item in selected_rows:
+            if item.column() == 0:
+                selected_items.append(item.text())
+        return selected_items
+
     def get_all_flow_tags(self) -> list[str]:
         flow_tags: list[str] = []
         for group, group_data in workspace_tags.get_value("flow_tags").items():
@@ -3499,76 +3508,22 @@ class MainWindow(QMainWindow):
                 self.generate_workorder(work_order=workorder.get_workorder())
 
     # WORKSPACE
-    def generate_workspace_quote_dialog(self, job_names: list[str] = None) -> None:
-        quote = GenerateWorkspaceQuoteDialog(
+    def generate_workspace_printout_dialog(self, job_names: list[str] = None) -> None:
+        printout_dialog = GenerateWorkspacePrintoutDialog(
             self,
-            title="Generate Quote",
+            title="Generate Printout",
             message="Set quantity for selected jobs",
             button_names=DialogButtons.generate_cancel,
             job_names=job_names,
         )
-        if quote.exec():
-            response = quote.get_response()
+        if printout_dialog.exec():
+            response = printout_dialog.get_response()
             if response == DialogButtons.generate:
-                print(quote.get_workorder())
-                pass
-                # self.quote_nest_information.clear()
-                # for assembly, quantity in quote.get_workorder().items():
-                #     self.quote_nest_information.setdefault(
-                #         f"_/{assembly.name}.pdf",
-                #         {
-                #             "quantity_multiplier": quantity,  # Sheet count
-                #             "gauge": "Null",
-                #             "material": "Null",
-                #             "sheet_dim": "0.000x0.000",
-                #             "scrap_percentage": 0.0,
-                #             "single_sheet_machining_time": 0.0,
-                #             "machining_time": 0.0,
-                #         },
-                #     )
-                #     self.quote_nest_information.setdefault(f"{assembly.name}.pdf", {})
-                #     for item in assembly.items:
-                #         part_name = item.name
-                #         self.quote_nest_information[f"{assembly.name}.pdf"].setdefault(part_name, {})
-                #         for category in parts_in_inventory.data.keys():
-                #             for part in parts_in_inventory.data[category].keys():
-                #                 if part == part_name:
-                #                     self.quote_nest_information[f"{assembly.name}.pdf"][part_name] = parts_in_inventory.get_data()[category].get(
-                #                         part_name
-                #                     )
-                #         if not self.quote_nest_information[f"{assembly.name}.pdf"][part_name]:
-                #             for category in inventory.data.keys():
-                #                 for part in inventory.data[category].keys():
-                #                     if part == part_name:
-                #                         self.quote_nest_information[f"{assembly.name}.pdf"][part_name] = inventory.get_data()[category].get(part_name)
-                #         self.quote_nest_information[f"{assembly.name}.pdf"][part_name]["quantity"] = item.get_value("parts_per")
-                #         try:
-                #             self.quote_nest_information[f"{assembly.name}.pdf"][part_name]["notes"] += f"\n{item.get_value('notes')}"
-                #         except KeyError:
-                #             self.quote_nest_information[f"{assembly.name}.pdf"][part_name].setdefault("notes", item.get_value("notes"))
-                #         self.quote_nest_information[f"{assembly.name}.pdf"][part_name].setdefault("flow_tag", item.get_value("flow_tag"))
-                #         self.quote_nest_information[f"{assembly.name}.pdf"][part_name].setdefault("machine_time", 0)
-                #         self.quote_nest_information[f"{assembly.name}.pdf"][part_name].setdefault("weight", 0)
-                #         self.quote_nest_information[f"{assembly.name}.pdf"][part_name].setdefault("part_number", 0)
-                #         self.quote_nest_information[f"{assembly.name}.pdf"][part_name].setdefault("image_index", part_name)
-                #         self.quote_nest_information[f"{assembly.name}.pdf"][part_name].setdefault("surface_area", 0)
-                #         self.quote_nest_information[f"{assembly.name}.pdf"][part_name].setdefault("cutting_length", 0)
-                #         self.quote_nest_information[f"{assembly.name}.pdf"][part_name]["file_name"] = f"{assembly.name}.pdf"
-                #         self.quote_nest_information[f"{assembly.name}.pdf"][part_name].setdefault("piercing_time", 0)
-                #         self.quote_nest_information[f"{assembly.name}.pdf"][part_name].setdefault("piercing_points", 0)
-                #         self.quote_nest_information[f"{assembly.name}.pdf"][part_name].setdefault("gauge", "Null")
-                #         self.quote_nest_information[f"{assembly.name}.pdf"][part_name].setdefault("material", "Null")
-                #         self.quote_nest_information[f"{assembly.name}.pdf"][part_name].setdefault("recut", False)
-                #         self.quote_nest_information[f"{assembly.name}.pdf"][part_name].setdefault("shelf_number", "")
-                #         self.quote_nest_information[f"{assembly.name}.pdf"][part_name].setdefault("sheet_dim", "Null")
-                #         self.quote_nest_information[f"{assembly.name}.pdf"][part_name].setdefault("part_dim", "Null")
-                #         self.quote_nest_information[f"{assembly.name}.pdf"][part_name].setdefault("geofile_name", "Null")
-                #         sorted_keys = natsorted(self.quote_nest_information.keys())
-                #         sorted_dict = {key: self.quote_nest_information[key] for key in sorted_keys}
-                #         self.quote_nest_information = sorted_dict
-                #     self.download_required_images(self.quote_nest_information[f"{assembly.name}.pdf"])
-                # self.tabWidget.setCurrentIndex(self.get_menu_tab_order().index("OmniGen"))
-                # self.load_nests()
+                file_name: str = f'Printout - {datetime.now().strftime("%A, %d %B %Y %H-%M-%S-%f")}'
+                generate_printout = GeneratePrintout(file_name, "Workorder", printout_dialog.get_workorder(), self.order_number)
+                generate_printout.generate()
+                path_to_save_workspace_printouts = self.config.get("GLOBAL VARIABLES", "path_to_save_workspace_printouts")
+                self.open_folder(f"{path_to_save_workspace_printouts}/{file_name}.html")
 
     def open_sheets_editor(self) -> None:
         editor = SheetEditor(self)
@@ -7254,7 +7209,7 @@ class MainWindow(QMainWindow):
     # * \/ CONTEXT MENU \/
     # USER
     def move_selected_table_items_to_next_flow_state(self, table: CustomTableWidget, assembly: Assembly | ItemGroup) -> None:
-        selected_items_from_table: list[str] = self.get_all_selected_parts(table)
+        selected_items_from_table: list[str] = self.get_all_selected_workspace_parts(table)
         if isinstance(assembly, Assembly):
             items_to_update: list[Item] = [item for item in assembly.items if item.name in selected_items_from_table]
         elif isinstance(assembly, ItemGroup):
@@ -7304,7 +7259,7 @@ class MainWindow(QMainWindow):
 
     # USER
     def change_selected_table_items_status(self, table: CustomTableWidget, assembly: Assembly | ItemGroup, status: str) -> None:
-        selected_items_from_table: list[str] = self.get_all_selected_parts(table)
+        selected_items_from_table: list[str] = self.get_all_selected_workspace_parts(table)
         if isinstance(assembly, Assembly):
             items_to_update: list[Item] = [item for item in assembly.items if item.name in selected_items_from_table]
         elif isinstance(assembly, ItemGroup):
@@ -7369,7 +7324,7 @@ class MainWindow(QMainWindow):
 
     # USER
     def download_all_selected_items_files(self, table: CustomTableWidget, assembly: Assembly | ItemGroup) -> None:
-        selected_items_from_table: list[str] = self.get_all_selected_parts(table)
+        selected_items_from_table: list[str] = self.get_all_selected_workspace_parts(table)
         if isinstance(assembly, Assembly):
             items_to_update: list[Item] = [item for item in assembly.items if item.name in selected_items_from_table]
         elif isinstance(assembly, ItemGroup):
@@ -7404,7 +7359,7 @@ class MainWindow(QMainWindow):
 
     # STAGING/EDITING
     def copy_items_to(self, table: CustomTableWidget, assembly_copy_from: Assembly, assembly_copy_to: Assembly) -> None:
-        selected_items_from_table: list[str] = self.get_all_selected_parts(table)
+        selected_items_from_table: list[str] = self.get_all_selected_workspace_parts(table)
         items_to_copy: list[Item] = [item for item in assembly_copy_from.items if item.name in selected_items_from_table]
 
         for item_to_copy in items_to_copy:
@@ -7421,7 +7376,7 @@ class MainWindow(QMainWindow):
 
     # STAGING/EDITING
     def move_items_to(self, table: CustomTableWidget, assembly_copy_from: Assembly, assembly_copy_to: Assembly) -> None:
-        selected_items_from_table: list[str] = self.get_all_selected_parts(table)
+        selected_items_from_table: list[str] = self.get_all_selected_workspace_parts(table)
         items_to_move: list[Item] = [item for item in assembly_copy_from.items if item.name in selected_items_from_table]
 
         for item_to_move in items_to_move:
@@ -7502,7 +7457,7 @@ class MainWindow(QMainWindow):
 
     # STAGING/EDITING
     def set_tables_selected_items_value(self, table: CustomTableWidget, assembly: Assembly, key: str, value: Any) -> None:
-        selected_items_from_table: list[str] = self.get_all_selected_parts(table)
+        selected_items_from_table: list[str] = self.get_all_selected_workspace_parts(table)
         items_to_change: list[Item] = [item for item in assembly.items if item.name in selected_items_from_table]
 
         if key == "paint_color":

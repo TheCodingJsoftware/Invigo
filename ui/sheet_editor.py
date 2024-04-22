@@ -2,15 +2,15 @@ import contextlib
 import copy
 import json
 import sys
-from functools import partial
 from datetime import datetime
-from utils.json_file import JsonFile
+from functools import partial
+
 import ujson as json
 from PyQt6.QtCore import Qt, pyqtSignal
 from PyQt6.QtWidgets import (
-    QLabel,
     QHBoxLayout,
     QInputDialog,
+    QLabel,
     QListWidget,
     QListWidgetItem,
     QMainWindow,
@@ -21,6 +21,8 @@ from PyQt6.QtWidgets import (
     QVBoxLayout,
     QWidget,
 )
+
+from utils.json_file import JsonFile
 
 
 class TableWidget(QTableWidget):

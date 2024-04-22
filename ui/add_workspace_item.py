@@ -19,7 +19,6 @@ settings_file = JsonFile(file_name="settings")
 
 
 class AddWorkspaceItem(QDialog):
-
     def __init__(
         self,
         parent=None,

@@ -7,7 +7,7 @@ from datetime import datetime
 from bs4 import BeautifulSoup  # pip install beautifulsoup4
 
 from utils.json_file import JsonFile
-from utils.quote_excel_file import ExcelFile
+from utils.omnigen.quote_excel_file import ExcelFile
 
 settings_file = JsonFile(file_name="settings")
 
@@ -32,6 +32,10 @@ class GenerateQuote:
         with open(self.path_to_sheet_prices, "r") as f:
             self.sheet_prices = json.load(f)
         self.materials = config.get("GLOBAL VARIABLES", "materials").split(",")
+        with open('utils/omnigen/quote.css', 'r') as quote_css_file:
+            self.quote_css = quote_css_file.read()
+        with open('utils/omnigen/quote.js', 'r') as quote_js_file:
+            self.quote_js = quote_js_file.read()
         """
         SS      304 SS,409 SS   Nitrogen
         ST      Mild Steel      CO2
@@ -111,367 +115,8 @@ class GenerateQuote:
             <script src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
             <script src="https://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
         </head>
-        <style>
-            *{
-                font-family: Verdana, Geneva, Tahoma, sans-serif;
-            }
-            html{
-                background-color: white;
-            }
-            .ui-table{
-                background-color: white;
-            }
-            .page{
-                background-color: white;
-            }
-            .header-table-row{
-                text-align: bottom;
-                vertical-align: bottom;
-                border: solid white 1px;
-                border-bottom: 1px solid #ccc;
-            }
-            .ui-table th{
-                vertical-align: bottom;
-                text-align: center;
-            }
-            .ui-table tfoot tr td {
-                vertical-align: top; /* Align content to the top */
-                text-align: center; /* Horizontally center content */
-            }
-            .ui-table td{
-                text-align: center;
-                vertical-align: middle;
-            }
-            p{
-                margin: 0px 0px;
-            }
-
-            /* Style for the title */
-            .title {
-                position: absolute;
-                font-size: 34px;
-                font-weight: bold;
-                text-align: center;
-                text-decoration: underline;
-                width: 50%;
-                top: 15px;
-                position: absolute;
-                left: 50%;
-                -webkit-transform: translate(-50%,-50%);
-                    -ms-transform: translate(-50%,-50%);
-                        transform: translate(-50%,-50%);
-            }
-
-
-            /* Style for the date */
-            .date {
-                position: fixed;
-                font-size: 10px;
-                top: 0;
-                right: 0;
-            }
-            body{
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                flex-direction: column;
-                background-color: white;
-            }
-            .tg-wrap{
-                display: flex;
-                flex-direction: column;
-                align-items: center;
-                justify-content: center;
-                background-color: white;
-            }
-
-            .input-box{
-                font-size: 16px;
-            }
-            .label {
-                display: block;
-                font-weight: bold;
-            }
-
-            .input-row {
-                display: inline-flex;
-                align-items: center;
-                margin-bottom: 10px; /* Add spacing between rows */
-            }
-
-            .input-row label {
-                flex: 0 0 auto;
-                margin-right: 10px; /* Add spacing between label and input */
-                width: auto; /* Set a fixed width for the label */
-            }
-            .ui-input-text{
-                margin: 0;
-            }
-            th:first-of-type {
-                border-top-left-radius: 10px;
-            }
-            th:last-of-type {
-                border-top-right-radius: 10px;
-            }
-            tr:last-of-type td:first-of-type {
-                border-bottom-left-radius: 10px;
-            }
-            tr:last-of-type td:last-of-type {
-                border-bottom-right-radius: 10px;
-            }
-            tr {
-                border: solid #ccc 1px;
-            }
-            /* Image and popup styles */
-            .image-container {
-                display: flex;
-                align-items: center;
-                justify-content: center;
-            }
-            .ui-table-cell-visible{
-                padding: 0;
-            }
-
-            .popup-trigger {
-            display: inline-block;
-            transition: transform 0.2s;
-            }
-
-            .popup-trigger img {
-                width: 300px;
-                height: 300px;
-                border: 2px solid transparent;
-            }
-
-            .popup {
-                display: none;
-                position: fixed;
-                top: 0;
-                right: 0;
-                background-color: white;
-                border: 1px solid #ccc;
-                padding: 10px;
-                width: auto;
-                height: 100%;
-                box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-                align-items: center;
-                justify-content: center;
-                z-index: 5;
-                overflow-y: auto;
-                overflow-x: hidden;
-            }
-
-            .popup:target {
-                display: block;
-            }
-
-            .image-container:target {
-                border-color: green;
-            }
-
-            .popup-trigger:hover {
-                transform: scale(1.1);
-                filter: sepia(0.3);
-            }
-            .popup-trigger:active {
-                transform: scale(0.9);
-                filter: sepia(0.6);
-            }
-
-            .close-popup {
-                display: block;
-                text-align: right;
-                cursor: pointer;
-                color: #333;
-            }
-            /* Styling the label to look like an "X" button */
-            .close-popup::before {
-                font-size: 18px;
-                color: #333;
-            }
-            #sheets-toggle {
-                cursor: pointer;
-            }
-            th:first-of-type {
-            border-top-left-radius: 10px;
-            }
-            th:last-of-type {
-                border-top-right-radius: 10px;
-            }
-            tr:last-of-type td:first-of-type {
-                border-bottom-left-radius: 10px;
-            }
-            tr:last-of-type td:last-of-type {
-                border-bottom-right-radius: 10px;
-            }
-            table.dltrc {
-                width: 95%;
-                border-collapse: separate;
-                border-spacing: 0px;
-                border: solid #ccc 2px;
-                border-radius: 8px;
-            }
-
-            tr.dlheader {
-                text-align: center;
-                font-weight: bold;
-                border-left: solid #ccc 1px;
-                padding: 2px
-            }
-
-            td.dlheader {
-                background: #d9d9d9;
-                text-align: center;
-                font-weight: bold;
-                border-left: solid #ccc 1px;
-                border-radius: 0px;
-                padding: 2px
-            }
-
-            tr.dlinfo,
-            td.dlinfo {
-                text-align: center;
-                border-left: solid #ccc 1px;
-                border-top: solid #ccc 1px;
-                padding: 2px
-            }
-
-            td.dlinfo:first-child,
-            td.dlheader:first-child {
-                border-left: none;
-            }
-
-            td.dlheader:first-child {
-                border-radius: 5px 0 0 0;
-            }
-
-            td.dlheader:last-child {
-            border-radius: 0 5px 0 0;
-            }
-            .ui-page{
-                background-color: white;
-            }
-            .ui-btn{
-                background-color: white;
-            }
-            .nests{
-                columns: 2;
-                display: grid;
-                margin: 25px;
-                grid-template-columns: 320px 320px;
-                grid-template-rows: 200px;
-                margin-left: auto;
-                margin-right: auto;
-                position: relative;
-            }
-            .nest{
-                width: 300px;
-                height: 230px;
-            }
-            .nests p{
-                padding-top: 8px;
-                text-align: center;
-                z-index: 10;
-                position: relative;
-            }
-            .nest_image{
-                height: 220px;
-                width: 290px;
-                position: absolute;
-                padding: 5px;
-                margin-top: -30px;
-            }
-            .ui-input-text input, .ui-inpput-search input{
-                min-height: 30px;
-                max-height: 30px;
-                border: none;
-            }
-            @media print{
-                .ui-table-columntoggle-btn{
-                    display: none;
-                }
-                .page-break {
-                    page-break-after: always;
-                }
-            }
-        </style>
-            <script>
-                window.addEventListener("beforeprint", function() {
-                    adjustTableOffsets();
-                });
-
-                window.addEventListener("afterprint", function() {
-                    // Code to reset table offsets after print preview
-                    resetTableOffsets();
-                });
-                function adjustTableOffsets() {
-                    var headerRows = document.querySelectorAll("thead tr");
-                    var checkbox = document.getElementById("showTotalCost");
-                    var checkboxLabel = document.getElementById("showTotalCostLabel");
-                    var checkboxCoverPageLabel = document.getElementById("showCoverPageLabel");
-                    var checkboxCoverPage = document.getElementById("showCoverPage");
-                    var total_cost_div = document.getElementById("total-cost-div");
-                    var cover_page_div = document.getElementById("cover-page");
-                    if (checkbox.checked) {
-                        total_cost_div.style.display = "block";
-                    } else {
-                        total_cost_div.style.display = "none";
-                    }
-                    if (checkboxCoverPage.checked) {
-                        cover_page_div.style.display = "block";
-                    } else {
-                        cover_page_div.style.display = "none";
-                    }
-                    checkbox.style.display = "none";
-                    checkboxLabel.style.display = "none";
-                    checkboxCoverPageLabel.style.display = "none";
-                    for (var i = 0; i < headerRows.length; i++) {
-                        headerRows[i].style.height = "50px";
-                    }
-                    const detailsElement = document.getElementById("sheets-toggle");
-                    if (detailsElement.open) {
-                        detailsElement.style.display = "block";
-                    } else {
-                        detailsElement.style.display = "none";
-                    }
-                }
-                function resetTableOffsets() {
-                    const detailsElement = document.getElementById("sheets-toggle");
-                    detailsElement.style.display = "block";
-                    var checkboxLabel = document.getElementById("showTotalCostLabel");
-                    var checkboxCoverPageLabel = document.getElementById("showCoverPageLabel");
-                    var total_cost_div = document.getElementById("total-cost-div");
-                    var cover_page_div = document.getElementById("cover-page");
-                    total_cost_div.style.display = "block";
-                    cover_page_div.style.display = "block";
-                    checkboxLabel.style.display = "block";
-                    checkboxCoverPageLabel.style.display = "block";
-                }
-                function clearImageBorders(){
-                    window.location.href = "";
-                    const allImages = document.querySelectorAll('.popup-trigger img');
-                    allImages.forEach(image => {
-                        image.style.border = '2px solid transparent';
-                        image.style.borderRadius  = '0';
-                        image.style.filter = 'sepia(0)';
-                    });
-                }
-                function highlightImage(imageName, imageId) {
-                    const allImages = document.querySelectorAll('.popup-trigger img');
-                    allImages.forEach(image => {
-                        image.style.border = '2px solid transparent';
-                        image.style.borderRadius  = '0';
-                        image.style.filter = 'sepia(0)';
-                    });
-                        window.location.href = "#" + imageName;
-
-                        const image = document.getElementById(imageId);
-                        image.style.border = '2px solid lime';
-                        image.style.borderRadius  = '5px';
-                        image.style.filter = 'sepia(1)';
-                    }
-
-            </script>
+        <style> ''' + self.quote_css + '''</style>
+        <script>''' + self.quote_js + '''</script>
         <div data-role="page" id="pageone">
             <div id="cover-page">
                 <label for="showCoverPage" id="showCoverPageLabel" style="background-color: white; width: 200px; margin-left: 84%; border: none; margin-top: 10px;">
@@ -515,7 +160,7 @@ class GenerateQuote:
                 </div>
                 </div>
         <details id="sheets-toggle" class="sheets-toggle" ''' + ("open=\"true\"" if title == "Workorder" else "") + '''>
-            <summary style="font-size: 24px; text-align: center; margin-top: 20px;">Sheets/Nests/Assemblies:</summary>
+            <summary style="font-size: 24px; text-align: center; margin-top: 20px;">Sheets</summary>
             ''' + sheets_html + sheets_picture_html + '''
             <div class="page-break"></div>
         </details>
@@ -890,15 +535,6 @@ class GenerateQuote:
 
         excel_document.set_print_area(cell=f"A1:G{index + STARTING_ROW+6}")
 
-        # excel_document.add_macro(macro_path=f"{self.program_directory}/macro.bin")
-        """
-        Macro Code:
-        Private Sub Workbook_Open()
-            Application.Iteration = True
-            Application.MaxIterations = 1
-        End Sub
-        """
-
         if self.should_generate_workorder:
             # excel_document.set_col_hidden("F1", True)
             # excel_document.set_col_hidden("G1", True)
@@ -921,14 +557,6 @@ class GenerateQuote:
         return items
 
     def get_total_sheet_count(self) -> int:
-        """
-        This function returns the total sheet count by summing the quantity multiplier of each nest in
-        the quote data.
-
-        Returns:
-          The function `get_total_sheet_count` is returning an integer value which is the sum of the
-        `quantity_multiplier` values for all the nests in the `quote_data` dictionary.
-        """
         return sum(self.quote_data[nest]["quantity_multiplier"] for nest in self.get_nests())
 
     def get_total_parts_price(self) -> float:
@@ -955,18 +583,6 @@ class GenerateQuote:
         return self.get_total_parts_price() + self.get_total_components_price()
 
     def get_cutting_method(self, material: str) -> str:
-        """
-        "Given a material ID, return the cutting method."
-
-        The first line of the function is a docstring. It's a string that describes what the function does.
-        It's a good idea to include a docstring in every function you write
-
-        Args:
-        material_id (str): The material ID of the material you want to cut.
-
-        Returns:
-        The cutting method for the material.
-        """
         with open(f"{self.program_directory}/material_id.json", "r") as material_id_file:
             data = json.load(material_id_file)
         return data[material]["cut"]

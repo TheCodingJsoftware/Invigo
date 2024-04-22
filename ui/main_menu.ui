@@ -8,7 +8,7 @@
     <x>0</x>
     <y>0</y>
     <width>1357</width>
-    <height>875</height>
+    <height>876</height>
    </rect>
   </property>
   <property name="font">
@@ -58,7 +58,7 @@
        <enum>QTabWidget::Rounded</enum>
       </property>
       <property name="currentIndex">
-       <number>3</number>
+       <number>4</number>
       </property>
       <property name="elideMode">
        <enum>Qt::ElideNone</enum>
@@ -509,7 +509,7 @@ QPushButton#pushButton_create_new:disabled{
                  <x>0</x>
                  <y>0</y>
                  <width>184</width>
-                 <height>655</height>
+                 <height>654</height>
                 </rect>
                </property>
                <property name="maximumSize">
@@ -737,7 +737,7 @@ QPushButton#pushButton_add_new_sheet:disabled{
                  <x>0</x>
                  <y>0</y>
                  <width>357</width>
-                 <height>567</height>
+                 <height>566</height>
                 </rect>
                </property>
                <layout class="QVBoxLayout" name="verticalLayout_21">
@@ -2362,7 +2362,7 @@ QPushButton:pressed#pushButton_show_item_summary:!checked {
                       <x>0</x>
                       <y>0</y>
                       <width>280</width>
-                      <height>176</height>
+                      <height>175</height>
                      </rect>
                     </property>
                     <layout class="QHBoxLayout" name="horizontalLayout_21">
@@ -2564,7 +2564,7 @@ QPushButton#pushButton_generate_workspace_quote:disabled{
 }</string>
               </property>
               <property name="text">
-               <string>Generate Quote</string>
+               <string>Generate Printout</string>
               </property>
              </widget>
             </item>
@@ -2804,7 +2804,7 @@ QPushButton#pushButton_generate_workspace_quote:disabled{
      <x>0</x>
      <y>0</y>
      <width>1357</width>
-     <height>21</height>
+     <height>22</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">

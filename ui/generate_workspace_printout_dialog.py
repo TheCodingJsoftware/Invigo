@@ -7,6 +7,7 @@ from PyQt6.QtCore import QFile, Qt, QTextStream
 from PyQt6.QtGui import QIcon, QStandardItem, QStandardItemModel
 from PyQt6.QtSvgWidgets import QSvgWidget
 from PyQt6.QtWidgets import (
+    QCheckBox,
     QDialog,
     QHBoxLayout,
     QLabel,
@@ -29,7 +30,7 @@ from utils.workspace.workspace import Workspace
 settings_file = JsonFile(file_name="settings")
 admin_workspace = Workspace("workspace - Admin")
 
-class GenerateWorkspaceQuoteDialog(QDialog):
+class GenerateWorkspacePrintoutDialog(QDialog):
 
     def __init__(
         self,
@@ -40,8 +41,8 @@ class GenerateWorkspaceQuoteDialog(QDialog):
         message: str = "",
         job_names: dict[str, int] = {},
     ) -> None:
-        super(GenerateWorkspaceQuoteDialog, self).__init__(parent)
-        uic.loadUi("ui/generate_workspace_quote_dialog.ui", self)
+        super(GenerateWorkspacePrintoutDialog, self).__init__(parent)
+        uic.loadUi("ui/generate_workspace_printout_dialog.ui", self)
         admin_workspace.load_data()
 
         self.icon_name = icon_name
@@ -52,7 +53,7 @@ class GenerateWorkspaceQuoteDialog(QDialog):
         self.theme: str = "dark" if settings_file.get_value(item_name="dark_mode") else "light"
         self.selected_assemblies: list[Assembly] = []
         self.models: list[QStandardItemModel] = []
-        self.workorder: dict[Assembly, int] = {}
+        self.workorder: dict[Assembly, dict[dict[str, int], dict[str, bool]]] = {}
         self.job_names = job_names
         self.data: dict[int, Assembly] = {}
         self.assembly_count: int = 0
@@ -154,31 +155,40 @@ class GenerateWorkspaceQuoteDialog(QDialog):
                 self.selected_assemblies.append(self.data[int(row)-1]) # Need to offset because ID starts at 1
         self.load_jobs()
 
-    def get_workorder(self) -> dict[Assembly, int]:
+    def get_workorder(self) -> dict[Assembly, dict[dict[str, int], dict[str, bool]]]:
         return self.workorder
 
     def load_jobs(self) -> None:
         self.clear_layout(self.verticalLayout_workorders)
         self.workorder.clear()
         for assembly in self.selected_assemblies:
-            self.workorder[assembly] = 0
+            self.workorder[assembly] = {'quantity': 0, 'show_all_items': False}
             widget = QWidget(self)
             h_layout = QHBoxLayout()
             h_layout.setSpacing(0)
-            h_layout.setContentsMargins(0, 0, 0, 5)
+            h_layout.setContentsMargins(0, 0, 5, 5)
             widget.setLayout(h_layout)
             quantity_spin_box = QSpinBox(self)
             quantity_spin_box.setValue(0)
             quantity_spin_box.setMinimum(0)
             quantity_spin_box.setMaximum(99999999)
+            quantity_spin_box.setFixedWidth(50)
+            checkbox_all_items = QCheckBox(self)
+            checkbox_all_items.setText("Show all items")
+            checkbox_all_items.setChecked(False)
 
             def update_quantity(assembly: Assembly, quantity_spin_box: QSpinBox):
-                self.workorder[assembly] = quantity_spin_box.value()
+                self.workorder[assembly]['quantity'] = quantity_spin_box.value()
+
+            def update_checkbox(assembly: Assembly, checkbox: QCheckBox):
+                self.workorder[assembly]['show_all_items'] = checkbox.isChecked()
 
             quantity_spin_box.valueChanged.connect(partial(update_quantity, assembly, quantity_spin_box))
+            checkbox_all_items.clicked.connect(partial(update_checkbox, assembly, checkbox_all_items))
 
             h_layout.addWidget(QLabel(assembly.name, self))
             h_layout.addWidget(quantity_spin_box)
+            h_layout.addWidget(checkbox_all_items)
 
             self.verticalLayout_workorders.addWidget(widget)
     def load_theme(self) -> None:

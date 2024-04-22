@@ -779,7 +779,7 @@ QComboBox::drop-down:button {
 }
 
 QComboBox::down-arrow {
-    image: url(ui/drop-down.svg);
+    image: url(ui/svg/drop-down.svg);
     width: 12px;
     height: 12px;
 }
@@ -909,29 +909,29 @@ QAbstractSpinBox::down-arrow:!off:!disabled:hover {
 }
 
 QAbstractSpinBox::up-arrow {
-    image: url(ui/up_arrow.svg);
+    image: url(ui/svg/up_arrow.svg);
 }
 
 QAbstractSpinBox::up-arrow:disabled,
 QAbstractSpinBox::up-arrow:off {
-    image: url(ui/up_arrow_disabled.svg);
+    image: url(ui/svg/up_arrow_disabled.svg);
 }
 
 QAbstractSpinBox::up-arrow:hover {
-    image: url(ui/up_arrow_hover.svg);
+    image: url(ui/svg/up_arrow_hover.svg);
 }
 
 QAbstractSpinBox::down-arrow {
-    image: url(ui/down_arrow.svg);
+    image: url(ui/svg/down_arrow.svg);
 }
 
 QAbstractSpinBox::down-arrow:disabled,
 QAbstractSpinBox::down-arrow:off {
-    image: url(ui/down_arrow_disabled.svg);
+    image: url(ui/svg/down_arrow_disabled.svg);
 }
 
 QAbstractSpinBox::down-arrow:!off:!disabled:hover {
-    image: url(ui/down_arrow_hover.svg);
+    image: url(ui/svg/down_arrow_hover.svg);
 }
 
 QDateEdit {
@@ -963,7 +963,7 @@ QDateEdit::drop-down:button {
 }
 
 QDateEdit::down-arrow {
-    image: url(ui/drop-down.svg);
+    image: url(ui/svg/drop-down.svg);
     width: 12px;
     height: 12px;
 }
