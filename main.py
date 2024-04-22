@@ -91,6 +91,7 @@ from threads.changes_thread import ChangesThread
 from threads.download_images_thread import DownloadImagesThread
 from threads.download_thread import DownloadThread
 from threads.get_order_number_thread import GetOrderNumberThread
+from threads.check_for_updates_thread import CheckForUpdatesThread
 from threads.get_previous_nests_data_thread import GetPreviousNestsDataThread
 from threads.get_previous_nests_files_thread import GetPreviousNestsFilesThread
 from threads.load_nests import LoadNests
@@ -382,7 +383,8 @@ class MainWindow(QMainWindow):
         self.setWindowIcon(QIcon(Icons.icon))
 
         check_po_directories()
-        self.check_for_updates(on_start_up=True)
+        # self.check_for_updates(on_start_up=True)
+
 
         if days_from_last_price_history_assessment > settings_file.get_value("days_until_new_price_history_assessment"):
             settings_file.add_item("price_history_file_name", str(datetime.now().strftime("%B %d %A %Y")))
@@ -461,6 +463,7 @@ class MainWindow(QMainWindow):
         self.check_trusted_user()
         self.__load_ui()
         self.download_all_files()
+        self.start_check_for_updates_thread()
 
     def __load_ui(self) -> None:
         menu_tabs_order = settings_file.get_value(item_name="menu_tabs_order")
@@ -3507,63 +3510,65 @@ class MainWindow(QMainWindow):
         if quote.exec():
             response = quote.get_response()
             if response == DialogButtons.generate:
-                self.quote_nest_information.clear()
-                for assembly, quantity in quote.get_workorder().items():
-                    self.quote_nest_information.setdefault(
-                        f"_/{assembly.name}.pdf",
-                        {
-                            "quantity_multiplier": quantity,  # Sheet count
-                            "gauge": "Null",
-                            "material": "Null",
-                            "sheet_dim": "0.000x0.000",
-                            "scrap_percentage": 0.0,
-                            "single_sheet_machining_time": 0.0,
-                            "machining_time": 0.0,
-                        },
-                    )
-                    self.quote_nest_information.setdefault(f"{assembly.name}.pdf", {})
-                    for item in assembly.items:
-                        part_name = item.name
-                        self.quote_nest_information[f"{assembly.name}.pdf"].setdefault(part_name, {})
-                        for category in parts_in_inventory.data.keys():
-                            for part in parts_in_inventory.data[category].keys():
-                                if part == part_name:
-                                    self.quote_nest_information[f"{assembly.name}.pdf"][part_name] = parts_in_inventory.get_data()[category].get(
-                                        part_name
-                                    )
-                        if not self.quote_nest_information[f"{assembly.name}.pdf"][part_name]:
-                            for category in inventory.data.keys():
-                                for part in inventory.data[category].keys():
-                                    if part == part_name:
-                                        self.quote_nest_information[f"{assembly.name}.pdf"][part_name] = inventory.get_data()[category].get(part_name)
-                        self.quote_nest_information[f"{assembly.name}.pdf"][part_name]["quantity"] = item.get_value("parts_per")
-                        try:
-                            self.quote_nest_information[f"{assembly.name}.pdf"][part_name]["notes"] += f"\n{item.get_value('notes')}"
-                        except KeyError:
-                            self.quote_nest_information[f"{assembly.name}.pdf"][part_name].setdefault("notes", item.get_value("notes"))
-                        self.quote_nest_information[f"{assembly.name}.pdf"][part_name].setdefault("flow_tag", item.get_value("flow_tag"))
-                        self.quote_nest_information[f"{assembly.name}.pdf"][part_name].setdefault("machine_time", 0)
-                        self.quote_nest_information[f"{assembly.name}.pdf"][part_name].setdefault("weight", 0)
-                        self.quote_nest_information[f"{assembly.name}.pdf"][part_name].setdefault("part_number", 0)
-                        self.quote_nest_information[f"{assembly.name}.pdf"][part_name].setdefault("image_index", part_name)
-                        self.quote_nest_information[f"{assembly.name}.pdf"][part_name].setdefault("surface_area", 0)
-                        self.quote_nest_information[f"{assembly.name}.pdf"][part_name].setdefault("cutting_length", 0)
-                        self.quote_nest_information[f"{assembly.name}.pdf"][part_name]["file_name"] = f"{assembly.name}.pdf"
-                        self.quote_nest_information[f"{assembly.name}.pdf"][part_name].setdefault("piercing_time", 0)
-                        self.quote_nest_information[f"{assembly.name}.pdf"][part_name].setdefault("piercing_points", 0)
-                        self.quote_nest_information[f"{assembly.name}.pdf"][part_name].setdefault("gauge", "Null")
-                        self.quote_nest_information[f"{assembly.name}.pdf"][part_name].setdefault("material", "Null")
-                        self.quote_nest_information[f"{assembly.name}.pdf"][part_name].setdefault("recut", False)
-                        self.quote_nest_information[f"{assembly.name}.pdf"][part_name].setdefault("shelf_number", "")
-                        self.quote_nest_information[f"{assembly.name}.pdf"][part_name].setdefault("sheet_dim", "Null")
-                        self.quote_nest_information[f"{assembly.name}.pdf"][part_name].setdefault("part_dim", "Null")
-                        self.quote_nest_information[f"{assembly.name}.pdf"][part_name].setdefault("geofile_name", "Null")
-                        sorted_keys = natsorted(self.quote_nest_information.keys())
-                        sorted_dict = {key: self.quote_nest_information[key] for key in sorted_keys}
-                        self.quote_nest_information = sorted_dict
-                    self.download_required_images(self.quote_nest_information[f"{assembly.name}.pdf"])
-                self.tabWidget.setCurrentIndex(self.get_menu_tab_order().index("OmniGen"))
-                self.load_nests()
+                print(quote.get_workorder())
+                pass
+                # self.quote_nest_information.clear()
+                # for assembly, quantity in quote.get_workorder().items():
+                #     self.quote_nest_information.setdefault(
+                #         f"_/{assembly.name}.pdf",
+                #         {
+                #             "quantity_multiplier": quantity,  # Sheet count
+                #             "gauge": "Null",
+                #             "material": "Null",
+                #             "sheet_dim": "0.000x0.000",
+                #             "scrap_percentage": 0.0,
+                #             "single_sheet_machining_time": 0.0,
+                #             "machining_time": 0.0,
+                #         },
+                #     )
+                #     self.quote_nest_information.setdefault(f"{assembly.name}.pdf", {})
+                #     for item in assembly.items:
+                #         part_name = item.name
+                #         self.quote_nest_information[f"{assembly.name}.pdf"].setdefault(part_name, {})
+                #         for category in parts_in_inventory.data.keys():
+                #             for part in parts_in_inventory.data[category].keys():
+                #                 if part == part_name:
+                #                     self.quote_nest_information[f"{assembly.name}.pdf"][part_name] = parts_in_inventory.get_data()[category].get(
+                #                         part_name
+                #                     )
+                #         if not self.quote_nest_information[f"{assembly.name}.pdf"][part_name]:
+                #             for category in inventory.data.keys():
+                #                 for part in inventory.data[category].keys():
+                #                     if part == part_name:
+                #                         self.quote_nest_information[f"{assembly.name}.pdf"][part_name] = inventory.get_data()[category].get(part_name)
+                #         self.quote_nest_information[f"{assembly.name}.pdf"][part_name]["quantity"] = item.get_value("parts_per")
+                #         try:
+                #             self.quote_nest_information[f"{assembly.name}.pdf"][part_name]["notes"] += f"\n{item.get_value('notes')}"
+                #         except KeyError:
+                #             self.quote_nest_information[f"{assembly.name}.pdf"][part_name].setdefault("notes", item.get_value("notes"))
+                #         self.quote_nest_information[f"{assembly.name}.pdf"][part_name].setdefault("flow_tag", item.get_value("flow_tag"))
+                #         self.quote_nest_information[f"{assembly.name}.pdf"][part_name].setdefault("machine_time", 0)
+                #         self.quote_nest_information[f"{assembly.name}.pdf"][part_name].setdefault("weight", 0)
+                #         self.quote_nest_information[f"{assembly.name}.pdf"][part_name].setdefault("part_number", 0)
+                #         self.quote_nest_information[f"{assembly.name}.pdf"][part_name].setdefault("image_index", part_name)
+                #         self.quote_nest_information[f"{assembly.name}.pdf"][part_name].setdefault("surface_area", 0)
+                #         self.quote_nest_information[f"{assembly.name}.pdf"][part_name].setdefault("cutting_length", 0)
+                #         self.quote_nest_information[f"{assembly.name}.pdf"][part_name]["file_name"] = f"{assembly.name}.pdf"
+                #         self.quote_nest_information[f"{assembly.name}.pdf"][part_name].setdefault("piercing_time", 0)
+                #         self.quote_nest_information[f"{assembly.name}.pdf"][part_name].setdefault("piercing_points", 0)
+                #         self.quote_nest_information[f"{assembly.name}.pdf"][part_name].setdefault("gauge", "Null")
+                #         self.quote_nest_information[f"{assembly.name}.pdf"][part_name].setdefault("material", "Null")
+                #         self.quote_nest_information[f"{assembly.name}.pdf"][part_name].setdefault("recut", False)
+                #         self.quote_nest_information[f"{assembly.name}.pdf"][part_name].setdefault("shelf_number", "")
+                #         self.quote_nest_information[f"{assembly.name}.pdf"][part_name].setdefault("sheet_dim", "Null")
+                #         self.quote_nest_information[f"{assembly.name}.pdf"][part_name].setdefault("part_dim", "Null")
+                #         self.quote_nest_information[f"{assembly.name}.pdf"][part_name].setdefault("geofile_name", "Null")
+                #         sorted_keys = natsorted(self.quote_nest_information.keys())
+                #         sorted_dict = {key: self.quote_nest_information[key] for key in sorted_keys}
+                #         self.quote_nest_information = sorted_dict
+                #     self.download_required_images(self.quote_nest_information[f"{assembly.name}.pdf"])
+                # self.tabWidget.setCurrentIndex(self.get_menu_tab_order().index("OmniGen"))
+                # self.load_nests()
 
     def open_sheets_editor(self) -> None:
         editor = SheetEditor(self)
@@ -8922,6 +8927,7 @@ class MainWindow(QMainWindow):
 
             if response == DialogButtons.set:
                 self.global_nest_material_change()
+                self.global_nest_thickness_change()
         # QApplication.restoreOverrideCursor()
 
     # OMNIGEN
@@ -9065,6 +9071,21 @@ class MainWindow(QMainWindow):
 
     def upload_sheets_thread_response(self) -> None:
         self.status_button.setText(f'Uploaded sheets settings - {datetime.now().strftime("%r")}', "lime")
+
+    def start_check_for_updates_thread(self) -> None:
+        check_for_updates_thread = CheckForUpdatesThread(self, __version__)
+        check_for_updates_thread.signal.connect(self.update_available_thread_response)
+        self.threads.append(check_for_updates_thread)
+        check_for_updates_thread.start()
+
+    def update_available_thread_response(self, version: str) -> None:
+        message_dialog = self.show_message_dialog(
+            title=__name__,
+            message=f"There is a new update available.\n\nNew Version: {version}\n\nMake sure to make a backup\nbefore installing new version.",
+            dialog_buttons=DialogButtons.ok_update,
+        )
+        if message_dialog == DialogButtons.update:
+            subprocess.Popen("start update.exe", shell=True)
 
     # * /\ THREADS /\
 
