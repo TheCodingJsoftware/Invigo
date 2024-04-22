@@ -1,6 +1,6 @@
 import time
-import requests
 
+import requests
 from PyQt6.QtCore import QThread, pyqtSignal
 
 
