@@ -61,7 +61,7 @@ p {
 
 /* Style for the date */
 .date {
-    position: fixed;
+    position: absolute;
     font-size: 10px;
     top: 0;
     right: 0;

@@ -23,7 +23,7 @@ class AssemblyTable:
         html += '</tr>'
         html += '<tbody id="table-body">'
         for assembly, data in self.data.items():
-            flow_tag = " -> ".join(assembly.assembly_data['flow_tag'])
+            flow_tag = " ➜ ".join(assembly.assembly_data['flow_tag'])
             html += (
                 '<tr>'
                 f'<td class="ui-table-cell-visible">{assembly.name}</td>'
@@ -54,7 +54,7 @@ class ItemsTable:
 
         html += '<tbody id="table-body">'
         for item in self.items:
-            flow_tag = " -> ".join(item.data['flow_tag'])
+            flow_tag = " ➜ ".join(item.data['flow_tag'])
             html += (
                 '<tr>'
                 f'<td class="ui-table-cell-visible">{item.name}</td>'
@@ -84,7 +84,6 @@ class GeneratePrintout:
             self.printout_css = printout_css_file.read()
         with open('utils/workspace/printout.js', 'r') as printout_js_file:
             self.printout_js = printout_js_file.read()
-
 
 
     def generate(self):
@@ -144,11 +143,6 @@ class GeneratePrintout:
                 <div style="margin-bottom: 300px;">
                 </div>
                 </div>
-        <details>
-            <summary style="font-size: 24px; text-align: center; margin-top: 20px;">Assemblies</summary>
-            ''' + assemblies_table.generate() + '''
-            <div class="page-break"></div>
-        </details>
         <div data-role="main" class="ui-content">
         '''
         html = html_start
@@ -159,10 +153,13 @@ class GeneratePrintout:
                 padding = 15 * parent_count
                 html += f'<div style="padding: {padding}px;">'
             assembly_flow_tag = " -> ".join(assembly.assembly_data['flow_tag'])
-            html += f'<h2>{assembly.name} x {data["quantity"]}</h2>'
-            html += f'<p>Assembly Flow Tag: {assembly_flow_tag}</p>'
-            items_table = ItemsTable(assembly, data['quantity'], data['show_all_items'])
-            html += items_table.generate()
+            html += f'<div style="display: inline-flex; align-items: center;"><h2 style="margin-right: 15px;">{assembly.name} x {data["quantity"]}</h2> Assembly Flow Tag: {assembly_flow_tag}</div>'
+            if len(assembly.items) > 0 and not data['show_all_items']:
+                items_table = ItemsTable(assembly, data['quantity'], data['show_all_items'])
+                html += items_table.generate()
+            elif data['show_all_items']:
+                items_table = ItemsTable(assembly, data['quantity'], data['show_all_items'])
+                html += items_table.generate()
             if parent_count > 0:
                 html += '</div>'
         # end
