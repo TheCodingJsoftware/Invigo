@@ -188,11 +188,11 @@ from web_scrapers.ebay_scraper import EbayScraper
 from web_scrapers.exchange_rate import ExchangeRate
 
 __author__: str = "Jared Gross"
-__copyright__: str = "Copyright 2022-2023, TheCodingJ's"
+__copyright__: str = "Copyright 2022-2024, TheCodingJ's"
 __credits__: list[str] = ["Jared Gross"]
 __license__: str = "MIT"
 __name__: str = "Invigo"
-__version__: str = "v2.2.40"
+__version__: str = "v2.2.41"
 __updated__: str = "2024-02-22 12:32:51"
 __maintainer__: str = "Jared Gross"
 __email__: str = "jared@pinelandfarms.ca"
@@ -2874,8 +2874,12 @@ class MainWindow(QMainWindow):
             return html
 
         try:
-            response = requests.get("https://api.github.com/repos/thecodingjsoftware/Inventory-Manager/releases/latest")
-            version: str = response.json()["name"].replace(" ", "")
+            try:
+                response = requests.get("http://10.0.0.10:5051/version")
+            except ConnectionError:
+                return
+            if response.status_code == 200:
+                version = response.text
             if version == __version__ or show:
                 build_date = time.strptime(__updated__, "%Y-%m-%d %H:%M:%S")
                 current_date = time.strptime(
@@ -8376,24 +8380,25 @@ class MainWindow(QMainWindow):
     def check_for_updates(self, on_start_up: bool = False) -> None:
         try:
             try:
-                response = requests.get("https://api.github.com/repos/thecodingjsoftware/Inventory-Manager/releases/latest")
+                response = requests.get("http://10.0.0.10:5051/version")
             except ConnectionError:
                 return
-            version: str = response.json()["name"].replace(" ", "")
-            if version != __version__:
-                # message_dialog = self.show_message_dialog(
-                #     title=__name__,
-                #     message=f"There is a new update available.\n\nNew Version: {version}\n\nMake sure to make a backup\nbefore installing new version.",
-                #     dialog_buttons=DialogButtons.ok_update,
-                # )
-                # if message_dialog == DialogButtons.update:
-                subprocess.Popen("start update.exe", shell=True)
-                # sys.exit()
-            elif not on_start_up:
-                self.show_message_dialog(
-                    title=__name__,
-                    message=f"There are currently no updates available.\n\nCurrent Version: {__version__}",
-                )
+            if response.status_code == 200:
+                version = response.text
+                if version != __version__:
+                    # message_dialog = self.show_message_dialog(
+                    #     title=__name__,
+                    #     message=f"There is a new update available.\n\nNew Version: {version}\n\nMake sure to make a backup\nbefore installing new version.",
+                    #     dialog_buttons=DialogButtons.ok_update,
+                    # )
+                    # if message_dialog == DialogButtons.update:
+                    subprocess.Popen("start update.exe", shell=True)
+                    # sys.exit()
+                elif not on_start_up:
+                    self.show_message_dialog(
+                        title=__name__,
+                        message=f"There are currently no updates available.",
+                    )
         except Exception as e:
             if not on_start_up:
                 self.show_error_dialog(title=__name__, message=f"Error\n\n{e}")
@@ -9036,7 +9041,7 @@ class MainWindow(QMainWindow):
     def update_available_thread_response(self, version: str) -> None:
         message_dialog = self.show_message_dialog(
             title=__name__,
-            message=f"There is a new update available.\n\nNew Version: {version}\n\nMake sure to make a backup\nbefore installing new version.",
+            message=f"There is a new update available.\n\nNew Version: {version}\n\nPlease consider updating to the latest version at your earliest convenience.",
             dialog_buttons=DialogButtons.ok_update,
         )
         if message_dialog == DialogButtons.update:
