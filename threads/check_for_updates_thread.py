@@ -14,13 +14,13 @@ class CheckForUpdatesThread(QThread):
     def run(self) -> None:
         while True:
             try:
-                try:
-                    response = requests.get("https://api.github.com/repos/thecodingjsoftware/Inventory-Manager/releases/latest")
-                except ConnectionError:
+                response = requests.get("http://10.0.0.10:5051/version")
+                if response.status_code == 200:
+                    version = response.text
+                    if version != self.current_version:
+                        self.signal.emit(version)
+                else:
                     continue
-                version: str = response.json()["name"].replace(" ", "")
-                if version != self.current_version:
-                    self.signal.emit(version)
             except Exception as e:
                 continue
             time.sleep(60)
