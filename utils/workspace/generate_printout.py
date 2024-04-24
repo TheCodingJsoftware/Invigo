@@ -87,7 +87,7 @@ class GeneratePrintout:
 
 
     def generate(self):
-        assemblies_table = AssemblyTable(self.data)
+        # assemblies_table = AssemblyTable(self.data)
         html_start = '''
         <!DOCTYPE html>
         <html>
@@ -152,7 +152,7 @@ class GeneratePrintout:
             if parent_count > 0:
                 padding = 15 * parent_count
                 html += f'<div style="padding: {padding}px;">'
-            assembly_flow_tag = " -> ".join(assembly.assembly_data['flow_tag'])
+            assembly_flow_tag = " ➜ ".join(assembly.assembly_data['flow_tag'])
             html += f'<div style="display: inline-flex; align-items: center;"><h2 style="margin-right: 15px;">{assembly.name} x {data["quantity"]}</h2> Assembly Flow Tag: {assembly_flow_tag}</div>'
             if len(assembly.items) > 0 and not data['show_all_items']:
                 items_table = ItemsTable(assembly, data['quantity'], data['show_all_items'])
@@ -164,7 +164,7 @@ class GeneratePrintout:
                 html += '</div>'
         # end
         html += '</div></html>'
-        with open(f"{self.path_to_save_printouts}/{self.filename}.html", 'w') as f:
+        with open(f"{self.path_to_save_printouts}/{self.filename}.html", 'w', encoding='utf-8') as f:
             f.write(BeautifulSoup(html, 'html.parser').prettify())
 
     def get_parent_assembly_count(self, starting_assembly: Assembly) -> int:
