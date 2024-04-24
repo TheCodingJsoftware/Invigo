@@ -46,11 +46,13 @@ class DownloadThread(QThread):
                     if "update.exe" in error_message:
                         extracted = True
                         continue
-                    self.signal.emit(f"Error during installation: {error_message}")
+                    # self.signal.emit(f"Error during installation: {error_message}")
                     if "Invigo.exe" in error_message:
                         if not self.close_process("Invigo.exe"):
                             self.signal.emit("Failed to close Invigo.exe. Please close it manually.")
                             # break  # Exit if we can't close the process after trying
+                        else:
+                            self.signal.emit("Installing...")
                     time.sleep(2)
                     retry_count += 1
                 time.sleep(1)
@@ -69,14 +71,14 @@ class DownloadThread(QThread):
         for proc in psutil.process_iter(["pid", "name"]):
             if proc.info["name"] == process_name:
                 try:
+                    self.signal.emit(f"Closing {process_name}.")
                     proc.terminate()
                     proc.wait()
-                    self.signal.emit(f"Process {process_name} with PID {proc.info['pid']} has been terminated.")
                     return True
                 except psutil.NoSuchProcess:
-                    self.signal.emit(f"Process {process_name} with PID {proc.info['pid']} does not exist.")
+                    self.signal.emit(f"Process {process_name} does not exist.")
                 except psutil.AccessDenied:
-                    self.signal.emit(f"Access denied when trying to terminate {process_name} with PID {proc.info['pid']}.")
+                    self.signal.emit(f"Access denied when trying to terminate {process_name}.")
                 except Exception as e:
                     self.signal.emit(f"An error occurred: {e}")
         return False
@@ -119,7 +121,7 @@ class CircleWidget(QWidget):
             y = self.height() // 2 + int(60 * math.sin(radian)) - 20 - 50
             painter.drawEllipse(QRect(x, y, 40, 40))
         painter.setBrush(QColor(46, 46, 48))
-        painter.setPen(QColor(46, 46, 48))
+        painter.setPen(QColor(139, 143, 148))
         painter.drawEllipse(self.width() // 2 - 25, self.height() // 2 - 25 - 50, 50, 50)
         painter.setBrush(QColor(61, 174, 233))
         painter.setPen(QColor(46, 46, 48))
