@@ -264,4 +264,4 @@ if __name__ == "__main__":
                     if compile(spec_file=spec_file_name):
                         if zip_files(source_dir=dist_dir, output_zip=output_zip_name):
                             if copy_file(source=zip_file, destination=os.path.join(destination_path, zip_file)):
-                                update_web_version(new_version=new_version)
+                                update_web_version(version=new_version)
