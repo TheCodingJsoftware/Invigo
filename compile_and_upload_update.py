@@ -16,6 +16,8 @@ from PyQt6.QtWidgets import (
     QWidget,
 )
 
+from ui.theme import set_theme
+
 
 class VersionUpdater(QWidget):
     selected_version = None
@@ -110,18 +112,16 @@ def get_current_version(path_to_script):
 
 def get_new_version(path_to_main_script: str) -> str | None:
     app = QApplication(sys.argv)
+    set_theme(app, theme="dark")
 
-    # Specify the path to the script with version info
-    path_to_script = "main.py"
-    current_version = get_current_version(path_to_script)
+    current_version = get_current_version(path_to_main_script)
 
     main_window = VersionUpdater(current_version)
     main_window.show()
+
     app.exec()
 
-    selected_version = VersionUpdater.selected_version
-
-    return selected_version
+    return VersionUpdater.selected_version
 
 
 def set_new_version(file_path: str, new_version: str) -> bool:
