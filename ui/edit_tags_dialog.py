@@ -34,7 +34,10 @@ workspace_tags = JsonFile(file_name="data/workspace_settings")
 
 class ButtonFilter(QObject):
     def eventFilter(self, obj, event):
-        if event.type() == QEvent.Type.KeyPress and event.key() in (Qt.Key.Key_Return, Qt.Key.Key_Enter):
+        if event.type() == QEvent.Type.KeyPress and event.key() in (
+            Qt.Key.Key_Return,
+            Qt.Key.Key_Enter,
+        ):
             event.ignore()
             return True
 
@@ -123,7 +126,6 @@ class EditTagsDialog(QDialog):
         self.groups_and_tables[rename_input] = new_table_widget
         group_data = workspace_tags.get_value("flow_tags")[group_name.text()]
         for row_count, flow_tag in enumerate(group_data):
-
             # for flow_tag in workspace_tags.get_value("flow_tags"):
             widget, layout, button = self.create_flow_tag_layout(flow_tag[0])
             if len(flow_tag) == 1:
@@ -132,9 +134,7 @@ class EditTagsDialog(QDialog):
             new_table_widget.insertRow(row_count)
             new_table_widget.setRowHeight(row_count, 45)
             new_table_widget.setCellWidget(row_count, 0, widget)
-            delete_flow_tag_button = DeletePushButton(
-                self, "Delete the entire flow tag", icon=QIcon("icons/trash.png")
-            )
+            delete_flow_tag_button = DeletePushButton(self, "Delete the entire flow tag", icon=QIcon("icons/trash.png"))
             delete_flow_tag_button.clicked.connect(partial(self.delete_flow_tag, new_table_widget, row_count))
             delete_flow_tag_button.setStyleSheet("margin-top: 10%; margin-bottom: 10%; margin-left: 7%; margin-right: 7%;")
             new_table_widget.setCellWidget(row_count, 1, delete_flow_tag_button)
@@ -231,7 +231,6 @@ class EditTagsDialog(QDialog):
             duplicate_button.clicked.connect(partial(self.duplicate_group, rename_input))
             self.groups_and_tables[rename_input] = table_widget
             for row_count, flow_tag in enumerate(group_data):
-
                 # for flow_tag in workspace_tags.get_value("flow_tags"):
                 try:
                     widget, layout, button = self.create_flow_tag_layout(flow_tag[0])
@@ -357,9 +356,7 @@ class EditTagsDialog(QDialog):
     def delete_selected_flow_tags(self, table_widget: QTableWidget) -> None:
         selected_indexes = table_widget.selectedIndexes()
         selected_rows = list({selected_index.row() for selected_index in selected_indexes})
-        delete_buttons: list[DeletePushButton] = [
-            table_widget.cellWidget(selected_row, 1) for selected_row in selected_rows if selected_row != table_widget.rowCount() - 1
-        ]
+        delete_buttons: list[DeletePushButton] = [table_widget.cellWidget(selected_row, 1) for selected_row in selected_rows if selected_row != table_widget.rowCount() - 1]
         for delete_button in delete_buttons:
             delete_button.click()
 
@@ -470,9 +467,7 @@ class EditTagsDialog(QDialog):
 
         widget, _, _ = self.create_flow_tag_layout()
 
-        delete_flow_tag_button = DeletePushButton(
-            self, "Delete the entire flow tag", icon=QIcon("icons/trash.png")
-        )
+        delete_flow_tag_button = DeletePushButton(self, "Delete the entire flow tag", icon=QIcon("icons/trash.png"))
         delete_flow_tag_button.clicked.connect(partial(self.delete_flow_tag, table, row_count - 1))
         delete_flow_tag_button.setStyleSheet("margin-top: 10%; margin-bottom: 10%; margin-left: 7%; margin-right: 7%;")
         table.insertRow(table.rowCount())
@@ -507,9 +502,7 @@ class EditTagsDialog(QDialog):
         workspace_tags.load_data()
         status_line_edit.disconnect()
         data = workspace_tags.get_data()
-        data["flow_tag_statuses"][self.listWidget_selected_flow_tag.currentItem().text()][status_line_edit.text()] = data["flow_tag_statuses"][
-            self.listWidget_selected_flow_tag.currentItem().text()
-        ][old_name]
+        data["flow_tag_statuses"][self.listWidget_selected_flow_tag.currentItem().text()][status_line_edit.text()] = data["flow_tag_statuses"][self.listWidget_selected_flow_tag.currentItem().text()][old_name]
         del data["flow_tag_statuses"][self.listWidget_selected_flow_tag.currentItem().text()][old_name]
         workspace_tags.save_data(data)
         status_line_edit.textChanged.connect(partial(self.status_name_change, status_line_edit.text(), status_line_edit))
@@ -553,16 +546,12 @@ class EditTagsDialog(QDialog):
             rad = QRadioButton(self)
             rad.setToolTip("When this status is selected, the item will be moved to the next flow tag.")
             rad.setText("Moves Tag Forward")
-            rad.setChecked(
-                workspace_tags.get_data()["flow_tag_statuses"][self.listWidget_selected_flow_tag.currentItem().text()][status_name]["completed"]
-            )
+            rad.setChecked(workspace_tags.get_data()["flow_tag_statuses"][self.listWidget_selected_flow_tag.currentItem().text()][status_name]["completed"])
             rad.toggled.connect(partial(self.status_is_complete_change, status_line_edit, rad))
             check = QCheckBox(self)
             check.setToolTip("When this status is selected, the timer will start automatically if timer is enabled.")
             check.setText("Starts Timer")
-            check.setChecked(
-                workspace_tags.get_data()["flow_tag_statuses"][self.listWidget_selected_flow_tag.currentItem().text()][status_name]["start_timer"]
-            )
+            check.setChecked(workspace_tags.get_data()["flow_tag_statuses"][self.listWidget_selected_flow_tag.currentItem().text()][status_name]["start_timer"])
             check.toggled.connect(partial(self.status_start_timer_change, status_line_edit, check))
             rad_layout.addWidget(rad)
             rad_layout.addWidget(check)
@@ -580,37 +569,42 @@ class EditTagsDialog(QDialog):
         self.tag_layout.addLayout(main_layout)
 
         timer_check_box = QCheckBox(self)
-        timer_check_box.setToolTip(
-            f"This will enable a timer that the user can start/stop to time how long the part takes to complete when its in {self.listWidget_selected_flow_tag.currentItem().text()}."
-        )
+        timer_check_box.setToolTip(f"This will enable a timer that the user can start/stop to time how long the part takes to complete when its in {self.listWidget_selected_flow_tag.currentItem().text()}.")
         timer_check_box.setText("Enable Timer")
         timer_check_box.setChecked(workspace_tags.get_value("attributes")[self.listWidget_selected_flow_tag.currentItem().text()]["is_timer_enabled"])
         timer_check_box.toggled.connect(
-            partial(self.save_attribute, self.listWidget_selected_flow_tag.currentItem().text(), "is_timer_enabled", timer_check_box)
+            partial(
+                self.save_attribute,
+                self.listWidget_selected_flow_tag.currentItem().text(),
+                "is_timer_enabled",
+                timer_check_box,
+            )
         )
 
         show_all_items_check_box = QCheckBox(self)
-        show_all_items_check_box.setToolTip(
-            f"All items will still show in the sub-assembly in case it needs to be recut during {self.listWidget_selected_flow_tag.currentItem().text()}"
-        )
+        show_all_items_check_box.setToolTip(f"All items will still show in the sub-assembly in case it needs to be recut during {self.listWidget_selected_flow_tag.currentItem().text()}")
         show_all_items_check_box.setText("Show All Items")
-        show_all_items_check_box.setChecked(
-            workspace_tags.get_value("attributes")[self.listWidget_selected_flow_tag.currentItem().text()]["show_all_items"]
-        )
+        show_all_items_check_box.setChecked(workspace_tags.get_value("attributes")[self.listWidget_selected_flow_tag.currentItem().text()]["show_all_items"])
         show_all_items_check_box.toggled.connect(
-            partial(self.save_attribute, self.listWidget_selected_flow_tag.currentItem().text(), "show_all_items", show_all_items_check_box)
+            partial(
+                self.save_attribute,
+                self.listWidget_selected_flow_tag.currentItem().text(),
+                "show_all_items",
+                show_all_items_check_box,
+            )
         )
 
         next_flow_state_text_edit = QPlainTextEdit(self)
         next_flow_state_text_edit.setPlaceholderText("Enter text...")
-        next_flow_state_text_edit.setToolTip(
-            f"This message will show when {self.listWidget_selected_flow_tag.currentItem().text()} is the next flow tag."
-        )
-        next_flow_state_text_edit.setPlainText(
-            workspace_tags.get_value("attributes")[self.listWidget_selected_flow_tag.currentItem().text()]["next_flow_tag_message"]
-        )
+        next_flow_state_text_edit.setToolTip(f"This message will show when {self.listWidget_selected_flow_tag.currentItem().text()} is the next flow tag.")
+        next_flow_state_text_edit.setPlainText(workspace_tags.get_value("attributes")[self.listWidget_selected_flow_tag.currentItem().text()]["next_flow_tag_message"])
         next_flow_state_text_edit.textChanged.connect(
-            partial(self.save_attribute, self.listWidget_selected_flow_tag.currentItem().text(), "next_flow_tag_message", next_flow_state_text_edit)
+            partial(
+                self.save_attribute,
+                self.listWidget_selected_flow_tag.currentItem().text(),
+                "next_flow_tag_message",
+                next_flow_state_text_edit,
+            )
         )
 
         self.attribute_layout.addWidget(timer_check_box)

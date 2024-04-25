@@ -28,6 +28,7 @@ from utils.workspace.workspace import Workspace
 
 admin_workspace = Workspace("workspace - Admin")
 
+
 class GenerateWorkorderDialog(QDialog):
     def __init__(
         self,
@@ -87,7 +88,11 @@ class GenerateWorkorderDialog(QDialog):
         grouped_data = admin_workspace._get_grouped_data()
         for group in grouped_data:
             for assembly in grouped_data[group]:
-                self.load_treeview(self.group_toolboxes[group], self.group_toolboxes[group].model(), assembly)
+                self.load_treeview(
+                    self.group_toolboxes[group],
+                    self.group_toolboxes[group].model(),
+                    assembly,
+                )
 
     def create_treeview(self) -> QTreeView:
         model = QStandardItemModel()
@@ -157,6 +162,7 @@ class GenerateWorkorderDialog(QDialog):
             self.update_child_items(item)
             if item.parent() is not None and self.are_all_children_checked(item.parent()):
                 item.parent().setCheckState(Qt.CheckState.Checked)
+
     def get_topmost_checked_items_rows(self, model: QStandardItemModel) -> list[str]:
         topmost_checked_items: list[QStandardItem] = []
         for row in range(model.rowCount()):
@@ -164,7 +170,7 @@ class GenerateWorkorderDialog(QDialog):
             if parent_item and parent_item.checkState() == Qt.CheckState.Checked:
                 topmost_checked_items.append(model.item(row, 1))
             self.find_topmost_checked_items(parent_item, topmost_checked_items)
-        return  [item.text() for item in topmost_checked_items]
+        return [item.text() for item in topmost_checked_items]
 
     def find_topmost_checked_items(self, parent_item: QStandardItem, topmost_checked_items: list[str]):
         for row in range(parent_item.rowCount()):
@@ -178,7 +184,7 @@ class GenerateWorkorderDialog(QDialog):
         for model in self.models:
             selected_rows: list[str] = self.get_topmost_checked_items_rows(model)
             for row in selected_rows:
-                self.selected_assemblies.append(self.data[int(row)-1]) # Need to offset because ID starts at 1
+                self.selected_assemblies.append(self.data[int(row) - 1])  # Need to offset because ID starts at 1
         self.load_jobs()
 
     def get_workorder(self) -> dict[Assembly, int]:
@@ -208,6 +214,7 @@ class GenerateWorkorderDialog(QDialog):
             h_layout.addWidget(quantity_spin_box)
 
             self.verticalLayout_workorders.addWidget(widget)
+
     def load_theme(self) -> None:
         set_theme(self, theme="dark")
 

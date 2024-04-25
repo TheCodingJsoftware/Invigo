@@ -168,7 +168,6 @@ class AddItemDialog(QDialog):
         return self.doubleSpinBox_price.value()
 
     def get_exchange_rate(self) -> bool:
-
         return self.comboBox_exchange_price.currentText() == "USD"
 
     def get_notes(self) -> str:

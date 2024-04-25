@@ -88,7 +88,11 @@ class GenerateWorkspacePrintoutDialog(QDialog):
         grouped_data = self.admin_workspace._get_grouped_data()
         for group in grouped_data:
             for assembly in grouped_data[group]:
-                self.load_treeview(self.group_toolboxes[group], self.group_toolboxes[group].model(), assembly)
+                self.load_treeview(
+                    self.group_toolboxes[group],
+                    self.group_toolboxes[group].model(),
+                    assembly,
+                )
 
     def create_treeview(self) -> QTreeView:
         model = QStandardItemModel()
@@ -135,7 +139,7 @@ class GenerateWorkspacePrintoutDialog(QDialog):
             if parent_item and parent_item.checkState() == Qt.CheckState.Checked:
                 topmost_checked_items.append(model.item(row, 1))
             self.find_topmost_checked_items(parent_item, topmost_checked_items)
-        return  [item.text() for item in topmost_checked_items]
+        return [item.text() for item in topmost_checked_items]
 
     def find_topmost_checked_items(self, parent_item: QStandardItem, topmost_checked_items: list[str]):
         for row in range(parent_item.rowCount()):
@@ -149,7 +153,7 @@ class GenerateWorkspacePrintoutDialog(QDialog):
         for model in self.models:
             selected_rows: list[str] = self.get_topmost_checked_items_rows(model)
             for row in selected_rows:
-                self.selected_assemblies.append(self.data[int(row)-1]) # Need to offset because ID starts at 1
+                self.selected_assemblies.append(self.data[int(row) - 1])  # Need to offset because ID starts at 1
         self.load_jobs()
 
     def get_workorder(self) -> dict[Assembly, dict[dict[str, int], dict[str, bool]]]:
@@ -159,7 +163,7 @@ class GenerateWorkspacePrintoutDialog(QDialog):
         self.clear_layout(self.verticalLayout_workorders)
         self.workorder.clear()
         for assembly in self.selected_assemblies:
-            self.workorder[assembly] = {'quantity': 0, 'show_all_items': False}
+            self.workorder[assembly] = {"quantity": 0, "show_all_items": False}
             widget = QWidget(self)
             h_layout = QHBoxLayout()
             h_layout.setSpacing(0)
@@ -175,10 +179,10 @@ class GenerateWorkspacePrintoutDialog(QDialog):
             checkbox_all_items.setChecked(False)
 
             def update_quantity(assembly: Assembly, quantity_spin_box: QSpinBox):
-                self.workorder[assembly]['quantity'] = quantity_spin_box.value()
+                self.workorder[assembly]["quantity"] = quantity_spin_box.value()
 
             def update_checkbox(assembly: Assembly, checkbox: QCheckBox):
-                self.workorder[assembly]['show_all_items'] = checkbox.isChecked()
+                self.workorder[assembly]["show_all_items"] = checkbox.isChecked()
 
             quantity_spin_box.valueChanged.connect(partial(update_quantity, assembly, quantity_spin_box))
             checkbox_all_items.clicked.connect(partial(update_checkbox, assembly, checkbox_all_items))
@@ -188,6 +192,7 @@ class GenerateWorkspacePrintoutDialog(QDialog):
             h_layout.addWidget(checkbox_all_items)
 
             self.verticalLayout_workorders.addWidget(widget)
+
     def load_theme(self) -> None:
         set_theme(self, theme="dark")
 

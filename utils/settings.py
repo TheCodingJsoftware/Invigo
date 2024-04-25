@@ -1,9 +1,9 @@
-
 from datetime import datetime
 from PyQt6.QtGui import QFont
 import os
 
 import ujson as json
+
 
 class Settings:
     def __init__(self) -> None:
@@ -24,7 +24,7 @@ class Settings:
             with open(f"{self.FOLDER_LOCATION}/{self.file_name}.json", "r", encoding="utf-8") as json_file:
                 self.data = json.load(json_file)
         except Exception as error:
-            print(f'{self.file_name}.JsonFile.load_data: {error}')
+            print(f"{self.file_name}.JsonFile.load_data: {error}")
             self.default_settings()
 
     def save_data(self) -> None:
@@ -67,7 +67,17 @@ class Settings:
         self.check_setting(setting="change_quantities_by", default_value="Category")
         self.check_setting(setting="inventory_file_name", default_value="inventory")
         self.check_setting(setting="path_to_order_number", default_value="order_number.json")
-        self.check_setting(setting="trusted_users", default_value=["lynden", "jared", "laserpc", "laser pc", "justin", "jordan"])
+        self.check_setting(
+            setting="trusted_users",
+            default_value=[
+                "lynden",
+                "jared",
+                "laserpc",
+                "laser pc",
+                "justin",
+                "jordan",
+            ],
+        )
         self.check_setting(setting="quote_nest_directories", default_value=[])
         font = QFont("Segoe UI", 8)
         font.setWeight(400)
@@ -111,10 +121,9 @@ class Settings:
         )
         self.save_data()
 
-
     def check_setting(self, setting: str, default_value: object) -> None:
         try:
             if self.data[setting] is None:
                 self.data[setting] = default_value
-        except KeyError: # Meaning the setting is not entered
+        except KeyError:  # Meaning the setting is not entered
             self.data[setting] = default_value

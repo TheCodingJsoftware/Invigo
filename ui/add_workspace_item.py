@@ -75,8 +75,8 @@ class AddWorkspaceItem(QDialog):
             for category, category_data in self.parts_in_inventory.get_data().items():
                 for name, part_data in category_data.items():
                     if name == self.lineEdit_name.text():
-                        self.thickness = part_data['gauge']
-                        self.material = part_data['material']
+                        self.thickness = part_data["gauge"]
+                        self.material = part_data["material"]
                         break
 
     def name_changed(self) -> None:
@@ -132,4 +132,3 @@ class AddWorkspaceItem(QDialog):
         for category in list(self.parts_in_inventory.data.keys()):
             part_names.extend(iter(list(self.parts_in_inventory.data[category].keys())))
         return list(set(part_names))
-

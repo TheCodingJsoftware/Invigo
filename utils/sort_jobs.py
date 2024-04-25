@@ -45,7 +45,10 @@ def get_data_from_excel(path_to_excel_file: str) -> dict:
         thickness: str = row[thickness_column]
         quantity: str = row[quantity_column]
 
-        part_names_new_with_thickness[part_name] = {"thickness": _make_name_safe(str(thickness)), "quantity": quantity}
+        part_names_new_with_thickness[part_name] = {
+            "thickness": _make_name_safe(str(thickness)),
+            "quantity": quantity,
+        }
 
     return part_names_new_with_thickness
 
@@ -69,14 +72,22 @@ def get_data_from_pdf(path_to_pdf_file: str) -> dict:
                 continue
             for match in matches:
                 item_no, part_name, material, thickness, quantity, weight = match
-                part_names_new_with_thickness[part_name] = {"thickness": _make_name_safe(str(thickness)), "quantity": quantity, "material": material}
+                part_names_new_with_thickness[part_name] = {
+                    "thickness": _make_name_safe(str(thickness)),
+                    "quantity": quantity,
+                    "material": material,
+                }
         elif i == 1:
             matches = re.findall(pattern, text)
             if len(matches) < 2:
                 continue
             for match in matches:
                 item_no, part_name, material, thickness, weight, quantity = match
-                part_names_new_with_thickness[part_name] = {"thickness": _make_name_safe(str(thickness)), "quantity": quantity, "material": material}
+                part_names_new_with_thickness[part_name] = {
+                    "thickness": _make_name_safe(str(thickness)),
+                    "quantity": quantity,
+                    "material": material,
+                }
         elif i == 2:
             matches = re.findall(pattern, text, re.MULTILINE | re.DOTALL)
             if len(matches) < 2:
@@ -85,13 +96,20 @@ def get_data_from_pdf(path_to_pdf_file: str) -> dict:
                 if len(match) != 5 or match[4] == "" or len(match[2]) < 2:
                     continue
                 item_no, quantity, part_name, material, thickness = match
-                part_names_new_with_thickness[part_name] = {"thickness": _make_name_safe(str(thickness)), "quantity": quantity, "material": material}
+                part_names_new_with_thickness[part_name] = {
+                    "thickness": _make_name_safe(str(thickness)),
+                    "quantity": quantity,
+                    "material": material,
+                }
         elif i == 3:
             for match in matches:
                 if len(match) != 5 or match[4] == "" or len(match[2]) < 2:
                     continue
                 item_no, quantity, part_name, material, thickness = match
-                part_names_new_with_thickness[part_name] = {"thickness": _make_name_safe(str(thickness)), "quantity": quantity}
+                part_names_new_with_thickness[part_name] = {
+                    "thickness": _make_name_safe(str(thickness)),
+                    "quantity": quantity,
+                }
 
     return part_names_new_with_thickness
 

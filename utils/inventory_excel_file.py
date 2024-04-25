@@ -64,9 +64,7 @@ class ExcelFile:
         )
         for category in list(data.keys()):
             worksheet = self.workbook.add_worksheet(category.title())
-            worksheet.set_header(
-                f'&L{datetime.now().strftime("%B %d %A %Y %I:%M:%S %p")}&C&25{category.title()}&RPiney Manufacturing Inventory'
-            )
+            worksheet.set_header(f'&L{datetime.now().strftime("%B %d %A %Y %I:%M:%S %p")}&C&25{category.title()}&RPiney Manufacturing Inventory')
             worksheet.hide_gridlines(2)
             worksheet.set_margins(0.25, 0.25, 0.8, 0.25)
             # worksheet.freeze_panes("A2")
@@ -85,7 +83,10 @@ class ExcelFile:
                 for item in list(grouped_category[group].keys()):
                     worksheet.write(row, 0, item, text_format)
                     worksheet.write(
-                        row, 1, grouped_category[group][item]["part_number"], text_format
+                        row,
+                        1,
+                        grouped_category[group][item]["part_number"],
+                        text_format,
                     )
                     worksheet.write(
                         row,
@@ -99,9 +100,7 @@ class ExcelFile:
                         grouped_category[group][item]["current_quantity"],
                         text_format,
                     )
-                    worksheet.write(
-                        row, 4, grouped_category[group][item]["price"], money_format
-                    )
+                    worksheet.write(row, 4, grouped_category[group][item]["price"], money_format)
                     worksheet.set_row(row, 50)
 
                     row += 1

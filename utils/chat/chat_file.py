@@ -19,9 +19,9 @@ class ChatFile:
                 json_file.write("{}")
 
     def load_chat(self, chat_name: str, chat_data: dict[str, any]) -> Chat:
-        chat = Chat(id=chat_name, name=chat_data['chat_data']['display_name'])
-        chat.set_messages(chat_data['messages'])
-        chat.set_chat_data(chat_data['chat_data'])
+        chat = Chat(id=chat_name, name=chat_data["chat_data"]["display_name"])
+        chat.set_messages(chat_data["messages"])
+        chat.set_chat_data(chat_data["chat_data"])
         return chat
 
     def load_data(self) -> None:

@@ -7,7 +7,13 @@ from openpyxl.utils.cell import column_index_from_string, get_column_letter
 
 
 class ExcelFile:
-    def __init__(self, file_name: str, generate_quote: bool, should_generate_packing_slip: bool, should_generate_workorder: bool) -> None:
+    def __init__(
+        self,
+        file_name: str,
+        generate_quote: bool,
+        should_generate_packing_slip: bool,
+        should_generate_workorder: bool,
+    ) -> None:
         self.workbook = xlsxwriter.Workbook(file_name)
         self.workbook.set_properties(
             {
@@ -152,16 +158,7 @@ class ExcelFile:
                 cell_format.set_align("center")
                 cell_format.set_align("vcenter")
                 cell_format.set_text_wrap()
-        if (
-            "Total" in str(item)
-            or "Packing Slip" in str(item)
-            or "Order #" in str(item)
-            or "Ship To:" in str(item)
-            or "Date Shipped:" in str(item)
-            or "No Tax Included" in str(item)
-            or "=SUM(Table1[Price])" in str(item)
-            or "TEXTAFTER" in str(item)
-        ):
+        if "Total" in str(item) or "Packing Slip" in str(item) or "Order #" in str(item) or "Ship To:" in str(item) or "Date Shipped:" in str(item) or "No Tax Included" in str(item) or "=SUM(Table1[Price])" in str(item) or "TEXTAFTER" in str(item):
             cell_format.set_bold()
         if col == "G" and row > 2 and "Tax" not in str(item):
             cell_format.set_right(1)

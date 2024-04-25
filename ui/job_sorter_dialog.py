@@ -63,14 +63,23 @@ class JobSorterDialog(QDialog):
         self.load_theme()
 
     def sort(self) -> None:
-        job_sorter_thread = JobSorterThread(self.parent, self.job_name, self.excel_file_path, self.directory_to_sort, self.output_directory)
+        job_sorter_thread = JobSorterThread(
+            self.parent,
+            self.job_name,
+            self.excel_file_path,
+            self.directory_to_sort,
+            self.output_directory,
+        )
         self.threads.append(job_sorter_thread)
         job_sorter_thread.signal.connect(self.thread_response)
         job_sorter_thread.start()
 
     def thread_response(self, response) -> None:
         if response == "Done":
-            self.parent.show_message_dialog(title="Done", message=f"Jobs sorted into {self.output_directory}/{self.job_name}")
+            self.parent.show_message_dialog(
+                title="Done",
+                message=f"Jobs sorted into {self.output_directory}/{self.job_name}",
+            )
         else:
             self.parent.show_error_dialog(title="Error", message=str(response))
 

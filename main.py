@@ -207,14 +207,6 @@ def check_folders(folders: list[str]) -> None:
                 os.mkdir(folder)
 
 
-def _play_celebrate_sound() -> None:
-    winsound.PlaySound("sound.wav", winsound.SND_FILENAME)
-
-
-def _play_boot_sound() -> None:
-    winsound.PlaySound("boot.wav", winsound.SND_FILENAME)
-
-
 check_folders(
     folders=[
         "logs",
@@ -227,6 +219,14 @@ check_folders(
         "PO's/templates",
     ]
 )
+
+
+def _play_celebrate_sound() -> None:
+    winsound.PlaySound("sound.wav", winsound.SND_FILENAME)
+
+
+def _play_boot_sound() -> None:
+    winsound.PlaySound("boot.wav", winsound.SND_FILENAME)
 
 
 logging.basicConfig(
@@ -259,7 +259,12 @@ def send_error_report(exc_type, exc_value, exc_traceback):
     data = {"error_log": f"User: {os.getlogin().title()}\nVersion: {__version__}\n\n{error_data}"}
     response = requests.post(url, data=data)
     if response.status_code != 200:
-        win32api.MessageBox(0, f"Did not send email, notify {__maintainer__} ASAP and send them the app.log file in the logs folder!", "oops", 0x40)
+        win32api.MessageBox(
+            0,
+            f"Did not send email, notify {__maintainer__} ASAP and send them the app.log file in the logs folder!",
+            "oops",
+            0x40,
+        )
 
 
 # Set the exception hook
@@ -357,9 +362,7 @@ class MainWindow(QMainWindow):
         self.tabWidget: QTabWidget
         self.scroll_position_manager = ScrollPositionManager()
         self.margins = (15, 15, 5, 5)  # top, bottom, left, right
-        self.margin_format = (
-            f"margin-top: {self.margins[0]}%; margin-bottom: {self.margins[1]}%; margin-left: {self.margins[2]}%; margin-right: {self.margins[3]}%;"
-        )
+        self.margin_format = f"margin-top: {self.margins[0]}%; margin-bottom: {self.margins[1]}%; margin-left: {self.margins[2]}%; margin-right: {self.margins[3]}%;"
 
         program_directory = os.path.dirname(os.path.realpath(sys.argv[0]))
         self.config = configparser.ConfigParser()
@@ -499,17 +502,21 @@ class MainWindow(QMainWindow):
         def save_scroll_position(tab_name: str, tab: CustomTableWidget):
             self.scroll_position_manager.save_scroll_position(tab_name=tab_name, scroll=tab)
 
-        self.tableWidget_quote_items.verticalScrollBar().valueChanged.connect(
-            partial(save_scroll_position, "OmniGen_Quote", self.tableWidget_quote_items)
-        )
-        self.tableWidget_quote_items.horizontalScrollBar().valueChanged.connect(
-            partial(save_scroll_position, "OmniGen_Quote", self.tableWidget_quote_items)
-        )
+        self.tableWidget_quote_items.verticalScrollBar().valueChanged.connect(partial(save_scroll_position, "OmniGen_Quote", self.tableWidget_quote_items))
+        self.tableWidget_quote_items.horizontalScrollBar().valueChanged.connect(partial(save_scroll_position, "OmniGen_Quote", self.tableWidget_quote_items))
         self.tableWidget_components_items.verticalScrollBar().valueChanged.connect(
-            partial(save_scroll_position, "OmniGen_Components", self.tableWidget_components_items)
+            partial(
+                save_scroll_position,
+                "OmniGen_Components",
+                self.tableWidget_components_items,
+            )
         )
         self.tableWidget_components_items.horizontalScrollBar().valueChanged.connect(
-            partial(save_scroll_position, "OmniGen_Components", self.tableWidget_components_items)
+            partial(
+                save_scroll_position,
+                "OmniGen_Components",
+                self.tableWidget_components_items,
+            )
         )
         self.tableWidget_components_items.cellChanged.connect(self.components_table_cell_changed)
         self.tableWidget_components_items.itemClicked.connect(self.components_table_cell_clicked)
@@ -623,10 +630,22 @@ class MainWindow(QMainWindow):
         )
         self.actionPriority.setChecked(settings_file.get_value(setting_name="sort_priority"))
         self.actionPriority.setEnabled(not settings_file.get_value(setting_name="sort_priority"))
-        self.actionAscending.triggered.connect(partial(self.action_group, "order", [self.actionAscending, self.actionDescending]))
+        self.actionAscending.triggered.connect(
+            partial(
+                self.action_group,
+                "order",
+                [self.actionAscending, self.actionDescending],
+            )
+        )
         self.actionAscending.setChecked(settings_file.get_value(setting_name="sort_ascending"))
         self.actionAscending.setEnabled(not settings_file.get_value(setting_name="sort_ascending"))
-        self.actionDescending.triggered.connect(partial(self.action_group, "order", [self.actionAscending, self.actionDescending]))
+        self.actionDescending.triggered.connect(
+            partial(
+                self.action_group,
+                "order",
+                [self.actionAscending, self.actionDescending],
+            )
+        )
         self.actionDescending.setChecked(settings_file.get_value(setting_name="sort_descending"))
         self.actionDescending.setEnabled(not settings_file.get_value(setting_name="sort_descending"))
         self.actionSort.triggered.connect(self.sort_inventory)
@@ -650,17 +669,33 @@ class MainWindow(QMainWindow):
         self.doubleSpinBox_cost_for_laser.valueChanged.connect(lambda: (self.update_quote_price(), self.update_sheet_prices()))
 
         self.spinBox_overhead_items.valueChanged.connect(
-            lambda: (self.update_components_prices(), self.update_quote_price(), self.update_sheet_prices())
+            lambda: (
+                self.update_components_prices(),
+                self.update_quote_price(),
+                self.update_sheet_prices(),
+            )
         )
         self.spinBox_profit_margin_items.valueChanged.connect(
-            lambda: (self.update_components_prices(), self.update_quote_price(), self.update_sheet_prices())
+            lambda: (
+                self.update_components_prices(),
+                self.update_quote_price(),
+                self.update_sheet_prices(),
+            )
         )
 
         self.spinBox_overhead_sheets.valueChanged.connect(
-            lambda: (self.update_components_prices(), self.update_quote_price(), self.update_sheet_prices())
+            lambda: (
+                self.update_components_prices(),
+                self.update_quote_price(),
+                self.update_sheet_prices(),
+            )
         )
         self.spinBox_profit_margin_sheets.valueChanged.connect(
-            lambda: (self.update_components_prices(), self.update_quote_price(), self.update_sheet_prices())
+            lambda: (
+                self.update_components_prices(),
+                self.update_quote_price(),
+                self.update_sheet_prices(),
+            )
         )
 
         self.pushButton_item_to_sheet.clicked.connect(self.match_item_to_sheet_price)
@@ -698,7 +733,10 @@ class MainWindow(QMainWindow):
         self.pushButton_hide_sheet_settings.clicked.connect(self.toggle_filter_tab_visibility_2)
 
         if not self.trusted_user:
-            self.tabWidget.setTabVisible(settings_file.get_value("menu_tabs_order").index("Edit Inventory"), False)
+            self.tabWidget.setTabVisible(
+                settings_file.get_value("menu_tabs_order").index("Edit Inventory"),
+                False,
+            )
             self.tabWidget.setTabVisible(
                 settings_file.get_value("menu_tabs_order").index("View Price Changes History (Read Only)"),
                 False,
@@ -719,15 +757,11 @@ class MainWindow(QMainWindow):
 
     def toggle_filter_tab_visibility_2(self) -> None:
         self.verticalLayout_32.setHidden(self.pushButton_hide_sheet_settings.isChecked())
-        self.pushButton_hide_sheet_settings.setText(
-            ">\n\nS\nh\ne\ne\nt\n\ns\ne\nt\nt\ni\nn\ng\ns\n\n>"
-            if self.pushButton_hide_sheet_settings.isChecked()
-            else "<\n\nS\nh\ne\ne\nt\n\ns\ne\nt\nt\ni\nn\ng\ns\n\n<"
-        )
+        self.pushButton_hide_sheet_settings.setText(">\n\nS\nh\ne\ne\nt\n\ns\ne\nt\nt\ni\nn\ng\ns\n\n>" if self.pushButton_hide_sheet_settings.isChecked() else "<\n\nS\nh\ne\ne\nt\n\ns\ne\nt\nt\ni\nn\ng\ns\n\n<")
 
     def quick_load_category(self, name: str) -> None:
         current_tab_text = self.tabWidget.tabText(self.tabWidget.currentIndex())
-        current_index = settings_file.get_value('category_tabs_order')[current_tab_text].index(name)
+        current_index = settings_file.get_value("category_tabs_order")[current_tab_text].index(name)
         self.tab_widget.setCurrentIndex(current_index)
         self.load_active_tab()
 
@@ -777,9 +811,7 @@ class MainWindow(QMainWindow):
             self.menuOpen_Category.setEnabled(False)
             self.load_quote_generator_ui()
             self.status_button.setHidden(False)
-        elif (
-            self.tabWidget.tabText(self.tabWidget.currentIndex()) == "View Removed Quantities History (Read Only)"
-        ):  # View Removed Quantities History (Read Only)
+        elif self.tabWidget.tabText(self.tabWidget.currentIndex()) == "View Removed Quantities History (Read Only)":  # View Removed Quantities History (Read Only)
             self.menuSort.setEnabled(False)
             self.menuOpen_Category.setEnabled(False)
             if not self.trusted_user:
@@ -788,9 +820,7 @@ class MainWindow(QMainWindow):
             self.active_layout = self.verticalLayout_5
             self.load_history_view()
             self.status_button.setHidden(True)
-        elif (
-            self.tabWidget.tabText(self.tabWidget.currentIndex()) == "View Price Changes History (Read Only)"
-        ):  # View Price Changes History (Read Only)
+        elif self.tabWidget.tabText(self.tabWidget.currentIndex()) == "View Price Changes History (Read Only)":  # View Price Changes History (Read Only)
             self.menuSort.setEnabled(False)
             self.menuOpen_Category.setEnabled(False)
             if not self.trusted_user:
@@ -1007,9 +1037,7 @@ class MainWindow(QMainWindow):
                     if order_pending_quantity == input_number:
                         inventory_data[self.category][item_name]["is_order_pending"] = button.isChecked()
                     inventory_data[self.category][item_name]["current_quantity"] = new_quantity
-                    inventory_data[self.category][item_name][
-                        "latest_change_current_quantity"
-                    ] = f"{self.username} - Changed from {old_quantity} to {new_quantity} at {datetime.now().strftime('%B %d %A %Y %I-%M-%S %p')}"
+                    inventory_data[self.category][item_name]["latest_change_current_quantity"] = f"{self.username} - Changed from {old_quantity} to {new_quantity} at {datetime.now().strftime('%B %d %A %Y %I-%M-%S %p')}"
                     inventory_data[self.category][item_name]["order_pending_quantity"] = remaining_quantity
                     for category in inventory.get_keys():
                         if category == self.category:
@@ -1017,9 +1045,7 @@ class MainWindow(QMainWindow):
                         for item in list(inventory_data[category].keys()):
                             if part_number == inventory_data[category][item]["part_number"]:
                                 inventory_data[category][item]["current_quantity"] = new_quantity
-                                inventory_data[category][item][
-                                    "latest_change_current_quantity"
-                                ] = f"{self.username} - Changed from {old_quantity} to {new_quantity} at {datetime.now().strftime('%B %d %A %Y %I-%M-%S %p')}"
+                                inventory_data[category][item]["latest_change_current_quantity"] = f"{self.username} - Changed from {old_quantity} to {new_quantity} at {datetime.now().strftime('%B %d %A %Y %I-%M-%S %p')}"
                                 inventory_data[category][item]["order_pending_quantity"] = remaining_quantity
                                 if order_pending_quantity == input_number:
                                     inventory_data[category][item]["is_order_pending"] = button.isChecked()
@@ -1266,7 +1292,10 @@ class MainWindow(QMainWindow):
                 new_assembly.set_assembly_data(key="starting_date", value=date_created)
                 new_assembly.set_assembly_data(key="ending_date", value=date_created)
                 new_assembly.set_assembly_data(key="status", value=None)
-                new_assembly.set_assembly_data(key="group", value=f"{job_name} x {quantity} - {group_name_date_created}")
+                new_assembly.set_assembly_data(
+                    key="group",
+                    value=f"{job_name} x {quantity} - {group_name_date_created}",
+                )
                 new_assembly.set_assembly_data(key="group_color", value=get_random_color())
                 # Sub-Assembly Data
                 new_assembly.set_data_to_all_sub_assemblies(key="starting_date", value=date_created)
@@ -1314,9 +1343,7 @@ class MainWindow(QMainWindow):
             part_number: str = self.get_value_from_category(item_name, "part_number")
             current_quantity: int = self.get_value_from_category(item_name, "current_quantity")
             inventory_data[self.category][item_name]["current_quantity"] = current_quantity + self.spinBox_quantity.value()
-            inventory_data[self.category][item_name][
-                "latest_change_current_quantity"
-            ] = f"{self.username} - Changed from {current_quantity} to {current_quantity + self.spinBox_quantity.value()} at {datetime.now().strftime('%B %d %A %Y %I-%M-%S %p')}"
+            inventory_data[self.category][item_name]["latest_change_current_quantity"] = f"{self.username} - Changed from {current_quantity} to {current_quantity + self.spinBox_quantity.value()} at {datetime.now().strftime('%B %d %A %Y %I-%M-%S %p')}"
             for category in inventory.get_keys():
                 if category == self.category:
                     continue
@@ -1324,9 +1351,7 @@ class MainWindow(QMainWindow):
                     if part_number == inventory_data[category][item]["part_number"]:
                         current_quantity: int = inventory_data[category][item]["current_quantity"]
                         inventory_data[category][item]["current_quantity"] = current_quantity + self.spinBox_quantity.value()
-                        inventory_data[category][item][
-                            "latest_change_current_quantity"
-                        ] = f"{self.username} - Changed from {current_quantity} to {current_quantity + self.spinBox_quantity.value()} at {datetime.now().strftime('%B %d %A %Y %I-%M-%S %p')}"
+                        inventory_data[category][item]["latest_change_current_quantity"] = f"{self.username} - Changed from {current_quantity} to {current_quantity + self.spinBox_quantity.value()} at {datetime.now().strftime('%B %d %A %Y %I-%M-%S %p')}"
         self.pushButton_add_quantity.setEnabled(False)
         self.pushButton_remove_quantity.setEnabled(False)
         inventory.save_data(inventory_data)
@@ -1355,9 +1380,7 @@ class MainWindow(QMainWindow):
             part_number: str = self.get_value_from_category(item_name, "part_number")
             current_quantity: int = self.get_value_from_category(item_name, "current_quantity")
             inventory_data[self.category][item_name]["current_quantity"] = current_quantity - self.spinBox_quantity.value()
-            inventory_data[self.category][item_name][
-                "latest_change_current_quantity"
-            ] = f"{self.username} - Changed from {current_quantity} to {current_quantity - self.spinBox_quantity.value()} at {datetime.now().strftime('%B %d %A %Y %I-%M-%S %p')}"
+            inventory_data[self.category][item_name]["latest_change_current_quantity"] = f"{self.username} - Changed from {current_quantity} to {current_quantity - self.spinBox_quantity.value()} at {datetime.now().strftime('%B %d %A %Y %I-%M-%S %p')}"
             for category in inventory.get_keys():
                 if category == self.category:
                     continue
@@ -1365,9 +1388,7 @@ class MainWindow(QMainWindow):
                     if part_number == inventory_data[category][item]["part_number"]:
                         current_quantity: int = inventory_data[category][item]["current_quantity"]
                         inventory_data[category][item]["current_quantity"] = current_quantity - self.spinBox_quantity.value()
-                        inventory_data[category][item][
-                            "latest_change_current_quantity"
-                        ] = f"{self.username} - Changed from {current_quantity} to {current_quantity - self.spinBox_quantity.value()} at {datetime.now().strftime('%B %d %A %Y %I-%M-%S %p')}"
+                        inventory_data[category][item]["latest_change_current_quantity"] = f"{self.username} - Changed from {current_quantity} to {current_quantity - self.spinBox_quantity.value()} at {datetime.now().strftime('%B %d %A %Y %I-%M-%S %p')}"
             history_file = HistoryFile()
             if self.spinBox_quantity.value() > 1:
                 history_file.add_new_to_single_item(
@@ -1441,25 +1462,19 @@ class MainWindow(QMainWindow):
                 actions[1].setEnabled(False)
                 actions[0].setEnabled(True)
         elif group_name == "sorting":
-            if actions[0].isChecked() and (
-                settings_file.get_value(setting_name="sort_priority") or settings_file.get_value(setting_name="sort_alphabatical")
-            ):  # Quantity in Stock
+            if actions[0].isChecked() and (settings_file.get_value(setting_name="sort_priority") or settings_file.get_value(setting_name="sort_alphabatical")):  # Quantity in Stock
                 actions[1].setChecked(False)
                 actions[2].setChecked(False)
                 actions[0].setEnabled(False)
                 actions[1].setEnabled(True)
                 actions[2].setEnabled(True)
-            elif actions[1].isChecked() and (
-                settings_file.get_value(setting_name="sort_quantity_in_stock") or settings_file.get_value(setting_name="sort_alphabatical")
-            ):  # Priority
+            elif actions[1].isChecked() and (settings_file.get_value(setting_name="sort_quantity_in_stock") or settings_file.get_value(setting_name="sort_alphabatical")):  # Priority
                 actions[0].setChecked(False)
                 actions[2].setChecked(False)
                 actions[0].setEnabled(True)
                 actions[1].setEnabled(False)
                 actions[2].setEnabled(True)
-            elif actions[2].isChecked() and (
-                settings_file.get_value(setting_name="sort_priority") or settings_file.get_value(setting_name="sort_quantity_in_stock")
-            ):  # Alphabatical
+            elif actions[2].isChecked() and (settings_file.get_value(setting_name="sort_priority") or settings_file.get_value(setting_name="sort_quantity_in_stock")):  # Alphabatical
                 actions[0].setChecked(False)
                 actions[1].setChecked(False)
                 actions[0].setEnabled(True)
@@ -1707,14 +1722,10 @@ class MainWindow(QMainWindow):
                 if batch_name == nest_name_to_update and item_to_change == "single_sheet_machining_time":  # This changes a nest not a item in a nest
                     try:
                         self.quote_nest_information[nest_name]["single_sheet_machining_time"] = current_value
-                        self.quote_nest_information[nest_name]["machining_time"] = (
-                            current_value * self.quote_nest_information[nest_name]["quantity_multiplier"]
-                        )
+                        self.quote_nest_information[nest_name]["machining_time"] = current_value * self.quote_nest_information[nest_name]["quantity_multiplier"]
                     except UnboundLocalError:
                         self.quote_nest_information[nest_name_to_update]["single_sheet_machining_time"] = current_value
-                        self.quote_nest_information[nest_name_to_update]["machining_time"] = (
-                            current_value * self.quote_nest_information[nest_name_to_update]["quantity_multiplier"]
-                        )
+                        self.quote_nest_information[nest_name_to_update]["machining_time"] = current_value * self.quote_nest_information[nest_name_to_update]["quantity_multiplier"]
                 continue
             for item in list(self.quote_nest_information[batch_name].keys()):
                 nest_name = "_" + self.quote_nest_information[batch_name][item]["file_name"].replace("\\", "/")
@@ -1883,9 +1894,7 @@ class MainWindow(QMainWindow):
                 current_quantity: int = category_data[self.category][part_name]["current_quantity"]
                 new_quantity = current_quantity - (unit_quantity * batch_multiplier)
                 category_data[self.category][part_name]["current_quantity"] = new_quantity
-                category_data[self.category][part_name][
-                    "modified_date"
-                ] = f'{self.username} - Removed {unit_quantity*batch_multiplier} quantity at {str(datetime.now().strftime("%B %d %A %Y %I:%M:%S %p"))}'
+                category_data[self.category][part_name]["modified_date"] = f'{self.username} - Removed {unit_quantity*batch_multiplier} quantity at {str(datetime.now().strftime("%B %d %A %Y %I:%M:%S %p"))}'
             for category in list(category_data.keys()):
                 if category in ["Recut", self.category]:
                     continue
@@ -1895,9 +1904,7 @@ class MainWindow(QMainWindow):
                         current_quantity: int = category_data[category][part_name]["current_quantity"]
                         new_quantity = current_quantity - (unit_quantity * batch_multiplier)
                         category_data[category][part_name]["current_quantity"] = new_quantity
-                        category_data[category][part_name][
-                            "modified_date"
-                        ] = f'{self.username} - Removed {unit_quantity*batch_multiplier} quantity at {str(datetime.now().strftime("%B %d %A %Y %I:%M:%S %p"))}'
+                        category_data[category][part_name]["modified_date"] = f'{self.username} - Removed {unit_quantity*batch_multiplier} quantity at {str(datetime.now().strftime("%B %d %A %Y %I:%M:%S %p"))}'
         else:
             are_you_sure_dialog = self.show_message_dialog(
                 title="Are you sure?",
@@ -1916,9 +1923,7 @@ class MainWindow(QMainWindow):
                 current_quantity: int = category_data[self.category][part_name]["current_quantity"]
                 new_quantity = current_quantity - (unit_quantity * batch_multiplier)
                 category_data[self.category][part_name]["current_quantity"] = new_quantity
-                category_data[self.category][part_name][
-                    "modified_date"
-                ] = f'{self.username} - Removed {unit_quantity*batch_multiplier} quantity at {str(datetime.now().strftime("%B %d %A %Y %I:%M:%S %p"))}'
+                category_data[self.category][part_name]["modified_date"] = f'{self.username} - Removed {unit_quantity*batch_multiplier} quantity at {str(datetime.now().strftime("%B %d %A %Y %I:%M:%S %p"))}'
             for category in list(category_data.keys()):
                 if category in ["Recut", self.category]:
                     continue
@@ -1928,9 +1933,7 @@ class MainWindow(QMainWindow):
                         current_quantity: int = category_data[category][part_name]["current_quantity"]
                         new_quantity = current_quantity - (unit_quantity * batch_multiplier)
                         category_data[category][part_name]["current_quantity"] = new_quantity
-                        category_data[category][part_name][
-                            "modified_date"
-                        ] = f'{self.username} - Removed {unit_quantity*batch_multiplier} quantity at {str(datetime.now().strftime("%B %d %A %Y %I:%M:%S %p"))}'
+                        category_data[category][part_name]["modified_date"] = f'{self.username} - Removed {unit_quantity*batch_multiplier} quantity at {str(datetime.now().strftime("%B %d %A %Y %I:%M:%S %p"))}'
         parts_in_inventory.save_data(category_data)
 
         for category in parts_in_inventory.get_data():
@@ -2156,7 +2159,10 @@ class MainWindow(QMainWindow):
                 price_per_pound: float = price_of_steel_inventory.get_data()["Price Per Pound"][material]["price"]
                 cost_for_laser: float = self.doubleSpinBox_cost_for_laser.value()
                 COGS: float = float((machine_time * (cost_for_laser / 60)) + (weight * price_per_pound))
-            item_data.setdefault(item_name, {"bend_cost": 0.0, "labor_cost": 0.0, "COGS": 0.0, "quantity": 0})
+            item_data.setdefault(
+                item_name,
+                {"bend_cost": 0.0, "labor_cost": 0.0, "COGS": 0.0, "quantity": 0},
+            )
             item_data[item_name]["bend_cost"] = bend_cost
             item_data[item_name]["labor_cost"] = labor_cost
             item_data[item_name]["COGS"] = COGS
@@ -2181,12 +2187,28 @@ class MainWindow(QMainWindow):
                 labor_cost = item_data["labor_cost"]
                 if include_extra_costs:
                     unit_price = (
-                        calculate_overhead(COGS, self.spinBox_profit_margin_items.value() / 100, self.spinBox_overhead_items.value() / 100)
-                        + calculate_overhead(bend_cost, self.spinBox_profit_margin_items.value() / 100, self.spinBox_overhead_items.value() / 100)
-                        + calculate_overhead(labor_cost, self.spinBox_profit_margin_items.value() / 100, self.spinBox_overhead_items.value() / 100)
+                        calculate_overhead(
+                            COGS,
+                            self.spinBox_profit_margin_items.value() / 100,
+                            self.spinBox_overhead_items.value() / 100,
+                        )
+                        + calculate_overhead(
+                            bend_cost,
+                            self.spinBox_profit_margin_items.value() / 100,
+                            self.spinBox_overhead_items.value() / 100,
+                        )
+                        + calculate_overhead(
+                            labor_cost,
+                            self.spinBox_profit_margin_items.value() / 100,
+                            self.spinBox_overhead_items.value() / 100,
+                        )
                     )
                 else:
-                    unit_price = calculate_overhead(COGS, self.spinBox_profit_margin_items.value() / 100, self.spinBox_overhead_items.value() / 100)
+                    unit_price = calculate_overhead(
+                        COGS,
+                        self.spinBox_profit_margin_items.value() / 100,
+                        self.spinBox_overhead_items.value() / 100,
+                    )
                 price = round(unit_price, 2) * quantity
                 total_item_cost += price
             return total_item_cost
@@ -2227,9 +2249,21 @@ class MainWindow(QMainWindow):
             bend_cost = item_data[item_name]["bend_cost"]
             labor_cost = item_data[item_name]["labor_cost"]
             unit_price = (
-                calculate_overhead(COGS, self.spinBox_profit_margin_items.value() / 100, self.spinBox_overhead_items.value() / 100)
-                + calculate_overhead(bend_cost, self.spinBox_profit_margin_items.value() / 100, self.spinBox_overhead_items.value() / 100)
-                + calculate_overhead(labor_cost, self.spinBox_profit_margin_items.value() / 100, self.spinBox_overhead_items.value() / 100)
+                calculate_overhead(
+                    COGS,
+                    self.spinBox_profit_margin_items.value() / 100,
+                    self.spinBox_overhead_items.value() / 100,
+                )
+                + calculate_overhead(
+                    bend_cost,
+                    self.spinBox_profit_margin_items.value() / 100,
+                    self.spinBox_overhead_items.value() / 100,
+                )
+                + calculate_overhead(
+                    labor_cost,
+                    self.spinBox_profit_margin_items.value() / 100,
+                    self.spinBox_overhead_items.value() / 100,
+                )
             )
             price = round(unit_price, 2) * quantity
             COGS_item: QTableWidgetItem = self.tableWidget_quote_items.item(row, 6)
@@ -2321,9 +2355,7 @@ class MainWindow(QMainWindow):
 
     # OMNIGEN
     def laser_cost_changed(self) -> None:
-        cost_for_laser: float = (
-            self.get_nitrogen_laser_cost() if self.comboBox_laser_cutting.currentText() == "Nitrogen" else self.get_co2_laser_cost()
-        )
+        cost_for_laser: float = self.get_nitrogen_laser_cost() if self.comboBox_laser_cutting.currentText() == "Nitrogen" else self.get_co2_laser_cost()
         self.doubleSpinBox_cost_for_laser.setValue(cost_for_laser)
 
     # OMNIGEN
@@ -2369,11 +2401,7 @@ class MainWindow(QMainWindow):
                 cost_for_laser: float = self.doubleSpinBox_cost_for_laser.value()
                 COGS: float = float((machine_time * (cost_for_laser / 60)) + (weight * price_per_pound))
 
-            unit_price = (
-                calculate_overhead(COGS, profit_margin / 100, overhead / 100)
-                + calculate_overhead(bend_cost, profit_margin / 100, overhead / 100)
-                + calculate_overhead(labor_cost, profit_margin / 100, overhead / 100)
-            )
+            unit_price = calculate_overhead(COGS, profit_margin / 100, overhead / 100) + calculate_overhead(bend_cost, profit_margin / 100, overhead / 100) + calculate_overhead(labor_cost, profit_margin / 100, overhead / 100)
 
             price = round(unit_price, 2) * quantity
             total_item_cost += price
@@ -2430,9 +2458,21 @@ class MainWindow(QMainWindow):
                 COGS: float = float((machine_time * (cost_for_laser / 60)) + (weight * price_per_pound))
 
             unit_price = (
-                calculate_overhead(COGS, self.spinBox_profit_margin_items.value() / 100, self.spinBox_overhead_items.value() / 100)
-                + calculate_overhead(bend_cost, self.spinBox_profit_margin_items.value() / 100, self.spinBox_overhead_items.value() / 100)
-                + calculate_overhead(labor_cost, self.spinBox_profit_margin_items.value() / 100, self.spinBox_overhead_items.value() / 100)
+                calculate_overhead(
+                    COGS,
+                    self.spinBox_profit_margin_items.value() / 100,
+                    self.spinBox_overhead_items.value() / 100,
+                )
+                + calculate_overhead(
+                    bend_cost,
+                    self.spinBox_profit_margin_items.value() / 100,
+                    self.spinBox_overhead_items.value() / 100,
+                )
+                + calculate_overhead(
+                    labor_cost,
+                    self.spinBox_profit_margin_items.value() / 100,
+                    self.spinBox_overhead_items.value() / 100,
+                )
             )
 
             price = round(unit_price, 2) * quantity
@@ -2507,7 +2547,9 @@ class MainWindow(QMainWindow):
             toolbox_index += 1
 
             total_sheet_cost += calculate_overhead(
-                (sheet_cost + cutting_cost), self.spinBox_profit_margin_sheets.value() / 100, self.spinBox_overhead_sheets.value() / 100
+                (sheet_cost + cutting_cost),
+                self.spinBox_profit_margin_sheets.value() / 100,
+                self.spinBox_overhead_sheets.value() / 100,
             )
         self.label_total_sheet_cost.setText(f"Total Cost for Sheets: ${total_sheet_cost:,.2f}")
 
@@ -2532,9 +2574,7 @@ class MainWindow(QMainWindow):
     # OMNIGEN
     def get_cutting_cost(self, nest_name: str) -> float:
         try:
-            machining_time: float = (
-                self.quote_nest_information[nest_name]["single_sheet_machining_time"] * self.quote_nest_information[nest_name]["quantity_multiplier"]
-            ) / 3600
+            machining_time: float = (self.quote_nest_information[nest_name]["single_sheet_machining_time"] * self.quote_nest_information[nest_name]["quantity_multiplier"]) / 3600
         except KeyError:
             machining_time = 0
         cost_for_laser: float = self.doubleSpinBox_cost_for_laser.value()
@@ -2543,10 +2583,7 @@ class MainWindow(QMainWindow):
     # OMNIGEN
     def get_total_cutting_time(self, nest_name: str) -> str:
         try:
-            total_seconds = (
-                float(self.quote_nest_information[nest_name]["single_sheet_machining_time"])
-                * self.quote_nest_information[nest_name]["quantity_multiplier"]
-            )
+            total_seconds = float(self.quote_nest_information[nest_name]["single_sheet_machining_time"]) * self.quote_nest_information[nest_name]["quantity_multiplier"]
             hours = int(total_seconds // 3600)
             minutes = int((total_seconds % 3600) // 60)
             seconds = int(total_seconds % 60)
@@ -2728,11 +2765,11 @@ class MainWindow(QMainWindow):
     # * /\ GETTERS /\
     def save_geometry(self) -> None:
         geometry = settings_file.get_value("geometry")
-        geometry['x'] = max(self.pos().x(), 0)
-        geometry['y'] = max(self.pos().y(), 0)
-        geometry['width'] = self.size().width()
-        geometry['height'] = self.size().height()
-        settings_file.set_value('geometry', geometry)
+        geometry["x"] = max(self.pos().x(), 0)
+        geometry["y"] = max(self.pos().y(), 0)
+        geometry["width"] = self.size().width()
+        geometry["height"] = self.size().height()
+        settings_file.set_value("geometry", geometry)
 
     def save_menu_tab_order(self) -> None:
         settings_file.set_value("menu_tabs_order", self.get_menu_tab_order())
@@ -3000,12 +3037,7 @@ class MainWindow(QMainWindow):
                 return
 
     def rename_category(self, index) -> None:
-        if (
-            self.tab_widget.tabText(0) == ""
-            or self.tab_widget.tabText(index) == "Price Per Pound"
-            or self.tab_widget.tabText(index) == "Recut"
-            or self.tab_widget.tabText(index) == "Custom"
-        ):
+        if self.tab_widget.tabText(0) == "" or self.tab_widget.tabText(index) == "Price Per Pound" or self.tab_widget.tabText(index) == "Recut" or self.tab_widget.tabText(index) == "Custom":
             return
         input_dialog = InputDialog(
             title="Rename category",
@@ -3072,10 +3104,7 @@ class MainWindow(QMainWindow):
                 continue
             if nest_name[0] == "_":
                 batch_data[nest_name] = self.quote_nest_information[nest_name]
-                batch_data[nest_name]["machining_time"] = (
-                    self.quote_nest_information[nest_name]["quantity_multiplier"]
-                    * self.quote_nest_information[nest_name]["single_sheet_machining_time"]
-                )
+                batch_data[nest_name]["machining_time"] = self.quote_nest_information[nest_name]["quantity_multiplier"] * self.quote_nest_information[nest_name]["single_sheet_machining_time"]
             else:
                 for item in self.quote_nest_information[nest_name]:
                     try:
@@ -3091,9 +3120,7 @@ class MainWindow(QMainWindow):
             profit_margin = self.spinBox_profit_margin_items.value() if self.checkBox_components_use_profit_margin.isChecked() else 0
             overhead = self.spinBox_overhead_items.value() if self.checkBox_components_use_overhead.isChecked() else 0
             if self.checkBox_components_use_profit_margin.isChecked() or self.checkBox_components_use_overhead.isChecked():
-                batch_data["Components"][component]["quoting_price"] = calculate_overhead(
-                    round(unit_price, 2) * quantity, profit_margin / 100, overhead / 100
-                )
+                batch_data["Components"][component]["quoting_price"] = calculate_overhead(round(unit_price, 2) * quantity, profit_margin / 100, overhead / 100)
             else:
                 batch_data["Components"][component]["quoting_price"] = unit_price * quantity
         return batch_data
@@ -3106,17 +3133,12 @@ class MainWindow(QMainWindow):
                 continue
             if nest_name[0] == "_":
                 batch_data[nest_name] = self.quote_nest_information[nest_name]
-                batch_data[nest_name]["machining_time"] = (
-                    self.quote_nest_information[nest_name]["quantity_multiplier"]
-                    * self.quote_nest_information[nest_name]["single_sheet_machining_time"]
-                )
+                batch_data[nest_name]["machining_time"] = self.quote_nest_information[nest_name]["quantity_multiplier"] * self.quote_nest_information[nest_name]["single_sheet_machining_time"]
             else:
                 batch_data[nest_name] = {}
                 for item in self.quote_nest_information[nest_name]:
                     batch_data[nest_name][item] = self.quote_nest_information[nest_name][item]
-                    batch_data[nest_name][item]["quoting_price"] = (
-                        batch_data[nest_name][item]["quantity"] * batch_data[nest_name][item]["quoting_unit_price"]
-                    )
+                    batch_data[nest_name][item]["quoting_price"] = batch_data[nest_name][item]["quantity"] * batch_data[nest_name][item]["quoting_unit_price"]
                     batch_data[nest_name][item]["price"] = f'${batch_data[nest_name][item]["quoting_price"]:,.2f}'
         batch_data["Components"] = self.quote_components_information
         for component in list(batch_data["Components"].keys()):
@@ -3125,9 +3147,7 @@ class MainWindow(QMainWindow):
             profit_margin = self.spinBox_profit_margin_items.value() if self.checkBox_components_use_profit_margin.isChecked() else 0
             overhead = self.spinBox_overhead_items.value() if self.checkBox_components_use_overhead.isChecked() else 0
             if self.checkBox_components_use_profit_margin.isChecked() or self.checkBox_components_use_overhead.isChecked():
-                batch_data["Components"][component]["quoting_price"] = calculate_overhead(
-                    round(unit_price, 2) * quantity, profit_margin / 100, overhead / 100
-                )
+                batch_data["Components"][component]["quoting_price"] = calculate_overhead(round(unit_price, 2) * quantity, profit_margin / 100, overhead / 100)
             else:
                 batch_data["Components"][component]["quoting_price"] = unit_price * quantity
         return batch_data
@@ -3147,7 +3167,13 @@ class MainWindow(QMainWindow):
                     action = select_item_dialog.get_selected_item()
                 except AttributeError:
                     return
-                should_generate_quote, should_generate_workorder, should_update_inventory, should_generate_packing_slip, should_group_items = action
+                (
+                    should_generate_quote,
+                    should_generate_workorder,
+                    should_update_inventory,
+                    should_generate_packing_slip,
+                    should_group_items,
+                ) = action
                 should_remove_sheet_quantities = select_item_dialog.should_remove_sheet_quantities()
                 if should_generate_packing_slip:
                     self.get_order_number_thread()
@@ -3173,7 +3199,13 @@ class MainWindow(QMainWindow):
                         path_to_save_quotes = self.config.get("GLOBAL VARIABLES", "path_to_save_quotes")
                         if should_generate_quote:
                             generate_quote = GenerateQuote(
-                                (True, False, should_update_inventory, False, should_group_items),
+                                (
+                                    True,
+                                    False,
+                                    should_update_inventory,
+                                    False,
+                                    should_group_items,
+                                ),
                                 file_name,
                                 batch_data,
                                 self.order_number,
@@ -3182,7 +3214,13 @@ class MainWindow(QMainWindow):
                                 self.open_folder(f"{path_to_save_quotes}/{file_name}.html")
                         elif should_generate_packing_slip:
                             generate_quote = GenerateQuote(
-                                (False, False, should_update_inventory, True, should_group_items),
+                                (
+                                    False,
+                                    False,
+                                    should_update_inventory,
+                                    True,
+                                    should_group_items,
+                                ),
                                 file_name,
                                 batch_data,
                                 self.order_number,
@@ -3193,7 +3231,16 @@ class MainWindow(QMainWindow):
                     if should_generate_workorder or should_update_inventory:
                         file_name: str = f'Workorder - {datetime.now().strftime("%A, %d %B %Y %H-%M-%S-%f")}'
                         generate_workorder = GenerateQuote(
-                            (False, True, should_update_inventory, False, should_group_items), file_name, batch_data, self.order_number
+                            (
+                                False,
+                                True,
+                                should_update_inventory,
+                                False,
+                                should_group_items,
+                            ),
+                            file_name,
+                            batch_data,
+                            self.order_number,
                         )
                 except FileNotFoundError:
                     self.show_error_dialog(
@@ -3211,7 +3258,11 @@ class MainWindow(QMainWindow):
                         if nest[0] == "_":
                             print("deleting")
                             del batch_data_to_upload_copy[nest]
-                self.upload_batch_to_inventory_thread(batch_data_to_upload_copy, should_update_inventory, should_generate_quote)
+                self.upload_batch_to_inventory_thread(
+                    batch_data_to_upload_copy,
+                    should_update_inventory,
+                    should_generate_quote,
+                )
                 if should_update_inventory and not self.is_nest_generated_from_parts_in_inventory:
                     self.upload_batched_parts_images(batch_data)
                 self.status_button.setText("Generating complete", "lime")
@@ -3363,7 +3414,9 @@ class MainWindow(QMainWindow):
 
     def open_job_sorter(self) -> None:
         job_sorter_menu = JobSorterDialog(
-            self, title="Job Sorter", message="Make sure all paths are set properly before pressing Sort, this is irreversible."
+            self,
+            title="Job Sorter",
+            message="Make sure all paths are set properly before pressing Sort, this is irreversible.",
         )
         job_sorter_menu.show()
 
@@ -3417,7 +3470,13 @@ class MainWindow(QMainWindow):
             response = printout_dialog.get_response()
             if response == DialogButtons.generate:
                 file_name: str = f'Printout - {datetime.now().strftime("%A, %d %B %Y %H-%M-%S-%f")}'
-                generate_printout = GeneratePrintout(admin_workspace, file_name, "Workorder", printout_dialog.get_workorder(), self.order_number)
+                generate_printout = GeneratePrintout(
+                    admin_workspace,
+                    file_name,
+                    "Workorder",
+                    printout_dialog.get_workorder(),
+                    self.order_number,
+                )
                 generate_printout.generate()
                 path_to_save_workspace_printouts = self.config.get("GLOBAL VARIABLES", "path_to_save_workspace_printouts")
                 self.open_folder(f"{path_to_save_workspace_printouts}/{file_name}.html")
@@ -3440,8 +3499,18 @@ class MainWindow(QMainWindow):
         try:
             new_part_number: str = tab.item(item.row(), 1).text()
             old_part_number = inventory_data[self.category][item_name]["part_number"]
-            unit_quantity: float = float(sympy.sympify(tab.item(item.row(), 2).text().replace(" ", "").replace(",", ""), evaluate=True))
-            current_quantity: float = float(sympy.sympify(tab.item(item.row(), 3).text().replace(" ", "").replace(",", ""), evaluate=True))
+            unit_quantity: float = float(
+                sympy.sympify(
+                    tab.item(item.row(), 2).text().replace(" ", "").replace(",", ""),
+                    evaluate=True,
+                )
+            )
+            current_quantity: float = float(
+                sympy.sympify(
+                    tab.item(item.row(), 3).text().replace(" ", "").replace(",", ""),
+                    evaluate=True,
+                )
+            )
             old_current_quantity = inventory_data[self.category][item_name]["current_quantity"]
             price: float = float(
                 sympy.sympify(
@@ -3473,9 +3542,7 @@ class MainWindow(QMainWindow):
             self.update_stock_costs()
         elif col_index == 3:  # Quantity in Stock
             inventory_data[self.category][item_name]["current_quantity"] = current_quantity
-            modified_date: str = (
-                f"{self.username} - Changed from {old_current_quantity} to {current_quantity} at {datetime.now().strftime('%B %d %A %Y %I-%M-%S %p')}"
-            )
+            modified_date: str = f"{self.username} - Changed from {old_current_quantity} to {current_quantity} at {datetime.now().strftime('%B %d %A %Y %I-%M-%S %p')}"
 
             tab.blockSignals(False)
             tab.item(row_index, col_index).setToolTip(modified_date)
@@ -3537,12 +3604,15 @@ class MainWindow(QMainWindow):
         row_index = item.row()
         column_index = item.column()
         try:
-            item_price: float = float(sympy.sympify(tab.item(row_index, 1).text().replace("$", "").replace(" ", "").replace(",", ""), evaluate=True))
+            item_price: float = float(
+                sympy.sympify(
+                    tab.item(row_index, 1).text().replace("$", "").replace(" ", "").replace(",", ""),
+                    evaluate=True,
+                )
+            )
             unit_quantity: float = float(sympy.sympify(tab.item(row_index, 2).text().replace(",", ""), evaluate=True))
             current_quantity: float = float(sympy.sympify(tab.item(row_index, 3).text().replace(",", ""), evaluate=True))
-            new_modified_date: str = (
-                f'{self.username} - Manually set to {current_quantity} quantity at {str(datetime.now().strftime("%B %d %A %Y %I:%M:%S %p"))}'
-            )
+            new_modified_date: str = f'{self.username} - Manually set to {current_quantity} quantity at {str(datetime.now().strftime("%B %d %A %Y %I:%M:%S %p"))}'
         except (ValueError, TypeError, SyntaxError) as e:
             item.setForeground(QColor("red"))
             self.status_button.setText(f"{item_name}: Enter a valid number, aborted!", "red")
@@ -3593,7 +3663,10 @@ class MainWindow(QMainWindow):
         if self.category == "Price Per Pound":
             try:
                 new_price: float = float(
-                    sympy.sympify(tab.item(row_index, 1).text().replace("$", "").replace(" ", "").replace(",", ""), evaluate=True)
+                    sympy.sympify(
+                        tab.item(row_index, 1).text().replace("$", "").replace(" ", "").replace(",", ""),
+                        evaluate=True,
+                    )
                 )
             except (ValueError, TypeError, SyntaxError) as e:
                 item.setForeground(QColor("red"))
@@ -3605,23 +3678,24 @@ class MainWindow(QMainWindow):
             price_item.setText(f"${new_price:,.2f}")
             tab.blockSignals(False)
             old_price = inventory_data[self.category][item_name]["price"]
-            modified_date: str = (
-                f'{self.username} - Modified from ${old_price:,.2f} to ${new_price:,.2f} at {datetime.now().strftime("%B %d %A %Y %I:%M:%S %p")}'
-            )
+            modified_date: str = f'{self.username} - Modified from ${old_price:,.2f} to ${new_price:,.2f} at {datetime.now().strftime("%B %d %A %Y %I:%M:%S %p")}'
             inventory_data[self.category][item_name]["price"] = new_price
             inventory_data[self.category][item_name]["latest_change_price"] = modified_date
         else:
             try:
-                new_quantity: float = float(sympy.sympify(tab.item(row_index, 2).text().replace(" ", "").replace(",", ""), evaluate=True))
+                new_quantity: float = float(
+                    sympy.sympify(
+                        tab.item(row_index, 2).text().replace(" ", "").replace(",", ""),
+                        evaluate=True,
+                    )
+                )
             except (ValueError, TypeError, SyntaxError) as e:
                 item.setForeground(QColor("red"))
                 self.status_button.setText(f"{item_name}: Enter a valid number, aborted!", "red")
                 return
             notes: str = tab.item(row_index, 6).text()
             old_quantity: float = inventory_data[self.category][item_name]["current_quantity"]
-            modified_date: str = (
-                f"{self.username} - Manually set to {new_quantity} from {old_quantity} at {datetime.now().strftime('%B %d %A %Y %I:%M:%S %p')}"
-            )
+            modified_date: str = f"{self.username} - Manually set to {new_quantity} from {old_quantity} at {datetime.now().strftime('%B %d %A %Y %I:%M:%S %p')}"
             try:
                 red_quantity_limit: int = inventory_data[self.category][item_name]["red_limit"]
             except KeyError:
@@ -3709,12 +3783,7 @@ class MainWindow(QMainWindow):
         self.search_layout.addWidget(tree_view, 0, 0)
 
     def load_categories(self) -> None:
-        if (
-            not self.trusted_user
-            and self.tabWidget.tabText(self.tabWidget.currentIndex()) != "Sheets in Inventory"
-            and self.tabWidget.tabText(self.tabWidget.currentIndex()) != "Parts in Inventory"
-            and self.tabWidget.tabText(self.tabWidget.currentIndex()) != "View Inventory (Read Only)"
-        ):
+        if not self.trusted_user and self.tabWidget.tabText(self.tabWidget.currentIndex()) != "Sheets in Inventory" and self.tabWidget.tabText(self.tabWidget.currentIndex()) != "Parts in Inventory" and self.tabWidget.tabText(self.tabWidget.currentIndex()) != "View Inventory (Read Only)":
             # print(self.last_selected_menu_tab)
             # self.tabWidget.setCurrentIndex(settings_file.get_value('menu_tabs_order').index(self.last_selected_menu_tab))
             # self.show_not_trusted_user()
@@ -3726,7 +3795,12 @@ class MainWindow(QMainWindow):
         admin_workspace.load_data()
         user_workspace.load_data()
 
-        if self.tabWidget.tabText(self.tabWidget.currentIndex()) not in ["Edit Inventory", "Parts in Inventory", "Sheets in Inventory", "Workspace"]:
+        if self.tabWidget.tabText(self.tabWidget.currentIndex()) not in [
+            "Edit Inventory",
+            "Parts in Inventory",
+            "Sheets in Inventory",
+            "Workspace",
+        ]:
             return
         self.clear_layout(self.active_layout)
         self.tabs.clear()
@@ -3791,8 +3865,7 @@ class MainWindow(QMainWindow):
             self.tab_widget.addTab(tab, "")
             i += 1
         with contextlib.suppress(Exception):
-
-            self.tab_widget.set_tab_order(settings_file.get_value('category_tabs_order')[self.tabWidget.tabText(self.tabWidget.currentIndex())])
+            self.tab_widget.set_tab_order(settings_file.get_value("category_tabs_order")[self.tabWidget.tabText(self.tabWidget.currentIndex())])
         self.tab_widget.setCurrentIndex(settings_file.get_value("last_category_tab"))
         self.tab_widget.currentChanged.connect(self.load_active_tab)
         self.active_layout.addWidget(self.tab_widget)
@@ -3828,9 +3901,7 @@ class MainWindow(QMainWindow):
                 completer.setCaseSensitivity(Qt.CaseSensitivity.CaseInsensitive)
                 self.lineEdit_search_items.setCompleter(completer)
             if self.tabWidget.tabText(self.tabWidget.currentIndex()) == "Parts in Inventory":
-                autofill_search_options = natsorted(
-                    list(set(parts_in_inventory.get_value(self.tab_widget.tabText(self.tab_widget.currentIndex())).keys()))
-                )
+                autofill_search_options = natsorted(list(set(parts_in_inventory.get_value(self.tab_widget.tabText(self.tab_widget.currentIndex())).keys())))
                 completer = QCompleter(autofill_search_options, self)
                 completer.setCaseSensitivity(Qt.CaseSensitivity.CaseInsensitive)
                 self.lineEdit_search_parts_in_inventory.setCompleter(completer)
@@ -3870,24 +3941,33 @@ class MainWindow(QMainWindow):
                 self.load_inventory_parts(tab, category_data)
 
             self.scroll_position_manager.restore_scroll_position(
-                tab_name=f"{self.tabWidget.tabText(self.tabWidget.currentIndex())} {self.category}", scroll=tab
+                tab_name=f"{self.tabWidget.tabText(self.tabWidget.currentIndex())} {self.category}",
+                scroll=tab,
             )
 
             def save_scroll_position(tab_name: str, tab: CustomTableWidget):
                 self.scroll_position_manager.save_scroll_position(tab_name=tab_name, scroll=tab)
 
             tab.verticalScrollBar().valueChanged.connect(
-                partial(save_scroll_position, f"{self.tabWidget.tabText(self.tabWidget.currentIndex())} {self.category}", tab)
+                partial(
+                    save_scroll_position,
+                    f"{self.tabWidget.tabText(self.tabWidget.currentIndex())} {self.category}",
+                    tab,
+                )
             )
             tab.horizontalScrollBar().valueChanged.connect(
-                partial(save_scroll_position, f"{self.tabWidget.tabText(self.tabWidget.currentIndex())} {self.category}", tab)
+                partial(
+                    save_scroll_position,
+                    f"{self.tabWidget.tabText(self.tabWidget.currentIndex())} {self.category}",
+                    tab,
+                )
             )
         if self.tabWidget.tabText(self.tabWidget.currentIndex()) == "Workspace":
             self.load_workspace()
         with contextlib.suppress(IndexError):
-            tab_order = settings_file.get_value('category_tabs_order')
+            tab_order = settings_file.get_value("category_tabs_order")
             tab_order[self.tabWidget.tabText(self.tabWidget.currentIndex())] = self.tabWidget.currentWidget().findChildren(CustomTabWidget)[0].get_tab_order()
-            settings_file.set_value('category_tabs_order', tab_order)
+            settings_file.set_value("category_tabs_order", tab_order)
 
     # NOTE PARTS IN INVENTYORY
     def load_inventory_parts(self, tab: CustomTableWidget, category_data: dict) -> None:
@@ -3903,7 +3983,16 @@ class MainWindow(QMainWindow):
         tab.setHorizontalScrollMode(QAbstractItemView.ScrollMode.ScrollPerPixel)
         tab.setSelectionMode(QAbstractItemView.SelectionMode.ExtendedSelection)
 
-        headers: list[str] = ["Part Name", "Item Price", "Quantity Per Unit", "Quantity in Stock", "Cost in Stock", "Shelf #", "Modified Date", "DEL"]
+        headers: list[str] = [
+            "Part Name",
+            "Item Price",
+            "Quantity Per Unit",
+            "Quantity in Stock",
+            "Cost in Stock",
+            "Shelf #",
+            "Modified Date",
+            "DEL",
+        ]
         tab.setColumnCount(len(headers))
         tab.setHorizontalHeaderLabels(headers)
         grouped_data = parts_in_inventory.sort_by_multiple_tags(category=category_data, tags_ids=["material", "gauge"])
@@ -3981,9 +4070,7 @@ class MainWindow(QMainWindow):
                     machine_time: float = self.get_value_from_category(item_name=item, key="machine_time")
                     material: str = self.get_value_from_category(item_name=item, key="material")
                     price_per_pound: float = price_of_steel_inventory.get_data()["Price Per Pound"][material]["price"]
-                    cost_for_laser: float = (
-                        self.get_nitrogen_laser_cost() if material in {"304 SS", "409 SS", "Aluminium"} else self.get_co2_laser_cost()
-                    )
+                    cost_for_laser: float = self.get_nitrogen_laser_cost() if material in {"304 SS", "409 SS", "Aluminium"} else self.get_co2_laser_cost()
                     price = float((machine_time * (cost_for_laser / 60)) + (weight * price_per_pound))
 
                 modified_date: str = self.get_value_from_category(item_name=item, key="modified_date")
@@ -4234,7 +4321,11 @@ class MainWindow(QMainWindow):
                     tab.item(row_index, col_index).setFont(self.tables_font)
                     col_index += 1
                     # COST
-                    tab.setItem(row_index, col_index, QTableWidgetItem(f"${cost_per_sheet:,.2f}"))
+                    tab.setItem(
+                        row_index,
+                        col_index,
+                        QTableWidgetItem(f"${cost_per_sheet:,.2f}"),
+                    )
                     tab.item(row_index, col_index).setTextAlignment(Qt.AlignmentFlag.AlignCenter | Qt.AlignmentFlag.AlignVCenter)
 
                     tab.item(row_index, col_index).setFont(self.tables_font)
@@ -4254,7 +4345,14 @@ class MainWindow(QMainWindow):
                     # ORDER STATUS
                     order_status_button = OrderStatusButton()
                     order_status_button.setChecked(is_order_pending)
-                    order_status_button.clicked.connect(partial(self.order_status_button_sheets_in_inventory, item, order_status_button, row_index))
+                    order_status_button.clicked.connect(
+                        partial(
+                            self.order_status_button_sheets_in_inventory,
+                            item,
+                            order_status_button,
+                            row_index,
+                        )
+                    )
                     order_status_button.setStyleSheet("margin-top: 3%; margin-bottom: 3%; margin-left: 5%; margin-right: 5%;")
                     tab.setCellWidget(row_index, col_index, order_status_button)
                     col_index += 1
@@ -4268,7 +4366,13 @@ class MainWindow(QMainWindow):
                             date = QDate(year, month, day)
                             arrival_date.setDate(date)
                             arrival_date.setCalendarPopup(True)
-                            arrival_date.dateChanged.connect(partial(self.arrival_date_change_sheets_in_inventory, item, arrival_date))
+                            arrival_date.dateChanged.connect(
+                                partial(
+                                    self.arrival_date_change_sheets_in_inventory,
+                                    item,
+                                    arrival_date,
+                                )
+                            )
                             tab.setCellWidget(row_index, col_index, arrival_date)
                         order_pending_date: str = self.get_value_from_category(item_name=item, key="order_pending_date")
                         order_status_button.setToolTip(f"Order Pending was set at {order_pending_date} for {order_quantity} sheets")
@@ -4371,11 +4475,7 @@ class MainWindow(QMainWindow):
             priority: int = self.get_value_from_category(item_name=item, key="priority")
             price: float = self.get_value_from_category(item_name=item, key="price")
             notes: str = self.get_value_from_category(item_name=item, key="notes")
-            shelf_number: str = (
-                ""
-                if self.get_value_from_category(item_name=item, key="shelf_number") == None
-                else self.get_value_from_category(item_name=item, key="shelf_number")
-            )
+            shelf_number: str = "" if self.get_value_from_category(item_name=item, key="shelf_number") == None else self.get_value_from_category(item_name=item, key="shelf_number")
             use_exchange_rate: bool = self.get_value_from_category(item_name=item, key="use_exchange_rate")
             converted_price: float = price * self.get_exchange_rate() if use_exchange_rate else price / self.get_exchange_rate()
             exchange_rate: float = self.get_exchange_rate() if use_exchange_rate else 1
@@ -4439,7 +4539,11 @@ class MainWindow(QMainWindow):
             col_index += 1
 
             # PRICE
-            tab.setItem(row_index, col_index, QTableWidgetItem(f'${price:,.2f} {"USD" if use_exchange_rate else "CAD"}'))
+            tab.setItem(
+                row_index,
+                col_index,
+                QTableWidgetItem(f'${price:,.2f} {"USD" if use_exchange_rate else "CAD"}'),
+            )
             tab.item(row_index, col_index).setFont(self.tables_font)
             tab.item(row_index, col_index).setToolTip(f'${converted_price:,.2f} {"CAD" if use_exchange_rate else "USD"}\n{latest_change_price}')
             tab.item(row_index, col_index).setTextAlignment(Qt.AlignmentFlag.AlignCenter | Qt.AlignmentFlag.AlignVCenter)
@@ -4466,14 +4570,22 @@ class MainWindow(QMainWindow):
             col_index += 1
 
             # TOTAL COST
-            tab.setItem(row_index, col_index, QTableWidgetItem(f"${total_cost_in_stock:,.2f} {combo_exchange_rate.currentText()}"))
+            tab.setItem(
+                row_index,
+                col_index,
+                QTableWidgetItem(f"${total_cost_in_stock:,.2f} {combo_exchange_rate.currentText()}"),
+            )
             tab.item(row_index, col_index).setFont(self.tables_font)
             tab.item(row_index, col_index).setTextAlignment(Qt.AlignmentFlag.AlignCenter | Qt.AlignmentFlag.AlignVCenter)
 
             col_index += 1
 
             # TOTAL UNIT COST
-            tab.setItem(row_index, col_index, QTableWidgetItem(f"${total_unit_cost:,.2f} {combo_exchange_rate.currentText()}"))
+            tab.setItem(
+                row_index,
+                col_index,
+                QTableWidgetItem(f"${total_unit_cost:,.2f} {combo_exchange_rate.currentText()}"),
+            )
             tab.item(row_index, col_index).setFont(self.tables_font)
             tab.item(row_index, col_index).setTextAlignment(Qt.AlignmentFlag.AlignCenter | Qt.AlignmentFlag.AlignVCenter)
 
@@ -4520,7 +4632,14 @@ class MainWindow(QMainWindow):
             # ORDER STATUS
             order_status_button = OrderStatusButton()
             order_status_button.setChecked(is_order_pending)
-            order_status_button.clicked.connect(partial(self.order_status_button_edit_inventory, item, order_status_button, row_index))
+            order_status_button.clicked.connect(
+                partial(
+                    self.order_status_button_edit_inventory,
+                    item,
+                    order_status_button,
+                    row_index,
+                )
+            )
             order_status_button.setStyleSheet("margin-top: 3%; margin-bottom: 3%; margin-left: 5%; margin-right: 5%;")
             tab.setCellWidget(row_index, col_index, order_status_button)
             col_index += 1
@@ -4629,7 +4748,14 @@ class MainWindow(QMainWindow):
         plus_button = table.cellWidget(table.rowCount() - 1, 0)
         plus_button.setEnabled(not assembly.exists(""))
 
-    def item_draggable_button_show_context_menu(self, btn: DraggableButton, assembly: Assembly, item: WorkspaceItem, file_category: str, file_name: str):
+    def item_draggable_button_show_context_menu(
+        self,
+        btn: DraggableButton,
+        assembly: Assembly,
+        item: WorkspaceItem,
+        file_category: str,
+        file_name: str,
+    ):
         contextMenu = QMenu(self)
         deleteAction = contextMenu.addAction("Delete file")
         action = contextMenu.exec(QCursor.pos())
@@ -4652,7 +4778,12 @@ class MainWindow(QMainWindow):
 
     # STAGING/EDITING
     def load_assemblies_items_file_layout(
-        self, file_category: str, files_layout: QHBoxLayout, assembly: Assembly, item: WorkspaceItem, show_dropped_widget: bool = True
+        self,
+        file_category: str,
+        files_layout: QHBoxLayout,
+        assembly: Assembly,
+        item: WorkspaceItem,
+        show_dropped_widget: bool = True,
     ) -> None:
         self.clear_layout(files_layout)
         files = item.get_value(key=file_category)
@@ -4667,7 +4798,14 @@ class MainWindow(QMainWindow):
             btn.setToolTip("Press to open")
             btn.buttonClicked.connect(partial(self.download_workspace_file, file, True))
             btn.customContextMenuRequested.connect(
-                partial(self.item_draggable_button_show_context_menu, btn, assembly, item, file_category, file_name)
+                partial(
+                    self.item_draggable_button_show_context_menu,
+                    btn,
+                    assembly,
+                    item,
+                    file_category,
+                    file_name,
+                )
             )
             files_layout.addWidget(btn)
         if show_dropped_widget:
@@ -4676,7 +4814,13 @@ class MainWindow(QMainWindow):
 
     # STAGING/EDITING
     def handle_dropped_file(
-        self, label: QLabel, file_paths: list[str], assembly: Assembly, item: WorkspaceItem, files_layout: QHBoxLayout, file_category: str
+        self,
+        label: QLabel,
+        file_paths: list[str],
+        assembly: Assembly,
+        item: WorkspaceItem,
+        files_layout: QHBoxLayout,
+        file_category: str,
     ) -> None:
         files = set(item.get_value(key=file_category))
         for file_path in file_paths:
@@ -4686,7 +4830,12 @@ class MainWindow(QMainWindow):
         self.status_button.setText("Upload starting", color="lime")
         label.setText("Drag Here")
         label.setStyleSheet("background-color: rgba(30,30,30,100);")
-        self.load_assemblies_items_file_layout(file_category=file_category, files_layout=files_layout, assembly=assembly, item=item)
+        self.load_assemblies_items_file_layout(
+            file_category=file_category,
+            files_layout=files_layout,
+            assembly=assembly,
+            item=item,
+        )
         self.active_workspace_file.save()
         self.sync_changes()
 
@@ -4749,9 +4898,7 @@ class MainWindow(QMainWindow):
                     color_name = color.getColorName()
                     self.active_workspace_file.save()
                     self.sync_changes()
-                    color_button.setStyleSheet(
-                        f'QComboBox{{border-radius: 0.001em; background-color: {item.get_value("paint_color")}}} {"QMenu { background-color: rgb(22,22,22);}"}'
-                    )
+                    color_button.setStyleSheet(f'QComboBox{{border-radius: 0.001em; background-color: {item.get_value("paint_color")}}} {"QMenu { background-color: rgb(22,22,22);}"}')
                     data = workspace_tags.get_data()
                     data["paint_colors"][color_name] = color.getHex(True)
                     workspace_tags.save_data(data)
@@ -4762,9 +4909,7 @@ class MainWindow(QMainWindow):
                     color_button.setCurrentText(color_name)
             else:
                 if color_button.currentText() == "None":
-                    color_button.setStyleSheet(
-                        f'QComboBox{{border-radius: 0.001em; background-color: transparent}} {"QMenu { background-color: rgb(22,22,22);}"}'
-                    )
+                    color_button.setStyleSheet(f'QComboBox{{border-radius: 0.001em; background-color: transparent}} {"QMenu { background-color: rgb(22,22,22);}"}')
                     color_button.setCurrentText("None")
                     item.set_value(key="paint_color", value=None)
                 else:
@@ -4773,9 +4918,7 @@ class MainWindow(QMainWindow):
                         if color_code == workspace_tags.get_data()["paint_colors"][color_button.currentText()]:
                             color_button.setCurrentText(color_name)
                             item.set_value(key="paint_color", value=color_code)
-                    color_button.setStyleSheet(
-                        f'QComboBox{{border-radius: 0.001em; background-color: {workspace_tags.get_data()["paint_colors"][color_button.currentText()]}}} {"QMenu { background-color: rgb(22,22,22);}"}'
-                    )
+                    color_button.setStyleSheet(f'QComboBox{{border-radius: 0.001em; background-color: {workspace_tags.get_data()["paint_colors"][color_button.currentText()]}}} {"QMenu { background-color: rgb(22,22,22);}"}')
                 self.active_workspace_file.save()
             self.sync_changes()
             color_button.currentTextChanged.connect(partial(select_color, item, color_button))
@@ -4813,7 +4956,12 @@ class MainWindow(QMainWindow):
                     timer_layout.addWidget(widget)
                 table.resizeColumnsToContents()
 
-        def flow_tag_box_change(table: CustomTableWidget, tag_box: QComboBox, item: WorkspaceItem, timer_layout: QHBoxLayout) -> None:
+        def flow_tag_box_change(
+            table: CustomTableWidget,
+            tag_box: QComboBox,
+            item: WorkspaceItem,
+            timer_layout: QHBoxLayout,
+        ) -> None:
             if tag_box.currentText() == "Select Flow Tag":
                 return
             tag_box.setStyleSheet("QComboBox#tag_box{border-radius: 0.001em;}")
@@ -4843,7 +4991,12 @@ class MainWindow(QMainWindow):
                 files_layout.setContentsMargins(0, 0, 0, 0)
                 files_layout.setSpacing(0)
                 button_widget.setLayout(files_layout)
-                self.load_assemblies_items_file_layout(file_category=file_column, files_layout=files_layout, assembly=assembly, item=item)
+                self.load_assemblies_items_file_layout(
+                    file_category=file_column,
+                    files_layout=files_layout,
+                    assembly=assembly,
+                    item=item,
+                )
                 table.setCellWidget(row_index, col_index, button_widget)
                 col_index += 1
             thickness_box = QComboBox(self)
@@ -4855,7 +5008,11 @@ class MainWindow(QMainWindow):
             thickness_box.addItems(price_of_steel_information.get_value("thicknesses"))
             thickness_box.setCurrentText(item.data["thickness"])
             thickness_box.currentTextChanged.connect(
-                lambda: (item.set_value(key="thickness", value=thickness_box.currentText()), self.active_workspace_file.save(), self.sync_changes())
+                lambda: (
+                    item.set_value(key="thickness", value=thickness_box.currentText()),
+                    self.active_workspace_file.save(),
+                    self.sync_changes(),
+                )
             )
             table.setCellWidget(row_index, col_index, thickness_box)
             col_index += 1
@@ -4868,7 +5025,11 @@ class MainWindow(QMainWindow):
             material_box.addItems(price_of_steel_information.get_value("materials"))
             material_box.setCurrentText(item.data["material"])
             material_box.currentTextChanged.connect(
-                lambda: (item.set_value(key="material", value=material_box.currentText()), self.active_workspace_file.save(), self.sync_changes())
+                lambda: (
+                    item.set_value(key="material", value=material_box.currentText()),
+                    self.active_workspace_file.save(),
+                    self.sync_changes(),
+                )
             )
             table.setCellWidget(row_index, col_index, material_box)
             col_index += 1
@@ -4898,9 +5059,7 @@ class MainWindow(QMainWindow):
                 for color_name, color_code in workspace_tags.get_value("paint_colors").items():
                     if color_code == item.get_value("paint_color"):
                         button_color.setCurrentText(color_name)
-                button_color.setStyleSheet(
-                    f'QComboBox{{border-radius: 0.001em; background-color: {item.get_value("paint_color")}}} {"QMenu { background-color: rgb(22,22,22);}"}'
-                )
+                button_color.setStyleSheet(f'QComboBox{{border-radius: 0.001em; background-color: {item.get_value("paint_color")}}} {"QMenu { background-color: rgb(22,22,22);}"}')
             else:
                 button_color.setCurrentText("Set Color")
                 button_color.setStyleSheet("border-radius: 0.001em; ")
@@ -5077,7 +5236,13 @@ class MainWindow(QMainWindow):
             self.sync_changes()
 
     # STAGING/EDITING
-    def load_edit_assembly_widget(self, assembly: Assembly, workspace_information: dict, group_color: str, parent=None) -> QWidget:
+    def load_edit_assembly_widget(
+        self,
+        assembly: Assembly,
+        workspace_information: dict,
+        group_color: str,
+        parent=None,
+    ) -> QWidget:
         widget = QWidget()
         layout = QVBoxLayout(widget)
         layout.setContentsMargins(1, 1, 1, 1)
@@ -5174,9 +5339,7 @@ class MainWindow(QMainWindow):
                     color_name = color.getColorName()
                     self.active_workspace_file.save()
                     self.sync_changes()
-                    color_button.setStyleSheet(
-                        f'QComboBox{{background-color: {assembly.get_assembly_data("paint_color")}}} {"QMenu { background-color: rgb(22,22,22);}"}'
-                    )
+                    color_button.setStyleSheet(f'QComboBox{{background-color: {assembly.get_assembly_data("paint_color")}}} {"QMenu { background-color: rgb(22,22,22);}"}')
                     data = workspace_tags.get_data()
                     data["paint_colors"][color_name] = color.getHex(True)
                     workspace_tags.save_data(data)
@@ -5196,9 +5359,7 @@ class MainWindow(QMainWindow):
                         if color_code == workspace_tags.get_data()["paint_colors"][color_button.currentText()]:
                             color_button.setCurrentText(color_name)
                             assembly.set_assembly_data(key="paint_color", value=color_code)
-                    color_button.setStyleSheet(
-                        f'QComboBox{{background-color: {workspace_tags.get_data()["paint_colors"][color_button.currentText()]}}} {"QMenu { background-color: rgb(22,22,22);}"}'
-                    )
+                    color_button.setStyleSheet(f'QComboBox{{background-color: {workspace_tags.get_data()["paint_colors"][color_button.currentText()]}}} {"QMenu { background-color: rgb(22,22,22);}"}')
                 self.active_workspace_file.save()
             self.sync_changes()
             color_button.currentTextChanged.connect(partial(select_color, assembly, color_button))
@@ -5230,7 +5391,11 @@ class MainWindow(QMainWindow):
                     layout.addWidget(timer_box)
                     timer_layout.addWidget(_widget)
 
-        def flow_tag_change(timer_layout: QHBoxLayout, color_widget: QWidget, flow_tag_combobox: QComboBox):
+        def flow_tag_change(
+            timer_layout: QHBoxLayout,
+            color_widget: QWidget,
+            flow_tag_combobox: QComboBox,
+        ):
             flow_tag_combobox.setStyleSheet("")
             assembly.set_assembly_data("flow_tag", flow_tag_combobox.currentText().split(" ➜ "))
             color_widget.setHidden(all(keyword not in flow_tag_combobox.currentText().lower() for keyword in ["paint", "powder"]))
@@ -5278,9 +5443,7 @@ class MainWindow(QMainWindow):
                 for color_name, color_code in workspace_tags.get_value("paint_colors").items():
                     if color_code == assembly.get_assembly_data("paint_color"):
                         button_color.setCurrentText(color_name)
-                button_color.setStyleSheet(
-                    f'QComboBox{{background-color: {assembly.get_assembly_data("paint_color")}}} {"QMenu { background-color: rgb(22,22,22);}"}'
-                )
+                button_color.setStyleSheet(f'QComboBox{{background-color: {assembly.get_assembly_data("paint_color")}}} {"QMenu { background-color: rgb(22,22,22);}"}')
             else:
                 button_color.setCurrentText("Set Color")
             button_color.currentTextChanged.connect(partial(select_color, assembly, button_color))
@@ -5409,9 +5572,7 @@ class MainWindow(QMainWindow):
                         workspace_information[new_assembly.name]["sub_assemblies"],
                         group_color=self.active_workspace_file.get_group_color(assembly.get_master_assembly().get_assembly_data(key="group")),
                     )  # Load the widget for the new assembly
-                    sub_assemblies_toolbox.addItem(
-                        sub_assembly_widget, new_assembly.name, base_color=group_color
-                    )  # Add the widget to the MultiToolBox
+                    sub_assemblies_toolbox.addItem(sub_assembly_widget, new_assembly.name, base_color=group_color)  # Add the widget to the MultiToolBox
                     delete_button = sub_assemblies_toolbox.getLastDeleteButton()
                     delete_button.clicked.connect(partial(delete_sub_assembly, new_assembly, sub_assembly_widget))
                     duplicate_button = sub_assemblies_toolbox.getLastDuplicateButton()
@@ -5468,7 +5629,9 @@ class MainWindow(QMainWindow):
                 for i, sub_assembly in enumerate(assembly.sub_assemblies):
                     # Load the sub assembly recursively and add it to the sub assemblies MultiToolBox
                     sub_assembly_widget = self.load_edit_assembly_widget(
-                        sub_assembly, workspace_information=workspace_information[assembly.name]["sub_assemblies"], group_color=group_color
+                        sub_assembly,
+                        workspace_information=workspace_information[assembly.name]["sub_assemblies"],
+                        group_color=group_color,
                     )
                     sub_assemblies_toolbox.addItem(sub_assembly_widget, sub_assembly.name, base_color=group_color)
                     delete_button = sub_assemblies_toolbox.getLastDeleteButton()
@@ -5489,9 +5652,7 @@ class MainWindow(QMainWindow):
             self.workspace_filter_tab_widget.clear_selections("Flow Tags")
         self.workspace_information.setdefault(self.category, {"group_tool_box": None})
         try:
-            self.workspace_information[self.category]["group_tool_box"] = self.workspace_information[self.category][
-                "group_tool_box"
-            ].get_widget_visibility()
+            self.workspace_information[self.category]["group_tool_box"] = self.workspace_information[self.category]["group_tool_box"].get_widget_visibility()
             saved_workspace_prefs = True
         except (AttributeError, RuntimeError):
             saved_workspace_prefs = False
@@ -5501,10 +5662,18 @@ class MainWindow(QMainWindow):
             self.scroll_position_manager.save_scroll_position(tab_name=tab_name, scroll=scroll)
 
         scroll_area.verticalScrollBar().valueChanged.connect(
-            partial(save_scroll_position, f"{self.tabWidget.tabText(self.tabWidget.currentIndex())} {self.category}", scroll_area)
+            partial(
+                save_scroll_position,
+                f"{self.tabWidget.tabText(self.tabWidget.currentIndex())} {self.category}",
+                scroll_area,
+            )
         )
         scroll_area.horizontalScrollBar().valueChanged.connect(
-            partial(save_scroll_position, f"{self.tabWidget.tabText(self.tabWidget.currentIndex())} {self.category}", scroll_area)
+            partial(
+                save_scroll_position,
+                f"{self.tabWidget.tabText(self.tabWidget.currentIndex())} {self.category}",
+                scroll_area,
+            )
         )
         scroll_area.setWidgetResizable(True)
         scroll_content = QWidget(scroll_area)
@@ -5521,7 +5690,10 @@ class MainWindow(QMainWindow):
         group_tool_box = AssemblyMultiToolBox(scroll_content)
 
         def set_assembly_inputbox_context_menu(
-            input_box: QLineEdit, multi_tool_box: AssemblyMultiToolBox, assembly_widget: QWidget, assembly: Assembly
+            input_box: QLineEdit,
+            multi_tool_box: AssemblyMultiToolBox,
+            assembly_widget: QWidget,
+            assembly: Assembly,
         ) -> None:
             input_box.setContextMenuPolicy(Qt.ContextMenuPolicy.CustomContextMenu)
             menu = QMenu(input_box)
@@ -5531,11 +5703,29 @@ class MainWindow(QMainWindow):
                 if menu_group == assembly.get_assembly_data(key="group"):
                     continue
                 action = QAction(groups_menu)
-                action.triggered.connect(partial(move_to_group, multi_tool_box, assembly_widget, assembly, menu_group, False))
+                action.triggered.connect(
+                    partial(
+                        move_to_group,
+                        multi_tool_box,
+                        assembly_widget,
+                        assembly,
+                        menu_group,
+                        False,
+                    )
+                )
                 action.setText(menu_group)
                 groups_menu.addAction(action)
             action = QAction(groups_menu)
-            action.triggered.connect(partial(move_to_group, multi_tool_box, assembly_widget, assembly, "menu_group", True))
+            action.triggered.connect(
+                partial(
+                    move_to_group,
+                    multi_tool_box,
+                    assembly_widget,
+                    assembly,
+                    "menu_group",
+                    True,
+                )
+            )
             action.setText("Create Group")
             groups_menu.addAction(action)
             menu.addMenu(groups_menu)
@@ -5543,13 +5733,19 @@ class MainWindow(QMainWindow):
 
         def add_job():
             input_dialog = AddJobDialog(
-                title="Add Job", message="Enter a name for a new job", group_names=self.active_workspace_file._get_all_groups()
+                title="Add Job",
+                message="Enter a name for a new job",
+                group_names=self.active_workspace_file._get_all_groups(),
             )
 
             if input_dialog.exec():
                 response = input_dialog.get_response()
                 if response == DialogButtons.add:
-                    job_name, has_items, has_sub_assemblies = input_dialog.get_selected_items()
+                    (
+                        job_name,
+                        has_items,
+                        has_sub_assemblies,
+                    ) = input_dialog.get_selected_items()
                     group = input_dialog.get_group_name()
                     group_color = get_random_color()
                     if group in list(grouped_data.keys()):
@@ -5586,7 +5782,14 @@ class MainWindow(QMainWindow):
                         input_box = group_tool_box.getLastInputBox()
                         input_box.editingFinished.connect(partial(rename_group, group_tool_box, group, input_box))
                         group_tool_boxes[group] = group_widget
-                        self.workspace_information[self.category].setdefault(group, {"tool_box": None, "sub_assemblies": {}, "group_tool_box": None})
+                        self.workspace_information[self.category].setdefault(
+                            group,
+                            {
+                                "tool_box": None,
+                                "sub_assemblies": {},
+                                "group_tool_box": None,
+                            },
+                        )
 
                         multi_tool_box = AssemblyMultiToolBox()
                         multi_tool_box.layout().setSpacing(0)
@@ -5604,7 +5807,14 @@ class MainWindow(QMainWindow):
                     multi_tool_box.addItem(sub_assembly_widget, new_assembly.name, base_color=group_color)  # Add the widget to the MultiToolBox
                     # multi_tool_box.open_all()
                     delete_button = multi_tool_box.getLastDeleteButton()
-                    delete_button.clicked.connect(partial(delete_assembly, multi_tool_box, new_assembly, sub_assembly_widget))
+                    delete_button.clicked.connect(
+                        partial(
+                            delete_assembly,
+                            multi_tool_box,
+                            new_assembly,
+                            sub_assembly_widget,
+                        )
+                    )
                     duplicate_button = multi_tool_box.getLastDuplicateButton()
                     duplicate_button.clicked.connect(partial(duplicate_assembly, multi_tool_box, new_assembly))
                     input_box = multi_tool_box.getLastInputBox()
@@ -5612,7 +5822,11 @@ class MainWindow(QMainWindow):
                 elif response == DialogButtons.cancel:
                     return
 
-        def delete_assembly(multi_tool_box: AssemblyMultiToolBox, sub_assembly_to_delete: Assembly, widget_to_delete: QWidget):
+        def delete_assembly(
+            multi_tool_box: AssemblyMultiToolBox,
+            sub_assembly_to_delete: Assembly,
+            widget_to_delete: QWidget,
+        ):
             self.active_workspace_file.remove_assembly(sub_assembly_to_delete)
             self.active_workspace_file.save()
             self.sync_changes()
@@ -5629,7 +5843,11 @@ class MainWindow(QMainWindow):
                 workspace_information=self.workspace_information[new_assembly.name]["sub_assemblies"],
                 group_color=self.active_workspace_file.get_group_color(assembly_to_duplicate.get_master_assembly().get_assembly_data(key="group")),
             )
-            multi_tool_box.addItem(assembly_widget, new_assembly.name, base_color=new_assembly.get_assembly_data(key="group_color"))
+            multi_tool_box.addItem(
+                assembly_widget,
+                new_assembly.name,
+                base_color=new_assembly.get_assembly_data(key="group_color"),
+            )
             delete_button = multi_tool_box.getLastDeleteButton()
             delete_button.clicked.connect(partial(delete_assembly, multi_tool_box, new_assembly, assembly_widget))
             duplicate_button = multi_tool_box.getLastDuplicateButton()
@@ -5637,12 +5855,19 @@ class MainWindow(QMainWindow):
             input_box = multi_tool_box.getLastInputBox()
             input_box.editingFinished.connect(partial(rename_sub_assembly, multi_tool_box, new_assembly, input_box))
             set_assembly_inputbox_context_menu(
-                input_box=input_box, multi_tool_box=multi_tool_box, assembly_widget=assembly_widget, assembly=new_assembly
+                input_box=input_box,
+                multi_tool_box=multi_tool_box,
+                assembly_widget=assembly_widget,
+                assembly=new_assembly,
             )
 
             multi_tool_box.close(len(multi_tool_box.buttons) - 1)
 
-        def rename_sub_assembly(multi_tool_box: AssemblyMultiToolBox, assembly_to_rename: Assembly, input_box: QLineEdit):
+        def rename_sub_assembly(
+            multi_tool_box: AssemblyMultiToolBox,
+            assembly_to_rename: Assembly,
+            input_box: QLineEdit,
+        ):
             assembly_to_rename.rename(input_box.text())
             self.active_workspace_file.save()
             self.sync_changes()
@@ -5685,7 +5910,10 @@ class MainWindow(QMainWindow):
             input_box = group_tool_box.getLastInputBox()
             input_box.editingFinished.connect(partial(rename_group, group_tool_box, new_group_name, input_box))
             group_tool_boxes[new_group_name] = group_widget
-            self.workspace_information[self.category].setdefault(new_group_name, {"tool_box": None, "sub_assemblies": {}, "group_tool_box": None})
+            self.workspace_information[self.category].setdefault(
+                new_group_name,
+                {"tool_box": None, "sub_assemblies": {}, "group_tool_box": None},
+            )
 
             multi_tool_box = AssemblyMultiToolBox()
             multi_tool_box.layout().setSpacing(0)
@@ -5703,7 +5931,10 @@ class MainWindow(QMainWindow):
                 input_box = multi_tool_box.getInputBox(i)
                 input_box.editingFinished.connect(partial(rename_sub_assembly, multi_tool_box, assembly, input_box))
                 set_assembly_inputbox_context_menu(
-                    input_box=input_box, multi_tool_box=multi_tool_box, assembly_widget=assembly_widget, assembly=assembly
+                    input_box=input_box,
+                    multi_tool_box=multi_tool_box,
+                    assembly_widget=assembly_widget,
+                    assembly=assembly,
                 )
 
             multi_tool_box.close_all()
@@ -5758,7 +5989,10 @@ class MainWindow(QMainWindow):
                 input_box = group_tool_box.getLastInputBox()
                 input_box.editingFinished.connect(partial(rename_group, group_tool_box, group, input_box))
                 group_tool_boxes[group] = group_widget
-                self.workspace_information[self.category].setdefault(group, {"tool_box": None, "sub_assemblies": {}, "group_tool_box": None})
+                self.workspace_information[self.category].setdefault(
+                    group,
+                    {"tool_box": None, "sub_assemblies": {}, "group_tool_box": None},
+                )
                 multi_tool_box = AssemblyMultiToolBox()
                 multi_tool_box.layout().setSpacing(0)
                 self.workspace_information[self.category][group]["tool_box"] = multi_tool_box
@@ -5766,17 +6000,28 @@ class MainWindow(QMainWindow):
                 multi_tool_box_to_move_to = multi_tool_box
 
             assembly_widget = self.load_edit_assembly_widget(
-                assembly=assembly, workspace_information=self.workspace_information[self.category][group]["sub_assemblies"]
+                assembly=assembly,
+                workspace_information=self.workspace_information[self.category][group]["sub_assemblies"],
             )
             multi_tool_box_to_move_to.addItem(assembly_widget, assembly.name)
             delete_button = multi_tool_box_to_move_to.getLastDeleteButton()
-            delete_button.clicked.connect(partial(delete_assembly, multi_tool_box_to_move_to, assembly, assembly_widget))
+            delete_button.clicked.connect(
+                partial(
+                    delete_assembly,
+                    multi_tool_box_to_move_to,
+                    assembly,
+                    assembly_widget,
+                )
+            )
             duplicate_button = multi_tool_box_to_move_to.getLastDuplicateButton()
             duplicate_button.clicked.connect(partial(duplicate_assembly, multi_tool_box_to_move_to, assembly))
             input_box = multi_tool_box_to_move_to.getLastInputBox()
             input_box.editingFinished.connect(partial(rename_sub_assembly, multi_tool_box_to_move_to, assembly, input_box))
             set_assembly_inputbox_context_menu(
-                input_box=input_box, multi_tool_box=multi_tool_box_to_move_to, assembly_widget=assembly_widget, assembly=assembly
+                input_box=input_box,
+                multi_tool_box=multi_tool_box_to_move_to,
+                assembly_widget=assembly_widget,
+                assembly=assembly,
             )
             multi_tool_box_to_move_to.close(len(multi_tool_box_to_move_to.buttons) - 1)
             multi_tool_box_to_move_from.removeItem(assembly_widget_to_move)
@@ -5805,9 +6050,7 @@ class MainWindow(QMainWindow):
             scroll_layout.addWidget(group_tool_box)
         for group in grouped_data:
             try:
-                self.workspace_information[self.category][group]["tool_box"] = self.workspace_information[self.category][group][
-                    "tool_box"
-                ].get_widget_visibility()
+                self.workspace_information[self.category][group]["tool_box"] = self.workspace_information[self.category][group]["tool_box"].get_widget_visibility()
                 saved_workspace_prefs = True
             except (AttributeError, RuntimeError):
                 saved_workspace_prefs = False
@@ -5828,7 +6071,10 @@ class MainWindow(QMainWindow):
                 input_box = multi_tool_box.getInputBox(i)
                 input_box.editingFinished.connect(partial(rename_sub_assembly, multi_tool_box, assembly, input_box))
                 set_assembly_inputbox_context_menu(
-                    input_box=input_box, multi_tool_box=multi_tool_box, assembly_widget=assembly_widget, assembly=assembly
+                    input_box=input_box,
+                    multi_tool_box=multi_tool_box,
+                    assembly_widget=assembly_widget,
+                    assembly=assembly,
                 )
 
             multi_tool_box.close_all()
@@ -5847,7 +6093,8 @@ class MainWindow(QMainWindow):
         self.pushButton_add_job.clicked.connect(add_job)
         self.tab_widget.currentWidget().layout().addWidget(scroll_area)
         self.scroll_position_manager.restore_scroll_position(
-            tab_name=f"{self.tabWidget.tabText(self.tabWidget.currentIndex())} {self.category}", scroll=scroll_area
+            tab_name=f"{self.tabWidget.tabText(self.tabWidget.currentIndex())} {self.category}",
+            scroll=scroll_area,
         )
 
     # USER
@@ -5891,7 +6138,11 @@ class MainWindow(QMainWindow):
         table.hideColumn(7)
         table.hideColumn(10)
 
-        def toggle_timer(item: WorkspaceItem, toggle_timer_button: QPushButton, recording_widget: RecordingWidget) -> None:
+        def toggle_timer(
+            item: WorkspaceItem,
+            toggle_timer_button: QPushButton,
+            recording_widget: RecordingWidget,
+        ) -> None:
             item_flow_tag: str = item.get_value("flow_tag")[item.get_value("current_flow_state")]
             timer_data = item.get_value("timers")
             is_recording: bool = not timer_data[item_flow_tag]["recording"]
@@ -5911,21 +6162,32 @@ class MainWindow(QMainWindow):
 
         def recut(item: WorkspaceItem) -> None:
             input_dialog = RecutDialog(
-                title="Set Recut Count", message=f"Select or Input recut count for: {item.name}", max_value=item.get_value(key="parts_per")
+                title="Set Recut Count",
+                message=f"Select or Input recut count for: {item.name}",
+                max_value=item.get_value(key="parts_per"),
             )
             if input_dialog.exec():
                 response = input_dialog.get_response()
                 if response == DialogButtons.ok:
                     recut_count = int(input_dialog.inputText)
                     parent_assembly = item.parent_assembly
-                    new_item = WorkspaceItem(name=f"{item.name} - Recut #{item.get_value('recut_count') + 1}", data=item.copy_data())
+                    new_item = WorkspaceItem(
+                        name=f"{item.name} - Recut #{item.get_value('recut_count') + 1}",
+                        data=item.copy_data(),
+                    )
                     new_item.set_value(key="parts_per", value=recut_count)
                     new_item.set_value(key="completed", value=False)
-                    new_item.set_value(key="current_flow_state", value=new_item.get_value("flow_tag").index("Laser Cutting"))
+                    new_item.set_value(
+                        key="current_flow_state",
+                        value=new_item.get_value("flow_tag").index("Laser Cutting"),
+                    )
                     new_item.set_value(key="recut", value=True)
                     parent_assembly.add_item(new_item)
                     item.set_value(key="recut_count", value=item.get_value("recut_count") + 1)
-                    item.set_value(key="parts_per", value=item.get_value(key="parts_per") - recut_count)
+                    item.set_value(
+                        key="parts_per",
+                        value=item.get_value(key="parts_per") - recut_count,
+                    )
                     user_workspace.save()
                     self.sync_changes()
                     self.load_workspace()
@@ -5944,7 +6206,10 @@ class MainWindow(QMainWindow):
                     item.set_value(key="timers", value=timer_data)
             if item_flow_tag == "Laser Cutting":
                 item.set_value(key="recut", value=False)
-            item.set_value(key="current_flow_state", value=item.get_value(key="current_flow_state") + 1)
+            item.set_value(
+                key="current_flow_state",
+                value=item.get_value(key="current_flow_state") + 1,
+            )
             item.set_value(key="status", value=None)
             if item.get_value(key="current_flow_state") == len(item.get_value(key="flow_tag")):
                 item.set_value(key="completed", value=True)
@@ -5966,18 +6231,19 @@ class MainWindow(QMainWindow):
             self.sync_changes()
             self.load_workspace()
 
-        def item_status_changed(status_box: QComboBox, item: WorkspaceItem, row_index: int, toggle_timer_button: QPushButton) -> None:
+        def item_status_changed(
+            status_box: QComboBox,
+            item: WorkspaceItem,
+            row_index: int,
+            toggle_timer_button: QPushButton,
+        ) -> None:
             if (
-                workspace_tags.get_value("flow_tag_statuses")[item.get_value("flow_tag")[item.get_value("current_flow_state")]][
-                    status_box.currentText()
-                ]["start_timer"]
+                workspace_tags.get_value("flow_tag_statuses")[item.get_value("flow_tag")[item.get_value("current_flow_state")]][status_box.currentText()]["start_timer"]
                 and workspace_tags.get_value("attributes")[item.get_value("flow_tag")[item.get_value("current_flow_state")]]["is_timer_enabled"]
                 and item.get_value("timers")[item.get_value("flow_tag")[item.get_value("current_flow_state")]]["recording"] == False
             ):
                 toggle_timer_button.click()
-            if workspace_tags.get_value("flow_tag_statuses")[item.get_value("flow_tag")[item.get_value("current_flow_state")]][
-                status_box.currentText()
-            ]["completed"]:
+            if workspace_tags.get_value("flow_tag_statuses")[item.get_value("flow_tag")[item.get_value("current_flow_state")]][status_box.currentText()]["completed"]:
                 move_to_next_flow(item=item, row_index=row_index)
             else:
                 item.set_value(key="status", value=status_box.currentText())
@@ -6009,7 +6275,11 @@ class MainWindow(QMainWindow):
                 files_layout.setSpacing(0)
                 button_widget.setLayout(files_layout)
                 self.load_assemblies_items_file_layout(
-                    file_category=file_column, files_layout=files_layout, assembly=assembly, item=item, show_dropped_widget=False
+                    file_category=file_column,
+                    files_layout=files_layout,
+                    assembly=assembly,
+                    item=item,
+                    show_dropped_widget=False,
                 )
                 table.setCellWidget(row_index, col_index, button_widget)
                 col_index += 1
@@ -6039,9 +6309,7 @@ class MainWindow(QMainWindow):
                     if color_code == item.get_value("paint_color"):
                         button_color.addItem(color_name)
                         button_color.setCurrentText(color_name)
-                        button_color.setStyleSheet(
-                            f'QComboBox{{border-radius: 0.001em; background-color: {item.get_value("paint_color")}}} {"QMenu { background-color: rgb(22,22,22);}"}'
-                        )
+                        button_color.setStyleSheet(f'QComboBox{{border-radius: 0.001em; background-color: {item.get_value("paint_color")}}} {"QMenu { background-color: rgb(22,22,22);}"}')
                         break
             table.setCellWidget(row_index, col_index, button_color)  # 7
             col_index += 1
@@ -6109,7 +6377,15 @@ class MainWindow(QMainWindow):
                     status_box.addItems(list(workspace_tags.get_value("flow_tag_statuses")[item_flow_tag].keys()))
                     status_box.setCurrentText(item.get_value("status"))
                     status_box.setStyleSheet("border-radius: 0.001em;")
-                    status_box.currentTextChanged.connect(partial(item_status_changed, status_box, item, row_index, toggle_timer_button))
+                    status_box.currentTextChanged.connect(
+                        partial(
+                            item_status_changed,
+                            status_box,
+                            item,
+                            row_index,
+                            toggle_timer_button,
+                        )
+                    )
                     # table.setCellWidget(row_index, col_index, status_box)
                     h_layout.addWidget(status_box)
             # if ["paint", "quote", "ship"] not in item_flow_tag.lower():
@@ -6121,7 +6397,12 @@ class MainWindow(QMainWindow):
                 h_layout.addWidget(recut_button)
             with contextlib.suppress(IndexError, KeyError):
                 next_flow_tag = item.get_value("flow_tag")[item.get_value("current_flow_state") + 1]
-                h_layout.addWidget(QLabel(workspace_tags.get_value("attributes")[next_flow_tag]["next_flow_tag_message"], self))
+                h_layout.addWidget(
+                    QLabel(
+                        workspace_tags.get_value("attributes")[next_flow_tag]["next_flow_tag_message"],
+                        self,
+                    )
+                )
             # if item.get_value(key="recut_count") > 0:
             #     h_layout.addWidget(QLabel(f"Recut Count: {item.get_value(key='recut_count')}", self))
 
@@ -6168,7 +6449,13 @@ class MainWindow(QMainWindow):
         return table
 
     # USER
-    def load_view_assembly_widget(self, assembly: Assembly, workspace_information: dict, group_color: str, parent=None) -> QWidget:
+    def load_view_assembly_widget(
+        self,
+        assembly: Assembly,
+        workspace_information: dict,
+        group_color: str,
+        parent=None,
+    ) -> QWidget:
         widget = QWidget(self)
         layout = QVBoxLayout(widget)
         layout.setSpacing(1)
@@ -6219,9 +6506,7 @@ class MainWindow(QMainWindow):
 
             grid.setAlignment(Qt.AlignmentFlag.AlignLeft)
             grid.addWidget(
-                QLabel(
-                    f"Timeline: {assembly.get_assembly_data('starting_date')} to {assembly.get_assembly_data('ending_date')}, ({QDate.fromString(assembly.get_assembly_data('starting_date'), 'yyyy-M-d').daysTo(QDate.fromString(assembly.get_assembly_data('ending_date'), 'yyyy-M-d'))} days)"
-                ),
+                QLabel(f"Timeline: {assembly.get_assembly_data('starting_date')} to {assembly.get_assembly_data('ending_date')}, ({QDate.fromString(assembly.get_assembly_data('starting_date'), 'yyyy-M-d').daysTo(QDate.fromString(assembly.get_assembly_data('ending_date'), 'yyyy-M-d'))} days)"),
                 0,
                 0,
             )
@@ -6231,7 +6516,11 @@ class MainWindow(QMainWindow):
                 except IndexError:
                     return
 
-                def toggle_timer(assembly: Assembly, toggle_timer_button: QPushButton, recording_widget: RecordingWidget) -> None:
+                def toggle_timer(
+                    assembly: Assembly,
+                    toggle_timer_button: QPushButton,
+                    recording_widget: RecordingWidget,
+                ) -> None:
                     assembly_flow_tag: str = assembly.get_assembly_data(key="flow_tag")[assembly.get_assembly_data(key="current_flow_state")]
                     timer_data = assembly.get_assembly_data(key="timers")
                     is_recording: bool = not timer_data[assembly_flow_tag]["recording"]
@@ -6260,7 +6549,10 @@ class MainWindow(QMainWindow):
                             timer_data[item_flow_tag]["time_taken_intervals"][-1].append(str(datetime.now()))
                             timer_data[item_flow_tag]["recording"] = False
                             assembly.set_assembly_data(key="timers", value=timer_data)
-                    assembly.set_assembly_data(key="current_flow_state", value=assembly.get_assembly_data(key="current_flow_state") + 1)
+                    assembly.set_assembly_data(
+                        key="current_flow_state",
+                        value=assembly.get_assembly_data(key="current_flow_state") + 1,
+                    )
                     assembly.set_assembly_data(key="status", value=None)
                     if assembly.get_assembly_data(key="current_flow_state") == len(assembly.get_assembly_data(key="flow_tag")):
                         assembly.set_assembly_data(key="completed", value=True)
@@ -6280,23 +6572,18 @@ class MainWindow(QMainWindow):
                     self.sync_changes()
                     self.load_workspace()
 
-                def item_status_changed(status_box: QComboBox, assembly: Assembly, toggle_timer_button: QPushButton) -> None:
+                def item_status_changed(
+                    status_box: QComboBox,
+                    assembly: Assembly,
+                    toggle_timer_button: QPushButton,
+                ) -> None:
                     if (
-                        workspace_tags.get_value("flow_tag_statuses")[
-                            assembly.get_assembly_data("flow_tag")[assembly.get_assembly_data("current_flow_state")]
-                        ][status_box.currentText()]["start_timer"]
-                        and workspace_tags.get_value("attributes")[
-                            assembly.get_assembly_data("flow_tag")[assembly.get_assembly_data("current_flow_state")]
-                        ]["is_timer_enabled"]
-                        and assembly.get_assembly_data("timers")[
-                            assembly.get_assembly_data("flow_tag")[assembly.get_assembly_data("current_flow_state")]
-                        ]["recording"]
-                        == False
+                        workspace_tags.get_value("flow_tag_statuses")[assembly.get_assembly_data("flow_tag")[assembly.get_assembly_data("current_flow_state")]][status_box.currentText()]["start_timer"]
+                        and workspace_tags.get_value("attributes")[assembly.get_assembly_data("flow_tag")[assembly.get_assembly_data("current_flow_state")]]["is_timer_enabled"]
+                        and assembly.get_assembly_data("timers")[assembly.get_assembly_data("flow_tag")[assembly.get_assembly_data("current_flow_state")]]["recording"] == False
                     ):
                         toggle_timer_button.click()
-                    if workspace_tags.get_value("flow_tag_statuses")[
-                        assembly.get_assembly_data("flow_tag")[assembly.get_assembly_data("current_flow_state")]
-                    ][status_box.currentText()]["completed"]:
+                    if workspace_tags.get_value("flow_tag_statuses")[assembly.get_assembly_data("flow_tag")[assembly.get_assembly_data("current_flow_state")]][status_box.currentText()]["completed"]:
                         move_to_next_flow(assembly=assembly)
                     else:
                         assembly.set_assembly_data(key="status", value=status_box.currentText())
@@ -6315,7 +6602,14 @@ class MainWindow(QMainWindow):
                     recording_widget.setHidden(not is_recording)
                     toggle_timer_button.setObjectName("recording_button")
                     toggle_timer_button.setText("Stop" if is_recording else "Start")
-                    toggle_timer_button.clicked.connect(partial(toggle_timer, assembly, toggle_timer_button, recording_widget))
+                    toggle_timer_button.clicked.connect(
+                        partial(
+                            toggle_timer,
+                            assembly,
+                            toggle_timer_button,
+                            recording_widget,
+                        )
+                    )
                     timer_layout.addWidget(toggle_timer_button)
                     timer_layout.addWidget(recording_widget)
                     grid.addWidget(QLabel("Timer:"), 1, 1)
@@ -6352,7 +6646,10 @@ class MainWindow(QMainWindow):
                         with contextlib.suppress(IndexError):
                             next_flow_tag = assembly.get_assembly_data(key="flow_tag")[assembly.get_assembly_data(key="current_flow_state") + 1]
                             grid.addWidget(
-                                QLabel(workspace_tags.get_value("attributes")[next_flow_tag]["next_flow_tag_message"], self),
+                                QLabel(
+                                    workspace_tags.get_value("attributes")[next_flow_tag]["next_flow_tag_message"],
+                                    self,
+                                ),
                                 0,
                                 3,
                             )
@@ -6361,14 +6658,24 @@ class MainWindow(QMainWindow):
                     status_box.setObjectName("flow_tag_status_button")
                     status_box.addItems(list(workspace_tags.get_value("flow_tag_statuses")[assembly_flow_tag].keys()))
                     status_box.setCurrentText(assembly.get_assembly_data("status"))
-                    status_box.currentTextChanged.connect(partial(item_status_changed, status_box, assembly, toggle_timer_button))
+                    status_box.currentTextChanged.connect(
+                        partial(
+                            item_status_changed,
+                            status_box,
+                            assembly,
+                            toggle_timer_button,
+                        )
+                    )
                     # table.setCellWidget(row_index, col_index, status_box)
                     grid.addWidget(QLabel("Status:"), 0, 1)
                     grid.addWidget(status_box, 0, 2)
                     with contextlib.suppress(IndexError, KeyError):
                         next_flow_tag = assembly.get_assembly_data(key="flow_tag")[assembly.get_assembly_data(key="current_flow_state") + 1]
                         grid.addWidget(
-                            QLabel(workspace_tags.get_value("attributes")[next_flow_tag]["next_flow_tag_message"], self),
+                            QLabel(
+                                workspace_tags.get_value("attributes")[next_flow_tag]["next_flow_tag_message"],
+                                self,
+                            ),
                             0,
                             3,
                         )
@@ -6422,7 +6729,9 @@ class MainWindow(QMainWindow):
         for i, sub_assembly in enumerate(assembly.sub_assemblies):
             if sub_assembly.get_assembly_data(key="show") == True and sub_assembly.get_assembly_data(key="completed") == False:
                 sub_assembly_widget = self.load_view_assembly_widget(
-                    assembly=sub_assembly, workspace_information=workspace_information[assembly.name]["sub_assemblies"], group_color=group_color
+                    assembly=sub_assembly,
+                    workspace_information=workspace_information[assembly.name]["sub_assemblies"],
+                    group_color=group_color,
                 )
                 sub_assemblies_toolbox.addItem(sub_assembly_widget, f"{sub_assembly.name}", base_color=group_color)
                 # sub_assemblies_toolbox.close(i)
@@ -6449,10 +6758,18 @@ class MainWindow(QMainWindow):
             self.scroll_position_manager.save_scroll_position(tab_name=tab_name, scroll=scroll)
 
         scroll_area.verticalScrollBar().valueChanged.connect(
-            partial(save_scroll_position, f"{self.tabWidget.tabText(self.tabWidget.currentIndex())} table_summary {self.category}", scroll_area)
+            partial(
+                save_scroll_position,
+                f"{self.tabWidget.tabText(self.tabWidget.currentIndex())} table_summary {self.category}",
+                scroll_area,
+            )
         )
         scroll_area.horizontalScrollBar().valueChanged.connect(
-            partial(save_scroll_position, f"{self.tabWidget.tabText(self.tabWidget.currentIndex())} table_summary {self.category}", scroll_area)
+            partial(
+                save_scroll_position,
+                f"{self.tabWidget.tabText(self.tabWidget.currentIndex())} table_summary {self.category}",
+                scroll_area,
+            )
         )
         scroll_area.setWidgetResizable(True)
         scroll_content = QWidget(self)
@@ -6500,7 +6817,11 @@ class MainWindow(QMainWindow):
         table.hideColumn(7)
         table.hideColumn(10)
 
-        def toggle_timer(item_name: str, toggle_timer_button: QPushButton, recording_widget: RecordingWidget) -> None:
+        def toggle_timer(
+            item_name: str,
+            toggle_timer_button: QPushButton,
+            recording_widget: RecordingWidget,
+        ) -> None:
             for item in grouped_items.data[item_name]:
                 item_flow_tag: str = item.get_value("flow_tag")[item.get_value("current_flow_state")]
                 timer_data = item.get_value("timers")
@@ -6532,19 +6853,32 @@ class MainWindow(QMainWindow):
             if max_recut_count == 0:
                 self.show_message_dialog(title="No More Quantity", message="Quantity limit exceeded")
                 return
-            input_dialog = RecutDialog(title="Set Recut Count", message=f"Select or Input recut count for: {item.name}", max_value=max_recut_count)
+            input_dialog = RecutDialog(
+                title="Set Recut Count",
+                message=f"Select or Input recut count for: {item.name}",
+                max_value=max_recut_count,
+            )
             if input_dialog.exec():
                 response = input_dialog.get_response()
                 if response == DialogButtons.ok:
                     recut_count = int(input_dialog.inputText)
                     parent_assembly = item.parent_assembly
-                    new_item = WorkspaceItem(name=f"{item.name} - Recut #{item.get_value('recut_count') + 1}", data=item.copy_data())
+                    new_item = WorkspaceItem(
+                        name=f"{item.name} - Recut #{item.get_value('recut_count') + 1}",
+                        data=item.copy_data(),
+                    )
                     new_item.set_value(key="parts_per", value=recut_count)
-                    new_item.set_value(key="current_flow_state", value=new_item.get_value("flow_tag").index("Laser Cutting"))
+                    new_item.set_value(
+                        key="current_flow_state",
+                        value=new_item.get_value("flow_tag").index("Laser Cutting"),
+                    )
                     new_item.set_value(key="recut", value=True)
                     parent_assembly.add_item(new_item)
                     item.set_value(key="recut_count", value=item.get_value("recut_count") + 1)
-                    item.set_value(key="parts_per", value=item.get_value(key="parts_per") - recut_count)
+                    item.set_value(
+                        key="parts_per",
+                        value=item.get_value(key="parts_per") - recut_count,
+                    )
                     user_workspace.save()
                     self.sync_changes()
                     self.load_workspace()
@@ -6564,7 +6898,10 @@ class MainWindow(QMainWindow):
                         item.set_value(key="timers", value=timer_data)
                 if item_flow_tag == "Laser Cutting":
                     item.set_value(key="recut", value=False)
-                item.set_value(key="current_flow_state", value=item.get_value(key="current_flow_state") + 1)
+                item.set_value(
+                    key="current_flow_state",
+                    value=item.get_value(key="current_flow_state") + 1,
+                )
                 item.set_value(key="status", value=None)
                 if item.get_value(key="current_flow_state") == len(item.get_value(key="flow_tag")):
                     item.set_value(key="completed", value=True)
@@ -6587,19 +6924,20 @@ class MainWindow(QMainWindow):
             self.sync_changes()
             self.load_workspace()
 
-        def item_status_changed(status_box: QComboBox, item_name: str, row_index: int, toggle_timer_button: QPushButton) -> None:
+        def item_status_changed(
+            status_box: QComboBox,
+            item_name: str,
+            row_index: int,
+            toggle_timer_button: QPushButton,
+        ) -> None:
             for item in grouped_items.data[item_name]:
                 if (
-                    workspace_tags.get_value("flow_tag_statuses")[item.get_value("flow_tag")[item.get_value("current_flow_state")]][
-                        status_box.currentText()
-                    ]["start_timer"]
+                    workspace_tags.get_value("flow_tag_statuses")[item.get_value("flow_tag")[item.get_value("current_flow_state")]][status_box.currentText()]["start_timer"]
                     and workspace_tags.get_value("attributes")[item.get_value("flow_tag")[item.get_value("current_flow_state")]]["is_timer_enabled"]
                     and item.get_value("timers")[item.get_value("flow_tag")[item.get_value("current_flow_state")]]["recording"] == False
                 ):
                     toggle_timer_button.click()
-                if workspace_tags.get_value("flow_tag_statuses")[item.get_value("flow_tag")[item.get_value("current_flow_state")]][
-                    status_box.currentText()
-                ]["completed"]:
+                if workspace_tags.get_value("flow_tag_statuses")[item.get_value("flow_tag")[item.get_value("current_flow_state")]][status_box.currentText()]["completed"]:
                     # grouped_items.update_values(item_to_update=item_name, key="status", value=status_box.currentText())
                     move_to_next_flow(item_name=item.name, row_index=row_index)
                 else:
@@ -6649,7 +6987,11 @@ class MainWindow(QMainWindow):
             table.setItem(row_index, col_index, QTableWidgetItem(first_item.data["material"]))  # 5
             table.item(row_index, col_index).setTextAlignment(Qt.AlignmentFlag.AlignCenter | Qt.AlignmentFlag.AlignVCenter)
             col_index += 1
-            table.setItem(row_index, col_index, QTableWidgetItem(str(first_item.data["paint_type"])))  # 6
+            table.setItem(
+                row_index,
+                col_index,
+                QTableWidgetItem(str(first_item.data["paint_type"])),
+            )  # 6
             table.item(row_index, col_index).setTextAlignment(Qt.AlignmentFlag.AlignCenter | Qt.AlignmentFlag.AlignVCenter)
             col_index += 1
             button_color = QComboBox(self)
@@ -6659,13 +7001,15 @@ class MainWindow(QMainWindow):
                     if color_code == first_item.get_value("paint_color"):
                         button_color.addItem(color_name)
                         button_color.setCurrentText(color_name)
-                        button_color.setStyleSheet(
-                            f'QComboBox{{border-radius: 0.001em; background-color: {first_item.get_value("paint_color")}}} {"QMenu { background-color: rgb(22,22,22);}"}'
-                        )
+                        button_color.setStyleSheet(f'QComboBox{{border-radius: 0.001em; background-color: {first_item.get_value("paint_color")}}} {"QMenu { background-color: rgb(22,22,22);}"}')
                         break
             table.setCellWidget(row_index, col_index, button_color)  # 7
             col_index += 1
-            table.setItem(row_index, col_index, QTableWidgetItem(str(grouped_items.get_total_quantity(item_name))))  # 8
+            table.setItem(
+                row_index,
+                col_index,
+                QTableWidgetItem(str(grouped_items.get_total_quantity(item_name))),
+            )  # 8
             table.item(row_index, col_index).setTextAlignment(Qt.AlignmentFlag.AlignCenter | Qt.AlignmentFlag.AlignVCenter)
             col_index += 1
 
@@ -6727,7 +7071,15 @@ class MainWindow(QMainWindow):
                     status_box.addItems(list(workspace_tags.get_value("flow_tag_statuses")[item_flow_tag].keys()))
                     status_box.setCurrentText(first_item.get_value("status"))
                     status_box.setStyleSheet("border-radius: 0.001em;")
-                    status_box.currentTextChanged.connect(partial(item_status_changed, status_box, item_name, row_index, toggle_timer_button))
+                    status_box.currentTextChanged.connect(
+                        partial(
+                            item_status_changed,
+                            status_box,
+                            item_name,
+                            row_index,
+                            toggle_timer_button,
+                        )
+                    )
                     # table.setCellWidget(row_index, col_index, status_box)
                     h_layout.addWidget(status_box)
             else:
@@ -6745,7 +7097,12 @@ class MainWindow(QMainWindow):
                 h_layout.addWidget(recut_button)
             with contextlib.suppress(IndexError, KeyError):
                 next_flow_tag = first_item.get_value("flow_tag")[first_item.get_value("current_flow_state") + 1]
-                h_layout.addWidget(QLabel(workspace_tags.get_value("attributes")[next_flow_tag]["next_flow_tag_message"], self))
+                h_layout.addWidget(
+                    QLabel(
+                        workspace_tags.get_value("attributes")[next_flow_tag]["next_flow_tag_message"],
+                        self,
+                    )
+                )
             table.setCellWidget(row_index, col_index, flow_tag_controls_widget)
             col_index += 1
 
@@ -6763,7 +7120,11 @@ class MainWindow(QMainWindow):
                 table.showColumn(10)
 
             col_index += 1
-            table.setItem(row_index, col_index, QTableWidgetItem(str(first_item.data["shelf_number"])))  # 11
+            table.setItem(
+                row_index,
+                col_index,
+                QTableWidgetItem(str(first_item.data["shelf_number"])),
+            )  # 11
             table.item(row_index, col_index).setTextAlignment(Qt.AlignmentFlag.AlignCenter | Qt.AlignmentFlag.AlignVCenter)
 
             col_index += 1
@@ -6785,7 +7146,14 @@ class MainWindow(QMainWindow):
             set_status_menu = QMenu("Set Status", self)
             for status in workspace_tags.get_value("flow_tag_statuses")[self.category]:
                 status_action = QAction(status, self)
-                status_action.triggered.connect(partial(self.change_selected_table_items_status, table, grouped_items, status))
+                status_action.triggered.connect(
+                    partial(
+                        self.change_selected_table_items_status,
+                        table,
+                        grouped_items,
+                        status,
+                    )
+                )
                 set_status_menu.addAction(status_action)
             menu.addMenu(set_status_menu)
         done_action = QAction("Mark all as Done", self)
@@ -6804,7 +7172,8 @@ class MainWindow(QMainWindow):
         else:
             self.tab_widget.currentWidget().layout().addWidget(scroll_area)
         self.scroll_position_manager.restore_scroll_position(
-            tab_name=f"{self.tabWidget.tabText(self.tabWidget.currentIndex())} table_summary {self.category}", scroll=scroll_area
+            tab_name=f"{self.tabWidget.tabText(self.tabWidget.currentIndex())} table_summary {self.category}",
+            scroll=scroll_area,
         )
 
     # USER
@@ -6813,9 +7182,7 @@ class MainWindow(QMainWindow):
         self.workspace_filter["show_recut"] = selected_tab == "Recut"
         self.workspace_information.setdefault(selected_tab, {"group_tool_box": None})
         try:
-            self.workspace_information[selected_tab]["group_tool_box"] = self.workspace_information[selected_tab][
-                "group_tool_box"
-            ].get_widget_visibility()
+            self.workspace_information[selected_tab]["group_tool_box"] = self.workspace_information[selected_tab]["group_tool_box"].get_widget_visibility()
             saved_workspace_prefs = True
         except (AttributeError, RuntimeError):
             saved_workspace_prefs = False
@@ -6829,10 +7196,18 @@ class MainWindow(QMainWindow):
                 self.scroll_position_manager.save_scroll_position(tab_name=tab_name, scroll=scroll)
 
             scroll_area.verticalScrollBar().valueChanged.connect(
-                partial(save_scroll_position, f"{self.tabWidget.tabText(self.tabWidget.currentIndex())} {self.category}", scroll_area)
+                partial(
+                    save_scroll_position,
+                    f"{self.tabWidget.tabText(self.tabWidget.currentIndex())} {self.category}",
+                    scroll_area,
+                )
             )
             scroll_area.horizontalScrollBar().valueChanged.connect(
-                partial(save_scroll_position, f"{self.tabWidget.tabText(self.tabWidget.currentIndex())} {self.category}", scroll_area)
+                partial(
+                    save_scroll_position,
+                    f"{self.tabWidget.tabText(self.tabWidget.currentIndex())} {self.category}",
+                    scroll_area,
+                )
             )
             scroll_area.setWidgetResizable(True)
             scroll_content = QWidget(self)
@@ -6847,9 +7222,16 @@ class MainWindow(QMainWindow):
                 group_widget = QWidget()
                 group_layout = QVBoxLayout(group_widget)
                 group_widget.setLayout(group_layout)
-                group_tool_box.addItem(group_widget, group, base_color=user_workspace.get_group_color(group))
+                group_tool_box.addItem(
+                    group_widget,
+                    group,
+                    base_color=user_workspace.get_group_color(group),
+                )
                 group_tool_boxes[group] = group_widget
-                self.workspace_information[selected_tab].setdefault(group, {"tool_box": None, "sub_assemblies": {}, "group_tool_box": None})
+                self.workspace_information[selected_tab].setdefault(
+                    group,
+                    {"tool_box": None, "sub_assemblies": {}, "group_tool_box": None},
+                )
             group_tool_box.close_all()
             if saved_workspace_prefs:
                 group_tool_box.set_widgets_visibility(self.workspace_information[selected_tab]["group_tool_box"])
@@ -6861,9 +7243,7 @@ class MainWindow(QMainWindow):
             grouped_data = user_workspace.get_grouped_data()
             for group in grouped_data:
                 try:
-                    self.workspace_information[selected_tab][group]["tool_box"] = self.workspace_information[selected_tab][group][
-                        "tool_box"
-                    ].get_widget_visibility()
+                    self.workspace_information[selected_tab][group]["tool_box"] = self.workspace_information[selected_tab][group]["tool_box"].get_widget_visibility()
                     saved_workspace_prefs = True
                 except (AttributeError, RuntimeError):
                     saved_workspace_prefs = False
@@ -6890,7 +7270,8 @@ class MainWindow(QMainWindow):
                 self.workspace_information[selected_tab][group]["tool_box"] = multi_tool_box
             self.tab_widget.currentWidget().layout().addWidget(scroll_area)
             self.scroll_position_manager.restore_scroll_position(
-                tab_name=f"{self.tabWidget.tabText(self.tabWidget.currentIndex())} {self.category}", scroll=scroll_area
+                tab_name=f"{self.tabWidget.tabText(self.tabWidget.currentIndex())} {self.category}",
+                scroll=scroll_area,
             )
         elif self.pushButton_show_item_summary.isChecked():
             self.load_view_table_summary()
@@ -6917,7 +7298,10 @@ class MainWindow(QMainWindow):
         item_group = WorkspaceItemGroup()
 
         for item in assembly.items:
-            item_group.add_item_to_group(group_name=f'{item.data.get("material")} {item.data.get("thickness")}', item=item)
+            item_group.add_item_to_group(
+                group_name=f'{item.data.get("material")} {item.data.get("thickness")}',
+                item=item,
+            )
 
         def get_date_edit_widget(row_index: int, group_name: str) -> QWidget:
             widget = QWidget()
@@ -6977,7 +7361,11 @@ class MainWindow(QMainWindow):
             table.insertRow(row_index)
             table.setRowHeight(row_index, 50)
             items_count = len(item_group.get_item_list(group))
-            table.setItem(row_index, col_index, QTableWidgetItem(f'{group} - ({items_count} item{"s" if items_count > 1 else ""})'))  # 0
+            table.setItem(
+                row_index,
+                col_index,
+                QTableWidgetItem(f'{group} - ({items_count} item{"s" if items_count > 1 else ""})'),
+            )  # 0
             items_tool_tip: str = ""
             for i, item in enumerate(item_group.get_item_list(group), start=1):
                 items_tool_tip += f"{i}. {item.name}\n"
@@ -6988,9 +7376,7 @@ class MainWindow(QMainWindow):
             table.setItem(
                 row_index,
                 col_index,
-                QTableWidgetItem(
-                    f'{item_group.get_item(group).get_value("starting_date")} to {item_group.get_item(group).get_value("ending_date")}, ({QDate.fromString(item_group.get_item(group).get_value("starting_date"), "yyyy-M-d").daysTo(QDate.fromString(item_group.get_item(group).get_value("ending_date"), "yyyy-M-d"))} days)'
-                ),
+                QTableWidgetItem(f'{item_group.get_item(group).get_value("starting_date")} to {item_group.get_item(group).get_value("ending_date")}, ({QDate.fromString(item_group.get_item(group).get_value("starting_date"), "yyyy-M-d").daysTo(QDate.fromString(item_group.get_item(group).get_value("ending_date"), "yyyy-M-d"))} days)'),
             )  # 0
             table.resizeColumnsToContents()
 
@@ -7010,7 +7396,13 @@ class MainWindow(QMainWindow):
         return table
 
     # PLANNING
-    def load_planning_assembly_widget(self, assembly: Assembly, workspace_information: dict, group_color: str, parent=None) -> QWidget:
+    def load_planning_assembly_widget(
+        self,
+        assembly: Assembly,
+        workspace_information: dict,
+        group_color: str,
+        parent=None,
+    ) -> QWidget:
         widget = QWidget(self)
         layout = QVBoxLayout(widget)
         layout.setSpacing(1)
@@ -7042,9 +7434,7 @@ class MainWindow(QMainWindow):
             grid_widget = QWidget(widget)
             grid = QGridLayout(grid_widget)
             grid.setAlignment(Qt.AlignmentFlag.AlignLeft)
-            timeline_label = QLabel(
-                f"{assembly.get_assembly_data('starting_date')} to {assembly.get_assembly_data('ending_date')}, ({QDate.fromString(assembly.get_assembly_data('starting_date'), 'yyyy-M-d').daysTo(QDate.fromString(assembly.get_assembly_data('ending_date'), 'yyyy-M-d'))} days)"
-            )
+            timeline_label = QLabel(f"{assembly.get_assembly_data('starting_date')} to {assembly.get_assembly_data('ending_date')}, ({QDate.fromString(assembly.get_assembly_data('starting_date'), 'yyyy-M-d').daysTo(QDate.fromString(assembly.get_assembly_data('ending_date'), 'yyyy-M-d'))} days)")
 
             def set_time_line():
                 timeline_dialog = SelectTimeLineDialog(
@@ -7115,7 +7505,9 @@ class MainWindow(QMainWindow):
         for i, sub_assembly in enumerate(assembly.sub_assemblies):
             if sub_assembly.get_assembly_data(key="show") == True and sub_assembly.get_assembly_data(key="completed") == False:
                 sub_assembly_widget = self.load_planning_assembly_widget(
-                    assembly=sub_assembly, workspace_information=workspace_information[assembly.name]["sub_assemblies"], group_color=group_color
+                    assembly=sub_assembly,
+                    workspace_information=workspace_information[assembly.name]["sub_assemblies"],
+                    group_color=group_color,
                 )
                 sub_assemblies_toolbox.addItem(sub_assembly_widget, f"{sub_assembly.name}", base_color=group_color)
                 # sub_assemblies_toolbox.close(i)
@@ -7131,9 +7523,7 @@ class MainWindow(QMainWindow):
     def load_planning_assembly_tab(self) -> None:
         self.workspace_information.setdefault("Planning", {"group_tool_box": None})
         try:
-            self.workspace_information["Planning"]["group_tool_box"] = self.workspace_information["Planning"][
-                "group_tool_box"
-            ].get_widget_visibility()
+            self.workspace_information["Planning"]["group_tool_box"] = self.workspace_information["Planning"]["group_tool_box"].get_widget_visibility()
             saved_workspace_prefs = True
         except (AttributeError, RuntimeError):
             saved_workspace_prefs = False
@@ -7145,10 +7535,18 @@ class MainWindow(QMainWindow):
             self.scroll_position_manager.save_scroll_position(tab_name=tab_name, scroll=scroll)
 
         scroll_area.verticalScrollBar().valueChanged.connect(
-            partial(save_scroll_position, f"{self.tabWidget.tabText(self.tabWidget.currentIndex())} Planning", scroll_area)
+            partial(
+                save_scroll_position,
+                f"{self.tabWidget.tabText(self.tabWidget.currentIndex())} Planning",
+                scroll_area,
+            )
         )
         scroll_area.horizontalScrollBar().valueChanged.connect(
-            partial(save_scroll_position, f"{self.tabWidget.tabText(self.tabWidget.currentIndex())} Planning", scroll_area)
+            partial(
+                save_scroll_position,
+                f"{self.tabWidget.tabText(self.tabWidget.currentIndex())} Planning",
+                scroll_area,
+            )
         )
         scroll_area.setWidgetResizable(True)
         scroll_content = QWidget(self)
@@ -7177,9 +7575,7 @@ class MainWindow(QMainWindow):
         grouped_data = user_workspace.get_grouped_data()
         for group in grouped_data:
             try:
-                self.workspace_information["Planning"][group]["tool_box"] = self.workspace_information["Planning"][group][
-                    "tool_box"
-                ].get_widget_visibility()
+                self.workspace_information["Planning"][group]["tool_box"] = self.workspace_information["Planning"][group]["tool_box"].get_widget_visibility()
                 saved_workspace_prefs = True
             except (AttributeError, RuntimeError):
                 saved_workspace_prefs = False
@@ -7206,7 +7602,8 @@ class MainWindow(QMainWindow):
             self.workspace_information["Planning"][group]["tool_box"] = multi_tool_box
         self.tab_widget.currentWidget().layout().addWidget(scroll_area)
         self.scroll_position_manager.restore_scroll_position(
-            tab_name=f"{self.tabWidget.tabText(self.tabWidget.currentIndex())} Planning", scroll=scroll_area
+            tab_name=f"{self.tabWidget.tabText(self.tabWidget.currentIndex())} Planning",
+            scroll=scroll_area,
         )
 
     # * \/ CONTEXT MENU \/
@@ -7234,7 +7631,10 @@ class MainWindow(QMainWindow):
                     item.set_value(key="timers", value=timer_data)
             if item_flow_tag == "Laser Cutting":
                 item.set_value(key="recut", value=False)
-            item.set_value(key="current_flow_state", value=item.get_value(key="current_flow_state") + 1)
+            item.set_value(
+                key="current_flow_state",
+                value=item.get_value(key="current_flow_state") + 1,
+            )
             item.set_value(key="status", value=None)
             if item.get_value(key="current_flow_state") == len(item.get_value(key="flow_tag")):
                 item.set_value(key="completed", value=True)
@@ -7261,7 +7661,12 @@ class MainWindow(QMainWindow):
         self.load_workspace()
 
     # USER
-    def change_selected_table_items_status(self, table: CustomTableWidget, assembly: Assembly | WorkspaceItemGroup, status: str) -> None:
+    def change_selected_table_items_status(
+        self,
+        table: CustomTableWidget,
+        assembly: Assembly | WorkspaceItemGroup,
+        status: str,
+    ) -> None:
         selected_items_from_table: list[str] = self.get_all_selected_workspace_parts(table)
         if isinstance(assembly, Assembly):
             items_to_update: list[WorkspaceItem] = [item for item in assembly.items if item.name in selected_items_from_table]
@@ -7284,7 +7689,10 @@ class MainWindow(QMainWindow):
                     item.set_value(key="timers", value=timer_data)
             if item_flow_tag == "Laser Cutting":
                 item.set_value(key="recut", value=False)
-            item.set_value(key="current_flow_state", value=item.get_value(key="current_flow_state") + 1)
+            item.set_value(
+                key="current_flow_state",
+                value=item.get_value(key="current_flow_state") + 1,
+            )
             item.set_value(key="status", value=None)
             if item.get_value(key="current_flow_state") == len(item.get_value(key="flow_tag")):
                 item.set_value(key="completed", value=True)
@@ -7306,11 +7714,7 @@ class MainWindow(QMainWindow):
 
         for item in items_to_update:
             item_flow_tag: str = item.get_value("flow_tag")[item.get_value("current_flow_state")]
-            if (
-                workspace_tags.get_value("flow_tag_statuses")[item_flow_tag][status]["start_timer"]
-                and workspace_tags.get_value("attributes")[item_flow_tag]["is_timer_enabled"]
-                and item.get_value("timers")[item_flow_tag]["recording"] == False
-            ):
+            if workspace_tags.get_value("flow_tag_statuses")[item_flow_tag][status]["start_timer"] and workspace_tags.get_value("attributes")[item_flow_tag]["is_timer_enabled"] and item.get_value("timers")[item_flow_tag]["recording"] == False:
                 timer_data = item.get_value("timers")
                 timer_data[item_flow_tag]["recording"] = True
                 timer_data[item_flow_tag].setdefault("time_taken_intervals", [])
@@ -7349,11 +7753,24 @@ class MainWindow(QMainWindow):
                     if len(workspace_tags.get_value("flow_tag_statuses")[self.category]) > 0:
                         for status in workspace_tags.get_value("flow_tag_statuses")[self.category]:
                             status_action = QAction(status, self)
-                            status_action.triggered.connect(partial(self.change_selected_table_items_status, table, main_assembly, status))
+                            status_action.triggered.connect(
+                                partial(
+                                    self.change_selected_table_items_status,
+                                    table,
+                                    main_assembly,
+                                    status,
+                                )
+                            )
                             set_status_menu.addAction(status_action)
                         menu.addMenu(set_status_menu)
                     done_action = QAction("Mark all as Done", self)
-                    done_action.triggered.connect(partial(self.move_selected_table_items_to_next_flow_state, table, main_assembly))
+                    done_action.triggered.connect(
+                        partial(
+                            self.move_selected_table_items_to_next_flow_state,
+                            table,
+                            main_assembly,
+                        )
+                    )
                     menu.addAction(done_action)
                     download_action = QAction("Download all files", self)
                     download_action.triggered.connect(partial(self.download_all_selected_items_files, table, main_assembly))
@@ -7361,13 +7778,21 @@ class MainWindow(QMainWindow):
                     table.customContextMenuRequested.connect(partial(self.open_group_menu, menu))
 
     # STAGING/EDITING
-    def copy_items_to(self, table: CustomTableWidget, assembly_copy_from: Assembly, assembly_copy_to: Assembly) -> None:
+    def copy_items_to(
+        self,
+        table: CustomTableWidget,
+        assembly_copy_from: Assembly,
+        assembly_copy_to: Assembly,
+    ) -> None:
         selected_items_from_table: list[str] = self.get_all_selected_workspace_parts(table)
         items_to_copy: list[WorkspaceItem] = [item for item in assembly_copy_from.items if item.name in selected_items_from_table]
 
         for item_to_copy in items_to_copy:
             if item_to_copy.name in [other_item.name for other_item in assembly_copy_to.items]:
-                self.show_message_dialog(title="Duplicates", message=f"There are duplicate items in '{assembly_copy_to.name}'")
+                self.show_message_dialog(
+                    title="Duplicates",
+                    message=f"There are duplicate items in '{assembly_copy_to.name}'",
+                )
                 return
 
         for item_to_copy in items_to_copy:
@@ -7378,13 +7803,21 @@ class MainWindow(QMainWindow):
         self.load_workspace()
 
     # STAGING/EDITING
-    def move_items_to(self, table: CustomTableWidget, assembly_copy_from: Assembly, assembly_copy_to: Assembly) -> None:
+    def move_items_to(
+        self,
+        table: CustomTableWidget,
+        assembly_copy_from: Assembly,
+        assembly_copy_to: Assembly,
+    ) -> None:
         selected_items_from_table: list[str] = self.get_all_selected_workspace_parts(table)
         items_to_move: list[WorkspaceItem] = [item for item in assembly_copy_from.items if item.name in selected_items_from_table]
 
         for item_to_move in items_to_move:
             if item_to_move.name in [other_item.name for other_item in assembly_copy_to.items]:
-                self.show_message_dialog(title="Duplicates", message=f"There are duplicate items in '{assembly_copy_to.name}'")
+                self.show_message_dialog(
+                    title="Duplicates",
+                    message=f"There are duplicate items in '{assembly_copy_to.name}'",
+                )
                 return
 
         for item_to_move in items_to_move:
@@ -7399,9 +7832,7 @@ class MainWindow(QMainWindow):
     def delete_selected_items_from_workspace(self, table: CustomTableWidget, assembly: Assembly) -> None:
         selected_indexes = table.selectedIndexes()
         selected_rows = list({selected_index.row() for selected_index in selected_indexes})
-        delete_buttons: list[DeletePushButton] = [
-            table.cellWidget(selected_row, table.columnCount() - 1) for selected_row in selected_rows if selected_row != table.rowCount() - 1
-        ]
+        delete_buttons: list[DeletePushButton] = [table.cellWidget(selected_row, table.columnCount() - 1) for selected_row in selected_rows if selected_row != table.rowCount() - 1]
 
         for delete_button in delete_buttons:
             delete_button.click()
@@ -7486,7 +7917,13 @@ class MainWindow(QMainWindow):
                     table.setContextMenuPolicy(Qt.ContextMenuPolicy.CustomContextMenu)
                     menu = QMenu(self)
                     generate_workrder = QAction("Generate Workorder with Selected Items", self)
-                    generate_workrder.triggered.connect(partial(self.generate_workorder_with_selected_items, table, main_assembly))
+                    generate_workrder.triggered.connect(
+                        partial(
+                            self.generate_workorder_with_selected_items,
+                            table,
+                            main_assembly,
+                        )
+                    )
                     menu.addSeparator()
                     menu.addAction(generate_workrder)
                     copy_to_menu = QMenu(self)
@@ -7506,9 +7943,23 @@ class MainWindow(QMainWindow):
                                     assembly_action.setEnabled(False)
                                 # assembly_action.toggled.connect(self.copy_selected_items_to(table, assembly))
                                 if action == "copy":
-                                    assembly_action.triggered.connect(partial(self.copy_items_to, table, main_assembly, assembly))
+                                    assembly_action.triggered.connect(
+                                        partial(
+                                            self.copy_items_to,
+                                            table,
+                                            main_assembly,
+                                            assembly,
+                                        )
+                                    )
                                 elif action == "move":
-                                    assembly_action.triggered.connect(partial(self.move_items_to, table, main_assembly, assembly))
+                                    assembly_action.triggered.connect(
+                                        partial(
+                                            self.move_items_to,
+                                            table,
+                                            main_assembly,
+                                            assembly,
+                                        )
+                                    )
                                 menu.addAction(assembly_action)
 
                                 if assembly.sub_assemblies:
@@ -7528,14 +7979,32 @@ class MainWindow(QMainWindow):
                             if not sub_assembly.get_assembly_data(key="has_items") or main_assembly == sub_assembly:
                                 assembly_action.setEnabled(False)
                             if action == "copy":
-                                assembly_action.triggered.connect(partial(self.copy_items_to, table, main_assembly, sub_assembly))
+                                assembly_action.triggered.connect(
+                                    partial(
+                                        self.copy_items_to,
+                                        table,
+                                        main_assembly,
+                                        sub_assembly,
+                                    )
+                                )
                             elif action == "move":
-                                assembly_action.triggered.connect(partial(self.move_items_to, table, main_assembly, sub_assembly))
+                                assembly_action.triggered.connect(
+                                    partial(
+                                        self.move_items_to,
+                                        table,
+                                        main_assembly,
+                                        sub_assembly,
+                                    )
+                                )
                             parent_menu.addAction(assembly_action)
                             if sub_assembly.sub_assemblies:
                                 sub_assembly_menu = parent_menu.addMenu("Sub Assemblies")
                                 parent_menu.addSeparator()
-                                create_sub_assemblies_submenu(sub_assembly_menu, action, sub_assembly.sub_assemblies)
+                                create_sub_assemblies_submenu(
+                                    sub_assembly_menu,
+                                    action,
+                                    sub_assembly.sub_assemblies,
+                                )
 
                     menu.addMenu(get_all_assemblies_menu(menu=copy_to_menu, action="copy"))
                     menu.addMenu(get_all_assemblies_menu(menu=move_to_menu, action="move"))
@@ -7545,7 +8014,15 @@ class MainWindow(QMainWindow):
                     materials_menu.setTitle("Set Materials")
                     for material in price_of_steel_information.get_value("materials"):
                         material_action = QAction(material, self)
-                        material_action.triggered.connect(partial(self.set_tables_selected_items_value, table, main_assembly, "material", material))
+                        material_action.triggered.connect(
+                            partial(
+                                self.set_tables_selected_items_value,
+                                table,
+                                main_assembly,
+                                "material",
+                                material,
+                            )
+                        )
                         materials_menu.addAction(material_action)
                     menu.addMenu(materials_menu)
 
@@ -7554,7 +8031,13 @@ class MainWindow(QMainWindow):
                     for thickness in price_of_steel_information.get_value("thicknesses"):
                         thickness_action = QAction(thickness, self)
                         thickness_action.triggered.connect(
-                            partial(self.set_tables_selected_items_value, table, main_assembly, "thickness", thickness)
+                            partial(
+                                self.set_tables_selected_items_value,
+                                table,
+                                main_assembly,
+                                "thickness",
+                                thickness,
+                            )
                         )
                         thickness_menu.addAction(thickness_action)
                     menu.addMenu(thickness_menu)
@@ -7563,7 +8046,15 @@ class MainWindow(QMainWindow):
                     flowtags_menu.setTitle("Set Flow Tag")
                     for flow_tag in self.get_all_flow_tags():
                         flowtag_action = QAction(flow_tag, self)
-                        flowtag_action.triggered.connect(partial(self.set_tables_selected_items_value, table, main_assembly, "flow_tag", flow_tag))
+                        flowtag_action.triggered.connect(
+                            partial(
+                                self.set_tables_selected_items_value,
+                                table,
+                                main_assembly,
+                                "flow_tag",
+                                flow_tag,
+                            )
+                        )
                         flowtags_menu.addAction(flowtag_action)
                     menu.addMenu(flowtags_menu)
 
@@ -7571,7 +8062,15 @@ class MainWindow(QMainWindow):
                     paint_color_menu.setTitle("Set Paint Color")
                     for color in list(workspace_tags.get_value("paint_colors").keys()):
                         color_action = QAction(color, self)
-                        color_action.triggered.connect(partial(self.set_tables_selected_items_value, table, main_assembly, "paint_color", color))
+                        color_action.triggered.connect(
+                            partial(
+                                self.set_tables_selected_items_value,
+                                table,
+                                main_assembly,
+                                "paint_color",
+                                color,
+                            )
+                        )
                         paint_color_menu.addAction(color_action)
                     menu.addMenu(paint_color_menu)
 
@@ -7580,13 +8079,25 @@ class MainWindow(QMainWindow):
                     for paint_type in ["None", "Powder", "Wet Paint"]:
                         paint_type_action = QAction(paint_type, self)
                         paint_type_action.triggered.connect(
-                            partial(self.set_tables_selected_items_value, table, main_assembly, "paint_type", paint_type)
+                            partial(
+                                self.set_tables_selected_items_value,
+                                table,
+                                main_assembly,
+                                "paint_type",
+                                paint_type,
+                            )
                         )
                         paint_type_menu.addAction(paint_type_action)
                     menu.addMenu(paint_type_menu)
 
                     delete_selected_items = QAction("Delete Selected Items", self)
-                    delete_selected_items.triggered.connect(partial(self.delete_selected_items_from_workspace, table, main_assembly))
+                    delete_selected_items.triggered.connect(
+                        partial(
+                            self.delete_selected_items_from_workspace,
+                            table,
+                            main_assembly,
+                        )
+                    )
                     menu.addSeparator()
                     menu.addAction(delete_selected_items)
 
@@ -7722,8 +8233,18 @@ class MainWindow(QMainWindow):
         self.lineEdit_search.setCompleter(QCompleter(self.get_all_workspace_item_names(), self))
         self.lineEdit_search.completer().setCaseSensitivity(Qt.CaseSensitivity.CaseInsensitive)
 
-        self.pushButton_show_sub_assembly.clicked.connect(lambda: (self.pushButton_show_item_summary.setChecked(False), self.load_workspace()))
-        self.pushButton_show_item_summary.clicked.connect(lambda: (self.pushButton_show_sub_assembly.setChecked(False), self.load_workspace()))
+        self.pushButton_show_sub_assembly.clicked.connect(
+            lambda: (
+                self.pushButton_show_item_summary.setChecked(False),
+                self.load_workspace(),
+            )
+        )
+        self.pushButton_show_item_summary.clicked.connect(
+            lambda: (
+                self.pushButton_show_sub_assembly.setChecked(False),
+                self.load_workspace(),
+            )
+        )
 
         self.horizontalLayout_23.setAlignment(Qt.AlignmentFlag.AlignRight)
 
@@ -7853,7 +8374,10 @@ class MainWindow(QMainWindow):
                     label = QLabel(label, self)
                     grid_layout.addWidget(label, i, 0)
 
-                label_scrap_percentage = QLabel(f"{calculate_scrap_percentage(nest_name, self.quote_nest_information):,.2f}%", self)
+                label_scrap_percentage = QLabel(
+                    f"{calculate_scrap_percentage(nest_name, self.quote_nest_information):,.2f}%",
+                    self,
+                )
                 grid_layout.addWidget(label_scrap_percentage, 0, 2)
 
                 label_sheet_cost = QLabel(f"${self.get_sheet_cost(nest_name):,.2f}")
@@ -7865,7 +8389,13 @@ class MainWindow(QMainWindow):
                 sheet_cut_time = MachineCutTimeSpinBox(self)
                 sheet_cut_time.setValue(float(self.quote_nest_information[nest_name]["single_sheet_machining_time"]))
                 sheet_cut_time.editingFinished.connect(
-                    partial(self.sheet_nest_item_change, tab_index, sheet_cut_time, nest_name, "single_sheet_machining_time")
+                    partial(
+                        self.sheet_nest_item_change,
+                        tab_index,
+                        sheet_cut_time,
+                        nest_name,
+                        "single_sheet_machining_time",
+                    )
                 )
                 sheet_cut_time.setToolTip(f"Original: {self.get_sheet_cut_time(nest_name)}")
                 grid_layout.addWidget(sheet_cut_time, 3, 2)
@@ -7892,7 +8422,11 @@ class MainWindow(QMainWindow):
                 comboBox_sheet_material.wheelEvent = lambda event: event.ignore()
                 comboBox_sheet_material.addItems(price_of_steel_information.get_value("materials"))
                 comboBox_sheet_material.setCurrentText(self.quote_nest_information[nest_name]["material"])
-                if self.quote_nest_information[nest_name]["material"] in {"304 SS", "409 SS", "Aluminium"}:
+                if self.quote_nest_information[nest_name]["material"] in {
+                    "304 SS",
+                    "409 SS",
+                    "Aluminium",
+                }:
                     self.comboBox_laser_cutting.setCurrentText("Nitrogen")
                 else:
                     self.comboBox_laser_cutting.setCurrentText("CO2")
@@ -8047,20 +8581,15 @@ class MainWindow(QMainWindow):
             if nest_name[0] == "_":
                 name = f"{self.quote_nest_information[nest_name]['material']} {self.quote_nest_information[nest_name]['gauge']} {self.quote_nest_information[nest_name]['sheet_dim']}"
                 summary.setdefault(name, {"total_sheet_count": 0, "total_seconds": 0})
-                summary.setdefault(f"{self.quote_nest_information[nest_name]['material']}", {"total_sheet_count": 0, "total_seconds": 0})
+                summary.setdefault(
+                    f"{self.quote_nest_information[nest_name]['material']}",
+                    {"total_sheet_count": 0, "total_seconds": 0},
+                )
                 summary[name]["total_sheet_count"] += self.quote_nest_information[nest_name]["quantity_multiplier"]
-                summary[name]["total_seconds"] += (
-                    float(self.quote_nest_information[nest_name]["single_sheet_machining_time"])
-                    * self.quote_nest_information[nest_name]["quantity_multiplier"]
-                )
+                summary[name]["total_seconds"] += float(self.quote_nest_information[nest_name]["single_sheet_machining_time"]) * self.quote_nest_information[nest_name]["quantity_multiplier"]
 
-                summary[f"{self.quote_nest_information[nest_name]['material']}"]["total_seconds"] += (
-                    float(self.quote_nest_information[nest_name]["single_sheet_machining_time"])
-                    * self.quote_nest_information[nest_name]["quantity_multiplier"]
-                )
-                summary[f"{self.quote_nest_information[nest_name]['material']}"]["total_sheet_count"] += self.quote_nest_information[nest_name][
-                    "quantity_multiplier"
-                ]
+                summary[f"{self.quote_nest_information[nest_name]['material']}"]["total_seconds"] += float(self.quote_nest_information[nest_name]["single_sheet_machining_time"]) * self.quote_nest_information[nest_name]["quantity_multiplier"]
+                summary[f"{self.quote_nest_information[nest_name]['material']}"]["total_sheet_count"] += self.quote_nest_information[nest_name]["quantity_multiplier"]
         sorted_keys = natsorted(summary.keys(), reverse=True)
         sorted_dict = {key: summary[key] for key in sorted_keys}
         return sorted_dict
@@ -8073,10 +8602,7 @@ class MainWindow(QMainWindow):
             for nest in self.quote_nest_information:
                 if nest_name in nest and nest[0] == "_":
                     for i, button in enumerate(self.sheet_nests_toolbox.buttons):
-                        if (
-                            button.text()
-                            == f"{self.quote_nest_information[nest]['gauge']} {self.quote_nest_information[nest]['material']} {self.quote_nest_information[nest]['sheet_dim']} - {nest.split('/')[-1].replace('.pdf', '')}"
-                        ):
+                        if button.text() == f"{self.quote_nest_information[nest]['gauge']} {self.quote_nest_information[nest]['material']} {self.quote_nest_information[nest]['sheet_dim']} - {nest.split('/')[-1].replace('.pdf', '')}":
                             self.sheet_nests_toolbox.getWidget(i).setEnabled(False)
                             self.sheet_nests_toolbox.setItemText(i, "No more items for this nest")
                             self.sheet_nests_toolbox.close(i)
@@ -8109,7 +8635,11 @@ class MainWindow(QMainWindow):
             if row in selected_rows:
                 if nest_name == "":
                     nest_name = "/CUSTOM NEST"
-                self.delete_quote_part(item_name=item_name, nest_name=f"{nest_name}.pdf", refresh_quote_table=False)
+                self.delete_quote_part(
+                    item_name=item_name,
+                    nest_name=f"{nest_name}.pdf",
+                    refresh_quote_table=False,
+                )
 
         self.load_quote_table()
         if len(self.quote_nest_information) == 0:
@@ -8197,9 +8727,7 @@ class MainWindow(QMainWindow):
                     self.tableWidget_quote_items.setItem(
                         row_index,
                         4,
-                        QTableWidgetItem(
-                            str(int(self.quote_nest_information[nest_name][item]["quantity"]) * self.get_quantity_multiplier(item, nest_name))
-                        ),
+                        QTableWidgetItem(str(int(self.quote_nest_information[nest_name][item]["quantity"]) * self.get_quantity_multiplier(item, nest_name))),
                     )
                     self.tableWidget_quote_items.item(row_index, 4).setTextAlignment(Qt.AlignmentFlag.AlignCenter | Qt.AlignmentFlag.AlignVCenter)
 
@@ -8209,9 +8737,7 @@ class MainWindow(QMainWindow):
                         QTableWidgetItem(str(self.quote_nest_information[nest_name][item]["part_dim"])),
                     )
                     self.tableWidget_quote_items.item(row_index, 5).setTextAlignment(Qt.AlignmentFlag.AlignCenter | Qt.AlignmentFlag.AlignVCenter)
-                    self.tableWidget_quote_items.item(row_index, 5).setToolTip(
-                        f'Surface Area: {self.quote_nest_information[nest_name][item]["surface_area"]}'
-                    )
+                    self.tableWidget_quote_items.item(row_index, 5).setToolTip(f'Surface Area: {self.quote_nest_information[nest_name][item]["surface_area"]}')
 
                     # COGS
                     self.tableWidget_quote_items.setItem(
@@ -8281,7 +8807,14 @@ class MainWindow(QMainWindow):
                     send_part_to_inventory.setText("Add Part to Inventory")
                     send_part_to_inventory.setStyleSheet("margin: 5%;")
                     send_part_to_inventory.setFixedWidth(150)
-                    send_part_to_inventory.clicked.connect(partial(self.upload_part_to_inventory_thread, item, nest_name, send_part_to_inventory))
+                    send_part_to_inventory.clicked.connect(
+                        partial(
+                            self.upload_part_to_inventory_thread,
+                            item,
+                            nest_name,
+                            send_part_to_inventory,
+                        )
+                    )
                     self.tableWidget_quote_items.setCellWidget(row_index, 13, send_part_to_inventory)
 
                     delete_button = DeletePushButton(
@@ -8472,7 +9005,10 @@ class MainWindow(QMainWindow):
                 new_file_path = f"PO's/templates/{po_file.get_vendor().replace('.','')}.xlsx"
                 shutil.copyfile(po_file_path, new_file_path)
             check_po_directories()
-            self.show_message_dialog(title="Success", message="Successfully added new Purchase Order template.")
+            self.show_message_dialog(
+                title="Success",
+                message="Successfully added new Purchase Order template.",
+            )
         if not open_select_file_dialog:
             for po_file_path in po_file_paths:
                 try:
@@ -8486,7 +9022,10 @@ class MainWindow(QMainWindow):
                 new_file_path = f"PO's/templates/{po_file.get_vendor().replace('.','')}.xlsx"
                 shutil.copyfile(po_file_path, new_file_path)
             check_po_directories()
-            self.show_message_dialog(title="Success", message="Successfully added new Purchase Order template.")
+            self.show_message_dialog(
+                title="Success",
+                message="Successfully added new Purchase Order template.",
+            )
 
         self.reload_po_menu()
 
@@ -8694,10 +9233,7 @@ class MainWindow(QMainWindow):
             __middle: float = __start + 0.001 if __start <= 1 - 0.001 else 1.0
             __end: float = __start + 0.0011 if __start <= 1 - 0.0011 else 1.0
             self.status_button.setText(f'Loading... {data.replace(", ", "/")}', color="white")
-            self.status_button.setStyleSheet(
-                """QPushButton#status_button {background: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0,stop:%(start)s #3daee9,stop:%(middle)s #3daee9,stop:%(end)s #1E363F)}"""
-                % {"start": str(__start), "middle": str(__middle), "end": str(__end)}
-            )
+            self.status_button.setStyleSheet("""QPushButton#status_button {background: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0,stop:%(start)s #3daee9,stop:%(middle)s #3daee9,stop:%(end)s #1E363F)}""" % {"start": str(__start), "middle": str(__middle), "end": str(__end)})
         else:
             self.status_button.setText("Done", "lime")
             inventory.load_data()
@@ -8756,14 +9292,14 @@ class MainWindow(QMainWindow):
             # self.tool_box_menu_changed()
             self.quantities_change()
             self.start_exchange_rate_thread()
-            if settings_file.get_value('geometry')['x'] == 0 and settings_file.get_value('geometry')['y'] == 0:
+            if settings_file.get_value("geometry")["x"] == 0 and settings_file.get_value("geometry")["y"] == 0:
                 self.showMaximized()
             else:
                 self.setGeometry(
-                    settings_file.get_value('geometry')['x'],
-                    settings_file.get_value('geometry')['y'] + 30,
-                    settings_file.get_value('geometry')['width'],
-                    settings_file.get_value('geometry')['height'] - 7,
+                    settings_file.get_value("geometry")["x"],
+                    settings_file.get_value("geometry")["y"] + 30,
+                    settings_file.get_value("geometry")["width"],
+                    settings_file.get_value("geometry")["height"] - 7,
                 )
 
         if "timed out" in str(data).lower() or "fail" in str(data).lower():
@@ -8876,7 +9412,10 @@ class MainWindow(QMainWindow):
                 self.comboBox_global_sheet_thickness.setCurrentText(select_item_dialog.get_selected_thickness())
 
             self.load_nests()
-            self.status_button.setText(f"Successfully loaded {len(self.get_all_selected_nests())} nests", "lime")
+            self.status_button.setText(
+                f"Successfully loaded {len(self.get_all_selected_nests())} nests",
+                "lime",
+            )
 
             if response == DialogButtons.set:
                 self.global_nest_material_change()
@@ -8902,7 +9441,12 @@ class MainWindow(QMainWindow):
         send_part_to_inventory.setEnabled(True)
 
     # OMNIGEN
-    def upload_batch_to_inventory_thread(self, batch_data: dict, should_update_inventory: bool, should_generate_quote: bool) -> None:
+    def upload_batch_to_inventory_thread(
+        self,
+        batch_data: dict,
+        should_update_inventory: bool,
+        should_generate_quote: bool,
+    ) -> None:
         # QApplication.setOverrideCursor(Qt.CursorShape.BusyCursor)
         if should_update_inventory:
             with open("parts_batch_to_upload_workorder.json", "w") as file:
@@ -8952,7 +9496,10 @@ class MainWindow(QMainWindow):
         try:
             self.order_number = int(order_number)
         except Exception:
-            self.show_error_dialog("oh no. Encountered error when fetching order number.", str(order_number))
+            self.show_error_dialog(
+                "oh no. Encountered error when fetching order number.",
+                str(order_number),
+            )
 
     # OMNIGEN
     def load_previous_nests_files_thread(self) -> None:

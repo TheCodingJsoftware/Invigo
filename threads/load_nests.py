@@ -15,8 +15,8 @@ from PyQt6.QtCore import QThread, pyqtSignal
 
 from utils.json_file import JsonFile
 
-class LoadNests(QThread):
 
+class LoadNests(QThread):
     signal = pyqtSignal(object)
 
     def __init__(self, parent, nests: list[str]) -> None:
@@ -65,14 +65,14 @@ class LoadNests(QThread):
                     image = Image.open(io.BytesIO(image_bytes))
                     if image.size[0] == 48 and image.size[1] == 48:
                         continue
-                    if image.size[0] == 580 and image.size[1] == 440: # A nest picture
+                    if image.size[0] == 580 and image.size[1] == 440:  # A nest picture
                         image.save(
                             open(
                                 f"{self.program_directory}/images/nest-{image_count}.{image_ext}",
                                 "wb",
                             )
                         )
-                    else: # A part picture
+                    else:  # A part picture
                         image = image.resize(
                             (self.size_of_picture, self.size_of_picture),
                             Image.Resampling.LANCZOS,
@@ -87,7 +87,6 @@ class LoadNests(QThread):
                     image_count += 1
 
     def convert_pdf_to_text(self, pdf_path: str) -> str:
-
         with open(f"{self.program_directory}/output.txt", "w") as f:
             f.write("")
 
@@ -146,8 +145,14 @@ class LoadNests(QThread):
                 sheet_material: str = self.material_id_to_name(self.get_values_from_text(nest_data, self.material_id_regex)[0])
                 sheet_gauge: str = self.get_values_from_text(nest_data, self.gauge_regex)[0]
                 sheet_cut_time: str = self.get_values_from_text(nest_data, self.sheet_cut_time_regex)[0]
-                sheet_cut_time_hours, sheet_cut_time_minutes, sheet_cut_time_seconds = sheet_cut_time.replace(' : ', ":").split(':')
-                total_sheet_cut_time = (float(sheet_cut_time_hours) * 3600) + (float(sheet_cut_time_minutes) * 60) + float(sheet_cut_time_seconds) # seconds
+                (
+                    sheet_cut_time_hours,
+                    sheet_cut_time_minutes,
+                    sheet_cut_time_seconds,
+                ) = sheet_cut_time.replace(
+                    " : ", ":"
+                ).split(":")
+                total_sheet_cut_time = (float(sheet_cut_time_hours) * 3600) + (float(sheet_cut_time_minutes) * 60) + float(sheet_cut_time_seconds)  # seconds
 
                 # lists
                 _quantities: list[str] = self.get_values_from_text(nest_data, self.quantity_regex)
@@ -172,9 +177,9 @@ class LoadNests(QThread):
                     "material": sheet_material,
                     "sheet_dim": sheet_dimension,
                     "scrap_percentage": scrap_percentage,
-                    "machining_time": total_sheet_cut_time * quantity_multiplier, # seconds
-                    "single_sheet_machining_time": total_sheet_cut_time, # seconds
-                    "image_index" : f'nest-{image_index}'
+                    "machining_time": total_sheet_cut_time * quantity_multiplier,  # seconds
+                    "single_sheet_machining_time": total_sheet_cut_time,  # seconds
+                    "image_index": f"nest-{image_index}",
                 }
                 self.data[nest_name] = {}
                 for i, part_name in enumerate(parts):
@@ -184,7 +189,7 @@ class LoadNests(QThread):
                         "machine_time": float(machining_times[i]),
                         "weight": float(weights[i]),
                         "part_number": part_numbers[i],
-                        "image_index": f'part-{image_index}',
+                        "image_index": f"part-{image_index}",
                         "surface_area": float(surface_areas[i]),
                         "cutting_length": float(cutting_lengths[i]),
                         "file_name": nest,
@@ -199,20 +204,20 @@ class LoadNests(QThread):
                         "geofile_name": geofile_names[i],
                     }
                     image_index += 1
-                if os.path.isfile(f'./images/nest-{image_index}.jpeg'):
-                    self.data[f"_{nest}"]["image_index"] = f'nest-{image_index}'
+                if os.path.isfile(f"./images/nest-{image_index}.jpeg"):
+                    self.data[f"_{nest}"]["image_index"] = f"nest-{image_index}"
                     image_index += 1
             # os.remove(f"{self.program_directory}/output.txt")
             for nest_name in list(self.data.keys()):
                 if nest_name[0] == "_":
                     try:
-                        image_name = nest_name.split('/')[-1].replace('.pdf', '')
+                        image_name = nest_name.split("/")[-1].replace(".pdf", "")
                         image_path: str = f"images/{self.data[nest_name]['image_index']}.jpeg"
                         new_image_path = f"images/{image_name}.jpeg"
                         self.data[nest_name]["image_index"] = image_name
                         shutil.move(image_path, new_image_path)
-                    except FileNotFoundError: # Some pdfs may not have the image
-                        self.data[nest_name]["image_index"] = '404'
+                    except FileNotFoundError:  # Some pdfs may not have the image
+                        self.data[nest_name]["image_index"] = "404"
                     continue
                 for item in list(self.data[nest_name].keys()):
                     image_path: str = f"images/{self.data[nest_name][item]['image_index']}.jpeg"
@@ -225,10 +230,6 @@ class LoadNests(QThread):
         except Exception as e:
             print(e)
             try:
-                self.signal.emit(
-                    f"ERROR!\nException: {e}\nTrace stack:\n{traceback.print_exc()}\n\nIf the error still persists, send me an email of the pdf your trying nesting.\n{nest}"
-                )
+                self.signal.emit(f"ERROR!\nException: {e}\nTrace stack:\n{traceback.print_exc()}\n\nIf the error still persists, send me an email of the pdf your trying nesting.\n{nest}")
             except Exception:
-                self.signal.emit(
-                    f"ERROR!\nException: {e}\nTrace stack:\n{traceback.print_exc()}\n\nIf the error still persists, send me an email of the pdf your trying nesting.\n{self.nests[0]}"
-                )
+                self.signal.emit(f"ERROR!\nException: {e}\nTrace stack:\n{traceback.print_exc()}\n\nIf the error still persists, send me an email of the pdf your trying nesting.\n{self.nests[0]}")

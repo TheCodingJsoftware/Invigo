@@ -36,9 +36,7 @@ class JsonFile:
         It opens the file, reads the data, and then closes the file
         """
         try:
-            with open(
-                f"{self.FOLDER_LOCATION}/{self.file_name}.json", "r", encoding="utf-8"
-            ) as json_file:
+            with open(f"{self.FOLDER_LOCATION}/{self.file_name}.json", "r", encoding="utf-8") as json_file:
                 self.data = json.load(json_file)
         except Exception as error:
             print(error)
@@ -47,9 +45,7 @@ class JsonFile:
         """
         It opens a file, writes the data to it, and then closes the file
         """
-        with open(
-            f"{self.FOLDER_LOCATION}/{self.file_name}.json", "w", encoding="utf-8"
-        ) as json_file:
+        with open(f"{self.FOLDER_LOCATION}/{self.file_name}.json", "w", encoding="utf-8") as json_file:
             json.dump(self.data, json_file, ensure_ascii=False, indent=4)
 
     def save_data(self, data: dict) -> None:
@@ -59,9 +55,7 @@ class JsonFile:
         Args:
           data (dict): dict - The data to save
         """
-        with open(
-            f"{self.FOLDER_LOCATION}/{self.file_name}.json", "w", encoding="utf-8"
-        ) as json_file:
+        with open(f"{self.FOLDER_LOCATION}/{self.file_name}.json", "w", encoding="utf-8") as json_file:
             json.dump(data, json_file, ensure_ascii=False, indent=4)
 
     def add_item(self, item_name: str, value) -> None:
@@ -126,9 +120,7 @@ class JsonFile:
         """
         # self.load_data()
         clonded_data = self.data
-        clonded_data[f"Clone from: {key_name} Double click me rename me"] = clonded_data[
-            key_name
-        ]
+        clonded_data[f"Clone from: {key_name} Double click me rename me"] = clonded_data[key_name]
         self.data.update(clonded_data)
         self.__save_data()
 
@@ -172,9 +164,7 @@ class JsonFile:
         self.data[object_name][item_name] = new_value
         self.__save_data()
 
-    def change_object_in_object_item(
-        self, object_name: str, item_name: str, value_name: str, new_value
-    ) -> None:
+    def change_object_in_object_item(self, object_name: str, item_name: str, value_name: str, new_value) -> None:
         """
         It changes the value of a value in an item in an object in a dictionary
 
@@ -270,10 +260,7 @@ class JsonFile:
           The sum of the values of the key_name for each item in the category.
         """
         try:
-            return sum(
-                self.data[category][item][key_name]
-                for item in list(self.data[category].keys())
-            )
+            return sum(self.data[category][item][key_name] for item in list(self.data[category].keys()))
         except Exception as error:
             return 1
 
@@ -291,15 +278,8 @@ class JsonFile:
         try:
             total_count: float = math.inf
             for item in list(self.data[category].keys()):
-                if (
-                    self.data[category][item]["current_quantity"]
-                    / self.data[category][item]["unit_quantity"]
-                    < total_count
-                ):
-                    total_count = (
-                        self.data[category][item]["current_quantity"]
-                        / self.data[category][item]["unit_quantity"]
-                    )
+                if self.data[category][item]["current_quantity"] / self.data[category][item]["unit_quantity"] < total_count:
+                    total_count = self.data[category][item]["current_quantity"] / self.data[category][item]["unit_quantity"]
             return total_count
         except Exception as error:
             return 1

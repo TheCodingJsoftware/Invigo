@@ -49,6 +49,7 @@ env = jinja2.Environment(loader=loader)
 with open("utils/inventory_file_to_use.txt", "r") as f:
     inventory_file_name: str = f.read()
 
+
 class MainHandler(tornado.web.RequestHandler):
     def get(self):
         logs = print_clients() + sys.stdout.getvalue()
@@ -81,7 +82,7 @@ class FileReceiveHandler(tornado.web.RequestHandler):
             file_path = "price_of_steel_information.json"
         else:
             file_path = f"data/{filename}"
-        lock = FileLock(f'{file_path}.lock', timeout=1)
+        lock = FileLock(f"{file_path}.lock", timeout=1)
         try:
             with lock:
                 with open(file_path, "rb") as file:
@@ -111,11 +112,12 @@ class FileReceiveHandler(tornado.web.RequestHandler):
 
 
 def update_inventory_file_to_pinecone(file_name: str):
-    shutil.copy2(f'data\\{file_name}', f'Z:\\Invigo\\{file_name}')
+    shutil.copy2(f"data\\{file_name}", f"Z:\\Invigo\\{file_name}")
     CustomPrint.print(
         f'INFO - Updated "{file_name}" to Pinecone',
         connected_clients=connected_clients,
     )
+
 
 class FileUploadHandler(tornado.web.RequestHandler):
     async def post(self):
@@ -129,7 +131,7 @@ class FileUploadHandler(tornado.web.RequestHandler):
                 # Save the received file to a local location
                 with open(f"data/{file_name}", "wb") as file:
                     file.write(file_data)
-                if file_name == f'{inventory_file_name}.json' or file_name == f'{inventory_file_name} - Price of Steel.json' or file_name == f'{inventory_file_name} - Parts in Inventory.json': # This needs to be done because the website uses this file
+                if file_name == f"{inventory_file_name}.json" or file_name == f"{inventory_file_name} - Price of Steel.json" or file_name == f"{inventory_file_name} - Parts in Inventory.json":  # This needs to be done because the website uses this file
                     threading.Thread(target=update_inventory_file_to_pinecone, args=(file_name,)).start()
             elif get_file_type(file_name) == "JPEG":
                 # Save the received file to a local location
@@ -140,7 +142,7 @@ class FileUploadHandler(tornado.web.RequestHandler):
                 connected_clients=connected_clients,
             )
             # Managing OmniGen's batch uploads
-            if 'parts_batch_to_upload_workorder' in file_name or 'parts_batch_to_upload_part' in file_name:
+            if "parts_batch_to_upload_workorder" in file_name or "parts_batch_to_upload_part" in file_name:
                 self.write("Batch sent successfully")
                 update_inventory(f"data/{file_name}", connected_clients)
             elif file_name == "parts_batch_to_upload_quote.json":
@@ -174,9 +176,9 @@ class WorkspaceFileUploader(tornado.web.RequestHandler):
         if file_info:
             file_data = file_info[0]["body"]
             file_name = os.path.basename(file_info[0]["filename"])
-            file_ext = os.path.splitext(file_name)[1].upper().replace('.', '')
-            Path(f'data/workspace/{file_ext}').mkdir(parents=True, exist_ok=True)
-            with open(f'data/workspace/{file_ext}/{file_name}', "wb") as file:
+            file_ext = os.path.splitext(file_name)[1].upper().replace(".", "")
+            Path(f"data/workspace/{file_ext}").mkdir(parents=True, exist_ok=True)
+            with open(f"data/workspace/{file_ext}/{file_name}", "wb") as file:
                 file.write(file_data)
             CustomPrint.print(
                 f'INFO - Received "{file_name}" from {self.request.remote_ip}',
@@ -190,7 +192,7 @@ class WorkspaceFileUploader(tornado.web.RequestHandler):
 
 class WorkspaceFileHandler(tornado.web.RequestHandler):
     def get(self, file_name):
-        file_ext = os.path.splitext(file_name)[1].upper().replace('.', '')
+        file_ext = os.path.splitext(file_name)[1].upper().replace(".", "")
         file_name = os.path.basename(file_name)
         filepath = os.path.join("data/workspace", file_ext, file_name)
         if os.path.exists(filepath):
@@ -235,15 +237,15 @@ class SetOrderNumberHandler(tornado.web.RequestHandler):
     def post(self):
         order_number = self.get_argument("order_number")
         if order_number is not None:
-            with open("order_number.json", 'r') as file:
+            with open("order_number.json", "r") as file:
                 json_file = json.load(file)
                 json_file["order_number"] = int(order_number)
 
-            with open("order_number.json", 'w') as file:
+            with open("order_number.json", "w") as file:
                 json.dump(json_file, file)
 
             CustomPrint.print(
-                f'INFO - {self.request.remote_ip} set order number to {order_number}',
+                f"INFO - {self.request.remote_ip} set order number to {order_number}",
                 connected_clients=connected_clients,
             )
         else:
@@ -252,19 +254,19 @@ class SetOrderNumberHandler(tornado.web.RequestHandler):
 
 class GetOrderNumberHandler(tornado.web.RequestHandler):
     def get(self):
-        with open("order_number.json", 'r') as file:
+        with open("order_number.json", "r") as file:
             order_number = json.load(file)["order_number"]
 
         self.write({"order_number": order_number})
         CustomPrint.print(
-            f'INFO - Sent order number to {self.request.remote_ip}',
+            f"INFO - Sent order number to {self.request.remote_ip}",
             connected_clients=connected_clients,
         )
 
 
 class SheetQuantityHandler(tornado.web.RequestHandler):
     def get(self, sheet_name):
-        sheet_name = sheet_name.replace('_', ' ')
+        sheet_name = sheet_name.replace("_", " ")
         if sheet_exists(sheet_name=sheet_name):
             quantity = get_sheet_quantity(sheet_name=sheet_name)
             pending_data = get_sheet_pending_data(sheet_name=sheet_name)
@@ -296,7 +298,36 @@ class SheetQuantityHandler(tornado.web.RequestHandler):
 class AddCutoffSheetHandler(tornado.web.RequestHandler):
     def get(self):
         template = env.get_template("add_cutoff_sheet.html")
-        rendered_template = template.render(thicknesses=["22 Gauge", "20 Gauge", "18 Gauge", "16 Gauge", "14 Gauge", "12 Gauge", "11 Gauge", "10 Gauge", "3/16", "1/4", "5/16", "3/8", "1/2", "5/8", "3/4", "1"], materials=["304 SS", "409 SS", "Mild Steel", "Galvanneal", "Galvanized", "Aluminium", "Laser Grade Plate"], cutoff_sheets=get_cutoff_sheets())
+        rendered_template = template.render(
+            thicknesses=[
+                "22 Gauge",
+                "20 Gauge",
+                "18 Gauge",
+                "16 Gauge",
+                "14 Gauge",
+                "12 Gauge",
+                "11 Gauge",
+                "10 Gauge",
+                "3/16",
+                "1/4",
+                "5/16",
+                "3/8",
+                "1/2",
+                "5/8",
+                "3/4",
+                "1",
+            ],
+            materials=[
+                "304 SS",
+                "409 SS",
+                "Mild Steel",
+                "Galvanneal",
+                "Galvanized",
+                "Aluminium",
+                "Laser Grade Plate",
+            ],
+            cutoff_sheets=get_cutoff_sheets(),
+        )
         self.write(rendered_template)
 
     def post(self):
@@ -306,7 +337,13 @@ class AddCutoffSheetHandler(tornado.web.RequestHandler):
         thickness: str = self.get_argument("thickness")
         quantity: int = int(self.get_argument("quantity"))
 
-        add_sheet(thickness=thickness, material=material, sheet_dim=f'{length:.3f}x{width:.3f}', sheet_count=quantity, _connected_clients=connected_clients)
+        add_sheet(
+            thickness=thickness,
+            material=material,
+            sheet_dim=f"{length:.3f}x{width:.3f}",
+            sheet_count=quantity,
+            _connected_clients=connected_clients,
+        )
 
         self.redirect("/add_cutoff_sheet")
 
@@ -329,10 +366,7 @@ class GetPreviousNestsFiles(tornado.web.RequestHandler):
             if "Part" in filename:
                 continue
             file_path = os.path.join(directory, filename)
-            file_info = {
-                "name": filename,
-                "created_date": os.path.getctime(file_path)
-            }
+            file_info = {"name": filename, "created_date": os.path.getctime(file_path)}
             files[filename] = file_info
 
         self.set_header("Content-Type", "application/json")
@@ -342,11 +376,11 @@ class GetPreviousNestsFiles(tornado.web.RequestHandler):
 
 class GetPreviousNestsDataHandler(tornado.web.RequestHandler):
     def post(self):
-        file_names = self.get_argument("file_names").split(';')
+        file_names = self.get_argument("file_names").split(";")
         combined_data = {}
 
         for file_name in file_names:
-            with open(f'parts batch to upload history/{file_name}', "r") as file:
+            with open(f"parts batch to upload history/{file_name}", "r") as file:
                 file_data = json.load(file)
                 combined_data.update(file_data)
 
@@ -358,12 +392,15 @@ class SendErrorReport(tornado.web.RequestHandler):
     def post(self):
         error_log = self.get_argument("error_log")
         CustomPrint.print(
-                f"ERROR - Received Error Log - {error_log}",
-                connected_clients=connected_clients,
-            )
+            f"ERROR - Received Error Log - {error_log}",
+            connected_clients=connected_clients,
+        )
         if error_log is not None:
             send_error_log(body=error_log, connected_clients=connected_clients)
-            with open(f'{os.path.dirname(os.path.realpath(__file__))}/logs/U{datetime.now().strftime("%B %d %A %Y %I-%M-%S %p")}.log', 'w') as error_file:
+            with open(
+                f'{os.path.dirname(os.path.realpath(__file__))}/logs/U{datetime.now().strftime("%B %d %A %Y %I-%M-%S %p")}.log',
+                "w",
+            ) as error_file:
                 error_file.write(error_log)
         else:
             self.set_status(400)
@@ -377,9 +414,9 @@ class UploadSheetsSettingsHandler(tornado.web.RequestHandler):
             file_name = file_info[0].decode()
             CustomPrint.print(
                 f'INFO - Received "{file_name}" from {self.request.remote_ip}',
-                connected_clients=connected_clients
+                connected_clients=connected_clients,
             )
-            with open(file_name, 'wb') as file:
+            with open(file_name, "wb") as file:
                 file.write(file_data)
             self.write("success")
             signal_clients_for_changes(client_to_ignore=self.request.remote_ip)
@@ -418,9 +455,7 @@ def config_logs() -> None:
 def backup_inventroy_files():
     logging.info("Backing up inventory files")
     files = os.listdir(f"{os.path.dirname(os.path.realpath(__file__))}/data")
-    path_to_zip_file: str = (
-        f"{os.path.dirname(os.path.realpath(__file__))}/backups/{datetime.now().strftime('%B %d %A %Y %I-%M-%S %p')}.zip"
-    )
+    path_to_zip_file: str = f"{os.path.dirname(os.path.realpath(__file__))}/backups/{datetime.now().strftime('%B %d %A %Y %I-%M-%S %p')}.zip"
     file = zipfile.ZipFile(path_to_zip_file, mode="w")
     for file_path in files:
         file.write(
@@ -432,10 +467,12 @@ def backup_inventroy_files():
     logging.info("Inventory file backed up")
     CustomPrint.print("INFO - Backup complete", connected_clients=connected_clients)
 
+
 def schedule_thread():
     while True:
         schedule.run_pending()
         time.sleep(5)
+
 
 if __name__ == "__main__":
     coloredlogs.install(level="INFO")  # Enable colored logs

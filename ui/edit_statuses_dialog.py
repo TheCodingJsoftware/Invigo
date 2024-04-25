@@ -29,7 +29,10 @@ workspace_tags = JsonFile(file_name="data/workspace_settings")
 
 class ButtonFilter(QObject):
     def eventFilter(self, obj, event):
-        if event.type() == QEvent.Type.KeyPress and event.key() in (Qt.Key.Key_Return, Qt.Key.Key_Enter):
+        if event.type() == QEvent.Type.KeyPress and event.key() in (
+            Qt.Key.Key_Return,
+            Qt.Key.Key_Enter,
+        ):
             event.ignore()
             return True
 
@@ -94,9 +97,7 @@ class EditStatusesDialog(QDialog):
         workspace_tags.load_data()
         status_line_edit.disconnect()
         data = workspace_tags.get_data()
-        data["flow_tag_statuses"][self.comboBox_current_status.currentText()][status_line_edit.text()] = data["flow_tag_statuses"][
-            self.comboBox_current_status.currentText()
-        ][old_name]
+        data["flow_tag_statuses"][self.comboBox_current_status.currentText()][status_line_edit.text()] = data["flow_tag_statuses"][self.comboBox_current_status.currentText()][old_name]
         del data["flow_tag_statuses"][self.comboBox_current_status.currentText()][old_name]
         workspace_tags.save_data(data)
         status_line_edit.textChanged.connect(partial(self.status_name_change, status_line_edit.text(), status_line_edit))

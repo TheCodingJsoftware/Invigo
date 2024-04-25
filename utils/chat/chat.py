@@ -10,7 +10,10 @@ class Chat:
         self.messages: list[Message] = []
         self.data: dict[str, str, str, list[Message]] = {
             "messages": self.messages,
-            "chat_data": {"date_created": f'{datetime.now().strftime("%Y-%m-%d %H:%M:%S.%f")}', "display_name": self.display_name},
+            "chat_data": {
+                "date_created": f'{datetime.now().strftime("%Y-%m-%d %H:%M:%S.%f")}',
+                "display_name": self.display_name,
+            },
         }
 
     def set_display_name(self, chat_name: str):
@@ -33,7 +36,7 @@ class Chat:
         self.messages.append(Message(user, text))
 
     def to_dict(self) -> dict[str, list[dict[str, any]]]:
-        data = {"messages": [], 'chat_data': self.data['chat_data']}
+        data = {"messages": [], "chat_data": self.data["chat_data"]}
         messages_data = []
         for message in self.messages:
             messages_data.append(message.to_dict())

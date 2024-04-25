@@ -40,7 +40,6 @@ class NestSheetVerification(QDialog):
         self.setAttribute(Qt.WidgetAttribute.WA_TranslucentBackground, True)
         self.setWindowIcon(QIcon("icons/icon.png"))
 
-
         self.load_dialog_buttons()
 
         self.listWidget_thicknesses.addItems(price_of_steel_information.get_value("thicknesses"))

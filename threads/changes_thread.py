@@ -27,7 +27,10 @@ class ChangesThread(QThread):
                     self.signal.emit(message)
 
                 # Create a WebSocket connection
-                self.websocket = websocket.WebSocketApp(self.websocket_url, on_message=lambda ws, message: handle_file_data(ws, message))
+                self.websocket = websocket.WebSocketApp(
+                    self.websocket_url,
+                    on_message=lambda ws, message: handle_file_data(ws, message),
+                )
                 self.websocket.run_forever()
             except Exception as error:
                 with contextlib.suppress(AttributeError):

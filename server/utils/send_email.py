@@ -19,7 +19,7 @@ def send(body: str, email_addresses: list[str], connected_clients):
     function.
     """
     if email_addresses is None:
-        email_addresses = ['jaredgrozz@gmail.com', 'lynden@pineymfg.com']
+        email_addresses = ["jaredgrozz@gmail.com", "lynden@pineymfg.com"]
 
     with open("credentials.json", "r") as credentialsFile:
         credentials = json.load(credentialsFile)
@@ -28,19 +28,23 @@ def send(body: str, email_addresses: list[str], connected_clients):
     for email_address in email_addresses:
         msg = multipart.MIMEMultipart()
 
-        msg['From'] = USERNAME
-        msg['To'] = email_address
-        msg['Subject'] = 'Invigo - Sheets to Order'
+        msg["From"] = USERNAME
+        msg["To"] = email_address
+        msg["Subject"] = "Invigo - Sheets to Order"
 
-        msg.attach(text.MIMEText(body, 'html'))
+        msg.attach(text.MIMEText(body, "html"))
 
-        server = smtplib.SMTP('smtp.gmail.com', 587)
+        server = smtplib.SMTP("smtp.gmail.com", 587)
         server.ehlo()
         server.starttls()
         server.ehlo()
         server.login(USERNAME, PASSWORD)
         server.sendmail(USERNAME, email_address, msg.as_string())
-        CustomPrint.print(f'INFO - Email sent to "{email_address}"', connected_clients=connected_clients)
+        CustomPrint.print(
+            f'INFO - Email sent to "{email_address}"',
+            connected_clients=connected_clients,
+        )
+
 
 def send_error_log(body: str, connected_clients):
     with open("credentials.json", "r") as credentialsFile:
@@ -49,17 +53,20 @@ def send_error_log(body: str, connected_clients):
     PASSWORD = credentials["password"]
     msg = multipart.MIMEMultipart()
 
-    msg['From'] = USERNAME
-    msg['To'] = 'jaredgrozz@gmail.com'
-    msg['Subject'] = 'Invigo - Error Report'
-    body = body.replace('\n', '<br>')
+    msg["From"] = USERNAME
+    msg["To"] = "jaredgrozz@gmail.com"
+    msg["Subject"] = "Invigo - Error Report"
+    body = body.replace("\n", "<br>")
 
-    msg.attach(text.MIMEText(body, 'html'))
+    msg.attach(text.MIMEText(body, "html"))
 
-    server = smtplib.SMTP('smtp.gmail.com', 587)
+    server = smtplib.SMTP("smtp.gmail.com", 587)
     server.ehlo()
     server.starttls()
     server.ehlo()
     server.login(USERNAME, PASSWORD)
-    server.sendmail(USERNAME, 'jaredgrozz@gmail.com', msg.as_string())
-    CustomPrint.print(f'INFO - Email sent to jaredgrozz@gmail.com', connected_clients=connected_clients)
+    server.sendmail(USERNAME, "jaredgrozz@gmail.com", msg.as_string())
+    CustomPrint.print(
+        f"INFO - Email sent to jaredgrozz@gmail.com",
+        connected_clients=connected_clients,
+    )

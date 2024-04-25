@@ -12,7 +12,14 @@ from PyQt6.QtCore import QThread, pyqtSignal
 class JobSorterThread(QThread):
     signal = pyqtSignal(object)
 
-    def __init__(self, parent, job_name: str, path_to_excel_file: str, directory_to_sort: str, output_directory: str) -> None:
+    def __init__(
+        self,
+        parent,
+        job_name: str,
+        path_to_excel_file: str,
+        directory_to_sort: str,
+        output_directory: str,
+    ) -> None:
         QThread.__init__(self)
         self.data = {}
         self.path_to_excel_file: str = path_to_excel_file
@@ -53,7 +60,10 @@ class JobSorterThread(QThread):
             thickness: str = row[thickness_column]
             quantity: str = row[quantity_column]
 
-            part_names_new_with_thickness[part_name] = {"thickness": self._make_name_safe(str(thickness)), "quantity": quantity}
+            part_names_new_with_thickness[part_name] = {
+                "thickness": self._make_name_safe(str(thickness)),
+                "quantity": quantity,
+            }
 
         return part_names_new_with_thickness
 
@@ -84,9 +94,7 @@ class JobSorterThread(QThread):
                 file_name: str = os.path.basename(file_path)
                 name_without_extension: str = os.path.splitext(file_name)[0]
                 extension: str = os.path.splitext(file_name)[1].replace(".", "").upper()
-                quantity_mulitplier: str = (
-                    f" x{data[name_without_extension]['quantity']}" if int(data[name_without_extension]["quantity"]) > 1 else ""
-                )
+                quantity_mulitplier: str = f" x{data[name_without_extension]['quantity']}" if int(data[name_without_extension]["quantity"]) > 1 else ""
                 new_copy_location[file_path] = {
                     "new_location": f"{self.output_directory}\\{extension}\\{data[name_without_extension]['thickness']}",
                     "old_name": f"{self.output_directory}\\{extension}\\{data[name_without_extension]['thickness']}\\{file_name}",

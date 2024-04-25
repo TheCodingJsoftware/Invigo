@@ -22,7 +22,7 @@ class SelectTimeLineDialog(QDialog):
         title: str = __name__,
         message: str = "",
         starting_date: str = None,
-        ending_date: str = None
+        ending_date: str = None,
     ) -> None:
         super(SelectTimeLineDialog, self).__init__(parent)
         uic.loadUi("ui/select_timeline_dialog.ui", self)
@@ -122,9 +122,7 @@ class SelectTimeLineDialog(QDialog):
         if not self.checkBox.isChecked():
             self.days.setValue(days)
 
-        self.selection_label.setText(
-            f'Selection is from {self.from_date.toString("MMMM d")} to {self.to_date.toString("MMMM d")}, which is {days} days or {weeks:.1f} weeks.'
-        )
+        self.selection_label.setText(f'Selection is from {self.from_date.toString("MMMM d")} to {self.to_date.toString("MMMM d")}, which is {days} days or {weeks:.1f} weeks.')
         self.label.setText(f'days from {self.from_date.toString("MMMM d")}')
 
     def highlight_selection(self, calendar: QCalendarWidget):

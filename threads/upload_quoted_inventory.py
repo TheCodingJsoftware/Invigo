@@ -10,7 +10,6 @@ from utils.json_file import JsonFile
 
 
 class UploadBatch(QThread):
-
     signal = pyqtSignal(str, str)
 
     def __init__(self, json_file_path: str) -> None:

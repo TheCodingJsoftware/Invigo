@@ -5,7 +5,6 @@ from utils.ip_utils import get_server_ip_address, get_server_port
 
 
 class UploadSheetsSettingsThread(QThread):
-
     signal = pyqtSignal(str, str)
 
     def __init__(self) -> None:

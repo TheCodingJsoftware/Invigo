@@ -21,7 +21,12 @@ class QImageViewer(QMainWindow):
         self.setCentralWidget(self.scroll_area)
 
         pixmap = QPixmap(path)
-        pixmap = pixmap.scaled(pixmap.width(), pixmap.height(), Qt.AspectRatioMode.KeepAspectRatio, Qt.TransformationMode.FastTransformation)
+        pixmap = pixmap.scaled(
+            pixmap.width(),
+            pixmap.height(),
+            Qt.AspectRatioMode.KeepAspectRatio,
+            Qt.TransformationMode.FastTransformation,
+        )
         self.image_label.setPixmap(pixmap)
         self.image_label.adjustSize()
         self.scroll_area.setWidgetResizable(True)

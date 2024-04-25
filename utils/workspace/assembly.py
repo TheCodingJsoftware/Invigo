@@ -18,7 +18,11 @@ class Assembly:
             self.sub_assemblies = []
         if not self.assembly_data:
             self.assembly_data = {}
-        self.data = {"assembly_data": self.assembly_data, "sub_assemblies": self.sub_assemblies, "items": self.items}
+        self.data = {
+            "assembly_data": self.assembly_data,
+            "sub_assemblies": self.sub_assemblies,
+            "items": self.items,
+        }
 
     def set_parent_assembly_value(self, key: str, value: Any) -> None:
         self.set_assembly_data(key=key, value=value)

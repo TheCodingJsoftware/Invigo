@@ -22,22 +22,23 @@ app = Flask(__name__)
 currency_rates = CurrencyRates()
 last_exchange_rate = 1.3608673726676752
 
+
 def write_log(log: str) -> None:
-    with open(f"{os.path.dirname(os.path.realpath(__file__))}/log.txt", 'a') as f:
-        f.write(log +'\n')
+    with open(f"{os.path.dirname(os.path.realpath(__file__))}/log.txt", "a") as f:
+        f.write(log + "\n")
 
 
-@app.route('/download')
+@app.route("/download")
 def download():
     return send_from_directory(
         "static",
         "Invigo.zip",
-        mimetype='application/zip',
+        mimetype="application/zip",
         as_attachment=True,
     )
 
 
-@app.route('/version')
+@app.route("/version")
 def version():
     with open(f"{os.path.dirname(os.path.realpath(__file__))}/static/version.txt", "r") as f:
         version = f.read()
@@ -54,7 +55,12 @@ def index() -> None:
             part_names=get_all_part_names(),
             part_numbers=get_all_part_numbers(),
             unit_costs=get_all_unit_cost(),
-            last_updated=str(time.strftime('Database last updated on %A %B %d %Y at %I:%M:%S %p',time.localtime(os.path.getmtime(f"{os.path.dirname(os.path.realpath(__file__))}/inventory.json")))),
+            last_updated=str(
+                time.strftime(
+                    "Database last updated on %A %B %d %Y at %I:%M:%S %p",
+                    time.localtime(os.path.getmtime(f"{os.path.dirname(os.path.realpath(__file__))}/inventory.json")),
+                )
+            ),
             price_of_steel=get_price_of_steel(),
         )
     except Exception as e:
@@ -63,7 +69,10 @@ def index() -> None:
 
 
 def get_price_of_steel() -> dict:
-    with open(f"{os.path.dirname(os.path.realpath(__file__))}/inventory - Price of Steel.json", "r") as f:
+    with open(
+        f"{os.path.dirname(os.path.realpath(__file__))}/inventory - Price of Steel.json",
+        "r",
+    ) as f:
         data = json.load(f)
     return data["Price Per Pound"]
 
@@ -111,10 +120,7 @@ def get_all_part_names() -> list[str]:
     data = get_inventory_data()
     part_names = []
     for category in list(data.keys()):
-        part_names.extend(
-            item.replace(" ", "_").replace("/", "⁄")
-            for item in list(data[category].keys())
-        )
+        part_names.extend(item.replace(" ", "_").replace("/", "⁄") for item in list(data[category].keys()))
     return list(set(part_names))
 
 
@@ -123,10 +129,7 @@ def get_all_part_numbers() -> list[str]:
     part_numbers = []
     for category in list(data.keys()):
         try:
-            part_numbers.extend(
-                data[category][item]["part_number"].replace(" ", "_").replace("/", "⁄")
-                for item in list(data[category].keys())
-            )
+            part_numbers.extend(data[category][item]["part_number"].replace(" ", "_").replace("/", "⁄") for item in list(data[category].keys()))
         except KeyError:
             continue
 
@@ -139,16 +142,20 @@ def get_inventory_data() -> dict:
             data = json.load(inventory_file)
         return data
     except Exception as e:
-        write_log(f'Failed to load inventory.json - {e}')
+        write_log(f"Failed to load inventory.json - {e}")
         return {}
+
 
 def get_parts_in_inventory_data() -> dict:
     try:
-        with open(f"{os.path.dirname(os.path.realpath(__file__))}/inventory - Parts in Inventory.json", "r") as inventory_file:
+        with open(
+            f"{os.path.dirname(os.path.realpath(__file__))}/inventory - Parts in Inventory.json",
+            "r",
+        ) as inventory_file:
             data = json.load(inventory_file)
         return data
     except Exception as e:
-        write_log(f'Failed to load inventory.json - {e}')
+        write_log(f"Failed to load inventory.json - {e}")
         return {}
 
 
@@ -161,6 +168,7 @@ def exhange_rate():
             last_exchange_rate = 1.3608673726676752  # just a guess
         time.sleep(15)
 
-#thread = threading.Thread(target=exhange_rate, args=())
-#thread.start()
+
+# thread = threading.Thread(target=exhange_rate, args=())
+# thread.start()
 # app.run(host="10.0.0.217", port=5000, debug=False, threaded=True)

@@ -86,7 +86,11 @@ class VersionUpdater(QWidget):
 
     def calculate_versions(self, current_version):
         parts = [int(x) for x in current_version.replace("v", "").split(".")]
-        versions = {"major": f"v{parts[0]+1}.0.0", "minor": f"v{parts[0]}.{parts[1]+1}.0", "quick_fix": f"v{parts[0]}.{parts[1]}.{parts[2]+1}"}
+        versions = {
+            "major": f"v{parts[0]+1}.0.0",
+            "minor": f"v{parts[0]}.{parts[1]+1}.0",
+            "quick_fix": f"v{parts[0]}.{parts[1]}.{parts[2]+1}",
+        }
         return versions
 
     def on_generate(self):
@@ -263,5 +267,8 @@ if __name__ == "__main__":
                 if update_timestamp(file_path=path_to_main_script):
                     if compile(spec_file=spec_file_name):
                         if zip_files(source_dir=dist_dir, output_zip=output_zip_name):
-                            if copy_file(source=zip_file, destination=os.path.join(destination_path, zip_file)):
+                            if copy_file(
+                                source=zip_file,
+                                destination=os.path.join(destination_path, zip_file),
+                            ):
                                 update_web_version(version=new_version)

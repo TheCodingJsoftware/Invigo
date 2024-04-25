@@ -12,7 +12,13 @@ from utils.workspace.workspace_item import WorkspaceItem
 class MondayExcelFile:
     def __init__(self, path: str) -> None:
         self.path: str = path
-        self.columns_to_find: list[str] = ["name", "paint color", "thickness", "material type", "parts per"]  # in lower
+        self.columns_to_find: list[str] = [
+            "name",
+            "paint color",
+            "thickness",
+            "material type",
+            "parts per",
+        ]  # in lower
         self.data: dict[str, dict[dict[str, int], dict[str, any]]] = {}
 
     def find_jobs(self, sheet: Worksheet) -> None:
@@ -23,7 +29,10 @@ class MondayExcelFile:
                 continue
             if cell_value.lower() in self.columns_to_find and cell_value.lower() == "name":
                 cell_above = sheet.cell(row=cell.row - 1, column=cell.column)  # Job name
-                self.data[cell_above.value] = {"job_data": {"start_row": cell.row}, "items": {}}
+                self.data[cell_above.value] = {
+                    "job_data": {"start_row": cell.row},
+                    "items": {},
+                }
 
     def find_table_headers(self, sheet: Worksheet) -> None:
         for job_index, (job_name, job_data) in enumerate(self.data.items()):
@@ -45,7 +54,13 @@ class MondayExcelFile:
         for job_name, job_data in self.data.items():
             data[job_name] = {}
             # for headers, item_data in job_data["items"].items():
-            for item_name, paint_color, thickness, material_type, parts_per in zip_longest(
+            for (
+                item_name,
+                paint_color,
+                thickness,
+                material_type,
+                parts_per,
+            ) in zip_longest(
                 job_data["items"]["name"],
                 job_data["items"]["paint color"],
                 job_data["items"]["thickness"],

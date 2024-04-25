@@ -17,21 +17,13 @@ class LoadWindow(QWidget):
 
         self.setFixedSize(self.WIDTH, self.HEIGHT)
         self.setStyleSheet("background-color: transparent;")
-        self.setWindowFlags(
-            self.windowFlags()
-            | Qt.WindowType.Window
-            | Qt.WindowType.FramelessWindowHint
-            | Qt.WindowType.WindowStaysOnTopHint
-            | Qt.WindowType.WindowTransparentForInput
-        )
+        self.setWindowFlags(self.windowFlags() | Qt.WindowType.Window | Qt.WindowType.FramelessWindowHint | Qt.WindowType.WindowStaysOnTopHint | Qt.WindowType.WindowTransparentForInput)
         self.setAttribute(Qt.WidgetAttribute.WA_TranslucentBackground)
         # self.setStyleSheet("QWidget{border-radius: 25px; background-color: rgba:(0,0,0,0);}")
         widget = QWidget(self)
         widget.resize(300, 150)
         widget.setObjectName("widget")
-        widget.setStyleSheet(
-            "QWidget#widget{ border-top-left-radius:10px; border-bottom-left-radius:10px; border-top-right-radius:10px; border-bottom-right-radius:10px; border: 1px solid #3daee9; background-color: #292929;}"
-        )
+        widget.setStyleSheet("QWidget#widget{ border-top-left-radius:10px; border-bottom-left-radius:10px; border-top-right-radius:10px; border-bottom-right-radius:10px; border: 1px solid #3daee9; background-color: #292929;}")
         shadow = QGraphicsDropShadowEffect(self)
         shadow.setBlurRadius(10)  # Adjust the blur radius as desired
         shadow.setColor(QColor(61, 174, 233, 255))

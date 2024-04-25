@@ -97,7 +97,7 @@ class Workspace:
         paint_colors: list[QPushButton] = filter["paint"]
         groupBox_due_dates: QGroupBox = filter["due_dates"]
         calendar = filter["calendar"]
-        dateTimeEdit_after,  dateTimeEdit_before = calendar.get_timeline() # end date
+        dateTimeEdit_after, dateTimeEdit_before = calendar.get_timeline()  # end date
         show_recut: bool = filter["show_recut"]
 
         # Recursively filter sub-assemblies
@@ -167,7 +167,7 @@ class Workspace:
                         continue
             item.set_value(key="show", value=True)
             item.parent_assembly.set_parent_assembly_value(key="show", value=True)
-        if self.get_completion_percentage(assembly=sub_assembly)[0] == 1: # is item completeion 100%
+        if self.get_completion_percentage(assembly=sub_assembly)[0] == 1:  # is item completeion 100%
             sub_assembly.set_assembly_data(key="show", value=False)
             if selected_flow_tags := [button.text() for button in flow_tags if button.isChecked()]:
                 with contextlib.suppress(IndexError):  # This means the part is 'completed'
@@ -324,15 +324,30 @@ class Workspace:
         assembly_completion_count: int = sum(bool(sub_assembly.get_assembly_data("completed")) for sub_assembly in sub_assembly.sub_assemblies)
 
         for _sub_assembly in sub_assembly.sub_assemblies:
-            _item_count, _item_completion_count, _assembly_count, _assembly_completion_count = self.__get_counts(sub_assembly=_sub_assembly)
+            (
+                _item_count,
+                _item_completion_count,
+                _assembly_count,
+                _assembly_completion_count,
+            ) = self.__get_counts(sub_assembly=_sub_assembly)
             item_count += _item_count
             item_completion_count += _item_completion_count
             assembly_count += _assembly_count
             assembly_completion_count += _assembly_completion_count
-        return item_count, item_completion_count, assembly_count, assembly_completion_count
+        return (
+            item_count,
+            item_completion_count,
+            assembly_count,
+            assembly_completion_count,
+        )
 
     def get_completion_percentage(self, assembly: Assembly) -> tuple[float, float]:
-        item_count, item_completion_count, assembly_count, assembly_completion_count = self.__get_counts(sub_assembly=assembly)
+        (
+            item_count,
+            item_completion_count,
+            assembly_count,
+            assembly_completion_count,
+        ) = self.__get_counts(sub_assembly=assembly)
         try:
             item_completion_percentage = item_completion_count / item_count
         except ZeroDivisionError:

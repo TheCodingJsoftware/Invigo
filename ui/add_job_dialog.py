@@ -23,7 +23,7 @@ class AddJobDialog(QDialog):
         title: str = __name__,
         message: str = "",
         group_names: list[str] = None,
-        options: list = None
+        options: list = None,
     ) -> None:
         if group_names is None:
             group_names = []

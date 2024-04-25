@@ -6,7 +6,11 @@ class Message:
         self.user = user
         self.text = text
         self.date_created = date_created if date_created is not None else datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-        self.data = {'user': self.user, 'text': self.text, 'date_created': self.date_created}
+        self.data = {
+            "user": self.user,
+            "text": self.text,
+            "date_created": self.date_created,
+        }
 
     def set_text(self, text: str):
         self.text = text

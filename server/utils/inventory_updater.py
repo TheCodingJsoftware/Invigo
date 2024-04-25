@@ -95,7 +95,10 @@ def add_parts(batch_data: dict, parts_to_add: list[str]):
                     parts_updated.remove(part_to_add)
     for part_to_add_to_custom in parts_updated:
         add_part_to_inventory(category="Custom", part_to_add=part_to_add_to_custom, batch_data=batch_data)
-        CustomPrint.print(f"INFO - Added {part_to_add_to_custom} to Custom", connected_clients=connected_clients)
+        CustomPrint.print(
+            f"INFO - Added {part_to_add_to_custom} to Custom",
+            connected_clients=connected_clients,
+        )
 
 
 def add_part_to_inventory(category, part_to_add, batch_data) -> None:
@@ -213,23 +216,32 @@ def subtract_sheet_count(sheet_name_to_update: str, sheet_count: int) -> None:
                     "latest_change_current_quantity",
                     f'Removed {sheet_count} at {datetime.now().strftime("%B %d %A %Y %I:%M:%S %p")}',
                 )
-                CustomPrint.print(f"INFO - Subtracted {sheet_count} quantities from {sheet_name_to_update}", connected_clients=connected_clients)
+                CustomPrint.print(
+                    f"INFO - Subtracted {sheet_count} quantities from {sheet_name_to_update}",
+                    connected_clients=connected_clients,
+                )
                 if (old_quantity - sheet_count) <= red_quantity_limit:
-                    CustomPrint.print(f"INFO - {sheet_name_to_update} went into RED", connected_clients=connected_clients)
+                    CustomPrint.print(
+                        f"INFO - {sheet_name_to_update} went into RED",
+                        connected_clients=connected_clients,
+                    )
                     if category != "Cutoff" and is_order_pending == False and has_sent_warning == False:
                         generate_single_sheet_report(
                             sheet_name=sheet_name_to_update,
                             red_limit=red_quantity_limit,
                             old_quantity=old_quantity,
-                            new_quantity=old_quantity-sheet_count,
+                            new_quantity=old_quantity - sheet_count,
                             notes=notes,
-                            clients=connected_clients
+                            clients=connected_clients,
                         )
                         price_of_steel_inventory.change_object_in_object_item(category, sheet_name_to_update, "has_sent_warning", True)
 
                 if category == "Cutoff" and old_quantity - sheet_count == 0:
                     price_of_steel_inventory.remove_object_item(category, sheet_name)
-                    CustomPrint.print(f"INFO - Removed {sheet_name} from Cutoff", connected_clients=connected_clients)
+                    CustomPrint.print(
+                        f"INFO - Removed {sheet_name} from Cutoff",
+                        connected_clients=connected_clients,
+                    )
 
 
 def get_cutoff_sheets() -> dict:
@@ -237,8 +249,14 @@ def get_cutoff_sheets() -> dict:
     return price_of_steel_inventory.get_data()["Cutoff"]
 
 
-def add_sheet(thickness: str, material: str, sheet_dim: str, sheet_count: float, _connected_clients) -> None:
-    sheet_name: str = f'{thickness} {material} {sheet_dim}'
+def add_sheet(
+    thickness: str,
+    material: str,
+    sheet_dim: str,
+    sheet_count: float,
+    _connected_clients,
+) -> None:
+    sheet_name: str = f"{thickness} {material} {sheet_dim}"
     category_name: str = "Cutoff"
     price_of_steel_inventory.load_data()
     price_of_steel_inventory.add_item_in_object(category_name, sheet_name)
@@ -261,7 +279,10 @@ def remove_cutoff_sheet(sheet_name: str, _connected_clients):
     price_of_steel_inventory.load_data()
     if sheet_exists(sheet_name):
         price_of_steel_inventory.remove_object_item("Cutoff", sheet_name)
-    CustomPrint.print(f'INFO - Removed "{sheet_name}" from Cutoff', connected_clients=_connected_clients)
+    CustomPrint.print(
+        f'INFO - Removed "{sheet_name}" from Cutoff',
+        connected_clients=_connected_clients,
+    )
     signal_clients_for_changes(connected_clients=_connected_clients)
 
 
@@ -278,6 +299,7 @@ def get_sheet_information(batch_data: dict) -> dict:
                 sheet_information[sheet_name] = batch_data[item]["quantity_multiplier"]
     return sheet_information
 
+
 def get_sheet_pending_data(sheet_name: str) -> dict[str, str]:
     price_of_steel_inventory.load_data()
     category_data = price_of_steel_inventory.get_data()
@@ -292,7 +314,7 @@ def get_sheet_pending_data(sheet_name: str) -> dict[str, str]:
                         "expected_arrival_time": category_data[category][sheet_name]["expected_arrival_time"],
                         "order_pending_date": category_data[category][sheet_name]["order_pending_date"],
                         "order_pending_quantity": category_data[category][sheet_name]["order_pending_quantity"],
-                        "new_quantity": category_data[category][sheet_name]["order_pending_quantity"] + category_data[category][sheet_name]["current_quantity"]
+                        "new_quantity": category_data[category][sheet_name]["order_pending_quantity"] + category_data[category][sheet_name]["current_quantity"],
                     }
                 except KeyError:
                     pending_data = {
@@ -300,7 +322,7 @@ def get_sheet_pending_data(sheet_name: str) -> dict[str, str]:
                         "expected_arrival_time": None,
                         "order_pending_date": None,
                         "order_pending_quantity": None,
-                        "new_quantity": 0
+                        "new_quantity": 0,
                     }
                 return pending_data
 
@@ -369,11 +391,17 @@ def sort_inventory() -> None:
 
 
 def signal_clients_for_changes(connected_clients) -> None:
-    CustomPrint.print(f"INFO - Signaling {len(connected_clients)} clients", connected_clients=connected_clients)
+    CustomPrint.print(
+        f"INFO - Signaling {len(connected_clients)} clients",
+        connected_clients=connected_clients,
+    )
     for client in connected_clients:
         if client.ws_connection and client.ws_connection.stream.socket:
             client.write_message("download changes")
-            CustomPrint.print(f"INFO - Signaling {client.request.remote_ip} to download changes", connected_clients=connected_clients)
+            CustomPrint.print(
+                f"INFO - Signaling {client.request.remote_ip} to download changes",
+                connected_clients=connected_clients,
+            )
 
 
 if __name__ == "__main__":

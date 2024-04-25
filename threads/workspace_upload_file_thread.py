@@ -6,7 +6,6 @@ from utils.json_file import JsonFile
 
 
 class WorkspaceUploadThread(QThread):
-
     signal = pyqtSignal(object)
 
     def __init__(self, files_to_upload: list[str]) -> None:

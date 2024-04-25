@@ -21,7 +21,7 @@ class SetOrderPendingDialog(QDialog):
         button_names: str = DialogButtons.ok_cancel,
         title: str = __name__,
         message: str = "",
-        label_text: str ="",
+        label_text: str = "",
     ) -> None:
         super(SetOrderPendingDialog, self).__init__(parent)
         uic.loadUi("ui/set_order_pending_dialog.ui", self)

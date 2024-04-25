@@ -7,12 +7,15 @@ import json
 import xlsxwriter
 from qrcode import constants
 
-with open(r"C:\Users\Invigo\Inventory-Manager\server\data\inventory - Price of Steel.json", "r") as f:
+with open(
+    r"C:\Users\Invigo\Inventory-Manager\server\data\inventory - Price of Steel.json",
+    "r",
+) as f:
     data = json.load(f)
 
 FONT_NAME: str = "Book Antiqua"
 SERVER_IP: str = "10.0.0.9"
-SERVER_PORT:int = 8080
+SERVER_PORT: int = 8080
 
 workbook = xlsxwriter.Workbook("qr_codes.xlsx")
 workbook.set_properties(
@@ -52,7 +55,17 @@ for category in data:
         qr_img.save(qr_img_path)
         # Insert the QR code image into the worksheet
         worksheet.insert_image(
-            row, col, qr_img_path, {"x_offset": 50, "y_offset": 30, "x_scale": 0.45, "y_scale": 0.45, "align": "center", "valign": "top"}
+            row,
+            col,
+            qr_img_path,
+            {
+                "x_offset": 50,
+                "y_offset": 30,
+                "x_scale": 0.45,
+                "y_scale": 0.45,
+                "align": "center",
+                "valign": "top",
+            },
         )
 
         worksheet.set_row(row, 205)  # Set row 0 (header row) height to 20

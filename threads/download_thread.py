@@ -23,7 +23,7 @@ class DownloadThread(QThread):
                     if file_to_download == "price_of_steel_information.json":
                         filepath = "price_of_steel_information.json"
                     else:
-                        filepath = f'data/{file_to_download}'
+                        filepath = f"data/{file_to_download}"
                     with open(filepath, "wb") as file:
                         file.write(response.content)
                 else:

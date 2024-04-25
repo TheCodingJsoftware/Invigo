@@ -23,7 +23,7 @@ class JsonFile:
             with open(f"{self.FOLDER_LOCATION}/{self.file_name}.json", "r", encoding="utf-8") as json_file:
                 self.data = json.load(json_file)
         except Exception as error:
-            print(f'{self.file_name}.JsonFile.load_data: {error}')
+            print(f"{self.file_name}.JsonFile.load_data: {error}")
 
     def __save_data(self) -> None:
         with open(f"{self.FOLDER_LOCATION}/{self.file_name}.json", "w", encoding="utf-8") as json_file:
@@ -140,7 +140,10 @@ class JsonFile:
 
         for item in all_items:
             exchange_rate: float = last_exchange_rate if all_items[item]["use_exchange_rate"] else 1
-            price: float = max(all_items[item]["price"] * all_items[item]["quantity"] * exchange_rate, 0)
+            price: float = max(
+                all_items[item]["price"] * all_items[item]["quantity"] * exchange_rate,
+                0,
+            )
             total_stock_cost += price
         return total_stock_cost
 

@@ -8,7 +8,6 @@ from utils.ip_utils import get_server_ip_address, get_server_port
 
 
 class WorkspaceDownloadFiles(QThread):
-
     signal = pyqtSignal(object)
 
     def __init__(self, file_to_download: str, open_when_done: bool) -> None:

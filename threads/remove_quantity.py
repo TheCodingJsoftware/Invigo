@@ -30,7 +30,7 @@ class RemoveQuantityThread(QThread):
         self.inventory = inventory
 
     def run(self) -> None:
-        print('thread running')
+        print("thread running")
         self.signal.emit(f"{self.completion_count}, {self.max_item_count}")
         try:
             inventory = self.inventory.get_data()
@@ -40,9 +40,7 @@ class RemoveQuantityThread(QThread):
                 current_quantity: int = inventory[self.category][item]["current_quantity"]
                 part_numbers.append(inventory[self.category][item]["part_number"])
                 inventory[self.category][item]["current_quantity"] = current_quantity - (unit_quantity * self.multiplier)
-                inventory[self.category][item][
-                    "latest_change_current_quantity"
-                ] = f"{self.username} - Changed from {current_quantity} to {current_quantity - (unit_quantity * self.multiplier)} at {datetime.now().strftime('%B %d %A %Y %I-%M-%S %p')}"
+                inventory[self.category][item]["latest_change_current_quantity"] = f"{self.username} - Changed from {current_quantity} to {current_quantity - (unit_quantity * self.multiplier)} at {datetime.now().strftime('%B %d %A %Y %I-%M-%S %p')}"
                 self.completion_count += 1
                 # self.signal.emit(f"{self.completion_count}, {self.max_item_count}")
             part_numbers = list(set(part_numbers))
@@ -58,14 +56,12 @@ class RemoveQuantityThread(QThread):
                         unit_quantity: int = inventory[category][item]["unit_quantity"]
                         current_quantity: int = inventory[category][item]["current_quantity"]
                         inventory[category][item]["current_quantity"] = current_quantity - (unit_quantity * self.multiplier)
-                        inventory[category][item][
-                            "latest_change_current_quantity"
-                        ] = f"{self.username} - Changed from {current_quantity} to {current_quantity - (unit_quantity * self.multiplier)} at {datetime.now().strftime('%B %d %A %Y %I-%M-%S %p')}"
+                        inventory[category][item]["latest_change_current_quantity"] = f"{self.username} - Changed from {current_quantity} to {current_quantity - (unit_quantity * self.multiplier)} at {datetime.now().strftime('%B %d %A %Y %I-%M-%S %p')}"
                     self.completion_count += 1
                     # self.signal.emit(f"{self.completion_count}, {self.max_item_count}")
             self.inventory.save_data(inventory)
             self.signal.emit("Done")
-            print('thread done')
+            print("thread done")
         except Exception as error:
             print(error)
             self.signal.emit(error)

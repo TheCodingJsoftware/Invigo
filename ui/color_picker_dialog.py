@@ -21,7 +21,6 @@ from ui.theme import set_theme
 
 
 class ColorPicker(QDialog):
-
     colorChanged = pyqtSignal()
 
     def __init__(self, *args, **kwargs):
@@ -70,11 +69,19 @@ class ColorPicker(QDialog):
         return (h * (hrange / 100.0), s * (svrange / 100.0), v * (svrange / 100.0))
 
     def getRGB(self, range=255):
-        r, g, b = self.i(self.red.text()), self.i(self.green.text()), self.i(self.blue.text())
+        r, g, b = (
+            self.i(self.red.text()),
+            self.i(self.green.text()),
+            self.i(self.blue.text()),
+        )
         return (r * (range / 255.0), g * (range / 255.0), b * (range / 255.0))
 
     def getHex(self, ht=False):
-        rgb = (self.i(self.red.text()), self.i(self.green.text()), self.i(self.blue.text()))
+        rgb = (
+            self.i(self.red.text()),
+            self.i(self.green.text()),
+            self.i(self.blue.text()),
+        )
         return f"#{self.rgb2hex(rgb)}" if ht else self.rgb2hex(rgb)
 
     def getColorName(self) -> str:
@@ -82,7 +89,11 @@ class ColorPicker(QDialog):
 
     ## Update Functions ##
     def hsvChanged(self):
-        h, s, v = (100 - self.hue_selector.y() / 1.85, (self.selector.x() + 6) / 2.0, (194 - self.selector.y()) / 2.0)
+        h, s, v = (
+            100 - self.hue_selector.y() / 1.85,
+            (self.selector.x() + 6) / 2.0,
+            (194 - self.selector.y()) / 2.0,
+        )
         r, g, b = self.hsv2rgb(h, s, v)
         self.color = (h, s, v)
         self._setRGB((r, g, b))
@@ -92,7 +103,11 @@ class ColorPicker(QDialog):
         self.colorChanged.emit()
 
     def rgbChanged(self):
-        r, g, b = self.i(self.red.text()), self.i(self.green.text()), self.i(self.blue.text())
+        r, g, b = (
+            self.i(self.red.text()),
+            self.i(self.green.text()),
+            self.i(self.blue.text()),
+        )
         self.color = self.rgb2hsv(r, g, b)
         self._setHSV(self.color)
         self._setHex(self.rgb2hex((r, g, b)))

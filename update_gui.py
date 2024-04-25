@@ -111,7 +111,12 @@ class CircleWidget(QWidget):
         painter.setPen(QColor(46, 46, 48))
         painter.setRenderHint(QPainter.RenderHint.Antialiasing)
         radius = 100
-        painter.drawEllipse(self.width() // 2 - radius // 2, self.height() // 2 - radius // 2 - 50, radius, radius)
+        painter.drawEllipse(
+            self.width() // 2 - radius // 2,
+            self.height() // 2 - radius // 2 - 50,
+            radius,
+            radius,
+        )
         painter.setBrush(QColor(41, 41, 41))
         painter.setPen(QColor(41, 41, 41))
         for i in range(6):
@@ -154,14 +159,14 @@ class Window(QWidget):
         widget.resize(WIDTH, HEIGHT)
         widget.setObjectName("widget")
         widget.setStyleSheet(
-            '''QWidget#widget {
+            """QWidget#widget {
                 border-top-left-radius: 10px;
                 border-bottom-left-radius: 10px;
                 border-top-right-radius: 10px;
                 border-bottom-right-radius: 10px;
                 border: 1px solid rgb(139, 143, 148);
                 background-color: #292929;
-            }'''
+            }"""
         )
         self.progress_text = QLabel(widget)
         self.progress_text.setWordWrap(True)

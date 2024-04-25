@@ -35,11 +35,7 @@ def generate_random_color():
         color = [random.randint(0, 255) for _ in range(3)]  # Generate random RGB values
 
         # Check if the color components are within the acceptable range
-        if (
-            abs(color[0] - color[1]) >= 10  # Red and green difference
-            and abs(color[0] - color[2]) >= 10  # Red and blue difference
-            and abs(color[1] - color[2]) >= 10  # Green and blue difference
-        ):
+        if abs(color[0] - color[1]) >= 10 and abs(color[0] - color[2]) >= 10 and abs(color[1] - color[2]) >= 10:  # Red and green difference  # Red and blue difference  # Green and blue difference
             return "#{:02x}{:02x}{:02x}".format(*color)
 
 

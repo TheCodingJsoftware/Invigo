@@ -1,4 +1,9 @@
-def calculate_overhead(cost: float, profit_margin: float = 0.3, overhead_percentage: float = 0.18, max_iterations: int = 10):
+def calculate_overhead(
+    cost: float,
+    profit_margin: float = 0.3,
+    overhead_percentage: float = 0.18,
+    max_iterations: int = 10,
+):
     unit_price = 0
     for _ in range(max_iterations):
         try:
@@ -17,9 +22,7 @@ def calculate_scrap_percentage(nest_name: str, quote_nest_information: dict):
         nest_name = f"/{nest_name}"
     # Because of workspace inconsistent item types
     try:
-        total_item_surface_area: float = sum(
-            item_data["surface_area"] * item_data["quantity"] for _, item_data in quote_nest_information[nest_name].items()
-        )
+        total_item_surface_area: float = sum(item_data["surface_area"] * item_data["quantity"] for _, item_data in quote_nest_information[nest_name].items())
     except TypeError:
         return 0.0
     try:
