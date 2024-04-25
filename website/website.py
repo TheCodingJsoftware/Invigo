@@ -5,13 +5,16 @@ and is not intended for the client to use this script.
 
 import contextlib
 import json
-import os
 import threading
 import time
 from datetime import datetime
+import os
+import pathlib
+import io
+import zipfile
 
 import requests
-from flask import Flask, render_template
+from flask import Flask, render_template, send_from_directory
 from forex_python.converter import CurrencyRates
 
 app = Flask(__name__)
@@ -23,9 +26,26 @@ def write_log(log: str) -> None:
     with open(f"{os.path.dirname(os.path.realpath(__file__))}/log.txt", 'a') as f:
         f.write(log +'\n')
 
+
+@app.route('/download')
+def download():
+    return send_from_directory(
+        "static",
+        "Invigo.zip",
+        mimetype='application/zip',
+        as_attachment=True,
+    )
+
+
+@app.route('/version')
+def version():
+    with open(f"{os.path.dirname(os.path.realpath(__file__))}/static/version.txt", "r") as f:
+        version = f.read()
+    return version
+
+
 @app.route("/")
 def index() -> None:
-    write_log('Loading website')
     try:
         return render_template(
             "index.html",
@@ -139,7 +159,8 @@ def exhange_rate():
             last_exchange_rate = currency_rates.get_rate("USD", "CAD")
         except Exception:
             last_exchange_rate = 1.3608673726676752  # just a guess
-        time.sleep(5)
+        time.sleep(15)
 
-# threading.Thread(target=exhange_rate).start()
+#thread = threading.Thread(target=exhange_rate, args=())
+#thread.start()
 # app.run(host="10.0.0.217", port=5000, debug=False, threaded=True)
