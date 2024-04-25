@@ -19,9 +19,6 @@ from ui.custom_widgets import set_default_dialog_button_stylesheet
 from ui.theme import set_theme
 from utils.dialog_buttons import DialogButtons
 from utils.dialog_icons import Icons
-from utils.json_file import JsonFile
-
-settings_file = JsonFile(file_name="settings")
 
 
 class WebScrapeResultsDialog(QDialog):
@@ -42,7 +39,6 @@ class WebScrapeResultsDialog(QDialog):
         self.title = f"{title} (Alpha)"
         self.message = message
         self.inputText: str = ""
-        self.theme: str = "dark" if settings_file.get_value(item_name="dark_mode") else "light"
 
         self.setWindowFlags(Qt.Window | Qt.FramelessWindowHint)
         self.setWindowIcon(QIcon("icons/icon.png"))

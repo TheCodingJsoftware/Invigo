@@ -14,11 +14,8 @@ from utils.dialog_buttons import DialogButtons
 from utils.dialog_icons import Icons
 from utils.json_file import JsonFile
 
-settings_file = JsonFile(file_name="settings")
-
 
 class JobSorterDialog(QDialog):
-
     def __init__(
         self,
         parent=None,
@@ -41,7 +38,6 @@ class JobSorterDialog(QDialog):
         self.directory_to_sort: str = ""
         self.output_directory: str = ""
         self.threads = []
-        self.theme: str = "dark"
 
         self.setWindowIcon(QIcon("icons/icon.png"))
 

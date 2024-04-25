@@ -6,10 +6,7 @@ from datetime import datetime
 
 from bs4 import BeautifulSoup  # pip install beautifulsoup4
 
-from utils.json_file import JsonFile
 from utils.omnigen.quote_excel_file import ExcelFile
-
-settings_file = JsonFile(file_name="settings")
 
 
 class GenerateQuote:

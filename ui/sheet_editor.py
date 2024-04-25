@@ -23,7 +23,9 @@ from PyQt6.QtWidgets import (
 )
 
 from utils.json_file import JsonFile
+from utils.settings import Settings
 
+settings_file = Settings()
 
 class TableWidget(QTableWidget):
     def __init__(self, parent, data):
@@ -46,7 +48,6 @@ class TableWidget(QTableWidget):
         self.setColumnWidth(1, 100)
 
 
-settings_file = JsonFile(file_name="settings")
 
 class SheetEditor(QMainWindow):
     windowClosed = pyqtSignal()
@@ -60,7 +61,7 @@ class SheetEditor(QMainWindow):
             self.data = json.load(file)
 
 
-        self.price_of_steel_inventory = JsonFile(file_name=f"data/{settings_file.get_value(item_name='inventory_file_name')} - Price of Steel")
+        self.price_of_steel_inventory = JsonFile(file_name=f"data/{settings_file.get_value('inventory_file_name')} - Price of Steel")
         with open('price_of_steel_information.json', 'r', encoding='utf-8') as file:
             self.data = json.load(file)
 

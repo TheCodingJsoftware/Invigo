@@ -174,6 +174,7 @@ from utils.inventory_excel_file import ExcelFile
 from utils.ip_utils import get_server_ip_address, get_server_port
 from utils.json_file import JsonFile
 from utils.json_object import JsonObject
+from utils.settings import Settings
 from utils.omnigen.generate_quote import GenerateQuote
 from utils.po import check_po_directories, get_all_po
 from utils.po_template import POTemplate
@@ -198,84 +199,6 @@ __updated__: str = "2024-04-25 09:20:25"
 __maintainer__: str = "Jared Gross"
 __email__: str = "jared@pinelandfarms.ca"
 __status__: str = "Production"
-
-
-def default_settings() -> None:
-    check_setting(setting="open_quote_when_generated", default_value=True)
-    check_setting(setting="open_workorder_when_generated", default_value=True)
-    check_setting(setting="open_packing_slip_when_generated", default_value=True)
-    check_setting(setting="exchange_rate", default_value=1.0)
-    check_setting(setting="dark_mode", default_value=True)  # deprecated
-    check_setting(setting="sort_ascending", default_value=False)
-    check_setting(setting="sort_descending", default_value=True)
-    check_setting(setting="sort_quantity_in_stock", default_value=True)
-    check_setting(setting="sort_priority", default_value=False)
-    check_setting(setting="sort_alphabatical", default_value=False)
-    check_setting(setting="server_ip", default_value="10.0.0.9")
-    check_setting(setting="server_port", default_value=8080)
-    check_setting(setting="server_buffer_size", default_value=8192)  # deprecated
-    check_setting(setting="server_time_out", default_value=10)  # deprecated
-    check_setting(
-        setting="geometry",
-        default_value={"x": 200, "y": 200, "width": 1200, "height": 600},
-    )
-    check_setting(
-        setting="last_opened",
-        default_value=str(datetime.now()),
-    )
-    check_setting(setting="last_category_tab", default_value=0)
-    check_setting(setting="last_toolbox_tab", default_value=0)
-    check_setting(setting="last_dock_location", default_value=2)
-    check_setting(setting="change_quantities_by", default_value="Category")
-    check_setting(setting="inventory_file_name", default_value="inventory")
-    check_setting(setting="path_to_order_number", default_value="order_number.json")
-    check_setting(setting="trusted_users", default_value=["lynden", "jared", "laserpc", "laser pc", "justin", "jordan"])
-    check_setting(setting="quote_nest_directories", default_value=[])
-    font = QFont("Segoe UI", 8)
-    font.setWeight(400)
-    font_data = {
-        "family": font.family(),
-        "pointSize": font.pointSize(),
-        "weight": font.weight(),
-        "italic": font.italic(),
-    }
-    check_setting(setting="tables_font", default_value=font_data)
-    check_setting(
-        setting="menu_tabs_order",
-        default_value=[
-            "Edit Inventory",
-            "Sheets in Inventory",
-            "Parts in Inventory",
-            "OmniGen",
-            "Workspace",
-            "Chat",
-            "View Inventory (Read Only)",
-            "View Removed Quantities History (Read Only)",
-            "View Price Changes History (Read Only)",
-        ],
-    )
-    check_setting(
-        setting="category_tabs_order",
-        default_value={
-            "Edit Inventory": [],
-            "Sheets in Inventory": [],
-            "Parts in Inventory": [],
-            "Workspace": [],
-        },
-    )
-    check_setting(
-        setting="price_history_file_name",
-        default_value=str(datetime.now().strftime("%B %d %A %Y")),
-    )
-    check_setting(
-        setting="days_until_new_price_history_assessment",
-        default_value=90,
-    )
-
-
-def check_setting(setting: str, default_value) -> None:
-    if settings_file.get_value(item_name=setting) is None:
-        settings_file.add_item(item_name=setting, value=default_value)
 
 
 def check_folders(folders: list[str]) -> None:
@@ -305,6 +228,7 @@ check_folders(
         "PO's/templates",
     ]
 )
+
 
 logging.basicConfig(
     filename="logs/app.log",
@@ -347,24 +271,18 @@ sys.argv += ["--enable-features=WebComponentsV0Enabled"]
 # 2048 is the hard limit
 win32file._setmaxstdio(2048)
 
-settings_file = JsonFile(file_name="settings")
+settings_file = Settings()
 
-default_settings()
-inventory = JsonFile(file_name=f"data/{settings_file.get_value(item_name='inventory_file_name')}")
-price_of_steel_inventory = JsonFile(file_name=f"data/{settings_file.get_value(item_name='inventory_file_name')} - Price of Steel")
-parts_in_inventory = JsonFile(file_name=f"data/{settings_file.get_value(item_name='inventory_file_name')} - Parts in Inventory")
+inventory = JsonFile(file_name=f"data/{settings_file.get_value(setting_name='inventory_file_name')}")
+price_of_steel_inventory = JsonFile(file_name=f"data/{settings_file.get_value(setting_name='inventory_file_name')} - Price of Steel")
+parts_in_inventory = JsonFile(file_name=f"data/{settings_file.get_value(setting_name='inventory_file_name')} - Parts in Inventory")
 price_of_steel_information = JsonFile(file_name="price_of_steel_information.json")
 
 user_workspace = Workspace("workspace - User")
 admin_workspace = Workspace("workspace - Admin")
 history_workspace = Workspace("workspace - History")
 
-# This is for toggling between user and admin workspace for editing purposes
-
 workspace_tags = JsonFile(file_name="data/workspace_settings")
-
-geometry = JsonObject(JsonFile=settings_file, object_name="geometry")
-category_tabs_order = JsonObject(JsonFile=settings_file, object_name="category_tabs_order")
 
 history_file_date = datetime.strptime(settings_file.get_value("price_history_file_name"), "%B %d %A %Y")
 days_from_last_price_history_assessment: int = int((datetime.now() - history_file_date).total_seconds() / 60 / 60 / 24)
@@ -387,7 +305,7 @@ class MainWindow(QMainWindow):
         # self.check_for_updates(on_start_up=True)
 
         if days_from_last_price_history_assessment > settings_file.get_value("days_until_new_price_history_assessment"):
-            settings_file.add_item("price_history_file_name", str(datetime.now().strftime("%B %d %A %Y")))
+            settings_file.set_value("price_history_file_name", str(datetime.now().strftime("%B %d %A %Y")))
             self.show_message_dialog(
                 title="Price Assessment",  # 760a0acf
                 message=f"It has been {settings_file.get_value('days_until_new_price_history_assessment')} days until the last price assessment. A new price history file has been created in the 'Price History Files' directory.",
@@ -422,7 +340,7 @@ class MainWindow(QMainWindow):
         self.tables_font.setWeight(settings_file.get_value("tables_font")["weight"])
         self.tables_font.setItalic(settings_file.get_value("tables_font")["italic"])
         self.tabs: dict[str, CustomTableWidget] = {}
-        self.inventory_file_name: str = settings_file.get_value(item_name="inventory_file_name")
+        self.inventory_file_name: str = settings_file.get_value(setting_name="inventory_file_name")
         self.last_item_selected_index: int = 0
         self.parts_in_inventory_name_lookup: dict[str, int] = {}
         self.last_item_selected_name: str = None
@@ -454,7 +372,7 @@ class MainWindow(QMainWindow):
         self.start_check_for_updates_thread()
 
     def __load_ui(self) -> None:
-        menu_tabs_order: list[str] = settings_file.get_value(item_name="menu_tabs_order")
+        menu_tabs_order: list[str] = settings_file.get_value(setting_name="menu_tabs_order")
         for tab_name in menu_tabs_order:
             index = self.get_tab_from_name(tab_name)
             if index != -1:
@@ -466,7 +384,7 @@ class MainWindow(QMainWindow):
         self.radioButton_category.toggled.connect(self.quantities_change)
         self.radioButton_single.toggled.connect(self.quantities_change)
 
-        if settings_file.get_value(item_name="change_quantities_by") == "Category":
+        if settings_file.get_value(setting_name="change_quantities_by") == "Category":
             self.radioButton_category.setChecked(True)
             self.radioButton_single.setChecked(False)
         else:
@@ -474,7 +392,7 @@ class MainWindow(QMainWindow):
             self.radioButton_single.setChecked(True)
 
         # Tool Box
-        self.tabWidget.setCurrentIndex(settings_file.get_value(item_name="last_toolbox_tab"))
+        self.tabWidget.setCurrentIndex(settings_file.get_value(setting_name="last_toolbox_tab"))
         self.tabWidget.currentChanged.connect(self.tool_box_menu_changed)
 
         # Send report button
@@ -678,8 +596,8 @@ class MainWindow(QMainWindow):
                 ],
             )
         )
-        self.actionAlphabatical.setChecked(settings_file.get_value(item_name="sort_alphabatical"))
-        self.actionAlphabatical.setEnabled(not settings_file.get_value(item_name="sort_alphabatical"))
+        self.actionAlphabatical.setChecked(settings_file.get_value(setting_name="sort_alphabatical"))
+        self.actionAlphabatical.setEnabled(not settings_file.get_value(setting_name="sort_alphabatical"))
         self.actionQuantity_in_Stock.triggered.connect(
             partial(
                 self.action_group,
@@ -691,8 +609,8 @@ class MainWindow(QMainWindow):
                 ],
             )
         )
-        self.actionQuantity_in_Stock.setChecked(settings_file.get_value(item_name="sort_quantity_in_stock"))
-        self.actionQuantity_in_Stock.setEnabled(not settings_file.get_value(item_name="sort_quantity_in_stock"))
+        self.actionQuantity_in_Stock.setChecked(settings_file.get_value(setting_name="sort_quantity_in_stock"))
+        self.actionQuantity_in_Stock.setEnabled(not settings_file.get_value(setting_name="sort_quantity_in_stock"))
         self.actionPriority.triggered.connect(
             partial(
                 self.action_group,
@@ -704,14 +622,14 @@ class MainWindow(QMainWindow):
                 ],
             )
         )
-        self.actionPriority.setChecked(settings_file.get_value(item_name="sort_priority"))
-        self.actionPriority.setEnabled(not settings_file.get_value(item_name="sort_priority"))
+        self.actionPriority.setChecked(settings_file.get_value(setting_name="sort_priority"))
+        self.actionPriority.setEnabled(not settings_file.get_value(setting_name="sort_priority"))
         self.actionAscending.triggered.connect(partial(self.action_group, "order", [self.actionAscending, self.actionDescending]))
-        self.actionAscending.setChecked(settings_file.get_value(item_name="sort_ascending"))
-        self.actionAscending.setEnabled(not settings_file.get_value(item_name="sort_ascending"))
+        self.actionAscending.setChecked(settings_file.get_value(setting_name="sort_ascending"))
+        self.actionAscending.setEnabled(not settings_file.get_value(setting_name="sort_ascending"))
         self.actionDescending.triggered.connect(partial(self.action_group, "order", [self.actionAscending, self.actionDescending]))
-        self.actionDescending.setChecked(settings_file.get_value(item_name="sort_descending"))
-        self.actionDescending.setEnabled(not settings_file.get_value(item_name="sort_descending"))
+        self.actionDescending.setChecked(settings_file.get_value(setting_name="sort_descending"))
+        self.actionDescending.setEnabled(not settings_file.get_value(setting_name="sort_descending"))
         self.actionSort.triggered.connect(self.sort_inventory)
         self.update_sorting_status_text()
 
@@ -809,7 +727,9 @@ class MainWindow(QMainWindow):
         )
 
     def quick_load_category(self, name: str) -> None:
-        self.tab_widget.setCurrentIndex(category_tabs_order.get_value(self.tabWidget.tabText(self.tabWidget.currentIndex())).index(name))
+        current_tab_text = self.tabWidget.tabText(self.tabWidget.currentIndex())
+        current_index = settings_file.get_value('category_tabs_order')[current_tab_text].index(name)
+        self.tab_widget.setCurrentIndex(current_index)
         self.load_active_tab()
 
     def tool_box_menu_changed(self) -> None:
@@ -891,7 +811,7 @@ class MainWindow(QMainWindow):
             # ! This is important to ensure memory addresses dont get mixed up
             # ! self.active_workspace_file = None
             self.load_workspace_filter_tab()
-        settings_file.add_item("last_toolbox_tab", self.tabWidget.currentIndex())
+        settings_file.set_value("last_toolbox_tab", self.tabWidget.currentIndex())
         self.last_selected_menu_tab = self.tabWidget.tabText(self.tabWidget.currentIndex())
 
         self.loading_screen.hide()
@@ -1247,7 +1167,7 @@ class MainWindow(QMainWindow):
             self.label.setText("Batches Multiplier:")
             self.pushButton_add_quantity.setText("Add Quantities")
             self.pushButton_remove_quantity.setText("Remove Quantities")
-            settings_file.add_item(item_name="change_quantities_by", value="Category")
+            settings_file.set_value("change_quantities_by", "Category")
             # self.listWidget_itemnames.setEnabled(False)
             self.listWidget_itemnames.clearSelection()
             self.pushButton_add_quantity.setEnabled(False)
@@ -1265,7 +1185,7 @@ class MainWindow(QMainWindow):
             self.label.setText("Quantity:")
             self.pushButton_add_quantity.setText("Add Quantity")
             self.pushButton_remove_quantity.setText("Remove Quantity")
-            settings_file.add_item(item_name="change_quantities_by", value="Item")
+            settings_file.set_value("change_quantities_by", "Item")
 
     def remove_quantity_from_category(self) -> None:
         are_you_sure_dialog = self.show_message_dialog(
@@ -1513,17 +1433,17 @@ class MainWindow(QMainWindow):
 
     def action_group(self, group_name: str, actions: list[QAction]) -> None:
         if group_name == "order":
-            if actions[0].isChecked() and settings_file.get_value(item_name="sort_descending"):
+            if actions[0].isChecked() and settings_file.get_value(setting_name="sort_descending"):
                 actions[1].setChecked(False)
                 actions[0].setEnabled(False)
                 actions[1].setEnabled(True)
-            if actions[1].isChecked() and settings_file.get_value(item_name="sort_ascending"):
+            if actions[1].isChecked() and settings_file.get_value(setting_name="sort_ascending"):
                 actions[0].setChecked(False)
                 actions[1].setEnabled(False)
                 actions[0].setEnabled(True)
         elif group_name == "sorting":
             if actions[0].isChecked() and (
-                settings_file.get_value(item_name="sort_priority") or settings_file.get_value(item_name="sort_alphabatical")
+                settings_file.get_value(setting_name="sort_priority") or settings_file.get_value(setting_name="sort_alphabatical")
             ):  # Quantity in Stock
                 actions[1].setChecked(False)
                 actions[2].setChecked(False)
@@ -1531,7 +1451,7 @@ class MainWindow(QMainWindow):
                 actions[1].setEnabled(True)
                 actions[2].setEnabled(True)
             elif actions[1].isChecked() and (
-                settings_file.get_value(item_name="sort_quantity_in_stock") or settings_file.get_value(item_name="sort_alphabatical")
+                settings_file.get_value(setting_name="sort_quantity_in_stock") or settings_file.get_value(setting_name="sort_alphabatical")
             ):  # Priority
                 actions[0].setChecked(False)
                 actions[2].setChecked(False)
@@ -1539,7 +1459,7 @@ class MainWindow(QMainWindow):
                 actions[1].setEnabled(False)
                 actions[2].setEnabled(True)
             elif actions[2].isChecked() and (
-                settings_file.get_value(item_name="sort_priority") or settings_file.get_value(item_name="sort_quantity_in_stock")
+                settings_file.get_value(setting_name="sort_priority") or settings_file.get_value(setting_name="sort_quantity_in_stock")
             ):  # Alphabatical
                 actions[0].setChecked(False)
                 actions[1].setChecked(False)
@@ -1547,25 +1467,25 @@ class MainWindow(QMainWindow):
                 actions[1].setEnabled(True)
                 actions[2].setEnabled(False)
 
-        settings_file.add_item(
-            item_name="sort_quantity_in_stock",
-            value=self.actionQuantity_in_Stock.isChecked(),
+        settings_file.set_value(
+            "sort_quantity_in_stock",
+            self.actionQuantity_in_Stock.isChecked(),
         )
-        settings_file.add_item(
-            item_name="sort_priority",
-            value=self.actionPriority.isChecked(),
+        settings_file.set_value(
+            "sort_priority",
+            self.actionPriority.isChecked(),
         )
-        settings_file.add_item(
-            item_name="sort_alphabatical",
-            value=self.actionAlphabatical.isChecked(),
+        settings_file.set_value(
+            "sort_alphabatical",
+            self.actionAlphabatical.isChecked(),
         )
-        settings_file.add_item(
-            item_name="sort_ascending",
-            value=self.actionAscending.isChecked(),
+        settings_file.set_value(
+            "sort_ascending",
+            self.actionAscending.isChecked(),
         )
-        settings_file.add_item(
-            item_name="sort_descending",
-            value=self.actionDescending.isChecked(),
+        settings_file.set_value(
+            "sort_descending",
+            self.actionDescending.isChecked(),
         )
         self.update_sorting_status_text()
 
@@ -2037,7 +1957,7 @@ class MainWindow(QMainWindow):
             self.tables_font.setPointSize(font.pointSize())
             self.tables_font.setWeight(font.weight())
             self.tables_font.setItalic(font.italic())
-            settings_file.add_item("tables_font", font_data)
+            settings_file.set_value("tables_font", font_data)
             self.load_active_tab()
 
     def update_sorting_status_text(self) -> None:
@@ -2687,7 +2607,7 @@ class MainWindow(QMainWindow):
         return part_names
 
     def get_exchange_rate(self) -> float:
-        return settings_file.get_value(item_name="exchange_rate")
+        return settings_file.get_value(setting_name="exchange_rate")
 
     def get_value_from_category(self, item_name: str, key: str) -> Any:
         try:
@@ -2808,13 +2728,15 @@ class MainWindow(QMainWindow):
 
     # * /\ GETTERS /\
     def save_geometry(self) -> None:
-        geometry.set_value(item_name="x", value=max(self.pos().x(), 0))
-        geometry.set_value(item_name="y", value=max(self.pos().y(), 0))
-        geometry.set_value(item_name="width", value=self.size().width())
-        geometry.set_value(item_name="height", value=self.size().height())
+        geometry = settings_file.get_value("geometry")
+        geometry['x'] = max(self.pos().x(), 0)
+        geometry['y'] = max(self.pos().y(), 0)
+        geometry['width'] = self.size().width()
+        geometry['height'] = self.size().height()
+        settings_file.set_value('geometry', geometry)
 
     def save_menu_tab_order(self) -> None:
-        settings_file.add_item(item_name="menu_tabs_order", value=self.get_menu_tab_order())
+        settings_file.set_value("menu_tabs_order", self.get_menu_tab_order())
 
     # * \/ Dialogs \/
     def show_about_dialog(self) -> None:
@@ -3033,7 +2955,7 @@ class MainWindow(QMainWindow):
                     self.active_json_file.remove_item(select_item_dialog.get_selected_item())
                 except AttributeError:
                     return
-                settings_file.add_item(item_name="last_category_tab", value=0)
+                settings_file.set_value("last_category_tab", 0)
                 self.sync_changes()
                 self.load_categories()
             elif response == DialogButtons.cancel:
@@ -3118,7 +3040,7 @@ class MainWindow(QMainWindow):
         nest_directories: list[str] = settings_file.get_value("quote_nest_directories")
         if new_nest_directory := QFileDialog.getExistingDirectory(self, "Open directory", "/"):
             nest_directories.append(new_nest_directory)
-            settings_file.add_item(item_name="quote_nest_directories", value=nest_directories)
+            settings_file.set_value("quote_nest_directories", nest_directories)
             self.refresh_nest_directories()
 
     # OMNIGEN
@@ -3138,7 +3060,7 @@ class MainWindow(QMainWindow):
                     nest_directories.remove(select_item_dialog.get_selected_item())
                 except ValueError:  # No Item was selected
                     return
-                settings_file.add_item(item_name="quote_nest_directories", value=nest_directories)
+                settings_file.set_value("quote_nest_directories", nest_directories)
                 self.refresh_nest_directories()
             elif response == DialogButtons.cancel:
                 return
@@ -3764,7 +3686,7 @@ class MainWindow(QMainWindow):
         self.priceHistoryTable.setHorizontalHeaderLabels(("Date;Part Name;Part #;Old Price;New Price").split(";"))
         self.priceHistoryTable.setColumnWidth(0, 270)
         self.priceHistoryTable.setColumnWidth(1, 600)
-        price_history_file = PriceHistoryFile(file_name=f"{settings_file.get_value(item_name='price_history_file_name')}.xlsx")
+        price_history_file = PriceHistoryFile(file_name=f"{settings_file.get_value(setting_name='price_history_file_name')}.xlsx")
         for i, date, part_name, part_number, old_price, new_price in zip(
             range(len(price_history_file.get_data_from_category()["Date"])),
             price_history_file.get_data_from_category()["Date"],
@@ -3870,7 +3792,8 @@ class MainWindow(QMainWindow):
             self.tab_widget.addTab(tab, "")
             i += 1
         with contextlib.suppress(Exception):
-            self.tab_widget.set_tab_order(category_tabs_order.get_value(self.tabWidget.tabText(self.tabWidget.currentIndex())))
+
+            self.tab_widget.set_tab_order(settings_file.get_value('category_tabs_order')[self.tabWidget.tabText(self.tabWidget.currentIndex())])
         self.tab_widget.setCurrentIndex(settings_file.get_value("last_category_tab"))
         self.tab_widget.currentChanged.connect(self.load_active_tab)
         self.active_layout.addWidget(self.tab_widget)
@@ -3893,7 +3816,7 @@ class MainWindow(QMainWindow):
             self.clear_layout(self.tabs[self.category])
         except (IndexError, KeyError):
             return
-        settings_file.add_item("last_category_tab", self.tab_widget.currentIndex())
+        settings_file.set_value("last_category_tab", self.tab_widget.currentIndex())
         tab: CustomTableWidget = self.tabs[self.category]
         if self.tabWidget.tabText(self.tabWidget.currentIndex()) != "Workspace":
             try:
@@ -3963,10 +3886,9 @@ class MainWindow(QMainWindow):
         if self.tabWidget.tabText(self.tabWidget.currentIndex()) == "Workspace":
             self.load_workspace()
         with contextlib.suppress(IndexError):
-            category_tabs_order.set_value(
-                self.tabWidget.tabText(self.tabWidget.currentIndex()),
-                value=self.tabWidget.currentWidget().findChildren(CustomTabWidget)[0].get_tab_order(),
-            )
+            tab_order = settings_file.get_value('category_tabs_order')
+            tab_order[self.tabWidget.tabText(self.tabWidget.currentIndex())] = self.tabWidget.currentWidget().findChildren(CustomTabWidget)[0].get_tab_order()
+            settings_file.set_value('category_tabs_order', tab_order)
 
     # NOTE PARTS IN INVENTYORY
     def load_inventory_parts(self, tab: CustomTableWidget, category_data: dict) -> None:
@@ -8835,14 +8757,14 @@ class MainWindow(QMainWindow):
             # self.tool_box_menu_changed()
             self.quantities_change()
             self.start_exchange_rate_thread()
-            if geometry.get_value("x") == 0 and geometry.get_value("y") == 0:
+            if settings_file.get_value('geometry')['x'] == 0 and settings_file.get_value('geometry')['y'] == 0:
                 self.showMaximized()
             else:
                 self.setGeometry(
-                    geometry.get_value("x"),
-                    geometry.get_value("y") + 30,
-                    geometry.get_value("width"),
-                    geometry.get_value("height") - 7,
+                    settings_file.get_value('geometry')['x'],
+                    settings_file.get_value('geometry')['y'] + 30,
+                    settings_file.get_value('geometry')['width'],
+                    settings_file.get_value('geometry')['height'] - 7,
                 )
 
         if "timed out" in str(data).lower() or "fail" in str(data).lower():
@@ -8868,7 +8790,7 @@ class MainWindow(QMainWindow):
     def exchange_rate_received(self, exchange_rate: float) -> None:
         self.label_exchange_price.setText(f"1.00 USD: {exchange_rate} CAD - {datetime.now().strftime('%r')}")
         self.label_total_unit_cost.setText(f"Total Unit Cost: ${inventory.get_total_unit_cost(self.category, self.get_exchange_rate()):,.2f}")
-        settings_file.change_item(item_name="exchange_rate", new_value=exchange_rate)
+        settings_file.set_value("exchange_rate", exchange_rate)
         self.update_stock_costs()
 
     # NOTE SHEETS IN INVENTORY

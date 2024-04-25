@@ -1,7 +1,7 @@
-from utils.json_file import JsonFile
+from utils.settings import Settings
 
-settings_file = JsonFile(file_name="settings")
+settings_file = Settings()
 
 
 def get_trusted_users() -> list[str]:
-    return settings_file.get_value(item_name="trusted_users")
+    return settings_file.get_value("trusted_users")

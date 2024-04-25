@@ -4,8 +4,9 @@ from datetime import datetime
 import xlsxwriter
 
 from utils.json_file import JsonFile
+from utils.settings import Settings
 
-settings_file = JsonFile(file_name="settings")
+settings_file = Settings()
 
 
 class ExcelFile:
@@ -148,4 +149,4 @@ class ExcelFile:
         self.workbook.close()
 
     def __get_exchange_rate(self) -> float:
-        return settings_file.get_value(item_name="exchange_rate")
+        return settings_file.get_value("exchange_rate")

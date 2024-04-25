@@ -11,9 +11,9 @@ from ui.custom_widgets import set_default_dialog_button_stylesheet
 from ui.theme import set_theme
 from utils.dialog_buttons import DialogButtons
 from utils.dialog_icons import Icons
-from utils.json_file import JsonFile
+from utils.settings import Settings
 
-settings_file = JsonFile(file_name="settings")
+settings_file = Settings()
 
 
 class GenerateQuoteDialog(QDialog):
@@ -38,18 +38,17 @@ class GenerateQuoteDialog(QDialog):
         self.message = message
         self.inputText: str = ""
         settings_file.load_data()
-        self.theme: str = "dark" if settings_file.get_value(item_name="dark_mode") else "light"
 
-        self.should_open_quote_when_generated: bool = settings_file.get_value(item_name='open_quote_when_generated')
-        self.should_open_workorder_when_generated: bool = settings_file.get_value(item_name='open_workorder_when_generated')
-        self.should_open_packing_slip_when_generated: bool = settings_file.get_value(item_name='open_packing_slip_when_generated')
+        self.should_open_quote_when_generated: bool = settings_file.get_value('open_quote_when_generated')
+        self.should_open_workorder_when_generated: bool = settings_file.get_value('open_workorder_when_generated')
+        self.should_open_packing_slip_when_generated: bool = settings_file.get_value('open_packing_slip_when_generated')
 
         self.checkBox_quote.setChecked(self.should_open_quote_when_generated)
-        self.checkBox_quote.toggled.connect(lambda:(settings_file.add_item('open_quote_when_generated', self.checkBox_quote.isChecked())))
+        self.checkBox_quote.toggled.connect(lambda:(settings_file.set_value('open_quote_when_generated', self.checkBox_quote.isChecked())))
         self.checkBox_workorder.setChecked(self.should_open_workorder_when_generated)
-        self.checkBox_workorder.toggled.connect(lambda:(settings_file.add_item('open_workorder_when_generated', self.checkBox_workorder.isChecked())))
+        self.checkBox_workorder.toggled.connect(lambda:(settings_file.set_value('open_workorder_when_generated', self.checkBox_workorder.isChecked())))
         self.checkBox_packing_slip.setChecked(self.should_open_packing_slip_when_generated)
-        self.checkBox_packing_slip.toggled.connect(lambda:(settings_file.add_item('open_packing_slip_when_generated', self.checkBox_packing_slip.isChecked())))
+        self.checkBox_packing_slip.toggled.connect(lambda:(settings_file.set_value('open_packing_slip_when_generated', self.checkBox_packing_slip.isChecked())))
 
         self.setWindowFlags(Qt.WindowType.Window | Qt.WindowType.FramelessWindowHint)
         self.setAttribute(Qt.WidgetAttribute.WA_TranslucentBackground, True)

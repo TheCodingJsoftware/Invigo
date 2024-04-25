@@ -7,8 +7,6 @@ from ui.theme import set_theme
 from utils.dialog_icons import Icons
 from utils.json_file import JsonFile
 
-settings_file = JsonFile(file_name="settings")
-
 
 class AboutDialog(QWidget):
     def __init__(self, parent, title: str, version: str, updated: str, home: str) -> None:
@@ -19,8 +17,6 @@ class AboutDialog(QWidget):
         self.setAttribute(Qt.WidgetAttribute.WA_TranslucentBackground, True)
         self.setWindowIcon(QIcon(Icons.icon))
         self.setFixedSize(550, 400)
-
-        self.theme: str = "dark" if settings_file.get_value(item_name="dark_mode") else "light"
 
         pixmap = QPixmap("icons/icon.png")
         scaled_pixmap = pixmap.scaled(self.lblIcon.size(), Qt.AspectRatioMode.KeepAspectRatio)

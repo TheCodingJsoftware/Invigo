@@ -13,8 +13,6 @@ from utils.dialog_buttons import DialogButtons
 from utils.dialog_icons import Icons
 from utils.json_file import JsonFile
 
-settings_file = JsonFile(file_name="settings")
-
 
 class AddJobDialog(QDialog):
     def __init__(
@@ -39,7 +37,6 @@ class AddJobDialog(QDialog):
         self.title = title
         self.message = message
         self.inputText: str = ""
-        self.theme: str = "dark" if settings_file.get_value(item_name="dark_mode") else "light"
 
         self.setWindowFlags(Qt.WindowType.Window | Qt.WindowType.FramelessWindowHint)
         self.setAttribute(Qt.WidgetAttribute.WA_TranslucentBackground, True)

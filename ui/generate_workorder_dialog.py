@@ -26,11 +26,9 @@ from utils.json_file import JsonFile
 from utils.workspace.assembly import Assembly
 from utils.workspace.workspace import Workspace
 
-settings_file = JsonFile(file_name="settings")
 admin_workspace = Workspace("workspace - Admin")
 
 class GenerateWorkorderDialog(QDialog):
-
     def __init__(
         self,
         parent=None,
@@ -49,7 +47,6 @@ class GenerateWorkorderDialog(QDialog):
         self.title = title
         self.message = message
         self.inputText: str = ""
-        self.theme: str = "dark" if settings_file.get_value(item_name="dark_mode") else "light"
         self.selected_assemblies: list[Assembly] = []
         self.models: list[QStandardItemModel] = []
         self.workorder: dict[Assembly, int] = {}

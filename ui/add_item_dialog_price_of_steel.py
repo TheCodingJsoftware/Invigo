@@ -12,8 +12,9 @@ from ui.theme import set_theme
 from utils.dialog_buttons import DialogButtons
 from utils.dialog_icons import Icons
 from utils.json_file import JsonFile
+from utils.settings import Settings
 
-settings_file = JsonFile(file_name="settings")
+settings_file = Settings()
 
 
 class AddItemDialogPriceOfSteel(QDialog):
@@ -28,14 +29,13 @@ class AddItemDialogPriceOfSteel(QDialog):
         super(AddItemDialogPriceOfSteel, self).__init__(parent)
         uic.loadUi("ui/add_item_dialog_price_of_steel.ui", self)
 
-        self.inventory = JsonFile(file_name=f"data/{settings_file.get_value(item_name='inventory_file_name')} - Price of Steel.json")
+        self.inventory = JsonFile(file_name=f"data/{settings_file.get_value('inventory_file_name')} - Price of Steel.json")
         self.price_of_steel_information = JsonFile(file_name="price_of_steel_information.json")
 
         self.icon_name = icon_name
         self.button_names = button_names
         self.title = title
         self.message = message
-        self.theme: str = "dark" if settings_file.get_value(item_name="dark_mode") else "light"
 
         self.setWindowFlags(Qt.WindowType.Window | Qt.WindowType.FramelessWindowHint)
         self.setAttribute(Qt.WidgetAttribute.WA_TranslucentBackground, True)

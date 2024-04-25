@@ -15,9 +15,6 @@ from PyQt6.QtCore import QThread, pyqtSignal
 
 from utils.json_file import JsonFile
 
-settings_file = JsonFile(file_name="settings")
-
-
 class LoadNests(QThread):
 
     signal = pyqtSignal(object)

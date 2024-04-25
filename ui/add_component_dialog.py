@@ -11,9 +11,10 @@ from ui.custom_widgets import set_default_dialog_button_stylesheet
 from ui.theme import set_theme
 from utils.dialog_buttons import DialogButtons
 from utils.dialog_icons import Icons
+from utils.settings import Settings
 from utils.json_file import JsonFile
 
-settings_file = JsonFile(file_name="settings")
+settings_file = Settings()
 
 
 class AddComponentDialog(QDialog):
@@ -28,13 +29,12 @@ class AddComponentDialog(QDialog):
         super(AddComponentDialog, self).__init__(parent)
         uic.loadUi("ui/add_component_dialog.ui", self)
 
-        self.inventory = JsonFile(file_name=f"data/{settings_file.get_value(item_name='inventory_file_name')}.json")
+        self.inventory = JsonFile(file_name=f"data/{settings_file.get_value('inventory_file_name')}.json")
 
         self.icon_name = icon_name
         self.button_names = button_names
         self.title = title
         self.message = message
-        self.theme: str = "dark" if settings_file.get_value(item_name="dark_mode") else "light"
 
         self.setWindowFlags(Qt.WindowType.Window | Qt.WindowType.FramelessWindowHint)
         self.setAttribute(Qt.WidgetAttribute.WA_TranslucentBackground, True)
