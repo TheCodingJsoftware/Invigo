@@ -1,28 +1,28 @@
 from typing import Any
 
-from utils.workspace.item import Item
+from utils.workspace.workspace_item import WorkspaceItem
 
 
-class ItemGroup:
+class WorkspaceItemGroup:
     def __init__(self) -> None:
-        self.data: dict[str, list[Item]] = {}
+        self.data: dict[str, list[WorkspaceItem]] = {}
 
-    def add_item_to_group(self, group_name: str, item: Item) -> None:
+    def add_item_to_group(self, group_name: str, item: WorkspaceItem) -> None:
         self.data.setdefault(group_name, []).append(item)
 
-    def add_item(self, item: Item) -> None:
+    def add_item(self, item: WorkspaceItem) -> None:
         self.data.setdefault(item.name, []).append(item)
 
-    def get_item(self, item_name: str) -> Item | None:
+    def get_item(self, item_name: str) -> WorkspaceItem | None:
         try:
             return self.data[item_name][0]
         except KeyError:
             return None
 
-    def get_item_list(self, item_name: str) -> list[Item]:
+    def get_item_list(self, item_name: str) -> list[WorkspaceItem]:
         return self.data[item_name]
 
-    def remove_item(self, item: Item) -> None:
+    def remove_item(self, item: WorkspaceItem) -> None:
         del self.data[item.name][item]
 
     def to_string(self, item_name: str) -> str:

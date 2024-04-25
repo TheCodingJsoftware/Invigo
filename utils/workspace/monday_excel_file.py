@@ -6,7 +6,7 @@ import openpyxl
 from openpyxl.worksheet.worksheet import Worksheet
 from rich import print
 
-from utils.workspace.item import Item
+from utils.workspace.workspace_item import WorkspaceItem
 
 
 class MondayExcelFile:
@@ -70,12 +70,12 @@ class MondayExcelFile:
         new_data: dict[str, dict[str, any]] = {job_name: job_data for job_name, job_data in data.items() if job_data}
         return new_data
 
-    def combine_data(self, data: dict[str, dict[str, any]]) -> dict[str, list[Item]]:
-        new_data: dict[str, list[Item]] = {}
+    def combine_data(self, data: dict[str, dict[str, any]]) -> dict[str, list[WorkspaceItem]]:
+        new_data: dict[str, list[WorkspaceItem]] = {}
         for job_name, job_data in data.items():
             new_data[job_name] = []
             for item_name, item_data in job_data.items():
-                item: Item = Item(
+                item: WorkspaceItem = WorkspaceItem(
                     name=item_name,
                     data={
                         "Bending Files": [],
@@ -97,7 +97,7 @@ class MondayExcelFile:
                 new_data[job_name].append(item)
         return new_data
 
-    def get_data(self) -> dict[str, list[Item]]:
+    def get_data(self) -> dict[str, list[WorkspaceItem]]:
         workbook = openpyxl.load_workbook(filename=self.path)
         sheet = workbook.active
         self.find_jobs(sheet=sheet)

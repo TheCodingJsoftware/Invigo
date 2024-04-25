@@ -1,15 +1,15 @@
 import copy
 from typing import Any, Union
 
-from utils.workspace.item import Item
+from utils.workspace.workspace_item import WorkspaceItem
 
 
 class Assembly:
-    def __init__(self, **kwargs: Union[str, list["Assembly"], list[Item]]) -> None:
+    def __init__(self, **kwargs: Union[str, list["Assembly"], list[WorkspaceItem]]) -> None:
         self.name = kwargs.get("name")
         self.assembly_data: dict[str, object] = kwargs.get("assembly_data")
         self.sub_assemblies: list["Assembly"] = kwargs.get("sub_assemblies")
-        self.items: list[Item] = kwargs.get("items")
+        self.items: list[WorkspaceItem] = kwargs.get("items")
         self.parent_assembly: "Assembly" = None
         self.master_assembly: "Assembly" = None
         if not self.items:
@@ -25,15 +25,15 @@ class Assembly:
         if self.parent_assembly is not None:
             self.parent_assembly.set_assembly_data(key=key, value=value)
 
-    def set_item(self, item: Item) -> None:
+    def set_item(self, item: WorkspaceItem) -> None:
         item.parent_assembly = self
         self.items.append(item)
 
-    def add_item(self, item: Item) -> None:
+    def add_item(self, item: WorkspaceItem) -> None:
         item.parent_assembly = self
         self.items.append(item)
 
-    def remove_item(self, item: Item) -> None:
+    def remove_item(self, item: WorkspaceItem) -> None:
         if self.exists(item):
             self.items.remove(item)
 
@@ -118,25 +118,25 @@ class Assembly:
             data["items"][item.name] = item.data
         return data
 
-    def exists(self, other: Item | str) -> bool:
-        if isinstance(other, Item):
+    def exists(self, other: WorkspaceItem | str) -> bool:
+        if isinstance(other, WorkspaceItem):
             return any(other.name == item.name for item in self.items)
         elif isinstance(other, str):
             return any(other == item.name for item in self.items)
 
-    def get_item(self, item_name: str) -> Item | None:
+    def get_item(self, item_name: str) -> WorkspaceItem | None:
         return next((item for item in self.items if item.name == item_name), None)
 
-    def get_all_items(self) -> list[Item]:
+    def get_all_items(self) -> list[WorkspaceItem]:
         all_items = self.items.copy()
         for sub_assembly in self.sub_assemblies:
             all_items.extend(sub_assembly.get_all_items())
         return all_items
 
-    def get_item_by_index(self, index: int) -> Item:
+    def get_item_by_index(self, index: int) -> WorkspaceItem:
         return self.items[index]
 
-    def copy_item(self, item_name: str) -> Item | None:
+    def copy_item(self, item_name: str) -> WorkspaceItem | None:
         return copy.deepcopy(self.get_item(item_name))
 
     def get_data(self) -> dict:

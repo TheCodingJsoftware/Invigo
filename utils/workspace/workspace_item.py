@@ -2,7 +2,7 @@ import copy
 from typing import Any, Union
 
 
-class Item:
+class WorkspaceItem:
     def __init__(self, **kwargs: Union[str, object]) -> None:
         self.name: str = kwargs.get("name")
         self.data: dict = kwargs.get("data")

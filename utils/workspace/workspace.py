@@ -17,8 +17,8 @@ from PyQt6.QtWidgets import (
 
 from utils.json_file import JsonFile
 from utils.workspace.assembly import Assembly
-from utils.workspace.item import Item
-from utils.workspace.item_group import ItemGroup
+from utils.workspace.workspace_item import WorkspaceItem
+from utils.workspace.workspace_item_group import WorkspaceItemGroup
 
 workspace_tags = JsonFile(file_name="data/workspace_settings")
 
@@ -48,7 +48,7 @@ class Workspace:
     def load_assembly(self, assembly_name: str, data: dict) -> Assembly:
         assembly = Assembly(name=assembly_name, assembly_data=data["assembly_data"])
         for item_name, item_data in data["items"].items():
-            item: Item = Item(name=item_name, data=item_data)
+            item: WorkspaceItem = WorkspaceItem(name=item_name, data=item_data)
             item.parent_assembly = assembly
             item.master_assembly = assembly.get_master_assembly()
             assembly.set_item(item)
@@ -376,24 +376,24 @@ class Workspace:
                 data[assembly.get_assembly_data(key="group")].append(assembly)
         return data
 
-    def __get_all_items(self, sub_assembly: Assembly) -> list[Item]:
-        items: list[Item] = []
+    def __get_all_items(self, sub_assembly: Assembly) -> list[WorkspaceItem]:
+        items: list[WorkspaceItem] = []
         items.extend(sub_assembly.items)
         for _sub_assembly in sub_assembly.sub_assemblies:
             items.extend(self.__get_all_items(sub_assembly=_sub_assembly))
         return items
 
-    def get_all_items(self) -> list[Item]:
-        items: list[Item] = []
+    def get_all_items(self) -> list[WorkspaceItem]:
+        items: list[WorkspaceItem] = []
         for assembly in self.data:
             items.extend(assembly.items)
             for sub_assembly in assembly.sub_assemblies:
                 items.extend(self.__get_all_items(sub_assembly=sub_assembly))
         return items
 
-    def get_grouped_items(self) -> ItemGroup:
-        all_items: list[Item] = self.get_all_items()
-        grouped_items: ItemGroup = ItemGroup()
+    def get_grouped_items(self) -> WorkspaceItemGroup:
+        all_items: list[WorkspaceItem] = self.get_all_items()
+        grouped_items: WorkspaceItemGroup = WorkspaceItemGroup()
         for item in all_items:
             if item.get_value(key="show"):
                 grouped_items.add_item(item)
