@@ -10,8 +10,6 @@ from PyQt6.QtWidgets import *
 
 
 class LoadWindow(QWidget):
-    """Loading animation window"""
-
     def __init__(self, parent=None):
         super(QWidget, self).__init__(parent)
         self.WIDTH, self.HEIGHT = 1000, 400

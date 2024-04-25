@@ -2,12 +2,7 @@ from openpyxl import Workbook, load_workbook
 
 
 class PriceHistoryFile:
-    """It's a wrapper around a file object that keeps track of the last line read"""
-
     def __init__(self, file_name: str) -> None:
-        """
-        It creates a workbook, creates two sheets, removes the default sheet, and then loads the file
-        """
         self.file_name = file_name
         self.row_pos: int = 0
         try:
@@ -29,9 +24,6 @@ class PriceHistoryFile:
         self.load_file()
 
     def load_file(self) -> None:
-        """
-        It loads data from an excel file into a dictionary
-        """
         self.row_pos = len(self.price_history_sheet["A"])
 
         for cell in self.price_history_sheet["A"]:
@@ -46,12 +38,6 @@ class PriceHistoryFile:
             self.data["New Price"].append(cell.value)
 
     def get_data_from_category(self) -> dict:
-        """
-        It returns the data from the category
-
-        Returns:
-          The category data
-        """
         return self.data
 
     def add_new(
@@ -62,14 +48,6 @@ class PriceHistoryFile:
         old_price: float,
         new_price: float,
     ) -> None:
-        """
-        It adds a new row to the categories sheet of the workbook, with the date and description of the
-        new category
-
-        Args:
-          date (str): str
-          description (str): str = "description"
-        """
         if old_price == new_price:
             return
         self.price_history_sheet.cell(row=self.row_pos + 1, column=1, value=date)

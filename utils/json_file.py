@@ -39,7 +39,7 @@ class JsonFile:
             with open(f"{self.FOLDER_LOCATION}/{self.file_name}.json", "r", encoding="utf-8") as json_file:
                 self.data = json.load(json_file)
         except Exception as error:
-            print(error)
+            print(f'{self.file_name}.JsonFile.load_data: {error}')
 
     def __save_data(self) -> None:
         """

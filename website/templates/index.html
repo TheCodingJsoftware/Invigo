@@ -12,199 +12,125 @@
         rel="stylesheet" />
     <link type="text/css" rel="stylesheet" href='/static/main.css' />
 
-    <meta property="og:title" content="Inventory" />
-    <meta property="og:url" content="https://hbniaudioarchive.herokuapp.com" />
+    <meta property="og:title" content="Invigo" />
+    <meta property="og:url" content="http://10.0.0.10:5051" />
     <meta property="og:description" content="View inventory." />
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <h1 id="header">Inventory Manager</h1>
-
+    <h1 id="header">Invigo</h1>
     <br>
-    <div class="search-box">
-        <div class="search-icon"><i class="fa fa-search search-icon"></i></div>
-
-        <form action="" class="search-form">
-            <input type="text" placeholder="Search" id="search" autocomplete="off" value={{search_term}}>
-        </form>
-        <svg class="search-border" version="1.1" xmlns="http://www.w3.org/2000/svg"
-            xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:a="http://ns.adobe.com/AdobeSVGViewerExtensions/3.0/"
-            x="0px" y="0px" viewBox="0 0 671 111" style="enable-background:new 0 0 671 111;" xml:space="preserve">
-            <path class="border" d="M335.5,108.5h-280c-29.3,0-53-23.7-53-53v0c0-29.3,23.7-53,53-53h280" />
-            <path class="border" d="M335.5,108.5h280c29.3,0,53-23.7,53-53v0c0-29.3-23.7-53-53-53h-280" />
-        </svg>
-        <div class="go-icon"><i class="fa fa-close"></i></div>
-    </div>
-    <br>
-    <div class="container">
-        <div class="item">
-            <h3>Quick Search</h3>
-        </div>
-        <div class="item">
-            <select name="search_categories" id="coloylist" class="selectpicker" data-style="btn-info"
-                data-live-search="true">
-                <option value="" selected="selected" disabled>Select Quick Search</option>
-                <optgroup label="Part Names">
-                    {% for part_name in part_names%}
-                    <option value={{part_name}}>{{part_name}}</option>
-                    {%endfor%}
-                </optgroup>
-                <optgroup label="Part Numbers">
-                    {% for part_number in part_numbers%}
-                    <option value={{part_number}}>{{part_number}}</option>
-                    {%endfor%}
-                </optgroup>
-            </select>
-        </div>
-    </div>
     <div id="downloads">
         <div class="scroll">
-            {% for category, category_data in inventory.items() %}
-            {%if search_term == ""%}
-            <details>
-                <summary>{{category}}</summary>
-                <div class="item">
-                    <h3 class="unit_cost"> Total Cost: ${{unit_costs[category]}} </h3>
-                </div>
-                <div class="content">
-                    <div class="scroll">
-                        {% for group, value in category_data.items() %}
-                        <details id='group'>
-                            <summary id='group_name'>{{group}}</summary>
-                            <div class="content">
-                                <div class="scroll">
-                                    <table class="sortable">
-                                        <thead>
-                                            <tr>
-                                                <th>Part Name</th>
-                                                <th>Part Number</th>
-                                                <th>Quantity Per Unit</th>
-                                                <th>Quantity in Stock</th>
-                                                <th>Item Price</th>
-                                                <th>Exchange Rate</th>
-                                                <th>Priority</th>
-                                                <th>Notes</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            {% for item_name, item_dictionary in value.items() %}
-                                            <tr>
-                                                <th>{{item_name}}</th>
-                                                <td>{{item_dictionary['part_number']}}</td>
-                                                <td>{{item_dictionary['unit_quantity']}}</td>
-                                                {% if item_dictionary['current_quantity'] <= 10 %}
-                                                <td class="high-priority">{{item_dictionary['current_quantity']}}</td>
-                                                {% elif item_dictionary['current_quantity'] <= 20 %}
-                                                <td class="medium-priority">{{item_dictionary['current_quantity']}}</td>
-                                                {% else %}
-                                                <td>{{item_dictionary['current_quantity']}}</td>
-                                                {% endif %}
-                                                <td sorttable_customkey={{item_dictionary['price']}}>
-                                                    ${{item_dictionary['price']}}
-                                                </td>
-                                                {% if item_dictionary['use_exchange_rate'] == true %}
-                                                <td sorttable_customkey=USD>
-                                                    USD
-                                                </td>
-                                                {% else %}
-                                                <td sorttable_customkey=CAD>
-                                                    CAD
-                                                </td>
-                                                {% endif %}
-                                                {% if item_dictionary['priority'] == 0 %}
-                                                <td sorttable_customkey="0">Default</td>
-                                                {% elif item_dictionary['priority'] == 1 %}
-                                                <td sorttable_customkey="1"> Low</td>
-                                                {% elif item_dictionary['priority'] == 2 %}
-                                                <td sorttable_customkey="2" class="medium-priority">Medium</td>
-                                                {% elif item_dictionary['priority'] == 3 %}
-                                                <td sorttable_customkey="3" class="high-priority">High</td>
-                                                {% endif %}
-                                                <td>{{item_dictionary['notes']}}</td>
-                                            </tr>
-                                            {% endfor %}
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                        </details>
-                        {% endfor %}
+        	<details>
+        		<summary>Inventory</summary>
+                {% for category, category_data in inventory.items() %}
+                <details id="group">
+                    <summary id="group_name">{{category}}</summary>
+                    <div class="item">
+                        <h3 class="unit_cost"> Total Cost: ${{unit_costs[category]}} </h3>
                     </div>
-                </div>
-            </details>
-            {% else %}
-            <details open>
-                <summary>{{category}}</summary>
-                <div class="item">
-                    <h3 class="unit_cost"> Total Cost: ${{unit_costs[category]}} </h3>
-                </div>
-                <div class="content">
-                    <div class="scroll">
-                        {% for group, value in category_data.items() %}
-                        <details open id='group'>
-                            <summary id='group_name'>{{group}}</summary>
-                            <div class="content">
-                                <div class="scroll">
-                                    <table class="sortable">
-                                        <thead>
-                                            <tr>
-                                                <th>Part Name</th>
-                                                <th>Part Number</th>
-                                                <th>Quantity Per Unit</th>
-                                                <th>Quantity in Stock</th>
-                                                <th>Item Price</th>
-                                                <th>Priority</th>
-                                                <th>Notes</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            {% for item_name, item_dictionary in value.items() %}
-                                            <tr>
-                                                <th>{{item_name}}</th>
-                                                <td>{{item_dictionary['part_number']}}</td>
-                                                <td>{{item_dictionary['unit_quantity']}}</td>
-                                                {% if item_dictionary['current_quantity'] <= 10 %}
-                                                <td class="high-priority">{{item_dictionary['current_quantity']}}</td>
-                                                {% elif item_dictionary['current_quantity'] <= 20 %}
-                                                <td class="medium-priority">{{item_dictionary['current_quantity']}}</td>
-                                                {% else %}
-                                                <td>{{item_dictionary['current_quantity']}}</td>
-                                                {% endif %}
-                                                <td sorttable_customkey={{item_dictionary['price']}}>
-                                                    ${{item_dictionary['price']}}
-                                                </td>
-                                                {% if item_dictionary['use_exchange_rate'] == true %}
-                                                <td sorttable_customkey=USD>
-                                                    USD
-                                                </td>
-                                                {% else %}
-                                                <td sorttable_customkey=CAD>
-                                                    CAD
-                                                </td>
-                                                {% endif %}
-                                                {% if item_dictionary['priority'] == 0 %}
-                                                <td sorttable_customkey="0">Default</td>
-                                                {% elif item_dictionary['priority'] == 1 %}
-                                                <td sorttable_customkey="1"> Low</td>
-                                                {% elif item_dictionary['priority'] == 2 %}
-                                                <td sorttable_customkey="2" class="medium-priority">Medium</td>
-                                                {% elif item_dictionary['priority'] == 3 %}
-                                                <td sorttable_customkey="3" class="high-priority">High</td>
-                                                {% endif %}
-                                                <td>{{item_dictionary['notes']}}</td>
-                                            </tr>
-                                            {% endfor %}
-                                        </tbody>
-                                    </table>
+                    <div class="content">
+                        <div class="scroll">
+                            {% for group, value in category_data.items() %}
+                            <details id='group'>
+                                <summary id='group_name'>{{group}}</summary>
+                                <div class="content">
+                                    <div class="scroll">
+                                        <table class="sortable">
+                                            <thead>
+                                                <tr>
+                                                    <th>Part Name</th>
+                                                    <th>Part Number</th>
+                                                    <th>Quantity Per Unit</th>
+                                                    <th>Quantity in Stock</th>
+                                                    <th>Item Price</th>
+                                                    <th>Exchange Rate</th>
+                                                    <th>Priority</th>
+                                                    <th>Notes</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                {% for item_name, item_dictionary in value.items() %}
+                                                <tr>
+                                                    <th>{{item_name}}</th>
+                                                    <td>{{item_dictionary['part_number']}}</td>
+                                                    <td>{{item_dictionary['unit_quantity']}}</td>
+                                                    {% if item_dictionary['current_quantity'] <= 10 %}
+                                                    <td class="high-priority">{{item_dictionary['current_quantity']}}</td>
+                                                    {% elif item_dictionary['current_quantity'] <= 20 %}
+                                                    <td class="medium-priority">{{item_dictionary['current_quantity']}}</td>
+                                                    {% else %}
+                                                    <td>{{item_dictionary['current_quantity']}}</td>
+                                                    {% endif %}
+                                                    <td sorttable_customkey={{item_dictionary['price']}}>
+                                                        ${{item_dictionary['price']}}
+                                                    </td>
+                                                    {% if item_dictionary['use_exchange_rate'] == true %}
+                                                    <td sorttable_customkey=USD>
+                                                        USD
+                                                    </td>
+                                                    {% else %}
+                                                    <td sorttable_customkey=CAD>
+                                                        CAD
+                                                    </td>
+                                                    {% endif %}
+                                                    {% if item_dictionary['priority'] == 0 %}
+                                                    <td sorttable_customkey="0">Default</td>
+                                                    {% elif item_dictionary['priority'] == 1 %}
+                                                    <td sorttable_customkey="1"> Low</td>
+                                                    {% elif item_dictionary['priority'] == 2 %}
+                                                    <td sorttable_customkey="2" class="medium-priority">Medium</td>
+                                                    {% elif item_dictionary['priority'] == 3 %}
+                                                    <td sorttable_customkey="3" class="high-priority">High</td>
+                                                    {% endif %}
+                                                    <td>{{item_dictionary['notes']}}</td>
+                                                </tr>
+                                                {% endfor %}
+                                            </tbody>
+                                        </table>
+                                    </div>
                                 </div>
-                            </div>
-                        </details>
-                        {% endfor %}
+                            </details>
+                            {% endfor %}
+                        </div>
                     </div>
-                </div>
-            </details>
-            {% endif %}
-            <br>
+                </details>
             {% endfor %}
+            </details>
+            <br>
+        	<details>
+        		<summary>Parts in Inventory</summary>
+        		{% for category, category_data in parts_in_inventory.items() %}
+        		<details id='group'>
+        			<summary id='group_name'>{{category}}</summary>
+        			<div class="content">
+                        <div class="scroll">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Part Name</th>
+                                        <th>Parts Per</th>
+                                        <th>Item Price</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for item_name, item_dictionary in category_data.items() %}
+                                    <tr>
+                                        <th>{{item_name}}</th>
+                                        <td>{{item_dictionary['unit_quantity']}}</td>
+                                        <td>
+								        {{ item_dictionary['price'] }}
+										</td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+        		</details>
+        		{% endfor %}
+        	</details>
+            <br>
             <details>
                 <summary>Price of Steel</summary>
                 <div class="content">
@@ -257,39 +183,6 @@
 </html>
 
 <script>
-    var input = document.getElementById("search");
-    // Execute a function when the user releases a key on the keyboard
-    input.addEventListener("keydown", function (event) {
-        if (event.keyCode === 13) {
-            event.preventDefault();
-            location.replace(input.value);
-            if (input.value === "") {
-                location.assign('https://piney-manufacturing-inventory.herokuapp.com');
-            }
-        }
-    });
-    $(document).ready(function () {
-        $(".go-icon").addClass("go-in");
-        $("#search").focus(function () {
-            $(".search-box").addClass("border-searching");
-            $(".search-icon").addClass("si-rotate");
-        });
-        $("#search").blur(function () {
-            $(".search-box").removeClass("border-searching");
-            $(".search-icon").removeClass("si-rotate");
-        });
-        $(".go-icon").click(function () {
-            $(".search-form").submit();
-            $(".go-icon").removeClass("go-in");
-            location.assign('https://piney-manufacturing-inventory.herokuapp.com');
-        });
-        $(function () {
-            $('select').on('change', function (e) {
-                location.replace(this.value);
-            });
-
-        });
-    });
     class Accordion {
         constructor(el) {
             // Store the <details> element

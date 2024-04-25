@@ -17,10 +17,6 @@ settings_file = JsonFile(file_name="settings")
 
 
 class RecutDialog(QDialog):
-    """
-    Input dialog
-    """
-
     def __init__(
         self,
         parent=None,
@@ -30,17 +26,6 @@ class RecutDialog(QDialog):
         message: str = "",
         max_value: int = 10,
     ) -> None:
-        """
-        It's a function that takes in a bunch of arguments and sets them to variables
-
-        Args:
-          parent: The parent widget of the dialog. If no parent is given, the dialog will be shown as a
-        window.
-          icon_name (str): str = Icons.question,
-          button_names (str): str = DialogButtons.ok_cancel,
-          title (str): str = __name__,
-          message (str): str = "",
-        """
         super(RecutDialog, self).__init__(parent)
         uic.loadUi("ui/recut_dialog.ui", self)
 
@@ -82,48 +67,22 @@ class RecutDialog(QDialog):
         self.accept()
 
     def load_theme(self) -> None:
-        """
-        It loads the stylesheet.qss file from the theme folder
-        """
         set_theme(self, theme="dark")
 
     def get_icon(self, path_to_icon: str) -> QSvgWidget:
-        """
-        It returns a QSvgWidget object that is initialized with a path to an SVG icon
-
-        Args:
-          path_to_icon (str): The path to the icon you want to use.
-
-        Returns:
-          A QSvgWidget object.
-        """
         return QSvgWidget(f"icons/{path_to_icon}")
 
     def button_press(self, button) -> None:
-        """
-        The function is called when a button is pressed. It sets the response to the text of the button
-        that was pressed, and the inputText to the text in the spinBox_input. Then it accepts the dialog
-
-        Args:
-          button: The button that was clicked.
-        """
         self.response = button.text()
         self.inputText = self.spinBox_input.value()
         self.accept()
 
     def input_enter_pressed(self) -> None:
-        """
-        It takes the text from the spinBox_input widget and puts it into the inputText variable
-        """
         self.response = "Ok"
         self.inputText = self.spinBox_input.value()
         self.accept()
 
     def load_dialog_buttons(self) -> None:
-        """
-        It takes a string of button names, splits them into a list, and then creates a button for each
-        name in the list
-        """
         button_names = self.button_names.split(", ")
         for index, name in enumerate(button_names):
             if os.path.isfile(f"icons/dialog_{name.lower()}.svg"):
@@ -143,10 +102,4 @@ class RecutDialog(QDialog):
             self.buttonsLayout.addWidget(button)
 
     def get_response(self) -> str:
-        """
-        This function returns the response of the class
-
-        Returns:
-          The response
-        """
         return self.response.replace(" ", "")

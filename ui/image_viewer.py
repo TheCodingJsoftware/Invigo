@@ -4,8 +4,6 @@ from PyQt6.QtWidgets import QLabel, QMainWindow, QScrollArea, QSizePolicy
 
 
 class QImageViewer(QMainWindow):
-    """This is a class for a main window that displays images."""
-
     def __init__(self, parent, path: str, title: str):
         super().__init__(parent)
         self.setWindowTitle(title)

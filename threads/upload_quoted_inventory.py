@@ -12,20 +12,10 @@ settings_file = JsonFile(file_name="settings")
 
 
 class UploadBatch(QThread):
-    """
-    Uploads client data to the server
-    """
 
     signal = pyqtSignal(str, str)
 
     def __init__(self, json_file_path: str) -> None:
-        """
-        The function is a constructor for a class that inherits from QThread. It takes a list of strings
-        as an argument and returns None
-
-        Args:
-          file_to_upload (list[str]): list[str] = list of files to upload
-        """
         QThread.__init__(self)
         self.SERVER_IP: str = get_server_ip_address()
         self.SERVER_PORT: int = get_server_port()
@@ -34,9 +24,6 @@ class UploadBatch(QThread):
         self.upload_url = f"http://{self.SERVER_IP}:{self.SERVER_PORT}/upload"
 
     def run(self) -> None:
-        """
-        It connects to a server, sends a message, and then sends the file
-        """
         try:
             # Send the file as a POST request to the server
             with open(self.json_file_path, "rb") as file:

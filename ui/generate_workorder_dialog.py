@@ -30,9 +30,6 @@ settings_file = JsonFile(file_name="settings")
 admin_workspace = Workspace("workspace - Admin")
 
 class GenerateWorkorderDialog(QDialog):
-    """
-    Select dialog
-    """
 
     def __init__(
         self,
@@ -43,17 +40,6 @@ class GenerateWorkorderDialog(QDialog):
         message: str = "",
         job_names: dict[str, int] = {},
     ) -> None:
-        """
-        It's a function that takes in a list of options and displays them in a list widget
-
-        Args:
-          parent: The parent widget of the dialog.
-          icon_name (str): str = Icons.question,
-          button_names (str): str = DialogButtons.ok_cancel,
-          title (str): str = __name__,
-          message (str): str = "",
-          options (list): list = None,
-        """
         super(GenerateWorkorderDialog, self).__init__(parent)
         uic.loadUi("ui/generate_workorder_dialog.ui", self)
         admin_workspace.load_data()
@@ -172,10 +158,8 @@ class GenerateWorkorderDialog(QDialog):
                 self.update_parent_state(parent_item)
         elif item.checkState() == Qt.CheckState.Checked:
             self.update_child_items(item)
-            if item.parent() is not None:
-                if self.are_all_children_checked(item.parent()):
-                    item.parent().setCheckState(Qt.CheckState.Checked)
-
+            if item.parent() is not None and self.are_all_children_checked(item.parent()):
+                item.parent().setCheckState(Qt.CheckState.Checked)
     def get_topmost_checked_items_rows(self, model: QStandardItemModel) -> list[str]:
         topmost_checked_items: list[QStandardItem] = []
         for row in range(model.rowCount()):
@@ -214,8 +198,8 @@ class GenerateWorkorderDialog(QDialog):
             h_layout.setContentsMargins(0, 0, 0, 5)
             widget.setLayout(h_layout)
             quantity_spin_box = QSpinBox(self)
-            quantity_spin_box.setValue(1)
-            quantity_spin_box.setMinimum(1)
+            quantity_spin_box.setValue(0)
+            quantity_spin_box.setMinimum(0)
             quantity_spin_box.setMaximum(99999999)
 
             def update_quantity(assembly: Assembly, quantity_spin_box: QSpinBox):
@@ -228,44 +212,21 @@ class GenerateWorkorderDialog(QDialog):
 
             self.verticalLayout_workorders.addWidget(widget)
     def load_theme(self) -> None:
-        """
-        It loads the stylesheet.qss file from the theme folder
-        """
         set_theme(self, theme="dark")
 
     def get_icon(self, path_to_icon: str) -> QSvgWidget:
-        """
-        It returns a QSvgWidget object that is initialized with a path to an SVG icon
-
-        Args:
-          path_to_icon (str): The path to the icon you want to use.
-
-        Returns:
-          A QSvgWidget object.
-        """
         return QSvgWidget(f"icons/{path_to_icon}")
 
     def button_press(self, button) -> None:
-        """
-        The function is called when a button is pressed. It sets the response to the text of the button
-        and then closes the dialog
-
-        Args:
-          button: The button that was clicked.
-        """
         self.response = button.text()
         self.accept()
 
     def load_dialog_buttons(self) -> None:
-        """
-        It takes a string of button names, splits them into a list, and then creates a button for each
-        name in the list
-        """
         button_names = self.button_names.split(", ")
         for index, name in enumerate(button_names):
             if name == DialogButtons.generate:
                 button = QPushButton(f"  {name}")
-                button.setIcon(QIcon(f"icons/dialog_ok.svg"))
+                button.setIcon(QIcon("icons/dialog_ok.svg"))
             elif os.path.isfile(f"icons/dialog_{name.lower()}.svg"):
                 button = QPushButton(f"  {name}")
                 button.setIcon(QIcon(f"icons/dialog_{name.lower()}.svg"))
@@ -283,22 +244,9 @@ class GenerateWorkorderDialog(QDialog):
             self.buttonsLayout.addWidget(button)
 
     def get_response(self) -> str:
-        """
-        This function returns the response of the class
-
-        Returns:
-          The response
-        """
         return self.response.replace(" ", "")
 
     def get_selected_item(self) -> tuple[bool, bool, bool, bool]:
-        """
-        This function returns a tuple of boolean values indicating which push buttons are checked.
-
-        Returns:
-          A tuple containing three boolean values representing whether the corresponding push button
-        (quote, work order, update inventory) is checked or not.
-        """
         return (
             self.pushButton_quote.isChecked(),
             self.pushButton_workorder.isChecked(),
@@ -307,13 +255,6 @@ class GenerateWorkorderDialog(QDialog):
         )
 
     def clear_layout(self, layout) -> None:
-        """
-        If the layout is not None, while the layout has items, take the first item, get the widget, if
-        the widget is not None, delete it, otherwise clear the layout
-
-        Args:
-          layout: The layout to be cleared
-        """
         with contextlib.suppress(AttributeError):
             if layout is not None:
                 while layout.count():

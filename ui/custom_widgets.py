@@ -30,7 +30,9 @@ from PyQt6.QtCore import (
     pyqtSignal,
 )
 from PyQt6.QtGui import (
+    QAction,
     QBrush,
+    QClipboard,
     QColor,
     QCursor,
     QDrag,
@@ -40,6 +42,7 @@ from PyQt6.QtGui import (
     QDropEvent,
     QFileSystemModel,
     QIcon,
+    QKeySequence,
     QPainter,
     QPalette,
     QPixmap,
@@ -71,6 +74,7 @@ from PyQt6.QtWidgets import (
     QScrollArea,
     QSizePolicy,
     QSpinBox,
+    QSplashScreen,
     QStyle,
     QStyledItemDelegate,
     QStyleOptionComboBox,
@@ -87,11 +91,81 @@ from PyQt6.QtWidgets import (
     QTreeWidgetItem,
     QVBoxLayout,
     QWidget,
+    QMenu
 )
 
 from utils.colors import darken_color, lighten_color
 from utils.workspace.assembly import Assembly
 from utils.workspace.item import Item
+
+
+class AssemblyImage(QLabel):
+    clicked = pyqtSignal()
+    imagePathDropped = pyqtSignal(str)
+    def __init__(self, parent: QWidget | None = ...) -> None:
+        super(AssemblyImage, self).__init__(parent)
+        self.setFixedSize(100, 100)
+        self.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        self.setContextMenuPolicy(Qt.ContextMenuPolicy.CustomContextMenu)
+        self.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
+        self.setToolTip("Press to enlarge")
+        self.setText("Drop an Image\n(PNG, JPG, JPEG)")
+        self.setAcceptDrops(True)
+        self.setWordWrap(True)
+        self.setStyleSheet("background-color: rgba(30,30,30,100);")
+
+    def set_new_image(self, path_to_image):
+        self.pixmap = QPixmap(path_to_image)
+        self.setPixmap(self.pixmap.scaled(self.width(), self.height(), Qt.AspectRatioMode.KeepAspectRatio))
+        self.setStyleSheet("background-color: rgba(30,30,30,100);")
+
+    def clear_image(self):
+        self.setPixmap(QPixmap())
+        self.setText("Drop an Image\n(PNG, JPG, JPEG)")
+        self.setStyleSheet("background-color: rgba(30,30,30,100);")
+
+    def mousePressEvent(self, event):
+        if event.button() == Qt.MouseButton.LeftButton:
+            self.clicked.emit()  # Emit the clicked signal
+
+    def mouseReleaseEvent(self, event):
+        if event.button() == Qt.MouseButton.LeftButton:
+            super().mouseReleaseEvent(event)
+
+    def dragEnterEvent(self, event: QDragEnterEvent):
+        if event.mimeData().hasImage():
+            event.acceptProposedAction()
+        elif event.mimeData().hasUrls():
+            urls = event.mimeData().urls()
+            self.setText("Drop Me")
+            self.setStyleSheet("background-color: rgba(70,210,110, 100);")
+            event.acceptProposedAction()
+            event.accept()
+
+    def dropEvent(self, event: QDropEvent):
+        urls = event.mimeData().urls()
+        if urls:
+            image_path = urls[0].toLocalFile()
+            if image_path.lower().endswith(('.png', '.jpg', '.jpeg')):
+                self.setPixmap(QPixmap(image_path).scaled(self.width(), self.height(), Qt.AspectRatioMode.KeepAspectRatio))
+                self.imagePathDropped.emit(image_path)
+                event.accept()
+            else:
+                self.setText("Not allowed")
+                self.setStyleSheet("background-color: rgba(210,70,60, 100);")
+                event.ignore()
+
+    def dragLeaveEvent(self, event: QDragLeaveEvent):
+        self.setText("Drop an Image\n(PNG, JPG, JPEG)")
+        self.setStyleSheet("background-color: rgba(30,30,30,100);")
+        event.accept()
+
+
+class LoadingScreen(QSplashScreen):
+    def __init__(self):
+        super().__init__()
+        self.setPixmap(QPixmap("icons/loading.png"))  # Load an image for the loading screen
+        self.setWindowFlag(Qt.WindowType.WindowStaysOnTopHint)
 
 
 class SelectRangeCalendar(QCalendarWidget):
@@ -115,12 +189,6 @@ class SelectRangeCalendar(QCalendarWidget):
         super().dateTextFormat()
 
     def get_timeline(self) -> tuple[QDate, QDate]:
-        """
-        The function `get_timeline` returns a tuple containing the `from_date` and `to_date` attributes.
-
-        Returns:
-          A tuple containing the values of `self.from_date` and `self.to_date`.
-        """
         return (self.from_date, self.to_date)
 
     def load_theme(self):
@@ -444,6 +512,109 @@ class RecordingWidget(QWidget):
         painter.drawEllipse(x, y, 2 * radius, 2 * radius)
 
 
+class MachineCutTimeSpinBox(QDoubleSpinBox):
+    # ! IF VALUE IS SET TO 1, THAT IS 1 SECOND
+    def __init__(self, parent=None):
+        super(MachineCutTimeSpinBox, self).__init__(parent)
+        self.setRange(0, 99999999)
+        self.setSingleStep(0.001)
+        self.setDecimals(9)
+        self.setFixedWidth(200)
+        self.setWrapping(True)
+        self.setAccelerated(True)
+        self.setFocusPolicy(Qt.FocusPolicy.StrongFocus)
+
+        regex = QRegularExpression(r"\d+.\d{2}")
+        validator = QRegularExpressionValidator(regex, self)
+        self.lineEdit().setValidator(validator)
+
+        self.installEventFilter(self)
+
+    def focusInEvent(self, event):
+        self.setFocusPolicy(Qt.FocusPolicy.WheelFocus)
+        super(MachineCutTimeSpinBox, self).focusInEvent(event)
+
+    def focusOutEvent(self, event):
+        self.setFocusPolicy(Qt.FocusPolicy.StrongFocus)
+        super(MachineCutTimeSpinBox, self).focusOutEvent(event)
+
+    def wheelEvent(self, event):
+        if self.hasFocus():
+            return super(MachineCutTimeSpinBox, self).wheelEvent(event)
+        else:
+            event.ignore()
+
+    def eventFilter(self, obj, event):
+        if event.type() == QEvent.Type.Wheel and self.hasFocus():
+            delta = event.angleDelta().y() / 120
+            self.changeValue(delta)
+            return True
+
+        return super().eventFilter(obj, event)
+
+    def changeValue(self, delta):
+        current_value = self.value()
+
+        if delta > 0:
+            # Increase the value
+            if current_value >= 5 * 3600:  # 5 hours
+                self.setValue(current_value + 3600)  # Increase by 1 hour
+            elif current_value >= 3600:  # 1 hour
+                self.setValue(current_value + 60)  # Increase by 1 minute
+            else:
+                self.setValue(current_value + 1)  # Increase by 1 second
+        elif delta < 0:
+            # Decrease the value
+            if current_value >= 5 * 3600:  # 5 hours
+                self.setValue(current_value - 3600)  # Decrease by 1 hour
+            elif current_value >= 3600:  # 1 hour
+                self.setValue(current_value - 60)  # Decrease by 1 minute
+            else:
+                self.setValue(current_value - 1)  # Decrease by 1 second
+
+    def textFromValue(self, value):
+        hours = int(value // 3600)
+        minutes = int((value % 3600) // 60)
+        seconds = int(value % 60)
+        return f"{hours:02d}h {minutes:02d}m {seconds:02d}s"
+
+    def valueFromText(self, text):
+        parts = text.split()
+        hours = int(parts[0][:2])
+        minutes = int(parts[1][:2])
+        seconds = int(parts[2][:2])
+        return hours * 3600 + minutes * 60 + seconds
+
+    def fixup(self, text):
+        time_parts = text.split(" ")
+        if len(time_parts) == 6:
+            days = int(time_parts[0])
+            hours = int(time_parts[2])
+            minutes = int(time_parts[4])
+            if days == 1:
+                time_parts[0] = f"0{time_parts[0]}"
+            if hours == 1:
+                time_parts[2] = f"0{time_parts[2]}"
+            if minutes == 1:
+                time_parts[4] = f"0{time_parts[4]}"
+            return " ".join(time_parts)
+
+        return text
+
+    def get_time_delta(self) -> datetime:
+        value = self.value()
+
+        days = int(value)
+        hours = int((value - days) * 24)
+        minutes = int(((value - days) * 24 - hours) * 60)
+
+        current_date_time = QDateTime.currentDateTime()
+        end_date_time = current_date_time.addDays(days).addSecs(hours * 3600 + minutes * 60)
+
+        time_delta = end_date_time.toSecsSinceEpoch() - current_date_time.toSecsSinceEpoch()
+        return timedelta(seconds=time_delta)
+
+
 class TimeSpinBox(QDoubleSpinBox):
     # ! IF VALUE IS SET TO 1, THAT IS 1 DAY
     def __init__(self, parent=None):
@@ -463,60 +634,20 @@ class TimeSpinBox(QDoubleSpinBox):
         self.installEventFilter(self)
 
     def focusInEvent(self, event):
-        """
-        When the user clicks on the spinbox, the focus policy is changed to allow the mouse wheel to be
-        used to change the value
-
-        Args:
-          event: QFocusEvent
-        """
         self.setFocusPolicy(Qt.FocusPolicy.WheelFocus)
         super(TimeSpinBox, self).focusInEvent(event)
 
     def focusOutEvent(self, event):
-        """
-        When the user clicks on the spinbox, the focus policy is changed to StrongFocus, and then the
-        focusOutEvent is called
-
-        Args:
-          event: QFocusEvent
-        """
         self.setFocusPolicy(Qt.FocusPolicy.StrongFocus)
         super(TimeSpinBox, self).focusOutEvent(event)
 
     def wheelEvent(self, event):
-        """
-        If the spinbox has focus, then it will behave as normal. If it doesn't have focus, then the
-        wheel event will be ignored
-
-        Args:
-          event: The event object
-
-        Returns:
-          The super class of the HumbleSpinBox class.
-        """
         if self.hasFocus():
             return super(TimeSpinBox, self).wheelEvent(event)
         else:
             event.ignore()
 
     def eventFilter(self, obj, event):
-        """
-        This function filters events and changes the value based on the wheel event.
-
-        Args:
-          obj: The object that is being filtered for events.
-          event: The event parameter is an instance of the QEvent class, which represents an event that
-        occurred in the application. It contains information about the type of event, its source, and
-        any additional data associated with it. In this case, the code is checking if the event type is
-        a wheel event, which
-
-        Returns:
-          a boolean value indicating whether the event has been handled or not. If the event type is a
-        wheel event, the function returns True after calling the `changeValue()` method. If the event
-        type is not a wheel event, the function calls the `eventFilter()` method of the parent class and
-        returns the value returned by that method.
-        """
         if event.type() == QEvent.Type.Wheel and self.hasFocus():
             delta = event.angleDelta().y() / 120
             self.changeValue(delta)
@@ -525,14 +656,6 @@ class TimeSpinBox(QDoubleSpinBox):
         return super().eventFilter(obj, event)
 
     def changeValue(self, delta):
-        """
-        This function changes the value of a variable based on a given delta, with different increments
-        depending on the current value.
-
-        Args:
-          delta: The amount by which the value of the object should be changed. It can be a positive or
-        negative number.
-        """
         current_value = self.value()
 
         if delta > 0:
@@ -553,39 +676,12 @@ class TimeSpinBox(QDoubleSpinBox):
                 self.setValue(current_value - 0.000694444444444444)
 
     def textFromValue(self, value):
-        """
-        This function converts a decimal value representing days, hours, and minutes into a formatted
-        string.
-
-        Args:
-          value: A float value representing a duration in hours.
-
-        Returns:
-          a formatted string that represents the input value as a number of days, hours, and minutes.
-        The input value is first converted to an integer number of days, and then the remaining hours
-        and minutes are calculated and added to the string. The string includes pluralization of the
-        units based on whether the value is singular or plural.
-        """
         days = int(value)
         hours = int((value - days) * 24)
         minutes = int(((value - days) * 24 - hours) * 60)
         return f"{days} day{'s' if days != 1 else ''} {hours:02d} hour{'s' if hours != 1 else ''} {minutes:02d} minute{'s' if minutes != 1 else ''}"
 
     def valueFromText(self, text):
-        """
-        The function takes a string of time in days, hours, and minutes and returns the total value in
-        days.
-
-        Args:
-          text: a string containing a time value in the format "X days Y hours Z minutes", where X, Y,
-        and Z are integers.
-
-        Returns:
-          a float value that represents the total number of days, including fractions of a day,
-        represented by the input text. The input text is expected to be in the format "X days Y hours Z
-        minutes", where X, Y, and Z are integers. The function calculates the total number of days by
-        adding the number of days, the fraction of a day represented by the number of
-        """
         time_parts = text.split(" ")
         days = int(time_parts[0])
         hours = int(time_parts[2])
@@ -593,19 +689,6 @@ class TimeSpinBox(QDoubleSpinBox):
         return days + hours / 24 + minutes / (24 * 60)
 
     def fixup(self, text):
-        """
-        The function takes in a string of time in days, hours, and minutes format and adds a leading
-        zero to the days, hours, or minutes if they are equal to 1.
-
-        Args:
-          text: The input text that needs to be fixed up. It is expected to be a string containing time
-        information in the format "X days Y hours Z minutes". The function will check if the number of
-        parts in the string is 6, and if so, it will extract the number of days, hours
-
-        Returns:
-          a string that is either the original input `text` or a modified version of it with leading
-        zeros added to the days, hours, or minutes if they are equal to 1.
-        """
         time_parts = text.split(" ")
         if len(time_parts) == 6:
             days = int(time_parts[0])
@@ -622,13 +705,6 @@ class TimeSpinBox(QDoubleSpinBox):
         return text
 
     def get_time_delta(self) -> datetime:
-        """
-        This function calculates the time difference between the current date and time and a future date
-        and time based on a given value in days, hours, and minutes.
-
-        Returns:
-          A datetime.timedelta object is being returned.
-        """
         value = self.value()
 
         days = int(value)
@@ -653,6 +729,7 @@ class DraggableButton(QPushButton):
         self.file = None
         self.drag_start_position = None
         self.setCursor(Qt.CursorShape.PointingHandCursor)
+        self.setContextMenuPolicy(Qt.ContextMenuPolicy.CustomContextMenu)
 
     def setFile(self, file: str) -> None:
         self.file = file
@@ -681,13 +758,14 @@ class DraggableButton(QPushButton):
         self.dragging = False
         if event.button() == Qt.MouseButton.LeftButton:
             self.drag_start_position = event.pos()
-        super().mousePressEvent(event)
+            super().mousePressEvent(event)
 
     def mouseReleaseEvent(self, event):
-        if not self.dragging:
+        if not self.dragging and event.button() == Qt.MouseButton.LeftButton:
             self.buttonClicked.emit()
         self.dragging = False
-        super().mouseReleaseEvent(event)
+        if event.button() == Qt.MouseButton.LeftButton:
+            super().mouseReleaseEvent(event)
 
 
 class DropWidget(QWidget):
@@ -720,7 +798,6 @@ class DropWidget(QWidget):
         else:
             self.label.setText("Drag Here")
             self.label.setStyleSheet("background-color: rgba(30,30,30,100);")
-
             event.ignore()
 
     def dragLeaveEvent(self, event: QDragEnterEvent):
@@ -754,48 +831,12 @@ class DictionaryTableModel(QAbstractTableModel):
         self.dictionary = dictionary
 
     def rowCount(self, parent=None):
-        """
-        This function returns the number of keys in a dictionary.
-
-        Args:
-          parent: The parent parameter is an optional argument that specifies the parent item of the
-        current item. In this case, it is set to None, which means that the current item has no parent.
-
-        Returns:
-          The function `rowCount` is returning the length of the `keys` attribute of the object.
-        """
         return len(self.keys)
 
     def columnCount(self, parent=None):
-        """
-        This function returns the value 2 as the number of columns in a table or grid.
-
-        Args:
-          parent: The parent widget of the current widget. It is an optional parameter and if not
-        specified, the current widget will be a top-level widget.
-
-        Returns:
-          the integer value 2.
-        """
         return 2
 
     def data(self, index, role=Qt.ItemDataRole.DisplayRole):
-        """
-        This function returns the data for a given index and role in a dictionary model.
-
-        Args:
-          index: The index of the item in the model that the view is requesting data for.
-          role: The role parameter is used to specify the type of data that is being requested. In this
-        case, it is set to Qt.DisplayRole, which means that the data is being requested for display
-        purposes. Other possible roles include Qt.EditRole (for editing data) and Qt.ToolTipRole (for
-        providing tooltip
-
-        Returns:
-          The method `data()` returns the data to be displayed in a specific cell of a table view. If
-        the `role` parameter is `Qt.DisplayRole`, it returns the data to be displayed as a string. If
-        the `index` parameter refers to the first column, it returns the key of the dictionary at the
-        corresponding row. If the `index` parameter refers to the second column, it
-        """
         if role == Qt.ItemDataRole.DisplayRole:
             key = self.keys[index.row()]
             value = self.dictionary[key]
@@ -807,27 +848,21 @@ class DictionaryTableModel(QAbstractTableModel):
 
         return None
 
+    def setData(self, index, value, role=Qt.ItemDataRole.EditRole):
+        if role == Qt.ItemDataRole.EditRole and index.isValid() and index.column() == 1:
+            key = self.keys[index.row()]
+            self.dictionary[key] = value
+            self.dataChanged.emit(index, index)
+            return True
+
+        return False
+
+    def flags(self, index):
+        if index.column() == 1:
+            return super().flags(index) | Qt.ItemFlag.ItemIsEditable
+        return super().flags(index)
+
     def headerData(self, section, orientation, role=Qt.ItemDataRole.DisplayRole):
-        """
-        This function returns the header data for a table view in a specific format based on the section,
-        orientation, and role.
-
-        Args:
-          section: The index of the section for which header data is being requested. For example, if the
-        header is for the first column, section would be 0.
-          orientation: The orientation parameter specifies whether the header is for the horizontal axis
-        (columns) or the vertical axis (rows) of a table or other data structure. It can have two possible
-        values: Qt.Horizontal or Qt.Vertical.
-          role: The role parameter is used to specify the type of data that is being requested. In this
-        case, the function is checking if the role is equal to Qt.DisplayRole, which means that the data is
-        being requested for display purposes.
-
-        Returns:
-          If the role is `Qt.DisplayRole`, the method returns the header data for the specified section and
-        orientation. If the orientation is horizontal, it returns "Key" for section 0 and "Value" for
-        section 1. If the orientation is vertical, it returns the section number as a string. If the role is
-        not `Qt.DisplayRole`, it returns `None`.
-        """
         if role == Qt.ItemDataRole.DisplayRole:
             if orientation == Qt.Orientation.Horizontal:
                 return ["Key", "Value"][section]
@@ -836,25 +871,95 @@ class DictionaryTableModel(QAbstractTableModel):
 
         return None
 
+    def getUpdatedDictionary(self):
+        return self.dictionary
+
 
 class PartInformationViewer(QDialog):
     def __init__(self, title: str, dictionary: dict, parent=None):
-        super().__init__(parent)
-
+        super(PartInformationViewer, self).__init__(parent)
         self.setWindowTitle(title)
 
         layout = QVBoxLayout(self)
-        self.table_view = QTableView(self)
-        layout.addWidget(self.table_view)
+        self.response = ""
 
-        model = DictionaryTableModel(dictionary, self)
-        self.table_view.setModel(model)
-        self.table_view.resizeColumnsToContents()
-        self.setMinimumSize(450, 700)
+        label = QLabel("Item Name:", self)
+        layout.addWidget(label)
+        self.lineEdit_name = QLineEdit(self)
+        self.lineEdit_name.setText(title)
+        layout.addWidget(self.lineEdit_name)
+
+        label = QLabel("Item Data:", self)
+        layout.addWidget(label)
+
+        self.grid_layout = QGridLayout(self)
+        layout.addLayout(self.grid_layout)
+
+        for row, (title, value) in enumerate(dictionary.items()):
+            label = QLabel(title, self)
+            if isinstance(value, str):
+                line_edit = QLineEdit(self)
+                line_edit.setText(value)
+            elif isinstance(value, float):
+                line_edit = HumbleDoubleSpinBox(self)
+                line_edit.setValue(value)
+            elif isinstance(value, int):
+                line_edit = HumbleSpinBox(self)
+                line_edit.setValue(value)
+
+            self.grid_layout.addWidget(label, row, 0)
+            self.grid_layout.addWidget(line_edit, row, 1)
+
+        btn_apply = QPushButton('Apply Changes', self)
+        btn_apply.clicked.connect(self.apply)
+        layout.addWidget(btn_apply)
+
+        btn_cancel = QPushButton('Cancel', self)
+        btn_cancel.clicked.connect(self.cancel)
+        layout.addWidget(btn_cancel)
+        self.setMinimumWidth(600)
+        self.setLayout(layout)
+
+    def apply(self) -> None:
+        self.response = "apply"
+        self.accept()
+
+    def cancel(self) -> None:
+        self.response = "cancel"
+        self.accept()
+
+    def get_data(self) -> dict:
+        data = {}
+        for row in range(self.grid_layout.rowCount()):
+            label_widget = None
+            value_widget = None
+
+            for column in range(self.grid_layout.columnCount()):
+                widget = self.grid_layout.itemAtPosition(row, column).widget()
+
+                if isinstance(widget, QLabel):
+                    label_widget = widget
+                elif isinstance(widget, (QLineEdit, QSpinBox, QDoubleSpinBox)):
+                    value_widget = widget
+
+            if label_widget and value_widget:
+                key = label_widget.text()
+                if isinstance(value_widget, QLineEdit):
+                    value = value_widget.text()
+                elif isinstance(value_widget, (QSpinBox, QDoubleSpinBox)):
+                    value = value_widget.value()
+                else:
+                    continue  # Skip if widget type is not recognized
+
+                data[key] = value
+
+        return data
+
+    def get_response(self) -> str:
+        return self.response
 
 
 class AssemblyMultiToolBox(QWidget):
-    """The class MultiToolBox is a QWidget."""
 
     def __init__(self, parent=None):
         super(AssemblyMultiToolBox, self).__init__(parent)
@@ -873,14 +978,6 @@ class AssemblyMultiToolBox(QWidget):
         self.setLayout(main_layout)
 
     def addItem(self, widget: QWidget, title: str, base_color: str = "#3daee9"):
-        """
-        This function adds a widget with a title and a toggle button to a layout.
-
-        Args:
-          widget (QWidget): QWidget - This is the widget that will be added to the sheet. It can be any
-        type of QWidget, such as a QLabel, QComboBox, or even another layout.
-          title (str): A string representing the title of the widget that will be added to the layout.
-        """
 
         # Apply the drop shadow effect to the widget
         # checkbox = QCheckBox(widget)
@@ -1057,65 +1154,22 @@ background-color: rgb(29, 29, 29);
         return self.input_box[-1]
 
     def setItemText(self, index: int, new_name: str):
-        """
-        This function sets the text of a button at a given index to a new name.
-
-        Args:
-          index (int): an integer representing the index of the button whose text needs to be changed.
-          new_name (str): A string representing the new text that will be set for the button at the
-        specified index.
-        """
         if 0 <= index < len(self.input_box):
             self.input_box[index].setText(new_name)
 
     def setItemIcon(self, index: int, icon_path: str):
-        """
-        This function sets the icon of a button at a given index with the icon located at a specified
-        file path.
-
-        Args:
-          index (int): An integer representing the index of the button in the list of buttons.
-          icon_path (str): The path to the icon file that will be used as the button's icon.
-        """
         if 0 <= index < len(self.buttons):
             button = self.buttons[index]
             icon = QIcon(icon_path)
             button.setIcon(icon)
 
     def getWidget(self, index):
-        """
-        This function returns the widget at the specified index if it exists, otherwise it returns None.
-
-        Args:
-          index: The index parameter is an integer value that represents the position of the widget in
-        the list of widgets. It is used to retrieve a specific widget from the list of widgets.
-
-        Returns:
-          The method `getWidget` returns either the widget at the specified index in the `self.widgets`
-        list, or `None` if the index is out of range.
-        """
         return self.widgets[index] if 0 <= index < len(self.widgets) else None
 
     def count(self) -> int:
-        """
-        The function returns the number of widgets in a class.
-
-        Returns:
-          The function `count()` is returning an integer value which represents the length of the
-        `widgets` list.
-        """
         return len(self.widgets)
 
     def toggle_widget_visibility(self, widget: QWidget):
-        """
-        This function toggles the visibility of a widget in a Python GUI.
-
-        Args:
-          widget: The widget parameter is a reference to a graphical user interface (GUI) widget object.
-        The function toggles the visibility of this widget, i.e., if the widget is currently visible, it
-        will be hidden, and if it is currently hidden, it will be made visible. The widget object could
-        be
-        """
         widget.setVisible(not widget.isVisible())
         shadow = QGraphicsDropShadowEffect()
         shadow.setBlurRadius(10)  # Adjust the blur radius as desired
@@ -1145,16 +1199,6 @@ background-color: rgb(29, 29, 29);
     #             else "background-color: rgba(71, 71, 71, 110); border-color: rgba(76, 76, 76, 110); border-bottom-right-radius: 8px;"
     #         )
     def clear_widget(self, widget: QWidget):
-        """
-        The function clears a widget and removes it from its parent widget.
-
-        Args:
-          widget (QWidget): The "widget" parameter is an instance of the QWidget class. It represents a
-        graphical user interface element, such as a button, label, or container.
-
-        Returns:
-          None.
-        """
         if widget is None:
             return
 
@@ -1176,13 +1220,6 @@ background-color: rgb(29, 29, 29);
         widget.deleteLater()
 
     def clear_layout(self, layout) -> None:
-        """
-        If the layout is not None, while the layout has items, take the first item, get the widget, if
-        the widget is not None, delete it, otherwise clear the layout
-
-        Args:
-          layout: The layout to be cleared
-        """
         with contextlib.suppress(AttributeError):
             if layout is not None:
                 while layout.count():
@@ -1194,27 +1231,9 @@ background-color: rgb(29, 29, 29);
                         self.clear_layout(item.layout())
 
     def get_widget_visibility(self) -> dict[int, bool]:
-        """
-        This function returns a dictionary containing the visibility status of each widget in a list of
-        widgets.
-
-        Returns:
-          A dictionary where the keys are integers representing the index of each widget in a list of
-        widgets, and the values are boolean values indicating whether each widget is currently visible
-        or not.
-        """
         return {i: widget.isVisible() for i, widget in enumerate(self.widgets)}
 
     def set_widgets_visibility(self, widgets_visibility: dict[int, bool]) -> None:
-        """
-        This function sets the visibility of widgets based on a dictionary of widget IDs and boolean
-        values, and closes any widgets that are not visible.
-
-        Args:
-          widgets_visibility (dict[int, bool]): A dictionary where the keys are integers representing
-        widget IDs and the values are boolean values indicating whether the widget should be visible or
-        not.
-        """
         if len(widgets_visibility.items()) > 0:
             for i, is_visible in widgets_visibility.items():
                 if is_visible:
@@ -1275,7 +1294,6 @@ background-color: rgb(29, 29, 29);
 
 
 class MultiToolBox(QWidget):
-    """The class MultiToolBox is a QWidget."""
 
     def __init__(self, parent=None):
         super(MultiToolBox, self).__init__(parent)
@@ -1289,14 +1307,6 @@ class MultiToolBox(QWidget):
         self.setLayout(main_layout)
 
     def addItem(self, widget: QWidget, title: str, base_color: str = "#3daee9"):
-        """
-        This function adds a widget with a title and a toggle button to a layout.
-
-        Args:
-          widget (QWidget): QWidget - This is the widget that will be added to the sheet. It can be any
-        type of QWidget, such as a QLabel, QComboBox, or even another layout.
-          title (str): A string representing the title of the widget that will be added to the layout.
-        """
         hover_color: str = lighten_color(base_color)
         pressed_color: str = darken_color(base_color)
 
@@ -1384,91 +1394,28 @@ QPushButton:!checked:pressed#sheet_nest_button {
         self.layout().addWidget(_widget)
 
     def setItemText(self, index: int, new_name: str):
-        """
-        This function sets the text of a button at a given index to a new name.
-
-        Args:
-          index (int): an integer representing the index of the button whose text needs to be changed.
-          new_name (str): A string representing the new text that will be set for the button at the
-        specified index.
-        """
         if 0 <= index < len(self.buttons):
             self.buttons[index].setText(new_name)
 
     def setItemIcon(self, index: int, icon_path: str):
-        """
-        This function sets the icon of a button at a given index with the icon located at a specified
-        file path.
-
-        Args:
-          index (int): An integer representing the index of the button in the list of buttons.
-          icon_path (str): The path to the icon file that will be used as the button's icon.
-        """
         if 0 <= index < len(self.buttons):
             button = self.buttons[index]
             icon = QIcon(icon_path)
             button.setIcon(icon)
 
     def getWidget(self, index) -> QWidget:
-        """
-        This function returns the widget at the specified index if it exists, otherwise it returns None.
-
-        Args:
-          index: The index parameter is an integer value that represents the position of the widget in
-        the list of widgets. It is used to retrieve a specific widget from the list of widgets.
-
-        Returns:
-          The method `getWidget` returns either the widget at the specified index in the `self.widgets`
-        list, or `None` if the index is out of range.
-        """
         return self.widgets[index] if 0 <= index < len(self.widgets) else None
 
     def getButton(self, index) -> QPushButton:
-        """
-        This function returns the widget at the specified index if it exists, otherwise it returns None.
-
-        Args:
-          index: The index parameter is an integer value that represents the position of the widget in
-        the list of widgets. It is used to retrieve a specific widget from the list of widgets.
-
-        Returns:
-          The method `getWidget` returns either the widget at the specified index in the `self.widgets`
-        list, or `None` if the index is out of range.
-        """
         return self.buttons[index] if 0 <= index < len(self.buttons) else None
 
     def count(self) -> int:
-        """
-        The function returns the number of widgets in a class.
-
-        Returns:
-          The function `count()` is returning an integer value which represents the length of the
-        `widgets` list.
-        """
         return len(self.widgets)
 
     def get_widget_visibility(self) -> dict[int, bool]:
-        """
-        This function returns a dictionary containing the visibility status of each widget in a list of
-        widgets.
-
-        Returns:
-          A dictionary where the keys are integers representing the index of each widget in a list of
-        widgets, and the values are boolean values indicating whether each widget is currently visible
-        or not.
-        """
         return {i: widget.isVisible() for i, widget in enumerate(self.widgets)}
 
     def set_widgets_visibility(self, widgets_visibility: dict[int, bool]) -> None:
-        """
-        This function sets the visibility of widgets based on a dictionary of widget IDs and boolean
-        values, and closes any widgets that are not visible.
-
-        Args:
-          widgets_visibility (dict[int, bool]): A dictionary where the keys are integers representing
-        widget IDs and the values are boolean values indicating whether the widget should be visible or
-        not.
-        """
         try:
             if len(widgets_visibility.items()) > 0:
                 for i, is_visible in widgets_visibility.items():
@@ -1482,15 +1429,6 @@ QPushButton:!checked:pressed#sheet_nest_button {
             self.close_all()
 
     def toggle_widget_visibility(self, widget):
-        """
-        This function toggles the visibility of a widget in a Python GUI.
-
-        Args:
-          widget: The widget parameter is a reference to a graphical user interface (GUI) widget object.
-        The function toggles the visibility of this widget, i.e., if the widget is currently visible, it
-        will be hidden, and if it is currently hidden, it will be made visible. The widget object could
-        be
-        """
         widget.setVisible(not widget.isVisible())
         shadow = QGraphicsDropShadowEffect()
         shadow.setBlurRadius(10)  # Adjust the blur radius as desired
@@ -1563,90 +1501,49 @@ class CustomTabWidget(QTabWidget):
             super().dragMoveEvent(event)
 
     def wheelEvent(self, event):
-        """
-        This function ignores the wheel event.
-
-        Args:
-          event: The event parameter in this code refers to a QWheelEvent object, which is an event that
-        occurs when the user rotates the mouse wheel. This function is a method of a class that inherits
-        from QWidget, and it is used to handle the wheel event when it occurs on the widget.
-        """
         event.ignore()
 
     def update_tab_order(self):
-        """
-        This function updates the tab order of a widget by creating a list of tab texts in the order
-        they appear.
-        """
         self.tab_order = [self.tabText(i) for i in range(self.count())]
 
     def get_tab_order(self) -> list[str]:
-        """
-        This function returns a list of strings representing the tab order of a QTabWidget.
-
-        Returns:
-          A list of strings representing the tab order.
-        """
         self.update_tab_order()
         return self.tab_order
 
     def set_tab_order(self, order):
-        """
-        This function sets the tab order of a tab bar based on a given list of tab names.
-
-        Args:
-          order: A list of tab names in the desired order. The function will reorder the tabs in the tab
-        bar based on this order.
-        """
         for tab_name in order:
             index = self.find_tab_by_name(tab_name)
             if index != -1:
                 self.tabBar().moveTab(index, order.index(tab_name))
 
     def find_tab_by_name(self, name: str) -> int:
-        """
-        This function finds the index of a tab in a tab widget by its name.
-
-        Args:
-          name (str): A string representing the name of the tab that needs to be found.
-
-        Returns:
-          an integer value which represents the index of the tab with the given name in the tab widget.
-        If the tab is not found, it returns -1.
-        """
         return next((i for i in range(self.count()) if self.tabText(i) == name), -1)
 
 
 class PdfFilterProxyModel(QSortFilterProxyModel):
-    def __init__(self, model, parent=None):
+    def __init__(self, model, parent=None, path=""):
         super().__init__(parent)
+        self.path = path
         self.setSourceModel(model)
 
     def filterAcceptsRow(self, row, parent):
-        """
-        This function filters rows based on whether they contain a file with a .pdf extension.
-
-        Args:
-          row: The row number of the item being filtered in the view.
-          parent: The parent index of the current index being filtered. It represents the parent item in
-        the model hierarchy.
-
-        Returns:
-          a boolean value indicating whether the row should be included in the filtered view or not.
-        """
         index = self.sourceModel().index(row, 0, parent)
         if not index.isValid():
             return False
         if self.sourceModel().isDir(index):
-            return any(file.lower().endswith(".pdf") for file in os.listdir(self.sourceModel().filePath(index)))
+            return self.directoryContainsPdf(self.sourceModel().filePath(index))
         filename = self.sourceModel().fileName(index)
         return filename.lower().endswith(".pdf")
 
-    def lessThan(self, left: QModelIndex, right: QModelIndex):
-        """Perform sorting comparison.
+    def directoryContainsPdf(self, directory):
+        if self.path not in directory:
+            return False
+        return any(
+            any(file.lower().endswith('.pdf') for file in files)
+            for root, dirs, files in os.walk(directory)
+        )
 
-        Since we know the sort order, we can ensure that folders always come first.
-        """
+    def lessThan(self, left: QModelIndex, right: QModelIndex):
         left_index = left.sibling(left.row(), 0)
         right_index = right.sibling(right.row(), 0)
         left_is_folder = self.sourceModel().isDir(left_index)
@@ -1663,14 +1560,15 @@ class PdfFilterProxyModel(QSortFilterProxyModel):
 class PdfTreeView(QTreeView):
     def __init__(self, path: str, parent=None):
         super().__init__(parent)
+        print(path)
         self.parent = parent
         self.model = QFileSystemModel(self.parent)
-        self.model.setRootPath("")
+        self.model.setRootPath(path)
         self.setModel(self.model)
-        self.filterModel = PdfFilterProxyModel(self.model, self.parent)
+        self.filterModel = PdfFilterProxyModel(self.model, self.parent, path)
         self.filterModel.setSourceModel(self.model)
-        self.setModel(self.filterModel)
         self.filterModel.setFilterKeyColumn(0)
+        self.setModel(self.filterModel)
         self.setRootIndex(self.filterModel.mapFromSource(self.model.index(path)))
         self.header().resizeSection(0, 170)
         self.setSelectionMode(QAbstractItemView.SelectionMode.ExtendedSelection)
@@ -1686,16 +1584,6 @@ class PdfTreeView(QTreeView):
         self.selectionModel().selectionChanged.connect(self.on_selection_changed)
 
     def on_selection_changed(self, selected, deselected):
-        """
-        This function updates a list of selected items and their full file paths when the selection in a
-        model/view is changed.
-
-        Args:
-          selected: A list of QModelIndex objects representing the newly selected items in the view.
-          deselected: The deselected parameter is a list of QModelIndex objects that represent the
-        indexes that were previously selected but are no longer selected after the selection has
-        changed.
-        """
         self.selected_indexes = self.selectionModel().selectedIndexes()
         self.selected_items = [index.data() for index in self.selected_indexes if ".pdf" in index.data()]
         self.full_paths.clear()
@@ -1708,16 +1596,6 @@ class PdfTreeView(QTreeView):
 
 class RecutButton(QPushButton):
     def __init__(self, parent=None):
-        """
-        This function initializes a checkable and clickable button with the text "No Recut" and a fixed
-        width of 100.
-
-        Args:
-          parent: The parent parameter is used to specify the parent widget of the current widget. If a
-        parent widget is specified, the current widget becomes a child of the parent widget and is
-        displayed within it. If no parent widget is specified, the current widget becomes a top-level
-        widget and is displayed independently. In this
-        """
         super().__init__(parent)
         self.setCheckable(True)
         self.setChecked(False)
@@ -1728,10 +1606,6 @@ class RecutButton(QPushButton):
         self.clicked.connect(self.toggle_state)
 
     def toggle_state(self):
-        """
-        This function toggles the text of a button between "Recut" and "No Recut" based on its current
-        state.
-        """
         if self.isChecked():
             self.setText("Recut")
         else:
@@ -1848,38 +1722,64 @@ class CustomTableWidget(QTableWidget):
     def __init__(self, parent=None):
         super(CustomTableWidget, self).__init__()
         self.editable_column_indexes = []
-
+        self.setStyleSheet("QScrollBar:horizontal {height: 20px;}")
     def edit(self, index, trigger, event):
-        """
-        This function checks if a column is editable and allows editing if it is, otherwise it returns
-        False.
-
-        Args:
-          index: The index of the item in the model that is being edited.
-          trigger: The trigger parameter is an event that causes the editor to be opened for editing the
-        cell. It can be one of the following values:
-          event: The event parameter in the edit() method is an instance of QEvent class. It represents
-        an event that occurred on the widget. The event parameter is used to determine the type of event
-        that occurred, such as a mouse click or a key press, and to handle the event accordingly.
-
-        Returns:
-          If the column index of the given index is in the list of editable_column_indexes, then the
-        super().edit() method is called and its return value is returned. Otherwise, False is returned.
-        """
         if index.column() in self.editable_column_indexes:
             return super(CustomTableWidget, self).edit(index, trigger, event)
         else:
             return False
 
     def set_editable_column_index(self, columns: list[int]):
-        """
-        This function sets the indexes of columns that are editable in a table.
-
-        Args:
-          columns (list[int]): A list of integers representing the indexes of the columns that should be
-        editable in a table or spreadsheet.
-        """
         self.editable_column_indexes = columns
+
+
+class ComponentsCustomTableWidget(CustomTableWidget):
+    imagePasted = pyqtSignal(str, int)
+    def __init__(self, parent=None):
+        super(ComponentsCustomTableWidget, self).__init__(parent)
+
+    def keyPressEvent(self, event):
+        if event.matches(QKeySequence.StandardKey.Paste):
+            # Handle Ctrl+V
+            self.pasteImageFromClipboard()
+        else:
+            # Pass other key events to the base class
+            super().keyPressEvent(event)
+
+    def copySelectedCells(self):
+        # Implement this function to copy selected cells to the clipboard if needed
+        pass
+
+    def pasteImageFromClipboard(self):
+        app = QApplication.instance()
+        clipboard = app.clipboard()
+        image = clipboard.image()
+        if not image.isNull():
+            selected_items = self.selectedItems()
+            for selected_item in selected_items:
+                if selected_item.column() == 0:
+                    item = selected_item
+                    break
+
+            original_width = image.width()
+            original_height = image.height()
+
+            new_height = 60
+            new_width = int(original_width * (new_height / original_height))
+
+            if not os.path.exists('images/items'):
+                os.makedirs('images/items')
+            # Resize the image to fit the specified height while maintaining aspect ratio
+            pixmap = QPixmap.fromImage(image).scaled(new_width, new_height, Qt.AspectRatioMode.KeepAspectRatio)
+            image_path = f'images/items/{datetime.now().strftime("%Y%m%d%H%M%S%f")}.png'
+            pixmap.save(image_path)
+
+            item.setData(Qt.ItemDataRole.DecorationRole, pixmap)
+
+            # Optionally, resize the cell to fit the image
+            self.resizeColumnToContents(item.column())
+            self.resizeRowToContents(item.row())
+            self.imagePasted.emit(image_path, item.row())
 
 
 # class _CustomTableWidget(QTableView):
@@ -2049,14 +1949,6 @@ class CustomTableWidget(QTableWidget):
 
 class OrderStatusButton(QPushButton):
     def __init__(self, parent=None):
-        """
-        This function initializes a QPushButton with specific properties and sets its object name to
-        "order_status".
-
-        Args:
-          parent: The parent widget of the QPushButton. If no parent is specified, the button will be a
-        top-level window.
-        """
         super(QPushButton, self).__init__(parent)
         self.setCheckable(True)
         self.setText("Order Pending")
@@ -2065,36 +1957,15 @@ class OrderStatusButton(QPushButton):
 
 
 class ItemCheckBox(QCheckBox):
-    """This is a custom class that inherits from the QCheckBox class in PyQt and adds additional functionality for handling items."""
 
     def mousePressEvent(self, event):
-        """
-        This function checks if the pressed key is the Shift key and if so, calls the parent class's
-        keyPressEvent method, otherwise it does nothing.
-
-        :param event: The event parameter in this code refers to a key press event that is triggered
-        when a key on the keyboard is pressed. It contains information about the key that was pressed,
-        such as the key code and whether any modifier keys (such as Shift or Ctrl) were also pressed.
-        The code checks if the
-        """
         if event.button() == Qt.LeftButton:
             super().mousePressEvent(event)
 
 
 class ItemNameComboBox(QComboBox):
-    """This class is a QComboBox that is populated with the names of items in the database"""
 
     def __init__(self, parent, selected_item: str, items: list[str], tool_tip: str):
-        """
-        It's a function that creates a dropdown menu with a list of items, and the selected item is the
-        one that is displayed when the dropdown menu is first created
-
-        Args:
-          parent: The parent widget
-          selected_item (str): The item that is selected by default
-          items (list[str]): list[str] = ['item1', 'item2', 'item3']
-          tool_tip (str): str = "This is the tool tip"
-        """
         QComboBox.__init__(self, parent)
         self.addItems(items)
         self.setCurrentText(selected_item)
@@ -2106,19 +1977,8 @@ class ItemNameComboBox(QComboBox):
 
 
 class PartNumberComboBox(QComboBox):
-    """This class is a QComboBox that is populated with the names of part numbers in the database"""
 
     def __init__(self, parent, selected_item: str, items: list[str], tool_tip: str):
-        """
-        It's a function that creates a dropdown menu with a list of items, and the selected item is the
-        one that is displayed when the dropdown menu is first created
-
-        Args:
-          parent: The parent widget
-          selected_item (str): The item that is selected by default
-          items (list[str]): list[str] = ['item1', 'item2', 'item3']
-          tool_tip (str): str = "This is the tool tip"
-        """
         QComboBox.__init__(self, parent)
         self.addItems(items)
         self.setCurrentText(selected_item)
@@ -2129,18 +1989,7 @@ class PartNumberComboBox(QComboBox):
 
 
 class PriorityComboBox(QComboBox):
-    """This class is a QComboBox that is populated with the names of items in the database"""
-
     def __init__(self, parent, selected_item: int):
-        """
-        It's a function that creates a dropdown menu with a list of items, and the selected item is the
-        one that is displayed when the dropdown menu is first created
-
-        Args:
-          parent: The parent widget
-          selected_item (str): The item that is selected by default
-          tool_tip (str): str = "This is the tool tip"
-        """
         QComboBox.__init__(self, parent)
         self.addItems(["Default", "Low", "Medium", "High"])
         self.setCurrentIndex(selected_item)
@@ -2149,20 +1998,7 @@ class PriorityComboBox(QComboBox):
 
 
 class ExchangeRateComboBox(QComboBox):
-    """This class is a QComboBox that is populated with the names of items in the database"""
-
     def __init__(self, parent, selected_item: int):
-        """
-        The function takes in a parent, a selected item, and a tool tip. It then creates a QComboBox
-        object, adds items to the combo box, sets the current text to the selected item, sets the tool
-        tip to the tool tip, sets the wheel event to a lambda function that does nothing, and sets the
-        fixed width to 40.
-
-        Args:
-          parent: The parent widget
-          selected_item (int): The item that is selected when the combobox is created.
-          tool_tip (str): The text that will be displayed when the user hovers over the combobox.
-        """
         QComboBox.__init__(self, parent)
         self.addItems(["CAD", "USD"])
         self.setCurrentText(selected_item)
@@ -2171,18 +2007,7 @@ class ExchangeRateComboBox(QComboBox):
 
 
 class NotesPlainTextEdit(QPlainTextEdit):
-    """It's a QPlainTextEdit that has a context menu with a "Copy" and "Paste" option"""
-
     def __init__(self, parent, text: str, tool_tip: str):
-        """
-        This function creates a QPlainTextEdit object with a minimum width of 100, a maximum width of
-        200, a fixed height of 60, a plain text of text, and a tool tip of tool_tip
-
-        Args:
-          parent: The parent widget.
-          text (str): The text that will be displayed in the text box.
-          tool_tip (str): The text that will be displayed when the mouse hovers over the widget.
-        """
         QPlainTextEdit.__init__(self, parent)
         self.setMinimumWidth(100)
         self.setObjectName("notes")
@@ -2196,16 +2021,7 @@ class NotesPlainTextEdit(QPlainTextEdit):
 
 
 class POPushButton(QPushButton):
-    """This class is a subclass of QPushButton that has a signal that emits the button's text when
-    the button is clicked"""
-
     def __init__(self, parent):
-        """
-        The function is called when the button is clicked
-
-        Args:
-          parent: The parent widget.
-        """
         QPushButton.__init__(self, parent)
         # self.setFixedSize(36, 26)
         self.setText("PO")
@@ -2213,15 +2029,8 @@ class POPushButton(QPushButton):
 
 
 class DeletePushButton(QPushButton):
-    """It creates a class called DeletePushButton that inherits from QPushButton."""
 
     def __init__(self, parent, tool_tip: str, icon: QIcon):
-        """
-        It creates a button with a trash icon
-
-        Args:
-          parent: The parent widget.
-        """
         QPushButton.__init__(self, parent)
         # self.setFixedSize(26, 26)
         self.setObjectName("delete_button")
@@ -2241,7 +2050,6 @@ class ClickableLabel(QLabel):
 
 
 class RichTextPushButton(QPushButton):
-    """It's a QPushButton that can display rich text"""
 
     def __init__(self, parent=None, text=None):
         if parent is not None:
@@ -2267,12 +2075,6 @@ class RichTextPushButton(QPushButton):
         return
 
     def setText(self, text: str, color: str) -> None:
-        """
-        > Sets the text of the widget to the given text
-
-        Args:
-          text: The text to be displayed in the label.
-        """
         set_status_button_stylesheet(button=self, color=color)
         if color == "lime":
             color = "#cef4d9"
@@ -2286,12 +2088,6 @@ class RichTextPushButton(QPushButton):
         return
 
     def sizeHint(self) -> QSizePolicy:
-        """
-        The function returns a QSizePolicy object that is the size of the QLabel object
-
-        Returns:
-          The size of the button.
-        """
         button_size = QPushButton.sizeHint(self)
         label_size = self.__lbl.sizeHint()
         button_size.setWidth(label_size.width())
@@ -2300,12 +2096,8 @@ class RichTextPushButton(QPushButton):
 
 
 class HumbleDoubleSpinBox(QDoubleSpinBox):
-    """It's a spin box that doesn't let you enter a value that's too close to zero."""
 
     def __init__(self, *args):
-        """
-        The function sets the focus policy of the spinbox to strong focus
-        """
         super(HumbleDoubleSpinBox, self).__init__(*args)
         self.setFocusPolicy(Qt.FocusPolicy.StrongFocus)
         # self.setFixedWidth(100)
@@ -2314,38 +2106,14 @@ class HumbleDoubleSpinBox(QDoubleSpinBox):
         self.setAccelerated(True)
 
     def focusInEvent(self, event):
-        """
-        When the user clicks on the spinbox, the focus policy is changed to allow the mouse wheel to be
-        used to change the value
-
-        Args:
-          event: QFocusEvent
-        """
         self.setFocusPolicy(Qt.FocusPolicy.WheelFocus)
         super(HumbleDoubleSpinBox, self).focusInEvent(event)
 
     def focusOutEvent(self, event):
-        """
-        When the user clicks on the spinbox, the focus policy is changed to StrongFocus, and then the
-        focusOutEvent is called
-
-        Args:
-          event: QFocusEvent
-        """
         self.setFocusPolicy(Qt.FocusPolicy.StrongFocus)
         super(HumbleDoubleSpinBox, self).focusOutEvent(event)
 
     def wheelEvent(self, event):
-        """
-        If the spinbox has focus, then it will behave as normal. If it doesn't have focus, then the
-        wheel event will be ignored
-
-        Args:
-          event: The event object
-
-        Returns:
-          The super class of the HumbleSpinBox class.
-        """
         if self.hasFocus():
             return super(HumbleDoubleSpinBox, self).wheelEvent(event)
         else:
@@ -2353,12 +2121,8 @@ class HumbleDoubleSpinBox(QDoubleSpinBox):
 
 
 class HumbleSpinBox(QSpinBox):
-    """It's a spin box that doesn't let you enter a value that's too close to zero."""
 
     def __init__(self, *args):
-        """
-        The function sets the focus policy of the spinbox to strong focus
-        """
         super(HumbleSpinBox, self).__init__(*args)
         self.setFocusPolicy(Qt.FocusPolicy.StrongFocus)
         # self.setFixedWidth(60)
@@ -2367,38 +2131,14 @@ class HumbleSpinBox(QSpinBox):
         self.setAccelerated(True)
 
     def focusInEvent(self, event):
-        """
-        When the user clicks on the spinbox, the focus policy is changed to allow the mouse wheel to be
-        used to change the value
-
-        Args:
-          event: QFocusEvent
-        """
         self.setFocusPolicy(Qt.FocusPolicy.WheelFocus)
         super(HumbleSpinBox, self).focusInEvent(event)
 
     def focusOutEvent(self, event):
-        """
-        When the user clicks on the spinbox, the focus policy is changed to StrongFocus, and then the
-        focusOutEvent is called
-
-        Args:
-          event: QFocusEvent
-        """
         self.setFocusPolicy(Qt.FocusPolicy.StrongFocus)
         super(HumbleSpinBox, self).focusOutEvent(event)
 
     def wheelEvent(self, event):
-        """
-        If the spinbox has focus, then it will behave as normal. If it doesn't have focus, then the
-        wheel event will be ignored
-
-        Args:
-          event: The event object
-
-        Returns:
-          The super class of the HumbleSpinBox class.
-        """
         if self.hasFocus():
             return super(HumbleSpinBox, self).wheelEvent(event)
         else:
@@ -2406,12 +2146,8 @@ class HumbleSpinBox(QSpinBox):
 
 
 class CurrentQuantitySpinBox(QSpinBox):
-    """It's a spin box that doesn't let you enter a value that's too close to zero."""
 
     def __init__(self, *args):
-        """
-        The function sets the focus policy of the spinbox to strong focus
-        """
         super(CurrentQuantitySpinBox, self).__init__(*args)
         self.setFocusPolicy(Qt.FocusPolicy.StrongFocus)
         # self.setFixedWidth(100)
@@ -2422,56 +2158,25 @@ class CurrentQuantitySpinBox(QSpinBox):
         self.setButtonSymbols(QAbstractSpinBox.NoButtons)
 
     def focusInEvent(self, event):
-        """
-        When the user clicks on the spinbox, the focus policy is changed to allow the mouse wheel to be
-        used to change the value
-
-        Args:
-          event: QFocusEvent
-        """
         self.setFocusPolicy(Qt.FocusPolicy.WheelFocus)
         super(CurrentQuantitySpinBox, self).focusInEvent(event)
 
     def focusOutEvent(self, event):
-        """
-        When the user clicks on the spinbox, the focus policy is changed to StrongFocus, and then the
-        focusOutEvent is called
-
-        Args:
-          event: QFocusEvent
-        """
         self.setFocusPolicy(Qt.FocusPolicy.StrongFocus)
         super(CurrentQuantitySpinBox, self).focusOutEvent(event)
 
     def wheelEvent(self, event):
-        """
-        ignore all wheel events
-        """
         event.ignore()
 
 
 class HumbleComboBox(QComboBox):
-    """> A QComboBox that can be set to a default value"""
 
     def __init__(self, scrollWidget=None, *args, **kwargs):
-        """
-        It sets the focus policy to strong focus.
-
-        Args:
-          scrollWidget: The widget that will be scrolled when the combobox is opened.
-        """
         super(HumbleComboBox, self).__init__(*args, **kwargs)
         self.scrollWidget = scrollWidget
         self.setFocusPolicy(Qt.FocusPolicy.StrongFocus)
 
     def wheelEvent(self, *args, **kwargs):
-        """
-        If the combobox has focus, then the wheel event is handled by the combobox, otherwise the wheel
-        event is handled by the scroll widget
-
-        Returns:
-          The return value is the return value of the last statement in the function.
-        """
         if self.hasFocus():
             return QComboBox.wheelEvent(self, *args, **kwargs)
         else:
@@ -2479,16 +2184,8 @@ class HumbleComboBox(QComboBox):
 
 
 class PlaceholderTextComboBox(QComboBox):
-    """This class is a subclass of QComboBox that allows the user to enter text into the combo box that is
-    not in the list of items"""
 
     def paintEvent(self, event):
-        """
-        It draws the combobox frame, focusrect and selected etc
-
-        Args:
-          event: The event that triggered the paintEvent.
-        """
 
         painter = QStylePainter(self)
         painter.setPen(self.palette().color(QPalette.Text))
@@ -2511,36 +2208,8 @@ class PlaceholderTextComboBox(QComboBox):
 
 
 class ViewTree(QTreeWidget):
-    """It's a QTreeWidget that displays a list of files and folders"""
 
     def __init__(self, data):
-        """
-        It takes a value and creates a tree widget item for it.
-
-        If the value is a dictionary, it creates a child item for each key and value pair.
-
-        If the value is a list or tuple, it creates a child item for each value.
-
-        If the value is anything else, it creates a child item with the value as its text.
-
-        The function is recursive, so if the value is a dictionary or list, it calls itself to create
-        the child items.
-
-        The function is also a nested function, so it can access the item argument of the outer
-        function.
-
-        The function is also a nested function, so it can access the item argument of the outer
-        function.
-
-        The function is also a nested function, so it can access the item argument of the outer
-        function.
-
-        The function is also a nested function, so it can access the item argument of the outer
-        function.
-
-        Args:
-          value: The value to be displayed in the tree.
-        """
         super().__init__()
         self.data = data
         self.setHeaderLabels(
@@ -2617,20 +2286,10 @@ class ViewTree(QTreeWidget):
 
 
 class HeaderScrollArea(QScrollArea):
-    """This class is a QScrollArea that has a header widget that is always visible"""
 
     def __init__(self, headers: dict[str:int], parent=None):
-        """
-        A QScrollArea with a QGridLayout inside of it. I'm then creating a QWidget with a
-        QGridLayout inside of it and adding it to the QScrollArea. I'm then creating a QWidget with a
-        QGridLayout inside of it and adding it to the QScrollArea.
-
-        Args:
-          headers (dict({str: int})): dict({str: int})
-          parent: The parent widget.
-        """
         QScrollArea.__init__(self, parent)
-        self.headers: dict({str: int}) = headers
+        self.headers: dict[str, int] = headers
 
         self.grid_widget = QWidget()
         self.grid_layout = QGridLayout()
@@ -2658,22 +2317,12 @@ class HeaderScrollArea(QScrollArea):
             self.headings_layout.setColumnStretch(col_index, 0)
 
     def resizeEvent(self, event) -> None:
-        """
-        The function is called when the scroll area is resized. It resizes the headings widget to match
-        the width of the scroll area and positions it at the top of the scroll area
-
-        Args:
-          event: QResizeEvent
-        """
         rect = self.viewport().geometry()
         self.headings_widget.setGeometry(rect.x(), rect.y() - self.margins.top(), rect.width(), self.margins.top())
         QScrollArea.resizeEvent(self, event)
 
 
 class DragableLayout(QWidget):
-    """
-    Generic list sorting handler.
-    """
 
     orderChanged = pyqtSignal(list)
 
@@ -2730,19 +2379,8 @@ class DragableLayout(QWidget):
 
 
 class StyledItemDelegate(QStyledItemDelegate):
-    """It's a delegate that can be used to display and edit data items from a model"""
 
     def sizeHint(self, option, index):
-        """
-        If the index is not a child of a parent, then set the height to 60
-
-        Args:
-          option: QStyleOptionViewItem
-          index: The index of the item to be drawn.
-
-        Returns:
-          The size of the item.
-        """
         item = super(StyledItemDelegate, self).sizeHint(option, index)
         if not index.parent().isValid():
             item.setHeight(60)
@@ -2750,12 +2388,6 @@ class StyledItemDelegate(QStyledItemDelegate):
 
 
 def set_default_dialog_button_stylesheet(button: QPushButton) -> None:
-    """
-    It sets the style sheet of the button
-
-    Args:
-        button (QPushButton): QPushButton
-    """
     button.setStyleSheet(
         """
         QPushButton#default_dialog_button{
@@ -2783,12 +2415,6 @@ def set_default_dialog_button_stylesheet(button: QPushButton) -> None:
 
 
 def set_status_button_stylesheet(button: QPushButton, color: str) -> None:
-    """
-    It sets the style sheet of the button
-
-    Args:
-        button (QPushButton): QPushButton
-    """
     background_color = "rgb(71, 71, 71)"
     border_color = "rgb(71, 71, 71)"
     if color == "lime":

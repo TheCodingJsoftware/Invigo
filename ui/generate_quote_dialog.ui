@@ -148,7 +148,7 @@ border-bottom: none;
                <x>0</x>
                <y>0</y>
                <width>434</width>
-               <height>150</height>
+               <height>115</height>
               </rect>
              </property>
              <layout class="QVBoxLayout" name="verticalLayout_4">
@@ -222,6 +222,72 @@ border-bottom: none;
            <property name="bottomMargin">
             <number>3</number>
            </property>
+           <item>
+            <layout class="QHBoxLayout" name="horizontalLayout_3">
+             <item>
+              <widget class="QPushButton" name="pushButton_group">
+               <property name="minimumSize">
+                <size>
+                 <width>220</width>
+                 <height>30</height>
+                </size>
+               </property>
+               <property name="maximumSize">
+                <size>
+                 <width>220</width>
+                 <height>16777215</height>
+                </size>
+               </property>
+               <property name="toolTip">
+                <string>Primarily used to generate Quotes/Workorders from Workspace. Instead of combining all items into one list, it seperates them by their respective nest/assembly.</string>
+               </property>
+               <property name="styleSheet">
+                <string notr="true">QPushButton#pushButton_group{
+	color: #ffffff;
+    background-color: #3daee9;
+    border: 0.01em solid #3daee9;
+    border-radius: 8px;
+}
+QPushButton#pushButton_group:checked{
+    background-color: #3daee9;
+    border: 0.01em solid #3daee9;
+}
+QPushButton#pushButton_group:hover{
+    background-color: #48b6ed;
+    border-color: #48b6ed;
+}
+QPushButton#pushButton_group:pressed{
+    background-color: #2b92c5;
+    border-color: #2b92c5;
+}
+
+QPushButton#pushButton_group:!checked {
+    background-color: rgba(71, 71, 71, 130);
+    border: 0.01em solid rgba(76, 76, 76, 130);
+    border-radius: 8px;
+    color: grey;
+}
+
+QPushButton:hover#pushButton_group:!checked {
+    background-color: rgba(76, 76, 76, 130);
+    border: 0.01em solid rgba(71, 76, 88, 130);
+}
+
+QPushButton:pressed#pushButton_group:!checked {
+    background-color: rgba(39, 39, 39, 130);
+    border: 0.01em solid rgba(47, 50, 57, 130);
+}</string>
+               </property>
+               <property name="text">
+                <string>Group Items by Nest/Assembly</string>
+               </property>
+               <property name="checkable">
+                <bool>true</bool>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </item>
            <item>
             <layout class="QGridLayout" name="gridLayout">
              <property name="leftMargin">
@@ -308,7 +374,7 @@ QPushButton:pressed#pushButton_update_inventory:!checked {
 }</string>
                </property>
                <property name="text">
-                <string>Add Parts to Inventory</string>
+                <string>Add/Update Parts to Inventory</string>
                </property>
                <property name="checkable">
                 <bool>true</bool>
@@ -499,6 +565,16 @@ QPushButton:pressed#pushButton_packingslip:!checked {
               <widget class="QCheckBox" name="checkBox_packing_slip">
                <property name="text">
                 <string>Open file when generated</string>
+               </property>
+              </widget>
+             </item>
+             <item row="4" column="1">
+              <widget class="QCheckBox" name="checkBox_remove_sheet_quantities">
+               <property name="text">
+                <string>Remove Sheet Quantities</string>
+               </property>
+               <property name="checked">
+                <bool>true</bool>
                </property>
               </widget>
              </item>

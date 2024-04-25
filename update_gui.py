@@ -1,76 +1,92 @@
+import math
 import os
 import sys
 import time
 import zipfile
 
+import psutil
 import requests
-from PyQt5.QtCore import (
+from PyQt6.QtCore import (
     QEasingCurve,
-    QParallelAnimationGroup,
-    QPoint,
     QPropertyAnimation,
-    QSize,
+    QRect,
     Qt,
     QThread,
+    pyqtProperty,
     pyqtSignal,
 )
-from PyQt5.QtWidgets import QApplication, QLabel, QVBoxLayout, QWidget
-
-QApplication.setAttribute(Qt.AA_EnableHighDpiScaling, True)
+from PyQt6.QtGui import QColor, QPainter
+from PyQt6.QtWidgets import QApplication, QLabel, QVBoxLayout, QWidget
 
 
 class DownloadThread(QThread):
-    """This class is a QThread that downloads a file."""
-
     signal = pyqtSignal(object)
 
     def __init__(self, url) -> None:
         QThread.__init__(self)
         self.url = url
-        self.file_name = ""
+        self.file_name = "Invigo.zip"
 
     def run(self) -> None:
-        """
-        It downloads a zip file, extracts it, and then deletes the zip file.
-        """
         try:
-            self.signal.emit("Downloading update..")
-            QApplication.setOverrideCursor(Qt.WaitCursor)
+            QApplication.setOverrideCursor(Qt.CursorShape.WaitCursor)
             self.download()
-            QApplication.setOverrideCursor(Qt.WaitCursor)
+            QApplication.setOverrideCursor(Qt.CursorShape.WaitCursor)
             self.signal.emit("Installing...")
-            QApplication.setOverrideCursor(Qt.WaitCursor)
-            extracted: bool = False
-            while not extracted:
+            QApplication.setOverrideCursor(Qt.CursorShape.WaitCursor)
+            extracted = False
+            retry_count = 0
+            while not extracted and retry_count < 5:
                 try:
                     with zipfile.ZipFile(self.file_name, "r") as zip_ref:
                         zip_ref.extractall(".")
                         extracted = True
                 except Exception as e:
-                    if "update.exe" in str(e):
+                    error_message = str(e)
+                    if "update.exe" in error_message:
                         extracted = True
-                    if "Invigo.exe" in str(e):
-                        self.signal.emit("Close Invigo.exe to finish installing")
+                        continue
+                    # self.signal.emit(f"Error during installation: {error_message}")
+                    if "Invigo.exe" in error_message:
+                        if not self.close_process("Invigo.exe"):
+                            self.signal.emit("Failed to close Invigo.exe. Please close it manually.")
+                            # break  # Exit if we can't close the process after trying
+                        else:
+                            self.signal.emit("Installing...")
+                    time.sleep(2)
+                    retry_count += 1
                 time.sleep(1)
             os.remove(self.file_name)
-            self.signal.emit("Updated successfully, have a wonderful day! :)")
-            QApplication.setOverrideCursor(Qt.WaitCursor)
+            if retry_count >= 5:
+                self.signal.emit("Updated failed, please try again later.")
+            else:
+                self.signal.emit("Update was successful!")
+            QApplication.setOverrideCursor(Qt.CursorShape.WaitCursor)
             time.sleep(2)
             self.signal.emit("")
         except Exception as e:
             self.signal.emit(e)
 
-    def download(self):
-        """
-        Downloads a file from a url and displays a progress bar using tqdm
+    def close_process(self, process_name):
+        for proc in psutil.process_iter(["pid", "name"]):
+            if proc.info["name"] == process_name:
+                try:
+                    self.signal.emit(f"Closing {process_name}.")
+                    proc.terminate()
+                    proc.wait()
+                    return True
+                except psutil.NoSuchProcess:
+                    self.signal.emit(f"Process {process_name} does not exist.")
+                except psutil.AccessDenied:
+                    self.signal.emit(f"Access denied when trying to terminate {process_name}.")
+                except Exception as e:
+                    self.signal.emit(f"An error occurred: {e}")
+        return False
 
-        Args:
-        url: The URL of the file you want to download.
-        """
+    def download(self):
         try:
             get_response = requests.get(self.url, stream=True)
             content_length = int(get_response.headers.get("content-length", 0))
-            self.file_name = self.url.split("/")[-1]
             total_downloaded: int = 0
             with open(self.file_name, "wb") as f:
                 for chunk in get_response.iter_content(chunk_size=8192):
@@ -79,102 +95,109 @@ class DownloadThread(QThread):
                         f.write(chunk)
                         self.signal.emit(f"Downloading update... {((total_downloaded/content_length)*100):.2f}%")
         except Exception as e:
-            self.signal.emit(f"{str(e)} ABORTING..")
+            self.signal.emit(f"ABORTING: {str(e)}")
+
+
+class CircleWidget(QWidget):
+    angleChanged = pyqtSignal(int)
+
+    def __init__(self, parent=None):
+        super().__init__(parent)
+        self._angle = 0
+
+    def paintEvent(self, event):
+        painter = QPainter(self)
+        painter.setBrush(QColor(139, 143, 148))
+        painter.setPen(QColor(46, 46, 48))
+        painter.setRenderHint(QPainter.RenderHint.Antialiasing)
+        radius = 100
+        painter.drawEllipse(self.width() // 2 - radius // 2, self.height() // 2 - radius // 2 - 50, radius, radius)
+        painter.setBrush(QColor(41, 41, 41))
+        painter.setPen(QColor(41, 41, 41))
+        for i in range(6):
+            angle = self._angle + i * (360 / 6)
+            radian = angle * math.pi / 180
+            x = self.width() // 2 + int(60 * math.cos(radian)) - 20
+            y = self.height() // 2 + int(60 * math.sin(radian)) - 20 - 50
+            painter.drawEllipse(QRect(x, y, 40, 40))
+        painter.setBrush(QColor(46, 46, 48))
+        painter.setPen(QColor(139, 143, 148))
+        painter.drawEllipse(self.width() // 2 - 25, self.height() // 2 - 25 - 50, 50, 50)
+        painter.setBrush(QColor(61, 174, 233))
+        painter.setPen(QColor(46, 46, 48))
+        painter.drawEllipse(self.width() // 2 - 20, self.height() // 2 - 20 - 50, 40, 40)
+
+    @pyqtProperty(int)
+    def angle(self):
+        return self._angle
+
+    @angle.setter
+    def angle(self, value):
+        if self._angle != value:
+            self._angle = value
+            self.angleChanged.emit(self._angle)
+            self.update()
 
 
 class Window(QWidget):
     def __init__(self):
         super().__init__()
-        WIDTH, HEIGHT = 440, 120
-        BORDER_THICKNESS: int = 2
-        OFFSET: int = 50
-        PROGRESS_BAR_HEIGHT: int = 20
-        MAX_PROGRESS_BAR_WIDTH: int = 120
-        PROGRESS_BAR_COLOR: str = "#3daee9"
+        WIDTH, HEIGHT = 240, 300
         ANIMATION_DURATION: int = 2000
         LOOP_DELAY: int = -1
 
         self.setFixedSize(WIDTH, HEIGHT)
-        self.setWindowTitle("Inventory Manager Update")
-        self.setWindowFlags(Qt.Window | Qt.FramelessWindowHint)
-        self.setAttribute(Qt.WA_TranslucentBackground, True)
+        self.setWindowTitle("Invigo Updater")
+        self.setWindowFlags(Qt.WindowType.Window | Qt.WindowType.FramelessWindowHint)
+        self.setAttribute(Qt.WidgetAttribute.WA_TranslucentBackground, True)
         widget = QWidget(self)
         widget.resize(WIDTH, HEIGHT)
         widget.setObjectName("widget")
         widget.setStyleSheet(
-            "QWidget#widget{border-top-left-radius:10px; border-bottom-left-radius:10px; border-top-right-radius:10px; border-bottom-right-radius:10px; border: 1px solid  rgb(0,120,212); background-color: #292929;}"
+            '''QWidget#widget {
+                border-top-left-radius: 10px;
+                border-bottom-left-radius: 10px;
+                border-top-right-radius: 10px;
+                border-bottom-right-radius: 10px;
+                border: 1px solid rgb(139, 143, 148);
+                background-color: #292929;
+            }'''
         )
         self.progress_text = QLabel(widget)
-        self.progress_text.setStyleSheet("color: white;")
-        self.progress_text.setText("Invigo Updater")
-        self.progress_text.setFixedSize(WIDTH - 20, 20)
-        self.progress_text.setAlignment(Qt.AlignHCenter | Qt.AlignVCenter)
+        self.progress_text.setWordWrap(True)
+        self.progress_text.setStyleSheet("color: rgb(169, 163, 168); font-size: 16px;")
+        self.progress_text.setText("Updated successfully!")
+        self.progress_text.move(10, HEIGHT // 2)
+        self.progress_text.setFixedSize(WIDTH - 20, 100)
+        self.progress_text.setAlignment(Qt.AlignmentFlag.AlignHCenter | Qt.AlignmentFlag.AlignVCenter)
 
-        self.background = QWidget(widget)
-        self.background.setStyleSheet("background-color: #404040; border: {BORDER_THICKNESS}px solid #191919; border-radius: 5px;")
-        self.background.move(QPoint(OFFSET - BORDER_THICKNESS, HEIGHT - OFFSET - (BORDER_THICKNESS)))
-        self.background.resize(
-            WIDTH - ((OFFSET - BORDER_THICKNESS) * 2),
-            PROGRESS_BAR_HEIGHT + BORDER_THICKNESS * 2,
-        )
+        self.circle_widget = CircleWidget(self)
+        layout = QVBoxLayout()
+        layout.addWidget(self.circle_widget)
+        self.setLayout(layout)
 
-        self.progress_bar = QWidget(widget)
-        self.progress_bar.setStyleSheet(f"background-color: {PROGRESS_BAR_COLOR}; border-radius: 5px;")
-        self.progress_bar.resize(0, PROGRESS_BAR_HEIGHT)
+        self.anim = QPropertyAnimation(self.circle_widget, b"angle")
 
-        self.anim = QPropertyAnimation(self.progress_bar, b"pos")
         self.anim.setDuration(ANIMATION_DURATION)
-        self.anim.setEasingCurve(QEasingCurve.OutBounce)
-        self.anim.setStartValue(QPoint(OFFSET, HEIGHT - OFFSET))
-        self.anim.setKeyValueAt(0.5, QPoint(WIDTH - OFFSET - 60, HEIGHT - OFFSET))
-        # self.anim.setEndValue(QPoint(OFFSET, HEIGHT - OFFSET))
-        # self.anim.setEndValue(QPoint(OFFSET, HEIGHT - OFFSET))
-        self.anim.setEndValue(QPoint(OFFSET, HEIGHT - OFFSET))
+        self.anim.setStartValue(0)
+        self.anim.setEasingCurve(QEasingCurve.Type.OutBounce)
+        self.anim.setKeyValueAt(0.4, 180)
+        self.anim.setEndValue(360)
+        self.anim.setLoopCount(LOOP_DELAY)
+        self.anim.start()
 
-        self.anim_2 = QPropertyAnimation(self.progress_bar, b"size")
-        self.anim_2.setDuration(ANIMATION_DURATION)
-        self.anim_2.setEasingCurve(QEasingCurve.BezierSpline)
-        self.anim_2.setStartValue(QSize(60, PROGRESS_BAR_HEIGHT))
-        # self.anim_2.setKeyValueAt(0.15, QSize(60, PROGRESS_BAR_HEIGHT))
-        self.anim_2.setKeyValueAt(0.5, QSize(60, PROGRESS_BAR_HEIGHT))
-        # self.anim_2.setKeyValueAt(0.85, QSize(60, PROGRESS_BAR_HEIGHT))
-        self.anim_2.setEndValue(QSize(60, PROGRESS_BAR_HEIGHT))
-
-        self.anim_group = QParallelAnimationGroup(widget)
-        self.anim_group.addAnimation(self.anim)
-        self.anim_group.addAnimation(self.anim_2)
-        self.anim_group.setLoopCount(LOOP_DELAY)
-        self.anim_group.start()
-
-        self.layout = QVBoxLayout()
-        self.layout.addWidget(self.progress_text)
-        widget.setLayout(self.layout)
         self.threads = []
 
-        download_thread = DownloadThread(url="https://github.com/TheCodingJsoftware/Inventory-Manager/releases/latest/download/Invigo.zip")
-        QApplication.setOverrideCursor(Qt.WaitCursor)
+        download_thread = DownloadThread(url="http://10.0.0.10:5051/download")
+        QApplication.setOverrideCursor(Qt.CursorShape.WaitCursor)
         self.start_thread(download_thread)
 
-    def start_thread(self, thread) -> None:
-        """
-        It connects the signal from the thread to the data_received function, then appends the thread to
-        the threads list, and finally starts the thread
-
-        Args:
-          thread: The thread to start
-        """
+    def start_thread(self, thread: DownloadThread) -> None:
         thread.signal.connect(self.data_received)
         self.threads.append(thread)
         thread.start()
 
     def data_received(self, data) -> None:
-        """
-        If the data received is "Successfully uploaded" or "Successfully downloaded", then show a
-        message dialog with the title and message
-
-        Args:
-          data: the data received from the server
-        """
         self.progress_text.setText(data)
         if data == "":
             QApplication.restoreOverrideCursor()
@@ -185,4 +208,4 @@ if __name__ == "__main__":
     app = QApplication(sys.argv)
     wizard = Window()
     wizard.show()
-    sys.exit(app.exec_())
+    sys.exit(app.exec())

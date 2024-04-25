@@ -176,12 +176,12 @@ footer {
 	overflow-y: auto;
 	overflow-x: hidden;
 	background: rgb(32, 32, 32);
-	padding: 2%;
+	margin: 1%;
 	width: auto;
 }
 
 #group_name {
-	font-size: 25px;
+	font-size: 32px;
 }
 
 th,

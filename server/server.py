@@ -1,20 +1,20 @@
 # import concurrent.futures
 import json
-import time
 import logging
 import os
 import shutil
 import sys
 import threading
+import time
 import zipfile
-from functools import partial
 from datetime import datetime
+from functools import partial
 from io import StringIO
 from pathlib import Path
 
 import coloredlogs
-import schedule
 import jinja2
+import schedule
 import tornado.ioloop
 import tornado.web
 import tornado.websocket
