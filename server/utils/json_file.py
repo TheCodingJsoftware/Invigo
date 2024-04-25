@@ -2,7 +2,7 @@ import contextlib
 import math
 import os
 
-import ujson as json
+import json
 
 
 class JsonFile:

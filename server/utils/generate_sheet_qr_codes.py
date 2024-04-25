@@ -3,15 +3,16 @@ import urllib.parse
 from pathlib import Path
 
 import qrcode  # pip install qrcode
-import ujson as json
+import json
 import xlsxwriter
 from qrcode import constants
 
-with open(r"F:\Code\Python-Projects\Inventory Manager\data\inventory - Price of Steel.json", "r") as f:
+with open(r"C:\Users\Invigo\Inventory-Manager\server\data\inventory - Price of Steel.json", "r") as f:
     data = json.load(f)
 
 FONT_NAME: str = "Book Antiqua"
-SERVER_IP: str = "10.0.0.93"
+SERVER_IP: str = "10.0.0.9"
+SERVER_PORT:int = 8080
 
 workbook = xlsxwriter.Workbook("qr_codes.xlsx")
 workbook.set_properties(
@@ -41,7 +42,7 @@ for category in data:
         continue
     # worksheet.merge_range(f"A{row}:B{row}", category, merge_format)
     for sheet in data[category]:
-        base_url = f"http://{SERVER_IP}/sheets_in_inventory/{sheet}".replace(" ", "_")
+        base_url = f"http://{SERVER_IP}:{SERVER_PORT}/sheets_in_inventory/{sheet}".replace(" ", "_")
         encoded_url = urllib.parse.quote(base_url, safe=":/")
         qr = qrcode.QRCode(error_correction=constants.ERROR_CORRECT_H, box_size=10, border=1)
         qr.add_data(encoded_url)

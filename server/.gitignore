@@ -1,0 +1,9 @@
+data
+backups
+.vscode
+logs
+*.json
+parts batch to upload history
+parts in inventory images
+*.pyc
+*.txt

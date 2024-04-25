@@ -39,6 +39,8 @@ def update_inventory(file_path: str, clients) -> None:
     if "workorder" in file_path:
         new_laser_batch_data = {}
         for nest_name in list(quote_nest_information.keys()):
+            if nest_name == "Components":
+                continue
             if nest_name[0] == "_":
                 new_laser_batch_data[nest_name] = quote_nest_information[nest_name]
             else:
@@ -362,6 +364,8 @@ def get_sheet_information(batch_data: dict) -> dict:
     """
     sheet_information = {}
     for item in list(batch_data.keys()):
+        if item == "Components":
+            continue
         if item[0] == "_":
             sheet_name = f"{batch_data[item]['gauge']} {batch_data[item]['material']} {batch_data[item]['sheet_dim']}"
             try:
