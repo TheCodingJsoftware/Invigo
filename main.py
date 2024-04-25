@@ -656,8 +656,6 @@ class MainWindow(QMainWindow):
         self.actionCheck_for_Updates.setIcon(QIcon(f"icons/refresh.png"))
         self.actionAbout.triggered.connect(self.show_about_dialog)
         self.actionAbout.setIcon(QIcon(f"icons/about.png"))
-        self.actionRelease_Notes.triggered.connect(partial(self.show_whats_new, True))
-        self.actionRelease_Notes.setIcon(QIcon(f"icons/release_notes.png"))
         self.actionWebsite.triggered.connect(self.open_website)
         self.actionWebsite.setIcon(QIcon(f"icons/website.png"))
         # PRINT
@@ -2860,31 +2858,6 @@ class MainWindow(QMainWindow):
             response = results.get_response()
             if response == DialogButtons.ok:
                 return
-
-    def show_whats_new(self, show: bool = False) -> None:
-        def markdown_to_html(markdown_text):
-            html = markdown.markdown(markdown_text)
-            return html
-
-        try:
-            try:
-                response = requests.get("http://10.0.0.10:5051/version")
-            except ConnectionError:
-                return
-            if response.status_code == 200:
-                version = response.text
-            if version == __version__ or show:
-                build_date = time.strptime(__updated__, "%Y-%m-%d %H:%M:%S")
-                current_date = time.strptime(
-                    settings_file.get_value(item_name="last_opened"),
-                    "%Y-%m-%d %H:%M:%S.%f",
-                )
-                if current_date < build_date or show:
-                    with open("CHANGELOG.md", "r") as change_log_file:
-                        self.show_message_dialog(title="Whats new?", message=markdown_to_html(change_log_file.read()))
-                    settings_file.add_item(item_name="last_opened", value=str(datetime.now()))
-        except Exception:
-            return
 
     def show_not_trusted_user(self) -> None:
         self.tabWidget.setCurrentIndex(settings_file.get_value("menu_tabs_order").index(self.last_selected_menu_tab))
@@ -8634,7 +8607,7 @@ class MainWindow(QMainWindow):
 
     # * \/ External Actions \/
     def open_website(self) -> None:
-        webbrowser.open("http://10.0.0.92:5051", new=0)
+        webbrowser.open("http://10.0.0.10:5051", new=0)
 
     def open_item_history(self) -> None:
         os.startfile(f"{os.path.dirname(os.path.realpath(sys.argv[0]))}/data/inventory history.xlsx")
@@ -8871,7 +8844,6 @@ class MainWindow(QMainWindow):
                     geometry.get_value("width"),
                     geometry.get_value("height") - 7,
                 )
-            self.show_whats_new()
 
         if "timed out" in str(data).lower() or "fail" in str(data).lower():
             self.show_error_dialog(

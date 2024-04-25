@@ -2854,7 +2854,6 @@ QPushButton#pushButton_generate_workspace_quote:disabled{
     <property name="title">
      <string>Help</string>
     </property>
-    <addaction name="actionRelease_Notes"/>
     <addaction name="actionWebsite"/>
     <addaction name="separator"/>
     <addaction name="actionAbout_Qt"/>
@@ -3152,10 +3151,10 @@ QPushButton#pushButton_generate_workspace_quote:disabled{
     <string>Website</string>
    </property>
    <property name="toolTip">
-    <string>http://10.0.0.92:5051</string>
+    <string>http://10.0.0.10:5051</string>
    </property>
    <property name="statusTip">
-    <string>http://10.0.0.92:5051</string>
+    <string>http://10.0.0.10:5051</string>
    </property>
   </action>
   <action name="actionPrint_Inventory">
