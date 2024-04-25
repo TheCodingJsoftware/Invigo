@@ -112,6 +112,7 @@ from ui.add_workspace_item import AddWorkspaceItem
 from ui.color_picker_dialog import ColorPicker
 from ui.custom_widgets import (
     AssemblyMultiToolBox,
+    AssemblyImage,
     ClickableLabel,
     ComponentsCustomTableWidget,
     CustomStandardItemModel,
@@ -326,7 +327,6 @@ def excepthook(exc_type, exc_value, exc_traceback):
     )  # 0x40 for OK button
 
 
-
 def send_error_report(exc_type, exc_value, exc_traceback):
     SERVER_IP: str = get_server_ip_address()
     SERVER_PORT: int = get_server_port()
@@ -386,7 +386,6 @@ class MainWindow(QMainWindow):
         check_po_directories()
         # self.check_for_updates(on_start_up=True)
 
-
         if days_from_last_price_history_assessment > settings_file.get_value("days_until_new_price_history_assessment"):
             settings_file.add_item("price_history_file_name", str(datetime.now().strftime("%B %d %A %Y")))
             self.show_message_dialog(
@@ -431,26 +430,14 @@ class MainWindow(QMainWindow):
         self.last_selected_menu_tab: str = settings_file.get_value("menu_tabs_order")[settings_file.get_value("last_toolbox_tab")]
         self.workspace_tables: dict[CustomTableWidget, Assembly] = {}
         self.workspace_information = {}  # idk the type hint
-        self.threads: list[
-            ChangesThread
-            | DownloadThread
-            | GetOrderNumberThread
-            | LoadNests
-            | RemoveQuantityThread
-            | SetOrderNumberThread
-            | UploadBatch
-            | UploadThread
-            | WorkspaceDownloadFiles
-            | WorkspaceUploadThread
-            | GetPreviousNestsFilesThread
-            | GetPreviousNestsDataThread
-        ] = []
+        self.threads: list[QThread] = []
         self.quote_nest_directories_list_widgets: dict[str, QTreeWidget] = {}
         self.quote_nest_information = {}
         self.quote_components_information = {}
         self.workspace_filter_tab_widget: FilterTabWidget = None
         self.sheet_nests_toolbox: MultiToolBox = None
         self.get_upload_file_response: bool = True
+        self.tabWidget: QTabWidget
         self.scroll_position_manager = ScrollPositionManager()
         self.margins = (15, 15, 5, 5)  # top, bottom, left, right
         self.margin_format = (
@@ -467,7 +454,7 @@ class MainWindow(QMainWindow):
         self.start_check_for_updates_thread()
 
     def __load_ui(self) -> None:
-        menu_tabs_order = settings_file.get_value(item_name="menu_tabs_order")
+        menu_tabs_order: list[str] = settings_file.get_value(item_name="menu_tabs_order")
         for tab_name in menu_tabs_order:
             index = self.get_tab_from_name(tab_name)
             if index != -1:
@@ -832,6 +819,7 @@ class MainWindow(QMainWindow):
         inventory.load_data()
         price_of_steel_inventory.load_data()
         parts_in_inventory.load_data()
+
         # with contextlib.suppress(KeyError):
         #     self.scroll_position_manager.saveScrollPosition(
         #         tab_name=f"{self.tabWidget.tabText(self.tabWidget.currentIndex())}_{self.category}", table=self.tabs[self.category]
@@ -901,6 +889,9 @@ class MainWindow(QMainWindow):
             self.load_categories()
         if not self.finished_loading_tabs:
             self.finished_loading_tabs = True
+            # with contextlib.suppress(AttributeError):
+            # ! This is important to ensure memory addresses dont get mixed up
+            # ! self.active_workspace_file = None
             self.load_workspace_filter_tab()
         settings_file.add_item("last_toolbox_tab", self.tabWidget.currentIndex())
         self.last_selected_menu_tab = self.tabWidget.tabText(self.tabWidget.currentIndex())
@@ -1336,7 +1327,7 @@ class MainWindow(QMainWindow):
         # Workspace order begins here
         date_created: str = QDate().currentDate().toString("yyyy-M-d")
         group_name_date_created = datetime.now()
-        admin_workspace.load_data()
+        # admin_workspace.load_data()
         for assembly, quantity in work_order.items():
             try:
                 job_name = assembly.name
@@ -1839,7 +1830,6 @@ class MainWindow(QMainWindow):
         else:
             self.pushButton_remove_quantities_from_inventory.setText(f"Remove Quantities from Selected ({len(selected_items)}) Items")
             self.last_item_selected_name = selected_items[0]
-
 
     # OMNIGEN
     def cutoff_sheet_double_clicked(self, cutoff_items: QListWidget):
@@ -2798,18 +2788,21 @@ class MainWindow(QMainWindow):
                 statuses.add(status)
         return list(statuses)
 
+    # Workspace
     def get_all_job_names(self) -> list[str]:
-        self.active_workspace_file.load_data()
+        # self.active_workspace_file.load_data()
         job_names: list[str] = [job.name for job in self.active_workspace_file.data]
         return job_names
 
+    # Workspace
     def get_all_workspace_items(self) -> list[Item]:
-        self.active_workspace_file.load_data()
+        # self.active_workspace_file.load_data()
         all_items: list[Item] = []
         for assembly in self.active_workspace_file.data:
             all_items.extend(assembly.get_all_items())
         return all_items
 
+    # Workspace
     def get_all_workspace_item_names(self) -> list[str]:
         all_items = self.get_all_workspace_items()
         unique_item_names = {item.name for item in all_items}
@@ -3400,6 +3393,11 @@ class MainWindow(QMainWindow):
         image_viewer = QImageViewer(self, path, title)
         image_viewer.show()
 
+    # Workspace
+    def open_assembly_image(self, assembly: Assembly) -> None:
+        image_viewer = QImageViewer(self, assembly.get_assembly_data("assembly_image"), assembly.name)
+        image_viewer.show()
+
     def open_pdf(self, path: str) -> None:
         url = QUrl.fromLocalFile(path)
         self.web_engine_view.load(url)
@@ -3434,7 +3432,7 @@ class MainWindow(QMainWindow):
             parts_in_inventory.save_data(inventory_data)
             parts_in_inventory.load_data()
             for category in parts_in_inventory.get_data():
-                parts_in_inventory.sort(category, 'current_quantity', True)
+                parts_in_inventory.sort(category, "current_quantity", True)
             self.sync_changes()
             self.load_categories()
             self.last_item_selected_index = self.parts_in_inventory_name_lookup[self.last_item_selected_name]
@@ -3519,12 +3517,13 @@ class MainWindow(QMainWindow):
             message="Set quantity for selected jobs",
             button_names=DialogButtons.generate_cancel,
             job_names=job_names,
+            admin_workspace=admin_workspace,
         )
         if printout_dialog.exec():
             response = printout_dialog.get_response()
             if response == DialogButtons.generate:
                 file_name: str = f'Printout - {datetime.now().strftime("%A, %d %B %Y %H-%M-%S-%f")}'
-                generate_printout = GeneratePrintout(file_name, "Workorder", printout_dialog.get_workorder(), self.order_number)
+                generate_printout = GeneratePrintout(admin_workspace, file_name, "Workorder", printout_dialog.get_workorder(), self.order_number)
                 generate_printout.generate()
                 path_to_save_workspace_printouts = self.config.get("GLOBAL VARIABLES", "path_to_save_workspace_printouts")
                 self.open_folder(f"{path_to_save_workspace_printouts}/{file_name}.html")
@@ -3829,14 +3828,10 @@ class MainWindow(QMainWindow):
             self.set_layout_message("Insufficient Privileges, Access Denied", "", "", 0)
             return
 
-        # No idea what this is supposed to do, but im too scared to delete it - Jared
-        # JsonFile(file_name=f"data/{self.inventory_file_name}")
-        # JsonFile(file_name=f"data/{self.inventory_file_name} - Price of Steel")
-        # JsonFile(file_name=f"data/{self.inventory_file_name} - Parts in Inventory")
         workspace_tags.load_data()
         admin_workspace.load_data()
         user_workspace.load_data()
-        # # QApplication.setOverrideCursor(Qt.CursorShape.BusyCursor)
+
         if self.tabWidget.tabText(self.tabWidget.currentIndex()) not in ["Edit Inventory", "Parts in Inventory", "Sheets in Inventory", "Workspace"]:
             return
         self.clear_layout(self.active_layout)
@@ -4731,8 +4726,35 @@ class MainWindow(QMainWindow):
             self.active_workspace_file.save()
             self.sync_changes()
             return
+        elif column == 12:  # Shelf Number
+            assembly_item = assembly.get_item(selected_item_name)
+            assembly_item.set_value(key="shelf_number", value=item_text)
+            self.active_workspace_file.save()
+            self.sync_changes()
+            return
         plus_button = table.cellWidget(table.rowCount() - 1, 0)
         plus_button.setEnabled(not assembly.exists(""))
+
+    def item_draggable_button_show_context_menu(self, btn: DraggableButton, assembly: Assembly, item: Item, file_category: str, file_name: str):
+        contextMenu = QMenu(self)
+        deleteAction = contextMenu.addAction("Delete file")
+        action = contextMenu.exec(QCursor.pos())
+
+        if action == deleteAction:
+            all_files: list[str] = item.get_value(file_category)
+
+            for i, file in enumerate(all_files):
+                if file_name in file:
+                    all_files.pop(i)
+                    break
+
+            item.set_value(file_category, all_files)
+
+            self.active_workspace_file.save()
+            self.sync_changes()
+
+            btn.hide()
+            btn.deleteLater()
 
     # STAGING/EDITING
     def load_assemblies_items_file_layout(
@@ -4749,7 +4771,10 @@ class MainWindow(QMainWindow):
             btn.setFixedWidth(30)
             btn.setText(file_ext)
             btn.setToolTip("Press to open")
-            btn.buttonClicked.connect(partial(self.download_workspace_file, file))
+            btn.buttonClicked.connect(partial(self.download_workspace_file, file, True))
+            btn.customContextMenuRequested.connect(
+                partial(self.item_draggable_button_show_context_menu, btn, assembly, item, file_category, file_name)
+            )
             files_layout.addWidget(btn)
         if show_dropped_widget:
             drop_widget = DropWidget(self, assembly, item, files_layout, file_category)
@@ -4763,13 +4788,13 @@ class MainWindow(QMainWindow):
         for file_path in file_paths:
             files.add(file_path)
         item.set_value(key=file_category, value=list(files))
-        self.active_workspace_file.save()
-        self.sync_changes()
-        self.upload_workspace_files(file_paths)
+        self.upload_workspace_files(list(files))
         self.status_button.setText("Upload starting", color="lime")
         label.setText("Drag Here")
         label.setStyleSheet("background-color: rgba(30,30,30,100);")
         self.load_assemblies_items_file_layout(file_category=file_category, files_layout=files_layout, assembly=assembly, item=item)
+        self.active_workspace_file.save()
+        self.sync_changes()
 
     # STAGING/EDITING
     def delete_workspace_item(self, assembly: Assembly, table: CustomTableWidget, row_index: int):
@@ -4800,6 +4825,7 @@ class MainWindow(QMainWindow):
             "Flow Tag",
             "Expected time to complete",
             "Notes",
+            "Shelf #",
             "DEL",
         ]
         #     table.setStyleSheet(
@@ -5021,6 +5047,9 @@ class MainWindow(QMainWindow):
             notes.textChanged.connect(partial(notes_change, table, notes, item))
             table.setCellWidget(row_index, col_index, notes)
             col_index += 1
+            table.setItem(row_index, col_index, QTableWidgetItem(str(item.data["shelf_number"])))
+            table.item(row_index, col_index).setTextAlignment(Qt.AlignmentFlag.AlignCenter | Qt.AlignmentFlag.AlignVCenter)
+            col_index += 1
             delete_button = DeletePushButton(
                 self,
                 tool_tip=f"Delete {item.name} forever from {assembly.name}",
@@ -5069,6 +5098,7 @@ class MainWindow(QMainWindow):
                         "ship_to": "",
                         "show": True,
                         "notes": "",
+                        "shelf_number": "",
                     }
                 else:  # EDITING
                     date_created: str = QDate().currentDate().toString("yyyy-M-d")
@@ -5087,6 +5117,7 @@ class MainWindow(QMainWindow):
                         "ship_to": "",
                         "show": True,
                         "notes": "",
+                        "shelf_number": "",
                         # New stuff
                         "recoat": False,
                         "recut": False,
@@ -5129,7 +5160,7 @@ class MainWindow(QMainWindow):
 
         add_item_button(on_load=True)
 
-        table.set_editable_column_index([0, 8])
+        table.set_editable_column_index([0, 8, 12])
         table.blockSignals(False)
         table.resizeColumnsToContents()
         self.workspace_tables[table] = assembly
@@ -5137,6 +5168,19 @@ class MainWindow(QMainWindow):
         # header.setSectionResizeMode(0, QHeaderView.ResizeMode.Fixed)  # Set the first column to Fixed
 
         return table
+
+    def assembly_image_show_context_menu(self, assembly_image: AssemblyImage, assembly: Assembly):
+        contextMenu = QMenu(self)
+        deleteAction = contextMenu.addAction("Clear image")
+        action = contextMenu.exec(QCursor.pos())
+
+        if action == deleteAction:
+            assembly.set_assembly_data("assembly_image", None)
+
+            assembly_image.clear_image()
+
+            self.active_workspace_file.save()
+            self.sync_changes()
 
     # STAGING/EDITING
     def load_edit_assembly_widget(self, assembly: Assembly, workspace_information: dict, group_color: str, parent=None) -> QWidget:
@@ -5146,6 +5190,37 @@ class MainWindow(QMainWindow):
         layout.setSpacing(1)
         h_layout = QHBoxLayout()
         h_layout.setAlignment(Qt.AlignmentFlag.AlignLeft)
+
+        assembly_image = AssemblyImage(widget)
+        if assembly.get_assembly_data("assembly_image"):
+            assembly_image.set_new_image(assembly.get_assembly_data("assembly_image"))
+
+        assembly_image.clicked.connect(partial(self.open_assembly_image, assembly))
+
+        def upload_assembly_image(path_to_image: str):
+            file_ext = path_to_image.split(".")[-1].upper()
+            file_name = os.path.basename(path_to_image)
+
+            target_dir = f"data/workspace/{file_ext}"
+            target_path = os.path.join(target_dir, file_name)
+
+            if not os.path.exists(target_dir):
+                os.makedirs(target_dir)
+
+            shutil.copyfile(path_to_image, target_path)
+
+            assembly_image.set_new_image(target_path)
+            assembly.set_assembly_data("assembly_image", target_path)
+
+            self.upload_workspace_files([target_path])
+            self.active_workspace_file.save()
+            self.sync_changes()
+
+        assembly_image.imagePathDropped.connect(upload_assembly_image)
+        assembly_image.customContextMenuRequested.connect(partial(self.assembly_image_show_context_menu, assembly_image, assembly))
+
+        h_layout.addWidget(assembly_image)
+
         layout.addLayout(h_layout)
         # widget.setLayout(h_layout)
         timer_widget = QWidget(widget)
@@ -5298,7 +5373,7 @@ class MainWindow(QMainWindow):
             flow_tag_combobox.currentTextChanged.connect(partial(flow_tag_change, timer_layout, color_widget, flow_tag_combobox))
             grid.addWidget(QLabel("Expected time to complete:"), 0, 0)
             grid.addWidget(time_box, 0, 1)
-            grid.addWidget(QLabel("Flow Tag:"), 1, 0)
+            grid.addWidget(QLabel("Assembly Flow Tag:"), 1, 0)
             grid.addWidget(flow_tag_combobox, 1, 1)
             button_color = QComboBox(self)
             button_color.wheelEvent = lambda event: event.ignore()
@@ -5406,6 +5481,7 @@ class MainWindow(QMainWindow):
                             "paint_color": None,
                             "paint_type": None,
                             "paint_amount": 0,
+                            "assembly_image": None,
                         }
                     else:
                         date_created: str = QDate().currentDate().toString("yyyy-M-d")
@@ -5418,6 +5494,7 @@ class MainWindow(QMainWindow):
                             "paint_color": None,
                             "paint_type": None,
                             "paint_amount": 0,
+                            "assembly_image": None,
                             # new stuff
                             "starting_data": date_created,
                             "ending_date": date_created,
@@ -5894,6 +5971,8 @@ class MainWindow(QMainWindow):
             "Quantity",  # 8
             "Flow Tag Controls",  # 9
             "Set Timers",  # 10
+            "Shelf #",  # 11
+            "Notes",  # 12
         ]
         #     table.setStyleSheet(
         #     f"QTableView {{ gridline-color: white; }} QTableWidget::item {{ border-color: white; }}"
@@ -6167,6 +6246,13 @@ class MainWindow(QMainWindow):
                 table.setCellWidget(row_index, col_index, timer_widget)
                 table.showColumn(10)
 
+            col_index += 1
+            table.setItem(row_index, col_index, QTableWidgetItem(str(item.data["shelf_number"])))  # 11
+            table.item(row_index, col_index).setTextAlignment(Qt.AlignmentFlag.AlignCenter | Qt.AlignmentFlag.AlignVCenter)
+            col_index += 1
+            table.setItem(row_index, col_index, QTableWidgetItem(str(item.data["notes"])))  # 12
+            table.item(row_index, col_index).setTextAlignment(Qt.AlignmentFlag.AlignCenter | Qt.AlignmentFlag.AlignVCenter)
+
         row_index: int = 0
         for item in assembly.items:
             if item.get_value("show") == False:
@@ -6195,6 +6281,18 @@ class MainWindow(QMainWindow):
         layout.setContentsMargins(1, 1, 1, 1)
         h_layout = QHBoxLayout()
         h_layout.setAlignment(Qt.AlignmentFlag.AlignLeft)
+
+        assembly_image = AssemblyImage(widget)
+        if assembly.get_assembly_data("assembly_image"):
+            self.download_workspace_file(assembly.get_assembly_data("assembly_image"), False)
+            assembly_image.set_new_image(assembly.get_assembly_data("assembly_image"))
+        else:
+            assembly_image.setText("No image provided")
+
+        assembly_image.clicked.connect(partial(self.open_assembly_image, assembly))
+
+        h_layout.addWidget(assembly_image)
+
         layout.addLayout(h_layout)
         # widget.setLayout(h_layout)
         timer_widget = QWidget()
@@ -6486,10 +6584,9 @@ class MainWindow(QMainWindow):
             "Quantity",  # 8
             "Flow Tag Controls",  # 9
             "Set Timers",  # 10
+            "Shelf #",  # 11
+            "Notes",  # 12
         ]
-        #     table.setStyleSheet(
-        #     f"QTableView {{ gridline-color: white; }} QTableWidget::item {{ border-color: white; }}"
-        # )
 
         table = CustomTableWidget(scroll_content)
         table.blockSignals(True)
@@ -6770,6 +6867,14 @@ class MainWindow(QMainWindow):
                 timer_layout.addWidget(recording_widget)
                 table.setCellWidget(row_index, col_index, timer_widget)
                 table.showColumn(10)
+
+            col_index += 1
+            table.setItem(row_index, col_index, QTableWidgetItem(str(first_item.data["shelf_number"])))  # 11
+            table.item(row_index, col_index).setTextAlignment(Qt.AlignmentFlag.AlignCenter | Qt.AlignmentFlag.AlignVCenter)
+
+            col_index += 1
+            table.setItem(row_index, col_index, QTableWidgetItem(str(first_item.data["notes"])))  # 12
+            table.item(row_index, col_index).setTextAlignment(Qt.AlignmentFlag.AlignCenter | Qt.AlignmentFlag.AlignVCenter)
 
         row_index: int = 0
         for item_name, items in grouped_items.data.items():
@@ -7608,7 +7713,9 @@ class MainWindow(QMainWindow):
                 self.active_workspace_file = admin_workspace
             else:  # Editing
                 self.active_workspace_file = user_workspace
+            self.load_workspace_filter_tab()
             if self.category == "Staging":  # Staging
+                self.pushButton_use_filter.setChecked(False)
                 self.pushButton_add_job.setHidden(False)
                 self.pushButton_generate_workorder.setHidden(False)
                 self.pushButton_generate_workspace_quote.setHidden(False)
@@ -7963,7 +8070,7 @@ class MainWindow(QMainWindow):
                 try:
                     pixmap = QPixmap(f"images/{self.quote_nest_information[nest_name]['image_index']}.jpeg")
                 except KeyError:
-                    self.quote_nest_information[nest_name]['image_index'] = '404'
+                    self.quote_nest_information[nest_name]["image_index"] = "404"
                     pixmap = QPixmap(f"images/{self.quote_nest_information[nest_name]['image_index']}.jpeg")
                 scaled_pixmap = pixmap.scaled(thumbnail.size(), aspectRatioMode=Qt.AspectRatioMode.KeepAspectRatio)
                 thumbnail.setPixmap(scaled_pixmap)
@@ -8355,13 +8462,9 @@ class MainWindow(QMainWindow):
             overhead = self.spinBox_overhead_items.value() if self.checkBox_components_use_overhead.isChecked() else 0
             price_item = self.tableWidget_components_items.item(row, 7)
             if self.checkBox_components_use_profit_margin.isChecked() or self.checkBox_components_use_overhead.isChecked():
-                price_item.setText(
-                    f"${calculate_overhead(round(unit_price_item, 2)*quantity, profit_margin / 100, overhead / 100):,.2f}"
-                )
+                price_item.setText(f"${calculate_overhead(round(unit_price_item, 2)*quantity, profit_margin / 100, overhead / 100):,.2f}")
             else:
-                price_item.setText(
-                    f"${unit_price_item*quantity:,.2f}"
-                )
+                price_item.setText(f"${unit_price_item*quantity:,.2f}")
         self.tableWidget_components_items.blockSignals(False)
         self.update_quote_price()
 
@@ -8610,9 +8713,9 @@ class MainWindow(QMainWindow):
                 )
 
     # USER
-    def download_workspace_file(self, file_to_download: str) -> None:
+    def download_workspace_file(self, file_to_download: str, open_when_done: bool = False) -> None:
         self.status_button.setText(f'Downloading - {datetime.now().strftime("%r")}', "yellow")
-        workspace_download_files = WorkspaceDownloadFiles(file_to_download)
+        workspace_download_files = WorkspaceDownloadFiles(file_to_download, open_when_done)
         self.threads.append(workspace_download_files)
         workspace_download_files.signal.connect(self.download_workspace_file_response)
         workspace_download_files.start()
@@ -8624,14 +8727,17 @@ class MainWindow(QMainWindow):
                 f"Successfully downloaded file - {datetime.now().strftime('%r')}",
                 "lime",
             )
-            file = response.split(";")[-1]
+            file = response.split(";")[1]
+            open_when_done = True if response.split(";")[-1] == "True" else False
             file_name = os.path.basename(file)
             file_ext = file_name.split(".")[-1].upper()
             file_path = f"{os.path.dirname(os.path.realpath(__file__))}/data/workspace/{file_ext}/{file_name}"
-            if file_ext in ["PNG", "JPEG", "JPG"]:
-                self.open_image(path=file_path, title=file_name)
-            if file_ext == "PDF":
-                self.open_pdf(path=file_path)
+
+            if open_when_done:
+                if file_ext in ["PNG", "JPEG", "JPG"]:
+                    self.open_image(path=file_path, title=file_name)
+                if file_ext == "PDF":
+                    self.open_pdf(path=file_path)
         else:
             self.status_button.setText(f"Error - {response} - {datetime.now().strftime('%r')}", "red")
 
@@ -8743,22 +8849,16 @@ class MainWindow(QMainWindow):
             self.files_downloaded_count += 1
         if self.files_downloaded_count == 1 and not self.finished_downloading_all_files:
             self.finished_downloading_all_files = True
-            inventory.load_data()
-            price_of_steel_inventory.load_data()
-            parts_in_inventory.load_data()
+            # inventory.load_data()
+            # price_of_steel_inventory.load_data()
+            # parts_in_inventory.load_data()
             self.tool_box_menu_changed()
             # self.load_categories()
             self.status_button.setText(f'Downloaded all files - {datetime.now().strftime("%r")}', "lime")
             self.centralwidget.setEnabled(True)
             # ON STARTUP
             self.downloading_changes = False
-            self.start_changes_thread(
-                [
-                    f"{self.inventory_file_name}.json",
-                    f"{self.inventory_file_name} - Price of Steel.json",
-                    f"{self.inventory_file_name} - Parts in Inventory.json",
-                ]
-            )
+            self.start_changes_thread()
             # self.tool_box_menu_changed()
             self.quantities_change()
             self.start_exchange_rate_thread()
@@ -8781,8 +8881,8 @@ class MainWindow(QMainWindow):
             self.status_button.setText("Cannot connect to server", "red")
         # QApplication.restoreOverrideCursor()
 
-    def start_changes_thread(self, files_to_download: list[str]) -> None:
-        changes_thread = ChangesThread(self, files_to_download)  # 5 minutes
+    def start_changes_thread(self) -> None:
+        changes_thread = ChangesThread(self)  # 5 minutes
         changes_thread.signal.connect(self.changes_response)
         self.threads.append(changes_thread)
         changes_thread.start()
@@ -8832,7 +8932,7 @@ class MainWindow(QMainWindow):
                 "workspace - Admin.json",
                 "workspace - User.json",
                 "workspace - History.json",
-                "price_of_steel_information.json"
+                "price_of_steel_information.json",
             ],
             False,
         )
@@ -8863,9 +8963,9 @@ class MainWindow(QMainWindow):
         thickness = price_of_steel_information.get_value("thicknesses")[0]
 
         for nest in self.quote_nest_information:
-            if nest[0] == '_':
-                material = self.quote_nest_information[nest]['material']
-                thickness = self.quote_nest_information[nest]['gauge']
+            if nest[0] == "_":
+                material = self.quote_nest_information[nest]["material"]
+                thickness = self.quote_nest_information[nest]["gauge"]
                 break
 
         select_item_dialog = NestSheetVerification(
@@ -8873,7 +8973,7 @@ class MainWindow(QMainWindow):
             title="Verify Sheet Thickness and Material",
             message=f"The nest sheet settings from pdf are: {thickness} {material}.",
             thickness=thickness,
-            material=material
+            material=material,
         )
 
         if select_item_dialog.exec():
@@ -9013,11 +9113,11 @@ class MainWindow(QMainWindow):
 
     def start_upload_sheets_thread(self) -> None:
         self.upload_file(
-                [
-                    f"{self.inventory_file_name} - Price of Steel.json",
-                ],
-                False,
-            )
+            [
+                f"{self.inventory_file_name} - Price of Steel.json",
+            ],
+            False,
+        )
         thread = UploadSheetsSettingsThread()
         thread.signal.connect(self.upload_sheets_thread_response)
         self.threads.append(thread)

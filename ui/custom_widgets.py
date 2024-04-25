@@ -30,6 +30,7 @@ from PyQt6.QtCore import (
     pyqtSignal,
 )
 from PyQt6.QtGui import (
+    QAction,
     QBrush,
     QClipboard,
     QColor,
@@ -90,6 +91,7 @@ from PyQt6.QtWidgets import (
     QTreeWidgetItem,
     QVBoxLayout,
     QWidget,
+    QMenu
 )
 
 from utils.colors import darken_color, lighten_color
@@ -97,12 +99,73 @@ from utils.workspace.assembly import Assembly
 from utils.workspace.item import Item
 
 
+class AssemblyImage(QLabel):
+    clicked = pyqtSignal()
+    imagePathDropped = pyqtSignal(str)
+    def __init__(self, parent: QWidget | None = ...) -> None:
+        super(AssemblyImage, self).__init__(parent)
+        self.setFixedSize(100, 100)
+        self.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        self.setContextMenuPolicy(Qt.ContextMenuPolicy.CustomContextMenu)
+        self.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
+        self.setToolTip("Press to enlarge")
+        self.setText("Drop an Image\n(PNG, JPG, JPEG)")
+        self.setAcceptDrops(True)
+        self.setWordWrap(True)
+        self.setStyleSheet("background-color: rgba(30,30,30,100);")
+
+    def set_new_image(self, path_to_image):
+        self.pixmap = QPixmap(path_to_image)
+        self.setPixmap(self.pixmap.scaled(self.width(), self.height(), Qt.AspectRatioMode.KeepAspectRatio))
+        self.setStyleSheet("background-color: rgba(30,30,30,100);")
+
+    def clear_image(self):
+        self.setPixmap(QPixmap())
+        self.setText("Drop an Image\n(PNG, JPG, JPEG)")
+        self.setStyleSheet("background-color: rgba(30,30,30,100);")
+
+    def mousePressEvent(self, event):
+        if event.button() == Qt.MouseButton.LeftButton:
+            self.clicked.emit()  # Emit the clicked signal
+
+    def mouseReleaseEvent(self, event):
+        if event.button() == Qt.MouseButton.LeftButton:
+            super().mouseReleaseEvent(event)
+
+    def dragEnterEvent(self, event: QDragEnterEvent):
+        if event.mimeData().hasImage():
+            event.acceptProposedAction()
+        elif event.mimeData().hasUrls():
+            urls = event.mimeData().urls()
+            self.setText("Drop Me")
+            self.setStyleSheet("background-color: rgba(70,210,110, 100);")
+            event.acceptProposedAction()
+            event.accept()
+
+    def dropEvent(self, event: QDropEvent):
+        urls = event.mimeData().urls()
+        if urls:
+            image_path = urls[0].toLocalFile()
+            if image_path.lower().endswith(('.png', '.jpg', '.jpeg')):
+                self.setPixmap(QPixmap(image_path).scaled(self.width(), self.height(), Qt.AspectRatioMode.KeepAspectRatio))
+                self.imagePathDropped.emit(image_path)
+                event.accept()
+            else:
+                self.setText("Not allowed")
+                self.setStyleSheet("background-color: rgba(210,70,60, 100);")
+                event.ignore()
+
+    def dragLeaveEvent(self, event: QDragLeaveEvent):
+        self.setText("Drop an Image\n(PNG, JPG, JPEG)")
+        self.setStyleSheet("background-color: rgba(30,30,30,100);")
+        event.accept()
+
+
 class LoadingScreen(QSplashScreen):
     def __init__(self):
         super().__init__()
         self.setPixmap(QPixmap("icons/loading.png"))  # Load an image for the loading screen
         self.setWindowFlag(Qt.WindowType.WindowStaysOnTopHint)
-
 
 
 class SelectRangeCalendar(QCalendarWidget):
@@ -666,6 +729,7 @@ class DraggableButton(QPushButton):
         self.file = None
         self.drag_start_position = None
         self.setCursor(Qt.CursorShape.PointingHandCursor)
+        self.setContextMenuPolicy(Qt.ContextMenuPolicy.CustomContextMenu)
 
     def setFile(self, file: str) -> None:
         self.file = file
@@ -694,13 +758,14 @@ class DraggableButton(QPushButton):
         self.dragging = False
         if event.button() == Qt.MouseButton.LeftButton:
             self.drag_start_position = event.pos()
-        super().mousePressEvent(event)
+            super().mousePressEvent(event)
 
     def mouseReleaseEvent(self, event):
-        if not self.dragging:
+        if not self.dragging and event.button() == Qt.MouseButton.LeftButton:
             self.buttonClicked.emit()
         self.dragging = False
-        super().mouseReleaseEvent(event)
+        if event.button() == Qt.MouseButton.LeftButton:
+            super().mouseReleaseEvent(event)
 
 
 class DropWidget(QWidget):
@@ -733,7 +798,6 @@ class DropWidget(QWidget):
         else:
             self.label.setText("Drag Here")
             self.label.setStyleSheet("background-color: rgba(30,30,30,100);")
-
             event.ignore()
 
     def dragLeaveEvent(self, event: QDragEnterEvent):

@@ -28,7 +28,6 @@ from utils.workspace.assembly import Assembly
 from utils.workspace.workspace import Workspace
 
 settings_file = JsonFile(file_name="settings")
-admin_workspace = Workspace("workspace - Admin")
 
 class GenerateWorkspacePrintoutDialog(QDialog):
 
@@ -40,10 +39,11 @@ class GenerateWorkspacePrintoutDialog(QDialog):
         title: str = __name__,
         message: str = "",
         job_names: dict[str, int] = {},
+        admin_workspace: Workspace = None,
     ) -> None:
         super(GenerateWorkspacePrintoutDialog, self).__init__(parent)
         uic.loadUi("ui/generate_workspace_printout_dialog.ui", self)
-        admin_workspace.load_data()
+        self.admin_workspace = admin_workspace
 
         self.icon_name = icon_name
         self.button_names = button_names
@@ -81,14 +81,14 @@ class GenerateWorkspacePrintoutDialog(QDialog):
         self.load_layout()
 
     def load_layout(self) -> None:
-        grouped_data = admin_workspace._get_all_groups()
+        grouped_data = self.admin_workspace._get_all_groups()
         for group in grouped_data:
             treeview = self.create_treeview()
-            self.group_toolbox.addItem(treeview, group, base_color=admin_workspace.get_group_color(group))
+            self.group_toolbox.addItem(treeview, group, base_color=self.admin_workspace.get_group_color(group))
             self.group_toolboxes[group] = treeview
         self.group_toolbox.close_all()
 
-        grouped_data = admin_workspace._get_grouped_data()
+        grouped_data = self.admin_workspace._get_grouped_data()
         for group in grouped_data:
             for assembly in grouped_data[group]:
                 self.load_treeview(self.group_toolboxes[group], self.group_toolboxes[group].model(), assembly)
@@ -109,7 +109,7 @@ class GenerateWorkspacePrintoutDialog(QDialog):
         return tree_view
 
     def load_treeview(self, tree_view: QTreeView, model: QStandardItemModel, assembly: Assembly):
-        # for assembly in admin_workspace.data:
+        # for assembly in self.admin_workspace.data:
         parent_item = self.create_item_with_checkbox(assembly.name)
         self.data[self.assembly_count] = assembly
         self.assembly_count += 1

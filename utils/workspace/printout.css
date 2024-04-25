@@ -299,11 +299,9 @@ td.dlheader:last-child {
 }
 
 .nest_image {
-    height: 220px;
-    width: 290px;
-    position: absolute;
+    height: 100px;
+    width: 100px;
     padding: 5px;
-    margin-top: -30px;
 }
 
 .ui-input-text input,
