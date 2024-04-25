@@ -96,7 +96,7 @@ from PyQt6.QtWidgets import (
 
 from utils.colors import darken_color, lighten_color
 from utils.workspace.assembly import Assembly
-from utils.workspace.item import Item
+from utils.workspace.workspace_item import WorkspaceItem
 
 
 class AssemblyImage(QLabel):
@@ -769,7 +769,7 @@ class DraggableButton(QPushButton):
 
 
 class DropWidget(QWidget):
-    def __init__(self, parent, assembly: Assembly, item: Item, files_layout: QHBoxLayout, file_category: str):
+    def __init__(self, parent, assembly: Assembly, item: WorkspaceItem, files_layout: QHBoxLayout, file_category: str):
         super().__init__()
         self.parent = parent
         self.setAcceptDrops(True)
