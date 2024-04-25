@@ -27,8 +27,10 @@ from utils.custom_print import CustomPrint, print_clients
 from utils.files import get_file_type
 from utils.inventory_updater import (
     add_sheet,
+    get_cutoff_sheets,
     get_sheet_pending_data,
     get_sheet_quantity,
+    remove_cutoff_sheet,
     set_sheet_quantity,
     sheet_exists,
     update_inventory,
@@ -49,9 +51,6 @@ with open("utils/inventory_file_to_use.txt", "r") as f:
 
 class MainHandler(tornado.web.RequestHandler):
     def get(self):
-        """
-        This function gets logs, converts them to HTML format, marks them as safe HTML, and writes them.
-        """
         logs = print_clients() + sys.stdout.getvalue()
         converter = Ansi2HTMLConverter()
         logs = converter.convert(logs)
@@ -61,10 +60,6 @@ class MainHandler(tornado.web.RequestHandler):
 
 class FileSenderHandler(tornado.websocket.WebSocketHandler):
     def open(self):
-        """
-        This function adds a client to a set of connected clients and prints information about the
-        connection.
-        """
         connected_clients.add(self)
 
         CustomPrint.print(
@@ -73,10 +68,6 @@ class FileSenderHandler(tornado.websocket.WebSocketHandler):
         )
 
     def on_close(self):
-        """
-        This function removes a disconnected client from a list of connected clients and prints
-        information about the disconnection.
-        """
         connected_clients.remove(self)
         CustomPrint.print(
             f"INFO - Connection ended with: {self.request.remote_ip} - Connected clients: {len(connected_clients)}",
@@ -85,17 +76,7 @@ class FileSenderHandler(tornado.websocket.WebSocketHandler):
 
 
 class FileReceiveHandler(tornado.web.RequestHandler):
-
     def get(self, filename):
-        """
-        This function checks if a requested file exists, and if it does, sends it as a response with
-        appropriate headers, otherwise returns a 404 error.
-
-        Args:
-          filename: a string representing the name of the file that the client is requesting to
-        download.
-        """
-        # Check if the requested file exists
         if filename == "price_of_steel_information.json":
             file_path = "price_of_steel_information.json"
         else:
@@ -137,12 +118,7 @@ def update_inventory_file_to_pinecone(file_name: str):
     )
 
 class FileUploadHandler(tornado.web.RequestHandler):
-    # this saves a file that the client uploads
     async def post(self):
-        """
-        This is an asynchronous function that receives a file, saves it to a local location, and updates
-        inventory if the file is a JSON batch file.
-        """
         file_info = self.request.files.get("file")
         should_signal_connect_clients: bool = False
         if file_info:
@@ -193,7 +169,6 @@ class FileUploadHandler(tornado.web.RequestHandler):
 
 
 class WorkspaceFileUploader(tornado.web.RequestHandler):
-    # this saves a file that the client uploads
     async def post(self):
         file_info = self.request.files.get("file")
         if file_info:
@@ -215,19 +190,11 @@ class WorkspaceFileUploader(tornado.web.RequestHandler):
 
 class WorkspaceFileHandler(tornado.web.RequestHandler):
     def get(self, file_name):
-        """
-        This function retrieves an image file and sends it as a response to a client's request, or
-        returns a 404 error if the file does not exist.
-
-        Args:
-          image_name: A string representing the name of the image file that the client is requesting.
-        """
         file_ext = os.path.splitext(file_name)[1].upper().replace('.', '')
         file_name = os.path.basename(file_name)
         filepath = os.path.join("data/workspace", file_ext, file_name)
         if os.path.exists(filepath):
             with open(filepath, "rb") as f:
-                # self.set_header("Content-Type", "image/jpeg")
                 self.write(f.read())
             CustomPrint.print(
                 f'INFO - Sent "{file_name}" to {self.request.remote_ip}',
@@ -239,13 +206,6 @@ class WorkspaceFileHandler(tornado.web.RequestHandler):
 
 class ImageHandler(tornado.web.RequestHandler):
     def get(self, image_name):
-        """
-        This function retrieves an image file and sends it as a response to a client's request, or
-        returns a 404 error if the file does not exist.
-
-        Args:
-          image_name: A string representing the name of the image file that the client is requesting.
-        """
         filepath = os.path.join("parts in inventory images", image_name)
         if os.path.exists(filepath):
             with open(filepath, "rb") as f:
@@ -261,21 +221,13 @@ class ImageHandler(tornado.web.RequestHandler):
 
 class CommandHandler(tornado.web.RequestHandler):
     def post(self):
-        """
-        This is a Python function that receives a command from a client, checks if it is
-        "send_sheet_report", and if so, generates a sheet report and sends it to connected clients.
-        """
-        # Receive the command from the client
         command = self.get_argument("command")
         CustomPrint.print(
             f'INFO - Command "{command}" from {self.request.remote_ip}',
             connected_clients=connected_clients,
         )
         if command == "send_sheet_report":
-            # await self.run_in_executor(self.generate_sheet_report)
             generate_sheet_report(connected_clients)
-        # Send the response back to the client
-        # self.write('done')
         self.finish()
 
 
@@ -283,28 +235,26 @@ class SetOrderNumberHandler(tornado.web.RequestHandler):
     def post(self):
         order_number = self.get_argument("order_number")
         if order_number is not None:
-            # Process the received integer value
             with open("order_number.json", 'r') as file:
                 json_file = json.load(file)
                 json_file["order_number"] = int(order_number)
 
             with open("order_number.json", 'w') as file:
                 json.dump(json_file, file)
-                
+
             CustomPrint.print(
                 f'INFO - {self.request.remote_ip} set order number to {order_number}',
                 connected_clients=connected_clients,
             )
         else:
-            self.set_status(400)  # Bad request status code
+            self.set_status(400)
 
 
 class GetOrderNumberHandler(tornado.web.RequestHandler):
     def get(self):
-        # Retrieve the order number from wherever it is stored
         with open("order_number.json", 'r') as file:
             order_number = json.load(file)["order_number"]
-        # Return the order number as a response
+
         self.write({"order_number": order_number})
         CustomPrint.print(
             f'INFO - Sent order number to {self.request.remote_ip}',
@@ -315,37 +265,31 @@ class GetOrderNumberHandler(tornado.web.RequestHandler):
 class SheetQuantityHandler(tornado.web.RequestHandler):
     def get(self, sheet_name):
         sheet_name = sheet_name.replace('_', ' ')
-        # Check if sheet_name exists in the data dictionary
         if sheet_exists(sheet_name=sheet_name):
-            # Retrieve the quantity from the data dictionary
             quantity = get_sheet_quantity(sheet_name=sheet_name)
             pending_data = get_sheet_pending_data(sheet_name=sheet_name)
-            if self.request.remote_ip in ["10.0.0.11", "10.0.0.64", "10.0.0.217"]:    
-                # Render the template with the sheet name and quantity
+            if self.request.remote_ip in ["10.0.0.11", "10.0.0.64", "10.0.0.217"]:
                 template = env.get_template("sheet_template.html")
                 rendered_template = template.render(sheet_name=sheet_name, quantity=quantity, pending_data=pending_data)
             else:
                 template = env.get_template("sheet_template_read_only.html")
                 rendered_template = template.render(sheet_name=sheet_name, quantity=quantity, pending_data=pending_data)
-            # Write the rendered template to the response
+
             self.write(rendered_template)
         else:
             self.write("Sheet not found")
             self.set_status(404)
 
     def post(self, sheet_name):
-        # Retrieve the new quantity from the request
         try:
             new_quantity = float(self.get_argument("new_quantity"))
         except ValueError:
             self.write("Not a number")
             self.set_status(500)
             return
-        
-        # Update the data dictionary with the new quantity
+
         set_sheet_quantity(sheet_name=sheet_name, new_quantity=new_quantity, clients=connected_clients)
-        
-        # Redirect to the GET request for the same sheet
+
         self.redirect(f"/sheets_in_inventory/{sheet_name}")
 
 
@@ -354,7 +298,7 @@ class AddCutoffSheetHandler(tornado.web.RequestHandler):
         template = env.get_template("add_cutoff_sheet.html")
         rendered_template = template.render(thicknesses=["22 Gauge", "20 Gauge", "18 Gauge", "16 Gauge", "14 Gauge", "12 Gauge", "11 Gauge", "10 Gauge", "3/16", "1/4", "5/16", "3/8", "1/2", "5/8", "3/4", "1"], materials=["304 SS", "409 SS", "Mild Steel", "Galvanneal", "Galvanized", "Aluminium", "Laser Grade Plate"])
         self.write(rendered_template)
-        
+
     def post(self):
         length: float = float(self.get_argument("length"))
         width: float = float(self.get_argument("width"))
@@ -363,15 +307,22 @@ class AddCutoffSheetHandler(tornado.web.RequestHandler):
         quantity: int = int(self.get_argument("quantity"))
 
         add_sheet(thickness=thickness, material=material, sheet_dim=f'{length:.3f}x{width:.3f}', sheet_count=quantity, _connected_clients=connected_clients)
-        # Process the form submission and perform the desired actions
 
-        # Redirect the user back to the form
+        self.redirect("/add_cutoff_sheet")
+
+
+class DeleteCutoffSheetHandler(tornado.web.RequestHandler):
+    def post(self):
+        sheet_id = self.get_argument("sheet_id")
+
+        remove_cutoff_sheet(sheet_id, connected_clients)
+
         self.redirect("/add_cutoff_sheet")
 
 
 class GetPreviousNestsFiles(tornado.web.RequestHandler):
     def get(self):
-        directory = "parts batch to upload history"  # Specify the directory path
+        directory = "parts batch to upload history"
 
         files = {}
         for filename in os.listdir(directory):
@@ -392,18 +343,13 @@ class GetPreviousNestsFiles(tornado.web.RequestHandler):
 class GetPreviousNestsDataHandler(tornado.web.RequestHandler):
     def post(self):
         file_names = self.get_argument("file_names").split(';')
-        # Process the file names received from the client
-        combined_data = {}  # Dictionary to store combined JSON data
-        
+        combined_data = {}
+
         for file_name in file_names:
-            # Read each file and extract its JSON data
             with open(f'parts batch to upload history/{file_name}', "r") as file:
                 file_data = json.load(file)
-                
-                # Merge the file data into the combined data
                 combined_data.update(file_data)
-        
-        # Send the combined JSON data back to the client
+
         self.set_status(200)
         self.write(json.dumps(combined_data))
 
@@ -440,13 +386,6 @@ class UploadSheetsSettingsHandler(tornado.web.RequestHandler):
 
 
 def signal_clients_for_changes(client_to_ignore) -> None:
-    """
-    This function signals connected clients to download changes, except for the client specified to be
-    ignored.
-
-    Args:
-      client_to_ignore: The IP address of a client that should be ignored and not signaled for changes.
-    """
     CustomPrint.print(
         f"INFO - Signaling {len(connected_clients)} clients",
         connected_clients=connected_clients,
@@ -467,9 +406,6 @@ def signal_clients_for_changes(client_to_ignore) -> None:
 
 
 def config_logs() -> None:
-    """
-    It configures the logs.
-    """
     logging.basicConfig(
         filename=f"{os.path.dirname(os.path.realpath(__file__))}/logs/server.log",
         filemode="a",
@@ -480,9 +416,6 @@ def config_logs() -> None:
 
 
 def backup_inventroy_files():
-    """
-    It backs up the inventory file to a backup file
-    """
     logging.info("Backing up inventory files")
     files = os.listdir(f"{os.path.dirname(os.path.realpath(__file__))}/data")
     path_to_zip_file: str = (
@@ -518,7 +451,7 @@ if __name__ == "__main__":
       &&&&&&&&&&&&&%%           %%%%%%#((     #######               ▄████████                     ██                                 ██
     &&&&&&&&& #&&&%&          %%%%%#((*       %########           ▄█▀      ▀███▄▄████▄▄▄         ██
    &&&&&&&&   %&&%%%       %%%%%%(((           (#####(((         █▀          ██████    ▀█▄      ▄█            ▄▄   ▄▄█▄    ▄▄▄▄▄    ██          ▄███▄        ▄▄▄▄▄▄
-  &&&&&&&&    %%%%%%     %%%%%#((                ##((((((       ██          █▀   ████    █     ██  ▀█▄██  ▄██████    ███  ██████ ▄████      ▄███▀   ▀     ▄▄██▀▀▀  
+  &&&&&&&&    %%%%%%     %%%%%#((                ##((((((       ██          █▀   ████    █     ██  ▀█▄██  ▄██████    ███  ██████ ▄████      ▄███▀   ▀     ▄▄██▀▀▀
  %&&&&&&%     %%%%%%      ##((                    (((((((/      █          ▄█       ███  █    ██     ███▄██▀ ███     ███ █   ██   ███    ▄██▀   ▄       ▄█▀ ▄▄▄▄▄
  &&&&&&%      %%%%%%                    ###((((((((((((///      ██         ██        █████  ▄█▀      ████▀  ███     ███▀    ██   ███    ▄█     ██      ██  █▀  ███
 *&&&&&&       %%%%%%                   /(##(((((((((//////       ██        ▀█          ██ ▄█▀       ███▀   ███      ██    ▄█▀   ███    ██     ███     ██      ▄██
@@ -558,6 +491,7 @@ if __name__ == "__main__":
             (r"/get_order_number", GetOrderNumberHandler),
             (r"/sheets_in_inventory/(.*)", SheetQuantityHandler),
             (r"/add_cutoff_sheet", AddCutoffSheetHandler),
+            (r"/delete_cutoff_sheet", DeleteCutoffSheetHandler),
             (r"/get_previous_nests_files", GetPreviousNestsFiles),
             (r"/get_previous_nests_data", GetPreviousNestsDataHandler),
             (r"/send_error_report", SendErrorReport),
@@ -566,6 +500,7 @@ if __name__ == "__main__":
     )
     # executor = concurrent.futures.ThreadPoolExecutor(max_workers=10)
     # app.executor = executor
+    # 10.0.0.9
     app.listen(8080)
     CustomPrint.print("INFO - Server started")
     tornado.ioloop.IOLoop.current().start()

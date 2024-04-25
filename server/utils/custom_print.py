@@ -15,10 +15,6 @@ def convert_set_to_list(s):
 class CustomPrint:
     @staticmethod
     def print(*args, **kwargs):
-        """
-        This is a customized print function that formats and colors the output text and also displays
-        the IP addresses of connected clients if provided.
-        """
         global messages, connected_clients
         try:
             connected_clients = convert_set_to_list(kwargs["connected_clients"])
@@ -38,17 +34,6 @@ class CustomPrint:
 
 
 def print_clients():
-    """
-    This function prints a formatted list of connected and expected clients.
-
-    Returns:
-      The function `print_clients()` returns a string that contains information about the connected
-    clients and their status. The string includes the number of connected clients, the name of each
-    client, their expected status, and whether they are currently connected or disconnected. The string
-    is formatted with color codes to highlight the status of each client.
-    """
-    # os.system("cls" if os.name == "nt" else "clear")
-    # connected_clients.insert(0, f"{Colors.BOLD}Connected clients: ({len(connected_clients)}){Colors.ENDC}")
     all_clients = list(set(list(expected_clients.keys()) + connected_clients))
     all_clients.insert(0, f"{Colors.BOLD}Connected clients: ({len(connected_clients)}){Colors.ENDC}")
     string = ""

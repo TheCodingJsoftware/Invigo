@@ -21,12 +21,6 @@ connected_clients = set()
 
 
 def update_inventory(file_path: str, clients) -> None:
-    """
-    It takes a json file, parses it, and updates a google sheet with the data
-
-    Args:
-      file_path (str): str = "data/testt - Laser Batch Data.json"
-    """
     global connected_clients
     connected_clients = clients
     CustomPrint.print("INFO - Updating inventory", connected_clients=connected_clients)
@@ -82,13 +76,6 @@ def update_inventory(file_path: str, clients) -> None:
 
 
 def add_parts(batch_data: dict, parts_to_add: list[str]):
-    """
-    It takes a dictionary of parts and quantities and adds them to the inventory
-
-    Args:
-      batch_data (dict): dict = {
-      parts_to_add (list[str]): list[str] = list(batch_data.keys())
-    """
     parts_updated: list[str] = list(parts_to_add)
     for category in list(parts_in_inventory.get_data().keys()):
         if category == "Recut":
@@ -112,14 +99,6 @@ def add_parts(batch_data: dict, parts_to_add: list[str]):
 
 
 def add_part_to_inventory(category, part_to_add, batch_data) -> None:
-    """
-    It adds a part to the inventory
-
-    Args:
-      category: The category of the part.
-      part_to_add: The name of the part to add
-      batch_data: This is the data that is being imported.
-    """
     parts_in_inventory.add_item_in_object(category, part_to_add)
     batch_data[part_to_add]["modified_date"] = f'Added at {datetime.now().strftime("%B %d %A %Y %I:%M:%S %p")}'
     batch_data[part_to_add]["current_quantity"] = batch_data[part_to_add]["quantity"]
@@ -129,15 +108,6 @@ def add_part_to_inventory(category, part_to_add, batch_data) -> None:
 
 
 def update_quantity(batch_data: dict, part_name_to_update: str, quantity: int) -> None:
-    """
-    It takes a category, part name, and quantity as arguments, and then adds the quantity to the current
-    quantity of the part in the category
-
-    Args:
-      category (str): str = The category of the part you want to update.
-      part_name_to_update (str): str = "part_name"
-      quantity (int): int
-    """
     for category in list(parts_in_inventory.get_data().keys()):
         if category == "Recut":
             continue
@@ -151,14 +121,6 @@ def update_quantity(batch_data: dict, part_name_to_update: str, quantity: int) -
 
 
 def add_recut_parts(batch_data: dict, recut_parts: list[str]) -> None:
-    """
-    It adds a new item to the "Recut" category of the inventory, and then changes the current quantity,
-    unit quantity, modified date, and group of the new item
-
-    Args:
-      batch_data (dict)
-      recut_parts (list[str])
-    """
     for recut_part in recut_parts:
         name = recut_part
         recut_count: int = 0
@@ -184,17 +146,6 @@ def add_recut_parts(batch_data: dict, recut_parts: list[str]) -> None:
 
 
 def calculate_price(batch_data: dict, part_name: str) -> float:
-    """
-    > Calculate the price of a part by multiplying the weight of the part by the price per pound of the
-    material, and adding the cost of the laser time
-
-    Args:
-      batch_data (dict): dict = {
-      part_name (str): str = "part_name"
-
-    Returns:
-      The price of the part.
-    """
     weight: float = batch_data[part_name]["weight"]
     machine_time: float = batch_data[part_name]["machine_time"]
     material: str = batch_data[part_name]["material"]
@@ -204,30 +155,10 @@ def calculate_price(batch_data: dict, part_name: str) -> float:
 
 
 def part_exists(category: str, part_name_to_find: str) -> bool:
-    """
-    > Given a category and a part name, return True if the part exists in the inventory, False otherwise
-
-    Args:
-      category (str): str
-      part_name_to_find (str): The name of the part you want to find.
-
-    Returns:
-      A boolean value.
-    """
     return part_name_to_find in list(parts_in_inventory.get_data()[category].keys())
 
 
 def get_recut_parts(batch_data) -> list[str]:
-    """
-    > This function takes a dictionary of part names and their attributes, and returns a list of part
-    names that have the attribute "recut" set to True
-
-    Args:
-      batch_data: dict
-
-    Returns:
-      A list of strings.
-    """
     recut_parts: list[str] = []
     for part_name in list(batch_data.keys()):
         with contextlib.suppress(KeyError):
@@ -237,16 +168,6 @@ def get_recut_parts(batch_data) -> list[str]:
 
 
 def get_no_recut_parts(batch_data) -> list[str]:
-    """
-    > This function takes a dictionary of part names and their attributes, and returns a list of part
-    names that have a `recut` attribute of `False`
-
-    Args:
-      batch_data: dict
-
-    Returns:
-      A list of part names that have a recut value of False.
-    """
     no_recut_parts: list[str] = []
     for part_name in list(batch_data.keys()):
         with contextlib.suppress(KeyError):
@@ -256,27 +177,11 @@ def get_no_recut_parts(batch_data) -> list[str]:
 
 
 def remove_sheet_quantities(sheets_information) -> None:
-    """
-    This function removes sheet quantities from a dictionary of sheets information by calling another
-    function to subtract the sheet count.
-
-    Args:
-      sheets_information: A dictionary containing information about the sheets, where the keys are the
-    names of the sheets and the values are the quantities of each sheet.
-    """
     for sheet in sheets_information:
         subtract_sheet_count(sheet_name_to_update=sheet, sheet_count=sheets_information[sheet])
 
 
 def subtract_sheet_count(sheet_name_to_update: str, sheet_count: int) -> None:
-    """
-    It takes a sheet name and a sheet count, and subtracts the sheet count from the sheet name's current
-    quantity
-
-    Args:
-      sheet_name_to_update (str): str = "Sheet Name"
-      sheet_count (int): int = the number of sheets to subtract from the inventory
-    """
     sheet_name_to_update = sheet_name_to_update.replace(" x ", "x")
     category_data = price_of_steel_inventory.get_data()
     for category in list(category_data.keys()):
@@ -313,11 +218,11 @@ def subtract_sheet_count(sheet_name_to_update: str, sheet_count: int) -> None:
                     CustomPrint.print(f"INFO - {sheet_name_to_update} went into RED", connected_clients=connected_clients)
                     if category != "Cutoff" and is_order_pending == False and has_sent_warning == False:
                         generate_single_sheet_report(
-                            sheet_name=sheet_name_to_update, 
-                            red_limit=red_quantity_limit, 
-                            old_quantity=old_quantity, 
-                            new_quantity=old_quantity-sheet_count, 
-                            notes=notes, 
+                            sheet_name=sheet_name_to_update,
+                            red_limit=red_quantity_limit,
+                            old_quantity=old_quantity,
+                            new_quantity=old_quantity-sheet_count,
+                            notes=notes,
                             clients=connected_clients
                         )
                         price_of_steel_inventory.change_object_in_object_item(category, sheet_name_to_update, "has_sent_warning", True)
@@ -325,6 +230,11 @@ def subtract_sheet_count(sheet_name_to_update: str, sheet_count: int) -> None:
                 if category == "Cutoff" and old_quantity - sheet_count == 0:
                     price_of_steel_inventory.remove_object_item(category, sheet_name)
                     CustomPrint.print(f"INFO - Removed {sheet_name} from Cutoff", connected_clients=connected_clients)
+
+
+def get_cutoff_sheets() -> dict:
+    price_of_steel_inventory.load_data()
+    return price_of_steel_inventory.get_data()["Cutoff"]
 
 
 def add_sheet(thickness: str, material: str, sheet_dim: str, sheet_count: float, _connected_clients) -> None:
@@ -347,21 +257,15 @@ def add_sheet(thickness: str, material: str, sheet_dim: str, sheet_count: float,
     signal_clients_for_changes(connected_clients=_connected_clients)
 
 
+def remove_cutoff_sheet(sheet_name: str, _connected_clients):
+    price_of_steel_inventory.load_data()
+    if sheet_exists(sheet_name):
+        price_of_steel_inventory.remove_object_item("Cutoff", sheet_name)
+    CustomPrint.print(f'INFO - Removed "{sheet_name}" from Cutoff', connected_clients=_connected_clients)
+    signal_clients_for_changes(connected_clients=_connected_clients)
+
+
 def get_sheet_information(batch_data: dict) -> dict:
-    """
-    The function takes in a dictionary of batch data and returns a dictionary of sheet information based
-    on certain keys in the batch data.
-
-    Args:
-      batch_data (dict): A dictionary containing information about a batch of items, where each key
-    represents an item and its value is a dictionary containing information about that item. The keys in
-    the item dictionary include 'gauge', 'material', 'sheet_dim', and 'quantity_multiplier'.
-
-    Returns:
-      The function `get_sheet_information` returns a dictionary containing information about the sheets
-    used in a batch of production. The keys of the dictionary are strings representing the sheet names,
-    and the values are integers representing the total quantity of each sheet used in the batch.
-    """
     sheet_information = {}
     for item in list(batch_data.keys()):
         if item == "Components":
@@ -459,9 +363,6 @@ def sheet_exists(sheet_name: str) -> bool:
 
 
 def sort_inventory() -> None:
-    """
-    This function sorts the parts in inventory by category and then by current quantity
-    """
     for category in parts_in_inventory.get_data():
         parts_in_inventory.sort(category=category, item_name="current_quantity", ascending=True)
     CustomPrint.print("INFO - Sorted inventory", connected_clients=connected_clients)

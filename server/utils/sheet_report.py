@@ -10,9 +10,6 @@ connected_clients = set()
 
 
 def generate_sheet_report(clients) -> None:
-    """
-    This function generates a report of sheets low in quantity and sends it as an email.
-    """
     global connected_clients
     connected_clients = clients
     sheets_in_inventory = JsonFile(file_name="data/inventory - Price of Steel")
