@@ -2,7 +2,7 @@ import smtplib
 from datetime import datetime
 from email.mime import multipart, text
 
-import ujson as json
+import json
 
 from utils.custom_print import CustomPrint
 
@@ -30,7 +30,7 @@ def send(body: str, email_addresses: list[str], connected_clients):
 
         msg['From'] = USERNAME
         msg['To'] = email_address
-        msg['Subject'] = 'Inventory Manager Sheets to Order'
+        msg['Subject'] = 'Invigo - Sheets to Order'
 
         msg.attach(text.MIMEText(body, 'html'))
 
@@ -41,3 +41,25 @@ def send(body: str, email_addresses: list[str], connected_clients):
         server.login(USERNAME, PASSWORD)
         server.sendmail(USERNAME, email_address, msg.as_string())
         CustomPrint.print(f'INFO - Email sent to "{email_address}"', connected_clients=connected_clients)
+
+def send_error_log(body: str, connected_clients):
+    with open("credentials.json", "r") as credentialsFile:
+        credentials = json.load(credentialsFile)
+    USERNAME: str = credentials["username"]
+    PASSWORD = credentials["password"]
+    msg = multipart.MIMEMultipart()
+
+    msg['From'] = USERNAME
+    msg['To'] = 'jaredgrozz@gmail.com'
+    msg['Subject'] = 'Invigo - Error Report'
+    body = body.replace('\n', '<br>')
+
+    msg.attach(text.MIMEText(body, 'html'))
+
+    server = smtplib.SMTP('smtp.gmail.com', 587)
+    server.ehlo()
+    server.starttls()
+    server.ehlo()
+    server.login(USERNAME, PASSWORD)
+    server.sendmail(USERNAME, 'jaredgrozz@gmail.com', msg.as_string())
+    CustomPrint.print(f'INFO - Email sent to jaredgrozz@gmail.com', connected_clients=connected_clients)

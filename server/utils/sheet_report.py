@@ -6,7 +6,6 @@ from utils.custom_print import CustomPrint
 from utils.json_file import JsonFile
 from utils.send_email import send
 
-sheets_in_inventory = JsonFile(file_name="data/inventory - Price of Steel")
 connected_clients = set()
 
 
@@ -16,6 +15,7 @@ def generate_sheet_report(clients) -> None:
     """
     global connected_clients
     connected_clients = clients
+    sheets_in_inventory = JsonFile(file_name="data/inventory - Price of Steel")
     if datetime.now().strftime('%A') != 'Monday':
         return
     sheets_low_in_quantity: int = 0

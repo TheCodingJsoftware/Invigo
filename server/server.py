@@ -33,6 +33,7 @@ from utils.inventory_updater import (
     sheet_exists,
     update_inventory,
 )
+from utils.send_email import send_error_log
 from utils.sheet_report import generate_sheet_report
 
 # Store connected clients
@@ -95,7 +96,10 @@ class FileReceiveHandler(tornado.web.RequestHandler):
         download.
         """
         # Check if the requested file exists
-        file_path = f"data/{filename}"
+        if filename == "price_of_steel_information.json":
+            file_path = "price_of_steel_information.json"
+        else:
+            file_path = f"data/{filename}"
         lock = FileLock(f'{file_path}.lock', timeout=1)
         try:
             with lock:
@@ -149,7 +153,7 @@ class FileUploadHandler(tornado.web.RequestHandler):
                 # Save the received file to a local location
                 with open(f"data/{file_name}", "wb") as file:
                     file.write(file_data)
-                if file_name == f'{inventory_file_name}.json' or file_name == f'{inventory_file_name} - Price of Steel.json': # This needs to be done because the website uses this file
+                if file_name == f'{inventory_file_name}.json' or file_name == f'{inventory_file_name} - Price of Steel.json' or file_name == f'{inventory_file_name} - Parts in Inventory.json': # This needs to be done because the website uses this file
                     threading.Thread(target=update_inventory_file_to_pinecone, args=(file_name,)).start()
             elif get_file_type(file_name) == "JPEG":
                 # Save the received file to a local location
@@ -404,6 +408,37 @@ class GetPreviousNestsDataHandler(tornado.web.RequestHandler):
         self.write(json.dumps(combined_data))
 
 
+class SendErrorReport(tornado.web.RequestHandler):
+    def post(self):
+        error_log = self.get_argument("error_log")
+        CustomPrint.print(
+                f"ERROR - Received Error Log - {error_log}",
+                connected_clients=connected_clients,
+            )
+        if error_log is not None:
+            send_error_log(body=error_log, connected_clients=connected_clients)
+            with open(f'{os.path.dirname(os.path.realpath(__file__))}/logs/U{datetime.now().strftime("%B %d %A %Y %I-%M-%S %p")}.log', 'w') as error_file:
+                error_file.write(error_log)
+        else:
+            self.set_status(400)
+
+
+class UploadSheetsSettingsHandler(tornado.web.RequestHandler):
+    async def post(self):
+        file_info = self.request.arguments.get("file")
+        if file_info:
+            file_data = file_info[1]
+            file_name = file_info[0].decode()
+            CustomPrint.print(
+                f'INFO - Received "{file_name}" from {self.request.remote_ip}',
+                connected_clients=connected_clients
+            )
+            with open(file_name, 'wb') as file:
+                file.write(file_data)
+            self.write("success")
+            signal_clients_for_changes(client_to_ignore=self.request.remote_ip)
+
+
 def signal_clients_for_changes(client_to_ignore) -> None:
     """
     This function signals connected clients to download changes, except for the client specified to be
@@ -450,17 +485,17 @@ def backup_inventroy_files():
     """
     logging.info("Backing up inventory files")
     files = os.listdir(f"{os.path.dirname(os.path.realpath(__file__))}/data")
+    path_to_zip_file: str = (
+        f"{os.path.dirname(os.path.realpath(__file__))}/backups/{datetime.now().strftime('%B %d %A %Y %I-%M-%S %p')}.zip"
+    )
+    file = zipfile.ZipFile(path_to_zip_file, mode="w")
     for file_path in files:
-        path_to_zip_file: str = (
-            f"{os.path.dirname(os.path.realpath(__file__))}/backups/{file_path} - {datetime.now().strftime('%B %d %A %Y %I-%M-%S %p')}.zip"
-        )
-        file = zipfile.ZipFile(path_to_zip_file, mode="w")
         file.write(
             f"{os.path.dirname(os.path.realpath(__file__))}/data/{file_path}",
             file_path,
             compress_type=zipfile.ZIP_DEFLATED,
         )
-        file.close()
+    file.close()
     logging.info("Inventory file backed up")
     CustomPrint.print("INFO - Backup complete", connected_clients=connected_clients)
 
@@ -506,6 +541,7 @@ if __name__ == "__main__":
     backup_inventroy_files()
     generate_sheet_report(clients=connected_clients)
     schedule.every().monday.at("04:00").do(partial(generate_sheet_report, connected_clients))
+    schedule.every().day.at("04:00").do(backup_inventroy_files)
     thread = threading.Thread(target=schedule_thread)
     thread.start()
     app = tornado.web.Application(
@@ -524,6 +560,8 @@ if __name__ == "__main__":
             (r"/add_cutoff_sheet", AddCutoffSheetHandler),
             (r"/get_previous_nests_files", GetPreviousNestsFiles),
             (r"/get_previous_nests_data", GetPreviousNestsDataHandler),
+            (r"/send_error_report", SendErrorReport),
+            (r"/upload_sheets_settings", UploadSheetsSettingsHandler),
         ]
     )
     # executor = concurrent.futures.ThreadPoolExecutor(max_workers=10)
