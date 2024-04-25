@@ -113,5 +113,8 @@ class Settings:
 
 
     def check_setting(self, setting: str, default_value: object) -> None:
-        if self.data[setting] is None:
+        try:
+            if self.data[setting] is None:
+                self.data[setting] = default_value
+        except KeyError: # Meaning the setting is not entered
             self.data[setting] = default_value
