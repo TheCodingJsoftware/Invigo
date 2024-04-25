@@ -6,8 +6,8 @@ from datetime import datetime
 
 from bs4 import BeautifulSoup  # pip install beautifulsoup4
 
-from utils.workspace.workspace import Workspace
 from utils.workspace.assembly import Assembly
+from utils.workspace.workspace import Workspace
 from utils.workspace.workspace_item import WorkspaceItem
 
 

@@ -11,8 +11,8 @@ from ui.custom_widgets import set_default_dialog_button_stylesheet
 from ui.theme import set_theme
 from utils.dialog_buttons import DialogButtons
 from utils.dialog_icons import Icons
-from utils.settings import Settings
 from utils.json_file import JsonFile
+from utils.settings import Settings
 
 settings_file = Settings()
 

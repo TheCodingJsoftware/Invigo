@@ -1,9 +1,9 @@
+import json
 import shutil
 import urllib.parse
 from pathlib import Path
 
 import qrcode  # pip install qrcode
-import json
 import xlsxwriter
 from qrcode import constants
 

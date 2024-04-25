@@ -6,14 +6,8 @@ from typing import Union
 
 import ujson as json
 from PyQt6.QtCore import QDate
-from PyQt6.QtWidgets import (
-    QCheckBox,
-    QDateTimeEdit,
-    QGroupBox,
-    QLineEdit,
-    QListWidget,
-    QPushButton,
-)
+from PyQt6.QtWidgets import (QCheckBox, QDateTimeEdit, QGroupBox, QLineEdit,
+                             QListWidget, QPushButton)
 
 from utils.json_file import JsonFile
 from utils.workspace.assembly import Assembly

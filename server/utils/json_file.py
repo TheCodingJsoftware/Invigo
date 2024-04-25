@@ -1,8 +1,7 @@
 import contextlib
+import json
 import math
 import os
-
-import json
 
 
 class JsonFile:

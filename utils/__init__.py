@@ -6,7 +6,8 @@ from utils.dialog_icons import Icons
 from utils.extract import extract
 from utils.file_changes import FileChanges
 from utils.history_file import HistoryFile
-from utils.ip_utils import get_server_ip_address, get_server_port, get_system_ip_address
+from utils.ip_utils import (get_server_ip_address, get_server_port,
+                            get_system_ip_address)
 from utils.json_file import JsonFile
 from utils.omnigen.generate_quote import GenerateQuote
 from utils.omnigen.quote_excel_file import ExcelFile

@@ -1,8 +1,7 @@
+import json
 import smtplib
 from datetime import datetime
 from email.mime import multipart, text
-
-import json
 
 from utils.custom_print import CustomPrint
 

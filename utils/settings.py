@@ -1,8 +1,8 @@
-from datetime import datetime
-from PyQt6.QtGui import QFont
 import os
+from datetime import datetime
 
 import ujson as json
+from PyQt6.QtGui import QFont
 
 
 class Settings:

@@ -4,14 +4,14 @@ and is not intended for the client to use this script.
 """
 
 import contextlib
+import io
 import json
-import threading
-import time
-from datetime import datetime
 import os
 import pathlib
-import io
+import threading
+import time
 import zipfile
+from datetime import datetime
 
 import requests
 from flask import Flask, render_template, send_from_directory

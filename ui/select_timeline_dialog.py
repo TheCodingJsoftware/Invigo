@@ -5,7 +5,8 @@ from PyQt6 import uic
 from PyQt6.QtCore import QDate, QDateTime, QFile, Qt, QTextStream
 from PyQt6.QtGui import QColor, QIcon, QTextCharFormat
 from PyQt6.QtSvgWidgets import QSvgWidget
-from PyQt6.QtWidgets import QAbstractItemView, QCalendarWidget, QDialog, QPushButton
+from PyQt6.QtWidgets import (QAbstractItemView, QCalendarWidget, QDialog,
+                             QPushButton)
 
 from ui.custom_widgets import set_default_dialog_button_stylesheet
 from ui.theme import set_theme
