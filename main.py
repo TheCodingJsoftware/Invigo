@@ -27,21 +27,42 @@ import win32api
 import win32file
 from natsort import natsorted
 from PyQt6 import QtWebEngineWidgets, uic
-from PyQt6.QtCore import (QDate, QElapsedTimer, QEventLoop, QModelIndex,
-                          QSettings, Qt, QThread, QTimer, QUrl)
-from PyQt6.QtGui import (QAction, QColor, QCursor, QDragEnterEvent,
-                         QDragLeaveEvent, QDragMoveEvent, QDropEvent, QFont,
-                         QIcon, QPixmap, QStandardItem, QStandardItemModel)
-from PyQt6.QtWidgets import (QAbstractItemView, QApplication, QColorDialog,
-                             QComboBox, QCompleter, QDateEdit, QFileDialog,
-                             QFileIconProvider, QFontDialog, QFormLayout,
-                             QGraphicsDropShadowEffect, QGridLayout, QGroupBox,
-                             QHBoxLayout, QHeaderView, QLabel, QLineEdit,
-                             QListWidget, QListWidgetItem, QMainWindow, QMenu,
-                             QPlainTextEdit, QPushButton, QScrollArea,
-                             QTableWidget, QTableWidgetItem, QTabWidget,
-                             QToolBox, QTreeWidget, QTreeWidgetItem,
-                             QVBoxLayout, QWidget)
+from PyQt6.QtCore import QDate, QElapsedTimer, QEventLoop, QModelIndex, QSettings, Qt, QThread, QTimer, QUrl
+from PyQt6.QtGui import QAction, QColor, QCursor, QDragEnterEvent, QDragLeaveEvent, QDragMoveEvent, QDropEvent, QFont, QIcon, QPixmap, QStandardItem, QStandardItemModel
+from PyQt6.QtWidgets import (
+    QAbstractItemView,
+    QApplication,
+    QColorDialog,
+    QComboBox,
+    QCompleter,
+    QDateEdit,
+    QFileDialog,
+    QFileIconProvider,
+    QFontDialog,
+    QFormLayout,
+    QGraphicsDropShadowEffect,
+    QGridLayout,
+    QGroupBox,
+    QHBoxLayout,
+    QHeaderView,
+    QLabel,
+    QLineEdit,
+    QListWidget,
+    QListWidgetItem,
+    QMainWindow,
+    QMenu,
+    QPlainTextEdit,
+    QPushButton,
+    QScrollArea,
+    QTableWidget,
+    QTableWidgetItem,
+    QTabWidget,
+    QToolBox,
+    QTreeWidget,
+    QTreeWidgetItem,
+    QVBoxLayout,
+    QWidget,
+)
 
 from threads.changes_thread import ChangesThread
 from threads.check_for_updates_thread import CheckForUpdatesThread
@@ -54,8 +75,7 @@ from threads.load_nests import LoadNests
 from threads.remove_quantity import RemoveQuantityThread
 from threads.send_sheet_report_thread import SendReportThread
 from threads.set_order_number_thread import SetOrderNumberThread
-from threads.upload_price_of_steel_information import \
-    UploadSheetsSettingsThread
+from threads.upload_price_of_steel_information import UploadSheetsSettingsThread
 from threads.upload_quoted_inventory import UploadBatch
 from threads.upload_thread import UploadThread
 from threads.workspace_get_file_thread import WorkspaceDownloadFiles
@@ -67,27 +87,44 @@ from ui.add_item_dialog_price_of_steel import AddItemDialogPriceOfSteel
 from ui.add_job_dialog import AddJobDialog
 from ui.add_workspace_item import AddWorkspaceItem
 from ui.color_picker_dialog import ColorPicker
-from ui.custom_widgets import (AssemblyImage, AssemblyMultiToolBox,
-                               ClickableLabel, ComponentsCustomTableWidget,
-                               CustomStandardItemModel, CustomTableWidget,
-                               CustomTabWidget, DeletePushButton,
-                               DraggableButton, DropWidget,
-                               ExchangeRateComboBox, FilterTabWidget,
-                               HumbleDoubleSpinBox, ItemsGroupBox,
-                               LoadingScreen, MachineCutTimeSpinBox,
-                               MultiToolBox, NotesPlainTextEdit,
-                               OrderStatusButton, PartInformationViewer,
-                               PdfTreeView, POPushButton, PriorityComboBox,
-                               RecordingWidget, RecutButton,
-                               RichTextPushButton, ScrollPositionManager,
-                               SelectRangeCalendar, TimeSpinBox, ViewTree,
-                               set_default_dialog_button_stylesheet)
+from ui.custom_widgets import (
+    AssemblyImage,
+    AssemblyMultiToolBox,
+    ClickableLabel,
+    ComponentsCustomTableWidget,
+    CustomStandardItemModel,
+    CustomTableWidget,
+    CustomTabWidget,
+    DeletePushButton,
+    DraggableButton,
+    DropWidget,
+    ExchangeRateComboBox,
+    FilterTabWidget,
+    HumbleDoubleSpinBox,
+    ItemsGroupBox,
+    LoadingScreen,
+    MachineCutTimeSpinBox,
+    MultiToolBox,
+    NotesPlainTextEdit,
+    OrderStatusButton,
+    PartInformationViewer,
+    PdfTreeView,
+    POPushButton,
+    PriorityComboBox,
+    RecordingWidget,
+    RecutButton,
+    RichTextPushButton,
+    ScrollPositionManager,
+    SelectRangeCalendar,
+    TimeSpinBox,
+    ViewTree,
+    set_default_dialog_button_stylesheet,
+)
 from ui.edit_statuses_dialog import EditStatusesDialog
 from ui.edit_tags_dialog import EditTagsDialog
 from ui.generate_quote_dialog import GenerateQuoteDialog
 from ui.generate_workorder_dialog import GenerateWorkorderDialog
-from ui.generate_workspace_printout_dialog import \
-    GenerateWorkspacePrintoutDialog
+from ui.generate_workspace_printout_dialog import GenerateWorkspacePrintoutDialog
 from ui.image_viewer import QImageViewer
 from ui.input_dialog import InputDialog
 from ui.job_sorter_dialog import JobSorterDialog

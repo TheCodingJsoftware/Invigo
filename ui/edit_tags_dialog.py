@@ -7,10 +7,7 @@ from PyQt6 import uic
 from PyQt6.QtCore import QEvent, QFile, QObject, Qt, QTextStream, pyqtSignal
 from PyQt6.QtGui import QAction, QCursor, QIcon
 from PyQt6.QtSvgWidgets import QSvgWidget
-from PyQt6.QtWidgets import (QAbstractItemView, QCheckBox, QComboBox, QDialog,
-                             QHBoxLayout, QLabel, QLineEdit, QMenu,
-                             QPlainTextEdit, QPushButton, QRadioButton,
-                             QTableWidget, QVBoxLayout, QWidget)
+from PyQt6.QtWidgets import QAbstractItemView, QCheckBox, QComboBox, QDialog, QHBoxLayout, QLabel, QLineEdit, QMenu, QPlainTextEdit, QPushButton, QRadioButton, QTableWidget, QVBoxLayout, QWidget
 
 from ui.custom_widgets import AssemblyMultiToolBox, DeletePushButton
 from ui.theme import set_theme

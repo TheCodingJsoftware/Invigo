@@ -25,11 +25,7 @@ from markupsafe import Markup
 
 from utils.custom_print import CustomPrint, print_clients
 from utils.files import get_file_type
-from utils.inventory_updater import (add_sheet, get_cutoff_sheets,
-                                     get_sheet_pending_data,
-                                     get_sheet_quantity, remove_cutoff_sheet,
-                                     set_sheet_quantity, sheet_exists,
-                                     update_inventory)
+from utils.inventory_updater import add_sheet, get_cutoff_sheets, get_sheet_pending_data, get_sheet_quantity, remove_cutoff_sheet, set_sheet_quantity, sheet_exists, update_inventory
 from utils.send_email import send_error_log
 from utils.sheet_report import generate_sheet_report
 

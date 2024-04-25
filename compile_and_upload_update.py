@@ -6,8 +6,7 @@ import sys
 import zipfile
 from datetime import datetime
 
-from PyQt6.QtWidgets import (QApplication, QHBoxLayout, QLabel, QLineEdit,
-                             QPushButton, QVBoxLayout, QWidget)
+from PyQt6.QtWidgets import QApplication, QHBoxLayout, QLabel, QLineEdit, QPushButton, QVBoxLayout, QWidget
 
 from ui.theme import set_theme
 
