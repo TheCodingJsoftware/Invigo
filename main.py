@@ -181,8 +181,8 @@ from utils.price_history_file import PriceHistoryFile
 from utils.trusted_users import get_trusted_users
 from utils.workspace.assembly import Assembly
 from utils.workspace.generate_printout import GeneratePrintout
-from utils.workspace.item import Item
-from utils.workspace.item_group import ItemGroup
+from utils.workspace.workspace_item import WorkspaceItem
+from utils.workspace.workspace_item_group import WorkspaceItemGroup
 from utils.workspace.monday_excel_file import MondayExcelFile
 from utils.workspace.workspace import Workspace
 from web_scrapers.ebay_scraper import EbayScraper
@@ -2793,9 +2793,9 @@ class MainWindow(QMainWindow):
         return job_names
 
     # Workspace
-    def get_all_workspace_items(self) -> list[Item]:
+    def get_all_workspace_items(self) -> list[WorkspaceItem]:
         # self.active_workspace_file.load_data()
-        all_items: list[Item] = []
+        all_items: list[WorkspaceItem] = []
         for assembly in self.active_workspace_file.data:
             all_items.extend(assembly.get_all_items())
         return all_items
@@ -4708,7 +4708,7 @@ class MainWindow(QMainWindow):
         plus_button = table.cellWidget(table.rowCount() - 1, 0)
         plus_button.setEnabled(not assembly.exists(""))
 
-    def item_draggable_button_show_context_menu(self, btn: DraggableButton, assembly: Assembly, item: Item, file_category: str, file_name: str):
+    def item_draggable_button_show_context_menu(self, btn: DraggableButton, assembly: Assembly, item: WorkspaceItem, file_category: str, file_name: str):
         contextMenu = QMenu(self)
         deleteAction = contextMenu.addAction("Delete file")
         action = contextMenu.exec(QCursor.pos())
@@ -4731,7 +4731,7 @@ class MainWindow(QMainWindow):
 
     # STAGING/EDITING
     def load_assemblies_items_file_layout(
-        self, file_category: str, files_layout: QHBoxLayout, assembly: Assembly, item: Item, show_dropped_widget: bool = True
+        self, file_category: str, files_layout: QHBoxLayout, assembly: Assembly, item: WorkspaceItem, show_dropped_widget: bool = True
     ) -> None:
         self.clear_layout(files_layout)
         files = item.get_value(key=file_category)
@@ -4755,7 +4755,7 @@ class MainWindow(QMainWindow):
 
     # STAGING/EDITING
     def handle_dropped_file(
-        self, label: QLabel, file_paths: list[str], assembly: Assembly, item: Item, files_layout: QHBoxLayout, file_category: str
+        self, label: QLabel, file_paths: list[str], assembly: Assembly, item: WorkspaceItem, files_layout: QHBoxLayout, file_category: str
     ) -> None:
         files = set(item.get_value(key=file_category))
         for file_path in file_paths:
@@ -4771,7 +4771,7 @@ class MainWindow(QMainWindow):
 
     # STAGING/EDITING
     def delete_workspace_item(self, assembly: Assembly, table: CustomTableWidget, row_index: int):
-        item: Item = assembly.get_item(table.item(row_index, 0).text())
+        item: WorkspaceItem = assembly.get_item(table.item(row_index, 0).text())
         assembly.remove_item(item=item)
         table.removeRow(row_index)
         for row in range(table.rowCount() - 1):
@@ -4817,7 +4817,7 @@ class MainWindow(QMainWindow):
         table.setSelectionBehavior(QAbstractItemView.SelectionBehavior.SelectRows)
         table.setSelectionMode(QAbstractItemView.SelectionMode.ExtendedSelection)
 
-        def select_color(item: Item, color_button: QComboBox) -> str:
+        def select_color(item: WorkspaceItem, color_button: QComboBox) -> str:
             color_button.disconnect()
             if color_button.currentText() == "Select Color":
                 workspace_tags.load_data()
@@ -4864,7 +4864,7 @@ class MainWindow(QMainWindow):
 
         #     timer_box.currentTextChanged.connect(partial(set_timer, timer_box, item))
 
-        def add_timers(table: CustomTableWidget, item: Item, timer_layout: QHBoxLayout) -> None:
+        def add_timers(table: CustomTableWidget, item: WorkspaceItem, timer_layout: QHBoxLayout) -> None:
             self.clear_layout(timer_layout)
             workspace_tags.load_data()
             for flow_tag in item.get_value("timers"):
@@ -4892,7 +4892,7 @@ class MainWindow(QMainWindow):
                     timer_layout.addWidget(widget)
                 table.resizeColumnsToContents()
 
-        def flow_tag_box_change(table: CustomTableWidget, tag_box: QComboBox, item: Item, timer_layout: QHBoxLayout) -> None:
+        def flow_tag_box_change(table: CustomTableWidget, tag_box: QComboBox, item: WorkspaceItem, timer_layout: QHBoxLayout) -> None:
             if tag_box.currentText() == "Select Flow Tag":
                 return
             tag_box.setStyleSheet("QComboBox#tag_box{border-radius: 0.001em;}")
@@ -4905,12 +4905,12 @@ class MainWindow(QMainWindow):
             add_timers(table, item, timer_layout)
             self.sync_changes()
 
-        def notes_change(table: CustomTableWidget, notes: NotesPlainTextEdit, item: Item) -> None:
+        def notes_change(table: CustomTableWidget, notes: NotesPlainTextEdit, item: WorkspaceItem) -> None:
             item.set_value(key="notes", value=notes.toPlainText())
             self.active_workspace_file.save()
             self.sync_changes()
 
-        def add_item(row_index: int, item: Item):
+        def add_item(row_index: int, item: WorkspaceItem):
             col_index: int = 0
             table.insertRow(row_index)
             table.setRowHeight(row_index, 50)
@@ -5101,7 +5101,7 @@ class MainWindow(QMainWindow):
                         "ending_date": date_created,
                         "status": None,
                     }
-                item = Item(name=item_name, data=item_data)
+                item = WorkspaceItem(name=item_name, data=item_data)
                 add_item(table.rowCount() - 1, item)
                 assembly.add_item(item)
                 self.active_workspace_file.save()
@@ -5218,7 +5218,7 @@ class MainWindow(QMainWindow):
         if assembly.get_assembly_data("has_items"):
             # TODO
             def load_excel_file(files: list[str]):
-                total_data: dict[str, list[Item]] = {}
+                total_data: dict[str, list[WorkspaceItem]] = {}
                 for file in files:
                     monday_excel_file = MondayExcelFile(file)
                     total_data.update(monday_excel_file.get_data())
@@ -5970,7 +5970,7 @@ class MainWindow(QMainWindow):
         table.hideColumn(7)
         table.hideColumn(10)
 
-        def toggle_timer(item: Item, toggle_timer_button: QPushButton, recording_widget: RecordingWidget) -> None:
+        def toggle_timer(item: WorkspaceItem, toggle_timer_button: QPushButton, recording_widget: RecordingWidget) -> None:
             item_flow_tag: str = item.get_value("flow_tag")[item.get_value("current_flow_state")]
             timer_data = item.get_value("timers")
             is_recording: bool = not timer_data[item_flow_tag]["recording"]
@@ -5988,7 +5988,7 @@ class MainWindow(QMainWindow):
             user_workspace.save()
             self.sync_changes()
 
-        def recut(item: Item) -> None:
+        def recut(item: WorkspaceItem) -> None:
             input_dialog = RecutDialog(
                 title="Set Recut Count", message=f"Select or Input recut count for: {item.name}", max_value=item.get_value(key="parts_per")
             )
@@ -5997,7 +5997,7 @@ class MainWindow(QMainWindow):
                 if response == DialogButtons.ok:
                     recut_count = int(input_dialog.inputText)
                     parent_assembly = item.parent_assembly
-                    new_item = Item(name=f"{item.name} - Recut #{item.get_value('recut_count') + 1}", data=item.copy_data())
+                    new_item = WorkspaceItem(name=f"{item.name} - Recut #{item.get_value('recut_count') + 1}", data=item.copy_data())
                     new_item.set_value(key="parts_per", value=recut_count)
                     new_item.set_value(key="completed", value=False)
                     new_item.set_value(key="current_flow_state", value=new_item.get_value("flow_tag").index("Laser Cutting"))
@@ -6009,7 +6009,7 @@ class MainWindow(QMainWindow):
                     self.sync_changes()
                     self.load_workspace()
 
-        def move_to_next_flow(item: Item, row_index: int) -> None:
+        def move_to_next_flow(item: WorkspaceItem, row_index: int) -> None:
             item_flow_tag: str = item.get_value("flow_tag")[item.get_value("current_flow_state")]
             if workspace_tags.get_value("attributes")[item_flow_tag]["is_timer_enabled"]:
                 timer_data = item.get_value("timers")
@@ -6045,7 +6045,7 @@ class MainWindow(QMainWindow):
             self.sync_changes()
             self.load_workspace()
 
-        def item_status_changed(status_box: QComboBox, item: Item, row_index: int, toggle_timer_button: QPushButton) -> None:
+        def item_status_changed(status_box: QComboBox, item: WorkspaceItem, row_index: int, toggle_timer_button: QPushButton) -> None:
             if (
                 workspace_tags.get_value("flow_tag_statuses")[item.get_value("flow_tag")[item.get_value("current_flow_state")]][
                     status_box.currentText()
@@ -6064,7 +6064,7 @@ class MainWindow(QMainWindow):
             user_workspace.save()
             self.sync_changes()
 
-        def add_item(row_index: int, item: Item):
+        def add_item(row_index: int, item: WorkspaceItem):
             if item.get_value(key="completed") == False:
                 try:
                     item_flow_tag: str = item.get_value("flow_tag")[item.get_value("current_flow_state")]
@@ -6541,7 +6541,7 @@ class MainWindow(QMainWindow):
         scroll_area.setWidget(scroll_content)
 
         workspace_data = user_workspace.get_filtered_data(self.workspace_filter)
-        grouped_items: ItemGroup = user_workspace.get_grouped_items()
+        grouped_items: WorkspaceItemGroup = user_workspace.get_grouped_items()
         # Need to all have same flow tag
         grouped_items.filter_items(flow_tag=self.category)
 
@@ -6617,7 +6617,7 @@ class MainWindow(QMainWindow):
                 if response == DialogButtons.ok:
                     recut_count = int(input_dialog.inputText)
                     parent_assembly = item.parent_assembly
-                    new_item = Item(name=f"{item.name} - Recut #{item.get_value('recut_count') + 1}", data=item.copy_data())
+                    new_item = WorkspaceItem(name=f"{item.name} - Recut #{item.get_value('recut_count') + 1}", data=item.copy_data())
                     new_item.set_value(key="parts_per", value=recut_count)
                     new_item.set_value(key="current_flow_state", value=new_item.get_value("flow_tag").index("Laser Cutting"))
                     new_item.set_value(key="recut", value=True)
@@ -6689,7 +6689,7 @@ class MainWindow(QMainWindow):
             self.sync_changes()
 
         def add_item(row_index: int, item_name: str):
-            first_item: Item = grouped_items.get_item(item_name=item_name)
+            first_item: WorkspaceItem = grouped_items.get_item(item_name=item_name)
             item_flow_tag: str = first_item.get_value("flow_tag")[first_item.get_value("current_flow_state")]
             col_index: int = 0
             table.insertRow(row_index)
@@ -6993,7 +6993,7 @@ class MainWindow(QMainWindow):
         table.setSelectionBehavior(QAbstractItemView.SelectionBehavior.SelectRows)
         table.setSelectionMode(QAbstractItemView.SelectionMode.ExtendedSelection)
 
-        item_group = ItemGroup()
+        item_group = WorkspaceItemGroup()
 
         for item in assembly.items:
             item_group.add_item_to_group(group_name=f'{item.data.get("material")} {item.data.get("thickness")}', item=item)
@@ -7290,16 +7290,16 @@ class MainWindow(QMainWindow):
 
     # * \/ CONTEXT MENU \/
     # USER
-    def move_selected_table_items_to_next_flow_state(self, table: CustomTableWidget, assembly: Assembly | ItemGroup) -> None:
+    def move_selected_table_items_to_next_flow_state(self, table: CustomTableWidget, assembly: Assembly | WorkspaceItemGroup) -> None:
         selected_items_from_table: list[str] = self.get_all_selected_workspace_parts(table)
         if isinstance(assembly, Assembly):
-            items_to_update: list[Item] = [item for item in assembly.items if item.name in selected_items_from_table]
-        elif isinstance(assembly, ItemGroup):
+            items_to_update: list[WorkspaceItem] = [item for item in assembly.items if item.name in selected_items_from_table]
+        elif isinstance(assembly, WorkspaceItemGroup):
             items_to_update = []
             for item in selected_items_from_table:
                 items_to_update.extend(assembly.get_item_list(item))
 
-        def move_to_next_flow(item: Item) -> None:
+        def move_to_next_flow(item: WorkspaceItem) -> None:
             item_flow_tag: str = item.get_value("flow_tag")[item.get_value("current_flow_state")]
             if workspace_tags.get_value("attributes")[item_flow_tag]["is_timer_enabled"]:
                 timer_data = item.get_value("timers")
@@ -7340,16 +7340,16 @@ class MainWindow(QMainWindow):
         self.load_workspace()
 
     # USER
-    def change_selected_table_items_status(self, table: CustomTableWidget, assembly: Assembly | ItemGroup, status: str) -> None:
+    def change_selected_table_items_status(self, table: CustomTableWidget, assembly: Assembly | WorkspaceItemGroup, status: str) -> None:
         selected_items_from_table: list[str] = self.get_all_selected_workspace_parts(table)
         if isinstance(assembly, Assembly):
-            items_to_update: list[Item] = [item for item in assembly.items if item.name in selected_items_from_table]
-        elif isinstance(assembly, ItemGroup):
+            items_to_update: list[WorkspaceItem] = [item for item in assembly.items if item.name in selected_items_from_table]
+        elif isinstance(assembly, WorkspaceItemGroup):
             items_to_update = []
             for item in selected_items_from_table:
                 items_to_update.extend(assembly.get_item_list(item))
 
-        def move_to_next_flow(item: Item) -> None:
+        def move_to_next_flow(item: WorkspaceItem) -> None:
             item_flow_tag: str = item.get_value("flow_tag")[item.get_value("current_flow_state")]
             if workspace_tags.get_value("attributes")[item_flow_tag]["is_timer_enabled"]:
                 timer_data = item.get_value("timers")
@@ -7405,11 +7405,11 @@ class MainWindow(QMainWindow):
         self.load_workspace()
 
     # USER
-    def download_all_selected_items_files(self, table: CustomTableWidget, assembly: Assembly | ItemGroup) -> None:
+    def download_all_selected_items_files(self, table: CustomTableWidget, assembly: Assembly | WorkspaceItemGroup) -> None:
         selected_items_from_table: list[str] = self.get_all_selected_workspace_parts(table)
         if isinstance(assembly, Assembly):
-            items_to_update: list[Item] = [item for item in assembly.items if item.name in selected_items_from_table]
-        elif isinstance(assembly, ItemGroup):
+            items_to_update: list[WorkspaceItem] = [item for item in assembly.items if item.name in selected_items_from_table]
+        elif isinstance(assembly, WorkspaceItemGroup):
             items_to_update = []
             for item in selected_items_from_table:
                 items_to_update.extend(assembly.get_item_list(item))
@@ -7442,7 +7442,7 @@ class MainWindow(QMainWindow):
     # STAGING/EDITING
     def copy_items_to(self, table: CustomTableWidget, assembly_copy_from: Assembly, assembly_copy_to: Assembly) -> None:
         selected_items_from_table: list[str] = self.get_all_selected_workspace_parts(table)
-        items_to_copy: list[Item] = [item for item in assembly_copy_from.items if item.name in selected_items_from_table]
+        items_to_copy: list[WorkspaceItem] = [item for item in assembly_copy_from.items if item.name in selected_items_from_table]
 
         for item_to_copy in items_to_copy:
             if item_to_copy.name in [other_item.name for other_item in assembly_copy_to.items]:
@@ -7459,7 +7459,7 @@ class MainWindow(QMainWindow):
     # STAGING/EDITING
     def move_items_to(self, table: CustomTableWidget, assembly_copy_from: Assembly, assembly_copy_to: Assembly) -> None:
         selected_items_from_table: list[str] = self.get_all_selected_workspace_parts(table)
-        items_to_move: list[Item] = [item for item in assembly_copy_from.items if item.name in selected_items_from_table]
+        items_to_move: list[WorkspaceItem] = [item for item in assembly_copy_from.items if item.name in selected_items_from_table]
 
         for item_to_move in items_to_move:
             if item_to_move.name in [other_item.name for other_item in assembly_copy_to.items]:
@@ -7489,7 +7489,7 @@ class MainWindow(QMainWindow):
     def generate_workorder_with_selected_items(self, table: CustomTableWidget, assembly: Assembly) -> None:
         selected_indexes = table.selectedIndexes()
         selected_rows = list({selected_index.row() for selected_index in selected_indexes})
-        selected_items: list[Item] = []
+        selected_items: list[WorkspaceItem] = []
         for item in assembly.items:
             for row in selected_rows:
                 if item.name == table.item(row, 0).text():
@@ -7540,7 +7540,7 @@ class MainWindow(QMainWindow):
     # STAGING/EDITING
     def set_tables_selected_items_value(self, table: CustomTableWidget, assembly: Assembly, key: str, value: Any) -> None:
         selected_items_from_table: list[str] = self.get_all_selected_workspace_parts(table)
-        items_to_change: list[Item] = [item for item in assembly.items if item.name in selected_items_from_table]
+        items_to_change: list[WorkspaceItem] = [item for item in assembly.items if item.name in selected_items_from_table]
 
         if key == "paint_color":
             value = workspace_tags.get_value("paint_colors")[value]
