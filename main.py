@@ -211,8 +211,8 @@ def default_settings() -> None:
     check_setting(setting="sort_quantity_in_stock", default_value=True)
     check_setting(setting="sort_priority", default_value=False)
     check_setting(setting="sort_alphabatical", default_value=False)
-    check_setting(setting="server_ip", default_value="10.0.0.93")
-    check_setting(setting="server_port", default_value=80)
+    check_setting(setting="server_ip", default_value="10.0.0.9")
+    check_setting(setting="server_port", default_value=8080)
     check_setting(setting="server_buffer_size", default_value=8192)  # deprecated
     check_setting(setting="server_time_out", default_value=10)  # deprecated
     check_setting(
@@ -229,7 +229,7 @@ def default_settings() -> None:
     check_setting(setting="change_quantities_by", default_value="Category")
     check_setting(setting="inventory_file_name", default_value="inventory")
     check_setting(setting="path_to_order_number", default_value="order_number.json")
-    check_setting(setting="trusted_users", default_value=["itsme", "jared", "joseph", "laserpc", "laser pc", "justin", "jordan"])
+    check_setting(setting="trusted_users", default_value=["lynden", "jared", "laserpc", "laser pc", "justin", "jordan"])
     check_setting(setting="quote_nest_directories", default_value=[])
     font = QFont("Segoe UI", 8)
     font.setWeight(400)
