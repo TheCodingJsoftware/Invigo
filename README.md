@@ -25,30 +25,18 @@
             alt="https://sourcery.ai"></a>
 </p>
 <p align="center">
-    <a href="https://forthebadge.com">
     <img src="http://ForTheBadge.com/images/badges/made-with-python.svg">
     <img src="https://forthebadge.com/images/badges/powered-by-qt.svg">
 </a>
 
-# Inventory Manager
+# Invigo
 
-Manage inventory.
-
+A state-of-the-art Assembly-Based Inventory Manager, designed to streamline the process of component tracking and management.
 
 ## Requirements
 
 ```pip install -r requirements.txt```
 
+## Build
 
-- [BreezeStyleSheets](https://github.com/Alexhuszagh/BreezeStyleSheets)
-    - [Install instructions](https://github.com/Alexhuszagh/BreezeStyleSheets#pyqt5-installation)
-    Don't remember how I installed it...
-    I think the program breaks if you don't setup breeze styles, it's untested.
-
-
-## Credits
-
- - [BreezeStyleSheets](https://github.com/Alexhuszagh/BreezeStyleSheets)
-    - Full credit goes to:  [Alexander Huszagh](https://github.com/Alexhuszagh)
-
-I'm only listing these credits because there is code/files directly included in my project that I do not own. Scripts such as PyQt5. won't be listed here because im not including any direct code from them in my repository, but of course this project wouldn't be possible without them.
+Not publically available as it requires the setup of server and a website which is not possible to do through a executable.
