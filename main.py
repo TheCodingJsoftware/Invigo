@@ -1,4 +1,3 @@
-# sourcery skip: avoid-builtin-shadow
 import configparser
 import contextlib
 import copy
@@ -162,7 +161,6 @@ from utils.workspace.monday_excel_file import MondayExcelFile
 from utils.workspace.workspace import Workspace
 from utils.workspace.workspace_item import WorkspaceItem
 from utils.workspace.workspace_item_group import WorkspaceItemGroup
-from web_scrapers.ebay_scraper import EbayScraper
 from web_scrapers.exchange_rate import ExchangeRate
 
 __author__: str = "Jared Gross"
@@ -248,9 +246,6 @@ def send_error_report(exc_type, exc_value, exc_traceback):
 sys.excepthook = excepthook
 sys.setrecursionlimit(10**4)
 sys.argv += ["--enable-features=WebComponentsV0Enabled"]
-
-# 2048 is the hard limit
-win32file._setmaxstdio(2048)
 
 settings_file = Settings()
 
@@ -2907,21 +2902,6 @@ class MainWindow(QMainWindow):
                 if self.tabWidget.tabText(self.tabWidget.currentIndex()) == "Sheets in Inventory":
                     self.load_active_tab()
 
-    # ! deprecated
-    def search_ebay(self) -> None:
-        input_dialog = InputDialog(title="Search Ebay", message="Search for anything")
-        if input_dialog.exec():
-            response = input_dialog.get_response()
-            if response == DialogButtons.ok:
-                input_text = input_dialog.inputText
-                ebay_scraper_thread = EbayScraper(item_to_search=input_text)
-                # # QApplication.setOverrideCursor(Qt.CursorShape.BusyCursor)
-                ebay_scraper_thread.signal.connect(self.show_web_scrape_results)
-                self.threads.append(ebay_scraper_thread)
-                ebay_scraper_thread.start()
-            elif response == DialogButtons.cancel:
-                return
-
     def create_new_category(self, event=None) -> None:
         input_dialog = InputDialog(title="Create category", message="Enter a name for a new category.")
         if input_dialog.exec():
@@ -3754,9 +3734,9 @@ class MainWindow(QMainWindow):
             self.priceHistoryTable.setItem(i - 1, 3, QTableWidgetItem(str(old_price)))
             self.priceHistoryTable.setItem(i - 1, 4, QTableWidgetItem(str(new_price)))
 
-    def load_tree_view(self, inventory: JsonFile):
+    def load_tree_view(self, inventory_file: JsonFile):
         self.clear_layout(self.search_layout)
-        tree_view = ViewTree(data=inventory.get_data())
+        tree_view = ViewTree(data=inventory_file.get_data())
         self.search_layout.addWidget(tree_view, 0, 0)
 
     def load_categories(self) -> None:
