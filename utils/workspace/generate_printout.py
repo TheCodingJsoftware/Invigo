@@ -25,7 +25,7 @@ class AssemblyTable:
         html += "</tr>"
         html += '<tbody id="table-body">'
         for assembly, data in self.data.items():
-            flow_tag = " ➜ ".join(assembly.assembly_data["flow_tag"])
+            flow_tag = " ➜ ".join(assembly.flow_tag)
             assembly_image_path = assembly.assembly_image
             image_html = f'<img src="{self.program_directory}/{assembly_image_path}" alt="Image" class="nest_image" id="{self.program_directory}/{assembly_image_path}">' if assembly_image_path else "No image provided"
             html += "<tr>" f'<td class="ui-table-cell-visible">{image_html}</td>' f'<td class="ui-table-cell-visible">{assembly.name}</td>' f'<td class="ui-table-cell-visible">{data["quantity"]}</td>' f'<td class="ui-table-cell-visible">{flow_tag}</td>' "</tr>"
@@ -185,7 +185,7 @@ class GeneratePrintout:
         def get_items_table(assembly: Assembly) -> str:
             text = ""
             if assembly in list(self.data.keys()):
-                assembly_flow_tag = " ➜ ".join(assembly.assembly_data["flow_tag"])
+                assembly_flow_tag = " ➜ ".join(assembly.flow_tag)
                 assembly_image_path = assembly.assembly_image
                 items_table = ItemsTable(
                     assembly,
