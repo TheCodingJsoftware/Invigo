@@ -216,7 +216,7 @@ logging.basicConfig(
 def excepthook(exc_type, exc_value, exc_traceback):
     logging.error("Unhandled exception", exc_info=(exc_type, exc_value, exc_traceback))
     sys.__excepthook__(exc_type, exc_value, exc_traceback)
-    threading.Thread(target=send_error_report, args=(exc_type, exc_value, exc_traceback)).start()
+    threading.Thread(target=send_error_report).start()
     win32api.MessageBox(
         0,
         f"We've encountered an unexpected issue, but don't worry—help is already on the way. The details of this glitch have been automatically reported to {__maintainer__}, and a notification has been sent to {__email__} for immediate attention. Rest assured, {__maintainer__} is on the case and will likely have this resolved with the next update. Your patience and understanding are greatly appreciated. If this problem persists, please don't hesitate to reach out directly to {__maintainer__} for further assistance.\n\nTechnical details for reference:\n- Exception Type: {exc_type}\n- Error Message: {exc_value}\n- Traceback Information: {exc_traceback}",
@@ -225,14 +225,14 @@ def excepthook(exc_type, exc_value, exc_traceback):
     )  # 0x40 for OK button
 
 
-def send_error_report(exc_type, exc_value, exc_traceback):
+def send_error_report():
     SERVER_IP: str = get_server_ip_address()
     SERVER_PORT: int = get_server_port()
     url = f"http://{SERVER_IP}:{SERVER_PORT}/send_error_report"
-    with open("logs/app.log", "r") as error_log:
+    with open("logs/app.log", "r", encoding="utf-8") as error_log:
         error_data = error_log.read()
     data = {"error_log": f"User: {os.getlogin().title()}\nVersion: {__version__}\n\n{error_data}"}
-    response = requests.post(url, data=data)
+    response = requests.post(url, data=data, timeout=5)
     if response.status_code != 200:
         win32api.MessageBox(
             0,
@@ -244,14 +244,12 @@ def send_error_report(exc_type, exc_value, exc_traceback):
 
 # Set the exception hook
 sys.excepthook = excepthook
-sys.setrecursionlimit(10**4)
-sys.argv += ["--enable-features=WebComponentsV0Enabled"]
 
 settings_file = Settings()
 
-inventory = JsonFile(file_name=f"data/{settings_file.get_value(setting_name='inventory_file_name')}")
-price_of_steel_inventory = JsonFile(file_name=f"data/{settings_file.get_value(setting_name='inventory_file_name')} - Price of Steel")
-parts_in_inventory = JsonFile(file_name=f"data/{settings_file.get_value(setting_name='inventory_file_name')} - Parts in Inventory")
+components_inventory = JsonFile(file_name=f"data/{settings_file.get_value(setting_name='inventory_file_name')}")
+sheets_inventory = JsonFile(file_name=f"data/{settings_file.get_value(setting_name='inventory_file_name')} - Price of Steel")
+laser_cut_inventory = JsonFile(file_name=f"data/{settings_file.get_value(setting_name='inventory_file_name')} - Parts in Inventory")
 price_of_steel_information = JsonFile(file_name="price_of_steel_information.json")
 
 user_workspace = Workspace("workspace - User")
@@ -739,9 +737,9 @@ class MainWindow(QMainWindow):
 
     def tool_box_menu_changed(self) -> None:
         self.loading_screen.show()
-        inventory.load_data()
-        price_of_steel_inventory.load_data()
-        parts_in_inventory.load_data()
+        components_inventory.load_data()
+        sheets_inventory.load_data()
+        laser_cut_inventory.load_data()
 
         # with contextlib.suppress(KeyError):
         #     self.scroll_position_manager.saveScrollPosition(
@@ -751,7 +749,7 @@ class MainWindow(QMainWindow):
             self.menuSort.setEnabled(False)
             self.menuOpen_Category.setEnabled(False)
             self.active_layout = self.verticalLayout_4
-            self.load_tree_view(inventory)
+            self.load_tree_view(components_inventory)
             self.status_button.setHidden(True)
         elif self.tabWidget.tabText(self.tabWidget.currentIndex()) == "Edit Inventory":  # Edit Inventory
             if not self.trusted_user:
@@ -759,21 +757,21 @@ class MainWindow(QMainWindow):
                 return
             self.menuSort.setEnabled(True)
             self.menuOpen_Category.setEnabled(True)
-            self.active_json_file = inventory
+            self.active_json_file = components_inventory
             self.active_layout = self.verticalLayout
             self.load_categories()
             self.status_button.setHidden(False)
         elif self.tabWidget.tabText(self.tabWidget.currentIndex()) == "Sheets in Inventory":  # Sheets in Inventory
             self.menuSort.setEnabled(True)
             self.menuOpen_Category.setEnabled(True)
-            self.active_json_file = price_of_steel_inventory
+            self.active_json_file = sheets_inventory
             self.active_layout = self.verticalLayout_10
             self.load_categories()
             self.status_button.setHidden(False)
         elif self.tabWidget.tabText(self.tabWidget.currentIndex()) == "Parts in Inventory":  # Parts in Inventory
             self.menuSort.setEnabled(True)
             self.menuOpen_Category.setEnabled(True)
-            self.active_json_file = parts_in_inventory
+            self.active_json_file = laser_cut_inventory
             self.active_layout = self.verticalLayout_11
             self.load_categories()
             self.load_parts_in_inventory_filter_tab()
@@ -820,19 +818,19 @@ class MainWindow(QMainWindow):
     def move_to_category(self, tab: CustomTableWidget, category: str) -> None:
         selected_parts = self.get_all_selected_parts(tab)
         for selected_part in selected_parts:
-            copy_of_item = parts_in_inventory.get_data()[self.category][selected_part]
-            parts_in_inventory.remove_object_item(self.category, selected_part)
-            parts_in_inventory.add_item_in_object(category, selected_part)
-            parts_in_inventory.change_object_item(category, selected_part, copy_of_item)
+            copy_of_item = laser_cut_inventory.get_data()[self.category][selected_part]
+            laser_cut_inventory.remove_object_item(self.category, selected_part)
+            laser_cut_inventory.add_item_in_object(category, selected_part)
+            laser_cut_inventory.change_object_item(category, selected_part, copy_of_item)
         self.load_active_tab()
         self.sync_changes()
 
     def copy_to_category(self, tab: CustomTableWidget, category: str) -> None:
         selected_parts = self.get_all_selected_parts(tab)
         for selected_part in selected_parts:
-            copy_of_item = parts_in_inventory.get_data()[self.category][selected_part]
-            parts_in_inventory.add_item_in_object(category, selected_part)
-            parts_in_inventory.change_object_item(category, selected_part, copy_of_item)
+            copy_of_item = laser_cut_inventory.get_data()[self.category][selected_part]
+            laser_cut_inventory.add_item_in_object(category, selected_part)
+            laser_cut_inventory.change_object_item(category, selected_part, copy_of_item)
         self.sync_changes()
 
     def add_sheet_item(self) -> None:
@@ -844,7 +842,7 @@ class MainWindow(QMainWindow):
         if add_item_dialog.exec():
             response = add_item_dialog.get_response()
             if response == DialogButtons.add:
-                inventory_data = copy.deepcopy(price_of_steel_inventory.get_data())
+                inventory_data = copy.deepcopy(sheets_inventory.get_data())
                 name: str = add_item_dialog.get_name()
                 for item in list(inventory_data[self.category].keys()):
                     if name == item:
@@ -871,8 +869,8 @@ class MainWindow(QMainWindow):
                         "latest_change_current_quantity": f"{self.username} - Item added at {datetime.now().strftime('%B %d %A %Y %I-%M-%S %p')}",
                     },
                 )
-                price_of_steel_inventory.save_data(inventory_data)
-                price_of_steel_inventory.load_data()
+                sheets_inventory.save_data(inventory_data)
+                sheets_inventory.load_data()
                 self.load_active_tab()
                 self.sync_changes()
             elif response == DialogButtons.cancel:
@@ -887,15 +885,15 @@ class MainWindow(QMainWindow):
             message=f'Set an expected arrival time for "{item_name}" and the number of sheets ordered',
             label_text="Sheets Ordered:",
         )
-        inventory_data = copy.deepcopy(price_of_steel_inventory.get_data())
+        inventory_data = copy.deepcopy(sheets_inventory.get_data())
         if button.isChecked() == True and select_date_dialog.exec():
             response = select_date_dialog.get_response()
             if response == DialogButtons.set:
                 inventory_data[self.category][item_name]["expected_arrival_time"] = select_date_dialog.get_selected_date()
                 inventory_data[self.category][item_name]["order_pending_quantity"] = select_date_dialog.get_order_quantity()
                 inventory_data[self.category][item_name]["is_order_pending"] = button.isChecked()
-                price_of_steel_inventory.save_data(inventory_data)
-                price_of_steel_inventory.load_data()
+                sheets_inventory.save_data(inventory_data)
+                sheets_inventory.load_data()
                 self.load_active_tab()
                 self.sync_changes()
             else:
@@ -904,8 +902,8 @@ class MainWindow(QMainWindow):
                 # self.sync_changes()
                 return
             inventory_data[self.category][item_name]["order_pending_date"] = datetime.now().strftime("%Y-%m-%d")
-            price_of_steel_inventory.save_data(inventory_data)
-            price_of_steel_inventory.load_data()
+            sheets_inventory.save_data(inventory_data)
+            sheets_inventory.load_data()
             self.load_active_tab()
             self.sync_changes()
         elif button.isChecked() == False:
@@ -913,18 +911,18 @@ class MainWindow(QMainWindow):
                 title="Add Sheet Quantity",
                 message=f'Do you want to add the incoming sheet quantity for "{item_name}"?',
                 button_names=DialogButtons.add_no,
-                placeholder_text=price_of_steel_inventory.data[self.category][item_name]["order_pending_quantity"],
+                placeholder_text=sheets_inventory.data[self.category][item_name]["order_pending_quantity"],
             )
             if input_dialog.exec():
                 response = input_dialog.get_response()
                 if response == DialogButtons.add:
                     try:
                         input_number = float(input_dialog.inputText)
-                        new_quantity = price_of_steel_inventory.data[self.category][item_name]["current_quantity"] + input_number
+                        new_quantity = sheets_inventory.data[self.category][item_name]["current_quantity"] + input_number
                         inventory_data[self.category][item_name]["current_quantity"] = new_quantity
                         inventory_data[self.category][item_name]["is_order_pending"] = button.isChecked()
-                        price_of_steel_inventory.save_data(inventory_data)
-                        price_of_steel_inventory.load_data()
+                        sheets_inventory.save_data(inventory_data)
+                        sheets_inventory.load_data()
                         self.load_active_tab()
                         self.sync_changes()
                     except Exception:
@@ -940,7 +938,7 @@ class MainWindow(QMainWindow):
 
     # NOTE SHEETS IN INVENTORY
     def arrival_date_change_sheets_in_inventory(self, item_name: str, arrival_date: QDateEdit) -> None:
-        price_of_steel_inventory.change_object_in_object_item(
+        sheets_inventory.change_object_in_object_item(
             object_name=self.category,
             item_name=item_name,
             value_name="expected_arrival_time",
@@ -965,12 +963,12 @@ class MainWindow(QMainWindow):
             if response == DialogButtons.cancel:
                 button.setChecked(False)
                 return
-            inventory_data = copy.deepcopy(inventory.get_data())
+            inventory_data = copy.deepcopy(components_inventory.get_data())
             inventory_data[self.category][item_name]["expected_arrival_time"] = select_date_dialog.get_selected_date()
             inventory_data[self.category][item_name]["order_pending_quantity"] = select_date_dialog.get_order_quantity()
             inventory_data[self.category][item_name]["order_pending_date"] = datetime.now().strftime("%Y-%m-%d")
             inventory_data[self.category][item_name]["is_order_pending"] = button.isChecked()
-            for category in inventory.get_keys():
+            for category in components_inventory.get_keys():
                 if category == self.category:
                     continue
                 for item in list(inventory_data[category].keys()):
@@ -979,16 +977,16 @@ class MainWindow(QMainWindow):
                         inventory_data[category][item]["order_pending_quantity"] = select_date_dialog.get_order_quantity()
                         inventory_data[category][item]["order_pending_date"] = datetime.now().strftime("%Y-%m-%d")
                         inventory_data[category][item]["is_order_pending"] = button.isChecked()
-            inventory.save_data(inventory_data)
-            inventory.load_data()
+            components_inventory.save_data(inventory_data)
+            components_inventory.load_data()
             self.load_active_tab()
             self.sync_changes()
             table_widget: CustomTableWidget = self.tabs[self.category]
-            self.last_item_selected_index = list(list(inventory.data[self.category].keys())).index(self.last_item_selected_name)
+            self.last_item_selected_index = list(list(components_inventory.data[self.category].keys())).index(self.last_item_selected_name)
             table_widget.scrollTo(table_widget.model().index(self.last_item_selected_index, 0))
             table_widget.selectRow(self.last_item_selected_index)
         elif button.isChecked() == False:
-            inventory_data = copy.deepcopy(inventory.get_data())
+            inventory_data = copy.deepcopy(components_inventory.get_data())
             order_pending_quantity: float = inventory_data[self.category][item_name]["order_pending_quantity"]
             input_dialog = InputDialog(
                 title="Add Parts Quantity",
@@ -1011,7 +1009,7 @@ class MainWindow(QMainWindow):
                     inventory_data[self.category][item_name]["current_quantity"] = new_quantity
                     inventory_data[self.category][item_name]["latest_change_current_quantity"] = f"{self.username} - Changed from {old_quantity} to {new_quantity} at {datetime.now().strftime('%B %d %A %Y %I-%M-%S %p')}"
                     inventory_data[self.category][item_name]["order_pending_quantity"] = remaining_quantity
-                    for category in inventory.get_keys():
+                    for category in components_inventory.get_keys():
                         if category == self.category:
                             continue
                         for item in list(inventory_data[category].keys()):
@@ -1021,12 +1019,12 @@ class MainWindow(QMainWindow):
                                 inventory_data[category][item]["order_pending_quantity"] = remaining_quantity
                                 if order_pending_quantity == input_number:
                                     inventory_data[category][item]["is_order_pending"] = button.isChecked()
-                    inventory.save_data(inventory_data)
-                    inventory.load_data()
+                    components_inventory.save_data(inventory_data)
+                    components_inventory.load_data()
                     self.sort_inventory()
 
                     table_widget: CustomTableWidget = self.tabs[self.category]
-                    self.last_item_selected_index = list(list(inventory.data[self.category].keys())).index(self.last_item_selected_name)
+                    self.last_item_selected_index = list(list(components_inventory.data[self.category].keys())).index(self.last_item_selected_name)
                     table_widget.scrollTo(table_widget.model().index(self.last_item_selected_index, 0))
                     table_widget.selectRow(self.last_item_selected_index)
                 except Exception:
@@ -1039,17 +1037,17 @@ class MainWindow(QMainWindow):
 
     # NOTE EDIT INVENTORY
     def arrival_date_change_edit_inventory(self, item_name: str, arrival_date: QDateEdit) -> None:
-        inventory_data = copy.deepcopy(inventory.get_data())
+        inventory_data = copy.deepcopy(components_inventory.get_data())
         inventory_data[self.category][item_name]["expected_arrival_time"] = arrival_date.date().toString("yyyy-MM-dd")
         part_number = self.get_value_from_category(item_name, "part_number")
-        for category in inventory.get_keys():
+        for category in components_inventory.get_keys():
             if category == self.category:
                 continue
             for item in list(inventory_data[category].keys()):
                 if part_number == inventory_data[category][item]["part_number"]:
                     inventory_data[category][item]["expected_arrival_time"] = arrival_date.date().toString("yyyy-MM-dd")
-        inventory.save_data(inventory_data)
-        inventory.load_data()
+        components_inventory.save_data(inventory_data)
+        components_inventory.load_data()
         self.load_active_tab()
         self.sync_changes()
 
@@ -1128,7 +1126,7 @@ class MainWindow(QMainWindow):
         self.sync_changes()
 
     def notes_changed(self, item_name: str, value_name: str, note: QPlainTextEdit) -> None:
-        data = inventory.get_data()
+        data = components_inventory.get_data()
         part_number = self.get_value_from_category(item_name, "part_number")
         self.value_change(self.category, item_name, value_name, note.toPlainText())
         self.sync_changes()
@@ -1204,7 +1202,7 @@ class MainWindow(QMainWindow):
         self.listWidget_itemnames.setEnabled(False)
 
         remove_quantity_thread = RemoveQuantityThread(
-            inventory,
+            components_inventory,
             self.category,
             self.spinBox_quantity.value(),
         )
@@ -1283,7 +1281,7 @@ class MainWindow(QMainWindow):
 
     # NOTE for EDIT INVENTORY
     def add_quantity(self) -> None:
-        data = inventory.get_data()
+        data = components_inventory.get_data()
         table = self.tabs[self.category]
         selected_rows = list({item.row() for item in table.selectedItems()})
         selected_items = [table.item(row, 0).text() for row in selected_rows]
@@ -1294,13 +1292,13 @@ class MainWindow(QMainWindow):
         )
         if are_you_sure_dialog in [DialogButtons.no, DialogButtons.cancel]:
             return
-        inventory_data = copy.deepcopy(inventory.get_data())
+        inventory_data = copy.deepcopy(components_inventory.get_data())
         for item_name in selected_items:
             part_number: str = self.get_value_from_category(item_name, "part_number")
             current_quantity: int = self.get_value_from_category(item_name, "current_quantity")
             inventory_data[self.category][item_name]["current_quantity"] = current_quantity + self.spinBox_quantity.value()
             inventory_data[self.category][item_name]["latest_change_current_quantity"] = f"{self.username} - Changed from {current_quantity} to {current_quantity + self.spinBox_quantity.value()} at {datetime.now().strftime('%B %d %A %Y %I-%M-%S %p')}"
-            for category in inventory.get_keys():
+            for category in components_inventory.get_keys():
                 if category == self.category:
                     continue
                 for item in list(inventory_data[category].keys()):
@@ -1310,8 +1308,8 @@ class MainWindow(QMainWindow):
                         inventory_data[category][item]["latest_change_current_quantity"] = f"{self.username} - Changed from {current_quantity} to {current_quantity + self.spinBox_quantity.value()} at {datetime.now().strftime('%B %d %A %Y %I-%M-%S %p')}"
         self.pushButton_add_quantity.setEnabled(False)
         self.pushButton_remove_quantity.setEnabled(False)
-        inventory.save_data(inventory_data)
-        inventory.load_data()
+        components_inventory.save_data(inventory_data)
+        components_inventory.load_data()
         self.update_category_total_stock_costs()
         self.sort_inventory()
         table_widget: CustomTableWidget = self.tabs[self.category]
@@ -1331,13 +1329,13 @@ class MainWindow(QMainWindow):
         )
         if are_you_sure_dialog in [DialogButtons.no, DialogButtons.cancel]:
             return
-        inventory_data = copy.deepcopy(inventory.get_data())
+        inventory_data = copy.deepcopy(components_inventory.get_data())
         for item_name in selected_items:
             part_number: str = self.get_value_from_category(item_name, "part_number")
             current_quantity: int = self.get_value_from_category(item_name, "current_quantity")
             inventory_data[self.category][item_name]["current_quantity"] = current_quantity - self.spinBox_quantity.value()
             inventory_data[self.category][item_name]["latest_change_current_quantity"] = f"{self.username} - Changed from {current_quantity} to {current_quantity - self.spinBox_quantity.value()} at {datetime.now().strftime('%B %d %A %Y %I-%M-%S %p')}"
-            for category in inventory.get_keys():
+            for category in components_inventory.get_keys():
                 if category == self.category:
                     continue
                 for item in list(inventory_data[category].keys()):
@@ -1358,12 +1356,12 @@ class MainWindow(QMainWindow):
                 )
         self.pushButton_add_quantity.setEnabled(False)
         self.pushButton_remove_quantity.setEnabled(False)
-        inventory.save_data(inventory_data)
-        inventory.load_data()
+        components_inventory.save_data(inventory_data)
+        components_inventory.load_data()
         self.update_category_total_stock_costs()
         self.sort_inventory()
         table_widget: CustomTableWidget = self.tabs[self.category]
-        self.last_item_selected_index = list(list(inventory.data[self.category].keys())).index(self.last_item_selected_name)
+        self.last_item_selected_index = list(list(components_inventory.data[self.category].keys())).index(self.last_item_selected_name)
         table_widget.scrollTo(table_widget.model().index(self.last_item_selected_index, 0))
         table_widget.selectRow(self.last_item_selected_index)
 
@@ -1380,7 +1378,7 @@ class MainWindow(QMainWindow):
             return
         # it brings incorrect results
         try:
-            self.last_item_selected_index = list(list(inventory.data[self.category].keys())).index(self.last_item_selected_name)
+            self.last_item_selected_index = list(list(components_inventory.data[self.category].keys())).index(self.last_item_selected_name)
         except (ValueError, KeyError):
             return
         # self.last_item_selected_index=200
@@ -1403,7 +1401,7 @@ class MainWindow(QMainWindow):
         remove_quantity_state: bool = self.pushButton_remove_quantity.isEnabled()
         self.pushButton_add_quantity.setEnabled(False)
         self.pushButton_remove_quantity.setEnabled(False)
-        inventory.change_object_in_object_item(category, item_name, value_name, new_value)
+        components_inventory.change_object_in_object_item(category, item_name, value_name, new_value)
         self.pushButton_add_quantity.setEnabled(add_quantity_state)
         self.pushButton_remove_quantity.setEnabled(remove_quantity_state)
 
@@ -1717,14 +1715,14 @@ class MainWindow(QMainWindow):
 
     # OMNIGEN
     def cutoff_sheet_double_clicked(self, cutoff_items: QListWidget):
-        cutoff_sheets = price_of_steel_inventory.get_value("Cutoff")
+        cutoff_sheets = sheets_inventory.get_value("Cutoff")
         item_pressed: QListWidgetItem = cutoff_items.selectedItems()[0]
         for sheet in list(cutoff_sheets.keys()):
             if item_pressed.text() == sheet:
-                sheet_material = price_of_steel_inventory.get_data()["Cutoff"][sheet]["material"]
-                sheet_thickness = price_of_steel_inventory.get_data()["Cutoff"][sheet]["thickness"]
-                sheet_dim_x = float(price_of_steel_inventory.get_data()["Cutoff"][sheet]["sheet_dimension"].split("x")[0].replace(" ", ""))
-                sheet_dim_y = float(price_of_steel_inventory.get_data()["Cutoff"][sheet]["sheet_dimension"].split("x")[1].replace(" ", ""))
+                sheet_material = sheets_inventory.get_data()["Cutoff"][sheet]["material"]
+                sheet_thickness = sheets_inventory.get_data()["Cutoff"][sheet]["thickness"]
+                sheet_dim_x = float(sheets_inventory.get_data()["Cutoff"][sheet]["sheet_dimension"].split("x")[0].replace(" ", ""))
+                sheet_dim_y = float(sheets_inventory.get_data()["Cutoff"][sheet]["sheet_dimension"].split("x")[1].replace(" ", ""))
                 self.comboBox_global_sheet_material.setCurrentText(sheet_material)
                 self.comboBox_global_sheet_thickness.setCurrentText(sheet_thickness)
                 self.doubleSpinBox_global_sheet_length.setValue(sheet_dim_x)
@@ -1737,7 +1735,7 @@ class MainWindow(QMainWindow):
     # * /\ SLOTS & SIGNALS /\
     # * \/ CALCULATION \/
     def calculuate_price_of_steel_summary(self) -> None:
-        category_data = price_of_steel_inventory.get_data()
+        category_data = sheets_inventory.get_data()
         self.clear_layout(self.gridLayout_price_of_steel)
         total: float = 0.0
         i: int = 0
@@ -1761,7 +1759,7 @@ class MainWindow(QMainWindow):
                 except ZeroDivisionError:
                     pounds_per_sheet = 0.0
                 try:
-                    price_per_pound: float = float(price_of_steel_inventory.get_data()["Price Per Pound"][material]["price"])
+                    price_per_pound: float = float(sheets_inventory.get_data()["Price Per Pound"][material]["price"])
                 except KeyError:
                     price_per_pound: float = 0.0
                 cost_per_sheet = pounds_per_sheet * price_per_pound
@@ -1786,7 +1784,7 @@ class MainWindow(QMainWindow):
             item = self.gridLayout_parts_in_inventory_summary.takeAt(0)
             widget = item.widget()
             widget.deleteLater()
-        category_data = parts_in_inventory.get_data()
+        category_data = laser_cut_inventory.get_data()
         # Idk why it does not exist somtimes
         if not category_data:
             return
@@ -1841,7 +1839,7 @@ class MainWindow(QMainWindow):
                 return
             self.pushButton_remove_quantities_from_inventory.setEnabled(False)
             self.spinBox_quantity_for_inventory.setValue(0)
-            category_data = parts_in_inventory.get_data()
+            category_data = laser_cut_inventory.get_data()
             part_names_to_check = []
 
             for part_name in selected_parts:
@@ -1872,7 +1870,7 @@ class MainWindow(QMainWindow):
             self.play_celebrate_sound()
             self.pushButton_remove_quantities_from_inventory.setEnabled(False)
             self.spinBox_quantity_for_inventory.setValue(0)
-            category_data = parts_in_inventory.get_data()
+            category_data = laser_cut_inventory.get_data()
             part_names_to_check = list(category_data[self.category].keys())
             for part_name in list(category_data[self.category].keys()):
                 unit_quantity: int = category_data[self.category][part_name]["unit_quantity"]
@@ -1890,10 +1888,10 @@ class MainWindow(QMainWindow):
                         new_quantity = current_quantity - (unit_quantity * batch_multiplier)
                         category_data[category][part_name]["current_quantity"] = new_quantity
                         category_data[category][part_name]["modified_date"] = f'{self.username} - Removed {unit_quantity*batch_multiplier} quantity at {str(datetime.now().strftime("%B %d %A %Y %I:%M:%S %p"))}'
-        parts_in_inventory.save_data(category_data)
+        laser_cut_inventory.save_data(category_data)
 
-        for category in parts_in_inventory.get_data():
-            parts_in_inventory.sort(category=category, item_name="current_quantity", ascending=True)
+        for category in laser_cut_inventory.get_data():
+            laser_cut_inventory.sort(category=category, item_name="current_quantity", ascending=True)
 
         self.pushButton_remove_quantities_from_inventory.setText("Remove Quantities from whole Category")
         self.pushButton_remove_quantities_from_inventory.setEnabled(True)
@@ -1961,7 +1959,7 @@ class MainWindow(QMainWindow):
 
     def update_edit_inventory_list_widget(self) -> None:
         search_input: str = self.lineEdit_search_items.text()
-        category_data = inventory.get_value(item_name=self.category)
+        category_data = components_inventory.get_value(item_name=self.category)
         self.listWidget_itemnames.disconnect()
         self.listWidget_itemnames.clear()
         self.pushButton_add_quantity.setEnabled(False)
@@ -1979,7 +1977,7 @@ class MainWindow(QMainWindow):
     def update_stock_costs(self) -> None:
         if self.tabWidget.tabText(self.tabWidget.currentIndex()) != "Edit Inventory":
             return
-        self.label_total_unit_cost.setText(f"Total Unit Cost: ${inventory.get_total_unit_cost(self.category, self.get_exchange_rate()):,.2f}")
+        self.label_total_unit_cost.setText(f"Total Unit Cost: ${components_inventory.get_total_unit_cost(self.category, self.get_exchange_rate()):,.2f}")
         tab = self.tabs[self.category]
         tab.blockSignals(True)
         for row_index in range(tab.rowCount()):
@@ -1998,7 +1996,7 @@ class MainWindow(QMainWindow):
     def update_category_total_stock_costs(self) -> None:
         total_stock_costs = {}
 
-        categories = inventory.get_data()
+        categories = components_inventory.get_data()
         # Idk why it does not exist somtimes
         if not categories:
             return
@@ -2012,8 +2010,8 @@ class MainWindow(QMainWindow):
                 price = max(current_quantity * price * exchange_rate, 0)
                 total_category_stock_cost += price
             total_stock_costs[category] = total_category_stock_cost
-        total_stock_costs["Polar Total Stock Cost"] = inventory.get_total_stock_cost_for_similar_categories("Polar")
-        total_stock_costs["BL Total Stock Cost"] = inventory.get_total_stock_cost_for_similar_categories("BL")
+        total_stock_costs["Polar Total Stock Cost"] = components_inventory.get_total_stock_cost_for_similar_categories("Polar")
+        total_stock_costs["BL Total Stock Cost"] = components_inventory.get_total_stock_cost_for_similar_categories("BL")
         total_stock_costs = dict(sorted(total_stock_costs.items()))
         self.clear_layout(self.gridLayout_Categor_Stock_Prices)
         lbl = QLabel("Stock Costs:", self)
@@ -2032,14 +2030,14 @@ class MainWindow(QMainWindow):
         lbl = QLabel("Total Cost in Stock:", self)
         lbl.setStyleSheet("border-top: 1px solid grey")
         self.gridLayout_Categor_Stock_Prices.addWidget(lbl, i + 1, 0)
-        lbl = QLabel(f"${inventory.get_total_stock_cost(self.get_exchange_rate()):,.2f}", self)
+        lbl = QLabel(f"${components_inventory.get_total_stock_cost(self.get_exchange_rate()):,.2f}", self)
         # lbl.setTextInteractionFlags(Qt.ItemFlag.TextSelectableByMouse)
         lbl.setStyleSheet("border-top: 1px solid grey")
         self.gridLayout_Categor_Stock_Prices.addWidget(lbl, i + 1, 1)
 
     # NOTE PARTS IN INVENTORY
     def update_all_parts_in_inventory_price(self) -> None:
-        data = copy.deepcopy(parts_in_inventory.get_data())
+        data = copy.deepcopy(laser_cut_inventory.get_data())
         # Idk why it does not exist somtimes
         if not data:
             return
@@ -2050,11 +2048,11 @@ class MainWindow(QMainWindow):
                 weight: float = data[category][part_name]["weight"]
                 machine_time: float = data[category][part_name]["machine_time"]
                 material: str = data[category][part_name]["material"]
-                price_per_pound: float = price_of_steel_inventory.get_data()["Price Per Pound"][material]["price"]
+                price_per_pound: float = sheets_inventory.get_data()["Price Per Pound"][material]["price"]
                 cost_for_laser: float = self.get_nitrogen_laser_cost() if material in {"304 SS", "409 SS", "Aluminium"} else self.get_co2_laser_cost()
                 data[category][part_name]["price"] = float((machine_time * (cost_for_laser / 60)) + (weight * price_per_pound))
-        parts_in_inventory.save_data(data)
-        parts_in_inventory.load_data()
+        laser_cut_inventory.save_data(data)
+        laser_cut_inventory.load_data()
 
     def set_table_row_color(self, table, row_index, color):
         for j in range(table.columnCount()):
@@ -2112,7 +2110,7 @@ class MainWindow(QMainWindow):
                 if isinstance(COGS, str):
                     COGS = float(COGS.replace("$", ""))
             else:
-                price_per_pound: float = price_of_steel_inventory.get_data()["Price Per Pound"][material]["price"]
+                price_per_pound: float = sheets_inventory.get_data()["Price Per Pound"][material]["price"]
                 cost_for_laser: float = self.doubleSpinBox_cost_for_laser.value()
                 COGS: float = float((machine_time * (cost_for_laser / 60)) + (weight * price_per_pound))
             item_data.setdefault(
@@ -2351,7 +2349,7 @@ class MainWindow(QMainWindow):
                 if isinstance(COGS, str):
                     COGS = float(COGS.replace("$", ""))
             else:
-                price_per_pound: float = price_of_steel_inventory.get_data()["Price Per Pound"][material]["price"]
+                price_per_pound: float = sheets_inventory.get_data()["Price Per Pound"][material]["price"]
                 # The above code is declaring a variable named "cost_for_laser" of type float and
                 # assigning it the value of "self.doubleSpinBox_cost_for_laser".
                 cost_for_laser: float = self.doubleSpinBox_cost_for_laser.value()
@@ -2409,7 +2407,7 @@ class MainWindow(QMainWindow):
                 if isinstance(COGS, str):
                     COGS = float(COGS.replace("$", ""))
             else:
-                price_per_pound: float = price_of_steel_inventory.get_data()["Price Per Pound"][material]["price"]
+                price_per_pound: float = sheets_inventory.get_data()["Price Per Pound"][material]["price"]
                 cost_for_laser: float = self.doubleSpinBox_cost_for_laser.value()
                 COGS: float = float((machine_time * (cost_for_laser / 60)) + (weight * price_per_pound))
 
@@ -2516,7 +2514,7 @@ class MainWindow(QMainWindow):
         if gauge == "Null" or material == "Null":
             return 0.0
         sheet_dim_x, sheet_dim_y = self.quote_nest_information[nest_name]["sheet_dim"].replace(" x ", "x").split("x")
-        price_per_pound: float = price_of_steel_inventory.get_data()["Price Per Pound"][material]["price"]
+        price_per_pound: float = sheets_inventory.get_data()["Price Per Pound"][material]["price"]
         try:
             pounds_per_square_foot: float = float(price_of_steel_information.get_data()["pounds_per_square_foot"][material][gauge])
         except KeyError:
@@ -2581,7 +2579,7 @@ class MainWindow(QMainWindow):
 
     # * \/ GETTERS \/
     def get_all_part_numbers(self) -> list[str]:
-        data = inventory.get_data()
+        data = components_inventory.get_data()
         part_numbers = []
         for category in list(data.keys()):
             try:
@@ -2591,7 +2589,7 @@ class MainWindow(QMainWindow):
         return list(set(part_numbers))
 
     def get_all_part_names(self) -> list[str]:
-        data = inventory.get_data()
+        data = components_inventory.get_data()
         part_names = []
         for category in list(data.keys()):
             part_names.extend(iter(list(data[category].keys())))
@@ -2647,7 +2645,7 @@ class MainWindow(QMainWindow):
         )
 
     def get_all_gauges(self) -> list[str]:
-        data = parts_in_inventory.get_data()
+        data = laser_cut_inventory.get_data()
         gauges = []
         for category in list(data.keys()):
             try:
@@ -2657,7 +2655,7 @@ class MainWindow(QMainWindow):
         return list(set(gauges))
 
     def get_all_materials(self) -> list[str]:
-        data = parts_in_inventory.get_data()
+        data = laser_cut_inventory.get_data()
         materials = []
         for category in list(data.keys()):
             try:
@@ -2790,7 +2788,7 @@ class MainWindow(QMainWindow):
             response = add_item_dialog.get_response()
             if response == DialogButtons.add:
                 name: str = add_item_dialog.get_name()
-                inventory_data = copy.deepcopy(inventory.get_data())
+                inventory_data = copy.deepcopy(components_inventory.get_data())
                 for item in list(inventory_data[self.category].keys()):
                     if name == item:
                         self.show_error_dialog(
@@ -2838,8 +2836,8 @@ class MainWindow(QMainWindow):
                         dialog_buttons=DialogButtons.ok,
                     )
                     return
-                inventory.save_data(inventory_data)
-                inventory.load_data()
+                components_inventory.save_data(inventory_data)
+                components_inventory.load_data()
                 self.sort_inventory()
                 # self.load_active_tab()
             elif response == DialogButtons.cancel:
@@ -3238,7 +3236,7 @@ class MainWindow(QMainWindow):
             },
         )
         for part_name in selected_parts:
-            self.quote_nest_information["/CUSTOM NEST.pdf"][part_name] = parts_in_inventory.get_data()[self.category].get(part_name)
+            self.quote_nest_information["/CUSTOM NEST.pdf"][part_name] = laser_cut_inventory.get_data()[self.category].get(part_name)
             self.quote_nest_information["/CUSTOM NEST.pdf"][part_name]["file_name"] = "/CUSTOM NEST.pdf"
         self.tabWidget.setCurrentIndex(self.get_menu_tab_order().index("OmniGen"))
         self.download_required_images(self.quote_nest_information["/CUSTOM NEST.pdf"])
@@ -3268,7 +3266,7 @@ class MainWindow(QMainWindow):
             },
         )
         for part_name in selected_parts:
-            self.quote_nest_information["/CUSTOM NEST.pdf"][part_name] = parts_in_inventory.get_data()[self.category].get(part_name)
+            self.quote_nest_information["/CUSTOM NEST.pdf"][part_name] = laser_cut_inventory.get_data()[self.category].get(part_name)
             self.quote_nest_information["/CUSTOM NEST.pdf"][part_name]["file_name"] = "/CUSTOM NEST.pdf"
         self.tabWidget.setCurrentIndex(self.get_menu_tab_order().index("OmniGen"))
         self.download_required_images(self.quote_nest_information["/CUSTOM NEST.pdf"])
@@ -3297,28 +3295,28 @@ class MainWindow(QMainWindow):
             return
         item_dialog = PartInformationViewer(
             selected_part,
-            parts_in_inventory.get_data()[self.category][selected_part],
+            laser_cut_inventory.get_data()[self.category][selected_part],
         )
         if item_dialog.exec() and item_dialog.get_response() == "apply":
-            inventory_data = copy.deepcopy(parts_in_inventory.get_data())
+            inventory_data = copy.deepcopy(laser_cut_inventory.get_data())
             new_item_name = item_dialog.lineEdit_name.text()
             new_item_data = item_dialog.get_data()
             if new_item_name == selected_part:
-                for category, category_data in parts_in_inventory.get_data().items():
+                for category, category_data in laser_cut_inventory.get_data().items():
                     for item_name, item_data in category_data.items():
                         if item_name == selected_part:
                             inventory_data[category][item_name] = new_item_data
             else:
                 self.last_item_selected_name = new_item_name
-                for category, category_data in parts_in_inventory.get_data().items():
+                for category, category_data in laser_cut_inventory.get_data().items():
                     for item_name, item_data in category_data.items():
                         if item_name == selected_part:
                             del inventory_data[category][item_name]
                             inventory_data[category][new_item_name] = new_item_data
-            parts_in_inventory.save_data(inventory_data)
-            parts_in_inventory.load_data()
-            for category in parts_in_inventory.get_data():
-                parts_in_inventory.sort(category, "current_quantity", True)
+            laser_cut_inventory.save_data(inventory_data)
+            laser_cut_inventory.load_data()
+            for category in laser_cut_inventory.get_data():
+                laser_cut_inventory.sort(category, "current_quantity", True)
             self.sync_changes()
             self.load_categories()
             self.last_item_selected_index = self.parts_in_inventory_name_lookup[self.last_item_selected_name]
@@ -3432,7 +3430,7 @@ class MainWindow(QMainWindow):
     # NOTE for Edit Inventory
     def edit_inventory_item_changes(self, item: QTableWidgetItem) -> None:
         tab = self.tabs[self.category]
-        inventory_data = copy.deepcopy(inventory.get_data())
+        inventory_data = copy.deepcopy(components_inventory.get_data())
         tab.blockSignals(False)
         row_index = item.row()
         col_index = item.column()
@@ -3489,15 +3487,15 @@ class MainWindow(QMainWindow):
             tab.item(row_index, col_index).setToolTip(modified_date)
             tab.blockSignals(True)
             inventory_data[self.category][item_name]["latest_change_current_quantity"] = modified_date
-            for category, items in inventory.get_data().items():
+            for category, items in components_inventory.get_data().items():
                 if category == self.category:
                     continue
                 for item, item_data in items.items():
                     if new_part_number == item_data.get("part_number"):
                         inventory_data[category][item]["latest_change_current_quantity"] = modified_date
                         inventory_data[category][item]["current_quantity"] = current_quantity
-            inventory.save_data(inventory_data)
-            inventory.load_data()
+            components_inventory.save_data(inventory_data)
+            components_inventory.load_data()
             self.sort_inventory()
         elif col_index == 4:  # Item Price
             use_exchange_rate: bool = inventory_data[self.category][item_name]["use_exchange_rate"]
@@ -3511,7 +3509,7 @@ class MainWindow(QMainWindow):
             inventory_data[self.category][item_name]["price"] = price
             inventory_data[self.category][item_name]["latest_change_price"] = modified_date
             self.update_stock_costs()
-            for category, items in inventory.get_data().items():
+            for category, items in components_inventory.get_data().items():
                 if category == self.category:
                     continue
                 for item, item_data in items.items():
@@ -3523,7 +3521,7 @@ class MainWindow(QMainWindow):
             shelf_number = tab.item(row_index, col_index).text()
             tab.blockSignals(True)
             inventory_data[self.category][item_name]["shelf_number"] = shelf_number
-            for category, items in inventory.get_data().items():
+            for category, items in components_inventory.get_data().items():
                 if category == self.category:
                     continue
                 for item, item_data in items.items():
@@ -3531,14 +3529,14 @@ class MainWindow(QMainWindow):
                         inventory_data[category][item_name]["shelf_number"] = shelf_number
         tab.blockSignals(False)
         if col_index != 3:
-            inventory.save_data(inventory_data)
-            inventory.load_data()
+            components_inventory.save_data(inventory_data)
+            components_inventory.load_data()
             self.sync_changes()
         # QApplication.restoreOverrideCursor()
 
     # NOTE for Parts in Inventory
     def parts_in_inventory_item_changes(self, item: QTableWidgetItem) -> None:
-        inventory_data = copy.deepcopy(parts_in_inventory.get_data())
+        inventory_data = copy.deepcopy(laser_cut_inventory.get_data())
         tab = self.tabs[self.category]
         tab.blockSignals(False)
         item_name: str = tab.item(item.row(), 0).text()
@@ -3586,8 +3584,8 @@ class MainWindow(QMainWindow):
         inventory_data[self.category][item_name]["unit_quantity"] = unit_quantity
         inventory_data[self.category][item_name]["price"] = item_price
         inventory_data[self.category][item_name]["current_quantity"] = current_quantity
-        parts_in_inventory.save_data(inventory_data)
-        parts_in_inventory.load_data()
+        laser_cut_inventory.save_data(inventory_data)
+        laser_cut_inventory.load_data()
         self.calculate_parts_in_inventory_summary()
         self.sync_changes()
         self.load_active_tab()
@@ -3595,7 +3593,7 @@ class MainWindow(QMainWindow):
 
     # NOTE for Sheets in Inventory
     def sheets_in_inventory_item_changes(self, item: QTableWidgetItem) -> None:
-        inventory_data = copy.deepcopy(price_of_steel_inventory.get_data())
+        inventory_data = copy.deepcopy(sheets_inventory.get_data())
         tab = self.tabs[self.category]
         tab.blockSignals(False)
         row_index: int = item.row()
@@ -3649,8 +3647,8 @@ class MainWindow(QMainWindow):
             inventory_data[self.category][item_name]["current_quantity"] = new_quantity
             inventory_data[self.category][item_name]["latest_change_current_quantity"] = modified_date
         tab.blockSignals(False)
-        price_of_steel_inventory.save_data(inventory_data)
-        price_of_steel_inventory.load_data()
+        sheets_inventory.save_data(inventory_data)
+        sheets_inventory.load_data()
         self.load_active_tab()
         self.sync_changes()
         # QApplication.restoreOverrideCursor()
@@ -3842,7 +3840,7 @@ class MainWindow(QMainWindow):
                 completer.setCaseSensitivity(Qt.CaseSensitivity.CaseInsensitive)
                 self.lineEdit_search_items.setCompleter(completer)
             if self.tabWidget.tabText(self.tabWidget.currentIndex()) == "Parts in Inventory":
-                autofill_search_options = natsorted(list(set(parts_in_inventory.get_value(self.tab_widget.tabText(self.tab_widget.currentIndex())).keys())))
+                autofill_search_options = natsorted(list(set(laser_cut_inventory.get_value(self.tab_widget.tabText(self.tab_widget.currentIndex())).keys())))
                 completer = QCompleter(autofill_search_options, self)
                 completer.setCaseSensitivity(Qt.CaseSensitivity.CaseInsensitive)
                 self.lineEdit_search_parts_in_inventory.setCompleter(completer)
@@ -3936,7 +3934,7 @@ class MainWindow(QMainWindow):
         ]
         tab.setColumnCount(len(headers))
         tab.setHorizontalHeaderLabels(headers)
-        grouped_data = parts_in_inventory.sort_by_multiple_tags(category=category_data, tags_ids=["material", "gauge"])
+        grouped_data = laser_cut_inventory.sort_by_multiple_tags(category=category_data, tags_ids=["material", "gauge"])
         row_index: int = 0
         self.parts_in_inventory_name_lookup.clear()
         self.parts_in_inventory_name_lookup[None] = 0
@@ -4010,7 +4008,7 @@ class MainWindow(QMainWindow):
                     weight: float = self.get_value_from_category(item_name=item, key="weight")
                     machine_time: float = self.get_value_from_category(item_name=item, key="machine_time")
                     material: str = self.get_value_from_category(item_name=item, key="material")
-                    price_per_pound: float = price_of_steel_inventory.get_data()["Price Per Pound"][material]["price"]
+                    price_per_pound: float = sheets_inventory.get_data()["Price Per Pound"][material]["price"]
                     cost_for_laser: float = self.get_nitrogen_laser_cost() if material in {"304 SS", "409 SS", "Aluminium"} else self.get_co2_laser_cost()
                     price = float((machine_time * (cost_for_laser / 60)) + (weight * price_per_pound))
 
@@ -4101,7 +4099,7 @@ class MainWindow(QMainWindow):
                 menu.addSeparator()
             categories = QMenu(menu)
             categories.setTitle("Move selected parts to category")
-            for i, category in enumerate(parts_in_inventory.get_keys()):
+            for i, category in enumerate(laser_cut_inventory.get_keys()):
                 if self.category == category or category == "Recut":
                     continue
                 if i == 1:
@@ -4113,7 +4111,7 @@ class MainWindow(QMainWindow):
 
             categories = QMenu(menu)
             categories.setTitle("Copy selected parts to category")
-            for i, category in enumerate(parts_in_inventory.get_keys()):
+            for i, category in enumerate(laser_cut_inventory.get_keys()):
                 if self.category == category or category == "Recut":
                     continue
                 if i == 1:
@@ -4166,7 +4164,7 @@ class MainWindow(QMainWindow):
             tab.setHorizontalHeaderLabels(headers)
             tab.horizontalHeader().setStretchLastSection(True)
             tab.set_editable_column_index([1])
-            for material in list(price_of_steel_inventory.get_data()[self.category].keys()):
+            for material in list(sheets_inventory.get_data()[self.category].keys()):
                 tab.insertRow(row_index)
                 tab.setRowHeight(row_index, 40)
                 price = self.get_value_from_category(item_name=material, key="price")
@@ -4197,7 +4195,7 @@ class MainWindow(QMainWindow):
             tab.setColumnCount(len(headers))
             tab.setHorizontalHeaderLabels(headers)
             tab.set_editable_column_index([2, 6])
-            grouped_data = price_of_steel_inventory.sort_by_groups(category=category_data, groups_id="material")
+            grouped_data = sheets_inventory.sort_by_groups(category=category_data, groups_id="material")
             for group in list(grouped_data.keys()):
                 tab.insertRow(row_index)
                 item = QTableWidgetItem(group)
@@ -4236,7 +4234,7 @@ class MainWindow(QMainWindow):
                         pounds_per_sheet = 0.0
                     # PRICE PER POUND
                     try:
-                        price_per_pound: float = float(price_of_steel_inventory.get_data()["Price Per Pound"][material]["price"])
+                        price_per_pound: float = float(sheets_inventory.get_data()["Price Per Pound"][material]["price"])
                     except KeyError:
                         price_per_pound: float = 0.0
 
@@ -8093,9 +8091,9 @@ class MainWindow(QMainWindow):
         with contextlib.suppress(Exception):  # This is just incase the Cutoff tab has never been created
             cutoff_items = self.cutoff_widget.widgets[0]
             cutoff_items.clear()
-            price_of_steel_inventory.load_data()
-            cutoff_sheets = price_of_steel_inventory.get_value("Cutoff")
-            grouped_data = parts_in_inventory.sort_by_multiple_tags(category=cutoff_sheets, tags_ids=["material"])
+            sheets_inventory.load_data()
+            cutoff_sheets = sheets_inventory.get_value("Cutoff")
+            grouped_data = laser_cut_inventory.sort_by_multiple_tags(category=cutoff_sheets, tags_ids=["material"])
             for group in grouped_data:
                 cutoff_items.addItem(f"\t             {group.replace(';', '')}")
                 for sheet in list(grouped_data[group].keys()):
@@ -8854,7 +8852,7 @@ class MainWindow(QMainWindow):
     def print_inventory(self) -> None:
         try:
             file_name = f"excel files/{datetime.now().strftime('%B %d %A %Y %I-%M-%S %p')}"
-            excel_file = ExcelFile(inventory, f"{file_name}.xlsx")
+            excel_file = ExcelFile(components_inventory, f"{file_name}.xlsx")
             excel_file.generate()
             excel_file.save()
 
@@ -9050,7 +9048,7 @@ class MainWindow(QMainWindow):
             self.status_button.setStyleSheet("""QPushButton#status_button {background: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0,stop:%(start)s #3daee9,stop:%(middle)s #3daee9,stop:%(end)s #1E363F)}""" % {"start": str(__start), "middle": str(__middle), "end": str(__end)})
         else:
             self.status_button.setText("Done", "lime")
-            inventory.load_data()
+            components_inventory.load_data()
             self.centralwidget.setEnabled(True)
             self.listWidget_itemnames.setEnabled(True)
             self.pushButton_create_new.setEnabled(True)
@@ -9079,14 +9077,14 @@ class MainWindow(QMainWindow):
                 "Parts in Inventory",
                 "Sheets in Inventory",
             ]:
-                inventory.load_data()
-                price_of_steel_inventory.load_data()
-                parts_in_inventory.load_data()
+                components_inventory.load_data()
+                sheets_inventory.load_data()
+                laser_cut_inventory.load_data()
                 self.load_categories()
             if self.tabWidget.tabText(self.tabWidget.currentIndex()) == "OmniGen":
-                inventory.load_data()
-                price_of_steel_inventory.load_data()
-                parts_in_inventory.load_data()
+                components_inventory.load_data()
+                sheets_inventory.load_data()
+                laser_cut_inventory.load_data()
                 self.load_cuttoff_drop_down()
 
         if not self.finished_downloading_all_files:
@@ -9138,7 +9136,7 @@ class MainWindow(QMainWindow):
 
     def exchange_rate_received(self, exchange_rate: float) -> None:
         self.label_exchange_price.setText(f"1.00 USD: {exchange_rate} CAD - {datetime.now().strftime('%r')}")
-        self.label_total_unit_cost.setText(f"Total Unit Cost: ${inventory.get_total_unit_cost(self.category, self.get_exchange_rate()):,.2f}")
+        self.label_total_unit_cost.setText(f"Total Unit Cost: ${components_inventory.get_total_unit_cost(self.category, self.get_exchange_rate()):,.2f}")
         settings_file.set_value("exchange_rate", exchange_rate)
         self.update_stock_costs()
 
@@ -9376,7 +9374,7 @@ class MainWindow(QMainWindow):
         thread.signal.connect(self.upload_sheets_thread_response)
         self.threads.append(thread)
         thread.start()
-        price_of_steel_inventory.load_data()
+        sheets_inventory.load_data()
         price_of_steel_information.load_data()
         self.comboBox_global_sheet_thickness.clear()
         self.comboBox_global_sheet_thickness.addItems(price_of_steel_information.get_value("thicknesses"))
