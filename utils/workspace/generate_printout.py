@@ -60,15 +60,15 @@ class ItemsTable:
 
         html += '<tbody id="table-body">'
         for item in self.items:
-            flow_tag = " ➜ ".join(item.data["flow_tag"])
+            flow_tag = " ➜ ".join(item.flow_tag)
             html += (
                 "<tr>"
                 f'<td class="ui-table-cell-visible">{item.name}</td>'
-                f'<td class="ui-table-cell-visible">{item.data["material"]}</td>'
-                f'<td class="ui-table-cell-visible">{item.data["thickness"]}</td>'
-                f'<td class="ui-table-cell-visible">{item.data["parts_per"] * self.assembly_quantity}</td>'
-                f'<td class="ui-table-cell-visible">{item.data["shelf_number"]}</td>'
-                f'<td class="ui-table-cell-visible">{item.data["notes"]}</td>'
+                f'<td class="ui-table-cell-visible">{item.material}</td>'
+                f'<td class="ui-table-cell-visible">{item.thickness}</td>'
+                f'<td class="ui-table-cell-visible">{item.parts_per * self.assembly_quantity}</td>'
+                f'<td class="ui-table-cell-visible">{item.shelf_number}</td>'
+                f'<td class="ui-table-cell-visible">{item.notes}</td>'
                 f'<td class="ui-table-cell-visible">{flow_tag}</td>'
                 "</tr>"
             )
