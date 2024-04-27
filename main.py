@@ -219,7 +219,7 @@ def excepthook(exc_type, exc_value, exc_traceback):
     threading.Thread(target=send_error_report).start()
     win32api.MessageBox(
         0,
-        f"We've encountered an unexpected issue, but don't worry—help is already on the way. The details of this glitch have been automatically reported to {__maintainer__}, and a notification has been sent to {__email__} for immediate attention. Rest assured, {__maintainer__} is on the case and will likely have this resolved with the next update. Your patience and understanding are greatly appreciated. If this problem persists, please don't hesitate to reach out directly to {__maintainer__} for further assistance.\n\nTechnical details for reference:\n- Exception Type: {exc_type}\n- Error Message: {exc_value}\n- Traceback Information: {exc_traceback}",
+        f"We've encountered an unexpected issue. The details of this glitch have been automatically reported to {__maintainer__}, and a notification has been sent to {__email__} for immediate attention. Rest assured, {__maintainer__} is on the case and will likely have this resolved with the next update. Your patience and understanding are greatly appreciated. If this problem persists, please don't hesitate to reach out directly to {__maintainer__} for further assistance.\n\nTechnical details for reference:\n- Exception Type: {exc_type}\n- Error Message: {exc_value}\n- Traceback Information: {exc_traceback}",
         "Unhandled exception - excepthook detected",
         0x40,
     )  # 0x40 for OK button
@@ -709,11 +709,11 @@ class MainWindow(QMainWindow):
                 False,
             )
             self.tabWidget.setTabVisible(
-                settings_file.get_value("menu_tabs_order").index("View Price Changes History (Read Only)"),
+                settings_file.get_value("menu_tabs_order").index("View Price Changes History"),
                 False,
             )
             self.tabWidget.setTabVisible(
-                settings_file.get_value("menu_tabs_order").index("View Removed Quantities History (Read Only)"),
+                settings_file.get_value("menu_tabs_order").index("View Removed Quantities History"),
                 False,
             )
 
@@ -782,7 +782,7 @@ class MainWindow(QMainWindow):
             self.menuOpen_Category.setEnabled(False)
             self.load_quote_generator_ui()
             self.status_button.setHidden(False)
-        elif self.tabWidget.tabText(self.tabWidget.currentIndex()) == "View Removed Quantities History (Read Only)":  # View Removed Quantities History (Read Only)
+        elif self.tabWidget.tabText(self.tabWidget.currentIndex()) == "View Removed Quantities History":  # View Removed Quantities History
             self.menuSort.setEnabled(False)
             self.menuOpen_Category.setEnabled(False)
             if not self.trusted_user:
@@ -791,7 +791,7 @@ class MainWindow(QMainWindow):
             self.active_layout = self.verticalLayout_5
             self.load_history_view()
             self.status_button.setHidden(True)
-        elif self.tabWidget.tabText(self.tabWidget.currentIndex()) == "View Price Changes History (Read Only)":  # View Price Changes History (Read Only)
+        elif self.tabWidget.tabText(self.tabWidget.currentIndex()) == "View Price Changes History":  # View Price Changes History
             self.menuSort.setEnabled(False)
             self.menuOpen_Category.setEnabled(False)
             if not self.trusted_user:
