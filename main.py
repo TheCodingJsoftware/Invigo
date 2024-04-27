@@ -3241,7 +3241,8 @@ class MainWindow(QMainWindow):
             self.quote_nest_information["/CUSTOM NEST.pdf"][part_name] = laser_cut_inventory.get_data()[self.category].get(part_name)
             self.quote_nest_information["/CUSTOM NEST.pdf"][part_name]["file_name"] = "/CUSTOM NEST.pdf"
         self.tabWidget.setCurrentIndex(self.get_menu_tab_order().index("OmniGen"))
-        self.download_required_images(self.quote_nest_information["/CUSTOM NEST.pdf"])
+        required_images = [self.quote_nest_information["/CUSTOM NEST.pdf"][item]["image_index"] + ".jpeg" for item in list(self.quote_nest_information["/CUSTOM NEST.pdf"].keys()) if item[0] != "_"]
+        self.download_required_images(required_images)
         # self.load_nests()
 
     # NOTE Edit Laser Cut Inventory
@@ -3271,7 +3272,8 @@ class MainWindow(QMainWindow):
             self.quote_nest_information["/CUSTOM NEST.pdf"][part_name] = laser_cut_inventory.get_data()[self.category].get(part_name)
             self.quote_nest_information["/CUSTOM NEST.pdf"][part_name]["file_name"] = "/CUSTOM NEST.pdf"
         self.tabWidget.setCurrentIndex(self.get_menu_tab_order().index("OmniGen"))
-        self.download_required_images(self.quote_nest_information["/CUSTOM NEST.pdf"])
+        required_images = [self.quote_nest_information["/CUSTOM NEST.pdf"][item]["image_index"] + ".jpeg" for item in list(self.quote_nest_information["/CUSTOM NEST.pdf"].keys()) if item[0] != "_"]
+        self.download_required_images(required_images)
         # self.load_nests()
 
     # OMNIGEN
@@ -3398,6 +3400,15 @@ class MainWindow(QMainWindow):
                 self.generate_workorder(work_order=workorder.get_workorder())
 
     # WORKSPACE
+    def get_required_images_from_workorder(self, workorder: dict[Assembly, dict[dict[str, int], dict[str, bool]]]) -> list[str]:
+        all_items: list[WorkspaceItem] = []
+        for assembly in workorder:
+            all_items.extend(assembly.items)
+
+        all_images: list[str] = [f'{item.name}.jpeg' for item in all_items]
+        return all_images
+
+    # WORKSPACE
     def generate_workspace_printout_dialog(self, job_names: list[str] = None) -> None:
         printout_dialog = GenerateWorkspacePrintoutDialog(
             self,
@@ -3411,6 +3422,8 @@ class MainWindow(QMainWindow):
             response = printout_dialog.get_response()
             if response == DialogButtons.generate:
                 file_name: str = f'Printout - {datetime.now().strftime("%A, %d %B %Y %H-%M-%S-%f")}'
+                required_images = self.get_required_images_from_workorder(printout_dialog.get_workorder())
+                self.download_required_images(required_images)
                 generate_printout = GeneratePrintout(
                     admin_workspace,
                     file_name,
@@ -9007,8 +9020,8 @@ class MainWindow(QMainWindow):
             self.status_button.setText(f"Error - {response}", "red")
 
     # OMNIGEN
-    def download_required_images(self, batch_data: dict) -> None:
-        required_images = [batch_data[item]["image_index"] + ".jpeg" for item in list(batch_data.keys()) if item[0] != "_"]
+    def download_required_images(self, required_images: list[str]) -> None:
+        # required_images = [batch_data[item]["image_index"] + ".jpeg" for item in list(batch_data.keys()) if item[0] != "_"]
         if not required_images:
             self.load_nests()
             return

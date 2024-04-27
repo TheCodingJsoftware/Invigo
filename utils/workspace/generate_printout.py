@@ -36,6 +36,7 @@ class AssemblyTable:
 class ItemsTable:
     def __init__(self, assembly: Assembly, assembly_quantity: int, show_all_items: bool):
         self.headers = [
+            "Image",
             "Part Name",
             "Material",
             "Thickness",
@@ -44,6 +45,7 @@ class ItemsTable:
             "Notes",
             "Flow Tag",
         ]
+        self.program_directory = os.path.dirname(os.path.realpath(sys.argv[0]))
         self.assembly = assembly
         if show_all_items:
             self.items = assembly.get_all_items()
@@ -63,6 +65,7 @@ class ItemsTable:
             flow_tag = " ➜ ".join(item.flow_tag)
             html += (
                 "<tr>"
+                f'<td class="ui-table-cell-visible"><img src="{self.program_directory}/images/{item.name}.jpeg" style="height: 100px; width: 100px;" alt="Image"></td>'
                 f'<td class="ui-table-cell-visible">{item.name}</td>'
                 f'<td class="ui-table-cell-visible">{item.material}</td>'
                 f'<td class="ui-table-cell-visible">{item.thickness}</td>'
