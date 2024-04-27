@@ -96,3 +96,6 @@ Workorders
 test.json
 test_output.html
 *.prof
+server/order_number.json
+server/data/inventory - Price of Steel.json
+*.json

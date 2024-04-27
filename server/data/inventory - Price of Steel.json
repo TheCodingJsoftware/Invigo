@@ -30,10 +30,10 @@
         }
     },
     "Mild Steel": {
-        "3/4 Laser Grade Plate 120.000x60.000": {
+        "3\/4 Laser Grade Plate 120.000x60.000": {
             "current_quantity": 6.0,
             "sheet_dimension": "120.000x60.000",
-            "thickness": "3/4",
+            "thickness": "3\/4",
             "material": "Laser Grade Plate",
             "group": "Laser Grade Plate",
             "latest_change_material": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-04-03 PM",
@@ -49,10 +49,10 @@
             "is_order_pending": false,
             "has_sent_warning": false
         },
-        "1/2 Laser Grade Plate 120.000x60.000": {
+        "1\/2 Laser Grade Plate 120.000x60.000": {
             "current_quantity": 2.0,
             "sheet_dimension": "120.000x60.000",
-            "thickness": "1/2",
+            "thickness": "1\/2",
             "material": "Laser Grade Plate",
             "group": "Laser Grade Plate",
             "latest_change_material": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-06-23 PM",
@@ -67,12 +67,12 @@
             "order_pending_date": "2023-10-10",
             "is_order_pending": false
         },
-        "3/8 Mild Steel 120.000x60.000": {
+        "3\/8 Mild Steel 120.000x60.000": {
             "current_quantity": 3.0,
             "sheet_dimension": "120.000x60.000",
-            "thickness": "3/8",
+            "thickness": "3\/8",
             "material": "Mild Steel",
-            "group": "3/8 Mild Steel",
+            "group": "3\/8 Mild Steel",
             "latest_change_material": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-09-47 PM",
             "latest_sheet_dimension": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-09-47 PM",
             "latest_change_thickness": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-09-47 PM",
@@ -86,12 +86,12 @@
             "order_pending_quantity": 5.0,
             "order_pending_date": "2024-02-09"
         },
-        "1/4 Mild Steel 120.000x60.000": {
+        "1\/4 Mild Steel 120.000x60.000": {
             "current_quantity": 119.0,
             "sheet_dimension": "120.000x60.000",
-            "thickness": "1/4",
+            "thickness": "1\/4",
             "material": "Mild Steel",
-            "group": "1/4 Mild Steel",
+            "group": "1\/4 Mild Steel",
             "latest_change_material": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-10-35 PM",
             "latest_sheet_dimension": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-10-35 PM",
             "latest_change_thickness": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-10-35 PM",
@@ -105,12 +105,12 @@
             "order_pending_quantity": 80.0,
             "order_pending_date": "2024-04-10"
         },
-        "1/4 Mild Steel 96.000x48.000": {
+        "1\/4 Mild Steel 96.000x48.000": {
             "current_quantity": 47.0,
             "sheet_dimension": "96.000x48.000",
-            "thickness": "1/4",
+            "thickness": "1\/4",
             "material": "Mild Steel",
-            "group": "1/4 Mild Steel",
+            "group": "1\/4 Mild Steel",
             "latest_change_material": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-13-13 PM",
             "latest_sheet_dimension": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-13-13 PM",
             "latest_change_thickness": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-13-13 PM",
@@ -124,12 +124,12 @@
             "order_pending_date": "2024-03-12",
             "has_sent_warning": false
         },
-        "3/16 Mild Steel 120.000x60.000": {
+        "3\/16 Mild Steel 120.000x60.000": {
             "current_quantity": 74.0,
             "sheet_dimension": "120.000x60.000",
-            "thickness": "3/16",
+            "thickness": "3\/16",
             "material": "Mild Steel",
-            "group": "3/16 Mild Steel ",
+            "group": "3\/16 Mild Steel ",
             "latest_change_material": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-14-45 PM",
             "latest_sheet_dimension": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-14-45 PM",
             "latest_change_thickness": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-14-45 PM",
@@ -143,12 +143,12 @@
             "has_sent_warning": false,
             "order_pending_quantity": 24.0
         },
-        "3/16 Mild Steel 120.000x48.000": {
+        "3\/16 Mild Steel 120.000x48.000": {
             "current_quantity": 58.0,
             "sheet_dimension": "120.000x48.000",
-            "thickness": "3/16",
+            "thickness": "3\/16",
             "material": "Mild Steel",
-            "group": "3/16 Mild Steel ",
+            "group": "3\/16 Mild Steel ",
             "latest_change_material": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-16-54 PM",
             "latest_sheet_dimension": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-16-54 PM",
             "latest_change_thickness": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-16-54 PM",
@@ -162,12 +162,12 @@
             "order_pending_date": "2024-04-10",
             "has_sent_warning": true
         },
-        "3/16 Mild Steel 96.000x48.000": {
+        "3\/16 Mild Steel 96.000x48.000": {
             "current_quantity": 43.0,
             "sheet_dimension": "96.000x48.000",
-            "thickness": "3/16",
+            "thickness": "3\/16",
             "material": "Mild Steel",
-            "group": "3/16 Mild Steel ",
+            "group": "3\/16 Mild Steel ",
             "latest_change_material": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-17-35 PM",
             "latest_sheet_dimension": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-17-35 PM",
             "latest_change_thickness": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-17-35 PM",
@@ -181,12 +181,12 @@
             "order_pending_quantity": 40.0,
             "order_pending_date": "2024-04-10"
         },
-        "3/16 Mild Steel 86.000x60.000": {
+        "3\/16 Mild Steel 86.000x60.000": {
             "current_quantity": 82.0,
             "sheet_dimension": "86.000x60.000",
-            "thickness": "3/16",
+            "thickness": "3\/16",
             "material": "Mild Steel",
-            "group": "3/16 Mild Steel ",
+            "group": "3\/16 Mild Steel ",
             "latest_change_material": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-18-54 PM",
             "latest_sheet_dimension": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-18-54 PM",
             "latest_change_thickness": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-18-54 PM",
@@ -200,12 +200,12 @@
             "order_pending_date": "2024-04-10",
             "has_sent_warning": false
         },
-        "3/16 Mild Steel 84.000x48.000": {
+        "3\/16 Mild Steel 84.000x48.000": {
             "current_quantity": 70.0,
             "sheet_dimension": "84.000x48.000",
-            "thickness": "3/16",
+            "thickness": "3\/16",
             "material": "Mild Steel",
-            "group": "3/16 Mild Steel ",
+            "group": "3\/16 Mild Steel ",
             "latest_change_material": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-22-11 PM",
             "latest_sheet_dimension": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-22-11 PM",
             "latest_change_thickness": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-22-11 PM",
@@ -307,10 +307,10 @@
             "yellow_limit": 0.0,
             "notes": "Usual Order 10 sheets "
         },
-        "5/16 Mild Steel 120.000x60.000": {
+        "5\/16 Mild Steel 120.000x60.000": {
             "current_quantity": 37.0,
             "sheet_dimension": "120.000x60.000",
-            "thickness": "5/16",
+            "thickness": "5\/16",
             "material": "Mild Steel",
             "latest_change_material": "Item added\nLaser Pc\nApril 27 Thursday 2023 04-32-42 PM",
             "latest_sheet_dimension": "Item added\nLaser Pc\nApril 27 Thursday 2023 04-32-42 PM",
@@ -332,10 +332,10 @@
             "red_limit": 0.5,
             "yellow_limit": 0.5
         },
-        "5/8 Laser Grade Plate 120.000x60.000": {
+        "5\/8 Laser Grade Plate 120.000x60.000": {
             "current_quantity": 2,
             "sheet_dimension": "120.000x60.000",
-            "thickness": "5/8",
+            "thickness": "5\/8",
             "material": "Laser Grade Plate",
             "latest_change_material": "Item added\nLaser Pc\nApril 27 Thursday 2023 04-33-38 PM",
             "latest_sheet_dimension": "Item added\nLaser Pc\nApril 27 Thursday 2023 04-33-38 PM",
@@ -345,12 +345,12 @@
             "red_limit": 0.5,
             "yellow_limit": 0.5
         },
-        "3/16 Mild Steel 72.000x48.000": {
+        "3\/16 Mild Steel 72.000x48.000": {
             "current_quantity": 24.0,
             "sheet_dimension": "72.000x48.000",
-            "thickness": "3/16",
+            "thickness": "3\/16",
             "material": "Mild Steel",
-            "group": "3/16 Mild Steel ",
+            "group": "3\/16 Mild Steel ",
             "latest_change_current_quantity": "Laser Pc - Manually set to 24.0 from 10.0 at April 23 Tuesday 2024 02:20:45 PM",
             "red_limit": 20.0,
             "yellow_limit": 40.0,
@@ -371,10 +371,10 @@
             "order_pending_date": "2023-11-20",
             "is_order_pending": false
         },
-        "3/16 Mild Steel 48.000x67.000": {
+        "3\/16 Mild Steel 48.000x67.000": {
             "current_quantity": 16.0,
             "sheet_dimension": "48.000x67.000",
-            "thickness": "3/16",
+            "thickness": "3\/16",
             "material": "Mild Steel",
             "latest_change_current_quantity": "Laser Pc - Manually set to 16.0 from 30.0 at April 23 Tuesday 2024 02:20:50 PM",
             "expected_arrival_time": "2024-3-19",
@@ -438,10 +438,10 @@
         }
     },
     "Stainless": {
-        "1/4 304 SS 120.000x60.000": {
+        "1\/4 304 SS 120.000x60.000": {
             "current_quantity": 1.0,
             "sheet_dimension": "120.000x60.000",
-            "thickness": "1/4",
+            "thickness": "1\/4",
             "material": "304 SS",
             "group": "304 SS",
             "latest_change_material": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-49-43 PM",
@@ -453,10 +453,10 @@
             "notes": "Usual Order 1 sheet ",
             "is_order_pending": false
         },
-        "3/16 304 SS 120.000x60.000": {
+        "3\/16 304 SS 120.000x60.000": {
             "current_quantity": 14.0,
             "sheet_dimension": "120.000x60.000",
-            "thickness": "3/16",
+            "thickness": "3\/16",
             "material": "304 SS",
             "group": "304 SS",
             "latest_change_material": "Item added\nLaser Pc\nFebruary 24 Friday 2023 04-50-54 PM",
@@ -658,7 +658,7 @@
             "latest_change_current_quantity": "Laser Pc - Item added at July 12 Wednesday 2023 01-34-00 PM"
         }
     },
-    "Galvanized/Galvanneal": {
+    "Galvanized\/Galvanneal": {
         "10 Gauge Galvanized 120.000x60.000": {
             "current_quantity": 9.0,
             "sheet_dimension": "120.000x60.000",
@@ -726,14 +726,14 @@
             "is_order_pending": false
         },
         "20 Gauge Galvanized 120.000x60.000": {
-            "current_quantity": 64.0,
+            "current_quantity": 37.0,
             "sheet_dimension": "120.000x60.000",
             "thickness": "20 Gauge",
             "material": "Galvanized",
             "latest_change_material": "Item added\nLaser Pc\nFebruary 24 Friday 2023 05-12-02 PM",
             "latest_sheet_dimension": "Item added\nLaser Pc\nFebruary 24 Friday 2023 05-12-02 PM",
             "latest_change_thickness": "Item added\nLaser Pc\nFebruary 24 Friday 2023 05-12-02 PM",
-            "latest_change_current_quantity": "Removed 12 at March 27 Wednesday 2024 10:32:35 AM",
+            "latest_change_current_quantity": "Removed 27.0 at April 27 Saturday 2024 10:03:35 AM",
             "group": "Galvanized",
             "red_limit": 15.0,
             "yellow_limit": 30.0,
@@ -745,7 +745,7 @@
             "has_sent_warning": false
         },
         "18 Gauge Galvanneal 120.000x60.000": {
-            "current_quantity": 173.0,
+            "current_quantity": 118.0,
             "sheet_dimension": "120.000x60.000",
             "thickness": "18 Gauge",
             "material": "Galvanneal",
@@ -753,7 +753,7 @@
             "latest_change_material": "Item added\nLaser Pc\nFebruary 24 Friday 2023 05-19-31 PM",
             "latest_sheet_dimension": "Item added\nLaser Pc\nFebruary 24 Friday 2023 05-19-31 PM",
             "latest_change_thickness": "Item added\nLaser Pc\nFebruary 24 Friday 2023 05-19-31 PM",
-            "latest_change_current_quantity": "Removed 32 at March 27 Wednesday 2024 10:13:29 AM",
+            "latest_change_current_quantity": "Removed 55 at April 26 Friday 2024 09:09:59 AM",
             "red_limit": 30.0,
             "yellow_limit": 60.0,
             "notes": "Usual Order 200 sheets ",
@@ -776,38 +776,6 @@
         }
     },
     "Cutoff": {
-        "14 Gauge Mild Steel 52.750x60.500": {
-            "current_quantity": 1,
-            "sheet_dimension": "52.750x60.500",
-            "thickness": "14 Gauge",
-            "material": "Mild Steel",
-            "group": "Mild Steel",
-            "latest_change_current_quantity": "Item added at April 11 Thursday 2024 11-09-37 AM via server"
-        },
-        "14 Gauge Mild Steel 60.500x52.500": {
-            "current_quantity": 1,
-            "sheet_dimension": "60.500x52.500",
-            "thickness": "14 Gauge",
-            "material": "Mild Steel",
-            "group": "Mild Steel",
-            "latest_change_current_quantity": "Item added at April 17 Wednesday 2024 10-25-01 AM via server"
-        },
-        "3/8 Mild Steel 120.000x40.750": {
-            "current_quantity": 1,
-            "sheet_dimension": "120.000x40.750",
-            "thickness": "3/8",
-            "material": "Mild Steel",
-            "group": "Mild Steel",
-            "latest_change_current_quantity": "Item added at April 22 Monday 2024 08-46-57 AM via server"
-        },
-        "1/4 Mild Steel 68.750x24.750": {
-            "current_quantity": 1,
-            "sheet_dimension": "68.750x24.750",
-            "thickness": "1/4",
-            "material": "Mild Steel",
-            "group": "Mild Steel",
-            "latest_change_current_quantity": "Item added at April 24 Wednesday 2024 03-58-51 PM via server"
-        },
         "12 Gauge Mild Steel 60.000x27.375": {
             "current_quantity": 1,
             "sheet_dimension": "60.000x27.375",
@@ -824,10 +792,10 @@
             "group": "Mild Steel",
             "latest_change_current_quantity": "Item added at April 23 Tuesday 2024 09-02-26 AM via server"
         },
-        "1/4 Mild Steel 71.000x48.250": {
+        "1\/4 Mild Steel 71.000x48.250": {
             "current_quantity": 1,
             "sheet_dimension": "71.000x48.250",
-            "thickness": "1/4",
+            "thickness": "1\/4",
             "material": "Mild Steel",
             "group": "Mild Steel",
             "latest_change_current_quantity": "Item added at April 24 Wednesday 2024 09-04-20 AM via server"
@@ -848,10 +816,10 @@
             "group": "Mild Steel",
             "latest_change_current_quantity": "Item added at April 24 Wednesday 2024 03-58-19 PM via server"
         },
-        "1/4 Mild Steel 60.500x49.000": {
+        "1\/4 Mild Steel 60.500x49.000": {
             "current_quantity": 1,
             "sheet_dimension": "60.500x49.000",
-            "thickness": "1/4",
+            "thickness": "1\/4",
             "material": "Mild Steel",
             "group": "Mild Steel",
             "latest_change_current_quantity": "Item added at April 24 Wednesday 2024 04-05-34 PM via server"
@@ -864,13 +832,29 @@
             "group": "304 SS",
             "latest_change_current_quantity": "Item added at April 25 Thursday 2024 08-53-29 AM via server"
         },
-        "3/16 304 SS 60.000x49.000": {
+        "3\/16 304 SS 60.000x49.000": {
             "current_quantity": 1,
             "sheet_dimension": "60.000x49.000",
-            "thickness": "3/16",
+            "thickness": "3\/16",
             "material": "304 SS",
             "group": "304 SS",
             "latest_change_current_quantity": "Item added at April 25 Thursday 2024 01-31-58 PM via server"
+        },
+        "3\/8 Mild Steel 120.000x22.500": {
+            "current_quantity": 1,
+            "sheet_dimension": "120.000x22.500",
+            "thickness": "3\/8",
+            "material": "Mild Steel",
+            "group": "Mild Steel",
+            "latest_change_current_quantity": "Item added at April 26 Friday 2024 04-31-24 PM via server"
+        },
+        "10 Gauge Mild Steel 120.000x19.500": {
+            "current_quantity": 1,
+            "sheet_dimension": "120.000x19.500",
+            "thickness": "10 Gauge",
+            "material": "Mild Steel",
+            "group": "Mild Steel",
+            "latest_change_current_quantity": "Item added at April 26 Friday 2024 04-32-04 PM via server"
         }
     }
 }
