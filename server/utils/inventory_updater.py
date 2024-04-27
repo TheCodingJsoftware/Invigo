@@ -10,7 +10,7 @@ from utils.send_email import send
 from utils.sheet_report import generate_single_sheet_report
 
 # This is because of git, and having a test server.
-with open("utils/inventory_file_to_use.txt", "r") as f:
+with open("utils/inventory_file_to_use.txt", "r", encoding="utf-8") as f:
     inventory_file_name: str = f.read()
 
 components_inventory = JsonFile(file_name=f"data/{inventory_file_name}")
@@ -26,7 +26,7 @@ def update_inventory(file_path: str, clients) -> None:
     CustomPrint.print("INFO - Updating inventory", connected_clients=connected_clients)
     laser_cut_inventory.load_data()
     sheets_inventory.load_data()
-    with open(file_path) as json_file:
+    with open(file_path, "r", encoding="utf-8") as json_file:
         quote_nest_information = json.load(json_file)
 
     # Need to combine duplicate items so inventory can be updated quicker and remove group names
@@ -165,7 +165,7 @@ def get_recut_parts(batch_data) -> list[str]:
     recut_parts: list[str] = []
     for part_name in list(batch_data.keys()):
         with contextlib.suppress(KeyError):
-            if batch_data[part_name]["recut"] == True:
+            if batch_data[part_name]["recut"] is True:
                 recut_parts.append(part_name)
     return recut_parts
 
@@ -174,7 +174,7 @@ def get_no_recut_parts(batch_data) -> list[str]:
     no_recut_parts: list[str] = []
     for part_name in list(batch_data.keys()):
         with contextlib.suppress(KeyError):
-            if batch_data[part_name]["recut"] == False:
+            if batch_data[part_name]["recut"] is False:
                 no_recut_parts.append(part_name)
     return no_recut_parts
 
@@ -225,7 +225,7 @@ def subtract_sheet_count(sheet_name_to_update: str, sheet_count: int) -> None:
                         f"INFO - {sheet_name_to_update} went into RED",
                         connected_clients=connected_clients,
                     )
-                    if category != "Cutoff" and is_order_pending == False and has_sent_warning == False:
+                    if category != "Cutoff" and not is_order_pending and not has_sent_warning:
                         generate_single_sheet_report(
                             sheet_name=sheet_name_to_update,
                             red_limit=red_quantity_limit,
