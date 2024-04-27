@@ -168,8 +168,8 @@ __copyright__: str = "Copyright 2022-2024, TheCodingJ's"
 __credits__: list[str] = ["Jared Gross"]
 __license__: str = "MIT"
 __name__: str = "Invigo"
-__version__: str = "v2.3.1"
-__updated__: str = "2024-04-27 14:20:44"
+__version__: str = "v2.3.3"
+__updated__: str = "2024-04-27 16:01:14"
 __maintainer__: str = "Jared Gross"
 __email__: str = "jared@pinelandfarms.ca"
 __status__: str = "Production"
@@ -9407,14 +9407,13 @@ class MainWindow(QMainWindow):
 
     def update_available_thread_response(self, version: str) -> None:
         if not self.ignore_update:
+            self.ignore_update = True
             message_dialog = self.show_message_dialog(
                 title=__name__,
                 message=f"There is a new update available.\n\nNew Version: {version}\n\nPlease consider updating to the latest version at your earliest convenience.",
                 dialog_buttons=DialogButtons.ok_update,
             )
-            if message_dialog == DialogButtons.ok:
-                self.ignore_update = True
-            elif message_dialog == DialogButtons.update:
+            if message_dialog == DialogButtons.update:
                 subprocess.Popen("start update.exe", shell=True)
 
     # * /\ THREADS /\
