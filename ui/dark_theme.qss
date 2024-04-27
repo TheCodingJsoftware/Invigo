@@ -13,13 +13,8 @@ QMenuBar:disabled {
     color: rgb(102, 102, 102);
 }
 
-QMenu::item:disabled {
-    color: rgb(102, 102, 102);
-    background-color: transparent;
-}
-
 QMenu::separator {
-    background-color: rgb(33, 33, 33);
+    background-color: rgb(133, 133, 133);
 }
 
 QStatusBar {
@@ -973,9 +968,6 @@ QLabel {
     border: none;
     padding: 1px 3px;
     color: rgb(210, 210, 210);
-}
-QMenu{
-	background: rgb(22,22,22);
 }
 /* https://www.qtcentre.org/threads/30478-How-To-Change-Style-Sheet-for-QCalendarWidget */
 QCalendarWidget QWidget{

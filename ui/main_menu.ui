@@ -2633,7 +2633,7 @@ QPushButton#pushButton_generate_workspace_quote:disabled{
          <normaloff>../../../../../.designer/icons/cil-notes.png</normaloff>../../../../../.designer/icons/cil-notes.png</iconset>
        </attribute>
        <attribute name="title">
-        <string>View Removed Quantities History (Read Only)</string>
+        <string>View Removed Quantities History</string>
        </attribute>
        <layout class="QVBoxLayout" name="verticalLayout_8">
         <property name="leftMargin">
@@ -2733,7 +2733,7 @@ QPushButton#pushButton_generate_workspace_quote:disabled{
          <normaloff>../../../../../.designer/icons/cil-notes.png</normaloff>../../../../../.designer/icons/cil-notes.png</iconset>
        </attribute>
        <attribute name="title">
-        <string>View Price Changes History (Read Only)</string>
+        <string>View Price Changes History</string>
        </attribute>
        <layout class="QVBoxLayout" name="verticalLayout_9">
         <property name="leftMargin">
