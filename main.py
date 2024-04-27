@@ -6805,16 +6805,16 @@ class MainWindow(QMainWindow):
                 table.showColumn(6)
                 table.showColumn(7)
 
-            table.setItem(row_index, col_index, QTableWidgetItem(first_item.data["thickness"]))  # 4
+            table.setItem(row_index, col_index, QTableWidgetItem(first_item.thickness))  # 4
             table.item(row_index, col_index).setTextAlignment(Qt.AlignmentFlag.AlignCenter | Qt.AlignmentFlag.AlignVCenter)
             col_index += 1
-            table.setItem(row_index, col_index, QTableWidgetItem(first_item.data["material"]))  # 5
+            table.setItem(row_index, col_index, QTableWidgetItem(first_item.material))  # 5
             table.item(row_index, col_index).setTextAlignment(Qt.AlignmentFlag.AlignCenter | Qt.AlignmentFlag.AlignVCenter)
             col_index += 1
             table.setItem(
                 row_index,
                 col_index,
-                QTableWidgetItem(str(first_item.data["paint_type"])),
+                QTableWidgetItem(str(first_item.paint_type)),
             )  # 6
             table.item(row_index, col_index).setTextAlignment(Qt.AlignmentFlag.AlignCenter | Qt.AlignmentFlag.AlignVCenter)
             col_index += 1
@@ -6947,12 +6947,12 @@ class MainWindow(QMainWindow):
             table.setItem(
                 row_index,
                 col_index,
-                QTableWidgetItem(str(first_item.data["shelf_number"])),
+                QTableWidgetItem(str(first_item.shelf_number)),
             )  # 11
             table.item(row_index, col_index).setTextAlignment(Qt.AlignmentFlag.AlignCenter | Qt.AlignmentFlag.AlignVCenter)
 
             col_index += 1
-            table.setItem(row_index, col_index, QTableWidgetItem(str(first_item.data["notes"])))  # 12
+            table.setItem(row_index, col_index, QTableWidgetItem(str(first_item.notes)))  # 12
             table.item(row_index, col_index).setTextAlignment(Qt.AlignmentFlag.AlignCenter | Qt.AlignmentFlag.AlignVCenter)
 
         row_index: int = 0
