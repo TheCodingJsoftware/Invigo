@@ -250,11 +250,12 @@ settings_file = Settings()
 components_inventory = JsonFile(file_name=f"data/{settings_file.get_value(setting_name='inventory_file_name')}")
 sheets_inventory = JsonFile(file_name=f"data/{settings_file.get_value(setting_name='inventory_file_name')} - Price of Steel")
 laser_cut_inventory = JsonFile(file_name=f"data/{settings_file.get_value(setting_name='inventory_file_name')} - Parts in Inventory")
+
 price_of_steel_information = JsonFile(file_name="price_of_steel_information.json")
 
-user_workspace = Workspace("workspace - User")
-admin_workspace = Workspace("workspace - Admin")
-history_workspace = Workspace("workspace - History")
+user_workspace = Workspace("user_workspace")
+admin_workspace = Workspace("admin_workspace")
+history_workspace = Workspace("history_workspace")
 
 workspace_tags = JsonFile(file_name="data/workspace_settings")
 
@@ -533,12 +534,12 @@ class MainWindow(QMainWindow):
         self.pushButton_add_new_sheet.clicked.connect(self.add_sheet_item)
         self.pushButton_add_quantity.clicked.connect(self.add_quantity)
         # self.pushButton_add_quantity.setEnabled(False)
-        self.pushButton_add_quantity.setIcon(QIcon(f"icons/list_add.png"))
+        self.pushButton_add_quantity.setIcon(QIcon("icons/list_add.png"))
         self.pushButton_remove_quantity.clicked.connect(self.remove_quantity)
         # self.pushButton_remove_quantity.setEnabled(False)
-        self.pushButton_remove_quantity.setIcon(QIcon(f"icons/list_remove.png"))
+        self.pushButton_remove_quantity.setIcon(QIcon("icons/list_remove.png"))
         self.listWidget_itemnames.itemSelectionChanged.connect(self.listWidget_item_changed)
-        self.pushButton_remove_quantities_from_inventory.setIcon(QIcon(f"icons/list_remove.png"))
+        self.pushButton_remove_quantities_from_inventory.setIcon(QIcon("icons/list_remove.png"))
 
         self.pushButton_remove_quantities_from_inventory.clicked.connect(self.remove_quantity_from_part_inventory)
 
@@ -547,11 +548,11 @@ class MainWindow(QMainWindow):
         # self.actionAbout_Qt.triggered.connect(qApp.aboutQt)
         # self.actionAbout_Qt.setIcon(self.style().standardIcon(QStyle.SP_TitleBarMenuButton))
         self.actionCheck_for_Updates.triggered.connect(self.check_for_updates)
-        self.actionCheck_for_Updates.setIcon(QIcon(f"icons/refresh.png"))
+        self.actionCheck_for_Updates.setIcon(QIcon("icons/refresh.png"))
         self.actionAbout.triggered.connect(self.show_about_dialog)
-        self.actionAbout.setIcon(QIcon(f"icons/about.png"))
+        self.actionAbout.setIcon(QIcon("icons/about.png"))
         self.actionWebsite.triggered.connect(self.open_website)
-        self.actionWebsite.setIcon(QIcon(f"icons/website.png"))
+        self.actionWebsite.setIcon(QIcon("icons/website.png"))
         # PRINT
         self.actionPrint_Inventory.triggered.connect(self.print_inventory)
 
@@ -681,22 +682,22 @@ class MainWindow(QMainWindow):
         self.pushButton_generate_workspace_quote.clicked.connect(partial(self.generate_workspace_printout_dialog, []))
 
         # FILE
-        self.menuOpen_Category.setIcon(QIcon(f"icons/folder.png"))
+        self.menuOpen_Category.setIcon(QIcon("icons/folder.png"))
         self.actionCreate_Category.triggered.connect(self.create_new_category)
-        self.actionCreate_Category.setIcon(QIcon(f"icons/list_add.png"))
+        self.actionCreate_Category.setIcon(QIcon("icons/list_add.png"))
         self.actionDelete_Category.triggered.connect(self.delete_category)
-        self.actionDelete_Category.setIcon(QIcon(f"icons/list_remove.png"))
+        self.actionDelete_Category.setIcon(QIcon("icons/list_remove.png"))
         self.actionClone_Category.triggered.connect(self.clone_category)
-        self.actionClone_Category.setIcon(QIcon(f"icons/tab_duplicate.png"))
+        self.actionClone_Category.setIcon(QIcon("icons/tab_duplicate.png"))
 
         self.actionBackup.triggered.connect(self.backup_database)
-        self.actionBackup.setIcon(QIcon(f"icons/backup.png"))
+        self.actionBackup.setIcon(QIcon("icons/backup.png"))
         self.actionLoad_Backup.triggered.connect(partial(self.load_backup, None))
 
         self.actionOpen_Item_History.triggered.connect(self.open_item_history)
 
         self.actionExit.triggered.connect(self.close)
-        self.actionExit.setIcon(QIcon(f"icons/tab_close.png"))
+        self.actionExit.setIcon(QIcon("icons/tab_close.png"))
 
         self.pushButton_hide_filter.clicked.connect(self.toggle_filter_tab_visibility)
         self.pushButton_hide_nests.clicked.connect(self.toggle_filter_tab_visibility_1)
@@ -704,7 +705,7 @@ class MainWindow(QMainWindow):
 
         if not self.trusted_user:
             self.tabWidget.setTabVisible(
-                settings_file.get_value("menu_tabs_order").index("Edit Inventory"),
+                settings_file.get_value("menu_tabs_order").index("Edit Components"),
                 False,
             )
             self.tabWidget.setTabVisible(
@@ -751,7 +752,7 @@ class MainWindow(QMainWindow):
             self.active_layout = self.verticalLayout_4
             self.load_tree_view(components_inventory)
             self.status_button.setHidden(True)
-        elif self.tabWidget.tabText(self.tabWidget.currentIndex()) == "Edit Inventory":  # Edit Inventory
+        elif self.tabWidget.tabText(self.tabWidget.currentIndex()) == "Edit Components":  # Edit Components
             if not self.trusted_user:
                 self.show_not_trusted_user()
                 return
@@ -761,14 +762,14 @@ class MainWindow(QMainWindow):
             self.active_layout = self.verticalLayout
             self.load_categories()
             self.status_button.setHidden(False)
-        elif self.tabWidget.tabText(self.tabWidget.currentIndex()) == "Sheets in Inventory":  # Sheets in Inventory
+        elif self.tabWidget.tabText(self.tabWidget.currentIndex()) == "Edit Sheets in Inventory":  # Edit Sheets in Inventory
             self.menuSort.setEnabled(True)
             self.menuOpen_Category.setEnabled(True)
             self.active_json_file = sheets_inventory
             self.active_layout = self.verticalLayout_10
             self.load_categories()
             self.status_button.setHidden(False)
-        elif self.tabWidget.tabText(self.tabWidget.currentIndex()) == "Parts in Inventory":  # Parts in Inventory
+        elif self.tabWidget.tabText(self.tabWidget.currentIndex()) == "Edit Laser Cut Inventory":  # Edit Laser Cut Inventory
             self.menuSort.setEnabled(True)
             self.menuOpen_Category.setEnabled(True)
             self.active_json_file = laser_cut_inventory
@@ -876,7 +877,7 @@ class MainWindow(QMainWindow):
             elif response == DialogButtons.cancel:
                 return
 
-    # NOTE SHEETS IN INVENTORY
+    # NOTE Edit Sheets in Inventory
     def order_status_button_sheets_in_inventory(self, item_name: str, button: OrderStatusButton, row_index: int) -> None:
         select_date_dialog = SetOrderPendingDialog(
             self,
@@ -936,7 +937,7 @@ class MainWindow(QMainWindow):
                     button.setChecked(True)
                     return
 
-    # NOTE SHEETS IN INVENTORY
+    # NOTE Edit Sheets in Inventory
     def arrival_date_change_sheets_in_inventory(self, item_name: str, arrival_date: QDateEdit) -> None:
         sheets_inventory.change_object_in_object_item(
             object_name=self.category,
@@ -948,7 +949,7 @@ class MainWindow(QMainWindow):
         self.load_active_tab()
         self.sync_changes()
 
-    # NOTE EDIT INVENTORY
+    # NOTE Edit Components
     def order_status_button_edit_inventory(self, item_name: str, button: OrderStatusButton, row_index: int) -> None:
         select_date_dialog = SetOrderPendingDialog(
             self,
@@ -1035,7 +1036,7 @@ class MainWindow(QMainWindow):
                     )
                     return
 
-    # NOTE EDIT INVENTORY
+    # NOTE Edit Components
     def arrival_date_change_edit_inventory(self, item_name: str, arrival_date: QDateEdit) -> None:
         inventory_data = copy.deepcopy(components_inventory.get_data())
         inventory_data[self.category][item_name]["expected_arrival_time"] = arrival_date.date().toString("yyyy-MM-dd")
@@ -1274,12 +1275,12 @@ class MainWindow(QMainWindow):
         # NOTE because sync handles uploading logic differently
         self.upload_file(
             [
-                "workspace - User.json",
+                "user_workspace.json",
             ],
             False,
         )
 
-    # NOTE for EDIT INVENTORY
+    # NOTE for Edit Components
     def add_quantity(self) -> None:
         data = components_inventory.get_data()
         table = self.tabs[self.category]
@@ -1317,7 +1318,7 @@ class MainWindow(QMainWindow):
         table_widget.scrollTo(table_widget.model().index(self.last_item_selected_index, 0))
         table_widget.selectRow(self.last_item_selected_index)
 
-    # NOTE for EDIT INVENTORY
+    # NOTE for Edit Components
     def remove_quantity(self) -> None:
         table = self.tabs[self.category]
         selected_rows = list({item.row() for item in table.selectedItems()})
@@ -1973,9 +1974,9 @@ class MainWindow(QMainWindow):
             self.listWidget_itemnames.itemSelectionChanged.connect(self.listWidget_item_changed)
             return
 
-    # NOTE EDIT INVENTORY
+    # NOTE Edit Components
     def update_stock_costs(self) -> None:
-        if self.tabWidget.tabText(self.tabWidget.currentIndex()) != "Edit Inventory":
+        if self.tabWidget.tabText(self.tabWidget.currentIndex()) != "Edit Components":
             return
         self.label_total_unit_cost.setText(f"Total Unit Cost: ${components_inventory.get_total_unit_cost(self.category, self.get_exchange_rate()):,.2f}")
         tab = self.tabs[self.category]
@@ -1992,7 +1993,7 @@ class MainWindow(QMainWindow):
             total_unit_cost_item.setText(f'${(unit_quantity * price):,.2f} {"USD" if use_exchange_rate else "CAD"}')
         tab.blockSignals(False)
 
-    # NOTE EDIT INVENTORY
+    # NOTE Edit Components
     def update_category_total_stock_costs(self) -> None:
         total_stock_costs = {}
 
@@ -2035,7 +2036,7 @@ class MainWindow(QMainWindow):
         lbl.setStyleSheet("border-top: 1px solid grey")
         self.gridLayout_Categor_Stock_Prices.addWidget(lbl, i + 1, 1)
 
-    # NOTE PARTS IN INVENTORY
+    # NOTE Edit Laser Cut Inventory
     def update_all_parts_in_inventory_price(self) -> None:
         data = copy.deepcopy(laser_cut_inventory.get_data())
         # Idk why it does not exist somtimes
@@ -2104,7 +2105,7 @@ class MainWindow(QMainWindow):
                 return
             machine_time: float = self.quote_nest_information[nest_name][item_name]["machine_time"]
             material: str = self.quote_nest_information[nest_name][item_name]["material"]
-            if material == "Null":  # Its from Edit Inventory
+            if material == "Null":  # Its from Edit Components
                 price_per_pound = 0.0
                 COGS: float = self.quote_nest_information[nest_name][item_name]["price"]
                 if isinstance(COGS, str):
@@ -2344,7 +2345,7 @@ class MainWindow(QMainWindow):
                 return
             machine_time: float = self.quote_nest_information[nest_name][item_name]["machine_time"]
             material: str = self.quote_nest_information[nest_name][item_name]["material"]
-            if material == "Null":  # Its from Edit Inventory
+            if material == "Null":  # Its from Edit Components
                 COGS: float = self.quote_nest_information[nest_name][item_name]["price"]
                 if isinstance(COGS, str):
                     COGS = float(COGS.replace("$", ""))
@@ -2398,7 +2399,7 @@ class MainWindow(QMainWindow):
                 return
             machine_time: float = self.quote_nest_information[nest_name][item_name]["machine_time"]
             material: str = self.quote_nest_information[nest_name][item_name]["material"]
-            if material == "Null":  # Its from Edit Inventory
+            if material == "Null":  # Its from Edit Components
                 price_per_pound = 0.0
                 try:
                     COGS: float = self.quote_nest_information[nest_name][item_name]["price"]
@@ -2881,7 +2882,7 @@ class MainWindow(QMainWindow):
                 else:
                     self.set_table_row_color(tab, selected_index, "#2c2c2c")
                 self.sync_changes()
-                if self.tabWidget.tabText(self.tabWidget.currentIndex()) == "Sheets in Inventory":
+                if self.tabWidget.tabText(self.tabWidget.currentIndex()) == "Edit Sheets in Inventory":
                     self.load_active_tab()
 
     def create_new_category(self, event=None) -> None:
@@ -3211,7 +3212,7 @@ class MainWindow(QMainWindow):
             elif response == DialogButtons.cancel:
                 return
 
-    # NOTE PARTS IN INVENTORY
+    # NOTE Edit Laser Cut Inventory
     def generate_quote_with_selected_parts(self, tab: CustomTableWidget) -> None:
         selected_parts = self.get_all_selected_parts(tab)
         try:
@@ -3242,7 +3243,7 @@ class MainWindow(QMainWindow):
         self.download_required_images(self.quote_nest_information["/CUSTOM NEST.pdf"])
         # self.load_nests()
 
-    # NOTE PARTS IN INVENTORY
+    # NOTE Edit Laser Cut Inventory
     def add_selected_parts_to_quote(self, tab: CustomTableWidget) -> None:
         selected_parts = self.get_all_selected_parts(tab)
         try:
@@ -3287,7 +3288,7 @@ class MainWindow(QMainWindow):
         self.web_engine_view.load(url)
         self.web_engine_view.show()
 
-    # NOTE PARTS IN INVENTORY
+    # NOTE Edit Laser Cut Inventory
     def view_part_information(self, tab: CustomTableWidget) -> None:
         try:
             selected_part = self.get_all_selected_parts(tab)[0]
@@ -3427,7 +3428,7 @@ class MainWindow(QMainWindow):
     # * /\ Dialogs /\
 
     # * \/ INVENTORY TABLE CHANGES \/
-    # NOTE for Edit Inventory
+    # NOTE for Edit Components
     def edit_inventory_item_changes(self, item: QTableWidgetItem) -> None:
         tab = self.tabs[self.category]
         inventory_data = copy.deepcopy(components_inventory.get_data())
@@ -3534,7 +3535,7 @@ class MainWindow(QMainWindow):
             self.sync_changes()
         # QApplication.restoreOverrideCursor()
 
-    # NOTE for Parts in Inventory
+    # NOTE for Edit Laser Cut Inventory
     def parts_in_inventory_item_changes(self, item: QTableWidgetItem) -> None:
         inventory_data = copy.deepcopy(laser_cut_inventory.get_data())
         tab = self.tabs[self.category]
@@ -3591,7 +3592,7 @@ class MainWindow(QMainWindow):
         self.load_active_tab()
         # QApplication.restoreOverrideCursor()
 
-    # NOTE for Sheets in Inventory
+    # NOTE for Edit Sheets in Inventory
     def sheets_in_inventory_item_changes(self, item: QTableWidgetItem) -> None:
         inventory_data = copy.deepcopy(sheets_inventory.get_data())
         tab = self.tabs[self.category]
@@ -3722,7 +3723,7 @@ class MainWindow(QMainWindow):
         self.search_layout.addWidget(tree_view, 0, 0)
 
     def load_categories(self) -> None:
-        if not self.trusted_user and self.tabWidget.tabText(self.tabWidget.currentIndex()) != "Sheets in Inventory" and self.tabWidget.tabText(self.tabWidget.currentIndex()) != "Parts in Inventory" and self.tabWidget.tabText(self.tabWidget.currentIndex()) != "View Inventory (Read Only)":
+        if not self.trusted_user and self.tabWidget.tabText(self.tabWidget.currentIndex()) != "Edit Sheets in Inventory" and self.tabWidget.tabText(self.tabWidget.currentIndex()) != "Edit Laser Cut Inventory" and self.tabWidget.tabText(self.tabWidget.currentIndex()) != "View Inventory (Read Only)":
             # print(self.last_selected_menu_tab)
             # self.tabWidget.setCurrentIndex(settings_file.get_value('menu_tabs_order').index(self.last_selected_menu_tab))
             # self.show_not_trusted_user()
@@ -3735,9 +3736,9 @@ class MainWindow(QMainWindow):
         user_workspace.load_data()
 
         if self.tabWidget.tabText(self.tabWidget.currentIndex()) not in [
-            "Edit Inventory",
-            "Parts in Inventory",
-            "Sheets in Inventory",
+            "Edit Components",
+            "Edit Laser Cut Inventory",
+            "Edit Sheets in Inventory",
             "Workspace",
         ]:
             return
@@ -3774,16 +3775,16 @@ class MainWindow(QMainWindow):
         else:
             for i, category in enumerate(self.categories):
                 tab = CustomTableWidget(self)
-                if category == "Price Per Pound" and self.tabWidget.tabText(self.tabWidget.currentIndex()) == "Sheets in Inventory":
+                if category == "Price Per Pound" and self.tabWidget.tabText(self.tabWidget.currentIndex()) == "Edit Sheets in Inventory":
                     self.pushButton_add_new_sheet.setEnabled(False)
-                elif self.tabWidget.tabText(self.tabWidget.currentIndex()) == "Sheets in Inventory":
+                elif self.tabWidget.tabText(self.tabWidget.currentIndex()) == "Edit Sheets in Inventory":
                     self.pushButton_add_new_sheet.setEnabled(True)
-                if self.tabWidget.tabText(self.tabWidget.currentIndex()) == "Edit Inventory":
+                if self.tabWidget.tabText(self.tabWidget.currentIndex()) == "Edit Components":
                     tab.itemSelectionChanged.connect(partial(self.inventory_cell_changed, tab))
                     tab.itemChanged.connect(self.edit_inventory_item_changes)
-                if self.tabWidget.tabText(self.tabWidget.currentIndex()) == "Sheets in Inventory":
+                if self.tabWidget.tabText(self.tabWidget.currentIndex()) == "Edit Sheets in Inventory":
                     tab.itemChanged.connect(self.sheets_in_inventory_item_changes)
-                if self.tabWidget.tabText(self.tabWidget.currentIndex()) == "Parts in Inventory":
+                if self.tabWidget.tabText(self.tabWidget.currentIndex()) == "Edit Laser Cut Inventory":
                     tab.itemSelectionChanged.connect(partial(self.parts_in_inventory_cell_changed, tab))
                     tab.itemChanged.connect(self.parts_in_inventory_item_changes)
                 self.tabs[category] = tab
@@ -3834,12 +3835,12 @@ class MainWindow(QMainWindow):
                 category_data = self.active_json_file.get_value(item_name=self.category)
             except AttributeError:
                 return
-            if self.tabWidget.tabText(self.tabWidget.currentIndex()) == "Edit Inventory":
+            if self.tabWidget.tabText(self.tabWidget.currentIndex()) == "Edit Components":
                 autofill_search_options = natsorted(list(set(self.get_all_part_names() + self.get_all_part_numbers())))
                 completer = QCompleter(autofill_search_options, self)
                 completer.setCaseSensitivity(Qt.CaseSensitivity.CaseInsensitive)
                 self.lineEdit_search_items.setCompleter(completer)
-            if self.tabWidget.tabText(self.tabWidget.currentIndex()) == "Parts in Inventory":
+            if self.tabWidget.tabText(self.tabWidget.currentIndex()) == "Edit Laser Cut Inventory":
                 autofill_search_options = natsorted(list(set(laser_cut_inventory.get_value(self.tab_widget.tabText(self.tab_widget.currentIndex())).keys())))
                 completer = QCompleter(autofill_search_options, self)
                 completer.setCaseSensitivity(Qt.CaseSensitivity.CaseInsensitive)
@@ -3868,15 +3869,15 @@ class MainWindow(QMainWindow):
                 # # QApplication.restoreOverrideCursor()
                 return
 
-            if self.category == "Price Per Pound" and self.tabWidget.tabText(self.tabWidget.currentIndex()) == "Sheets in Inventory":
+            if self.category == "Price Per Pound" and self.tabWidget.tabText(self.tabWidget.currentIndex()) == "Edit Sheets in Inventory":
                 self.pushButton_add_new_sheet.setEnabled(False)
-            elif self.tabWidget.tabText(self.tabWidget.currentIndex()) == "Sheets in Inventory":
+            elif self.tabWidget.tabText(self.tabWidget.currentIndex()) == "Edit Sheets in Inventory":
                 self.pushButton_add_new_sheet.setEnabled(True)
-            if self.tabWidget.tabText(self.tabWidget.currentIndex()) == "Edit Inventory":
+            if self.tabWidget.tabText(self.tabWidget.currentIndex()) == "Edit Components":
                 self.load_inventory_items(tab, category_data)
-            elif self.tabWidget.tabText(self.tabWidget.currentIndex()) == "Sheets in Inventory":
+            elif self.tabWidget.tabText(self.tabWidget.currentIndex()) == "Edit Sheets in Inventory":
                 self.price_of_steel_item(tab, category_data)
-            elif self.tabWidget.tabText(self.tabWidget.currentIndex()) == "Parts in Inventory":
+            elif self.tabWidget.tabText(self.tabWidget.currentIndex()) == "Edit Laser Cut Inventory":
                 self.load_inventory_parts(tab, category_data)
 
             self.scroll_position_manager.restore_scroll_position(
@@ -4144,7 +4145,7 @@ class MainWindow(QMainWindow):
         # QApplication.restoreOverrideCursor()
         # QApplication.setOverrideCursor(Qt.CursorShape.ArrowCursor)
 
-    # NOTE SHEETS IN INVENTORY
+    # NOTE Edit Sheets in Inventory
     def price_of_steel_item(self, tab: CustomTableWidget, category_data: dict) -> None:
         tab.blockSignals(True)
         tab.setEnabled(False)
@@ -4363,7 +4364,7 @@ class MainWindow(QMainWindow):
         # QApplication.restoreOverrideCursor()
         # QApplication.setOverrideCursor(Qt.CursorShape.ArrowCursor)
 
-    # NOTE EDIT INVENTORY
+    # NOTE Edit Components
     def load_inventory_items(self, tab: CustomTableWidget, category_data: dict) -> None:
         tab.blockSignals(True)
         tab.setEnabled(False)
@@ -7156,7 +7157,7 @@ class MainWindow(QMainWindow):
                         user_workspace.save()
                         self.upload_file(
                             [
-                                "workspace - User.json",
+                                "user_workspace.json",
                             ],
                             False,
                         )
@@ -7282,7 +7283,7 @@ class MainWindow(QMainWindow):
                         user_workspace.save()
                         self.upload_file(
                             [
-                                "workspace - User.json",
+                                "user_workspace.json",
                             ],
                             False,
                         )
@@ -7687,7 +7688,7 @@ class MainWindow(QMainWindow):
         self.status_button.setText(f'Synching - {datetime.now().strftime("%r")}', "lime")
         self.upload_file(
             [
-                "workspace - User.json",
+                "user_workspace.json",
             ],
             False,
         )
@@ -7987,7 +7988,7 @@ class MainWindow(QMainWindow):
             self.load_view_assembly_tab()
             QApplication.restoreOverrideCursor()
 
-    # NOTE FOR PARTS IN INVENTORY
+    # NOTE FOR Edit Laser Cut Inventory
     def load_parts_in_inventory_filter_tab(self) -> None:
         self.parts_in_ineventory_filter.clear()
         self.clear_layout(self.verticalLayout_parts_filter)
@@ -8915,7 +8916,7 @@ class MainWindow(QMainWindow):
     # * /\ External Actions /\
     # * \/ THREADS \/
     def sync_changes(self) -> None:
-        if self.tabWidget.tabText(self.tabWidget.currentIndex()) == "Edit Inventory":
+        if self.tabWidget.tabText(self.tabWidget.currentIndex()) == "Edit Components":
             self.status_button.setText(f'Synching - {datetime.now().strftime("%r")}', "lime")
             self.upload_file(
                 [
@@ -8923,7 +8924,7 @@ class MainWindow(QMainWindow):
                 ],
                 False,
             )
-        elif self.tabWidget.tabText(self.tabWidget.currentIndex()) == "Parts in Inventory":
+        elif self.tabWidget.tabText(self.tabWidget.currentIndex()) == "Edit Laser Cut Inventory":
             self.status_button.setText(f'Synching - {datetime.now().strftime("%r")}', "lime")
             self.upload_file(
                 [
@@ -8931,7 +8932,7 @@ class MainWindow(QMainWindow):
                 ],
                 False,
             )
-        elif self.tabWidget.tabText(self.tabWidget.currentIndex()) == "Sheets in Inventory":
+        elif self.tabWidget.tabText(self.tabWidget.currentIndex()) == "Edit Sheets in Inventory":
             self.status_button.setText(f'Synching - {datetime.now().strftime("%r")}', "lime")
             self.upload_file(
                 [
@@ -8944,15 +8945,15 @@ class MainWindow(QMainWindow):
             if self.category == "Staging":
                 self.upload_file(
                     [
-                        "workspace - Admin.json",
+                        "admin_workspace.json",
                     ],
                     False,
                 )
             else:
                 self.upload_file(
                     [
-                        "workspace - User.json",
-                        "workspace - History.json",
+                        "user_workspace.json",
+                        "history_workspace.json",
                     ],
                     False,
                 )
@@ -9074,8 +9075,8 @@ class MainWindow(QMainWindow):
             self.status_button.setText(f'Synched - {datetime.now().strftime("%r")}', "lime")
         if self.downloading_changes and data == "Successfully downloaded":
             if self.tabWidget.tabText(self.tabWidget.currentIndex()) in [
-                "Parts in Inventory",
-                "Sheets in Inventory",
+                "Edit Laser Cut Inventory",
+                "Edit Sheets in Inventory",
             ]:
                 components_inventory.load_data()
                 sheets_inventory.load_data()
@@ -9140,7 +9141,7 @@ class MainWindow(QMainWindow):
         settings_file.set_value("exchange_rate", exchange_rate)
         self.update_stock_costs()
 
-    # NOTE SHEETS IN INVENTORY
+    # NOTE Edit Sheets in Inventory
     def send_sheet_report(self) -> None:
         thread = SendReportThread()
         self.start_thread(thread)
@@ -9170,9 +9171,9 @@ class MainWindow(QMainWindow):
                 f"{self.inventory_file_name} - Price of Steel.json",
                 f"{self.inventory_file_name}.json",
                 "workspace_settings.json",
-                "workspace - Admin.json",
-                "workspace - User.json",
-                "workspace - History.json",
+                "admin_workspace.json",
+                "user_workspace.json",
+                "history_workspace.json",
                 "price_of_steel_information.json",
             ],
             False,
@@ -9506,7 +9507,7 @@ class MainWindow(QMainWindow):
             return
         if event.mimeData().hasUrls:
             for url in event.mimeData().urls():
-                if str(url.toLocalFile()).endswith(".xlsx") and self.tabWidget.tabText(self.tabWidget.currentIndex()) == "Edit Inventory":
+                if str(url.toLocalFile()).endswith(".xlsx") and self.tabWidget.tabText(self.tabWidget.currentIndex()) == "Edit Components":
                     event.setDropAction(Qt.DropAction.CopyAction)
                     event.accept()
                     self.set_layout_message("", "Add", "a new Purchase Order template", 80, None)
@@ -9530,7 +9531,7 @@ class MainWindow(QMainWindow):
             event.setDropAction(Qt.DropAction.CopyAction)
             event.accept()
             for url in event.mimeData().urls():
-                if str(url.toLocalFile()).endswith(".xlsx") and self.tabWidget.tabText(self.tabWidget.currentIndex()) == "Edit Inventory":
+                if str(url.toLocalFile()).endswith(".xlsx") and self.tabWidget.tabText(self.tabWidget.currentIndex()) == "Edit Components":
                     files = [str(url.toLocalFile()) for url in event.mimeData().urls()]
                     # self.load_categories()
                     self.add_po_templates(files)

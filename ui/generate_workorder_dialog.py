@@ -16,7 +16,7 @@ from utils.json_file import JsonFile
 from utils.workspace.assembly import Assembly
 from utils.workspace.workspace import Workspace
 
-admin_workspace = Workspace("workspace - Admin")
+admin_workspace = Workspace("admin_workspace")
 
 
 class GenerateWorkorderDialog(QDialog):

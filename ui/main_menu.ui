@@ -81,7 +81,7 @@
          <normaloff>../../../../../.designer/icons/cil-align-center.png</normaloff>../../../../../.designer/icons/cil-align-center.png</iconset>
        </attribute>
        <attribute name="title">
-        <string>Edit Inventory</string>
+        <string>Edit Components</string>
        </attribute>
        <layout class="QVBoxLayout" name="verticalLayout_41">
         <item>
@@ -460,7 +460,7 @@ QPushButton#pushButton_create_new:disabled{
          <normaloff>../../../../../.designer/icons/cil-align-center.png</normaloff>../../../../../.designer/icons/cil-align-center.png</iconset>
        </attribute>
        <attribute name="title">
-        <string>Sheets in Inventory</string>
+        <string>Edit Sheets in Inventory</string>
        </attribute>
        <layout class="QVBoxLayout" name="verticalLayout_13">
         <property name="leftMargin">
@@ -682,7 +682,7 @@ QPushButton#pushButton_add_new_sheet:disabled{
          <normaloff>../../../../../.designer/icons/cil-align-center.png</normaloff>../../../../../.designer/icons/cil-align-center.png</iconset>
        </attribute>
        <attribute name="title">
-        <string>Parts in Inventory</string>
+        <string>Edit Laser Cut Inventory</string>
        </attribute>
        <layout class="QVBoxLayout" name="verticalLayout_12">
         <property name="leftMargin">

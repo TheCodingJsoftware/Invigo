@@ -332,7 +332,7 @@ QPushButton:pressed#pushButton_has_items:!checked {
                 </size>
                </property>
                <property name="toolTip">
-                <string>Will add/update parts in inventory.</string>
+                <string>Will add/update Edit Laser Cut Inventory.</string>
                </property>
                <property name="autoFillBackground">
                 <bool>false</bool>

@@ -21,7 +21,7 @@ workbook = xlsxwriter.Workbook("qr_codes.xlsx")
 workbook.set_properties(
     {
         "title": "QR Codes",
-        "subject": "For Sheets in Inventory",
+        "subject": "For Edit Sheets in Inventory",
         "author": "Jared Gross",
         "manager": "Jared Gross",
         "company": "TheCodingJsoftware",

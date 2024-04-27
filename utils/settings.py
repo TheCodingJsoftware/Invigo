@@ -91,9 +91,9 @@ class Settings:
         self.check_setting(
             setting="menu_tabs_order",
             default_value=[
-                "Edit Inventory",
-                "Sheets in Inventory",
-                "Parts in Inventory",
+                "Edit Components",
+                "Edit Sheets in Inventory",
+                "Edit Laser Cut Inventory",
                 "OmniGen",
                 "Workspace",
                 "Chat",
@@ -105,9 +105,9 @@ class Settings:
         self.check_setting(
             setting="category_tabs_order",
             default_value={
-                "Edit Inventory": [],
-                "Sheets in Inventory": [],
-                "Parts in Inventory": [],
+                "Edit Components": [],
+                "Edit Sheets in Inventory": [],
+                "Edit Laser Cut Inventory": [],
                 "Workspace": [],
             },
         )
