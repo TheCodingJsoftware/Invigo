@@ -26,7 +26,7 @@ class AssemblyTable:
         html += '<tbody id="table-body">'
         for assembly, data in self.data.items():
             flow_tag = " ➜ ".join(assembly.assembly_data["flow_tag"])
-            assembly_image_path = assembly.get_assembly_data("assembly_image")
+            assembly_image_path = assembly.assembly_image
             image_html = f'<img src="{self.program_directory}/{assembly_image_path}" alt="Image" class="nest_image" id="{self.program_directory}/{assembly_image_path}">' if assembly_image_path else "No image provided"
             html += "<tr>" f'<td class="ui-table-cell-visible">{image_html}</td>' f'<td class="ui-table-cell-visible">{assembly.name}</td>' f'<td class="ui-table-cell-visible">{data["quantity"]}</td>' f'<td class="ui-table-cell-visible">{flow_tag}</td>' "</tr>"
         html += "</tbody></table>"
@@ -186,14 +186,14 @@ class GeneratePrintout:
             text = ""
             if assembly in list(self.data.keys()):
                 assembly_flow_tag = " ➜ ".join(assembly.assembly_data["flow_tag"])
-                assembly_image_path = assembly.get_assembly_data("assembly_image")
+                assembly_image_path = assembly.assembly_image
                 items_table = ItemsTable(
                     assembly,
                     self.data[assembly]["quantity"],
                     self.data[assembly]["show_all_items"],
                 )
                 image_html = f'<img src="{self.program_directory}/{assembly_image_path}" alt="Image" class="nest_image" id="{self.program_directory}/{assembly_image_path}">' if assembly_image_path else ""
-                text += f'<div style="margin: 15px; padding: 5px; border: 1px solid #bbb; border-radius: 10px">'
+                text += '<div style="margin: 15px; padding: 5px; border: 1px solid #bbb; border-radius: 10px">'
                 text += f'<div style="display: inline-flex;">{image_html}<div><h2 style="margin: 0;">{assembly.name} x {self.data[assembly]["quantity"]}</h2><p>Flow Tag: {assembly_flow_tag}</p></div></div>'
                 if len(assembly.items) > 0:
                     text += items_table.generate()

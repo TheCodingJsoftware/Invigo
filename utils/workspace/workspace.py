@@ -27,7 +27,7 @@ class Workspace:
 
     def __create_file(self) -> None:
         if not os.path.exists(f"{self.FOLDER_LOCATION}/{self.file_name}.json"):
-            with open(f"{self.FOLDER_LOCATION}/{self.file_name}.json", "w") as json_file:
+            with open(f"{self.FOLDER_LOCATION}/{self.file_name}.json", "w", encoding="utf-8") as json_file:
                 json_file.write("{}")
 
     def save(self) -> None:
@@ -81,32 +81,32 @@ class Workspace:
         # Consider filtering items relevant to the user
         return {}
 
-    def filter_assemblies(self, sub_assembly: Assembly, filter: dict):
-        lineEdit_search: QLineEdit = filter["search"]
-        materials: list[QPushButton] = filter["materials"]
-        thicknesses: list[QPushButton] = filter["thicknesses"]
-        flow_tags: list[QPushButton] = filter["flow_tags"]
-        statuses: list[QPushButton] = filter["statuses"]
-        paint_colors: list[QPushButton] = filter["paint"]
-        groupBox_due_dates: QGroupBox = filter["due_dates"]
-        calendar = filter["calendar"]
+    def filter_assemblies(self, sub_assembly: Assembly, assembly_filter: dict):
+        lineEdit_search: QLineEdit = assembly_filter["search"]
+        materials: list[QPushButton] = assembly_filter["materials"]
+        thicknesses: list[QPushButton] = assembly_filter["thicknesses"]
+        flow_tags: list[QPushButton] = assembly_filter["flow_tags"]
+        statuses: list[QPushButton] = assembly_filter["statuses"]
+        paint_colors: list[QPushButton] = assembly_filter["paint"]
+        groupBox_due_dates: QGroupBox = assembly_filter["due_dates"]
+        calendar = assembly_filter["calendar"]
         dateTimeEdit_after, dateTimeEdit_before = calendar.get_timeline()  # end date
-        show_recut: bool = filter["show_recut"]
+        show_recut: bool = assembly_filter["show_recut"]
 
         # Recursively filter sub-assemblies
         completed_items = 0
         for item in sub_assembly.items:
-            item.set_value(key="show", value=False)
-            if show_recut and item.get_value(key="recut") == False:
+            item.show = False
+            if show_recut and item.recut == False:
                 continue
-            if item.get_value(key="completed") == True:
+            if item.completed == True:
                 completed_items += 1
                 #     item.parent_assembly.set_parent_assembly_value(key="show", value=True)
                 #     item.set_value(key="show", value=True)
                 continue
 
             if item.name == "":
-                item.set_value(key="show", value=True)
+                item.show = True
                 item.parent_assembly.set_parent_assembly_value(key="show", value=True)
                 continue
 
@@ -115,28 +115,28 @@ class Workspace:
                 continue
 
             if selected_materials := [button.text() for button in materials if button.isChecked()]:
-                item_materials = item.get_value("material")
+                item_materials = item.material
                 if item_materials not in selected_materials:
                     continue
 
             if selected_thicknesses := [button.text() for button in thicknesses if button.isChecked()]:
-                item_thicknesses = item.get_value("thickness")
+                item_thicknesses = item.thickness
                 if item_thicknesses not in selected_thicknesses:
                     continue
 
             if selected_flow_tags := [button.text() for button in flow_tags if button.isChecked()]:
                 with contextlib.suppress(IndexError):  # This means the part is 'completed'
-                    item_flow_tag = item.get_value("flow_tag")[item.get_value("current_flow_state")]
+                    item_flow_tag = item.get_current_flow_state()
                     if item_flow_tag not in selected_flow_tags:
                         continue
 
             if selected_statuses := [button.text() for button in statuses if button.isChecked()]:
-                item_status = item.get_value("status")
+                item_status = item.status
                 if item_status not in selected_statuses:
                     continue
 
             if selected_paint_colors := [button.text() for button in paint_colors if button.isChecked()]:
-                item_paint = item.get_value("paint_color")
+                item_paint = item.paint_color
                 if item_paint != None:
                     for color_name, color_code in workspace_tags.get_value("paint_colors").items():
                         if color_code == item_paint:
@@ -150,69 +150,69 @@ class Workspace:
             # Apply due dates filter
             # with contextlib.suppress(TypeError, AttributeError):
             if groupBox_due_dates.isChecked():
-                item_start_date = QDate.fromString(item.get_value("starting_date"), "yyyy-M-d")
-                item_ending_date = QDate.fromString(item.get_value("ending_date"), "yyyy-M-d")
+                item_start_date = QDate.fromString(item.starting_date, "yyyy-M-d")
+                item_ending_date = QDate.fromString(item.ending_date, "yyyy-M-d")
                 if dateTimeEdit_after is not None and dateTimeEdit_before is not None:
                     if not (item_start_date.daysTo(dateTimeEdit_before) >= 0 and item_ending_date.daysTo(dateTimeEdit_after) <= 0):
                         continue
                 elif dateTimeEdit_after is not None and dateTimeEdit_before is None:
                     if not (item_start_date.daysTo(dateTimeEdit_after) >= 0 and item_ending_date.daysTo(dateTimeEdit_after) <= 0):
                         continue
-            item.set_value(key="show", value=True)
+            item.show = True
             item.parent_assembly.set_parent_assembly_value(key="show", value=True)
         if self.get_completion_percentage(assembly=sub_assembly)[0] == 1:  # is item completeion 100%
-            sub_assembly.set_assembly_data(key="show", value=False)
+            sub_assembly.show = False
             if selected_flow_tags := [button.text() for button in flow_tags if button.isChecked()]:
                 with contextlib.suppress(IndexError):  # This means the part is 'completed'
-                    assembly_flow_tag = sub_assembly.get_assembly_data("flow_tag")[sub_assembly.get_assembly_data("current_flow_state")]
+                    assembly_flow_tag = sub_assembly.get_current_flow_state()
                     if assembly_flow_tag in selected_flow_tags:
-                        sub_assembly.set_assembly_data(key="show", value=True)
+                        sub_assembly.show = True
                         sub_assembly.set_parent_assembly_value(key="show", value=True)
             if selected_statuses := [button.text() for button in statuses if button.isChecked()]:
-                assembly_status = sub_assembly.get_assembly_data("status")
+                assembly_status = sub_assembly.status
                 if assembly_status is None:
                     assembly_status = "None"
                 if assembly_status in selected_statuses:
-                    sub_assembly.set_assembly_data(key="show", value=True)
+                    sub_assembly.show = True
                     sub_assembly.set_parent_assembly_value(key="show", value=True)
             if groupBox_due_dates.isChecked():
-                assembly_start_date = QDate.fromString(sub_assembly.get_assembly_data("starting_date"), "yyyy-M-d")
-                assembly_ending_date = QDate.fromString(sub_assembly.get_assembly_data("ending_date"), "yyyy-M-d")
+                assembly_start_date = QDate.fromString(sub_assembly.starting_date, "yyyy-M-d")
+                assembly_ending_date = QDate.fromString(sub_assembly.ending_date, "yyyy-M-d")
                 if dateTimeEdit_after is not None and dateTimeEdit_before is not None:
                     if assembly_start_date.daysTo(dateTimeEdit_before) >= 0 and assembly_ending_date.daysTo(dateTimeEdit_after) <= 0:
-                        sub_assembly.set_assembly_data(key="show", value=True)
+                        sub_assembly.show = True
                         sub_assembly.set_parent_assembly_value(key="show", value=True)
                     else:
-                        sub_assembly.set_assembly_data(key="show", value=False)
+                        sub_assembly.show = False
                 elif dateTimeEdit_after is not None and dateTimeEdit_before is None:
                     if assembly_start_date.daysTo(dateTimeEdit_after) >= 0 and assembly_ending_date.daysTo(dateTimeEdit_after) <= 0:
-                        sub_assembly.set_assembly_data(key="show", value=True)
+                        sub_assembly.show = True
                         sub_assembly.set_parent_assembly_value(key="show", value=True)
                     else:
-                        sub_assembly.set_assembly_data(key="show", value=False)
+                        sub_assembly.show = False
             with contextlib.suppress(TypeError, IndexError):
-                assembly_flow_tag = sub_assembly.get_assembly_data("flow_tag")[sub_assembly.get_assembly_data("current_flow_state")]
+                assembly_flow_tag = sub_assembly.get_current_flow_state()
                 if workspace_tags.get_value("attributes")[assembly_flow_tag]["show_all_items"]:
                     for item in sub_assembly.items:
-                        item.set_value(key="show", value=True)
+                        item.show = True
             if not (sub_assembly.all_sub_assemblies_complete() and sub_assembly.all_items_complete()):
-                sub_assembly.set_assembly_data(key="show", value=False)
+                sub_assembly.show = False
 
         for _sub_assembly in sub_assembly.sub_assemblies:
-            self.filter_assemblies(sub_assembly=_sub_assembly, filter=filter)
+            self.filter_assemblies(sub_assembly=_sub_assembly, assembly_filter=assembly_filter)
 
-    def get_filtered_data(self, filter: dict) -> dict:
+    def get_filtered_data(self, assembly_filter: dict) -> dict:
         workspace_tags.load_data()
-        if not filter:
+        if not assembly_filter:
             for assembly in self.data:
                 assembly.set_default_value_to_all_items(key="show", value=True)
                 assembly.set_data_to_all_sub_assemblies(key="show", value=True)
-                assembly.set_assembly_data(key="show", value=True)
+                assembly.show = True
             return self.data
         try:
-            checkbox_use_filter: QPushButton = filter["use_filter"]
-            flow_tags: list[QPushButton] = filter["flow_tags"]
-            statuses: list[QPushButton] = filter["statuses"]
+            checkbox_use_filter: QPushButton = assembly_filter["use_filter"]
+            flow_tags: list[QPushButton] = assembly_filter["flow_tags"]
+            statuses: list[QPushButton] = assembly_filter["statuses"]
         except KeyError:  # For a wierd bug if the filter loads before the gui
             return {}
 
@@ -220,11 +220,11 @@ class Workspace:
             for assembly in self.data:
                 assembly.set_default_value_to_all_items(key="show", value=True)
                 assembly.set_data_to_all_sub_assemblies(key="show", value=True)
-                assembly.set_assembly_data(key="show", value=True)
+                assembly.show = True
             return self.data
         else:
             for assembly in self.data:
-                self.filter_assemblies(sub_assembly=assembly, filter=filter)
+                self.filter_assemblies(sub_assembly=assembly, assembly_filter=assembly_filter)
             # for assembly in self.data:
             #     if self.is_assembly_empty(assembly) == True and (assembly.any_sub_assemblies_to_show() and assembly.all_sub_assemblies_complete()):
             #         assembly.set_assembly_data(key="show", value=True)
@@ -243,17 +243,17 @@ class Workspace:
         return self.data
 
     def __gather_sub_assembly_data(self, sub_assembly: Assembly, data: list) -> bool:
-        should_show = any(item.get_value(key="show") for item in sub_assembly.items)
+        should_show = any(item.show for item in sub_assembly.items)
         data.append(should_show)
         for _sub_assembly in sub_assembly.sub_assemblies:
-            should_show = any(item.get_value(key="show") for item in _sub_assembly.items)
+            should_show = any(item.show for item in _sub_assembly.items)
             data.append(should_show)
             # data.extend(self.__gather_sub_assembly_data(sub_assembly=_sub_assembly, data=data))
         return data
 
     def is_assembly_empty(self, assembly: Assembly) -> bool:
         data = {assembly: []}
-        should_show = any(item.get_value(key="show") for item in assembly.items)
+        should_show = any(item.show for item in assembly.items)
         data[assembly].append(should_show)
         for sub_assembly in assembly.sub_assemblies:
             data[assembly].extend(self.__gather_sub_assembly_data(sub_assembly=sub_assembly, data=data[assembly]))
@@ -300,21 +300,21 @@ class Workspace:
         )
 
     def remove_assembly(self, assembly_to_delete: Assembly) -> Assembly:
-        copy = self.copy(assembly_to_delete)
+        assembly_copy = self.copy(assembly_to_delete)
         for i, assembly in enumerate(self.data):
             if assembly == assembly_to_delete:
                 self.data.pop(i)
                 break
-        return copy
+        return assembly_copy
 
     def get_all_assembly_names(self) -> list[str]:
         return [assembly.name for assembly in self.data]
 
     def __get_counts(self, sub_assembly: Assembly) -> tuple[int, int, int, int]:
         item_count: int = 0 + len(sub_assembly.items)
-        item_completion_count: int = sum(bool(item.get_value("completed")) for item in sub_assembly.items)
+        item_completion_count: int = sum(bool(item.completed) for item in sub_assembly.items)
         assembly_count: int = 0 + len(sub_assembly.sub_assemblies)
-        assembly_completion_count: int = sum(bool(sub_assembly.get_assembly_data("completed")) for sub_assembly in sub_assembly.sub_assemblies)
+        assembly_completion_count: int = sum(sub_assembly.completed for sub_assembly in sub_assembly.sub_assemblies)
 
         for _sub_assembly in sub_assembly.sub_assemblies:
             (
@@ -352,36 +352,32 @@ class Workspace:
         return item_completion_percentage, assembly_completion_percentage
 
     def get_all_groups(self) -> list[str]:
-        return list(set(assembly.get_assembly_data(key="group") for assembly in self.data if assembly.get_assembly_data("show")))
+        return list({assembly.group for assembly in self.data if assembly.show})
 
     def _get_all_groups(self) -> list[str]:
-        return list(set(assembly.get_assembly_data(key="group") for assembly in self.data))
+        return list({assembly.group for assembly in self.data})
 
     def get_group_color(self, group: str) -> str | None:
         return next(
-            (assembly.get_assembly_data(key="group_color") for assembly in self.data if assembly.get_assembly_data(key="group") == group),
+            (assembly.group_color for assembly in self.data if assembly.group == group),
             None,
         )
 
     def _get_all_groups(self) -> list[str]:
-        return list(set(assembly.get_assembly_data(key="group") for assembly in self.data))
+        return list({assembly.group for assembly in self.data})
 
     def get_grouped_data(self) -> dict[str, list[Assembly]]:
-        data: dict[str, list[Assembly]] = {}
-        for group in self.get_all_groups():
-            data[group] = []
+        data: dict[str, list[Assembly]] = {group: [] for group in self.get_all_groups()}
         for assembly in self.data:
             with contextlib.suppress(KeyError):
-                data[assembly.get_assembly_data(key="group")].append(assembly)
+                data[assembly.group].append(assembly)
         return data
 
     def _get_grouped_data(self) -> dict[str, list[Assembly]]:
-        data: dict[str, list[Assembly]] = {}
-        for group in self._get_all_groups():
-            data[group] = []
+        data: dict[str, list[Assembly]] = {group: [] for group in self._get_all_groups()}
         for assembly in self.data:
             with contextlib.suppress(KeyError):
-                data[assembly.get_assembly_data(key="group")].append(assembly)
+                data[assembly.group].append(assembly)
         return data
 
     def __get_all_items(self, sub_assembly: Assembly) -> list[WorkspaceItem]:
@@ -403,7 +399,7 @@ class Workspace:
         all_items: list[WorkspaceItem] = self.get_all_items()
         grouped_items: WorkspaceItemGroup = WorkspaceItemGroup()
         for item in all_items:
-            if item.get_value(key="show"):
+            if item.show:
                 grouped_items.add_item(item)
         return grouped_items
 
@@ -424,13 +420,7 @@ class Workspace:
         return all_assemblies
 
     def do_all_items_have_flow_tags(self) -> bool:
-        for item in self.get_all_items():
-            if len(item.get_value(key="flow_tag")) == 0:
-                return False
-        return True
+        return all(len(item.flow_tag) != 0 for item in self.get_all_items())
 
     def do_all_sub_assemblies_have_flow_tags(self) -> bool:
-        for assembly in self.get_all_assemblies():
-            if len(assembly.get_assembly_data(key="flow_tag")) == 0:
-                return False
-        return True
+        return all(len(assembly.flow_tag) != 0 for assembly in self.get_all_assemblies())
