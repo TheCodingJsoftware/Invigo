@@ -122,7 +122,11 @@ class FileUploadHandler(tornado.web.RequestHandler):
                 # Save the received file to a local location
                 with open(f"data/{file_name}", "wb") as file:
                     file.write(file_data)
-                if file_name == f"{inventory_file_name}.json" or file_name == f"{inventory_file_name} - Price of Steel.json" or file_name == f"{inventory_file_name} - Parts in Inventory.json":  # This needs to be done because the website uses this file
+                if file_name in [
+                    f"{inventory_file_name}.json",
+                    f"{inventory_file_name} - Price of Steel.json",
+                    f"{inventory_file_name} - Parts in Inventory.json",
+                ]:  # This needs to be done because the website uses this file
                     threading.Thread(target=update_inventory_file_to_pinecone, args=(file_name,)).start()
             elif get_file_type(file_name) == "JPEG":
                 # Save the received file to a local location
@@ -163,8 +167,7 @@ class FileUploadHandler(tornado.web.RequestHandler):
 
 class WorkspaceFileUploader(tornado.web.RequestHandler):
     async def post(self):
-        file_info = self.request.files.get("file")
-        if file_info:
+        if file_info := self.request.files.get("file"):
             file_data = file_info[0]["body"]
             file_name = os.path.basename(file_info[0]["filename"])
             file_ext = os.path.splitext(file_name)[1].upper().replace(".", "")
@@ -199,7 +202,7 @@ class WorkspaceFileHandler(tornado.web.RequestHandler):
 
 class ImageHandler(tornado.web.RequestHandler):
     def get(self, image_name):
-        filepath = os.path.join("parts in inventory images", image_name)
+        filepath = os.path.join("Edit Laser Cut Inventory images", image_name)
         if os.path.exists(filepath):
             with open(filepath, "rb") as f:
                 self.set_header("Content-Type", "image/jpeg")
@@ -263,11 +266,9 @@ class SheetQuantityHandler(tornado.web.RequestHandler):
             pending_data = get_sheet_pending_data(sheet_name=sheet_name)
             if self.request.remote_ip in ["10.0.0.11", "10.0.0.64", "10.0.0.217"]:
                 template = env.get_template("sheet_template.html")
-                rendered_template = template.render(sheet_name=sheet_name, quantity=quantity, pending_data=pending_data)
             else:
                 template = env.get_template("sheet_template_read_only.html")
-                rendered_template = template.render(sheet_name=sheet_name, quantity=quantity, pending_data=pending_data)
-
+            rendered_template = template.render(sheet_name=sheet_name, quantity=quantity, pending_data=pending_data)
             self.write(rendered_template)
         else:
             self.write("Sheet not found")
@@ -399,8 +400,7 @@ class SendErrorReport(tornado.web.RequestHandler):
 
 class UploadSheetsSettingsHandler(tornado.web.RequestHandler):
     async def post(self):
-        file_info = self.request.arguments.get("file")
-        if file_info:
+        if file_info := self.request.arguments.get("file"):
             file_data = file_info[1]
             file_name = file_info[0].decode()
             CustomPrint.print(

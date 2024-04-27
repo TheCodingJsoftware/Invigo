@@ -10,10 +10,7 @@ from openpyxl import load_workbook
 
 def _make_name_safe(name: str):
     invalid_chars_pattern = r'[<>:"/\\|?*]'
-
-    safe_directory_name = re.sub(invalid_chars_pattern, "_", name)
-
-    return safe_directory_name
+    return re.sub(invalid_chars_pattern, "_", name)
 
 
 def _find_column(path_to_excel_file: str, column_name_to_find: str) -> int:

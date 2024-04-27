@@ -25,8 +25,8 @@ class AssemblyTable:
         html += "</tr>"
         html += '<tbody id="table-body">'
         for assembly, data in self.data.items():
-            flow_tag = " ➜ ".join(assembly.assembly_data["flow_tag"])
-            assembly_image_path = assembly.get_assembly_data("assembly_image")
+            flow_tag = " ➜ ".join(assembly.flow_tag)
+            assembly_image_path = assembly.assembly_image
             image_html = f'<img src="{self.program_directory}/{assembly_image_path}" alt="Image" class="nest_image" id="{self.program_directory}/{assembly_image_path}">' if assembly_image_path else "No image provided"
             html += "<tr>" f'<td class="ui-table-cell-visible">{image_html}</td>' f'<td class="ui-table-cell-visible">{assembly.name}</td>' f'<td class="ui-table-cell-visible">{data["quantity"]}</td>' f'<td class="ui-table-cell-visible">{flow_tag}</td>' "</tr>"
         html += "</tbody></table>"
@@ -60,15 +60,15 @@ class ItemsTable:
 
         html += '<tbody id="table-body">'
         for item in self.items:
-            flow_tag = " ➜ ".join(item.data["flow_tag"])
+            flow_tag = " ➜ ".join(item.flow_tag)
             html += (
                 "<tr>"
                 f'<td class="ui-table-cell-visible">{item.name}</td>'
-                f'<td class="ui-table-cell-visible">{item.data["material"]}</td>'
-                f'<td class="ui-table-cell-visible">{item.data["thickness"]}</td>'
-                f'<td class="ui-table-cell-visible">{item.data["parts_per"] * self.assembly_quantity}</td>'
-                f'<td class="ui-table-cell-visible">{item.data["shelf_number"]}</td>'
-                f'<td class="ui-table-cell-visible">{item.data["notes"]}</td>'
+                f'<td class="ui-table-cell-visible">{item.material}</td>'
+                f'<td class="ui-table-cell-visible">{item.thickness}</td>'
+                f'<td class="ui-table-cell-visible">{item.parts_per * self.assembly_quantity}</td>'
+                f'<td class="ui-table-cell-visible">{item.shelf_number}</td>'
+                f'<td class="ui-table-cell-visible">{item.notes}</td>'
                 f'<td class="ui-table-cell-visible">{flow_tag}</td>'
                 "</tr>"
             )
@@ -185,15 +185,15 @@ class GeneratePrintout:
         def get_items_table(assembly: Assembly) -> str:
             text = ""
             if assembly in list(self.data.keys()):
-                assembly_flow_tag = " ➜ ".join(assembly.assembly_data["flow_tag"])
-                assembly_image_path = assembly.get_assembly_data("assembly_image")
+                assembly_flow_tag = " ➜ ".join(assembly.flow_tag)
+                assembly_image_path = assembly.assembly_image
                 items_table = ItemsTable(
                     assembly,
                     self.data[assembly]["quantity"],
                     self.data[assembly]["show_all_items"],
                 )
                 image_html = f'<img src="{self.program_directory}/{assembly_image_path}" alt="Image" class="nest_image" id="{self.program_directory}/{assembly_image_path}">' if assembly_image_path else ""
-                text += f'<div style="margin: 15px; padding: 5px; border: 1px solid #bbb; border-radius: 10px">'
+                text += '<div style="margin: 15px; padding: 5px; border: 1px solid #bbb; border-radius: 10px">'
                 text += f'<div style="display: inline-flex;">{image_html}<div><h2 style="margin: 0;">{assembly.name} x {self.data[assembly]["quantity"]}</h2><p>Flow Tag: {assembly_flow_tag}</p></div></div>'
                 if len(assembly.items) > 0:
                     text += items_table.generate()

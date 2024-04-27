@@ -1,4 +1,3 @@
-# sourcery skip: avoid-builtin-shadow
 import configparser
 import contextlib
 import copy
@@ -162,7 +161,6 @@ from utils.workspace.monday_excel_file import MondayExcelFile
 from utils.workspace.workspace import Workspace
 from utils.workspace.workspace_item import WorkspaceItem
 from utils.workspace.workspace_item_group import WorkspaceItemGroup
-from web_scrapers.ebay_scraper import EbayScraper
 from web_scrapers.exchange_rate import ExchangeRate
 
 __author__: str = "Jared Gross"
@@ -170,8 +168,8 @@ __copyright__: str = "Copyright 2022-2024, TheCodingJ's"
 __credits__: list[str] = ["Jared Gross"]
 __license__: str = "MIT"
 __name__: str = "Invigo"
-__version__: str = "v2.3.0"
-__updated__: str = "2024-04-25 09:20:25"
+__version__: str = "v2.3.1"
+__updated__: str = "2024-04-27 14:20:44"
 __maintainer__: str = "Jared Gross"
 __email__: str = "jared@pinelandfarms.ca"
 __status__: str = "Production"
@@ -218,23 +216,23 @@ logging.basicConfig(
 def excepthook(exc_type, exc_value, exc_traceback):
     logging.error("Unhandled exception", exc_info=(exc_type, exc_value, exc_traceback))
     sys.__excepthook__(exc_type, exc_value, exc_traceback)
-    threading.Thread(target=send_error_report, args=(exc_type, exc_value, exc_traceback)).start()
+    threading.Thread(target=send_error_report).start()
     win32api.MessageBox(
         0,
-        f"We've encountered an unexpected issue, but don't worry—help is already on the way. The details of this glitch have been automatically reported to {__maintainer__}, and a notification has been sent to {__email__} for immediate attention. Rest assured, {__maintainer__} is on the case and will likely have this resolved with the next update. Your patience and understanding are greatly appreciated. If this problem persists, please don't hesitate to reach out directly to {__maintainer__} for further assistance.\n\nTechnical details for reference:\n- Exception Type: {exc_type}\n- Error Message: {exc_value}\n- Traceback Information: {exc_traceback}",
+        f"We've encountered an unexpected issue. The details of this glitch have been automatically reported to {__maintainer__}, and a notification has been sent to {__email__} for immediate attention. Rest assured, {__maintainer__} is on the case and will likely have this resolved with the next update. Your patience and understanding are greatly appreciated. If this problem persists, please don't hesitate to reach out directly to {__maintainer__} for further assistance.\n\nTechnical details for reference:\n- Exception Type: {exc_type}\n- Error Message: {exc_value}\n- Traceback Information: {exc_traceback}",
         "Unhandled exception - excepthook detected",
         0x40,
     )  # 0x40 for OK button
 
 
-def send_error_report(exc_type, exc_value, exc_traceback):
+def send_error_report():
     SERVER_IP: str = get_server_ip_address()
     SERVER_PORT: int = get_server_port()
     url = f"http://{SERVER_IP}:{SERVER_PORT}/send_error_report"
-    with open("logs/app.log", "r") as error_log:
+    with open("logs/app.log", "r", encoding="utf-8") as error_log:
         error_data = error_log.read()
     data = {"error_log": f"User: {os.getlogin().title()}\nVersion: {__version__}\n\n{error_data}"}
-    response = requests.post(url, data=data)
+    response = requests.post(url, data=data, timeout=5)
     if response.status_code != 200:
         win32api.MessageBox(
             0,
@@ -246,22 +244,18 @@ def send_error_report(exc_type, exc_value, exc_traceback):
 
 # Set the exception hook
 sys.excepthook = excepthook
-sys.setrecursionlimit(10**4)
-sys.argv += ["--enable-features=WebComponentsV0Enabled"]
-
-# 2048 is the hard limit
-win32file._setmaxstdio(2048)
 
 settings_file = Settings()
 
-inventory = JsonFile(file_name=f"data/{settings_file.get_value(setting_name='inventory_file_name')}")
-price_of_steel_inventory = JsonFile(file_name=f"data/{settings_file.get_value(setting_name='inventory_file_name')} - Price of Steel")
-parts_in_inventory = JsonFile(file_name=f"data/{settings_file.get_value(setting_name='inventory_file_name')} - Parts in Inventory")
+components_inventory = JsonFile(file_name=f"data/{settings_file.get_value(setting_name='inventory_file_name')}")
+sheets_inventory = JsonFile(file_name=f"data/{settings_file.get_value(setting_name='inventory_file_name')} - Price of Steel")
+laser_cut_inventory = JsonFile(file_name=f"data/{settings_file.get_value(setting_name='inventory_file_name')} - Parts in Inventory")
+
 price_of_steel_information = JsonFile(file_name="price_of_steel_information.json")
 
-user_workspace = Workspace("workspace - User")
-admin_workspace = Workspace("workspace - Admin")
-history_workspace = Workspace("workspace - History")
+user_workspace = Workspace("user_workspace")
+admin_workspace = Workspace("admin_workspace")
+history_workspace = Workspace("history_workspace")
 
 workspace_tags = JsonFile(file_name="data/workspace_settings")
 
@@ -340,6 +334,7 @@ class MainWindow(QMainWindow):
         self.scroll_position_manager = ScrollPositionManager()
         self.margins = (15, 15, 5, 5)  # top, bottom, left, right
         self.margin_format = f"margin-top: {self.margins[0]}%; margin-bottom: {self.margins[1]}%; margin-left: {self.margins[2]}%; margin-right: {self.margins[3]}%;"
+        self.ignore_update: bool = False
 
         program_directory = os.path.dirname(os.path.realpath(sys.argv[0]))
         self.config = configparser.ConfigParser()
@@ -540,12 +535,12 @@ class MainWindow(QMainWindow):
         self.pushButton_add_new_sheet.clicked.connect(self.add_sheet_item)
         self.pushButton_add_quantity.clicked.connect(self.add_quantity)
         # self.pushButton_add_quantity.setEnabled(False)
-        self.pushButton_add_quantity.setIcon(QIcon(f"icons/list_add.png"))
+        self.pushButton_add_quantity.setIcon(QIcon("icons/list_add.png"))
         self.pushButton_remove_quantity.clicked.connect(self.remove_quantity)
         # self.pushButton_remove_quantity.setEnabled(False)
-        self.pushButton_remove_quantity.setIcon(QIcon(f"icons/list_remove.png"))
+        self.pushButton_remove_quantity.setIcon(QIcon("icons/list_remove.png"))
         self.listWidget_itemnames.itemSelectionChanged.connect(self.listWidget_item_changed)
-        self.pushButton_remove_quantities_from_inventory.setIcon(QIcon(f"icons/list_remove.png"))
+        self.pushButton_remove_quantities_from_inventory.setIcon(QIcon("icons/list_remove.png"))
 
         self.pushButton_remove_quantities_from_inventory.clicked.connect(self.remove_quantity_from_part_inventory)
 
@@ -554,11 +549,11 @@ class MainWindow(QMainWindow):
         # self.actionAbout_Qt.triggered.connect(qApp.aboutQt)
         # self.actionAbout_Qt.setIcon(self.style().standardIcon(QStyle.SP_TitleBarMenuButton))
         self.actionCheck_for_Updates.triggered.connect(self.check_for_updates)
-        self.actionCheck_for_Updates.setIcon(QIcon(f"icons/refresh.png"))
+        self.actionCheck_for_Updates.setIcon(QIcon("icons/refresh.png"))
         self.actionAbout.triggered.connect(self.show_about_dialog)
-        self.actionAbout.setIcon(QIcon(f"icons/about.png"))
+        self.actionAbout.setIcon(QIcon("icons/about.png"))
         self.actionWebsite.triggered.connect(self.open_website)
-        self.actionWebsite.setIcon(QIcon(f"icons/website.png"))
+        self.actionWebsite.setIcon(QIcon("icons/website.png"))
         # PRINT
         self.actionPrint_Inventory.triggered.connect(self.print_inventory)
 
@@ -688,22 +683,22 @@ class MainWindow(QMainWindow):
         self.pushButton_generate_workspace_quote.clicked.connect(partial(self.generate_workspace_printout_dialog, []))
 
         # FILE
-        self.menuOpen_Category.setIcon(QIcon(f"icons/folder.png"))
+        self.menuOpen_Category.setIcon(QIcon("icons/folder.png"))
         self.actionCreate_Category.triggered.connect(self.create_new_category)
-        self.actionCreate_Category.setIcon(QIcon(f"icons/list_add.png"))
+        self.actionCreate_Category.setIcon(QIcon("icons/list_add.png"))
         self.actionDelete_Category.triggered.connect(self.delete_category)
-        self.actionDelete_Category.setIcon(QIcon(f"icons/list_remove.png"))
+        self.actionDelete_Category.setIcon(QIcon("icons/list_remove.png"))
         self.actionClone_Category.triggered.connect(self.clone_category)
-        self.actionClone_Category.setIcon(QIcon(f"icons/tab_duplicate.png"))
+        self.actionClone_Category.setIcon(QIcon("icons/tab_duplicate.png"))
 
         self.actionBackup.triggered.connect(self.backup_database)
-        self.actionBackup.setIcon(QIcon(f"icons/backup.png"))
+        self.actionBackup.setIcon(QIcon("icons/backup.png"))
         self.actionLoad_Backup.triggered.connect(partial(self.load_backup, None))
 
         self.actionOpen_Item_History.triggered.connect(self.open_item_history)
 
         self.actionExit.triggered.connect(self.close)
-        self.actionExit.setIcon(QIcon(f"icons/tab_close.png"))
+        self.actionExit.setIcon(QIcon("icons/tab_close.png"))
 
         self.pushButton_hide_filter.clicked.connect(self.toggle_filter_tab_visibility)
         self.pushButton_hide_nests.clicked.connect(self.toggle_filter_tab_visibility_1)
@@ -711,15 +706,15 @@ class MainWindow(QMainWindow):
 
         if not self.trusted_user:
             self.tabWidget.setTabVisible(
-                settings_file.get_value("menu_tabs_order").index("Edit Inventory"),
+                settings_file.get_value("menu_tabs_order").index("Edit Components"),
                 False,
             )
             self.tabWidget.setTabVisible(
-                settings_file.get_value("menu_tabs_order").index("View Price Changes History (Read Only)"),
+                settings_file.get_value("menu_tabs_order").index("View Price Changes History"),
                 False,
             )
             self.tabWidget.setTabVisible(
-                settings_file.get_value("menu_tabs_order").index("View Removed Quantities History (Read Only)"),
+                settings_file.get_value("menu_tabs_order").index("View Removed Quantities History"),
                 False,
             )
 
@@ -744,9 +739,9 @@ class MainWindow(QMainWindow):
 
     def tool_box_menu_changed(self) -> None:
         self.loading_screen.show()
-        inventory.load_data()
-        price_of_steel_inventory.load_data()
-        parts_in_inventory.load_data()
+        components_inventory.load_data()
+        sheets_inventory.load_data()
+        laser_cut_inventory.load_data()
 
         # with contextlib.suppress(KeyError):
         #     self.scroll_position_manager.saveScrollPosition(
@@ -756,29 +751,29 @@ class MainWindow(QMainWindow):
             self.menuSort.setEnabled(False)
             self.menuOpen_Category.setEnabled(False)
             self.active_layout = self.verticalLayout_4
-            self.load_tree_view(inventory)
+            self.load_tree_view(components_inventory)
             self.status_button.setHidden(True)
-        elif self.tabWidget.tabText(self.tabWidget.currentIndex()) == "Edit Inventory":  # Edit Inventory
+        elif self.tabWidget.tabText(self.tabWidget.currentIndex()) == "Edit Components":  # Edit Components
             if not self.trusted_user:
                 self.show_not_trusted_user()
                 return
             self.menuSort.setEnabled(True)
             self.menuOpen_Category.setEnabled(True)
-            self.active_json_file = inventory
+            self.active_json_file = components_inventory
             self.active_layout = self.verticalLayout
             self.load_categories()
             self.status_button.setHidden(False)
-        elif self.tabWidget.tabText(self.tabWidget.currentIndex()) == "Sheets in Inventory":  # Sheets in Inventory
+        elif self.tabWidget.tabText(self.tabWidget.currentIndex()) == "Edit Sheets in Inventory":  # Edit Sheets in Inventory
             self.menuSort.setEnabled(True)
             self.menuOpen_Category.setEnabled(True)
-            self.active_json_file = price_of_steel_inventory
+            self.active_json_file = sheets_inventory
             self.active_layout = self.verticalLayout_10
             self.load_categories()
             self.status_button.setHidden(False)
-        elif self.tabWidget.tabText(self.tabWidget.currentIndex()) == "Parts in Inventory":  # Parts in Inventory
+        elif self.tabWidget.tabText(self.tabWidget.currentIndex()) == "Edit Laser Cut Inventory":  # Edit Laser Cut Inventory
             self.menuSort.setEnabled(True)
             self.menuOpen_Category.setEnabled(True)
-            self.active_json_file = parts_in_inventory
+            self.active_json_file = laser_cut_inventory
             self.active_layout = self.verticalLayout_11
             self.load_categories()
             self.load_parts_in_inventory_filter_tab()
@@ -788,7 +783,7 @@ class MainWindow(QMainWindow):
             self.menuOpen_Category.setEnabled(False)
             self.load_quote_generator_ui()
             self.status_button.setHidden(False)
-        elif self.tabWidget.tabText(self.tabWidget.currentIndex()) == "View Removed Quantities History (Read Only)":  # View Removed Quantities History (Read Only)
+        elif self.tabWidget.tabText(self.tabWidget.currentIndex()) == "View Removed Quantities History":  # View Removed Quantities History
             self.menuSort.setEnabled(False)
             self.menuOpen_Category.setEnabled(False)
             if not self.trusted_user:
@@ -797,7 +792,7 @@ class MainWindow(QMainWindow):
             self.active_layout = self.verticalLayout_5
             self.load_history_view()
             self.status_button.setHidden(True)
-        elif self.tabWidget.tabText(self.tabWidget.currentIndex()) == "View Price Changes History (Read Only)":  # View Price Changes History (Read Only)
+        elif self.tabWidget.tabText(self.tabWidget.currentIndex()) == "View Price Changes History":  # View Price Changes History
             self.menuSort.setEnabled(False)
             self.menuOpen_Category.setEnabled(False)
             if not self.trusted_user:
@@ -825,19 +820,19 @@ class MainWindow(QMainWindow):
     def move_to_category(self, tab: CustomTableWidget, category: str) -> None:
         selected_parts = self.get_all_selected_parts(tab)
         for selected_part in selected_parts:
-            copy_of_item = parts_in_inventory.get_data()[self.category][selected_part]
-            parts_in_inventory.remove_object_item(self.category, selected_part)
-            parts_in_inventory.add_item_in_object(category, selected_part)
-            parts_in_inventory.change_object_item(category, selected_part, copy_of_item)
+            copy_of_item = laser_cut_inventory.get_data()[self.category][selected_part]
+            laser_cut_inventory.remove_object_item(self.category, selected_part)
+            laser_cut_inventory.add_item_in_object(category, selected_part)
+            laser_cut_inventory.change_object_item(category, selected_part, copy_of_item)
         self.load_active_tab()
         self.sync_changes()
 
     def copy_to_category(self, tab: CustomTableWidget, category: str) -> None:
         selected_parts = self.get_all_selected_parts(tab)
         for selected_part in selected_parts:
-            copy_of_item = parts_in_inventory.get_data()[self.category][selected_part]
-            parts_in_inventory.add_item_in_object(category, selected_part)
-            parts_in_inventory.change_object_item(category, selected_part, copy_of_item)
+            copy_of_item = laser_cut_inventory.get_data()[self.category][selected_part]
+            laser_cut_inventory.add_item_in_object(category, selected_part)
+            laser_cut_inventory.change_object_item(category, selected_part, copy_of_item)
         self.sync_changes()
 
     def add_sheet_item(self) -> None:
@@ -849,7 +844,7 @@ class MainWindow(QMainWindow):
         if add_item_dialog.exec():
             response = add_item_dialog.get_response()
             if response == DialogButtons.add:
-                inventory_data = copy.deepcopy(price_of_steel_inventory.get_data())
+                inventory_data = copy.deepcopy(sheets_inventory.get_data())
                 name: str = add_item_dialog.get_name()
                 for item in list(inventory_data[self.category].keys()):
                     if name == item:
@@ -876,14 +871,14 @@ class MainWindow(QMainWindow):
                         "latest_change_current_quantity": f"{self.username} - Item added at {datetime.now().strftime('%B %d %A %Y %I-%M-%S %p')}",
                     },
                 )
-                price_of_steel_inventory.save_data(inventory_data)
-                price_of_steel_inventory.load_data()
+                sheets_inventory.save_data(inventory_data)
+                sheets_inventory.load_data()
                 self.load_active_tab()
                 self.sync_changes()
             elif response == DialogButtons.cancel:
                 return
 
-    # NOTE SHEETS IN INVENTORY
+    # NOTE Edit Sheets in Inventory
     def order_status_button_sheets_in_inventory(self, item_name: str, button: OrderStatusButton, row_index: int) -> None:
         select_date_dialog = SetOrderPendingDialog(
             self,
@@ -892,15 +887,15 @@ class MainWindow(QMainWindow):
             message=f'Set an expected arrival time for "{item_name}" and the number of sheets ordered',
             label_text="Sheets Ordered:",
         )
-        inventory_data = copy.deepcopy(price_of_steel_inventory.get_data())
+        inventory_data = copy.deepcopy(sheets_inventory.get_data())
         if button.isChecked() == True and select_date_dialog.exec():
             response = select_date_dialog.get_response()
             if response == DialogButtons.set:
                 inventory_data[self.category][item_name]["expected_arrival_time"] = select_date_dialog.get_selected_date()
                 inventory_data[self.category][item_name]["order_pending_quantity"] = select_date_dialog.get_order_quantity()
                 inventory_data[self.category][item_name]["is_order_pending"] = button.isChecked()
-                price_of_steel_inventory.save_data(inventory_data)
-                price_of_steel_inventory.load_data()
+                sheets_inventory.save_data(inventory_data)
+                sheets_inventory.load_data()
                 self.load_active_tab()
                 self.sync_changes()
             else:
@@ -909,8 +904,8 @@ class MainWindow(QMainWindow):
                 # self.sync_changes()
                 return
             inventory_data[self.category][item_name]["order_pending_date"] = datetime.now().strftime("%Y-%m-%d")
-            price_of_steel_inventory.save_data(inventory_data)
-            price_of_steel_inventory.load_data()
+            sheets_inventory.save_data(inventory_data)
+            sheets_inventory.load_data()
             self.load_active_tab()
             self.sync_changes()
         elif button.isChecked() == False:
@@ -918,18 +913,18 @@ class MainWindow(QMainWindow):
                 title="Add Sheet Quantity",
                 message=f'Do you want to add the incoming sheet quantity for "{item_name}"?',
                 button_names=DialogButtons.add_no,
-                placeholder_text=price_of_steel_inventory.data[self.category][item_name]["order_pending_quantity"],
+                placeholder_text=sheets_inventory.data[self.category][item_name]["order_pending_quantity"],
             )
             if input_dialog.exec():
                 response = input_dialog.get_response()
                 if response == DialogButtons.add:
                     try:
                         input_number = float(input_dialog.inputText)
-                        new_quantity = price_of_steel_inventory.data[self.category][item_name]["current_quantity"] + input_number
+                        new_quantity = sheets_inventory.data[self.category][item_name]["current_quantity"] + input_number
                         inventory_data[self.category][item_name]["current_quantity"] = new_quantity
                         inventory_data[self.category][item_name]["is_order_pending"] = button.isChecked()
-                        price_of_steel_inventory.save_data(inventory_data)
-                        price_of_steel_inventory.load_data()
+                        sheets_inventory.save_data(inventory_data)
+                        sheets_inventory.load_data()
                         self.load_active_tab()
                         self.sync_changes()
                     except Exception:
@@ -943,9 +938,9 @@ class MainWindow(QMainWindow):
                     button.setChecked(True)
                     return
 
-    # NOTE SHEETS IN INVENTORY
+    # NOTE Edit Sheets in Inventory
     def arrival_date_change_sheets_in_inventory(self, item_name: str, arrival_date: QDateEdit) -> None:
-        price_of_steel_inventory.change_object_in_object_item(
+        sheets_inventory.change_object_in_object_item(
             object_name=self.category,
             item_name=item_name,
             value_name="expected_arrival_time",
@@ -955,7 +950,7 @@ class MainWindow(QMainWindow):
         self.load_active_tab()
         self.sync_changes()
 
-    # NOTE EDIT INVENTORY
+    # NOTE Edit Components
     def order_status_button_edit_inventory(self, item_name: str, button: OrderStatusButton, row_index: int) -> None:
         select_date_dialog = SetOrderPendingDialog(
             self,
@@ -970,12 +965,12 @@ class MainWindow(QMainWindow):
             if response == DialogButtons.cancel:
                 button.setChecked(False)
                 return
-            inventory_data = copy.deepcopy(inventory.get_data())
+            inventory_data = copy.deepcopy(components_inventory.get_data())
             inventory_data[self.category][item_name]["expected_arrival_time"] = select_date_dialog.get_selected_date()
             inventory_data[self.category][item_name]["order_pending_quantity"] = select_date_dialog.get_order_quantity()
             inventory_data[self.category][item_name]["order_pending_date"] = datetime.now().strftime("%Y-%m-%d")
             inventory_data[self.category][item_name]["is_order_pending"] = button.isChecked()
-            for category in inventory.get_keys():
+            for category in components_inventory.get_keys():
                 if category == self.category:
                     continue
                 for item in list(inventory_data[category].keys()):
@@ -984,16 +979,16 @@ class MainWindow(QMainWindow):
                         inventory_data[category][item]["order_pending_quantity"] = select_date_dialog.get_order_quantity()
                         inventory_data[category][item]["order_pending_date"] = datetime.now().strftime("%Y-%m-%d")
                         inventory_data[category][item]["is_order_pending"] = button.isChecked()
-            inventory.save_data(inventory_data)
-            inventory.load_data()
+            components_inventory.save_data(inventory_data)
+            components_inventory.load_data()
             self.load_active_tab()
             self.sync_changes()
             table_widget: CustomTableWidget = self.tabs[self.category]
-            self.last_item_selected_index = list(list(inventory.data[self.category].keys())).index(self.last_item_selected_name)
+            self.last_item_selected_index = list(list(components_inventory.data[self.category].keys())).index(self.last_item_selected_name)
             table_widget.scrollTo(table_widget.model().index(self.last_item_selected_index, 0))
             table_widget.selectRow(self.last_item_selected_index)
         elif button.isChecked() == False:
-            inventory_data = copy.deepcopy(inventory.get_data())
+            inventory_data = copy.deepcopy(components_inventory.get_data())
             order_pending_quantity: float = inventory_data[self.category][item_name]["order_pending_quantity"]
             input_dialog = InputDialog(
                 title="Add Parts Quantity",
@@ -1016,7 +1011,7 @@ class MainWindow(QMainWindow):
                     inventory_data[self.category][item_name]["current_quantity"] = new_quantity
                     inventory_data[self.category][item_name]["latest_change_current_quantity"] = f"{self.username} - Changed from {old_quantity} to {new_quantity} at {datetime.now().strftime('%B %d %A %Y %I-%M-%S %p')}"
                     inventory_data[self.category][item_name]["order_pending_quantity"] = remaining_quantity
-                    for category in inventory.get_keys():
+                    for category in components_inventory.get_keys():
                         if category == self.category:
                             continue
                         for item in list(inventory_data[category].keys()):
@@ -1026,12 +1021,12 @@ class MainWindow(QMainWindow):
                                 inventory_data[category][item]["order_pending_quantity"] = remaining_quantity
                                 if order_pending_quantity == input_number:
                                     inventory_data[category][item]["is_order_pending"] = button.isChecked()
-                    inventory.save_data(inventory_data)
-                    inventory.load_data()
+                    components_inventory.save_data(inventory_data)
+                    components_inventory.load_data()
                     self.sort_inventory()
 
                     table_widget: CustomTableWidget = self.tabs[self.category]
-                    self.last_item_selected_index = list(list(inventory.data[self.category].keys())).index(self.last_item_selected_name)
+                    self.last_item_selected_index = list(list(components_inventory.data[self.category].keys())).index(self.last_item_selected_name)
                     table_widget.scrollTo(table_widget.model().index(self.last_item_selected_index, 0))
                     table_widget.selectRow(self.last_item_selected_index)
                 except Exception:
@@ -1042,19 +1037,19 @@ class MainWindow(QMainWindow):
                     )
                     return
 
-    # NOTE EDIT INVENTORY
+    # NOTE Edit Components
     def arrival_date_change_edit_inventory(self, item_name: str, arrival_date: QDateEdit) -> None:
-        inventory_data = copy.deepcopy(inventory.get_data())
+        inventory_data = copy.deepcopy(components_inventory.get_data())
         inventory_data[self.category][item_name]["expected_arrival_time"] = arrival_date.date().toString("yyyy-MM-dd")
         part_number = self.get_value_from_category(item_name, "part_number")
-        for category in inventory.get_keys():
+        for category in components_inventory.get_keys():
             if category == self.category:
                 continue
             for item in list(inventory_data[category].keys()):
                 if part_number == inventory_data[category][item]["part_number"]:
                     inventory_data[category][item]["expected_arrival_time"] = arrival_date.date().toString("yyyy-MM-dd")
-        inventory.save_data(inventory_data)
-        inventory.load_data()
+        components_inventory.save_data(inventory_data)
+        components_inventory.load_data()
         self.load_active_tab()
         self.sync_changes()
 
@@ -1133,7 +1128,7 @@ class MainWindow(QMainWindow):
         self.sync_changes()
 
     def notes_changed(self, item_name: str, value_name: str, note: QPlainTextEdit) -> None:
-        data = inventory.get_data()
+        data = components_inventory.get_data()
         part_number = self.get_value_from_category(item_name, "part_number")
         self.value_change(self.category, item_name, value_name, note.toPlainText())
         self.sync_changes()
@@ -1209,7 +1204,7 @@ class MainWindow(QMainWindow):
         self.listWidget_itemnames.setEnabled(False)
 
         remove_quantity_thread = RemoveQuantityThread(
-            inventory,
+            components_inventory,
             self.category,
             self.spinBox_quantity.value(),
         )
@@ -1264,47 +1259,31 @@ class MainWindow(QMainWindow):
                     continue
                 new_assembly.rename(f"{job_name} - {datetime.now()}")
                 # Job Assembly Data
-                new_assembly.set_assembly_data(key="display_name", value=job_name)
-                new_assembly.set_assembly_data(key="completed", value=False)
-                new_assembly.set_assembly_data(key="starting_date", value=date_created)
-                new_assembly.set_assembly_data(key="ending_date", value=date_created)
-                new_assembly.set_assembly_data(key="status", value=None)
-                new_assembly.set_assembly_data(
-                    key="group",
-                    value=f"{job_name} x {quantity} - {group_name_date_created}",
-                )
-                new_assembly.set_assembly_data(key="group_color", value=get_random_color())
+                new_assembly.display_name = job_name
+                new_assembly.starting_date = date_created
+                new_assembly.ending_date = date_created
+                new_assembly.group = f"{job_name} x {quantity} - {group_name_date_created}"
+                new_assembly.group_color = get_random_color()
                 # Sub-Assembly Data
                 new_assembly.set_data_to_all_sub_assemblies(key="starting_date", value=date_created)
                 new_assembly.set_data_to_all_sub_assemblies(key="ending_date", value=date_created)
-                new_assembly.set_data_to_all_sub_assemblies(key="current_flow_state", value=0)
-                new_assembly.set_data_to_all_sub_assemblies(key="completed", value=False)
-                new_assembly.set_data_to_all_sub_assemblies(key="status", value=None)
                 # All items in Assembly and Sub-Assembly
                 new_assembly.set_default_value_to_all_items(key="starting_date", value=date_created)
                 new_assembly.set_default_value_to_all_items(key="ending_date", value=date_created)
-                new_assembly.set_default_value_to_all_items(key="current_flow_state", value=0)
-                new_assembly.set_default_value_to_all_items(key="recoat", value=False)
-                new_assembly.set_default_value_to_all_items(key="status", value=None)
-                new_assembly.set_default_value_to_all_items(key="recut", value=False)
-                new_assembly.set_default_value_to_all_items(key="recut_count", value=0)
-                new_assembly.set_default_value_to_all_items(key="completed", value=False)
 
-                # new_assembly.setup_timers_for_all_items()
-                # new_assembly.setup_timers_for_all_assemblies()
                 user_workspace.add_assembly(new_assembly)
                 user_workspace.save()
         # NOTE because sync handles uploading logic differently
         self.upload_file(
             [
-                "workspace - User.json",
+                "user_workspace.json",
             ],
             False,
         )
 
-    # NOTE for EDIT INVENTORY
+    # NOTE for Edit Components
     def add_quantity(self) -> None:
-        data = inventory.get_data()
+        data = components_inventory.get_data()
         table = self.tabs[self.category]
         selected_rows = list({item.row() for item in table.selectedItems()})
         selected_items = [table.item(row, 0).text() for row in selected_rows]
@@ -1315,13 +1294,13 @@ class MainWindow(QMainWindow):
         )
         if are_you_sure_dialog in [DialogButtons.no, DialogButtons.cancel]:
             return
-        inventory_data = copy.deepcopy(inventory.get_data())
+        inventory_data = copy.deepcopy(components_inventory.get_data())
         for item_name in selected_items:
             part_number: str = self.get_value_from_category(item_name, "part_number")
             current_quantity: int = self.get_value_from_category(item_name, "current_quantity")
             inventory_data[self.category][item_name]["current_quantity"] = current_quantity + self.spinBox_quantity.value()
             inventory_data[self.category][item_name]["latest_change_current_quantity"] = f"{self.username} - Changed from {current_quantity} to {current_quantity + self.spinBox_quantity.value()} at {datetime.now().strftime('%B %d %A %Y %I-%M-%S %p')}"
-            for category in inventory.get_keys():
+            for category in components_inventory.get_keys():
                 if category == self.category:
                     continue
                 for item in list(inventory_data[category].keys()):
@@ -1331,8 +1310,8 @@ class MainWindow(QMainWindow):
                         inventory_data[category][item]["latest_change_current_quantity"] = f"{self.username} - Changed from {current_quantity} to {current_quantity + self.spinBox_quantity.value()} at {datetime.now().strftime('%B %d %A %Y %I-%M-%S %p')}"
         self.pushButton_add_quantity.setEnabled(False)
         self.pushButton_remove_quantity.setEnabled(False)
-        inventory.save_data(inventory_data)
-        inventory.load_data()
+        components_inventory.save_data(inventory_data)
+        components_inventory.load_data()
         self.update_category_total_stock_costs()
         self.sort_inventory()
         table_widget: CustomTableWidget = self.tabs[self.category]
@@ -1340,7 +1319,7 @@ class MainWindow(QMainWindow):
         table_widget.scrollTo(table_widget.model().index(self.last_item_selected_index, 0))
         table_widget.selectRow(self.last_item_selected_index)
 
-    # NOTE for EDIT INVENTORY
+    # NOTE for Edit Components
     def remove_quantity(self) -> None:
         table = self.tabs[self.category]
         selected_rows = list({item.row() for item in table.selectedItems()})
@@ -1352,13 +1331,13 @@ class MainWindow(QMainWindow):
         )
         if are_you_sure_dialog in [DialogButtons.no, DialogButtons.cancel]:
             return
-        inventory_data = copy.deepcopy(inventory.get_data())
+        inventory_data = copy.deepcopy(components_inventory.get_data())
         for item_name in selected_items:
             part_number: str = self.get_value_from_category(item_name, "part_number")
             current_quantity: int = self.get_value_from_category(item_name, "current_quantity")
             inventory_data[self.category][item_name]["current_quantity"] = current_quantity - self.spinBox_quantity.value()
             inventory_data[self.category][item_name]["latest_change_current_quantity"] = f"{self.username} - Changed from {current_quantity} to {current_quantity - self.spinBox_quantity.value()} at {datetime.now().strftime('%B %d %A %Y %I-%M-%S %p')}"
-            for category in inventory.get_keys():
+            for category in components_inventory.get_keys():
                 if category == self.category:
                     continue
                 for item in list(inventory_data[category].keys()):
@@ -1379,12 +1358,12 @@ class MainWindow(QMainWindow):
                 )
         self.pushButton_add_quantity.setEnabled(False)
         self.pushButton_remove_quantity.setEnabled(False)
-        inventory.save_data(inventory_data)
-        inventory.load_data()
+        components_inventory.save_data(inventory_data)
+        components_inventory.load_data()
         self.update_category_total_stock_costs()
         self.sort_inventory()
         table_widget: CustomTableWidget = self.tabs[self.category]
-        self.last_item_selected_index = list(list(inventory.data[self.category].keys())).index(self.last_item_selected_name)
+        self.last_item_selected_index = list(list(components_inventory.data[self.category].keys())).index(self.last_item_selected_name)
         table_widget.scrollTo(table_widget.model().index(self.last_item_selected_index, 0))
         table_widget.selectRow(self.last_item_selected_index)
 
@@ -1401,7 +1380,7 @@ class MainWindow(QMainWindow):
             return
         # it brings incorrect results
         try:
-            self.last_item_selected_index = list(list(inventory.data[self.category].keys())).index(self.last_item_selected_name)
+            self.last_item_selected_index = list(list(components_inventory.data[self.category].keys())).index(self.last_item_selected_name)
         except (ValueError, KeyError):
             return
         # self.last_item_selected_index=200
@@ -1424,7 +1403,7 @@ class MainWindow(QMainWindow):
         remove_quantity_state: bool = self.pushButton_remove_quantity.isEnabled()
         self.pushButton_add_quantity.setEnabled(False)
         self.pushButton_remove_quantity.setEnabled(False)
-        inventory.change_object_in_object_item(category, item_name, value_name, new_value)
+        components_inventory.change_object_in_object_item(category, item_name, value_name, new_value)
         self.pushButton_add_quantity.setEnabled(add_quantity_state)
         self.pushButton_remove_quantity.setEnabled(remove_quantity_state)
 
@@ -1738,14 +1717,14 @@ class MainWindow(QMainWindow):
 
     # OMNIGEN
     def cutoff_sheet_double_clicked(self, cutoff_items: QListWidget):
-        cutoff_sheets = price_of_steel_inventory.get_value("Cutoff")
+        cutoff_sheets = sheets_inventory.get_value("Cutoff")
         item_pressed: QListWidgetItem = cutoff_items.selectedItems()[0]
         for sheet in list(cutoff_sheets.keys()):
             if item_pressed.text() == sheet:
-                sheet_material = price_of_steel_inventory.get_data()["Cutoff"][sheet]["material"]
-                sheet_thickness = price_of_steel_inventory.get_data()["Cutoff"][sheet]["thickness"]
-                sheet_dim_x = float(price_of_steel_inventory.get_data()["Cutoff"][sheet]["sheet_dimension"].split("x")[0].replace(" ", ""))
-                sheet_dim_y = float(price_of_steel_inventory.get_data()["Cutoff"][sheet]["sheet_dimension"].split("x")[1].replace(" ", ""))
+                sheet_material = sheets_inventory.get_data()["Cutoff"][sheet]["material"]
+                sheet_thickness = sheets_inventory.get_data()["Cutoff"][sheet]["thickness"]
+                sheet_dim_x = float(sheets_inventory.get_data()["Cutoff"][sheet]["sheet_dimension"].split("x")[0].replace(" ", ""))
+                sheet_dim_y = float(sheets_inventory.get_data()["Cutoff"][sheet]["sheet_dimension"].split("x")[1].replace(" ", ""))
                 self.comboBox_global_sheet_material.setCurrentText(sheet_material)
                 self.comboBox_global_sheet_thickness.setCurrentText(sheet_thickness)
                 self.doubleSpinBox_global_sheet_length.setValue(sheet_dim_x)
@@ -1758,7 +1737,7 @@ class MainWindow(QMainWindow):
     # * /\ SLOTS & SIGNALS /\
     # * \/ CALCULATION \/
     def calculuate_price_of_steel_summary(self) -> None:
-        category_data = price_of_steel_inventory.get_data()
+        category_data = sheets_inventory.get_data()
         self.clear_layout(self.gridLayout_price_of_steel)
         total: float = 0.0
         i: int = 0
@@ -1782,7 +1761,7 @@ class MainWindow(QMainWindow):
                 except ZeroDivisionError:
                     pounds_per_sheet = 0.0
                 try:
-                    price_per_pound: float = float(price_of_steel_inventory.get_data()["Price Per Pound"][material]["price"])
+                    price_per_pound: float = float(sheets_inventory.get_data()["Price Per Pound"][material]["price"])
                 except KeyError:
                     price_per_pound: float = 0.0
                 cost_per_sheet = pounds_per_sheet * price_per_pound
@@ -1807,7 +1786,7 @@ class MainWindow(QMainWindow):
             item = self.gridLayout_parts_in_inventory_summary.takeAt(0)
             widget = item.widget()
             widget.deleteLater()
-        category_data = parts_in_inventory.get_data()
+        category_data = laser_cut_inventory.get_data()
         # Idk why it does not exist somtimes
         if not category_data:
             return
@@ -1862,7 +1841,7 @@ class MainWindow(QMainWindow):
                 return
             self.pushButton_remove_quantities_from_inventory.setEnabled(False)
             self.spinBox_quantity_for_inventory.setValue(0)
-            category_data = parts_in_inventory.get_data()
+            category_data = laser_cut_inventory.get_data()
             part_names_to_check = []
 
             for part_name in selected_parts:
@@ -1893,7 +1872,7 @@ class MainWindow(QMainWindow):
             self.play_celebrate_sound()
             self.pushButton_remove_quantities_from_inventory.setEnabled(False)
             self.spinBox_quantity_for_inventory.setValue(0)
-            category_data = parts_in_inventory.get_data()
+            category_data = laser_cut_inventory.get_data()
             part_names_to_check = list(category_data[self.category].keys())
             for part_name in list(category_data[self.category].keys()):
                 unit_quantity: int = category_data[self.category][part_name]["unit_quantity"]
@@ -1911,10 +1890,10 @@ class MainWindow(QMainWindow):
                         new_quantity = current_quantity - (unit_quantity * batch_multiplier)
                         category_data[category][part_name]["current_quantity"] = new_quantity
                         category_data[category][part_name]["modified_date"] = f'{self.username} - Removed {unit_quantity*batch_multiplier} quantity at {str(datetime.now().strftime("%B %d %A %Y %I:%M:%S %p"))}'
-        parts_in_inventory.save_data(category_data)
+        laser_cut_inventory.save_data(category_data)
 
-        for category in parts_in_inventory.get_data():
-            parts_in_inventory.sort(category=category, item_name="current_quantity", ascending=True)
+        for category in laser_cut_inventory.get_data():
+            laser_cut_inventory.sort(category=category, item_name="current_quantity", ascending=True)
 
         self.pushButton_remove_quantities_from_inventory.setText("Remove Quantities from whole Category")
         self.pushButton_remove_quantities_from_inventory.setEnabled(True)
@@ -1982,7 +1961,7 @@ class MainWindow(QMainWindow):
 
     def update_edit_inventory_list_widget(self) -> None:
         search_input: str = self.lineEdit_search_items.text()
-        category_data = inventory.get_value(item_name=self.category)
+        category_data = components_inventory.get_value(item_name=self.category)
         self.listWidget_itemnames.disconnect()
         self.listWidget_itemnames.clear()
         self.pushButton_add_quantity.setEnabled(False)
@@ -1996,11 +1975,11 @@ class MainWindow(QMainWindow):
             self.listWidget_itemnames.itemSelectionChanged.connect(self.listWidget_item_changed)
             return
 
-    # NOTE EDIT INVENTORY
+    # NOTE Edit Components
     def update_stock_costs(self) -> None:
-        if self.tabWidget.tabText(self.tabWidget.currentIndex()) != "Edit Inventory":
+        if self.tabWidget.tabText(self.tabWidget.currentIndex()) != "Edit Components":
             return
-        self.label_total_unit_cost.setText(f"Total Unit Cost: ${inventory.get_total_unit_cost(self.category, self.get_exchange_rate()):,.2f}")
+        self.label_total_unit_cost.setText(f"Total Unit Cost: ${components_inventory.get_total_unit_cost(self.category, self.get_exchange_rate()):,.2f}")
         tab = self.tabs[self.category]
         tab.blockSignals(True)
         for row_index in range(tab.rowCount()):
@@ -2015,11 +1994,11 @@ class MainWindow(QMainWindow):
             total_unit_cost_item.setText(f'${(unit_quantity * price):,.2f} {"USD" if use_exchange_rate else "CAD"}')
         tab.blockSignals(False)
 
-    # NOTE EDIT INVENTORY
+    # NOTE Edit Components
     def update_category_total_stock_costs(self) -> None:
         total_stock_costs = {}
 
-        categories = inventory.get_data()
+        categories = components_inventory.get_data()
         # Idk why it does not exist somtimes
         if not categories:
             return
@@ -2033,8 +2012,8 @@ class MainWindow(QMainWindow):
                 price = max(current_quantity * price * exchange_rate, 0)
                 total_category_stock_cost += price
             total_stock_costs[category] = total_category_stock_cost
-        total_stock_costs["Polar Total Stock Cost"] = inventory.get_total_stock_cost_for_similar_categories("Polar")
-        total_stock_costs["BL Total Stock Cost"] = inventory.get_total_stock_cost_for_similar_categories("BL")
+        total_stock_costs["Polar Total Stock Cost"] = components_inventory.get_total_stock_cost_for_similar_categories("Polar")
+        total_stock_costs["BL Total Stock Cost"] = components_inventory.get_total_stock_cost_for_similar_categories("BL")
         total_stock_costs = dict(sorted(total_stock_costs.items()))
         self.clear_layout(self.gridLayout_Categor_Stock_Prices)
         lbl = QLabel("Stock Costs:", self)
@@ -2053,14 +2032,14 @@ class MainWindow(QMainWindow):
         lbl = QLabel("Total Cost in Stock:", self)
         lbl.setStyleSheet("border-top: 1px solid grey")
         self.gridLayout_Categor_Stock_Prices.addWidget(lbl, i + 1, 0)
-        lbl = QLabel(f"${inventory.get_total_stock_cost(self.get_exchange_rate()):,.2f}", self)
+        lbl = QLabel(f"${components_inventory.get_total_stock_cost(self.get_exchange_rate()):,.2f}", self)
         # lbl.setTextInteractionFlags(Qt.ItemFlag.TextSelectableByMouse)
         lbl.setStyleSheet("border-top: 1px solid grey")
         self.gridLayout_Categor_Stock_Prices.addWidget(lbl, i + 1, 1)
 
-    # NOTE PARTS IN INVENTORY
+    # NOTE Edit Laser Cut Inventory
     def update_all_parts_in_inventory_price(self) -> None:
-        data = copy.deepcopy(parts_in_inventory.get_data())
+        data = copy.deepcopy(laser_cut_inventory.get_data())
         # Idk why it does not exist somtimes
         if not data:
             return
@@ -2071,11 +2050,11 @@ class MainWindow(QMainWindow):
                 weight: float = data[category][part_name]["weight"]
                 machine_time: float = data[category][part_name]["machine_time"]
                 material: str = data[category][part_name]["material"]
-                price_per_pound: float = price_of_steel_inventory.get_data()["Price Per Pound"][material]["price"]
+                price_per_pound: float = sheets_inventory.get_data()["Price Per Pound"][material]["price"]
                 cost_for_laser: float = self.get_nitrogen_laser_cost() if material in {"304 SS", "409 SS", "Aluminium"} else self.get_co2_laser_cost()
                 data[category][part_name]["price"] = float((machine_time * (cost_for_laser / 60)) + (weight * price_per_pound))
-        parts_in_inventory.save_data(data)
-        parts_in_inventory.load_data()
+        laser_cut_inventory.save_data(data)
+        laser_cut_inventory.load_data()
 
     def set_table_row_color(self, table, row_index, color):
         for j in range(table.columnCount()):
@@ -2127,13 +2106,13 @@ class MainWindow(QMainWindow):
                 return
             machine_time: float = self.quote_nest_information[nest_name][item_name]["machine_time"]
             material: str = self.quote_nest_information[nest_name][item_name]["material"]
-            if material == "Null":  # Its from Edit Inventory
+            if material == "Null":  # Its from Edit Components
                 price_per_pound = 0.0
                 COGS: float = self.quote_nest_information[nest_name][item_name]["price"]
                 if isinstance(COGS, str):
                     COGS = float(COGS.replace("$", ""))
             else:
-                price_per_pound: float = price_of_steel_inventory.get_data()["Price Per Pound"][material]["price"]
+                price_per_pound: float = sheets_inventory.get_data()["Price Per Pound"][material]["price"]
                 cost_for_laser: float = self.doubleSpinBox_cost_for_laser.value()
                 COGS: float = float((machine_time * (cost_for_laser / 60)) + (weight * price_per_pound))
             item_data.setdefault(
@@ -2367,12 +2346,12 @@ class MainWindow(QMainWindow):
                 return
             machine_time: float = self.quote_nest_information[nest_name][item_name]["machine_time"]
             material: str = self.quote_nest_information[nest_name][item_name]["material"]
-            if material == "Null":  # Its from Edit Inventory
+            if material == "Null":  # Its from Edit Components
                 COGS: float = self.quote_nest_information[nest_name][item_name]["price"]
                 if isinstance(COGS, str):
                     COGS = float(COGS.replace("$", ""))
             else:
-                price_per_pound: float = price_of_steel_inventory.get_data()["Price Per Pound"][material]["price"]
+                price_per_pound: float = sheets_inventory.get_data()["Price Per Pound"][material]["price"]
                 # The above code is declaring a variable named "cost_for_laser" of type float and
                 # assigning it the value of "self.doubleSpinBox_cost_for_laser".
                 cost_for_laser: float = self.doubleSpinBox_cost_for_laser.value()
@@ -2421,7 +2400,7 @@ class MainWindow(QMainWindow):
                 return
             machine_time: float = self.quote_nest_information[nest_name][item_name]["machine_time"]
             material: str = self.quote_nest_information[nest_name][item_name]["material"]
-            if material == "Null":  # Its from Edit Inventory
+            if material == "Null":  # Its from Edit Components
                 price_per_pound = 0.0
                 try:
                     COGS: float = self.quote_nest_information[nest_name][item_name]["price"]
@@ -2430,7 +2409,7 @@ class MainWindow(QMainWindow):
                 if isinstance(COGS, str):
                     COGS = float(COGS.replace("$", ""))
             else:
-                price_per_pound: float = price_of_steel_inventory.get_data()["Price Per Pound"][material]["price"]
+                price_per_pound: float = sheets_inventory.get_data()["Price Per Pound"][material]["price"]
                 cost_for_laser: float = self.doubleSpinBox_cost_for_laser.value()
                 COGS: float = float((machine_time * (cost_for_laser / 60)) + (weight * price_per_pound))
 
@@ -2537,7 +2516,7 @@ class MainWindow(QMainWindow):
         if gauge == "Null" or material == "Null":
             return 0.0
         sheet_dim_x, sheet_dim_y = self.quote_nest_information[nest_name]["sheet_dim"].replace(" x ", "x").split("x")
-        price_per_pound: float = price_of_steel_inventory.get_data()["Price Per Pound"][material]["price"]
+        price_per_pound: float = sheets_inventory.get_data()["Price Per Pound"][material]["price"]
         try:
             pounds_per_square_foot: float = float(price_of_steel_information.get_data()["pounds_per_square_foot"][material][gauge])
         except KeyError:
@@ -2602,7 +2581,7 @@ class MainWindow(QMainWindow):
 
     # * \/ GETTERS \/
     def get_all_part_numbers(self) -> list[str]:
-        data = inventory.get_data()
+        data = components_inventory.get_data()
         part_numbers = []
         for category in list(data.keys()):
             try:
@@ -2612,7 +2591,7 @@ class MainWindow(QMainWindow):
         return list(set(part_numbers))
 
     def get_all_part_names(self) -> list[str]:
-        data = inventory.get_data()
+        data = components_inventory.get_data()
         part_names = []
         for category in list(data.keys()):
             part_names.extend(iter(list(data[category].keys())))
@@ -2668,7 +2647,7 @@ class MainWindow(QMainWindow):
         )
 
     def get_all_gauges(self) -> list[str]:
-        data = parts_in_inventory.get_data()
+        data = laser_cut_inventory.get_data()
         gauges = []
         for category in list(data.keys()):
             try:
@@ -2678,7 +2657,7 @@ class MainWindow(QMainWindow):
         return list(set(gauges))
 
     def get_all_materials(self) -> list[str]:
-        data = parts_in_inventory.get_data()
+        data = laser_cut_inventory.get_data()
         materials = []
         for category in list(data.keys()):
             try:
@@ -2811,7 +2790,7 @@ class MainWindow(QMainWindow):
             response = add_item_dialog.get_response()
             if response == DialogButtons.add:
                 name: str = add_item_dialog.get_name()
-                inventory_data = copy.deepcopy(inventory.get_data())
+                inventory_data = copy.deepcopy(components_inventory.get_data())
                 for item in list(inventory_data[self.category].keys()):
                     if name == item:
                         self.show_error_dialog(
@@ -2859,8 +2838,8 @@ class MainWindow(QMainWindow):
                         dialog_buttons=DialogButtons.ok,
                     )
                     return
-                inventory.save_data(inventory_data)
-                inventory.load_data()
+                components_inventory.save_data(inventory_data)
+                components_inventory.load_data()
                 self.sort_inventory()
                 # self.load_active_tab()
             elif response == DialogButtons.cancel:
@@ -2904,23 +2883,8 @@ class MainWindow(QMainWindow):
                 else:
                     self.set_table_row_color(tab, selected_index, "#2c2c2c")
                 self.sync_changes()
-                if self.tabWidget.tabText(self.tabWidget.currentIndex()) == "Sheets in Inventory":
+                if self.tabWidget.tabText(self.tabWidget.currentIndex()) == "Edit Sheets in Inventory":
                     self.load_active_tab()
-
-    # ! deprecated
-    def search_ebay(self) -> None:
-        input_dialog = InputDialog(title="Search Ebay", message="Search for anything")
-        if input_dialog.exec():
-            response = input_dialog.get_response()
-            if response == DialogButtons.ok:
-                input_text = input_dialog.inputText
-                ebay_scraper_thread = EbayScraper(item_to_search=input_text)
-                # # QApplication.setOverrideCursor(Qt.CursorShape.BusyCursor)
-                ebay_scraper_thread.signal.connect(self.show_web_scrape_results)
-                self.threads.append(ebay_scraper_thread)
-                ebay_scraper_thread.start()
-            elif response == DialogButtons.cancel:
-                return
 
     def create_new_category(self, event=None) -> None:
         input_dialog = InputDialog(title="Create category", message="Enter a name for a new category.")
@@ -3249,7 +3213,7 @@ class MainWindow(QMainWindow):
             elif response == DialogButtons.cancel:
                 return
 
-    # NOTE PARTS IN INVENTORY
+    # NOTE Edit Laser Cut Inventory
     def generate_quote_with_selected_parts(self, tab: CustomTableWidget) -> None:
         selected_parts = self.get_all_selected_parts(tab)
         try:
@@ -3274,13 +3238,13 @@ class MainWindow(QMainWindow):
             },
         )
         for part_name in selected_parts:
-            self.quote_nest_information["/CUSTOM NEST.pdf"][part_name] = parts_in_inventory.get_data()[self.category].get(part_name)
+            self.quote_nest_information["/CUSTOM NEST.pdf"][part_name] = laser_cut_inventory.get_data()[self.category].get(part_name)
             self.quote_nest_information["/CUSTOM NEST.pdf"][part_name]["file_name"] = "/CUSTOM NEST.pdf"
         self.tabWidget.setCurrentIndex(self.get_menu_tab_order().index("OmniGen"))
         self.download_required_images(self.quote_nest_information["/CUSTOM NEST.pdf"])
         # self.load_nests()
 
-    # NOTE PARTS IN INVENTORY
+    # NOTE Edit Laser Cut Inventory
     def add_selected_parts_to_quote(self, tab: CustomTableWidget) -> None:
         selected_parts = self.get_all_selected_parts(tab)
         try:
@@ -3304,7 +3268,7 @@ class MainWindow(QMainWindow):
             },
         )
         for part_name in selected_parts:
-            self.quote_nest_information["/CUSTOM NEST.pdf"][part_name] = parts_in_inventory.get_data()[self.category].get(part_name)
+            self.quote_nest_information["/CUSTOM NEST.pdf"][part_name] = laser_cut_inventory.get_data()[self.category].get(part_name)
             self.quote_nest_information["/CUSTOM NEST.pdf"][part_name]["file_name"] = "/CUSTOM NEST.pdf"
         self.tabWidget.setCurrentIndex(self.get_menu_tab_order().index("OmniGen"))
         self.download_required_images(self.quote_nest_information["/CUSTOM NEST.pdf"])
@@ -3317,7 +3281,7 @@ class MainWindow(QMainWindow):
 
     # Workspace
     def open_assembly_image(self, assembly: Assembly) -> None:
-        image_viewer = QImageViewer(self, assembly.get_assembly_data("assembly_image"), assembly.name)
+        image_viewer = QImageViewer(self, assembly.assembly_image, assembly.name)
         image_viewer.show()
 
     def open_pdf(self, path: str) -> None:
@@ -3325,7 +3289,7 @@ class MainWindow(QMainWindow):
         self.web_engine_view.load(url)
         self.web_engine_view.show()
 
-    # NOTE PARTS IN INVENTORY
+    # NOTE Edit Laser Cut Inventory
     def view_part_information(self, tab: CustomTableWidget) -> None:
         try:
             selected_part = self.get_all_selected_parts(tab)[0]
@@ -3333,28 +3297,28 @@ class MainWindow(QMainWindow):
             return
         item_dialog = PartInformationViewer(
             selected_part,
-            parts_in_inventory.get_data()[self.category][selected_part],
+            laser_cut_inventory.get_data()[self.category][selected_part],
         )
         if item_dialog.exec() and item_dialog.get_response() == "apply":
-            inventory_data = copy.deepcopy(parts_in_inventory.get_data())
+            inventory_data = copy.deepcopy(laser_cut_inventory.get_data())
             new_item_name = item_dialog.lineEdit_name.text()
             new_item_data = item_dialog.get_data()
             if new_item_name == selected_part:
-                for category, category_data in parts_in_inventory.get_data().items():
+                for category, category_data in laser_cut_inventory.get_data().items():
                     for item_name, item_data in category_data.items():
                         if item_name == selected_part:
                             inventory_data[category][item_name] = new_item_data
             else:
                 self.last_item_selected_name = new_item_name
-                for category, category_data in parts_in_inventory.get_data().items():
+                for category, category_data in laser_cut_inventory.get_data().items():
                     for item_name, item_data in category_data.items():
                         if item_name == selected_part:
                             del inventory_data[category][item_name]
                             inventory_data[category][new_item_name] = new_item_data
-            parts_in_inventory.save_data(inventory_data)
-            parts_in_inventory.load_data()
-            for category in parts_in_inventory.get_data():
-                parts_in_inventory.sort(category, "current_quantity", True)
+            laser_cut_inventory.save_data(inventory_data)
+            laser_cut_inventory.load_data()
+            for category in laser_cut_inventory.get_data():
+                laser_cut_inventory.sort(category, "current_quantity", True)
             self.sync_changes()
             self.load_categories()
             self.last_item_selected_index = self.parts_in_inventory_name_lookup[self.last_item_selected_name]
@@ -3465,10 +3429,10 @@ class MainWindow(QMainWindow):
     # * /\ Dialogs /\
 
     # * \/ INVENTORY TABLE CHANGES \/
-    # NOTE for Edit Inventory
+    # NOTE for Edit Components
     def edit_inventory_item_changes(self, item: QTableWidgetItem) -> None:
         tab = self.tabs[self.category]
-        inventory_data = copy.deepcopy(inventory.get_data())
+        inventory_data = copy.deepcopy(components_inventory.get_data())
         tab.blockSignals(False)
         row_index = item.row()
         col_index = item.column()
@@ -3525,15 +3489,15 @@ class MainWindow(QMainWindow):
             tab.item(row_index, col_index).setToolTip(modified_date)
             tab.blockSignals(True)
             inventory_data[self.category][item_name]["latest_change_current_quantity"] = modified_date
-            for category, items in inventory.get_data().items():
+            for category, items in components_inventory.get_data().items():
                 if category == self.category:
                     continue
                 for item, item_data in items.items():
                     if new_part_number == item_data.get("part_number"):
                         inventory_data[category][item]["latest_change_current_quantity"] = modified_date
                         inventory_data[category][item]["current_quantity"] = current_quantity
-            inventory.save_data(inventory_data)
-            inventory.load_data()
+            components_inventory.save_data(inventory_data)
+            components_inventory.load_data()
             self.sort_inventory()
         elif col_index == 4:  # Item Price
             use_exchange_rate: bool = inventory_data[self.category][item_name]["use_exchange_rate"]
@@ -3547,7 +3511,7 @@ class MainWindow(QMainWindow):
             inventory_data[self.category][item_name]["price"] = price
             inventory_data[self.category][item_name]["latest_change_price"] = modified_date
             self.update_stock_costs()
-            for category, items in inventory.get_data().items():
+            for category, items in components_inventory.get_data().items():
                 if category == self.category:
                     continue
                 for item, item_data in items.items():
@@ -3559,7 +3523,7 @@ class MainWindow(QMainWindow):
             shelf_number = tab.item(row_index, col_index).text()
             tab.blockSignals(True)
             inventory_data[self.category][item_name]["shelf_number"] = shelf_number
-            for category, items in inventory.get_data().items():
+            for category, items in components_inventory.get_data().items():
                 if category == self.category:
                     continue
                 for item, item_data in items.items():
@@ -3567,14 +3531,14 @@ class MainWindow(QMainWindow):
                         inventory_data[category][item_name]["shelf_number"] = shelf_number
         tab.blockSignals(False)
         if col_index != 3:
-            inventory.save_data(inventory_data)
-            inventory.load_data()
+            components_inventory.save_data(inventory_data)
+            components_inventory.load_data()
             self.sync_changes()
         # QApplication.restoreOverrideCursor()
 
-    # NOTE for Parts in Inventory
+    # NOTE for Edit Laser Cut Inventory
     def parts_in_inventory_item_changes(self, item: QTableWidgetItem) -> None:
-        inventory_data = copy.deepcopy(parts_in_inventory.get_data())
+        inventory_data = copy.deepcopy(laser_cut_inventory.get_data())
         tab = self.tabs[self.category]
         tab.blockSignals(False)
         item_name: str = tab.item(item.row(), 0).text()
@@ -3622,16 +3586,16 @@ class MainWindow(QMainWindow):
         inventory_data[self.category][item_name]["unit_quantity"] = unit_quantity
         inventory_data[self.category][item_name]["price"] = item_price
         inventory_data[self.category][item_name]["current_quantity"] = current_quantity
-        parts_in_inventory.save_data(inventory_data)
-        parts_in_inventory.load_data()
+        laser_cut_inventory.save_data(inventory_data)
+        laser_cut_inventory.load_data()
         self.calculate_parts_in_inventory_summary()
         self.sync_changes()
         self.load_active_tab()
         # QApplication.restoreOverrideCursor()
 
-    # NOTE for Sheets in Inventory
+    # NOTE for Edit Sheets in Inventory
     def sheets_in_inventory_item_changes(self, item: QTableWidgetItem) -> None:
-        inventory_data = copy.deepcopy(price_of_steel_inventory.get_data())
+        inventory_data = copy.deepcopy(sheets_inventory.get_data())
         tab = self.tabs[self.category]
         tab.blockSignals(False)
         row_index: int = item.row()
@@ -3685,8 +3649,8 @@ class MainWindow(QMainWindow):
             inventory_data[self.category][item_name]["current_quantity"] = new_quantity
             inventory_data[self.category][item_name]["latest_change_current_quantity"] = modified_date
         tab.blockSignals(False)
-        price_of_steel_inventory.save_data(inventory_data)
-        price_of_steel_inventory.load_data()
+        sheets_inventory.save_data(inventory_data)
+        sheets_inventory.load_data()
         self.load_active_tab()
         self.sync_changes()
         # QApplication.restoreOverrideCursor()
@@ -3754,13 +3718,13 @@ class MainWindow(QMainWindow):
             self.priceHistoryTable.setItem(i - 1, 3, QTableWidgetItem(str(old_price)))
             self.priceHistoryTable.setItem(i - 1, 4, QTableWidgetItem(str(new_price)))
 
-    def load_tree_view(self, inventory: JsonFile):
+    def load_tree_view(self, inventory_file: JsonFile):
         self.clear_layout(self.search_layout)
-        tree_view = ViewTree(data=inventory.get_data())
+        tree_view = ViewTree(data=inventory_file.get_data())
         self.search_layout.addWidget(tree_view, 0, 0)
 
     def load_categories(self) -> None:
-        if not self.trusted_user and self.tabWidget.tabText(self.tabWidget.currentIndex()) != "Sheets in Inventory" and self.tabWidget.tabText(self.tabWidget.currentIndex()) != "Parts in Inventory" and self.tabWidget.tabText(self.tabWidget.currentIndex()) != "View Inventory (Read Only)":
+        if not self.trusted_user and self.tabWidget.tabText(self.tabWidget.currentIndex()) != "Edit Sheets in Inventory" and self.tabWidget.tabText(self.tabWidget.currentIndex()) != "Edit Laser Cut Inventory" and self.tabWidget.tabText(self.tabWidget.currentIndex()) != "View Inventory (Read Only)":
             # print(self.last_selected_menu_tab)
             # self.tabWidget.setCurrentIndex(settings_file.get_value('menu_tabs_order').index(self.last_selected_menu_tab))
             # self.show_not_trusted_user()
@@ -3773,9 +3737,9 @@ class MainWindow(QMainWindow):
         user_workspace.load_data()
 
         if self.tabWidget.tabText(self.tabWidget.currentIndex()) not in [
-            "Edit Inventory",
-            "Parts in Inventory",
-            "Sheets in Inventory",
+            "Edit Components",
+            "Edit Laser Cut Inventory",
+            "Edit Sheets in Inventory",
             "Workspace",
         ]:
             return
@@ -3812,16 +3776,16 @@ class MainWindow(QMainWindow):
         else:
             for i, category in enumerate(self.categories):
                 tab = CustomTableWidget(self)
-                if category == "Price Per Pound" and self.tabWidget.tabText(self.tabWidget.currentIndex()) == "Sheets in Inventory":
+                if category == "Price Per Pound" and self.tabWidget.tabText(self.tabWidget.currentIndex()) == "Edit Sheets in Inventory":
                     self.pushButton_add_new_sheet.setEnabled(False)
-                elif self.tabWidget.tabText(self.tabWidget.currentIndex()) == "Sheets in Inventory":
+                elif self.tabWidget.tabText(self.tabWidget.currentIndex()) == "Edit Sheets in Inventory":
                     self.pushButton_add_new_sheet.setEnabled(True)
-                if self.tabWidget.tabText(self.tabWidget.currentIndex()) == "Edit Inventory":
+                if self.tabWidget.tabText(self.tabWidget.currentIndex()) == "Edit Components":
                     tab.itemSelectionChanged.connect(partial(self.inventory_cell_changed, tab))
                     tab.itemChanged.connect(self.edit_inventory_item_changes)
-                if self.tabWidget.tabText(self.tabWidget.currentIndex()) == "Sheets in Inventory":
+                if self.tabWidget.tabText(self.tabWidget.currentIndex()) == "Edit Sheets in Inventory":
                     tab.itemChanged.connect(self.sheets_in_inventory_item_changes)
-                if self.tabWidget.tabText(self.tabWidget.currentIndex()) == "Parts in Inventory":
+                if self.tabWidget.tabText(self.tabWidget.currentIndex()) == "Edit Laser Cut Inventory":
                     tab.itemSelectionChanged.connect(partial(self.parts_in_inventory_cell_changed, tab))
                     tab.itemChanged.connect(self.parts_in_inventory_item_changes)
                 self.tabs[category] = tab
@@ -3872,13 +3836,13 @@ class MainWindow(QMainWindow):
                 category_data = self.active_json_file.get_value(item_name=self.category)
             except AttributeError:
                 return
-            if self.tabWidget.tabText(self.tabWidget.currentIndex()) == "Edit Inventory":
+            if self.tabWidget.tabText(self.tabWidget.currentIndex()) == "Edit Components":
                 autofill_search_options = natsorted(list(set(self.get_all_part_names() + self.get_all_part_numbers())))
                 completer = QCompleter(autofill_search_options, self)
                 completer.setCaseSensitivity(Qt.CaseSensitivity.CaseInsensitive)
                 self.lineEdit_search_items.setCompleter(completer)
-            if self.tabWidget.tabText(self.tabWidget.currentIndex()) == "Parts in Inventory":
-                autofill_search_options = natsorted(list(set(parts_in_inventory.get_value(self.tab_widget.tabText(self.tab_widget.currentIndex())).keys())))
+            if self.tabWidget.tabText(self.tabWidget.currentIndex()) == "Edit Laser Cut Inventory":
+                autofill_search_options = natsorted(list(set(laser_cut_inventory.get_value(self.tab_widget.tabText(self.tab_widget.currentIndex())).keys())))
                 completer = QCompleter(autofill_search_options, self)
                 completer.setCaseSensitivity(Qt.CaseSensitivity.CaseInsensitive)
                 self.lineEdit_search_parts_in_inventory.setCompleter(completer)
@@ -3906,15 +3870,15 @@ class MainWindow(QMainWindow):
                 # # QApplication.restoreOverrideCursor()
                 return
 
-            if self.category == "Price Per Pound" and self.tabWidget.tabText(self.tabWidget.currentIndex()) == "Sheets in Inventory":
+            if self.category == "Price Per Pound" and self.tabWidget.tabText(self.tabWidget.currentIndex()) == "Edit Sheets in Inventory":
                 self.pushButton_add_new_sheet.setEnabled(False)
-            elif self.tabWidget.tabText(self.tabWidget.currentIndex()) == "Sheets in Inventory":
+            elif self.tabWidget.tabText(self.tabWidget.currentIndex()) == "Edit Sheets in Inventory":
                 self.pushButton_add_new_sheet.setEnabled(True)
-            if self.tabWidget.tabText(self.tabWidget.currentIndex()) == "Edit Inventory":
+            if self.tabWidget.tabText(self.tabWidget.currentIndex()) == "Edit Components":
                 self.load_inventory_items(tab, category_data)
-            elif self.tabWidget.tabText(self.tabWidget.currentIndex()) == "Sheets in Inventory":
+            elif self.tabWidget.tabText(self.tabWidget.currentIndex()) == "Edit Sheets in Inventory":
                 self.price_of_steel_item(tab, category_data)
-            elif self.tabWidget.tabText(self.tabWidget.currentIndex()) == "Parts in Inventory":
+            elif self.tabWidget.tabText(self.tabWidget.currentIndex()) == "Edit Laser Cut Inventory":
                 self.load_inventory_parts(tab, category_data)
 
             self.scroll_position_manager.restore_scroll_position(
@@ -3972,7 +3936,7 @@ class MainWindow(QMainWindow):
         ]
         tab.setColumnCount(len(headers))
         tab.setHorizontalHeaderLabels(headers)
-        grouped_data = parts_in_inventory.sort_by_multiple_tags(category=category_data, tags_ids=["material", "gauge"])
+        grouped_data = laser_cut_inventory.sort_by_multiple_tags(category=category_data, tags_ids=["material", "gauge"])
         row_index: int = 0
         self.parts_in_inventory_name_lookup.clear()
         self.parts_in_inventory_name_lookup[None] = 0
@@ -4046,7 +4010,7 @@ class MainWindow(QMainWindow):
                     weight: float = self.get_value_from_category(item_name=item, key="weight")
                     machine_time: float = self.get_value_from_category(item_name=item, key="machine_time")
                     material: str = self.get_value_from_category(item_name=item, key="material")
-                    price_per_pound: float = price_of_steel_inventory.get_data()["Price Per Pound"][material]["price"]
+                    price_per_pound: float = sheets_inventory.get_data()["Price Per Pound"][material]["price"]
                     cost_for_laser: float = self.get_nitrogen_laser_cost() if material in {"304 SS", "409 SS", "Aluminium"} else self.get_co2_laser_cost()
                     price = float((machine_time * (cost_for_laser / 60)) + (weight * price_per_pound))
 
@@ -4137,7 +4101,7 @@ class MainWindow(QMainWindow):
                 menu.addSeparator()
             categories = QMenu(menu)
             categories.setTitle("Move selected parts to category")
-            for i, category in enumerate(parts_in_inventory.get_keys()):
+            for i, category in enumerate(laser_cut_inventory.get_keys()):
                 if self.category == category or category == "Recut":
                     continue
                 if i == 1:
@@ -4149,7 +4113,7 @@ class MainWindow(QMainWindow):
 
             categories = QMenu(menu)
             categories.setTitle("Copy selected parts to category")
-            for i, category in enumerate(parts_in_inventory.get_keys()):
+            for i, category in enumerate(laser_cut_inventory.get_keys()):
                 if self.category == category or category == "Recut":
                     continue
                 if i == 1:
@@ -4182,7 +4146,7 @@ class MainWindow(QMainWindow):
         # QApplication.restoreOverrideCursor()
         # QApplication.setOverrideCursor(Qt.CursorShape.ArrowCursor)
 
-    # NOTE SHEETS IN INVENTORY
+    # NOTE Edit Sheets in Inventory
     def price_of_steel_item(self, tab: CustomTableWidget, category_data: dict) -> None:
         tab.blockSignals(True)
         tab.setEnabled(False)
@@ -4202,7 +4166,7 @@ class MainWindow(QMainWindow):
             tab.setHorizontalHeaderLabels(headers)
             tab.horizontalHeader().setStretchLastSection(True)
             tab.set_editable_column_index([1])
-            for material in list(price_of_steel_inventory.get_data()[self.category].keys()):
+            for material in list(sheets_inventory.get_data()[self.category].keys()):
                 tab.insertRow(row_index)
                 tab.setRowHeight(row_index, 40)
                 price = self.get_value_from_category(item_name=material, key="price")
@@ -4233,7 +4197,7 @@ class MainWindow(QMainWindow):
             tab.setColumnCount(len(headers))
             tab.setHorizontalHeaderLabels(headers)
             tab.set_editable_column_index([2, 6])
-            grouped_data = price_of_steel_inventory.sort_by_groups(category=category_data, groups_id="material")
+            grouped_data = sheets_inventory.sort_by_groups(category=category_data, groups_id="material")
             for group in list(grouped_data.keys()):
                 tab.insertRow(row_index)
                 item = QTableWidgetItem(group)
@@ -4272,7 +4236,7 @@ class MainWindow(QMainWindow):
                         pounds_per_sheet = 0.0
                     # PRICE PER POUND
                     try:
-                        price_per_pound: float = float(price_of_steel_inventory.get_data()["Price Per Pound"][material]["price"])
+                        price_per_pound: float = float(sheets_inventory.get_data()["Price Per Pound"][material]["price"])
                     except KeyError:
                         price_per_pound: float = 0.0
 
@@ -4401,7 +4365,7 @@ class MainWindow(QMainWindow):
         # QApplication.restoreOverrideCursor()
         # QApplication.setOverrideCursor(Qt.CursorShape.ArrowCursor)
 
-    # NOTE EDIT INVENTORY
+    # NOTE Edit Components
     def load_inventory_items(self, tab: CustomTableWidget, category_data: dict) -> None:
         tab.blockSignals(True)
         tab.setEnabled(False)
@@ -4712,13 +4676,13 @@ class MainWindow(QMainWindow):
         elif column == 8:  # Parts Per
             assembly_item = assembly.get_item(selected_item_name)
             item_text = item_text.replace(",", "").replace(" ", "")
-            assembly_item.set_value(key="parts_per", value=float(sympy.sympify(item_text, evaluate=True)))
+            assembly_item.parts_per = float(sympy.sympify(item_text, evaluate=True))
             self.active_workspace_file.save()
             self.sync_changes()
             return
         elif column == 12:  # Shelf Number
             assembly_item = assembly.get_item(selected_item_name)
-            assembly_item.set_value(key="shelf_number", value=item_text)
+            assembly_item.shelf_number = item_text
             self.active_workspace_file.save()
             self.sync_changes()
             return
@@ -4738,14 +4702,14 @@ class MainWindow(QMainWindow):
         action = contextMenu.exec(QCursor.pos())
 
         if action == deleteAction:
-            all_files: list[str] = item.get_value(file_category)
+            all_files = item.get_all_files(file_category)
 
             for i, file in enumerate(all_files):
                 if file_name in file:
                     all_files.pop(i)
                     break
 
-            item.set_value(file_category, all_files)
+            item.update_files(file_category, all_files)
 
             self.active_workspace_file.save()
             self.sync_changes()
@@ -4763,7 +4727,7 @@ class MainWindow(QMainWindow):
         show_dropped_widget: bool = True,
     ) -> None:
         self.clear_layout(files_layout)
-        files = item.get_value(key=file_category)
+        files = item.get_all_files(file_category)
         for file in files:
             btn = DraggableButton(self)
             file_name = os.path.basename(file)
@@ -4799,10 +4763,10 @@ class MainWindow(QMainWindow):
         files_layout: QHBoxLayout,
         file_category: str,
     ) -> None:
-        files = set(item.get_value(key=file_category))
+        files = set(item.get_all_files(file_category))
         for file_path in file_paths:
             files.add(file_path)
-        item.set_value(key=file_category, value=list(files))
+        item.update_files(file_category, list(files))
         self.upload_workspace_files(list(files))
         self.status_button.setText("Upload starting", color="lime")
         label.setText("Drag Here")
@@ -4871,11 +4835,11 @@ class MainWindow(QMainWindow):
                 color = ColorPicker()
                 color.show()
                 if color.exec():
-                    item.set_value(key="paint_color", value=color.getHex(True))
+                    item.paint_color = color.getHex(True)
                     color_name = color.getColorName()
                     self.active_workspace_file.save()
                     self.sync_changes()
-                    color_button.setStyleSheet(f'QComboBox{{border-radius: 0.001em; background-color: {item.get_value("paint_color")}}} {"QMenu { background-color: rgb(22,22,22);}"}')
+                    color_button.setStyleSheet(f'QComboBox{{border-radius: 0.001em; background-color: {item.paint_color}}} {"QMenu { background-color: rgb(22,22,22);}"}')
                     data = workspace_tags.get_data()
                     data["paint_colors"][color_name] = color.getHex(True)
                     workspace_tags.save_data(data)
@@ -4888,13 +4852,13 @@ class MainWindow(QMainWindow):
                 if color_button.currentText() == "None":
                     color_button.setStyleSheet(f'QComboBox{{border-radius: 0.001em; background-color: transparent}} {"QMenu { background-color: rgb(22,22,22);}"}')
                     color_button.setCurrentText("None")
-                    item.set_value(key="paint_color", value=None)
+                    item.paint_color = None
                 else:
                     workspace_tags.load_data()
                     for color_name, color_code in workspace_tags.get_value("paint_colors").items():
                         if color_code == workspace_tags.get_data()["paint_colors"][color_button.currentText()]:
                             color_button.setCurrentText(color_name)
-                            item.set_value(key="paint_color", value=color_code)
+                            item.paint_color = color_code
                     color_button.setStyleSheet(f'QComboBox{{border-radius: 0.001em; background-color: {workspace_tags.get_data()["paint_colors"][color_button.currentText()]}}} {"QMenu { background-color: rgb(22,22,22);}"}')
                 self.active_workspace_file.save()
             self.sync_changes()
@@ -4908,7 +4872,7 @@ class MainWindow(QMainWindow):
         def add_timers(table: CustomTableWidget, item: WorkspaceItem, timer_layout: QHBoxLayout) -> None:
             self.clear_layout(timer_layout)
             workspace_tags.load_data()
-            for flow_tag in item.get_value("timers"):
+            for flow_tag in item.timers:
                 try:
                     workspace_tags.get_value("attributes")[flow_tag]["is_timer_enabled"]
                 except (KeyError, TypeError):
@@ -4942,17 +4906,17 @@ class MainWindow(QMainWindow):
             if tag_box.currentText() == "Select Flow Tag":
                 return
             tag_box.setStyleSheet("QComboBox#tag_box{border-radius: 0.001em;}")
-            item.set_value(key="flow_tag", value=tag_box.currentText().split(" ➜ "))
+            item.flow_tag = tag_box.currentText().split(" ➜ ")
             timers = {}
             for tag in tag_box.currentText().split(" ➜ "):
                 timers[tag] = {}
-            item.set_value(key="timers", value=timers)
+            item.timers = timers
             self.active_workspace_file.save()
             add_timers(table, item, timer_layout)
             self.sync_changes()
 
         def notes_change(table: CustomTableWidget, notes: NotesPlainTextEdit, item: WorkspaceItem) -> None:
-            item.set_value(key="notes", value=notes.toPlainText())
+            item.notes = notes.toPlainText()
             self.active_workspace_file.save()
             self.sync_changes()
 
@@ -4980,51 +4944,51 @@ class MainWindow(QMainWindow):
             thickness_box.wheelEvent = lambda event: event.ignore()
             thickness_box.setObjectName("thickness_box")
             thickness_box.setStyleSheet("QComboBox#thickness_box{border-radius: 0.001em;}")
-            if not item.data["thickness"]:
+            if not item.thickness:
                 thickness_box.addItem("Select Thickness")
             thickness_box.addItems(price_of_steel_information.get_value("thicknesses"))
-            thickness_box.setCurrentText(item.data["thickness"])
-            thickness_box.currentTextChanged.connect(
-                lambda: (
-                    item.set_value(key="thickness", value=thickness_box.currentText()),
-                    self.active_workspace_file.save(),
-                    self.sync_changes(),
-                )
-            )
+            thickness_box.setCurrentText(item.thickness)
+
+            def update_item_thickness():
+                item.thickness = thickness_box.currentText()
+                self.active_workspace_file.save()
+                self.sync_changes()
+
+            thickness_box.currentTextChanged.connect(update_item_thickness)
             table.setCellWidget(row_index, col_index, thickness_box)
             col_index += 1
             material_box = QComboBox(self)
             material_box.wheelEvent = lambda event: event.ignore()
             material_box.setObjectName("material_box")
             material_box.setStyleSheet("QComboBox#material_box{border-radius: 0.001em;}")
-            if not item.data["material"]:
+            if not item.material:
                 material_box.addItem("Select Material")
             material_box.addItems(price_of_steel_information.get_value("materials"))
-            material_box.setCurrentText(item.data["material"])
-            material_box.currentTextChanged.connect(
-                lambda: (
-                    item.set_value(key="material", value=material_box.currentText()),
-                    self.active_workspace_file.save(),
-                    self.sync_changes(),
-                )
-            )
+            material_box.setCurrentText(item.material)
+
+            def update_item_material():
+                item.material = material_box.currentText()
+                self.active_workspace_file.save()
+                self.sync_changes()
+
+            material_box.currentTextChanged.connect(update_item_material)
             table.setCellWidget(row_index, col_index, material_box)
             col_index += 1
             button_paint_type = QComboBox(self)
             button_paint_type.wheelEvent = lambda event: event.ignore()
-            if not item.data["paint_type"]:
+            if not item.paint_type:
                 button_paint_type.addItem("Select Paint Type")
             button_paint_type.addItems(["None", "Powder", "Wet Paint"])
             button_paint_type.setCurrentText("None")
             button_paint_type.setStyleSheet("border-radius: 0.001em; ")
-            button_paint_type.setCurrentText(item.get_value(key="paint_type"))
-            button_paint_type.currentTextChanged.connect(
-                lambda: (
-                    item.set_value(key="paint_type", value=button_paint_type.currentText()),
-                    self.active_workspace_file.save(),
-                    self.sync_changes(),
-                )
-            )
+            button_paint_type.setCurrentText(item.paint_type)
+
+            def update_item_paint_type():
+                item.paint_type = button_paint_type.currentText()
+                self.active_workspace_file.save()
+                self.sync_changes()
+
+            button_paint_type.currentTextChanged.connect(update_item_paint_type)
             table.setCellWidget(row_index, col_index, button_paint_type)
             col_index += 1
             button_color = QComboBox(self)
@@ -5032,18 +4996,18 @@ class MainWindow(QMainWindow):
             button_color.addItem("None")
             button_color.addItems(list(workspace_tags.get_value("paint_colors").keys()) or ["Select Color"])
             button_color.addItem("Select Color")
-            if item.get_value("paint_color") != None:
+            if item.paint_color != None:
                 for color_name, color_code in workspace_tags.get_value("paint_colors").items():
-                    if color_code == item.get_value("paint_color"):
+                    if color_code == item.paint_color:
                         button_color.setCurrentText(color_name)
-                button_color.setStyleSheet(f'QComboBox{{border-radius: 0.001em; background-color: {item.get_value("paint_color")}}} {"QMenu { background-color: rgb(22,22,22);}"}')
+                button_color.setStyleSheet(f'QComboBox{{border-radius: 0.001em; background-color: {item.paint_color}}} {"QMenu { background-color: rgb(22,22,22);}"}')
             else:
                 button_color.setCurrentText("Set Color")
                 button_color.setStyleSheet("border-radius: 0.001em; ")
             button_color.currentTextChanged.connect(partial(select_color, item, button_color))
             table.setCellWidget(row_index, col_index, button_color)
             col_index += 1
-            table.setItem(row_index, col_index, QTableWidgetItem(str(item.data["parts_per"])))
+            table.setItem(row_index, col_index, QTableWidgetItem(str(item.parts_per)))
             table.item(row_index, col_index).setTextAlignment(Qt.AlignmentFlag.AlignCenter | Qt.AlignmentFlag.AlignVCenter)
             col_index += 1
 
@@ -5061,23 +5025,23 @@ class MainWindow(QMainWindow):
             tag_box.wheelEvent = lambda event: event.ignore()
             tag_box.setObjectName("tag_box")
             tag_box.setStyleSheet("QComboBox#tag_box{border-radius: 0.001em;}")
-            if not item.data["flow_tag"]:
+            if not item.flow_tag:
                 tag_box.addItem("Select Flow Tag")
                 tag_box.setStyleSheet("QComboBox#tag_box{color: red; border-radius: 0.001em; border-color: darkred; background-color: #3F1E25;}")
             tag_box.addItems(self.get_all_flow_tags())
-            if item.data["flow_tag"]:
-                tag_box.setCurrentText(" ➜ ".join(item.data["flow_tag"]))
+            if item.flow_tag:
+                tag_box.setCurrentText(" ➜ ".join(item.flow_tag))
             tag_box.currentTextChanged.connect(partial(flow_tag_box_change, table, tag_box, item, timer_layout))
             table.setCellWidget(row_index, col_index, tag_box)
             col_index += 1
             table.setCellWidget(row_index, col_index, timer_widget)
             col_index += 1
-            notes = NotesPlainTextEdit(self, item.data["notes"], "Add notes...")
+            notes = NotesPlainTextEdit(self, item.notes, "Add notes...")
             notes.setFixedHeight(50)
             notes.textChanged.connect(partial(notes_change, table, notes, item))
             table.setCellWidget(row_index, col_index, notes)
             col_index += 1
-            table.setItem(row_index, col_index, QTableWidgetItem(str(item.data["shelf_number"])))
+            table.setItem(row_index, col_index, QTableWidgetItem(item.shelf_number))
             table.item(row_index, col_index).setTextAlignment(Qt.AlignmentFlag.AlignCenter | Qt.AlignmentFlag.AlignVCenter)
             col_index += 1
             delete_button = DeletePushButton(
@@ -5091,7 +5055,7 @@ class MainWindow(QMainWindow):
 
         row_index: int = 0
         for item in assembly.items:
-            if not item.get_value("show"):
+            if not item.show:
                 continue
             add_item(row_index, item)
             row_index += 1
@@ -5111,54 +5075,12 @@ class MainWindow(QMainWindow):
                 else:
                     return
                 table.blockSignals(True)
-
-                if self.category == "Staging":
-                    item_data = {
-                        "Bending Files": [],
-                        "Welding Files": [],
-                        "CNC/Milling Files": [],
-                        "thickness": thickness,
-                        "material": material,
-                        "paint_type": None,
-                        "paint_color": None,
-                        "parts_per": 0,
-                        "flow_tag": [],
-                        "timers": {},
-                        "customer": "",
-                        "ship_to": "",
-                        "show": True,
-                        "notes": "",
-                        "shelf_number": "",
-                    }
-                else:  # EDITING
-                    date_created: str = QDate().currentDate().toString("yyyy-M-d")
-                    item_data = {
-                        "Bending Files": [],
-                        "Welding Files": [],
-                        "CNC/Milling Files": [],
-                        "thickness": thickness,
-                        "material": material,
-                        "paint_type": None,
-                        "paint_color": None,
-                        "parts_per": 0,
-                        "flow_tag": [],
-                        "timers": {},
-                        "customer": "",
-                        "ship_to": "",
-                        "show": True,
-                        "notes": "",
-                        "shelf_number": "",
-                        # New stuff
-                        "recoat": False,
-                        "recut": False,
-                        "recut_count": 0,
-                        "completed": False,
-                        "current_flow_state": 0,
-                        "starting_date": date_created,
-                        "ending_date": date_created,
-                        "status": None,
-                    }
-                item = WorkspaceItem(name=item_name, data=item_data)
+                date_created: str = QDate().currentDate().toString("yyyy-M-d")
+                item = WorkspaceItem(name=item_name, data={})
+                item.material = material
+                item.thickness = thickness
+                item.starting_date = date_created
+                item.ending_date = date_created
                 add_item(table.rowCount() - 1, item)
                 assembly.add_item(item)
                 self.active_workspace_file.save()
@@ -5205,7 +5127,7 @@ class MainWindow(QMainWindow):
         action = contextMenu.exec(QCursor.pos())
 
         if action == deleteAction:
-            assembly.set_assembly_data("assembly_image", None)
+            assembly.assembly_image = None
 
             assembly_image.clear_image()
 
@@ -5228,8 +5150,8 @@ class MainWindow(QMainWindow):
         h_layout.setAlignment(Qt.AlignmentFlag.AlignLeft)
 
         assembly_image = AssemblyImage(widget)
-        if assembly.get_assembly_data("assembly_image"):
-            assembly_image.set_new_image(assembly.get_assembly_data("assembly_image"))
+        if assembly.assembly_image:
+            assembly_image.set_new_image(assembly.assembly_image)
 
         assembly_image.clicked.connect(partial(self.open_assembly_image, assembly))
 
@@ -5246,8 +5168,7 @@ class MainWindow(QMainWindow):
             shutil.copyfile(path_to_image, target_path)
 
             assembly_image.set_new_image(target_path)
-            assembly.set_assembly_data("assembly_image", target_path)
-
+            assembly.assembly_image = target_path
             self.upload_workspace_files([target_path])
             self.active_workspace_file.save()
             self.sync_changes()
@@ -5278,7 +5199,7 @@ class MainWindow(QMainWindow):
         _color_layout.addLayout(paint_amount_layout)
         color_widget.setLayout(_color_layout)
         # Create the "Items" group box
-        if assembly.get_assembly_data("has_items"):
+        if assembly.has_items:
             # TODO
             def load_excel_file(files: list[str]):
                 total_data: dict[str, list[WorkspaceItem]] = {}
@@ -5301,7 +5222,7 @@ class MainWindow(QMainWindow):
             items_groupbox.setLayout(items_layout)
 
         # Create and configure the table widget
-        if assembly.get_assembly_data("has_items"):
+        if assembly.has_items:
             table_widget = self.load_edit_assembly_items_table(assembly)
             table_widget.setFixedHeight(45 * (len(assembly.items) + 3))
 
@@ -5312,11 +5233,11 @@ class MainWindow(QMainWindow):
                 color = ColorPicker()
                 color.show()
                 if color.exec():
-                    assembly.set_assembly_data(key="paint_color", value=color.getHex(True))
+                    assembly.paint_color = color.getHex(True)
                     color_name = color.getColorName()
                     self.active_workspace_file.save()
                     self.sync_changes()
-                    color_button.setStyleSheet(f'QComboBox{{background-color: {assembly.get_assembly_data("paint_color")}}} {"QMenu { background-color: rgb(22,22,22);}"}')
+                    color_button.setStyleSheet(f'QComboBox{{background-color: {assembly.paint_color}}} {"QMenu { background-color: rgb(22,22,22);}"}')
                     data = workspace_tags.get_data()
                     data["paint_colors"][color_name] = color.getHex(True)
                     workspace_tags.save_data(data)
@@ -5329,13 +5250,13 @@ class MainWindow(QMainWindow):
                 if color_button.currentText() == "None":
                     color_button.setStyleSheet(f'QComboBox{{background-color: transparent}} {"QMenu { background-color: rgb(22,22,22);}"}')
                     color_button.setCurrentText("None")
-                    assembly.set_assembly_data(key="paint_color", value=None)
+                    assembly.paint_color = None
                 else:
                     workspace_tags.load_data()
                     for color_name, color_code in workspace_tags.get_value("paint_colors").items():
                         if color_code == workspace_tags.get_data()["paint_colors"][color_button.currentText()]:
                             color_button.setCurrentText(color_name)
-                            assembly.set_assembly_data(key="paint_color", value=color_code)
+                            assembly.paint_color = color_code
                     color_button.setStyleSheet(f'QComboBox{{background-color: {workspace_tags.get_data()["paint_colors"][color_button.currentText()]}}} {"QMenu { background-color: rgb(22,22,22);}"}')
                 self.active_workspace_file.save()
             self.sync_changes()
@@ -5344,7 +5265,7 @@ class MainWindow(QMainWindow):
         def add_timers(timer_layout: QHBoxLayout) -> None:
             self.clear_layout(timer_layout)
             workspace_tags.load_data()
-            for flow_tag in assembly.get_assembly_data("flow_tag"):
+            for flow_tag in assembly.flow_tag:
                 try:
                     workspace_tags.get_value("attributes")[flow_tag]["is_timer_enabled"]
                 except (KeyError, TypeError):
@@ -5357,7 +5278,7 @@ class MainWindow(QMainWindow):
                     layout.addWidget(QLabel(flow_tag))
                     timer_box = TimeSpinBox()
                     with contextlib.suppress(KeyError, TypeError):
-                        timer_box.setValue(assembly.assembly_data["timers"][flow_tag]["time_to_complete"])
+                        timer_box.setValue(assembly.timers[flow_tag]["time_to_complete"])
                     timer_box.editingFinished.connect(
                         lambda flow_tag=flow_tag, timer_box=timer_box: (
                             assembly.set_timer(flow_tag=flow_tag, time=timer_box),
@@ -5374,12 +5295,12 @@ class MainWindow(QMainWindow):
             flow_tag_combobox: QComboBox,
         ):
             flow_tag_combobox.setStyleSheet("")
-            assembly.set_assembly_data("flow_tag", flow_tag_combobox.currentText().split(" ➜ "))
+            assembly.flow_tag = flow_tag_combobox.currentText().split(" ➜ ")
             color_widget.setHidden(all(keyword not in flow_tag_combobox.currentText().lower() for keyword in ["paint", "powder"]))
             timers = {}
             for tag in flow_tag_combobox.currentText().split(" ➜ "):
                 timers[tag] = {}
-            assembly.set_assembly_data(key="timers", value=timers)
+            assembly.timers = timers
             self.active_workspace_file.save()
             self.sync_changes()
             add_timers(timer_layout)
@@ -5389,23 +5310,23 @@ class MainWindow(QMainWindow):
             grid_widget = QWidget()
             grid = QGridLayout(grid_widget)
             time_box = TimeSpinBox()
-            time_box.setValue(assembly.get_assembly_data(key="expected_time_to_complete"))
-            time_box.editingFinished.connect(
-                lambda: (
-                    assembly.set_assembly_data(key="expected_time_to_complete", value=time_box.value()),
-                    self.active_workspace_file.save(),
-                    self.sync_changes(),
-                )
-            )
+            time_box.setValue(assembly.expected_time_to_complete)
+
+            def update_expected_time_to_complete():
+                assembly.expected_time_to_complete = time_box.value()
+                self.active_workspace_file.save()
+                self.sync_changes()
+
+            time_box.editingFinished.connect(update_expected_time_to_complete)
             grid.setAlignment(Qt.AlignmentFlag.AlignLeft)
             flow_tag_combobox = QComboBox()
             flow_tag_combobox.setObjectName("tag_box")
             flow_tag_combobox.wheelEvent = lambda event: event.ignore()
-            if not assembly.get_assembly_data("flow_tag"):
+            if not assembly.flow_tag:
                 flow_tag_combobox.addItem("Select Flow Tag")
                 flow_tag_combobox.setStyleSheet("QComboBox#tag_box{color: red; border-color: darkred; background-color: #3F1E25;}")
             flow_tag_combobox.addItems(self.get_all_flow_tags())
-            flow_tag_combobox.setCurrentText(" ➜ ".join(assembly.get_assembly_data("flow_tag")))
+            flow_tag_combobox.setCurrentText(" ➜ ".join(assembly.flow_tag))
             flow_tag_combobox.currentTextChanged.connect(partial(flow_tag_change, timer_layout, color_widget, flow_tag_combobox))
             grid.addWidget(QLabel("Expected time to complete:"), 0, 0)
             grid.addWidget(time_box, 0, 1)
@@ -5416,11 +5337,11 @@ class MainWindow(QMainWindow):
             button_color.addItem("None")
             button_color.addItems(list(workspace_tags.get_value("paint_colors").keys()) or ["Select Color"])
             button_color.addItem("Select Color")
-            if assembly.get_assembly_data("paint_color") != None:
+            if assembly.paint_color != None:
                 for color_name, color_code in workspace_tags.get_value("paint_colors").items():
-                    if color_code == assembly.get_assembly_data("paint_color"):
+                    if color_code == assembly.paint_color:
                         button_color.setCurrentText(color_name)
-                button_color.setStyleSheet(f'QComboBox{{background-color: {assembly.get_assembly_data("paint_color")}}} {"QMenu { background-color: rgb(22,22,22);}"}')
+                button_color.setStyleSheet(f'QComboBox{{background-color: {assembly.paint_color}}} {"QMenu { background-color: rgb(22,22,22);}"}')
             else:
                 button_color.setCurrentText("Set Color")
             button_color.currentTextChanged.connect(partial(select_color, assembly, button_color))
@@ -5429,32 +5350,32 @@ class MainWindow(QMainWindow):
 
             button_paint_type = QComboBox(self)
             button_paint_type.wheelEvent = lambda event: event.ignore()
-            if not assembly.get_assembly_data("paint_type"):
+            if not assembly.paint_type:
                 button_paint_type.addItem("Select Paint Type")
             button_paint_type.addItems(["None", "Powder", "Wet Paint"])
             button_paint_type.setCurrentText("None")
-            button_paint_type.setCurrentText(assembly.get_assembly_data(key="paint_type"))
-            button_paint_type.currentTextChanged.connect(
-                lambda: (
-                    assembly.set_assembly_data(key="paint_type", value=button_paint_type.currentText()),
-                    self.active_workspace_file.save(),
-                    self.sync_changes(),
-                )
-            )
+            button_paint_type.setCurrentText(assembly.paint_type)
+
+            def update_paint_type():
+                assembly.paint_type = button_paint_type.currentText()
+                self.active_workspace_file.save()
+                self.sync_changes()
+
+            button_paint_type.currentTextChanged.connect(update_paint_type)
             paint_type_layout.addWidget(QLabel("Paint Type:"))
             paint_type_layout.addWidget(button_paint_type)
 
             lineedit_paint_amount = HumbleDoubleSpinBox(self)
             with contextlib.suppress(TypeError):
-                lineedit_paint_amount.setValue(assembly.get_assembly_data(key="paint_amount"))
+                lineedit_paint_amount.setValue(assembly.paint_amount)
             lineedit_paint_amount.setSuffix(" gallons")
-            lineedit_paint_amount.editingFinished.connect(
-                lambda: (
-                    assembly.set_assembly_data(key="paint_amount", value=lineedit_paint_amount.value()),
-                    self.active_workspace_file.save(),
-                    self.sync_changes(),
-                )
-            )
+
+            def update_paint_amount():
+                assembly.paint_amount = lineedit_paint_amount.value()
+                self.active_workspace_file.save()
+                self.sync_changes()
+
+            lineedit_paint_amount.editingFinished.connect(update_paint_amount)
             paint_amount_layout.addWidget(QLabel("Paint Amount:"))
             paint_amount_layout.addWidget(lineedit_paint_amount)
             color_widget.setHidden(all(keyword not in flow_tag_combobox.currentText().lower() for keyword in ["paint", "powder"]))
@@ -5463,7 +5384,7 @@ class MainWindow(QMainWindow):
         grid_widget = get_grid_widget()
         add_timers(timer_layout)
 
-        if assembly.get_assembly_data("has_items"):
+        if assembly.has_items:
             h_layout.addWidget(grid_widget)
             items_layout.addWidget(table_widget)
         else:
@@ -5472,14 +5393,14 @@ class MainWindow(QMainWindow):
         h_layout.addWidget(color_widget)
 
         # Add the "Items" group box to the main layout
-        if assembly.get_assembly_data("has_items"):
+        if assembly.has_items:
             layout.addWidget(items_groupbox)
 
         # Create the "Add Sub Assembly" button
         pushButton_add_sub_assembly = QPushButton("Add Sub Assembly")
         pushButton_add_sub_assembly.setFixedWidth(120)
 
-        if assembly.get_assembly_data("has_sub_assemblies"):
+        if assembly.has_sub_assemblies:
             sub_assembly_groupbox = QGroupBox("Sub Assemblies")
             sub_assembly_groupbox_layout = QVBoxLayout()
             sub_assembly_groupbox.setLayout(sub_assembly_groupbox_layout)
@@ -5505,40 +5426,14 @@ class MainWindow(QMainWindow):
                 response = input_dialog.get_response()
                 if response == DialogButtons.ok:
                     input_text = input_dialog.inputText
-                    if self.category == "Staging":
-                        assembly_data = {
-                            "expected_time_to_complete": 0.0,
-                            "has_items": True,
-                            "has_sub_assemblies": True,
-                            "flow_tag": [],
-                            "timers": {},
-                            "paint_color": None,
-                            "paint_type": None,
-                            "paint_amount": 0,
-                            "assembly_image": None,
-                        }
-                    else:
-                        date_created: str = QDate().currentDate().toString("yyyy-M-d")
-                        assembly_data = {
-                            "expected_time_to_complete": 0.0,
-                            "has_items": True,
-                            "has_sub_assemblies": True,
-                            "flow_tag": [],
-                            "timers": {},
-                            "paint_color": None,
-                            "paint_type": None,
-                            "paint_amount": 0,
-                            "assembly_image": None,
-                            # new stuff
-                            "starting_data": date_created,
-                            "ending_date": date_created,
-                            "current_flow_state": 0,
-                            "completed": False,
-                            "status": None,
-                        }
+                    date_created: str = QDate().currentDate().toString("yyyy-M-d")
                     new_assembly: Assembly = Assembly(
                         name=input_text,
-                        assembly_data=assembly_data,
+                        assembly_data={
+                            "has_items": True,
+                            "starting_data": date_created,
+                            "ending_date": date_created,
+                        },
                     )
                     assembly.add_sub_assembly(new_assembly)
                     self.active_workspace_file.save()
@@ -5547,7 +5442,7 @@ class MainWindow(QMainWindow):
                     sub_assembly_widget = self.load_edit_assembly_widget(
                         new_assembly,
                         workspace_information[new_assembly.name]["sub_assemblies"],
-                        group_color=self.active_workspace_file.get_group_color(assembly.get_master_assembly().get_assembly_data(key="group")),
+                        group_color=self.active_workspace_file.get_group_color(assembly.get_master_assembly().group),
                     )  # Load the widget for the new assembly
                     sub_assemblies_toolbox.addItem(sub_assembly_widget, new_assembly.name, base_color=group_color)  # Add the widget to the MultiToolBox
                     delete_button = sub_assemblies_toolbox.getLastDeleteButton()
@@ -5571,7 +5466,7 @@ class MainWindow(QMainWindow):
         def duplicate_sub_assembly(assembly_to_duplicate: Assembly):
             new_assembly = assembly.copy_sub_assembly(assembly_to_duplicate)
             assembly.add_sub_assembly(new_assembly)
-            new_assembly.set_assembly_data(key="widget_color", value=get_random_color())
+            # new_assembly.set_assembly_data(key="widget_color", value=get_random_color())
             self.active_workspace_file.save()
             self.sync_changes()
             self.active_workspace_file.get_filtered_data(self.workspace_filter)
@@ -5579,7 +5474,7 @@ class MainWindow(QMainWindow):
             assembly_widget = self.load_edit_assembly_widget(
                 new_assembly,
                 workspace_information[new_assembly.name]["sub_assemblies"],
-                group_color=self.active_workspace_file.get_group_color(assembly.get_master_assembly().get_assembly_data(key="group")),
+                group_color=self.active_workspace_file.get_group_color(assembly.get_master_assembly().group),
             )
             sub_assemblies_toolbox.addItem(assembly_widget, new_assembly.name, base_color=group_color)
             delete_button = sub_assemblies_toolbox.getLastDeleteButton()
@@ -5596,7 +5491,7 @@ class MainWindow(QMainWindow):
             self.active_workspace_file.save()
             self.sync_changes()
 
-        if assembly.get_assembly_data("has_sub_assemblies"):
+        if assembly.has_sub_assemblies:
             pushButton_add_sub_assembly.clicked.connect(add_sub_assembly)
             # Add the sub assemblies MultiToolBox to the main layout
             sub_assembly_groupbox_layout.addWidget(pushButton_add_sub_assembly)
@@ -5677,7 +5572,7 @@ class MainWindow(QMainWindow):
             groups_menu = QMenu(menu)
             groups_menu.setTitle("Move to Group")
             for menu_group in self.active_workspace_file._get_all_groups():
-                if menu_group == assembly.get_assembly_data(key="group"):
+                if menu_group == assembly.group:
                     continue
                 action = QAction(groups_menu)
                 action.triggered.connect(
@@ -5727,18 +5622,15 @@ class MainWindow(QMainWindow):
                     group_color = get_random_color()
                     if group in list(grouped_data.keys()):
                         for assembly in self.active_workspace_file.data:
-                            if assembly.get_assembly_data(key="group") == group:
-                                group_color = assembly.get_assembly_data(key="group_color")
+                            if assembly.group == group:
+                                group_color = assembly.group_color
                     new_assembly: Assembly = Assembly(
                         name=job_name,
                         assembly_data={
-                            "expected_time_to_complete": 0.0,
                             "has_items": has_items,
                             "has_sub_assemblies": has_sub_assemblies,
                             "group": group,
                             "group_color": group_color,
-                            "flow_tag": [],
-                            "timers": {},
                         },
                     )
                     try:
@@ -5818,12 +5710,12 @@ class MainWindow(QMainWindow):
             assembly_widget = self.load_edit_assembly_widget(
                 new_assembly,
                 workspace_information=self.workspace_information[new_assembly.name]["sub_assemblies"],
-                group_color=self.active_workspace_file.get_group_color(assembly_to_duplicate.get_master_assembly().get_assembly_data(key="group")),
+                group_color=self.active_workspace_file.get_group_color(assembly_to_duplicate.get_master_assembly().group),
             )
             multi_tool_box.addItem(
                 assembly_widget,
                 new_assembly.name,
-                base_color=new_assembly.get_assembly_data(key="group_color"),
+                base_color=new_assembly.group_color,
             )
             delete_button = multi_tool_box.getLastDeleteButton()
             delete_button.clicked.connect(partial(delete_assembly, multi_tool_box, new_assembly, assembly_widget))
@@ -5867,8 +5759,8 @@ class MainWindow(QMainWindow):
             group_color = get_random_color()
             for assembly in grouped_data[group]:
                 new_assembly = self.active_workspace_file.duplicate_assembly(assembly)
-                new_assembly.set_assembly_data(key="group", value=new_group_name)
-                new_assembly.set_assembly_data(key="group_color", value=group_color)
+                new_assembly.group = new_group_name
+                new_assembly.group_color = group_color
                 self.active_workspace_file.save()
             self.sync_changes()
 
@@ -5927,7 +5819,7 @@ class MainWindow(QMainWindow):
             grouped_data = self.active_workspace_file.get_grouped_data()
             try:
                 for assembly in grouped_data[group]:
-                    assembly.set_assembly_data(key="group", value=input_box.text())
+                    assembly.group = input_box.text()
             except KeyError:  # The assembly mustve been deleted?
                 return
             self.active_workspace_file.save()
@@ -5948,7 +5840,7 @@ class MainWindow(QMainWindow):
                         group = input_dialog.inputText
                     elif response == DialogButtons.cancel:
                         return
-            assembly.set_assembly_data(key="group", value=group)
+            assembly.group = group
             self.active_workspace_file.save()
             self.sync_changes()
             try:
@@ -6120,19 +6012,17 @@ class MainWindow(QMainWindow):
             toggle_timer_button: QPushButton,
             recording_widget: RecordingWidget,
         ) -> None:
-            item_flow_tag: str = item.get_value("flow_tag")[item.get_value("current_flow_state")]
-            timer_data = item.get_value("timers")
-            is_recording: bool = not timer_data[item_flow_tag]["recording"]
+            item_flow_tag: str = item.get_current_flow_state()
+            is_recording: bool = not item.timers[item_flow_tag]["recording"]
             toggle_timer_button.setChecked(is_recording)
             toggle_timer_button.setText("Stop" if is_recording else "Start")
             recording_widget.setHidden(not is_recording)
-            timer_data[item_flow_tag]["recording"] = is_recording
+            item.timers[item_flow_tag]["recording"] = is_recording
             if is_recording:
-                timer_data[item_flow_tag].setdefault("time_taken_intervals", [])
-                timer_data[item_flow_tag]["time_taken_intervals"].append([str(datetime.now())])
+                item.timers[item_flow_tag].setdefault("time_taken_intervals", [])
+                item.timers[item_flow_tag]["time_taken_intervals"].append([str(datetime.now())])
             else:
-                timer_data[item_flow_tag]["time_taken_intervals"][-1].append(str(datetime.now()))
-            item.set_value(key="timers", value=timer_data)
+                item.timers[item_flow_tag]["time_taken_intervals"][-1].append(str(datetime.now()))
 
             user_workspace.save()
             self.sync_changes()
@@ -6141,7 +6031,7 @@ class MainWindow(QMainWindow):
             input_dialog = RecutDialog(
                 title="Set Recut Count",
                 message=f"Select or Input recut count for: {item.name}",
-                max_value=item.get_value(key="parts_per"),
+                max_value=item.parts_per,
             )
             if input_dialog.exec():
                 response = input_dialog.get_response()
@@ -6149,55 +6039,44 @@ class MainWindow(QMainWindow):
                     recut_count = int(input_dialog.inputText)
                     parent_assembly = item.parent_assembly
                     new_item = WorkspaceItem(
-                        name=f"{item.name} - Recut #{item.get_value('recut_count') + 1}",
-                        data=item.copy_data(),
+                        name=f"{item.name} - Recut #{item.recut_count + 1}",
+                        data=item.to_dict(),
                     )
-                    new_item.set_value(key="parts_per", value=recut_count)
-                    new_item.set_value(key="completed", value=False)
-                    new_item.set_value(
-                        key="current_flow_state",
-                        value=new_item.get_value("flow_tag").index("Laser Cutting"),
-                    )
-                    new_item.set_value(key="recut", value=True)
+                    new_item.parts_per = recut_count
+                    new_item.complete = False
+                    new_item.current_flow_state = new_item.flow_tag.index("Laser Cutting")
+                    new_item.recut = True
                     parent_assembly.add_item(new_item)
-                    item.set_value(key="recut_count", value=item.get_value("recut_count") + 1)
-                    item.set_value(
-                        key="parts_per",
-                        value=item.get_value(key="parts_per") - recut_count,
-                    )
+                    item.recut_count += 1
+                    item.parts_per -= recut_count
                     user_workspace.save()
                     self.sync_changes()
                     self.load_workspace()
 
         def move_to_next_flow(item: WorkspaceItem, row_index: int) -> None:
-            item_flow_tag: str = item.get_value("flow_tag")[item.get_value("current_flow_state")]
+            item_flow_tag: str = item.get_current_flow_state()
             if workspace_tags.get_value("attributes")[item_flow_tag]["is_timer_enabled"]:
-                timer_data = item.get_value("timers")
                 try:
-                    timer_data[item_flow_tag]["recording"]
+                    item.timers[item_flow_tag]["recording"]
                 except KeyError:
-                    timer_data[item_flow_tag]["recording"] = False
-                if timer_data[item_flow_tag]["recording"]:
-                    timer_data[item_flow_tag]["time_taken_intervals"][-1].append(str(datetime.now()))
-                    timer_data[item_flow_tag]["recording"] = False
-                    item.set_value(key="timers", value=timer_data)
+                    item.timers[item_flow_tag]["recording"] = False
+                if item.timers[item_flow_tag]["recording"]:
+                    item.timers[item_flow_tag]["time_taken_intervals"][-1].append(str(datetime.now()))
+                    item.timers[item_flow_tag]["recording"] = False
             if item_flow_tag == "Laser Cutting":
-                item.set_value(key="recut", value=False)
-            item.set_value(
-                key="current_flow_state",
-                value=item.get_value(key="current_flow_state") + 1,
-            )
-            item.set_value(key="status", value=None)
-            if item.get_value(key="current_flow_state") == len(item.get_value(key="flow_tag")):
-                item.set_value(key="completed", value=True)
-                item.set_value(key="date_completed", value=str(datetime.now()))
-                if assembly.get_assembly_data("current_flow_state") == -1:  # NOTE Custom Job
+                item.recut = False
+            item.current_flow_state += 1
+            item.status = None
+            if item.current_flow_state == len(item.flow_tag):
+                item.completed = True
+                item.date_completed = str(datetime.now())
+                if assembly.current_flow_state == -1:  # NOTE Custom Job
                     completed_assemblies: list[Assembly] = []
                     history_workspace.load_data()
                     for main_assembly in user_workspace.data:
                         # Assembly is 100% complete
                         if user_workspace.get_completion_percentage(main_assembly)[0] == 1.0:
-                            main_assembly.set_assembly_data(key="completed", value=True)
+                            main_assembly.completed = True
                             completed_assemblies.append(main_assembly)
                             history_workspace.add_assembly(main_assembly)
                             history_workspace.save()
@@ -6214,29 +6093,25 @@ class MainWindow(QMainWindow):
             row_index: int,
             toggle_timer_button: QPushButton,
         ) -> None:
-            if (
-                workspace_tags.get_value("flow_tag_statuses")[item.get_value("flow_tag")[item.get_value("current_flow_state")]][status_box.currentText()]["start_timer"]
-                and workspace_tags.get_value("attributes")[item.get_value("flow_tag")[item.get_value("current_flow_state")]]["is_timer_enabled"]
-                and item.get_value("timers")[item.get_value("flow_tag")[item.get_value("current_flow_state")]]["recording"] == False
-            ):
+            if workspace_tags.get_value("flow_tag_statuses")[item.get_current_flow_state()][status_box.currentText()]["start_timer"] and workspace_tags.get_value("attributes")[item.get_current_flow_state()]["is_timer_enabled"] and item.timers[item.get_current_flow_state()]["recording"] == False:
                 toggle_timer_button.click()
-            if workspace_tags.get_value("flow_tag_statuses")[item.get_value("flow_tag")[item.get_value("current_flow_state")]][status_box.currentText()]["completed"]:
+            if workspace_tags.get_value("flow_tag_statuses")[item.get_current_flow_state()][status_box.currentText()]["completed"]:
                 move_to_next_flow(item=item, row_index=row_index)
             else:
-                item.set_value(key="status", value=status_box.currentText())
+                item.status = status_box.currentText()
 
             user_workspace.save()
             self.sync_changes()
 
         def add_item(row_index: int, item: WorkspaceItem):
-            if item.get_value(key="completed") == False:
+            if item.completed == False:
                 try:
-                    item_flow_tag: str = item.get_value("flow_tag")[item.get_value("current_flow_state")]
+                    item_flow_tag: str = item.get_current_flow_state()
                 except IndexError:  # This happens when an item was added from the Editing tab without a flow tag
                     return
             else:
-                if assembly.get_assembly_data("current_flow_state") >= 0:
-                    item_flow_tag: str = assembly.get_assembly_data("flow_tag")[assembly.get_assembly_data("current_flow_state")]
+                if assembly.current_flow_state >= 0:
+                    item_flow_tag: str = assembly.get_current_flow_state()
                 else:  # Custom Job
                     item_flow_tag: str = "Custom Job"
 
@@ -6270,27 +6145,27 @@ class MainWindow(QMainWindow):
                 table.showColumn(6)
                 table.showColumn(7)
 
-            table.setItem(row_index, col_index, QTableWidgetItem(item.data["thickness"]))  # 4
+            table.setItem(row_index, col_index, QTableWidgetItem(item.thickness))  # 4
             table.item(row_index, col_index).setTextAlignment(Qt.AlignmentFlag.AlignCenter | Qt.AlignmentFlag.AlignVCenter)
             col_index += 1
-            table.setItem(row_index, col_index, QTableWidgetItem(item.data["material"]))  # 5
+            table.setItem(row_index, col_index, QTableWidgetItem(item.material))  # 5
             table.item(row_index, col_index).setTextAlignment(Qt.AlignmentFlag.AlignCenter | Qt.AlignmentFlag.AlignVCenter)
             col_index += 1
-            table.setItem(row_index, col_index, QTableWidgetItem(str(item.data["paint_type"])))  # 6
+            table.setItem(row_index, col_index, QTableWidgetItem(str(item.paint_type)))  # 6
             table.item(row_index, col_index).setTextAlignment(Qt.AlignmentFlag.AlignCenter | Qt.AlignmentFlag.AlignVCenter)
             col_index += 1
             button_color = QComboBox(self)
             button_color.setEnabled(False)
-            if item.get_value("paint_color") != None:
+            if item.paint_color != None:
                 for color_name, color_code in workspace_tags.get_value("paint_colors").items():
-                    if color_code == item.get_value("paint_color"):
+                    if color_code == item.paint_color:
                         button_color.addItem(color_name)
                         button_color.setCurrentText(color_name)
-                        button_color.setStyleSheet(f'QComboBox{{border-radius: 0.001em; background-color: {item.get_value("paint_color")}}} {"QMenu { background-color: rgb(22,22,22);}"}')
+                        button_color.setStyleSheet(f'QComboBox{{border-radius: 0.001em; background-color: {item.paint_color}}} {"QMenu { background-color: rgb(22,22,22);}"}')
                         break
             table.setCellWidget(row_index, col_index, button_color)  # 7
             col_index += 1
-            table.setItem(row_index, col_index, QTableWidgetItem(str(item.data["parts_per"])))  # 8
+            table.setItem(row_index, col_index, QTableWidgetItem(str(item.parts_per)))  # 8
             table.item(row_index, col_index).setTextAlignment(Qt.AlignmentFlag.AlignCenter | Qt.AlignmentFlag.AlignVCenter)
             col_index += 1
 
@@ -6319,7 +6194,7 @@ class MainWindow(QMainWindow):
             recording_widget = RecordingWidget(timer_widget)
             toggle_timer_button = QPushButton(timer_widget)
 
-            if item.get_value(key="completed") == False:
+            if item.completed == False:
                 if not list(workspace_tags.get_value("flow_tag_statuses")[item_flow_tag].keys()):
                     try:
                         button_next_flow_state = QPushButton(self)
@@ -6352,7 +6227,7 @@ class MainWindow(QMainWindow):
                     status_box.setFixedHeight(50)
                     status_box.setObjectName("flow_tag_status_button")
                     status_box.addItems(list(workspace_tags.get_value("flow_tag_statuses")[item_flow_tag].keys()))
-                    status_box.setCurrentText(item.get_value("status"))
+                    status_box.setCurrentText(item.status)
                     status_box.setStyleSheet("border-radius: 0.001em;")
                     status_box.currentTextChanged.connect(
                         partial(
@@ -6373,7 +6248,7 @@ class MainWindow(QMainWindow):
                 recut_button.clicked.connect(partial(recut, item))
                 h_layout.addWidget(recut_button)
             with contextlib.suppress(IndexError, KeyError):
-                next_flow_tag = item.get_value("flow_tag")[item.get_value("current_flow_state") + 1]
+                next_flow_tag = item.flow_tag[item.current_flow_state + 1]
                 h_layout.addWidget(
                     QLabel(
                         workspace_tags.get_value("attributes")[next_flow_tag]["next_flow_tag_message"],
@@ -6385,8 +6260,8 @@ class MainWindow(QMainWindow):
 
             table.setCellWidget(row_index, col_index, flow_tag_controls_widget)
             col_index += 1
-            if item.get_value(key="completed") == False and workspace_tags.get_value("attributes")[item_flow_tag]["is_timer_enabled"]:
-                is_recording: bool = item.get_value("timers")[item_flow_tag].setdefault("recording", False)
+            if item.completed == False and workspace_tags.get_value("attributes")[item_flow_tag]["is_timer_enabled"]:
+                is_recording: bool = item.timers[item_flow_tag].setdefault("recording", False)
                 toggle_timer_button.setCheckable(True)
                 toggle_timer_button.setChecked(is_recording)
                 recording_widget.setHidden(not is_recording)
@@ -6399,15 +6274,15 @@ class MainWindow(QMainWindow):
                 table.showColumn(10)
 
             col_index += 1
-            table.setItem(row_index, col_index, QTableWidgetItem(str(item.data["shelf_number"])))  # 11
+            table.setItem(row_index, col_index, QTableWidgetItem(item.shelf_number))  # 11
             table.item(row_index, col_index).setTextAlignment(Qt.AlignmentFlag.AlignCenter | Qt.AlignmentFlag.AlignVCenter)
             col_index += 1
-            table.setItem(row_index, col_index, QTableWidgetItem(str(item.data["notes"])))  # 12
+            table.setItem(row_index, col_index, QTableWidgetItem(item.notes))  # 12
             table.item(row_index, col_index).setTextAlignment(Qt.AlignmentFlag.AlignCenter | Qt.AlignmentFlag.AlignVCenter)
 
         row_index: int = 0
         for item in assembly.items:
-            if item.get_value("show") == False:
+            if item.show == False:
                 continue
             add_item(row_index, item)
             row_index += 1
@@ -6441,9 +6316,9 @@ class MainWindow(QMainWindow):
         h_layout.setAlignment(Qt.AlignmentFlag.AlignLeft)
 
         assembly_image = AssemblyImage(widget)
-        if assembly.get_assembly_data("assembly_image"):
-            self.download_workspace_file(assembly.get_assembly_data("assembly_image"), False)
-            assembly_image.set_new_image(assembly.get_assembly_data("assembly_image"))
+        if assembly.assembly_image:
+            self.download_workspace_file(assembly.assembly_image, False)
+            assembly_image.set_new_image(assembly.assembly_image)
         else:
             assembly_image.setText("No image provided")
 
@@ -6465,7 +6340,7 @@ class MainWindow(QMainWindow):
         items_groupbox.setLayout(items_layout)
 
         # Create and configure the table widget
-        if assembly.get_assembly_data("has_items"):
+        if assembly.has_items:
             table_widget = self.load_view_assembly_items_table(assembly)
             table_widget.setFixedHeight(40 * (len(assembly.items) + 2))
             # if isinstance(table_widget, QLabel): # Its empty
@@ -6483,13 +6358,13 @@ class MainWindow(QMainWindow):
 
             grid.setAlignment(Qt.AlignmentFlag.AlignLeft)
             grid.addWidget(
-                QLabel(f"Timeline: {assembly.get_assembly_data('starting_date')} to {assembly.get_assembly_data('ending_date')}, ({QDate.fromString(assembly.get_assembly_data('starting_date'), 'yyyy-M-d').daysTo(QDate.fromString(assembly.get_assembly_data('ending_date'), 'yyyy-M-d'))} days)"),
+                QLabel(f"Timeline: {assembly.starting_date} to {assembly.ending_date}, ({QDate.fromString(assembly.starting_date, 'yyyy-M-d').daysTo(QDate.fromString(assembly.ending_date, 'yyyy-M-d'))} days)"),
                 0,
                 0,
             )
             if assembly.all_sub_assemblies_complete() and assembly.all_items_complete():
                 try:
-                    assembly_flow_tag: str = assembly.get_assembly_data(key="flow_tag")[assembly.get_assembly_data(key="current_flow_state")]
+                    assembly_flow_tag: str = assembly.get_current_flow_state()
                 except IndexError:
                     return
 
@@ -6498,47 +6373,40 @@ class MainWindow(QMainWindow):
                     toggle_timer_button: QPushButton,
                     recording_widget: RecordingWidget,
                 ) -> None:
-                    assembly_flow_tag: str = assembly.get_assembly_data(key="flow_tag")[assembly.get_assembly_data(key="current_flow_state")]
-                    timer_data = assembly.get_assembly_data(key="timers")
-                    is_recording: bool = not timer_data[assembly_flow_tag]["recording"]
+                    assembly_flow_tag: str = assembly.get_current_flow_state()
+                    is_recording: bool = not assembly.timers[assembly_flow_tag]["recording"]
                     toggle_timer_button.setChecked(is_recording)
                     toggle_timer_button.setText("Stop" if is_recording else "Start")
                     recording_widget.setHidden(not is_recording)
-                    timer_data[assembly_flow_tag]["recording"] = is_recording
+                    assembly.timers[assembly_flow_tag]["recording"] = is_recording
                     if is_recording:
-                        timer_data[assembly_flow_tag].setdefault("time_taken_intervals", [])
-                        timer_data[assembly_flow_tag]["time_taken_intervals"].append([str(datetime.now())])
+                        assembly.timers[assembly_flow_tag].setdefault("time_taken_intervals", [])
+                        assembly.timers[assembly_flow_tag]["time_taken_intervals"].append([str(datetime.now())])
                     else:
-                        timer_data[assembly_flow_tag]["time_taken_intervals"][-1].append(str(datetime.now()))
-                    assembly.set_assembly_data(key="timers", value=timer_data)
+                        assembly.timers[assembly_flow_tag]["time_taken_intervals"][-1].append(str(datetime.now()))
                     user_workspace.save()
                     self.sync_changes()
 
                 def move_to_next_flow(assembly: Assembly) -> None:
-                    item_flow_tag: str = assembly.get_assembly_data("flow_tag")[assembly.get_assembly_data("current_flow_state")]
+                    item_flow_tag: str = assembly.get_current_flow_state()
                     if workspace_tags.get_value("attributes")[item_flow_tag]["is_timer_enabled"]:
-                        timer_data = assembly.get_assembly_data("timers")
                         try:
-                            timer_data[item_flow_tag]["recording"]
+                            assembly.timers[item_flow_tag]["recording"]
                         except KeyError:
-                            timer_data[item_flow_tag]["recording"] = False
-                        if timer_data[item_flow_tag]["recording"]:
-                            timer_data[item_flow_tag]["time_taken_intervals"][-1].append(str(datetime.now()))
-                            timer_data[item_flow_tag]["recording"] = False
-                            assembly.set_assembly_data(key="timers", value=timer_data)
-                    assembly.set_assembly_data(
-                        key="current_flow_state",
-                        value=assembly.get_assembly_data(key="current_flow_state") + 1,
-                    )
-                    assembly.set_assembly_data(key="status", value=None)
-                    if assembly.get_assembly_data(key="current_flow_state") == len(assembly.get_assembly_data(key="flow_tag")):
-                        assembly.set_assembly_data(key="completed", value=True)
-                        assembly.set_assembly_data(key="date_completed", value=str(datetime.now()))
+                            assembly.timers[item_flow_tag]["recording"] = False
+                        if assembly.timers[item_flow_tag]["recording"]:
+                            assembly.timers[item_flow_tag]["time_taken_intervals"][-1].append(str(datetime.now()))
+                            assembly.timers[item_flow_tag]["recording"] = False
+                    assembly.current_flow_state += 1
+                    assembly.status = None
+                    if assembly.current_flow_state == len(assembly.flow_tag):
+                        assembly.completed = True
+                        assembly.date_completed = str(datetime.now())
                         completed_assemblies: list[Assembly] = []
                         history_workspace.load_data()
                         for main_assembly in user_workspace.data:
                             # Assembly is 100% complete
-                            if main_assembly.get_assembly_data(key="completed"):
+                            if main_assembly.completed:
                                 completed_assemblies.append(main_assembly)
                                 history_workspace.add_assembly(main_assembly)
                                 history_workspace.save()
@@ -6554,16 +6422,12 @@ class MainWindow(QMainWindow):
                     assembly: Assembly,
                     toggle_timer_button: QPushButton,
                 ) -> None:
-                    if (
-                        workspace_tags.get_value("flow_tag_statuses")[assembly.get_assembly_data("flow_tag")[assembly.get_assembly_data("current_flow_state")]][status_box.currentText()]["start_timer"]
-                        and workspace_tags.get_value("attributes")[assembly.get_assembly_data("flow_tag")[assembly.get_assembly_data("current_flow_state")]]["is_timer_enabled"]
-                        and assembly.get_assembly_data("timers")[assembly.get_assembly_data("flow_tag")[assembly.get_assembly_data("current_flow_state")]]["recording"] == False
-                    ):
+                    if workspace_tags.get_value("flow_tag_statuses")[assembly.get_current_flow_state()][status_box.currentText()]["start_timer"] and workspace_tags.get_value("attributes")[assembly.get_current_flow_state()]["is_timer_enabled"] and assembly.timers[assembly.get_current_flow_state()]["recording"] == False:
                         toggle_timer_button.click()
-                    if workspace_tags.get_value("flow_tag_statuses")[assembly.get_assembly_data("flow_tag")[assembly.get_assembly_data("current_flow_state")]][status_box.currentText()]["completed"]:
+                    if workspace_tags.get_value("flow_tag_statuses")[assembly.get_current_flow_state()][status_box.currentText()]["completed"]:
                         move_to_next_flow(assembly=assembly)
                     else:
-                        assembly.set_assembly_data(key="status", value=status_box.currentText())
+                        assembly.status = status_box.currentText()
                     user_workspace.save()
                     self.sync_changes()
 
@@ -6573,7 +6437,7 @@ class MainWindow(QMainWindow):
                 recording_widget = RecordingWidget(timer_widget)
                 toggle_timer_button = QPushButton(timer_widget)
                 if workspace_tags.get_value("attributes")[assembly_flow_tag]["is_timer_enabled"]:
-                    is_recording: bool = assembly.get_assembly_data(key="timers")[assembly_flow_tag].setdefault("recording", False)
+                    is_recording: bool = assembly.timers[assembly_flow_tag].setdefault("recording", False)
                     toggle_timer_button.setCheckable(True)
                     toggle_timer_button.setChecked(is_recording)
                     recording_widget.setHidden(not is_recording)
@@ -6621,7 +6485,7 @@ class MainWindow(QMainWindow):
                         grid.addWidget(QLabel("Flow Tag:"), 0, 1)
                         grid.addWidget(button_next_flow_state, 0, 2)
                         with contextlib.suppress(IndexError):
-                            next_flow_tag = assembly.get_assembly_data(key="flow_tag")[assembly.get_assembly_data(key="current_flow_state") + 1]
+                            next_flow_tag = assembly.flow_tag[assembly.current_flow_state + 1]
                             grid.addWidget(
                                 QLabel(
                                     workspace_tags.get_value("attributes")[next_flow_tag]["next_flow_tag_message"],
@@ -6634,7 +6498,7 @@ class MainWindow(QMainWindow):
                     status_box = QComboBox(self)
                     status_box.setObjectName("flow_tag_status_button")
                     status_box.addItems(list(workspace_tags.get_value("flow_tag_statuses")[assembly_flow_tag].keys()))
-                    status_box.setCurrentText(assembly.get_assembly_data("status"))
+                    status_box.setCurrentText(assembly.status)
                     status_box.currentTextChanged.connect(
                         partial(
                             item_status_changed,
@@ -6647,7 +6511,7 @@ class MainWindow(QMainWindow):
                     grid.addWidget(QLabel("Status:"), 0, 1)
                     grid.addWidget(status_box, 0, 2)
                     with contextlib.suppress(IndexError, KeyError):
-                        next_flow_tag = assembly.get_assembly_data(key="flow_tag")[assembly.get_assembly_data(key="current_flow_state") + 1]
+                        next_flow_tag = assembly.flow_tag[assembly.current_flow_state + 1]
                         grid.addWidget(
                             QLabel(
                                 workspace_tags.get_value("attributes")[next_flow_tag]["next_flow_tag_message"],
@@ -6656,13 +6520,13 @@ class MainWindow(QMainWindow):
                             0,
                             3,
                         )
-                if all(keyword not in assembly_flow_tag for keyword in ["paint", "powder"]) and assembly.get_assembly_data(key="paint_color") != None:
+                if all(keyword not in assembly_flow_tag for keyword in ["paint", "powder"]) and assembly.paint_color != None:
                     paint_color: str = "None"
                     for color_name, color_code in workspace_tags.get_value("paint_colors").items():
-                        if color_code == assembly.get_assembly_data(key="paint_color"):
+                        if color_code == assembly.paint_color:
                             paint_color = color_name
-                    paint_type: str = assembly.get_assembly_data(key="paint_type")
-                    paint_amount: float = assembly.get_assembly_data(key="paint_amount")
+                    paint_type: str = assembly.paint_type
+                    paint_amount: float = assembly.paint_amount
                     grid.addWidget(
                         QLabel(f'Assembly needs to be painted "{paint_color}" using "{paint_type}", the expected amount is {paint_amount} gallons'),
                         0,
@@ -6673,13 +6537,13 @@ class MainWindow(QMainWindow):
 
         grid_widget = get_grid_widget()
 
-        if assembly.get_assembly_data("has_items"):
+        if assembly.has_items:
             items_layout.addWidget(table_widget)
         h_layout.addWidget(grid_widget)
         # h_layout.addWidget(timer_widget)
 
         # Add the "Items" group box to the main layout
-        # if assembly.get_assembly_data("has_items") and user_workspace.is_assembly_empty(assembly=assembly):
+        # if assembly.has_items and user_workspace.is_assembly_empty(assembly=assembly):
         #     layout.addWidget(items_groupbox)
 
         # Create the MultiToolBox for sub assemblies
@@ -6691,20 +6555,20 @@ class MainWindow(QMainWindow):
             saved_workspace_prefs = False
         sub_assemblies_toolbox = MultiToolBox(widget)
         sub_assemblies_toolbox.layout().setSpacing(0)
-        # if assembly.get_assembly_data("has_sub_assemblies"):
+        # if assembly.has_sub_assemblies:
         sub_assembly_groupbox = QGroupBox("Sub Assemblies")
         sub_assembly_groupbox_layout = QVBoxLayout()
         sub_assembly_groupbox.setLayout(sub_assembly_groupbox_layout)
         # Add the sub assemblies MultiToolBox to the main layout
         sub_assembly_groupbox_layout.addWidget(sub_assemblies_toolbox)
         # if len(assembly.sub_assemblies) > 0:
-        if assembly.get_assembly_data("has_items"):
+        if assembly.has_items:
             layout.addWidget(items_groupbox)
         # added_items_group_widget = True
         # if not added_sub_assemblies_group_widget:
         # added_sub_assemblies_group_widget = True
         for i, sub_assembly in enumerate(assembly.sub_assemblies):
-            if sub_assembly.get_assembly_data(key="show") == True and sub_assembly.get_assembly_data(key="completed") == False:
+            if sub_assembly.show == True and sub_assembly.completed == False:
                 sub_assembly_widget = self.load_view_assembly_widget(
                     assembly=sub_assembly,
                     workspace_information=workspace_information[assembly.name]["sub_assemblies"],
@@ -6800,22 +6664,20 @@ class MainWindow(QMainWindow):
             recording_widget: RecordingWidget,
         ) -> None:
             for item in grouped_items.data[item_name]:
-                item_flow_tag: str = item.get_value("flow_tag")[item.get_value("current_flow_state")]
-                timer_data = item.get_value("timers")
+                item_flow_tag: str = item.get_current_flow_state()
                 try:
-                    is_recording: bool = not timer_data[item_flow_tag]["recording"]
+                    is_recording: bool = not item.timers[item_flow_tag]["recording"]
                 except KeyError:
                     is_recording: bool = True
                 toggle_timer_button.setChecked(is_recording)
                 toggle_timer_button.setText("Stop" if is_recording else "Start")
                 recording_widget.setHidden(not is_recording)
-                timer_data[item_flow_tag]["recording"] = is_recording
+                item.timers[item_flow_tag]["recording"] = is_recording
                 if is_recording:
-                    timer_data[item_flow_tag].setdefault("time_taken_intervals", [])
-                    timer_data[item_flow_tag]["time_taken_intervals"].append([str(datetime.now())])
+                    item.timers[item_flow_tag].setdefault("time_taken_intervals", [])
+                    item.timers[item_flow_tag]["time_taken_intervals"].append([str(datetime.now())])
                 else:
-                    timer_data[item_flow_tag]["time_taken_intervals"][-1].append(str(datetime.now()))
-                item.set_value(key="timers", value=timer_data)
+                    item.timers[item_flow_tag]["time_taken_intervals"][-1].append(str(datetime.now()))
 
             user_workspace.save()
             self.sync_changes()
@@ -6824,7 +6686,7 @@ class MainWindow(QMainWindow):
             max_recut_count: int = 0
             item = grouped_items.get_item(item_name)
             for item in grouped_items.get_item_list(item_name):
-                max_recut_count = item.get_value(key="parts_per")
+                max_recut_count = item.parts_per
                 if max_recut_count != 0:
                     break
             if max_recut_count == 0:
@@ -6841,56 +6703,45 @@ class MainWindow(QMainWindow):
                     recut_count = int(input_dialog.inputText)
                     parent_assembly = item.parent_assembly
                     new_item = WorkspaceItem(
-                        name=f"{item.name} - Recut #{item.get_value('recut_count') + 1}",
-                        data=item.copy_data(),
+                        name=f"{item.name} - Recut #{item.recut_count + 1}",
+                        data=item.to_dict(),
                     )
-                    new_item.set_value(key="parts_per", value=recut_count)
-                    new_item.set_value(
-                        key="current_flow_state",
-                        value=new_item.get_value("flow_tag").index("Laser Cutting"),
-                    )
-                    new_item.set_value(key="recut", value=True)
+                    new_item.parts_per = recut_count
+                    new_item.current_flow_state = new_item.flow_tag.index("Laser Cutting")
+                    new_item.recut = True
                     parent_assembly.add_item(new_item)
-                    item.set_value(key="recut_count", value=item.get_value("recut_count") + 1)
-                    item.set_value(
-                        key="parts_per",
-                        value=item.get_value(key="parts_per") - recut_count,
-                    )
+                    item.recut_count = item.parts_per + 1
+                    item.parts_per -= recut_count
                     user_workspace.save()
                     self.sync_changes()
                     self.load_workspace()
 
         def move_to_next_flow(item_name: str, row_index: int) -> None:
             for item in grouped_items.data[item_name]:
-                item_flow_tag: str = item.get_value("flow_tag")[item.get_value("current_flow_state")]
+                item_flow_tag: str = item.get_current_flow_state()
                 if workspace_tags.get_value("attributes")[item_flow_tag]["is_timer_enabled"]:
-                    timer_data = item.get_value("timers")
                     try:
-                        timer_data[item_flow_tag]["recording"]
+                        item.timers[item_flow_tag]["recording"]
                     except KeyError:
-                        timer_data[item_flow_tag]["recording"] = False
-                    if timer_data[item_flow_tag]["recording"]:
-                        timer_data[item_flow_tag]["time_taken_intervals"][-1].append(str(datetime.now()))
-                        timer_data[item_flow_tag]["recording"] = False
-                        item.set_value(key="timers", value=timer_data)
+                        item.timers[item_flow_tag]["recording"] = False
+                    if item.timers[item_flow_tag]["recording"]:
+                        item.timers[item_flow_tag]["time_taken_intervals"][-1].append(str(datetime.now()))
+                        item.timers[item_flow_tag]["recording"] = False
                 if item_flow_tag == "Laser Cutting":
-                    item.set_value(key="recut", value=False)
-                item.set_value(
-                    key="current_flow_state",
-                    value=item.get_value(key="current_flow_state") + 1,
-                )
-                item.set_value(key="status", value=None)
-                if item.get_value(key="current_flow_state") == len(item.get_value(key="flow_tag")):
-                    item.set_value(key="completed", value=True)
-                    item.set_value(key="date_completed", value=str(datetime.now()))
+                    item.recut = False
+                item.current_flow_state += 1
+                item.status = None
+                if item.current_flow_state == len(item.flow_tag):
+                    item.completed = True
+                    item.date_completed = str(datetime.now())
                     assembly: Assembly = item.parent_assembly
-                    if assembly.get_assembly_data("current_flow_state") == -1:  # NOTE Custom Job
+                    if assembly.current_flow_state == -1:  # NOTE Custom Job
                         completed_assemblies: list[Assembly] = []
                         history_workspace.load_data()
                         for main_assembly in user_workspace.data:
                             # Assembly is 100% complete
                             if user_workspace.get_completion_percentage(main_assembly)[0] == 1.0:
-                                main_assembly.set_assembly_data(key="completed", value=True)
+                                main_assembly.completed = True
                                 completed_assemblies.append(main_assembly)
                                 history_workspace.add_assembly(main_assembly)
                                 history_workspace.save()
@@ -6908,17 +6759,13 @@ class MainWindow(QMainWindow):
             toggle_timer_button: QPushButton,
         ) -> None:
             for item in grouped_items.data[item_name]:
-                if (
-                    workspace_tags.get_value("flow_tag_statuses")[item.get_value("flow_tag")[item.get_value("current_flow_state")]][status_box.currentText()]["start_timer"]
-                    and workspace_tags.get_value("attributes")[item.get_value("flow_tag")[item.get_value("current_flow_state")]]["is_timer_enabled"]
-                    and item.get_value("timers")[item.get_value("flow_tag")[item.get_value("current_flow_state")]]["recording"] == False
-                ):
+                if workspace_tags.get_value("flow_tag_statuses")[item.get_current_flow_state()][status_box.currentText()]["start_timer"] and workspace_tags.get_value("attributes")[item.get_current_flow_state()]["is_timer_enabled"] and item.timers[item.get_current_flow_state()]["recording"] == False:
                     toggle_timer_button.click()
-                if workspace_tags.get_value("flow_tag_statuses")[item.get_value("flow_tag")[item.get_value("current_flow_state")]][status_box.currentText()]["completed"]:
+                if workspace_tags.get_value("flow_tag_statuses")[item.get_current_flow_state()][status_box.currentText()]["completed"]:
                     # grouped_items.update_values(item_to_update=item_name, key="status", value=status_box.currentText())
                     move_to_next_flow(item_name=item.name, row_index=row_index)
                 else:
-                    item.set_value(key="status", value=status_box.currentText())
+                    item.status = status_box.currentText()
                     # grouped_items.update_values(item_to_update=item_name, key="status", value=status_box.currentText())
 
             user_workspace.save()
@@ -6926,7 +6773,7 @@ class MainWindow(QMainWindow):
 
         def add_item(row_index: int, item_name: str):
             first_item: WorkspaceItem = grouped_items.get_item(item_name=item_name)
-            item_flow_tag: str = first_item.get_value("flow_tag")[first_item.get_value("current_flow_state")]
+            item_flow_tag: str = first_item.get_current_flow_state()
             col_index: int = 0
             table.insertRow(row_index)
             table.setRowHeight(row_index, 50)
@@ -6958,27 +6805,27 @@ class MainWindow(QMainWindow):
                 table.showColumn(6)
                 table.showColumn(7)
 
-            table.setItem(row_index, col_index, QTableWidgetItem(first_item.data["thickness"]))  # 4
+            table.setItem(row_index, col_index, QTableWidgetItem(first_item.thickness))  # 4
             table.item(row_index, col_index).setTextAlignment(Qt.AlignmentFlag.AlignCenter | Qt.AlignmentFlag.AlignVCenter)
             col_index += 1
-            table.setItem(row_index, col_index, QTableWidgetItem(first_item.data["material"]))  # 5
+            table.setItem(row_index, col_index, QTableWidgetItem(first_item.material))  # 5
             table.item(row_index, col_index).setTextAlignment(Qt.AlignmentFlag.AlignCenter | Qt.AlignmentFlag.AlignVCenter)
             col_index += 1
             table.setItem(
                 row_index,
                 col_index,
-                QTableWidgetItem(str(first_item.data["paint_type"])),
+                QTableWidgetItem(str(first_item.paint_type)),
             )  # 6
             table.item(row_index, col_index).setTextAlignment(Qt.AlignmentFlag.AlignCenter | Qt.AlignmentFlag.AlignVCenter)
             col_index += 1
             button_color = QComboBox(self)
             button_color.setEnabled(False)
-            if first_item.get_value("paint_color") != None:
+            if first_item.paint_color != None:
                 for color_name, color_code in workspace_tags.get_value("paint_colors").items():
-                    if color_code == first_item.get_value("paint_color"):
+                    if color_code == first_item.paint_color:
                         button_color.addItem(color_name)
                         button_color.setCurrentText(color_name)
-                        button_color.setStyleSheet(f'QComboBox{{border-radius: 0.001em; background-color: {first_item.get_value("paint_color")}}} {"QMenu { background-color: rgb(22,22,22);}"}')
+                        button_color.setStyleSheet(f'QComboBox{{border-radius: 0.001em; background-color: {first_item.paint_color}}} {"QMenu { background-color: rgb(22,22,22);}"}')
                         break
             table.setCellWidget(row_index, col_index, button_color)  # 7
             col_index += 1
@@ -7046,7 +6893,7 @@ class MainWindow(QMainWindow):
                     status_box.setFixedHeight(50)
                     status_box.setObjectName("flow_tag_status_button")
                     status_box.addItems(list(workspace_tags.get_value("flow_tag_statuses")[item_flow_tag].keys()))
-                    status_box.setCurrentText(first_item.get_value("status"))
+                    status_box.setCurrentText(first_item.status)
                     status_box.setStyleSheet("border-radius: 0.001em;")
                     status_box.currentTextChanged.connect(
                         partial(
@@ -7073,7 +6920,7 @@ class MainWindow(QMainWindow):
                 recut_button.clicked.connect(partial(recut, item_name))
                 h_layout.addWidget(recut_button)
             with contextlib.suppress(IndexError, KeyError):
-                next_flow_tag = first_item.get_value("flow_tag")[first_item.get_value("current_flow_state") + 1]
+                next_flow_tag = first_item.flow_tag[first_item.current_flow_state + 1]
                 h_layout.addWidget(
                     QLabel(
                         workspace_tags.get_value("attributes")[next_flow_tag]["next_flow_tag_message"],
@@ -7084,7 +6931,7 @@ class MainWindow(QMainWindow):
             col_index += 1
 
             if workspace_tags.get_value("attributes")[item_flow_tag]["is_timer_enabled"]:
-                is_recording: bool = first_item.get_value("timers")[item_flow_tag].setdefault("recording", False)
+                is_recording: bool = first_item.timers[item_flow_tag].setdefault("recording", False)
                 toggle_timer_button.setCheckable(True)
                 toggle_timer_button.setChecked(is_recording)
                 recording_widget.setHidden(not is_recording)
@@ -7100,12 +6947,12 @@ class MainWindow(QMainWindow):
             table.setItem(
                 row_index,
                 col_index,
-                QTableWidgetItem(str(first_item.data["shelf_number"])),
+                QTableWidgetItem(str(first_item.shelf_number)),
             )  # 11
             table.item(row_index, col_index).setTextAlignment(Qt.AlignmentFlag.AlignCenter | Qt.AlignmentFlag.AlignVCenter)
 
             col_index += 1
-            table.setItem(row_index, col_index, QTableWidgetItem(str(first_item.data["notes"])))  # 12
+            table.setItem(row_index, col_index, QTableWidgetItem(str(first_item.notes)))  # 12
             table.item(row_index, col_index).setTextAlignment(Qt.AlignmentFlag.AlignCenter | Qt.AlignmentFlag.AlignVCenter)
 
         row_index: int = 0
@@ -7227,7 +7074,7 @@ class MainWindow(QMainWindow):
                 multi_tool_box = MultiToolBox()
                 multi_tool_box.layout().setSpacing(0)
                 for assembly in grouped_data[group]:
-                    if assembly.get_assembly_data(key="show") == True and assembly.get_assembly_data(key="completed") == False:
+                    if assembly.show == True and assembly.completed == False:
                         assembly_widget = self.load_view_assembly_widget(
                             assembly=assembly,
                             workspace_information=self.workspace_information[selected_tab][group]["sub_assemblies"],
@@ -7235,7 +7082,7 @@ class MainWindow(QMainWindow):
                         )
                         multi_tool_box.addItem(
                             assembly_widget,
-                            f'{assembly.get_assembly_data(key="display_name")} - Items: {user_workspace.get_completion_percentage(assembly)[0]*100}% - Assemblies: {user_workspace.get_completion_percentage(assembly)[1]*100}%',
+                            f"{assembly.display_name} - Items: {user_workspace.get_completion_percentage(assembly)[0]*100}% - Assemblies: {user_workspace.get_completion_percentage(assembly)[1]*100}%",
                             base_color=user_workspace.get_group_color(group),
                         )
                 group_tool_boxes[group].layout().addWidget(multi_tool_box)
@@ -7276,7 +7123,7 @@ class MainWindow(QMainWindow):
 
         for item in assembly.items:
             item_group.add_item_to_group(
-                group_name=f'{item.data.get("material")} {item.data.get("thickness")}',
+                group_name=f"{item.material} {item.thickness}",
                 item=item,
             )
 
@@ -7293,8 +7140,8 @@ class MainWindow(QMainWindow):
                     button_names=DialogButtons.set_cancel,
                     title="Set Timeline",
                     message=f"Set timeline for all items in {group}",
-                    starting_date=item_group.get_item(group).get_value("starting_date"),
-                    ending_date=item_group.get_item(group).get_value("ending_date"),
+                    starting_date=item_group.get_item(group).starting_date,
+                    ending_date=item_group.get_item(group).ending_date,
                 )
                 if timeline_dialog.exec():
                     if timeline_dialog.get_response() == DialogButtons.set:
@@ -7306,12 +7153,12 @@ class MainWindow(QMainWindow):
                         string_end_time = end_time.toString("yyyy-M-d")
 
                         for item in item_group.get_item_list(group_name):
-                            item.set_value("starting_date", string_start_time)
-                            item.set_value("ending_date", string_end_time)
+                            item.starting_date = string_start_time
+                            item.ending_date = string_end_time
                         user_workspace.save()
                         self.upload_file(
                             [
-                                "workspace - User.json",
+                                "user_workspace.json",
                             ],
                             False,
                         )
@@ -7353,7 +7200,7 @@ class MainWindow(QMainWindow):
             table.setItem(
                 row_index,
                 col_index,
-                QTableWidgetItem(f'{item_group.get_item(group).get_value("starting_date")} to {item_group.get_item(group).get_value("ending_date")}, ({QDate.fromString(item_group.get_item(group).get_value("starting_date"), "yyyy-M-d").daysTo(QDate.fromString(item_group.get_item(group).get_value("ending_date"), "yyyy-M-d"))} days)'),
+                QTableWidgetItem(f'{item_group.get_item(group).starting_date} to {item_group.get_item(group).ending_date}, ({QDate.fromString(item_group.get_item(group).starting_date, "yyyy-M-d").daysTo(QDate.fromString(item_group.get_item(group).ending_date, "yyyy-M-d"))} days)'),
             )  # 0
             table.resizeColumnsToContents()
 
@@ -7400,7 +7247,7 @@ class MainWindow(QMainWindow):
         items_groupbox.setLayout(items_layout)
 
         # Create and configure the table widget
-        if assembly.get_assembly_data("has_items"):
+        if assembly.has_items:
             table_widget = self.load_planning_assembly_items_table(assembly)
             table_widget.setFixedHeight(40 * (len(assembly.items) + 2))
             # if isinstance(table_widget, QLabel): # Its empty
@@ -7411,7 +7258,7 @@ class MainWindow(QMainWindow):
             grid_widget = QWidget(widget)
             grid = QGridLayout(grid_widget)
             grid.setAlignment(Qt.AlignmentFlag.AlignLeft)
-            timeline_label = QLabel(f"{assembly.get_assembly_data('starting_date')} to {assembly.get_assembly_data('ending_date')}, ({QDate.fromString(assembly.get_assembly_data('starting_date'), 'yyyy-M-d').daysTo(QDate.fromString(assembly.get_assembly_data('ending_date'), 'yyyy-M-d'))} days)")
+            timeline_label = QLabel(f"{assembly.starting_date} to {assembly.ending_date}, ({QDate.fromString(assembly.starting_date, 'yyyy-M-d').daysTo(QDate.fromString(assembly.ending_date, 'yyyy-M-d'))} days)")
 
             def set_time_line():
                 timeline_dialog = SelectTimeLineDialog(
@@ -7419,8 +7266,8 @@ class MainWindow(QMainWindow):
                     button_names=DialogButtons.set_cancel,
                     title="Set Timeline",
                     message=f"Set timeline for sub assembly: {assembly.name}",
-                    starting_date=assembly.get_assembly_data("starting_date"),
-                    ending_date=assembly.get_assembly_data("ending_date"),
+                    starting_date=assembly.starting_date,
+                    ending_date=assembly.ending_date,
                 )
                 if timeline_dialog.exec():
                     if timeline_dialog.get_response() == DialogButtons.set:
@@ -7431,13 +7278,13 @@ class MainWindow(QMainWindow):
                         string_start_time = start_time.toString("yyyy-M-d")
                         string_end_time = end_time.toString("yyyy-M-d")
 
-                        assembly.set_assembly_data("starting_date", string_start_time)
-                        assembly.set_assembly_data("ending_date", string_end_time)
+                        assembly.starting_date = string_start_time
+                        assembly.ending_date = string_end_time
 
                         user_workspace.save()
                         self.upload_file(
                             [
-                                "workspace - User.json",
+                                "user_workspace.json",
                             ],
                             False,
                         )
@@ -7455,7 +7302,7 @@ class MainWindow(QMainWindow):
 
         grid_widget = get_grid_widget()
 
-        if assembly.get_assembly_data("has_items"):
+        if assembly.has_items:
             items_layout.addWidget(table_widget)
         h_layout.addWidget(grid_widget)
         # Create the MultiToolBox for sub assemblies
@@ -7467,20 +7314,20 @@ class MainWindow(QMainWindow):
             saved_workspace_prefs = False
         sub_assemblies_toolbox = MultiToolBox(widget)
         sub_assemblies_toolbox.layout().setSpacing(0)
-        # if assembly.get_assembly_data("has_sub_assemblies"):
+        # if assembly.has_sub_assemblies:
         sub_assembly_groupbox = QGroupBox("Sub Assemblies")
         sub_assembly_groupbox_layout = QVBoxLayout()
         sub_assembly_groupbox.setLayout(sub_assembly_groupbox_layout)
         # Add the sub assemblies MultiToolBox to the main layout
         sub_assembly_groupbox_layout.addWidget(sub_assemblies_toolbox)
         # if len(assembly.sub_assemblies) > 0:
-        if assembly.get_assembly_data("has_items"):
+        if assembly.has_items:
             layout.addWidget(items_groupbox)
         # added_items_group_widget = True
         # if not added_sub_assemblies_group_widget:
         # added_sub_assemblies_group_widget = True
         for i, sub_assembly in enumerate(assembly.sub_assemblies):
-            if sub_assembly.get_assembly_data(key="show") == True and sub_assembly.get_assembly_data(key="completed") == False:
+            if sub_assembly.show == True and sub_assembly.completed == False:
                 sub_assembly_widget = self.load_planning_assembly_widget(
                     assembly=sub_assembly,
                     workspace_information=workspace_information[assembly.name]["sub_assemblies"],
@@ -7559,7 +7406,7 @@ class MainWindow(QMainWindow):
             multi_tool_box = MultiToolBox()
             multi_tool_box.layout().setSpacing(0)
             for assembly in grouped_data[group]:
-                if assembly.get_assembly_data(key="show") == True and assembly.get_assembly_data(key="completed") == False:
+                if assembly.show == True and assembly.completed == False:
                     assembly_widget = self.load_planning_assembly_widget(
                         assembly=assembly,
                         workspace_information=self.workspace_information["Planning"][group]["sub_assemblies"],
@@ -7567,7 +7414,7 @@ class MainWindow(QMainWindow):
                     )
                     multi_tool_box.addItem(
                         assembly_widget,
-                        f'{assembly.get_assembly_data(key="display_name")} - Items: {user_workspace.get_completion_percentage(assembly)[0]*100}% - Assemblies: {user_workspace.get_completion_percentage(assembly)[1]*100}%',
+                        f"{assembly.display_name} - Items: {user_workspace.get_completion_percentage(assembly)[0]*100}% - Assemblies: {user_workspace.get_completion_percentage(assembly)[1]*100}%",
                         base_color=user_workspace.get_group_color(group),
                     )
             group_tool_boxes[group].layout().addWidget(multi_tool_box)
@@ -7595,35 +7442,30 @@ class MainWindow(QMainWindow):
                 items_to_update.extend(assembly.get_item_list(item))
 
         def move_to_next_flow(item: WorkspaceItem) -> None:
-            item_flow_tag: str = item.get_value("flow_tag")[item.get_value("current_flow_state")]
+            item_flow_tag: str = item.get_current_flow_state()
             if workspace_tags.get_value("attributes")[item_flow_tag]["is_timer_enabled"]:
-                timer_data = item.get_value("timers")
                 try:
-                    timer_data[item_flow_tag]["recording"]
+                    item.timers[item_flow_tag]["recording"]
                 except KeyError:
-                    timer_data[item_flow_tag]["recording"] = False
-                if timer_data[item_flow_tag]["recording"]:
-                    timer_data[item_flow_tag]["time_taken_intervals"][-1].append(str(datetime.now()))
-                    timer_data[item_flow_tag]["recording"] = False
-                    item.set_value(key="timers", value=timer_data)
+                    item.timers[item_flow_tag]["recording"] = False
+                if item.timers[item_flow_tag]["recording"]:
+                    item.timers[item_flow_tag]["time_taken_intervals"][-1].append(str(datetime.now()))
+                    item.timers[item_flow_tag]["recording"] = False
             if item_flow_tag == "Laser Cutting":
-                item.set_value(key="recut", value=False)
-            item.set_value(
-                key="current_flow_state",
-                value=item.get_value(key="current_flow_state") + 1,
-            )
-            item.set_value(key="status", value=None)
-            if item.get_value(key="current_flow_state") == len(item.get_value(key="flow_tag")):
-                item.set_value(key="completed", value=True)
-                item.set_value(key="date_completed", value=str(datetime.now()))
+                item.recut = False
+            item.current_flow_state += 1
+            item.status = None
+            if item.current_flow_state == len(item.flow_tag):
+                item.completed = True
+                item.data_completed = str(datetime.now())
                 assembly: Assembly = item.parent_assembly
-                if assembly.get_assembly_data("current_flow_state") == -1:  # NOTE Custom Job
+                if assembly.current_flow_state == -1:  # NOTE Custom Job
                     completed_assemblies: list[Assembly] = []
                     history_workspace.load_data()
                     for main_assembly in user_workspace.data:
                         # Assembly is 100% complete
                         if user_workspace.get_completion_percentage(main_assembly)[0] == 1.0:
-                            main_assembly.set_assembly_data(key="completed", value=True)
+                            main_assembly.completed = True
                             completed_assemblies.append(main_assembly)
                             history_workspace.add_assembly(main_assembly)
                             history_workspace.save()
@@ -7653,35 +7495,30 @@ class MainWindow(QMainWindow):
                 items_to_update.extend(assembly.get_item_list(item))
 
         def move_to_next_flow(item: WorkspaceItem) -> None:
-            item_flow_tag: str = item.get_value("flow_tag")[item.get_value("current_flow_state")]
+            item_flow_tag: str = item.get_current_flow_state()
             if workspace_tags.get_value("attributes")[item_flow_tag]["is_timer_enabled"]:
-                timer_data = item.get_value("timers")
                 try:
-                    timer_data[item_flow_tag]["recording"]
+                    item.timers[item_flow_tag]["recording"]
                 except KeyError:
-                    timer_data[item_flow_tag]["recording"] = False
-                if timer_data[item_flow_tag]["recording"]:
-                    timer_data[item_flow_tag]["time_taken_intervals"][-1].append(str(datetime.now()))
-                    timer_data[item_flow_tag]["recording"] = False
-                    item.set_value(key="timers", value=timer_data)
+                    item.timers[item_flow_tag]["recording"] = False
+                if item.timers[item_flow_tag]["recording"]:
+                    item.timers[item_flow_tag]["time_taken_intervals"][-1].append(str(datetime.now()))
+                    item.timers[item_flow_tag]["recording"] = False
             if item_flow_tag == "Laser Cutting":
-                item.set_value(key="recut", value=False)
-            item.set_value(
-                key="current_flow_state",
-                value=item.get_value(key="current_flow_state") + 1,
-            )
-            item.set_value(key="status", value=None)
-            if item.get_value(key="current_flow_state") == len(item.get_value(key="flow_tag")):
-                item.set_value(key="completed", value=True)
-                item.set_value(key="date_completed", value=str(datetime.now()))
+                item.recut = False
+            item.current_flow_state += 1
+            item.status = None
+            if item.current_flow_state == len(item.flow_tag):
+                item.completed = True
+                item.date_completed = str(datetime.now())
                 assembly: Assembly = item.parent_assembly
-                if assembly.get_assembly_data("current_flow_state") == -1:  # NOTE Custom Job
+                if assembly.current_flow_state == -1:  # NOTE Custom Job
                     completed_assemblies: list[Assembly] = []
                     history_workspace.load_data()
                     for main_assembly in user_workspace.data:
                         # Assembly is 100% complete
                         if user_workspace.get_completion_percentage(main_assembly)[0] == 1.0:
-                            main_assembly.set_assembly_data(key="completed", value=True)
+                            main_assembly.completed = True
                             completed_assemblies.append(main_assembly)
                             history_workspace.add_assembly(main_assembly)
                             history_workspace.save()
@@ -7690,17 +7527,15 @@ class MainWindow(QMainWindow):
                         user_workspace.remove_assembly(completed_assembly)
 
         for item in items_to_update:
-            item_flow_tag: str = item.get_value("flow_tag")[item.get_value("current_flow_state")]
-            if workspace_tags.get_value("flow_tag_statuses")[item_flow_tag][status]["start_timer"] and workspace_tags.get_value("attributes")[item_flow_tag]["is_timer_enabled"] and item.get_value("timers")[item_flow_tag]["recording"] == False:
-                timer_data = item.get_value("timers")
-                timer_data[item_flow_tag]["recording"] = True
-                timer_data[item_flow_tag].setdefault("time_taken_intervals", [])
-                timer_data[item_flow_tag]["time_taken_intervals"].append([str(datetime.now())])
-                item.set_value(key="timers", value=timer_data)
+            item_flow_tag: str = item.get_current_flow_state()
+            if workspace_tags.get_value("flow_tag_statuses")[item_flow_tag][status]["start_timer"] and workspace_tags.get_value("attributes")[item_flow_tag]["is_timer_enabled"] and item.timers[item_flow_tag]["recording"] == False:
+                item.timers[item_flow_tag]["recording"] = True
+                item.timers[item_flow_tag].setdefault("time_taken_intervals", [])
+                item.timers[item_flow_tag]["time_taken_intervals"].append([str(datetime.now())])
             if workspace_tags.get_value("flow_tag_statuses")[item_flow_tag][status]["completed"]:
                 move_to_next_flow(item=item)
             else:
-                item.set_value(key="status", value=status)
+                item.status = status
 
         user_workspace.save()
         self.sync_changes()
@@ -7830,18 +7665,11 @@ class MainWindow(QMainWindow):
         custom_assembly = Assembly(
             name=f"Custom Job ({len(selected_items)} items) - {datetime.now()}",
             assembly_data={
-                "expected_time_to_complete": 0.0,
-                "has_items": True,
-                "has_sub_assemblies": False,
                 "group": "Custom Jobs",
                 "group_color": group_color,
-                "flow_tag": [],
-                "timers": {},
-                "completed": False,
                 "display_name": f"Custom Job ({len(selected_items)} items)",
                 "starting_date": date_created,
                 "ending_date": date_created,
-                "status": None,
                 "current_flow_state": -1,
             },
         )
@@ -7861,7 +7689,7 @@ class MainWindow(QMainWindow):
         self.status_button.setText(f'Synching - {datetime.now().strftime("%r")}', "lime")
         self.upload_file(
             [
-                "workspace - User.json",
+                "user_workspace.json",
             ],
             False,
         )
@@ -7877,7 +7705,16 @@ class MainWindow(QMainWindow):
             value: list[str] = value.split(" ➜ ")
 
         for item in items_to_change:
-            item.set_value(key=key, value=value)
+            if key == "material":
+                item.material = value
+            elif key == "thickness":
+                item.thickness = value
+            elif key == "flow_tag":
+                item.flow_tag = value
+            elif key == "paint_type":
+                item.paint_type = value
+            elif key == "paint_color":
+                item.paint_color = value
         if self.category == "Staging" or self.category == "Editing":
             self.active_workspace_file.save()
         else:
@@ -7914,9 +7751,9 @@ class MainWindow(QMainWindow):
                                 assembly_action = QAction(assembly.name, self)
                                 if main_assembly == assembly:
                                     assembly_action.setText(f"{assembly_action.text()} - (You are Here)")
-                                elif not assembly.get_assembly_data(key="has_items"):
+                                elif not assembly.has_items:
                                     assembly_action.setText(f"{assembly_action.text()} - (No Items)")
-                                if not assembly.get_assembly_data(key="has_items") or main_assembly == assembly:
+                                if not assembly.has_items or main_assembly == assembly:
                                     assembly_action.setEnabled(False)
                                 # assembly_action.toggled.connect(self.copy_selected_items_to(table, assembly))
                                 if action == "copy":
@@ -7951,9 +7788,9 @@ class MainWindow(QMainWindow):
                             assembly_action = QAction(sub_assembly.name, self)
                             if main_assembly == sub_assembly:
                                 assembly_action.setText(f"{assembly_action.text()} - (You are Here)")
-                            elif not sub_assembly.get_assembly_data(key="has_items"):
+                            elif not sub_assembly.has_items:
                                 assembly_action.setText(f"{assembly_action.text()} - (No Items)")
-                            if not sub_assembly.get_assembly_data(key="has_items") or main_assembly == sub_assembly:
+                            if not sub_assembly.has_items or main_assembly == sub_assembly:
                                 assembly_action.setEnabled(False)
                             if action == "copy":
                                 assembly_action.triggered.connect(
@@ -8152,7 +7989,7 @@ class MainWindow(QMainWindow):
             self.load_view_assembly_tab()
             QApplication.restoreOverrideCursor()
 
-    # NOTE FOR PARTS IN INVENTORY
+    # NOTE FOR Edit Laser Cut Inventory
     def load_parts_in_inventory_filter_tab(self) -> None:
         self.parts_in_ineventory_filter.clear()
         self.clear_layout(self.verticalLayout_parts_filter)
@@ -8256,9 +8093,9 @@ class MainWindow(QMainWindow):
         with contextlib.suppress(Exception):  # This is just incase the Cutoff tab has never been created
             cutoff_items = self.cutoff_widget.widgets[0]
             cutoff_items.clear()
-            price_of_steel_inventory.load_data()
-            cutoff_sheets = price_of_steel_inventory.get_value("Cutoff")
-            grouped_data = parts_in_inventory.sort_by_multiple_tags(category=cutoff_sheets, tags_ids=["material"])
+            sheets_inventory.load_data()
+            cutoff_sheets = sheets_inventory.get_value("Cutoff")
+            grouped_data = laser_cut_inventory.sort_by_multiple_tags(category=cutoff_sheets, tags_ids=["material"])
             for group in grouped_data:
                 cutoff_items.addItem(f"\t             {group.replace(';', '')}")
                 for sheet in list(grouped_data[group].keys()):
@@ -9017,7 +8854,7 @@ class MainWindow(QMainWindow):
     def print_inventory(self) -> None:
         try:
             file_name = f"excel files/{datetime.now().strftime('%B %d %A %Y %I-%M-%S %p')}"
-            excel_file = ExcelFile(inventory, f"{file_name}.xlsx")
+            excel_file = ExcelFile(components_inventory, f"{file_name}.xlsx")
             excel_file.generate()
             excel_file.save()
 
@@ -9080,7 +8917,7 @@ class MainWindow(QMainWindow):
     # * /\ External Actions /\
     # * \/ THREADS \/
     def sync_changes(self) -> None:
-        if self.tabWidget.tabText(self.tabWidget.currentIndex()) == "Edit Inventory":
+        if self.tabWidget.tabText(self.tabWidget.currentIndex()) == "Edit Components":
             self.status_button.setText(f'Synching - {datetime.now().strftime("%r")}', "lime")
             self.upload_file(
                 [
@@ -9088,7 +8925,7 @@ class MainWindow(QMainWindow):
                 ],
                 False,
             )
-        elif self.tabWidget.tabText(self.tabWidget.currentIndex()) == "Parts in Inventory":
+        elif self.tabWidget.tabText(self.tabWidget.currentIndex()) == "Edit Laser Cut Inventory":
             self.status_button.setText(f'Synching - {datetime.now().strftime("%r")}', "lime")
             self.upload_file(
                 [
@@ -9096,7 +8933,7 @@ class MainWindow(QMainWindow):
                 ],
                 False,
             )
-        elif self.tabWidget.tabText(self.tabWidget.currentIndex()) == "Sheets in Inventory":
+        elif self.tabWidget.tabText(self.tabWidget.currentIndex()) == "Edit Sheets in Inventory":
             self.status_button.setText(f'Synching - {datetime.now().strftime("%r")}', "lime")
             self.upload_file(
                 [
@@ -9109,15 +8946,15 @@ class MainWindow(QMainWindow):
             if self.category == "Staging":
                 self.upload_file(
                     [
-                        "workspace - Admin.json",
+                        "admin_workspace.json",
                     ],
                     False,
                 )
             else:
                 self.upload_file(
                     [
-                        "workspace - User.json",
-                        "workspace - History.json",
+                        "user_workspace.json",
+                        "history_workspace.json",
                     ],
                     False,
                 )
@@ -9213,7 +9050,7 @@ class MainWindow(QMainWindow):
             self.status_button.setStyleSheet("""QPushButton#status_button {background: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0,stop:%(start)s #3daee9,stop:%(middle)s #3daee9,stop:%(end)s #1E363F)}""" % {"start": str(__start), "middle": str(__middle), "end": str(__end)})
         else:
             self.status_button.setText("Done", "lime")
-            inventory.load_data()
+            components_inventory.load_data()
             self.centralwidget.setEnabled(True)
             self.listWidget_itemnames.setEnabled(True)
             self.pushButton_create_new.setEnabled(True)
@@ -9239,17 +9076,17 @@ class MainWindow(QMainWindow):
             self.status_button.setText(f'Synched - {datetime.now().strftime("%r")}', "lime")
         if self.downloading_changes and data == "Successfully downloaded":
             if self.tabWidget.tabText(self.tabWidget.currentIndex()) in [
-                "Parts in Inventory",
-                "Sheets in Inventory",
+                "Edit Laser Cut Inventory",
+                "Edit Sheets in Inventory",
             ]:
-                inventory.load_data()
-                price_of_steel_inventory.load_data()
-                parts_in_inventory.load_data()
+                components_inventory.load_data()
+                sheets_inventory.load_data()
+                laser_cut_inventory.load_data()
                 self.load_categories()
             if self.tabWidget.tabText(self.tabWidget.currentIndex()) == "OmniGen":
-                inventory.load_data()
-                price_of_steel_inventory.load_data()
-                parts_in_inventory.load_data()
+                components_inventory.load_data()
+                sheets_inventory.load_data()
+                laser_cut_inventory.load_data()
                 self.load_cuttoff_drop_down()
 
         if not self.finished_downloading_all_files:
@@ -9301,11 +9138,11 @@ class MainWindow(QMainWindow):
 
     def exchange_rate_received(self, exchange_rate: float) -> None:
         self.label_exchange_price.setText(f"1.00 USD: {exchange_rate} CAD - {datetime.now().strftime('%r')}")
-        self.label_total_unit_cost.setText(f"Total Unit Cost: ${inventory.get_total_unit_cost(self.category, self.get_exchange_rate()):,.2f}")
+        self.label_total_unit_cost.setText(f"Total Unit Cost: ${components_inventory.get_total_unit_cost(self.category, self.get_exchange_rate()):,.2f}")
         settings_file.set_value("exchange_rate", exchange_rate)
         self.update_stock_costs()
 
-    # NOTE SHEETS IN INVENTORY
+    # NOTE Edit Sheets in Inventory
     def send_sheet_report(self) -> None:
         thread = SendReportThread()
         self.start_thread(thread)
@@ -9335,9 +9172,9 @@ class MainWindow(QMainWindow):
                 f"{self.inventory_file_name} - Price of Steel.json",
                 f"{self.inventory_file_name}.json",
                 "workspace_settings.json",
-                "workspace - Admin.json",
-                "workspace - User.json",
-                "workspace - History.json",
+                "admin_workspace.json",
+                "user_workspace.json",
+                "history_workspace.json",
                 "price_of_steel_information.json",
             ],
             False,
@@ -9539,7 +9376,7 @@ class MainWindow(QMainWindow):
         thread.signal.connect(self.upload_sheets_thread_response)
         self.threads.append(thread)
         thread.start()
-        price_of_steel_inventory.load_data()
+        sheets_inventory.load_data()
         price_of_steel_information.load_data()
         self.comboBox_global_sheet_thickness.clear()
         self.comboBox_global_sheet_thickness.addItems(price_of_steel_information.get_value("thicknesses"))
@@ -9556,13 +9393,16 @@ class MainWindow(QMainWindow):
         check_for_updates_thread.start()
 
     def update_available_thread_response(self, version: str) -> None:
-        message_dialog = self.show_message_dialog(
-            title=__name__,
-            message=f"There is a new update available.\n\nNew Version: {version}\n\nPlease consider updating to the latest version at your earliest convenience.",
-            dialog_buttons=DialogButtons.ok_update,
-        )
-        if message_dialog == DialogButtons.update:
-            subprocess.Popen("start update.exe", shell=True)
+        if not self.ignore_update:
+            message_dialog = self.show_message_dialog(
+                title=__name__,
+                message=f"There is a new update available.\n\nNew Version: {version}\n\nPlease consider updating to the latest version at your earliest convenience.",
+                dialog_buttons=DialogButtons.ok_update,
+            )
+            if message_dialog == DialogButtons.ok:
+                self.ignore_update = True
+            elif message_dialog == DialogButtons.update:
+                subprocess.Popen("start update.exe", shell=True)
 
     # * /\ THREADS /\
 
@@ -9671,7 +9511,7 @@ class MainWindow(QMainWindow):
             return
         if event.mimeData().hasUrls:
             for url in event.mimeData().urls():
-                if str(url.toLocalFile()).endswith(".xlsx") and self.tabWidget.tabText(self.tabWidget.currentIndex()) == "Edit Inventory":
+                if str(url.toLocalFile()).endswith(".xlsx") and self.tabWidget.tabText(self.tabWidget.currentIndex()) == "Edit Components":
                     event.setDropAction(Qt.DropAction.CopyAction)
                     event.accept()
                     self.set_layout_message("", "Add", "a new Purchase Order template", 80, None)
@@ -9695,7 +9535,7 @@ class MainWindow(QMainWindow):
             event.setDropAction(Qt.DropAction.CopyAction)
             event.accept()
             for url in event.mimeData().urls():
-                if str(url.toLocalFile()).endswith(".xlsx") and self.tabWidget.tabText(self.tabWidget.currentIndex()) == "Edit Inventory":
+                if str(url.toLocalFile()).endswith(".xlsx") and self.tabWidget.tabText(self.tabWidget.currentIndex()) == "Edit Components":
                     files = [str(url.toLocalFile()) for url in event.mimeData().urls()]
                     # self.load_categories()
                     self.add_po_templates(files)
@@ -9734,5 +9574,4 @@ def main() -> None:
     app.exec()
 
 
-# cProfile.run('main()')
 main()
