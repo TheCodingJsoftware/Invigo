@@ -169,7 +169,7 @@ __credits__: list[str] = ["Jared Gross"]
 __license__: str = "MIT"
 __name__: str = "Invigo"
 __version__: str = "v2.3.0"
-__updated__: str = "2024-04-25 09:20:25"
+__updated__: str = "2024-04-27 13:50:49"
 __maintainer__: str = "Jared Gross"
 __email__: str = "jared@pinelandfarms.ca"
 __status__: str = "Production"
@@ -334,6 +334,7 @@ class MainWindow(QMainWindow):
         self.scroll_position_manager = ScrollPositionManager()
         self.margins = (15, 15, 5, 5)  # top, bottom, left, right
         self.margin_format = f"margin-top: {self.margins[0]}%; margin-bottom: {self.margins[1]}%; margin-left: {self.margins[2]}%; margin-right: {self.margins[3]}%;"
+        self.ignore_update: bool = False
 
         program_directory = os.path.dirname(os.path.realpath(sys.argv[0]))
         self.config = configparser.ConfigParser()
@@ -9392,13 +9393,16 @@ class MainWindow(QMainWindow):
         check_for_updates_thread.start()
 
     def update_available_thread_response(self, version: str) -> None:
-        message_dialog = self.show_message_dialog(
-            title=__name__,
-            message=f"There is a new update available.\n\nNew Version: {version}\n\nPlease consider updating to the latest version at your earliest convenience.",
-            dialog_buttons=DialogButtons.ok_update,
-        )
-        if message_dialog == DialogButtons.update:
-            subprocess.Popen("start update.exe", shell=True)
+        if not self.ignore_update:
+            message_dialog = self.show_message_dialog(
+                title=__name__,
+                message=f"There is a new update available.\n\nNew Version: {version}\n\nPlease consider updating to the latest version at your earliest convenience.",
+                dialog_buttons=DialogButtons.ok_update,
+            )
+            if message_dialog == DialogButtons.ok:
+                self.ignore_update = True
+            elif message_dialog == DialogButtons.update:
+                subprocess.Popen("start update.exe", shell=True)
 
     # * /\ THREADS /\
 
