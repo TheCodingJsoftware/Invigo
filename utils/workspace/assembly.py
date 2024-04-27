@@ -85,14 +85,9 @@ class Assembly:
         return master_assembly
 
     def delete_sub_assembly(self, assembly) -> "Assembly":
-        copy = self.copy_sub_assembly(assembly)
+        assembly_copy = self.copy_sub_assembly(assembly)
         self.sub_assemblies.remove(assembly)
-        return copy
-
-    def set_sub_assembly(self, assembly: "Assembly") -> list["Assembly"]:
-        assembly.parent_assembly = self
-        assembly.master_assembly = assembly.get_master_assembly()
-        self.sub_assemblies.append(assembly)
+        return assembly_copy
 
     def add_sub_assembly(self, assembly: "Assembly") -> list["Assembly"]:
         assembly.parent_assembly = self
@@ -211,7 +206,7 @@ class Assembly:
         for item in sub_assembly.items:
             if key == "show":
                 item.show = value
-        if sub_assembly != None:
+        if sub_assembly is not None:
             for _sub_assembly in sub_assembly.sub_assemblies:
                 for item in _sub_assembly.items:
                     if key == "show":
@@ -252,7 +247,7 @@ class Assembly:
         return any(assembly.show is True for assembly in self.sub_assemblies)
 
     def all_items_complete(self) -> bool:
-        return all(item.completed != False for item in self.items)
+        return all(item.completed is not False for item in self.items)
 
     def all_sub_assemblies_complete(self) -> bool:
-        return all(sub_assembly.completed != False for sub_assembly in self.sub_assemblies)
+        return all(sub_assembly.completed is not False for sub_assembly in self.sub_assemblies)

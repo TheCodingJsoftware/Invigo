@@ -47,7 +47,7 @@ class Workspace:
             assembly.set_item(item)
         for sub_assembly_name, sub_assembly_data in data["sub_assemblies"].items():
             sub_assembly: Assembly = self.load_assembly(sub_assembly_name, sub_assembly_data)
-            assembly.set_sub_assembly(sub_assembly)
+            assembly.add_sub_assembly(sub_assembly)
         return assembly
 
     def load_data(self) -> None:
