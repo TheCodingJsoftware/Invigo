@@ -4,7 +4,6 @@ from itertools import zip_longest
 
 import openpyxl
 from openpyxl.worksheet.worksheet import Worksheet
-from rich import print
 
 from utils.workspace.workspace_item import WorkspaceItem
 

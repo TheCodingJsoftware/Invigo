@@ -61,7 +61,10 @@ class Settings:
         self.data.setdefault("change_quantities_by", "Category")
         self.data.setdefault("inventory_file_name", "inventory")
         self.data.setdefault("path_to_order_number", "order_number.json")
-        self.data.setdefault("trusted_users", ["lynden", "jared", "laserpc", "laser pc", "justin", "jordan"])
+        self.data.setdefault(
+            "trusted_users",
+            ["lynden", "jared", "laserpc", "laser pc", "justin", "jordan"],
+        )
         self.data.setdefault("quote_nest_directories", [])
         font = QFont("Segoe UI", 8, 400)
         self.data.setdefault(

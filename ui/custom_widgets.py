@@ -9,8 +9,48 @@ from functools import partial
 
 from natsort import natsorted
 from PyQt6 import QtCore, QtGui
-from PyQt6.QtCore import QAbstractItemModel, QAbstractTableModel, QDate, QDateTime, QEvent, QMargins, QMimeData, QModelIndex, QPoint, QRegularExpression, QSettings, QSize, QSortFilterProxyModel, Qt, QTime, QTimer, QUrl, pyqtSignal
-from PyQt6.QtGui import QAction, QBrush, QClipboard, QColor, QCursor, QDrag, QDragEnterEvent, QDragLeaveEvent, QDragMoveEvent, QDropEvent, QFileSystemModel, QIcon, QKeySequence, QPainter, QPalette, QPixmap, QRegularExpressionValidator, QStandardItem, QStandardItemModel, QTextCharFormat
+from PyQt6.QtCore import (
+    QAbstractItemModel,
+    QAbstractTableModel,
+    QDate,
+    QDateTime,
+    QEvent,
+    QMargins,
+    QMimeData,
+    QModelIndex,
+    QPoint,
+    QRegularExpression,
+    QSettings,
+    QSize,
+    QSortFilterProxyModel,
+    Qt,
+    QTime,
+    QTimer,
+    QUrl,
+    pyqtSignal,
+)
+from PyQt6.QtGui import (
+    QAction,
+    QBrush,
+    QClipboard,
+    QColor,
+    QCursor,
+    QDrag,
+    QDragEnterEvent,
+    QDragLeaveEvent,
+    QDragMoveEvent,
+    QDropEvent,
+    QFileSystemModel,
+    QIcon,
+    QKeySequence,
+    QPainter,
+    QPalette,
+    QPixmap,
+    QRegularExpressionValidator,
+    QStandardItem,
+    QStandardItemModel,
+    QTextCharFormat,
+)
 from PyQt6.QtWidgets import (
     QAbstractItemView,
     QAbstractSpinBox,

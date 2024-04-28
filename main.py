@@ -1,7 +1,6 @@
 import configparser
 import contextlib
 import copy
-import cProfile
 import json
 import logging
 import math
@@ -11,23 +10,42 @@ import shutil
 import subprocess
 import sys
 import threading
-import time
-import traceback
 import webbrowser
 import winsound
 from datetime import datetime, timedelta
 from functools import partial
 from typing import Any, Union
 
-import markdown
 import requests
 import sympy
-import win32api
-import win32file
+import win32api  # pywin32
 from natsort import natsorted
 from PyQt6 import QtWebEngineWidgets, uic
-from PyQt6.QtCore import QDate, QElapsedTimer, QEventLoop, QModelIndex, QSettings, Qt, QThread, QTimer, QUrl
-from PyQt6.QtGui import QAction, QColor, QCursor, QDragEnterEvent, QDragLeaveEvent, QDragMoveEvent, QDropEvent, QFont, QIcon, QPixmap, QStandardItem, QStandardItemModel
+from PyQt6.QtCore import (
+    QDate,
+    QElapsedTimer,
+    QEventLoop,
+    QModelIndex,
+    QSettings,
+    Qt,
+    QThread,
+    QTimer,
+    QUrl,
+)
+from PyQt6.QtGui import (
+    QAction,
+    QColor,
+    QCursor,
+    QDragEnterEvent,
+    QDragLeaveEvent,
+    QDragMoveEvent,
+    QDropEvent,
+    QFont,
+    QIcon,
+    QPixmap,
+    QStandardItem,
+    QStandardItemModel,
+)
 from PyQt6.QtWidgets import (
     QAbstractItemView,
     QApplication,
@@ -2032,7 +2050,10 @@ class MainWindow(QMainWindow):
         lbl = QLabel("Total Cost in Stock:", self)
         lbl.setStyleSheet("border-top: 1px solid grey")
         self.gridLayout_Categor_Stock_Prices.addWidget(lbl, i + 1, 0)
-        lbl = QLabel(f"${components_inventory.get_total_stock_cost(self.get_exchange_rate()):,.2f}", self)
+        lbl = QLabel(
+            f"${components_inventory.get_total_stock_cost(self.get_exchange_rate()):,.2f}",
+            self,
+        )
         # lbl.setTextInteractionFlags(Qt.ItemFlag.TextSelectableByMouse)
         lbl.setStyleSheet("border-top: 1px solid grey")
         self.gridLayout_Categor_Stock_Prices.addWidget(lbl, i + 1, 1)
@@ -3405,7 +3426,7 @@ class MainWindow(QMainWindow):
         for assembly in workorder:
             all_items.extend(assembly.items)
 
-        all_images: list[str] = [f'{item.name}.jpeg' for item in all_items]
+        all_images: list[str] = [f"{item.name}.jpeg" for item in all_items]
         return all_images
 
     # WORKSPACE

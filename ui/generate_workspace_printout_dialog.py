@@ -6,7 +6,18 @@ from PyQt6 import uic
 from PyQt6.QtCore import QFile, Qt, QTextStream
 from PyQt6.QtGui import QIcon, QStandardItem, QStandardItemModel
 from PyQt6.QtSvgWidgets import QSvgWidget
-from PyQt6.QtWidgets import QCheckBox, QDialog, QHBoxLayout, QLabel, QPushButton, QRadioButton, QSpinBox, QTreeView, QTreeWidget, QWidget
+from PyQt6.QtWidgets import (
+    QCheckBox,
+    QDialog,
+    QHBoxLayout,
+    QLabel,
+    QPushButton,
+    QRadioButton,
+    QSpinBox,
+    QTreeView,
+    QTreeWidget,
+    QWidget,
+)
 
 from ui.custom_widgets import MultiToolBox, set_default_dialog_button_stylesheet
 from ui.theme import set_theme
