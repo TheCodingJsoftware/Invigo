@@ -51,7 +51,7 @@ class Component(InventoryItem):
         self.part_name: str = data.get("part_name", "")
         self.price: float = data.get("price", 0.0)
         self.use_exchange_rate: bool = data.get("use_exchange_rate", False)
-        self.priority: int = data.get("priorty", 0)
+        self.priority: int = data.get("priority", 0)
         self.shelf_number: str = data.get("shelf_number", "")
         self.notes: str = data.get("notes", "")
         self.image_path: str = data.get("image_path", "")
@@ -81,7 +81,7 @@ class Component(InventoryItem):
             "price": round(self.price, 2),
             "latest_change_price": self.latest_change_price,
             "use_exchange_rate": self.use_exchange_rate,
-            "priorty": self.priority,
+            "priority": self.priority,
             "shelf_number": self.shelf_number,
             "notes": self.notes,
             "image_path": self.image_path,
