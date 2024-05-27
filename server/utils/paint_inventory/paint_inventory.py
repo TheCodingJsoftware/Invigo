@@ -1,6 +1,6 @@
 import contextlib
 
-import ujson as json
+import json
 
 from utils.components_inventory.components_inventory import ComponentsInventory
 from utils.inventory.inventory import Inventory
