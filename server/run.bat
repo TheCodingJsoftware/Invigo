@@ -1,1 +1,3 @@
-C:\Users\Invigo\AppData\Local\Programs\Python\Python310\python.exe C:\Users\Invigo\Inventory-Manager\server\server.py %*
+@echo off
+cd /d C:\Users\Invigo\Inventory-Manager\server
+C:\Users\Invigo\AppData\Local\Programs\Python\Python310\python.exe server.py %*
