@@ -815,11 +815,14 @@ QComboBox::item {
     padding: 1px;
  }
  QComboBox::item:selected {
-    color: #EAE9FC;
+    color: #171717;
+    background-color: #3daee9;
  }
 
  QComboBox::item:checked {
-    color: #EAE9FC;
+    color: #171717;
+    background-color: #3daee9;
+    border-color: #171717;
 }
 
  QComboBox::indicator {
@@ -833,17 +836,17 @@ QComboBox::item {
 }
 
 QComboBox::indicator:selected {
-    border-color: #3daee9;
+    border-color: #171717;
 }
 QComboBox::indicator:pressed {
     background-color: #3daee9;
-    border-color: #3daee9;
+    border-color: #171717;
 }
 QComboBox::indicator:checked {
     color: #EAE9FC;
     text-decoration: bold;
     background-color: #3daee9;
-    border-color: #3daee9;
+    border-color: #171717;
 }
 QLineEdit {
     background-color: rgba(15, 15, 15, 0.6);

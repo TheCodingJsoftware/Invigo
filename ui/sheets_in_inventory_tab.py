@@ -198,7 +198,7 @@ class SheetsInInventoryTab(QWidget):
             self.set_table_row_color(current_table, row_index, "#141414")
             row_index += 1
 
-            for sheet in self.sheets_inventory.sheets:
+            for sheet in self.sheets_inventory.get_sheets_by_category(self.category):
                 if group != sheet.material:
                     continue
 

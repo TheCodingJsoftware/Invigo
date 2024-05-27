@@ -238,7 +238,7 @@ class SheetQuantityHandler(tornado.web.RequestHandler):
         if sheet_exists(sheet_name=sheet_name):
             quantity = get_sheet_quantity(sheet_name=sheet_name)
             pending_data = get_sheet_pending_data(sheet_name=sheet_name)
-            if self.request.remote_ip in ["10.0.0.11", "10.0.0.64", "10.0.0.217"]:
+            if self.request.remote_ip in ["10.0.0.11", "10.0.0.64", "10.0.0.217", "10.0.0.155"]:
                 template = env.get_template("sheet_template.html")
             else:
                 template = env.get_template("sheet_template_read_only.html")

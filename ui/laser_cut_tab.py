@@ -879,7 +879,7 @@ class LaserCutTab(QWidget):
         if item_dialog.exec():
             self.update_laser_cut_part(item_dialog, laser_cut_part)
 
-    def update_laser_cut_part(self, item_dialog, laser_cut_part):
+    def update_laser_cut_part(self, item_dialog: EditLaserCutPart, laser_cut_part: LaserCutPart):
         new_name = item_dialog.lineEdit_name.text()
         item_data = item_dialog.get_data()
         categories: list[str] = [category.name for category in laser_cut_part.categories]

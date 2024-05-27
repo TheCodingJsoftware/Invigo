@@ -173,7 +173,7 @@ class FilterButton(QPushButton):
     def __init__(self, name: str, parent=None):
         super(FilterButton, self).__init__(parent)
         self.setText(name)
-        self.setFixedSize(QSize(100, self.sizeHint().height()))
+        # self.setFixedSize(QSize(100, self.sizeHint().height()))
         self.setCheckable(True)
         self.setStyleSheet(
             """QPushButton{
@@ -184,6 +184,7 @@ class FilterButton(QPushButton):
 }
 QPushButton:checked{
     background-color: #3daee9;
+    color: #171717;
 }
 QPushButton:hover{
     background-color: #48b6ed;
@@ -191,6 +192,7 @@ QPushButton:hover{
 }
 QPushButton:pressed{
     background-color: #2b92c5;
+    color: #171717;
 }
 
 QPushButton:!checked {
@@ -206,7 +208,7 @@ QPushButton:hover:!checked {
 
 QPushButton:pressed:!checked {
     background-color: #3daee9;
-    color: #EAE9FC;
+    color: #171717;
 }"""
         )
 

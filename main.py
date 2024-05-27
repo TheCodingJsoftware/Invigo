@@ -84,8 +84,8 @@ __author__: str = "Jared Gross"
 __copyright__: str = "Copyright 2022-2024, TheCodingJ's"
 __credits__: list[str] = ["Jared Gross"]
 __license__: str = "MIT"
-__version__: str = "v3.0.0"
-__updated__: str = "2024-05-27 12:47:01"
+__version__: str = "v3.0.1"
+__updated__: str = "2024-05-27 15:04:08"
 __maintainer__: str = "Jared Gross"
 __email__: str = "jared@pinelandfarms.ca"
 __status__: str = "Production"
@@ -298,18 +298,16 @@ class MainWindow(QMainWindow):
         self.verticalLayout_status.addWidget(self.status_button)
 
         # Tab widget
-        # self.load_categories()
         # self.pushButton_add_new_sheet.clicked.connect(self.add_sheet_item)
 
         # Action events
         # HELP
         self.actionAbout_Qt.triggered.connect(QApplication.aboutQt)
         self.actionCheck_for_Updates.triggered.connect(self.check_for_updates)
-        # self.actionCheck_for_Updates.setIcon(QIcon("icons/refresh.png"))
         self.actionAbout.triggered.connect(self.show_about_dialog)
-        # self.actionAbout.setIcon(QIcon("icons/about.png"))
-        self.actionWebsite.triggered.connect(self.open_website)
-        # self.actionWebsite.setIcon(QIcon("icons/website.png"))
+        self.actionServer_logs.triggered.connect(self.open_server_logs)
+        self.actionInventory.triggered.connect(self.open_inventory)
+        self.actionQr_Codes.triggered.connect(self.open_qr_codes)
         # PRINT
         self.actionPrint_Inventory.triggered.connect(self.print_inventory)
 
@@ -579,7 +577,6 @@ class MainWindow(QMainWindow):
             self.tables_font.setWeight(font.weight())
             self.tables_font.setItalic(font.italic())
             self.settings_file.set_value("tables_font", font_data)
-            self.load_active_tab()
 
     def update_sorting_status_text(self) -> None:
         sorting_from_alphabet: str = "A"
@@ -864,7 +861,6 @@ class MainWindow(QMainWindow):
 
         if tag_editor.exec():
             upload_workspace_settings()
-            # self.load_categories()
 
     # * /\ Dialogs /\
 
@@ -929,115 +925,6 @@ class MainWindow(QMainWindow):
         self.clear_layout(self.search_layout)
         tree_view = ViewTree(data=inventory_file.get_data())
         self.search_layout.addWidget(tree_view, 0, 0)
-
-    def load_categories(self) -> None:
-        if not self.trusted_user and self.tabWidget.tabText(self.tabWidget.currentIndex()) != "Sheets in Inventory" and self.tabWidget.tabText(self.tabWidget.currentIndex()) != "Laser Cut Inventory" and self.tabWidget.tabText(self.tabWidget.currentIndex()) != "View Inventory (Read Only)":
-            # print(self.last_selected_menu_tab)
-            # self.tabWidget.setCurrentIndex(settings_file.get_value('menu_tabs_order').index(self.last_selected_menu_tab))
-            # self.show_not_trusted_user()
-
-            self.set_layout_message("Insufficient Privileges, Access Denied", "", "", 0)
-            return
-
-        self.admin_workspace.load_data()
-        self.user_workspace.load_data()
-
-        if self.tabWidget.tabText(self.tabWidget.currentIndex()) not in [
-            "Components",
-            "Laser Cut Inventory",
-            "Sheets in Inventory",
-            "Workspace",
-        ]:
-            return
-        self.clear_layout(self.active_layout)
-        self.tabs.clear()
-        self.tab_widget = CustomTabWidget(self)
-        i: int = -1
-        if self.tabWidget.tabText(self.tabWidget.currentIndex()) == "Workspace":
-            if self.trusted_user:
-                edit_tabs = ["Staging", "Planning", "Editing", "Recut"]
-            else:
-                edit_tabs = ["Recut"]
-            for i, category in enumerate(edit_tabs + self.workspace_settings.get_all_tags()):
-                tab = QWidget(self)
-                layout = QVBoxLayout(tab)
-                tab.setLayout(layout)
-                self.tabs[category] = tab
-                self.tab_widget.addTab(tab, category)
-
-        if i == -1:
-            tab = QScrollArea(self)
-            content_widget = QWidget()
-            content_widget.setObjectName("tab")
-            tab.setWidget(content_widget)
-            tab.setWidgetResizable(True)
-            layout = QVBoxLayout(content_widget)
-            layout.setAlignment(Qt.AlignmentFlag.AlignTop)
-            try:
-                self.tabs[category] = layout
-            except UnboundLocalError:
-                return
-            self.tab_widget.addTab(tab, "")
-            i += 1
-        with contextlib.suppress(Exception):
-            self.tab_widget.set_tab_order(self.settings_file.get_value("category_tabs_order")[self.tabWidget.tabText(self.tabWidget.currentIndex())])
-        self.tab_widget.setCurrentIndex(self.settings_file.get_value("last_category_tab"))
-        self.tab_widget.currentChanged.connect(self.load_active_tab)
-        with contextlib.suppress(AttributeError):
-            self.active_layout.addWidget(self.tab_widget)
-
-    def load_active_tab(self) -> None:
-        try:
-            for category in self.categories:
-                if category.name == self.tab_widget.tabText(self.tab_widget.currentIndex()):
-                    self.category = category
-        except AttributeError:
-            return
-        try:
-            self.clear_layout(self.tabs[self.category])
-        except (IndexError, KeyError):
-            return
-        self.settings_file.set_value("last_category_tab", self.tab_widget.currentIndex())
-        tab: CustomTableWidget = self.tabs[self.category]
-        if self.tabWidget.tabText(self.tabWidget.currentIndex()) != "Workspace":
-            if self.tabWidget.tabText(self.tabWidget.currentIndex()) == "Laser Cut Inventory":
-                autofill_search_options = natsorted(self.laser_cut_inventory.get_all_part_names())
-                completer = QCompleter(autofill_search_options, self)
-                completer.setCaseSensitivity(Qt.CaseSensitivity.CaseInsensitive)
-                self.lineEdit_search_parts_in_inventory.setCompleter(completer)
-            self.calculuate_price_of_steel_summary()
-
-            if self.tabWidget.tabText(self.tabWidget.currentIndex()) == "Sheets in Inventory":
-                self.load_sheet_tab(tab)
-            elif self.tabWidget.tabText(self.tabWidget.currentIndex()) == "Laser Cut Inventory":
-                self.load_laser_cut_tab(tab)
-
-            self.scroll_position_manager.get_scroll_position(
-                f"{self.tabWidget.tabText(self.tabWidget.currentIndex())} {self.category.name}",
-                tab,
-            )
-
-            def save_scroll_position(tab_name: str, tab: CustomTableWidget):
-                self.scroll_position_manager.save_scroll_position(tab_name=tab_name, scroll=tab)
-
-            tab.verticalScrollBar().valueChanged.connect(
-                partial(
-                    save_scroll_position,
-                    f"{self.tabWidget.tabText(self.tabWidget.currentIndex())} {self.category.name}",
-                    tab,
-                )
-            )
-            tab.horizontalScrollBar().valueChanged.connect(
-                partial(
-                    save_scroll_position,
-                    f"{self.tabWidget.tabText(self.tabWidget.currentIndex())} {self.category.name}",
-                    tab,
-                )
-            )
-        with contextlib.suppress(IndexError):
-            tab_order = self.settings_file.get_value("category_tabs_order")
-            tab_order[self.tabWidget.tabText(self.tabWidget.currentIndex())] = self.tabWidget.currentWidget().findChildren(CustomTabWidget)[0].get_tab_order()
-            self.settings_file.set_value("category_tabs_order", tab_order)
 
     def load_cuttoff_drop_down(self) -> None:
         cutoff_items: QListWidget = self.cutoff_widget.widgets[0]
@@ -1321,8 +1208,14 @@ class MainWindow(QMainWindow):
             msg.exec()
 
     # * \/ External Actions \/
-    def open_website(self) -> None:
-        webbrowser.open("http://10.0.0.10:5051", new=0)
+    def open_server_logs(self) -> None:
+        webbrowser.open(f"http://{get_server_ip_address()}:{get_server_port()}", new=0)
+
+    def open_inventory(self) -> None:
+        webbrowser.open(f"http://{get_server_ip_address()}:{get_server_port()}/inventory", new=0)
+
+    def open_qr_codes(self) -> None:
+        webbrowser.open(f"http://{get_server_ip_address()}:{get_server_port()}/view_qr_codes", new=0)
 
     def open_quote(self, folder: str):
         webbrowser.open(f"http://{get_server_ip_address()}:{get_server_port()}/load_quote/{folder}", new=0)
@@ -1945,7 +1838,6 @@ class MainWindow(QMainWindow):
             event.ignore()
 
     def dragLeaveEvent(self, event: QDragLeaveEvent) -> None:
-        # self.load_categories()
         pass
 
     def dropEvent(self, event: QDropEvent) -> None:
@@ -1957,7 +1849,6 @@ class MainWindow(QMainWindow):
             for url in event.mimeData().urls():
                 if str(url.toLocalFile()).endswith(".xlsx") and self.tabWidget.tabText(self.tabWidget.currentIndex()) == "Components":
                     files = [str(url.toLocalFile()) for url in event.mimeData().urls()]
-                    # self.load_categories()
                     self.add_po_templates(files)
                     break
             event.ignore()

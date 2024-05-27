@@ -500,7 +500,7 @@
                        <rect>
                         <x>0</x>
                         <y>0</y>
-                        <width>80</width>
+                        <width>63</width>
                         <height>16</height>
                        </rect>
                       </property>
@@ -569,7 +569,7 @@
                        <rect>
                         <x>0</x>
                         <y>0</y>
-                        <width>80</width>
+                        <width>63</width>
                         <height>16</height>
                        </rect>
                       </property>
@@ -947,7 +947,15 @@ QPushButton#pushButton_generate_quote:disabled{
     <property name="title">
      <string>Help</string>
     </property>
-    <addaction name="actionWebsite"/>
+    <widget class="QMenu" name="menuServer_URLs">
+     <property name="title">
+      <string>Server URL's</string>
+     </property>
+     <addaction name="actionServer_logs"/>
+     <addaction name="actionInventory"/>
+     <addaction name="actionQr_Codes"/>
+    </widget>
+    <addaction name="menuServer_URLs"/>
     <addaction name="separator"/>
     <addaction name="actionAbout_Qt"/>
     <addaction name="separator"/>
@@ -1269,22 +1277,6 @@ QPushButton#pushButton_generate_quote:disabled{
     <bool>true</bool>
    </property>
   </action>
-  <action name="actionWebsite">
-   <property name="icon">
-    <iconset>
-     <normalon>svg/network_drive.svg</normalon>
-    </iconset>
-   </property>
-   <property name="text">
-    <string>Website</string>
-   </property>
-   <property name="toolTip">
-    <string>http://10.0.0.10:5051</string>
-   </property>
-   <property name="statusTip">
-    <string>http://10.0.0.10:5051</string>
-   </property>
-  </action>
   <action name="actionPrint_Inventory">
    <property name="text">
     <string>Print Inventory</string>
@@ -1437,6 +1429,36 @@ QPushButton#pushButton_generate_quote:disabled{
   <action name="actionEdit_Paint_in_Inventory">
    <property name="text">
     <string>Edit Paint in Inventory</string>
+   </property>
+  </action>
+  <action name="actionServer_logs">
+   <property name="icon">
+    <iconset>
+     <normalon>../icons/website.png</normalon>
+    </iconset>
+   </property>
+   <property name="text">
+    <string>Server logs</string>
+   </property>
+  </action>
+  <action name="actionInventory">
+   <property name="icon">
+    <iconset>
+     <normalon>../icons/website.png</normalon>
+    </iconset>
+   </property>
+   <property name="text">
+    <string>Inventory</string>
+   </property>
+  </action>
+  <action name="actionQr_Codes">
+   <property name="icon">
+    <iconset>
+     <normalon>../icons/website.png</normalon>
+    </iconset>
+   </property>
+   <property name="text">
+    <string>Qr Codes</string>
    </property>
   </action>
  </widget>
