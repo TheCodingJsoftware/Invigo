@@ -1,4 +1,4 @@
-import ujson as json
+import json
 from natsort import natsorted
 
 from utils.components_inventory.component import Component

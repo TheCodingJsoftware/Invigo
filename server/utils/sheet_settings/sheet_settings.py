@@ -1,6 +1,6 @@
 import os
 
-import ujson as json
+import json
 
 from utils.sheet_settings.collection import Collection
 from utils.sheet_settings.material import Material

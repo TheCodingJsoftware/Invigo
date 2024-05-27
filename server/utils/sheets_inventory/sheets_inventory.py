@@ -1,4 +1,4 @@
-import ujson as json
+import json
 from natsort import natsorted
 
 from utils.inventory.category import Category
