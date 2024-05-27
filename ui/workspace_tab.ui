@@ -1,0 +1,455 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>Form</class>
+ <widget class="QWidget" name="Form">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>1112</width>
+    <height>756</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Form</string>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout">
+   <item>
+    <widget class="QSplitter" name="splitter">
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+     <property name="handleWidth">
+      <number>10</number>
+     </property>
+     <widget class="QWidget" name="">
+      <layout class="QHBoxLayout" name="workspace_layout">
+       <item>
+        <spacer name="horizontalSpacer">
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>1000</width>
+           <height>20</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QWidget" name="">
+      <layout class="QVBoxLayout" name="verticalLayout_40">
+       <item>
+        <layout class="QHBoxLayout" name="horizontalLayout_23">
+         <property name="spacing">
+          <number>0</number>
+         </property>
+         <item>
+          <widget class="QWidget" name="workspace_side_panel_2" native="true">
+           <property name="minimumSize">
+            <size>
+             <width>300</width>
+             <height>0</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>16777215</width>
+             <height>16777215</height>
+            </size>
+           </property>
+           <layout class="QVBoxLayout" name="workspace_side_panel">
+            <item>
+             <widget class="QPushButton" name="pushButton_use_filter">
+              <property name="font">
+               <font>
+                <pointsize>16</pointsize>
+               </font>
+              </property>
+              <property name="styleSheet">
+               <string notr="true">QPushButton#pushButton_use_filter{
+	color: #ffffff;
+    background-color: #3daee9;
+    border: 0px solid #3daee9;
+    border-radius: 5px;
+}
+QPushButton#pushButton_use_filter:checked{
+    background-color: #3daee9;
+    border: 0px solid #3daee9;
+}
+QPushButton#pushButton_use_filter:hover{
+    background-color: #48b6ed;
+    border-color: #48b6ed;
+}
+QPushButton#pushButton_use_filter:pressed{
+    background-color: #2b92c5;
+    border-color: #2b92c5;
+}
+
+QPushButton#pushButton_use_filter:!checked {
+    background-color: rgba(71, 71, 71, 130);
+    border: 0px solid rgba(76, 76, 76, 130);
+    border-radius: 5px;
+    color: grey;
+}
+
+QPushButton:hover#pushButton_use_filter:!checked {
+    background-color: rgba(76, 76, 76, 130);
+    border: 0px solid rgba(71, 76, 88, 130);
+}
+
+QPushButton:pressed#pushButton_use_filter:!checked {
+    background-color: rgba(39, 39, 39, 130);
+    border: 0px solid rgba(47, 50, 57, 130);
+}</string>
+              </property>
+              <property name="text">
+               <string>Filter</string>
+              </property>
+              <property name="checkable">
+               <bool>true</bool>
+              </property>
+              <property name="flat">
+               <bool>false</bool>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <layout class="QHBoxLayout" name="horizontalLayout_9">
+              <item>
+               <widget class="QPushButton" name="pushButton_show_sub_assembly">
+                <property name="styleSheet">
+                 <string notr="true">QPushButton#pushButton_show_sub_assembly{
+	color: #ffffff;
+    background-color: #3daee9;
+    border: 0px solid #3daee9;
+    border-radius: 5px;
+}
+QPushButton#pushButton_show_sub_assembly:checked{
+    background-color: #3daee9;
+    border: 0px solid #3daee9;
+}
+QPushButton#pushButton_show_sub_assembly:hover{
+    background-color: #48b6ed;
+    border-color: #48b6ed;
+}
+QPushButton#pushButton_show_sub_assembly:pressed{
+    background-color: #2b92c5;
+    border-color: #2b92c5;
+}
+
+QPushButton#pushButton_show_sub_assembly:!checked {
+    background-color: rgba(71, 71, 71, 130);
+    border: 0px solid rgba(76, 76, 76, 130);
+    border-radius: 5px;
+    color: grey;
+}
+
+QPushButton:hover#pushButton_show_sub_assembly:!checked {
+    background-color: rgba(76, 76, 76, 130);
+    border: 0px solid rgba(71, 76, 88, 130);
+}
+
+QPushButton:pressed#pushButton_show_sub_assembly:!checked {
+    background-color: rgba(39, 39, 39, 130);
+    border: 0px solid rgba(47, 50, 57, 130);
+}</string>
+                </property>
+                <property name="text">
+                 <string>Show Sub Assemblies</string>
+                </property>
+                <property name="checkable">
+                 <bool>true</bool>
+                </property>
+                <property name="checked">
+                 <bool>true</bool>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QPushButton" name="pushButton_show_item_summary">
+                <property name="styleSheet">
+                 <string notr="true">QPushButton#pushButton_show_item_summary{
+	color: #ffffff;
+    background-color: #3daee9;
+    border: 0px solid #3daee9;
+    border-radius: 5px;
+}
+QPushButton#pushButton_show_item_summary:checked{
+    background-color: #3daee9;
+    border: 0px solid #3daee9;
+}
+QPushButton#pushButton_show_item_summary:hover{
+    background-color: #48b6ed;
+    border-color: #48b6ed;
+}
+QPushButton#pushButton_show_item_summary:pressed{
+    background-color: #2b92c5;
+    border-color: #2b92c5;
+}
+
+QPushButton#pushButton_show_item_summary:!checked {
+    background-color: rgba(71, 71, 71, 130);
+    border: 0px solid rgba(76, 76, 76, 130);
+    border-radius: 5px;
+    color: grey;
+}
+
+QPushButton:hover#pushButton_show_item_summary:!checked {
+    background-color: rgba(76, 76, 76, 130);
+    border: 0px solid rgba(71, 76, 88, 130);
+}
+
+QPushButton:pressed#pushButton_show_item_summary:!checked {
+    background-color: rgba(39, 39, 39, 130);
+    border: 0px solid rgba(47, 50, 57, 130);
+}</string>
+                </property>
+                <property name="text">
+                 <string>Show Item Summary</string>
+                </property>
+                <property name="checkable">
+                 <bool>true</bool>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </item>
+            <item>
+             <widget class="QLineEdit" name="lineEdit_search">
+              <property name="placeholderText">
+               <string>Search for items...</string>
+              </property>
+              <property name="clearButtonEnabled">
+               <bool>true</bool>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QScrollArea" name="scrollArea_5">
+              <property name="widgetResizable">
+               <bool>true</bool>
+              </property>
+              <widget class="QWidget" name="scrollAreaWidgetContents_6">
+               <property name="geometry">
+                <rect>
+                 <x>0</x>
+                 <y>0</y>
+                 <width>1006</width>
+                 <height>161</height>
+                </rect>
+               </property>
+               <layout class="QHBoxLayout" name="horizontalLayout_21">
+                <item>
+                 <layout class="QVBoxLayout" name="filter_layout"/>
+                </item>
+               </layout>
+              </widget>
+             </widget>
+            </item>
+            <item>
+             <widget class="QGroupBox" name="groupBox_due_dates">
+              <property name="minimumSize">
+               <size>
+                <width>0</width>
+                <height>350</height>
+               </size>
+              </property>
+              <property name="maximumSize">
+               <size>
+                <width>16777215</width>
+                <height>350</height>
+               </size>
+              </property>
+              <property name="title">
+               <string>Timeline</string>
+              </property>
+              <property name="flat">
+               <bool>false</bool>
+              </property>
+              <property name="checkable">
+               <bool>true</bool>
+              </property>
+              <property name="checked">
+               <bool>false</bool>
+              </property>
+              <layout class="QVBoxLayout" name="verticalLayout_35" stretch="1,0">
+               <item>
+                <layout class="QVBoxLayout" name="verticalLayout_calendar_select_range"/>
+               </item>
+               <item>
+                <widget class="QGroupBox" name="groupBox_16">
+                 <property name="title">
+                  <string>Quick Select Timeline</string>
+                 </property>
+                 <layout class="QVBoxLayout" name="verticalLayout_39">
+                  <item>
+                   <widget class="QLabel" name="label_13">
+                    <property name="font">
+                     <font>
+                      <weight>50</weight>
+                      <italic>true</italic>
+                      <bold>false</bold>
+                     </font>
+                    </property>
+                    <property name="text">
+                     <string>* With respect to the current date</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <layout class="QVBoxLayout" name="verticalLayout_38">
+                    <property name="spacing">
+                     <number>3</number>
+                    </property>
+                    <item>
+                     <layout class="QHBoxLayout" name="horizontalLayout_7">
+                      <item>
+                       <widget class="QLabel" name="label_15">
+                        <property name="minimumSize">
+                         <size>
+                          <width>40</width>
+                          <height>0</height>
+                         </size>
+                        </property>
+                        <property name="maximumSize">
+                         <size>
+                          <width>40</width>
+                          <height>16777215</height>
+                         </size>
+                        </property>
+                        <property name="text">
+                         <string>Due: </string>
+                        </property>
+                       </widget>
+                      </item>
+                      <item>
+                       <widget class="QPushButton" name="pushButton_next_2_days">
+                        <property name="text">
+                         <string>Next 2 Days</string>
+                        </property>
+                       </widget>
+                      </item>
+                      <item>
+                       <widget class="QPushButton" name="pushButton_next_4_days">
+                        <property name="text">
+                         <string>Next 4 Days</string>
+                        </property>
+                       </widget>
+                      </item>
+                      <item>
+                       <widget class="QPushButton" name="pushButton_this_week">
+                        <property name="text">
+                         <string>This Week</string>
+                        </property>
+                       </widget>
+                      </item>
+                     </layout>
+                    </item>
+                   </layout>
+                  </item>
+                 </layout>
+                </widget>
+               </item>
+              </layout>
+             </widget>
+            </item>
+           </layout>
+          </widget>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <widget class="QPushButton" name="pushButton_add_job">
+         <property name="text">
+          <string>Add Job</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="pushButton_generate_workorder">
+         <property name="font">
+          <font>
+           <pointsize>12</pointsize>
+           <weight>75</weight>
+           <bold>true</bold>
+          </font>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">QPushButton#pushButton_generate_workorder{
+	color: #ffffff;
+	background-color: #3daee9;
+	border: 2px solid #3daee9;
+	border-radius: 5px;
+	padding: 8px 16px;
+	font-weight: bold;
+}
+QPushButton#pushButton_generate_workorder:hover{
+	background-color: #48b6ed;
+	border-color: #48b6ed;
+}
+QPushButton#pushButton_generate_workorder:pressed{
+	background-color: #2b92c5;
+	border-color: #2b92c5;
+}
+QPushButton#pushButton_generate_workorder:disabled{
+	background-color: rgba(44, 44, 44, 130);
+	border: 1px solid rgba(57, 57, 57, 130);
+	color: rgb(144, 144, 144);
+	border-radius: 4px;
+}</string>
+         </property>
+         <property name="text">
+          <string>Generate Workorder</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="pushButton_generate_workspace_quote">
+         <property name="font">
+          <font>
+           <pointsize>12</pointsize>
+           <weight>75</weight>
+           <bold>true</bold>
+          </font>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">QPushButton#pushButton_generate_workspace_quote{
+	color: #ffffff;
+	background-color: #3daee9;
+	border: 2px solid #3daee9;
+	border-radius: 5px;
+	padding: 8px 16px;
+	font-weight: bold;
+}
+QPushButton#pushButton_generate_workspace_quote:hover{
+	background-color: #48b6ed;
+	border-color: #48b6ed;
+}
+QPushButton#pushButton_generate_workspace_quote:pressed{
+	background-color: #2b92c5;
+	border-color: #2b92c5;
+}
+QPushButton#pushButton_generate_workspace_quote:disabled{
+	background-color: rgba(44, 44, 44, 130);
+	border: 1px solid rgba(57, 57, 57, 130);
+	color: rgb(144, 144, 144);
+	border-radius: 4px;
+}</string>
+         </property>
+         <property name="text">
+          <string>Generate Printout</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

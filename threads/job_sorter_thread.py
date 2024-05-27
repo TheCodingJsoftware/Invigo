@@ -38,8 +38,9 @@ class JobSorterThread(QThread):
 
         try:
             for column, cell in enumerate(worksheet[1]):
-                if column_name_to_find.lower() in cell.value.lower():
-                    return column
+                if name := cell.value:
+                    if column_name_to_find.lower() in name.lower():
+                        return column
         except TypeError:
             return -1
         return -1

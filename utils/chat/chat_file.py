@@ -1,7 +1,8 @@
 import os
 
 import ujson as json
-from chat import Chat
+
+from utils.chat.chat import Chat
 
 
 class ChatFile:

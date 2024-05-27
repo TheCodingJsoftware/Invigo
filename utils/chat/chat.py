@@ -1,6 +1,6 @@
 from datetime import datetime
 
-from message import Message
+from utils.chat.message import Message
 
 
 class Chat:

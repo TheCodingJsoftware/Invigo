@@ -47,10 +47,7 @@ class ItemsTable:
         ]
         self.program_directory = os.path.dirname(os.path.realpath(sys.argv[0]))
         self.assembly = assembly
-        if show_all_items:
-            self.items = assembly.get_all_items()
-        else:
-            self.items = assembly.items
+        self.items = assembly.get_all_items() if show_all_items else assembly.items
         self.assembly_quantity = assembly_quantity
 
     def generate(self) -> str:
@@ -65,7 +62,7 @@ class ItemsTable:
             flow_tag = " ➜ ".join(item.flow_tag)
             html += (
                 "<tr>"
-                f'<td class="ui-table-cell-visible"><img src="{self.program_directory}/images/{item.name}.jpeg" style="height: 100px; width: 100px;" alt="Image"></td>'
+                f'<td class="ui-table-cell-visible"><img src="{self.program_directory}/images/{item.name}.jpeg" style="height: 100px;" alt="Image"></td>'
                 f'<td class="ui-table-cell-visible">{item.name}</td>'
                 f'<td class="ui-table-cell-visible">{item.material}</td>'
                 f'<td class="ui-table-cell-visible">{item.thickness}</td>'
@@ -98,10 +95,10 @@ class GeneratePrintout:
         config.read(f"{self.program_directory}/laser_quote_variables.cfg")
         self.path_to_save_printouts = config.get("GLOBAL VARIABLES", "path_to_save_workspace_printouts")
 
-        with open("utils/workspace/printout.css", "r") as printout_css_file:
+        with open("utils/workspace/printout.css", "r", encoding="utf-8") as printout_css_file:
             self.printout_css = printout_css_file.read()
 
-        with open("utils/workspace/printout.js", "r") as printout_js_file:
+        with open("utils/workspace/printout.js", "r", encoding="utf-8") as printout_js_file:
             self.printout_js = printout_js_file.read()
 
     def generate(self):
@@ -128,10 +125,10 @@ class GeneratePrintout:
             + '''</script>
         <div data-role="page" id="pageone">
             <div id="cover-page">
-                <label for="showCoverPage" id="showCoverPageLabel" style="background-color: white; width: 200px; margin-left: 84%; border: none; margin-top: 10px;">
+                <label for="showCoverPage" id="showCoverPageLabel" style="background-color: #EAE9FC; width: 200px; margin-left: 84%; border: none; margin-top: 10px;">
                  Show Cover Page
                 </label>
-                <input style="background-color: white; display: none;" type="checkbox" id="showCoverPage" checked=true>
+                <input style="background-color: #EAE9FC; display: none;" type="checkbox" id="showCoverPage" checked=true>
                 <div style="position: absolute; top: 0;">
                     <img class="logo" src="'''
             + self.program_directory
@@ -196,7 +193,7 @@ class GeneratePrintout:
                     self.data[assembly]["show_all_items"],
                 )
                 image_html = f'<img src="{self.program_directory}/{assembly_image_path}" alt="Image" class="nest_image" id="{self.program_directory}/{assembly_image_path}">' if assembly_image_path else ""
-                text += '<div style="margin: 15px; padding: 5px; border: 1px solid #bbb; border-radius: 10px">'
+                text += '<div style="margin: 15px; padding: 5px; border: 1px solid #bbb; border-radius: 10px; page-break-inside: avoid;">'
                 text += f'<div style="display: inline-flex;">{image_html}<div><h2 style="margin: 0;">{assembly.name} x {self.data[assembly]["quantity"]}</h2><p>Flow Tag: {assembly_flow_tag}</p></div></div>'
                 if len(assembly.items) > 0:
                     text += items_table.generate()

@@ -59,14 +59,7 @@
    <item>
     <widget class="QWidget" name="widget" native="true">
      <property name="styleSheet">
-      <string notr="true">QWidget#widget{
-	border-top-left-radius:10px;
-	border-bottom-left-radius:10px;
-	border-top-right-radius:10px;
-	border-bottom-right-radius:10px;
-	border: 1px solid  #3daee9;
-	background-color: #19232D;
-}</string>
+      <string notr="true"/>
      </property>
      <layout class="QVBoxLayout" name="verticalLayout_3">
       <property name="spacing">
@@ -494,10 +487,13 @@ background-color: #000;
           <property name="text">
            <string>Color name:</string>
           </property>
+          <property name="buddy">
+           <cstring>lineEdit_color_name</cstring>
+          </property>
          </widget>
         </item>
         <item>
-         <layout class="QHBoxLayout" name="horizontalLayout_3">
+         <layout class="QHBoxLayout" name="horizontalLayout_3" stretch="1,0,0">
           <item>
            <widget class="QLineEdit" name="lineEdit_color_name">
             <property name="placeholderText">
@@ -518,7 +514,7 @@ background-color: #000;
             </property>
             <property name="maximumSize">
              <size>
-              <width>30</width>
+              <width>16777215</width>
               <height>16777215</height>
              </size>
             </property>
@@ -531,13 +527,13 @@ background-color: #000;
            <widget class="QPushButton" name="pushButton_cancel">
             <property name="minimumSize">
              <size>
-              <width>50</width>
+              <width>0</width>
               <height>0</height>
              </size>
             </property>
             <property name="maximumSize">
              <size>
-              <width>50</width>
+              <width>16777215</width>
               <height>16777215</height>
              </size>
             </property>
@@ -557,9 +553,13 @@ background-color: #000;
  </widget>
  <layoutdefault spacing="5" margin="10"/>
  <tabstops>
+  <tabstop>pushButton_set_color</tabstop>
+  <tabstop>pushButton_cancel</tabstop>
   <tabstop>red</tabstop>
   <tabstop>green</tabstop>
   <tabstop>blue</tabstop>
+  <tabstop>lineEdit_color_name</tabstop>
+  <tabstop>hex</tabstop>
  </tabstops>
  <resources/>
  <connections>

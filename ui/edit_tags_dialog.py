@@ -1,32 +1,12 @@
 import contextlib
-import copy
-import os.path
 from functools import partial
 
 from PyQt6 import uic
-from PyQt6.QtCore import QEvent, QFile, QObject, Qt, QTextStream, pyqtSignal
+from PyQt6.QtCore import QEvent, QObject, Qt, pyqtSignal
 from PyQt6.QtGui import QAction, QCursor, QIcon
-from PyQt6.QtSvgWidgets import QSvgWidget
-from PyQt6.QtWidgets import (
-    QAbstractItemView,
-    QCheckBox,
-    QComboBox,
-    QDialog,
-    QHBoxLayout,
-    QLabel,
-    QLineEdit,
-    QMenu,
-    QPlainTextEdit,
-    QPushButton,
-    QRadioButton,
-    QTableWidget,
-    QVBoxLayout,
-    QWidget,
-)
+from PyQt6.QtWidgets import QAbstractItemView, QCheckBox, QComboBox, QDialog, QHBoxLayout, QLabel, QLineEdit, QMenu, QPlainTextEdit, QPushButton, QRadioButton, QTableWidget, QVBoxLayout, QWidget
 
 from ui.custom_widgets import AssemblyMultiToolBox, DeletePushButton
-from ui.theme import set_theme
-from utils.dialog_icons import Icons
 from utils.json_file import JsonFile
 
 workspace_tags = JsonFile(file_name="data/workspace_settings")
@@ -49,21 +29,11 @@ class EditTagsDialog(QDialog):
 
     def __init__(
         self,
-        parent=None,
-        icon_name: str = Icons.information,
-        title: str = __name__,
-        message: str = "",
-        options: list = None,
+        parent,
     ) -> None:
         super(EditTagsDialog, self).__init__(parent)
-        uic.loadUi("ui/edit_tags_dialog.ui", self)
-        self.showMaximized()
+        uic.loadUi("ui/edit_workspace_settings.ui", self)
 
-        self.icon_name = icon_name
-        self.title = title
-        self.message = message
-        self.inputText: str = ""
-        self.theme: str = "dark"
         self.tag_boxes: dict[QWidget, list[QComboBox]] = {}
         self.check_boxes: dict[QCheckBox, QComboBox] = {}
         self.connections: dict[object, QCheckBox] = {}
@@ -72,16 +42,9 @@ class EditTagsDialog(QDialog):
         self.flow_tag_layout.setAlignment(Qt.AlignmentFlag.AlignTop)
         self.flow_tag_layout.addWidget(self.groups_multi_tool_box)
 
+        self.setWindowTitle("Edit Workspace Flow Tags")
         self.setWindowIcon(QIcon("icons/icon.png"))
 
-        self.setWindowTitle(self.title)
-        self.lblMessage.setText(self.message)
-
-        svg_icon = self.get_icon(icon_name)
-        svg_icon.setFixedSize(62, 50)
-        self.iconHolder.addWidget(svg_icon)
-
-        self.load_theme()
         button_filter = ButtonFilter()
 
         self.pushButton_create_new_group.clicked.connect(self.create_new_group)
@@ -102,6 +65,7 @@ class EditTagsDialog(QDialog):
         self.listWidget_selected_flow_tag.currentItemChanged.connect(self.load_statuses)
         self.pushButton_add_status.clicked.connect(self.add_new_status)
         self.pushButton_add_status.installEventFilter(button_filter)
+        self.showMaximized()
 
     def delete_group(self, group_name: QLineEdit):
         table_widget = self.groups_and_tables[group_name]
@@ -611,12 +575,6 @@ class EditTagsDialog(QDialog):
         self.attribute_layout.addWidget(show_all_items_check_box)
         self.attribute_layout.addWidget(QLabel("Next Flow Tag Message:", self))
         self.attribute_layout.addWidget(next_flow_state_text_edit)
-
-    def load_theme(self) -> None:
-        set_theme(self, theme="dark")
-
-    def get_icon(self, path_to_icon: str) -> QSvgWidget:
-        return QSvgWidget(f"icons/{path_to_icon}")
 
     def clear_layout(self, layout) -> None:
         with contextlib.suppress(AttributeError):

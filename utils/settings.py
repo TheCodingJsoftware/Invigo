@@ -38,10 +38,12 @@ class Settings:
             return None
 
     def set_value(self, setting_name: str, setting_value: object):
+        self.load_data()
         self.data[setting_name] = setting_value
         self.save_data()
 
     def default_settings(self) -> None:
+        self.data.setdefault("server_directory", r"C:\Users\Invigo\Inventory-Manager\server")
         self.data.setdefault("open_quote_when_generated", True)
         self.data.setdefault("open_workorder_when_generated", True)
         self.data.setdefault("open_packing_slip_when_generated", True)
@@ -82,7 +84,7 @@ class Settings:
                 "Edit Components",
                 "Edit Sheets in Inventory",
                 "Edit Laser Cut Inventory",
-                "OmniGen",
+                "Quote Generator",
                 "Workspace",
                 "Chat",
                 "View Removed Quantities History",
@@ -92,9 +94,9 @@ class Settings:
         self.data.setdefault(
             "category_tabs_order",
             {
-                "Edit Components": [],
-                "Edit Sheets in Inventory": [],
-                "Edit Laser Cut Inventory": [],
+                "Components": [],
+                "Sheets in Inventory": [],
+                "Laser Cut Inventory": [],
                 "Workspace": [],
             },
         )

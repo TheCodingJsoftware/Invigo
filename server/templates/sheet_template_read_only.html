@@ -1,34 +1,21 @@
 <!DOCTYPE html>
 <html>
-    <meta name="viewport" content ="width=device-width,initial-scale=1,user-scalable=yes" />
+<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=yes" />
+
 <head>
     <style>
-        .content {
-            display: inline-block;
-            margin: 130px 10px;
-            text-align: center;
+        html {
+            align-items: center;
             background-color: #222222;
-        }
-        button {
-            color: #ffffff;
-            background-color: #3daee9;
-            border: none;
-            border-radius: 8px;
-            padding: 8px 16px;
-            font-weight: bold;
-            padding: 5% 10%;
-            font-size: 20px;
+            text-align: center;
         }
 
-        button:focus {
-            background-color: #48b6ed;
-            border-color: #48b6ed;
-        }
-
-        button:after {
-            background-color: #2b92c5;
-            border-color: #2b92c5;
-            color: rgb(132, 132, 132);
+        .content {
+            display: block;
+            text-align: center;
+            align-items: center;
+            text-align: center;
+            margin-top: 150px;
         }
 
         /* Text */
@@ -38,16 +25,18 @@
             font-size: 26px;
             margin-bottom: 5px;
         }
+
         h1 {
             font-family: Arial, Helvetica, sans-serif;
-            color: rgb(210, 210, 210);
+            color: #EAE9FC;
             margin-bottom: 5px;
-            font-size: 28px;
+            font-size: 26px;
         }
+
         h1.order_is_pending {
             background-color: #3bba6d;
             padding: 1%;
-            color: white;
+            color: #EAE9FC;
             font-weight: bold;
             width: 100%;
             position: fixed;
@@ -56,10 +45,11 @@
             margin: 0;
 
         }
+
         h1.order_is_not_pending {
             background-color: gray;
             padding: 1%;
-            color: white;
+            color: #EAE9FC;
             font-weight: bold;
             width: 100%;
             position: fixed;
@@ -70,20 +60,24 @@
     </style>
     <title>{{ sheet_name }}</title>
 </head>
-<body class="content">
-    
-    {% if pending_data["is_order_pending"] == True %}
-    <h1 class="order_is_pending">Order is Pending</h1>
-    <h1>{{ sheet_name }}</h1>
-    <p>Pending Since: {{ pending_data["order_pending_date"] }}
-    <br>
-    Expected Arrival: {{ pending_data["expected_arrival_time"] }}
-    <br>
-    Sheets Ordered: {{ pending_data["order_pending_quantity"] }}</p>
-    {% else %}
-    <h1 class="order_is_not_pending">No Order is Pending</h1>
-    <h1>{{ sheet_name }}</h1>
-    {% endif %}
-    <p>Current quantity: {{ quantity }}</p>
+
+<body>
+    <div class="content">
+        {% if pending_data["is_order_pending"] == True %}
+        <h1 class="order_is_pending">Order is Pending</h1>
+        <h1>{{ sheet_name }}</h1>
+        <p>Pending Since: {{ pending_data["order_pending_date"] }}
+            <br>
+            Expected Arrival: {{ pending_data["expected_arrival_time"] }}
+            <br>
+            Sheets Ordered: {{ pending_data["order_pending_quantity"] }}
+        </p>
+        {% else %}
+        <h1 class="order_is_not_pending">No Order is Pending</h1>
+        <h1>{{ sheet_name }}</h1>
+        {% endif %}
+        <p>Current quantity: {{ quantity }}</p>
+    </div>
 </body>
+
 </html>

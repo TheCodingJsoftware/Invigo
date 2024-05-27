@@ -31,7 +31,7 @@ class LoadWindow(QWidget):
         widget.setGraphicsEffect(shadow)
         widget.move(QPoint(400, 120))
         self.progress_text = QLabel(widget)
-        self.progress_text.setStyleSheet("color: white; font-size: 100px; font-family: Vivaldi;")
+        self.progress_text.setStyleSheet("color: #EAE9FC; font-size: 100px; font-family: Vivaldi;")
         self.progress_text.setText("Invigo")
         self.progress_text.setFixedSize(self.WIDTH - 20, 120)
         self.progress_text.setAlignment(Qt.AlignmentFlag.AlignHCenter | Qt.AlignmentFlag.AlignVCenter)

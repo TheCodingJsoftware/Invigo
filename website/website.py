@@ -157,18 +157,3 @@ def get_parts_in_inventory_data() -> dict:
     except Exception as e:
         write_log(f"Failed to load inventory.json - {e}")
         return {}
-
-
-def exhange_rate():
-    global last_exchange_rate
-    while True:
-        try:
-            last_exchange_rate = currency_rates.get_rate("USD", "CAD")
-        except Exception:
-            last_exchange_rate = 1.3608673726676752  # just a guess
-        time.sleep(15)
-
-
-# thread = threading.Thread(target=exhange_rate, args=())
-# thread.start()
-# app.run(host="10.0.0.217", port=5000, debug=False, threaded=True)

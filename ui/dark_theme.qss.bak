@@ -224,8 +224,8 @@ QWidget#multi_tool_box_widget {
     border: 1px solid #3daee9;
     border-bottom-left-radius: 8px;
     border-bottom-right-radius: 8px;
-    border-top-right-radius: 0.01em;
-    border-top-left-radius: 0.01em;
+    border-top-right-radius: 0px;
+    border-top-left-radius: 0px;
     background-color: rgba(29, 29, 29, 57);
 }
 
@@ -233,8 +233,8 @@ QWidget#nest_widget {
     border: 1px solid #3daee9;
     border-bottom-left-radius: 8px;
     border-bottom-right-radius: 8px;
-    border-top-right-radius: 0.01em;
-    border-top-left-radius: 0.01em;
+    border-top-right-radius: 0px;
+    border-top-left-radius: 0px;
     margin-top: -1px;
     background-color: rgba(29, 29, 29, 57);
     border: 1px solid red;
@@ -243,7 +243,7 @@ QWidget#nest_widget {
 QPushButton {
     background-color: rgba(71, 71, 71, 130);
     border: none;
-    border-radius: 8px;
+    border-radius: 5px;
     padding: 3px 3px;
     color: rgb(210, 210, 210);
 }
@@ -271,7 +271,7 @@ QPushButton:checked#order_status {
     color: #ffffff;
     background-color: #2ea44f;
     border: none;
-    border-radius: 8px;
+    border-radius: 5px;
 }
 
 QPushButton:checked:hover#order_status {
@@ -290,7 +290,7 @@ QPushButton#flow_tag_button {
     color: #ffffff;
     background-color: #2ea44f;
     border: none;
-    border-radius: 8px;
+    border-radius: 5px;
 }
 
 QPushButton:hover#flow_tag_button {
@@ -304,7 +304,7 @@ QPushButton:pressed#flow_tag_button {
 QComboBox#flow_tag_status_button {
     color: #ffffff;
     background-color: #2ea44f;
-    border-radius: 8px;
+    border-radius: 5px;
 }
 
 QComboBox:hover#flow_tag_status_button {
@@ -319,7 +319,7 @@ QPushButton:checked#recut_button {
     color: #ffffff;
     background-color: #2ea44f;
     border: none;
-    border-radius: 8px;
+    border-radius: 5px;
 }
 
 QPushButton:checked:hover#recut_button {
@@ -346,21 +346,21 @@ QPushButton#delete_button {
     color: #ff0000;
     border-color: #8b0000;
     background-color: #682727;
-    border-radius: 8px;
+    border-radius: 5px;
 }
 
 QPushButton:hover#delete_button {
     color: #ff0000;
     border-color: #6f0000;
     background-color: #642a2a;
-    border-radius: 8px;
+    border-radius: 5px;
 }
 
 QPushButton:pressed#delete_button {
     color: #ff0000;
     border-color: #5c0000;
     background-color: #461f1f;
-    border-radius: 8px;
+    border-radius: 5px;
 }
 
 
@@ -374,7 +374,7 @@ QRadioButton::indicator {
     width: 14px;
     height: 14px;
     background-color: #3daee9;
-    border-radius: 8px;
+    border-radius: 5px;
     border: 1px solid rgba(90, 90, 90, 180);
 }
 
@@ -435,7 +435,7 @@ QRadioButton::indicator:checked#option {
 
 QToolTip {
     background-color: rgb(24, 24, 24);
-    color: white;
+    color: #EAE9FC;
     border: none;
     padding: 5px;
 }
@@ -449,7 +449,7 @@ QToolBox {
 QToolBox::tab {
     background-color: rgba(71, 71, 71, 130);
     border: none;
-    border-radius: 8px;
+    border-radius: 5px;
     color: rgb(210, 210, 210);
     padding-bottom: -1px;
     margin-top: 3px;
@@ -468,19 +468,19 @@ QToolBox::tab:pressed {
 }
 
 QToolBox::tab:selected {
-    color: white;
+    color: #EAE9FC;
     background-color: #3daee9;
     border: none;
     border-top-right-radius: 8px;
     border-top-left-radius: 8px;
-    border-bottom-left-radius: 0.01em;
-    border-bottom-right-radius: 0.01em;
+    border-bottom-left-radius: 0px;
+    border-bottom-right-radius: 0px;
     margin-bottom: -1px;
 }
 
 
 QToolButton {
-    border-radius: 8px;
+    border-radius: 5px;
     background-color: transparent;
     padding: 1px 3px;
     color: rgb(210, 210, 210);
@@ -504,13 +504,13 @@ QToolButton:disabled {
 
 QCheckBox {
     color: rgb(144, 144, 144);
-    border-radius: 8px;
+    border-radius: 5px;
 }
 
 QCheckBox::indicator {
     width: 10px;
     height: 10px;
-    border-radius: 8px;
+    border-radius: 5px;
     border: 1px solid #5b5b5b;
     background: #474747;
 }
@@ -550,7 +550,7 @@ QHeaderView:section {
 QListWidget {
     background-color: rgba(29, 29, 29, 57);
     border: 1px solid rgb(57, 57, 57);
-    border-radius: 8px;
+    border-radius: 5px;
     padding: 0px;
     color: rgb(210, 210, 210);
 }
@@ -585,8 +585,8 @@ QTreeView {
     border: 1px solid #3daee9;
     border-bottom-right-radius: 10px;
     border-bottom-left-radius: 10px;
-    border-top-left-radius: 0.01em;
-    border-top-right-radius: 0.01em;
+    border-top-left-radius: 0px;
+    border-top-right-radius: 0px;
 }
 
 QTreeWidget {
@@ -680,9 +680,9 @@ QTabBar::tab:!selected:hover {
 }
 
 QTabBar::tab:selected {
-    color: white;
+    color: #EAE9FC;
     background-color: #3daee9;
-    border: 0.01em solid #3daee9;
+    border: 0px solid #3daee9;
     border-top-right-radius: 5px;
     border-top-left-radius: 5px;
     /*border-bottom-left-radius: 0.2em;
@@ -733,7 +733,7 @@ QComboBox {
     background-color: rgba(65, 65, 65, 130);
     border: 1px solid rgba(65, 65, 65, 130);
     color: rgb(210, 210, 210);
-    border-radius: 8px;
+    border-radius: 5px;
     padding: 1px 3px;
 
 }
@@ -755,7 +755,7 @@ QComboBox:disabled {
 }
 
 QComboBox::drop-down:button {
-    border-radius: 8px;
+    border-radius: 5px;
 }
 
 QComboBox::down-arrow {
@@ -765,7 +765,7 @@ QComboBox::down-arrow {
 }
 
 QLineEdit {
-    border-radius: 8px;
+    border-radius: 5px;
     background-color: rgba(29, 29, 29, 130);
     padding: 1px 3px;
     color: rgb(210, 210, 210);
@@ -781,7 +781,7 @@ QLineEdit:focus {
 }
 
 QTextEdit {
-    border-radius: 8px;
+    border-radius: 5px;
     background-color: rgba(29, 29, 29, 130);
     padding: 1px 3px;
     color: rgb(210, 210, 210);
@@ -797,7 +797,7 @@ QTextEdit:focus {
 }
 
 QPlainTextEdit {
-    border-radius: 8px;
+    border-radius: 5px;
     background-color: rgba(29, 29, 29, 130);
     padding: 1px 3px;
     color: rgb(210, 210, 210);
@@ -814,7 +814,7 @@ QPlainTextEdit:focus {
 
 
 QSpinBox {
-    border-radius: 8px;
+    border-radius: 5px;
     background-color: rgba(15, 15 15, 130);
     padding: 1px 3px;
     color: rgb(210, 210, 210);
@@ -834,7 +834,7 @@ QSpinBox:disabled {
 }
 
 QDoubleSpinBox {
-    border-radius: 8px;
+    border-radius: 5px;
     background-color: rgba(15, 15, 15, 130);
     padding: 1px 3px;
     color: rgb(210, 210, 210);
@@ -917,7 +917,7 @@ QAbstractSpinBox::down-arrow:!off:!disabled:hover {
 QDateEdit {
     background-color: rgba(65, 65, 65, 150);
     border: 1px solid rgba(65, 65, 65, 150);
-    border-radius: 8px;
+    border-radius: 5px;
     padding: 1px 3px;
     color: rgb(210, 210, 210);
 }
@@ -960,12 +960,12 @@ QMenu{
 /* https://www.qtcentre.org/threads/30478-How-To-Change-Style-Sheet-for-QCalendarWidget */
 QCalendarWidget QWidget{
 	background-color: #151515;
-	border-radius: 8px;
+	border-radius: 5px;
 	margin-bottom: 8px;
 }
 QCalendarWidget QAbstractItemView:item:selected { 
     background-color: #287BA8;
-	color: white;
+	color: #EAE9FC;
 }
 QCalendarWidget QAbstractItemView:item:disabled {
 	color: rgba(102, 102, 102, 130);

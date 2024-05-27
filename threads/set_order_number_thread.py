@@ -9,7 +9,7 @@ class SetOrderNumberThread(QThread):
 
     signal = pyqtSignal(object)
 
-    def __init__(self, order_number: int) -> None:
+    def __init__(self, order_number: float) -> None:
         QThread.__init__(self)
         self.SERVER_IP: str = get_server_ip_address()
         self.SERVER_PORT: int = get_server_port()

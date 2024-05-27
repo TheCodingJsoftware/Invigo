@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>413</width>
-    <height>283</height>
+    <width>517</width>
+    <height>331</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -38,14 +38,7 @@
       <bool>false</bool>
      </property>
      <property name="styleSheet">
-      <string notr="true">QWidget#widget{
-	border-top-left-radius:10px;
-	border-bottom-left-radius:10px;
-	border-top-right-radius:10px;
-	border-bottom-right-radius:10px;
-	border: 1px solid  #3daee9;
-	background-color: #19232D;
-}</string>
+      <string notr="true"/>
      </property>
      <layout class="QVBoxLayout" name="verticalLayout_3">
       <item>
@@ -171,8 +164,8 @@
              <rect>
               <x>0</x>
               <y>0</y>
-              <width>373</width>
-              <height>69</height>
+              <width>477</width>
+              <height>72</height>
              </rect>
             </property>
             <layout class="QHBoxLayout" name="horizontalLayout_3">
@@ -193,6 +186,19 @@
       <item>
        <layout class="QHBoxLayout" name="horizontalLayout_5">
         <item>
+         <spacer name="horizontalSpacer">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>40</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+        <item>
          <widget class="QPushButton" name="btnClose">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
@@ -202,28 +208,12 @@
           </property>
           <property name="maximumSize">
            <size>
-            <width>70</width>
+            <width>16777215</width>
             <height>16777215</height>
            </size>
           </property>
           <property name="styleSheet">
-           <string notr="true">
-        QPushButton#btnClose{
-            background-color: #3daee9;
-            border: 0.04em solid  #3daee9;
-            border-radius: 5px;
-        }
-        QPushButton#btnClose:hover{
-            background-color: #49b3eb;
-            border: 0.04em solid  #49b3eb;
-            border-radius: 5px;
-        }
-        QPushButton#btnClose:pressed{
-            background-color: #5cbaed;
-            color: #bae2f8;
-            border: 0.04em solid  #5cbaed;
-            border-radius: 5px;
-        }</string>
+           <string notr="true"/>
           </property>
           <property name="text">
            <string>  OK</string>

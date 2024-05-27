@@ -17,8 +17,6 @@ from PyQt6.QtCore import QPoint, Qt, pyqtSignal
 from PyQt6.QtGui import QColor, QMouseEvent
 from PyQt6.QtWidgets import QApplication, QDialog, QMainWindow
 
-from ui.theme import set_theme
-
 
 class ColorPicker(QDialog):
     colorChanged = pyqtSignal()
@@ -32,8 +30,6 @@ class ColorPicker(QDialog):
         hsv = kwargs.pop("hsv", None)
         _hex = kwargs.pop("hex", None)
 
-        self.setWindowFlags(Qt.WindowType.Window | Qt.WindowType.FramelessWindowHint)
-        self.setAttribute(Qt.WidgetAttribute.WA_TranslucentBackground, True)
         # Connect update functions
         self.hue.mouseMoveEvent = self.moveHueSelector
         self.hue.mousePressEvent = self.moveHueSelector
@@ -60,7 +56,6 @@ class ColorPicker(QDialog):
             self.setHex(_hex)
         else:
             self.setRGB((0, 0, 0))
-        self.load_theme()
         self.setStyleSheet("QWidget{background-color: none;} QFrame{border-radius:5px;}")
 
     ## Main Functions ##
@@ -234,6 +229,3 @@ class ColorPicker(QDialog):
         g = min(g, 255)
         b = min(b, 255)
         return (r, g, b)
-
-    def load_theme(self) -> None:
-        set_theme(self, theme="dark")

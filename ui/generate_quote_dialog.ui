@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>484</width>
-    <height>393</height>
+    <width>506</width>
+    <height>406</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -38,16 +38,9 @@
       <bool>false</bool>
      </property>
      <property name="styleSheet">
-      <string notr="true">QWidget#widget{
-	border-top-left-radius:10px;
-	border-bottom-left-radius:10px;
-	border-top-right-radius:10px;
-	border-bottom-right-radius:10px;
-	border: 1px solid  #3daee9;
-	background-color: #19232D;
-}</string>
+      <string notr="true"/>
      </property>
-     <layout class="QVBoxLayout" name="verticalLayout_3" stretch="0,0">
+     <layout class="QVBoxLayout" name="verticalLayout_3" stretch="0">
       <property name="leftMargin">
        <number>0</number>
       </property>
@@ -60,40 +53,6 @@
       <property name="bottomMargin">
        <number>0</number>
       </property>
-      <item>
-       <widget class="QLabel" name="lblTitle">
-        <property name="maximumSize">
-         <size>
-          <width>16777215</width>
-          <height>16777215</height>
-         </size>
-        </property>
-        <property name="font">
-         <font>
-          <pointsize>12</pointsize>
-         </font>
-        </property>
-        <property name="styleSheet">
-         <string notr="true">border-top-left-radius:10px;
-border-top-right-radius:10px;
-border: 1px solid  #3daee9;
-border-bottom: none;
-</string>
-        </property>
-        <property name="frameShape">
-         <enum>QFrame::Box</enum>
-        </property>
-        <property name="frameShadow">
-         <enum>QFrame::Sunken</enum>
-        </property>
-        <property name="text">
-         <string>TextLabel</string>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignHCenter|Qt::AlignTop</set>
-        </property>
-       </widget>
-      </item>
       <item>
        <layout class="QVBoxLayout" name="verticalLayout">
         <property name="leftMargin">
@@ -109,34 +68,7 @@ border-bottom: none;
          <number>9</number>
         </property>
         <item>
-         <layout class="QHBoxLayout" name="horizontalLayout_4" stretch="0,0">
-          <item>
-           <layout class="QVBoxLayout" name="verticalLayout_2">
-            <property name="spacing">
-             <number>0</number>
-            </property>
-            <item>
-             <layout class="QVBoxLayout" name="iconHolder">
-              <property name="spacing">
-               <number>0</number>
-              </property>
-             </layout>
-            </item>
-            <item>
-             <spacer name="verticalSpacer">
-              <property name="orientation">
-               <enum>Qt::Vertical</enum>
-              </property>
-              <property name="sizeHint" stdset="0">
-               <size>
-                <width>20</width>
-                <height>40</height>
-               </size>
-              </property>
-             </spacer>
-            </item>
-           </layout>
-          </item>
+         <layout class="QHBoxLayout" name="horizontalLayout_4" stretch="0">
           <item>
            <widget class="QScrollArea" name="scrollArea">
             <property name="widgetResizable">
@@ -147,8 +79,8 @@ border-bottom: none;
               <rect>
                <x>0</x>
                <y>0</y>
-               <width>434</width>
-               <height>115</height>
+               <width>484</width>
+               <height>131</height>
               </rect>
              </property>
              <layout class="QVBoxLayout" name="verticalLayout_4">
@@ -176,7 +108,9 @@ border-bottom: none;
                  </sizepolicy>
                 </property>
                 <property name="text">
-                 <string>TextLabel</string>
+                 <string>Select which ever options you need.
+
+Press 'Generate' when finished.</string>
                 </property>
                 <property name="alignment">
                  <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
@@ -208,375 +142,445 @@ border-bottom: none;
           </property>
           <layout class="QVBoxLayout" name="verticalLayout_6">
            <property name="spacing">
-            <number>3</number>
+            <number>6</number>
            </property>
            <property name="leftMargin">
-            <number>3</number>
+            <number>9</number>
            </property>
            <property name="topMargin">
-            <number>3</number>
+            <number>9</number>
            </property>
            <property name="rightMargin">
-            <number>3</number>
+            <number>9</number>
            </property>
            <property name="bottomMargin">
-            <number>3</number>
+            <number>9</number>
            </property>
            <item>
-            <layout class="QHBoxLayout" name="horizontalLayout_3">
+            <layout class="QVBoxLayout" name="verticalLayout_5">
              <item>
-              <widget class="QPushButton" name="pushButton_group">
-               <property name="minimumSize">
-                <size>
-                 <width>220</width>
-                 <height>30</height>
-                </size>
-               </property>
-               <property name="maximumSize">
-                <size>
-                 <width>220</width>
-                 <height>16777215</height>
-                </size>
-               </property>
-               <property name="toolTip">
-                <string>Primarily used to generate Quotes/Workorders from Workspace. Instead of combining all items into one list, it seperates them by their respective nest/assembly.</string>
-               </property>
-               <property name="styleSheet">
-                <string notr="true">QPushButton#pushButton_group{
-	color: #ffffff;
+              <layout class="QHBoxLayout" name="horizontalLayout_3">
+               <item>
+                <widget class="QPushButton" name="pushButton_group">
+                 <property name="enabled">
+                  <bool>false</bool>
+                 </property>
+                 <property name="sizePolicy">
+                  <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                   <horstretch>0</horstretch>
+                   <verstretch>0</verstretch>
+                  </sizepolicy>
+                 </property>
+                 <property name="minimumSize">
+                  <size>
+                   <width>150</width>
+                   <height>40</height>
+                  </size>
+                 </property>
+                 <property name="maximumSize">
+                  <size>
+                   <width>16777215</width>
+                   <height>16777215</height>
+                  </size>
+                 </property>
+                 <property name="toolTip">
+                  <string>Primarily used to generate Quotes/Workorders from Workspace. Instead of combining all items into one list, it seperates them by their respective nest/assembly.</string>
+                 </property>
+                 <property name="styleSheet">
+                  <string notr="true">QPushButton#pushButton_group{
     background-color: #3daee9;
-    border: 0.01em solid #3daee9;
-    border-radius: 8px;
+    border: 1px solid #3daee9;
+    border-radius: 5px;
 }
 QPushButton#pushButton_group:checked{
     background-color: #3daee9;
-    border: 0.01em solid #3daee9;
 }
 QPushButton#pushButton_group:hover{
     background-color: #48b6ed;
-    border-color: #48b6ed;
+    border-color: #3daee9;
 }
 QPushButton#pushButton_group:pressed{
     background-color: #2b92c5;
-    border-color: #2b92c5;
+    color: #171717;
 }
 
 QPushButton#pushButton_group:!checked {
     background-color: rgba(71, 71, 71, 130);
-    border: 0.01em solid rgba(76, 76, 76, 130);
-    border-radius: 8px;
+    border-color: rgba(71, 71, 71, 130);
     color: grey;
 }
 
 QPushButton:hover#pushButton_group:!checked {
     background-color: rgba(76, 76, 76, 130);
-    border: 0.01em solid rgba(71, 76, 88, 130);
+    border-color: #3daee9;
 }
 
 QPushButton:pressed#pushButton_group:!checked {
-    background-color: rgba(39, 39, 39, 130);
-    border: 0.01em solid rgba(47, 50, 57, 130);
+    background-color: #3daee9;
+    color: #171717;
 }</string>
-               </property>
-               <property name="text">
-                <string>Group Items by Nest/Assembly</string>
-               </property>
-               <property name="checkable">
-                <bool>true</bool>
-               </property>
-              </widget>
+                 </property>
+                 <property name="text">
+                  <string>Group Items by Nest</string>
+                 </property>
+                 <property name="checkable">
+                  <bool>true</bool>
+                 </property>
+                </widget>
+               </item>
+              </layout>
              </item>
-            </layout>
-           </item>
-           <item>
-            <layout class="QGridLayout" name="gridLayout">
-             <property name="leftMargin">
-              <number>6</number>
-             </property>
-             <property name="topMargin">
-              <number>6</number>
-             </property>
-             <property name="rightMargin">
-              <number>6</number>
-             </property>
-             <property name="bottomMargin">
-              <number>6</number>
-             </property>
-             <item row="1" column="1">
-              <widget class="QCheckBox" name="checkBox_workorder">
-               <property name="text">
-                <string>Open file when generated</string>
-               </property>
-              </widget>
-             </item>
-             <item row="1" column="0">
-              <widget class="QCheckBox" name="checkBox_quote">
-               <property name="text">
-                <string>Open file when generated</string>
-               </property>
-              </widget>
-             </item>
-             <item row="3" column="1">
-              <widget class="QPushButton" name="pushButton_update_inventory">
-               <property name="sizePolicy">
-                <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                 <horstretch>0</horstretch>
-                 <verstretch>0</verstretch>
-                </sizepolicy>
-               </property>
-               <property name="minimumSize">
-                <size>
-                 <width>220</width>
-                 <height>39</height>
-                </size>
-               </property>
-               <property name="toolTip">
-                <string>Will add/update Edit Laser Cut Inventory.</string>
-               </property>
-               <property name="autoFillBackground">
-                <bool>false</bool>
-               </property>
-               <property name="styleSheet">
-                <string notr="true">QPushButton#pushButton_update_inventory{
-	color: #ffffff;
+             <item>
+              <layout class="QVBoxLayout" name="verticalLayout_7">
+               <item>
+                <layout class="QHBoxLayout" name="horizontalLayout_8">
+                 <item>
+                  <widget class="QPushButton" name="pushButton_quote">
+                   <property name="sizePolicy">
+                    <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                     <horstretch>0</horstretch>
+                     <verstretch>0</verstretch>
+                    </sizepolicy>
+                   </property>
+                   <property name="minimumSize">
+                    <size>
+                     <width>150</width>
+                     <height>40</height>
+                    </size>
+                   </property>
+                   <property name="toolTip">
+                    <string>Will generate and save a quote to the Quote directory</string>
+                   </property>
+                   <property name="styleSheet">
+                    <string notr="true">QPushButton#pushButton_quote{
     background-color: #3daee9;
-    border: 0.01em solid #3daee9;
-    border-radius: 8px;
-}
-QPushButton#pushButton_update_inventory:checked{
-    background-color: #3daee9;
-    border: 0.01em solid #3daee9;
-}
-QPushButton#pushButton_update_inventory:hover{
-    background-color: #48b6ed;
-    border-color: #48b6ed;
-}
-QPushButton#pushButton_update_inventory:pressed{
-    background-color: #2b92c5;
-    border-color: #2b92c5;
-}
-
-QPushButton#pushButton_update_inventory:!checked {
-    background-color: rgba(71, 71, 71, 130);
-    border: 0.01em solid rgba(76, 76, 76, 130);
-    border-radius: 8px;
-    color: grey;
-}
-
-QPushButton:hover#pushButton_update_inventory:!checked {
-    background-color: rgba(76, 76, 76, 130);
-    border: 0.01em solid rgba(71, 76, 88, 130);
-}
-
-QPushButton:pressed#pushButton_update_inventory:!checked {
-    background-color: rgba(39, 39, 39, 130);
-    border: 0.01em solid rgba(47, 50, 57, 130);
-}</string>
-               </property>
-               <property name="text">
-                <string>Add/Update Parts to Inventory</string>
-               </property>
-               <property name="checkable">
-                <bool>true</bool>
-               </property>
-              </widget>
-             </item>
-             <item row="0" column="0">
-              <widget class="QPushButton" name="pushButton_quote">
-               <property name="sizePolicy">
-                <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                 <horstretch>0</horstretch>
-                 <verstretch>0</verstretch>
-                </sizepolicy>
-               </property>
-               <property name="minimumSize">
-                <size>
-                 <width>220</width>
-                 <height>40</height>
-                </size>
-               </property>
-               <property name="toolTip">
-                <string>Will generate and save a quote to the Quote directory</string>
-               </property>
-               <property name="styleSheet">
-                <string notr="true">QPushButton#pushButton_quote{
-	color: #ffffff;
-    background-color: #3daee9;
-    border: 0.01em solid #3daee9;
-    border-radius: 8px;
+    border: 1px solid #3daee9;
+    border-radius: 5px;
 }
 QPushButton#pushButton_quote:checked{
     background-color: #3daee9;
-    border: 0.01em solid #3daee9;
+    color: #171717;
 }
 QPushButton#pushButton_quote:hover{
     background-color: #48b6ed;
-    border-color: #48b6ed;
+    border-color: #3daee9;
 }
 QPushButton#pushButton_quote:pressed{
     background-color: #2b92c5;
-    border-color: #2b92c5;
+    color: #171717;
 }
 
 QPushButton#pushButton_quote:!checked {
     background-color: rgba(71, 71, 71, 130);
-    border: 0.01em solid rgba(76, 76, 76, 130);
-    border-radius: 8px;
+    border-color: rgba(71, 71, 71, 130);
     color: grey;
 }
 
 QPushButton:hover#pushButton_quote:!checked {
     background-color: rgba(76, 76, 76, 130);
-    border: 0.01em solid rgba(71, 76, 88, 130);
+    border-color: #3daee9;
 }
 
 QPushButton:pressed#pushButton_quote:!checked {
-    background-color: rgba(39, 39, 39, 130);
-    border: 0.01em solid rgba(47, 50, 57, 130);
+    background-color: #3daee9;
+    color: #171717;
 }</string>
-               </property>
-               <property name="text">
-                <string>Generate Quote</string>
-               </property>
-               <property name="checkable">
-                <bool>true</bool>
-               </property>
-               <property name="checked">
-                <bool>false</bool>
-               </property>
-              </widget>
-             </item>
-             <item row="0" column="1">
-              <widget class="QPushButton" name="pushButton_workorder">
-               <property name="sizePolicy">
-                <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                 <horstretch>0</horstretch>
-                 <verstretch>0</verstretch>
-                </sizepolicy>
-               </property>
-               <property name="minimumSize">
-                <size>
-                 <width>220</width>
-                 <height>40</height>
-                </size>
-               </property>
-               <property name="toolTip">
-                <string>Will generate and save a workorder to the Workorder directory</string>
-               </property>
-               <property name="styleSheet">
-                <string notr="true">QPushButton#pushButton_workorder{
-	color: #ffffff;
+                   </property>
+                   <property name="text">
+                    <string>Generate Quote</string>
+                   </property>
+                   <property name="checkable">
+                    <bool>true</bool>
+                   </property>
+                   <property name="checked">
+                    <bool>false</bool>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="QPushButton" name="pushButton_packingslip">
+                   <property name="sizePolicy">
+                    <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                     <horstretch>0</horstretch>
+                     <verstretch>0</verstretch>
+                    </sizepolicy>
+                   </property>
+                   <property name="minimumSize">
+                    <size>
+                     <width>150</width>
+                     <height>40</height>
+                    </size>
+                   </property>
+                   <property name="styleSheet">
+                    <string notr="true">QPushButton#pushButton_packingslip{
     background-color: #3daee9;
-    border: 0.01em solid #3daee9;
-    border-radius: 8px;
-}
-QPushButton#pushButton_workorder:checked{
-    background-color: #3daee9;
-    border: 0.01em solid #3daee9;
-}
-QPushButton#pushButton_workorder:hover{
-    background-color: #48b6ed;
-    border-color: #48b6ed;
-}
-QPushButton#pushButton_workorder:pressed{
-    background-color: #2b92c5;
-    border-color: #2b92c5;
-}
-
-QPushButton#pushButton_workorder:!checked {
-    background-color: rgba(71, 71, 71, 130);
-    border: 0.01em solid rgba(76, 76, 76, 130);
-    border-radius: 8px;
-    color: grey;
-}
-
-QPushButton:hover#pushButton_workorder:!checked {
-    background-color: rgba(76, 76, 76, 130);
-    border: 0.01em solid rgba(71, 76, 88, 130);
-}
-
-QPushButton:pressed#pushButton_workorder:!checked {
-    background-color: rgba(39, 39, 39, 130);
-    border: 0.01em solid rgba(47, 50, 57, 130);
-}</string>
-               </property>
-               <property name="text">
-                <string>Generate Workorder</string>
-               </property>
-               <property name="checkable">
-                <bool>true</bool>
-               </property>
-              </widget>
-             </item>
-             <item row="3" column="0">
-              <widget class="QPushButton" name="pushButton_packingslip">
-               <property name="minimumSize">
-                <size>
-                 <width>220</width>
-                 <height>40</height>
-                </size>
-               </property>
-               <property name="styleSheet">
-                <string notr="true">QPushButton#pushButton_packingslip{
-	color: #ffffff;
-    background-color: #3daee9;
-    border: 0.01em solid #3daee9;
-    border-radius: 8px;
+    border: 1px solid #3daee9;
+    border-radius: 5px;
 }
 QPushButton#pushButton_packingslip:checked{
     background-color: #3daee9;
-    border: 0.01em solid #3daee9;
+    color: #171717;
 }
 QPushButton#pushButton_packingslip:hover{
     background-color: #48b6ed;
-    border-color: #48b6ed;
+    border-color: #3daee9;
 }
 QPushButton#pushButton_packingslip:pressed{
     background-color: #2b92c5;
-    border-color: #2b92c5;
 }
 
 QPushButton#pushButton_packingslip:!checked {
     background-color: rgba(71, 71, 71, 130);
-    border: 0.01em solid rgba(76, 76, 76, 130);
-    border-radius: 8px;
+    border-color: rgba(71, 71, 71, 130);
     color: grey;
 }
 
 QPushButton:hover#pushButton_packingslip:!checked {
     background-color: rgba(76, 76, 76, 130);
-    border: 0.01em solid rgba(71, 76, 88, 130);
+    border-color: #3daee9;
 }
 
 QPushButton:pressed#pushButton_packingslip:!checked {
-    background-color: rgba(39, 39, 39, 130);
-    border: 0.01em solid rgba(47, 50, 57, 130);
+    background-color: #3daee9;
+    color: #171717;
 }</string>
-               </property>
-               <property name="text">
-                <string>Generate Packing Slip</string>
-               </property>
-               <property name="checkable">
-                <bool>true</bool>
-               </property>
-              </widget>
+                   </property>
+                   <property name="text">
+                    <string>Generate Packing Slip</string>
+                   </property>
+                   <property name="checkable">
+                    <bool>true</bool>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="QPushButton" name="pushButton_workorder">
+                   <property name="sizePolicy">
+                    <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                     <horstretch>0</horstretch>
+                     <verstretch>0</verstretch>
+                    </sizepolicy>
+                   </property>
+                   <property name="minimumSize">
+                    <size>
+                     <width>150</width>
+                     <height>40</height>
+                    </size>
+                   </property>
+                   <property name="toolTip">
+                    <string>Will generate and save a workorder to the Workorder directory</string>
+                   </property>
+                   <property name="styleSheet">
+                    <string notr="true">QPushButton#pushButton_workorder{
+    background-color: #3daee9;
+    border: 1px solid #3daee9;
+    border-radius: 5px;
+}
+QPushButton#pushButton_workorder:checked{
+    background-color: #3daee9;
+    color: #171717;
+}
+QPushButton#pushButton_workorder:hover{
+    background-color: #48b6ed;
+    border-color: #3daee9;
+}
+QPushButton#pushButton_workorder:pressed{
+    background-color: #2b92c5;
+}
+
+QPushButton#pushButton_workorder:!checked {
+    background-color: rgba(71, 71, 71, 130);
+    border-color: rgba(71, 71, 71, 130);
+    color: grey;
+}
+
+QPushButton:hover#pushButton_workorder:!checked {
+    background-color: rgba(76, 76, 76, 130);
+    border-color: #3daee9;
+}
+
+QPushButton:pressed#pushButton_workorder:!checked {
+    background-color: #3daee9;
+    color: #171717;
+}</string>
+                   </property>
+                   <property name="text">
+                    <string>Generate Workorder</string>
+                   </property>
+                   <property name="checkable">
+                    <bool>true</bool>
+                   </property>
+                  </widget>
+                 </item>
+                </layout>
+               </item>
+               <item>
+                <layout class="QHBoxLayout" name="horizontalLayout_7">
+                 <item>
+                  <widget class="QCheckBox" name="checkBox_quote">
+                   <property name="text">
+                    <string>Open file when generated</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="QCheckBox" name="checkBox_packing_slip">
+                   <property name="text">
+                    <string>Open file when generated</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="QCheckBox" name="checkBox_workorder">
+                   <property name="text">
+                    <string>Open file when generated</string>
+                   </property>
+                  </widget>
+                 </item>
+                </layout>
+               </item>
+              </layout>
              </item>
-             <item row="4" column="0">
-              <widget class="QCheckBox" name="checkBox_packing_slip">
-               <property name="text">
-                <string>Open file when generated</string>
+             <item>
+              <spacer name="verticalSpacer">
+               <property name="orientation">
+                <enum>Qt::Vertical</enum>
                </property>
-              </widget>
+               <property name="sizeType">
+                <enum>QSizePolicy::Fixed</enum>
+               </property>
+               <property name="sizeHint" stdset="0">
+                <size>
+                 <width>20</width>
+                 <height>10</height>
+                </size>
+               </property>
+              </spacer>
              </item>
-             <item row="4" column="1">
-              <widget class="QCheckBox" name="checkBox_remove_sheet_quantities">
-               <property name="text">
-                <string>Remove Sheet Quantities</string>
-               </property>
-               <property name="checked">
-                <bool>true</bool>
-               </property>
-              </widget>
+             <item>
+              <layout class="QHBoxLayout" name="horizontalLayout_2">
+               <item>
+                <widget class="QPushButton" name="pushButton_remove_sheet_quantity">
+                 <property name="sizePolicy">
+                  <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                   <horstretch>0</horstretch>
+                   <verstretch>0</verstretch>
+                  </sizepolicy>
+                 </property>
+                 <property name="minimumSize">
+                  <size>
+                   <width>150</width>
+                   <height>40</height>
+                  </size>
+                 </property>
+                 <property name="styleSheet">
+                  <string notr="true">QPushButton#pushButton_remove_sheet_quantity{
+    background-color: #3daee9;
+    border: 1px solid #3daee9;
+    border-radius: 5px;
+}
+QPushButton#pushButton_remove_sheet_quantity:checked{
+    background-color: #3daee9;
+    color: #171717;
+}
+QPushButton#pushButton_remove_sheet_quantity:hover{
+    background-color: #48b6ed;
+    border-color: #3daee9;
+}
+QPushButton#pushButton_remove_sheet_quantity:pressed{
+    background-color: #2b92c5;
+}
+
+QPushButton#pushButton_remove_sheet_quantity:!checked {
+    background-color: rgba(71, 71, 71, 130);
+    border-color: rgba(71, 71, 71, 130);
+    color: grey;
+}
+
+QPushButton:hover#pushButton_remove_sheet_quantity:!checked {
+    background-color: rgba(76, 76, 76, 130);
+    border-color: #3daee9;
+}
+
+QPushButton:pressed#pushButton_remove_sheet_quantity:!checked {
+    background-color: #3daee9;
+    color: #171717;
+}</string>
+                 </property>
+                 <property name="text">
+                  <string>Remove Sheet Quantities</string>
+                 </property>
+                 <property name="checkable">
+                  <bool>true</bool>
+                 </property>
+                 <property name="checked">
+                  <bool>false</bool>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QPushButton" name="pushButton_update_inventory">
+                 <property name="sizePolicy">
+                  <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                   <horstretch>0</horstretch>
+                   <verstretch>0</verstretch>
+                  </sizepolicy>
+                 </property>
+                 <property name="minimumSize">
+                  <size>
+                   <width>150</width>
+                   <height>40</height>
+                  </size>
+                 </property>
+                 <property name="toolTip">
+                  <string>Will add/update Edit Laser Cut Inventory.</string>
+                 </property>
+                 <property name="autoFillBackground">
+                  <bool>false</bool>
+                 </property>
+                 <property name="styleSheet">
+                  <string notr="true">QPushButton#pushButton_update_inventory{
+    background-color: #3daee9;
+    border: 1px solid #3daee9;
+    border-radius: 5px;
+}
+QPushButton#pushButton_update_inventory:checked{
+    background-color: #3daee9;
+    color: #171717;
+}
+QPushButton#pushButton_update_inventory:hover{
+    background-color: #48b6ed;
+    border-color: #3daee9;
+}
+QPushButton#pushButton_update_inventory:pressed{
+    background-color: #2b92c5;
+}
+
+QPushButton#pushButton_update_inventory:!checked {
+    background-color: rgba(71, 71, 71, 130);
+    border-color: rgba(71, 71, 71, 130);
+    color: grey;
+}
+
+QPushButton:hover#pushButton_update_inventory:!checked {
+    background-color: rgba(76, 76, 76, 130);
+    border-color: #3daee9;
+}
+
+QPushButton:pressed#pushButton_update_inventory:!checked {
+    background-color: #3daee9;
+    color: #171717;
+}</string>
+                 </property>
+                 <property name="text">
+                  <string>Add Parts to Inventory</string>
+                 </property>
+                 <property name="checkable">
+                  <bool>true</bool>
+                 </property>
+                </widget>
+               </item>
+              </layout>
              </item>
             </layout>
            </item>
@@ -584,17 +588,47 @@ QPushButton:pressed#pushButton_packingslip:!checked {
          </widget>
         </item>
         <item>
-         <layout class="QHBoxLayout" name="horizontalLayout_2">
-          <property name="spacing">
-           <number>6</number>
-          </property>
-          <property name="bottomMargin">
-           <number>0</number>
-          </property>
+         <layout class="QHBoxLayout" name="buttonsLayout">
+          <item>
+           <spacer name="horizontalSpacer">
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>40</width>
+              <height>20</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+          <item>
+           <widget class="QPushButton" name="pushButton_generate">
+            <property name="maximumSize">
+             <size>
+              <width>16777215</width>
+              <height>16777215</height>
+             </size>
+            </property>
+            <property name="text">
+             <string>Generate</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="pushButton_cancel">
+            <property name="maximumSize">
+             <size>
+              <width>16777215</width>
+              <height>16777215</height>
+             </size>
+            </property>
+            <property name="text">
+             <string>Cancel</string>
+            </property>
+           </widget>
+          </item>
          </layout>
-        </item>
-        <item>
-         <layout class="QHBoxLayout" name="buttonsLayout"/>
         </item>
        </layout>
       </item>

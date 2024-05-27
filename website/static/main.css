@@ -218,7 +218,7 @@ body {
 
 thead {
 	background-color: rgb(32, 32, 32);
-	color: white;
+	color: #EAE9FC;
 	font-size: 1.2rem;
 	text-transform: uppercase;
 	letter-spacing: 2%;
@@ -248,7 +248,7 @@ thead th {
 }
 
 .low-priority {
-	background-color: white;
+	background-color: #EAE9FC;
 	font-weight: bold;
 }
 

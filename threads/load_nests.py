@@ -9,20 +9,31 @@ import traceback
 from pathlib import Path
 
 import fitz  # PyMuPDF
-from natsort import natsorted
 from PIL import Image
 from PyQt6.QtCore import QThread, pyqtSignal
 
-from utils.json_file import JsonFile
+from utils.components_inventory.components_inventory import ComponentsInventory
+from utils.laser_cut_inventory.laser_cut_inventory import LaserCutInventory
+from utils.laser_cut_inventory.laser_cut_part import LaserCutPart
+from utils.quote.nest import Nest
+from utils.quote.quote import Quote
+from utils.sheet_settings.sheet_settings import SheetSettings
 
 
 class LoadNests(QThread):
     signal = pyqtSignal(object)
 
-    def __init__(self, parent, nests: list[str]) -> None:
+    def __init__(self, parent, nests: list[str], components_inventory: ComponentsInventory, laser_cut_inventory: LaserCutInventory, sheet_settings: SheetSettings) -> None:
         QThread.__init__(self, parent)
         self.nests = nests
         self.data = {}
+
+        self.components_inventory = components_inventory
+        self.laser_cut_inventory = laser_cut_inventory
+        self.paint_inventory = self.laser_cut_inventory.paint_inventory
+        self.sheet_settings = sheet_settings
+
+        self.quote = Quote("Quote", None, self.components_inventory, self.laser_cut_inventory, self.sheet_settings)
 
         self.program_directory = os.path.dirname(os.path.realpath(sys.argv[0]))
 
@@ -51,13 +62,13 @@ class LoadNests(QThread):
 
     def extract_images_from_pdf(self, pdf_paths: list[str]) -> None:
         image_count: int = 0
-        for i, pdf_path in enumerate(pdf_paths, start=1):
+        for _, pdf_path in enumerate(pdf_paths, start=1):
             pdf_file = fitz.open(pdf_path)
             for page_index in range(len(pdf_file)):
                 page = pdf_file[page_index]
-                if not (image_list := page.get_images()):
+                if not (_ := page.get_images()):
                     continue
-                for image_index, img in enumerate(page.get_images(), start=1):
+                for _, img in enumerate(page.get_images(), start=1):
                     xref = img[0]
                     base_image = pdf_file.extract_image(xref)
                     image_bytes = base_image["image"]
@@ -87,7 +98,7 @@ class LoadNests(QThread):
                     image_count += 1
 
     def convert_pdf_to_text(self, pdf_path: str) -> str:
-        with open(f"{self.program_directory}/output.txt", "w") as f:
+        with open(f"{self.program_directory}/output.txt", "w", encoding="utf-8") as f:
             f.write("")
 
         pdf_file = fitz.open(pdf_path)
@@ -96,13 +107,13 @@ class LoadNests(QThread):
             if pg in pages:
                 page = pdf_file[pg]
                 page_lines = page.get_text("text")
-                with open(f"{self.program_directory}/output.txt", "a") as f:
+                with open(f"{self.program_directory}/output.txt", "a", encoding="utf-8") as f:
                     f.write(page_lines)
 
-        with open(f"{self.program_directory}/output.txt", "r") as f:
+        with open(f"{self.program_directory}/output.txt", "r", encoding="utf-8") as f:
             all_text = f.read().replace(" \n", " ")
 
-        with open(f"{self.program_directory}/output.txt", "w") as f:
+        with open(f"{self.program_directory}/output.txt", "w", encoding="utf-8") as f:
             f.write(all_text)
         return all_text
 
@@ -117,14 +128,10 @@ class LoadNests(QThread):
         return [items[0]] if len(items) == 1 else items
 
     def material_id_to_name(self, material: str) -> str:
-        with open(f"{self.program_directory}/material_id.json", "r") as material_id_file:
-            data = json.load(material_id_file)
-        return data[material]["name"]
+        return self.sheet_settings.material_id["cutting_methods"][material]["name"]
 
     def material_id_to_number(self, number_id: str) -> str:
-        with open(f"{self.program_directory}/material_id.json", "r") as material_id_file:
-            data = json.load(material_id_file)
-        return data["thickness"][number_id]
+        return self.sheet_settings.material_id["thickness_ids"][number_id]
 
     def run(self) -> None:
         try:
@@ -171,62 +178,75 @@ class LoadNests(QThread):
                 if int(sheet_gauge) >= 50:  # 1/2 inch
                     sheet_material = "Laser Grade Plate"
                 sheet_gauge = self.material_id_to_number(sheet_gauge)
-                self.data[f"_{nest}"] = {
-                    "quantity_multiplier": quantity_multiplier,  # Sheet count
-                    "gauge": sheet_gauge,
-                    "material": sheet_material,
-                    "sheet_dim": sheet_dimension,
-                    "scrap_percentage": scrap_percentage,
-                    "machining_time": total_sheet_cut_time * quantity_multiplier,  # seconds
-                    "single_sheet_machining_time": total_sheet_cut_time,  # seconds
-                    "image_index": f"nest-{image_index}",
-                }
-                self.data[nest_name] = {}
-                for i, part_name in enumerate(parts):
-                    part_name = part_name.split("\\")[-1].replace("\n", "").replace(".GEO", "").replace(".geo", "").strip()
-                    self.data[nest_name][part_name] = {
-                        "quantity": int(quantities[i]),
-                        "machine_time": float(machining_times[i]),
-                        "weight": float(weights[i]),
-                        "part_number": part_numbers[i],
-                        "image_index": f"part-{image_index}",
-                        "surface_area": float(surface_areas[i]),
-                        "cutting_length": float(cutting_lengths[i]),
-                        "file_name": nest,
-                        "piercing_time": float(piercing_times[i]),
-                        "piercing_points": int(piercing_points[i]),
+                nest_object = Nest(
+                    nest_name,
+                    {
+                        "sheet_count": quantity_multiplier,
                         "gauge": sheet_gauge,
                         "material": sheet_material,
-                        "recut": False,
-                        "shelf_number": "",
-                        "sheet_dim": sheet_dimension,
-                        "part_dim": part_dimensions[i],
-                        "geofile_name": geofile_names[i],
-                    }
+                        "scrap_percentage": scrap_percentage,
+                        "sheet_cut_time": total_sheet_cut_time,  # seconds
+                        "image_path": f"nest-{image_index}",
+                    },
+                    self.sheet_settings,
+                    self.laser_cut_inventory,
+                )
+                nest_object.sheet.length = float(sheet_dimension.strip().replace(" x ", "x").split("x")[0])
+                nest_object.sheet.width = float(sheet_dimension.strip().replace(" x ", "x").split("x")[1])
+                self.quote.add_nest(nest_object)
+                # self.data[nest_name] = {}
+                for i, part_name in enumerate(parts):
+                    part_name = part_name.split("\\")[-1].replace("\n", "").replace(".GEO", "").replace(".geo", "").strip()
+                    laser_cut_part = LaserCutPart(
+                        part_name,
+                        {
+                            "quantity": int(quantities[i]),
+                            "quantity_in_nest": int(quantities[i]),
+                            "machine_time": float(machining_times[i]),
+                            "weight": float(weights[i]),
+                            "part_number": part_numbers[i],
+                            "image_index": f"part-{image_index}",
+                            "surface_area": float(surface_areas[i]),
+                            "cutting_length": float(cutting_lengths[i]),
+                            "file_name": nest,
+                            "piercing_time": float(piercing_times[i]),
+                            "piercing_points": int(piercing_points[i]),
+                            "gauge": sheet_gauge,
+                            "material": sheet_material,
+                            "sheet_dim": sheet_dimension,
+                            "part_dim": part_dimensions[i],
+                            "geofile_name": geofile_names[i],
+                        },
+                        self.laser_cut_inventory,
+                    )
+                    laser_cut_part.nest = nest_object
+                    nest_object.add_laser_cut_part(laser_cut_part)
                     image_index += 1
                 if os.path.isfile(f"./images/nest-{image_index}.jpeg"):
-                    self.data[f"_{nest}"]["image_index"] = f"nest-{image_index}"
+                    nest_object.image_path = f"nest-{image_index}"
+                    # self.data[f"_{nest}"]["image_index"] = f"nest-{image_index}"
                     image_index += 1
             # os.remove(f"{self.program_directory}/output.txt")
-            for nest_name in list(self.data.keys()):
-                if nest_name[0] == "_":
-                    try:
-                        image_name = nest_name.split("/")[-1].replace(".pdf", "")
-                        image_path: str = f"images/{self.data[nest_name]['image_index']}.jpeg"
-                        new_image_path = f"images/{image_name}.jpeg"
-                        self.data[nest_name]["image_index"] = image_name
-                        shutil.move(image_path, new_image_path)
-                    except FileNotFoundError:  # Some pdfs may not have the image
-                        self.data[nest_name]["image_index"] = "404"
-                    continue
-                for item in list(self.data[nest_name].keys()):
-                    image_path: str = f"images/{self.data[nest_name][item]['image_index']}.jpeg"
-                    new_image_path = f"images/{item}.jpeg"
-                    self.data[nest_name][item]["image_index"] = item
+            for nest in self.quote.nests:
+                try:
+                    image_name = nest.name.split("/")[-1].replace(".pdf", "")
+                    image_path: str = f"images/{nest.image_path}.jpeg"
+                    new_image_path = f"images/{image_name}.jpeg"
+                    nest.image_path = new_image_path
                     shutil.move(image_path, new_image_path)
-            sorted_keys = natsorted(self.data.keys())
-            sorted_dict = {key: self.data[key] for key in sorted_keys}
-            self.signal.emit(sorted_dict)
+                except FileNotFoundError:
+                    nest.image_path = "images/404.jpeg"
+                for laser_cut_part in nest.laser_cut_parts:
+                    image_path: str = f"images/{laser_cut_part.image_index}.jpeg"
+                    new_image_path = f"images/{laser_cut_part.name}.jpeg"
+                    laser_cut_part.image_index = new_image_path
+                    shutil.move(image_path, new_image_path)
+
+            self.quote.sort_nests()
+            self.quote.sort_laser_cut_parts()
+            # sorted_keys = natsorted(self.data.keys())
+            # sorted_dict = {key: self.data[key] for key in sorted_keys}
+            self.signal.emit(self.quote)
         except Exception as e:
             print(e)
             try:

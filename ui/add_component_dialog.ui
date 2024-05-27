@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>337</width>
-    <height>239</height>
+    <width>442</width>
+    <height>235</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -38,16 +38,9 @@
       <bool>false</bool>
      </property>
      <property name="styleSheet">
-      <string notr="true">QWidget#widget{
-	border-top-left-radius:10px;
-	border-bottom-left-radius:10px;
-	border-top-right-radius:10px;
-	border-bottom-right-radius:10px;
-	border: 1px solid  #3daee9;
-	background-color: #19232D;
-}</string>
+      <string notr="true"/>
      </property>
-     <layout class="QVBoxLayout" name="verticalLayout_3" stretch="0,0">
+     <layout class="QVBoxLayout" name="verticalLayout_3" stretch="0">
       <property name="leftMargin">
        <number>0</number>
       </property>
@@ -60,45 +53,6 @@
       <property name="bottomMargin">
        <number>0</number>
       </property>
-      <item>
-       <widget class="QLabel" name="lblTitle">
-        <property name="minimumSize">
-         <size>
-          <width>0</width>
-          <height>30</height>
-         </size>
-        </property>
-        <property name="maximumSize">
-         <size>
-          <width>16777215</width>
-          <height>16777215</height>
-         </size>
-        </property>
-        <property name="font">
-         <font>
-          <pointsize>12</pointsize>
-         </font>
-        </property>
-        <property name="styleSheet">
-         <string notr="true">border-top-left-radius:10px;
-border-top-right-radius:10px;
-border: 1px solid  #3daee9;
-border-bottom: none;</string>
-        </property>
-        <property name="frameShape">
-         <enum>QFrame::Box</enum>
-        </property>
-        <property name="frameShadow">
-         <enum>QFrame::Sunken</enum>
-        </property>
-        <property name="text">
-         <string>TextLabel</string>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignHCenter|Qt::AlignTop</set>
-        </property>
-       </widget>
-      </item>
       <item>
        <layout class="QVBoxLayout" name="verticalLayout">
         <property name="leftMargin">
@@ -114,90 +68,27 @@ border-bottom: none;</string>
          <number>9</number>
         </property>
         <item>
-         <layout class="QHBoxLayout" name="horizontalLayout_4" stretch="0,0">
-          <item>
-           <layout class="QVBoxLayout" name="verticalLayout_2">
-            <property name="spacing">
-             <number>0</number>
-            </property>
-            <item>
-             <layout class="QVBoxLayout" name="iconHolder">
-              <property name="spacing">
-               <number>0</number>
-              </property>
-             </layout>
-            </item>
-            <item>
-             <spacer name="verticalSpacer">
-              <property name="orientation">
-               <enum>Qt::Vertical</enum>
-              </property>
-              <property name="sizeHint" stdset="0">
-               <size>
-                <width>20</width>
-                <height>40</height>
-               </size>
-              </property>
-             </spacer>
-            </item>
-           </layout>
-          </item>
-          <item>
-           <widget class="QScrollArea" name="scrollArea">
-            <property name="widgetResizable">
-             <bool>true</bool>
-            </property>
-            <widget class="QWidget" name="scrollAreaWidgetContents">
-             <property name="geometry">
-              <rect>
-               <x>0</x>
-               <y>0</y>
-               <width>287</width>
-               <height>69</height>
-              </rect>
-             </property>
-             <layout class="QVBoxLayout" name="verticalLayout_4">
-              <property name="spacing">
-               <number>0</number>
-              </property>
-              <property name="leftMargin">
-               <number>0</number>
-              </property>
-              <property name="topMargin">
-               <number>0</number>
-              </property>
-              <property name="rightMargin">
-               <number>0</number>
-              </property>
-              <property name="bottomMargin">
-               <number>0</number>
-              </property>
-              <item>
-               <widget class="QLabel" name="lblMessage">
-                <property name="sizePolicy">
-                 <sizepolicy hsizetype="Preferred" vsizetype="Minimum">
-                  <horstretch>0</horstretch>
-                  <verstretch>0</verstretch>
-                 </sizepolicy>
-                </property>
-                <property name="text">
-                 <string>TextLabel</string>
-                </property>
-                <property name="alignment">
-                 <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
-                </property>
-               </widget>
-              </item>
-             </layout>
-            </widget>
-           </widget>
-          </item>
-         </layout>
+         <widget class="QLabel" name="lblMessage">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Preferred" vsizetype="Minimum">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="text">
+           <string>Adding a new item to Quote.
+
+Press 'Add' when finished.</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+          </property>
+         </widget>
         </item>
         <item>
-         <layout class="QGridLayout" name="gridLayout">
+         <layout class="QGridLayout" name="gridLayout" columnstretch="0,0,0,0">
           <item row="3" column="3">
-           <layout class="QHBoxLayout" name="horizontalLayout_3" stretch="0,0,0,0">
+           <layout class="QHBoxLayout" name="horizontalLayout_3" stretch="0,0,0">
             <property name="spacing">
              <number>0</number>
             </property>
@@ -245,22 +136,6 @@ border-bottom: none;</string>
              </widget>
             </item>
             <item>
-             <spacer name="horizontalSpacer">
-              <property name="orientation">
-               <enum>Qt::Horizontal</enum>
-              </property>
-              <property name="sizeType">
-               <enum>QSizePolicy::Fixed</enum>
-              </property>
-              <property name="sizeHint" stdset="0">
-               <size>
-                <width>6</width>
-                <height>20</height>
-               </size>
-              </property>
-             </spacer>
-            </item>
-            <item>
              <widget class="QComboBox" name="comboBox_exchange_price">
               <property name="sizePolicy">
                <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
@@ -268,9 +143,15 @@ border-bottom: none;</string>
                 <verstretch>0</verstretch>
                </sizepolicy>
               </property>
+              <property name="minimumSize">
+               <size>
+                <width>100</width>
+                <height>0</height>
+               </size>
+              </property>
               <property name="maximumSize">
                <size>
-                <width>50</width>
+                <width>16777215</width>
                 <height>16777215</height>
                </size>
               </property>
@@ -299,12 +180,18 @@ border-bottom: none;</string>
             <property name="alignment">
              <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
             </property>
+            <property name="buddy">
+             <cstring>doubleSpinBox_price</cstring>
+            </property>
            </widget>
           </item>
           <item row="2" column="0">
            <widget class="QLabel" name="label_7">
             <property name="text">
              <string>Quantity:</string>
+            </property>
+            <property name="buddy">
+             <cstring>spinBox_current_quantity</cstring>
             </property>
            </widget>
           </item>
@@ -315,6 +202,9 @@ border-bottom: none;</string>
             </property>
             <property name="alignment">
              <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+            </property>
+            <property name="buddy">
+             <cstring>lineEdit_name</cstring>
             </property>
            </widget>
           </item>
@@ -351,6 +241,9 @@ border-bottom: none;</string>
             <property name="text">
              <string>Part Number:</string>
             </property>
+            <property name="buddy">
+             <cstring>comboBox_part_number</cstring>
+            </property>
            </widget>
           </item>
           <item row="1" column="3">
@@ -363,7 +256,47 @@ border-bottom: none;</string>
          </layout>
         </item>
         <item>
-         <layout class="QHBoxLayout" name="buttonsLayout"/>
+         <layout class="QHBoxLayout" name="buttonsLayout">
+          <item>
+           <spacer name="horizontalSpacer_2">
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>40</width>
+              <height>20</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+          <item>
+           <widget class="QPushButton" name="pushButton_add">
+            <property name="maximumSize">
+             <size>
+              <width>16777215</width>
+              <height>16777215</height>
+             </size>
+            </property>
+            <property name="text">
+             <string>Add</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="pushButton_cancel">
+            <property name="maximumSize">
+             <size>
+              <width>16777215</width>
+              <height>16777215</height>
+             </size>
+            </property>
+            <property name="text">
+             <string>Cancel</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
         </item>
        </layout>
       </item>
@@ -372,6 +305,14 @@ border-bottom: none;</string>
    </item>
   </layout>
  </widget>
+ <tabstops>
+  <tabstop>lineEdit_name</tabstop>
+  <tabstop>pushButton_autofill</tabstop>
+  <tabstop>comboBox_part_number</tabstop>
+  <tabstop>spinBox_current_quantity</tabstop>
+  <tabstop>doubleSpinBox_price</tabstop>
+  <tabstop>comboBox_exchange_price</tabstop>
+ </tabstops>
  <resources/>
  <connections/>
 </ui>

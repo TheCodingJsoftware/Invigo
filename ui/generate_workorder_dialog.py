@@ -1,53 +1,27 @@
 import contextlib
-import os.path
 from functools import partial
 
 from PyQt6 import uic
-from PyQt6.QtCore import QFile, Qt, QTextStream
+from PyQt6.QtCore import Qt
 from PyQt6.QtGui import QIcon, QStandardItem, QStandardItemModel
-from PyQt6.QtSvgWidgets import QSvgWidget
-from PyQt6.QtWidgets import (
-    QDialog,
-    QHBoxLayout,
-    QLabel,
-    QPushButton,
-    QRadioButton,
-    QSpinBox,
-    QTreeView,
-    QTreeWidget,
-    QWidget,
-)
+from PyQt6.QtWidgets import QDialog, QHBoxLayout, QLabel, QSpinBox, QTreeView, QWidget
 
-from ui.custom_widgets import MultiToolBox, set_default_dialog_button_stylesheet
-from ui.theme import set_theme
-from utils.dialog_buttons import DialogButtons
-from utils.dialog_icons import Icons
-from utils.json_file import JsonFile
+from ui.custom_widgets import MultiToolBox
 from utils.workspace.assembly import Assembly
 from utils.workspace.workspace import Workspace
-
-admin_workspace = Workspace("admin_workspace")
 
 
 class GenerateWorkorderDialog(QDialog):
     def __init__(
         self,
-        parent=None,
-        icon_name: str = Icons.question,
-        button_names: str = DialogButtons.generate_cancel,
-        title: str = __name__,
-        message: str = "",
-        job_names: dict[str, int] = {},
+        admin_workspace: Workspace,
+        job_names: dict[str, int],
+        parent,
     ) -> None:
         super(GenerateWorkorderDialog, self).__init__(parent)
         uic.loadUi("ui/generate_workorder_dialog.ui", self)
-        admin_workspace.load_data()
+        self.admin_workspace = admin_workspace
 
-        self.icon_name = icon_name
-        self.button_names = button_names
-        self.title = title
-        self.message = message
-        self.inputText: str = ""
         self.selected_assemblies: list[Assembly] = []
         self.models: list[QStandardItemModel] = []
         self.workorder: dict[Assembly, int] = {}
@@ -55,37 +29,28 @@ class GenerateWorkorderDialog(QDialog):
         self.data: dict[int, Assembly] = {}
         self.assembly_count: int = 0
 
-        self.setWindowFlags(Qt.WindowType.Window | Qt.WindowType.FramelessWindowHint)
-        self.setAttribute(Qt.WidgetAttribute.WA_TranslucentBackground, True)
+        self.setWindowTitle("Workorder Generator")
         self.setWindowIcon(QIcon("icons/icon.png"))
+
         self.group_toolbox = MultiToolBox(self)
         self.group_toolboxes = {}
         self.treeLayout.addWidget(self.group_toolbox)
 
-        self.lblTitle.setText(self.title)
-        self.lblMessage.setText(self.message)
+        self.pushButton_generate.clicked.connect(self.accept)
+        self.pushButton_cancel.clicked.connect(self.reject)
 
-        self.load_dialog_buttons()
-
-        svg_icon = self.get_icon(icon_name)
-        svg_icon.setFixedSize(62, 50)
-        self.iconHolder.addWidget(svg_icon)
-
-        # self.resize(320, 250)
-
-        self.load_theme()
         self.verticalLayout_workorders.setAlignment(Qt.AlignmentFlag.AlignTop)
         self.load_layout()
 
     def load_layout(self) -> None:
-        grouped_data = admin_workspace._get_all_groups()
+        grouped_data = self.admin_workspace._get_all_groups()
         for group in grouped_data:
             treeview = self.create_treeview()
-            self.group_toolbox.addItem(treeview, group, base_color=admin_workspace.get_group_color(group))
+            self.group_toolbox.addItem(treeview, group, base_color=self.admin_workspace.get_group_color(group))
             self.group_toolboxes[group] = treeview
         self.group_toolbox.close_all()
 
-        grouped_data = admin_workspace._get_grouped_data()
+        grouped_data = self.admin_workspace._get_grouped_data()
         for group in grouped_data:
             for assembly in grouped_data[group]:
                 self.load_treeview(
@@ -214,41 +179,6 @@ class GenerateWorkorderDialog(QDialog):
             h_layout.addWidget(quantity_spin_box)
 
             self.verticalLayout_workorders.addWidget(widget)
-
-    def load_theme(self) -> None:
-        set_theme(self, theme="dark")
-
-    def get_icon(self, path_to_icon: str) -> QSvgWidget:
-        return QSvgWidget(f"icons/{path_to_icon}")
-
-    def button_press(self, button) -> None:
-        self.response = button.text()
-        self.accept()
-
-    def load_dialog_buttons(self) -> None:
-        button_names = self.button_names.split(", ")
-        for index, name in enumerate(button_names):
-            if name == DialogButtons.generate:
-                button = QPushButton(f"  {name}")
-                button.setIcon(QIcon("icons/dialog_ok.svg"))
-            elif os.path.isfile(f"icons/dialog_{name.lower()}.svg"):
-                button = QPushButton(f"  {name}")
-                button.setIcon(QIcon(f"icons/dialog_{name.lower()}.svg"))
-            else:
-                button = QPushButton(name)
-            if index == 0:
-                button.setObjectName("default_dialog_button")
-                set_default_dialog_button_stylesheet(button)
-            button.setFixedWidth(100)
-            if name == DialogButtons.copy:
-                button.setToolTip("Will copy this window to your clipboard.")
-            elif name == DialogButtons.save and self.icon_name == Icons.critical:
-                button.setToolTip("Will save this error log to the logs directory.")
-            button.clicked.connect(partial(self.button_press, button))
-            self.buttonsLayout.addWidget(button)
-
-    def get_response(self) -> str:
-        return self.response.replace(" ", "")
 
     def get_selected_item(self) -> tuple[bool, bool, bool, bool]:
         return (

@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inventory</title>
+    <style>
+        * {
+            -webkit-box-sizing: border-box;
+            -moz-box-sizing: border-box;
+            box-sizing: border-box;
+        }
+
+
+        html {
+            scroll-behavior: smooth;
+            justify-content: center;
+            position: center;
+            text-align: center;
+            align-items: center;
+            margin: auto;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        details {
+            overflow-y: auto;
+            overflow-x: hidden;
+            text-align: center;
+            color: #fff;
+            font-size: 200%;
+            overflow: none;
+            background-color: #222222;
+            padding: 6px;
+            border-radius: 25px;
+            border: 1px solid #76797c;
+            transition: 0.3s ease-in-out;
+        }
+
+        details:hover {
+            border: 1px solid #3daee9;
+            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.3), 0 6px 20px 0 rgba(0, 0, 0, 0.3);
+        }
+
+        details span {
+            display: inline-block;
+            margin-top: 1rem;
+        }
+
+        details summary::-webkit-details-marker {
+            display: none;
+        }
+
+        details[open]>summary:before {
+            transform: rotate(90deg);
+        }
+
+        details[open] summary {
+            opacity: 0.8;
+            animation-name: fadeOut;
+            animation-duration: 5000ms;
+        }
+
+        details>summary {
+            padding: 2px 6px;
+            font-weight: 700;
+            border: none;
+            cursor: pointer;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        #group {
+            overflow-y: auto;
+            overflow-x: hidden;
+            background: rgb(32, 32, 32);
+            margin: 1%;
+            width: auto;
+        }
+
+        #group_name {
+            font-size: 32px;
+        }
+
+        .group_items {
+            overflow-y: auto;
+            text-align: center;
+            align-items: center;
+            padding: 10px;
+            width: 50%;
+            margin: auto;
+        }
+
+        body {
+            justify-content: center;
+            position: center;
+            align-items: center;
+            margin: auto;
+            height: 100%;
+            background-color: #1c1c1c;
+            font-family: Arial, Helvetica, sans-serif;
+            text-decoration: none;
+            color: rgb(240, 244, 245);
+        }
+
+        button {
+            font-size: 16px;
+            color: gray;
+            border: 1px solid transparent;
+            padding: 10px;
+            margin-top: 10px;
+            background-color: #1a1a1a;
+            border-radius: 10px;
+            transition: background-color 0.3s ease-in-out, color 0.3s ease-in-out, border-color 0.3s ease-in-out, border 0.3s ease-in-out, transform 0.3s ease-in-out;
+            transform: scale(1);
+        }
+
+        button:hover {
+            color: #EAE9FC;
+            border: 1px solid #3daee9;
+            background-color: #3daee9;
+            cursor: pointer;
+            transform: scale(1.05);
+        }
+    </style>
+</head>
+
+<body>
+    {% for inventory, category_data in data.items() %}
+    <details id="group" open>
+        <summary id="group_name">
+            {{ inventory }}
+        </summary>
+        <div class="group_items">
+            {% for category_name, category_url in category_data.items() %}
+            <a href="{{ category_url }}" style="text-decoration: none;">
+                <button>{{ category_name }}</button>
+            </a>
+            {% endfor %}
+        </div>
+    </details>
+    {% endfor %}
+</body>
+
+<script>
+    class Accordion {
+        constructor(el) {
+            this.el = el;
+            this.summary = el.querySelector('summary');
+            this.content = el.querySelector('.group_items');
+
+            this.animation = null;
+            this.isClosing = false;
+            this.isExpanding = false;
+            this.summary.addEventListener('click', (e) => this.onClick(e));
+        }
+
+        onClick(e) {
+            e.preventDefault();
+            this.el.style.overflow = 'hidden';
+            if (this.isClosing || !this.el.open) {
+                this.open();
+            } else if (this.isExpanding || this.el.open) {
+                this.shrink();
+            }
+        }
+
+        shrink() {
+            this.isClosing = true;
+
+            const startHeight = `${this.el.offsetHeight}px`;
+            const endHeight = `${this.summary.offsetHeight+15}px`;
+
+            if (this.animation) {
+                this.animation.cancel();
+            }
+
+            this.animation = this.el.animate({
+                height: [startHeight, endHeight]
+            }, {
+                duration: 400,
+                easing: 'ease-out'
+            });
+
+            this.animation.onfinish = () => this.onAnimationFinish(false);
+            this.animation.oncancel = () => this.isClosing = false;
+        }
+
+        open() {
+            this.el.style.height = `${this.el.offsetHeight+10}px`;
+            this.el.open = true;
+            window.requestAnimationFrame(() => this.expand());
+        }
+
+        expand() {
+            this.isExpanding = true;
+            const startHeight = `${this.el.offsetHeight}px`;
+            const endHeight = `${this.summary.offsetHeight + this.content.offsetHeight+10}px`;
+
+            if (this.animation) {
+                this.animation.cancel();
+            }
+
+            this.animation = this.el.animate({
+                height: [startHeight, endHeight]
+            }, {
+                duration: 400,
+                easing: 'ease-out'
+            });
+            this.animation.onfinish = () => this.onAnimationFinish(true);
+            this.animation.oncancel = () => this.isExpanding = false;
+        }
+
+        onAnimationFinish(open) {
+            this.el.open = open;
+            this.animation = null;
+            this.isClosing = false;
+            this.isExpanding = false;
+            this.el.style.height = this.el.style.overflow = '';
+        }
+    }
+
+    document.querySelectorAll('details').forEach((el) => {
+        new Accordion(el);
+    });
+</script>
+</html>

@@ -1,33 +1,42 @@
 <!DOCTYPE html>
 <html>
-    <meta name="viewport" content ="width=device-width,initial-scale=1,user-scalable=yes" />
+<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=yes" />
+
 <head>
     <style>
-        .content {
-            display: inline-block;
-            margin: 130px 10px;
+        html {
+            align-items: center;
             text-align: center;
             background-color: #222222;
         }
+
+        .content {
+            display: block;
+            margin: 150px 20px;
+        }
+
         button {
-            color: #ffffff;
+            font-size: 16px;
+            color: gray;
+            padding: 10px;
+            margin-top: 10px;
+            border: 1px solid transparent;
+            background-color: #1a1a1a;
+            border-radius: 10px;
+            transition: background-color 0.3s ease-in-out, color 0.3s ease-in-out, border-color 0.3s ease-in-out, border 0.3s ease-in-out, transform 0.3s ease-in-out;
+            transform: scale(1);
+        }
+
+        button:hover {
+            color: #EAE9FC;
+            border: 1px solid #3daee9;
             background-color: #3daee9;
-            border: none;
-            border-radius: 8px;
-            padding: 8px 16px;
-            font-weight: bold;
-            padding: 5% 10%;
-            font-size: 20px;
+            cursor: pointer;
+            transform: scale(1.05);
         }
 
-        button:focus {
-            background-color: #48b6ed;
-            border-color: #48b6ed;
-        }
-
-        button:after {
-            background-color: #2b92c5;
-            border-color: #2b92c5;
+        button:disabled {
+            background-color: rgb(44, 44, 44);
             color: rgb(132, 132, 132);
         }
 
@@ -38,24 +47,28 @@
             font-size: 26px;
             margin-bottom: 5px;
         }
+
         h1 {
             font-family: Arial, Helvetica, sans-serif;
-            color: rgb(210, 210, 210);
+            color: #EAE9FC;
             margin-bottom: 5px;
-            font-size: 28px;
+            font-size: 26px;
         }
-        label{
+
+        label {
             font-size: 26px;
             font-family: Arial, Helvetica, sans-serif;
             color: rgb(210, 210, 210);
             margin-bottom: 5px;
         }
-        input{
-            margin:10px;
+
+        input {
+            margin: 10px;
             font-size: 36px;
             max-width: 120px;
             display: inline-block;
         }
+
         .form-container {
             display: flex;
             flex-direction: column;
@@ -69,35 +82,40 @@
         .form-container button {
             margin-bottom: 10px;
         }
+
         /* Input Dialog */
-        input[type="text"], input[type="number"] {
+        input[type="text"],
+        input[type="number"] {
             font-family: Arial, Helvetica, sans-serif;
-            background-color: rgba(71, 71, 71, 130);
+            background-color: #1a1a1a;
+            border-radius: 10px;
             border: 1px solid rgba(76, 76, 76, 130);
-            border-radius: 8px;
             padding: 3px 3px;
+            transition: background-color 0.3s ease-in-out, color 0.3s ease-in-out, border-color 0.3s ease-in-out, border 0.3s ease-in-out, transform 0.3s ease-in-out;
             color: rgb(210, 210, 210);
         }
 
-        input[type="text"]:hover, input[type="number"]:hover {
+        input[type="text"]:hover,
+        input[type="number"]:hover {
             color: rgb(210, 210, 210);
             font-family: Arial, Helvetica, sans-serif;
-            background-color: rgba(76, 76, 76, 160);
+            background-color: #1a1a1a;
             border: 1px solid rgba(71, 76, 88, 130);
         }
 
-        input[type="text"]:focus, input[type="number"]:focus {
+        input[type="text"]:focus,
+        input[type="number"]:focus {
             font-family: Arial, Helvetica, sans-serif;
             outline: none;
-            background-color: rgba(39, 39, 39, 160);
+            background-color: #1a1a1a;
             border: 1px solid rgba(47, 50, 57, 130);
             color: rgb(132, 132, 132);
         }
+
         h1.order_is_pending {
             background-color: #3bba6d;
             padding: 1%;
-            color: white;
-            font-weight: bold;
+            color: #EAE9FC;
             width: 100%;
             position: fixed;
             top: 0;
@@ -105,11 +123,11 @@
             margin: 0;
 
         }
+
         h1.order_is_not_pending {
             background-color: gray;
             padding: 1%;
-            color: white;
-            font-weight: bold;
+            color: #EAE9FC;
             width: 100%;
             position: fixed;
             top: 0;
@@ -119,28 +137,34 @@
     </style>
     <title>{{ sheet_name }}</title>
 </head>
-<body class="content">
-    {% if pending_data["is_order_pending"] == True %}
-    <h1 class="order_is_pending">Order is Pending</h1>
-    <h1>{{ sheet_name }}</h1>
-    <p>Pending Since: {{ pending_data["order_pending_date"] }}
-    <br>
-    Expected Arrival: {{ pending_data["expected_arrival_time"] }}
-    <br>
-    Sheets Ordered: {{ pending_data["order_pending_quantity"] }}</p>
-    {% else %}
-    <h1 class="order_is_not_pending">No Order is Pending</h1>
-    <h1>{{ sheet_name }}</h1>
-    {% endif %}
-    <p>Current quantity: {{ quantity }}</p>
-    <form action="/sheets_in_inventory/{{ sheet_name }}" method="post" class="form-container">
-        <label for="new_quantity">New Quantity:</label>
+
+<body>
+    <div class="content">
         {% if pending_data["is_order_pending"] == True %}
-        <input type="number" name="new_quantity" id="new_quantity" placeholder="0" value="{{pending_data["new_quantity"]}}">
+        <h1 class="order_is_pending">Order is Pending</h1>
+        <h1>{{ sheet_name }}</h1>
+        <p>Pending Since: {{ pending_data["order_pending_date"] }}
+            <br>
+            Expected Arrival: {{ pending_data["expected_arrival_time"] }}
+            <br>
+            Sheets Ordered: {{ pending_data["order_pending_quantity"] }}
+        </p>
         {% else %}
-        <input type="number" name="new_quantity" id="new_quantity" placeholder="0">
+        <h1 class="order_is_not_pending">No Order is Pending</h1>
+        <h1>{{ sheet_name }}</h1>
         {% endif %}
-        <button type="submit">Set</button>
-    </form>
+        <p>Current quantity: {{ quantity }}</p>
+        <form action="/sheets_in_inventory/{{ sheet_name }}" method="post" class="form-container">
+            <label for="new_quantity">New Quantity:</label>
+            {% if pending_data["is_order_pending"] == True %}
+            <input type="number" name="new_quantity" id="new_quantity" placeholder="0" value="{{pending_data["
+                new_quantity"]}}">
+            {% else %}
+            <input type="number" name="new_quantity" id="new_quantity" placeholder="0">
+            {% endif %}
+            <button type="submit">Set</button>
+        </form>
+    </div>
 </body>
+
 </html>

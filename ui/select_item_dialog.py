@@ -16,51 +16,27 @@ from utils.dialog_icons import Icons
 class SelectItemDialog(QDialog):
     def __init__(
         self,
-        parent=None,
-        icon_name: str = Icons.question,
-        button_names: str = DialogButtons.ok_cancel,
-        title: str = __name__,
-        message: str = "",
-        items: list = None,
-        selection_mode=QAbstractItemView.SelectionMode.SingleSelection,
+        button_names: str,
+        title: str,
+        message: str,
+        items: list[str],
+        parent,
     ) -> None:
-        if items is None:
-            items = []
         super(SelectItemDialog, self).__init__(parent)
         uic.loadUi("ui/select_item_dialog.ui", self)
 
-        self.icon_name = icon_name
         self.button_names = button_names
-        self.title = title
-        self.message = message
-        self.inputText: str = ""
         self.items = items
 
-        self.setWindowFlags(Qt.WindowType.Window | Qt.WindowType.FramelessWindowHint)
-        self.setAttribute(Qt.WidgetAttribute.WA_TranslucentBackground, True)
+        self.setWindowTitle(title)
         self.setWindowIcon(QIcon("icons/icon.png"))
 
-        self.lblTitle.setText(self.title)
-        self.lblMessage.setText(self.message)
+        self.lblMessage.setText(message)
 
         self.load_dialog_buttons()
 
         self.listWidget.addItems(self.items)
-        self.listWidget.setSelectionMode(selection_mode)
-
-        svg_icon = self.get_icon(icon_name)
-        svg_icon.setFixedSize(62, 50)
-        self.iconHolder.addWidget(svg_icon)
-
-        # self.resize(320, 250)
-
-        self.load_theme()
-
-    def load_theme(self) -> None:
-        set_theme(self, theme="dark")
-
-    def get_icon(self, path_to_icon: str) -> QSvgWidget:
-        return QSvgWidget(f"icons/{path_to_icon}")
+        self.listWidget.setSelectionMode(QAbstractItemView.SelectionMode.SingleSelection)
 
     def button_press(self, button) -> None:
         self.response = button.text()

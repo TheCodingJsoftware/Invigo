@@ -1,21 +1,16 @@
 import contextlib
 import copy
-import math
 import os
-from typing import Union
 
 import ujson as json
 from PyQt6.QtCore import QDate
-from PyQt6.QtWidgets import (
-    QCheckBox,
-    QDateTimeEdit,
-    QGroupBox,
-    QLineEdit,
-    QListWidget,
-    QPushButton,
-)
+from PyQt6.QtWidgets import QGroupBox, QLineEdit, QPushButton
 
+from utils.components_inventory.component import Component
+from utils.components_inventory.components_inventory import ComponentsInventory
 from utils.json_file import JsonFile
+from utils.laser_cut_inventory.laser_cut_inventory import LaserCutInventory
+from utils.laser_cut_inventory.laser_cut_part import LaserCutPart
 from utils.workspace.assembly import Assembly
 from utils.workspace.workspace_item import WorkspaceItem
 from utils.workspace.workspace_item_group import WorkspaceItemGroup
@@ -24,31 +19,33 @@ workspace_tags = JsonFile(file_name="data/workspace_settings")
 
 
 class Workspace:
-    def __init__(self, file_name: str) -> None:
+    def __init__(self, file_name: str, components_inventory: ComponentsInventory, laser_cut_inventory: LaserCutInventory) -> None:
         self.data: list[Assembly] = []
 
         self.file_name: str = file_name
         self.FOLDER_LOCATION: str = f"{os.getcwd()}/data"
+
+        self.components_inventory = components_inventory
+        self.laser_cut_inventory = laser_cut_inventory
+
         self.__create_file()
         self.load_data()
 
-    def __create_file(self) -> None:
-        if not os.path.exists(f"{self.FOLDER_LOCATION}/{self.file_name}.json"):
-            with open(f"{self.FOLDER_LOCATION}/{self.file_name}.json", "w", encoding="utf-8") as json_file:
-                json_file.write("{}")
+    def get_inventory_item(self, item_name: str) -> Component | LaserCutPart | None:
+        components_item = self.components_inventory.get_component_by_name(item_name)
+        laser_cut_part = self.laser_cut_inventory.get_laser_cut_part_by_name(item_name)
 
-    def save(self) -> None:
-        with open(f"{self.FOLDER_LOCATION}/{self.file_name}.json", "w", encoding="utf-8") as json_file:
-            json.dump(self.to_dict(), json_file, ensure_ascii=False, indent=4)
-
-    def save_data(self, data: dict) -> None:
-        with open(f"{self.FOLDER_LOCATION}/{self.file_name}.json", "w", encoding="utf-8") as json_file:
-            json.dump(data, json_file, ensure_ascii=False, indent=4)
+        if components_item:
+            return components_item
+        elif laser_cut_part:
+            return laser_cut_part
 
     def load_assembly(self, assembly_name: str, data: dict) -> Assembly:
         assembly = Assembly(name=assembly_name, assembly_data=data["assembly_data"])
         for item_name, item_data in data["items"].items():
-            item: WorkspaceItem = WorkspaceItem(name=item_name, data=item_data)
+            print(item_name)
+            inventory_item = self.get_inventory_item(item_name)
+            item: WorkspaceItem = WorkspaceItem(inventory_item=inventory_item, data=item_data)
             item.parent_assembly = assembly
             item.master_assembly = assembly.get_master_assembly()
             assembly.set_item(item)
@@ -56,32 +53,6 @@ class Workspace:
             sub_assembly: Assembly = self.load_assembly(sub_assembly_name, sub_assembly_data)
             assembly.add_sub_assembly(sub_assembly)
         return assembly
-
-    def load_data(self) -> None:
-        self.data.clear()
-        with open(f"{self.FOLDER_LOCATION}/{self.file_name}.json", "r", encoding="utf-8") as json_file:
-            data = json.load(json_file)
-        for assembly_name in data:
-            # assembly: Assembly = Assembly(name=assembly_name, assembly_data=data[assembly_name]["assembly_data"])
-            self.set_assembly(self.load_assembly(assembly_name, data[assembly_name]))
-        # for assembly in self.data:
-        #     assembly.set_default_value_to_all_items(key="show", value=True)
-        #     assembly.set_data_to_all_sub_assemblies(key="show", value=True)
-        #     assembly.set_assembly_data(key="show", value=True)
-        # self.set_assembly_parents()
-
-    # def set_subassembly_parents(self, sub_assembly: Assembly) -> None:
-    #     for _sub_assembly in sub_assembly.sub_assemblies:
-    #         _sub_assembly.parent_assembly = sub_assembly
-    #         self.set_subassembly_parents(_sub_assembly)
-
-    # def set_assembly_parents(self) -> None:
-    #     for assembly in self.data:
-    #         assembly.parent_assembly = None
-    #         assembly.master_assembly = None
-    #         for sub_assembly in assembly.sub_assemblies:
-    #             # sub_assembly.parent_assembly = assembly
-    #             self.set_subassembly_parents(sub_assembly)
 
     # TODO
     def get_users_data(self) -> dict:
@@ -104,9 +75,9 @@ class Workspace:
         completed_items = 0
         for item in sub_assembly.items:
             item.show = False
-            if show_recut and item.recut == False:
+            if show_recut and not item.recut:
                 continue
-            if item.completed == True:
+            if item.completed:
                 completed_items += 1
                 #     item.parent_assembly.set_parent_assembly_value(key="show", value=True)
                 #     item.set_value(key="show", value=True)
@@ -431,3 +402,41 @@ class Workspace:
 
     def do_all_sub_assemblies_have_flow_tags(self) -> bool:
         return all(len(assembly.flow_tag) != 0 for assembly in self.get_all_assemblies())
+
+    def __create_file(self) -> None:
+        if not os.path.exists(f"{self.FOLDER_LOCATION}/{self.file_name}.json"):
+            with open(f"{self.FOLDER_LOCATION}/{self.file_name}.json", "w", encoding="utf-8") as json_file:
+                json_file.write("{}")
+
+    def save(self) -> None:
+        with open(f"{self.FOLDER_LOCATION}/{self.file_name}.json", "w", encoding="utf-8") as json_file:
+            json.dump(self.to_dict(), json_file, ensure_ascii=False)
+
+    def load_data(self) -> None:
+        try:
+            with open(f"{self.FOLDER_LOCATION}/{self.file_name}.json", "r", encoding="utf-8") as json_file:
+                data = json.load(json_file)
+        except json.JSONDecodeError:
+            return
+        self.data.clear()
+        for assembly_name in data:
+            # assembly: Assembly = Assembly(name=assembly_name, assembly_data=data[assembly_name]["assembly_data"])
+            self.set_assembly(self.load_assembly(assembly_name, data[assembly_name]))
+        # for assembly in self.data:
+        #     assembly.set_default_value_to_all_items(key="show", value=True)
+        #     assembly.set_data_to_all_sub_assemblies(key="show", value=True)
+        #     assembly.set_assembly_data(key="show", value=True)
+        # self.set_assembly_parents()
+
+    # def set_subassembly_parents(self, sub_assembly: Assembly) -> None:
+    #     for _sub_assembly in sub_assembly.sub_assemblies:
+    #         _sub_assembly.parent_assembly = sub_assembly
+    #         self.set_subassembly_parents(_sub_assembly)
+
+    # def set_assembly_parents(self) -> None:
+    #     for assembly in self.data:
+    #         assembly.parent_assembly = None
+    #         assembly.master_assembly = None
+    #         for sub_assembly in assembly.sub_assemblies:
+    #             # sub_assembly.parent_assembly = assembly
+    #             self.set_subassembly_parents(sub_assembly)

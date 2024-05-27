@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<ui version="4.0">
+<ui version="4.0" idbasedtr="true">
  <author>Jared Gross</author>
  <class>MainWindow</class>
  <widget class="QMainWindow" name="MainWindow">
@@ -7,8 +7,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1357</width>
-    <height>876</height>
+    <width>1075</width>
+    <height>671</height>
    </rect>
   </property>
   <property name="font">
@@ -20,24 +20,42 @@
    <bool>true</bool>
   </property>
   <property name="windowTitle">
-   <string>MainWindow</string>
+   <string>Invigo</string>
+  </property>
+  <property name="windowOpacity">
+   <double>1.000000000000000</double>
   </property>
   <property name="toolButtonStyle">
    <enum>Qt::ToolButtonTextOnly</enum>
   </property>
+  <property name="tabShape">
+   <enum>QTabWidget::Rounded</enum>
+  </property>
+  <property name="unifiedTitleAndToolBarOnMac">
+   <bool>false</bool>
+  </property>
   <widget class="QWidget" name="centralwidget">
    <layout class="QVBoxLayout" name="verticalLayout_2">
+    <property name="spacing">
+     <number>0</number>
+    </property>
+    <property name="leftMargin">
+     <number>0</number>
+    </property>
     <property name="topMargin">
-     <number>3</number>
+     <number>0</number>
     </property>
     <property name="rightMargin">
+     <number>0</number>
+    </property>
+    <property name="bottomMargin">
      <number>0</number>
     </property>
     <item>
      <widget class="QTabWidget" name="tabWidget">
       <property name="minimumSize">
        <size>
-        <width>300</width>
+        <width>0</width>
         <height>0</height>
        </size>
       </property>
@@ -51,6 +69,11 @@
         <kerning>true</kerning>
        </font>
       </property>
+      <property name="styleSheet">
+       <string notr="true">QTabWidget#tabWidget &gt; QWidget {
+	border-radius: 0px;
+}</string>
+      </property>
       <property name="tabPosition">
        <enum>QTabWidget::North</enum>
       </property>
@@ -58,7 +81,7 @@
        <enum>QTabWidget::Rounded</enum>
       </property>
       <property name="currentIndex">
-       <number>4</number>
+       <number>8</number>
       </property>
       <property name="elideMode">
        <enum>Qt::ElideNone</enum>
@@ -75,769 +98,187 @@
       <property name="tabBarAutoHide">
        <bool>false</bool>
       </property>
-      <widget class="QWidget" name="inventory_tab">
+      <widget class="QWidget" name="components_tab">
        <attribute name="icon">
         <iconset>
          <normaloff>../../../../../.designer/icons/cil-align-center.png</normaloff>../../../../../.designer/icons/cil-align-center.png</iconset>
        </attribute>
        <attribute name="title">
-        <string>Edit Components</string>
+        <string>Components</string>
        </attribute>
        <layout class="QVBoxLayout" name="verticalLayout_41">
-        <item>
-         <widget class="QSplitter" name="splitter">
-          <property name="lineWidth">
-           <number>1</number>
-          </property>
-          <property name="midLineWidth">
-           <number>0</number>
-          </property>
-          <property name="orientation">
-           <enum>Qt::Horizontal</enum>
-          </property>
-          <property name="opaqueResize">
-           <bool>true</bool>
-          </property>
-          <property name="handleWidth">
-           <number>10</number>
-          </property>
-          <property name="childrenCollapsible">
-           <bool>true</bool>
-          </property>
-          <widget class="QWidget" name="layoutWidget">
-           <layout class="QVBoxLayout" name="verticalLayout"/>
-          </widget>
-          <widget class="QWidget" name="widget" native="true">
-           <property name="maximumSize">
-            <size>
-             <width>260</width>
-             <height>16777215</height>
-            </size>
-           </property>
-           <layout class="QVBoxLayout" name="verticalLayout_3">
-            <property name="bottomMargin">
-             <number>1</number>
-            </property>
-            <item>
-             <widget class="QWidget" name="verticalWidget_2" native="true">
-              <layout class="QVBoxLayout" name="verticalLayout_36">
-               <item>
-                <widget class="QSplitter" name="splitter_2">
-                 <property name="orientation">
-                  <enum>Qt::Vertical</enum>
-                 </property>
-                 <property name="handleWidth">
-                  <number>10</number>
-                 </property>
-                 <widget class="QWidget" name="layoutWidget">
-                  <layout class="QVBoxLayout" name="verticalLayout_42">
-                   <item>
-                    <widget class="QLabel" name="label_exchange_price">
-                     <property name="text">
-                      <string>Getting exchange rate...</string>
-                     </property>
-                    </widget>
-                   </item>
-                   <item>
-                    <widget class="QLabel" name="label_category_name">
-                     <property name="text">
-                      <string>Category: </string>
-                     </property>
-                    </widget>
-                   </item>
-                   <item>
-                    <widget class="QLabel" name="label_total_unit_cost">
-                     <property name="text">
-                      <string>Total Cost: </string>
-                     </property>
-                     <property name="textInteractionFlags">
-                      <set>Qt::LinksAccessibleByMouse|Qt::TextSelectableByMouse</set>
-                     </property>
-                    </widget>
-                   </item>
-                   <item>
-                    <widget class="QScrollArea" name="scrollArea">
-                     <property name="widgetResizable">
-                      <bool>true</bool>
-                     </property>
-                     <widget class="QWidget" name="scrollAreaWidgetContents">
-                      <property name="geometry">
-                       <rect>
-                        <x>0</x>
-                        <y>0</y>
-                        <width>220</width>
-                        <height>121</height>
-                       </rect>
-                      </property>
-                      <property name="maximumSize">
-                       <size>
-                        <width>16777215</width>
-                        <height>500</height>
-                       </size>
-                      </property>
-                      <layout class="QVBoxLayout" name="verticalLayout_6">
-                       <property name="spacing">
-                        <number>0</number>
-                       </property>
-                       <property name="leftMargin">
-                        <number>0</number>
-                       </property>
-                       <property name="topMargin">
-                        <number>0</number>
-                       </property>
-                       <property name="rightMargin">
-                        <number>0</number>
-                       </property>
-                       <property name="bottomMargin">
-                        <number>0</number>
-                       </property>
-                       <item>
-                        <layout class="QGridLayout" name="gridLayout_Categor_Stock_Prices">
-                         <property name="horizontalSpacing">
-                          <number>0</number>
-                         </property>
-                         <property name="verticalSpacing">
-                          <number>6</number>
-                         </property>
-                        </layout>
-                       </item>
-                      </layout>
-                     </widget>
-                    </widget>
-                   </item>
-                  </layout>
-                 </widget>
-                 <widget class="QWidget" name="layoutWidget">
-                  <layout class="QVBoxLayout" name="verticalLayout_7">
-                   <item>
-                    <widget class="QLabel" name="label_2">
-                     <property name="text">
-                      <string>Search:</string>
-                     </property>
-                    </widget>
-                   </item>
-                   <item>
-                    <widget class="QLineEdit" name="lineEdit_search_items">
-                     <property name="statusTip">
-                      <string>Search items in this category</string>
-                     </property>
-                     <property name="inputMask">
-                      <string/>
-                     </property>
-                     <property name="dragEnabled">
-                      <bool>false</bool>
-                     </property>
-                     <property name="placeholderText">
-                      <string>Search for items...</string>
-                     </property>
-                     <property name="clearButtonEnabled">
-                      <bool>true</bool>
-                     </property>
-                    </widget>
-                   </item>
-                   <item>
-                    <widget class="QListWidget" name="listWidget_itemnames">
-                     <property name="statusTip">
-                      <string>All items from this category</string>
-                     </property>
-                     <property name="styleSheet">
-                      <string notr="true"/>
-                     </property>
-                    </widget>
-                   </item>
-                  </layout>
-                 </widget>
-                </widget>
-               </item>
-              </layout>
-             </widget>
-            </item>
-            <item>
-             <widget class="QGroupBox" name="groupBox">
-              <property name="minimumSize">
-               <size>
-                <width>0</width>
-                <height>60</height>
-               </size>
-              </property>
-              <property name="title">
-               <string>Change Quantities by</string>
-              </property>
-              <layout class="QHBoxLayout" name="horizontalLayout_6">
-               <property name="topMargin">
-                <number>0</number>
-               </property>
-               <property name="bottomMargin">
-                <number>9</number>
-               </property>
-               <item>
-                <layout class="QGridLayout" name="gridLayout">
-                 <property name="leftMargin">
-                  <number>0</number>
-                 </property>
-                 <property name="topMargin">
-                  <number>0</number>
-                 </property>
-                 <property name="rightMargin">
-                  <number>0</number>
-                 </property>
-                 <property name="bottomMargin">
-                  <number>0</number>
-                 </property>
-                 <property name="horizontalSpacing">
-                  <number>9</number>
-                 </property>
-                 <property name="verticalSpacing">
-                  <number>0</number>
-                 </property>
-                 <item row="0" column="0">
-                  <widget class="QRadioButton" name="radioButton_category">
-                   <property name="text">
-                    <string>All Items in Category</string>
-                   </property>
-                   <property name="checked">
-                    <bool>true</bool>
-                   </property>
-                  </widget>
-                 </item>
-                 <item row="0" column="1">
-                  <widget class="QRadioButton" name="radioButton_single">
-                   <property name="text">
-                    <string>Selected Item</string>
-                   </property>
-                  </widget>
-                 </item>
-                </layout>
-               </item>
-              </layout>
-             </widget>
-            </item>
-            <item>
-             <layout class="QHBoxLayout" name="horizontalLayout_3">
-              <item>
-               <widget class="QLabel" name="label">
-                <property name="text">
-                 <string>Batches Multiplier:</string>
-                </property>
-               </widget>
-              </item>
-              <item>
-               <widget class="QSpinBox" name="spinBox_quantity">
-                <property name="statusTip">
-                 <string>Quantity you want to add/remove to the selected item/category</string>
-                </property>
-                <property name="accelerated">
-                 <bool>true</bool>
-                </property>
-                <property name="maximum">
-                 <number>99999999</number>
-                </property>
-               </widget>
-              </item>
-             </layout>
-            </item>
-            <item>
-             <layout class="QHBoxLayout" name="horizontalLayout_2">
-              <item>
-               <widget class="QPushButton" name="pushButton_add_quantity">
-                <property name="minimumSize">
-                 <size>
-                  <width>0</width>
-                  <height>30</height>
-                 </size>
-                </property>
-                <property name="statusTip">
-                 <string>Adds to the currently selected item</string>
-                </property>
-                <property name="text">
-                 <string>Add Quantity</string>
-                </property>
-               </widget>
-              </item>
-              <item>
-               <widget class="QPushButton" name="pushButton_remove_quantity">
-                <property name="minimumSize">
-                 <size>
-                  <width>0</width>
-                  <height>30</height>
-                 </size>
-                </property>
-                <property name="statusTip">
-                 <string>Removes from the currently selected item</string>
-                </property>
-                <property name="text">
-                 <string>Remove Quantity</string>
-                </property>
-               </widget>
-              </item>
-             </layout>
-            </item>
-            <item>
-             <widget class="QPushButton" name="pushButton_create_new">
-              <property name="enabled">
-               <bool>true</bool>
-              </property>
-              <property name="sizePolicy">
-               <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
-                <horstretch>0</horstretch>
-                <verstretch>0</verstretch>
-               </sizepolicy>
-              </property>
-              <property name="minimumSize">
-               <size>
-                <width>0</width>
-                <height>40</height>
-               </size>
-              </property>
-              <property name="maximumSize">
-               <size>
-                <width>16777215</width>
-                <height>40</height>
-               </size>
-              </property>
-              <property name="font">
-               <font>
-                <weight>75</weight>
-                <bold>true</bold>
-               </font>
-              </property>
-              <property name="cursor">
-               <cursorShape>ArrowCursor</cursorShape>
-              </property>
-              <property name="toolTip">
-               <string/>
-              </property>
-              <property name="statusTip">
-               <string>Create a new item</string>
-              </property>
-              <property name="styleSheet">
-               <string notr="true">QPushButton#pushButton_create_new{
-	color: #ffffff;
-	background-color: #3daee9;
-	border: 2px solid #3daee9;
-	border-radius: 8px;
-	padding: 8px 16px;
-	font-weight: bold;
-}
-QPushButton#pushButton_create_new:hover{
-	background-color: #48b6ed;
-	border-color: #48b6ed;
-}
-QPushButton#pushButton_create_new:pressed{
-	background-color: #2b92c5;
-	border-color: #2b92c5;
-}
-QPushButton#pushButton_create_new:disabled{
-	background-color: rgba(44, 44, 44, 130);
-	border: 1px solid rgba(57, 57, 57, 130);
-	color: rgb(144, 144, 144);
-	border-radius: 4px;
-}</string>
-              </property>
-              <property name="text">
-               <string>Add New Item</string>
-              </property>
-              <property name="checkable">
-               <bool>false</bool>
-              </property>
-              <property name="default">
-               <bool>false</bool>
-              </property>
-              <property name="flat">
-               <bool>false</bool>
-              </property>
-             </widget>
-            </item>
-           </layout>
-          </widget>
-         </widget>
-        </item>
-       </layout>
-      </widget>
-      <widget class="QWidget" name="tab_5">
-       <attribute name="icon">
-        <iconset>
-         <normaloff>../../../../../.designer/icons/cil-align-center.png</normaloff>../../../../../.designer/icons/cil-align-center.png</iconset>
-       </attribute>
-       <attribute name="title">
-        <string>Edit Sheets in Inventory</string>
-       </attribute>
-       <layout class="QVBoxLayout" name="verticalLayout_13">
+        <property name="spacing">
+         <number>6</number>
+        </property>
         <property name="leftMargin">
-         <number>9</number>
+         <number>0</number>
         </property>
         <property name="topMargin">
-         <number>3</number>
+         <number>0</number>
         </property>
         <property name="rightMargin">
-         <number>9</number>
+         <number>0</number>
         </property>
         <property name="bottomMargin">
          <number>0</number>
         </property>
         <item>
-         <layout class="QHBoxLayout" name="horizontalLayout_17" stretch="6,1">
+         <layout class="QVBoxLayout" name="components_layout">
+          <property name="spacing">
+           <number>0</number>
+          </property>
+          <property name="leftMargin">
+           <number>0</number>
+          </property>
+          <property name="topMargin">
+           <number>0</number>
+          </property>
           <property name="rightMargin">
            <number>0</number>
           </property>
           <property name="bottomMargin">
-           <number>6</number>
+           <number>9</number>
           </property>
           <item>
-           <layout class="QVBoxLayout" name="verticalLayout_10"/>
-          </item>
-          <item>
-           <layout class="QVBoxLayout" name="verticalLayout_23">
-            <property name="bottomMargin">
-             <number>0</number>
+           <widget class="QLabel" name="label">
+            <property name="text">
+             <string>Loading...</string>
             </property>
-            <item>
-             <widget class="QLabel" name="label_9">
-              <property name="text">
-               <string>Total Cost in Stock:</string>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QScrollArea" name="scrollArea_2">
-              <property name="widgetResizable">
-               <bool>true</bool>
-              </property>
-              <widget class="QWidget" name="scrollAreaWidgetContents_2">
-               <property name="geometry">
-                <rect>
-                 <x>0</x>
-                 <y>0</y>
-                 <width>184</width>
-                 <height>654</height>
-                </rect>
-               </property>
-               <property name="maximumSize">
-                <size>
-                 <width>16777215</width>
-                 <height>16777215</height>
-                </size>
-               </property>
-               <layout class="QVBoxLayout" name="verticalLayout_16">
-                <property name="spacing">
-                 <number>0</number>
-                </property>
-                <property name="leftMargin">
-                 <number>0</number>
-                </property>
-                <property name="topMargin">
-                 <number>0</number>
-                </property>
-                <property name="rightMargin">
-                 <number>0</number>
-                </property>
-                <property name="bottomMargin">
-                 <number>0</number>
-                </property>
-                <item>
-                 <layout class="QVBoxLayout" name="verticalLayout_14">
-                  <property name="spacing">
-                   <number>0</number>
-                  </property>
-                  <item>
-                   <layout class="QGridLayout" name="gridLayout_price_of_steel">
-                    <property name="horizontalSpacing">
-                     <number>0</number>
-                    </property>
-                    <property name="verticalSpacing">
-                     <number>6</number>
-                    </property>
-                   </layout>
-                  </item>
-                 </layout>
-                </item>
-                <item>
-                 <spacer name="verticalSpacer">
-                  <property name="orientation">
-                   <enum>Qt::Vertical</enum>
-                  </property>
-                  <property name="sizeHint" stdset="0">
-                   <size>
-                    <width>20</width>
-                    <height>40</height>
-                   </size>
-                  </property>
-                 </spacer>
-                </item>
-               </layout>
-              </widget>
-             </widget>
-            </item>
-            <item>
-             <layout class="QHBoxLayout" name="horizontalLayout_4">
-              <item>
-               <widget class="QPushButton" name="pushButton_send_sheet_report">
-                <property name="minimumSize">
-                 <size>
-                  <width>0</width>
-                  <height>30</height>
-                 </size>
-                </property>
-                <property name="maximumSize">
-                 <size>
-                  <width>150</width>
-                  <height>16777215</height>
-                 </size>
-                </property>
-                <property name="statusTip">
-                 <string>Will send then sheets that are low in quantity to Lynden by email.</string>
-                </property>
-                <property name="text">
-                 <string>   Send Sheet Report</string>
-                </property>
-               </widget>
-              </item>
-             </layout>
-            </item>
-            <item>
-             <widget class="QPushButton" name="pushButton_add_new_sheet">
-              <property name="enabled">
-               <bool>true</bool>
-              </property>
-              <property name="sizePolicy">
-               <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
-                <horstretch>0</horstretch>
-                <verstretch>0</verstretch>
-               </sizepolicy>
-              </property>
-              <property name="minimumSize">
-               <size>
-                <width>0</width>
-                <height>40</height>
-               </size>
-              </property>
-              <property name="maximumSize">
-               <size>
-                <width>16777215</width>
-                <height>40</height>
-               </size>
-              </property>
-              <property name="font">
-               <font>
-                <weight>75</weight>
-                <bold>true</bold>
-               </font>
-              </property>
-              <property name="cursor">
-               <cursorShape>ArrowCursor</cursorShape>
-              </property>
-              <property name="toolTip">
-               <string/>
-              </property>
-              <property name="statusTip">
-               <string>Create a new item</string>
-              </property>
-              <property name="styleSheet">
-               <string notr="true">QPushButton#pushButton_add_new_sheet{
-	color: #ffffff;
-	background-color: #3daee9;
-	border: 2px solid #3daee9;
-	border-radius: 8px;
-	padding: 8px 16px;
-	font-weight: bold;
-}
-QPushButton#pushButton_add_new_sheet:hover{
-	background-color: #48b6ed;
-	border-color: #48b6ed;
-}
-QPushButton#pushButton_add_new_sheet:pressed{
-	background-color: #2b92c5;
-	border-color: #2b92c5;
-}
-QPushButton#pushButton_add_new_sheet:disabled{
-	background-color: rgba(44, 44, 44, 130);
-	border: 1px solid rgba(57, 57, 57, 130);
-	color: rgb(144, 144, 144);
-	border-radius: 4px;
-}</string>
-              </property>
-              <property name="text">
-               <string>Add New Sheet</string>
-              </property>
-              <property name="checkable">
-               <bool>false</bool>
-              </property>
-              <property name="default">
-               <bool>false</bool>
-              </property>
-              <property name="flat">
-               <bool>false</bool>
-              </property>
-             </widget>
-            </item>
-           </layout>
+            <property name="alignment">
+             <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+            </property>
+           </widget>
           </item>
          </layout>
         </item>
        </layout>
       </widget>
-      <widget class="QWidget" name="tab">
+      <widget class="QWidget" name="sheets_in_inventory_tab">
        <attribute name="icon">
         <iconset>
          <normaloff>../../../../../.designer/icons/cil-align-center.png</normaloff>../../../../../.designer/icons/cil-align-center.png</iconset>
        </attribute>
        <attribute name="title">
-        <string>Edit Laser Cut Inventory</string>
+        <string>Sheets in Inventory</string>
        </attribute>
-       <layout class="QVBoxLayout" name="verticalLayout_12">
+       <layout class="QVBoxLayout" name="verticalLayout_13">
+        <property name="spacing">
+         <number>6</number>
+        </property>
         <property name="leftMargin">
-         <number>9</number>
+         <number>0</number>
         </property>
         <property name="topMargin">
-         <number>3</number>
+         <number>0</number>
         </property>
         <property name="rightMargin">
-         <number>9</number>
+         <number>0</number>
         </property>
         <property name="bottomMargin">
          <number>0</number>
         </property>
         <item>
-         <layout class="QHBoxLayout" name="horizontalLayout_18" stretch="6,1">
-          <property name="rightMargin">
+         <layout class="QVBoxLayout" name="sheets_inventory_layout">
+          <property name="spacing">
            <number>0</number>
           </property>
           <property name="bottomMargin">
-           <number>6</number>
+           <number>9</number>
           </property>
           <item>
-           <layout class="QVBoxLayout" name="verticalLayout_11"/>
-          </item>
-          <item>
-           <layout class="QVBoxLayout" name="verticalLayout_20" stretch="0,0,0,0,0,0">
-            <property name="bottomMargin">
-             <number>0</number>
+           <widget class="QLabel" name="label_2">
+            <property name="text">
+             <string>Loading...</string>
             </property>
-            <item>
-             <widget class="QLabel" name="label_4">
-              <property name="text">
-               <string>Total Cost in Stock:</string>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QScrollArea" name="scrollArea_3">
-              <property name="minimumSize">
-               <size>
-                <width>0</width>
-                <height>200</height>
-               </size>
-              </property>
-              <property name="widgetResizable">
-               <bool>true</bool>
-              </property>
-              <widget class="QWidget" name="scrollAreaWidgetContents_3">
-               <property name="geometry">
-                <rect>
-                 <x>0</x>
-                 <y>0</y>
-                 <width>357</width>
-                 <height>566</height>
-                </rect>
-               </property>
-               <layout class="QVBoxLayout" name="verticalLayout_21">
-                <property name="leftMargin">
-                 <number>0</number>
-                </property>
-                <property name="topMargin">
-                 <number>0</number>
-                </property>
-                <property name="rightMargin">
-                 <number>0</number>
-                </property>
-                <property name="bottomMargin">
-                 <number>0</number>
-                </property>
-                <item>
-                 <layout class="QVBoxLayout" name="verticalLayout_17">
-                  <item>
-                   <layout class="QGridLayout" name="gridLayout_parts_in_inventory_summary">
-                    <property name="horizontalSpacing">
-                     <number>0</number>
-                    </property>
-                   </layout>
-                  </item>
-                 </layout>
-                </item>
-                <item>
-                 <spacer name="verticalSpacer_2">
-                  <property name="orientation">
-                   <enum>Qt::Vertical</enum>
-                  </property>
-                  <property name="sizeHint" stdset="0">
-                   <size>
-                    <width>20</width>
-                    <height>40</height>
-                   </size>
-                  </property>
-                 </spacer>
-                </item>
-               </layout>
-              </widget>
-             </widget>
-            </item>
-            <item>
-             <widget class="QLabel" name="label_16">
-              <property name="text">
-               <string>Search:</string>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QLineEdit" name="lineEdit_search_parts_in_inventory">
-              <property name="placeholderText">
-               <string>Search for parts...</string>
-              </property>
-              <property name="clearButtonEnabled">
-               <bool>true</bool>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <layout class="QVBoxLayout" name="verticalLayout_parts_filter"/>
-            </item>
-            <item>
-             <widget class="QGroupBox" name="groupBox_5">
-              <property name="title">
-               <string>Remove Quantities</string>
-              </property>
-              <layout class="QVBoxLayout" name="verticalLayout_19">
-               <item>
-                <layout class="QGridLayout" name="gridLayout_2">
-                 <item row="0" column="0">
-                  <widget class="QLabel" name="label_3">
-                   <property name="text">
-                    <string>Batches Multiplier:</string>
-                   </property>
-                  </widget>
-                 </item>
-                 <item row="0" column="1">
-                  <widget class="QSpinBox" name="spinBox_quantity_for_inventory"/>
-                 </item>
-                </layout>
-               </item>
-               <item>
-                <widget class="QPushButton" name="pushButton_remove_quantities_from_inventory">
-                 <property name="minimumSize">
-                  <size>
-                   <width>0</width>
-                   <height>30</height>
-                  </size>
-                 </property>
-                 <property name="text">
-                  <string>Remove Quantities from whole Category</string>
-                 </property>
-                </widget>
-               </item>
-              </layout>
-             </widget>
-            </item>
-           </layout>
+            <property name="alignment">
+             <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
+       </layout>
+      </widget>
+      <widget class="QWidget" name="sheet_settings_tab">
+       <attribute name="title">
+        <string>Sheet Settings</string>
+       </attribute>
+       <layout class="QVBoxLayout" name="verticalLayout">
+        <property name="spacing">
+         <number>6</number>
+        </property>
+        <property name="leftMargin">
+         <number>0</number>
+        </property>
+        <property name="topMargin">
+         <number>0</number>
+        </property>
+        <property name="rightMargin">
+         <number>0</number>
+        </property>
+        <property name="bottomMargin">
+         <number>0</number>
+        </property>
+        <item>
+         <layout class="QVBoxLayout" name="sheet_settings_layout">
+          <property name="spacing">
+           <number>0</number>
+          </property>
+          <property name="bottomMargin">
+           <number>9</number>
+          </property>
+          <item>
+           <widget class="QLabel" name="label_4">
+            <property name="text">
+             <string>Loading...</string>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
+       </layout>
+      </widget>
+      <widget class="QWidget" name="tab_laser_cut_inventory">
+       <attribute name="icon">
+        <iconset>
+         <normaloff>../../../../../.designer/icons/cil-align-center.png</normaloff>../../../../../.designer/icons/cil-align-center.png</iconset>
+       </attribute>
+       <attribute name="title">
+        <string>Laser Cut Inventory</string>
+       </attribute>
+       <layout class="QVBoxLayout" name="verticalLayout_12">
+        <property name="spacing">
+         <number>6</number>
+        </property>
+        <property name="leftMargin">
+         <number>0</number>
+        </property>
+        <property name="topMargin">
+         <number>0</number>
+        </property>
+        <property name="rightMargin">
+         <number>0</number>
+        </property>
+        <property name="bottomMargin">
+         <number>0</number>
+        </property>
+        <item>
+         <layout class="QVBoxLayout" name="laser_cut_layout">
+          <property name="bottomMargin">
+           <number>9</number>
+          </property>
+          <item>
+           <widget class="QLabel" name="label_3">
+            <property name="text">
+             <string>Loading...</string>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+            </property>
+           </widget>
           </item>
          </layout>
         </item>
@@ -849,9 +290,12 @@ QPushButton#pushButton_add_new_sheet:disabled{
          <normaloff>../../../../../.designer/icons/cil-library-add.png</normaloff>../../../../../.designer/icons/cil-library-add.png</iconset>
        </attribute>
        <attribute name="title">
-        <string>OmniGen</string>
+        <string>Quote Generator</string>
        </attribute>
-       <layout class="QHBoxLayout" name="horizontalLayout_19">
+       <layout class="QVBoxLayout" name="verticalLayout_25" stretch="0">
+        <property name="spacing">
+         <number>6</number>
+        </property>
         <property name="leftMargin">
          <number>0</number>
         </property>
@@ -865,970 +309,65 @@ QPushButton#pushButton_add_new_sheet:disabled{
          <number>0</number>
         </property>
         <item>
-         <layout class="QHBoxLayout" name="horizontalLayout_15" stretch="0,1,0">
-          <property name="rightMargin">
-           <number>0</number>
+         <widget class="QSplitter" name="splitter_3">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
           </property>
-          <property name="bottomMargin">
-           <number>6</number>
+          <property name="handleWidth">
+           <number>5</number>
           </property>
-          <item>
-           <widget class="QWidget" name="horizontalWidget_2" native="true">
-            <layout class="QHBoxLayout" name="horizontalLayout_24">
-             <property name="spacing">
-              <number>0</number>
-             </property>
-             <property name="leftMargin">
-              <number>0</number>
-             </property>
-             <property name="topMargin">
-              <number>0</number>
-             </property>
-             <property name="rightMargin">
-              <number>0</number>
-             </property>
-             <property name="bottomMargin">
-              <number>0</number>
-             </property>
-             <item>
-              <widget class="QWidget" name="verticalLayout_32" native="true">
-               <property name="minimumSize">
-                <size>
-                 <width>500</width>
-                 <height>0</height>
-                </size>
-               </property>
-               <layout class="QVBoxLayout" name="verticalLayout_26" stretch="0">
-                <property name="spacing">
-                 <number>6</number>
-                </property>
-                <property name="bottomMargin">
-                 <number>0</number>
-                </property>
-                <item>
-                 <layout class="QVBoxLayout" name="verticalLayout_51">
-                  <item>
-                   <widget class="QWidget" name="widget_2" native="true">
-                    <layout class="QVBoxLayout" name="verticalLayout_52">
-                     <item>
-                      <widget class="QSplitter" name="splitter_4">
-                       <property name="sizePolicy">
-                        <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
-                         <horstretch>0</horstretch>
-                         <verstretch>0</verstretch>
-                        </sizepolicy>
-                       </property>
-                       <property name="orientation">
-                        <enum>Qt::Vertical</enum>
-                       </property>
-                       <property name="handleWidth">
-                        <number>10</number>
-                       </property>
-                       <widget class="QWidget" name="layoutWidget">
-                        <layout class="QHBoxLayout" name="horizontalLayout">
-                         <property name="spacing">
-                          <number>3</number>
-                         </property>
-                         <item>
-                          <widget class="QGroupBox" name="groupBox_6">
-                           <property name="minimumSize">
-                            <size>
-                             <width>0</width>
-                             <height>200</height>
-                            </size>
-                           </property>
-                           <property name="maximumSize">
-                            <size>
-                             <width>16777215</width>
-                             <height>200</height>
-                            </size>
-                           </property>
-                           <property name="title">
-                            <string>Global Sheet Settings</string>
-                           </property>
-                           <layout class="QGridLayout" name="gridLayout_4">
-                            <item row="4" column="0">
-                             <layout class="QHBoxLayout" name="horizontalLayout_22">
-                              <property name="spacing">
-                               <number>0</number>
-                              </property>
-                              <item>
-                               <widget class="QDoubleSpinBox" name="doubleSpinBox_global_sheet_length">
-                                <property name="suffix">
-                                 <string> in</string>
-                                </property>
-                                <property name="decimals">
-                                 <number>3</number>
-                                </property>
-                                <property name="maximum">
-                                 <double>9999.000000000000000</double>
-                                </property>
-                                <property name="value">
-                                 <double>120.000000000000000</double>
-                                </property>
-                               </widget>
-                              </item>
-                              <item>
-                               <widget class="QLabel" name="label_18">
-                                <property name="minimumSize">
-                                 <size>
-                                  <width>20</width>
-                                  <height>0</height>
-                                 </size>
-                                </property>
-                                <property name="maximumSize">
-                                 <size>
-                                  <width>20</width>
-                                  <height>16777214</height>
-                                 </size>
-                                </property>
-                                <property name="text">
-                                 <string>x</string>
-                                </property>
-                                <property name="alignment">
-                                 <set>Qt::AlignCenter</set>
-                                </property>
-                               </widget>
-                              </item>
-                              <item>
-                               <widget class="QDoubleSpinBox" name="doubleSpinBox_global_sheet_width">
-                                <property name="prefix">
-                                 <string/>
-                                </property>
-                                <property name="suffix">
-                                 <string> in</string>
-                                </property>
-                                <property name="decimals">
-                                 <number>3</number>
-                                </property>
-                                <property name="maximum">
-                                 <double>9999.000000000000000</double>
-                                </property>
-                                <property name="value">
-                                 <double>60.000000000000000</double>
-                                </property>
-                               </widget>
-                              </item>
-                             </layout>
-                            </item>
-                            <item row="2" column="0">
-                             <layout class="QGridLayout" name="gridLayout_3">
-                              <item row="0" column="0">
-                               <widget class="QLabel" name="label_10">
-                                <property name="text">
-                                 <string>Laser Cutting:</string>
-                                </property>
-                               </widget>
-                              </item>
-                              <item row="1" column="0">
-                               <widget class="QLabel" name="label_5">
-                                <property name="text">
-                                 <string>Sheet Material:</string>
-                                </property>
-                               </widget>
-                              </item>
-                              <item row="2" column="0">
-                               <widget class="QLabel" name="label_6">
-                                <property name="text">
-                                 <string>Sheet Thickness:</string>
-                                </property>
-                               </widget>
-                              </item>
-                              <item row="1" column="2">
-                               <widget class="QComboBox" name="comboBox_global_sheet_material">
-                                <property name="focusPolicy">
-                                 <enum>Qt::ClickFocus</enum>
-                                </property>
-                               </widget>
-                              </item>
-                              <item row="2" column="2">
-                               <widget class="QComboBox" name="comboBox_global_sheet_thickness">
-                                <property name="focusPolicy">
-                                 <enum>Qt::ClickFocus</enum>
-                                </property>
-                               </widget>
-                              </item>
-                              <item row="0" column="2">
-                               <layout class="QHBoxLayout" name="horizontalLayout_27">
-                                <property name="spacing">
-                                 <number>3</number>
-                                </property>
-                                <item>
-                                 <widget class="QComboBox" name="comboBox_laser_cutting">
-                                  <property name="currentText">
-                                   <string>CO2</string>
-                                  </property>
-                                  <item>
-                                   <property name="text">
-                                    <string>CO2</string>
-                                   </property>
-                                  </item>
-                                  <item>
-                                   <property name="text">
-                                    <string>Nitrogen</string>
-                                   </property>
-                                  </item>
-                                 </widget>
-                                </item>
-                                <item>
-                                 <widget class="QDoubleSpinBox" name="doubleSpinBox_cost_for_laser">
-                                  <property name="statusTip">
-                                   <string>This number will not be saved, to set a default value go into laser_quote_variables.cfg and change it manually.</string>
-                                  </property>
-                                  <property name="prefix">
-                                   <string>$</string>
-                                  </property>
-                                  <property name="suffix">
-                                   <string> per hour</string>
-                                  </property>
-                                  <property name="maximum">
-                                   <double>9999999.000000000000000</double>
-                                  </property>
-                                  <property name="value">
-                                   <double>150.000000000000000</double>
-                                  </property>
-                                 </widget>
-                                </item>
-                               </layout>
-                              </item>
-                             </layout>
-                            </item>
-                            <item row="1" column="0">
-                             <widget class="QLabel" name="label_7">
-                              <property name="minimumSize">
-                               <size>
-                                <width>0</width>
-                                <height>20</height>
-                               </size>
-                              </property>
-                              <property name="maximumSize">
-                               <size>
-                                <width>16777215</width>
-                                <height>20</height>
-                               </size>
-                              </property>
-                              <property name="font">
-                               <font>
-                                <weight>50</weight>
-                                <italic>true</italic>
-                                <bold>false</bold>
-                               </font>
-                              </property>
-                              <property name="text">
-                               <string>* These will overide all sheet settings</string>
-                              </property>
-                              <property name="scaledContents">
-                               <bool>false</bool>
-                              </property>
-                              <property name="alignment">
-                               <set>Qt::AlignCenter</set>
-                              </property>
-                             </widget>
-                            </item>
-                            <item row="3" column="0">
-                             <widget class="QLabel" name="label_17">
-                              <property name="text">
-                               <string>Sheet Dimensions (len x wid):</string>
-                              </property>
-                             </widget>
-                            </item>
-                           </layout>
-                          </widget>
-                         </item>
-                         <item>
-                          <layout class="QVBoxLayout" name="verticalLayout_46">
-                           <property name="sizeConstraint">
-                            <enum>QLayout::SetMinimumSize</enum>
-                           </property>
-                           <item>
-                            <widget class="QGroupBox" name="groupBox_9">
-                             <property name="minimumSize">
-                              <size>
-                               <width>0</width>
-                               <height>130</height>
-                              </size>
-                             </property>
-                             <property name="maximumSize">
-                              <size>
-                               <width>16777215</width>
-                               <height>130</height>
-                              </size>
-                             </property>
-                             <property name="font">
-                              <font>
-                               <pointsize>8</pointsize>
-                              </font>
-                             </property>
-                             <property name="title">
-                              <string>Item Quoting Options</string>
-                             </property>
-                             <layout class="QGridLayout" name="gridLayout_6">
-                              <item row="0" column="0">
-                               <layout class="QGridLayout" name="gridLayout_5">
-                                <item row="2" column="0">
-                                 <widget class="QLabel" name="label_12">
-                                  <property name="text">
-                                   <string>Profit Margin (%):</string>
-                                  </property>
-                                 </widget>
-                                </item>
-                                <item row="1" column="0">
-                                 <widget class="QLabel" name="label_11">
-                                  <property name="text">
-                                   <string>Overhead (%):</string>
-                                  </property>
-                                 </widget>
-                                </item>
-                                <item row="1" column="1">
-                                 <widget class="QSpinBox" name="spinBox_overhead_items">
-                                  <property name="toolTip">
-                                   <string>Default: 18%</string>
-                                  </property>
-                                  <property name="statusTip">
-                                   <string>Default: 18%</string>
-                                  </property>
-                                  <property name="maximum">
-                                   <number>100</number>
-                                  </property>
-                                  <property name="value">
-                                   <number>18</number>
-                                  </property>
-                                 </widget>
-                                </item>
-                                <item row="2" column="1">
-                                 <widget class="QSpinBox" name="spinBox_profit_margin_items">
-                                  <property name="toolTip">
-                                   <string>Default: 30%</string>
-                                  </property>
-                                  <property name="statusTip">
-                                   <string>Default: 30%</string>
-                                  </property>
-                                  <property name="maximum">
-                                   <number>100</number>
-                                  </property>
-                                  <property name="value">
-                                   <number>30</number>
-                                  </property>
-                                 </widget>
-                                </item>
-                               </layout>
-                              </item>
-                              <item row="1" column="0">
-                               <widget class="QPushButton" name="pushButton_item_to_sheet">
-                                <property name="maximumSize">
-                                 <size>
-                                  <width>16777215</width>
-                                  <height>16777215</height>
-                                 </size>
-                                </property>
-                                <property name="statusTip">
-                                 <string>Match item cost to sheet cost</string>
-                                </property>
-                                <property name="styleSheet">
-                                 <string notr="true">QPushButton#pushButton_item_to_sheet{
-	color: #ffffff;
-    background-color: #3daee9;
-    border: 0.01em solid #3daee9;
-    border-radius: 8px;
-}
-QPushButton#pushButton_item_to_sheet:checked{
-    background-color: #3daee9;
-    border: 0.01em solid #3daee9;
-}
-QPushButton#pushButton_item_to_sheet:hover{
-    background-color: #48b6ed;
-    border-color: #48b6ed;
-}
-QPushButton#pushButton_item_to_sheet:pressed{
-    background-color: #2b92c5;
-    border-color: #2b92c5;
-}
-
-QPushButton#pushButton_item_to_sheet:!checked {
-    background-color: rgba(71, 71, 71, 130);
-    border: 0.01em solid rgba(76, 76, 76, 130);
-    border-radius: 8px;
-    color: grey;
-}
-
-QPushButton:hover#pushButton_item_to_sheet:!checked {
-    background-color: rgba(76, 76, 76, 130);
-    border: 0.01em solid rgba(71, 76, 88, 130);
-}
-
-QPushButton:pressed#pushButton_item_to_sheet:!checked {
-    background-color: rgba(39, 39, 39, 130);
-    border: 0.01em solid rgba(47, 50, 57, 130);
-}</string>
-                                </property>
-                                <property name="text">
-                                 <string>Match Item Cost to Sheet Cost</string>
-                                </property>
-                                <property name="checkable">
-                                 <bool>true</bool>
-                                </property>
-                               </widget>
-                              </item>
-                             </layout>
-                            </widget>
-                           </item>
-                           <item>
-                            <widget class="QGroupBox" name="groupBox_10">
-                             <property name="minimumSize">
-                              <size>
-                               <width>0</width>
-                               <height>130</height>
-                              </size>
-                             </property>
-                             <property name="maximumSize">
-                              <size>
-                               <width>16777215</width>
-                               <height>130</height>
-                              </size>
-                             </property>
-                             <property name="font">
-                              <font>
-                               <pointsize>8</pointsize>
-                              </font>
-                             </property>
-                             <property name="title">
-                              <string>Sheet Quoting Options</string>
-                             </property>
-                             <layout class="QVBoxLayout" name="verticalLayout_47">
-                              <item>
-                               <layout class="QGridLayout" name="gridLayout_7">
-                                <item row="0" column="0">
-                                 <widget class="QLabel" name="label_14">
-                                  <property name="text">
-                                   <string>Overhead (%):</string>
-                                  </property>
-                                 </widget>
-                                </item>
-                                <item row="1" column="0">
-                                 <widget class="QLabel" name="label_19">
-                                  <property name="text">
-                                   <string>Profit Margin (%):</string>
-                                  </property>
-                                 </widget>
-                                </item>
-                                <item row="0" column="1">
-                                 <widget class="QSpinBox" name="spinBox_overhead_sheets">
-                                  <property name="toolTip">
-                                   <string>Default: 18%</string>
-                                  </property>
-                                  <property name="statusTip">
-                                   <string>Default: 18%</string>
-                                  </property>
-                                  <property name="maximum">
-                                   <number>100</number>
-                                  </property>
-                                  <property name="value">
-                                   <number>18</number>
-                                  </property>
-                                 </widget>
-                                </item>
-                                <item row="1" column="1">
-                                 <widget class="QSpinBox" name="spinBox_profit_margin_sheets">
-                                  <property name="toolTip">
-                                   <string>Default: 30%</string>
-                                  </property>
-                                  <property name="statusTip">
-                                   <string>Default: 30%</string>
-                                  </property>
-                                  <property name="maximum">
-                                   <number>100</number>
-                                  </property>
-                                  <property name="value">
-                                   <number>30</number>
-                                  </property>
-                                 </widget>
-                                </item>
-                               </layout>
-                              </item>
-                              <item>
-                               <widget class="QPushButton" name="pushButton_match_sheet_to_item">
-                                <property name="maximumSize">
-                                 <size>
-                                  <width>16777215</width>
-                                  <height>16777215</height>
-                                 </size>
-                                </property>
-                                <property name="statusTip">
-                                 <string>Match sheet cost to item cost</string>
-                                </property>
-                                <property name="text">
-                                 <string>Match Sheet Cost to Item Cost</string>
-                                </property>
-                               </widget>
-                              </item>
-                             </layout>
-                            </widget>
-                           </item>
-                          </layout>
-                         </item>
-                        </layout>
-                       </widget>
-                       <widget class="QGroupBox" name="groupBox_11">
-                        <property name="sizePolicy">
-                         <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-                          <horstretch>0</horstretch>
-                          <verstretch>1</verstretch>
-                         </sizepolicy>
-                        </property>
-                        <property name="minimumSize">
-                         <size>
-                          <width>0</width>
-                          <height>100</height>
-                         </size>
-                        </property>
-                        <property name="title">
-                         <string>Nest Summary</string>
-                        </property>
-                        <layout class="QVBoxLayout" name="verticalLayout_49">
-                         <item>
-                          <widget class="QScrollArea" name="scrollArea_6">
-                           <property name="widgetResizable">
-                            <bool>true</bool>
-                           </property>
-                           <property name="alignment">
-                            <set>Qt::AlignHCenter|Qt::AlignTop</set>
-                           </property>
-                           <widget class="QWidget" name="scrollAreaWidgetContents_5">
-                            <property name="geometry">
-                             <rect>
-                              <x>0</x>
-                              <y>0</y>
-                              <width>423</width>
-                              <height>79</height>
-                             </rect>
-                            </property>
-                            <property name="sizePolicy">
-                             <sizepolicy hsizetype="Preferred" vsizetype="Minimum">
-                              <horstretch>0</horstretch>
-                              <verstretch>0</verstretch>
-                             </sizepolicy>
-                            </property>
-                            <layout class="QVBoxLayout" name="verticalLayout_50">
-                             <property name="sizeConstraint">
-                              <enum>QLayout::SetMinimumSize</enum>
-                             </property>
-                             <item>
-                              <layout class="QGridLayout" name="gridLayout_nest_summary">
-                               <property name="horizontalSpacing">
-                                <number>0</number>
-                               </property>
-                               <item row="0" column="0">
-                                <widget class="QLabel" name="label_20">
-                                 <property name="font">
-                                  <font>
-                                   <family>MS Shell Dlg 2</family>
-                                   <pointsize>8</pointsize>
-                                   <weight>50</weight>
-                                   <bold>false</bold>
-                                  </font>
-                                 </property>
-                                 <property name="text">
-                                  <string>Empty</string>
-                                 </property>
-                                 <property name="alignment">
-                                  <set>Qt::AlignCenter</set>
-                                 </property>
-                                </widget>
-                               </item>
-                              </layout>
-                             </item>
-                             <item>
-                              <spacer name="verticalSpacer_3">
-                               <property name="orientation">
-                                <enum>Qt::Vertical</enum>
-                               </property>
-                               <property name="sizeHint" stdset="0">
-                                <size>
-                                 <width>20</width>
-                                 <height>40</height>
-                                </size>
-                               </property>
-                              </spacer>
-                             </item>
-                            </layout>
-                           </widget>
-                          </widget>
-                         </item>
-                        </layout>
-                       </widget>
-                       <widget class="QGroupBox" name="groupBox_8">
-                        <property name="sizePolicy">
-                         <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-                          <horstretch>0</horstretch>
-                          <verstretch>3</verstretch>
-                         </sizepolicy>
-                        </property>
-                        <property name="minimumSize">
-                         <size>
-                          <width>0</width>
-                          <height>350</height>
-                         </size>
-                        </property>
-                        <property name="title">
-                         <string>Nest Settings</string>
-                        </property>
-                        <layout class="QVBoxLayout" name="verticalLayout_31">
-                         <property name="leftMargin">
-                          <number>3</number>
-                         </property>
-                         <property name="rightMargin">
-                          <number>3</number>
-                         </property>
-                         <property name="bottomMargin">
-                          <number>3</number>
-                         </property>
-                         <item>
-                          <layout class="QVBoxLayout" name="verticalLayout_30">
-                           <item>
-                            <widget class="QScrollArea" name="scrollArea_4">
-                             <property name="styleSheet">
-                              <string notr="true">border: none;</string>
-                             </property>
-                             <property name="widgetResizable">
-                              <bool>true</bool>
-                             </property>
-                             <widget class="QWidget" name="scrollAreaWidgetContents_4">
-                              <property name="geometry">
-                               <rect>
-                                <x>0</x>
-                                <y>0</y>
-                                <width>452</width>
-                                <height>315</height>
-                               </rect>
-                              </property>
-                              <property name="styleSheet">
-                               <string notr="true">border: none;</string>
-                              </property>
-                              <layout class="QVBoxLayout" name="verticalLayout_33">
-                               <property name="spacing">
-                                <number>0</number>
-                               </property>
-                               <property name="leftMargin">
-                                <number>0</number>
-                               </property>
-                               <property name="topMargin">
-                                <number>0</number>
-                               </property>
-                               <property name="rightMargin">
-                                <number>0</number>
-                               </property>
-                               <property name="bottomMargin">
-                                <number>0</number>
-                               </property>
-                               <item>
-                                <layout class="QVBoxLayout" name="verticalLayout_sheets">
-                                 <item>
-                                  <widget class="QLabel" name="label_8">
-                                   <property name="text">
-                                    <string>Empty</string>
-                                   </property>
-                                   <property name="alignment">
-                                    <set>Qt::AlignCenter</set>
-                                   </property>
-                                  </widget>
-                                 </item>
-                                </layout>
-                               </item>
-                              </layout>
-                             </widget>
-                            </widget>
-                           </item>
-                          </layout>
-                         </item>
-                        </layout>
-                       </widget>
-                      </widget>
-                     </item>
-                    </layout>
-                   </widget>
-                  </item>
-                 </layout>
-                </item>
-               </layout>
-              </widget>
-             </item>
-             <item>
-              <widget class="QPushButton" name="pushButton_hide_sheet_settings">
-               <property name="sizePolicy">
-                <sizepolicy hsizetype="Fixed" vsizetype="Expanding">
-                 <horstretch>0</horstretch>
-                 <verstretch>0</verstretch>
-                </sizepolicy>
-               </property>
-               <property name="minimumSize">
-                <size>
-                 <width>15</width>
-                 <height>0</height>
-                </size>
-               </property>
-               <property name="maximumSize">
-                <size>
-                 <width>15</width>
-                 <height>16777215</height>
-                </size>
-               </property>
-               <property name="styleSheet">
-                <string notr="true">
-QPushButton {
-    background-color: rgba(71, 71, 71, 130);
-    border-radius: 8px;
-    padding: 3px 3px;
-    color: rgb(210, 210, 210);
-	border: none;
-}
-
-QPushButton:hover {
-    background-color: rgba(76, 76, 76, 160);
-}
-
-QPushButton:pressed {
-    background-color: rgba(39, 39, 39, 160);
-    color: rgb(132, 132, 132);
-}</string>
-               </property>
-               <property name="text">
-                <string>&lt;
-
-S
-h
-e
-e
-t
-
-s
-e
-t
-t
-i
-n
-g
-s
-
-&lt;</string>
-               </property>
-               <property name="checkable">
-                <bool>true</bool>
-               </property>
-              </widget>
-             </item>
-            </layout>
-           </widget>
-          </item>
-          <item>
-           <layout class="QVBoxLayout" name="verticalLayout_37" stretch="0">
+          <widget class="QWidget" name="layoutWidget">
+           <layout class="QVBoxLayout" name="omnigen_layout" stretch="0">
+            <property name="spacing">
+             <number>6</number>
+            </property>
+            <property name="rightMargin">
+             <number>9</number>
+            </property>
+            <property name="bottomMargin">
+             <number>9</number>
+            </property>
             <item>
-             <widget class="QWidget" name="verticalWidget_4" native="true">
-              <layout class="QVBoxLayout" name="verticalLayout_45" stretch="0,0">
-               <item>
-                <widget class="QSplitter" name="splitter_3">
-                 <property name="layoutDirection">
-                  <enum>Qt::LeftToRight</enum>
-                 </property>
-                 <property name="orientation">
-                  <enum>Qt::Vertical</enum>
-                 </property>
-                 <property name="opaqueResize">
-                  <bool>true</bool>
-                 </property>
-                 <property name="handleWidth">
-                  <number>10</number>
-                 </property>
-                 <property name="childrenCollapsible">
-                  <bool>true</bool>
-                 </property>
-                 <widget class="QWidget" name="widget" native="true">
-                  <property name="sizePolicy">
-                   <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-                    <horstretch>0</horstretch>
-                    <verstretch>1</verstretch>
-                   </sizepolicy>
-                  </property>
-                  <property name="minimumSize">
-                   <size>
-                    <width>0</width>
-                    <height>0</height>
-                   </size>
-                  </property>
-                  <layout class="QVBoxLayout" name="verticalLayout_25">
-                   <property name="spacing">
-                    <number>0</number>
-                   </property>
-                   <property name="sizeConstraint">
-                    <enum>QLayout::SetDefaultConstraint</enum>
-                   </property>
-                   <item>
-                    <layout class="QVBoxLayout" name="verticalLayout_53">
-                     <property name="spacing">
-                      <number>0</number>
-                     </property>
-                    </layout>
-                   </item>
-                  </layout>
-                 </widget>
-                 <widget class="QGroupBox" name="groupBox_7">
-                  <property name="sizePolicy">
-                   <sizepolicy hsizetype="Preferred" vsizetype="Minimum">
-                    <horstretch>0</horstretch>
-                    <verstretch>0</verstretch>
-                   </sizepolicy>
-                  </property>
-                  <property name="title">
-                   <string>Items</string>
-                  </property>
-                  <layout class="QVBoxLayout" name="verticalLayout_44" stretch="1,0">
-                   <item>
-                    <layout class="QVBoxLayout" name="verticalLayout_43"/>
-                   </item>
-                   <item>
-                    <layout class="QHBoxLayout" name="horizontalLayout_16" stretch="0,1,1">
-                     <item>
-                      <layout class="QVBoxLayout" name="verticalLayout_54">
-                       <item>
-                        <widget class="QCheckBox" name="checkBox_components_use_overhead">
-                         <property name="text">
-                          <string>Use Overhead</string>
-                         </property>
-                        </widget>
-                       </item>
-                       <item>
-                        <widget class="QCheckBox" name="checkBox_components_use_profit_margin">
-                         <property name="text">
-                          <string>Use Profit Margin</string>
-                         </property>
-                        </widget>
-                       </item>
-                      </layout>
-                     </item>
-                     <item>
-                      <widget class="QPushButton" name="pushButton_add_component">
-                       <property name="text">
-                        <string>Add Component</string>
-                       </property>
-                      </widget>
-                     </item>
-                     <item>
-                      <widget class="QPushButton" name="pushButton_clear_all_components">
-                       <property name="text">
-                        <string>Clear All Components</string>
-                       </property>
-                      </widget>
-                     </item>
-                    </layout>
-                   </item>
-                  </layout>
-                 </widget>
-                </widget>
-               </item>
-               <item>
-                <layout class="QHBoxLayout" name="horizontalLayout_26">
-                 <item>
-                  <widget class="QLabel" name="label_total_sheet_cost">
-                   <property name="font">
-                    <font>
-                     <pointsize>14</pointsize>
-                    </font>
-                   </property>
-                   <property name="text">
-                    <string>Total Cost for Sheets: $0.00</string>
-                   </property>
-                  </widget>
-                 </item>
-                 <item>
-                  <layout class="QVBoxLayout" name="verticalLayout_48"/>
-                 </item>
-                 <item>
-                  <widget class="QLabel" name="label_total_item_cost">
-                   <property name="font">
-                    <font>
-                     <pointsize>14</pointsize>
-                    </font>
-                   </property>
-                   <property name="text">
-                    <string>Total Cost for Items: $0.00</string>
-                   </property>
-                  </widget>
-                 </item>
-                </layout>
-               </item>
-              </layout>
-             </widget>
+             <spacer name="horizontalSpacer">
+              <property name="orientation">
+               <enum>Qt::Horizontal</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>2000</width>
+                <height>20</height>
+               </size>
+              </property>
+             </spacer>
             </item>
            </layout>
-          </item>
-          <item>
+          </widget>
+          <widget class="QWidget" name="layoutWidget">
            <layout class="QHBoxLayout" name="horizontalLayout_25">
             <property name="spacing">
              <number>0</number>
             </property>
+            <property name="leftMargin">
+             <number>0</number>
+            </property>
+            <property name="bottomMargin">
+             <number>9</number>
+            </property>
             <item>
-             <widget class="QPushButton" name="pushButton_hide_nests">
-              <property name="sizePolicy">
-               <sizepolicy hsizetype="Fixed" vsizetype="Expanding">
-                <horstretch>0</horstretch>
-                <verstretch>0</verstretch>
-               </sizepolicy>
-              </property>
+             <widget class="QWidget" name="verticalLayout_nest_directories_2" native="true">
               <property name="minimumSize">
                <size>
-                <width>15</width>
+                <width>0</width>
                 <height>0</height>
                </size>
               </property>
               <property name="maximumSize">
                <size>
-                <width>15</width>
+                <width>16777215</width>
                 <height>16777215</height>
                </size>
               </property>
-              <property name="styleSheet">
-               <string notr="true">
-QPushButton {
-    background-color: rgba(71, 71, 71, 130);
-    border-radius: 8px;
-    padding: 3px 3px;
-    color: rgb(210, 210, 210);
-	border: none;
-}
-
-QPushButton:hover {
-    background-color: rgba(76, 76, 76, 160);
-}
-
-QPushButton:pressed {
-    background-color: rgba(39, 39, 39, 160);
-    color: rgb(132, 132, 132);
-}</string>
-              </property>
-              <property name="text">
-               <string>&gt;
-
-N
-e
-s
-t
-s
-
-&gt;</string>
-              </property>
-              <property name="checkable">
-               <bool>true</bool>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QWidget" name="verticalLayout_nest_directories_2" native="true">
-              <property name="minimumSize">
-               <size>
-                <width>350</width>
-                <height>0</height>
-               </size>
-              </property>
-              <layout class="QVBoxLayout" name="verticalLayout_nest_directories" stretch="0,1,0">
+              <layout class="QVBoxLayout" name="verticalLayout_nest_directories" stretch="0,1,0,0,0">
                <property name="bottomMargin">
                 <number>1</number>
                </property>
@@ -1844,7 +383,10 @@ s
                   <number>0</number>
                  </property>
                  <property name="usesScrollButtons">
-                  <bool>false</bool>
+                  <bool>true</bool>
+                 </property>
+                 <property name="documentMode">
+                  <bool>true</bool>
                  </property>
                  <widget class="QWidget" name="tab_2">
                   <property name="styleSheet">
@@ -1855,26 +397,26 @@ s
                   </attribute>
                   <layout class="QVBoxLayout" name="verticalLayout_22" stretch="1,0,0">
                    <property name="spacing">
-                    <number>3</number>
+                    <number>6</number>
                    </property>
                    <property name="leftMargin">
-                    <number>3</number>
+                    <number>9</number>
                    </property>
                    <property name="topMargin">
-                    <number>3</number>
+                    <number>9</number>
                    </property>
                    <property name="rightMargin">
-                    <number>3</number>
+                    <number>9</number>
                    </property>
                    <property name="bottomMargin">
-                    <number>3</number>
+                    <number>9</number>
                    </property>
                    <item>
                     <layout class="QVBoxLayout" name="verticalLayout_18">
                      <item>
                       <layout class="QVBoxLayout" name="verticalLayout_24">
                        <property name="spacing">
-                        <number>0</number>
+                        <number>6</number>
                        </property>
                        <property name="leftMargin">
                         <number>0</number>
@@ -1895,7 +437,7 @@ s
                    <item>
                     <layout class="QHBoxLayout" name="horizontalLayout_20">
                      <property name="topMargin">
-                      <number>6</number>
+                      <number>0</number>
                      </property>
                      <item>
                       <widget class="QPushButton" name="pushButton_clear_selections">
@@ -1931,6 +473,66 @@ s
                    </item>
                   </layout>
                  </widget>
+                 <widget class="QWidget" name="tab_7">
+                  <attribute name="title">
+                   <string>Saved Quotes</string>
+                  </attribute>
+                  <layout class="QVBoxLayout" name="verticalLayout_26">
+                   <property name="leftMargin">
+                    <number>9</number>
+                   </property>
+                   <property name="topMargin">
+                    <number>9</number>
+                   </property>
+                   <property name="rightMargin">
+                    <number>9</number>
+                   </property>
+                   <property name="bottomMargin">
+                    <number>9</number>
+                   </property>
+                   <item>
+                    <widget class="QScrollArea" name="scrollArea_2">
+                     <property name="widgetResizable">
+                      <bool>true</bool>
+                     </property>
+                     <widget class="QWidget" name="scrollAreaWidgetContents_2">
+                      <property name="geometry">
+                       <rect>
+                        <x>0</x>
+                        <y>0</y>
+                        <width>80</width>
+                        <height>16</height>
+                       </rect>
+                      </property>
+                      <layout class="QVBoxLayout" name="verticalLayout_6">
+                       <property name="leftMargin">
+                        <number>0</number>
+                       </property>
+                       <property name="topMargin">
+                        <number>0</number>
+                       </property>
+                       <property name="rightMargin">
+                        <number>0</number>
+                       </property>
+                       <property name="bottomMargin">
+                        <number>0</number>
+                       </property>
+                       <item>
+                        <layout class="QVBoxLayout" name="verticalLayout_4"/>
+                       </item>
+                      </layout>
+                     </widget>
+                    </widget>
+                   </item>
+                   <item>
+                    <widget class="QPushButton" name="pushButton_refresh_saved_nests">
+                     <property name="text">
+                      <string>Refresh</string>
+                     </property>
+                    </widget>
+                   </item>
+                  </layout>
+                 </widget>
                  <widget class="QWidget" name="tab_6">
                   <property name="autoFillBackground">
                    <bool>false</bool>
@@ -1939,46 +541,57 @@ s
                    <string notr="true"/>
                   </property>
                   <attribute name="title">
-                   <string>Previous Nests</string>
+                   <string>Previous Quotes</string>
                   </attribute>
                   <layout class="QVBoxLayout" name="verticalLayout_29">
                    <property name="spacing">
-                    <number>3</number>
+                    <number>6</number>
                    </property>
                    <property name="leftMargin">
-                    <number>3</number>
+                    <number>9</number>
                    </property>
                    <property name="topMargin">
-                    <number>3</number>
+                    <number>9</number>
                    </property>
                    <property name="rightMargin">
-                    <number>3</number>
+                    <number>9</number>
                    </property>
                    <property name="bottomMargin">
-                    <number>3</number>
+                    <number>9</number>
                    </property>
                    <item>
-                    <layout class="QVBoxLayout" name="verticalLayout_28">
-                     <item>
-                      <widget class="QTreeView" name="treeView_previous_nests">
-                       <property name="editTriggers">
-                        <set>QAbstractItemView::NoEditTriggers</set>
+                    <widget class="QScrollArea" name="scrollArea">
+                     <property name="widgetResizable">
+                      <bool>true</bool>
+                     </property>
+                     <widget class="QWidget" name="scrollAreaWidgetContents">
+                      <property name="geometry">
+                       <rect>
+                        <x>0</x>
+                        <y>0</y>
+                        <width>80</width>
+                        <height>16</height>
+                       </rect>
+                      </property>
+                      <layout class="QVBoxLayout" name="verticalLayout_3">
+                       <property name="leftMargin">
+                        <number>0</number>
                        </property>
-                       <property name="selectionMode">
-                        <enum>QAbstractItemView::ExtendedSelection</enum>
+                       <property name="topMargin">
+                        <number>0</number>
                        </property>
-                       <property name="indentation">
-                        <number>20</number>
+                       <property name="rightMargin">
+                        <number>0</number>
                        </property>
-                       <property name="sortingEnabled">
-                        <bool>true</bool>
+                       <property name="bottomMargin">
+                        <number>0</number>
                        </property>
-                       <property name="animated">
-                        <bool>true</bool>
-                       </property>
-                      </widget>
-                     </item>
-                    </layout>
+                       <item>
+                        <layout class="QVBoxLayout" name="verticalLayout_28"/>
+                       </item>
+                      </layout>
+                     </widget>
+                    </widget>
                    </item>
                    <item>
                     <widget class="QPushButton" name="pushButton_refresh_previous_nests">
@@ -1987,53 +600,54 @@ s
                      </property>
                     </widget>
                    </item>
-                   <item>
-                    <widget class="QPushButton" name="pushButton_load_previous_nests">
-                     <property name="enabled">
-                      <bool>false</bool>
-                     </property>
-                     <property name="minimumSize">
-                      <size>
-                       <width>0</width>
-                       <height>30</height>
-                      </size>
-                     </property>
-                     <property name="maximumSize">
-                      <size>
-                       <width>16777215</width>
-                       <height>30</height>
-                      </size>
-                     </property>
-                     <property name="text">
-                      <string>Load 0 Previous Nests</string>
-                     </property>
-                    </widget>
-                   </item>
                   </layout>
                  </widget>
                 </widget>
                </item>
                <item>
-                <layout class="QVBoxLayout" name="verticalLayout_27">
+                <widget class="QLabel" name="label_quote_save_status">
+                 <property name="text">
+                  <string/>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <layout class="QHBoxLayout" name="horizontalLayout">
                  <item>
-                  <widget class="QPushButton" name="pushButton_generate_quote">
-                   <property name="minimumSize">
-                    <size>
-                     <width>0</width>
-                     <height>30</height>
-                    </size>
+                  <widget class="QPushButton" name="pushButton_save">
+                   <property name="text">
+                    <string>Save</string>
                    </property>
-                   <property name="font">
-                    <font>
-                     <weight>75</weight>
-                     <bold>true</bold>
-                    </font>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="QPushButton" name="pushButton_save_as">
+                   <property name="text">
+                    <string>Save As...</string>
                    </property>
-                   <property name="styleSheet">
-                    <string notr="true">QPushButton#pushButton_generate_quote{
-	color: #ffffff;
+                  </widget>
+                 </item>
+                </layout>
+               </item>
+               <item>
+                <widget class="QPushButton" name="pushButton_generate_quote">
+                 <property name="minimumSize">
+                  <size>
+                   <width>0</width>
+                   <height>30</height>
+                  </size>
+                 </property>
+                 <property name="font">
+                  <font>
+                   <weight>75</weight>
+                   <bold>true</bold>
+                  </font>
+                 </property>
+                 <property name="styleSheet">
+                  <string notr="true">QPushButton#pushButton_generate_quote{
+    color: #171717;
 	background-color: #3daee9;
-	border: 2px solid #3daee9;
+	border: 1px solid #3daee9;
 	border-radius: 8px;
 	padding: 8px 16px;
 	font-weight: bold;
@@ -2044,7 +658,6 @@ QPushButton#pushButton_generate_quote:hover{
 }
 QPushButton#pushButton_generate_quote:pressed{
 	background-color: #2b92c5;
-	border-color: #2b92c5;
 }
 QPushButton#pushButton_generate_quote:disabled{
 	background-color: rgba(44, 44, 44, 130);
@@ -2052,20 +665,18 @@ QPushButton#pushButton_generate_quote:disabled{
 	color: rgb(144, 144, 144);
 	border-radius: 4px;
 }</string>
-                   </property>
-                   <property name="text">
-                    <string>Generate Quote</string>
-                   </property>
-                  </widget>
-                 </item>
-                </layout>
+                 </property>
+                 <property name="text">
+                  <string>Generate Printout</string>
+                 </property>
+                </widget>
                </item>
               </layout>
              </widget>
             </item>
            </layout>
-          </item>
-         </layout>
+          </widget>
+         </widget>
         </item>
        </layout>
       </widget>
@@ -2077,12 +688,15 @@ QPushButton#pushButton_generate_quote:disabled{
        <attribute name="title">
         <string>Workspace</string>
        </attribute>
-       <layout class="QVBoxLayout" name="verticalLayout_15" stretch="1">
+       <layout class="QVBoxLayout" name="verticalLayout_15" stretch="0">
+        <property name="spacing">
+         <number>6</number>
+        </property>
         <property name="leftMargin">
-         <number>9</number>
+         <number>0</number>
         </property>
         <property name="topMargin">
-         <number>3</number>
+         <number>0</number>
         </property>
         <property name="rightMargin">
          <number>0</number>
@@ -2091,490 +705,15 @@ QPushButton#pushButton_generate_quote:disabled{
          <number>0</number>
         </property>
         <item>
-         <layout class="QHBoxLayout" name="horizontalLayout_5" stretch="7,0">
+         <layout class="QVBoxLayout" name="workspace_layout">
           <property name="bottomMargin">
-           <number>6</number>
+           <number>9</number>
           </property>
-          <item>
-           <layout class="QVBoxLayout" name="workspace_layout"/>
-          </item>
-          <item>
-           <layout class="QVBoxLayout" name="verticalLayout_40">
-            <item>
-             <layout class="QHBoxLayout" name="horizontalLayout_23">
-              <property name="spacing">
-               <number>0</number>
-              </property>
-              <item>
-               <widget class="QPushButton" name="pushButton_hide_filter">
-                <property name="sizePolicy">
-                 <sizepolicy hsizetype="Fixed" vsizetype="Expanding">
-                  <horstretch>0</horstretch>
-                  <verstretch>0</verstretch>
-                 </sizepolicy>
-                </property>
-                <property name="minimumSize">
-                 <size>
-                  <width>15</width>
-                  <height>0</height>
-                 </size>
-                </property>
-                <property name="maximumSize">
-                 <size>
-                  <width>15</width>
-                  <height>16777215</height>
-                 </size>
-                </property>
-                <property name="toolTip">
-                 <string>Show/Hide Filter</string>
-                </property>
-                <property name="statusTip">
-                 <string>Show/Hide Filter</string>
-                </property>
-                <property name="styleSheet">
-                 <string notr="true">
-QPushButton {
-    background-color: rgba(71, 71, 71, 130);
-    border-radius: 8px;
-    padding: 3px 3px;
-    color: rgb(210, 210, 210);
-	border: none;
-}
-
-QPushButton:hover {
-    background-color: rgba(76, 76, 76, 160);
-}
-
-QPushButton:pressed {
-    background-color: rgba(39, 39, 39, 160);
-    color: rgb(132, 132, 132);
-}</string>
-                </property>
-                <property name="text">
-                 <string>&gt;
-
-F
-i
-l
-t
-e
-r
-
-&gt;</string>
-                </property>
-                <property name="shortcut">
-                 <string>Ctrl+F</string>
-                </property>
-                <property name="checkable">
-                 <bool>true</bool>
-                </property>
-               </widget>
-              </item>
-              <item>
-               <widget class="QWidget" name="workspace_side_panel_2" native="true">
-                <property name="minimumSize">
-                 <size>
-                  <width>300</width>
-                  <height>0</height>
-                 </size>
-                </property>
-                <property name="maximumSize">
-                 <size>
-                  <width>300</width>
-                  <height>16777215</height>
-                 </size>
-                </property>
-                <layout class="QVBoxLayout" name="workspace_side_panel">
-                 <item>
-                  <widget class="QPushButton" name="pushButton_use_filter">
-                   <property name="font">
-                    <font>
-                     <pointsize>16</pointsize>
-                    </font>
-                   </property>
-                   <property name="styleSheet">
-                    <string notr="true">QPushButton#pushButton_use_filter{
-	color: #ffffff;
-    background-color: #3daee9;
-    border: 0.01em solid #3daee9;
-    border-radius: 8px;
-}
-QPushButton#pushButton_use_filter:checked{
-    background-color: #3daee9;
-    border: 0.01em solid #3daee9;
-}
-QPushButton#pushButton_use_filter:hover{
-    background-color: #48b6ed;
-    border-color: #48b6ed;
-}
-QPushButton#pushButton_use_filter:pressed{
-    background-color: #2b92c5;
-    border-color: #2b92c5;
-}
-
-QPushButton#pushButton_use_filter:!checked {
-    background-color: rgba(71, 71, 71, 130);
-    border: 0.01em solid rgba(76, 76, 76, 130);
-    border-radius: 8px;
-    color: grey;
-}
-
-QPushButton:hover#pushButton_use_filter:!checked {
-    background-color: rgba(76, 76, 76, 130);
-    border: 0.01em solid rgba(71, 76, 88, 130);
-}
-
-QPushButton:pressed#pushButton_use_filter:!checked {
-    background-color: rgba(39, 39, 39, 130);
-    border: 0.01em solid rgba(47, 50, 57, 130);
-}</string>
-                   </property>
-                   <property name="text">
-                    <string>Filter</string>
-                   </property>
-                   <property name="checkable">
-                    <bool>true</bool>
-                   </property>
-                   <property name="flat">
-                    <bool>false</bool>
-                   </property>
-                  </widget>
-                 </item>
-                 <item>
-                  <layout class="QHBoxLayout" name="horizontalLayout_9">
-                   <item>
-                    <widget class="QPushButton" name="pushButton_show_sub_assembly">
-                     <property name="styleSheet">
-                      <string notr="true">QPushButton#pushButton_show_sub_assembly{
-	color: #ffffff;
-    background-color: #3daee9;
-    border: 0.01em solid #3daee9;
-    border-radius: 8px;
-}
-QPushButton#pushButton_show_sub_assembly:checked{
-    background-color: #3daee9;
-    border: 0.01em solid #3daee9;
-}
-QPushButton#pushButton_show_sub_assembly:hover{
-    background-color: #48b6ed;
-    border-color: #48b6ed;
-}
-QPushButton#pushButton_show_sub_assembly:pressed{
-    background-color: #2b92c5;
-    border-color: #2b92c5;
-}
-
-QPushButton#pushButton_show_sub_assembly:!checked {
-    background-color: rgba(71, 71, 71, 130);
-    border: 0.01em solid rgba(76, 76, 76, 130);
-    border-radius: 8px;
-    color: grey;
-}
-
-QPushButton:hover#pushButton_show_sub_assembly:!checked {
-    background-color: rgba(76, 76, 76, 130);
-    border: 0.01em solid rgba(71, 76, 88, 130);
-}
-
-QPushButton:pressed#pushButton_show_sub_assembly:!checked {
-    background-color: rgba(39, 39, 39, 130);
-    border: 0.01em solid rgba(47, 50, 57, 130);
-}</string>
-                     </property>
-                     <property name="text">
-                      <string>Show Sub Assemblies</string>
-                     </property>
-                     <property name="checkable">
-                      <bool>true</bool>
-                     </property>
-                     <property name="checked">
-                      <bool>true</bool>
-                     </property>
-                    </widget>
-                   </item>
-                   <item>
-                    <widget class="QPushButton" name="pushButton_show_item_summary">
-                     <property name="styleSheet">
-                      <string notr="true">QPushButton#pushButton_show_item_summary{
-	color: #ffffff;
-    background-color: #3daee9;
-    border: 0.01em solid #3daee9;
-    border-radius: 8px;
-}
-QPushButton#pushButton_show_item_summary:checked{
-    background-color: #3daee9;
-    border: 0.01em solid #3daee9;
-}
-QPushButton#pushButton_show_item_summary:hover{
-    background-color: #48b6ed;
-    border-color: #48b6ed;
-}
-QPushButton#pushButton_show_item_summary:pressed{
-    background-color: #2b92c5;
-    border-color: #2b92c5;
-}
-
-QPushButton#pushButton_show_item_summary:!checked {
-    background-color: rgba(71, 71, 71, 130);
-    border: 0.01em solid rgba(76, 76, 76, 130);
-    border-radius: 8px;
-    color: grey;
-}
-
-QPushButton:hover#pushButton_show_item_summary:!checked {
-    background-color: rgba(76, 76, 76, 130);
-    border: 0.01em solid rgba(71, 76, 88, 130);
-}
-
-QPushButton:pressed#pushButton_show_item_summary:!checked {
-    background-color: rgba(39, 39, 39, 130);
-    border: 0.01em solid rgba(47, 50, 57, 130);
-}</string>
-                     </property>
-                     <property name="text">
-                      <string>Show Item Summary</string>
-                     </property>
-                     <property name="checkable">
-                      <bool>true</bool>
-                     </property>
-                    </widget>
-                   </item>
-                  </layout>
-                 </item>
-                 <item>
-                  <widget class="QLineEdit" name="lineEdit_search">
-                   <property name="placeholderText">
-                    <string>Search for items...</string>
-                   </property>
-                   <property name="clearButtonEnabled">
-                    <bool>true</bool>
-                   </property>
-                  </widget>
-                 </item>
-                 <item>
-                  <widget class="QScrollArea" name="scrollArea_5">
-                   <property name="widgetResizable">
-                    <bool>true</bool>
-                   </property>
-                   <widget class="QWidget" name="scrollAreaWidgetContents_6">
-                    <property name="geometry">
-                     <rect>
-                      <x>0</x>
-                      <y>0</y>
-                      <width>280</width>
-                      <height>175</height>
-                     </rect>
-                    </property>
-                    <layout class="QHBoxLayout" name="horizontalLayout_21">
-                     <item>
-                      <layout class="QVBoxLayout" name="filter_layout"/>
-                     </item>
-                    </layout>
-                   </widget>
-                  </widget>
-                 </item>
-                 <item>
-                  <widget class="QGroupBox" name="groupBox_due_dates">
-                   <property name="minimumSize">
-                    <size>
-                     <width>0</width>
-                     <height>350</height>
-                    </size>
-                   </property>
-                   <property name="maximumSize">
-                    <size>
-                     <width>16777215</width>
-                     <height>350</height>
-                    </size>
-                   </property>
-                   <property name="title">
-                    <string>Timeline</string>
-                   </property>
-                   <property name="flat">
-                    <bool>false</bool>
-                   </property>
-                   <property name="checkable">
-                    <bool>true</bool>
-                   </property>
-                   <property name="checked">
-                    <bool>false</bool>
-                   </property>
-                   <layout class="QVBoxLayout" name="verticalLayout_35" stretch="1,0">
-                    <item>
-                     <layout class="QVBoxLayout" name="verticalLayout_calendar_select_range"/>
-                    </item>
-                    <item>
-                     <widget class="QGroupBox" name="groupBox_16">
-                      <property name="title">
-                       <string>Quick Select Timeline</string>
-                      </property>
-                      <layout class="QVBoxLayout" name="verticalLayout_39">
-                       <item>
-                        <widget class="QLabel" name="label_13">
-                         <property name="font">
-                          <font>
-                           <weight>50</weight>
-                           <italic>true</italic>
-                           <bold>false</bold>
-                          </font>
-                         </property>
-                         <property name="text">
-                          <string>* With respect to the current date</string>
-                         </property>
-                        </widget>
-                       </item>
-                       <item>
-                        <layout class="QVBoxLayout" name="verticalLayout_38">
-                         <property name="spacing">
-                          <number>3</number>
-                         </property>
-                         <item>
-                          <layout class="QHBoxLayout" name="horizontalLayout_7">
-                           <item>
-                            <widget class="QLabel" name="label_15">
-                             <property name="minimumSize">
-                              <size>
-                               <width>40</width>
-                               <height>0</height>
-                              </size>
-                             </property>
-                             <property name="maximumSize">
-                              <size>
-                               <width>40</width>
-                               <height>16777215</height>
-                              </size>
-                             </property>
-                             <property name="text">
-                              <string>Due: </string>
-                             </property>
-                            </widget>
-                           </item>
-                           <item>
-                            <widget class="QPushButton" name="pushButton_next_2_days">
-                             <property name="text">
-                              <string>Next 2 Days</string>
-                             </property>
-                            </widget>
-                           </item>
-                           <item>
-                            <widget class="QPushButton" name="pushButton_next_4_days">
-                             <property name="text">
-                              <string>Next 4 Days</string>
-                             </property>
-                            </widget>
-                           </item>
-                           <item>
-                            <widget class="QPushButton" name="pushButton_this_week">
-                             <property name="text">
-                              <string>This Week</string>
-                             </property>
-                            </widget>
-                           </item>
-                          </layout>
-                         </item>
-                        </layout>
-                       </item>
-                      </layout>
-                     </widget>
-                    </item>
-                   </layout>
-                  </widget>
-                 </item>
-                </layout>
-               </widget>
-              </item>
-             </layout>
-            </item>
-            <item>
-             <widget class="QPushButton" name="pushButton_add_job">
-              <property name="text">
-               <string>Add Job</string>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QPushButton" name="pushButton_generate_workorder">
-              <property name="font">
-               <font>
-                <pointsize>12</pointsize>
-                <weight>75</weight>
-                <bold>true</bold>
-               </font>
-              </property>
-              <property name="styleSheet">
-               <string notr="true">QPushButton#pushButton_generate_workorder{
-	color: #ffffff;
-	background-color: #3daee9;
-	border: 2px solid #3daee9;
-	border-radius: 8px;
-	padding: 8px 16px;
-	font-weight: bold;
-}
-QPushButton#pushButton_generate_workorder:hover{
-	background-color: #48b6ed;
-	border-color: #48b6ed;
-}
-QPushButton#pushButton_generate_workorder:pressed{
-	background-color: #2b92c5;
-	border-color: #2b92c5;
-}
-QPushButton#pushButton_generate_workorder:disabled{
-	background-color: rgba(44, 44, 44, 130);
-	border: 1px solid rgba(57, 57, 57, 130);
-	color: rgb(144, 144, 144);
-	border-radius: 4px;
-}</string>
-              </property>
-              <property name="text">
-               <string>Generate Workorder</string>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QPushButton" name="pushButton_generate_workspace_quote">
-              <property name="font">
-               <font>
-                <pointsize>12</pointsize>
-                <weight>75</weight>
-                <bold>true</bold>
-               </font>
-              </property>
-              <property name="styleSheet">
-               <string notr="true">QPushButton#pushButton_generate_workspace_quote{
-	color: #ffffff;
-	background-color: #3daee9;
-	border: 2px solid #3daee9;
-	border-radius: 8px;
-	padding: 8px 16px;
-	font-weight: bold;
-}
-QPushButton#pushButton_generate_workspace_quote:hover{
-	background-color: #48b6ed;
-	border-color: #48b6ed;
-}
-QPushButton#pushButton_generate_workspace_quote:pressed{
-	background-color: #2b92c5;
-	border-color: #2b92c5;
-}
-QPushButton#pushButton_generate_workspace_quote:disabled{
-	background-color: rgba(44, 44, 44, 130);
-	border: 1px solid rgba(57, 57, 57, 130);
-	color: rgb(144, 144, 144);
-	border-radius: 4px;
-}</string>
-              </property>
-              <property name="text">
-               <string>Generate Printout</string>
-              </property>
-             </widget>
-            </item>
-           </layout>
-          </item>
          </layout>
         </item>
        </layout>
       </widget>
-      <widget class="QWidget" name="tab_chat">
+      <widget class="QWidget" name="chat_tab">
        <attribute name="icon">
         <iconset>
          <normaloff>../../../../../.designer/icons/cil-comment-square.png</normaloff>../../../../../.designer/icons/cil-comment-square.png</iconset>
@@ -2594,39 +733,6 @@ QPushButton#pushButton_generate_workspace_quote:disabled{
         <layout class="QVBoxLayout" name="verticalLayout_34"/>
        </widget>
       </widget>
-      <widget class="QWidget" name="view_inventory_tab">
-       <attribute name="icon">
-        <iconset>
-         <normaloff>../../../../../.designer/icons/cil-notes.png</normaloff>../../../../../.designer/icons/cil-notes.png</iconset>
-       </attribute>
-       <attribute name="title">
-        <string>View Inventory (Read Only)</string>
-       </attribute>
-       <layout class="QHBoxLayout" name="horizontalLayout_14">
-        <property name="leftMargin">
-         <number>9</number>
-        </property>
-        <property name="topMargin">
-         <number>0</number>
-        </property>
-        <property name="rightMargin">
-         <number>9</number>
-        </property>
-        <property name="bottomMargin">
-         <number>0</number>
-        </property>
-        <item>
-         <layout class="QVBoxLayout" name="verticalLayout_4">
-          <property name="rightMargin">
-           <number>0</number>
-          </property>
-          <item>
-           <layout class="QGridLayout" name="search_layout"/>
-          </item>
-         </layout>
-        </item>
-       </layout>
-      </widget>
       <widget class="QWidget" name="tab_3">
        <attribute name="icon">
         <iconset>
@@ -2636,14 +742,17 @@ QPushButton#pushButton_generate_workspace_quote:disabled{
         <string>View Removed Quantities History</string>
        </attribute>
        <layout class="QVBoxLayout" name="verticalLayout_8">
+        <property name="spacing">
+         <number>6</number>
+        </property>
         <property name="leftMargin">
-         <number>9</number>
+         <number>0</number>
         </property>
         <property name="topMargin">
          <number>0</number>
         </property>
         <property name="rightMargin">
-         <number>9</number>
+         <number>0</number>
         </property>
         <property name="bottomMargin">
          <number>0</number>
@@ -2652,6 +761,9 @@ QPushButton#pushButton_generate_workspace_quote:disabled{
          <layout class="QVBoxLayout" name="verticalLayout_5">
           <property name="rightMargin">
            <number>0</number>
+          </property>
+          <property name="bottomMargin">
+           <number>9</number>
           </property>
           <item>
            <layout class="QHBoxLayout" name="horizontalLayout_11">
@@ -2736,14 +848,17 @@ QPushButton#pushButton_generate_workspace_quote:disabled{
         <string>View Price Changes History</string>
        </attribute>
        <layout class="QVBoxLayout" name="verticalLayout_9">
+        <property name="spacing">
+         <number>6</number>
+        </property>
         <property name="leftMargin">
-         <number>9</number>
+         <number>0</number>
         </property>
         <property name="topMargin">
          <number>0</number>
         </property>
         <property name="rightMargin">
-         <number>9</number>
+         <number>0</number>
         </property>
         <property name="bottomMargin">
          <number>0</number>
@@ -2782,17 +897,20 @@ QPushButton#pushButton_generate_workspace_quote:disabled{
     </item>
     <item>
      <layout class="QVBoxLayout" name="verticalLayout_status">
+      <property name="spacing">
+       <number>0</number>
+      </property>
       <property name="leftMargin">
-       <number>6</number>
+       <number>0</number>
       </property>
       <property name="topMargin">
-       <number>3</number>
+       <number>0</number>
       </property>
       <property name="rightMargin">
-       <number>6</number>
+       <number>0</number>
       </property>
       <property name="bottomMargin">
-       <number>3</number>
+       <number>0</number>
       </property>
      </layout>
     </item>
@@ -2803,7 +921,7 @@ QPushButton#pushButton_generate_workspace_quote:disabled{
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1357</width>
+     <width>1075</width>
      <height>22</height>
     </rect>
    </property>
@@ -2811,30 +929,6 @@ QPushButton#pushButton_generate_workspace_quote:disabled{
     <property name="title">
      <string>File</string>
     </property>
-    <widget class="QMenu" name="menuOpen_Category">
-     <property name="statusTip">
-      <string>Quick load categories</string>
-     </property>
-     <property name="title">
-      <string>Open Category</string>
-     </property>
-    </widget>
-    <widget class="QMenu" name="menuInventory">
-     <property name="title">
-      <string>Add/Remove/Clone Category</string>
-     </property>
-     <addaction name="actionCreate_Category"/>
-     <addaction name="actionDelete_Category"/>
-     <addaction name="separator"/>
-     <addaction name="actionClone_Category"/>
-    </widget>
-    <addaction name="menuInventory"/>
-    <addaction name="separator"/>
-    <addaction name="menuOpen_Category"/>
-    <addaction name="separator"/>
-    <addaction name="actionBackup"/>
-    <addaction name="actionLoad_Backup"/>
-    <addaction name="separator"/>
     <addaction name="actionPrint_Inventory"/>
     <addaction name="separator"/>
     <addaction name="actionOpen_Item_History"/>
@@ -2848,7 +942,6 @@ QPushButton#pushButton_generate_workspace_quote:disabled{
     <addaction name="actionChange_tables_font"/>
     <addaction name="actionSet_Order_Number"/>
     <addaction name="action_Set_User_Workspace"/>
-    <addaction name="actionEdit_Sheets"/>
    </widget>
    <widget class="QMenu" name="menuHelp">
     <property name="title">
@@ -2868,7 +961,6 @@ QPushButton#pushButton_generate_workspace_quote:disabled{
     </property>
     <addaction name="actionAlphabatical"/>
     <addaction name="actionQuantity_in_Stock"/>
-    <addaction name="actionPriority"/>
     <addaction name="separator"/>
     <addaction name="actionAscending"/>
     <addaction name="actionDescending"/>
@@ -2888,13 +980,12 @@ QPushButton#pushButton_generate_workspace_quote:disabled{
    </widget>
    <widget class="QMenu" name="menuQuote_Generator">
     <property name="title">
-     <string>OmniGen</string>
+     <string>Quote Generator</string>
     </property>
     <addaction name="actionAdd_Nest_Directory"/>
     <addaction name="actionRemove_Nest_Directory"/>
     <addaction name="separator"/>
-    <addaction name="actionOpen_Quotes_Directory"/>
-    <addaction name="actionOpen_Workorders_Directory"/>
+    <addaction name="actionEdit_Paint_in_Inventory"/>
    </widget>
    <widget class="QMenu" name="menuJobSorter">
     <property name="title">
@@ -2919,6 +1010,11 @@ QPushButton#pushButton_generate_workspace_quote:disabled{
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
   <action name="actionExit">
+   <property name="icon">
+    <iconset>
+     <normalon>svg/window_close.svg</normalon>
+    </iconset>
+   </property>
    <property name="text">
     <string>Exit</string>
    </property>
@@ -2941,6 +1037,11 @@ QPushButton#pushButton_generate_workspace_quote:disabled{
    </property>
   </action>
   <action name="actionAbout_Qt">
+   <property name="icon">
+    <iconset>
+     <normalon>svg/file_dialog_info.svg</normalon>
+    </iconset>
+   </property>
    <property name="text">
     <string>About Qt</string>
    </property>
@@ -2959,6 +1060,11 @@ QPushButton#pushButton_generate_workspace_quote:disabled{
    </property>
   </action>
   <action name="actionCheck_for_Updates">
+   <property name="icon">
+    <iconset>
+     <normalon>svg/restore_defaults.svg</normalon>
+    </iconset>
+   </property>
    <property name="text">
     <string>Check for Updates...</string>
    </property>
@@ -2967,14 +1073,16 @@ QPushButton#pushButton_generate_workspace_quote:disabled{
    </property>
   </action>
   <action name="actionAbout">
+   <property name="icon">
+    <iconset>
+     <normalon>svg/file_dialog_info.svg</normalon>
+    </iconset>
+   </property>
    <property name="text">
     <string>About</string>
    </property>
    <property name="statusTip">
     <string>Shows license, version, distrbuter and webpage.</string>
-   </property>
-   <property name="iconVisibleInMenu">
-    <bool>true</bool>
    </property>
   </action>
   <action name="actionBackup">
@@ -3103,6 +1211,11 @@ QPushButton#pushButton_generate_workspace_quote:disabled{
    </property>
   </action>
   <action name="actionAdd_Purchase_Order">
+   <property name="icon">
+    <iconset>
+     <normalon>svg/file.svg</normalon>
+    </iconset>
+   </property>
    <property name="text">
     <string>Add Purchase Order Template</string>
    </property>
@@ -3110,10 +1223,15 @@ QPushButton#pushButton_generate_workspace_quote:disabled{
     <string>Add a new Purchase Order</string>
    </property>
    <property name="iconVisibleInMenu">
-    <bool>false</bool>
+    <bool>true</bool>
    </property>
   </action>
   <action name="actionRemove_Purchase_Order">
+   <property name="icon">
+    <iconset>
+     <normalon>svg/trash.svg</normalon>
+    </iconset>
+   </property>
    <property name="text">
     <string>Remove Purchase Order Template</string>
    </property>
@@ -3121,10 +1239,15 @@ QPushButton#pushButton_generate_workspace_quote:disabled{
     <string>Remove a PO Template, BUT does NOT remove the generated PO's</string>
    </property>
    <property name="iconVisibleInMenu">
-    <bool>false</bool>
+    <bool>true</bool>
    </property>
   </action>
   <action name="actionOpen_Purchase_Order">
+   <property name="icon">
+    <iconset>
+     <normalon>svg/file_dialog_start.svg</normalon>
+    </iconset>
+   </property>
    <property name="text">
     <string>Open Purchase Order</string>
    </property>
@@ -3132,7 +1255,7 @@ QPushButton#pushButton_generate_workspace_quote:disabled{
     <string>Generate and open the selected Purchase Order</string>
    </property>
    <property name="iconVisibleInMenu">
-    <bool>false</bool>
+    <bool>true</bool>
    </property>
   </action>
   <action name="actionRelease_Notes">
@@ -3147,6 +1270,11 @@ QPushButton#pushButton_generate_workspace_quote:disabled{
    </property>
   </action>
   <action name="actionWebsite">
+   <property name="icon">
+    <iconset>
+     <normalon>svg/network_drive.svg</normalon>
+    </iconset>
+   </property>
    <property name="text">
     <string>Website</string>
    </property>
@@ -3166,6 +1294,11 @@ QPushButton#pushButton_generate_workspace_quote:disabled{
    </property>
   </action>
   <action name="actionOpen_Folder">
+   <property name="icon">
+    <iconset>
+     <normalon>svg/folder_open.svg</normalon>
+    </iconset>
+   </property>
    <property name="text">
     <string>Open Folder</string>
    </property>
@@ -3173,7 +1306,7 @@ QPushButton#pushButton_generate_workspace_quote:disabled{
     <string>Open PO's directory in windows explorer</string>
    </property>
    <property name="iconVisibleInMenu">
-    <bool>false</bool>
+    <bool>true</bool>
    </property>
   </action>
   <action name="actionCreate_Category">
@@ -3212,6 +1345,11 @@ QPushButton#pushButton_generate_workspace_quote:disabled{
    </property>
   </action>
   <action name="actionAdd_Nest_Directory">
+   <property name="icon">
+    <iconset>
+     <normalon>svg/folder.svg</normalon>
+    </iconset>
+   </property>
    <property name="text">
     <string>Add Nest Directory</string>
    </property>
@@ -3219,15 +1357,20 @@ QPushButton#pushButton_generate_workspace_quote:disabled{
     <enum>QAction::TextHeuristicRole</enum>
    </property>
    <property name="iconVisibleInMenu">
-    <bool>false</bool>
+    <bool>true</bool>
    </property>
   </action>
   <action name="actionRemove_Nest_Directory">
+   <property name="icon">
+    <iconset>
+     <normalon>svg/trash.svg</normalon>
+    </iconset>
+   </property>
    <property name="text">
     <string>Remove Nest Directory</string>
    </property>
    <property name="iconVisibleInMenu">
-    <bool>false</bool>
+    <bool>true</bool>
    </property>
   </action>
   <action name="actionOpen_Quotes_Directory">
@@ -3260,6 +1403,10 @@ QPushButton#pushButton_generate_workspace_quote:disabled{
    </property>
   </action>
   <action name="actionOpenMenu">
+   <property name="icon">
+    <iconset>
+     <normaloff>svg/restore.svg</normaloff>svg/restore.svg</iconset>
+   </property>
    <property name="text">
     <string>Open Menu</string>
    </property>
@@ -3285,6 +1432,11 @@ QPushButton#pushButton_generate_workspace_quote:disabled{
   <action name="actionEdit_Sheets">
    <property name="text">
     <string>Edit Sheets</string>
+   </property>
+  </action>
+  <action name="actionEdit_Paint_in_Inventory">
+   <property name="text">
+    <string>Edit Paint in Inventory</string>
    </property>
   </action>
  </widget>

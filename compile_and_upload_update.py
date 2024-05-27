@@ -6,15 +6,7 @@ import sys
 import zipfile
 from datetime import datetime
 
-from PyQt6.QtWidgets import (
-    QApplication,
-    QHBoxLayout,
-    QLabel,
-    QLineEdit,
-    QPushButton,
-    QVBoxLayout,
-    QWidget,
-)
+from PyQt6.QtWidgets import QApplication, QHBoxLayout, QLabel, QLineEdit, QPushButton, QVBoxLayout, QWidget
 
 from ui.theme import set_theme
 
@@ -86,12 +78,11 @@ class VersionUpdater(QWidget):
 
     def calculate_versions(self, current_version):
         parts = [int(x) for x in current_version.replace("v", "").split(".")]
-        versions = {
+        return {
             "major": f"v{parts[0]+1}.0.0",
             "minor": f"v{parts[0]}.{parts[1]+1}.0",
             "quick_fix": f"v{parts[0]}.{parts[1]}.{parts[2]+1}",
         }
-        return versions
 
     def on_generate(self):
         VersionUpdater.selected_version = self.version_input.text()
@@ -104,21 +95,20 @@ class VersionUpdater(QWidget):
 def get_current_version(path_to_script):
     version_pattern = r"__version__\s*:\s*str\s*=\s*\"([^\"]+)\""
     try:
-        with open(path_to_script, "r") as file:
+        with open(path_to_script, "r", encoding="utf-8") as file:
             contents = file.read()
-        match = re.search(version_pattern, contents)
-        if match:
-            return match.group(1)
+        if match := re.search(version_pattern, contents):
+            return match[1]
     except FileNotFoundError:
         print("File not found. Please check the path.")
     return "v0.0.0"
 
 
-def get_new_version(path_to_main_script: str) -> str | None:
+def get_new_version(path_to_file: str) -> str | None:
     app = QApplication(sys.argv)
     set_theme(app, theme="dark")
 
-    current_version = get_current_version(path_to_main_script)
+    current_version = get_current_version(path_to_file)
 
     main_window = VersionUpdater(current_version)
     main_window.show()
@@ -128,16 +118,16 @@ def get_new_version(path_to_main_script: str) -> str | None:
     return VersionUpdater.selected_version
 
 
-def set_new_version(file_path: str, new_version: str) -> bool:
+def set_new_version(file_path: str, version: str) -> bool:
     version_pattern = re.compile(r'(__version__\s*:\s*str\s*=\s*".*")')
     try:
-        with open(file_path, "r") as file:
+        with open(file_path, "r", encoding="utf-8") as file:
             contents = file.readlines()
         for i, line in enumerate(contents):
             if "__version__" in line:
-                contents[i] = re.sub(version_pattern, f'__version__: str = "{new_version}"', line)
+                contents[i] = re.sub(version_pattern, f'__version__: str = "{version}"', line)
                 break
-        with open(file_path, "w") as file:
+        with open(file_path, "w", encoding="utf-8") as file:
             file.writelines(contents)
         print("Version updated successfully.")
     except Exception as e:
@@ -177,7 +167,7 @@ def update_timestamp(file_path: str) -> bool:
     current_datetime = datetime.now().strftime(datetime_format)
 
     try:
-        with open(file_path, "r") as file:
+        with open(file_path, "r", encoding="utf-8") as file:
             contents = file.readlines()
         pattern = re.compile(r'(__updated__:\s*str\s*=\s*")[^"]+(")')
 
@@ -186,7 +176,7 @@ def update_timestamp(file_path: str) -> bool:
             new_line = pattern.sub(rf"\g<1>{current_datetime}\g<2>", line)
             updated_contents.append(new_line)
 
-        with open(file_path, "w") as file:
+        with open(file_path, "w", encoding="utf-8") as file:
             file.writelines(updated_contents)
 
         print("Successfully updated the timestamp.")
@@ -196,7 +186,7 @@ def update_timestamp(file_path: str) -> bool:
     return True
 
 
-def compile(spec_file: str) -> bool:
+def run_pyinstaller(spec_file: str) -> bool:
     try:
         print("Running `pyinstaller Invigo.spec`.")
         subprocess.run(["pyinstaller", spec_file], check=True)
@@ -210,10 +200,10 @@ def compile(spec_file: str) -> bool:
 def zip_files(source_dir: str, output_zip: str) -> bool:
     files_to_ignore = ["desktop.ini", "update.exe", "update - Copy.exe"]
     try:
-        output_zip_path = f"{output_zip}.zip" if not output_zip.endswith(".zip") else output_zip
+        output_zip_path = output_zip if output_zip.endswith(".zip") else f"{output_zip}.zip"
         print("Zipping files.")
         with zipfile.ZipFile(output_zip_path, "w", zipfile.ZIP_DEFLATED) as zf:
-            for dirpath, dirnames, filenames in os.walk(source_dir):
+            for dirpath, _, filenames in os.walk(source_dir):
                 for filename in filenames:
                     print(f"{dirpath}\\{filename}")
                     if filename in files_to_ignore:
@@ -242,7 +232,7 @@ def copy_file(source: str, destination: str) -> bool:
 def update_web_version(version: str) -> bool:
     try:
         print("Updating web version.")
-        with open(path_to_web_version, "w") as file:
+        with open(path_to_web_version, "w", encoding="utf-8") as file:
             file.write(version)
         print(f"{path_to_web_version} successfully updated.")
     except Exception as e:
@@ -261,11 +251,11 @@ path_to_web_version = r"\\Pinecone\web\Invigo\static\version.txt"
 
 
 if __name__ == "__main__":
-    if new_version := get_new_version(path_to_main_script=path_to_main_script):
-        if set_new_version(file_path=path_to_main_script, new_version=new_version):
+    if new_version := get_new_version(path_to_file=path_to_main_script):
+        if set_new_version(file_path=path_to_main_script, version=new_version):
             if copy_folders_and_clean(folders=["icons", "ui", "utils"], destination="dist"):
                 if update_timestamp(file_path=path_to_main_script):
-                    if compile(spec_file=spec_file_name):
+                    if run_pyinstaller(spec_file=spec_file_name):
                         if zip_files(source_dir=dist_dir, output_zip=output_zip_name):
                             if copy_file(
                                 source=zip_file,

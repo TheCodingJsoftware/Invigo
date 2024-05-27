@@ -1,26 +1,12 @@
 import contextlib
 import copy
-import json
 import sys
 from datetime import datetime
 from functools import partial
 
 import ujson as json
 from PyQt6.QtCore import Qt, pyqtSignal
-from PyQt6.QtWidgets import (
-    QHBoxLayout,
-    QInputDialog,
-    QLabel,
-    QListWidget,
-    QListWidgetItem,
-    QMainWindow,
-    QPushButton,
-    QTableWidget,
-    QTableWidgetItem,
-    QTabWidget,
-    QVBoxLayout,
-    QWidget,
-)
+from PyQt6.QtWidgets import QHBoxLayout, QInputDialog, QLabel, QListWidget, QListWidgetItem, QMainWindow, QPushButton, QTableWidget, QTableWidgetItem, QTabWidget, QVBoxLayout, QWidget
 
 from utils.json_file import JsonFile
 from utils.settings import Settings
