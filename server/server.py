@@ -202,22 +202,28 @@ class CommandHandler(tornado.web.RequestHandler):
 
 
 class SetOrderNumberHandler(tornado.web.RequestHandler):
-    def post(self):
-        order_number = self.get_argument("order_number")
-        if order_number is not None:
-            with open("order_number.json", "r", encoding="utf-8") as file:
-                json_file = json.load(file)
-                json_file["order_number"] = int(order_number)
+    def post(self, order_number):
+        try:
+            order_number = int(order_number)
+            file_path = "order_number.json"
+            if os.path.exists(file_path):
+                with open(file_path, "r", encoding="utf-8") as file:
+                    json_file = json.load(file)
+            else:
+                json_file = {}
 
-            with open("order_number.json", "w", encoding="utf-8") as file:
+            json_file["order_number"] = order_number
+            with open(file_path, "w", encoding="utf-8") as file:
                 json.dump(json_file, file)
 
             CustomPrint.print(
-                f"INFO - {self.request.remote_ip} set order number to {order_number}",
+                f"INFO - {self.request.remote_ip} set order number to {order_number})",
                 connected_clients=connected_clients,
             )
-        else:
-            self.set_status(400)
+            self.write("Order number updated successfully.")
+        except Exception as e:
+            self.set_status(500)
+            self.write(f"Failed to set order number: {str(e)}")
 
 
 class GetOrderNumberHandler(tornado.web.RequestHandler):
@@ -699,7 +705,7 @@ if __name__ == "__main__":
             (r"/ws", FileSenderHandler),
             (r"/image/(.*)", ImageHandler),
             (r"/images/(.*)", ImageHandler),
-            (r"/set_order_number", SetOrderNumberHandler),
+            (r"/set_order_number/(\d+)", SetOrderNumberHandler),
             (r"/get_order_number", GetOrderNumberHandler),
             (r"/sheets_in_inventory/(.*)", SheetQuantityHandler),
             (r"/add_cutoff_sheet", AddCutoffSheetHandler),
