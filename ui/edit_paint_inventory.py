@@ -181,6 +181,8 @@ class EditPaintInventory(QDialog):
         self.sync_changes()
 
     def apply_changes(self):
+        if not self.selected_item:
+            return
         self.selected_item.color = self.selected_color
         if self.comboBox_type.currentText() == "Primer":
             self.selected_item.average_coverage = self.doubleSpinBox_average_coverage.value()
@@ -282,4 +284,9 @@ class EditPaintInventory(QDialog):
         return self.shelf_number
 
     def sync_changes(self):
-        self.parent.sync_changes()
+        self.parent.upload_file(
+            [
+                "paint_inventory.json",
+            ],
+            False,
+        )
