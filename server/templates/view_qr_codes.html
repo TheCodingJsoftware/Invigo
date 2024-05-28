@@ -98,11 +98,10 @@
 
 <script>
     document.addEventListener('DOMContentLoaded', function () {
-        baseUrl = "http://10.0.0.9:8080/sheets_in_inventory/";
+        baseUrl = "http://invi.go/";
         document.querySelectorAll('.qr-item').forEach(item => {
             const name = item.getAttribute('data-name');
             if (name == "add_cutoff_sheet") {
-                baseUrl = "http://10.0.0.9:8080/";
                 const encodedUrl = encodeURI(baseUrl + name.replace(/ /g, "_"));
                 const qrDiv = item.querySelector('.qr-code');
                 new QRCode(qrDiv, {
@@ -118,7 +117,8 @@
                     window.open(encodedUrl, '_blank');
                 });
             } else {
-                const encodedUrl = encodeURI(baseUrl + name.replace(/ /g, "_"));
+                sheetsUrl = baseUrl + "sheets_in_inventory/"
+                const encodedUrl = encodeURI(sheetsUrl + name.replace(/ /g, "_"));
                 const qrDiv = item.querySelector('.qr-code');
                 new QRCode(qrDiv, {
                     text: encodedUrl,
