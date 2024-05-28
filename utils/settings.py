@@ -43,7 +43,6 @@ class Settings:
         self.save_data()
 
     def default_settings(self) -> None:
-        self.data.setdefault("server_directory", r"C:\Users\Invigo\Inventory-Manager\server")
         self.data.setdefault("open_quote_when_generated", True)
         self.data.setdefault("open_workorder_when_generated", True)
         self.data.setdefault("open_packing_slip_when_generated", True)

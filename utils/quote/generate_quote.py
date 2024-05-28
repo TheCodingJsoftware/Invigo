@@ -13,7 +13,7 @@ class CoverPage:
     def __init__(self, title: str, quote: Quote) -> None:
         self.title = title
         self.quote = quote
-        self.server_directory = f"http://{get_server_ip_address()}:{get_server_port()}"
+        self.server_directory = f"http://{get_server_ip_address()}"
 
     def generate(self) -> str:
         return f"""<div id="cover-page">
@@ -62,7 +62,7 @@ class CoverPage:
 class SheetsPictures:
     def __init__(self, nests: list[Nest]) -> None:
         self.nests = nests
-        self.server_directory = f"http://{get_server_ip_address()}:{get_server_port()}"
+        self.server_directory = f"http://{get_server_ip_address()}"
 
     def generate(self) -> str:
         sheets_picture_html = '<div class="nests">'
@@ -137,7 +137,7 @@ class LaserCutPartsTable:
             "Price",
         ]
         self.laser_cut_parts = laser_cut_parts
-        self.server_directory = f"http://{get_server_ip_address()}:{get_server_port()}"
+        self.server_directory = f"http://{get_server_ip_address()}"
 
     def generate_laser_cut_part_data(self, laser_cut_part: LaserCutPart) -> str:
         html = """<table class="dltrc" style="background:none;"><tbody>
@@ -221,7 +221,7 @@ class LaserCutPartsTable:
 class ComponentsTable:
     def __init__(self, components: list[Component]) -> None:
         self.components = components
-        self.server_directory = f"http://{get_server_ip_address()}:{get_server_port()}"
+        self.server_directory = f"http://{get_server_ip_address()}"
         self.headers = ["Picture", "Part Name", "Part #", "Shelf #", "Qty", "Price"]
 
     def generate_components_data(self, component: Component) -> str:
