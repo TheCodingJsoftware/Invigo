@@ -44,6 +44,13 @@ env = jinja2.Environment(loader=loader)
 
 class MainHandler(tornado.web.RequestHandler):
     def get(self):
+        template = env.get_template("index.html")
+        rendered_template = template.render()
+        self.write(rendered_template)
+
+
+class ServerLogsHandler(tornado.web.RequestHandler):
+    def get(self):
         logs = print_clients() + sys.stdout.getvalue()
         converter = Ansi2HTMLConverter()
         logs = converter.convert(logs)
@@ -697,6 +704,7 @@ if __name__ == "__main__":
     app = tornado.web.Application(
         [
             (r"/", MainHandler),
+            (r"/logs", ServerLogsHandler),
             (r"/file/(.*)", FileReceiveHandler),
             (r"/command", CommandHandler),
             (r"/upload", FileUploadHandler),
@@ -726,6 +734,6 @@ if __name__ == "__main__":
     )
     # executor = concurrent.futures.ThreadPoolExecutor(max_workers=10)
     # app.executor = executor
-    app.listen(80)
+    app.listen(8080)
     CustomPrint.print("INFO - Invigo server started")
     tornado.ioloop.IOLoop.current().start()
