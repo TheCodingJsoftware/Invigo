@@ -81,9 +81,9 @@ class Settings:
         self.data.setdefault(
             "menu_tabs_order",
             [
-                "Edit Components",
-                "Edit Sheets in Inventory",
-                "Edit Laser Cut Inventory",
+                "Components",
+                "Sheets in Inventory",
+                "Laser Cut Inventory",
                 "Quote Generator",
                 "Workspace",
                 "Chat",
