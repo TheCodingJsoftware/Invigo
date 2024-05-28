@@ -208,7 +208,7 @@ QPushButton#pushButton_item:pressed{
 QPushButton#pushButton_item:!checked {
     background-color: rgba(71, 71, 71, 130);
     border-color: rgba(71, 71, 71, 130);
-    color: grey;
+    color: #8C8C8C;
 }
 
 QPushButton:hover#pushButton_item:!checked {
@@ -268,7 +268,7 @@ QPushButton#pushButton_category:pressed{
 QPushButton#pushButton_category:!checked {
     background-color: rgba(71, 71, 71, 130);
     border-color: rgba(71, 71, 71, 130);
-    color: grey;
+    color: #8C8C8C;
 }
 
 QPushButton:hover#pushButton_category:!checked {

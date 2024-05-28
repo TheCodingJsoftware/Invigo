@@ -94,7 +94,7 @@ QScrollArea {
 }
 
 QDockWidget {
-    color: grey;
+    color: #8C8C8C;
 }
 
 
@@ -222,7 +222,7 @@ QPushButton:pressed {
 
 QPushButton:disabled {
     background-color: rgba(44, 44, 44, 0.6);
-    color: grey;
+    color: #8C8C8C;
 }
 
 QPushButton:checked {
@@ -415,7 +415,7 @@ QRadioButton::indicator:!checked:pressed {
 QRadioButton::indicator:disabled {
     background-color: rgba(44, 44, 44, 0.6);
     border: 1px solid rgba(57, 57, 57, 0.6);
-    color: grey;
+    color: #8C8C8C;
     border-radius: 5px;
 }
 
@@ -471,11 +471,11 @@ QToolButton:pressed {
 QToolButton:disabled {
     background-color: rgba(44, 44, 44, 0.6);
     border: none;
-    color: grey;
+    color: #8C8C8C;
 }
 
 QCheckBox {
-    color: grey;
+    color: #8C8C8C;
 }
 
 QCheckBox:hover {
@@ -509,7 +509,7 @@ QCheckBox:checked {
 /* Item Widgets */
 
 QHeaderView:section {
-    color: grey;
+    color: #8C8C8C;
     background: rgb(57, 57, 57);
     border: 0px solid rgb(44, 44, 44);
     border-radius: 0px;
@@ -594,7 +594,7 @@ QTreeWidget::indicator {
 }
 
 QTreeWidget::indicator:checked {
-    border: 3px solid grey;
+    border: 3px solid #8C8C8C;
     border: 1px solid rgba(67, 71, 77, 0.6);
 }
 
@@ -791,7 +791,7 @@ QComboBox:hover {
 }
 
 QComboBox:disabled {
-    color: rgba(102, 102, 102, 130);
+    color: #8C8C8C;
 }
 
 QComboBox::drop-down:button {
@@ -808,18 +808,21 @@ QComboBox QAbstractItemView {
     border-radius: 0px;
     min-width: 150px;
 }
+
 QComboBox::item {
-    color: gray;
+    color: #8C8C8C;
     border: 1px solid transparent;
     height: 25px;
     padding: 1px;
- }
- QComboBox::item:selected {
-    color: #171717;
-    background-color: #3daee9;
- }
+}
 
- QComboBox::item:checked {
+QComboBox::item:selected {
+    color: #EAE9FC;
+    border-color: #3daee9;
+}
+
+
+QComboBox::item:checked {
     color: #171717;
     background-color: #3daee9;
     border-color: #171717;
@@ -932,7 +935,7 @@ QDoubleSpinBox:focus {
 }
 
 QDoubleSpinBox:disabled {
-    color: grey;
+    color: #8C8C8C;
 }
 
 QAbstractSpinBox:up-button,

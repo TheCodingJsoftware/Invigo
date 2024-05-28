@@ -490,7 +490,7 @@ QPushButton#pushButton_item_to_sheet:pressed{
 QPushButton#pushButton_item_to_sheet:!checked {
     background-color: rgba(71, 71, 71, 130);
     border-color: rgba(71, 71, 71, 130);
-    color: grey;
+    color: #8C8C8C;
 }
 
 QPushButton:hover#pushButton_item_to_sheet:!checked {
@@ -738,7 +738,7 @@ QPushButton#pushButton_toggle_primer:pressed{
 QPushButton#pushButton_toggle_primer:!checked {
     background-color: rgba(71, 71, 71, 130);
     border-color: rgba(71, 71, 71, 130);
-    color: grey;
+    color: #8C8C8C;
 }
 
 QPushButton:hover#pushButton_toggle_primer:!checked {
@@ -860,7 +860,7 @@ QPushButton#pushButton_toggle_paint:pressed{
 QPushButton#pushButton_toggle_paint:!checked {
     background-color: rgba(71, 71, 71, 130);
     border-color: rgba(71, 71, 71, 130);
-    color: grey;
+    color: #8C8C8C;
 }
 
 QPushButton:hover#pushButton_toggle_paint:!checked {
@@ -959,7 +959,7 @@ QPushButton#pushButton_toggle_powder_coating:pressed{
 QPushButton#pushButton_toggle_powder_coating:!checked {
     background-color: rgba(71, 71, 71, 130);
     border-color: rgba(71, 71, 71, 130);
-    color: grey;
+    color: #8C8C8C;
 }
 
 QPushButton:hover#pushButton_toggle_powder_coating:!checked {

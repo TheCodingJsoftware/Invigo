@@ -84,8 +84,8 @@ __author__: str = "Jared Gross"
 __copyright__: str = "Copyright 2022-2024, TheCodingJ's"
 __credits__: list[str] = ["Jared Gross"]
 __license__: str = "MIT"
-__version__: str = "v3.0.1"
-__updated__: str = "2024-05-27 15:04:08"
+__version__: str = "v3.0.2"
+__updated__: str = "2024-05-27 21:38:08"
 __maintainer__: str = "Jared Gross"
 __email__: str = "jared@pinelandfarms.ca"
 __status__: str = "Production"
@@ -166,7 +166,6 @@ class MainWindow(QMainWindow):
     def __init__(self):
         super(MainWindow, self).__init__()
         uic.loadUi("ui/main_menu.ui", self)
-
         self.settings_file = Settings()
         self.sheet_settings = SheetSettings()
         self.sheets_inventory = SheetsInventory(self.sheet_settings)
@@ -1619,7 +1618,7 @@ class MainWindow(QMainWindow):
 
     def get_order_number_thread_response(self, order_number: int) -> None:
         try:
-            self.order_number = int(order_number)
+            self.order_number = order_number
         except Exception as e:
             msg = QMessageBox(self)
             msg.setIcon(QMessageBox.Icon.Critical)

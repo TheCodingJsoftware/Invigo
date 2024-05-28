@@ -102,7 +102,7 @@ class PreviousQuoteItem(QGroupBox):
         layout.addLayout(h_layout_2)
 
         self.setLayout(layout)
-        self.setStyleSheet("QGroupBox{border: 1px solid gray;}")
+        self.setStyleSheet("QGroupBox{border: 1px solid #8C8C8C;}")
 
 
 class SavedQuoteItem(QGroupBox):
@@ -166,7 +166,7 @@ class SavedQuoteItem(QGroupBox):
         layout.addLayout(h_layout_3)
 
         self.setLayout(layout)
-        self.setStyleSheet("QGroupBox{border: 1px solid gray;}")
+        self.setStyleSheet("QGroupBox{border: 1px solid #8C8C8C;}")
 
 
 class FilterButton(QPushButton):
@@ -198,7 +198,7 @@ QPushButton:pressed{
 QPushButton:!checked {
     background-color: rgba(71, 71, 71, 130);
     border-color: rgba(71, 71, 71, 130);
-    color: grey;
+    color: #8C8C8C;
 }
 
 QPushButton:hover:!checked {
@@ -484,7 +484,7 @@ QPushButton:pressed{
 QPushButton:!checked {
     background-color: rgba(71, 71, 71, 130);
     border-color: rgba(71, 71, 71, 130);
-    color: grey;
+    color: #8C8C8C;
 }
 
 QPushButton:hover:!checked {
@@ -560,7 +560,7 @@ class RecordingWidget(QWidget):
         self.setFixedSize(20, 20)
         self.recording = True
         self.recording_color = QColor("red")
-        self.nonrecording_color = QColor("gray")
+        self.nonrecording_color = QColor("#8C8C8C")
         self.current_color = self.nonrecording_color
         self.scale = 1.0
         self.scale_factor = 0.01
@@ -1025,7 +1025,7 @@ class AssemblyMultiToolBox(QWidget):
         main_layout.setAlignment(Qt.AlignmentFlag.AlignTop)
         main_layout.setSpacing(1)
         main_layout.setContentsMargins(1, 1, 1, 1)
-        self.setStyleSheet("QWidget#assembly_widget{border: 1px solid gray;}")
+        self.setStyleSheet("QWidget#assembly_widget{border: 1px solid #8C8C8C;}")
         self.setLayout(main_layout)
 
     def addItem(self, widget: QWidget, title: str, base_color: str = "#3daee9"):
@@ -1063,7 +1063,7 @@ QPushButton:pressed#edit_sheet_nest_button {
 }
 
 QPushButton:checked#edit_sheet_nest_button {
-    color: gray;
+    color: #8C8C8C;
 }
 
 QPushButton:!checked#edit_sheet_nest_button {
@@ -1394,7 +1394,7 @@ QPushButton:pressed#sheet_nest_button {
 }
 
 QPushButton:checked#sheet_nest_button {
-    color: gray;
+    color: #8C8C8C;
 }
 
 QPushButton:checked:pressed#sheet_nest_button {
@@ -2651,8 +2651,8 @@ def set_default_dialog_button_stylesheet(button: QPushButton) -> None:
         }
         QPushButton#default_dialog_button:disabled{
             background-color: rgba(32,32,32,130);
-            color: gray;
-            border: 0.04em solid  gray;
+            color: #8C8C8C;
+            border: 0.04em solid  #8C8C8C;
             border-radius: 4px;
         }
         """

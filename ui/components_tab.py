@@ -116,10 +116,6 @@ class ComponentsTab(QWidget):
         self.verticalLayout.addWidget(self.tab_widget)
 
         self.lineEdit_search_items.textChanged.connect(self.update_edit_inventory_list_widget)
-        autofill_search_options = natsorted(list(set(self.components_inventory.get_all_part_names() + self.components_inventory.get_all_part_numbers())))
-        completer = QCompleter(autofill_search_options, self)
-        completer.setCaseSensitivity(Qt.CaseSensitivity.CaseInsensitive)
-        self.lineEdit_search_items.setCompleter(completer)
 
         self.pushButton_create_new.clicked.connect(self.add_item)
         self.pushButton_add_quantity.setIcon(QIcon("./icons/list_add.png"))
@@ -385,17 +381,17 @@ class ComponentsTab(QWidget):
             # PURCHASE ORDER
             btn_po = POPushButton(self)
             btn_po.setMenu(po_menu)
-            btn_po.setStyleSheet(f"background-color: rgba(65, 65, 65, 150); border-radius: 0px;")
+            btn_po.setStyleSheet("border-radius: 0px;")
             current_table.setCellWidget(row_index, col_index, btn_po)
             self.po_buttons.append(btn_po)
 
             col_index += 1
 
-            def delete_component(component_to_delete: Component, row: int):
+            def delete_component(component_to_delete: Component):
                 self.components_inventory.remove_component(component_to_delete)
                 self.components_inventory.save()
-                current_table.removeRow(row)
                 self.sync_changes()
+                self.load_table()
 
             # DELETE
             btn_delete = DeletePushButton(
@@ -403,7 +399,7 @@ class ComponentsTab(QWidget):
                 tool_tip=f"Delete {component.part_name} permanently from {self.category.name}",
                 icon=QIcon("icons/trash.png"),
             )
-            btn_delete.clicked.connect(partial(delete_component, component, row_index))
+            btn_delete.clicked.connect(partial(delete_component, component))
             btn_delete.setStyleSheet("border-radius: 0px;")
             current_table.setCellWidget(row_index, col_index, btn_delete)
             if component.quantity <= component.red_quantity_limit:
@@ -424,13 +420,19 @@ class ComponentsTab(QWidget):
         if current_table.contextMenuPolicy() != Qt.ContextMenuPolicy.CustomContextMenu:
             current_table.setContextMenuPolicy(Qt.ContextMenuPolicy.CustomContextMenu)
             menu = QMenu(self)
-            action = QAction(self)
-            action.triggered.connect(self.set_custom_quantity_limit)
-            action.setText("Set Custom Quantity Limit")
-            menu.addAction(action)
-            menu.addSeparator()
+            set_custom_quantity_limit_action = QAction(self)
+            set_custom_quantity_limit_action.triggered.connect(self.set_custom_quantity_limit)
+            set_custom_quantity_limit_action.setText("Set Custom Quantity Limit")
+
+            print_action = QAction(self)
+            print_action.triggered.connect(self.print_selected_items)
+            print_action.setText("Print Selected Parts")
+
+            menu.addAction(set_custom_quantity_limit_action)
+            menu.addAction(print_action)
             current_table.customContextMenuRequested.connect(partial(self.open_group_menu, menu))
         self.update_edit_inventory_list_widget()
+        self.update_search_suggestions()
         self.update_category_total_stock_costs()
         self.update_components_costs()
 
@@ -545,22 +547,22 @@ class ComponentsTab(QWidget):
         for i, stock_cost in enumerate(total_stock_costs, start=1):
             lbl = QLabel(stock_cost, self)
             if "Total" in stock_cost:
-                lbl.setStyleSheet("border-top: 1px solid grey; border-bottom: 1px solid grey")
+                lbl.setStyleSheet("border-top: 1px solid #8C8C8C; border-bottom: 1px solid #8C8C8C")
             self.gridLayout_category_stock_costs.addWidget(lbl, i, 0)
             lbl = QLabel(f"${total_stock_costs[stock_cost]:,.2f}", self)
             lbl.setTextInteractionFlags(Qt.TextInteractionFlag.TextSelectableByMouse)
             if "Total" in stock_cost:
-                lbl.setStyleSheet("border-top: 1px solid grey; border-bottom: 1px solid grey")
+                lbl.setStyleSheet("border-top: 1px solid #8C8C8C; border-bottom: 1px solid #8C8C8C")
             self.gridLayout_category_stock_costs.addWidget(lbl, i, 1)
         lbl = QLabel("Total Cost in Stock:", self)
-        lbl.setStyleSheet("border-top: 1px solid grey")
+        lbl.setStyleSheet("border-top: 1px solid #8C8C8C")
         self.gridLayout_category_stock_costs.addWidget(lbl, i + 1, 0)
         lbl = QLabel(
             f"${self.components_inventory.get_total_stock_cost():,.2f}",
             self,
         )
         # lbl.setTextInteractionFlags(Qt.ItemFlag.TextSelectableByMouse)
-        lbl.setStyleSheet("border-top: 1px solid grey")
+        lbl.setStyleSheet("border-top: 1px solid #8C8C8C")
         self.gridLayout_category_stock_costs.addWidget(lbl, i + 1, 1)
 
     def set_custom_quantity_limit(self) -> None:
@@ -642,17 +644,37 @@ class ComponentsTab(QWidget):
                 current_table.selectRow(table_items["row"])
                 current_table.scrollTo(current_table.model().index(table_items["row"], 0))
 
+    def update_search_suggestions(self):
+        current_tab_components = self.components_inventory.get_components_by_category(self.category)
+        current_tab_components_sorted = natsorted(current_tab_components, key=lambda component: component.part_name)
+
+        suggestions: list[str] = []
+        for component in current_tab_components_sorted:
+            suggestions.extend((component.part_name, component.part_number))
+
+        completer = QCompleter(suggestions, self)
+        completer.setCaseSensitivity(Qt.CaseSensitivity.CaseInsensitive)
+        self.lineEdit_search_items.setCompleter(completer)
+
     def update_edit_inventory_list_widget(self):
         current_tab_components = self.components_inventory.get_components_by_category(self.category)
         current_tab_components_sorted = natsorted(current_tab_components, key=lambda component: component.part_name)
 
         self.listWidget_itemnames.blockSignals(True)
         self.listWidget_itemnames.clear()
+
         for component in current_tab_components_sorted:
             if self.lineEdit_search_items.text() in component.part_name or self.lineEdit_search_items.text() in component.part_number:
                 self.listWidget_itemnames.addItem(component.part_name)
                 self.listWidget_itemnames.addItem(component.part_number)
+
         self.listWidget_itemnames.blockSignals(False)
+
+        for row in range(self.listWidget_itemnames.count()):
+            item = self.listWidget_itemnames.itemAt(0, row)
+            if self.lineEdit_search_items.text() == item.text():
+                self.listWidget_itemnames.setCurrentRow(row)
+                break
 
     def arrival_date_change_edit_inventory(self, component: Component, arrival_date: QDateEdit):
         component.expected_arrival_time = arrival_date.date().toString("yyyy-MM-dd")
@@ -748,6 +770,10 @@ class ComponentsTab(QWidget):
     def get_selected_row(self) -> int:
         with contextlib.suppress(IndexError):
             return self.category_tables[self.category].selectedItems()[0].row()
+
+    def print_selected_items(self):
+        if components := self.get_selected_components():
+            pass
 
     def set_table_row_color(self, table: ComponentsTableWidget, row_index: int, color: str):
         for j in range(table.columnCount()):

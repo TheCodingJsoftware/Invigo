@@ -92,7 +92,7 @@ QPushButton#pushButton_use_filter:!checked {
     background-color: rgba(71, 71, 71, 130);
     border: 0px solid rgba(76, 76, 76, 130);
     border-radius: 5px;
-    color: grey;
+    color: #8C8C8C;
 }
 
 QPushButton:hover#pushButton_use_filter:!checked {
@@ -144,7 +144,7 @@ QPushButton#pushButton_show_sub_assembly:!checked {
     background-color: rgba(71, 71, 71, 130);
     border: 0px solid rgba(76, 76, 76, 130);
     border-radius: 5px;
-    color: grey;
+    color: #8C8C8C;
 }
 
 QPushButton:hover#pushButton_show_sub_assembly:!checked {
@@ -194,7 +194,7 @@ QPushButton#pushButton_show_item_summary:!checked {
     background-color: rgba(71, 71, 71, 130);
     border: 0px solid rgba(76, 76, 76, 130);
     border-radius: 5px;
-    color: grey;
+    color: #8C8C8C;
 }
 
 QPushButton:hover#pushButton_show_item_summary:!checked {

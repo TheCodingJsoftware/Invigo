@@ -582,18 +582,17 @@ class LaserCutTab(QWidget):
                     icon=QIcon("icons/trash.png"),
                 )
 
-                def delete_item(item_to_delete: LaserCutPart, row_index: int):
+                def delete_item(item_to_delete: LaserCutPart):
                     if self.category.name == "Recut":
                         self.laser_cut_inventory.remove_recut_part(item_to_delete)
                     else:
                         self.laser_cut_inventory.remove_laser_cut_part(item_to_delete)
-                    current_table.removeRow(row_index)
                     self.laser_cut_inventory.save()
                     self.sync_changes()
                     self.load_table()
 
                 btn_delete.setStyleSheet("border-radius: 0px;")
-                btn_delete.clicked.connect(partial(delete_item, laser_cut_part, row_index))
+                btn_delete.clicked.connect(partial(delete_item, laser_cut_part))
                 current_table.setCellWidget(row_index, current_table.delete_column, btn_delete)
                 if self.category.name != "Recut":
                     if laser_cut_part.quantity <= laser_cut_part.red_quantity_limit:

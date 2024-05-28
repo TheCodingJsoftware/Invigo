@@ -75,7 +75,7 @@
             <x>0</x>
             <y>0</y>
             <width>298</width>
-            <height>590</height>
+            <height>560</height>
            </rect>
           </property>
           <property name="maximumSize">
@@ -135,45 +135,71 @@
         </widget>
        </item>
        <item>
-        <widget class="QPushButton" name="pushButton_add_new_sheet">
-         <property name="enabled">
-          <bool>true</bool>
-         </property>
-         <property name="sizePolicy">
-          <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
-         </property>
-         <property name="minimumSize">
-          <size>
-           <width>0</width>
-           <height>40</height>
-          </size>
-         </property>
-         <property name="maximumSize">
-          <size>
-           <width>16777215</width>
-           <height>40</height>
-          </size>
-         </property>
-         <property name="font">
-          <font>
-           <weight>75</weight>
-           <bold>true</bold>
-          </font>
-         </property>
-         <property name="cursor">
-          <cursorShape>ArrowCursor</cursorShape>
-         </property>
-         <property name="toolTip">
-          <string/>
-         </property>
-         <property name="statusTip">
-          <string>Create a new item</string>
-         </property>
-         <property name="styleSheet">
-          <string notr="true">QPushButton#pushButton_add_new_sheet{
+        <layout class="QVBoxLayout" name="verticalLayout_2">
+         <item>
+          <layout class="QHBoxLayout" name="horizontalLayout">
+           <item>
+            <spacer name="horizontalSpacer">
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>40</width>
+               <height>20</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+           <item>
+            <widget class="QCheckBox" name="checkBox_edit_sheets">
+             <property name="text">
+              <string>Edit sheets</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+         <item>
+          <widget class="QPushButton" name="pushButton_add_new_sheet">
+           <property name="enabled">
+            <bool>true</bool>
+           </property>
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="minimumSize">
+            <size>
+             <width>0</width>
+             <height>40</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>16777215</width>
+             <height>40</height>
+            </size>
+           </property>
+           <property name="font">
+            <font>
+             <weight>75</weight>
+             <bold>true</bold>
+            </font>
+           </property>
+           <property name="cursor">
+            <cursorShape>ArrowCursor</cursorShape>
+           </property>
+           <property name="toolTip">
+            <string/>
+           </property>
+           <property name="statusTip">
+            <string>Create a new item</string>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">QPushButton#pushButton_add_new_sheet{
     color: #171717;
 	background-color: #3daee9;
 	border: 1px solid #3daee9;
@@ -194,20 +220,22 @@ QPushButton#pushButton_add_new_sheet:disabled{
 	color: rgb(144, 144, 144);
 	border-radius: 4px;
 }</string>
-         </property>
-         <property name="text">
-          <string>Add New Sheet</string>
-         </property>
-         <property name="checkable">
-          <bool>false</bool>
-         </property>
-         <property name="default">
-          <bool>false</bool>
-         </property>
-         <property name="flat">
-          <bool>false</bool>
-         </property>
-        </widget>
+           </property>
+           <property name="text">
+            <string>Add New Sheet</string>
+           </property>
+           <property name="checkable">
+            <bool>false</bool>
+           </property>
+           <property name="default">
+            <bool>false</bool>
+           </property>
+           <property name="flat">
+            <bool>false</bool>
+           </property>
+          </widget>
+         </item>
+        </layout>
        </item>
       </layout>
      </item>
@@ -216,7 +244,6 @@ QPushButton#pushButton_add_new_sheet:disabled{
   </layout>
  </widget>
  <tabstops>
-  <tabstop>pushButton_add_new_sheet</tabstop>
   <tabstop>scrollArea_2</tabstop>
  </tabstops>
  <resources/>

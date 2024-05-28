@@ -491,6 +491,7 @@ class QuoteWidget(QWidget):
 
     def global_quote_settings_changed(self):
         self.quote.laser_cutting_method = self.comboBox_laser_cutting_2.currentText()
+        self.doubleSpinBox_cost_for_laser_2.setValue(self.sheet_settings.get_laser_cost(self.quote.laser_cutting_method))
         self.quote.laser_cutting_cost = self.doubleSpinBox_cost_for_laser_2.value()
 
         self.quote.item_overhead = self.doubleSpinBox_overhead_items_2.value()
@@ -868,7 +869,7 @@ class QuoteWidget(QWidget):
         for i, (sheet_name, sheet_data) in enumerate(sorted_summary.items(), start=1):
             label_sheet_name = QLabel(sheet_name, self)
             if "x" not in sheet_name:
-                label_sheet_name.setStyleSheet("border-top: 1px solid grey; border-bottom: 1px solid grey")
+                label_sheet_name.setStyleSheet("border-top: 1px solid #8C8C8C; border-bottom: 1px solid #8C8C8C")
             self.gridLayout_nest_summary_2.addWidget(label_sheet_name, i + 1, 0)
 
             if "x" not in sheet_name:
@@ -876,7 +877,7 @@ class QuoteWidget(QWidget):
             else:
                 label_sheet_count = QLabel(str(sheet_data["total_sheet_count"]), self)
             if "x" not in sheet_name:
-                label_sheet_count.setStyleSheet("border-top: 1px solid grey; border-bottom: 1px solid grey")
+                label_sheet_count.setStyleSheet("border-top: 1px solid #8C8C8C; border-bottom: 1px solid #8C8C8C")
             self.gridLayout_nest_summary_2.addWidget(label_sheet_count, i + 1, 1)
 
             total_seconds = sheet_data["total_seconds"]
@@ -893,7 +894,7 @@ class QuoteWidget(QWidget):
             else:
                 label_sheet_cuttime = QLabel(total_seconds_string, self)
             if "x" not in sheet_name:
-                label_sheet_cuttime.setStyleSheet("border-top: 1px solid grey; border-bottom: 1px solid grey")
+                label_sheet_cuttime.setStyleSheet("border-top: 1px solid #8C8C8C; border-bottom: 1px solid #8C8C8C")
             self.gridLayout_nest_summary_2.addWidget(label_sheet_cuttime, i + 1, 2)
 
     def open_image(self, path: str, title: str) -> None:

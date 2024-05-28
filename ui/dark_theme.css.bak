@@ -286,7 +286,7 @@ QPushButton:checked:pressed#order_status {
 }
 
 QPushButton:!checked#order_status {
-    color: gray;
+    color: #8C8C8C;
 }
 
 QPushButton:checked#recut_button {
@@ -338,7 +338,7 @@ QPushButton:pressed#edit_sheet_nest_button {
 }
 
 QPushButton:checked#edit_sheet_nest_button {
-    color: gray;
+    color: #8C8C8C;
 }
 
 QPushButton:!checked#edit_sheet_nest_button {
@@ -379,7 +379,7 @@ QPushButton:pressed#sheet_nest_button {
 }
 
 QPushButton:checked#sheet_nest_button {
-    color: gray;
+    color: #8C8C8C;
 }
 
 QPushButton:!checked#sheet_nest_button {
@@ -532,7 +532,7 @@ QToolBox::tab:selected {
 }
 
 QToolBox {
-    border: 0px solid gray;
+    border: 0px solid #8C8C8C;
     icon-size: 25px;
 }
 

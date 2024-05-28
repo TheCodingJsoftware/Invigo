@@ -7,7 +7,7 @@ import sympy
 from PyQt6 import uic
 from PyQt6.QtCore import QDate, Qt
 from PyQt6.QtGui import QAction, QColor, QCursor, QFont, QIcon
-from PyQt6.QtWidgets import QAbstractItemView, QComboBox, QDateEdit, QGridLayout, QInputDialog, QLabel, QMenu, QMessageBox, QPushButton, QTableWidgetItem, QVBoxLayout, QWidget
+from PyQt6.QtWidgets import QAbstractItemView, QCheckBox, QComboBox, QDateEdit, QGridLayout, QInputDialog, QLabel, QMenu, QMessageBox, QPushButton, QTableWidgetItem, QVBoxLayout, QWidget
 
 from ui.add_sheet_dialog import AddSheetDialog
 from ui.custom_widgets import CustomTableWidget, CustomTabWidget, DeletePushButton, HumbleDoubleSpinBox, OrderStatusButton
@@ -98,6 +98,8 @@ class SheetsInInventoryTab(QWidget):
         self.pushButton_add_new_sheet.clicked.connect(self.add_sheet)
         self.verticalLayout_10 = self.findChild(QVBoxLayout, "verticalLayout_10")
         self.verticalLayout_10.addWidget(self.tab_widget)
+        self.checkBox_edit_sheets = self.findChild(QCheckBox, "checkBox_edit_sheets")
+        self.checkBox_edit_sheets.toggled.connect(self.toggle_edit_mode)
 
     def add_category(self):
         new_category_name, ok = QInputDialog.getText(self, "New Category", "Enter a name for a category:")
@@ -217,6 +219,7 @@ class SheetsInInventoryTab(QWidget):
 
                 # THICKNESS
                 comboBox_thickness = QComboBox(self)
+                comboBox_thickness.setEnabled(self.checkBox_edit_sheets.isChecked())
                 comboBox_thickness.setStyleSheet("border-radius: none;")
                 comboBox_thickness.wheelEvent = lambda event: event.ignore()
                 comboBox_thickness.addItems(self.sheet_settings.get_thicknesses())
@@ -228,6 +231,7 @@ class SheetsInInventoryTab(QWidget):
 
                 # MATERIAL
                 comboBox_material = QComboBox(self)
+                comboBox_material.setEnabled(self.checkBox_edit_sheets.isChecked())
                 comboBox_material.setStyleSheet("border-radius: none;")
                 comboBox_material.wheelEvent = lambda event: event.ignore()
                 comboBox_material.addItems(self.sheet_settings.get_materials())
@@ -239,6 +243,7 @@ class SheetsInInventoryTab(QWidget):
 
                 # LENGTH
                 spinbox_length = HumbleDoubleSpinBox(self)
+                spinbox_length.setEnabled(self.checkBox_edit_sheets.isChecked())
                 spinbox_length.setDecimals(3)
                 spinbox_length.setStyleSheet("border-radius: none;")
                 spinbox_length.setValue(sheet.length)
@@ -249,6 +254,7 @@ class SheetsInInventoryTab(QWidget):
 
                 # WIDTH
                 spinbox_width = HumbleDoubleSpinBox(self)
+                spinbox_width.setEnabled(self.checkBox_edit_sheets.isChecked())
                 spinbox_width.setDecimals(3)
                 spinbox_width.setStyleSheet("border-radius: none;")
                 spinbox_width.setValue(sheet.width)
@@ -345,13 +351,13 @@ class SheetsInInventoryTab(QWidget):
                     icon=QIcon("icons/trash.png"),
                 )
 
-                def remove_sheet(sheet_to_remove: Sheet, row: int):
+                def remove_sheet(sheet_to_remove: Sheet):
                     self.sheets_inventory.remove_sheet(sheet_to_remove)
-                    current_table.removeRow(row)
                     self.sheets_inventory.save()
                     self.sync_changes()
+                    self.load_table()
 
-                btn_delete.clicked.connect(partial(remove_sheet, sheet, row_index))
+                btn_delete.clicked.connect(partial(remove_sheet, sheet))
                 btn_delete.setStyleSheet("border-radius: 0px;")
                 current_table.setCellWidget(row_index, col_index, btn_delete)
                 if sheet.quantity <= sheet.red_quantity_limit:
@@ -409,6 +415,13 @@ class SheetsInInventoryTab(QWidget):
         self.category_tables[self.category].blockSignals(False)
         self.update_sheet_costs()
         self.update_stock_costs()
+
+    def toggle_edit_mode(self):
+        for table_data in self.table_sheets_widgets.values():
+            table_data["material"].setEnabled(self.checkBox_edit_sheets.isChecked())
+            table_data["thickness"].setEnabled(self.checkBox_edit_sheets.isChecked())
+            table_data["length"].setEnabled(self.checkBox_edit_sheets.isChecked())
+            table_data["width"].setEnabled(self.checkBox_edit_sheets.isChecked())
 
     def add_sheet(self) -> None:
         add_sheet_dialog = AddSheetDialog(None, self.category, self.sheets_inventory, self.sheet_settings, self)
@@ -531,10 +544,10 @@ class SheetsInInventoryTab(QWidget):
             grand_total += category_total
             i += 1
         lbl = QLabel("Total:", self)
-        lbl.setStyleSheet("border-top: 1px solid grey; border-bottom: 1px solid grey")
+        lbl.setStyleSheet("border-top: 1px solid #8C8C8C; border-bottom: 1px solid #8C8C8C")
         self.gridLayout_sheet_prices.addWidget(lbl, i + 1, 0)
         lbl = QLabel(f"${grand_total:,.2f}", self)
-        lbl.setStyleSheet("border-top: 1px solid grey; border-bottom: 1px solid grey")
+        lbl.setStyleSheet("border-top: 1px solid #8C8C8C; border-bottom: 1px solid #8C8C8C")
         self.gridLayout_sheet_prices.addWidget(lbl, i + 1, 1)
 
     def select_last_selected_item(self):

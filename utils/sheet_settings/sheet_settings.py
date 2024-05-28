@@ -70,6 +70,9 @@ class SheetSettings:
     def get_cost_for_laser(self, material: str) -> float:
         return self.cost_for_laser["Nitrogen"] if material in {"304 SS", "409 SS", "Aluminium"} else self.cost_for_laser["CO2"]
 
+    def get_laser_cost(self, cutting_method: str) -> float:
+        return self.cost_for_laser[cutting_method]
+
     def get_pounds_per_square_foot(self, material_name: str, thickness_name: str) -> float:
         if material := self.materials.get(material_name):
             if thickness := self.thicknesses.get(thickness_name):
