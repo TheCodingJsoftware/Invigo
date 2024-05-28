@@ -78,7 +78,7 @@ from utils.sheets_inventory.sheets_inventory import SheetsInventory
 from utils.trusted_users import get_trusted_users
 from utils.workspace.workspace import Workspace
 from utils.workspace.workspace_settings import WorkspaceSettings
-from web_scrapers.exchange_rate import ExchangeRate
+from threads.exchange_rate import ExchangeRate
 
 __author__: str = "Jared Gross"
 __copyright__: str = "Copyright 2022-2024, TheCodingJ's"
