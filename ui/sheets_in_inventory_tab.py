@@ -379,6 +379,12 @@ class SheetsInInventoryTab(QWidget):
             action.triggered.connect(self.set_custom_quantity_limit)
             action.setText("Set Custom Quantity Limit")
             menu.addAction(action)
+
+            action = QAction(self)
+            action.triggered.connect(self.print_selected_items)
+            action.setText("Print Selected Sheets")
+            menu.addAction(action)
+
             current_table.customContextMenuRequested.connect(partial(self.open_group_menu, menu))
 
         self.save_current_tab()
@@ -578,6 +584,38 @@ class SheetsInInventoryTab(QWidget):
     def get_selected_row(self) -> int:
         with contextlib.suppress(IndexError):
             return self.category_tables[self.category].selectedItems()[0].row()
+
+    def print_selected_items(self):
+        headers = [
+            "Sheet Name",
+            "Qty in Stock",
+            "Notes",
+            "Order Status",
+            "Modified Date",
+        ]
+        if sheets := self.get_selected_sheets():
+            html = '<html><body><table style="width: 100%; border-collapse: collapse; text-align: left; vertical-align: middle; font-size: 12px; font-family: Verdana, Geneva, Tahoma, sans-serif;">'
+            html += '<thead><tr style="border-bottom: 1px solid black;">'
+            for header in headers:
+                html += f'<th>{header}</th>'
+            html += "</tr>"
+            html += "</thead>"
+            html += '<tbody>'
+            for sheet in sheets:
+                order_status = "No order is pending"
+                if sheet.is_order_pending:
+                    order_status = f"Order is pending since {sheet.order_pending_date} for {sheet.order_pending_quantity} quantity and expected to arrive at {sheet.expected_arrival_time}"
+                html += f"""<tr style="border-bottom: 1px solid black;">
+                <td>{sheet.get_name()}</td>
+                <td>{sheet.quantity}</td>
+                <td>{sheet.notes.replace("\n", "<br>")}</td>
+                <td>{order_status}</td>
+                <td>{sheet.latest_change_quantity.replace("\n", "<br>")}</td>
+                </tr>"""
+            html += "</tbody></table><body><html>"
+        with open("print_selected_parts.html", "w", encoding="utf-8") as f:
+            f.write(html)
+        self.parent.open_print_selected_parts()
 
     def set_table_row_color(self, table: SheetsTableWidget, row_index: int, color: str):
         for j in range(table.columnCount()):

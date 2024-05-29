@@ -1207,6 +1207,9 @@ class MainWindow(QMainWindow):
             msg.exec()
 
     # * \/ External Actions \/
+    def open_print_selected_parts(self):
+        webbrowser.open(f"print_selected_parts.html", new=0)
+
     def open_server_logs(self) -> None:
         webbrowser.open(f"http://{get_server_ip_address()}:{get_server_port()}", new=0)
 

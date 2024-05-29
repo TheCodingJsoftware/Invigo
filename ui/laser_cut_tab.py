@@ -626,6 +626,12 @@ class LaserCutTab(QWidget):
         action = QAction("View Parts Data", self)
         action.triggered.connect(self.edit_laser_cut_part)
         menu.addAction(action)
+
+        action = QAction(self)
+        action.triggered.connect(self.print_selected_items)
+        action.setText("Print Selected Parts")
+        menu.addAction(action)
+
         menu.addSeparator()
         action = QAction("Set Custom Quantity Limit", self)
         if self.category.name != "Recut":
@@ -927,6 +933,46 @@ class LaserCutTab(QWidget):
     def get_selected_row(self) -> int:
         with contextlib.suppress(IndexError):
             return self.category_tables[self.category].selectedItems()[0].row()
+
+    def print_selected_items(self):
+        headers = [
+            "Part Name",
+            "Unit Qty",
+            "Qty in Stock",
+            "Painting",
+            "Shelf #",
+            "Modified Date",
+        ]
+        if laser_cut_parts := self.get_selected_laser_cut_parts():
+            html = '<html><body><table style="width: 100%; border-collapse: collapse; text-align: left; vertical-align: middle; font-size: 12px; font-family: Verdana, Geneva, Tahoma, sans-serif;">'
+            html += '<thead><tr style="border-bottom: 1px solid black;">'
+            for header in headers:
+                html += f'<th>{header}</th>'
+            html += "</tr>"
+            html += "</thead>"
+            html += '<tbody>'
+            for laser_cut_part in laser_cut_parts:
+                paint_message = ""
+                if laser_cut_part.uses_primer:
+                    paint_message += f"Primer: {laser_cut_part.primer_name}\n"
+                if laser_cut_part.uses_paint:
+                    paint_message += f"Paint: {laser_cut_part.paint_name}\n"
+                if laser_cut_part.uses_powder:
+                    paint_message += f"Powder: {laser_cut_part.powder_name}\n"
+                if not (laser_cut_part.uses_primer or laser_cut_part.uses_paint or laser_cut_part.uses_powder):
+                    paint_message = "Not painted"
+                html += f"""<tr style="border-bottom: 1px solid black;">
+                <td>{laser_cut_part.name}</td>
+                <td>{laser_cut_part.unit_quantity}</td>
+                <td>{laser_cut_part.quantity}</td>
+                <td>{paint_message.replace("\n", "<br>")}</td>
+                <td>{laser_cut_part.shelf_number}</td>
+                <td>{laser_cut_part.modified_date.replace("\n", "<br>")}</td>
+                </tr>"""
+            html += "</tbody></table><body><html>"
+        with open("print_selected_parts.html", "w", encoding="utf-8") as f:
+            f.write(html)
+        self.parent.open_print_selected_parts()
 
     def set_table_row_color(self, table: LaserCutPartsTableWidget, row_index: int, color: str):
         for j in range(table.columnCount()):

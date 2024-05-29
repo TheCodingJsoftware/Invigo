@@ -420,16 +420,16 @@ class ComponentsTab(QWidget):
         if current_table.contextMenuPolicy() != Qt.ContextMenuPolicy.CustomContextMenu:
             current_table.setContextMenuPolicy(Qt.ContextMenuPolicy.CustomContextMenu)
             menu = QMenu(self)
-            set_custom_quantity_limit_action = QAction(self)
-            set_custom_quantity_limit_action.triggered.connect(self.set_custom_quantity_limit)
-            set_custom_quantity_limit_action.setText("Set Custom Quantity Limit")
+            action = QAction(self)
+            action.triggered.connect(self.set_custom_quantity_limit)
+            action.setText("Set Custom Quantity Limit")
+            menu.addAction(action)
 
-            print_action = QAction(self)
-            print_action.triggered.connect(self.print_selected_items)
-            print_action.setText("Print Selected Parts")
+            action = QAction(self)
+            action.triggered.connect(self.print_selected_items)
+            action.setText("Print Selected Parts")
+            menu.addAction(action)
 
-            menu.addAction(set_custom_quantity_limit_action)
-            menu.addAction(print_action)
             current_table.customContextMenuRequested.connect(partial(self.open_group_menu, menu))
         self.update_edit_inventory_list_widget()
         self.update_search_suggestions()
@@ -772,8 +772,40 @@ class ComponentsTab(QWidget):
             return self.category_tables[self.category].selectedItems()[0].row()
 
     def print_selected_items(self):
+        headers = [
+            "Part Name",
+            "Part Number",
+            "Unit Qty",
+            "Qty in Stock",
+            "Shelf #",
+            "Notes",
+            "Order Status",
+        ]
         if components := self.get_selected_components():
-            pass
+            html = '<html><body><table style="width: 100%; border-collapse: collapse; text-align: left; vertical-align: middle; font-size: 12px; font-family: Verdana, Geneva, Tahoma, sans-serif;">'
+            html += '<thead><tr style="border-bottom: 1px solid black;">'
+            for header in headers:
+                html += f'<th>{header}</th>'
+            html += "</tr>"
+            html += "</thead>"
+            html += '<tbody>'
+            for component in components:
+                order_status = "No order is pending"
+                if component.is_order_pending:
+                    order_status = f"Order is pending since {component.order_pending_date} for {component.order_pending_quantity} quantity and expected to arrive at {component.expected_arrival_time}"
+                html += f"""<tr style="border-bottom: 1px solid black;">
+                <td>{component.part_name}</td>
+                <td>{component.part_number}</td>
+                <td>{component.unit_quantity}</td>
+                <td>{component.quantity}</td>
+                <td>{component.shelf_number}</td>
+                <td>{component.notes.replace("\n", "<br>")}</td>
+                <td>{order_status}</td>
+                </tr>"""
+            html += "</tbody></table><body><html>"
+        with open("print_selected_parts.html", "w", encoding="utf-8") as f:
+            f.write(html)
+        self.parent.open_print_selected_parts()
 
     def set_table_row_color(self, table: ComponentsTableWidget, row_index: int, color: str):
         for j in range(table.columnCount()):
