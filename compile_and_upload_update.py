@@ -6,13 +6,14 @@ import sys
 import zipfile
 from datetime import datetime
 
-from PyQt6.QtWidgets import QApplication, QHBoxLayout, QLabel, QLineEdit, QPushButton, QVBoxLayout, QWidget
+from PyQt6.QtWidgets import QApplication, QHBoxLayout, QLabel, QLineEdit, QPushButton, QVBoxLayout, QWidget, QTextEdit
 
 from ui.theme import set_theme
 
 
 class VersionUpdater(QWidget):
     selected_version = None
+    update_message = ""
 
     def __init__(self, initial_version):
         super().__init__()
@@ -44,7 +45,12 @@ class VersionUpdater(QWidget):
         self.btn_quick_fix.clicked.connect(lambda: self.select_version(self.versions["quick_fix"]))
         button_version_layout.addWidget(self.btn_quick_fix)
 
+        self.update_notes = QTextEdit()
+        self.update_notes.setPlaceholderText("notes...")
+
         main_layout.addLayout(input_layout)
+        main_layout.addWidget(QLabel("Update notes (optional):", self))
+        main_layout.addWidget(self.update_notes)
         main_layout.addWidget(QLabel("Quick select new version:", self))
         main_layout.addLayout(button_version_layout)
         main_layout.addLayout(button_layout)
@@ -61,6 +67,7 @@ class VersionUpdater(QWidget):
 
     def select_version(self, version):
         VersionUpdater.selected_version = version
+        VersionUpdater.update_message = self.update_notes.toPlainText()
         self.close()
 
     def update_version(self, version_type):
@@ -86,6 +93,7 @@ class VersionUpdater(QWidget):
 
     def on_generate(self):
         VersionUpdater.selected_version = self.version_input.text()
+        VersionUpdater.update_message = self.update_notes.toPlainText()
         self.close()
 
     def on_cancel(self):
@@ -104,7 +112,7 @@ def get_current_version(path_to_script):
     return "v0.0.0"
 
 
-def get_new_version(path_to_file: str) -> str | None:
+def get_new_version_and_update_message(path_to_file: str) -> tuple[str, str] | None:
     app = QApplication(sys.argv)
     set_theme(app, theme="dark")
 
@@ -115,7 +123,7 @@ def get_new_version(path_to_file: str) -> str | None:
 
     app.exec()
 
-    return VersionUpdater.selected_version
+    return VersionUpdater.selected_version, VersionUpdater.update_message
 
 
 def set_new_version(file_path: str, version: str) -> bool:
@@ -220,7 +228,7 @@ def zip_files(source_dir: str, output_zip: str) -> bool:
 
 def copy_file(source: str, destination: str) -> bool:
     try:
-        print(f"Uploading {source} file to Pinecone.")
+        print(f"Uploading {source} to Pinecone.")
         shutil.copy2(source, destination)
         print(f"{source} uploaded successfully.")
     except Exception as e:
@@ -241,6 +249,18 @@ def update_web_version(version: str) -> bool:
     return True
 
 
+def update_update_message(message: str) -> bool:
+    try:
+        print("Updating web update message.")
+        with open(path_to_web_update_message, "w", encoding="utf-8") as file:
+            file.write(message)
+        print(f"{path_to_web_update_message} successfully updated.")
+    except Exception as e:
+        print(f"An error occurred while updating {path_to_web_update_message}: {e}")
+        return False
+    return True
+
+
 spec_file_name = "Invigo.spec"
 dist_dir = "dist"
 output_zip_name = "Invigo"
@@ -248,10 +268,12 @@ zip_file = f"{output_zip_name}.zip"
 destination_path = r"\\Pinecone\web\Invigo\static"
 path_to_main_script = "main.py"
 path_to_web_version = r"\\Pinecone\web\Invigo\static\version.txt"
+path_to_web_update_message = r"\\Pinecone\web\Invigo\static\update_message.txt"
 
 
 if __name__ == "__main__":
-    if new_version := get_new_version(path_to_file=path_to_main_script):
+    new_version, update_message = get_new_version_and_update_message(path_to_file=path_to_main_script)
+    if new_version:
         if set_new_version(file_path=path_to_main_script, version=new_version):
             if copy_folders_and_clean(folders=["icons", "ui", "utils"], destination="dist"):
                 if update_timestamp(file_path=path_to_main_script):
@@ -262,3 +284,4 @@ if __name__ == "__main__":
                                 destination=os.path.join(destination_path, zip_file),
                             ):
                                 update_web_version(version=new_version)
+                                update_update_message(message=update_message)

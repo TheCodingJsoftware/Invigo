@@ -5,7 +5,7 @@ from PyQt6.QtCore import QThread, pyqtSignal
 
 
 class CheckForUpdatesThread(QThread):
-    signal = pyqtSignal(object)
+    signal = pyqtSignal(object, object)
 
     def __init__(self, parent, current_version: str) -> None:
         self.parent = parent
@@ -15,12 +15,14 @@ class CheckForUpdatesThread(QThread):
     def run(self) -> None:
         while True:
             try:
-                response = requests.get("http://10.0.0.10:5051/version", timeout=10)
-                if response.status_code != 200:
+                response_version = requests.get("http://10.0.0.10:5051/version", timeout=10)
+                response_message = requests.get("http://10.0.0.10:5051/update_message", timeout=10)
+                if response_version.status_code != 200 or response_message.status_code != 200:
                     continue
-                version = response.text
+                version = response_version.text
+                message = response_message.text
                 if version != self.current_version:
-                    self.signal.emit(version)
+                    self.signal.emit(version, message)
             except Exception as e:
                 continue
             time.sleep(60)
