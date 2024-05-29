@@ -84,8 +84,8 @@ __author__: str = "Jared Gross"
 __copyright__: str = "Copyright 2022-2024, TheCodingJ's"
 __credits__: list[str] = ["Jared Gross"]
 __license__: str = "MIT"
-__version__: str = "v3.0.6"
-__updated__: str = "2024-05-29 11:19:11"
+__version__: str = "v3.0.7"
+__updated__: str = "2024-05-29 12:30:31"
 __maintainer__: str = "Jared Gross"
 __email__: str = "jared@pinelandfarms.ca"
 __status__: str = "Production"
@@ -1733,15 +1733,15 @@ class MainWindow(QMainWindow):
         self.threads.append(check_for_updates_thread)
         check_for_updates_thread.start()
 
-    def update_available_thread_response(self, version: str, message: str) -> None:
+    def update_available_thread_response(self, version: str, update_message: str) -> None:
         if not self.ignore_update:
             self.ignore_update = True
             msg = QMessageBox(self)
             msg.setIcon(QMessageBox.Icon.Information)
-            msg.setWindowTitle("New update")
-            if message:
-                update_message = f"\n\nUpdate notes:\n{message}"
-            msg.setText(f"New Version: {version}\n\nPlease consider updating to the latest version at your earliest convenience.{update_message}\n\nWould you like to update?")
+            msg.setWindowTitle("New Update Available")
+            if update_message:
+                update_notes = f"\n\nUpdate Notes:\n{update_message}"
+            msg.setText(f"Current Version: {__version__}\nNew Version: {version}\n\nPlease consider updating to the latest version at your earliest convenience.{update_notes}\n\nWould you like to update?")
             msg.setStandardButtons(QMessageBox.StandardButton.No | QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.Cancel)
             msg.setDefaultButton(QMessageBox.StandardButton.Yes)
             response = msg.exec()
