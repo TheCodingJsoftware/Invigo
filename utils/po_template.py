@@ -48,6 +48,7 @@ class POTemplate:
         if "PO's" in self.po_template:
             worksheet.cell(row=self.order_number_cell[0], column=self.order_number_cell[1]).value = order_number + 1
             workbook.save(self.po_template)
+            workbook.close()
         return order_number
 
     def get_output_path(self) -> str:
@@ -58,12 +59,14 @@ class POTemplate:
         worksheet = workbook.active
         worksheet.cell(row=self.order_number_cell[0], column=self.order_number_cell[1]).value = self.order_number + 1
         workbook.save(self.output_path)
+        workbook.close()
 
     def set_date(self) -> None:
         workbook = load_workbook(filename=self.output_path)
         worksheet = workbook.active
         worksheet.cell(row=self.date_cell[0], column=self.date_cell[1]).value = self.date
         workbook.save(self.output_path)
+        workbook.close()
 
     def set_signature(self) -> None:
         workbook = load_workbook(filename=self.output_path)
@@ -76,6 +79,7 @@ class POTemplate:
                 signature_row = cell.row - 1
         worksheet.cell(row=signature_row, column=5).value = self.signature  # E:{signature_row}
         workbook.save(self.output_path)
+        workbook.close()
 
 
 if __name__ == "__main__":
