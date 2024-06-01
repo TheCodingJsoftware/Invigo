@@ -919,20 +919,19 @@ class QuoteWidget(QWidget):
         return f"{hours:02d}h {minutes:02d}m {seconds:02d}s"
 
     def delete_selected_laser_cut_parts(self):
+        self.quote.group_laser_cut_parts()
         update_nests = False
         selected_rows: set[int] = {selection.row() for selection in self.laser_cut_table_widget.selectedItems()}
         for laser_cut_part, table_item_data in self.laser_cut_table_items.items():
             if table_item_data["row"] in selected_rows:
-                self.quote.remove_laser_cut_part(laser_cut_part)
                 laser_cut_part.nest.remove_laser_cut_part(laser_cut_part)
                 if len(laser_cut_part.nest.laser_cut_parts) == 0:
                     self.quote.remove_nest(laser_cut_part.nest)
                     update_nests = True
-
+        self.quote.group_laser_cut_parts()
         self.load_laser_cut_parts()
         if update_nests:
             self.load_nests()
-
         self.quote_changed()
 
     def update_selected_laser_cut_parts_paint_types(self, paint_type: str, enable: bool):
