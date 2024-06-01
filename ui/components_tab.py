@@ -672,9 +672,10 @@ class ComponentsTab(QWidget):
 
         for row in range(self.listWidget_itemnames.count()):
             item = self.listWidget_itemnames.itemAt(0, row)
-            if self.lineEdit_search_items.text() == item.text():
-                self.listWidget_itemnames.setCurrentRow(row)
-                break
+            with contextlib.suppress(AttributeError): # For some unknown reason
+                if self.lineEdit_search_items.text() == item.text():
+                    self.listWidget_itemnames.setCurrentRow(row)
+                    break
 
     def arrival_date_change_edit_inventory(self, component: Component, arrival_date: QDateEdit):
         component.expected_arrival_time = arrival_date.date().toString("yyyy-MM-dd")
