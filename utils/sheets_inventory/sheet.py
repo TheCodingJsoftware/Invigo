@@ -39,6 +39,9 @@ class Sheet(InventoryItem):
         if len(self.categories) == 0:
             self.sheets_inventory.remove_sheet(self)
 
+    def get_categories(self) -> list[str]:
+        return [category.name for category in self.categories]
+
     def load_data(self, data: dict[str, Union[str, int, float, bool]]):
         self.quantity: int = data.get("quantity", 0)
         self.latest_change_quantity: str = data.get("latest_change_quantity", "")

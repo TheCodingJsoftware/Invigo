@@ -1344,7 +1344,7 @@ class MainWindow(QMainWindow):
                 old_quantity = sheet.quantity
                 sheet.quantity -= nest.sheet_count
                 sheet.latest_change_quantity = f"{os.getlogin().title()} - Removed {nest.sheet_count} sheets from {quote.name} at {datetime.now().strftime('%B %d %A %Y %I:%M:%S %p')}"
-                if sheet.quantity <= sheet.red_quantity_limit and not sheet.has_sent_warning:
+                if sheet.quantity <= sheet.red_quantity_limit and not sheet.has_sent_warning and "Cutoff" not in sheet.get_categories():
                     sheet.has_sent_warning = True
                     self.generate_single_sheet_report(sheet, old_quantity)
         self.sheets_inventory.save()
