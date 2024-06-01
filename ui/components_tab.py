@@ -461,6 +461,7 @@ class ComponentsTab(QWidget):
                     evaluate=True,
                 )
             )
+
             component.price = float(
                 sympy.sympify(
                     self.table_components_widgets[component]["price"].text().replace("USD", "").replace("CAD", "").strip().replace(",", "").replace("$", ""),
@@ -469,6 +470,14 @@ class ComponentsTab(QWidget):
             )
             component.use_exchange_rate = self.table_components_widgets[component]["use_exchange_rate"].currentText() == "USD"
             component.priority = self.table_components_widgets[component]["priority"].currentIndex()
+
+            if self.table_components_widgets[component]["priority"].currentText() == "Medium":
+                self.table_components_widgets[component]["priority"].setStyleSheet("QComboBox{background-color: #524b2f; border-radius: 0px;} QComboBox:hover{border-color: #e9bb3d;}")
+            elif self.table_components_widgets[component]["priority"].currentText() == "High":
+                self.table_components_widgets[component]["priority"].setStyleSheet("QComboBox{background-color: #4d2323; border-radius: 0px;} QComboBox:hover{border-color: #e93d3d;}")
+            else:
+                self.table_components_widgets[component]["priority"].setStyleSheet("border-radius: 0px;")
+
             component.shelf_number = self.table_components_widgets[component]["shelf_number"].text()
             component.notes = self.table_components_widgets[component]["notes"].toPlainText()
             self.components_inventory.save()
@@ -478,6 +487,14 @@ class ComponentsTab(QWidget):
             self.table_components_widgets[component]["quantity"].setText(f"{component.quantity:,.2f}")
             self.table_components_widgets[component]["price"].setText(f"${component.price:,.2f}")
             self.category_tables[self.category].blockSignals(False)
+
+            if component.quantity <= component.red_quantity_limit:
+                self.set_table_row_color(self.category_tables[self.category], self.table_components_widgets[component]["row"], "#3F1E25")
+            elif component.quantity <= component.yellow_quantity_limit:
+                self.set_table_row_color(self.category_tables[self.category], self.table_components_widgets[component]["row"], "#413C28")
+            else:
+                self.set_table_row_color(self.category_tables[self.category], self.table_components_widgets[component]["row"], "#141414")
+
             self.update_components_costs()
             self.update_category_total_stock_costs()
 

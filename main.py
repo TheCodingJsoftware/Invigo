@@ -1410,7 +1410,6 @@ class MainWindow(QMainWindow):
             else:
                 self.download_files(response)
             self.status_button.setText("Synched", "lime")
-            self.sheet_settings.load_data()
         else:
             self.status_button.setText(f"Syncing Error: {response}", "red")
 
@@ -1418,6 +1417,7 @@ class MainWindow(QMainWindow):
         if data == "Successfully uploaded":
             self.status_button.setText("Synched", "lime")
         if self.downloading_changes and data == "Successfully downloaded":
+            self.sheet_settings.load_data()
             if self.tabWidget.tabText(self.tabWidget.currentIndex()) in [
                 "Laser Cut Inventory",
                 "Sheets in Inventory",
