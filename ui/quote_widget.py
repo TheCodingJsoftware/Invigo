@@ -709,6 +709,7 @@ class QuoteWidget(QWidget):
             self.nest_items[nest].update({"cut_time": nest_cut_time})
 
             spinBox_sheet_count = QDoubleSpinBox(widget)
+            spinBox_sheet_count.setMaximum(9999999999.9)
             spinBox_sheet_count.wheelEvent = lambda event: None
             spinBox_sheet_count.setValue(nest.sheet_count)
 
@@ -783,6 +784,7 @@ class QuoteWidget(QWidget):
             self.nest_items[nest].update({"thickness": comboBox_sheet_thickness})
             grid_layout.addWidget(comboBox_sheet_thickness, 8, 2)
             lineEdit_sheet_size_x = QDoubleSpinBox(widget)
+            lineEdit_sheet_size_x.setMaximum(9999999999.9)
             lineEdit_sheet_size_x.wheelEvent = lambda event: None
             lineEdit_sheet_size_x.setDecimals(3)
             lineEdit_sheet_size_x.setSuffix(" in")
@@ -804,6 +806,7 @@ class QuoteWidget(QWidget):
             label.setFixedWidth(20)
             grid_layout.addWidget(label, 11, 1)
             lineEdit_sheet_size_y = QDoubleSpinBox(widget)
+            lineEdit_sheet_size_y.setMaximum(9999999999.9)
             lineEdit_sheet_size_y.wheelEvent = lambda event: None
             lineEdit_sheet_size_y.setDecimals(3)
             lineEdit_sheet_size_y.setSuffix(" in")
