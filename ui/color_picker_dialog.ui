@@ -483,6 +483,23 @@ background-color: #000;
          </layout>
         </item>
         <item>
+         <layout class="QHBoxLayout" name="horizontalLayout_4" stretch="0,1">
+          <item>
+           <widget class="QLabel" name="label_2">
+            <property name="text">
+             <string>Quick color select:</string>
+            </property>
+            <property name="buddy">
+             <cstring>comboBox_colors_ral</cstring>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QComboBox" name="comboBox_colors_ral"/>
+          </item>
+         </layout>
+        </item>
+        <item>
          <widget class="QLabel" name="label">
           <property name="text">
            <string>Color name:</string>

@@ -18,6 +18,8 @@ from PyQt6.QtGui import QColor, QMouseEvent
 from PyQt6.QtWidgets import QApplication, QDialog, QMainWindow
 
 
+from utils import colors
+
 class ColorPicker(QDialog):
     colorChanged = pyqtSignal()
 
@@ -48,6 +50,9 @@ class ColorPicker(QDialog):
         self.black_overlay.mouseMoveEvent = self.moveSVSelector
         self.black_overlay.mousePressEvent = self.moveSVSelector
 
+        self.comboBox_colors_ral.addItems(list(colors.colors_ral.keys()))
+        self.comboBox_colors_ral.currentTextChanged.connect(self.quick_ral_colors_changed)
+
         if rgb:
             self.setRGB(rgb)
         elif hsv:
@@ -57,6 +62,10 @@ class ColorPicker(QDialog):
         else:
             self.setRGB((0, 0, 0))
         self.setStyleSheet("QWidget{background-color: none;} QFrame{border-radius:5px;}")
+
+    def quick_ral_colors_changed(self):
+        self.setHex(colors.colors_ral[self.comboBox_colors_ral.currentText()]["hex"].lower().replace("#", ""))
+        self.lineEdit_color_name.setText(colors.colors_ral[self.comboBox_colors_ral.currentText()]["name"])
 
     ## Main Functions ##
     def getHSV(self, hrange=100, svrange=100):
