@@ -55,17 +55,16 @@ QStatusBar {
     border: 1px solid #242424;
 }
 
+/* https://www.qtcentre.org/threads/18151-QScrollArea-misbehaving-background-style */
+QAbstractScrollArea {
+    background-color: transparent;
+}
+
+QWidget#scrollAreaWidgetContents{
+    background-color: transparent;
+}
+
 /* Containers */
-
-QDialog {
-    /* background-color: #181818; */
-}
-
-
-QWidget {
-
-    border: none;
-}
 QGridWidget{
     border-radius: 5px;
 }
@@ -84,13 +83,6 @@ QGroupBox::title {
     subcontrol-position: top center;
     padding-left: 0.2em;
     padding-right: 0.2em;
-}
-
-QScrollArea {
-    background: transparent;
-    width: 10px;
-    border-radius: 0px;
-    margin: 0px;
 }
 
 QDockWidget {
