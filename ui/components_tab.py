@@ -8,10 +8,16 @@ from natsort import natsorted
 from PyQt6 import uic
 from PyQt6.QtCore import QDate, Qt
 from PyQt6.QtGui import QAction, QColor, QCursor, QFont, QIcon
-from PyQt6.QtWidgets import QAbstractItemView, QCompleter, QDateEdit, QGridLayout, QInputDialog, QLabel, QLineEdit, QListWidget, QMenu, QMessageBox, QPushButton, QTableWidgetItem, QVBoxLayout, QWidget
+from PyQt6.QtWidgets import (QAbstractItemView, QCompleter, QDateEdit,
+                             QGridLayout, QInputDialog, QLabel, QLineEdit,
+                             QListWidget, QMenu, QMessageBox, QPushButton,
+                             QTableWidgetItem, QVBoxLayout, QWidget)
 
 from ui.add_item_dialog import AddItemDialog
-from ui.custom_widgets import CustomTableWidget, CustomTabWidget, DeletePushButton, ExchangeRateComboBox, NotesPlainTextEdit, OrderStatusButton, POPushButton, PriorityComboBox
+from ui.custom_widgets import (CustomTableWidget, CustomTabWidget,
+                               DeletePushButton, ExchangeRateComboBox,
+                               NotesPlainTextEdit, OrderStatusButton,
+                               POPushButton, PriorityComboBox)
 from ui.edit_category_dialog import EditCategoryDialog
 from ui.items_change_quantity_dialog import ItemsChangeQuantityDialog
 from ui.select_item_dialog import SelectItemDialog
@@ -65,11 +71,11 @@ class ComponentsTabWidget(CustomTabWidget):
 
 
 class ComponentsTab(QWidget):
-    def __init__(self, components_inventory: ComponentsInventory, parent: QWidget) -> None:
+    def __init__(self, parent: QWidget) -> None:
         super(ComponentsTab, self).__init__(parent)
         uic.loadUi("ui/components_tab.ui", self)
         self.parent = parent
-        self.components_inventory = components_inventory
+        self.components_inventory: ComponentsInventory = self.parent.components_inventory
 
         self.settings_file = Settings()
 
@@ -729,7 +735,7 @@ class ComponentsTab(QWidget):
                 component.quantity = new_quantity
                 component.latest_change_quantity = f"Used: Order pending - add quantity\nChanged from {old_quantity} to {new_quantity} at {datetime.now().strftime('%B %d %A %Y %I:%M:%S %p')}"
                 component.order_pending_quantity = remaining_quantity
-                if remaining_quantity == 0:
+                if remaining_quantity <= 0:
                     component.is_order_pending = False
                 self.components_inventory.save()
                 self.sync_changes()

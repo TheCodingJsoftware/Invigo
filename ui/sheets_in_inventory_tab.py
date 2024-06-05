@@ -7,10 +7,15 @@ import sympy
 from PyQt6 import uic
 from PyQt6.QtCore import QDate, Qt
 from PyQt6.QtGui import QAction, QColor, QCursor, QFont, QIcon
-from PyQt6.QtWidgets import QAbstractItemView, QCheckBox, QComboBox, QDateEdit, QGridLayout, QInputDialog, QLabel, QMenu, QMessageBox, QPushButton, QTableWidgetItem, QVBoxLayout, QWidget
+from PyQt6.QtWidgets import (QAbstractItemView, QCheckBox, QComboBox,
+                             QDateEdit, QGridLayout, QInputDialog, QLabel,
+                             QMenu, QMessageBox, QPushButton, QTableWidgetItem,
+                             QVBoxLayout, QWidget)
 
 from ui.add_sheet_dialog import AddSheetDialog
-from ui.custom_widgets import CustomTableWidget, CustomTabWidget, DeletePushButton, HumbleDoubleSpinBox, OrderStatusButton
+from ui.custom_widgets import (CustomTableWidget, CustomTabWidget,
+                               DeletePushButton, HumbleDoubleSpinBox,
+                               OrderStatusButton)
 from ui.edit_category_dialog import EditCategoryDialog
 from ui.set_custom_limit_dialog import SetCustomLimitDialog
 from ui.set_order_pending_dialog import SetOrderPendingDialog
@@ -59,12 +64,12 @@ class SheetsTabWidget(CustomTabWidget):
 
 
 class SheetsInInventoryTab(QWidget):
-    def __init__(self, sheets_inventory: SheetsInventory, sheet_settings: SheetSettings, parent: QWidget) -> None:
+    def __init__(self, parent) -> None:
         super(SheetsInInventoryTab, self).__init__(parent)
         uic.loadUi("ui/sheets_in_inventory_tab.ui", self)
         self.parent = parent
-        self.sheets_inventory = sheets_inventory
-        self.sheet_settings = sheet_settings
+        self.sheets_inventory: SheetsInventory = self.parent.sheets_inventory
+        self.sheet_settings: SheetSettings = self.parent.sheet_settings
 
         self.settings_file = Settings()
 

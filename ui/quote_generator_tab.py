@@ -16,13 +16,13 @@ class QuoteGeneratorTab(QWidget):
     save_quote = pyqtSignal(Quote)
     save_quote_as = pyqtSignal(Quote)
 
-    def __init__(self, components_inventory: ComponentsInventory, laser_cut_inventory: LaserCutInventory, sheets_inventory: SheetsInventory, sheet_settings: SheetSettings, parent: QWidget) -> None:
+    def __init__(self, parent) -> None:
         super(QuoteGeneratorTab, self).__init__(parent)
         self.parent = parent
-        self.components_inventory = components_inventory
-        self.laser_cut_inventory = laser_cut_inventory
-        self.sheets_inventory = sheets_inventory
-        self.sheet_settings = sheet_settings
+        self.components_inventory: ComponentsInventory = self.parent.components_inventory
+        self.laser_cut_inventory: LaserCutInventory = self.parent.laser_cut_inventory
+        self.sheets_inventory: SheetsInventory = self.parent.sheets_inventory
+        self.sheet_settings: SheetSettings = self.parent.sheet_settings
 
         self.quotes: list[QuoteWidget] = []
         self.current_quote: Quote = None
@@ -116,8 +116,7 @@ class QuoteGeneratorTab(QWidget):
         if self.tab_widget.count() == 1:
             self.tab_widget.setTabsClosable(False)
 
-    def rename_tab(self):
-        tab_index = self.tab_widget.currentIndex()
+    def rename_tab(self, tab_index: int):
         new_name, ok = QInputDialog.getText(self, "Rename Quote", "Enter new quote name:", text=self.current_quote.name)
         if ok and new_name:
             self.current_quote.name = new_name

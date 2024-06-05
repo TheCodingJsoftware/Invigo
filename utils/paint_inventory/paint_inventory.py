@@ -11,9 +11,10 @@ from utils.paint_inventory.primer import Primer
 
 
 class PaintInventory(Inventory):
-    def __init__(self, components_inventory: ComponentsInventory):
+    def __init__(self, parent):
         super().__init__("paint_inventory")
-        self.components_inventory = components_inventory
+        self.parent = parent
+        self.components_inventory: ComponentsInventory = self.parent.components_inventory
 
         self.primers: list[Primer] = []
         self.paints: list[Paint] = []

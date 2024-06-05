@@ -61,11 +61,11 @@ class PoundsPerSquareFootTab(CustomTabWidget):
 
 
 class SheetSettingsTab(QWidget):
-    def __init__(self, sheet_settings: SheetSettings, parent: QWidget) -> None:
+    def __init__(self, parent) -> None:
         super(SheetSettingsTab, self).__init__(parent)
         uic.loadUi("ui/sheet_settings_tab.ui", self)
         self.parent = parent
-        self.sheet_settings = sheet_settings
+        self.sheet_settings: SheetSettings = self.parent.sheet_settings
         self.sheet_settings.load_data()
 
         self.price_per_pound_table: PricePerPoundTableWidget = None

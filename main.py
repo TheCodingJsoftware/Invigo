@@ -29,6 +29,7 @@ from threads.delete_quote_thread import DeleteQuoteThread
 from threads.download_images_thread import DownloadImagesThread
 from threads.download_quote_thread import DownloadQuoteThread
 from threads.download_thread import DownloadThread
+from threads.exchange_rate import ExchangeRate
 from threads.get_order_number_thread import GetOrderNumberThread
 from threads.get_previous_quotes_thread import GetPreviousQuotesThread
 from threads.get_saved_quotes_thread import GetSavedQuotesThread
@@ -49,6 +50,7 @@ from ui.job_sorter_dialog import JobSorterDialog
 from ui.laser_cut_tab import LaserCutTab
 from ui.nest_sheet_verification import NestSheetVerification
 from ui.quote_generator_tab import QuoteGeneratorTab
+from ui.job_planner_tab import JobPlannerTab
 from ui.save_quote_dialog import SaveQuoteDialog
 from ui.select_item_dialog import SelectItemDialog
 from ui.sheet_settings_tab import SheetSettingsTab
@@ -76,9 +78,10 @@ from utils.sheet_settings.sheet_settings import SheetSettings
 from utils.sheets_inventory.sheet import Sheet
 from utils.sheets_inventory.sheets_inventory import SheetsInventory
 from utils.trusted_users import get_trusted_users
+from utils.workspace.job import Job
+from utils.workspace.job_manager import JobManager
 from utils.workspace.workspace import Workspace
 from utils.workspace.workspace_settings import WorkspaceSettings
-from threads.exchange_rate import ExchangeRate
 
 __author__: str = "Jared Gross"
 __copyright__: str = "Copyright 2022-2024, TheCodingJ's"
@@ -102,6 +105,8 @@ check_folders(
     folders=[
         "logs",
         "data",
+        "data/jobs",
+        "data/workspace",
         "images",
         "backups",
         "Price History Files",
@@ -152,7 +157,7 @@ def send_error_report():
     if response.status_code != 200:
         win32api.MessageBox(
             0,
-            f"Could not send email, notify {__maintainer__} ASAP and send them the app.log file in the logs folder!",
+            f"Failed to send email. Kindly notify {__maintainer__} about the issue you just encountered!",
             "oops",
             0x40,
         )
@@ -166,22 +171,32 @@ class MainWindow(QMainWindow):
     def __init__(self):
         super(MainWindow, self).__init__()
         uic.loadUi("ui/main_menu.ui", self)
+
         self.settings_file = Settings()
         self.sheet_settings = SheetSettings()
-        self.sheets_inventory = SheetsInventory(self.sheet_settings)
+        self.sheets_inventory = SheetsInventory(self)
         self.components_inventory = ComponentsInventory()
-        self.paint_inventory = PaintInventory(self.components_inventory)
-        self.laser_cut_inventory = LaserCutInventory(self.paint_inventory)
-        self.quote_generator_tab_widget = QuoteGeneratorTab(self.components_inventory, self.laser_cut_inventory, self.sheets_inventory, self.sheet_settings, self)
+        self.paint_inventory = PaintInventory(self)
+        self.laser_cut_inventory = LaserCutInventory(self)
+
+        self.job_manager = JobManager(self)
+
+        self.quote_generator_tab_widget = QuoteGeneratorTab(self)
         self.quote_generator_tab_widget.add_quote(Quote("Quote0", None, self.components_inventory, self.laser_cut_inventory, self.sheet_settings))
         self.quote_generator_tab_widget.save_quote.connect(self.save_quote)
         self.quote_generator_tab_widget.save_quote_as.connect(self.save_quote_as)
         self.clear_layout(self.omnigen_layout)
         self.omnigen_layout.addWidget(self.quote_generator_tab_widget)
 
-        self.user_workspace = Workspace("user_workspace", self.components_inventory, self.laser_cut_inventory)
-        self.admin_workspace = Workspace("admin_workspace", self.components_inventory, self.laser_cut_inventory)
-        self.history_workspace = Workspace("history_workspace", self.components_inventory, self.laser_cut_inventory)
+        self.job_planner_widget = JobPlannerTab(self)
+        self.job_planner_widget.load_job(self.job_manager.jobs[0])
+        # self.quote_planner_tab_widget.add_job(Job("Job0", None))
+        self.clear_layout(self.job_planner_layout)
+        self.job_planner_layout.addWidget(self.job_planner_widget)
+
+        # self.user_workspace = Workspace("user_workspace", self.components_inventory, self.laser_cut_inventory)
+        # self.admin_workspace = Workspace("admin_workspace", self.components_inventory, self.laser_cut_inventory)
+        # self.history_workspace = Workspace("history_workspace", self.components_inventory, self.laser_cut_inventory)
 
         self.components_tab_widget: ComponentsTab = None
         self.components_tab_widget_last_selected_tab_index: int = 0  # * Used inside components_tab.py
@@ -237,7 +252,7 @@ class MainWindow(QMainWindow):
         self.quote_nest_directories_list_widgets: dict[str, QTreeWidget] = {}
         self.quote_nest_information = {}
         self.quote_components_information = {}
-        self.tabWidget: QTabWidget
+        self.tabWidget: QTabWidget = self.findChild(QTabWidget, "tabWidget")
         self.scroll_position_manager = ScrollPositionManager()
 
         self.ignore_update: bool = False
@@ -248,6 +263,9 @@ class MainWindow(QMainWindow):
         self.__load_ui()
         self.download_all_files()
         self.start_check_for_updates_thread()
+
+        self.splitter_3.setStretchFactor(0, 1)
+        self.splitter.setStretchFactor(0, 1)
 
     def __load_ui(self) -> None:
         menu_tabs_order: list[str] = self.settings_file.get_value(setting_name="menu_tabs_order")
@@ -420,24 +438,24 @@ class MainWindow(QMainWindow):
                 return
             self.menuSort.setEnabled(True)
             self.clear_layout(self.components_layout)
-            self.components_tab_widget = ComponentsTab(self.components_inventory, self)
+            self.components_tab_widget = ComponentsTab(self)
             self.components_layout.addWidget(self.components_tab_widget)
             self.components_tab_widget.restore_scroll_position()
         elif self.tabWidget.tabText(self.tabWidget.currentIndex()) == "Sheets in Inventory":
             self.menuSort.setEnabled(True)
             self.clear_layout(self.sheets_inventory_layout)
-            self.sheets_inventory_tab_widget = SheetsInInventoryTab(self.sheets_inventory, self.sheet_settings, self)
+            self.sheets_inventory_tab_widget = SheetsInInventoryTab(self)
             self.sheets_inventory_layout.addWidget(self.sheets_inventory_tab_widget)
             self.sheets_inventory_tab_widget.restore_scroll_position()
         elif self.tabWidget.tabText(self.tabWidget.currentIndex()) == "Laser Cut Inventory":
             self.menuSort.setEnabled(True)
             self.clear_layout(self.laser_cut_layout)
-            self.laser_cut_tab_widget = LaserCutTab(self.laser_cut_inventory, self.sheet_settings, self)
+            self.laser_cut_tab_widget = LaserCutTab(self)
             self.laser_cut_layout.addWidget(self.laser_cut_tab_widget)
             self.laser_cut_tab_widget.restore_scroll_position()
         elif self.tabWidget.tabText(self.tabWidget.currentIndex()) == "Sheet Settings":
             self.clear_layout(self.sheet_settings_layout)
-            self.sheet_settings_tab_widget = SheetSettingsTab(self.sheet_settings, self)
+            self.sheet_settings_tab_widget = SheetSettingsTab(self)
             self.sheet_settings_layout.addWidget(self.sheet_settings_tab_widget)
         elif self.tabWidget.tabText(self.tabWidget.currentIndex()) == "Quote Generator":
             self.load_cuttoff_drop_down()
@@ -446,6 +464,13 @@ class MainWindow(QMainWindow):
             self.refresh_nest_directories()
             for quote_widget in self.quote_generator_tab_widget.quotes:
                 quote_widget.update_sheet_statuses()
+        elif self.tabWidget.tabText(self.tabWidget.currentIndex()) == "Job Planner":
+            # self.job_planner_widget.reload_active_tab()
+            msg = QMessageBox(QMessageBox.Icon.Warning, "In development", "Job Planner is not complete.", QMessageBox.StandardButton.Ok, self)
+            msg.exec()
+            # self.clear_layout(self.job_planner_layout)
+            # self.quote_planner_tab_widget = QuotePlannerTab(self)
+            # self.job_planner_layout.addWidget(self.quote_planner_tab_widget)
         elif self.tabWidget.tabText(self.tabWidget.currentIndex()) == "View Removed Quantities History":  # View Removed Quantities History
             self.menuSort.setEnabled(False)
             if not self.trusted_user:

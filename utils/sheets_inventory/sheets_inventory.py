@@ -8,10 +8,11 @@ from utils.sheets_inventory.sheet import Sheet
 
 
 class SheetsInventory(Inventory):
-    def __init__(self, sheet_settings: SheetSettings):
+    def __init__(self, parent):
         super().__init__("sheets_inventory")
+        self.parent = parent
         self.sheets: list[Sheet] = []
-        self.sheet_settings = sheet_settings
+        self.sheet_settings: SheetSettings = self.parent.sheet_settings
         self.load_data()
 
     def get_all_sheets_material(self, sheets: list[Sheet] = None) -> list[str]:

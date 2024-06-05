@@ -8,10 +8,10 @@ from utils.paint_inventory.paint_inventory import PaintInventory
 
 
 class LaserCutInventory(Inventory):
-    def __init__(self, paint_inventory: PaintInventory):
+    def __init__(self, parent):
         super().__init__("laser_cut_inventory")
-
-        self.paint_inventory = paint_inventory
+        self.parent = parent
+        self.paint_inventory: PaintInventory = self.parent.paint_inventory
 
         self.laser_cut_parts: list[LaserCutPart] = []
         self.recut_parts: list[LaserCutPart] = []

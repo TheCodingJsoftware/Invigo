@@ -8,9 +8,15 @@ from natsort import natsorted
 from PyQt6 import uic
 from PyQt6.QtCore import Qt
 from PyQt6.QtGui import QAction, QColor, QCursor, QFont, QIcon
-from PyQt6.QtWidgets import QAbstractItemView, QCheckBox, QComboBox, QCompleter, QDialog, QDoubleSpinBox, QGridLayout, QHBoxLayout, QInputDialog, QLabel, QLineEdit, QMenu, QMessageBox, QPushButton, QScrollArea, QTableWidgetItem, QVBoxLayout, QWidget
+from PyQt6.QtWidgets import (QAbstractItemView, QCheckBox, QComboBox,
+                             QCompleter, QDialog, QDoubleSpinBox, QGridLayout,
+                             QHBoxLayout, QInputDialog, QLabel, QLineEdit,
+                             QMenu, QMessageBox, QPushButton, QScrollArea,
+                             QTableWidgetItem, QVBoxLayout, QWidget)
 
-from ui.custom_widgets import CustomTableWidget, CustomTabWidget, DeletePushButton, FilterButton, HumbleComboBox, HumbleDoubleSpinBox
+from ui.custom_widgets import (CustomTableWidget, CustomTabWidget,
+                               DeletePushButton, FilterButton, HumbleComboBox,
+                               HumbleDoubleSpinBox)
 from ui.edit_category_dialog import EditCategoryDialog
 from ui.items_change_quantity_dialog import ItemsChangeQuantityDialog
 from ui.set_custom_limit_dialog import SetCustomLimitDialog
@@ -267,13 +273,13 @@ class PaintWidget(QWidget):
 
 
 class LaserCutTab(QWidget):
-    def __init__(self, laser_cut_inventory: LaserCutInventory, sheet_settings: SheetSettings, parent: QWidget) -> None:
+    def __init__(self, parent) -> None:
         super(LaserCutTab, self).__init__(parent)
         uic.loadUi("ui/laser_cut_tab.ui", self)
         self.parent = parent
-        self.laser_cut_inventory = laser_cut_inventory
+        self.laser_cut_inventory: LaserCutInventory = self.parent.laser_cut_inventory
         self.paint_inventory = self.laser_cut_inventory.paint_inventory
-        self.sheet_settings = sheet_settings
+        self.sheet_settings: SheetSettings = self.parent.sheet_settings
 
         self.settings_file = Settings()
 

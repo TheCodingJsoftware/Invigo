@@ -17,8 +17,8 @@ from PyQt6.QtCore import QPoint, Qt, pyqtSignal
 from PyQt6.QtGui import QColor, QMouseEvent
 from PyQt6.QtWidgets import QApplication, QDialog, QMainWindow
 
-
 from utils import colors
+
 
 class ColorPicker(QDialog):
     colorChanged = pyqtSignal()

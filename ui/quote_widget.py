@@ -635,7 +635,7 @@ class QuoteWidget(QWidget):
     def load_nests(self):
         self.clear_layout(self.nests_layout)
         self.nest_items.clear()
-        self.nests_tool_box: MultiToolBox = MultiToolBox(self)
+        self.nests_tool_box = MultiToolBox(self)
         self.nests_tool_box.layout().setSpacing(0)
         self.nests_layout.addWidget(self.nests_tool_box)
         tab_index = 0
