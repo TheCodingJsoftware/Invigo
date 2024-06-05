@@ -189,7 +189,10 @@ class MainWindow(QMainWindow):
         self.omnigen_layout.addWidget(self.quote_generator_tab_widget)
 
         self.job_planner_widget = JobPlannerTab(self)
-        self.job_planner_widget.load_job(self.job_manager.jobs[0])
+        try:
+            self.job_planner_widget.load_job(self.job_manager.jobs[0])
+        except IndexError:
+            self.job_planner_widget.load_job(Job("Enter Job Name0", {}))
         # self.quote_planner_tab_widget.add_job(Job("Job0", None))
         self.clear_layout(self.job_planner_layout)
         self.job_planner_layout.addWidget(self.job_planner_widget)
