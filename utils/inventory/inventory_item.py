@@ -6,6 +6,12 @@ class InventoryItem:
         self.name: str = name
         self.categories: list[Category] = []
 
+    def print_categories(self) -> str:
+        return "".join(
+            f"{i + 1}. {category.name}\n"
+            for i, category in enumerate(self.categories)
+        )
+
     def rename(self, new_name: str):
         self.name = new_name
 

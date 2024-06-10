@@ -1,5 +1,5 @@
-from PyQt6.QtWidgets import QDialog, QInputDialog, QHBoxLayout, QVBoxLayout, QPushButton, QLabel, QDoubleSpinBox
-
+from PyQt6.QtWidgets import QDialog, QHBoxLayout, QVBoxLayout, QPushButton, QLabel, QDoubleSpinBox
+from PyQt6.QtCore import Qt
 
 class OrderPendingQuantityDialog(QDialog):
     def __init__(self, parent=None):
@@ -19,6 +19,7 @@ class OrderPendingQuantityDialog(QDialog):
         self.input_quantity.setMaximum(float("inf"))
         h_layout.addWidget(QLabel("Quantity to Add:"))
         h_layout.addWidget(self.input_quantity)
+        h_layout.setStretchFactor(self.input_quantity, 1)
 
         v_layout.addLayout(h_layout)
 
@@ -35,6 +36,7 @@ class OrderPendingQuantityDialog(QDialog):
         self.close_button = QPushButton("Close")
         self.close_button.clicked.connect(self.reject)
         h_layout.addWidget(self.close_button)
+        h_layout.setAlignment(Qt.AlignmentFlag.AlignRight)
 
         v_layout.addLayout(h_layout)
 

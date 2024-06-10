@@ -19,8 +19,8 @@ class Component(InventoryItem):
         self.shelf_number: str = ""
         self.notes: str = ""
         self.image_path: str = ""
-        self.latest_change_quantity: str = ""
-        self.latest_change_price: str = ""
+        self.latest_change_quantity: str = "Nothing recorded"
+        self.latest_change_price: str = "Nothing recorded"
         self.red_quantity_limit: float = 0.0
         self.yellow_quantity_limit: float = 0.0
         self.expected_arrival_time: str = ""
@@ -55,8 +55,8 @@ class Component(InventoryItem):
         self.shelf_number: str = data.get("shelf_number", "")
         self.notes: str = data.get("notes", "")
         self.image_path: str = data.get("image_path", "")
-        self.latest_change_quantity: str = data.get("latest_change_quantity", "")
-        self.latest_change_price: str = data.get("latest_change_price", "")
+        self.latest_change_quantity: str = data.get("latest_change_quantity", "Nothing recorded")
+        self.latest_change_price: str = data.get("latest_change_price", "Nothing recorded")
         self.red_quantity_limit: float = data.get("red_quantity_limit", 10.0)
         self.yellow_quantity_limit: float = data.get("yellow_quantity_limit", 20.0)
         self.expected_arrival_time: str = data.get("expected_arrival_time", "")

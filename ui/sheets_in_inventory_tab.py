@@ -215,13 +215,6 @@ class SheetsInInventoryTab(QWidget):
                 current_table.insertRow(row_index)
                 current_table.setRowHeight(row_index, 35)
 
-                # NAME
-                # table_item_sheet_name = QTableWidgetItem(sheet.get_name())
-                # current_table.setItem(row_index, col_index, table_item_sheet_name)
-                # current_table.item(row_index, col_index).setFont(self.tables_font)
-                # self.table_sheets_widgets[sheet].update({"name": table_item_sheet_name})
-                # col_index += 1
-
                 # THICKNESS
                 comboBox_thickness = QComboBox(self)
                 comboBox_thickness.setEnabled(self.checkBox_edit_sheets.isChecked())
@@ -282,7 +275,7 @@ class SheetsInInventoryTab(QWidget):
                 col_index += 1
 
                 # CURRENT QUANTITY
-                table_item_quantity = QTableWidgetItem(str(sheet.quantity))
+                table_item_quantity = QTableWidgetItem(f"{sheet.quantity:,.2f}")
                 current_table.setItem(row_index, col_index, table_item_quantity)
                 current_table.item(row_index, col_index).setTextAlignment(Qt.AlignmentFlag.AlignCenter | Qt.AlignmentFlag.AlignVCenter)
                 current_table.item(row_index, col_index).setFont(self.tables_font)
@@ -365,12 +358,9 @@ class SheetsInInventoryTab(QWidget):
                 btn_delete.clicked.connect(partial(remove_sheet, sheet))
                 btn_delete.setStyleSheet("border-radius: 0px;")
                 current_table.setCellWidget(row_index, col_index, btn_delete)
-                if sheet.quantity <= sheet.red_quantity_limit:
-                    self.set_table_row_color(current_table, row_index, "#3F1E25")
-                elif sheet.quantity <= sheet.yellow_quantity_limit:
-                    self.set_table_row_color(current_table, row_index, "#413C28")
-                if sheet.is_order_pending:
-                    self.set_table_row_color(current_table, row_index, "#29422c")
+
+                self.update_sheet_row_color(current_table, sheet)
+
                 row_index += 1
 
         current_table.blockSignals(False)
@@ -424,6 +414,7 @@ class SheetsInInventoryTab(QWidget):
         self.table_sheets_widgets[sheet]["quantity"].setText(f"{sheet.quantity:,.2f}")
         self.table_sheets_widgets[sheet]["modified_date"].setText(sheet.latest_change_quantity)
         self.category_tables[self.category].blockSignals(False)
+        self.update_sheet_row_color(self.category_tables[self.category], sheet)
         self.update_sheet_costs()
         self.update_stock_costs()
 
@@ -532,12 +523,7 @@ class SheetsInInventoryTab(QWidget):
                 for sheet in sheets:
                     sheet.red_quantity_limit = set_custom_limit_dialog.get_red_limit()
                     sheet.yellow_quantity_limit = set_custom_limit_dialog.get_yellow_limit()
-                    if sheet.quantity <= sheet.red_quantity_limit:
-                        self.set_table_row_color(current_table, self.table_sheets_widgets[sheet]["row"], "#3F1E25")
-                    elif sheet.quantity <= sheet.yellow_quantity_limit:
-                        self.set_table_row_color(current_table, self.table_sheets_widgets[sheet]["row"], "#413C28")
-                    else:
-                        self.set_table_row_color(current_table, self.table_sheets_widgets[sheet]["row"], "#2c2c2c")
+                    self.update_sheet_row_color(current_table, sheet)
                 self.sheets_inventory.save()
                 self.sync_changes()
 
@@ -621,6 +607,16 @@ class SheetsInInventoryTab(QWidget):
         with open("print_selected_parts.html", "w", encoding="utf-8") as f:
             f.write(html)
         self.parent.open_print_selected_parts()
+
+    def update_sheet_row_color(self, table, sheet: Sheet):
+        if sheet.is_order_pending:
+            self.set_table_row_color(table, self.table_sheets_widgets[sheet]["row"], "#29422c")
+        elif sheet.quantity <= sheet.red_quantity_limit:
+            self.set_table_row_color(table, self.table_sheets_widgets[sheet]["row"], "#3F1E25")
+        elif sheet.quantity <= sheet.yellow_quantity_limit:
+            self.set_table_row_color(table, self.table_sheets_widgets[sheet]["row"], "#413C28")
+        else:
+            self.set_table_row_color(table, self.table_sheets_widgets[sheet]["row"], "#141414")
 
     def set_table_row_color(self, table: SheetsTableWidget, row_index: int, color: str):
         for j in range(table.columnCount()):

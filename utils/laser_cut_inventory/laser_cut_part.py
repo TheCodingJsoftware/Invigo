@@ -40,6 +40,7 @@ class LaserCutPart(InventoryItem):
         self.part_dim: str = ""
         self.geofile_name: str = ""
         self.modified_date: str = ""
+        self.notes: str = ""
 
         self.price: float = 0.0
         self.cost_of_goods: float = 0.0
@@ -111,6 +112,7 @@ class LaserCutPart(InventoryItem):
         self.part_dim: str = data.get("part_dim", "")
         self.geofile_name: str = data.get("geofile_name", "")
         self.modified_date: str = data.get("modified_date", "")
+        self.notes: str = data.get("notes", "")
         self.bend_cost: float = data.get("bend_cost", 0.0)
         self.labor_cost: float = data.get("labor_cost", 0.0)
 
@@ -172,6 +174,7 @@ class LaserCutPart(InventoryItem):
             "file_name": self.file_name,
             "geofile_name": self.geofile_name,
             "modified_date": self.modified_date,
+            "notes": self.notes,
             "image_index": self.image_index,
             "bend_cost": self.bend_cost,
             "labor_cost": self.labor_cost,

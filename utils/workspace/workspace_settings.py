@@ -61,7 +61,7 @@ class WorkspaceSettings:
         self.add_flow_tag(flow_tags, flow_tag)
 
     def get_all_flow_tags(self) -> dict[str, FlowTag]:
-        flow_tags: dict[str, FlowTag] = []
+        flow_tags: dict[str, FlowTag] = {}
         for flow_tag_group in self.flow_tags_group:
             for flow_tag in flow_tag_group:
                 flow_tags |= {flow_tag.get_name(): flow_tag}
@@ -112,18 +112,18 @@ Tags such as, "Staging", "Editing", and "Planning" cannot be used as flow tags, 
         for group, flow_tags in data.get("flow_tags", {}).items():
             flow_tag_group = FlowTags(group)
             self.flow_tags_group.append(flow_tag_group)
-            for flow_tag_name, flow_tag_data in flow_tags.items():
-                flow_tag = FlowTag(flow_tag_name, flow_tag_data, self)
+            for flow_tag_data in flow_tags:
+                flow_tag = FlowTag(flow_tag_data["name"], flow_tag_data, self)
                 flow_tag_group.add_flow_tag(flow_tag)
 
     def to_dict(self) -> dict[str, dict[str, dict[str, dict]]]:
-        data: dict[str, dict[str, dict[str, dict]]] = {"notes": self.notes, "tags": {}, "flow_tags": {}}
+        data: dict[str, dict[str, list]] = {"notes": self.notes, "tags": {}, "flow_tags": {}}
         for tag in self.tags:
             data["tags"].update({tag.name: tag.to_dict()})
 
         for flow_tag_group in self.flow_tags_group:
-            data["flow_tags"].update({flow_tag_group.name: {}})
+            data["flow_tags"].update({flow_tag_group.name: []})
             for flow_tag in flow_tag_group.flow_tags:
-                data["flow_tags"][flow_tag_group.name].update({flow_tag.name: flow_tag.to_dict()})
+                data["flow_tags"][flow_tag_group.name].append(flow_tag.to_dict())
 
         return data

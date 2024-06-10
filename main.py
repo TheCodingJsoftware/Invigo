@@ -87,8 +87,8 @@ __author__: str = "Jared Gross"
 __copyright__: str = "Copyright 2022-2024, TheCodingJ's"
 __credits__: list[str] = ["Jared Gross"]
 __license__: str = "MIT"
-__version__: str = "v3.0.12"
-__updated__: str = "2024-06-05 12:12:06"
+__version__: str = "v3.0.14"
+__updated__: str = "2024-06-10 07:50:21"
 __maintainer__: str = "Jared Gross"
 __email__: str = "jared@pinelandfarms.ca"
 __status__: str = "Production"
@@ -174,6 +174,7 @@ class MainWindow(QMainWindow):
 
         self.settings_file = Settings()
         self.sheet_settings = SheetSettings()
+        self.workspace_settings = WorkspaceSettings()
         self.sheets_inventory = SheetsInventory(self)
         self.components_inventory = ComponentsInventory()
         self.paint_inventory = PaintInventory(self)
@@ -192,7 +193,7 @@ class MainWindow(QMainWindow):
         try:
             self.job_planner_widget.load_job(self.job_manager.jobs[0])
         except IndexError:
-            self.job_planner_widget.load_job(Job("Enter Job Name0", {}))
+            self.job_planner_widget.load_job(Job("Enter Job Name0", {}, self.job_manager))
         # self.quote_planner_tab_widget.add_job(Job("Job0", None))
         self.clear_layout(self.job_planner_layout)
         self.job_planner_layout.addWidget(self.job_planner_widget)
@@ -212,8 +213,6 @@ class MainWindow(QMainWindow):
 
         self.sheet_settings_tab_widget: SheetSettingsTab = None
 
-        self.workspace_tags = JsonFile(file_name="data/workspace_settings")
-        self.workspace_settings = WorkspaceSettings()
         self.workspace_tab_widget: WorkspaceTab = None
 
         self.username = os.getlogin().title()
@@ -467,10 +466,8 @@ class MainWindow(QMainWindow):
             self.refresh_nest_directories()
             for quote_widget in self.quote_generator_tab_widget.quotes:
                 quote_widget.update_sheet_statuses()
-        elif self.tabWidget.tabText(self.tabWidget.currentIndex()) == "Job Planner":
-            # self.job_planner_widget.reload_active_tab()
-            msg = QMessageBox(QMessageBox.Icon.Warning, "In development", "Job Planner is not complete.", QMessageBox.StandardButton.Ok, self)
-            msg.exec()
+        elif self.tabWidget.tabText(self.tabWidget.currentIndex()) == "Job Planner": # TODO Load server jobs
+            pass
             # self.clear_layout(self.job_planner_layout)
             # self.quote_planner_tab_widget = QuotePlannerTab(self)
             # self.job_planner_layout.addWidget(self.quote_planner_tab_widget)
@@ -877,7 +874,7 @@ class MainWindow(QMainWindow):
         job_sorter_menu.show()
 
     def open_tag_editor(self) -> None:
-        tag_editor = EditWorkspaceSettings(self)
+        tag_editor = EditWorkspaceSettings(self.workspace_settings, self)
 
         def upload_workspace_settings():
             self.status_button.setText("Synching", "lime")
@@ -888,6 +885,7 @@ class MainWindow(QMainWindow):
 
         if tag_editor.exec():
             upload_workspace_settings()
+            self.job_planner_widget.workspace_settings_changed()
 
     # * /\ Dialogs /\
 
@@ -1375,6 +1373,8 @@ class MainWindow(QMainWindow):
                 if sheet.quantity <= sheet.red_quantity_limit and not sheet.has_sent_warning and "Cutoff" not in sheet.get_categories():
                     sheet.has_sent_warning = True
                     self.generate_single_sheet_report(sheet, old_quantity)
+                if "Cutoff" in sheet.get_categories() and sheet.quantity <= 0:
+                    self.sheets_inventory.remove_sheet(sheet)
         self.sheets_inventory.save()
         self.sync_changes()
 
