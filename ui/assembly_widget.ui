@@ -7,13 +7,19 @@
     <x>0</x>
     <y>0</y>
     <width>982</width>
-    <height>1000</height>
+    <height>1323</height>
    </rect>
+  </property>
+  <property name="sizePolicy">
+   <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+    <horstretch>0</horstretch>
+    <verstretch>0</verstretch>
+   </sizepolicy>
   </property>
   <property name="minimumSize">
    <size>
     <width>0</width>
-    <height>1000</height>
+    <height>0</height>
    </size>
   </property>
   <property name="windowTitle">
@@ -40,6 +46,18 @@
      <layout class="QVBoxLayout" name="verticalLayout_9" stretch="0">
       <item>
        <layout class="QVBoxLayout" name="verticalLayout_14" stretch="0,0,0,1">
+        <property name="leftMargin">
+         <number>3</number>
+        </property>
+        <property name="topMargin">
+         <number>3</number>
+        </property>
+        <property name="rightMargin">
+         <number>3</number>
+        </property>
+        <property name="bottomMargin">
+         <number>3</number>
+        </property>
         <item>
          <widget class="QWidget" name="verticalWidget_4" native="true">
           <property name="sizePolicy">
@@ -56,22 +74,50 @@
             <layout class="QVBoxLayout" name="image_layout"/>
            </item>
            <item>
-            <layout class="QHBoxLayout" name="assembly_files_layout"/>
-           </item>
-           <item>
-            <layout class="QHBoxLayout" name="horizontalLayout_2">
+            <layout class="QVBoxLayout" name="verticalLayout_15">
              <item>
-              <widget class="QLabel" name="label">
+              <widget class="QLabel" name="label_2">
                <property name="text">
-                <string>Flow Tag:</string>
-               </property>
-               <property name="buddy">
-                <cstring>comboBox_assembly_flow_tag</cstring>
+                <string>Assembly Files:</string>
                </property>
               </widget>
              </item>
              <item>
-              <widget class="QComboBox" name="comboBox_assembly_flow_tag"/>
+              <layout class="QHBoxLayout" name="horizontalLayout_6">
+               <item>
+                <layout class="QHBoxLayout" name="assembly_files_layout"/>
+               </item>
+               <item>
+                <spacer name="horizontalSpacer_5">
+                 <property name="orientation">
+                  <enum>Qt::Horizontal</enum>
+                 </property>
+                 <property name="sizeHint" stdset="0">
+                  <size>
+                   <width>40</width>
+                   <height>20</height>
+                  </size>
+                 </property>
+                </spacer>
+               </item>
+              </layout>
+             </item>
+             <item>
+              <layout class="QHBoxLayout" name="horizontalLayout_2" stretch="0,1">
+               <item>
+                <widget class="QLabel" name="label">
+                 <property name="text">
+                  <string>Flow Tag:</string>
+                 </property>
+                 <property name="buddy">
+                  <cstring>comboBox_assembly_flow_tag</cstring>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QComboBox" name="comboBox_assembly_flow_tag"/>
+               </item>
+              </layout>
              </item>
             </layout>
            </item>
@@ -337,6 +383,18 @@
           </item>
           <item>
            <widget class="QWidget" name="sub_assemblies_widget" native="true">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Preferred" vsizetype="MinimumExpanding">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>1000</height>
+             </size>
+            </property>
             <layout class="QVBoxLayout" name="verticalLayout_11">
              <property name="spacing">
               <number>6</number>
@@ -397,10 +455,16 @@
              </item>
              <item>
               <widget class="QScrollArea" name="scrollArea">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
                <property name="minimumSize">
                 <size>
                  <width>0</width>
-                 <height>1000</height>
+                 <height>0</height>
                 </size>
                </property>
                <property name="styleSheet">
@@ -417,8 +481,8 @@
                  <rect>
                   <x>0</x>
                   <y>0</y>
-                  <width>958</width>
-                  <height>998</height>
+                  <width>954</width>
+                  <height>994</height>
                  </rect>
                 </property>
                 <layout class="QVBoxLayout" name="verticalLayout_13">

@@ -21,7 +21,7 @@ from utils.inventory.category import Category
 from utils.laser_cut_inventory.laser_cut_inventory import LaserCutInventory
 from utils.laser_cut_inventory.laser_cut_part import LaserCutPart
 from utils.workspace.group import Group
-from utils.workspace.job import Job, JobType
+from utils.workspace.job import Job, JobStatus
 
 
 class JobWidget(QWidget):
@@ -65,9 +65,9 @@ class JobWidget(QWidget):
 
         # self.pushButton_get_order_number.clicked.connect(get_latest_order_number)
         self.comboBox_type: QComboBox = self.findChild(QComboBox, "comboBox_type")
-        self.comboBox_type.setCurrentIndex(self.job.job_type.value)
+        self.comboBox_type.setCurrentIndex(self.job.job_status.value)
         self.comboBox_type.currentTextChanged.connect(self.job_settings_changed)
-        self.comboBox_type.setEnabled(self.job.job_type != JobType.PLANNING)
+        self.comboBox_type.setEnabled(self.job.job_status != JobStatus.PLANNING)
         self.comboBox_type.wheelEvent = lambda event: None
         self.dateEdit_shipped: QDateEdit = self.findChild(QDateEdit, "dateEdit_shipped")
         try:
@@ -99,7 +99,7 @@ class JobWidget(QWidget):
 
     def job_settings_changed(self):
         self.job.order_number = self.doubleSpinBox_order_number.value()
-        self.job.job_type = JobType(self.comboBox_type.currentIndex())
+        self.job.job_status = JobStatus(self.comboBox_type.currentIndex())
         self.job.date_shipped = self.dateEdit_shipped.date().toString("yyyy-M-d")
         self.job.date_expected = self.dateEdit_expected.date().toString("yyyy-M-d")
         self.job.ship_to = self.textEdit_ship_to.toPlainText()

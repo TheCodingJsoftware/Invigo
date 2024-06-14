@@ -6,16 +6,33 @@ from datetime import datetime, timedelta
 from functools import partial
 
 from PyQt6 import uic
-from PyQt6.QtCore import QAbstractItemModel, QAbstractTableModel, QDate, QDateTime, QEvent, QMargins, QMimeData, QModelIndex, QPoint, QRegularExpression, QSettings, QSize, QSortFilterProxyModel, Qt, QTime, QTimer, QUrl, pyqtSignal
-from PyQt6.QtGui import QAction, QBrush, QClipboard, QColor, QCursor, QDrag, QDragEnterEvent, QDragLeaveEvent, QDragMoveEvent, QDropEvent, QFileSystemModel, QFont, QIcon, QKeySequence, QMouseEvent, QPainter, QPalette, QPixmap, QRegularExpressionValidator, QStandardItem, QStandardItemModel, QTextCharFormat
-from PyQt6.QtWidgets import QAbstractItemView, QApplication, QCheckBox, QComboBox, QDateEdit, QDoubleSpinBox, QFileDialog, QGridLayout, QHBoxLayout, QLabel, QLineEdit, QMenu, QMessageBox, QPushButton, QScrollArea, QTableWidget, QTableWidgetItem, QTextEdit, QVBoxLayout, QWidget
+from PyQt6.QtCore import (QAbstractItemModel, QAbstractTableModel, QDate,
+                          QDateTime, QEvent, QMargins, QMimeData, QModelIndex,
+                          QPoint, QRegularExpression, QSettings, QSize,
+                          QSortFilterProxyModel, Qt, QTime, QTimer, QUrl,
+                          pyqtSignal)
+from PyQt6.QtGui import (QAction, QBrush, QClipboard, QColor, QCursor, QDrag,
+                         QDragEnterEvent, QDragLeaveEvent, QDragMoveEvent,
+                         QDropEvent, QFileSystemModel, QFont, QIcon,
+                         QKeySequence, QMouseEvent, QPainter, QPalette,
+                         QPixmap, QRegularExpressionValidator, QStandardItem,
+                         QStandardItemModel, QTextCharFormat)
+from PyQt6.QtWidgets import (QAbstractItemView, QApplication, QCheckBox,
+                             QComboBox, QDateEdit, QDoubleSpinBox, QFileDialog,
+                             QGridLayout, QHBoxLayout, QLabel, QLineEdit,
+                             QMenu, QMessageBox, QPushButton, QScrollArea,
+                             QTableWidget, QTableWidgetItem, QTextEdit,
+                             QVBoxLayout, QWidget)
 
 from threads.workspace_get_file_thread import WorkspaceDownloadFile
 from threads.workspace_upload_file_thread import WorkspaceUploadThread
+from threads.upload_thread import UploadThread
 from ui.add_component_dialog import AddComponentDialog
 from ui.add_laser_cut_part_dialog import AddLaserCutPartDialog
-from ui.custom.components_planning_table_widget import ComponentsPlanningTableWidget
-from ui.custom.laser_cut_parts_planning_table_widget import LaserCutPartsPlanningTableWidget
+from ui.custom.components_planning_table_widget import \
+    ComponentsPlanningTableWidget
+from ui.custom.laser_cut_parts_planning_table_widget import \
+    LaserCutPartsPlanningTableWidget
 from ui.custom_widgets import AssemblyMultiToolBox
 from ui.image_viewer import QImageViewer
 from ui.pdf_viewer import PDFViewer
@@ -644,17 +661,17 @@ class FileButton(QPushButton):
         self.deleteFileClicked.emit()
 
 
-class FileDropWidget(QWidget):
+class LaserCutPartFileDropWidget(QWidget):
     fileDropped = pyqtSignal(QHBoxLayout, object, str, list)  # Changed to object for LaserCutPart
 
     def __init__(
         self,
-        laser_cut_part,
+        laser_cut_part: LaserCutPart,
         files_layout: QHBoxLayout,
         file_category: str,
         parent,
     ):
-        super(FileDropWidget, self).__init__(parent)
+        super(LaserCutPartFileDropWidget, self).__init__(parent)
         self.parent = parent
         self.setAcceptDrops(True)
         self.laser_cut_part = laser_cut_part
@@ -735,6 +752,93 @@ class FileDropWidget(QWidget):
         self.label.setText("Drag Here")
         self.label.setStyleSheet(self.default_style_sheet)
 
+class AssemblyFileDropWidget(QWidget):
+    fileDropped = pyqtSignal(QHBoxLayout, list)  # Changed to object for LaserCutPart
+
+    def __init__(
+        self,
+        files_layout: QHBoxLayout,
+        parent,
+    ):
+        super(AssemblyFileDropWidget, self).__init__(parent)
+        self.parent = parent
+        self.setAcceptDrops(True)
+        self.files_layout = files_layout
+
+        self.default_style_sheet = "background-color: rgba(30,30,30, 0.6); border-radius: 5px; border: 1px solid rgb(15,15,15);"
+        self.accept_style_sheet = "background-color: rgba(70,210,110, 0.6); border-radius: 5px; border: 1px solid rgba(70,210,110, 0.6);"
+        self.fail_style_sheet = "background-color: rgba(210,70,60, 0.6); border-radius: 5px; border: 1px solid rgba(210,70,60, 0.6);"
+
+        self.setMaximumWidth(1000)
+        layout = QVBoxLayout(self)
+        layout.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        layout.setContentsMargins(2, 2, 2, 2)
+        layout.setSpacing(0)
+        self.setLayout(layout)
+
+        self.label = QLabel("Drag Here", self)
+        self.label.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        self.label.setMaximumWidth(1000)
+        self.label.setMinimumHeight(65)
+        self.label.setMinimumWidth(80)
+        self.label.setStyleSheet(self.default_style_sheet)
+        self.label.setCursor(Qt.CursorShape.PointingHandCursor)
+        self.label.setToolTip("Click to select files from your computer")
+        layout.addWidget(self.label)
+
+    def dragEnterEvent(self, event: QDragEnterEvent):
+        if event.mimeData().hasUrls():
+            self.label.setText("Drop Me")
+            self.label.setStyleSheet(self.accept_style_sheet)
+            event.accept()
+        else:
+            self.reset_label()
+            event.ignore()
+
+    def dragLeaveEvent(self, event: QDragEnterEvent):
+        self.reset_label()
+        event.accept()
+
+    def dropEvent(self, event: QDropEvent):
+        if event.mimeData().hasUrls():
+            urls = event.mimeData().urls()
+            file_paths = [url.toLocalFile() for url in urls]
+            allowed_extensions = [
+                ".pdf",
+                ".dxf",
+                ".jpeg",
+                ".geo",
+                ".png",
+                ".jpg",
+                "sldprt",
+            ]  # Allowed file extensions
+            valid_files = all(file_path.lower().endswith(tuple(allowed_extensions)) for file_path in file_paths)
+            if valid_files:
+                self.fileDropped.emit(self.files_layout, file_paths)
+                self.reset_label()
+                event.accept()
+            else:
+                self.label.setText("Not allowed")
+                self.label.setStyleSheet(self.fail_style_sheet)
+                QTimer.singleShot(1000, self.reset_label)
+                event.ignore()
+        else:
+            event.ignore()
+
+    def mousePressEvent(self, event: QMouseEvent):
+        if event.button() == Qt.MouseButton.LeftButton:
+            file_dialog = QFileDialog(self)
+            file_dialog.setFileMode(QFileDialog.FileMode.ExistingFiles)
+            file_dialog.setNameFilter("Allowed Files (*.pdf *.dxf *.jpeg *.geo *.png *.jpg *.sldprt)")
+            file_dialog.setViewMode(QFileDialog.ViewMode.Detail)
+            if file_dialog.exec():
+                if file_paths := file_dialog.selectedFiles():
+                    self.fileDropped.emit(self.files_layout, file_paths)
+
+    def reset_label(self):
+        self.label.setText("Drag Here")
+        self.label.setStyleSheet(self.default_style_sheet)
+
 
 class AssemblyWidget(QWidget):
     def __init__(self, assembly: Assembly, parent) -> None:
@@ -753,6 +857,7 @@ class AssemblyWidget(QWidget):
         self.laser_cut_part_table_items: dict[LaserCutPart, dict[str, QTableWidgetItem | QComboBox | QWidget | int]] = {}
         self.components_table_items: dict[Component, dict[str, QTableWidgetItem | int]] = {}
 
+        self.upload_images_thread: UploadThread = None
         self.upload_files_thread: WorkspaceUploadThread = None
         self.download_file_thread: WorkspaceDownloadFile = None
 
@@ -766,8 +871,8 @@ class AssemblyWidget(QWidget):
             """
 QWidget#assembly_widget {
 border: 1px solid %(base_color)s;
-border-bottom-left-radius: 5px;
-border-bottom-right-radius: 5px;
+border-bottom-left-radius: 10px;
+border-bottom-right-radius: 10px;
 border-top-right-radius: 0px;
 border-top-left-radius: 0px;
 }"""
@@ -779,17 +884,25 @@ border-top-left-radius: 0px;
         self.verticalLayout_10.setAlignment(Qt.AlignmentFlag.AlignTop)
 
         self.pushButton_laser_cut_parts = self.findChild(QPushButton, "pushButton_laser_cut_parts")
+        self.pushButton_laser_cut_parts.setCursor(Qt.CursorShape.PointingHandCursor)
         self.laser_cut_widget = self.findChild(QWidget, "laser_cut_widget")
         self.apply_stylesheet_to_toggle_buttons(self.pushButton_laser_cut_parts, self.laser_cut_widget)
         self.pushButton_components = self.findChild(QPushButton, "pushButton_components")
+        self.pushButton_components.setCursor(Qt.CursorShape.PointingHandCursor)
         self.component_widget = self.findChild(QWidget, "component_widget")
         self.apply_stylesheet_to_toggle_buttons(self.pushButton_components, self.component_widget)
         self.pushButton_sub_assemblies = self.findChild(QPushButton, "pushButton_sub_assemblies")
+        self.pushButton_sub_assemblies.setCursor(Qt.CursorShape.PointingHandCursor)
         self.sub_assemblies_widget = self.findChild(QWidget, "sub_assemblies_widget")
         self.sub_assemblies_widget.setHidden(True)
         self.apply_stylesheet_to_toggle_buttons(self.pushButton_sub_assemblies, self.sub_assemblies_widget)
 
         self.image_layout = self.findChild(QVBoxLayout, "image_layout")
+
+        self.assembly_files_layout = self.findChild(QHBoxLayout, "assembly_files_layout")
+        assembly_files_widget, assembly_files_layout = self.create_assembly_file_layout()
+        self.assembly_files_layout.addWidget(assembly_files_widget)
+
         self.assembly_image = AssemblyImage(self)
 
         if self.assembly.assembly_image:
@@ -816,6 +929,7 @@ border-top-left-radius: 0px;
         self.comboBox_assembly_flow_tag = self.findChild(QComboBox, "comboBox_assembly_flow_tag")
         self.comboBox_assembly_flow_tag.addItems([f"{flow_tag}" for flow_tag in list(self.workspace_settings.get_all_flow_tags().values())])
         self.comboBox_assembly_flow_tag.setCurrentText(str(self.assembly.flow_tag))
+        self.comboBox_assembly_flow_tag.wheelEvent = lambda event: None
         self.comboBox_assembly_flow_tag.currentTextChanged.connect(self.assembly_flow_tag_changed)
 
         self.laser_cut_parts_layout = self.findChild(QVBoxLayout, "laser_cut_parts_layout")
@@ -919,8 +1033,8 @@ QPushButton:checked:pressed#assembly_button_drop_menu {
             border: 1px solid %(base_color)s;
             border-top-left-radius: 0px;
             border-top-right-radius: 0px;
-            border-bottom-left-radius: 5px;
-            border-bottom-right-radius: 5px;
+            border-bottom-left-radius: 10px;
+            border-bottom-right-radius: 10px;
             };
             """
             % {"base_color": base_color}
@@ -946,20 +1060,15 @@ QPushButton:checked:pressed#assembly_button_drop_menu {
 
     # ASSEMBLY STUFF
     def upload_assembly_image(self, path_to_image: str):
-        file_ext = path_to_image.split(".")[-1].upper()
         file_name = os.path.basename(path_to_image)
 
-        target_dir = f"data\\workspace\\{file_ext}"
-        target_path = os.path.join(target_dir, file_name)
-
-        if not os.path.exists(target_dir):
-            os.makedirs(target_dir)
+        target_path = os.path.join("images", file_name)
 
         shutil.copyfile(path_to_image, target_path)
 
         self.assembly_image.set_new_image(target_path)
         self.assembly.assembly_image = target_path
-        self.upload_files(target_path)
+        self.upload_images([target_path])
         self.changes_made()
 
     def assembly_image_show_context_menu(self):
@@ -986,6 +1095,89 @@ QPushButton:checked:pressed#assembly_button_drop_menu {
         self.paint_widget.setVisible(self.assembly.flow_tag.has_tag("Painting"))
         self.changes_made()
 
+    def add_assembly_drag_file_widget(self, files_layout: QHBoxLayout, file_path: str):
+        file_button = FileButton(f"{os.path.dirname(os.path.realpath(__file__))}\\{file_path}", self)
+        file_button.buttonClicked.connect(partial(self.assembly_file_clicked, file_path))
+        file_button.deleteFileClicked.connect(partial(self.assembly_delete_file, file_path, file_button))
+        file_name = os.path.basename(file_path)
+        file_ext = file_name.split(".")[-1].upper()
+        file_button.setText(file_ext)
+        file_button.setToolTip(file_path)
+        file_button.setToolTipDuration(0)
+        files_layout.addWidget(file_button)
+
+    def create_assembly_file_layout(self) -> tuple[QWidget, QHBoxLayout]:
+        main_widget = QWidget(self)
+        main_widget.setObjectName("main_widget")
+        main_widget.setStyleSheet("QWidget#main_widget{background-color: transparent;}")
+        main_layout = QHBoxLayout(main_widget)
+        main_layout.setContentsMargins(0, 0, 0, 0)
+        main_layout.setSpacing(0)
+
+        files_widget = QWidget()
+        files_widget.setObjectName("files_widget")
+        files_widget.setStyleSheet("QWidget#files_widget{background-color: transparent;}")
+        files_layout = QHBoxLayout(files_widget)
+        files_layout.setAlignment(Qt.AlignmentFlag.AlignLeft)
+        files_layout.setContentsMargins(0, 0, 6, 0)
+        files_layout.setSpacing(6)
+
+        drop_widget = AssemblyFileDropWidget(files_layout, main_widget)
+        drop_widget.fileDropped.connect(self.assembly_file_dropped)
+        main_layout.addWidget(drop_widget)
+
+        scroll_area = QScrollArea(self)
+        scroll_area.setWidget(files_widget)
+        scroll_area.setWidgetResizable(True)
+        scroll_area.setVerticalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAlwaysOff)
+        # scroll_area.setStyleSheet("QWidget#scrollAreaWidgetContents{background-color: rgba(20, 20, 20, 0.5);} QAbstractScrollArea{background-color: rgba(20, 20, 20, 0.5);}")
+
+        main_layout.addWidget(scroll_area)
+
+        for file in self.assembly.assembly_files:
+            self.add_assembly_drag_file_widget(files_layout, file)
+
+        return main_widget, files_layout
+
+    def assembly_file_clicked(self, file_path: str):
+        self.download_file_thread = WorkspaceDownloadFile(file_path, True)
+        self.download_file_thread.signal.connect(self.file_downloaded)
+        self.download_file_thread.start()
+        self.download_file_thread.wait()
+        if file_path.lower().endswith(".pdf"):
+            self.open_pdf(self.assembly_get_all_file_types(".pdf"), file_path)
+
+    def assembly_delete_file(self, file_path: str, file_button: FileButton):
+        self.assembly.assembly_files.remove(file_path)
+        file_button.deleteLater()
+        self.changes_made()
+
+    def assembly_file_dropped(self, files_layout: QHBoxLayout, file_paths: list[str]):
+        for file_path in file_paths:
+            file_ext = file_path.split(".")[-1].upper()
+            file_name = os.path.basename(file_path)
+
+            target_dir = f"data\\workspace\\{file_ext}"
+            target_path = os.path.join(target_dir, file_name)
+
+            if not os.path.exists(target_dir):
+                os.makedirs(target_dir)
+
+            shutil.copyfile(file_path, target_path)
+            self.assembly.assembly_files.append(target_path)
+
+            self.add_assembly_drag_file_widget(files_layout, target_path)
+        self.upload_files(file_paths)
+        self.changes_made()
+
+    def assembly_get_all_file_types(self, file_ext: str) -> list[str]:
+        files: set[str] = {
+            file
+            for file in self.assembly.assembly_files
+            if file.lower().endswith(file_ext)
+        }
+        return list(files)
+
     def open_assembly_image(self):
         self.open_image(self.assembly.assembly_image, self.assembly.name)
 
@@ -993,8 +1185,8 @@ QPushButton:checked:pressed#assembly_button_drop_menu {
         image_viewer = QImageViewer(self, path, title)
         image_viewer.show()
 
-    def open_pdf(self, laser_cut_part: LaserCutPart, file_path: str):
-        pdf_viewer = PDFViewer(laser_cut_part, file_path, self)
+    def open_pdf(self, files, file_path: str):
+        pdf_viewer = PDFViewer(files, file_path, self)
         pdf_viewer.show()
 
     # COMPONENT STUFF
@@ -1011,7 +1203,13 @@ QPushButton:checked:pressed#assembly_button_drop_menu {
     def component_image_pasted(self, image_file_name: str, row: int) -> None:
         component_name = self.components_table.item(row, self.components_table.part_number_column).text()
         component = self.get_component_by_name(component_name)
-        component.image_path = image_file_name
+
+        target_path = os.path.join("images", f"{component.name}.png")
+
+        shutil.copyfile(image_file_name, target_path)
+
+        component.image_path = target_path
+        self.upload_images([target_path])
         self.changes_made()
 
     def add_component_to_table(self, component: Component):
@@ -1020,14 +1218,14 @@ QPushButton:checked:pressed#assembly_button_drop_menu {
         self.components_table_items.update({component: {}})
         self.components_table_items[component].update({"row": current_row})
         self.components_table.insertRow(current_row)
-        self.components_table.setRowHeight(current_row, 30)
+        self.components_table.setRowHeight(current_row, self.components_table.row_height)
 
         image_item = QTableWidgetItem("")
         if component.image_path:
             image = QPixmap(component.image_path)
             original_width = image.width()
             original_height = image.height()
-            new_height = 60
+            new_height = self.components_table.row_height
             new_width = int(original_width * (new_height / original_height))
             pixmap = image.scaled(new_width, new_height, Qt.AspectRatioMode.KeepAspectRatio)
             image_item.setData(Qt.ItemDataRole.DecorationRole, pixmap)
@@ -1038,13 +1236,16 @@ QPushButton:checked:pressed#assembly_button_drop_menu {
         part_name_item = QTableWidgetItem(component.part_name)
         if self.components_inventory.get_component_by_name(component.name):
             component_inventory_status = f"{component.name} exists in inventory."
+            self.set_table_row_color(self.components_table, current_row, "#141414")
         else:
             component_inventory_status = f"{component.name} does NOT exist in inventory."
+            self.set_table_row_color(self.components_table, current_row, "#3F1E25")
         part_name_item.setToolTip(component_inventory_status)
         self.components_table.setItem(current_row, self.components_table.part_name_column, part_name_item)
         self.components_table_items[component].update({"part_name": part_name_item})
 
         part_number_item = QTableWidgetItem(component.part_number)
+        part_number_item.setToolTip(component_inventory_status)
         self.components_table.setItem(current_row, self.components_table.part_number_column, part_number_item)
         self.components_table_items[component].update({"part_number": part_number_item})
 
@@ -1053,6 +1254,7 @@ QPushButton:checked:pressed#assembly_button_drop_menu {
         self.components_table_items[component].update({"quantity": quantity_item})
 
         notes_item = QTableWidgetItem(component.notes)
+        notes_item.setToolTip(component.notes)
         self.components_table.setItem(current_row, self.components_table.notes_column, notes_item)
         self.components_table_items[component].update({"notes": notes_item})
 
@@ -1065,6 +1267,14 @@ QPushButton:checked:pressed#assembly_button_drop_menu {
     def components_table_changed(self):
         for component, table_data in self.components_table_items.items():
             component.part_name = table_data["part_name"].text()
+            if self.components_inventory.get_component_by_name(component.name):
+                component_inventory_status = f"{component.name} exists in inventory."
+                self.set_table_row_color(self.components_table, table_data["row"], "#141414")
+            else:
+                component_inventory_status = f"{component.name} does NOT exist in inventory."
+                self.set_table_row_color(self.components_table, table_data["row"], "#3F1E25")
+            table_data["part_name"].setToolTip(component_inventory_status)
+            table_data["part_number"].setToolTip(component_inventory_status)
             component.part_number = table_data["part_number"].text()
             with contextlib.suppress(ValueError):
                 component.quantity = float(table_data["quantity"].text())
@@ -1090,7 +1300,7 @@ QPushButton:checked:pressed#assembly_button_drop_menu {
             self.add_component_to_table(new_component)
 
     def update_components_table_height(self):
-        self.components_table.setFixedHeight((len(self.assembly.components) + 1) * 30)
+        self.components_table.setFixedHeight((len(self.assembly.components) + 1) * self.components_table.row_height)
 
     def get_selected_components(self) -> list[Component]:
         selected_components: list[Component] = []
@@ -1149,7 +1359,7 @@ QPushButton:checked:pressed#assembly_button_drop_menu {
             files_layout.setContentsMargins(0, 0, 6, 0)
             files_layout.setSpacing(6)
 
-            drop_widget = FileDropWidget(laser_cut_part, files_layout, file_type, main_widget)
+            drop_widget = LaserCutPartFileDropWidget(laser_cut_part, files_layout, file_type, main_widget)
             drop_widget.fileDropped.connect(self.laser_cut_part_file_dropped)
             main_layout.addWidget(drop_widget)
 
@@ -1172,6 +1382,7 @@ QPushButton:checked:pressed#assembly_button_drop_menu {
         self.laser_cut_part_table_items.update({laser_cut_part: {}})
         self.laser_cut_part_table_items[laser_cut_part].update({"row": current_row})
         self.laser_cut_parts_table.insertRow(current_row)
+        self.laser_cut_parts_table.setRowHeight(current_row, self.laser_cut_parts_table.row_height)
 
         image_item = QTableWidgetItem()
         try:
@@ -1180,7 +1391,7 @@ QPushButton:checked:pressed#assembly_button_drop_menu {
                 image = QPixmap("images/404.jpeg")
             original_width = image.width()
             original_height = image.height()
-            new_height = 70
+            new_height = self.laser_cut_parts_table.row_height
             new_width = int(original_width * (new_height / original_height))
             pixmap = image.scaled(new_width, new_height, Qt.AspectRatioMode.KeepAspectRatio)
             image_item.setData(Qt.ItemDataRole.DecorationRole, pixmap)
@@ -1193,8 +1404,10 @@ QPushButton:checked:pressed#assembly_button_drop_menu {
         part_name_item = QTableWidgetItem(laser_cut_part.name)
         if self.laser_cut_inventory.get_laser_cut_part_by_name(laser_cut_part.name):
             laser_cut_part_inventory_status = f"{laser_cut_part.name} exists in inventory."
+            self.set_table_row_color(self.laser_cut_parts_table, current_row, "#141414")
         else:
             laser_cut_part_inventory_status = f"{laser_cut_part.name} does NOT exist in inventory."
+            self.set_table_row_color(self.laser_cut_parts_table, current_row, "#3F1E25")
 
         part_name_item.setToolTip(laser_cut_part_inventory_status)
         self.laser_cut_parts_table.setItem(current_row, self.laser_cut_parts_table.part_name_column, part_name_item)
@@ -1275,8 +1488,10 @@ QPushButton:checked:pressed#assembly_button_drop_menu {
             laser_cut_part.name = table_data["part_name"].text()
             if self.laser_cut_inventory.get_laser_cut_part_by_name(laser_cut_part.name):
                 laser_cut_part_inventory_status = f"{laser_cut_part.name} exists in inventory."
+                self.set_table_row_color(self.laser_cut_parts_table, table_data["row"], "#141414")
             else:
                 laser_cut_part_inventory_status = f"{laser_cut_part.name} does NOT exist in inventory."
+                self.set_table_row_color(self.laser_cut_parts_table, table_data["row"], "#3F1E25")
             table_data["part_name"].setToolTip(laser_cut_part_inventory_status)
             laser_cut_part.material = table_data["material"].currentText()
             laser_cut_part.gauge = table_data["thickness"].currentText()
@@ -1303,12 +1518,28 @@ QPushButton:checked:pressed#assembly_button_drop_menu {
         self.laser_cut_parts_table.resizeColumnsToContents()
 
     def update_laser_cut_parts_table_height(self):
-        self.laser_cut_parts_table.setFixedHeight((len(self.assembly.laser_cut_parts) + 1) * 70)
+        self.laser_cut_parts_table.setFixedHeight((len(self.assembly.laser_cut_parts) + 1) * self.laser_cut_parts_table.row_height)
+
+    def laser_cut_part_get_all_file_types(self, laser_cut_part: LaserCutPart, file_ext: str) -> list[str]:
+        files: set[str] = set()
+        for bending_file in laser_cut_part.bending_files:
+            if bending_file.lower().endswith(file_ext):
+                files.add(bending_file)
+        for welding_file in laser_cut_part.welding_files:
+            if welding_file.lower().endswith(file_ext):
+                files.add(welding_file)
+        for cnc_milling_file in laser_cut_part.cnc_milling_files:
+            if cnc_milling_file.lower().endswith(file_ext):
+                files.add(cnc_milling_file)
+        return list(files)
 
     def laser_cut_part_file_clicked(self, laser_cut_part: LaserCutPart, file_path: str):
-        self.download_file_thread = WorkspaceDownloadFile(laser_cut_part, file_path, True)
+        self.download_file_thread = WorkspaceDownloadFile(file_path, True)
         self.download_file_thread.signal.connect(self.file_downloaded)
         self.download_file_thread.start()
+        self.download_file_thread.wait()
+        if file_path.lower().endswith(".pdf"):
+            self.open_pdf(self.laser_cut_part_get_all_file_types(laser_cut_part, ".pdf"), file_path)
 
     def get_selected_laser_cut_parts(self) -> list[LaserCutPart]:
         selected_laser_cut_parts: list[LaserCutPart] = []
@@ -1339,7 +1570,7 @@ QPushButton:checked:pressed#assembly_button_drop_menu {
             self.laser_cut_parts_table.customContextMenuRequested.connect(partial(self.open_group_menu, menu))
 
     # OTHER STUFF
-    def file_downloaded(self, laser_cut_part: LaserCutPart, file_ext: str, file_name: str, open_when_done: bool):
+    def file_downloaded(self, file_ext: str, file_name: str, open_when_done: bool):
         if file_ext is None:
             msg = QMessageBox(QMessageBox.Icon.Critical, "Error", f"Failed to download file: {file_name}", QMessageBox.StandardButton.Ok, self)
             msg.show()
@@ -1348,8 +1579,8 @@ QPushButton:checked:pressed#assembly_button_drop_menu {
             local_path = f"data/workspace/{file_ext}/{file_name}"
             if file_ext in {"PNG", "JPG", "JPEG"}:
                 self.open_image(local_path, file_name)
-            elif file_ext == "PDF":
-                self.open_pdf(laser_cut_part, local_path)
+            # elif file_ext == "PDF":
+                # self.open_pdf(laser_cut_part, local_path)
 
     def laser_cut_part_delete_file(self, laser_cut_part: LaserCutPart, file_category: str, file_path: str, file_button: FileButton):
         if file_category == "bending_files":
@@ -1373,13 +1604,13 @@ QPushButton:checked:pressed#assembly_button_drop_menu {
                 os.makedirs(target_dir)
 
             shutil.copyfile(file_path, target_path)
-
-            if file_category == "bending_files":
-                laser_cut_part.bending_files.append(target_path)
-            elif file_category == "welding_files":
-                laser_cut_part.welding_files.append(target_path)
-            elif file_category == "cnc_milling_files":
-                laser_cut_part.cnc_milling_files.append(target_path)
+            getattr(laser_cut_part, file_category).append(target_path)
+            # if file_category == "bending_files":
+            #     laser_cut_part.bending_files.append(target_path)
+            # elif file_category == "welding_files":
+            #     laser_cut_part.welding_files.append(target_path)
+            # elif file_category == "cnc_milling_files":
+            #     laser_cut_part.cnc_milling_files.append(target_path)
 
             self.add_laser_cut_part_drag_file_widget(laser_cut_part, file_category, files_layout, target_path)
         self.upload_files(file_paths)
@@ -1388,6 +1619,10 @@ QPushButton:checked:pressed#assembly_button_drop_menu {
     def upload_files(self, files: list[str]):
         self.upload_files_thread = WorkspaceUploadThread(files)
         self.upload_files_thread.start()
+
+    def upload_images(self, files: list[str]):
+        self.upload_images_thread = UploadThread(files)
+        self.upload_images_thread.start()
 
     def get_laser_cut_part_by_name(self, laser_cut_part_name: str) -> LaserCutPart:
         return next(
@@ -1455,6 +1690,14 @@ QPushButton:checked:pressed#assembly_button_drop_menu {
         self.load_laser_cut_parts_table()
         for sub_assembly_widget in self.sub_assembly_widgets:
             sub_assembly_widget.update_tables()
+
+    def set_table_row_color(self, table: LaserCutPartsPlanningTableWidget | ComponentsPlanningTableWidget, row_index: int, color: str):
+        for j in range(table.columnCount()):
+            item = table.item(row_index, j)
+            if not item:
+                item = QTableWidgetItem()
+                table.setItem(row_index, j, item)
+            item.setBackground(QColor(color))
 
     def open_group_menu(self, menu: QMenu) -> None:
         menu.exec(QCursor.pos())

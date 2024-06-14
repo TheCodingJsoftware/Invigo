@@ -10,7 +10,7 @@ from utils.workspace.group import Group
 from utils.workspace.workspace_settings import WorkspaceSettings
 
 
-class JobType(Enum):
+class JobStatus(Enum):
     PLANNING = 0
     QUOTING = 1
     QUOTED = 2
@@ -29,7 +29,7 @@ class Job:
         from utils.workspace.job_manager import JobManager
 
         self.job_manager: JobManager = job_manager
-        self.job_type = JobType.PLANNING
+        self.job_status = JobStatus.PLANNING
 
         # NOTE Non serialized variables
         self.sheet_settings: SheetSettings = self.job_manager.sheet_settings
@@ -81,7 +81,7 @@ class Job:
         self.ship_to = job_data.get("ship_to", "")
         self.date_shipped = job_data.get("date_shipped", "")
         self.date_expected = job_data.get("date_expected", "")
-        self.job_type = JobType(job_data.get("type", 0))
+        self.job_status = JobStatus(job_data.get("type", 0))
 
         groups_data = data.get("groups", {})
 
@@ -94,7 +94,7 @@ class Job:
         self.unsaved_changes = False
         return {
             "job_data": {
-                "type": self.job_type.value,
+                "type": self.job_status.value,
                 "order_number": self.order_number,
                 "ship_to": self.ship_to,
                 "date_shipped": self.date_shipped,

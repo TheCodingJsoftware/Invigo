@@ -25,7 +25,7 @@ class JobLoaderThread(QThread):
         images: set[str] = set()
         for assembly in job.get_all_assemblies():
             if assembly.assembly_image:
-                images.add(assembly.assembly_image.split("\\")[-1])
+                images.add(assembly.assembly_image)
         for laser_cut_part in job.get_all_laser_cut_parts():
             images.add(laser_cut_part.image_index)
         for component in job.get_all_components():

@@ -13,6 +13,8 @@ class ComponentsPlanningTableWidget(CustomTableWidget):
 
     def __init__(self, parent=None):
         super(ComponentsPlanningTableWidget, self).__init__(parent)
+        self.row_height = 60
+
         self.image_column = 0
         self.part_name_column = 1
         self.part_number_column = 2
@@ -55,14 +57,14 @@ class ComponentsPlanningTableWidget(CustomTableWidget):
             original_width = image.width()
             original_height = image.height()
 
-            new_height = 60
+            new_height = self.row_height
             new_width = int(original_width * (new_height / original_height))
 
-            if not os.path.exists("images/items"):
-                os.makedirs("images/items")
+            if not os.path.exists("images"):
+                os.makedirs("images")
             # Resize the image to fit the specified height while maintaining aspect ratio
             pixmap = QPixmap.fromImage(image).scaled(new_width, new_height, Qt.AspectRatioMode.KeepAspectRatio)
-            image_path = f'images/items/{datetime.now().strftime("%Y%m%d%H%M%S%f")}.png'
+            image_path = f'images/{datetime.now().strftime("%Y%m%d%H%M%S%f")}.png'
             pixmap.save(image_path)
 
             item.setData(Qt.ItemDataRole.DecorationRole, pixmap)

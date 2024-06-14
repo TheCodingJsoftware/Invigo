@@ -85,7 +85,7 @@ from utils.sheets_inventory.sheet import Sheet
 from utils.sheets_inventory.sheets_inventory import SheetsInventory
 from utils.trusted_users import get_trusted_users
 from utils.workspace.generate_printout import JobPlannerPrintout
-from utils.workspace.job import Job, JobType
+from utils.workspace.job import Job, JobStatus
 from utils.workspace.job_manager import JobManager
 from utils.workspace.workspace import Workspace
 from utils.workspace.workspace_settings import WorkspaceSettings
@@ -94,8 +94,8 @@ __author__: str = "Jared Gross"
 __copyright__: str = "Copyright 2022-2024, TheCodingJ's"
 __credits__: list[str] = ["Jared Gross"]
 __license__: str = "MIT"
-__version__: str = "v3.0.18"
-__updated__: str = "2024-06-13 21:51:40"
+__version__: str = "v3.0.19"
+__updated__: str = "2024-06-14 10:46:33"
 __maintainer__: str = "Jared Gross"
 __email__: str = "jared@pinelandfarms.ca"
 __status__: str = "Production"
@@ -313,6 +313,9 @@ class MainWindow(QMainWindow):
 
         self.pushButton_save.clicked.connect(partial(self.save_quote, None))
         self.pushButton_save_as.clicked.connect(partial(self.save_quote_as, None))
+
+        self.pushButton_save_job.clicked.connect(partial(self.save_job, None))
+        self.pushButton_save_as_job.setHidden(True)
 
         self.saved_planning_jobs_layout = self.findChild(QVBoxLayout, "saved_planning_jobs_layout")
         self.saved_planning_jobs_layout.setAlignment(Qt.AlignmentFlag.AlignTop)
@@ -762,9 +765,13 @@ class MainWindow(QMainWindow):
                 return
 
     def save_job(self, job: Job):
+        if job is None:
+            job = self.job_planner_widget.current_job
         job_plan_printout = JobPlannerPrintout(job)
         html = job_plan_printout.generate()
-        self.upload_job_thread(f"saved_jobs/{job.job_type.name.lower()}/{job.name}", job, html)
+        self.upload_job_thread(f"saved_jobs/{job.job_status.name.lower()}/{job.name}", job, html)
+        job.unsaved_changes = False
+        self.job_planner_widget.update_job_save_status(job)
         self.status_button.setText(f"Saved {job.name}", "lime")
         self.upload_file(
             [
@@ -775,9 +782,10 @@ class MainWindow(QMainWindow):
         )
 
     def save_job_as(self, job: Job):  # Todo
+        return
         job_plan_printout = JobPlannerPrintout(job)
         html = job_plan_printout.generate()
-        self.upload_job_thread(f"saved_jobs/{job.job_type.name.lower()}/{job.name}", job, html)
+        self.upload_job_thread(f"saved_jobs/{job.job_status.name.lower()}/{job.name}", job, html)
         self.status_button.setText(f"Saved {job.name}", "lime")
         self.upload_file(
             [
@@ -1052,7 +1060,7 @@ class MainWindow(QMainWindow):
 
         sorted_data = dict(natsorted(data.items(), key=lambda x: x[1]["name"], reverse=True))
         for folder_path, file_info in sorted_data.items():
-            if self.tabWidget.tabText(self.tabWidget.currentIndex()) == "Job Planner" and file_info["type"] == JobType.PLANNING.value:
+            if self.tabWidget.tabText(self.tabWidget.currentIndex()) == "Job Planner" and file_info["type"] == JobStatus.PLANNING.value:
                 job_item = SavedPlanningJobItem(file_info, self)
                 job_item.load_job.connect(partial(self.load_job_thread, f"saved_jobs/{folder_path}"))
                 job_item.delete_job.connect(partial(self.delete_job_thread, f"saved_jobs/{folder_path}"))

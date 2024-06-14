@@ -7,6 +7,8 @@ from ui.custom_widgets import CustomTableWidget
 class LaserCutPartsPlanningTableWidget(CustomTableWidget):
     def __init__(self, parent=None):
         super(LaserCutPartsPlanningTableWidget, self).__init__(parent)
+        self.row_height = 70
+
         self.image_column = 0
         self.part_name_column = 1
         self.bending_files_column = 2

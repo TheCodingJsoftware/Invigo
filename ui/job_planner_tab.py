@@ -21,7 +21,7 @@ from utils.components_inventory.components_inventory import ComponentsInventory
 from utils.inventory.category import Category
 from utils.laser_cut_inventory.laser_cut_inventory import LaserCutInventory
 from utils.laser_cut_inventory.laser_cut_part import LaserCutPart
-from utils.workspace.job import Job, JobType
+from utils.workspace.job import Job, JobStatus
 from utils.workspace.job_manager import JobManager
 
 
@@ -70,7 +70,7 @@ class JobPlannerTab(QWidget):
     def add_job(self, new_job: Job = None) -> JobWidget:
         if not new_job:
             job = Job(f"Enter Job Name{len(self.jobs)}", {}, self.job_manager)
-            job.job_type = JobType.PLANNING
+            job.job_status = JobStatus.PLANNING
             self.job_manager.add_job(job)
         else:
             job = new_job

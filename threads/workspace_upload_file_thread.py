@@ -24,7 +24,7 @@ class WorkspaceUploadThread(QThread):
                 with open(file_to_upload, "rb") as file:
                     files = {"file": (file_to_upload, file.read())}
                     # files = {"file": (file_to_upload, file.read(), "image/jpeg")}
-                response = requests.post(self.upload_url, files=files)
+                response = requests.post(self.upload_url, files=files, timeout=10)
                 if response.status_code == 200:
                     self.signal.emit("Successfully uploaded")
                 else:

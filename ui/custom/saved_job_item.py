@@ -72,7 +72,7 @@ class SavedPlanningJobItem(QGroupBox):
 
         self.setTitle(job_name)
 
-        job_type = QLabel("Job Type:", self)
+        job_type = QLabel("Job status:", self)
         job_type.setFixedWidth(60)
 
         self.job_type_combobox = QComboBox(self)

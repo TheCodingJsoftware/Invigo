@@ -18,6 +18,7 @@ class Assembly:
         self.group: Group = group
         self.paint_inventory = self.group.job.job_manager.paint_inventory
         self.parent_assembly: "Assembly" = None
+        self.assembly_files: list[str] = []
         self.laser_cut_parts: list[LaserCutPart] = []
         self.components: list[Component] = []
         self.sub_assemblies: list[Assembly] = []
@@ -45,9 +46,6 @@ class Assembly:
         self.has_items: bool = False
         self.has_sub_assemblies: bool = False
         self.flow_tag: FlowTag = None
-        self.paint_color: str = None
-        self.paint_type: str = None
-        self.paint_amount: float = 0.0
         self.assembly_image: str = None
         # NOTE Used by user workspace
         self.timers: dict[str, dict] = {}
@@ -125,10 +123,8 @@ class Assembly:
         self.has_items: bool = assembly_data.get("has_items", False)
         self.has_sub_assemblies: bool = assembly_data.get("has_sub_assemblies", True)
         self.flow_tag: FlowTag = FlowTag("", assembly_data.get("flow_tag", {}), self.workspace_settings)
-        self.paint_color: str = assembly_data.get("paint_color")
-        self.paint_type: str = assembly_data.get("paint_type")
-        self.paint_amount: float = assembly_data.get("paint_amount", 0.0)
         self.assembly_image: str = assembly_data.get("assembly_image")
+        self.assembly_files: list[str] = assembly_data.get("assembly_files", [])
 
         self.uses_primer: bool = assembly_data.get("uses_primer", False)
         self.primer_name: str = assembly_data.get("primer_name")
@@ -186,16 +182,14 @@ class Assembly:
 
         data = {
             "assembly_data": {
+                "display_name": self.display_name,
                 "expected_time_to_complete": self.expected_time_to_complete,
                 "has_items": self.has_items,
                 "has_sub_assemblies": self.has_sub_assemblies,
                 "flow_tag": self.flow_tag.to_dict(),
-                "paint_color": self.paint_color,
-                "paint_type": self.paint_type,
-                "paint_amount": self.paint_amount,
                 "assembly_image": self.assembly_image,
+                "assembly_files": self.assembly_files,
                 "timers": self.timers,
-                "display_name": self.display_name,
                 "completed": self.completed,
                 "starting_date": self.starting_date,
                 "ending_date": self.ending_date,

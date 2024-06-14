@@ -6,19 +6,17 @@ from PyQt6.QtWebEngineWidgets import QWebEngineView
 from PyQt6.QtWidgets import QHBoxLayout, QMainWindow, QMessageBox, QPushButton, QSplitter, QVBoxLayout
 
 from threads.workspace_get_file_thread import WorkspaceDownloadFile
-from utils.laser_cut_inventory.laser_cut_part import LaserCutPart
 
+from natsort import natsorted
 
 class PDFViewer(QMainWindow):
-    def __init__(self, laser_cut_part: LaserCutPart, file_path: str, parent):
+    def __init__(self, pdf_files: list[str], file_path: str, parent):
         super(PDFViewer, self).__init__(parent)
         uic.loadUi("ui/pdf_viewer.ui", self)
 
-        self.laser_cut_part = laser_cut_part
+        self.files = pdf_files
         self.buttons: list[QPushButton] = []
         self.download_file_thread: WorkspaceDownloadFile = None
-
-        self.setWindowTitle(self.laser_cut_part.name)
 
         self.webView = QWebEngineView(self)
         self.webView.settings().setAttribute(self.webView.settings().WebAttribute.PluginsEnabled, True)
@@ -58,36 +56,30 @@ class PDFViewer(QMainWindow):
                 button.setChecked(True)
                 button.blockSignals(False)
         self.webView.setUrl(QUrl("file:///" + path.replace("\\", "/")))
+        self.setWindowTitle(path)
 
     def get_pdf_files(self) -> list[str]:
-        pdf_files: set[str] = set()
-        for bending_file in self.laser_cut_part.bending_files:
-            if bending_file.lower().endswith(".pdf"):
-                pdf_files.add(bending_file)
-        for welding_file in self.laser_cut_part.welding_files:
-            if welding_file.lower().endswith(".pdf"):
-                pdf_files.add(welding_file)
-        for cnc_milling_file in self.laser_cut_part.cnc_milling_files:
-            if cnc_milling_file.lower().endswith(".pdf"):
-                pdf_files.add(cnc_milling_file)
+        pdf_files: set[str] = {
+            file for file in self.files if file.lower().endswith(".pdf")
+        }
         return list(pdf_files)
 
     def load_pdf_file(self, file_path: str):
-        self.download_file_thread = WorkspaceDownloadFile(self.laser_cut_part, file_path, True)
+        self.download_file_thread = WorkspaceDownloadFile(file_path, True)
         self.download_file_thread.signal.connect(self.file_downloaded)
         self.download_file_thread.start()
 
-    def file_downloaded(self, laser_cut_part: LaserCutPart, file_ext: str, file_name: str, open_when_done: bool):
+    def file_downloaded(self, file_ext: str, file_name: str, open_when_done: bool):
         if file_ext is None:
             msg = QMessageBox(QMessageBox.Icon.Critical, "Error", f"Failed to download file: {file_name}", QMessageBox.StandardButton.Ok, self)
             msg.show()
             return
         if open_when_done:
-            local_path = f"data/workspace/{file_ext}/{file_name}"
+            local_path = f"data\\workspace\\{file_ext}\\{file_name}"
             self.pdf_button_pressed(local_path)
 
     def load_pdf_buttons(self):
-        all_pdfs = self.get_pdf_files()
+        all_pdfs = natsorted(self.get_pdf_files())
         for file in all_pdfs:
             file_name = file.split("\\")[-1].replace(".pdf", "")
             button = QPushButton(file_name, self)
