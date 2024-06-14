@@ -1086,7 +1086,7 @@ QPushButton:checked:pressed#assembly_button_drop_menu {
             clipboard = QApplication.clipboard()
             image = clipboard.image()
             if not image.isNull():
-                temp_path = f"{self.assembly.name}.png"
+                temp_path = f"images/{self.assembly.name}.png"
                 image.save(temp_path)
                 self.upload_assembly_image(temp_path)
 
