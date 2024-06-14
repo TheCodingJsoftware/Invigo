@@ -72,7 +72,7 @@ class Quote:
         laser_cut_part_dict: dict[str, LaserCutPart] = {}
         for nest in self.nests:
             for laser_cut_part in nest.laser_cut_parts:
-                if laser_cut_part.name in list(laser_cut_part_dict.keys()):
+                if laser_cut_part.name in laser_cut_part_dict:
                     laser_cut_part_dict[laser_cut_part.name].quantity += laser_cut_part.quantity
                 else:
                     new_laser_cut_part = LaserCutPart(laser_cut_part.name, laser_cut_part.to_dict(), self.laser_cut_inventory)
@@ -131,10 +131,7 @@ class Quote:
         self.load_settings(data)
         self.components.clear()
         for component_name, component_data in data["components"].items():
-            if component := self.component_inventory.get_component_by_name(component_name):
-                self.components.append(component)
-            else:
-                self.components.append(Component(component_name, component_data, self.component_inventory))
+            self.components.append(Component(component_name, component_data, self.component_inventory))
 
         self.nests.clear()
         for nest_name, nest_data in data["nests"].items():

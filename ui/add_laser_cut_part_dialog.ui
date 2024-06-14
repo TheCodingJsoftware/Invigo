@@ -86,36 +86,19 @@ Press 'Add' when finished.</string>
          </widget>
         </item>
         <item>
-         <layout class="QGridLayout" name="gridLayout" columnstretch="0,1">
-          <item row="0" column="1">
-           <widget class="QComboBox" name="comboBox_component_name">
-            <property name="editable">
-             <bool>true</bool>
-            </property>
-           </widget>
-          </item>
-          <item row="0" column="0">
+         <layout class="QHBoxLayout" name="horizontalLayout_4" stretch="0,1">
+          <item>
            <widget class="QLabel" name="label_3">
             <property name="text">
-             <string>Component Name:</string>
+             <string>Laser Cut Part Name or Number:</string>
             </property>
             <property name="buddy">
-             <cstring>comboBox_component_name</cstring>
+             <cstring>comboBox_name</cstring>
             </property>
            </widget>
           </item>
-          <item row="1" column="0">
-           <widget class="QLabel" name="label">
-            <property name="text">
-             <string>Component Part Number:</string>
-            </property>
-            <property name="buddy">
-             <cstring>comboBox_part_number</cstring>
-            </property>
-           </widget>
-          </item>
-          <item row="1" column="1">
-           <widget class="QComboBox" name="comboBox_part_number">
+          <item>
+           <widget class="QComboBox" name="comboBox_name">
             <property name="editable">
              <bool>true</bool>
             </property>
@@ -124,14 +107,14 @@ Press 'Add' when finished.</string>
          </layout>
         </item>
         <item>
-         <widget class="QLabel" name="label_2">
+         <widget class="QLabel" name="label">
           <property name="text">
-           <string>All Components in Inventory:</string>
+           <string>All Laser Cut Parts in Inventory:</string>
           </property>
          </widget>
         </item>
         <item>
-         <widget class="QListWidget" name="listWidget_components"/>
+         <widget class="QListWidget" name="listWidget_laser_cut_parts"/>
         </item>
         <item>
          <layout class="QHBoxLayout" name="horizontalLayout_3" stretch="0,1">
@@ -155,9 +138,9 @@ Press 'Add' when finished.</string>
          </layout>
         </item>
         <item>
-         <widget class="QLabel" name="label_component_status">
+         <widget class="QLabel" name="label_laser_cut_part_status">
           <property name="text">
-           <string> * Component does NOT exist in inventory.</string>
+           <string> * Laser Cut Part does NOT exist in inventory.</string>
           </property>
           <property name="alignment">
            <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -215,12 +198,11 @@ Press 'Add' when finished.</string>
   </layout>
  </widget>
  <tabstops>
-  <tabstop>comboBox_component_name</tabstop>
-  <tabstop>comboBox_part_number</tabstop>
+  <tabstop>comboBox_name</tabstop>
   <tabstop>spinBox_current_quantity</tabstop>
   <tabstop>pushButton_add</tabstop>
   <tabstop>pushButton_cancel</tabstop>
-  <tabstop>listWidget_components</tabstop>
+  <tabstop>listWidget_laser_cut_parts</tabstop>
  </tabstops>
  <resources/>
  <connections/>

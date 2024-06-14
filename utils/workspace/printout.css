@@ -1,19 +1,31 @@
+@page {
+    size: letter portrait;
+    margin: 10px;
+}
+
 * {
     font-family: Verdana, Geneva, Tahoma, sans-serif;
 }
 
 html {
-    background-color: #EAE9FC;
+    background-color: white;
 }
 
 .ui-table {
-    background-color: #EAE9FC;
+    background-color: white;
 }
 
 .page {
-    background-color: #EAE9FC;
+    background-color: white;
 }
-
+h2#components-heading{
+    margin-bottom: 0px;
+    text-align: center;
+}
+h2#laser-cut-parts-heading{
+    margin-bottom: 0px;
+    text-align: center;
+}
 .header-table-row {
     text-align: bottom;
     vertical-align: bottom;
@@ -61,7 +73,7 @@ p {
 
 /* Style for the date */
 .date {
-    position: absolute;
+    position: fixed;
     font-size: 10px;
     top: 0;
     right: 0;
@@ -72,7 +84,7 @@ body {
     align-items: center;
     justify-content: center;
     flex-direction: column;
-    background-color: #EAE9FC;
+    background-color: white;
 }
 
 .tg-wrap {
@@ -80,7 +92,7 @@ body {
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    background-color: #EAE9FC;
+    background-color: white;
 }
 
 .input-box {
@@ -158,10 +170,10 @@ tr {
     position: fixed;
     top: 0;
     right: 0;
-    background-color: #EAE9FC;
+    background-color: white;
     border: 1px solid #ccc;
     padding: 10px;
-    width: auto;
+    width: 70%;
     height: 100%;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     align-items: center;
@@ -268,11 +280,11 @@ td.dlheader:last-child {
 }
 
 .ui-page {
-    background-color: #EAE9FC;
+    background-color: white;
 }
 
 .ui-btn {
-    background-color: #EAE9FC;
+    background-color: white;
 }
 
 .nests {
@@ -299,8 +311,11 @@ td.dlheader:last-child {
 }
 
 .nest_image {
-    height: 100px;
+    height: 220px;
+    width: 290px;
+    position: absolute;
     padding: 5px;
+    margin-top: -30px;
 }
 
 .ui-input-text input,

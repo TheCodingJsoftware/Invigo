@@ -1,23 +1,50 @@
 import copy
 from typing import Any, Union
 
-from utils.workspace.workspace_item import WorkspaceItem
+from utils.components_inventory.component import Component
+from utils.laser_cut_inventory.laser_cut_part import LaserCutPart
+from utils.paint_inventory.paint import Paint
+from utils.paint_inventory.powder import Powder
+from utils.paint_inventory.primer import Primer
+from utils.workspace.flow_tag import FlowTag
+from utils.workspace.workspace_settings import WorkspaceSettings
 
 
 class Assembly:
-    def __init__(self, name: str, assembly_data: dict[str, object]) -> None:
+    def __init__(self, name: str, assembly_data: dict[str, object], group) -> None:
         self.name = name
-        self.sub_assemblies: list[Assembly] = []
-        self.items: list[WorkspaceItem] = []
+        from utils.workspace.group import Group
+
+        self.group: Group = group
+        self.paint_inventory = self.group.job.job_manager.paint_inventory
         self.parent_assembly: "Assembly" = None
-        self.master_assembly: "Assembly" = None
+        self.laser_cut_parts: list[LaserCutPart] = []
+        self.components: list[Component] = []
+        self.sub_assemblies: list[Assembly] = []
+
+        # Paint Items
+        self.uses_primer: bool = False
+        self.primer_name: str = None
+        self.primer_item: Primer = None
+        self.primer_overspray: float = 66.67
+        self.cost_for_primer: float = 0.0
+
+        self.uses_paint: bool = False
+        self.paint_name: str = None
+        self.paint_item: Paint = None
+        self.paint_overspray: float = 66.67
+        self.cost_for_paint: float = 0.0
+
+        self.uses_powder: bool = False
+        self.powder_name: str = None
+        self.powder_item: Powder = None
+        self.powder_transfer_efficiency: float = 66.67
+        self.cost_for_powder_coating: float = 0.0
 
         self.expected_time_to_complete: float = 0.0
         self.has_items: bool = False
         self.has_sub_assemblies: bool = False
-        self.group: str = ""
-        self.group_color: str = ""
-        self.flow_tag: list[str] = []
+        self.flow_tag: FlowTag = None
         self.paint_color: str = None
         self.paint_type: str = None
         self.paint_amount: float = 0.0
@@ -31,31 +58,12 @@ class Assembly:
         self.status: str = None
         self.current_flow_state: int = 0
         self.date_completed: str = ""
-        self.load_data(assembly_data)
 
         # NOTE Non serializable variables
+        self.workspace_settings: WorkspaceSettings = self.group.workspace_settings
         self.show = True
 
-    def load_data(self, data: dict[str, Union[float, bool, str, dict]]):
-        self.expected_time_to_complete: float = data.get("expected_time_to_complete", 0.0)
-        self.has_items: bool = data.get("has_items", False)
-        self.has_sub_assemblies: bool = data.get("has_sub_assemblies", True)
-        self.group: str = data.get("group", "")
-        self.group_color: str = data.get("group_color", "")
-        self.flow_tag: list[str] = data.get("flow_tag", [])
-        self.paint_color: str = data.get("paint_color")
-        self.paint_type: str = data.get("paint_type")
-        self.paint_amount: float = data.get("paint_amount", 0.0)
-        self.assembly_image: str = data.get("assembly_image")
-        # NOTE Used by user workspace
-        self.timers: dict[str, dict[str, object]] = data.get("timers", {})
-        self.display_name: str = data.get("display_name", "")
-        self.completed: bool = data.get("completed", False)
-        self.starting_date: str = data.get("starting_date", "")
-        self.ending_date: str = data.get("ending_date", "")
-        self.status: str = data.get("status")
-        self.current_flow_state: int = data.get("current_flow_state", 0)
-        self.date_completed: str = data.get("date_completed", "")
+        self.load_data(assembly_data)
 
     def set_parent_assembly_value(self, key: str, value: Any) -> None:
         if key == "show":
@@ -63,17 +71,17 @@ class Assembly:
             if self.parent_assembly is not None:
                 self.parent_assembly.show = value
 
-    def set_item(self, item: WorkspaceItem) -> None:
-        item.parent_assembly = self
-        self.items.append(item)
+    def add_laser_cut_part(self, laser_cut_part: LaserCutPart):
+        self.laser_cut_parts.append(laser_cut_part)
 
-    def add_item(self, item: WorkspaceItem) -> None:
-        item.parent_assembly = self
-        self.items.append(item)
+    def remove_laser_cut_part(self, laser_cut_part: LaserCutPart):
+        self.laser_cut_parts.remove(laser_cut_part)
 
-    def remove_item(self, item: WorkspaceItem) -> None:
-        if self.exists(item):
-            self.items.remove(item)
+    def add_component(self, component: Component):
+        self.components.append(component)
+
+    def remove_component(self, component: Component):
+        self.components.remove(component)
 
     def get_current_flow_state(self) -> str:
         return self.flow_tag[self.current_flow_state]
@@ -84,15 +92,13 @@ class Assembly:
             master_assembly = master_assembly.parent_assembly
         return master_assembly
 
-    def delete_sub_assembly(self, assembly) -> "Assembly":
-        assembly_copy = self.copy_sub_assembly(assembly)
-        self.sub_assemblies.remove(assembly)
-        return assembly_copy
-
-    def add_sub_assembly(self, assembly: "Assembly") -> list["Assembly"]:
+    def add_sub_assembly(self, assembly: "Assembly"):
         assembly.parent_assembly = self
-        assembly.master_assembly = assembly.get_master_assembly()
+        assembly.group = self.group
         self.sub_assemblies.append(assembly)
+
+    def remove_sub_assembly(self, assembly) -> "Assembly":
+        self.sub_assemblies.remove(assembly)
 
     def get_sub_assemblies(self) -> list["Assembly"]:
         return self.sub_assemblies
@@ -103,36 +109,87 @@ class Assembly:
             None,
         )
 
-    def copy_sub_assembly(self, assembly_name: Union[str, "Assembly"]) -> "Assembly":
-        if isinstance(assembly_name, Assembly):
-            assembly_name = assembly_name.name
-        for sub_assembly in self.sub_assemblies:
-            if sub_assembly.name == assembly_name:
-                sub_assembly = copy.deepcopy(sub_assembly)
-                sub_assembly.rename(f"{sub_assembly.name} - (Copy)")
-                return sub_assembly
-        return None
-
-    def copy_assembly(self) -> "Assembly":
-        return copy.deepcopy(self)
-
     def rename(self, new_name: str) -> None:
         self.name = new_name
 
-    def to_dict(self, processed_assemblies: set = None) -> dict:
+    def get_all_sub_assemblies(self) -> list["Assembly"]:
+        assemblies: list["Assembly"] = []
+        assemblies.extend(self.sub_assemblies)
+        for sub_assembly in self.sub_assemblies:
+            assemblies.extend(sub_assembly.get_all_sub_assemblies())
+        return assemblies
+
+    def load_data(self, data: dict[str, Union[float, bool, str, dict]]):
+        assembly_data = data.get("assembly_data", {})
+        self.expected_time_to_complete: float = assembly_data.get("expected_time_to_complete", 0.0)
+        self.has_items: bool = assembly_data.get("has_items", False)
+        self.has_sub_assemblies: bool = assembly_data.get("has_sub_assemblies", True)
+        self.flow_tag: FlowTag = FlowTag("", assembly_data.get("flow_tag", {}), self.workspace_settings)
+        self.paint_color: str = assembly_data.get("paint_color")
+        self.paint_type: str = assembly_data.get("paint_type")
+        self.paint_amount: float = assembly_data.get("paint_amount", 0.0)
+        self.assembly_image: str = assembly_data.get("assembly_image")
+
+        self.uses_primer: bool = assembly_data.get("uses_primer", False)
+        self.primer_name: str = assembly_data.get("primer_name")
+        self.primer_overspray: float = assembly_data.get("primer_overspray", 66.67)
+        if self.uses_primer and self.primer_name:
+            self.primer_item = self.paint_inventory.get_primer(self.primer_name)
+        self.cost_for_primer = assembly_data.get("cost_for_primer", 0.0)
+
+        self.uses_paint: bool = assembly_data.get("uses_paint", False)
+        self.paint_name: str = assembly_data.get("paint_name")
+        self.paint_overspray: float = assembly_data.get("paint_overspray", 66.67)
+        if self.uses_paint and self.paint_name:
+            self.paint_item = self.paint_inventory.get_paint(self.paint_name)
+        self.cost_for_paint = assembly_data.get("cost_for_paint", 0.0)
+
+        self.uses_powder: bool = assembly_data.get("uses_powder_coating", False)
+        self.powder_name: str = assembly_data.get("powder_name")
+        self.powder_transfer_efficiency: float = assembly_data.get("powder_transfer_efficiency", 66.67)
+        if self.uses_powder and self.powder_name:
+            self.powder_item = self.paint_inventory.get_powder(self.powder_name)
+        self.cost_for_powder_coating = assembly_data.get("cost_for_powder_coating", 0.0)
+
+        # NOTE Used by user workspace
+        self.timers: dict[str, dict[str, object]] = assembly_data.get("timers", {})
+        self.display_name: str = assembly_data.get("display_name", "")
+        self.completed: bool = assembly_data.get("completed", False)
+        self.starting_date: str = assembly_data.get("starting_date", "")
+        self.ending_date: str = assembly_data.get("ending_date", "")
+        self.status: str = assembly_data.get("status")
+        self.current_flow_state: int = assembly_data.get("current_flow_state", 0)
+        self.date_completed: str = assembly_data.get("date_completed", "")
+
+        self.laser_cut_parts.clear()
+        laser_cut_parts = data.get("laser_cut_parts", {})
+        for laser_cut_part_name, laser_cut_part_data in laser_cut_parts.items():
+            laser_cut_part = LaserCutPart(laser_cut_part_name, laser_cut_part_data, self.group.job.laser_cut_inventory)
+            self.add_laser_cut_part(laser_cut_part)
+
+        self.components.clear()
+        components = data.get("components", {})
+        for component_name, component_data in components.items():
+            component = Component(component_name, component_data, self.group.job.components_inventory)
+            self.add_component(component)
+
+        self.sub_assemblies.clear()
+        sub_assemblies = data.get("sub_assemblies", {})
+        for sub_assembly_name, sub_assembly_data in sub_assemblies.items():
+            sub_assembly = Assembly(sub_assembly_name, sub_assembly_data, self.group)
+            self.sub_assemblies.append(sub_assembly)
+
+    def to_dict(self, processed_assemblies: set["Assembly"] = None) -> dict:
         if processed_assemblies is None:
             processed_assemblies = set()
         processed_assemblies.add(self)
 
         data = {
-            "items": {},
             "assembly_data": {
                 "expected_time_to_complete": self.expected_time_to_complete,
                 "has_items": self.has_items,
                 "has_sub_assemblies": self.has_sub_assemblies,
-                "group": self.group,
-                "group_color": self.group_color,
-                "flow_tag": self.flow_tag,
+                "flow_tag": self.flow_tag.to_dict(),
                 "paint_color": self.paint_color,
                 "paint_type": self.paint_type,
                 "paint_amount": self.paint_amount,
@@ -145,109 +202,63 @@ class Assembly:
                 "status": self.status,
                 "current_flow_state": self.current_flow_state,
                 "date_completed": self.date_completed,
+                "uses_primer": self.uses_primer,
+                "primer_name": None if self.primer_name == "None" else self.primer_name,
+                "primer_overspray": self.primer_overspray,
+                "cost_for_primer": self.cost_for_primer,
+                "uses_paint": self.uses_paint,
+                "paint_name": None if self.paint_name == "None" else self.paint_name,
+                "paint_overspray": self.paint_overspray,
+                "cost_for_paint": self.cost_for_paint,
+                "uses_powder_coating": self.uses_powder,
+                "powder_name": None if self.powder_name == "None" else self.powder_name,
+                "powder_transfer_efficiency": self.powder_transfer_efficiency,
+                "cost_for_powder_coating": self.cost_for_powder_coating,
             },
+            "laser_cut_parts": {},
+            "components": {},
             "sub_assemblies": {},
         }
+
+        save_laser_cut_inventory: bool = False
+        laser_cut_inventory = None
+        for laser_cut_part in self.laser_cut_parts:
+            if laser_cut_part.name == "":
+                continue
+
+            if inventory_laser_cut_part := laser_cut_part.laser_cut_inventory.get_laser_cut_part_by_name(laser_cut_part.name):
+                inventory_laser_cut_part.bending_files = laser_cut_part.bending_files
+                inventory_laser_cut_part.welding_files = laser_cut_part.welding_files
+                inventory_laser_cut_part.cnc_milling_files = laser_cut_part.cnc_milling_files
+                inventory_laser_cut_part.flow_tag = laser_cut_part.flow_tag
+                save_laser_cut_inventory = True
+                laser_cut_inventory = laser_cut_part.laser_cut_inventory
+
+            data["laser_cut_parts"][laser_cut_part.name] = laser_cut_part.to_dict()
+
+        if save_laser_cut_inventory and laser_cut_inventory:
+            laser_cut_inventory.save()
+
+        save_components_inventory: bool = False
+        components_inventory = None
+        for component in self.components:
+            if component.name == "":
+                continue
+            if inventory_component := component.components_inventory.get_component_by_name(component.name):
+                inventory_component.image_path = component.image_path
+                components_inventory = component.components_inventory
+                save_components_inventory = True
+
+            data["components"][component.name] = component.to_dict()
+
+        if save_components_inventory and components_inventory:
+            components_inventory.save()
+
         for sub_assembly in self.sub_assemblies:
             if sub_assembly not in processed_assemblies:  # Check if the sub-assembly is already processed
                 data["sub_assemblies"][sub_assembly.name] = sub_assembly.to_dict(processed_assemblies)
-        for item in self.items:
-            if item.name == "":
-                continue
-            data["items"][item.name] = item.to_dict()
+
         return data
-
-    def exists(self, other: WorkspaceItem | str) -> bool:
-        if isinstance(other, WorkspaceItem):
-            return any(other.name == item.name for item in self.items)
-        elif isinstance(other, str):
-            return any(other == item.name for item in self.items)
-
-    def get_item(self, item_name: str) -> WorkspaceItem | None:
-        return next((item for item in self.items if item.name == item_name), None)
-
-    def get_all_items(self) -> list[WorkspaceItem]:
-        all_items = self.items.copy()
-        for sub_assembly in self.sub_assemblies:
-            all_items.extend(sub_assembly.get_all_items())
-        return all_items
-
-    def get_item_by_index(self, index: int) -> WorkspaceItem:
-        return self.items[index]
-
-    def copy_item(self, item_name: str) -> WorkspaceItem | None:
-        return copy.deepcopy(self.get_item(item_name))
 
     def set_timer(self, flow_tag: str, time: object) -> None:
         self.timers[flow_tag]["time_to_complete"] = time.value()
-
-    def _set_data_to_all_sub_assemblies(self, sub_assembly: "Assembly", key: str, value: Any) -> None:
-        if key == "show":
-            sub_assembly.show = value
-        elif key == "starting_date":
-            sub_assembly.starting_date = value
-        elif key == "ending_date":
-            sub_assembly.ending_date = value
-        if sub_assembly.sub_assemblies:
-            for _sub_assembly in sub_assembly.sub_assemblies:
-                self._set_data_to_all_sub_assemblies(sub_assembly=_sub_assembly, key=key, value=value)
-
-    def set_data_to_all_sub_assemblies(self, key: str, value: Any) -> None:
-        if key == "show":
-            self.show = value
-        elif key == "starting_date":
-            self.starting_date = value
-        elif key == "ending_date":
-            self.ending_date = value
-        for sub_assembly in self.sub_assemblies:
-            self._set_data_to_all_sub_assemblies(sub_assembly=sub_assembly, key=key, value=value)
-
-    def _set_default_value_to_all_items(self, sub_assembly: "Assembly", key: str, value: str) -> None:
-        for item in sub_assembly.items:
-            if key == "show":
-                item.show = value
-        if sub_assembly is not None:
-            for _sub_assembly in sub_assembly.sub_assemblies:
-                for item in _sub_assembly.items:
-                    if key == "show":
-                        item.show = value
-                if _sub_assembly.sub_assemblies:
-                    self._set_default_value_to_all_items(sub_assembly=_sub_assembly, key=key, value=value)
-
-    def set_default_value_to_all_items(self, key: str, value: str) -> None:
-        for item in self.items:
-            if key == "show":
-                item.show = value
-        for sub_assembly in self.sub_assemblies:
-            for item in sub_assembly.items:
-                if key == "show":
-                    item.show = value
-            if self.sub_assemblies:
-                self._set_default_value_to_all_items(sub_assembly=sub_assembly, key=key, value=value)
-
-    def any_items_to_show(self) -> bool:
-        for item in self.items:
-            if item.show and not item.completed:
-                return True
-        for sub_assembly in self.sub_assemblies:
-            for item in sub_assembly.items:
-                if item.show and not item.completed:
-                    return True
-        return False
-
-    def _any_sub_assemblies_to_show(self, sub_assembly: "Assembly") -> bool:
-        for _sub_assembly in sub_assembly.sub_assemblies:
-            if _sub_assembly.show is True:
-                return True
-            if _sub_assembly._any_sub_assemblies_to_show(_sub_assembly):
-                return True
-        return False
-
-    def any_sub_assemblies_to_show(self) -> bool:
-        return any(assembly.show is True for assembly in self.sub_assemblies)
-
-    def all_items_complete(self) -> bool:
-        return all(item.completed is not False for item in self.items)
-
-    def all_sub_assemblies_complete(self) -> bool:
-        return all(sub_assembly.completed is not False for sub_assembly in self.sub_assemblies)

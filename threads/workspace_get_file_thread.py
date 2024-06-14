@@ -5,15 +5,17 @@ import requests
 from PyQt6.QtCore import QThread, pyqtSignal
 
 from utils.ip_utils import get_server_ip_address, get_server_port
+from utils.laser_cut_inventory.laser_cut_part import LaserCutPart
 
 
-class WorkspaceDownloadFiles(QThread):
-    signal = pyqtSignal(object)
+class WorkspaceDownloadFile(QThread):
+    signal = pyqtSignal(LaserCutPart, str, str, bool)
 
-    def __init__(self, file_to_download: str, open_when_done: bool) -> None:
+    def __init__(self, laser_cut_part: LaserCutPart, file_to_download: str, open_when_done: bool) -> None:
         QThread.__init__(self)
         self.SERVER_IP: str = get_server_ip_address()
         self.SERVER_PORT: int = get_server_port()
+        self.laser_cut_part = laser_cut_part
         self.file_to_download = file_to_download
         self.open_when_done = open_when_done
         self.file_url = f"http://{self.SERVER_IP}:{self.SERVER_PORT}/workspace_get_file/"
@@ -28,9 +30,9 @@ class WorkspaceDownloadFiles(QThread):
                 # Save the received file to a local location
                 with open(f"data/workspace/{file_ext}/{file_name}", "wb") as file:
                     file.write(response.content)
+                self.signal.emit(self.laser_cut_part, file_ext, file_name, self.open_when_done)
             else:
-                self.signal.emit(response.text)
+                self.signal.emit(self.laser_cut_part, None, response.text, False)
         except Exception as e:
             print(e)
-            self.signal.emit(e)
-        self.signal.emit(f"Successfully downloaded;{self.file_to_download};{self.open_when_done}")
+            self.signal.emit(self.laser_cut_part, None, str(e), False)

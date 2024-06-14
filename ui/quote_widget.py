@@ -293,11 +293,8 @@ class ComponentsTableWidget(CustomTableWidget):
             new_height = 60
             new_width = int(original_width * (new_height / original_height))
 
-            if not os.path.exists("images/items"):
-                os.makedirs("images/items")
-            # Resize the image to fit the specified height while maintaining aspect ratio
             pixmap = QPixmap.fromImage(image).scaled(new_width, new_height, Qt.AspectRatioMode.KeepAspectRatio)
-            image_path = f'images/items/{datetime.now().strftime("%Y%m%d%H%M%S%f")}.png'
+            image_path = f'images/{datetime.now().strftime("%Y%m%d%H%M%S%f")}.png'
             pixmap.save(image_path)
 
             item.setData(Qt.ItemDataRole.DecorationRole, pixmap)
@@ -1456,10 +1453,10 @@ class QuoteWidget(QWidget):
         self.quote_changed()
 
     def add_component(self):
-        add_item_dialog = AddComponentDialog(self.components_inventory, self)
+        add_item_dialog = AddComponentDialog(self)
         if add_item_dialog.exec():
             if not (component := self.components_inventory.get_component_by_name(add_item_dialog.get_part_number())):
-                component = Component(add_item_dialog.get_part_number(), {"quantity": add_item_dialog.get_current_quantity(), "part_name": add_item_dialog.get_name(), "price": add_item_dialog.get_item_price(), "shelf_number": add_item_dialog.get_shelf_number(), "use_exchange_rate": add_item_dialog.get_exchange_rate()}, self.components_inventory)
+                component = Component(add_item_dialog.get_part_number(), {"quantity": add_item_dialog.get_current_quantity(), "part_name": add_item_dialog.get_name()}, self.components_inventory)
             self.quote.add_component(component)
             self.load_component_parts()
         self.quote_changed()
@@ -1551,6 +1548,7 @@ class QuoteWidget(QWidget):
         self.components_table_widget.blockSignals(False)
         self.label_total_item_cost_2.setText(f"Total Cost for Items: ${(self.get_total_cost_for_laser_cut_parts() + self.get_total_cost_for_components()):,.2f}")
         self.components_table_widget.resizeColumnsToContents()
+        self.quote_changed()
 
     def get_component_by_name(self, component_name: str) -> Component:
         for component in self.quote.components:

@@ -25,6 +25,8 @@ from utils.laser_cut_inventory.laser_cut_inventory import LaserCutInventory
 from utils.laser_cut_inventory.laser_cut_part import LaserCutPart
 from utils.settings import Settings
 from utils.sheet_settings.sheet_settings import SheetSettings
+from utils.workspace.assembly import Assembly
+from utils.workspace.job import Job
 
 
 class EditLaserCutPart(QDialog):
@@ -120,7 +122,6 @@ class LaserCutPartsTableWidget(CustomTableWidget):
         self.paint_settings_column = 6
         self.shelf_number_column = 7
         self.modified_date_column = 8
-        self.delete_column = 9
 
         self.set_editable_column_index([self.part_name_column, self.unit_quantity_column, self.quantity_column, self.shelf_number_column, self.modified_date_column])
         headers: dict[str, int] = {
@@ -133,7 +134,6 @@ class LaserCutPartsTableWidget(CustomTableWidget):
             "Paint Settings": self.paint_settings_column,
             "Shelf #": self.shelf_number_column,
             "Modified Date": self.modified_date_column,
-            "DEL": self.modified_date_column,
         }
         self.setColumnCount(len(list(headers.keys())))
         self.setHorizontalHeaderLabels(headers)
@@ -276,7 +276,9 @@ class LaserCutTab(QWidget):
     def __init__(self, parent) -> None:
         super(LaserCutTab, self).__init__(parent)
         uic.loadUi("ui/laser_cut_tab.ui", self)
-        self.parent = parent
+        from main import MainWindow
+
+        self.parent: MainWindow = parent
         self.laser_cut_inventory: LaserCutInventory = self.parent.laser_cut_inventory
         self.paint_inventory = self.laser_cut_inventory.paint_inventory
         self.sheet_settings: SheetSettings = self.parent.sheet_settings
@@ -517,7 +519,7 @@ class LaserCutTab(QWidget):
 
                 table_item_name = QTableWidgetItem(laser_cut_part.name)
                 table_item_name.setFont(self.tables_font)
-                table_item_name.setToolTip(laser_cut_part.geofile_name)
+                table_item_name.setToolTip(f"{laser_cut_part.geofile_name}\n\nPresent in:\n{laser_cut_part.print_categories()}")
                 current_table.setItem(row_index, current_table.part_name_column, table_item_name)
                 self.table_laser_cut_parts_widgets[laser_cut_part].update({"name": table_item_name})
 
@@ -581,25 +583,6 @@ class LaserCutTab(QWidget):
                 current_table.setItem(row_index, current_table.modified_date_column, table_item_modified_date)
                 self.table_laser_cut_parts_widgets[laser_cut_part].update({"modified_date": table_item_modified_date})
 
-                # DELETE
-                btn_delete = DeletePushButton(
-                    parent=self,
-                    tool_tip=f"Delete {laser_cut_part.name} permanently from {self.category.name}",
-                    icon=QIcon("icons/trash.png"),
-                )
-
-                def delete_item(item_to_delete: LaserCutPart):
-                    if self.category.name == "Recut":
-                        self.laser_cut_inventory.remove_recut_part(item_to_delete)
-                    else:
-                        self.laser_cut_inventory.remove_laser_cut_part(item_to_delete)
-                    self.laser_cut_inventory.save()
-                    self.sync_changes()
-                    self.load_table()
-
-                btn_delete.setStyleSheet("border-radius: 0px;")
-                btn_delete.clicked.connect(partial(delete_item, laser_cut_part))
-                current_table.setCellWidget(row_index, current_table.delete_column, btn_delete)
                 if self.category.name != "Recut":
                     if laser_cut_part.quantity <= laser_cut_part.red_quantity_limit:
                         self.set_table_row_color(current_table, row_index, "#3F1E25")
@@ -622,9 +605,25 @@ class LaserCutTab(QWidget):
         self.save_category_tabs_order()
         self.restore_scroll_position()
 
-        self.setup_table_context_menu(current_table)
+        self.load_context_menu()
 
-    def setup_table_context_menu(self, current_table: LaserCutPartsTableWidget):
+    def load_assembly_menu(self, menu: QMenu, job: Job, assemblies: list[Assembly], level=0, prefix=""):
+        for i, assembly in enumerate(assemblies):
+            is_last = (i == len(assemblies) - 1)
+            next_assembly = None if is_last else assemblies[i + 1]
+            has_next_assembly = next_assembly is not None
+
+            action_text = prefix + ("├ " if has_next_assembly else "└ ") + assembly.name
+
+            action = QAction(action_text, menu)
+            action.triggered.connect(partial(self.add_to_assembly, job, assembly))
+            menu.addAction(action)
+            if assembly.sub_assemblies:
+                sub_prefix = prefix + ("│   " if has_next_assembly else "    ")
+                self.load_assembly_menu(menu, job, assembly.sub_assemblies, level + 1, sub_prefix)
+
+    def load_context_menu(self):
+        current_table = self.category_tables[self.category]
         if current_table.contextMenuPolicy() == Qt.ContextMenuPolicy.CustomContextMenu:
             return
         current_table.setContextMenuPolicy(Qt.ContextMenuPolicy.CustomContextMenu)
@@ -638,12 +637,12 @@ class LaserCutTab(QWidget):
         action.setText("Print Selected Parts")
         menu.addAction(action)
 
-        menu.addSeparator()
         action = QAction("Set Custom Quantity Limit", self)
         if self.category.name != "Recut":
             action.triggered.connect(self.set_custom_quantity_limit)
             menu.addAction(action)
-            menu.addSeparator()
+
+        menu.addSeparator()
 
         def move_to_category(new_category: Category):
             if not (selected_laser_cut_parts := self.get_selected_laser_cut_parts()):
@@ -673,7 +672,7 @@ class LaserCutTab(QWidget):
 
         categories = QMenu(menu)
         categories.setTitle("Move selected parts to category")
-        for i, category in enumerate(self.laser_cut_inventory.get_categories()):
+        for _, category in enumerate(self.laser_cut_inventory.get_categories()):
             if category.name == "Recut":
                 continue
             action = QAction(category.name, self)
@@ -711,7 +710,7 @@ class LaserCutTab(QWidget):
 
         categories = QMenu(menu)
         categories.setTitle("Copy selected parts to category")
-        for i, category in enumerate(self.laser_cut_inventory.get_categories()):
+        for _, category in enumerate(self.laser_cut_inventory.get_categories()):
             if category.name == "Recut":
                 continue
             action = QAction(category.name, self)
@@ -722,15 +721,32 @@ class LaserCutTab(QWidget):
             categories.addAction(action)
         menu.addMenu(categories)
 
+        menu.addSeparator()
+
+        def remove_parts_from_category():
+            if not (selected_laser_cut_parts := self.get_selected_laser_cut_parts()):
+                return
+            for laser_cut_part in selected_laser_cut_parts:
+                laser_cut_part.remove_from_category(self.category)
+                if len(laser_cut_part.categories) == 0:
+                    if self.category.name == "Recut":
+                        self.laser_cut_inventory.remove_recut_part(laser_cut_part)
+                    else:
+                        self.laser_cut_inventory.remove_laser_cut_part(laser_cut_part)
+            self.laser_cut_inventory.save()
+            self.sync_changes()
+            self.load_table()
+
+        action = QAction(f"Remove selected parts from {self.category.name}", self)
+        action.triggered.connect(remove_parts_from_category)
+        menu.addAction(action)
+
         def delete_selected_parts():
             if not (selected_laser_cut_parts := self.get_selected_laser_cut_parts()):
                 return
             if self.category.name == "Recut":
                 for laser_cut_part in selected_laser_cut_parts:
                     self.laser_cut_inventory.remove_recut_part(laser_cut_part)
-            elif self.category.name == "Custom":
-                for laser_cut_part in selected_laser_cut_parts:
-                    self.laser_cut_inventory.remove_custom_part(laser_cut_part)
             else:
                 for laser_cut_part in selected_laser_cut_parts:
                     self.laser_cut_inventory.remove_laser_cut_part(laser_cut_part)
@@ -738,7 +754,7 @@ class LaserCutTab(QWidget):
             self.sync_changes()
             self.sort_laser_cut_parts()
 
-        action = QAction("Delete selected parts", self)
+        action = QAction("Delete selected parts from inventory", self)
         action.triggered.connect(delete_selected_parts)
         menu.addAction(action)
 
@@ -753,7 +769,22 @@ class LaserCutTab(QWidget):
         action = QAction("Set selected parts to zero quantity", self)
         action.triggered.connect(reset_selected_parts_quantity)
         menu.addAction(action)
+
         menu.addSeparator()
+
+        job_planner_menu = QMenu("Add to Job", self)
+        for job_widget in self.parent.job_planner_widget.jobs:
+            job = job_widget.job
+            job_menu = QMenu(job.name, job_planner_menu)
+            for group in job.groups:
+                group_menu = QMenu(group.name, job_menu)
+                for assembly in group.assemblies:
+                    self.load_assembly_menu(group_menu, job, [assembly])
+                job_menu.addMenu(group_menu)
+            job_planner_menu.addMenu(job_menu)
+
+        menu.addMenu(job_planner_menu)
+
         # if self.category.name != "Recut":
         #     action1 = QAction("Generate Quote with Selected Parts", self)
         #     action1.triggered.connect(partial(self.generate_quote_with_selected_parts, current_table))
@@ -762,6 +793,16 @@ class LaserCutTab(QWidget):
         #     action2.triggered.connect(partial(self.add_selected_parts_to_quote, current_table))
         #     menu.addAction(action2)
         current_table.customContextMenuRequested.connect(partial(self.open_group_menu, menu))
+
+    def add_to_assembly(self, job: Job, assembly: Assembly):
+        if laser_cut_parts := self.get_selected_laser_cut_parts():
+            for laser_cut_part in laser_cut_parts:
+                assembly.add_laser_cut_part(LaserCutPart(laser_cut_part.name, laser_cut_part.to_dict(), self.laser_cut_inventory))
+            job.changes_made()
+            if len(laser_cut_parts) == 1:
+                self.parent.status_button.setText(f"Added {len(laser_cut_parts)} laser cut part to {job.name}", "lime")
+            else:
+                self.parent.status_button.setText(f"Added {len(laser_cut_parts)} laser cut parts to {job.name}", "lime")
 
     def table_selected_changed(self):
         if laser_cut_part := self.get_selected_laser_cut_part():

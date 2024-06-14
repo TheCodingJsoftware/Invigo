@@ -12,7 +12,6 @@ class QImageViewer(QMainWindow):
         self.image_label = QLabel()
         self.image_label.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Expanding)
         self.image_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
-        self.image_label.setScaledContents(True)
 
         self.scroll_area = QScrollArea()
         self.scroll_area.setWidget(self.image_label)
@@ -20,17 +19,26 @@ class QImageViewer(QMainWindow):
 
         self.setCentralWidget(self.scroll_area)
 
-        pixmap = QPixmap(path)
-        pixmap = pixmap.scaled(
-            pixmap.width(),
-            pixmap.height(),
+        self.original_pixmap = QPixmap(path)
+        self.update_pixmap()
+
+        self.scroll_area.setWidgetResizable(True)
+        self.setMouseTracking(True)
+        self.showMaximized()
+
+    def update_pixmap(self):
+        # Scale the pixmap while keeping the aspect ratio
+        pixmap = self.original_pixmap.scaled(
+            self.scroll_area.size(),
             Qt.AspectRatioMode.KeepAspectRatio,
-            Qt.TransformationMode.FastTransformation,
+            Qt.TransformationMode.SmoothTransformation,
         )
         self.image_label.setPixmap(pixmap)
         self.image_label.adjustSize()
-        self.scroll_area.setWidgetResizable(True)
-        self.setMouseTracking(True)
+
+    def resizeEvent(self, event):
+        super().resizeEvent(event)
+        self.update_pixmap()
 
     def keyPressEvent(self, event):
         self.close()

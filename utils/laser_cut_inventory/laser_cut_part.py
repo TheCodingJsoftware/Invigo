@@ -6,15 +6,19 @@ from utils.inventory.inventory_item import InventoryItem
 from utils.paint_inventory.paint import Paint
 from utils.paint_inventory.powder import Powder
 from utils.paint_inventory.primer import Primer
+from utils.workspace.flow_tag import FlowTag
+from utils.workspace.workspace_settings import WorkspaceSettings
 
 
 class LaserCutPart(InventoryItem):
     def __init__(self, name: str, data: dict, laser_cut_inventory):
         super().__init__(name)
+        from utils.laser_cut_inventory.laser_cut_inventory import LaserCutInventory
         from utils.paint_inventory.paint_inventory import PaintInventory
 
-        self.laser_cut_inventory = laser_cut_inventory
+        self.laser_cut_inventory: LaserCutInventory = laser_cut_inventory
         self.paint_inventory: PaintInventory = self.laser_cut_inventory.paint_inventory
+        self.workspace_settings: WorkspaceSettings = self.laser_cut_inventory.workspace_settings
 
         self.quantity: int = 0
         self.red_quantity_limit: int = 10
@@ -65,6 +69,11 @@ class LaserCutPart(InventoryItem):
         self.powder_item: Powder = None
         self.powder_transfer_efficiency: float = 66.67
         self.cost_for_powder_coating: float = 0.0
+
+        self.flow_tag: FlowTag = None
+        self.bending_files: list[str] = []
+        self.welding_files: list[str] = []
+        self.cnc_milling_files: list[str] = []
 
         # NOTE Non serializable variables
         self.unit_price: float = 0.0
@@ -137,6 +146,14 @@ class LaserCutPart(InventoryItem):
             self.powder_item = self.paint_inventory.get_powder(self.powder_name)
         self.cost_for_powder_coating = data.get("cost_for_powder_coating", 0.0)
 
+        self.flow_tag = FlowTag("", data.get("flow_tag", {"name": "", "tags": []}), self.workspace_settings)
+        self.bending_files.clear()
+        self.bending_files = data.get("bending_files", [])
+        self.welding_files.clear()
+        self.welding_files = data.get("welding_files", [])
+        self.cnc_milling_files.clear()
+        self.cnc_milling_files = data.get("cnc_milling_files", [])
+
         self.quantity_in_nest = data.get("quantity_in_nest")
 
         self.categories.clear()
@@ -191,5 +208,9 @@ class LaserCutPart(InventoryItem):
             "powder_transfer_efficiency": self.powder_transfer_efficiency,
             "cost_for_powder_coating": self.cost_for_powder_coating,
             "quantity_in_nest": self.quantity_in_nest,
+            "flow_tag": self.flow_tag.to_dict(),
+            "bending_files": self.bending_files,
+            "welding_files": self.welding_files,
+            "cnc_milling_files": self.cnc_milling_files,
             "categories": [category.name for category in self.categories],
         }

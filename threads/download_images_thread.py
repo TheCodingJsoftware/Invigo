@@ -17,6 +17,10 @@ class DownloadImagesThread(QThread):
 
     def run(self) -> None:
         for file_to_download in self.files_to_download:
+            if not file_to_download.endswith(".jpeg"):
+                file_to_download += ".jpeg"
+            if "images" not in file_to_download:
+                file_to_download = f"images/{file_to_download}"
             try:
                 response = self.session.get(self.file_url + file_to_download, timeout=10)
                 if response.status_code == 200:

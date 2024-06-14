@@ -37,11 +37,13 @@ class ComponentsInventory(Inventory):
 
     def get_total_stock_cost_for_similar_categories(self, text: str) -> float:
         total = 0.0
+        used_components: set[Component] = set()
         for category in self.get_categories():
             if text in category.name:
                 for component in self.components:
-                    if category in component.categories:
+                    if category in component.categories and component not in used_components:
                         total += component.get_total_cost_in_stock()
+                        used_components.add(component)
         return total
 
     def get_total_category_cost_in_stock(self, category: Category | str) -> float:

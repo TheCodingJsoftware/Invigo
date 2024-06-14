@@ -1214,8 +1214,8 @@ QPushButton:pressed#pushButton_toggle_powder_coating:!checked {
                        <rect>
                         <x>0</x>
                         <y>0</y>
-                        <width>501</width>
-                        <height>79</height>
+                        <width>518</width>
+                        <height>69</height>
                        </rect>
                       </property>
                       <property name="sizePolicy">
@@ -1233,24 +1233,6 @@ QPushButton:pressed#pushButton_toggle_powder_coating:!checked {
                          <property name="horizontalSpacing">
                           <number>0</number>
                          </property>
-                         <item row="0" column="0">
-                          <widget class="QLabel" name="label_27">
-                           <property name="font">
-                            <font>
-                             <family>MS Shell Dlg 2</family>
-                             <pointsize>8</pointsize>
-                             <weight>50</weight>
-                             <bold>false</bold>
-                            </font>
-                           </property>
-                           <property name="text">
-                            <string>Empty</string>
-                           </property>
-                           <property name="alignment">
-                            <set>Qt::AlignCenter</set>
-                           </property>
-                          </widget>
-                         </item>
                         </layout>
                        </item>
                        <item>
@@ -1285,18 +1267,6 @@ QPushButton:pressed#pushButton_toggle_powder_coating:!checked {
                 </property>
                 <item>
                  <widget class="QGroupBox" name="groupBox_17">
-                  <property name="sizePolicy">
-                   <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-                    <horstretch>0</horstretch>
-                    <verstretch>3</verstretch>
-                   </sizepolicy>
-                  </property>
-                  <property name="minimumSize">
-                   <size>
-                    <width>0</width>
-                    <height>0</height>
-                   </size>
-                  </property>
                   <property name="title">
                    <string>Nest Settings</string>
                   </property>
@@ -1314,9 +1284,6 @@ QPushButton:pressed#pushButton_toggle_powder_coating:!checked {
                     <layout class="QVBoxLayout" name="verticalLayout_35">
                      <item>
                       <widget class="QScrollArea" name="scrollArea_5">
-                       <property name="styleSheet">
-                        <string notr="true"/>
-                       </property>
                        <property name="widgetResizable">
                         <bool>true</bool>
                        </property>
@@ -1328,9 +1295,6 @@ QPushButton:pressed#pushButton_toggle_powder_coating:!checked {
                           <width>516</width>
                           <height>69</height>
                          </rect>
-                        </property>
-                        <property name="styleSheet">
-                         <string notr="true"/>
                         </property>
                         <layout class="QVBoxLayout" name="verticalLayout_36">
                          <property name="spacing">
@@ -1349,24 +1313,32 @@ QPushButton:pressed#pushButton_toggle_powder_coating:!checked {
                           <number>0</number>
                          </property>
                          <item>
-                          <layout class="QVBoxLayout" name="verticalLayout_sheets_2">
-                           <item>
-                            <widget class="QLabel" name="label_28">
-                             <property name="text">
-                              <string>Empty</string>
-                             </property>
-                             <property name="alignment">
-                              <set>Qt::AlignCenter</set>
-                             </property>
-                            </widget>
-                           </item>
-                          </layout>
+                          <layout class="QVBoxLayout" name="verticalLayout_sheets_2"/>
                          </item>
                         </layout>
                        </widget>
                       </widget>
                      </item>
                     </layout>
+                   </item>
+                   <item>
+                    <widget class="QPushButton" name="pushButton_clear_all_nests">
+                     <property name="sizePolicy">
+                      <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                       <horstretch>0</horstretch>
+                       <verstretch>0</verstretch>
+                      </sizepolicy>
+                     </property>
+                     <property name="maximumSize">
+                      <size>
+                       <width>16777215</width>
+                       <height>16777215</height>
+                      </size>
+                     </property>
+                     <property name="text">
+                      <string>Clear All Nests</string>
+                     </property>
+                    </widget>
                    </item>
                   </layout>
                  </widget>
@@ -1434,19 +1406,6 @@ QPushButton:pressed#pushButton_toggle_powder_coating:!checked {
                 </property>
                </layout>
               </item>
-              <item>
-               <widget class="QPushButton" name="pushButton_clear_all_nests">
-                <property name="maximumSize">
-                 <size>
-                  <width>100</width>
-                  <height>16777215</height>
-                 </size>
-                </property>
-                <property name="text">
-                 <string>Clear All Nests</string>
-                </property>
-               </widget>
-              </item>
              </layout>
             </widget>
            </item>
@@ -1459,12 +1418,6 @@ QPushButton:pressed#pushButton_toggle_powder_coating:!checked {
            </property>
            <item>
             <widget class="QGroupBox" name="groupBox_8">
-             <property name="sizePolicy">
-              <sizepolicy hsizetype="Preferred" vsizetype="Minimum">
-               <horstretch>0</horstretch>
-               <verstretch>0</verstretch>
-              </sizepolicy>
-             </property>
              <property name="title">
               <string>Components</string>
              </property>
@@ -1473,7 +1426,7 @@ QPushButton:pressed#pushButton_toggle_powder_coating:!checked {
                <layout class="QVBoxLayout" name="verticalLayout_49"/>
               </item>
               <item>
-               <layout class="QHBoxLayout" name="horizontalLayout_17" stretch="0,1,1">
+               <layout class="QHBoxLayout" name="horizontalLayout_17" stretch="0,0,0,0">
                 <item>
                  <layout class="QVBoxLayout" name="verticalLayout_56">
                   <item>
@@ -1494,6 +1447,12 @@ QPushButton:pressed#pushButton_toggle_powder_coating:!checked {
                 </item>
                 <item>
                  <widget class="QPushButton" name="pushButton_add_component_2">
+                  <property name="sizePolicy">
+                   <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                    <horstretch>0</horstretch>
+                    <verstretch>0</verstretch>
+                   </sizepolicy>
+                  </property>
                   <property name="text">
                    <string>Add Component</string>
                   </property>
@@ -1501,10 +1460,29 @@ QPushButton:pressed#pushButton_toggle_powder_coating:!checked {
                 </item>
                 <item>
                  <widget class="QPushButton" name="pushButton_clear_all_components_2">
+                  <property name="sizePolicy">
+                   <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                    <horstretch>0</horstretch>
+                    <verstretch>0</verstretch>
+                   </sizepolicy>
+                  </property>
                   <property name="text">
                    <string>Clear All Components</string>
                   </property>
                  </widget>
+                </item>
+                <item>
+                 <spacer name="horizontalSpacer">
+                  <property name="orientation">
+                   <enum>Qt::Horizontal</enum>
+                  </property>
+                  <property name="sizeHint" stdset="0">
+                   <size>
+                    <width>40</width>
+                    <height>20</height>
+                   </size>
+                  </property>
+                 </spacer>
                 </item>
                </layout>
               </item>
@@ -1562,7 +1540,6 @@ QPushButton:pressed#pushButton_toggle_powder_coating:!checked {
   <tabstop>pushButton_match_sheet_to_item_2</tabstop>
   <tabstop>scrollArea_7</tabstop>
   <tabstop>scrollArea_5</tabstop>
-  <tabstop>pushButton_clear_all_nests</tabstop>
   <tabstop>checkBox_components_use_overhead_2</tabstop>
   <tabstop>checkBox_components_use_profit_margin_2</tabstop>
   <tabstop>pushButton_add_component_2</tabstop>

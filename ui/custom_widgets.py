@@ -219,31 +219,39 @@ class AssemblyImage(QLabel):
 
     def __init__(self, parent: QWidget | None = ...) -> None:
         super(AssemblyImage, self).__init__(parent)
-        self.setFixedSize(100, 100)
+        self.setMinimumSize(120, 120)
+        self.setFixedHeight(120)
         self.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self.setContextMenuPolicy(Qt.ContextMenuPolicy.CustomContextMenu)
         self.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
         self.setToolTip("Press to enlarge")
-        self.setText("Drop an Image\n(PNG, JPG, JPEG)")
+        self.setText("Drop an Image.\nRight click to Paste\nfrom clipboard.\n(PNG, JPG, JPEG)")
         self.setAcceptDrops(True)
         self.setWordWrap(True)
         self.setStyleSheet("background-color: rgba(30,30,30,100);")
+        self.image_dropped: bool = False
+        self.path_to_image: str = ""
 
     def set_new_image(self, path_to_image):
-        self.pixmap = QPixmap(path_to_image)
-        self.setPixmap(self.pixmap.scaled(self.width(), self.height(), Qt.AspectRatioMode.KeepAspectRatio))
+        pixmap = QPixmap(path_to_image)
+        pixmap = pixmap.scaledToHeight(100, Qt.TransformationMode.SmoothTransformation)
+        self.setPixmap(pixmap)
         self.setStyleSheet("background-color: rgba(30,30,30,100);")
+        self.path_to_image = path_to_image
+        self.image_dropped = True
 
     def clear_image(self):
         self.setPixmap(QPixmap())
-        self.setText("Drop an Image\n(PNG, JPG, JPEG)")
+        self.setText("Drop an Image.\nRight click to Paste\nfrom clipboard.\n(PNG, JPG, JPEG)")
         self.setStyleSheet("background-color: rgba(30,30,30,100);")
+        self.path_to_image = ""
+        self.image_dropped = False
 
-    def mousePressEvent(self, event):
+    def mousePressEvent(self, event: QMouseEvent):
         if event.button() == Qt.MouseButton.LeftButton:
             self.clicked.emit()  # Emit the clicked signal
 
-    def mouseReleaseEvent(self, event):
+    def mouseReleaseEvent(self, event: QMouseEvent):
         if event.button() == Qt.MouseButton.LeftButton:
             super().mouseReleaseEvent(event)
 
@@ -251,15 +259,13 @@ class AssemblyImage(QLabel):
         if event.mimeData().hasImage():
             event.acceptProposedAction()
         elif event.mimeData().hasUrls():
-            urls = event.mimeData().urls()
             self.setText("Drop Me")
             self.setStyleSheet("background-color: rgba(70,210,110, 100);")
             event.acceptProposedAction()
             event.accept()
 
     def dropEvent(self, event: QDropEvent):
-        urls = event.mimeData().urls()
-        if urls:
+        if urls := event.mimeData().urls():
             image_path = urls[0].toLocalFile()
             if image_path.lower().endswith((".png", ".jpg", ".jpeg")):
                 self.setPixmap(QPixmap(image_path).scaled(self.width(), self.height(), Qt.AspectRatioMode.KeepAspectRatio))
@@ -271,9 +277,11 @@ class AssemblyImage(QLabel):
                 event.ignore()
 
     def dragLeaveEvent(self, event: QDragLeaveEvent):
-        self.setText("Drop an Image\n(PNG, JPG, JPEG)")
+        self.setText("Drop an Image.\nRight click to Paste\nfrom clipboard.\n(PNG, JPG, JPEG)")
         self.setStyleSheet("background-color: rgba(30,30,30,100);")
         event.accept()
+        if self.image_dropped:
+            self.set_new_image(self.path_to_image)
 
 
 class LoadingScreen(QSplashScreen):
@@ -1025,7 +1033,6 @@ class AssemblyMultiToolBox(QWidget):
         main_layout.setAlignment(Qt.AlignmentFlag.AlignTop)
         main_layout.setSpacing(1)
         main_layout.setContentsMargins(1, 1, 1, 1)
-        self.setStyleSheet("QWidget#assembly_widget{border: 1px solid #8C8C8C;}")
         self.setLayout(main_layout)
 
     def addItem(self, widget: QWidget, title: str, base_color: str = "#3daee9"):
@@ -1155,7 +1162,7 @@ border-bottom-left-radius: 5px;
 border-bottom-right-radius: 5px;
 border-top-right-radius: 0px;
 border-top-left-radius: 0px;
-background-color: rgb(29, 29, 29);
+background-color: rgba(25, 25, 25, 0.6);
 }
 """
             % {"base_color": base_color}
@@ -1253,25 +1260,26 @@ background-color: rgb(29, 29, 29);
     #             else "background-color: rgba(71, 71, 71, 110); border-color: rgba(76, 76, 76, 110); border-bottom-right-radius: 5px;"
     #         )
     def clear_widget(self, widget: QWidget):
-        if widget is None:
-            return
+        with contextlib.suppress(TypeError):  # Dont care, it works.
+            if widget is None:
+                return
 
-        layout = widget.layout()
-        if layout is not None:
-            while layout.count():
-                item = layout.takeAt(0)
-                if item.widget():
-                    self.clear_widget(item.widget())
-                    item.widget().deleteLater()
+            layout = widget.layout()
+            if layout is not None:
+                while layout.count():
+                    item = layout.takeAt(0)
+                    if item.widget():
+                        self.clear_widget(item.widget())
+                        item.widget().deleteLater()
 
-        parent_widget = widget.parent()
-        if parent_widget is not None:
-            parent_layout = parent_widget.layout()
-            if parent_layout is not None:
-                parent_layout.removeWidget(widget)
+            parent_widget = widget.parent()
+            if parent_widget is not None:
+                parent_layout = parent_widget.layout()
+                if parent_layout is not None:
+                    parent_layout.removeWidget(widget)
 
-        widget.setParent(None)
-        widget.deleteLater()
+            widget.setParent(None)
+            widget.deleteLater()
 
     def clear_layout(self, layout) -> None:
         with contextlib.suppress(AttributeError):
@@ -1310,7 +1318,6 @@ background-color: rgb(29, 29, 29);
             shadow.setOffset(0, 0)  # Set the shadow offset (x, y)
             # self.widgets[index].parentWidget().setGraphicsEffect(shadow)
             self.input_box[index].setStyleSheet("QLineEdit{background-color: %(base_color)s; border-color: %(base_color)s; border-bottom-right-radius: 0px;} QMenu { background-color: rgb(22,22,22);}" % {"base_color": self.colors[index]})
-            print("open")
 
     def close(self, index: int) -> QWidget:
         if 0 <= index < len(self.buttons):
@@ -1749,7 +1756,7 @@ class CustomTabWidget(QWidget):
     def count(self) -> int:
         return len(self.buttons)
 
-    def dropEvent(self, event):
+    def dropEvent(self, event: QDropEvent):
         position: QPoint = event.position().toPoint()
         button: DraggableButton = event.source()
         if button in self.buttons:
@@ -1762,7 +1769,7 @@ class CustomTabWidget(QWidget):
             self.rearrange_buttons()
         event.accept()
 
-    def dragEnterEvent(self, event):
+    def dragEnterEvent(self, event: QDragEnterEvent):
         if event.mimeData().hasText():
             event.accept()
 

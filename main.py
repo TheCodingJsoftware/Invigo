@@ -25,32 +25,38 @@ from PyQt6.QtWidgets import QApplication, QComboBox, QCompleter, QFileDialog, QF
 
 from threads.changes_thread import ChangesThread
 from threads.check_for_updates_thread import CheckForUpdatesThread
+from threads.delete_job_thread import DeleteJobThread
 from threads.delete_quote_thread import DeleteQuoteThread
 from threads.download_images_thread import DownloadImagesThread
+from threads.download_job_thread import DownloadJobThread
 from threads.download_quote_thread import DownloadQuoteThread
 from threads.download_thread import DownloadThread
 from threads.exchange_rate import ExchangeRate
+from threads.get_jobs_thread import GetJobsThread
 from threads.get_order_number_thread import GetOrderNumberThread
 from threads.get_previous_quotes_thread import GetPreviousQuotesThread
 from threads.get_saved_quotes_thread import GetSavedQuotesThread
+from threads.job_loader_thread import JobLoaderThread
 from threads.load_nests import LoadNests
 from threads.send_email_thread import SendEmailThread
 from threads.send_sheet_report_thread import SendReportThread
 from threads.set_order_number_thread import SetOrderNumberThread
 from threads.update_quote_settings import UpdateQuoteSettings
+from threads.upload_job_thread import UploadJobThread
 from threads.upload_quote import UploadQuote
 from threads.upload_thread import UploadThread
 from ui.about_dialog import AboutDialog
 from ui.components_tab import ComponentsTab
+from ui.custom.saved_job_item import SavedPlanningJobItem
 from ui.custom_widgets import CustomTableWidget, CustomTabWidget, MultiToolBox, PdfTreeView, PreviousQuoteItem, RichTextPushButton, SavedQuoteItem, ScrollPositionManager, ViewTree, set_default_dialog_button_stylesheet
 from ui.edit_paint_inventory import EditPaintInventory
 from ui.edit_workspace_settings import EditWorkspaceSettings
 from ui.generate_quote_dialog import GenerateQuoteDialog
+from ui.job_planner_tab import JobPlannerTab
 from ui.job_sorter_dialog import JobSorterDialog
 from ui.laser_cut_tab import LaserCutTab
 from ui.nest_sheet_verification import NestSheetVerification
 from ui.quote_generator_tab import QuoteGeneratorTab
-from ui.job_planner_tab import JobPlannerTab
 from ui.save_quote_dialog import SaveQuoteDialog
 from ui.select_item_dialog import SelectItemDialog
 from ui.sheet_settings_tab import SheetSettingsTab
@@ -78,7 +84,8 @@ from utils.sheet_settings.sheet_settings import SheetSettings
 from utils.sheets_inventory.sheet import Sheet
 from utils.sheets_inventory.sheets_inventory import SheetsInventory
 from utils.trusted_users import get_trusted_users
-from utils.workspace.job import Job
+from utils.workspace.generate_printout import JobPlannerPrintout
+from utils.workspace.job import Job, JobType
 from utils.workspace.job_manager import JobManager
 from utils.workspace.workspace import Workspace
 from utils.workspace.workspace_settings import WorkspaceSettings
@@ -87,8 +94,8 @@ __author__: str = "Jared Gross"
 __copyright__: str = "Copyright 2022-2024, TheCodingJ's"
 __credits__: list[str] = ["Jared Gross"]
 __license__: str = "MIT"
-__version__: str = "v3.0.14"
-__updated__: str = "2024-06-10 07:50:21"
+__version__: str = "v3.0.18"
+__updated__: str = "2024-06-13 21:51:40"
 __maintainer__: str = "Jared Gross"
 __email__: str = "jared@pinelandfarms.ca"
 __status__: str = "Production"
@@ -140,7 +147,7 @@ def excepthook(exc_type, exc_value, exc_traceback):
     threading.Thread(target=send_error_report).start()
     win32api.MessageBox(
         0,
-        f"We've encountered an unexpected issue. The details of this glitch have been automatically reported to {__maintainer__}, and a notification has been sent to {__email__} for immediate attention. Rest assured, {__maintainer__} is on the case and will likely have this resolved with the next update. Your patience and understanding are greatly appreciated. If this problem persists, please don't hesitate to reach out directly to {__maintainer__} for further assistance.\n\nTechnical details for reference:\n- Exception Type: {exc_type}\n- Error Message: {exc_value}\n- Traceback Information: {exc_traceback}",
+        f"We've encountered an unexpected issue. The details of this glitch have been automatically reported to {__maintainer__}, and a notification has been sent to {__email__} for immediate attention. Rest assured, {__maintainer__} is on the case and will likely have this resolved with the next update. Your patience and understanding are greatly appreciated. If this problem persists, please don't hesitate to reach out directly to {__maintainer__} for further assistance.\n\nTechnical details for reference:\n - Exception Type: {exc_type}\n - Error Message: {exc_value}\n - Traceback Information: {exc_traceback}",
         "Unhandled exception - excepthook detected",
         0x40,
     )  # 0x40 for OK button
@@ -175,12 +182,11 @@ class MainWindow(QMainWindow):
         self.settings_file = Settings()
         self.sheet_settings = SheetSettings()
         self.workspace_settings = WorkspaceSettings()
+
         self.sheets_inventory = SheetsInventory(self)
         self.components_inventory = ComponentsInventory()
         self.paint_inventory = PaintInventory(self)
         self.laser_cut_inventory = LaserCutInventory(self)
-
-        self.job_manager = JobManager(self)
 
         self.quote_generator_tab_widget = QuoteGeneratorTab(self)
         self.quote_generator_tab_widget.add_quote(Quote("Quote0", None, self.components_inventory, self.laser_cut_inventory, self.sheet_settings))
@@ -189,11 +195,11 @@ class MainWindow(QMainWindow):
         self.clear_layout(self.omnigen_layout)
         self.omnigen_layout.addWidget(self.quote_generator_tab_widget)
 
+        self.job_manager = JobManager(self)
         self.job_planner_widget = JobPlannerTab(self)
-        try:
-            self.job_planner_widget.load_job(self.job_manager.jobs[0])
-        except IndexError:
-            self.job_planner_widget.load_job(Job("Enter Job Name0", {}, self.job_manager))
+        self.job_planner_widget.save_job.connect(self.save_job)
+        self.job_planner_widget.save_job_as.connect(self.save_job_as)
+        self.job_planner_widget.load_job(Job("Enter Job Name0", {}, self.job_manager))
         # self.quote_planner_tab_widget.add_job(Job("Job0", None))
         self.clear_layout(self.job_planner_layout)
         self.job_planner_layout.addWidget(self.job_planner_widget)
@@ -303,10 +309,13 @@ class MainWindow(QMainWindow):
         self.pushButton_refresh_directories.clicked.connect(self.refresh_nest_directories)
         self.pushButton_generate_quote.clicked.connect(self.generate_printout)
 
+        self.pushButton_refresh_jobs.clicked.connect(self.load_jobs_thread)
+
         self.pushButton_save.clicked.connect(partial(self.save_quote, None))
         self.pushButton_save_as.clicked.connect(partial(self.save_quote_as, None))
 
-        # Filter
+        self.saved_planning_jobs_layout = self.findChild(QVBoxLayout, "saved_planning_jobs_layout")
+        self.saved_planning_jobs_layout.setAlignment(Qt.AlignmentFlag.AlignTop)
 
         # Status
         self.status_button = RichTextPushButton(self)
@@ -466,8 +475,10 @@ class MainWindow(QMainWindow):
             self.refresh_nest_directories()
             for quote_widget in self.quote_generator_tab_widget.quotes:
                 quote_widget.update_sheet_statuses()
-        elif self.tabWidget.tabText(self.tabWidget.currentIndex()) == "Job Planner": # TODO Load server jobs
-            pass
+        elif self.tabWidget.tabText(self.tabWidget.currentIndex()) == "Job Planner":  # TODO Load server jobs
+            self.load_jobs_thread()
+            self.job_planner_widget.update_tables()
+            # pass
             # self.clear_layout(self.job_planner_layout)
             # self.quote_planner_tab_widget = QuotePlannerTab(self)
             # self.job_planner_layout.addWidget(self.quote_planner_tab_widget)
@@ -750,6 +761,32 @@ class MainWindow(QMainWindow):
             elif response == DialogButtons.cancel:
                 return
 
+    def save_job(self, job: Job):
+        job_plan_printout = JobPlannerPrintout(job)
+        html = job_plan_printout.generate()
+        self.upload_job_thread(f"saved_jobs/{job.job_type.name.lower()}/{job.name}", job, html)
+        self.status_button.setText(f"Saved {job.name}", "lime")
+        self.upload_file(
+            [
+                "components_inventory.json",
+                "laser_cut_inventory.json",
+            ],
+            False,
+        )
+
+    def save_job_as(self, job: Job):  # Todo
+        job_plan_printout = JobPlannerPrintout(job)
+        html = job_plan_printout.generate()
+        self.upload_job_thread(f"saved_jobs/{job.job_type.name.lower()}/{job.name}", job, html)
+        self.status_button.setText(f"Saved {job.name}", "lime")
+        self.upload_file(
+            [
+                "components_inventory.json",
+                "laser_cut_inventory.json",
+            ],
+            False,
+        )
+
     def save_quote(self, quote: Quote):
         if quote is None:
             quote = self.quote_generator_tab_widget.current_quote
@@ -761,6 +798,7 @@ class MainWindow(QMainWindow):
         html_file = generate_quote.generate()
 
         folder = f"saved_quotes/quotes/{quote.name}"
+        self.upload_nest_images(quote)
         self.upload_quote_thread(folder, quote, html_file)
         self.status_button.setText(f"Saved {quote.name}", "lime")
         quote.unsaved_changes = False
@@ -784,6 +822,7 @@ class MainWindow(QMainWindow):
             generate_quote = GeneratePrintout(quote_type, quote)
             html_file = generate_quote.generate()
             folder = f"saved_quotes/{quote_type.lower().replace(' ', '_')}s/{quote.name}"
+            self.upload_nest_images(quote)
             self.upload_quote_thread(folder, quote, html_file)
             self.status_button.setText(f"Saved {quote.name}", "lime")
             quote.unsaved_changes = False
@@ -1007,6 +1046,18 @@ class MainWindow(QMainWindow):
                 quote_item.delete_quote.connect(partial(self.delete_quote_thread, f"previous_quotes/{folder_path}"))
                 packing_slips_layout.addWidget(quote_item)
         self.status_button.setText("Refreshed", "lime")
+
+    def load_planning_jobs(self, data: dict[str, dict[str, Any]]):
+        self.clear_layout(self.saved_planning_jobs_layout)
+
+        sorted_data = dict(natsorted(data.items(), key=lambda x: x[1]["name"], reverse=True))
+        for folder_path, file_info in sorted_data.items():
+            if self.tabWidget.tabText(self.tabWidget.currentIndex()) == "Job Planner" and file_info["type"] == JobType.PLANNING.value:
+                job_item = SavedPlanningJobItem(file_info, self)
+                job_item.load_job.connect(partial(self.load_job_thread, f"saved_jobs/{folder_path}"))
+                job_item.delete_job.connect(partial(self.delete_job_thread, f"saved_jobs/{folder_path}"))
+                job_item.open_webpage.connect(partial(self.open_job, f"saved_jobs/{folder_path}"))
+                self.saved_planning_jobs_layout.addWidget(job_item)
 
     def load_saved_quotes(self, data: dict[str, dict[str, Any]]) -> None:
         sorted_data = dict(natsorted(data.items(), key=lambda x: x[1]["order_number"], alg=ns.FLOAT, reverse=True))
@@ -1245,6 +1296,9 @@ class MainWindow(QMainWindow):
     def open_qr_codes(self) -> None:
         webbrowser.open(f"http://{get_server_ip_address()}:{get_server_port()}/view_qr_codes", new=0)
 
+    def open_job(self, folder: str):
+        webbrowser.open(f"http://{get_server_ip_address()}:{get_server_port()}/load_job/{folder}", new=0)
+
     def open_quote(self, folder: str):
         webbrowser.open(f"http://{get_server_ip_address()}:{get_server_port()}/load_quote/{folder}", new=0)
 
@@ -1426,6 +1480,7 @@ class MainWindow(QMainWindow):
     def upload_nest_images(self, quote: Quote) -> None:
         quote.group_laser_cut_parts()
         images_to_upload = [laser_cut_part.image_index for laser_cut_part in quote.grouped_laser_cut_parts]
+        images_to_upload.extend(component.image_path for component in quote.components)
         images_to_upload.extend(nest.image_path for nest in quote.nests)
         self.upload_file(images_to_upload)
 
@@ -1669,6 +1724,39 @@ class MainWindow(QMainWindow):
         else:
             self.status_button.setText(f"Error: {data}'", "red")
 
+    def upload_job_thread(self, folder: str, job: Job, html_file_contents: str) -> None:
+        upload_batch = UploadJobThread(folder, job, html_file_contents)
+        upload_batch.signal.connect(self.upload_job_response)
+        self.threads.append(upload_batch)
+        self.status_button.setText(f"Uploading {job.name}", "yellow")
+        self.job_planner_widget.update_job_save_status(job)
+        upload_batch.start()
+
+    def upload_job_response(self, response: str) -> None:
+        if response == "Job sent successfully":
+            self.status_button.setText("Job was sent successfully", "lime")
+            self.load_jobs_thread()
+        else:
+            self.status_button.setText("Job failed to send", "red")
+            msg = QMessageBox(self)
+            msg.setIcon(QMessageBox.Icon.Critical)
+            msg.setWindowTitle("Upload error")
+            msg.setText(f"{response}")
+            msg.exec()
+
+    def load_jobs_thread(self) -> None:
+        get_saved_quotes_thread = GetJobsThread()
+        self.threads.append(get_saved_quotes_thread)
+        get_saved_quotes_thread.signal.connect(self.load_jobs_response)
+        get_saved_quotes_thread.start()
+
+    def load_jobs_response(self, data: dict) -> None:
+        if isinstance(data, dict):
+            self.load_planning_jobs(data)
+            # More will be added here such as quoting, workspace, archive...
+        else:
+            self.status_button.setText(f"Error: {data}'", "red")
+
     def load_saved_quoted_thread(self) -> None:
         get_saved_quotes_thread = GetSavedQuotesThread()
         self.threads.append(get_saved_quotes_thread)
@@ -1680,6 +1768,63 @@ class MainWindow(QMainWindow):
             self.load_saved_quotes(data)
         else:
             self.status_button.setText(f"Error: {data}'", "red")
+
+    def load_job_thread(self, folder_name: str):
+        self.status_button.setText(f"Fetching {folder_name} data...", "yellow")
+        job_loader_thread = JobLoaderThread(self.job_manager, folder_name)
+        self.threads.append(job_loader_thread)
+        job_loader_thread.signal.connect(self.load_job_response)
+        job_loader_thread.start()
+
+    def load_job_response(self, job: Job | None):
+        if job:
+            self.status_button.setText(f"{job.name} loaded successfully!", "lime")
+            self.job_planner_widget.load_job(job)
+        else:
+            self.status_button.setText("Failed to load job.", "red")
+
+    def download_job_data_thread(self, folder_name: str) -> None:
+        self.status_button.setText("Fetching job data", "lime")
+        download_quote_thread = DownloadJobThread(folder_name)
+        self.threads.append(download_quote_thread)
+        download_quote_thread.signal.connect(self.download_job_data_response)
+        download_quote_thread.start()
+
+    def download_job_data_response(self, data: dict[str, dict[str, Any]], folder_name: str) -> None:
+        if isinstance(data, dict):
+            job_name = folder_name.split("\\")[-1]
+            job = Job(job_name, data, self.job_manager)
+
+            # required_images = [laser_cut_part.image_index for laser_cut_part in job.grouped_laser_cut_parts]
+            # required_images.extend(nest.image_path for nest in job.nests)
+
+            # self.download_required_images_thread(required_images)
+
+            job.downloaded_from_server = True
+            self.job_planner_widget.load_job(job)
+            self.status_button.setText(
+                f"Successfully fetched {folder_name} data",
+                "lime",
+            )
+        else:
+            self.status_button.setText(f"Error - {data}", "red")
+
+    def delete_job_thread(self, folder_path: str):
+        self.status_button.setText(f"Deleting {folder_path}", "yellow")
+        delete_job_thread = DeleteJobThread(folder_path)
+        self.threads.append(delete_job_thread)
+        delete_job_thread.signal.connect(self.delete_job_response)
+        delete_job_thread.start()
+
+    def delete_job_response(self, response: dict | str, folder_name: str) -> None:
+        if isinstance(response, dict):
+            self.status_button.setText(
+                f"Successfully deleted {folder_name}",
+                "lime",
+            )
+            self.load_jobs_thread()
+        else:
+            self.status_button.setText(f"Error: {response}", "red")
 
     def change_quote_thread(self, quote_path: str, quote_setting_key: str, setting: QComboBox):
         setting.setEnabled(False)
@@ -1711,6 +1856,7 @@ class MainWindow(QMainWindow):
             quote = Quote(quote_name, data, self.components_inventory, self.laser_cut_inventory, self.sheet_settings)
 
             required_images = [laser_cut_part.image_index for laser_cut_part in quote.grouped_laser_cut_parts]
+            required_images.extend(component.image_path for component in quote.components)
             required_images.extend(nest.image_path for nest in quote.nests)
 
             self.download_required_images_thread(required_images)

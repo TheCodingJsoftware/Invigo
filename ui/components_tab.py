@@ -14,6 +14,7 @@ from PyQt6.QtWidgets import (QAbstractItemView, QCompleter, QDateEdit, QDialog,
                              QTableWidgetItem, QVBoxLayout, QWidget)
 
 from ui.add_item_dialog import AddItemDialog
+from ui.custom.order_pending_quantity_dialog import OrderPendingQuantityDialog
 from ui.custom_widgets import (CustomTableWidget, CustomTabWidget,
                                DeletePushButton, ExchangeRateComboBox,
                                NotesPlainTextEdit, OrderStatusButton,
@@ -23,7 +24,6 @@ from ui.items_change_quantity_dialog import ItemsChangeQuantityDialog
 from ui.select_item_dialog import SelectItemDialog
 from ui.set_custom_limit_dialog import SetCustomLimitDialog
 from ui.set_order_pending_dialog import SetOrderPendingDialog
-from ui.custom.order_pending_quantity_dialog import OrderPendingQuantityDialog
 from utils.components_inventory.component import Component
 from utils.components_inventory.components_inventory import ComponentsInventory
 from utils.dialog_buttons import DialogButtons
@@ -32,6 +32,8 @@ from utils.inventory.category import Category
 from utils.po import get_all_po
 from utils.po_template import POTemplate
 from utils.settings import Settings
+from utils.workspace.assembly import Assembly
+from utils.workspace.job import Job
 
 
 class ComponentsTableWidget(CustomTableWidget):
@@ -60,7 +62,6 @@ class ComponentsTableWidget(CustomTableWidget):
             "Order Status",
             "Set Arrival Time",
             "PO",
-            "DEL",
         ]
         self.setColumnCount(len(headers))
         self.setHorizontalHeaderLabels(headers)
@@ -75,7 +76,9 @@ class ComponentsTab(QWidget):
     def __init__(self, parent: QWidget) -> None:
         super(ComponentsTab, self).__init__(parent)
         uic.loadUi("ui/components_tab.ui", self)
-        self.parent = parent
+        from main import MainWindow
+
+        self.parent: MainWindow = parent
         self.components_inventory: ComponentsInventory = self.parent.components_inventory
 
         self.settings_file = Settings()
@@ -397,22 +400,6 @@ class ComponentsTab(QWidget):
 
             col_index += 1
 
-            def delete_component(component_to_delete: Component):
-                self.components_inventory.remove_component(component_to_delete)
-                self.components_inventory.save()
-                self.sync_changes()
-                self.load_table()
-
-            # DELETE
-            btn_delete = DeletePushButton(
-                parent=self,
-                tool_tip=f"Delete {component.part_name} permanently from {self.category.name}",
-                icon=QIcon("icons/trash.png"),
-            )
-            btn_delete.clicked.connect(partial(delete_component, component))
-            btn_delete.setStyleSheet("border-radius: 0px;")
-            current_table.setCellWidget(row_index, col_index, btn_delete)
-
             self.update_component_row_color(current_table, component)
 
             row_index += 1
@@ -422,21 +409,9 @@ class ComponentsTab(QWidget):
         current_table.resizeColumnsToContents()
         current_table.setColumnWidth(0, 250)
         current_table.setColumnWidth(1, 150)
-        # set context menu
-        if current_table.contextMenuPolicy() != Qt.ContextMenuPolicy.CustomContextMenu:
-            current_table.setContextMenuPolicy(Qt.ContextMenuPolicy.CustomContextMenu)
-            menu = QMenu(self)
-            action = QAction(self)
-            action.triggered.connect(self.set_custom_quantity_limit)
-            action.setText("Set Custom Quantity Limit")
-            menu.addAction(action)
 
-            action = QAction(self)
-            action.triggered.connect(self.print_selected_items)
-            action.setText("Print Selected Parts")
-            menu.addAction(action)
+        self.load_context_menu()
 
-            current_table.customContextMenuRequested.connect(partial(self.open_group_menu, menu))
         self.update_edit_inventory_list_widget()
         self.update_search_suggestions()
         self.update_category_total_stock_costs()
@@ -503,6 +478,167 @@ class ComponentsTab(QWidget):
 
         self.update_components_costs()
         self.update_category_total_stock_costs()
+
+    def load_assembly_menu(self, menu: QMenu, job: Job, assemblies: list[Assembly], level=0, prefix=""):
+        for i, assembly in enumerate(assemblies):
+            is_last = (i == len(assemblies) - 1)
+            next_assembly = None if is_last else assemblies[i + 1]
+            has_next_assembly = next_assembly is not None
+
+            action_text = prefix + ("├ " if has_next_assembly else "└ ") + assembly.name
+
+            action = QAction(action_text, menu)
+            action.triggered.connect(partial(self.add_to_assembly, job, assembly))
+            menu.addAction(action)
+            if assembly.sub_assemblies:
+                sub_prefix = prefix + ("│   " if has_next_assembly else "    ")
+                self.load_assembly_menu(menu, job, assembly.sub_assemblies, level + 1, sub_prefix)
+
+    def load_context_menu(self):
+        current_table = self.category_tables[self.category]
+        if current_table.contextMenuPolicy() != Qt.ContextMenuPolicy.CustomContextMenu:
+            current_table.setContextMenuPolicy(Qt.ContextMenuPolicy.CustomContextMenu)
+
+            menu = QMenu(self)
+            action = QAction("Set Custom Quantity Limit", self)
+            action.triggered.connect(self.set_custom_quantity_limit)
+            menu.addAction(action)
+
+            action = QAction("Print Selected Parts", self)
+            action.triggered.connect(self.print_selected_items)
+            menu.addAction(action)
+
+            menu.addSeparator()
+
+            def move_to_category(new_category: Category):
+                if not (selected_components := self.get_selected_components()):
+                    return
+                existing_components: list[Component] = []
+                for component in selected_components:
+                    if new_category in component.categories:
+                        existing_components.append(component)
+                if existing_components:
+                    message = f"The following components will be ignored since they already exist in {new_category.name}:\n"
+                    for i, existing_part in enumerate(existing_components):
+                        message += f"  {i+1}. {existing_part.name}\n"
+                    msg = QMessageBox(self)
+                    msg.setWindowTitle("Exists")
+                    msg.setText(message)
+                    msg.setStandardButtons(QMessageBox.StandardButton.Ok | QMessageBox.StandardButton.Cancel)
+                    response = msg.exec()
+                    if response == QMessageBox.StandardButton.Cancel:
+                        return
+                for component in selected_components:
+                    if component in existing_components:
+                        continue
+                    component.move_to_category(self.category, new_category)
+                self.components_inventory.save()
+                self.sync_changes()
+                self.sort_components()
+
+            categories = QMenu(menu)
+            categories.setTitle("Move selected parts to category")
+            for _, category in enumerate(self.components_inventory.get_categories()):
+                action = QAction(category.name, self)
+                if self.category == category:
+                    action.setEnabled(False)
+                    action.setText(f"{category.name} - (You are here)")
+                action.triggered.connect(partial(move_to_category, category))
+                categories.addAction(action)
+            menu.addMenu(categories)
+
+            def copy_to_category(new_category: Category):
+                if not (selected_components := self.get_selected_components()):
+                    return
+                existing_components: list[Component] = []
+                for laser_cut_part in selected_components:
+                    if new_category in laser_cut_part.categories:
+                        existing_components.append(laser_cut_part)
+                if existing_components:
+                    message = f"The following laser cut parts will be ignored since they already exist in {new_category.name}:\n"
+                    for i, existing_part in enumerate(existing_components):
+                        message += f"  {i+1}. {existing_part.name}\n"
+                    msg = QMessageBox(self)
+                    msg.setWindowTitle("Exists")
+                    msg.setText(message)
+                    msg.setStandardButtons(QMessageBox.StandardButton.Ok | QMessageBox.StandardButton.Cancel)
+                    response = msg.exec()
+                    if response == QMessageBox.StandardButton.Cancel:
+                        return
+                for laser_cut_part in selected_components:
+                    if laser_cut_part in existing_components:
+                        continue
+                    laser_cut_part.add_to_category(new_category)
+                self.components_inventory.save()
+                self.sync_changes()
+
+            categories = QMenu(menu)
+            categories.setTitle("Copy selected parts to category")
+            for _, category in enumerate(self.components_inventory.get_categories()):
+                action = QAction(category.name, self)
+                if self.category == category:
+                    action.setEnabled(False)
+                    action.setText(f"{category.name} - (You are here)")
+                action.triggered.connect(partial(copy_to_category, category))
+                categories.addAction(action)
+            menu.addMenu(categories)
+
+            menu.addSeparator()
+
+            def remove_parts_from_category():
+                if not (selected_components := self.get_selected_components()):
+                    return
+                for component in selected_components:
+                    component.remove_from_category(self.category)
+                    if len(component.categories) == 0:
+                        self.components_inventory.remove_component(component)
+                self.components_inventory.save()
+                self.sync_changes()
+                self.load_table()
+
+            action = QAction(f"Remove selected parts from {self.category.name}", self)
+            action.triggered.connect(remove_parts_from_category)
+            menu.addAction(action)
+
+            def delete_selected_parts():
+                if not (selected_components := self.get_selected_components()):
+                    return
+                for component in selected_components:
+                    self.components_inventory.remove_component(component)
+                self.components_inventory.save()
+                self.sync_changes()
+                self.load_table()
+
+            action = QAction("Delete selected parts from inventory", self)
+            action.triggered.connect(delete_selected_parts)
+            menu.addAction(action)
+
+            menu.addSeparator()
+
+            job_planner_menu = QMenu("Add to Job", self)
+            for job_widget in self.parent.job_planner_widget.jobs:
+                job = job_widget.job
+                job_menu = QMenu(job.name, job_planner_menu)
+                for group in job.groups:
+                    group_menu = QMenu(group.name, job_menu)
+                    for assembly in group.assemblies:
+                        self.load_assembly_menu(group_menu, job, [assembly])
+                    job_menu.addMenu(group_menu)
+                job_planner_menu.addMenu(job_menu)
+
+            menu.addMenu(job_planner_menu)
+
+            current_table.customContextMenuRequested.connect(partial(self.open_group_menu, menu))
+
+    def add_to_assembly(self, job: Job, assembly: Assembly):
+        if components := self.get_selected_components():
+            for component in components:
+                assembly.add_component(Component(component.name, component.to_dict(), self.components_inventory))
+            job.changes_made()
+            if len(components) == 1:
+                self.parent.status_button.setText(f"Added {len(components)} component to {job.name}", "lime")
+            else:
+                self.parent.status_button.setText(f"Added {len(components)} components to {job.name}", "lime")
 
     def add_item(self) -> None:
         add_item_dialog = AddItemDialog(f'Add new item to "{self.category.name}"', f"Adding a new item to \"{self.category.name}\".\n\nPress 'Add' when finished.", self.components_inventory, self)

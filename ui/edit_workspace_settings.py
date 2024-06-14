@@ -33,7 +33,7 @@ class TagWidget(QWidget):
         self.tag_combobox.addItems([tag.name for tag in self.remaining_tags])
         self.tag_combobox.setCurrentText(tag.name)
         self.tag_combobox.currentTextChanged.connect(self.tag_changed)
-        self.tag_combobox.wheelEvent = lambda: None
+        self.tag_combobox.wheelEvent = lambda event: None
         self.arrow_label = QLabel("➜", self)
         self.delete_button = DeletePushButton(self, "Delete this tag", icon=QIcon("icons/trash.png"))
         self.delete_button.setFixedWidth(40)
@@ -125,9 +125,9 @@ class FlowTagWidget(QWidget):
 
     def update_tag_selections(self):
         self.add_tag_button.setEnabled(len(self.flow_tag.tags) != len(self.workspace_settings.tags))
-        self.remaining_tags = [tag for tag in self.workspace_settings.tags if tag.name not in self.flow_tag.to_dict()]
+        self.remaining_tags = [tag for tag in self.workspace_settings.tags if tag.name not in self.flow_tag.to_list()]
         for tag_widget in self.tag_widgets:
-            tag_widget.update_tag_selections(used_tags=self.flow_tag.to_dict())
+            tag_widget.update_tag_selections(used_tags=self.flow_tag.to_list())
 
 
 class FlowTagsTableWidget(QTableWidget):
@@ -228,6 +228,7 @@ class FlowTagsTableWidget(QTableWidget):
                 self.table_widgets[flow_tag]["widget"].deleteLater()
                 self.removeRow(self.table_widgets[flow_tag]["name"].row())
                 del self.table_widgets[flow_tag]
+                self.flow_tag_group.remove_flow_tag(flow_tag)
 
     def get_selected_flow_tags(self) -> list[FlowTags]:
         selected_flow_tags: list[FlowTags] = []
@@ -253,12 +254,13 @@ class FlowTagsTableWidget(QTableWidget):
 class EditWorkspaceSettings(QDialog):
     def __init__(
         self,
+        workspace_settings: WorkspaceSettings,
         parent=None,
     ) -> None:
         super(EditWorkspaceSettings, self).__init__(parent)
         uic.loadUi("ui/edit_workspace_settings.ui", self)
 
-        self.workspace_settings = WorkspaceSettings()
+        self.workspace_settings = workspace_settings
 
         self.groups_multi_tool_box = AssemblyMultiToolBox(self)
         self.flow_tag_tables: dict[FlowTags, FlowTagsTableWidget] = {}
@@ -304,6 +306,7 @@ class EditWorkspaceSettings(QDialog):
 
         self.load_flow_tag_table_widgets()
         self.load_tags()
+        self.showMaximized()
 
     def create_group(self):
         name, ok = QInputDialog.getText(self, "Group name", "Enter a group name:")

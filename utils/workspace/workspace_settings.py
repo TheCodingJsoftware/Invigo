@@ -67,6 +67,13 @@ class WorkspaceSettings:
                 flow_tags |= {flow_tag.get_name(): flow_tag}
         return flow_tags
 
+    def get_flow_tag_by_name(self, name: str) -> FlowTag:
+        for flow_tag_group in self.flow_tags_group:
+            for flow_tag in flow_tag_group:
+                if str(flow_tag) == name:
+                    return flow_tag
+        return None
+
     def add_flow_tag(self, flow_tags: FlowTags, flow_tag: FlowTag):
         flow_tags.add_flow_tag(flow_tag)
 

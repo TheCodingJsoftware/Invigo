@@ -10,7 +10,7 @@ from PyQt6.QtCore import QDate, Qt
 from PyQt6.QtGui import QAction, QCursor, QFont, QIcon
 from PyQt6.QtWidgets import QAbstractItemView, QApplication, QComboBox, QCompleter, QGridLayout, QGroupBox, QHBoxLayout, QInputDialog, QLabel, QLineEdit, QMenu, QMessageBox, QPushButton, QScrollArea, QTableWidgetItem, QTabWidget, QVBoxLayout, QWidget
 
-from threads.workspace_get_file_thread import WorkspaceDownloadFiles
+from threads.workspace_get_file_thread import WorkspaceDownloadFile
 from threads.workspace_upload_file_thread import WorkspaceUploadThread
 from ui.color_picker_dialog import ColorPicker
 from ui.custom_widgets import AssemblyImage, AssemblyMultiToolBox, CustomTableWidget, DeletePushButton, DraggableButton, DropWidget, FilterTabWidget, HumbleDoubleSpinBox, ItemsGroupBox, MultiToolBox, NotesPlainTextEdit, RecordingWidget, ScrollPositionManager, SelectRangeCalendar, TimeSpinBox
@@ -25,7 +25,6 @@ from utils.paint_inventory.paint_inventory import PaintInventory
 from utils.settings import Settings
 from utils.trusted_users import get_trusted_users
 from utils.workspace.assembly import Assembly
-from utils.workspace.generate_printout import GeneratePrintout
 from utils.workspace.workspace import Workspace
 from utils.workspace.workspace_item import WorkspaceItem
 from utils.workspace.workspace_item_group import WorkspaceItemGroup
@@ -3457,7 +3456,7 @@ class WorkspaceTab(QWidget):
     # USER
     def download_workspace_file(self, file_to_download: str, open_when_done: bool = False) -> None:
         self.status_button.setText(f'Downloading - {datetime.now().strftime("%r")}', "yellow")
-        workspace_download_files = WorkspaceDownloadFiles(file_to_download, open_when_done)
+        workspace_download_files = WorkspaceDownloadFile(file_to_download, open_when_done)
         self.threads.append(workspace_download_files)
         workspace_download_files.signal.connect(self.download_workspace_file_response)
         workspace_download_files.start()

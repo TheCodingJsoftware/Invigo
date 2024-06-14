@@ -8,7 +8,9 @@ from utils.inventory.inventory_item import InventoryItem
 class Component(InventoryItem):
     def __init__(self, name: str, data: dict, components_inventory):
         super().__init__(name)
-        self.components_inventory = components_inventory
+        from utils.components_inventory.components_inventory import ComponentsInventory
+
+        self.components_inventory: ComponentsInventory = components_inventory
         self.quantity: float = 0.0
         self.unit_quantity: float = 0.0
         self.part_number: str = self.name
@@ -39,6 +41,10 @@ class Component(InventoryItem):
     def get_total_cost_in_stock(self) -> float:
         exchange_rate = self.get_exchange_rate() if self.use_exchange_rate else 1
         return max(self.price * self.quantity * exchange_rate, 0)
+
+    def move_to_category(self, from_category: Category, to_category: Category):
+        super().remove_from_category(from_category)
+        self.add_to_category(to_category)
 
     def remove_from_category(self, category: Category):
         super().remove_from_category(category)

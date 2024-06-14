@@ -7,10 +7,11 @@ from utils.ip_utils import get_server_ip_address, get_server_port
 from utils.laser_cut_inventory.laser_cut_part import LaserCutPart
 from utils.quote.nest import Nest
 from utils.quote.quote import Quote
+from utils.workspace.job import Job
 
 
 class CoverPage:
-    def __init__(self, title: str, quote: Quote) -> None:
+    def __init__(self, title: str, quote: Quote | Job) -> None:
         self.title = title
         self.quote = quote
         self.server_directory = f"http://{get_server_ip_address()}"
@@ -243,7 +244,7 @@ class ComponentsTable:
             f"""
                 <div class="popup" id="{component.name}">
                     <div class="input-container-horizontal" style="padding: 5px; align-items: left; display: flex;">
-                        <img src="{self.server_directory}/{component.image_path}" style="height: 100px; width: 100px;" alt="Component Image">
+                        <img src="{self.server_directory}/{component.image_path}" style="height: 100px; width: auto;" alt="Component Image">
                         <h1 style="margin-left: 20px;">{component.part_name}</h1>
                         {self.generate_components_data(component)}
                     </div>
@@ -276,7 +277,7 @@ class ComponentsTable:
             <td class="ui-table-cell-visible">
                 <div class="image-container">
                     <a class="popup-trigger" href="#{component.name}" onclick="highlightImage(\'{component.name}\', \'images/{component.name}\')">
-                    <img src="{self.server_directory}/{component.image_path}" style="height: 60px; width: 60px;" alt="Component Image" id="images/{component.name}">
+                    <img src="{self.server_directory}/{component.image_path}" style="height: 60px; width: auto;" alt="Component Image" id="images/{component.name}">
                 </div>
             </td>
             <td class="ui-table-cell-visible">{component.part_name}</td>

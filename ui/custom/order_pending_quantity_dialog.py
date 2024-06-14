@@ -1,5 +1,6 @@
-from PyQt6.QtWidgets import QDialog, QHBoxLayout, QVBoxLayout, QPushButton, QLabel, QDoubleSpinBox
 from PyQt6.QtCore import Qt
+from PyQt6.QtWidgets import QDialog, QDoubleSpinBox, QHBoxLayout, QLabel, QPushButton, QVBoxLayout
+
 
 class OrderPendingQuantityDialog(QDialog):
     def __init__(self, parent=None):
