@@ -94,8 +94,8 @@ __author__: str = "Jared Gross"
 __copyright__: str = "Copyright 2022-2024, TheCodingJ's"
 __credits__: list[str] = ["Jared Gross"]
 __license__: str = "MIT"
-__version__: str = "v3.0.20"
-__updated__: str = "2024-06-14 10:49:17"
+__version__: str = "v3.0.22"
+__updated__: str = "2024-06-15 13:20:08"
 __maintainer__: str = "Jared Gross"
 __email__: str = "jared@pinelandfarms.ca"
 __status__: str = "Production"
@@ -197,8 +197,9 @@ class MainWindow(QMainWindow):
 
         self.job_manager = JobManager(self)
         self.job_planner_widget = JobPlannerTab(self)
-        self.job_planner_widget.save_job.connect(self.save_job)
-        self.job_planner_widget.save_job_as.connect(self.save_job_as)
+        self.job_planner_widget.savJob.connect(self.save_job)
+        self.job_planner_widget.saveJobAs.connect(self.save_job_as)
+        self.job_planner_widget.reloadJob.connect(self.reload_job)
         self.job_planner_widget.load_job(Job("Enter Job Name0", {}, self.job_manager))
         # self.quote_planner_tab_widget.add_job(Job("Job0", None))
         self.clear_layout(self.job_planner_layout)
@@ -319,6 +320,9 @@ class MainWindow(QMainWindow):
 
         self.saved_planning_jobs_layout = self.findChild(QVBoxLayout, "saved_planning_jobs_layout")
         self.saved_planning_jobs_layout.setAlignment(Qt.AlignmentFlag.AlignTop)
+        self.saved_jobs_multitoolbox = MultiToolBox(self)
+        self.saved_planning_jobs_layout.addWidget(self.saved_jobs_multitoolbox)
+        self.saved_planning_job_items_last_opened: dict[int, bool] = {}
 
         # Status
         self.status_button = RichTextPushButton(self)
@@ -764,6 +768,10 @@ class MainWindow(QMainWindow):
             elif response == DialogButtons.cancel:
                 return
 
+    def reload_job(self, job: Job):
+        folder_path = f"saved_jobs\\{job.job_status.name.lower()}\\{job.name}"
+        self.reload_job_thread(folder_path)
+
     def save_job(self, job: Job):
         if job is None:
             job = self.job_planner_widget.current_job
@@ -1056,8 +1064,8 @@ class MainWindow(QMainWindow):
         self.status_button.setText("Refreshed", "lime")
 
     def load_planning_jobs(self, data: dict[str, dict[str, Any]]):
-        self.clear_layout(self.saved_planning_jobs_layout)
-
+        self.saved_planning_job_items_last_opened = self.saved_jobs_multitoolbox.get_widget_visibility()
+        self.saved_jobs_multitoolbox.clear()
         sorted_data = dict(natsorted(data.items(), key=lambda x: x[1]["name"], reverse=True))
         for folder_path, file_info in sorted_data.items():
             if self.tabWidget.tabText(self.tabWidget.currentIndex()) == "Job Planner" and file_info["type"] == JobStatus.PLANNING.value:
@@ -1065,7 +1073,10 @@ class MainWindow(QMainWindow):
                 job_item.load_job.connect(partial(self.load_job_thread, f"saved_jobs/{folder_path}"))
                 job_item.delete_job.connect(partial(self.delete_job_thread, f"saved_jobs/{folder_path}"))
                 job_item.open_webpage.connect(partial(self.open_job, f"saved_jobs/{folder_path}"))
-                self.saved_planning_jobs_layout.addWidget(job_item)
+                job_item.pushButton_open_in_browser.setToolTip(f"{job_item.pushButton_open_in_browser.toolTip()}\n\nhttp://{get_server_ip_address()}:{get_server_port()}/load_job/saved_jobs/{folder_path}")
+                self.saved_jobs_multitoolbox.addItem(job_item, file_info.get("name"), file_info.get("color"))
+        self.saved_jobs_multitoolbox.close_all()
+        self.saved_jobs_multitoolbox.set_widgets_visibility(self.saved_planning_job_items_last_opened)
 
     def load_saved_quotes(self, data: dict[str, dict[str, Any]]) -> None:
         sorted_data = dict(natsorted(data.items(), key=lambda x: x[1]["order_number"], alg=ns.FLOAT, reverse=True))
@@ -1302,7 +1313,7 @@ class MainWindow(QMainWindow):
         webbrowser.open(f"http://{get_server_ip_address()}:{get_server_port()}/inventory", new=0)
 
     def open_qr_codes(self) -> None:
-        webbrowser.open(f"http://{get_server_ip_address()}:{get_server_port()}/view_qr_codes", new=0)
+        webbrowser.open(f"http://{get_server_ip_address()}:{get_server_port()}/sheet_qr_codes", new=0)
 
     def open_job(self, folder: str):
         webbrowser.open(f"http://{get_server_ip_address()}:{get_server_port()}/load_job/{folder}", new=0)
@@ -1760,6 +1771,7 @@ class MainWindow(QMainWindow):
 
     def load_jobs_response(self, data: dict) -> None:
         if isinstance(data, dict):
+            self.status_button.setText("Fetched all jobs", "lime")
             self.load_planning_jobs(data)
             # More will be added here such as quoting, workspace, archive...
         else:
@@ -1777,12 +1789,28 @@ class MainWindow(QMainWindow):
         else:
             self.status_button.setText(f"Error: {data}'", "red")
 
+    def reload_job_thread(self, folder_name: str):
+        self.status_button.setText(f"Fetching {folder_name} data...", "yellow")
+        job_loader_thread = JobLoaderThread(self.job_manager, folder_name)
+        self.threads.append(job_loader_thread)
+        job_loader_thread.signal.connect(self.reload_job_response)
+        job_loader_thread.start()
+        job_loader_thread.wait()
+
+    def reload_job_response(self, job: Job | None):
+        if job:
+            self.status_button.setText(f"{job.name} reloaded successfully!", "lime")
+            self.job_planner_widget.reload_job(job)
+        else:
+            self.status_button.setText("Failed to load job.", "red")
+
     def load_job_thread(self, folder_name: str):
         self.status_button.setText(f"Fetching {folder_name} data...", "yellow")
         job_loader_thread = JobLoaderThread(self.job_manager, folder_name)
         self.threads.append(job_loader_thread)
         job_loader_thread.signal.connect(self.load_job_response)
         job_loader_thread.start()
+        job_loader_thread.wait()
 
     def load_job_response(self, job: Job | None):
         if job:

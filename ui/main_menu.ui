@@ -345,23 +345,35 @@
                       <rect>
                        <x>0</x>
                        <y>0</y>
-                       <width>496</width>
-                       <height>483</height>
+                       <width>1011</width>
+                       <height>454</height>
                       </rect>
                      </property>
                      <layout class="QVBoxLayout" name="verticalLayout_17">
+                      <property name="leftMargin">
+                       <number>0</number>
+                      </property>
+                      <property name="topMargin">
+                       <number>0</number>
+                      </property>
+                      <property name="rightMargin">
+                       <number>0</number>
+                      </property>
+                      <property name="bottomMargin">
+                       <number>0</number>
+                      </property>
                       <item>
                        <layout class="QVBoxLayout" name="saved_planning_jobs_layout"/>
                       </item>
-                      <item>
-                       <widget class="QPushButton" name="pushButton_refresh_jobs">
-                        <property name="text">
-                         <string>Refresh</string>
-                        </property>
-                       </widget>
-                      </item>
                      </layout>
                     </widget>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QPushButton" name="pushButton_refresh_jobs">
+                    <property name="text">
+                     <string>Refresh</string>
+                    </property>
                    </widget>
                   </item>
                  </layout>
@@ -434,7 +446,7 @@
            <number>5</number>
           </property>
           <widget class="QWidget" name="layoutWidget">
-           <layout class="QVBoxLayout" name="omnigen_layout" stretch="">
+           <layout class="QVBoxLayout" name="omnigen_layout">
             <property name="spacing">
              <number>6</number>
             </property>
@@ -604,8 +616,8 @@
                        <rect>
                         <x>0</x>
                         <y>0</y>
-                        <width>185</width>
-                        <height>409</height>
+                        <width>63</width>
+                        <height>16</height>
                        </rect>
                       </property>
                       <layout class="QVBoxLayout" name="verticalLayout_6">
@@ -673,8 +685,8 @@
                        <rect>
                         <x>0</x>
                         <y>0</y>
-                        <width>185</width>
-                        <height>409</height>
+                        <width>63</width>
+                        <height>16</height>
                        </rect>
                       </property>
                       <layout class="QVBoxLayout" name="verticalLayout_3">

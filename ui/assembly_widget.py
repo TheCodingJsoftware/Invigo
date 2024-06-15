@@ -80,7 +80,7 @@ class PaintSettingsWidget(QWidget):
         self.spinbox_primer_overspray.setValue(self.laser_cut_part.primer_overspray)
         self.spinbox_primer_overspray.setMaximum(100.0)
         self.spinbox_primer_overspray.setSuffix("%")
-        self.spinbox_primer_overspray.editingFinished.connect(self.update_paint_settings)
+        self.spinbox_primer_overspray.textChanged.connect(self.update_paint_settings)
         self.primer_layout.addWidget(QLabel("Primer:", self.widget_primer), 0, 0)
         self.primer_layout.addWidget(self.combobox_primer, 1, 0)
         self.primer_layout.addWidget(QLabel("Overspray:", self.widget_primer), 0, 1)
@@ -106,7 +106,7 @@ class PaintSettingsWidget(QWidget):
         self.spinbox_paint_overspray.setValue(self.laser_cut_part.paint_overspray)
         self.spinbox_paint_overspray.setMaximum(100.0)
         self.spinbox_paint_overspray.setSuffix("%")
-        self.spinbox_paint_overspray.editingFinished.connect(self.update_paint_settings)
+        self.spinbox_paint_overspray.textChanged.connect(self.update_paint_settings)
         self.paint_color_layout.addWidget(QLabel("Paint:", self.widget_paint_color), 0, 0)
         self.paint_color_layout.addWidget(self.combobox_paint_color, 1, 0)
         self.paint_color_layout.addWidget(QLabel("Overspray:", self.widget_paint_color), 0, 1)
@@ -132,7 +132,7 @@ class PaintSettingsWidget(QWidget):
         self.spinbox_powder_transfer_efficiency.setValue(self.laser_cut_part.powder_transfer_efficiency)
         self.spinbox_powder_transfer_efficiency.setMaximum(100.0)
         self.spinbox_powder_transfer_efficiency.setSuffix("%")
-        self.spinbox_powder_transfer_efficiency.editingFinished.connect(self.update_paint_settings)
+        self.spinbox_powder_transfer_efficiency.textChanged.connect(self.update_paint_settings)
         self.powder_coating_layout.addWidget(QLabel("Powder:", self.widget_powder_coating), 0, 0)
         self.powder_coating_layout.addWidget(self.combobox_powder_coating_color, 1, 0)
         self.powder_coating_layout.addWidget(QLabel("Transfer eff:", self.widget_powder_coating), 0, 1)
@@ -309,7 +309,7 @@ class AssemblyPaintSettingsWidget(QWidget):
         self.spinbox_primer_overspray.setValue(self.assembly.primer_overspray)
         self.spinbox_primer_overspray.setMaximum(100.0)
         self.spinbox_primer_overspray.setSuffix("%")
-        self.spinbox_primer_overspray.editingFinished.connect(self.update_paint_settings)
+        self.spinbox_primer_overspray.textChanged.connect(self.update_paint_settings)
         self.primer_layout.addWidget(QLabel("Primer:", self.widget_primer), 0, 0)
         self.primer_layout.addWidget(self.combobox_primer, 1, 0)
         self.primer_layout.addWidget(QLabel("Overspray:", self.widget_primer), 0, 1)
@@ -335,7 +335,7 @@ class AssemblyPaintSettingsWidget(QWidget):
         self.spinbox_paint_overspray.setValue(self.assembly.paint_overspray)
         self.spinbox_paint_overspray.setMaximum(100.0)
         self.spinbox_paint_overspray.setSuffix("%")
-        self.spinbox_paint_overspray.editingFinished.connect(self.update_paint_settings)
+        self.spinbox_paint_overspray.textChanged.connect(self.update_paint_settings)
         self.paint_color_layout.addWidget(QLabel("Paint:", self.widget_paint_color), 0, 0)
         self.paint_color_layout.addWidget(self.combobox_paint_color, 1, 0)
         self.paint_color_layout.addWidget(QLabel("Overspray:", self.widget_paint_color), 0, 1)
@@ -361,7 +361,7 @@ class AssemblyPaintSettingsWidget(QWidget):
         self.spinbox_powder_transfer_efficiency.setValue(self.assembly.powder_transfer_efficiency)
         self.spinbox_powder_transfer_efficiency.setMaximum(100.0)
         self.spinbox_powder_transfer_efficiency.setSuffix("%")
-        self.spinbox_powder_transfer_efficiency.editingFinished.connect(self.update_paint_settings)
+        self.spinbox_powder_transfer_efficiency.textChanged.connect(self.update_paint_settings)
         self.powder_coating_layout.addWidget(QLabel("Powder:", self.widget_powder_coating), 0, 0)
         self.powder_coating_layout.addWidget(self.combobox_powder_coating_color, 1, 0)
         self.powder_coating_layout.addWidget(QLabel("Transfer eff:", self.widget_powder_coating), 0, 1)
@@ -629,6 +629,7 @@ class FileButton(QPushButton):
             self.dragging = True
             mime_data = QMimeData()
             url = QUrl.fromLocalFile(self.file)  # Replace with the actual file path
+            print(self.file)
             mime_data.setUrls([url])
 
             drag = QDrag(self)
@@ -751,6 +752,7 @@ class LaserCutPartFileDropWidget(QWidget):
     def reset_label(self):
         self.label.setText("Drag Here")
         self.label.setStyleSheet(self.default_style_sheet)
+
 
 class AssemblyFileDropWidget(QWidget):
     fileDropped = pyqtSignal(QHBoxLayout, list)  # Changed to object for LaserCutPart
@@ -1506,7 +1508,7 @@ QPushButton:checked:pressed#assembly_button_drop_menu {
         self.changes_made()
 
     def add_laser_cut_part_drag_file_widget(self, laser_cut_part: LaserCutPart, file_category: str, files_layout: QHBoxLayout, file_path: str):
-        file_button = FileButton(f"{os.path.dirname(os.path.realpath(__file__))}\\{file_path}", self)
+        file_button = FileButton(f"{os.getcwd()}\\{file_path}", self)
         file_button.buttonClicked.connect(partial(self.laser_cut_part_file_clicked, laser_cut_part, file_path))
         file_button.deleteFileClicked.connect(partial(self.laser_cut_part_delete_file, laser_cut_part, file_category, file_path, file_button))
         file_name = os.path.basename(file_path)
@@ -1652,7 +1654,7 @@ QPushButton:checked:pressed#assembly_button_drop_menu {
         self.sub_assemblies_toolbox.addItem(sub_assembly_widget, sub_assembly.name, sub_assembly.group.color)
 
         name_input: QLineEdit = self.sub_assemblies_toolbox.getLastInputBox()
-        name_input.editingFinished.connect(partial(self.sub_assembly_name_renamed, sub_assembly, name_input))
+        name_input.textChanged.connect(partial(self.sub_assembly_name_renamed, sub_assembly, name_input))
 
         duplicate_button = self.sub_assemblies_toolbox.getLastDuplicateButton()
         duplicate_button.clicked.connect(partial(self.duplicate_sub_assembly, sub_assembly))

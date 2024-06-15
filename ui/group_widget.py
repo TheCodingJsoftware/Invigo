@@ -72,7 +72,7 @@ border-top-left-radius: 0px;
         self.assemblies_toolbox.addItem(assembly_widget, assembly.name, self.group.color)
 
         name_input: QLineEdit = self.assemblies_toolbox.getLastInputBox()
-        name_input.editingFinished.connect(partial(self.assembly_name_renamed, assembly, name_input))
+        name_input.textChanged.connect(partial(self.assembly_name_renamed, assembly, name_input))
 
         duplicate_button = self.assemblies_toolbox.getLastDuplicateButton()
         duplicate_button.clicked.connect(partial(self.duplicate_assembly, assembly))

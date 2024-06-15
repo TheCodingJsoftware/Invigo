@@ -4,11 +4,16 @@
 }
 
 * {
-    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
 }
 
 html {
+    scroll-behavior: smooth;
     background-color: white;
+    transition: 0.3s ease-in-out;
+    font-family: 'Varela Round';
 }
 
 .ui-table {
@@ -18,14 +23,17 @@ html {
 .page {
     background-color: white;
 }
-h2#components-heading{
+
+h2#components-heading {
     margin-bottom: 0px;
     text-align: center;
 }
-h2#laser-cut-parts-heading{
+
+h2#laser-cut-parts-heading {
     margin-bottom: 0px;
     text-align: center;
 }
+
 .header-table-row {
     text-align: bottom;
     vertical-align: bottom;
@@ -184,7 +192,7 @@ tr {
 }
 
 .popup:target {
-    display: block;
+    display: inline;
 }
 
 .image-container:target {
@@ -318,6 +326,70 @@ td.dlheader:last-child {
     margin-top: -30px;
 }
 
+.assembly_image {
+    height: 100px;
+    width: auto;
+    padding: 5px;
+}
+
+.summary {
+    cursor: pointer;
+}
+
+details {
+    border: 1px solid lightgrey;
+    border-radius: 10px;
+    padding: 10px;
+    margin: 5px;
+}
+
+details span {
+    display: inline-block;
+}
+
+details>summary {
+    padding: 2px 6px;
+    font-weight: 700;
+    font-size: 16pt;
+    cursor: pointer;
+}
+#data-table-components tr, #data-table-laser-cut_parts tr{
+    border-left-color: transparent;
+    border-right-color: transparent;
+    height: 40px;
+}
+
+.job {}
+
+.group {}
+
+.laser_cut_parts_detail,
+.components_detail {
+    padding: 0px;
+
+}
+.laser_cut_parts_detail span,
+.components_detail span {
+    padding-left: 10px;
+}
+.laser_cut_part_contents,
+.components_contents {
+    display: block;
+    height: auto;
+}
+
+.assembly {
+    page-break-inside: avoid;
+}
+
+.detail_contents {}
+
+.assembly_data {
+    page-break-inside: avoid;
+    height: 100px;
+    display: inline-flex;
+}
+
 .ui-input-text input,
 .ui-inpput-search input {
     min-height: 30px;
@@ -326,8 +398,20 @@ td.dlheader:last-child {
 }
 
 @media print {
+    details:not([open]) {
+        display: none;
+    }
+
     .ui-table-columntoggle-btn {
         display: none;
+    }
+
+    #showCoverPageLabel {
+        display: none;
+    }
+
+    .group_details {
+        border-color: transparent;
     }
 
     .page-break {

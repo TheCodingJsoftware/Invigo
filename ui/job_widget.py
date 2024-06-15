@@ -25,6 +25,7 @@ from utils.workspace.job import Job, JobStatus
 
 
 class JobWidget(QWidget):
+    reloadJob = pyqtSignal(Job)
     def __init__(self, job: Job, parent) -> None:
         super(JobWidget, self).__init__(parent)
         uic.loadUi("ui/job_widget.ui", self)
@@ -52,6 +53,9 @@ class JobWidget(QWidget):
         self.gridLayout_2.setAlignment(Qt.AlignmentFlag.AlignTop)
         self.splitter.setStretchFactor(0, 0)
         self.splitter.setStretchFactor(1, 1)
+
+        self.pushButton_reload_job = self.findChild(QPushButton, "pushButton_reload_job")
+        self.pushButton_reload_job.clicked.connect(self.reload_job)
 
         self.doubleSpinBox_order_number: QDoubleSpinBox = self.findChild(QDoubleSpinBox, "doubleSpinBox_order_number")
         self.doubleSpinBox_order_number.setValue(self.job.order_number)
@@ -123,7 +127,7 @@ class JobWidget(QWidget):
         self.groups_toolbox.addItem(group_widget, group.name, group.color)
 
         job_name_input: QLineEdit = self.groups_toolbox.getLastInputBox()
-        job_name_input.editingFinished.connect(partial(self.group_name_renamed, group, job_name_input))
+        job_name_input.textChanged.connect(partial(self.group_name_renamed, group, job_name_input))
 
         duplicate_button = self.groups_toolbox.getLastDuplicateButton()
         duplicate_button.clicked.connect(partial(self.duplicate_group, group))
@@ -156,6 +160,9 @@ class JobWidget(QWidget):
         self.groups_toolbox.removeItem(group_widget)
         self.job.remove_group(group_widget.group)
         self.changes_made()
+
+    def reload_job(self):
+        self.reloadJob.emit(self.job)
 
     def changes_made(self):
         self.parent.job_changed(self.job)

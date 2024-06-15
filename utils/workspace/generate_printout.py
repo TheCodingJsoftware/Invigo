@@ -8,6 +8,7 @@ from utils.ip_utils import get_server_ip_address, get_server_port
 from utils.quote.generate_quote import ComponentsTable, CoverPage, LaserCutPartsTable
 from utils.workspace.assembly import Assembly
 from utils.workspace.job import Job
+from utils.workspace.group import Group
 from utils.workspace.workspace import Workspace
 from utils.workspace.workspace_item import WorkspaceItem
 
@@ -35,9 +36,9 @@ from utils.workspace.workspace_item import WorkspaceItem
 
 class AssemblyTable:
     def __init__(self, job: Job):
-        self.headers = ["Image", "Assembly Name", "Qty", "Flow Tag"]
+        self.headers = ["Image", "Assembly Name", "Qty", "Process"]
         self.job = job
-        self.server_directory = f"http://{get_server_ip_address()}"
+        self.server_directory = f"http://{get_server_ip_address()}:{get_server_port()}"
 
     def generate(self) -> str:
         html = "<table class='ui-responsive' data-mode='' data-role='table' id='data-table' style='border-collapse: collapse; text-align: center; vertical-align: middle; font-size: 12px;'>"
@@ -48,12 +49,107 @@ class AssemblyTable:
         html += '<tbody id="table-body">'
         for assembly in self.job.get_all_assemblies():
             flow_tag = assembly.flow_tag.get_name()
-            if assembly.assembly_image:
-                assembly_image_path = assembly.assembly_image.split("\\")[-1]
-            image_html = f'<img src="{self.server_directory}/images/{assembly_image_path}" alt="Image" class="nest_image" id="{self.server_directory}/{assembly_image_path}">' if assembly.assembly_image else ""
-            html += "<tr>" f'<td class="ui-table-cell-visible">{image_html}</td>' f'<td class="ui-table-cell-visible">{assembly.name}</td>' f'<td class="ui-table-cell-visible">NA</td>' f'<td class="ui-table-cell-visible">{flow_tag}</td>' "</tr>"
+            image_html = f'<img src="{self.server_directory}/image/{assembly.assembly_image}" alt="Assembly Image" class="assembly_image" id="{self.server_directory}/image/{assembly.assembly_image}">' if assembly.assembly_image else ""
+            html += f'''<tr>
+                <td class="ui-table-cell-visible">{image_html}</td>
+                <td class="ui-table-cell-visible">{assembly.name}</td>
+                <td class="ui-table-cell-visible">NA</td>
+                <td class="ui-table-cell-visible">{flow_tag}</td>
+                </tr>'''
         html += "</tbody></table>"
         return html
+
+
+class JobDiv:
+    def __init__(self, job: Job) -> None:
+        self.job = job
+
+    def generate(self) -> str:
+        html = ""
+        # html = "<details open>"
+        # html += f"<summary>{self.job.name}</summary>"
+        # html += '<div class="job">'
+        for group in self.job.groups:
+            group_div = GroupDiv(group)
+            html += group_div.generate()
+        # html += "</div>"
+        # html += "</details>"
+        return html
+
+
+class GroupDiv:
+    def __init__(self, group: Group) -> None:
+        self.group = group
+
+    def generate(self) -> str:
+        html = '<details class="group_details" open>'
+        html += f"<summary>{self.group.name}</summary>"
+        html += '<div class="group">'
+        for assembly in self.group.assemblies:
+            assembly_div = AssemblyDiv(assembly)
+            html += assembly_div.generate()
+        html += "</div>"
+        html += "</details>"
+        return html
+
+
+class AssemblyDiv:
+    def __init__(self, assembly: Assembly) -> None:
+        self.assembly = assembly
+        self.server_directory = f"http://{get_server_ip_address()}:{get_server_port()}"
+
+    def get_assembly_data_html(self) -> str:
+        html = '<div class="assembly_data">'
+        image_html = f'<img src="{self.server_directory}/image/{self.assembly.assembly_image}" alt="Assembly Image" class="assembly_image" id="{self.server_directory}/image/{self.assembly.assembly_image}">' if self.assembly.assembly_image else ""
+        html += image_html
+        html += '<div>'
+        html += f"<h2>{self.assembly.name}</h2>"
+        html += f"<p>Process: {self.assembly.flow_tag.get_name()}</p>"
+        html += '</div>'
+        html += '</div>'
+        return html
+
+    def generate(self) -> str:
+        html = '<details class="assembly_details" open>'
+        html += f"<summary>{self.assembly.name}</summary>"
+        html += '<div class="assembly">'
+        html += self.get_assembly_data_html()
+
+        if self.assembly.laser_cut_parts:
+            html += '<details class="laser_cut_parts_detail" open>'
+            html += "<summary>Laser Cut Parts</summary>"
+            html += '<div class="detail_contents laser_cut_part_contents">'
+            laser_cut_table = LaserCutPartsTable("Workorder", self.assembly.laser_cut_parts)
+            html += laser_cut_table.generate()
+            html += "</div>"
+            html += "</details>"
+
+        if self.assembly.components:
+            html += '<details class="components_detail" open>'
+            html += "<summary>Components</summary>"
+            html += '<div class="detail_contents components_contents">'
+            component_table = ComponentsTable(self.assembly.components)
+            html += component_table.generate()
+            html += "</div>"
+            html += "</details>"
+
+        if self.assembly.laser_cut_parts or self.assembly.components:
+            html += '<div class="page-break"></div>'
+
+        if self.assembly.sub_assemblies:
+            html += '<details open>'
+            html += "<summary>Sub-Assemblies</summary>"
+            html += '<div class="detail_contents assembly">'
+            for sub_assembly in self.assembly.sub_assemblies:
+                sub_assembly_div = AssemblyDiv(sub_assembly)
+                html += sub_assembly_div.generate()
+            html += "</div>"
+            html += "</details>"
+
+        html += "</div>"
+        html += "</details>"
+        return html
+
 
 
 class JobPlannerPrintout:
@@ -79,20 +175,28 @@ class JobPlannerPrintout:
                         <meta name="viewport" content="width=device-width, initial-scale=1.0">
                         <title>{self.title} - {self.job.name}</title>
                         <link rel="stylesheet" href="https://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css">
+                        <link href='https://fonts.googleapis.com/css?family=Varela Round' rel='stylesheet'>
                         <script src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
                         <script src="https://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
+                        <script src="https://kit.fontawesome.com/b88fae5da2.js"
+                            crossorigin="anonymous"></script>
                     </head>
         <style>{self.printout_css}</style>
-        <script>{self.printout_js}</script>
         <div data-role="page" id="pageone">"""
 
         cover_page = CoverPage(self.title, self.job)
+
 
         html += cover_page.generate()
 
         assembly_table = AssemblyTable(self.job)
         html += assembly_table.generate()
 
+        html += '<div class="page-break"></div>'
+
+        job_div = JobDiv(self.job)
+        html += job_div.generate()
+        html += f'<script>{self.printout_js}</script>'
         return html
 
 

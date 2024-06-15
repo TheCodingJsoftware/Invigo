@@ -176,14 +176,75 @@
             <number>0</number>
            </property>
            <item>
-            <widget class="QLabel" name="label_5">
-             <property name="text">
-              <string>Ship to:</string>
+            <layout class="QHBoxLayout" name="horizontalLayout_6" stretch="1,0">
+             <property name="bottomMargin">
+              <number>3</number>
              </property>
-             <property name="buddy">
-              <cstring>textEdit_ship_to</cstring>
-             </property>
-            </widget>
+             <item>
+              <widget class="QLabel" name="label_5">
+               <property name="text">
+                <string>Ship to:</string>
+               </property>
+               <property name="buddy">
+                <cstring>textEdit_ship_to</cstring>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QPushButton" name="pushButton_reload_job">
+               <property name="minimumSize">
+                <size>
+                 <width>25</width>
+                 <height>25</height>
+                </size>
+               </property>
+               <property name="maximumSize">
+                <size>
+                 <width>25</width>
+                 <height>25</height>
+                </size>
+               </property>
+               <property name="toolTip">
+                <string>Reload current job
+
+Ctrl + R</string>
+               </property>
+               <property name="styleSheet">
+                <string notr="true">
+QPushButton#pushButton_reload_job:flat {
+    background-color: transparent;
+    border: 1px solid transparent;
+    border-radius: 12px;
+    padding: 5px 10px;
+    color: #EAE9FC;
+}
+
+QPushButton#pushButton_reload_job:flat:pressed {
+    background-color: #3daee9;
+    color: #171717;
+}
+
+QPushButton#pushButton_reload_job:flat:hover {
+    background-color: rgba(76, 76, 76, 0.6);
+}</string>
+               </property>
+               <property name="text">
+                <string/>
+               </property>
+               <property name="icon">
+                <iconset>
+                 <normalon>svg/browser_refresh.svg</normalon>
+                </iconset>
+               </property>
+               <property name="shortcut">
+                <string>Ctrl+R</string>
+               </property>
+               <property name="flat">
+                <bool>true</bool>
+               </property>
+              </widget>
+             </item>
+            </layout>
            </item>
            <item>
             <widget class="QTextEdit" name="textEdit_ship_to">

@@ -133,6 +133,7 @@ class LaserCutPartsTable:
             "Material",
             "Thickness",
             "Qty",
+            "Process",
             "Shelf #",
             "Unit Price",
             "Price",
@@ -158,7 +159,7 @@ class LaserCutPartsTable:
         return "".join(
             f"""
                 <div class="popup" id="{laser_cut_part.name}">
-                    <div class="input-container-horizontal" style="padding: 5px; align-items: left; display: flex;">
+                    <div class="input-container-horizontal" style="padding: 5px; align-items: left; display: inline;">
                         <img src="{self.server_directory}/{laser_cut_part.image_index}" style="height: 100px; width: 100px;" alt="Laser Cut Part Image">
                         <h1 style="margin-left: 20px;">{laser_cut_part.name}</h1>
                         {self.generate_laser_cut_part_data(laser_cut_part)}
@@ -201,6 +202,7 @@ class LaserCutPartsTable:
             <td class="ui-table-cell-visible">{laser_cut_part.material}</td>
             <td class="ui-table-cell-visible">{laser_cut_part.gauge}</td>
             <td class="ui-table-cell-visible">{laser_cut_part.quantity}</td>
+            <td class="ui-table-cell-{'visible' if self.title == "Workorder" else 'hidden'}">{laser_cut_part.flow_tag.get_name()}</td>
             <td class="ui-table-cell-{'visible' if self.title == "Workorder" else 'hidden'}">{laser_cut_part.shelf_number}</td>
             <td class="ui-table-cell-{'visible' if self.title == "Quote" else 'hidden'}">${laser_cut_part.price:,.2f}</td>
             <td class="ui-table-cell-{'visible' if self.title == "Quote" else 'hidden'}">${(laser_cut_part.price * laser_cut_part.quantity):,.2f}</td>
@@ -211,6 +213,7 @@ class LaserCutPartsTable:
             <td></td>
             <td></td>
             <td></td>
+            <td class="ui-table-cell-{'visible' if self.title == "Workorder" else 'hidden'}"></td>
             <td class="ui-table-cell-{'visible' if self.title == "Workorder" else 'hidden'}"></td>
             <td class="ui-table-cell-{'visible' if self.title == "Quote" else 'hidden'}"></td>
             <td class="ui-table-cell-{'visible' if self.title == "Quote" else 'hidden'}">Total: ${self.get_total_cost():,.2f}</td>
@@ -243,7 +246,7 @@ class ComponentsTable:
         return "".join(
             f"""
                 <div class="popup" id="{component.name}">
-                    <div class="input-container-horizontal" style="padding: 5px; align-items: left; display: flex;">
+                    <div class="input-container-horizontal" style="padding: 5px; align-items: left; display: inline;">
                         <img src="{self.server_directory}/{component.image_path}" style="height: 100px; width: auto;" alt="Component Image">
                         <h1 style="margin-left: 20px;">{component.part_name}</h1>
                         {self.generate_components_data(component)}

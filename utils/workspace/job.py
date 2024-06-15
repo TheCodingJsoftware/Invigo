@@ -25,6 +25,7 @@ class Job:
         self.ship_to: str = ""
         self.date_shipped: str = ""
         self.date_expected: str = ""
+        self.color: str = "#3daee9"  # default
         self.groups: list[Group] = []
         from utils.workspace.job_manager import JobManager
 
@@ -41,6 +42,16 @@ class Job:
         self.downloaded_from_server = False
 
         self.load_data(data)
+
+    def get_color(self):
+        if self.job_status == JobStatus.PLANNING:
+            return "#3daee9"
+        elif self.job_status == JobStatus.QUOTING | JobStatus.QUOTED:
+            return "#eabf3e"
+        elif self.job_status == JobStatus.WORKSPACE:
+            return "#69ea3e"
+        elif self.job_status == JobStatus.ARCHIVE:
+            return "#943eea"
 
     def changes_made(self):
         self.unsaved_changes = True
@@ -81,6 +92,7 @@ class Job:
         self.ship_to = job_data.get("ship_to", "")
         self.date_shipped = job_data.get("date_shipped", "")
         self.date_expected = job_data.get("date_expected", "")
+        self.color = job_data.get("color", "#3daee9")
         self.job_status = JobStatus(job_data.get("type", 0))
 
         groups_data = data.get("groups", {})
@@ -99,6 +111,7 @@ class Job:
                 "ship_to": self.ship_to,
                 "date_shipped": self.date_shipped,
                 "date_expected": self.date_expected,
+                "color": self.get_color(),
             },
             "groups": {group.name: group.to_dict() for group in self.groups},
         }

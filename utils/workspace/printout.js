@@ -1,55 +1,3 @@
-
-window.addEventListener("beforeprint", function () {
-    adjustTableOffsets();
-});
-
-window.addEventListener("afterprint", function () {
-    // Code to reset table offsets after print preview
-    resetTableOffsets();
-});
-function adjustTableOffsets() {
-    var headerRows = document.querySelectorAll("thead tr");
-    var checkbox = document.getElementById("showTotalCost");
-    var checkboxLabel = document.getElementById("showTotalCostLabel");
-    var checkboxCoverPageLabel = document.getElementById("showCoverPageLabel");
-    var checkboxCoverPage = document.getElementById("showCoverPage");
-    var total_cost_div = document.getElementById("total-cost-div");
-    var cover_page_div = document.getElementById("cover-page");
-    if (checkbox.checked) {
-        total_cost_div.style.display = "block";
-    } else {
-        total_cost_div.style.display = "none";
-    }
-    if (checkboxCoverPage.checked) {
-        cover_page_div.style.display = "block";
-    } else {
-        cover_page_div.style.display = "none";
-    }
-    checkbox.style.display = "none";
-    checkboxLabel.style.display = "none";
-    checkboxCoverPageLabel.style.display = "none";
-    for (var i = 0; i < headerRows.length; i++) {
-        headerRows[i].style.height = "50px";
-    }
-    const detailsElement = document.getElementById("sheets-toggle");
-    if (detailsElement.open) {
-        detailsElement.style.display = "block";
-    } else {
-        detailsElement.style.display = "none";
-    }
-}
-function resetTableOffsets() {
-    const detailsElement = document.getElementById("sheets-toggle");
-    detailsElement.style.display = "block";
-    var checkboxLabel = document.getElementById("showTotalCostLabel");
-    var checkboxCoverPageLabel = document.getElementById("showCoverPageLabel");
-    var total_cost_div = document.getElementById("total-cost-div");
-    var cover_page_div = document.getElementById("cover-page");
-    total_cost_div.style.display = "block";
-    cover_page_div.style.display = "block";
-    checkboxLabel.style.display = "block";
-    checkboxCoverPageLabel.style.display = "block";
-}
 function clearImageBorders() {
     window.location.href = "";
     const allImages = document.querySelectorAll('.popup-trigger img');
@@ -73,3 +21,106 @@ function highlightImage(imageName, imageId) {
     image.style.borderRadius = '5px';
     image.style.filter = 'sepia(1)';
 }
+
+$(document).ready(function () {
+    $('details.assembly_details').each(function () {
+        const summary = $(this).children('summary');
+        const summaryText = summary.text();
+        const span = $('<span>').text(summaryText);
+        summary.text('').append(span);
+
+        // Initially hide the summary text if the details element is open
+        if (this.open) {
+            span.hide();
+        }
+
+        $(this).on('toggle', function () {
+            if (this.open) {
+                span.hide();
+            } else {
+                span.show();
+            }
+        });
+    });
+});
+
+class Accordion {
+    constructor(el) {
+        this.el = el;
+        this.summary = el.querySelector('summary');
+        this.content = el.querySelector('.detail_contents');
+
+        this.animation = null;
+        this.isClosing = false;
+        this.isExpanding = false;
+        this.summary.addEventListener('click', (e) => this.onClick(e));
+    }
+
+    onClick(e) {
+        e.preventDefault();
+        this.el.style.overflow = 'hidden';
+        if (this.isClosing || !this.el.open) {
+            this.open();
+        } else if (this.isExpanding || this.el.open) {
+            this.shrink();
+        }
+    }
+
+    shrink() {
+        this.isClosing = true;
+
+        const startHeight = `${this.el.offsetHeight}px`;
+        const endHeight = `${this.summary.offsetHeight + 15}px`;
+
+        if (this.animation) {
+            this.animation.cancel();
+        }
+
+        this.animation = this.el.animate({
+            height: [startHeight, endHeight]
+        }, {
+            duration: 400,
+            easing: 'ease-out'
+        });
+
+        this.animation.onfinish = () => this.onAnimationFinish(false);
+        this.animation.oncancel = () => this.isClosing = false;
+    }
+
+    open() {
+        this.el.style.height = `${this.el.offsetHeight + 10}px`;
+        this.el.open = true;
+        window.requestAnimationFrame(() => this.expand());
+    }
+
+    expand() {
+        this.isExpanding = true;
+        const startHeight = `${this.el.offsetHeight}px`;
+        const endHeight = `${this.summary.offsetHeight + this.content.offsetHeight + 10}px`;
+
+        if (this.animation) {
+            this.animation.cancel();
+        }
+
+        this.animation = this.el.animate({
+            height: [startHeight, endHeight]
+        }, {
+            duration: 400,
+            easing: 'ease-out'
+        });
+        this.animation.onfinish = () => this.onAnimationFinish(true);
+        this.animation.oncancel = () => this.isExpanding = false;
+    }
+
+    onAnimationFinish(open) {
+        this.el.open = open;
+        this.animation = null;
+        this.isClosing = false;
+        this.isExpanding = false;
+        this.el.style.height = this.el.style.overflow = '';
+    }
+}
+
+document.querySelectorAll('details').forEach((el) => {
+    new Accordion(el);
+});

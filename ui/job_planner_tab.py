@@ -26,8 +26,9 @@ from utils.workspace.job_manager import JobManager
 
 
 class JobPlannerTab(QWidget):
-    save_job = pyqtSignal(Job)
-    save_job_as = pyqtSignal(Job)
+    savJob = pyqtSignal(Job)
+    saveJobAs = pyqtSignal(Job)
+    reloadJob = pyqtSignal(Job)
 
     def __init__(self, parent) -> None:
         super(JobPlannerTab, self).__init__(parent)
@@ -70,12 +71,14 @@ class JobPlannerTab(QWidget):
     def add_job(self, new_job: Job = None) -> JobWidget:
         if not new_job:
             job = Job(f"Enter Job Name{len(self.jobs)}", {}, self.job_manager)
+            job.color = colors.get_random_color()
             job.job_status = JobStatus.PLANNING
             self.job_manager.add_job(job)
         else:
             job = new_job
 
         job_widget = JobWidget(job, self)
+        job_widget.reloadJob.connect(self.reloadJob.emit)
 
         self.job_tab.addTab(job_widget, job.name)
 
@@ -85,7 +88,27 @@ class JobPlannerTab(QWidget):
             self.job_tab.setTabsClosable(False)
         else:
             self.job_tab.setTabsClosable(True)
+        self.job_tab.setCurrentIndex(self.job_tab.count()-1)
+        self.tab_changed()
         return job_widget
+
+    def reload_job(self, job: Job):
+        current_index = self.job_tab.currentIndex()
+        if current_index != -1:
+            old_widget = self.job_tab.widget(current_index)
+            new_widget = JobWidget(job, self)
+            new_widget.reloadJob.connect(self.reloadJob.emit)
+
+            for group in job.groups:
+                new_widget.load_group(group)
+
+            self.job_tab.removeTab(current_index)
+            self.job_tab.insertTab(current_index, new_widget, job.name)
+            self.job_tab.setCurrentIndex(current_index)
+
+            self.jobs[current_index] = new_widget
+
+            old_widget.deleteLater()
 
     def load_job(self, job: Job):
         job_widget = self.add_job(job)
@@ -104,7 +127,7 @@ class JobPlannerTab(QWidget):
         if not self.get_active_job():
             return
         self.current_job = self.get_active_job()
-        self.job_changed(self.current_job)
+        self.update_job_save_status(self.current_job)
 
     def get_active_tab(self) -> str:
         return self.job_tab.tabText(self.job_tab.currentIndex())
@@ -114,6 +137,13 @@ class JobPlannerTab(QWidget):
             (job_widget.job for job_widget in self.jobs if job_widget.job.name == self.get_active_tab()),
             None,
         )
+
+    def get_active_job_widget(self) -> JobWidget:
+        active_job = self.jobs[self.get_tab_index(self.current_job)]
+        for tab_index in range(self.job_tab.count()):
+            if self.job_tab.widget(tab_index) == active_job:
+                return self.job_tab.widget(tab_index)
+        return None
 
     def rename_tab(self, tab_index: int):
         active_tab = self.get_active_tab()
@@ -129,6 +159,9 @@ class JobPlannerTab(QWidget):
         self.job_manager.add_job(new_job)
         self.load_job(new_job)
 
+    def close_current_tab(self):
+        self.job_tab.removeTab(self.job_tab.currentIndex())
+
     def close_tab(self, tab_index: int):
         job_to_delete = self.jobs[tab_index]
         self.jobs.remove(job_to_delete)
@@ -143,12 +176,12 @@ class JobPlannerTab(QWidget):
 
     def save_current_job(self):
         self.current_job.unsaved_changes = False
-        self.save_job.emit(self.current_job)
+        self.savJob.emit(self.current_job)
         self.update_job_save_status(self.current_job)
 
     def save_current_job_as(self):
         self.current_job.unsaved_changes = False
-        self.save_job_as.emit(self.current_job)
+        self.saveJobAs.emit(self.current_job)
         self.update_job_save_status(self.current_job)
 
     def job_changed(self, job: Job):
