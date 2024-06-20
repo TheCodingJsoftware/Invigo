@@ -3456,7 +3456,7 @@ class WorkspaceTab(QWidget):
     # USER
     def download_workspace_file(self, file_to_download: str, open_when_done: bool = False) -> None:
         self.status_button.setText(f'Downloading - {datetime.now().strftime("%r")}', "yellow")
-        workspace_download_files = WorkspaceDownloadFile(file_to_download, open_when_done)
+        workspace_download_files = WorkspaceDownloadFile([file_to_download], open_when_done)
         self.threads.append(workspace_download_files)
         workspace_download_files.signal.connect(self.download_workspace_file_response)
         workspace_download_files.start()

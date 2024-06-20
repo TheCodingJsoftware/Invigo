@@ -94,8 +94,8 @@ __author__: str = "Jared Gross"
 __copyright__: str = "Copyright 2022-2024, TheCodingJ's"
 __credits__: list[str] = ["Jared Gross"]
 __license__: str = "MIT"
-__version__: str = "v3.0.22"
-__updated__: str = "2024-06-15 13:20:08"
+__version__: str = "v3.0.23"
+__updated__: str = "2024-06-20 15:30:15"
 __maintainer__: str = "Jared Gross"
 __email__: str = "jared@pinelandfarms.ca"
 __status__: str = "Production"
@@ -441,6 +441,7 @@ class MainWindow(QMainWindow):
         self.sheets_inventory.load_data()
         self.laser_cut_inventory.load_data()
         self.sheet_settings.load_data()
+        self.workspace_settings.load_data()
 
         self.clear_layout(self.sheet_settings_layout)
         self.sheet_settings_layout.addWidget(QLabel("Loading...", self))
@@ -786,7 +787,6 @@ class MainWindow(QMainWindow):
                 "components_inventory.json",
                 "laser_cut_inventory.json",
             ],
-            False,
         )
 
     def save_job_as(self, job: Job):  # Todo
@@ -800,7 +800,6 @@ class MainWindow(QMainWindow):
                 "components_inventory.json",
                 "laser_cut_inventory.json",
             ],
-            False,
         )
 
     def save_quote(self, quote: Quote):
@@ -929,13 +928,13 @@ class MainWindow(QMainWindow):
         job_sorter_menu.show()
 
     def open_tag_editor(self) -> None:
+        self.workspace_settings.load_data()
         tag_editor = EditWorkspaceSettings(self.workspace_settings, self)
 
         def upload_workspace_settings():
             self.status_button.setText("Synching", "lime")
             self.upload_file(
                 ["workspace_settings.json"],
-                False,
             )
 
         if tag_editor.exec():
@@ -1354,7 +1353,6 @@ class MainWindow(QMainWindow):
                 [
                     "components_inventory.json",
                 ],
-                False,
             )
         if self.tabWidget.tabText(self.tabWidget.currentIndex()) in [
             "Laser Cut Inventory",
@@ -1364,7 +1362,6 @@ class MainWindow(QMainWindow):
                 [
                     "laser_cut_inventory.json",
                 ],
-                False,
             )
         if self.tabWidget.tabText(self.tabWidget.currentIndex()) in [
             "Sheets in Inventory",
@@ -1374,7 +1371,6 @@ class MainWindow(QMainWindow):
                 [
                     "sheets_inventory.json",
                 ],
-                False,
             )
         if self.tabWidget.tabText(self.tabWidget.currentIndex()) == "Sheet Settings":
             self.upload_file(
@@ -1397,7 +1393,6 @@ class MainWindow(QMainWindow):
                         "user_workspace.json",
                         "history_workspace.json",
                     ],
-                    False,
                 )
 
     def add_laser_cut_part_to_inventory(self, laser_cut_part_to_add: LaserCutPart, quote_name: str):
@@ -1509,6 +1504,8 @@ class MainWindow(QMainWindow):
             self.downloading_changes = True
             if response[0] == "reload_saved_quotes":
                 self.load_saved_quoted_thread()
+            elif response[0] == "reload_saved_jobs":
+                self.load_jobs_thread()
             else:
                 self.download_files(response)
             self.status_button.setText("Synched", "lime")
@@ -1516,54 +1513,8 @@ class MainWindow(QMainWindow):
             self.status_button.setText(f"Syncing Error: {response}", "red")
 
     def data_received(self, data) -> None:
-        if data == "Successfully uploaded":
-            self.status_button.setText("Synched", "lime")
-        if self.downloading_changes and data == "Successfully downloaded":
-            self.sheet_settings.load_data()
-            if self.tabWidget.tabText(self.tabWidget.currentIndex()) in [
-                "Laser Cut Inventory",
-                "Sheets in Inventory",
-            ]:
-                self.components_inventory.load_data()
-                self.sheets_inventory.load_data()
-                self.laser_cut_inventory.load_data()
-                if self.tabWidget.tabText(self.tabWidget.currentIndex()) == "Laser Cut Inventory":
-                    self.laser_cut_tab_widget.load_categories()
-                    self.laser_cut_tab_widget.restore_last_selected_tab()
-                elif self.tabWidget.tabText(self.tabWidget.currentIndex()) == "Sheets in Inventory":
-                    self.sheets_inventory_tab_widget.load_categories()
-                    self.sheets_inventory_tab_widget.restore_last_selected_tab()
-            if self.tabWidget.tabText(self.tabWidget.currentIndex()) == "Quote Generator":
-                self.components_inventory.load_data()
-                self.sheets_inventory.load_data()
-                self.laser_cut_inventory.load_data()
-                self.load_saved_quoted_thread()
-                self.load_cuttoff_drop_down()
+        print(data)
 
-        if not self.finished_downloading_all_files:
-            self.files_downloaded_count += 1
-            if "404" in str(data):
-                self.status_button.setText(f"{data} - {self.files_downloaded_count}/8", "yellow")
-            elif "200" in str(data):
-                self.status_button.setText(f"{data} - {self.files_downloaded_count}/8", "lime")
-        if self.files_downloaded_count >= 8 and not self.finished_downloading_all_files:
-            self.finished_downloading_all_files = True
-            self.tool_box_menu_changed()
-            self.status_button.setText("Downloaded all files", "lime")
-            self.centralwidget.setEnabled(True)
-            # ON STARTUP
-            self.downloading_changes = False
-            self.start_changes_thread()
-            self.start_exchange_rate_thread()
-            if self.settings_file.get_value("geometry")["x"] == 0 and self.settings_file.get_value("geometry")["y"] == 0:
-                self.showMaximized()
-            else:
-                self.setGeometry(
-                    self.settings_file.get_value("geometry")["x"],
-                    self.settings_file.get_value("geometry")["y"] + 30,
-                    self.settings_file.get_value("geometry")["width"],
-                    self.settings_file.get_value("geometry")["height"] - 7,
-                )
         if "timed out" in str(data).lower() or "fail" in str(data).lower():
             self.status_button.setText("Server error", "red")
             self.centralwidget.setEnabled(False)
@@ -1594,23 +1545,65 @@ class MainWindow(QMainWindow):
 
     def send_sheet_report(self) -> None:
         thread = SendReportThread()
-        self.start_thread(thread)
-
-    def upload_file(self, files_to_upload: list[str], get_response: bool = True) -> None:
-        upload_thread = UploadThread(files_to_upload)
-        # if get_response:
-        # # QApplication.setOverrideCursor(Qt.CursorShape.BusyCursor)
-        self.start_thread(upload_thread)
-
-    def download_files(self, files_to_download: list[str], get_response: bool = True) -> None:
-        download_thread = DownloadThread(files_to_download)
-        # # QApplication.setOverrideCursor(Qt.CursorShape.BusyCursor)
-        self.start_thread(download_thread)
-
-    def start_thread(self, thread: QThread) -> None:
-        thread.signal.connect(self.data_received)
         self.threads.append(thread)
         thread.start()
+
+    def upload_file(self, files_to_upload: list[str]) -> None:
+        upload_thread = UploadThread(files_to_upload)
+        self.threads.append(upload_thread)
+        upload_thread.signal.connect(self.upload_thread_response)
+        upload_thread.start()
+
+    def upload_thread_response(self, response: dict, files_uploaded: list[str]):
+        print(response, files_uploaded)
+        if response['status'] == "success":
+            self.status_button.setText("Synched", "lime")
+
+    def download_files(self, files_to_download: list[str]) -> None:
+        download_thread = DownloadThread(files_to_download)
+        self.threads.append(download_thread)
+        download_thread.signal.connect(self.download_thread_response)
+        download_thread.start()
+
+    def download_thread_response(self, response: dict, files_uploaded: list[str]):
+        print(response, files_uploaded)
+        if not self.finished_downloading_all_files:
+            self.finished_downloading_all_files = True
+            self.tool_box_menu_changed()
+            self.status_button.setText("Downloaded all files", "lime")
+            self.centralwidget.setEnabled(True)
+            # ON STARTUP
+            self.downloading_changes = False
+            self.start_changes_thread()
+            self.start_exchange_rate_thread()
+            self.showMaximized()
+        else:
+            if self.downloading_changes and response["status"] == "success":
+                if "sheet_settings.json" in response["successful_files"]:
+                    self.sheet_settings.load_data()
+                if "workspace_settings.json" in response["successful_files"]:
+                    self.workspace_settings.load_data()
+                    self.job_planner_widget.workspace_settings_changed()
+
+                if "components_inventory.json" in response["successful_files"]:
+                    self.components_inventory.load_data()
+                if "sheets_inventory.json" in response["successful_files"]:
+                    self.sheets_inventory.load_data()
+                if "laser_cut_inventory.json" in response["successful_files"]:
+                    self.laser_cut_inventory.load_data()
+
+                if self.tabWidget.tabText(self.tabWidget.currentIndex()) == "Laser Cut Inventory":
+                    self.laser_cut_tab_widget.load_categories()
+                    self.laser_cut_tab_widget.restore_last_selected_tab()
+                elif self.tabWidget.tabText(self.tabWidget.currentIndex()) == "Sheets in Inventory":
+                    self.sheets_inventory_tab_widget.load_categories()
+                    self.sheets_inventory_tab_widget.restore_last_selected_tab()
+                elif self.tabWidget.tabText(self.tabWidget.currentIndex()) == "Components":
+                    self.components_tab_widget.load_categories()
+                    self.sheets_inventory_tab_widget.restore_last_selected_tab()
+                elif self.tabWidget.tabText(self.tabWidget.currentIndex()) == "Quote Generator":
+                    self.load_saved_quoted_thread()
+                    self.load_cuttoff_drop_down()
 
     def download_all_files(self) -> None:
         self.download_files(
@@ -1619,12 +1612,8 @@ class MainWindow(QMainWindow):
                 "sheets_inventory.json",
                 "components_inventory.json",
                 "workspace_settings.json",
-                "admin_workspace.json",
-                "user_workspace.json",
-                "history_workspace.json",
                 "sheet_settings.json",
-            ],
-            False,
+            ]
         )
 
     def start_process_nest_thread(self, nests: list[str]) -> None:

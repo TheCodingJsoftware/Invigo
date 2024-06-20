@@ -683,7 +683,7 @@ class LaserCutPartFileDropWidget(QWidget):
         self.accept_style_sheet = "background-color: rgba(70,210,110, 0.6); border-radius: 5px; border: 1px solid rgba(70,210,110, 0.6);"
         self.fail_style_sheet = "background-color: rgba(210,70,60, 0.6); border-radius: 5px; border: 1px solid rgba(210,70,60, 0.6);"
 
-        self.setMaximumWidth(1000)
+        self.setMaximumWidth(100)
         layout = QVBoxLayout(self)
         layout.setAlignment(Qt.AlignmentFlag.AlignCenter)
         layout.setContentsMargins(2, 2, 2, 2)
@@ -692,7 +692,7 @@ class LaserCutPartFileDropWidget(QWidget):
 
         self.label = QLabel("Drag Here", self)
         self.label.setAlignment(Qt.AlignmentFlag.AlignCenter)
-        self.label.setMaximumWidth(1000)
+        self.label.setMaximumWidth(100)
         self.label.setMinimumHeight(65)
         self.label.setMinimumWidth(80)
         self.label.setStyleSheet(self.default_style_sheet)
@@ -771,7 +771,7 @@ class AssemblyFileDropWidget(QWidget):
         self.accept_style_sheet = "background-color: rgba(70,210,110, 0.6); border-radius: 5px; border: 1px solid rgba(70,210,110, 0.6);"
         self.fail_style_sheet = "background-color: rgba(210,70,60, 0.6); border-radius: 5px; border: 1px solid rgba(210,70,60, 0.6);"
 
-        self.setMaximumWidth(1000)
+        self.setMaximumWidth(100)
         layout = QVBoxLayout(self)
         layout.setAlignment(Qt.AlignmentFlag.AlignCenter)
         layout.setContentsMargins(2, 2, 2, 2)
@@ -780,7 +780,7 @@ class AssemblyFileDropWidget(QWidget):
 
         self.label = QLabel("Drag Here", self)
         self.label.setAlignment(Qt.AlignmentFlag.AlignCenter)
-        self.label.setMaximumWidth(1000)
+        self.label.setMaximumWidth(100)
         self.label.setMinimumHeight(65)
         self.label.setMinimumWidth(80)
         self.label.setStyleSheet(self.default_style_sheet)
@@ -929,7 +929,7 @@ border-top-left-radius: 0px;
         self.image_layout.addWidget(self.assembly_image)
 
         self.comboBox_assembly_flow_tag = self.findChild(QComboBox, "comboBox_assembly_flow_tag")
-        self.comboBox_assembly_flow_tag.addItems([f"{flow_tag}" for flow_tag in list(self.workspace_settings.get_all_flow_tags().values())])
+        self.comboBox_assembly_flow_tag.addItems([f"{flow_tag}" for flow_tag in list(self.workspace_settings.get_all_assembly_flow_tags().values())])
         self.comboBox_assembly_flow_tag.setCurrentText(str(self.assembly.flow_tag))
         self.comboBox_assembly_flow_tag.wheelEvent = lambda event: None
         self.comboBox_assembly_flow_tag.currentTextChanged.connect(self.assembly_flow_tag_changed)
@@ -1046,14 +1046,14 @@ QPushButton:checked:pressed#assembly_button_drop_menu {
         assembly_selected_flow_tag = self.comboBox_assembly_flow_tag.currentText()
         self.comboBox_assembly_flow_tag.blockSignals(True)
         self.comboBox_assembly_flow_tag.clear()
-        self.comboBox_assembly_flow_tag.addItems([f"{flow_tag}" for flow_tag in list(self.workspace_settings.get_all_flow_tags().values())])
+        self.comboBox_assembly_flow_tag.addItems([f"{flow_tag}" for flow_tag in list(self.workspace_settings.get_all_assembly_flow_tags().values())])
         self.comboBox_assembly_flow_tag.setCurrentText(assembly_selected_flow_tag)
         self.comboBox_assembly_flow_tag.blockSignals(False)
         for _, table_items in self.laser_cut_part_table_items.items():
             selected_flow_tag = table_items["flow_tag"].currentText()
             table_items["flow_tag"].blockSignals(True)
             table_items["flow_tag"].clear()
-            table_items["flow_tag"].addItems([f"{flow_tag}" for flow_tag in list(self.workspace_settings.get_all_flow_tags().values())])
+            table_items["flow_tag"].addItems([f"{flow_tag}" for flow_tag in list(self.workspace_settings.get_all_laser_cut_part_flow_tags().values())])
             table_items["flow_tag"].setCurrentText(selected_flow_tag)
             table_items["flow_tag"].blockSignals(False)
         for sub_assembly_widget in self.sub_assembly_widgets:
@@ -1142,7 +1142,7 @@ QPushButton:checked:pressed#assembly_button_drop_menu {
         return main_widget, files_layout
 
     def assembly_file_clicked(self, file_path: str):
-        self.download_file_thread = WorkspaceDownloadFile(file_path, True)
+        self.download_file_thread = WorkspaceDownloadFile([file_path], True)
         self.download_file_thread.signal.connect(self.file_downloaded)
         self.download_file_thread.start()
         self.download_file_thread.wait()
@@ -1368,7 +1368,7 @@ QPushButton:checked:pressed#assembly_button_drop_menu {
             scroll_area = QScrollArea(self.laser_cut_parts_table)
             scroll_area.setWidget(files_widget)
             scroll_area.setWidgetResizable(True)
-            scroll_area.setFixedWidth(250)
+            scroll_area.setFixedWidth(100)
             scroll_area.setVerticalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAlwaysOff)
             # scroll_area.setStyleSheet("QWidget#scrollAreaWidgetContents{background-color: rgba(20, 20, 20, 0.5);} QAbstractScrollArea{background-color: rgba(20, 20, 20, 0.5);}")
 
@@ -1465,7 +1465,7 @@ QPushButton:checked:pressed#assembly_button_drop_menu {
         flow_tag_combobox = QComboBox(self)
         flow_tag_combobox.setStyleSheet("border-radius: 0px;")
         flow_tag_combobox.wheelEvent = lambda event: None
-        flow_tag_combobox.addItems([str(flow_tag) for flow_tag in list(self.workspace_settings.get_all_flow_tags().values())])
+        flow_tag_combobox.addItems([str(flow_tag) for flow_tag in list(self.workspace_settings.get_all_laser_cut_part_flow_tags().values())])
         flow_tag_combobox.setCurrentText(str(laser_cut_part.flow_tag))
         flow_tag_combobox.currentTextChanged.connect(partial(self.laser_cut_part_flow_tag_changed, laser_cut_part, flow_tag_combobox))
         self.laser_cut_parts_table.setCellWidget(current_row, self.laser_cut_parts_table.flow_tag_column, flow_tag_combobox)
@@ -1536,7 +1536,7 @@ QPushButton:checked:pressed#assembly_button_drop_menu {
         return list(files)
 
     def laser_cut_part_file_clicked(self, laser_cut_part: LaserCutPart, file_path: str):
-        self.download_file_thread = WorkspaceDownloadFile(file_path, True)
+        self.download_file_thread = WorkspaceDownloadFile([file_path], True)
         self.download_file_thread.signal.connect(self.file_downloaded)
         self.download_file_thread.start()
         self.download_file_thread.wait()
@@ -1578,8 +1578,8 @@ QPushButton:checked:pressed#assembly_button_drop_menu {
             msg.show()
             return
         if open_when_done:
-            local_path = f"data/workspace/{file_ext}/{file_name}"
             if file_ext in {"PNG", "JPG", "JPEG"}:
+                local_path = f"data/workspace/{file_ext}/{file_name}"
                 self.open_image(local_path, file_name)
             # elif file_ext == "PDF":
                 # self.open_pdf(laser_cut_part, local_path)

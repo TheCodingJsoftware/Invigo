@@ -11,7 +11,7 @@ from PyQt6.QtWidgets import QAbstractItemView, QApplication, QCheckBox, QComboBo
 
 from ui.add_component_dialog import AddComponentDialog
 from ui.assembly_widget import AssemblyWidget
-from ui.custom_widgets import AssemblyMultiToolBox, ClickableLabel, CustomTableWidget, DeletePushButton, MachineCutTimeSpinBox, MultiToolBox, QLineEdit, RecutButton
+from ui.custom_widgets import AssemblyMultiToolBox, QScrollArea, ClickableLabel, CustomTableWidget, DeletePushButton, MachineCutTimeSpinBox, MultiToolBox, QLineEdit, RecutButton
 from ui.image_viewer import QImageViewer
 from utils.calulations import calculate_overhead
 from utils.components_inventory.component import Component

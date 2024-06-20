@@ -1,14 +1,16 @@
 from typing import Iterator
 
-from utils.workspace.flow_tag import FlowTag
+from utils.workspace.flow_tag import FlowTag, Group
 
 
 class FlowTags:
     def __init__(self, name: str) -> None:
         self.name = name
+        self.group: Group = Group.LASER_CUT_PART
         self.flow_tags: list[FlowTag] = []
 
     def add_flow_tag(self, flow_tag: FlowTag):
+        flow_tag.group = self.group
         self.flow_tags.append(flow_tag)
 
     def remove_flow_tag(self, flow_tag: FlowTag):

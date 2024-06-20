@@ -5,10 +5,10 @@ from functools import partial
 from PyQt6 import uic
 from PyQt6.QtCore import Qt, pyqtSignal
 from PyQt6.QtGui import QAction, QCursor, QIcon
-from PyQt6.QtWidgets import QAbstractItemView, QCheckBox, QComboBox, QDialog, QGroupBox, QHBoxLayout, QInputDialog, QLabel, QLineEdit, QListWidget, QMenu, QMessageBox, QPlainTextEdit, QPushButton, QTableWidget, QTableWidgetItem, QTextEdit, QWidget
+from PyQt6.QtWidgets import QAbstractItemView, QCheckBox, QComboBox, QDialog, QGroupBox, QHBoxLayout, QInputDialog, QLabel, QLineEdit, QListWidget, QMenu, QMessageBox, QPlainTextEdit, QPushButton, QTabWidget, QTableWidget, QTableWidgetItem, QTextEdit, QWidget
 
 from ui.custom_widgets import AssemblyMultiToolBox, DeletePushButton
-from utils.workspace.flow_tag import FlowTag
+from utils.workspace.flow_tag import FlowTag, Group
 from utils.workspace.flow_tags import FlowTags
 from utils.workspace.status import Status
 from utils.workspace.tag import Tag
@@ -262,7 +262,15 @@ class EditWorkspaceSettings(QDialog):
 
         self.workspace_settings = workspace_settings
 
-        self.groups_multi_tool_box = AssemblyMultiToolBox(self)
+        self.assembly_groups_multi_tool_box = AssemblyMultiToolBox(self)
+        self.laser_cut_parts_groups_multi_tool_box = AssemblyMultiToolBox(self)
+        self.components_groups_multi_tool_box = AssemblyMultiToolBox(self)
+
+        self.actve_groups_multi_tool_box: AssemblyMultiToolBox = self.laser_cut_parts_groups_multi_tool_box
+
+        self.tabWidget = self.findChild(QTabWidget, "tabWidget")
+        self.tabWidget.currentChanged.connect(self.tab_changed)
+
         self.flow_tag_tables: dict[FlowTags, FlowTagsTableWidget] = {}
 
         self.listWidget_select_tag = self.findChild(QListWidget, "listWidget_select_tag")
@@ -295,7 +303,9 @@ class EditWorkspaceSettings(QDialog):
         self.pushButton_add_tag.clicked.connect(self.add_tag)
         self.pushButton_delete_tag.clicked.connect(self.delete_tag)
 
-        self.pushButton_create_new_group.clicked.connect(self.create_group)
+        self.pushButton_create_new_assembly_group.clicked.connect(self.create_group)
+        self.pushButton_create_new_laser_cut_part_group.clicked.connect(self.create_group)
+        self.pushButton_create_new_components_group.clicked.connect(self.create_group)
 
         self.pushButton_save.clicked.connect(self.save)
         self.pushButton_save_and_close.clicked.connect(self.save_and_close)
@@ -308,21 +318,52 @@ class EditWorkspaceSettings(QDialog):
         self.load_tags()
         self.showMaximized()
 
+    def tab_changed(self):
+        if self.tabWidget.currentIndex() == 0:
+            self.actve_groups_multi_tool_box = self.assembly_groups_multi_tool_box
+        elif self.tabWidget.currentIndex() == 1:
+            self.actve_groups_multi_tool_box = self.laser_cut_parts_groups_multi_tool_box
+        elif self.tabWidget.currentIndex() == 2:
+            self.actve_groups_multi_tool_box = self.components_groups_multi_tool_box
+
     def create_group(self):
         name, ok = QInputDialog.getText(self, "Group name", "Enter a group name:")
         if name and ok:
             flow_tag_group = self.workspace_settings.create_group(name)
+            if self.tabWidget.currentIndex() == 0:
+                flow_tag_group.group = Group.ASSEMBLY
+            elif self.tabWidget.currentIndex() == 1:
+                flow_tag_group.group = Group.LASER_CUT_PART
+            elif self.tabWidget.currentIndex() == 2:
+                flow_tag_group.group = Group.COMPONENT
             self.add_group(flow_tag_group)
 
     def add_group(self, flow_tag_group: FlowTags):
         table_widget = FlowTagsTableWidget(flow_tag_group, self.workspace_settings, self)
-        self.groups_multi_tool_box.addItem(table_widget, flow_tag_group.name)
-        delete_button = self.groups_multi_tool_box.getLastDeleteButton()
-        delete_button.clicked.connect(partial(self.delete_group, flow_tag_group))
-        input_box = self.groups_multi_tool_box.getLastInputBox()
-        input_box.textChanged.connect(partial(self.rename_group, flow_tag_group, input_box))
-        duplicate_button = self.groups_multi_tool_box.getLastDuplicateButton()
-        duplicate_button.clicked.connect(partial(self.duplicate_group, flow_tag_group))
+        if flow_tag_group.group == Group.ASSEMBLY:
+            self.assembly_groups_multi_tool_box.addItem(table_widget, flow_tag_group.name)
+            delete_button = self.assembly_groups_multi_tool_box.getLastDeleteButton()
+            delete_button.clicked.connect(partial(self.delete_group, flow_tag_group))
+            input_box = self.assembly_groups_multi_tool_box.getLastInputBox()
+            input_box.textChanged.connect(partial(self.rename_group, flow_tag_group, input_box))
+            duplicate_button = self.assembly_groups_multi_tool_box.getLastDuplicateButton()
+            duplicate_button.clicked.connect(partial(self.duplicate_group, flow_tag_group))
+        elif flow_tag_group.group == Group.LASER_CUT_PART:
+            self.laser_cut_parts_groups_multi_tool_box.addItem(table_widget, flow_tag_group.name)
+            delete_button = self.laser_cut_parts_groups_multi_tool_box.getLastDeleteButton()
+            delete_button.clicked.connect(partial(self.delete_group, flow_tag_group))
+            input_box = self.laser_cut_parts_groups_multi_tool_box.getLastInputBox()
+            input_box.textChanged.connect(partial(self.rename_group, flow_tag_group, input_box))
+            duplicate_button = self.laser_cut_parts_groups_multi_tool_box.getLastDuplicateButton()
+            duplicate_button.clicked.connect(partial(self.duplicate_group, flow_tag_group))
+        elif flow_tag_group.group == Group.COMPONENT:
+            self.components_groups_multi_tool_box.addItem(table_widget, flow_tag_group.name)
+            delete_button = self.components_groups_multi_tool_box.getLastDeleteButton()
+            delete_button.clicked.connect(partial(self.delete_group, flow_tag_group))
+            input_box = self.components_groups_multi_tool_box.getLastInputBox()
+            input_box.textChanged.connect(partial(self.rename_group, flow_tag_group, input_box))
+            duplicate_button = self.components_groups_multi_tool_box.getLastDuplicateButton()
+            duplicate_button.clicked.connect(partial(self.duplicate_group, flow_tag_group))
         self.flow_tag_tables.update({flow_tag_group: table_widget})
 
     def rename_group(self, flow_tag_group: FlowTags, input_box: QLineEdit):
@@ -330,32 +371,40 @@ class EditWorkspaceSettings(QDialog):
 
     def delete_group(self, flow_tag_group: FlowTags):
         self.clear_layout(self.flow_tag_tables[flow_tag_group])
-        self.groups_multi_tool_box.removeItem(self.groups_multi_tool_box.getWidget(self.workspace_settings.flow_tags_group.index(flow_tag_group)))
+        if flow_tag_group.group == Group.ASSEMBLY:
+            self.assembly_groups_multi_tool_box.removeItem(self.actve_groups_multi_tool_box.getWidget(self.workspace_settings.flow_tags_group.index(flow_tag_group)))
+        elif flow_tag_group.group == Group.LASER_CUT_PART:
+            self.laser_cut_parts_groups_multi_tool_box.removeItem(self.actve_groups_multi_tool_box.getWidget(self.workspace_settings.flow_tags_group.index(flow_tag_group)))
+        elif flow_tag_group.group == Group.COMPONENT:
+            self.components_groups_multi_tool_box.removeItem(self.actve_groups_multi_tool_box.getWidget(self.workspace_settings.flow_tags_group.index(flow_tag_group)))
         self.workspace_settings.delete_group(flow_tag_group)
         del self.flow_tag_tables[flow_tag_group]
 
     def duplicate_group(self, flow_tag_group: FlowTags):
         new_group = self.workspace_settings.create_group(f"{flow_tag_group.name} - Copy")
+        if self.tabWidget.currentIndex() == 0:
+            new_group.group = Group.ASSEMBLY
+        elif self.tabWidget.currentIndex() == 1:
+            new_group.group = Group.LASER_CUT_PART
+        elif self.tabWidget.currentIndex() == 2:
+            new_group.group = Group.COMPONENT
         for flow_tag in flow_tag_group:
             new_group.add_flow_tag(flow_tag)
         self.add_group(new_group)
 
     def load_flow_tag_table_widgets(self):
-        self.clear_layout(self.flow_tag_layout)
-        self.flow_tag_layout.addWidget(self.groups_multi_tool_box)
+        self.clear_layout(self.assemblies_flow_tag_layout)
+        self.clear_layout(self.laser_cut_parts_flow_tag_layout)
+        self.clear_layout(self.components_flow_tag_layout)
+        self.assemblies_flow_tag_layout.addWidget(self.assembly_groups_multi_tool_box)
+        self.laser_cut_parts_flow_tag_layout.addWidget(self.laser_cut_parts_groups_multi_tool_box)
+        self.components_flow_tag_layout.addWidget(self.components_groups_multi_tool_box)
         for flow_tag_group in self.workspace_settings.flow_tags_group:
             self.add_group(flow_tag_group)
 
     def add_tag(self):
         tag_name, ok = QInputDialog.getText(self, "Add tag", "Enter a tag name:")
         if tag_name and ok:
-            if tag_name in ["Staging", "Planning", "Editing"]:
-                msg = QMessageBox(self)
-                msg.setWindowTitle("Invalid name")
-                msg.setIcon(QMessageBox.Icon.Warning)
-                msg.setText(f"{tag_name} cannot be used as a tag.")
-                msg.exec()
-                return
             self.workspace_settings.create_tag(tag_name)
             self.load_tags()
 

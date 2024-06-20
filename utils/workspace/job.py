@@ -104,6 +104,20 @@ class Job:
 
     def to_dict(self) -> dict:
         self.unsaved_changes = False
+
+        for laser_cut_part in self.get_all_laser_cut_parts():
+            if inventory_laser_cut_part := self.laser_cut_inventory.get_laser_cut_part_by_name(laser_cut_part.name):
+                inventory_laser_cut_part.bending_files = laser_cut_part.bending_files
+                inventory_laser_cut_part.welding_files = laser_cut_part.welding_files
+                inventory_laser_cut_part.cnc_milling_files = laser_cut_part.cnc_milling_files
+                inventory_laser_cut_part.flow_tag = laser_cut_part.flow_tag
+        self.laser_cut_inventory.save()
+
+        for component in self.get_all_components():
+            if inventory_component := self.components_inventory.get_component_by_name(component.name):
+                inventory_component.image_path = component.image_path
+        self.components_inventory.save()
+
         return {
             "job_data": {
                 "type": self.job_status.value,

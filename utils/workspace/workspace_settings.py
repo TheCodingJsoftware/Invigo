@@ -2,7 +2,7 @@ import os
 
 import ujson as json
 
-from utils.workspace.flow_tag import FlowTag
+from utils.workspace.flow_tag import FlowTag, Group
 from utils.workspace.flow_tags import FlowTags
 from utils.workspace.status import Status
 from utils.workspace.tag import Tag
@@ -60,11 +60,10 @@ class WorkspaceSettings:
         flow_tag = FlowTag(name, [], self)
         self.add_flow_tag(flow_tags, flow_tag)
 
-    def get_all_flow_tags(self) -> dict[str, FlowTag]:
-        flow_tags: dict[str, FlowTag] = {}
+    def get_all_flow_tags(self) -> list[FlowTag]:
+        flow_tags: list[FlowTag] = []
         for flow_tag_group in self.flow_tags_group:
-            for flow_tag in flow_tag_group:
-                flow_tags |= {flow_tag.get_name(): flow_tag}
+            flow_tags.extend(iter(flow_tag_group))
         return flow_tags
 
     def get_flow_tag_by_name(self, name: str) -> FlowTag:
@@ -73,6 +72,27 @@ class WorkspaceSettings:
                 if str(flow_tag) == name:
                     return flow_tag
         return None
+
+    def get_all_assembly_flow_tags(self) -> dict[str, FlowTag]:
+        return {
+            flow_tag.get_name(): flow_tag
+            for flow_tag in self.get_all_flow_tags()
+            if flow_tag.group == Group.ASSEMBLY
+        }
+
+    def get_all_laser_cut_part_flow_tags(self) -> dict[str, FlowTag]:
+        return {
+            flow_tag.get_name(): flow_tag
+            for flow_tag in self.get_all_flow_tags()
+            if flow_tag.group == Group.LASER_CUT_PART
+        }
+
+    def get_all_component_flow_tags(self) -> dict[str, FlowTag]:
+        return {
+            flow_tag.get_name(): flow_tag
+            for flow_tag in self.get_all_flow_tags()
+            if flow_tag.group == Group.COMPONENT
+        }
 
     def add_flow_tag(self, flow_tags: FlowTags, flow_tag: FlowTag):
         flow_tags.add_flow_tag(flow_tag)
@@ -121,6 +141,7 @@ Tags such as, "Staging", "Editing", and "Planning" cannot be used as flow tags, 
             self.flow_tags_group.append(flow_tag_group)
             for flow_tag_data in flow_tags:
                 flow_tag = FlowTag(flow_tag_data["name"], flow_tag_data, self)
+                flow_tag_group.group = flow_tag.group
                 flow_tag_group.add_flow_tag(flow_tag)
 
     def to_dict(self) -> dict[str, dict[str, dict[str, dict]]]:

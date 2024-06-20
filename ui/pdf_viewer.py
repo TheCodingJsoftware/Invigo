@@ -65,7 +65,7 @@ class PDFViewer(QMainWindow):
         return list(pdf_files)
 
     def load_pdf_file(self, file_path: str):
-        self.download_file_thread = WorkspaceDownloadFile(file_path, True)
+        self.download_file_thread = WorkspaceDownloadFile([file_path], True)
         self.download_file_thread.signal.connect(self.file_downloaded)
         self.download_file_thread.start()
 

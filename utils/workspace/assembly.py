@@ -214,42 +214,14 @@ class Assembly:
             "sub_assemblies": {},
         }
 
-        save_laser_cut_inventory: bool = False
-        laser_cut_inventory = None
         for laser_cut_part in self.laser_cut_parts:
-            if laser_cut_part.name == "":
-                continue
-
-            if inventory_laser_cut_part := laser_cut_part.laser_cut_inventory.get_laser_cut_part_by_name(laser_cut_part.name):
-                inventory_laser_cut_part.bending_files = laser_cut_part.bending_files
-                inventory_laser_cut_part.welding_files = laser_cut_part.welding_files
-                inventory_laser_cut_part.cnc_milling_files = laser_cut_part.cnc_milling_files
-                inventory_laser_cut_part.flow_tag = laser_cut_part.flow_tag
-                save_laser_cut_inventory = True
-                laser_cut_inventory = laser_cut_part.laser_cut_inventory
-
             data["laser_cut_parts"][laser_cut_part.name] = laser_cut_part.to_dict()
 
-        if save_laser_cut_inventory and laser_cut_inventory:
-            laser_cut_inventory.save()
-
-        save_components_inventory: bool = False
-        components_inventory = None
         for component in self.components:
-            if component.name == "":
-                continue
-            if inventory_component := component.components_inventory.get_component_by_name(component.name):
-                inventory_component.image_path = component.image_path
-                components_inventory = component.components_inventory
-                save_components_inventory = True
-
             data["components"][component.name] = component.to_dict()
 
-        if save_components_inventory and components_inventory:
-            components_inventory.save()
-
         for sub_assembly in self.sub_assemblies:
-            if sub_assembly not in processed_assemblies:  # Check if the sub-assembly is already processed
+            if sub_assembly not in processed_assemblies:
                 data["sub_assemblies"][sub_assembly.name] = sub_assembly.to_dict(processed_assemblies)
 
         return data

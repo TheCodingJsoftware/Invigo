@@ -7,11 +7,11 @@
     <x>0</x>
     <y>0</y>
     <width>982</width>
-    <height>1323</height>
+    <height>725</height>
    </rect>
   </property>
   <property name="sizePolicy">
-   <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+   <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
     <horstretch>0</horstretch>
     <verstretch>0</verstretch>
    </sizepolicy>
@@ -43,6 +43,12 @@
    </property>
    <item>
     <widget class="QWidget" name="assembly_widget" native="true">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
      <layout class="QVBoxLayout" name="verticalLayout_9" stretch="0">
       <item>
        <layout class="QVBoxLayout" name="verticalLayout_14" stretch="0,0,0,1">
@@ -384,7 +390,7 @@
           <item>
            <widget class="QWidget" name="sub_assemblies_widget" native="true">
             <property name="sizePolicy">
-             <sizepolicy hsizetype="Preferred" vsizetype="MinimumExpanding">
+             <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
               <horstretch>0</horstretch>
               <verstretch>0</verstretch>
              </sizepolicy>
@@ -392,10 +398,10 @@
             <property name="minimumSize">
              <size>
               <width>0</width>
-              <height>1000</height>
+              <height>0</height>
              </size>
             </property>
-            <layout class="QVBoxLayout" name="verticalLayout_11">
+            <layout class="QVBoxLayout" name="verticalLayout_11" stretch="0,1">
              <property name="spacing">
               <number>6</number>
              </property>
@@ -454,44 +460,20 @@
               </layout>
              </item>
              <item>
-              <widget class="QScrollArea" name="scrollArea">
-               <property name="sizePolicy">
-                <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-                 <horstretch>0</horstretch>
-                 <verstretch>0</verstretch>
-                </sizepolicy>
+              <layout class="QVBoxLayout" name="sub_assembly_layout">
+               <property name="leftMargin">
+                <number>9</number>
                </property>
-               <property name="minimumSize">
-                <size>
-                 <width>0</width>
-                 <height>0</height>
-                </size>
+               <property name="topMargin">
+                <number>9</number>
                </property>
-               <property name="styleSheet">
-                <string notr="true"/>
+               <property name="rightMargin">
+                <number>9</number>
                </property>
-               <property name="widgetResizable">
-                <bool>true</bool>
+               <property name="bottomMargin">
+                <number>9</number>
                </property>
-               <property name="alignment">
-                <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
-               </property>
-               <widget class="QWidget" name="scrollAreaWidgetContents">
-                <property name="geometry">
-                 <rect>
-                  <x>0</x>
-                  <y>0</y>
-                  <width>954</width>
-                  <height>994</height>
-                 </rect>
-                </property>
-                <layout class="QVBoxLayout" name="verticalLayout_13">
-                 <item>
-                  <layout class="QVBoxLayout" name="sub_assembly_layout"/>
-                 </item>
-                </layout>
-               </widget>
-              </widget>
+              </layout>
              </item>
             </layout>
            </widget>

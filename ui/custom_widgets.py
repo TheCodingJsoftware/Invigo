@@ -1214,6 +1214,9 @@ background-color: rgba(25, 25, 25, 0.6);
     def getLastInputBox(self) -> QLineEdit:
         return self.input_box[-1]
 
+    def getLastToggleButton(self) -> QPushButton:
+        return self.buttons[-1]
+
     def setItemText(self, index: int, new_name: str):
         if 0 <= index < len(self.input_box):
             self.input_box[index].setText(new_name)

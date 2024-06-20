@@ -94,7 +94,7 @@ class LaserCutInventory(Inventory):
 
     def save(self):
         with open(f"{self.FOLDER_LOCATION}/{self.filename}.json", "w", encoding="utf-8") as file:
-            json.dump(self.to_dict(), file, ensure_ascii=False)
+            json.dump(self.to_dict(), file, ensure_ascii=False, indent=4)
 
     def load_data(self):
         try:
