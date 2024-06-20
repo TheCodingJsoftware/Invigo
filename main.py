@@ -1377,7 +1377,6 @@ class MainWindow(QMainWindow):
                 [
                     "sheet_settings.json",
                 ],
-                False,
             )
         if self.tabWidget.tabText(self.tabWidget.currentIndex()) == "Workspace":
             if self.category.name == "Staging":
@@ -1385,7 +1384,6 @@ class MainWindow(QMainWindow):
                     [
                         "admin_workspace.json",
                     ],
-                    False,
                 )
             else:
                 self.upload_file(

@@ -2614,7 +2614,6 @@ class WorkspaceTab(QWidget):
                         [
                             "user_workspace.json",
                         ],
-                        False,
                     )
 
                     table.setItem(
@@ -2735,7 +2734,6 @@ class WorkspaceTab(QWidget):
                         [
                             "user_workspace.json",
                         ],
-                        False,
                     )
 
                     timeline_label.setText(f"{string_start_time} to {string_end_time}, ({start_time.daysTo(end_time)} days)")
@@ -3137,7 +3135,6 @@ class WorkspaceTab(QWidget):
             [
                 "user_workspace.json",
             ],
-            False,
         )
 
     # STAGING/EDITING
@@ -3581,7 +3578,6 @@ class WorkspaceTab(QWidget):
             [
                 "user_workspace.json",
             ],
-            False,
         )
 
     def load_tabs(self):

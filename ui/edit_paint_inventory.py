@@ -288,5 +288,4 @@ class EditPaintInventory(QDialog):
             [
                 "paint_inventory.json",
             ],
-            False,
         )
