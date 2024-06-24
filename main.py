@@ -44,6 +44,7 @@ from threads.set_order_number_thread import SetOrderNumberThread
 from threads.update_quote_settings import UpdateQuoteSettings
 from threads.upload_job_thread import UploadJobThread
 from threads.upload_quote import UploadQuote
+from threads.update_job_setting import UpdateJobSetting
 from threads.upload_thread import UploadThread
 from ui.about_dialog import AboutDialog
 from ui.components_tab import ComponentsTab
@@ -85,7 +86,7 @@ from utils.sheets_inventory.sheet import Sheet
 from utils.sheets_inventory.sheets_inventory import SheetsInventory
 from utils.trusted_users import get_trusted_users
 from utils.workspace.generate_printout import JobPlannerPrintout
-from utils.workspace.job import Job, JobStatus
+from utils.workspace.job import Job, JobStatus, JobColor
 from utils.workspace.job_manager import JobManager
 from utils.workspace.workspace import Workspace
 from utils.workspace.workspace_settings import WorkspaceSettings
@@ -94,8 +95,8 @@ __author__: str = "Jared Gross"
 __copyright__: str = "Copyright 2022-2024, TheCodingJ's"
 __credits__: list[str] = ["Jared Gross"]
 __license__: str = "MIT"
-__version__: str = "v3.0.23"
-__updated__: str = "2024-06-20 15:30:15"
+__version__: str = "v3.0.26"
+__updated__: str = "2024-06-24 13:06:57"
 __maintainer__: str = "Jared Gross"
 __email__: str = "jared@pinelandfarms.ca"
 __status__: str = "Production"
@@ -324,6 +325,11 @@ class MainWindow(QMainWindow):
         self.saved_planning_jobs_layout.addWidget(self.saved_jobs_multitoolbox)
         self.saved_planning_job_items_last_opened: dict[int, bool] = {}
 
+        self.templates_jobs_layout = self.findChild(QVBoxLayout, "template_jobs_layout")
+        self.templates_jobs_layout.setAlignment(Qt.AlignmentFlag.AlignTop)
+        self.templates_jobs_multitoolbox = MultiToolBox(self)
+        self.templates_jobs_layout.addWidget(self.templates_jobs_multitoolbox)
+        self.templates_job_items_last_opened: dict[int, bool] = {}
         # Status
         self.status_button = RichTextPushButton(self)
         self.status_button.setText("Downloading all files, please wait...", "yellow")
@@ -1064,18 +1070,27 @@ class MainWindow(QMainWindow):
 
     def load_planning_jobs(self, data: dict[str, dict[str, Any]]):
         self.saved_planning_job_items_last_opened = self.saved_jobs_multitoolbox.get_widget_visibility()
+        self.templates_job_items_last_opened = self.templates_jobs_multitoolbox.get_widget_visibility()
+
+        self.templates_jobs_multitoolbox.clear()
         self.saved_jobs_multitoolbox.clear()
         sorted_data = dict(natsorted(data.items(), key=lambda x: x[1]["name"], reverse=True))
         for folder_path, file_info in sorted_data.items():
-            if self.tabWidget.tabText(self.tabWidget.currentIndex()) == "Job Planner" and file_info["type"] == JobStatus.PLANNING.value:
-                job_item = SavedPlanningJobItem(file_info, self)
-                job_item.load_job.connect(partial(self.load_job_thread, f"saved_jobs/{folder_path}"))
-                job_item.delete_job.connect(partial(self.delete_job_thread, f"saved_jobs/{folder_path}"))
-                job_item.open_webpage.connect(partial(self.open_job, f"saved_jobs/{folder_path}"))
-                job_item.pushButton_open_in_browser.setToolTip(f"{job_item.pushButton_open_in_browser.toolTip()}\n\nhttp://{get_server_ip_address()}:{get_server_port()}/load_job/saved_jobs/{folder_path}")
-                self.saved_jobs_multitoolbox.addItem(job_item, file_info.get("name"), file_info.get("color"))
+            job_item = SavedPlanningJobItem(file_info, self)
+            job_item.load_job.connect(partial(self.load_job_thread, f"saved_jobs/{folder_path}"))
+            job_item.delete_job.connect(partial(self.delete_job_thread, f"saved_jobs/{folder_path}"))
+            job_item.open_webpage.connect(partial(self.open_job, f"saved_jobs/{folder_path}"))
+            job_item.pushButton_open_in_browser.setToolTip(f"{job_item.pushButton_open_in_browser.toolTip()}\n\nhttp://{get_server_ip_address()}:{get_server_port()}/load_job/saved_jobs/{folder_path}")
+            job_item.job_type_changed.connect(partial(self.change_job_thread, f"saved_jobs/{folder_path}", "type", job_item.comboBox_job_status))
+            if self.tabWidget.tabText(self.tabWidget.currentIndex()) == "Job Planner":
+                if file_info["type"] == JobStatus.PLANNING.value:
+                    self.saved_jobs_multitoolbox.addItem(job_item, file_info.get("name"), JobColor.get_color(JobStatus(file_info.get("type", 1))))
+                elif file_info["type"] == JobStatus.TEMPLATE.value:
+                    self.templates_jobs_multitoolbox.addItem(job_item, file_info.get("name"), JobColor.get_color(JobStatus(file_info.get("type", 1))))
         self.saved_jobs_multitoolbox.close_all()
+        self.templates_jobs_multitoolbox.close_all()
         self.saved_jobs_multitoolbox.set_widgets_visibility(self.saved_planning_job_items_last_opened)
+        self.templates_jobs_multitoolbox.set_widgets_visibility(self.templates_job_items_last_opened)
 
     def load_saved_quotes(self, data: dict[str, dict[str, Any]]) -> None:
         sorted_data = dict(natsorted(data.items(), key=lambda x: x[1]["order_number"], alg=ns.FLOAT, reverse=True))
@@ -1582,7 +1597,6 @@ class MainWindow(QMainWindow):
                 if "workspace_settings.json" in response["successful_files"]:
                     self.workspace_settings.load_data()
                     self.job_planner_widget.workspace_settings_changed()
-
                 if "components_inventory.json" in response["successful_files"]:
                     self.components_inventory.load_data()
                 if "sheets_inventory.json" in response["successful_files"]:
@@ -1598,7 +1612,7 @@ class MainWindow(QMainWindow):
                     self.sheets_inventory_tab_widget.restore_last_selected_tab()
                 elif self.tabWidget.tabText(self.tabWidget.currentIndex()) == "Components":
                     self.components_tab_widget.load_categories()
-                    self.sheets_inventory_tab_widget.restore_last_selected_tab()
+                    self.components_tab_widget.restore_last_selected_tab()
                 elif self.tabWidget.tabText(self.tabWidget.currentIndex()) == "Quote Generator":
                     self.load_saved_quoted_thread()
                     self.load_cuttoff_drop_down()
@@ -1831,6 +1845,23 @@ class MainWindow(QMainWindow):
             )
         else:
             self.status_button.setText(f"Error - {data}", "red")
+
+    def change_job_thread(self, job_path: str, job_setting_key: str, setting: QComboBox):
+        setting.setEnabled(False)
+        update_job_thread = UpdateJobSetting(job_path, job_setting_key, setting.currentIndex() + 1)
+        self.threads.append(update_job_thread)
+        update_job_thread.signal.connect(self.change_job_response)
+        update_job_thread.start()
+
+    def change_job_response(self, response: dict | str, folder_name: str):
+        if isinstance(response, dict):
+            self.status_button.setText(
+                f"Successfully updated {folder_name}",
+                "lime",
+            )
+        else:
+            self.status_button.setText(f"Error: {response} - {folder_name}", "red")
+        self.load_jobs_thread()
 
     def delete_job_thread(self, folder_path: str):
         self.status_button.setText(f"Deleting {folder_path}", "yellow")

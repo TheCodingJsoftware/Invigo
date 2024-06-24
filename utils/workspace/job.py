@@ -1,4 +1,4 @@
-from enum import Enum
+from enum import Enum, auto
 
 from utils.components_inventory.component import Component
 from utils.components_inventory.components_inventory import ComponentsInventory
@@ -7,16 +7,32 @@ from utils.laser_cut_inventory.laser_cut_part import LaserCutPart
 from utils.sheet_settings import SheetSettings
 from utils.workspace.assembly import Assembly
 from utils.workspace.group import Group
+from utils.workspace.nest import Nest
 from utils.workspace.workspace_settings import WorkspaceSettings
 
 
 class JobStatus(Enum):
-    PLANNING = 0
-    QUOTING = 1
-    QUOTED = 2
-    WORKSPACE = 3
-    ARCHIVE = 4
+    PLANNING = auto()
+    QUOTING = auto()
+    QUOTED = auto()
+    TEMPLATE = auto()
+    WORKSPACE = auto()
+    ARCHIVE = auto()
 
+
+class JobColor(Enum):
+    PLANNING = ("#3daee9", JobStatus.PLANNING)
+    QUOTING = ("#eabf3e", JobStatus.QUOTING)
+    QUOTED = ("#eabf3e", JobStatus.QUOTED)
+    TEMPLATE = ("#ea693e", JobStatus.TEMPLATE)
+    WORKSPACE = ("#69ea3e", JobStatus.WORKSPACE)
+    ARCHIVE = ("#943eea", JobStatus.ARCHIVE)
+
+    @classmethod
+    def get_color(cls, job_status):
+        return next(
+            (color.value[0] for color in cls if color.value[1] == job_status), None
+        )
 
 class Job:
     def __init__(self, name: str, data: dict, job_manager) -> None:
@@ -27,6 +43,7 @@ class Job:
         self.date_expected: str = ""
         self.color: str = "#3daee9"  # default
         self.groups: list[Group] = []
+        self.nests: list[Nest] = []
         from utils.workspace.job_manager import JobManager
 
         self.job_manager: JobManager = job_manager
@@ -46,6 +63,8 @@ class Job:
     def get_color(self):
         if self.job_status == JobStatus.PLANNING:
             return "#3daee9"
+        elif self.job_status == JobStatus.TEMPLATE:
+            return "#ea693e"
         elif self.job_status == JobStatus.QUOTING | JobStatus.QUOTED:
             return "#eabf3e"
         elif self.job_status == JobStatus.WORKSPACE:
@@ -55,6 +74,12 @@ class Job:
 
     def changes_made(self):
         self.unsaved_changes = True
+
+    def add_nest(self, nest: Nest):
+        self.groups.append(nest)
+
+    def remove_nest(self, nest: Nest):
+        self.groups.remove(nest)
 
     def add_group(self, group: Group):
         self.groups.append(group)
@@ -92,8 +117,15 @@ class Job:
         self.ship_to = job_data.get("ship_to", "")
         self.date_shipped = job_data.get("date_shipped", "")
         self.date_expected = job_data.get("date_expected", "")
-        self.color = job_data.get("color", "#3daee9")
-        self.job_status = JobStatus(job_data.get("type", 0))
+        self.job_status = JobStatus(int(job_data.get("type", 0))) # Just in case we cast, trust me
+        self.color = self.get_color()
+
+        nests_data = data.get("nests", {})
+
+        self.nests.clear()
+        for nest_name, nest_data in nests_data.items():
+            nest = Nest(nest_name, nest_data, self.sheet_settings, self.laser_cut_inventory)
+            self.add_nest(nest)
 
         groups_data = data.get("groups", {})
 
@@ -127,5 +159,6 @@ class Job:
                 "date_expected": self.date_expected,
                 "color": self.get_color(),
             },
+            "nests": {nest.name: nest.to_dict() for nest in self.nests},
             "groups": {group.name: group.to_dict() for group in self.groups},
         }

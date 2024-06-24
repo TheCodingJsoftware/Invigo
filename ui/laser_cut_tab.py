@@ -6,7 +6,7 @@ from functools import partial
 import sympy
 from natsort import natsorted
 from PyQt6 import uic
-from PyQt6.QtCore import Qt
+from PyQt6.QtCore import QDate, Qt, QTimer, pyqtSignal
 from PyQt6.QtGui import QAction, QColor, QCursor, QFont, QIcon
 from PyQt6.QtWidgets import (QAbstractItemView, QCheckBox, QComboBox,
                              QCompleter, QDialog, QDoubleSpinBox, QGridLayout,
@@ -102,6 +102,8 @@ class EditLaserCutPart(QDialog):
 
 
 class LaserCutPartsTableWidget(CustomTableWidget):
+    rowChanged = pyqtSignal(int)  # Custom signal that takes a row index
+
     def __init__(self, parent=None):
         super(LaserCutPartsTableWidget, self).__init__(parent)
         self.parent: "LaserCutPartsTabWidget" = parent
@@ -137,6 +139,22 @@ class LaserCutPartsTableWidget(CustomTableWidget):
         }
         self.setColumnCount(len(list(headers.keys())))
         self.setHorizontalHeaderLabels(headers)
+
+        self.changed_rows = set()
+        self.row_change_timer = QTimer()
+        self.row_change_timer.setSingleShot(True)
+        self.row_change_timer.timeout.connect(self.handle_row_change)
+
+        self.cellChanged.connect(self.table_changed)
+
+    def table_changed(self, row, column):
+        self.changed_rows.add(row)
+        self.row_change_timer.start(100)  # Adjust the delay as needed
+
+    def handle_row_change(self):
+        for row in self.changed_rows:
+            self.rowChanged.emit(row)
+        self.changed_rows.clear()
 
 
 class LaserCutPartsTabWidget(CustomTabWidget):
@@ -380,7 +398,7 @@ class LaserCutTab(QWidget):
             table = LaserCutPartsTableWidget(self.tab_widget)
             self.category_tables.update({new_category: table})
             self.tab_widget.addTab(table, new_category.name)
-            table.cellChanged.connect(self.table_changed)
+            table.rowChanged.connect(self.table_changed)
             table.cellPressed.connect(self.table_selected_changed)
             self.laser_cut_inventory.save()
             self.sync_changes()
@@ -421,7 +439,7 @@ class LaserCutTab(QWidget):
                 table = LaserCutPartsTableWidget(self.tab_widget)
                 self.category_tables.update({new_category: table})
                 self.tab_widget.insertTab(self.tab_widget.currentIndex() + 1, table, new_category.name)
-                table.cellChanged.connect(self.table_changed)
+                table.rowChanged.connect(self.table_changed)
                 table.cellPressed.connect(self.table_selected_changed)
             elif action == "RENAME":
                 self.category.rename(input_text)
@@ -452,7 +470,7 @@ class LaserCutTab(QWidget):
                 table = LaserCutPartsTableWidget(self.tab_widget)
                 self.category_tables.update({category: table})
                 self.tab_widget.addTab(table, category.name)
-                table.cellChanged.connect(self.table_changed)
+                table.rowChanged.connect(self.table_changed)
                 table.cellPressed.connect(self.table_selected_changed)
                 table.verticalScrollBar().valueChanged.connect(self.save_scroll_position)
         self.tab_widget.currentChanged.connect(self.load_table)

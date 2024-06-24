@@ -12,7 +12,7 @@ class Component(InventoryItem):
 
         self.components_inventory: ComponentsInventory = components_inventory
         self.quantity: float = 0.0
-        self.unit_quantity: float = 0.0
+        self.category_quantities: dict[Category, float] = {}
         self.part_number: str = self.name
         self.part_name: str = ""
         self.price: float = 0.0
@@ -34,9 +34,11 @@ class Component(InventoryItem):
     def get_exchange_rate(self) -> float:
         return 1.3
 
-    def get_total_unit_cost(self) -> float:
+    def get_total_unit_cost(self, category: str | Category) -> float:
+        if isinstance(category, str):
+            category = self.components_inventory.get_category(category)
         exchange_rate = self.get_exchange_rate() if self.use_exchange_rate else 1
-        return self.price * self.unit_quantity * exchange_rate
+        return self.price * self.get_category_quantity(category) * exchange_rate
 
     def get_total_cost_in_stock(self) -> float:
         exchange_rate = self.get_exchange_rate() if self.use_exchange_rate else 1
@@ -51,9 +53,28 @@ class Component(InventoryItem):
         if len(self.categories) == 0:
             self.components_inventory.remove_component(self)
 
+    def get_category_quantity(self, category: str | Category) -> float:
+        if isinstance(category, str):
+            category = self.components_inventory.get_category(category)
+        try:
+            return self.category_quantities[category]
+        except KeyError:
+            return 0.0
+
+    def set_category_quantity(self, category: str | Category, quantity: float) -> float:
+        if isinstance(category, str):
+            category = self.components_inventory.get_category(category)
+        self.category_quantities[category] = quantity
+
+    def print_category_quantities(self) -> str:
+        return "".join(f"{i + 1}. {category.name}: {self.get_category_quantity(category)}\n" for i, category in enumerate(self.categories))
+
     def load_data(self, data: dict[str, Union[str, int, float, bool]]):
         self.quantity: float = data.get("quantity", 0.0)
-        self.unit_quantity: float = data.get("unit_quantity", 0.0)
+        self.category_quantities.clear()
+        for category_name, unit_quantity in data.get("category_quantities", {}).items():
+            category = self.components_inventory.get_category(category_name)
+            self.category_quantities.update({category: unit_quantity})
         self.part_name: str = data.get("part_name", "")
         self.price: float = data.get("price", 0.0)
         self.use_exchange_rate: bool = data.get("use_exchange_rate", False)
@@ -81,7 +102,7 @@ class Component(InventoryItem):
     def to_dict(self) -> dict[str, dict]:
         return {
             "quantity": round(self.quantity, 2),
-            "unit_quantity": round(self.unit_quantity, 2),
+            "category_quantities": {category.name: self.category_quantities.get(category, 0.0) for category in self.categories},
             "latest_change_quantity": self.latest_change_quantity,
             "part_name": self.part_name,
             "price": round(self.price, 2),

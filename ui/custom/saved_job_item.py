@@ -23,8 +23,7 @@ class SavedPlanningJobItem(QWidget):
         uic.loadUi("ui/job_plan_widget.ui", self)
 
         modified_date = datetime.fromtimestamp(file_info.get("modified_date")).strftime("%A, %B %d, %Y, %I:%M:%S %p")
-        status = file_info.get("status", "Planning")
-        base_color = file_info.get("color")
+        job_type = file_info.get("type", 0)
 
         self.comboBox_job_status = self.findChild(QComboBox, "comboBox_job_status")
         self.pushButton_load_job = self.findChild(QPushButton, "pushButton_load_job")
@@ -32,9 +31,8 @@ class SavedPlanningJobItem(QWidget):
         self.pushButton_open_in_browser = self.findChild(QPushButton, "pushButton_open_in_browser")
         self.pushButton_delete = self.findChild(QPushButton, "pushButton_delete")
 
-        self.comboBox_job_status.setEnabled(False)
         self.comboBox_job_status.wheelEvent = lambda event: None
-        self.comboBox_job_status.setCurrentText(status)
+        self.comboBox_job_status.setCurrentIndex(job_type - 1)
         self.comboBox_job_status.currentTextChanged.connect(self.job_type_changed.emit)
 
         self.label_modified_date.setText(f"Modified: {modified_date}")

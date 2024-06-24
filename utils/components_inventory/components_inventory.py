@@ -61,7 +61,7 @@ class ComponentsInventory(Inventory):
             category = self.get_category(category)
         for component in self.components:
             if category in component.categories:
-                total += component.get_total_unit_cost()
+                total += component.get_total_unit_cost(category)
         return total
 
     def add_component(self, component: Component):

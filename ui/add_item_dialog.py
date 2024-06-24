@@ -64,7 +64,7 @@ class AddItemDialog(QDialog):
         self.comboBox_priority.setCurrentIndex(component.priority)
         self.spinBox_current_quantity.setValue(int(component.quantity))
 
-        self.doubleSpinBox_unit_quantity.setValue(component.unit_quantity)
+        self.doubleSpinBox_unit_quantity.setValue(0)
         self.doubleSpinBox_price.setValue(component.price)
         self.comboBox_exchange_price.setCurrentText("USD" if component.use_exchange_rate else "CAD")
 

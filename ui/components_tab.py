@@ -6,7 +6,7 @@ from functools import partial
 import sympy
 from natsort import natsorted
 from PyQt6 import uic
-from PyQt6.QtCore import QDate, Qt
+from PyQt6.QtCore import QDate, Qt, QTimer, pyqtSignal
 from PyQt6.QtGui import QAction, QColor, QCursor, QFont, QIcon
 from PyQt6.QtWidgets import (QAbstractItemView, QCompleter, QDateEdit, QDialog,
                              QGridLayout, QInputDialog, QLabel, QLineEdit,
@@ -37,6 +37,8 @@ from utils.workspace.job import Job
 
 
 class ComponentsTableWidget(CustomTableWidget):
+    rowChanged = pyqtSignal(int)  # Custom signal that takes a row index
+
     def __init__(self, parent=None):
         super(ComponentsTableWidget, self).__init__(parent)
         self.setShowGrid(True)
@@ -65,6 +67,22 @@ class ComponentsTableWidget(CustomTableWidget):
         ]
         self.setColumnCount(len(headers))
         self.setHorizontalHeaderLabels(headers)
+
+        self.changed_rows = set()
+        self.row_change_timer = QTimer()
+        self.row_change_timer.setSingleShot(True)
+        self.row_change_timer.timeout.connect(self.handle_row_change)
+
+        self.cellChanged.connect(self.table_changed)
+
+    def table_changed(self, row, column):
+        self.changed_rows.add(row)
+        self.row_change_timer.start(100)  # Adjust the delay as needed
+
+    def handle_row_change(self):
+        for row in self.changed_rows:
+            self.rowChanged.emit(row)
+        self.changed_rows.clear()
 
 
 class ComponentsTabWidget(CustomTabWidget):
@@ -141,7 +159,7 @@ class ComponentsTab(QWidget):
             table = ComponentsTableWidget(self.tab_widget)
             self.category_tables.update({new_category: table})
             self.tab_widget.addTab(table, new_category.name)
-            table.cellChanged.connect(self.table_changed)
+            table.rowChanged.connect(self.table_changed)
             table.cellPressed.connect(self.table_selected_changed)
             self.components_inventory.save()
             self.sync_changes()
@@ -173,7 +191,7 @@ class ComponentsTab(QWidget):
                 table = ComponentsTableWidget(self.tab_widget)
                 self.category_tables.update({new_category: table})
                 self.tab_widget.insertTab(self.tab_widget.currentIndex() + 1, table, new_category.name)
-                table.cellChanged.connect(self.table_changed)
+                table.rowChanged.connect(self.table_changed)
                 table.cellPressed.connect(self.table_selected_changed)
             elif action == "RENAME":
                 self.category.rename(input_text)
@@ -204,7 +222,7 @@ class ComponentsTab(QWidget):
                 table = ComponentsTableWidget(self.tab_widget)
                 self.category_tables.update({category: table})
                 self.tab_widget.addTab(table, category.name)
-                table.cellChanged.connect(self.table_changed)
+                table.rowChanged.connect(self.table_changed)
                 table.cellPressed.connect(self.table_selected_changed)
                 table.verticalScrollBar().valueChanged.connect(self.save_scroll_position)
         self.tab_widget.currentChanged.connect(self.load_table)
@@ -249,19 +267,20 @@ class ComponentsTab(QWidget):
             # PART NUMBER
             table_item_part_number = QTableWidgetItem(component.part_number)
             table_item_part_number.setFont(self.tables_font)
-            table_item_part_number.setToolTip(f"{component.part_number}\n\nPresent in:\n{component.print_categories()}")
+            table_item_part_number.setToolTip(f"{component.part_number}\n\nItem is present in:\n{component.print_categories()}")
             table_item_part_number.setTextAlignment(Qt.AlignmentFlag.AlignCenter | Qt.AlignmentFlag.AlignVCenter)
             current_table.setItem(row_index, col_index, table_item_part_number)
             self.table_components_widgets[component].update({"part_number": table_item_part_number})
 
             col_index += 1
 
-            # UNIT QUANTITY
-            table_item_unit_quantity = QTableWidgetItem(f"{component.unit_quantity:,.2f}")
-            table_item_unit_quantity.setFont(self.tables_font)
-            table_item_unit_quantity.setTextAlignment(Qt.AlignmentFlag.AlignCenter | Qt.AlignmentFlag.AlignVCenter)
-            current_table.setItem(row_index, col_index, table_item_unit_quantity)
-            self.table_components_widgets[component].update({"unit_quantity": table_item_unit_quantity})
+            # CATEGORY QUANTITY
+            table_item_category_quantity = QTableWidgetItem(f"{component.get_category_quantity(self.category):,.2f}")
+            table_item_category_quantity.setFont(self.tables_font)
+            table_item_category_quantity.setTextAlignment(Qt.AlignmentFlag.AlignCenter | Qt.AlignmentFlag.AlignVCenter)
+            table_item_category_quantity.setToolTip(f"Unit quantities:\n{component.print_category_quantities()}")
+            current_table.setItem(row_index, col_index, table_item_category_quantity)
+            self.table_components_widgets[component].update({"unit_quantity": table_item_category_quantity})
 
             col_index += 1
 
@@ -320,7 +339,7 @@ class ComponentsTab(QWidget):
             col_index += 1
 
             # TOTAL UNIT COST
-            table_item_total_unit_cost = QTableWidgetItem(f"${component.get_total_unit_cost():,.2f} {combo_exchange_rate.currentText()}")
+            table_item_total_unit_cost = QTableWidgetItem(f"${component.get_total_unit_cost(self.category):,.2f} {combo_exchange_rate.currentText()}")
             table_item_total_unit_cost.setFont(self.tables_font)
             table_item_total_unit_cost.setTextAlignment(Qt.AlignmentFlag.AlignCenter | Qt.AlignmentFlag.AlignVCenter)
             current_table.setItem(
@@ -426,33 +445,51 @@ class ComponentsTab(QWidget):
             self.last_selected_component = component.name
             self.last_selected_index = self.get_selected_row()
 
-    def table_changed(self):
+    def table_changed(self, row):
         if not (component := self.get_selected_component()):
             return
         component.part_name = self.table_components_widgets[component]["part_name"].text()
         component.part_number = self.table_components_widgets[component]["part_number"].text()
-        component.unit_quantity = float(
-            sympy.sympify(
-                self.table_components_widgets[component]["unit_quantity"].text().strip().replace(",", ""),
-                evaluate=True,
+        try:
+            new_unit_quantity = float(
+                    sympy.sympify(
+                        self.table_components_widgets[component]["unit_quantity"].text().strip().replace(",", ""),
+                        evaluate=True,
+                    )
+                )
+        except sympy.SympifyError:
+            self.set_table_row_color(self.category_tables[self.category], self.table_components_widgets[component]["row"], "#e93d3d")
+            self.parent.status_button.setText(f"Invalid number for {component.name} unit quantity", "red")
+            return
+        try:
+            table_quantity = float(
+                sympy.sympify(
+                    self.table_components_widgets[component]["quantity"].text().strip().replace(",", ""),
+                    evaluate=True,
+                )
             )
-        )
-        table_quantity = float(
-            sympy.sympify(
-                self.table_components_widgets[component]["quantity"].text().strip().replace(",", ""),
-                evaluate=True,
+        except sympy.SympifyError:
+            self.set_table_row_color(self.category_tables[self.category], self.table_components_widgets[component]["row"], "#e93d3d")
+            self.parent.status_button.setText(f"Invalid number for {component.name} quantity", "red")
+            return
+
+        try:
+            new_price = float(
+                sympy.sympify(
+                    self.table_components_widgets[component]["price"].text().replace("USD", "").replace("CAD", "").strip().replace(",", "").replace("$", ""),
+                    evaluate=True,
+                )
             )
-        )
+        except sympy.SympifyError:
+            self.set_table_row_color(self.category_tables[self.category], self.table_components_widgets[component]["row"], "#e93d3d")
+            self.parent.status_button.setText(f"Invalid number for {component.name} price", "red")
+            return
+
         if component.quantity != table_quantity:
             component.latest_change_quantity = f"{os.getlogin().title()} manually set to {table_quantity} from {component.quantity} at {datetime.now().strftime('%B %d %A %Y %I:%M:%S %p')}"
+        component.price = new_price
+        component.set_category_quantity(self.category, new_unit_quantity)
         component.quantity = table_quantity
-
-        component.price = float(
-            sympy.sympify(
-                self.table_components_widgets[component]["price"].text().replace("USD", "").replace("CAD", "").strip().replace(",", "").replace("$", ""),
-                evaluate=True,
-            )
-        )
         component.use_exchange_rate = self.table_components_widgets[component]["use_exchange_rate"].currentText() == "USD"
         component.priority = self.table_components_widgets[component]["priority"].currentIndex()
 
@@ -468,7 +505,8 @@ class ComponentsTab(QWidget):
         self.components_inventory.save()
         self.sync_changes()
         self.category_tables[self.category].blockSignals(True)
-        self.table_components_widgets[component]["unit_quantity"].setText(f"{component.unit_quantity:,.2f}")
+        self.table_components_widgets[component]["unit_quantity"].setText(f"{component.get_category_quantity(self.category):,.2f}")
+        self.table_components_widgets[component]["unit_quantity"].setToolTip(f"Unit quantities:\n{component.print_category_quantities()}")
         self.table_components_widgets[component]["quantity"].setText(f"{component.quantity:,.2f}")
         self.table_components_widgets[component]["quantity"].setToolTip(component.latest_change_quantity)
         self.table_components_widgets[component]["price"].setText(f"${component.price:,.2f}")
@@ -660,7 +698,7 @@ class ComponentsTab(QWidget):
                 add_item_dialog.get_part_number(),
                 {
                     "part_name": add_item_dialog.get_name(),
-                    "unit_quantity": add_item_dialog.get_unit_quantity(),
+                    "unit_quantities": {self.category: add_item_dialog.get_unit_quantity()},
                     "current_quantity": add_item_dialog.get_current_quantity(),
                     "price": add_item_dialog.get_item_price(),
                     "use_exchange_rate": add_item_dialog.get_exchange_rate(),
@@ -687,8 +725,8 @@ class ComponentsTab(QWidget):
             table_item["price"].setToolTip(f'${converted_price:,.2f} {"CAD" if component.use_exchange_rate else "USD"}\n{component.latest_change_price}')
             table_item["total_cost_in_stock"].setText(f'${component.get_total_cost_in_stock():,.2f} {"USD" if component.use_exchange_rate else "CAD"}')
             total_cost_in_stock += component.get_total_cost_in_stock()
-            table_item["total_unit_cost"].setText(f'${component.get_total_unit_cost():,.2f} {"USD" if component.use_exchange_rate else "CAD"}')
-            total_unit_cost += component.get_total_unit_cost()
+            table_item["total_unit_cost"].setText(f'${component.get_total_unit_cost(self.category):,.2f} {"USD" if component.use_exchange_rate else "CAD"}')
+            total_unit_cost += component.get_total_unit_cost(self.category)
         self.category_tables[self.category].blockSignals(False)
         self.label_total_unit_cost.setText(f"Total Unit Cost: ${total_unit_cost:,.2f}")
 
@@ -753,11 +791,11 @@ class ComponentsTab(QWidget):
                 self.category_tables[self.category].blockSignals(True)
                 for component, tables_item in self.table_components_widgets.items():
                     if add_or_remove == "ADD":
-                        component.latest_change_quantity = f"{os.getlogin().title()} Used: All Items in Category - add quantity\nChanged from {component.quantity} to {component.quantity + (component.unit_quantity * multiplier)} at {datetime.now().strftime('%B %d %A %Y %I:%M:%S %p')}"
-                        component.quantity = component.quantity + (multiplier * component.unit_quantity)
+                        component.latest_change_quantity = f"{os.getlogin().title()} Used: All Items in Category - add quantity\nChanged from {component.quantity} to {component.quantity + (component.get_category_quantity(self.category) * multiplier)} at {datetime.now().strftime('%B %d %A %Y %I:%M:%S %p')}"
+                        component.quantity = component.quantity + (multiplier * component.get_category_quantity(self.category))
                     elif add_or_remove == "REMOVE":
-                        component.latest_change_quantity = f"{os.getlogin().title()} Used: All Items in Category - remove quantity\nChanged from {component.quantity} to {component.quantity - (component.unit_quantity * multiplier)} at {datetime.now().strftime('%B %d %A %Y %I:%M:%S %p')}"
-                        component.quantity = component.quantity - (multiplier * component.unit_quantity)
+                        component.latest_change_quantity = f"{os.getlogin().title()} Used: All Items in Category - remove quantity\nChanged from {component.quantity} to {component.quantity - (component.get_category_quantity(self.category) * multiplier)} at {datetime.now().strftime('%B %d %A %Y %I:%M:%S %p')}"
+                        component.quantity = component.quantity - (multiplier * component.get_category_quantity(self.category))
                     tables_item["quantity"].setText(str(component.quantity))
                     tables_item["quantity"].setToolTip(component.latest_change_quantity)
                 self.category_tables[self.category].blockSignals(False)
@@ -957,7 +995,7 @@ class ComponentsTab(QWidget):
                 html += f"""<tr style="border-bottom: 1px solid black;">
                 <td>{component.part_name}</td>
                 <td>{component.part_number}</td>
-                <td>{component.unit_quantity}</td>
+                <td>{component.get_category_quantity(self.category)}</td>
                 <td>{component.quantity}</td>
                 <td>{component.shelf_number}</td>
                 <td>{component.notes.replace("\n", "<br>")}</td>

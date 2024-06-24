@@ -69,10 +69,9 @@ class JobWidget(QWidget):
 
         # self.pushButton_get_order_number.clicked.connect(get_latest_order_number)
         self.comboBox_type: QComboBox = self.findChild(QComboBox, "comboBox_type")
-        self.comboBox_type.setCurrentIndex(self.job.job_status.value)
-        self.comboBox_type.currentTextChanged.connect(self.job_settings_changed)
-        self.comboBox_type.setEnabled(self.job.job_status != JobStatus.PLANNING)
+        self.comboBox_type.setCurrentIndex(self.job.job_status.value - 1)
         self.comboBox_type.wheelEvent = lambda event: None
+        self.comboBox_type.currentTextChanged.connect(self.job_settings_changed)
         self.dateEdit_shipped: QDateEdit = self.findChild(QDateEdit, "dateEdit_shipped")
         try:
             year, month, day = map(int, self.job.date_shipped.split("-"))
@@ -103,7 +102,7 @@ class JobWidget(QWidget):
 
     def job_settings_changed(self):
         self.job.order_number = self.doubleSpinBox_order_number.value()
-        self.job.job_status = JobStatus(self.comboBox_type.currentIndex())
+        self.job.job_status = JobStatus(self.comboBox_type.currentIndex() + 1)
         self.job.date_shipped = self.dateEdit_shipped.date().toString("yyyy-M-d")
         self.job.date_expected = self.dateEdit_expected.date().toString("yyyy-M-d")
         self.job.ship_to = self.textEdit_ship_to.toPlainText()

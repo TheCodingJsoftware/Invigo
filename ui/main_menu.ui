@@ -369,15 +369,56 @@
                     </widget>
                    </widget>
                   </item>
+                 </layout>
+                </widget>
+                <widget class="QWidget" name="templates">
+                 <attribute name="title">
+                  <string>Templates</string>
+                 </attribute>
+                 <layout class="QVBoxLayout" name="verticalLayout_19">
                   <item>
-                   <widget class="QPushButton" name="pushButton_refresh_jobs">
-                    <property name="text">
-                     <string>Refresh</string>
+                   <widget class="QScrollArea" name="scrollArea_4">
+                    <property name="widgetResizable">
+                     <bool>true</bool>
                     </property>
+                    <widget class="QWidget" name="scrollAreaWidgetContents_4">
+                     <property name="geometry">
+                      <rect>
+                       <x>0</x>
+                       <y>0</y>
+                       <width>1011</width>
+                       <height>454</height>
+                      </rect>
+                     </property>
+                     <layout class="QVBoxLayout" name="verticalLayout_20">
+                      <property name="leftMargin">
+                       <number>0</number>
+                      </property>
+                      <property name="topMargin">
+                       <number>0</number>
+                      </property>
+                      <property name="rightMargin">
+                       <number>0</number>
+                      </property>
+                      <property name="bottomMargin">
+                       <number>0</number>
+                      </property>
+                      <item>
+                       <layout class="QVBoxLayout" name="template_jobs_layout"/>
+                      </item>
+                     </layout>
+                    </widget>
                    </widget>
                   </item>
                  </layout>
                 </widget>
+               </widget>
+              </item>
+              <item>
+               <widget class="QPushButton" name="pushButton_refresh_jobs">
+                <property name="text">
+                 <string>Refresh</string>
+                </property>
                </widget>
               </item>
               <item>

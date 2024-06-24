@@ -100,6 +100,11 @@
              </item>
              <item>
               <property name="text">
+               <string>Template</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
                <string>Workspace</string>
               </property>
              </item>
