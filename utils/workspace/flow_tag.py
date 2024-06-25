@@ -18,8 +18,11 @@ class FlowTag:
         self.load_data(data)
 
     def get_name(self) -> str:
-        tags = [tag.name for tag in self.tags]
-        return " ➜ ".join(tags)
+        try:
+            tags = [tag.name for tag in self.tags]
+            return " ➜ ".join(tags)
+        except AttributeError: # Tag does not exist
+            return "Tag name not found"
 
     def load_data(self, data: dict[str, str | list[str]]):
         if not data:
@@ -46,7 +49,10 @@ class FlowTag:
         return f"{self.name}: {self.get_name()}"
 
     def to_dict(self) -> dict[str]:
-        return {"name": self.name, "group": self.group.value, "tags": [tag.name for tag in self.tags]}
+        try:
+            return {"name": self.name, "group": self.group.value, "tags": [tag.name for tag in self.tags]}
+        except AttributeError: # no flow tag
+            return {"name": "", "group": self.group.value, "tags": []}
 
     def to_list(self) -> list[str]:
         return [tag.name for tag in self.tags]
