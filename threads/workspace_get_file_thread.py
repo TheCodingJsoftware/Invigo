@@ -33,10 +33,11 @@ class WorkspaceDownloadFile(QThread):
                         file.write(response.content)
                     if self.open_when_done:
                         self.signal.emit(file_ext, file_name, self.open_when_done)
+                        self.session.close()
+                        return
                 else:
                     self.signal.emit(None, response.text, False)
             except Exception as e:
-                print(e)
                 self.signal.emit(None, str(e), False)
         self.signal.emit("Successfully downloaded", "Successfully downloaded", self.open_when_done)
         self.session.close()
