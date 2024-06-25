@@ -11,9 +11,11 @@ from PyQt6.QtGui import QAction, QColor, QCursor, QFont, QIcon
 from PyQt6.QtWidgets import (QAbstractItemView, QCompleter, QDateEdit, QDialog,
                              QGridLayout, QInputDialog, QLabel, QLineEdit,
                              QListWidget, QMenu, QMessageBox, QPushButton,
-                             QTableWidgetItem, QVBoxLayout, QWidget)
+                             QTableWidgetItem, QHBoxLayout, QVBoxLayout, QWidget)
 
 from ui.add_item_dialog import AddItemDialog
+from ui.update_component_order_pending_dialog import UpdateComponentOrderPendingDialog
+from ui.set_component_order_pending_dialog import SetComponentOrderPendingDialog
 from ui.custom.order_pending_quantity_dialog import OrderPendingQuantityDialog
 from ui.custom_widgets import (CustomTableWidget, CustomTabWidget,
                                DeletePushButton, ExchangeRateComboBox,
@@ -26,6 +28,7 @@ from ui.set_custom_limit_dialog import SetCustomLimitDialog
 from ui.set_order_pending_dialog import SetOrderPendingDialog
 from utils.components_inventory.component import Component
 from utils.components_inventory.components_inventory import ComponentsInventory
+from utils.components_inventory.order import Order
 from utils.dialog_buttons import DialogButtons
 from utils.history_file import HistoryFile
 from utils.inventory.category import Category
@@ -42,6 +45,7 @@ class ComponentsTableWidget(CustomTableWidget):
     def __init__(self, parent=None):
         super(ComponentsTableWidget, self).__init__(parent)
         self.setShowGrid(True)
+        self.setWordWrap(True)
         self.setSortingEnabled(False)
         self.setTextElideMode(Qt.TextElideMode.ElideNone)
         self.setSelectionBehavior(QAbstractItemView.SelectionBehavior.SelectRows)
@@ -61,9 +65,8 @@ class ComponentsTableWidget(CustomTableWidget):
             "Priority",
             "Shelf #",
             "Notes",
-            "Order Status",
-            "Set Arrival Time",
             "PO",
+            "Orders",
         ]
         self.setColumnCount(len(headers))
         self.setHorizontalHeaderLabels(headers)
@@ -88,6 +91,122 @@ class ComponentsTableWidget(CustomTableWidget):
 class ComponentsTabWidget(CustomTabWidget):
     def __init__(self, parent: QWidget) -> None:
         super(ComponentsTabWidget, self).__init__(parent)
+
+
+class OrderWidget(QWidget):
+    def __init__(self, component: Component, parent: "ComponentsTab") -> None:
+        super().__init__(parent)
+        self.parent: "ComponentsTab" = parent
+        self.component = component
+
+        self.h_layout = QHBoxLayout()
+        self.h_layout.setContentsMargins(0,0,0,0)
+        self.orders_layout = QHBoxLayout()
+        self.add_order_button = QPushButton("Add Order", self)
+        self.add_order_button.clicked.connect(self.create_order)
+
+        self.h_layout.addLayout(self.orders_layout)
+        self.h_layout.addWidget(self.add_order_button)
+        self.h_layout.addStretch()
+
+        self.setLayout(self.h_layout)
+        self.load_ui()
+
+    def load_ui(self):
+        self.clear_layout(self.orders_layout)
+
+        for order in self.component.orders:
+            v_layout = QVBoxLayout()
+            v_layout.setContentsMargins(1,1,1,1)
+            v_layout.setSpacing(0)
+            order_status_button = OrderStatusButton(self)
+            order_status_button.setStyleSheet("QPushButton#order_status{border-top-left-radius: 5px; border-top-right-radius: 5px; border-bottom-left-radius: 0; border-bottom-right-radius: 0;}")
+            order_status_button.setText(f"Order Pending ({int(order.quantity)})")
+            order_status_button.setToolTip(str(order))
+            order_status_button.setChecked(True)
+            order_status_button.clicked.connect(partial(self.order_button_pressed, order, order_status_button))
+
+            year, month, day = map(int, order.expected_arrival_time.split("-"))
+            date = QDate(year, month, day)
+
+            arrival_date = QDateEdit(self)
+            arrival_date.setStyleSheet("QDateEdit{border-top-left-radius: 0; border-top-right-radius: 0; border-bottom-left-radius: 5px; border-bottom-right-radius: 5px;} QDateEdit:hover{border-color: #3bba6d; }")
+            arrival_date.wheelEvent = lambda event: None
+            arrival_date.setDate(date)
+            arrival_date.setCalendarPopup(True)
+            arrival_date.setToolTip("Expected arrival time.")
+            arrival_date.dateChanged.connect(partial(self.date_changed, order, arrival_date))
+
+            v_layout.addWidget(order_status_button)
+            v_layout.addWidget(arrival_date)
+            self.orders_layout.addLayout(v_layout)
+        self.parent.category_tables[self.parent.category].setColumnWidth(12, 400) # Widgets don't like being resized with columns
+        self.parent.update_component_row_color(self.parent.category_tables[self.parent.category], self.component)
+
+    def create_order(self):
+        select_date_dialog = SetComponentOrderPendingDialog(
+            f'Set an expected arrival time for "{self.component.part_name}," the number of parts ordered, and notes.',
+            self,
+        )
+        if select_date_dialog.exec():
+            new_order = Order({
+                    "expected_arrival_time": select_date_dialog.get_selected_date(),
+                    "order_pending_quantity": select_date_dialog.get_order_quantity(),
+                    "order_pending_date": datetime.now().strftime("%Y-%m-%d"),
+                    "notes": select_date_dialog.get_notes()
+                }
+            )
+            self.component.add_order(new_order)
+            self.parent.components_inventory.save()
+            self.parent.sync_changes()
+            self.load_ui()
+
+    def order_button_pressed(self, order: Order, order_status_button: OrderStatusButton):
+        dialog = UpdateComponentOrderPendingDialog(order, f"Update order for {self.component.part_name}", self)
+        if dialog.exec():
+            if dialog.action == "CANCEL_ORDER":
+                self.component.remove_order(order)
+            elif dialog.action == "UPDATE_ORDER":
+                order.notes = dialog.get_notes()
+                order.quantity = dialog.get_order_quantity()
+            elif dialog.action == "ADD_INCOMING_QUANTITY":
+                quantity_to_add = dialog.get_order_quantity()
+                remaining_quantity = order.quantity - quantity_to_add
+                old_quantity = self.component.quantity
+                new_quantity = old_quantity + quantity_to_add
+                self.component.quantity = new_quantity
+                self.component.latest_change_quantity = f"Used: Order pending - add quantity\nChanged from {old_quantity} to {new_quantity} at {datetime.now().strftime('%B %d %A %Y %I:%M:%S %p')}"
+                order.quantity = remaining_quantity
+                if remaining_quantity <= 0:
+                    msg = QMessageBox(QMessageBox.Icon.Information, "Order", f"All the quantity from this order has been added, this order will now be removed from {self.component.part_name}", QMessageBox.StandardButton.Ok, self)
+                    if msg.exec():
+                        self.component.remove_order(order)
+            else: # You never know.
+                order_status_button.setChecked(True)
+                return
+            self.parent.components_inventory.save()
+            self.parent.sync_changes()
+            self.parent.sort_components()
+            self.parent.select_last_selected_item()
+            self.load_ui()
+        else: # Close order pressed
+            order_status_button.setChecked(True)
+
+    def date_changed(self, order: Order, arrival_date: QDateEdit):
+        order.expected_arrival_time = arrival_date.date().toString("yyyy-MM-dd")
+        self.parent.components_inventory.save()
+        self.parent.sync_changes()
+
+    def clear_layout(self, layout: QVBoxLayout | QWidget) -> None:
+        with contextlib.suppress(AttributeError):
+            if layout is not None:
+                while layout.count():
+                    item = layout.takeAt(0)
+                    widget = item.widget()
+                    if widget is not None:
+                        widget.deleteLater()
+                    else:
+                        self.clear_layout(item.layout())
 
 
 class ComponentsTab(QWidget):
@@ -381,35 +500,6 @@ class ComponentsTab(QWidget):
 
             col_index += 1
 
-            # ORDER STATUS
-            order_status_button = OrderStatusButton()
-            order_status_button.setChecked(component.is_order_pending)
-            order_status_button.clicked.connect(
-                partial(
-                    self.order_status_button_edit_inventory,
-                    component,
-                    order_status_button,
-                )
-            )
-            order_status_button.setStyleSheet("margin-top: 3%; margin-bottom: 3%; margin-left: 5%; margin-right: 5%;")
-            current_table.setCellWidget(row_index, col_index, order_status_button)
-            col_index += 1
-
-            if component.is_order_pending:
-                arrival_date = QDateEdit(self)
-                arrival_date.setStyleSheet("border-radius: 0px;")
-                order_status_button.setText(f"Order Pending ({int(component.order_pending_quantity)})")
-                year, month, day = map(int, component.expected_arrival_time.split("-"))
-                date = QDate(year, month, day)
-                arrival_date.wheelEvent = lambda event: None
-                arrival_date.setDate(date)
-                arrival_date.setCalendarPopup(True)
-                arrival_date.dateChanged.connect(partial(self.arrival_date_change_edit_inventory, component, arrival_date))
-                current_table.setCellWidget(row_index, col_index, arrival_date)
-                order_status_button.setToolTip(f"Order Pending was set at {component.order_pending_date} for {component.order_pending_quantity} items")
-
-            col_index += 1
-
             # PURCHASE ORDER
             btn_po = POPushButton(self)
             btn_po.setMenu(po_menu)
@@ -418,6 +508,10 @@ class ComponentsTab(QWidget):
             self.po_buttons.append(btn_po)
 
             col_index += 1
+
+            # ORDER WIDGET
+            order_widget = OrderWidget(component, self)
+            current_table.setCellWidget(row_index, col_index, order_widget)
 
             self.update_component_row_color(current_table, component)
 
@@ -875,56 +969,6 @@ class ComponentsTab(QWidget):
                     self.listWidget_itemnames.setCurrentRow(row)
                     break
 
-    def arrival_date_change_edit_inventory(self, component: Component, arrival_date: QDateEdit):
-        component.expected_arrival_time = arrival_date.date().toString("yyyy-MM-dd")
-        self.components_inventory.save()
-        self.sync_changes()
-
-    def order_status_button_edit_inventory(self, component: Component, button: OrderStatusButton) -> None:
-        self.last_selected_component = component.name
-        # part_number = self.get_value_from_category(item_name, "part_number")
-        if button.isChecked():
-            select_date_dialog = SetOrderPendingDialog(
-                f'Set an expected arrival time for "{component.part_name}" and the number of parts ordered',
-                "Parts Ordered:",
-                self,
-            )
-            if select_date_dialog.exec():
-                component.expected_arrival_time = select_date_dialog.get_selected_date()
-                component.order_pending_quantity = select_date_dialog.get_order_quantity()
-                component.order_pending_date = datetime.now().strftime("%Y-%m-%d")
-                component.is_order_pending = button.isChecked()
-                self.components_inventory.save()
-                self.sync_changes()
-                self.sort_components()
-                self.select_last_selected_item()
-            else:
-                button.setChecked(False)
-                return
-        elif not button.isChecked():
-            dialog = OrderPendingQuantityDialog(self)
-            dialog.set_quantity_input(component.part_name, component.order_pending_quantity)
-            # quantity_to_add, ok = QInputDialog.getDouble(self, "Add Quantity", f'Do you want to add the incoming quantity for:\n\n{}.\n\nPress "OK" to update quantity.', )
-            if dialog.exec():
-                if dialog.cancel_order:
-                    component.is_order_pending = False
-                else:
-                    quantity_to_add = dialog.input_quantity.value()
-                    remaining_quantity = component.order_pending_quantity - quantity_to_add
-                    old_quantity = component.quantity
-                    new_quantity = old_quantity + quantity_to_add
-                    component.quantity = new_quantity
-                    component.latest_change_quantity = f"Used: Order pending - add quantity\nChanged from {old_quantity} to {new_quantity} at {datetime.now().strftime('%B %d %A %Y %I:%M:%S %p')}"
-                    component.order_pending_quantity = remaining_quantity
-                    if remaining_quantity <= 0:
-                        component.is_order_pending = False
-                self.components_inventory.save()
-                self.sync_changes()
-                self.sort_components()
-                self.select_last_selected_item()
-            else:
-                button.setChecked(True)
-
     def open_po(self, po_name: str = None) -> None:
         if po_name is None:
             input_dialog = SelectItemDialog(DialogButtons.open_cancel, "Open PO", "Select a PO to open", get_all_po(), self)
@@ -994,10 +1038,13 @@ class ComponentsTab(QWidget):
             html += "</tr>"
             html += "</thead>"
             html += '<tbody>'
+            order_status = ""
             for component in components:
-                order_status = "No order is pending"
-                if component.is_order_pending:
-                    order_status = f"Order is pending since {component.order_pending_date} for {component.order_pending_quantity} quantity and expected to arrive at {component.expected_arrival_time}"
+                if component.orders:
+                    for order in component.orders:
+                        order_status += f"{order}<br>"
+                else:
+                    order_status = "No order is pending"
                 html += f"""<tr style="border-bottom: 1px solid black;">
                 <td>{component.part_name}</td>
                 <td>{component.part_number}</td>
@@ -1008,12 +1055,12 @@ class ComponentsTab(QWidget):
                 <td>{order_status}</td>
                 </tr>"""
             html += "</tbody></table><body><html>"
-        with open("print_selected_parts.html", "w", encoding="utf-8") as f:
-            f.write(html)
-        self.parent.open_print_selected_parts()
+            with open("print_selected_parts.html", "w", encoding="utf-8") as f:
+                f.write(html)
+            self.parent.open_print_selected_parts()
 
     def update_component_row_color(self, table, component: Component):
-        if component.is_order_pending:
+        if component.orders:
             self.set_table_row_color(table, self.table_components_widgets[component]["row"], "#29422c")
         elif component.quantity <= component.red_quantity_limit:
             self.set_table_row_color(table, self.table_components_widgets[component]["row"], "#3F1E25")

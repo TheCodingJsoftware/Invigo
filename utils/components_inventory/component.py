@@ -3,6 +3,7 @@ from typing import Union
 
 from utils.inventory.category import Category
 from utils.inventory.inventory_item import InventoryItem
+from utils.components_inventory.order import Order
 
 
 class Component(InventoryItem):
@@ -25,10 +26,8 @@ class Component(InventoryItem):
         self.latest_change_price: str = "Nothing recorded"
         self.red_quantity_limit: float = 0.0
         self.yellow_quantity_limit: float = 0.0
-        self.expected_arrival_time: str = ""
-        self.order_pending_quantity: float = 0.0
-        self.order_pending_date: str = ""
-        self.is_order_pending: bool = False
+        self.orders: list[Order] = []
+
         self.load_data(data)
 
     def get_exchange_rate(self) -> float:
@@ -52,6 +51,12 @@ class Component(InventoryItem):
         super().remove_from_category(category)
         if len(self.categories) == 0:
             self.components_inventory.remove_component(self)
+
+    def add_order(self, order: Order):
+        self.orders.append(order)
+
+    def remove_order(self, order: Order):
+        self.orders.remove(order)
 
     def get_category_quantity(self, category: str | Category) -> float:
         if isinstance(category, str):
@@ -86,10 +91,12 @@ class Component(InventoryItem):
         self.latest_change_price: str = data.get("latest_change_price", "Nothing recorded")
         self.red_quantity_limit: float = data.get("red_quantity_limit", 10.0)
         self.yellow_quantity_limit: float = data.get("yellow_quantity_limit", 20.0)
-        self.expected_arrival_time: str = data.get("expected_arrival_time", "")
-        self.order_pending_quantity: float = data.get("order_pending_quantity", 0.0)
-        self.order_pending_date: str = data.get("order_pending_date", "")
-        self.is_order_pending: bool = data.get("is_order_pending", False)
+
+        self.orders.clear()
+        for order_data in data.get("orders", []):
+            order = Order(order_data)
+            self.add_order(order)
+
         self.categories.clear()
         categories = data.get("categories", [])
         for category in self.components_inventory.get_categories():
@@ -114,9 +121,6 @@ class Component(InventoryItem):
             "image_path": self.image_path,
             "red_quantity_limit": self.red_quantity_limit,
             "yellow_quantity_limit": self.yellow_quantity_limit,
-            "expected_arrival_time": self.expected_arrival_time,
-            "order_pending_quantity": self.order_pending_quantity,
-            "order_pending_date": self.order_pending_date,
-            "is_order_pending": self.is_order_pending,
+            "orders": [order.to_dict() for order in self.orders],
             "categories": [category.name for category in self.categories],
         }

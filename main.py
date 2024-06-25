@@ -94,8 +94,8 @@ from utils.workspace.workspace_settings import WorkspaceSettings
 __author__: str = "Jared"
 __copyright__: str = "Copyright 2022-2024, TheCodingJ's"
 __license__: str = "MIT"
-__version__: str = "v3.0.28"
-__updated__: str = "2024-06-24 20:30:23"
+__version__: str = "v3.0.29"
+__updated__: str = "2024-06-25 13:34:08"
 __maintainer__: str = "Jared"
 __email__: str = "jared@pinelandfarms.ca"
 __status__: str = "Production"
@@ -204,10 +204,6 @@ class MainWindow(QMainWindow):
         # self.quote_planner_tab_widget.add_job(Job("Job0", None))
         self.clear_layout(self.job_planner_layout)
         self.job_planner_layout.addWidget(self.job_planner_widget)
-
-        # self.user_workspace = Workspace("user_workspace", self.components_inventory, self.laser_cut_inventory)
-        # self.admin_workspace = Workspace("admin_workspace", self.components_inventory, self.laser_cut_inventory)
-        # self.history_workspace = Workspace("history_workspace", self.components_inventory, self.laser_cut_inventory)
 
         self.components_tab_widget: ComponentsTab = None
         self.components_tab_widget_last_selected_tab_index: int = 0  # * Used inside components_tab.py
