@@ -888,10 +888,12 @@ border-top-left-radius: 0px;
         self.pushButton_laser_cut_parts = self.findChild(QPushButton, "pushButton_laser_cut_parts")
         self.pushButton_laser_cut_parts.setCursor(Qt.CursorShape.PointingHandCursor)
         self.laser_cut_widget = self.findChild(QWidget, "laser_cut_widget")
+        self.laser_cut_widget.setHidden(True)
         self.apply_stylesheet_to_toggle_buttons(self.pushButton_laser_cut_parts, self.laser_cut_widget)
         self.pushButton_components = self.findChild(QPushButton, "pushButton_components")
         self.pushButton_components.setCursor(Qt.CursorShape.PointingHandCursor)
         self.component_widget = self.findChild(QWidget, "component_widget")
+        self.component_widget.setHidden(True)
         self.apply_stylesheet_to_toggle_buttons(self.pushButton_components, self.component_widget)
         self.pushButton_sub_assemblies = self.findChild(QPushButton, "pushButton_sub_assemblies")
         self.pushButton_sub_assemblies.setCursor(Qt.CursorShape.PointingHandCursor)
@@ -1165,10 +1167,10 @@ QPushButton:checked:pressed#assembly_button_drop_menu {
             if not os.path.exists(target_dir):
                 os.makedirs(target_dir)
 
-            shutil.copyfile(file_path, target_path)
-            self.assembly.assembly_files.append(target_path)
-
-            self.add_assembly_drag_file_widget(files_layout, target_path)
+            with contextlib.suppress(shutil.SameFileError):
+                shutil.copyfile(file_path, target_path)
+                self.assembly.assembly_files.append(target_path)
+                self.add_assembly_drag_file_widget(files_layout, target_path)
         self.upload_files(file_paths)
         self.changes_made()
 
@@ -1449,6 +1451,7 @@ QPushButton:checked:pressed#assembly_button_drop_menu {
         self.laser_cut_part_table_items[laser_cut_part].update({"thickness": thicknesses_combobox})
 
         quantity_item = QTableWidgetItem(str(laser_cut_part.quantity))
+        quantity_item.setTextAlignment(Qt.AlignmentFlag.AlignCenter)
         self.laser_cut_parts_table.setItem(current_row, self.laser_cut_parts_table.quantity_column, quantity_item)
         self.laser_cut_part_table_items[laser_cut_part].update({"quantity": quantity_item})
 
@@ -1669,6 +1672,7 @@ QPushButton:checked:pressed#assembly_button_drop_menu {
         for sub_assembly in self.assembly.sub_assemblies:
             sub_assembly.group = self.assembly.group
             self.load_sub_assembly(sub_assembly)
+        self.sub_assemblies_toolbox.close_all()
 
     def load_sub_assembly(self, assembly: Assembly):
         sub_assembly_widget = self.add_sub_assembly(assembly)

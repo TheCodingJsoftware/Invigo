@@ -1312,7 +1312,7 @@ background-color: rgba(25, 25, 25, 0.6);
         if 0 <= index < len(self.buttons):
             self.buttons[index].click()
             self.buttons[index].setChecked(False)
-            self.buttons[index].setText("   🡇")
+            self.buttons[index].setText("🡇")
             self.widgets[index].setVisible(True)
             self.delete_buttons[index].setStyleSheet("border-radius: 0px; border-top-right-radius: 5px; border-bottom-right-radius: 0px;")
             shadow = QGraphicsDropShadowEffect(self)
@@ -1325,7 +1325,7 @@ background-color: rgba(25, 25, 25, 0.6);
     def close(self, index: int) -> QWidget:
         if 0 <= index < len(self.buttons):
             self.buttons[index].click()
-            self.buttons[index].setText("   🡆")
+            self.buttons[index].setText("🡆")
             self.buttons[index].setChecked(True)
             self.widgets[index].setVisible(False)
             self.delete_buttons[index].setStyleSheet("border-radius: 0px; border-top-right-radius: 5px; border-bottom-right-radius: 5px;")
@@ -1341,12 +1341,12 @@ background-color: rgba(25, 25, 25, 0.6);
             button.click()
             button.click()
             button.setChecked(True)
-            button.setText("   🡆")
+            button.setText("🡆")
             widget.setVisible(False)
-            shadow = QGraphicsDropShadowEffect(self)
-            shadow.setBlurRadius(10)  # Adjust the blur radius as desired
-            shadow.setColor(QColor(0, 0, 0, 255))  # Set the shadow color and opacity
-            shadow.setOffset(0, 0)  # Set the shadow offset (x, y)
+            # shadow = QGraphicsDropShadowEffect(self)
+            # shadow.setBlurRadius(10)  # Adjust the blur radius as desired
+            # shadow.setColor(QColor(0, 0, 0, 255))  # Set the shadow color and opacity
+            # shadow.setOffset(0, 0)  # Set the shadow offset (x, y)
             # widget.parentWidget().setGraphicsEffect(shadow)
             input_box.setStyleSheet("background-color: rgba(71, 71, 71, 110); border-color: rgba(76, 76, 76, 110); border-bottom-right-radius: 5px;")
             delete_button.setStyleSheet("border-radius: 0px; border-top-right-radius: 5px; border-bottom-right-radius: 5px;")

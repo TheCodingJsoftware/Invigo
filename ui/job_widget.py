@@ -142,6 +142,7 @@ class JobWidget(QWidget):
         group_widget = self.add_group(group)
         for assembly in group.assemblies:
             group_widget.load_assembly(assembly)
+        self.groups_toolbox.close_all()
 
     def group_name_renamed(self, group: Group, new_group_name: QLineEdit):
         group.name = new_group_name.text()

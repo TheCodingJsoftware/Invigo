@@ -88,6 +88,7 @@ border-top-left-radius: 0px;
         for sub_assembly in assembly.sub_assemblies:
             sub_assembly.group = self.group
             assembly_widget.load_sub_assembly(sub_assembly)
+        self.assemblies_toolbox.close_all()
 
     def assembly_name_renamed(self, assembly: Assembly, new_assembly_name: QLineEdit):
         assembly.name = new_assembly_name.text()
