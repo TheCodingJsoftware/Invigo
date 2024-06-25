@@ -258,7 +258,7 @@ class ComponentsTab(QWidget):
             table_item_part_name = QTableWidgetItem(component.part_name)
             table_item_part_name.setFont(self.tables_font)
             table_item_part_name.setTextAlignment(Qt.AlignmentFlag.AlignCenter | Qt.AlignmentFlag.AlignVCenter)
-            table_item_part_name.setToolTip(f"{component.part_name}\n\nItem is present in:\n{component.print_categories()}")
+            table_item_part_name.setToolTip(f"{component.part_name}\n\nComponent is present in:\n{component.print_categories()}")
             current_table.setItem(row_index, col_index, table_item_part_name)
             self.table_components_widgets[component].update({"part_name": table_item_part_name})
 
@@ -267,7 +267,7 @@ class ComponentsTab(QWidget):
             # PART NUMBER
             table_item_part_number = QTableWidgetItem(component.part_number)
             table_item_part_number.setFont(self.tables_font)
-            table_item_part_number.setToolTip(f"{component.part_number}\n\nItem is present in:\n{component.print_categories()}")
+            table_item_part_number.setToolTip(f"{component.part_number}\n\nComponent is present in:\n{component.print_categories()}")
             table_item_part_number.setTextAlignment(Qt.AlignmentFlag.AlignCenter | Qt.AlignmentFlag.AlignVCenter)
             current_table.setItem(row_index, col_index, table_item_part_number)
             self.table_components_widgets[component].update({"part_number": table_item_part_number})
@@ -589,9 +589,9 @@ class ComponentsTab(QWidget):
                 if not (selected_components := self.get_selected_components()):
                     return
                 existing_components: list[Component] = []
-                for laser_cut_part in selected_components:
-                    if new_category in laser_cut_part.categories:
-                        existing_components.append(laser_cut_part)
+                for component in selected_components:
+                    if new_category in component.categories:
+                        existing_components.append(component)
                 if existing_components:
                     message = f"The following laser cut parts will be ignored since they already exist in {new_category.name}:\n"
                     for i, existing_part in enumerate(existing_components):
@@ -603,10 +603,15 @@ class ComponentsTab(QWidget):
                     response = msg.exec()
                     if response == QMessageBox.StandardButton.Cancel:
                         return
-                for laser_cut_part in selected_components:
-                    if laser_cut_part in existing_components:
+                for component in selected_components:
+                    if component in existing_components:
                         continue
-                    laser_cut_part.add_to_category(new_category)
+                    component.add_to_category(new_category)
+                self.category_tables[self.category].blockSignals(True)
+                self.table_components_widgets[component]["unit_quantity"].setToolTip(f"Unit quantities:\n{component.print_category_quantities()}")
+                self.table_components_widgets[component]["part_name"].setToolTip(f"{component.part_name}\n\nComponent is present in:\n{component.print_categories()}")
+                self.table_components_widgets[component]["part_number"].setToolTip(f"{component.part_number}\n\nComponent is present in:\n{component.print_categories()}")
+                self.category_tables[self.category].blockSignals(False)
                 self.components_inventory.save()
                 self.sync_changes()
 
@@ -627,9 +632,10 @@ class ComponentsTab(QWidget):
                 if not (selected_components := self.get_selected_components()):
                     return
                 for component in selected_components:
-                    component.remove_from_category(self.category)
-                    if len(component.categories) == 0:
+                    if len(component.categories) <= 1:
                         self.components_inventory.remove_component(component)
+                    else:
+                        component.remove_from_category(self.category)
                 self.components_inventory.save()
                 self.sync_changes()
                 self.load_table()

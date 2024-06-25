@@ -59,7 +59,7 @@ class Component(InventoryItem):
         try:
             return self.category_quantities[category]
         except KeyError:
-            return 0.0
+            return 1.0
 
     def set_category_quantity(self, category: str | Category, quantity: float) -> float:
         if isinstance(category, str):
@@ -102,7 +102,7 @@ class Component(InventoryItem):
     def to_dict(self) -> dict[str, dict]:
         return {
             "quantity": round(self.quantity, 2),
-            "category_quantities": {category.name: self.category_quantities.get(category, 0.0) for category in self.categories},
+            "category_quantities": {category.name: self.category_quantities.get(category, 1.0) for category in self.categories},
             "latest_change_quantity": self.latest_change_quantity,
             "part_name": self.part_name,
             "price": round(self.price, 2),

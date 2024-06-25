@@ -537,7 +537,7 @@ class LaserCutTab(QWidget):
 
                 table_item_name = QTableWidgetItem(laser_cut_part.name)
                 table_item_name.setFont(self.tables_font)
-                table_item_name.setToolTip(f"{laser_cut_part.geofile_name}\n\nPresent in:\n{laser_cut_part.print_categories()}")
+                table_item_name.setToolTip(f"{laser_cut_part.geofile_name}\n\n Laser cut part is present in:\n{laser_cut_part.print_categories()}")
                 current_table.setItem(row_index, current_table.part_name_column, table_item_name)
                 self.table_laser_cut_parts_widgets[laser_cut_part].update({"name": table_item_name})
 
@@ -548,12 +548,13 @@ class LaserCutTab(QWidget):
                 current_table.setItem(row_index, current_table.price_column, table_item_price)
                 self.table_laser_cut_parts_widgets[laser_cut_part].update({"price": table_item_price})
 
-                # UNIT QUANTITY
-                table_item_unit_quantity = QTableWidgetItem(f"{laser_cut_part.unit_quantity:,.2f}")
-                table_item_unit_quantity.setTextAlignment(Qt.AlignmentFlag.AlignCenter | Qt.AlignmentFlag.AlignVCenter)
-                table_item_unit_quantity.setFont(self.tables_font)
-                current_table.setItem(row_index, current_table.unit_quantity_column, table_item_unit_quantity)
-                self.table_laser_cut_parts_widgets[laser_cut_part].update({"unit_quantity": table_item_unit_quantity})
+                # CATEGORY QUANTITY
+                table_item_category_quantity = QTableWidgetItem(f"{laser_cut_part.get_category_quantity(self.category):,.2f}")
+                table_item_category_quantity.setTextAlignment(Qt.AlignmentFlag.AlignCenter | Qt.AlignmentFlag.AlignVCenter)
+                table_item_category_quantity.setFont(self.tables_font)
+                table_item_category_quantity.setToolTip(f"Unit quantities:\n{laser_cut_part.print_category_quantities()}")
+                current_table.setItem(row_index, current_table.unit_quantity_column, table_item_category_quantity)
+                self.table_laser_cut_parts_widgets[laser_cut_part].update({"unit_quantity": table_item_category_quantity})
 
                 # QUANTITY
                 table_item_quantity = QTableWidgetItem(f"{laser_cut_part.quantity:,.2f}")
@@ -684,6 +685,10 @@ class LaserCutTab(QWidget):
                 if laser_cut_part in existing_laser_cut_parts:
                     continue
                 laser_cut_part.move_to_category(self.category, new_category)
+                self.category_tables[self.category].blockSignals(True)
+                self.table_laser_cut_parts_widgets[laser_cut_part]["unit_quantity"].setToolTip(f"Unit quantities:\n{laser_cut_part.print_category_quantities()}")
+                self.table_laser_cut_parts_widgets[laser_cut_part]["name"].setToolTip(f"{laser_cut_part.geofile_name}\n\n Laser cut part is present in:\n{laser_cut_part.print_categories()}")
+                self.category_tables[self.category].blockSignals(False)
             self.laser_cut_inventory.save()
             self.sync_changes()
             self.sort_laser_cut_parts()
@@ -723,6 +728,10 @@ class LaserCutTab(QWidget):
                 if laser_cut_part in existing_laser_cut_parts:
                     continue
                 laser_cut_part.add_to_category(new_category)
+                self.category_tables[self.category].blockSignals(True)
+                self.table_laser_cut_parts_widgets[laser_cut_part]["unit_quantity"].setToolTip(f"Unit quantities:\n{laser_cut_part.print_category_quantities()}")
+                self.table_laser_cut_parts_widgets[laser_cut_part]["name"].setToolTip(f"{laser_cut_part.geofile_name}\n\n Laser cut part is present in:\n{laser_cut_part.print_categories()}")
+                self.category_tables[self.category].blockSignals(False)
             self.laser_cut_inventory.save()
             self.sync_changes()
 
@@ -832,12 +841,10 @@ class LaserCutTab(QWidget):
             return
         old_quantity = laser_cut_part.quantity
         laser_cut_part.name = self.table_laser_cut_parts_widgets[laser_cut_part]["name"].text()
-        laser_cut_part.unit_quantity = float(
-            sympy.sympify(
-                self.table_laser_cut_parts_widgets[laser_cut_part]["unit_quantity"].text().strip().replace(",", ""),
-                evaluate=True,
-            )
-        )
+        laser_cut_part.set_category_quantity(self.category, sympy.sympify(
+            self.table_laser_cut_parts_widgets[laser_cut_part]["unit_quantity"].text().strip().replace(",", ""),
+            evaluate=True,
+        ))
         laser_cut_part.quantity = float(
             sympy.sympify(
                 self.table_laser_cut_parts_widgets[laser_cut_part]["quantity"].text().strip().replace(",", ""),
@@ -850,7 +857,8 @@ class LaserCutTab(QWidget):
         self.laser_cut_inventory.save()
         self.sync_changes()
         self.category_tables[self.category].blockSignals(True)
-        self.table_laser_cut_parts_widgets[laser_cut_part]["unit_quantity"].setText(f"{laser_cut_part.unit_quantity:,.2f}")
+        self.table_laser_cut_parts_widgets[laser_cut_part]["unit_quantity"].setText(f"{laser_cut_part.get_category_quantity(self.category):,.2f}")
+        self.table_laser_cut_parts_widgets[laser_cut_part]["unit_quantity"].setToolTip(f"Unit quantities:\n{laser_cut_part.print_category_quantities()}")
         self.table_laser_cut_parts_widgets[laser_cut_part]["quantity"].setText(f"{laser_cut_part.quantity:,.2f}")
         self.table_laser_cut_parts_widgets[laser_cut_part]["modified_date"].setText(laser_cut_part.modified_date)
         self.category_tables[self.category].blockSignals(False)
@@ -917,11 +925,11 @@ class LaserCutTab(QWidget):
                 self.category_tables[self.category].blockSignals(True)
                 for laser_cut_part, tables_item in self.table_laser_cut_parts_widgets.items():
                     if add_or_remove == "ADD":
-                        laser_cut_part.modified_date = f"{os.getlogin().title()} Used: All Items in Category - add quantity. Changed from {laser_cut_part.quantity} to {laser_cut_part.quantity + (laser_cut_part.unit_quantity * multiplier)} at {datetime.now().strftime('%B %d %A %Y %I:%M:%S %p')}"
-                        laser_cut_part.quantity = laser_cut_part.quantity + (multiplier * laser_cut_part.unit_quantity)
+                        laser_cut_part.modified_date = f"{os.getlogin().title()} Used: All Items in Category - add quantity. Changed from {laser_cut_part.quantity} to {laser_cut_part.quantity + (laser_cut_part.get_category_quantity(self.category) * multiplier)} at {datetime.now().strftime('%B %d %A %Y %I:%M:%S %p')}"
+                        laser_cut_part.quantity = laser_cut_part.quantity + (multiplier * laser_cut_part.get_category_quantity(self.category))
                     elif add_or_remove == "REMOVE":
-                        laser_cut_part.modified_date = f"{os.getlogin().title()} Used: All Items in Category - remove quantity. Changed from {laser_cut_part.quantity} to {laser_cut_part.quantity - (laser_cut_part.unit_quantity * multiplier)} at {datetime.now().strftime('%B %d %A %Y %I:%M:%S %p')}"
-                        laser_cut_part.quantity = laser_cut_part.quantity - (multiplier * laser_cut_part.unit_quantity)
+                        laser_cut_part.modified_date = f"{os.getlogin().title()} Used: All Items in Category - remove quantity. Changed from {laser_cut_part.quantity} to {laser_cut_part.quantity - (laser_cut_part.get_category_quantity(self.category) * multiplier)} at {datetime.now().strftime('%B %d %A %Y %I:%M:%S %p')}"
+                        laser_cut_part.quantity = laser_cut_part.quantity - (multiplier * laser_cut_part.get_category_quantity(self.category))
                     tables_item["quantity"].setText(str(laser_cut_part.quantity))
                     tables_item["quantity"].setToolTip(laser_cut_part.modified_date)
                 self.category_tables[self.category].blockSignals(False)
@@ -1028,7 +1036,7 @@ class LaserCutTab(QWidget):
                     paint_message = "Not painted"
                 html += f"""<tr style="border-bottom: 1px solid black;">
                 <td>{laser_cut_part.name}</td>
-                <td>{laser_cut_part.unit_quantity}</td>
+                <td>{laser_cut_part.get_category_quantity(self.category)}</td>
                 <td>{laser_cut_part.quantity}</td>
                 <td>{paint_message.replace("\n", "<br>")}</td>
                 <td>{laser_cut_part.shelf_number}</td>

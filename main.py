@@ -91,13 +91,12 @@ from utils.workspace.job_manager import JobManager
 from utils.workspace.workspace import Workspace
 from utils.workspace.workspace_settings import WorkspaceSettings
 
-__author__: str = "Jared Gross"
+__author__: str = "Jared"
 __copyright__: str = "Copyright 2022-2024, TheCodingJ's"
-__credits__: list[str] = ["Jared Gross"]
 __license__: str = "MIT"
-__version__: str = "v3.0.27"
-__updated__: str = "2024-06-24 14:29:25"
-__maintainer__: str = "Jared Gross"
+__version__: str = "v3.0.28"
+__updated__: str = "2024-06-24 20:30:23"
+__maintainer__: str = "Jared"
 __email__: str = "jared@pinelandfarms.ca"
 __status__: str = "Production"
 

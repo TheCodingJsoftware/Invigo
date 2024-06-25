@@ -23,7 +23,7 @@ class LaserCutPart(InventoryItem):
         self.quantity: int = 0
         self.red_quantity_limit: int = 10
         self.yellow_quantity_limit: int = 20
-        self.unit_quantity: int = 1
+        self.category_quantities: dict[Category, float] = {}
 
         self.machine_time: float = 0.0
         self.weight: float = 0.0
@@ -95,11 +95,30 @@ class LaserCutPart(InventoryItem):
         if len(self.categories) == 0:
             self.laser_cut_inventory.remove_laser_cut_part(self)
 
+    def get_category_quantity(self, category: str | Category) -> float:
+        if isinstance(category, str):
+            category = self.laser_cut_inventory.get_category(category)
+        try:
+            return self.category_quantities[category]
+        except KeyError:
+            return 1.0
+
+    def set_category_quantity(self, category: str | Category, quantity: float) -> float:
+        if isinstance(category, str):
+            category = self.laser_cut_inventory.get_category(category)
+        self.category_quantities[category] = quantity
+
+    def print_category_quantities(self) -> str:
+        return "".join(f"{i + 1}. {category.name}: {self.get_category_quantity(category)}\n" for i, category in enumerate(self.categories))
+
     def load_data(self, data: dict[str, Union[str, int, float, bool]]):
         self.quantity: int = data.get("quantity", 0)
         self.red_quantity_limit: int = data.get("red_quantity_limit", 10)
         self.yellow_quantity_limit: int = data.get("yellow_quantity_limit", 20)
-        self.unit_quantity: int = data.get("unit_quantity", 1)
+        self.category_quantities.clear()
+        for category_name, unit_quantity in data.get("category_quantities", {}).items():
+            category = self.laser_cut_inventory.get_category(category_name)
+            self.category_quantities.update({category: unit_quantity})
         self.machine_time: float = data.get("machine_time", 0.0)
         self.weight: float = data.get("weight", 0.0)
         self.part_number: str = data.get("part_number", "")
@@ -172,7 +191,7 @@ class LaserCutPart(InventoryItem):
             "quantity": self.quantity,
             "red_quantity_limit": self.red_quantity_limit,
             "yellow_quantity_limit": self.yellow_quantity_limit,
-            "unit_quantity": self.unit_quantity,
+            "category_quantities": {category.name: self.category_quantities.get(category, 1.0) for category in self.categories},
             "machine_time": self.machine_time,
             "weight": self.weight,
             "surface_area": self.surface_area,
