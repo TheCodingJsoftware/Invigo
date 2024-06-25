@@ -1381,9 +1381,9 @@ class QuoteWidget(QWidget):
         profit_margin = self.doubleSpinBox_profit_margin_items_2.value() / 100
         overhead = self.doubleSpinBox_overhead_items_2.value() / 100
         for laser_cut_part, table_item_data in self.laser_cut_table_items.items():
-            bend_cost = float(table_item_data["bend_cost"].text().strip().replace("$", "").replace(",", ""))
-            labor_cost = float(table_item_data["labor_cost"].text().strip().replace("$", "").replace(",", ""))
-            quantity = float(table_item_data["quantity"].text().strip().replace(",", ""))
+            bend_cost = float(table_item_data["bend_cost"].text().strip().replace("$", "").replace(",", "").replace('"', "").replace("'", ""))
+            labor_cost = float(table_item_data["labor_cost"].text().strip().replace("$", "").replace(",", "").replace('"', "").replace("'", ""))
+            quantity = float(table_item_data["quantity"].text().strip().replace(",", "").replace('"', "").replace("'", ""))
             material = table_item_data["material"].currentText()
 
             laser_cut_part.quantity = quantity
@@ -1456,7 +1456,11 @@ class QuoteWidget(QWidget):
         add_item_dialog = AddComponentDialog(self)
         if add_item_dialog.exec():
             if not (component := self.components_inventory.get_component_by_name(add_item_dialog.get_part_number())):
-                component = Component(add_item_dialog.get_part_number(), {"quantity": add_item_dialog.get_current_quantity(), "part_name": add_item_dialog.get_name()}, self.components_inventory)
+                if not add_item_dialog.get_part_number():
+                    part_number = add_item_dialog.get_name()
+                else:
+                    part_number = add_item_dialog.get_part_number()
+                component = Component(part_number, {"quantity": add_item_dialog.get_current_quantity(), "part_name": add_item_dialog.get_name()}, self.components_inventory)
             self.quote.add_component(component)
             self.load_component_parts()
         self.quote_changed()

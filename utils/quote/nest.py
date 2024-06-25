@@ -56,7 +56,9 @@ class Nest:
         self.image_path = data.get("image_path", "images/404.jpeg")
         self.laser_cut_parts.clear()
         for laser_cut_part_name, laser_cut_part_data in data.get("laser_cut_parts", {}).items():
-            self.laser_cut_parts.append(LaserCutPart(laser_cut_part_name, laser_cut_part_data, self.laser_cut_inventory))
+            laser_cut_part = LaserCutPart(laser_cut_part_name, laser_cut_part_data, self.laser_cut_inventory)
+            laser_cut_part.nest = self
+            self.laser_cut_parts.append(laser_cut_part)
         try:
             sheet_name = list(data["sheet"].keys())[0]
             self.sheet = Sheet(

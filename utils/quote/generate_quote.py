@@ -182,7 +182,7 @@ class LaserCutPartsTable:
         html += '<thead><tr class="header-table-row">'
         for i, header in enumerate(self.headers):
             is_visible = "visible"
-            if self.title == "Quote" and header == "Shelf #":
+            if self.title == "Quote" and header in ["Shelf #", "Process"]:
                 is_visible = "hidden"
             elif self.title == "Workorder" and header in ["Unit Price", "Price"]:
                 is_visible = "hidden"
@@ -226,7 +226,7 @@ class ComponentsTable:
     def __init__(self, components: list[Component]) -> None:
         self.components = components
         self.server_directory = f"http://{get_server_ip_address()}"
-        self.headers = ["Picture", "Part Name", "Part #", "Shelf #", "Qty", "Price"]
+        self.headers = ["Picture", "Part Name", "Part #", "Shelf #", "Qty", "Unit Price", "Price"]
 
     def generate_components_data(self, component: Component) -> str:
         html = """<table class="dltrc" style="background:none;"><tbody>
@@ -288,12 +288,14 @@ class ComponentsTable:
             <td class="ui-table-cell-hidden">{component.shelf_number}</td>
             <td class="ui-table-cell-visible">{component.quantity}</td>
             <td class="ui-table-cell-visible">${component.price:,.2f}</td>
+            <td class="ui-table-cell-visible">${(component.price * component.quantity):,.2f}</td>
             </tr>"""
         html += f"""<tr>
         <td class="ui-table-cell-visible"></td>
         <td class="ui-table-cell-visible"></td>
         <td class="ui-table-cell-visible"></td>
         <td class="ui-table-cell-hidden"></td>
+        <td class="ui-table-cell-visible"></td>
         <td class="ui-table-cell-visible"></td>
         <td class="ui-table-cell-visible">Total: ${self.get_total_cost():,.2f}</td>
         </tr>"""
