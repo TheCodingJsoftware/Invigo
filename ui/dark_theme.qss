@@ -28,7 +28,9 @@ QMenuBar:disabled {
     color: #666666;
 }
 QMenu::item{
-    padding: 5px;
+    padding: 7px;
+    padding-right: 15px;
+    padding-left: 15px;
     background-color: #303030;
     border: 1px solid #303030;
 }

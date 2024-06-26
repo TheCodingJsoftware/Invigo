@@ -1339,10 +1339,29 @@ QPushButton:checked:pressed#assembly_button_drop_menu {
             self.components_table.setContextMenuPolicy(Qt.ContextMenuPolicy.CustomContextMenu)
 
             menu = QMenu(self)
-            action = QAction("Delete selected parts from assembly", self)
-            action.triggered.connect(self.delete_selected_components)
-            menu.addAction(action)
+
+            set_quantity_menu = QMenu("Set Quantity", menu)
+            for number in range(10):
+                action = QAction(str(number), set_quantity_menu)
+                action.triggered.connect(partial(self.handle_components_table_context_menu, "SET_QUANTITY", number))
+                set_quantity_menu.addAction(action)
+
+            delete_action = QAction("Delete", self)
+            delete_action.triggered.connect(self.delete_selected_components)
+
+            menu.addMenu(set_quantity_menu)
+            menu.addAction(delete_action)
+
             self.components_table.customContextMenuRequested.connect(partial(self.open_group_menu, menu))
+
+    def handle_components_table_context_menu(self, ACTION: str, selection: str | float | int):
+        if not (selected_components := self.get_selected_components()):
+            return
+        for component in selected_components:
+            if ACTION == "SET_QUANTITY":
+                component.quantity = float(selection)
+        self.load_components_table()
+        self.changes_made()
 
     # LASER CUT PART STUFF
     def load_laser_cut_parts_table(self):
@@ -1585,15 +1604,61 @@ QPushButton:checked:pressed#assembly_button_drop_menu {
         self.load_laser_cut_parts_table()
 
     def load_laser_cut_parts_table_context_menu(self):
-        if self.laser_cut_parts_table.contextMenuPolicy() != Qt.ContextMenuPolicy.CustomContextMenu:
-            self.laser_cut_parts_table.setContextMenuPolicy(Qt.ContextMenuPolicy.CustomContextMenu)
+        if self.laser_cut_parts_table.contextMenuPolicy() == Qt.ContextMenuPolicy.CustomContextMenu:
+            return
+        self.laser_cut_parts_table.setContextMenuPolicy(Qt.ContextMenuPolicy.CustomContextMenu)
 
-            menu = QMenu(self)
-            action = QAction("Delete selected parts from assembly", self)
-            action.triggered.connect(self.delete_selected_laser_cut_parts)
-            menu.addAction(action)
+        menu = QMenu(self)
 
-            self.laser_cut_parts_table.customContextMenuRequested.connect(partial(self.open_group_menu, menu))
+        material_menu = QMenu("Set Material", menu)
+        for material in self.sheet_settings.get_materials():
+            action = QAction(material, material_menu)
+            action.triggered.connect(partial(self.handle_laser_cut_parts_table_context_menu, "SET_MATERIAL", material))
+            material_menu.addAction(action)
+
+        thickness_menu = QMenu("Set Thickness", menu)
+        for thickness in self.sheet_settings.get_thicknesses():
+            action = QAction(thickness, thickness_menu)
+            action.triggered.connect(partial(self.handle_laser_cut_parts_table_context_menu, "SET_THICKNESS", thickness))
+            thickness_menu.addAction(action)
+
+        set_quantity_menu = QMenu("Set Quantity", menu)
+        for number in range(10):
+            action = QAction(str(number), set_quantity_menu)
+            action.triggered.connect(partial(self.handle_laser_cut_parts_table_context_menu, "SET_QUANTITY", number))
+            set_quantity_menu.addAction(action)
+
+        flow_tag_menu = QMenu("Set Flow Tag", menu)
+        for flow_tag in [f"{flow_tag}" for flow_tag in list(self.workspace_settings.get_all_laser_cut_part_flow_tags().values())]:
+            action = QAction(flow_tag, flow_tag_menu)
+            action.triggered.connect(partial(self.handle_laser_cut_parts_table_context_menu, "SET_FLOW_TAG", flow_tag))
+            flow_tag_menu.addAction(action)
+
+        delete_action = QAction("Delete", self)
+        delete_action.triggered.connect(self.delete_selected_laser_cut_parts)
+
+        menu.addMenu(material_menu)
+        menu.addMenu(thickness_menu)
+        menu.addMenu(set_quantity_menu)
+        menu.addMenu(flow_tag_menu)
+        menu.addAction(delete_action)
+
+        self.laser_cut_parts_table.customContextMenuRequested.connect(partial(self.open_group_menu, menu))
+
+    def handle_laser_cut_parts_table_context_menu(self, ACTION: str, selection: str | int | float):
+        if not (selected_laser_cut_parts := self.get_selected_laser_cut_parts()):
+            return
+        for laser_cut_part in selected_laser_cut_parts:
+            if ACTION == "SET_MATERIAL":
+                laser_cut_part.material = selection
+            elif ACTION == "SET_THICKNESS":
+                laser_cut_part.gauge = selection
+            elif ACTION == "SET_QUANTITY":
+                laser_cut_part.quantity = float(selection)
+            elif ACTION == "SET_FLOW_TAG":
+                laser_cut_part.flow_tag = self.workspace_settings.get_flow_tag_by_name(selection)
+        self.load_laser_cut_parts_table()
+        self.changes_made()
 
     # OTHER STUFF
     def file_downloaded(self, file_ext: str, file_name: str, open_when_done: bool):
@@ -1720,16 +1785,19 @@ QPushButton:checked:pressed#assembly_button_drop_menu {
 
     def sub_assembly_name_renamed(self, sub_assembly: Assembly, new_sub_assembly_name: QLineEdit):
         sub_assembly.name = new_sub_assembly_name.text()
+        self.changes_made()
 
     def duplicate_sub_assembly(self, sub_assembly: Assembly):
         new_sub_assembly = Assembly(f"{sub_assembly.name} - (Copy)", sub_assembly.to_dict(), self.assembly.group)
         self.load_sub_assembly(new_sub_assembly)
         self.assembly.add_sub_assembly(new_sub_assembly)
+        self.changes_made()
 
     def delete_sub_assembly(self, sub_assembly_widget: "AssemblyWidget"):
         self.sub_assembly_widgets.remove(sub_assembly_widget)
         self.sub_assemblies_toolbox.removeItem(sub_assembly_widget)
         self.assembly.remove_sub_assembly(sub_assembly_widget.assembly)
+        self.changes_made()
 
     def update_tables(self):
         self.load_components_table()

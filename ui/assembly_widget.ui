@@ -218,9 +218,15 @@
                <item>
                 <layout class="QHBoxLayout" name="horizontalLayout_4">
                  <property name="leftMargin">
-                  <number>3</number>
+                  <number>6</number>
+                 </property>
+                 <property name="topMargin">
+                  <number>6</number>
                  </property>
                  <property name="rightMargin">
+                  <number>6</number>
+                 </property>
+                 <property name="bottomMargin">
                   <number>3</number>
                  </property>
                  <item>
@@ -314,9 +320,15 @@
                <item>
                 <layout class="QHBoxLayout" name="horizontalLayout_3">
                  <property name="leftMargin">
-                  <number>3</number>
+                  <number>6</number>
+                 </property>
+                 <property name="topMargin">
+                  <number>6</number>
                  </property>
                  <property name="rightMargin">
+                  <number>6</number>
+                 </property>
+                 <property name="bottomMargin">
                   <number>3</number>
                  </property>
                  <item>
@@ -395,9 +407,9 @@
               <height>0</height>
              </size>
             </property>
-            <layout class="QVBoxLayout" name="verticalLayout_11" stretch="0,1">
+            <layout class="QVBoxLayout" name="verticalLayout_11" stretch="1,0">
              <property name="spacing">
-              <number>6</number>
+              <number>0</number>
              </property>
              <property name="leftMargin">
               <number>0</number>
@@ -412,18 +424,34 @@
               <number>0</number>
              </property>
              <item>
-              <layout class="QHBoxLayout" name="horizontalLayout_5">
+              <layout class="QVBoxLayout" name="sub_assembly_layout">
                <property name="leftMargin">
-                <number>3</number>
+                <number>9</number>
                </property>
                <property name="topMargin">
-                <number>3</number>
+                <number>9</number>
                </property>
                <property name="rightMargin">
-                <number>3</number>
+                <number>9</number>
                </property>
                <property name="bottomMargin">
-                <number>3</number>
+                <number>9</number>
+               </property>
+              </layout>
+             </item>
+             <item>
+              <layout class="QHBoxLayout" name="horizontalLayout_5">
+               <property name="leftMargin">
+                <number>6</number>
+               </property>
+               <property name="topMargin">
+                <number>0</number>
+               </property>
+               <property name="rightMargin">
+                <number>6</number>
+               </property>
+               <property name="bottomMargin">
+                <number>6</number>
                </property>
                <item>
                 <widget class="QPushButton" name="add_sub_assembly_button">
@@ -451,22 +479,6 @@
                  </property>
                 </spacer>
                </item>
-              </layout>
-             </item>
-             <item>
-              <layout class="QVBoxLayout" name="sub_assembly_layout">
-               <property name="leftMargin">
-                <number>9</number>
-               </property>
-               <property name="topMargin">
-                <number>9</number>
-               </property>
-               <property name="rightMargin">
-                <number>9</number>
-               </property>
-               <property name="bottomMargin">
-                <number>9</number>
-               </property>
               </layout>
              </item>
             </layout>

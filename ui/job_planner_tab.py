@@ -1,7 +1,8 @@
 import contextlib
+from functools import partial
 
 from PyQt6 import uic
-from PyQt6.QtCore import Qt, pyqtSignal
+from PyQt6.QtCore import Qt, pyqtSignal, QTimer
 from PyQt6.QtGui import QKeySequence, QShortcut
 from PyQt6.QtWidgets import QInputDialog, QPushButton, QVBoxLayout, QWidget
 
@@ -62,6 +63,7 @@ class JobPlannerTab(QWidget):
             job = Job(f"Enter Job Name{len(self.jobs)}", {}, self.job_manager)
             job.color = colors.get_random_color()
             job.job_status = JobStatus.PLANNING
+            job.order_number = self.parent.order_number
             self.job_manager.add_job(job)
         else:
             job = new_job
@@ -99,7 +101,8 @@ class JobPlannerTab(QWidget):
 
             old_widget.deleteLater()
 
-            self.set_job_widget_scroll_position(job, new_widget)
+            self.set_job_widget_scroll_position_with_delay(job, new_widget)
+            self.current_job = job
 
     def load_job(self, job: Job):
         job_widget = self.add_job(job)
@@ -107,12 +110,22 @@ class JobPlannerTab(QWidget):
             job_widget.load_group(group)
         self.current_job = job
         self.job_tab.setCurrentIndex(self.get_tab_index(job))
-        self.set_job_widget_scroll_position(job, job_widget)
+        self.set_job_widget_scroll_position_with_delay(job, job_widget)
 
     def set_job_widget_scroll_position(self, job: Job, job_widget: JobWidget):
         x, y = self.job_preferences.get_job_scroll_position(job.name)
         job_widget.scrollArea.verticalScrollBar().setValue(y)
         job_widget.scrollArea.horizontalScrollBar().setValue(x)
+
+    def set_job_widget_scroll_position_with_delay(self, job: Job, job_widget: JobWidget):
+        self.timer = QTimer(self) # For setting scroll in job widget
+        self.timer.setSingleShot(True)
+        self.timer.timeout.connect(partial(self.execute_set_job_widget_scroll_position, job, job_widget))
+        self.timer.start(500)
+
+    def execute_set_job_widget_scroll_position(self, job: Job, job_widget: JobWidget):
+        self.set_job_widget_scroll_position(job, job_widget)
+        self.timer = None  # Clean up the timer
 
     def get_tab_index(self, job: Job) -> int:
         return next(

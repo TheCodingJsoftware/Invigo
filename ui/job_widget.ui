@@ -31,9 +31,6 @@
      <property name="orientation">
       <enum>Qt::Vertical</enum>
      </property>
-     <property name="handleWidth">
-      <number>10</number>
-     </property>
      <widget class="QWidget" name="job_settings_widget" native="true">
       <property name="sizePolicy">
        <sizepolicy hsizetype="Preferred" vsizetype="Maximum">
@@ -140,7 +137,7 @@
              <item>
               <widget class="QPushButton" name="pushButton_get_order_number">
                <property name="enabled">
-                <bool>false</bool>
+                <bool>true</bool>
                </property>
                <property name="text">
                 <string>Get latest order number</string>
@@ -313,7 +310,7 @@ QPushButton#pushButton_reload_job:flat:hover {
             <x>0</x>
             <y>0</y>
             <width>1042</width>
-            <height>199</height>
+            <height>202</height>
            </rect>
           </property>
           <property name="sizePolicy">

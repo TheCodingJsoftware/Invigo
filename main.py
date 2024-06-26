@@ -180,6 +180,9 @@ class MainWindow(QMainWindow):
     def __init__(self):
         super(MainWindow, self).__init__()
         uic.loadUi("ui/main_menu.ui", self)
+        self.threads: list[QThread] = []
+        self.order_number: int = -1
+        self.get_order_number_thread()
 
         self.settings_file = Settings()
         self.sheet_settings = SheetSettings()
@@ -203,7 +206,9 @@ class MainWindow(QMainWindow):
         self.job_planner_widget.savJob.connect(self.save_job)
         self.job_planner_widget.saveJobAs.connect(self.save_job_as)
         self.job_planner_widget.reloadJob.connect(self.reload_job)
-        self.job_planner_widget.load_job(Job("Enter Job Name0", {}, self.job_manager))
+        template_job = Job("Enter Job Name0", {}, self.job_manager)
+        template_job.order_number = self.order_number
+        self.job_planner_widget.load_job(template_job)
         # self.quote_planner_tab_widget.add_job(Job("Job0", None))
         self.clear_layout(self.job_planner_layout)
         self.job_planner_layout.addWidget(self.job_planner_widget)
@@ -240,7 +245,6 @@ class MainWindow(QMainWindow):
             msg.exec()
 
         # VARIABLES
-        self.order_number: int = -1
         self.category: Category = None
         self.categories: list[Category] = []
         self.active_layout: QVBoxLayout = None
@@ -256,7 +260,6 @@ class MainWindow(QMainWindow):
         self.tabs: dict[Category, CustomTableWidget] = {}
         self.parts_in_inventory_name_lookup: dict[str, int] = {}
         self.last_selected_menu_tab: str = self.settings_file.get_value("menu_tabs_order")[self.settings_file.get_value("last_toolbox_tab")]
-        self.threads: list[QThread] = []
         self.quote_nest_directories_list_widgets: dict[str, QTreeWidget] = {}
         self.quote_nest_information = {}
         self.quote_components_information = {}
@@ -265,15 +268,14 @@ class MainWindow(QMainWindow):
 
         self.ignore_update: bool = False
 
-        self.get_order_number_thread()
 
         self.check_trusted_user()
         self.__load_ui()
         self.download_all_files()
         self.start_check_for_updates_thread()
 
-        self.splitter_3.setStretchFactor(0, 1)
-        self.splitter.setStretchFactor(0, 1)
+        self.splitter_3.setStretchFactor(3,3) # Quote Generator
+        self.splitter.setStretchFactor(10,11) # Job Planner
 
     def __load_ui(self) -> None:
         menu_tabs_order: list[str] = self.settings_file.get_value(setting_name="menu_tabs_order")

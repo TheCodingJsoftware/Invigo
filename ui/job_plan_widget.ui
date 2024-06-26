@@ -108,6 +108,12 @@
           </item>
           <item>
            <widget class="QPushButton" name="pushButton_open_in_browser">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
             <property name="minimumSize">
              <size>
               <width>25</width>
@@ -153,8 +159,20 @@ QPushButton#pushButton_open_in_browser:flat {
          <layout class="QHBoxLayout" name="horizontalLayout_3" stretch="1,0">
           <item>
            <widget class="QLabel" name="label_modified_date">
+            <property name="styleSheet">
+             <string notr="true">padding: 0px</string>
+            </property>
             <property name="text">
              <string>TextLabel</string>
+            </property>
+            <property name="wordWrap">
+             <bool>true</bool>
+            </property>
+            <property name="margin">
+             <number>10</number>
+            </property>
+            <property name="indent">
+             <number>0</number>
             </property>
            </widget>
           </item>

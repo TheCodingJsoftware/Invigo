@@ -67,11 +67,12 @@ class JobWidget(QWidget):
         self.doubleSpinBox_order_number.valueChanged.connect(self.job_settings_changed)
         self.pushButton_get_order_number: QPushButton = self.findChild(QPushButton, "pushButton_get_order_number")
 
-        # def get_latest_order_number():
-        #     self.doubleSpinBox_order_number.setValue(self.parent.parent.order_number)
-        #     self.job_settings_changed()
+        def get_latest_order_number():
+            self.doubleSpinBox_order_number.setValue(self.parent.parent.order_number)
+            self.job_settings_changed()
 
-        # self.pushButton_get_order_number.clicked.connect(get_latest_order_number)
+        self.pushButton_get_order_number.clicked.connect(get_latest_order_number)
+
         self.comboBox_type: QComboBox = self.findChild(QComboBox, "comboBox_type")
         self.comboBox_type.setCurrentIndex(self.job.job_status.value - 1)
         self.comboBox_type.wheelEvent = lambda event: None

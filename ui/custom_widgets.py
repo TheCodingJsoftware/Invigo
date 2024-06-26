@@ -74,13 +74,23 @@ class PreviousQuoteItem(QGroupBox):
         self.setTitle(quote_name)
 
         modified = QLabel(f"Saved: {modified_date}")
+        modified.setWordWrap(True)
         load_quote_button = QPushButton("Load Quote", self)
         load_quote_button.clicked.connect(self.load_quote.emit)
         load_quote_button.setToolTip("Loads the selected quote into a new tab for detailed viewing and editing.")
 
-        open_external = ClickableLabel(self)
-        open_external.setTextFormat(Qt.TextFormat.RichText)
-        open_external.setText('<a href="open-in-browser">Open in Browser</a>')
+        open_external = QPushButton(self)
+        open_external.setObjectName("pushButton_open_in_browser")
+        open_external.setStyleSheet("""
+QPushButton#pushButton_open_in_browser:flat {
+    background-color: transparent;
+	border-color: transparent;
+}
+""")
+        open_external.setFlat(True)
+        open_external.setCursor(Qt.CursorShape.PointingHandCursor)
+        open_external.setFixedSize(25, 25)
+        open_external.setIcon(QIcon("icons/website.png"))
         open_external.clicked.connect(self.open_webpage.emit)
         open_external.setToolTip("Will open up the printout in your default web browser.")
 
@@ -131,19 +141,29 @@ class SavedQuoteItem(QGroupBox):
         self.status_combobox.currentTextChanged.connect(self.status_changed.emit)
 
         modified = QLabel(f"Modified: {modified_date}")
+        modified.setWordWrap(True)
 
         load_quote_button = QPushButton("Load Quote", self)
         load_quote_button.clicked.connect(self.load_quote.emit)
         load_quote_button.setToolTip("Loads the selected quote into a new tab for detailed viewing and editing.")
 
-        open_external = ClickableLabel(self)
-        open_external.setTextFormat(Qt.TextFormat.RichText)
-        open_external.setText('<a href="open-in-browser">Open in Browser</a>')
+        open_external = QPushButton(self)
+        open_external.setCursor(Qt.CursorShape.PointingHandCursor)
+        open_external.setObjectName("pushButton_open_in_browser")
+        open_external.setStyleSheet("""
+QPushButton#pushButton_open_in_browser:flat {
+    background-color: transparent;
+	border-color: transparent;
+}
+""")
+        open_external.setFlat(True)
+        open_external.setFixedSize(25, 25)
+        open_external.setIcon(QIcon("icons/website.png"))
         open_external.clicked.connect(self.open_webpage.emit)
         open_external.setToolTip("Will open up the printout in your default web browser.")
 
         delete_button = DeletePushButton(self, f"Permanently delete {quote_name}.\nThis action is irreversible.\nPlease exercise caution.", QIcon("icons/trash.png"))
-        delete_button.setFixedWidth(25)
+        delete_button.setFixedSize(25, 25)
         delete_button.clicked.connect(self.delete_quote.emit)
 
         layout = QVBoxLayout(self)
@@ -1977,7 +1997,7 @@ class CustomTableWidget(QTableWidget):
     rowChanged = pyqtSignal(int)  # Custom signal that takes a row index
 
     def __init__(self, parent=None):
-        super(CustomTableWidget, self).__init__()
+        super(CustomTableWidget, self).__init__(parent)
         self.editable_column_indexes = []
         self.setStyleSheet("QScrollBar:horizontal {height: 20px;}")
 
@@ -1993,7 +2013,8 @@ class CustomTableWidget(QTableWidget):
         self.row_change_timer.start(100)  # Adjust the delay as needed
 
     def handle_row_change(self):
-        for row in self.changed_rows:
+        changed_rows_copy = self.changed_rows.copy()  # Make a copy of the set
+        for row in changed_rows_copy:
             self.rowChanged.emit(row)
         self.changed_rows.clear()
 
