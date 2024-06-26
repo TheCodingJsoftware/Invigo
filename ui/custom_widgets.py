@@ -1974,10 +1974,28 @@ class FrozenTableView(QTableView):
 
 
 class CustomTableWidget(QTableWidget):
+    rowChanged = pyqtSignal(int)  # Custom signal that takes a row index
+
     def __init__(self, parent=None):
         super(CustomTableWidget, self).__init__()
         self.editable_column_indexes = []
         self.setStyleSheet("QScrollBar:horizontal {height: 20px;}")
+
+        self.changed_rows = set()
+        self.row_change_timer = QTimer()
+        self.row_change_timer.setSingleShot(True)
+        self.row_change_timer.timeout.connect(self.handle_row_change)
+
+        self.cellChanged.connect(self.table_changed)
+
+    def table_changed(self, row, column):
+        self.changed_rows.add(row)
+        self.row_change_timer.start(100)  # Adjust the delay as needed
+
+    def handle_row_change(self):
+        for row in self.changed_rows:
+            self.rowChanged.emit(row)
+        self.changed_rows.clear()
 
     def edit(self, index, trigger, event):
         if index.column() in self.editable_column_indexes:

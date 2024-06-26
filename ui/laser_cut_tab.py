@@ -102,8 +102,6 @@ class EditLaserCutPart(QDialog):
 
 
 class LaserCutPartsTableWidget(CustomTableWidget):
-    rowChanged = pyqtSignal(int)  # Custom signal that takes a row index
-
     def __init__(self, parent=None):
         super(LaserCutPartsTableWidget, self).__init__(parent)
         self.parent: "LaserCutPartsTabWidget" = parent
@@ -139,22 +137,6 @@ class LaserCutPartsTableWidget(CustomTableWidget):
         }
         self.setColumnCount(len(list(headers.keys())))
         self.setHorizontalHeaderLabels(headers)
-
-        self.changed_rows = set()
-        self.row_change_timer = QTimer()
-        self.row_change_timer.setSingleShot(True)
-        self.row_change_timer.timeout.connect(self.handle_row_change)
-
-        self.cellChanged.connect(self.table_changed)
-
-    def table_changed(self, row, column):
-        self.changed_rows.add(row)
-        self.row_change_timer.start(100)  # Adjust the delay as needed
-
-    def handle_row_change(self):
-        for row in self.changed_rows:
-            self.rowChanged.emit(row)
-        self.changed_rows.clear()
 
 
 class LaserCutPartsTabWidget(CustomTabWidget):
@@ -841,10 +823,10 @@ class LaserCutTab(QWidget):
             return
         old_quantity = laser_cut_part.quantity
         laser_cut_part.name = self.table_laser_cut_parts_widgets[laser_cut_part]["name"].text()
-        laser_cut_part.set_category_quantity(self.category, sympy.sympify(
+        laser_cut_part.set_category_quantity(self.category, float(sympy.sympify(
             self.table_laser_cut_parts_widgets[laser_cut_part]["unit_quantity"].text().strip().replace(",", ""),
             evaluate=True,
-        ))
+        )))
         laser_cut_part.quantity = float(
             sympy.sympify(
                 self.table_laser_cut_parts_widgets[laser_cut_part]["quantity"].text().strip().replace(",", ""),

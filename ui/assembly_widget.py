@@ -942,7 +942,7 @@ border-top-left-radius: 0px;
 
         self.laser_cut_parts_layout = self.findChild(QVBoxLayout, "laser_cut_parts_layout")
         self.laser_cut_parts_table = LaserCutPartsPlanningTableWidget(self)
-        self.laser_cut_parts_table.cellChanged.connect(self.laser_cut_parts_table_changed)
+        self.laser_cut_parts_table.rowChanged.connect(self.laser_cut_parts_table_changed)
         self.laser_cut_parts_layout.addWidget(self.laser_cut_parts_table)
         self.add_laser_cut_part_button = self.findChild(QPushButton, "add_laser_cut_part_button")
         self.add_laser_cut_part_button.clicked.connect(self.add_laser_cut_part)
@@ -950,7 +950,7 @@ border-top-left-radius: 0px;
 
         self.components_layout = self.findChild(QVBoxLayout, "components_layout")
         self.components_table = ComponentsPlanningTableWidget(self)
-        self.components_table.cellChanged.connect(self.components_table_changed)
+        self.components_table.rowChanged.connect(self.components_table_changed)
         self.components_table.imagePasted.connect(self.component_image_pasted)
         self.load_components_table_context_menu()
 
