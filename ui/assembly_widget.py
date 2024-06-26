@@ -45,6 +45,7 @@ from utils.laser_cut_inventory.laser_cut_inventory import LaserCutInventory
 from utils.laser_cut_inventory.laser_cut_part import LaserCutPart
 from utils.workspace.assembly import Assembly
 from utils.workspace.group import Group
+from utils.workspace.job_preferences import JobPreferences
 
 
 class PaintSettingsWidget(QWidget):
@@ -849,6 +850,7 @@ class AssemblyWidget(QWidget):
 
         self.parent = parent
         self.assembly = assembly
+        self.job_preferences: JobPreferences = self.parent.job_preferences
 
         self.sheet_settings = self.assembly.group.job.sheet_settings
         self.workspace_settings = self.assembly.group.job.workspace_settings
@@ -888,17 +890,16 @@ border-top-left-radius: 0px;
         self.pushButton_laser_cut_parts = self.findChild(QPushButton, "pushButton_laser_cut_parts")
         self.pushButton_laser_cut_parts.setCursor(Qt.CursorShape.PointingHandCursor)
         self.laser_cut_widget = self.findChild(QWidget, "laser_cut_widget")
-        self.laser_cut_widget.setHidden(True)
         self.apply_stylesheet_to_toggle_buttons(self.pushButton_laser_cut_parts, self.laser_cut_widget)
+
         self.pushButton_components = self.findChild(QPushButton, "pushButton_components")
         self.pushButton_components.setCursor(Qt.CursorShape.PointingHandCursor)
         self.component_widget = self.findChild(QWidget, "component_widget")
-        self.component_widget.setHidden(True)
         self.apply_stylesheet_to_toggle_buttons(self.pushButton_components, self.component_widget)
+
         self.pushButton_sub_assemblies = self.findChild(QPushButton, "pushButton_sub_assemblies")
         self.pushButton_sub_assemblies.setCursor(Qt.CursorShape.PointingHandCursor)
         self.sub_assemblies_widget = self.findChild(QWidget, "sub_assemblies_widget")
-        self.sub_assemblies_widget.setHidden(True)
         self.apply_stylesheet_to_toggle_buttons(self.pushButton_sub_assemblies, self.sub_assemblies_widget)
 
         self.image_layout = self.findChild(QVBoxLayout, "image_layout")
@@ -1662,8 +1663,13 @@ QPushButton:checked:pressed#assembly_button_drop_menu {
         sub_assembly_widget = AssemblyWidget(sub_assembly, self.parent)
         self.sub_assemblies_toolbox.addItem(sub_assembly_widget, sub_assembly.name, sub_assembly.group.color)
 
+        toggle_button = self.sub_assemblies_toolbox.getLastToggleButton()
+
         name_input: QLineEdit = self.sub_assemblies_toolbox.getLastInputBox()
         name_input.textChanged.connect(partial(self.sub_assembly_name_renamed, sub_assembly, name_input))
+
+        name_input.textChanged.connect(partial(self.job_preferences.assembly_toolbox_toggled, name_input, toggle_button, sub_assembly_widget.pushButton_laser_cut_parts, sub_assembly_widget.pushButton_components, sub_assembly_widget.pushButton_sub_assemblies))
+        toggle_button.clicked.connect(partial(self.job_preferences.assembly_toolbox_toggled, name_input, toggle_button, sub_assembly_widget.pushButton_laser_cut_parts, sub_assembly_widget.pushButton_components, sub_assembly_widget.pushButton_sub_assemblies))
 
         duplicate_button = self.sub_assemblies_toolbox.getLastDuplicateButton()
         duplicate_button.clicked.connect(partial(self.duplicate_sub_assembly, sub_assembly))
@@ -1671,14 +1677,28 @@ QPushButton:checked:pressed#assembly_button_drop_menu {
         delete_button = self.sub_assemblies_toolbox.getLastDeleteButton()
         delete_button.clicked.connect(partial(self.delete_sub_assembly, sub_assembly_widget))
 
+        sub_assembly_widget.pushButton_laser_cut_parts.clicked.connect(partial(self.job_preferences.assembly_toolbox_toggled, name_input, toggle_button, sub_assembly_widget.pushButton_laser_cut_parts, sub_assembly_widget.pushButton_components, sub_assembly_widget.pushButton_sub_assemblies))
+        sub_assembly_widget.pushButton_components.clicked.connect(partial(self.job_preferences.assembly_toolbox_toggled, name_input, toggle_button, sub_assembly_widget.pushButton_laser_cut_parts, sub_assembly_widget.pushButton_components, sub_assembly_widget.pushButton_sub_assemblies))
+        sub_assembly_widget.pushButton_sub_assemblies.clicked.connect(partial(self.job_preferences.assembly_toolbox_toggled, name_input, toggle_button, sub_assembly_widget.pushButton_laser_cut_parts, sub_assembly_widget.pushButton_components, sub_assembly_widget.pushButton_sub_assemblies))
+
         self.sub_assembly_widgets.append(sub_assembly_widget)
+
+        if self.job_preferences.is_assembly_closed(sub_assembly.name):
+            self.sub_assemblies_toolbox.closeLastToolBox()
+
+        sub_assembly_widget.pushButton_laser_cut_parts.setChecked(self.job_preferences.is_assembly_laser_cut_closed(sub_assembly.name))
+        sub_assembly_widget.laser_cut_widget.setHidden(not self.job_preferences.is_assembly_laser_cut_closed(sub_assembly.name))
+        sub_assembly_widget.pushButton_components.setChecked(self.job_preferences.is_assembly_component_closed(sub_assembly.name))
+        sub_assembly_widget.component_widget.setHidden(not self.job_preferences.is_assembly_component_closed(sub_assembly.name))
+        sub_assembly_widget.pushButton_sub_assemblies.setChecked(self.job_preferences.is_assembly_sub_assembly_closed(sub_assembly.name))
+        sub_assembly_widget.sub_assemblies_widget.setHidden(not self.job_preferences.is_assembly_sub_assembly_closed(sub_assembly.name))
+
         return sub_assembly_widget
 
     def load_sub_assemblies(self):
         for sub_assembly in self.assembly.sub_assemblies:
             sub_assembly.group = self.assembly.group
             self.load_sub_assembly(sub_assembly)
-        self.sub_assemblies_toolbox.close_all()
 
     def load_sub_assembly(self, assembly: Assembly):
         sub_assembly_widget = self.add_sub_assembly(assembly)

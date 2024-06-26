@@ -176,7 +176,7 @@
              <string>Will only update notes and the quantity to add. It will NOT add quantity to the component.</string>
             </property>
             <property name="text">
-             <string>Update Order</string>
+             <string>Save Order</string>
             </property>
            </widget>
           </item>

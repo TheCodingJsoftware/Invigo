@@ -23,8 +23,8 @@ class DownloadImagesThread(QThread):
                     with open(file_to_download, "wb") as file:
                         file.write(response.content)
                 else:
-                    self.signal.emit(response.text)
+                    self.signal.emit(f"{response.status_code} {file_to_download} not found")
             except Exception as e:
-                self.signal.emit(e)
+                self.signal.emit(f"{e} - {file_to_download}")
         self.signal.emit("Successfully downloaded")
         self.session.close()

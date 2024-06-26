@@ -21,6 +21,8 @@ from utils.laser_cut_inventory.laser_cut_inventory import LaserCutInventory
 from utils.laser_cut_inventory.laser_cut_part import LaserCutPart
 from utils.workspace.assembly import Assembly
 from utils.workspace.group import Group
+from utils.workspace.job_preferences import JobPreferences
+
 
 
 class GroupWidget(QWidget):
@@ -30,6 +32,7 @@ class GroupWidget(QWidget):
 
         self.parent = parent
         self.group = group
+        self.job_preferences: JobPreferences = self.parent.job_preferences
 
         self.assembly_widgets: list[AssemblyWidget] = []
 
@@ -71,8 +74,13 @@ border-top-left-radius: 0px;
         assembly_widget = AssemblyWidget(assembly, self)
         self.assemblies_toolbox.addItem(assembly_widget, assembly.name, self.group.color)
 
+        toggle_button = self.assemblies_toolbox.getLastToggleButton()
+
         name_input: QLineEdit = self.assemblies_toolbox.getLastInputBox()
         name_input.textChanged.connect(partial(self.assembly_name_renamed, assembly, name_input))
+
+        name_input.textChanged.connect(partial(self.job_preferences.assembly_toolbox_toggled, name_input, toggle_button, assembly_widget.pushButton_laser_cut_parts, assembly_widget.pushButton_components, assembly_widget.pushButton_sub_assemblies))
+        toggle_button.clicked.connect(partial(self.job_preferences.assembly_toolbox_toggled, name_input, toggle_button, assembly_widget.pushButton_laser_cut_parts, assembly_widget.pushButton_components, assembly_widget.pushButton_sub_assemblies))
 
         duplicate_button = self.assemblies_toolbox.getLastDuplicateButton()
         duplicate_button.clicked.connect(partial(self.duplicate_assembly, assembly))
@@ -80,7 +88,22 @@ border-top-left-radius: 0px;
         delete_button = self.assemblies_toolbox.getLastDeleteButton()
         delete_button.clicked.connect(partial(self.delete_assembly, assembly_widget))
 
+        assembly_widget.pushButton_laser_cut_parts.clicked.connect(partial(self.job_preferences.assembly_toolbox_toggled, name_input, toggle_button, assembly_widget.pushButton_laser_cut_parts, assembly_widget.pushButton_components, assembly_widget.pushButton_sub_assemblies))
+        assembly_widget.pushButton_components.clicked.connect(partial(self.job_preferences.assembly_toolbox_toggled, name_input, toggle_button, assembly_widget.pushButton_laser_cut_parts, assembly_widget.pushButton_components, assembly_widget.pushButton_sub_assemblies))
+        assembly_widget.pushButton_sub_assemblies.clicked.connect(partial(self.job_preferences.assembly_toolbox_toggled, name_input, toggle_button, assembly_widget.pushButton_laser_cut_parts, assembly_widget.pushButton_components, assembly_widget.pushButton_sub_assemblies))
+
         self.assembly_widgets.append(assembly_widget)
+
+        if self.job_preferences.is_assembly_closed(assembly.name):
+            self.assemblies_toolbox.closeLastToolBox()
+
+        assembly_widget.pushButton_laser_cut_parts.setChecked(self.job_preferences.is_assembly_laser_cut_closed(assembly.name))
+        assembly_widget.laser_cut_widget.setHidden(not self.job_preferences.is_assembly_laser_cut_closed(assembly.name))
+        assembly_widget.pushButton_components.setChecked(self.job_preferences.is_assembly_component_closed(assembly.name))
+        assembly_widget.component_widget.setHidden(not self.job_preferences.is_assembly_component_closed(assembly.name))
+        assembly_widget.pushButton_sub_assemblies.setChecked(self.job_preferences.is_assembly_sub_assembly_closed(assembly.name))
+        assembly_widget.sub_assemblies_widget.setHidden(not self.job_preferences.is_assembly_sub_assembly_closed(assembly.name))
+
         return assembly_widget
 
     def load_assembly(self, assembly: Assembly):
@@ -88,7 +111,6 @@ border-top-left-radius: 0px;
         for sub_assembly in assembly.sub_assemblies:
             sub_assembly.group = self.group
             assembly_widget.load_sub_assembly(sub_assembly)
-        self.assemblies_toolbox.close_all()
 
     def assembly_name_renamed(self, assembly: Assembly, new_assembly_name: QLineEdit):
         assembly.name = new_assembly_name.text()

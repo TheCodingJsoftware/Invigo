@@ -7,7 +7,7 @@ from functools import partial
 from PyQt6 import uic
 from PyQt6.QtCore import QDate, Qt, pyqtSignal
 from PyQt6.QtGui import QAction, QColor, QCursor, QFont, QIcon, QKeySequence, QPixmap
-from PyQt6.QtWidgets import QAbstractItemView, QApplication, QCheckBox, QComboBox, QDateEdit, QDoubleSpinBox, QGridLayout, QHBoxLayout, QLabel, QMenu, QMessageBox, QPushButton, QTableWidgetItem, QTextEdit, QVBoxLayout, QWidget
+from PyQt6.QtWidgets import QAbstractItemView, QApplication, QCheckBox, QComboBox, QDateEdit, QDoubleSpinBox, QGridLayout, QHBoxLayout, QScrollArea, QLabel, QMenu, QMessageBox, QPushButton, QTableWidgetItem, QTextEdit, QVBoxLayout, QWidget
 
 from ui.add_component_dialog import AddComponentDialog
 from ui.custom_widgets import AssemblyMultiToolBox, ClickableLabel, CustomTableWidget, DeletePushButton, MachineCutTimeSpinBox, MultiToolBox, QLineEdit, RecutButton
@@ -22,16 +22,18 @@ from utils.laser_cut_inventory.laser_cut_inventory import LaserCutInventory
 from utils.laser_cut_inventory.laser_cut_part import LaserCutPart
 from utils.workspace.group import Group
 from utils.workspace.job import Job, JobStatus
+from utils.workspace.job_preferences import JobPreferences
 
 
 class JobWidget(QWidget):
-    reloadJob = pyqtSignal(Job)
+    reloadJob = pyqtSignal(object) # JobWidget
     def __init__(self, job: Job, parent) -> None:
         super(JobWidget, self).__init__(parent)
         uic.loadUi("ui/job_widget.ui", self)
 
         self.parent = parent
         self.job = job
+        self.job_preferences: JobPreferences = self.parent.job_preferences
 
         self.group_widgets: list[GroupWidget] = []
 
@@ -53,6 +55,8 @@ class JobWidget(QWidget):
         self.gridLayout_2.setAlignment(Qt.AlignmentFlag.AlignTop)
         self.splitter.setStretchFactor(0, 0)
         self.splitter.setStretchFactor(1, 1)
+
+        self.scrollArea = self.findChild(QScrollArea, "scrollArea")
 
         self.pushButton_reload_job = self.findChild(QPushButton, "pushButton_reload_job")
         self.pushButton_reload_job.clicked.connect(self.reload_job)
@@ -125,8 +129,13 @@ class JobWidget(QWidget):
         group_widget = GroupWidget(group, self)
         self.groups_toolbox.addItem(group_widget, group.name, group.color)
 
+        toggle_button = self.groups_toolbox.getLastToggleButton()
+
         job_name_input: QLineEdit = self.groups_toolbox.getLastInputBox()
         job_name_input.textChanged.connect(partial(self.group_name_renamed, group, job_name_input))
+
+        job_name_input.textChanged.connect(partial(self.job_preferences.group_toolbox_toggled, job_name_input, toggle_button))
+        toggle_button.clicked.connect(partial(self.job_preferences.group_toolbox_toggled, job_name_input, toggle_button))
 
         duplicate_button = self.groups_toolbox.getLastDuplicateButton()
         duplicate_button.clicked.connect(partial(self.duplicate_group, group))
@@ -136,13 +145,15 @@ class JobWidget(QWidget):
 
         self.group_widgets.append(group_widget)
 
+        if self.job_preferences.is_group_closed(group.name):
+            self.groups_toolbox.closeLastToolBox()
+
         return group_widget
 
     def load_group(self, group: Group):
         group_widget = self.add_group(group)
         for assembly in group.assemblies:
             group_widget.load_assembly(assembly)
-        self.groups_toolbox.close_all()
 
     def group_name_renamed(self, group: Group, new_group_name: QLineEdit):
         group.name = new_group_name.text()
@@ -162,7 +173,8 @@ class JobWidget(QWidget):
         self.changes_made()
 
     def reload_job(self):
-        self.reloadJob.emit(self.job)
+        self.job_preferences.set_job_scroll_position(self.job.name, (self.scrollArea.horizontalScrollBar().value(), self.scrollArea.verticalScrollBar().value()))
+        self.reloadJob.emit(self)
 
     def changes_made(self):
         self.parent.job_changed(self.job)

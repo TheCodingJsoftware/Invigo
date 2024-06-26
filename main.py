@@ -57,6 +57,7 @@ from ui.job_planner_tab import JobPlannerTab
 from ui.job_sorter_dialog import JobSorterDialog
 from ui.laser_cut_tab import LaserCutTab
 from ui.nest_sheet_verification import NestSheetVerification
+from ui.job_widget import JobWidget
 from ui.quote_generator_tab import QuoteGeneratorTab
 from ui.save_quote_dialog import SaveQuoteDialog
 from ui.select_item_dialog import SelectItemDialog
@@ -90,12 +91,13 @@ from utils.workspace.job import Job, JobStatus, JobColor
 from utils.workspace.job_manager import JobManager
 from utils.workspace.workspace import Workspace
 from utils.workspace.workspace_settings import WorkspaceSettings
+from utils.workspace.job_preferences import JobPreferences
 
 __author__: str = "Jared"
 __copyright__: str = "Copyright 2022-2024, TheCodingJ's"
 __license__: str = "MIT"
-__version__: str = "v3.0.30"
-__updated__: str = "2024-06-25 14:25:44"
+__version__: str = "v3.0.31"
+__updated__: str = "2024-06-26 08:49:35"
 __maintainer__: str = "Jared"
 __email__: str = "jared@pinelandfarms.ca"
 __status__: str = "Production"
@@ -182,6 +184,7 @@ class MainWindow(QMainWindow):
         self.settings_file = Settings()
         self.sheet_settings = SheetSettings()
         self.workspace_settings = WorkspaceSettings()
+        self.job_preferences = JobPreferences()
 
         self.sheets_inventory = SheetsInventory(self)
         self.components_inventory = ComponentsInventory()
@@ -770,7 +773,8 @@ class MainWindow(QMainWindow):
             elif response == DialogButtons.cancel:
                 return
 
-    def reload_job(self, job: Job):
+    def reload_job(self, job_widget: JobWidget):
+        job = job_widget.job
         folder_path = f"saved_jobs\\{job.job_status.name.lower()}\\{job.name}"
         self.reload_job_thread(folder_path)
 

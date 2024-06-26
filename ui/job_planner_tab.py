@@ -1,34 +1,22 @@
 import contextlib
-import math
-import os
-from datetime import datetime
-from functools import partial
 
 from PyQt6 import uic
-from PyQt6.QtCore import QDate, Qt, pyqtSignal
-from PyQt6.QtGui import QAction, QColor, QCursor, QFont, QIcon, QKeySequence, QPixmap, QShortcut
-from PyQt6.QtWidgets import QAbstractItemView, QApplication, QCheckBox, QComboBox, QDateEdit, QDoubleSpinBox, QGridLayout, QHBoxLayout, QInputDialog, QLabel, QLineEdit, QMenu, QMessageBox, QPushButton, QTableWidgetItem, QTextEdit, QVBoxLayout, QWidget
+from PyQt6.QtCore import Qt, pyqtSignal
+from PyQt6.QtGui import QKeySequence, QShortcut
+from PyQt6.QtWidgets import QInputDialog, QPushButton, QVBoxLayout, QWidget
 
-from ui.add_component_dialog import AddComponentDialog
 from ui.custom.job_tab import JobTab
-from ui.custom_widgets import AssemblyMultiToolBox, ClickableLabel, CustomTableWidget, DeletePushButton, MachineCutTimeSpinBox, MultiToolBox, QTabWidget, RecutButton
-from ui.image_viewer import QImageViewer
 from ui.job_widget import JobWidget
 from utils import colors
-from utils.calulations import calculate_overhead
-from utils.components_inventory.component import Component
-from utils.components_inventory.components_inventory import ComponentsInventory
-from utils.inventory.category import Category
-from utils.laser_cut_inventory.laser_cut_inventory import LaserCutInventory
-from utils.laser_cut_inventory.laser_cut_part import LaserCutPart
 from utils.workspace.job import Job, JobStatus
 from utils.workspace.job_manager import JobManager
+from utils.workspace.job_preferences import JobPreferences
 
 
 class JobPlannerTab(QWidget):
     savJob = pyqtSignal(Job)
     saveJobAs = pyqtSignal(Job)
-    reloadJob = pyqtSignal(Job)
+    reloadJob = pyqtSignal(JobWidget)
 
     def __init__(self, parent) -> None:
         super(JobPlannerTab, self).__init__(parent)
@@ -37,6 +25,7 @@ class JobPlannerTab(QWidget):
         self.parent = parent
 
         self.job_manager: JobManager = self.parent.job_manager
+        self.job_preferences: JobPreferences = self.parent.job_preferences
 
         self.jobs: list[JobWidget] = []
         self.current_job: Job = None
@@ -110,12 +99,20 @@ class JobPlannerTab(QWidget):
 
             old_widget.deleteLater()
 
+            self.set_job_widget_scroll_position(job, new_widget)
+
     def load_job(self, job: Job):
         job_widget = self.add_job(job)
         for group in job.groups:
             job_widget.load_group(group)
         self.current_job = job
         self.job_tab.setCurrentIndex(self.get_tab_index(job))
+        self.set_job_widget_scroll_position(job, job_widget)
+
+    def set_job_widget_scroll_position(self, job: Job, job_widget: JobWidget):
+        x, y = self.job_preferences.get_job_scroll_position(job.name)
+        job_widget.scrollArea.verticalScrollBar().setValue(y)
+        job_widget.scrollArea.horizontalScrollBar().setValue(x)
 
     def get_tab_index(self, job: Job) -> int:
         return next(
@@ -140,10 +137,14 @@ class JobPlannerTab(QWidget):
 
     def get_active_job_widget(self) -> JobWidget:
         active_job = self.jobs[self.get_tab_index(self.current_job)]
-        for tab_index in range(self.job_tab.count()):
-            if self.job_tab.widget(tab_index) == active_job:
-                return self.job_tab.widget(tab_index)
-        return None
+        return next(
+            (
+                self.job_tab.widget(tab_index)
+                for tab_index in range(self.job_tab.count())
+                if self.job_tab.widget(tab_index) == active_job
+            ),
+            None,
+        )
 
     def rename_tab(self, tab_index: int):
         active_tab = self.get_active_tab()

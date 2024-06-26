@@ -1497,30 +1497,38 @@ class QuoteWidget(QWidget):
             self.components_table_widget.setItem(row_index, 0, QTableWidgetItem(""))
             self.components_table_widget.item(row_index, 0).setData(Qt.ItemDataRole.DecorationRole, QPixmap(component.image_path))
 
-            self.components_table_widget.setItem(row_index, 1, QTableWidgetItem(component.part_name))
+            table_widget_part_name = QTableWidgetItem(component.part_name)
+            self.components_table_widget.setItem(row_index, 1, table_widget_part_name)
+            self.components_table_items[component].update({"part_name": table_widget_part_name})
 
-            self.components_table_widget.setItem(row_index, 2, QTableWidgetItem(component.part_number))
+            table_widget_part_number = QTableWidgetItem(component.part_number)
+            self.components_table_widget.setItem(row_index, 2, table_widget_part_number)
             self.components_table_widget.item(row_index, 2).setTextAlignment(Qt.AlignmentFlag.AlignCenter | Qt.AlignmentFlag.AlignVCenter)
+            self.components_table_items[component].update({"part_number": table_widget_part_number})
 
-            self.components_table_widget.setItem(row_index, 3, QTableWidgetItem(component.shelf_number))
+            table_widget_shelf_number = QTableWidgetItem(component.shelf_number)
+            self.components_table_widget.setItem(row_index, 3, table_widget_shelf_number)
             self.components_table_widget.item(row_index, 3).setTextAlignment(Qt.AlignmentFlag.AlignCenter | Qt.AlignmentFlag.AlignVCenter)
+            self.components_table_items[component].update({"shelf_number": table_widget_shelf_number})
 
-            self.components_table_widget.setItem(row_index, 4, QTableWidgetItem(component.notes))
+            table_widget_notes = QTableWidgetItem(component.notes)
+            self.components_table_widget.setItem(row_index, 4, table_widget_notes)
+            self.components_table_items[component].update({"notes": table_widget_notes})
 
             table_widget_item_quantity = QTableWidgetItem(str(component.quantity))
-            self.components_table_items[component].update({"quantity": table_widget_item_quantity})
             self.components_table_widget.setItem(row_index, 5, table_widget_item_quantity)
             self.components_table_widget.item(row_index, 5).setTextAlignment(Qt.AlignmentFlag.AlignCenter | Qt.AlignmentFlag.AlignVCenter)
+            self.components_table_items[component].update({"quantity": table_widget_item_quantity})
 
             table_widget_item_unit_price = QTableWidgetItem(f"${component.price:,.2f}")
-            self.components_table_items[component].update({"unit_price": table_widget_item_unit_price})
             self.components_table_widget.setItem(row_index, 6, table_widget_item_unit_price)
             self.components_table_widget.item(row_index, 6).setTextAlignment(Qt.AlignmentFlag.AlignCenter | Qt.AlignmentFlag.AlignVCenter)
+            self.components_table_items[component].update({"unit_price": table_widget_item_unit_price})
 
             table_widget_item_price = QTableWidgetItem("$0.00")
-            self.components_table_items[component].update({"price": table_widget_item_price})
             self.components_table_widget.setItem(row_index, 7, table_widget_item_price)
             self.components_table_widget.item(row_index, 7).setTextAlignment(Qt.AlignmentFlag.AlignCenter | Qt.AlignmentFlag.AlignVCenter)
+            self.components_table_items[component].update({"price": table_widget_item_price})
 
         self.components_table_widget.blockSignals(False)
         self.components_table_widget.cellChanged.connect(self.update_components_price)
@@ -1540,6 +1548,10 @@ class QuoteWidget(QWidget):
         profit_margin = self.doubleSpinBox_profit_margin_items_2.value() if self.checkBox_components_use_profit_margin_2.isChecked() else 0
         overhead = self.doubleSpinBox_overhead_items_2.value() if self.checkBox_components_use_overhead_2.isChecked() else 0
         for component, table_item_data in self.components_table_items.items():
+            component.part_name = table_item_data["part_name"].text()
+            component.name = table_item_data["part_number"].text()
+            component.shelf_number = table_item_data["shelf_number"].text()
+            component.notes = table_item_data["notes"].text()
             quantity = float(table_item_data["quantity"].text().strip().replace(",", ""))
             component.quantity = quantity
             unit_price = float(table_item_data["unit_price"].text().strip().replace(",", "").replace("$", ""))
