@@ -96,8 +96,8 @@ from utils.workspace.job_preferences import JobPreferences
 __author__: str = "Jared"
 __copyright__: str = "Copyright 2022-2024, TheCodingJ's"
 __license__: str = "MIT"
-__version__: str = "v3.0.33"
-__updated__: str = "2024-06-26 11:42:08"
+__version__: str = "v3.0.34"
+__updated__: str = "2024-06-26 16:46:41"
 __maintainer__: str = "Jared"
 __email__: str = "jared@pinelandfarms.ca"
 __status__: str = "Production"
@@ -267,7 +267,6 @@ class MainWindow(QMainWindow):
         self.scroll_position_manager = ScrollPositionManager()
 
         self.ignore_update: bool = False
-
 
         self.check_trusted_user()
         self.__load_ui()
