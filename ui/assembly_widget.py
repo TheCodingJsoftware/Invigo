@@ -1273,21 +1273,22 @@ QPushButton:checked:pressed#assembly_button_drop_menu {
         self.update_components_table_height()
 
     def components_table_changed(self):
-        for component, table_data in self.components_table_items.items():
-            component.part_name = table_data["part_name"].text()
-            if self.components_inventory.get_component_by_name(component.name):
-                component_inventory_status = f"{component.name} exists in inventory."
-                self.set_table_row_color(self.components_table, table_data["row"], "#141414")
-            else:
-                component_inventory_status = f"{component.name} does NOT exist in inventory."
-                self.set_table_row_color(self.components_table, table_data["row"], "#3F1E25")
-            table_data["part_name"].setToolTip(component_inventory_status)
-            table_data["part_number"].setToolTip(component_inventory_status)
-            component.part_number = table_data["part_number"].text()
-            with contextlib.suppress(ValueError):
-                component.quantity = float(table_data["quantity"].text())
-            component.notes = table_data["notes"].text()
-            component.shelf_number = table_data["shelf_number"].text()
+        if not (component := self.get_selected_component()):
+            return
+        component.part_name = self.components_table_items[component]["part_name"].text()
+        if self.components_inventory.get_component_by_name(component.name):
+            component_inventory_status = f"{component.name} exists in inventory."
+            self.set_table_row_color(self.components_table, self.components_table_items[component]["row"], "#141414")
+        else:
+            component_inventory_status = f"{component.name} does NOT exist in inventory."
+            self.set_table_row_color(self.components_table, self.components_table_items[component]["row"], "#3F1E25")
+        self.components_table_items[component]["part_name"].setToolTip(component_inventory_status)
+        self.components_table_items[component]["part_number"].setToolTip(component_inventory_status)
+        component.part_number = self.components_table_items[component]["part_number"].text()
+        with contextlib.suppress(ValueError):
+            component.quantity = float(self.components_table_items[component]["quantity"].text())
+        component.notes = self.components_table_items[component]["notes"].text()
+        component.shelf_number = self.components_table_items[component]["shelf_number"].text()
         self.changes_made()
 
     def get_component_by_name(self, component_name: str) -> Component:
@@ -1309,6 +1310,12 @@ QPushButton:checked:pressed#assembly_button_drop_menu {
 
     def update_components_table_height(self):
         self.components_table.setFixedHeight((len(self.assembly.components) + 1) * self.components_table.row_height)
+
+    def get_selected_component(self) -> Component:
+        if selected_components := self.get_selected_components():
+            return selected_components[0]
+        else:
+            return None
 
     def get_selected_components(self) -> list[Component]:
         selected_components: list[Component] = []
@@ -1496,21 +1503,22 @@ QPushButton:checked:pressed#assembly_button_drop_menu {
         self.update_laser_cut_parts_table_height()
 
     def laser_cut_parts_table_changed(self):
-        for laser_cut_part, table_data in self.laser_cut_part_table_items.items():
-            laser_cut_part.name = table_data["part_name"].text()
-            if self.laser_cut_inventory.get_laser_cut_part_by_name(laser_cut_part.name):
-                laser_cut_part_inventory_status = f"{laser_cut_part.name} exists in inventory."
-                self.set_table_row_color(self.laser_cut_parts_table, table_data["row"], "#141414")
-            else:
-                laser_cut_part_inventory_status = f"{laser_cut_part.name} does NOT exist in inventory."
-                self.set_table_row_color(self.laser_cut_parts_table, table_data["row"], "#3F1E25")
-            table_data["part_name"].setToolTip(laser_cut_part_inventory_status)
-            laser_cut_part.material = table_data["material"].currentText()
-            laser_cut_part.gauge = table_data["thickness"].currentText()
-            with contextlib.suppress(ValueError):
-                laser_cut_part.quantity = float(table_data["quantity"].text())
-            laser_cut_part.notes = table_data["notes"].text()
-            laser_cut_part.shelf_number = table_data["shelf_number"].text()
+        if not (laser_cut_part := self.get_selected_laser_cut_part()):
+            return
+        laser_cut_part.name = self.laser_cut_part_table_items[laser_cut_part]["part_name"].text()
+        if self.laser_cut_inventory.get_laser_cut_part_by_name(laser_cut_part.name):
+            laser_cut_part_inventory_status = f"{laser_cut_part.name} exists in inventory."
+            self.set_table_row_color(self.laser_cut_parts_table, self.laser_cut_part_table_items[laser_cut_part]["row"], "#141414")
+        else:
+            laser_cut_part_inventory_status = f"{laser_cut_part.name} does NOT exist in inventory."
+            self.set_table_row_color(self.laser_cut_parts_table, self.laser_cut_part_table_items[laser_cut_part]["row"], "#3F1E25")
+        self.laser_cut_part_table_items[laser_cut_part]["part_name"].setToolTip(laser_cut_part_inventory_status)
+        laser_cut_part.material = self.laser_cut_part_table_items[laser_cut_part]["material"].currentText()
+        laser_cut_part.gauge = self.laser_cut_part_table_items[laser_cut_part]["thickness"].currentText()
+        with contextlib.suppress(ValueError):
+            laser_cut_part.quantity = float(self.laser_cut_part_table_items[laser_cut_part]["quantity"].text())
+        laser_cut_part.notes = self.laser_cut_part_table_items[laser_cut_part]["notes"].text()
+        laser_cut_part.shelf_number = self.laser_cut_part_table_items[laser_cut_part]["shelf_number"].text()
         self.changes_made()
 
     def laser_cut_part_flow_tag_changed(self, laser_cut_part: LaserCutPart, flow_tag_combobox: QComboBox):
@@ -1552,6 +1560,12 @@ QPushButton:checked:pressed#assembly_button_drop_menu {
         self.download_file_thread.wait()
         if file_path.lower().endswith(".pdf"):
             self.open_pdf(self.laser_cut_part_get_all_file_types(laser_cut_part, ".pdf"), file_path)
+
+    def get_selected_laser_cut_part(self) -> LaserCutPart:
+        if selected_laser_cut_parts := self.get_selected_laser_cut_parts():
+            return selected_laser_cut_parts[0]
+        else:
+            return None
 
     def get_selected_laser_cut_parts(self) -> list[LaserCutPart]:
         selected_laser_cut_parts: list[LaserCutPart] = []
