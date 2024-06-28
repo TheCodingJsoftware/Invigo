@@ -3,6 +3,7 @@ from typing import Union
 
 from utils.inventory.category import Category
 from utils.inventory.inventory_item import InventoryItem
+from utils.inventory.order import Order
 
 
 class Sheet(InventoryItem):
@@ -17,12 +18,9 @@ class Sheet(InventoryItem):
         self.latest_change_quantity: str = ""
         self.red_quantity_limit: int = 4
         self.yellow_quantity_limit: int = 10
-        self.expected_arrival_time: str = ""
-        self.order_pending_quantity: int = 0
-        self.order_pending_date: str = ""
-        self.is_order_pending: bool = False
         self.has_sent_warning: bool = False
         self.notes: str = ""
+        self.orders: list[Order] = []
         self.load_data(data)
 
     def get_sheet_dimension(self) -> str:
@@ -39,6 +37,12 @@ class Sheet(InventoryItem):
         if len(self.categories) == 0:
             self.sheets_inventory.remove_sheet(self)
 
+    def add_order(self, order: Order):
+        self.orders.append(order)
+
+    def remove_order(self, order: Order):
+        self.orders.remove(order)
+
     def get_categories(self) -> list[str]:
         return [category.name for category in self.categories]
 
@@ -51,10 +55,12 @@ class Sheet(InventoryItem):
         self.material: str = data.get("material", "")
         self.red_quantity_limit: int = data.get("red_quantity_limit", 4)
         self.yellow_quantity_limit: int = data.get("yellow_quantity_limit", 10)
-        self.expected_arrival_time: str = data.get("expected_arrival_time", "")
-        self.order_pending_quantity: int = data.get("order_pending_quantity", 0)
-        self.order_pending_date: str = data.get("order_pending_date", "")
-        self.is_order_pending: bool = data.get("is_order_pending", False)
+
+        self.orders.clear()
+        for order_data in data.get("orders", []):
+            order = Order(order_data)
+            self.add_order(order)
+
         self.has_sent_warning: bool = data.get("has_sent_warning", False)
         self.notes: str = data.get("notes", "")
         self.categories.clear()
@@ -76,11 +82,8 @@ class Sheet(InventoryItem):
             "material": self.material,
             "width": round(self.width, 3),
             "length": round(self.length, 3),
-            "is_order_pending": self.is_order_pending,
-            "order_pending_quantity": self.order_pending_quantity,
-            "order_pending_date": self.order_pending_date,
-            "expected_arrival_time": self.expected_arrival_time,
             "has_sent_warning": self.has_sent_warning,
             "notes": self.notes,
+            "orders": [order.to_dict() for order in self.orders],
             "categories": [category.name for category in self.categories],
         }

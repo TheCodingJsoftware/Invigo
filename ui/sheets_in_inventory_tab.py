@@ -9,10 +9,12 @@ from PyQt6.QtCore import QDate, Qt, QTimer, pyqtSignal
 from PyQt6.QtGui import QAction, QColor, QCursor, QFont, QIcon
 from PyQt6.QtWidgets import (QAbstractItemView, QCheckBox, QComboBox,
                              QDateEdit, QGridLayout, QInputDialog, QLabel,
-                             QMenu, QMessageBox, QPushButton, QTableWidgetItem,
+                             QMenu, QMessageBox, QHBoxLayout,  QPushButton, QTableWidgetItem,
                              QVBoxLayout, QWidget)
 
 from ui.add_sheet_dialog import AddSheetDialog
+from ui.update_component_order_pending_dialog import UpdateComponentOrderPendingDialog
+from ui.set_component_order_pending_dialog import SetComponentOrderPendingDialog
 from ui.custom_widgets import (CustomTableWidget, CustomTabWidget,
                                DeletePushButton, HumbleDoubleSpinBox,
                                OrderStatusButton)
@@ -24,6 +26,7 @@ from utils.settings import Settings
 from utils.sheet_settings.sheet_settings import SheetSettings
 from utils.sheets_inventory.sheet import Sheet
 from utils.sheets_inventory.sheets_inventory import SheetsInventory
+from utils.inventory.order import Order
 
 settings_file = Settings()
 
@@ -48,11 +51,9 @@ class SheetsTableWidget(CustomTableWidget):
             "Cost per Sheet",
             "Quantity in Stock",
             "Total Cost in Stock",
-            "Order Status",
-            "Set Arrival Time",
+            "Orders",
             "Notes",
             "Modified Date",
-            "DEL",
         ]
         self.setColumnCount(len(headers))
         self.setHorizontalHeaderLabels(headers)
@@ -61,6 +62,121 @@ class SheetsTableWidget(CustomTableWidget):
 class SheetsTabWidget(CustomTabWidget):
     def __init__(self, parent: QWidget) -> None:
         super(SheetsTabWidget, self).__init__(parent)
+
+
+class OrderWidget(QWidget):
+    def __init__(self, sheet: Sheet, parent: "SheetsInInventoryTab") -> None:
+        super().__init__(parent)
+        self.parent: "SheetsInInventoryTab" = parent
+        self.sheet = sheet
+
+        self.h_layout = QHBoxLayout()
+        self.h_layout.setContentsMargins(0,0,0,0)
+        self.orders_layout = QHBoxLayout()
+        self.add_order_button = QPushButton("Add Order", self)
+        self.add_order_button.clicked.connect(self.create_order)
+
+        self.h_layout.addLayout(self.orders_layout)
+        self.h_layout.addWidget(self.add_order_button)
+        self.h_layout.addStretch()
+
+        self.setLayout(self.h_layout)
+        self.load_ui()
+
+    def load_ui(self):
+        self.clear_layout(self.orders_layout)
+
+        for order in self.sheet.orders:
+            v_layout = QVBoxLayout()
+            v_layout.setContentsMargins(1,1,1,1)
+            v_layout.setSpacing(0)
+            order_status_button = OrderStatusButton(self)
+            order_status_button.setStyleSheet("QPushButton#order_status{border-top-left-radius: 5px; border-top-right-radius: 5px; border-bottom-left-radius: 0; border-bottom-right-radius: 0;}")
+            order_status_button.setText(f"Order Pending ({int(order.quantity)})")
+            order_status_button.setToolTip(str(order))
+            order_status_button.setChecked(True)
+            order_status_button.clicked.connect(partial(self.order_button_pressed, order, order_status_button))
+
+            year, month, day = map(int, order.expected_arrival_time.split("-"))
+            date = QDate(year, month, day)
+
+            arrival_date = QDateEdit(self)
+            arrival_date.setStyleSheet("QDateEdit{border-top-left-radius: 0; border-top-right-radius: 0; border-bottom-left-radius: 5px; border-bottom-right-radius: 5px;} QDateEdit:hover{border-color: #3bba6d; }")
+            arrival_date.wheelEvent = lambda event: None
+            arrival_date.setDate(date)
+            arrival_date.setCalendarPopup(True)
+            arrival_date.setToolTip("Expected arrival time.")
+            arrival_date.dateChanged.connect(partial(self.date_changed, order, arrival_date))
+
+            v_layout.addWidget(order_status_button)
+            v_layout.addWidget(arrival_date)
+            self.orders_layout.addLayout(v_layout)
+        self.parent.category_tables[self.parent.category].setColumnWidth(7, 400) # Widgets don't like being resized with columns
+        self.parent.update_sheet_row_color(self.parent.category_tables[self.parent.category], self.sheet)
+
+    def create_order(self):
+        select_date_dialog = SetComponentOrderPendingDialog(
+            f'Set an expected arrival time for "{self.sheet.get_name()}," the number of parts ordered, and notes.',
+            self,
+        )
+        if select_date_dialog.exec():
+            new_order = Order({
+                    "expected_arrival_time": select_date_dialog.get_selected_date(),
+                    "order_pending_quantity": select_date_dialog.get_order_quantity(),
+                    "order_pending_date": datetime.now().strftime("%Y-%m-%d"),
+                    "notes": select_date_dialog.get_notes()
+                }
+            )
+            self.sheet.add_order(new_order)
+            self.parent.sheets_inventory.save()
+            self.parent.sync_changes()
+            self.load_ui()
+
+    def order_button_pressed(self, order: Order, order_status_button: OrderStatusButton):
+        dialog = UpdateComponentOrderPendingDialog(order, f"Update order for {self.sheet.get_name()}", self)
+        if dialog.exec():
+            if dialog.action == "CANCEL_ORDER":
+                self.sheet.remove_order(order)
+            elif dialog.action == "UPDATE_ORDER":
+                order.notes = dialog.get_notes()
+                order.quantity = dialog.get_order_quantity()
+            elif dialog.action == "ADD_INCOMING_QUANTITY":
+                quantity_to_add = dialog.get_order_quantity()
+                remaining_quantity = order.quantity - quantity_to_add
+                old_quantity = self.sheet.quantity
+                new_quantity = old_quantity + quantity_to_add
+                self.sheet.quantity = new_quantity
+                self.sheet.latest_change_quantity = f"Used: Order pending - add quantity\nChanged from {old_quantity} to {new_quantity} at {datetime.now().strftime('%B %d %A %Y %I:%M:%S %p')}"
+                order.quantity = remaining_quantity
+                if remaining_quantity <= 0:
+                    msg = QMessageBox(QMessageBox.Icon.Information, "Order", f"All the quantity from this order has been added, this order will now be removed from {self.sheet.get_name()}", QMessageBox.StandardButton.Ok, self)
+                    if msg.exec():
+                        self.sheet.remove_order(order)
+            else: # You never know.
+                order_status_button.setChecked(True)
+                return
+            self.parent.sheets_inventory.save()
+            self.parent.sync_changes()
+            self.parent.select_last_selected_item()
+            self.load_ui()
+        else: # Close order pressed
+            order_status_button.setChecked(True)
+
+    def date_changed(self, order: Order, arrival_date: QDateEdit):
+        order.expected_arrival_time = arrival_date.date().toString("yyyy-MM-dd")
+        self.parent.sheets_inventory.save()
+        self.parent.sync_changes()
+
+    def clear_layout(self, layout: QVBoxLayout | QWidget) -> None:
+        with contextlib.suppress(AttributeError):
+            if layout is not None:
+                while layout.count():
+                    item = layout.takeAt(0)
+                    widget = item.widget()
+                    if widget is not None:
+                        widget.deleteLater()
+                    else:
+                        self.clear_layout(item.layout())
 
 
 class SheetsInInventoryTab(QWidget):
@@ -74,8 +190,6 @@ class SheetsInInventoryTab(QWidget):
         self.settings_file = Settings()
 
         self.tab_widget = SheetsTabWidget(self)
-        self.tab_widget.addCategory.connect(self.add_category)
-        self.tab_widget.removeCategory.connect(self.remove_category)
 
         self.category: Category = None
         self.finished_loading: bool = False
@@ -142,22 +256,32 @@ class SheetsInInventoryTab(QWidget):
                 if new_name == self.category.name:
                     new_name += " - Copy"
                 new_category = self.sheets_inventory.duplicate_category(self.category, new_name)
-                self.sheets_inventory.add_category(new_category)
+                # self.sheets_inventory.add_category(new_category)
                 table = SheetsTableWidget(self.tab_widget)
                 self.category_tables.update({new_category: table})
                 self.tab_widget.insertTab(self.tab_widget.currentIndex() + 1, table, new_category.name)
                 table.rowChanged.connect(self.table_changed)
                 table.cellPressed.connect(self.table_selected_changed)
+                self.sheets_inventory.save()
+                self.sync_changes()
+                self.load_categories()
+                self.restore_last_selected_tab()
             elif action == "RENAME":
                 self.category.rename(input_text)
                 self.tab_widget.setTabText(self.tab_widget.currentIndex(), input_text)
+                self.sheets_inventory.save()
+                self.sync_changes()
+                self.load_categories()
+                self.restore_last_selected_tab()
             elif action == "DELETE":
                 self.clear_layout(self.category_tables[self.category])
                 del self.category_tables[self.category]
                 self.sheets_inventory.delete_category(self.category)
                 self.tab_widget.removeTab(self.tab_widget.currentIndex())
-            self.sheets_inventory.save()
-            self.sync_changes()
+                self.sheets_inventory.save()
+                self.sync_changes()
+                self.load_categories()
+                self.restore_last_selected_tab()
 
     def load_categories(self):
         self.settings_file.load_data()
@@ -183,9 +307,11 @@ class SheetsInInventoryTab(QWidget):
         self.tab_widget.tabOrderChanged.connect(self.save_category_tabs_order)
         self.tab_widget.tabOrderChanged.connect(self.save_current_tab)
         self.tab_widget.tabBarDoubleClicked.connect(self.edit_category)
+        self.tab_widget.addCategory.connect(self.add_category)
+        self.tab_widget.removeCategory.connect(self.remove_category)
 
     def load_table(self):
-        self.category: Category = self.sheets_inventory.get_category(self.tab_widget.tabText(self.tab_widget.currentIndex()))
+        self.category = self.sheets_inventory.get_category(self.tab_widget.tabText(self.tab_widget.currentIndex()))
         current_table = self.category_tables[self.category]
         current_table.blockSignals(True)
         current_table.clearContents()
@@ -213,7 +339,7 @@ class SheetsInInventoryTab(QWidget):
                 self.table_sheets_widgets[sheet].update({"row": row_index})
                 col_index: int = 0
                 current_table.insertRow(row_index)
-                current_table.setRowHeight(row_index, 35)
+                current_table.setRowHeight(row_index, 60)
 
                 # THICKNESS
                 comboBox_thickness = QComboBox(self)
@@ -291,40 +417,9 @@ class SheetsInInventoryTab(QWidget):
                 self.table_sheets_widgets[sheet].update({"total_cost_in_stock": table_item_cost_in_stock})
                 col_index += 1
 
-                # ORDER STATUS
-                order_status_button = OrderStatusButton()
-                order_status_button.setChecked(sheet.is_order_pending)
-                order_status_button.clicked.connect(
-                    partial(
-                        self.order_status_button_sheets_in_inventory,
-                        sheet,
-                        order_status_button,
-                    )
-                )
-                order_status_button.setStyleSheet("margin-top: 3%; margin-bottom: 3%; margin-left: 5%; margin-right: 5%;")
-                current_table.setCellWidget(row_index, col_index, order_status_button)
-                self.table_sheets_widgets[sheet].update({"order_pending": order_status_button})
-                col_index += 1
-                if sheet.is_order_pending:
-                    arrival_date = QDateEdit(self)
-                    arrival_date.setStyleSheet("border-radius: 0px;")
-                    order_status_button.setText(f"Order Pending ({int(sheet.order_pending_quantity)})")
-                    year, month, day = map(int, sheet.expected_arrival_time.split("-"))
-                    date = QDate(year, month, day)
-                    arrival_date.wheelEvent = lambda event: None
-                    arrival_date.setDate(date)
-                    arrival_date.setCalendarPopup(True)
-                    arrival_date.dateChanged.connect(
-                        partial(
-                            self.arrival_date_change_sheets_in_inventory,
-                            sheet,
-                            arrival_date,
-                        )
-                    )
-                    current_table.setCellWidget(row_index, col_index, arrival_date)
-                    # order_pending_date: str = self.get_value_from_category(item_name=item, key="order_pending_date")
-                    order_status_button.setToolTip(f"Order Pending was set at {sheet.order_pending_date} for {sheet.order_pending_quantity} sheets")
-
+                # ORDERS
+                order_widget = OrderWidget(sheet, self)
+                current_table.setCellWidget(row_index, col_index, order_widget)
                 col_index += 1
 
                 # NOTES
@@ -340,24 +435,6 @@ class SheetsInInventoryTab(QWidget):
                 current_table.setItem(row_index, col_index, table_item_modified_date)
                 current_table.item(row_index, col_index).setFont(self.tables_font)
                 self.table_sheets_widgets[sheet].update({"modified_date": table_item_modified_date})
-                col_index += 1
-
-                # DELETE
-                btn_delete = DeletePushButton(
-                    parent=self,
-                    tool_tip=f"Delete {sheet.get_name()} permanently from {self.category.name}",
-                    icon=QIcon("icons/trash.png"),
-                )
-
-                def remove_sheet(sheet_to_remove: Sheet):
-                    self.sheets_inventory.remove_sheet(sheet_to_remove)
-                    self.sheets_inventory.save()
-                    self.sync_changes()
-                    self.load_table()
-
-                btn_delete.clicked.connect(partial(remove_sheet, sheet))
-                btn_delete.setStyleSheet("border-radius: 0px;")
-                current_table.setCellWidget(row_index, col_index, btn_delete)
 
                 self.update_sheet_row_color(current_table, sheet)
 
@@ -380,8 +457,22 @@ class SheetsInInventoryTab(QWidget):
             action.setText("Print Selected Sheets")
             menu.addAction(action)
 
+            def delete_selected_sheets():
+                if not (selected_sheets := self.get_selected_sheets()):
+                    return
+                for sheet in selected_sheets:
+                    self.sheets_inventory.remove_sheet(sheet)
+                self.sheets_inventory.save()
+                self.sync_changes()
+                self.load_table()
+
+            action = QAction("Delete", self)
+            action.triggered.connect(delete_selected_sheets)
+            menu.addAction(action)
+
             current_table.customContextMenuRequested.connect(partial(self.open_group_menu, menu))
 
+        current_table.setColumnWidth(7, 400) # Widgets don't like being resized with columns
         self.save_current_tab()
         self.save_category_tabs_order()
         self.restore_scroll_position()
@@ -455,50 +546,6 @@ class SheetsInInventoryTab(QWidget):
             self.sync_changes()
             self.sort_sheets()
             self.update_stock_costs()
-
-    def order_status_button_sheets_in_inventory(self, sheet: Sheet, button: OrderStatusButton) -> None:
-        if button.isChecked():  # Meaning there is not a order pending, and we want to set up a order pending
-            select_date_dialog = SetOrderPendingDialog(
-                f'Set an expected arrival time for "{sheet.get_name()}" and the number of sheets ordered',
-                "Sheets Ordered:",
-                self,
-            )
-            if select_date_dialog.exec():
-                sheet.expected_arrival_time = select_date_dialog.get_selected_date()
-                sheet.order_pending_quantity = select_date_dialog.get_order_quantity()
-                sheet.order_pending_date = datetime.now().strftime("%Y-%m-%d")
-                sheet.is_order_pending = True
-                self.sheets_inventory.save()
-                self.sync_changes()
-                self.sort_sheets()
-            else:
-                button.setChecked(False)
-                return
-        elif not button.isChecked():  # Meaning there is a order pending, and we want to add the quantity we set.
-            msg_box = QMessageBox(self)
-            msg_box.setWindowTitle("Add Sheet Quantity")
-            msg_box.setText(f'Do you want to add the incoming sheet quantity for "{sheet.get_name()}"?\n\nThe number of sheets that will be added is: {sheet.order_pending_quantity}.')
-            msg_box.setStandardButtons(QMessageBox.StandardButton.No | QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.Cancel)
-            msg_box.setDefaultButton(QMessageBox.StandardButton.No)
-            response = msg_box.exec()
-            if response == QMessageBox.StandardButton.Yes:
-                modified_date: str = f"{os.getlogin().title()} added {sheet.order_pending_quantity} sheets via order pending at {datetime.now().strftime('%B %d %A %Y %I:%M:%S %p')}"
-                sheet.quantity += sheet.order_pending_quantity
-                sheet.order_pending_quantity = 0
-                sheet.latest_change_quantity = modified_date
-                sheet.is_order_pending = False
-                sheet.has_sent_warning = False
-                self.sheets_inventory.save()
-                self.sync_changes()
-                self.sort_sheets()
-            else:
-                button.setChecked(True)
-                return
-
-    def arrival_date_change_sheets_in_inventory(self, sheet: Sheet, arrival_date: QDateEdit) -> None:
-        sheet.expected_arrival_time = arrival_date.date().toString("yyyy-MM-dd")
-        self.sheets_inventory.save()
-        self.sync_changes()
 
     def update_sheet_costs(self):
         self.category_tables[self.category].blockSignals(True)
@@ -593,9 +640,12 @@ class SheetsInInventoryTab(QWidget):
             html += "</thead>"
             html += '<tbody>'
             for sheet in sheets:
-                order_status = "No order is pending"
-                if sheet.is_order_pending:
-                    order_status = f"Order is pending since {sheet.order_pending_date} for {sheet.order_pending_quantity} quantity and expected to arrive at {sheet.expected_arrival_time}"
+                order_status = ""
+                if sheet.orders:
+                    for order in sheet.orders:
+                        order_status += f"{order}<br>"
+                else:
+                    order_status = "No order is pending"
                 html += f"""<tr style="border-bottom: 1px solid black;">
                 <td>{sheet.get_name()}</td>
                 <td>{sheet.quantity}</td>
@@ -609,7 +659,7 @@ class SheetsInInventoryTab(QWidget):
         self.parent.open_print_selected_parts()
 
     def update_sheet_row_color(self, table, sheet: Sheet):
-        if sheet.is_order_pending:
+        if sheet.orders:
             self.set_table_row_color(table, self.table_sheets_widgets[sheet]["row"], "#29422c")
         elif sheet.quantity <= sheet.red_quantity_limit:
             self.set_table_row_color(table, self.table_sheets_widgets[sheet]["row"], "#3F1E25")

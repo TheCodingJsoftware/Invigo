@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1103</width>
-    <height>631</height>
+    <width>724</width>
+    <height>461</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -1214,8 +1214,8 @@ QPushButton:pressed#pushButton_toggle_powder_coating:!checked {
                        <rect>
                         <x>0</x>
                         <y>0</y>
-                        <width>518</width>
-                        <height>69</height>
+                        <width>302</width>
+                        <height>58</height>
                        </rect>
                       </property>
                       <property name="sizePolicy">
@@ -1292,8 +1292,8 @@ QPushButton:pressed#pushButton_toggle_powder_coating:!checked {
                          <rect>
                           <x>0</x>
                           <y>0</y>
-                          <width>516</width>
-                          <height>69</height>
+                          <width>307</width>
+                          <height>52</height>
                          </rect>
                         </property>
                         <layout class="QVBoxLayout" name="verticalLayout_36">
@@ -1355,7 +1355,7 @@ QPushButton:pressed#pushButton_toggle_powder_coating:!checked {
       </layout>
      </widget>
      <widget class="QWidget" name="verticalWidget_4" native="true">
-      <layout class="QVBoxLayout" name="verticalLayout_19" stretch="1,0">
+      <layout class="QVBoxLayout" name="verticalLayout_19" stretch="0,0">
        <property name="rightMargin">
         <number>12</number>
        </property>
@@ -1392,7 +1392,7 @@ QPushButton:pressed#pushButton_toggle_powder_coating:!checked {
              <property name="title">
               <string>Laser Cut Parts</string>
              </property>
-             <layout class="QVBoxLayout" name="verticalLayout_26">
+             <layout class="QVBoxLayout" name="verticalLayout_26" stretch="1,0">
               <property name="spacing">
                <number>6</number>
               </property>
@@ -1404,6 +1404,30 @@ QPushButton:pressed#pushButton_toggle_powder_coating:!checked {
                 <property name="spacing">
                  <number>0</number>
                 </property>
+               </layout>
+              </item>
+              <item>
+               <layout class="QHBoxLayout" name="horizontalLayout_4">
+                <item>
+                 <widget class="QPushButton" name="pushButton_add_laser_cut_part_2">
+                  <property name="text">
+                   <string>Add Laser Cut Part</string>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <spacer name="horizontalSpacer_2">
+                  <property name="orientation">
+                   <enum>Qt::Horizontal</enum>
+                  </property>
+                  <property name="sizeHint" stdset="0">
+                   <size>
+                    <width>40</width>
+                    <height>20</height>
+                   </size>
+                  </property>
+                 </spacer>
+                </item>
                </layout>
               </item>
              </layout>

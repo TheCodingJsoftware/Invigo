@@ -4,7 +4,7 @@ from PyQt6 import uic
 from PyQt6.QtGui import QIcon
 from PyQt6.QtWidgets import QDialog
 
-from utils.components_inventory.order import Order
+from utils.inventory.order import Order
 
 
 class UpdateComponentOrderPendingDialog(QDialog):

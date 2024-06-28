@@ -15,6 +15,7 @@ class Nest:
         self.image_path: str = "404.jpeg"
         self.laser_cut_parts: list[LaserCutPart] = []
         self.sheet: Sheet = None
+        self.is_custom: bool = False
         self.load_data(data)
 
     def add_laser_cut_part(self, laser_cut_part: LaserCutPart):

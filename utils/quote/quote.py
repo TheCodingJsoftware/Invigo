@@ -22,6 +22,8 @@ class Quote:
         self.grouped_laser_cut_parts: list[LaserCutPart] = []
         self.components: list[Component] = []
         self.nests: list[Nest] = []
+        self.custom_nest: Nest = Nest("Custom", {}, self.sheet_settings, self.laser_cut_inventory)
+        self.custom_nest.is_custom = True
 
         # * Nest, Sheet, Item Quoting Settings
         self.laser_cutting_method: str = "CO2"
@@ -83,11 +85,12 @@ class Quote:
         self.grouped_laser_cut_parts = laser_cut_part_dict.values()
         self.sort_laser_cut_parts()
 
-    def add_laser_cut_part(self, laser_cut_part: LaserCutPart):
-        self.grouped_laser_cut_parts.append(laser_cut_part)
+    def add_laser_cut_part_to_custom_nest(self, laser_cut_part: LaserCutPart):
+        laser_cut_part.nest = self.custom_nest
+        self.custom_nest.add_laser_cut_part(laser_cut_part)
 
-    def remove_laser_cut_part(self, laser_cut_part: LaserCutPart):
-        self.grouped_laser_cut_parts.remove(laser_cut_part)
+    def remove_laser_cut_part_to_custom_nest(self, laser_cut_part: LaserCutPart):
+        self.custom_nest.remove_laser_cut_part(laser_cut_part)
 
     def add_nest(self, nest: Nest):
         self.nests.append(nest)
@@ -134,6 +137,11 @@ class Quote:
             self.components.append(Component(component_name, component_data, self.component_inventory))
 
         self.nests.clear()
+
+        custom_nest_data = data.get("custom_nest", {})
+        self.custom_nest = Nest("Custom", custom_nest_data, self.sheet_settings, self.laser_cut_inventory)
+        self.custom_nest.is_custom = True
+
         for nest_name, nest_data in data["nests"].items():
             self.nests.append(Nest(nest_name, nest_data, self.sheet_settings, self.laser_cut_inventory))
 
@@ -166,6 +174,7 @@ class Quote:
             "laser_cut_parts": {},
             "components": {},
             "nests": {},
+            "custom_nest": self.custom_nest.to_dict()
         }
 
         for component in self.components:

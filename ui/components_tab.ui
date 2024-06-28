@@ -125,8 +125,8 @@
                   <rect>
                    <x>0</x>
                    <y>0</y>
-                   <width>906</width>
-                   <height>102</height>
+                   <width>883</width>
+                   <height>91</height>
                   </rect>
                  </property>
                  <property name="maximumSize">
@@ -325,7 +325,7 @@ QPushButton#pushButton_create_new:disabled{
 }r</string>
          </property>
          <property name="text">
-          <string>Add New Item</string>
+          <string>Add New Component to Inventory</string>
          </property>
          <property name="checkable">
           <bool>false</bool>

@@ -286,8 +286,6 @@ class LaserCutTab(QWidget):
         self.settings_file = Settings()
 
         self.tab_widget = LaserCutPartsTabWidget(self)
-        self.tab_widget.addCategory.connect(self.add_category)
-        self.tab_widget.removeCategory.connect(self.remove_category)
 
         self.category: Category = None
         self.finished_loading: bool = False
@@ -384,7 +382,8 @@ class LaserCutTab(QWidget):
             table.cellPressed.connect(self.table_selected_changed)
             self.laser_cut_inventory.save()
             self.sync_changes()
-            self.update_category_total_stock_costs()
+            self.load_categories()
+            self.restore_last_selected_tab()
 
     def remove_category(self):
         category_to_remove, ok = QInputDialog.getItem(self, "Remove Category", "Select a category to remove", [category.name for category in self.laser_cut_inventory.get_categories()], self.tab_widget.currentIndex(), False)
@@ -403,7 +402,8 @@ class LaserCutTab(QWidget):
             del self.category_tables[category]
             self.laser_cut_inventory.save()
             self.sync_changes()
-            self.update_category_total_stock_costs()
+            self.load_categories()
+            self.restore_last_selected_tab()
 
     def edit_category(self):
         if self.category.name in ["Recut", "Custom"]:
@@ -423,17 +423,26 @@ class LaserCutTab(QWidget):
                 self.tab_widget.insertTab(self.tab_widget.currentIndex() + 1, table, new_category.name)
                 table.rowChanged.connect(self.table_changed)
                 table.cellPressed.connect(self.table_selected_changed)
+                self.laser_cut_inventory.save()
+                self.sync_changes()
+                self.load_categories()
+                self.restore_last_selected_tab()
             elif action == "RENAME":
                 self.category.rename(input_text)
                 self.tab_widget.setTabText(self.tab_widget.currentIndex(), input_text)
+                self.laser_cut_inventory.save()
+                self.sync_changes()
+                self.load_categories()
+                self.restore_last_selected_tab()
             elif action == "DELETE":
                 self.clear_layout(self.category_tables[self.category])
                 del self.category_tables[self.category]
                 self.laser_cut_inventory.delete_category(self.category)
                 self.tab_widget.removeTab(self.tab_widget.currentIndex())
-            self.laser_cut_inventory.save()
-            self.sync_changes()
-            self.update_category_total_stock_costs()
+                self.laser_cut_inventory.save()
+                self.sync_changes()
+                self.load_categories()
+                self.restore_last_selected_tab()
 
     def load_categories(self):
         self.settings_file.load_data()
@@ -459,7 +468,10 @@ class LaserCutTab(QWidget):
         self.tab_widget.tabOrderChanged.connect(self.save_category_tabs_order)
         self.tab_widget.tabOrderChanged.connect(self.save_current_tab)
         self.tab_widget.tabBarDoubleClicked.connect(self.edit_category)
-        self.update_category_total_stock_costs()
+        self.tab_widget.addCategory.connect(self.add_category)
+        self.tab_widget.removeCategory.connect(self.remove_category)
+        # NOTE I know, just testing
+        # self.update_category_total_stock_costs()
 
     def load_table(self):
         self.category: Category = self.laser_cut_inventory.get_category(self.tab_widget.tabText(self.tab_widget.currentIndex()))

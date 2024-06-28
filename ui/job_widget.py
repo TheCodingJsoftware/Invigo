@@ -53,8 +53,6 @@ class JobWidget(QWidget):
         #         )
         self.verticalLayout_4.setAlignment(Qt.AlignmentFlag.AlignTop)
         self.gridLayout_2.setAlignment(Qt.AlignmentFlag.AlignTop)
-        self.splitter.setStretchFactor(0, 0)
-        self.splitter.setStretchFactor(1, 1)
 
         self.scrollArea = self.findChild(QScrollArea, "scrollArea")
 

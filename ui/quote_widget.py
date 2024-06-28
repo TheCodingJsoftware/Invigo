@@ -10,6 +10,7 @@ from PyQt6.QtCore import QDate, Qt, pyqtSignal
 from PyQt6.QtGui import QAction, QColor, QCursor, QFont, QIcon, QKeySequence, QPixmap
 from PyQt6.QtWidgets import QAbstractItemView, QApplication, QCheckBox, QComboBox, QDateEdit, QDoubleSpinBox, QGridLayout, QHBoxLayout, QLabel, QMenu, QMessageBox, QPushButton, QTableWidgetItem, QTextEdit, QVBoxLayout, QWidget
 
+from ui.add_laser_cut_part_dialog import AddLaserCutPartDialog
 from ui.add_component_dialog import AddComponentDialog
 from ui.add_sheet_dialog import AddSheetDialog
 from ui.custom_widgets import ClickableLabel, CustomTableWidget, DeletePushButton, MachineCutTimeSpinBox, MultiToolBox, RecutButton
@@ -379,6 +380,9 @@ class QuoteWidget(QWidget):
         self.pushButton_match_sheet_to_item_2.setChecked(self.quote.match_sheet_cost_to_item)
         self.pushButton_match_sheet_to_item_2.clicked.connect(lambda: (self.global_quote_settings_changed(), self.update_laser_cut_parts_price()))
 
+        self.pushButton_add_laser_cut_part_2 = self.findChild(QPushButton, "pushButton_add_laser_cut_part_2")
+        self.pushButton_add_laser_cut_part_2.clicked.connect(self.add_laser_cut_part)
+
         self.pushButton_add_component_2: QPushButton = self.findChild(QPushButton, "pushButton_add_component_2")
         self.pushButton_add_component_2.clicked.connect(self.add_component)
 
@@ -636,7 +640,9 @@ class QuoteWidget(QWidget):
         self.nests_tool_box.layout().setSpacing(0)
         self.nests_layout.addWidget(self.nests_tool_box)
         tab_index = 0
-        for nest in self.quote.nests:
+        for nest in [self.quote.custom_nest] + self.quote.nests:
+            if not nest.laser_cut_parts:
+                continue
             self.nest_items.update({nest: {}})
             self.nest_items[nest].update({"tab_index": tab_index})
             layout_widget = QWidget(self.nests_tool_box)
@@ -855,7 +861,9 @@ class QuoteWidget(QWidget):
 
         summary = {}
 
-        for nest in self.quote.nests:
+        for nest in [self.quote.custom_nest] + self.quote.nests:
+            if not nest.laser_cut_parts:
+                continue
             summary.setdefault(nest.sheet.get_name(), {"total_sheet_count": 0, "total_seconds": 0})
             summary.setdefault(nest.sheet.material, {"total_sheet_count": 0, "total_seconds": 0})
             summary[nest.sheet.get_name()]["total_sheet_count"] += nest.sheet_count
@@ -926,7 +934,8 @@ class QuoteWidget(QWidget):
             if table_item_data["row"] in selected_rows:
                 laser_cut_part.nest.remove_laser_cut_part(laser_cut_part)
                 if len(laser_cut_part.nest.laser_cut_parts) == 0:
-                    self.quote.remove_nest(laser_cut_part.nest)
+                    if not laser_cut_part.nest.is_custom:
+                        self.quote.remove_nest(laser_cut_part.nest)
                     update_nests = True
         self.quote.group_laser_cut_parts()
         self.load_laser_cut_parts()
@@ -1072,6 +1081,23 @@ class QuoteWidget(QWidget):
 
         return menu
 
+    def add_laser_cut_part(self):
+        add_item_dialog = AddLaserCutPartDialog(self)
+        if add_item_dialog.exec():
+            if not (laser_cut_part := self.laser_cut_inventory.get_laser_cut_part_by_name(add_item_dialog.get_name())):
+                msg = QMessageBox(QMessageBox.Icon.Critical, "Does not exist", f"{add_item_dialog.get_name()} does not exist in the laser cut parts inventory", QMessageBox.StandardButton.Ok, self)
+                msg.show()
+                return
+            new_laser_cut_part = LaserCutPart(laser_cut_part.name, laser_cut_part.to_dict(), self.laser_cut_inventory)
+            new_laser_cut_part.quantity = add_item_dialog.get_current_quantity()
+            new_laser_cut_part.quantity_in_nest = 1
+            self.quote.add_laser_cut_part_to_custom_nest(new_laser_cut_part)
+            self.parent.parent.download_required_images_thread([new_laser_cut_part.image_index])
+            self.load_laser_cut_parts()
+            self.load_nests()
+            self.load_nest_summary()
+        self.quote_changed()
+
     def load_laser_cut_parts(self):
         self.laser_cut_table_items.clear()
         self.clear_layout(self.laser_cut_layout)
@@ -1082,7 +1108,9 @@ class QuoteWidget(QWidget):
         self.laser_cut_layout.addWidget(self.laser_cut_table_widget)
         row_index = 0
         self.laser_cut_table_widget.setRowCount(0)
-        for nest in self.quote.nests:
+        for nest in [self.quote.custom_nest] + self.quote.nests:
+            if not nest.laser_cut_parts:
+                continue
             self.laser_cut_table_widget.insertRow(row_index)
             item = QTableWidgetItem(nest.name)
             item.setTextAlignment(4)
@@ -1099,32 +1127,25 @@ class QuoteWidget(QWidget):
 
                 self.laser_cut_table_widget.insertRow(row_index)
                 self.laser_cut_table_widget.setRowHeight(row_index, 70)
-                label = ClickableLabel(self)
-                label.setToolTip("Click to make bigger.")
-                label.setFixedSize(70, 70)
-                pixmap = QPixmap(laser_cut_part.image_index)
-                does_part_exist: bool = True
-                if pixmap.isNull():
+                image_item = QTableWidgetItem()
+                if not "images" in laser_cut_part.image_index:
+                    laser_cut_part.image_index = "images/" + laser_cut_part.image_index
+                if not laser_cut_part.image_index.endswith(".jpeg"):
+                    laser_cut_part.image_index += ".jpeg"
+                image = QPixmap(laser_cut_part.image_index)
+                if image.isNull():
+                    image = QPixmap("images/404.jpeg")
                     does_part_exist = False
-                    pixmap = QPixmap("images/404.png")
-                    label.clicked.connect(
-                        partial(
-                            self.open_image,
-                            "images/404.png",
-                            "Part does not exist",
-                        )
-                    )
                 else:
-                    label.clicked.connect(
-                        partial(
-                            self.open_image,
-                            laser_cut_part.image_index,
-                            laser_cut_part.name,
-                        )
-                    )
-                scaled_pixmap = pixmap.scaled(label.size(), aspectRatioMode=Qt.AspectRatioMode.KeepAspectRatio)
-                label.setPixmap(scaled_pixmap)
-                self.laser_cut_table_widget.setCellWidget(row_index, self.laser_cut_table_widget.picture_column, label)
+                    does_part_exist = True
+                original_width = image.width()
+                original_height = image.height()
+                new_height = 70
+                new_width = int(original_width * (new_height / original_height))
+                pixmap = image.scaled(new_width, new_height, Qt.AspectRatioMode.KeepAspectRatio)
+                image_item.setData(Qt.ItemDataRole.DecorationRole, pixmap)
+
+                self.laser_cut_table_widget.setItem(row_index, self.laser_cut_table_widget.picture_column, image_item)
 
                 table_widget_item_name = QTableWidgetItem(laser_cut_part.name)
                 table_widget_item_name.setTextAlignment(Qt.AlignmentFlag.AlignCenter | Qt.AlignmentFlag.AlignVCenter)
@@ -1165,6 +1186,8 @@ class QuoteWidget(QWidget):
                 )
                 self.laser_cut_table_items[laser_cut_part].update({"thickness": thickness_combobox})
 
+                if not laser_cut_part.quantity_in_nest: # I dont understand why I need to check, it throws TypeError in the following lines
+                    laser_cut_part.quantity_in_nest = laser_cut_part.quantity
                 table_widget_item_quantity = QTableWidgetItem(str(laser_cut_part.quantity_in_nest * nest.sheet_count))
                 table_widget_item_quantity.setTextAlignment(Qt.AlignmentFlag.AlignCenter | Qt.AlignmentFlag.AlignVCenter)
                 table_widget_item_quantity.setToolTip(f"One sheet has: {laser_cut_part.quantity_in_nest}")
@@ -1444,6 +1467,8 @@ class QuoteWidget(QWidget):
             QMessageBox.StandardButton.Cancel,
         ]:
             return
+        self.quote.custom_nest = Nest("Custom", {}, self.sheet_settings, self.laser_cut_inventory)
+        self.quote.custom_nest.is_custom = True
         self.quote.nests.clear()
         self.quote.grouped_laser_cut_parts.clear()
         self.laser_cut_table_items.clear()

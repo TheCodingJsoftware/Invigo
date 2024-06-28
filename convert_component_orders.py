@@ -3,7 +3,7 @@ from datetime import datetime
 import ujson as json
 
 from utils.components_inventory.components_inventory import ComponentsInventory
-from utils.components_inventory.order import Order
+from utils.inventory.order import Order
 
 def restore():
     with open(r"data\components_inventory - old orders.json", "r", encoding="utf-8") as file:

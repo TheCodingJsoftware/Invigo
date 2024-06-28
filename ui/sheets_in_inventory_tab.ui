@@ -75,7 +75,7 @@
             <x>0</x>
             <y>0</y>
             <width>298</width>
-            <height>560</height>
+            <height>571</height>
            </rect>
           </property>
           <property name="maximumSize">
@@ -222,7 +222,7 @@ QPushButton#pushButton_add_new_sheet:disabled{
 }</string>
            </property>
            <property name="text">
-            <string>Add New Sheet</string>
+            <string>Add New Sheet to Inventory</string>
            </property>
            <property name="checkable">
             <bool>false</bool>

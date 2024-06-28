@@ -96,8 +96,8 @@ from utils.workspace.job_preferences import JobPreferences
 __author__: str = "Jared"
 __copyright__: str = "Copyright 2022-2024, TheCodingJ's"
 __license__: str = "MIT"
-__version__: str = "v3.0.34"
-__updated__: str = "2024-06-26 16:46:41"
+__version__: str = "v3.0.35"
+__updated__: str = "2024-06-28 11:39:14"
 __maintainer__: str = "Jared"
 __email__: str = "jared@pinelandfarms.ca"
 __status__: str = "Production"
@@ -275,6 +275,7 @@ class MainWindow(QMainWindow):
 
         self.splitter_3.setStretchFactor(3,3) # Quote Generator
         self.splitter.setStretchFactor(10,11) # Job Planner
+        self.splitter_2.setStretchFactor(10,11) # Quote Generator 2
 
     def __load_ui(self) -> None:
         menu_tabs_order: list[str] = self.settings_file.get_value(setting_name="menu_tabs_order")
@@ -1509,7 +1510,8 @@ class MainWindow(QMainWindow):
         images_to_upload = [laser_cut_part.image_index for laser_cut_part in quote.grouped_laser_cut_parts]
         images_to_upload.extend(component.image_path for component in quote.components)
         images_to_upload.extend(nest.image_path for nest in quote.nests)
-        self.upload_file(images_to_upload)
+        images = set(images_to_upload)
+        self.upload_file(list(images))
 
     def changes_response(self, response: str | list[str]) -> None:
         if isinstance(response, list):
@@ -1579,7 +1581,6 @@ class MainWindow(QMainWindow):
         download_thread.start()
 
     def download_thread_response(self, response: dict, files_uploaded: list[str]):
-        print(response, files_uploaded)
         if not self.finished_downloading_all_files:
             self.finished_downloading_all_files = True
             self.tool_box_menu_changed()

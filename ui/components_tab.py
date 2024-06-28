@@ -28,7 +28,7 @@ from ui.set_custom_limit_dialog import SetCustomLimitDialog
 from ui.set_order_pending_dialog import SetOrderPendingDialog
 from utils.components_inventory.component import Component
 from utils.components_inventory.components_inventory import ComponentsInventory
-from utils.components_inventory.order import Order
+from utils.inventory.order import Order
 from utils.dialog_buttons import DialogButtons
 from utils.history_file import HistoryFile
 from utils.inventory.category import Category
@@ -203,8 +203,6 @@ class ComponentsTab(QWidget):
         self.settings_file = Settings()
 
         self.tab_widget = ComponentsTabWidget(self)
-        self.tab_widget.addCategory.connect(self.add_category)
-        self.tab_widget.removeCategory.connect(self.remove_category)
 
         self.category: Category = None
         self.finished_loading: bool = False
@@ -265,6 +263,8 @@ class ComponentsTab(QWidget):
             self.components_inventory.save()
             self.sync_changes()
             self.update_category_total_stock_costs()
+            self.load_categories()
+            self.restore_last_selected_tab()
 
     def remove_category(self):
         category_to_remove, ok = QInputDialog.getItem(self, "Remove Category", "Select a category to remove", [category.name for category in self.components_inventory.get_categories()], self.tab_widget.currentIndex(), False)
@@ -277,6 +277,8 @@ class ComponentsTab(QWidget):
             self.components_inventory.save()
             self.sync_changes()
             self.update_category_total_stock_costs()
+            self.load_categories()
+            self.restore_last_selected_tab()
 
     def edit_category(self):
         edit_dialog = EditCategoryDialog(f"Edit {self.category.name}", f"Delete, duplicate, or rename: {self.category.name}.", self.category.name, self.category, self.components_inventory, self)
@@ -294,17 +296,29 @@ class ComponentsTab(QWidget):
                 self.tab_widget.insertTab(self.tab_widget.currentIndex() + 1, table, new_category.name)
                 table.rowChanged.connect(self.table_changed)
                 table.cellPressed.connect(self.table_selected_changed)
+                self.components_inventory.save()
+                self.sync_changes()
+                self.update_category_total_stock_costs()
+                self.load_categories()
+                self.restore_last_selected_tab()
             elif action == "RENAME":
                 self.category.rename(input_text)
                 self.tab_widget.setTabText(self.tab_widget.currentIndex(), input_text)
+                self.components_inventory.save()
+                self.sync_changes()
+                self.update_category_total_stock_costs()
+                self.load_categories()
+                self.restore_last_selected_tab()
             elif action == "DELETE":
                 self.clear_layout(self.category_tables[self.category])
                 del self.category_tables[self.category]
                 self.components_inventory.delete_category(self.category)
                 self.tab_widget.removeTab(self.tab_widget.currentIndex())
-            self.components_inventory.save()
-            self.sync_changes()
-            self.update_category_total_stock_costs()
+                self.components_inventory.save()
+                self.sync_changes()
+                self.update_category_total_stock_costs()
+                self.load_categories()
+                self.restore_last_selected_tab()
 
     def load_categories(self):
         self.settings_file.load_data()
@@ -330,6 +344,8 @@ class ComponentsTab(QWidget):
         self.tab_widget.tabOrderChanged.connect(self.save_category_tabs_order)
         self.tab_widget.tabOrderChanged.connect(self.save_current_tab)
         self.tab_widget.tabBarDoubleClicked.connect(self.edit_category)
+        self.tab_widget.addCategory.connect(self.add_category)
+        self.tab_widget.removeCategory.connect(self.remove_category)
 
     def load_table(self):
         self.category: Category = self.components_inventory.get_category(self.tab_widget.tabText(self.tab_widget.currentIndex()))
@@ -651,7 +667,7 @@ class ComponentsTab(QWidget):
                 self.sort_components()
 
             categories = QMenu(menu)
-            categories.setTitle("Move selected parts to category")
+            categories.setTitle("Move to")
             for _, category in enumerate(self.components_inventory.get_categories()):
                 action = QAction(category.name, self)
                 if self.category == category:
@@ -692,7 +708,7 @@ class ComponentsTab(QWidget):
                 self.sync_changes()
 
             categories = QMenu(menu)
-            categories.setTitle("Copy selected parts to category")
+            categories.setTitle("Add to")
             for _, category in enumerate(self.components_inventory.get_categories()):
                 action = QAction(category.name, self)
                 if self.category == category:
@@ -1020,8 +1036,8 @@ class ComponentsTab(QWidget):
             html += "</tr>"
             html += "</thead>"
             html += '<tbody>'
-            order_status = ""
             for component in components:
+                order_status = ""
                 if component.orders:
                     for order in component.orders:
                         order_status += f"{order}<br>"

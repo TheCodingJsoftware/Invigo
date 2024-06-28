@@ -1420,6 +1420,10 @@ QPushButton:checked:pressed#assembly_button_drop_menu {
 
         image_item = QTableWidgetItem()
         try:
+            if not "images" in laser_cut_part.image_index:
+                laser_cut_part.image_index = "images/" + laser_cut_part.image_index
+            if not laser_cut_part.image_index.endswith(".jpeg"):
+                laser_cut_part.image_index += ".jpeg"
             image = QPixmap(laser_cut_part.image_index)
             if image.isNull():
                 image = QPixmap("images/404.jpeg")

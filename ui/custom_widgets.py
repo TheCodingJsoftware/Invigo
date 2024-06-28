@@ -1703,7 +1703,10 @@ class CustomTabWidget(QWidget):
         return next((i for i, button in enumerate(self.buttons) if button.isChecked()), 0)
 
     def setCurrentIndex(self, index: int):
-        self.buttons[index].click()
+        try:
+            self.buttons[index].click()
+        except IndexError:
+            self.setCurrentIndex(index-1)
 
     def currentTabText(self) -> str:
         return next((button.text() for button in self.buttons if button.isChecked()), None)
@@ -1711,7 +1714,16 @@ class CustomTabWidget(QWidget):
     def currentTab(self) -> TabButton:
         return next((button for button in self.buttons if button.isChecked()), None)
 
+    def clear_signals(self):
+        self.currentChanged.disconnect()
+        self.tabBarDoubleClicked.disconnect()
+        self.addCategory.disconnect()
+        self.removeCategory.disconnect()
+        self.tabOrderChanged.disconnect()
+
     def clear(self):
+        with contextlib.suppress(TypeError): # Because it just initialized
+            self.clear_signals()
         while self.stacked_widget.count():
             widget = self.stacked_widget.widget(0)
             self.stacked_widget.removeWidget(widget)

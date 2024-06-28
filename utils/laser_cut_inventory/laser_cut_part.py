@@ -79,7 +79,8 @@ class LaserCutPart(InventoryItem):
         self.unit_price: float = 0.0
 
         # NOTE Only for Quote Generator and load_nest.py
-        self.nest = None
+        from utils.quote.nest import Nest
+        self.nest: Nest = None
         self.quoted_price: float = 0.0
         self.quantity_in_nest: int = None
         self.matched_to_sheet_cost_price: float = 0.0
