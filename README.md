@@ -2,8 +2,9 @@
 
 <table>
 <tbody>
-<td>
-<img style="border-radius: 25px; max-width: 200px; width: auto; height: 150px" src="icons/icon.png" /><p style="font-size: 36px; font-weight: bold; max-width: 200px; text-align: center; margin: auto;">Invigo</p>
+<td style="width: 200px;">
+<br>
+<img style="border-radius: 25px; width: 200px; height: auto;" src="icons/icon.png" /><h3>Invigo</h3>
 </td>
 <td>
 <img src="https://img.shields.io/github/created-at/TheCodingJsoftware/Inventory-Manager?style=for-the-badge&"/><img src="https://img.shields.io/github/license/TheCodingJsoftware/Inventory-Manager?&style=for-the-badge"/><img src="https://img.shields.io/static/v1?label=Platform&message=Windows&&style=for-the-badge"/><img src="https://img.shields.io/github/repo-size/TheCodingJsoftware/Inventory-Manager?label=Size&style=for-the-badge"/><img src="https://img.shields.io/github/commit-activity/m/TheCodingJsoftware/Inventory-Manager?style=for-the-badge"/><img src="https://img.shields.io/github/last-commit/TheCodingJsoftware/Invigo?style=for-the-badge
