@@ -101,3 +101,14 @@ server/data/inventory - Price of Steel.json
 *.json
 order_number.json
 print_selected_parts.html
+1 - compile_and_upload_update.bat
+2 - upload_update.bat
+compile_and_upload_update.py
+convert_component_orders.py
+convert_sheet_orders.py
+convert.py
+restore_component_category_quantities.py
+restore_laser_cut_inventory_category_quantities.py
+upload_update.py
+*.eddx
+*.bat
