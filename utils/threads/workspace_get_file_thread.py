@@ -1,8 +1,8 @@
 import os
 from pathlib import Path
 
-from requests import Session
 from PyQt6.QtCore import QThread, pyqtSignal
+from requests import Session
 
 from utils.ip_utils import get_server_ip_address, get_server_port
 

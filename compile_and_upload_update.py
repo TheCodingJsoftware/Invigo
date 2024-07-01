@@ -6,7 +6,8 @@ import sys
 import zipfile
 from datetime import datetime
 
-from PyQt6.QtWidgets import QApplication, QHBoxLayout, QLabel, QLineEdit, QPushButton, QTextEdit, QVBoxLayout, QWidget
+from PyQt6.QtWidgets import (QApplication, QHBoxLayout, QLabel, QLineEdit,
+                             QPushButton, QTextEdit, QVBoxLayout, QWidget)
 
 from ui.theme import set_theme
 
@@ -266,7 +267,7 @@ dist_dir = "dist"
 output_zip_name = "Invigo"
 zip_file = f"{output_zip_name}.zip"
 destination_path = r"\\Pinecone\web\Invigo\static"
-path_to_main_script = "main.py"
+path_to_main_script = "ui\\main_window.py"
 path_to_web_version = r"\\Pinecone\web\Invigo\static\version.txt"
 path_to_web_update_message = r"\\Pinecone\web\Invigo\static\update_message.txt"
 

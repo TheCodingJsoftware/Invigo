@@ -1,5 +1,5 @@
 import copy
-from typing import Union
+from typing import TYPE_CHECKING, Union
 
 from utils.inventory.category import Category
 from utils.inventory.inventory_item import InventoryItem
@@ -9,12 +9,14 @@ from utils.paint_inventory.primer import Primer
 from utils.workspace.flow_tag import FlowTag
 from utils.workspace.workspace_settings import WorkspaceSettings
 
+if TYPE_CHECKING:
+    from utils.laser_cut_inventory.laser_cut_inventory import LaserCutInventory
+    from utils.paint_inventory.paint_inventory import PaintInventory
+
 
 class LaserCutPart(InventoryItem):
     def __init__(self, name: str, data: dict, laser_cut_inventory):
         super().__init__(name)
-        from utils.laser_cut_inventory.laser_cut_inventory import LaserCutInventory
-        from utils.paint_inventory.paint_inventory import PaintInventory
 
         self.laser_cut_inventory: LaserCutInventory = laser_cut_inventory
         self.paint_inventory: PaintInventory = self.laser_cut_inventory.paint_inventory
@@ -80,6 +82,7 @@ class LaserCutPart(InventoryItem):
 
         # NOTE Only for Quote Generator and load_nest.py
         from utils.quote.nest import Nest
+
         self.nest: Nest = None
         self.quoted_price: float = 0.0
         self.quantity_in_nest: int = None

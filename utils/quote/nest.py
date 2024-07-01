@@ -24,6 +24,13 @@ class Nest:
     def remove_laser_cut_part(self, laser_cut_part: LaserCutPart):
         self.laser_cut_parts.remove(laser_cut_part)
 
+    def get_total_cutting_time(self) -> str:
+        total_seconds = self.sheet_cut_time * self.sheet_count
+        hours = int(total_seconds // 3600)
+        minutes = int((total_seconds % 3600) // 60)
+        seconds = int(total_seconds % 60)
+        return f"{hours:02d}h {minutes:02d}m {seconds:02d}s"
+
     def calculate_scrap_percentage(self) -> float:
         sheet_surface_area = self.sheet.length * self.sheet.width
         total_laser_cut_part_surface_area = 0.0

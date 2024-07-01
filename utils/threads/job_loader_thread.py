@@ -2,9 +2,9 @@ import contextlib
 
 from PyQt6.QtCore import QObject, QThread, pyqtSignal
 
-from threads.download_images_thread import DownloadImagesThread
-from threads.download_job_thread import DownloadJobThread
-from threads.workspace_get_file_thread import WorkspaceDownloadFile
+from utils.threads.download_images_thread import DownloadImagesThread
+from utils.threads.download_job_thread import DownloadJobThread
+from utils.threads.workspace_get_file_thread import WorkspaceDownloadFile
 from utils.workspace.job import Job
 from utils.workspace.job_manager import JobManager
 
@@ -39,11 +39,11 @@ class JobLoaderThread(QThread):
         files: set[str] = set()
         for assembly in job.get_all_assemblies():
             for assembly_file in assembly.assembly_files:
-                if not assembly_file.lower().endswith(('.pdf', '.jpeg', '.jpg', '.png')):
+                if not assembly_file.lower().endswith((".pdf", ".jpeg", ".jpg", ".png")):
                     files.add(assembly_file)
         for laser_cut_part in job.get_all_laser_cut_parts():
             for laser_cut_part_file in laser_cut_part.bending_files + laser_cut_part.welding_files + laser_cut_part.cnc_milling_files:
-                if not laser_cut_part_file.lower().endswith(('.pdf', '.jpeg', '.jpg', '.png')):
+                if not laser_cut_part_file.lower().endswith((".pdf", ".jpeg", ".jpg", ".png")):
                     files.add(laser_cut_part_file)
         return list(files)
 

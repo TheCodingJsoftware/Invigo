@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>724</width>
-    <height>461</height>
+    <height>475</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -469,39 +469,7 @@
                             <string>Match item cost to sheet cost</string>
                            </property>
                            <property name="styleSheet">
-                            <string notr="true">QPushButton#pushButton_item_to_sheet{
-	color: #ffffff;
-    background-color: #3daee9;
-    border: 1px solid #3daee9;
-    border-radius: 5px;
-}
-QPushButton#pushButton_item_to_sheet:checked{
-    background-color: #3daee9;
-    color: #171717;
-}
-QPushButton#pushButton_item_to_sheet:hover{
-    background-color: #48b6ed;
-    border-color: #3daee9;
-}
-QPushButton#pushButton_item_to_sheet:pressed{
-    background-color: #2b92c5;
-}
-
-QPushButton#pushButton_item_to_sheet:!checked {
-    background-color: rgba(71, 71, 71, 130);
-    border-color: rgba(71, 71, 71, 130);
-    color: #8C8C8C;
-}
-
-QPushButton:hover#pushButton_item_to_sheet:!checked {
-    background-color: rgba(76, 76, 76, 130);
-    border-color: #3daee9;
-}
-
-QPushButton:pressed#pushButton_item_to_sheet:!checked {
-    background-color: #3daee9;
-    color: #171717;
-}</string>
+                            <string notr="true"/>
                            </property>
                            <property name="text">
                             <string>Match Item Cost to Sheet Cost</string>
@@ -716,40 +684,7 @@ QPushButton:pressed#pushButton_item_to_sheet:!checked {
                                     </size>
                                    </property>
                                    <property name="styleSheet">
-                                    <string notr="true">QPushButton#pushButton_toggle_primer{
-	color: #ffffff;
-    background-color: #3daee9;
-    border: 1px solid #3daee9;
-    border-radius: 5px;
-}
-QPushButton#pushButton_toggle_primer:checked{
-    background-color: #3daee9;
-    color: #171717;
-
-}
-QPushButton#pushButton_toggle_primer:hover{
-    background-color: #48b6ed;
-    border-color: #3daee9;
-}
-QPushButton#pushButton_toggle_primer:pressed{
-    background-color: #2b92c5;
-}
-
-QPushButton#pushButton_toggle_primer:!checked {
-    background-color: rgba(71, 71, 71, 130);
-    border-color: rgba(71, 71, 71, 130);
-    color: #8C8C8C;
-}
-
-QPushButton:hover#pushButton_toggle_primer:!checked {
-    background-color: rgba(76, 76, 76, 130);
-    border-color: #3daee9;
-}
-
-QPushButton:pressed#pushButton_toggle_primer:!checked {
-    background-color: #3daee9;
-    color: #171717;
-}</string>
+                                    <string notr="true"/>
                                    </property>
                                    <property name="text">
                                     <string>Toggle all parts</string>
@@ -839,39 +774,7 @@ QPushButton:pressed#pushButton_toggle_primer:!checked {
                                     </size>
                                    </property>
                                    <property name="styleSheet">
-                                    <string notr="true">QPushButton#pushButton_toggle_paint{
-	color: #ffffff;
-    background-color: #3daee9;
-    border: 1px solid #3daee9;
-    border-radius: 5px;
-}
-QPushButton#pushButton_toggle_paint:checked{
-    background-color: #3daee9;
-    color: #171717;
-}
-QPushButton#pushButton_toggle_paint:hover{
-    background-color: #48b6ed;
-    border-color: #3daee9;
-}
-QPushButton#pushButton_toggle_paint:pressed{
-    background-color: #2b92c5;
-}
-
-QPushButton#pushButton_toggle_paint:!checked {
-    background-color: rgba(71, 71, 71, 130);
-    border-color: rgba(71, 71, 71, 130);
-    color: #8C8C8C;
-}
-
-QPushButton:hover#pushButton_toggle_paint:!checked {
-    background-color: rgba(76, 76, 76, 130);
-    border-color: #3daee9;
-}
-
-QPushButton:pressed#pushButton_toggle_paint:!checked {
-    background-color: #3daee9;
-    color: #171717;
-}</string>
+                                    <string notr="true"/>
                                    </property>
                                    <property name="text">
                                     <string>Toggle all parts</string>
@@ -938,39 +841,7 @@ QPushButton:pressed#pushButton_toggle_paint:!checked {
                                 </size>
                                </property>
                                <property name="styleSheet">
-                                <string notr="true">QPushButton#pushButton_toggle_powder_coating{
-	color: #ffffff;
-    background-color: #3daee9;
-    border: 1px solid #3daee9;
-    border-radius: 5px;
-}
-QPushButton#pushButton_toggle_powder_coating:checked{
-    background-color: #3daee9;
-    color: #171717;
-}
-QPushButton#pushButton_toggle_powder_coating:hover{
-    background-color: #48b6ed;
-    border-color: #3daee9;
-}
-QPushButton#pushButton_toggle_powder_coating:pressed{
-    background-color: #2b92c5;
-}
-
-QPushButton#pushButton_toggle_powder_coating:!checked {
-    background-color: rgba(71, 71, 71, 130);
-    border-color: rgba(71, 71, 71, 130);
-    color: #8C8C8C;
-}
-
-QPushButton:hover#pushButton_toggle_powder_coating:!checked {
-    background-color: rgba(76, 76, 76, 130);
-    border-color: #3daee9;
-}
-
-QPushButton:pressed#pushButton_toggle_powder_coating:!checked {
-    background-color: #3daee9;
-    color: #171717;
-}</string>
+                                <string notr="true"/>
                                </property>
                                <property name="text">
                                 <string>Toggle all parts</string>

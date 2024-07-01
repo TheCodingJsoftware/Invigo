@@ -1,4 +1,7 @@
 from enum import Enum, auto
+from typing import TYPE_CHECKING
+
+from natsort import natsorted
 
 from utils.components_inventory.component import Component
 from utils.components_inventory.components_inventory import ComponentsInventory
@@ -9,6 +12,9 @@ from utils.workspace.assembly import Assembly
 from utils.workspace.group import Group
 from utils.workspace.nest import Nest
 from utils.workspace.workspace_settings import WorkspaceSettings
+
+if TYPE_CHECKING:
+    from utils.workspace.job_manager import JobManager
 
 
 class JobStatus(Enum):
@@ -30,9 +36,8 @@ class JobColor(Enum):
 
     @classmethod
     def get_color(cls, job_status):
-        return next(
-            (color.value[0] for color in cls if color.value[1] == job_status), None
-        )
+        return next((color.value[0] for color in cls if color.value[1] == job_status), None)
+
 
 class Job:
     def __init__(self, name: str, data: dict, job_manager) -> None:
@@ -44,7 +49,7 @@ class Job:
         self.color: str = "#3daee9"  # default
         self.groups: list[Group] = []
         self.nests: list[Nest] = []
-        from utils.workspace.job_manager import JobManager
+        self.grouped_laser_cut_parts: list[LaserCutPart] = []
 
         self.job_manager: JobManager = job_manager
         self.job_status = JobStatus.PLANNING
@@ -75,17 +80,38 @@ class Job:
     def changes_made(self):
         self.unsaved_changes = True
 
-    def add_nest(self, nest: Nest):
-        self.groups.append(nest)
-
-    def remove_nest(self, nest: Nest):
-        self.groups.remove(nest)
-
     def add_group(self, group: Group):
         self.groups.append(group)
 
     def remove_group(self, group: Group):
         self.groups.remove(group)
+
+    def add_nest(self, nest: Nest):
+        self.nests.append(nest)
+
+    def remove_nest(self, nest: Nest):
+        self.nests.remove(nest)
+
+    def group_laser_cut_parts(self):
+        laser_cut_part_dict: dict[str, LaserCutPart] = {}
+        for nest in self.nests:
+            for laser_cut_part in nest.laser_cut_parts:
+                if laser_cut_part.name in laser_cut_part_dict:
+                    laser_cut_part_dict[laser_cut_part.name].quantity += laser_cut_part.quantity
+                else:
+                    new_laser_cut_part = LaserCutPart(laser_cut_part.name, laser_cut_part.to_dict(), self.laser_cut_inventory)
+                    # This is because we group the data, so all nest reference is lost.
+                    new_laser_cut_part.quantity_in_nest = None
+                    laser_cut_part_dict[laser_cut_part.name] = new_laser_cut_part
+
+        self.grouped_laser_cut_parts = laser_cut_part_dict.values()
+        self.sort_laser_cut_parts()
+
+    def sort_nests(self):
+        self.nests = natsorted(self.nests, key=lambda nest: nest.name)
+
+    def sort_laser_cut_parts(self):
+        self.grouped_laser_cut_parts = natsorted(self.grouped_laser_cut_parts, key=lambda laser_cut_part: laser_cut_part.name)
 
     def get_group(self, group_name: str) -> Group:
         return next((group for group in self.groups if group.name == group_name), None)
@@ -117,7 +143,7 @@ class Job:
         self.ship_to = job_data.get("ship_to", "")
         self.date_shipped = job_data.get("date_shipped", "")
         self.date_expected = job_data.get("date_expected", "")
-        self.job_status = JobStatus(int(job_data.get("type", 0))) # Just in case we cast, trust me
+        self.job_status = JobStatus(int(job_data.get("type", 0)))  # Just in case we cast, trust me
         self.color = self.get_color()
 
         nests_data = data.get("nests", {})

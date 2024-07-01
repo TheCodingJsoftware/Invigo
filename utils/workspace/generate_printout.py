@@ -5,10 +5,10 @@ import sys
 from datetime import datetime
 
 from utils.ip_utils import get_server_ip_address, get_server_port
-from utils.quote.generate_quote import ComponentsTable, CoverPage, LaserCutPartsTable
+from utils.quote.generate_printout import ComponentsTable, CoverPage, LaserCutPartsTable
 from utils.workspace.assembly import Assembly
-from utils.workspace.job import Job
 from utils.workspace.group import Group
+from utils.workspace.job import Job
 from utils.workspace.workspace import Workspace
 from utils.workspace.workspace_item import WorkspaceItem
 
@@ -50,12 +50,12 @@ class AssemblyTable:
         for assembly in self.job.get_all_assemblies():
             flow_tag = assembly.flow_tag.get_name()
             image_html = f'<img src="{self.server_directory}/image/{assembly.assembly_image}" alt="Assembly Image" class="assembly_image" id="{self.server_directory}/image/{assembly.assembly_image}">' if assembly.assembly_image else ""
-            html += f'''<tr>
+            html += f"""<tr>
                 <td class="ui-table-cell-visible">{image_html}</td>
                 <td class="ui-table-cell-visible">{assembly.name}</td>
                 <td class="ui-table-cell-visible">NA</td>
                 <td class="ui-table-cell-visible">{flow_tag}</td>
-                </tr>'''
+                </tr>"""
         html += "</tbody></table>"
         return html
 
@@ -102,11 +102,11 @@ class AssemblyDiv:
         html = '<div class="assembly_data">'
         image_html = f'<img src="{self.server_directory}/image/{self.assembly.assembly_image}" alt="Assembly Image" class="assembly_image" id="{self.server_directory}/image/{self.assembly.assembly_image}">' if self.assembly.assembly_image else ""
         html += image_html
-        html += '<div>'
+        html += "<div>"
         html += f"<h2>{self.assembly.name}</h2>"
         html += f"<p>Process: {self.assembly.flow_tag.get_name()}</p>"
-        html += '</div>'
-        html += '</div>'
+        html += "</div>"
+        html += "</div>"
         return html
 
     def generate(self) -> str:
@@ -137,7 +137,7 @@ class AssemblyDiv:
             html += '<div class="page-break"></div>'
 
         if self.assembly.sub_assemblies:
-            html += '<details open>'
+            html += "<details open>"
             html += "<summary>Sub-Assemblies</summary>"
             html += '<div class="detail_contents assembly">'
             for sub_assembly in self.assembly.sub_assemblies:
@@ -149,7 +149,6 @@ class AssemblyDiv:
         html += "</div>"
         html += "</details>"
         return html
-
 
 
 class JobPlannerPrintout:
@@ -186,7 +185,6 @@ class JobPlannerPrintout:
 
         cover_page = CoverPage(self.title, self.job)
 
-
         html += cover_page.generate()
 
         assembly_table = AssemblyTable(self.job)
@@ -196,7 +194,7 @@ class JobPlannerPrintout:
 
         job_div = JobDiv(self.job)
         html += job_div.generate()
-        html += f'<script>{self.printout_js}</script>'
+        html += f"<script>{self.printout_js}</script>"
         return html
 
 

@@ -1,4 +1,4 @@
-from PyQt6.QtWidgets import QPushButton, QLineEdit
+from PyQt6.QtWidgets import QLineEdit, QPushButton
 
 
 class JobPreferences:

@@ -1,14 +1,16 @@
-from typing import Union
+from typing import TYPE_CHECKING, Union
 
 from utils.workspace.assembly import Assembly
 from utils.workspace.workspace_settings import WorkspaceSettings
+
+if TYPE_CHECKING:
+    from utils.workspace.job import Job
 
 
 class Group:
     def __init__(self, name: str, data: dict[str, dict[str, Union[str, dict[str, object]]]], job) -> None:
         self.name = name
         self.color: str = "#3daee9"  # default
-        from utils.workspace.job import Job
 
         self.job: Job = job
         self.assemblies: list[Assembly] = []

@@ -1,15 +1,18 @@
 import copy
-from typing import Union
+from typing import TYPE_CHECKING, Union
 
 from utils.inventory.category import Category
 from utils.inventory.inventory_item import InventoryItem
-from utils.components_inventory.order import Order
+from utils.inventory.order import Order
+
+if TYPE_CHECKING:
+    from utils.components_inventory.components_inventory import \
+        ComponentsInventory
 
 
 class Component(InventoryItem):
     def __init__(self, name: str, data: dict, components_inventory):
         super().__init__(name)
-        from utils.components_inventory.components_inventory import ComponentsInventory
 
         self.components_inventory: ComponentsInventory = components_inventory
         self.quantity: float = 0.0
@@ -102,6 +105,9 @@ class Component(InventoryItem):
         for category in self.components_inventory.get_categories():
             if category.name in categories:
                 self.categories.append(category)
+
+        if not self.part_number:
+            self.part_number = self.part_name
 
     def get_copy(self) -> "Component":
         return copy.deepcopy(self)

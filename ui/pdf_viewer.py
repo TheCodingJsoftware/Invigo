@@ -1,13 +1,14 @@
 from functools import partial
 
+from natsort import natsorted
 from PyQt6 import uic
 from PyQt6.QtCore import Qt, QUrl
 from PyQt6.QtWebEngineWidgets import QWebEngineView
-from PyQt6.QtWidgets import QHBoxLayout, QMainWindow, QMessageBox, QPushButton, QSplitter, QVBoxLayout
+from PyQt6.QtWidgets import (QHBoxLayout, QMainWindow, QMessageBox,
+                             QPushButton, QSplitter, QVBoxLayout)
 
-from threads.workspace_get_file_thread import WorkspaceDownloadFile
+from utils.threads.workspace_get_file_thread import WorkspaceDownloadFile
 
-from natsort import natsorted
 
 class PDFViewer(QMainWindow):
     def __init__(self, pdf_files: list[str], file_path: str, parent):
@@ -59,9 +60,7 @@ class PDFViewer(QMainWindow):
         self.setWindowTitle(path)
 
     def get_pdf_files(self) -> list[str]:
-        pdf_files: set[str] = {
-            file for file in self.files if file.lower().endswith(".pdf")
-        }
+        pdf_files: set[str] = {file for file in self.files if file.lower().endswith(".pdf")}
         return list(pdf_files)
 
     def load_pdf_file(self, file_path: str):

@@ -1,3 +1,5 @@
+from typing import Union
+
 from utils.laser_cut_inventory.laser_cut_inventory import LaserCutInventory
 from utils.laser_cut_inventory.laser_cut_part import LaserCutPart
 from utils.sheet_settings.sheet_settings import SheetSettings
@@ -5,7 +7,7 @@ from utils.sheets_inventory.sheet import Sheet
 
 
 class Nest:
-    def __init__(self, name: str, data: dict[str, object], sheet_settings: SheetSettings, laser_cut_inventory: LaserCutInventory):
+    def __init__(self, name: str, data: dict[str, Union[float, int, str, dict[str, Union[float, str]]]], sheet_settings: SheetSettings, laser_cut_inventory: LaserCutInventory):
         self.name: str = name
         self.sheet_settings = sheet_settings
         self.laser_cut_inventory = laser_cut_inventory
@@ -49,7 +51,7 @@ class Nest:
     def get_name(self) -> str:
         return f"{self.sheet.thickness} {self.sheet.material} {self.get_sheet_dimension()} {self.name}"
 
-    def load_data(self, data: dict[str, float | int | str | dict[str, float | str]]):
+    def load_data(self, data: dict[str, Union[float, int, str, dict[str, Union[float, str]]]]):
         self.sheet_count = data.get("sheet_count", 0)
         self.scrape_percentage = data.get("scrape_percentage", 0.0)
         self.sheet_cut_time = data.get("sheet_cut_time", 0.0)
@@ -74,5 +76,5 @@ class Nest:
                 None,
             )
 
-    def to_dict(self) -> dict[str, float | int | str]:
+    def to_dict(self) -> dict[str, Union[float, int, str]]:
         return {"sheet_count": self.sheet_count, "scrape_percentage": self.scrape_percentage, "sheet_cut_time": self.sheet_cut_time, "image_path": self.image_path, "laser_cut_parts": {laser_cut_part.name: laser_cut_part.to_dict() for laser_cut_part in self.laser_cut_parts}, "sheet": {self.sheet.get_name(): self.sheet.to_dict()}}

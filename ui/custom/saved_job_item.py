@@ -1,15 +1,8 @@
-from datetime import datetime, timedelta
+from datetime import datetime
 
 from PyQt6 import uic
 from PyQt6.QtCore import pyqtSignal
-from PyQt6.QtWidgets import (
-    QComboBox,
-    QLabel,
-    QPushButton,
-    QWidget,
-)
-
-from ui.custom_widgets import ClickableLabel, DeletePushButton
+from PyQt6.QtWidgets import QComboBox, QLabel, QPushButton, QWidget
 
 
 class SavedPlanningJobItem(QWidget):
@@ -19,7 +12,7 @@ class SavedPlanningJobItem(QWidget):
     job_type_changed = pyqtSignal()
 
     def __init__(self, file_info: dict[str, str], parent: QWidget) -> None:
-        super().__init__(parent)
+        super(SavedPlanningJobItem, self).__init__(parent)
         uic.loadUi("ui/job_plan_widget.ui", self)
 
         modified_date = datetime.fromtimestamp(file_info.get("modified_date")).strftime("%A, %B %d, %Y, %I:%M:%S %p")

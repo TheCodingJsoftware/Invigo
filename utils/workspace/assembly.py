@@ -1,5 +1,5 @@
 import copy
-from typing import Any, Union
+from typing import TYPE_CHECKING, Any, Union
 
 from utils.components_inventory.component import Component
 from utils.laser_cut_inventory.laser_cut_part import LaserCutPart
@@ -9,11 +9,13 @@ from utils.paint_inventory.primer import Primer
 from utils.workspace.flow_tag import FlowTag
 from utils.workspace.workspace_settings import WorkspaceSettings
 
+if TYPE_CHECKING:
+    from utils.workspace.group import Group
+
 
 class Assembly:
     def __init__(self, name: str, assembly_data: dict[str, object], group) -> None:
         self.name = name
-        from utils.workspace.group import Group
 
         self.group: Group = group
         self.paint_inventory = self.group.job.job_manager.paint_inventory

@@ -6,12 +6,20 @@ from functools import partial
 
 from PyQt6 import uic
 from PyQt6.QtCore import QDate, Qt, pyqtSignal
-from PyQt6.QtGui import QAction, QColor, QCursor, QFont, QIcon, QKeySequence, QPixmap
-from PyQt6.QtWidgets import QAbstractItemView, QApplication, QCheckBox, QComboBox, QDateEdit, QDoubleSpinBox, QGridLayout, QHBoxLayout, QLabel, QMenu, QMessageBox, QPushButton, QTableWidgetItem, QTextEdit, QVBoxLayout, QWidget
+from PyQt6.QtGui import (QAction, QColor, QCursor, QFont, QIcon, QKeySequence,
+                         QPixmap)
+from PyQt6.QtWidgets import (QAbstractItemView, QApplication, QCheckBox,
+                             QComboBox, QDateEdit, QDoubleSpinBox, QGridLayout,
+                             QHBoxLayout, QLabel, QMenu, QMessageBox,
+                             QPushButton, QTableWidgetItem, QTextEdit,
+                             QVBoxLayout, QWidget)
 
 from ui.add_component_dialog import AddComponentDialog
-from ui.assembly_widget import AssemblyWidget
-from ui.custom_widgets import AssemblyMultiToolBox, QScrollArea, ClickableLabel, CustomTableWidget, DeletePushButton, MachineCutTimeSpinBox, MultiToolBox, QLineEdit, RecutButton
+from ui.custom.assembly_planning_widget import AssemblyPlanningWidget
+from ui.custom_widgets import (AssemblyMultiToolBox, ClickableLabel,
+                               CustomTableWidget, DeletePushButton,
+                               MachineCutTimeSpinBox, MultiToolBox, QLineEdit,
+                               QScrollArea, RecutButton)
 from ui.image_viewer import QImageViewer
 from utils.calulations import calculate_overhead
 from utils.components_inventory.component import Component
@@ -24,7 +32,6 @@ from utils.workspace.group import Group
 from utils.workspace.job_preferences import JobPreferences
 
 
-
 class GroupWidget(QWidget):
     def __init__(self, group: Group, parent) -> None:
         super(GroupWidget, self).__init__(parent)
@@ -34,7 +41,7 @@ class GroupWidget(QWidget):
         self.group = group
         self.job_preferences: JobPreferences = self.parent.job_preferences
 
-        self.assembly_widgets: list[AssemblyWidget] = []
+        self.assembly_widgets: list[AssemblyPlanningWidget] = []
 
         self.load_ui()
 
@@ -63,7 +70,7 @@ border-top-left-radius: 0px;
         for assembly_widget in self.assembly_widgets:
             assembly_widget.workspace_settings_changed()
 
-    def add_assembly(self, new_assembly: Assembly = None) -> AssemblyWidget:
+    def add_assembly(self, new_assembly: Assembly = None) -> AssemblyPlanningWidget:
         if not new_assembly:
             assembly = Assembly(f"Enter Assembly Name{len(self.group.assemblies)}", {}, self.group)
             self.group.add_assembly(assembly)
@@ -71,7 +78,7 @@ border-top-left-radius: 0px;
         else:
             assembly = new_assembly
 
-        assembly_widget = AssemblyWidget(assembly, self)
+        assembly_widget = AssemblyPlanningWidget(assembly, self)
         self.assemblies_toolbox.addItem(assembly_widget, assembly.name, self.group.color)
 
         toggle_button = self.assemblies_toolbox.getLastToggleButton()
@@ -122,7 +129,7 @@ border-top-left-radius: 0px;
         self.group.add_assembly(new_assembly)
         self.changes_made()
 
-    def delete_assembly(self, assembly_widget: AssemblyWidget):
+    def delete_assembly(self, assembly_widget: AssemblyPlanningWidget):
         self.assembly_widgets.remove(assembly_widget)
         self.assemblies_toolbox.removeItem(assembly_widget)
         self.group.remove_assembly(assembly_widget.assembly)

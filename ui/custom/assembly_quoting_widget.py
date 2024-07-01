@@ -1,854 +1,55 @@
 import contextlib
-import math
 import os
 import shutil
-from datetime import datetime, timedelta
 from functools import partial
+from typing import TYPE_CHECKING
 
 from PyQt6 import uic
-from PyQt6.QtCore import (QAbstractItemModel, QAbstractTableModel, QDate,
-                          QDateTime, QEvent, QMargins, QMimeData, QModelIndex,
-                          QPoint, QRegularExpression, QSettings, QSize,
-                          QSortFilterProxyModel, Qt, QTime, QTimer, QUrl,
-                          pyqtSignal)
-from PyQt6.QtGui import (QAction, QBrush, QClipboard, QColor, QCursor, QDrag,
-                         QDragEnterEvent, QDragLeaveEvent, QDragMoveEvent,
-                         QDropEvent, QFileSystemModel, QFont, QIcon,
-                         QKeySequence, QMouseEvent, QPainter, QPalette,
-                         QPixmap, QRegularExpressionValidator, QStandardItem,
-                         QStandardItemModel, QTextCharFormat)
-from PyQt6.QtWidgets import (QAbstractItemView, QApplication, QCheckBox,
-                             QComboBox, QDateEdit, QDoubleSpinBox, QFileDialog,
-                             QGridLayout, QHBoxLayout, QLabel, QLineEdit,
-                             QMenu, QMessageBox, QPushButton, QScrollArea,
-                             QTableWidget, QTableWidgetItem, QTextEdit,
+from PyQt6.QtCore import Qt
+from PyQt6.QtGui import QAction, QColor, QCursor, QPixmap
+from PyQt6.QtWidgets import (QApplication, QComboBox, QDoubleSpinBox,
+                             QHBoxLayout, QLineEdit, QMenu, QMessageBox,
+                             QPushButton, QScrollArea, QTableWidgetItem,
                              QVBoxLayout, QWidget)
 
-from threads.workspace_get_file_thread import WorkspaceDownloadFile
-from threads.workspace_upload_file_thread import WorkspaceUploadThread
-from threads.upload_thread import UploadThread
 from ui.add_component_dialog import AddComponentDialog
 from ui.add_laser_cut_part_dialog import AddLaserCutPartDialog
-from ui.custom.components_planning_table_widget import \
-    ComponentsPlanningTableWidget
-from ui.custom.laser_cut_parts_planning_table_widget import \
-    LaserCutPartsPlanningTableWidget
+from ui.custom.assembly_file_drop_widget import AssemblyFileDropWidget
+from ui.custom.assembly_image import AssemblyImage
+from ui.custom.assembly_paint_settings_widget import \
+    AssemblyPaintSettingsWidget
+from ui.custom.assembly_paint_widget import AssemblyPaintWidget
+from ui.custom.assembly_widget import AssemblyWidget
+from ui.custom.components_quoting_table_widget import \
+    ComponentsQuotingTableWidget
+from ui.custom.file_button import FileButton
+from ui.custom.laser_cut_part_file_drop_widget import \
+    LaserCutPartFileDropWidget
+from ui.custom.laser_cut_part_paint_settings_widget import \
+    LasserCutPartPaintSettingsWidget
+from ui.custom.laser_cut_part_paint_widget import LaserCutPartPaintWidget
+from ui.custom.laser_cut_parts_quoting_table_widget import \
+    LaserCutPartsQuotingTableWidget
 from ui.custom_widgets import AssemblyMultiToolBox
 from ui.image_viewer import QImageViewer
 from ui.pdf_viewer import PDFViewer
-from utils.calulations import calculate_overhead
 from utils.colors import darken_color, lighten_color
 from utils.components_inventory.component import Component
-from utils.components_inventory.components_inventory import ComponentsInventory
-from utils.inventory.category import Category
-from utils.laser_cut_inventory.laser_cut_inventory import LaserCutInventory
 from utils.laser_cut_inventory.laser_cut_part import LaserCutPart
+from utils.threads.upload_thread import UploadThread
+from utils.threads.workspace_get_file_thread import WorkspaceDownloadFile
+from utils.threads.workspace_upload_file_thread import WorkspaceUploadThread
 from utils.workspace.assembly import Assembly
-from utils.workspace.group import Group
 from utils.workspace.job_preferences import JobPreferences
 
+if TYPE_CHECKING:
+    from ui.custom.job_tab import JobTab
 
-class PaintSettingsWidget(QWidget):
-    settingsChanged = pyqtSignal()
 
-    def __init__(self, laser_cut_part: LaserCutPart, parent: "LaserCutPartsPlanningTableWidget") -> None:
-        super(PaintSettingsWidget, self).__init__(parent)
-        self.parent: LaserCutPartsPlanningTableWidget = parent
-        self.laser_cut_part = laser_cut_part
-        self.paint_inventory = self.laser_cut_part.paint_inventory
-
-        self.paint_settings_layout = QHBoxLayout(self)
-
-        self.paint_settings_layout.setContentsMargins(0, 0, 0, 0)
-        self.paint_settings_layout.setSpacing(0)
-        self.not_painted_label = QLabel("Not painted", self)
-        self.paint_settings_layout.addWidget(self.not_painted_label)
-
-        self.widget_primer = QWidget(self)
-        self.widget_primer.setObjectName("widget_primer")
-        self.widget_primer.setStyleSheet("QWidget#widget_primer{border: 1px solid rgba(120, 120, 120, 70);}")
-        self.primer_layout = QGridLayout(self.widget_primer)
-        self.primer_layout.setContentsMargins(3, 3, 3, 3)
-        self.primer_layout.setSpacing(0)
-        self.combobox_primer = QComboBox(self.widget_primer)
-        self.combobox_primer.wheelEvent = lambda event: None
-        self.combobox_primer.addItems(["None"] + self.paint_inventory.get_all_primers())
-        if self.laser_cut_part.primer_name:
-            self.combobox_primer.setCurrentText(self.laser_cut_part.primer_name)
-        self.combobox_primer.currentTextChanged.connect(self.update_paint_settings)
-        self.spinbox_primer_overspray = QDoubleSpinBox(self.widget_primer)
-        self.spinbox_primer_overspray.wheelEvent = lambda event: None
-        self.spinbox_primer_overspray.setValue(self.laser_cut_part.primer_overspray)
-        self.spinbox_primer_overspray.setMaximum(100.0)
-        self.spinbox_primer_overspray.setSuffix("%")
-        self.spinbox_primer_overspray.textChanged.connect(self.update_paint_settings)
-        self.primer_layout.addWidget(QLabel("Primer:", self.widget_primer), 0, 0)
-        self.primer_layout.addWidget(self.combobox_primer, 1, 0)
-        self.primer_layout.addWidget(QLabel("Overspray:", self.widget_primer), 0, 1)
-        self.primer_layout.addWidget(self.spinbox_primer_overspray, 1, 1)
-        self.widget_primer.setVisible(self.laser_cut_part.uses_primer)
-        self.paint_settings_layout.addWidget(self.widget_primer)
-
-        # PAINT COLOR
-        self.widget_paint_color = QWidget(self)
-        self.widget_paint_color.setObjectName("widget_paint_color")
-        self.widget_paint_color.setStyleSheet("QWidget#widget_paint_color{border: 1px solid rgba(120, 120, 120, 70);}")
-        self.paint_color_layout = QGridLayout(self.widget_paint_color)
-        self.paint_color_layout.setContentsMargins(3, 3, 3, 3)
-        self.paint_color_layout.setSpacing(0)
-        self.combobox_paint_color = QComboBox(self.widget_paint_color)
-        self.combobox_paint_color.wheelEvent = lambda event: None
-        self.combobox_paint_color.addItems(["None"] + self.paint_inventory.get_all_paints())
-        if self.laser_cut_part.paint_name:
-            self.combobox_paint_color.setCurrentText(self.laser_cut_part.paint_name)
-        self.combobox_paint_color.currentTextChanged.connect(self.update_paint_settings)
-        self.spinbox_paint_overspray = QDoubleSpinBox(self.widget_paint_color)
-        self.spinbox_paint_overspray.wheelEvent = lambda event: None
-        self.spinbox_paint_overspray.setValue(self.laser_cut_part.paint_overspray)
-        self.spinbox_paint_overspray.setMaximum(100.0)
-        self.spinbox_paint_overspray.setSuffix("%")
-        self.spinbox_paint_overspray.textChanged.connect(self.update_paint_settings)
-        self.paint_color_layout.addWidget(QLabel("Paint:", self.widget_paint_color), 0, 0)
-        self.paint_color_layout.addWidget(self.combobox_paint_color, 1, 0)
-        self.paint_color_layout.addWidget(QLabel("Overspray:", self.widget_paint_color), 0, 1)
-        self.paint_color_layout.addWidget(self.spinbox_paint_overspray, 1, 1)
-        self.widget_paint_color.setVisible(self.laser_cut_part.uses_paint)
-        self.paint_settings_layout.addWidget(self.widget_paint_color)
-
-        # POWDER COATING COLOR
-        self.widget_powder_coating = QWidget(self)
-        self.widget_powder_coating.setObjectName("widget_powder_coating")
-        self.widget_powder_coating.setStyleSheet("QWidget#widget_powder_coating{border: 1px solid rgba(120, 120, 120, 70);}")
-        self.powder_coating_layout = QGridLayout(self.widget_powder_coating)
-        self.powder_coating_layout.setContentsMargins(3, 3, 3, 3)
-        self.powder_coating_layout.setSpacing(0)
-        self.combobox_powder_coating_color = QComboBox(self.widget_powder_coating)
-        self.combobox_powder_coating_color.wheelEvent = lambda event: None
-        self.combobox_powder_coating_color.addItems(["None"] + self.paint_inventory.get_all_powders())
-        if self.laser_cut_part.powder_name:
-            self.combobox_powder_coating_color.setCurrentText(self.laser_cut_part.powder_name)
-        self.combobox_powder_coating_color.currentTextChanged.connect(self.update_paint_settings)
-        self.spinbox_powder_transfer_efficiency = QDoubleSpinBox(self.widget_powder_coating)
-        self.spinbox_powder_transfer_efficiency.wheelEvent = lambda event: None
-        self.spinbox_powder_transfer_efficiency.setValue(self.laser_cut_part.powder_transfer_efficiency)
-        self.spinbox_powder_transfer_efficiency.setMaximum(100.0)
-        self.spinbox_powder_transfer_efficiency.setSuffix("%")
-        self.spinbox_powder_transfer_efficiency.textChanged.connect(self.update_paint_settings)
-        self.powder_coating_layout.addWidget(QLabel("Powder:", self.widget_powder_coating), 0, 0)
-        self.powder_coating_layout.addWidget(self.combobox_powder_coating_color, 1, 0)
-        self.powder_coating_layout.addWidget(QLabel("Transfer eff:", self.widget_powder_coating), 0, 1)
-        self.powder_coating_layout.addWidget(self.spinbox_powder_transfer_efficiency, 1, 1)
-        self.widget_powder_coating.setVisible(self.laser_cut_part.uses_powder)
-        self.paint_settings_layout.addWidget(self.widget_powder_coating)
-
-        self.setLayout(self.paint_settings_layout)
-
-    def update_paint_settings(self):
-        self.laser_cut_part.primer_overspray = self.spinbox_primer_overspray.value()
-        self.laser_cut_part.paint_overspray = self.spinbox_paint_overspray.value()
-        self.laser_cut_part.powder_transfer_efficiency = self.spinbox_powder_transfer_efficiency.value()
-        self.laser_cut_part.paint_name = self.combobox_paint_color.currentText()
-        self.laser_cut_part.primer_name = self.combobox_primer.currentText()
-        self.laser_cut_part.powder_name = self.combobox_powder_coating_color.currentText()
-
-        self.parent.resizeColumnsToContents()
-
-        self.settingsChanged.emit()
-
-
-class PaintWidget(QWidget):
-    settingsChanged = pyqtSignal()
-
-    def __init__(self, laser_cut_part: LaserCutPart, paint_settings_widget: PaintSettingsWidget, parent: "LaserCutPartsPlanningTableWidget") -> None:
-        super(PaintWidget, self).__init__(parent)
-        self.parent: LaserCutPartsPlanningTableWidget = parent
-
-        self.laser_cut_part = laser_cut_part
-        self.paint_settings_widget = paint_settings_widget
-
-        layout = QVBoxLayout(self)
-
-        self.checkbox_primer = QCheckBox("Primer", self)
-        self.checkbox_primer.setChecked(self.laser_cut_part.uses_primer)
-        self.checkbox_primer.checkStateChanged.connect(self.update_paint)
-        self.checkbox_paint = QCheckBox("Paint", self)
-        self.checkbox_paint.setChecked(self.laser_cut_part.uses_paint)
-        self.checkbox_paint.checkStateChanged.connect(self.update_paint)
-        self.checkbox_powder = QCheckBox("Powder", self)
-        self.checkbox_powder.setChecked(self.laser_cut_part.uses_powder)
-        self.checkbox_powder.checkStateChanged.connect(self.update_paint)
-
-        layout.addWidget(self.checkbox_primer)
-        layout.addWidget(self.checkbox_paint)
-        layout.addWidget(self.checkbox_powder)
-
-        self.setLayout(layout)
-
-        self.paint_settings_widget.widget_primer.setVisible(self.laser_cut_part.uses_primer)
-        self.paint_settings_widget.widget_paint_color.setVisible(self.laser_cut_part.uses_paint)
-        self.paint_settings_widget.widget_powder_coating.setVisible(self.laser_cut_part.uses_powder)
-        self.paint_settings_widget.not_painted_label.setVisible(not (self.laser_cut_part.uses_primer or self.laser_cut_part.uses_paint or self.laser_cut_part.uses_powder))
-
-        self.parent.resizeColumnsToContents()
-
-    def update_paint(self):
-        self.laser_cut_part.uses_primer = self.checkbox_primer.isChecked()
-        self.laser_cut_part.uses_paint = self.checkbox_paint.isChecked()
-        self.laser_cut_part.uses_powder = self.checkbox_powder.isChecked()
-
-        self.paint_settings_widget.widget_primer.setVisible(self.laser_cut_part.uses_primer)
-        self.paint_settings_widget.widget_paint_color.setVisible(self.laser_cut_part.uses_paint)
-        self.paint_settings_widget.widget_powder_coating.setVisible(self.laser_cut_part.uses_powder)
-        self.paint_settings_widget.not_painted_label.setVisible(not (self.laser_cut_part.uses_primer or self.laser_cut_part.uses_paint or self.laser_cut_part.uses_powder))
-
-        self.parent.resizeColumnsToContents()
-
-        self.settingsChanged.emit()
-
-
-class AssemblyImage(QLabel):
-    clicked = pyqtSignal()
-    imagePathDropped = pyqtSignal(str)
-
-    def __init__(self, parent: QWidget | None = ...) -> None:
-        super(AssemblyImage, self).__init__(parent)
-        self.setMinimumSize(120, 120)
-        self.setFixedHeight(120)
-        self.setAlignment(Qt.AlignmentFlag.AlignCenter)
-        self.setContextMenuPolicy(Qt.ContextMenuPolicy.CustomContextMenu)
-        self.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
-        self.setToolTip("Press to enlarge")
-        self.setText("Drop an Image.\nRight click to Paste\nfrom clipboard.\n(PNG, JPG, JPEG)")
-        self.setAcceptDrops(True)
-        self.setWordWrap(True)
-        self.setStyleSheet("background-color: rgba(30,30,30,100);")
-        self.image_dropped: bool = False
-        self.path_to_image: str = ""
-
-    def set_new_image(self, path_to_image):
-        pixmap = QPixmap(path_to_image)
-        pixmap = pixmap.scaledToHeight(100, Qt.TransformationMode.SmoothTransformation)
-        self.setPixmap(pixmap)
-        self.setStyleSheet("background-color: rgba(30,30,30,100);")
-        self.path_to_image = path_to_image
-        self.image_dropped = True
-
-    def clear_image(self):
-        self.setPixmap(QPixmap())
-        self.setText("Drop an Image.\nRight click to Paste\nfrom clipboard.\n(PNG, JPG, JPEG)")
-        self.setStyleSheet("background-color: rgba(30,30,30,100);")
-        self.path_to_image = ""
-        self.image_dropped = False
-
-    def mousePressEvent(self, event: QMouseEvent):
-        if event.button() == Qt.MouseButton.LeftButton:
-            self.clicked.emit()  # Emit the clicked signal
-
-    def mouseReleaseEvent(self, event: QMouseEvent):
-        if event.button() == Qt.MouseButton.LeftButton:
-            super().mouseReleaseEvent(event)
-
-    def dragEnterEvent(self, event: QDragEnterEvent):
-        if event.mimeData().hasImage():
-            event.acceptProposedAction()
-        elif event.mimeData().hasUrls():
-            self.setText("Drop Me")
-            self.setStyleSheet("background-color: rgba(70,210,110, 100);")
-            event.acceptProposedAction()
-            event.accept()
-
-    def dropEvent(self, event: QDropEvent):
-        if urls := event.mimeData().urls():
-            image_path = urls[0].toLocalFile()
-            if image_path.lower().endswith((".png", ".jpg", ".jpeg")):
-                self.setPixmap(QPixmap(image_path).scaled(self.width(), self.height(), Qt.AspectRatioMode.KeepAspectRatio))
-                self.imagePathDropped.emit(image_path)
-                event.accept()
-            else:
-                self.setText("Not allowed")
-                self.setStyleSheet("background-color: rgba(210,70,60, 100);")
-                event.ignore()
-
-    def dragLeaveEvent(self, event: QDragLeaveEvent):
-        self.setText("Drop an Image.\nRight click to Paste\nfrom clipboard.\n(PNG, JPG, JPEG)")
-        self.setStyleSheet("background-color: rgba(30,30,30,100);")
-        event.accept()
-        if self.image_dropped:
-            self.set_new_image(self.path_to_image)
-
-
-class AssemblyPaintSettingsWidget(QWidget):
-    settingsChanged = pyqtSignal()
-
-    def __init__(self, assembly: Assembly, parent: "AssemblyWidget") -> None:
-        super(AssemblyPaintSettingsWidget, self).__init__(parent)
-        self.parent: AssemblyWidget = parent
-        self.assembly = assembly
-        self.paint_inventory = self.assembly.paint_inventory
-
-        self.paint_settings_layout = QHBoxLayout(self)
-
-        self.paint_settings_layout.setContentsMargins(0, 0, 0, 0)
-        self.paint_settings_layout.setSpacing(0)
-        self.not_painted_label = QLabel("Not painted", self)
-        self.paint_settings_layout.addWidget(self.not_painted_label)
-
-        self.widget_primer = QWidget(self)
-        self.widget_primer.setObjectName("widget_primer")
-        self.widget_primer.setStyleSheet("QWidget#widget_primer{border: 1px solid rgba(120, 120, 120, 70);}")
-        self.primer_layout = QGridLayout(self.widget_primer)
-        self.primer_layout.setContentsMargins(3, 3, 3, 3)
-        self.primer_layout.setSpacing(0)
-        self.combobox_primer = QComboBox(self.widget_primer)
-        self.combobox_primer.wheelEvent = lambda event: None
-        self.combobox_primer.addItems(["None"] + self.paint_inventory.get_all_primers())
-        if self.assembly.primer_name:
-            self.combobox_primer.setCurrentText(self.assembly.primer_name)
-        self.combobox_primer.currentTextChanged.connect(self.update_paint_settings)
-        self.spinbox_primer_overspray = QDoubleSpinBox(self.widget_primer)
-        self.spinbox_primer_overspray.wheelEvent = lambda event: None
-        self.spinbox_primer_overspray.setValue(self.assembly.primer_overspray)
-        self.spinbox_primer_overspray.setMaximum(100.0)
-        self.spinbox_primer_overspray.setSuffix("%")
-        self.spinbox_primer_overspray.textChanged.connect(self.update_paint_settings)
-        self.primer_layout.addWidget(QLabel("Primer:", self.widget_primer), 0, 0)
-        self.primer_layout.addWidget(self.combobox_primer, 1, 0)
-        self.primer_layout.addWidget(QLabel("Overspray:", self.widget_primer), 0, 1)
-        self.primer_layout.addWidget(self.spinbox_primer_overspray, 1, 1)
-        self.widget_primer.setVisible(self.assembly.uses_primer)
-        self.paint_settings_layout.addWidget(self.widget_primer)
-
-        # PAINT COLOR
-        self.widget_paint_color = QWidget(self)
-        self.widget_paint_color.setObjectName("widget_paint_color")
-        self.widget_paint_color.setStyleSheet("QWidget#widget_paint_color{border: 1px solid rgba(120, 120, 120, 70);}")
-        self.paint_color_layout = QGridLayout(self.widget_paint_color)
-        self.paint_color_layout.setContentsMargins(3, 3, 3, 3)
-        self.paint_color_layout.setSpacing(0)
-        self.combobox_paint_color = QComboBox(self.widget_paint_color)
-        self.combobox_paint_color.wheelEvent = lambda event: None
-        self.combobox_paint_color.addItems(["None"] + self.paint_inventory.get_all_paints())
-        if self.assembly.paint_name:
-            self.combobox_paint_color.setCurrentText(self.assembly.paint_name)
-        self.combobox_paint_color.currentTextChanged.connect(self.update_paint_settings)
-        self.spinbox_paint_overspray = QDoubleSpinBox(self.widget_paint_color)
-        self.spinbox_paint_overspray.wheelEvent = lambda event: None
-        self.spinbox_paint_overspray.setValue(self.assembly.paint_overspray)
-        self.spinbox_paint_overspray.setMaximum(100.0)
-        self.spinbox_paint_overspray.setSuffix("%")
-        self.spinbox_paint_overspray.textChanged.connect(self.update_paint_settings)
-        self.paint_color_layout.addWidget(QLabel("Paint:", self.widget_paint_color), 0, 0)
-        self.paint_color_layout.addWidget(self.combobox_paint_color, 1, 0)
-        self.paint_color_layout.addWidget(QLabel("Overspray:", self.widget_paint_color), 0, 1)
-        self.paint_color_layout.addWidget(self.spinbox_paint_overspray, 1, 1)
-        self.widget_paint_color.setVisible(self.assembly.uses_paint)
-        self.paint_settings_layout.addWidget(self.widget_paint_color)
-
-        # POWDER COATING COLOR
-        self.widget_powder_coating = QWidget(self)
-        self.widget_powder_coating.setObjectName("widget_powder_coating")
-        self.widget_powder_coating.setStyleSheet("QWidget#widget_powder_coating{border: 1px solid rgba(120, 120, 120, 70);}")
-        self.powder_coating_layout = QGridLayout(self.widget_powder_coating)
-        self.powder_coating_layout.setContentsMargins(3, 3, 3, 3)
-        self.powder_coating_layout.setSpacing(0)
-        self.combobox_powder_coating_color = QComboBox(self.widget_powder_coating)
-        self.combobox_powder_coating_color.wheelEvent = lambda event: None
-        self.combobox_powder_coating_color.addItems(["None"] + self.paint_inventory.get_all_powders())
-        if self.assembly.powder_name:
-            self.combobox_powder_coating_color.setCurrentText(self.assembly.powder_name)
-        self.combobox_powder_coating_color.currentTextChanged.connect(self.update_paint_settings)
-        self.spinbox_powder_transfer_efficiency = QDoubleSpinBox(self.widget_powder_coating)
-        self.spinbox_powder_transfer_efficiency.wheelEvent = lambda event: None
-        self.spinbox_powder_transfer_efficiency.setValue(self.assembly.powder_transfer_efficiency)
-        self.spinbox_powder_transfer_efficiency.setMaximum(100.0)
-        self.spinbox_powder_transfer_efficiency.setSuffix("%")
-        self.spinbox_powder_transfer_efficiency.textChanged.connect(self.update_paint_settings)
-        self.powder_coating_layout.addWidget(QLabel("Powder:", self.widget_powder_coating), 0, 0)
-        self.powder_coating_layout.addWidget(self.combobox_powder_coating_color, 1, 0)
-        self.powder_coating_layout.addWidget(QLabel("Transfer eff:", self.widget_powder_coating), 0, 1)
-        self.powder_coating_layout.addWidget(self.spinbox_powder_transfer_efficiency, 1, 1)
-        self.widget_powder_coating.setVisible(self.assembly.uses_powder)
-        self.paint_settings_layout.addWidget(self.widget_powder_coating)
-
-        self.setLayout(self.paint_settings_layout)
-
-    def update_paint_settings(self):
-        self.assembly.primer_overspray = self.spinbox_primer_overspray.value()
-        self.assembly.paint_overspray = self.spinbox_paint_overspray.value()
-        self.assembly.powder_transfer_efficiency = self.spinbox_powder_transfer_efficiency.value()
-        self.assembly.paint_name = self.combobox_paint_color.currentText()
-        self.assembly.primer_name = self.combobox_primer.currentText()
-        self.assembly.powder_name = self.combobox_powder_coating_color.currentText()
-
-        self.settingsChanged.emit()
-
-
-class AssemblyPaintWidget(QWidget):
-    settingsChanged = pyqtSignal()
-
-    def __init__(self, assembly: Assembly, paint_settings_widget: PaintSettingsWidget, parent: "AssemblyWidget") -> None:
-        super(AssemblyPaintWidget, self).__init__(parent)
-        self.parent: AssemblyWidget = parent
-
-        self.assembly = assembly
-        self.paint_settings_widget = paint_settings_widget
-
-        layout = QVBoxLayout(self)
-
-        self.checkbox_primer = QCheckBox("Primer", self)
-        self.checkbox_primer.setChecked(self.assembly.uses_primer)
-        self.checkbox_primer.checkStateChanged.connect(self.update_paint)
-        self.checkbox_paint = QCheckBox("Paint", self)
-        self.checkbox_paint.setChecked(self.assembly.uses_paint)
-        self.checkbox_paint.checkStateChanged.connect(self.update_paint)
-        self.checkbox_powder = QCheckBox("Powder", self)
-        self.checkbox_powder.setChecked(self.assembly.uses_powder)
-        self.checkbox_powder.checkStateChanged.connect(self.update_paint)
-
-        layout.addWidget(self.checkbox_primer)
-        layout.addWidget(self.checkbox_paint)
-        layout.addWidget(self.checkbox_powder)
-
-        self.setLayout(layout)
-
-        self.paint_settings_widget.widget_primer.setVisible(self.assembly.uses_primer)
-        self.paint_settings_widget.widget_paint_color.setVisible(self.assembly.uses_paint)
-        self.paint_settings_widget.widget_powder_coating.setVisible(self.assembly.uses_powder)
-        self.paint_settings_widget.not_painted_label.setVisible(not (self.assembly.uses_primer or self.assembly.uses_paint or self.assembly.uses_powder))
-
-    def update_paint(self):
-        self.assembly.uses_primer = self.checkbox_primer.isChecked()
-        self.assembly.uses_paint = self.checkbox_paint.isChecked()
-        self.assembly.uses_powder = self.checkbox_powder.isChecked()
-
-        self.paint_settings_widget.widget_primer.setVisible(self.assembly.uses_primer)
-        self.paint_settings_widget.widget_paint_color.setVisible(self.assembly.uses_paint)
-        self.paint_settings_widget.widget_powder_coating.setVisible(self.assembly.uses_powder)
-        self.paint_settings_widget.not_painted_label.setVisible(not (self.assembly.uses_primer or self.assembly.uses_paint or self.assembly.uses_powder))
-
-        self.settingsChanged.emit()
-
-
-class RecordingWidget(QWidget):
-    def __init__(self, parent=None):
-        super().__init__(parent)
-        self.setFixedSize(20, 20)
-        self.recording = True
-        self.recording_color = QColor("red")
-        self.nonrecording_color = QColor("#8C8C8C")
-        self.current_color = self.nonrecording_color
-        self.scale = 1.0
-        self.scale_factor = 0.01
-        self.scale_direction = 0.1
-        self.animation_duration = 3000
-        self.elapsed_time = 0
-
-        self.timer = QTimer(self)
-        self.timer.timeout.connect(self.updateAnimation)
-        self.timer.start(1)  # Update every 20 milliseconds
-
-    def set_recording(self, recording):
-        self.recording = recording
-
-    def updateAnimation(self):
-        if self.recording:
-            self.elapsed_time += self.timer.interval()
-            if self.elapsed_time >= self.animation_duration:
-                self.elapsed_time = 0
-
-            progress = self.elapsed_time / self.animation_duration
-            scale_progress = 1 - (2 * abs(progress - 0.5) * 0.3)
-            self.scale = scale_progress
-
-            self.current_color = self.interpolateColors(self.recording_color, QColor("darkred"), scale_progress)
-        else:
-            self.elapsed_time = 0
-            self.scale = 1.0
-            self.current_color = self.interpolateColors(self.nonrecording_color, self.recording_color, 1.0)
-
-        self.update()
-
-    def interpolateColors(self, start_color, end_color, progress):
-        red = int(start_color.red() + progress * (end_color.red() - start_color.red()))
-        green = int(start_color.green() + progress * (end_color.green() - start_color.green()))
-        blue = int(start_color.blue() + progress * (end_color.blue() - start_color.blue()))
-
-        return QColor(red, green, blue)
-
-    def paintEvent(self, event):
-        painter = QPainter(self)
-        painter.setPen(Qt.PenStyle.NoPen)
-
-        painter.setRenderHint(QPainter.RenderHint.Antialiasing)
-
-        painter.setBrush(QBrush(self.current_color))
-
-        # Calculate the center of the widget
-        center = self.rect().center()
-
-        # Calculate the radius of the circle based on the widget size
-        radius = int(min(self.rect().width(), self.rect().height()) / 2)
-
-        # Adjust the radius based on the scale
-        radius = int(radius * self.scale)
-
-        # Calculate the top-left corner of the circle bounding rectangle
-        x = center.x() - radius
-        y = center.y() - radius
-
-        # Draw the circle
-        painter.drawEllipse(x, y, 2 * radius, 2 * radius)
-
-
-class TimeSpinBox(QDoubleSpinBox):
-    # ! IF VALUE IS SET TO 1, THAT IS 1 DAY
-    def __init__(self, parent=None):
-        super(TimeSpinBox, self).__init__(parent)
-        self.setRange(0, 99999999)
-        self.setSingleStep(0.001)
-        self.setDecimals(9)
-        self.setFixedWidth(200)
-        self.setWrapping(True)
-        self.setAccelerated(True)
-        self.setFocusPolicy(Qt.FocusPolicy.StrongFocus)
-
-        regex = QRegularExpression(r"\d+.\d{2}")
-        validator = QRegularExpressionValidator(regex, self)
-        self.lineEdit().setValidator(validator)
-
-        self.installEventFilter(self)
-
-    def focusInEvent(self, event):
-        self.setFocusPolicy(Qt.FocusPolicy.WheelFocus)
-        super(TimeSpinBox, self).focusInEvent(event)
-
-    def focusOutEvent(self, event):
-        self.setFocusPolicy(Qt.FocusPolicy.StrongFocus)
-        super(TimeSpinBox, self).focusOutEvent(event)
-
-    def wheelEvent(self, event):
-        if self.hasFocus():
-            return super(TimeSpinBox, self).wheelEvent(event)
-        else:
-            event.ignore()
-
-    def eventFilter(self, obj, event):
-        if event.type() == QEvent.Type.Wheel and self.hasFocus():
-            delta = event.angleDelta().y() / 120
-            self.changeValue(delta)
-            return True
-
-        return super().eventFilter(obj, event)
-
-    def changeValue(self, delta):
-        current_value = self.value()
-
-        if delta > 0:
-            # Increase the value
-            if current_value >= 1:  # day
-                self.setValue(current_value + 1)
-            elif current_value >= 0.5:
-                self.setValue(current_value + 0.0416666666666667)
-            else:
-                self.setValue(current_value + 0.000694444444444444)
-        elif delta < 0:
-            # Decrease the value
-            if current_value >= 1:
-                self.setValue(current_value - 1)
-            elif current_value >= 0.5:
-                self.setValue(current_value - 0.0416666666666667)
-            else:
-                self.setValue(current_value - 0.000694444444444444)
-
-    def textFromValue(self, value):
-        days = int(value)
-        hours = int((value - days) * 24)
-        minutes = int(((value - days) * 24 - hours) * 60)
-        return f"{days} day{'s' if days != 1 else ''} {hours:02d} hour{'s' if hours != 1 else ''} {minutes:02d} minute{'s' if minutes != 1 else ''}"
-
-    def valueFromText(self, text):
-        time_parts = text.split(" ")
-        days = int(time_parts[0])
-        hours = int(time_parts[2])
-        minutes = int(time_parts[4])
-        return days + hours / 24 + minutes / (24 * 60)
-
-    def fixup(self, text):
-        time_parts = text.split(" ")
-        if len(time_parts) == 6:
-            days = int(time_parts[0])
-            hours = int(time_parts[2])
-            minutes = int(time_parts[4])
-            if days == 1:
-                time_parts[0] = f"0{time_parts[0]}"
-            if hours == 1:
-                time_parts[2] = f"0{time_parts[2]}"
-            if minutes == 1:
-                time_parts[4] = f"0{time_parts[4]}"
-            return " ".join(time_parts)
-
-        return text
-
-    def get_time_delta(self) -> datetime:
-        value = self.value()
-
-        days = int(value)
-        hours = int((value - days) * 24)
-        minutes = int(((value - days) * 24 - hours) * 60)
-
-        current_date_time = QDateTime.currentDateTime()
-        end_date_time = current_date_time.addDays(days).addSecs(hours * 3600 + minutes * 60)
-
-        time_delta = end_date_time.toSecsSinceEpoch() - current_date_time.toSecsSinceEpoch()
-        return timedelta(seconds=time_delta)
-
-
-class FileButton(QPushButton):
-    buttonClicked = pyqtSignal()
-    deleteFileClicked = pyqtSignal()
-    longDragThreshold = 30
-
-    def __init__(self, file: str, parent=None):
-        super(FileButton, self).__init__(parent)
-        self.setFixedWidth(50)
-        self.setAcceptDrops(True)
-        self.dragging = False
-        self.file = file
-        self.drag_start_position = None
-        self.setCursor(Qt.CursorShape.PointingHandCursor)
-        self.setContextMenuPolicy(Qt.ContextMenuPolicy.CustomContextMenu)
-        self.customContextMenuRequested.connect(self.showContextMenu)
-
-    def mouseMoveEvent(self, event):
-        if self.dragging:
-            return
-        try:
-            distance = (event.pos() - self.drag_start_position).manhattanLength()
-        except TypeError:
-            return
-        if distance >= self.longDragThreshold:
-            self.dragging = True
-            mime_data = QMimeData()
-            url = QUrl.fromLocalFile(self.file)  # Replace with the actual file path
-            print(self.file)
-            mime_data.setUrls([url])
-
-            drag = QDrag(self)
-            drag.setMimeData(mime_data)
-
-            # Start the drag operation
-            drag.exec(Qt.DropAction.CopyAction)
-            super().mousePressEvent(event)
-
-    def mousePressEvent(self, event: QMouseEvent):
-        self.dragging = False
-        if event.button() == Qt.MouseButton.LeftButton:
-            self.drag_start_position = event.pos()
-            super().mousePressEvent(event)
-
-    def mouseReleaseEvent(self, event: QMouseEvent):
-        if not self.dragging and event.button() == Qt.MouseButton.LeftButton:
-            self.buttonClicked.emit()
-        self.dragging = False
-        if event.button() == Qt.MouseButton.LeftButton:
-            super().mouseReleaseEvent(event)
-
-    def showContextMenu(self, pos):
-        context_menu = QMenu(self)
-        delete_action = context_menu.addAction("Delete File")
-        delete_action.triggered.connect(self.onDeleteFileClicked)
-        context_menu.exec(self.mapToGlobal(pos))
-
-    def onDeleteFileClicked(self):
-        self.deleteFileClicked.emit()
-
-
-class LaserCutPartFileDropWidget(QWidget):
-    fileDropped = pyqtSignal(QHBoxLayout, object, str, list)  # Changed to object for LaserCutPart
-
-    def __init__(
-        self,
-        laser_cut_part: LaserCutPart,
-        files_layout: QHBoxLayout,
-        file_category: str,
-        parent,
-    ):
-        super(LaserCutPartFileDropWidget, self).__init__(parent)
-        self.parent = parent
-        self.setAcceptDrops(True)
-        self.laser_cut_part = laser_cut_part
-        self.files_layout = files_layout
-        self.file_category = file_category
-
-        self.default_style_sheet = "background-color: rgba(30,30,30, 0.6); border-radius: 5px; border: 1px solid rgb(15,15,15);"
-        self.accept_style_sheet = "background-color: rgba(70,210,110, 0.6); border-radius: 5px; border: 1px solid rgba(70,210,110, 0.6);"
-        self.fail_style_sheet = "background-color: rgba(210,70,60, 0.6); border-radius: 5px; border: 1px solid rgba(210,70,60, 0.6);"
-
-        self.setMaximumWidth(100)
-        layout = QVBoxLayout(self)
-        layout.setAlignment(Qt.AlignmentFlag.AlignCenter)
-        layout.setContentsMargins(2, 2, 2, 2)
-        layout.setSpacing(0)
-        self.setLayout(layout)
-
-        self.label = QLabel("Drag Here", self)
-        self.label.setAlignment(Qt.AlignmentFlag.AlignCenter)
-        self.label.setMaximumWidth(100)
-        self.label.setMinimumHeight(65)
-        self.label.setMinimumWidth(80)
-        self.label.setStyleSheet(self.default_style_sheet)
-        self.label.setCursor(Qt.CursorShape.PointingHandCursor)
-        self.label.setToolTip("Click to select files from your computer")
-        layout.addWidget(self.label)
-
-    def dragEnterEvent(self, event: QDragEnterEvent):
-        if event.mimeData().hasUrls():
-            self.label.setText("Drop Me")
-            self.label.setStyleSheet(self.accept_style_sheet)
-            event.accept()
-        else:
-            self.reset_label()
-            event.ignore()
-
-    def dragLeaveEvent(self, event: QDragEnterEvent):
-        self.reset_label()
-        event.accept()
-
-    def dropEvent(self, event: QDropEvent):
-        if event.mimeData().hasUrls():
-            urls = event.mimeData().urls()
-            file_paths = [url.toLocalFile() for url in urls]
-            allowed_extensions = [
-                ".pdf",
-                ".dxf",
-                ".jpeg",
-                ".geo",
-                ".png",
-                ".jpg",
-                "sldprt",
-            ]  # Allowed file extensions
-            valid_files = all(file_path.lower().endswith(tuple(allowed_extensions)) for file_path in file_paths)
-            if valid_files:
-                self.fileDropped.emit(self.files_layout, self.laser_cut_part, self.file_category, file_paths)
-                self.reset_label()
-                event.accept()
-            else:
-                self.label.setText("Not allowed")
-                self.label.setStyleSheet(self.fail_style_sheet)
-                QTimer.singleShot(1000, self.reset_label)
-                event.ignore()
-        else:
-            event.ignore()
-
-    def mousePressEvent(self, event: QMouseEvent):
-        if event.button() == Qt.MouseButton.LeftButton:
-            file_dialog = QFileDialog(self)
-            file_dialog.setFileMode(QFileDialog.FileMode.ExistingFiles)
-            file_dialog.setNameFilter("Allowed Files (*.pdf *.dxf *.jpeg *.geo *.png *.jpg *.sldprt)")
-            file_dialog.setViewMode(QFileDialog.ViewMode.Detail)
-            if file_dialog.exec():
-                if file_paths := file_dialog.selectedFiles():
-                    self.fileDropped.emit(self.files_layout, self.laser_cut_part, self.file_category, file_paths)
-
-    def reset_label(self):
-        self.label.setText("Drag Here")
-        self.label.setStyleSheet(self.default_style_sheet)
-
-
-class AssemblyFileDropWidget(QWidget):
-    fileDropped = pyqtSignal(QHBoxLayout, list)  # Changed to object for LaserCutPart
-
-    def __init__(
-        self,
-        files_layout: QHBoxLayout,
-        parent,
-    ):
-        super(AssemblyFileDropWidget, self).__init__(parent)
-        self.parent = parent
-        self.setAcceptDrops(True)
-        self.files_layout = files_layout
-
-        self.default_style_sheet = "background-color: rgba(30,30,30, 0.6); border-radius: 5px; border: 1px solid rgb(15,15,15);"
-        self.accept_style_sheet = "background-color: rgba(70,210,110, 0.6); border-radius: 5px; border: 1px solid rgba(70,210,110, 0.6);"
-        self.fail_style_sheet = "background-color: rgba(210,70,60, 0.6); border-radius: 5px; border: 1px solid rgba(210,70,60, 0.6);"
-
-        self.setMaximumWidth(100)
-        layout = QVBoxLayout(self)
-        layout.setAlignment(Qt.AlignmentFlag.AlignCenter)
-        layout.setContentsMargins(2, 2, 2, 2)
-        layout.setSpacing(0)
-        self.setLayout(layout)
-
-        self.label = QLabel("Drag Here", self)
-        self.label.setAlignment(Qt.AlignmentFlag.AlignCenter)
-        self.label.setMaximumWidth(100)
-        self.label.setMinimumHeight(65)
-        self.label.setMinimumWidth(80)
-        self.label.setStyleSheet(self.default_style_sheet)
-        self.label.setCursor(Qt.CursorShape.PointingHandCursor)
-        self.label.setToolTip("Click to select files from your computer")
-        layout.addWidget(self.label)
-
-    def dragEnterEvent(self, event: QDragEnterEvent):
-        if event.mimeData().hasUrls():
-            self.label.setText("Drop Me")
-            self.label.setStyleSheet(self.accept_style_sheet)
-            event.accept()
-        else:
-            self.reset_label()
-            event.ignore()
-
-    def dragLeaveEvent(self, event: QDragEnterEvent):
-        self.reset_label()
-        event.accept()
-
-    def dropEvent(self, event: QDropEvent):
-        if event.mimeData().hasUrls():
-            urls = event.mimeData().urls()
-            file_paths = [url.toLocalFile() for url in urls]
-            allowed_extensions = [
-                ".pdf",
-                ".dxf",
-                ".jpeg",
-                ".geo",
-                ".png",
-                ".jpg",
-                "sldprt",
-            ]  # Allowed file extensions
-            valid_files = all(file_path.lower().endswith(tuple(allowed_extensions)) for file_path in file_paths)
-            if valid_files:
-                self.fileDropped.emit(self.files_layout, file_paths)
-                self.reset_label()
-                event.accept()
-            else:
-                self.label.setText("Not allowed")
-                self.label.setStyleSheet(self.fail_style_sheet)
-                QTimer.singleShot(1000, self.reset_label)
-                event.ignore()
-        else:
-            event.ignore()
-
-    def mousePressEvent(self, event: QMouseEvent):
-        if event.button() == Qt.MouseButton.LeftButton:
-            file_dialog = QFileDialog(self)
-            file_dialog.setFileMode(QFileDialog.FileMode.ExistingFiles)
-            file_dialog.setNameFilter("Allowed Files (*.pdf *.dxf *.jpeg *.geo *.png *.jpg *.sldprt)")
-            file_dialog.setViewMode(QFileDialog.ViewMode.Detail)
-            if file_dialog.exec():
-                if file_paths := file_dialog.selectedFiles():
-                    self.fileDropped.emit(self.files_layout, file_paths)
-
-    def reset_label(self):
-        self.label.setText("Drag Here")
-        self.label.setStyleSheet(self.default_style_sheet)
-
-
-class AssemblyWidget(QWidget):
+class AssemblyPlanningWidget(AssemblyWidget):
     def __init__(self, assembly: Assembly, parent) -> None:
-        super(AssemblyWidget, self).__init__(parent)
-        uic.loadUi("ui/assembly_widget.ui", self)
-
-        self.parent = parent
+        super(AssemblyPlanningWidget, self).__init__(assembly, parent)
+        self.parent: JobTab = parent
         self.assembly = assembly
         self.job_preferences: JobPreferences = self.parent.job_preferences
 
@@ -857,7 +58,7 @@ class AssemblyWidget(QWidget):
         self.components_inventory = self.assembly.group.job.components_inventory
         self.laser_cut_inventory = self.assembly.group.job.laser_cut_inventory
 
-        self.sub_assembly_widgets: list[AssemblyWidget] = []
+        self.sub_assembly_widgets: list[AssemblyPlanningWidget] = []
         self.laser_cut_part_table_items: dict[LaserCutPart, dict[str, QTableWidgetItem | QComboBox | QWidget | int]] = {}
         self.components_table_items: dict[Component, dict[str, QTableWidgetItem | int]] = {}
 
@@ -941,7 +142,7 @@ border-top-left-radius: 0px;
         self.comboBox_assembly_flow_tag.currentTextChanged.connect(self.assembly_flow_tag_changed)
 
         self.laser_cut_parts_layout = self.findChild(QVBoxLayout, "laser_cut_parts_layout")
-        self.laser_cut_parts_table = LaserCutPartsPlanningTableWidget(self)
+        self.laser_cut_parts_table = LaserCutPartsQuotingTableWidget(self)
         self.laser_cut_parts_table.rowChanged.connect(self.laser_cut_parts_table_changed)
         self.laser_cut_parts_layout.addWidget(self.laser_cut_parts_table)
         self.add_laser_cut_part_button = self.findChild(QPushButton, "add_laser_cut_part_button")
@@ -949,7 +150,7 @@ border-top-left-radius: 0px;
         self.load_laser_cut_parts_table_context_menu()
 
         self.components_layout = self.findChild(QVBoxLayout, "components_layout")
-        self.components_table = ComponentsPlanningTableWidget(self)
+        self.components_table = ComponentsQuotingTableWidget(self)
         self.components_table.rowChanged.connect(self.components_table_changed)
         self.components_table.imagePasted.connect(self.component_image_pasted)
         self.load_components_table_context_menu()
@@ -1179,11 +380,7 @@ QPushButton:checked:pressed#assembly_button_drop_menu {
         self.changes_made()
 
     def assembly_get_all_file_types(self, file_ext: str) -> list[str]:
-        files: set[str] = {
-            file
-            for file in self.assembly.assembly_files
-            if file.lower().endswith(file_ext)
-        }
+        files: set[str] = {file for file in self.assembly.assembly_files if file.lower().endswith(file_ext)}
         return list(files)
 
     def open_assembly_image(self):
@@ -1489,12 +686,12 @@ QPushButton:checked:pressed#assembly_button_drop_menu {
         self.laser_cut_parts_table.setItem(current_row, self.laser_cut_parts_table.quantity_column, quantity_item)
         self.laser_cut_part_table_items[laser_cut_part].update({"quantity": quantity_item})
 
-        painting_settings_widget = PaintSettingsWidget(laser_cut_part, self.laser_cut_parts_table)
+        painting_settings_widget = LasserCutPartPaintSettingsWidget(laser_cut_part, self.laser_cut_parts_table)
         painting_settings_widget.settingsChanged.connect(self.changes_made)
         self.laser_cut_parts_table.setCellWidget(current_row, self.laser_cut_parts_table.paint_settings_column, painting_settings_widget)
         self.laser_cut_part_table_items[laser_cut_part].update({"painting_settings_widget": painting_settings_widget})
 
-        painting_widget = PaintWidget(laser_cut_part, painting_settings_widget, self.laser_cut_parts_table)
+        painting_widget = LaserCutPartPaintWidget(laser_cut_part, painting_settings_widget, self.laser_cut_parts_table)
         painting_widget.settingsChanged.connect(self.changes_made)
         self.laser_cut_parts_table.setCellWidget(current_row, self.laser_cut_parts_table.painting_column, painting_widget)
         self.laser_cut_part_table_items[laser_cut_part].update({"painting_widget": painting_widget})
@@ -1675,7 +872,7 @@ QPushButton:checked:pressed#assembly_button_drop_menu {
                 local_path = f"data/workspace/{file_ext}/{file_name}"
                 self.open_image(local_path, file_name)
             # elif file_ext == "PDF":
-                # self.open_pdf(laser_cut_part, local_path)
+            # self.open_pdf(laser_cut_part, local_path)
 
     def laser_cut_part_delete_file(self, laser_cut_part: LaserCutPart, file_category: str, file_path: str, file_button: FileButton):
         if file_category == "bending_files":
@@ -1736,14 +933,14 @@ QPushButton:checked:pressed#assembly_button_drop_menu {
             self.assembly.add_laser_cut_part(new_laser_cut_part)
             self.add_laser_cut_part_to_table(new_laser_cut_part)
 
-    def add_sub_assembly(self, new_sub_assembly: Assembly = None) -> "AssemblyWidget":
+    def add_sub_assembly(self, new_sub_assembly: Assembly = None) -> "AssemblyPlanningWidget":
         if not new_sub_assembly:
             sub_assembly = Assembly(f"Enter Sub Assembly Name{len(self.assembly.sub_assemblies)}", {}, self.assembly.group)
             self.assembly.add_sub_assembly(sub_assembly)
         else:
             sub_assembly = new_sub_assembly
 
-        sub_assembly_widget = AssemblyWidget(sub_assembly, self.parent)
+        sub_assembly_widget = AssemblyPlanningWidget(sub_assembly, self.parent)
         self.sub_assemblies_toolbox.addItem(sub_assembly_widget, sub_assembly.name, sub_assembly.group.color)
 
         toggle_button = self.sub_assemblies_toolbox.getLastToggleButton()
@@ -1797,7 +994,7 @@ QPushButton:checked:pressed#assembly_button_drop_menu {
         self.assembly.add_sub_assembly(new_sub_assembly)
         self.changes_made()
 
-    def delete_sub_assembly(self, sub_assembly_widget: "AssemblyWidget"):
+    def delete_sub_assembly(self, sub_assembly_widget: "AssemblyPlanningWidget"):
         self.sub_assembly_widgets.remove(sub_assembly_widget)
         self.sub_assemblies_toolbox.removeItem(sub_assembly_widget)
         self.assembly.remove_sub_assembly(sub_assembly_widget.assembly)
@@ -1809,7 +1006,7 @@ QPushButton:checked:pressed#assembly_button_drop_menu {
         for sub_assembly_widget in self.sub_assembly_widgets:
             sub_assembly_widget.update_tables()
 
-    def set_table_row_color(self, table: LaserCutPartsPlanningTableWidget | ComponentsPlanningTableWidget, row_index: int, color: str):
+    def set_table_row_color(self, table: LaserCutPartsQuotingTableWidget | ComponentsQuotingTableWidget, row_index: int, color: str):
         for j in range(table.columnCount()):
             item = table.item(row_index, j)
             if not item:

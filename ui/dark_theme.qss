@@ -65,6 +65,27 @@ QAbstractScrollArea {
 QWidget#scrollAreaWidgetContents{
     background-color: transparent;
 }
+QWidget#scrollAreaWidgetContents_2{
+    background-color: transparent;
+}
+QWidget#scrollAreaWidgetContents_3{
+    background-color: transparent;
+}
+QWidget#scrollAreaWidgetContents_4{
+    background-color: transparent;
+}
+QWidget#scrollAreaWidgetContents_5{
+    background-color: transparent;
+}
+QWidget#scrollAreaWidgetContents_6{
+    background-color: transparent;
+}
+QWidget#scrollAreaWidgetContents_7{
+    background-color: transparent;
+}
+QWidget#scrollAreaWidgetContents_8{
+    background-color: transparent;
+}
 
 /* Containers */
 QGridWidget{
@@ -219,10 +240,31 @@ QPushButton:disabled {
     color: #8C8C8C;
 }
 
-QPushButton:checked {
-    background-color: rgba(39, 39, 39, 0.6);
+
+QPushButton:checked{
+    background-color: #3daee9;
+    color: #171717;
+}
+QPushButton:pressed{
+    background-color: #2b92c5;
+}
+
+QPushButton:!checked {
+    background-color: rgba(71, 71, 71, 130);
+    border-color: rgba(71, 71, 71, 130);
     color: #EAE9FC;
 }
+
+QPushButton:hover:!checked {
+    background-color: rgba(76, 76, 76, 130);
+    border-color: #3daee9;
+}
+
+QPushButton:pressed:!checked {
+    background-color: #3daee9;
+    color: #171717;
+}
+
 
 QPushButton#custom_tab_button{
     color: #171717;

@@ -8,25 +8,27 @@ from PyQt6 import uic
 from PyQt6.QtCore import QDate, Qt, QTimer, pyqtSignal
 from PyQt6.QtGui import QAction, QColor, QCursor, QFont, QIcon
 from PyQt6.QtWidgets import (QAbstractItemView, QCheckBox, QComboBox,
-                             QDateEdit, QGridLayout, QInputDialog, QLabel,
-                             QMenu, QMessageBox, QHBoxLayout,  QPushButton, QTableWidgetItem,
-                             QVBoxLayout, QWidget)
+                             QDateEdit, QGridLayout, QHBoxLayout, QInputDialog,
+                             QLabel, QMenu, QMessageBox, QPushButton,
+                             QTableWidgetItem, QVBoxLayout, QWidget)
 
 from ui.add_sheet_dialog import AddSheetDialog
-from ui.update_component_order_pending_dialog import UpdateComponentOrderPendingDialog
-from ui.set_component_order_pending_dialog import SetComponentOrderPendingDialog
 from ui.custom_widgets import (CustomTableWidget, CustomTabWidget,
                                DeletePushButton, HumbleDoubleSpinBox,
                                OrderStatusButton)
 from ui.edit_category_dialog import EditCategoryDialog
+from ui.set_component_order_pending_dialog import \
+    SetComponentOrderPendingDialog
 from ui.set_custom_limit_dialog import SetCustomLimitDialog
 from ui.set_order_pending_dialog import SetOrderPendingDialog
+from ui.update_component_order_pending_dialog import \
+    UpdateComponentOrderPendingDialog
 from utils.inventory.category import Category
+from utils.inventory.order import Order
 from utils.settings import Settings
 from utils.sheet_settings.sheet_settings import SheetSettings
 from utils.sheets_inventory.sheet import Sheet
 from utils.sheets_inventory.sheets_inventory import SheetsInventory
-from utils.inventory.order import Order
 
 settings_file = Settings()
 
@@ -71,7 +73,7 @@ class OrderWidget(QWidget):
         self.sheet = sheet
 
         self.h_layout = QHBoxLayout()
-        self.h_layout.setContentsMargins(0,0,0,0)
+        self.h_layout.setContentsMargins(0, 0, 0, 0)
         self.orders_layout = QHBoxLayout()
         self.add_order_button = QPushButton("Add Order", self)
         self.add_order_button.clicked.connect(self.create_order)
@@ -88,7 +90,7 @@ class OrderWidget(QWidget):
 
         for order in self.sheet.orders:
             v_layout = QVBoxLayout()
-            v_layout.setContentsMargins(1,1,1,1)
+            v_layout.setContentsMargins(1, 1, 1, 1)
             v_layout.setSpacing(0)
             order_status_button = OrderStatusButton(self)
             order_status_button.setStyleSheet("QPushButton#order_status{border-top-left-radius: 5px; border-top-right-radius: 5px; border-bottom-left-radius: 0; border-bottom-right-radius: 0;}")
@@ -111,7 +113,7 @@ class OrderWidget(QWidget):
             v_layout.addWidget(order_status_button)
             v_layout.addWidget(arrival_date)
             self.orders_layout.addLayout(v_layout)
-        self.parent.category_tables[self.parent.category].setColumnWidth(7, 400) # Widgets don't like being resized with columns
+        self.parent.category_tables[self.parent.category].setColumnWidth(7, 400)  # Widgets don't like being resized with columns
         self.parent.update_sheet_row_color(self.parent.category_tables[self.parent.category], self.sheet)
 
     def create_order(self):
@@ -120,13 +122,7 @@ class OrderWidget(QWidget):
             self,
         )
         if select_date_dialog.exec():
-            new_order = Order({
-                    "expected_arrival_time": select_date_dialog.get_selected_date(),
-                    "order_pending_quantity": select_date_dialog.get_order_quantity(),
-                    "order_pending_date": datetime.now().strftime("%Y-%m-%d"),
-                    "notes": select_date_dialog.get_notes()
-                }
-            )
+            new_order = Order({"expected_arrival_time": select_date_dialog.get_selected_date(), "order_pending_quantity": select_date_dialog.get_order_quantity(), "order_pending_date": datetime.now().strftime("%Y-%m-%d"), "notes": select_date_dialog.get_notes()})
             self.sheet.add_order(new_order)
             self.parent.sheets_inventory.save()
             self.parent.sync_changes()
@@ -152,14 +148,14 @@ class OrderWidget(QWidget):
                     msg = QMessageBox(QMessageBox.Icon.Information, "Order", f"All the quantity from this order has been added, this order will now be removed from {self.sheet.get_name()}", QMessageBox.StandardButton.Ok, self)
                     if msg.exec():
                         self.sheet.remove_order(order)
-            else: # You never know.
+            else:  # You never know.
                 order_status_button.setChecked(True)
                 return
             self.parent.sheets_inventory.save()
             self.parent.sync_changes()
             self.parent.select_last_selected_item()
             self.load_ui()
-        else: # Close order pressed
+        else:  # Close order pressed
             order_status_button.setChecked(True)
 
     def date_changed(self, order: Order, arrival_date: QDateEdit):
@@ -472,7 +468,7 @@ class SheetsInInventoryTab(QWidget):
 
             current_table.customContextMenuRequested.connect(partial(self.open_group_menu, menu))
 
-        current_table.setColumnWidth(7, 400) # Widgets don't like being resized with columns
+        current_table.setColumnWidth(7, 400)  # Widgets don't like being resized with columns
         self.save_current_tab()
         self.save_category_tabs_order()
         self.restore_scroll_position()
@@ -635,10 +631,10 @@ class SheetsInInventoryTab(QWidget):
             html = '<html><body><table style="width: 100%; border-collapse: collapse; text-align: left; vertical-align: middle; font-size: 12px; font-family: Verdana, Geneva, Tahoma, sans-serif;">'
             html += '<thead><tr style="border-bottom: 1px solid black;">'
             for header in headers:
-                html += f'<th>{header}</th>'
+                html += f"<th>{header}</th>"
             html += "</tr>"
             html += "</thead>"
-            html += '<tbody>'
+            html += "<tbody>"
             for sheet in sheets:
                 order_status = ""
                 if sheet.orders:

@@ -74,25 +74,13 @@ class WorkspaceSettings:
         return None
 
     def get_all_assembly_flow_tags(self) -> dict[str, FlowTag]:
-        return {
-            flow_tag.get_name(): flow_tag
-            for flow_tag in self.get_all_flow_tags()
-            if flow_tag.group == Group.ASSEMBLY
-        }
+        return {flow_tag.get_name(): flow_tag for flow_tag in self.get_all_flow_tags() if flow_tag.group == Group.ASSEMBLY}
 
     def get_all_laser_cut_part_flow_tags(self) -> dict[str, FlowTag]:
-        return {
-            flow_tag.get_name(): flow_tag
-            for flow_tag in self.get_all_flow_tags()
-            if flow_tag.group == Group.LASER_CUT_PART
-        }
+        return {flow_tag.get_name(): flow_tag for flow_tag in self.get_all_flow_tags() if flow_tag.group == Group.LASER_CUT_PART}
 
     def get_all_component_flow_tags(self) -> dict[str, FlowTag]:
-        return {
-            flow_tag.get_name(): flow_tag
-            for flow_tag in self.get_all_flow_tags()
-            if flow_tag.group == Group.COMPONENT
-        }
+        return {flow_tag.get_name(): flow_tag for flow_tag in self.get_all_flow_tags() if flow_tag.group == Group.COMPONENT}
 
     def add_flow_tag(self, flow_tags: FlowTags, flow_tag: FlowTag):
         flow_tags.add_flow_tag(flow_tag)

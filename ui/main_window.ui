@@ -7,8 +7,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1127</width>
-    <height>607</height>
+    <width>1551</width>
+    <height>836</height>
    </rect>
   </property>
   <property name="font">
@@ -26,10 +26,10 @@
    <double>1.000000000000000</double>
   </property>
   <property name="toolButtonStyle">
-   <enum>Qt::ToolButtonTextOnly</enum>
+   <enum>Qt::ToolButtonStyle::ToolButtonTextOnly</enum>
   </property>
   <property name="tabShape">
-   <enum>QTabWidget::Rounded</enum>
+   <enum>QTabWidget::TabShape::Rounded</enum>
   </property>
   <property name="unifiedTitleAndToolBarOnMac">
    <bool>false</bool>
@@ -63,7 +63,6 @@
        <font>
         <family>Montserrat</family>
         <pointsize>12</pointsize>
-        <weight>75</weight>
         <bold>true</bold>
         <stylestrategy>PreferAntialias</stylestrategy>
         <kerning>true</kerning>
@@ -75,16 +74,16 @@
 }</string>
       </property>
       <property name="tabPosition">
-       <enum>QTabWidget::North</enum>
+       <enum>QTabWidget::TabPosition::North</enum>
       </property>
       <property name="tabShape">
-       <enum>QTabWidget::Rounded</enum>
+       <enum>QTabWidget::TabShape::Rounded</enum>
       </property>
       <property name="currentIndex">
        <number>5</number>
       </property>
       <property name="elideMode">
-       <enum>Qt::ElideNone</enum>
+       <enum>Qt::TextElideMode::ElideNone</enum>
       </property>
       <property name="usesScrollButtons">
        <bool>true</bool>
@@ -145,7 +144,7 @@
              <string>Loading...</string>
             </property>
             <property name="alignment">
-             <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+             <set>Qt::AlignmentFlag::AlignLeading|Qt::AlignmentFlag::AlignLeft|Qt::AlignmentFlag::AlignVCenter</set>
             </property>
            </widget>
           </item>
@@ -191,7 +190,7 @@
              <string>Loading...</string>
             </property>
             <property name="alignment">
-             <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+             <set>Qt::AlignmentFlag::AlignLeading|Qt::AlignmentFlag::AlignLeft|Qt::AlignmentFlag::AlignVCenter</set>
             </property>
            </widget>
           </item>
@@ -233,7 +232,7 @@
              <string>Loading...</string>
             </property>
             <property name="alignment">
-             <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+             <set>Qt::AlignmentFlag::AlignLeading|Qt::AlignmentFlag::AlignLeft|Qt::AlignmentFlag::AlignVCenter</set>
             </property>
            </widget>
           </item>
@@ -276,7 +275,7 @@
              <string>Loading...</string>
             </property>
             <property name="alignment">
-             <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+             <set>Qt::AlignmentFlag::AlignLeading|Qt::AlignmentFlag::AlignLeft|Qt::AlignmentFlag::AlignVCenter</set>
             </property>
            </widget>
           </item>
@@ -309,7 +308,7 @@
           <item>
            <widget class="QSplitter" name="splitter">
             <property name="orientation">
-             <enum>Qt::Horizontal</enum>
+             <enum>Qt::Orientation::Horizontal</enum>
             </property>
             <widget class="QWidget" name="verticalLayoutWidget_3">
              <layout class="QVBoxLayout" name="job_planner_layout"/>
@@ -351,8 +350,8 @@
                       <rect>
                        <x>0</x>
                        <y>0</y>
-                       <width>1066</width>
-                       <height>438</height>
+                       <width>1482</width>
+                       <height>599</height>
                       </rect>
                      </property>
                      <layout class="QVBoxLayout" name="verticalLayout_17">
@@ -392,8 +391,8 @@
                       <rect>
                        <x>0</x>
                        <y>0</y>
-                       <width>1066</width>
-                       <height>438</height>
+                       <width>80</width>
+                       <height>16</height>
                       </rect>
                      </property>
                      <layout class="QVBoxLayout" name="verticalLayout_20">
@@ -468,7 +467,7 @@
         <item>
          <widget class="QSplitter" name="splitter_2">
           <property name="orientation">
-           <enum>Qt::Horizontal</enum>
+           <enum>Qt::Orientation::Horizontal</enum>
           </property>
           <widget class="QWidget" name="verticalLayoutWidget_5">
            <layout class="QVBoxLayout" name="quote_generator_layout"/>
@@ -541,7 +540,7 @@
                 <item>
                  <widget class="QPushButton" name="pushButton_load_nests_2">
                   <property name="enabled">
-                   <bool>false</bool>
+                   <bool>true</bool>
                   </property>
                   <property name="minimumSize">
                    <size>
@@ -577,8 +576,8 @@
                     <rect>
                      <x>0</x>
                      <y>0</y>
-                     <width>968</width>
-                     <height>436</height>
+                     <width>1479</width>
+                     <height>591</height>
                     </rect>
                    </property>
                    <layout class="QVBoxLayout" name="verticalLayout_27">
@@ -625,8 +624,8 @@
                     <rect>
                      <x>0</x>
                      <y>0</y>
-                     <width>968</width>
-                     <height>436</height>
+                     <width>1479</width>
+                     <height>591</height>
                     </rect>
                    </property>
                    <layout class="QVBoxLayout" name="verticalLayout_31">
@@ -718,7 +717,7 @@
         <item>
          <widget class="QSplitter" name="splitter_3">
           <property name="orientation">
-           <enum>Qt::Horizontal</enum>
+           <enum>Qt::Orientation::Horizontal</enum>
           </property>
           <property name="handleWidth">
            <number>5</number>
@@ -894,8 +893,8 @@
                        <rect>
                         <x>0</x>
                         <y>0</y>
-                        <width>1028</width>
-                        <height>395</height>
+                        <width>80</width>
+                        <height>16</height>
                        </rect>
                       </property>
                       <layout class="QVBoxLayout" name="verticalLayout_6">
@@ -963,7 +962,7 @@
                        <rect>
                         <x>0</x>
                         <y>0</y>
-                        <width>67</width>
+                        <width>80</width>
                         <height>16</height>
                        </rect>
                       </property>
@@ -1033,7 +1032,6 @@
                  </property>
                  <property name="font">
                   <font>
-                   <weight>75</weight>
                    <bold>true</bold>
                   </font>
                  </property>
@@ -1178,17 +1176,17 @@ QPushButton#pushButton_generate_quote:disabled{
                  <property name="columnCount">
                   <number>2</number>
                  </property>
-                 <attribute name="horizontalHeaderDefaultSectionSize">
-                  <number>500</number>
-                 </attribute>
                  <attribute name="horizontalHeaderMinimumSectionSize">
                   <number>42</number>
                  </attribute>
-                 <attribute name="verticalHeaderDefaultSectionSize">
-                  <number>30</number>
+                 <attribute name="horizontalHeaderDefaultSectionSize">
+                  <number>500</number>
                  </attribute>
                  <attribute name="verticalHeaderMinimumSectionSize">
                   <number>28</number>
+                 </attribute>
+                 <attribute name="verticalHeaderDefaultSectionSize">
+                  <number>30</number>
                  </attribute>
                  <column/>
                  <column/>
@@ -1214,11 +1212,11 @@ QPushButton#pushButton_generate_quote:disabled{
                  <property name="columnCount">
                   <number>2</number>
                  </property>
-                 <attribute name="horizontalHeaderDefaultSectionSize">
-                  <number>500</number>
-                 </attribute>
                  <attribute name="horizontalHeaderMinimumSectionSize">
                   <number>42</number>
+                 </attribute>
+                 <attribute name="horizontalHeaderDefaultSectionSize">
+                  <number>500</number>
                  </attribute>
                  <column/>
                  <column/>
@@ -1315,8 +1313,8 @@ QPushButton#pushButton_generate_quote:disabled{
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1127</width>
-     <height>18</height>
+     <width>1551</width>
+     <height>33</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
@@ -1740,7 +1738,7 @@ QPushButton#pushButton_generate_quote:disabled{
     <string>Add Nest Directory</string>
    </property>
    <property name="menuRole">
-    <enum>QAction::TextHeuristicRole</enum>
+    <enum>QAction::MenuRole::TextHeuristicRole</enum>
    </property>
    <property name="iconVisibleInMenu">
     <bool>true</bool>

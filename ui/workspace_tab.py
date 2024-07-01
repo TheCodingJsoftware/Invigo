@@ -8,14 +8,24 @@ import sympy
 from PyQt6 import uic
 from PyQt6.QtCore import QDate, Qt
 from PyQt6.QtGui import QAction, QCursor, QFont, QIcon
-from PyQt6.QtWidgets import QAbstractItemView, QApplication, QComboBox, QCompleter, QGridLayout, QGroupBox, QHBoxLayout, QInputDialog, QLabel, QLineEdit, QMenu, QMessageBox, QPushButton, QScrollArea, QTableWidgetItem, QTabWidget, QVBoxLayout, QWidget
+from PyQt6.QtWidgets import (QAbstractItemView, QApplication, QComboBox,
+                             QCompleter, QGridLayout, QGroupBox, QHBoxLayout,
+                             QInputDialog, QLabel, QLineEdit, QMenu,
+                             QMessageBox, QPushButton, QScrollArea,
+                             QTableWidgetItem, QTabWidget, QVBoxLayout,
+                             QWidget)
 
-from threads.workspace_get_file_thread import WorkspaceDownloadFile
-from threads.workspace_upload_file_thread import WorkspaceUploadThread
 from ui.color_picker_dialog import ColorPicker
-from ui.custom_widgets import AssemblyImage, AssemblyMultiToolBox, CustomTableWidget, DeletePushButton, DraggableButton, DropWidget, FilterTabWidget, HumbleDoubleSpinBox, ItemsGroupBox, MultiToolBox, NotesPlainTextEdit, RecordingWidget, ScrollPositionManager, SelectRangeCalendar, TimeSpinBox
+from ui.custom_widgets import (AssemblyImage, AssemblyMultiToolBox,
+                               CustomTableWidget, DeletePushButton,
+                               DraggableButton, DropWidget, FilterTabWidget,
+                               HumbleDoubleSpinBox, ItemsGroupBox,
+                               MultiToolBox, NotesPlainTextEdit,
+                               RecordingWidget, ScrollPositionManager,
+                               SelectRangeCalendar, TimeSpinBox)
 from ui.generate_workorder_dialog import GenerateWorkorderDialog
-from ui.generate_workspace_printout_dialog import GenerateWorkspacePrintoutDialog
+from ui.generate_workspace_printout_dialog import \
+    GenerateWorkspacePrintoutDialog
 from ui.recut_dialog import RecutDialog
 from utils.colors import get_random_color
 from utils.components_inventory.components_inventory import ComponentsInventory
@@ -23,6 +33,8 @@ from utils.dialog_buttons import DialogButtons
 from utils.laser_cut_inventory.laser_cut_inventory import LaserCutInventory
 from utils.paint_inventory.paint_inventory import PaintInventory
 from utils.settings import Settings
+from utils.threads.workspace_get_file_thread import WorkspaceDownloadFile
+from utils.threads.workspace_upload_file_thread import WorkspaceUploadThread
 from utils.trusted_users import get_trusted_users
 from utils.workspace.assembly import Assembly
 from utils.workspace.workspace import Workspace

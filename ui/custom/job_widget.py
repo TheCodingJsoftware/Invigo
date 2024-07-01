@@ -6,36 +6,52 @@ from functools import partial
 
 from PyQt6 import uic
 from PyQt6.QtCore import QDate, Qt, pyqtSignal
-from PyQt6.QtGui import QAction, QColor, QCursor, QFont, QIcon, QKeySequence, QPixmap
-from PyQt6.QtWidgets import QAbstractItemView, QApplication, QCheckBox, QComboBox, QDateEdit, QDoubleSpinBox, QGridLayout, QHBoxLayout, QScrollArea, QLabel, QMenu, QMessageBox, QPushButton, QTableWidgetItem, QTextEdit, QVBoxLayout, QWidget
+from PyQt6.QtGui import (QAction, QColor, QCursor, QFont, QIcon, QKeySequence,
+                         QPixmap)
+from PyQt6.QtWidgets import (QAbstractItemView, QApplication, QCheckBox,
+                             QComboBox, QDateEdit, QDoubleSpinBox, QGridLayout,
+                             QHBoxLayout, QLabel, QMenu, QMessageBox,
+                             QPushButton, QScrollArea, QStackedWidget,
+                             QTableWidgetItem, QTextEdit, QVBoxLayout, QWidget)
 
 from ui.add_component_dialog import AddComponentDialog
-from ui.custom_widgets import AssemblyMultiToolBox, ClickableLabel, CustomTableWidget, DeletePushButton, MachineCutTimeSpinBox, MultiToolBox, QLineEdit, RecutButton
-from ui.group_widget import GroupWidget
+from ui.custom.group_widget import GroupWidget
+from ui.custom.nest_widget import NestWidget
+from ui.custom_widgets import (AssemblyMultiToolBox, ClickableLabel,
+                               CustomTableWidget, DeletePushButton,
+                               MachineCutTimeSpinBox, MultiToolBox, QLineEdit,
+                               RecutButton)
 from ui.image_viewer import QImageViewer
 from utils import colors
 from utils.calulations import calculate_overhead
+from utils.colors import darken_color, lighten_color
 from utils.components_inventory.component import Component
 from utils.components_inventory.components_inventory import ComponentsInventory
 from utils.inventory.category import Category
 from utils.laser_cut_inventory.laser_cut_inventory import LaserCutInventory
 from utils.laser_cut_inventory.laser_cut_part import LaserCutPart
+from utils.quote.nest import Nest
 from utils.workspace.group import Group
 from utils.workspace.job import Job, JobStatus
 from utils.workspace.job_preferences import JobPreferences
 
 
 class JobWidget(QWidget):
-    reloadJob = pyqtSignal(object) # JobWidget
+    reloadJob = pyqtSignal(object)  # object -> JobWidget
+
     def __init__(self, job: Job, parent) -> None:
         super(JobWidget, self).__init__(parent)
         uic.loadUi("ui/job_widget.ui", self)
 
-        self.parent = parent
+        from ui.custom.job_tab import JobTab
+
+        self.parent: JobTab = parent
         self.job = job
         self.job_preferences: JobPreferences = self.parent.job_preferences
 
+        self.nests_tool_box: MultiToolBox = None
         self.group_widgets: list[GroupWidget] = []
+        self.nest_widgets: list[NestWidget] = []
 
         self.load_ui()
 
@@ -53,6 +69,29 @@ class JobWidget(QWidget):
         #         )
         self.verticalLayout_4.setAlignment(Qt.AlignmentFlag.AlignTop)
         self.gridLayout_2.setAlignment(Qt.AlignmentFlag.AlignTop)
+        self.verticalLayout_8.setAlignment(Qt.AlignmentFlag.AlignTop)
+
+        self.pushButton_global_sheet_settings = self.findChild(QPushButton, "pushButton_global_sheet_settings")
+        self.global_sheet_settings_widget = self.findChild(QWidget, "global_sheet_settings_widget")
+        self.apply_stylesheet_to_toggle_buttons(self.pushButton_global_sheet_settings, self.global_sheet_settings_widget)
+
+        self.pushButton_item_quoting_options = self.findChild(QPushButton, "pushButton_item_quoting_options")
+        self.item_quoting_options_widget = self.findChild(QWidget, "item_quoting_options_widget")
+        self.apply_stylesheet_to_toggle_buttons(self.pushButton_item_quoting_options, self.item_quoting_options_widget)
+
+        self.pushButton_sheet_quoting_options = self.findChild(QPushButton, "pushButton_sheet_quoting_options")
+        self.sheet_quoting_options_widget = self.findChild(QWidget, "sheet_quoting_options_widget")
+        self.apply_stylesheet_to_toggle_buttons(self.pushButton_sheet_quoting_options, self.sheet_quoting_options_widget)
+
+        self.pushButton_nests = self.findChild(QPushButton, "pushButton_nests")
+        self.nests_widget = self.findChild(QWidget, "nests_widget")
+        self.nests_layout = self.findChild(QVBoxLayout, "nests_layout")
+        self.apply_stylesheet_to_toggle_buttons(self.pushButton_nests, self.nests_widget)
+
+        self.pushButton_nest_summary = self.findChild(QPushButton, "pushButton_nest_summary")
+        self.nest_summary_widget = self.findChild(QWidget, "nest_summary_widget")
+        self.nest_summary_layout = self.findChild(QVBoxLayout, "nest_summary_layout")
+        self.apply_stylesheet_to_toggle_buttons(self.pushButton_nest_summary, self.nest_summary_widget)
 
         self.scrollArea = self.findChild(QScrollArea, "scrollArea")
 
@@ -102,6 +141,85 @@ class JobWidget(QWidget):
 
         self.groups_toolbox = AssemblyMultiToolBox(self)
         self.groups_layout.addWidget(self.groups_toolbox)
+
+        # if self.job.job_status != JobStatus.QUOTED or self.job.job_status != JobStatus.QUOTING:
+        #     self.splitter.setSizes([0, 1])
+        #     self.splitter.setEnabled(False)
+        self.splitter.setStretchFactor(1, 5)
+
+    def apply_stylesheet_to_toggle_buttons(self, button: QPushButton, widget: QWidget):
+        base_color = self.job.get_color()
+        hover_color: str = lighten_color(base_color)
+        pressed_color: str = darken_color(base_color)
+        button.setObjectName("assembly_button_drop_menu")
+        button.setStyleSheet(
+            """
+QPushButton#assembly_button_drop_menu {
+    border: 1px solid rgba(71, 71, 71, 110);
+    background-color: rgba(71, 71, 71, 110);
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
+    color: #EAE9FC;
+    text-align: left;
+}
+
+QPushButton:hover#assembly_button_drop_menu {
+    background-color: rgba(76, 76, 76, 110);
+    border: 1px solid %(base_color)s;
+}
+
+QPushButton:pressed#assembly_button_drop_menu {
+    background-color: %(base_color)s;
+    color: #EAE9FC;
+}
+
+QPushButton:!checked#assembly_button_drop_menu {
+    color: #8C8C8C;
+}
+
+QPushButton:!checked:pressed#assembly_button_drop_menu {
+    color: #EAE9FC;
+}
+
+QPushButton:checked#assembly_button_drop_menu {
+    color: #EAE9FC;
+    border-color: %(base_color)s;
+    background-color: %(base_color)s;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+    border-bottom-left-radius: 0px;
+    border-bottom-right-radius: 0px;
+}
+
+QPushButton:checked:hover#assembly_button_drop_menu {
+    background-color: %(hover_color)s;
+}
+
+QPushButton:checked:pressed#assembly_button_drop_menu {
+    color: #EAE9FC;
+    background-color: %(pressed_color)s;
+}
+"""
+            % {
+                "base_color": base_color,
+                "hover_color": hover_color,
+                "pressed_color": pressed_color,
+            }
+        )
+        widget.setObjectName("assembly_widget_drop_menu")
+        widget.setStyleSheet(
+            """QWidget#assembly_widget_drop_menu{
+            border: 1px solid %(base_color)s;
+            border-top-left-radius: 0px;
+            border-top-right-radius: 0px;
+            border-bottom-left-radius: 10px;
+            border-bottom-right-radius: 10px;
+            };
+            """
+            % {"base_color": base_color}
+        )
 
     def job_settings_changed(self):
         self.job.order_number = self.doubleSpinBox_order_number.value()
@@ -174,6 +292,21 @@ class JobWidget(QWidget):
     def reload_job(self):
         self.job_preferences.set_job_scroll_position(self.job.name, (self.scrollArea.horizontalScrollBar().value(), self.scrollArea.verticalScrollBar().value()))
         self.reloadJob.emit(self)
+
+    def load_nests(self):
+        self.clear_layout(self.nests_layout)
+        self.nest_widgets.clear()
+        self.nests_tool_box = MultiToolBox(self)
+        self.nests_tool_box.layout().setSpacing(0)
+        self.nests_layout.addWidget(self.nests_tool_box)
+        for nest in self.job.nests:
+            nest_widget = NestWidget(nest, self)
+            nest_widget.updateLaserCutPartSettings.connect(self.nested_laser_cut_parts_settings_changed)
+            self.nest_widgets.append(nest_widget)
+            self.nests_tool_box.addItem(nest_widget, nest.name, self.job.color)
+
+    def nested_laser_cut_parts_settings_changed(self, nest: Nest):
+        self.update_tables()
 
     def changes_made(self):
         self.parent.job_changed(self.job)

@@ -7,13 +7,23 @@ from functools import partial
 from natsort import natsorted
 from PyQt6 import uic
 from PyQt6.QtCore import QDate, Qt, pyqtSignal
-from PyQt6.QtGui import QAction, QColor, QCursor, QFont, QIcon, QKeySequence, QPixmap
-from PyQt6.QtWidgets import QAbstractItemView, QApplication, QCheckBox, QComboBox, QDateEdit, QDoubleSpinBox, QGridLayout, QHBoxLayout, QLabel, QMenu, QMessageBox, QPushButton, QTableWidgetItem, QTextEdit, QVBoxLayout, QWidget
+from PyQt6.QtGui import (QAction, QColor, QCursor, QFont, QIcon, QKeySequence,
+                         QPixmap)
+from PyQt6.QtWidgets import (QAbstractItemView, QApplication, QCheckBox,
+                             QComboBox, QDateEdit, QDoubleSpinBox, QGridLayout,
+                             QHBoxLayout, QLabel, QMenu, QMessageBox,
+                             QPushButton, QTableWidgetItem, QTextEdit,
+                             QVBoxLayout, QWidget)
 
-from ui.add_laser_cut_part_dialog import AddLaserCutPartDialog
 from ui.add_component_dialog import AddComponentDialog
+from ui.add_laser_cut_part_dialog import AddLaserCutPartDialog
 from ui.add_sheet_dialog import AddSheetDialog
-from ui.custom_widgets import ClickableLabel, CustomTableWidget, DeletePushButton, MachineCutTimeSpinBox, MultiToolBox, RecutButton
+from ui.custom.components_quoting_table_widget import \
+    ComponentsQuotingTableWidget
+from ui.custom.laser_cut_parts_quoting_table_widget import \
+    LaserCutPartsQuotingTableWidget
+from ui.custom_widgets import (ClickableLabel, MachineCutTimeSpinBox,
+                               MultiToolBox, RecutButton)
 from ui.image_viewer import QImageViewer
 from utils.calulations import calculate_overhead
 from utils.components_inventory.component import Component
@@ -31,9 +41,9 @@ from utils.sheets_inventory.sheets_inventory import SheetsInventory
 class PaintSettingsWidget(QWidget):
     settingsChanged = pyqtSignal()
 
-    def __init__(self, laser_cut_part: LaserCutPart, parent: "LaserCutTableWidget") -> None:
+    def __init__(self, laser_cut_part: LaserCutPart, parent: "LaserCutPartsQuotingTableWidget") -> None:
         super(PaintSettingsWidget, self).__init__(parent)
-        self.parent: LaserCutTableWidget = parent
+        self.parent: LaserCutPartsQuotingTableWidget = parent
         self.laser_cut_part = laser_cut_part
         self.paint_inventory = self.laser_cut_part.paint_inventory
 
@@ -139,9 +149,9 @@ class PaintSettingsWidget(QWidget):
 class PaintWidget(QWidget):
     settingsChanged = pyqtSignal()
 
-    def __init__(self, laser_cut_part: LaserCutPart, paint_settings_widget: PaintSettingsWidget, parent: "LaserCutTableWidget") -> None:
+    def __init__(self, laser_cut_part: LaserCutPart, paint_settings_widget: PaintSettingsWidget, parent: "LaserCutPartsQuotingTableWidget") -> None:
         super(PaintWidget, self).__init__(parent)
-        self.parent: LaserCutTableWidget = parent
+        self.parent: LaserCutPartsQuotingTableWidget = parent
 
         self.laser_cut_part = laser_cut_part
         self.paint_settings_widget = paint_settings_widget
@@ -186,126 +196,6 @@ class PaintWidget(QWidget):
         self.settingsChanged.emit()
 
 
-class LaserCutTableWidget(CustomTableWidget):
-    def __init__(self, parent=None):
-        super().__init__(parent)
-        self.picture_column = 0
-        self.part_name_column = 1
-        self.material_column = 2
-        self.thickness_column = 3
-        self.quantity_column = 4
-        self.part_dim_column = 5
-
-        self.paint_type_column = 6
-        self.paint_settings_column = 7
-        self.paint_cost_column = 8
-
-        self.cost_of_goods_column = 9
-        self.bend_cost_column = 10
-        self.labor_cost_column = 11
-        self.unit_price_column = 12
-        self.price_column = 13
-        self.shelf_number_column = 14
-        self.recut_column = 15
-        self.add_to_inventory_column = 16
-
-        self.set_editable_column_index([self.quantity_column, self.bend_cost_column, self.labor_cost_column, self.shelf_number_column])
-        self.setShowGrid(True)
-        self.setSortingEnabled(False)
-        self.setSelectionBehavior(QAbstractItemView.SelectionBehavior.SelectRows)
-        self.setSelectionMode(QAbstractItemView.SelectionMode.ExtendedSelection)
-        self.setVerticalScrollMode(QAbstractItemView.ScrollMode.ScrollPerPixel)
-        self.setHorizontalScrollMode(QAbstractItemView.ScrollMode.ScrollPerPixel)
-        headers: dict[str, int] = {
-            "Picture": self.picture_column,
-            "Part name": self.part_name_column,
-            "Material": self.material_column,
-            "Thickness": self.thickness_column,
-            "Qty": self.quantity_column,
-            "Part Dim": self.part_dim_column,
-            "Painting": self.paint_type_column,
-            "Paint Settings": self.paint_settings_column,
-            "Paint Cost": self.paint_cost_column,
-            "Cost of\nGoods": self.cost_of_goods_column,
-            "Bend Cost": self.bend_cost_column,
-            "Labor Cost": self.labor_cost_column,
-            "Unit Price": self.unit_price_column,
-            "Price": self.price_column,
-            "Shelf #": self.shelf_number_column,
-            "Recut": self.recut_column,
-            "Add to Inventory": self.add_to_inventory_column,
-        }
-        self.setColumnCount(len(list(headers.keys())))
-        self.setHorizontalHeaderLabels(headers)
-
-
-class ComponentsTableWidget(CustomTableWidget):
-    imagePasted = pyqtSignal(str, int)
-
-    def __init__(self, parent=None):
-        super().__init__(parent)
-        self.set_editable_column_index([1, 2, 3, 4, 5, 6])
-
-        self.horizontalHeader().setStretchLastSection(True)
-        self.setShowGrid(True)
-        self.setSortingEnabled(False)
-        self.setSelectionBehavior(QAbstractItemView.SelectionBehavior.SelectRows)
-        self.setSelectionMode(QAbstractItemView.SelectionMode.ExtendedSelection)
-        self.setVerticalScrollMode(QAbstractItemView.ScrollMode.ScrollPerPixel)
-        self.setHorizontalScrollMode(QAbstractItemView.ScrollMode.ScrollPerPixel)
-        headers: list[str] = [
-            "Picture",  # 0
-            "Part Name",  # 1
-            "Part #",  # 2
-            "Shelf #",  # 3
-            "Description",  # 4
-            "Qty",  # 5
-            "Unit Price",  # 6
-            "Price",  # 7
-            "",
-        ]
-        self.setColumnCount(len(headers))
-        self.setHorizontalHeaderLabels(headers)
-
-    def keyPressEvent(self, event):
-        if event.matches(QKeySequence.StandardKey.Paste):
-            self.pasteImageFromClipboard()
-        else:
-            super().keyPressEvent(event)
-
-    def copySelectedCells(self):
-        # Implement this function to copy selected cells to the clipboard if needed
-        pass
-
-    def pasteImageFromClipboard(self):
-        app = QApplication.instance()
-        clipboard = app.clipboard()
-        image = clipboard.image()
-        if not image.isNull():
-            selected_items = self.selectedItems()
-            for selected_item in selected_items:
-                if selected_item.column() == 0:
-                    item = selected_item
-                    break
-
-            original_width = image.width()
-            original_height = image.height()
-
-            new_height = 60
-            new_width = int(original_width * (new_height / original_height))
-
-            pixmap = QPixmap.fromImage(image).scaled(new_width, new_height, Qt.AspectRatioMode.KeepAspectRatio)
-            image_path = f'images/{datetime.now().strftime("%Y%m%d%H%M%S%f")}.png'
-            pixmap.save(image_path)
-
-            item.setData(Qt.ItemDataRole.DecorationRole, pixmap)
-
-            # Optionally, resize the cell to fit the image
-            self.resizeColumnToContents(item.column())
-            self.resizeRowToContents(item.row())
-            self.imagePasted.emit(image_path, item.row())
-
-
 class QuoteWidget(QWidget):
     quote_unsaved_changes = pyqtSignal(Quote)
 
@@ -325,9 +215,9 @@ class QuoteWidget(QWidget):
 
         self.nests_tool_box: MultiToolBox = None
         self.nest_items: dict[Nest, dict[str, QComboBox | QDoubleSpinBox | QLabel | MachineCutTimeSpinBox]] = {}
-        self.laser_cut_table_widget: LaserCutTableWidget = None
+        self.laser_cut_table_widget: LaserCutPartsQuotingTableWidget = None
         self.laser_cut_table_items: dict[LaserCutPart, dict[str, QTableWidgetItem | QCheckBox | QDoubleSpinBox | QComboBox | QWidget | PaintSettingsWidget | PaintWidget]] = {}
-        self.components_table_widget: ComponentsTableWidget = None
+        self.components_table_widget: ComponentsQuotingTableWidget = None
         self.components_table_items: dict[Component, dict[str, QTableWidgetItem]] = {}
 
         self.splitter.setStretchFactor(0, 0)
@@ -1101,7 +991,7 @@ class QuoteWidget(QWidget):
     def load_laser_cut_parts(self):
         self.laser_cut_table_items.clear()
         self.clear_layout(self.laser_cut_layout)
-        self.laser_cut_table_widget = LaserCutTableWidget(self)
+        self.laser_cut_table_widget = LaserCutPartsQuotingTableWidget(self)
         self.laser_cut_table_widget.setContextMenuPolicy(Qt.ContextMenuPolicy.CustomContextMenu)
         self.laser_cut_table_widget.customContextMenuRequested.connect(partial(self.open_group_menu, self.load_context_menu()))
 
@@ -1186,7 +1076,7 @@ class QuoteWidget(QWidget):
                 )
                 self.laser_cut_table_items[laser_cut_part].update({"thickness": thickness_combobox})
 
-                if not laser_cut_part.quantity_in_nest: # I dont understand why I need to check, it throws TypeError in the following lines
+                if not laser_cut_part.quantity_in_nest:  # I dont understand why I need to check, it throws TypeError in the following lines
                     laser_cut_part.quantity_in_nest = laser_cut_part.quantity
                 table_widget_item_quantity = QTableWidgetItem(str(laser_cut_part.quantity_in_nest * nest.sheet_count))
                 table_widget_item_quantity.setTextAlignment(Qt.AlignmentFlag.AlignCenter | Qt.AlignmentFlag.AlignVCenter)
@@ -1500,7 +1390,7 @@ class QuoteWidget(QWidget):
     def load_component_parts(self):
         self.components_table_items.clear()
         self.clear_layout(self.components_layout)
-        self.components_table_widget: ComponentsTableWidget = ComponentsTableWidget(self)
+        self.components_table_widget: ComponentsQuotingTableWidget = ComponentsQuotingTableWidget(self)
 
         self.components_table_widget.setContextMenuPolicy(Qt.ContextMenuPolicy.CustomContextMenu)
         menu = QMenu(self)
@@ -1659,7 +1549,9 @@ class QuoteWidget(QWidget):
         for nest, table_item_data in self.nest_items.items():
             table_item_data["cut_time"].setText(self.get_total_cutting_time(nest))
 
+    # Disabled for now.
     def update_scrap_percentage(self):
+        return
         for nest, table_item_data in self.nest_items.items():
             table_item_data["scrap_percentage"].setText(f"{nest.calculate_scrap_percentage():,.2f}%")
             nest.scrape_percentage = nest.calculate_scrap_percentage()
@@ -1719,7 +1611,7 @@ class QuoteWidget(QWidget):
                 table_item_data["button_sheet_status"].setHidden(False)
                 table_item_data["label_sheet_status"].setText("This sheet does not exist in sheets inventory.")
 
-    def set_table_row_color(self, table: LaserCutTableWidget | ComponentsTableWidget, row_index: int, color: str):
+    def set_table_row_color(self, table: LaserCutPartsQuotingTableWidget | ComponentsQuotingTableWidget, row_index: int, color: str):
         for j in range(table.columnCount()):
             item = table.item(row_index, j)
             if not item:

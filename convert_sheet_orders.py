@@ -2,9 +2,10 @@ from datetime import datetime
 
 import ujson as json
 
+from utils.inventory.order import Order
 from utils.sheet_settings.sheet_settings import SheetSettings
 from utils.sheets_inventory.sheets_inventory import SheetsInventory
-from utils.inventory.order import Order
+
 
 def restore():
     sheet_settings = SheetSettings()
@@ -24,6 +25,7 @@ def restore():
     print(f"saving start {datetime.now()}")
     sheets_inventory.save()
     print(f"saving done {datetime.now()}")
+
 
 if __name__ == "__main__":
     restore()

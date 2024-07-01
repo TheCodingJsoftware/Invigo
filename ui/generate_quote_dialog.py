@@ -39,13 +39,15 @@ class GenerateQuoteDialog(QDialog):
         self.pushButton_quote.clicked.connect(lambda: (self.pushButton_packingslip.setChecked(False),) if self.pushButton_quote.isChecked() else self.pushButton_quote.isChecked())
         self.pushButton_workorder.clicked.connect(
             lambda: (
-                self.pushButton_update_inventory.setChecked(True),
-                self.pushButton_remove_sheet_quantity.setChecked(True),
-                self.pushButton_packingslip.setChecked(False),
-                self.pushButton_quote.setChecked(False),
+                (
+                    self.pushButton_update_inventory.setChecked(True),
+                    self.pushButton_remove_sheet_quantity.setChecked(True),
+                    self.pushButton_packingslip.setChecked(False),
+                    self.pushButton_quote.setChecked(False),
+                )
+                if self.pushButton_workorder.isChecked()
+                else self.pushButton_workorder.isChecked()
             )
-            if self.pushButton_workorder.isChecked()
-            else self.pushButton_workorder.isChecked()
         )
         self.pushButton_packingslip.clicked.connect(lambda: (self.pushButton_quote.setChecked(False),) if self.pushButton_packingslip.isChecked() else self.pushButton_packingslip.isChecked())
 
