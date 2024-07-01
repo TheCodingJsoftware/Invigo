@@ -6,9 +6,9 @@ import ujson as json
 from utils.inventory.components_inventory import ComponentsInventory
 from utils.inventory.inventory import Inventory
 from utils.inventory.laser_cut_part import LaserCutPart
-from utils.paint_inventory.paint import Paint
-from utils.paint_inventory.powder import Powder
-from utils.paint_inventory.primer import Primer
+from utils.inventory.paint import Paint
+from utils.inventory.powder import Powder
+from utils.inventory.primer import Primer
 
 if TYPE_CHECKING:
     from main import MainWindow
