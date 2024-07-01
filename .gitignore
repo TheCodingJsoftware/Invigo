@@ -110,3 +110,5 @@ convert.py
 restore_component_category_quantities.py
 restore_laser_cut_inventory_category_quantities.py
 upload_update.py
+*.eddx
+*.bat
