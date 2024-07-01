@@ -9,14 +9,12 @@ from PyQt6 import uic
 from PyQt6.QtCore import QDate, Qt, QTimer, pyqtSignal
 from PyQt6.QtGui import QAction, QColor, QCursor, QFont, QIcon
 from PyQt6.QtWidgets import (QAbstractItemView, QCompleter, QDateEdit, QDialog,
-                             QGridLayout, QInputDialog, QLabel, QLineEdit,
-                             QListWidget, QMenu, QMessageBox, QPushButton,
-                             QTableWidgetItem, QHBoxLayout, QVBoxLayout, QWidget)
+                             QGridLayout, QHBoxLayout, QInputDialog, QLabel,
+                             QLineEdit, QListWidget, QMenu, QMessageBox,
+                             QPushButton, QTableWidgetItem, QVBoxLayout,
+                             QWidget)
 
 from ui.add_item_dialog import AddItemDialog
-from ui.update_component_order_pending_dialog import UpdateComponentOrderPendingDialog
-from ui.set_component_order_pending_dialog import SetComponentOrderPendingDialog
-from ui.custom.order_pending_quantity_dialog import OrderPendingQuantityDialog
 from ui.custom_widgets import (CustomTableWidget, CustomTabWidget,
                                DeletePushButton, ExchangeRateComboBox,
                                NotesPlainTextEdit, OrderStatusButton,
@@ -24,14 +22,18 @@ from ui.custom_widgets import (CustomTableWidget, CustomTabWidget,
 from ui.edit_category_dialog import EditCategoryDialog
 from ui.items_change_quantity_dialog import ItemsChangeQuantityDialog
 from ui.select_item_dialog import SelectItemDialog
+from ui.set_component_order_pending_dialog import \
+    SetComponentOrderPendingDialog
 from ui.set_custom_limit_dialog import SetCustomLimitDialog
 from ui.set_order_pending_dialog import SetOrderPendingDialog
+from ui.update_component_order_pending_dialog import \
+    UpdateComponentOrderPendingDialog
 from utils.components_inventory.component import Component
 from utils.components_inventory.components_inventory import ComponentsInventory
-from utils.inventory.order import Order
 from utils.dialog_buttons import DialogButtons
 from utils.history_file import HistoryFile
 from utils.inventory.category import Category
+from utils.inventory.order import Order
 from utils.po import get_all_po
 from utils.po_template import POTemplate
 from utils.settings import Settings
@@ -82,7 +84,7 @@ class OrderWidget(QWidget):
         self.component = component
 
         self.h_layout = QHBoxLayout()
-        self.h_layout.setContentsMargins(0,0,0,0)
+        self.h_layout.setContentsMargins(0, 0, 0, 0)
         self.orders_layout = QHBoxLayout()
         self.add_order_button = QPushButton("Add Order", self)
         self.add_order_button.clicked.connect(self.create_order)
@@ -99,7 +101,7 @@ class OrderWidget(QWidget):
 
         for order in self.component.orders:
             v_layout = QVBoxLayout()
-            v_layout.setContentsMargins(1,1,1,1)
+            v_layout.setContentsMargins(1, 1, 1, 1)
             v_layout.setSpacing(0)
             order_status_button = OrderStatusButton(self)
             order_status_button.setStyleSheet("QPushButton#order_status{border-top-left-radius: 5px; border-top-right-radius: 5px; border-bottom-left-radius: 0; border-bottom-right-radius: 0;}")
@@ -122,7 +124,7 @@ class OrderWidget(QWidget):
             v_layout.addWidget(order_status_button)
             v_layout.addWidget(arrival_date)
             self.orders_layout.addLayout(v_layout)
-        self.parent.category_tables[self.parent.category].setColumnWidth(12, 400) # Widgets don't like being resized with columns
+        self.parent.category_tables[self.parent.category].setColumnWidth(12, 400)  # Widgets don't like being resized with columns
         self.parent.update_component_row_color(self.parent.category_tables[self.parent.category], self.component)
 
     def create_order(self):
@@ -131,13 +133,7 @@ class OrderWidget(QWidget):
             self,
         )
         if select_date_dialog.exec():
-            new_order = Order({
-                    "expected_arrival_time": select_date_dialog.get_selected_date(),
-                    "order_pending_quantity": select_date_dialog.get_order_quantity(),
-                    "order_pending_date": datetime.now().strftime("%Y-%m-%d"),
-                    "notes": select_date_dialog.get_notes()
-                }
-            )
+            new_order = Order({"expected_arrival_time": select_date_dialog.get_selected_date(), "order_pending_quantity": select_date_dialog.get_order_quantity(), "order_pending_date": datetime.now().strftime("%Y-%m-%d"), "notes": select_date_dialog.get_notes()})
             self.component.add_order(new_order)
             self.parent.components_inventory.save()
             self.parent.sync_changes()
@@ -163,7 +159,7 @@ class OrderWidget(QWidget):
                     msg = QMessageBox(QMessageBox.Icon.Information, "Order", f"All the quantity from this order has been added, this order will now be removed from {self.component.part_name}", QMessageBox.StandardButton.Ok, self)
                     if msg.exec():
                         self.component.remove_order(order)
-            else: # You never know.
+            else:  # You never know.
                 order_status_button.setChecked(True)
                 return
             self.parent.components_inventory.save()
@@ -171,7 +167,7 @@ class OrderWidget(QWidget):
             self.parent.sort_components()
             self.parent.select_last_selected_item()
             self.load_ui()
-        else: # Close order pressed
+        else:  # Close order pressed
             order_status_button.setChecked(True)
 
     def date_changed(self, order: Order, arrival_date: QDateEdit):
@@ -544,11 +540,11 @@ class ComponentsTab(QWidget):
         component.part_number = self.table_components_widgets[component]["part_number"].text()
         try:
             new_unit_quantity = float(
-                    sympy.sympify(
-                        self.table_components_widgets[component]["unit_quantity"].text().strip().replace(",", ""),
-                        evaluate=True,
-                    )
+                sympy.sympify(
+                    self.table_components_widgets[component]["unit_quantity"].text().strip().replace(",", ""),
+                    evaluate=True,
                 )
+            )
         except sympy.SympifyError:
             self.set_table_row_color(self.category_tables[self.category], self.table_components_widgets[component]["row"], "#e93d3d")
             self.parent.status_button.setText(f"Invalid number for {component.name} unit quantity", "red")
@@ -611,7 +607,7 @@ class ComponentsTab(QWidget):
 
     def load_assembly_menu(self, menu: QMenu, job: Job, assemblies: list[Assembly], level=0, prefix=""):
         for i, assembly in enumerate(assemblies):
-            is_last = (i == len(assemblies) - 1)
+            is_last = i == len(assemblies) - 1
             next_assembly = None if is_last else assemblies[i + 1]
             has_next_assembly = next_assembly is not None
 
@@ -962,7 +958,7 @@ class ComponentsTab(QWidget):
 
         for row in range(self.listWidget_itemnames.count()):
             item = self.listWidget_itemnames.itemAt(0, row)
-            with contextlib.suppress(AttributeError): # For some unknown reason
+            with contextlib.suppress(AttributeError):  # For some unknown reason
                 if self.lineEdit_search_items.text() == item.text():
                     self.listWidget_itemnames.setCurrentRow(row)
                     break
@@ -1032,10 +1028,10 @@ class ComponentsTab(QWidget):
             html = '<html><body><table style="width: 100%; border-collapse: collapse; text-align: left; vertical-align: middle; font-size: 12px; font-family: Verdana, Geneva, Tahoma, sans-serif;">'
             html += '<thead><tr style="border-bottom: 1px solid black;">'
             for header in headers:
-                html += f'<th>{header}</th>'
+                html += f"<th>{header}</th>"
             html += "</tr>"
             html += "</thead>"
-            html += '<tbody>'
+            html += "<tbody>"
             for component in components:
                 order_status = ""
                 if component.orders:

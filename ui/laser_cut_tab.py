@@ -622,7 +622,7 @@ class LaserCutTab(QWidget):
 
     def load_assembly_menu(self, menu: QMenu, job: Job, assemblies: list[Assembly], level=0, prefix=""):
         for i, assembly in enumerate(assemblies):
-            is_last = (i == len(assemblies) - 1)
+            is_last = i == len(assemblies) - 1
             next_assembly = None if is_last else assemblies[i + 1]
             has_next_assembly = next_assembly is not None
 
@@ -835,10 +835,15 @@ class LaserCutTab(QWidget):
             return
         old_quantity = laser_cut_part.quantity
         laser_cut_part.name = self.table_laser_cut_parts_widgets[laser_cut_part]["name"].text()
-        laser_cut_part.set_category_quantity(self.category, float(sympy.sympify(
-            self.table_laser_cut_parts_widgets[laser_cut_part]["unit_quantity"].text().strip().replace(",", ""),
-            evaluate=True,
-        )))
+        laser_cut_part.set_category_quantity(
+            self.category,
+            float(
+                sympy.sympify(
+                    self.table_laser_cut_parts_widgets[laser_cut_part]["unit_quantity"].text().strip().replace(",", ""),
+                    evaluate=True,
+                )
+            ),
+        )
         laser_cut_part.quantity = float(
             sympy.sympify(
                 self.table_laser_cut_parts_widgets[laser_cut_part]["quantity"].text().strip().replace(",", ""),
@@ -1014,10 +1019,10 @@ class LaserCutTab(QWidget):
             html = '<html><body><table style="width: 100%; border-collapse: collapse; text-align: left; vertical-align: middle; font-size: 12px; font-family: Verdana, Geneva, Tahoma, sans-serif;">'
             html += '<thead><tr style="border-bottom: 1px solid black;">'
             for header in headers:
-                html += f'<th>{header}</th>'
+                html += f"<th>{header}</th>"
             html += "</tr>"
             html += "</thead>"
-            html += '<tbody>'
+            html += "<tbody>"
             for laser_cut_part in laser_cut_parts:
                 paint_message = ""
                 if laser_cut_part.uses_primer:
@@ -1028,14 +1033,13 @@ class LaserCutTab(QWidget):
                     paint_message += f"Powder: {laser_cut_part.powder_name}\n"
                 if not (laser_cut_part.uses_primer or laser_cut_part.uses_paint or laser_cut_part.uses_powder):
                     paint_message = "Not painted"
-                html += f"""<tr style="border-bottom: 1px solid black;">
+                html += f'''<tr style="border-bottom: 1px solid black;">
                 <td>{laser_cut_part.name}</td>
                 <td>{laser_cut_part.get_category_quantity(self.category)}</td>
                 <td>{laser_cut_part.quantity}</td>
                 <td>{paint_message.replace("\n", "<br>")}</td>
                 <td>{laser_cut_part.shelf_number}</td>
-                <td>{laser_cut_part.modified_date.replace("\n", "<br>")}</td>
-                </tr>"""
+                <td>{laser_cut_part.modified_date.replace("\n", "<br>")}</td></tr>'''
             html += "</tbody></table><body><html>"
         with open("print_selected_parts.html", "w", encoding="utf-8") as f:
             f.write(html)

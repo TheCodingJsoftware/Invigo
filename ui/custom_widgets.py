@@ -9,51 +9,30 @@ from functools import partial
 
 from natsort import natsorted
 from PyQt6 import QtCore, QtGui
-from PyQt6.QtCore import QAbstractItemModel, QAbstractTableModel, QDate, QDateTime, QEvent, QMargins, QMimeData, QModelIndex, QPoint, QRegularExpression, QSettings, QSize, QSortFilterProxyModel, Qt, QTime, QTimer, QUrl, pyqtSignal
-from PyQt6.QtGui import QAction, QBrush, QClipboard, QColor, QCursor, QDrag, QDragEnterEvent, QDragLeaveEvent, QDragMoveEvent, QDropEvent, QFileSystemModel, QIcon, QKeySequence, QMouseEvent, QPainter, QPalette, QPixmap, QRegularExpressionValidator, QStandardItem, QStandardItemModel, QTextCharFormat
-from PyQt6.QtWidgets import (
-    QAbstractItemView,
-    QAbstractSpinBox,
-    QApplication,
-    QCalendarWidget,
-    QCheckBox,
-    QComboBox,
-    QDialog,
-    QDoubleSpinBox,
-    QFormLayout,
-    QGraphicsDropShadowEffect,
-    QGridLayout,
-    QGroupBox,
-    QHBoxLayout,
-    QHeaderView,
-    QLabel,
-    QLineEdit,
-    QMainWindow,
-    QMenu,
-    QPlainTextEdit,
-    QPushButton,
-    QScrollArea,
-    QSizePolicy,
-    QSpinBox,
-    QSplashScreen,
-    QStackedWidget,
-    QStyle,
-    QStyledItemDelegate,
-    QStyleOptionComboBox,
-    QStylePainter,
-    QTabBar,
-    QTableView,
-    QTableWidget,
-    QTableWidgetItem,
-    QTabWidget,
-    QToolBox,
-    QToolButton,
-    QTreeView,
-    QTreeWidget,
-    QTreeWidgetItem,
-    QVBoxLayout,
-    QWidget,
-)
+from PyQt6.QtCore import (QAbstractItemModel, QAbstractTableModel, QDate,
+                          QDateTime, QEvent, QMargins, QMimeData, QModelIndex,
+                          QPoint, QRegularExpression, QSettings, QSize,
+                          QSortFilterProxyModel, Qt, QTime, QTimer, QUrl,
+                          pyqtSignal)
+from PyQt6.QtGui import (QAction, QBrush, QClipboard, QColor, QCursor, QDrag,
+                         QDragEnterEvent, QDragLeaveEvent, QDragMoveEvent,
+                         QDropEvent, QFileSystemModel, QIcon, QKeySequence,
+                         QMouseEvent, QPainter, QPalette, QPixmap,
+                         QRegularExpressionValidator, QStandardItem,
+                         QStandardItemModel, QTextCharFormat)
+from PyQt6.QtWidgets import (QAbstractItemView, QAbstractSpinBox, QApplication,
+                             QCalendarWidget, QCheckBox, QComboBox, QDialog,
+                             QDoubleSpinBox, QFormLayout,
+                             QGraphicsDropShadowEffect, QGridLayout, QGroupBox,
+                             QHBoxLayout, QHeaderView, QLabel, QLineEdit,
+                             QMainWindow, QMenu, QPlainTextEdit, QPushButton,
+                             QScrollArea, QSizePolicy, QSpinBox, QSplashScreen,
+                             QStackedWidget, QStyle, QStyledItemDelegate,
+                             QStyleOptionComboBox, QStylePainter, QTabBar,
+                             QTableView, QTableWidget, QTableWidgetItem,
+                             QTabWidget, QToolBox, QToolButton, QTreeView,
+                             QTreeWidget, QTreeWidgetItem, QVBoxLayout,
+                             QWidget)
 
 from utils.colors import darken_color, lighten_color
 from utils.inventory.category import Category
@@ -81,12 +60,14 @@ class PreviousQuoteItem(QGroupBox):
 
         open_external = QPushButton(self)
         open_external.setObjectName("pushButton_open_in_browser")
-        open_external.setStyleSheet("""
+        open_external.setStyleSheet(
+            """
 QPushButton#pushButton_open_in_browser:flat {
     background-color: transparent;
 	border-color: transparent;
 }
-""")
+"""
+        )
         open_external.setFlat(True)
         open_external.setCursor(Qt.CursorShape.PointingHandCursor)
         open_external.setFixedSize(25, 25)
@@ -150,12 +131,14 @@ class SavedQuoteItem(QGroupBox):
         open_external = QPushButton(self)
         open_external.setCursor(Qt.CursorShape.PointingHandCursor)
         open_external.setObjectName("pushButton_open_in_browser")
-        open_external.setStyleSheet("""
+        open_external.setStyleSheet(
+            """
 QPushButton#pushButton_open_in_browser:flat {
     background-color: transparent;
 	border-color: transparent;
 }
-""")
+"""
+        )
         open_external.setFlat(True)
         open_external.setFixedSize(25, 25)
         open_external.setIcon(QIcon("icons/website.png"))
@@ -1706,7 +1689,7 @@ class CustomTabWidget(QWidget):
         try:
             self.buttons[index].click()
         except IndexError:
-            self.setCurrentIndex(index-1)
+            self.setCurrentIndex(index - 1)
 
     def currentTabText(self) -> str:
         return next((button.text() for button in self.buttons if button.isChecked()), None)
@@ -1722,7 +1705,7 @@ class CustomTabWidget(QWidget):
         self.tabOrderChanged.disconnect()
 
     def clear(self):
-        with contextlib.suppress(TypeError): # Because it just initialized
+        with contextlib.suppress(TypeError):  # Because it just initialized
             self.clear_signals()
         while self.stacked_widget.count():
             widget = self.stacked_widget.widget(0)

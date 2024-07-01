@@ -1,15 +1,18 @@
 import copy
-from typing import Union
+from typing import TYPE_CHECKING, Union
 
 from utils.inventory.category import Category
 from utils.inventory.inventory_item import InventoryItem
 from utils.inventory.order import Order
 
+if TYPE_CHECKING:
+    from utils.sheets_inventory.sheets_inventory import SheetsInventory
+
 
 class Sheet(InventoryItem):
     def __init__(self, name: str, data: dict, sheets_inventory):
         super().__init__(name)
-        self.sheets_inventory = sheets_inventory
+        self.sheets_inventory: SheetsInventory = sheets_inventory
         self.quantity: int = 0
         self.length: float = 0.0
         self.width: float = 0.0
@@ -69,7 +72,7 @@ class Sheet(InventoryItem):
             for category in self.sheets_inventory.get_categories():
                 if category.name in categories:
                     self.categories.append(category)
-        except AttributeError:  # Because these sheets come from threads.load_nests.py
+        except AttributeError:  # Because these sheets come from utils.threads.load_nests.py
             self.categories = []
 
     def to_dict(self) -> dict[str, dict]:

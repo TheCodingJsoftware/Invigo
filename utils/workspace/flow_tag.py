@@ -1,14 +1,21 @@
 from enum import Enum
+from typing import TYPE_CHECKING
+
 from utils.workspace.tag import Tag
+
 
 class Group(Enum):
     ASSEMBLY = 0
     LASER_CUT_PART = 1
     COMPONENT = 2
 
+
+if TYPE_CHECKING:
+    from utils.workspace.workspace_settings import WorkspaceSettings
+
+
 class FlowTag:
     def __init__(self, name: str, data: list[str], workspace_settings) -> None:
-        from utils.workspace.workspace_settings import WorkspaceSettings
 
         self.name = name
         self.tags: list[Tag] = []
@@ -21,7 +28,7 @@ class FlowTag:
         try:
             tags = [tag.name for tag in self.tags]
             return " ➜ ".join(tags)
-        except AttributeError: # Tag does not exist
+        except AttributeError:  # Tag does not exist
             return "Tag name not found"
 
     def load_data(self, data: dict[str, str | list[str]]):
@@ -51,7 +58,7 @@ class FlowTag:
     def to_dict(self) -> dict[str]:
         try:
             return {"name": self.name, "group": self.group.value, "tags": [tag.name for tag in self.tags]}
-        except AttributeError: # no flow tag
+        except AttributeError:  # no flow tag
             return {"name": "", "group": self.group.value, "tags": []}
 
     def to_list(self) -> list[str]:

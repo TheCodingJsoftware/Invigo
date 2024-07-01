@@ -1,147 +1,32 @@
-import configparser
-import io
 import os
-import re
 import shutil
-import sys
 import traceback
 from pathlib import Path
 
-import fitz  # PyMuPDF
-from PIL import Image
-from PyQt6.QtCore import QThread, pyqtSignal
+from PyQt6.QtCore import pyqtSignal
 
+from utils.threads.load_nest_file_thread import LoadNestFileThread
 from utils.components_inventory.components_inventory import ComponentsInventory
 from utils.laser_cut_inventory.laser_cut_inventory import LaserCutInventory
 from utils.laser_cut_inventory.laser_cut_part import LaserCutPart
 from utils.quote.nest import Nest
-from utils.quote.quote import Quote
 from utils.sheet_settings.sheet_settings import SheetSettings
 
 
-class GenerateQuote(QThread):
-    signal = pyqtSignal(object)
+class LoadNestsThread(LoadNestFileThread):
+    signal = pyqtSignal(list) # list[Nest]
 
-    def __init__(self, parent, nests: list[str], components_inventory: ComponentsInventory, laser_cut_inventory: LaserCutInventory, sheet_settings: SheetSettings) -> None:
-        QThread.__init__(self, parent)
-        self.nests = nests
-        self.data = {}
-
-        self.components_inventory = components_inventory
-        self.laser_cut_inventory = laser_cut_inventory
-        self.paint_inventory = self.laser_cut_inventory.paint_inventory
-        self.sheet_settings = sheet_settings
-
-        self.quote = Quote("Quote", None, self.components_inventory, self.laser_cut_inventory, self.sheet_settings)
-
-        self.program_directory = os.path.dirname(os.path.realpath(sys.argv[0]))
-
-        config = configparser.ConfigParser()
-        config.read(f"{self.program_directory}/laser_quote_variables.cfg")
-        self.size_of_picture = int(config.get("GLOBAL VARIABLES", "size_of_picture"))
-
-        # REGEX VARIABLEAS
-        self.part_path_regex = r"GEOFILE NAME: ([a-zA-z]:\\[\w\W]{1,300}\.[Gg][Ee][Oo])"
-        self.machinging_time_regex = r"MACHINING TIME: (\d{1,}.\d{1,}) min"
-        self.weight_regex = r"WEIGHT: (\d{1,}.\d{1,}) lb"
-        self.surface_area_regex = r"SURFACE: (\d{1,}.\d{1,})  in2"
-        self.cutting_length_regex = r"CUTTING LENGTH: (\d{1,}.\d{1,})  in|CUTTING LENGTH: (\d{1,})  in"
-        self.quantity_regex = r"  NUMBER: (\d{1,})"
-        self.part_number_regex = r"PART NUMBER: (\d{1,})"
-        self.sheet_quantity_regex = r"PROGRAMME RUNS:  \/  SCRAP: (\d{1,})|PROGRAM RUNS:  \/  SCRAP: (\d{1,})"
-        self.scrap_percentage_regex = r"PROGRAMME RUNS:  \/  SCRAP: \d{1,}  \/  (\d{1,}.\d{1,}) %|PROGRAM RUNS:  \/  SCRAP: \d{1,}  \/  (\d{1,}.\d{1,}) %"
-        self.piercing_time_regex = r"PIERCING TIME (\d{1,}.\d{1,})  s"
-        self.material_id_regex = r"MATERIAL ID \(SHEET\):.{1,}(ST|SS|AL)-\d{1,}"
-        self.gauge_regex = r"MATERIAL ID \(SHEET\):.{1,}\w{2}-(\d{1,})"
-        self.sheet_dimension_regex = r"BLANK: (\d{1,}\.\d{1,} x \d{1,}\.\d{1,}) x \d{1,}\.\d{1,}"
-        self.part_dimensions_regex = r"DIMENSIONS: (\d{1,}\.\d{1,} x \d{1,}\.\d{1,})"
-        self.piercing_points_regex = r"NUMBER OF PIERCING POINTS: (\d{1,})"
-        self.sheet_cut_time_regex = r"MACHINING TIME: NC postprocessor (\d{1,} : \d{1,} : \d{1,})"
-        self.geofile_name = r"GEOFILE NAME: (.:[\s\S]*?\.[Gg][Ee][Oo])"
-
-    def extract_images_from_pdf(self, pdf_paths: list[str]) -> None:
-        image_count: int = 0
-        for _, pdf_path in enumerate(pdf_paths, start=1):
-            pdf_file = fitz.open(pdf_path)
-            for page_index in range(len(pdf_file)):
-                page = pdf_file[page_index]
-                if not (_ := page.get_images()):
-                    continue
-                for _, img in enumerate(page.get_images(), start=1):
-                    xref = img[0]
-                    base_image = pdf_file.extract_image(xref)
-                    image_bytes = base_image["image"]
-                    image_ext = base_image["ext"]
-                    image = Image.open(io.BytesIO(image_bytes))
-                    if image.size[0] == 48 and image.size[1] == 48:
-                        continue
-                    if image.size[0] == 580 and image.size[1] == 440:  # A nest picture
-                        image.save(
-                            open(
-                                f"{self.program_directory}/images/nest-{image_count}.{image_ext}",
-                                "wb",
-                            )
-                        )
-                    else:  # A part picture
-                        image = image.resize(
-                            (self.size_of_picture, self.size_of_picture),
-                            Image.Resampling.LANCZOS,
-                        )
-                        image.save(
-                            open(
-                                f"{self.program_directory}/images/part-{image_count}.{image_ext}",
-                                "wb",
-                            )
-                        )
-
-                    image_count += 1
-
-    def convert_pdf_to_text(self, pdf_path: str) -> str:
-        with open(f"{self.program_directory}/output.txt", "w", encoding="utf-8") as f:
-            f.write("")
-
-        pdf_file = fitz.open(pdf_path)
-        pages = list(range(pdf_file.page_count))
-        for pg in range(pdf_file.page_count):
-            if pg in pages:
-                page = pdf_file[pg]
-                page_lines = page.get_text("text")
-                with open(f"{self.program_directory}/output.txt", "a", encoding="utf-8") as f:
-                    f.write(page_lines)
-
-        with open(f"{self.program_directory}/output.txt", "r", encoding="utf-8") as f:
-            all_text = f.read().replace(" \n", " ")
-
-        with open(f"{self.program_directory}/output.txt", "w", encoding="utf-8") as f:
-            f.write(all_text)
-        return all_text
-
-    def get_values_from_text(self, text: str, regex: str) -> any:
-        matches = re.finditer(regex, text, re.MULTILINE)
-        items = []
-        for match in matches:
-            if match.group(1) is None:
-                items.append(match.group(2))
-            else:
-                items.append(match.group(1))
-        return [items[0]] if len(items) == 1 else items
-
-    def material_id_to_name(self, material: str) -> str:
-        return self.sheet_settings.material_id["cutting_methods"][material]["name"]
-
-    def material_id_to_number(self, number_id: str) -> str:
-        return self.sheet_settings.material_id["thickness_ids"][number_id]
+    def __init__(self, parent, nest_files: list[str], components_inventory: ComponentsInventory, laser_cut_inventory: LaserCutInventory, sheet_settings: SheetSettings) -> None:
+        super(LoadNestsThread, self).__init__(parent, components_inventory, laser_cut_inventory, sheet_settings)
+        self.nest_files = nest_files
+        self.nests: list[Nest] = []
 
     def run(self) -> None:
         try:
-            # try:
-            #     shutil.rmtree(f"{self.program_directory}/images")
-            # except:
-            #     pass
             Path(f"{self.program_directory}/images").mkdir(parents=True, exist_ok=True)
-            self.extract_images_from_pdf(self.nests)
+            self.extract_images_from_pdf(self.nest_files)
             image_index: int = 0
-            for nest in self.nests:
+            for nest in self.nest_files:
                 # variables
                 nest_name: str = os.path.basename(nest)
                 nest_data = self.convert_pdf_to_text(nest)
@@ -192,8 +77,7 @@ class GenerateQuote(QThread):
                 )
                 nest_object.sheet.length = float(sheet_dimension.strip().replace(" x ", "x").split("x")[0])
                 nest_object.sheet.width = float(sheet_dimension.strip().replace(" x ", "x").split("x")[1])
-                self.quote.add_nest(nest_object)
-                # self.data[nest_name] = {}
+                self.nests.append(nest_object)
                 for i, part_name in enumerate(parts):
                     part_name = part_name.split("\\")[-1].replace("\n", "").replace(".GEO", "").replace(".geo", "").strip()
                     laser_cut_part = LaserCutPart(
@@ -223,10 +107,9 @@ class GenerateQuote(QThread):
                     image_index += 1
                 if os.path.isfile(f"./images/nest-{image_index}.jpeg"):
                     nest_object.image_path = f"nest-{image_index}"
-                    # self.data[f"_{nest}"]["image_index"] = f"nest-{image_index}"
                     image_index += 1
             # os.remove(f"{self.program_directory}/output.txt")
-            for nest in self.quote.nests:
+            for nest in self.nests:
                 try:
                     image_name = nest.name.split("/")[-1].replace(".pdf", "")
                     image_path: str = f"images/{nest.image_path}.jpeg"
@@ -241,14 +124,10 @@ class GenerateQuote(QThread):
                     laser_cut_part.image_index = new_image_path
                     shutil.move(image_path, new_image_path)
 
-            self.quote.sort_nests()
-            self.quote.sort_laser_cut_parts()
-            # sorted_keys = natsorted(self.data.keys())
-            # sorted_dict = {key: self.data[key] for key in sorted_keys}
-            self.signal.emit(self.quote)
+            self.signal.emit(self.nests)
         except Exception as e:
             print(e)
             try:
                 self.signal.emit(f"ERROR!\nException: {e}\nTrace stack:\n{traceback.print_exc()}\n\nIf the error still persists, send me an email of the pdf your trying nesting.\n{nest}")
             except Exception:
-                self.signal.emit(f"ERROR!\nException: {e}\nTrace stack:\n{traceback.print_exc()}\n\nIf the error still persists, send me an email of the pdf your trying nesting.\n{self.nests[0]}")
+                self.signal.emit(f"ERROR!\nException: {e}\nTrace stack:\n{traceback.print_exc()}\n\nIf the error still persists, send me an email of the pdf your trying nesting.\n{self.nest_files[0]}")

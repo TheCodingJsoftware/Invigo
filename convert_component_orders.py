@@ -5,6 +5,7 @@ import ujson as json
 from utils.components_inventory.components_inventory import ComponentsInventory
 from utils.inventory.order import Order
 
+
 def restore():
     with open(r"data\components_inventory - old orders.json", "r", encoding="utf-8") as file:
         old_components_inventory_data = json.load(file)
@@ -22,6 +23,7 @@ def restore():
     print(f"saving start {datetime.now()}")
     components_inventory.save()
     print(f"saving done {datetime.now()}")
+
 
 if __name__ == "__main__":
     restore()

@@ -2,7 +2,7 @@ from PyQt6 import uic
 from PyQt6.QtGui import QIcon
 from PyQt6.QtWidgets import QDialog, QFileDialog, QMessageBox
 
-from threads.job_sorter_thread import JobSorterThread
+from utils.threads.job_sorter_thread import JobSorterThread
 
 
 class JobSorterDialog(QDialog):

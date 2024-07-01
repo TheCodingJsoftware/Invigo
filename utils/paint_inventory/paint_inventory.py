@@ -1,4 +1,5 @@
 import contextlib
+from typing import TYPE_CHECKING
 
 import ujson as json
 
@@ -9,11 +10,14 @@ from utils.paint_inventory.paint import Paint
 from utils.paint_inventory.powder import Powder
 from utils.paint_inventory.primer import Primer
 
+if TYPE_CHECKING:
+    from main import MainWindow
+
 
 class PaintInventory(Inventory):
     def __init__(self, parent):
         super().__init__("paint_inventory")
-        self.parent = parent
+        self.parent: MainWindow = parent
         self.components_inventory: ComponentsInventory = self.parent.components_inventory
 
         self.primers: list[Primer] = []

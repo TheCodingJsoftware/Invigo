@@ -72,7 +72,9 @@ class Quote:
 
     def group_laser_cut_parts(self):
         laser_cut_part_dict: dict[str, LaserCutPart] = {}
-        for nest in self.nests:
+        for nest in [self.custom_nest] + self.nests:
+            if not nest.laser_cut_parts:
+                continue
             for laser_cut_part in nest.laser_cut_parts:
                 if laser_cut_part.name in laser_cut_part_dict:
                     laser_cut_part_dict[laser_cut_part.name].quantity += laser_cut_part.quantity
@@ -171,18 +173,13 @@ class Quote:
                 "ship_to": self.ship_to,
                 "date_expected": self.date_expected,
             },
-            "laser_cut_parts": {},
             "components": {},
             "nests": {},
-            "custom_nest": self.custom_nest.to_dict()
+            "custom_nest": self.custom_nest.to_dict(),
         }
 
         for component in self.components:
             data["components"].update({component.name: component.to_dict()})
-
-        # ? Do I need to keep this? hmmm
-        for laser_cut_part in self.grouped_laser_cut_parts:
-            data["laser_cut_parts"].update({laser_cut_part.name: laser_cut_part.to_dict()})
 
         for nest in self.nests:
             data["nests"].update({nest.name: nest.to_dict()})
