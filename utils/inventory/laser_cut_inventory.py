@@ -3,8 +3,8 @@ from natsort import natsorted
 
 from utils.inventory.category import Category
 from utils.inventory.inventory import Inventory
-from utils.laser_cut_inventory.laser_cut_part import LaserCutPart
-from utils.paint_inventory.paint_inventory import PaintInventory
+from utils.inventory.laser_cut_part import LaserCutPart
+from utils.inventory.paint_inventory import PaintInventory
 from utils.workspace.workspace_settings import WorkspaceSettings
 
 

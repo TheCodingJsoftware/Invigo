@@ -1,10 +1,10 @@
 from typing import Union
 
-from utils.components_inventory.component import Component
+from utils.inventory.component import Component
 from utils.inventory.inventory_item import InventoryItem
 
 
-class Primer(InventoryItem):
+class Paint(InventoryItem):
     def __init__(self, name: str, data: dict[str, str | float], paint_inventory) -> None:
         super().__init__(name)
         self.paint_inventory = paint_inventory

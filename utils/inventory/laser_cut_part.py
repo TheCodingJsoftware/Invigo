@@ -10,8 +10,8 @@ from utils.workspace.flow_tag import FlowTag
 from utils.workspace.workspace_settings import WorkspaceSettings
 
 if TYPE_CHECKING:
-    from utils.laser_cut_inventory.laser_cut_inventory import LaserCutInventory
-    from utils.paint_inventory.paint_inventory import PaintInventory
+    from utils.inventory.laser_cut_inventory import LaserCutInventory
+    from utils.inventory.paint_inventory import PaintInventory
 
 
 class LaserCutPart(InventoryItem):
