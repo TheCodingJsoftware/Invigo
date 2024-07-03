@@ -13,9 +13,9 @@ from utils.workspace.job import Job, JobStatus
 from utils.workspace.job_manager import JobManager
 from utils.workspace.job_preferences import JobPreferences
 
-
 if TYPE_CHECKING:
     from ui.main_window import MainWindow
+
 
 class JobTab(QWidget):
     savJob = pyqtSignal(Job)
@@ -29,7 +29,7 @@ class JobTab(QWidget):
         self.job_manager: JobManager = self.parent.job_manager
         self.job_preferences: JobPreferences = self.parent.job_preferences
 
-        self.jobs: list[JobWidget] = []
+        self.job_widgets: list[JobWidget] = []
         self.current_job: Job = None
 
         self.shortcut_save = QShortcut(QKeySequence("Ctrl+S"), self)
@@ -58,12 +58,12 @@ class JobTab(QWidget):
         self.setLayout(self.jobs_layout)
 
     def workspace_settings_changed(self):
-        for job_widget in self.jobs:
+        for job_widget in self.job_widgets:
             job_widget.workspace_settings_changed()
 
     def add_job(self, new_job: Job = None) -> JobWidget:
         if not new_job:
-            job = Job(f"Enter Job Name{len(self.jobs)}", {}, self.job_manager)
+            job = Job(f"Enter Job Name{len(self.job_widgets)}", {}, self.job_manager)
             job.color = colors.get_random_color()
             if self.parent.tabWidget.tabText(self.parent.tabWidget.currentIndex()) == "Job Planner":
                 job.job_status = JobStatus.PLANNING
@@ -79,7 +79,7 @@ class JobTab(QWidget):
 
         self.job_tab.addTab(job_widget, job.name)
 
-        self.jobs.append(job_widget)
+        self.job_widgets.append(job_widget)
 
         if self.job_tab.count() == 1:
             self.job_tab.setTabsClosable(False)
@@ -103,7 +103,7 @@ class JobTab(QWidget):
             self.job_tab.insertTab(current_index, new_widget, job.name)
             self.job_tab.setCurrentIndex(current_index)
 
-            self.jobs[current_index] = new_widget
+            self.job_widgets[current_index] = new_widget
 
             old_widget.deleteLater()
 
@@ -135,7 +135,7 @@ class JobTab(QWidget):
 
     def get_tab_index(self, job: Job) -> int:
         return next(
-            (i for i, job_widget in enumerate(self.jobs) if job_widget.job == job),
+            (i for i, job_widget in enumerate(self.job_widgets) if job_widget.job == job),
             0,
         )
 
@@ -150,12 +150,12 @@ class JobTab(QWidget):
 
     def get_active_job(self) -> Job:
         return next(
-            (job_widget.job for job_widget in self.jobs if job_widget.job.name == self.get_active_tab()),
+            (job_widget.job for job_widget in self.job_widgets if job_widget.job.name == self.get_active_tab()),
             None,
         )
 
     def get_active_job_widget(self) -> JobWidget:
-        active_job = self.jobs[self.get_tab_index(self.current_job)]
+        active_job = self.job_widgets[self.get_tab_index(self.current_job)]
         return next(
             (self.job_tab.widget(tab_index) for tab_index in range(self.job_tab.count()) if self.job_tab.widget(tab_index) == active_job),
             None,
@@ -179,8 +179,8 @@ class JobTab(QWidget):
         self.job_tab.removeTab(self.job_tab.currentIndex())
 
     def close_tab(self, tab_index: int):
-        job_to_delete = self.jobs[tab_index]
-        self.jobs.remove(job_to_delete)
+        job_to_delete = self.job_widgets[tab_index]
+        self.job_widgets.remove(job_to_delete)
         self.job_tab.removeTab(tab_index)
         if self.job_tab.count() == 1:
             self.job_tab.setTabsClosable(False)
@@ -211,7 +211,7 @@ class JobTab(QWidget):
             self.parent.label_job_save_status.setText("")
 
     def update_tables(self):
-        for job_widget in self.jobs:
+        for job_widget in self.job_widgets:
             job_widget.update_tables()
 
     def clear_layout(self, layout: QVBoxLayout | QWidget) -> None:

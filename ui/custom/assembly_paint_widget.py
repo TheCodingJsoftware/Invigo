@@ -1,8 +1,7 @@
 from PyQt6.QtCore import pyqtSignal
 from PyQt6.QtWidgets import QCheckBox, QVBoxLayout, QWidget
 
-from ui.custom.assembly_paint_settings_widget import \
-    AssemblyPaintSettingsWidget
+from ui.custom.assembly_paint_settings_widget import AssemblyPaintSettingsWidget
 from utils.workspace.assembly import Assembly
 
 

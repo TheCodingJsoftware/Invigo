@@ -3,15 +3,16 @@ from typing import TYPE_CHECKING, Union
 
 from utils.inventory.category import Category
 from utils.inventory.inventory_item import InventoryItem
-from utils.paint_inventory.paint import Paint
-from utils.paint_inventory.powder import Powder
-from utils.paint_inventory.primer import Primer
+from utils.inventory.paint import Paint
+from utils.inventory.powder import Powder
+from utils.inventory.primer import Primer
 from utils.workspace.flow_tag import FlowTag
 from utils.workspace.workspace_settings import WorkspaceSettings
 
 if TYPE_CHECKING:
-    from utils.laser_cut_inventory.laser_cut_inventory import LaserCutInventory
-    from utils.paint_inventory.paint_inventory import PaintInventory
+    from utils.inventory.laser_cut_inventory import LaserCutInventory
+    from utils.inventory.paint_inventory import PaintInventory
+    from utils.quote.nest import Nest
 
 
 class LaserCutPart(InventoryItem):
@@ -81,7 +82,6 @@ class LaserCutPart(InventoryItem):
         self.unit_price: float = 0.0
 
         # NOTE Only for Quote Generator and load_nest.py
-        from utils.quote.nest import Nest
 
         self.nest: Nest = None
         self.quoted_price: float = 0.0

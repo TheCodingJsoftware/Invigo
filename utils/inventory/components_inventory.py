@@ -1,8 +1,8 @@
 import ujson as json
 from natsort import natsorted
 
-from utils.components_inventory.component import Component
 from utils.inventory.category import Category
+from utils.inventory.component import Component
 from utils.inventory.inventory import Inventory
 
 

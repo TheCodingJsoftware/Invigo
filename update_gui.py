@@ -6,8 +6,7 @@ import zipfile
 
 import psutil
 import requests
-from PyQt6.QtCore import (QEasingCurve, QPropertyAnimation, QRect, Qt, QThread,
-                          pyqtProperty, pyqtSignal)
+from PyQt6.QtCore import QEasingCurve, QPropertyAnimation, QRect, Qt, QThread, pyqtProperty, pyqtSignal
 from PyQt6.QtGui import QColor, QPainter
 from PyQt6.QtWidgets import QApplication, QLabel, QVBoxLayout, QWidget
 

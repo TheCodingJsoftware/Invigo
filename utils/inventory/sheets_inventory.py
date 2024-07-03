@@ -3,8 +3,8 @@ from natsort import natsorted
 
 from utils.inventory.category import Category
 from utils.inventory.inventory import Inventory
+from utils.inventory.sheet import Sheet
 from utils.sheet_settings.sheet_settings import SheetSettings
-from utils.sheets_inventory.sheet import Sheet
 
 
 class SheetsInventory(Inventory):

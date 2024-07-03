@@ -4,10 +4,7 @@ from functools import partial
 from PyQt6 import uic
 from PyQt6.QtCore import QEvent, QObject, Qt, pyqtSignal
 from PyQt6.QtGui import QAction, QCursor, QIcon
-from PyQt6.QtWidgets import (QAbstractItemView, QCheckBox, QComboBox, QDialog,
-                             QHBoxLayout, QLabel, QLineEdit, QMenu,
-                             QPlainTextEdit, QPushButton, QRadioButton,
-                             QTableWidget, QVBoxLayout, QWidget)
+from PyQt6.QtWidgets import QAbstractItemView, QCheckBox, QComboBox, QDialog, QHBoxLayout, QLabel, QLineEdit, QMenu, QPlainTextEdit, QPushButton, QRadioButton, QTableWidget, QVBoxLayout, QWidget
 
 from ui.custom_widgets import AssemblyMultiToolBox, DeletePushButton
 from utils.json_file import JsonFile

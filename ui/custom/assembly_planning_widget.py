@@ -5,32 +5,24 @@ from functools import partial
 
 from PyQt6.QtCore import Qt
 from PyQt6.QtGui import QAction, QColor, QCursor, QPixmap
-from PyQt6.QtWidgets import (QApplication, QComboBox, QDoubleSpinBox,
-                             QHBoxLayout, QLineEdit, QMenu, QMessageBox,
-                             QPushButton, QScrollArea, QTableWidget,
-                             QTableWidgetItem, QVBoxLayout, QWidget)
+from PyQt6.QtWidgets import QApplication, QComboBox, QDoubleSpinBox, QHBoxLayout, QLineEdit, QMenu, QMessageBox, QPushButton, QScrollArea, QTableWidget, QTableWidgetItem, QVBoxLayout, QWidget
 
 from ui.add_component_dialog import AddComponentDialog
 from ui.add_laser_cut_part_dialog import AddLaserCutPartDialog
 from ui.custom.assembly_file_drop_widget import AssemblyFileDropWidget
 from ui.custom.assembly_image import AssemblyImage
-from ui.custom.assembly_paint_settings_widget import \
-    AssemblyPaintSettingsWidget
+from ui.custom.assembly_paint_settings_widget import AssemblyPaintSettingsWidget
 from ui.custom.assembly_paint_widget import AssemblyPaintWidget
 from ui.custom.assembly_widget import AssemblyWidget
-from ui.custom.components_planning_table_widget import \
-    ComponentsPlanningTableWidget
+from ui.custom.components_planning_table_widget import ComponentsPlanningTableWidget
 from ui.custom.file_button import FileButton
-from ui.custom.laser_cut_part_file_drop_widget import \
-    LaserCutPartFileDropWidget
-from ui.custom.laser_cut_part_paint_settings_widget import \
-    LasserCutPartPaintSettingsWidget
+from ui.custom.laser_cut_part_file_drop_widget import LaserCutPartFileDropWidget
+from ui.custom.laser_cut_part_paint_settings_widget import LasserCutPartPaintSettingsWidget
 from ui.custom.laser_cut_part_paint_widget import LaserCutPartPaintWidget
-from ui.custom.laser_cut_parts_planning_table_widget import \
-    LaserCutPartsPlanningTableWidget
+from ui.custom.laser_cut_parts_planning_table_widget import LaserCutPartsPlanningTableWidget
 from ui.custom_widgets import AssemblyMultiToolBox
-from utils.components_inventory.component import Component
-from utils.laser_cut_inventory.laser_cut_part import LaserCutPart
+from utils.inventory.component import Component
+from utils.inventory.laser_cut_part import LaserCutPart
 from utils.threads.upload_thread import UploadThread
 from utils.threads.workspace_get_file_thread import WorkspaceDownloadFile
 from utils.threads.workspace_upload_file_thread import WorkspaceUploadThread

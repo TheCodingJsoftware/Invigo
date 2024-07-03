@@ -1,13 +1,12 @@
 from PyQt6 import uic
 from PyQt6.QtGui import QIcon
-from PyQt6.QtWidgets import (QComboBox, QDialog, QDoubleSpinBox, QListWidget,
-                             QMessageBox, QPushButton)
+from PyQt6.QtWidgets import QComboBox, QDialog, QDoubleSpinBox, QListWidget, QMessageBox, QPushButton
 
 from ui.color_picker_dialog import ColorPicker
-from utils.paint_inventory.paint import Paint
-from utils.paint_inventory.paint_inventory import PaintInventory
-from utils.paint_inventory.powder import Powder
-from utils.paint_inventory.primer import Primer
+from utils.inventory.paint import Paint
+from utils.inventory.paint_inventory import PaintInventory
+from utils.inventory.powder import Powder
+from utils.inventory.primer import Primer
 from utils.settings import Settings
 
 settings_file = Settings()

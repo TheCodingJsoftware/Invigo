@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>945</width>
-    <height>536</height>
+    <width>1158</width>
+    <height>865</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -288,11 +288,19 @@ QPushButton#pushButton_reload_job:flat:hover {
    <item>
     <widget class="QSplitter" name="splitter">
      <property name="orientation">
-      <enum>Qt::Horizontal</enum>
+      <enum>Qt::Orientation::Horizontal</enum>
      </property>
      <widget class="QWidget" name="nest_widget" native="true">
       <property name="styleSheet">
-       <string notr="true"/>
+       <string notr="true">QWidget#nest_widget{
+	border-top-right-radius: 10px;
+	border-bottom-right-radius: 10px;
+	border-top-left-radius: 0;
+	border-bottom-left-radius: 0;
+    background-color: rgba(20, 20, 20, 0.5);
+    border: 1px solid rgba(15, 15, 15, 0.7);
+	padding: 5px;
+}</string>
       </property>
       <layout class="QVBoxLayout" name="verticalLayout_6">
        <property name="rightMargin">
@@ -306,15 +314,15 @@ QPushButton#pushButton_reload_job:flat:hover {
             <bool>true</bool>
            </property>
            <property name="alignment">
-            <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+            <set>Qt::AlignmentFlag::AlignLeading|Qt::AlignmentFlag::AlignLeft|Qt::AlignmentFlag::AlignTop</set>
            </property>
            <widget class="QWidget" name="scrollAreaWidgetContents_2">
             <property name="geometry">
              <rect>
               <x>0</x>
               <y>0</y>
-              <width>618</width>
-              <height>526</height>
+              <width>787</width>
+              <height>736</height>
              </rect>
             </property>
             <layout class="QVBoxLayout" name="verticalLayout_7">
@@ -466,7 +474,7 @@ QPushButton#pushButton_reload_job:flat:hover {
                          <string>x</string>
                         </property>
                         <property name="alignment">
-                         <set>Qt::AlignCenter</set>
+                         <set>Qt::AlignmentFlag::AlignCenter</set>
                         </property>
                        </widget>
                       </item>
@@ -830,8 +838,8 @@ QPushButton#pushButton_reload_job:flat:hover {
            <rect>
             <x>0</x>
             <y>0</y>
-            <width>248</width>
-            <height>377</height>
+            <width>309</width>
+            <height>706</height>
            </rect>
           </property>
           <layout class="QVBoxLayout" name="verticalLayout_3">
@@ -872,7 +880,7 @@ QPushButton#pushButton_reload_job:flat:hover {
          <item>
           <spacer name="horizontalSpacer">
            <property name="orientation">
-            <enum>Qt::Horizontal</enum>
+            <enum>Qt::Orientation::Horizontal</enum>
            </property>
            <property name="sizeHint" stdset="0">
             <size>

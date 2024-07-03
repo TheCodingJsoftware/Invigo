@@ -1,6 +1,5 @@
 from PyQt6.QtCore import Qt, pyqtSignal
-from PyQt6.QtGui import (QCursor, QDragEnterEvent, QDragLeaveEvent, QDropEvent,
-                         QMouseEvent, QPixmap)
+from PyQt6.QtGui import QCursor, QDragEnterEvent, QDragLeaveEvent, QDropEvent, QMouseEvent, QPixmap
 from PyQt6.QtWidgets import QLabel, QWidget
 
 

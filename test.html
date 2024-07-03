@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<!-- saved from url=(0058)http://invigo.test/load_job/saved_jobs/planning/NEW%20TEST -->
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="google" content="notranslate">
+    <link href="https://cdn.jsdelivr.net/npm/beercss@3.6.0/dist/cdn/beer.min.css" rel="stylesheet">
+    <script type="module" src="https://cdn.jsdelivr.net/npm/beercss@3.6.0/dist/cdn/beer.min.js"></script>
+    <script type="module" src="https://cdn.jsdelivr.net/npm/material-dynamic-colors@1.1.2/dist/cdn/material-dynamic-colors.min.js"></script>
+    <title>Job Plan - NEW TEST</title>
+    <meta property="og:title" content="Job Plan - NEW TEST">
+    <meta property="og:description" content="asds">
+    <style>
+        .summary {
+            cursor: pointer;
+        }
+
+        details {
+            border: 1px solid lightgrey;
+            border-radius: 10px;
+            padding: 10px;
+            margin: 5px;
+        }
+
+        details span {
+            display: inline-block;
+        }
+
+        details>summary {
+            padding: 2px 6px;
+            font-weight: 700;
+            font-size: 16pt;
+            cursor: pointer;
+        }
+
+        @media print {
+            details:not([open]) {
+                display: none;
+            }
+            .ui-table-columntoggle-btn {
+                display: none;
+            }
+            #showCoverPageLabel {
+                display: none;
+            }
+            .group_details {
+                border-color: transparent;
+            }
+            .page-break {
+                page-break-after: always;
+            }
+        }
+    </style>
+</head>
+
+<body class="light">
+    <header class="fixed">
+        <nav>
+            <h5 class="max center-align small">
+                Job Plan - NEW TEST
+            </h5>
+        </nav>
+    </header>
+    <main>
+        <div id="cover-page">
+            <div class="center-align">
+                <label class="checkbox">
+                    <input type="checkbox" id="showCoverPage" checked="true">
+                    <span>Show Cover Page</span>
+                </label>
+            </div>
+            <div style="position: absolute; top: 0;">
+                <img class="logo" src="./test_files/logo.png" alt="Logo">
+            </div>
+            <div class="field label prefix border max">
+                <i>numbers</i>
+                <input type="number" id="order-number">
+                <label>Order Number</label>
+            </div>
+            <div class="row">
+                <article class="border max">
+                    <div class="field label prefix border">
+                        <i>today</i>
+                        <input type="date">
+                        <label>Date Shipped</label>
+                      </div>
+                      <div class="field label prefix border">
+                        <i>today</i>
+                        <input type="date">
+                        <label>Date Expected</label>
+                      </div>
+                </article>
+                <article class="border max">
+                    <div class="field textarea label border">
+                        <textarea></textarea>
+                        <label>Ship To</label>
+                      </div>
+                      <div class="field border">
+                        <input type="text">
+                        <span class="helper">Received in good order by</span>
+                      </div>
+                </article>
+            </div>
+        </div>
+        <table class="ui-responsive" data-mode="" data-role="table" id="data-table" style="border-collapse: collapse; text-align: center; vertical-align: middle; font-size: 12px;">
+            <tbody>
+                <tr class="header-table-row">
+                    <th>Image</th>
+                    <th>Assembly Name</th>
+                    <th>Qty</th>
+                    <th>Process</th>
+                </tr>
+            </tbody>
+            <tbody id="table-body">
+                <tr>
+                    <td class="ui-table-cell-visible"><img src="./test_files/Top.png" alt="Assembly Image" class="assembly_image" id="http://invigo.test:80/image/images\Top.png"></td>
+                    <td class="ui-table-cell-visible">Top</td>
+                    <td class="ui-table-cell-visible">NA</td>
+                    <td class="ui-table-cell-visible">Welding ➜ Shipping ➜ Laser Cutting</td>
+                </tr>
+                <tr>
+                    <td class="ui-table-cell-visible"></td>
+                    <td class="ui-table-cell-visible">Legs</td>
+                    <td class="ui-table-cell-visible">NA</td>
+                    <td class="ui-table-cell-visible">Welding ➜ Powder Coating ➜ Shipping ➜ Laser Cutting ➜ Part Picking ➜ Forming ➜ Liquid Paint ➜ Assembly ➜ Thread Cutting</td>
+                </tr>
+            </tbody>
+        </table>
+    </main>
+</body>
+
+</html>

@@ -1,9 +1,8 @@
 from PyQt6.QtCore import pyqtSignal
-from PyQt6.QtWidgets import (QComboBox, QDoubleSpinBox, QGridLayout,
-                             QHBoxLayout, QLabel, QWidget)
+from PyQt6.QtWidgets import QComboBox, QDoubleSpinBox, QGridLayout, QHBoxLayout, QLabel, QWidget
 
 from ui.custom_widgets import CustomTableWidget
-from utils.laser_cut_inventory.laser_cut_part import LaserCutPart
+from utils.inventory.laser_cut_part import LaserCutPart
 
 
 class LasserCutPartPaintSettingsWidget(QWidget):

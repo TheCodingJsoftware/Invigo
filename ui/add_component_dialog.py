@@ -3,8 +3,8 @@ from PyQt6 import uic
 from PyQt6.QtGui import QIcon
 from PyQt6.QtWidgets import QComboBox, QDialog, QListWidget
 
-from utils.components_inventory.component import Component
-from utils.components_inventory.components_inventory import ComponentsInventory
+from utils.inventory.component import Component
+from utils.inventory.components_inventory import ComponentsInventory
 from utils.settings import Settings
 
 

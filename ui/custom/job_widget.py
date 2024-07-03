@@ -6,30 +6,22 @@ from functools import partial
 
 from PyQt6 import uic
 from PyQt6.QtCore import QDate, Qt, pyqtSignal
-from PyQt6.QtGui import (QAction, QColor, QCursor, QFont, QIcon, QKeySequence,
-                         QPixmap)
-from PyQt6.QtWidgets import (QAbstractItemView, QApplication, QCheckBox,
-                             QComboBox, QDateEdit, QDoubleSpinBox, QGridLayout,
-                             QHBoxLayout, QLabel, QMenu, QMessageBox,
-                             QPushButton, QScrollArea, QStackedWidget,
-                             QTableWidgetItem, QTextEdit, QVBoxLayout, QWidget)
+from PyQt6.QtGui import QAction, QColor, QCursor, QFont, QIcon, QKeySequence, QPixmap
+from PyQt6.QtWidgets import QAbstractItemView, QApplication, QCheckBox, QComboBox, QDateEdit, QDoubleSpinBox, QGridLayout, QHBoxLayout, QLabel, QMenu, QMessageBox, QPushButton, QScrollArea, QStackedWidget, QTableWidgetItem, QTextEdit, QVBoxLayout, QWidget
 
 from ui.add_component_dialog import AddComponentDialog
 from ui.custom.group_widget import GroupWidget
 from ui.custom.nest_widget import NestWidget
-from ui.custom_widgets import (AssemblyMultiToolBox, ClickableLabel,
-                               CustomTableWidget, DeletePushButton,
-                               MachineCutTimeSpinBox, MultiToolBox, QLineEdit,
-                               RecutButton)
+from ui.custom_widgets import AssemblyMultiToolBox, ClickableLabel, CustomTableWidget, DeletePushButton, MachineCutTimeSpinBox, MultiToolBox, QLineEdit, RecutButton
 from ui.image_viewer import QImageViewer
 from utils import colors
 from utils.calulations import calculate_overhead
 from utils.colors import darken_color, lighten_color
-from utils.components_inventory.component import Component
-from utils.components_inventory.components_inventory import ComponentsInventory
 from utils.inventory.category import Category
-from utils.laser_cut_inventory.laser_cut_inventory import LaserCutInventory
-from utils.laser_cut_inventory.laser_cut_part import LaserCutPart
+from utils.inventory.component import Component
+from utils.inventory.components_inventory import ComponentsInventory
+from utils.inventory.laser_cut_inventory import LaserCutInventory
+from utils.inventory.laser_cut_part import LaserCutPart
 from utils.quote.nest import Nest
 from utils.workspace.group import Group
 from utils.workspace.job import Job, JobStatus
@@ -142,9 +134,9 @@ class JobWidget(QWidget):
         self.groups_toolbox = AssemblyMultiToolBox(self)
         self.groups_layout.addWidget(self.groups_toolbox)
 
-        # if self.job.job_status != JobStatus.QUOTED or self.job.job_status != JobStatus.QUOTING:
-        #     self.splitter.setSizes([0, 1])
-        #     self.splitter.setEnabled(False)
+        if self.parent.parent.tabWidget.tabText(self.parent.parent.tabWidget.currentIndex()) == "Job Planner":
+            self.splitter.setSizes([0, 1])
+            self.nest_widget.setEnabled(False)
         self.splitter.setStretchFactor(1, 5)
 
     def apply_stylesheet_to_toggle_buttons(self, button: QPushButton, widget: QWidget):
@@ -224,8 +216,8 @@ QPushButton:checked:pressed#assembly_button_drop_menu {
     def job_settings_changed(self):
         self.job.order_number = self.doubleSpinBox_order_number.value()
         self.job.job_status = JobStatus(self.comboBox_type.currentIndex() + 1)
-        self.job.date_shipped = self.dateEdit_shipped.date().toString("yyyy-M-d")
-        self.job.date_expected = self.dateEdit_expected.date().toString("yyyy-M-d")
+        self.job.date_shipped = self.dateEdit_shipped.date().toString("yyyy-MM-dd")
+        self.job.date_expected = self.dateEdit_expected.date().toString("yyyy-MM-dd")
         self.job.ship_to = self.textEdit_ship_to.toPlainText()
 
         self.changes_made()

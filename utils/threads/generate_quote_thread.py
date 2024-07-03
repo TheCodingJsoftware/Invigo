@@ -5,13 +5,13 @@ from pathlib import Path
 
 from PyQt6.QtCore import pyqtSignal
 
-from utils.threads.load_nest_file_thread import LoadNestFileThread
-from utils.components_inventory.components_inventory import ComponentsInventory
-from utils.laser_cut_inventory.laser_cut_inventory import LaserCutInventory
-from utils.laser_cut_inventory.laser_cut_part import LaserCutPart
+from utils.inventory.components_inventory import ComponentsInventory
+from utils.inventory.laser_cut_inventory import LaserCutInventory
+from utils.inventory.laser_cut_part import LaserCutPart
 from utils.quote.nest import Nest
 from utils.quote.quote import Quote
 from utils.sheet_settings.sheet_settings import SheetSettings
+from utils.threads.load_nest_file_thread import LoadNestFileThread
 
 
 class GenerateQuoteThread(LoadNestFileThread):

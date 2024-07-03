@@ -1,5 +1,5 @@
-from utils.components_inventory.component import Component
-from utils.laser_cut_inventory.laser_cut_part import LaserCutPart
+from utils.inventory.component import Component
+from utils.inventory.laser_cut_part import LaserCutPart
 
 
 class WorkspaceItem:

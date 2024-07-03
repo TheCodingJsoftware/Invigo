@@ -1,9 +1,9 @@
 from typing import Union
 
-from utils.laser_cut_inventory.laser_cut_inventory import LaserCutInventory
-from utils.laser_cut_inventory.laser_cut_part import LaserCutPart
+from utils.inventory.laser_cut_inventory import LaserCutInventory
+from utils.inventory.laser_cut_part import LaserCutPart
+from utils.inventory.sheet import Sheet
 from utils.sheet_settings.sheet_settings import SheetSettings
-from utils.sheets_inventory.sheet import Sheet
 
 
 class Nest:

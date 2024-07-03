@@ -4,8 +4,7 @@ from functools import partial
 from PyQt6 import uic
 from PyQt6.QtCore import Qt
 from PyQt6.QtGui import QIcon, QStandardItem, QStandardItemModel
-from PyQt6.QtWidgets import (QDialog, QHBoxLayout, QLabel, QSpinBox, QTreeView,
-                             QWidget)
+from PyQt6.QtWidgets import QDialog, QHBoxLayout, QLabel, QSpinBox, QTreeView, QWidget
 
 from ui.custom_widgets import MultiToolBox
 from utils.workspace.assembly import Assembly

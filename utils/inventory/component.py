@@ -6,8 +6,7 @@ from utils.inventory.inventory_item import InventoryItem
 from utils.inventory.order import Order
 
 if TYPE_CHECKING:
-    from utils.components_inventory.components_inventory import \
-        ComponentsInventory
+    from utils.inventory.components_inventory import ComponentsInventory
 
 
 class Component(InventoryItem):

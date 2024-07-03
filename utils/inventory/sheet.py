@@ -6,7 +6,7 @@ from utils.inventory.inventory_item import InventoryItem
 from utils.inventory.order import Order
 
 if TYPE_CHECKING:
-    from utils.sheets_inventory.sheets_inventory import SheetsInventory
+    from utils.inventory.sheets_inventory import SheetsInventory
 
 
 class Sheet(InventoryItem):
