@@ -20,6 +20,9 @@
    <string>Form</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout" stretch="0,1">
+   <property name="leftMargin">
+    <number>0</number>
+   </property>
    <item>
     <widget class="QWidget" name="job_settings_widget" native="true">
      <property name="sizePolicy">
@@ -246,7 +249,7 @@ QPushButton#pushButton_reload_job:flat:hover {
               </property>
               <property name="icon">
                <iconset>
-                <normalon>../../../../../.designer/backup/svg/browser_refresh.svg</normalon>
+                <normalon>../../../../../../../.designer/backup/svg/browser_refresh.svg</normalon>
                </iconset>
               </property>
               <property name="shortcut">
@@ -303,11 +306,26 @@ QPushButton#pushButton_reload_job:flat:hover {
 }</string>
       </property>
       <layout class="QVBoxLayout" name="verticalLayout_6">
+       <property name="leftMargin">
+        <number>9</number>
+       </property>
        <property name="rightMargin">
         <number>9</number>
        </property>
+       <property name="bottomMargin">
+        <number>0</number>
+       </property>
        <item>
         <layout class="QVBoxLayout" name="verticalLayout_5">
+         <property name="spacing">
+          <number>9</number>
+         </property>
+         <property name="topMargin">
+          <number>9</number>
+         </property>
+         <property name="bottomMargin">
+          <number>0</number>
+         </property>
          <item>
           <widget class="QScrollArea" name="scrollArea_2">
            <property name="widgetResizable">
@@ -321,8 +339,8 @@ QPushButton#pushButton_reload_job:flat:hover {
              <rect>
               <x>0</x>
               <y>0</y>
-              <width>787</width>
-              <height>736</height>
+              <width>794</width>
+              <height>737</height>
              </rect>
             </property>
             <layout class="QVBoxLayout" name="verticalLayout_7">
@@ -838,7 +856,7 @@ QPushButton#pushButton_reload_job:flat:hover {
            <rect>
             <x>0</x>
             <y>0</y>
-            <width>309</width>
+            <width>311</width>
             <height>706</height>
            </rect>
           </property>

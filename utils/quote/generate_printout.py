@@ -103,7 +103,7 @@ class SheetsTable:
             <td>{nest.sheet.thickness}</td>
             <td>{nest.sheet.material}</td>
             <td>{nest.sheet.get_sheet_dimension()}</td>
-            <td>{nest.scrape_percentage:,.2f}%</td>
+            <td>{nest.scrap_percentage:,.2f}%</td>
             <td>{nest.sheet_count}</td>
             <td>{single_hours:02d}h {single_minutes:02d}m {single_seconds:02d}s</td>
             <td>{nest_hours:02d}h {nest_minutes:02d}m {nest_seconds:02d}s</td>
