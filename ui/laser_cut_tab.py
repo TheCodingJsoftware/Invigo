@@ -8,21 +8,15 @@ from natsort import natsorted
 from PyQt6 import uic
 from PyQt6.QtCore import QDate, Qt, QTimer, pyqtSignal
 from PyQt6.QtGui import QAction, QColor, QCursor, QFont, QIcon
-from PyQt6.QtWidgets import (QAbstractItemView, QCheckBox, QComboBox,
-                             QCompleter, QDialog, QDoubleSpinBox, QGridLayout,
-                             QHBoxLayout, QInputDialog, QLabel, QLineEdit,
-                             QMenu, QMessageBox, QPushButton, QScrollArea,
-                             QTableWidgetItem, QVBoxLayout, QWidget)
+from PyQt6.QtWidgets import QAbstractItemView, QCheckBox, QComboBox, QCompleter, QDialog, QDoubleSpinBox, QGridLayout, QHBoxLayout, QInputDialog, QLabel, QLineEdit, QMenu, QMessageBox, QPushButton, QScrollArea, QTableWidgetItem, QVBoxLayout, QWidget
 
-from ui.custom_widgets import (CustomTableWidget, CustomTabWidget,
-                               DeletePushButton, FilterButton, HumbleComboBox,
-                               HumbleDoubleSpinBox)
+from ui.custom_widgets import CustomTableWidget, CustomTabWidget, DeletePushButton, FilterButton, HumbleComboBox, HumbleDoubleSpinBox
 from ui.edit_category_dialog import EditCategoryDialog
 from ui.items_change_quantity_dialog import ItemsChangeQuantityDialog
 from ui.set_custom_limit_dialog import SetCustomLimitDialog
 from utils.inventory.category import Category
-from utils.laser_cut_inventory.laser_cut_inventory import LaserCutInventory
-from utils.laser_cut_inventory.laser_cut_part import LaserCutPart
+from utils.inventory.laser_cut_inventory import LaserCutInventory
+from utils.inventory.laser_cut_part import LaserCutPart
 from utils.settings import Settings
 from utils.sheet_settings.sheet_settings import SheetSettings
 from utils.workspace.assembly import Assembly
@@ -794,7 +788,7 @@ class LaserCutTab(QWidget):
         menu.addSeparator()
 
         job_planner_menu = QMenu("Add to Job", self)
-        for job_widget in self.parent.job_planner_widget.jobs:
+        for job_widget in self.parent.job_planner_widget.job_widgets:
             job = job_widget.job
             job_menu = QMenu(job.name, job_planner_menu)
             for group in job.groups:

@@ -1,8 +1,7 @@
 from PyQt6 import uic
 from PyQt6.QtCore import QDate
 from PyQt6.QtGui import QIcon
-from PyQt6.QtWidgets import (QComboBox, QDateEdit, QDialog, QDoubleSpinBox,
-                             QLineEdit, QPushButton, QTextEdit)
+from PyQt6.QtWidgets import QComboBox, QDateEdit, QDialog, QDoubleSpinBox, QLineEdit, QPushButton, QTextEdit
 
 from utils.quote.quote import Quote
 
@@ -60,10 +59,10 @@ class SaveQuoteDialog(QDialog):
         return self.comboBox_status.currentText()
 
     def get_date_shipped(self) -> str:
-        return self.dateEdit_shipped.date().toString("yyyy-M-d")
+        return self.dateEdit_shipped.date().toString("yyyy-MM-dd")
 
     def get_date_expected(self) -> str:
-        return self.dateEdit_expected.date().toString("yyyy-M-d")
+        return self.dateEdit_expected.date().toString("yyyy-MM-dd")
 
     def get_ship_to(self) -> str:
         return self.textEdit_ship_to.toPlainText()

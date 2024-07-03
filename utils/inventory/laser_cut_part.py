@@ -12,6 +12,7 @@ from utils.workspace.workspace_settings import WorkspaceSettings
 if TYPE_CHECKING:
     from utils.inventory.laser_cut_inventory import LaserCutInventory
     from utils.inventory.paint_inventory import PaintInventory
+    from utils.quote.nest import Nest
 
 
 class LaserCutPart(InventoryItem):
@@ -81,7 +82,6 @@ class LaserCutPart(InventoryItem):
         self.unit_price: float = 0.0
 
         # NOTE Only for Quote Generator and load_nest.py
-        from utils.quote.nest import Nest
 
         self.nest: Nest = None
         self.quoted_price: float = 0.0

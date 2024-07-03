@@ -1,9 +1,8 @@
 from PyQt6.QtCore import Qt, QTimer, pyqtSignal
 from PyQt6.QtGui import QDragEnterEvent, QDropEvent, QMouseEvent
-from PyQt6.QtWidgets import (QFileDialog, QHBoxLayout, QLabel, QVBoxLayout,
-                             QWidget)
+from PyQt6.QtWidgets import QFileDialog, QHBoxLayout, QLabel, QVBoxLayout, QWidget
 
-from utils.laser_cut_inventory.laser_cut_part import LaserCutPart
+from utils.inventory.laser_cut_part import LaserCutPart
 
 
 class LaserCutPartFileDropWidget(QWidget):

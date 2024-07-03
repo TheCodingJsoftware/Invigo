@@ -8,31 +8,22 @@ from natsort import natsorted
 from PyQt6 import uic
 from PyQt6.QtCore import QDate, Qt, QTimer, pyqtSignal
 from PyQt6.QtGui import QAction, QColor, QCursor, QFont, QIcon
-from PyQt6.QtWidgets import (QAbstractItemView, QCompleter, QDateEdit, QDialog,
-                             QGridLayout, QHBoxLayout, QInputDialog, QLabel,
-                             QLineEdit, QListWidget, QMenu, QMessageBox,
-                             QPushButton, QTableWidgetItem, QVBoxLayout,
-                             QWidget)
+from PyQt6.QtWidgets import QAbstractItemView, QCompleter, QDateEdit, QDialog, QGridLayout, QHBoxLayout, QInputDialog, QLabel, QLineEdit, QListWidget, QMenu, QMessageBox, QPushButton, QTableWidgetItem, QVBoxLayout, QWidget
 
 from ui.add_item_dialog import AddItemDialog
-from ui.custom_widgets import (CustomTableWidget, CustomTabWidget,
-                               DeletePushButton, ExchangeRateComboBox,
-                               NotesPlainTextEdit, OrderStatusButton,
-                               POPushButton, PriorityComboBox)
+from ui.custom_widgets import CustomTableWidget, CustomTabWidget, DeletePushButton, ExchangeRateComboBox, NotesPlainTextEdit, OrderStatusButton, POPushButton, PriorityComboBox
 from ui.edit_category_dialog import EditCategoryDialog
 from ui.items_change_quantity_dialog import ItemsChangeQuantityDialog
 from ui.select_item_dialog import SelectItemDialog
-from ui.set_component_order_pending_dialog import \
-    SetComponentOrderPendingDialog
+from ui.set_component_order_pending_dialog import SetComponentOrderPendingDialog
 from ui.set_custom_limit_dialog import SetCustomLimitDialog
 from ui.set_order_pending_dialog import SetOrderPendingDialog
-from ui.update_component_order_pending_dialog import \
-    UpdateComponentOrderPendingDialog
-from utils.components_inventory.component import Component
-from utils.components_inventory.components_inventory import ComponentsInventory
+from ui.update_component_order_pending_dialog import UpdateComponentOrderPendingDialog
 from utils.dialog_buttons import DialogButtons
 from utils.history_file import HistoryFile
 from utils.inventory.category import Category
+from utils.inventory.component import Component
+from utils.inventory.components_inventory import ComponentsInventory
 from utils.inventory.order import Order
 from utils.po import get_all_po
 from utils.po_template import POTemplate
@@ -430,7 +421,7 @@ class ComponentsTab(QWidget):
                 parent=self,
                 selected_item="USD" if component.use_exchange_rate else "CAD",
             )
-            combo_exchange_rate.currentIndexChanged.connect(self.table_changed)
+            combo_exchange_rate.currentIndexChanged.connect(partial(self.table_changed, row_index))
             combo_exchange_rate.setStyleSheet("border-radius: 0px;")
             # layout.addWidget(combo_exchange_rate)
             current_table.setCellWidget(row_index, col_index, combo_exchange_rate)
@@ -471,7 +462,7 @@ class ComponentsTab(QWidget):
                 combo_priority.setStyleSheet("QComboBox{background-color: #524b2f; border-radius: 0px;} QComboBox:hover{border-color: #e9bb3d;}")
             elif combo_priority.currentText() == "High":
                 combo_priority.setStyleSheet("QComboBox{background-color: #4d2323; border-radius: 0px;} QComboBox:hover{border-color: #e93d3d;}")
-            combo_priority.currentIndexChanged.connect(self.table_changed)
+            combo_priority.currentIndexChanged.connect(partial(self.table_changed, row_index))
             current_table.setCellWidget(row_index, col_index, combo_priority)
             self.table_components_widgets[component].update({"priority": combo_priority})
 
@@ -488,7 +479,7 @@ class ComponentsTab(QWidget):
 
             # NOTES
             text_notes = NotesPlainTextEdit(self, component.notes, "")
-            text_notes.textChanged.connect(self.table_changed)
+            text_notes.textChanged.connect(partial(self.table_changed, row_index))
             current_table.setCellWidget(row_index, col_index, text_notes)
             self.table_components_widgets[component].update({"notes": text_notes})
 
@@ -748,7 +739,7 @@ class ComponentsTab(QWidget):
             menu.addSeparator()
 
             job_planner_menu = QMenu("Add to Job", self)
-            for job_widget in self.parent.job_planner_widget.jobs:
+            for job_widget in self.parent.job_planner_widget.job_widgets:
                 job = job_widget.job
                 job_menu = QMenu(job.name, job_planner_menu)
                 for group in job.groups:

@@ -1,9 +1,9 @@
 from natsort import natsorted
 
-from utils.components_inventory.component import Component
-from utils.components_inventory.components_inventory import ComponentsInventory
-from utils.laser_cut_inventory.laser_cut_inventory import LaserCutInventory
-from utils.laser_cut_inventory.laser_cut_part import LaserCutPart
+from utils.inventory.component import Component
+from utils.inventory.components_inventory import ComponentsInventory
+from utils.inventory.laser_cut_inventory import LaserCutInventory
+from utils.inventory.laser_cut_part import LaserCutPart
 from utils.quote.nest import Nest
 from utils.sheet_settings.sheet_settings import SheetSettings
 

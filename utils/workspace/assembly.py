@@ -1,11 +1,11 @@
 import copy
 from typing import TYPE_CHECKING, Any, Union
 
-from utils.components_inventory.component import Component
-from utils.laser_cut_inventory.laser_cut_part import LaserCutPart
-from utils.paint_inventory.paint import Paint
-from utils.paint_inventory.powder import Powder
-from utils.paint_inventory.primer import Primer
+from utils.inventory.component import Component
+from utils.inventory.laser_cut_part import LaserCutPart
+from utils.inventory.paint import Paint
+from utils.inventory.powder import Powder
+from utils.inventory.primer import Primer
 from utils.workspace.flow_tag import FlowTag
 from utils.workspace.workspace_settings import WorkspaceSettings
 

@@ -8,30 +8,18 @@ import sympy
 from PyQt6 import uic
 from PyQt6.QtCore import QDate, Qt
 from PyQt6.QtGui import QAction, QCursor, QFont, QIcon
-from PyQt6.QtWidgets import (QAbstractItemView, QApplication, QComboBox,
-                             QCompleter, QGridLayout, QGroupBox, QHBoxLayout,
-                             QInputDialog, QLabel, QLineEdit, QMenu,
-                             QMessageBox, QPushButton, QScrollArea,
-                             QTableWidgetItem, QTabWidget, QVBoxLayout,
-                             QWidget)
+from PyQt6.QtWidgets import QAbstractItemView, QApplication, QComboBox, QCompleter, QGridLayout, QGroupBox, QHBoxLayout, QInputDialog, QLabel, QLineEdit, QMenu, QMessageBox, QPushButton, QScrollArea, QTableWidgetItem, QTabWidget, QVBoxLayout, QWidget
 
 from ui.color_picker_dialog import ColorPicker
-from ui.custom_widgets import (AssemblyImage, AssemblyMultiToolBox,
-                               CustomTableWidget, DeletePushButton,
-                               DraggableButton, DropWidget, FilterTabWidget,
-                               HumbleDoubleSpinBox, ItemsGroupBox,
-                               MultiToolBox, NotesPlainTextEdit,
-                               RecordingWidget, ScrollPositionManager,
-                               SelectRangeCalendar, TimeSpinBox)
+from ui.custom_widgets import AssemblyImage, AssemblyMultiToolBox, CustomTableWidget, DeletePushButton, DraggableButton, DropWidget, FilterTabWidget, HumbleDoubleSpinBox, ItemsGroupBox, MultiToolBox, NotesPlainTextEdit, RecordingWidget, ScrollPositionManager, SelectRangeCalendar, TimeSpinBox
 from ui.generate_workorder_dialog import GenerateWorkorderDialog
-from ui.generate_workspace_printout_dialog import \
-    GenerateWorkspacePrintoutDialog
+from ui.generate_workspace_printout_dialog import GenerateWorkspacePrintoutDialog
 from ui.recut_dialog import RecutDialog
 from utils.colors import get_random_color
-from utils.components_inventory.components_inventory import ComponentsInventory
 from utils.dialog_buttons import DialogButtons
-from utils.laser_cut_inventory.laser_cut_inventory import LaserCutInventory
-from utils.paint_inventory.paint_inventory import PaintInventory
+from utils.inventory.components_inventory import ComponentsInventory
+from utils.inventory.laser_cut_inventory import LaserCutInventory
+from utils.inventory.paint_inventory import PaintInventory
 from utils.settings import Settings
 from utils.threads.workspace_get_file_thread import WorkspaceDownloadFile
 from utils.threads.workspace_upload_file_thread import WorkspaceUploadThread
@@ -577,7 +565,7 @@ class WorkspaceTab(QWidget):
                 material = input_dialog.material
                 thickness = input_dialog.thickness
                 table.blockSignals(True)
-                date_created: str = QDate().currentDate().toString("yyyy-M-d")
+                date_created: str = QDate().currentDate().toString("yyyy-MM-dd")
                 inventory_item = self.admin_workspace.get_inventory_item(item_name)
                 item = WorkspaceItem(inventory_item, data={})
                 item.material = material
@@ -921,7 +909,7 @@ class WorkspaceTab(QWidget):
         def add_sub_assembly():
             input_text, ok = QInputDialog.getText(self, "Add Sub Assembly", "Enter a name for a new sub assembly:")
             if input_text and ok:
-                date_created: str = QDate().currentDate().toString("yyyy-M-d")
+                date_created: str = QDate().currentDate().toString("yyyy-MM-dd")
                 new_assembly: Assembly = Assembly(
                     name=input_text,
                     assembly_data={
@@ -1833,7 +1821,7 @@ class WorkspaceTab(QWidget):
 
             grid.setAlignment(Qt.AlignmentFlag.AlignLeft)
             grid.addWidget(
-                QLabel(f"Timeline: {assembly.starting_date} to {assembly.ending_date}, ({QDate.fromString(assembly.starting_date, 'yyyy-M-d').daysTo(QDate.fromString(assembly.ending_date, 'yyyy-M-d'))} days)"),
+                QLabel(f"Timeline: {assembly.starting_date} to {assembly.ending_date}, ({QDate.fromString(assembly.starting_date, 'yyyy-MM-dd').daysTo(QDate.fromString(assembly.ending_date, 'yyyy-MM-dd'))} days)"),
                 0,
                 0,
             )
@@ -2615,8 +2603,8 @@ class WorkspaceTab(QWidget):
                     start_time: QDate = timeline[0]
                     end_time: QDate = timeline[1]
 
-                    string_start_time = start_time.toString("yyyy-M-d")
-                    string_end_time = end_time.toString("yyyy-M-d")
+                    string_start_time = start_time.toString("yyyy-MM-dd")
+                    string_end_time = end_time.toString("yyyy-MM-dd")
 
                     for item in item_group.get_item_list(group_name):
                         item.starting_date = string_start_time
@@ -2663,7 +2651,7 @@ class WorkspaceTab(QWidget):
             table.setItem(
                 row_index,
                 col_index,
-                QTableWidgetItem(f'{item_group.get_item(group).starting_date} to {item_group.get_item(group).ending_date}, ({QDate.fromString(item_group.get_item(group).starting_date, "yyyy-M-d").daysTo(QDate.fromString(item_group.get_item(group).ending_date, "yyyy-M-d"))} days)'),
+                QTableWidgetItem(f'{item_group.get_item(group).starting_date} to {item_group.get_item(group).ending_date}, ({QDate.fromString(item_group.get_item(group).starting_date, "yyyy-MM-dd").daysTo(QDate.fromString(item_group.get_item(group).ending_date, "yyyy-MM-dd"))} days)'),
             )  # 0
             table.resizeColumnsToContents()
 
@@ -2721,7 +2709,7 @@ class WorkspaceTab(QWidget):
             grid_widget = QWidget(widget)
             grid = QGridLayout(grid_widget)
             grid.setAlignment(Qt.AlignmentFlag.AlignLeft)
-            timeline_label = QLabel(f"{assembly.starting_date} to {assembly.ending_date}, ({QDate.fromString(assembly.starting_date, 'yyyy-M-d').daysTo(QDate.fromString(assembly.ending_date, 'yyyy-M-d'))} days)")
+            timeline_label = QLabel(f"{assembly.starting_date} to {assembly.ending_date}, ({QDate.fromString(assembly.starting_date, 'yyyy-MM-dd').daysTo(QDate.fromString(assembly.ending_date, 'yyyy-MM-dd'))} days)")
 
             def set_time_line():
                 timeline_dialog = SelectTimeLineDialog(
@@ -2735,8 +2723,8 @@ class WorkspaceTab(QWidget):
                     start_time: QDate = timeline[0]
                     end_time: QDate = timeline[1]
 
-                    string_start_time = start_time.toString("yyyy-M-d")
-                    string_end_time = end_time.toString("yyyy-M-d")
+                    string_start_time = start_time.toString("yyyy-MM-dd")
+                    string_end_time = end_time.toString("yyyy-MM-dd")
 
                     assembly.starting_date = string_start_time
                     assembly.ending_date = string_end_time
@@ -3117,7 +3105,7 @@ class WorkspaceTab(QWidget):
                     continue
         self.user_workspace.load_data()
         group_color = get_random_color() if self.user_workspace.get_group_color("Custom Jobs") is None else self.user_workspace.get_group_color("Custom Jobs")
-        date_created: str = QDate().currentDate().toString("yyyy-M-d")
+        date_created: str = QDate().currentDate().toString("yyyy-MM-dd")
         custom_assembly = Assembly(
             name=f"Custom Job ({len(selected_items)} items) - {datetime.now()}",
             assembly_data={
@@ -3552,7 +3540,7 @@ class WorkspaceTab(QWidget):
             msg.exec()
             return
         # Workspace order begins here
-        date_created: str = QDate().currentDate().toString("yyyy-M-d")
+        date_created: str = QDate().currentDate().toString("yyyy-MM-dd")
         group_name_date_created = datetime.now()
         # admin_workspace.load_data()
         for assembly, quantity in work_order.items():

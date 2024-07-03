@@ -16,29 +16,18 @@ import win32api  # pywin32
 from natsort import natsorted, ns
 from PyQt6 import uic
 from PyQt6.QtCore import QEventLoop, QPoint, Qt, QThread, QTimer
-from PyQt6.QtGui import (QAction, QColor, QCursor, QDragEnterEvent,
-                         QDragLeaveEvent, QDragMoveEvent, QDropEvent, QFont,
-                         QIcon, QStandardItem, QStandardItemModel)
-from PyQt6.QtWidgets import (QApplication, QComboBox, QCompleter, QFileDialog,
-                             QFileIconProvider, QFontDialog, QGridLayout,
-                             QInputDialog, QLabel, QListWidget,
-                             QListWidgetItem, QMainWindow, QMenu, QMessageBox,
-                             QPushButton, QScrollArea, QTableWidgetItem,
-                             QTabWidget, QToolBox, QTreeView, QTreeWidget,
-                             QVBoxLayout, QWidget)
+from PyQt6.QtGui import QAction, QColor, QCursor, QDragEnterEvent, QDragLeaveEvent, QDragMoveEvent, QDropEvent, QFont, QIcon, QStandardItem, QStandardItemModel
+from PyQt6.QtWidgets import QApplication, QComboBox, QCompleter, QFileDialog, QFileIconProvider, QFontDialog, QGridLayout, QInputDialog, QLabel, QListWidget, QListWidgetItem, QMainWindow, QMenu, QMessageBox, QPushButton, QScrollArea, QTableWidgetItem, QTabWidget, QToolBox, QTreeView, QTreeWidget, QVBoxLayout, QWidget
 
 from ui.about_dialog import AboutDialog
 from ui.components_tab import ComponentsTab
+from ui.custom.job_tab import JobTab
 from ui.custom.job_widget import JobWidget
 from ui.custom.saved_job_item import SavedPlanningJobItem
-from ui.custom_widgets import (CustomTableWidget, MultiToolBox, PdfTreeView,
-                               PreviousQuoteItem, RichTextPushButton,
-                               SavedQuoteItem, ScrollPositionManager, ViewTree,
-                               set_default_dialog_button_stylesheet)
+from ui.custom_widgets import CustomTableWidget, MultiToolBox, PdfTreeView, PreviousQuoteItem, RichTextPushButton, SavedQuoteItem, ScrollPositionManager, ViewTree, set_default_dialog_button_stylesheet
 from ui.edit_paint_inventory import EditPaintInventory
 from ui.edit_workspace_settings import EditWorkspaceSettings
 from ui.generate_quote_dialog import GenerateQuoteDialog
-from ui.custom.job_tab import JobTab
 from ui.job_sorter_dialog import JobSorterDialog
 from ui.laser_cut_tab import LaserCutTab
 from ui.nest_sheet_verification import NestSheetVerification
@@ -48,27 +37,27 @@ from ui.select_item_dialog import SelectItemDialog
 from ui.sheet_settings_tab import SheetSettingsTab
 from ui.sheets_in_inventory_tab import SheetsInInventoryTab
 from ui.workspace_tab import WorkspaceTab
-from utils.components_inventory.components_inventory import ComponentsInventory
 from utils.dialog_buttons import DialogButtons
 from utils.dialog_icons import Icons
 from utils.history_file import HistoryFile
 from utils.inventory.category import Category
+from utils.inventory.components_inventory import ComponentsInventory
+from utils.inventory.laser_cut_inventory import LaserCutInventory
+from utils.inventory.laser_cut_part import LaserCutPart
+from utils.inventory.paint_inventory import PaintInventory
+from utils.inventory.sheet import Sheet
+from utils.inventory.sheets_inventory import SheetsInventory
 from utils.inventory_excel_file import ExcelFile
 from utils.ip_utils import get_server_ip_address, get_server_port
 from utils.json_file import JsonFile
-from utils.laser_cut_inventory.laser_cut_inventory import LaserCutInventory
-from utils.laser_cut_inventory.laser_cut_part import LaserCutPart
-from utils.paint_inventory.paint_inventory import PaintInventory
 from utils.po import check_po_directories, get_all_po
 from utils.po_template import POTemplate
 from utils.price_history_file import PriceHistoryFile
 from utils.quote.generate_printout import GeneratePrintout
-from utils.quote.quote import Quote
 from utils.quote.nest import Nest
+from utils.quote.quote import Quote
 from utils.settings import Settings
 from utils.sheet_settings.sheet_settings import SheetSettings
-from utils.sheets_inventory.sheet import Sheet
-from utils.sheets_inventory.sheets_inventory import SheetsInventory
 from utils.threads.changes_thread import ChangesThread
 from utils.threads.check_for_updates_thread import CheckForUpdatesThread
 from utils.threads.delete_job_thread import DeleteJobThread
@@ -83,8 +72,8 @@ from utils.threads.get_jobs_thread import GetJobsThread
 from utils.threads.get_order_number_thread import GetOrderNumberThread
 from utils.threads.get_previous_quotes_thread import GetPreviousQuotesThread
 from utils.threads.get_saved_quotes_thread import GetSavedQuotesThread
-from utils.threads.load_nests_thread import LoadNestsThread
 from utils.threads.job_loader_thread import JobLoaderThread
+from utils.threads.load_nests_thread import LoadNestsThread
 from utils.threads.send_email_thread import SendEmailThread
 from utils.threads.send_sheet_report_thread import SendReportThread
 from utils.threads.set_order_number_thread import SetOrderNumberThread
@@ -101,14 +90,8 @@ from utils.workspace.job_preferences import JobPreferences
 from utils.workspace.workspace import Workspace
 from utils.workspace.workspace_settings import WorkspaceSettings
 
-__author__: str = "Jared"
-__copyright__: str = "Copyright 2022-2024, TheCodingJ's"
-__license__: str = "MIT"
-__version__: str = "v3.0.37"
-__updated__: str = "2024-07-01 13:37:59"
-__maintainer__: str = "Jared"
-__email__: str = "jared@pinelandfarms.ca"
-__status__: str = "Production"
+__version__: str = "v3.0.38"
+__updated__: str = "2024-07-01 16:07:13"
 
 
 def check_folders(folders: list[str]) -> None:
@@ -135,11 +118,11 @@ check_folders(
 
 
 def _play_celebrate_sound() -> None:
-    winsound.PlaySound("sound.wav", winsound.SND_FILENAME)
+    winsound.PlaySound("sounds/sound.wav", winsound.SND_FILENAME)
 
 
 def _play_boot_sound() -> None:
-    winsound.PlaySound("boot.wav", winsound.SND_FILENAME)
+    winsound.PlaySound("sounds/boot.wav", winsound.SND_FILENAME)
 
 
 logging.basicConfig(
@@ -157,7 +140,7 @@ def excepthook(exc_type, exc_value, exc_traceback):
     threading.Thread(target=send_error_report).start()
     win32api.MessageBox(
         0,
-        f"We've encountered an unexpected issue. The details of this glitch have been automatically reported to {__maintainer__}, and a notification has been sent to {__email__} for immediate attention. Rest assured, {__maintainer__} is on the case and will likely have this resolved with the next update. Your patience and understanding are greatly appreciated. If this problem persists, please don't hesitate to reach out directly to {__maintainer__} for further assistance.\n\nTechnical details for reference:\n - Exception Type: {exc_type}\n - Error Message: {exc_value}\n - Traceback Information: {exc_traceback}",
+        f"We've encountered an unexpected issue. The details of this glitch have been automatically reported to Jared, and a notification has been sent to jared@pinelandfarms.ca for immediate attention. Rest assured, Jared is on the case and will likely have this resolved with the next update. Your patience and understanding are greatly appreciated. If this problem persists, please don't hesitate to reach out directly to Jared for further assistance.\n\nTechnical details for reference:\n - Exception Type: {exc_type}\n - Error Message: {exc_value}\n - Traceback Information: {exc_traceback}",
         "Unhandled exception - excepthook detected",
         0x40,
     )  # 0x40 for OK button
@@ -174,7 +157,7 @@ def send_error_report():
     if response.status_code != 200:
         win32api.MessageBox(
             0,
-            f"Failed to send email. Kindly notify {__maintainer__} about the issue you just encountered!",
+            f"Failed to send email. Kindly notify Jared about the issue you just encountered!",
             "Failed to send email",
             0x40,
         )
@@ -209,7 +192,6 @@ class MainWindow(QMainWindow):
         self.clear_layout(self.omnigen_layout)
         self.omnigen_layout.addWidget(self.quote_generator_tab_widget)
 
-
         self.job_planner_widget = JobTab(self)
         self.job_planner_widget.savJob.connect(self.save_job)
         self.job_planner_widget.saveJobAs.connect(self.save_job_as)
@@ -217,9 +199,21 @@ class MainWindow(QMainWindow):
         template_job = Job("Enter Job Name0", {}, self.job_manager)
         template_job.order_number = self.order_number
         self.job_planner_widget.load_job(template_job)
-        # self.quote_planner_tab_widget.add_job(Job("Job0", None))
         self.clear_layout(self.job_planner_layout)
         self.job_planner_layout.addWidget(self.job_planner_widget)
+
+        self.job_quote_widget = JobTab(self)
+        self.job_quote_widget.savJob.connect(self.save_job)
+        self.job_quote_widget.saveJobAs.connect(self.save_job_as)
+        self.job_quote_widget.reloadJob.connect(self.reload_job)
+        template_job = Job("Enter Job Name0", {}, self.job_manager)
+        template_job.job_status = JobStatus.QUOTING
+        template_job.order_number = self.order_number
+        self.job_quote_widget.load_job(template_job)
+
+        # self.quote_planner_tab_widget.add_job(Job("Job0", None))
+        self.clear_layout(self.quote_generator_layout)
+        self.quote_generator_layout.addWidget(self.job_quote_widget)
 
         self.components_tab_widget: ComponentsTab = None
         self.components_tab_widget_last_selected_tab_index: int = 0  # * Used inside components_tab.py
@@ -341,11 +335,18 @@ class MainWindow(QMainWindow):
         self.templates_jobs_layout.addWidget(self.templates_jobs_multitoolbox)
         self.templates_job_items_last_opened: dict[int, bool] = {}
 
-        self.quote_jobs_layout = self.findChild(QVBoxLayout, "template_jobs_layout")
-        self.quote_jobs_layout.setAlignment(Qt.AlignmentFlag.AlignTop)
-        self.quote_jobs_multitoolbox = MultiToolBox(self)
-        self.quote_jobs_layout.addWidget(self.templates_jobs_multitoolbox)
-        self.quote_job_items_last_opened: dict[int, bool] = {}
+        self.saved_planning_jobs_layout_2 = self.findChild(QVBoxLayout, "saved_planning_jobs_layout_2")
+        self.saved_planning_jobs_layout_2.setAlignment(Qt.AlignmentFlag.AlignTop)
+        self.saved_jobs_multitoolbox_2 = MultiToolBox(self)
+        self.saved_planning_jobs_layout_2.addWidget(self.saved_jobs_multitoolbox_2)
+        self.saved_planning_job_items_last_opened_2: dict[int, bool] = {}
+
+        self.templates_jobs_layout_2 = self.findChild(QVBoxLayout, "template_jobs_layout_2")
+        self.templates_jobs_layout_2.setAlignment(Qt.AlignmentFlag.AlignTop)
+        self.templates_jobs_multitoolbox_2 = MultiToolBox(self)
+        self.templates_jobs_layout_2.addWidget(self.templates_jobs_multitoolbox_2)
+        self.templates_job_items_last_opened_2: dict[int, bool] = {}
+
         # Status
         self.status_button = RichTextPushButton(self)
         self.status_button.setText("Downloading all files, please wait...", "yellow")
@@ -1128,15 +1129,37 @@ class MainWindow(QMainWindow):
             job_item.open_webpage.connect(partial(self.open_job, f"saved_jobs/{folder_path}"))
             job_item.pushButton_open_in_browser.setToolTip(f"{job_item.pushButton_open_in_browser.toolTip()}\n\nhttp://{get_server_ip_address()}:{get_server_port()}/load_job/saved_jobs/{folder_path}")
             job_item.job_type_changed.connect(partial(self.change_job_thread, f"saved_jobs/{folder_path}", "type", job_item.comboBox_job_status))
-            if self.tabWidget.tabText(self.tabWidget.currentIndex()) == "Job Planner":
-                if file_info["type"] == JobStatus.PLANNING.value:
-                    self.saved_jobs_multitoolbox.addItem(job_item, file_info.get("name"), JobColor.get_color(JobStatus(file_info.get("type", 1))))
-                elif file_info["type"] == JobStatus.TEMPLATE.value:
-                    self.templates_jobs_multitoolbox.addItem(job_item, file_info.get("name"), JobColor.get_color(JobStatus(file_info.get("type", 1))))
+            if file_info["type"] == JobStatus.PLANNING.value:
+                self.saved_jobs_multitoolbox.addItem(job_item, file_info.get("name"), JobColor.get_color(JobStatus(file_info.get("type", 1))))
+            elif file_info["type"] == JobStatus.TEMPLATE.value:
+                self.templates_jobs_multitoolbox.addItem(job_item, file_info.get("name"), JobColor.get_color(JobStatus(file_info.get("type", 1))))
         self.saved_jobs_multitoolbox.close_all()
         self.templates_jobs_multitoolbox.close_all()
         self.saved_jobs_multitoolbox.set_widgets_visibility(self.saved_planning_job_items_last_opened)
         self.templates_jobs_multitoolbox.set_widgets_visibility(self.templates_job_items_last_opened)
+
+    def load_quoting_jobs(self, data: dict[str, dict[str, Any]]):
+        self.saved_planning_job_items_last_opened_2 = self.saved_jobs_multitoolbox_2.get_widget_visibility()
+        self.templates_job_items_last_opened_2 = self.templates_jobs_multitoolbox_2.get_widget_visibility()
+
+        self.templates_jobs_multitoolbox_2.clear()
+        self.saved_jobs_multitoolbox_2.clear()
+        sorted_data = dict(natsorted(data.items(), key=lambda x: x[1]["name"], reverse=True))
+        for folder_path, file_info in sorted_data.items():
+            job_item = SavedPlanningJobItem(file_info, self)
+            job_item.load_job.connect(partial(self.load_job_thread, f"saved_jobs/{folder_path}"))
+            job_item.delete_job.connect(partial(self.delete_job_thread, f"saved_jobs/{folder_path}"))
+            job_item.open_webpage.connect(partial(self.open_job, f"saved_jobs/{folder_path}"))
+            job_item.pushButton_open_in_browser.setToolTip(f"{job_item.pushButton_open_in_browser.toolTip()}\n\nhttp://{get_server_ip_address()}:{get_server_port()}/load_job/saved_jobs/{folder_path}")
+            job_item.job_type_changed.connect(partial(self.change_job_thread, f"saved_jobs/{folder_path}", "type", job_item.comboBox_job_status))
+            if file_info["type"] in [JobStatus.PLANNING.value, JobStatus.QUOTED.value, JobStatus.QUOTING.value]:
+                self.saved_jobs_multitoolbox_2.addItem(job_item, file_info.get("name"), JobColor.get_color(JobStatus(file_info.get("type", 1))))
+            elif file_info["type"] == JobStatus.TEMPLATE.value:
+                self.templates_jobs_multitoolbox_2.addItem(job_item, file_info.get("name"), JobColor.get_color(JobStatus(file_info.get("type", 1))))
+        self.saved_jobs_multitoolbox_2.close_all()
+        self.templates_jobs_multitoolbox_2.close_all()
+        self.saved_jobs_multitoolbox_2.set_widgets_visibility(self.saved_planning_job_items_last_opened_2)
+        self.templates_jobs_multitoolbox_2.set_widgets_visibility(self.templates_job_items_last_opened_2)
 
     def load_saved_quotes(self, data: dict[str, dict[str, Any]]) -> None:
         sorted_data = dict(natsorted(data.items(), key=lambda x: x[1]["order_number"], alg=ns.FLOAT, reverse=True))
@@ -1201,8 +1224,8 @@ class MainWindow(QMainWindow):
         toolbox_2 = QToolBox(self)
         toolbox_2.setLineWidth(0)
         toolbox_2.layout().setSpacing(0)
-        self.verticalLayout_24.addWidget(toolbox_1) # Quote Generator
-        self.verticalLayout_33.addWidget(toolbox_2) # Quote Generator 2
+        self.verticalLayout_24.addWidget(toolbox_1)  # Quote Generator
+        self.verticalLayout_33.addWidget(toolbox_2)  # Quote Generator 2
         for i, nest_directory in enumerate(nest_directories):
             nest_directory_name: str = nest_directory.split("/")[-1]
             tree_view_1 = PdfTreeView(nest_directory, self)
@@ -1679,6 +1702,7 @@ class MainWindow(QMainWindow):
                 elif self.tabWidget.tabText(self.tabWidget.currentIndex()) == "Quote Generator":
                     self.load_saved_quoted_thread()
                     self.load_cuttoff_drop_down()
+                self.downloading_changes = False
 
     def download_all_files(self) -> None:
         self.download_files(
@@ -1727,11 +1751,12 @@ class MainWindow(QMainWindow):
                     for laser_cut_part in nest.laser_cut_parts:
                         laser_cut_part.material = select_item_dialog.get_selected_material()
                         laser_cut_part.gauge = select_item_dialog.get_selected_thickness()
-            current_job = self.job_planner_widget.current_job
+            current_job = self.job_quote_widget.current_job
             current_job.nests = data
             current_job.unsaved_changes = True
-            self.job_planner_widget.job_changed(current_job)
-            self.job_planner_widget.update_tables()
+            self.job_quote_widget.job_changed(current_job)
+            self.job_quote_widget.update_tables()
+            self.status_button.setText(f"Nests loaded into {current_job.name}", "lime")
         else:
             self.status_button.setText("Loading nests aborted", "lime")
         QApplication.restoreOverrideCursor()
@@ -1881,7 +1906,10 @@ class MainWindow(QMainWindow):
     def load_jobs_response(self, data: dict) -> None:
         if isinstance(data, dict):
             self.status_button.setText("Fetched all jobs", "lime")
-            self.load_planning_jobs(data)
+            if self.tabWidget.tabText(self.tabWidget.currentIndex()) == "Job Planner":
+                self.load_planning_jobs(data)
+            elif self.tabWidget.tabText(self.tabWidget.currentIndex()) == "Quote Generator 2":
+                self.load_quoting_jobs(data)
             # More will be added here such as quoting, workspace, archive...
         else:
             self.status_button.setText(f"Error: {data}'", "red")
@@ -1924,7 +1952,10 @@ class MainWindow(QMainWindow):
     def load_job_response(self, job: Job | None):
         if job:
             self.status_button.setText(f"{job.name} loaded successfully!", "lime")
-            self.job_planner_widget.load_job(job)
+            if self.tabWidget.tabText(self.tabWidget.currentIndex()) == "Job Planner":
+                self.job_planner_widget.load_job(job)
+            elif self.tabWidget.tabText(self.tabWidget.currentIndex()) == "Quote Generator 2":
+                self.job_quote_widget.load_job(job)
         else:
             self.status_button.setText("Failed to load job.", "red")
 

@@ -7,35 +7,27 @@ from functools import partial
 from natsort import natsorted
 from PyQt6 import uic
 from PyQt6.QtCore import QDate, Qt, pyqtSignal
-from PyQt6.QtGui import (QAction, QColor, QCursor, QFont, QIcon, QKeySequence,
-                         QPixmap)
-from PyQt6.QtWidgets import (QAbstractItemView, QApplication, QCheckBox,
-                             QComboBox, QDateEdit, QDoubleSpinBox, QGridLayout,
-                             QHBoxLayout, QLabel, QMenu, QMessageBox,
-                             QPushButton, QTableWidgetItem, QTextEdit,
-                             QVBoxLayout, QWidget)
+from PyQt6.QtGui import QAction, QColor, QCursor, QFont, QIcon, QKeySequence, QPixmap
+from PyQt6.QtWidgets import QAbstractItemView, QApplication, QCheckBox, QComboBox, QDateEdit, QDoubleSpinBox, QGridLayout, QHBoxLayout, QLabel, QMenu, QMessageBox, QPushButton, QTableWidgetItem, QTextEdit, QVBoxLayout, QWidget
 
 from ui.add_component_dialog import AddComponentDialog
 from ui.add_laser_cut_part_dialog import AddLaserCutPartDialog
 from ui.add_sheet_dialog import AddSheetDialog
-from ui.custom.components_quoting_table_widget import \
-    ComponentsQuotingTableWidget
-from ui.custom.laser_cut_parts_quoting_table_widget import \
-    LaserCutPartsQuotingTableWidget
-from ui.custom_widgets import (ClickableLabel, MachineCutTimeSpinBox,
-                               MultiToolBox, RecutButton)
+from ui.custom.components_quoting_table_widget import ComponentsQuotingTableWidget
+from ui.custom.laser_cut_parts_quoting_table_widget import LaserCutPartsQuotingTableWidget
+from ui.custom_widgets import ClickableLabel, MachineCutTimeSpinBox, MultiToolBox, RecutButton
 from ui.image_viewer import QImageViewer
 from utils.calulations import calculate_overhead
-from utils.components_inventory.component import Component
-from utils.components_inventory.components_inventory import ComponentsInventory
 from utils.inventory.category import Category
-from utils.laser_cut_inventory.laser_cut_inventory import LaserCutInventory
-from utils.laser_cut_inventory.laser_cut_part import LaserCutPart
+from utils.inventory.component import Component
+from utils.inventory.components_inventory import ComponentsInventory
+from utils.inventory.laser_cut_inventory import LaserCutInventory
+from utils.inventory.laser_cut_part import LaserCutPart
+from utils.inventory.sheet import Sheet
+from utils.inventory.sheets_inventory import SheetsInventory
 from utils.quote.nest import Nest
 from utils.quote.quote import Quote
 from utils.sheet_settings.sheet_settings import SheetSettings
-from utils.sheets_inventory.sheet import Sheet
-from utils.sheets_inventory.sheets_inventory import SheetsInventory
 
 
 class PaintSettingsWidget(QWidget):
@@ -404,8 +396,8 @@ class QuoteWidget(QWidget):
 
         self.quote.order_number = self.doubleSpinBox_order_number.value()
         self.quote.status = self.comboBox_quote_status.currentText()
-        self.quote.date_shipped = self.dateEdit_shipped.date().toString("yyyy-M-d")
-        self.quote.date_expected = self.dateEdit_expected.date().toString("yyyy-M-d")
+        self.quote.date_shipped = self.dateEdit_shipped.date().toString("yyyy-MM-dd")
+        self.quote.date_expected = self.dateEdit_expected.date().toString("yyyy-MM-dd")
         self.quote.ship_to = self.textEdit_ship_to.toPlainText()
 
         self.quote_changed()

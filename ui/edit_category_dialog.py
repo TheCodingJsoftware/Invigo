@@ -2,10 +2,10 @@ from PyQt6 import uic
 from PyQt6.QtGui import QIcon
 from PyQt6.QtWidgets import QDialog
 
-from utils.components_inventory.components_inventory import ComponentsInventory
 from utils.inventory.category import Category
-from utils.laser_cut_inventory.laser_cut_inventory import LaserCutInventory
-from utils.sheets_inventory.sheets_inventory import SheetSettings
+from utils.inventory.components_inventory import ComponentsInventory
+from utils.inventory.laser_cut_inventory import LaserCutInventory
+from utils.inventory.sheets_inventory import SheetSettings
 
 
 class EditCategoryDialog(QDialog):

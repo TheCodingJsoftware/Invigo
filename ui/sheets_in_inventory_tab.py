@@ -7,28 +7,21 @@ import sympy
 from PyQt6 import uic
 from PyQt6.QtCore import QDate, Qt, QTimer, pyqtSignal
 from PyQt6.QtGui import QAction, QColor, QCursor, QFont, QIcon
-from PyQt6.QtWidgets import (QAbstractItemView, QCheckBox, QComboBox,
-                             QDateEdit, QGridLayout, QHBoxLayout, QInputDialog,
-                             QLabel, QMenu, QMessageBox, QPushButton,
-                             QTableWidgetItem, QVBoxLayout, QWidget)
+from PyQt6.QtWidgets import QAbstractItemView, QCheckBox, QComboBox, QDateEdit, QGridLayout, QHBoxLayout, QInputDialog, QLabel, QMenu, QMessageBox, QPushButton, QTableWidgetItem, QVBoxLayout, QWidget
 
 from ui.add_sheet_dialog import AddSheetDialog
-from ui.custom_widgets import (CustomTableWidget, CustomTabWidget,
-                               DeletePushButton, HumbleDoubleSpinBox,
-                               OrderStatusButton)
+from ui.custom_widgets import CustomTableWidget, CustomTabWidget, DeletePushButton, HumbleDoubleSpinBox, OrderStatusButton
 from ui.edit_category_dialog import EditCategoryDialog
-from ui.set_component_order_pending_dialog import \
-    SetComponentOrderPendingDialog
+from ui.set_component_order_pending_dialog import SetComponentOrderPendingDialog
 from ui.set_custom_limit_dialog import SetCustomLimitDialog
 from ui.set_order_pending_dialog import SetOrderPendingDialog
-from ui.update_component_order_pending_dialog import \
-    UpdateComponentOrderPendingDialog
+from ui.update_component_order_pending_dialog import UpdateComponentOrderPendingDialog
 from utils.inventory.category import Category
 from utils.inventory.order import Order
+from utils.inventory.sheet import Sheet
+from utils.inventory.sheets_inventory import SheetsInventory
 from utils.settings import Settings
 from utils.sheet_settings.sheet_settings import SheetSettings
-from utils.sheets_inventory.sheet import Sheet
-from utils.sheets_inventory.sheets_inventory import SheetsInventory
 
 settings_file = Settings()
 
@@ -344,7 +337,7 @@ class SheetsInInventoryTab(QWidget):
                 comboBox_thickness.wheelEvent = lambda event: event.ignore()
                 comboBox_thickness.addItems(self.sheet_settings.get_thicknesses())
                 comboBox_thickness.setCurrentText(sheet.thickness)
-                comboBox_thickness.currentTextChanged.connect(self.table_changed)
+                comboBox_thickness.currentTextChanged.connect(partial(self.table_changed, row_index))
                 current_table.setCellWidget(row_index, col_index, comboBox_thickness)
                 self.table_sheets_widgets[sheet].update({"thickness": comboBox_thickness})
                 col_index += 1
@@ -356,7 +349,7 @@ class SheetsInInventoryTab(QWidget):
                 comboBox_material.wheelEvent = lambda event: event.ignore()
                 comboBox_material.addItems(self.sheet_settings.get_materials())
                 comboBox_material.setCurrentText(sheet.material)
-                comboBox_material.currentTextChanged.connect(self.table_changed)
+                comboBox_material.currentTextChanged.connect(partial(self.table_changed, row_index))
                 current_table.setCellWidget(row_index, col_index, comboBox_material)
                 self.table_sheets_widgets[sheet].update({"material": comboBox_material})
                 col_index += 1
@@ -367,7 +360,7 @@ class SheetsInInventoryTab(QWidget):
                 spinbox_length.setDecimals(3)
                 spinbox_length.setStyleSheet("border-radius: none;")
                 spinbox_length.setValue(sheet.length)
-                spinbox_length.valueChanged.connect(self.table_changed)
+                spinbox_length.valueChanged.connect(partial(self.table_changed, row_index))
                 current_table.setCellWidget(row_index, col_index, spinbox_length)
                 self.table_sheets_widgets[sheet].update({"length": spinbox_length})
                 col_index += 1
@@ -378,7 +371,7 @@ class SheetsInInventoryTab(QWidget):
                 spinbox_width.setDecimals(3)
                 spinbox_width.setStyleSheet("border-radius: none;")
                 spinbox_width.setValue(sheet.width)
-                spinbox_width.valueChanged.connect(self.table_changed)
+                spinbox_width.valueChanged.connect(partial(self.table_changed, row_index))
                 current_table.setCellWidget(row_index, col_index, spinbox_width)
                 self.table_sheets_widgets[sheet].update({"width": spinbox_width})
                 col_index += 1
@@ -478,7 +471,7 @@ class SheetsInInventoryTab(QWidget):
             self.last_selected_sheet = sheet.name
             self.last_selected_index = self.get_selected_row()
 
-    def table_changed(self):
+    def table_changed(self, row):
         if not (sheet := self.get_selected_sheet()):
             return
         old_quantity = sheet.quantity

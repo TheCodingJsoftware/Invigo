@@ -2,9 +2,9 @@ import os
 import sys
 from datetime import datetime
 
-from utils.components_inventory.component import Component
+from utils.inventory.component import Component
+from utils.inventory.laser_cut_part import LaserCutPart
 from utils.ip_utils import get_server_ip_address, get_server_port
-from utils.laser_cut_inventory.laser_cut_part import LaserCutPart
 from utils.quote.nest import Nest
 from utils.quote.quote import Quote
 from utils.workspace.job import Job

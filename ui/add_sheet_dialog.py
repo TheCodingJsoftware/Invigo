@@ -3,9 +3,9 @@ from PyQt6.QtGui import QIcon
 from PyQt6.QtWidgets import QDialog
 
 from utils.inventory.category import Category
+from utils.inventory.sheet import Sheet
+from utils.inventory.sheets_inventory import SheetsInventory
 from utils.sheet_settings.sheet_settings import SheetSettings
-from utils.sheets_inventory.sheet import Sheet
-from utils.sheets_inventory.sheets_inventory import SheetsInventory
 
 
 class AddSheetDialog(QDialog):

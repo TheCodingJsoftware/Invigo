@@ -32,7 +32,7 @@ class SetComponentOrderPendingDialog(QDialog):
 
     def get_selected_date(self) -> str:
         try:
-            return self.calendarWidget.selectedDate().toString("yyyy-M-d")
+            return self.calendarWidget.selectedDate().toString("yyyy-MM-dd")
         except AttributeError:
             return None
 

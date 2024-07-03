@@ -4,17 +4,12 @@ from typing import TYPE_CHECKING
 
 from PyQt6 import uic
 from PyQt6.QtCore import pyqtSignal
-from PyQt6.QtWidgets import (QAbstractItemView, QApplication, QCheckBox,
-                             QComboBox, QDateEdit, QDoubleSpinBox, QGridLayout,
-                             QHBoxLayout, QLabel, QMenu, QMessageBox,
-                             QPushButton, QTableWidgetItem, QTextEdit,
-                             QVBoxLayout, QWidget)
+from PyQt6.QtWidgets import QAbstractItemView, QApplication, QCheckBox, QComboBox, QDateEdit, QDoubleSpinBox, QGridLayout, QHBoxLayout, QLabel, QMenu, QMessageBox, QPushButton, QTableWidgetItem, QTextEdit, QVBoxLayout, QWidget
 
 from ui.add_sheet_dialog import AddSheetDialog
-from ui.custom.machine_cut_time_double_spin_box import \
-    MachineCutTimeDoubleSpinBox
+from ui.custom.machine_cut_time_double_spin_box import MachineCutTimeDoubleSpinBox
+from utils.inventory.sheets_inventory import Sheet, SheetsInventory
 from utils.quote.nest import Nest
-from utils.sheets_inventory.sheets_inventory import Sheet, SheetsInventory
 
 if TYPE_CHECKING:
     from ui.custom.job_widget import JobWidget

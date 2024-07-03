@@ -1,10 +1,10 @@
 from typing import TYPE_CHECKING
 
-from utils.components_inventory.components_inventory import ComponentsInventory
-from utils.laser_cut_inventory.laser_cut_inventory import LaserCutInventory
-from utils.paint_inventory.paint_inventory import PaintInventory
+from utils.inventory.components_inventory import ComponentsInventory
+from utils.inventory.laser_cut_inventory import LaserCutInventory
+from utils.inventory.paint_inventory import PaintInventory
+from utils.inventory.sheets_inventory import SheetsInventory
 from utils.sheet_settings import SheetSettings
-from utils.sheets_inventory.sheets_inventory import SheetsInventory
 from utils.workspace.job import Job
 from utils.workspace.workspace_settings import WorkspaceSettings
 

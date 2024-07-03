@@ -31,9 +31,9 @@ class SelectTimeLineDialog(QDialog):
         self.pushButton_cancel.clicked.connect(self.reject)
 
         if starting_date is not None:
-            self.left_calendar.setSelectedDate(QDate.fromString(starting_date, "yyyy-M-d"))
+            self.left_calendar.setSelectedDate(QDate.fromString(starting_date, "yyyy-MM-dd"))
         if ending_date is not None:
-            self.right_calendar.setSelectedDate(QDate.fromString(ending_date, "yyyy-M-d"))
+            self.right_calendar.setSelectedDate(QDate.fromString(ending_date, "yyyy-MM-dd"))
 
         self.from_date: QDate = None
         self.to_date: QDate = None

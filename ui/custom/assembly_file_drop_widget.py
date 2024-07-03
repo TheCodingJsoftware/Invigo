@@ -1,7 +1,6 @@
 from PyQt6.QtCore import Qt, QTimer, pyqtSignal
 from PyQt6.QtGui import QDragEnterEvent, QDropEvent, QMouseEvent
-from PyQt6.QtWidgets import (QFileDialog, QHBoxLayout, QLabel, QVBoxLayout,
-                             QWidget)
+from PyQt6.QtWidgets import QFileDialog, QHBoxLayout, QLabel, QVBoxLayout, QWidget
 
 
 class AssemblyFileDropWidget(QWidget):
