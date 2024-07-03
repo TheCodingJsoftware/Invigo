@@ -1,4 +1,3 @@
-import copy
 from typing import TYPE_CHECKING, Any, Union
 
 from utils.inventory.component import Component
@@ -105,7 +104,11 @@ class Assembly:
 
     def get_sub_assembly(self, assembly_name: str) -> "Assembly":
         return next(
-            (sub_assembly for sub_assembly in self.sub_assemblies if sub_assembly.name == assembly_name),
+            (
+                sub_assembly
+                for sub_assembly in self.sub_assemblies
+                if sub_assembly.name == assembly_name
+            ),
             None,
         )
 
@@ -121,10 +124,14 @@ class Assembly:
 
     def load_data(self, data: dict[str, Union[float, bool, str, dict]]):
         assembly_data = data.get("assembly_data", {})
-        self.expected_time_to_complete: float = assembly_data.get("expected_time_to_complete", 0.0)
+        self.expected_time_to_complete: float = assembly_data.get(
+            "expected_time_to_complete", 0.0
+        )
         self.has_items: bool = assembly_data.get("has_items", False)
         self.has_sub_assemblies: bool = assembly_data.get("has_sub_assemblies", True)
-        self.flow_tag: FlowTag = FlowTag("", assembly_data.get("flow_tag", {}), self.workspace_settings)
+        self.flow_tag: FlowTag = FlowTag(
+            "", assembly_data.get("flow_tag", {}), self.workspace_settings
+        )
         self.assembly_image: str = assembly_data.get("assembly_image")
         self.assembly_files: list[str] = assembly_data.get("assembly_files", [])
 
@@ -144,7 +151,9 @@ class Assembly:
 
         self.uses_powder: bool = assembly_data.get("uses_powder_coating", False)
         self.powder_name: str = assembly_data.get("powder_name")
-        self.powder_transfer_efficiency: float = assembly_data.get("powder_transfer_efficiency", 66.67)
+        self.powder_transfer_efficiency: float = assembly_data.get(
+            "powder_transfer_efficiency", 66.67
+        )
         if self.uses_powder and self.powder_name:
             self.powder_item = self.paint_inventory.get_powder(self.powder_name)
         self.cost_for_powder_coating = assembly_data.get("cost_for_powder_coating", 0.0)
@@ -162,13 +171,19 @@ class Assembly:
         self.laser_cut_parts.clear()
         laser_cut_parts = data.get("laser_cut_parts", {})
         for laser_cut_part_name, laser_cut_part_data in laser_cut_parts.items():
-            laser_cut_part = LaserCutPart(laser_cut_part_name, laser_cut_part_data, self.group.job.laser_cut_inventory)
+            laser_cut_part = LaserCutPart(
+                laser_cut_part_name,
+                laser_cut_part_data,
+                self.group.job.laser_cut_inventory,
+            )
             self.add_laser_cut_part(laser_cut_part)
 
         self.components.clear()
         components = data.get("components", {})
         for component_name, component_data in components.items():
-            component = Component(component_name, component_data, self.group.job.components_inventory)
+            component = Component(
+                component_name, component_data, self.group.job.components_inventory
+            )
             self.add_component(component)
 
         self.sub_assemblies.clear()
@@ -224,7 +239,9 @@ class Assembly:
 
         for sub_assembly in self.sub_assemblies:
             if sub_assembly not in processed_assemblies:
-                data["sub_assemblies"][sub_assembly.name] = sub_assembly.to_dict(processed_assemblies)
+                data["sub_assemblies"][sub_assembly.name] = sub_assembly.to_dict(
+                    processed_assemblies
+                )
 
         return data
 

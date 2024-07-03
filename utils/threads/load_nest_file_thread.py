@@ -9,20 +9,31 @@ from PyQt6.QtCore import QThread
 
 from utils.inventory.components_inventory import ComponentsInventory
 from utils.inventory.laser_cut_inventory import LaserCutInventory
-from utils.quote.nest import Nest
 from utils.quote.quote import Quote
 from utils.sheet_settings.sheet_settings import SheetSettings
 
 
 class LoadNestFileThread(QThread):
-    def __init__(self, parent, components_inventory: ComponentsInventory, laser_cut_inventory: LaserCutInventory, sheet_settings: SheetSettings) -> None:
+    def __init__(
+        self,
+        parent,
+        components_inventory: ComponentsInventory,
+        laser_cut_inventory: LaserCutInventory,
+        sheet_settings: SheetSettings,
+    ) -> None:
         QThread.__init__(self, parent)
         self.parent = parent
         self.components_inventory = components_inventory
         self.laser_cut_inventory = laser_cut_inventory
         self.sheet_settings = sheet_settings
 
-        self.quote = Quote("Quote", None, self.components_inventory, self.laser_cut_inventory, self.sheet_settings)
+        self.quote = Quote(
+            "Quote",
+            None,
+            self.components_inventory,
+            self.laser_cut_inventory,
+            self.sheet_settings,
+        )
 
         self.program_directory = os.path.dirname(os.path.realpath(sys.argv[0]))
 
@@ -33,18 +44,26 @@ class LoadNestFileThread(QThread):
         self.machinging_time_regex = r"MACHINING TIME: (\d{1,}.\d{1,}) min"
         self.weight_regex = r"WEIGHT: (\d{1,}.\d{1,}) lb"
         self.surface_area_regex = r"SURFACE: (\d{1,}.\d{1,})  in2"
-        self.cutting_length_regex = r"CUTTING LENGTH: (\d{1,}.\d{1,})  in|CUTTING LENGTH: (\d{1,})  in"
+        self.cutting_length_regex = (
+            r"CUTTING LENGTH: (\d{1,}.\d{1,})  in|CUTTING LENGTH: (\d{1,})  in"
+        )
         self.quantity_regex = r"  NUMBER: (\d{1,})"
         self.part_number_regex = r"PART NUMBER: (\d{1,})"
-        self.sheet_quantity_regex = r"PROGRAMME RUNS:  \/  SCRAP: (\d{1,})|PROGRAM RUNS:  \/  SCRAP: (\d{1,})"
+        self.sheet_quantity_regex = (
+            r"PROGRAMME RUNS:  \/  SCRAP: (\d{1,})|PROGRAM RUNS:  \/  SCRAP: (\d{1,})"
+        )
         self.scrap_percentage_regex = r"PROGRAMME RUNS:  \/  SCRAP: \d{1,}  \/  (\d{1,}.\d{1,}) %|PROGRAM RUNS:  \/  SCRAP: \d{1,}  \/  (\d{1,}.\d{1,}) %"
         self.piercing_time_regex = r"PIERCING TIME (\d{1,}.\d{1,})  s"
         self.material_id_regex = r"MATERIAL ID \(SHEET\):.{1,}(ST|SS|AL)-\d{1,}"
         self.gauge_regex = r"MATERIAL ID \(SHEET\):.{1,}\w{2}-(\d{1,})"
-        self.sheet_dimension_regex = r"BLANK: (\d{1,}\.\d{1,} x \d{1,}\.\d{1,}) x \d{1,}\.\d{1,}"
+        self.sheet_dimension_regex = (
+            r"BLANK: (\d{1,}\.\d{1,} x \d{1,}\.\d{1,}) x \d{1,}\.\d{1,}"
+        )
         self.part_dimensions_regex = r"DIMENSIONS: (\d{1,}\.\d{1,} x \d{1,}\.\d{1,})"
         self.piercing_points_regex = r"NUMBER OF PIERCING POINTS: (\d{1,})"
-        self.sheet_cut_time_regex = r"MACHINING TIME: NC postprocessor (\d{1,} : \d{1,} : \d{1,})"
+        self.sheet_cut_time_regex = (
+            r"MACHINING TIME: NC postprocessor (\d{1,} : \d{1,} : \d{1,})"
+        )
         self.geofile_name = r"GEOFILE NAME: (.:[\s\S]*?\.[Gg][Ee][Oo])"
 
     def extract_images_from_pdf(self, pdf_paths: list[str]) -> None:
@@ -94,7 +113,9 @@ class LoadNestFileThread(QThread):
             if pg in pages:
                 page = pdf_file[pg]
                 page_lines = page.get_text("text")
-                with open(f"{self.program_directory}/output.txt", "a", encoding="utf-8") as f:
+                with open(
+                    f"{self.program_directory}/output.txt", "a", encoding="utf-8"
+                ) as f:
                     f.write(page_lines)
 
         with open(f"{self.program_directory}/output.txt", "r", encoding="utf-8") as f:

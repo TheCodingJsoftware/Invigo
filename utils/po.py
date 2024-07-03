@@ -5,7 +5,11 @@ from os.path import isfile, join
 
 
 def get_all_po() -> list[str]:
-    return [po_file.split(".")[0] for po_file in listdir("PO's/templates") if isfile(join("PO's/templates", po_file)) and po_file.split(".")[-1] == "xlsx"]
+    return [
+        po_file.split(".")[0]
+        for po_file in listdir("PO's/templates")
+        if isfile(join("PO's/templates", po_file)) and po_file.split(".")[-1] == "xlsx"
+    ]
 
 
 def check_folders(folders: list[str]) -> None:
@@ -16,7 +20,14 @@ def check_folders(folders: list[str]) -> None:
 
 
 def check_po_directories() -> None:
-    all_po_files = [po_file for po_file in listdir("PO's/templates") if isfile(join("PO's/templates", po_file)) and po_file.split(".")[-1] == "xlsx" or isfile(join("PO's/templates", po_file)) and po_file.split(".")[-1] == "xls"]
+    all_po_files = [
+        po_file
+        for po_file in listdir("PO's/templates")
+        if isfile(join("PO's/templates", po_file))
+        and po_file.split(".")[-1] == "xlsx"
+        or isfile(join("PO's/templates", po_file))
+        and po_file.split(".")[-1] == "xls"
+    ]
     for template in all_po_files:
         extension: str = template.split(".")[-1]
         if extension in "xlsx":

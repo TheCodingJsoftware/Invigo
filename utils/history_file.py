@@ -41,13 +41,21 @@ class HistoryFile:
         return self.single_item_data
 
     def add_new_to_category(self, date: str, description: str) -> None:
-        self.categories_sheet.cell(row=self.category_new_row_pos + 1, column=1, value=date)
-        self.categories_sheet.cell(row=self.category_new_row_pos + 1, column=2, value=description)
+        self.categories_sheet.cell(
+            row=self.category_new_row_pos + 1, column=1, value=date
+        )
+        self.categories_sheet.cell(
+            row=self.category_new_row_pos + 1, column=2, value=description
+        )
         self.workbook.save(f"data/{self.file_name}")
         self.load_file()
 
     def add_new_to_single_item(self, date: str, description: str) -> None:
-        self.single_items_sheet.cell(row=self.single_item_new_row + 1, column=1, value=date)
-        self.single_items_sheet.cell(row=self.single_item_new_row + 1, column=2, value=description)
+        self.single_items_sheet.cell(
+            row=self.single_item_new_row + 1, column=1, value=date
+        )
+        self.single_items_sheet.cell(
+            row=self.single_item_new_row + 1, column=2, value=description
+        )
         self.workbook.save(f"data/{self.file_name}")
         self.load_file()

@@ -1,26 +1,21 @@
-import configparser
-import copy
 import os
+import string
 import sys
 from datetime import datetime
-import string
-
-from utils.ip_utils import get_server_ip_address, get_server_port
 
 from utils.inventory.component import Component
 from utils.inventory.laser_cut_part import LaserCutPart
+from utils.ip_utils import get_server_ip_address, get_server_port
 from utils.workspace.assembly import Assembly
 from utils.workspace.group import Group
 from utils.workspace.job import Job
-from utils.workspace.workspace import Workspace
-from utils.workspace.workspace_item import WorkspaceItem
 
 
 class CoverPage:
     def __init__(self, title: str, job: Job) -> None:
         self.title = title
         self.job = job
-        self.server_directory = f"http://{get_server_ip_address()}"
+        self.server_directory = f"http://{get_server_ip_address()}:{get_server_port()}"
 
     def generate(self) -> str:
         return f"""<div id="cover-page">
@@ -60,20 +55,31 @@ class CoverPage:
 
 class NestsTable:
     def __init__(self, job: Job) -> None:
-        self.headers = ["Nest Name", "Thickness", "Material", "Qty", "Sheet Cut Time", "Nest Cut Time"]
+        self.headers = [
+            "Nest Name",
+            "Thickness",
+            "Material",
+            "Qty",
+            "Sheet Cut Time",
+            "Nest Cut Time",
+        ]
         self.job = job
         self.grand_total_cut_time = 0.0
 
     def get_hours_minutes_seconds(self, total_seconds: float) -> tuple[int, int, int]:
-        return int(total_seconds // 3600), int((total_seconds % 3600) // 60), int(total_seconds % 60)
+        return (
+            int(total_seconds // 3600),
+            int((total_seconds % 3600) // 60),
+            int(total_seconds % 60),
+        )
 
     def get_total_sheet_count(self) -> int:
         return sum(nest.sheet_count for nest in self.job.nests)
 
     def generate(self) -> str:
-        sheets_table_html = '''<div id="nests-layout">
+        sheets_table_html = """<div id="nests-layout">
                 <h5 class="center-align">Nests:</h5>
-                <article class="sheets-table border">'''
+                <article class="sheets-table border">"""
         sheets_table_html += "<table class='small-text no-space border dynamic-table'>"
         sheets_table_html += "<thead><tr>"
         for i, header in enumerate(self.headers):
@@ -81,8 +87,12 @@ class NestsTable:
         sheets_table_html += "</tr></thead>"
         sheets_table_html += '<tbody id="table-body">'
         for nest in self.job.nests:
-            single_hours, single_minutes, single_seconds = self.get_hours_minutes_seconds(nest.sheet_cut_time)
-            nest_hours, nest_minutes, nest_seconds = self.get_hours_minutes_seconds(nest.get_machining_time())
+            single_hours, single_minutes, single_seconds = (
+                self.get_hours_minutes_seconds(nest.sheet_cut_time)
+            )
+            nest_hours, nest_minutes, nest_seconds = self.get_hours_minutes_seconds(
+                nest.get_machining_time()
+            )
             self.grand_total_cut_time += nest.get_machining_time()
             sheets_table_html += f"""<tr>
             <td class="small-text" data-column="0">{nest.name}</td>
@@ -93,7 +103,9 @@ class NestsTable:
             <td class="small-text" data-column="5">{nest_hours:02d}h {nest_minutes:02d}m {nest_seconds:02d}s</td>
             </tr>"""
 
-        grand_total_hours, grand_total_minutes, grand_total_seconds = self.get_hours_minutes_seconds(self.grand_total_cut_time)
+        grand_total_hours, grand_total_minutes, grand_total_seconds = (
+            self.get_hours_minutes_seconds(self.grand_total_cut_time)
+        )
         sheets_table_html += f"""<tr>
         <td class="small-text" data-column="0"></td>
         <td class="small-text" data-column="1"></td>
@@ -111,21 +123,29 @@ class SheetImages:
         self.server_directory = f"http://{get_server_ip_address()}:{get_server_port()}"
 
     def get_hours_minutes_seconds(self, total_seconds: float) -> tuple[int, int, int]:
-        return int(total_seconds // 3600), int((total_seconds % 3600) // 60), int(total_seconds % 60)
+        return (
+            int(total_seconds // 3600),
+            int((total_seconds % 3600) // 60),
+            int(total_seconds % 60),
+        )
 
     def generate(self) -> str:
-        html = '''<div id="sheets-layout">
+        html = """<div id="sheets-layout">
                 <h5 class="center-align">Sheets:</h5>
-                <article class="border"><div class="grid">'''
+                <article class="border"><div class="grid">"""
         for nest in self.job.nests:
-            single_hours, single_minutes, single_seconds = self.get_hours_minutes_seconds(nest.sheet_cut_time)
-            nest_hours, nest_minutes, nest_seconds = self.get_hours_minutes_seconds(nest.get_machining_time())
+            single_hours, single_minutes, single_seconds = (
+                self.get_hours_minutes_seconds(nest.sheet_cut_time)
+            )
+            nest_hours, nest_minutes, nest_seconds = self.get_hours_minutes_seconds(
+                nest.get_machining_time()
+            )
             if nest.sheet_count == 1:
                 cut_time = f'<div class="small-text">Cut Time: {nest_hours:02d}h {nest_minutes:02d}m {nest_seconds:02d}s</div>'
             else:
-                cut_time = f'''<div class="small-text">Sheet Cut Time: {single_hours:02d}h {single_minutes:02d}m {single_seconds:02d}s</div>
-                            <div class="small-text">Nest Cut Time: {nest_hours:02d}h {nest_minutes:02d}m {nest_seconds:02d}s</div>'''
-            html += f'''
+                cut_time = f"""<div class="small-text">Sheet Cut Time: {single_hours:02d}h {single_minutes:02d}m {single_seconds:02d}s</div>
+                            <div class="small-text">Nest Cut Time: {nest_hours:02d}h {nest_minutes:02d}m {nest_seconds:02d}s</div>"""
+            html += f"""
             <div class="s6">
                 <article class="nest no-padding border">
                     <img style="margin-bottom: -50px; margin-top: -40px; z-index: -1; height: auto;" src="{self.server_directory}/image/{nest.image_path}" class="responsive small nest_image">
@@ -150,8 +170,8 @@ class SheetImages:
                         </div>
                     </div>
                 </article>
-            </div>'''
-        html += '</article></div></div><br>'
+            </div>"""
+        html += "</article></div></div><br>"
         return html
 
 
@@ -168,13 +188,13 @@ class LaserCutPartsTable:
             "Price",
         ]
         self.laser_cut_parts = laser_cut_parts
-        self.server_directory = f"http://{get_server_ip_address()}"
+        self.server_directory = f"http://{get_server_ip_address()}:{get_server_port()}"
 
     def format_filename(self, s: str):
         # https://gist.github.com/seanh/93666
         valid_chars = "-_.() %s%s" % (string.ascii_letters, string.digits)
-        filename = ''.join(c for c in s if c in valid_chars)
-        filename = filename.replace(' ','_') # I don't like spaces in filenames.
+        filename = "".join(c for c in s if c in valid_chars)
+        filename = filename.replace(" ", "_")  # I don't like spaces in filenames.
         return filename
 
     def generate_laser_cut_part_data(self, laser_cut_part: LaserCutPart) -> str:
@@ -184,16 +204,16 @@ class LaserCutPartsTable:
                    <td class="small-text">Value</td>
                 </tr>"""
         for key, value in laser_cut_part.to_dict().items():
-            html += f'''<tr>
+            html += f"""<tr>
                 <td class="small-text bold">{key.replace("_", " ").title()}</td>
                 <td class="small-text">{value}</td>
-                </tr>'''
+                </tr>"""
         html += "</tbody></table><br>"
         return html
 
     def generate_laser_cut_part_popups(self):
         return "".join(
-            f'''
+            f"""
             <div class="overlay blur"></div>
             <dialog style="width: 30vw;" class="right" id="LCP-{self.format_filename(laser_cut_part.name)}">
                 <img src="{self.server_directory}/{laser_cut_part.image_index}" style="height: 100px; width: 100px;" >
@@ -202,7 +222,7 @@ class LaserCutPartsTable:
                 <nav class="right-align no-space">
                     <button data-ui="#LCP-{self.format_filename(laser_cut_part.name)}" class="transparent link">Close</button>
                 </nav>
-            </dialog>'''
+            </dialog>"""
             for laser_cut_part in self.laser_cut_parts
         )
 
@@ -214,12 +234,12 @@ class LaserCutPartsTable:
 
     def generate(self) -> str:
         html = '<table class="no-space border dynamic-table">'
-        html += '<thead><tr>'
+        html += "<thead><tr>"
         for i, header in enumerate(self.headers):
             html += f'<th class="small-text" data-column="{i}"><label class="checkbox"><input type="checkbox" class="column-toggle" data-column="{i}" data-name="{header.lower().replace(" ", "-")}" checked><span></span></label>{header}</th>'
         html += "</tr>"
         html += "</thead>"
-        html += '<tbody>'
+        html += "<tbody>"
         for laser_cut_part in self.laser_cut_parts:
             html += f"""<tr>
             <td class="min" data-column="0" data-name="part">
@@ -253,13 +273,13 @@ class LaserCutPartsTable:
 class ComponentsTable:
     def __init__(self, components: list[Component]) -> None:
         self.components = components
-        self.server_directory = f"http://{get_server_ip_address()}"
+        self.server_directory = f"http://{get_server_ip_address()}:{get_server_port()}"
         self.headers = ["Part", "Part #", "Shelf #", "Qty", "Unit Price", "Price"]
 
     def format_filename(self, s):
         valid_chars = "-_.() %s%s" % (string.ascii_letters, string.digits)
-        filename = ''.join(c for c in s if c in valid_chars)
-        filename = filename.replace(' ','_') # I don't like spaces in filenames.
+        filename = "".join(c for c in s if c in valid_chars)
+        filename = filename.replace(" ", "_")  # I don't like spaces in filenames.
         return filename
 
     def generate_components_data(self, laser_cut_part: LaserCutPart) -> str:
@@ -269,16 +289,16 @@ class ComponentsTable:
                    <td class="small-text">Value</td>
                 </tr>"""
         for key, value in laser_cut_part.to_dict().items():
-            html += f'''<tr>
+            html += f"""<tr>
                 <td class="small-text bold">{key.replace("_", " ").title()}</td>
                 <td class="small-text">{value}</td>
-                </tr>'''
+                </tr>"""
         html += "</tbody></table><br>"
         return html
 
     def generate_components_popups(self):
         return "".join(
-            f'''
+            f"""
             <div class="overlay blur"></div>
             <dialog style="width: 30vw;" class="right" id="C-{self.format_filename(component.part_name)}">
                 <img src="{self.server_directory}/{component.image_path}" style="height: 100px; width: 100px;" >
@@ -287,7 +307,7 @@ class ComponentsTable:
                 <nav class="right-align no-space">
                     <button data-ui="#C-{self.format_filename(component.part_name)}" class="transparent link">Close</button>
                 </nav>
-            </dialog>'''
+            </dialog>"""
             for component in self.components
         )
 
@@ -299,7 +319,7 @@ class ComponentsTable:
 
     def generate(self):
         html = '<table class="no-space border">'
-        html += '<thead><tr>'
+        html += "<thead><tr>"
         for i, header in enumerate(self.headers):
             html += f'<th class="small-text" data-column="{i}"><label class="checkbox"><input type="checkbox" class="column-toggle" data-column="{i}" data-name="{header.lower().replace(" ", "-")}" checked><span></span></label>{header}</th>'
         html += "</tr></thead><tbody>"
@@ -334,11 +354,11 @@ class AssemblyTable:
         self.server_directory = f"http://{get_server_ip_address()}:{get_server_port()}"
 
     def generate(self) -> str:
-        html = '''<div id="assemblies-list-layout">
+        html = """<div id="assemblies-list-layout">
                 <h5 class="center-align">Assemblies:</h5>
-                <article class="assembly-table border">'''
+                <article class="assembly-table border">"""
         for assembly in self.job.get_all_assemblies():
-            html += f'''
+            html += f"""
             <a class="row padding surface-container wave">
                 <img src="{self.server_directory}/image/{assembly.assembly_image}" class="assembly_image round">
                 <div class="max">
@@ -346,10 +366,9 @@ class AssemblyTable:
                     <div>{assembly.flow_tag.get_name()}</div>
                 </div>
                 <label>NA</label>
-            </a><div class="divider"></div>'''
-        html += '</article></div><br>'
+            </a><div class="divider"></div>"""
+        html += "</article></div><br>"
         return html
-
 
 
 class JobDiv:
@@ -387,11 +406,17 @@ class AssemblyDiv:
 
     def get_assembly_data_html(self) -> str:
         html = '<div class="assembly_data">'
-        image_html = f'<img src="{self.server_directory}/image/{self.assembly.assembly_image}" class="assembly_image">' if self.assembly.assembly_image else ""
+        image_html = (
+            f'<img src="{self.server_directory}/image/{self.assembly.assembly_image}" class="assembly_image">'
+            if self.assembly.assembly_image
+            else ""
+        )
         html += image_html
         html += '<div class="padding">'
         html += f"<h5>{self.assembly.name}</h4>"
-        html += f'<p class="small-text">Process: {self.assembly.flow_tag.get_name()}</p>'
+        html += (
+            f'<p class="small-text">Process: {self.assembly.flow_tag.get_name()}</p>'
+        )
         html += "</div>"
         html += "</div>"
         return html
@@ -448,10 +473,14 @@ class JobPlannerPrintout:
         self.program_directory = os.path.dirname(os.path.realpath(sys.argv[0]))
         self.server_directory = f"http://{get_server_ip_address()}:{get_server_port()}"
 
-        with open("utils/workspace/printout.css", "r", encoding="utf-8") as printout_css_file:
+        with open(
+            "utils/workspace/printout.css", "r", encoding="utf-8"
+        ) as printout_css_file:
             self.printout_css = printout_css_file.read()
 
-        with open("utils/workspace/printout.js", "r", encoding="utf-8") as printout_js_file:
+        with open(
+            "utils/workspace/printout.js", "r", encoding="utf-8"
+        ) as printout_js_file:
             self.printout_js = printout_js_file.read()
 
     def get_total_price(self) -> float:
@@ -559,10 +588,10 @@ class JobPlannerPrintout:
             html += nests_table.generate()
 
         html += '<div id="parts-layout"><div class="page-break"></div>'
-        html += '''<div class="tabs">
+        html += """<div class="tabs">
             <a class="active" data-ui="#assemblies-layout"><i>table_view</i>Assemblies Layout</a>
             <a data-ui="#parts-list"> <i>format_list_bulleted</i>Parts List</a>
-        </div>'''
+        </div>"""
         html += '<div class="page active" id="assemblies-layout">'
         if self.job.groups:
             job_div = JobDiv(self.job)
