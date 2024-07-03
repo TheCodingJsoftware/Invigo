@@ -90,8 +90,8 @@ from utils.workspace.job_preferences import JobPreferences
 from utils.workspace.workspace import Workspace
 from utils.workspace.workspace_settings import WorkspaceSettings
 
-__version__: str = "v3.0.40"
-__updated__: str = "2024-07-02 23:44:33"
+__version__: str = "v3.0.41"
+__updated__: str = "2024-07-03 08:36:38"
 
 
 def check_folders(folders: list[str]) -> None:
