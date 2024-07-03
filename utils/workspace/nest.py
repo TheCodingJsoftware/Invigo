@@ -7,7 +7,13 @@ from utils.sheet_settings.sheet_settings import SheetSettings
 
 
 class Nest:
-    def __init__(self, name: str, data: dict[str, Union[float, int, str, dict[str, Union[float, str]]]], sheet_settings: SheetSettings, laser_cut_inventory: LaserCutInventory):
+    def __init__(
+        self,
+        name: str,
+        data: dict[str, Union[float, int, str, dict[str, Union[float, str]]]],
+        sheet_settings: SheetSettings,
+        laser_cut_inventory: LaserCutInventory,
+    ):
         self.name: str = name
         self.sheet_settings = sheet_settings
         self.laser_cut_inventory = laser_cut_inventory
@@ -36,9 +42,15 @@ class Nest:
             return 0.0
 
     def get_sheet_cost(self) -> float:
-        if price_per_pound := self.sheet_settings.get_price_per_pound(self.sheet.material):
-            if pounds_per_square_foot := self.sheet_settings.get_pounds_per_square_foot(self.sheet.material, self.sheet.thickness):
-                pounds_per_sheet = ((self.sheet.length * self.sheet.width) / 144) * pounds_per_square_foot
+        if price_per_pound := self.sheet_settings.get_price_per_pound(
+            self.sheet.material
+        ):
+            if pounds_per_square_foot := self.sheet_settings.get_pounds_per_square_foot(
+                self.sheet.material, self.sheet.thickness
+            ):
+                pounds_per_sheet = (
+                    (self.sheet.length * self.sheet.width) / 144
+                ) * pounds_per_square_foot
                 return price_per_pound * pounds_per_sheet
         return 0.0
 
@@ -51,14 +63,22 @@ class Nest:
     def get_name(self) -> str:
         return f"{self.sheet.thickness} {self.sheet.material} {self.get_sheet_dimension()} {self.name}"
 
-    def load_data(self, data: dict[str, Union[float, int, str, dict[str, Union[float, str]]]]):
+    def load_data(
+        self, data: dict[str, Union[float, int, str, dict[str, Union[float, str]]]]
+    ):
         self.sheet_count = data.get("sheet_count", 0)
         self.scrap_percentage = data.get("scrap_percentage", 0.0)
         self.sheet_cut_time = data.get("sheet_cut_time", 0.0)
         self.image_path = data.get("image_path", "images/404.jpeg")
         self.laser_cut_parts.clear()
-        for laser_cut_part_name, laser_cut_part_data in data.get("laser_cut_parts", {}).items():
-            self.laser_cut_parts.append(LaserCutPart(laser_cut_part_name, laser_cut_part_data, self.laser_cut_inventory))
+        for laser_cut_part_name, laser_cut_part_data in data.get(
+            "laser_cut_parts", {}
+        ).items():
+            self.laser_cut_parts.append(
+                LaserCutPart(
+                    laser_cut_part_name, laser_cut_part_data, self.laser_cut_inventory
+                )
+            )
         try:
             sheet_name = list(data["sheet"].keys())[0]
             self.sheet = Sheet(
@@ -77,4 +97,14 @@ class Nest:
             )
 
     def to_dict(self) -> dict[str, Union[float, int, str]]:
-        return {"sheet_count": self.sheet_count, "scrap_percentage": self.scrap_percentage, "sheet_cut_time": self.sheet_cut_time, "image_path": self.image_path, "laser_cut_parts": {laser_cut_part.name: laser_cut_part.to_dict() for laser_cut_part in self.laser_cut_parts}, "sheet": {self.sheet.get_name(): self.sheet.to_dict()}}
+        return {
+            "sheet_count": self.sheet_count,
+            "scrap_percentage": self.scrap_percentage,
+            "sheet_cut_time": self.sheet_cut_time,
+            "image_path": self.image_path,
+            "laser_cut_parts": {
+                laser_cut_part.name: laser_cut_part.to_dict()
+                for laser_cut_part in self.laser_cut_parts
+            },
+            "sheet": {self.sheet.get_name(): self.sheet.to_dict()},
+        }

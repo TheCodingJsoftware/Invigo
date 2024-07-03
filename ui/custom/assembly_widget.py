@@ -4,7 +4,16 @@ from typing import TYPE_CHECKING
 from PyQt6 import uic
 from PyQt6.QtCore import Qt
 from PyQt6.QtGui import QColor, QCursor
-from PyQt6.QtWidgets import QComboBox, QHBoxLayout, QMenu, QPushButton, QTableWidget, QTableWidgetItem, QVBoxLayout, QWidget
+from PyQt6.QtWidgets import (
+    QComboBox,
+    QHBoxLayout,
+    QMenu,
+    QPushButton,
+    QTableWidget,
+    QTableWidgetItem,
+    QVBoxLayout,
+    QWidget,
+)
 
 from ui.window.image_viewer import QImageViewer
 from ui.window.pdf_viewer import PDFViewer

@@ -5,7 +5,18 @@ from functools import partial
 
 from PyQt6.QtCore import Qt
 from PyQt6.QtGui import QAction, QCursor, QPixmap
-from PyQt6.QtWidgets import QApplication, QComboBox, QDoubleSpinBox, QHBoxLayout, QLineEdit, QMenu, QMessageBox, QScrollArea, QTableWidgetItem, QWidget
+from PyQt6.QtWidgets import (
+    QApplication,
+    QComboBox,
+    QDoubleSpinBox,
+    QHBoxLayout,
+    QLineEdit,
+    QMenu,
+    QMessageBox,
+    QScrollArea,
+    QTableWidgetItem,
+    QWidget,
+)
 
 from ui.custom.assembly_file_drop_widget import AssemblyFileDropWidget
 from ui.custom.assembly_image import AssemblyImage
@@ -15,9 +26,13 @@ from ui.custom.assembly_widget import AssemblyWidget
 from ui.custom.components_planning_table_widget import ComponentsPlanningTableWidget
 from ui.custom.file_button import FileButton
 from ui.custom.laser_cut_part_file_drop_widget import LaserCutPartFileDropWidget
-from ui.custom.laser_cut_part_paint_settings_widget import LasserCutPartPaintSettingsWidget
+from ui.custom.laser_cut_part_paint_settings_widget import (
+    LasserCutPartPaintSettingsWidget,
+)
 from ui.custom.laser_cut_part_paint_widget import LaserCutPartPaintWidget
-from ui.custom.laser_cut_parts_planning_table_widget import LaserCutPartsPlanningTableWidget
+from ui.custom.laser_cut_parts_planning_table_widget import (
+    LaserCutPartsPlanningTableWidget,
+)
 from ui.custom_widgets import AssemblyMultiToolBox
 from ui.dialogs.add_component_dialog import AddComponentDialog
 from ui.dialogs.add_laser_cut_part_dialog import AddLaserCutPartDialog

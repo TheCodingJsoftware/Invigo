@@ -5,7 +5,11 @@ from utils.chat.message import Message
 
 class Chat:
     def __init__(self, id: str = None, name: str = "") -> None:
-        self.id = id if id is not None else f'{datetime.now().strftime("%Y-%m-%d %H:%M:%S.%f")} - {name}'
+        self.id = (
+            id
+            if id is not None
+            else f'{datetime.now().strftime("%Y-%m-%d %H:%M:%S.%f")} - {name}'
+        )
         self.display_name: str = name
         self.messages: list[Message] = []
         self.data: dict[str, str, str, list[Message]] = {

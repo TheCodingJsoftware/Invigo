@@ -5,7 +5,15 @@ from typing import TYPE_CHECKING
 from PyQt6 import uic
 from PyQt6.QtCore import Qt, pyqtSignal
 from PyQt6.QtGui import QPixmap
-from PyQt6.QtWidgets import QComboBox, QDoubleSpinBox, QLabel, QMessageBox, QPushButton, QVBoxLayout, QWidget
+from PyQt6.QtWidgets import (
+    QComboBox,
+    QDoubleSpinBox,
+    QLabel,
+    QMessageBox,
+    QPushButton,
+    QVBoxLayout,
+    QWidget,
+)
 
 from ui.custom.machine_cut_time_double_spin_box import MachineCutTimeDoubleSpinBox
 from ui.dialogs.add_sheet_dialog import AddSheetDialog

@@ -18,7 +18,9 @@ class PaintInventory(Inventory):
     def __init__(self, parent):
         super().__init__("paint_inventory")
         self.parent: MainWindow = parent
-        self.components_inventory: ComponentsInventory = self.parent.components_inventory
+        self.components_inventory: ComponentsInventory = (
+            self.parent.components_inventory
+        )
 
         self.primers: list[Primer] = []
         self.paints: list[Paint] = []
@@ -45,7 +47,10 @@ class PaintInventory(Inventory):
             if laser_cut_part.uses_primer:
                 if primer := self.get_primer(laser_cut_part.primer_name):
                     primer_cost_per_gallon = primer.component.price
-                    gallons_used = (((laser_cut_part.surface_area * 2) / 144) / primer.average_coverage) * ((laser_cut_part.primer_overspray / 100) + 1)
+                    gallons_used = (
+                        ((laser_cut_part.surface_area * 2) / 144)
+                        / primer.average_coverage
+                    ) * ((laser_cut_part.primer_overspray / 100) + 1)
                     return primer_cost_per_gallon * gallons_used
         return 0.0
 
@@ -68,7 +73,10 @@ class PaintInventory(Inventory):
             if laser_cut_part.uses_paint:
                 if paint := self.get_paint(laser_cut_part.paint_name):
                     paint_cost_per_gallon = paint.component.price
-                    gallons_used = (((laser_cut_part.surface_area * 2) / 144) / paint.average_coverage) * ((laser_cut_part.paint_overspray / 100) + 1)
+                    gallons_used = (
+                        ((laser_cut_part.surface_area * 2) / 144)
+                        / paint.average_coverage
+                    ) * ((laser_cut_part.paint_overspray / 100) + 1)
                     return paint_cost_per_gallon * gallons_used
         return 0.0
 
@@ -86,22 +94,32 @@ class PaintInventory(Inventory):
     def get_all_powders(self) -> list[str]:
         return [powder.name for powder in self.powders]
 
-    def get_powder_cost(self, laser_cut_part: LaserCutPart, mil_thickness: float) -> float:
+    def get_powder_cost(
+        self, laser_cut_part: LaserCutPart, mil_thickness: float
+    ) -> float:
         with contextlib.suppress(ZeroDivisionError):
             if laser_cut_part.uses_powder:
                 if powder := self.get_powder(laser_cut_part.powder_name):
-                    estimated_sq_ft_coverage = (192.3 / (powder.gravity * mil_thickness)) * (laser_cut_part.powder_transfer_efficiency / 100)
-                    estimated_lbs_needed = ((laser_cut_part.surface_area * 2) / 144) / estimated_sq_ft_coverage
+                    estimated_sq_ft_coverage = (
+                        192.3 / (powder.gravity * mil_thickness)
+                    ) * (laser_cut_part.powder_transfer_efficiency / 100)
+                    estimated_lbs_needed = (
+                        (laser_cut_part.surface_area * 2) / 144
+                    ) / estimated_sq_ft_coverage
                     return estimated_lbs_needed * powder.component.price
         return 0.0
 
     def save(self):
-        with open(f"{self.FOLDER_LOCATION}/{self.filename}.json", "w", encoding="utf-8") as file:
+        with open(
+            f"{self.FOLDER_LOCATION}/{self.filename}.json", "w", encoding="utf-8"
+        ) as file:
             json.dump(self.to_dict(), file, ensure_ascii=False, indent=4)
 
     def load_data(self):
         try:
-            with open(f"{self.FOLDER_LOCATION}/{self.filename}.json", "r", encoding="utf-8") as file:
+            with open(
+                f"{self.FOLDER_LOCATION}/{self.filename}.json", "r", encoding="utf-8"
+            ) as file:
                 data: dict[str, dict[str, object]] = json.load(file)
             self.categories.from_dict(["Primer", "Paint", "Powder"])
             self.primers.clear()

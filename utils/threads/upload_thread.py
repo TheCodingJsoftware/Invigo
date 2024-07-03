@@ -29,16 +29,24 @@ class UploadThread(QThread):
                         file = {"file": (file_to_upload, f.read(), "image/jpeg")}
 
                 if file:
-                    response = self.session.post(self.upload_url, files=file, timeout=10)
+                    response = self.session.post(
+                        self.upload_url, files=file, timeout=10
+                    )
                     if response.status_code == 200:
                         successful_uploads.append(file_to_upload)
                     else:
                         failed_uploads.append(file_to_upload)
 
             if failed_uploads:
-                self.signal.emit({"status": "failed", "failed_files": failed_uploads}, self.files_to_upload)
+                self.signal.emit(
+                    {"status": "failed", "failed_files": failed_uploads},
+                    self.files_to_upload,
+                )
             else:
-                self.signal.emit({"status": "success", "successful_files": successful_uploads}, self.files_to_upload)
+                self.signal.emit(
+                    {"status": "success", "successful_files": successful_uploads},
+                    self.files_to_upload,
+                )
         except Exception as e:
             self.signal.emit({"status": "error", "error": str(e)}, self.files_to_upload)
         finally:

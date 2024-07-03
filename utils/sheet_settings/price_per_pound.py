@@ -1,4 +1,4 @@
-from typing import Dict, Generic, Iterator, List, Tuple, Union
+from typing import Dict, Iterator, Tuple, Union
 
 from utils.sheet_settings.material import Material
 
@@ -9,7 +9,10 @@ class Price:
         self.latest_change: str = latest_change
 
     def to_dict(self) -> Dict[str, Union[float, str]]:
-        return {"price_per_pound": self.price_per_pound, "latest_change": self.latest_change}
+        return {
+            "price_per_pound": self.price_per_pound,
+            "latest_change": self.latest_change,
+        }
 
 
 class PricePerPound:
@@ -37,7 +40,10 @@ class PricePerPound:
         self.data.clear()
 
     def to_dict(self):
-        return {material.name: price_per_pound_object.to_dict() for material, price_per_pound_object in self}
+        return {
+            material.name: price_per_pound_object.to_dict()
+            for material, price_per_pound_object in self
+        }
 
     def __iter__(self) -> Iterator[Tuple[Material, Price]]:
         return iter(self.data.items())

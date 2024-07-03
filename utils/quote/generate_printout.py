@@ -14,7 +14,7 @@ class CoverPage:
     def __init__(self, title: str, quote: Quote | Job) -> None:
         self.title = title
         self.quote = quote
-        self.server_directory = f"http://{get_server_ip_address()}"
+        self.server_directory = f"http://{get_server_ip_address()}:{get_server_port()}"
 
     def generate(self) -> str:
         return f"""<div id="cover-page">
@@ -63,7 +63,7 @@ class CoverPage:
 class SheetsPictures:
     def __init__(self, nests: list[Nest]) -> None:
         self.nests = nests
-        self.server_directory = f"http://{get_server_ip_address()}"
+        self.server_directory = f"http://{get_server_ip_address()}:{get_server_port()}"
 
     def generate(self) -> str:
         sheets_picture_html = '<div class="nests">'
@@ -77,12 +77,25 @@ class SheetsPictures:
 
 class SheetsTable:
     def __init__(self, nests: list[Nest]) -> None:
-        self.headers = ["Sheet Name", "Thickness", "Materiak", "Dimension", "Scrap", "Qty", "Sheet Cut Time", "Nest Cut Time"]
+        self.headers = [
+            "Sheet Name",
+            "Thickness",
+            "Materiak",
+            "Dimension",
+            "Scrap",
+            "Qty",
+            "Sheet Cut Time",
+            "Nest Cut Time",
+        ]
         self.nests = nests
         self.grand_total_cut_time = 0.0
 
     def get_hours_minutes_seconds(self, total_seconds: float) -> tuple[int, int, int]:
-        return int(total_seconds // 3600), int((total_seconds % 3600) // 60), int(total_seconds % 60)
+        return (
+            int(total_seconds // 3600),
+            int((total_seconds % 3600) // 60),
+            int(total_seconds % 60),
+        )
 
     def get_total_sheet_count(self) -> int:
         return sum(nest.sheet_count for nest in self.nests)
@@ -95,8 +108,12 @@ class SheetsTable:
         sheets_table_html += "</tr>"
         sheets_table_html += '<tbody id="table-body">'
         for nest in self.nests:
-            single_hours, single_minutes, single_seconds = self.get_hours_minutes_seconds(nest.sheet_cut_time)
-            nest_hours, nest_minutes, nest_seconds = self.get_hours_minutes_seconds(nest.get_machining_time())
+            single_hours, single_minutes, single_seconds = (
+                self.get_hours_minutes_seconds(nest.sheet_cut_time)
+            )
+            nest_hours, nest_minutes, nest_seconds = self.get_hours_minutes_seconds(
+                nest.get_machining_time()
+            )
             self.grand_total_cut_time += nest.get_machining_time()
             sheets_table_html += f"""<tr>
             <td>{nest.name}</td>
@@ -109,7 +126,9 @@ class SheetsTable:
             <td>{nest_hours:02d}h {nest_minutes:02d}m {nest_seconds:02d}s</td>
             </tr>"""
 
-        grand_total_hours, grand_total_minutes, grand_total_seconds = self.get_hours_minutes_seconds(self.grand_total_cut_time)
+        grand_total_hours, grand_total_minutes, grand_total_seconds = (
+            self.get_hours_minutes_seconds(self.grand_total_cut_time)
+        )
         sheets_table_html += f"""<tr>
         <td>Total:</td>
         <td></td>
@@ -139,7 +158,7 @@ class LaserCutPartsTable:
             "Price",
         ]
         self.laser_cut_parts = laser_cut_parts
-        self.server_directory = f"http://{get_server_ip_address()}"
+        self.server_directory = f"http://{get_server_ip_address()}:{get_server_port()}"
 
     def generate_laser_cut_part_data(self, laser_cut_part: LaserCutPart) -> str:
         html = """<table class="dltrc" style="background:none;"><tbody>
@@ -225,8 +244,16 @@ class LaserCutPartsTable:
 class ComponentsTable:
     def __init__(self, components: list[Component]) -> None:
         self.components = components
-        self.server_directory = f"http://{get_server_ip_address()}"
-        self.headers = ["Picture", "Part Name", "Part #", "Shelf #", "Qty", "Unit Price", "Price"]
+        self.server_directory = f"http://{get_server_ip_address()}:{get_server_port()}"
+        self.headers = [
+            "Picture",
+            "Part Name",
+            "Part #",
+            "Shelf #",
+            "Qty",
+            "Unit Price",
+            "Price",
+        ]
 
     def generate_components_data(self, component: Component) -> str:
         html = """<table class="dltrc" style="background:none;"><tbody>
@@ -328,7 +355,9 @@ class QuotePrintout:
             html += "</details>"
         if self.quote.grouped_laser_cut_parts:
             html += '<h2 id="laser-cut-parts-heading">Laser Cut Parts</h2>'
-            laser_cut_parts_table = LaserCutPartsTable("Quote", self.quote.grouped_laser_cut_parts)
+            laser_cut_parts_table = LaserCutPartsTable(
+                "Quote", self.quote.grouped_laser_cut_parts
+            )
             html += laser_cut_parts_table.generate()
         if self.quote.components:
             html += '<h2 id="components-heading">Components</h2>'
@@ -370,7 +399,9 @@ class WorkorderPrintout:
             html += "</details>"
         if self.quote.grouped_laser_cut_parts:
             html += '<h2 id="laser-cut-parts-heading">Laser Cut Parts</h2>'
-            laser_cut_parts_table = LaserCutPartsTable("Workorder", self.quote.grouped_laser_cut_parts)
+            laser_cut_parts_table = LaserCutPartsTable(
+                "Workorder", self.quote.grouped_laser_cut_parts
+            )
             html += laser_cut_parts_table.generate()
         if self.quote.components:
             html += '<h2 id="components-heading">Components</h2>'
@@ -412,7 +443,9 @@ class PackingSlipPrintout:
             html += "</details>"
         if self.quote.grouped_laser_cut_parts:
             html += '<h2 id="laser-cut-parts-heading">Laser Cut Parts</h2>'
-            laser_cut_parts_table = LaserCutPartsTable("Packing Slip", self.quote.grouped_laser_cut_parts)
+            laser_cut_parts_table = LaserCutPartsTable(
+                "Packing Slip", self.quote.grouped_laser_cut_parts
+            )
             html += laser_cut_parts_table.generate()
         if self.quote.components:
             html += '<h2 id="components-heading">Components</h2>'

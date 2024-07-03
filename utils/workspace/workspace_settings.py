@@ -74,13 +74,25 @@ class WorkspaceSettings:
         return None
 
     def get_all_assembly_flow_tags(self) -> dict[str, FlowTag]:
-        return {flow_tag.get_name(): flow_tag for flow_tag in self.get_all_flow_tags() if flow_tag.group == Group.ASSEMBLY}
+        return {
+            flow_tag.get_name(): flow_tag
+            for flow_tag in self.get_all_flow_tags()
+            if flow_tag.group == Group.ASSEMBLY
+        }
 
     def get_all_laser_cut_part_flow_tags(self) -> dict[str, FlowTag]:
-        return {flow_tag.get_name(): flow_tag for flow_tag in self.get_all_flow_tags() if flow_tag.group == Group.LASER_CUT_PART}
+        return {
+            flow_tag.get_name(): flow_tag
+            for flow_tag in self.get_all_flow_tags()
+            if flow_tag.group == Group.LASER_CUT_PART
+        }
 
     def get_all_component_flow_tags(self) -> dict[str, FlowTag]:
-        return {flow_tag.get_name(): flow_tag for flow_tag in self.get_all_flow_tags() if flow_tag.group == Group.COMPONENT}
+        return {
+            flow_tag.get_name(): flow_tag
+            for flow_tag in self.get_all_flow_tags()
+            if flow_tag.group == Group.COMPONENT
+        }
 
     def add_flow_tag(self, flow_tags: FlowTags, flow_tag: FlowTag):
         flow_tags.add_flow_tag(flow_tag)
@@ -89,7 +101,9 @@ class WorkspaceSettings:
         flow_tags.remove_flow_tag(flow_tag)
 
     def save(self):
-        with open(f"{self.FOLDER_LOCATION}/{self.filename}.json", "w", encoding="utf-8") as file:
+        with open(
+            f"{self.FOLDER_LOCATION}/{self.filename}.json", "w", encoding="utf-8"
+        ) as file:
             json.dump(self.to_dict(), file, ensure_ascii=False, indent=4)
 
     def __create_file(self):
@@ -97,12 +111,16 @@ class WorkspaceSettings:
             self._reset_file()
 
     def _reset_file(self):
-        with open(f"{self.FOLDER_LOCATION}/{self.filename}.json", "w", encoding="utf-8") as file:
+        with open(
+            f"{self.FOLDER_LOCATION}/{self.filename}.json", "w", encoding="utf-8"
+        ) as file:
             file.write("{}")
 
     def load_data(self):
         try:
-            with open(f"{self.FOLDER_LOCATION}/{self.filename}.json", "r", encoding="utf-8") as file:
+            with open(
+                f"{self.FOLDER_LOCATION}/{self.filename}.json", "r", encoding="utf-8"
+            ) as file:
                 data: dict[str, dict[str, object]] = json.load(file)
         except KeyError:  # Inventory was just created
             return
@@ -133,7 +151,11 @@ Tags such as, "Staging", "Editing", and "Planning" cannot be used as flow tags, 
                 flow_tag_group.add_flow_tag(flow_tag)
 
     def to_dict(self) -> dict[str, dict[str, dict[str, dict]]]:
-        data: dict[str, dict[str, list]] = {"notes": self.notes, "tags": {}, "flow_tags": {}}
+        data: dict[str, dict[str, list]] = {
+            "notes": self.notes,
+            "tags": {},
+            "flow_tags": {},
+        }
         for tag in self.tags:
             data["tags"].update({tag.name: tag.to_dict()})
 

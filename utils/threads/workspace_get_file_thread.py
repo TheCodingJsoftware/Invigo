@@ -18,12 +18,16 @@ class WorkspaceDownloadFile(QThread):
         print(self.files_to_download)
         self.session = Session()
         self.open_when_done = open_when_done
-        self.file_url = f"http://{self.SERVER_IP}:{self.SERVER_PORT}/workspace_get_file/"
+        self.file_url = (
+            f"http://{self.SERVER_IP}:{self.SERVER_PORT}/workspace_get_file/"
+        )
 
     def run(self) -> None:
         for file_to_download in self.files_to_download:
             try:
-                response = self.session.get(self.file_url + file_to_download, timeout=10)
+                response = self.session.get(
+                    self.file_url + file_to_download, timeout=10
+                )
                 file_name = os.path.basename(file_to_download)
                 file_ext = file_name.split(".")[-1].upper()
                 Path(f"data/workspace/{file_ext}").mkdir(parents=True, exist_ok=True)
@@ -39,5 +43,7 @@ class WorkspaceDownloadFile(QThread):
                     self.signal.emit(None, response.text, False)
             except Exception as e:
                 self.signal.emit(None, str(e), False)
-        self.signal.emit("Successfully downloaded", "Successfully downloaded", self.open_when_done)
+        self.signal.emit(
+            "Successfully downloaded", "Successfully downloaded", self.open_when_done
+        )
         self.session.close()

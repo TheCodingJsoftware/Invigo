@@ -4,7 +4,18 @@ from typing import TYPE_CHECKING
 
 from PyQt6 import uic
 from PyQt6.QtCore import QDate, Qt, pyqtSignal
-from PyQt6.QtWidgets import QComboBox, QDateEdit, QDoubleSpinBox, QGridLayout, QPushButton, QScrollArea, QSplitter, QTextEdit, QVBoxLayout, QWidget
+from PyQt6.QtWidgets import (
+    QComboBox,
+    QDateEdit,
+    QDoubleSpinBox,
+    QGridLayout,
+    QPushButton,
+    QScrollArea,
+    QSplitter,
+    QTextEdit,
+    QVBoxLayout,
+    QWidget,
+)
 
 from ui.custom.group_widget import GroupWidget
 from ui.custom_widgets import AssemblyMultiToolBox, MultiToolBox, QLineEdit

@@ -57,7 +57,11 @@ class FlowTag:
 
     def to_dict(self) -> dict[str]:
         try:
-            return {"name": self.name, "group": self.group.value, "tags": [tag.name for tag in self.tags]}
+            return {
+                "name": self.name,
+                "group": self.group.value,
+                "tags": [tag.name for tag in self.tags],
+            }
         except AttributeError:  # no flow tag
             return {"name": "", "group": self.group.value, "tags": []}
 

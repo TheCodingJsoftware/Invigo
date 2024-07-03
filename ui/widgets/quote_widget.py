@@ -8,11 +8,33 @@ from natsort import natsorted
 from PyQt6 import uic
 from PyQt6.QtCore import QDate, Qt, pyqtSignal
 from PyQt6.QtGui import QAction, QColor, QCursor, QFont, QPixmap
-from PyQt6.QtWidgets import QCheckBox, QComboBox, QDateEdit, QDoubleSpinBox, QGridLayout, QHBoxLayout, QLabel, QMenu, QMessageBox, QPushButton, QTableWidgetItem, QTextEdit, QVBoxLayout, QWidget
+from PyQt6.QtWidgets import (
+    QCheckBox,
+    QComboBox,
+    QDateEdit,
+    QDoubleSpinBox,
+    QGridLayout,
+    QHBoxLayout,
+    QLabel,
+    QMenu,
+    QMessageBox,
+    QPushButton,
+    QTableWidgetItem,
+    QTextEdit,
+    QVBoxLayout,
+    QWidget,
+)
 
 from ui.custom.components_quoting_table_widget import ComponentsQuotingTableWidget
-from ui.custom.laser_cut_parts_quoting_table_widget import LaserCutPartsQuotingTableWidget
-from ui.custom_widgets import ClickableLabel, MachineCutTimeSpinBox, MultiToolBox, RecutButton
+from ui.custom.laser_cut_parts_quoting_table_widget import (
+    LaserCutPartsQuotingTableWidget,
+)
+from ui.custom_widgets import (
+    ClickableLabel,
+    MachineCutTimeSpinBox,
+    MultiToolBox,
+    RecutButton,
+)
 from ui.dialogs.add_component_dialog import AddComponentDialog
 from ui.dialogs.add_laser_cut_part_dialog import AddLaserCutPartDialog
 from ui.dialogs.add_sheet_dialog import AddSheetDialog

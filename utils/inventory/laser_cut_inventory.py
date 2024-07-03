@@ -22,15 +22,23 @@ class LaserCutInventory(Inventory):
     def get_all_part_names(self) -> list[str]:
         return [laser_cut_part.name for laser_cut_part in self.laser_cut_parts]
 
-    def get_laser_cut_parts_by_category(self, category: str | Category) -> list[LaserCutPart]:
+    def get_laser_cut_parts_by_category(
+        self, category: str | Category
+    ) -> list[LaserCutPart]:
         if isinstance(category, str):
             category = self.get_category(category)
         if category.name == "Recut":
             return self.recut_parts
         else:
-            return [laser_cut_part for laser_cut_part in self.laser_cut_parts if category in laser_cut_part.categories]
+            return [
+                laser_cut_part
+                for laser_cut_part in self.laser_cut_parts
+                if category in laser_cut_part.categories
+            ]
 
-    def get_group_categories(self, laser_cut_parts: list[LaserCutPart]) -> dict[str, list[LaserCutPart]]:
+    def get_group_categories(
+        self, laser_cut_parts: list[LaserCutPart]
+    ) -> dict[str, list[LaserCutPart]]:
         group: dict[str, list[LaserCutPart]] = {}
         for laser_cut_part in laser_cut_parts:
             group_name = f"{laser_cut_part.material};{laser_cut_part.gauge}"
@@ -63,10 +71,14 @@ class LaserCutInventory(Inventory):
     def remove_recut_part(self, laser_cut_part: LaserCutPart):
         self.recut_parts.remove(laser_cut_part)
 
-    def duplicate_category(self, category_to_duplicate: Category, new_category_name: str) -> Category:
+    def duplicate_category(
+        self, category_to_duplicate: Category, new_category_name: str
+    ) -> Category:
         new_category = Category(new_category_name)
         super().add_category(new_category)
-        for laser_cut_part in self.get_laser_cut_parts_by_category(category_to_duplicate):
+        for laser_cut_part in self.get_laser_cut_parts_by_category(
+            category_to_duplicate
+        ):
             laser_cut_part.add_to_category(new_category)
         return new_category
 
@@ -78,33 +90,53 @@ class LaserCutInventory(Inventory):
 
     def get_laser_cut_part_by_name(self, laser_cut_part_name: str) -> LaserCutPart:
         return next(
-            (laser_cut_part for laser_cut_part in self.laser_cut_parts if laser_cut_part.name == laser_cut_part_name),
+            (
+                laser_cut_part
+                for laser_cut_part in self.laser_cut_parts
+                if laser_cut_part.name == laser_cut_part_name
+            ),
             None,
         )
 
     def get_recut_part_by_name(self, recut_part_name: str) -> LaserCutPart:
         return next(
-            (recut_part for recut_part in self.recut_parts if recut_part.name == recut_part_name),
+            (
+                recut_part
+                for recut_part in self.recut_parts
+                if recut_part.name == recut_part_name
+            ),
             None,
         )
 
     def sort_by_quantity(self) -> list[LaserCutPart]:
-        self.laser_cut_parts = natsorted(self.laser_cut_parts, key=lambda laser_cut_part: laser_cut_part.quantity)
-        self.recut_parts = natsorted(self.recut_parts, key=lambda recut_part: recut_part.quantity)
+        self.laser_cut_parts = natsorted(
+            self.laser_cut_parts, key=lambda laser_cut_part: laser_cut_part.quantity
+        )
+        self.recut_parts = natsorted(
+            self.recut_parts, key=lambda recut_part: recut_part.quantity
+        )
 
     def save(self):
-        with open(f"{self.FOLDER_LOCATION}/{self.filename}.json", "w", encoding="utf-8") as file:
+        with open(
+            f"{self.FOLDER_LOCATION}/{self.filename}.json", "w", encoding="utf-8"
+        ) as file:
             json.dump(self.to_dict(), file, ensure_ascii=False, indent=4)
 
     def load_data(self):
         try:
-            with open(f"{self.FOLDER_LOCATION}/{self.filename}.json", "r", encoding="utf-8") as file:
+            with open(
+                f"{self.FOLDER_LOCATION}/{self.filename}.json", "r", encoding="utf-8"
+            ) as file:
                 data: dict[str, dict[str, object]] = json.load(file)
             self.categories.from_dict(data["categories"])
             self.laser_cut_parts.clear()
             self.recut_parts.clear()
-            for laser_cut_part_name, laser_cut_part_data in data["laser_cut_parts"].items():
-                laser_cut_part = LaserCutPart(laser_cut_part_name, laser_cut_part_data, self)
+            for laser_cut_part_name, laser_cut_part_data in data[
+                "laser_cut_parts"
+            ].items():
+                laser_cut_part = LaserCutPart(
+                    laser_cut_part_name, laser_cut_part_data, self
+                )
                 self.add_laser_cut_part(laser_cut_part)
             for recut_part_name, recut_part_data in data["recut_parts"].items():
                 recut_part = LaserCutPart(recut_part_name, recut_part_data, self)
@@ -122,7 +154,9 @@ class LaserCutInventory(Inventory):
             "recut_parts": {},
         }
         for laser_cut_part in self.laser_cut_parts:
-            data["laser_cut_parts"].update({laser_cut_part.name: laser_cut_part.to_dict()})
+            data["laser_cut_parts"].update(
+                {laser_cut_part.name: laser_cut_part.to_dict()}
+            )
         for recut_part in self.recut_parts:
             data["recut_parts"].update({recut_part.name: recut_part.to_dict()})
         return data

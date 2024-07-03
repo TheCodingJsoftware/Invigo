@@ -20,7 +20,14 @@ class JobPreferences:
     def group_toolbox_toggled(self, name: QLineEdit, button: QPushButton):
         self.closed_toolboxes[name.text()] = button.isChecked()
 
-    def assembly_toolbox_toggled(self, name: QLineEdit, button: QPushButton, laser_cut_button: QPushButton, component_button: QPushButton, sub_assembly_button: QPushButton):
+    def assembly_toolbox_toggled(
+        self,
+        name: QLineEdit,
+        button: QPushButton,
+        laser_cut_button: QPushButton,
+        component_button: QPushButton,
+        sub_assembly_button: QPushButton,
+    ):
         self.closed_toolboxes[name.text()] = {
             "is_closed": button.isChecked(),
             "is_laser_cut_closed": laser_cut_button.isChecked(),

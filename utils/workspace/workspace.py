@@ -32,16 +32,22 @@ class Workspace:
 
     def __create_file(self) -> None:
         if not os.path.exists(f"{self.FOLDER_LOCATION}/{self.file_name}.json"):
-            with open(f"{self.FOLDER_LOCATION}/{self.file_name}.json", "w", encoding="utf-8") as json_file:
+            with open(
+                f"{self.FOLDER_LOCATION}/{self.file_name}.json", "w", encoding="utf-8"
+            ) as json_file:
                 json_file.write("{}")
 
     def save(self) -> None:
-        with open(f"{self.FOLDER_LOCATION}/{self.file_name}.json", "w", encoding="utf-8") as json_file:
+        with open(
+            f"{self.FOLDER_LOCATION}/{self.file_name}.json", "w", encoding="utf-8"
+        ) as json_file:
             json.dump(self.to_dict(), json_file, ensure_ascii=False)
 
     def load_data(self) -> None:
         try:
-            with open(f"{self.FOLDER_LOCATION}/{self.file_name}.json", "r", encoding="utf-8") as json_file:
+            with open(
+                f"{self.FOLDER_LOCATION}/{self.file_name}.json", "r", encoding="utf-8"
+            ) as json_file:
                 data = json.load(json_file)
         except json.JSONDecodeError:
             return

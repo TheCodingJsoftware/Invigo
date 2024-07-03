@@ -21,7 +21,9 @@ class DownloadThread(QThread):
 
         for file_to_download in self.files_to_download:
             try:
-                response = self.session.get(self.file_url + file_to_download, timeout=10)
+                response = self.session.get(
+                    self.file_url + file_to_download, timeout=10
+                )
 
                 if response.status_code == 200:
                     filepath = f"data/{file_to_download}"
@@ -34,8 +36,14 @@ class DownloadThread(QThread):
                 failed_downloads.append((file_to_download, str(e)))
 
         if failed_downloads:
-            self.signal.emit({"status": "failed", "failed_files": failed_downloads}, self.files_to_download)
+            self.signal.emit(
+                {"status": "failed", "failed_files": failed_downloads},
+                self.files_to_download,
+            )
         else:
-            self.signal.emit({"status": "success", "successful_files": successful_downloads}, self.files_to_download)
+            self.signal.emit(
+                {"status": "success", "successful_files": successful_downloads},
+                self.files_to_download,
+            )
 
         self.session.close()

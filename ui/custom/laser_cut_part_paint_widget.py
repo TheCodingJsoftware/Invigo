@@ -1,7 +1,9 @@
 from PyQt6.QtCore import pyqtSignal
 from PyQt6.QtWidgets import QCheckBox, QVBoxLayout, QWidget
 
-from ui.custom.laser_cut_part_paint_settings_widget import LasserCutPartPaintSettingsWidget
+from ui.custom.laser_cut_part_paint_settings_widget import (
+    LasserCutPartPaintSettingsWidget,
+)
 from ui.custom_widgets import CustomTableWidget
 from utils.inventory.laser_cut_part import LaserCutPart
 

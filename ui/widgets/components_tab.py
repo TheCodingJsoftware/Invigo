@@ -8,16 +8,42 @@ from natsort import natsorted
 from PyQt6 import uic
 from PyQt6.QtCore import QDate, Qt
 from PyQt6.QtGui import QAction, QColor, QCursor, QFont, QIcon
-from PyQt6.QtWidgets import QAbstractItemView, QCompleter, QDateEdit, QGridLayout, QHBoxLayout, QInputDialog, QLabel, QLineEdit, QListWidget, QMenu, QMessageBox, QPushButton, QTableWidgetItem, QVBoxLayout, QWidget
+from PyQt6.QtWidgets import (
+    QAbstractItemView,
+    QCompleter,
+    QDateEdit,
+    QGridLayout,
+    QHBoxLayout,
+    QInputDialog,
+    QLabel,
+    QLineEdit,
+    QListWidget,
+    QMenu,
+    QMessageBox,
+    QPushButton,
+    QTableWidgetItem,
+    QVBoxLayout,
+    QWidget,
+)
 
-from ui.custom_widgets import CustomTableWidget, CustomTabWidget, ExchangeRateComboBox, NotesPlainTextEdit, OrderStatusButton, POPushButton, PriorityComboBox
+from ui.custom_widgets import (
+    CustomTableWidget,
+    CustomTabWidget,
+    ExchangeRateComboBox,
+    NotesPlainTextEdit,
+    OrderStatusButton,
+    POPushButton,
+    PriorityComboBox,
+)
 from ui.dialogs.add_item_dialog import AddItemDialog
 from ui.dialogs.edit_category_dialog import EditCategoryDialog
 from ui.dialogs.items_change_quantity_dialog import ItemsChangeQuantityDialog
 from ui.dialogs.select_item_dialog import SelectItemDialog
 from ui.dialogs.set_component_order_pending_dialog import SetComponentOrderPendingDialog
 from ui.dialogs.set_custom_limit_dialog import SetCustomLimitDialog
-from ui.dialogs.update_component_order_pending_dialog import UpdateComponentOrderPendingDialog
+from ui.dialogs.update_component_order_pending_dialog import (
+    UpdateComponentOrderPendingDialog,
+)
 from utils.dialog_buttons import DialogButtons
 from utils.history_file import HistoryFile
 from utils.inventory.category import Category

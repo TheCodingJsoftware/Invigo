@@ -5,7 +5,21 @@ from datetime import datetime
 from PyQt6 import uic
 from PyQt6.QtCore import Qt
 from PyQt6.QtGui import QCursor, QFont, QIcon
-from PyQt6.QtWidgets import QAbstractItemView, QComboBox, QDoubleSpinBox, QInputDialog, QLineEdit, QListWidget, QMenu, QPushButton, QTableWidget, QTableWidgetItem, QTabWidget, QVBoxLayout, QWidget
+from PyQt6.QtWidgets import (
+    QAbstractItemView,
+    QComboBox,
+    QDoubleSpinBox,
+    QInputDialog,
+    QLineEdit,
+    QListWidget,
+    QMenu,
+    QPushButton,
+    QTableWidget,
+    QTableWidgetItem,
+    QTabWidget,
+    QVBoxLayout,
+    QWidget,
+)
 
 from ui.custom_widgets import CustomTableWidget, CustomTabWidget
 from utils.settings import Settings

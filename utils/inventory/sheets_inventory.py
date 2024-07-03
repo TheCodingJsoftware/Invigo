@@ -33,7 +33,9 @@ class SheetsInventory(Inventory):
     def remove_sheet(self, sheet: Sheet):
         self.sheets.remove(sheet)
 
-    def duplicate_category(self, category_to_duplicate: Category, new_category_name: str) -> Category:
+    def duplicate_category(
+        self, category_to_duplicate: Category, new_category_name: str
+    ) -> Category:
         new_category = Category(new_category_name)
         super().add_category(new_category)
         for sheet in self.get_sheets_by_category(category_to_duplicate):
@@ -47,7 +49,9 @@ class SheetsInventory(Inventory):
         return deleted_category
 
     def get_sheet_cost(self, sheet: Sheet) -> float:
-        pounds_per_square_foot = self.sheet_settings.get_pounds_per_square_foot(sheet.material, sheet.thickness)
+        pounds_per_square_foot = self.sheet_settings.get_pounds_per_square_foot(
+            sheet.material, sheet.thickness
+        )
         pounds_per_sheet = ((sheet.length * sheet.width) / 144) * pounds_per_square_foot
         price_per_pound = self.sheet_settings.get_price_per_pound(sheet.material)
         return pounds_per_sheet * price_per_pound
@@ -59,7 +63,9 @@ class SheetsInventory(Inventory):
         return total
 
     def get_sheet_by_name(self, sheet_name: str) -> Sheet:
-        return next((sheet for sheet in self.sheets if sheet.get_name() == sheet_name), None)
+        return next(
+            (sheet for sheet in self.sheets if sheet.get_name() == sheet_name), None
+        )
 
     def exists(self, other: Sheet) -> bool:
         return any(sheet.get_name() == other.get_name() for sheet in self.sheets)
@@ -71,12 +77,16 @@ class SheetsInventory(Inventory):
         self.sheets = natsorted(self.sheets, key=lambda sheet: sheet.thickness)
 
     def save(self):
-        with open(f"{self.FOLDER_LOCATION}/{self.filename}.json", "w", encoding="utf-8") as file:
+        with open(
+            f"{self.FOLDER_LOCATION}/{self.filename}.json", "w", encoding="utf-8"
+        ) as file:
             json.dump(self.to_dict(), file, ensure_ascii=False, indent=4)
 
     def load_data(self):
         try:
-            with open(f"{self.FOLDER_LOCATION}/{self.filename}.json", "r", encoding="utf-8") as file:
+            with open(
+                f"{self.FOLDER_LOCATION}/{self.filename}.json", "r", encoding="utf-8"
+            ) as file:
                 data: dict[str, dict[str, object]] = json.load(file)
             self.categories.from_dict(data["categories"])
             self.sheets.clear()

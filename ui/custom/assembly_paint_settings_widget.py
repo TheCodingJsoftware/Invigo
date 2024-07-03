@@ -1,5 +1,12 @@
 from PyQt6.QtCore import pyqtSignal
-from PyQt6.QtWidgets import QComboBox, QDoubleSpinBox, QGridLayout, QHBoxLayout, QLabel, QWidget
+from PyQt6.QtWidgets import (
+    QComboBox,
+    QDoubleSpinBox,
+    QGridLayout,
+    QHBoxLayout,
+    QLabel,
+    QWidget,
+)
 
 from utils.workspace.assembly import Assembly
 

@@ -6,7 +6,15 @@ import zipfile
 
 import psutil
 import requests
-from PyQt6.QtCore import QEasingCurve, QPropertyAnimation, QRect, Qt, QThread, pyqtProperty, pyqtSignal
+from PyQt6.QtCore import (
+    QEasingCurve,
+    QPropertyAnimation,
+    QRect,
+    Qt,
+    QThread,
+    pyqtProperty,
+    pyqtSignal,
+)
 from PyQt6.QtGui import QColor, QPainter
 from PyQt6.QtWidgets import QApplication, QLabel, QVBoxLayout, QWidget
 
@@ -41,7 +49,9 @@ class DownloadThread(QThread):
                     # self.signal.emit(f"Error during installation: {error_message}")
                     if "Invigo.exe" in error_message:
                         if not self.close_process("Invigo.exe"):
-                            self.signal.emit("Failed to close Invigo.exe. Please close it manually.")
+                            self.signal.emit(
+                                "Failed to close Invigo.exe. Please close it manually."
+                            )
                             # break  # Exit if we can't close the process after trying
                         else:
                             self.signal.emit("Installing...")
@@ -70,7 +80,9 @@ class DownloadThread(QThread):
                 except psutil.NoSuchProcess:
                     self.signal.emit(f"Process {process_name} does not exist.")
                 except psutil.AccessDenied:
-                    self.signal.emit(f"Access denied when trying to terminate {process_name}.")
+                    self.signal.emit(
+                        f"Access denied when trying to terminate {process_name}."
+                    )
                 except Exception as e:
                     self.signal.emit(f"An error occurred: {e}")
         return False
@@ -85,7 +97,9 @@ class DownloadThread(QThread):
                     if chunk:
                         total_downloaded += len(chunk)
                         f.write(chunk)
-                        self.signal.emit(f"Downloading update... {((total_downloaded/content_length)*100):.2f}%")
+                        self.signal.emit(
+                            f"Downloading update... {((total_downloaded/content_length)*100):.2f}%"
+                        )
         except Exception as e:
             self.signal.emit(f"ABORTING: {str(e)}")
 
@@ -119,10 +133,14 @@ class CircleWidget(QWidget):
             painter.drawEllipse(QRect(x, y, 40, 40))
         painter.setBrush(QColor(46, 46, 48))
         painter.setPen(QColor(139, 143, 148))
-        painter.drawEllipse(self.width() // 2 - 25, self.height() // 2 - 25 - 50, 50, 50)
+        painter.drawEllipse(
+            self.width() // 2 - 25, self.height() // 2 - 25 - 50, 50, 50
+        )
         painter.setBrush(QColor(61, 174, 233))
         painter.setPen(QColor(46, 46, 48))
-        painter.drawEllipse(self.width() // 2 - 20, self.height() // 2 - 20 - 50, 40, 40)
+        painter.drawEllipse(
+            self.width() // 2 - 20, self.height() // 2 - 20 - 50, 40, 40
+        )
 
     @pyqtProperty(int)
     def angle(self):
@@ -166,7 +184,9 @@ class Window(QWidget):
         self.progress_text.setText("Updated successfully!")
         self.progress_text.move(10, HEIGHT // 2)
         self.progress_text.setFixedSize(WIDTH - 20, 100)
-        self.progress_text.setAlignment(Qt.AlignmentFlag.AlignHCenter | Qt.AlignmentFlag.AlignVCenter)
+        self.progress_text.setAlignment(
+            Qt.AlignmentFlag.AlignHCenter | Qt.AlignmentFlag.AlignVCenter
+        )
 
         self.circle_widget = CircleWidget(self)
         layout = QVBoxLayout()

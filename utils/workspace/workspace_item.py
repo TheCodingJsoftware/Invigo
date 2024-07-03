@@ -3,7 +3,9 @@ from utils.inventory.laser_cut_part import LaserCutPart
 
 
 class WorkspaceItem:
-    def __init__(self, inventory_item: Component | LaserCutPart | None, data: dict) -> None:
+    def __init__(
+        self, inventory_item: Component | LaserCutPart | None, data: dict
+    ) -> None:
         # NOTE NON serialized variables
         self.show: bool = True
         self.inventory_item = inventory_item
@@ -42,15 +44,31 @@ class WorkspaceItem:
         self.bending_files: list[str] = data.get("bending_files", [])
         self.welding_files: list[str] = data.get("welding_files", [])
         self.cnc_milling_files: list[str] = data.get("cnc_milling_files", [])
-        self.thickness: str = self.inventory_item.gauge if isinstance(self.inventory_item, LaserCutPart) else data.get("thickness", "")
-        self.material: str = self.inventory_item.material if isinstance(self.inventory_item, LaserCutPart) else data.get("material", "")
+        self.thickness: str = (
+            self.inventory_item.gauge
+            if isinstance(self.inventory_item, LaserCutPart)
+            else data.get("thickness", "")
+        )
+        self.material: str = (
+            self.inventory_item.material
+            if isinstance(self.inventory_item, LaserCutPart)
+            else data.get("material", "")
+        )
         self.parts_per: int = data.get("parts_per", 0)
         self.flow_tag: list[str] = data.get("flow_tag", [])
         self.timers: dict[str, dict] = data.get("timers", {})
         self.customer: str = data.get("customer", "")
         self.ship_to: str = data.get("ship_to", "")
-        self.shelf_number: str = self.inventory_item.shelf_number if isinstance(self.inventory_item, LaserCutPart) else data.get("shelf_number", "")
-        self.notes: str = self.inventory_item.notes if isinstance(self.inventory_item, Component) else data.get("notes", "")
+        self.shelf_number: str = (
+            self.inventory_item.shelf_number
+            if isinstance(self.inventory_item, LaserCutPart)
+            else data.get("shelf_number", "")
+        )
+        self.notes: str = (
+            self.inventory_item.notes
+            if isinstance(self.inventory_item, Component)
+            else data.get("notes", "")
+        )
         # NOTE Used in user workspace
         self.current_flow_state: int = data.get("current_flow_state", 0)
         self.recoat: bool = data.get("recoat", False)

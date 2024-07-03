@@ -9,11 +9,23 @@ from utils.sheet_settings.sheet_settings import SheetSettings
 
 
 class Quote:
-    def __init__(self, name: str, data: dict, component_inventory: ComponentsInventory, laser_cut_inventory: LaserCutInventory, sheet_settings: SheetSettings):
+    def __init__(
+        self,
+        name: str,
+        data: dict,
+        component_inventory: ComponentsInventory,
+        laser_cut_inventory: LaserCutInventory,
+        sheet_settings: SheetSettings,
+    ):
         self.name = name
 
         if data is None:
-            data = {"settings": {}, "components": {}, "laser_cut_parts": {}, "nests": {}}
+            data = {
+                "settings": {},
+                "components": {},
+                "laser_cut_parts": {},
+                "nests": {},
+            }
 
         self.component_inventory = component_inventory
         self.laser_cut_inventory = laser_cut_inventory
@@ -22,12 +34,16 @@ class Quote:
         self.grouped_laser_cut_parts: list[LaserCutPart] = []
         self.components: list[Component] = []
         self.nests: list[Nest] = []
-        self.custom_nest: Nest = Nest("Custom", {}, self.sheet_settings, self.laser_cut_inventory)
+        self.custom_nest: Nest = Nest(
+            "Custom", {}, self.sheet_settings, self.laser_cut_inventory
+        )
         self.custom_nest.is_custom = True
 
         # * Nest, Sheet, Item Quoting Settings
         self.laser_cutting_method: str = "CO2"
-        self.laser_cutting_cost: float = self.sheet_settings.cost_for_laser[self.laser_cutting_method]
+        self.laser_cutting_cost: float = self.sheet_settings.cost_for_laser[
+            self.laser_cutting_method
+        ]
 
         self.item_overhead: float = 18.0
         self.item_profit_margin: float = 30.0
@@ -77,9 +93,15 @@ class Quote:
                 continue
             for laser_cut_part in nest.laser_cut_parts:
                 if laser_cut_part.name in laser_cut_part_dict:
-                    laser_cut_part_dict[laser_cut_part.name].quantity += laser_cut_part.quantity
+                    laser_cut_part_dict[
+                        laser_cut_part.name
+                    ].quantity += laser_cut_part.quantity
                 else:
-                    new_laser_cut_part = LaserCutPart(laser_cut_part.name, laser_cut_part.to_dict(), self.laser_cut_inventory)
+                    new_laser_cut_part = LaserCutPart(
+                        laser_cut_part.name,
+                        laser_cut_part.to_dict(),
+                        self.laser_cut_inventory,
+                    )
                     # This is because we group the data, so all nest reference is lost.
                     new_laser_cut_part.quantity_in_nest = None
                     laser_cut_part_dict[laser_cut_part.name] = new_laser_cut_part
@@ -104,7 +126,9 @@ class Quote:
         self.nests = natsorted(self.nests, key=lambda nest: nest.name)
 
     def sort_laser_cut_parts(self):
-        self.grouped_laser_cut_parts = natsorted(self.grouped_laser_cut_parts, key=lambda laser_cut_part: laser_cut_part.name)
+        self.grouped_laser_cut_parts = natsorted(
+            self.grouped_laser_cut_parts, key=lambda laser_cut_part: laser_cut_part.name
+        )
 
     def load_settings(self, data: dict[str, dict[str, str | bool | float]]):
         # * Nest, Sheet, Item Quoting Settings
@@ -112,12 +136,20 @@ class Quote:
         self.laser_cutting_cost = data["settings"].get("laser_cutting_cost", 150.0)
         self.item_overhead = data["settings"].get("item_overhead", 18.0)
         self.item_profit_margin = data["settings"].get("item_profit_margin", 30.0)
-        self.match_item_to_sheet_cost = data["settings"].get("match_item_to_sheet_cost", False)
+        self.match_item_to_sheet_cost = data["settings"].get(
+            "match_item_to_sheet_cost", False
+        )
         self.sheet_overhead = data["settings"].get("sheet_overhead", 18.0)
         self.sheet_profit_margin = data["settings"].get("sheet_profit_margin", 30.0)
-        self.match_sheet_cost_to_item = data["settings"].get("match_sheet_cost_to_item", False)
-        self.component_use_overhead = data["settings"].get("component_use_overhead", False)
-        self.component_use_profit_margin = data["settings"].get("component_use_profit_margin", False)
+        self.match_sheet_cost_to_item = data["settings"].get(
+            "match_sheet_cost_to_item", False
+        )
+        self.component_use_overhead = data["settings"].get(
+            "component_use_overhead", False
+        )
+        self.component_use_profit_margin = data["settings"].get(
+            "component_use_profit_margin", False
+        )
 
         # * Paint Settings
         self.primer_overspray = data["settings"].get("primer_overspray", 66.67)
@@ -136,16 +168,24 @@ class Quote:
         self.load_settings(data)
         self.components.clear()
         for component_name, component_data in data["components"].items():
-            self.components.append(Component(component_name, component_data, self.component_inventory))
+            self.components.append(
+                Component(component_name, component_data, self.component_inventory)
+            )
 
         self.nests.clear()
 
         custom_nest_data = data.get("custom_nest", {})
-        self.custom_nest = Nest("Custom", custom_nest_data, self.sheet_settings, self.laser_cut_inventory)
+        self.custom_nest = Nest(
+            "Custom", custom_nest_data, self.sheet_settings, self.laser_cut_inventory
+        )
         self.custom_nest.is_custom = True
 
         for nest_name, nest_data in data["nests"].items():
-            self.nests.append(Nest(nest_name, nest_data, self.sheet_settings, self.laser_cut_inventory))
+            self.nests.append(
+                Nest(
+                    nest_name, nest_data, self.sheet_settings, self.laser_cut_inventory
+                )
+            )
 
         self.group_laser_cut_parts()
 

@@ -16,13 +16,54 @@ import win32api  # pywin32
 from natsort import natsorted, ns
 from PyQt6 import uic
 from PyQt6.QtCore import QEventLoop, QPoint, Qt, QThread, QTimer
-from PyQt6.QtGui import QAction, QColor, QCursor, QDragEnterEvent, QDragLeaveEvent, QDragMoveEvent, QDropEvent, QFont, QIcon
-from PyQt6.QtWidgets import QApplication, QComboBox, QFileDialog, QFontDialog, QGridLayout, QInputDialog, QLabel, QListWidget, QListWidgetItem, QMainWindow, QMenu, QMessageBox, QPushButton, QScrollArea, QSplitter, QTableWidgetItem, QTabWidget, QToolBox, QVBoxLayout, QWidget
+from PyQt6.QtGui import (
+    QAction,
+    QColor,
+    QCursor,
+    QDragEnterEvent,
+    QDragLeaveEvent,
+    QDragMoveEvent,
+    QDropEvent,
+    QFont,
+    QIcon,
+)
+from PyQt6.QtWidgets import (
+    QApplication,
+    QComboBox,
+    QFileDialog,
+    QFontDialog,
+    QGridLayout,
+    QInputDialog,
+    QLabel,
+    QListWidget,
+    QListWidgetItem,
+    QMainWindow,
+    QMenu,
+    QMessageBox,
+    QPushButton,
+    QScrollArea,
+    QSplitter,
+    QTableWidgetItem,
+    QTabWidget,
+    QToolBox,
+    QVBoxLayout,
+    QWidget,
+)
 
 from ui.custom.job_tab import JobTab
 from ui.custom.job_widget import JobWidget
 from ui.custom.saved_job_item import SavedPlanningJobItem
-from ui.custom_widgets import CustomTableWidget, MultiToolBox, PdfTreeView, PreviousQuoteItem, RichTextPushButton, SavedQuoteItem, ScrollPositionManager, ViewTree, set_default_dialog_button_stylesheet
+from ui.custom_widgets import (
+    CustomTableWidget,
+    MultiToolBox,
+    PdfTreeView,
+    PreviousQuoteItem,
+    RichTextPushButton,
+    SavedQuoteItem,
+    ScrollPositionManager,
+    ViewTree,
+    set_default_dialog_button_stylesheet,
+)
 from ui.dialogs.about_dialog import AboutDialog
 from ui.dialogs.edit_paint_inventory import EditPaintInventory
 from ui.dialogs.edit_workspace_settings import EditWorkspaceSettings
@@ -158,7 +199,7 @@ def send_error_report():
     if response.status_code != 200:
         win32api.MessageBox(
             0,
-            f"Failed to send email. Kindly notify Jared about the issue you just encountered!",
+            "Failed to send email. Kindly notify Jared about the issue you just encountered!",
             "Failed to send email",
             0x40,
         )
@@ -314,8 +355,8 @@ class MainWindow(QMainWindow):
         self.splitter_2 = self.findChild(QSplitter, "splitter_2")
         self.splitter_3 = self.findChild(QSplitter, "splitter_3")
 
-        self.splitter.setStretchFactor(0, 1)  # Job Planner
-        self.splitter.setStretchFactor(1, 0)  # Job Planner
+        self.splitter.setStretchFactor(0, 0)  # Job Planner
+        self.splitter.setStretchFactor(1, 1)  # Job Planner
 
         self.splitter_3.setStretchFactor(0, 3)  # Quote Generator
         self.splitter_3.setStretchFactor(1, 2)  # Quote Generator

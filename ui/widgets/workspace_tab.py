@@ -8,12 +8,49 @@ import sympy
 from PyQt6 import uic
 from PyQt6.QtCore import QDate, Qt
 from PyQt6.QtGui import QAction, QCursor, QFont, QIcon
-from PyQt6.QtWidgets import QAbstractItemView, QApplication, QComboBox, QCompleter, QGridLayout, QGroupBox, QHBoxLayout, QInputDialog, QLabel, QLineEdit, QMenu, QMessageBox, QPushButton, QScrollArea, QTableWidgetItem, QTabWidget, QVBoxLayout, QWidget
+from PyQt6.QtWidgets import (
+    QAbstractItemView,
+    QApplication,
+    QComboBox,
+    QCompleter,
+    QGridLayout,
+    QGroupBox,
+    QHBoxLayout,
+    QInputDialog,
+    QLabel,
+    QLineEdit,
+    QMenu,
+    QMessageBox,
+    QPushButton,
+    QScrollArea,
+    QTableWidgetItem,
+    QTabWidget,
+    QVBoxLayout,
+    QWidget,
+)
 
-from ui.custom_widgets import AssemblyImage, AssemblyMultiToolBox, CustomTableWidget, DeletePushButton, DraggableButton, DropWidget, FilterTabWidget, HumbleDoubleSpinBox, ItemsGroupBox, MultiToolBox, NotesPlainTextEdit, RecordingWidget, ScrollPositionManager, SelectRangeCalendar, TimeSpinBox
+from ui.custom_widgets import (
+    AssemblyImage,
+    AssemblyMultiToolBox,
+    CustomTableWidget,
+    DeletePushButton,
+    DraggableButton,
+    DropWidget,
+    FilterTabWidget,
+    HumbleDoubleSpinBox,
+    ItemsGroupBox,
+    MultiToolBox,
+    NotesPlainTextEdit,
+    RecordingWidget,
+    ScrollPositionManager,
+    SelectRangeCalendar,
+    TimeSpinBox,
+)
 from ui.dialogs.color_picker_dialog import ColorPicker
 from ui.dialogs.generate_workorder_dialog import GenerateWorkorderDialog
-from ui.dialogs.generate_workspace_printout_dialog import GenerateWorkspacePrintoutDialog
+from ui.dialogs.generate_workspace_printout_dialog import (
+    GenerateWorkspacePrintoutDialog,
+)
 from ui.dialogs.recut_dialog import RecutDialog
 from utils.colors import get_random_color
 from utils.dialog_buttons import DialogButtons

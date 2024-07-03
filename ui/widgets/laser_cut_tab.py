@@ -8,7 +8,26 @@ from natsort import natsorted
 from PyQt6 import uic
 from PyQt6.QtCore import Qt
 from PyQt6.QtGui import QAction, QColor, QCursor, QFont, QIcon
-from PyQt6.QtWidgets import QAbstractItemView, QCheckBox, QComboBox, QCompleter, QDialog, QDoubleSpinBox, QGridLayout, QHBoxLayout, QInputDialog, QLabel, QLineEdit, QMenu, QMessageBox, QPushButton, QScrollArea, QTableWidgetItem, QVBoxLayout, QWidget
+from PyQt6.QtWidgets import (
+    QAbstractItemView,
+    QCheckBox,
+    QComboBox,
+    QCompleter,
+    QDialog,
+    QDoubleSpinBox,
+    QGridLayout,
+    QHBoxLayout,
+    QInputDialog,
+    QLabel,
+    QLineEdit,
+    QMenu,
+    QMessageBox,
+    QPushButton,
+    QScrollArea,
+    QTableWidgetItem,
+    QVBoxLayout,
+    QWidget,
+)
 
 from ui.custom_widgets import CustomTableWidget, CustomTabWidget, FilterButton
 from ui.dialogs.edit_category_dialog import EditCategoryDialog

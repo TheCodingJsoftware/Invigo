@@ -5,7 +5,9 @@ from utils.inventory.inventory_item import InventoryItem
 
 
 class Powder(InventoryItem):
-    def __init__(self, name: str, data: dict[str, str | float], paint_inventory) -> None:
+    def __init__(
+        self, name: str, data: dict[str, str | float], paint_inventory
+    ) -> None:
         super().__init__(name)
         self.paint_inventory = paint_inventory
         self.component: Component = None
@@ -14,7 +16,11 @@ class Powder(InventoryItem):
         self.load_data(data)
 
     def get_component(self):
-        self.component = self.paint_inventory.components_inventory.get_component_by_part_name(self.name)
+        self.component = (
+            self.paint_inventory.components_inventory.get_component_by_part_name(
+                self.name
+            )
+        )
 
     def load_data(self, data: dict[str, Union[str, int, float, bool]]):
         self.categories.clear()
