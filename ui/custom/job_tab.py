@@ -7,7 +7,7 @@ from PyQt6.QtGui import QKeySequence, QShortcut
 from PyQt6.QtWidgets import QInputDialog, QPushButton, QVBoxLayout, QWidget
 
 from ui.custom.job_tab_widget import JobTabWidget
-from ui.custom.job_widget import JobWidget
+from ui.widgets.job_widget import JobWidget
 from utils import colors
 from utils.workspace.job import Job, JobStatus
 from utils.workspace.job_manager import JobManager

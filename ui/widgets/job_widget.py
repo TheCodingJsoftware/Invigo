@@ -17,7 +17,7 @@ from PyQt6.QtWidgets import (
     QWidget,
 )
 
-from ui.custom.group_widget import GroupWidget
+from ui.widgets.group_widget import GroupWidget
 from ui.custom_widgets import AssemblyMultiToolBox, MultiToolBox, QLineEdit
 from ui.widgets.nest_widget import NestWidget
 from utils import colors

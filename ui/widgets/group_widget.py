@@ -14,7 +14,7 @@ from utils.workspace.group import Group
 from utils.workspace.job_preferences import JobPreferences
 
 if TYPE_CHECKING:
-    from ui.custom.job_widget import JobWidget
+    from ui.widgets.job_widget import JobWidget
 
 
 class GroupWidget(QWidget):

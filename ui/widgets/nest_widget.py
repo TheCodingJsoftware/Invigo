@@ -21,7 +21,7 @@ from utils.inventory.sheets_inventory import Sheet
 from utils.quote.nest import Nest
 
 if TYPE_CHECKING:
-    from ui.custom.job_widget import JobWidget
+    from ui.widgets.job_widget import JobWidget
 
 
 class NestWidget(QWidget):

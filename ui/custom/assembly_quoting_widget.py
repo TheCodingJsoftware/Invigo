@@ -21,7 +21,7 @@ from PyQt6.QtWidgets import (
 from ui.custom.assembly_image import AssemblyImage
 from ui.custom.assembly_paint_settings_widget import AssemblyPaintSettingsWidget
 from ui.custom.assembly_paint_widget import AssemblyPaintWidget
-from ui.custom.assembly_widget import AssemblyWidget
+from ui.widgets.assembly_widget import AssemblyWidget
 from ui.custom.components_quoting_table_widget import ComponentsQuotingTableWidget
 from ui.custom.file_button import FileButton
 from ui.custom.laser_cut_part_paint_settings_widget import (
