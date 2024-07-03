@@ -334,7 +334,7 @@ class AssemblyTable:
         self.server_directory = f"http://{get_server_ip_address()}:{get_server_port()}"
 
     def generate(self) -> str:
-        html = '''<div id="assemblies-layout">
+        html = '''<div id="assemblies-list-layout">
                 <h5 class="center-align">Assemblies:</h5>
                 <article class="assembly-table border">'''
         for assembly in self.job.get_all_assemblies():
@@ -514,7 +514,7 @@ class JobPlannerPrintout:
             </label>
             <br>
             <label class="checkbox">
-                <input type="checkbox" id="showAssemblies" data-name="show-assemblies" data-layout="assemblies-layout" {"checked" if self.job.groups else ""}>
+                <input type="checkbox" id="showAssemblies" data-name="show-assemblies" data-layout="assemblies-list-layout" {"checked" if self.job.groups else ""}>
                 <span>Show Assemblies</span>
             </label>
             <br>

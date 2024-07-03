@@ -39,7 +39,7 @@ details>summary {
     .page-break {
         page-break-after: always;
     }
-    .nest, .sheets-table, .assembly-table, #sheets-layout, #nests-layout, #assemblies-layout{
+    .nest, .sheets-table, .assembly-table, #sheets-layout, #nests-layout, #assemblies-list-layout{
         page-break-inside: avoid;
     }
 }
