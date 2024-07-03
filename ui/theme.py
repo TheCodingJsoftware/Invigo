@@ -1,8 +1,6 @@
 import contextlib
 import os
 
-from PyQt6 import QtGui
-
 THEME_PATH = f"{os.getcwd()}/ui/"
 
 STYLE_SHEET_PATH_DICT = {"dark": os.path.join(THEME_PATH, "dark_theme.qss")}
@@ -16,4 +14,6 @@ def set_theme(app, theme):
         app.setStyle("fusion")
 
     with open(STYLE_SHEET_PATH_DICT[theme], "r", encoding="utf-8") as style_sheet:
-        app.setStyleSheet(style_sheet.read().replace(DEFAULT_ICON_PATH, CURRENT_ICON_PATH))
+        app.setStyleSheet(
+            style_sheet.read().replace(DEFAULT_ICON_PATH, CURRENT_ICON_PATH)
+        )

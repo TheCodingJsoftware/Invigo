@@ -9,8 +9,13 @@ from utils.inventory.laser_cut_part import LaserCutPart
 class LaserCutPartPaintWidget(QWidget):
     settingsChanged = pyqtSignal()
 
-    def __init__(self, laser_cut_part: LaserCutPart, paint_settings_widget: LasserCutPartPaintSettingsWidget, parent: CustomTableWidget) -> None:
-        super(LaserCutPartPaintWidget, self).__init__(parent)
+    def __init__(
+        self,
+        laser_cut_part: LaserCutPart,
+        paint_settings_widget: LasserCutPartPaintSettingsWidget,
+        parent: CustomTableWidget,
+    ) -> None:
+        super().__init__(parent)
         self.parent: CustomTableWidget = parent
 
         self.laser_cut_part = laser_cut_part
@@ -34,10 +39,22 @@ class LaserCutPartPaintWidget(QWidget):
 
         self.setLayout(layout)
 
-        self.paint_settings_widget.widget_primer.setVisible(self.laser_cut_part.uses_primer)
-        self.paint_settings_widget.widget_paint_color.setVisible(self.laser_cut_part.uses_paint)
-        self.paint_settings_widget.widget_powder_coating.setVisible(self.laser_cut_part.uses_powder)
-        self.paint_settings_widget.not_painted_label.setVisible(not (self.laser_cut_part.uses_primer or self.laser_cut_part.uses_paint or self.laser_cut_part.uses_powder))
+        self.paint_settings_widget.widget_primer.setVisible(
+            self.laser_cut_part.uses_primer
+        )
+        self.paint_settings_widget.widget_paint_color.setVisible(
+            self.laser_cut_part.uses_paint
+        )
+        self.paint_settings_widget.widget_powder_coating.setVisible(
+            self.laser_cut_part.uses_powder
+        )
+        self.paint_settings_widget.not_painted_label.setVisible(
+            not (
+                self.laser_cut_part.uses_primer
+                or self.laser_cut_part.uses_paint
+                or self.laser_cut_part.uses_powder
+            )
+        )
 
         self.parent.resizeColumnsToContents()
 
@@ -46,10 +63,22 @@ class LaserCutPartPaintWidget(QWidget):
         self.laser_cut_part.uses_paint = self.checkbox_paint.isChecked()
         self.laser_cut_part.uses_powder = self.checkbox_powder.isChecked()
 
-        self.paint_settings_widget.widget_primer.setVisible(self.laser_cut_part.uses_primer)
-        self.paint_settings_widget.widget_paint_color.setVisible(self.laser_cut_part.uses_paint)
-        self.paint_settings_widget.widget_powder_coating.setVisible(self.laser_cut_part.uses_powder)
-        self.paint_settings_widget.not_painted_label.setVisible(not (self.laser_cut_part.uses_primer or self.laser_cut_part.uses_paint or self.laser_cut_part.uses_powder))
+        self.paint_settings_widget.widget_primer.setVisible(
+            self.laser_cut_part.uses_primer
+        )
+        self.paint_settings_widget.widget_paint_color.setVisible(
+            self.laser_cut_part.uses_paint
+        )
+        self.paint_settings_widget.widget_powder_coating.setVisible(
+            self.laser_cut_part.uses_powder
+        )
+        self.paint_settings_widget.not_painted_label.setVisible(
+            not (
+                self.laser_cut_part.uses_primer
+                or self.laser_cut_part.uses_paint
+                or self.laser_cut_part.uses_powder
+            )
+        )
 
         self.parent.resizeColumnsToContents()
 

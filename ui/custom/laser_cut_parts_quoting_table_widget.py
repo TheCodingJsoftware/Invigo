@@ -5,7 +5,7 @@ from ui.custom_widgets import CustomTableWidget
 
 class LaserCutPartsQuotingTableWidget(CustomTableWidget):
     def __init__(self, parent=None):
-        super(LaserCutPartsQuotingTableWidget, self).__init__(parent)
+        super().__init__(parent)
         self.row_height = 70
 
         self.picture_column = 0
@@ -15,7 +15,7 @@ class LaserCutPartsQuotingTableWidget(CustomTableWidget):
         self.quantity_column = 4
         self.part_dim_column = 5
 
-        self.paint_type_column = 6
+        self.painting_column = 6
         self.paint_settings_column = 7
         self.paint_cost_column = 8
 
@@ -28,7 +28,14 @@ class LaserCutPartsQuotingTableWidget(CustomTableWidget):
         self.recut_column = 15
         self.add_to_inventory_column = 16
 
-        self.set_editable_column_index([self.quantity_column, self.bend_cost_column, self.labor_cost_column, self.shelf_number_column])
+        self.set_editable_column_index(
+            [
+                self.quantity_column,
+                self.bend_cost_column,
+                self.labor_cost_column,
+                self.shelf_number_column,
+            ]
+        )
         self.setShowGrid(True)
         self.setSortingEnabled(False)
         self.setSelectionBehavior(QAbstractItemView.SelectionBehavior.SelectRows)
@@ -43,7 +50,7 @@ class LaserCutPartsQuotingTableWidget(CustomTableWidget):
             "Thickness": self.thickness_column,
             "Qty": self.quantity_column,
             "Part Dim": self.part_dim_column,
-            "Painting": self.paint_type_column,
+            "Painting": self.painting_column,
             "Paint Settings": self.paint_settings_column,
             "Paint Cost": self.paint_cost_column,
             "Cost of\nGoods": self.cost_of_goods_column,

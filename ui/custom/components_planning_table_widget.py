@@ -12,10 +12,10 @@ class ComponentsPlanningTableWidget(CustomTableWidget):
     imagePasted = pyqtSignal(str, int)
 
     def __init__(self, parent=None):
-        super(ComponentsPlanningTableWidget, self).__init__(parent)
+        super().__init__(parent)
         self.row_height = 60
 
-        self.image_column = 0
+        self.picture_column = 0
         self.part_name_column = 1
         self.part_number_column = 2
         self.quantity_column = 3
@@ -30,9 +30,24 @@ class ComponentsPlanningTableWidget(CustomTableWidget):
         self.setVerticalScrollMode(QAbstractItemView.ScrollMode.ScrollPerPixel)
         self.setHorizontalScrollMode(QAbstractItemView.ScrollMode.ScrollPerPixel)
 
-        self.set_editable_column_index([self.part_name_column, self.part_number_column, self.quantity_column, self.notes_column, self.shelf_number_column])
+        self.set_editable_column_index(
+            [
+                self.part_name_column,
+                self.part_number_column,
+                self.quantity_column,
+                self.notes_column,
+                self.shelf_number_column,
+            ]
+        )
 
-        headers: dict[str, int] = {"Picture": self.image_column, "Part Name": self.part_name_column, "Part Number": self.part_number_column, "Quantity": self.quantity_column, "Notes": self.notes_column, "Shelf #": self.shelf_number_column}
+        headers: dict[str, int] = {
+            "Picture": self.picture_column,
+            "Part Name": self.part_name_column,
+            "Part Number": self.part_number_column,
+            "Quantity": self.quantity_column,
+            "Notes": self.notes_column,
+            "Shelf #": self.shelf_number_column,
+        }
         self.setColumnCount(len(list(headers.keys())))
         self.setHorizontalHeaderLabels(headers)
         self.setStyleSheet("border-color: transparent;")
@@ -63,7 +78,9 @@ class ComponentsPlanningTableWidget(CustomTableWidget):
             if not os.path.exists("images"):
                 os.makedirs("images")
             # Resize the image to fit the specified height while maintaining aspect ratio
-            pixmap = QPixmap.fromImage(image).scaled(new_width, new_height, Qt.AspectRatioMode.KeepAspectRatio)
+            pixmap = QPixmap.fromImage(image).scaled(
+                new_width, new_height, Qt.AspectRatioMode.KeepAspectRatio
+            )
             image_path = f'images/{datetime.now().strftime("%Y%m%d%H%M%S%f")}.png'
             pixmap.save(image_path)
 

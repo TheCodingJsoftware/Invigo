@@ -6,10 +6,10 @@ from ui.custom_widgets import CustomTableWidget
 
 class LaserCutPartsPlanningTableWidget(CustomTableWidget):
     def __init__(self, parent=None):
-        super(LaserCutPartsPlanningTableWidget, self).__init__(parent)
+        super().__init__(parent)
         self.row_height = 70
 
-        self.image_column = 0
+        self.picture_column = 0
         self.part_name_column = 1
         self.bending_files_column = 2
         self.welding_files_column = 3
@@ -31,10 +31,17 @@ class LaserCutPartsPlanningTableWidget(CustomTableWidget):
         self.setSelectionMode(QAbstractItemView.SelectionMode.ExtendedSelection)
         self.setVerticalScrollMode(QAbstractItemView.ScrollMode.ScrollPerPixel)
         self.setHorizontalScrollMode(QAbstractItemView.ScrollMode.ScrollPerPixel)
-        self.set_editable_column_index([self.part_name_column, self.quantity_column, self.notes_column, self.shelf_number_column])
+        self.set_editable_column_index(
+            [
+                self.part_name_column,
+                self.quantity_column,
+                self.notes_column,
+                self.shelf_number_column,
+            ]
+        )
 
         headers: dict[str, int] = {
-            "Picture": self.image_column,
+            "Picture": self.picture_column,
             "Part Name": self.part_name_column,
             "Bending Files": self.bending_files_column,
             "Welding Files": self.welding_files_column,

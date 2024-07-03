@@ -14,7 +14,7 @@ from utils.workspace.job_manager import JobManager
 from utils.workspace.job_preferences import JobPreferences
 
 if TYPE_CHECKING:
-    from ui.main_window import MainWindow
+    from ui.window.main_window import MainWindow
 
 
 class JobTab(QWidget):
@@ -23,7 +23,7 @@ class JobTab(QWidget):
     reloadJob = pyqtSignal(JobWidget)
 
     def __init__(self, parent) -> None:
-        super(JobTab, self).__init__(parent)
+        super().__init__(parent)
         self.parent: MainWindow = parent
 
         self.job_manager: JobManager = self.parent.job_manager
@@ -65,9 +65,15 @@ class JobTab(QWidget):
         if not new_job:
             job = Job(f"Enter Job Name{len(self.job_widgets)}", {}, self.job_manager)
             job.color = colors.get_random_color()
-            if self.parent.tabWidget.tabText(self.parent.tabWidget.currentIndex()) == "Job Planner":
+            if (
+                self.parent.tabWidget.tabText(self.parent.tabWidget.currentIndex())
+                == "Job Planner"
+            ):
                 job.job_status = JobStatus.PLANNING
-            elif self.parent.tabWidget.tabText(self.parent.tabWidget.currentIndex()) == "Quote Generator 2":
+            elif (
+                self.parent.tabWidget.tabText(self.parent.tabWidget.currentIndex())
+                == "Quote Generator 2"
+            ):
                 job.job_status = JobStatus.QUOTED
             job.order_number = self.parent.order_number
             self.job_manager.add_job(job)
@@ -123,10 +129,14 @@ class JobTab(QWidget):
         job_widget.scrollArea.verticalScrollBar().setValue(y)
         job_widget.scrollArea.horizontalScrollBar().setValue(x)
 
-    def set_job_widget_scroll_position_with_delay(self, job: Job, job_widget: JobWidget):
+    def set_job_widget_scroll_position_with_delay(
+        self, job: Job, job_widget: JobWidget
+    ):
         self.timer = QTimer(self)  # For setting scroll in job widget
         self.timer.setSingleShot(True)
-        self.timer.timeout.connect(partial(self.execute_set_job_widget_scroll_position, job, job_widget))
+        self.timer.timeout.connect(
+            partial(self.execute_set_job_widget_scroll_position, job, job_widget)
+        )
         self.timer.start(500)
 
     def execute_set_job_widget_scroll_position(self, job: Job, job_widget: JobWidget):
@@ -135,7 +145,11 @@ class JobTab(QWidget):
 
     def get_tab_index(self, job: Job) -> int:
         return next(
-            (i for i, job_widget in enumerate(self.job_widgets) if job_widget.job == job),
+            (
+                i
+                for i, job_widget in enumerate(self.job_widgets)
+                if job_widget.job == job
+            ),
             0,
         )
 
@@ -150,20 +164,30 @@ class JobTab(QWidget):
 
     def get_active_job(self) -> Job:
         return next(
-            (job_widget.job for job_widget in self.job_widgets if job_widget.job.name == self.get_active_tab()),
+            (
+                job_widget.job
+                for job_widget in self.job_widgets
+                if job_widget.job.name == self.get_active_tab()
+            ),
             None,
         )
 
     def get_active_job_widget(self) -> JobWidget:
         active_job = self.job_widgets[self.get_tab_index(self.current_job)]
         return next(
-            (self.job_tab.widget(tab_index) for tab_index in range(self.job_tab.count()) if self.job_tab.widget(tab_index) == active_job),
+            (
+                self.job_tab.widget(tab_index)
+                for tab_index in range(self.job_tab.count())
+                if self.job_tab.widget(tab_index) == active_job
+            ),
             None,
         )
 
     def rename_tab(self, tab_index: int):
         active_tab = self.get_active_tab()
-        new_name, ok = QInputDialog.getText(self, "Rename Job", "Enter new job name:", text=active_tab)
+        new_name, ok = QInputDialog.getText(
+            self, "Rename Job", "Enter new job name:", text=active_tab
+        )
         if ok and new_name:
             self.current_job.name = new_name
             self.job_tab.setTabText(tab_index, new_name)

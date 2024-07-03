@@ -11,7 +11,7 @@ class AssemblyFileDropWidget(QWidget):
         files_layout: QHBoxLayout,
         parent,
     ):
-        super(AssemblyFileDropWidget, self).__init__(parent)
+        super().__init__(parent)
         self.parent = parent
         self.setAcceptDrops(True)
         self.files_layout = files_layout
@@ -63,7 +63,10 @@ class AssemblyFileDropWidget(QWidget):
                 ".jpg",
                 "sldprt",
             ]  # Allowed file extensions
-            valid_files = all(file_path.lower().endswith(tuple(allowed_extensions)) for file_path in file_paths)
+            valid_files = all(
+                file_path.lower().endswith(tuple(allowed_extensions))
+                for file_path in file_paths
+            )
             if valid_files:
                 self.fileDropped.emit(self.files_layout, file_paths)
                 self.reset_label()
@@ -80,7 +83,9 @@ class AssemblyFileDropWidget(QWidget):
         if event.button() == Qt.MouseButton.LeftButton:
             file_dialog = QFileDialog(self)
             file_dialog.setFileMode(QFileDialog.FileMode.ExistingFiles)
-            file_dialog.setNameFilter("Allowed Files (*.pdf *.dxf *.jpeg *.geo *.png *.jpg *.sldprt)")
+            file_dialog.setNameFilter(
+                "Allowed Files (*.pdf *.dxf *.jpeg *.geo *.png *.jpg *.sldprt)"
+            )
             file_dialog.setViewMode(QFileDialog.ViewMode.Detail)
             if file_dialog.exec():
                 if file_paths := file_dialog.selectedFiles():

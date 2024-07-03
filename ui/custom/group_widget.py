@@ -1,39 +1,35 @@
 import contextlib
-import math
-import os
-from datetime import datetime
 from functools import partial
+from typing import TYPE_CHECKING, Union
 
 from PyQt6 import uic
-from PyQt6.QtCore import QDate, Qt, pyqtSignal
-from PyQt6.QtGui import QAction, QColor, QCursor, QFont, QIcon, QKeySequence, QPixmap
-from PyQt6.QtWidgets import QAbstractItemView, QApplication, QCheckBox, QComboBox, QDateEdit, QDoubleSpinBox, QGridLayout, QHBoxLayout, QLabel, QMenu, QMessageBox, QPushButton, QTableWidgetItem, QTextEdit, QVBoxLayout, QWidget
+from PyQt6.QtCore import Qt
+from PyQt6.QtWidgets import QPushButton, QVBoxLayout, QWidget
 
-from ui.add_component_dialog import AddComponentDialog
 from ui.custom.assembly_planning_widget import AssemblyPlanningWidget
-from ui.custom_widgets import AssemblyMultiToolBox, ClickableLabel, CustomTableWidget, DeletePushButton, MachineCutTimeSpinBox, MultiToolBox, QLineEdit, QScrollArea, RecutButton
-from ui.image_viewer import QImageViewer
-from utils.calulations import calculate_overhead
-from utils.inventory.category import Category
-from utils.inventory.component import Component
-from utils.inventory.components_inventory import ComponentsInventory
-from utils.inventory.laser_cut_inventory import LaserCutInventory
-from utils.inventory.laser_cut_part import LaserCutPart
+from ui.custom.assembly_quoting_widget import AssemblyQuotingWidget
+from ui.custom_widgets import AssemblyMultiToolBox, QLineEdit
 from utils.workspace.assembly import Assembly
 from utils.workspace.group import Group
 from utils.workspace.job_preferences import JobPreferences
 
+if TYPE_CHECKING:
+    from ui.custom.job_widget import JobWidget
+
 
 class GroupWidget(QWidget):
     def __init__(self, group: Group, parent) -> None:
-        super(GroupWidget, self).__init__(parent)
-        uic.loadUi("ui/group_widget.ui", self)
+        super().__init__(parent)
+        uic.loadUi("ui/widgets/group_widget.ui", self)
 
-        self.parent = parent
+        self.parent: JobWidget = parent
         self.group = group
         self.job_preferences: JobPreferences = self.parent.job_preferences
+        self.main_window_tab_widget = self.parent.parent.parent.tabWidget
 
-        self.assembly_widgets: list[AssemblyPlanningWidget] = []
+        self.assembly_widgets: list[
+            Union[AssemblyPlanningWidget, AssemblyQuotingWidget]
+        ] = []
 
         self.load_ui()
 
@@ -62,24 +58,64 @@ border-top-left-radius: 0px;
         for assembly_widget in self.assembly_widgets:
             assembly_widget.workspace_settings_changed()
 
-    def add_assembly(self, new_assembly: Assembly = None) -> AssemblyPlanningWidget:
+    def add_assembly(
+        self, new_assembly: Assembly = None
+    ) -> Union[AssemblyPlanningWidget, AssemblyQuotingWidget]:
         if not new_assembly:
-            assembly = Assembly(f"Enter Assembly Name{len(self.group.assemblies)}", {}, self.group)
+            assembly = Assembly(
+                f"Enter Assembly Name{len(self.group.assemblies)}", {}, self.group
+            )
             self.group.add_assembly(assembly)
             self.changes_made()
         else:
             assembly = new_assembly
 
-        assembly_widget = AssemblyPlanningWidget(assembly, self)
-        self.assemblies_toolbox.addItem(assembly_widget, assembly.name, self.group.color)
+        if (
+            self.main_window_tab_widget.tabText(
+                self.main_window_tab_widget.currentIndex()
+            )
+            == "Job Planner"
+        ):
+            assembly_widget = AssemblyPlanningWidget(assembly, self)
+        elif (
+            self.main_window_tab_widget.tabText(
+                self.main_window_tab_widget.currentIndex()
+            )
+            == "Quote Generator 2"
+        ):
+            assembly_widget = AssemblyQuotingWidget(assembly, self)
+
+        self.assemblies_toolbox.addItem(
+            assembly_widget, assembly.name, self.group.color
+        )
 
         toggle_button = self.assemblies_toolbox.getLastToggleButton()
 
         name_input: QLineEdit = self.assemblies_toolbox.getLastInputBox()
-        name_input.textChanged.connect(partial(self.assembly_name_renamed, assembly, name_input))
+        name_input.textChanged.connect(
+            partial(self.assembly_name_renamed, assembly, name_input)
+        )
 
-        name_input.textChanged.connect(partial(self.job_preferences.assembly_toolbox_toggled, name_input, toggle_button, assembly_widget.pushButton_laser_cut_parts, assembly_widget.pushButton_components, assembly_widget.pushButton_sub_assemblies))
-        toggle_button.clicked.connect(partial(self.job_preferences.assembly_toolbox_toggled, name_input, toggle_button, assembly_widget.pushButton_laser_cut_parts, assembly_widget.pushButton_components, assembly_widget.pushButton_sub_assemblies))
+        name_input.textChanged.connect(
+            partial(
+                self.job_preferences.assembly_toolbox_toggled,
+                name_input,
+                toggle_button,
+                assembly_widget.pushButton_laser_cut_parts,
+                assembly_widget.pushButton_components,
+                assembly_widget.pushButton_sub_assemblies,
+            )
+        )
+        toggle_button.clicked.connect(
+            partial(
+                self.job_preferences.assembly_toolbox_toggled,
+                name_input,
+                toggle_button,
+                assembly_widget.pushButton_laser_cut_parts,
+                assembly_widget.pushButton_components,
+                assembly_widget.pushButton_sub_assemblies,
+            )
+        )
 
         duplicate_button = self.assemblies_toolbox.getLastDuplicateButton()
         duplicate_button.clicked.connect(partial(self.duplicate_assembly, assembly))
@@ -87,21 +123,60 @@ border-top-left-radius: 0px;
         delete_button = self.assemblies_toolbox.getLastDeleteButton()
         delete_button.clicked.connect(partial(self.delete_assembly, assembly_widget))
 
-        assembly_widget.pushButton_laser_cut_parts.clicked.connect(partial(self.job_preferences.assembly_toolbox_toggled, name_input, toggle_button, assembly_widget.pushButton_laser_cut_parts, assembly_widget.pushButton_components, assembly_widget.pushButton_sub_assemblies))
-        assembly_widget.pushButton_components.clicked.connect(partial(self.job_preferences.assembly_toolbox_toggled, name_input, toggle_button, assembly_widget.pushButton_laser_cut_parts, assembly_widget.pushButton_components, assembly_widget.pushButton_sub_assemblies))
-        assembly_widget.pushButton_sub_assemblies.clicked.connect(partial(self.job_preferences.assembly_toolbox_toggled, name_input, toggle_button, assembly_widget.pushButton_laser_cut_parts, assembly_widget.pushButton_components, assembly_widget.pushButton_sub_assemblies))
+        assembly_widget.pushButton_laser_cut_parts.clicked.connect(
+            partial(
+                self.job_preferences.assembly_toolbox_toggled,
+                name_input,
+                toggle_button,
+                assembly_widget.pushButton_laser_cut_parts,
+                assembly_widget.pushButton_components,
+                assembly_widget.pushButton_sub_assemblies,
+            )
+        )
+        assembly_widget.pushButton_components.clicked.connect(
+            partial(
+                self.job_preferences.assembly_toolbox_toggled,
+                name_input,
+                toggle_button,
+                assembly_widget.pushButton_laser_cut_parts,
+                assembly_widget.pushButton_components,
+                assembly_widget.pushButton_sub_assemblies,
+            )
+        )
+        assembly_widget.pushButton_sub_assemblies.clicked.connect(
+            partial(
+                self.job_preferences.assembly_toolbox_toggled,
+                name_input,
+                toggle_button,
+                assembly_widget.pushButton_laser_cut_parts,
+                assembly_widget.pushButton_components,
+                assembly_widget.pushButton_sub_assemblies,
+            )
+        )
 
         self.assembly_widgets.append(assembly_widget)
 
         if self.job_preferences.is_assembly_closed(assembly.name):
             self.assemblies_toolbox.closeLastToolBox()
 
-        assembly_widget.pushButton_laser_cut_parts.setChecked(self.job_preferences.is_assembly_laser_cut_closed(assembly.name))
-        assembly_widget.laser_cut_widget.setHidden(not self.job_preferences.is_assembly_laser_cut_closed(assembly.name))
-        assembly_widget.pushButton_components.setChecked(self.job_preferences.is_assembly_component_closed(assembly.name))
-        assembly_widget.component_widget.setHidden(not self.job_preferences.is_assembly_component_closed(assembly.name))
-        assembly_widget.pushButton_sub_assemblies.setChecked(self.job_preferences.is_assembly_sub_assembly_closed(assembly.name))
-        assembly_widget.sub_assemblies_widget.setHidden(not self.job_preferences.is_assembly_sub_assembly_closed(assembly.name))
+        assembly_widget.pushButton_laser_cut_parts.setChecked(
+            self.job_preferences.is_assembly_laser_cut_closed(assembly.name)
+        )
+        assembly_widget.laser_cut_widget.setHidden(
+            not self.job_preferences.is_assembly_laser_cut_closed(assembly.name)
+        )
+        assembly_widget.pushButton_components.setChecked(
+            self.job_preferences.is_assembly_component_closed(assembly.name)
+        )
+        assembly_widget.component_widget.setHidden(
+            not self.job_preferences.is_assembly_component_closed(assembly.name)
+        )
+        assembly_widget.pushButton_sub_assemblies.setChecked(
+            self.job_preferences.is_assembly_sub_assembly_closed(assembly.name)
+        )
+        assembly_widget.sub_assemblies_widget.setHidden(
+            not self.job_preferences.is_assembly_sub_assembly_closed(assembly.name)
+        )
 
         return assembly_widget
 
@@ -116,12 +191,16 @@ border-top-left-radius: 0px;
         self.changes_made()
 
     def duplicate_assembly(self, assembly: Assembly):
-        new_assembly = Assembly(f"{assembly.name} - (Copy)", assembly.to_dict(), self.group)
+        new_assembly = Assembly(
+            f"{assembly.name} - (Copy)", assembly.to_dict(), self.group
+        )
         self.load_assembly(new_assembly)
         self.group.add_assembly(new_assembly)
         self.changes_made()
 
-    def delete_assembly(self, assembly_widget: AssemblyPlanningWidget):
+    def delete_assembly(
+        self, assembly_widget: Union[AssemblyPlanningWidget, AssemblyQuotingWidget]
+    ):
         self.assembly_widgets.remove(assembly_widget)
         self.assemblies_toolbox.removeItem(assembly_widget)
         self.group.remove_assembly(assembly_widget.assembly)

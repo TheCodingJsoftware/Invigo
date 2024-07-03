@@ -1,47 +1,36 @@
 import contextlib
-import math
-import os
-from datetime import datetime
 from functools import partial
+from typing import TYPE_CHECKING
 
 from PyQt6 import uic
 from PyQt6.QtCore import QDate, Qt, pyqtSignal
-from PyQt6.QtGui import QAction, QColor, QCursor, QFont, QIcon, QKeySequence, QPixmap
-from PyQt6.QtWidgets import QAbstractItemView, QApplication, QCheckBox, QComboBox, QDateEdit, QDoubleSpinBox, QGridLayout, QHBoxLayout, QLabel, QMenu, QMessageBox, QPushButton, QScrollArea, QStackedWidget, QTableWidgetItem, QTextEdit, QVBoxLayout, QWidget
+from PyQt6.QtWidgets import QComboBox, QDateEdit, QDoubleSpinBox, QGridLayout, QPushButton, QScrollArea, QSplitter, QTextEdit, QVBoxLayout, QWidget
 
-from ui.add_component_dialog import AddComponentDialog
 from ui.custom.group_widget import GroupWidget
 from ui.custom.nest_widget import NestWidget
-from ui.custom_widgets import AssemblyMultiToolBox, ClickableLabel, CustomTableWidget, DeletePushButton, MachineCutTimeSpinBox, MultiToolBox, QLineEdit, RecutButton
-from ui.image_viewer import QImageViewer
+from ui.custom_widgets import AssemblyMultiToolBox, MultiToolBox, QLineEdit
 from utils import colors
-from utils.calulations import calculate_overhead
 from utils.colors import darken_color, lighten_color
-from utils.inventory.category import Category
-from utils.inventory.component import Component
-from utils.inventory.components_inventory import ComponentsInventory
-from utils.inventory.laser_cut_inventory import LaserCutInventory
-from utils.inventory.laser_cut_part import LaserCutPart
 from utils.quote.nest import Nest
 from utils.workspace.group import Group
 from utils.workspace.job import Job, JobStatus
-from utils.workspace.job_preferences import JobPreferences
+
+if TYPE_CHECKING:
+    from ui.custom.job_tab import JobTab
 
 
 class JobWidget(QWidget):
     reloadJob = pyqtSignal(object)  # object -> JobWidget
 
     def __init__(self, job: Job, parent) -> None:
-        super(JobWidget, self).__init__(parent)
-        uic.loadUi("ui/job_widget.ui", self)
-
-        from ui.custom.job_tab import JobTab
+        super().__init__(parent)
+        uic.loadUi("ui/widgets/job_widget.ui", self)
 
         self.parent: JobTab = parent
         self.job = job
-        self.job_preferences: JobPreferences = self.parent.job_preferences
+        self.job_preferences = self.parent.job_preferences
+        self.sheet_settings = self.parent.parent.sheet_settings
 
-        self.nests_tool_box: MultiToolBox = None
         self.group_widgets: list[GroupWidget] = []
         self.nest_widgets: list[NestWidget] = []
 
@@ -63,38 +52,78 @@ class JobWidget(QWidget):
         self.gridLayout_2.setAlignment(Qt.AlignmentFlag.AlignTop)
         self.verticalLayout_8.setAlignment(Qt.AlignmentFlag.AlignTop)
 
-        self.pushButton_global_sheet_settings = self.findChild(QPushButton, "pushButton_global_sheet_settings")
-        self.global_sheet_settings_widget = self.findChild(QWidget, "global_sheet_settings_widget")
-        self.apply_stylesheet_to_toggle_buttons(self.pushButton_global_sheet_settings, self.global_sheet_settings_widget)
+        self.item_quoting_options_layout = self.findChild(
+            QVBoxLayout, "item_quoting_options_layout"
+        )
+        self.item_quoting_options_layout.setAlignment(Qt.AlignmentFlag.AlignTop)
+        self.gridLayout_4 = self.findChild(QGridLayout, "gridLayout_4")
+        self.gridLayout_4.setAlignment(Qt.AlignmentFlag.AlignTop)
+        self.nest_summary_layout = self.findChild(QVBoxLayout, "nest_summary_layout")
+        self.nest_summary_layout.setAlignment(Qt.AlignmentFlag.AlignTop)
 
-        self.pushButton_item_quoting_options = self.findChild(QPushButton, "pushButton_item_quoting_options")
-        self.item_quoting_options_widget = self.findChild(QWidget, "item_quoting_options_widget")
-        self.apply_stylesheet_to_toggle_buttons(self.pushButton_item_quoting_options, self.item_quoting_options_widget)
+        self.pushButton_global_sheet_settings = self.findChild(
+            QPushButton, "pushButton_global_sheet_settings"
+        )
+        self.global_sheet_settings_widget = self.findChild(
+            QWidget, "global_sheet_settings_widget"
+        )
+        self.apply_stylesheet_to_toggle_buttons(
+            self.pushButton_global_sheet_settings, self.global_sheet_settings_widget
+        )
 
-        self.pushButton_sheet_quoting_options = self.findChild(QPushButton, "pushButton_sheet_quoting_options")
-        self.sheet_quoting_options_widget = self.findChild(QWidget, "sheet_quoting_options_widget")
-        self.apply_stylesheet_to_toggle_buttons(self.pushButton_sheet_quoting_options, self.sheet_quoting_options_widget)
+        self.pushButton_item_quoting_options = self.findChild(
+            QPushButton, "pushButton_item_quoting_options"
+        )
+        self.item_quoting_options_widget = self.findChild(
+            QWidget, "item_quoting_options_widget"
+        )
+        self.apply_stylesheet_to_toggle_buttons(
+            self.pushButton_item_quoting_options, self.item_quoting_options_widget
+        )
+
+        self.pushButton_sheet_quoting_options = self.findChild(
+            QPushButton, "pushButton_sheet_quoting_options"
+        )
+        self.sheet_quoting_options_widget = self.findChild(
+            QWidget, "sheet_quoting_options_widget"
+        )
+        self.apply_stylesheet_to_toggle_buttons(
+            self.pushButton_sheet_quoting_options, self.sheet_quoting_options_widget
+        )
 
         self.pushButton_nests = self.findChild(QPushButton, "pushButton_nests")
         self.nests_widget = self.findChild(QWidget, "nests_widget")
         self.nests_layout = self.findChild(QVBoxLayout, "nests_layout")
-        self.apply_stylesheet_to_toggle_buttons(self.pushButton_nests, self.nests_widget)
+        self.nests_layout.setAlignment(Qt.AlignmentFlag.AlignTop)
+        self.apply_stylesheet_to_toggle_buttons(
+            self.pushButton_nests, self.nests_widget
+        )
 
-        self.pushButton_nest_summary = self.findChild(QPushButton, "pushButton_nest_summary")
+        self.pushButton_nest_summary = self.findChild(
+            QPushButton, "pushButton_nest_summary"
+        )
         self.nest_summary_widget = self.findChild(QWidget, "nest_summary_widget")
         self.nest_summary_layout = self.findChild(QVBoxLayout, "nest_summary_layout")
-        self.apply_stylesheet_to_toggle_buttons(self.pushButton_nest_summary, self.nest_summary_widget)
+        self.apply_stylesheet_to_toggle_buttons(
+            self.pushButton_nest_summary, self.nest_summary_widget
+        )
 
         self.scrollArea = self.findChild(QScrollArea, "scrollArea")
 
-        self.pushButton_reload_job = self.findChild(QPushButton, "pushButton_reload_job")
+        self.pushButton_reload_job = self.findChild(
+            QPushButton, "pushButton_reload_job"
+        )
         self.pushButton_reload_job.clicked.connect(self.reload_job)
 
-        self.doubleSpinBox_order_number: QDoubleSpinBox = self.findChild(QDoubleSpinBox, "doubleSpinBox_order_number")
+        self.doubleSpinBox_order_number: QDoubleSpinBox = self.findChild(
+            QDoubleSpinBox, "doubleSpinBox_order_number"
+        )
         self.doubleSpinBox_order_number.setValue(self.job.order_number)
         self.doubleSpinBox_order_number.wheelEvent = lambda event: None
         self.doubleSpinBox_order_number.valueChanged.connect(self.job_settings_changed)
-        self.pushButton_get_order_number: QPushButton = self.findChild(QPushButton, "pushButton_get_order_number")
+        self.pushButton_get_order_number: QPushButton = self.findChild(
+            QPushButton, "pushButton_get_order_number"
+        )
 
         def get_latest_order_number():
             self.doubleSpinBox_order_number.setValue(self.parent.parent.order_number)
@@ -114,7 +143,9 @@ class JobWidget(QWidget):
             self.dateEdit_shipped.setDate(QDate.currentDate())
         self.dateEdit_shipped.dateChanged.connect(self.job_settings_changed)
         self.dateEdit_shipped.wheelEvent = lambda event: None
-        self.dateEdit_expected: QDateEdit = self.findChild(QDateEdit, "dateEdit_expected")
+        self.dateEdit_expected: QDateEdit = self.findChild(
+            QDateEdit, "dateEdit_expected"
+        )
         try:
             year, month, day = map(int, self.job.date_expected.split("-"))
             self.dateEdit_expected.setDate(QDate(year, month, day))
@@ -134,9 +165,85 @@ class JobWidget(QWidget):
         self.groups_toolbox = AssemblyMultiToolBox(self)
         self.groups_layout.addWidget(self.groups_toolbox)
 
-        if self.parent.parent.tabWidget.tabText(self.parent.parent.tabWidget.currentIndex()) == "Job Planner":
+        self.comboBox_laser_cutting = self.findChild(
+            QComboBox, "comboBox_laser_cutting"
+        )
+        self.comboBox_laser_cutting.wheelEvent = lambda event: None
+
+        self.doubleSpinBox_cost_for_laser = self.findChild(
+            QDoubleSpinBox, "doubleSpinBox_cost_for_laser"
+        )
+        self.doubleSpinBox_cost_for_laser.wheelEvent = lambda event: None
+
+        self.comboBox_materials = self.findChild(QComboBox, "comboBox_materials")
+        self.comboBox_materials.wheelEvent = lambda event: None
+        self.comboBox_materials.addItems(self.sheet_settings.get_materials())
+        self.comboBox_materials.currentTextChanged.connect(
+            partial(self.update_nest_sheets, "MATERIAL")
+        )
+
+        self.comboBox_thicknesses = self.findChild(QComboBox, "comboBox_thicknesses")
+        self.comboBox_thicknesses.wheelEvent = lambda event: None
+        self.comboBox_thicknesses.addItems(self.sheet_settings.get_thicknesses())
+        self.comboBox_thicknesses.currentTextChanged.connect(
+            partial(self.update_nest_sheets, "THICKNESS")
+        )
+
+        self.doubleSpinBox_length = self.findChild(
+            QDoubleSpinBox, "doubleSpinBox_length"
+        )
+        self.doubleSpinBox_length.wheelEvent = lambda event: None
+        self.doubleSpinBox_length.valueChanged.connect(
+            partial(self.update_nest_sheets, "LENGTH")
+        )
+
+        self.doubleSpinBox_width = self.findChild(QDoubleSpinBox, "doubleSpinBox_width")
+        self.doubleSpinBox_width.wheelEvent = lambda event: None
+        self.doubleSpinBox_width.valueChanged.connect(
+            partial(self.update_nest_sheets, "WIDTH")
+        )
+
+        self.doubleSpinBox_items_overhead = self.findChild(
+            QDoubleSpinBox, "doubleSpinBox_items_overhead"
+        )
+        self.doubleSpinBox_items_overhead.wheelEvent = lambda event: None
+
+        self.doubleSpinBox_items_profit_margin = self.findChild(
+            QDoubleSpinBox, "doubleSpinBox_items_profit_margin"
+        )
+        self.doubleSpinBox_items_profit_margin.wheelEvent = lambda event: None
+
+        self.pushButton_item_to_sheet = self.findChild(
+            QPushButton, "pushButton_item_to_sheet"
+        )
+        self.pushButton_item_to_sheet.wheelEvent = lambda event: None
+
+        self.doubleSpinBox_sheets_overhead = self.findChild(
+            QDoubleSpinBox, "doubleSpinBox_sheets_overhead"
+        )
+        self.doubleSpinBox_sheets_overhead.wheelEvent = lambda event: None
+
+        self.doubleSpinBox_sheets_profit_margin = self.findChild(
+            QDoubleSpinBox, "doubleSpinBox_sheets_profit_margin"
+        )
+        self.doubleSpinBox_sheets_profit_margin.wheelEvent = lambda event: None
+
+        self.nests_toolbox = MultiToolBox(self)
+        self.nests_layout.addWidget(self.nests_toolbox)
+
+        self.splitter = self.findChild(QSplitter, "splitter")
+
+        if (
+            self.job.job_status == JobStatus.PLANNING
+            and self.parent.parent.tabWidget.tabText(
+                self.parent.parent.tabWidget.currentIndex()
+            )
+            == "Job Planner"
+        ):
             self.splitter.setSizes([0, 1])
-            self.nest_widget.setEnabled(False)
+            self.quoting_settings_widget.setEnabled(False)
+
+        self.splitter.setStretchFactor(0, 1)
         self.splitter.setStretchFactor(1, 5)
 
     def apply_stylesheet_to_toggle_buttons(self, button: QPushButton, widget: QWidget):
@@ -164,7 +271,7 @@ QPushButton:hover#assembly_button_drop_menu {
 
 QPushButton:pressed#assembly_button_drop_menu {
     background-color: %(base_color)s;
-    color: #EAE9FC;
+    color: #171717;
 }
 
 QPushButton:!checked#assembly_button_drop_menu {
@@ -176,7 +283,7 @@ QPushButton:!checked:pressed#assembly_button_drop_menu {
 }
 
 QPushButton:checked#assembly_button_drop_menu {
-    color: #EAE9FC;
+    color: #171717;
     border-color: %(base_color)s;
     background-color: %(base_color)s;
     border-top-left-radius: 5px;
@@ -190,7 +297,7 @@ QPushButton:checked:hover#assembly_button_drop_menu {
 }
 
 QPushButton:checked:pressed#assembly_button_drop_menu {
-    color: #EAE9FC;
+    color: #171717;
     background-color: %(pressed_color)s;
 }
 """
@@ -241,10 +348,24 @@ QPushButton:checked:pressed#assembly_button_drop_menu {
         toggle_button = self.groups_toolbox.getLastToggleButton()
 
         job_name_input: QLineEdit = self.groups_toolbox.getLastInputBox()
-        job_name_input.textChanged.connect(partial(self.group_name_renamed, group, job_name_input))
+        job_name_input.textChanged.connect(
+            partial(self.group_name_renamed, group, job_name_input)
+        )
 
-        job_name_input.textChanged.connect(partial(self.job_preferences.group_toolbox_toggled, job_name_input, toggle_button))
-        toggle_button.clicked.connect(partial(self.job_preferences.group_toolbox_toggled, job_name_input, toggle_button))
+        job_name_input.textChanged.connect(
+            partial(
+                self.job_preferences.group_toolbox_toggled,
+                job_name_input,
+                toggle_button,
+            )
+        )
+        toggle_button.clicked.connect(
+            partial(
+                self.job_preferences.group_toolbox_toggled,
+                job_name_input,
+                toggle_button,
+            )
+        )
 
         duplicate_button = self.groups_toolbox.getLastDuplicateButton()
         duplicate_button.clicked.connect(partial(self.duplicate_group, group))
@@ -263,6 +384,7 @@ QPushButton:checked:pressed#assembly_button_drop_menu {
         group_widget = self.add_group(group)
         for assembly in group.assemblies:
             group_widget.load_assembly(assembly)
+        self.load_nests()
 
     def group_name_renamed(self, group: Group, new_group_name: QLineEdit):
         group.name = new_group_name.text()
@@ -282,22 +404,39 @@ QPushButton:checked:pressed#assembly_button_drop_menu {
         self.changes_made()
 
     def reload_job(self):
-        self.job_preferences.set_job_scroll_position(self.job.name, (self.scrollArea.horizontalScrollBar().value(), self.scrollArea.verticalScrollBar().value()))
+        self.job_preferences.set_job_scroll_position(
+            self.job.name,
+            (
+                self.scrollArea.horizontalScrollBar().value(),
+                self.scrollArea.verticalScrollBar().value(),
+            ),
+        )
         self.reloadJob.emit(self)
 
     def load_nests(self):
-        self.clear_layout(self.nests_layout)
+        self.nests_toolbox.clear()
         self.nest_widgets.clear()
-        self.nests_tool_box = MultiToolBox(self)
-        self.nests_tool_box.layout().setSpacing(0)
-        self.nests_layout.addWidget(self.nests_tool_box)
         for nest in self.job.nests:
             nest_widget = NestWidget(nest, self)
-            nest_widget.updateLaserCutPartSettings.connect(self.nested_laser_cut_parts_settings_changed)
+            nest_widget.updateLaserCutPartSettings.connect(self.nest_settings_changed)
             self.nest_widgets.append(nest_widget)
-            self.nests_tool_box.addItem(nest_widget, nest.name, self.job.color)
+            self.nests_toolbox.addItem(nest_widget, nest.get_name(), self.job.color)
+        self.nests_toolbox.close_all()
 
-    def nested_laser_cut_parts_settings_changed(self, nest: Nest):
+    def update_nest_sheets(self, action: str):
+        for i, nest_widget in enumerate(self.nest_widgets):
+            if action == "LENGTH":
+                nest_widget.sheet.length = self.doubleSpinBox_length.value()
+            elif action == "WIDTH":
+                nest_widget.sheet.width = self.doubleSpinBox_width.value()
+            elif action == "MATERIAL":
+                nest_widget.sheet.material = self.comboBox_materials.currentText()
+            elif action == "THICKNESS":
+                nest_widget.sheet.thickness = self.comboBox_thicknesses.currentText()
+            nest_widget.update_ui_values()
+            self.nests_toolbox.setItemText(i, nest_widget.nest.get_name())
+
+    def nest_settings_changed(self, nest: Nest):
         self.update_tables()
 
     def changes_made(self):

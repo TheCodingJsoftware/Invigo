@@ -8,7 +8,7 @@ from PyQt6.QtWidgets import QDoubleSpinBox
 class TimeSpinBox(QDoubleSpinBox):
     # ! IF VALUE IS SET TO 1, THAT IS 1 DAY
     def __init__(self, parent=None):
-        super(TimeSpinBox, self).__init__(parent)
+        super().__init__(parent)
         self.setRange(0, 99999999)
         self.setSingleStep(0.001)
         self.setDecimals(9)
@@ -25,15 +25,15 @@ class TimeSpinBox(QDoubleSpinBox):
 
     def focusInEvent(self, event):
         self.setFocusPolicy(Qt.FocusPolicy.WheelFocus)
-        super(TimeSpinBox, self).focusInEvent(event)
+        super().focusInEvent(event)
 
     def focusOutEvent(self, event):
         self.setFocusPolicy(Qt.FocusPolicy.StrongFocus)
-        super(TimeSpinBox, self).focusOutEvent(event)
+        super().focusOutEvent(event)
 
     def wheelEvent(self, event):
         if self.hasFocus():
-            return super(TimeSpinBox, self).wheelEvent(event)
+            return super().wheelEvent(event)
         else:
             event.ignore()
 
@@ -102,7 +102,11 @@ class TimeSpinBox(QDoubleSpinBox):
         minutes = int(((value - days) * 24 - hours) * 60)
 
         current_date_time = QDateTime.currentDateTime()
-        end_date_time = current_date_time.addDays(days).addSecs(hours * 3600 + minutes * 60)
+        end_date_time = current_date_time.addDays(days).addSecs(
+            hours * 3600 + minutes * 60
+        )
 
-        time_delta = end_date_time.toSecsSinceEpoch() - current_date_time.toSecsSinceEpoch()
+        time_delta = (
+            end_date_time.toSecsSinceEpoch() - current_date_time.toSecsSinceEpoch()
+        )
         return timedelta(seconds=time_delta)

@@ -8,14 +8,16 @@ class AssemblyImage(QLabel):
     imagePathDropped = pyqtSignal(str)
 
     def __init__(self, parent: QWidget | None = ...) -> None:
-        super(AssemblyImage, self).__init__(parent)
+        super().__init__(parent)
         self.setMinimumSize(120, 120)
         self.setFixedHeight(120)
         self.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self.setContextMenuPolicy(Qt.ContextMenuPolicy.CustomContextMenu)
         self.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
         self.setToolTip("Press to enlarge")
-        self.setText("Drop an Image.\nRight click to Paste\nfrom clipboard.\n(PNG, JPG, JPEG)")
+        self.setText(
+            "Drop an Image.\nRight click to Paste\nfrom clipboard.\n(PNG, JPG, JPEG)"
+        )
         self.setAcceptDrops(True)
         self.setWordWrap(True)
         self.setStyleSheet("background-color: rgba(30,30,30,100);")
@@ -32,7 +34,9 @@ class AssemblyImage(QLabel):
 
     def clear_image(self):
         self.setPixmap(QPixmap())
-        self.setText("Drop an Image.\nRight click to Paste\nfrom clipboard.\n(PNG, JPG, JPEG)")
+        self.setText(
+            "Drop an Image.\nRight click to Paste\nfrom clipboard.\n(PNG, JPG, JPEG)"
+        )
         self.setStyleSheet("background-color: rgba(30,30,30,100);")
         self.path_to_image = ""
         self.image_dropped = False
@@ -58,7 +62,11 @@ class AssemblyImage(QLabel):
         if urls := event.mimeData().urls():
             image_path = urls[0].toLocalFile()
             if image_path.lower().endswith((".png", ".jpg", ".jpeg")):
-                self.setPixmap(QPixmap(image_path).scaled(self.width(), self.height(), Qt.AspectRatioMode.KeepAspectRatio))
+                self.setPixmap(
+                    QPixmap(image_path).scaled(
+                        self.width(), self.height(), Qt.AspectRatioMode.KeepAspectRatio
+                    )
+                )
                 self.imagePathDropped.emit(image_path)
                 event.accept()
             else:
@@ -67,7 +75,9 @@ class AssemblyImage(QLabel):
                 event.ignore()
 
     def dragLeaveEvent(self, event: QDragLeaveEvent):
-        self.setText("Drop an Image.\nRight click to Paste\nfrom clipboard.\n(PNG, JPG, JPEG)")
+        self.setText(
+            "Drop an Image.\nRight click to Paste\nfrom clipboard.\n(PNG, JPG, JPEG)"
+        )
         self.setStyleSheet("background-color: rgba(30,30,30,100);")
         event.accept()
         if self.image_dropped:
