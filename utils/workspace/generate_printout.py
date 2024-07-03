@@ -509,7 +509,7 @@ class JobPlannerPrintout:
         </header>
         <div class="center-align" id="printout-controls">
             <label class="checkbox">
-                <input type="checkbox" id="showCoverPage" data-name="show-cover-page" data-layout="cover-page" "checked">
+                <input type="checkbox" id="showCoverPage" data-name="show-cover-page" data-layout="cover-page" checked>
                 <span>Show Cover Page</span>
             </label>
             <br>
