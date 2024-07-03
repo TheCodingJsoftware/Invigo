@@ -7,8 +7,8 @@ from PyQt6.QtCore import QDate, Qt, pyqtSignal
 from PyQt6.QtWidgets import QComboBox, QDateEdit, QDoubleSpinBox, QGridLayout, QPushButton, QScrollArea, QSplitter, QTextEdit, QVBoxLayout, QWidget
 
 from ui.custom.group_widget import GroupWidget
-from ui.custom.nest_widget import NestWidget
 from ui.custom_widgets import AssemblyMultiToolBox, MultiToolBox, QLineEdit
+from ui.widgets.nest_widget import NestWidget
 from utils import colors
 from utils.colors import darken_color, lighten_color
 from utils.quote.nest import Nest
