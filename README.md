@@ -44,6 +44,6 @@ It also hosts various web pages that are designed with [beercss](https://beercss
    - Example: `/inventory/components_inventory/BL 25` will load a table of all the items in the `components_inventory` that are in the `BL 25` category.
  - `/sheets_in_inventory/(.*)` is a page where you can view the order-pending status of a sheet and view/edit the quantity.
  - `/sheet_qr_codes` is a printer-ready page that generates QR Codes for every sheet in the inventory, scanning the QR Code redirects you to `/sheets_in_inventory/(.*)`.
- - `/add_cutoff_sheet` is a page to add and vew cutoff sheets.
+ - `/add_cutoff_sheet` is a page to add and view cutoff sheets.
  - `/load_job/(.*)` loads a jobs HTML contents.
  - `/load_quote/(.*)` loads a quotes HTML contents.
