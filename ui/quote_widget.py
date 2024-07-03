@@ -1546,7 +1546,7 @@ class QuoteWidget(QWidget):
         return
         for nest, table_item_data in self.nest_items.items():
             table_item_data["scrap_percentage"].setText(f"{nest.calculate_scrap_percentage():,.2f}%")
-            nest.scrape_percentage = nest.calculate_scrap_percentage()
+            nest.scrap_percentage = nest.calculate_scrap_percentage()
 
     def add_nested_sheet_to_inventory(self, nest: Nest):
         add_sheet_dialog = AddSheetDialog(nest.sheet, None, self.sheets_inventory, self.sheet_settings, self)

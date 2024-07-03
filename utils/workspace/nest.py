@@ -12,7 +12,7 @@ class Nest:
         self.sheet_settings = sheet_settings
         self.laser_cut_inventory = laser_cut_inventory
         self.sheet_count: int = 0
-        self.scrape_percentage: float = 0.0
+        self.scrap_percentage: float = 0.0
         self.sheet_cut_time: float = 0.0
         self.image_path: str = "404.jpeg"
         self.laser_cut_parts: list[LaserCutPart] = []
@@ -53,7 +53,7 @@ class Nest:
 
     def load_data(self, data: dict[str, Union[float, int, str, dict[str, Union[float, str]]]]):
         self.sheet_count = data.get("sheet_count", 0)
-        self.scrape_percentage = data.get("scrape_percentage", 0.0)
+        self.scrap_percentage = data.get("scrap_percentage", 0.0)
         self.sheet_cut_time = data.get("sheet_cut_time", 0.0)
         self.image_path = data.get("image_path", "images/404.jpeg")
         self.laser_cut_parts.clear()
@@ -77,4 +77,4 @@ class Nest:
             )
 
     def to_dict(self) -> dict[str, Union[float, int, str]]:
-        return {"sheet_count": self.sheet_count, "scrape_percentage": self.scrape_percentage, "sheet_cut_time": self.sheet_cut_time, "image_path": self.image_path, "laser_cut_parts": {laser_cut_part.name: laser_cut_part.to_dict() for laser_cut_part in self.laser_cut_parts}, "sheet": {self.sheet.get_name(): self.sheet.to_dict()}}
+        return {"sheet_count": self.sheet_count, "scrap_percentage": self.scrap_percentage, "sheet_cut_time": self.sheet_cut_time, "image_path": self.image_path, "laser_cut_parts": {laser_cut_part.name: laser_cut_part.to_dict() for laser_cut_part in self.laser_cut_parts}, "sheet": {self.sheet.get_name(): self.sheet.to_dict()}}
