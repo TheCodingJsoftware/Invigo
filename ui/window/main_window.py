@@ -52,7 +52,7 @@ from PyQt6.QtWidgets import (
 
 from ui.custom.job_tab import JobTab
 from ui.custom.job_widget import JobWidget
-from ui.custom.saved_job_item import SavedPlanningJobItem
+from ui.widgets.saved_job_item import SavedPlanningJobItem
 from ui.custom_widgets import (
     CustomTableWidget,
     MultiToolBox,
