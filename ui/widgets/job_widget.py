@@ -434,6 +434,105 @@ QPushButton:checked:pressed#assembly_button_drop_menu {
             self.nests_toolbox.addItem(nest_widget, nest.get_name(), self.job.color)
         self.nests_toolbox.close_all()
 
+
+
+    def generate_summary_html(self, summary_data: dict[str, dict[str, float]]):
+        sorted_summary_keys = natsorted(summary_data.keys())
+        sorted_summary = {key: summary_data[key] for key in sorted_summary_keys}
+
+        summary = '''
+        <table border="1">
+            <tr>
+                <th>Sheet</th>
+                <th>Quantity</th>
+                <th>Cut time</th>
+            </tr>
+        '''
+
+        for sheet, data in sorted_summary.get("sheets", {}).items():
+            hours = int(data['total_seconds'] // 3600)
+            minutes = int((data['total_seconds'] % 3600) // 60)
+            seconds = int(data['total_seconds'] % 60)
+            total_seconds_string = f"{hours:02d}h {minutes:02d}m {seconds:02d}s"
+            summary += f'''
+            <tr>
+                <td>{sheet}</td>
+                <td>{data['total_sheet_count']}</td>
+                <td>{total_seconds_string}</td>
+            </tr>
+            '''
+
+        summary += '''
+            <tr>
+                <th colspan="3">Material Totals</th>
+            </tr>
+        '''
+
+        for material, data in sorted_summary.get("material_total", {}).items():
+            hours = int(data['total_seconds'] // 3600)
+            minutes = int((data['total_seconds'] % 3600) // 60)
+            seconds = int(data['total_seconds'] % 60)
+            total_seconds_string = f"{hours:02d}h {minutes:02d}m {seconds:02d}s"
+            summary += f'''
+            <tr>
+                <td>{material}</td>
+                <td>{data['total_sheet_count']}</td>
+                <td>{total_seconds_string}</td>
+            </tr>
+            '''
+
+        summary += '</table>'
+        return summary
+
+    def update_nest_summary(self):
+        summary_data = {"sheets": {}, "material_total": {}}
+
+        for nest in self.job.nests:
+            if not nest.laser_cut_parts:
+                continue
+            summary_data["sheets"].setdefault(
+                nest.sheet.get_name(), {"total_sheet_count": 0, "total_seconds": 0}
+            )
+            summary_data["material_total"].setdefault(
+                nest.sheet.material, {"total_sheet_count": 0, "total_seconds": 0}
+            )
+            summary_data["sheets"][nest.sheet.get_name()]["total_sheet_count"] += nest.sheet_count
+            summary_data["sheets"][nest.sheet.get_name()]["total_seconds"] += (
+                nest.sheet_cut_time * nest.sheet_count
+            )
+            summary_data["material_total"][nest.sheet.material]["total_seconds"] += (
+                nest.sheet_cut_time * nest.sheet_count
+            )
+            summary_data["material_total"][nest.sheet.material]["total_sheet_count"] += nest.sheet_count
+
+            self.treeWidget_nest_summary.clear()
+            self.treeWidget_nest_summary.setHeaderLabels(["Name", "Quantity", "Cut time"])
+
+            sorted_summary_keys = natsorted(summary_data.keys())
+            sorted_summary = {key: summary_data[key] for key in sorted_summary_keys}
+
+            for sheet, data in sorted_summary.get("sheets", {}).items():
+                hours = int(data['total_seconds'] // 3600)
+                minutes = int((data['total_seconds'] % 3600) // 60)
+                seconds = int(data['total_seconds'] % 60)
+                total_seconds_string = f"{hours:02d}h {minutes:02d}m {seconds:02d}s"
+                item = QTreeWidgetItem([sheet, str(data['total_sheet_count']), total_seconds_string])
+                self.treeWidget_nest_summary.addTopLevelItem(item)
+
+            materials_item = QTreeWidgetItem(self.treeWidget_nest_summary, ["Materials"])
+            materials_item.setFirstColumnSpanned(True)
+            for material, data in sorted_summary.get("material_total", {}).items():
+                hours = int(data['total_seconds'] // 3600)
+                minutes = int((data['total_seconds'] % 3600) // 60)
+                seconds = int(data['total_seconds'] % 60)
+                total_seconds_string = f"{hours:02d}h {minutes:02d}m {seconds:02d}s"
+                item = QTreeWidgetItem([material, str(data['total_sheet_count']), total_seconds_string])
+                materials_item.addChild(item)
+
+            self.treeWidget_nest_summary.expandAll()
+            self.treeWidget_nest_summary.resizeColumnToContents(0)
+            self.treeWidget_nest_summary.resizeColumnToContents(1)
+
     def update_nest_sheets(self, action: str):
         for i, nest_widget in enumerate(self.nest_widgets):
             if action == "LENGTH":
