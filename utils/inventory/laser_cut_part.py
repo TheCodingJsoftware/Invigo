@@ -116,7 +116,7 @@ class LaserCutPart(InventoryItem):
         return "".join(f"{i + 1}. {category.name}: {self.get_category_quantity(category)}\n" for i, category in enumerate(self.categories))
 
     def load_data(self, data: dict[str, Union[str, int, float, bool]]):
-        self.quantity: int = data.get("quantity", 0)
+        self.quantity: int = data.get("quantity", 0) # In the context of assemblies, quantity is unit_quantity
         self.red_quantity_limit: int = data.get("red_quantity_limit", 10)
         self.yellow_quantity_limit: int = data.get("yellow_quantity_limit", 20)
         self.category_quantities.clear()

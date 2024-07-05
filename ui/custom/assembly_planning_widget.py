@@ -23,7 +23,7 @@ from ui.custom.assembly_image import AssemblyImage
 from ui.custom.assembly_paint_settings_widget import AssemblyPaintSettingsWidget
 from ui.custom.assembly_paint_widget import AssemblyPaintWidget
 from ui.widgets.assembly_widget import AssemblyWidget
-from ui.custom.components_planning_table_widget import ComponentsPlanningTableWidget
+from ui.custom.components_planning_table_widget import ComponentsPlanningTableWidget, ComponentsTableColumns
 from ui.custom.file_button import FileButton
 from ui.custom.laser_cut_part_file_drop_widget import LaserCutPartFileDropWidget
 from ui.custom.laser_cut_part_paint_settings_widget import (
@@ -31,7 +31,7 @@ from ui.custom.laser_cut_part_paint_settings_widget import (
 )
 from ui.custom.laser_cut_part_paint_widget import LaserCutPartPaintWidget
 from ui.custom.laser_cut_parts_planning_table_widget import (
-    LaserCutPartsPlanningTableWidget,
+    LaserCutPartsPlanningTableWidget, LaserCutTableColumns
 )
 from ui.custom_widgets import AssemblyMultiToolBox
 from ui.dialogs.add_component_dialog import AddComponentDialog
@@ -70,9 +70,11 @@ class AssemblyPlanningWidget(AssemblyWidget):
             self.assembly_image.set_new_image(self.assembly.assembly_image)
 
         self.assembly_image.clicked.connect(self.open_assembly_image)
-
         self.assembly_image.imagePathDropped.connect(self.upload_assembly_image)
         self.assembly_image.customContextMenuRequested.connect(self.assembly_image_show_context_menu)
+
+        self.doubleSpinBox_quantity.setValue(self.assembly.quantity)
+        self.doubleSpinBox_quantity.valueChanged.connect(self.assembly_quantity_changed)
 
         self.paint_widget.setVisible(self.assembly.flow_tag.has_tag("Painting"))
 
@@ -139,6 +141,12 @@ class AssemblyPlanningWidget(AssemblyWidget):
         self.changes_made()
 
     # ASSEMBLY STUFF
+    def assembly_quantity_changed(self):
+        self.assembly.quantity = self.doubleSpinBox_quantity.value()
+        self.update_laser_cut_parts_table_quantity()
+        self.update_component_table_quantity()
+        self.changes_made()
+
     def create_assembly_file_layout(self) -> tuple[QWidget, QHBoxLayout]:
         main_widget = QWidget(self)
         main_widget.setObjectName("main_widget")
@@ -266,7 +274,7 @@ class AssemblyPlanningWidget(AssemblyWidget):
         self.update_components_table_height()
 
     def component_image_pasted(self, image_file_name: str, row: int) -> None:
-        component_name = self.components_table.item(row, self.components_table.part_number_column).text()
+        component_name = self.components_table.item(row, ComponentsTableColumns.PART_NUMBER.value).text()
         component = self.get_component_by_name(component_name)
 
         target_path = os.path.join("images", f"{component.name}.png")
@@ -296,7 +304,7 @@ class AssemblyPlanningWidget(AssemblyWidget):
             image_item.setData(Qt.ItemDataRole.DecorationRole, pixmap)
             self.components_table.setRowHeight(current_row, new_height)
 
-        self.components_table.setItem(current_row, self.components_table.picture_column, image_item)
+        self.components_table.setItem(current_row, ComponentsTableColumns.PICTURE.value, image_item)
 
         part_name_item = QTableWidgetItem(component.part_name)
         if self.components_inventory.get_component_by_name(component.name):
@@ -306,28 +314,38 @@ class AssemblyPlanningWidget(AssemblyWidget):
             component_inventory_status = f"{component.name} does NOT exist in inventory."
             self.set_table_row_color(self.components_table, current_row, "#3F1E25")
         part_name_item.setToolTip(component_inventory_status)
-        self.components_table.setItem(current_row, self.components_table.part_name_column, part_name_item)
+        self.components_table.setItem(current_row, ComponentsTableColumns.PART_NAME.value, part_name_item)
         self.components_table_items[component].update({"part_name": part_name_item})
 
         part_number_item = QTableWidgetItem(component.part_number)
         part_number_item.setToolTip(component_inventory_status)
-        self.components_table.setItem(current_row, self.components_table.part_number_column, part_number_item)
+        self.components_table.setItem(current_row, ComponentsTableColumns.PART_NUMBER.value, part_number_item)
         self.components_table_items[component].update({"part_number": part_number_item})
 
-        quantity_item = QTableWidgetItem(str(component.quantity))
-        self.components_table.setItem(current_row, self.components_table.quantity_column, quantity_item)
+        unit_quantity_item = QTableWidgetItem(str(component.quantity))
+        self.components_table.setItem(current_row, ComponentsTableColumns.UNIT_QUANTITY.value, unit_quantity_item)
+        self.components_table_items[component].update({"unit_quantity": unit_quantity_item})
+
+        quantity_item = QTableWidgetItem(str(component.quantity * self.assembly.quantity))
+        self.components_table.setItem(current_row, ComponentsTableColumns.QUANTITY.value, quantity_item)
         self.components_table_items[component].update({"quantity": quantity_item})
 
         notes_item = QTableWidgetItem(component.notes)
         notes_item.setToolTip(component.notes)
-        self.components_table.setItem(current_row, self.components_table.notes_column, notes_item)
+        self.components_table.setItem(current_row, ComponentsTableColumns.NOTES.value, notes_item)
         self.components_table_items[component].update({"notes": notes_item})
 
         shelf_number_item = QTableWidgetItem(component.shelf_number)
-        self.components_table.setItem(current_row, self.components_table.shelf_number_column, shelf_number_item)
+        self.components_table.setItem(current_row, ComponentsTableColumns.SHELF_NUMBER.value, shelf_number_item)
         self.components_table_items[component].update({"shelf_number": shelf_number_item})
         self.components_table.blockSignals(False)
         self.update_components_table_height()
+
+    def update_component_table_quantity(self):
+        self.components_table.blockSignals(True)
+        for component, table_data in self.components_table_items.items():
+            table_data["quantity"].setText(str(component.quantity * self.assembly.quantity))
+        self.components_table.blockSignals(False)
 
     def components_table_changed(self):
         if not (component := self.get_selected_component()):
@@ -512,7 +530,7 @@ class AssemblyPlanningWidget(AssemblyWidget):
             image_item.setText(f"Error: {e}")
 
         self.laser_cut_parts_table.setRowHeight(current_row, new_height)
-        self.laser_cut_parts_table.setItem(current_row, self.laser_cut_parts_table.picture_column, image_item)
+        self.laser_cut_parts_table.setItem(current_row, LaserCutTableColumns.PICTURE.value, image_item)
 
         part_name_item = QTableWidgetItem(laser_cut_part.name)
         if self.laser_cut_inventory.get_laser_cut_part_by_name(laser_cut_part.name):
@@ -523,14 +541,14 @@ class AssemblyPlanningWidget(AssemblyWidget):
             self.set_table_row_color(self.laser_cut_parts_table, current_row, "#3F1E25")
 
         part_name_item.setToolTip(laser_cut_part_inventory_status)
-        self.laser_cut_parts_table.setItem(current_row, self.laser_cut_parts_table.part_name_column, part_name_item)
+        self.laser_cut_parts_table.setItem(current_row, LaserCutTableColumns.PART_NAME.value, part_name_item)
         self.laser_cut_part_table_items[laser_cut_part].update({"part_name": part_name_item})
 
         # Bending files
         bending_files_widget, bending_files_layout = create_file_layout("bending_files")
         self.laser_cut_parts_table.setCellWidget(
             current_row,
-            self.laser_cut_parts_table.bending_files_column,
+            LaserCutTableColumns.BENDING_FILES.value,
             bending_files_widget,
         )
         self.laser_cut_part_table_items[laser_cut_part].update({"bending_files": bending_files_widget})
@@ -539,7 +557,7 @@ class AssemblyPlanningWidget(AssemblyWidget):
         welding_files_widget, welding_files_layout = create_file_layout("welding_files")
         self.laser_cut_parts_table.setCellWidget(
             current_row,
-            self.laser_cut_parts_table.welding_files_column,
+            LaserCutTableColumns.WELDING_FILES.value,
             welding_files_widget,
         )
         self.laser_cut_part_table_items[laser_cut_part].update({"welding_files": welding_files_widget})
@@ -548,7 +566,7 @@ class AssemblyPlanningWidget(AssemblyWidget):
         cnc_milling_files_widget, cnc_milling_files_layout = create_file_layout("cnc_milling_files")
         self.laser_cut_parts_table.setCellWidget(
             current_row,
-            self.laser_cut_parts_table.cnc_milling_files_column,
+            LaserCutTableColumns.CNC_MILLING_FILES.value,
             cnc_milling_files_widget,
         )
         self.laser_cut_part_table_items[laser_cut_part].update({"cnc_milling_files": cnc_milling_files_widget})
@@ -559,7 +577,7 @@ class AssemblyPlanningWidget(AssemblyWidget):
         materials_combobox.addItems(self.sheet_settings.get_materials())
         materials_combobox.setCurrentText(laser_cut_part.material)
         materials_combobox.currentTextChanged.connect(self.laser_cut_parts_table_changed)
-        self.laser_cut_parts_table.setCellWidget(current_row, self.laser_cut_parts_table.material_column, materials_combobox)
+        self.laser_cut_parts_table.setCellWidget(current_row, LaserCutTableColumns.MATERIAL.value, materials_combobox)
         self.laser_cut_part_table_items[laser_cut_part].update({"material": materials_combobox})
 
         thicknesses_combobox = QComboBox(self)
@@ -570,28 +588,33 @@ class AssemblyPlanningWidget(AssemblyWidget):
         thicknesses_combobox.currentTextChanged.connect(self.laser_cut_parts_table_changed)
         self.laser_cut_parts_table.setCellWidget(
             current_row,
-            self.laser_cut_parts_table.thickness_column,
+            LaserCutTableColumns.THICKNESS.value,
             thicknesses_combobox,
         )
         self.laser_cut_part_table_items[laser_cut_part].update({"thickness": thicknesses_combobox})
 
-        quantity_item = QTableWidgetItem(str(laser_cut_part.quantity))
+        unit_quantity_item = QTableWidgetItem(str(laser_cut_part.quantity))
+        unit_quantity_item.setTextAlignment(Qt.AlignmentFlag.AlignCenter)
+        self.laser_cut_parts_table.setItem(current_row, LaserCutTableColumns.UNIT_QUANTITY.value, unit_quantity_item)
+        self.laser_cut_part_table_items[laser_cut_part].update({"unit_quantity": unit_quantity_item})
+
+        quantity_item = QTableWidgetItem(str(laser_cut_part.quantity * self.assembly.quantity))
         quantity_item.setTextAlignment(Qt.AlignmentFlag.AlignCenter)
-        self.laser_cut_parts_table.setItem(current_row, self.laser_cut_parts_table.quantity_column, quantity_item)
+        self.laser_cut_parts_table.setItem(current_row, LaserCutTableColumns.QUANTITY.value, quantity_item)
         self.laser_cut_part_table_items[laser_cut_part].update({"quantity": quantity_item})
 
         painting_settings_widget = LasserCutPartPaintSettingsWidget(laser_cut_part, self.laser_cut_parts_table)
         painting_settings_widget.settingsChanged.connect(self.changes_made)
         self.laser_cut_parts_table.setCellWidget(
             current_row,
-            self.laser_cut_parts_table.paint_settings_column,
+            LaserCutTableColumns.PAINT_SETTINGS.value,
             painting_settings_widget,
         )
         self.laser_cut_part_table_items[laser_cut_part].update({"painting_settings_widget": painting_settings_widget})
 
         painting_widget = LaserCutPartPaintWidget(laser_cut_part, painting_settings_widget, self.laser_cut_parts_table)
         painting_widget.settingsChanged.connect(self.changes_made)
-        self.laser_cut_parts_table.setCellWidget(current_row, self.laser_cut_parts_table.painting_column, painting_widget)
+        self.laser_cut_parts_table.setCellWidget(current_row, LaserCutTableColumns.PAINTING.value, painting_widget)
         self.laser_cut_part_table_items[laser_cut_part].update({"painting_widget": painting_widget})
 
         flow_tag_combobox = QComboBox(self)
@@ -603,30 +626,36 @@ class AssemblyPlanningWidget(AssemblyWidget):
             flow_tag_combobox.addItems(["Select flow tag"] + [f"{flow_tag}" for flow_tag in list(self.workspace_settings.get_all_laser_cut_part_flow_tags().values())])
         flow_tag_combobox.setCurrentText(str(laser_cut_part.flow_tag))
         flow_tag_combobox.currentTextChanged.connect(partial(self.laser_cut_part_flow_tag_changed, laser_cut_part, flow_tag_combobox))
-        self.laser_cut_parts_table.setCellWidget(current_row, self.laser_cut_parts_table.flow_tag_column, flow_tag_combobox)
+        self.laser_cut_parts_table.setCellWidget(current_row, LaserCutTableColumns.FLOW_TAG.value, flow_tag_combobox)
         self.laser_cut_part_table_items[laser_cut_part].update({"flow_tag": flow_tag_combobox})
 
         expected_time_to_complete = QDoubleSpinBox(self)
         self.laser_cut_parts_table.setCellWidget(
             current_row,
-            self.laser_cut_parts_table.expected_time_to_complete_column,
+            LaserCutTableColumns.EXPECTED_TIME_TO_COMPLETE.value,
             expected_time_to_complete,
         )
         self.laser_cut_part_table_items[laser_cut_part].update({"expected_time_to_complete": expected_time_to_complete})
 
         notes_item = QTableWidgetItem(laser_cut_part.notes)
-        self.laser_cut_parts_table.setItem(current_row, self.laser_cut_parts_table.notes_column, notes_item)
+        self.laser_cut_parts_table.setItem(current_row, LaserCutTableColumns.NOTES.value, notes_item)
         self.laser_cut_part_table_items[laser_cut_part].update({"notes": notes_item})
 
         shelf_number_item = QTableWidgetItem(laser_cut_part.shelf_number)
         self.laser_cut_parts_table.setItem(
             current_row,
-            self.laser_cut_parts_table.shelf_number_column,
+            LaserCutTableColumns.SHELF_NUMBER.value,
             shelf_number_item,
         )
         self.laser_cut_part_table_items[laser_cut_part].update({"shelf_number": shelf_number_item})
         self.laser_cut_parts_table.blockSignals(False)
         self.update_laser_cut_parts_table_height()
+
+    def update_laser_cut_parts_table_quantity(self):
+        self.laser_cut_parts_table.blockSignals(True)
+        for laser_cut_part, table_data in self.laser_cut_part_table_items.items():
+            table_data["quantity"].setText(str(laser_cut_part.quantity * self.assembly.quantity))
+        self.laser_cut_parts_table.blockSignals(False)
 
     def laser_cut_parts_table_changed(self):
         if not (laser_cut_part := self.get_selected_laser_cut_part()):
@@ -650,7 +679,7 @@ class AssemblyPlanningWidget(AssemblyWidget):
         laser_cut_part.material = self.laser_cut_part_table_items[laser_cut_part]["material"].currentText()
         laser_cut_part.gauge = self.laser_cut_part_table_items[laser_cut_part]["thickness"].currentText()
         with contextlib.suppress(ValueError):
-            laser_cut_part.quantity = float(self.laser_cut_part_table_items[laser_cut_part]["quantity"].text())
+            laser_cut_part.quantity = float(self.laser_cut_part_table_items[laser_cut_part]["unit_quantity"].text())
         laser_cut_part.notes = self.laser_cut_part_table_items[laser_cut_part]["notes"].text()
         laser_cut_part.shelf_number = self.laser_cut_part_table_items[laser_cut_part]["shelf_number"].text()
         self.changes_made()

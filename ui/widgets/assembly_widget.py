@@ -6,6 +6,7 @@ from PyQt6.QtCore import Qt
 from PyQt6.QtGui import QColor, QCursor
 from PyQt6.QtWidgets import (
     QComboBox,
+    QDoubleSpinBox,
     QHBoxLayout,
     QMenu,
     QPushButton,
@@ -75,7 +76,7 @@ border-top-left-radius: 0px;
         self.apply_stylesheet_to_toggle_buttons(self.pushButton_sub_assemblies, self.sub_assemblies_widget)
 
         self.image_layout = self.findChild(QVBoxLayout, "image_layout")
-
+        self.doubleSpinBox_quantity = self.findChild(QDoubleSpinBox, "doubleSpinBox_quantity")
         self.assembly_files_layout = self.findChild(QHBoxLayout, "assembly_files_layout")
         self.paint_widget = self.findChild(QWidget, "paint_widget")
         self.paint_layout = self.findChild(QHBoxLayout, "paint_layout")

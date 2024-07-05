@@ -345,7 +345,7 @@ class QuotePrintout:
             html += '<summary style="font-size: 24px; text-align: center; margin-top: 20px;">Sheets/Nests</summary>'
             html += sheets_table.generate()
             html += sheets_pictures.generate()
-            html += '<div class="page-break"></div>'
+            html += '<div id="page-break" class="page-break"></div>'
             html += "</details>"
         if self.quote.grouped_laser_cut_parts:
             html += '<h2 id="laser-cut-parts-heading">Laser Cut Parts</h2>'
@@ -387,7 +387,7 @@ class WorkorderPrintout:
             html += '<summary style="font-size: 24px; text-align: center; margin-top: 20px;">Sheets/Nests</summary>'
             html += sheets_table.generate()
             html += sheets_pictures.generate()
-            html += '<div class="page-break"></div>'
+            html += '<div id="page-break" class="page-break"></div>'
             html += "</details>"
         if self.quote.grouped_laser_cut_parts:
             html += '<h2 id="laser-cut-parts-heading">Laser Cut Parts</h2>'
@@ -429,7 +429,7 @@ class PackingSlipPrintout:
             html += '<summary style="font-size: 24px; text-align: center; margin-top: 20px;">Sheets/Nests</summary>'
             html += sheets_table.generate()
             html += sheets_pictures.generate()
-            html += '<div class="page-break"></div>'
+            html += '<div id="page-break" class="page-break"></div>'
             html += "</details>"
         if self.quote.grouped_laser_cut_parts:
             html += '<h2 id="laser-cut-parts-heading">Laser Cut Parts</h2>'

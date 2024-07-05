@@ -30,7 +30,7 @@ details>summary {
     display: flex;
 }
 @media print {
-    #showCoverPageLabel, #showAssemblies, #showNests, #showSheets, .checkbox, #printout-controls, details:not([open]) {
+    #showCoverPageLabel, #showAssemblies, #showNests, #showSheets, .checkbox, #printout-controls, .nested-parts, details:not([open]) {
         display: none;
     }
     .group_details {

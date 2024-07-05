@@ -20,11 +20,13 @@ from PyQt6.QtWidgets import (
     QMessageBox,
     QPlainTextEdit,
     QPushButton,
+    QSplitter,
     QTableWidget,
     QTableWidgetItem,
     QTabWidget,
     QTextEdit,
     QWidget,
+    QVBoxLayout
 )
 
 from ui.custom_widgets import AssemblyMultiToolBox, DeletePushButton
@@ -36,6 +38,8 @@ from utils.workspace.workspace_settings import WorkspaceSettings
 
 
 class TagWidget(QWidget):
+    addQuantityTagChanged = pyqtSignal()
+    removeQuantityTagChanged = pyqtSignal()
     tagDeleted = pyqtSignal()
 
     def __init__(
@@ -46,28 +50,47 @@ class TagWidget(QWidget):
         parent: "FlowTagWidget",
     ):
         super().__init__(parent)
-        self.parent = parent
+        self.parent: "FlowTagWidget" = parent
         self.remaining_tags = remaining_tags
         self.workspace_settings = workspace_settings
         self.tag = tag
         self.setStyleSheet("QWidget#tag_idget{border: 1px solid rgba(120, 120, 120, 70);}")
-        layout = QHBoxLayout(self)
-        layout.setAlignment(Qt.AlignmentFlag.AlignLeft)
-        layout.setContentsMargins(0, 0, 0, 0)
-        layout.setSpacing(0)
+        v_layout = QVBoxLayout(self)
+        v_layout.setContentsMargins(0, 0, 0, 0)
+        v_layout.setSpacing(0)
+
+        h_layout_1 = QHBoxLayout()
+        h_layout_1.setAlignment(Qt.AlignmentFlag.AlignLeft)
+        h_layout_1.setContentsMargins(0, 0, 0, 0)
+        h_layout_1.setSpacing(0)
         self.tag_combobox = QComboBox(self)
         self.tag_combobox.addItems([tag.name for tag in self.remaining_tags])
         self.tag_combobox.setCurrentText(tag.name)
         self.tag_combobox.currentTextChanged.connect(self.tag_changed)
         self.tag_combobox.wheelEvent = lambda event: None
         self.arrow_label = QLabel("➜", self)
+        self.arrow_label.setFixedWidth(60)
         self.delete_button = DeletePushButton(self, "Delete this tag", icon=QIcon("icons/trash.png"))
-        self.delete_button.setFixedWidth(40)
+        self.delete_button.setFixedSize(20, 20)
         self.delete_button.clicked.connect(self.delete_tag)
-        layout.addWidget(self.tag_combobox)
-        layout.addWidget(self.delete_button)
-        layout.addWidget(self.arrow_label)
-        self.setLayout(layout)
+        h_layout_1.addWidget(self.tag_combobox)
+        h_layout_1.addWidget(self.delete_button)
+        h_layout_1.addWidget(self.arrow_label)
+
+        h_layout_2 = QHBoxLayout()
+        self.add_quantity_checkbox = QCheckBox("Adds Qty", self)
+        self.add_quantity_checkbox.setToolTip("Adds quantity to inventory when this tag is completed.\nNote: This is part specific; quantity will be adjusted with respect to the part.")
+        self.add_quantity_checkbox.toggled.connect(self.addQuantityTagChanged.emit)
+        self.remove_quantity_checkbox = QCheckBox("Removes Qty", self)
+        self.remove_quantity_checkbox.setToolTip("Removes quantity from inventory when this tag is completed.\nThis would typically be when the part is complete, or nearly complete.\nNote: This is part specific; quantity will be adjusted with respect to the part.")
+        self.remove_quantity_checkbox.toggled.connect(self.removeQuantityTagChanged.emit)
+        h_layout_2.addWidget(self.add_quantity_checkbox)
+        h_layout_2.addWidget(self.remove_quantity_checkbox)
+
+        v_layout.addLayout(h_layout_1)
+        v_layout.addLayout(h_layout_2)
+
+        self.setLayout(v_layout)
 
     def tag_changed(self):
         self.parent.tag_changed(self, self.tag, self.tag_combobox.currentText())
@@ -86,9 +109,9 @@ class TagWidget(QWidget):
 
 
 class FlowTagWidget(QWidget):
-    def __init__(self, flow_tag: FlowTag, workspace_settings: WorkspaceSettings, parent: QWidget):
+    def __init__(self, flow_tag: FlowTag, workspace_settings: WorkspaceSettings, parent: "FlowTagsTableWidget"):
         super().__init__(parent)
-        self.parent = parent
+        self.parent: "FlowTagsTableWidget" = parent
         self.flow_tag = flow_tag
         self.workspace_settings = workspace_settings
 
@@ -119,7 +142,17 @@ class FlowTagWidget(QWidget):
     def load_data(self):
         for tag in self.flow_tag.tags:
             tag_widget = TagWidget(tag, self.remaining_tags, self.workspace_settings, self)
+            tag_widget.addQuantityTagChanged.connect(partial(self.add_quantity_tag_changed, tag_widget))
+            tag_widget.removeQuantityTagChanged.connect(partial(self.remove_quantity_tag_changed, tag_widget))
             tag_widget.tagDeleted.connect(partial(self.delete_tag, tag_widget))
+            if self.flow_tag.add_quantity_tag and self.flow_tag.add_quantity_tag.name == tag.name:
+                tag_widget.add_quantity_checkbox.blockSignals(True)
+                tag_widget.add_quantity_checkbox.setChecked(True)
+                tag_widget.add_quantity_checkbox.blockSignals(False)
+            if self.flow_tag.remove_quantity_tag and self.flow_tag.remove_quantity_tag.name == tag.name:
+                tag_widget.remove_quantity_checkbox.blockSignals(True)
+                tag_widget.remove_quantity_checkbox.setChecked(True)
+                tag_widget.remove_quantity_checkbox.blockSignals(False)
             self.tag_widgets.append(tag_widget)
             self.tag_layout.addWidget(tag_widget)
         self.update_tag_selections()
@@ -128,11 +161,35 @@ class FlowTagWidget(QWidget):
         new_tag = self.remaining_tags[0]
         tag_widget = TagWidget(new_tag, self.remaining_tags, self.workspace_settings, self)
         self.flow_tag.add_tag(new_tag)
+        tag_widget.addQuantityTagChanged.connect(partial(self.add_quantity_tag_changed, tag_widget))
+        tag_widget.removeQuantityTagChanged.connect(partial(self.remove_quantity_tag_changed, tag_widget))
         tag_widget.tagDeleted.connect(partial(self.delete_tag, tag_widget))
         self.tag_widgets.append(tag_widget)
         self.tag_layout.addWidget(tag_widget)
         self.remaining_tags.remove(new_tag)
         self.update_tag_selections()
+
+    def add_quantity_tag_changed(self, tag_widget: TagWidget):
+        if not tag_widget.add_quantity_checkbox.isChecked():
+            return
+        self.flow_tag.add_quantity_tag = tag_widget.tag
+        for other_tag_widget in self.tag_widgets:
+            if tag_widget == other_tag_widget:
+                continue
+            other_tag_widget.add_quantity_checkbox.blockSignals(True)
+            other_tag_widget.add_quantity_checkbox.setChecked(False)
+            other_tag_widget.add_quantity_checkbox.blockSignals(False)
+
+    def remove_quantity_tag_changed(self, tag_widget: TagWidget):
+        if not tag_widget.remove_quantity_checkbox.isChecked():
+            return
+        self.flow_tag.remove_quantity_tag = tag_widget.tag
+        for other_tag_widget in self.tag_widgets:
+            if tag_widget == other_tag_widget:
+                continue
+            other_tag_widget.remove_quantity_checkbox.blockSignals(True)
+            other_tag_widget.remove_quantity_checkbox.setChecked(False)
+            other_tag_widget.remove_quantity_checkbox.blockSignals(False)
 
     def delete_tag(self, deleted_tag_widget: TagWidget):
         self.tag_widgets.remove(deleted_tag_widget)
@@ -344,6 +401,9 @@ class EditWorkspaceSettings(QDialog):
 
         self.setWindowTitle("Edit Workspace Flow Tags")
         self.setWindowIcon(QIcon("icons/icon.png"))
+
+        self.splitter = self.findChild(QSplitter, "splitter")
+        self.splitter.setStretchFactor(1, 1)
 
         self.load_flow_tag_table_widgets()
         self.load_tags()

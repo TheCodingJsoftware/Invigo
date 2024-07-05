@@ -3,6 +3,7 @@ const checkboxConfig = {
         "picture": true,
         "part-#": true,
         "qty": true,
+        "unit-qty": false,
         "material": true,
         "thickness": true,
         "part": true,
@@ -15,6 +16,7 @@ const checkboxConfig = {
         "picture": true,
         "part-#": true,
         "qty": true,
+        "unit-qty": false,
         "material": true,
         "thickness": true,
         "part": true,
@@ -23,10 +25,11 @@ const checkboxConfig = {
         "shelf-#": true,
         "process": true,
     },
-    "packing-slip": {
+    "packingslip": {
         "picture": true,
         "part-#": true,
         "qty": true,
+        "unit-qty": false,
         "material": true,
         "thickness": true,
         "part": true,
@@ -41,9 +44,24 @@ const baseUrl = "http://invi.go/";
 const mediaQueryList = window.matchMedia('print');
 const navCheckBoxLinks = document.querySelectorAll('nav.tabbed.primary-container a');
 const checkboxes = document.querySelectorAll('.center-align .checkbox input[type="checkbox"]');
+const pageBreakDivs = document.querySelectorAll('#page-break');
+const usePageBreakcheckbox = document.getElementById('usePageBreaks');
 
+if (usePageBreakcheckbox.checked) {
+    pageBreakDivs.forEach(div => div.classList.add('page-break'));
+} else {
+    pageBreakDivs.forEach(div => div.classList.remove('page-break'));
+}
+
+usePageBreakcheckbox.addEventListener('change', function () {
+    if (usePageBreakcheckbox.checked) {
+        pageBreakDivs.forEach(div => div.classList.add('page-break'));
+    } else {
+        pageBreakDivs.forEach(div => div.classList.remove('page-break'));
+    }
+});
 checkboxes.forEach(checkbox => {
-    checkbox.addEventListener('change', function() {
+    checkbox.addEventListener('change', function () {
         const layoutId = this.getAttribute('data-layout');
         const layoutDiv = document.getElementById(layoutId);
         if (this.checked) {
@@ -261,7 +279,6 @@ $('img').each(function () {
         this.classList.add('hidden');
     };
 });
-toggleCheckboxes("quote", navCheckBoxLinks);
 
 window.addEventListener('beforeprint', hideUncheckedColumns);
 window.addEventListener('afterprint', restoreAllColumns);

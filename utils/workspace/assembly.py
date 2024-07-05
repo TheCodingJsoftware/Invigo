@@ -48,6 +48,8 @@ class Assembly:
         self.has_sub_assemblies: bool = False
         self.flow_tag: FlowTag = None
         self.assembly_image: str = None
+        self.quantity: int = 0
+
         # NOTE Used by user workspace
         self.timers: dict[str, dict] = {}
         self.display_name: str = ""
@@ -126,6 +128,7 @@ class Assembly:
         self.flow_tag: FlowTag = FlowTag("", assembly_data.get("flow_tag", {}), self.workspace_settings)
         self.assembly_image: str = assembly_data.get("assembly_image")
         self.assembly_files: list[str] = assembly_data.get("assembly_files", [])
+        self.quantity: int = assembly_data.get("quantity", 0)
 
         self.uses_primer: bool = assembly_data.get("uses_primer", False)
         self.primer_name: str = assembly_data.get("primer_name")
@@ -193,6 +196,7 @@ class Assembly:
                 "has_sub_assemblies": self.has_sub_assemblies,
                 "flow_tag": self.flow_tag.to_dict(),
                 "assembly_image": self.assembly_image,
+                "quantity": self.quantity,
                 "assembly_files": self.assembly_files,
                 "timers": self.timers,
                 "completed": self.completed,

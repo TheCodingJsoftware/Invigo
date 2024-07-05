@@ -83,34 +83,33 @@ class Job:
 
     def group_laser_cut_parts(self):
         laser_cut_part_dict: dict[str, LaserCutPart] = {}
-        for laser_cut_part in self.get_all_laser_cut_parts():
-            if laser_cut_part.name in laser_cut_part_dict:
-                laser_cut_part_dict[laser_cut_part.name].quantity += laser_cut_part.quantity
-            else:
-                new_laser_cut_part = LaserCutPart(
-                    laser_cut_part.name,
-                    laser_cut_part.to_dict(),
-                    self.laser_cut_inventory,
-                )
+        for assembly in self.get_all_assemblies():
+            for assembly_laser_cut_part in assembly.laser_cut_parts:
+                unit_quantity = assembly_laser_cut_part.quantity
+                new_laser_cut_part = LaserCutPart(assembly_laser_cut_part.name, assembly_laser_cut_part.to_dict(), self.laser_cut_inventory)
+                new_laser_cut_part.quantity = unit_quantity * assembly.quantity
+
+                if existing_component := laser_cut_part_dict.get(new_laser_cut_part.name):
+                    existing_component.quantity += new_laser_cut_part.quantity
+                else:
+                    laser_cut_part_dict[new_laser_cut_part.name] = new_laser_cut_part
                 # This is because we group the data, so all nest reference is lost.
                 new_laser_cut_part.quantity_in_nest = None
-                laser_cut_part_dict[laser_cut_part.name] = new_laser_cut_part
 
         self.grouped_laser_cut_parts = laser_cut_part_dict.values()
         self.sort_laser_cut_parts()
 
     def group_components(self):
         components_dict: dict[str, Component] = {}
-        for component in self.get_all_components():
-            if component.name in components_dict:
-                components_dict[component.name].quantity += component.quantity
-            else:
-                new_laser_cut_part = Component(
-                    component.name,
-                    component.to_dict(),
-                    self.components_inventory,
-                )
-                components_dict[component.name] = new_laser_cut_part
+        for assembly in self.get_all_assemblies():
+            for assembly_component in assembly.components:
+                unit_quantity = assembly_component.quantity
+                new_component = Component(assembly_component.name, assembly_component.to_dict(), self.components_inventory)
+                new_component.quantity = unit_quantity * assembly.quantity
+                if existing_component := components_dict.get(new_component.name):
+                    existing_component.quantity += new_component.quantity
+                else:
+                    components_dict[new_component.name] = new_component
 
         self.grouped_components = components_dict.values()
         self.sort_components()
@@ -195,6 +194,19 @@ class Job:
                 inventory_laser_cut_part.welding_files = laser_cut_part.welding_files
                 inventory_laser_cut_part.cnc_milling_files = laser_cut_part.cnc_milling_files
                 inventory_laser_cut_part.flow_tag = laser_cut_part.flow_tag
+
+                inventory_laser_cut_part.uses_primer = laser_cut_part.uses_primer
+                inventory_laser_cut_part.uses_paint = laser_cut_part.uses_paint
+                inventory_laser_cut_part.uses_powder = laser_cut_part.uses_powder
+
+                inventory_laser_cut_part.primer_name = laser_cut_part.primer_name
+                inventory_laser_cut_part.paint_name = laser_cut_part.paint_name
+                inventory_laser_cut_part.powder_name = laser_cut_part.powder_name
+
+                inventory_laser_cut_part.primer_overspray = laser_cut_part.primer_overspray
+                inventory_laser_cut_part.paint_overspray = laser_cut_part.paint_overspray
+                inventory_laser_cut_part.powder_transfer_efficiency = laser_cut_part.powder_transfer_efficiency
+
         self.laser_cut_inventory.save()
 
         for component in self.get_all_components():

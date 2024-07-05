@@ -3,7 +3,7 @@
  <class>Form</class>
  <widget class="QDialog" name="Form">
   <property name="windowModality">
-   <enum>Qt::ApplicationModal</enum>
+   <enum>Qt::WindowModality::ApplicationModal</enum>
   </property>
   <property name="geometry">
    <rect>
@@ -38,7 +38,7 @@
    <item>
     <widget class="QWidget" name="widget" native="true">
      <property name="contextMenuPolicy">
-      <enum>Qt::ActionsContextMenu</enum>
+      <enum>Qt::ContextMenuPolicy::ActionsContextMenu</enum>
      </property>
      <property name="autoFillBackground">
       <bool>false</bool>
@@ -49,8 +49,14 @@
      <layout class="QVBoxLayout" name="verticalLayout_2">
       <item>
        <widget class="QSplitter" name="splitter">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Preferred" vsizetype="Ignored">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
         <property name="orientation">
-         <enum>Qt::Vertical</enum>
+         <enum>Qt::Orientation::Vertical</enum>
         </property>
         <widget class="QWidget" name="verticalLayoutWidget">
          <layout class="QVBoxLayout" name="verticalLayout_3">
@@ -68,14 +74,17 @@
            <widget class="QTextEdit" name="textEdit_notes">
             <property name="html">
              <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
-&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;meta charset=&quot;utf-8&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'MS Shell Dlg 2'; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Create and edit flow tags, set attributes and statuses.&lt;/p&gt;
-&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;If a tag box is left as 'None' it will not be part of the flow.&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&amp;quot;Starts Timer&amp;quot; starts the timer if the flow tag has a timer enabled, timers will be stop automatically when flow tag is changed.&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Tags such as, &amp;quot;Staging&amp;quot;, &amp;quot;Editing&amp;quot;, and &amp;quot;Planning&amp;quot; cannot be used as flow tags, nothing will be checked if you use them, it could break everything, so, don't use them.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+hr { height: 1px; border-width: 0; }
+li.unchecked::marker { content: &quot;\2610&quot;; }
+li.checked::marker { content: &quot;\2612&quot;; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Segoe UI'; font-size:9pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'MS Shell Dlg 2'; font-size:8.25pt;&quot;&gt;Create and edit flow tags, set attributes and statuses.&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:'MS Shell Dlg 2'; font-size:8.25pt;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'MS Shell Dlg 2'; font-size:8.25pt;&quot;&gt;If a tag box is left as 'None' it will not be part of the flow.&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'MS Shell Dlg 2'; font-size:8.25pt;&quot;&gt;&amp;quot;Starts Timer&amp;quot; starts the timer if the flow tag has a timer enabled, timers will be stop automatically when flow tag is changed.&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'MS Shell Dlg 2'; font-size:8.25pt;&quot;&gt;Tags such as, &amp;quot;Staging&amp;quot;, &amp;quot;Editing&amp;quot;, and &amp;quot;Planning&amp;quot; cannot be used as flow tags, nothing will be checked if you use them, it could break everything, so, don't use them.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
             </property>
            </widget>
           </item>
@@ -85,6 +94,12 @@ p, li { white-space: pre-wrap; }
          <layout class="QVBoxLayout" name="verticalLayout_4">
           <item>
            <widget class="QTabWidget" name="tabWidget">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Expanding" vsizetype="Ignored">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
             <property name="currentIndex">
              <number>1</number>
             </property>
@@ -119,7 +134,7 @@ p, li { white-space: pre-wrap; }
                    <bool>true</bool>
                   </property>
                   <property name="alignment">
-                   <set>Qt::AlignHCenter|Qt::AlignTop</set>
+                   <set>Qt::AlignmentFlag::AlignHCenter|Qt::AlignmentFlag::AlignTop</set>
                   </property>
                   <widget class="QWidget" name="scrollAreaWidgetContents_2">
                    <property name="geometry">
@@ -127,7 +142,7 @@ p, li { white-space: pre-wrap; }
                      <x>0</x>
                      <y>0</y>
                      <width>1221</width>
-                     <height>249</height>
+                     <height>264</height>
                     </rect>
                    </property>
                    <layout class="QVBoxLayout" name="verticalLayout_5">
@@ -136,7 +151,7 @@ p, li { white-space: pre-wrap; }
                       <item>
                        <spacer name="verticalSpacer">
                         <property name="orientation">
-                         <enum>Qt::Vertical</enum>
+                         <enum>Qt::Orientation::Vertical</enum>
                         </property>
                         <property name="sizeHint" stdset="0">
                          <size>
@@ -178,7 +193,7 @@ p, li { white-space: pre-wrap; }
                 <item>
                  <spacer name="horizontalSpacer">
                   <property name="orientation">
-                   <enum>Qt::Horizontal</enum>
+                   <enum>Qt::Orientation::Horizontal</enum>
                   </property>
                   <property name="sizeHint" stdset="0">
                    <size>
@@ -222,7 +237,7 @@ p, li { white-space: pre-wrap; }
                      <x>0</x>
                      <y>0</y>
                      <width>1221</width>
-                     <height>249</height>
+                     <height>264</height>
                     </rect>
                    </property>
                    <layout class="QVBoxLayout" name="verticalLayout_13">
@@ -231,7 +246,7 @@ p, li { white-space: pre-wrap; }
                       <item>
                        <spacer name="verticalSpacer_2">
                         <property name="orientation">
-                         <enum>Qt::Vertical</enum>
+                         <enum>Qt::Orientation::Vertical</enum>
                         </property>
                         <property name="sizeHint" stdset="0">
                          <size>
@@ -261,7 +276,7 @@ p, li { white-space: pre-wrap; }
                 <item>
                  <spacer name="horizontalSpacer_4">
                   <property name="orientation">
-                   <enum>Qt::Horizontal</enum>
+                   <enum>Qt::Orientation::Horizontal</enum>
                   </property>
                   <property name="sizeHint" stdset="0">
                    <size>
@@ -305,7 +320,7 @@ p, li { white-space: pre-wrap; }
                      <x>0</x>
                      <y>0</y>
                      <width>1221</width>
-                     <height>249</height>
+                     <height>264</height>
                     </rect>
                    </property>
                    <layout class="QVBoxLayout" name="verticalLayout_17">
@@ -314,7 +329,7 @@ p, li { white-space: pre-wrap; }
                       <item>
                        <spacer name="verticalSpacer_3">
                         <property name="orientation">
-                         <enum>Qt::Vertical</enum>
+                         <enum>Qt::Orientation::Vertical</enum>
                         </property>
                         <property name="sizeHint" stdset="0">
                          <size>
@@ -344,7 +359,7 @@ p, li { white-space: pre-wrap; }
                 <item>
                  <spacer name="horizontalSpacer_5">
                   <property name="orientation">
-                   <enum>Qt::Horizontal</enum>
+                   <enum>Qt::Orientation::Horizontal</enum>
                   </property>
                   <property name="sizeHint" stdset="0">
                    <size>
@@ -363,6 +378,12 @@ p, li { white-space: pre-wrap; }
          </layout>
         </widget>
         <widget class="QGroupBox" name="groupBox_2">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Preferred" vsizetype="Ignored">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
          <property name="maximumSize">
           <size>
            <width>16777215</width>
@@ -388,9 +409,16 @@ p, li { white-space: pre-wrap; }
               </property>
               <layout class="QVBoxLayout" name="verticalLayout_12">
                <item>
+                <widget class="QLabel" name="label">
+                 <property name="text">
+                  <string>Double-click to rename</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
                 <widget class="QListWidget" name="listWidget_select_tag">
                  <property name="layoutMode">
-                  <enum>QListView::SinglePass</enum>
+                  <enum>QListView::LayoutMode::SinglePass</enum>
                  </property>
                 </widget>
                </item>
@@ -430,7 +458,7 @@ p, li { white-space: pre-wrap; }
                <item>
                 <widget class="QTableWidget" name="tableWidget_statuses">
                  <property name="gridStyle">
-                  <enum>Qt::NoPen</enum>
+                  <enum>Qt::PenStyle::NoPen</enum>
                  </property>
                  <column>
                   <property name="text">
@@ -465,7 +493,7 @@ p, li { white-space: pre-wrap; }
                     </size>
                    </property>
                    <property name="focusPolicy">
-                    <enum>Qt::NoFocus</enum>
+                    <enum>Qt::FocusPolicy::NoFocus</enum>
                    </property>
                    <property name="text">
                     <string>Add New Status</string>
@@ -475,7 +503,7 @@ p, li { white-space: pre-wrap; }
                  <item>
                   <spacer name="horizontalSpacer_2">
                    <property name="orientation">
-                    <enum>Qt::Horizontal</enum>
+                    <enum>Qt::Orientation::Horizontal</enum>
                    </property>
                    <property name="sizeHint" stdset="0">
                     <size>
@@ -554,7 +582,7 @@ p, li { white-space: pre-wrap; }
         <item>
          <spacer name="horizontalSpacer_3">
           <property name="orientation">
-           <enum>Qt::Horizontal</enum>
+           <enum>Qt::Orientation::Horizontal</enum>
           </property>
           <property name="sizeHint" stdset="0">
            <size>

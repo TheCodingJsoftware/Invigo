@@ -46,10 +46,11 @@ class WorkspaceSettings:
             statuses.extend(status.name for status in tag.statuses)
         return statuses
 
-    def get_tag(self, tag_name: str) -> Tag:
+    def get_tag(self, tag_name: str) -> Tag | None:
         for tag in self.tags:
             if tag.name == tag_name:
                 return tag
+        return None
 
     def create_tag(self, name: str) -> Tag:
         tag = Tag(name, {"attribute": {}, "statuses": {}})

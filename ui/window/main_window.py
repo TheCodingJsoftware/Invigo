@@ -124,7 +124,7 @@ from utils.threads.upload_job_thread import UploadJobThread
 from utils.threads.upload_quote import UploadQuote
 from utils.threads.upload_thread import UploadThread
 from utils.trusted_users import get_trusted_users
-from utils.workspace.generate_printout import JobPlannerPrintout
+from utils.workspace.generate_printout import Printout
 from utils.workspace.job import Job, JobColor, JobStatus
 from utils.workspace.job_manager import JobManager
 from utils.workspace.job_preferences import JobPreferences
@@ -936,7 +936,7 @@ class MainWindow(QMainWindow):
     def save_job(self, job: Job):
         if job is None:
             job = self.job_planner_widget.current_job
-        job_plan_printout = JobPlannerPrintout(job)
+        job_plan_printout = Printout(job)
         html = job_plan_printout.generate()
         self.upload_job_thread(f"saved_jobs/{job.status.name.lower()}/{job.name}", job, html)
         job.unsaved_changes = False
@@ -951,7 +951,7 @@ class MainWindow(QMainWindow):
 
     def save_job_as(self, job: Job):  # Todo
         return
-        job_plan_printout = JobPlannerPrintout(job)
+        job_plan_printout = Printout(job)
         html = job_plan_printout.generate()
         self.upload_job_thread(f"saved_jobs/{job.status.name.lower()}/{job.name}", job, html)
         self.status_button.setText(f"Saved {job.name}", "lime")

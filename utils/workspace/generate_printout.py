@@ -2,6 +2,7 @@ import os
 import string
 import sys
 from datetime import datetime
+from typing import Literal
 
 from utils.inventory.component import Component
 from utils.inventory.laser_cut_part import LaserCutPart
@@ -12,8 +13,7 @@ from utils.workspace.job import Job
 
 
 class CoverPage:
-    def __init__(self, title: str, job: Job) -> None:
-        self.title = title
+    def __init__(self, job: Job) -> None:
         self.job = job
         self.server_directory = f"http://{get_server_ip_address()}:{get_server_port()}"
 
@@ -166,7 +166,7 @@ class SheetImages:
         html = """<div id="sheets-layout">
                 <h5 class="center-align">Sheets:</h5>
                 <article class="border"><div class="grid">"""
-        for nest in self.job.nests:
+        for i, nest in enumerate(self.job.nests):
             single_hours, single_minutes, single_seconds = self.get_hours_minutes_seconds(nest.sheet_cut_time)
             nest_hours, nest_minutes, nest_seconds = self.get_hours_minutes_seconds(nest.get_machining_time())
             if nest.sheet_count == 1:
@@ -174,36 +174,34 @@ class SheetImages:
             else:
                 cut_time = f"""<div class="small-text">Sheet Cut Time: {single_hours:02d}h {single_minutes:02d}m {single_seconds:02d}s</div>
                             <div class="small-text">Nest Cut Time: {nest_hours:02d}h {nest_minutes:02d}m {nest_seconds:02d}s</div>"""
-            parts_list = '''<table class="border">
-                <thead>
-                    <tr>
-                        <th>Part</th>
-                        <th class="min">Quantity on One Sheet</th>
-                    </tr>
-                </thead><tbody>'''
+            parts_list = '<article class="no-padding" style="width: 300px;">'
             for part in nest.laser_cut_parts:
                 parts_list += f'''
-                <tr>
-                    <td class="min">
-                        <button class="extra transparent small-round" onclick="ui('#NEST-{self.format_filename(part.name)}');">
-                        <img class="responsive" src="{self.server_directory}/{part.image_index}">
-                        <span class="small-text">{part.name}</span>
-                    </td>
-                    <td>{part.quantity_in_nest}</td>
-                </tr>'''
-            parts_list += '</tbody></table>'
+                <a class="row padding surface-container wave" onclick="ui('#NEST-{self.format_filename(part.name)}');">
+                    <img class="round" src="{self.server_directory}/{part.image_index}">
+                    <div class="max">
+                        <h6 class="small">{part.name}</h6>
+                        <div>Quantity: {part.quantity_in_nest}</div>
+                    </div>
+                    <div class="badge none">#{part.part_number}</div>
+                </a>
+                <div class="divider"></div>'''
+            parts_list += '</article>'
             html += f"""
             <div class="s6">
                 <article class="nest no-padding border">
                     <img style="margin-bottom: -50px; margin-top: -40px; z-index: -1; height: auto;" src="{self.server_directory}/image/{nest.image_path}" class="responsive small nest_image">
+                    <div class="{'right-align' if i % 2 == 0 else 'left-align'}">
+                        <button class="nested-parts transparent small small-round">
+                            <i>format_list_bulleted</i>
+                            <span>Parts</span>
+                            <div class="tooltip {'right' if i % 2 == 0 else 'left'}">
+                                {parts_list}
+                            </div>
+                        </button>
+                    </div>
                     <div class="small-padding">
                         <div class="row">
-                            <button class="transparent square small">
-                                <i>format_list_bulleted</i>
-                                <div class="tooltip max right" style="width: 400px;">
-                                    {parts_list}
-                                </div>
-                            </button>
                             <h5 class="small max">{nest.name}</h5>
                             <div class="badge none">{int(nest.sheet_count)}</div>
                         </div>
@@ -231,17 +229,19 @@ class SheetImages:
 
 
 class LaserCutPartsTable:
-    def __init__(self, laser_cut_parts: list[LaserCutPart]) -> None:
+    def __init__(self, assembly_quantity: int, laser_cut_parts: list[LaserCutPart]) -> None:
         self.headers = [
             "Part",
             "Material",
             "Thickness",
+            "Unit Qty",
             "Qty",
             "Process",
             "Shelf #",
             "Unit Price",
             "Price",
         ]
+        self.assembly_quantity = assembly_quantity
         self.laser_cut_parts = laser_cut_parts
         self.server_directory = f"http://{get_server_ip_address()}:{get_server_port()}"
 
@@ -304,32 +304,33 @@ class LaserCutPartsTable:
             </td>
             <td class="small-text" data-column="1" data-name="material">{laser_cut_part.material}</td>
             <td class="small-text" data-column="2" data-name="thickness">{laser_cut_part.gauge}</td>
-            <td class="small-text" data-column="3" data-name="qty">{laser_cut_part.quantity}</td>
-            <td class="small-text min" data-column="4" data-name="process">{laser_cut_part.flow_tag.get_name()}</td>
-            <td class="small-text" data-column="5" data-name="shelf-#">{laser_cut_part.shelf_number}</td>
-            <td class="small-text" data-column="6" data-name="unit-price">${laser_cut_part.price:,.2f}</td>
-            <td class="small-text" data-column="7" data-name="price">${(laser_cut_part.price * laser_cut_part.quantity):,.2f}</td>
+            <td class="small-text" data-column="3" data-name="unit-qty">{laser_cut_part.quantity}</td>
+            <td class="small-text" data-column="4" data-name="qty">{laser_cut_part.quantity * self.assembly_quantity}</td>
+            <td class="small-text min" data-column="5" data-name="process">{laser_cut_part.flow_tag.get_name()}</td>
+            <td class="small-text" data-column="6" data-name="shelf-#">{laser_cut_part.shelf_number}</td>
+            <td class="small-text" data-column="7" data-name="unit-price">${laser_cut_part.price:,.2f}</td>
+            <td class="small-text" data-column="8" data-name="price">${(laser_cut_part.price * laser_cut_part.quantity):,.2f}</td>
             </tr>'''
-        html += f'''<tfoot>
-            <tr>
+        html += f'''<tr>
                 <th class="small-text" data-column="0" data-name="part"></th>
                 <th class="small-text" data-column="1" data-name="material"></th>
                 <th class="small-text" data-column="2" data-name="thickness"></th>
-                <th class="small-text" data-column="3" data-name="qty"></th>
-                <th class="small-text" data-column="4" data-name="process"></th>
-                <th class="small-text" data-column="5" data-name="shelf-#"></th>
-                <th class="small-text" data-column="6" data-name="unit-price"></th>
-                <th class="small-text" data-column="7" data-name="price">Total: ${self.get_total_cost():,.2f}</th>
-            </tr>
-            </tfoot></tbody></table>'''
+                <th class="small-text" data-column="3" data-name="unit-qty"></th>
+                <th class="small-text" data-column="4" data-name="qty"></th>
+                <th class="small-text" data-column="5" data-name="process"></th>
+                <th class="small-text" data-column="6" data-name="shelf-#"></th>
+                <th class="small-text" data-column="7" data-name="unit-price"></th>
+                <th class="small-text" data-column="8" data-name="price">Total: ${self.get_total_cost():,.2f}</th>
+            </tr></tbody></table>'''
         return html
 
 
 class ComponentsTable:
-    def __init__(self, components: list[Component]) -> None:
+    def __init__(self, assembly_quantity: int, components: list[Component]) -> None:
+        self.assembly_quantity = assembly_quantity
         self.components = components
         self.server_directory = f"http://{get_server_ip_address()}:{get_server_port()}"
-        self.headers = ["Part", "Part #", "Shelf #", "Qty", "Unit Price", "Price"]
+        self.headers = ["Part", "Part #", "Shelf #", "Unit Qty", "Qty", "Unit Price", "Price"]
 
     def format_filename(self, s):
         valid_chars = "-_.() %s%s" % (string.ascii_letters, string.digits)
@@ -387,17 +388,19 @@ class ComponentsTable:
             </td>
             <td class="small-text" data-column="1" data-name="part-#">{component.part_number}</td>
             <td class="small-text" data-column="2" data-name="shelf-#">{component.shelf_number}</td>
-            <td class="small-text" data-column="3" data-name="qty">{component.quantity}</td>
-            <td class="small-text" data-column="4" data-name="unit-price">${component.price:,.2f}</td>
-            <td class="small-text" data-column="5" data-name="price">${(component.price * component.quantity):,.2f}</td>
+            <td class="small-text" data-column="3" data-name="unit-qty">{component.quantity}</td>
+            <td class="small-text" data-column="4" data-name="qty">{component.quantity * self.assembly_quantity}</td>
+            <td class="small-text" data-column="5" data-name="unit-price">${component.price:,.2f}</td>
+            <td class="small-text" data-column="6" data-name="price">${(component.price * component.quantity):,.2f}</td>
             </tr>"""
         html += f"""</tbody><tfoot><tr>
         <th class="small-text" data-column="0" data-name="picture"></th>
         <th class="small-text" data-column="1" data-name="part-#"></th>
         <th class="small-text" data-column="2" data-name="shelf-#"></th>
-        <th class="small-text" data-column="3" data-name="qty"></th>
-        <th class="small-text" data-column="4" data-name="unit-price"></th>
-        <th class="small-text" data-column="5" data-name="price">Total: ${self.get_total_cost():,.2f}</th>
+        <th class="small-text" data-column="3" data-name="unit-qty"></th>
+        <th class="small-text" data-column="4" data-name="qty"></th>
+        <th class="small-text" data-column="5" data-name="unit-price"></th>
+        <th class="small-text" data-column="6" data-name="price">Total: ${self.get_total_cost():,.2f}</th>
         </tr></tfoot></table>"""
         return html
 
@@ -420,7 +423,7 @@ class AssemblyTable:
                     <h6 class="small">{assembly.name}</h6>
                     <div>{assembly.flow_tag.get_name()}</div>
                 </div>
-                <label>NA</label>
+                <div class="badge none">{int(assembly.quantity)}</div>
             </a><div class="divider"></div>"""
         html += "</article></div><br>"
         return html
@@ -455,8 +458,9 @@ class GroupDiv:
 
 
 class AssemblyDiv:
-    def __init__(self, assembly: Assembly) -> None:
+    def __init__(self, assembly: Assembly, use_recursion=True) -> None:
         self.assembly = assembly
+        self.use_recursion = use_recursion
         self.server_directory = f"http://{get_server_ip_address()}:{get_server_port()}"
 
     def get_assembly_data_html(self) -> str:
@@ -464,7 +468,7 @@ class AssemblyDiv:
         image_html = f'<img src="{self.server_directory}/image/{self.assembly.assembly_image}" class="assembly_image">' if self.assembly.assembly_image else ""
         html += image_html
         html += '<div class="padding">'
-        html += f"<h5>{self.assembly.name}</h5>"
+        html += f'<h5>{self.assembly.name} <div class="badge none">{int(self.assembly.quantity)}</div></h5>'
         html += f'<p class="small-text">Process: {self.assembly.flow_tag.get_name()}</p>'
         html += "</div>"
         html += "</div>"
@@ -472,7 +476,7 @@ class AssemblyDiv:
 
     def generate(self) -> str:
         html = '<details class="assembly_details" open>'
-        html += f"<summary>{self.assembly.name}</summary>"
+        html += f'<summary>{self.assembly.name} × {int(self.assembly.quantity)}</summary>'
         html += '<div class="assembly">'
         html += self.get_assembly_data_html()
 
@@ -480,7 +484,7 @@ class AssemblyDiv:
             html += '<details class="laser_cut_parts_detail" open>'
             html += "<summary>Laser Cut Parts</summary>"
             html += '<div class="detail_contents laser_cut_part_contents">'
-            laser_cut_table = LaserCutPartsTable(self.assembly.laser_cut_parts)
+            laser_cut_table = LaserCutPartsTable(self.assembly.quantity, self.assembly.laser_cut_parts)
             html += laser_cut_table.generate()
             html += "</div>"
             html += "</details>"
@@ -489,15 +493,15 @@ class AssemblyDiv:
             html += '<details class="components_detail" open>'
             html += "<summary>Components</summary>"
             html += '<div class="detail_contents components_contents">'
-            component_table = ComponentsTable(self.assembly.components)
+            component_table = ComponentsTable(self.assembly.quantity, self.assembly.components)
             html += component_table.generate()
             html += "</div>"
             html += "</details>"
 
         # if self.assembly.laser_cut_parts or self.assembly.components:
-        #     html += '<div class="page-break"></div>'
+        #     html += '<div id="page-break" class="page-break"></div>'
 
-        if self.assembly.sub_assemblies:
+        if self.assembly.sub_assemblies and self.use_recursion:
             html += "<details open>"
             html += "<summary>Sub-Assemblies</summary>"
             html += '<div class="detail_contents assembly">'
@@ -512,13 +516,50 @@ class AssemblyDiv:
         return html
 
 
-class JobPlannerPrintout:
+class PrintoutHeader:
     def __init__(
         self,
         job: Job,
+        printout_type: Literal["QUOTE", "WORKORDER", "PACKINGSLIP"] = "QUOTE"
     ) -> None:
         self.job = job
-        self.title = "Job Plan"
+        self.printout_type = printout_type
+        self.server_directory = f"http://{get_server_ip_address()}:{get_server_port()}"
+        self.html = f'''<header>
+            <nav>
+                <img class="logo" src="{self.server_directory}/images/logo.png">
+                <h5 class="max center-align small">
+                    {self.job.name}
+                </h5>
+                <div class="date">
+                    {str(datetime.now().strftime("%I:%M:%S %p %A %B %d, %Y"))}
+                </div>
+            </nav>
+            <nav class="tabbed primary-container">
+                <a {'class="active primary"' if self.printout_type == "QUOTE" else ''} data-target="quote">
+                    <i>request_quote</i>
+                    <span>Quote</span>
+                </a>
+                <a {'class="active primary"' if self.printout_type == "WORKORDER" else ''} data-target="workorder">
+                    <i>manufacturing</i>
+                    <span>Workorder</span>
+                </a>
+                <a {'class="active primary"' if self.printout_type == "PACKINGSLIP" else ''} data-target="packingslip">
+                    <i>receipt_long</i>
+                    <span>Packing Slip</span>
+                </a>
+            </nav>
+        </header>'''
+
+
+class Printout:
+    def __init__(
+        self,
+        job: Job,
+        printout_type: Literal["QUOTE", "WORKORDER", "PACKINGSLIP"] = "QUOTE"
+    ) -> None:
+        self.job = job
+        self.printout_type = printout_type
         self.program_directory = os.path.dirname(os.path.realpath(sys.argv[0]))
         self.server_directory = f"http://{get_server_ip_address()}:{get_server_port()}"
 
@@ -537,6 +578,7 @@ class JobPlannerPrintout:
         return total
 
     def generate(self) -> str:
+        header_html = PrintoutHeader(self.job, self.printout_type).html
         html = f"""<!DOCTYPE html>
                 <html>
                     <head>
@@ -550,8 +592,8 @@ class JobPlannerPrintout:
                         <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
                         <script type="module" src="https://cdn.jsdelivr.net/npm/material-dynamic-colors@1.1.2/dist/cdn/material-dynamic-colors.min.js"></script>
                         <link rel="stylesheet" type="text/css" href="/static/theme.css">
-                        <title>{self.title} - {self.job.name}</title>
-                        <meta property="og:title" content="{self.title} - {self.job.name}" />
+                        <title>{self.printout_type.title()} {self.job.name}</title>
+                        <meta property="og:title" content="{self.printout_type.title()} - {self.job.name}" />
                         <meta property="og:description" content="{self.job.ship_to}" />
                     </head>
         <style>
@@ -559,31 +601,7 @@ class JobPlannerPrintout:
         </style>
         <body class="quote">
         <main class="responsive">
-        <header>
-            <nav>
-                <img class="logo" src="{self.server_directory}/images/logo.png">
-                <h5 class="max center-align small">
-                    {self.title} - {self.job.name}
-                </h5>
-                <div class="date">
-                    {str(datetime.now().strftime("%I:%M:%S %p %A %B %d, %Y"))}
-                </div>
-            </nav>
-            <nav class="tabbed primary-container">
-                <a class="active primary" data-target="quote">
-                    <i>request_quote</i>
-                    <span>Quote</span>
-                </a>
-                <a data-target="workorder">
-                    <i>manufacturing</i>
-                    <span>Workorder</span>
-                </a>
-                <a data-target="packing-slip">
-                    <i>receipt_long</i>
-                    <span>Packing Slip</span>
-                </a>
-            </nav>
-        </header>
+        {header_html}
         <div class="center-align" id="printout-controls">
             <label class="checkbox">
                 <input type="checkbox" id="showCoverPage" data-name="show-cover-page" data-layout="cover-page" checked>
@@ -614,14 +632,21 @@ class JobPlannerPrintout:
                 <input type="checkbox" id="showTotalCost" data-name="show-total-cost" data-layout="total-cost-layout" checked>
                 <span>Show Total Cost</span>
             </label>
+            <br>
+            <label class="checkbox">
+                <input type="checkbox" id="usePageBreaks" data-name="use-page-breaks" data-layout="page-break" checked>
+                <span>Use Page Breaks</span>
+            </label>
         </div>
         <br>"""
 
-        cover_page = CoverPage(self.title, self.job)
+        cover_page = CoverPage(self.job)
 
         html += cover_page.generate()
 
-        if self.job.get_all_assemblies():
+        all_assemblies = self.job.get_all_assemblies()
+
+        if all_assemblies:
             assembly_table = AssemblyTable(self.job)
             html += assembly_table.generate()
 
@@ -632,15 +657,26 @@ class JobPlannerPrintout:
             nests_table = SheetImages(self.job)
             html += nests_table.generate()
 
-        html += '<div id="parts-layout"><div class="page-break"></div>'
+        html += '<div id="parts-layout"><div id="page-break" class="page-break"></div>'
         html += """<div class="tabs">
             <a class="active" data-ui="#assemblies-layout"><i>table_view</i>Assemblies Layout</a>
-            <a data-ui="#parts-list"> <i>format_list_bulleted</i>Parts List</a>
+            <a data-ui="#assemblies-list"> <i>data_table</i>Assemblies List</a>
+            <a data-ui="#parts-list"> <i>format_list_bulleted</i>Grouped Parts List</a>
         </div>"""
         html += '<div class="page active" id="assemblies-layout">'
         if self.job.groups:
             job_div = JobDiv(self.job)
             html += job_div.generate()
+        else:
+            html += "Nothing here"
+        html += "</div>"
+
+        html += '<div class="page" id="assemblies-list" class="hidden">'
+        if all_assemblies:
+            for assembly in all_assemblies:
+                assembly_div = AssemblyDiv(assembly, False)
+                html += assembly_div.generate()
+                html += '<div id="page-break" class="page-break"></div>'
         else:
             html += "Nothing here"
         html += "</div>"
@@ -652,30 +688,33 @@ class JobPlannerPrintout:
         if grouped_laser_cut_parts and grouped_components:
             if grouped_laser_cut_parts:
                 html += '<h5 class="center-align">Laser Cut Parts:</h5>'
-                grouped_laser_cut_parts_table = LaserCutPartsTable(grouped_laser_cut_parts)
+                grouped_laser_cut_parts_table = LaserCutPartsTable(1, grouped_laser_cut_parts)
                 html += grouped_laser_cut_parts_table.generate()
             if grouped_components:
                 html += '<h5 class="center-align">Components:</h5>'
-                grouped_components_table = ComponentsTable(grouped_components)
+                grouped_components_table = ComponentsTable(1, grouped_components)
                 html += grouped_components_table.generate()
         else:
             html += "Nothing here"
-        html += "</div></div>"
+        html += "</div>"
+        html += "</div>" # for the tabs
 
         if grouped_components or grouped_laser_cut_parts:
             html += f"""
             <div id="total-cost-layout">
-                <h6 class="center-align">Total Cost: ${self.get_total_price():,.2f}</h6>
+                <h6 class="center-align bold">Total Cost: ${self.get_total_price():,.2f}</h6>
                 <p class="small-text center-align bold underline">No tax is included in this quote.</p>
                 <p class="small-text center-align">Payment past due date will receive 1.5% interest rate per month of received goods.</p>
             </div>"""
-
-        html += grouped_laser_cut_parts_table.generate_laser_cut_part_popups()
-        html += grouped_components_table.generate_components_popups()
+        if grouped_laser_cut_parts:
+            html += grouped_laser_cut_parts_table.generate_laser_cut_part_popups()
+        if grouped_components:
+            html += grouped_components_table.generate_components_popups()
         html += nests_table.generate_laser_cut_part_popups()
 
         html += "</main></body>"
         html += f"""<script>
             {self.printout_js}
+            toggleCheckboxes("{self.printout_type.lower()}", navCheckBoxLinks);
         </script>"""
         return html

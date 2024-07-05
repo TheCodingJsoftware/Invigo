@@ -1,11 +1,27 @@
 import os
 from datetime import datetime
+from enum import Enum, auto
 
 from PyQt6.QtCore import Qt, pyqtSignal
 from PyQt6.QtGui import QKeySequence, QPixmap
-from PyQt6.QtWidgets import QAbstractItemView, QApplication
+from PyQt6.QtWidgets import QAbstractItemView, QApplication, QTableWidgetItem
 
 from ui.custom_widgets import CustomTableWidget
+
+
+class AutoNumber(Enum):
+    def _generate_next_value_(name, start, count, last_values):
+        return count
+
+
+class ComponentsTableColumns(AutoNumber):
+    PICTURE = auto()
+    PART_NAME = auto()
+    PART_NUMBER = auto()
+    UNIT_QUANTITY = auto()
+    QUANTITY = auto()
+    SHELF_NUMBER = auto()
+    NOTES = auto()
 
 
 class ComponentsPlanningTableWidget(CustomTableWidget):
@@ -15,13 +31,6 @@ class ComponentsPlanningTableWidget(CustomTableWidget):
         super().__init__(parent)
         self.row_height = 60
 
-        self.picture_column = 0
-        self.part_name_column = 1
-        self.part_number_column = 2
-        self.quantity_column = 3
-        self.notes_column = 4
-        self.shelf_number_column = 5
-
         self.setShowGrid(True)
         self.setSortingEnabled(False)
         self.setTextElideMode(Qt.TextElideMode.ElideNone)
@@ -30,26 +39,28 @@ class ComponentsPlanningTableWidget(CustomTableWidget):
         self.setVerticalScrollMode(QAbstractItemView.ScrollMode.ScrollPerPixel)
         self.setHorizontalScrollMode(QAbstractItemView.ScrollMode.ScrollPerPixel)
 
-        self.set_editable_column_index(
-            [
-                self.part_name_column,
-                self.part_number_column,
-                self.quantity_column,
-                self.notes_column,
-                self.shelf_number_column,
-            ]
-        )
+        editable_columns = [
+            ComponentsTableColumns.PART_NAME,
+            ComponentsTableColumns.PART_NUMBER,
+            ComponentsTableColumns.UNIT_QUANTITY,
+            ComponentsTableColumns.NOTES,
+            ComponentsTableColumns.SHELF_NUMBER,
+        ]
+        self.set_editable_column_index([col.value for col in editable_columns])
 
-        headers: dict[str, int] = {
-            "Picture": self.picture_column,
-            "Part Name": self.part_name_column,
-            "Part Number": self.part_number_column,
-            "Quantity": self.quantity_column,
-            "Notes": self.notes_column,
-            "Shelf #": self.shelf_number_column,
+        headers = {
+            "Picture": ComponentsTableColumns.PICTURE.value,
+            "Part Name": ComponentsTableColumns.PART_NAME.value,
+            "Part Number": ComponentsTableColumns.PART_NUMBER.value,
+            "Unit Quantity": ComponentsTableColumns.UNIT_QUANTITY.value,
+            "Quantity": ComponentsTableColumns.QUANTITY.value,
+            "Shelf #": ComponentsTableColumns.SHELF_NUMBER.value,
+            "Notes": ComponentsTableColumns.NOTES.value,
         }
-        self.setColumnCount(len(list(headers.keys())))
-        self.setHorizontalHeaderLabels(headers)
+        self.setColumnCount(len(headers))
+        for header, column in headers.items():
+            self.setHorizontalHeaderItem(column, QTableWidgetItem(header))
+
         self.setStyleSheet("border-color: transparent;")
 
     def keyPressEvent(self, event: QKeySequence):
@@ -65,7 +76,7 @@ class ComponentsPlanningTableWidget(CustomTableWidget):
         if not image.isNull():
             selected_items = self.selectedItems()
             for selected_item in selected_items:
-                if selected_item.column() == 0:
+                if selected_item.column() == ComponentsTableColumns.PICTURE.value:
                     item = selected_item
                     break
 

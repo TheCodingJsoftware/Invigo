@@ -25,9 +25,9 @@ from PyQt6.QtWidgets import (
     QWidget,
 )
 
-from ui.custom.components_quoting_table_widget import ComponentsQuotingTableWidget
+from ui.custom.components_quoting_table_widget import ComponentsQuotingTableWidget, ComponentsTableColumns
 from ui.custom.laser_cut_parts_quoting_table_widget import (
-    LaserCutPartsQuotingTableWidget,
+    LaserCutPartsQuotingTableWidget, LaserCutTableColumns
 )
 from ui.custom_widgets import (
     ClickableLabel,
@@ -1158,13 +1158,13 @@ class QuoteWidget(QWidget):
                 pixmap = image.scaled(new_width, new_height, Qt.AspectRatioMode.KeepAspectRatio)
                 image_item.setData(Qt.ItemDataRole.DecorationRole, pixmap)
 
-                self.laser_cut_table_widget.setItem(row_index, self.laser_cut_table_widget.picture_column, image_item)
+                self.laser_cut_table_widget.setItem(row_index, LaserCutTableColumns.PICTURE.value, image_item)
 
                 table_widget_item_name = QTableWidgetItem(laser_cut_part.name)
                 table_widget_item_name.setTextAlignment(Qt.AlignmentFlag.AlignCenter | Qt.AlignmentFlag.AlignVCenter)
                 self.laser_cut_table_widget.setItem(
                     row_index,
-                    self.laser_cut_table_widget.part_name_column,
+                    LaserCutTableColumns.PART_NAME.value,
                     table_widget_item_name,
                 )
 
@@ -1181,7 +1181,7 @@ class QuoteWidget(QWidget):
                 material_combobox.currentTextChanged.connect(partial(material_changed, laser_cut_part, material_combobox))
                 self.laser_cut_table_widget.setCellWidget(
                     row_index,
-                    self.laser_cut_table_widget.material_column,
+                    LaserCutTableColumns.MATERIAL.value,
                     material_combobox,
                 )
                 self.laser_cut_table_items[laser_cut_part].update({"material": material_combobox})
@@ -1198,7 +1198,7 @@ class QuoteWidget(QWidget):
                 thickness_combobox.currentTextChanged.connect(partial(thickness_changed, laser_cut_part, thickness_combobox))
                 self.laser_cut_table_widget.setCellWidget(
                     row_index,
-                    self.laser_cut_table_widget.thickness_column,
+                    LaserCutTableColumns.THICKNESS.value,
                     thickness_combobox,
                 )
                 self.laser_cut_table_items[laser_cut_part].update({"thickness": thickness_combobox})
@@ -1210,7 +1210,7 @@ class QuoteWidget(QWidget):
                 table_widget_item_quantity.setToolTip(f"One sheet has: {laser_cut_part.quantity_in_nest}")
                 self.laser_cut_table_widget.setItem(
                     row_index,
-                    self.laser_cut_table_widget.quantity_column,
+                    LaserCutTableColumns.QUANTITY.value,
                     table_widget_item_quantity,
                 )
                 self.laser_cut_table_items[laser_cut_part].update({"quantity": table_widget_item_quantity})
@@ -1219,7 +1219,7 @@ class QuoteWidget(QWidget):
                 table_widget_item_part_dim.setTextAlignment(Qt.AlignmentFlag.AlignCenter | Qt.AlignmentFlag.AlignVCenter)
                 self.laser_cut_table_widget.setItem(
                     row_index,
-                    self.laser_cut_table_widget.part_dim_column,
+                    LaserCutTableColumns.PART_DIM.value,
                     table_widget_item_part_dim,
                 )
 
@@ -1232,11 +1232,11 @@ class QuoteWidget(QWidget):
                 paint_widget.settingsChanged.connect(lambda: (self.quote_changed(), self.update_laser_cut_parts_price()))
                 self.laser_cut_table_items[laser_cut_part].update({"paint_type": paint_widget})
 
-                self.laser_cut_table_widget.setCellWidget(row_index, self.laser_cut_table_widget.painting_column, paint_widget)
+                self.laser_cut_table_widget.setCellWidget(row_index, LaserCutTableColumns.PAINTING.value, paint_widget)
 
                 self.laser_cut_table_widget.setCellWidget(
                     row_index,
-                    self.laser_cut_table_widget.paint_settings_column,
+                    LaserCutTableColumns.PAINT_SETTINGS.value,
                     paint_settings_widget,
                 )
 
@@ -1245,7 +1245,7 @@ class QuoteWidget(QWidget):
                 table_widget_item_paint_cost.setTextAlignment(Qt.AlignmentFlag.AlignCenter | Qt.AlignmentFlag.AlignVCenter)
                 self.laser_cut_table_widget.setItem(
                     row_index,
-                    self.laser_cut_table_widget.paint_cost_column,
+                    LaserCutTableColumns.PAINT_COST.value,
                     table_widget_item_paint_cost,
                 )
                 self.laser_cut_table_items[laser_cut_part].update({"paint_cost": table_widget_item_paint_cost})
@@ -1255,7 +1255,7 @@ class QuoteWidget(QWidget):
                 table_widget_item_cost_of_goods.setTextAlignment(Qt.AlignmentFlag.AlignCenter | Qt.AlignmentFlag.AlignVCenter)
                 self.laser_cut_table_widget.setItem(
                     row_index,
-                    self.laser_cut_table_widget.cost_of_goods_column,
+                    LaserCutTableColumns.COST_OF_GOODS.value,
                     table_widget_item_cost_of_goods,
                 )
                 self.laser_cut_table_items[laser_cut_part].update({"cost_of_goods": table_widget_item_cost_of_goods})
@@ -1265,7 +1265,7 @@ class QuoteWidget(QWidget):
                 table_widget_item_bend_cost.setTextAlignment(Qt.AlignmentFlag.AlignCenter | Qt.AlignmentFlag.AlignVCenter)
                 self.laser_cut_table_widget.setItem(
                     row_index,
-                    self.laser_cut_table_widget.bend_cost_column,
+                    LaserCutTableColumns.BEND_COST.value,
                     table_widget_item_bend_cost,
                 )
                 self.laser_cut_table_items[laser_cut_part].update({"bend_cost": table_widget_item_bend_cost})
@@ -1275,7 +1275,7 @@ class QuoteWidget(QWidget):
                 table_widget_item_bend_cost.setTextAlignment(Qt.AlignmentFlag.AlignCenter | Qt.AlignmentFlag.AlignVCenter)
                 self.laser_cut_table_widget.setItem(
                     row_index,
-                    self.laser_cut_table_widget.labor_cost_column,
+                    LaserCutTableColumns.LABOR_COST.value,
                     table_widget_item_bend_cost,
                 )
                 self.laser_cut_table_items[laser_cut_part].update({"labor_cost": table_widget_item_bend_cost})
@@ -1285,7 +1285,7 @@ class QuoteWidget(QWidget):
                 table_widget_item_unit_price.setTextAlignment(Qt.AlignmentFlag.AlignCenter | Qt.AlignmentFlag.AlignVCenter)
                 self.laser_cut_table_widget.setItem(
                     row_index,
-                    self.laser_cut_table_widget.unit_price_column,
+                    LaserCutTableColumns.UNIT_PRICE.value,
                     table_widget_item_unit_price,
                 )
                 self.laser_cut_table_items[laser_cut_part].update({"unit_price": table_widget_item_unit_price})
@@ -1295,7 +1295,7 @@ class QuoteWidget(QWidget):
                 table_widget_item_price.setTextAlignment(Qt.AlignmentFlag.AlignCenter | Qt.AlignmentFlag.AlignVCenter)
                 self.laser_cut_table_widget.setItem(
                     row_index,
-                    self.laser_cut_table_widget.price_column,
+                    LaserCutTableColumns.PRICE.value,
                     table_widget_item_price,
                 )
                 self.laser_cut_table_items[laser_cut_part].update({"price": table_widget_item_price})
@@ -1305,7 +1305,7 @@ class QuoteWidget(QWidget):
                 table_widget_item_shelf_number.setTextAlignment(Qt.AlignmentFlag.AlignCenter | Qt.AlignmentFlag.AlignVCenter)
                 self.laser_cut_table_widget.setItem(
                     row_index,
-                    self.laser_cut_table_widget.shelf_number_column,
+                    LaserCutTableColumns.SHELF_NUMBER.value,
                     table_widget_item_shelf_number,
                 )
 
@@ -1316,7 +1316,7 @@ class QuoteWidget(QWidget):
                 recut_button = RecutButton(self)
                 recut_button.clicked.connect(partial(recut_pressed, laser_cut_part, recut_button))
                 recut_button.setStyleSheet("margin: 5%;")
-                self.laser_cut_table_widget.setCellWidget(row_index, self.laser_cut_table_widget.recut_column, recut_button)
+                self.laser_cut_table_widget.setCellWidget(row_index, LaserCutTableColumns.RECUT.value, recut_button)
 
                 send_part_to_inventory = QPushButton(self)
                 send_part_to_inventory.setText("Add to Inventory")
@@ -1330,7 +1330,7 @@ class QuoteWidget(QWidget):
                 )
                 self.laser_cut_table_widget.setCellWidget(
                     row_index,
-                    self.laser_cut_table_widget.add_to_inventory_column,
+                    LaserCutTableColumns.ADD_TO_INVENTORY.value,
                     send_part_to_inventory,
                 )
 
@@ -1571,7 +1571,7 @@ class QuoteWidget(QWidget):
     def load_component_parts(self):
         self.components_table_items.clear()
         self.clear_layout(self.components_layout)
-        self.components_table_widget: ComponentsQuotingTableWidget = ComponentsQuotingTableWidget(self)
+        self.components_table_widget = ComponentsQuotingTableWidget(self)
 
         self.components_table_widget.setContextMenuPolicy(Qt.ContextMenuPolicy.CustomContextMenu)
         menu = QMenu(self)
