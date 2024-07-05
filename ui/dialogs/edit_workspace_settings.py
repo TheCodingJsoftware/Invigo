@@ -171,6 +171,7 @@ class FlowTagWidget(QWidget):
 
     def add_quantity_tag_changed(self, tag_widget: TagWidget):
         if not tag_widget.add_quantity_checkbox.isChecked():
+            self.flow_tag.add_quantity_tag = None
             return
         self.flow_tag.add_quantity_tag = tag_widget.tag
         for other_tag_widget in self.tag_widgets:
@@ -182,6 +183,7 @@ class FlowTagWidget(QWidget):
 
     def remove_quantity_tag_changed(self, tag_widget: TagWidget):
         if not tag_widget.remove_quantity_checkbox.isChecked():
+            self.flow_tag.remove_quantity_tag = None
             return
         self.flow_tag.remove_quantity_tag = tag_widget.tag
         for other_tag_widget in self.tag_widgets:
