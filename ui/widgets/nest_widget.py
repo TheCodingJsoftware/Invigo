@@ -227,6 +227,114 @@ class NestWidget(QWidget):
                 "This sheet does not exist in sheets inventory."
             )
 
+    def update_nest_summary(self):
+        self.parent.update_nest_summary()
+
+    def load_nest_parts(self):
+        self.part_assembly_comboboxes.clear()
+        self.treeWidget_parts.clear()
+        self.treeWidget_parts.setHeaderLabels(
+            ["Part Name", "Qty", "Nest Qty", "Assembly"]
+        )
+
+        for laser_cut_part in self.nest.laser_cut_parts:
+            tree_item = QTreeWidgetItem(
+                self.treeWidget_parts,
+                [
+                    laser_cut_part.name,
+                    str(int(laser_cut_part.quantity_in_nest)),
+                    str(int(laser_cut_part.quantity_in_nest * self.nest.sheet_count)),
+                    "",
+                ],
+            )  # Placeholder for the QComboBox
+            assembly_combobox = QComboBox(self.treeWidget_parts)
+            self.part_assembly_comboboxes.append(assembly_combobox)
+            assembly_combobox.wheelEvent = lambda event: None
+            assembly_combobox.addItems(
+                ["None"]
+                + [assembly.name for assembly in self.parent.job.get_all_assemblies()]
+            )
+            if assembly := self.find_parts_assembly(laser_cut_part.name):
+                assembly_combobox.setCurrentText(assembly.name)
+            assembly_combobox.currentTextChanged.connect(
+                partial(self.part_assembly_changed, assembly_combobox, laser_cut_part)
+            )
+            self.treeWidget_parts.addTopLevelItem(tree_item)
+            self.treeWidget_parts.setItemWidget(tree_item, 3, assembly_combobox)
+        self.treeWidget_parts.resizeColumnToContents(1)
+        self.treeWidget_parts.resizeColumnToContents(2)
+        self.treeWidget_parts.resizeColumnToContents(3)
+
+    def update_parts_assembly(self):
+        self.preprocess_assemblies()
+        for assembly_combobox in self.part_assembly_comboboxes:
+            selection = assembly_combobox.currentIndex() # Because the user might have renamed the assembly
+            assembly_combobox.blockSignals(True)
+            assembly_combobox.clear()
+            assembly_combobox.addItems(
+                ["None"]
+                + [assembly.name for assembly in self.parent.job.get_all_assemblies()]
+            )
+            assembly_combobox.setCurrentIndex(selection)
+            assembly_combobox.blockSignals(False)
+
+    def preprocess_assemblies(self):
+        self.part_to_assembly.clear()
+        self.assembly_dict.clear()
+
+        for assembly in self.parent.job.get_all_assemblies():
+            self.assembly_dict[assembly.name] = assembly
+            for laser_cut_part in assembly.laser_cut_parts:
+                self.part_to_assembly[laser_cut_part.name] = assembly
+
+    def find_parts_assembly(self, part_name: str) -> Assembly | None:
+        return self.part_to_assembly.get(part_name, None)
+
+    def is_part_in_assembly(self, assembly_name: str, part_name: str) -> bool:
+        if assembly := self.assembly_dict.get(assembly_name):
+            return any(part_name == part.name for part in assembly.laser_cut_parts)
+        return False
+
+    def part_assembly_changed(
+        self, assembly_combobox: QComboBox, nest_laser_cut_part: LaserCutPart
+    ):
+        if assembly_combobox.currentText() == "None":
+            return
+
+        if self.is_part_in_assembly(
+            assembly_combobox.currentText(), nest_laser_cut_part.name
+        ):
+            if assembly := self.assembly_dict.get(assembly_combobox.currentText()):
+                for laser_cut_part in assembly.laser_cut_parts:
+                    if laser_cut_part.name == nest_laser_cut_part.name:
+                        laser_cut_part.load_part_data(nest_laser_cut_part.to_dict())
+                        self.parent.update_tables()
+                        msg = QMessageBox(
+                            QMessageBox.Icon.Information,
+                            "Updated",
+                            f"Updated {nest_laser_cut_part.name}'s data in job.",
+                            QMessageBox.StandardButton.Ok,
+                            self,
+                        )
+                        msg.exec()
+                        return
+        else:
+            msg = QMessageBox(
+                QMessageBox.Icon.Question,
+                "Item not found",
+                f"{nest_laser_cut_part.name} does not exist in {assembly_combobox.currentText()}.\n\nWould you like to add it?",
+                QMessageBox.StandardButton.Yes
+                | QMessageBox.StandardButton.No
+                | QMessageBox.StandardButton.Cancel,
+                self,
+            )
+            if msg.exec() != QMessageBox.StandardButton.Yes:
+                return
+            if assembly := self.assembly_dict.get(assembly_combobox.currentText()):
+                new_laser_cut_part = LaserCutPart(nest_laser_cut_part.name, nest_laser_cut_part.to_dict(), nest_laser_cut_part.laser_cut_inventory)
+                assembly.add_laser_cut_part(new_laser_cut_part)
+                self.parent.update_tables()
+
     def sync_changes(self):
         self.parent.parent.sync_changes()
 
