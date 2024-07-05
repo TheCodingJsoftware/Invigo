@@ -50,6 +50,7 @@ class Job:
         self.groups: list[Group] = []
         self.nests: list[Nest] = []
         self.grouped_laser_cut_parts: list[LaserCutPart] = []
+        self.grouped_components: list[Component] = []
 
         self.job_manager: JobManager = job_manager
         self.status = JobStatus.PLANNING
@@ -82,28 +83,46 @@ class Job:
 
     def group_laser_cut_parts(self):
         laser_cut_part_dict: dict[str, LaserCutPart] = {}
-        for nest in self.nests:
-            for laser_cut_part in nest.laser_cut_parts:
-                if laser_cut_part.name in laser_cut_part_dict:
-                    laser_cut_part_dict[laser_cut_part.name].quantity += laser_cut_part.quantity
-                else:
-                    new_laser_cut_part = LaserCutPart(
-                        laser_cut_part.name,
-                        laser_cut_part.to_dict(),
-                        self.laser_cut_inventory,
-                    )
-                    # This is because we group the data, so all nest reference is lost.
-                    new_laser_cut_part.quantity_in_nest = None
-                    laser_cut_part_dict[laser_cut_part.name] = new_laser_cut_part
+        for laser_cut_part in self.get_all_laser_cut_parts():
+            if laser_cut_part.name in laser_cut_part_dict:
+                laser_cut_part_dict[laser_cut_part.name].quantity += laser_cut_part.quantity
+            else:
+                new_laser_cut_part = LaserCutPart(
+                    laser_cut_part.name,
+                    laser_cut_part.to_dict(),
+                    self.laser_cut_inventory,
+                )
+                # This is because we group the data, so all nest reference is lost.
+                new_laser_cut_part.quantity_in_nest = None
+                laser_cut_part_dict[laser_cut_part.name] = new_laser_cut_part
 
         self.grouped_laser_cut_parts = laser_cut_part_dict.values()
         self.sort_laser_cut_parts()
+
+    def group_components(self):
+        components_dict: dict[str, Component] = {}
+        for component in self.get_all_components():
+            if component.name in components_dict:
+                components_dict[component.name].quantity += component.quantity
+            else:
+                new_laser_cut_part = Component(
+                    component.name,
+                    component.to_dict(),
+                    self.components_inventory,
+                )
+                components_dict[component.name] = new_laser_cut_part
+
+        self.grouped_components = components_dict.values()
+        self.sort_components()
 
     def sort_nests(self):
         self.nests = natsorted(self.nests, key=lambda nest: nest.name)
 
     def sort_laser_cut_parts(self):
         self.grouped_laser_cut_parts = natsorted(self.grouped_laser_cut_parts, key=lambda laser_cut_part: laser_cut_part.name)
+
+    def sort_components(self):
+        self.grouped_components = natsorted(self.grouped_components, key=lambda laser_cut_part: laser_cut_part.name)
 
     def get_group(self, group_name: str) -> Group:
         return next((group for group in self.groups if group.name == group_name), None)
@@ -127,11 +146,19 @@ class Job:
             laser_cut_parts.extend(nest.laser_cut_parts)
         return laser_cut_parts
 
+    def get_grouped_laser_cut_parts(self) -> list[LaserCutPart]:
+        self.group_laser_cut_parts()
+        return self.grouped_laser_cut_parts
+
     def get_all_components(self) -> list[Component]:
         components: list[Component] = []
         for assembly in self.get_all_assemblies():
             components.extend(assembly.components)
         return components
+
+    def get_grouped_components(self) -> list[Component]:
+        self.group_components()
+        return self.grouped_components
 
     def load_data(self, data: dict[str, dict[str, object]]):
         if not data:

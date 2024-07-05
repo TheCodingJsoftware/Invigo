@@ -96,7 +96,7 @@ navCheckBoxLinks.forEach(link => {
         event.preventDefault();
         const targetColumn = this.getAttribute('data-target');
         toggleCheckboxes(targetColumn, navCheckBoxLinks);
-
+        document.body.className = targetColumn;
     });
 });
 

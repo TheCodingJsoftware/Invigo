@@ -490,7 +490,7 @@ class JobPlannerPrintout:
                         <meta property="og:description" content="{self.job.ship_to}" />
                     </head>
         <style>{self.printout_css}</style>
-        <body class="light"><main>
+        <body class="quote"><main>
         <header>
             <nav>
                 <img class="logo" src="{self.server_directory}/images/logo.png">
@@ -580,21 +580,24 @@ class JobPlannerPrintout:
             html += "Nothing here"
         html += "</div>"
 
+        grouped_laser_cut_parts = self.job.get_grouped_laser_cut_parts()
+        grouped_components = self.job.get_grouped_components()
+
         html += '<div class="page" id="parts-list" class="hidden">'
-        if self.job.get_all_laser_cut_parts() and self.job.get_all_components():
-            if self.job.get_all_laser_cut_parts():
+        if grouped_laser_cut_parts and grouped_components:
+            if grouped_laser_cut_parts:
                 html += '<h5 class="center-align">Laser Cut Parts:</h5>'
-                parts_list = LaserCutPartsTable(self.job.get_all_laser_cut_parts())
-                html += parts_list.generate()
-            if self.job.get_all_components():
+                grouped_laser_cut_parts_table = LaserCutPartsTable(grouped_laser_cut_parts)
+                html += grouped_laser_cut_parts_table.generate()
+            if grouped_components:
                 html += '<h5 class="center-align">Components:</h5>'
-                components_list = ComponentsTable(self.job.get_all_components())
-                html += components_list.generate()
+                grouped_components_table = ComponentsTable(grouped_components)
+                html += grouped_components_table.generate()
         else:
             html += "Nothing here"
         html += "</div></div>"
 
-        if self.job.get_all_components() or self.job.get_all_laser_cut_parts():
+        if grouped_components or grouped_laser_cut_parts:
             html += f"""
             <div id="total-cost-layout">
                 <h6 class="center-align">Total Cost: ${self.get_total_price():,.2f}</h6>
@@ -602,8 +605,8 @@ class JobPlannerPrintout:
                 <p class="small-text center-align">Payment past due date will receive 1.5% interest rate per month of received goods.</p>
             </div>"""
 
-        html += parts_list.generate_laser_cut_part_popups()
-        html += components_list.generate_components_popups()
+        html += grouped_laser_cut_parts_table.generate_laser_cut_part_popups()
+        html += grouped_components_table.generate_components_popups()
 
         html += "</main></body>"
         html += f"<script>{self.printout_js}</script>"
