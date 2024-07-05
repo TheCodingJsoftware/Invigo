@@ -21,9 +21,7 @@ class DownloadThread(QThread):
 
         for file_to_download in self.files_to_download:
             try:
-                response = self.session.get(
-                    self.file_url + file_to_download, timeout=10
-                )
+                response = self.session.get(self.file_url + file_to_download, timeout=10)
 
                 if response.status_code == 200:
                     filepath = f"data/{file_to_download}"

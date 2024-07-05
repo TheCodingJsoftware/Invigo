@@ -49,9 +49,7 @@ class ColorPicker(QDialog):
         self.black_overlay.mousePressEvent = self.moveSVSelector
 
         self.comboBox_colors_ral.addItems(list(colors.colors_ral.keys()))
-        self.comboBox_colors_ral.currentTextChanged.connect(
-            self.quick_ral_colors_changed
-        )
+        self.comboBox_colors_ral.currentTextChanged.connect(self.quick_ral_colors_changed)
 
         if rgb:
             self.setRGB(rgb)
@@ -61,19 +59,11 @@ class ColorPicker(QDialog):
             self.setHex(_hex)
         else:
             self.setRGB((0, 0, 0))
-        self.setStyleSheet(
-            "QWidget{background-color: none;} QFrame{border-radius:5px;}"
-        )
+        self.setStyleSheet("QWidget{background-color: none;} QFrame{border-radius:5px;}")
 
     def quick_ral_colors_changed(self):
-        self.setHex(
-            colors.colors_ral[self.comboBox_colors_ral.currentText()]["hex"]
-            .lower()
-            .replace("#", "")
-        )
-        self.lineEdit_color_name.setText(
-            colors.colors_ral[self.comboBox_colors_ral.currentText()]["name"]
-        )
+        self.setHex(colors.colors_ral[self.comboBox_colors_ral.currentText()]["hex"].lower().replace("#", ""))
+        self.lineEdit_color_name.setText(colors.colors_ral[self.comboBox_colors_ral.currentText()]["name"])
 
     ## Main Functions ##
     def getHSV(self, hrange=100, svrange=100):
@@ -111,9 +101,7 @@ class ColorPicker(QDialog):
         self._setRGB((r, g, b))
         self._setHex(self.hsv2hex(self.color))
         self.color_vis.setStyleSheet(f"background-color: rgb({r},{g},{b})")
-        self.color_view.setStyleSheet(
-            f"border-radius: 5px;background-color: qlineargradient(x1:1, x2:0, stop:0 hsl({h}%,100%,50%), stop:1 #fff);"
-        )
+        self.color_view.setStyleSheet(f"border-radius: 5px;background-color: qlineargradient(x1:1, x2:0, stop:0 hsl({h}%,100%,50%), stop:1 #fff);")
         self.colorChanged.emit()
 
     def rgbChanged(self):
@@ -146,9 +134,7 @@ class ColorPicker(QDialog):
 
     def _setHSV(self, c):
         self.hue_selector.move(7, int((100 - c[0]) * 1.85))
-        self.color_view.setStyleSheet(
-            f"border-radius: 5px;background-color: qlineargradient(x1:1, x2:0, stop:0 hsl({c[0]}%,100%,50%), stop:1 #fff);"
-        )
+        self.color_view.setStyleSheet(f"border-radius: 5px;background-color: qlineargradient(x1:1, x2:0, stop:0 hsl({c[0]}%,100%,50%), stop:1 #fff);")
         self.selector.move(int(c[1] * 2 - 6), int((200 - c[2] * 2) - 6))
 
     def _setHex(self, c):

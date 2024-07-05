@@ -9,6 +9,4 @@ class JobTabWidget(QTabWidget):
         self.setDocumentMode(True)
         self.setMovable(True)
         self.setObjectName("job_planner_tab_widget")
-        self.setStyleSheet(
-            "QTabWidget#job_planner_tab_widget > QWidget { border-bottom-left-radius: 0px; }"
-        )
+        self.setStyleSheet("QTabWidget#job_planner_tab_widget > QWidget { border-bottom-left-radius: 0px; }")

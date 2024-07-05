@@ -46,9 +46,7 @@ class GenerateWorkorderDialog(QDialog):
         grouped_data = self.admin_workspace._get_all_groups()
         for group in grouped_data:
             treeview = self.create_treeview()
-            self.group_toolbox.addItem(
-                treeview, group, base_color=self.admin_workspace.get_group_color(group)
-            )
+            self.group_toolbox.addItem(treeview, group, base_color=self.admin_workspace.get_group_color(group))
             self.group_toolboxes[group] = treeview
         self.group_toolbox.close_all()
 
@@ -77,9 +75,7 @@ class GenerateWorkorderDialog(QDialog):
         tree_view.clicked.connect(self.get_selected_assemblies)
         return tree_view
 
-    def load_treeview(
-        self, tree_view: QTreeView, model: QStandardItemModel, assembly: Assembly
-    ):
+    def load_treeview(self, tree_view: QTreeView, model: QStandardItemModel, assembly: Assembly):
         # for assembly in admin_workspace.data:
         parent_item = self.create_item_with_checkbox(assembly.name)
         self.data[self.assembly_count] = assembly
@@ -93,9 +89,7 @@ class GenerateWorkorderDialog(QDialog):
             item_with_checkbox = self.create_item_with_checkbox(_sub_assembly.name)
             self.data[self.assembly_count] = _sub_assembly
             self.assembly_count += 1
-            parent_item.appendRow(
-                [item_with_checkbox, QStandardItem(str(self.assembly_count))]
-            )
+            parent_item.appendRow([item_with_checkbox, QStandardItem(str(self.assembly_count))])
             if len(_sub_assembly.sub_assemblies) > 0:
                 self.add_items_to_model(item_with_checkbox, _sub_assembly)
 
@@ -131,9 +125,7 @@ class GenerateWorkorderDialog(QDialog):
                 self.update_parent_state(parent_item)
         elif item.checkState() == Qt.CheckState.Checked:
             self.update_child_items(item)
-            if item.parent() is not None and self.are_all_children_checked(
-                item.parent()
-            ):
+            if item.parent() is not None and self.are_all_children_checked(item.parent()):
                 item.parent().setCheckState(Qt.CheckState.Checked)
 
     def get_topmost_checked_items_rows(self, model: QStandardItemModel) -> list[str]:
@@ -145,16 +137,10 @@ class GenerateWorkorderDialog(QDialog):
             self.find_topmost_checked_items(parent_item, topmost_checked_items)
         return [item.text() for item in topmost_checked_items]
 
-    def find_topmost_checked_items(
-        self, parent_item: QStandardItem, topmost_checked_items: list[str]
-    ):
+    def find_topmost_checked_items(self, parent_item: QStandardItem, topmost_checked_items: list[str]):
         for row in range(parent_item.rowCount()):
             child_item = parent_item.child(row)
-            if (
-                child_item
-                and child_item.checkState() == Qt.CheckState.Checked
-                and child_item.parent().checkState() == Qt.CheckState.Unchecked
-            ):
+            if child_item and child_item.checkState() == Qt.CheckState.Checked and child_item.parent().checkState() == Qt.CheckState.Unchecked:
                 topmost_checked_items.append(parent_item.child(row, 1))
             self.find_topmost_checked_items(child_item, topmost_checked_items)
 
@@ -163,9 +149,7 @@ class GenerateWorkorderDialog(QDialog):
         for model in self.models:
             selected_rows: list[str] = self.get_topmost_checked_items_rows(model)
             for row in selected_rows:
-                self.selected_assemblies.append(
-                    self.data[int(row) - 1]
-                )  # Need to offset because ID starts at 1
+                self.selected_assemblies.append(self.data[int(row) - 1])  # Need to offset because ID starts at 1
         self.load_jobs()
 
     def get_workorder(self) -> dict[Assembly, int]:
@@ -189,9 +173,7 @@ class GenerateWorkorderDialog(QDialog):
             def update_quantity(assembly: Assembly, quantity_spin_box: QSpinBox):
                 self.workorder[assembly] = quantity_spin_box.value()
 
-            quantity_spin_box.valueChanged.connect(
-                partial(update_quantity, assembly, quantity_spin_box)
-            )
+            quantity_spin_box.valueChanged.connect(partial(update_quantity, assembly, quantity_spin_box))
 
             h_layout.addWidget(QLabel(assembly.name, self))
             h_layout.addWidget(quantity_spin_box)

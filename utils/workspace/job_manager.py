@@ -21,9 +21,7 @@ class JobManager:
         self.sheet_settings: SheetSettings = self.parent.sheet_settings
         self.sheets_inventory: SheetsInventory = self.parent.sheets_inventory
         self.workspace_settings: WorkspaceSettings = self.parent.workspace_settings
-        self.components_inventory: ComponentsInventory = (
-            self.parent.components_inventory
-        )
+        self.components_inventory: ComponentsInventory = self.parent.components_inventory
         self.laser_cut_inventory: LaserCutInventory = self.parent.laser_cut_inventory
         self.paint_inventory: PaintInventory = self.parent.paint_inventory
 

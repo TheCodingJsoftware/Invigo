@@ -91,9 +91,7 @@ class PreviousQuoteItem(QGroupBox):
     def __init__(self, file_info: dict[str, str], parent: QWidget) -> None:
         super().__init__(parent)
         quote_name = file_info.get("name")
-        modified_date = datetime.fromtimestamp(file_info.get("modified_date")).strftime(
-            "%A, %B %d, %Y, %I:%M:%S %p"
-        )
+        modified_date = datetime.fromtimestamp(file_info.get("modified_date")).strftime("%A, %B %d, %Y, %I:%M:%S %p")
 
         self.setTitle(quote_name)
 
@@ -101,9 +99,7 @@ class PreviousQuoteItem(QGroupBox):
         modified.setWordWrap(True)
         load_quote_button = QPushButton("Load Quote", self)
         load_quote_button.clicked.connect(self.load_quote.emit)
-        load_quote_button.setToolTip(
-            "Loads the selected quote into a new tab for detailed viewing and editing."
-        )
+        load_quote_button.setToolTip("Loads the selected quote into a new tab for detailed viewing and editing.")
 
         open_external = QPushButton(self)
         open_external.setObjectName("pushButton_open_in_browser")
@@ -120,9 +116,7 @@ QPushButton#pushButton_open_in_browser:flat {
         open_external.setFixedSize(25, 25)
         open_external.setIcon(QIcon("icons/website.png"))
         open_external.clicked.connect(self.open_webpage.emit)
-        open_external.setToolTip(
-            "Will open up the printout in your default web browser."
-        )
+        open_external.setToolTip("Will open up the printout in your default web browser.")
 
         delete_button = DeletePushButton(
             self,
@@ -158,9 +152,7 @@ class SavedQuoteItem(QGroupBox):
     def __init__(self, file_info: dict[str, str], parent: QWidget) -> None:
         super().__init__(parent)
         quote_name = file_info.get("name")
-        modified_date = datetime.fromtimestamp(file_info.get("modified_date")).strftime(
-            "%A, %B %d, %Y, %I:%M:%S %p"
-        )
+        modified_date = datetime.fromtimestamp(file_info.get("modified_date")).strftime("%A, %B %d, %Y, %I:%M:%S %p")
         order_number = file_info.get("order_number")
         status = file_info.get("status")
 
@@ -171,9 +163,7 @@ class SavedQuoteItem(QGroupBox):
         quote_status.setFixedWidth(50)
 
         self.status_combobox = QComboBox(self)
-        self.status_combobox.addItems(
-            ["In progress", "Need more info", "Quoted", "Confirmed"]
-        )
+        self.status_combobox.addItems(["In progress", "Need more info", "Quoted", "Confirmed"])
         self.status_combobox.wheelEvent = lambda event: None
         self.status_combobox.setCurrentText(status)
         self.status_combobox.currentTextChanged.connect(self.status_changed.emit)
@@ -183,9 +173,7 @@ class SavedQuoteItem(QGroupBox):
 
         load_quote_button = QPushButton("Load Quote", self)
         load_quote_button.clicked.connect(self.load_quote.emit)
-        load_quote_button.setToolTip(
-            "Loads the selected quote into a new tab for detailed viewing and editing."
-        )
+        load_quote_button.setToolTip("Loads the selected quote into a new tab for detailed viewing and editing.")
 
         open_external = QPushButton(self)
         open_external.setCursor(Qt.CursorShape.PointingHandCursor)
@@ -202,9 +190,7 @@ QPushButton#pushButton_open_in_browser:flat {
         open_external.setFixedSize(25, 25)
         open_external.setIcon(QIcon("icons/website.png"))
         open_external.clicked.connect(self.open_webpage.emit)
-        open_external.setToolTip(
-            "Will open up the printout in your default web browser."
-        )
+        open_external.setToolTip("Will open up the printout in your default web browser.")
 
         delete_button = DeletePushButton(
             self,
@@ -293,9 +279,7 @@ class AssemblyImage(QLabel):
         self.setContextMenuPolicy(Qt.ContextMenuPolicy.CustomContextMenu)
         self.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
         self.setToolTip("Press to enlarge")
-        self.setText(
-            "Drop an Image.\nRight click to Paste\nfrom clipboard.\n(PNG, JPG, JPEG)"
-        )
+        self.setText("Drop an Image.\nRight click to Paste\nfrom clipboard.\n(PNG, JPG, JPEG)")
         self.setAcceptDrops(True)
         self.setWordWrap(True)
         self.setStyleSheet("background-color: rgba(30,30,30,100);")
@@ -312,9 +296,7 @@ class AssemblyImage(QLabel):
 
     def clear_image(self):
         self.setPixmap(QPixmap())
-        self.setText(
-            "Drop an Image.\nRight click to Paste\nfrom clipboard.\n(PNG, JPG, JPEG)"
-        )
+        self.setText("Drop an Image.\nRight click to Paste\nfrom clipboard.\n(PNG, JPG, JPEG)")
         self.setStyleSheet("background-color: rgba(30,30,30,100);")
         self.path_to_image = ""
         self.image_dropped = False
@@ -340,11 +322,7 @@ class AssemblyImage(QLabel):
         if urls := event.mimeData().urls():
             image_path = urls[0].toLocalFile()
             if image_path.lower().endswith((".png", ".jpg", ".jpeg")):
-                self.setPixmap(
-                    QPixmap(image_path).scaled(
-                        self.width(), self.height(), Qt.AspectRatioMode.KeepAspectRatio
-                    )
-                )
+                self.setPixmap(QPixmap(image_path).scaled(self.width(), self.height(), Qt.AspectRatioMode.KeepAspectRatio))
                 self.imagePathDropped.emit(image_path)
                 event.accept()
             else:
@@ -353,9 +331,7 @@ class AssemblyImage(QLabel):
                 event.ignore()
 
     def dragLeaveEvent(self, event: QDragLeaveEvent):
-        self.setText(
-            "Drop an Image.\nRight click to Paste\nfrom clipboard.\n(PNG, JPG, JPEG)"
-        )
+        self.setText("Drop an Image.\nRight click to Paste\nfrom clipboard.\n(PNG, JPG, JPEG)")
         self.setStyleSheet("background-color: rgba(30,30,30,100);")
         event.accept()
         if self.image_dropped:
@@ -365,9 +341,7 @@ class AssemblyImage(QLabel):
 class LoadingScreen(QSplashScreen):
     def __init__(self):
         super().__init__()
-        self.setPixmap(
-            QPixmap("icons/loading.png")
-        )  # Load an image for the loading screen
+        self.setPixmap(QPixmap("icons/loading.png"))  # Load an image for the loading screen
         self.setWindowFlag(Qt.WindowType.WindowStaysOnTopHint)
 
 
@@ -375,9 +349,7 @@ class SelectRangeCalendar(QCalendarWidget):
     def __init__(self, parent=None):
         super().__init__(parent)
         self.setObjectName("select_range_calendar")
-        self.setVerticalHeaderFormat(
-            QCalendarWidget.VerticalHeaderFormat.NoVerticalHeader
-        )
+        self.setVerticalHeaderFormat(QCalendarWidget.VerticalHeaderFormat.NoVerticalHeader)
         self.from_date: QDate = None
         self.to_date: QDate = None
 
@@ -424,10 +396,7 @@ class SelectRangeCalendar(QCalendarWidget):
         self.highlight_range(QTextCharFormat())
 
         # check if a keyboard modifer is pressed
-        if (
-            QApplication.keyboardModifiers() & Qt.KeyboardModifier.ShiftModifier
-            and self.from_date
-        ):
+        if QApplication.keyboardModifiers() & Qt.KeyboardModifier.ShiftModifier and self.from_date:
             self.to_date = date_value
             if self.to_date < self.from_date:
                 self.to_date, self.from_date = self.from_date, self.to_date
@@ -457,13 +426,9 @@ class ItemsGroupBox(QGroupBox):
         if event.mimeData().hasUrls:
             for url in event.mimeData().urls():
                 if str(url.toLocalFile()).endswith(".xlsx"):
-                    self.setStyleSheet(
-                        "QGroupBox#items_group_box {background-color: rgba(29, 185, 84, 100);}"
-                    )
+                    self.setStyleSheet("QGroupBox#items_group_box {background-color: rgba(29, 185, 84, 100);}")
                 else:
-                    self.setStyleSheet(
-                        "QGroupBox#items_group_box {background-color: rgba(229, 9, 20, 100);}"
-                    )
+                    self.setStyleSheet("QGroupBox#items_group_box {background-color: rgba(229, 9, 20, 100);}")
             event.accept()
         else:
             event.ignore()
@@ -504,9 +469,7 @@ class FilterTabWidget(QWidget):
         self.show_all_tab = QWidget(self)
         self.num_columns = columns
         layout = QGridLayout(self.show_all_tab)
-        layout.setAlignment(
-            Qt.AlignmentFlag.AlignHCenter | Qt.AlignmentFlag.AlignTop
-        )  # Set horizontal alignment to center
+        layout.setAlignment(Qt.AlignmentFlag.AlignHCenter | Qt.AlignmentFlag.AlignTop)  # Set horizontal alignment to center
         self.show_all_tab.setLayout(layout)
 
         scroll_area = QScrollArea()
@@ -527,13 +490,9 @@ class FilterTabWidget(QWidget):
     def add_tab(self, name):
         tab_widget = QWidget(self)
         tab_widget.setObjectName("filter_tab_widget")
-        tab_widget.setStyleSheet(
-            "QWidget#filter_tab_widget{background-color: rgba(25, 25, 25, 100); border-bottom-left-radius: 5px; border-bottom-right-radius: 5px;}"
-        )
+        tab_widget.setStyleSheet("QWidget#filter_tab_widget{background-color: rgba(25, 25, 25, 100); border-bottom-left-radius: 5px; border-bottom-right-radius: 5px;}")
         layout = QGridLayout(tab_widget)
-        layout.setAlignment(
-            Qt.AlignmentFlag.AlignHCenter | Qt.AlignmentFlag.AlignTop
-        )  # Set horizontal alignment to center
+        layout.setAlignment(Qt.AlignmentFlag.AlignHCenter | Qt.AlignmentFlag.AlignTop)  # Set horizontal alignment to center
 
         scroll_area = QScrollArea()
         scroll_area.setWidgetResizable(True)
@@ -645,9 +604,7 @@ class ScrollPositionManager:
         self.scroll_positions: dict[str, int] = {}
 
     def save_scroll_position(self, category: str, scroll: QTableWidget | QScrollArea):
-        scroll_position = QPoint(
-            scroll.horizontalScrollBar().value(), scroll.verticalScrollBar().value()
-        )
+        scroll_position = QPoint(scroll.horizontalScrollBar().value(), scroll.verticalScrollBar().value())
         if not scroll_position.y():
             return
         self.scroll_positions[category] = scroll_position.y()
@@ -690,26 +647,18 @@ class RecordingWidget(QWidget):
             scale_progress = 1 - (2 * abs(progress - 0.5) * 0.3)
             self.scale = scale_progress
 
-            self.current_color = self.interpolateColors(
-                self.recording_color, QColor("darkred"), scale_progress
-            )
+            self.current_color = self.interpolateColors(self.recording_color, QColor("darkred"), scale_progress)
         else:
             self.elapsed_time = 0
             self.scale = 1.0
-            self.current_color = self.interpolateColors(
-                self.nonrecording_color, self.recording_color, 1.0
-            )
+            self.current_color = self.interpolateColors(self.nonrecording_color, self.recording_color, 1.0)
 
         self.update()
 
     def interpolateColors(self, start_color, end_color, progress):
         red = int(start_color.red() + progress * (end_color.red() - start_color.red()))
-        green = int(
-            start_color.green() + progress * (end_color.green() - start_color.green())
-        )
-        blue = int(
-            start_color.blue() + progress * (end_color.blue() - start_color.blue())
-        )
+        green = int(start_color.green() + progress * (end_color.green() - start_color.green()))
+        blue = int(start_color.blue() + progress * (end_color.blue() - start_color.blue()))
 
         return QColor(red, green, blue)
 
@@ -836,13 +785,9 @@ class MachineCutTimeSpinBox(QDoubleSpinBox):
         minutes = int(((value - days) * 24 - hours) * 60)
 
         current_date_time = QDateTime.currentDateTime()
-        end_date_time = current_date_time.addDays(days).addSecs(
-            hours * 3600 + minutes * 60
-        )
+        end_date_time = current_date_time.addDays(days).addSecs(hours * 3600 + minutes * 60)
 
-        time_delta = (
-            end_date_time.toSecsSinceEpoch() - current_date_time.toSecsSinceEpoch()
-        )
+        time_delta = end_date_time.toSecsSinceEpoch() - current_date_time.toSecsSinceEpoch()
         return timedelta(seconds=time_delta)
 
 
@@ -943,13 +888,9 @@ class TimeSpinBox(QDoubleSpinBox):
         minutes = int(((value - days) * 24 - hours) * 60)
 
         current_date_time = QDateTime.currentDateTime()
-        end_date_time = current_date_time.addDays(days).addSecs(
-            hours * 3600 + minutes * 60
-        )
+        end_date_time = current_date_time.addDays(days).addSecs(hours * 3600 + minutes * 60)
 
-        time_delta = (
-            end_date_time.toSecsSinceEpoch() - current_date_time.toSecsSinceEpoch()
-        )
+        time_delta = end_date_time.toSecsSinceEpoch() - current_date_time.toSecsSinceEpoch()
         return timedelta(seconds=time_delta)
 
 
@@ -1060,10 +1001,7 @@ class DropWidget(QWidget):
                 ".jpg",
                 "sldprt",
             ]  # Allowed file extensions
-            valid_files = all(
-                file_path.lower().endswith(tuple(allowed_extensions))
-                for file_path in file_paths
-            )
+            valid_files = all(file_path.lower().endswith(tuple(allowed_extensions)) for file_path in file_paths)
             if valid_files:
                 self.label.setText("Processing")
                 self.label.setStyleSheet("background-color: rgba(70,210,110, 100);")
@@ -1225,8 +1163,7 @@ QPushButton:!checked:pressed#edit_sheet_nest_button {
                 self.toggle_widget_visibility(w),
                 button.setText("🡇" if w.isVisible() else "🡆"),
                 input_box.setStyleSheet(
-                    "QLineEdit{background-color: %(base_color)s; border-color: %(base_color)s; border-bottom-right-radius: 0px;} QMenu { background-color: rgb(22,22,22);}"
-                    % {"base_color": base_color}
+                    "QLineEdit{background-color: %(base_color)s; border-color: %(base_color)s; border-bottom-right-radius: 0px;} QMenu { background-color: rgb(22,22,22);}" % {"base_color": base_color}
                     if w.isVisible()
                     else "QLineEdit{background-color: rgba(71, 71, 71, 110); border-color: rgba(76, 76, 76, 110); border-bottom-right-radius: 5px;} QMenu { background-color: rgb(22,22,22);}"
                 ),
@@ -1235,19 +1172,14 @@ QPushButton:!checked:pressed#edit_sheet_nest_button {
         input_box.setObjectName("input_box_multitoolbox")
         input_box.setText(title)
         input_box.setFixedHeight(34)
-        input_box.setStyleSheet(
-            "QLineEdit{background-color: %(base_color)s; border-color: %(base_color)s; border-bottom-right-radius: 0px;} QMenu { background-color: rgb(22,22,22);}"
-            % {"base_color": base_color}
-        )
+        input_box.setStyleSheet("QLineEdit{background-color: %(base_color)s; border-color: %(base_color)s; border-bottom-right-radius: 0px;} QMenu { background-color: rgb(22,22,22);}" % {"base_color": base_color})
 
         delete_button = DeletePushButton(
             parent=widget,
             tool_tip=f"Delete {title} forever",
             icon=QIcon("icons/trash.png"),
         )
-        delete_button.setStyleSheet(
-            "border-radius: 0px; border-top-right-radius: 5px; border-bottom-right-radius: 5px;"
-        )
+        delete_button.setStyleSheet("border-radius: 0px; border-top-right-radius: 5px; border-bottom-right-radius: 5px;")
         delete_button.setFixedWidth(33)
         delete_button.setFixedHeight(34)
         duplicate_button = QPushButton()
@@ -1304,13 +1236,9 @@ background-color: rgba(25, 25, 25, 0.6);
         main_layout = self.layout()  # Get the reference to the main layout
         for i in range(main_layout.count()):
             layout_item = main_layout.itemAt(i)
-            widget = (
-                layout_item.widget().layout().itemAt(1).widget()
-            )  # This is what were trying to find
+            widget = layout_item.widget().layout().itemAt(1).widget()  # This is what were trying to find
             # layout = widget.layout()
-            if (
-                widget == widget_to_delete
-            ):  # Check if the layout's widget matches the given widget
+            if widget == widget_to_delete:  # Check if the layout's widget matches the given widget
                 self.delete_buttons[i].disconnect()
                 self.buttons[i].disconnect()
                 self.buttons.pop(i)
@@ -1347,24 +1275,15 @@ background-color: rgba(25, 25, 25, 0.6);
         self.buttons[-1].setText("🡆")
         self.buttons[-1].setChecked(True)
         self.widgets[-1].setVisible(False)
-        self.delete_buttons[-1].setStyleSheet(
-            "border-radius: 0px; border-top-right-radius: 5px; border-bottom-right-radius: 5px;"
-        )
-        self.input_box[-1].setStyleSheet(
-            "QLineEdit{background-color: rgba(71, 71, 71, 110); border-color: rgba(76, 76, 76, 110); border-bottom-right-radius: 5px;} QMenu { background-color: rgb(22,22,22);}"
-        )
+        self.delete_buttons[-1].setStyleSheet("border-radius: 0px; border-top-right-radius: 5px; border-bottom-right-radius: 5px;")
+        self.input_box[-1].setStyleSheet("QLineEdit{background-color: rgba(71, 71, 71, 110); border-color: rgba(76, 76, 76, 110); border-bottom-right-radius: 5px;} QMenu { background-color: rgb(22,22,22);}")
 
     def openLastToolBox(self):
         self.buttons[-1].setText("🡇")
         self.buttons[-1].setChecked(False)
         self.widgets[-1].setVisible(True)
-        self.delete_buttons[-1].setStyleSheet(
-            "border-radius: 0px; border-top-right-radius: 5px; border-bottom-right-radius: 0px;"
-        )
-        self.input_box[-1].setStyleSheet(
-            "QLineEdit{background-color: %(base_color)s; border-color: %(base_color)s; border-bottom-right-radius: 0px;} QMenu { background-color: rgb(22,22,22);}"
-            % {"base_color": self.colors[-1]}
-        )
+        self.delete_buttons[-1].setStyleSheet("border-radius: 0px; border-top-right-radius: 5px; border-bottom-right-radius: 0px;")
+        self.input_box[-1].setStyleSheet("QLineEdit{background-color: %(base_color)s; border-color: %(base_color)s; border-bottom-right-radius: 0px;} QMenu { background-color: rgb(22,22,22);}" % {"base_color": self.colors[-1]})
 
     def setItemText(self, index: int, new_name: str):
         if 0 <= index < len(self.input_box):
@@ -1384,18 +1303,12 @@ background-color: rgba(25, 25, 25, 0.6);
 
     def toggle_widget_visibility(self, widget: QWidget):
         widget.setVisible(not widget.isVisible())
-        for _widget, button, delete_button in zip(
-            self.widgets, self.buttons, self.delete_buttons
-        ):
+        for _widget, button, delete_button in zip(self.widgets, self.buttons, self.delete_buttons):
             if widget == _widget:
                 if button.isChecked():
-                    delete_button.setStyleSheet(
-                        "border-radius: 0px; border-top-right-radius: 5px; border-bottom-right-radius: 5px;"
-                    )
+                    delete_button.setStyleSheet("border-radius: 0px; border-top-right-radius: 5px; border-bottom-right-radius: 5px;")
                 else:
-                    delete_button.setStyleSheet(
-                        "border-radius: 0px; border-top-right-radius: 5px; border-bottom-right-radius: 0px;"
-                    )
+                    delete_button.setStyleSheet("border-radius: 0px; border-top-right-radius: 5px; border-bottom-right-radius: 0px;")
 
     def clear_widget(self, widget: QWidget):
         with contextlib.suppress(TypeError):  # Dont care, it works.
@@ -1449,13 +1362,8 @@ background-color: rgba(25, 25, 25, 0.6);
             self.buttons[index].setChecked(False)
             self.buttons[index].setText("🡇")
             self.widgets[index].setVisible(True)
-            self.delete_buttons[index].setStyleSheet(
-                "border-radius: 0px; border-top-right-radius: 5px; border-bottom-right-radius: 0px;"
-            )
-            self.input_box[index].setStyleSheet(
-                "QLineEdit{background-color: %(base_color)s; border-color: %(base_color)s; border-bottom-right-radius: 0px;} QMenu { background-color: rgb(22,22,22);}"
-                % {"base_color": self.colors[index]}
-            )
+            self.delete_buttons[index].setStyleSheet("border-radius: 0px; border-top-right-radius: 5px; border-bottom-right-radius: 0px;")
+            self.input_box[index].setStyleSheet("QLineEdit{background-color: %(base_color)s; border-color: %(base_color)s; border-bottom-right-radius: 0px;} QMenu { background-color: rgb(22,22,22);}" % {"base_color": self.colors[index]})
 
     def close(self, index: int) -> QWidget:
         if 0 <= index < len(self.buttons):
@@ -1463,26 +1371,16 @@ background-color: rgba(25, 25, 25, 0.6);
             self.buttons[index].setText("🡆")
             self.buttons[index].setChecked(True)
             self.widgets[index].setVisible(False)
-            self.delete_buttons[index].setStyleSheet(
-                "border-radius: 0px; border-top-right-radius: 5px; border-bottom-right-radius: 5px;"
-            )
-            self.input_box[index].setStyleSheet(
-                "QLineEdit{background-color: rgba(71, 71, 71, 110); border-color: rgba(76, 76, 76, 110); border-bottom-right-radius: 5px;} QMenu { background-color: rgb(22,22,22);}"
-            )
+            self.delete_buttons[index].setStyleSheet("border-radius: 0px; border-top-right-radius: 5px; border-bottom-right-radius: 5px;")
+            self.input_box[index].setStyleSheet("QLineEdit{background-color: rgba(71, 71, 71, 110); border-color: rgba(76, 76, 76, 110); border-bottom-right-radius: 5px;} QMenu { background-color: rgb(22,22,22);}")
 
     def close_all(self) -> None:
-        for button, widget, input_box, delete_button in zip(
-            self.buttons, self.widgets, self.input_box, self.delete_buttons
-        ):
+        for button, widget, input_box, delete_button in zip(self.buttons, self.widgets, self.input_box, self.delete_buttons):
             button.setChecked(True)
             button.setText("🡆")
             widget.setVisible(False)
-            input_box.setStyleSheet(
-                "background-color: rgba(71, 71, 71, 110); border-color: rgba(76, 76, 76, 110); border-bottom-right-radius: 5px;"
-            )
-            delete_button.setStyleSheet(
-                "border-radius: 0px; border-top-right-radius: 5px; border-bottom-right-radius: 5px;"
-            )
+            input_box.setStyleSheet("background-color: rgba(71, 71, 71, 110); border-color: rgba(76, 76, 76, 110); border-bottom-right-radius: 5px;")
+            delete_button.setStyleSheet("border-radius: 0px; border-top-right-radius: 5px; border-bottom-right-radius: 5px;")
 
 
 class MultiToolBox(QWidget):
@@ -1585,10 +1483,7 @@ QPushButton:!checked:pressed#sheet_nest_button {
         _widget.setLayout(layout)
         widget.setObjectName("nest_widget")
         # widget.setAutoFillBackground(True)
-        widget.setStyleSheet(
-            "QWidget#nest_widget{border: 1px solid %(base_color)s; background-color: rgba(25,25,25, 0.7); }"
-            % {"base_color": base_color}
-        )
+        widget.setStyleSheet("QWidget#nest_widget{border: 1px solid %(base_color)s; background-color: rgba(25,25,25, 0.7); }" % {"base_color": base_color})
 
         # shadow = QGraphicsDropShadowEffect()
         # shadow.setBlurRadius(10)  # Adjust the blur radius as desired
@@ -1738,12 +1633,7 @@ class TabButton(QPushButton):
 
     def mouseMoveEvent(self, e: QMouseEvent):
         super().mouseMoveEvent(e)
-        if (
-            e.buttons() == Qt.MouseButton.LeftButton
-            and self.drag_start_pos is not None
-            and (e.position().toPoint() - self.drag_start_pos).manhattanLength()
-            > self.move_threshold
-        ):
+        if e.buttons() == Qt.MouseButton.LeftButton and self.drag_start_pos is not None and (e.position().toPoint() - self.drag_start_pos).manhattanLength() > self.move_threshold:
             if not self.drag_timer.isActive():
                 self.initiateDrag()
 
@@ -1764,9 +1654,7 @@ class TabButton(QPushButton):
         drag.setMimeData(mime)
         pixmap = self.grab()
         drag.setPixmap(pixmap)
-        drag.setHotSpot(
-            self.drag_start_pos - QPoint(pixmap.width() // 2, pixmap.height() // 2)
-        )
+        drag.setHotSpot(self.drag_start_pos - QPoint(pixmap.width() // 2, pixmap.height() // 2))
         drag.exec(Qt.DropAction.MoveAction)
 
 
@@ -1803,16 +1691,12 @@ class CustomTabWidget(QWidget):
         add_category = QPushButton(self)
         add_category.setObjectName("add_category")
         add_category.setIcon(QIcon("icons/list_add.png"))
-        add_category.setStyleSheet(
-            "QPushButton#add_category{border-top-left-radius: 12px; border-bottom-left-radius: 12px; border-bottom-right-radius: 0px; border-top-right-radius: 0px;}"
-        )
+        add_category.setStyleSheet("QPushButton#add_category{border-top-left-radius: 12px; border-bottom-left-radius: 12px; border-bottom-right-radius: 0px; border-top-right-radius: 0px;}")
         add_category.clicked.connect(self.addCategory.emit)
         remove_category = QPushButton(self)
         remove_category.setObjectName("remove_category")
         remove_category.setIcon(QIcon("icons/list_remove.png"))
-        remove_category.setStyleSheet(
-            "QPushButton#remove_category{border-top-right-radius: 12px; border-bottom-right-radius: 12px; border-bottom-left-radius: 0px; border-top-left-radius: 0px;}"
-        )
+        remove_category.setStyleSheet("QPushButton#remove_category{border-top-right-radius: 12px; border-bottom-right-radius: 12px; border-bottom-left-radius: 0px; border-top-left-radius: 0px;}")
         remove_category.clicked.connect(self.removeCategory.emit)
         layout.addWidget(add_category)
         layout.addWidget(remove_category)
@@ -1850,9 +1734,7 @@ class CustomTabWidget(QWidget):
         self.buttons[index].setText(text)
 
     def currentIndex(self) -> int:
-        return next(
-            (i for i, button in enumerate(self.buttons) if button.isChecked()), 0
-        )
+        return next((i for i, button in enumerate(self.buttons) if button.isChecked()), 0)
 
     def setCurrentIndex(self, index: int):
         try:
@@ -1861,9 +1743,7 @@ class CustomTabWidget(QWidget):
             self.setCurrentIndex(index - 1)
 
     def currentTabText(self) -> str:
-        return next(
-            (button.text() for button in self.buttons if button.isChecked()), None
-        )
+        return next((button.text() for button in self.buttons if button.isChecked()), None)
 
     def currentTab(self) -> TabButton:
         return next((button for button in self.buttons if button.isChecked()), None)
@@ -1938,9 +1818,7 @@ class CustomTabWidget(QWidget):
             for i, btn in enumerate(self.buttons):
                 if btn != button and btn.geometry().contains(position):
                     self.buttons.insert(i, self.buttons.pop(original_index))
-                    self.stacked_widget.insertWidget(
-                        i, self.stacked_widget.widget(original_index)
-                    )
+                    self.stacked_widget.insertWidget(i, self.stacked_widget.widget(original_index))
                     break
             self.rearrange_buttons()
         event.accept()
@@ -1954,9 +1832,7 @@ class CustomTabWidget(QWidget):
             while row.count():
                 row.itemAt(0).widget().setParent(None)
         for i, button in enumerate(self.buttons):
-            self.rows[i // self.tabs_per_row].addWidget(
-                button, alignment=Qt.AlignmentFlag.AlignBottom
-            )
+            self.rows[i // self.tabs_per_row].addWidget(button, alignment=Qt.AlignmentFlag.AlignBottom)
         self.stacked_widget.setCurrentIndex(self.currentIndex())
         self.tabOrderChanged.emit()
 
@@ -1990,10 +1866,7 @@ class PdfFilterProxyModel(QSortFilterProxyModel):
     def directoryContainsPdf(self, directory):
         if self.path not in directory:
             return False
-        return any(
-            any(file.lower().endswith(".pdf") for file in files)
-            for root, dirs, files in os.walk(directory)
-        )
+        return any(any(file.lower().endswith(".pdf") for file in files) for root, dirs, files in os.walk(directory))
 
     def lessThan(self, left: QModelIndex, right: QModelIndex):
         left_index = left.sibling(left.row(), 0)
@@ -2001,12 +1874,7 @@ class PdfFilterProxyModel(QSortFilterProxyModel):
         left_is_folder = self.sourceModel().isDir(left_index)
         right_is_folder = self.sourceModel().isDir(right_index)
 
-        if (
-            left_is_folder
-            and not right_is_folder
-            or not left_is_folder
-            and right_is_folder
-        ):
+        if left_is_folder and not right_is_folder or not left_is_folder and right_is_folder:
             return False  # Folders come first
         left_modified = self.sourceModel().fileInfo(left_index).lastModified()
         right_modified = self.sourceModel().fileInfo(right_index).lastModified()
@@ -2042,9 +1910,7 @@ class PdfTreeView(QTreeView):
 
     def on_selection_changed(self, selected, deselected):
         self.selected_indexes = self.selectionModel().selectedIndexes()
-        self.selected_items = [
-            index.data() for index in self.selected_indexes if ".pdf" in index.data()
-        ]
+        self.selected_items = [index.data() for index in self.selected_indexes if ".pdf" in index.data()]
         self.full_paths.clear()
         for index in self.selected_indexes:
             source_index = self.filterModel.mapToSource(index)
@@ -2079,12 +1945,8 @@ class FreezeTableWidget(QTableView):
         self.init()
         self.horizontalHeader().sectionResized.connect(self.updateSectionWidth)
         self.verticalHeader().sectionResized.connect(self.updateSectionHeight)
-        self.frozenTableView.verticalScrollBar().valueChanged.connect(
-            self.verticalScrollBar().setValue
-        )
-        self.verticalScrollBar().valueChanged.connect(
-            self.frozenTableView.verticalScrollBar().setValue
-        )
+        self.frozenTableView.verticalScrollBar().valueChanged.connect(self.verticalScrollBar().setValue)
+        self.verticalScrollBar().valueChanged.connect(self.frozenTableView.verticalScrollBar().setValue)
         self.setVerticalScrollMode(QAbstractItemView.ScrollMode.ScrollPerPixel)
         self.setHorizontalScrollMode(QAbstractItemView.ScrollMode.ScrollPerPixel)
         self.setSelectionBehavior(QAbstractItemView.SelectionBehavior.SelectRows)
@@ -2094,9 +1956,7 @@ class FreezeTableWidget(QTableView):
         self.frozenTableView.setModel(self.model())
         self.frozenTableView.setFocusPolicy(Qt.FocusPolicy.NoFocus)
         self.frozenTableView.verticalHeader().hide()
-        self.frozenTableView.horizontalHeader().setSectionResizeMode(
-            QHeaderView.ResizeMode.Fixed
-        )
+        self.frozenTableView.horizontalHeader().setSectionResizeMode(QHeaderView.ResizeMode.Fixed)
         self.viewport().stackUnder(self.frozenTableView)
 
         self.frozenTableView.setStyleSheet(
@@ -2111,12 +1971,8 @@ class FreezeTableWidget(QTableView):
         for col in range(1, self.model().columnCount()):
             self.frozenTableView.setColumnHidden(col, True)
         self.frozenTableView.setColumnWidth(0, self.columnWidth(0))
-        self.frozenTableView.setHorizontalScrollBarPolicy(
-            Qt.ScrollBarPolicy.ScrollBarAlwaysOff
-        )
-        self.frozenTableView.setVerticalScrollBarPolicy(
-            Qt.ScrollBarPolicy.ScrollBarAlwaysOff
-        )
+        self.frozenTableView.setHorizontalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAlwaysOff)
+        self.frozenTableView.setVerticalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAlwaysOff)
         self.frozenTableView.show()
         self.updateFrozenTableGeometry()
         self.setHorizontalScrollMode(self.ScrollMode.ScrollPerPixel)
@@ -2136,17 +1992,8 @@ class FreezeTableWidget(QTableView):
 
     def moveCursor(self, cursorAction, modifiers):
         current = super().moveCursor(cursorAction, modifiers)
-        if (
-            cursorAction == self.CursorAction.MoveLeft
-            and self.current.column() > 0
-            and self.visualRect(current).topLeft().x()
-            < self.frozenTableView.columnWidth(0)
-        ):
-            newValue = (
-                self.horizontalScrollBar().value()
-                + self.visualRect(current).topLeft().x()
-                - self.frozenTableView.columnWidth(0)
-            )
+        if cursorAction == self.CursorAction.MoveLeft and self.current.column() > 0 and self.visualRect(current).topLeft().x() < self.frozenTableView.columnWidth(0):
+            newValue = self.horizontalScrollBar().value() + self.visualRect(current).topLeft().x() - self.frozenTableView.columnWidth(0)
             self.horizontalScrollBar().setValue(newValue)
         return current
 
@@ -2174,9 +2021,7 @@ class CustomStandardItemModel(QStandardItemModel):
             return True
         return super().setData(index, value, role)
 
-    def index(
-        self, row: int, column: int, parent: QModelIndex = QModelIndex()
-    ) -> QModelIndex:
+    def index(self, row: int, column: int, parent: QModelIndex = QModelIndex()) -> QModelIndex:
         index = super().index(row, column, parent)
         if item := self.itemFromIndex(index):
             self.itemClicked.emit(item)
@@ -2267,9 +2112,7 @@ class ComponentsCustomTableWidget(CustomTableWidget):
             if not os.path.exists("images/items"):
                 os.makedirs("images/items")
             # Resize the image to fit the specified height while maintaining aspect ratio
-            pixmap = QPixmap.fromImage(image).scaled(
-                new_width, new_height, Qt.AspectRatioMode.KeepAspectRatio
-            )
+            pixmap = QPixmap.fromImage(image).scaled(new_width, new_height, Qt.AspectRatioMode.KeepAspectRatio)
             image_path = f'images/items/{datetime.now().strftime("%Y%m%d%H%M%S%f")}.png'
             pixmap.save(image_path)
 
@@ -2601,11 +2444,7 @@ class ViewTree(QTreeWidget):
                     new_item(item, str(key), val)
             elif isinstance(value, (list, tuple)):
                 for val in value:
-                    text = (
-                        f"[{type(val).__name__}]"
-                        if isinstance(val, (dict, list, tuple))
-                        else str(val)
-                    )
+                    text = f"[{type(val).__name__}]" if isinstance(val, (dict, list, tuple)) else str(val)
                     new_item(item, text, val)
 
         fill_item(self.invisibleRootItem(), self.data)
@@ -2643,9 +2482,7 @@ class HeaderScrollArea(QScrollArea):
 
     def resizeEvent(self, event) -> None:
         rect = self.viewport().geometry()
-        self.headings_widget.setGeometry(
-            rect.x(), rect.y() - self.margins.top(), rect.width(), self.margins.top()
-        )
+        self.headings_widget.setGeometry(rect.x(), rect.y() - self.margins.top(), rect.width(), self.margins.top())
         QScrollArea.resizeEvent(self, event)
 
 

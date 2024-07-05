@@ -29,9 +29,7 @@ class UploadThread(QThread):
                         file = {"file": (file_to_upload, f.read(), "image/jpeg")}
 
                 if file:
-                    response = self.session.post(
-                        self.upload_url, files=file, timeout=10
-                    )
+                    response = self.session.post(self.upload_url, files=file, timeout=10)
                     if response.status_code == 200:
                         successful_uploads.append(file_to_upload)
                     else:

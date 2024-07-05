@@ -67,9 +67,7 @@ class JobWidget(QWidget):
         self.gridLayout_2.setAlignment(Qt.AlignmentFlag.AlignTop)
         self.verticalLayout_8.setAlignment(Qt.AlignmentFlag.AlignTop)
 
-        self.item_quoting_options_layout = self.findChild(
-            QVBoxLayout, "item_quoting_options_layout"
-        )
+        self.item_quoting_options_layout = self.findChild(QVBoxLayout, "item_quoting_options_layout")
         self.item_quoting_options_layout.setAlignment(Qt.AlignmentFlag.AlignTop)
         self.gridLayout_4 = self.findChild(QGridLayout, "gridLayout_4")
         self.gridLayout_4.setAlignment(Qt.AlignmentFlag.AlignTop)
@@ -77,68 +75,38 @@ class JobWidget(QWidget):
         self.nest_summary_layout.setAlignment(Qt.AlignmentFlag.AlignTop)
         self.treeWidget_nest_summary = self.findChild(QTreeWidget, "treeWidget_nest_summary")
 
-        self.pushButton_global_sheet_settings = self.findChild(
-            QPushButton, "pushButton_global_sheet_settings"
-        )
-        self.global_sheet_settings_widget = self.findChild(
-            QWidget, "global_sheet_settings_widget"
-        )
-        self.apply_stylesheet_to_toggle_buttons(
-            self.pushButton_global_sheet_settings, self.global_sheet_settings_widget
-        )
+        self.pushButton_global_sheet_settings = self.findChild(QPushButton, "pushButton_global_sheet_settings")
+        self.global_sheet_settings_widget = self.findChild(QWidget, "global_sheet_settings_widget")
+        self.apply_stylesheet_to_toggle_buttons(self.pushButton_global_sheet_settings, self.global_sheet_settings_widget)
 
-        self.pushButton_item_quoting_options = self.findChild(
-            QPushButton, "pushButton_item_quoting_options"
-        )
-        self.item_quoting_options_widget = self.findChild(
-            QWidget, "item_quoting_options_widget"
-        )
-        self.apply_stylesheet_to_toggle_buttons(
-            self.pushButton_item_quoting_options, self.item_quoting_options_widget
-        )
+        self.pushButton_item_quoting_options = self.findChild(QPushButton, "pushButton_item_quoting_options")
+        self.item_quoting_options_widget = self.findChild(QWidget, "item_quoting_options_widget")
+        self.apply_stylesheet_to_toggle_buttons(self.pushButton_item_quoting_options, self.item_quoting_options_widget)
 
-        self.pushButton_sheet_quoting_options = self.findChild(
-            QPushButton, "pushButton_sheet_quoting_options"
-        )
-        self.sheet_quoting_options_widget = self.findChild(
-            QWidget, "sheet_quoting_options_widget"
-        )
-        self.apply_stylesheet_to_toggle_buttons(
-            self.pushButton_sheet_quoting_options, self.sheet_quoting_options_widget
-        )
+        self.pushButton_sheet_quoting_options = self.findChild(QPushButton, "pushButton_sheet_quoting_options")
+        self.sheet_quoting_options_widget = self.findChild(QWidget, "sheet_quoting_options_widget")
+        self.apply_stylesheet_to_toggle_buttons(self.pushButton_sheet_quoting_options, self.sheet_quoting_options_widget)
 
         self.pushButton_nests = self.findChild(QPushButton, "pushButton_nests")
         self.nests_widget = self.findChild(QWidget, "nests_widget")
         self.nests_layout = self.findChild(QVBoxLayout, "nests_layout")
         self.nests_layout.setAlignment(Qt.AlignmentFlag.AlignTop)
-        self.apply_stylesheet_to_toggle_buttons(
-            self.pushButton_nests, self.nests_widget
-        )
+        self.apply_stylesheet_to_toggle_buttons(self.pushButton_nests, self.nests_widget)
 
-        self.pushButton_nest_summary = self.findChild(
-            QPushButton, "pushButton_nest_summary"
-        )
+        self.pushButton_nest_summary = self.findChild(QPushButton, "pushButton_nest_summary")
         self.nest_summary_widget = self.findChild(QWidget, "nest_summary_widget")
-        self.apply_stylesheet_to_toggle_buttons(
-            self.pushButton_nest_summary, self.nest_summary_widget
-        )
+        self.apply_stylesheet_to_toggle_buttons(self.pushButton_nest_summary, self.nest_summary_widget)
 
         self.scrollArea = self.findChild(QScrollArea, "scrollArea")
 
-        self.pushButton_reload_job = self.findChild(
-            QPushButton, "pushButton_reload_job"
-        )
+        self.pushButton_reload_job = self.findChild(QPushButton, "pushButton_reload_job")
         self.pushButton_reload_job.clicked.connect(self.reload_job)
 
-        self.doubleSpinBox_order_number: QDoubleSpinBox = self.findChild(
-            QDoubleSpinBox, "doubleSpinBox_order_number"
-        )
+        self.doubleSpinBox_order_number: QDoubleSpinBox = self.findChild(QDoubleSpinBox, "doubleSpinBox_order_number")
         self.doubleSpinBox_order_number.setValue(self.job.order_number)
         self.doubleSpinBox_order_number.wheelEvent = lambda event: None
         self.doubleSpinBox_order_number.valueChanged.connect(self.job_settings_changed)
-        self.pushButton_get_order_number: QPushButton = self.findChild(
-            QPushButton, "pushButton_get_order_number"
-        )
+        self.pushButton_get_order_number: QPushButton = self.findChild(QPushButton, "pushButton_get_order_number")
 
         def get_latest_order_number():
             self.doubleSpinBox_order_number.setValue(self.parent.parent.order_number)
@@ -158,9 +126,7 @@ class JobWidget(QWidget):
             self.dateEdit_shipped.setDate(QDate.currentDate())
         self.dateEdit_shipped.dateChanged.connect(self.job_settings_changed)
         self.dateEdit_shipped.wheelEvent = lambda event: None
-        self.dateEdit_expected: QDateEdit = self.findChild(
-            QDateEdit, "dateEdit_expected"
-        )
+        self.dateEdit_expected: QDateEdit = self.findChild(QDateEdit, "dateEdit_expected")
         try:
             year, month, day = map(int, self.job.date_expected.split("-"))
             self.dateEdit_expected.setDate(QDate(year, month, day))
@@ -180,67 +146,43 @@ class JobWidget(QWidget):
         self.groups_toolbox = AssemblyMultiToolBox(self)
         self.groups_layout.addWidget(self.groups_toolbox)
 
-        self.comboBox_laser_cutting = self.findChild(
-            QComboBox, "comboBox_laser_cutting"
-        )
+        self.comboBox_laser_cutting = self.findChild(QComboBox, "comboBox_laser_cutting")
         self.comboBox_laser_cutting.wheelEvent = lambda event: None
 
-        self.doubleSpinBox_cost_for_laser = self.findChild(
-            QDoubleSpinBox, "doubleSpinBox_cost_for_laser"
-        )
+        self.doubleSpinBox_cost_for_laser = self.findChild(QDoubleSpinBox, "doubleSpinBox_cost_for_laser")
         self.doubleSpinBox_cost_for_laser.wheelEvent = lambda event: None
 
         self.comboBox_materials = self.findChild(QComboBox, "comboBox_materials")
         self.comboBox_materials.wheelEvent = lambda event: None
         self.comboBox_materials.addItems(self.sheet_settings.get_materials())
-        self.comboBox_materials.currentTextChanged.connect(
-            partial(self.update_nest_sheets, "MATERIAL")
-        )
+        self.comboBox_materials.currentTextChanged.connect(partial(self.update_nest_sheets, "MATERIAL"))
 
         self.comboBox_thicknesses = self.findChild(QComboBox, "comboBox_thicknesses")
         self.comboBox_thicknesses.wheelEvent = lambda event: None
         self.comboBox_thicknesses.addItems(self.sheet_settings.get_thicknesses())
-        self.comboBox_thicknesses.currentTextChanged.connect(
-            partial(self.update_nest_sheets, "THICKNESS")
-        )
+        self.comboBox_thicknesses.currentTextChanged.connect(partial(self.update_nest_sheets, "THICKNESS"))
 
-        self.doubleSpinBox_length = self.findChild(
-            QDoubleSpinBox, "doubleSpinBox_length"
-        )
+        self.doubleSpinBox_length = self.findChild(QDoubleSpinBox, "doubleSpinBox_length")
         self.doubleSpinBox_length.wheelEvent = lambda event: None
-        self.doubleSpinBox_length.valueChanged.connect(
-            partial(self.update_nest_sheets, "LENGTH")
-        )
+        self.doubleSpinBox_length.valueChanged.connect(partial(self.update_nest_sheets, "LENGTH"))
 
         self.doubleSpinBox_width = self.findChild(QDoubleSpinBox, "doubleSpinBox_width")
         self.doubleSpinBox_width.wheelEvent = lambda event: None
-        self.doubleSpinBox_width.valueChanged.connect(
-            partial(self.update_nest_sheets, "WIDTH")
-        )
+        self.doubleSpinBox_width.valueChanged.connect(partial(self.update_nest_sheets, "WIDTH"))
 
-        self.doubleSpinBox_items_overhead = self.findChild(
-            QDoubleSpinBox, "doubleSpinBox_items_overhead"
-        )
+        self.doubleSpinBox_items_overhead = self.findChild(QDoubleSpinBox, "doubleSpinBox_items_overhead")
         self.doubleSpinBox_items_overhead.wheelEvent = lambda event: None
 
-        self.doubleSpinBox_items_profit_margin = self.findChild(
-            QDoubleSpinBox, "doubleSpinBox_items_profit_margin"
-        )
+        self.doubleSpinBox_items_profit_margin = self.findChild(QDoubleSpinBox, "doubleSpinBox_items_profit_margin")
         self.doubleSpinBox_items_profit_margin.wheelEvent = lambda event: None
 
-        self.pushButton_item_to_sheet = self.findChild(
-            QPushButton, "pushButton_item_to_sheet"
-        )
+        self.pushButton_item_to_sheet = self.findChild(QPushButton, "pushButton_item_to_sheet")
         self.pushButton_item_to_sheet.wheelEvent = lambda event: None
 
-        self.doubleSpinBox_sheets_overhead = self.findChild(
-            QDoubleSpinBox, "doubleSpinBox_sheets_overhead"
-        )
+        self.doubleSpinBox_sheets_overhead = self.findChild(QDoubleSpinBox, "doubleSpinBox_sheets_overhead")
         self.doubleSpinBox_sheets_overhead.wheelEvent = lambda event: None
 
-        self.doubleSpinBox_sheets_profit_margin = self.findChild(
-            QDoubleSpinBox, "doubleSpinBox_sheets_profit_margin"
-        )
+        self.doubleSpinBox_sheets_profit_margin = self.findChild(QDoubleSpinBox, "doubleSpinBox_sheets_profit_margin")
         self.doubleSpinBox_sheets_profit_margin.wheelEvent = lambda event: None
 
         self.nests_toolbox = MultiToolBox(self)
@@ -248,13 +190,7 @@ class JobWidget(QWidget):
 
         self.splitter = self.findChild(QSplitter, "splitter")
 
-        if (
-            self.job.status == JobStatus.PLANNING
-            and self.parent.parent.tabWidget.tabText(
-                self.parent.parent.tabWidget.currentIndex()
-            )
-            == "Job Planner"
-        ):
+        if self.job.status == JobStatus.PLANNING and self.parent.parent.tabWidget.tabText(self.parent.parent.tabWidget.currentIndex()) == "Job Planner":
             self.splitter.setSizes([0, 1])
             # self.quoting_settings_widget.setEnabled(False)
 
@@ -363,9 +299,7 @@ QPushButton:checked:pressed#assembly_button_drop_menu {
         toggle_button = self.groups_toolbox.getLastToggleButton()
 
         job_name_input: QLineEdit = self.groups_toolbox.getLastInputBox()
-        job_name_input.textChanged.connect(
-            partial(self.group_name_renamed, group, job_name_input)
-        )
+        job_name_input.textChanged.connect(partial(self.group_name_renamed, group, job_name_input))
 
         job_name_input.textChanged.connect(
             partial(
@@ -450,19 +384,11 @@ QPushButton:checked:pressed#assembly_button_drop_menu {
         for nest in self.job.nests:
             if not nest.laser_cut_parts:
                 continue
-            summary_data["sheets"].setdefault(
-                nest.sheet.get_name(), {"total_sheet_count": 0, "total_seconds": 0}
-            )
-            summary_data["material_total"].setdefault(
-                nest.sheet.material, {"total_sheet_count": 0, "total_seconds": 0}
-            )
+            summary_data["sheets"].setdefault(nest.sheet.get_name(), {"total_sheet_count": 0, "total_seconds": 0})
+            summary_data["material_total"].setdefault(nest.sheet.material, {"total_sheet_count": 0, "total_seconds": 0})
             summary_data["sheets"][nest.sheet.get_name()]["total_sheet_count"] += nest.sheet_count
-            summary_data["sheets"][nest.sheet.get_name()]["total_seconds"] += (
-                nest.sheet_cut_time * nest.sheet_count
-            )
-            summary_data["material_total"][nest.sheet.material]["total_seconds"] += (
-                nest.sheet_cut_time * nest.sheet_count
-            )
+            summary_data["sheets"][nest.sheet.get_name()]["total_seconds"] += nest.sheet_cut_time * nest.sheet_count
+            summary_data["material_total"][nest.sheet.material]["total_seconds"] += nest.sheet_cut_time * nest.sheet_count
             summary_data["material_total"][nest.sheet.material]["total_sheet_count"] += nest.sheet_count
 
             self.treeWidget_nest_summary.clear()
@@ -472,21 +398,21 @@ QPushButton:checked:pressed#assembly_button_drop_menu {
             sorted_summary = {key: summary_data[key] for key in sorted_summary_keys}
 
             for sheet, data in sorted_summary.get("sheets", {}).items():
-                hours = int(data['total_seconds'] // 3600)
-                minutes = int((data['total_seconds'] % 3600) // 60)
-                seconds = int(data['total_seconds'] % 60)
+                hours = int(data["total_seconds"] // 3600)
+                minutes = int((data["total_seconds"] % 3600) // 60)
+                seconds = int(data["total_seconds"] % 60)
                 total_seconds_string = f"{hours:02d}h {minutes:02d}m {seconds:02d}s"
-                item = QTreeWidgetItem([sheet, str(data['total_sheet_count']), total_seconds_string])
+                item = QTreeWidgetItem([sheet, str(data["total_sheet_count"]), total_seconds_string])
                 self.treeWidget_nest_summary.addTopLevelItem(item)
 
             materials_item = QTreeWidgetItem(self.treeWidget_nest_summary, ["Materials Total"])
             materials_item.setFirstColumnSpanned(True)
             for material, data in sorted_summary.get("material_total", {}).items():
-                hours = int(data['total_seconds'] // 3600)
-                minutes = int((data['total_seconds'] % 3600) // 60)
-                seconds = int(data['total_seconds'] % 60)
+                hours = int(data["total_seconds"] // 3600)
+                minutes = int((data["total_seconds"] % 3600) // 60)
+                seconds = int(data["total_seconds"] % 60)
                 total_seconds_string = f"{hours:02d}h {minutes:02d}m {seconds:02d}s"
-                item = QTreeWidgetItem([material, str(data['total_sheet_count']), total_seconds_string])
+                item = QTreeWidgetItem([material, str(data["total_sheet_count"]), total_seconds_string])
                 materials_item.addChild(item)
 
             self.treeWidget_nest_summary.expandAll()

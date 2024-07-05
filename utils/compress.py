@@ -10,13 +10,9 @@ settings_file = Settings()
 def compress_database(path_to_file: str, on_close: bool = False) -> None:
     file_name: str = path_to_file.split("/")[-1]
     if on_close:
-        path_to_zip_file: str = (
-            f"backups/{settings_file.get_value('inventory_file_name')} - {datetime.now().strftime('%B %d %A %Y %I_%M_%S %p')} - (Auto Generated).zip"
-        )
+        path_to_zip_file: str = f"backups/{settings_file.get_value('inventory_file_name')} - {datetime.now().strftime('%B %d %A %Y %I_%M_%S %p')} - (Auto Generated).zip"
     else:
-        path_to_zip_file: str = (
-            f"backups/{settings_file.get_value('inventory_file_name')} - {datetime.now().strftime('%B %d %A %Y %I_%M_%S %p')}.zip"
-        )
+        path_to_zip_file: str = f"backups/{settings_file.get_value('inventory_file_name')} - {datetime.now().strftime('%B %d %A %Y %I_%M_%S %p')}.zip"
     file = zipfile.ZipFile(path_to_zip_file, mode="w")
     file.write(path_to_file, file_name, compress_type=zipfile.ZIP_DEFLATED)
     file.close()

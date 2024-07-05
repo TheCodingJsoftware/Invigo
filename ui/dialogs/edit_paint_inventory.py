@@ -39,17 +39,11 @@ class EditPaintInventory(QDialog):
 
         self.comboBox_type = self.findChild(QComboBox, "comboBox_type")
 
-        self.doubleSpinBox_average_coverage = self.findChild(
-            QDoubleSpinBox, "doubleSpinBox_average_coverage"
-        )
-        self.doubleSpinBox_gravity = self.findChild(
-            QDoubleSpinBox, "doubleSpinBox_gravity"
-        )
+        self.doubleSpinBox_average_coverage = self.findChild(QDoubleSpinBox, "doubleSpinBox_average_coverage")
+        self.doubleSpinBox_gravity = self.findChild(QDoubleSpinBox, "doubleSpinBox_gravity")
 
         self.pushButton_set_color = self.findChild(QPushButton, "pushButton_set_color")
-        self.pushButton_set_color.setStyleSheet(
-            f"QPushButton{{background-color: {self.selected_color}}}"
-        )
+        self.pushButton_set_color.setStyleSheet(f"QPushButton{{background-color: {self.selected_color}}}")
         self.pushButton_set_color.clicked.connect(self.get_color)
 
         self.pushButton_add = self.findChild(QPushButton, "pushButton_add")
@@ -90,9 +84,7 @@ class EditPaintInventory(QDialog):
         color.show()
         if color.exec():
             self.selected_color = color.getHex(True)
-            self.pushButton_set_color.setStyleSheet(
-                f"QPushButton{{background-color: {self.selected_color}}}"
-            )
+            self.pushButton_set_color.setStyleSheet(f"QPushButton{{background-color: {self.selected_color}}}")
 
     def primer_changed(self):
         self.label_5.setText("Price per gallon:")
@@ -110,9 +102,7 @@ class EditPaintInventory(QDialog):
                 self.lineEdit_name.setCurrentText(primer.name)
                 self.comboBox_type.setCurrentText("Primer")
                 self.selected_color = primer.color
-                self.pushButton_set_color.setStyleSheet(
-                    f"QPushButton{{background-color: {primer.color}}}"
-                )
+                self.pushButton_set_color.setStyleSheet(f"QPushButton{{background-color: {primer.color}}}")
                 self.doubleSpinBox_gravity.setValue(0.0)
                 self.doubleSpinBox_average_coverage.setValue(primer.average_coverage)
                 self.pushButton_add.setEnabled(False)
@@ -126,9 +116,7 @@ class EditPaintInventory(QDialog):
                     QMessageBox.Icon.Question,
                     "Are you sure",
                     f"Are you sure you want to delete: {primer.name}?",
-                    QMessageBox.StandardButton.Yes
-                    | QMessageBox.StandardButton.No
-                    | QMessageBox.StandardButton.Cancel,
+                    QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No | QMessageBox.StandardButton.Cancel,
                     self,
                 )
                 response = msg.exec()
@@ -152,9 +140,7 @@ class EditPaintInventory(QDialog):
                 self.lineEdit_name.setCurrentText(paint.name)
                 self.comboBox_type.setCurrentText("Paint")
                 self.selected_color = paint.color
-                self.pushButton_set_color.setStyleSheet(
-                    f"QPushButton{{background-color: {paint.color}}}"
-                )
+                self.pushButton_set_color.setStyleSheet(f"QPushButton{{background-color: {paint.color}}}")
                 self.doubleSpinBox_gravity.setValue(0.0)
                 self.doubleSpinBox_average_coverage.setValue(paint.average_coverage)
                 self.pushButton_add.setEnabled(False)
@@ -168,9 +154,7 @@ class EditPaintInventory(QDialog):
                     QMessageBox.Icon.Question,
                     "Are you sure",
                     f"Are you sure you want to delete: {paint.name}?",
-                    QMessageBox.StandardButton.Yes
-                    | QMessageBox.StandardButton.No
-                    | QMessageBox.StandardButton.Cancel,
+                    QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No | QMessageBox.StandardButton.Cancel,
                     self,
                 )
                 response = msg.exec()
@@ -194,9 +178,7 @@ class EditPaintInventory(QDialog):
                 self.lineEdit_name.setCurrentText(powder.name)
                 self.comboBox_type.setCurrentText("Powder")
                 self.selected_color = powder.color
-                self.pushButton_set_color.setStyleSheet(
-                    f"QPushButton{{background-color: {powder.color}}}"
-                )
+                self.pushButton_set_color.setStyleSheet(f"QPushButton{{background-color: {powder.color}}}")
                 self.doubleSpinBox_gravity.setValue(powder.gravity)
                 self.doubleSpinBox_average_coverage.setValue(0.0)
                 self.pushButton_add.setEnabled(False)
@@ -210,9 +192,7 @@ class EditPaintInventory(QDialog):
                     QMessageBox.Icon.Question,
                     "Are you sure",
                     f"Are you sure you want to delete: {powder.name}?",
-                    QMessageBox.StandardButton.Yes
-                    | QMessageBox.StandardButton.No
-                    | QMessageBox.StandardButton.Cancel,
+                    QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No | QMessageBox.StandardButton.Cancel,
                     self,
                 )
                 response = msg.exec()
@@ -230,9 +210,7 @@ class EditPaintInventory(QDialog):
             return
         self.selected_item.color = self.selected_color
         if self.comboBox_type.currentText() == "Primer":
-            self.selected_item.average_coverage = (
-                self.doubleSpinBox_average_coverage.value()
-            )
+            self.selected_item.average_coverage = self.doubleSpinBox_average_coverage.value()
             if isinstance(self.selected_item, Paint):
                 self.paint_inventory.remove_paint(self.selected_item)
                 new = Primer(
@@ -250,9 +228,7 @@ class EditPaintInventory(QDialog):
                 )
                 self.paint_inventory.add_primer(new)
         elif self.comboBox_type.currentText() == "Paint":
-            self.selected_item.average_coverage = (
-                self.doubleSpinBox_average_coverage.value()
-            )
+            self.selected_item.average_coverage = self.doubleSpinBox_average_coverage.value()
             if isinstance(self.selected_item, Primer):
                 self.paint_inventory.remove_primer(self.selected_item)
                 new = Paint(
@@ -290,9 +266,7 @@ class EditPaintInventory(QDialog):
         self.save_and_apply()
 
     def add_item(self):
-        if item := self.components_inventory.get_component_by_part_name(
-            self.lineEdit_name.currentText()
-        ):
+        if item := self.components_inventory.get_component_by_part_name(self.lineEdit_name.currentText()):
             if self.comboBox_type.currentText() == "Primer":
                 primer = Primer(
                     item.part_name,

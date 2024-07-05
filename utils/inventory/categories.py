@@ -7,11 +7,7 @@ class Categories:
 
     def get_category(self, category_name: str) -> Category:
         return next(
-            (
-                category
-                for category in self.categories
-                if category.name == category_name
-            ),
+            (category for category in self.categories if category.name == category_name),
             None,
         )
 

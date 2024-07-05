@@ -86,9 +86,7 @@ class SheetSettingsTab(QWidget):
         self.price_per_pound_table_items: dict[Price, QTableWidgetItem] = {}
 
         self.pounds_per_square_foot_tab: PoundsPerSquareFootTab = None
-        self.pounds_per_square_foot_tables: dict[
-            int, PoundsPerSquareFootTableWidget
-        ] = {}
+        self.pounds_per_square_foot_tables: dict[int, PoundsPerSquareFootTableWidget] = {}
         self.pounds_per_square_foot_table_items: dict[Pound, QTableWidgetItem] = {}
 
         self.last_selected_index: int = 0
@@ -97,48 +95,32 @@ class SheetSettingsTab(QWidget):
     def load_ui(self):
         self.tables_font = QFont()
         self.tables_font.setFamily(settings_file.get_value("tables_font")["family"])
-        self.tables_font.setPointSize(
-            settings_file.get_value("tables_font")["pointSize"]
-        )
+        self.tables_font.setPointSize(settings_file.get_value("tables_font")["pointSize"])
         self.tables_font.setWeight(settings_file.get_value("tables_font")["weight"])
         self.tables_font.setItalic(settings_file.get_value("tables_font")["italic"])
 
-        self.nitrogen_cost_spinbox = self.findChild(
-            QDoubleSpinBox, "nitrogen_cost_spinbox"
-        )
-        self.nitrogen_cost_spinbox.setValue(
-            self.sheet_settings.cost_for_laser["Nitrogen"]
-        )
-        self.nitrogen_cost_spinbox.editingFinished.connect(
-            self.nitrogen_spin_box_changed
-        )
+        self.nitrogen_cost_spinbox = self.findChild(QDoubleSpinBox, "nitrogen_cost_spinbox")
+        self.nitrogen_cost_spinbox.setValue(self.sheet_settings.cost_for_laser["Nitrogen"])
+        self.nitrogen_cost_spinbox.editingFinished.connect(self.nitrogen_spin_box_changed)
         self.co2_cost_spinbox = self.findChild(QDoubleSpinBox, "co2_cost_spinbox")
         self.co2_cost_spinbox.setValue(self.sheet_settings.cost_for_laser["CO2"])
         self.co2_cost_spinbox.editingFinished.connect(self.co2_spin_box_changed)
 
         self.tabWidget = self.findChild(QTabWidget, "tabWidget")
 
-        self.price_per_pound_layout = self.findChild(
-            QVBoxLayout, "price_per_pound_layout"
-        )
+        self.price_per_pound_layout = self.findChild(QVBoxLayout, "price_per_pound_layout")
 
-        self.pounds_per_square_foot_layout = self.findChild(
-            QVBoxLayout, "pounds_per_square_foot_layout"
-        )
+        self.pounds_per_square_foot_layout = self.findChild(QVBoxLayout, "pounds_per_square_foot_layout")
 
         self.materials_list = self.findChild(QListWidget, "materials_list")
         self.materials_list.doubleClicked.connect(self.rename_material)
         self.materials_list.itemSelectionChanged.connect(self.material_list_clicked)
 
-        self.pushButton_add_material = self.findChild(
-            QPushButton, "pushButton_add_material"
-        )
+        self.pushButton_add_material = self.findChild(QPushButton, "pushButton_add_material")
         self.pushButton_add_material.clicked.connect(self.add_material)
         self.pushButton_add_material.setIcon(QIcon("icons/list_add.png"))
 
-        self.pushButton_remove_material = self.findChild(
-            QPushButton, "pushButton_remove_material"
-        )
+        self.pushButton_remove_material = self.findChild(QPushButton, "pushButton_remove_material")
         self.pushButton_remove_material.clicked.connect(self.remove_material)
         self.pushButton_remove_material.setIcon(QIcon("icons/list_remove.png"))
 
@@ -146,21 +128,15 @@ class SheetSettingsTab(QWidget):
         self.thicknesses_list.doubleClicked.connect(self.rename_thickness)
         self.thicknesses_list.itemSelectionChanged.connect(self.thickness_list_clicked)
 
-        self.pushButton_add_thickness = self.findChild(
-            QPushButton, "pushButton_add_thickness"
-        )
+        self.pushButton_add_thickness = self.findChild(QPushButton, "pushButton_add_thickness")
         self.pushButton_add_thickness.clicked.connect(self.add_thickness)
         self.pushButton_add_thickness.setIcon(QIcon("icons/list_add.png"))
 
-        self.pushButton_remove_thickness = self.findChild(
-            QPushButton, "pushButton_remove_thickness"
-        )
+        self.pushButton_remove_thickness = self.findChild(QPushButton, "pushButton_remove_thickness")
         self.pushButton_remove_thickness.clicked.connect(self.remove_thickness)
         self.pushButton_remove_thickness.setIcon(QIcon("icons/list_remove.png"))
 
-        self.tableWidget_thickness_id = self.findChild(
-            QTableWidget, "tableWidget_thickness_id"
-        )
+        self.tableWidget_thickness_id = self.findChild(QTableWidget, "tableWidget_thickness_id")
 
         self.load_thickness_ids()
 
@@ -206,9 +182,7 @@ class SheetSettingsTab(QWidget):
 
         self.clear_layout(self.pounds_per_square_foot_layout)
         self.pounds_per_square_foot_tab = PoundsPerSquareFootTab(self)
-        self.pounds_per_square_foot_tab.currentChanged.connect(
-            self.pounds_per_square_foot_tab_changed
-        )
+        self.pounds_per_square_foot_tab.currentChanged.connect(self.pounds_per_square_foot_tab_changed)
         self.pounds_per_square_foot_layout.addWidget(self.pounds_per_square_foot_tab)
         self.load_pounds_per_square_foot()
 
@@ -216,103 +190,53 @@ class SheetSettingsTab(QWidget):
         self.clear_layout(self.price_per_pound_layout)
         self.price_per_pound_layout.addWidget(self.price_per_pound_table)
         self.load_price_per_pound_table()
-        self.price_per_pound_table.cellChanged.connect(
-            self.price_per_pound_table_changed
-        )
+        self.price_per_pound_table.cellChanged.connect(self.price_per_pound_table_changed)
 
     def load_material_cutting_methods(self):
-        self.lineEdit_SS_name.setText(
-            self.sheet_settings.material_id["cutting_methods"]["SS"]["name"]
-        )
-        self.comboBox_SS_cut.setCurrentText(
-            self.sheet_settings.material_id["cutting_methods"]["SS"]["cut"]
-        )
-        self.lineEdit_ST_name.setText(
-            self.sheet_settings.material_id["cutting_methods"]["ST"]["name"]
-        )
-        self.comboBox_ST_cut.setCurrentText(
-            self.sheet_settings.material_id["cutting_methods"]["ST"]["cut"]
-        )
-        self.lineEdit_AL_name.setText(
-            self.sheet_settings.material_id["cutting_methods"]["AL"]["name"]
-        )
-        self.comboBox_AL_cut.setCurrentText(
-            self.sheet_settings.material_id["cutting_methods"]["AL"]["cut"]
-        )
-        self.lineEdit_GALV_name.setText(
-            self.sheet_settings.material_id["cutting_methods"]["GALV"]["name"]
-        )
-        self.comboBox_GALV_cut.setCurrentText(
-            self.sheet_settings.material_id["cutting_methods"]["GALV"]["cut"]
-        )
-        self.lineEdit_GALN_name.setText(
-            self.sheet_settings.material_id["cutting_methods"]["GALN"]["name"]
-        )
-        self.comboBox_GALN_cut.setCurrentText(
-            self.sheet_settings.material_id["cutting_methods"]["GALN"]["cut"]
-        )
+        self.lineEdit_SS_name.setText(self.sheet_settings.material_id["cutting_methods"]["SS"]["name"])
+        self.comboBox_SS_cut.setCurrentText(self.sheet_settings.material_id["cutting_methods"]["SS"]["cut"])
+        self.lineEdit_ST_name.setText(self.sheet_settings.material_id["cutting_methods"]["ST"]["name"])
+        self.comboBox_ST_cut.setCurrentText(self.sheet_settings.material_id["cutting_methods"]["ST"]["cut"])
+        self.lineEdit_AL_name.setText(self.sheet_settings.material_id["cutting_methods"]["AL"]["name"])
+        self.comboBox_AL_cut.setCurrentText(self.sheet_settings.material_id["cutting_methods"]["AL"]["cut"])
+        self.lineEdit_GALV_name.setText(self.sheet_settings.material_id["cutting_methods"]["GALV"]["name"])
+        self.comboBox_GALV_cut.setCurrentText(self.sheet_settings.material_id["cutting_methods"]["GALV"]["cut"])
+        self.lineEdit_GALN_name.setText(self.sheet_settings.material_id["cutting_methods"]["GALN"]["name"])
+        self.comboBox_GALN_cut.setCurrentText(self.sheet_settings.material_id["cutting_methods"]["GALN"]["cut"])
 
     def load_thickness_ids(self):
-        for row, (thickness_id, thickness) in enumerate(
-            self.sheet_settings.material_id["thickness_ids"].items()
-        ):
+        for row, (thickness_id, thickness) in enumerate(self.sheet_settings.material_id["thickness_ids"].items()):
             self.tableWidget_thickness_id.insertRow(row)
-            self.tableWidget_thickness_id.setItem(
-                row, 0, QTableWidgetItem(thickness_id)
-            )
+            self.tableWidget_thickness_id.setItem(row, 0, QTableWidgetItem(thickness_id))
             self.tableWidget_thickness_id.setItem(row, 1, QTableWidgetItem(thickness))
-        self.tableWidget_thickness_id.cellChanged.connect(
-            self.thickness_id_table_changes
-        )
+        self.tableWidget_thickness_id.cellChanged.connect(self.thickness_id_table_changes)
 
     def thickness_id_table_changes(self):
         self.tableWidget_thickness_id.blockSignals(True)
         for row in range(self.tableWidget_thickness_id.rowCount()):
             thickness_id = self.tableWidget_thickness_id.item(row, 0)
             thickness = self.tableWidget_thickness_id.item(row, 1)
-            self.sheet_settings.material_id["thickness_ids"].update(
-                {thickness_id.text(): thickness.text()}
-            )
+            self.sheet_settings.material_id["thickness_ids"].update({thickness_id.text(): thickness.text()})
         self.tableWidget_thickness_id.blockSignals(False)
 
         self.sheet_settings.save_data()
         self.sync_changes()
 
     def material_cutting_changes(self):
-        self.sheet_settings.material_id["cutting_methods"]["SS"][
-            "name"
-        ] = self.lineEdit_SS_name.text()
-        self.sheet_settings.material_id["cutting_methods"]["SS"][
-            "cut"
-        ] = self.comboBox_SS_cut.currentText()
+        self.sheet_settings.material_id["cutting_methods"]["SS"]["name"] = self.lineEdit_SS_name.text()
+        self.sheet_settings.material_id["cutting_methods"]["SS"]["cut"] = self.comboBox_SS_cut.currentText()
 
-        self.sheet_settings.material_id["cutting_methods"]["ST"][
-            "name"
-        ] = self.lineEdit_ST_name.text()
-        self.sheet_settings.material_id["cutting_methods"]["ST"][
-            "cut"
-        ] = self.comboBox_ST_cut.currentText()
+        self.sheet_settings.material_id["cutting_methods"]["ST"]["name"] = self.lineEdit_ST_name.text()
+        self.sheet_settings.material_id["cutting_methods"]["ST"]["cut"] = self.comboBox_ST_cut.currentText()
 
-        self.sheet_settings.material_id["cutting_methods"]["AL"][
-            "name"
-        ] = self.lineEdit_AL_name.text()
-        self.sheet_settings.material_id["cutting_methods"]["AL"][
-            "cut"
-        ] = self.comboBox_AL_cut.currentText()
+        self.sheet_settings.material_id["cutting_methods"]["AL"]["name"] = self.lineEdit_AL_name.text()
+        self.sheet_settings.material_id["cutting_methods"]["AL"]["cut"] = self.comboBox_AL_cut.currentText()
 
-        self.sheet_settings.material_id["cutting_methods"]["GALV"][
-            "name"
-        ] = self.lineEdit_GALV_name.text()
-        self.sheet_settings.material_id["cutting_methods"]["GALV"][
-            "cut"
-        ] = self.comboBox_GALV_cut.currentText()
+        self.sheet_settings.material_id["cutting_methods"]["GALV"]["name"] = self.lineEdit_GALV_name.text()
+        self.sheet_settings.material_id["cutting_methods"]["GALV"]["cut"] = self.comboBox_GALV_cut.currentText()
 
-        self.sheet_settings.material_id["cutting_methods"]["GALN"][
-            "name"
-        ] = self.lineEdit_GALN_name.text()
-        self.sheet_settings.material_id["cutting_methods"]["GALN"][
-            "cut"
-        ] = self.comboBox_GALN_cut.currentText()
+        self.sheet_settings.material_id["cutting_methods"]["GALN"]["name"] = self.lineEdit_GALN_name.text()
+        self.sheet_settings.material_id["cutting_methods"]["GALN"]["cut"] = self.comboBox_GALN_cut.currentText()
 
         self.sheet_settings.save_data()
         self.sync_changes()
@@ -322,17 +246,13 @@ class SheetSettingsTab(QWidget):
         self.price_per_pound_table.clearContents()
         self.price_per_pound_table.setRowCount(0)
         self.price_per_pound_table.blockSignals(True)
-        for row, (material, price_per_pound) in enumerate(
-            self.sheet_settings.price_per_pound
-        ):
+        for row, (material, price_per_pound) in enumerate(self.sheet_settings.price_per_pound):
             self.price_per_pound_table.insertRow(row)
             table_item_material = QTableWidgetItem(material.name)
             table_item_material.setFont(self.tables_font)
             self.price_per_pound_table.setItem(row, 0, table_item_material)
 
-            table_item_price = QTableWidgetItem(
-                f"${price_per_pound.price_per_pound:,.2f}"
-            )
+            table_item_price = QTableWidgetItem(f"${price_per_pound.price_per_pound:,.2f}")
             table_item_price.setFont(self.tables_font)
             self.price_per_pound_table.setItem(row, 1, table_item_price)
             self.price_per_pound_table_items[price_per_pound] = table_item_price
@@ -344,14 +264,10 @@ class SheetSettingsTab(QWidget):
 
     def price_per_pound_table_changed(self):
         for price, table_item_price in self.price_per_pound_table_items.items():
-            new_price = float(
-                table_item_price.text().strip().replace("$", "").replace(",", "")
-            )
+            new_price = float(table_item_price.text().strip().replace("$", "").replace(",", ""))
             old_price = price.price_per_pound
             if new_price != old_price:
-                modified_date: str = (
-                    f'{os.getlogin().title()} - Modified from ${old_price:,.2f} to ${new_price:,.2f} at {datetime.now().strftime("%B %d %A %Y %I:%M:%S %p")}'
-                )
+                modified_date: str = f'{os.getlogin().title()} - Modified from ${old_price:,.2f} to ${new_price:,.2f} at {datetime.now().strftime("%B %d %A %Y %I:%M:%S %p")}'
                 price.price_per_pound = new_price
                 price.latest_change = modified_date
         self.sheet_settings.save_data()
@@ -363,26 +279,16 @@ class SheetSettingsTab(QWidget):
         self.pounds_per_square_foot_tables.clear()
         self.pounds_per_square_foot_tab.blockSignals(True)
         self.pounds_per_square_foot_tab.clear()
-        for i, (material, thickness_data) in enumerate(
-            self.sheet_settings.pounds_per_square_foot
-        ):
+        for i, (material, thickness_data) in enumerate(self.sheet_settings.pounds_per_square_foot):
             material_pounds_per_square_foot_table = PoundsPerSquareFootTableWidget(self)
-            self.pounds_per_square_foot_tables.update(
-                {i: material_pounds_per_square_foot_table}
-            )
-            self.load_material_pounds_per_square_foot_table(
-                thickness_data, material_pounds_per_square_foot_table
-            )
+            self.pounds_per_square_foot_tables.update({i: material_pounds_per_square_foot_table})
+            self.load_material_pounds_per_square_foot_table(thickness_data, material_pounds_per_square_foot_table)
             material_pounds_per_square_foot_table.resizeColumnsToContents()
-            self.pounds_per_square_foot_tab.addTab(
-                material_pounds_per_square_foot_table, material.name
-            )
+            self.pounds_per_square_foot_tab.addTab(material_pounds_per_square_foot_table, material.name)
         self.pounds_per_square_foot_tab.blockSignals(False)
         self.pounds_per_square_foot_tab.setCurrentIndex(self.last_selected_index)
 
-    def load_material_pounds_per_square_foot_table(
-        self, data: dict[Thickness, Pound], table: PoundsPerSquareFootTableWidget
-    ):
+    def load_material_pounds_per_square_foot_table(self, data: dict[Thickness, Pound], table: PoundsPerSquareFootTableWidget):
         for row, (thickness, pound) in enumerate(data.items()):
             table.insertRow(row)
             table_item_thickness = QTableWidgetItem(thickness.name)
@@ -404,9 +310,7 @@ class SheetSettingsTab(QWidget):
             new_value = float(table_item_pounds.text().replace(",", "").strip())
             old_value = pound.pounds_per_square_foot
             if new_value != old_value:
-                modified_date: str = (
-                    f'{os.getlogin().title()} - Modified from {old_value:,.4f} to {new_value:,.4f} at {datetime.now().strftime("%B %d %A %Y %I:%M:%S %p")}'
-                )
+                modified_date: str = f'{os.getlogin().title()} - Modified from {old_value:,.4f} to {new_value:,.4f} at {datetime.now().strftime("%B %d %A %Y %I:%M:%S %p")}'
                 pound.pounds_per_square_foot = new_value
                 pound.latest_change = modified_date
         self.sheet_settings.save_data()
@@ -417,9 +321,7 @@ class SheetSettingsTab(QWidget):
         self.last_selected_index = self.pounds_per_square_foot_tab.currentIndex()
 
     def nitrogen_spin_box_changed(self):
-        self.sheet_settings.cost_for_laser["Nitrogen"] = (
-            self.nitrogen_cost_spinbox.value()
-        )
+        self.sheet_settings.cost_for_laser["Nitrogen"] = self.nitrogen_cost_spinbox.value()
         self.sheet_settings.save_data()
         self.sync_changes()
 
@@ -431,42 +333,22 @@ class SheetSettingsTab(QWidget):
     def material_list_clicked(self):
         if self.tabWidget.tabText(self.tabWidget.currentIndex()) == "Price Per Pound":
             for row in range(self.price_per_pound_table.rowCount()):
-                if (
-                    self.price_per_pound_table.item(row, 0).text()
-                    == self.materials_list.selectedItems()[0].text()
-                ):
+                if self.price_per_pound_table.item(row, 0).text() == self.materials_list.selectedItems()[0].text():
                     self.price_per_pound_table.selectRow(row)
                     return
-        elif (
-            self.tabWidget.tabText(self.tabWidget.currentIndex())
-            == "Pounds Per Square Foot"
-        ):
-            self.pounds_per_square_foot_tab.setCurrentIndex(
-                self.sheet_settings.get_materials().index(
-                    self.materials_list.selectedItems()[0].text()
-                )
-            )
+        elif self.tabWidget.tabText(self.tabWidget.currentIndex()) == "Pounds Per Square Foot":
+            self.pounds_per_square_foot_tab.setCurrentIndex(self.sheet_settings.get_materials().index(self.materials_list.selectedItems()[0].text()))
 
     def thickness_list_clicked(self):
-        if (
-            self.tabWidget.tabText(self.tabWidget.currentIndex())
-            == "Pounds Per Square Foot"
-        ):
-            current_table = self.pounds_per_square_foot_tables[
-                self.pounds_per_square_foot_tab.currentIndex()
-            ]
+        if self.tabWidget.tabText(self.tabWidget.currentIndex()) == "Pounds Per Square Foot":
+            current_table = self.pounds_per_square_foot_tables[self.pounds_per_square_foot_tab.currentIndex()]
             for row in range(current_table.rowCount()):
-                if (
-                    current_table.item(row, 0).text()
-                    == self.thicknesses_list.selectedItems()[0].text()
-                ):
+                if current_table.item(row, 0).text() == self.thicknesses_list.selectedItems()[0].text():
                     current_table.selectRow(row)
                     return
 
     def add_material(self):
-        new_material_name, ok = QInputDialog.getText(
-            self, "Add material", "Enter a material name:"
-        )
+        new_material_name, ok = QInputDialog.getText(self, "Add material", "Enter a material name:")
         if new_material_name and ok:
             self.sheet_settings.add_material(new_material_name)
             self.sheet_settings.save_data()
@@ -475,9 +357,7 @@ class SheetSettingsTab(QWidget):
 
     def remove_material(self):
         try:
-            selected_row = self.sheet_settings.get_materials().index(
-                self.materials_list.selectedItems()[0].text()
-            )
+            selected_row = self.sheet_settings.get_materials().index(self.materials_list.selectedItems()[0].text())
         except IndexError:
             selected_row = 0
         material_to_remove, ok = QInputDialog.getItem(
@@ -495,12 +375,8 @@ class SheetSettingsTab(QWidget):
             self.load_tabs()
 
     def rename_material(self):
-        selected_material = self.sheet_settings.materials.get(
-            self.materials_list.selectedItems()[0].text()
-        )
-        text, ok = QInputDialog.getText(
-            self, "Rename material", "Enter a new name:", text=selected_material.name
-        )
+        selected_material = self.sheet_settings.materials.get(self.materials_list.selectedItems()[0].text())
+        text, ok = QInputDialog.getText(self, "Rename material", "Enter a new name:", text=selected_material.name)
         if text and ok:
             selected_material.name = text
             self.sheet_settings.save_data()
@@ -508,9 +384,7 @@ class SheetSettingsTab(QWidget):
             self.load_tabs()
 
     def add_thickness(self):
-        new_thickness_name, ok = QInputDialog.getText(
-            self, "Add thickness", "Enter a thickness name:"
-        )
+        new_thickness_name, ok = QInputDialog.getText(self, "Add thickness", "Enter a thickness name:")
         if new_thickness_name and ok:
             self.sheet_settings.add_thickness(new_thickness_name)
             self.sheet_settings.save_data()
@@ -519,9 +393,7 @@ class SheetSettingsTab(QWidget):
 
     def remove_thickness(self):
         try:
-            selected_row = self.sheet_settings.get_thicknesses().index(
-                self.thicknesses_list.selectedItems()[0].text()
-            )
+            selected_row = self.sheet_settings.get_thicknesses().index(self.thicknesses_list.selectedItems()[0].text())
         except IndexError:
             selected_row = 0
         thickness_to_remove, ok = QInputDialog.getItem(
@@ -539,12 +411,8 @@ class SheetSettingsTab(QWidget):
             self.load_tabs()
 
     def rename_thickness(self):
-        selected_thickness = self.sheet_settings.thicknesses.get(
-            self.thicknesses_list.selectedItems()[0].text()
-        )
-        text, ok = QInputDialog.getText(
-            self, "Rename material", "Enter a new name:", text=selected_thickness.name
-        )
+        selected_thickness = self.sheet_settings.thicknesses.get(self.thicknesses_list.selectedItems()[0].text())
+        text, ok = QInputDialog.getText(self, "Rename material", "Enter a new name:", text=selected_thickness.name)
         if text and ok:
             selected_thickness.name = text
             self.sheet_settings.save_data()

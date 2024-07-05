@@ -192,9 +192,7 @@ def send_error_report():
     url = f"http://{SERVER_IP}:{SERVER_PORT}/send_error_report"
     with open("logs/app.log", "r", encoding="utf-8") as error_log:
         error_data = error_log.read()
-    data = {
-        "error_log": f"User: {os.getlogin().title()}\nVersion: {__version__}\n\n{error_data}"
-    }
+    data = {"error_log": f"User: {os.getlogin().title()}\nVersion: {__version__}\n\n{error_data}"}
     response = requests.post(url, data=data, timeout=5)
     if response.status_code != 200:
         win32api.MessageBox(
@@ -266,19 +264,13 @@ class MainWindow(QMainWindow):
         self.quote_generator_layout.addWidget(self.job_quote_widget)
 
         self.components_tab_widget: ComponentsTab = None
-        self.components_tab_widget_last_selected_tab_index: int = (
-            0  # * Used inside components_tab.py
-        )
+        self.components_tab_widget_last_selected_tab_index: int = 0  # * Used inside components_tab.py
 
         self.sheets_inventory_tab_widget: SheetsInInventoryTab = None
-        self.sheets_inventory_tab_widget_last_selected_tab_index: int = (
-            0  # * Used inside sheets_in_inventory_tab.py
-        )
+        self.sheets_inventory_tab_widget_last_selected_tab_index: int = 0  # * Used inside sheets_in_inventory_tab.py
 
         self.laser_cut_tab_widget: LaserCutTab = None
-        self.laser_cut_tab_widget_last_selected_tab_index: int = (
-            0  # * Used inside laser_cut_tab.py
-        )
+        self.laser_cut_tab_widget_last_selected_tab_index: int = 0  # * Used inside laser_cut_tab.py
 
         self.sheet_settings_tab_widget: SheetSettingsTab = None
 
@@ -292,18 +284,10 @@ class MainWindow(QMainWindow):
         check_po_directories()
         # self.check_for_updates(on_start_up=True)
 
-        history_file_date = datetime.strptime(
-            self.settings_file.get_value("price_history_file_name"), "%B %d %A %Y"
-        )
-        days_from_last_price_history_assessment: int = int(
-            (datetime.now() - history_file_date).total_seconds() / 60 / 60 / 24
-        )
-        if days_from_last_price_history_assessment > self.settings_file.get_value(
-            "days_until_new_price_history_assessment"
-        ):
-            self.settings_file.set_value(
-                "price_history_file_name", str(datetime.now().strftime("%B %d %A %Y"))
-            )
+        history_file_date = datetime.strptime(self.settings_file.get_value("price_history_file_name"), "%B %d %A %Y")
+        days_from_last_price_history_assessment: int = int((datetime.now() - history_file_date).total_seconds() / 60 / 60 / 24)
+        if days_from_last_price_history_assessment > self.settings_file.get_value("days_until_new_price_history_assessment"):
+            self.settings_file.set_value("price_history_file_name", str(datetime.now().strftime("%B %d %A %Y")))
             msg = QMessageBox(
                 QMessageBox.Icon.Information,
                 "Price Assessment",
@@ -320,23 +304,13 @@ class MainWindow(QMainWindow):
         self.finished_loading_tabs: bool = False
         self.files_downloaded_count: int = 0
         self.tables_font = QFont()
-        self.tables_font.setFamily(
-            self.settings_file.get_value("tables_font")["family"]
-        )
-        self.tables_font.setPointSize(
-            self.settings_file.get_value("tables_font")["pointSize"]
-        )
-        self.tables_font.setWeight(
-            self.settings_file.get_value("tables_font")["weight"]
-        )
-        self.tables_font.setItalic(
-            self.settings_file.get_value("tables_font")["italic"]
-        )
+        self.tables_font.setFamily(self.settings_file.get_value("tables_font")["family"])
+        self.tables_font.setPointSize(self.settings_file.get_value("tables_font")["pointSize"])
+        self.tables_font.setWeight(self.settings_file.get_value("tables_font")["weight"])
+        self.tables_font.setItalic(self.settings_file.get_value("tables_font")["italic"])
         self.tabs: dict[Category, CustomTableWidget] = {}
         self.parts_in_inventory_name_lookup: dict[str, int] = {}
-        self.last_selected_menu_tab: str = self.settings_file.get_value(
-            "menu_tabs_order"
-        )[self.settings_file.get_value("last_toolbox_tab")]
+        self.last_selected_menu_tab: str = self.settings_file.get_value("menu_tabs_order")[self.settings_file.get_value("last_toolbox_tab")]
         self.quote_nest_directories_list_widgets: dict[str, PdfTreeView] = {}
         self.quote_job_directories_list_widgets: dict[str, PdfTreeView] = {}
         self.quote_nest_information = {}
@@ -365,18 +339,14 @@ class MainWindow(QMainWindow):
         self.splitter_2.setStretchFactor(1, 0)  # Quote Generator 2
 
     def __load_ui(self) -> None:
-        menu_tabs_order: list[str] = self.settings_file.get_value(
-            setting_name="menu_tabs_order"
-        )
+        menu_tabs_order: list[str] = self.settings_file.get_value(setting_name="menu_tabs_order")
         for tab_name in menu_tabs_order:
             index = self.get_tab_from_name(tab_name)
             if index != -1:
                 self.tabWidget.tabBar().moveTab(index, menu_tabs_order.index(tab_name))
 
         # Tool Box
-        self.tabWidget.setCurrentIndex(
-            self.settings_file.get_value(setting_name="last_toolbox_tab")
-        )
+        self.tabWidget.setCurrentIndex(self.settings_file.get_value(setting_name="last_toolbox_tab"))
         self.tabWidget.currentChanged.connect(self.tool_box_menu_changed)
 
         # Load Nests
@@ -387,9 +357,7 @@ class MainWindow(QMainWindow):
             2: False,
         }
         self.verticalLayout_4.addWidget(self.saved_quotes_tool_box)
-        self.pushButton_refresh_saved_nests.clicked.connect(
-            self.load_saved_quoted_thread
-        )
+        self.pushButton_refresh_saved_nests.clicked.connect(self.load_saved_quoted_thread)
 
         self.previous_quotes_tool_box = MultiToolBox(self)
         self.previous_quotes_tool_box_opened_menus: dict[int, bool] = {
@@ -398,33 +366,23 @@ class MainWindow(QMainWindow):
             2: False,
         }
         self.verticalLayout_28.addWidget(self.previous_quotes_tool_box)
-        self.pushButton_refresh_previous_nests.clicked.connect(
-            self.load_previous_quotes_thread
-        )
+        self.pushButton_refresh_previous_nests.clicked.connect(self.load_previous_quotes_thread)
 
         self.cutoff_widget = MultiToolBox(self)
         self.verticalLayout_cutoff.addWidget(self.cutoff_widget)
         cutoff_items = QListWidget(self)
-        cutoff_items.doubleClicked.connect(
-            partial(self.cutoff_sheet_double_clicked, cutoff_items)
-        )
+        cutoff_items.doubleClicked.connect(partial(self.cutoff_sheet_double_clicked, cutoff_items))
         self.cutoff_widget.addItem(cutoff_items, "Cutoff Sheets")
         self.cutoff_widget.close_all()
 
         self.pushButton_load_nests.clicked.connect(self.process_selected_nests)
         self.pushButton_clear_selections.clicked.connect(self.clear_nest_selections)
-        self.pushButton_refresh_directories.clicked.connect(
-            self.refresh_nest_directories
-        )
+        self.pushButton_refresh_directories.clicked.connect(self.refresh_nest_directories)
         self.pushButton_generate_quote.clicked.connect(self.generate_printout)
 
         self.pushButton_load_nests_2.clicked.connect(self.process_selected_nests_to_job)
-        self.pushButton_clear_selections_2.clicked.connect(
-            self.clear_job_quote_selections
-        )
-        self.pushButton_refresh_directories_2.clicked.connect(
-            self.refresh_nest_directories
-        )
+        self.pushButton_clear_selections_2.clicked.connect(self.clear_job_quote_selections)
+        self.pushButton_refresh_directories_2.clicked.connect(self.refresh_nest_directories)
 
         self.pushButton_refresh_jobs.clicked.connect(self.load_jobs_thread)
         self.pushButton_refresh_jobs_2.clicked.connect(self.load_jobs_thread)
@@ -435,9 +393,7 @@ class MainWindow(QMainWindow):
         self.pushButton_save_job.clicked.connect(partial(self.save_job, None))
         self.pushButton_save_as_job.setHidden(True)
 
-        self.saved_planning_jobs_layout = self.findChild(
-            QVBoxLayout, "saved_planning_jobs_layout"
-        )
+        self.saved_planning_jobs_layout = self.findChild(QVBoxLayout, "saved_planning_jobs_layout")
         self.saved_planning_jobs_layout.setAlignment(Qt.AlignmentFlag.AlignTop)
         self.saved_jobs_multitoolbox = MultiToolBox(self)
         self.saved_planning_jobs_layout.addWidget(self.saved_jobs_multitoolbox)
@@ -449,17 +405,13 @@ class MainWindow(QMainWindow):
         self.templates_jobs_layout.addWidget(self.templates_jobs_multitoolbox)
         self.templates_job_items_last_opened: dict[int, bool] = {}
 
-        self.saved_planning_jobs_layout_2 = self.findChild(
-            QVBoxLayout, "saved_planning_jobs_layout_2"
-        )
+        self.saved_planning_jobs_layout_2 = self.findChild(QVBoxLayout, "saved_planning_jobs_layout_2")
         self.saved_planning_jobs_layout_2.setAlignment(Qt.AlignmentFlag.AlignTop)
         self.saved_jobs_multitoolbox_2 = MultiToolBox(self)
         self.saved_planning_jobs_layout_2.addWidget(self.saved_jobs_multitoolbox_2)
         self.saved_planning_job_items_last_opened_2: dict[int, bool] = {}
 
-        self.templates_jobs_layout_2 = self.findChild(
-            QVBoxLayout, "template_jobs_layout_2"
-        )
+        self.templates_jobs_layout_2 = self.findChild(QVBoxLayout, "template_jobs_layout_2")
         self.templates_jobs_layout_2.setAlignment(Qt.AlignmentFlag.AlignTop)
         self.templates_jobs_multitoolbox_2 = MultiToolBox(self)
         self.templates_jobs_layout_2.addWidget(self.templates_jobs_multitoolbox_2)
@@ -502,12 +454,8 @@ class MainWindow(QMainWindow):
                 ],
             )
         )
-        self.actionAlphabatical.setChecked(
-            self.settings_file.get_value(setting_name="sort_alphabatical")
-        )
-        self.actionAlphabatical.setEnabled(
-            not self.settings_file.get_value(setting_name="sort_alphabatical")
-        )
+        self.actionAlphabatical.setChecked(self.settings_file.get_value(setting_name="sort_alphabatical"))
+        self.actionAlphabatical.setEnabled(not self.settings_file.get_value(setting_name="sort_alphabatical"))
         self.actionQuantity_in_Stock.triggered.connect(
             partial(
                 self.action_group,
@@ -518,18 +466,10 @@ class MainWindow(QMainWindow):
                 ],
             )
         )
-        self.actionQuantity_in_Stock.setChecked(
-            self.settings_file.get_value(setting_name="sort_quantity_in_stock")
-        )
-        self.actionQuantity_in_Stock.setEnabled(
-            not self.settings_file.get_value(setting_name="sort_quantity_in_stock")
-        )
-        self.actionAscending.setChecked(
-            self.settings_file.get_value(setting_name="sort_ascending")
-        )
-        self.actionAscending.setEnabled(
-            not self.settings_file.get_value(setting_name="sort_ascending")
-        )
+        self.actionQuantity_in_Stock.setChecked(self.settings_file.get_value(setting_name="sort_quantity_in_stock"))
+        self.actionQuantity_in_Stock.setEnabled(not self.settings_file.get_value(setting_name="sort_quantity_in_stock"))
+        self.actionAscending.setChecked(self.settings_file.get_value(setting_name="sort_ascending"))
+        self.actionAscending.setEnabled(not self.settings_file.get_value(setting_name="sort_ascending"))
         self.actionAscending.triggered.connect(
             partial(
                 self.action_group,
@@ -537,12 +477,8 @@ class MainWindow(QMainWindow):
                 [self.actionAscending, self.actionDescending],
             )
         )
-        self.actionDescending.setChecked(
-            self.settings_file.get_value(setting_name="sort_descending")
-        )
-        self.actionDescending.setEnabled(
-            not self.settings_file.get_value(setting_name="sort_descending")
-        )
+        self.actionDescending.setChecked(self.settings_file.get_value(setting_name="sort_descending"))
+        self.actionDescending.setEnabled(not self.settings_file.get_value(setting_name="sort_descending"))
         self.actionDescending.triggered.connect(
             partial(
                 self.action_group,
@@ -554,9 +490,7 @@ class MainWindow(QMainWindow):
         self.update_sorting_status_text()
 
         # PURCHASE ORDERS
-        self.actionAdd_Purchase_Order.triggered.connect(
-            partial(self.add_po_templates, [], True)
-        )
+        self.actionAdd_Purchase_Order.triggered.connect(partial(self.add_po_templates, [], True))
         self.actionRemove_Purchase_Order.triggered.connect(self.delete_po)
         self.actionOpen_Purchase_Order.triggered.connect(partial(self.open_po, None))
         self.actionOpen_Folder.triggered.connect(partial(self.open_folder, "PO's"))
@@ -585,15 +519,11 @@ class MainWindow(QMainWindow):
                 False,
             )
             self.tabWidget.setTabVisible(
-                self.settings_file.get_value("menu_tabs_order").index(
-                    "View Price Changes History"
-                ),
+                self.settings_file.get_value("menu_tabs_order").index("View Price Changes History"),
                 False,
             )
             self.tabWidget.setTabVisible(
-                self.settings_file.get_value("menu_tabs_order").index(
-                    "View Removed Quantities History"
-                ),
+                self.settings_file.get_value("menu_tabs_order").index("View Removed Quantities History"),
                 False,
             )
 
@@ -623,19 +553,13 @@ class MainWindow(QMainWindow):
             self.components_tab_widget = ComponentsTab(self)
             self.components_layout.addWidget(self.components_tab_widget)
             self.components_tab_widget.restore_scroll_position()
-        elif (
-            self.tabWidget.tabText(self.tabWidget.currentIndex())
-            == "Sheets in Inventory"
-        ):
+        elif self.tabWidget.tabText(self.tabWidget.currentIndex()) == "Sheets in Inventory":
             self.menuSort.setEnabled(True)
             self.clear_layout(self.sheets_inventory_layout)
             self.sheets_inventory_tab_widget = SheetsInInventoryTab(self)
             self.sheets_inventory_layout.addWidget(self.sheets_inventory_tab_widget)
             self.sheets_inventory_tab_widget.restore_scroll_position()
-        elif (
-            self.tabWidget.tabText(self.tabWidget.currentIndex())
-            == "Laser Cut Inventory"
-        ):
+        elif self.tabWidget.tabText(self.tabWidget.currentIndex()) == "Laser Cut Inventory":
             self.menuSort.setEnabled(True)
             self.clear_layout(self.laser_cut_layout)
             self.laser_cut_tab_widget = LaserCutTab(self)
@@ -652,33 +576,23 @@ class MainWindow(QMainWindow):
             self.refresh_nest_directories()
             for quote_widget in self.quote_generator_tab_widget.quotes:
                 quote_widget.update_sheet_statuses()
-        elif (
-            self.tabWidget.tabText(self.tabWidget.currentIndex()) == "Quote Generator 2"
-        ):
+        elif self.tabWidget.tabText(self.tabWidget.currentIndex()) == "Quote Generator 2":
             self.load_jobs_thread()
             self.refresh_nest_directories()
-        elif (
-            self.tabWidget.tabText(self.tabWidget.currentIndex()) == "Job Planner"
-        ):  # TODO Load server jobs
+        elif self.tabWidget.tabText(self.tabWidget.currentIndex()) == "Job Planner":  # TODO Load server jobs
             self.load_jobs_thread()
             self.job_planner_widget.update_tables()
             # pass
             # self.clear_layout(self.job_planner_layout)
             # self.quote_planner_tab_widget = QuotePlannerTab(self)
             # self.job_planner_layout.addWidget(self.quote_planner_tab_widget)
-        elif (
-            self.tabWidget.tabText(self.tabWidget.currentIndex())
-            == "View Removed Quantities History"
-        ):  # View Removed Quantities History
+        elif self.tabWidget.tabText(self.tabWidget.currentIndex()) == "View Removed Quantities History":  # View Removed Quantities History
             self.menuSort.setEnabled(False)
             if not self.trusted_user:
                 self.show_not_trusted_user()
                 return
             self.load_history_view()
-        elif (
-            self.tabWidget.tabText(self.tabWidget.currentIndex())
-            == "View Price Changes History"
-        ):  # View Price Changes History
+        elif self.tabWidget.tabText(self.tabWidget.currentIndex()) == "View Price Changes History":  # View Price Changes History
             self.menuSort.setEnabled(False)
             if not self.trusted_user:
                 self.show_not_trusted_user()
@@ -708,9 +622,7 @@ class MainWindow(QMainWindow):
             )
             self.workspace_layout.addWidget(self.workspace_tab_widget)
         self.settings_file.set_value("last_toolbox_tab", self.tabWidget.currentIndex())
-        self.last_selected_menu_tab = self.tabWidget.tabText(
-            self.tabWidget.currentIndex()
-        )
+        self.last_selected_menu_tab = self.tabWidget.tabText(self.tabWidget.currentIndex())
 
         # self.loading_screen.hide()
 
@@ -720,16 +632,10 @@ class MainWindow(QMainWindow):
             if self.tabWidget.tabText(self.tabWidget.currentIndex()) == "Components":
                 self.status_button.setText("Sorted Components", "lime")
                 self.components_tab_widget.sort_components()
-            elif (
-                self.tabWidget.tabText(self.tabWidget.currentIndex())
-                == "Sheets in Inventory"
-            ):
+            elif self.tabWidget.tabText(self.tabWidget.currentIndex()) == "Sheets in Inventory":
                 self.status_button.setText("Sorted Sheets", "lime")
                 self.sheets_inventory_tab_widget.sort_sheets()
-            elif (
-                self.tabWidget.tabText(self.tabWidget.currentIndex())
-                == "Laser Cut Inventory"
-            ):
+            elif self.tabWidget.tabText(self.tabWidget.currentIndex()) == "Laser Cut Inventory":
                 self.laser_cut_tab_widget.sort_laser_cut_parts()
                 self.status_button.setText("Sorted Laser Cut Parts", "lime")
 
@@ -782,9 +688,7 @@ class MainWindow(QMainWindow):
                 QMessageBox.Icon.Question,
                 "Overwrite changes",
                 f"You are about to overwrite this quote from your view. This action will not change the quote from the server. It will only be changed from your current session.\n\nAre you sure you want to overwrite {self.quote_generator_tab_widget.current_quote.name}?",
-                QMessageBox.StandardButton.Yes
-                | QMessageBox.StandardButton.No
-                | QMessageBox.StandardButton.Cancel,
+                QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No | QMessageBox.StandardButton.Cancel,
                 self,
             )
             response = msg.exec()
@@ -803,9 +707,7 @@ class MainWindow(QMainWindow):
                 QMessageBox.Icon.Question,
                 "Overwrite Nests",
                 f"You are about to overwrite this jobs nests. This action will not change the job from the server. It will only be changed from your current session until you save it.\n\nAre you sure you want to overwrite {current_job.name}?",
-                QMessageBox.StandardButton.Yes
-                | QMessageBox.StandardButton.No
-                | QMessageBox.StandardButton.Cancel,
+                QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No | QMessageBox.StandardButton.Cancel,
                 self,
             )
             response = msg.exec()
@@ -822,30 +724,14 @@ class MainWindow(QMainWindow):
         item_pressed: QListWidgetItem = cutoff_items.selectedItems()[0]
         for sheet in cutoff_sheets:
             if item_pressed.text() == sheet.get_name():
-                self.quote_generator_tab_widget.quotes[
-                    self.quote_generator_tab_widget.tab_widget.currentIndex()
-                ].comboBox_global_sheet_material_2.setCurrentText(sheet.material)
-                self.quote_generator_tab_widget.quotes[
-                    self.quote_generator_tab_widget.tab_widget.currentIndex()
-                ].comboBox_global_sheet_thickness_2.setCurrentText(sheet.thickness)
-                self.quote_generator_tab_widget.quotes[
-                    self.quote_generator_tab_widget.tab_widget.currentIndex()
-                ].doubleSpinBox_global_sheet_length_2.setValue(sheet.length)
-                self.quote_generator_tab_widget.quotes[
-                    self.quote_generator_tab_widget.tab_widget.currentIndex()
-                ].doubleSpinBox_global_sheet_width_2.setValue(sheet.width)
-                self.quote_generator_tab_widget.quotes[
-                    self.quote_generator_tab_widget.tab_widget.currentIndex()
-                ].global_sheet_materials_changed()
-                self.quote_generator_tab_widget.quotes[
-                    self.quote_generator_tab_widget.tab_widget.currentIndex()
-                ].global_sheet_materials_changed()
-                self.quote_generator_tab_widget.quotes[
-                    self.quote_generator_tab_widget.tab_widget.currentIndex()
-                ].global_sheet_dimension_changed()
-                self.quote_generator_tab_widget.quotes[
-                    self.quote_generator_tab_widget.tab_widget.currentIndex()
-                ].update_sheet_statuses()
+                self.quote_generator_tab_widget.quotes[self.quote_generator_tab_widget.tab_widget.currentIndex()].comboBox_global_sheet_material_2.setCurrentText(sheet.material)
+                self.quote_generator_tab_widget.quotes[self.quote_generator_tab_widget.tab_widget.currentIndex()].comboBox_global_sheet_thickness_2.setCurrentText(sheet.thickness)
+                self.quote_generator_tab_widget.quotes[self.quote_generator_tab_widget.tab_widget.currentIndex()].doubleSpinBox_global_sheet_length_2.setValue(sheet.length)
+                self.quote_generator_tab_widget.quotes[self.quote_generator_tab_widget.tab_widget.currentIndex()].doubleSpinBox_global_sheet_width_2.setValue(sheet.width)
+                self.quote_generator_tab_widget.quotes[self.quote_generator_tab_widget.tab_widget.currentIndex()].global_sheet_materials_changed()
+                self.quote_generator_tab_widget.quotes[self.quote_generator_tab_widget.tab_widget.currentIndex()].global_sheet_materials_changed()
+                self.quote_generator_tab_widget.quotes[self.quote_generator_tab_widget.tab_widget.currentIndex()].global_sheet_dimension_changed()
+                self.quote_generator_tab_widget.quotes[self.quote_generator_tab_widget.tab_widget.currentIndex()].update_sheet_statuses()
                 return
 
     # * /\ SLOTS & SIGNALS /\
@@ -874,50 +760,26 @@ class MainWindow(QMainWindow):
         sorting_to_number: str = "9"
 
         if self.actionAscending.isChecked():
-            self.actionAlphabatical.setStatusTip(
-                f"Sort from {sorting_from_alphabet} to {sorting_to_alphabet}"
-            )
-            self.actionQuantity_in_Stock.setStatusTip(
-                f"Sort from {sorting_from_number} to {sorting_to_number}"
-            )
+            self.actionAlphabatical.setStatusTip(f"Sort from {sorting_from_alphabet} to {sorting_to_alphabet}")
+            self.actionQuantity_in_Stock.setStatusTip(f"Sort from {sorting_from_number} to {sorting_to_number}")
         else:
-            self.actionAlphabatical.setStatusTip(
-                f"Sort from {sorting_to_alphabet} to {sorting_from_alphabet}"
-            )
-            self.actionQuantity_in_Stock.setStatusTip(
-                f"Sort from {sorting_to_number} to {sorting_from_number}"
-            )
+            self.actionAlphabatical.setStatusTip(f"Sort from {sorting_to_alphabet} to {sorting_from_alphabet}")
+            self.actionQuantity_in_Stock.setStatusTip(f"Sort from {sorting_to_number} to {sorting_from_number}")
 
         if self.actionAlphabatical.isChecked():
             if self.actionAscending.isChecked():
-                self.actionSort.setStatusTip(
-                    f"Sort from {sorting_from_alphabet} to {sorting_to_alphabet}"
-                )
+                self.actionSort.setStatusTip(f"Sort from {sorting_from_alphabet} to {sorting_to_alphabet}")
             else:
-                self.actionSort.setStatusTip(
-                    f"Sort from {sorting_to_alphabet} to {sorting_from_alphabet}"
-                )
-            self.actionAscending.setStatusTip(
-                f"Sort from {sorting_from_alphabet} to {sorting_to_alphabet}"
-            )
-            self.actionDescending.setStatusTip(
-                f"Sort from {sorting_to_alphabet} to {sorting_from_alphabet}"
-            )
+                self.actionSort.setStatusTip(f"Sort from {sorting_to_alphabet} to {sorting_from_alphabet}")
+            self.actionAscending.setStatusTip(f"Sort from {sorting_from_alphabet} to {sorting_to_alphabet}")
+            self.actionDescending.setStatusTip(f"Sort from {sorting_to_alphabet} to {sorting_from_alphabet}")
         elif self.actionQuantity_in_Stock.isChecked():
             if self.actionAscending.isChecked():
-                self.actionSort.setStatusTip(
-                    f"Sort from {sorting_from_number} to {sorting_to_number}"
-                )
+                self.actionSort.setStatusTip(f"Sort from {sorting_from_number} to {sorting_to_number}")
             else:
-                self.actionSort.setStatusTip(
-                    f"Sort from {sorting_to_number} to {sorting_from_number}"
-                )
-            self.actionAscending.setStatusTip(
-                f"Sort from {sorting_from_number} to {sorting_to_number}"
-            )
-            self.actionDescending.setStatusTip(
-                f"Sort from {sorting_to_number} to {sorting_from_number}"
-            )
+                self.actionSort.setStatusTip(f"Sort from {sorting_to_number} to {sorting_from_number}")
+            self.actionAscending.setStatusTip(f"Sort from {sorting_from_number} to {sorting_to_number}")
+            self.actionDescending.setStatusTip(f"Sort from {sorting_to_number} to {sorting_from_number}")
 
     def set_table_row_color(self, table, row_index, color):
         for j in range(table.columnCount()):
@@ -950,9 +812,7 @@ class MainWindow(QMainWindow):
             self.pushButton_load_nests.setEnabled(False)
         else:
             self.pushButton_load_nests.setEnabled(True)
-        self.pushButton_load_nests.setText(
-            f"Load {selected_nests} Nest{'' if selected_nests == 1 else 's'}"
-        )
+        self.pushButton_load_nests.setText(f"Load {selected_nests} Nest{'' if selected_nests == 1 else 's'}")
 
     def job_quote_directory_item_selected(self) -> None:
         # self.process_selected_nests()
@@ -961,9 +821,7 @@ class MainWindow(QMainWindow):
             self.pushButton_load_nests_2.setEnabled(False)
         else:
             self.pushButton_load_nests_2.setEnabled(True)
-        self.pushButton_load_nests_2.setText(
-            f"Load {selected_nests} Nest{'' if selected_nests == 1 else 's'}"
-        )
+        self.pushButton_load_nests_2.setText(f"Load {selected_nests} Nest{'' if selected_nests == 1 else 's'}")
 
     def save_scroll_position(self, category: Category, table: CustomTableWidget):
         self.scroll_position_manager.save_scroll_position(
@@ -972,9 +830,7 @@ class MainWindow(QMainWindow):
         )
 
     def get_scroll_position(self, category: Category) -> QPoint:
-        return self.scroll_position_manager.get_scroll_position(
-            f"{self.tabWidget.tabText(self.tabWidget.currentIndex())} - {category.name}"
-        )
+        return self.scroll_position_manager.get_scroll_position(f"{self.tabWidget.tabText(self.tabWidget.currentIndex())} - {category.name}")
 
     # * /\ UPDATE UI ELEMENTS /\
     # * \/ GETTERS \/
@@ -999,11 +855,7 @@ class MainWindow(QMainWindow):
 
     def get_tab_from_name(self, name: str) -> int:
         return next(
-            (
-                i
-                for i in range(self.tabWidget.count())
-                if self.tabWidget.tabText(i) == name
-            ),
+            (i for i in range(self.tabWidget.count()) if self.tabWidget.tabText(i) == name),
             -1,
         )
 
@@ -1011,11 +863,7 @@ class MainWindow(QMainWindow):
         selected_rows = tab.selectedItems()
         all_items = list(self.parts_in_inventory_name_lookup.keys())
 
-        selected_items: list[str] = [
-            item.text()
-            for item in selected_rows
-            if item.text() in all_items and item.column() == 0
-        ]
+        selected_items: list[str] = [item.text() for item in selected_rows if item.text() in all_items and item.column() == 0]
         return selected_items
 
     # * /\ GETTERS /\
@@ -1041,11 +889,7 @@ class MainWindow(QMainWindow):
         dialog.show()
 
     def show_not_trusted_user(self) -> None:
-        self.tabWidget.setCurrentIndex(
-            self.settings_file.get_value("menu_tabs_order").index(
-                self.last_selected_menu_tab
-            )
-        )
+        self.tabWidget.setCurrentIndex(self.settings_file.get_value("menu_tabs_order").index(self.last_selected_menu_tab))
         msg = QMessageBox(self)
         msg.setIcon(QMessageBox.Icon.Information)
         msg.setWindowTitle("Permission error")
@@ -1056,20 +900,14 @@ class MainWindow(QMainWindow):
         menu.exec(QCursor.pos())
 
     def add_nest_directory(self) -> None:
-        nest_directories: list[str] = self.settings_file.get_value(
-            "quote_nest_directories"
-        )
-        if new_nest_directory := QFileDialog.getExistingDirectory(
-            self, "Open directory", "/"
-        ):
+        nest_directories: list[str] = self.settings_file.get_value("quote_nest_directories")
+        if new_nest_directory := QFileDialog.getExistingDirectory(self, "Open directory", "/"):
             nest_directories.append(new_nest_directory)
             self.settings_file.set_value("quote_nest_directories", nest_directories)
             self.refresh_nest_directories()
 
     def remove_nest_directory(self) -> None:
-        nest_directories: list[str] = self.settings_file.get_value(
-            "quote_nest_directories"
-        )
+        nest_directories: list[str] = self.settings_file.get_value("quote_nest_directories")
         select_item_dialog = SelectItemDialog(
             DialogButtons.discard_cancel,
             "Remove Nest Directory",
@@ -1100,9 +938,7 @@ class MainWindow(QMainWindow):
             job = self.job_planner_widget.current_job
         job_plan_printout = JobPlannerPrintout(job)
         html = job_plan_printout.generate()
-        self.upload_job_thread(
-            f"saved_jobs/{job.status.name.lower()}/{job.name}", job, html
-        )
+        self.upload_job_thread(f"saved_jobs/{job.status.name.lower()}/{job.name}", job, html)
         job.unsaved_changes = False
         self.job_planner_widget.update_job_save_status(job)
         self.status_button.setText(f"Saved {job.name}", "lime")
@@ -1117,9 +953,7 @@ class MainWindow(QMainWindow):
         return
         job_plan_printout = JobPlannerPrintout(job)
         html = job_plan_printout.generate()
-        self.upload_job_thread(
-            f"saved_jobs/{job.status.name.lower()}/{job.name}", job, html
-        )
+        self.upload_job_thread(f"saved_jobs/{job.status.name.lower()}/{job.name}", job, html)
         self.status_button.setText(f"Saved {job.name}", "lime")
         self.upload_file(
             [
@@ -1162,9 +996,7 @@ class MainWindow(QMainWindow):
             quote.group_laser_cut_parts()
             generate_quote = GeneratePrintout(quote_type, quote)
             html_file = generate_quote.generate()
-            folder = (
-                f"saved_quotes/{quote_type.lower().replace(' ', '_')}s/{quote.name}"
-            )
+            folder = f"saved_quotes/{quote_type.lower().replace(' ', '_')}s/{quote.name}"
             self.upload_nest_images(quote)
             self.upload_quote_thread(folder, quote, html_file)
             self.status_button.setText(f"Saved {quote.name}", "lime")
@@ -1217,9 +1049,7 @@ class MainWindow(QMainWindow):
                 self.remove_sheet_quantities(quote)
 
             self.load_previous_quotes_thread()
-            self.quote_generator_tab_widget.quotes[
-                self.quote_generator_tab_widget.tab_widget.currentIndex()
-            ].update_sheet_statuses()
+            self.quote_generator_tab_widget.quotes[self.quote_generator_tab_widget.tab_widget.currentIndex()].update_sheet_statuses()
 
     def generate_packing_slip(self, quote: Quote):
         self.get_order_number_thread()
@@ -1234,9 +1064,7 @@ class MainWindow(QMainWindow):
             "open_workorder_when_generated",
         )
 
-    def generate_quote(
-        self, quote_type: str, quote: Quote, folder: str, open_file_settings: str
-    ):
+    def generate_quote(self, quote_type: str, quote: Quote, folder: str, open_file_settings: str):
         generate_quote = GeneratePrintout(quote_type, quote)
         html_file = generate_quote.generate()
         folder = f"{folder}{quote.name} - {datetime.now().strftime('%Y%m%d%H%M%S')}"
@@ -1249,9 +1077,7 @@ class MainWindow(QMainWindow):
         loop = QEventLoop()
         QTimer.singleShot(200, loop.quit)
         loop.exec()
-        input_number, ok = QInputDialog.getDouble(
-            self, "Set Order Number", "Enter a Order Number:", self.order_number
-        )
+        input_number, ok = QInputDialog.getDouble(self, "Set Order Number", "Enter a Order Number:", self.order_number)
         if input_number and ok:
             self.set_order_number_thread(input_number)
 
@@ -1282,9 +1108,7 @@ class MainWindow(QMainWindow):
         # CATEOGRY HISTORY
         self.categoryHistoryTable.clear()
         self.categoryHistoryTable.setRowCount(0)
-        self.categoryHistoryTable.setHorizontalHeaderLabels(
-            ("Date;Description;").split(";")
-        )
+        self.categoryHistoryTable.setHorizontalHeaderLabels(("Date;Description;").split(";"))
         self.categoryHistoryTable.setColumnWidth(0, 270)
         self.categoryHistoryTable.setColumnWidth(1, 600)
         history_file = HistoryFile()
@@ -1299,9 +1123,7 @@ class MainWindow(QMainWindow):
         # SINGLE ITEM HISTORY
         self.singleItemHistoryTable.clear()
         self.singleItemHistoryTable.setRowCount(0)
-        self.singleItemHistoryTable.setHorizontalHeaderLabels(
-            ("Date;Description;").split(";")
-        )
+        self.singleItemHistoryTable.setHorizontalHeaderLabels(("Date;Description;").split(";"))
         self.singleItemHistoryTable.setColumnWidth(0, 270)
         self.singleItemHistoryTable.setColumnWidth(1, 600)
         for i, date, description in zip(
@@ -1309,9 +1131,7 @@ class MainWindow(QMainWindow):
             history_file.get_data_from_single_item()["Date"],
             history_file.get_data_from_single_item()["Description"],
         ):
-            self.singleItemHistoryTable.insertRow(
-                self.singleItemHistoryTable.rowCount()
-            )
+            self.singleItemHistoryTable.insertRow(self.singleItemHistoryTable.rowCount())
             self.singleItemHistoryTable.setItem(i, 0, QTableWidgetItem(date))
             self.singleItemHistoryTable.setItem(i, 1, QTableWidgetItem(description))
 
@@ -1319,14 +1139,10 @@ class MainWindow(QMainWindow):
         # CATEOGRY HISTORY
         self.priceHistoryTable.clear()
         self.priceHistoryTable.setRowCount(0)
-        self.priceHistoryTable.setHorizontalHeaderLabels(
-            ("Date;Part Name;Part #;Old Price;New Price").split(";")
-        )
+        self.priceHistoryTable.setHorizontalHeaderLabels(("Date;Part Name;Part #;Old Price;New Price").split(";"))
         self.priceHistoryTable.setColumnWidth(0, 270)
         self.priceHistoryTable.setColumnWidth(1, 600)
-        price_history_file = PriceHistoryFile(
-            file_name=f"{self.settings_file.get_value(setting_name='price_history_file_name')}.xlsx"
-        )
+        price_history_file = PriceHistoryFile(file_name=f"{self.settings_file.get_value(setting_name='price_history_file_name')}.xlsx")
         for i, date, part_name, part_number, old_price, new_price in zip(
             range(len(price_history_file.get_data_from_category()["Date"])),
             price_history_file.get_data_from_category()["Date"],
@@ -1370,15 +1186,9 @@ class MainWindow(QMainWindow):
             )
         )
         with contextlib.suppress(IndexError):  # Not loaded yet
-            self.previous_quotes_tool_box_opened_menus[0] = (
-                not self.previous_quotes_tool_box.buttons[0].isChecked()
-            )
-            self.previous_quotes_tool_box_opened_menus[1] = (
-                not self.previous_quotes_tool_box.buttons[1].isChecked()
-            )
-            self.previous_quotes_tool_box_opened_menus[2] = (
-                not self.previous_quotes_tool_box.buttons[2].isChecked()
-            )
+            self.previous_quotes_tool_box_opened_menus[0] = not self.previous_quotes_tool_box.buttons[0].isChecked()
+            self.previous_quotes_tool_box_opened_menus[1] = not self.previous_quotes_tool_box.buttons[1].isChecked()
+            self.previous_quotes_tool_box_opened_menus[2] = not self.previous_quotes_tool_box.buttons[2].isChecked()
 
         self.previous_quotes_tool_box.clear()
 
@@ -1394,9 +1204,7 @@ class MainWindow(QMainWindow):
         packing_slips_layout = QVBoxLayout(packing_slips_widget)
         self.previous_quotes_tool_box.addItem(packing_slips_widget, "Packing Slips")
         self.previous_quotes_tool_box.close_all()
-        self.previous_quotes_tool_box.set_widgets_visibility(
-            self.previous_quotes_tool_box_opened_menus
-        )
+        self.previous_quotes_tool_box.set_widgets_visibility(self.previous_quotes_tool_box_opened_menus)
 
         for folder_path, file_info in sorted_data.items():
             folder_path = folder_path.replace("\\", "/")
@@ -1409,12 +1217,8 @@ class MainWindow(QMainWindow):
                         f"previous_quotes/{folder_path}",
                     )
                 )
-                quote_item.open_webpage.connect(
-                    partial(self.open_quote, f"previous_quotes/{folder_path}")
-                )
-                quote_item.delete_quote.connect(
-                    partial(self.delete_quote_thread, f"previous_quotes/{folder_path}")
-                )
+                quote_item.open_webpage.connect(partial(self.open_quote, f"previous_quotes/{folder_path}"))
+                quote_item.delete_quote.connect(partial(self.delete_quote_thread, f"previous_quotes/{folder_path}"))
                 quote_layout.addWidget(quote_item)
             elif folder_name == "workorders":
                 quote_item = PreviousQuoteItem(file_info, workorders_widget)
@@ -1424,12 +1228,8 @@ class MainWindow(QMainWindow):
                         f"previous_quotes/{folder_path}",
                     )
                 )
-                quote_item.open_webpage.connect(
-                    partial(self.open_quote, f"previous_quotes/{folder_path}")
-                )
-                quote_item.delete_quote.connect(
-                    partial(self.delete_quote_thread, f"previous_quotes/{folder_path}")
-                )
+                quote_item.open_webpage.connect(partial(self.open_quote, f"previous_quotes/{folder_path}"))
+                quote_item.delete_quote.connect(partial(self.delete_quote_thread, f"previous_quotes/{folder_path}"))
                 workorders_layout.addWidget(quote_item)
             elif folder_name == "packing_slips":
                 quote_item = PreviousQuoteItem(file_info, packing_slips_widget)
@@ -1439,42 +1239,24 @@ class MainWindow(QMainWindow):
                         f"previous_quotes/{folder_path}",
                     )
                 )
-                quote_item.open_webpage.connect(
-                    partial(self.open_quote, f"previous_quotes/{folder_path}")
-                )
-                quote_item.delete_quote.connect(
-                    partial(self.delete_quote_thread, f"previous_quotes/{folder_path}")
-                )
+                quote_item.open_webpage.connect(partial(self.open_quote, f"previous_quotes/{folder_path}"))
+                quote_item.delete_quote.connect(partial(self.delete_quote_thread, f"previous_quotes/{folder_path}"))
                 packing_slips_layout.addWidget(quote_item)
         self.status_button.setText("Refreshed", "lime")
 
     def load_planning_jobs(self, data: dict[str, dict[str, Any]]):
-        self.saved_planning_job_items_last_opened = (
-            self.saved_jobs_multitoolbox.get_widget_visibility()
-        )
-        self.templates_job_items_last_opened = (
-            self.templates_jobs_multitoolbox.get_widget_visibility()
-        )
+        self.saved_planning_job_items_last_opened = self.saved_jobs_multitoolbox.get_widget_visibility()
+        self.templates_job_items_last_opened = self.templates_jobs_multitoolbox.get_widget_visibility()
 
         self.templates_jobs_multitoolbox.clear()
         self.saved_jobs_multitoolbox.clear()
-        sorted_data = dict(
-            natsorted(data.items(), key=lambda x: x[1]["name"], reverse=True)
-        )
+        sorted_data = dict(natsorted(data.items(), key=lambda x: x[1]["name"], reverse=True))
         for folder_path, file_info in sorted_data.items():
             job_item = SavedPlanningJobItem(file_info, self)
-            job_item.load_job.connect(
-                partial(self.load_job_thread, f"saved_jobs/{folder_path}")
-            )
-            job_item.delete_job.connect(
-                partial(self.delete_job_thread, f"saved_jobs/{folder_path}")
-            )
-            job_item.open_webpage.connect(
-                partial(self.open_job, f"saved_jobs/{folder_path}")
-            )
-            job_item.pushButton_open_in_browser.setToolTip(
-                f"{job_item.pushButton_open_in_browser.toolTip()}\n\nhttp://{get_server_ip_address()}:{get_server_port()}/load_job/saved_jobs/{folder_path}"
-            )
+            job_item.load_job.connect(partial(self.load_job_thread, f"saved_jobs/{folder_path}"))
+            job_item.delete_job.connect(partial(self.delete_job_thread, f"saved_jobs/{folder_path}"))
+            job_item.open_webpage.connect(partial(self.open_job, f"saved_jobs/{folder_path}"))
+            job_item.pushButton_open_in_browser.setToolTip(f"{job_item.pushButton_open_in_browser.toolTip()}\n\nhttp://{get_server_ip_address()}:{get_server_port()}/load_job/saved_jobs/{folder_path}")
             job_item.job_type_changed.connect(
                 partial(
                     self.change_job_thread,
@@ -1497,40 +1279,22 @@ class MainWindow(QMainWindow):
                 )
         self.saved_jobs_multitoolbox.close_all()
         self.templates_jobs_multitoolbox.close_all()
-        self.saved_jobs_multitoolbox.set_widgets_visibility(
-            self.saved_planning_job_items_last_opened
-        )
-        self.templates_jobs_multitoolbox.set_widgets_visibility(
-            self.templates_job_items_last_opened
-        )
+        self.saved_jobs_multitoolbox.set_widgets_visibility(self.saved_planning_job_items_last_opened)
+        self.templates_jobs_multitoolbox.set_widgets_visibility(self.templates_job_items_last_opened)
 
     def load_quoting_jobs(self, data: dict[str, dict[str, Any]]):
-        self.saved_planning_job_items_last_opened_2 = (
-            self.saved_jobs_multitoolbox_2.get_widget_visibility()
-        )
-        self.templates_job_items_last_opened_2 = (
-            self.templates_jobs_multitoolbox_2.get_widget_visibility()
-        )
+        self.saved_planning_job_items_last_opened_2 = self.saved_jobs_multitoolbox_2.get_widget_visibility()
+        self.templates_job_items_last_opened_2 = self.templates_jobs_multitoolbox_2.get_widget_visibility()
 
         self.templates_jobs_multitoolbox_2.clear()
         self.saved_jobs_multitoolbox_2.clear()
-        sorted_data = dict(
-            natsorted(data.items(), key=lambda x: x[1]["name"], reverse=True)
-        )
+        sorted_data = dict(natsorted(data.items(), key=lambda x: x[1]["name"], reverse=True))
         for folder_path, file_info in sorted_data.items():
             job_item = SavedPlanningJobItem(file_info, self)
-            job_item.load_job.connect(
-                partial(self.load_job_thread, f"saved_jobs/{folder_path}")
-            )
-            job_item.delete_job.connect(
-                partial(self.delete_job_thread, f"saved_jobs/{folder_path}")
-            )
-            job_item.open_webpage.connect(
-                partial(self.open_job, f"saved_jobs/{folder_path}")
-            )
-            job_item.pushButton_open_in_browser.setToolTip(
-                f"{job_item.pushButton_open_in_browser.toolTip()}\n\nhttp://{get_server_ip_address()}:{get_server_port()}/load_job/saved_jobs/{folder_path}"
-            )
+            job_item.load_job.connect(partial(self.load_job_thread, f"saved_jobs/{folder_path}"))
+            job_item.delete_job.connect(partial(self.delete_job_thread, f"saved_jobs/{folder_path}"))
+            job_item.open_webpage.connect(partial(self.open_job, f"saved_jobs/{folder_path}"))
+            job_item.pushButton_open_in_browser.setToolTip(f"{job_item.pushButton_open_in_browser.toolTip()}\n\nhttp://{get_server_ip_address()}:{get_server_port()}/load_job/saved_jobs/{folder_path}")
             job_item.job_type_changed.connect(
                 partial(
                     self.change_job_thread,
@@ -1556,12 +1320,8 @@ class MainWindow(QMainWindow):
                 )
         self.saved_jobs_multitoolbox_2.close_all()
         self.templates_jobs_multitoolbox_2.close_all()
-        self.saved_jobs_multitoolbox_2.set_widgets_visibility(
-            self.saved_planning_job_items_last_opened_2
-        )
-        self.templates_jobs_multitoolbox_2.set_widgets_visibility(
-            self.templates_job_items_last_opened_2
-        )
+        self.saved_jobs_multitoolbox_2.set_widgets_visibility(self.saved_planning_job_items_last_opened_2)
+        self.templates_jobs_multitoolbox_2.set_widgets_visibility(self.templates_job_items_last_opened_2)
 
     def load_saved_quotes(self, data: dict[str, dict[str, Any]]) -> None:
         sorted_data = dict(
@@ -1574,15 +1334,9 @@ class MainWindow(QMainWindow):
         )
 
         with contextlib.suppress(IndexError):  # Not loaded yet
-            self.saved_quotes_tool_box_opened_menus[0] = (
-                not self.saved_quotes_tool_box.buttons[0].isChecked()
-            )
-            self.saved_quotes_tool_box_opened_menus[1] = (
-                not self.saved_quotes_tool_box.buttons[1].isChecked()
-            )
-            self.saved_quotes_tool_box_opened_menus[2] = (
-                not self.saved_quotes_tool_box.buttons[2].isChecked()
-            )
+            self.saved_quotes_tool_box_opened_menus[0] = not self.saved_quotes_tool_box.buttons[0].isChecked()
+            self.saved_quotes_tool_box_opened_menus[1] = not self.saved_quotes_tool_box.buttons[1].isChecked()
+            self.saved_quotes_tool_box_opened_menus[2] = not self.saved_quotes_tool_box.buttons[2].isChecked()
 
         self.saved_quotes_tool_box.clear()
 
@@ -1598,26 +1352,16 @@ class MainWindow(QMainWindow):
         packing_slips_layout = QVBoxLayout(packing_slips_widget)
         self.saved_quotes_tool_box.addItem(packing_slips_widget, "Packing Slips")
         self.saved_quotes_tool_box.close_all()
-        self.saved_quotes_tool_box.set_widgets_visibility(
-            self.saved_quotes_tool_box_opened_menus
-        )
+        self.saved_quotes_tool_box.set_widgets_visibility(self.saved_quotes_tool_box_opened_menus)
 
         for folder_path, file_info in sorted_data.items():
             folder_path = folder_path.replace("\\", "/")
             folder_name = folder_path.split("/")[0]
             if folder_name == "quotes":
                 quote_item = SavedQuoteItem(file_info, quote_widget)
-                quote_item.load_quote.connect(
-                    partial(
-                        self.download_quote_data_thread, f"saved_quotes/{folder_path}"
-                    )
-                )
-                quote_item.open_webpage.connect(
-                    partial(self.open_quote, f"saved_quotes/{folder_path}")
-                )
-                quote_item.delete_quote.connect(
-                    partial(self.delete_quote_thread, f"saved_quotes/{folder_path}")
-                )
+                quote_item.load_quote.connect(partial(self.download_quote_data_thread, f"saved_quotes/{folder_path}"))
+                quote_item.open_webpage.connect(partial(self.open_quote, f"saved_quotes/{folder_path}"))
+                quote_item.delete_quote.connect(partial(self.delete_quote_thread, f"saved_quotes/{folder_path}"))
                 quote_item.status_changed.connect(
                     partial(
                         self.change_quote_thread,
@@ -1629,17 +1373,9 @@ class MainWindow(QMainWindow):
                 quote_layout.addWidget(quote_item)
             elif folder_name == "workorders":
                 quote_item = SavedQuoteItem(file_info, workorders_widget)
-                quote_item.load_quote.connect(
-                    partial(
-                        self.download_quote_data_thread, f"saved_quotes/{folder_path}"
-                    )
-                )
-                quote_item.open_webpage.connect(
-                    partial(self.open_quote, f"saved_quotes/{folder_path}")
-                )
-                quote_item.delete_quote.connect(
-                    partial(self.delete_quote_thread, f"saved_quotes/{folder_path}")
-                )
+                quote_item.load_quote.connect(partial(self.download_quote_data_thread, f"saved_quotes/{folder_path}"))
+                quote_item.open_webpage.connect(partial(self.open_quote, f"saved_quotes/{folder_path}"))
+                quote_item.delete_quote.connect(partial(self.delete_quote_thread, f"saved_quotes/{folder_path}"))
                 quote_item.status_changed.connect(
                     partial(
                         self.change_quote_thread,
@@ -1651,17 +1387,9 @@ class MainWindow(QMainWindow):
                 workorders_layout.addWidget(quote_item)
             elif folder_name == "packing_slips":
                 quote_item = SavedQuoteItem(file_info, packing_slips_widget)
-                quote_item.load_quote.connect(
-                    partial(
-                        self.download_quote_data_thread, f"saved_quotes/{folder_path}"
-                    )
-                )
-                quote_item.open_webpage.connect(
-                    partial(self.open_quote, f"saved_quotes/{folder_path}")
-                )
-                quote_item.delete_quote.connect(
-                    partial(self.delete_quote_thread, f"saved_quotes/{folder_path}")
-                )
+                quote_item.load_quote.connect(partial(self.download_quote_data_thread, f"saved_quotes/{folder_path}"))
+                quote_item.open_webpage.connect(partial(self.open_quote, f"saved_quotes/{folder_path}"))
+                quote_item.delete_quote.connect(partial(self.delete_quote_thread, f"saved_quotes/{folder_path}"))
                 quote_item.status_changed.connect(
                     partial(
                         self.change_quote_thread,
@@ -1679,9 +1407,7 @@ class MainWindow(QMainWindow):
         self.quote_nest_directories_list_widgets.clear()
         self.quote_job_directories_list_widgets.clear()
         self.settings_file.load_data()
-        nest_directories: list[str] = self.settings_file.get_value(
-            "quote_nest_directories"
-        )
+        nest_directories: list[str] = self.settings_file.get_value("quote_nest_directories")
         toolbox_1 = QToolBox(self)
         toolbox_1.setLineWidth(0)
         toolbox_1.layout().setSpacing(0)
@@ -1693,13 +1419,9 @@ class MainWindow(QMainWindow):
         for i, nest_directory in enumerate(nest_directories):
             nest_directory_name: str = nest_directory.split("/")[-1]
             tree_view_1 = PdfTreeView(nest_directory, self)
-            tree_view_1.selectionModel().selectionChanged.connect(
-                self.nest_directory_item_selected
-            )
+            tree_view_1.selectionModel().selectionChanged.connect(self.nest_directory_item_selected)
             tree_view_2 = PdfTreeView(nest_directory, self)
-            tree_view_2.selectionModel().selectionChanged.connect(
-                self.job_quote_directory_item_selected
-            )
+            tree_view_2.selectionModel().selectionChanged.connect(self.job_quote_directory_item_selected)
             self.quote_nest_directories_list_widgets[nest_directory] = tree_view_1
             self.quote_job_directories_list_widgets[nest_directory] = tree_view_2
             toolbox_1.addItem(tree_view_1, nest_directory_name)
@@ -1759,9 +1481,7 @@ class MainWindow(QMainWindow):
                 response = input_dialog.get_response()
                 if response == DialogButtons.open:
                     try:
-                        po_template = POTemplate(
-                            f"{os.path.abspath(os.getcwd())}/PO's/templates/{input_dialog.get_selected_item()}.xlsx"
-                        )
+                        po_template = POTemplate(f"{os.path.abspath(os.getcwd())}/PO's/templates/{input_dialog.get_selected_item()}.xlsx")
                         po_template.generate()
                         os.startfile(po_template.get_output_path())
                     except AttributeError:
@@ -1769,9 +1489,7 @@ class MainWindow(QMainWindow):
                 elif response == DialogButtons.cancel:
                     return
         else:
-            po_template = POTemplate(
-                f"{os.path.abspath(os.getcwd())}/PO's/templates/{po_name}.xlsx"
-            )
+            po_template = POTemplate(f"{os.path.abspath(os.getcwd())}/PO's/templates/{po_name}.xlsx")
             po_template.generate()
             os.startfile(po_template.get_output_path())
 
@@ -1798,13 +1516,9 @@ class MainWindow(QMainWindow):
             elif response == DialogButtons.cancel:
                 return
 
-    def add_po_templates(
-        self, po_file_paths: list[str], open_select_file_dialog: bool = False
-    ) -> None:
+    def add_po_templates(self, po_file_paths: list[str], open_select_file_dialog: bool = False) -> None:
         if open_select_file_dialog:
-            po_file_paths, check = QFileDialog.getOpenFileNames(
-                None, "Add Purchase Order Template", "", "Excel Files (*.xlsx)"
-            )
+            po_file_paths, check = QFileDialog.getOpenFileNames(None, "Add Purchase Order Template", "", "Excel Files (*.xlsx)")
             if not po_file_paths:
                 return
             for po_file_path in po_file_paths:
@@ -1819,9 +1533,7 @@ class MainWindow(QMainWindow):
                     )
                     msg.exec()
                     return
-                new_file_path = (
-                    f"PO's/templates/{po_file.get_vendor().replace('.','')}.xlsx"
-                )
+                new_file_path = f"PO's/templates/{po_file.get_vendor().replace('.','')}.xlsx"
                 shutil.copyfile(po_file_path, new_file_path)
             check_po_directories()
             msg = QMessageBox(self)
@@ -1842,9 +1554,7 @@ class MainWindow(QMainWindow):
                     )
                     msg.exec()
                     return
-                new_file_path = (
-                    f"PO's/templates/{po_file.get_vendor().replace('.','')}.xlsx"
-                )
+                new_file_path = f"PO's/templates/{po_file.get_vendor().replace('.','')}.xlsx"
                 shutil.copyfile(po_file_path, new_file_path)
             check_po_directories()
             msg = QMessageBox(self)
@@ -1866,9 +1576,7 @@ class MainWindow(QMainWindow):
     # * /\ Purchase Order /\
     def print_inventory(self) -> None:
         try:
-            file_name = (
-                f"excel files/{datetime.now().strftime('%B %d %A %Y %I:%M:%S %p')}"
-            )
+            file_name = f"excel files/{datetime.now().strftime('%B %d %A %Y %I:%M:%S %p')}"
             excel_file = ExcelFile(self.components_inventory, f"{file_name}.xlsx")
             excel_file.generate()
             excel_file.save()
@@ -1877,18 +1585,12 @@ class MainWindow(QMainWindow):
             msg.setIcon(QMessageBox.Icon.Information)
             msg.setWindowTitle("Finished.")
             msg.setText("Would you love to open it?")
-            msg.setStandardButtons(
-                QMessageBox.StandardButton.No
-                | QMessageBox.StandardButton.Yes
-                | QMessageBox.StandardButton.Cancel
-            )
+            msg.setStandardButtons(QMessageBox.StandardButton.No | QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.Cancel)
             msg.setDefaultButton(QMessageBox.StandardButton.Yes)
             response = msg.exec()
             if response == QMessageBox.StandardButton.Yes:
                 try:
-                    os.startfile(
-                        f"{os.path.dirname(os.path.realpath(sys.argv[0]))}/{file_name}.xlsx"
-                    )
+                    os.startfile(f"{os.path.dirname(os.path.realpath(sys.argv[0]))}/{file_name}.xlsx")
                 except AttributeError:
                     return
         except Exception as error:
@@ -1906,9 +1608,7 @@ class MainWindow(QMainWindow):
         webbrowser.open(f"http://{get_server_ip_address()}:{get_server_port()}", new=0)
 
     def open_inventory(self) -> None:
-        webbrowser.open(
-            f"http://{get_server_ip_address()}:{get_server_port()}/inventory", new=0
-        )
+        webbrowser.open(f"http://{get_server_ip_address()}:{get_server_port()}/inventory", new=0)
 
     def open_qr_codes(self) -> None:
         webbrowser.open(
@@ -1929,9 +1629,7 @@ class MainWindow(QMainWindow):
         )
 
     def open_item_history(self) -> None:
-        os.startfile(
-            f"{os.path.dirname(os.path.realpath(sys.argv[0]))}/data/inventory history.xlsx"
-        )
+        os.startfile(f"{os.path.dirname(os.path.realpath(sys.argv[0]))}/data/inventory history.xlsx")
 
     def open_folder(self, path: str) -> None:
         try:
@@ -1957,9 +1655,7 @@ class MainWindow(QMainWindow):
     # * /\ External Actions /\
     # * \/ THREADS \/
     def sync_changes(self) -> None:
-        self.status_button.setText(
-            f"Synching {self.tabWidget.tabText(self.tabWidget.currentIndex())}", "lime"
-        )
+        self.status_button.setText(f"Synching {self.tabWidget.tabText(self.tabWidget.currentIndex())}", "lime")
         if self.tabWidget.tabText(self.tabWidget.currentIndex()) == "Components":
             self.upload_file(
                 [
@@ -1993,9 +1689,7 @@ class MainWindow(QMainWindow):
                 ],
             )
 
-    def add_laser_cut_part_to_inventory(
-        self, laser_cut_part_to_add: LaserCutPart, quote_name: str
-    ):
+    def add_laser_cut_part_to_inventory(self, laser_cut_part_to_add: LaserCutPart, quote_name: str):
         laser_cut_part_to_add.quantity_in_nest = None
         if laser_cut_part_to_add.recut:
             new_recut_part = LaserCutPart(
@@ -2003,20 +1697,14 @@ class MainWindow(QMainWindow):
                 laser_cut_part_to_add.to_dict(),
                 self.laser_cut_inventory,
             )
-            new_recut_part.add_to_category(
-                self.laser_cut_inventory.get_category("Recut")
-            )
-            if existing_recut_part := self.laser_cut_inventory.get_recut_part_by_name(
-                laser_cut_part_to_add.name
-            ):
+            new_recut_part.add_to_category(self.laser_cut_inventory.get_category("Recut"))
+            if existing_recut_part := self.laser_cut_inventory.get_recut_part_by_name(laser_cut_part_to_add.name):
                 existing_recut_part.recut_count += 1
                 new_recut_part.recut_count = existing_recut_part.recut_count
                 new_recut_part.name = f"{new_recut_part.name} - (Recut count: {new_recut_part.recut_count})"
             new_recut_part.modified_date = f"{os.getlogin().title()} - Part added from {quote_name} at {datetime.now().strftime('%B %d %A %Y %I:%M:%S %p')}"
             self.laser_cut_inventory.add_recut_part(new_recut_part)
-        elif existing_laser_cut_part := self.laser_cut_inventory.get_laser_cut_part_by_name(
-            laser_cut_part_to_add.name
-        ):
+        elif existing_laser_cut_part := self.laser_cut_inventory.get_laser_cut_part_by_name(laser_cut_part_to_add.name):
             existing_laser_cut_part.quantity += laser_cut_part_to_add.quantity
             existing_laser_cut_part.uses_primer = laser_cut_part_to_add.uses_primer
             existing_laser_cut_part.primer_name = laser_cut_part_to_add.primer_name
@@ -2024,12 +1712,8 @@ class MainWindow(QMainWindow):
             existing_laser_cut_part.paint_name = laser_cut_part_to_add.paint_name
             existing_laser_cut_part.uses_powder = laser_cut_part_to_add.uses_powder
             existing_laser_cut_part.powder_name = laser_cut_part_to_add.powder_name
-            existing_laser_cut_part.primer_overspray = (
-                laser_cut_part_to_add.primer_overspray
-            )
-            existing_laser_cut_part.paint_overspray = (
-                laser_cut_part_to_add.paint_overspray
-            )
+            existing_laser_cut_part.primer_overspray = laser_cut_part_to_add.primer_overspray
+            existing_laser_cut_part.paint_overspray = laser_cut_part_to_add.paint_overspray
             existing_laser_cut_part.modified_date = f"{os.getlogin().title()} - Added {laser_cut_part_to_add.quantity} quantities from {quote_name} at {datetime.now().strftime('%B %d %A %Y %I:%M:%S %p')}"
         else:
             if not (category := self.laser_cut_inventory.get_category("Uncategorized")):
@@ -2052,11 +1736,7 @@ class MainWindow(QMainWindow):
                 old_quantity = sheet.quantity
                 sheet.quantity -= nest.sheet_count
                 sheet.latest_change_quantity = f"{os.getlogin().title()} - Removed {nest.sheet_count} sheets from {quote.name} at {datetime.now().strftime('%B %d %A %Y %I:%M:%S %p')}"
-                if (
-                    sheet.quantity <= sheet.red_quantity_limit
-                    and not sheet.has_sent_warning
-                    and "Cutoff" not in sheet.get_categories()
-                ):
+                if sheet.quantity <= sheet.red_quantity_limit and not sheet.has_sent_warning and "Cutoff" not in sheet.get_categories():
                     sheet.has_sent_warning = True
                     self.generate_single_sheet_report(sheet, old_quantity)
                 if "Cutoff" in sheet.get_categories() and sheet.quantity <= 0:
@@ -2113,20 +1793,12 @@ class MainWindow(QMainWindow):
         images_to_upload: list[str] = []
         if isinstance(data, Quote):
             data.group_laser_cut_parts()
-            images_to_upload.extend(
-                laser_cut_part.image_index
-                for laser_cut_part in data.grouped_laser_cut_parts
-            )
-            images_to_upload.extend(
-                component.image_path for component in data.components
-            )
+            images_to_upload.extend(laser_cut_part.image_index for laser_cut_part in data.grouped_laser_cut_parts)
+            images_to_upload.extend(component.image_path for component in data.components)
             images_to_upload.extend(nest.image_path for nest in data.nests)
         elif isinstance(data, list):
             for nest in data:
-                images_to_upload.extend(
-                    laser_cut_part.image_index
-                    for laser_cut_part in nest.laser_cut_parts
-                )
+                images_to_upload.extend(laser_cut_part.image_index for laser_cut_part in nest.laser_cut_parts)
                 images_to_upload.extend(nest.image_path for nest in data)
 
         images = set(images_to_upload)
@@ -2174,12 +1846,8 @@ class MainWindow(QMainWindow):
         exchange_rate_thread.start()
 
     def exchange_rate_received(self, exchange_rate: float) -> None:
-        with contextlib.suppress(
-            AttributeError, RuntimeError
-        ):  # It might be the case that ComponentsTab is not loaded
-            self.components_tab_widget.label_exchange_price.setText(
-                f"1.00 USD: {exchange_rate} CAD"
-            )
+        with contextlib.suppress(AttributeError, RuntimeError):  # It might be the case that ComponentsTab is not loaded
+            self.components_tab_widget.label_exchange_price.setText(f"1.00 USD: {exchange_rate} CAD")
             self.settings_file.load_data()
             self.settings_file.set_value("exchange_rate", exchange_rate)
 
@@ -2224,44 +1892,23 @@ class MainWindow(QMainWindow):
                 if "workspace_settings.json" in response["successful_files"]:
                     self.workspace_settings.load_data()
                     self.job_planner_widget.workspace_settings_changed()
-                if (
-                    f"{self.components_inventory.filename}.json"
-                    in response["successful_files"]
-                ):
+                if f"{self.components_inventory.filename}.json" in response["successful_files"]:
                     self.components_inventory.load_data()
-                if (
-                    f"{self.sheets_inventory.filename}.json"
-                    in response["successful_files"]
-                ):
+                if f"{self.sheets_inventory.filename}.json" in response["successful_files"]:
                     self.sheets_inventory.load_data()
-                if (
-                    f"{self.laser_cut_inventory.filename}.json"
-                    in response["successful_files"]
-                ):
+                if f"{self.laser_cut_inventory.filename}.json" in response["successful_files"]:
                     self.laser_cut_inventory.load_data()
 
-                if (
-                    self.tabWidget.tabText(self.tabWidget.currentIndex())
-                    == "Laser Cut Inventory"
-                ):
+                if self.tabWidget.tabText(self.tabWidget.currentIndex()) == "Laser Cut Inventory":
                     self.laser_cut_tab_widget.load_categories()
                     self.laser_cut_tab_widget.restore_last_selected_tab()
-                elif (
-                    self.tabWidget.tabText(self.tabWidget.currentIndex())
-                    == "Sheets in Inventory"
-                ):
+                elif self.tabWidget.tabText(self.tabWidget.currentIndex()) == "Sheets in Inventory":
                     self.sheets_inventory_tab_widget.load_categories()
                     self.sheets_inventory_tab_widget.restore_last_selected_tab()
-                elif (
-                    self.tabWidget.tabText(self.tabWidget.currentIndex())
-                    == "Components"
-                ):
+                elif self.tabWidget.tabText(self.tabWidget.currentIndex()) == "Components":
                     self.components_tab_widget.load_categories()
                     self.components_tab_widget.restore_last_selected_tab()
-                elif (
-                    self.tabWidget.tabText(self.tabWidget.currentIndex())
-                    == "Quote Generator"
-                ):
+                elif self.tabWidget.tabText(self.tabWidget.currentIndex()) == "Quote Generator":
                     self.load_saved_quoted_thread()
                     self.load_cuttoff_drop_down()
                 self.downloading_changes = False
@@ -2295,9 +1942,7 @@ class MainWindow(QMainWindow):
     # TODO Update existing LCP's with the ones in the nest
     def load_nests_for_job_response(self, nests: list[Nest] | str) -> None:
         if isinstance(nests, str):
-            self.status_button.setText(
-                f"Encountered error processing nests: {nests}", "red"
-            )
+            self.status_button.setText(f"Encountered error processing nests: {nests}", "red")
             self.pushButton_load_nests_2.setEnabled(True)
             QApplication.restoreOverrideCursor()
             msg = QMessageBox(
@@ -2315,10 +1960,7 @@ class MainWindow(QMainWindow):
 
         QApplication.restoreOverrideCursor()
 
-        settings_text = "".join(
-            f"  {i + 1}. {nest.name}: {nest.sheet.thickness} {nest.sheet.material}\n"
-            for i, nest in enumerate(nests)
-        )
+        settings_text = "".join(f"  {i + 1}. {nest.name}: {nest.sheet.thickness} {nest.sheet.material}\n" for i, nest in enumerate(nests))
         select_item_dialog = NestSheetVerification(
             f"The nests sheet settings from pdf are:\n{settings_text}",
             nests[0].sheet.thickness,
@@ -2355,7 +1997,13 @@ class MainWindow(QMainWindow):
                 for i, part in enumerate(not_updated_parts):
                     message += f"{i+1}. {part}\n"
                 message += "\nBe sure to review these parts."
-                QMessageBox(QMessageBox.Icon.Information, "Parts to update", message, QMessageBox.StandardButton.Ok, self).exec()
+                QMessageBox(
+                    QMessageBox.Icon.Information,
+                    "Parts to update",
+                    message,
+                    QMessageBox.StandardButton.Ok,
+                    self,
+                ).exec()
             current_job_widget.load_nests()
             current_job_widget.update_nest_summary()
             current_job_widget.update_tables()
@@ -2363,9 +2011,7 @@ class MainWindow(QMainWindow):
             self.job_quote_widget.job_changed(current_job)
             # self.job_quote_widget.update_nests()
             # self.job_quote_widget.update_tables()
-            self.status_button.setText(
-                f"Nests loaded into {current_job.name}", "lime"
-            )
+            self.status_button.setText(f"Nests loaded into {current_job.name}", "lime")
         else:
             self.status_button.setText("Loading nests aborted", "lime")
         QApplication.restoreOverrideCursor()
@@ -2405,10 +2051,7 @@ class MainWindow(QMainWindow):
 
         QApplication.restoreOverrideCursor()
 
-        settings_text = "".join(
-            f"  {i + 1}. {nest.name}: {nest.sheet.thickness} {nest.sheet.material}\n"
-            for i, nest in enumerate(data.nests)
-        )
+        settings_text = "".join(f"  {i + 1}. {nest.name}: {nest.sheet.thickness} {nest.sheet.material}\n" for i, nest in enumerate(data.nests))
         select_item_dialog = NestSheetVerification(
             f"The nests sheet settings from pdf are:\n{settings_text}",
             data.nests[0].sheet.thickness,
@@ -2425,29 +2068,17 @@ class MainWindow(QMainWindow):
                     nest.sheet.material = select_item_dialog.get_selected_material()
                     nest.sheet.thickness = select_item_dialog.get_selected_thickness()
                     for laser_cut_part in nest.laser_cut_parts:
-                        laser_cut_part.material = (
-                            select_item_dialog.get_selected_material()
-                        )
-                        laser_cut_part.gauge = (
-                            select_item_dialog.get_selected_thickness()
-                        )
+                        laser_cut_part.material = select_item_dialog.get_selected_material()
+                        laser_cut_part.gauge = select_item_dialog.get_selected_thickness()
 
-            current_tab_index = (
-                self.quote_generator_tab_widget.tab_widget.currentIndex()
-            )
+            current_tab_index = self.quote_generator_tab_widget.tab_widget.currentIndex()
             self.quote_generator_tab_widget.set_quote(current_tab_index, data)
-            current_quote_widget = self.quote_generator_tab_widget.quotes[
-                current_tab_index
-            ]
+            current_quote_widget = self.quote_generator_tab_widget.quotes[current_tab_index]
             current_quote_widget.comboBox_global_sheet_material_2.blockSignals(True)
-            current_quote_widget.comboBox_global_sheet_material_2.setCurrentText(
-                select_item_dialog.get_selected_material()
-            )
+            current_quote_widget.comboBox_global_sheet_material_2.setCurrentText(select_item_dialog.get_selected_material())
             current_quote_widget.comboBox_global_sheet_material_2.blockSignals(False)
             current_quote_widget.comboBox_global_sheet_thickness_2.blockSignals(True)
-            current_quote_widget.comboBox_global_sheet_thickness_2.setCurrentText(
-                select_item_dialog.get_selected_thickness()
-            )
+            current_quote_widget.comboBox_global_sheet_thickness_2.setCurrentText(select_item_dialog.get_selected_thickness())
             current_quote_widget.comboBox_global_sheet_thickness_2.blockSignals(False)
             self.status_button.setText(
                 f"Successfully loaded {len(self.get_all_selected_nests())} nests into {self.quote_generator_tab_widget.tab_widget.tabText(current_tab_index)}",
@@ -2457,9 +2088,7 @@ class MainWindow(QMainWindow):
             self.status_button.setText("Loading nests aborted", "lime")
         QApplication.restoreOverrideCursor()
 
-    def upload_quote_thread(
-        self, folder: str, quote: Quote, html_file_contents: str
-    ) -> None:
+    def upload_quote_thread(self, folder: str, quote: Quote, html_file_contents: str) -> None:
         upload_batch = UploadQuote(folder, quote, html_file_contents)
         upload_batch.signal.connect(self.upload_quote_response)
         self.threads.append(upload_batch)
@@ -2552,10 +2181,7 @@ class MainWindow(QMainWindow):
             self.status_button.setText("Fetched all jobs", "lime")
             if self.tabWidget.tabText(self.tabWidget.currentIndex()) == "Job Planner":
                 self.load_planning_jobs(data)
-            elif (
-                self.tabWidget.tabText(self.tabWidget.currentIndex())
-                == "Quote Generator 2"
-            ):
+            elif self.tabWidget.tabText(self.tabWidget.currentIndex()) == "Quote Generator 2":
                 self.load_quoting_jobs(data)
             # More will be added here such as quoting, workspace, archive...
         else:
@@ -2586,10 +2212,7 @@ class MainWindow(QMainWindow):
             self.status_button.setText(f"{job.name} reloaded successfully!", "lime")
             if self.tabWidget.tabText(self.tabWidget.currentIndex()) == "Job Planner":
                 self.job_planner_widget.reload_job(job)
-            elif (
-                self.tabWidget.tabText(self.tabWidget.currentIndex())
-                == "Quote Generator 2"
-            ):
+            elif self.tabWidget.tabText(self.tabWidget.currentIndex()) == "Quote Generator 2":
                 self.job_quote_widget.reload_job(job)
         else:
             self.status_button.setText(
@@ -2610,10 +2233,7 @@ class MainWindow(QMainWindow):
             self.status_button.setText(f"{job.name} loaded successfully!", "lime")
             if self.tabWidget.tabText(self.tabWidget.currentIndex()) == "Job Planner":
                 self.job_planner_widget.load_job(job)
-            elif (
-                self.tabWidget.tabText(self.tabWidget.currentIndex())
-                == "Quote Generator 2"
-            ):
+            elif self.tabWidget.tabText(self.tabWidget.currentIndex()) == "Quote Generator 2":
                 self.job_quote_widget.load_job(job)
         else:
             self.status_button.setText(
@@ -2628,9 +2248,7 @@ class MainWindow(QMainWindow):
         download_quote_thread.signal.connect(self.download_job_data_response)
         download_quote_thread.start()
 
-    def download_job_data_response(
-        self, data: dict[str, dict[str, Any]], folder_name: str
-    ) -> None:
+    def download_job_data_response(self, data: dict[str, dict[str, Any]], folder_name: str) -> None:
         if isinstance(data, dict):
             job_name = folder_name.split("\\")[-1]
             job = Job(job_name, data, self.job_manager)
@@ -2649,13 +2267,9 @@ class MainWindow(QMainWindow):
         else:
             self.status_button.setText(f"Error - {data}", "red")
 
-    def change_job_thread(
-        self, job_path: str, job_setting_key: str, setting: QComboBox
-    ):
+    def change_job_thread(self, job_path: str, job_setting_key: str, setting: QComboBox):
         setting.setEnabled(False)
-        update_job_thread = UpdateJobSetting(
-            job_path, job_setting_key, setting.currentIndex() + 1
-        )
+        update_job_thread = UpdateJobSetting(job_path, job_setting_key, setting.currentIndex() + 1)
         self.threads.append(update_job_thread)
         update_job_thread.signal.connect(self.change_job_response)
         update_job_thread.start()
@@ -2687,13 +2301,9 @@ class MainWindow(QMainWindow):
         else:
             self.status_button.setText(f"Error: {response}", "red")
 
-    def change_quote_thread(
-        self, quote_path: str, quote_setting_key: str, setting: QComboBox
-    ):
+    def change_quote_thread(self, quote_path: str, quote_setting_key: str, setting: QComboBox):
         setting.setEnabled(False)
-        update_quote_thread = UpdateQuoteSettings(
-            quote_path, quote_setting_key, setting.currentText()
-        )
+        update_quote_thread = UpdateQuoteSettings(quote_path, quote_setting_key, setting.currentText())
         self.threads.append(update_quote_thread)
         update_quote_thread.signal.connect(self.change_quote_response)
         update_quote_thread.start()
@@ -2715,9 +2325,7 @@ class MainWindow(QMainWindow):
         download_quote_thread.signal.connect(self.download_quote_data_response)
         download_quote_thread.start()
 
-    def download_quote_data_response(
-        self, data: dict[str, dict[str, Any]], folder_name: str
-    ) -> None:
+    def download_quote_data_response(self, data: dict[str, dict[str, Any]], folder_name: str) -> None:
         if isinstance(data, dict):
             quote_name = folder_name.split("/")[-1]
             quote = Quote(
@@ -2728,13 +2336,8 @@ class MainWindow(QMainWindow):
                 self.sheet_settings,
             )
 
-            required_images = [
-                laser_cut_part.image_index
-                for laser_cut_part in quote.grouped_laser_cut_parts
-            ]
-            required_images.extend(
-                component.image_path for component in quote.components
-            )
+            required_images = [laser_cut_part.image_index for laser_cut_part in quote.grouped_laser_cut_parts]
+            required_images.extend(component.image_path for component in quote.components)
             required_images.extend(nest.image_path for nest in quote.nests)
 
             self.download_required_images_thread(required_images)
@@ -2768,9 +2371,7 @@ class MainWindow(QMainWindow):
         else:
             self.status_button.setText(f"Error: {response}", "red")
 
-    def send_email_thread(
-        self, title: str, message: str, emails: list[str], notify: bool = False
-    ):
+    def send_email_thread(self, title: str, message: str, emails: list[str], notify: bool = False):
         self.status_button.setText("Fetching quote data", "yellow")
         send_email_thread = SendEmailThread(title, message, emails)
         self.threads.append(send_email_thread)
@@ -2787,9 +2388,7 @@ class MainWindow(QMainWindow):
         self.threads.append(check_for_updates_thread)
         check_for_updates_thread.start()
 
-    def update_available_thread_response(
-        self, version: str, update_message: str
-    ) -> None:
+    def update_available_thread_response(self, version: str, update_message: str) -> None:
         if not self.ignore_update:
             self.ignore_update = True
             msg = QMessageBox(self)
@@ -2797,14 +2396,8 @@ class MainWindow(QMainWindow):
             msg.setWindowTitle("New Update Available")
             if update_message:
                 update_notes = f"\n\nUpdate Notes:\n{update_message}"
-            msg.setText(
-                f"Current Version: {__version__}\nNew Version: {version}\n\nPlease consider updating to the latest version at your earliest convenience.{update_notes}\n\nWould you like to update?"
-            )
-            msg.setStandardButtons(
-                QMessageBox.StandardButton.No
-                | QMessageBox.StandardButton.Yes
-                | QMessageBox.StandardButton.Cancel
-            )
+            msg.setText(f"Current Version: {__version__}\nNew Version: {version}\n\nPlease consider updating to the latest version at your earliest convenience.{update_notes}\n\nWould you like to update?")
+            msg.setStandardButtons(QMessageBox.StandardButton.No | QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.Cancel)
             msg.setDefaultButton(QMessageBox.StandardButton.Yes)
             response = msg.exec()
             if response == QMessageBox.StandardButton.Yes:
@@ -2851,13 +2444,9 @@ class MainWindow(QMainWindow):
         lbl1.setStyleSheet("font:30px")
         if not left_label:
             lbl1.setFixedWidth(650)
-            lbl1.setAlignment(
-                Qt.AlignmentFlag.AlignHCenter | Qt.AlignmentFlag.AlignVCenter
-            )
+            lbl1.setAlignment(Qt.AlignmentFlag.AlignHCenter | Qt.AlignmentFlag.AlignVCenter)
         else:
-            lbl1.setAlignment(
-                Qt.AlignmentFlag.AlignRight | Qt.AlignmentFlag.AlignVCenter
-            )
+            lbl1.setAlignment(Qt.AlignmentFlag.AlignRight | Qt.AlignmentFlag.AlignVCenter)
         font_size = QFont()
         font_size.setPointSize(25)
         btn = QPushButton(highlighted_message)
@@ -2866,21 +2455,15 @@ class MainWindow(QMainWindow):
         if button_pressed_event is not None:
             btn.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
             btn.clicked.connect(button_pressed_event)
-        btn.setStyleSheet(
-            "QPushButton#default_dialog_button{text-align: center; vertical-align: center }"
-        )
+        btn.setStyleSheet("QPushButton#default_dialog_button{text-align: center; vertical-align: center }")
         set_default_dialog_button_stylesheet(btn)
         btn.setFixedSize(highlighted_message_width, 45)
         lbl2 = QLabel(right_label)
         if not right_label:
             lbl2.setFixedWidth(650)
-            lbl2.setAlignment(
-                Qt.AlignmentFlag.AlignHCenter | Qt.AlignmentFlag.AlignVCenter
-            )
+            lbl2.setAlignment(Qt.AlignmentFlag.AlignHCenter | Qt.AlignmentFlag.AlignVCenter)
         else:
-            lbl2.setAlignment(
-                Qt.AlignmentFlag.AlignLeft | Qt.AlignmentFlag.AlignVCenter
-            )
+            lbl2.setAlignment(Qt.AlignmentFlag.AlignLeft | Qt.AlignmentFlag.AlignVCenter)
         lbl2.setStyleSheet("font:30px")
 
         tab = self.tabs["layout_message"]
@@ -2900,16 +2483,10 @@ class MainWindow(QMainWindow):
             return
         if event.mimeData().hasUrls:
             for url in event.mimeData().urls():
-                if (
-                    str(url.toLocalFile()).endswith(".xlsx")
-                    and self.tabWidget.tabText(self.tabWidget.currentIndex())
-                    == "Components"
-                ):
+                if str(url.toLocalFile()).endswith(".xlsx") and self.tabWidget.tabText(self.tabWidget.currentIndex()) == "Components":
                     event.setDropAction(Qt.DropAction.CopyAction)
                     event.accept()
-                    self.set_layout_message(
-                        "", "Add", "a new Purchase Order template", 80, None
-                    )
+                    self.set_layout_message("", "Add", "a new Purchase Order template", 80, None)
                 elif str(url.toLocalFile()).endswith(".zip"):
                     event.setDropAction(Qt.DropAction.CopyAction)
                     event.accept()
@@ -2929,11 +2506,7 @@ class MainWindow(QMainWindow):
             event.setDropAction(Qt.DropAction.CopyAction)
             event.accept()
             for url in event.mimeData().urls():
-                if (
-                    str(url.toLocalFile()).endswith(".xlsx")
-                    and self.tabWidget.tabText(self.tabWidget.currentIndex())
-                    == "Components"
-                ):
+                if str(url.toLocalFile()).endswith(".xlsx") and self.tabWidget.tabText(self.tabWidget.currentIndex()) == "Components":
                     files = [str(url.toLocalFile()) for url in event.mimeData().urls()]
                     self.add_po_templates(files)
                     break

@@ -26,9 +26,7 @@ class RecutDialog(QDialog):
         self.pushButton_1.clicked.connect(partial(self.quick_input_button_press, "1"))
         self.pushButton_2.clicked.connect(partial(self.quick_input_button_press, "2"))
         self.pushButton_3.clicked.connect(partial(self.quick_input_button_press, "3"))
-        self.pushButton_all.clicked.connect(
-            partial(self.quick_input_button_press, "All")
-        )
+        self.pushButton_all.clicked.connect(partial(self.quick_input_button_press, "All"))
 
         self.doubleSpinBox_input.selectAll()
         self.pushButton_ok.clicked.connect(self.button_press)

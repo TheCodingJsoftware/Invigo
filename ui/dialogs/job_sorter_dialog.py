@@ -23,9 +23,7 @@ class JobSorterDialog(QDialog):
         self.setWindowIcon(QIcon("icons/icon.png"))
 
         self.pushButton_set_excel_file_path.clicked.connect(self.set_excel_file_path)
-        self.pushButton_set_sorting_directory.clicked.connect(
-            self.set_sorting_directory
-        )
+        self.pushButton_set_sorting_directory.clicked.connect(self.set_sorting_directory)
         self.pushButton_set_output_directory.clicked.connect(self.set_output_directory)
         self.lineEdit_path_to_data_file.textChanged.connect(self.paths_changes)
         self.lineEdit_directory_to_sort.textChanged.connect(self.paths_changes)
@@ -71,14 +69,7 @@ class JobSorterDialog(QDialog):
         self.directory_to_sort: str = self.lineEdit_directory_to_sort.text()
         self.output_directory: str = self.lineEdit_output_directory.text()
         self.job_name: str = self.lineEdit_job_name.text()
-        self.pushButton_sort.setEnabled(
-            bool(
-                self.excel_file_path
-                and self.directory_to_sort
-                and self.output_directory
-                and self.job_name
-            )
-        )
+        self.pushButton_sort.setEnabled(bool(self.excel_file_path and self.directory_to_sort and self.output_directory and self.job_name))
 
     def set_excel_file_path(self) -> None:
         file_dialog = QFileDialog()

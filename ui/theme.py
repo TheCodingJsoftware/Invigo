@@ -14,6 +14,4 @@ def set_theme(app, theme):
         app.setStyle("fusion")
 
     with open(STYLE_SHEET_PATH_DICT[theme], "r", encoding="utf-8") as style_sheet:
-        app.setStyleSheet(
-            style_sheet.read().replace(DEFAULT_ICON_PATH, CURRENT_ICON_PATH)
-        )
+        app.setStyleSheet(style_sheet.read().replace(DEFAULT_ICON_PATH, CURRENT_ICON_PATH))

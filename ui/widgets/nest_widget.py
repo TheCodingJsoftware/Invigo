@@ -52,21 +52,15 @@ class NestWidget(QWidget):
     def load_ui(self):
         self.pushButton_settings = self.findChild(QPushButton, "pushButton_settings")
         self.settings_widget = self.findChild(QWidget, "settings_widget")
-        self.parent.apply_stylesheet_to_toggle_buttons(
-            self.pushButton_settings, self.settings_widget
-        )
+        self.parent.apply_stylesheet_to_toggle_buttons(self.pushButton_settings, self.settings_widget)
 
         self.pushButton_laser_cut_parts = self.findChild(QPushButton, "pushButton_laser_cut_parts")
         self.laser_cut_parts_widget = self.findChild(QWidget, "laser_cut_parts_widget")
-        self.parent.apply_stylesheet_to_toggle_buttons(
-            self.pushButton_laser_cut_parts, self.laser_cut_parts_widget
-        )
+        self.parent.apply_stylesheet_to_toggle_buttons(self.pushButton_laser_cut_parts, self.laser_cut_parts_widget)
 
         self.pushButton_image = self.findChild(QPushButton, "pushButton_image")
         self.image_widget_2 = self.findChild(QWidget, "image_widget_2")
-        self.parent.apply_stylesheet_to_toggle_buttons(
-            self.pushButton_image, self.image_widget_2
-        )
+        self.parent.apply_stylesheet_to_toggle_buttons(self.pushButton_image, self.image_widget_2)
 
         self.label_sheet_status = self.findChild(QLabel, "label_sheet_status")
 
@@ -80,24 +74,18 @@ class NestWidget(QWidget):
 
         self.label_cutting_cost = self.findChild(QLabel, "label_cutting_cost")
 
-        self.verticalLayout_sheet_cut_time = self.findChild(
-            QVBoxLayout, "verticalLayout_sheet_cut_time"
-        )
+        self.verticalLayout_sheet_cut_time = self.findChild(QVBoxLayout, "verticalLayout_sheet_cut_time")
 
         self.doubleSpinBox_sheet_cut_time = MachineCutTimeDoubleSpinBox(self)
         self.doubleSpinBox_sheet_cut_time.wheelEvent = lambda event: None
         self.doubleSpinBox_sheet_cut_time.setValue(self.nest.sheet_cut_time)
-        self.doubleSpinBox_sheet_cut_time.setToolTip(
-            f"Original: {self.get_sheet_cut_time()}"
-        )
+        self.doubleSpinBox_sheet_cut_time.setToolTip(f"Original: {self.get_sheet_cut_time()}")
         self.doubleSpinBox_sheet_cut_time.valueChanged.connect(self.nest_changed)
         self.verticalLayout_sheet_cut_time.addWidget(self.doubleSpinBox_sheet_cut_time)
 
         self.label_nest_cut_time = self.findChild(QLabel, "label_nest_cut_time")
 
-        self.doubleSpinBox_sheet_count = self.findChild(
-            QDoubleSpinBox, "doubleSpinBox_sheet_count"
-        )
+        self.doubleSpinBox_sheet_count = self.findChild(QDoubleSpinBox, "doubleSpinBox_sheet_count")
         self.doubleSpinBox_sheet_count.wheelEvent = lambda event: None
         self.doubleSpinBox_sheet_count.setValue(self.nest.sheet_count)
         self.doubleSpinBox_sheet_count.valueChanged.connect(self.nest_changed)
@@ -114,9 +102,7 @@ class NestWidget(QWidget):
         self.comboBox_thickness.setCurrentText(self.sheet.thickness)
         self.comboBox_thickness.currentTextChanged.connect(self.sheet_changed)
 
-        self.doubleSpinBox_length = self.findChild(
-            QDoubleSpinBox, "doubleSpinBox_length"
-        )
+        self.doubleSpinBox_length = self.findChild(QDoubleSpinBox, "doubleSpinBox_length")
         self.doubleSpinBox_length.wheelEvent = lambda event: None
         self.doubleSpinBox_length.setValue(self.sheet.length)
         self.doubleSpinBox_length.valueChanged.connect(self.sheet_changed)
@@ -195,9 +181,7 @@ class NestWidget(QWidget):
         return f"{hours:02d}h {minutes:02d}m {seconds:02d}s"
 
     def add_new_sheet_to_inventory(self):
-        add_sheet_dialog = AddSheetDialog(
-            self.sheet, None, self.sheets_inventory, self.sheet_settings, self
-        )
+        add_sheet_dialog = AddSheetDialog(self.sheet, None, self.sheets_inventory, self.sheet_settings, self)
 
         if add_sheet_dialog.exec():
             new_sheet = Sheet(
@@ -212,9 +196,7 @@ class NestWidget(QWidget):
                 },
                 self.sheets_inventory,
             )
-            new_sheet.add_to_category(
-                self.sheets_inventory.get_category(add_sheet_dialog.get_category())
-            )
+            new_sheet.add_to_category(self.sheets_inventory.get_category(add_sheet_dialog.get_category()))
             for sheet in self.sheets_inventory.sheets:
                 if new_sheet.get_name() == sheet.get_name():
                     msg = QMessageBox(self)
@@ -249,17 +231,11 @@ class NestWidget(QWidget):
     def update_sheet_status(self):
         if self.sheets_inventory.exists(self.nest.sheet):
             self.pushButton_add_sheet.setHidden(True)
-            if sheet := self.sheets_inventory.get_sheet_by_name(
-                self.nest.sheet.get_name()
-            ):
-                self.label_sheet_status.setText(
-                    f"This sheet exists in sheets inventory with {sheet.quantity} in stock."
-                )
+            if sheet := self.sheets_inventory.get_sheet_by_name(self.nest.sheet.get_name()):
+                self.label_sheet_status.setText(f"This sheet exists in sheets inventory with {sheet.quantity} in stock.")
         else:
             self.pushButton_add_sheet.setHidden(False)
-            self.label_sheet_status.setText(
-                "This sheet does not exist in sheets inventory."
-            )
+            self.label_sheet_status.setText("This sheet does not exist in sheets inventory.")
 
     def update_nest_summary(self):
         self.parent.update_nest_summary()
@@ -267,9 +243,7 @@ class NestWidget(QWidget):
     def load_nest_parts(self):
         self.part_assembly_comboboxes.clear()
         self.treeWidget_parts.clear()
-        self.treeWidget_parts.setHeaderLabels(
-            ["Part Name", "Qty", "Nest Qty", "Assembly"]
-        )
+        self.treeWidget_parts.setHeaderLabels(["Part Name", "Qty", "Nest Qty", "Assembly"])
 
         for laser_cut_part in self.nest.laser_cut_parts:
             tree_item = QTreeWidgetItem(
@@ -284,15 +258,10 @@ class NestWidget(QWidget):
             assembly_combobox = QComboBox(self.treeWidget_parts)
             self.part_assembly_comboboxes.append(assembly_combobox)
             assembly_combobox.wheelEvent = lambda event: None
-            assembly_combobox.addItems(
-                ["None"]
-                + [assembly.name for assembly in self.parent.job.get_all_assemblies()]
-            )
+            assembly_combobox.addItems(["None"] + [assembly.name for assembly in self.parent.job.get_all_assemblies()])
             if assembly := self.find_parts_assembly(laser_cut_part.name):
                 assembly_combobox.setCurrentText(assembly.name)
-            assembly_combobox.currentTextChanged.connect(
-                partial(self.part_assembly_changed, assembly_combobox, laser_cut_part)
-            )
+            assembly_combobox.currentTextChanged.connect(partial(self.part_assembly_changed, assembly_combobox, laser_cut_part))
             self.treeWidget_parts.addTopLevelItem(tree_item)
             self.treeWidget_parts.setItemWidget(tree_item, 3, assembly_combobox)
         self.treeWidget_parts.resizeColumnToContents(1)
@@ -302,13 +271,10 @@ class NestWidget(QWidget):
     def update_parts_assembly(self):
         self.preprocess_assemblies()
         for assembly_combobox in self.part_assembly_comboboxes:
-            selection = assembly_combobox.currentIndex() # Because the user might have renamed the assembly
+            selection = assembly_combobox.currentIndex()  # Because the user might have renamed the assembly
             assembly_combobox.blockSignals(True)
             assembly_combobox.clear()
-            assembly_combobox.addItems(
-                ["None"]
-                + [assembly.name for assembly in self.parent.job.get_all_assemblies()]
-            )
+            assembly_combobox.addItems(["None"] + [assembly.name for assembly in self.parent.job.get_all_assemblies()])
             assembly_combobox.setCurrentIndex(selection)
             assembly_combobox.blockSignals(False)
 
@@ -329,15 +295,11 @@ class NestWidget(QWidget):
             return any(part_name == part.name for part in assembly.laser_cut_parts)
         return False
 
-    def part_assembly_changed(
-        self, assembly_combobox: QComboBox, nest_laser_cut_part: LaserCutPart
-    ):
+    def part_assembly_changed(self, assembly_combobox: QComboBox, nest_laser_cut_part: LaserCutPart):
         if assembly_combobox.currentText() == "None":
             return
 
-        if self.is_part_in_assembly(
-            assembly_combobox.currentText(), nest_laser_cut_part.name
-        ):
+        if self.is_part_in_assembly(assembly_combobox.currentText(), nest_laser_cut_part.name):
             if assembly := self.assembly_dict.get(assembly_combobox.currentText()):
                 for laser_cut_part in assembly.laser_cut_parts:
                     if laser_cut_part.name == nest_laser_cut_part.name:
@@ -357,15 +319,17 @@ class NestWidget(QWidget):
                 QMessageBox.Icon.Question,
                 "Item not found",
                 f"{nest_laser_cut_part.name} does not exist in {assembly_combobox.currentText()}.\n\nWould you like to add it?",
-                QMessageBox.StandardButton.Yes
-                | QMessageBox.StandardButton.No
-                | QMessageBox.StandardButton.Cancel,
+                QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No | QMessageBox.StandardButton.Cancel,
                 self,
             )
             if msg.exec() != QMessageBox.StandardButton.Yes:
                 return
             if assembly := self.assembly_dict.get(assembly_combobox.currentText()):
-                new_laser_cut_part = LaserCutPart(nest_laser_cut_part.name, nest_laser_cut_part.to_dict(), nest_laser_cut_part.laser_cut_inventory)
+                new_laser_cut_part = LaserCutPart(
+                    nest_laser_cut_part.name,
+                    nest_laser_cut_part.to_dict(),
+                    nest_laser_cut_part.laser_cut_inventory,
+                )
                 assembly.add_laser_cut_part(new_laser_cut_part)
                 self.parent.update_tables()
 

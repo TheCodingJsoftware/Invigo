@@ -31,13 +31,9 @@ class SelectTimeLineDialog(QDialog):
         self.pushButton_cancel.clicked.connect(self.reject)
 
         if starting_date is not None:
-            self.left_calendar.setSelectedDate(
-                QDate.fromString(starting_date, "yyyy-MM-dd")
-            )
+            self.left_calendar.setSelectedDate(QDate.fromString(starting_date, "yyyy-MM-dd"))
         if ending_date is not None:
-            self.right_calendar.setSelectedDate(
-                QDate.fromString(ending_date, "yyyy-MM-dd")
-            )
+            self.right_calendar.setSelectedDate(QDate.fromString(ending_date, "yyyy-MM-dd"))
 
         self.from_date: QDate = None
         self.to_date: QDate = None
@@ -61,22 +57,16 @@ class SelectTimeLineDialog(QDialog):
             self.to_date = self.right_calendar.selectedDate()
             days = self.from_date.daysTo(self.to_date)
             self.days.setValue(days)
-            self.right_calendar.setSelectedDate(
-                self.left_calendar.selectedDate().addDays(self.days.value())
-            )
+            self.right_calendar.setSelectedDate(self.left_calendar.selectedDate().addDays(self.days.value()))
             self.update_selection()
 
     def set_days(self):
-        self.right_calendar.setSelectedDate(
-            self.left_calendar.selectedDate().addDays(self.days.value())
-        )
+        self.right_calendar.setSelectedDate(self.left_calendar.selectedDate().addDays(self.days.value()))
         self.update_selection()
 
     def use_set_days(self):
         if self.checkBox.isChecked():
-            self.right_calendar.setSelectedDate(
-                self.left_calendar.selectedDate().addDays(self.days.value())
-            )
+            self.right_calendar.setSelectedDate(self.left_calendar.selectedDate().addDays(self.days.value()))
             self.update_selection()
 
     def update_selection(self):
@@ -106,9 +96,7 @@ class SelectTimeLineDialog(QDialog):
         if not self.checkBox.isChecked():
             self.days.setValue(days)
 
-        self.selection_label.setText(
-            f'Selection is from {self.from_date.toString("MMMM d")} to {self.to_date.toString("MMMM d")}, which is {days} days or {weeks:.1f} weeks.'
-        )
+        self.selection_label.setText(f'Selection is from {self.from_date.toString("MMMM d")} to {self.to_date.toString("MMMM d")}, which is {days} days or {weeks:.1f} weeks.')
         self.label.setText(f'days from {self.from_date.toString("MMMM d")}')
 
     def highlight_selection(self, calendar: QCalendarWidget):

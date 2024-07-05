@@ -33,9 +33,7 @@ class SelectItemDialog(QDialog):
         self.load_dialog_buttons()
 
         self.listWidget.addItems(self.items)
-        self.listWidget.setSelectionMode(
-            QAbstractItemView.SelectionMode.SingleSelection
-        )
+        self.listWidget.setSelectionMode(QAbstractItemView.SelectionMode.SingleSelection)
 
     def button_press(self, button) -> None:
         self.response = button.text()

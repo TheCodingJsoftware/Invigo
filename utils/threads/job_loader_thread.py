@@ -18,9 +18,7 @@ class JobLoaderThread(QThread):
         self.folder_name = folder_name
         self.job_manager = job_manager
         self.job = None
-        self.threads: list[
-            Union[DownloadImagesThread, DownloadJobThread, WorkspaceDownloadFile]
-        ] = []
+        self.threads: list[Union[DownloadImagesThread, DownloadJobThread, WorkspaceDownloadFile]] = []
         self.remaining_threads = 0
 
     def run(self):
@@ -44,19 +42,11 @@ class JobLoaderThread(QThread):
         files: set[str] = set()
         for assembly in job.get_all_assemblies():
             for assembly_file in assembly.assembly_files:
-                if not assembly_file.lower().endswith(
-                    (".pdf", ".jpeg", ".jpg", ".png")
-                ):
+                if not assembly_file.lower().endswith((".pdf", ".jpeg", ".jpg", ".png")):
                     files.add(assembly_file)
         for laser_cut_part in job.get_all_laser_cut_parts():
-            for laser_cut_part_file in (
-                laser_cut_part.bending_files
-                + laser_cut_part.welding_files
-                + laser_cut_part.cnc_milling_files
-            ):
-                if not laser_cut_part_file.lower().endswith(
-                    (".pdf", ".jpeg", ".jpg", ".png")
-                ):
+            for laser_cut_part_file in laser_cut_part.bending_files + laser_cut_part.welding_files + laser_cut_part.cnc_milling_files:
+                if not laser_cut_part_file.lower().endswith((".pdf", ".jpeg", ".jpg", ".png")):
                     files.add(laser_cut_part_file)
         return list(files)
 
@@ -100,9 +90,7 @@ class JobLoaderThread(QThread):
             download_files_thread.signal.connect(self.download_files_response)
             download_files_thread.start()
 
-    def download_files_response(
-        self, file_ext: str, file_name: str, open_when_done: bool
-    ):
+    def download_files_response(self, file_ext: str, file_name: str, open_when_done: bool):
         print(f"download_files_response: {file_ext}")
         self.thread_finished()
 

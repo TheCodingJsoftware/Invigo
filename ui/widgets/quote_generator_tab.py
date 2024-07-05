@@ -26,9 +26,7 @@ class QuoteGeneratorTab(QWidget):
     def __init__(self, parent) -> None:
         super().__init__(parent)
         self.parent = parent
-        self.components_inventory: ComponentsInventory = (
-            self.parent.components_inventory
-        )
+        self.components_inventory: ComponentsInventory = self.parent.components_inventory
         self.laser_cut_inventory: LaserCutInventory = self.parent.laser_cut_inventory
         self.sheets_inventory: SheetsInventory = self.parent.sheets_inventory
         self.sheet_settings: SheetSettings = self.parent.sheet_settings
@@ -47,15 +45,11 @@ class QuoteGeneratorTab(QWidget):
         self.tab_widget.tabCloseRequested.connect(self.close_tab)
         self.tab_widget.tabBarDoubleClicked.connect(self.rename_tab)
         self.tab_widget.currentChanged.connect(self.tab_changed)
-        self.tab_widget.setStyleSheet(
-            "QTabWidget#quote_generator_tab_widget > QWidget { border-bottom-left-radius: 0px; }"
-        )
+        self.tab_widget.setStyleSheet("QTabWidget#quote_generator_tab_widget > QWidget { border-bottom-left-radius: 0px; }")
         self.pushbutton_new_quote = QPushButton("Add New Quote Tab", self)
         self.pushbutton_new_quote.setStyleSheet("border-radius: 0px; padding: 2px;")
         self.pushbutton_new_quote.clicked.connect(self.add_tab)
-        self.tab_widget.setCornerWidget(
-            self.pushbutton_new_quote, Qt.Corner.TopRightCorner
-        )
+        self.tab_widget.setCornerWidget(self.pushbutton_new_quote, Qt.Corner.TopRightCorner)
         self.tab_layout.addWidget(self.tab_widget)
 
         self.setLayout(self.tab_layout)
@@ -132,17 +126,12 @@ class QuoteGeneratorTab(QWidget):
         if self.tab_widget.count() == 1:
             return
         quote_to_delete = self.quotes[tab_index]
-        if (
-            quote_to_delete.quote.unsaved_changes
-            and quote_to_delete.quote.downloaded_from_server
-        ):
+        if quote_to_delete.quote.unsaved_changes and quote_to_delete.quote.downloaded_from_server:
             msg = QMessageBox(
                 QMessageBox.Icon.Question,
                 "Unsaved changes",
                 f"You are about to remove this quote from your view. This action will not delete the quote from the server. It will only be removed from your current session.\n\nAre you sure you want to delete {quote_to_delete.quote.name}?",
-                QMessageBox.StandardButton.Yes
-                | QMessageBox.StandardButton.No
-                | QMessageBox.StandardButton.Cancel,
+                QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No | QMessageBox.StandardButton.Cancel,
                 self,
             )
             response = msg.exec()
@@ -158,9 +147,7 @@ class QuoteGeneratorTab(QWidget):
             self.tab_widget.setTabsClosable(False)
 
     def rename_tab(self, tab_index: int):
-        new_name, ok = QInputDialog.getText(
-            self, "Rename Quote", "Enter new quote name:", text=self.current_quote.name
-        )
+        new_name, ok = QInputDialog.getText(self, "Rename Quote", "Enter new quote name:", text=self.current_quote.name)
         if ok and new_name:
             self.current_quote.name = new_name
             self.tab_widget.setTabText(tab_index, new_name)

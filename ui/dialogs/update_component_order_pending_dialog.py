@@ -26,15 +26,9 @@ class UpdateComponentOrderPendingDialog(QDialog):
         self.doubleSpinBox_quantity.setValue(order.quantity)
         self.textEdit_notes.setPlainText(order.notes)
 
-        self.pushButton_add_incoming_quantity.clicked.connect(
-            partial(self.button_accept, "ADD_INCOMING_QUANTITY")
-        )
-        self.pushButton_update_order.clicked.connect(
-            partial(self.button_accept, "UPDATE_ORDER")
-        )
-        self.pushButton_cancel_order.clicked.connect(
-            partial(self.button_accept, "CANCEL_ORDER")
-        )
+        self.pushButton_add_incoming_quantity.clicked.connect(partial(self.button_accept, "ADD_INCOMING_QUANTITY"))
+        self.pushButton_update_order.clicked.connect(partial(self.button_accept, "UPDATE_ORDER"))
+        self.pushButton_cancel_order.clicked.connect(partial(self.button_accept, "CANCEL_ORDER"))
         self.pushButton_cancel.clicked.connect(self.reject)
 
     def button_accept(self, action: str):

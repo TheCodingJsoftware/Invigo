@@ -21,9 +21,7 @@ class LaserCutPart(InventoryItem):
 
         self.laser_cut_inventory: LaserCutInventory = laser_cut_inventory
         self.paint_inventory: PaintInventory = self.laser_cut_inventory.paint_inventory
-        self.workspace_settings: WorkspaceSettings = (
-            self.laser_cut_inventory.workspace_settings
-        )
+        self.workspace_settings: WorkspaceSettings = self.laser_cut_inventory.workspace_settings
 
         self.quantity: int = 0
         self.red_quantity_limit: int = 10
@@ -115,10 +113,7 @@ class LaserCutPart(InventoryItem):
         self.category_quantities[category] = quantity
 
     def print_category_quantities(self) -> str:
-        return "".join(
-            f"{i + 1}. {category.name}: {self.get_category_quantity(category)}\n"
-            for i, category in enumerate(self.categories)
-        )
+        return "".join(f"{i + 1}. {category.name}: {self.get_category_quantity(category)}\n" for i, category in enumerate(self.categories))
 
     def load_data(self, data: dict[str, Union[str, int, float, bool]]):
         self.quantity: int = data.get("quantity", 0)
@@ -169,16 +164,12 @@ class LaserCutPart(InventoryItem):
 
         self.uses_powder: bool = data.get("uses_powder_coating", False)
         self.powder_name: str = data.get("powder_name")
-        self.powder_transfer_efficiency: float = data.get(
-            "powder_transfer_efficiency", 66.67
-        )
+        self.powder_transfer_efficiency: float = data.get("powder_transfer_efficiency", 66.67)
         if self.uses_powder and self.powder_name:
             self.powder_item = self.paint_inventory.get_powder(self.powder_name)
         self.cost_for_powder_coating = data.get("cost_for_powder_coating", 0.0)
 
-        self.flow_tag = FlowTag(
-            "", data.get("flow_tag", {"name": "", "tags": []}), self.workspace_settings
-        )
+        self.flow_tag = FlowTag("", data.get("flow_tag", {"name": "", "tags": []}), self.workspace_settings)
         self.bending_files.clear()
         self.bending_files = data.get("bending_files", [])
         self.welding_files.clear()
@@ -195,7 +186,7 @@ class LaserCutPart(InventoryItem):
                 self.categories.append(category)
 
     def load_part_data(self, data: dict[str, Union[str, int, float, bool]]):
-        '''Only updates part information from nest files.'''
+        """Only updates part information from nest files."""
         self.machine_time: float = data.get("machine_time", 0.0)
         self.weight: float = data.get("weight", 0.0)
         self.part_number: str = data.get("part_number", "")
@@ -222,10 +213,7 @@ class LaserCutPart(InventoryItem):
             "quantity": self.quantity,
             "red_quantity_limit": self.red_quantity_limit,
             "yellow_quantity_limit": self.yellow_quantity_limit,
-            "category_quantities": {
-                category.name: self.category_quantities.get(category, 1.0)
-                for category in self.categories
-            },
+            "category_quantities": {category.name: self.category_quantities.get(category, 1.0) for category in self.categories},
             "machine_time": self.machine_time,
             "weight": self.weight,
             "surface_area": self.surface_area,

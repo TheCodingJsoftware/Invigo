@@ -87,12 +87,8 @@ class NestsTable:
         sheets_table_html += "</tr></thead>"
         sheets_table_html += '<tbody id="table-body">'
         for nest in self.job.nests:
-            single_hours, single_minutes, single_seconds = (
-                self.get_hours_minutes_seconds(nest.sheet_cut_time)
-            )
-            nest_hours, nest_minutes, nest_seconds = self.get_hours_minutes_seconds(
-                nest.get_machining_time()
-            )
+            single_hours, single_minutes, single_seconds = self.get_hours_minutes_seconds(nest.sheet_cut_time)
+            nest_hours, nest_minutes, nest_seconds = self.get_hours_minutes_seconds(nest.get_machining_time())
             self.grand_total_cut_time += nest.get_machining_time()
             sheets_table_html += f"""<tr>
             <td class="small-text" data-column="0">{nest.name}</td>
@@ -103,9 +99,7 @@ class NestsTable:
             <td class="small-text" data-column="5">{nest_hours:02d}h {nest_minutes:02d}m {nest_seconds:02d}s</td>
             </tr>"""
 
-        grand_total_hours, grand_total_minutes, grand_total_seconds = (
-            self.get_hours_minutes_seconds(self.grand_total_cut_time)
-        )
+        grand_total_hours, grand_total_minutes, grand_total_seconds = self.get_hours_minutes_seconds(self.grand_total_cut_time)
         sheets_table_html += f"""<tr>
         <td class="small-text" data-column="0"></td>
         <td class="small-text" data-column="1"></td>
@@ -134,12 +128,8 @@ class SheetImages:
                 <h5 class="center-align">Sheets:</h5>
                 <article class="border"><div class="grid">"""
         for nest in self.job.nests:
-            single_hours, single_minutes, single_seconds = (
-                self.get_hours_minutes_seconds(nest.sheet_cut_time)
-            )
-            nest_hours, nest_minutes, nest_seconds = self.get_hours_minutes_seconds(
-                nest.get_machining_time()
-            )
+            single_hours, single_minutes, single_seconds = self.get_hours_minutes_seconds(nest.sheet_cut_time)
+            nest_hours, nest_minutes, nest_seconds = self.get_hours_minutes_seconds(nest.get_machining_time())
             if nest.sheet_count == 1:
                 cut_time = f'<div class="small-text">Cut Time: {nest_hours:02d}h {nest_minutes:02d}m {nest_seconds:02d}s</div>'
             else:
@@ -406,17 +396,11 @@ class AssemblyDiv:
 
     def get_assembly_data_html(self) -> str:
         html = '<div class="assembly_data">'
-        image_html = (
-            f'<img src="{self.server_directory}/image/{self.assembly.assembly_image}" class="assembly_image">'
-            if self.assembly.assembly_image
-            else ""
-        )
+        image_html = f'<img src="{self.server_directory}/image/{self.assembly.assembly_image}" class="assembly_image">' if self.assembly.assembly_image else ""
         html += image_html
         html += '<div class="padding">'
         html += f"<h5>{self.assembly.name}</h4>"
-        html += (
-            f'<p class="small-text">Process: {self.assembly.flow_tag.get_name()}</p>'
-        )
+        html += f'<p class="small-text">Process: {self.assembly.flow_tag.get_name()}</p>'
         html += "</div>"
         html += "</div>"
         return html
@@ -473,14 +457,10 @@ class JobPlannerPrintout:
         self.program_directory = os.path.dirname(os.path.realpath(sys.argv[0]))
         self.server_directory = f"http://{get_server_ip_address()}:{get_server_port()}"
 
-        with open(
-            "utils/workspace/printout.css", "r", encoding="utf-8"
-        ) as printout_css_file:
+        with open("utils/workspace/printout.css", "r", encoding="utf-8") as printout_css_file:
             self.printout_css = printout_css_file.read()
 
-        with open(
-            "utils/workspace/printout.js", "r", encoding="utf-8"
-        ) as printout_js_file:
+        with open("utils/workspace/printout.js", "r", encoding="utf-8") as printout_js_file:
             self.printout_js = printout_js_file.read()
 
     def get_total_price(self) -> float:

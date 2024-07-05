@@ -18,12 +18,7 @@ class Order:
     def __eq__(self, other: "Order") -> bool:
         if not isinstance(other, Order):
             return False
-        return (
-            self.expected_arrival_time == other.expected_arrival_time
-            and self.quantity == other.quantity
-            and self.order_pending_date == other.order_pending_date
-            and self.notes == other.notes
-        )
+        return self.expected_arrival_time == other.expected_arrival_time and self.quantity == other.quantity and self.order_pending_date == other.order_pending_date and self.notes == other.notes
 
     def to_dict(self) -> dict:
         return {

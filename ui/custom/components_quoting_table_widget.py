@@ -73,9 +73,7 @@ class ComponentsQuotingTableWidget(CustomTableWidget):
             new_height = 60
             new_width = int(original_width * (new_height / original_height))
 
-            pixmap = QPixmap.fromImage(image).scaled(
-                new_width, new_height, Qt.AspectRatioMode.KeepAspectRatio
-            )
+            pixmap = QPixmap.fromImage(image).scaled(new_width, new_height, Qt.AspectRatioMode.KeepAspectRatio)
             image_path = f'images/{datetime.now().strftime("%Y%m%d%H%M%S%f")}.png'
             pixmap.save(image_path)
 

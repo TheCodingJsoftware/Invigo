@@ -54,9 +54,7 @@ class GenerateWorkspacePrintoutDialog(QDialog):
         grouped_data = self.admin_workspace._get_all_groups()
         for group in grouped_data:
             treeview = self.create_treeview()
-            self.group_toolbox.addItem(
-                treeview, group, base_color=self.admin_workspace.get_group_color(group)
-            )
+            self.group_toolbox.addItem(treeview, group, base_color=self.admin_workspace.get_group_color(group))
             self.group_toolboxes[group] = treeview
         self.group_toolbox.close_all()
 
@@ -84,9 +82,7 @@ class GenerateWorkspacePrintoutDialog(QDialog):
         tree_view.clicked.connect(self.get_selected_assemblies)
         return tree_view
 
-    def load_treeview(
-        self, tree_view: QTreeView, model: QStandardItemModel, assembly: Assembly
-    ):
+    def load_treeview(self, tree_view: QTreeView, model: QStandardItemModel, assembly: Assembly):
         # for assembly in self.admin_workspace.data:
         parent_item = self.create_item_with_checkbox(assembly.name)
         self.data[self.assembly_count] = assembly
@@ -100,9 +96,7 @@ class GenerateWorkspacePrintoutDialog(QDialog):
             item_with_checkbox = self.create_item_with_checkbox(_sub_assembly.name)
             self.data[self.assembly_count] = _sub_assembly
             self.assembly_count += 1
-            parent_item.appendRow(
-                [item_with_checkbox, QStandardItem(str(self.assembly_count))]
-            )
+            parent_item.appendRow([item_with_checkbox, QStandardItem(str(self.assembly_count))])
             if len(_sub_assembly.sub_assemblies) > 0:
                 self.add_items_to_model(item_with_checkbox, _sub_assembly)
 
@@ -120,9 +114,7 @@ class GenerateWorkspacePrintoutDialog(QDialog):
             self.find_topmost_checked_items(parent_item, topmost_checked_items)
         return [item.text() for item in topmost_checked_items]
 
-    def find_topmost_checked_items(
-        self, parent_item: QStandardItem, topmost_checked_items: list[str]
-    ):
+    def find_topmost_checked_items(self, parent_item: QStandardItem, topmost_checked_items: list[str]):
         for row in range(parent_item.rowCount()):
             child_item = parent_item.child(row)
             if child_item and child_item.checkState() == Qt.CheckState.Checked:
@@ -134,9 +126,7 @@ class GenerateWorkspacePrintoutDialog(QDialog):
         for model in self.models:
             selected_rows: list[str] = self.get_topmost_checked_items_rows(model)
             for row in selected_rows:
-                self.selected_assemblies.append(
-                    self.data[int(row) - 1]
-                )  # Need to offset because ID starts at 1
+                self.selected_assemblies.append(self.data[int(row) - 1])  # Need to offset because ID starts at 1
         self.load_jobs()
 
     def get_workorder(self) -> dict[Assembly, dict[dict[str, int], dict[str, bool]]]:
@@ -167,12 +157,8 @@ class GenerateWorkspacePrintoutDialog(QDialog):
             def update_checkbox(assembly: Assembly, checkbox: QCheckBox):
                 self.workorder[assembly]["show_all_items"] = checkbox.isChecked()
 
-            quantity_spin_box.valueChanged.connect(
-                partial(update_quantity, assembly, quantity_spin_box)
-            )
-            checkbox_all_items.clicked.connect(
-                partial(update_checkbox, assembly, checkbox_all_items)
-            )
+            quantity_spin_box.valueChanged.connect(partial(update_quantity, assembly, quantity_spin_box))
+            checkbox_all_items.clicked.connect(partial(update_checkbox, assembly, checkbox_all_items))
 
             h_layout.addWidget(QLabel(assembly.name, self))
             h_layout.addWidget(quantity_spin_box)

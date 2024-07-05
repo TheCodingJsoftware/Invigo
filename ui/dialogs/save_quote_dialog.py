@@ -34,9 +34,7 @@ class SaveQuoteDialog(QDialog):
         self.comboBox_type.setCurrentText("Quote")
         self.lineEdit_name = self.findChild(QLineEdit, "lineEdit_name")
         self.lineEdit_name.setText(self.quote.name)
-        self.doubleSpinBox_order_number = self.findChild(
-            QDoubleSpinBox, "doubleSpinBox_order_number"
-        )
+        self.doubleSpinBox_order_number = self.findChild(QDoubleSpinBox, "doubleSpinBox_order_number")
         self.doubleSpinBox_order_number.setValue(self.quote.order_number)
         self.comboBox_status = self.findChild(QComboBox, "comboBox_status")
         self.comboBox_status.setCurrentText(self.quote.status)

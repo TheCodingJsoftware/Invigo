@@ -16,9 +16,7 @@ class ChatFile:
 
     def __create_file(self) -> None:
         if not os.path.exists(f"{self.FOLDER_LOCATION}/{self.file_name}.json"):
-            with open(
-                f"{self.FOLDER_LOCATION}/{self.file_name}.json", "w"
-            ) as json_file:
+            with open(f"{self.FOLDER_LOCATION}/{self.file_name}.json", "w") as json_file:
                 json_file.write("{}")
 
     def load_chat(self, chat_name: str, chat_data: dict[str, any]) -> Chat:
@@ -29,17 +27,13 @@ class ChatFile:
 
     def load_data(self) -> None:
         self.chats.clear()
-        with open(
-            f"{self.FOLDER_LOCATION}/{self.file_name}.json", "r", encoding="utf-8"
-        ) as json_file:
+        with open(f"{self.FOLDER_LOCATION}/{self.file_name}.json", "r", encoding="utf-8") as json_file:
             data = json.load(json_file)
         for chat_name in data:
             self.add_chat(self.load_chat(chat_name, data[chat_name]))
 
     def save(self) -> None:
-        with open(
-            f"{self.FOLDER_LOCATION}/{self.file_name}.json", "w", encoding="utf-8"
-        ) as json_file:
+        with open(f"{self.FOLDER_LOCATION}/{self.file_name}.json", "w", encoding="utf-8") as json_file:
             json.dump(self.to_dict(), json_file, ensure_ascii=False, indent=4)
 
     def add_chat(self, chat: Chat):

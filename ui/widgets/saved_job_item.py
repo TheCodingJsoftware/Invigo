@@ -15,17 +15,13 @@ class SavedPlanningJobItem(QWidget):
         super().__init__(parent)
         uic.loadUi("ui/widgets/job_plan_widget.ui", self)
 
-        modified_date = datetime.fromtimestamp(file_info.get("modified_date")).strftime(
-            "%A, %B %d, %Y, %I:%M:%S %p"
-        )
+        modified_date = datetime.fromtimestamp(file_info.get("modified_date")).strftime("%A, %B %d, %Y, %I:%M:%S %p")
         job_type = file_info.get("type", 0)
 
         self.comboBox_job_status = self.findChild(QComboBox, "comboBox_job_status")
         self.pushButton_load_job = self.findChild(QPushButton, "pushButton_load_job")
         self.label_modified_date = self.findChild(QLabel, "label_modified_date")
-        self.pushButton_open_in_browser = self.findChild(
-            QPushButton, "pushButton_open_in_browser"
-        )
+        self.pushButton_open_in_browser = self.findChild(QPushButton, "pushButton_open_in_browser")
         self.pushButton_delete = self.findChild(QPushButton, "pushButton_delete")
 
         self.comboBox_job_status.wheelEvent = lambda event: None
