@@ -80,7 +80,7 @@ class NestsTable:
         sheets_table_html = """<div id="nests-layout">
                 <h5 class="center-align">Nests:</h5>
                 <article class="sheets-table border">"""
-        sheets_table_html += "<table class='small-text no-space border dynamic-table'>"
+        sheets_table_html += '<table class="small-text no-space border dynamic-table">'
         sheets_table_html += "<thead><tr>"
         for i, header in enumerate(self.headers):
             sheets_table_html += f'<th data-column="{i}"><label class="checkbox"><input type="checkbox" class="column-toggle" data-column="{i}" checked><span></span></label>{header}</th>'
@@ -115,12 +115,51 @@ class SheetImages:
     def __init__(self, job: Job):
         self.job = job
         self.server_directory = f"http://{get_server_ip_address()}:{get_server_port()}"
+        self.laser_cut_parts: list[LaserCutPart] = []
+        for nest in self.job.nests:
+            self.laser_cut_parts.extend(nest.laser_cut_parts)
+
+    def format_filename(self, s: str):
+        # https://gist.github.com/seanh/93666
+        valid_chars = "-_.() %s%s" % (string.ascii_letters, string.digits)
+        filename = "".join(c for c in s if c in valid_chars)
+        filename = filename.replace(" ", "_")  # I don't like spaces in filenames.
+        return filename
 
     def get_hours_minutes_seconds(self, total_seconds: float) -> tuple[int, int, int]:
         return (
             int(total_seconds // 3600),
             int((total_seconds % 3600) // 60),
             int(total_seconds % 60),
+        )
+
+    def generate_laser_cut_part_data(self, laser_cut_part: LaserCutPart) -> str:
+        html = """<table class="no-space border"><tbody>
+                <tr>
+                   <td class="small-text bold">Key</td>
+                   <td class="small-text">Value</td>
+                </tr>"""
+        for key, value in laser_cut_part.to_dict().items():
+            html += f"""<tr>
+                <td class="small-text bold">{key.replace("_", " ").title()}</td>
+                <td class="small-text">{value}</td>
+                </tr>"""
+        html += "</tbody></table><br>"
+        return html
+
+    def generate_laser_cut_part_popups(self):
+        return "".join(
+            f"""
+            <div class="overlay blur"></div>
+            <dialog style="width: 30vw;" class="right" id="NEST-{self.format_filename(laser_cut_part.name)}">
+                <img src="{self.server_directory}/{laser_cut_part.image_index}" style="height: 100px; width: 100px;" >
+                <h5>{laser_cut_part.name}</h5>
+                <div>{self.generate_laser_cut_part_data(laser_cut_part)}</div>
+                <nav class="right-align no-space">
+                    <button data-ui="#NEST-{self.format_filename(laser_cut_part.name)}" class="transparent link">Close</button>
+                </nav>
+            </dialog>"""
+            for laser_cut_part in self.laser_cut_parts
         )
 
     def generate(self) -> str:
@@ -135,6 +174,24 @@ class SheetImages:
             else:
                 cut_time = f"""<div class="small-text">Sheet Cut Time: {single_hours:02d}h {single_minutes:02d}m {single_seconds:02d}s</div>
                             <div class="small-text">Nest Cut Time: {nest_hours:02d}h {nest_minutes:02d}m {nest_seconds:02d}s</div>"""
+            parts_list = '''<table class="border">
+                <thead>
+                    <tr>
+                        <th>Part</th>
+                        <th class="min">Quantity on One Sheet</th>
+                    </tr>
+                </thead><tbody>'''
+            for part in nest.laser_cut_parts:
+                parts_list += f'''
+                <tr>
+                    <td class="min">
+                        <button class="extra transparent small-round" onclick="ui('#NEST-{self.format_filename(part.name)}');">
+                        <img class="responsive" src="{self.server_directory}/{part.image_index}">
+                        <span class="small-text">{part.name}</span>
+                    </td>
+                    <td>{part.quantity_in_nest}</td>
+                </tr>'''
+            parts_list += '</tbody></table>'
             html += f"""
             <div class="s6">
                 <article class="nest no-padding border">
@@ -142,19 +199,27 @@ class SheetImages:
                     <div class="small-padding">
                         <div class="row">
                             <button class="transparent square small">
-                            <i>qr_code_2</i>
-                                <div class="tooltip right">
-                                    <div class="qr-item" data-name="{nest.sheet.get_name()}">
-                                        <div class="qr-code"></div>
-                                    </div>
+                                <i>format_list_bulleted</i>
+                                <div class="tooltip max right" style="width: 400px;">
+                                    {parts_list}
                                 </div>
                             </button>
                             <h5 class="small max">{nest.name}</h5>
-                            <div class="badge none">{nest.sheet_count}</div>
+                            <div class="badge none">{int(nest.sheet_count)}</div>
                         </div>
                         <div class="row surface-container">
                             <div class="max">
-                                <div class="small-text">{nest.sheet.thickness} {nest.sheet.material} {nest.sheet.get_sheet_dimension()}</div>
+                                <div class="small-text">
+                                    <button class="transparent square small">
+                                        <i>qr_code_2</i>
+                                        <div class="tooltip right">
+                                            <div class="qr-item" data-name="{nest.sheet.get_name()}">
+                                                <div class="qr-code"></div>
+                                            </div>
+                                        </div>
+                                    </button>
+                                    {nest.sheet.thickness} {nest.sheet.material} {nest.sheet.get_sheet_dimension()}
+                                </div>
                                 {cut_time}
                             </div>
                         </div>
@@ -188,7 +253,7 @@ class LaserCutPartsTable:
         return filename
 
     def generate_laser_cut_part_data(self, laser_cut_part: LaserCutPart) -> str:
-        html = """<table class="no-space border""><tbody>
+        html = """<table class="no-space border"><tbody>
                 <tr>
                    <td class="small-text bold">Key</td>
                    <td class="small-text">Value</td>
@@ -231,7 +296,7 @@ class LaserCutPartsTable:
         html += "</thead>"
         html += "<tbody>"
         for laser_cut_part in self.laser_cut_parts:
-            html += f"""<tr>
+            html += f'''<tr>
             <td class="min" data-column="0" data-name="part">
                 <button class="extra transparent small-round" onclick="ui('#LCP-{self.format_filename(laser_cut_part.name)}');">
                 <img class="responsive" src="{self.server_directory}/{laser_cut_part.image_index}">
@@ -244,8 +309,8 @@ class LaserCutPartsTable:
             <td class="small-text" data-column="5" data-name="shelf-#">{laser_cut_part.shelf_number}</td>
             <td class="small-text" data-column="6" data-name="unit-price">${laser_cut_part.price:,.2f}</td>
             <td class="small-text" data-column="7" data-name="price">${(laser_cut_part.price * laser_cut_part.quantity):,.2f}</td>
-            </tr>"""
-        html += f"""<tfoot>
+            </tr>'''
+        html += f'''<tfoot>
             <tr>
                 <th class="small-text" data-column="0" data-name="part"></th>
                 <th class="small-text" data-column="1" data-name="material"></th>
@@ -256,7 +321,7 @@ class LaserCutPartsTable:
                 <th class="small-text" data-column="6" data-name="unit-price"></th>
                 <th class="small-text" data-column="7" data-name="price">Total: ${self.get_total_cost():,.2f}</th>
             </tr>
-            </tfoot></tbody></table>"""
+            </tfoot></tbody></table>'''
         return html
 
 
@@ -273,7 +338,7 @@ class ComponentsTable:
         return filename
 
     def generate_components_data(self, laser_cut_part: LaserCutPart) -> str:
-        html = """<table class="no-space border""><tbody>
+        html = """<table class="no-space border"><tbody>
                 <tr>
                    <td class="small-text bold">Key</td>
                    <td class="small-text">Value</td>
@@ -399,7 +464,7 @@ class AssemblyDiv:
         image_html = f'<img src="{self.server_directory}/image/{self.assembly.assembly_image}" class="assembly_image">' if self.assembly.assembly_image else ""
         html += image_html
         html += '<div class="padding">'
-        html += f"<h5>{self.assembly.name}</h4>"
+        html += f"<h5>{self.assembly.name}</h5>"
         html += f'<p class="small-text">Process: {self.assembly.flow_tag.get_name()}</p>'
         html += "</div>"
         html += "</div>"
@@ -489,8 +554,11 @@ class JobPlannerPrintout:
                         <meta property="og:title" content="{self.title} - {self.job.name}" />
                         <meta property="og:description" content="{self.job.ship_to}" />
                     </head>
-        <style>{self.printout_css}</style>
-        <body class="quote"><main>
+        <style>
+            {self.printout_css}
+        </style>
+        <body class="quote">
+        <main class="responsive">
         <header>
             <nav>
                 <img class="logo" src="{self.server_directory}/images/logo.png">
@@ -547,10 +615,7 @@ class JobPlannerPrintout:
                 <span>Show Total Cost</span>
             </label>
         </div>
-        <br>
-
-
-        """
+        <br>"""
 
         cover_page = CoverPage(self.title, self.job)
 
@@ -607,7 +672,10 @@ class JobPlannerPrintout:
 
         html += grouped_laser_cut_parts_table.generate_laser_cut_part_popups()
         html += grouped_components_table.generate_components_popups()
+        html += nests_table.generate_laser_cut_part_popups()
 
         html += "</main></body>"
-        html += f"<script>{self.printout_js}</script>"
+        html += f"""<script>
+            {self.printout_js}
+        </script>"""
         return html
