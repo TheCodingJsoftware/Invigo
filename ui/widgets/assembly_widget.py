@@ -77,6 +77,7 @@ border-top-left-radius: 0px;
 
         self.image_layout = self.findChild(QVBoxLayout, "image_layout")
         self.doubleSpinBox_quantity = self.findChild(QDoubleSpinBox, "doubleSpinBox_quantity")
+        self.doubleSpinBox_quantity.wheelEvent = lambda event: None
         self.assembly_files_layout = self.findChild(QHBoxLayout, "assembly_files_layout")
         self.paint_widget = self.findChild(QWidget, "paint_widget")
         self.paint_layout = self.findChild(QHBoxLayout, "paint_layout")

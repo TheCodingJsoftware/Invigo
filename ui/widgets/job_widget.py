@@ -97,6 +97,74 @@ class JobWidget(QWidget):
         self.nest_summary_widget = self.findChild(QWidget, "nest_summary_widget")
         self.apply_stylesheet_to_toggle_buttons(self.pushButton_nest_summary, self.nest_summary_widget)
 
+        self.pushButton_global_sheet_settings.clicked.connect(
+            partial(
+                self.job_preferences.job_nest_tool_box_toggled,
+                self.job.name,
+                self.pushButton_global_sheet_settings,
+                self.pushButton_item_quoting_options,
+                self.pushButton_sheet_quoting_options,
+                self.pushButton_nest_summary,
+                self.pushButton_nests,
+            )
+        )
+        self.pushButton_item_quoting_options.clicked.connect(
+            partial(
+                self.job_preferences.job_nest_tool_box_toggled,
+                self.job.name,
+                self.pushButton_global_sheet_settings,
+                self.pushButton_item_quoting_options,
+                self.pushButton_sheet_quoting_options,
+                self.pushButton_nest_summary,
+                self.pushButton_nests,
+            )
+        )
+        self.pushButton_sheet_quoting_options.clicked.connect(
+            partial(
+                self.job_preferences.job_nest_tool_box_toggled,
+                self.job.name,
+                self.pushButton_global_sheet_settings,
+                self.pushButton_item_quoting_options,
+                self.pushButton_sheet_quoting_options,
+                self.pushButton_nest_summary,
+                self.pushButton_nests,
+            )
+        )
+        self.pushButton_nests.clicked.connect(
+            partial(
+                self.job_preferences.job_nest_tool_box_toggled,
+                self.job.name,
+                self.pushButton_global_sheet_settings,
+                self.pushButton_item_quoting_options,
+                self.pushButton_sheet_quoting_options,
+                self.pushButton_nest_summary,
+                self.pushButton_nests,
+            )
+        )
+        self.pushButton_nest_summary.clicked.connect(
+            partial(
+                self.job_preferences.job_nest_tool_box_toggled,
+                self.job.name,
+                self.pushButton_global_sheet_settings,
+                self.pushButton_item_quoting_options,
+                self.pushButton_sheet_quoting_options,
+                self.pushButton_nest_summary,
+                self.pushButton_nests,
+            )
+        )
+
+        self.pushButton_global_sheet_settings.setChecked(self.job_preferences.is_global_sheet_settings_closed(self.job.name))
+        self.global_sheet_settings_widget.setHidden(not self.job_preferences.is_global_sheet_settings_closed(self.job.name))
+        self.pushButton_item_quoting_options.setChecked(self.job_preferences.is_item_quoting_options_closed(self.job.name))
+        self.item_quoting_options_widget.setHidden(not self.job_preferences.is_item_quoting_options_closed(self.job.name))
+        self.pushButton_sheet_quoting_options.setChecked(self.job_preferences.is_sheet_quoting_options_closed(self.job.name))
+        self.sheet_quoting_options_widget.setHidden(not self.job_preferences.is_sheet_quoting_options_closed(self.job.name))
+        self.pushButton_nest_summary.setChecked(self.job_preferences.is_nest_summary_closed(self.job.name))
+        self.nest_summary_widget.setHidden(not self.job_preferences.is_nest_summary_closed(self.job.name))
+        self.pushButton_nests.setChecked(self.job_preferences.is_nests_closed(self.job.name))
+        self.nests_widget.setHidden(not self.job_preferences.is_nests_closed(self.job.name))
+
+
         self.scrollArea = self.findChild(QScrollArea, "scrollArea")
 
         self.pushButton_reload_job = self.findChild(QPushButton, "pushButton_reload_job")

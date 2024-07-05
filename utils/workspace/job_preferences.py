@@ -20,6 +20,53 @@ class JobPreferences:
     def group_toolbox_toggled(self, name: QLineEdit, button: QPushButton):
         self.closed_toolboxes[name.text()] = button.isChecked()
 
+    def job_nest_tool_box_toggled(
+        self,
+        job_name: str,
+        global_sheet_settings_button: QPushButton,
+        item_quoting_options_button: QPushButton,
+        sheet_quoting_options_button: QPushButton,
+        nest_summary_button: QPushButton,
+        nests_button: QPushButton,
+    ):
+        self.closed_toolboxes[job_name] = {
+            "is_global_sheet_settings_closed": global_sheet_settings_button.isChecked(),
+            "is_item_quoting_options_closed": item_quoting_options_button.isChecked(),
+            "is_sheet_quoting_options_closed": sheet_quoting_options_button.isChecked(),
+            "is_nest_summary_closed": nest_summary_button.isChecked(),
+            "is_nests_closed": nests_button.isChecked(),
+        }
+
+    def is_global_sheet_settings_closed(self, job_name: str) -> bool:
+        try:
+            return self.closed_toolboxes[job_name]["is_global_sheet_settings_closed"]
+        except KeyError:
+            return True
+
+    def is_item_quoting_options_closed(self, job_name: str) -> bool:
+        try:
+            return self.closed_toolboxes[job_name]["is_item_quoting_options_closed"]
+        except KeyError:
+            return True
+
+    def is_sheet_quoting_options_closed(self, job_name: str) -> bool:
+        try:
+            return self.closed_toolboxes[job_name]["is_sheet_quoting_options_closed"]
+        except KeyError:
+            return True
+
+    def is_nest_summary_closed(self, job_name: str) -> bool:
+        try:
+            return self.closed_toolboxes[job_name]["is_nest_summary_closed"]
+        except KeyError:
+            return True
+
+    def is_nests_closed(self, job_name: str) -> bool:
+        try:
+            return self.closed_toolboxes[job_name]["is_nests_closed"]
+        except KeyError:
+            return True
+
     def assembly_toolbox_toggled(
         self,
         name: QLineEdit,

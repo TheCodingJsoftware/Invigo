@@ -77,7 +77,43 @@
             <number>6</number>
            </property>
            <item>
-            <layout class="QVBoxLayout" name="image_layout"/>
+            <layout class="QVBoxLayout" name="verticalLayout_13">
+             <item>
+              <layout class="QVBoxLayout" name="image_layout"/>
+             </item>
+             <item>
+              <widget class="QLabel" name="label_3">
+               <property name="text">
+                <string>Quantity:</string>
+               </property>
+               <property name="buddy">
+                <cstring>doubleSpinBox_quantity</cstring>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QDoubleSpinBox" name="doubleSpinBox_quantity">
+               <property name="toolTip">
+                <string>Quantity multiplier</string>
+               </property>
+               <property name="buttonSymbols">
+                <enum>QAbstractSpinBox::ButtonSymbols::UpDownArrows</enum>
+               </property>
+               <property name="specialValueText">
+                <string/>
+               </property>
+               <property name="decimals">
+                <number>0</number>
+               </property>
+               <property name="maximum">
+                <double>999999999999999.000000000000000</double>
+               </property>
+               <property name="stepType">
+                <enum>QAbstractSpinBox::StepType::AdaptiveDecimalStepType</enum>
+               </property>
+              </widget>
+             </item>
+            </layout>
            </item>
            <item>
             <layout class="QVBoxLayout" name="verticalLayout_15">
@@ -105,39 +141,6 @@
                   </size>
                  </property>
                 </spacer>
-               </item>
-              </layout>
-             </item>
-             <item>
-              <layout class="QHBoxLayout" name="horizontalLayout_5" stretch="0,1">
-               <item>
-                <widget class="QLabel" name="label_3">
-                 <property name="text">
-                  <string>Quantity:</string>
-                 </property>
-                 <property name="buddy">
-                  <cstring>doubleSpinBox_quantity</cstring>
-                 </property>
-                </widget>
-               </item>
-               <item>
-                <widget class="QDoubleSpinBox" name="doubleSpinBox_quantity">
-                 <property name="toolTip">
-                  <string>Quantity multiplier</string>
-                 </property>
-                 <property name="specialValueText">
-                  <string/>
-                 </property>
-                 <property name="decimals">
-                  <number>0</number>
-                 </property>
-                 <property name="maximum">
-                  <double>999999999999999.000000000000000</double>
-                 </property>
-                 <property name="stepType">
-                  <enum>QAbstractSpinBox::StepType::AdaptiveDecimalStepType</enum>
-                 </property>
-                </widget>
                </item>
               </layout>
              </item>
