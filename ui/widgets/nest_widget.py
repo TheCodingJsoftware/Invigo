@@ -1,5 +1,6 @@
 import os
 from datetime import datetime
+from functools import partial
 from typing import TYPE_CHECKING
 
 from PyQt6 import uic
@@ -11,14 +12,19 @@ from PyQt6.QtWidgets import (
     QLabel,
     QMessageBox,
     QPushButton,
+    QTreeWidget,
+    QTreeWidgetItem,
     QVBoxLayout,
     QWidget,
 )
 
 from ui.custom.machine_cut_time_double_spin_box import MachineCutTimeDoubleSpinBox
 from ui.dialogs.add_sheet_dialog import AddSheetDialog
+from ui.window.image_viewer import QImageViewer
+from utils.inventory.laser_cut_part import LaserCutPart
 from utils.inventory.sheets_inventory import Sheet
-from utils.quote.nest import Nest
+from utils.inventory.nest import Nest
+from utils.workspace.assembly import Assembly
 
 if TYPE_CHECKING:
     from ui.widgets.job_widget import JobWidget
@@ -37,10 +43,31 @@ class NestWidget(QWidget):
         self.sheet = self.nest.sheet
         self.sheets_inventory = self.parent.parent.job_manager.sheets_inventory
         self.sheet_settings = self.parent.parent.job_manager.sheet_settings
-
+        self.part_to_assembly: dict[str, Assembly] = {}
+        self.assembly_dict: dict[str, Assembly] = {}
+        self.part_assembly_comboboxes: list[QComboBox] = []
+        self.preprocess_assemblies()
         self.load_ui()
 
     def load_ui(self):
+        self.pushButton_settings = self.findChild(QPushButton, "pushButton_settings")
+        self.settings_widget = self.findChild(QWidget, "settings_widget")
+        self.parent.apply_stylesheet_to_toggle_buttons(
+            self.pushButton_settings, self.settings_widget
+        )
+
+        self.pushButton_laser_cut_parts = self.findChild(QPushButton, "pushButton_laser_cut_parts")
+        self.laser_cut_parts_widget = self.findChild(QWidget, "laser_cut_parts_widget")
+        self.parent.apply_stylesheet_to_toggle_buttons(
+            self.pushButton_laser_cut_parts, self.laser_cut_parts_widget
+        )
+
+        self.pushButton_image = self.findChild(QPushButton, "pushButton_image")
+        self.image_widget_2 = self.findChild(QWidget, "image_widget_2")
+        self.parent.apply_stylesheet_to_toggle_buttons(
+            self.pushButton_image, self.image_widget_2
+        )
+
         self.label_sheet_status = self.findChild(QLabel, "label_sheet_status")
 
         self.pushButton_add_sheet = self.findChild(QPushButton, "pushButton_add_sheet")
@@ -63,6 +90,7 @@ class NestWidget(QWidget):
         self.doubleSpinBox_sheet_cut_time.setToolTip(
             f"Original: {self.get_sheet_cut_time()}"
         )
+        self.doubleSpinBox_sheet_cut_time.valueChanged.connect(self.nest_changed)
         self.verticalLayout_sheet_cut_time.addWidget(self.doubleSpinBox_sheet_cut_time)
 
         self.label_nest_cut_time = self.findChild(QLabel, "label_nest_cut_time")
@@ -71,6 +99,8 @@ class NestWidget(QWidget):
             QDoubleSpinBox, "doubleSpinBox_sheet_count"
         )
         self.doubleSpinBox_sheet_count.wheelEvent = lambda event: None
+        self.doubleSpinBox_sheet_count.setValue(self.nest.sheet_count)
+        self.doubleSpinBox_sheet_count.valueChanged.connect(self.nest_changed)
 
         self.comboBox_material = self.findChild(QComboBox, "comboBox_material")
         self.comboBox_material.wheelEvent = lambda event: None
@@ -95,6 +125,9 @@ class NestWidget(QWidget):
         self.doubleSpinBox_width.wheelEvent = lambda event: None
         self.doubleSpinBox_width.setValue(self.sheet.width)
         self.doubleSpinBox_width.valueChanged.connect(self.sheet_changed)
+
+        self.treeWidget_parts = self.findChild(QTreeWidget, "treeWidget_parts")
+        self.load_nest_parts()
 
         self.image_widget = self.findChild(QWidget, "image_widget")
         self.image_widget.setHidden(True)
@@ -136,6 +169,7 @@ class NestWidget(QWidget):
         self.nest.sheet_count = self.doubleSpinBox_sheet_count.value()
         self.nest.sheet_cut_time = self.doubleSpinBox_sheet_cut_time.value()
         self.update_nest_cut_time()
+        self.load_nest_parts()
 
     def set_cost_for_sheets(self, cost: float):
         self.label_cost_for_sheets.setText(f"${cost:,.2f}")

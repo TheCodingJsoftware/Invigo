@@ -52,10 +52,13 @@ border-top-left-radius: 0px;
         )
         self.verticalLayout_14 = self.findChild(QVBoxLayout, "verticalLayout_14")
         self.verticalLayout_14.setAlignment(Qt.AlignmentFlag.AlignTop)
+
         self.verticalLayout_3 = self.findChild(QVBoxLayout, "verticalLayout_3")
         self.verticalLayout_3.setAlignment(Qt.AlignmentFlag.AlignTop)
+
         self.verticalLayout_4 = self.findChild(QVBoxLayout, "verticalLayout_4")
         self.verticalLayout_4.setAlignment(Qt.AlignmentFlag.AlignTop)
+
         self.verticalLayout_10 = self.findChild(QVBoxLayout, "verticalLayout_10")
         self.verticalLayout_10.setAlignment(Qt.AlignmentFlag.AlignTop)
 

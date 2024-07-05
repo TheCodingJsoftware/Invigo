@@ -4,7 +4,7 @@ from utils.inventory.component import Component
 from utils.inventory.components_inventory import ComponentsInventory
 from utils.inventory.laser_cut_inventory import LaserCutInventory
 from utils.inventory.laser_cut_part import LaserCutPart
-from utils.quote.nest import Nest
+from utils.inventory.nest import Nest
 from utils.sheet_settings.sheet_settings import SheetSettings
 
 

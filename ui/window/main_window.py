@@ -95,7 +95,7 @@ from utils.po import check_po_directories, get_all_po
 from utils.po_template import POTemplate
 from utils.price_history_file import PriceHistoryFile
 from utils.quote.generate_printout import GeneratePrintout
-from utils.quote.nest import Nest
+from utils.inventory.nest import Nest
 from utils.quote.quote import Quote
 from utils.settings import Settings
 from utils.sheet_settings.sheet_settings import SheetSettings
@@ -257,7 +257,7 @@ class MainWindow(QMainWindow):
         self.job_quote_widget.saveJobAs.connect(self.save_job_as)
         self.job_quote_widget.reloadJob.connect(self.reload_job)
         template_job = Job("Enter Job Name0", {}, self.job_manager)
-        template_job.job_status = JobStatus.QUOTING
+        template_job.status = JobStatus.QUOTING
         template_job.order_number = self.order_number
         self.job_quote_widget.load_job(template_job)
 
@@ -427,6 +427,7 @@ class MainWindow(QMainWindow):
         )
 
         self.pushButton_refresh_jobs.clicked.connect(self.load_jobs_thread)
+        self.pushButton_refresh_jobs_2.clicked.connect(self.load_jobs_thread)
 
         self.pushButton_save.clicked.connect(partial(self.save_quote, None))
         self.pushButton_save_as.clicked.connect(partial(self.save_quote_as, None))
@@ -1091,7 +1092,7 @@ class MainWindow(QMainWindow):
 
     def reload_job(self, job_widget: JobWidget):
         job = job_widget.job
-        folder_path = f"saved_jobs\\{job.job_status.name.lower()}\\{job.name}"
+        folder_path = f"saved_jobs\\{job.status.name.lower()}\\{job.name}"
         self.reload_job_thread(folder_path)
 
     def save_job(self, job: Job):
@@ -1100,7 +1101,7 @@ class MainWindow(QMainWindow):
         job_plan_printout = JobPlannerPrintout(job)
         html = job_plan_printout.generate()
         self.upload_job_thread(
-            f"saved_jobs/{job.job_status.name.lower()}/{job.name}", job, html
+            f"saved_jobs/{job.status.name.lower()}/{job.name}", job, html
         )
         job.unsaved_changes = False
         self.job_planner_widget.update_job_save_status(job)
@@ -1117,7 +1118,7 @@ class MainWindow(QMainWindow):
         job_plan_printout = JobPlannerPrintout(job)
         html = job_plan_printout.generate()
         self.upload_job_thread(
-            f"saved_jobs/{job.job_status.name.lower()}/{job.name}", job, html
+            f"saved_jobs/{job.status.name.lower()}/{job.name}", job, html
         )
         self.status_button.setText(f"Saved {job.name}", "lime")
         self.upload_file(
@@ -1539,7 +1540,6 @@ class MainWindow(QMainWindow):
                 )
             )
             if file_info["type"] in [
-                JobStatus.PLANNING.value,
                 JobStatus.QUOTED.value,
                 JobStatus.QUOTING.value,
             ]:
@@ -2329,28 +2329,42 @@ class MainWindow(QMainWindow):
 
         if select_item_dialog.exec():
             QApplication.setOverrideCursor(Qt.CursorShape.WaitCursor)
-            self.status_button.setText("Loading quote", "yellow")
+            self.status_button.setText("Loading nests", "yellow")
             current_job_widget = self.job_quote_widget.get_active_job_widget()
+            current_job = current_job_widget.job
             if select_item_dialog.response == DialogButtons.set:
+                material = select_item_dialog.get_selected_material()
+                thickness = select_item_dialog.get_selected_thickness()
                 for nest in nests:
-                    nest.sheet.material = select_item_dialog.get_selected_material()
-                    nest.sheet.thickness = select_item_dialog.get_selected_thickness()
+                    nest.sheet.material = material
+                    nest.sheet.thickness = thickness
                     for laser_cut_part in nest.laser_cut_parts:
-                        laser_cut_part.material = (
-                            select_item_dialog.get_selected_material()
-                        )
-                        laser_cut_part.gauge = (
-                            select_item_dialog.get_selected_thickness()
-                        )
-            current_job_widget.job.nests = nests
+                        laser_cut_part.material = material
+                        laser_cut_part.gauge = thickness
+            current_job.nests = nests
+            parts_to_update = {part.name for part in current_job.get_all_nested_laser_cut_parts()}
+            for nest_laser_cut_part in current_job.get_all_nested_laser_cut_parts():
+                for laser_cut_part in current_job.get_all_laser_cut_parts():
+                    if laser_cut_part.name == nest_laser_cut_part.name:
+                        laser_cut_part.load_part_data(nest_laser_cut_part.to_dict())
+                        parts_to_update.discard(nest_laser_cut_part.name)
+                        break
+            not_updated_parts = list(parts_to_update)
+            if not_updated_parts:
+                message = f"The following parts were not found in {current_job.name}:\n"
+                for i, part in enumerate(not_updated_parts):
+                    message += f"{i+1}. {part}\n"
+                message += "\nBe sure to review these parts."
+                QMessageBox(QMessageBox.Icon.Information, "Parts to update", message, QMessageBox.StandardButton.Ok, self).exec()
             current_job_widget.load_nests()
+            current_job_widget.update_nest_summary()
             current_job_widget.update_tables()
-            current_job_widget.job.unsaved_changes = True
-            self.job_quote_widget.job_changed(current_job_widget.job)
+            current_job.unsaved_changes = True
+            self.job_quote_widget.job_changed(current_job)
             # self.job_quote_widget.update_nests()
             # self.job_quote_widget.update_tables()
             self.status_button.setText(
-                f"Nests loaded into {current_job_widget.job.name}", "lime"
+                f"Nests loaded into {current_job.name}", "lime"
             )
         else:
             self.status_button.setText("Loading nests aborted", "lime")

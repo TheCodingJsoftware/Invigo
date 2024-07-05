@@ -151,8 +151,7 @@ QPushButton#pushButton_open_in_browser:flat {
             </property>
             <property name="icon">
              <iconset>
-              <normalon>../icons/website.png</normalon>
-             </iconset>
+              <normaloff>../../icons/website.png</normaloff>../../icons/website.png</iconset>
             </property>
             <property name="flat">
              <bool>true</bool>
@@ -211,8 +210,7 @@ QPushButton:pressed#pushButton_delete {
             </property>
             <property name="icon">
              <iconset>
-              <normalon>../icons/trash.png</normalon>
-             </iconset>
+              <normaloff>../../icons/trash.png</normaloff>../../icons/trash.png</iconset>
             </property>
            </widget>
           </item>

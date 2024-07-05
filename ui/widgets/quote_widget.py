@@ -46,7 +46,7 @@ from utils.inventory.laser_cut_inventory import LaserCutInventory
 from utils.inventory.laser_cut_part import LaserCutPart
 from utils.inventory.sheet import Sheet
 from utils.inventory.sheets_inventory import SheetsInventory
-from utils.quote.nest import Nest
+from utils.inventory.nest import Nest
 from utils.quote.quote import Quote
 from utils.sheet_settings.sheet_settings import SheetSettings
 
@@ -1143,7 +1143,7 @@ class QuoteWidget(QWidget):
             summary[nest.sheet.material]["total_seconds"] += (
                 nest.sheet_cut_time * nest.sheet_count
             )
-            summary[nest.sheet.material]["total_sheet_count"] += nest.sheet_cut_time
+            summary[nest.sheet.material]["total_sheet_count"] += nest.sheet_count
 
         sorted_summary_keys = natsorted(summary.keys())
         sorted_summary = {key: summary[key] for key in sorted_summary_keys}

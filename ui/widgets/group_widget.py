@@ -27,9 +27,7 @@ class GroupWidget(QWidget):
         self.job_preferences: JobPreferences = self.parent.job_preferences
         self.main_window_tab_widget = self.parent.parent.parent.tabWidget
 
-        self.assembly_widgets: list[
-            Union[AssemblyPlanningWidget, AssemblyQuotingWidget]
-        ] = []
+        self.assembly_widgets: list[Union[AssemblyPlanningWidget, AssemblyQuotingWidget]] = []
 
         self.load_ui()
 
@@ -58,43 +56,24 @@ border-top-left-radius: 0px;
         for assembly_widget in self.assembly_widgets:
             assembly_widget.workspace_settings_changed()
 
-    def add_assembly(
-        self, new_assembly: Assembly = None
-    ) -> Union[AssemblyPlanningWidget, AssemblyQuotingWidget]:
+    def add_assembly(self, new_assembly: Assembly = None) -> Union[AssemblyPlanningWidget, AssemblyQuotingWidget]:
         if not new_assembly:
-            assembly = Assembly(
-                f"Enter Assembly Name{len(self.group.assemblies)}", {}, self.group
-            )
+            assembly = Assembly(f"Enter Assembly Name{len(self.group.assemblies)}", {}, self.group)
             self.group.add_assembly(assembly)
             self.changes_made()
         else:
             assembly = new_assembly
 
-        if (
-            self.main_window_tab_widget.tabText(
-                self.main_window_tab_widget.currentIndex()
-            )
-            == "Job Planner"
-        ):
+        if self.main_window_tab_widget.tabText(self.main_window_tab_widget.currentIndex()) == "Job Planner":
             assembly_widget = AssemblyPlanningWidget(assembly, self)
-        elif (
-            self.main_window_tab_widget.tabText(
-                self.main_window_tab_widget.currentIndex()
-            )
-            == "Quote Generator 2"
-        ):
+        elif self.main_window_tab_widget.tabText(self.main_window_tab_widget.currentIndex()) == "Quote Generator 2":
             assembly_widget = AssemblyQuotingWidget(assembly, self)
-
-        self.assemblies_toolbox.addItem(
-            assembly_widget, assembly.name, self.group.color
-        )
+        self.assemblies_toolbox.addItem(assembly_widget, assembly.name, self.group.color)
 
         toggle_button = self.assemblies_toolbox.getLastToggleButton()
 
         name_input: QLineEdit = self.assemblies_toolbox.getLastInputBox()
-        name_input.textChanged.connect(
-            partial(self.assembly_name_renamed, assembly, name_input)
-        )
+        name_input.textChanged.connect(partial(self.assembly_name_renamed, assembly, name_input))
 
         name_input.textChanged.connect(
             partial(
@@ -159,24 +138,12 @@ border-top-left-radius: 0px;
         if self.job_preferences.is_assembly_closed(assembly.name):
             self.assemblies_toolbox.closeLastToolBox()
 
-        assembly_widget.pushButton_laser_cut_parts.setChecked(
-            self.job_preferences.is_assembly_laser_cut_closed(assembly.name)
-        )
-        assembly_widget.laser_cut_widget.setHidden(
-            not self.job_preferences.is_assembly_laser_cut_closed(assembly.name)
-        )
-        assembly_widget.pushButton_components.setChecked(
-            self.job_preferences.is_assembly_component_closed(assembly.name)
-        )
-        assembly_widget.component_widget.setHidden(
-            not self.job_preferences.is_assembly_component_closed(assembly.name)
-        )
-        assembly_widget.pushButton_sub_assemblies.setChecked(
-            self.job_preferences.is_assembly_sub_assembly_closed(assembly.name)
-        )
-        assembly_widget.sub_assemblies_widget.setHidden(
-            not self.job_preferences.is_assembly_sub_assembly_closed(assembly.name)
-        )
+        assembly_widget.pushButton_laser_cut_parts.setChecked(self.job_preferences.is_assembly_laser_cut_closed(assembly.name))
+        assembly_widget.laser_cut_widget.setHidden(not self.job_preferences.is_assembly_laser_cut_closed(assembly.name))
+        assembly_widget.pushButton_components.setChecked(self.job_preferences.is_assembly_component_closed(assembly.name))
+        assembly_widget.component_widget.setHidden(not self.job_preferences.is_assembly_component_closed(assembly.name))
+        assembly_widget.pushButton_sub_assemblies.setChecked(self.job_preferences.is_assembly_sub_assembly_closed(assembly.name))
+        assembly_widget.sub_assemblies_widget.setHidden(not self.job_preferences.is_assembly_sub_assembly_closed(assembly.name))
 
         return assembly_widget
 
@@ -191,16 +158,12 @@ border-top-left-radius: 0px;
         self.changes_made()
 
     def duplicate_assembly(self, assembly: Assembly):
-        new_assembly = Assembly(
-            f"{assembly.name} - (Copy)", assembly.to_dict(), self.group
-        )
+        new_assembly = Assembly(f"{assembly.name} - (Copy)", assembly.to_dict(), self.group)
         self.load_assembly(new_assembly)
         self.group.add_assembly(new_assembly)
         self.changes_made()
 
-    def delete_assembly(
-        self, assembly_widget: Union[AssemblyPlanningWidget, AssemblyQuotingWidget]
-    ):
+    def delete_assembly(self, assembly_widget: Union[AssemblyPlanningWidget, AssemblyQuotingWidget]):
         self.assembly_widgets.remove(assembly_widget)
         self.assemblies_toolbox.removeItem(assembly_widget)
         self.group.remove_assembly(assembly_widget.assembly)

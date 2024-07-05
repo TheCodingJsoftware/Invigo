@@ -69,12 +69,12 @@ class JobTab(QWidget):
                 self.parent.tabWidget.tabText(self.parent.tabWidget.currentIndex())
                 == "Job Planner"
             ):
-                job.job_status = JobStatus.PLANNING
+                job.status = JobStatus.PLANNING
             elif (
                 self.parent.tabWidget.tabText(self.parent.tabWidget.currentIndex())
                 == "Quote Generator 2"
             ):
-                job.job_status = JobStatus.QUOTED
+                job.status = JobStatus.QUOTED
             job.order_number = self.parent.order_number
             self.job_manager.add_job(job)
         else:

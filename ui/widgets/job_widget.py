@@ -2,6 +2,7 @@ import contextlib
 from functools import partial
 from typing import TYPE_CHECKING
 
+from natsort import natsorted
 from PyQt6 import uic
 from PyQt6.QtCore import QDate, Qt, pyqtSignal
 from PyQt6.QtWidgets import (
@@ -13,6 +14,8 @@ from PyQt6.QtWidgets import (
     QScrollArea,
     QSplitter,
     QTextEdit,
+    QTreeWidget,
+    QTreeWidgetItem,
     QVBoxLayout,
     QWidget,
 )
@@ -22,9 +25,9 @@ from ui.custom_widgets import AssemblyMultiToolBox, MultiToolBox, QLineEdit
 from ui.widgets.nest_widget import NestWidget
 from utils import colors
 from utils.colors import darken_color, lighten_color
-from utils.quote.nest import Nest
+from utils.inventory.nest import Nest
 from utils.workspace.group import Group
-from utils.workspace.job import Job, JobStatus
+from utils.workspace.job import Job, JobStatus, JobColor
 
 if TYPE_CHECKING:
     from ui.custom.job_tab import JobTab
@@ -44,6 +47,7 @@ class JobWidget(QWidget):
 
         self.group_widgets: list[GroupWidget] = []
         self.nest_widgets: list[NestWidget] = []
+        self.nest_laser_cut_parts_assembly_comboboxes: list[QComboBox] = []
 
         self.load_ui()
 
@@ -71,6 +75,7 @@ class JobWidget(QWidget):
         self.gridLayout_4.setAlignment(Qt.AlignmentFlag.AlignTop)
         self.nest_summary_layout = self.findChild(QVBoxLayout, "nest_summary_layout")
         self.nest_summary_layout.setAlignment(Qt.AlignmentFlag.AlignTop)
+        self.treeWidget_nest_summary = self.findChild(QTreeWidget, "treeWidget_nest_summary")
 
         self.pushButton_global_sheet_settings = self.findChild(
             QPushButton, "pushButton_global_sheet_settings"
@@ -114,7 +119,6 @@ class JobWidget(QWidget):
             QPushButton, "pushButton_nest_summary"
         )
         self.nest_summary_widget = self.findChild(QWidget, "nest_summary_widget")
-        self.nest_summary_layout = self.findChild(QVBoxLayout, "nest_summary_layout")
         self.apply_stylesheet_to_toggle_buttons(
             self.pushButton_nest_summary, self.nest_summary_widget
         )
@@ -143,7 +147,7 @@ class JobWidget(QWidget):
         self.pushButton_get_order_number.clicked.connect(get_latest_order_number)
 
         self.comboBox_type: QComboBox = self.findChild(QComboBox, "comboBox_type")
-        self.comboBox_type.setCurrentIndex(self.job.job_status.value - 1)
+        self.comboBox_type.setCurrentIndex(self.job.status.value - 1)
         self.comboBox_type.wheelEvent = lambda event: None
         self.comboBox_type.currentTextChanged.connect(self.job_settings_changed)
         self.dateEdit_shipped: QDateEdit = self.findChild(QDateEdit, "dateEdit_shipped")
@@ -245,20 +249,20 @@ class JobWidget(QWidget):
         self.splitter = self.findChild(QSplitter, "splitter")
 
         if (
-            self.job.job_status == JobStatus.PLANNING
+            self.job.status == JobStatus.PLANNING
             and self.parent.parent.tabWidget.tabText(
                 self.parent.parent.tabWidget.currentIndex()
             )
             == "Job Planner"
         ):
             self.splitter.setSizes([0, 1])
-            self.quoting_settings_widget.setEnabled(False)
+            # self.quoting_settings_widget.setEnabled(False)
 
         self.splitter.setStretchFactor(0, 1)
         self.splitter.setStretchFactor(1, 5)
 
     def apply_stylesheet_to_toggle_buttons(self, button: QPushButton, widget: QWidget):
-        base_color = self.job.get_color()
+        base_color = JobColor.get_color(self.job.status)
         hover_color: str = lighten_color(base_color)
         pressed_color: str = darken_color(base_color)
         button.setObjectName("assembly_button_drop_menu")
@@ -333,7 +337,7 @@ QPushButton:checked:pressed#assembly_button_drop_menu {
 
     def job_settings_changed(self):
         self.job.order_number = self.doubleSpinBox_order_number.value()
-        self.job.job_status = JobStatus(self.comboBox_type.currentIndex() + 1)
+        self.job.status = JobStatus(self.comboBox_type.currentIndex() + 1)
         self.job.date_shipped = self.dateEdit_shipped.date().toString("yyyy-MM-dd")
         self.job.date_expected = self.dateEdit_expected.date().toString("yyyy-MM-dd")
         self.job.ship_to = self.textEdit_ship_to.toPlainText()
@@ -396,6 +400,7 @@ QPushButton:checked:pressed#assembly_button_drop_menu {
         for assembly in group.assemblies:
             group_widget.load_assembly(assembly)
         self.load_nests()
+        self.update_nest_summary()
 
     def group_name_renamed(self, group: Group, new_group_name: QLineEdit):
         group.name = new_group_name.text()
@@ -427,62 +432,17 @@ QPushButton:checked:pressed#assembly_button_drop_menu {
     def load_nests(self):
         self.nests_toolbox.clear()
         self.nest_widgets.clear()
+        self.nest_laser_cut_parts_assembly_comboboxes.clear()
         for nest in self.job.nests:
             nest_widget = NestWidget(nest, self)
             nest_widget.updateLaserCutPartSettings.connect(self.nest_settings_changed)
             self.nest_widgets.append(nest_widget)
-            self.nests_toolbox.addItem(nest_widget, nest.get_name(), self.job.color)
+            self.nests_toolbox.addItem(nest_widget, nest.get_name(), JobColor.get_color(self.job.status))
         self.nests_toolbox.close_all()
 
-
-
-    def generate_summary_html(self, summary_data: dict[str, dict[str, float]]):
-        sorted_summary_keys = natsorted(summary_data.keys())
-        sorted_summary = {key: summary_data[key] for key in sorted_summary_keys}
-
-        summary = '''
-        <table border="1">
-            <tr>
-                <th>Sheet</th>
-                <th>Quantity</th>
-                <th>Cut time</th>
-            </tr>
-        '''
-
-        for sheet, data in sorted_summary.get("sheets", {}).items():
-            hours = int(data['total_seconds'] // 3600)
-            minutes = int((data['total_seconds'] % 3600) // 60)
-            seconds = int(data['total_seconds'] % 60)
-            total_seconds_string = f"{hours:02d}h {minutes:02d}m {seconds:02d}s"
-            summary += f'''
-            <tr>
-                <td>{sheet}</td>
-                <td>{data['total_sheet_count']}</td>
-                <td>{total_seconds_string}</td>
-            </tr>
-            '''
-
-        summary += '''
-            <tr>
-                <th colspan="3">Material Totals</th>
-            </tr>
-        '''
-
-        for material, data in sorted_summary.get("material_total", {}).items():
-            hours = int(data['total_seconds'] // 3600)
-            minutes = int((data['total_seconds'] % 3600) // 60)
-            seconds = int(data['total_seconds'] % 60)
-            total_seconds_string = f"{hours:02d}h {minutes:02d}m {seconds:02d}s"
-            summary += f'''
-            <tr>
-                <td>{material}</td>
-                <td>{data['total_sheet_count']}</td>
-                <td>{total_seconds_string}</td>
-            </tr>
-            '''
-
-        summary += '</table>'
-        return summary
+    def update_nest_parts_assemblies(self):
+        for nest_widget in self.nest_widgets:
+            nest_widget.update_parts_assembly()
 
     def update_nest_summary(self):
         summary_data = {"sheets": {}, "material_total": {}}
@@ -519,7 +479,7 @@ QPushButton:checked:pressed#assembly_button_drop_menu {
                 item = QTreeWidgetItem([sheet, str(data['total_sheet_count']), total_seconds_string])
                 self.treeWidget_nest_summary.addTopLevelItem(item)
 
-            materials_item = QTreeWidgetItem(self.treeWidget_nest_summary, ["Materials"])
+            materials_item = QTreeWidgetItem(self.treeWidget_nest_summary, ["Materials Total"])
             materials_item.setFirstColumnSpanned(True)
             for material, data in sorted_summary.get("material_total", {}).items():
                 hours = int(data['total_seconds'] // 3600)
@@ -551,6 +511,7 @@ QPushButton:checked:pressed#assembly_button_drop_menu {
 
     def changes_made(self):
         self.parent.job_changed(self.job)
+        self.update_nest_parts_assemblies()
 
     def update_tables(self):
         for group_widget in self.group_widgets:

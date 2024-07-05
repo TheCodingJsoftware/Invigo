@@ -7,10 +7,10 @@ from utils.inventory.component import Component
 from utils.inventory.components_inventory import ComponentsInventory
 from utils.inventory.laser_cut_inventory import LaserCutInventory
 from utils.inventory.laser_cut_part import LaserCutPart
+from utils.inventory.nest import Nest
 from utils.sheet_settings.sheet_settings import SheetSettings
 from utils.workspace.assembly import Assembly
 from utils.workspace.group import Group
-from utils.workspace.nest import Nest
 from utils.workspace.workspace_settings import WorkspaceSettings
 
 if TYPE_CHECKING:
@@ -27,11 +27,11 @@ class JobStatus(Enum):
 
 
 class JobColor(Enum):
-    PLANNING = ("#3daee9", JobStatus.PLANNING)
-    QUOTING = ("#eabf3e", JobStatus.QUOTING)
-    QUOTED = ("#eabf3e", JobStatus.QUOTED)
+    PLANNING = ("#eabf3e", JobStatus.PLANNING)
+    QUOTING = ("#69ea3e", JobStatus.QUOTING)
+    QUOTED = ("#69ea3e", JobStatus.QUOTED)
     TEMPLATE = ("#ea693e", JobStatus.TEMPLATE)
-    WORKSPACE = ("#69ea3e", JobStatus.WORKSPACE)
+    WORKSPACE = ("#3daee9", JobStatus.WORKSPACE)
     ARCHIVE = ("#943eea", JobStatus.ARCHIVE)
 
     @classmethod
@@ -48,13 +48,13 @@ class Job:
         self.ship_to: str = ""
         self.date_shipped: str = ""
         self.date_expected: str = ""
-        self.color: str = "#3daee9"  # default
+        self.color: str = "#eabf3e"  # default
         self.groups: list[Group] = []
         self.nests: list[Nest] = []
         self.grouped_laser_cut_parts: list[LaserCutPart] = []
 
         self.job_manager: JobManager = job_manager
-        self.job_status = JobStatus.PLANNING
+        self.status = JobStatus.PLANNING
 
         # NOTE Non serialized variables
         self.sheet_settings: SheetSettings = self.job_manager.sheet_settings
@@ -70,20 +70,6 @@ class Job:
         self.downloaded_from_server = False
 
         self.load_data(data)
-
-    def get_color(self):
-        if self.job_status == JobStatus.PLANNING:
-            return "#3daee9"
-        elif self.job_status == JobStatus.TEMPLATE:
-            return "#ea693e"
-        elif (
-            self.job_status == JobStatus.QUOTING or self.job_status == JobStatus.QUOTED
-        ):
-            return "#eabf3e"
-        elif self.job_status == JobStatus.WORKSPACE:
-            return "#69ea3e"
-        elif self.job_status == JobStatus.ARCHIVE:
-            return "#943eea"
 
     def changes_made(self):
         self.unsaved_changes = True
@@ -139,9 +125,16 @@ class Job:
         return assemblies
 
     def get_all_laser_cut_parts(self) -> list[LaserCutPart]:
+        '''Laser cut parts in all assemblies.'''
         laser_cut_parts: list[LaserCutPart] = []
         for assembly in self.get_all_assemblies():
             laser_cut_parts.extend(assembly.laser_cut_parts)
+        return laser_cut_parts
+
+    def get_all_nested_laser_cut_parts(self) -> list[LaserCutPart]:
+        laser_cut_parts: list[LaserCutPart] = []
+        for nest in self.nests:
+            laser_cut_parts.extend(nest.laser_cut_parts)
         return laser_cut_parts
 
     def get_all_components(self) -> list[Component]:
@@ -149,6 +142,7 @@ class Job:
         for assembly in self.get_all_assemblies():
             components.extend(assembly.components)
         return components
+
 
     def load_data(self, data: dict[str, dict[str, object]]):
         if not data:
@@ -159,10 +153,10 @@ class Job:
         self.ship_to = job_data.get("ship_to", "")
         self.date_shipped = job_data.get("date_shipped", "")
         self.date_expected = job_data.get("date_expected", "")
-        self.job_status = JobStatus(
+        self.status = JobStatus(
             int(job_data.get("type", 0))
         )  # Just in case we cast, trust me
-        self.color = self.get_color()
+        self.color = JobColor.get_color(self.status)
 
         nests_data = data.get("nests", {})
 
@@ -204,12 +198,12 @@ class Job:
 
         return {
             "job_data": {
-                "type": self.job_status.value,
+                "type": self.status.value,
                 "order_number": self.order_number,
                 "ship_to": self.ship_to,
                 "date_shipped": self.date_shipped,
                 "date_expected": self.date_expected,
-                "color": self.get_color(),
+                "color": JobColor.get_color(self.status),
             },
             "nests": {nest.name: nest.to_dict() for nest in self.nests},
             "groups": {group.name: group.to_dict() for group in self.groups},

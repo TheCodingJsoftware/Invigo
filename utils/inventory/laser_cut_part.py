@@ -12,7 +12,7 @@ from utils.workspace.workspace_settings import WorkspaceSettings
 if TYPE_CHECKING:
     from utils.inventory.laser_cut_inventory import LaserCutInventory
     from utils.inventory.paint_inventory import PaintInventory
-    from utils.quote.nest import Nest
+    from utils.inventory.nest import Nest
 
 
 class LaserCutPart(InventoryItem):
@@ -193,6 +193,24 @@ class LaserCutPart(InventoryItem):
         for category in self.laser_cut_inventory.get_categories():
             if category.name in categories:
                 self.categories.append(category)
+
+    def load_part_data(self, data: dict[str, Union[str, int, float, bool]]):
+        '''Only updates part information from nest files.'''
+        self.machine_time: float = data.get("machine_time", 0.0)
+        self.weight: float = data.get("weight", 0.0)
+        self.part_number: str = data.get("part_number", "")
+        self.image_index: str = data.get("image_index", "")
+        self.surface_area: float = data.get("surface_area", 0.0)
+        self.cutting_length: float = data.get("cutting_length", 0.0)
+        self.file_name: str = data.get("file_name", "")
+        self.piercing_time: float = data.get("piercing_time", 0.0)
+        self.piercing_points: int = data.get("piercing_points", 0)
+        self.gauge: str = data.get("gauge", "")
+        self.material: str = data.get("material", "")
+        self.sheet_dim: str = data.get("sheet_dim", "")
+        self.part_dim: str = data.get("part_dim", "")
+        self.geofile_name: str = data.get("geofile_name", "")
+        self.quantity_in_nest = data.get("quantity_in_nest")
 
     def get_copy(self) -> "LaserCutPart":
         return copy.deepcopy(self)
