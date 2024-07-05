@@ -663,7 +663,7 @@ class Printout:
             <a data-ui="#assemblies-list"> <i>data_table</i>Assemblies List</a>
             <a data-ui="#parts-list"> <i>format_list_bulleted</i>Grouped Parts List</a>
         </div>"""
-        html += '<div class="page active" id="assemblies-layout">'
+        html += '<div class="page right active" id="assemblies-layout">'
         if self.job.groups:
             job_div = JobDiv(self.job)
             html += job_div.generate()
@@ -684,7 +684,7 @@ class Printout:
         grouped_laser_cut_parts = self.job.get_grouped_laser_cut_parts()
         grouped_components = self.job.get_grouped_components()
 
-        html += '<div class="page" id="parts-list" class="hidden">'
+        html += '<div class="page left" id="parts-list" class="hidden">'
         if grouped_laser_cut_parts and grouped_components:
             if grouped_laser_cut_parts:
                 html += '<h5 class="center-align">Laser Cut Parts:</h5>'
