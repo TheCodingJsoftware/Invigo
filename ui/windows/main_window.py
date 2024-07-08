@@ -130,8 +130,8 @@ from utils.workspace.job_manager import JobManager
 from utils.workspace.job_preferences import JobPreferences
 from utils.workspace.workspace_settings import WorkspaceSettings
 
-__version__: str = "v3.1.1"
-__updated__: str = "2024-07-08 11:51:33"
+__version__: str = "v3.1.2"
+__updated__: str = "2024-07-08 12:39:56"
 
 
 def check_folders(folders: list[str]) -> None:
@@ -310,7 +310,10 @@ class MainWindow(QMainWindow):
         self.tables_font.setItalic(self.settings_file.get_value("tables_font")["italic"])
         self.tabs: dict[Category, CustomTableWidget] = {}
         self.parts_in_inventory_name_lookup: dict[str, int] = {}
-        self.last_selected_menu_tab: str = self.settings_file.get_value("menu_tabs_order")[self.settings_file.get_value("last_toolbox_tab")]
+        try:
+            self.last_selected_menu_tab: str = self.settings_file.get_value("menu_tabs_order")[self.settings_file.get_value("last_toolbox_tab")]
+        except IndexError:
+            self.last_selected_menu_tab: str = self.settings_file.get_value("menu_tabs_order")[0]
         self.quote_nest_directories_list_widgets: dict[str, PdfTreeView] = {}
         self.quote_job_directories_list_widgets: dict[str, PdfTreeView] = {}
         self.quote_nest_information = {}
@@ -941,8 +944,13 @@ class MainWindow(QMainWindow):
                 job = self.job_planner_widget.current_job
             else:
                 job = self.job_quote_widget.current_job
-        job_plan_printout = Printout(job)
-        html = job_plan_printout.generate()
+        try:
+            job_plan_printout = Printout(job)
+            html = job_plan_printout.generate()
+        except Exception as e:
+            html = f"There was an error when generating the printout for {job.name}.\n\nPlease report the error:\n{e}"
+            msg = QMessageBox(QMessageBox.Icon.Warning, "Warning", f"Job saved, but there was an error when generating the printout for {job.name}.\n\nPlease report the error:\n{e}")
+            msg.exec()
         self.upload_job_thread(f"saved_jobs/{job.status.name.lower()}/{job.name}", job, html)
         job.unsaved_changes = False
         self.job_planner_widget.update_job_save_status(job)
