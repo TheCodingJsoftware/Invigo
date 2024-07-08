@@ -38,7 +38,7 @@ from ui.custom_widgets import (
 from ui.dialogs.add_component_dialog import AddComponentDialog
 from ui.dialogs.add_laser_cut_part_dialog import AddLaserCutPartDialog
 from ui.dialogs.add_sheet_dialog import AddSheetDialog
-from ui.window.image_viewer import QImageViewer
+from ui.windowsimage_viewer import QImageViewer
 from utils.calulations import calculate_overhead
 from utils.inventory.component import Component
 from utils.inventory.components_inventory import ComponentsInventory
