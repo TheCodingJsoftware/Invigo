@@ -733,8 +733,8 @@ class Printout:
             html += grouped_components_table.generate_components_popups()
         if all_assemblies:
             html += assembly_table.generate_assembly_popups()
-
-        html += nests_table.generate_laser_cut_part_popups()
+        if self.job.nests:
+            html += nests_table.generate_laser_cut_part_popups()
 
         html += "</main></body>"
         html += f'''<script>
