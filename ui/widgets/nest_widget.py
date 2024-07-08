@@ -34,7 +34,7 @@ class NestWidget(QWidget):
     updateNestSummary = pyqtSignal()
     updateLaserCutPartSettings = pyqtSignal(Nest)
 
-    def __init__(self, nest: Nest, parent: QWidget) -> None:
+    def __init__(self, nest: Nest, parent) -> None:
         super().__init__(parent)
         uic.loadUi("ui/widgets/nest_widget.ui", self)
 
@@ -43,6 +43,7 @@ class NestWidget(QWidget):
         self.sheet = self.nest.sheet
         self.sheets_inventory = self.parent.parent.job_manager.sheets_inventory
         self.sheet_settings = self.parent.parent.job_manager.sheet_settings
+        self.price_calculator = self.parent.price_calculator
         self.part_to_assembly: dict[str, Assembly] = {}
         self.assembly_dict: dict[str, Assembly] = {}
         self.part_assembly_comboboxes: list[QComboBox] = []
@@ -53,14 +54,17 @@ class NestWidget(QWidget):
         self.pushButton_settings = self.findChild(QPushButton, "pushButton_settings")
         self.settings_widget = self.findChild(QWidget, "settings_widget")
         self.parent.apply_stylesheet_to_toggle_buttons(self.pushButton_settings, self.settings_widget)
+        self.settings_widget.setHidden(True)
 
         self.pushButton_laser_cut_parts = self.findChild(QPushButton, "pushButton_laser_cut_parts")
         self.laser_cut_parts_widget = self.findChild(QWidget, "laser_cut_parts_widget")
         self.parent.apply_stylesheet_to_toggle_buttons(self.pushButton_laser_cut_parts, self.laser_cut_parts_widget)
+        self.laser_cut_parts_widget.setHidden(True)
 
         self.pushButton_image = self.findChild(QPushButton, "pushButton_image")
         self.image_widget_2 = self.findChild(QWidget, "image_widget_2")
         self.parent.apply_stylesheet_to_toggle_buttons(self.pushButton_image, self.image_widget_2)
+        self.image_widget_2.setHidden(True)
 
         self.label_sheet_status = self.findChild(QLabel, "label_sheet_status")
 
@@ -129,33 +133,39 @@ class NestWidget(QWidget):
             )
             self.label_image.setPixmap(scaled_pixmap)
 
+        self.label_total_cost_for_nested_parts = self.findChild(QLabel, "label_total_cost_for_nested_parts")
+        self.update_nest_cost()
         self.update_sheet_status()
 
     def update_ui_values(self):
-        self.doubleSpinBox_length.blockSignals(True)
-        self.doubleSpinBox_width.blockSignals(True)
-        self.comboBox_thickness.blockSignals(True)
-        self.comboBox_material.blockSignals(True)
+        self.block_ui_signals(True)
         self.doubleSpinBox_length.setValue(self.sheet.length)
         self.doubleSpinBox_width.setValue(self.sheet.width)
         self.comboBox_thickness.setCurrentText(self.sheet.thickness)
         self.comboBox_material.setCurrentText(self.sheet.material)
-        self.doubleSpinBox_length.blockSignals(False)
-        self.doubleSpinBox_width.blockSignals(False)
-        self.comboBox_thickness.blockSignals(False)
-        self.comboBox_material.blockSignals(False)
+        self.block_ui_signals(False)
+
+    def block_ui_signals(self, block: bool):
+        self.doubleSpinBox_length.blockSignals(block)
+        self.doubleSpinBox_width.blockSignals(block)
+        self.comboBox_thickness.blockSignals(block)
+        self.comboBox_material.blockSignals(block)
 
     def sheet_changed(self):
         self.sheet.length = self.doubleSpinBox_length.value()
         self.sheet.width = self.doubleSpinBox_width.value()
         self.sheet.material = self.comboBox_material.currentText()
         self.sheet.thickness = self.comboBox_thickness.currentText()
+        self.update_nest_cost()
+        self.parent.update_prices()
 
     def nest_changed(self):
         self.nest.sheet_count = self.doubleSpinBox_sheet_count.value()
         self.nest.sheet_cut_time = self.doubleSpinBox_sheet_cut_time.value()
         self.update_nest_cut_time()
         self.load_nest_parts()
+        self.update_nest_cost()
+        self.parent.update_prices()
 
     def set_cost_for_sheets(self, cost: float):
         self.label_cost_for_sheets.setText(f"${cost:,.2f}")
@@ -166,17 +176,22 @@ class NestWidget(QWidget):
     def update_nest_cut_time(self):
         self.label_nest_cut_time.setText(self.get_total_cutting_time())
 
+    def update_nest_cost(self):
+        self.label_total_cost_for_nested_parts.setText(f"Total Cost for Parts: ${self.price_calculator.get_nest_laser_cut_parts_cost(self.nest):,.2f}")
+        self.label_cost_for_sheets.setText(f"${self.price_calculator.get_sheet_cost(self.nest.sheet) * self.nest.sheet_count:,.2f}")
+        self.label_cutting_cost.setText(f"${self.price_calculator.get_cutting_cost(self.nest):,.2f}")
+
     def get_sheet_cut_time(self) -> str:
         total_seconds = self.nest.sheet_cut_time
-        hours = int(total_seconds // 3600)
-        minutes = int((total_seconds % 3600) // 60)
-        seconds = int(total_seconds % 60)
-        return f"{hours:02d}h {minutes:02d}m {seconds:02d}s"
+        return self.get_formatted_time(total_seconds)
 
     def get_total_cutting_time(self) -> str:
         total_seconds = self.nest.sheet_cut_time * self.nest.sheet_count
+        return self.get_formatted_time(total_seconds)
+
+    def get_formatted_time(self, total_seconds) -> str:
         hours = int(total_seconds // 3600)
-        minutes = int((total_seconds % 3600) // 60)
+        minutes = int(total_seconds % 3600 // 60)
         seconds = int(total_seconds % 60)
         return f"{hours:02d}h {minutes:02d}m {seconds:02d}s"
 

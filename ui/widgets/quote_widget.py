@@ -1724,7 +1724,7 @@ class QuoteWidget(QWidget):
         for nest, table_item_data in self.nest_items.items():
             table_item_data["cutting_cost"].setText(f"${self.get_cutting_cost(nest):,.2f}")
             table_item_data["sheet_cost"].setText(f"${nest.get_sheet_cost() * nest.sheet_count:,.2f}")
-        self.label_total_sheet_cost_2.setText(f"Total Cost for Sheets: ${self.get_total_cost_for_sheets():,.2f}")
+        self.label_total_sheet_cost_2.setText(f"Total Cost for Nested Sheets: ${self.get_total_cost_for_sheets():,.2f}")
 
     def update_cutting_time(self):
         for nest, table_item_data in self.nest_items.items():

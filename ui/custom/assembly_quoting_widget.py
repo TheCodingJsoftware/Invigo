@@ -3,6 +3,7 @@ import os
 import shutil
 from datetime import datetime
 from functools import partial
+from typing import Union
 
 from PyQt6.QtCore import Qt
 from PyQt6.QtGui import QAction, QCursor, QPixmap
@@ -43,7 +44,6 @@ from utils.threads.workspace_get_file_thread import WorkspaceDownloadFile
 from utils.threads.workspace_upload_file_thread import WorkspaceUploadThread
 from utils.workspace.assembly import Assembly
 
-
 class AssemblyQuotingWidget(AssemblyWidget):
     def __init__(self, assembly: Assembly, parent) -> None:
         super().__init__(assembly, parent)
@@ -63,6 +63,8 @@ class AssemblyQuotingWidget(AssemblyWidget):
     def load_ui(self):
         assembly_files_widget, assembly_files_layout = self.create_assembly_file_layout()
         self.assembly_files_layout.addWidget(assembly_files_widget)
+
+        self.label_total_cost_for_assembly.setHidden(False)
 
         self.assembly_image = AssemblyImage(self)
 
@@ -114,6 +116,8 @@ class AssemblyQuotingWidget(AssemblyWidget):
 
         self.sub_assemblies_toolbox = AssemblyMultiToolBox(self)
         self.sub_assembly_layout.addWidget(self.sub_assemblies_toolbox)
+
+        self.label_total_cost_for_assembly.setText(f"Total Cost for Assembly: ${self.price_calculator.get_assembly_cost(self.assembly):,.2f}")
 
         # ! JUST FOR TESTING REMOVE IN PRODUCTION
         # self.splitter.setSizes([0, 0, 0, 0])
@@ -329,6 +333,13 @@ class AssemblyQuotingWidget(AssemblyWidget):
             table_data["quantity"].setText(str(component.quantity * self.assembly.quantity))
         self.components_table.blockSignals(False)
 
+    # TODO
+    def update_components_table_prices(self):
+        self.components_table.blockSignals(True)
+        for component, table_data in self.components_table_items.items():
+            table_data["quantity"].setText(str(component.quantity * self.assembly.quantity))
+        self.components_table.blockSignals(False)
+
     def components_table_changed(self):
         if not (component := self.get_selected_component()):
             return
@@ -429,7 +440,7 @@ class AssemblyQuotingWidget(AssemblyWidget):
 
             self.components_table.customContextMenuRequested.connect(partial(self.open_group_menu, menu))
 
-    def handle_components_table_context_menu(self, ACTION: str, selection: str | float | int):
+    def handle_components_table_context_menu(self, ACTION: str, selection: Union[str, float, int]):
         if not (selected_components := self.get_selected_components()):
             return
         for component in selected_components:
@@ -461,8 +472,8 @@ class AssemblyQuotingWidget(AssemblyWidget):
 
         image_item = QTableWidgetItem()
         try:
-            if not "images" in laser_cut_part.image_index:
-                laser_cut_part.image_index = "images/" + laser_cut_part.image_index
+            if "images" not in laser_cut_part.image_index:
+                laser_cut_part.image_index = f"images/{laser_cut_part.image_index}"
             if not laser_cut_part.image_index.endswith(".jpeg"):
                 laser_cut_part.image_index += ".jpeg"
             image = QPixmap(laser_cut_part.image_index)
@@ -536,8 +547,8 @@ class AssemblyQuotingWidget(AssemblyWidget):
         self.laser_cut_parts_table.setCellWidget(current_row, LaserCutTableColumns.PAINTING.value, painting_widget)
         self.laser_cut_part_table_items[laser_cut_part].update({"painting_widget": painting_widget})
 
-        # COGS
-        table_widget_item_paint_cost = QTableWidgetItem("$0.00")
+        # PAINT COST
+        table_widget_item_paint_cost = QTableWidgetItem(f"${self.price_calculator.get_laser_cut_part_cost_for_painting(laser_cut_part):,.2f}")
         table_widget_item_paint_cost.setTextAlignment(Qt.AlignmentFlag.AlignCenter | Qt.AlignmentFlag.AlignVCenter)
         self.laser_cut_parts_table.setItem(
             current_row,
@@ -547,7 +558,7 @@ class AssemblyQuotingWidget(AssemblyWidget):
         self.laser_cut_part_table_items[laser_cut_part].update({"paint_cost": table_widget_item_paint_cost})
 
         # COGS
-        table_widget_item_cost_of_goods = QTableWidgetItem("$0.00")
+        table_widget_item_cost_of_goods = QTableWidgetItem(f"${self.price_calculator.get_laser_cut_part_cost_of_goods(laser_cut_part):,.2f}")
         table_widget_item_cost_of_goods.setTextAlignment(Qt.AlignmentFlag.AlignCenter | Qt.AlignmentFlag.AlignVCenter)
         self.laser_cut_parts_table.setItem(
             current_row,
@@ -577,7 +588,8 @@ class AssemblyQuotingWidget(AssemblyWidget):
         self.laser_cut_part_table_items[laser_cut_part].update({"labor_cost": table_widget_item_bend_cost})
 
         # Unit Price
-        table_widget_item_unit_price = QTableWidgetItem("$0.00")
+        unit_price = self.price_calculator.get_laser_cut_part_cost(laser_cut_part)
+        table_widget_item_unit_price = QTableWidgetItem(f"${unit_price:,.2f}")
         table_widget_item_unit_price.setTextAlignment(Qt.AlignmentFlag.AlignCenter | Qt.AlignmentFlag.AlignVCenter)
         self.laser_cut_parts_table.setItem(
             current_row,
@@ -587,7 +599,7 @@ class AssemblyQuotingWidget(AssemblyWidget):
         self.laser_cut_part_table_items[laser_cut_part].update({"unit_price": table_widget_item_unit_price})
 
         # Price
-        table_widget_item_price = QTableWidgetItem("$0.00")
+        table_widget_item_price = QTableWidgetItem(f"${(unit_price * laser_cut_part.quantity * self.assembly.quantity):.2f}")
         table_widget_item_price.setTextAlignment(Qt.AlignmentFlag.AlignCenter | Qt.AlignmentFlag.AlignVCenter)
         self.laser_cut_parts_table.setItem(
             current_row,
@@ -642,6 +654,21 @@ class AssemblyQuotingWidget(AssemblyWidget):
             table_data["quantity"].setText(str(laser_cut_part.quantity * self.assembly.quantity))
         self.laser_cut_parts_table.blockSignals(False)
 
+    # TODO
+    def update_laser_cut_parts_table_prices(self):
+        self.laser_cut_parts_table.blockSignals(True)
+        for laser_cut_part, table_data in self.laser_cut_part_table_items.items():
+            unit_price = self.price_calculator.get_laser_cut_part_cost(laser_cut_part)
+            cost_of_goods = self.price_calculator.get_laser_cut_part_cost_of_goods(laser_cut_part)
+            paint_cost = self.price_calculator.get_laser_cut_part_cost_for_painting(laser_cut_part)
+            table_data["paint_cost"].setText(f"${paint_cost:,.2f}")
+            table_data["cost_of_goods"].setText(f"${cost_of_goods:,.2f}")
+            table_data["labor_cost"].setText(f"${laser_cut_part.labor_cost:,.2f}")
+            table_data["bend_cost"].setText(f"${laser_cut_part.bend_cost:,.2f}")
+            table_data["unit_price"].setText(f"${unit_price:,.2f}")
+            table_data["price"].setText(f"${(unit_price * laser_cut_part.quantity * self.assembly.quantity):,.2f}")
+        self.laser_cut_parts_table.blockSignals(False)
+
     def laser_cut_parts_table_changed(self):
         if not (laser_cut_part := self.get_selected_laser_cut_part()):
             return
@@ -664,9 +691,11 @@ class AssemblyQuotingWidget(AssemblyWidget):
         laser_cut_part.material = self.laser_cut_part_table_items[laser_cut_part]["material"].currentText()
         laser_cut_part.gauge = self.laser_cut_part_table_items[laser_cut_part]["thickness"].currentText()
         with contextlib.suppress(ValueError):
-            laser_cut_part.quantity = float(self.laser_cut_part_table_items[laser_cut_part]["quantity"].text())
+            laser_cut_part.quantity = float(self.laser_cut_part_table_items[laser_cut_part]["unit_quantity"].text())
         with contextlib.suppress(ValueError):
-            laser_cut_part.unit_quantity = float(self.laser_cut_part_table_items[laser_cut_part]["unit_quantity"].text())
+            laser_cut_part.bend_cost = float(self.laser_cut_part_table_items[laser_cut_part]["bend_cost"].text())
+        with contextlib.suppress(ValueError):
+            laser_cut_part.labor_cost = float(self.laser_cut_part_table_items[laser_cut_part]["labor_cost"].text())
         laser_cut_part.shelf_number = self.laser_cut_part_table_items[laser_cut_part]["shelf_number"].text()
         self.changes_made()
 
@@ -775,25 +804,12 @@ class AssemblyQuotingWidget(AssemblyWidget):
             )
             set_quantity_menu.addAction(action)
 
-        flow_tag_menu = QMenu("Set Flow Tag", menu)
-        for flow_tag in [f"{flow_tag}" for flow_tag in list(self.workspace_settings.get_all_laser_cut_part_flow_tags().values())]:
-            action = QAction(flow_tag, flow_tag_menu)
-            action.triggered.connect(
-                partial(
-                    self.handle_laser_cut_parts_table_context_menu,
-                    "SET_FLOW_TAG",
-                    flow_tag,
-                )
-            )
-            flow_tag_menu.addAction(action)
-
         delete_action = QAction("Delete", self)
         delete_action.triggered.connect(self.delete_selected_laser_cut_parts)
 
         menu.addMenu(material_menu)
         menu.addMenu(thickness_menu)
         menu.addMenu(set_quantity_menu)
-        menu.addMenu(flow_tag_menu)
         menu.addAction(delete_action)
 
         self.laser_cut_parts_table.customContextMenuRequested.connect(partial(self.open_group_menu, menu))
@@ -808,8 +824,6 @@ class AssemblyQuotingWidget(AssemblyWidget):
                 laser_cut_part.gauge = selection
             elif ACTION == "SET_QUANTITY":
                 laser_cut_part.quantity = float(selection)
-            elif ACTION == "SET_FLOW_TAG":
-                laser_cut_part.flow_tag = self.workspace_settings.get_flow_tag_by_name(selection)
         self.load_laser_cut_parts_table()
         self.changes_made()
 
@@ -1031,3 +1045,10 @@ class AssemblyQuotingWidget(AssemblyWidget):
         self.load_laser_cut_parts_table()
         for sub_assembly_widget in self.sub_assembly_widgets:
             sub_assembly_widget.update_tables()
+
+    def update_prices(self):
+        self.label_total_cost_for_assembly.setText(f"Total Cost for Assembly: ${self.price_calculator.get_assembly_cost(self.assembly):,.2f}")
+        self.update_laser_cut_parts_table_prices()
+        self.update_components_table_prices()
+        for sub_assembly_widget in self.sub_assembly_widgets:
+            sub_assembly_widget.update_prices()

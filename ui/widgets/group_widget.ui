@@ -45,7 +45,20 @@
        <property name="styleSheet">
         <string notr="true"/>
        </property>
-       <layout class="QVBoxLayout" name="verticalLayout_3" stretch="1,0">
+       <layout class="QVBoxLayout" name="verticalLayout_3" stretch="0,1,0">
+        <item>
+         <widget class="QLabel" name="label_total_cost_for_group">
+          <property name="text">
+           <string>Total Cost for Group: $0.00</string>
+          </property>
+          <property name="wordWrap">
+           <bool>true</bool>
+          </property>
+          <property name="textInteractionFlags">
+           <set>Qt::TextInteractionFlag::LinksAccessibleByMouse|Qt::TextInteractionFlag::TextSelectableByMouse</set>
+          </property>
+         </widget>
+        </item>
         <item>
          <layout class="QVBoxLayout" name="assemblies_layout"/>
         </item>

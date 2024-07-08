@@ -1560,7 +1560,7 @@ class MainWindow(QMainWindow):
             msg = QMessageBox(self)
             msg.setIcon(QMessageBox.Icon.Information)
             msg.setWindowTitle("Success")
-            msg.setText(f"Successfully added new Purchase Order template.")
+            msg.setText("Successfully added new Purchase Order template.")
             msg.exec()
 
         self.reload_po_menu()

@@ -10,6 +10,7 @@ from PyQt6.QtWidgets import (
     QDateEdit,
     QDoubleSpinBox,
     QGridLayout,
+    QLabel,
     QPushButton,
     QScrollArea,
     QSplitter,
@@ -28,6 +29,7 @@ from utils.colors import darken_color, lighten_color
 from utils.inventory.nest import Nest
 from utils.workspace.group import Group
 from utils.workspace.job import Job, JobStatus, JobColor
+from utils.workspace.job_price_calculator import JobPriceCalculator
 
 if TYPE_CHECKING:
     from ui.custom.job_tab import JobTab
@@ -44,6 +46,8 @@ class JobWidget(QWidget):
         self.job = job
         self.job_preferences = self.parent.job_preferences
         self.sheet_settings = self.parent.parent.sheet_settings
+        self.paint_inventory = self.parent.parent.paint_inventory
+        self.price_calculator = self.job.price_calculator
 
         self.group_widgets: list[GroupWidget] = []
         self.nest_widgets: list[NestWidget] = []
@@ -52,20 +56,10 @@ class JobWidget(QWidget):
         self.load_ui()
 
     def load_ui(self):
-        #         self.groups_widget = self.findChild(QWidget, "groups_widget")
-        #         self.groups_widget.setStyleSheet(
-        #             """
-        # QWidget#groups_widget {
-        # border: 1px solid #3daee9;
-        # border-bottom-left-radius: 10px;
-        # border-bottom-right-radius: 10px;
-        # border-top-right-radius: 0px;
-        # border-top-left-radius: 0px;
-        # }"""
-        #         )
         self.verticalLayout_4.setAlignment(Qt.AlignmentFlag.AlignTop)
         self.gridLayout_2.setAlignment(Qt.AlignmentFlag.AlignTop)
         self.verticalLayout_8.setAlignment(Qt.AlignmentFlag.AlignTop)
+
 
         self.item_quoting_options_layout = self.findChild(QVBoxLayout, "item_quoting_options_layout")
         self.item_quoting_options_layout.setAlignment(Qt.AlignmentFlag.AlignTop)
@@ -164,6 +158,7 @@ class JobWidget(QWidget):
         self.pushButton_nests.setChecked(self.job_preferences.is_nests_closed(self.job.name))
         self.nests_widget.setHidden(not self.job_preferences.is_nests_closed(self.job.name))
 
+        # TODO: Save close close/opened nest
 
         self.scrollArea = self.findChild(QScrollArea, "scrollArea")
 
@@ -218,6 +213,8 @@ class JobWidget(QWidget):
         self.comboBox_laser_cutting.wheelEvent = lambda event: None
 
         self.doubleSpinBox_cost_for_laser = self.findChild(QDoubleSpinBox, "doubleSpinBox_cost_for_laser")
+        self.doubleSpinBox_cost_for_laser.setValue(self.price_calculator.cost_for_laser)
+        self.doubleSpinBox_cost_for_laser.valueChanged.connect(self.cost_for_laser_changed)
         self.doubleSpinBox_cost_for_laser.wheelEvent = lambda event: None
 
         self.comboBox_materials = self.findChild(QComboBox, "comboBox_materials")
@@ -240,18 +237,27 @@ class JobWidget(QWidget):
 
         self.doubleSpinBox_items_overhead = self.findChild(QDoubleSpinBox, "doubleSpinBox_items_overhead")
         self.doubleSpinBox_items_overhead.wheelEvent = lambda event: None
+        self.doubleSpinBox_items_overhead.setValue(self.price_calculator.item_overhead * 100)
+        self.doubleSpinBox_items_overhead.valueChanged.connect(self.price_settings_changed)
 
         self.doubleSpinBox_items_profit_margin = self.findChild(QDoubleSpinBox, "doubleSpinBox_items_profit_margin")
         self.doubleSpinBox_items_profit_margin.wheelEvent = lambda event: None
+        self.doubleSpinBox_items_profit_margin.setValue(self.price_calculator.item_profit_margin * 100)
+        self.doubleSpinBox_items_profit_margin.valueChanged.connect(self.price_settings_changed)
 
         self.pushButton_item_to_sheet = self.findChild(QPushButton, "pushButton_item_to_sheet")
-        self.pushButton_item_to_sheet.wheelEvent = lambda event: None
+        self.pushButton_item_to_sheet.setChecked(self.price_calculator.match_item_cogs_to_sheet)
+        self.pushButton_item_to_sheet.clicked.connect(self.match_item_to_sheet_toggled)
 
         self.doubleSpinBox_sheets_overhead = self.findChild(QDoubleSpinBox, "doubleSpinBox_sheets_overhead")
         self.doubleSpinBox_sheets_overhead.wheelEvent = lambda event: None
+        self.doubleSpinBox_sheets_overhead.setValue(self.price_calculator.sheet_overhead * 100)
+        self.doubleSpinBox_sheets_overhead.valueChanged.connect(self.price_settings_changed)
 
         self.doubleSpinBox_sheets_profit_margin = self.findChild(QDoubleSpinBox, "doubleSpinBox_sheets_profit_margin")
         self.doubleSpinBox_sheets_profit_margin.wheelEvent = lambda event: None
+        self.doubleSpinBox_sheets_profit_margin.setValue(self.price_calculator.sheet_profit_margin * 100)
+        self.doubleSpinBox_sheets_profit_margin.valueChanged.connect(self.price_settings_changed)
 
         self.nests_toolbox = MultiToolBox(self)
         self.nests_layout.addWidget(self.nests_toolbox)
@@ -264,6 +270,14 @@ class JobWidget(QWidget):
 
         self.splitter.setStretchFactor(0, 1)
         self.splitter.setStretchFactor(1, 5)
+
+        self.label_total_cost_for_parts = self.findChild(QLabel, "label_total_cost_for_parts")
+        self.label_total_cost_for_parts.setHidden(self.job.status == JobStatus.PLANNING)
+        self.label_total_cost_for_parts.setText(f"Total Cost for Parts: ${self.price_calculator.get_job_cost():,.2f}")
+
+        self.label_total_cost_for_sheets = self.findChild(QLabel, "label_total_cost_for_sheets")
+        self.label_total_cost_for_sheets.setHidden(self.job.status == JobStatus.PLANNING)
+        self.label_total_cost_for_sheets.setText(f"Total Cost for Nested Sheets: ${self.price_calculator.get_total_cost_for_sheets():,.2f}")
 
     def apply_stylesheet_to_toggle_buttons(self, button: QPushButton, widget: QWidget):
         base_color = JobColor.get_color(self.job.status)
@@ -448,7 +462,6 @@ QPushButton:checked:pressed#assembly_button_drop_menu {
 
     def update_nest_summary(self):
         summary_data = {"sheets": {}, "material_total": {}}
-
         for nest in self.job.nests:
             if not nest.laser_cut_parts:
                 continue
@@ -487,6 +500,14 @@ QPushButton:checked:pressed#assembly_button_drop_menu {
             self.treeWidget_nest_summary.resizeColumnToContents(0)
             self.treeWidget_nest_summary.resizeColumnToContents(1)
 
+    def match_item_to_sheet_toggled(self):
+        self.price_calculator.match_item_cogs_to_sheet = self.pushButton_item_to_sheet.isChecked()
+        self.update_prices()
+
+    def cost_for_laser_changed(self):
+        self.price_calculator.cost_for_laser = self.doubleSpinBox_cost_for_laser.value()
+        self.update_prices()
+
     def update_nest_sheets(self, action: str):
         for i, nest_widget in enumerate(self.nest_widgets):
             if action == "LENGTH":
@@ -498,18 +519,38 @@ QPushButton:checked:pressed#assembly_button_drop_menu {
             elif action == "THICKNESS":
                 nest_widget.sheet.thickness = self.comboBox_thicknesses.currentText()
             nest_widget.update_ui_values()
+            nest_widget.update_nest_cost()
             self.nests_toolbox.setItemText(i, nest_widget.nest.get_name())
-
-    def nest_settings_changed(self, nest: Nest):
-        self.update_tables()
-
-    def changes_made(self):
-        self.parent.job_changed(self.job)
-        self.update_nest_parts_assemblies()
+        self.price_calculator.update_laser_cut_parts_to_sheet_price()
+        self.price_calculator.update_laser_cut_parts_cost()
 
     def update_tables(self):
         for group_widget in self.group_widgets:
             group_widget.update_tables()
+
+    def update_prices(self):
+        self.price_calculator.update_laser_cut_parts_cost()
+        self.price_calculator.update_laser_cut_parts_to_sheet_price()
+        self.label_total_cost_for_parts.setText(f"Total Cost for Parts: ${self.price_calculator.get_job_cost():,.2f}")
+        self.label_total_cost_for_sheets.setText(f"Total Cost for Nested Sheets: ${self.price_calculator.get_total_cost_for_sheets():,.2f}")
+        for group_widget in self.group_widgets:
+            group_widget.update_prices()
+
+    def price_settings_changed(self):
+        self.price_calculator.item_overhead = self.doubleSpinBox_items_overhead.value() / 100
+        self.price_calculator.item_profit_margin = self.doubleSpinBox_items_profit_margin.value() / 100
+        self.price_calculator.sheet_overhead = self.doubleSpinBox_sheets_overhead.value() / 100
+        self.price_calculator.sheet_profit_margin = self.doubleSpinBox_sheets_profit_margin.value() / 100
+        self.update_prices()
+
+    def nest_settings_changed(self, nest: Nest):
+        self.update_tables()
+        self.update_prices()
+
+    def changes_made(self):
+        self.parent.job_changed(self.job)
+        self.update_nest_parts_assemblies()
+        self.update_prices()
 
     def clear_layout(self, layout: QVBoxLayout | QWidget) -> None:
         with contextlib.suppress(AttributeError):

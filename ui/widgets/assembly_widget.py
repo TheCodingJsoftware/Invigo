@@ -1,5 +1,5 @@
 import contextlib
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Union
 
 from PyQt6 import uic
 from PyQt6.QtCore import Qt
@@ -8,6 +8,7 @@ from PyQt6.QtWidgets import (
     QComboBox,
     QDoubleSpinBox,
     QHBoxLayout,
+    QLabel,
     QMenu,
     QPushButton,
     QTableWidget,
@@ -23,21 +24,22 @@ from utils.workspace.assembly import Assembly
 from utils.workspace.job_preferences import JobPreferences
 
 if TYPE_CHECKING:
-    from ui.custom.job_tab import JobTab
+    from ui.widgets.group_widget import GroupWidget
 
 
 class AssemblyWidget(QWidget):
     def __init__(self, assembly: Assembly, parent) -> None:
         super().__init__(parent)
         uic.loadUi("ui/widgets/assembly_widget.ui", self)
+        self.parent: Union["AssemblyWidget", GroupWidget] = parent
 
-        self.parent: JobTab = parent
         self.assembly = assembly
         self.job_preferences: JobPreferences = self.parent.job_preferences
         self.sheet_settings = self.assembly.group.job.sheet_settings
         self.workspace_settings = self.assembly.group.job.workspace_settings
         self.components_inventory = self.assembly.group.job.components_inventory
         self.laser_cut_inventory = self.assembly.group.job.laser_cut_inventory
+        self.price_calculator = self.parent.price_calculator
 
         self.assembly_widget = self.findChild(QWidget, "assembly_widget")
         self.assembly_widget.setStyleSheet(
@@ -74,6 +76,8 @@ border-top-left-radius: 0px;
         self.pushButton_sub_assemblies = self.findChild(QPushButton, "pushButton_sub_assemblies")
         self.sub_assemblies_widget = self.findChild(QWidget, "sub_assemblies_widget")
         self.apply_stylesheet_to_toggle_buttons(self.pushButton_sub_assemblies, self.sub_assemblies_widget)
+
+        self.label_total_cost_for_assembly = self.findChild(QLabel, "label_total_cost_for_assembly")
 
         self.image_layout = self.findChild(QVBoxLayout, "image_layout")
         self.doubleSpinBox_quantity = self.findChild(QDoubleSpinBox, "doubleSpinBox_quantity")

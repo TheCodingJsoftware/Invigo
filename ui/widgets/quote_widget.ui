@@ -1398,7 +1398,7 @@
             </font>
            </property>
            <property name="text">
-            <string>Total Cost for Sheets: $0.00</string>
+            <string>Total Cost for Nested Sheets: $0.00</string>
            </property>
           </widget>
          </item>

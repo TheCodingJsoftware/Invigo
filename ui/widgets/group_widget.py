@@ -4,7 +4,7 @@ from typing import TYPE_CHECKING, Union
 
 from PyQt6 import uic
 from PyQt6.QtCore import Qt
-from PyQt6.QtWidgets import QPushButton, QVBoxLayout, QWidget
+from PyQt6.QtWidgets import QLabel, QPushButton, QVBoxLayout, QWidget
 
 from ui.custom.assembly_planning_widget import AssemblyPlanningWidget
 from ui.custom.assembly_quoting_widget import AssemblyQuotingWidget
@@ -12,6 +12,7 @@ from ui.custom_widgets import AssemblyMultiToolBox, QLineEdit
 from utils.workspace.assembly import Assembly
 from utils.workspace.group import Group
 from utils.workspace.job_preferences import JobPreferences
+from utils.workspace.job import JobStatus
 
 if TYPE_CHECKING:
     from ui.widgets.job_widget import JobWidget
@@ -26,9 +27,9 @@ class GroupWidget(QWidget):
         self.group = group
         self.job_preferences: JobPreferences = self.parent.job_preferences
         self.main_window_tab_widget = self.parent.parent.parent.tabWidget
+        self.price_calculator = self.parent.price_calculator
 
         self.assembly_widgets: list[Union[AssemblyPlanningWidget, AssemblyQuotingWidget]] = []
-
         self.load_ui()
 
     def load_ui(self):
@@ -51,6 +52,10 @@ border-top-left-radius: 0px;
 
         self.assemblies_toolbox = AssemblyMultiToolBox(self)
         self.assemblies_layout.addWidget(self.assemblies_toolbox)
+
+        self.label_total_cost_for_group = self.findChild(QLabel, "label_total_cost_for_group")
+        self.label_total_cost_for_group.setHidden(self.group.job.status == JobStatus.PLANNING)
+        self.label_total_cost_for_group.setText(f"Total Cost for Group: ${self.price_calculator.get_group_cost(self.group):,.2f}")
 
     def workspace_settings_changed(self):
         for assembly_widget in self.assembly_widgets:
@@ -175,6 +180,12 @@ border-top-left-radius: 0px;
     def update_tables(self):
         for assembly_widget in self.assembly_widgets:
             assembly_widget.update_tables()
+
+    def update_prices(self):
+        self.label_total_cost_for_group.setText(f"Total Cost for Group: ${self.price_calculator.get_group_cost(self.group):,.2f}")
+        for assembly_widget in self.assembly_widgets:
+            if isinstance(assembly_widget, AssemblyQuotingWidget):
+                assembly_widget.update_prices()
 
     def clear_layout(self, layout: QVBoxLayout | QWidget) -> None:
         with contextlib.suppress(AttributeError):

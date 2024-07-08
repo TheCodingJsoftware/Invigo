@@ -64,6 +64,8 @@ class AssemblyPlanningWidget(AssemblyWidget):
         assembly_files_widget, assembly_files_layout = self.create_assembly_file_layout()
         self.assembly_files_layout.addWidget(assembly_files_widget)
 
+        self.label_total_cost_for_assembly.setHidden(True)
+
         self.assembly_image = AssemblyImage(self)
 
         if self.assembly.assembly_image:
@@ -369,7 +371,7 @@ class AssemblyPlanningWidget(AssemblyWidget):
         self.components_table_items[component]["part_number"].setToolTip(component_inventory_status)
         component.part_number = self.components_table_items[component]["part_number"].text()
         with contextlib.suppress(ValueError):
-            component.quantity = float(self.components_table_items[component]["quantity"].text())
+            component.quantity = float(self.components_table_items[component]["unit_quantity"].text())
         component.notes = self.components_table_items[component]["notes"].text()
         component.shelf_number = self.components_table_items[component]["shelf_number"].text()
         self.changes_made()
