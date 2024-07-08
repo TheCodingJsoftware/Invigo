@@ -365,6 +365,7 @@ class AssemblyQuotingWidget(AssemblyWidget):
             component.quantity = float(self.components_table_items[component]["unit_quantity"].text())
         component.notes = self.components_table_items[component]["notes"].text()
         component.shelf_number = self.components_table_items[component]["shelf_number"].text()
+        self.update_component_table_quantity()
         self.changes_made()
 
     def get_component_by_name(self, component_name: str) -> Component:
@@ -697,6 +698,7 @@ class AssemblyQuotingWidget(AssemblyWidget):
         with contextlib.suppress(ValueError):
             laser_cut_part.labor_cost = float(self.laser_cut_part_table_items[laser_cut_part]["labor_cost"].text())
         laser_cut_part.shelf_number = self.laser_cut_part_table_items[laser_cut_part]["shelf_number"].text()
+        self.update_laser_cut_parts_table_quantity()
         self.changes_made()
 
     def update_laser_cut_parts_table_height(self):

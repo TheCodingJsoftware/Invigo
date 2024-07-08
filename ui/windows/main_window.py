@@ -130,8 +130,8 @@ from utils.workspace.job_manager import JobManager
 from utils.workspace.job_preferences import JobPreferences
 from utils.workspace.workspace_settings import WorkspaceSettings
 
-__version__: str = "v3.0.41"
-__updated__: str = "2024-07-03 08:36:38"
+__version__: str = "v3.1.0"
+__updated__: str = "2024-07-08 10:59:34"
 
 
 def check_folders(folders: list[str]) -> None:
@@ -209,7 +209,7 @@ sys.excepthook = excepthook
 class MainWindow(QMainWindow):
     def __init__(self):
         super().__init__()
-        uic.loadUi("ui/window/main_window.ui", self)
+        uic.loadUi("ui/windows/main_window.ui", self)
         self.threads: list[QThread] = []
         self.order_number: int = -1
         self.get_order_number_thread()

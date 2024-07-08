@@ -77,38 +77,42 @@ class NestsTable:
         return sum(nest.sheet_count for nest in self.job.nests)
 
     def generate(self) -> str:
-        sheets_table_html = """<div id="nests-layout">
+        html = """<div id="nests-layout">
                 <h5 class="center-align">Nests:</h5>
                 <article class="sheets-table border">"""
-        sheets_table_html += '<table class="small-text no-space border dynamic-table">'
-        sheets_table_html += "<thead><tr>"
-        for i, header in enumerate(self.headers):
-            sheets_table_html += f'<th data-column="{i}"><label class="checkbox"><input type="checkbox" class="column-toggle" data-column="{i}" checked><span></span></label>{header}</th>'
-        sheets_table_html += "</tr></thead>"
-        sheets_table_html += '<tbody id="table-body">'
-        for nest in self.job.nests:
-            single_hours, single_minutes, single_seconds = self.get_hours_minutes_seconds(nest.sheet_cut_time)
-            nest_hours, nest_minutes, nest_seconds = self.get_hours_minutes_seconds(nest.get_machining_time())
-            self.grand_total_cut_time += nest.get_machining_time()
-            sheets_table_html += f"""<tr>
-            <td class="small-text" data-column="0">{nest.name}</td>
-            <td class="small-text" data-column="1">{nest.sheet.thickness}</td>
-            <td class="small-text" data-column="2">{nest.sheet.material}</td>
-            <td class="small-text" data-column="3">{nest.sheet_count}</td>
-            <td class="small-text" data-column="4">{single_hours:02d}h {single_minutes:02d}m {single_seconds:02d}s</td>
-            <td class="small-text" data-column="5">{nest_hours:02d}h {nest_minutes:02d}m {nest_seconds:02d}s</td>
-            </tr>"""
+        if not self.job.nests:
+            html += "Nothing here"
+        else:
+            html += '<table class="small-text no-space border dynamic-table">'
+            html += "<thead><tr>"
+            for i, header in enumerate(self.headers):
+                html += f'<th data-column="{i}"><label class="checkbox"><input type="checkbox" class="column-toggle" data-column="{i}" checked><span></span></label>{header}</th>'
+            html += "</tr></thead>"
+            html += '<tbody id="table-body">'
+            for nest in self.job.nests:
+                single_hours, single_minutes, single_seconds = self.get_hours_minutes_seconds(nest.sheet_cut_time)
+                nest_hours, nest_minutes, nest_seconds = self.get_hours_minutes_seconds(nest.get_machining_time())
+                self.grand_total_cut_time += nest.get_machining_time()
+                html += f"""<tr>
+                <td class="small-text" data-column="0">{nest.name}</td>
+                <td class="small-text" data-column="1">{nest.sheet.thickness}</td>
+                <td class="small-text" data-column="2">{nest.sheet.material}</td>
+                <td class="small-text" data-column="3">{nest.sheet_count}</td>
+                <td class="small-text" data-column="4">{single_hours:02d}h {single_minutes:02d}m {single_seconds:02d}s</td>
+                <td class="small-text" data-column="5">{nest_hours:02d}h {nest_minutes:02d}m {nest_seconds:02d}s</td>
+                </tr>"""
 
-        grand_total_hours, grand_total_minutes, grand_total_seconds = self.get_hours_minutes_seconds(self.grand_total_cut_time)
-        sheets_table_html += f"""<tr>
-        <td class="small-text" data-column="0"></td>
-        <td class="small-text" data-column="1"></td>
-        <td class="small-text" data-column="2"></td>
-        <td class="small-text" data-column="5">{self.get_total_sheet_count()}</td>
-        <td class="small-text" data-column="6"></td>
-        <td class="small-text" data-column="7">{grand_total_hours:02d}h {grand_total_minutes:02d}m {grand_total_seconds:02d}s</td>
-        </tr></tbody></table></article></div><br>"""
-        return sheets_table_html
+            grand_total_hours, grand_total_minutes, grand_total_seconds = self.get_hours_minutes_seconds(self.grand_total_cut_time)
+            html += f"""<tr>
+            <td class="small-text" data-column="0"></td>
+            <td class="small-text" data-column="1"></td>
+            <td class="small-text" data-column="2"></td>
+            <td class="small-text" data-column="5">{self.get_total_sheet_count()}</td>
+            <td class="small-text" data-column="6"></td>
+            <td class="small-text" data-column="7">{grand_total_hours:02d}h {grand_total_minutes:02d}m {grand_total_seconds:02d}s</td></tr></tbody></table>"""
+
+        html += "</article></div><br>"
+        return html
 
 
 class SheetImages:
@@ -166,64 +170,67 @@ class SheetImages:
         html = """<div id="sheets-layout">
                 <h5 class="center-align">Sheets:</h5>
                 <article class="border"><div class="grid">"""
-        for i, nest in enumerate(self.job.nests):
-            single_hours, single_minutes, single_seconds = self.get_hours_minutes_seconds(nest.sheet_cut_time)
-            nest_hours, nest_minutes, nest_seconds = self.get_hours_minutes_seconds(nest.get_machining_time())
-            if nest.sheet_count == 1:
-                cut_time = f'<div class="small-text">Cut Time: {nest_hours:02d}h {nest_minutes:02d}m {nest_seconds:02d}s</div>'
-            else:
-                cut_time = f"""<div class="small-text">Sheet Cut Time: {single_hours:02d}h {single_minutes:02d}m {single_seconds:02d}s</div>
-                            <div class="small-text">Nest Cut Time: {nest_hours:02d}h {nest_minutes:02d}m {nest_seconds:02d}s</div>"""
-            parts_list = '<article class="no-padding" style="width: 300px;">'
-            for part in nest.laser_cut_parts:
-                parts_list += f'''
-                <a class="row padding surface-container wave" onclick="ui('#NEST-{self.format_filename(part.name)}');">
-                    <img class="round" src="{self.server_directory}/{part.image_index}">
-                    <div class="max">
-                        <h6 class="small">{part.name}</h6>
-                        <div>Quantity: {part.quantity_in_nest}</div>
-                    </div>
-                    <div class="badge none">#{part.part_number}</div>
-                </a>
-                <div class="divider"></div>'''
-            parts_list += '</article>'
-            html += f"""
-            <div class="s6">
-                <article class="nest no-padding border">
-                    <img style="margin-bottom: -50px; margin-top: -40px; z-index: -1; height: auto;" src="{self.server_directory}/image/{nest.image_path}" class="responsive small nest_image">
-                    <div class="{'right-align' if i % 2 == 0 else 'left-align'}">
-                        <button class="nested-parts transparent small small-round">
-                            <i>format_list_bulleted</i>
-                            <span>Parts</span>
-                            <div class="tooltip {'right' if i % 2 == 0 else 'left'}">
-                                {parts_list}
-                            </div>
-                        </button>
-                    </div>
-                    <div class="small-padding">
-                        <div class="row">
-                            <h5 class="small max">{nest.name}</h5>
-                            <div class="badge none">{int(nest.sheet_count)}</div>
+        if not self.job.nests:
+            html += "Nothing here"
+        else:
+            for i, nest in enumerate(self.job.nests):
+                single_hours, single_minutes, single_seconds = self.get_hours_minutes_seconds(nest.sheet_cut_time)
+                nest_hours, nest_minutes, nest_seconds = self.get_hours_minutes_seconds(nest.get_machining_time())
+                if nest.sheet_count == 1:
+                    cut_time = f'<div class="small-text">Cut Time: {nest_hours:02d}h {nest_minutes:02d}m {nest_seconds:02d}s</div>'
+                else:
+                    cut_time = f"""<div class="small-text">Sheet Cut Time: {single_hours:02d}h {single_minutes:02d}m {single_seconds:02d}s</div>
+                                <div class="small-text">Nest Cut Time: {nest_hours:02d}h {nest_minutes:02d}m {nest_seconds:02d}s</div>"""
+                parts_list = '<article class="no-padding" style="width: 300px;">'
+                for part in nest.laser_cut_parts:
+                    parts_list += f'''
+                    <a class="row padding surface-container wave" onclick="ui('#NEST-{self.format_filename(part.name)}');">
+                        <img class="round" src="{self.server_directory}/{part.image_index}">
+                        <div class="max">
+                            <h6 class="small">{part.name}</h6>
+                            <div>Quantity: {part.quantity_in_nest}</div>
                         </div>
-                        <div class="row surface-container">
-                            <div class="max">
-                                <div class="small-text">
-                                    <button class="transparent square small">
-                                        <i>qr_code_2</i>
-                                        <div class="tooltip right">
-                                            <div class="qr-item" data-name="{nest.sheet.get_name()}">
-                                                <div class="qr-code"></div>
-                                            </div>
-                                        </div>
-                                    </button>
-                                    {nest.sheet.thickness} {nest.sheet.material} {nest.sheet.get_sheet_dimension()}
+                        <div class="badge none">#{part.part_number}</div>
+                    </a>
+                    <div class="divider"></div>'''
+                parts_list += '</article>'
+                html += f"""
+                <div class="s6">
+                    <article class="nest no-padding border">
+                        <img style="margin-bottom: -50px; margin-top: -40px; z-index: -1; height: auto;" src="{self.server_directory}/image/{nest.image_path}" class="responsive small nest_image">
+                        <div class="{'right-align' if i % 2 == 0 else 'left-align'}">
+                            <button class="nested-parts transparent small small-round">
+                                <i>format_list_bulleted</i>
+                                <span>Parts</span>
+                                <div class="tooltip {'right' if i % 2 == 0 else 'left'}">
+                                    {parts_list}
                                 </div>
-                                {cut_time}
+                            </button>
+                        </div>
+                        <div class="small-padding">
+                            <div class="row">
+                                <h5 class="small max">{nest.name}</h5>
+                                <div class="badge none">{int(nest.sheet_count)}</div>
+                            </div>
+                            <div class="row surface-container">
+                                <div class="max">
+                                    <div class="small-text">
+                                        <button class="transparent square small">
+                                            <i>qr_code_2</i>
+                                            <div class="tooltip right">
+                                                <div class="qr-item" data-name="{nest.sheet.get_name()}">
+                                                    <div class="qr-code"></div>
+                                                </div>
+                                            </div>
+                                        </button>
+                                        {nest.sheet.thickness} {nest.sheet.material} {nest.sheet.get_sheet_dimension()}
+                                    </div>
+                                    {cut_time}
+                                </div>
                             </div>
                         </div>
-                    </div>
-                </article>
-            </div>"""
+                    </article>
+                </div>"""
         html += "</article></div></div><br>"
         return html
 
@@ -448,17 +455,20 @@ class AssemblyTable:
         html = """<div id="assemblies-list-layout">
                 <h5 class="center-align">Assemblies:</h5>
                 <article class="assembly-table border">"""
-        for assembly in self.job.get_all_assemblies():
-            html += f"""
-            <a class="row padding surface-container wave" onclick="ui('#A-{self.format_filename(assembly.name)}');">
-                <img src="{self.server_directory}/image/{assembly.assembly_image}" class="assembly_image round">
-                <div class="max">
-                    <h6 class="small">{assembly.name}</h6>
-                    <div>{assembly.flow_tag.get_name()}</div>
-                </div>
-                <div class="badge none">{int(assembly.quantity)}</div>
-            </a><div class="divider"></div>"""
-        html += "</article></div><br>"
+        if not self.job.get_all_assemblies():
+            html += "Nothing here"
+        else:
+            for assembly in self.job.get_all_assemblies():
+                html += f"""
+                <a class="row padding surface-container wave" onclick="ui('#A-{self.format_filename(assembly.name)}');">
+                    <img src="{self.server_directory}/image/{assembly.assembly_image}" class="assembly_image round">
+                    <div class="max">
+                        <h6 class="small">{assembly.name}</h6>
+                        <div>{assembly.flow_tag.get_name()}</div>
+                    </div>
+                    <div class="badge none">{int(assembly.quantity)}</div>
+                </a><div class="divider"></div>"""
+        html += "</*argsticle></div><br>"
         return html
 
 
@@ -668,16 +678,14 @@ class Printout:
 
         all_assemblies = self.job.get_all_assemblies()
 
-        if all_assemblies:
-            assembly_table = AssemblyTable(self.job)
-            html += assembly_table.generate()
+        assembly_table = AssemblyTable(self.job)
+        html += assembly_table.generate()
 
-        if self.job.nests:
-            sheets_table = NestsTable(self.job)
-            html += sheets_table.generate()
+        sheets_table = NestsTable(self.job)
+        html += sheets_table.generate()
 
-            nests_table = SheetImages(self.job)
-            html += nests_table.generate()
+        nests_table = SheetImages(self.job)
+        html += nests_table.generate()
 
         html += '<div id="parts-layout"><div id="page-break" class="page-break"></div>'
         html += """<div class="tabs">
@@ -708,14 +716,17 @@ class Printout:
         grouped_components = self.job.get_grouped_components()
 
         html += '<div class="page left" id="parts-list" class="hidden">'
-        if grouped_laser_cut_parts:
-            html += '<h5 class="center-align">Laser Cut Parts:</h5>'
-            grouped_laser_cut_parts_table = LaserCutPartsTable(self.job, 1, grouped_laser_cut_parts)
-            html += grouped_laser_cut_parts_table.generate()
-        if grouped_components:
-            html += '<h5 class="center-align">Components:</h5>'
-            grouped_components_table = ComponentsTable(self.job, 1, grouped_components)
-            html += grouped_components_table.generate()
+        if grouped_laser_cut_parts and grouped_components:
+            if grouped_laser_cut_parts:
+                html += '<h5 class="center-align">Laser Cut Parts:</h5>'
+                grouped_laser_cut_parts_table = LaserCutPartsTable(self.job, 1, grouped_laser_cut_parts)
+                html += grouped_laser_cut_parts_table.generate()
+            if grouped_components:
+                html += '<h5 class="center-align">Components:</h5>'
+                grouped_components_table = ComponentsTable(self.job, 1, grouped_components)
+                html += grouped_components_table.generate()
+        else:
+            html += "Nothing here"
         html += "</div>"
         html += "</div>" # for the tabs
 
@@ -731,9 +742,7 @@ class Printout:
             html += grouped_laser_cut_parts_table.generate_laser_cut_part_popups()
         if grouped_components:
             html += grouped_components_table.generate_components_popups()
-        if all_assemblies:
-            html += assembly_table.generate_assembly_popups()
-
+        html += assembly_table.generate_assembly_popups()
         html += nests_table.generate_laser_cut_part_popups()
 
         html += "</main></body>"
