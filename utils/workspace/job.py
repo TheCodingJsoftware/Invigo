@@ -4,14 +4,11 @@ from typing import TYPE_CHECKING
 from natsort import natsorted
 
 from utils.inventory.component import Component
-from utils.inventory.components_inventory import ComponentsInventory
-from utils.inventory.laser_cut_inventory import LaserCutInventory
 from utils.inventory.laser_cut_part import LaserCutPart
 from utils.inventory.nest import Nest
-from utils.sheet_settings.sheet_settings import SheetSettings
 from utils.workspace.assembly import Assembly
 from utils.workspace.group import Group
-from utils.workspace.workspace_settings import WorkspaceSettings
+from utils.workspace.job_price_calculator import JobPriceCalculator
 
 if TYPE_CHECKING:
     from utils.workspace.job_manager import JobManager
@@ -49,22 +46,27 @@ class Job:
         self.color: str = "#eabf3e"  # default
         self.groups: list[Group] = []
         self.nests: list[Nest] = []
-        self.grouped_laser_cut_parts: list[LaserCutPart] = []
-        self.grouped_components: list[Component] = []
 
         self.job_manager: JobManager = job_manager
         self.status = JobStatus.PLANNING
 
         # NOTE Non serialized variables
-        self.sheet_settings: SheetSettings = self.job_manager.sheet_settings
-        self.workspace_settings: WorkspaceSettings = self.job_manager.workspace_settings
-        self.components_inventory: ComponentsInventory = self.job_manager.components_inventory
-        self.laser_cut_inventory: LaserCutInventory = self.job_manager.laser_cut_inventory
+        self.grouped_components: list[Component] = []
+        self.grouped_laser_cut_parts: list[LaserCutPart] = []
+        self.sheet_settings = self.job_manager.sheet_settings
+        self.workspace_settings = self.job_manager.workspace_settings
+        self.components_inventory = self.job_manager.components_inventory
+        self.laser_cut_inventory = self.job_manager.laser_cut_inventory
+        self.paint_inventory = self.job_manager.paint_inventory
+        self.price_calculator = JobPriceCalculator(self, self.sheet_settings, self.paint_inventory, {})
 
         self.unsaved_changes = False
         self.downloaded_from_server = False
 
         self.load_data(data)
+
+        if self.price_calculator.match_item_cogs_to_sheet:
+            self.price_calculator.update_laser_cut_parts_to_sheet_price()
 
     def changes_made(self):
         self.unsaved_changes = True
@@ -170,6 +172,7 @@ class Job:
         self.date_expected = job_data.get("date_expected", "")
         self.status = JobStatus(int(job_data.get("type", 0)))  # Just in case we cast, trust me
         self.color = JobColor.get_color(self.status)
+        self.price_calculator.load_settings(job_data.get("price_settings", {}))
 
         nests_data = data.get("nests", {})
 
@@ -188,6 +191,7 @@ class Job:
     def to_dict(self) -> dict:
         self.unsaved_changes = False
 
+        # Updating all parts in the main inventory
         for laser_cut_part in self.get_all_laser_cut_parts():
             if inventory_laser_cut_part := self.laser_cut_inventory.get_laser_cut_part_by_name(laser_cut_part.name):
                 inventory_laser_cut_part.bending_files = laser_cut_part.bending_files
@@ -222,6 +226,7 @@ class Job:
                 "date_shipped": self.date_shipped,
                 "date_expected": self.date_expected,
                 "color": JobColor.get_color(self.status),
+                "price_settings": self.price_calculator.to_dict(),
             },
             "nests": {nest.name: nest.to_dict() for nest in self.nests},
             "groups": {group.name: group.to_dict() for group in self.groups},

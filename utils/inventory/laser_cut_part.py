@@ -78,11 +78,7 @@ class LaserCutPart(InventoryItem):
         self.welding_files: list[str] = []
         self.cnc_milling_files: list[str] = []
 
-        # NOTE Non serializable variables
-        self.unit_price: float = 0.0
-
         # NOTE Only for Quote Generator and load_nest.py
-
         self.nest: Nest = None
         self.quoted_price: float = 0.0
         self.quantity_in_nest: int = None
