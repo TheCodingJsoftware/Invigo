@@ -21,4 +21,9 @@ class Order:
         return self.expected_arrival_time == other.expected_arrival_time and self.quantity == other.quantity and self.order_pending_date == other.order_pending_date and self.notes == other.notes
 
     def to_dict(self) -> dict:
-        return {"expected_arrival_time": self.expected_arrival_time, "order_pending_quantity": self.quantity, "order_pending_date": self.order_pending_date, "notes": self.notes}
+        return {
+            "expected_arrival_time": self.expected_arrival_time,
+            "order_pending_quantity": self.quantity,
+            "order_pending_date": self.order_pending_date,
+            "notes": self.notes,
+        }

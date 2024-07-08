@@ -3,6 +3,7 @@ const checkboxConfig = {
         "picture": true,
         "part-#": true,
         "qty": true,
+        "unit-qty": false,
         "material": true,
         "thickness": true,
         "part": true,
@@ -15,6 +16,7 @@ const checkboxConfig = {
         "picture": true,
         "part-#": true,
         "qty": true,
+        "unit-qty": false,
         "material": true,
         "thickness": true,
         "part": true,
@@ -23,10 +25,11 @@ const checkboxConfig = {
         "shelf-#": true,
         "process": true,
     },
-    "packing-slip": {
+    "packingslip": {
         "picture": true,
         "part-#": true,
         "qty": true,
+        "unit-qty": false,
         "material": true,
         "thickness": true,
         "part": true,
@@ -40,142 +43,15 @@ const checkboxConfig = {
 const baseUrl = "http://invi.go/";
 const mediaQueryList = window.matchMedia('print');
 const navCheckBoxLinks = document.querySelectorAll('nav.tabbed.primary-container a');
-const checkboxes = document.querySelectorAll('.center-align .checkbox input[type="checkbox"]');
+const checkboxes = document.querySelectorAll('#printout-controls .checkbox input[type="checkbox"]');
+const pageBreakDivs = document.querySelectorAll('#page-break');
+const usePageBreakcheckbox = document.getElementById('usePageBreaks');
+const storedTargetColumn = localStorage.getItem('selectedTargetColumn');
 
-checkboxes.forEach(checkbox => {
-    checkbox.addEventListener('change', function() {
-        const layoutId = this.getAttribute('data-layout');
-        const layoutDiv = document.getElementById(layoutId);
-        if (this.checked) {
-            layoutDiv.classList.remove('hidden');
-        } else {
-            layoutDiv.classList.add('hidden');
-        }
-    });
-
-    // Initial check to set the correct visibility on page load
-    const layoutId = checkbox.getAttribute('data-layout');
-    const layoutDiv = document.getElementById(layoutId);
-    if (checkbox.checked) {
-        layoutDiv.classList.remove('hidden');
-    } else {
-        layoutDiv.classList.add('hidden');
-    }
-});
-
-$('details.assembly_details').each(function () {
-    const summary = $(this).children('summary');
-    const summaryText = summary.text();
-    const span = $('<span>').text(summaryText);
-    summary.text('').append(span);
-
-    // Initially hide the summary text if the details element is open
-    if (this.open) {
-        span.hide();
-    }
-
-    $(this).on('toggle', function () {
-        if (this.open) {
-            span.hide();
-        } else {
-            span.show();
-        }
-    });
-});
-
-mediaQueryList.addListener((mql) => {
-    if (mql.matches) {
-        hideUncheckedColumns();
-    } else {
-        restoreAllColumns();
-    }
-});
-
-navCheckBoxLinks.forEach(link => {
-    link.addEventListener('click', function (event) {
-        event.preventDefault();
-        const targetColumn = this.getAttribute('data-target');
-        toggleCheckboxes(targetColumn, navCheckBoxLinks);
-
-    });
-});
+window.addEventListener('beforeprint', hideUncheckedColumns);
+window.addEventListener('afterprint', restoreAllColumns);
 
 
-document.querySelectorAll('.qr-item').forEach(async item => {
-    const name = item.getAttribute('data-name');
-    let encodedUrl;
-    let qrDiv = item.querySelector('.qr-code');
-
-    sheetsUrl = baseUrl + "sheets_in_inventory/";
-    encodedUrl = encodeURI(sheetsUrl + name.replace(/ /g, "_"));
-    new QRCode(qrDiv, {
-        text: encodedUrl,
-        width: 256,
-        height: 256,
-        colorDark: "#000000",
-        colorLight: "#ffffff",
-        correctLevel: QRCode.CorrectLevel.H
-    });
-
-    qrDiv.style.cursor = 'pointer';
-    qrDiv.addEventListener('click', function () {
-        window.open(encodedUrl, '_blank');
-    });
-
-});
-
-function toggleCheckboxes(targetColumn, navLinks) {
-    navLinks.forEach(link => {
-        if (link.getAttribute('data-target') === targetColumn) {
-            link.classList.add('active');
-            link.classList.add('primary');
-        } else {
-            link.classList.remove('active');
-            link.classList.remove('primary');
-        }
-    });
-    const config = checkboxConfig[targetColumn];
-    if (config) {
-        for (const [column, shouldCheck] of Object.entries(config)) {
-            const checkboxes = document.querySelectorAll(`input[data-name="${column}"]`);
-            checkboxes.forEach(checkbox => {
-                if (checkbox) {
-                    checkbox.checked = shouldCheck;
-                }
-            })
-        }
-    }
-}
-
-function hideUncheckedColumns() {
-    const checkboxes = document.querySelectorAll('.column-toggle');
-    checkboxes.forEach(checkbox => {
-        if (!checkbox.checked) {
-            const column = checkbox.getAttribute('data-column');
-            const table = checkbox.closest('table');
-            const thCells = table.querySelectorAll(`th:nth-child(${parseInt(column) + 1})`);
-            const tdCells = table.querySelectorAll(`td[data-column="${column}"]`);
-
-            thCells.forEach(cell => {
-                cell.classList.add('hidden-column');
-            });
-
-            tdCells.forEach(cell => {
-                cell.classList.add('hidden-column');
-            });
-        }
-    });
-}
-
-function restoreAllColumns() {
-    const tables = document.querySelectorAll('.dynamic-table');
-    tables.forEach(table => {
-        const hiddenCells = table.querySelectorAll('.hidden-column');
-        hiddenCells.forEach(cell => {
-            cell.classList.remove('hidden-column');
-        });
-    });
-}
 class Accordion {
     constructor(el) {
         this.el = el;
@@ -256,12 +132,190 @@ class Accordion {
 document.querySelectorAll('details').forEach((el) => {
     new Accordion(el);
 });
-$('img').each(function () {
-    this.onerror = function () {
-        this.classList.add('hidden');
-    };
-});
-toggleCheckboxes("quote", navCheckBoxLinks);
 
-window.addEventListener('beforeprint', hideUncheckedColumns);
-window.addEventListener('afterprint', restoreAllColumns);
+if (usePageBreakcheckbox.checked) {
+    pageBreakDivs.forEach(div => div.classList.add('page-break'));
+} else {
+    pageBreakDivs.forEach(div => div.classList.remove('page-break'));
+}
+
+usePageBreakcheckbox.addEventListener('change', function () {
+    if (usePageBreakcheckbox.checked) {
+        pageBreakDivs.forEach(div => div.classList.add('page-break'));
+    } else {
+        pageBreakDivs.forEach(div => div.classList.remove('page-break'));
+    }
+});
+
+navCheckBoxLinks.forEach(link => {
+    link.addEventListener('click', function (event) {
+        event.preventDefault();
+        const targetColumn = this.getAttribute('data-target');
+        localStorage.setItem('selectedTargetColumn', targetColumn);
+        toggleCheckboxes(targetColumn, navCheckBoxLinks);
+        document.body.className = targetColumn;
+    });
+});
+
+
+checkboxes.forEach(checkbox => {
+    const layoutId = checkbox.getAttribute('data-layout');
+    const layoutDiv = document.getElementById(layoutId);
+    const storedState = localStorage.getItem(checkbox.id);
+
+    if (storedState === 'true') {
+        checkbox.checked = true;
+        layoutDiv.classList.remove('hidden');
+    } else if (storedState === 'false') {
+        checkbox.checked = false;
+        layoutDiv.classList.add('hidden');
+    } else {
+        checkbox.checked = true;
+        layoutDiv.classList.add('hidden');
+    }
+
+    checkbox.addEventListener('change', function () {
+        localStorage.setItem(checkbox.id, this.checked);
+        if (this.checked) {
+            layoutDiv.classList.remove('hidden');
+        } else {
+            layoutDiv.classList.add('hidden');
+        }
+    });
+});
+
+if (storedTargetColumn) {
+    toggleCheckboxes(storedTargetColumn, navCheckBoxLinks);
+    document.body.className = storedTargetColumn;
+} else {
+    const defaultTarget = navCheckBoxLinks[0].getAttribute('data-target');
+    toggleCheckboxes(defaultTarget, navCheckBoxLinks);
+    document.body.className = defaultTarget;
+}
+
+checkboxes.forEach(checkbox => {
+    const layoutId = checkbox.getAttribute('data-layout');
+    const layoutDiv = document.getElementById(layoutId);
+    if (checkbox.checked) {
+        layoutDiv.classList.remove('hidden');
+    } else {
+        layoutDiv.classList.add('hidden');
+    }
+});
+
+window.addEventListener('load', function() {
+    setTimeout(function() {
+        document.querySelectorAll('img').forEach(function(img) {
+            img.onerror = function() {
+                this.classList.add('hidden');
+            };
+            if (!img.complete || img.naturalWidth === 0) {
+                img.onerror();
+            }
+        });
+    }, 1000); // 1000 milliseconds = 1 second
+});
+
+$('details.assembly_details').each(function () {
+    const summary = $(this).children('summary');
+    const summaryText = summary.text();
+    const span = $('<span>').text(summaryText);
+    summary.text('').append(span);
+
+    // Initially hide the summary text if the details element is open
+    if (this.open) {
+        span.hide();
+    }
+
+    $(this).on('toggle', function () {
+        if (this.open) {
+            span.hide();
+        } else {
+            span.show();
+        }
+    });
+});
+
+mediaQueryList.addListener((mql) => {
+    if (mql.matches) {
+        hideUncheckedColumns();
+    } else {
+        restoreAllColumns();
+    }
+});
+
+document.querySelectorAll('.qr-item').forEach(async item => {
+    const name = item.getAttribute('data-name');
+    let encodedUrl;
+    let qrDiv = item.querySelector('.qr-code');
+
+    sheetsUrl = baseUrl + "sheets_in_inventory/";
+    encodedUrl = encodeURI(sheetsUrl + name.replace(/ /g, "_"));
+    new QRCode(qrDiv, {
+        text: encodedUrl,
+        width: 256,
+        height: 256,
+        colorDark: "#000000",
+        colorLight: "#ffffff",
+        correctLevel: QRCode.CorrectLevel.H
+    });
+
+    qrDiv.style.cursor = 'pointer';
+    qrDiv.addEventListener('click', function () {
+        window.open(encodedUrl, '_blank');
+    });
+
+});
+
+function toggleCheckboxes(targetColumn, navLinks) {
+    navLinks.forEach(link => {
+        if (link.getAttribute('data-target') === targetColumn) {
+            link.classList.add('active');
+            link.classList.add('primary');
+        } else {
+            link.classList.remove('active');
+            link.classList.remove('primary');
+        }
+    });
+    const config = checkboxConfig[targetColumn];
+    if (config) {
+        for (const [column, shouldCheck] of Object.entries(config)) {
+            const checkboxes = document.querySelectorAll(`input[data-name="${column}"]`);
+            checkboxes.forEach(checkbox => {
+                if (checkbox) {
+                    checkbox.checked = shouldCheck;
+                }
+            })
+        }
+    }
+}
+
+function hideUncheckedColumns() {
+    const checkboxes = document.querySelectorAll('.column-toggle');
+    checkboxes.forEach(checkbox => {
+        if (!checkbox.checked) {
+            const column = checkbox.getAttribute('data-column');
+            const table = checkbox.closest('table');
+            const thCells = table.querySelectorAll(`th:nth-child(${parseInt(column) + 1})`);
+            const tdCells = table.querySelectorAll(`td[data-column="${column}"]`);
+
+            thCells.forEach(cell => {
+                cell.classList.add('hidden-column');
+            });
+
+            tdCells.forEach(cell => {
+                cell.classList.add('hidden-column');
+            });
+        }
+    });
+}
+
+function restoreAllColumns() {
+    const tables = document.querySelectorAll('.dynamic-table');
+    tables.forEach(table => {
+        const hiddenCells = table.querySelectorAll('.hidden-column');
+        hiddenCells.forEach(cell => {
+            cell.classList.remove('hidden-column');
+        });
+    });
+}

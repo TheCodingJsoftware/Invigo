@@ -46,10 +46,11 @@ class WorkspaceSettings:
             statuses.extend(status.name for status in tag.statuses)
         return statuses
 
-    def get_tag(self, tag_name: str) -> Tag:
+    def get_tag(self, tag_name: str) -> Tag | None:
         for tag in self.tags:
             if tag.name == tag_name:
                 return tag
+        return None
 
     def create_tag(self, name: str) -> Tag:
         tag = Tag(name, {"attribute": {}, "statuses": {}})
@@ -133,7 +134,11 @@ Tags such as, "Staging", "Editing", and "Planning" cannot be used as flow tags, 
                 flow_tag_group.add_flow_tag(flow_tag)
 
     def to_dict(self) -> dict[str, dict[str, dict[str, dict]]]:
-        data: dict[str, dict[str, list]] = {"notes": self.notes, "tags": {}, "flow_tags": {}}
+        data: dict[str, dict[str, list]] = {
+            "notes": self.notes,
+            "tags": {},
+            "flow_tags": {},
+        }
         for tag in self.tags:
             data["tags"].update({tag.name: tag.to_dict()})
 

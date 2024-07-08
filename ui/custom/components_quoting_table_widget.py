@@ -1,27 +1,36 @@
 from datetime import datetime
+from enum import Enum, auto
 
 from PyQt6.QtCore import Qt, pyqtSignal
 from PyQt6.QtGui import QKeySequence, QPixmap
-from PyQt6.QtWidgets import QAbstractItemView, QApplication
+from PyQt6.QtWidgets import QAbstractItemView, QApplication, QTableWidgetItem
 
 from ui.custom_widgets import CustomTableWidget
+
+
+class AutoNumber(Enum):
+    def _generate_next_value_(name, start, count, last_values):
+        return count
+
+
+class ComponentsTableColumns(AutoNumber):
+    PICTURE = auto()
+    PART_NAME = auto()
+    PART_NUMBER = auto()
+    UNIT_QUANTITY = auto()
+    QUANTITY = auto()
+    UNIT_PRICE = auto()
+    PRICE = auto()
+    SHELF_NUMBER = auto()
+    NOTES = auto()
 
 
 class ComponentsQuotingTableWidget(CustomTableWidget):
     imagePasted = pyqtSignal(str, int)
 
     def __init__(self, parent=None):
-        super(ComponentsQuotingTableWidget, self).__init__(parent)
+        super().__init__(parent)
         self.row_height = 60
-
-        self.picture_column = 0
-        self.part_name_column = 1
-        self.part_number_column = 2
-        self.shelf_number_column = 3
-        self.description_column = 4
-        self.quantity_column = 5
-        self.unit_price_column = 6
-        self.price_column = 7
 
         self.horizontalHeader().setStretchLastSection(True)
         self.setShowGrid(True)
@@ -31,20 +40,32 @@ class ComponentsQuotingTableWidget(CustomTableWidget):
         self.setVerticalScrollMode(QAbstractItemView.ScrollMode.ScrollPerPixel)
         self.setHorizontalScrollMode(QAbstractItemView.ScrollMode.ScrollPerPixel)
 
-        self.set_editable_column_index([1, 2, 3, 4, 5, 6])
+        editable_columns = [
+            ComponentsTableColumns.PART_NAME,
+            ComponentsTableColumns.PART_NUMBER,
+            ComponentsTableColumns.SHELF_NUMBER,
+            ComponentsTableColumns.NOTES,
+            ComponentsTableColumns.UNIT_QUANTITY,
+            ComponentsTableColumns.UNIT_PRICE,
+        ]
+        self.set_editable_column_index([col.value for col in editable_columns])
 
-        headers: dict[str, int] = {
-            "Picture": self.picture_column,
-            "Part Name": self.part_name_column,
-            "Part #": self.part_number_column,
-            "Shelf #": self.shelf_number_column,
-            "Description": self.description_column,
-            "Qty": self.quantity_column,
-            "Unit Price": self.unit_price_column,
-            "Price": self.price_column,
+        headers = {
+            "Picture": ComponentsTableColumns.PICTURE.value,
+            "Part Name": ComponentsTableColumns.PART_NAME.value,
+            "Part #": ComponentsTableColumns.PART_NUMBER.value,
+            "Unit Quantity": ComponentsTableColumns.QUANTITY.value,
+            "Quantity": ComponentsTableColumns.QUANTITY.value,
+            "Unit Price": ComponentsTableColumns.UNIT_PRICE.value,
+            "Price": ComponentsTableColumns.PRICE.value,
+            "Shelf #": ComponentsTableColumns.SHELF_NUMBER.value,
+            "Notes": ComponentsTableColumns.NOTES.value,
         }
-        self.setColumnCount(len(list(headers.keys())))
-        self.setHorizontalHeaderLabels(headers)
+        self.setColumnCount(len(headers))
+        for header, column in headers.items():
+            self.setHorizontalHeaderItem(column, QTableWidgetItem(header))
+
+        self.setStyleSheet("border-color: transparent;")
 
     def keyPressEvent(self, event):
         if event.matches(QKeySequence.StandardKey.Paste):
@@ -63,14 +84,14 @@ class ComponentsQuotingTableWidget(CustomTableWidget):
         if not image.isNull():
             selected_items = self.selectedItems()
             for selected_item in selected_items:
-                if selected_item.column() == 0:
+                if selected_item.column() == ComponentsTableColumns.PICTURE.value:
                     item = selected_item
                     break
 
             original_width = image.width()
             original_height = image.height()
 
-            new_height = 60
+            new_height = self.row_height
             new_width = int(original_width * (new_height / original_height))
 
             pixmap = QPixmap.fromImage(image).scaled(new_width, new_height, Qt.AspectRatioMode.KeepAspectRatio)
@@ -83,3 +104,4 @@ class ComponentsQuotingTableWidget(CustomTableWidget):
             self.resizeColumnToContents(item.column())
             self.resizeRowToContents(item.row())
             self.imagePasted.emit(image_path, item.row())
+

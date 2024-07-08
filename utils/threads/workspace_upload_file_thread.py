@@ -2,7 +2,6 @@ import requests
 from PyQt6.QtCore import QThread, pyqtSignal
 
 from utils.ip_utils import get_server_ip_address, get_server_port
-from utils.json_file import JsonFile
 
 
 class WorkspaceUploadThread(QThread):

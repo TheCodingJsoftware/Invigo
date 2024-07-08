@@ -1,4 +1,3 @@
-import copy
 from typing import TYPE_CHECKING, Any, Union
 
 from utils.inventory.component import Component
@@ -49,6 +48,8 @@ class Assembly:
         self.has_sub_assemblies: bool = False
         self.flow_tag: FlowTag = None
         self.assembly_image: str = None
+        self.quantity: int = 0
+
         # NOTE Used by user workspace
         self.timers: dict[str, dict] = {}
         self.display_name: str = ""
@@ -127,6 +128,7 @@ class Assembly:
         self.flow_tag: FlowTag = FlowTag("", assembly_data.get("flow_tag", {}), self.workspace_settings)
         self.assembly_image: str = assembly_data.get("assembly_image")
         self.assembly_files: list[str] = assembly_data.get("assembly_files", [])
+        self.quantity: int = assembly_data.get("quantity", 0)
 
         self.uses_primer: bool = assembly_data.get("uses_primer", False)
         self.primer_name: str = assembly_data.get("primer_name")
@@ -162,7 +164,11 @@ class Assembly:
         self.laser_cut_parts.clear()
         laser_cut_parts = data.get("laser_cut_parts", {})
         for laser_cut_part_name, laser_cut_part_data in laser_cut_parts.items():
-            laser_cut_part = LaserCutPart(laser_cut_part_name, laser_cut_part_data, self.group.job.laser_cut_inventory)
+            laser_cut_part = LaserCutPart(
+                laser_cut_part_name,
+                laser_cut_part_data,
+                self.group.job.laser_cut_inventory,
+            )
             self.add_laser_cut_part(laser_cut_part)
 
         self.components.clear()
@@ -190,6 +196,7 @@ class Assembly:
                 "has_sub_assemblies": self.has_sub_assemblies,
                 "flow_tag": self.flow_tag.to_dict(),
                 "assembly_image": self.assembly_image,
+                "quantity": self.quantity,
                 "assembly_files": self.assembly_files,
                 "timers": self.timers,
                 "completed": self.completed,

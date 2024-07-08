@@ -1,16 +1,47 @@
 import contextlib
-import copy
-import itertools
 import os
-import sys
-import typing
 from datetime import datetime, timedelta
 from functools import partial
 
 from natsort import natsorted
-from PyQt6 import QtCore, QtGui
-from PyQt6.QtCore import QAbstractItemModel, QAbstractTableModel, QDate, QDateTime, QEvent, QMargins, QMimeData, QModelIndex, QPoint, QRegularExpression, QSettings, QSize, QSortFilterProxyModel, Qt, QTime, QTimer, QUrl, pyqtSignal
-from PyQt6.QtGui import QAction, QBrush, QClipboard, QColor, QCursor, QDrag, QDragEnterEvent, QDragLeaveEvent, QDragMoveEvent, QDropEvent, QFileSystemModel, QIcon, QKeySequence, QMouseEvent, QPainter, QPalette, QPixmap, QRegularExpressionValidator, QStandardItem, QStandardItemModel, QTextCharFormat
+from PyQt6.QtCore import (
+    QAbstractTableModel,
+    QDate,
+    QDateTime,
+    QEvent,
+    QMargins,
+    QMimeData,
+    QModelIndex,
+    QPoint,
+    QRegularExpression,
+    QSize,
+    QSortFilterProxyModel,
+    Qt,
+    QTimer,
+    QUrl,
+    pyqtSignal,
+)
+from PyQt6.QtGui import (
+    QBrush,
+    QColor,
+    QCursor,
+    QDrag,
+    QDragEnterEvent,
+    QDragLeaveEvent,
+    QDragMoveEvent,
+    QDropEvent,
+    QFileSystemModel,
+    QIcon,
+    QKeySequence,
+    QMouseEvent,
+    QPainter,
+    QPalette,
+    QPixmap,
+    QRegularExpressionValidator,
+    QStandardItem,
+    QStandardItemModel,
+    QTextCharFormat,
+)
 from PyQt6.QtWidgets import (
     QAbstractItemView,
     QAbstractSpinBox,
@@ -18,9 +49,7 @@ from PyQt6.QtWidgets import (
     QCalendarWidget,
     QCheckBox,
     QComboBox,
-    QDialog,
     QDoubleSpinBox,
-    QFormLayout,
     QGraphicsDropShadowEffect,
     QGridLayout,
     QGroupBox,
@@ -28,8 +57,6 @@ from PyQt6.QtWidgets import (
     QHeaderView,
     QLabel,
     QLineEdit,
-    QMainWindow,
-    QMenu,
     QPlainTextEdit,
     QPushButton,
     QScrollArea,
@@ -41,13 +68,9 @@ from PyQt6.QtWidgets import (
     QStyledItemDelegate,
     QStyleOptionComboBox,
     QStylePainter,
-    QTabBar,
     QTableView,
     QTableWidget,
-    QTableWidgetItem,
     QTabWidget,
-    QToolBox,
-    QToolButton,
     QTreeView,
     QTreeWidget,
     QTreeWidgetItem,
@@ -56,7 +79,6 @@ from PyQt6.QtWidgets import (
 )
 
 from utils.colors import darken_color, lighten_color
-from utils.inventory.category import Category
 from utils.workspace.assembly import Assembly
 from utils.workspace.workspace_item import WorkspaceItem
 
@@ -96,7 +118,11 @@ QPushButton#pushButton_open_in_browser:flat {
         open_external.clicked.connect(self.open_webpage.emit)
         open_external.setToolTip("Will open up the printout in your default web browser.")
 
-        delete_button = DeletePushButton(self, f"Permanently delete {quote_name}.\nThis action is irreversible.\nPlease exercise caution.", QIcon("icons/trash.png"))
+        delete_button = DeletePushButton(
+            self,
+            f"Permanently delete {quote_name}.\nThis action is irreversible.\nPlease exercise caution.",
+            QIcon("icons/trash.png"),
+        )
         delete_button.setFixedWidth(25)
         delete_button.clicked.connect(self.delete_quote.emit)
 
@@ -166,7 +192,11 @@ QPushButton#pushButton_open_in_browser:flat {
         open_external.clicked.connect(self.open_webpage.emit)
         open_external.setToolTip("Will open up the printout in your default web browser.")
 
-        delete_button = DeletePushButton(self, f"Permanently delete {quote_name}.\nThis action is irreversible.\nPlease exercise caution.", QIcon("icons/trash.png"))
+        delete_button = DeletePushButton(
+            self,
+            f"Permanently delete {quote_name}.\nThis action is irreversible.\nPlease exercise caution.",
+            QIcon("icons/trash.png"),
+        )
         delete_button.setFixedSize(25, 25)
         delete_button.clicked.connect(self.delete_quote.emit)
 
@@ -195,7 +225,7 @@ QPushButton#pushButton_open_in_browser:flat {
 
 class FilterButton(QPushButton):
     def __init__(self, name: str, parent=None):
-        super(FilterButton, self).__init__(parent)
+        super().__init__(parent)
         self.setText(name)
         # self.setFixedSize(QSize(100, self.sizeHint().height()))
         self.setCheckable(True)
@@ -242,7 +272,7 @@ class AssemblyImage(QLabel):
     imagePathDropped = pyqtSignal(str)
 
     def __init__(self, parent: QWidget | None = ...) -> None:
-        super(AssemblyImage, self).__init__(parent)
+        super().__init__(parent)
         self.setMinimumSize(120, 120)
         self.setFixedHeight(120)
         self.setAlignment(Qt.AlignmentFlag.AlignCenter)
@@ -317,7 +347,7 @@ class LoadingScreen(QSplashScreen):
 
 class SelectRangeCalendar(QCalendarWidget):
     def __init__(self, parent=None):
-        super(SelectRangeCalendar, self).__init__(parent)
+        super().__init__(parent)
         self.setObjectName("select_range_calendar")
         self.setVerticalHeaderFormat(QCalendarWidget.VerticalHeaderFormat.NoVerticalHeader)
         self.from_date: QDate = None
@@ -388,7 +418,7 @@ class ItemsGroupBox(QGroupBox):
     filesDropped = pyqtSignal(list)
 
     def __init__(self, parent: QWidget | None = ...) -> None:
-        super(ItemsGroupBox, self).__init__(parent)
+        super().__init__(parent)
         self.setTitle("Items")
         self.setObjectName("items_group_box")
 
@@ -434,7 +464,7 @@ class FilterTabWidget(QWidget):
     filterButtonPressed = pyqtSignal()
 
     def __init__(self, columns: int, parent: QWidget | None = ...) -> None:
-        super(FilterTabWidget, self).__init__(parent)
+        super().__init__(parent)
         self.tab_widget = QTabWidget()
         self.show_all_tab = QWidget(self)
         self.num_columns = columns
@@ -660,7 +690,7 @@ class RecordingWidget(QWidget):
 class MachineCutTimeSpinBox(QDoubleSpinBox):
     # ! IF VALUE IS SET TO 1, THAT IS 1 SECOND
     def __init__(self, parent=None):
-        super(MachineCutTimeSpinBox, self).__init__(parent)
+        super().__init__(parent)
         self.setRange(0, 99999999)
         self.setSingleStep(0.001)
         self.setDecimals(9)
@@ -678,15 +708,15 @@ class MachineCutTimeSpinBox(QDoubleSpinBox):
 
     def focusInEvent(self, event):
         self.setFocusPolicy(Qt.FocusPolicy.WheelFocus)
-        super(MachineCutTimeSpinBox, self).focusInEvent(event)
+        super().focusInEvent(event)
 
     def focusOutEvent(self, event):
         self.setFocusPolicy(Qt.FocusPolicy.StrongFocus)
-        super(MachineCutTimeSpinBox, self).focusOutEvent(event)
+        super().focusOutEvent(event)
 
     def wheelEvent(self, event):
         if self.hasFocus():
-            return super(MachineCutTimeSpinBox, self).wheelEvent(event)
+            return super().wheelEvent(event)
         else:
             event.ignore()
 
@@ -764,7 +794,7 @@ class MachineCutTimeSpinBox(QDoubleSpinBox):
 class TimeSpinBox(QDoubleSpinBox):
     # ! IF VALUE IS SET TO 1, THAT IS 1 DAY
     def __init__(self, parent=None):
-        super(TimeSpinBox, self).__init__(parent)
+        super().__init__(parent)
         self.setRange(0, 99999999)
         self.setSingleStep(0.001)
         self.setDecimals(9)
@@ -781,15 +811,15 @@ class TimeSpinBox(QDoubleSpinBox):
 
     def focusInEvent(self, event):
         self.setFocusPolicy(Qt.FocusPolicy.WheelFocus)
-        super(TimeSpinBox, self).focusInEvent(event)
+        super().focusInEvent(event)
 
     def focusOutEvent(self, event):
         self.setFocusPolicy(Qt.FocusPolicy.StrongFocus)
-        super(TimeSpinBox, self).focusOutEvent(event)
+        super().focusOutEvent(event)
 
     def wheelEvent(self, event):
         if self.hasFocus():
-            return super(TimeSpinBox, self).wheelEvent(event)
+            return super().wheelEvent(event)
         else:
             event.ignore()
 
@@ -869,7 +899,7 @@ class DraggableButton(QPushButton):
     longDragThreshold = 30
 
     def __init__(self, parent=None):
-        super(QPushButton, self).__init__(parent)
+        super().__init__(parent)
         self.setAcceptDrops(True)
         self.dragging = False
         self.file = None
@@ -1045,7 +1075,7 @@ class DictionaryTableModel(QAbstractTableModel):
 
 class AssemblyMultiToolBox(QWidget):
     def __init__(self, parent=None):
-        super(AssemblyMultiToolBox, self).__init__(parent)
+        super().__init__(parent)
         self.widgets: list[QWidget] = []
         self.buttons: list[QPushButton] = []
         self.input_box: list[QLineEdit] = []
@@ -1355,7 +1385,7 @@ background-color: rgba(25, 25, 25, 0.6);
 
 class MultiToolBox(QWidget):
     def __init__(self, parent=None):
-        super(MultiToolBox, self).__init__(parent)
+        super().__init__(parent)
         self.widgets: list[QWidget] = []
         self.widget_visibility: dict[int, bool] = {}
         self.buttons: list[QPushButton] = []
@@ -1452,17 +1482,7 @@ QPushButton:!checked:pressed#sheet_nest_button {
         layout.addWidget(widget)
         _widget.setLayout(layout)
         widget.setObjectName("nest_widget")
-        # widget.setAutoFillBackground(True)
         widget.setStyleSheet("QWidget#nest_widget{border: 1px solid %(base_color)s; background-color: rgba(25,25,25, 0.7); }" % {"base_color": base_color})
-
-        # shadow = QGraphicsDropShadowEffect()
-        # shadow.setBlurRadius(10)  # Adjust the blur radius as desired
-        # if widget.isVisible():
-        #     shadow.setColor(QColor(0, 0, 0, 255))
-        # else:
-        #     shadow.setColor(QColor(61, 174, 233, 255))
-        # shadow.setOffset(0, 0)  # Set the shadow offset (x, y)
-        # widget.parentWidget().setGraphicsEffect(shadow)
 
         self.buttons.append(button)
         self.widgets.append(widget)
@@ -1485,6 +1505,9 @@ QPushButton:!checked:pressed#sheet_nest_button {
     def getButton(self, index) -> QPushButton:
         return self.buttons[index] if 0 <= index < len(self.buttons) else None
 
+    def getLastButton(self) -> QPushButton:
+        return self.buttons[-1]
+
     def count(self) -> int:
         return len(self.widgets)
 
@@ -1506,14 +1529,6 @@ QPushButton:!checked:pressed#sheet_nest_button {
 
     def toggle_widget_visibility(self, widget):
         widget.setVisible(not widget.isVisible())
-        # shadow = QGraphicsDropShadowEffect()
-        # shadow.setBlurRadius(10)  # Adjust the blur radius as desired
-        # if widget.isVisible():
-        #     shadow.setColor(QColor(61, 174, 233, 255))
-        # else:
-        #     shadow.setColor(QColor(0, 0, 0, 255))
-        # shadow.setOffset(0, 0)  # Set the shadow offset (x, y)
-        # widget.parentWidget().setGraphicsEffect(shadow)
 
     def closeLastToolBox(self):
         self.buttons[-1].setChecked(True)
@@ -1528,22 +1543,12 @@ QPushButton:!checked:pressed#sheet_nest_button {
             self.buttons[index].click()
             self.buttons[index].setChecked(False)
             self.widgets[index].setVisible(True)
-            shadow = QGraphicsDropShadowEffect(self)
-            shadow.setBlurRadius(10)  # Adjust the blur radius as desired
-            shadow.setColor(QColor(61, 174, 233, 255))
-            shadow.setOffset(0, 0)  # Set the shadow offset (x, y)
-            # self.widgets[index].parentWidget().setGraphicsEffect(shadow)
 
     def close(self, index: int) -> QWidget:
         if 0 <= index < len(self.buttons):
             self.buttons[index].click()
             self.buttons[index].setChecked(True)
             self.widgets[index].setVisible(False)
-            shadow = QGraphicsDropShadowEffect(self)
-            shadow.setBlurRadius(10)  # Adjust the blur radius as desired
-            shadow.setColor(QColor(0, 0, 0, 255))  # Set the shadow color and opacity
-            shadow.setOffset(0, 0)  # Set the shadow offset (x, y)
-            # self.widgets[index].parentWidget().setGraphicsEffect(shadow)
 
     def close_all(self) -> None:
         for button, widget in zip(self.buttons, self.widgets):
@@ -1551,11 +1556,6 @@ QPushButton:!checked:pressed#sheet_nest_button {
             button.click()
             button.setChecked(True)
             widget.setVisible(False)
-            shadow = QGraphicsDropShadowEffect(self)
-            shadow.setBlurRadius(10)  # Adjust the blur radius as desired
-            shadow.setColor(QColor(0, 0, 0, 255))  # Set the shadow color and opacity
-            shadow.setOffset(0, 0)  # Set the shadow offset (x, y)
-            # widget.parentWidget().setGraphicsEffect(shadow)
 
     def open_all(self) -> None:
         for button, widget in zip(self.buttons, self.widgets):
@@ -1563,11 +1563,6 @@ QPushButton:!checked:pressed#sheet_nest_button {
             button.click()
             button.setChecked(False)
             widget.setVisible(True)
-            shadow = QGraphicsDropShadowEffect(self)
-            shadow.setBlurRadius(10)  # Adjust the blur radius as desired
-            shadow.setColor(QColor(61, 174, 233, 255))
-            shadow.setOffset(0, 0)  # Set the shadow offset (x, y)
-            # widget.parentWidget().setGraphicsEffect(shadow)
 
     def clear_layout(self, layout: QVBoxLayout | QWidget) -> None:
         with contextlib.suppress(AttributeError):
@@ -1585,7 +1580,7 @@ class TabButton(QPushButton):
     doubleClicked = pyqtSignal()
 
     def __init__(self, text: str, parent: QWidget = None):
-        super(TabButton, self).__init__(text, parent)
+        super().__init__(text, parent)
         self.setCheckable(True)
         self.setObjectName("custom_tab_button")
         self.drag_start_pos = None
@@ -1909,7 +1904,7 @@ class RecutButton(QPushButton):
 
 class FreezeTableWidget(QTableView):
     def __init__(self, model):
-        super(FreezeTableWidget, self).__init__()
+        super().__init__()
         self.setModel(model)
         self.frozenTableView = QTableView(self)
         self.init()
@@ -1957,11 +1952,11 @@ class FreezeTableWidget(QTableView):
         self.frozenTableView.setRowHeight(logicalIndex, newSize)
 
     def resizeEvent(self, event):
-        super(FreezeTableWidget, self).resizeEvent(event)
+        super().resizeEvent(event)
         self.updateFrozenTableGeometry()
 
     def moveCursor(self, cursorAction, modifiers):
-        current = super(FreezeTableWidget, self).moveCursor(cursorAction, modifiers)
+        current = super().moveCursor(cursorAction, modifiers)
         if cursorAction == self.CursorAction.MoveLeft and self.current.column() > 0 and self.visualRect(current).topLeft().x() < self.frozenTableView.columnWidth(0):
             newValue = self.horizontalScrollBar().value() + self.visualRect(current).topLeft().x() - self.frozenTableView.columnWidth(0)
             self.horizontalScrollBar().setValue(newValue)
@@ -1969,7 +1964,7 @@ class FreezeTableWidget(QTableView):
 
     def scrollTo(self, index, hint):
         if index.column() > 0:
-            super(FreezeTableWidget, self).scrollTo(index, hint)
+            super().scrollTo(index, hint)
 
     def updateFrozenTableGeometry(self):
         self.frozenTableView.setGeometry(
@@ -1989,10 +1984,10 @@ class CustomStandardItemModel(QStandardItemModel):
             item.setData(value, role)
             self.itemChanged.emit(item)
             return True
-        return super(CustomStandardItemModel, self).setData(index, value, role)
+        return super().setData(index, value, role)
 
     def index(self, row: int, column: int, parent: QModelIndex = QModelIndex()) -> QModelIndex:
-        index = super(CustomStandardItemModel, self).index(row, column, parent)
+        index = super().index(row, column, parent)
         if item := self.itemFromIndex(index):
             self.itemClicked.emit(item)
         return index
@@ -2013,7 +2008,7 @@ class CustomTableWidget(QTableWidget):
     rowChanged = pyqtSignal(int)  # Custom signal that takes a row index
 
     def __init__(self, parent=None):
-        super(CustomTableWidget, self).__init__(parent)
+        super().__init__(parent)
         self.editable_column_indexes = []
         self.setStyleSheet("QScrollBar:horizontal {height: 20px;}")
 
@@ -2036,7 +2031,7 @@ class CustomTableWidget(QTableWidget):
 
     def edit(self, index, trigger, event):
         if index.column() in self.editable_column_indexes:
-            return super(CustomTableWidget, self).edit(index, trigger, event)
+            return super().edit(index, trigger, event)
         else:
             return False
 
@@ -2048,7 +2043,7 @@ class ComponentsCustomTableWidget(CustomTableWidget):
     imagePasted = pyqtSignal(str, int)
 
     def __init__(self, parent=None):
-        super(ComponentsCustomTableWidget, self).__init__(parent)
+        super().__init__(parent)
 
     def keyPressEvent(self, event):
         if event.matches(QKeySequence.StandardKey.Paste):
@@ -2096,7 +2091,7 @@ class ComponentsCustomTableWidget(CustomTableWidget):
 
 class OrderStatusButton(QPushButton):
     def __init__(self, parent=None):
-        super(OrderStatusButton, self).__init__(parent)
+        super().__init__(parent)
         self.setCheckable(True)
         self.setText("Order Pending")
         self.setFixedWidth(150)
@@ -2155,7 +2150,9 @@ class NotesPlainTextEdit(QPlainTextEdit):
         QPlainTextEdit.__init__(self, parent)
         self.setMinimumWidth(100)
         self.setObjectName("notes")
-        self.setStyleSheet("QPlainTextEdit#notes{border-radius: 0px;}QPlainTextEdit:focus#notes{background-color: rgba(32,32,32,130); border: 1px solid #3daee9; border-radius: 0px; color: #EAE9FC;}QPlainTextEdit:hover#notes{border-color: #3daee9;border-radius: 0px; }")
+        self.setStyleSheet(
+            "QPlainTextEdit#notes{border-radius: 0px;}QPlainTextEdit:focus#notes{background-color: rgba(32,32,32,130); border: 1px solid #3daee9; border-radius: 0px; color: #EAE9FC;}QPlainTextEdit:hover#notes{border-color: #3daee9;border-radius: 0px; }"
+        )
         self.setMaximumWidth(200)
         self.setFixedHeight(60)
         self.setPlainText(text)
@@ -2183,7 +2180,7 @@ class ClickableLabel(QLabel):
     clicked = pyqtSignal()  # Signal emitted when the label is clicked
 
     def __init__(self, parent=None):
-        super(ClickableLabel, self).__init__(parent)
+        super().__init__(parent)
         self.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
 
     def mousePressEvent(self, event):
@@ -2237,7 +2234,7 @@ class RichTextPushButton(QPushButton):
 
 class HumbleDoubleSpinBox(QDoubleSpinBox):
     def __init__(self, *args):
-        super(HumbleDoubleSpinBox, self).__init__(*args)
+        super().__init__(*args)
         self.setFocusPolicy(Qt.FocusPolicy.StrongFocus)
         # self.setFixedWidth(100)
         self.setMaximum(99999999)
@@ -2246,22 +2243,22 @@ class HumbleDoubleSpinBox(QDoubleSpinBox):
 
     def focusInEvent(self, event):
         self.setFocusPolicy(Qt.FocusPolicy.WheelFocus)
-        super(HumbleDoubleSpinBox, self).focusInEvent(event)
+        super().focusInEvent(event)
 
     def focusOutEvent(self, event):
         self.setFocusPolicy(Qt.FocusPolicy.StrongFocus)
-        super(HumbleDoubleSpinBox, self).focusOutEvent(event)
+        super().focusOutEvent(event)
 
     def wheelEvent(self, event):
         if self.hasFocus():
-            return super(HumbleDoubleSpinBox, self).wheelEvent(event)
+            return super().wheelEvent(event)
         else:
             event.ignore()
 
 
 class HumbleSpinBox(QSpinBox):
     def __init__(self, *args):
-        super(HumbleSpinBox, self).__init__(*args)
+        super().__init__(*args)
         self.setFocusPolicy(Qt.FocusPolicy.StrongFocus)
         # self.setFixedWidth(60)
         self.setMaximum(99999999)
@@ -2270,22 +2267,22 @@ class HumbleSpinBox(QSpinBox):
 
     def focusInEvent(self, event):
         self.setFocusPolicy(Qt.FocusPolicy.WheelFocus)
-        super(HumbleSpinBox, self).focusInEvent(event)
+        super().focusInEvent(event)
 
     def focusOutEvent(self, event):
         self.setFocusPolicy(Qt.FocusPolicy.StrongFocus)
-        super(HumbleSpinBox, self).focusOutEvent(event)
+        super().focusOutEvent(event)
 
     def wheelEvent(self, event):
         if self.hasFocus():
-            return super(HumbleSpinBox, self).wheelEvent(event)
+            return super().wheelEvent(event)
         else:
             event.ignore()
 
 
 class CurrentQuantitySpinBox(QSpinBox):
     def __init__(self, *args):
-        super(CurrentQuantitySpinBox, self).__init__(*args)
+        super().__init__(*args)
         self.setFocusPolicy(Qt.FocusPolicy.StrongFocus)
         # self.setFixedWidth(100)
         self.setMaximum(99999999)
@@ -2296,11 +2293,11 @@ class CurrentQuantitySpinBox(QSpinBox):
 
     def focusInEvent(self, event):
         self.setFocusPolicy(Qt.FocusPolicy.WheelFocus)
-        super(CurrentQuantitySpinBox, self).focusInEvent(event)
+        super().focusInEvent(event)
 
     def focusOutEvent(self, event):
         self.setFocusPolicy(Qt.FocusPolicy.StrongFocus)
-        super(CurrentQuantitySpinBox, self).focusOutEvent(event)
+        super().focusOutEvent(event)
 
     def wheelEvent(self, event):
         event.ignore()
@@ -2308,7 +2305,7 @@ class CurrentQuantitySpinBox(QSpinBox):
 
 class HumbleComboBox(QComboBox):
     def __init__(self, scrollWidget=None, *args, **kwargs):
-        super(HumbleComboBox, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
         self.scrollWidget = scrollWidget
         self.setFocusPolicy(Qt.FocusPolicy.StrongFocus)
 
@@ -2511,7 +2508,7 @@ class DragableLayout(QWidget):
 
 class StyledItemDelegate(QStyledItemDelegate):
     def sizeHint(self, option, index):
-        item = super(StyledItemDelegate, self).sizeHint(option, index)
+        item = super().sizeHint(option, index)
         if not index.parent().isValid():
             item.setHeight(60)
         return item

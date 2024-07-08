@@ -1,10 +1,7 @@
-import contextlib
 import itertools
 import os
-import threading
 from datetime import datetime
 
-from PyQt6 import QtTest
 from PyQt6.QtCore import QThread, pyqtSignal
 
 from utils.json_file import JsonFile
@@ -56,7 +53,9 @@ class RemoveQuantityThread(QThread):
                         unit_quantity: int = inventory[category][item]["unit_quantity"]
                         current_quantity: int = inventory[category][item]["current_quantity"]
                         inventory[category][item]["current_quantity"] = current_quantity - (unit_quantity * self.multiplier)
-                        inventory[category][item]["latest_change_current_quantity"] = f"{self.username} - Changed from {current_quantity} to {current_quantity - (unit_quantity * self.multiplier)} at {datetime.now().strftime('%B %d %A %Y %I:%M:%S %p')}"
+                        inventory[category][item][
+                            "latest_change_current_quantity"
+                        ] = f"{self.username} - Changed from {current_quantity} to {current_quantity - (unit_quantity * self.multiplier)} at {datetime.now().strftime('%B %d %A %Y %I:%M:%S %p')}"
                     self.completion_count += 1
                     # self.signal.emit(f"{self.completion_count}, {self.max_item_count}")
             self.inventory.save_data(inventory)

@@ -9,7 +9,7 @@ class FileButton(QPushButton):
     longDragThreshold = 30
 
     def __init__(self, file: str, parent=None):
-        super(FileButton, self).__init__(parent)
+        super().__init__(parent)
         self.setFixedWidth(50)
         self.setAcceptDrops(True)
         self.dragging = False

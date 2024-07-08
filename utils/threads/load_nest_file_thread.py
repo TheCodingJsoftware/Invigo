@@ -9,20 +9,31 @@ from PyQt6.QtCore import QThread
 
 from utils.inventory.components_inventory import ComponentsInventory
 from utils.inventory.laser_cut_inventory import LaserCutInventory
-from utils.quote.nest import Nest
 from utils.quote.quote import Quote
 from utils.sheet_settings.sheet_settings import SheetSettings
 
 
 class LoadNestFileThread(QThread):
-    def __init__(self, parent, components_inventory: ComponentsInventory, laser_cut_inventory: LaserCutInventory, sheet_settings: SheetSettings) -> None:
+    def __init__(
+        self,
+        parent,
+        components_inventory: ComponentsInventory,
+        laser_cut_inventory: LaserCutInventory,
+        sheet_settings: SheetSettings,
+    ) -> None:
         QThread.__init__(self, parent)
         self.parent = parent
         self.components_inventory = components_inventory
         self.laser_cut_inventory = laser_cut_inventory
         self.sheet_settings = sheet_settings
 
-        self.quote = Quote("Quote", None, self.components_inventory, self.laser_cut_inventory, self.sheet_settings)
+        self.quote = Quote(
+            "Quote",
+            None,
+            self.components_inventory,
+            self.laser_cut_inventory,
+            self.sheet_settings,
+        )
 
         self.program_directory = os.path.dirname(os.path.realpath(sys.argv[0]))
 

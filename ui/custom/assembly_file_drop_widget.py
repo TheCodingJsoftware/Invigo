@@ -11,7 +11,7 @@ class AssemblyFileDropWidget(QWidget):
         files_layout: QHBoxLayout,
         parent,
     ):
-        super(AssemblyFileDropWidget, self).__init__(parent)
+        super().__init__(parent)
         self.parent = parent
         self.setAcceptDrops(True)
         self.files_layout = files_layout

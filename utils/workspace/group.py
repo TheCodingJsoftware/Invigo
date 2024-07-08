@@ -26,7 +26,10 @@ class Group:
         self.assemblies.remove(assembly)
 
     def get_assembly(self, assembly_name: str) -> Assembly:
-        return next((assembly for assembly in self.assemblies if assembly.name == assembly_name), None)
+        return next(
+            (assembly for assembly in self.assemblies if assembly.name == assembly_name),
+            None,
+        )
 
     def load_assembly(self, assembly_name: str, data: dict) -> Assembly:
         assembly = Assembly(assembly_name, data, self)
@@ -56,4 +59,7 @@ class Group:
             self.assemblies.append(assembly)
 
     def to_dict(self) -> dict:
-        return {"group_data": {"color": self.color}, "assemblies": {assembly.name: assembly.to_dict(set()) for assembly in self.assemblies}}
+        return {
+            "group_data": {"color": self.color},
+            "assemblies": {assembly.name: assembly.to_dict(set()) for assembly in self.assemblies},
+        }

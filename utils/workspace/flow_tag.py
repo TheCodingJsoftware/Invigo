@@ -1,5 +1,5 @@
 from enum import Enum
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Union
 
 from utils.workspace.tag import Tag
 
@@ -16,11 +16,12 @@ if TYPE_CHECKING:
 
 class FlowTag:
     def __init__(self, name: str, data: list[str], workspace_settings) -> None:
-
         self.name = name
         self.tags: list[Tag] = []
         self.group: Group = Group.LASER_CUT_PART
         self.workspace_settings: WorkspaceSettings = workspace_settings
+        self.add_quantity_tag: Tag = None
+        self.remove_quantity_tag: Tag = None
 
         self.load_data(data)
 
@@ -31,11 +32,14 @@ class FlowTag:
         except AttributeError:  # Tag does not exist
             return "Tag name not found"
 
-    def load_data(self, data: dict[str, str | list[str]]):
+    def load_data(self, data: dict[str, Union[str, list[str]]]):
         if not data:
             return
         self.name = data.get("name", "")
         self.group = Group(data.get("group", 0))
+
+        self.add_quantity_tag = self.workspace_settings.get_tag(data.get("add_quantity_tag"))
+        self.remove_quantity_tag = self.workspace_settings.get_tag(data.get("remove_quantity_tag"))
 
         self.tags.clear()
         tags = data.get("tags", [])
@@ -57,9 +61,21 @@ class FlowTag:
 
     def to_dict(self) -> dict[str]:
         try:
-            return {"name": self.name, "group": self.group.value, "tags": [tag.name for tag in self.tags]}
+            return {
+                "name": self.name,
+                "group": self.group.value,
+                "add_quantity_tag": self.add_quantity_tag.name if self.add_quantity_tag else None,
+                "remove_quantity_tag": self.remove_quantity_tag.name if self.remove_quantity_tag else None,
+                "tags": [tag.name for tag in self.tags],
+            }
         except AttributeError:  # no flow tag
-            return {"name": "", "group": self.group.value, "tags": []}
+            return {
+                "name": "",
+                "group": self.group.value,
+                "add_quantity_tag": self.add_quantity_tag.name if self.add_quantity_tag else None,
+                "remove_quantity_tag": self.remove_quantity_tag.name if self.remove_quantity_tag else None,
+                "tags": [],
+            }
 
     def to_list(self) -> list[str]:
         return [tag.name for tag in self.tags]

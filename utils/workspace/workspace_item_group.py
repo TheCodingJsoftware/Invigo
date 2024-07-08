@@ -1,5 +1,3 @@
-from typing import Any
-
 from utils.workspace.workspace_item import WorkspaceItem
 
 

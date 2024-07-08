@@ -1,5 +1,12 @@
 from PyQt6.QtCore import Qt, pyqtSignal
-from PyQt6.QtGui import QCursor, QDragEnterEvent, QDragLeaveEvent, QDropEvent, QMouseEvent, QPixmap
+from PyQt6.QtGui import (
+    QCursor,
+    QDragEnterEvent,
+    QDragLeaveEvent,
+    QDropEvent,
+    QMouseEvent,
+    QPixmap,
+)
 from PyQt6.QtWidgets import QLabel, QWidget
 
 
@@ -8,7 +15,7 @@ class AssemblyImage(QLabel):
     imagePathDropped = pyqtSignal(str)
 
     def __init__(self, parent: QWidget | None = ...) -> None:
-        super(AssemblyImage, self).__init__(parent)
+        super().__init__(parent)
         self.setMinimumSize(120, 120)
         self.setFixedHeight(120)
         self.setAlignment(Qt.AlignmentFlag.AlignCenter)

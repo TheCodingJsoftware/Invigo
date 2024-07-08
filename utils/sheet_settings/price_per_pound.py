@@ -1,4 +1,4 @@
-from typing import Dict, Generic, Iterator, List, Tuple, Union
+from typing import Dict, Iterator, Tuple, Union
 
 from utils.sheet_settings.material import Material
 
@@ -9,7 +9,10 @@ class Price:
         self.latest_change: str = latest_change
 
     def to_dict(self) -> Dict[str, Union[float, str]]:
-        return {"price_per_pound": self.price_per_pound, "latest_change": self.latest_change}
+        return {
+            "price_per_pound": self.price_per_pound,
+            "latest_change": self.latest_change,
+        }
 
 
 class PricePerPound:

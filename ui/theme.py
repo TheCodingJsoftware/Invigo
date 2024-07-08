@@ -1,8 +1,6 @@
 import contextlib
 import os
 
-from PyQt6 import QtGui
-
 THEME_PATH = f"{os.getcwd()}/ui/"
 
 STYLE_SHEET_PATH_DICT = {"dark": os.path.join(THEME_PATH, "dark_theme.qss")}

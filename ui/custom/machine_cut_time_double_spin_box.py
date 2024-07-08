@@ -8,11 +8,10 @@ from PyQt6.QtWidgets import QDoubleSpinBox
 class MachineCutTimeDoubleSpinBox(QDoubleSpinBox):
     # ! IF VALUE IS SET TO 1, THAT IS 1 SECOND
     def __init__(self, parent=None):
-        super(MachineCutTimeDoubleSpinBox, self).__init__(parent)
+        super().__init__(parent)
         self.setRange(0, 99999999)
         self.setSingleStep(0.001)
         self.setDecimals(9)
-        self.setFixedWidth(200)
         self.setWrapping(True)
         self.setAccelerated(True)
         self.setFocusPolicy(Qt.FocusPolicy.StrongFocus)
@@ -25,15 +24,15 @@ class MachineCutTimeDoubleSpinBox(QDoubleSpinBox):
 
     def focusInEvent(self, event):
         self.setFocusPolicy(Qt.FocusPolicy.WheelFocus)
-        super(MachineCutTimeDoubleSpinBox, self).focusInEvent(event)
+        super().focusInEvent(event)
 
     def focusOutEvent(self, event):
         self.setFocusPolicy(Qt.FocusPolicy.StrongFocus)
-        super(MachineCutTimeDoubleSpinBox, self).focusOutEvent(event)
+        super().focusOutEvent(event)
 
     def wheelEvent(self, event):
         if self.hasFocus():
-            return super(MachineCutTimeDoubleSpinBox, self).wheelEvent(event)
+            return super().wheelEvent(event)
         else:
             event.ignore()
 

@@ -1,3 +1,5 @@
+# NOTE Deprecated in favor of job_price_calculator.py
+
 def calculate_overhead(
     cost: float,
     profit_margin: float = 0.3,

@@ -34,8 +34,14 @@ class DownloadThread(QThread):
                 failed_downloads.append((file_to_download, str(e)))
 
         if failed_downloads:
-            self.signal.emit({"status": "failed", "failed_files": failed_downloads}, self.files_to_download)
+            self.signal.emit(
+                {"status": "failed", "failed_files": failed_downloads},
+                self.files_to_download,
+            )
         else:
-            self.signal.emit({"status": "success", "successful_files": successful_downloads}, self.files_to_download)
+            self.signal.emit(
+                {"status": "success", "successful_files": successful_downloads},
+                self.files_to_download,
+            )
 
         self.session.close()

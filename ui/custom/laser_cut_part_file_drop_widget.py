@@ -15,7 +15,7 @@ class LaserCutPartFileDropWidget(QWidget):
         file_category: str,
         parent,
     ):
-        super(LaserCutPartFileDropWidget, self).__init__(parent)
+        super().__init__(parent)
         self.parent = parent
         self.setAcceptDrops(True)
         self.laser_cut_part = laser_cut_part
@@ -71,7 +71,12 @@ class LaserCutPartFileDropWidget(QWidget):
             ]  # Allowed file extensions
             valid_files = all(file_path.lower().endswith(tuple(allowed_extensions)) for file_path in file_paths)
             if valid_files:
-                self.fileDropped.emit(self.files_layout, self.laser_cut_part, self.file_category, file_paths)
+                self.fileDropped.emit(
+                    self.files_layout,
+                    self.laser_cut_part,
+                    self.file_category,
+                    file_paths,
+                )
                 self.reset_label()
                 event.accept()
             else:
@@ -90,7 +95,12 @@ class LaserCutPartFileDropWidget(QWidget):
             file_dialog.setViewMode(QFileDialog.ViewMode.Detail)
             if file_dialog.exec():
                 if file_paths := file_dialog.selectedFiles():
-                    self.fileDropped.emit(self.files_layout, self.laser_cut_part, self.file_category, file_paths)
+                    self.fileDropped.emit(
+                        self.files_layout,
+                        self.laser_cut_part,
+                        self.file_category,
+                        file_paths,
+                    )
 
     def reset_label(self):
         self.label.setText("Drag Here")

@@ -1,4 +1,3 @@
-import colorsys
 import math
 import random
 
@@ -365,4 +364,8 @@ def interpolate_color(color1, color2, factor):
 
 
 def get_random_color() -> str:
-    return hsl_to_hex(random.randint(0, 360) / 360, random.randint(25, 75) / 100, random.randint(15, 50) / 100)
+    return hsl_to_hex(
+        random.randint(0, 360) / 360,
+        random.randint(25, 75) / 100,
+        random.randint(15, 50) / 100,
+    )

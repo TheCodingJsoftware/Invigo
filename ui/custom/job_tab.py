@@ -7,14 +7,14 @@ from PyQt6.QtGui import QKeySequence, QShortcut
 from PyQt6.QtWidgets import QInputDialog, QPushButton, QVBoxLayout, QWidget
 
 from ui.custom.job_tab_widget import JobTabWidget
-from ui.custom.job_widget import JobWidget
+from ui.widgets.job_widget import JobWidget
 from utils import colors
 from utils.workspace.job import Job, JobStatus
 from utils.workspace.job_manager import JobManager
 from utils.workspace.job_preferences import JobPreferences
 
 if TYPE_CHECKING:
-    from ui.main_window import MainWindow
+    from ui.window.main_window import MainWindow
 
 
 class JobTab(QWidget):
@@ -23,7 +23,7 @@ class JobTab(QWidget):
     reloadJob = pyqtSignal(JobWidget)
 
     def __init__(self, parent) -> None:
-        super(JobTab, self).__init__(parent)
+        super().__init__(parent)
         self.parent: MainWindow = parent
 
         self.job_manager: JobManager = self.parent.job_manager
@@ -66,9 +66,9 @@ class JobTab(QWidget):
             job = Job(f"Enter Job Name{len(self.job_widgets)}", {}, self.job_manager)
             job.color = colors.get_random_color()
             if self.parent.tabWidget.tabText(self.parent.tabWidget.currentIndex()) == "Job Planner":
-                job.job_status = JobStatus.PLANNING
+                job.status = JobStatus.PLANNING
             elif self.parent.tabWidget.tabText(self.parent.tabWidget.currentIndex()) == "Quote Generator 2":
-                job.job_status = JobStatus.QUOTED
+                job.status = JobStatus.QUOTED
             job.order_number = self.parent.order_number
             self.job_manager.add_job(job)
         else:
@@ -205,10 +205,16 @@ class JobTab(QWidget):
         self.update_job_save_status(job)
 
     def update_job_save_status(self, job: Job):
-        if job.unsaved_changes:
-            self.parent.label_job_save_status.setText("You have unsaved changes")
+        if job.status == JobStatus.PLANNING:
+            if job.unsaved_changes:
+                self.parent.label_job_save_status.setText("You have unsaved changes")
+            else:
+                self.parent.label_job_save_status.setText("")
         else:
-            self.parent.label_job_save_status.setText("")
+            if job.unsaved_changes:
+                self.parent.label_job_save_status_2.setText("You have unsaved changes")
+            else:
+                self.parent.label_job_save_status_2.setText("")
 
     def update_tables(self):
         for job_widget in self.job_widgets:

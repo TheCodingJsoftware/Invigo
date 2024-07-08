@@ -4,16 +4,28 @@ from utils.inventory.component import Component
 from utils.inventory.components_inventory import ComponentsInventory
 from utils.inventory.laser_cut_inventory import LaserCutInventory
 from utils.inventory.laser_cut_part import LaserCutPart
-from utils.quote.nest import Nest
+from utils.inventory.nest import Nest
 from utils.sheet_settings.sheet_settings import SheetSettings
 
 
 class Quote:
-    def __init__(self, name: str, data: dict, component_inventory: ComponentsInventory, laser_cut_inventory: LaserCutInventory, sheet_settings: SheetSettings):
+    def __init__(
+        self,
+        name: str,
+        data: dict,
+        component_inventory: ComponentsInventory,
+        laser_cut_inventory: LaserCutInventory,
+        sheet_settings: SheetSettings,
+    ):
         self.name = name
 
         if data is None:
-            data = {"settings": {}, "components": {}, "laser_cut_parts": {}, "nests": {}}
+            data = {
+                "settings": {},
+                "components": {},
+                "laser_cut_parts": {},
+                "nests": {},
+            }
 
         self.component_inventory = component_inventory
         self.laser_cut_inventory = laser_cut_inventory
@@ -79,7 +91,11 @@ class Quote:
                 if laser_cut_part.name in laser_cut_part_dict:
                     laser_cut_part_dict[laser_cut_part.name].quantity += laser_cut_part.quantity
                 else:
-                    new_laser_cut_part = LaserCutPart(laser_cut_part.name, laser_cut_part.to_dict(), self.laser_cut_inventory)
+                    new_laser_cut_part = LaserCutPart(
+                        laser_cut_part.name,
+                        laser_cut_part.to_dict(),
+                        self.laser_cut_inventory,
+                    )
                     # This is because we group the data, so all nest reference is lost.
                     new_laser_cut_part.quantity_in_nest = None
                     laser_cut_part_dict[laser_cut_part.name] = new_laser_cut_part

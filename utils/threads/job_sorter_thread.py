@@ -5,7 +5,6 @@ import traceback
 from itertools import islice
 
 from openpyxl import load_workbook
-from PIL import Image
 from PyQt6.QtCore import QThread, pyqtSignal
 
 

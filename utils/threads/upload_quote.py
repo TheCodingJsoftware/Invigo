@@ -24,7 +24,13 @@ class UploadQuote(QThread):
                 "folder": self.folder,
                 "html_file_contents": self.html_file_contents,
             }
-            files = {"quote_data": ("quote.json", json.dumps(self.quote.to_dict()), "application/json")}
+            files = {
+                "quote_data": (
+                    "quote.json",
+                    json.dumps(self.quote.to_dict()),
+                    "application/json",
+                )
+            }
             response = requests.post(self.upload_url, data=data, files=files, timeout=10)
             if response.status_code == 200:
                 self.signal.emit("Quote sent successfully")

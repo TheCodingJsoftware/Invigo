@@ -1,5 +1,4 @@
 import difflib
-import filecmp
 import os
 import pathlib
 import time

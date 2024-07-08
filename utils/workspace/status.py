@@ -12,4 +12,8 @@ class Status:
         self.next_flow_tag_message = data.get("next_flow_tag_message", "")
 
     def to_dict(self) -> dict[str, bool]:
-        return {"completed": self.completed, "start_timer": self.start_timer, "next_flow_tag_message": self.next_flow_tag_message}
+        return {
+            "completed": self.completed,
+            "start_timer": self.start_timer,
+            "next_flow_tag_message": self.next_flow_tag_message,
+        }

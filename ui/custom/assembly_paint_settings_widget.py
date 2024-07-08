@@ -1,5 +1,12 @@
 from PyQt6.QtCore import pyqtSignal
-from PyQt6.QtWidgets import QComboBox, QDoubleSpinBox, QGridLayout, QHBoxLayout, QLabel, QWidget
+from PyQt6.QtWidgets import (
+    QComboBox,
+    QDoubleSpinBox,
+    QGridLayout,
+    QHBoxLayout,
+    QLabel,
+    QWidget,
+)
 
 from utils.workspace.assembly import Assembly
 
@@ -8,7 +15,7 @@ class AssemblyPaintSettingsWidget(QWidget):
     settingsChanged = pyqtSignal()
 
     def __init__(self, assembly: Assembly, parent) -> None:
-        super(AssemblyPaintSettingsWidget, self).__init__(parent)
+        super().__init__(parent)
         self.parent = parent
         self.assembly = assembly
         self.paint_inventory = self.assembly.paint_inventory

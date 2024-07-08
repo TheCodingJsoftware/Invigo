@@ -1,5 +1,12 @@
 from PyQt6.QtCore import pyqtSignal
-from PyQt6.QtWidgets import QComboBox, QDoubleSpinBox, QGridLayout, QHBoxLayout, QLabel, QWidget
+from PyQt6.QtWidgets import (
+    QComboBox,
+    QDoubleSpinBox,
+    QGridLayout,
+    QHBoxLayout,
+    QLabel,
+    QWidget,
+)
 
 from ui.custom_widgets import CustomTableWidget
 from utils.inventory.laser_cut_part import LaserCutPart
@@ -9,7 +16,7 @@ class LasserCutPartPaintSettingsWidget(QWidget):
     settingsChanged = pyqtSignal()
 
     def __init__(self, laser_cut_part: LaserCutPart, parent: CustomTableWidget) -> None:
-        super(LasserCutPartPaintSettingsWidget, self).__init__(parent)
+        super().__init__(parent)
         self.parent: CustomTableWidget = parent
         self.laser_cut_part = laser_cut_part
         self.paint_inventory = self.laser_cut_part.paint_inventory

@@ -4,7 +4,6 @@ import shutil
 from itertools import islice
 
 import PyPDF2
-import tabula
 from openpyxl import load_workbook
 
 

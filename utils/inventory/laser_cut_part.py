@@ -12,7 +12,7 @@ from utils.workspace.workspace_settings import WorkspaceSettings
 if TYPE_CHECKING:
     from utils.inventory.laser_cut_inventory import LaserCutInventory
     from utils.inventory.paint_inventory import PaintInventory
-    from utils.quote.nest import Nest
+    from utils.inventory.nest import Nest
 
 
 class LaserCutPart(InventoryItem):
@@ -78,11 +78,7 @@ class LaserCutPart(InventoryItem):
         self.welding_files: list[str] = []
         self.cnc_milling_files: list[str] = []
 
-        # NOTE Non serializable variables
-        self.unit_price: float = 0.0
-
         # NOTE Only for Quote Generator and load_nest.py
-
         self.nest: Nest = None
         self.quoted_price: float = 0.0
         self.quantity_in_nest: int = None
@@ -116,7 +112,7 @@ class LaserCutPart(InventoryItem):
         return "".join(f"{i + 1}. {category.name}: {self.get_category_quantity(category)}\n" for i, category in enumerate(self.categories))
 
     def load_data(self, data: dict[str, Union[str, int, float, bool]]):
-        self.quantity: int = data.get("quantity", 0)
+        self.quantity: int = data.get("quantity", 0) # In the context of assemblies, quantity is unit_quantity
         self.red_quantity_limit: int = data.get("red_quantity_limit", 10)
         self.yellow_quantity_limit: int = data.get("yellow_quantity_limit", 20)
         self.category_quantities.clear()
@@ -184,6 +180,24 @@ class LaserCutPart(InventoryItem):
         for category in self.laser_cut_inventory.get_categories():
             if category.name in categories:
                 self.categories.append(category)
+
+    def load_part_data(self, data: dict[str, Union[str, int, float, bool]]):
+        """Only updates part information from nest files."""
+        self.machine_time: float = data.get("machine_time", 0.0)
+        self.weight: float = data.get("weight", 0.0)
+        self.part_number: str = data.get("part_number", "")
+        self.image_index: str = data.get("image_index", "")
+        self.surface_area: float = data.get("surface_area", 0.0)
+        self.cutting_length: float = data.get("cutting_length", 0.0)
+        self.file_name: str = data.get("file_name", "")
+        self.piercing_time: float = data.get("piercing_time", 0.0)
+        self.piercing_points: int = data.get("piercing_points", 0)
+        self.gauge: str = data.get("gauge", "")
+        self.material: str = data.get("material", "")
+        self.sheet_dim: str = data.get("sheet_dim", "")
+        self.part_dim: str = data.get("part_dim", "")
+        self.geofile_name: str = data.get("geofile_name", "")
+        self.quantity_in_nest = data.get("quantity_in_nest")
 
     def get_copy(self) -> "LaserCutPart":
         return copy.deepcopy(self)

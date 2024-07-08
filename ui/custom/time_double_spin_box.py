@@ -8,7 +8,7 @@ from PyQt6.QtWidgets import QDoubleSpinBox
 class TimeSpinBox(QDoubleSpinBox):
     # ! IF VALUE IS SET TO 1, THAT IS 1 DAY
     def __init__(self, parent=None):
-        super(TimeSpinBox, self).__init__(parent)
+        super().__init__(parent)
         self.setRange(0, 99999999)
         self.setSingleStep(0.001)
         self.setDecimals(9)
@@ -25,15 +25,15 @@ class TimeSpinBox(QDoubleSpinBox):
 
     def focusInEvent(self, event):
         self.setFocusPolicy(Qt.FocusPolicy.WheelFocus)
-        super(TimeSpinBox, self).focusInEvent(event)
+        super().focusInEvent(event)
 
     def focusOutEvent(self, event):
         self.setFocusPolicy(Qt.FocusPolicy.StrongFocus)
-        super(TimeSpinBox, self).focusOutEvent(event)
+        super().focusOutEvent(event)
 
     def wheelEvent(self, event):
         if self.hasFocus():
-            return super(TimeSpinBox, self).wheelEvent(event)
+            return super().wheelEvent(event)
         else:
             event.ignore()
 

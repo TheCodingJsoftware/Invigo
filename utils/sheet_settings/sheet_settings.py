@@ -116,7 +116,14 @@ class SheetSettings:
         self.material_id.clear()
         self.material_id.update({"cutting_methods": {}, "thickness_ids": {}})
         for material_id, cutting_methods in data["cutting_methods"].items():
-            self.material_id["cutting_methods"].update({material_id: {"name": cutting_methods["name"], "cut": cutting_methods["cut"]}})
+            self.material_id["cutting_methods"].update(
+                {
+                    material_id: {
+                        "name": cutting_methods["name"],
+                        "cut": cutting_methods["cut"],
+                    }
+                }
+            )
         for thickness_id, thickness in data["thickness_ids"].items():
             self.material_id["thickness_ids"].update({thickness_id: thickness})
 

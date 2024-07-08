@@ -1,4 +1,4 @@
-from typing import Dict, Generic, Iterator, List, Tuple, Union
+from typing import Dict, Iterator, Tuple, Union
 
 from utils.sheet_settings.material import Material
 from utils.sheet_settings.thickness import Thickness
@@ -10,7 +10,10 @@ class Pound:
         self.latest_change: str = latest_change
 
     def to_dict(self):
-        return {"pounds_per_square_foot": self.pounds_per_square_foot, "latest_change": self.latest_change}
+        return {
+            "pounds_per_square_foot": self.pounds_per_square_foot,
+            "latest_change": self.latest_change,
+        }
 
 
 class PoundsPerSquareFoot:

@@ -5,7 +5,7 @@ from datetime import datetime
 from utils.inventory.component import Component
 from utils.inventory.laser_cut_part import LaserCutPart
 from utils.ip_utils import get_server_ip_address, get_server_port
-from utils.quote.nest import Nest
+from utils.inventory.nest import Nest
 from utils.quote.quote import Quote
 from utils.workspace.job import Job
 
@@ -14,7 +14,7 @@ class CoverPage:
     def __init__(self, title: str, quote: Quote | Job) -> None:
         self.title = title
         self.quote = quote
-        self.server_directory = f"http://{get_server_ip_address()}"
+        self.server_directory = f"http://{get_server_ip_address()}:{get_server_port()}"
 
     def generate(self) -> str:
         return f"""<div id="cover-page">
@@ -63,7 +63,7 @@ class CoverPage:
 class SheetsPictures:
     def __init__(self, nests: list[Nest]) -> None:
         self.nests = nests
-        self.server_directory = f"http://{get_server_ip_address()}"
+        self.server_directory = f"http://{get_server_ip_address()}:{get_server_port()}"
 
     def generate(self) -> str:
         sheets_picture_html = '<div class="nests">'
@@ -77,12 +77,25 @@ class SheetsPictures:
 
 class SheetsTable:
     def __init__(self, nests: list[Nest]) -> None:
-        self.headers = ["Sheet Name", "Thickness", "Materiak", "Dimension", "Scrap", "Qty", "Sheet Cut Time", "Nest Cut Time"]
+        self.headers = [
+            "Sheet Name",
+            "Thickness",
+            "Materiak",
+            "Dimension",
+            "Scrap",
+            "Qty",
+            "Sheet Cut Time",
+            "Nest Cut Time",
+        ]
         self.nests = nests
         self.grand_total_cut_time = 0.0
 
     def get_hours_minutes_seconds(self, total_seconds: float) -> tuple[int, int, int]:
-        return int(total_seconds // 3600), int((total_seconds % 3600) // 60), int(total_seconds % 60)
+        return (
+            int(total_seconds // 3600),
+            int((total_seconds % 3600) // 60),
+            int(total_seconds % 60),
+        )
 
     def get_total_sheet_count(self) -> int:
         return sum(nest.sheet_count for nest in self.nests)
@@ -139,7 +152,7 @@ class LaserCutPartsTable:
             "Price",
         ]
         self.laser_cut_parts = laser_cut_parts
-        self.server_directory = f"http://{get_server_ip_address()}"
+        self.server_directory = f"http://{get_server_ip_address()}:{get_server_port()}"
 
     def generate_laser_cut_part_data(self, laser_cut_part: LaserCutPart) -> str:
         html = """<table class="dltrc" style="background:none;"><tbody>
@@ -225,8 +238,16 @@ class LaserCutPartsTable:
 class ComponentsTable:
     def __init__(self, components: list[Component]) -> None:
         self.components = components
-        self.server_directory = f"http://{get_server_ip_address()}"
-        self.headers = ["Picture", "Part Name", "Part #", "Shelf #", "Qty", "Unit Price", "Price"]
+        self.server_directory = f"http://{get_server_ip_address()}:{get_server_port()}"
+        self.headers = [
+            "Picture",
+            "Part Name",
+            "Part #",
+            "Shelf #",
+            "Qty",
+            "Unit Price",
+            "Price",
+        ]
 
     def generate_components_data(self, component: Component) -> str:
         html = """<table class="dltrc" style="background:none;"><tbody>
@@ -324,7 +345,7 @@ class QuotePrintout:
             html += '<summary style="font-size: 24px; text-align: center; margin-top: 20px;">Sheets/Nests</summary>'
             html += sheets_table.generate()
             html += sheets_pictures.generate()
-            html += '<div class="page-break"></div>'
+            html += '<div id="page-break" class="page-break"></div>'
             html += "</details>"
         if self.quote.grouped_laser_cut_parts:
             html += '<h2 id="laser-cut-parts-heading">Laser Cut Parts</h2>'
@@ -366,7 +387,7 @@ class WorkorderPrintout:
             html += '<summary style="font-size: 24px; text-align: center; margin-top: 20px;">Sheets/Nests</summary>'
             html += sheets_table.generate()
             html += sheets_pictures.generate()
-            html += '<div class="page-break"></div>'
+            html += '<div id="page-break" class="page-break"></div>'
             html += "</details>"
         if self.quote.grouped_laser_cut_parts:
             html += '<h2 id="laser-cut-parts-heading">Laser Cut Parts</h2>'
@@ -408,7 +429,7 @@ class PackingSlipPrintout:
             html += '<summary style="font-size: 24px; text-align: center; margin-top: 20px;">Sheets/Nests</summary>'
             html += sheets_table.generate()
             html += sheets_pictures.generate()
-            html += '<div class="page-break"></div>'
+            html += '<div id="page-break" class="page-break"></div>'
             html += "</details>"
         if self.quote.grouped_laser_cut_parts:
             html += '<h2 id="laser-cut-parts-heading">Laser Cut Parts</h2>'
