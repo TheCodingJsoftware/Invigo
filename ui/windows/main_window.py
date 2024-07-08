@@ -130,8 +130,8 @@ from utils.workspace.job_manager import JobManager
 from utils.workspace.job_preferences import JobPreferences
 from utils.workspace.workspace_settings import WorkspaceSettings
 
-__version__: str = "v3.1.0"
-__updated__: str = "2024-07-08 10:59:34"
+__version__: str = "v3.1.1"
+__updated__: str = "2024-07-08 11:51:33"
 
 
 def check_folders(folders: list[str]) -> None:
@@ -391,7 +391,9 @@ class MainWindow(QMainWindow):
         self.pushButton_save_as.clicked.connect(partial(self.save_quote_as, None))
 
         self.pushButton_save_job.clicked.connect(partial(self.save_job, None))
+        self.pushButton_save_job_2.clicked.connect(partial(self.save_job, None))
         self.pushButton_save_as_job.setHidden(True)
+        self.pushButton_save_as_job_2.setHidden(True)
 
         self.saved_planning_jobs_layout = self.findChild(QVBoxLayout, "saved_planning_jobs_layout")
         self.saved_planning_jobs_layout.setAlignment(Qt.AlignmentFlag.AlignTop)
@@ -935,7 +937,10 @@ class MainWindow(QMainWindow):
 
     def save_job(self, job: Job):
         if job is None:
-            job = self.job_planner_widget.current_job
+            if self.tabWidget.tabText(self.tabWidget.currentIndex()) == "Job Planner":
+                job = self.job_planner_widget.current_job
+            else:
+                job = self.job_quote_widget.current_job
         job_plan_printout = Printout(job)
         html = job_plan_printout.generate()
         self.upload_job_thread(f"saved_jobs/{job.status.name.lower()}/{job.name}", job, html)
