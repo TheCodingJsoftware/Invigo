@@ -209,7 +209,7 @@ sys.excepthook = excepthook
 class MainWindow(QMainWindow):
     def __init__(self):
         super().__init__()
-        uic.loadUi("ui/window/main_window.ui", self)
+        uic.loadUi("ui/windows/main_window.ui", self)
         self.threads: list[QThread] = []
         self.order_number: int = -1
         self.get_order_number_thread()
