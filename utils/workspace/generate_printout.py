@@ -229,7 +229,10 @@ class SheetImages:
 
 
 class LaserCutPartsTable:
-    def __init__(self, assembly_quantity: int, laser_cut_parts: list[LaserCutPart]) -> None:
+    def __init__(self, job: Job, assembly_quantity: int, laser_cut_parts: list[LaserCutPart]) -> None:
+        self.job = job
+        self.assembly_quantity = assembly_quantity
+        self.laser_cut_parts = laser_cut_parts
         self.headers = [
             "Part",
             "Material",
@@ -241,16 +244,12 @@ class LaserCutPartsTable:
             "Unit Price",
             "Price",
         ]
-        self.assembly_quantity = assembly_quantity
-        self.laser_cut_parts = laser_cut_parts
         self.server_directory = f"http://{get_server_ip_address()}:{get_server_port()}"
 
     def format_filename(self, s: str):
-        # https://gist.github.com/seanh/93666
-        valid_chars = "-_.() %s%s" % (string.ascii_letters, string.digits)
+        valid_chars = f"-_.() {string.ascii_letters}{string.digits}"
         filename = "".join(c for c in s if c in valid_chars)
-        filename = filename.replace(" ", "_")  # I don't like spaces in filenames.
-        return filename
+        return filename.replace(" ", "_")
 
     def generate_laser_cut_part_data(self, laser_cut_part: LaserCutPart) -> str:
         html = """<table class="no-space border"><tbody>
@@ -284,18 +283,18 @@ class LaserCutPartsTable:
     def get_total_cost(self) -> float:
         total = 0.0
         for laser_cut_part in self.laser_cut_parts:
-            total += round(laser_cut_part.price, 2) * laser_cut_part.quantity
+            total += self.job.price_calculator.get_laser_cut_part_cost(laser_cut_part) * laser_cut_part.quantity * self.assembly_quantity
         return total
 
     def generate(self) -> str:
-        html = '<table class="no-space border dynamic-table">'
-        html += "<thead><tr>"
+        html = '<table class="no-space border dynamic-table"><thead><tr>'
         for i, header in enumerate(self.headers):
             html += f'<th class="small-text" data-column="{i}"><label class="checkbox"><input type="checkbox" class="column-toggle" data-column="{i}" data-name="{header.lower().replace(" ", "-")}" checked><span></span></label>{header}</th>'
         html += "</tr>"
         html += "</thead>"
         html += "<tbody>"
         for laser_cut_part in self.laser_cut_parts:
+            unit_price = self.job.price_calculator.get_laser_cut_part_cost(laser_cut_part)
             html += f'''<tr>
             <td class="min" data-column="0" data-name="part">
                 <button class="extra transparent small-round" onclick="ui('#LCP-{self.format_filename(laser_cut_part.name)}');">
@@ -305,11 +304,11 @@ class LaserCutPartsTable:
             <td class="small-text" data-column="1" data-name="material">{laser_cut_part.material}</td>
             <td class="small-text" data-column="2" data-name="thickness">{laser_cut_part.gauge}</td>
             <td class="small-text" data-column="3" data-name="unit-qty">{laser_cut_part.quantity}</td>
-            <td class="small-text" data-column="4" data-name="qty">{laser_cut_part.quantity * self.assembly_quantity}</td>
+            <td class="small-text" data-column="4" data-name="qty">{(laser_cut_part.quantity * self.assembly_quantity):,.2f}</td>
             <td class="small-text min" data-column="5" data-name="process">{laser_cut_part.flow_tag.get_name()}</td>
             <td class="small-text" data-column="6" data-name="shelf-#">{laser_cut_part.shelf_number}</td>
-            <td class="small-text" data-column="7" data-name="unit-price">${laser_cut_part.price:,.2f}</td>
-            <td class="small-text" data-column="8" data-name="price">${(laser_cut_part.price * laser_cut_part.quantity):,.2f}</td>
+            <td class="small-text" data-column="7" data-name="unit-price">${unit_price:,.2f}</td>
+            <td class="small-text" data-column="8" data-name="price">${(unit_price * laser_cut_part.quantity * self.assembly_quantity):,.2f}</td>
             </tr>'''
         html += f'''<tr>
                 <th class="small-text" data-column="0" data-name="part"></th>
@@ -326,17 +325,17 @@ class LaserCutPartsTable:
 
 
 class ComponentsTable:
-    def __init__(self, assembly_quantity: int, components: list[Component]) -> None:
+    def __init__(self, job: Job, assembly_quantity: int, components: list[Component]) -> None:
+        self.job = job
         self.assembly_quantity = assembly_quantity
         self.components = components
         self.server_directory = f"http://{get_server_ip_address()}:{get_server_port()}"
         self.headers = ["Part", "Part #", "Shelf #", "Unit Qty", "Qty", "Unit Price", "Price"]
 
-    def format_filename(self, s):
-        valid_chars = "-_.() %s%s" % (string.ascii_letters, string.digits)
+    def format_filename(self, s: str):
+        valid_chars = f"-_.() {string.ascii_letters}{string.digits}"
         filename = "".join(c for c in s if c in valid_chars)
-        filename = filename.replace(" ", "_")  # I don't like spaces in filenames.
-        return filename
+        return filename.replace(" ", "_")
 
     def generate_components_data(self, laser_cut_part: LaserCutPart) -> str:
         html = """<table class="no-space border"><tbody>
@@ -370,16 +369,16 @@ class ComponentsTable:
     def get_total_cost(self) -> float:
         total = 0.0
         for component in self.components:
-            total += round(component.price, 2) * component.quantity
+            total += self.job.price_calculator.get_component_cost(component) * component.quantity * self.assembly_quantity
         return total
 
     def generate(self):
-        html = '<table class="no-space border">'
-        html += "<thead><tr>"
+        html = '<table class="no-space border"><thead><tr>'
         for i, header in enumerate(self.headers):
             html += f'<th class="small-text" data-column="{i}"><label class="checkbox"><input type="checkbox" class="column-toggle" data-column="{i}" data-name="{header.lower().replace(" ", "-")}" checked><span></span></label>{header}</th>'
         html += "</tr></thead><tbody>"
         for component in self.components:
+            unit_price = self.job.price_calculator.get_component_cost(component)
             html += f"""<tr>
             <td class="min" data-column="0" data-name="part">
                 <button class="extra transparent small-round" onclick="ui('#C-{self.format_filename(component.part_name)}');">
@@ -388,10 +387,10 @@ class ComponentsTable:
             </td>
             <td class="small-text" data-column="1" data-name="part-#">{component.part_number}</td>
             <td class="small-text" data-column="2" data-name="shelf-#">{component.shelf_number}</td>
-            <td class="small-text" data-column="3" data-name="unit-qty">{component.quantity}</td>
-            <td class="small-text" data-column="4" data-name="qty">{component.quantity * self.assembly_quantity}</td>
-            <td class="small-text" data-column="5" data-name="unit-price">${component.price:,.2f}</td>
-            <td class="small-text" data-column="6" data-name="price">${(component.price * component.quantity):,.2f}</td>
+            <td class="small-text" data-column="3" data-name="unit-qty">{component.quantity:,.2f}</td>
+            <td class="small-text" data-column="4" data-name="qty">{(component.quantity * self.assembly_quantity):,.2f}</td>
+            <td class="small-text" data-column="5" data-name="unit-price">${unit_price:,.2f}</td>
+            <td class="small-text" data-column="6" data-name="price">${(unit_price * component.quantity * self.assembly_quantity):,.2f}</td>
             </tr>"""
         html += f"""</tbody><tfoot><tr>
         <th class="small-text" data-column="0" data-name="picture"></th>
@@ -411,13 +410,47 @@ class AssemblyTable:
         self.job = job
         self.server_directory = f"http://{get_server_ip_address()}:{get_server_port()}"
 
+    def format_filename(self, s: str):
+        valid_chars = f"-_.() {string.ascii_letters}{string.digits}"
+        filename = "".join(c for c in s if c in valid_chars)
+        return filename.replace(" ", "_")
+
+    def generate_assembly_data(self, assembly: Assembly) -> str:
+        html = """<table class="no-space border"><tbody>
+                <tr>
+                   <td class="small-text bold">Key</td>
+                   <td class="small-text">Value</td>
+                </tr>"""
+        for key, value in assembly.to_dict().get("assembly_data", {}).items():
+            html += f"""<tr>
+                <td class="small-text bold">{key.replace("_", " ").title()}</td>
+                <td class="small-text">{value}</td>
+                </tr>"""
+        html += "</tbody></table><br>"
+        return html
+
+    def generate_assembly_popups(self):
+        return "".join(
+            f"""
+            <div class="overlay blur"></div>
+            <dialog style="width: 30vw;" class="right" id="A-{self.format_filename(assembly.name)}">
+                <img src="{self.server_directory}/{assembly.assembly_image}" style="height: 100px; width: 100px;" >
+                <h5>{assembly.name}</h5>
+                <div>{self.generate_assembly_data(assembly)}</div>
+                <nav class="right-align no-space">
+                    <button data-ui="#A-{self.format_filename(assembly.name)}" class="transparent link">Close</button>
+                </nav>
+            </dialog>"""
+            for assembly in self.job.get_all_assemblies()
+        )
+
     def generate(self) -> str:
         html = """<div id="assemblies-list-layout">
                 <h5 class="center-align">Assemblies:</h5>
                 <article class="assembly-table border">"""
         for assembly in self.job.get_all_assemblies():
             html += f"""
-            <a class="row padding surface-container wave">
+            <a class="row padding surface-container wave" onclick="ui('#A-{self.format_filename(assembly.name)}');">
                 <img src="{self.server_directory}/image/{assembly.assembly_image}" class="assembly_image round">
                 <div class="max">
                     <h6 class="small">{assembly.name}</h6>
@@ -436,13 +469,14 @@ class JobDiv:
     def generate(self) -> str:
         html = ""
         for group in self.job.groups:
-            group_div = GroupDiv(group)
+            group_div = GroupDiv(self.job, group)
             html += group_div.generate()
         return html
 
 
 class GroupDiv:
-    def __init__(self, group: Group) -> None:
+    def __init__(self, job: Job, group: Group) -> None:
+        self.job = job
         self.group = group
 
     def generate(self) -> str:
@@ -450,7 +484,7 @@ class GroupDiv:
         html += f"<summary>{self.group.name}</summary>"
         html += '<div class="group">'
         for assembly in self.group.assemblies:
-            assembly_div = AssemblyDiv(assembly)
+            assembly_div = AssemblyDiv(self.job, assembly, True)
             html += assembly_div.generate()
         html += "</div>"
         html += "</details>"
@@ -458,7 +492,8 @@ class GroupDiv:
 
 
 class AssemblyDiv:
-    def __init__(self, assembly: Assembly, use_recursion=True) -> None:
+    def __init__(self, job: Job, assembly: Assembly, use_recursion=True) -> None:
+        self.job = job
         self.assembly = assembly
         self.use_recursion = use_recursion
         self.server_directory = f"http://{get_server_ip_address()}:{get_server_port()}"
@@ -484,7 +519,7 @@ class AssemblyDiv:
             html += '<details class="laser_cut_parts_detail" open>'
             html += "<summary>Laser Cut Parts</summary>"
             html += '<div class="detail_contents laser_cut_part_contents">'
-            laser_cut_table = LaserCutPartsTable(self.assembly.quantity, self.assembly.laser_cut_parts)
+            laser_cut_table = LaserCutPartsTable(self.job, self.assembly.quantity, self.assembly.laser_cut_parts)
             html += laser_cut_table.generate()
             html += "</div>"
             html += "</details>"
@@ -493,7 +528,7 @@ class AssemblyDiv:
             html += '<details class="components_detail" open>'
             html += "<summary>Components</summary>"
             html += '<div class="detail_contents components_contents">'
-            component_table = ComponentsTable(self.assembly.quantity, self.assembly.components)
+            component_table = ComponentsTable(self.job, self.assembly.quantity, self.assembly.components)
             html += component_table.generate()
             html += "</div>"
             html += "</details>"
@@ -506,7 +541,7 @@ class AssemblyDiv:
             html += "<summary>Sub-Assemblies</summary>"
             html += '<div class="detail_contents assembly">'
             for sub_assembly in self.assembly.sub_assemblies:
-                sub_assembly_div = AssemblyDiv(sub_assembly)
+                sub_assembly_div = AssemblyDiv(self.job, sub_assembly)
                 html += sub_assembly_div.generate()
             html += "</div>"
             html += "</details>"
@@ -569,14 +604,6 @@ class Printout:
         with open("utils/workspace/printout.js", "r", encoding="utf-8") as printout_js_file:
             self.printout_js = printout_js_file.read()
 
-    def get_total_price(self) -> float:
-        total = 0.0
-        for component in self.job.get_all_components():
-            total += round(component.price, 2) * component.quantity
-        for laser_cut_part in self.job.get_all_laser_cut_parts():
-            total += round(laser_cut_part.price, 2) * laser_cut_part.quantity
-        return total
-
     def generate(self) -> str:
         header_html = PrintoutHeader(self.job, self.printout_type).html
         html = f"""<!DOCTYPE html>
@@ -600,45 +627,40 @@ class Printout:
             {self.printout_css}
         </style>
         <body class="quote">
+        <nav class="left l" id="printout-controls" style="width: 10vw;">
+            <div class="left-align">
+                <label class="checkbox">
+                    <input type="checkbox" id="showCoverPage" data-name="show-cover-page" data-layout="cover-page" checked>
+                    <span>Show Cover Page</span>
+                </label>
+                <label class="checkbox">
+                    <input type="checkbox" id="showAssemblies" data-name="show-assemblies" data-layout="assemblies-list-layout" {"checked" if self.job.groups else ""}>
+                    <span>Show Assemblies</span>
+                </label>
+                <label class="checkbox">
+                    <input type="checkbox" id="showNests" data-name="show-nests" data-layout="nests-layout" {"checked" if self.job.nests else ""}>
+                    <span>Show Nests</span>
+                </label>
+                <label class="checkbox">
+                    <input type="checkbox" id="showSheets" data-name="show-sheets" data-layout="sheets-layout" {"checked" if self.job.nests else ""}>
+                    <span>Show Sheets</span>
+                </label>
+                <label class="checkbox">
+                    <input type="checkbox" id="showParts" data-name="show-parts" data-layout="parts-layout" {"checked" if self.job.get_all_components() or self.job.get_all_laser_cut_parts() else ""}>
+                    <span>Show Parts</span>
+                </label>
+                <label class="checkbox">
+                    <input type="checkbox" id="showTotalCost" data-name="show-total-cost" data-layout="total-cost-layout" checked>
+                    <span>Show Total Cost</span>
+                </label>
+                <label class="checkbox">
+                    <input type="checkbox" id="usePageBreaks" data-name="use-page-breaks" data-layout="page-break" checked>
+                    <span>Use Page Breaks</span>
+                </label>
+            </div>
+        </nav>
         <main class="responsive">
-        {header_html}
-        <div class="center-align" id="printout-controls">
-            <label class="checkbox">
-                <input type="checkbox" id="showCoverPage" data-name="show-cover-page" data-layout="cover-page" checked>
-                <span>Show Cover Page</span>
-            </label>
-            <br>
-            <label class="checkbox">
-                <input type="checkbox" id="showAssemblies" data-name="show-assemblies" data-layout="assemblies-list-layout" {"checked" if self.job.groups else ""}>
-                <span>Show Assemblies</span>
-            </label>
-            <br>
-            <label class="checkbox">
-                <input type="checkbox" id="showNests" data-name="show-nests" data-layout="nests-layout" {"checked" if self.job.nests else ""}>
-                <span>Show Nests</span>
-            </label>
-            <br>
-            <label class="checkbox">
-                <input type="checkbox" id="showSheets" data-name="show-sheets" data-layout="sheets-layout" {"checked" if self.job.nests else ""}>
-                <span>Show Sheets</span>
-            </label>
-            <br>
-            <label class="checkbox">
-                <input type="checkbox" id="showParts" data-name="show-parts" data-layout="parts-layout" {"checked" if self.job.get_all_components() or self.job.get_all_laser_cut_parts() else ""}>
-                <span>Show Parts</span>
-            </label>
-            <br>
-            <label class="checkbox">
-                <input type="checkbox" id="showTotalCost" data-name="show-total-cost" data-layout="total-cost-layout" checked>
-                <span>Show Total Cost</span>
-            </label>
-            <br>
-            <label class="checkbox">
-                <input type="checkbox" id="usePageBreaks" data-name="use-page-breaks" data-layout="page-break" checked>
-                <span>Use Page Breaks</span>
-            </label>
-        </div>
-        <br>"""
+        {header_html}<br>"""
 
         cover_page = CoverPage(self.job)
 
@@ -671,12 +693,13 @@ class Printout:
             html += "Nothing here"
         html += "</div>"
 
-        html += '<div class="page" id="assemblies-list" class="hidden">'
+        html += '<div class="page top" id="assemblies-list" class="hidden">'
         if all_assemblies:
-            for assembly in all_assemblies:
-                assembly_div = AssemblyDiv(assembly, False)
+            for index, assembly in enumerate(all_assemblies):
+                assembly_div = AssemblyDiv(self.job, assembly, False)
                 html += assembly_div.generate()
-                html += '<div id="page-break" class="page-break"></div>'
+                if index < len(all_assemblies) - 1:  # Check if it's not the last item
+                    html += '<div id="page-break" class="page-break"></div>'
         else:
             html += "Nothing here"
         html += "</div>"
@@ -685,36 +708,36 @@ class Printout:
         grouped_components = self.job.get_grouped_components()
 
         html += '<div class="page left" id="parts-list" class="hidden">'
-        if grouped_laser_cut_parts and grouped_components:
-            if grouped_laser_cut_parts:
-                html += '<h5 class="center-align">Laser Cut Parts:</h5>'
-                grouped_laser_cut_parts_table = LaserCutPartsTable(1, grouped_laser_cut_parts)
-                html += grouped_laser_cut_parts_table.generate()
-            if grouped_components:
-                html += '<h5 class="center-align">Components:</h5>'
-                grouped_components_table = ComponentsTable(1, grouped_components)
-                html += grouped_components_table.generate()
-        else:
-            html += "Nothing here"
+        if grouped_laser_cut_parts:
+            html += '<h5 class="center-align">Laser Cut Parts:</h5>'
+            grouped_laser_cut_parts_table = LaserCutPartsTable(self.job, 1, grouped_laser_cut_parts)
+            html += grouped_laser_cut_parts_table.generate()
+        if grouped_components:
+            html += '<h5 class="center-align">Components:</h5>'
+            grouped_components_table = ComponentsTable(self.job, 1, grouped_components)
+            html += grouped_components_table.generate()
         html += "</div>"
         html += "</div>" # for the tabs
 
         if grouped_components or grouped_laser_cut_parts:
             html += f"""
             <div id="total-cost-layout">
-                <h6 class="center-align bold">Total Cost: ${self.get_total_price():,.2f}</h6>
+                <h6 class="center-align bold">Total Cost: ${self.job.price_calculator.get_job_cost():,.2f}</h6>
                 <p class="small-text center-align bold underline">No tax is included in this quote.</p>
                 <p class="small-text center-align">Payment past due date will receive 1.5% interest rate per month of received goods.</p>
             </div>"""
+
         if grouped_laser_cut_parts:
             html += grouped_laser_cut_parts_table.generate_laser_cut_part_popups()
         if grouped_components:
             html += grouped_components_table.generate_components_popups()
+        if all_assemblies:
+            html += assembly_table.generate_assembly_popups()
+
         html += nests_table.generate_laser_cut_part_popups()
 
         html += "</main></body>"
-        html += f"""<script>
+        html += f'''<script>
             {self.printout_js}
-            toggleCheckboxes("{self.printout_type.lower()}", navCheckBoxLinks);
-        </script>"""
+        </script>'''
         return html
