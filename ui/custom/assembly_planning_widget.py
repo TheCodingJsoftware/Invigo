@@ -374,6 +374,7 @@ class AssemblyPlanningWidget(AssemblyWidget):
             component.quantity = float(self.components_table_items[component]["unit_quantity"].text())
         component.notes = self.components_table_items[component]["notes"].text()
         component.shelf_number = self.components_table_items[component]["shelf_number"].text()
+        self.update_component_table_quantity()
         self.changes_made()
 
     def get_component_by_name(self, component_name: str) -> Component:
@@ -684,6 +685,7 @@ class AssemblyPlanningWidget(AssemblyWidget):
             laser_cut_part.quantity = float(self.laser_cut_part_table_items[laser_cut_part]["unit_quantity"].text())
         laser_cut_part.notes = self.laser_cut_part_table_items[laser_cut_part]["notes"].text()
         laser_cut_part.shelf_number = self.laser_cut_part_table_items[laser_cut_part]["shelf_number"].text()
+        self.update_laser_cut_parts_table_quantity()
         self.changes_made()
 
     def laser_cut_part_flow_tag_changed(self, laser_cut_part: LaserCutPart, flow_tag_combobox: QComboBox):
