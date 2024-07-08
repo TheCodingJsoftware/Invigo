@@ -11,6 +11,7 @@ const checkboxConfig = {
         "unit-price": true,
         "shelf-#": false,
         "process": false,
+        "paint": true,
     },
     "workorder": {
         "picture": true,
@@ -22,8 +23,9 @@ const checkboxConfig = {
         "part": true,
         "price": false,
         "unit-price": false,
-        "shelf-#": true,
+        "shelf-#": false,
         "process": true,
+        "paint": true,
     },
     "packingslip": {
         "picture": true,
@@ -37,6 +39,7 @@ const checkboxConfig = {
         "unit-price": false,
         "shelf-#": false,
         "process": false,
+        "paint": true,
     }
 };
 
@@ -46,7 +49,8 @@ const navCheckBoxLinks = document.querySelectorAll('nav.tabbed.primary-container
 const checkboxes = document.querySelectorAll('#printout-controls .checkbox input[type="checkbox"]');
 const pageBreakDivs = document.querySelectorAll('#page-break');
 const usePageBreakcheckbox = document.getElementById('usePageBreaks');
-const storedTargetColumn = localStorage.getItem('selectedTargetColumn');
+const lastSegment = window.location.pathname.split('/').pop();
+const getStorageKey = (key) => `${lastSegment}_${key}`;
 
 window.addEventListener('beforeprint', hideUncheckedColumns);
 window.addEventListener('afterprint', restoreAllColumns);
@@ -133,25 +137,12 @@ document.querySelectorAll('details').forEach((el) => {
     new Accordion(el);
 });
 
-if (usePageBreakcheckbox.checked) {
-    pageBreakDivs.forEach(div => div.classList.add('page-break'));
-} else {
-    pageBreakDivs.forEach(div => div.classList.remove('page-break'));
-}
-
-usePageBreakcheckbox.addEventListener('change', function () {
-    if (usePageBreakcheckbox.checked) {
-        pageBreakDivs.forEach(div => div.classList.add('page-break'));
-    } else {
-        pageBreakDivs.forEach(div => div.classList.remove('page-break'));
-    }
-});
 
 navCheckBoxLinks.forEach(link => {
     link.addEventListener('click', function (event) {
         event.preventDefault();
         const targetColumn = this.getAttribute('data-target');
-        localStorage.setItem('selectedTargetColumn', targetColumn);
+        localStorage.setItem(getStorageKey('selectedTargetColumn'), targetColumn);
         toggleCheckboxes(targetColumn, navCheckBoxLinks);
         document.body.className = targetColumn;
     });
@@ -161,7 +152,7 @@ navCheckBoxLinks.forEach(link => {
 checkboxes.forEach(checkbox => {
     const layoutId = checkbox.getAttribute('data-layout');
     const layoutDiv = document.getElementById(layoutId);
-    const storedState = localStorage.getItem(checkbox.id);
+    const storedState = localStorage.getItem(getStorageKey(checkbox.id));
 
     if (storedState === 'true') {
         checkbox.checked = true;
@@ -175,7 +166,7 @@ checkboxes.forEach(checkbox => {
     }
 
     checkbox.addEventListener('change', function () {
-        localStorage.setItem(checkbox.id, this.checked);
+        localStorage.setItem(getStorageKey(checkbox.id), this.checked);
         if (this.checked) {
             layoutDiv.classList.remove('hidden');
         } else {
@@ -183,6 +174,8 @@ checkboxes.forEach(checkbox => {
         }
     });
 });
+
+const storedTargetColumn = localStorage.getItem(getStorageKey('selectedTargetColumn'));
 
 if (storedTargetColumn) {
     toggleCheckboxes(storedTargetColumn, navCheckBoxLinks);
@@ -319,3 +312,17 @@ function restoreAllColumns() {
         });
     });
 }
+
+if (usePageBreakcheckbox.checked) {
+    pageBreakDivs.forEach(div => div.classList.add('page-break'));
+} else {
+    pageBreakDivs.forEach(div => div.classList.remove('page-break'));
+}
+
+usePageBreakcheckbox.addEventListener('change', function () {
+    if (usePageBreakcheckbox.checked) {
+        pageBreakDivs.forEach(div => div.classList.add('page-break'));
+    } else {
+        pageBreakDivs.forEach(div => div.classList.remove('page-break'));
+    }
+});

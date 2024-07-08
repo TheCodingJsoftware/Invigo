@@ -16,7 +16,7 @@ class JobPreferences:
     def get_job_scroll_position(self, name: str) -> tuple[int, int]:
         try:
             return self.job_scroll_positions[name]
-        except KeyError:
+        except Exception:
             return (0, 0)
 
     def group_toolbox_toggled(self, name: QLineEdit, button: QPushButton):
@@ -42,31 +42,31 @@ class JobPreferences:
     def is_global_sheet_settings_closed(self, job_name: str) -> bool:
         try:
             return self.closed_toolboxes[job_name]["is_global_sheet_settings_closed"]
-        except KeyError:
+        except Exception:
             return False
 
     def is_item_quoting_options_closed(self, job_name: str) -> bool:
         try:
             return self.closed_toolboxes[job_name]["is_item_quoting_options_closed"]
-        except KeyError:
+        except Exception:
             return False
 
     def is_sheet_quoting_options_closed(self, job_name: str) -> bool:
         try:
             return self.closed_toolboxes[job_name]["is_sheet_quoting_options_closed"]
-        except KeyError:
+        except Exception:
             return False
 
     def is_nest_summary_closed(self, job_name: str) -> bool:
         try:
             return self.closed_toolboxes[job_name]["is_nest_summary_closed"]
-        except KeyError:
+        except Exception:
             return False
 
     def is_nests_closed(self, job_name: str) -> bool:
         try:
             return self.closed_toolboxes[job_name]["is_nests_closed"]
-        except KeyError:
+        except Exception:
             return False
 
     def assembly_toolbox_toggled(
@@ -99,7 +99,7 @@ class JobPreferences:
     def is_nest_closed(self, nest_name: str) -> bool:
         try:
             return self.closed_toolboxes[nest_name]["is_closed"]
-        except KeyError:
+        except Exception:
             return True
 
     def nest_widget_toolbox_toggled(self, nest: Nest, setting_button: QPushButton, laser_cut_button: QPushButton, image_button: QPushButton):
@@ -119,48 +119,48 @@ class JobPreferences:
     def is_nest_setting_closed(self, nest: Nest) -> bool:
         try:
             return self.closed_toolboxes[nest.get_name()]["is_setting_closed"]
-        except KeyError:
+        except Exception:
             return False
 
     def is_nest_laser_cut_closed(self, nest: Nest) -> bool:
         try:
             return self.closed_toolboxes[nest.get_name()]["is_laser_cut_closed"]
-        except KeyError:
+        except Exception:
             return False
 
     def is_nest_image_closed(self, nest: Nest) -> bool:
         try:
             return self.closed_toolboxes[nest.get_name()]["is_image_closed"]
-        except KeyError:
+        except Exception:
             return False
 
     def is_group_closed(self, name: str) -> bool:
         try:
             return self.closed_toolboxes[name]
-        except KeyError:
+        except Exception:
             return True
 
     def is_assembly_closed(self, name: str) -> bool:
         try:
             return self.closed_toolboxes[name]["is_closed"]
-        except KeyError:
+        except Exception:
             return True
 
     # NOTE multitoolbox's closing logic is different from assembly-multitoolbox, hence the oppositve return values
     def is_assembly_laser_cut_closed(self, name: str) -> bool:
         try:
             return self.closed_toolboxes[name]["is_laser_cut_closed"]
-        except KeyError:
+        except Exception:
             return False
 
     def is_assembly_component_closed(self, name: str) -> bool:
         try:
             return self.closed_toolboxes[name]["is_component_closed"]
-        except KeyError:
+        except Exception:
             return False
 
     def is_assembly_sub_assembly_closed(self, name: str) -> bool:
         try:
             return self.closed_toolboxes[name]["is_sub_assembly_closed"]
-        except KeyError:
+        except Exception:
             return False
