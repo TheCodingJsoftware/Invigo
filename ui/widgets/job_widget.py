@@ -29,7 +29,6 @@ from utils.colors import darken_color, lighten_color
 from utils.inventory.nest import Nest
 from utils.workspace.group import Group
 from utils.workspace.job import Job, JobStatus, JobColor
-from utils.workspace.job_price_calculator import JobPriceCalculator
 
 if TYPE_CHECKING:
     from ui.custom.job_tab import JobTab
@@ -269,7 +268,7 @@ class JobWidget(QWidget):
             # self.quoting_settings_widget.setEnabled(False)
 
         self.splitter.setStretchFactor(0, 1)
-        self.splitter.setStretchFactor(1, 5)
+        self.splitter.setStretchFactor(1, 2)
 
         self.label_total_cost_for_parts = self.findChild(QLabel, "label_total_cost_for_parts")
         self.label_total_cost_for_parts.setHidden(self.job.status == JobStatus.PLANNING)
@@ -359,7 +358,6 @@ QPushButton:checked:pressed#assembly_button_drop_menu {
         self.job.date_shipped = self.dateEdit_shipped.date().toString("yyyy-MM-dd")
         self.job.date_expected = self.dateEdit_expected.date().toString("yyyy-MM-dd")
         self.job.ship_to = self.textEdit_ship_to.toPlainText()
-
         self.changes_made()
 
     def workspace_settings_changed(self):
@@ -454,7 +452,14 @@ QPushButton:checked:pressed#assembly_button_drop_menu {
             nest_widget.updateLaserCutPartSettings.connect(self.nest_settings_changed)
             self.nest_widgets.append(nest_widget)
             self.nests_toolbox.addItem(nest_widget, nest.get_name(), JobColor.get_color(self.job.status))
-        self.nests_toolbox.close_all()
+            button = self.nests_toolbox.getLastButton()
+            button.clicked.connect(partial(self.job_preferences.nest_toggled, nest.get_name(), button))
+            nest_widget.toolbox_button = button
+        for i, nest in enumerate(self.job.nests):
+            if self.job_preferences.is_nest_closed(nest.get_name()):
+                self.nests_toolbox.close(i)
+            else:
+                self.nests_toolbox.open(i)
 
     def update_nest_parts_assemblies(self):
         for nest_widget in self.nest_widgets:
@@ -502,11 +507,11 @@ QPushButton:checked:pressed#assembly_button_drop_menu {
 
     def match_item_to_sheet_toggled(self):
         self.price_calculator.match_item_cogs_to_sheet = self.pushButton_item_to_sheet.isChecked()
-        self.update_prices()
+        self.changes_made()
 
     def cost_for_laser_changed(self):
         self.price_calculator.cost_for_laser = self.doubleSpinBox_cost_for_laser.value()
-        self.update_prices()
+        self.changes_made()
 
     def update_nest_sheets(self, action: str):
         for i, nest_widget in enumerate(self.nest_widgets):
@@ -523,6 +528,7 @@ QPushButton:checked:pressed#assembly_button_drop_menu {
             self.nests_toolbox.setItemText(i, nest_widget.nest.get_name())
         self.price_calculator.update_laser_cut_parts_to_sheet_price()
         self.price_calculator.update_laser_cut_parts_cost()
+        self.changes_made()
 
     def update_tables(self):
         for group_widget in self.group_widgets:
@@ -541,11 +547,11 @@ QPushButton:checked:pressed#assembly_button_drop_menu {
         self.price_calculator.item_profit_margin = self.doubleSpinBox_items_profit_margin.value() / 100
         self.price_calculator.sheet_overhead = self.doubleSpinBox_sheets_overhead.value() / 100
         self.price_calculator.sheet_profit_margin = self.doubleSpinBox_sheets_profit_margin.value() / 100
-        self.update_prices()
+        self.changes_made()
 
     def nest_settings_changed(self, nest: Nest):
         self.update_tables()
-        self.update_prices()
+        self.changes_made()
 
     def changes_made(self):
         self.parent.job_changed(self.job)

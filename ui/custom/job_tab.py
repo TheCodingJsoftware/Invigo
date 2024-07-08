@@ -205,10 +205,16 @@ class JobTab(QWidget):
         self.update_job_save_status(job)
 
     def update_job_save_status(self, job: Job):
-        if job.unsaved_changes:
-            self.parent.label_job_save_status.setText("You have unsaved changes")
+        if job.status == JobStatus.PLANNING:
+            if job.unsaved_changes:
+                self.parent.label_job_save_status.setText("You have unsaved changes")
+            else:
+                self.parent.label_job_save_status.setText("")
         else:
-            self.parent.label_job_save_status.setText("")
+            if job.unsaved_changes:
+                self.parent.label_job_save_status_2.setText("You have unsaved changes")
+            else:
+                self.parent.label_job_save_status_2.setText("")
 
     def update_tables(self):
         for job_widget in self.job_widgets:

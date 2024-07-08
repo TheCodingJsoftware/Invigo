@@ -1,5 +1,7 @@
 from PyQt6.QtWidgets import QLineEdit, QPushButton
 
+from utils.inventory.nest import Nest
+
 
 class JobPreferences:
     def __init__(self):
@@ -41,31 +43,31 @@ class JobPreferences:
         try:
             return self.closed_toolboxes[job_name]["is_global_sheet_settings_closed"]
         except KeyError:
-            return True
+            return False
 
     def is_item_quoting_options_closed(self, job_name: str) -> bool:
         try:
             return self.closed_toolboxes[job_name]["is_item_quoting_options_closed"]
         except KeyError:
-            return True
+            return False
 
     def is_sheet_quoting_options_closed(self, job_name: str) -> bool:
         try:
             return self.closed_toolboxes[job_name]["is_sheet_quoting_options_closed"]
         except KeyError:
-            return True
+            return False
 
     def is_nest_summary_closed(self, job_name: str) -> bool:
         try:
             return self.closed_toolboxes[job_name]["is_nest_summary_closed"]
         except KeyError:
-            return True
+            return False
 
     def is_nests_closed(self, job_name: str) -> bool:
         try:
             return self.closed_toolboxes[job_name]["is_nests_closed"]
         except KeyError:
-            return True
+            return False
 
     def assembly_toolbox_toggled(
         self,
@@ -81,6 +83,56 @@ class JobPreferences:
             "is_component_closed": component_button.isChecked(),
             "is_sub_assembly_closed": sub_assembly_button.isChecked(),
         }
+
+    def nest_toggled(self, nest_name: str, nest_button: QPushButton):
+        self.closed_toolboxes.setdefault(
+            nest_name,
+            {
+                "is_closed": False,
+                "is_setting_closed": False,
+                "is_laser_cut_closed": False,
+                "is_image_closed": False,
+            },
+        )
+        self.closed_toolboxes[nest_name]["is_closed"] = nest_button.isChecked()
+
+    def is_nest_closed(self, nest_name: str) -> bool:
+        try:
+            return self.closed_toolboxes[nest_name]["is_closed"]
+        except KeyError:
+            return True
+
+    def nest_widget_toolbox_toggled(self, nest: Nest, setting_button: QPushButton, laser_cut_button: QPushButton, image_button: QPushButton):
+        self.closed_toolboxes.setdefault(
+            nest.get_name(),
+            {
+                "is_closed": False,
+                "is_setting_closed": False,
+                "is_laser_cut_closed": False,
+                "is_image_closed": False,
+            },
+        )
+        self.closed_toolboxes[nest.get_name()]["is_setting_closed"] = setting_button.isChecked()
+        self.closed_toolboxes[nest.get_name()]["is_laser_cut_closed"] = laser_cut_button.isChecked()
+        self.closed_toolboxes[nest.get_name()]["is_image_closed"] = image_button.isChecked()
+
+    def is_nest_setting_closed(self, nest: Nest) -> bool:
+        try:
+            return self.closed_toolboxes[nest.get_name()]["is_setting_closed"]
+        except KeyError:
+            return False
+
+    def is_nest_laser_cut_closed(self, nest: Nest) -> bool:
+        try:
+            return self.closed_toolboxes[nest.get_name()]["is_laser_cut_closed"]
+        except KeyError:
+            return False
+
+    def is_nest_image_closed(self, nest: Nest) -> bool:
+        try:
+            return self.closed_toolboxes[nest.get_name()]["is_image_closed"]
+        except KeyError:
+            return False
 
     def is_group_closed(self, name: str) -> bool:
         try:

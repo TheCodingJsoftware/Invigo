@@ -80,7 +80,7 @@
        <enum>QTabWidget::TabShape::Rounded</enum>
       </property>
       <property name="currentIndex">
-       <number>4</number>
+       <number>5</number>
       </property>
       <property name="elideMode">
        <enum>Qt::TextElideMode::ElideNone</enum>
@@ -576,8 +576,8 @@
                     <rect>
                      <x>0</x>
                      <y>0</y>
-                     <width>68</width>
-                     <height>16</height>
+                     <width>1479</width>
+                     <height>591</height>
                     </rect>
                    </property>
                    <layout class="QVBoxLayout" name="verticalLayout_27">
@@ -624,8 +624,8 @@
                     <rect>
                      <x>0</x>
                      <y>0</y>
-                     <width>1479</width>
-                     <height>591</height>
+                     <width>68</width>
+                     <height>16</height>
                     </rect>
                    </property>
                    <layout class="QVBoxLayout" name="verticalLayout_31">

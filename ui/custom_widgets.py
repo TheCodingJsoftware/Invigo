@@ -1482,17 +1482,7 @@ QPushButton:!checked:pressed#sheet_nest_button {
         layout.addWidget(widget)
         _widget.setLayout(layout)
         widget.setObjectName("nest_widget")
-        # widget.setAutoFillBackground(True)
         widget.setStyleSheet("QWidget#nest_widget{border: 1px solid %(base_color)s; background-color: rgba(25,25,25, 0.7); }" % {"base_color": base_color})
-
-        # shadow = QGraphicsDropShadowEffect()
-        # shadow.setBlurRadius(10)  # Adjust the blur radius as desired
-        # if widget.isVisible():
-        #     shadow.setColor(QColor(0, 0, 0, 255))
-        # else:
-        #     shadow.setColor(QColor(61, 174, 233, 255))
-        # shadow.setOffset(0, 0)  # Set the shadow offset (x, y)
-        # widget.parentWidget().setGraphicsEffect(shadow)
 
         self.buttons.append(button)
         self.widgets.append(widget)
@@ -1515,6 +1505,9 @@ QPushButton:!checked:pressed#sheet_nest_button {
     def getButton(self, index) -> QPushButton:
         return self.buttons[index] if 0 <= index < len(self.buttons) else None
 
+    def getLastButton(self) -> QPushButton:
+        return self.buttons[-1]
+
     def count(self) -> int:
         return len(self.widgets)
 
@@ -1536,14 +1529,6 @@ QPushButton:!checked:pressed#sheet_nest_button {
 
     def toggle_widget_visibility(self, widget):
         widget.setVisible(not widget.isVisible())
-        # shadow = QGraphicsDropShadowEffect()
-        # shadow.setBlurRadius(10)  # Adjust the blur radius as desired
-        # if widget.isVisible():
-        #     shadow.setColor(QColor(61, 174, 233, 255))
-        # else:
-        #     shadow.setColor(QColor(0, 0, 0, 255))
-        # shadow.setOffset(0, 0)  # Set the shadow offset (x, y)
-        # widget.parentWidget().setGraphicsEffect(shadow)
 
     def closeLastToolBox(self):
         self.buttons[-1].setChecked(True)
@@ -1558,22 +1543,12 @@ QPushButton:!checked:pressed#sheet_nest_button {
             self.buttons[index].click()
             self.buttons[index].setChecked(False)
             self.widgets[index].setVisible(True)
-            shadow = QGraphicsDropShadowEffect(self)
-            shadow.setBlurRadius(10)  # Adjust the blur radius as desired
-            shadow.setColor(QColor(61, 174, 233, 255))
-            shadow.setOffset(0, 0)  # Set the shadow offset (x, y)
-            # self.widgets[index].parentWidget().setGraphicsEffect(shadow)
 
     def close(self, index: int) -> QWidget:
         if 0 <= index < len(self.buttons):
             self.buttons[index].click()
             self.buttons[index].setChecked(True)
             self.widgets[index].setVisible(False)
-            shadow = QGraphicsDropShadowEffect(self)
-            shadow.setBlurRadius(10)  # Adjust the blur radius as desired
-            shadow.setColor(QColor(0, 0, 0, 255))  # Set the shadow color and opacity
-            shadow.setOffset(0, 0)  # Set the shadow offset (x, y)
-            # self.widgets[index].parentWidget().setGraphicsEffect(shadow)
 
     def close_all(self) -> None:
         for button, widget in zip(self.buttons, self.widgets):
@@ -1581,11 +1556,6 @@ QPushButton:!checked:pressed#sheet_nest_button {
             button.click()
             button.setChecked(True)
             widget.setVisible(False)
-            shadow = QGraphicsDropShadowEffect(self)
-            shadow.setBlurRadius(10)  # Adjust the blur radius as desired
-            shadow.setColor(QColor(0, 0, 0, 255))  # Set the shadow color and opacity
-            shadow.setOffset(0, 0)  # Set the shadow offset (x, y)
-            # widget.parentWidget().setGraphicsEffect(shadow)
 
     def open_all(self) -> None:
         for button, widget in zip(self.buttons, self.widgets):
@@ -1593,11 +1563,6 @@ QPushButton:!checked:pressed#sheet_nest_button {
             button.click()
             button.setChecked(False)
             widget.setVisible(True)
-            shadow = QGraphicsDropShadowEffect(self)
-            shadow.setBlurRadius(10)  # Adjust the blur radius as desired
-            shadow.setColor(QColor(61, 174, 233, 255))
-            shadow.setOffset(0, 0)  # Set the shadow offset (x, y)
-            # widget.parentWidget().setGraphicsEffect(shadow)
 
     def clear_layout(self, layout: QVBoxLayout | QWidget) -> None:
         with contextlib.suppress(AttributeError):

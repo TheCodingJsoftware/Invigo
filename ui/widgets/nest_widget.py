@@ -20,7 +20,6 @@ from PyQt6.QtWidgets import (
 
 from ui.custom.machine_cut_time_double_spin_box import MachineCutTimeDoubleSpinBox
 from ui.dialogs.add_sheet_dialog import AddSheetDialog
-from ui.window.image_viewer import QImageViewer
 from utils.inventory.laser_cut_part import LaserCutPart
 from utils.inventory.sheets_inventory import Sheet
 from utils.inventory.nest import Nest
@@ -31,7 +30,6 @@ if TYPE_CHECKING:
 
 
 class NestWidget(QWidget):
-    updateNestSummary = pyqtSignal()
     updateLaserCutPartSettings = pyqtSignal(Nest)
 
     def __init__(self, nest: Nest, parent) -> None:
@@ -39,11 +37,13 @@ class NestWidget(QWidget):
         uic.loadUi("ui/widgets/nest_widget.ui", self)
 
         self.parent: JobWidget = parent
+        self.toolbox_button: QPushButton = None
         self.nest = nest
         self.sheet = self.nest.sheet
         self.sheets_inventory = self.parent.parent.job_manager.sheets_inventory
         self.sheet_settings = self.parent.parent.job_manager.sheet_settings
         self.price_calculator = self.parent.price_calculator
+        self.job_preferences = self.parent.job_preferences
         self.part_to_assembly: dict[str, Assembly] = {}
         self.assembly_dict: dict[str, Assembly] = {}
         self.part_assembly_comboboxes: list[QComboBox] = []
@@ -52,19 +52,26 @@ class NestWidget(QWidget):
 
     def load_ui(self):
         self.pushButton_settings = self.findChild(QPushButton, "pushButton_settings")
+        self.pushButton_settings.setChecked(self.job_preferences.is_nest_setting_closed(self.nest))
         self.settings_widget = self.findChild(QWidget, "settings_widget")
         self.parent.apply_stylesheet_to_toggle_buttons(self.pushButton_settings, self.settings_widget)
-        self.settings_widget.setHidden(True)
+        self.settings_widget.setHidden(not self.job_preferences.is_nest_setting_closed(self.nest))
 
         self.pushButton_laser_cut_parts = self.findChild(QPushButton, "pushButton_laser_cut_parts")
+        self.pushButton_laser_cut_parts.setChecked(self.job_preferences.is_nest_laser_cut_closed(self.nest))
         self.laser_cut_parts_widget = self.findChild(QWidget, "laser_cut_parts_widget")
         self.parent.apply_stylesheet_to_toggle_buttons(self.pushButton_laser_cut_parts, self.laser_cut_parts_widget)
-        self.laser_cut_parts_widget.setHidden(True)
+        self.laser_cut_parts_widget.setHidden(not self.job_preferences.is_nest_laser_cut_closed(self.nest))
 
         self.pushButton_image = self.findChild(QPushButton, "pushButton_image")
+        self.pushButton_image.setChecked(self.job_preferences.is_nest_image_closed(self.nest))
         self.image_widget_2 = self.findChild(QWidget, "image_widget_2")
         self.parent.apply_stylesheet_to_toggle_buttons(self.pushButton_image, self.image_widget_2)
-        self.image_widget_2.setHidden(True)
+        self.image_widget_2.setHidden(not self.job_preferences.is_nest_image_closed(self.nest))
+
+        self.pushButton_settings.clicked.connect(partial(self.job_preferences.nest_widget_toolbox_toggled, self.nest, self.pushButton_settings, self.pushButton_laser_cut_parts, self.pushButton_image))
+        self.pushButton_laser_cut_parts.clicked.connect(partial(self.job_preferences.nest_widget_toolbox_toggled, self.nest, self.pushButton_settings, self.pushButton_laser_cut_parts, self.pushButton_image))
+        self.pushButton_image.clicked.connect(partial(self.job_preferences.nest_widget_toolbox_toggled, self.nest, self.pushButton_settings, self.pushButton_laser_cut_parts, self.pushButton_image))
 
         self.label_sheet_status = self.findChild(QLabel, "label_sheet_status")
 
@@ -156,8 +163,11 @@ class NestWidget(QWidget):
         self.sheet.width = self.doubleSpinBox_width.value()
         self.sheet.material = self.comboBox_material.currentText()
         self.sheet.thickness = self.comboBox_thickness.currentText()
+        if self.toolbox_button:
+            self.toolbox_button.setText(self.nest.get_name())
+            self.job_preferences.nest_toggled(self.nest.get_name(), self.toolbox_button)
         self.update_nest_cost()
-        self.parent.update_prices()
+        self.parent.changes_made()
 
     def nest_changed(self):
         self.nest.sheet_count = self.doubleSpinBox_sheet_count.value()
@@ -165,7 +175,7 @@ class NestWidget(QWidget):
         self.update_nest_cut_time()
         self.load_nest_parts()
         self.update_nest_cost()
-        self.parent.update_prices()
+        self.parent.changes_made()
 
     def set_cost_for_sheets(self, cost: float):
         self.label_cost_for_sheets.setText(f"${cost:,.2f}")
