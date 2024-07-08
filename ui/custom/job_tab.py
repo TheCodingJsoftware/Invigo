@@ -14,7 +14,7 @@ from utils.workspace.job_manager import JobManager
 from utils.workspace.job_preferences import JobPreferences
 
 if TYPE_CHECKING:
-    from ui.window.main_window import MainWindow
+    from ui.windows.main_window import MainWindow
 
 
 class JobTab(QWidget):
