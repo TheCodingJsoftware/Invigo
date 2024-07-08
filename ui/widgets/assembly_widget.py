@@ -17,8 +17,8 @@ from PyQt6.QtWidgets import (
     QWidget,
 )
 
-from ui.windowsimage_viewer import QImageViewer
-from ui.windowspdf_viewer import PDFViewer
+from ui.windows.image_viewer import QImageViewer
+from ui.windows.pdf_viewer import PDFViewer
 from utils.colors import darken_color, lighten_color
 from utils.workspace.assembly import Assembly
 from utils.workspace.job_preferences import JobPreferences
