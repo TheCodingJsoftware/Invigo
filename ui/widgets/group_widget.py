@@ -71,7 +71,7 @@ border-top-left-radius: 0px;
 
         if self.main_window_tab_widget.tabText(self.main_window_tab_widget.currentIndex()) == "Job Planner":
             assembly_widget = AssemblyPlanningWidget(assembly, self)
-        elif self.main_window_tab_widget.tabText(self.main_window_tab_widget.currentIndex()) == "Quote Generator 2":
+        elif self.main_window_tab_widget.tabText(self.main_window_tab_widget.currentIndex()) == "Job Quoter":
             assembly_widget = AssemblyQuotingWidget(assembly, self)
         self.assemblies_toolbox.addItem(assembly_widget, assembly.name, self.group.color)
 

@@ -130,8 +130,8 @@ from utils.workspace.job_manager import JobManager
 from utils.workspace.job_preferences import JobPreferences
 from utils.workspace.workspace_settings import WorkspaceSettings
 
-__version__: str = "v3.1.1"
-__updated__: str = "2024-07-08 11:51:33"
+__version__: str = "v3.1.2"
+__updated__: str = "2024-07-08 12:39:56"
 
 
 def check_folders(folders: list[str]) -> None:
@@ -310,7 +310,10 @@ class MainWindow(QMainWindow):
         self.tables_font.setItalic(self.settings_file.get_value("tables_font")["italic"])
         self.tabs: dict[Category, CustomTableWidget] = {}
         self.parts_in_inventory_name_lookup: dict[str, int] = {}
-        self.last_selected_menu_tab: str = self.settings_file.get_value("menu_tabs_order")[self.settings_file.get_value("last_toolbox_tab")]
+        try:
+            self.last_selected_menu_tab: str = self.settings_file.get_value("menu_tabs_order")[self.settings_file.get_value("last_toolbox_tab")]
+        except IndexError:
+            self.last_selected_menu_tab: str = self.settings_file.get_value("menu_tabs_order")[0]
         self.quote_nest_directories_list_widgets: dict[str, PdfTreeView] = {}
         self.quote_job_directories_list_widgets: dict[str, PdfTreeView] = {}
         self.quote_nest_information = {}
@@ -335,8 +338,8 @@ class MainWindow(QMainWindow):
         self.splitter_3.setStretchFactor(0, 3)  # Quote Generator
         self.splitter_3.setStretchFactor(1, 2)  # Quote Generator
 
-        self.splitter_2.setStretchFactor(0, 1)  # Quote Generator 2
-        self.splitter_2.setStretchFactor(1, 0)  # Quote Generator 2
+        self.splitter_2.setStretchFactor(0, 1)  # Job Quoter
+        self.splitter_2.setStretchFactor(1, 0)  # Job Quoter
 
     def __load_ui(self) -> None:
         menu_tabs_order: list[str] = self.settings_file.get_value(setting_name="menu_tabs_order")
@@ -578,7 +581,7 @@ class MainWindow(QMainWindow):
             self.refresh_nest_directories()
             for quote_widget in self.quote_generator_tab_widget.quotes:
                 quote_widget.update_sheet_statuses()
-        elif self.tabWidget.tabText(self.tabWidget.currentIndex()) == "Quote Generator 2":
+        elif self.tabWidget.tabText(self.tabWidget.currentIndex()) == "Job Quoter":
             self.load_jobs_thread()
             self.refresh_nest_directories()
         elif self.tabWidget.tabText(self.tabWidget.currentIndex()) == "Job Planner":  # TODO Load server jobs
@@ -941,8 +944,13 @@ class MainWindow(QMainWindow):
                 job = self.job_planner_widget.current_job
             else:
                 job = self.job_quote_widget.current_job
-        job_plan_printout = Printout(job)
-        html = job_plan_printout.generate()
+        try:
+            job_plan_printout = Printout(job)
+            html = job_plan_printout.generate()
+        except Exception as e:
+            html = f"There was an error when generating the printout for {job.name}.\n\nPlease report the error:\n{e}"
+            msg = QMessageBox(QMessageBox.Icon.Warning, "Warning", f"Job saved, but there was an error when generating the printout for {job.name}.\n\nPlease report the error:\n{e}")
+            msg.exec()
         self.upload_job_thread(f"saved_jobs/{job.status.name.lower()}/{job.name}", job, html)
         job.unsaved_changes = False
         self.job_planner_widget.update_job_save_status(job)
@@ -1420,7 +1428,7 @@ class MainWindow(QMainWindow):
         toolbox_2.setLineWidth(0)
         toolbox_2.layout().setSpacing(0)
         self.verticalLayout_24.addWidget(toolbox_1)  # Quote Generator
-        self.verticalLayout_33.addWidget(toolbox_2)  # Quote Generator 2
+        self.verticalLayout_33.addWidget(toolbox_2)  # Job Quoter
         for i, nest_directory in enumerate(nest_directories):
             nest_directory_name: str = nest_directory.split("/")[-1]
             tree_view_1 = PdfTreeView(nest_directory, self)
@@ -1670,7 +1678,7 @@ class MainWindow(QMainWindow):
         if self.tabWidget.tabText(self.tabWidget.currentIndex()) in [
             "Laser Cut Inventory",
             "Quote Generator",
-            "Quote Generator 2",
+            "Job Quoter",
         ]:
             self.upload_file(
                 [
@@ -1680,7 +1688,7 @@ class MainWindow(QMainWindow):
         if self.tabWidget.tabText(self.tabWidget.currentIndex()) in [
             "Sheets in Inventory",
             "Quote Generator",
-            "Quote Generator 2",
+            "Job Quoter",
         ]:
             self.upload_file(
                 [
@@ -2186,7 +2194,7 @@ class MainWindow(QMainWindow):
             self.status_button.setText("Fetched all jobs", "lime")
             if self.tabWidget.tabText(self.tabWidget.currentIndex()) == "Job Planner":
                 self.load_planning_jobs(data)
-            elif self.tabWidget.tabText(self.tabWidget.currentIndex()) == "Quote Generator 2":
+            elif self.tabWidget.tabText(self.tabWidget.currentIndex()) == "Job Quoter":
                 self.load_quoting_jobs(data)
             # More will be added here such as quoting, workspace, archive...
         else:
@@ -2217,7 +2225,7 @@ class MainWindow(QMainWindow):
             self.status_button.setText(f"{job.name} reloaded successfully!", "lime")
             if self.tabWidget.tabText(self.tabWidget.currentIndex()) == "Job Planner":
                 self.job_planner_widget.reload_job(job)
-            elif self.tabWidget.tabText(self.tabWidget.currentIndex()) == "Quote Generator 2":
+            elif self.tabWidget.tabText(self.tabWidget.currentIndex()) == "Job Quoter":
                 self.job_quote_widget.reload_job(job)
         else:
             self.status_button.setText(
@@ -2238,7 +2246,7 @@ class MainWindow(QMainWindow):
             self.status_button.setText(f"{job.name} loaded successfully!", "lime")
             if self.tabWidget.tabText(self.tabWidget.currentIndex()) == "Job Planner":
                 self.job_planner_widget.load_job(job)
-            elif self.tabWidget.tabText(self.tabWidget.currentIndex()) == "Quote Generator 2":
+            elif self.tabWidget.tabText(self.tabWidget.currentIndex()) == "Job Quoter":
                 self.job_quote_widget.load_job(job)
         else:
             self.status_button.setText(

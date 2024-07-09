@@ -67,7 +67,7 @@ class JobTab(QWidget):
             job.color = colors.get_random_color()
             if self.parent.tabWidget.tabText(self.parent.tabWidget.currentIndex()) == "Job Planner":
                 job.status = JobStatus.PLANNING
-            elif self.parent.tabWidget.tabText(self.parent.tabWidget.currentIndex()) == "Quote Generator 2":
+            elif self.parent.tabWidget.tabText(self.parent.tabWidget.currentIndex()) == "Job Quoter":
                 job.status = JobStatus.QUOTED
             job.order_number = self.parent.order_number
             self.job_manager.add_job(job)
