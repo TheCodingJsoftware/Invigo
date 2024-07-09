@@ -350,8 +350,8 @@
                       <rect>
                        <x>0</x>
                        <y>0</y>
-                       <width>1482</width>
-                       <height>599</height>
+                       <width>80</width>
+                       <height>16</height>
                       </rect>
                      </property>
                      <layout class="QVBoxLayout" name="verticalLayout_17">
@@ -391,7 +391,7 @@
                       <rect>
                        <x>0</x>
                        <y>0</y>
-                       <width>68</width>
+                       <width>80</width>
                        <height>16</height>
                       </rect>
                      </property>
@@ -461,7 +461,7 @@
       </widget>
       <widget class="QWidget" name="quote_generator_tab">
        <attribute name="title">
-        <string>Quote Generator 2</string>
+        <string>Job Quoter</string>
        </attribute>
        <layout class="QVBoxLayout" name="verticalLayout_7">
         <item>
@@ -576,8 +576,8 @@
                     <rect>
                      <x>0</x>
                      <y>0</y>
-                     <width>1479</width>
-                     <height>591</height>
+                     <width>80</width>
+                     <height>16</height>
                     </rect>
                    </property>
                    <layout class="QVBoxLayout" name="verticalLayout_27">
@@ -624,7 +624,7 @@
                     <rect>
                      <x>0</x>
                      <y>0</y>
-                     <width>68</width>
+                     <width>80</width>
                      <height>16</height>
                     </rect>
                    </property>
@@ -893,7 +893,7 @@
                        <rect>
                         <x>0</x>
                         <y>0</y>
-                        <width>68</width>
+                        <width>80</width>
                         <height>16</height>
                        </rect>
                       </property>
@@ -962,7 +962,7 @@
                        <rect>
                         <x>0</x>
                         <y>0</y>
-                        <width>68</width>
+                        <width>80</width>
                         <height>16</height>
                        </rect>
                       </property>

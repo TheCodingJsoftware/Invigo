@@ -771,7 +771,7 @@ class Printout:
 
         html += '<div id="parts-layout">'
         html += """<div class="tabs">
-            <a data-ui="#assemblies-layout"><i>table_view</i>Assemblies Layout</a>
+            <a data-ui="#assemblies-layout"><i>table_view</i>Groups Layout</a>
             <a class="active" data-ui="#assemblies-list"> <i>data_table</i>Assemblies List</a>
             <a data-ui="#parts-list"> <i>format_list_bulleted</i>Grouped Parts List</a>
         </div>"""

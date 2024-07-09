@@ -338,8 +338,8 @@ class MainWindow(QMainWindow):
         self.splitter_3.setStretchFactor(0, 3)  # Quote Generator
         self.splitter_3.setStretchFactor(1, 2)  # Quote Generator
 
-        self.splitter_2.setStretchFactor(0, 1)  # Quote Generator 2
-        self.splitter_2.setStretchFactor(1, 0)  # Quote Generator 2
+        self.splitter_2.setStretchFactor(0, 1)  # Job Quoter
+        self.splitter_2.setStretchFactor(1, 0)  # Job Quoter
 
     def __load_ui(self) -> None:
         menu_tabs_order: list[str] = self.settings_file.get_value(setting_name="menu_tabs_order")
@@ -581,7 +581,7 @@ class MainWindow(QMainWindow):
             self.refresh_nest_directories()
             for quote_widget in self.quote_generator_tab_widget.quotes:
                 quote_widget.update_sheet_statuses()
-        elif self.tabWidget.tabText(self.tabWidget.currentIndex()) == "Quote Generator 2":
+        elif self.tabWidget.tabText(self.tabWidget.currentIndex()) == "Job Quoter":
             self.load_jobs_thread()
             self.refresh_nest_directories()
         elif self.tabWidget.tabText(self.tabWidget.currentIndex()) == "Job Planner":  # TODO Load server jobs
@@ -1428,7 +1428,7 @@ class MainWindow(QMainWindow):
         toolbox_2.setLineWidth(0)
         toolbox_2.layout().setSpacing(0)
         self.verticalLayout_24.addWidget(toolbox_1)  # Quote Generator
-        self.verticalLayout_33.addWidget(toolbox_2)  # Quote Generator 2
+        self.verticalLayout_33.addWidget(toolbox_2)  # Job Quoter
         for i, nest_directory in enumerate(nest_directories):
             nest_directory_name: str = nest_directory.split("/")[-1]
             tree_view_1 = PdfTreeView(nest_directory, self)
@@ -1678,7 +1678,7 @@ class MainWindow(QMainWindow):
         if self.tabWidget.tabText(self.tabWidget.currentIndex()) in [
             "Laser Cut Inventory",
             "Quote Generator",
-            "Quote Generator 2",
+            "Job Quoter",
         ]:
             self.upload_file(
                 [
@@ -1688,7 +1688,7 @@ class MainWindow(QMainWindow):
         if self.tabWidget.tabText(self.tabWidget.currentIndex()) in [
             "Sheets in Inventory",
             "Quote Generator",
-            "Quote Generator 2",
+            "Job Quoter",
         ]:
             self.upload_file(
                 [
@@ -2194,7 +2194,7 @@ class MainWindow(QMainWindow):
             self.status_button.setText("Fetched all jobs", "lime")
             if self.tabWidget.tabText(self.tabWidget.currentIndex()) == "Job Planner":
                 self.load_planning_jobs(data)
-            elif self.tabWidget.tabText(self.tabWidget.currentIndex()) == "Quote Generator 2":
+            elif self.tabWidget.tabText(self.tabWidget.currentIndex()) == "Job Quoter":
                 self.load_quoting_jobs(data)
             # More will be added here such as quoting, workspace, archive...
         else:
@@ -2225,7 +2225,7 @@ class MainWindow(QMainWindow):
             self.status_button.setText(f"{job.name} reloaded successfully!", "lime")
             if self.tabWidget.tabText(self.tabWidget.currentIndex()) == "Job Planner":
                 self.job_planner_widget.reload_job(job)
-            elif self.tabWidget.tabText(self.tabWidget.currentIndex()) == "Quote Generator 2":
+            elif self.tabWidget.tabText(self.tabWidget.currentIndex()) == "Job Quoter":
                 self.job_quote_widget.reload_job(job)
         else:
             self.status_button.setText(
@@ -2246,7 +2246,7 @@ class MainWindow(QMainWindow):
             self.status_button.setText(f"{job.name} loaded successfully!", "lime")
             if self.tabWidget.tabText(self.tabWidget.currentIndex()) == "Job Planner":
                 self.job_planner_widget.load_job(job)
-            elif self.tabWidget.tabText(self.tabWidget.currentIndex()) == "Quote Generator 2":
+            elif self.tabWidget.tabText(self.tabWidget.currentIndex()) == "Job Quoter":
                 self.job_quote_widget.load_job(job)
         else:
             self.status_button.setText(
