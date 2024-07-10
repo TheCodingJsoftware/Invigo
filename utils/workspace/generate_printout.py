@@ -351,11 +351,11 @@ class LaserCutPartsTable:
     def get_paint(self, laser_cut_part: LaserCutPart) -> str:
         html = '<div class="no-padding small-text">'
         if laser_cut_part.uses_primer:
-            html += f'<div class="row no-margin">{laser_cut_part.primer_item.name}: <div style="height: 20px; width: 20px; background-color: {laser_cut_part.primer_item.color};"></div></div>'
+            html += f'<div class="row no-margin"><div style="height: 20px; width: 20px; background-color: {laser_cut_part.primer_item.color}; border-radius: 5px;"></div>{laser_cut_part.primer_item.name}</div>'
         if laser_cut_part.uses_paint:
-            html += f'<div class="row no-margin">{laser_cut_part.paint_item.name}: <div style="height: 20px; width: 20px; background-color: {laser_cut_part.paint_item.color};"></div></div>'
+            html += f'<div class="row no-margin"><div style="height: 20px; width: 20px; background-color: {laser_cut_part.paint_item.color}; border-radius: 5px;"></div>{laser_cut_part.paint_item.name}</div>'
         if laser_cut_part.uses_powder:
-            html += f'<div class="row no-margin">{laser_cut_part.powder_item.name}: <div style="height: 20px; width: 20px; background-color: {laser_cut_part.powder_item.color};"></div></div>'
+            html += f'<div class="row no-margin"><div style="height: 20px; width: 20px; background-color: {laser_cut_part.powder_item.color}; border-radius: 5px;"></div>{laser_cut_part.powder_item.name}</div>'
         if not (laser_cut_part.uses_primer and laser_cut_part.uses_paint and laser_cut_part.uses_powder):
             html = ""
         html += '</div>'
@@ -580,7 +580,8 @@ class AssemblyDiv:
         image_html = f'<img src="{self.server_directory}/image/{self.assembly.assembly_image}" class="assembly_image">' if self.assembly.assembly_image else ""
         html += image_html
         html += '<div class="padding">'
-        html += f'<h5>{self.assembly.name} <div class="badge none">{int(self.assembly.quantity)}</div></h5>'
+        html += f'<h5>{self.assembly.name}</h5>'
+        html += f'<p class="small-text">Quantity: {self.assembly.quantity}</p>'
         html += f'<p class="small-text">Process: {self.assembly.flow_tag.get_name()}</p>'
         html += "</div>"
         html += "</div>"

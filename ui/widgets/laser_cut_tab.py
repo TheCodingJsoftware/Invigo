@@ -380,7 +380,7 @@ class LaserCutTab(QWidget):
             col += 1
             self.laser_cut_parts_filter["thicknesses"].append(button)
 
-        self.lineEdit_search_laser_cut_parts.textChanged.connect(self.load_table)
+        self.lineEdit_search_laser_cut_parts.returnPressed.connect(self.load_table)
         autofill_search_options = natsorted(self.laser_cut_inventory.get_all_part_names())
         completer = QCompleter(autofill_search_options, self)
         completer.setCaseSensitivity(Qt.CaseSensitivity.CaseInsensitive)

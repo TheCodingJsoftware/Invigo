@@ -1649,8 +1649,8 @@ class CustomTabWidget(QWidget):
 
         self.buttons: list[TabButton] = []
 
-        widget = QWidget(self)
-        layout = QHBoxLayout(widget)
+        self.corner_widget = QWidget(self)
+        layout = QHBoxLayout(self.corner_widget)
         layout.setSpacing(0)
         layout.setContentsMargins(0, 0, 0, 6)
         add_category = QPushButton(self)
@@ -1666,7 +1666,7 @@ class CustomTabWidget(QWidget):
         layout.addWidget(add_category)
         layout.addWidget(remove_category)
 
-        self.setCornerWidget(widget)
+        self.setCornerWidget(self.corner_widget)
 
     def setCornerWidget(self, widget: QWidget):
         self.corner_layout.addWidget(widget)
