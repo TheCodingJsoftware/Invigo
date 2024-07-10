@@ -333,7 +333,6 @@ class AssemblyQuotingWidget(AssemblyWidget):
             table_data["quantity"].setText(str(component.quantity * self.assembly.quantity))
         self.components_table.blockSignals(False)
 
-    # TODO
     def update_components_table_prices(self):
         self.components_table.blockSignals(True)
         for component, table_data in self.components_table_items.items():
@@ -464,6 +463,36 @@ class AssemblyQuotingWidget(AssemblyWidget):
     def add_laser_cut_part_to_table(self, laser_cut_part: LaserCutPart):
         self.laser_cut_parts_table.blockSignals(True)
 
+        def create_file_layout(file_types: list[str]) -> tuple[QWidget, QHBoxLayout]:
+            main_widget = QWidget(self.laser_cut_parts_table)
+            main_widget.setObjectName("main_widget")
+            main_widget.setStyleSheet("QWidget#main_widget{background-color: transparent;}")
+            main_layout = QHBoxLayout(main_widget)
+            main_layout.setContentsMargins(0, 0, 0, 0)
+            main_layout.setSpacing(0)
+
+            files_widget = QWidget()
+            files_widget.setObjectName("files_widget")
+            files_widget.setStyleSheet("QWidget#files_widget{background-color: transparent;}")
+            files_layout = QHBoxLayout(files_widget)
+            files_layout.setAlignment(Qt.AlignmentFlag.AlignLeft)
+            files_layout.setContentsMargins(0, 0, 6, 0)
+            files_layout.setSpacing(6)
+
+            scroll_area = QScrollArea(self.laser_cut_parts_table)
+            scroll_area.setWidget(files_widget)
+            scroll_area.setWidgetResizable(True)
+            scroll_area.setFixedWidth(100)
+            scroll_area.setVerticalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAlwaysOff)
+            # scroll_area.setStyleSheet("QWidget#scrollAreaWidgetContents{background-color: rgba(20, 20, 20, 0.5);} QAbstractScrollArea{background-color: rgba(20, 20, 20, 0.5);}")
+
+            main_layout.addWidget(scroll_area)
+
+            for file_type in file_types:
+                file_list = getattr(laser_cut_part, file_type)
+                for file in file_list:
+                    self.add_laser_cut_part_drag_file_widget(laser_cut_part, file_type, files_layout, file)
+            return main_widget, files_layout
         does_exist_in_inventory = self.laser_cut_inventory.get_laser_cut_part_by_name(laser_cut_part.name)
         current_row = self.laser_cut_parts_table.rowCount()
         self.laser_cut_part_table_items.update({laser_cut_part: {}})
@@ -501,6 +530,15 @@ class AssemblyQuotingWidget(AssemblyWidget):
         part_name_item.setToolTip(laser_cut_part_inventory_status)
         self.laser_cut_parts_table.setItem(current_row, LaserCutTableColumns.PART_NAME.value, part_name_item)
         self.laser_cut_part_table_items[laser_cut_part].update({"part_name": part_name_item})
+
+        # Bending files
+        files_widget, files_layout = create_file_layout(["bending_files", "welding_files", "cnc_milling_files"])
+        self.laser_cut_parts_table.setCellWidget(
+            current_row,
+            LaserCutTableColumns.FILES.value,
+            files_widget,
+        )
+        self.laser_cut_part_table_items[laser_cut_part].update({"files": files_widget})
 
         materials_combobox = QComboBox(self)
         materials_combobox.setStyleSheet("border-radius: 0px;")
@@ -655,7 +693,6 @@ class AssemblyQuotingWidget(AssemblyWidget):
             table_data["quantity"].setText(str(laser_cut_part.quantity * self.assembly.quantity))
         self.laser_cut_parts_table.blockSignals(False)
 
-    # TODO
     def update_laser_cut_parts_table_prices(self):
         self.laser_cut_parts_table.blockSignals(True)
         for laser_cut_part, table_data in self.laser_cut_part_table_items.items():
@@ -700,6 +737,56 @@ class AssemblyQuotingWidget(AssemblyWidget):
         laser_cut_part.shelf_number = self.laser_cut_part_table_items[laser_cut_part]["shelf_number"].text()
         self.update_laser_cut_parts_table_quantity()
         self.changes_made()
+
+    def add_laser_cut_part_drag_file_widget(
+        self,
+        laser_cut_part: LaserCutPart,
+        file_category: str,
+        files_layout: QHBoxLayout,
+        file_path: str,
+    ):
+        file_button = FileButton(f"{os.getcwd()}\\{file_path}", self)
+        file_button.buttonClicked.connect(partial(self.laser_cut_part_file_clicked, laser_cut_part, file_path))
+        file_button.deleteFileClicked.connect(
+            partial(
+                self.laser_cut_part_delete_file,
+                laser_cut_part,
+                file_category,
+                file_path,
+                file_button,
+            )
+        )
+        file_name = os.path.basename(file_path)
+        file_ext = file_name.split(".")[-1].upper()
+        file_button.setText(file_ext)
+        file_button.setToolTip(file_path)
+        file_button.setToolTipDuration(0)
+        files_layout.addWidget(file_button)
+        self.laser_cut_parts_table.resizeColumnsToContents()
+
+    def laser_cut_part_get_all_file_types(self, laser_cut_part: LaserCutPart, file_ext: str) -> list[str]:
+        files: set[str] = set()
+        for bending_file in laser_cut_part.bending_files:
+            if bending_file.lower().endswith(file_ext):
+                files.add(bending_file)
+        for welding_file in laser_cut_part.welding_files:
+            if welding_file.lower().endswith(file_ext):
+                files.add(welding_file)
+        for cnc_milling_file in laser_cut_part.cnc_milling_files:
+            if cnc_milling_file.lower().endswith(file_ext):
+                files.add(cnc_milling_file)
+        return list(files)
+
+    def laser_cut_part_file_clicked(self, laser_cut_part: LaserCutPart, file_path: str):
+        self.download_file_thread = WorkspaceDownloadFile([file_path], True)
+        self.download_file_thread.signal.connect(self.file_downloaded)
+        self.download_file_thread.start()
+        self.download_file_thread.wait()
+        if file_path.lower().endswith(".pdf"):
+            self.open_pdf(
+                self.laser_cut_part_get_all_file_types(laser_cut_part, ".pdf"),
+                file_path,
+            )
 
     def update_laser_cut_parts_table_height(self):
         self.laser_cut_parts_table.setFixedHeight((len(self.assembly.laser_cut_parts) + 1) * self.laser_cut_parts_table.row_height)

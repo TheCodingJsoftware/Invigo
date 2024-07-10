@@ -19,7 +19,7 @@ from utils.threads.workspace_get_file_thread import WorkspaceDownloadFile
 class PDFViewer(QMainWindow):
     def __init__(self, pdf_files: list[str], file_path: str, parent):
         super().__init__(parent)
-        uic.loadUi("ui/window/pdf_viewer.ui", self)
+        uic.loadUi("ui/windows/pdf_viewer.ui", self)
 
         self.files = pdf_files
         self.buttons: list[QPushButton] = []

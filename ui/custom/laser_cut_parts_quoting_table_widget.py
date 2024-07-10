@@ -12,6 +12,7 @@ class AutoNumber(Enum):
 class LaserCutTableColumns(AutoNumber):
     PICTURE = auto()
     PART_NAME = auto()
+    FILES = auto()
     MATERIAL = auto()
     THICKNESS = auto()
     UNIT_QUANTITY = auto()
@@ -53,6 +54,7 @@ class LaserCutPartsQuotingTableWidget(CustomTableWidget):
         headers = {
             "Picture": LaserCutTableColumns.PICTURE.value,
             "Part name": LaserCutTableColumns.PART_NAME.value,
+            "Files": LaserCutTableColumns.FILES.value,
             "Material": LaserCutTableColumns.MATERIAL.value,
             "Thickness": LaserCutTableColumns.THICKNESS.value,
             "Unit Qty": LaserCutTableColumns.UNIT_QUANTITY.value,

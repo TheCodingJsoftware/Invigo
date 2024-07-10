@@ -248,8 +248,7 @@ QPushButton#pushButton_reload_job:flat:hover {
                <string/>
               </property>
               <property name="icon">
-               <iconset>
-                <normaloff>svg/browser_refresh.svg</normaloff>svg/browser_refresh.svg</iconset>
+               <iconset theme="view-refresh"/>
               </property>
               <property name="shortcut">
                <string>Ctrl+R</string>
@@ -338,7 +337,7 @@ QPushButton#pushButton_reload_job:flat:hover {
              <rect>
               <x>0</x>
               <y>0</y>
-              <width>585</width>
+              <width>276</width>
               <height>980</height>
              </rect>
             </property>
@@ -1012,8 +1011,8 @@ QPushButton#pushButton_reload_job:flat:hover {
            <rect>
             <x>0</x>
             <y>0</y>
-            <width>520</width>
-            <height>928</height>
+            <width>829</width>
+            <height>954</height>
            </rect>
           </property>
           <layout class="QVBoxLayout" name="verticalLayout_3">
