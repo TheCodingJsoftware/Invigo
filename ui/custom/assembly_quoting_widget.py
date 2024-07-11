@@ -30,9 +30,7 @@ from ui.custom.laser_cut_part_paint_settings_widget import (
     LasserCutPartPaintSettingsWidget,
 )
 from ui.custom.laser_cut_part_paint_widget import LaserCutPartPaintWidget
-from ui.custom.laser_cut_parts_quoting_table_widget import (
-    LaserCutPartsQuotingTableWidget, LaserCutTableColumns
-)
+from ui.custom.laser_cut_parts_quoting_table_widget import LaserCutPartsQuotingTableWidget, LaserCutTableColumns
 from ui.custom_widgets import AssemblyMultiToolBox, RecutButton
 from ui.dialogs.add_component_dialog import AddComponentDialog
 from ui.dialogs.add_laser_cut_part_dialog import AddLaserCutPartDialog
@@ -43,6 +41,7 @@ from utils.threads.upload_thread import UploadThread
 from utils.threads.workspace_get_file_thread import WorkspaceDownloadFile
 from utils.threads.workspace_upload_file_thread import WorkspaceUploadThread
 from utils.workspace.assembly import Assembly
+
 
 class AssemblyQuotingWidget(AssemblyWidget):
     def __init__(self, assembly: Assembly, parent) -> None:
@@ -339,31 +338,35 @@ class AssemblyQuotingWidget(AssemblyWidget):
             table_data["quantity"].setText(str(component.quantity * self.assembly.quantity))
         self.components_table.blockSignals(False)
 
-    def components_table_changed(self):
-        if not (component := self.get_selected_component()):
+    def components_table_changed(self, row: int):
+        changed_component = next(
+            (component for component, table_data in self.components_table_items.items() if table_data["row"] == row),
+            None,
+        )
+        if not changed_component:
             return
-        component.part_name = self.components_table_items[component]["part_name"].text()
-        if self.components_inventory.get_component_by_name(component.name):
-            component_inventory_status = f"{component.name} exists in inventory."
+        changed_component.part_name = self.components_table_items[changed_component]["part_name"].text()
+        if self.components_inventory.get_component_by_name(changed_component.name):
+            component_inventory_status = f"{changed_component.name} exists in inventory."
             self.set_table_row_color(
                 self.components_table,
-                self.components_table_items[component]["row"],
+                self.components_table_items[changed_component]["row"],
                 "#141414",
             )
         else:
-            component_inventory_status = f"{component.name} does NOT exist in inventory."
+            component_inventory_status = f"{changed_component.name} does NOT exist in inventory."
             self.set_table_row_color(
                 self.components_table,
-                self.components_table_items[component]["row"],
+                self.components_table_items[changed_component]["row"],
                 "#3F1E25",
             )
-        self.components_table_items[component]["part_name"].setToolTip(component_inventory_status)
-        self.components_table_items[component]["part_number"].setToolTip(component_inventory_status)
-        component.part_number = self.components_table_items[component]["part_number"].text()
+        self.components_table_items[changed_component]["part_name"].setToolTip(component_inventory_status)
+        self.components_table_items[changed_component]["part_number"].setToolTip(component_inventory_status)
+        changed_component.part_number = self.components_table_items[changed_component]["part_number"].text()
         with contextlib.suppress(ValueError):
-            component.quantity = float(self.components_table_items[component]["unit_quantity"].text())
-        component.notes = self.components_table_items[component]["notes"].text()
-        component.shelf_number = self.components_table_items[component]["shelf_number"].text()
+            changed_component.quantity = float(self.components_table_items[changed_component]["unit_quantity"].text())
+        changed_component.notes = self.components_table_items[changed_component]["notes"].text()
+        changed_component.shelf_number = self.components_table_items[changed_component]["shelf_number"].text()
         self.update_component_table_quantity()
         self.changes_made()
 
@@ -493,6 +496,7 @@ class AssemblyQuotingWidget(AssemblyWidget):
                 for file in file_list:
                     self.add_laser_cut_part_drag_file_widget(laser_cut_part, file_type, files_layout, file)
             return main_widget, files_layout
+
         does_exist_in_inventory = self.laser_cut_inventory.get_laser_cut_part_by_name(laser_cut_part.name)
         current_row = self.laser_cut_parts_table.rowCount()
         self.laser_cut_part_table_items.update({laser_cut_part: {}})
@@ -545,7 +549,7 @@ class AssemblyQuotingWidget(AssemblyWidget):
         materials_combobox.wheelEvent = lambda event: None
         materials_combobox.addItems(self.sheet_settings.get_materials())
         materials_combobox.setCurrentText(laser_cut_part.material)
-        materials_combobox.currentTextChanged.connect(self.laser_cut_parts_table_changed)
+        materials_combobox.currentTextChanged.connect(partial(self.laser_cut_parts_table_changed, current_row))
         self.laser_cut_parts_table.setCellWidget(current_row, LaserCutTableColumns.PICTURE.value, materials_combobox)
         self.laser_cut_part_table_items[laser_cut_part].update({"material": materials_combobox})
 
@@ -554,7 +558,7 @@ class AssemblyQuotingWidget(AssemblyWidget):
         thicknesses_combobox.wheelEvent = lambda event: None
         thicknesses_combobox.addItems(self.sheet_settings.get_thicknesses())
         thicknesses_combobox.setCurrentText(laser_cut_part.gauge)
-        thicknesses_combobox.currentTextChanged.connect(self.laser_cut_parts_table_changed)
+        thicknesses_combobox.currentTextChanged.connect(partial(self.laser_cut_parts_table_changed, current_row))
         self.laser_cut_parts_table.setCellWidget(
             current_row,
             LaserCutTableColumns.THICKNESS.value,
@@ -571,6 +575,9 @@ class AssemblyQuotingWidget(AssemblyWidget):
         quantity_item.setTextAlignment(Qt.AlignmentFlag.AlignCenter)
         self.laser_cut_parts_table.setItem(current_row, LaserCutTableColumns.QUANTITY.value, quantity_item)
         self.laser_cut_part_table_items[laser_cut_part].update({"quantity": quantity_item})
+
+        part_dim_item = QTableWidgetItem(f"{laser_cut_part.part_dim}\n{laser_cut_part.surface_area} in²")
+        self.laser_cut_parts_table.setItem(current_row, LaserCutTableColumns.PART_DIM.value, part_dim_item)
 
         painting_settings_widget = LasserCutPartPaintSettingsWidget(laser_cut_part, self.laser_cut_parts_table)
         painting_settings_widget.settingsChanged.connect(self.changes_made)
@@ -707,34 +714,38 @@ class AssemblyQuotingWidget(AssemblyWidget):
             table_data["price"].setText(f"${(unit_price * laser_cut_part.quantity * self.assembly.quantity):,.2f}")
         self.laser_cut_parts_table.blockSignals(False)
 
-    def laser_cut_parts_table_changed(self):
-        if not (laser_cut_part := self.get_selected_laser_cut_part()):
+    def laser_cut_parts_table_changed(self, row: int):
+        changed_laser_cut_part = next(
+            (laser_cut_part for laser_cut_part, table_data in self.laser_cut_part_table_items.items() if table_data["row"] == row),
+            None,
+        )
+        if not changed_laser_cut_part:
             return
-        laser_cut_part.name = self.laser_cut_part_table_items[laser_cut_part]["part_name"].text()
-        if self.laser_cut_inventory.get_laser_cut_part_by_name(laser_cut_part.name):
-            laser_cut_part_inventory_status = f"{laser_cut_part.name} exists in inventory."
+        changed_laser_cut_part.name = self.laser_cut_part_table_items[changed_laser_cut_part]["part_name"].text()
+        if self.laser_cut_inventory.get_laser_cut_part_by_name(changed_laser_cut_part.name):
+            laser_cut_part_inventory_status = f"{changed_laser_cut_part.name} exists in inventory."
             self.set_table_row_color(
                 self.laser_cut_parts_table,
-                self.laser_cut_part_table_items[laser_cut_part]["row"],
+                self.laser_cut_part_table_items[changed_laser_cut_part]["row"],
                 "#141414",
             )
         else:
-            laser_cut_part_inventory_status = f"{laser_cut_part.name} does NOT exist in inventory."
+            laser_cut_part_inventory_status = f"{changed_laser_cut_part.name} does NOT exist in inventory."
             self.set_table_row_color(
                 self.laser_cut_parts_table,
-                self.laser_cut_part_table_items[laser_cut_part]["row"],
+                self.laser_cut_part_table_items[changed_laser_cut_part]["row"],
                 "#3F1E25",
             )
-        self.laser_cut_part_table_items[laser_cut_part]["part_name"].setToolTip(laser_cut_part_inventory_status)
-        laser_cut_part.material = self.laser_cut_part_table_items[laser_cut_part]["material"].currentText()
-        laser_cut_part.gauge = self.laser_cut_part_table_items[laser_cut_part]["thickness"].currentText()
+        self.laser_cut_part_table_items[changed_laser_cut_part]["part_name"].setToolTip(laser_cut_part_inventory_status)
+        changed_laser_cut_part.material = self.laser_cut_part_table_items[changed_laser_cut_part]["material"].currentText()
+        changed_laser_cut_part.gauge = self.laser_cut_part_table_items[changed_laser_cut_part]["thickness"].currentText()
         with contextlib.suppress(ValueError):
-            laser_cut_part.quantity = float(self.laser_cut_part_table_items[laser_cut_part]["unit_quantity"].text())
+            changed_laser_cut_part.quantity = float(self.laser_cut_part_table_items[changed_laser_cut_part]["unit_quantity"].text())
         with contextlib.suppress(ValueError):
-            laser_cut_part.bend_cost = float(self.laser_cut_part_table_items[laser_cut_part]["bend_cost"].text())
+            changed_laser_cut_part.bend_cost = float(self.laser_cut_part_table_items[changed_laser_cut_part]["bend_cost"].text())
         with contextlib.suppress(ValueError):
-            laser_cut_part.labor_cost = float(self.laser_cut_part_table_items[laser_cut_part]["labor_cost"].text())
-        laser_cut_part.shelf_number = self.laser_cut_part_table_items[laser_cut_part]["shelf_number"].text()
+            changed_laser_cut_part.labor_cost = float(self.laser_cut_part_table_items[changed_laser_cut_part]["labor_cost"].text())
+        changed_laser_cut_part.shelf_number = self.laser_cut_part_table_items[changed_laser_cut_part]["shelf_number"].text()
         self.update_laser_cut_parts_table_quantity()
         self.changes_made()
 

@@ -279,14 +279,17 @@ class NestedLaserCutParts:
 
     def generate(self) -> str:
         html = '<div id="nested-parts-layout"><h5 class="center-align">Nested Laser Cut Parts:</h5>'
-        for i, nest in enumerate(self.job.nests):
-            html += '<article class="border nest-summary"><div class="center-align">'
-            html += f'<h6 class="center-align">{nest.get_name()}</h6><br>'
-            html += f'<img style="margin-bottom: -80px; margin-top: -100px; z-index: -1; height: auto;" src="{self.server_directory}/image/{nest.image_path}" class="responsive nest_image"></div>'
-            html += self.generate_laser_cut_part_table(nest)
-            html += '</article>'
-            if i < len(self.job.nests) - 1:  # Check if it's not the last item
-                html += '<div id="page-break" class="page-break"></div>'
+        if not self.job.nests:
+            html += '<article class="border nest-summary">Nothing here</article>'
+        else:
+            for i, nest in enumerate(self.job.nests):
+                html += '<article class="border nest-summary"><div class="center-align">'
+                html += f'<h6 class="center-align">{nest.get_name()}</h6><br>'
+                html += f'<img style="margin-bottom: -80px; margin-top: -100px; z-index: -1; height: auto;" src="{self.server_directory}/image/{nest.image_path}" class="responsive nest_image"></div>'
+                html += self.generate_laser_cut_part_table(nest)
+                html += '</article>'
+                if i < len(self.job.nests) - 1:  # Check if it's not the last item
+                    html += '<div id="page-break" class="page-break"></div>'
         html += '</div>'
         return html
 
@@ -350,13 +353,13 @@ class LaserCutPartsTable:
 
     def get_paint(self, laser_cut_part: LaserCutPart) -> str:
         html = '<div class="no-padding small-text">'
-        if laser_cut_part.uses_primer:
+        if laser_cut_part.uses_primer and laser_cut_part.primer_item:
             html += f'<div class="row no-margin"><div style="height: 20px; width: 20px; background-color: {laser_cut_part.primer_item.color}; border-radius: 5px;"></div>{laser_cut_part.primer_item.name}</div>'
-        if laser_cut_part.uses_paint:
+        if laser_cut_part.uses_paint and laser_cut_part.paint_item:
             html += f'<div class="row no-margin"><div style="height: 20px; width: 20px; background-color: {laser_cut_part.paint_item.color}; border-radius: 5px;"></div>{laser_cut_part.paint_item.name}</div>'
-        if laser_cut_part.uses_powder:
+        if laser_cut_part.uses_powder and laser_cut_part.powder_item:
             html += f'<div class="row no-margin"><div style="height: 20px; width: 20px; background-color: {laser_cut_part.powder_item.color}; border-radius: 5px;"></div>{laser_cut_part.powder_item.name}</div>'
-        if not (laser_cut_part.uses_primer and laser_cut_part.uses_paint and laser_cut_part.uses_powder):
+        if not (laser_cut_part.uses_primer or laser_cut_part.uses_paint or laser_cut_part.uses_powder):
             html = ""
         html += '</div>'
         return html

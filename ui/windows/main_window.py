@@ -133,8 +133,8 @@ from utils.workspace.job_preferences import JobPreferences
 from utils.workspace.workspace import Workspace
 from utils.workspace.workspace_settings import WorkspaceSettings
 
-__version__: str = "v3.1.3"
-__updated__: str = "2024-07-08 23:50:33"
+__version__: str = "v3.1.4"
+__updated__: str = "2024-07-10 16:16:57"
 
 
 def check_folders(folders: list[str]) -> None:
@@ -245,7 +245,7 @@ class MainWindow(QMainWindow):
         self.omnigen_layout.addWidget(self.quote_generator_tab_widget)
 
         self.job_planner_widget = JobTab(self)
-        self.job_planner_widget.savJob.connect(self.save_job)
+        self.job_planner_widget.saveJob.connect(self.save_job)
         self.job_planner_widget.saveJobAs.connect(self.save_job_as)
         self.job_planner_widget.reloadJob.connect(self.reload_job)
         template_job = Job("Enter Job Name0", {}, self.job_manager)
@@ -255,7 +255,7 @@ class MainWindow(QMainWindow):
         self.job_planner_layout.addWidget(self.job_planner_widget)
 
         self.job_quote_widget = JobTab(self)
-        self.job_quote_widget.savJob.connect(self.save_job)
+        self.job_quote_widget.saveJob.connect(self.save_job)
         self.job_quote_widget.saveJobAs.connect(self.save_job_as)
         self.job_quote_widget.reloadJob.connect(self.reload_job)
         template_job = Job("Enter Job Name0", {}, self.job_manager)
@@ -928,18 +928,22 @@ class MainWindow(QMainWindow):
         folder_path = f"saved_jobs\\{job.status.name.lower()}\\{job.name}"
         self.reload_job_thread(folder_path)
 
-    def save_job(self, job: Job):
-        if job is None:
+    def save_job(self, job: Job | None):
+        if not job:
             if self.tabWidget.tabText(self.tabWidget.currentIndex()) == "Job Planner":
-                job = self.job_planner_widget.current_job
-            else:
-                job = self.job_quote_widget.current_job
+                job = self.job_planner_widget.get_active_job()
+            elif self.tabWidget.tabText(self.tabWidget.currentIndex()) == "Job Quoter":
+                job = self.job_quote_widget.get_active_job()
+        if not job:
+            msg = QMessageBox(QMessageBox.Icon.Critical, "Critcal", "Active job could not be found. Aborted.")
+            msg.exec()
+            return
         try:
             job_plan_printout = Printout(job)
             html = job_plan_printout.generate()
         except Exception as e:
             html = f"There was an error when generating the printout for {job.name}.\n\nPlease report the error:\n{e}"
-            msg = QMessageBox(QMessageBox.Icon.Warning, "Warning", f"Job saved, but there was an error when generating the printout for {job.name}.\n\nPlease report the error:\n{e}")
+            msg = QMessageBox(QMessageBox.Icon.Warning, "Warning", f"Job saved, but there was an error when generating the printout for {job.name}.\n\nPlease report the error:\n{e} {e.__traceback__}")
             msg.exec()
         self.upload_job_thread(f"saved_jobs/{job.status.name.lower()}/{job.name}", job, html)
         job.unsaved_changes = False
@@ -970,12 +974,22 @@ class MainWindow(QMainWindow):
         for job_widget in self.job_planner_widget.job_widgets:
             job = job_widget.job
             if job.order_number >= 0:
-                active_jobs_in_planning.update({job.name: {"job": job, "type": job.status.value, "modified_date": "", "order_number": job.order_number}})
+                active_jobs_in_planning[job.name] = {
+                    "job": job,
+                    "type": job.status.value,
+                    "modified_date": "",
+                    "order_number": job.order_number,
+                }
         active_jobs_in_quoting = {}
         for job_widget in self.job_quote_widget.job_widgets:
             job = job_widget.job
             if job.order_number >= 0:
-                active_jobs_in_quoting.update({job.name: {"job": job, "type": job.status.value, "modified_date": "", "order_number": job.order_number}})
+                active_jobs_in_quoting[job.name] = {
+                    "job": job,
+                    "type": job.status.value,
+                    "modified_date": "",
+                    "order_number": job.order_number,
+                }
 
         send_to_workspace_dialog = SendJobsToWorkspaceDialog(active_jobs_in_planning, active_jobs_in_quoting, self.saved_jobs, self)
         if send_to_workspace_dialog.exec():
