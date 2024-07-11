@@ -133,7 +133,7 @@ from utils.workspace.job_preferences import JobPreferences
 from utils.workspace.workspace import Workspace
 from utils.workspace.workspace_settings import WorkspaceSettings
 
-__version__: str = "v3.1.3"
+__version__: str = "v3.1.4"
 __updated__: str = "2024-07-10 16:16:57"
 
 
