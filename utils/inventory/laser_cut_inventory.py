@@ -1,4 +1,4 @@
-import ujson as json
+import msgspec
 from natsort import natsorted
 
 from utils.inventory.category import Category
@@ -93,13 +93,13 @@ class LaserCutInventory(Inventory):
         self.recut_parts = natsorted(self.recut_parts, key=lambda recut_part: recut_part.quantity)
 
     def save(self):
-        with open(f"{self.FOLDER_LOCATION}/{self.filename}.json", "w", encoding="utf-8") as file:
-            json.dump(self.to_dict(), file, ensure_ascii=False, indent=4)
+        with open(f"{self.FOLDER_LOCATION}/{self.filename}.json", "wb") as file:
+            file.write(msgspec.json.encode(self.to_dict()))
 
     def load_data(self):
         try:
-            with open(f"{self.FOLDER_LOCATION}/{self.filename}.json", "r", encoding="utf-8") as file:
-                data: dict[str, dict[str, object]] = json.load(file)
+            with open(f"{self.FOLDER_LOCATION}/{self.filename}.json", "rb") as file:
+                data: dict[str, dict[str, object]] = msgspec.json.decode(file.read())
             self.categories.from_dict(data["categories"])
             self.laser_cut_parts.clear()
             self.recut_parts.clear()
@@ -109,11 +109,11 @@ class LaserCutInventory(Inventory):
             for recut_part_name, recut_part_data in data["recut_parts"].items():
                 recut_part = LaserCutPart(recut_part_name, recut_part_data, self)
                 self.add_recut_part(recut_part)
-
         except KeyError:  # Inventory was just created
             return
-        except json.JSONDecodeError:  # Inventory file got cleared
+        except msgspec.DecodeError:  # Inventory file got cleared
             self._reset_file()
+            self.load_data()
 
     def to_dict(self) -> dict:
         data: dict[str, dict[str, object]] = {

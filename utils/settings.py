@@ -1,9 +1,8 @@
 import os
 from datetime import datetime
 
-import ujson as json
+import msgspec
 from PyQt6.QtGui import QFont
-
 
 class Settings:
     def __init__(self) -> None:
@@ -21,15 +20,15 @@ class Settings:
 
     def load_data(self) -> None:
         try:
-            with open(f"{self.FOLDER_LOCATION}/{self.file_name}.json", "r", encoding="utf-8") as json_file:
-                self.data = json.load(json_file)
-        except json.JSONDecodeError as error:
+            with open(f"{self.FOLDER_LOCATION}/{self.file_name}.json", "rb") as json_file:
+                self.data = msgspec.json.decode(json_file.read())
+        except msgspec.DecodeError as error:
             print(f"{self.file_name}.JsonFile.load_data: {error}")
             self.default_settings()
 
     def save_data(self) -> None:
-        with open(f"{self.FOLDER_LOCATION}/{self.file_name}.json", "w", encoding="utf-8") as json_file:
-            json.dump(self.data, json_file, ensure_ascii=False, indent=4)
+        with open(f"{self.FOLDER_LOCATION}/{self.file_name}.json", "wb") as json_file:
+            json_file.write(msgspec.json.encode(self.data))
 
     def get_value(self, setting_name: str) -> None | dict[str, dict[str, int]] | int | bool | str | float:
         try:
@@ -84,6 +83,8 @@ class Settings:
                 "Sheets in Inventory",
                 "Laser Cut Inventory",
                 "Quote Generator",
+                "Job Planner",
+                "Job Quoter",
                 "Workspace",
                 "Chat",
                 "View Removed Quantities History",

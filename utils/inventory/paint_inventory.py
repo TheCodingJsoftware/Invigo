@@ -1,7 +1,7 @@
 import contextlib
 from typing import TYPE_CHECKING
 
-import ujson as json
+import msgspec
 
 from utils.inventory.components_inventory import ComponentsInventory
 from utils.inventory.inventory import Inventory
@@ -96,13 +96,13 @@ class PaintInventory(Inventory):
         return 0.0
 
     def save(self):
-        with open(f"{self.FOLDER_LOCATION}/{self.filename}.json", "w", encoding="utf-8") as file:
-            json.dump(self.to_dict(), file, ensure_ascii=False, indent=4)
+        with open(f"{self.FOLDER_LOCATION}/{self.filename}.json", "wb") as file:
+            file.write(msgspec.json.encode(self.to_dict()))
 
     def load_data(self):
         try:
-            with open(f"{self.FOLDER_LOCATION}/{self.filename}.json", "r", encoding="utf-8") as file:
-                data: dict[str, dict[str, object]] = json.load(file)
+            with open(f"{self.FOLDER_LOCATION}/{self.filename}.json", "rb") as file:
+                data: dict[str, dict[str, object]] = msgspec.json.decode(file.read())
             self.categories.from_dict(["Primer", "Paint", "Powder"])
             self.primers.clear()
             self.paints.clear()
@@ -115,8 +115,9 @@ class PaintInventory(Inventory):
                 self.add_powder(Powder(powder_name, powder_data, self))
         except KeyError:  # Inventory was just created
             return
-        except json.JSONDecodeError:  # Inventory file got cleared
+        except msgspec.DecodeError:  # Inventory file got cleared
             self._reset_file()
+            self.load_data()
 
     def to_dict(self) -> dict:
         data: dict[str, dict[str, object]] = {

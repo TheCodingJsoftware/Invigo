@@ -158,7 +158,7 @@ check_folders(
         "PO's/templates",
     ]
 )
-
+ 
 
 def _play_celebrate_sound() -> None:
     winsound.PlaySound("sounds/sound.wav", winsound.SND_FILENAME)

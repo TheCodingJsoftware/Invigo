@@ -1,7 +1,6 @@
 import os
-from typing import TYPE_CHECKING
 
-import ujson as json
+import msgspec
 from natsort import natsorted
 
 from utils.workspace.job import Job
@@ -95,14 +94,14 @@ class Workspace:
                 json_file.write("{}")
 
     def save(self) -> None:
-        with open(f"{self.FOLDER_LOCATION}/{self.filename}.json", "w", encoding="utf-8") as json_file:
-            json.dump(self.to_dict(), json_file, ensure_ascii=False)
+        with open(f"{self.FOLDER_LOCATION}/{self.filename}.json", "wb") as file:
+            file.write(msgspec.json.encode(self.to_dict()))
 
     def load_data(self) -> None:
         try:
-            with open(f"{self.FOLDER_LOCATION}/{self.filename}.json", "r", encoding="utf-8") as json_file:
-                data = json.load(json_file)
-        except json.JSONDecodeError:
+            with open(f"{self.FOLDER_LOCATION}/{self.filename}.json", "rb") as file:
+                data = msgspec.json.decode(file.read())
+        except msgspec.DecodeError:
             return
 
         self.jobs.clear()

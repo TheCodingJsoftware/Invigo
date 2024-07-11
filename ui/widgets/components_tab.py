@@ -582,8 +582,12 @@ class ComponentsTab(QWidget):
             self.last_selected_component = component.name
             self.last_selected_index = self.get_selected_row()
 
-    def table_changed(self, row):
-        if not (component := self.get_selected_component()):
+    def table_changed(self, row: int):
+        component = next(
+            (component for component, table_data in self.table_components_widgets.items() if table_data["row"] == row),
+            None,
+        )
+        if not component:
             return
         component.part_name = self.table_components_widgets[component]["part_name"].text()
         component.part_number = self.table_components_widgets[component]["part_number"].text()
