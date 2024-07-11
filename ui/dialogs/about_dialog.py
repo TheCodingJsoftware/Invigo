@@ -5,7 +5,7 @@ from PyQt6.QtWidgets import QDialog
 
 
 class AboutDialog(QDialog):
-    def __init__(self, parent, version: str, updated: str, home: str) -> None:
+    def __init__(self, parent, version: str, home: str) -> None:
         super().__init__(parent)
         uic.loadUi("ui/dialogs/about_dialog.ui", self)
         self.parent = parent
@@ -19,8 +19,6 @@ class AboutDialog(QDialog):
 
         self.lblIcon.setFixedSize(128, 128)
         self.lblIcon.setPixmap(scaled_pixmap)
-
-        self.lblVersion.setText(f"Build time: {updated}")
 
         with open("LICENSE", "r", encoding="utf-8") as license_file:
             self.lblLicense.setText(license_file.read())

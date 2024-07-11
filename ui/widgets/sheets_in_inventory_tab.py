@@ -518,8 +518,12 @@ class SheetsInInventoryTab(QWidget):
             self.last_selected_sheet = sheet.name
             self.last_selected_index = self.get_selected_row()
 
-    def table_changed(self, row):
-        if not (sheet := self.get_selected_sheet()):
+    def table_changed(self, row: int):
+        sheet = next(
+            (sheet for sheet, table_data in self.table_sheets_widgets.items() if table_data["row"] == row),
+            None,
+        )
+        if not sheet:
             return
         old_quantity = sheet.quantity
         sheet.quantity = float(

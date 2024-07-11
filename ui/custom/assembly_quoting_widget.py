@@ -339,34 +339,34 @@ class AssemblyQuotingWidget(AssemblyWidget):
         self.components_table.blockSignals(False)
 
     def components_table_changed(self, row: int):
-        changed_component = next(
+        component = next(
             (component for component, table_data in self.components_table_items.items() if table_data["row"] == row),
             None,
         )
-        if not changed_component:
+        if not component:
             return
-        changed_component.part_name = self.components_table_items[changed_component]["part_name"].text()
-        if self.components_inventory.get_component_by_name(changed_component.name):
-            component_inventory_status = f"{changed_component.name} exists in inventory."
+        component.part_name = self.components_table_items[component]["part_name"].text()
+        if self.components_inventory.get_component_by_name(component.name):
+            component_inventory_status = f"{component.name} exists in inventory."
             self.set_table_row_color(
                 self.components_table,
-                self.components_table_items[changed_component]["row"],
+                self.components_table_items[component]["row"],
                 "#141414",
             )
         else:
-            component_inventory_status = f"{changed_component.name} does NOT exist in inventory."
+            component_inventory_status = f"{component.name} does NOT exist in inventory."
             self.set_table_row_color(
                 self.components_table,
-                self.components_table_items[changed_component]["row"],
+                self.components_table_items[component]["row"],
                 "#3F1E25",
             )
-        self.components_table_items[changed_component]["part_name"].setToolTip(component_inventory_status)
-        self.components_table_items[changed_component]["part_number"].setToolTip(component_inventory_status)
-        changed_component.part_number = self.components_table_items[changed_component]["part_number"].text()
+        self.components_table_items[component]["part_name"].setToolTip(component_inventory_status)
+        self.components_table_items[component]["part_number"].setToolTip(component_inventory_status)
+        component.part_number = self.components_table_items[component]["part_number"].text()
         with contextlib.suppress(ValueError):
-            changed_component.quantity = float(self.components_table_items[changed_component]["unit_quantity"].text())
-        changed_component.notes = self.components_table_items[changed_component]["notes"].text()
-        changed_component.shelf_number = self.components_table_items[changed_component]["shelf_number"].text()
+            component.quantity = float(self.components_table_items[component]["unit_quantity"].text())
+        component.notes = self.components_table_items[component]["notes"].text()
+        component.shelf_number = self.components_table_items[component]["shelf_number"].text()
         self.update_component_table_quantity()
         self.changes_made()
 
@@ -577,6 +577,7 @@ class AssemblyQuotingWidget(AssemblyWidget):
         self.laser_cut_part_table_items[laser_cut_part].update({"quantity": quantity_item})
 
         part_dim_item = QTableWidgetItem(f"{laser_cut_part.part_dim}\n{laser_cut_part.surface_area} in²")
+        part_dim_item.setTextAlignment(Qt.AlignmentFlag.AlignCenter)
         self.laser_cut_parts_table.setItem(current_row, LaserCutTableColumns.PART_DIM.value, part_dim_item)
 
         painting_settings_widget = LasserCutPartPaintSettingsWidget(laser_cut_part, self.laser_cut_parts_table)

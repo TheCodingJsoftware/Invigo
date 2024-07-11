@@ -1,5 +1,5 @@
 import requests
-import ujson as json
+import msgspec
 from PyQt6.QtCore import QThread, pyqtSignal
 
 from utils.ip_utils import get_server_ip_address, get_server_port
@@ -27,7 +27,7 @@ class UploadQuote(QThread):
             files = {
                 "quote_data": (
                     "quote.json",
-                    json.dumps(self.quote.to_dict()),
+                    msgspec.json.encode(self.quote.to_dict()),
                     "application/json",
                 )
             }

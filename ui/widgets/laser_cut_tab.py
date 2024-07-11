@@ -891,8 +891,12 @@ class LaserCutTab(QWidget):
             self.last_selected_laser_cut_part = laser_cut_part.name
             self.last_selected_index = self.get_selected_row()
 
-    def table_changed(self):
-        if not (laser_cut_part := self.get_selected_laser_cut_part()):
+    def table_changed(self, row: int):
+        laser_cut_part = next(
+            (laser_cut_part for laser_cut_part, table_data in self.table_laser_cut_parts_widgets.items() if table_data["row"] == row),
+            None,
+        )
+        if not laser_cut_part:
             return
         old_quantity = laser_cut_part.quantity
         laser_cut_part.name = self.table_laser_cut_parts_widgets[laser_cut_part]["name"].text()

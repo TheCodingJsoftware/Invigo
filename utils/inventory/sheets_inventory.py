@@ -1,4 +1,4 @@
-import ujson as json
+import msgspec
 from natsort import natsorted
 
 from utils.inventory.category import Category
@@ -71,21 +71,22 @@ class SheetsInventory(Inventory):
         self.sheets = natsorted(self.sheets, key=lambda sheet: sheet.thickness)
 
     def save(self):
-        with open(f"{self.FOLDER_LOCATION}/{self.filename}.json", "w", encoding="utf-8") as file:
-            json.dump(self.to_dict(), file, ensure_ascii=False, indent=4)
+        with open(f"{self.FOLDER_LOCATION}/{self.filename}.json", "wb") as file:
+            file.write(msgspec.json.encode(self.to_dict()))
 
     def load_data(self):
         try:
             with open(f"{self.FOLDER_LOCATION}/{self.filename}.json", "r", encoding="utf-8") as file:
-                data: dict[str, dict[str, object]] = json.load(file)
+                data: dict[str, dict[str, object]] = msgspec.json.decode(file.read())
             self.categories.from_dict(data["categories"])
             self.sheets.clear()
             for sheet_name, sheet_data in data["sheets"].items():
                 self.add_sheet(Sheet(sheet_name, sheet_data, self))
         except KeyError:  # Inventory was just created
             return
-        except json.JSONDecodeError:  # Inventory file got cleared
+        except msgspec.DecodeError:  # Inventory file got cleared
             self._reset_file()
+            self.load_data()
 
     def to_dict(self) -> dict:
         data: dict[str, dict[str, object]] = {

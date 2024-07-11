@@ -1,5 +1,5 @@
 import requests
-import ujson as json
+import msgspec
 from PyQt6.QtCore import QThread, pyqtSignal
 
 from utils.ip_utils import get_server_ip_address, get_server_port
@@ -28,7 +28,7 @@ class UploadJobThread(QThread):
             files = {
                 "job_data": (
                     "job.json",
-                    json.dumps(self.job.to_dict()),
+                    msgspec.json.encode(self.job.to_dict()),
                     "application/json",
                 )
             }

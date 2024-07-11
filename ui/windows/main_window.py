@@ -78,7 +78,6 @@ from ui.widgets.laser_cut_tab import LaserCutTab
 from ui.widgets.quote_generator_tab import QuoteGeneratorTab
 from ui.widgets.sheet_settings_tab import SheetSettingsTab
 from ui.widgets.sheets_in_inventory_tab import SheetsInInventoryTab
-from ui.widgets.workspace_widget import WorkspaceWidget
 from ui.widgets.workspace_tab_widget import WorkspaceTabWidget
 from utils.dialog_buttons import DialogButtons
 from utils.dialog_icons import Icons
@@ -133,8 +132,7 @@ from utils.workspace.job_preferences import JobPreferences
 from utils.workspace.workspace import Workspace
 from utils.workspace.workspace_settings import WorkspaceSettings
 
-__version__: str = "v3.1.4"
-__updated__: str = "2024-07-10 16:16:57"
+__version__: str = "v3.1.5"
 
 
 def check_folders(folders: list[str]) -> None:
@@ -878,8 +876,7 @@ class MainWindow(QMainWindow):
         dialog = AboutDialog(
             self,
             __version__,
-            __updated__,
-            "https://github.com/TheCodingJsoftware/Inventory-Manager",
+            "https://github.com/TheCodingJsoftware/Invigo",
         )
         dialog.show()
 

@@ -1,6 +1,5 @@
 import os
-
-import ujson as json
+import msgspec
 
 from utils.sheet_settings.collection import Collection
 from utils.sheet_settings.material import Material
@@ -81,12 +80,12 @@ class SheetSettings:
         return 0.0
 
     def save_data(self):
-        with open(f"{self.FOLDER_LOCATION}/{self.filename}.json", "w", encoding="utf-8") as file:
-            json.dump(self.to_dict(), file, ensure_ascii=False, indent=4)
+        with open(f"{self.FOLDER_LOCATION}/{self.filename}.json", "wb") as file:
+            file.write(msgspec.json.encode(self.to_dict()))
 
     def load_data(self):
-        with open(f"{self.FOLDER_LOCATION}/{self.filename}.json", "r", encoding="utf-8") as file:
-            data = json.load(file)
+        with open(f"{self.FOLDER_LOCATION}/{self.filename}.json", "rb") as file:
+            data = msgspec.json.decode(file.read())
 
         self.cost_for_laser.clear()
         for cutting_method in data["cost_for_laser"]:
