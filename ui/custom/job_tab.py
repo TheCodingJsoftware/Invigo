@@ -18,7 +18,7 @@ if TYPE_CHECKING:
 
 
 class JobTab(QWidget):
-    savJob = pyqtSignal(Job)
+    saveJob = pyqtSignal(Job)
     saveJobAs = pyqtSignal(Job)
     reloadJob = pyqtSignal(JobWidget)
 
@@ -192,7 +192,7 @@ class JobTab(QWidget):
 
     def save_current_job(self):
         self.current_job.unsaved_changes = False
-        self.savJob.emit(self.current_job)
+        self.saveJob.emit(self.current_job)
         self.update_job_save_status(self.current_job)
 
     def save_current_job_as(self):

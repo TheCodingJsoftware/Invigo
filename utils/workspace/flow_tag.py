@@ -29,7 +29,7 @@ class FlowTag:
         try:
             tags = [tag.name for tag in self.tags]
             return " ➜ ".join(tags)
-        except AttributeError:  # Tag does not exist
+        except Exception:  # Tag does not exist
             return "Tag name not found"
 
     def load_data(self, data: dict[str, Union[str, list[str]]]):

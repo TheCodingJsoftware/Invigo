@@ -75,8 +75,18 @@
               <height>0</height>
              </size>
             </property>
+            <property name="showGroupSeparator" stdset="0">
+             <bool>true</bool>
+            </property>
             <property name="calendarPopup">
              <bool>true</bool>
+            </property>
+            <property name="date">
+             <date>
+              <year>2024</year>
+              <month>1</month>
+              <day>1</day>
+             </date>
             </property>
            </widget>
           </item>
@@ -166,8 +176,18 @@
               <height>0</height>
              </size>
             </property>
+            <property name="showGroupSeparator" stdset="0">
+             <bool>true</bool>
+            </property>
             <property name="calendarPopup">
              <bool>true</bool>
+            </property>
+            <property name="date">
+             <date>
+              <year>2024</year>
+              <month>1</month>
+              <day>1</day>
+             </date>
             </property>
            </widget>
           </item>
