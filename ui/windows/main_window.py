@@ -73,6 +73,7 @@ from ui.dialogs.nest_sheet_verification import NestSheetVerification
 from ui.dialogs.save_quote_dialog import SaveQuoteDialog
 from ui.dialogs.select_item_dialog import SelectItemDialog
 from ui.dialogs.send_jobs_to_workspace_dialog import SendJobsToWorkspaceDialog
+from ui.dialogs.view_removed_quantities_history_dialog import ViewRemovedQuantitiesHistoryDialog
 from ui.widgets.components_tab import ComponentsTab
 from ui.widgets.laser_cut_tab import LaserCutTab
 from ui.widgets.quote_generator_tab import QuoteGeneratorTab
@@ -247,6 +248,7 @@ class MainWindow(QMainWindow):
         self.job_planner_widget.saveJobAs.connect(self.save_job_as)
         self.job_planner_widget.reloadJob.connect(self.reload_job)
         template_job = Job("Enter Job Name0", {}, self.job_manager)
+        template_job.status = JobStatus.PLANNING
         template_job.order_number = self.order_number
         self.job_planner_widget.load_job(template_job)
         self.clear_layout(self.job_planner_layout)
@@ -284,18 +286,6 @@ class MainWindow(QMainWindow):
         self.setWindowIcon(QIcon(Icons.icon))
 
         check_po_directories()
-        # self.check_for_updates(on_start_up=True)
-
-        history_file_date = datetime.strptime(self.settings_file.get_value("price_history_file_name"), "%B %d %A %Y")
-        days_from_last_price_history_assessment: int = int((datetime.now() - history_file_date).total_seconds() / 60 / 60 / 24)
-        if days_from_last_price_history_assessment > self.settings_file.get_value("days_until_new_price_history_assessment"):
-            self.settings_file.set_value("price_history_file_name", str(datetime.now().strftime("%B %d %A %Y")))
-            msg = QMessageBox(
-                QMessageBox.Icon.Information,
-                "Price Assessment",
-                f"It has been {self.settings_file.get_value('days_until_new_price_history_assessment')} days until the last price assessment. A new price history file has been created in the 'Price History Files' directory.",
-            )
-            msg.exec()
 
         # VARIABLES
         self.category: Category = None
@@ -445,11 +435,13 @@ class MainWindow(QMainWindow):
         self.actionAbout_Qt.triggered.connect(QApplication.aboutQt)
         self.actionCheck_for_Updates.triggered.connect(self.check_for_updates)
         self.actionAbout.triggered.connect(self.show_about_dialog)
+        self.actionServer_log.triggered.connect(self.open_server_log)
         self.actionServer_logs.triggered.connect(self.open_server_logs)
         self.actionInventory.triggered.connect(self.open_inventory)
-        self.actionQr_Codes.triggered.connect(self.open_qr_codes)
+        self.actionQR_Codes.triggered.connect(self.open_qr_codes)
+        self.actionWay_Back_Machine.triggered.connect(self.open_way_back_machine)
+        self.actionInvigo_Help.triggered.connect(self.open_wiki)
         # PRINT
-        self.actionPrint_Inventory.triggered.connect(self.print_inventory)
 
         # SETTINGS
         self.actionChange_tables_font.triggered.connect(self.change_tables_font)
@@ -521,6 +513,7 @@ class MainWindow(QMainWindow):
         # FILE
 
         self.actionOpen_Item_History.triggered.connect(self.open_item_history)
+        self.actionRemoved_Component_Quantity_History.triggered.connect(self.view_removed_component_quantity_history)
 
         self.actionExit.triggered.connect(self.close)
         # self.actionExit.setIcon(QIcon("icons/tab_close.png"))
@@ -591,25 +584,9 @@ class MainWindow(QMainWindow):
         elif self.tabWidget.tabText(self.tabWidget.currentIndex()) == "Job Quoter":
             self.load_jobs_thread()
             self.refresh_nest_directories()
-        elif self.tabWidget.tabText(self.tabWidget.currentIndex()) == "Job Planner":  # TODO Load server jobs
+        elif self.tabWidget.tabText(self.tabWidget.currentIndex()) == "Job Planner":
             self.load_jobs_thread()
             self.job_planner_widget.update_tables()
-            # pass
-            # self.clear_layout(self.job_planner_layout)
-            # self.quote_planner_tab_widget = QuotePlannerTab(self)
-            # self.job_planner_layout.addWidget(self.quote_planner_tab_widget)
-        elif self.tabWidget.tabText(self.tabWidget.currentIndex()) == "View Removed Quantities History":  # View Removed Quantities History
-            self.menuSort.setEnabled(False)
-            if not self.trusted_user:
-                self.show_not_trusted_user()
-                return
-            self.load_history_view()
-        elif self.tabWidget.tabText(self.tabWidget.currentIndex()) == "View Price Changes History":  # View Price Changes History
-            self.menuSort.setEnabled(False)
-            if not self.trusted_user:
-                self.show_not_trusted_user()
-                return
-            self.load_price_history_view()
         elif self.tabWidget.tabText(self.tabWidget.currentIndex()) == "Workspace":
             self.workspace_tab_widget = WorkspaceTabWidget(self)
             self.clear_layout(self.workspace_layout)
@@ -1134,67 +1111,6 @@ class MainWindow(QMainWindow):
     # * /\ Dialogs /\
 
     # * \/ Load UI \/
-    def load_history_view(self) -> None:
-        # CATEOGRY HISTORY
-        self.categoryHistoryTable.clear()
-        self.categoryHistoryTable.setRowCount(0)
-        self.categoryHistoryTable.setHorizontalHeaderLabels(("Date;Description;").split(";"))
-        self.categoryHistoryTable.setColumnWidth(0, 270)
-        self.categoryHistoryTable.setColumnWidth(1, 600)
-        history_file = HistoryFile()
-        for i, date, description in zip(
-            range(len(history_file.get_data_from_category()["Date"])),
-            history_file.get_data_from_category()["Date"],
-            history_file.get_data_from_category()["Description"],
-        ):
-            self.categoryHistoryTable.insertRow(self.categoryHistoryTable.rowCount())
-            self.categoryHistoryTable.setItem(i, 0, QTableWidgetItem(date))
-            self.categoryHistoryTable.setItem(i, 1, QTableWidgetItem(description))
-        # SINGLE ITEM HISTORY
-        self.singleItemHistoryTable.clear()
-        self.singleItemHistoryTable.setRowCount(0)
-        self.singleItemHistoryTable.setHorizontalHeaderLabels(("Date;Description;").split(";"))
-        self.singleItemHistoryTable.setColumnWidth(0, 270)
-        self.singleItemHistoryTable.setColumnWidth(1, 600)
-        for i, date, description in zip(
-            range(len(history_file.get_data_from_single_item()["Date"])),
-            history_file.get_data_from_single_item()["Date"],
-            history_file.get_data_from_single_item()["Description"],
-        ):
-            self.singleItemHistoryTable.insertRow(self.singleItemHistoryTable.rowCount())
-            self.singleItemHistoryTable.setItem(i, 0, QTableWidgetItem(date))
-            self.singleItemHistoryTable.setItem(i, 1, QTableWidgetItem(description))
-
-    def load_price_history_view(self) -> None:
-        # CATEOGRY HISTORY
-        self.priceHistoryTable.clear()
-        self.priceHistoryTable.setRowCount(0)
-        self.priceHistoryTable.setHorizontalHeaderLabels(("Date;Part Name;Part #;Old Price;New Price").split(";"))
-        self.priceHistoryTable.setColumnWidth(0, 270)
-        self.priceHistoryTable.setColumnWidth(1, 600)
-        price_history_file = PriceHistoryFile(file_name=f"{self.settings_file.get_value(setting_name='price_history_file_name')}.xlsx")
-        for i, date, part_name, part_number, old_price, new_price in zip(
-            range(len(price_history_file.get_data_from_category()["Date"])),
-            price_history_file.get_data_from_category()["Date"],
-            price_history_file.get_data_from_category()["Part Name"],
-            price_history_file.get_data_from_category()["Part Number"],
-            price_history_file.get_data_from_category()["Old Price"],
-            price_history_file.get_data_from_category()["New Price"],
-        ):
-            if i == 0:
-                continue
-            self.priceHistoryTable.insertRow(self.priceHistoryTable.rowCount())
-            self.priceHistoryTable.setItem(i - 1, 0, QTableWidgetItem(str(date)))
-            self.priceHistoryTable.setItem(i - 1, 1, QTableWidgetItem(str(part_name)))
-            self.priceHistoryTable.setItem(i - 1, 2, QTableWidgetItem(str(part_number)))
-            self.priceHistoryTable.setItem(i - 1, 3, QTableWidgetItem(str(old_price)))
-            self.priceHistoryTable.setItem(i - 1, 4, QTableWidgetItem(str(new_price)))
-
-    def load_tree_view(self, inventory_file: JsonFile):
-        self.clear_layout(self.search_layout)
-        tree_view = ViewTree(data=inventory_file.get_data())
-        self.search_layout.addWidget(tree_view, 0, 0)
-
     def load_cuttoff_drop_down(self) -> None:
         cutoff_items: QListWidget = self.cutoff_widget.widgets[0]
         cutoff_items.clear()
@@ -1604,41 +1520,24 @@ class MainWindow(QMainWindow):
                 po_button.setMenu(po_menu)
 
     # * /\ Purchase Order /\
-    def print_inventory(self) -> None:
-        try:
-            file_name = f"excel files/{datetime.now().strftime('%B %d %A %Y %I:%M:%S %p')}"
-            excel_file = ExcelFile(self.components_inventory, f"{file_name}.xlsx")
-            excel_file.generate()
-            excel_file.save()
-
-            msg = QMessageBox(self)
-            msg.setIcon(QMessageBox.Icon.Information)
-            msg.setWindowTitle("Finished.")
-            msg.setText("Would you love to open it?")
-            msg.setStandardButtons(QMessageBox.StandardButton.No | QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.Cancel)
-            msg.setDefaultButton(QMessageBox.StandardButton.Yes)
-            response = msg.exec()
-            if response == QMessageBox.StandardButton.Yes:
-                try:
-                    os.startfile(f"{os.path.dirname(os.path.realpath(sys.argv[0]))}/{file_name}.xlsx")
-                except AttributeError:
-                    return
-        except Exception as error:
-            msg = QMessageBox(self)
-            msg.setIcon(QMessageBox.Icon.Critical)
-            msg.setWindowTitle("Error")
-            msg.setText(f"{error}")
-            msg.exec()
-
     # * \/ External Actions \/
     def open_print_selected_parts(self):
-        webbrowser.open(f"print_selected_parts.html", new=0)
+        webbrowser.open("print_selected_parts.html", new=0)
+
+    def open_server_log(self) -> None:
+        webbrowser.open(f"http://{get_server_ip_address()}:{get_server_port()}/server_log", new=0)
 
     def open_server_logs(self) -> None:
-        webbrowser.open(f"http://{get_server_ip_address()}:{get_server_port()}", new=0)
+        webbrowser.open(f"http://{get_server_ip_address()}:{get_server_port()}/logs", new=0)
 
     def open_inventory(self) -> None:
         webbrowser.open(f"http://{get_server_ip_address()}:{get_server_port()}/inventory", new=0)
+
+    def open_way_back_machine(self) -> None:
+        webbrowser.open(f"http://{get_server_ip_address()}:{get_server_port()}/way_back_machine", new=0)
+
+    def open_wiki(self) -> None:
+        webbrowser.open("https://github.com/TheCodingJsoftware/Invigo/wiki", new=0)
 
     def open_qr_codes(self) -> None:
         webbrowser.open(
@@ -1660,6 +1559,10 @@ class MainWindow(QMainWindow):
 
     def open_item_history(self) -> None:
         os.startfile(f"{os.path.dirname(os.path.realpath(sys.argv[0]))}/data/inventory history.xlsx")
+
+    def view_removed_component_quantity_history(self):
+        dialog = ViewRemovedQuantitiesHistoryDialog(self)
+        dialog.show()
 
     def open_folder(self, path: str) -> None:
         try:
@@ -2327,11 +2230,14 @@ class MainWindow(QMainWindow):
         self.load_jobs_thread()
 
     def delete_job_thread(self, folder_path: str):
-        self.status_button.setText(f"Deleting {folder_path}", "yellow")
-        delete_job_thread = DeleteJobThread(folder_path)
-        self.threads.append(delete_job_thread)
-        delete_job_thread.signal.connect(self.delete_job_response)
-        delete_job_thread.start()
+        job_name = folder_path.split("\\")[-1]
+        are_you_sure = QMessageBox(QMessageBox.Icon.Question, "Are you sure?", f"Are you sure you want to delete {job_name}?\n\nThis is permanent and cannot be undone.", QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No | QMessageBox.StandardButton.Cancel, self)
+        if are_you_sure.exec() == QMessageBox.StandardButton.Yes:
+            self.status_button.setText(f"Deleting {folder_path}", "yellow")
+            delete_job_thread = DeleteJobThread(folder_path)
+            self.threads.append(delete_job_thread)
+            delete_job_thread.signal.connect(self.delete_job_response)
+            delete_job_thread.start()
 
     def delete_job_response(self, response: dict | str, folder_name: str) -> None:
         if isinstance(response, dict):
@@ -2394,11 +2300,14 @@ class MainWindow(QMainWindow):
             self.status_button.setText(f"Error - {data}", "red")
 
     def delete_quote_thread(self, folder_path: str):
-        self.status_button.setText("Fetching quote data", "yellow")
-        delete_quote_thread = DeleteQuoteThread(folder_path)
-        self.threads.append(delete_quote_thread)
-        delete_quote_thread.signal.connect(self.delete_quote_response)
-        delete_quote_thread.start()
+        quote_name = folder_path.split("/")[-1]
+        are_you_sure = QMessageBox(QMessageBox.Icon.Question, "Are you sure?", f"Are you sure you want to delete {quote_name}?\n\nThis is permanent and cannot be undone.", QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No | QMessageBox.StandardButton.Cancel, self)
+        if are_you_sure.exec() == QMessageBox.StandardButton.Yes:
+            self.status_button.setText(f"Deleting {folder_path}", "yellow")
+            delete_quote_thread = DeleteQuoteThread(folder_path)
+            self.threads.append(delete_quote_thread)
+            delete_quote_thread.signal.connect(self.delete_quote_response)
+            delete_quote_thread.start()
 
     def delete_quote_response(self, response: dict | str, folder_name: str) -> None:
         if isinstance(response, dict):

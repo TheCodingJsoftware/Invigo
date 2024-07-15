@@ -76,7 +76,7 @@ class AssemblyPlanningWidget(AssemblyWidget):
         self.doubleSpinBox_quantity.setValue(self.assembly.quantity)
         self.doubleSpinBox_quantity.valueChanged.connect(self.assembly_quantity_changed)
 
-        self.paint_widget.setVisible(self.assembly.flow_tag.has_tag("Painting"))
+        self.paint_widget.setVisible(self.assembly.flow_tag.contains(["paint", "powder", "coating", "liquid"]))
 
         self.assembly_setting_paint_widget = AssemblyPaintSettingsWidget(self.assembly, self)
         self.assembly_setting_paint_widget.settingsChanged.connect(self.changes_made)
@@ -110,7 +110,7 @@ class AssemblyPlanningWidget(AssemblyWidget):
 
         self.add_component_button.clicked.connect(self.add_component)
 
-        self.add_sub_assembly_button.clicked.connect(self.add_sub_assembly)
+        self.add_new_sub_assembly_button.clicked.connect(self.add_sub_assembly)
 
         self.sub_assemblies_toolbox = AssemblyMultiToolBox(self)
         self.sub_assembly_layout.addWidget(self.sub_assemblies_toolbox)
@@ -213,7 +213,7 @@ class AssemblyPlanningWidget(AssemblyWidget):
 
     def assembly_flow_tag_changed(self):
         self.assembly.flow_tag = self.workspace_settings.get_flow_tag_by_name(self.comboBox_assembly_flow_tag.currentText())
-        self.paint_widget.setVisible(self.assembly.flow_tag.has_tag("Painting"))
+        self.paint_widget.setVisible(self.assembly.flow_tag.contains(["paint", "powder", "coating", "liquid"]))
         self.changes_made()
 
     def add_assembly_drag_file_widget(self, files_layout: QHBoxLayout, file_path: str):

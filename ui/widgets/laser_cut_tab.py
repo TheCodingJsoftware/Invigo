@@ -693,7 +693,7 @@ class LaserCutTab(QWidget):
             return
         current_table.setContextMenuPolicy(Qt.ContextMenuPolicy.CustomContextMenu)
         menu = QMenu(self)
-        action = QAction("View Parts Data", self)
+        action = QAction("View Part Data", self)
         action.triggered.connect(self.edit_laser_cut_part)
         menu.addAction(action)
 
@@ -740,7 +740,7 @@ class LaserCutTab(QWidget):
             self.sort_laser_cut_parts()
 
         categories = QMenu(menu)
-        categories.setTitle("Move selected parts to category")
+        categories.setTitle("Move to")
         for _, category in enumerate(self.laser_cut_inventory.get_categories()):
             if category.name == "Recut":
                 continue
@@ -782,7 +782,7 @@ class LaserCutTab(QWidget):
             self.sync_changes()
 
         categories = QMenu(menu)
-        categories.setTitle("Copy selected parts to category")
+        categories.setTitle("Add to")
         for _, category in enumerate(self.laser_cut_inventory.get_categories()):
             if category.name == "Recut":
                 continue
@@ -810,7 +810,7 @@ class LaserCutTab(QWidget):
             self.sync_changes()
             self.load_table()
 
-        action = QAction(f"Remove selected parts from {self.category.name}", self)
+        action = QAction(f"Remove from {self.category.name}", self)
         action.triggered.connect(remove_parts_from_category)
         menu.addAction(action)
 
@@ -827,7 +827,7 @@ class LaserCutTab(QWidget):
             self.sync_changes()
             self.sort_laser_cut_parts()
 
-        action = QAction("Delete selected parts from inventory", self)
+        action = QAction("Delete from inventory", self)
         action.triggered.connect(delete_selected_parts)
         menu.addAction(action)
 
@@ -839,7 +839,7 @@ class LaserCutTab(QWidget):
                 self.sync_changes()
                 self.sort_laser_cut_parts()
 
-        action = QAction("Set selected parts to zero quantity", self)
+        action = QAction("Set to zero quantity", self)
         action.triggered.connect(reset_selected_parts_quantity)
         menu.addAction(action)
 

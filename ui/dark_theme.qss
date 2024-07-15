@@ -11,8 +11,8 @@ QMenuBar {
 
 QMenuBar::item {
     padding: 5px;
-    background-color: #181818;
-    border: 1px solid #181818;
+    background-color: transparent;
+    border: 1px solid transparent;
 }
 
 QMenuBar::item:selected {
@@ -27,12 +27,17 @@ QMenuBar::item:pressed {
 QMenuBar:disabled {
     color: #666666;
 }
+QMenu{
+    background-color: #303030;
+}
 QMenu::item{
     padding: 7px;
-    padding-right: 15px;
-    padding-left: 15px;
     background-color: #303030;
     border: 1px solid #303030;
+    border-radius: 5px;
+}
+QMenu::icon{
+    padding: 5px;
 }
 QMenu::item:selected{
     background-color: #303030;
@@ -744,7 +749,7 @@ QTabBar::tab:!selected:hover {
 }
 
 QTabBar::tab:selected {
-    color: #171717;
+    color: #EAE9FC;
     background-color: #3daee9;
     border-top-right-radius: 6px;
     border-top-left-radius: 6px;
@@ -753,7 +758,6 @@ QTabBar::tab:selected {
     /* padding-right: 5px; */
     /* padding-left: 5px; */
 }
-
 QTableView {
     gridline-color: rgba(120, 120, 120, 0.1);
 }
@@ -840,16 +844,16 @@ QComboBox::down-arrow {
     height: 12px;
 }
 QComboBox QAbstractItemView {
-    background-color: #303030;
-    border-radius: 0px;
     min-width: 150px;
 }
 
 QComboBox::item {
     color: #8C8C8C;
     border: 1px solid transparent;
-    height: 25px;
-    padding: 1px;
+    border-radius: 5px;
+    height: 20px;
+    padding: 5px;
+    padding-left: 0px;
 }
 
 QComboBox::item:selected {
@@ -862,14 +866,11 @@ QComboBox::item:checked {
     color: #171717;
     background-color: #3daee9;
     border-color: #171717;
+    border-radius: 0px;
 }
 
  QComboBox::indicator {
-    background-color: #202020;
-    border: 1px solid #202020;
-    border-radius: 10px;
-    padding: 3px;
-    margin: 3px;
+    padding: 7px;
     width: 12px;
     height: 12px;
 }
@@ -884,8 +885,7 @@ QComboBox::indicator:pressed {
 QComboBox::indicator:checked {
     color: #EAE9FC;
     text-decoration: bold;
-    background-color: #3daee9;
-    border-color: #171717;
+    image: url(ui/svg/dialog_apply.svg);
 }
 QLineEdit {
     background-color: rgba(15, 15, 15, 0.6);

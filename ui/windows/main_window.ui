@@ -80,7 +80,7 @@
        <enum>QTabWidget::TabShape::Rounded</enum>
       </property>
       <property name="currentIndex">
-       <number>4</number>
+       <number>6</number>
       </property>
       <property name="elideMode">
        <enum>Qt::TextElideMode::ElideNone</enum>
@@ -99,8 +99,7 @@
       </property>
       <widget class="QWidget" name="components_tab">
        <attribute name="icon">
-        <iconset>
-         <normaloff>../../../../../../../.designer/icons/cil-align-center.png</normaloff>../../../../../../../.designer/icons/cil-align-center.png</iconset>
+        <iconset theme="format-justify-left"/>
        </attribute>
        <attribute name="title">
         <string>Components</string>
@@ -154,8 +153,7 @@
       </widget>
       <widget class="QWidget" name="sheets_in_inventory_tab">
        <attribute name="icon">
-        <iconset>
-         <normaloff>../../../../../../../.designer/icons/cil-align-center.png</normaloff>../../../../../../../.designer/icons/cil-align-center.png</iconset>
+        <iconset theme="format-justify-left"/>
        </attribute>
        <attribute name="title">
         <string>Sheets in Inventory</string>
@@ -199,6 +197,9 @@
        </layout>
       </widget>
       <widget class="QWidget" name="sheet_settings_tab">
+       <attribute name="icon">
+        <iconset theme="document-properties"/>
+       </attribute>
        <attribute name="title">
         <string>Sheet Settings</string>
        </attribute>
@@ -242,8 +243,7 @@
       </widget>
       <widget class="QWidget" name="tab_laser_cut_inventory">
        <attribute name="icon">
-        <iconset>
-         <normaloff>../../../../../../../.designer/icons/cil-align-center.png</normaloff>../../../../../../../.designer/icons/cil-align-center.png</iconset>
+        <iconset theme="format-justify-left"/>
        </attribute>
        <attribute name="title">
         <string>Laser Cut Inventory</string>
@@ -284,6 +284,9 @@
        </layout>
       </widget>
       <widget class="QWidget" name="job_planner">
+       <attribute name="icon">
+        <iconset theme="applications-development"/>
+       </attribute>
        <attribute name="title">
         <string>Job Planner</string>
        </attribute>
@@ -350,7 +353,7 @@
                       <rect>
                        <x>0</x>
                        <y>0</y>
-                       <width>1482</width>
+                       <width>1484</width>
                        <height>559</height>
                       </rect>
                      </property>
@@ -391,7 +394,7 @@
                       <rect>
                        <x>0</x>
                        <y>0</y>
-                       <width>68</width>
+                       <width>80</width>
                        <height>16</height>
                       </rect>
                      </property>
@@ -424,6 +427,9 @@
                 <property name="text">
                  <string>Refresh</string>
                 </property>
+                <property name="icon">
+                 <iconset theme="emblem-synchronized"/>
+                </property>
                </widget>
               </item>
               <item>
@@ -438,7 +444,10 @@
                 <item>
                  <widget class="QPushButton" name="pushButton_save_job">
                   <property name="text">
-                   <string>Save</string>
+                   <string>Save (Ctrl + S)</string>
+                  </property>
+                  <property name="icon">
+                   <iconset theme="document-save"/>
                   </property>
                  </widget>
                 </item>
@@ -490,10 +499,25 @@ QPushButton#pushButton_send_to_workspace:disabled{
        </layout>
       </widget>
       <widget class="QWidget" name="quote_generator_tab">
+       <attribute name="icon">
+        <iconset theme="accessories-calculator"/>
+       </attribute>
        <attribute name="title">
         <string>Job Quoter</string>
        </attribute>
        <layout class="QVBoxLayout" name="verticalLayout_7">
+        <property name="leftMargin">
+         <number>0</number>
+        </property>
+        <property name="topMargin">
+         <number>0</number>
+        </property>
+        <property name="rightMargin">
+         <number>0</number>
+        </property>
+        <property name="bottomMargin">
+         <number>0</number>
+        </property>
         <item>
          <widget class="QSplitter" name="splitter_2">
           <property name="orientation">
@@ -563,6 +587,9 @@ QPushButton#pushButton_send_to_workspace:disabled{
                     <property name="text">
                      <string>Refresh</string>
                     </property>
+                    <property name="icon">
+                     <iconset theme="emblem-synchronized"/>
+                    </property>
                    </widget>
                   </item>
                  </layout>
@@ -606,8 +633,8 @@ QPushButton#pushButton_send_to_workspace:disabled{
                     <rect>
                      <x>0</x>
                      <y>0</y>
-                     <width>1479</width>
-                     <height>591</height>
+                     <width>80</width>
+                     <height>16</height>
                     </rect>
                    </property>
                    <layout class="QVBoxLayout" name="verticalLayout_27">
@@ -635,6 +662,9 @@ QPushButton#pushButton_send_to_workspace:disabled{
                   <property name="text">
                    <string>Refresh</string>
                   </property>
+                  <property name="icon">
+                   <iconset theme="emblem-synchronized"/>
+                  </property>
                  </widget>
                 </item>
                </layout>
@@ -654,8 +684,8 @@ QPushButton#pushButton_send_to_workspace:disabled{
                     <rect>
                      <x>0</x>
                      <y>0</y>
-                     <width>1479</width>
-                     <height>591</height>
+                     <width>80</width>
+                     <height>16</height>
                     </rect>
                    </property>
                    <layout class="QVBoxLayout" name="verticalLayout_31">
@@ -683,6 +713,9 @@ QPushButton#pushButton_send_to_workspace:disabled{
                   <property name="text">
                    <string>Refresh</string>
                   </property>
+                  <property name="icon">
+                   <iconset theme="emblem-synchronized"/>
+                  </property>
                  </widget>
                 </item>
                </layout>
@@ -701,7 +734,10 @@ QPushButton#pushButton_send_to_workspace:disabled{
               <item>
                <widget class="QPushButton" name="pushButton_save_job_2">
                 <property name="text">
-                 <string>Save</string>
+                 <string>Save (Ctrl + S)</string>
+                </property>
+                <property name="icon">
+                 <iconset theme="document-save"/>
                 </property>
                </widget>
               </item>
@@ -752,8 +788,7 @@ QPushButton#pushButton_send_to_workspace_2:disabled{
       </widget>
       <widget class="QWidget" name="laser_quote_tab">
        <attribute name="icon">
-        <iconset>
-         <normaloff>../../../../../../../.designer/icons/cil-library-add.png</normaloff>../../../../../../../.designer/icons/cil-library-add.png</iconset>
+        <iconset theme="accessories-calculator"/>
        </attribute>
        <attribute name="title">
         <string>Quote Generator</string>
@@ -904,6 +939,9 @@ QPushButton#pushButton_send_to_workspace_2:disabled{
                        <property name="text">
                         <string>Refresh</string>
                        </property>
+                       <property name="icon">
+                        <iconset theme="emblem-synchronized"/>
+                       </property>
                       </widget>
                      </item>
                     </layout>
@@ -953,7 +991,7 @@ QPushButton#pushButton_send_to_workspace_2:disabled{
                        <rect>
                         <x>0</x>
                         <y>0</y>
-                        <width>68</width>
+                        <width>80</width>
                         <height>16</height>
                        </rect>
                       </property>
@@ -1022,7 +1060,7 @@ QPushButton#pushButton_send_to_workspace_2:disabled{
                        <rect>
                         <x>0</x>
                         <y>0</y>
-                        <width>68</width>
+                        <width>80</width>
                         <height>16</height>
                        </rect>
                       </property>
@@ -1069,7 +1107,10 @@ QPushButton#pushButton_send_to_workspace_2:disabled{
                  <item>
                   <widget class="QPushButton" name="pushButton_save">
                    <property name="text">
-                    <string>Save</string>
+                    <string>Save (Ctrl + S)</string>
+                   </property>
+                   <property name="icon">
+                    <iconset theme="document-save"/>
                    </property>
                   </widget>
                  </item>
@@ -1134,8 +1175,7 @@ QPushButton#pushButton_generate_quote:disabled{
       </widget>
       <widget class="QWidget" name="workspace_tab">
        <attribute name="icon">
-        <iconset>
-         <normaloff>../../../../../../../.designer/icons/cil-clipboard.png</normaloff>../../../../../../../.designer/icons/cil-clipboard.png</iconset>
+        <iconset theme="emblem-shared"/>
        </attribute>
        <attribute name="title">
         <string>Workspace</string>
@@ -1161,186 +1201,6 @@ QPushButton#pushButton_generate_quote:disabled{
           <property name="bottomMargin">
            <number>9</number>
           </property>
-         </layout>
-        </item>
-       </layout>
-      </widget>
-      <widget class="QWidget" name="chat_tab">
-       <attribute name="icon">
-        <iconset>
-         <normaloff>../../../../../../../.designer/icons/cil-comment-square.png</normaloff>../../../../../../../.designer/icons/cil-comment-square.png</iconset>
-       </attribute>
-       <attribute name="title">
-        <string>Chat</string>
-       </attribute>
-       <widget class="QWidget" name="verticalLayoutWidget">
-        <property name="geometry">
-         <rect>
-          <x>290</x>
-          <y>230</y>
-          <width>2</width>
-          <height>2</height>
-         </rect>
-        </property>
-        <layout class="QVBoxLayout" name="verticalLayout_34"/>
-       </widget>
-      </widget>
-      <widget class="QWidget" name="tab_3">
-       <attribute name="icon">
-        <iconset>
-         <normaloff>../../../../../../../.designer/icons/cil-notes.png</normaloff>../../../../../../../.designer/icons/cil-notes.png</iconset>
-       </attribute>
-       <attribute name="title">
-        <string>View Removed Quantities History</string>
-       </attribute>
-       <layout class="QVBoxLayout" name="verticalLayout_8">
-        <property name="spacing">
-         <number>6</number>
-        </property>
-        <property name="leftMargin">
-         <number>0</number>
-        </property>
-        <property name="topMargin">
-         <number>0</number>
-        </property>
-        <property name="rightMargin">
-         <number>0</number>
-        </property>
-        <property name="bottomMargin">
-         <number>0</number>
-        </property>
-        <item>
-         <layout class="QVBoxLayout" name="verticalLayout_5">
-          <property name="rightMargin">
-           <number>0</number>
-          </property>
-          <property name="bottomMargin">
-           <number>9</number>
-          </property>
-          <item>
-           <layout class="QHBoxLayout" name="horizontalLayout_11">
-            <item>
-             <widget class="QGroupBox" name="groupBox_2">
-              <property name="title">
-               <string>Category History</string>
-              </property>
-              <layout class="QHBoxLayout" name="horizontalLayout_12">
-               <item>
-                <widget class="QTableWidget" name="categoryHistoryTable">
-                 <property name="enabled">
-                  <bool>true</bool>
-                 </property>
-                 <property name="rowCount">
-                  <number>0</number>
-                 </property>
-                 <property name="columnCount">
-                  <number>2</number>
-                 </property>
-                 <attribute name="horizontalHeaderMinimumSectionSize">
-                  <number>42</number>
-                 </attribute>
-                 <attribute name="horizontalHeaderDefaultSectionSize">
-                  <number>500</number>
-                 </attribute>
-                 <attribute name="verticalHeaderMinimumSectionSize">
-                  <number>28</number>
-                 </attribute>
-                 <attribute name="verticalHeaderDefaultSectionSize">
-                  <number>30</number>
-                 </attribute>
-                 <column/>
-                 <column/>
-                </widget>
-               </item>
-              </layout>
-             </widget>
-            </item>
-            <item>
-             <widget class="QGroupBox" name="groupBox_3">
-              <property name="title">
-               <string>Single Item History</string>
-              </property>
-              <layout class="QHBoxLayout" name="horizontalLayout_13">
-               <item>
-                <widget class="QTableWidget" name="singleItemHistoryTable">
-                 <property name="enabled">
-                  <bool>true</bool>
-                 </property>
-                 <property name="rowCount">
-                  <number>0</number>
-                 </property>
-                 <property name="columnCount">
-                  <number>2</number>
-                 </property>
-                 <attribute name="horizontalHeaderMinimumSectionSize">
-                  <number>42</number>
-                 </attribute>
-                 <attribute name="horizontalHeaderDefaultSectionSize">
-                  <number>500</number>
-                 </attribute>
-                 <column/>
-                 <column/>
-                </widget>
-               </item>
-              </layout>
-             </widget>
-            </item>
-           </layout>
-          </item>
-         </layout>
-        </item>
-       </layout>
-      </widget>
-      <widget class="QWidget" name="tab_4">
-       <attribute name="icon">
-        <iconset>
-         <normaloff>../../../../../../../.designer/icons/cil-notes.png</normaloff>../../../../../../../.designer/icons/cil-notes.png</iconset>
-       </attribute>
-       <attribute name="title">
-        <string>View Price Changes History</string>
-       </attribute>
-       <layout class="QVBoxLayout" name="verticalLayout_9">
-        <property name="spacing">
-         <number>6</number>
-        </property>
-        <property name="leftMargin">
-         <number>0</number>
-        </property>
-        <property name="topMargin">
-         <number>0</number>
-        </property>
-        <property name="rightMargin">
-         <number>0</number>
-        </property>
-        <property name="bottomMargin">
-         <number>0</number>
-        </property>
-        <item>
-         <layout class="QHBoxLayout" name="horizontalLayout_8">
-          <property name="rightMargin">
-           <number>0</number>
-          </property>
-          <item>
-           <widget class="QGroupBox" name="groupBox_4">
-            <property name="title">
-             <string>Price History</string>
-            </property>
-            <layout class="QHBoxLayout" name="horizontalLayout_10">
-             <item>
-              <widget class="QTableWidget" name="priceHistoryTable">
-               <property name="columnCount">
-                <number>5</number>
-               </property>
-               <column/>
-               <column/>
-               <column/>
-               <column/>
-               <column/>
-              </widget>
-             </item>
-            </layout>
-           </widget>
-          </item>
          </layout>
         </item>
        </layout>
@@ -1381,10 +1241,6 @@ QPushButton#pushButton_generate_quote:disabled{
     <property name="title">
      <string>File</string>
     </property>
-    <addaction name="actionPrint_Inventory"/>
-    <addaction name="separator"/>
-    <addaction name="actionOpen_Item_History"/>
-    <addaction name="separator"/>
     <addaction name="actionExit"/>
    </widget>
    <widget class="QMenu" name="menuSettings">
@@ -1394,26 +1250,24 @@ QPushButton#pushButton_generate_quote:disabled{
     <addaction name="actionChange_tables_font"/>
     <addaction name="actionSet_Order_Number"/>
     <addaction name="action_Set_User_Workspace"/>
+    <addaction name="separator"/>
+    <addaction name="actionEditTags"/>
    </widget>
    <widget class="QMenu" name="menuHelp">
     <property name="title">
      <string>Help</string>
     </property>
-    <widget class="QMenu" name="menuServer_URLs">
-     <property name="title">
-      <string>Server URL's</string>
-     </property>
-     <addaction name="actionServer_logs"/>
-     <addaction name="actionInventory"/>
-     <addaction name="actionQr_Codes"/>
-    </widget>
-    <addaction name="menuServer_URLs"/>
+    <addaction name="actionInvigo_Help"/>
+    <addaction name="separator"/>
+    <addaction name="actionInventory"/>
+    <addaction name="actionServer_log"/>
+    <addaction name="actionServer_logs"/>
+    <addaction name="actionQR_Codes"/>
     <addaction name="separator"/>
     <addaction name="actionAbout_Qt"/>
+    <addaction name="actionAbout"/>
     <addaction name="separator"/>
     <addaction name="actionCheck_for_Updates"/>
-    <addaction name="separator"/>
-    <addaction name="actionAbout"/>
    </widget>
    <widget class="QMenu" name="menuSort">
     <property name="title">
@@ -1440,163 +1294,100 @@ QPushButton#pushButton_generate_quote:disabled{
    </widget>
    <widget class="QMenu" name="menuQuote_Generator">
     <property name="title">
-     <string>Quote Generator</string>
+     <string>Nest Directories</string>
     </property>
     <addaction name="actionAdd_Nest_Directory"/>
     <addaction name="actionRemove_Nest_Directory"/>
-    <addaction name="separator"/>
-    <addaction name="actionEdit_Paint_in_Inventory"/>
    </widget>
    <widget class="QMenu" name="menuJobSorter">
+    <property name="tearOffEnabled">
+     <bool>false</bool>
+    </property>
     <property name="title">
-     <string>Job Sorter</string>
+     <string>Job File Sorter</string>
+    </property>
+    <property name="separatorsCollapsible">
+     <bool>false</bool>
     </property>
     <addaction name="actionOpenMenu"/>
    </widget>
-   <widget class="QMenu" name="menuWorkspace">
+   <widget class="QMenu" name="menuPaint_Inventory">
     <property name="title">
-     <string>Workspace</string>
+     <string>Paint Inventory</string>
     </property>
-    <addaction name="actionEditTags"/>
+    <addaction name="actionEdit_Paint_in_Inventory"/>
+   </widget>
+   <widget class="QMenu" name="menuHistory">
+    <property name="title">
+     <string>History</string>
+    </property>
+    <addaction name="actionWay_Back_Machine"/>
+    <addaction name="separator"/>
+    <addaction name="actionOpen_Item_History"/>
+    <addaction name="actionRemoved_Component_Quantity_History"/>
    </widget>
    <addaction name="menuFile"/>
    <addaction name="menuSettings"/>
    <addaction name="menuSort"/>
    <addaction name="menuPurchase_Orders"/>
    <addaction name="menuQuote_Generator"/>
-   <addaction name="menuWorkspace"/>
+   <addaction name="menuPaint_Inventory"/>
    <addaction name="menuJobSorter"/>
+   <addaction name="menuHistory"/>
    <addaction name="menuHelp"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
   <action name="actionExit">
    <property name="icon">
-    <iconset>
-     <normalon>../../../../../../../.designer/backup/svg/window_close.svg</normalon>
-    </iconset>
+    <iconset theme="system-log-out"/>
    </property>
    <property name="text">
-    <string>Exit</string>
+    <string>Quit</string>
    </property>
    <property name="statusTip">
     <string>Exit program</string>
    </property>
-  </action>
-  <action name="actionDarkmode">
-   <property name="checkable">
-    <bool>true</bool>
-   </property>
-   <property name="text">
-    <string>Darkmode</string>
-   </property>
-   <property name="statusTip">
-    <string>Toggle between darkmode and lightmode. Some changes need the program to restart to take effect.</string>
-   </property>
-   <property name="iconVisibleInMenu">
-    <bool>false</bool>
+   <property name="menuRole">
+    <enum>QAction::MenuRole::QuitRole</enum>
    </property>
   </action>
   <action name="actionAbout_Qt">
    <property name="icon">
-    <iconset>
-     <normalon>../../../../../../../.designer/backup/svg/file_dialog_info.svg</normalon>
-    </iconset>
+    <iconset theme="help-about"/>
    </property>
    <property name="text">
     <string>About Qt</string>
+   </property>
+   <property name="menuRole">
+    <enum>QAction::MenuRole::AboutQtRole</enum>
    </property>
    <property name="iconVisibleInMenu">
     <bool>true</bool>
    </property>
   </action>
-  <action name="actionView_License">
-   <property name="text">
-    <string>View License</string>
-   </property>
-  </action>
-  <action name="actionCheck_for_updates">
-   <property name="text">
-    <string>Check for updates</string>
-   </property>
-  </action>
   <action name="actionCheck_for_Updates">
    <property name="icon">
-    <iconset>
-     <normalon>../../../../../../../.designer/backup/svg/restore_defaults.svg</normalon>
-    </iconset>
+    <iconset theme="system-software-update"/>
    </property>
    <property name="text">
     <string>Check for Updates...</string>
    </property>
    <property name="statusTip">
-    <string>Checks for new updates on GitHub</string>
+    <string>Checks for new updates on Pinecone</string>
    </property>
   </action>
   <action name="actionAbout">
    <property name="icon">
-    <iconset>
-     <normalon>../../../../../../../.designer/backup/svg/file_dialog_info.svg</normalon>
-    </iconset>
+    <iconset theme="help-about"/>
    </property>
    <property name="text">
-    <string>About</string>
+    <string>About Invigo</string>
    </property>
    <property name="statusTip">
     <string>Shows license, version, distrbuter and webpage.</string>
    </property>
-  </action>
-  <action name="actionBackup">
-   <property name="text">
-    <string>Backup</string>
-   </property>
-   <property name="statusTip">
-    <string>Backup your inventory locally on your computer.</string>
-   </property>
-  </action>
-  <action name="actions">
-   <property name="text">
-    <string>s</string>
-   </property>
-  </action>
-  <action name="actionUploadInventory">
-   <property name="text">
-    <string>Inventory</string>
-   </property>
-   <property name="statusTip">
-    <string>Upload all inventory category and items.</string>
-   </property>
-  </action>
-  <action name="actionDownloadInventory">
-   <property name="text">
-    <string>Inventory</string>
-   </property>
-   <property name="statusTip">
-    <string>Download all inventory categories and items.</string>
-   </property>
-  </action>
-  <action name="actionEbay">
-   <property name="text">
-    <string>Ebay</string>
-   </property>
-   <property name="iconText">
-    <string>Ebay</string>
-   </property>
-   <property name="statusTip">
-    <string>Search ebay for prices (beta &amp; deprecated)</string>
-   </property>
-   <property name="iconVisibleInMenu">
-    <bool>false</bool>
-   </property>
-  </action>
-  <action name="actionLoad_Backup">
-   <property name="text">
-    <string>Load Local Backup</string>
-   </property>
-   <property name="statusTip">
-    <string>Load a local backup that is saved to your computer.</string>
-   </property>
-   <property name="iconVisibleInMenu">
-    <bool>false</bool>
+   <property name="menuRole">
+    <enum>QAction::MenuRole::AboutRole</enum>
    </property>
   </action>
   <action name="actionQuantity_in_Stock">
@@ -1608,17 +1399,6 @@ QPushButton#pushButton_generate_quote:disabled{
    </property>
    <property name="text">
     <string>Quantity in Stock</string>
-   </property>
-  </action>
-  <action name="actionPriority">
-   <property name="checkable">
-    <bool>true</bool>
-   </property>
-   <property name="text">
-    <string>Priority</string>
-   </property>
-   <property name="iconVisibleInMenu">
-    <bool>true</bool>
    </property>
   </action>
   <action name="actionAscending">
@@ -1650,21 +1430,7 @@ QPushButton#pushButton_generate_quote:disabled{
   </action>
   <action name="actionSort">
    <property name="text">
-    <string>Apply Sorting Method</string>
-   </property>
-   <property name="iconVisibleInMenu">
-    <bool>false</bool>
-   </property>
-  </action>
-  <action name="actionAuto_back_up_to_cloud">
-   <property name="checkable">
-    <bool>true</bool>
-   </property>
-   <property name="text">
-    <string>Auto backup to cloud</string>
-   </property>
-   <property name="statusTip">
-    <string>Automatically upload your changes to the cloud.</string>
+    <string>Sort</string>
    </property>
    <property name="iconVisibleInMenu">
     <bool>false</bool>
@@ -1672,12 +1438,10 @@ QPushButton#pushButton_generate_quote:disabled{
   </action>
   <action name="actionAdd_Purchase_Order">
    <property name="icon">
-    <iconset>
-     <normalon>../../../../../../../.designer/backup/svg/file.svg</normalon>
-    </iconset>
+    <iconset theme="document-page-setup"/>
    </property>
    <property name="text">
-    <string>Add Purchase Order Template</string>
+    <string>Add Template</string>
    </property>
    <property name="statusTip">
     <string>Add a new Purchase Order</string>
@@ -1688,12 +1452,10 @@ QPushButton#pushButton_generate_quote:disabled{
   </action>
   <action name="actionRemove_Purchase_Order">
    <property name="icon">
-    <iconset>
-     <normalon>../../../../../../../.designer/backup/svg/trash.svg</normalon>
-    </iconset>
+    <iconset theme="edit-delete"/>
    </property>
    <property name="text">
-    <string>Remove Purchase Order Template</string>
+    <string>Remove Template</string>
    </property>
    <property name="statusTip">
     <string>Remove a PO Template, BUT does NOT remove the generated PO's</string>
@@ -1704,47 +1466,24 @@ QPushButton#pushButton_generate_quote:disabled{
   </action>
   <action name="actionOpen_Purchase_Order">
    <property name="icon">
-    <iconset>
-     <normalon>../../../../../../../.designer/backup/svg/file_dialog_start.svg</normalon>
-    </iconset>
+    <iconset theme="document-new"/>
    </property>
    <property name="text">
-    <string>Open Purchase Order</string>
+    <string>Use Purchase Order</string>
    </property>
    <property name="statusTip">
-    <string>Generate and open the selected Purchase Order</string>
+    <string>Will generate a purchase order, update date and order number.</string>
    </property>
    <property name="iconVisibleInMenu">
     <bool>true</bool>
-   </property>
-  </action>
-  <action name="actionRelease_Notes">
-   <property name="text">
-    <string>Release Notes</string>
-   </property>
-   <property name="statusTip">
-    <string>View release notes</string>
-   </property>
-   <property name="iconVisibleInMenu">
-    <bool>true</bool>
-   </property>
-  </action>
-  <action name="actionPrint_Inventory">
-   <property name="text">
-    <string>Print Inventory</string>
-   </property>
-   <property name="statusTip">
-    <string>Generates a excel sheet summary of the current inventory.</string>
    </property>
   </action>
   <action name="actionOpen_Folder">
    <property name="icon">
-    <iconset>
-     <normalon>../../../../../../../.designer/backup/svg/folder_open.svg</normalon>
-    </iconset>
+    <iconset theme="folder-open"/>
    </property>
    <property name="text">
-    <string>Open Folder</string>
+    <string>Open PO Directory</string>
    </property>
    <property name="statusTip">
     <string>Open PO's directory in windows explorer</string>
@@ -1753,33 +1492,12 @@ QPushButton#pushButton_generate_quote:disabled{
     <bool>true</bool>
    </property>
   </action>
-  <action name="actionCreate_Category">
-   <property name="text">
-    <string>Create Category</string>
-   </property>
-   <property name="statusTip">
-    <string>Craete a new Category</string>
-   </property>
-  </action>
-  <action name="actionDelete_Category">
-   <property name="text">
-    <string>Delete Category</string>
-   </property>
-   <property name="statusTip">
-    <string>Delete an existing Category.</string>
-   </property>
-  </action>
-  <action name="actionClone_Category">
-   <property name="text">
-    <string>Clone Category</string>
-   </property>
-   <property name="statusTip">
-    <string>Clone an existing Category.</string>
-   </property>
-  </action>
   <action name="actionOpen_Item_History">
+   <property name="icon">
+    <iconset theme="document-open"/>
+   </property>
    <property name="text">
-    <string>Open Inventory History</string>
+    <string>Open Inventory History File</string>
    </property>
    <property name="toolTip">
     <string>Open removed quantites history excel file.</string>
@@ -1790,9 +1508,7 @@ QPushButton#pushButton_generate_quote:disabled{
   </action>
   <action name="actionAdd_Nest_Directory">
    <property name="icon">
-    <iconset>
-     <normalon>../../../../../../../.designer/backup/svg/folder.svg</normalon>
-    </iconset>
+    <iconset theme="folder-new"/>
    </property>
    <property name="text">
     <string>Add Nest Directory</string>
@@ -1806,9 +1522,7 @@ QPushButton#pushButton_generate_quote:disabled{
   </action>
   <action name="actionRemove_Nest_Directory">
    <property name="icon">
-    <iconset>
-     <normalon>../../../../../../../.designer/backup/svg/trash.svg</normalon>
-    </iconset>
+    <iconset theme="list-remove"/>
    </property>
    <property name="text">
     <string>Remove Nest Directory</string>
@@ -1817,23 +1531,10 @@ QPushButton#pushButton_generate_quote:disabled{
     <bool>true</bool>
    </property>
   </action>
-  <action name="actionOpen_Quotes_Directory">
-   <property name="text">
-    <string>Open Quotes Directory</string>
-   </property>
-   <property name="iconVisibleInMenu">
-    <bool>false</bool>
-   </property>
-  </action>
-  <action name="actionOpen_Workorders_Directory">
-   <property name="text">
-    <string>Open Workorders Directory</string>
-   </property>
-   <property name="iconVisibleInMenu">
-    <bool>false</bool>
-   </property>
-  </action>
   <action name="actionChange_tables_font">
+   <property name="icon">
+    <iconset theme="preferences-desktop-font"/>
+   </property>
    <property name="text">
     <string>Set Table Font</string>
    </property>
@@ -1842,20 +1543,25 @@ QPushButton#pushButton_generate_quote:disabled{
    </property>
   </action>
   <action name="actionSet_Order_Number">
+   <property name="icon">
+    <iconset theme="mail-message-new"/>
+   </property>
    <property name="text">
     <string>Set Order Number</string>
    </property>
   </action>
   <action name="actionOpenMenu">
-   <property name="icon">
-    <iconset>
-     <normaloff>../../../../../../../.designer/backup/svg/restore.svg</normaloff>../../../../../../../.designer/backup/svg/restore.svg</iconset>
-   </property>
    <property name="text">
     <string>Open Menu</string>
    </property>
+   <property name="iconVisibleInMenu">
+    <bool>true</bool>
+   </property>
   </action>
   <action name="action_Set_User_Workspace">
+   <property name="icon">
+    <iconset theme="preferences-desktop-accessibility"/>
+   </property>
    <property name="text">
     <string>Set User Workspace</string>
    </property>
@@ -1864,53 +1570,84 @@ QPushButton#pushButton_generate_quote:disabled{
    </property>
   </action>
   <action name="actionEditTags">
+   <property name="icon">
+    <iconset theme="document-properties"/>
+   </property>
    <property name="text">
     <string>Edit Flow Tags</string>
    </property>
   </action>
-  <action name="actionEditStatuses">
-   <property name="text">
-    <string>Edit Statuses</string>
-   </property>
-  </action>
-  <action name="actionEdit_Sheets">
-   <property name="text">
-    <string>Edit Sheets</string>
-   </property>
-  </action>
   <action name="actionEdit_Paint_in_Inventory">
+   <property name="icon">
+    <iconset theme="mail-message-new"/>
+   </property>
    <property name="text">
-    <string>Edit Paint in Inventory</string>
+    <string>Edit</string>
+   </property>
+  </action>
+  <action name="actionWay_Back_Machine">
+   <property name="icon">
+    <iconset theme="applications-internet"/>
+   </property>
+   <property name="text">
+    <string>Way Back Machine</string>
+   </property>
+   <property name="toolTip">
+    <string>Way Back Machine</string>
+   </property>
+   <property name="statusTip">
+    <string>Will open up the way back machine on the invigo website</string>
+   </property>
+  </action>
+  <action name="actionInvigo_Help">
+   <property name="icon">
+    <iconset theme="applications-internet"/>
+   </property>
+   <property name="text">
+    <string>Wiki</string>
+   </property>
+   <property name="statusTip">
+    <string>Wiki page with frequently asked questions with answers.</string>
+   </property>
+  </action>
+  <action name="actionRemoved_Component_Quantity_History">
+   <property name="icon">
+    <iconset theme="accessories-dictionary"/>
+   </property>
+   <property name="text">
+    <string>View Components Quantity History</string>
    </property>
   </action>
   <action name="actionServer_logs">
    <property name="icon">
-    <iconset>
-     <normalon>../../../../../../../.designer/icons/website.png</normalon>
-    </iconset>
+    <iconset theme="applications-internet"/>
    </property>
    <property name="text">
-    <string>Server logs</string>
+    <string>Server &amp;&amp; Error Logs</string>
    </property>
   </action>
   <action name="actionInventory">
    <property name="icon">
-    <iconset>
-     <normalon>../../../../../../../.designer/icons/website.png</normalon>
-    </iconset>
+    <iconset theme="applications-internet"/>
    </property>
    <property name="text">
     <string>Inventory</string>
    </property>
   </action>
-  <action name="actionQr_Codes">
+  <action name="actionQR_Codes">
    <property name="icon">
-    <iconset>
-     <normalon>../../../../../../../.designer/icons/website.png</normalon>
-    </iconset>
+    <iconset theme="applications-internet"/>
    </property>
    <property name="text">
-    <string>Qr Codes</string>
+    <string>QR Codes</string>
+   </property>
+  </action>
+  <action name="actionServer_log">
+   <property name="icon">
+    <iconset theme="applications-internet"/>
+   </property>
+   <property name="text">
+    <string>Live Server Log</string>
    </property>
   </action>
  </widget>

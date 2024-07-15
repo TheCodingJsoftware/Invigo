@@ -12,6 +12,7 @@ const checkboxConfig = {
         "shelf-#": false,
         "process": false,
         "paint": true,
+        "show-total-cost": true,
     },
     "workorder": {
         "picture": true,
@@ -26,6 +27,7 @@ const checkboxConfig = {
         "shelf-#": false,
         "process": true,
         "paint": true,
+        "show-total-cost": false,
     },
     "packingslip": {
         "picture": true,
@@ -40,6 +42,7 @@ const checkboxConfig = {
         "shelf-#": false,
         "process": false,
         "paint": true,
+        "show-total-cost": false,
     }
 };
 
@@ -186,20 +189,10 @@ if (storedTargetColumn) {
     document.body.className = defaultTarget;
 }
 
-checkboxes.forEach(checkbox => {
-    const layoutId = checkbox.getAttribute('data-layout');
-    const layoutDiv = document.getElementById(layoutId);
-    if (checkbox.checked) {
-        layoutDiv.classList.remove('hidden');
-    } else {
-        layoutDiv.classList.add('hidden');
-    }
-});
-
-window.addEventListener('load', function() {
-    setTimeout(function() {
-        document.querySelectorAll('img').forEach(function(img) {
-            img.onerror = function() {
+window.addEventListener('load', function () {
+    setTimeout(function () {
+        document.querySelectorAll('img').forEach(function (img) {
+            img.onerror = function () {
                 this.classList.add('hidden');
             };
             if (!img.complete || img.naturalWidth === 0) {
@@ -277,6 +270,16 @@ function toggleCheckboxes(targetColumn, navLinks) {
             checkboxes.forEach(checkbox => {
                 if (checkbox) {
                     checkbox.checked = shouldCheck;
+                    // This is for the nav selection show-total-cost checkbox
+                    try {
+                        const layoutId = checkbox.getAttribute('data-layout');
+                        const layoutDiv = document.getElementById(layoutId);
+                        if (shouldCheck) {
+                            layoutDiv.classList.remove('hidden');
+                        } else {
+                            layoutDiv.classList.add('hidden');
+                        }
+                    } catch (error) { }
                 }
             })
         }

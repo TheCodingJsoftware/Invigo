@@ -50,6 +50,13 @@ class FlowTag:
     def has_tag(self, tag_name: str) -> bool:
         return any(tag.name.lower() == tag_name.lower() for tag in self.tags)
 
+    def contains(self, texts: list[str]) -> bool:
+        for text in texts:
+            for tag in self.tags:
+                if text.lower() in tag.name.lower():
+                    return True
+        return False
+
     def add_tag(self, tag: Tag):
         self.tags.append(tag)
 

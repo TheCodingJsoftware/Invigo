@@ -793,7 +793,7 @@ class ComponentsTab(QWidget):
                 self.sync_changes()
                 self.load_table()
 
-            action = QAction(f"Remove selected parts from {self.category.name}", self)
+            action = QAction(f"Remove from {self.category.name}", self)
             action.triggered.connect(remove_parts_from_category)
             menu.addAction(action)
 
@@ -806,7 +806,7 @@ class ComponentsTab(QWidget):
                 self.sync_changes()
                 self.load_table()
 
-            action = QAction("Delete selected parts from inventory", self)
+            action = QAction("Delete from inventory", self)
             action.triggered.connect(delete_selected_parts)
             menu.addAction(action)
 
