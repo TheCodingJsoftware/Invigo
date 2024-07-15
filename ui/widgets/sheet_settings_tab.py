@@ -207,8 +207,13 @@ class SheetSettingsTab(QWidget):
     def load_thickness_ids(self):
         for row, (thickness_id, thickness) in enumerate(self.sheet_settings.material_id["thickness_ids"].items()):
             self.tableWidget_thickness_id.insertRow(row)
-            self.tableWidget_thickness_id.setItem(row, 0, QTableWidgetItem(thickness_id))
-            self.tableWidget_thickness_id.setItem(row, 1, QTableWidgetItem(thickness))
+            thickness_id_item = QTableWidgetItem(thickness_id)
+            thickness_id_item.setFont(self.tables_font)
+
+            self.tableWidget_thickness_id.setItem(row, 0, thickness_id_item)
+            thickness_item = QTableWidgetItem(thickness)
+            thickness_item.setFont(self.tables_font)
+            self.tableWidget_thickness_id.setItem(row, 1, thickness_item)
         self.tableWidget_thickness_id.cellChanged.connect(self.thickness_id_table_changes)
 
     def thickness_id_table_changes(self):

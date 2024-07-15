@@ -133,7 +133,7 @@ from utils.workspace.job_preferences import JobPreferences
 from utils.workspace.workspace import Workspace
 from utils.workspace.workspace_settings import WorkspaceSettings
 
-__version__: str = "v3.1.5"
+__version__: str = "v3.1.6"
 
 
 def check_folders(folders: list[str]) -> None:
@@ -791,7 +791,7 @@ class MainWindow(QMainWindow):
             self.pushButton_load_nests_2.setEnabled(False)
         else:
             self.pushButton_load_nests_2.setEnabled(True)
-        self.pushButton_load_nests_2.setText(f"Load {selected_nests} Nest{'' if selected_nests == 1 else 's'}")
+        self.pushButton_load_nests_2.setText(f"Import {selected_nests} Nest{'' if selected_nests == 1 else 's'}")
 
     def save_scroll_position(self, category: Category, table: CustomTableWidget):
         self.scroll_position_manager.save_scroll_position(
@@ -951,7 +951,7 @@ class MainWindow(QMainWindow):
                 active_jobs_in_planning[job.name] = {
                     "job": job,
                     "type": job.status.value,
-                    "modified_date": "",
+                    "modified_date": "Currently open",
                     "order_number": job.order_number,
                 }
         active_jobs_in_quoting = {}
@@ -961,7 +961,7 @@ class MainWindow(QMainWindow):
                 active_jobs_in_quoting[job.name] = {
                     "job": job,
                     "type": job.status.value,
-                    "modified_date": "",
+                    "modified_date": "Currently open",
                     "order_number": job.order_number,
                 }
 

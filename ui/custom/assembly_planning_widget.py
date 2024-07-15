@@ -4,7 +4,7 @@ import shutil
 from functools import partial
 
 from PyQt6.QtCore import Qt
-from PyQt6.QtGui import QAction, QCursor, QPixmap
+from PyQt6.QtGui import QAction, QCursor, QPixmap, QFont
 from PyQt6.QtWidgets import (
     QApplication,
     QComboBox,
@@ -40,6 +40,7 @@ from utils.threads.upload_thread import UploadThread
 from utils.threads.workspace_get_file_thread import WorkspaceDownloadFile
 from utils.threads.workspace_upload_file_thread import WorkspaceUploadThread
 from utils.workspace.assembly import Assembly
+from utils.settings import Settings
 
 
 class AssemblyPlanningWidget(AssemblyWidget):
@@ -53,6 +54,13 @@ class AssemblyPlanningWidget(AssemblyWidget):
         self.upload_images_thread: UploadThread = None
         self.upload_files_thread: WorkspaceUploadThread = None
         self.download_file_thread: WorkspaceDownloadFile = None
+
+        self.settings_file = Settings()
+        self.tables_font = QFont()
+        self.tables_font.setFamily(self.settings_file.get_value("tables_font")["family"])
+        self.tables_font.setPointSize(self.settings_file.get_value("tables_font")["pointSize"])
+        self.tables_font.setWeight(self.settings_file.get_value("tables_font")["weight"])
+        self.tables_font.setItalic(self.settings_file.get_value("tables_font")["italic"])
 
         self.load_ui()
         self.load_laser_cut_parts_table()
@@ -307,6 +315,7 @@ class AssemblyPlanningWidget(AssemblyWidget):
         self.components_table.setItem(current_row, ComponentsTableColumns.PICTURE.value, image_item)
 
         part_name_item = QTableWidgetItem(component.part_name)
+        part_name_item.setFont(self.tables_font)
         if self.components_inventory.get_component_by_name(component.name):
             component_inventory_status = f"{component.name} exists in inventory."
             self.set_table_row_color(self.components_table, current_row, "#141414")
@@ -318,24 +327,29 @@ class AssemblyPlanningWidget(AssemblyWidget):
         self.components_table_items[component].update({"part_name": part_name_item})
 
         part_number_item = QTableWidgetItem(component.part_number)
+        part_number_item.setFont(self.tables_font)
         part_number_item.setToolTip(component_inventory_status)
         self.components_table.setItem(current_row, ComponentsTableColumns.PART_NUMBER.value, part_number_item)
         self.components_table_items[component].update({"part_number": part_number_item})
 
         unit_quantity_item = QTableWidgetItem(str(component.quantity))
+        unit_quantity_item.setFont(self.tables_font)
         self.components_table.setItem(current_row, ComponentsTableColumns.UNIT_QUANTITY.value, unit_quantity_item)
         self.components_table_items[component].update({"unit_quantity": unit_quantity_item})
 
         quantity_item = QTableWidgetItem(str(component.quantity * self.assembly.quantity))
+        quantity_item.setFont(self.tables_font)
         self.components_table.setItem(current_row, ComponentsTableColumns.QUANTITY.value, quantity_item)
         self.components_table_items[component].update({"quantity": quantity_item})
 
         notes_item = QTableWidgetItem(component.notes)
+        notes_item.setFont(self.tables_font)
         notes_item.setToolTip(component.notes)
         self.components_table.setItem(current_row, ComponentsTableColumns.NOTES.value, notes_item)
         self.components_table_items[component].update({"notes": notes_item})
 
         shelf_number_item = QTableWidgetItem(component.shelf_number)
+        shelf_number_item.setFont(self.tables_font)
         self.components_table.setItem(current_row, ComponentsTableColumns.SHELF_NUMBER.value, shelf_number_item)
         self.components_table_items[component].update({"shelf_number": shelf_number_item})
         self.components_table.blockSignals(False)
@@ -517,7 +531,7 @@ class AssemblyPlanningWidget(AssemblyWidget):
 
         image_item = QTableWidgetItem()
         try:
-            if not "images" in laser_cut_part.image_index:
+            if "images" not in laser_cut_part.image_index:
                 laser_cut_part.image_index = "images/" + laser_cut_part.image_index
             if not laser_cut_part.image_index.endswith(".jpeg"):
                 laser_cut_part.image_index += ".jpeg"
@@ -537,6 +551,7 @@ class AssemblyPlanningWidget(AssemblyWidget):
         self.laser_cut_parts_table.setItem(current_row, LaserCutTableColumns.PICTURE.value, image_item)
 
         part_name_item = QTableWidgetItem(laser_cut_part.name)
+        part_name_item.setFont(self.tables_font)
         if self.laser_cut_inventory.get_laser_cut_part_by_name(laser_cut_part.name):
             laser_cut_part_inventory_status = f"{laser_cut_part.name} exists in inventory."
             self.set_table_row_color(self.laser_cut_parts_table, current_row, "#141414")
@@ -598,11 +613,13 @@ class AssemblyPlanningWidget(AssemblyWidget):
         self.laser_cut_part_table_items[laser_cut_part].update({"thickness": thicknesses_combobox})
 
         unit_quantity_item = QTableWidgetItem(str(laser_cut_part.quantity))
+        unit_quantity_item.setFont(self.tables_font)
         unit_quantity_item.setTextAlignment(Qt.AlignmentFlag.AlignCenter)
         self.laser_cut_parts_table.setItem(current_row, LaserCutTableColumns.UNIT_QUANTITY.value, unit_quantity_item)
         self.laser_cut_part_table_items[laser_cut_part].update({"unit_quantity": unit_quantity_item})
 
         quantity_item = QTableWidgetItem(str(laser_cut_part.quantity * self.assembly.quantity))
+        quantity_item.setFont(self.tables_font)
         quantity_item.setTextAlignment(Qt.AlignmentFlag.AlignCenter)
         self.laser_cut_parts_table.setItem(current_row, LaserCutTableColumns.QUANTITY.value, quantity_item)
         self.laser_cut_part_table_items[laser_cut_part].update({"quantity": quantity_item})
@@ -642,10 +659,12 @@ class AssemblyPlanningWidget(AssemblyWidget):
         self.laser_cut_part_table_items[laser_cut_part].update({"expected_time_to_complete": expected_time_to_complete})
 
         notes_item = QTableWidgetItem(laser_cut_part.notes)
+        notes_item.setFont(self.tables_font)
         self.laser_cut_parts_table.setItem(current_row, LaserCutTableColumns.NOTES.value, notes_item)
         self.laser_cut_part_table_items[laser_cut_part].update({"notes": notes_item})
 
         shelf_number_item = QTableWidgetItem(laser_cut_part.shelf_number)
+        shelf_number_item.setFont(self.tables_font)
         self.laser_cut_parts_table.setItem(
             current_row,
             LaserCutTableColumns.SHELF_NUMBER.value,

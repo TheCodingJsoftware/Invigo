@@ -357,6 +357,7 @@ class NestWidget(QWidget):
                 )
                 assembly.add_laser_cut_part(new_laser_cut_part)
                 self.parent.update_tables()
+                self.parent.update_prices()
 
     def sync_changes(self):
         self.parent.parent.sync_changes()
