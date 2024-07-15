@@ -65,7 +65,7 @@
         <item>
          <layout class="QFormLayout" name="formLayout">
           <item row="0" column="0">
-           <widget class="QPushButton" name="add_assembly_button">
+           <widget class="QPushButton" name="add_new_assembly_button">
             <property name="sizePolicy">
              <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
               <horstretch>0</horstretch>
@@ -73,7 +73,20 @@
              </sizepolicy>
             </property>
             <property name="text">
-             <string>Add Assembly</string>
+             <string>Add New Assembly</string>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="1">
+           <widget class="QPushButton" name="add_existing_assembly_button">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="text">
+             <string>Add Existing Assembly</string>
             </property>
            </widget>
           </item>

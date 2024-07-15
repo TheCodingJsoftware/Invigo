@@ -92,7 +92,8 @@ border-top-left-radius: 0px;
         self.add_component_button = self.findChild(QPushButton, "add_component_button")
         self.sub_assembly_layout = self.findChild(QVBoxLayout, "sub_assembly_layout")
         self.sub_assembly_layout.setAlignment(Qt.AlignmentFlag.AlignTop)
-        self.add_sub_assembly_button = self.findChild(QPushButton, "add_sub_assembly_button")
+        self.add_new_sub_assembly_button = self.findChild(QPushButton, "add_new_sub_assembly_button")
+        self.add_existing_assembly_button = self.findChild(QPushButton, "add_existing_assembly_button")
 
     def apply_stylesheet_to_toggle_buttons(self, button: QPushButton, widget: QWidget):
         base_color = self.assembly.group.color

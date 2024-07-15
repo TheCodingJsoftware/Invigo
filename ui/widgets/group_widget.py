@@ -47,8 +47,11 @@ border-top-left-radius: 0px;
         )
         self.assemblies_layout = self.findChild(QVBoxLayout, "assemblies_layout")
         self.assemblies_layout.setAlignment(Qt.AlignmentFlag.AlignTop)
-        self.add_assembly_button = self.findChild(QPushButton, "add_assembly_button")
-        self.add_assembly_button.clicked.connect(self.add_assembly)
+        self.add_new_assembly_button = self.findChild(QPushButton, "add_new_assembly_button")
+        self.add_new_assembly_button.clicked.connect(self.add_new_assembly)
+
+        self.add_existing_assembly_button = self.findChild(QPushButton, "add_existing_assembly_button")
+        self.add_existing_assembly_button.clicked.connect(self.add_existing_assembly)
 
         self.assemblies_toolbox = AssemblyMultiToolBox(self)
         self.assemblies_layout.addWidget(self.assemblies_toolbox)
@@ -61,7 +64,7 @@ border-top-left-radius: 0px;
         for assembly_widget in self.assembly_widgets:
             assembly_widget.workspace_settings_changed()
 
-    def add_assembly(self, new_assembly: Assembly = None) -> Union[AssemblyPlanningWidget, AssemblyQuotingWidget]:
+    def add_new_assembly(self, new_assembly: Assembly = None) -> Union[AssemblyPlanningWidget, AssemblyQuotingWidget]:
         if not new_assembly:
             assembly = Assembly(f"Enter Assembly Name{len(self.group.assemblies)}", {}, self.group)
             self.group.add_assembly(assembly)
@@ -152,8 +155,11 @@ border-top-left-radius: 0px;
 
         return assembly_widget
 
+    def add_existing_assembly(self):
+        pass
+
     def load_assembly(self, assembly: Assembly):
-        assembly_widget = self.add_assembly(assembly)
+        assembly_widget = self.add_new_assembly(assembly)
         for sub_assembly in assembly.sub_assemblies:
             sub_assembly.group = self.group
             assembly_widget.load_sub_assembly(sub_assembly)

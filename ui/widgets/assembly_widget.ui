@@ -72,7 +72,7 @@
             <verstretch>0</verstretch>
            </sizepolicy>
           </property>
-          <layout class="QHBoxLayout" name="horizontalLayout">
+          <layout class="QHBoxLayout" name="horizontalLayout" stretch="0,0,0,0">
            <property name="bottomMargin">
             <number>6</number>
            </property>
@@ -129,36 +129,6 @@
                <item>
                 <layout class="QHBoxLayout" name="assembly_files_layout"/>
                </item>
-               <item>
-                <spacer name="horizontalSpacer_5">
-                 <property name="orientation">
-                  <enum>Qt::Orientation::Horizontal</enum>
-                 </property>
-                 <property name="sizeHint" stdset="0">
-                  <size>
-                   <width>40</width>
-                   <height>20</height>
-                  </size>
-                 </property>
-                </spacer>
-               </item>
-              </layout>
-             </item>
-             <item>
-              <layout class="QHBoxLayout" name="horizontalLayout_2" stretch="0,1">
-               <item>
-                <widget class="QLabel" name="label">
-                 <property name="text">
-                  <string>Flow Tag:</string>
-                 </property>
-                 <property name="buddy">
-                  <cstring>comboBox_assembly_flow_tag</cstring>
-                 </property>
-                </widget>
-               </item>
-               <item>
-                <widget class="QComboBox" name="comboBox_assembly_flow_tag"/>
-               </item>
               </layout>
              </item>
              <item>
@@ -177,29 +147,46 @@
             </layout>
            </item>
            <item>
-            <widget class="QWidget" name="paint_widget" native="true">
-             <layout class="QVBoxLayout" name="verticalLayout">
-              <property name="leftMargin">
-               <number>0</number>
-              </property>
-              <property name="topMargin">
-               <number>0</number>
-              </property>
-              <property name="rightMargin">
-               <number>0</number>
-              </property>
-              <property name="bottomMargin">
-               <number>0</number>
-              </property>
-              <item>
-               <layout class="QVBoxLayout" name="verticalLayout_12" stretch="1">
+            <layout class="QVBoxLayout" name="verticalLayout_16">
+             <item>
+              <widget class="QLabel" name="label">
+               <property name="text">
+                <string>Flow Tag:</string>
+               </property>
+               <property name="buddy">
+                <cstring>comboBox_assembly_flow_tag</cstring>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QComboBox" name="comboBox_assembly_flow_tag"/>
+             </item>
+             <item>
+              <widget class="QWidget" name="paint_widget" native="true">
+               <layout class="QVBoxLayout" name="verticalLayout">
+                <property name="leftMargin">
+                 <number>0</number>
+                </property>
+                <property name="topMargin">
+                 <number>0</number>
+                </property>
+                <property name="rightMargin">
+                 <number>0</number>
+                </property>
+                <property name="bottomMargin">
+                 <number>0</number>
+                </property>
                 <item>
-                 <layout class="QHBoxLayout" name="paint_layout"/>
+                 <layout class="QVBoxLayout" name="verticalLayout_12">
+                  <item>
+                   <layout class="QHBoxLayout" name="paint_layout"/>
+                  </item>
+                 </layout>
                 </item>
                </layout>
-              </item>
-             </layout>
-            </widget>
+              </widget>
+             </item>
+            </layout>
            </item>
            <item>
             <spacer name="horizontalSpacer">
@@ -506,7 +493,7 @@
                 <number>6</number>
                </property>
                <item row="0" column="0">
-                <widget class="QPushButton" name="add_sub_assembly_button">
+                <widget class="QPushButton" name="add_new_sub_assembly_button">
                  <property name="sizePolicy">
                   <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                    <horstretch>0</horstretch>
@@ -514,7 +501,20 @@
                   </sizepolicy>
                  </property>
                  <property name="text">
-                  <string>Add Sub Assembly</string>
+                  <string>Add New Sub Assembly</string>
+                 </property>
+                </widget>
+               </item>
+               <item row="0" column="1">
+                <widget class="QPushButton" name="add_existing_assembly_button">
+                 <property name="sizePolicy">
+                  <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                   <horstretch>0</horstretch>
+                   <verstretch>0</verstretch>
+                  </sizepolicy>
+                 </property>
+                 <property name="text">
+                  <string>Add Existing Assembly</string>
                  </property>
                 </widget>
                </item>

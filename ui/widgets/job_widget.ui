@@ -268,7 +268,7 @@ QPushButton#pushButton_reload_job:flat:hover {
                <string/>
               </property>
               <property name="icon">
-               <iconset theme="view-refresh"/>
+               <iconset theme="emblem-synchronized"/>
               </property>
               <property name="shortcut">
                <string>Ctrl+R</string>

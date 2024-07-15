@@ -210,7 +210,7 @@ class SheetImages:
                         <div class="small-padding">
                             <div class="row">
                                 <h5 class="small max">{nest.name}</h5>
-                                <div class="badge none">{int(nest.sheet_count)}</div>
+                                <h5>× {int(nest.sheet_count)}</h5>
                             </div>
                             <div class="row surface-container">
                                 <div class="max">
@@ -538,7 +538,7 @@ class AssemblyTable:
                     </div>
                     <h5>× {int(assembly.quantity)}</h5>
                 </a><div class="divider"></div>"""
-        html += "</*argsticle></div><br>"
+        html += "</article></div><br>"
         return html
 
 
@@ -584,7 +584,7 @@ class AssemblyDiv:
         html += image_html
         html += '<div class="padding">'
         html += f'<h5>{self.assembly.name}</h5>'
-        html += f'<p class="small-text">Quantity: {self.assembly.quantity}</p>'
+        html += f'<p class="small-text">Assembly Quantity: {self.assembly.quantity}</p>'
         html += f'<p class="small-text">Process: {self.assembly.flow_tag.get_name()}</p>'
         html += "</div>"
         html += "</div>"

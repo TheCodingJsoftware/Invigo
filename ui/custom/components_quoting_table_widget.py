@@ -54,7 +54,7 @@ class ComponentsQuotingTableWidget(CustomTableWidget):
             "Picture": ComponentsTableColumns.PICTURE.value,
             "Part Name": ComponentsTableColumns.PART_NAME.value,
             "Part #": ComponentsTableColumns.PART_NUMBER.value,
-            "Unit Quantity": ComponentsTableColumns.QUANTITY.value,
+            "Unit Quantity": ComponentsTableColumns.UNIT_QUANTITY.value,
             "Quantity": ComponentsTableColumns.QUANTITY.value,
             "Unit Price": ComponentsTableColumns.UNIT_PRICE.value,
             "Price": ComponentsTableColumns.PRICE.value,
