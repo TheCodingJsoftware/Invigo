@@ -1639,6 +1639,8 @@ class MainWindow(QMainWindow):
             self.laser_cut_inventory.add_recut_part(new_recut_part)
         elif existing_laser_cut_part := self.laser_cut_inventory.get_laser_cut_part_by_name(laser_cut_part_to_add.name):
             existing_laser_cut_part.quantity += laser_cut_part_to_add.quantity
+            existing_laser_cut_part.material = laser_cut_part_to_add.material
+            existing_laser_cut_part.gauge = laser_cut_part_to_add.gauge
             existing_laser_cut_part.uses_primer = laser_cut_part_to_add.uses_primer
             existing_laser_cut_part.primer_name = laser_cut_part_to_add.primer_name
             existing_laser_cut_part.uses_paint = laser_cut_part_to_add.uses_paint
@@ -1653,6 +1655,7 @@ class MainWindow(QMainWindow):
                 category = Category("Uncategorized")
                 self.laser_cut_inventory.add_category(category)
             laser_cut_part_to_add.add_to_category(category)
+            laser_cut_part_to_add.quantity = 1
             laser_cut_part_to_add.modified_date = f"{os.getlogin().title()} - Part added from {quote_name} at {datetime.now().strftime('%B %d %A %Y %I:%M:%S %p')}"
             self.laser_cut_inventory.add_laser_cut_part(laser_cut_part_to_add)
 
