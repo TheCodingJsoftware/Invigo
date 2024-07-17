@@ -2,39 +2,17 @@ import contextlib
 import math
 import os
 from datetime import datetime
+from enum import Enum, auto
 from functools import partial
 
 from natsort import natsorted
 from PyQt6 import uic
 from PyQt6.QtCore import QDate, Qt, pyqtSignal
 from PyQt6.QtGui import QAction, QColor, QCursor, QFont, QPixmap
-from PyQt6.QtWidgets import (
-    QCheckBox,
-    QComboBox,
-    QDateEdit,
-    QDoubleSpinBox,
-    QGridLayout,
-    QHBoxLayout,
-    QLabel,
-    QMenu,
-    QMessageBox,
-    QPushButton,
-    QTableWidgetItem,
-    QTextEdit,
-    QVBoxLayout,
-    QWidget,
-)
+from PyQt6.QtWidgets import QAbstractItemView, QCheckBox, QComboBox, QDateEdit, QDoubleSpinBox, QGridLayout, QHBoxLayout, QLabel, QMenu, QMessageBox, QPushButton, QTableWidgetItem, QTextEdit, QVBoxLayout, QWidget
 
 from ui.custom.components_quoting_table_widget import ComponentsQuotingTableWidget, ComponentsTableColumns
-from ui.custom.laser_cut_parts_quoting_table_widget import (
-    LaserCutPartsQuotingTableWidget, LaserCutTableColumns
-)
-from ui.custom_widgets import (
-    ClickableLabel,
-    MachineCutTimeSpinBox,
-    MultiToolBox,
-    RecutButton,
-)
+from ui.custom_widgets import ClickableLabel, CustomTableWidget, MachineCutTimeSpinBox, MultiToolBox, RecutButton
 from ui.dialogs.add_component_dialog import AddComponentDialog
 from ui.dialogs.add_laser_cut_part_dialog import AddLaserCutPartDialog
 from ui.dialogs.add_sheet_dialog import AddSheetDialog
@@ -44,12 +22,12 @@ from utils.inventory.component import Component
 from utils.inventory.components_inventory import ComponentsInventory
 from utils.inventory.laser_cut_inventory import LaserCutInventory
 from utils.inventory.laser_cut_part import LaserCutPart
+from utils.inventory.nest import Nest
 from utils.inventory.sheet import Sheet
 from utils.inventory.sheets_inventory import SheetsInventory
-from utils.inventory.nest import Nest
 from utils.quote.quote import Quote
-from utils.sheet_settings.sheet_settings import SheetSettings
 from utils.settings import Settings
+from utils.sheet_settings.sheet_settings import SheetSettings
 
 
 class PaintSettingsWidget(QWidget):
@@ -215,6 +193,81 @@ class PaintWidget(QWidget):
         self.settingsChanged.emit()
 
 
+class AutoNumber(Enum):
+    def _generate_next_value_(name, start, count, last_values):
+        return count
+
+
+class LaserCutTableColumns(AutoNumber):
+    PICTURE = auto()
+    PART_NAME = auto()
+    FILES = auto()
+    MATERIAL = auto()
+    THICKNESS = auto()
+    UNIT_QUANTITY = auto()
+    QUANTITY = auto()
+    PART_DIM = auto()
+    SHELF_NUMBER = auto()
+    PAINTING = auto()
+    PAINT_SETTINGS = auto()
+    PAINT_COST = auto()
+    BEND_COST = auto()
+    LABOR_COST = auto()
+    COST_OF_GOODS = auto()
+    UNIT_PRICE = auto()
+    PRICE = auto()
+    RECUT = auto()
+    ADD_TO_INVENTORY = auto()
+
+
+class LaserCutPartsQuotingTableWidget(CustomTableWidget):
+    def __init__(self, parent=None):
+        super().__init__(parent)
+        self.row_height = 70
+
+        editable_columns = [
+            LaserCutTableColumns.UNIT_QUANTITY,
+            LaserCutTableColumns.BEND_COST,
+            LaserCutTableColumns.LABOR_COST,
+            LaserCutTableColumns.SHELF_NUMBER,
+        ]
+
+        self.set_editable_column_index([col.value for col in editable_columns])
+        self.setShowGrid(True)
+        self.setSortingEnabled(False)
+        self.setSelectionBehavior(QAbstractItemView.SelectionBehavior.SelectRows)
+        self.setSelectionMode(QAbstractItemView.SelectionMode.ExtendedSelection)
+        self.setVerticalScrollMode(QAbstractItemView.ScrollMode.ScrollPerPixel)
+        self.setHorizontalScrollMode(QAbstractItemView.ScrollMode.ScrollPerPixel)
+
+        headers = {
+            "Picture": LaserCutTableColumns.PICTURE.value,
+            "Part name": LaserCutTableColumns.PART_NAME.value,
+            "Files": LaserCutTableColumns.FILES.value,
+            "Material": LaserCutTableColumns.MATERIAL.value,
+            "Thickness": LaserCutTableColumns.THICKNESS.value,
+            "Unit Qty": LaserCutTableColumns.UNIT_QUANTITY.value,
+            "Qty": LaserCutTableColumns.QUANTITY.value,
+            "Part Dim": LaserCutTableColumns.PART_DIM.value,
+            "Shelf #": LaserCutTableColumns.SHELF_NUMBER.value,
+            "Painting": LaserCutTableColumns.PAINTING.value,
+            "Paint Settings": LaserCutTableColumns.PAINT_SETTINGS.value,
+            "Paint Cost": LaserCutTableColumns.PAINT_COST.value,
+            "Cost of\nGoods": LaserCutTableColumns.COST_OF_GOODS.value,
+            "Bend Cost": LaserCutTableColumns.BEND_COST.value,
+            "Labor Cost": LaserCutTableColumns.LABOR_COST.value,
+            "Unit Price": LaserCutTableColumns.UNIT_PRICE.value,
+            "Price": LaserCutTableColumns.PRICE.value,
+            "Recut": LaserCutTableColumns.RECUT.value,
+            "Add Part to Inventory": LaserCutTableColumns.ADD_TO_INVENTORY.value,
+        }
+        self.setColumnCount(len(headers))
+        for header, column in headers.items():
+            self.setHorizontalHeaderItem(column, QTableWidgetItem(header))
+
+        self.setStyleSheet("border-color: transparent;")
+
+
 class QuoteWidget(QWidget):
     quote_unsaved_changes = pyqtSignal(Quote)
 
@@ -237,7 +290,6 @@ class QuoteWidget(QWidget):
         self.paint_inventory = self.laser_cut_inventory.paint_inventory
         self.sheets_inventory = sheets_inventory
         self.sheet_settings = sheet_settings
-
 
         self.settings_file = Settings()
         self.tables_font = QFont()
@@ -1578,7 +1630,8 @@ class QuoteWidget(QWidget):
                     new_component.quantity = 1.0
                     self.quote.add_component(new_component)
             else:
-                component = Component({
+                component = Component(
+                    {
                         "part_number": add_item_dialog.get_name(),
                         "quantity": add_item_dialog.get_current_quantity(),
                         "part_name": add_item_dialog.get_name(),
@@ -1779,7 +1832,8 @@ class QuoteWidget(QWidget):
         add_sheet_dialog = AddSheetDialog(nest.sheet, None, self.sheets_inventory, self.sheet_settings, self)
 
         if add_sheet_dialog.exec():
-            new_sheet = Sheet({
+            new_sheet = Sheet(
+                {
                     "quantity": add_sheet_dialog.get_quantity(),
                     "length": add_sheet_dialog.get_length(),
                     "width": add_sheet_dialog.get_width(),
