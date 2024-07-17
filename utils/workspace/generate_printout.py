@@ -182,7 +182,7 @@ class SheetImages:
                                 <div class="small-text">Nest Cut Time: {nest_hours:02d}h {nest_minutes:02d}m {nest_seconds:02d}s</div>"""
                 parts_list = '<article class="no-padding" style="width: 300px;">'
                 for part in nest.laser_cut_parts:
-                    parts_list += f'''
+                    parts_list += f"""
                     <a class="row padding surface-container wave" onclick="ui('#NEST-{self.format_filename(part.name)}');">
                         <img class="round" src="{self.server_directory}/{part.image_index}">
                         <div class="max">
@@ -191,8 +191,8 @@ class SheetImages:
                         </div>
                         <div class="badge none">#{part.part_number}</div>
                     </a>
-                    <div class="divider"></div>'''
-                parts_list += '</article>'
+                    <div class="divider"></div>"""
+                parts_list += "</article>"
                 html += f"""
                 <div class="s6">
                     <article class="nest no-padding border">
@@ -238,12 +238,7 @@ class NestedLaserCutParts:
     def __init__(self, job: Job):
         self.job = job
         self.server_directory = f"http://{get_server_ip_address()}:{get_server_port()}"
-        self.headers = [
-            "Part",
-            "Material",
-            "Sheet Qty",
-            "Qty"
-        ]
+        self.headers = ["Part", "Material", "Sheet Qty", "Qty"]
 
     def format_filename(self, s: str):
         valid_chars = f"-_.() {string.ascii_letters}{string.digits}"
@@ -258,7 +253,7 @@ class NestedLaserCutParts:
         html += "</thead>"
         html += "<tbody>"
         for laser_cut_part in nest.laser_cut_parts:
-            html += f'''<tr>
+            html += f"""<tr>
             <td class="min" data-column="0" data-name="part">
                 <button class="extra transparent small-round" onclick="ui('#NEST-{self.format_filename(laser_cut_part.name)}');">
                 <img class="responsive" src="{self.server_directory}/{laser_cut_part.image_index}">
@@ -267,13 +262,13 @@ class NestedLaserCutParts:
             <td class="small-text" data-column="1" data-name="material">{laser_cut_part.gauge} {laser_cut_part.material}</td>
             <td class="small-text" data-column="2" data-name="sheet-qty">{laser_cut_part.quantity}</td>
             <td class="small-text" data-column="3" data-name="qty">{(laser_cut_part.quantity * nest.sheet_count):,.2f}</td>
-            </tr>'''
-        html += '''<tr>
+            </tr>"""
+        html += """<tr>
                 <th class="small-text" data-column="0" data-name="part"></th>
                 <th class="small-text" data-column="1" data-name="material"></th>
                 <th class="small-text" data-column="2" data-name="sheet-qty"></th>
                 <th class="small-text" data-column="3" data-name="qty"></th>
-            </tr></tbody></table>'''
+            </tr></tbody></table>"""
         return html
 
     def generate(self) -> str:
@@ -286,10 +281,10 @@ class NestedLaserCutParts:
                 html += f'<h6 class="center-align">{nest.get_name()}</h6><br>'
                 html += f'<img style="margin-bottom: -80px; margin-top: -100px; z-index: -1; height: auto;" src="{self.server_directory}/image/{nest.image_path}" class="responsive nest_image"></div>'
                 html += self.generate_laser_cut_part_table(nest)
-                html += '</article>'
+                html += "</article>"
                 if i < len(self.job.nests) - 1:  # Check if it's not the last item
                     html += '<div id="page-break" class="page-break"></div>'
-        html += '</div>'
+        html += "</div>"
         return html
 
 
@@ -360,7 +355,7 @@ class LaserCutPartsTable:
             html += f'<div class="row no-margin"><div style="height: 20px; width: 20px; background-color: {laser_cut_part.powder_item.color}; border-radius: 5px;"></div>{laser_cut_part.powder_item.name}</div>'
         if not (laser_cut_part.uses_primer or laser_cut_part.uses_paint or laser_cut_part.uses_powder):
             html = ""
-        html += '</div>'
+        html += "</div>"
         return html
 
     def generate(self) -> str:
@@ -372,7 +367,7 @@ class LaserCutPartsTable:
         html += "<tbody>"
         for laser_cut_part in self.laser_cut_parts:
             unit_price = self.job.price_calculator.get_laser_cut_part_cost(laser_cut_part)
-            html += f'''<tr>
+            html += f"""<tr>
             <td class="min" data-column="0" data-name="part">
                 <button class="extra transparent small-round" onclick="ui('#LCP-{self.format_filename(laser_cut_part.name)}');">
                     <img class="responsive" src="{self.server_directory}/{laser_cut_part.image_index}">
@@ -386,8 +381,8 @@ class LaserCutPartsTable:
             <td class="small-text min" data-column="5" data-name="qty">{(laser_cut_part.quantity * self.assembly_quantity):,.2f}</td>
             <td class="small-text min" data-column="6" data-name="unit-price">${unit_price:,.2f}</td>
             <td class="small-text" data-column="7" data-name="price">${(unit_price * laser_cut_part.quantity * self.assembly_quantity):,.2f}</td>
-            </tr>'''
-        html += f'''<tr>
+            </tr>"""
+        html += f"""<tr>
                 <th class="small-text" data-column="0" data-name="part"></th>
                 <th class="small-text" data-column="1" data-name="material"></th>
                 <th class="small-text" data-column="2" data-name="process"></th>
@@ -396,7 +391,7 @@ class LaserCutPartsTable:
                 <th class="small-text" data-column="5" data-name="qty"></th>
                 <th class="small-text" data-column="6" data-name="unit-price"></th>
                 <th class="small-text min" data-column="7" data-name="price">Total: ${self.get_total_cost():,.2f}</th>
-            </tr></tbody></table>'''
+            </tr></tbody></table>"""
         return html
 
 
@@ -565,7 +560,7 @@ class AssemblyDiv:
         image_html = f'<img src="{self.server_directory}/image/{self.assembly.assembly_image}" class="assembly_image">' if self.assembly.assembly_image else ""
         html += image_html
         html += '<div class="padding">'
-        html += f'<h5>{self.assembly.name}</h5>'
+        html += f"<h5>{self.assembly.name}</h5>"
         html += f'<p class="small-text">Assembly Quantity: {self.assembly.quantity}</p>'
         html += f'<p class="small-text">Process: {self.assembly.flow_tag.get_name()}</p>'
         html += "</div>"
@@ -574,7 +569,7 @@ class AssemblyDiv:
 
     def generate(self) -> str:
         html = '<details class="assembly_details" open>'
-        html += f'<summary>{self.assembly.name} × {int(self.assembly.quantity)}</summary>'
+        html += f"<summary>{self.assembly.name} × {int(self.assembly.quantity)}</summary>"
         html += '<div class="assembly">'
         html += self.get_assembly_data_html()
 
@@ -623,15 +618,11 @@ class JobParts:
 
 
 class PrintoutHeader:
-    def __init__(
-        self,
-        job: Job,
-        printout_type: Literal["QUOTE", "WORKORDER", "PACKINGSLIP"] = "QUOTE"
-    ) -> None:
+    def __init__(self, job: Job, printout_type: Literal["QUOTE", "WORKORDER", "PACKINGSLIP"] = "QUOTE") -> None:
         self.job = job
         self.printout_type = printout_type
         self.server_directory = f"http://{get_server_ip_address()}:{get_server_port()}"
-        self.html = f'''<header>
+        self.html = f"""<header>
             <nav>
                 <img class="logo" src="{self.server_directory}/images/logo.png">
                 <h5 class="max center-align small">
@@ -655,15 +646,11 @@ class PrintoutHeader:
                     <span>Packing Slip</span>
                 </a>
             </nav>
-        </header>'''
+        </header>"""
 
 
 class Printout:
-    def __init__(
-        self,
-        job: Job,
-        printout_type: Literal["QUOTE", "WORKORDER", "PACKINGSLIP"] = "QUOTE"
-    ) -> None:
+    def __init__(self, job: Job, printout_type: Literal["QUOTE", "WORKORDER", "PACKINGSLIP"] = "QUOTE") -> None:
         self.job = job
         self.printout_type = printout_type
         self.program_directory = os.path.dirname(os.path.realpath(sys.argv[0]))
@@ -797,7 +784,7 @@ class Printout:
         else:
             html += "Nothing here"
         html += "</div>"
-        html += "</div>" # for the tabs
+        html += "</div>"  # for the tabs
 
         if grouped_components or grouped_laser_cut_parts:
             html += f"""
@@ -815,7 +802,7 @@ class Printout:
         html += nests_table.generate_laser_cut_part_popups()
 
         html += "</main></body>"
-        html += f'''<script>
+        html += f"""<script>
             {self.printout_js}
-        </script>'''
+        </script>"""
         return html

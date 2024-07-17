@@ -8,42 +8,16 @@ from natsort import natsorted
 from PyQt6 import uic
 from PyQt6.QtCore import QDate, Qt
 from PyQt6.QtGui import QAction, QColor, QCursor, QFont, QIcon
-from PyQt6.QtWidgets import (
-    QAbstractItemView,
-    QCompleter,
-    QDateEdit,
-    QGridLayout,
-    QHBoxLayout,
-    QInputDialog,
-    QLabel,
-    QLineEdit,
-    QListWidget,
-    QMenu,
-    QMessageBox,
-    QPushButton,
-    QTableWidgetItem,
-    QVBoxLayout,
-    QWidget,
-)
+from PyQt6.QtWidgets import QAbstractItemView, QCompleter, QDateEdit, QGridLayout, QHBoxLayout, QInputDialog, QLabel, QLineEdit, QListWidget, QMenu, QMessageBox, QPushButton, QTableWidgetItem, QVBoxLayout, QWidget
 
-from ui.custom_widgets import (
-    CustomTableWidget,
-    CustomTabWidget,
-    ExchangeRateComboBox,
-    NotesPlainTextEdit,
-    OrderStatusButton,
-    POPushButton,
-    PriorityComboBox,
-)
+from ui.custom_widgets import CustomTableWidget, CustomTabWidget, ExchangeRateComboBox, NotesPlainTextEdit, OrderStatusButton, POPushButton, PriorityComboBox
 from ui.dialogs.add_item_dialog import AddItemDialog
 from ui.dialogs.edit_category_dialog import EditCategoryDialog
 from ui.dialogs.items_change_quantity_dialog import ItemsChangeQuantityDialog
 from ui.dialogs.select_item_dialog import SelectItemDialog
 from ui.dialogs.set_component_order_pending_dialog import SetComponentOrderPendingDialog
 from ui.dialogs.set_custom_limit_dialog import SetCustomLimitDialog
-from ui.dialogs.update_component_order_pending_dialog import (
-    UpdateComponentOrderPendingDialog,
-)
+from ui.dialogs.update_component_order_pending_dialog import UpdateComponentOrderPendingDialog
 from utils.dialog_buttons import DialogButtons
 from utils.history_file import HistoryFile
 from utils.inventory.category import Category
@@ -855,7 +829,8 @@ class ComponentsTab(QWidget):
                     response = msg_box.exec()
                     return
 
-            new_component = Component({
+            new_component = Component(
+                {
                     "part_number": add_item_dialog.get_part_number(),
                     "part_name": add_item_dialog.get_name(),
                     "unit_quantities": {self.category: add_item_dialog.get_unit_quantity()},
@@ -974,9 +949,7 @@ class ComponentsTab(QWidget):
                         component.latest_change_quantity = f"{os.getlogin().title()} Used: Selected Item - add quantity\nChanged from {component.quantity} to {component.quantity + multiplier} at {datetime.now().strftime('%B %d %A %Y %I:%M:%S %p')}"
                         component.quantity += multiplier
                     elif add_or_remove == "REMOVE":
-                        component.latest_change_quantity = (
-                            f"{os.getlogin().title()} Used: Selected Item - remove quantity\nChanged from {component.quantity} to {component.quantity - multiplier} at {datetime.now().strftime('%B %d %A %Y %I:%M:%S %p')}"
-                        )
+                        component.latest_change_quantity = f"{os.getlogin().title()} Used: Selected Item - remove quantity\nChanged from {component.quantity} to {component.quantity - multiplier} at {datetime.now().strftime('%B %d %A %Y %I:%M:%S %p')}"
                         component.quantity -= multiplier
                     history_file.add_new_to_single_item(
                         date=datetime.now().strftime("%B %d %A %Y %I:%M:%S %p"),

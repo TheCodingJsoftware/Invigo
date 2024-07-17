@@ -1,11 +1,11 @@
 import math
 from typing import TYPE_CHECKING
 
-from utils.inventory.sheet import Sheet
 from utils.inventory.component import Component
 from utils.inventory.laser_cut_part import LaserCutPart
-from utils.inventory.paint_inventory import PaintInventory
 from utils.inventory.nest import Nest
+from utils.inventory.paint_inventory import PaintInventory
+from utils.inventory.sheet import Sheet
 from utils.sheet_settings.sheet_settings import SheetSettings
 from utils.workspace.assembly import Assembly
 

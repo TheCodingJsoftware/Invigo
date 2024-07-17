@@ -69,7 +69,8 @@ class LoadNestsThread(LoadNestFileThread):
                 if int(sheet_gauge) >= 50:  # 1/2 inch
                     sheet_material = "Laser Grade Plate"
                 sheet_gauge = self.material_id_to_number(sheet_gauge)
-                nest_object = Nest({
+                nest_object = Nest(
+                    {
                         "name": nest_name,
                         "sheet_count": quantity_multiplier,
                         "gauge": sheet_gauge,
@@ -86,7 +87,8 @@ class LoadNestsThread(LoadNestFileThread):
                 self.nests.append(nest_object)
                 for i, part_name in enumerate(parts):
                     part_name = part_name.split("\\")[-1].replace("\n", "").replace(".GEO", "").replace(".geo", "").strip()
-                    laser_cut_part = LaserCutPart({
+                    laser_cut_part = LaserCutPart(
+                        {
                             "name": part_name,
                             "quantity": int(quantities[i]),
                             "quantity_in_nest": int(quantities[i]),

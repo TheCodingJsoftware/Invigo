@@ -1,4 +1,5 @@
 import contextlib
+
 import msgspec
 import websocket
 from PyQt6.QtCore import QThread, pyqtSignal
@@ -19,6 +20,7 @@ class ChangesThread(QThread):
     def run(self) -> None:
         while True:
             try:
+
                 def handle_file_data(ws, message):
                     data: dict[str, list[str] | str] = msgspec.json.decode(message)
                     if data.get("action") == "download":

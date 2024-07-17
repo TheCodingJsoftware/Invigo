@@ -104,4 +104,3 @@ class ComponentsQuotingTableWidget(CustomTableWidget):
             self.resizeColumnToContents(item.column())
             self.resizeRowToContents(item.row())
             self.imagePasted.emit(image_path, item.row())
-

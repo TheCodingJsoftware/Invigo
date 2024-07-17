@@ -75,9 +75,7 @@ class ItemsChangeQuantityDialog(QDialog):
         self.pushButton_add.setEnabled(self.doubleSpinBox_quantity.value() > 0 and (self.pushButton_item.isChecked() or self.pushButton_category.isChecked()))
         self.pushButton_remove.setEnabled(self.doubleSpinBox_quantity.value() > 0 and (self.pushButton_item.isChecked() or self.pushButton_category.isChecked()))
         if self.pushButton_category.isChecked():
-            self.lblMessage.setText(
-                f"Before proceeding, it is important to confirm your intention to {self.add_or_remove} quantities.\n\nEach item in {self.title} will {self.add_or_remove} a multiple of {self.doubleSpinBox_quantity.value()} quantities with respect to its unit quantity.\n\nKindly ensure the accuracy of your decision."
-            )
+            self.lblMessage.setText(f"Before proceeding, it is important to confirm your intention to {self.add_or_remove} quantities.\n\nEach item in {self.title} will {self.add_or_remove} a multiple of {self.doubleSpinBox_quantity.value()} quantities with respect to its unit quantity.\n\nKindly ensure the accuracy of your decision.")
         elif self.pushButton_item.isChecked() and self.items:
             items_string = "\n"
             for i, item in enumerate(self.items):

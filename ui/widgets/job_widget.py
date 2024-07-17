@@ -1,25 +1,12 @@
 import contextlib
 from functools import partial
-from typing import TYPE_CHECKING, Union, Optional
+from typing import TYPE_CHECKING, Optional, Union
 
 from natsort import natsorted
 from PyQt6 import uic
 from PyQt6.QtCore import QDate, Qt, pyqtSignal
-from PyQt6.QtWidgets import (
-    QComboBox,
-    QDateEdit,
-    QDoubleSpinBox,
-    QGridLayout,
-    QLabel,
-    QPushButton,
-    QScrollArea,
-    QSplitter,
-    QTextEdit,
-    QTreeWidget,
-    QTreeWidgetItem,
-    QVBoxLayout,
-    QWidget,
-)
+from PyQt6.QtWidgets import QComboBox, QDateEdit, QDoubleSpinBox, QGridLayout, QLabel, QPushButton, QScrollArea, QSplitter, QTextEdit, QTreeWidget, QTreeWidgetItem, QVBoxLayout, QWidget
+
 from ui.custom.assembly_planning_widget import AssemblyPlanningWidget
 from ui.custom.assembly_quoting_widget import AssemblyQuotingWidget
 from ui.custom_widgets import AssemblyMultiToolBox, MultiToolBox, QLineEdit
@@ -29,7 +16,7 @@ from utils import colors
 from utils.colors import darken_color, lighten_color
 from utils.inventory.nest import Nest
 from utils.workspace.assembly import Assembly
-from utils.workspace.job import Job, JobStatus, JobColor
+from utils.workspace.job import Job, JobColor, JobStatus
 
 if TYPE_CHECKING:
     from ui.custom.job_tab import JobTab
@@ -208,7 +195,6 @@ class JobWidget(QWidget):
 
         self.pushButton_add_existing_assembly = self.findChild(QPushButton, "pushButton_add_existing_assembly")
         self.pushButton_add_existing_assembly.clicked.connect(self.add_existing_assembly)
-
 
         self.assemblies_toolbox = AssemblyMultiToolBox(self)
         self.assemblies_layout.addWidget(self.assemblies_toolbox)

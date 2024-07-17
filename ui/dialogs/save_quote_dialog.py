@@ -1,14 +1,7 @@
 from PyQt6 import uic
 from PyQt6.QtCore import QDate
 from PyQt6.QtGui import QIcon
-from PyQt6.QtWidgets import (
-    QComboBox,
-    QDateEdit,
-    QDialog,
-    QDoubleSpinBox,
-    QLineEdit,
-    QTextEdit,
-)
+from PyQt6.QtWidgets import QComboBox, QDateEdit, QDialog, QDoubleSpinBox, QLineEdit, QTextEdit
 
 from utils.quote.quote import Quote
 

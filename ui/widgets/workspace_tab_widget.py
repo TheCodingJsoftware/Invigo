@@ -2,52 +2,18 @@ import contextlib
 import os
 from datetime import datetime
 from functools import partial
-from typing import Any, TYPE_CHECKING, Union
+from typing import TYPE_CHECKING, Any, Union
 
 import sympy
 from PyQt6 import uic
 from PyQt6.QtCore import QDate, Qt
 from PyQt6.QtGui import QAction, QCursor, QFont, QIcon
-from PyQt6.QtWidgets import (
-    QAbstractItemView,
-    QApplication,
-    QComboBox,
-    QCompleter,
-    QGridLayout,
-    QGroupBox,
-    QHBoxLayout,
-    QInputDialog,
-    QLabel,
-    QLineEdit,
-    QMenu,
-    QMessageBox,
-    QPushButton,
-    QScrollArea,
-    QTableWidgetItem,
-    QTabWidget,
-    QVBoxLayout,
-    QWidget,
-)
+from PyQt6.QtWidgets import QAbstractItemView, QApplication, QComboBox, QCompleter, QGridLayout, QGroupBox, QHBoxLayout, QInputDialog, QLabel, QLineEdit, QMenu, QMessageBox, QPushButton, QScrollArea, QTableWidgetItem, QTabWidget, QVBoxLayout, QWidget
 
-from ui.custom_widgets import (
-    AssemblyImage,
-    AssemblyMultiToolBox,
-    CustomTableWidget,
-    DeletePushButton,
-    DraggableButton,
-    DropWidget,
-    FilterTabWidget,
-    HumbleDoubleSpinBox,
-    ItemsGroupBox,
-    MultiToolBox,
-    NotesPlainTextEdit,
-    RecordingWidget,
-    ScrollPositionManager,
-    SelectRangeCalendar,
-    TimeSpinBox,
-)
+from ui.custom_widgets import AssemblyImage, AssemblyMultiToolBox, CustomTableWidget, DeletePushButton, DraggableButton, DropWidget, FilterTabWidget, HumbleDoubleSpinBox, ItemsGroupBox, MultiToolBox, NotesPlainTextEdit, RecordingWidget, ScrollPositionManager, SelectRangeCalendar, TimeSpinBox
 from ui.dialogs.color_picker_dialog import ColorPicker
 from ui.dialogs.recut_dialog import RecutDialog
+from ui.widgets.workspace_widget import WorkspaceWidget
 from utils.colors import get_random_color
 from utils.dialog_buttons import DialogButtons
 from utils.inventory.components_inventory import ComponentsInventory
@@ -62,10 +28,10 @@ from utils.workspace.workspace import Workspace
 from utils.workspace.workspace_item import WorkspaceItem
 from utils.workspace.workspace_item_group import WorkspaceItemGroup
 from utils.workspace.workspace_settings import WorkspaceSettings
-from ui.widgets.workspace_widget import WorkspaceWidget
 
 if TYPE_CHECKING:
     from ui.windows.main_window import MainWindow
+
 
 class Filter:
     def __init__(self):

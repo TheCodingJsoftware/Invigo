@@ -7,36 +7,14 @@ import sympy
 from PyQt6 import uic
 from PyQt6.QtCore import QDate, Qt
 from PyQt6.QtGui import QAction, QColor, QCursor, QFont
-from PyQt6.QtWidgets import (
-    QAbstractItemView,
-    QCheckBox,
-    QComboBox,
-    QDateEdit,
-    QGridLayout,
-    QHBoxLayout,
-    QInputDialog,
-    QLabel,
-    QMenu,
-    QMessageBox,
-    QPushButton,
-    QTableWidgetItem,
-    QVBoxLayout,
-    QWidget,
-)
+from PyQt6.QtWidgets import QAbstractItemView, QCheckBox, QComboBox, QDateEdit, QGridLayout, QHBoxLayout, QInputDialog, QLabel, QMenu, QMessageBox, QPushButton, QTableWidgetItem, QVBoxLayout, QWidget
 
-from ui.custom_widgets import (
-    CustomTableWidget,
-    CustomTabWidget,
-    HumbleDoubleSpinBox,
-    OrderStatusButton,
-)
+from ui.custom_widgets import CustomTableWidget, CustomTabWidget, HumbleDoubleSpinBox, OrderStatusButton
 from ui.dialogs.add_sheet_dialog import AddSheetDialog
 from ui.dialogs.edit_category_dialog import EditCategoryDialog
 from ui.dialogs.set_component_order_pending_dialog import SetComponentOrderPendingDialog
 from ui.dialogs.set_custom_limit_dialog import SetCustomLimitDialog
-from ui.dialogs.update_component_order_pending_dialog import (
-    UpdateComponentOrderPendingDialog,
-)
+from ui.dialogs.update_component_order_pending_dialog import UpdateComponentOrderPendingDialog
 from utils.inventory.category import Category
 from utils.inventory.order import Order
 from utils.inventory.sheet import Sheet
@@ -560,7 +538,8 @@ class SheetsInInventoryTab(QWidget):
         add_sheet_dialog = AddSheetDialog(None, self.category, self.sheets_inventory, self.sheet_settings, self)
 
         if add_sheet_dialog.exec():
-            new_sheet = Sheet({
+            new_sheet = Sheet(
+                {
                     "quantity": add_sheet_dialog.get_quantity(),
                     "length": add_sheet_dialog.get_length(),
                     "width": add_sheet_dialog.get_width(),

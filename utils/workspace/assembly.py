@@ -1,4 +1,4 @@
-from typing import TYPE_CHECKING, Any, Union, Optional
+from typing import TYPE_CHECKING, Any, Optional, Union
 
 from utils.inventory.component import Component
 from utils.inventory.laser_cut_part import LaserCutPart
@@ -6,8 +6,8 @@ from utils.inventory.paint import Paint
 from utils.inventory.powder import Powder
 from utils.inventory.primer import Primer
 from utils.workspace.flow_tag import FlowTag
-from utils.workspace.workspace_settings import WorkspaceSettings
 from utils.workspace.tag import Tag
+from utils.workspace.workspace_settings import WorkspaceSettings
 
 if TYPE_CHECKING:
     from utils.workspace.job import Job

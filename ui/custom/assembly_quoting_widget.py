@@ -3,45 +3,32 @@ import os
 import shutil
 from datetime import datetime
 from functools import partial
-from typing import Union, Optional
+from typing import Optional, Union
 
 from PyQt6.QtCore import Qt
-from PyQt6.QtGui import QAction, QCursor, QPixmap, QFont
-from PyQt6.QtWidgets import (
-    QApplication,
-    QComboBox,
-    QHBoxLayout,
-    QLineEdit,
-    QMenu,
-    QMessageBox,
-    QPushButton,
-    QScrollArea,
-    QTableWidgetItem,
-    QWidget,
-)
+from PyQt6.QtGui import QAction, QCursor, QFont, QPixmap
+from PyQt6.QtWidgets import QApplication, QComboBox, QHBoxLayout, QLineEdit, QMenu, QMessageBox, QPushButton, QScrollArea, QTableWidgetItem, QWidget
 
 from ui.custom.assembly_image import AssemblyImage
 from ui.custom.assembly_paint_settings_widget import AssemblyPaintSettingsWidget
 from ui.custom.assembly_paint_widget import AssemblyPaintWidget
-from ui.widgets.assembly_widget import AssemblyWidget
 from ui.custom.components_quoting_table_widget import ComponentsQuotingTableWidget, ComponentsTableColumns
 from ui.custom.file_button import FileButton
-from ui.custom.laser_cut_part_paint_settings_widget import (
-    LasserCutPartPaintSettingsWidget,
-)
+from ui.custom.laser_cut_part_paint_settings_widget import LasserCutPartPaintSettingsWidget
 from ui.custom.laser_cut_part_paint_widget import LaserCutPartPaintWidget
 from ui.custom.laser_cut_parts_quoting_table_widget import LaserCutPartsQuotingTableWidget, LaserCutTableColumns
 from ui.custom_widgets import AssemblyMultiToolBox, RecutButton
 from ui.dialogs.add_component_dialog import AddComponentDialog
 from ui.dialogs.add_laser_cut_part_dialog import AddLaserCutPartDialog
+from ui.widgets.assembly_widget import AssemblyWidget
 from utils.inventory.category import Category
 from utils.inventory.component import Component
 from utils.inventory.laser_cut_part import LaserCutPart
+from utils.settings import Settings
 from utils.threads.upload_thread import UploadThread
 from utils.threads.workspace_get_file_thread import WorkspaceDownloadFile
 from utils.threads.workspace_upload_file_thread import WorkspaceUploadThread
 from utils.workspace.assembly import Assembly
-from utils.settings import Settings
 
 
 class AssemblyQuotingWidget(AssemblyWidget):

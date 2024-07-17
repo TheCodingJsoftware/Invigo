@@ -1,4 +1,5 @@
 from enum import Enum, auto
+
 from PyQt6.QtWidgets import QAbstractItemView, QTableWidgetItem
 
 from ui.custom_widgets import CustomTableWidget

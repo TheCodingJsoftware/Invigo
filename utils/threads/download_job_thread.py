@@ -1,8 +1,9 @@
-import requests
 import msgspec
+import requests
 from PyQt6.QtCore import QThread, pyqtSignal
 
 from utils.ip_utils import get_server_ip_address, get_server_port
+
 
 class DownloadJobThread(QThread):
     signal = pyqtSignal(object, object)

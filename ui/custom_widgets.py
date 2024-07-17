@@ -4,44 +4,8 @@ from datetime import datetime, timedelta
 from functools import partial
 
 from natsort import natsorted
-from PyQt6.QtCore import (
-    QAbstractTableModel,
-    QDate,
-    QDateTime,
-    QEvent,
-    QMargins,
-    QMimeData,
-    QModelIndex,
-    QPoint,
-    QRegularExpression,
-    QSize,
-    QSortFilterProxyModel,
-    Qt,
-    QTimer,
-    QUrl,
-    pyqtSignal,
-)
-from PyQt6.QtGui import (
-    QBrush,
-    QColor,
-    QCursor,
-    QDrag,
-    QDragEnterEvent,
-    QDragLeaveEvent,
-    QDragMoveEvent,
-    QDropEvent,
-    QFileSystemModel,
-    QIcon,
-    QKeySequence,
-    QMouseEvent,
-    QPainter,
-    QPalette,
-    QPixmap,
-    QRegularExpressionValidator,
-    QStandardItem,
-    QStandardItemModel,
-    QTextCharFormat,
-)
+from PyQt6.QtCore import QAbstractTableModel, QDate, QDateTime, QEvent, QMargins, QMimeData, QModelIndex, QPoint, QRegularExpression, QSize, QSortFilterProxyModel, Qt, QTimer, QUrl, pyqtSignal
+from PyQt6.QtGui import QBrush, QColor, QCursor, QDrag, QDragEnterEvent, QDragLeaveEvent, QDragMoveEvent, QDropEvent, QFileSystemModel, QIcon, QKeySequence, QMouseEvent, QPainter, QPalette, QPixmap, QRegularExpressionValidator, QStandardItem, QStandardItemModel, QTextCharFormat
 from PyQt6.QtWidgets import (
     QAbstractItemView,
     QAbstractSpinBox,
@@ -2150,9 +2114,7 @@ class NotesPlainTextEdit(QPlainTextEdit):
         QPlainTextEdit.__init__(self, parent)
         self.setMinimumWidth(100)
         self.setObjectName("notes")
-        self.setStyleSheet(
-            "QPlainTextEdit#notes{border-radius: 0px;}QPlainTextEdit:focus#notes{background-color: rgba(32,32,32,130); border: 1px solid #3daee9; border-radius: 0px; color: #EAE9FC;}QPlainTextEdit:hover#notes{border-color: #3daee9;border-radius: 0px; }"
-        )
+        self.setStyleSheet("QPlainTextEdit#notes{border-radius: 0px;}QPlainTextEdit:focus#notes{background-color: rgba(32,32,32,130); border: 1px solid #3daee9; border-radius: 0px; color: #EAE9FC;}QPlainTextEdit:hover#notes{border-color: #3daee9;border-radius: 0px; }")
         self.setMaximumWidth(200)
         self.setFixedHeight(60)
         self.setPlainText(text)

@@ -153,7 +153,7 @@ class Quote:
         for component_data in data["components"]:
             try:
                 component = Component(component_data, self.component_inventory)
-            except AttributeError: # Old inventory format
+            except AttributeError:  # Old inventory format
                 component = Component(data["components"][component_data], self.component_inventory)
                 component.name = component_data
             self.components.append(component)
@@ -168,7 +168,7 @@ class Quote:
         for nest_data in data["nests"]:
             try:
                 nest = Nest(nest_data, self.sheet_settings, self.laser_cut_inventory)
-            except AttributeError: # Old inventory format
+            except AttributeError:  # Old inventory format
                 nest = Nest(data["nests"][nest_data], self.sheet_settings, self.laser_cut_inventory)
             self.nests.append(nest)
 

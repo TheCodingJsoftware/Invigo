@@ -1,5 +1,5 @@
 import copy
-from typing import TYPE_CHECKING, Union, Optional
+from typing import TYPE_CHECKING, Optional, Union
 
 from utils.inventory.category import Category
 from utils.inventory.inventory_item import InventoryItem
@@ -7,13 +7,13 @@ from utils.inventory.paint import Paint
 from utils.inventory.powder import Powder
 from utils.inventory.primer import Primer
 from utils.workspace.flow_tag import FlowTag
-from utils.workspace.workspace_settings import WorkspaceSettings
 from utils.workspace.tag import Tag
+from utils.workspace.workspace_settings import WorkspaceSettings
 
 if TYPE_CHECKING:
     from utils.inventory.laser_cut_inventory import LaserCutInventory
-    from utils.inventory.paint_inventory import PaintInventory
     from utils.inventory.nest import Nest
+    from utils.inventory.paint_inventory import PaintInventory
 
 
 class LaserCutPart(InventoryItem):
@@ -131,7 +131,7 @@ class LaserCutPart(InventoryItem):
 
     def load_data(self, data: dict[str, Union[str, int, float, bool]]):
         self.name = data.get("name", "")
-        self.quantity: int = data.get("quantity", 0) # In the context of assemblies, quantity is unit_quantity
+        self.quantity: int = data.get("quantity", 0)  # In the context of assemblies, quantity is unit_quantity
         self.red_quantity_limit: int = data.get("red_quantity_limit", 10)
         self.yellow_quantity_limit: int = data.get("yellow_quantity_limit", 20)
         self.category_quantities.clear()
