@@ -41,7 +41,6 @@ from ui.widgets.sheets_in_inventory_tab import SheetsInInventoryTab
 from ui.widgets.workspace_tab_widget import WorkspaceTabWidget
 from utils.dialog_buttons import DialogButtons
 from utils.dialog_icons import Icons
-from utils.history_file import HistoryFile
 from utils.inventory.category import Category
 from utils.inventory.components_inventory import ComponentsInventory
 from utils.inventory.laser_cut_inventory import LaserCutInventory
@@ -50,12 +49,9 @@ from utils.inventory.nest import Nest
 from utils.inventory.paint_inventory import PaintInventory
 from utils.inventory.sheet import Sheet
 from utils.inventory.sheets_inventory import SheetsInventory
-from utils.inventory_excel_file import ExcelFile
 from utils.ip_utils import get_server_ip_address, get_server_port
-from utils.json_file import JsonFile
 from utils.po import check_po_directories, get_all_po
 from utils.po_template import POTemplate
-from utils.price_history_file import PriceHistoryFile
 from utils.quote.generate_printout import GeneratePrintout
 from utils.quote.quote import Quote
 from utils.settings import Settings
@@ -92,7 +88,7 @@ from utils.workspace.job_preferences import JobPreferences
 from utils.workspace.workspace import Workspace
 from utils.workspace.workspace_settings import WorkspaceSettings
 
-__version__: str = "v3.2.1"
+__version__: str = "v3.2.2"
 
 
 def check_folders(folders: list[str]) -> None:
