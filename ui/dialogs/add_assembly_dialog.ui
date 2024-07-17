@@ -76,9 +76,7 @@
            </sizepolicy>
           </property>
           <property name="text">
-           <string>Press 'Tab' to autofill.
-
-Press 'Add' when finished.</string>
+           <string>Press 'Add' when finished.</string>
           </property>
           <property name="alignment">
            <set>Qt::AlignmentFlag::AlignLeading|Qt::AlignmentFlag::AlignLeft|Qt::AlignmentFlag::AlignTop</set>
@@ -86,72 +84,15 @@ Press 'Add' when finished.</string>
          </widget>
         </item>
         <item>
-         <layout class="QHBoxLayout" name="horizontalLayout_4" stretch="0,1">
-          <item>
-           <widget class="QLabel" name="label_3">
-            <property name="text">
-             <string>Laser Cut Part Name or Number:</string>
-            </property>
-            <property name="buddy">
-             <cstring>comboBox_name</cstring>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QComboBox" name="comboBox_name">
-            <property name="editable">
-             <bool>true</bool>
-            </property>
-           </widget>
-          </item>
-         </layout>
-        </item>
-        <item>
-         <widget class="QLabel" name="label">
-          <property name="text">
-           <string>All Laser Cut Parts in Inventory:</string>
-          </property>
-          <property name="buddy">
-           <cstring>listWidget_laser_cut_parts</cstring>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QListWidget" name="listWidget_laser_cut_parts">
+         <widget class="QTreeWidget" name="treeWidget_assemblies">
           <property name="selectionMode">
            <enum>QAbstractItemView::SelectionMode::ExtendedSelection</enum>
           </property>
-         </widget>
-        </item>
-        <item>
-         <layout class="QHBoxLayout" name="horizontalLayout_3" stretch="0,1">
-          <item>
-           <widget class="QLabel" name="label_7">
-            <property name="text">
-             <string>Quantity:</string>
-            </property>
-            <property name="buddy">
-             <cstring>spinBox_current_quantity</cstring>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QDoubleSpinBox" name="spinBox_current_quantity">
-            <property name="maximum">
-             <double>999999999.000000000000000</double>
-            </property>
-           </widget>
-          </item>
-         </layout>
-        </item>
-        <item>
-         <widget class="QLabel" name="label_laser_cut_part_status">
-          <property name="text">
-           <string> * Laser Cut Part does NOT exist in inventory.</string>
-          </property>
-          <property name="alignment">
-           <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
-          </property>
+          <column>
+           <property name="text">
+            <string>Job / Assemblies</string>
+           </property>
+          </column>
          </widget>
         </item>
         <item>
@@ -205,11 +146,9 @@ Press 'Add' when finished.</string>
   </layout>
  </widget>
  <tabstops>
-  <tabstop>comboBox_name</tabstop>
-  <tabstop>spinBox_current_quantity</tabstop>
   <tabstop>pushButton_add</tabstop>
   <tabstop>pushButton_cancel</tabstop>
-  <tabstop>listWidget_laser_cut_parts</tabstop>
+  <tabstop>treeWidget_assemblies</tabstop>
  </tabstops>
  <resources/>
  <connections/>

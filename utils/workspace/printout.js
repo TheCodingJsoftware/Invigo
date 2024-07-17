@@ -165,7 +165,6 @@ checkboxes.forEach(checkbox => {
         layoutDiv.classList.add('hidden');
     } else {
         checkbox.checked = true;
-        layoutDiv.classList.add('hidden');
     }
 
     checkbox.addEventListener('change', function () {

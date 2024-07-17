@@ -60,8 +60,7 @@ class JobLoaderThread(QThread):
     def download_job_data_response(self, data: dict, folder_name: str) -> None:
         print(f"download_job_data_response: {data} {folder_name}")
         if isinstance(data, dict):
-            job_name = folder_name.split("\\")[-1]
-            self.job = Job(job_name, data, self.job_manager)
+            self.job = Job(data, self.job_manager)
             self.job.downloaded_from_server = True
 
             required_images = self.get_all_images(self.job)

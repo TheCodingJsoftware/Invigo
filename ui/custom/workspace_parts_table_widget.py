@@ -11,17 +11,12 @@ class AutoNumber(Enum):
 
 
 class WorkspacePartsTableColumns(AutoNumber):
-    PICTURE = auto()
     PART_NAME = auto()
-    BENDING_FILES = auto()
-    WELDING_FILES = auto()
-    CNC_MILLING_FILES = auto()
+    FILES = auto()
     MATERIAL = auto()
-    THICKNESS = auto()
     PAINT = auto()
     QUANTITY = auto()
     PROCESS_CONTROLS = auto()
-    TIMERS = auto()
     NOTES = auto()
     SHELF_NUMBER = auto()
 
@@ -43,17 +38,12 @@ class WorkspacePartsTableWidget(CustomTableWidget):
         self.set_editable_column_index([col.value for col in editable_columns])
 
         headers = {
-            "Picture": WorkspacePartsTableColumns.PICTURE.value,
             "Part Name": WorkspacePartsTableColumns.PART_NAME.value,
-            "Bending Files": WorkspacePartsTableColumns.BENDING_FILES.value,
-            "Welding Files": WorkspacePartsTableColumns.WELDING_FILES.value,
-            "CNC/Milling Files": WorkspacePartsTableColumns.CNC_MILLING_FILES.value,
+            "Files": WorkspacePartsTableColumns.FILES.value,
             "Material": WorkspacePartsTableColumns.MATERIAL.value,
-            "Thickness": WorkspacePartsTableColumns.THICKNESS.value,
             "Paint": WorkspacePartsTableColumns.PAINT.value,
             "Quantity": WorkspacePartsTableColumns.QUANTITY.value,
             "Process Controls": WorkspacePartsTableColumns.PROCESS_CONTROLS.value,
-            "Timers": WorkspacePartsTableColumns.TIMERS.value,
             "Shelf #": WorkspacePartsTableColumns.SHELF_NUMBER.value,
             "Notes": WorkspacePartsTableColumns.NOTES.value,
         }

@@ -35,6 +35,7 @@ QMenu::item{
     background-color: #303030;
     border: 1px solid #303030;
     border-radius: 5px;
+    min-width: 100px;
 }
 QMenu::icon{
     padding: 5px;

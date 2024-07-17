@@ -1,5 +1,6 @@
 import msgspec
 from natsort import natsorted
+from typing import Union
 
 from utils.inventory.category import Category
 from utils.inventory.component import Component
@@ -112,22 +113,25 @@ class ComponentsInventory(Inventory):
     def load_data(self):
         try:
             with open(f"{self.FOLDER_LOCATION}/{self.filename}.json", "rb") as file:
-                data: dict[str, dict[str, object]] = msgspec.json.decode(file.read())
+                data: dict[str, Union[dict[str, object], list[object]]] = msgspec.json.decode(file.read())
             self.categories.from_dict(data["categories"])
             self.components.clear()
-            for component_name, component_data in data["components"].items():
-                self.add_component(Component(component_name, component_data, self))
+
+            for component_data in data["components"]:
+                try:
+                    component = Component(component_data, self)
+                except AttributeError: # Old inventory format
+                    component = Component(data["components"][component_data], self)
+                    component.part_number = component_data
+                self.add_component(component)
         except KeyError:  # Inventory was just created
             return
         except msgspec.DecodeError:  # Inventory file got cleared
             self._reset_file()
             self.load_data()
 
-    def to_dict(self) -> dict:
-        data: dict[str, dict[str, object]] = {
+    def to_dict(self) -> dict[str, Union[dict[str, object], list[object]]]:
+        return {
             "categories": self.categories.to_dict(),
-            "components": {},
+            "components": [component.to_dict() for component in self.components],
         }
-        for component in self.components:
-            data["components"][component.name] = component.to_dict()
-        return data

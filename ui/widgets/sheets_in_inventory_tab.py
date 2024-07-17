@@ -560,9 +560,7 @@ class SheetsInInventoryTab(QWidget):
         add_sheet_dialog = AddSheetDialog(None, self.category, self.sheets_inventory, self.sheet_settings, self)
 
         if add_sheet_dialog.exec():
-            new_sheet = Sheet(
-                "new_name",
-                {
+            new_sheet = Sheet({
                     "quantity": add_sheet_dialog.get_quantity(),
                     "length": add_sheet_dialog.get_length(),
                     "width": add_sheet_dialog.get_width(),

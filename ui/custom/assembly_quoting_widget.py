@@ -3,7 +3,7 @@ import os
 import shutil
 from datetime import datetime
 from functools import partial
-from typing import Union
+from typing import Union, Optional
 
 from PyQt6.QtCore import Qt
 from PyQt6.QtGui import QAction, QCursor, QPixmap, QFont
@@ -120,6 +120,7 @@ class AssemblyQuotingWidget(AssemblyWidget):
         self.add_component_button.clicked.connect(self.add_component)
 
         self.add_new_sub_assembly_button.clicked.connect(self.add_sub_assembly)
+        self.add_existing_assembly_button.clicked.connect(self.add_existing_sub_assembly)
 
         self.sub_assemblies_toolbox = AssemblyMultiToolBox(self)
         self.sub_assembly_layout.addWidget(self.sub_assemblies_toolbox)
@@ -324,16 +325,31 @@ class AssemblyQuotingWidget(AssemblyWidget):
 
         unit_quantity_item = QTableWidgetItem(str(component.quantity))
         unit_quantity_item.setFont(self.tables_font)
+        unit_quantity_item.setTextAlignment(Qt.AlignmentFlag.AlignCenter)
         self.components_table.setItem(current_row, ComponentsTableColumns.UNIT_QUANTITY.value, unit_quantity_item)
         self.components_table_items[component].update({"unit_quantity": unit_quantity_item})
 
-        quantity_item = QTableWidgetItem(str(component.quantity * self.assembly.quantity))
+        quantity_item = QTableWidgetItem(f"{(component.quantity * self.assembly.quantity):,.2f}")
         quantity_item.setFont(self.tables_font)
+        quantity_item.setTextAlignment(Qt.AlignmentFlag.AlignCenter)
         self.components_table.setItem(current_row, ComponentsTableColumns.QUANTITY.value, quantity_item)
         self.components_table_items[component].update({"quantity": quantity_item})
 
+        unit_price_item = QTableWidgetItem(f"${(component.price):,.2f}")
+        unit_price_item.setFont(self.tables_font)
+        unit_price_item.setTextAlignment(Qt.AlignmentFlag.AlignCenter)
+        self.components_table.setItem(current_row, ComponentsTableColumns.UNIT_PRICE.value, unit_price_item)
+        self.components_table_items[component].update({"unit_price": unit_price_item})
+
+        price_item = QTableWidgetItem(f"${(component.price * component.quantity * self.assembly.quantity):,.2f}")
+        price_item.setFont(self.tables_font)
+        price_item.setTextAlignment(Qt.AlignmentFlag.AlignCenter)
+        self.components_table.setItem(current_row, ComponentsTableColumns.PRICE.value, price_item)
+        self.components_table_items[component].update({"price": price_item})
+
         shelf_number_item = QTableWidgetItem(component.shelf_number)
         shelf_number_item.setFont(self.tables_font)
+        shelf_number_item.setTextAlignment(Qt.AlignmentFlag.AlignCenter)
         self.components_table.setItem(current_row, ComponentsTableColumns.SHELF_NUMBER.value, shelf_number_item)
         self.components_table_items[component].update({"shelf_number": shelf_number_item})
 
@@ -354,7 +370,7 @@ class AssemblyQuotingWidget(AssemblyWidget):
     def update_components_table_prices(self):
         self.components_table.blockSignals(True)
         for component, table_data in self.components_table_items.items():
-            table_data["quantity"].setText(str(component.quantity * self.assembly.quantity))
+            table_data["price"].setText(f"${(component.price * component.quantity * self.assembly.quantity):,.2f}")
         self.components_table.blockSignals(False)
 
     def components_table_changed(self, row: int):
@@ -383,7 +399,9 @@ class AssemblyQuotingWidget(AssemblyWidget):
         self.components_table_items[component]["part_number"].setToolTip(component_inventory_status)
         component.part_number = self.components_table_items[component]["part_number"].text()
         with contextlib.suppress(ValueError):
-            component.quantity = float(self.components_table_items[component]["unit_quantity"].text())
+            component.quantity = float(self.components_table_items[component]["unit_quantity"].text().replace(",", "").strip())
+        with contextlib.suppress(ValueError):
+            component.price = float(self.components_table_items[component]["unit_price"].text().replace(",", "").replace("$", "").strip())
         component.notes = self.components_table_items[component]["notes"].text()
         component.shelf_number = self.components_table_items[component]["shelf_number"].text()
         self.update_component_table_quantity()
@@ -398,17 +416,21 @@ class AssemblyQuotingWidget(AssemblyWidget):
     def add_component(self):
         add_item_dialog = AddComponentDialog(self)
         if add_item_dialog.exec():
-            if component := add_item_dialog.get_selected_component():
-                new_component = Component(component.name, component.to_dict(), self.components_inventory)
+            if components := add_item_dialog.get_selected_components():
+                for component in components:
+                    new_component = Component(component.to_dict(), self.components_inventory)
+                    new_component.quantity = 1.0
+                    self.assembly.add_component(new_component)
+                    self.add_component_to_table(new_component)
             else:
                 new_component = Component(
-                    add_item_dialog.get_part_number(),
-                    {"part_name": add_item_dialog.get_name()},
+                    add_item_dialog.get_name(),
+                    {"part_name": add_item_dialog.get_name(), "part_number": add_item_dialog.get_name()},
                     self.components_inventory,
                 )
-            new_component.quantity = add_item_dialog.get_current_quantity()
-            self.assembly.add_component(new_component)
-            self.add_component_to_table(new_component)
+                new_component.quantity = add_item_dialog.get_current_quantity()
+                self.assembly.add_component(new_component)
+                self.add_component_to_table(new_component)
 
     def update_components_table_height(self):
         self.components_table.setFixedHeight((len(self.assembly.components) + 1) * self.components_table.row_height)
@@ -555,7 +577,7 @@ class AssemblyQuotingWidget(AssemblyWidget):
         self.laser_cut_parts_table.setItem(current_row, LaserCutTableColumns.PART_NAME.value, part_name_item)
         self.laser_cut_part_table_items[laser_cut_part].update({"part_name": part_name_item})
 
-        # Bending files
+        # Files
         files_widget, files_layout = create_file_layout(["bending_files", "welding_files", "cnc_milling_files"])
         self.laser_cut_parts_table.setCellWidget(
             current_row,
@@ -570,7 +592,7 @@ class AssemblyQuotingWidget(AssemblyWidget):
         materials_combobox.addItems(self.sheet_settings.get_materials())
         materials_combobox.setCurrentText(laser_cut_part.material)
         materials_combobox.currentTextChanged.connect(partial(self.laser_cut_parts_table_changed, current_row))
-        self.laser_cut_parts_table.setCellWidget(current_row, LaserCutTableColumns.PICTURE.value, materials_combobox)
+        self.laser_cut_parts_table.setCellWidget(current_row, LaserCutTableColumns.MATERIAL.value, materials_combobox)
         self.laser_cut_part_table_items[laser_cut_part].update({"material": materials_combobox})
 
         thicknesses_combobox = QComboBox(self)
@@ -693,31 +715,6 @@ class AssemblyQuotingWidget(AssemblyWidget):
         )
         self.laser_cut_part_table_items[laser_cut_part].update({"shelf_number": shelf_number_item})
 
-        def recut_pressed(recut_part: LaserCutPart, button: RecutButton):
-            recut_part.recut = button.isChecked()
-            self.changes_made()
-
-        recut_button = RecutButton(self)
-        recut_button.clicked.connect(partial(recut_pressed, laser_cut_part, recut_button))
-        recut_button.setStyleSheet("margin: 5%;")
-        self.laser_cut_parts_table.setCellWidget(current_row, LaserCutTableColumns.RECUT.value, recut_button)
-
-        send_part_to_inventory = QPushButton(self)
-        send_part_to_inventory.setText("Add to Inventory")
-        send_part_to_inventory.setStyleSheet("margin: 5%;")
-        send_part_to_inventory.setFixedWidth(120)
-        send_part_to_inventory.clicked.connect(
-            partial(
-                self.add_laser_cut_part_to_inventory,
-                laser_cut_part,
-            )
-        )
-        self.laser_cut_parts_table.setCellWidget(
-            current_row,
-            LaserCutTableColumns.ADD_TO_INVENTORY.value,
-            send_part_to_inventory,
-        )
-
         if does_exist_in_inventory:
             self.set_table_row_color(self.laser_cut_parts_table, current_row, "#141414")
         else:
@@ -830,6 +827,24 @@ class AssemblyQuotingWidget(AssemblyWidget):
                 file_path,
             )
 
+    def add_laser_cut_part(self):
+        add_item_dialog = AddLaserCutPartDialog(self)
+        if add_item_dialog.exec():
+            if laser_cut_parts := add_item_dialog.get_selected_laser_cut_parts():
+                for laser_cut_part in laser_cut_parts:
+                    new_laser_cut_part = LaserCutPart(
+                        laser_cut_part.to_dict(),
+                        self.laser_cut_inventory,
+                    )
+                    new_laser_cut_part.quantity = add_item_dialog.get_current_quantity()
+                    self.assembly.add_laser_cut_part(new_laser_cut_part)
+                    self.add_laser_cut_part_to_table(new_laser_cut_part)
+            else:
+                new_laser_cut_part = LaserCutPart({"name": add_item_dialog.get_name()}, self.laser_cut_inventory)
+                new_laser_cut_part.quantity = add_item_dialog.get_current_quantity()
+                self.assembly.add_laser_cut_part(new_laser_cut_part)
+                self.add_laser_cut_part_to_table(new_laser_cut_part)
+
     def update_laser_cut_parts_table_height(self):
         self.laser_cut_parts_table.setFixedHeight((len(self.assembly.laser_cut_parts) + 1) * self.laser_cut_parts_table.row_height)
 
@@ -837,7 +852,6 @@ class AssemblyQuotingWidget(AssemblyWidget):
         laser_cut_part_to_add.quantity_in_nest = None
         if laser_cut_part_to_add.recut:
             new_recut_part = LaserCutPart(
-                laser_cut_part_to_add.name,
                 laser_cut_part_to_add.to_dict(),
                 self.laser_cut_inventory,
             )
@@ -850,6 +864,8 @@ class AssemblyQuotingWidget(AssemblyWidget):
             self.laser_cut_inventory.add_recut_part(new_recut_part)
         elif existing_laser_cut_part := self.laser_cut_inventory.get_laser_cut_part_by_name(laser_cut_part_to_add.name):
             existing_laser_cut_part.quantity += laser_cut_part_to_add.quantity
+            existing_laser_cut_part.material = laser_cut_part_to_add.material
+            existing_laser_cut_part.gauge = laser_cut_part_to_add.gauge
             existing_laser_cut_part.uses_primer = laser_cut_part_to_add.uses_primer
             existing_laser_cut_part.primer_name = laser_cut_part_to_add.primer_name
             existing_laser_cut_part.uses_paint = laser_cut_part_to_add.uses_paint
@@ -1037,34 +1053,28 @@ class AssemblyQuotingWidget(AssemblyWidget):
             None,
         )
 
-    def add_laser_cut_part(self):
-        add_item_dialog = AddLaserCutPartDialog(self)
-        if add_item_dialog.exec():
-            if laser_cut_part := add_item_dialog.get_selected_laser_cut_part():
-                new_laser_cut_part = LaserCutPart(
-                    laser_cut_part.name,
-                    laser_cut_part.to_dict(),
-                    self.laser_cut_inventory,
-                )
-            else:
-                new_laser_cut_part = LaserCutPart(add_item_dialog.get_name(), {}, self.laser_cut_inventory)
-            new_laser_cut_part.quantity = add_item_dialog.get_current_quantity()
-            self.assembly.add_laser_cut_part(new_laser_cut_part)
-            self.add_laser_cut_part_to_table(new_laser_cut_part)
+    def add_existing_sub_assembly(self):
+        if assemblies_to_add := self.get_assemblies_dialog():
+            for assembly in assemblies_to_add:
+                new_assembly = Assembly(assembly.to_dict(), self.assembly.job)
+                self.assembly.add_sub_assembly(new_assembly)
+                self.load_sub_assembly(new_assembly)
+            self.job_tab.get_active_job_widget().update_prices()
 
-    def add_sub_assembly(self, new_sub_assembly: Assembly = None) -> "AssemblyQuotingWidget":
+    def add_sub_assembly(self, new_sub_assembly: Optional[Assembly] = None) -> "AssemblyQuotingWidget":
         if not new_sub_assembly:
             sub_assembly = Assembly(
-                f"Enter Sub Assembly Name{len(self.assembly.sub_assemblies)}",
                 {},
-                self.assembly.group,
+                self.assembly.job,
             )
+            sub_assembly.name = f"Enter Sub Assembly Name{len(self.assembly.sub_assemblies)}"
             self.assembly.add_sub_assembly(sub_assembly)
         else:
             sub_assembly = new_sub_assembly
+        sub_assembly.color = self.assembly.color
 
         sub_assembly_widget = AssemblyQuotingWidget(sub_assembly, self.parent)
-        self.sub_assemblies_toolbox.addItem(sub_assembly_widget, sub_assembly.name, sub_assembly.group.color)
+        self.sub_assemblies_toolbox.addItem(sub_assembly_widget, sub_assembly.name, self.assembly.color)
 
         toggle_button = self.sub_assemblies_toolbox.getLastToggleButton()
 
@@ -1145,7 +1155,8 @@ class AssemblyQuotingWidget(AssemblyWidget):
 
     def load_sub_assemblies(self):
         for sub_assembly in self.assembly.sub_assemblies:
-            sub_assembly.group = self.assembly.group
+            sub_assembly.job = self.assembly.job
+            sub_assembly.color = self.assembly.color
             self.load_sub_assembly(sub_assembly)
 
     def load_sub_assembly(self, assembly: Assembly):
@@ -1157,7 +1168,9 @@ class AssemblyQuotingWidget(AssemblyWidget):
         self.changes_made()
 
     def duplicate_sub_assembly(self, sub_assembly: Assembly):
-        new_sub_assembly = Assembly(f"{sub_assembly.name} - (Copy)", sub_assembly.to_dict(), self.assembly.group)
+        new_sub_assembly = Assembly(sub_assembly.to_dict(), self.assembly.job)
+        new_sub_assembly.name = f"{sub_assembly.name} - (Copy)"
+        new_sub_assembly.color = self.assembly.color
         self.load_sub_assembly(new_sub_assembly)
         self.assembly.add_sub_assembly(new_sub_assembly)
         self.changes_made()

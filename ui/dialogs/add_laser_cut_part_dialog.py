@@ -14,7 +14,6 @@ class AddLaserCutPartDialog(QDialog):
         self.parent = parent
 
         self.laser_cut_inventory: LaserCutInventory = self.parent.laser_cut_inventory
-        self.selected_laser_cut_part: LaserCutPart = None
 
         self.setWindowTitle("Add New Laser Cut Part")
         self.setWindowIcon(QIcon("icons/icon.png"))
@@ -33,6 +32,8 @@ class AddLaserCutPartDialog(QDialog):
         self.pushButton_cancel.clicked.connect(self.reject)
 
     def selection_changed(self):
+        if len(self.listWidget_laser_cut_parts.selectedItems()) > 1:
+            return
         for laser_cut_part in self.laser_cut_inventory.laser_cut_parts:
             if laser_cut_part.name == self.listWidget_laser_cut_parts.currentItem().text():
                 self.comboBox_name.lineEdit().blockSignals(True)
@@ -40,12 +41,10 @@ class AddLaserCutPartDialog(QDialog):
                 self.comboBox_name.lineEdit().blockSignals(False)
                 self.label_laser_cut_part_status.setStyleSheet("color: #4EE753;")
                 self.label_laser_cut_part_status.setText(" * Laser Cut Part exists in inventory.")
-                self.selected_laser_cut_part = laser_cut_part
                 return
             else:
                 self.label_laser_cut_part_status.setStyleSheet("color: #E74E4E;")
                 self.label_laser_cut_part_status.setText(" * Laser Cut Part does NOT exists in inventory.")
-                self.selected_laser_cut_part = None
 
     def get_laser_cut_part_row(self, laser_cut_part_name: str) -> int:
         return next(
@@ -61,12 +60,10 @@ class AddLaserCutPartDialog(QDialog):
                 self.listWidget_laser_cut_parts.blockSignals(False)
                 self.label_laser_cut_part_status.setStyleSheet("color: #4EE753;")
                 self.label_laser_cut_part_status.setText(" * Laser Cut Part exists in inventory.")
-                self.selected_laser_cut_part = laser_cut_part
                 return
             else:
                 self.label_laser_cut_part_status.setStyleSheet("color: #E74E4E;")
                 self.label_laser_cut_part_status.setText(" * Laser Cut Part does NOT exists in inventory.")
-                self.selected_laser_cut_part = None
 
     def get_name(self) -> str:
         return self.comboBox_name.currentText().encode("ascii", "ignore").decode()
@@ -74,5 +71,10 @@ class AddLaserCutPartDialog(QDialog):
     def get_current_quantity(self) -> int:
         return self.spinBox_current_quantity.value()
 
-    def get_selected_laser_cut_part(self) -> LaserCutPart:
-        return self.selected_laser_cut_part
+    def get_selected_laser_cut_parts(self) -> list[LaserCutPart]:
+        if len(self.listWidget_laser_cut_parts.selectedItems())  == 0:
+            return []
+        selected_laser_cut_parts: list[LaserCutPart] = []
+        for list_item in self.listWidget_laser_cut_parts.selectedItems():
+            selected_laser_cut_parts.append(self.laser_cut_inventory.get_laser_cut_part_by_name(list_item.text()))
+        return selected_laser_cut_parts

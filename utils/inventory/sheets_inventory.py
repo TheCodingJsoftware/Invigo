@@ -1,5 +1,6 @@
 import msgspec
 from natsort import natsorted
+from typing import Union
 
 from utils.inventory.category import Category
 from utils.inventory.inventory import Inventory
@@ -8,11 +9,10 @@ from utils.sheet_settings.sheet_settings import SheetSettings
 
 
 class SheetsInventory(Inventory):
-    def __init__(self, parent):
+    def __init__(self, sheet_settings: SheetSettings):
         super().__init__("sheets_inventory")
-        self.parent = parent
         self.sheets: list[Sheet] = []
-        self.sheet_settings: SheetSettings = self.parent.sheet_settings
+        self.sheet_settings = sheet_settings
         self.load_data()
 
     def get_all_sheets_material(self, sheets: list[Sheet] = None) -> list[str]:
@@ -80,19 +80,21 @@ class SheetsInventory(Inventory):
                 data: dict[str, dict[str, object]] = msgspec.json.decode(file.read())
             self.categories.from_dict(data["categories"])
             self.sheets.clear()
-            for sheet_name, sheet_data in data["sheets"].items():
-                self.add_sheet(Sheet(sheet_name, sheet_data, self))
+            for sheet_data in data["sheets"]:
+                try:
+                    sheet = Sheet(sheet_data, self)
+                except AttributeError:
+                    sheet = Sheet(data["sheets"][sheet_data], self)
+                    sheet.name = sheet_data
+                self.add_sheet(Sheet(sheet_data, self))
         except KeyError:  # Inventory was just created
             return
         except msgspec.DecodeError:  # Inventory file got cleared
             self._reset_file()
             self.load_data()
 
-    def to_dict(self) -> dict:
-        data: dict[str, dict[str, object]] = {
+    def to_dict(self) -> dict[str, Union[dict[str, object], list[object]]]:
+        return {
             "categories": self.categories.to_dict(),
-            "sheets": {},
+            "sheets": [sheet.to_dict() for sheet in self.sheets],
         }
-        for sheet in self.sheets:
-            data["sheets"][sheet.get_name()] = sheet.to_dict()
-        return data

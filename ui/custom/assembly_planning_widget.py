@@ -2,6 +2,7 @@ import contextlib
 import os
 import shutil
 from functools import partial
+from typing import Optional
 
 from PyQt6.QtCore import Qt
 from PyQt6.QtGui import QAction, QCursor, QPixmap, QFont
@@ -119,6 +120,7 @@ class AssemblyPlanningWidget(AssemblyWidget):
         self.add_component_button.clicked.connect(self.add_component)
 
         self.add_new_sub_assembly_button.clicked.connect(self.add_sub_assembly)
+        self.add_existing_assembly_button.clicked.connect(self.add_existing_sub_assembly)
 
         self.sub_assemblies_toolbox = AssemblyMultiToolBox(self)
         self.sub_assembly_layout.addWidget(self.sub_assemblies_toolbox)
@@ -401,17 +403,20 @@ class AssemblyPlanningWidget(AssemblyWidget):
     def add_component(self):
         add_item_dialog = AddComponentDialog(self)
         if add_item_dialog.exec():
-            if component := add_item_dialog.get_selected_component():
-                new_component = Component(component.name, component.to_dict(), self.components_inventory)
+            if components := add_item_dialog.get_selected_components():
+                for component in components:
+                    new_component = Component(component.to_dict(), self.components_inventory)
+                    new_component.quantity = 1.0
+                    self.assembly.add_component(new_component)
+                    self.add_component_to_table(new_component)
             else:
                 new_component = Component(
-                    add_item_dialog.get_part_number(),
-                    {"part_name": add_item_dialog.get_name()},
+                    {"part_name": add_item_dialog.get_name(), "part_number": add_item_dialog.get_name()},
                     self.components_inventory,
                 )
-            new_component.quantity = add_item_dialog.get_current_quantity()
-            self.assembly.add_component(new_component)
-            self.add_component_to_table(new_component)
+                new_component.quantity = add_item_dialog.get_current_quantity()
+                self.assembly.add_component(new_component)
+                self.add_component_to_table(new_component)
 
     def update_components_table_height(self):
         self.components_table.setFixedHeight((len(self.assembly.components) + 1) * self.components_table.row_height)
@@ -742,6 +747,24 @@ class AssemblyPlanningWidget(AssemblyWidget):
         files_layout.addWidget(file_button)
         self.laser_cut_parts_table.resizeColumnsToContents()
 
+    def add_laser_cut_part(self):
+        add_item_dialog = AddLaserCutPartDialog(self)
+        if add_item_dialog.exec():
+            if laser_cut_parts := add_item_dialog.get_selected_laser_cut_parts():
+                for laser_cut_part in laser_cut_parts:
+                    new_laser_cut_part = LaserCutPart(
+                        laser_cut_part.to_dict(),
+                        self.laser_cut_inventory,
+                    )
+                    new_laser_cut_part.quantity = add_item_dialog.get_current_quantity()
+                    self.assembly.add_laser_cut_part(new_laser_cut_part)
+                    self.add_laser_cut_part_to_table(new_laser_cut_part)
+            else:
+                new_laser_cut_part = LaserCutPart({"name": add_item_dialog.get_name()}, self.laser_cut_inventory)
+                new_laser_cut_part.quantity = add_item_dialog.get_current_quantity()
+                self.assembly.add_laser_cut_part(new_laser_cut_part)
+                self.add_laser_cut_part_to_table(new_laser_cut_part)
+
     def update_laser_cut_parts_table_height(self):
         self.laser_cut_parts_table.setFixedHeight((len(self.assembly.laser_cut_parts) + 1) * self.laser_cut_parts_table.row_height)
 
@@ -952,34 +975,24 @@ class AssemblyPlanningWidget(AssemblyWidget):
             None,
         )
 
-    def add_laser_cut_part(self):
-        add_item_dialog = AddLaserCutPartDialog(self)
-        if add_item_dialog.exec():
-            if laser_cut_part := add_item_dialog.get_selected_laser_cut_part():
-                new_laser_cut_part = LaserCutPart(
-                    laser_cut_part.name,
-                    laser_cut_part.to_dict(),
-                    self.laser_cut_inventory,
-                )
-            else:
-                new_laser_cut_part = LaserCutPart(add_item_dialog.get_name(), {}, self.laser_cut_inventory)
-            new_laser_cut_part.quantity = add_item_dialog.get_current_quantity()
-            self.assembly.add_laser_cut_part(new_laser_cut_part)
-            self.add_laser_cut_part_to_table(new_laser_cut_part)
+    def add_existing_sub_assembly(self):
+        if assemblies_to_add := self.get_assemblies_dialog():
+            for assembly in assemblies_to_add:
+                new_assembly = Assembly(assembly.to_dict(), self.assembly.job)
+                self.assembly.add_sub_assembly(new_assembly)
+                self.load_sub_assembly(new_assembly)
 
-    def add_sub_assembly(self, new_sub_assembly: Assembly = None) -> "AssemblyPlanningWidget":
+    def add_sub_assembly(self, new_sub_assembly: Optional[Assembly] = None) -> "AssemblyPlanningWidget":
         if not new_sub_assembly:
-            sub_assembly = Assembly(
-                f"Enter Sub Assembly Name{len(self.assembly.sub_assemblies)}",
-                {},
-                self.assembly.group,
-            )
+            sub_assembly = Assembly({}, self.assembly.job)
+            sub_assembly.name = f"Enter Sub Assembly Name{len(self.assembly.sub_assemblies)}"
             self.assembly.add_sub_assembly(sub_assembly)
         else:
             sub_assembly = new_sub_assembly
+        sub_assembly.color = self.assembly.color
 
         sub_assembly_widget = AssemblyPlanningWidget(sub_assembly, self.parent)
-        self.sub_assemblies_toolbox.addItem(sub_assembly_widget, sub_assembly.name, sub_assembly.group.color)
+        self.sub_assemblies_toolbox.addItem(sub_assembly_widget, sub_assembly.name, self.assembly.color)
 
         toggle_button = self.sub_assemblies_toolbox.getLastToggleButton()
 
@@ -1060,7 +1073,8 @@ class AssemblyPlanningWidget(AssemblyWidget):
 
     def load_sub_assemblies(self):
         for sub_assembly in self.assembly.sub_assemblies:
-            sub_assembly.group = self.assembly.group
+            sub_assembly.job = self.assembly.job
+            sub_assembly.color = self.assembly.color
             self.load_sub_assembly(sub_assembly)
 
     def load_sub_assembly(self, assembly: Assembly):
@@ -1072,7 +1086,9 @@ class AssemblyPlanningWidget(AssemblyWidget):
         self.changes_made()
 
     def duplicate_sub_assembly(self, sub_assembly: Assembly):
-        new_sub_assembly = Assembly(f"{sub_assembly.name} - (Copy)", sub_assembly.to_dict(), self.assembly.group)
+        new_sub_assembly = Assembly(sub_assembly.to_dict(), self.assembly.job)
+        new_sub_assembly.name = f"{sub_assembly.name} - (Copy)"
+        new_sub_assembly.color = self.assembly.color
         self.load_sub_assembly(new_sub_assembly)
         self.assembly.add_sub_assembly(new_sub_assembly)
         self.changes_made()

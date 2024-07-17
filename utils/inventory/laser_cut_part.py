@@ -1,5 +1,5 @@
 import copy
-from typing import TYPE_CHECKING, Union
+from typing import TYPE_CHECKING, Union, Optional
 
 from utils.inventory.category import Category
 from utils.inventory.inventory_item import InventoryItem
@@ -8,6 +8,7 @@ from utils.inventory.powder import Powder
 from utils.inventory.primer import Primer
 from utils.workspace.flow_tag import FlowTag
 from utils.workspace.workspace_settings import WorkspaceSettings
+from utils.workspace.tag import Tag
 
 if TYPE_CHECKING:
     from utils.inventory.laser_cut_inventory import LaserCutInventory
@@ -16,8 +17,8 @@ if TYPE_CHECKING:
 
 
 class LaserCutPart(InventoryItem):
-    def __init__(self, name: str, data: dict, laser_cut_inventory):
-        super().__init__(name)
+    def __init__(self, data: dict[str, Union[str, float, int, dict[str, object], list[object]]], laser_cut_inventory):
+        super().__init__()
 
         self.laser_cut_inventory: LaserCutInventory = laser_cut_inventory
         self.paint_inventory: PaintInventory = self.laser_cut_inventory.paint_inventory
@@ -74,6 +75,7 @@ class LaserCutPart(InventoryItem):
         self.cost_for_powder_coating: float = 0.0
 
         self.flow_tag: FlowTag = None
+        self.current_flow_tag_index: int = 0
         self.bending_files: list[str] = []
         self.welding_files: list[str] = []
         self.cnc_milling_files: list[str] = []
@@ -86,6 +88,22 @@ class LaserCutPart(InventoryItem):
 
         self.load_data(data)
 
+    def get_current_tag(self) -> Optional[Tag]:
+        try:
+            return self.flow_tag.tags[self.current_flow_tag_index]
+        except IndexError:
+            return None
+
+    def get_all_paints(self) -> str:
+        name = ""
+        if self.uses_primer and self.primer_item:
+            name += f"{self.primer_item.name}"
+        if self.uses_paint and self.paint_item:
+            name += f"{self.paint_item.name}"
+        if self.uses_powder and self.powder_item:
+            name += f"{self.powder_item.name}"
+        return name
+
     def move_to_category(self, from_category: Category, to_category: Category):
         super().remove_from_category(from_category)
         self.add_to_category(to_category)
@@ -95,7 +113,7 @@ class LaserCutPart(InventoryItem):
         if len(self.categories) == 0:
             self.laser_cut_inventory.remove_laser_cut_part(self)
 
-    def get_category_quantity(self, category: str | Category) -> float:
+    def get_category_quantity(self, category: Union[str, Category]) -> float:
         if isinstance(category, str):
             category = self.laser_cut_inventory.get_category(category)
         try:
@@ -103,7 +121,7 @@ class LaserCutPart(InventoryItem):
         except KeyError:
             return 1.0
 
-    def set_category_quantity(self, category: str | Category, quantity: float) -> float:
+    def set_category_quantity(self, category: Union[str, Category], quantity: float) -> float:
         if isinstance(category, str):
             category = self.laser_cut_inventory.get_category(category)
         self.category_quantities[category] = quantity
@@ -112,6 +130,7 @@ class LaserCutPart(InventoryItem):
         return "".join(f"{i + 1}. {category.name}: {self.get_category_quantity(category)}\n" for i, category in enumerate(self.categories))
 
     def load_data(self, data: dict[str, Union[str, int, float, bool]]):
+        self.name = data.get("name", "")
         self.quantity: int = data.get("quantity", 0) # In the context of assemblies, quantity is unit_quantity
         self.red_quantity_limit: int = data.get("red_quantity_limit", 10)
         self.yellow_quantity_limit: int = data.get("yellow_quantity_limit", 20)
@@ -166,6 +185,7 @@ class LaserCutPart(InventoryItem):
         self.cost_for_powder_coating = data.get("cost_for_powder_coating", 0.0)
 
         self.flow_tag = FlowTag("", data.get("flow_tag", {"name": "", "tags": []}), self.workspace_settings)
+        self.current_flow_tag_index = data.get("current_flow_tag_index", 0)
         self.bending_files.clear()
         self.bending_files = data.get("bending_files", [])
         self.welding_files.clear()
@@ -204,12 +224,14 @@ class LaserCutPart(InventoryItem):
 
     def to_dict(self) -> dict[str, dict]:
         return {
+            "name": self.name,
             "part_number": self.part_number,
-            "part_dim": self.part_dim,
             "quantity": self.quantity,
+            "gauge": self.gauge,
+            "material": self.material,
+            "part_dim": self.part_dim,
             "red_quantity_limit": self.red_quantity_limit,
             "yellow_quantity_limit": self.yellow_quantity_limit,
-            "category_quantities": {category.name: self.category_quantities.get(category, 1.0) for category in self.categories},
             "machine_time": self.machine_time,
             "weight": self.weight,
             "surface_area": self.surface_area,
@@ -218,8 +240,6 @@ class LaserCutPart(InventoryItem):
             "piercing_points": self.piercing_points,
             "price": self.price,
             "cost_of_goods": self.cost_of_goods,
-            "gauge": self.gauge,
-            "material": self.material,
             "custom": self.custom,
             "recut": self.recut,
             "recut_count": self.recut_count,
@@ -246,8 +266,10 @@ class LaserCutPart(InventoryItem):
             "cost_for_powder_coating": self.cost_for_powder_coating,
             "quantity_in_nest": self.quantity_in_nest,
             "flow_tag": self.flow_tag.to_dict(),
+            "current_flow_tag_index": self.current_flow_tag_index,
             "bending_files": self.bending_files,
             "welding_files": self.welding_files,
             "cnc_milling_files": self.cnc_milling_files,
             "categories": [category.name for category in self.categories],
+            "category_quantities": {category.name: self.category_quantities.get(category, 1.0) for category in self.categories},
         }

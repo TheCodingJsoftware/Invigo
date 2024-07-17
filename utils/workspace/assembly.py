@@ -1,4 +1,4 @@
-from typing import TYPE_CHECKING, Any, Union
+from typing import TYPE_CHECKING, Any, Union, Optional
 
 from utils.inventory.component import Component
 from utils.inventory.laser_cut_part import LaserCutPart
@@ -7,17 +7,19 @@ from utils.inventory.powder import Powder
 from utils.inventory.primer import Primer
 from utils.workspace.flow_tag import FlowTag
 from utils.workspace.workspace_settings import WorkspaceSettings
+from utils.workspace.tag import Tag
 
 if TYPE_CHECKING:
-    from utils.workspace.group import Group
+    from utils.workspace.job import Job
 
 
 class Assembly:
-    def __init__(self, name: str, assembly_data: dict[str, object], group) -> None:
-        self.name = name
+    def __init__(self, assembly_data: dict[str, object], job) -> None:
+        self.job: Job = job
 
-        self.group: Group = group
-        self.paint_inventory = self.group.job.job_manager.paint_inventory
+        self.name = ""
+        self.color = ""
+        self.paint_inventory = self.job.job_manager.paint_inventory
         self.parent_assembly: "Assembly" = None
         self.assembly_files: list[str] = []
         self.laser_cut_parts: list[LaserCutPart] = []
@@ -47,21 +49,14 @@ class Assembly:
         self.has_items: bool = False
         self.has_sub_assemblies: bool = False
         self.flow_tag: FlowTag = None
+        self.current_flow_tag_index: int = 0
         self.assembly_image: str = None
         self.quantity: int = 1
 
-        # NOTE Used by user workspace
         self.timers: dict[str, dict] = {}
-        self.display_name: str = ""
-        self.completed: bool = False
-        self.starting_date: str = ""
-        self.ending_date: str = ""
-        self.status: str = None
-        self.current_flow_state: int = 0
-        self.date_completed: str = ""
 
         # NOTE Non serializable variables
-        self.workspace_settings: WorkspaceSettings = self.group.workspace_settings
+        self.workspace_settings: WorkspaceSettings = self.job.workspace_settings
         self.show = True
 
         self.load_data(assembly_data)
@@ -84,8 +79,11 @@ class Assembly:
     def remove_component(self, component: Component):
         self.components.remove(component)
 
-    def get_current_flow_state(self) -> str:
-        return self.flow_tag[self.current_flow_state]
+    def get_current_tag(self) -> Optional[Tag]:
+        try:
+            return self.flow_tag.tags[self.current_flow_tag_index]
+        except IndexError:
+            return None
 
     def get_master_assembly(self) -> "Assembly":
         master_assembly = self
@@ -95,7 +93,7 @@ class Assembly:
 
     def add_sub_assembly(self, assembly: "Assembly"):
         assembly.parent_assembly = self
-        assembly.group = self.group
+        assembly.job = self.job
         self.sub_assemblies.append(assembly)
 
     def remove_sub_assembly(self, assembly) -> "Assembly":
@@ -122,13 +120,16 @@ class Assembly:
 
     def load_data(self, data: dict[str, Union[float, bool, str, dict]]):
         assembly_data = data.get("assembly_data", {})
+        self.name = assembly_data.get("name", "Assembly")
         self.expected_time_to_complete: float = assembly_data.get("expected_time_to_complete", 0.0)
         self.has_items: bool = assembly_data.get("has_items", False)
         self.has_sub_assemblies: bool = assembly_data.get("has_sub_assemblies", True)
         self.flow_tag: FlowTag = FlowTag("", assembly_data.get("flow_tag", {}), self.workspace_settings)
+        self.current_flow_tag_index = data.get("current_flow_tag_index", 0)
         self.assembly_image: str = assembly_data.get("assembly_image")
         self.assembly_files: list[str] = assembly_data.get("assembly_files", [])
         self.quantity: int = assembly_data.get("quantity", 1)
+        self.color = assembly_data.get("color", "#3daee9")
 
         self.uses_primer: bool = assembly_data.get("uses_primer", False)
         self.primer_name: str = assembly_data.get("primer_name")
@@ -153,58 +154,45 @@ class Assembly:
 
         # NOTE Used by user workspace
         self.timers: dict[str, dict[str, object]] = assembly_data.get("timers", {})
-        self.display_name: str = assembly_data.get("display_name", "")
-        self.completed: bool = assembly_data.get("completed", False)
-        self.starting_date: str = assembly_data.get("starting_date", "")
-        self.ending_date: str = assembly_data.get("ending_date", "")
-        self.status: str = assembly_data.get("status")
-        self.current_flow_state: int = assembly_data.get("current_flow_state", 0)
-        self.date_completed: str = assembly_data.get("date_completed", "")
 
         self.laser_cut_parts.clear()
-        laser_cut_parts = data.get("laser_cut_parts", {})
-        for laser_cut_part_name, laser_cut_part_data in laser_cut_parts.items():
+        laser_cut_parts = data.get("laser_cut_parts", [])
+        for laser_cut_part_data in laser_cut_parts:
             laser_cut_part = LaserCutPart(
-                laser_cut_part_name,
                 laser_cut_part_data,
-                self.group.job.laser_cut_inventory,
+                self.job.laser_cut_inventory,
             )
             self.add_laser_cut_part(laser_cut_part)
 
         self.components.clear()
         components = data.get("components", {})
-        for component_name, component_data in components.items():
-            component = Component(component_name, component_data, self.group.job.components_inventory)
+        for component_data in components:
+            component = Component(component_data, self.job.components_inventory)
             self.add_component(component)
 
         self.sub_assemblies.clear()
-        sub_assemblies = data.get("sub_assemblies", {})
-        for sub_assembly_name, sub_assembly_data in sub_assemblies.items():
-            sub_assembly = Assembly(sub_assembly_name, sub_assembly_data, self.group)
+        sub_assemblies = data.get("sub_assemblies", [])
+        for sub_assembly_data in sub_assemblies:
+            sub_assembly = Assembly(sub_assembly_data, self.job)
             self.sub_assemblies.append(sub_assembly)
 
-    def to_dict(self, processed_assemblies: set["Assembly"] = None) -> dict:
-        if processed_assemblies is None:
-            processed_assemblies = set()
-        processed_assemblies.add(self)
+    def set_timer(self, flow_tag: str, time: object) -> None:
+        self.timers[flow_tag]["time_to_complete"] = time.value()
 
-        data = {
+    def to_dict(self) -> dict:
+        return {
             "assembly_data": {
-                "display_name": self.display_name,
+                "name": self.name,
+                "color": self.color,
                 "expected_time_to_complete": self.expected_time_to_complete,
                 "has_items": self.has_items,
                 "has_sub_assemblies": self.has_sub_assemblies,
                 "flow_tag": self.flow_tag.to_dict(),
+                "current_flow_tag_index": self.current_flow_tag_index,
                 "assembly_image": self.assembly_image,
                 "quantity": self.quantity,
                 "assembly_files": self.assembly_files,
                 "timers": self.timers,
-                "completed": self.completed,
-                "starting_date": self.starting_date,
-                "ending_date": self.ending_date,
-                "status": self.status,
-                "current_flow_state": self.current_flow_state,
-                "date_completed": self.date_completed,
                 "uses_primer": self.uses_primer,
                 "primer_name": None if self.primer_name == "None" else self.primer_name,
                 "primer_overspray": self.primer_overspray,
@@ -218,22 +206,7 @@ class Assembly:
                 "powder_transfer_efficiency": self.powder_transfer_efficiency,
                 "cost_for_powder_coating": self.cost_for_powder_coating,
             },
-            "laser_cut_parts": {},
-            "components": {},
-            "sub_assemblies": {},
+            "laser_cut_parts": [laser_cut_part.to_dict() for laser_cut_part in self.laser_cut_parts],
+            "components": [component.to_dict() for component in self.components],
+            "sub_assemblies": [sub_assembly.to_dict() for sub_assembly in self.sub_assemblies],
         }
-
-        for laser_cut_part in self.laser_cut_parts:
-            data["laser_cut_parts"][laser_cut_part.name] = laser_cut_part.to_dict()
-
-        for component in self.components:
-            data["components"][component.name] = component.to_dict()
-
-        for sub_assembly in self.sub_assemblies:
-            if sub_assembly not in processed_assemblies:
-                data["sub_assemblies"][sub_assembly.name] = sub_assembly.to_dict(processed_assemblies)
-
-        return data
-
-    def set_timer(self, flow_tag: str, time: object) -> None:
-        self.timers[flow_tag]["time_to_complete"] = time.value()

@@ -1,3 +1,5 @@
+from typing import Union
+
 from utils.inventory.laser_cut_inventory import LaserCutInventory
 from utils.inventory.laser_cut_part import LaserCutPart
 from utils.inventory.sheet import Sheet
@@ -7,12 +9,11 @@ from utils.sheet_settings.sheet_settings import SheetSettings
 class Nest:
     def __init__(
         self,
-        name: str,
         data: dict[str, object],
         sheet_settings: SheetSettings,
         laser_cut_inventory: LaserCutInventory,
     ):
-        self.name: str = name
+        self.name: str = ""
         self.sheet_settings = sheet_settings
         self.laser_cut_inventory = laser_cut_inventory
         self.sheet_count: int = 0
@@ -64,38 +65,42 @@ class Nest:
         return f"{self.sheet.thickness} {self.sheet.material} {self.get_sheet_dimension()} {self.name}"
 
     def load_data(self, data: dict[str, float | int | str | dict[str, float | str]]):
+        self.name = data.get("name", "")
         self.sheet_count = data.get("sheet_count", 0)
         self.scrap_percentage = data.get("scrap_percentage", 0.0)
         self.sheet_cut_time = data.get("sheet_cut_time", 0.0)
         self.image_path = data.get("image_path", "images/404.jpeg")
         self.laser_cut_parts.clear()
-        for laser_cut_part_name, laser_cut_part_data in data.get("laser_cut_parts", {}).items():
-            laser_cut_part = LaserCutPart(laser_cut_part_name, laser_cut_part_data, self.laser_cut_inventory)
+        for laser_cut_part_data in data.get("laser_cut_parts", []):
+            try:
+                laser_cut_part = LaserCutPart(laser_cut_part_data, self.laser_cut_inventory)
+            except AttributeError: # Old inventory format
+                laser_cut_part = LaserCutPart(data["laser_cut_parts"][laser_cut_part_data], self.laser_cut_inventory)
+                laser_cut_part.name = laser_cut_part_data
             laser_cut_part.nest = self
             self.laser_cut_parts.append(laser_cut_part)
         try:
-            sheet_name = list(data["sheet"].keys())[0]
             self.sheet = Sheet(
-                sheet_name,
-                data["sheet"][sheet_name],
+                data["sheet"],
                 None,
             )
         except KeyError:  # Generated from load_nests.py
             self.sheet = Sheet(
-                "nest_sheet",
                 {
                     "thickness": data.get("gauge", ""),
                     "material": data.get("material", ""),
                 },
                 None,
             )
+            self.sheet.name = "nest_sheet"
 
-    def to_dict(self) -> dict[str, float | int | str]:
+    def to_dict(self) -> dict[str, Union[float, int, str]]:
         return {
+            "name": self.name,
             "sheet_count": self.sheet_count,
             "scrap_percentage": self.scrap_percentage,
             "sheet_cut_time": self.sheet_cut_time,
             "image_path": self.image_path,
-            "laser_cut_parts": {laser_cut_part.name: laser_cut_part.to_dict() for laser_cut_part in self.laser_cut_parts},
-            "sheet": {self.sheet.get_name(): self.sheet.to_dict()},
+            "laser_cut_parts": [laser_cut_part.to_dict() for laser_cut_part in self.laser_cut_parts],
+            "sheet": self.sheet.to_dict(),
         }

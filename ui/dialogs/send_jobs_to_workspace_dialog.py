@@ -11,9 +11,9 @@ from PyQt6.QtWidgets import (
     QWidget,
     QHBoxLayout,
     QVBoxLayout,
+    QCheckBox,
 )
 from PyQt6.QtCore import Qt
-from datetime import datetime
 
 from utils.workspace.job import JobStatus, Job
 from utils.settings import Settings
@@ -24,7 +24,6 @@ class SendJobsToWorkspaceDialog(QDialog):
         self,
         active_jobs_in_planning: dict[str, dict[str, Union[Job, float, str, int]]],
         active_jobs_in_quoting: dict[str, dict[str, Union[Job, float, str, int]]],
-        job_templates: dict[str, dict[str, Union[float, str, int]]],
         parent=None,
     ) -> None:
         super().__init__(parent)
@@ -55,19 +54,18 @@ class SendJobsToWorkspaceDialog(QDialog):
         self.verticalLayout_workorders.setAlignment(Qt.AlignmentFlag.AlignTop)
 
         self.populate_tree_widget(
-            active_jobs_in_planning, active_jobs_in_quoting, job_templates
+            active_jobs_in_planning, active_jobs_in_quoting
         )
 
         self.job_tree_widget.itemChanged.connect(self.update_workorders_layout)
 
     def populate_tree_widget(
-        self, active_jobs_in_planning, active_jobs_in_quoting, job_templates
+        self, active_jobs_in_planning, active_jobs_in_quoting
     ):
-        self.job_tree_widget.setColumnCount(3)
+        self.job_tree_widget.setColumnCount(2)
         self.job_tree_widget.setHeaderLabels(
-            ["Job Name", "Order Number", "Modified Date"]
+            ["Job Name", "Order Number"]
         )
-
 
         if active_jobs_in_planning:
             planning_item = QTreeWidgetItem(["Active Jobs in Planning"])
@@ -80,13 +78,6 @@ class SendJobsToWorkspaceDialog(QDialog):
             quoting_item.setFont(0, self.tables_font)
             self.job_tree_widget.addTopLevelItem(quoting_item)
             self.add_jobs_to_item(quoting_item, active_jobs_in_quoting, True)
-
-        if job_templates:
-            templates_item = QTreeWidgetItem(["Templates"])
-            templates_item.setFont(0, self.tables_font)
-            self.job_tree_widget.addTopLevelItem(templates_item)
-            self.add_jobs_to_item(templates_item, job_templates)
-
 
         # Expand all tree widgets by default
         self.job_tree_widget.expandAll()
@@ -106,17 +97,10 @@ class SendJobsToWorkspaceDialog(QDialog):
             job_name = job_name.split("\\")[-1]
             if not ignore_job_type and job_data.get("type") != JobStatus.TEMPLATE.value:
                 continue
-            try:
-                modified_date = datetime.fromtimestamp(
-                    job_data.get("modified_date")
-                ).strftime("%A, %B %d, %Y, %I:%M:%S %p")
-            except TypeError:
-                modified_date = ""
             item = QTreeWidgetItem(
                 [
                     job_name,
-                    str(job_data["order_number"]),
-                    modified_date,
+                    str(int(job_data["order_number"])),
                 ]
             )
             item.setFont(0, self.tables_font)
@@ -138,6 +122,7 @@ class SendJobsToWorkspaceDialog(QDialog):
     def add_workorder_widget(self, job_name: str):
         container = QWidget()
         layout = QHBoxLayout()
+        layout.setContentsMargins(0, 0, 0, 0)
 
         label = QLabel(job_name)
         label_1 = QLabel("*")
@@ -147,9 +132,18 @@ class SendJobsToWorkspaceDialog(QDialog):
         spin_box.setDecimals(0)
         spin_box.setMinimum(1)
 
+        group_assemblies_checkbox = QCheckBox("Split up Assemblies")
+
         layout.addWidget(label)
-        layout.addWidget(spin_box)
         layout.addWidget(label_1)
+        layout.addWidget(spin_box)
+        layout.addWidget(group_assemblies_checkbox)
+
+        layout.setStretch(0, 2)
+        layout.setStretch(1, 0)
+        layout.setStretch(2, 1)
+        layout.setStretch(3, 0)
+
         container.setLayout(layout)
 
         container.setObjectName(job_name)
@@ -161,3 +155,29 @@ class SendJobsToWorkspaceDialog(QDialog):
             if widget and widget.objectName() == job_name:
                 widget.deleteLater()
                 break
+
+    def get_selected_jobs(self) -> dict[str, list[tuple[str, float, bool]]]:
+        selected_jobs = {"planning": [], "quoting": []}
+
+        def collect_selected_jobs(item: QTreeWidgetItem, category: str):
+            if item.checkState(0) == Qt.CheckState.Checked:
+                for i in range(self.verticalLayout_workorders.count()):
+                    widget = self.verticalLayout_workorders.itemAt(i).widget()
+                    if widget and widget.objectName() == item.text(0):
+                        spin_box = widget.findChild(QDoubleSpinBox)
+                        group_assemblies_checkbox = widget.findChild(QCheckBox)
+                        quantity = int(spin_box.value()) if spin_box else 1
+                        group_assemblies = group_assemblies_checkbox.isChecked() if group_assemblies_checkbox else False
+                        selected_jobs[category].append((item.text(0), quantity, group_assemblies))
+                        break
+            for i in range(item.childCount()):
+                collect_selected_jobs(item.child(i), category)
+
+        for i in range(self.job_tree_widget.topLevelItemCount()):
+            top_item = self.job_tree_widget.topLevelItem(i)
+            if top_item.text(0) == "Active Jobs in Planning":
+                collect_selected_jobs(top_item, "planning")
+            elif top_item.text(0) == "Active Jobs in Quoting":
+                collect_selected_jobs(top_item, "quoting")
+
+        return selected_jobs

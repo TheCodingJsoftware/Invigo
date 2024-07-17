@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>982</width>
-    <height>725</height>
+    <width>980</width>
+    <height>720</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -480,17 +480,20 @@
              </item>
              <item>
               <layout class="QFormLayout" name="formLayout">
-               <property name="leftMargin">
+               <property name="horizontalSpacing">
                 <number>6</number>
+               </property>
+               <property name="leftMargin">
+                <number>9</number>
                </property>
                <property name="topMargin">
                 <number>0</number>
                </property>
                <property name="rightMargin">
-                <number>6</number>
+                <number>0</number>
                </property>
                <property name="bottomMargin">
-                <number>6</number>
+                <number>9</number>
                </property>
                <item row="0" column="0">
                 <widget class="QPushButton" name="add_new_sub_assembly_button">

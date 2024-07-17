@@ -133,7 +133,7 @@ from utils.workspace.job_preferences import JobPreferences
 from utils.workspace.workspace import Workspace
 from utils.workspace.workspace_settings import WorkspaceSettings
 
-__version__: str = "v3.1.6"
+__version__: str = "v3.1.7"
 
 
 def check_folders(folders: list[str]) -> None:
@@ -221,12 +221,12 @@ class MainWindow(QMainWindow):
         self.workspace_settings = WorkspaceSettings()
         self.job_preferences = JobPreferences()
 
-        self.sheets_inventory = SheetsInventory(self)
+        self.sheets_inventory = SheetsInventory(self.sheet_settings)
         self.components_inventory = ComponentsInventory()
-        self.paint_inventory = PaintInventory(self)
-        self.laser_cut_inventory = LaserCutInventory(self)
+        self.paint_inventory = PaintInventory(self.components_inventory)
+        self.laser_cut_inventory = LaserCutInventory(self.paint_inventory, self.workspace_settings)
         self.job_manager = JobManager(self)
-        self.workspace = Workspace(self)
+        self.workspace = Workspace(self.workspace_settings, self.job_manager)
 
         self.quote_generator_tab_widget = QuoteGeneratorTab(self)
         self.quote_generator_tab_widget.add_quote(
@@ -244,26 +244,18 @@ class MainWindow(QMainWindow):
         self.omnigen_layout.addWidget(self.quote_generator_tab_widget)
 
         self.job_planner_widget = JobTab(self)
+        self.job_planner_widget.default_job_status = JobStatus.PLANNING
         self.job_planner_widget.saveJob.connect(self.save_job)
-        self.job_planner_widget.saveJobAs.connect(self.save_job_as)
         self.job_planner_widget.reloadJob.connect(self.reload_job)
-        template_job = Job("Enter Job Name0", {}, self.job_manager)
-        template_job.status = JobStatus.PLANNING
-        template_job.order_number = self.order_number
-        self.job_planner_widget.load_job(template_job)
+        self.job_planner_widget.add_job()
         self.clear_layout(self.job_planner_layout)
         self.job_planner_layout.addWidget(self.job_planner_widget)
 
         self.job_quote_widget = JobTab(self)
+        self.job_quote_widget.default_job_status = JobStatus.QUOTING
         self.job_quote_widget.saveJob.connect(self.save_job)
-        self.job_quote_widget.saveJobAs.connect(self.save_job_as)
         self.job_quote_widget.reloadJob.connect(self.reload_job)
-        template_job = Job("Enter Job Name0", {}, self.job_manager)
-        template_job.status = JobStatus.QUOTING
-        template_job.order_number = self.order_number
-        self.job_quote_widget.load_job(template_job)
-
-        # self.quote_planner_tab_widget.add_job(Job("Job0", None))
+        self.job_quote_widget.add_job()
         self.clear_layout(self.quote_generator_layout)
         self.quote_generator_layout.addWidget(self.job_quote_widget)
 
@@ -930,44 +922,56 @@ class MainWindow(QMainWindow):
             ],
         )
 
-    def save_job_as(self, job: Job):  # Todo
-        return
-        job_plan_printout = Printout(job)
-        html = job_plan_printout.generate()
-        self.upload_job_thread(f"saved_jobs/{job.status.name.lower()}/{job.name}", job, html)
-        self.status_button.setText(f"Saved {job.name}", "lime")
-        self.upload_file(
-            [
-                f"{self.components_inventory.filename}.json",
-                f"{self.laser_cut_inventory.filename}.json",
-            ],
-        )
-
     def send_job_to_workspace(self):
         active_jobs_in_planning = {}
         for job_widget in self.job_planner_widget.job_widgets:
             job = job_widget.job
-            if job.order_number >= 0:
-                active_jobs_in_planning[job.name] = {
-                    "job": job,
-                    "type": job.status.value,
-                    "modified_date": "Currently open",
-                    "order_number": job.order_number,
-                }
+            active_jobs_in_planning[job.name] = {
+                "job": job,
+                "type": job.status.value,
+                "modified_date": "Currently open",
+                "order_number": job.order_number,
+            }
         active_jobs_in_quoting = {}
         for job_widget in self.job_quote_widget.job_widgets:
             job = job_widget.job
-            if job.order_number >= 0:
-                active_jobs_in_quoting[job.name] = {
-                    "job": job,
-                    "type": job.status.value,
-                    "modified_date": "Currently open",
-                    "order_number": job.order_number,
-                }
+            active_jobs_in_quoting[job.name] = {
+                "job": job,
+                "type": job.status.value,
+                "modified_date": "Currently open",
+                "order_number": job.order_number,
+            }
+        if not (active_jobs_in_planning or active_jobs_in_quoting):
+            msg = QMessageBox(QMessageBox.Icon.Information, "No jobs loaded", "You have no jobs currently loaded.", QMessageBox.StandardButton.Ok, self)
+            msg.exec()
+            return
 
-        send_to_workspace_dialog = SendJobsToWorkspaceDialog(active_jobs_in_planning, active_jobs_in_quoting, self.saved_jobs, self)
+        send_to_workspace_dialog = SendJobsToWorkspaceDialog(active_jobs_in_planning, active_jobs_in_quoting, self)
+
         if send_to_workspace_dialog.exec():
-            print("hi")
+            selected_jobs = send_to_workspace_dialog.get_selected_jobs()
+            msg = QMessageBox(QMessageBox.Icon.Information, "In development", f"Selected Jobs: {selected_jobs}\n\nNothing happen.", QMessageBox.StandardButton.Ok, self)
+            msg.exec()
+            return
+            self.workspace.load_data()
+            for selected_job_data in selected_jobs.get("planning", []):
+                job_name, job_quantity, split_assemblies  = selected_job_data
+                if job := self.job_planner_widget.get_job(job_name):
+                    for _ in range(job_quantity): # Add job x amount of times
+                        new_job = Job(job.to_dict(), self.job_manager)
+                        self.workspace.add_job(new_job)
+            for selected_job_data in selected_jobs.get("quoting", []):
+                job_name, job_quantity, split_assemblies = selected_job_data
+                if job := self.job_quote_widget.get_job(job_name):
+                    for _ in range(job_quantity): # Add job x amount of times
+                        new_job = Job(job.to_dict(), self.job_manager)
+                        self.workspace.add_job(new_job)
+            self.workspace.save()
+            self.upload_file(
+                [
+                    "workspace.json",
+                ]
+            )
 
     def save_quote(self, quote: Quote):
         if quote is None:
@@ -1107,6 +1111,8 @@ class MainWindow(QMainWindow):
         if tag_editor.exec():
             upload_workspace_settings()
             self.job_planner_widget.workspace_settings_changed()
+            self.job_quote_widget.workspace_settings_changed()
+            self.workspace_tab_widget.workspace_settings_changed()
 
     # * /\ Dialogs /\
 
@@ -1599,6 +1605,7 @@ class MainWindow(QMainWindow):
             "Laser Cut Inventory",
             "Quote Generator",
             "Job Quoter",
+            "Job Planner"
         ]:
             self.upload_file(
                 [
@@ -1621,12 +1628,17 @@ class MainWindow(QMainWindow):
                     "sheet_settings.json",
                 ],
             )
+        if self.tabWidget.tabText(self.tabWidget.currentIndex()) == "Workspace":
+            self.upload_file(
+                [
+                    "workspace.json",
+                ],
+            )
 
     def add_laser_cut_part_to_inventory(self, laser_cut_part_to_add: LaserCutPart, quote_name: str):
         laser_cut_part_to_add.quantity_in_nest = None
         if laser_cut_part_to_add.recut:
             new_recut_part = LaserCutPart(
-                laser_cut_part_to_add.name,
                 laser_cut_part_to_add.to_dict(),
                 self.laser_cut_inventory,
             )
@@ -1821,6 +1833,7 @@ class MainWindow(QMainWindow):
                 self.workspace.load_data()
                 self.job_planner_widget.workspace_settings_changed()
                 self.job_quote_widget.workspace_settings_changed()
+                self.workspace_tab_widget.workspace_settings_changed()
             if f"{self.components_inventory.filename}.json" in response["successful_files"]:
                 self.components_inventory.load_data()
             if f"{self.sheets_inventory.filename}.json" in response["successful_files"]:
@@ -1829,6 +1842,8 @@ class MainWindow(QMainWindow):
                 self.laser_cut_inventory.load_data()
             if f"{self.workspace.filename}.json" in response["successful_files"]:
                 self.workspace.load_data()
+            if f"{self.paint_inventory.filename}.json" in response["successful_files"]:
+                self.paint_inventory.load_data()
 
             # Update relevant tabs
             if self.tabWidget.tabText(self.tabWidget.currentIndex()) == "Laser Cut Inventory":
@@ -1845,7 +1860,8 @@ class MainWindow(QMainWindow):
                 self.load_cuttoff_drop_down()
             elif self.tabWidget.tabText(self.tabWidget.currentIndex()) == "Workspace":
                 self.workspace_tab_widget.load_tags()
-                self.workspace
+                self.workspace_tab_widget.workspace_widget.load_parts_table()
+                self.workspace_tab_widget.workspace_widget.load_assembly_table()
             self.downloading_changes = False
 
     def init_finished(self):
@@ -1863,6 +1879,7 @@ class MainWindow(QMainWindow):
         self.download_files(
             [
                 f"{self.sheet_settings.filename}.json",
+                f"{self.paint_inventory.filename}.json",
                 f"{self.workspace_settings.filename}.json",
                 f"{self.laser_cut_inventory.filename}.json",
                 f"{self.sheets_inventory.filename}.json",
@@ -2198,8 +2215,7 @@ class MainWindow(QMainWindow):
 
     def download_job_data_response(self, data: dict[str, dict[str, Any]], folder_name: str) -> None:
         if isinstance(data, dict):
-            job_name = folder_name.split("\\")[-1]
-            job = Job(job_name, data, self.job_manager)
+            job = Job(data, self.job_manager)
 
             # required_images = [laser_cut_part.image_index for laser_cut_part in job.grouped_laser_cut_parts]
             # required_images.extend(nest.image_path for nest in job.nests)
