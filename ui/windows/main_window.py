@@ -133,7 +133,7 @@ from utils.workspace.job_preferences import JobPreferences
 from utils.workspace.workspace import Workspace
 from utils.workspace.workspace_settings import WorkspaceSettings
 
-__version__: str = "v3.1.7"
+__version__: str = "v3.2.1"
 
 
 def check_folders(folders: list[str]) -> None:

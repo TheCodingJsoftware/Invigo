@@ -86,7 +86,7 @@ class SheetsInventory(Inventory):
                 except AttributeError:
                     sheet = Sheet(data["sheets"][sheet_data], self)
                     sheet.name = sheet_data
-                self.add_sheet(Sheet(sheet_data, self))
+                self.add_sheet(sheet)
         except KeyError:  # Inventory was just created
             return
         except msgspec.DecodeError:  # Inventory file got cleared
