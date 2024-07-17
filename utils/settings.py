@@ -4,6 +4,7 @@ from datetime import datetime
 import msgspec
 from PyQt6.QtGui import QFont
 
+
 class Settings:
     def __init__(self) -> None:
         self.data = {}

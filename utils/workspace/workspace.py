@@ -3,12 +3,12 @@ import os
 import msgspec
 from natsort import natsorted
 
-from utils.workspace.job import Job
-from utils.workspace.workspace_settings import WorkspaceSettings
-from utils.inventory.laser_cut_part import LaserCutPart
 from utils.inventory.component import Component
+from utils.inventory.laser_cut_part import LaserCutPart
 from utils.workspace.assembly import Assembly
+from utils.workspace.job import Job
 from utils.workspace.job_manager import JobManager
+from utils.workspace.workspace_settings import WorkspaceSettings
 
 
 class Workspace:

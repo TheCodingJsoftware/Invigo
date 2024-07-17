@@ -4,14 +4,7 @@ from natsort import natsorted
 from PyQt6 import uic
 from PyQt6.QtCore import Qt, QUrl
 from PyQt6.QtWebEngineWidgets import QWebEngineView
-from PyQt6.QtWidgets import (
-    QHBoxLayout,
-    QMainWindow,
-    QMessageBox,
-    QPushButton,
-    QSplitter,
-    QVBoxLayout,
-)
+from PyQt6.QtWidgets import QHBoxLayout, QMainWindow, QMessageBox, QPushButton, QSplitter, QVBoxLayout
 
 from utils.threads.workspace_get_file_thread import WorkspaceDownloadFile
 

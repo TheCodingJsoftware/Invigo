@@ -2,14 +2,7 @@ import contextlib
 
 from PyQt6.QtCore import Qt, pyqtSignal
 from PyQt6.QtGui import QKeySequence, QShortcut
-from PyQt6.QtWidgets import (
-    QInputDialog,
-    QMessageBox,
-    QPushButton,
-    QTabWidget,
-    QVBoxLayout,
-    QWidget,
-)
+from PyQt6.QtWidgets import QInputDialog, QMessageBox, QPushButton, QTabWidget, QVBoxLayout, QWidget
 
 from ui.widgets.quote_widget import QuoteWidget
 from utils.inventory.components_inventory import ComponentsInventory

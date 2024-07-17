@@ -72,7 +72,7 @@ class AddLaserCutPartDialog(QDialog):
         return self.spinBox_current_quantity.value()
 
     def get_selected_laser_cut_parts(self) -> list[LaserCutPart]:
-        if len(self.listWidget_laser_cut_parts.selectedItems())  == 0:
+        if len(self.listWidget_laser_cut_parts.selectedItems()) == 0:
             return []
         selected_laser_cut_parts: list[LaserCutPart] = []
         for list_item in self.listWidget_laser_cut_parts.selectedItems():

@@ -1,22 +1,12 @@
 from typing import Union
 
 from PyQt6 import uic
-from PyQt6.QtGui import QIcon, QFont
-from PyQt6.QtWidgets import (
-    QDialog,
-    QTreeWidget,
-    QTreeWidgetItem,
-    QDoubleSpinBox,
-    QLabel,
-    QWidget,
-    QHBoxLayout,
-    QVBoxLayout,
-    QCheckBox,
-)
 from PyQt6.QtCore import Qt
+from PyQt6.QtGui import QFont, QIcon
+from PyQt6.QtWidgets import QCheckBox, QDialog, QDoubleSpinBox, QHBoxLayout, QLabel, QTreeWidget, QTreeWidgetItem, QVBoxLayout, QWidget
 
-from utils.workspace.job import JobStatus, Job
 from utils.settings import Settings
+from utils.workspace.job import Job, JobStatus
 
 
 class SendJobsToWorkspaceDialog(QDialog):
@@ -48,24 +38,16 @@ class SendJobsToWorkspaceDialog(QDialog):
         self.jobs_layout = self.findChild(QVBoxLayout, "jobs_layout")
         self.jobs_layout.addWidget(self.job_tree_widget)
 
-        self.verticalLayout_workorders = self.findChild(
-            QVBoxLayout, "verticalLayout_workorders"
-        )
+        self.verticalLayout_workorders = self.findChild(QVBoxLayout, "verticalLayout_workorders")
         self.verticalLayout_workorders.setAlignment(Qt.AlignmentFlag.AlignTop)
 
-        self.populate_tree_widget(
-            active_jobs_in_planning, active_jobs_in_quoting
-        )
+        self.populate_tree_widget(active_jobs_in_planning, active_jobs_in_quoting)
 
         self.job_tree_widget.itemChanged.connect(self.update_workorders_layout)
 
-    def populate_tree_widget(
-        self, active_jobs_in_planning, active_jobs_in_quoting
-    ):
+    def populate_tree_widget(self, active_jobs_in_planning, active_jobs_in_quoting):
         self.job_tree_widget.setColumnCount(2)
-        self.job_tree_widget.setHeaderLabels(
-            ["Job Name", "Order Number"]
-        )
+        self.job_tree_widget.setHeaderLabels(["Job Name", "Order Number"])
 
         if active_jobs_in_planning:
             planning_item = QTreeWidgetItem(["Active Jobs in Planning"])
@@ -106,9 +88,7 @@ class SendJobsToWorkspaceDialog(QDialog):
             item.setFont(0, self.tables_font)
             item.setFont(1, self.tables_font)
             item.setFont(2, self.tables_font)
-            item.setCheckState(
-                0, Qt.CheckState.Unchecked
-            )  # Add checkbox to the first column
+            item.setCheckState(0, Qt.CheckState.Unchecked)  # Add checkbox to the first column
             item.setFlags(item.flags() | Qt.ItemFlag.ItemIsUserCheckable)
             parent_item.addChild(item)
 

@@ -5,15 +5,15 @@ from typing import TYPE_CHECKING, Optional
 
 from PyQt6 import uic
 from PyQt6.QtCore import Qt, pyqtSignal
-from PyQt6.QtGui import QPixmap, QAction
-from PyQt6.QtWidgets import QComboBox, QDoubleSpinBox, QLabel, QMessageBox, QPushButton, QTreeWidget, QTreeWidgetItem, QVBoxLayout, QWidget, QMenu
+from PyQt6.QtGui import QAction, QPixmap
+from PyQt6.QtWidgets import QComboBox, QDoubleSpinBox, QLabel, QMenu, QMessageBox, QPushButton, QTreeWidget, QTreeWidgetItem, QVBoxLayout, QWidget
 
 from ui.custom.machine_cut_time_double_spin_box import MachineCutTimeDoubleSpinBox
 from ui.dialogs.add_sheet_dialog import AddSheetDialog
-from utils.inventory.laser_cut_part import LaserCutPart
-from utils.inventory.sheets_inventory import Sheet
-from utils.inventory.nest import Nest
 from utils.inventory.category import Category
+from utils.inventory.laser_cut_part import LaserCutPart
+from utils.inventory.nest import Nest
+from utils.inventory.sheets_inventory import Sheet
 from utils.workspace.assembly import Assembly
 
 if TYPE_CHECKING:
@@ -230,7 +230,8 @@ class NestWidget(QWidget):
         add_sheet_dialog = AddSheetDialog(self.sheet, None, self.sheets_inventory, self.sheet_settings, self)
 
         if add_sheet_dialog.exec():
-            new_sheet = Sheet({
+            new_sheet = Sheet(
+                {
                     "quantity": add_sheet_dialog.get_quantity(),
                     "length": add_sheet_dialog.get_length(),
                     "width": add_sheet_dialog.get_width(),

@@ -8,26 +8,7 @@ from natsort import natsorted
 from PyQt6 import uic
 from PyQt6.QtCore import Qt
 from PyQt6.QtGui import QAction, QColor, QCursor, QFont, QIcon
-from PyQt6.QtWidgets import (
-    QAbstractItemView,
-    QCheckBox,
-    QComboBox,
-    QCompleter,
-    QDialog,
-    QDoubleSpinBox,
-    QGridLayout,
-    QHBoxLayout,
-    QInputDialog,
-    QLabel,
-    QLineEdit,
-    QMenu,
-    QMessageBox,
-    QPushButton,
-    QScrollArea,
-    QTableWidgetItem,
-    QVBoxLayout,
-    QWidget,
-)
+from PyQt6.QtWidgets import QAbstractItemView, QCheckBox, QComboBox, QCompleter, QDialog, QDoubleSpinBox, QGridLayout, QHBoxLayout, QInputDialog, QLabel, QLineEdit, QMenu, QMessageBox, QPushButton, QScrollArea, QTableWidgetItem, QVBoxLayout, QWidget
 
 from ui.custom_widgets import CustomTableWidget, CustomTabWidget, FilterButton
 from ui.dialogs.edit_category_dialog import EditCategoryDialog
@@ -941,9 +922,7 @@ class LaserCutTab(QWidget):
         self.category_tables[self.category].blockSignals(False)
 
     def update_category_total_stock_costs(self) -> None:
-        summary: dict[str, float] = {category.name: self.laser_cut_inventory.get_category_parts_total_stock_cost(category) for category in self.laser_cut_inventory.get_categories()} | {
-            "Recut": self.laser_cut_inventory.get_recut_parts_total_stock_cost()
-        }
+        summary: dict[str, float] = {category.name: self.laser_cut_inventory.get_category_parts_total_stock_cost(category) for category in self.laser_cut_inventory.get_categories()} | {"Recut": self.laser_cut_inventory.get_recut_parts_total_stock_cost()}
         summary = dict(natsorted(summary.items()))
 
         self.clear_layout(self.gridLayout_laser_cut_parts_summary)
@@ -1017,14 +996,10 @@ class LaserCutTab(QWidget):
             elif option == "Item":
                 for laser_cut_part in selected_laser_cut_parts:
                     if add_or_remove == "ADD":
-                        laser_cut_part.modified_date = (
-                            f"{os.getlogin().title()} Used: Selected Item - add quantity. Changed from {laser_cut_part.quantity} to {laser_cut_part.quantity + multiplier} at {datetime.now().strftime('%B %d %A %Y %I:%M:%S %p')}"
-                        )
+                        laser_cut_part.modified_date = f"{os.getlogin().title()} Used: Selected Item - add quantity. Changed from {laser_cut_part.quantity} to {laser_cut_part.quantity + multiplier} at {datetime.now().strftime('%B %d %A %Y %I:%M:%S %p')}"
                         laser_cut_part.quantity += multiplier
                     elif add_or_remove == "REMOVE":
-                        laser_cut_part.modified_date = (
-                            f"{os.getlogin().title()} Used: Selected Item - remove quantity. Changed from {laser_cut_part.quantity} to {laser_cut_part.quantity - multiplier} at {datetime.now().strftime('%B %d %A %Y %I:%M:%S %p')}"
-                        )
+                        laser_cut_part.modified_date = f"{os.getlogin().title()} Used: Selected Item - remove quantity. Changed from {laser_cut_part.quantity} to {laser_cut_part.quantity - multiplier} at {datetime.now().strftime('%B %d %A %Y %I:%M:%S %p')}"
                         laser_cut_part.quantity -= multiplier
                 self.laser_cut_inventory.save()
                 self.sync_changes()

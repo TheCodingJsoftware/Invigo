@@ -1,6 +1,7 @@
+from typing import Union
+
 import msgspec
 from natsort import natsorted
-from typing import Union
 
 from utils.inventory.category import Category
 from utils.inventory.inventory import Inventory

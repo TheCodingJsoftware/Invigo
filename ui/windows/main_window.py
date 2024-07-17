@@ -16,54 +16,11 @@ import win32api  # pywin32
 from natsort import natsorted, ns
 from PyQt6 import uic
 from PyQt6.QtCore import QEventLoop, QPoint, Qt, QThread, QTimer
-from PyQt6.QtGui import (
-    QAction,
-    QColor,
-    QCursor,
-    QDragEnterEvent,
-    QDragLeaveEvent,
-    QDragMoveEvent,
-    QDropEvent,
-    QFont,
-    QIcon,
-)
-from PyQt6.QtWidgets import (
-    QApplication,
-    QComboBox,
-    QFileDialog,
-    QFontDialog,
-    QGridLayout,
-    QInputDialog,
-    QLabel,
-    QListWidget,
-    QListWidgetItem,
-    QMainWindow,
-    QMenu,
-    QMessageBox,
-    QPushButton,
-    QScrollArea,
-    QSplitter,
-    QTableWidgetItem,
-    QTabWidget,
-    QToolBox,
-    QVBoxLayout,
-    QWidget,
-)
+from PyQt6.QtGui import QAction, QColor, QCursor, QDragEnterEvent, QDragLeaveEvent, QDragMoveEvent, QDropEvent, QFont, QIcon
+from PyQt6.QtWidgets import QApplication, QComboBox, QFileDialog, QFontDialog, QGridLayout, QInputDialog, QLabel, QListWidget, QListWidgetItem, QMainWindow, QMenu, QMessageBox, QPushButton, QScrollArea, QSplitter, QTableWidgetItem, QTabWidget, QToolBox, QVBoxLayout, QWidget
 
 from ui.custom.job_tab import JobTab
-from ui.widgets.job_widget import JobWidget
-from ui.widgets.saved_job_item import SavedPlanningJobItem
-from ui.custom_widgets import (
-    CustomTableWidget,
-    MultiToolBox,
-    PdfTreeView,
-    PreviousQuoteItem,
-    RichTextPushButton,
-    SavedQuoteItem,
-    ScrollPositionManager,
-    ViewTree,
-    set_default_dialog_button_stylesheet,
-)
+from ui.custom_widgets import CustomTableWidget, MultiToolBox, PdfTreeView, PreviousQuoteItem, RichTextPushButton, SavedQuoteItem, ScrollPositionManager, ViewTree, set_default_dialog_button_stylesheet
 from ui.dialogs.about_dialog import AboutDialog
 from ui.dialogs.edit_paint_inventory import EditPaintInventory
 from ui.dialogs.edit_workspace_settings import EditWorkspaceSettings
@@ -75,8 +32,10 @@ from ui.dialogs.select_item_dialog import SelectItemDialog
 from ui.dialogs.send_jobs_to_workspace_dialog import SendJobsToWorkspaceDialog
 from ui.dialogs.view_removed_quantities_history_dialog import ViewRemovedQuantitiesHistoryDialog
 from ui.widgets.components_tab import ComponentsTab
+from ui.widgets.job_widget import JobWidget
 from ui.widgets.laser_cut_tab import LaserCutTab
 from ui.widgets.quote_generator_tab import QuoteGeneratorTab
+from ui.widgets.saved_job_item import SavedPlanningJobItem
 from ui.widgets.sheet_settings_tab import SheetSettingsTab
 from ui.widgets.sheets_in_inventory_tab import SheetsInInventoryTab
 from ui.widgets.workspace_tab_widget import WorkspaceTabWidget
@@ -87,6 +46,7 @@ from utils.inventory.category import Category
 from utils.inventory.components_inventory import ComponentsInventory
 from utils.inventory.laser_cut_inventory import LaserCutInventory
 from utils.inventory.laser_cut_part import LaserCutPart
+from utils.inventory.nest import Nest
 from utils.inventory.paint_inventory import PaintInventory
 from utils.inventory.sheet import Sheet
 from utils.inventory.sheets_inventory import SheetsInventory
@@ -97,7 +57,6 @@ from utils.po import check_po_directories, get_all_po
 from utils.po_template import POTemplate
 from utils.price_history_file import PriceHistoryFile
 from utils.quote.generate_printout import GeneratePrintout
-from utils.inventory.nest import Nest
 from utils.quote.quote import Quote
 from utils.settings import Settings
 from utils.sheet_settings.sheet_settings import SheetSettings
@@ -385,7 +344,6 @@ class MainWindow(QMainWindow):
         self.pushButton_send_to_workspace.clicked.connect(self.send_job_to_workspace)
         self.pushButton_send_to_workspace_2.clicked.connect(self.send_job_to_workspace)
 
-
         self.saved_planning_jobs_layout = self.findChild(QVBoxLayout, "saved_planning_jobs_layout")
         self.saved_planning_jobs_layout.setAlignment(Qt.AlignmentFlag.AlignTop)
         self.saved_jobs_multitoolbox = MultiToolBox(self)
@@ -409,7 +367,6 @@ class MainWindow(QMainWindow):
         self.templates_jobs_multitoolbox_2 = MultiToolBox(self)
         self.templates_jobs_layout_2.addWidget(self.templates_jobs_multitoolbox_2)
         self.templates_job_items_last_opened_2: dict[int, bool] = {}
-
 
         # Status
         self.status_button = RichTextPushButton(self)
@@ -955,15 +912,15 @@ class MainWindow(QMainWindow):
             return
             self.workspace.load_data()
             for selected_job_data in selected_jobs.get("planning", []):
-                job_name, job_quantity, split_assemblies  = selected_job_data
+                job_name, job_quantity, split_assemblies = selected_job_data
                 if job := self.job_planner_widget.get_job(job_name):
-                    for _ in range(job_quantity): # Add job x amount of times
+                    for _ in range(job_quantity):  # Add job x amount of times
                         new_job = Job(job.to_dict(), self.job_manager)
                         self.workspace.add_job(new_job)
             for selected_job_data in selected_jobs.get("quoting", []):
                 job_name, job_quantity, split_assemblies = selected_job_data
                 if job := self.job_quote_widget.get_job(job_name):
-                    for _ in range(job_quantity): # Add job x amount of times
+                    for _ in range(job_quantity):  # Add job x amount of times
                         new_job = Job(job.to_dict(), self.job_manager)
                         self.workspace.add_job(new_job)
             self.workspace.save()
@@ -1480,9 +1437,7 @@ class MainWindow(QMainWindow):
                     msg = QMessageBox(self)
                     msg.setIcon(QMessageBox.Icon.Critical)
                     msg.setWindowTitle("Error")
-                    msg.setText(
-                        f"An error occurred while parsing the Excel file you provided. Kindly verify that the order number and vendor cell positions are accurate. Alternatively, please forward the Excel file to me for further review.\n\nError Details: {error}\n\nPO File Path:{po_file_path}"
-                    )
+                    msg.setText(f"An error occurred while parsing the Excel file you provided. Kindly verify that the order number and vendor cell positions are accurate. Alternatively, please forward the Excel file to me for further review.\n\nError Details: {error}\n\nPO File Path:{po_file_path}")
                     msg.exec()
                     return
                 new_file_path = f"PO's/templates/{po_file.get_vendor().replace('.','')}.xlsx"
@@ -1501,9 +1456,7 @@ class MainWindow(QMainWindow):
                     msg = QMessageBox(self)
                     msg.setIcon(QMessageBox.Icon.Critical)
                     msg.setWindowTitle("Error")
-                    msg.setText(
-                        f"An error occurred while parsing the Excel file you provided. Kindly verify that the order number and vendor cell positions are accurate. Alternatively, please forward the Excel file to me for further review.\n\nError Details: {error}"
-                    )
+                    msg.setText(f"An error occurred while parsing the Excel file you provided. Kindly verify that the order number and vendor cell positions are accurate. Alternatively, please forward the Excel file to me for further review.\n\nError Details: {error}")
                     msg.exec()
                     return
                 new_file_path = f"PO's/templates/{po_file.get_vendor().replace('.','')}.xlsx"
@@ -1601,12 +1554,7 @@ class MainWindow(QMainWindow):
                     f"{self.components_inventory.filename}.json",
                 ],
             )
-        if self.tabWidget.tabText(self.tabWidget.currentIndex()) in [
-            "Laser Cut Inventory",
-            "Quote Generator",
-            "Job Quoter",
-            "Job Planner"
-        ]:
+        if self.tabWidget.tabText(self.tabWidget.currentIndex()) in ["Laser Cut Inventory", "Quote Generator", "Job Quoter", "Job Planner"]:
             self.upload_file(
                 [
                     f"{self.laser_cut_inventory.filename}.json",
@@ -1775,9 +1723,7 @@ class MainWindow(QMainWindow):
             msg = QMessageBox(self)
             msg.setIcon(QMessageBox.Icon.Critical)
             msg.setWindowTitle("Server error")
-            msg.setText(
-                f"The server is either offline or your device is not connected to the internet. Please ensure that any VPNs are disabled, then try again. If the problem persists, contact your server or network administrator for assistance.\n\nThread response:\n{str(data)}"
-            )
+            msg.setText(f"The server is either offline or your device is not connected to the internet. Please ensure that any VPNs are disabled, then try again. If the problem persists, contact your server or network administrator for assistance.\n\nThread response:\n{str(data)}")
             msg.exec()
         # QApplication.restoreOverrideCursor()
 
@@ -1876,17 +1822,7 @@ class MainWindow(QMainWindow):
             self.showMaximized()
 
     def download_all_files(self) -> None:
-        self.download_files(
-            [
-                f"{self.sheet_settings.filename}.json",
-                f"{self.paint_inventory.filename}.json",
-                f"{self.workspace_settings.filename}.json",
-                f"{self.laser_cut_inventory.filename}.json",
-                f"{self.sheets_inventory.filename}.json",
-                f"{self.components_inventory.filename}.json",
-                f"{self.workspace.filename}.json"
-            ]
-        )
+        self.download_files([f"{self.sheet_settings.filename}.json", f"{self.paint_inventory.filename}.json", f"{self.workspace_settings.filename}.json", f"{self.laser_cut_inventory.filename}.json", f"{self.sheets_inventory.filename}.json", f"{self.components_inventory.filename}.json", f"{self.workspace.filename}.json"])
 
     def load_nests_for_job_thread(self, nests: list[str]) -> None:
         QApplication.setOverrideCursor(Qt.CursorShape.WaitCursor)

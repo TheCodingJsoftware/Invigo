@@ -74,7 +74,7 @@ class Nest:
         for laser_cut_part_data in data.get("laser_cut_parts", []):
             try:
                 laser_cut_part = LaserCutPart(laser_cut_part_data, self.laser_cut_inventory)
-            except AttributeError: # Old inventory format
+            except AttributeError:  # Old inventory format
                 laser_cut_part = LaserCutPart(data["laser_cut_parts"][laser_cut_part_data], self.laser_cut_inventory)
                 laser_cut_part.name = laser_cut_part_data
             laser_cut_part.nest = self

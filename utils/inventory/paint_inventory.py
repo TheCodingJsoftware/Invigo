@@ -106,21 +106,21 @@ class PaintInventory(Inventory):
             for primer_data in data["primers"]:
                 try:
                     primer = Primer(primer_data, self)
-                except AttributeError: # Old inventory format
+                except AttributeError:  # Old inventory format
                     primer = Primer(data["primers"][primer_data], self)
                     primer.name = primer_data
                 self.add_primer(primer)
             for paint_data in data["paints"]:
                 try:
                     paint = Paint(paint_data, self)
-                except AttributeError: # Old inventory format
+                except AttributeError:  # Old inventory format
                     paint = Paint(data["paints"][paint_data], self)
                     paint.name = paint_data
                 self.add_paint(paint)
             for powder_data in data["powders"]:
                 try:
                     powder = Powder(powder_data, self)
-                except AttributeError: # Old inventory format
+                except AttributeError:  # Old inventory format
                     powder = Powder(data["powders"][powder_data], self)
                     powder.name = powder_data
                 self.add_powder(powder)
