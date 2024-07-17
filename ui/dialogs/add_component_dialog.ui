@@ -32,7 +32,7 @@
    <item>
     <widget class="QWidget" name="widget" native="true">
      <property name="contextMenuPolicy">
-      <enum>Qt::ActionsContextMenu</enum>
+      <enum>Qt::ContextMenuPolicy::ActionsContextMenu</enum>
      </property>
      <property name="autoFillBackground">
       <bool>false</bool>
@@ -81,7 +81,7 @@
 Press 'Add' when finished.</string>
           </property>
           <property name="alignment">
-           <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+           <set>Qt::AlignmentFlag::AlignLeading|Qt::AlignmentFlag::AlignLeft|Qt::AlignmentFlag::AlignTop</set>
           </property>
          </widget>
         </item>
@@ -104,23 +104,6 @@ Press 'Add' when finished.</string>
             </property>
            </widget>
           </item>
-          <item row="1" column="0">
-           <widget class="QLabel" name="label">
-            <property name="text">
-             <string>Component Part Number:</string>
-            </property>
-            <property name="buddy">
-             <cstring>comboBox_part_number</cstring>
-            </property>
-           </widget>
-          </item>
-          <item row="1" column="1">
-           <widget class="QComboBox" name="comboBox_part_number">
-            <property name="editable">
-             <bool>true</bool>
-            </property>
-           </widget>
-          </item>
          </layout>
         </item>
         <item>
@@ -128,10 +111,17 @@ Press 'Add' when finished.</string>
           <property name="text">
            <string>All Components in Inventory:</string>
           </property>
+          <property name="buddy">
+           <cstring>listWidget_components</cstring>
+          </property>
          </widget>
         </item>
         <item>
-         <widget class="QListWidget" name="listWidget_components"/>
+         <widget class="QListWidget" name="listWidget_components">
+          <property name="selectionMode">
+           <enum>QAbstractItemView::SelectionMode::ExtendedSelection</enum>
+          </property>
+         </widget>
         </item>
         <item>
          <layout class="QHBoxLayout" name="horizontalLayout_3" stretch="0,1">
@@ -160,7 +150,7 @@ Press 'Add' when finished.</string>
            <string> * Component does NOT exist in inventory.</string>
           </property>
           <property name="alignment">
-           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+           <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
           </property>
          </widget>
         </item>
@@ -169,7 +159,7 @@ Press 'Add' when finished.</string>
           <item>
            <spacer name="horizontalSpacer_2">
             <property name="orientation">
-             <enum>Qt::Horizontal</enum>
+             <enum>Qt::Orientation::Horizontal</enum>
             </property>
             <property name="sizeHint" stdset="0">
              <size>
@@ -216,7 +206,6 @@ Press 'Add' when finished.</string>
  </widget>
  <tabstops>
   <tabstop>comboBox_component_name</tabstop>
-  <tabstop>comboBox_part_number</tabstop>
   <tabstop>spinBox_current_quantity</tabstop>
   <tabstop>pushButton_add</tabstop>
   <tabstop>pushButton_cancel</tabstop>

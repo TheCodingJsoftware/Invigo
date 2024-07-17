@@ -8,16 +8,18 @@ from utils.workspace.workspace_settings import WorkspaceSettings
 from utils.inventory.laser_cut_part import LaserCutPart
 from utils.inventory.component import Component
 from utils.workspace.assembly import Assembly
+from utils.workspace.job_manager import JobManager
 
 
 class Workspace:
-    def __init__(self, workspace_settings: WorkspaceSettings) -> None:
+    def __init__(self, workspace_settings: WorkspaceSettings, job_manager: JobManager) -> None:
         self.jobs: list[Job] = []
 
         self.filename: str = "workspace"
         self.FOLDER_LOCATION: str = f"{os.getcwd()}/data"
 
         self.workspace_settings = workspace_settings
+        self.job_manager = job_manager
 
         # NOTE Non serialized variables
         self.grouped_components: list[Component] = []
@@ -40,7 +42,7 @@ class Workspace:
         for assembly in self.get_all_assemblies():
             for assembly_laser_cut_part in assembly.laser_cut_parts:
                 unit_quantity = assembly_laser_cut_part.quantity
-                new_laser_cut_part = LaserCutPart(assembly_laser_cut_part.name, assembly_laser_cut_part.to_dict(), self.laser_cut_inventory)
+                new_laser_cut_part = LaserCutPart(assembly_laser_cut_part.to_dict(), self.laser_cut_inventory)
                 new_laser_cut_part.quantity = unit_quantity * assembly.quantity
 
                 if existing_component := laser_cut_part_dict.get(new_laser_cut_part.name):
@@ -85,27 +87,28 @@ class Workspace:
             components.extend(assembly.components)
         return components
 
-    def to_dict(self) -> dict:
-        return {job.name: job.to_dict() for job in self.jobs}
+    def to_list(self) -> list[dict[str, object]]:
+        return [job.to_dict() for job in self.jobs]
 
     def __create_file(self) -> None:
         if not os.path.exists(f"{self.FOLDER_LOCATION}/{self.filename}.json"):
             with open(f"{self.FOLDER_LOCATION}/{self.filename}.json", "w", encoding="utf-8") as json_file:
-                json_file.write("{}")
+                json_file.write("[]")
 
     def save(self) -> None:
         with open(f"{self.FOLDER_LOCATION}/{self.filename}.json", "wb") as file:
-            file.write(msgspec.json.encode(self.to_dict()))
+            file.write(msgspec.json.encode(self.to_list()))
 
     def load_data(self) -> None:
         try:
             with open(f"{self.FOLDER_LOCATION}/{self.filename}.json", "rb") as file:
-                data = msgspec.json.decode(file.read())
+                data: list[dict[str, object]] = msgspec.json.decode(file.read())
         except msgspec.DecodeError:
             return
 
         self.jobs.clear()
 
-        for job_name, job_data in data.items():
-            job = Job(job_name, job_data)
-            self.jobs.append(job)
+        for job in data:
+            for job_data in job:
+                job = Job(job_data, self.job_manager)
+                self.jobs.append(job)

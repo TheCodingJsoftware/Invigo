@@ -4,7 +4,6 @@ from PyQt6.QtCore import QThread, pyqtSignal
 
 from utils.ip_utils import get_server_ip_address, get_server_port
 from utils.workspace.job import Job
-from utils.workspace.generate_printout import Printout
 
 
 class UploadJobThread(QThread):

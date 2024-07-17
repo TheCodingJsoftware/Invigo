@@ -10,8 +10,8 @@ if TYPE_CHECKING:
 
 
 class Sheet(InventoryItem):
-    def __init__(self, name: str, data: dict, sheets_inventory):
-        super().__init__(name)
+    def __init__(self, data: dict, sheets_inventory):
+        super().__init__()
         self.sheets_inventory: SheetsInventory = sheets_inventory
         self.quantity: int = 0
         self.length: float = 0.0

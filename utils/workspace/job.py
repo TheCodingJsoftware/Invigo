@@ -7,7 +7,6 @@ from utils.inventory.component import Component
 from utils.inventory.laser_cut_part import LaserCutPart
 from utils.inventory.nest import Nest
 from utils.workspace.assembly import Assembly
-from utils.workspace.group import Group
 from utils.workspace.job_price_calculator import JobPriceCalculator
 
 if TYPE_CHECKING:
@@ -32,19 +31,19 @@ class JobColor(Enum):
     ARCHIVE = ("#943eea", JobStatus.ARCHIVE)
 
     @classmethod
-    def get_color(cls, job_status):
+    def get_color(cls, job_status: JobStatus):
         return next((color.value[0] for color in cls if color.value[1] == job_status), None)
 
 
 class Job:
-    def __init__(self, name: str, data: dict, job_manager) -> None:
-        self.name: str = name
+    def __init__(self, data: dict, job_manager) -> None:
+        self.name: str = ""
         self.order_number: float = 0.0
         self.ship_to: str = ""
         self.date_shipped: str = ""
         self.date_expected: str = ""
         self.color: str = "#eabf3e"  # default
-        self.groups: list[Group] = []
+        self.assemblies: list[Assembly] = []
         self.nests: list[Nest] = []
 
         self.job_manager: JobManager = job_manager
@@ -71,11 +70,11 @@ class Job:
     def changes_made(self):
         self.unsaved_changes = True
 
-    def add_group(self, group: Group):
-        self.groups.append(group)
+    def add_assembly(self, assembly: Assembly):
+        self.assemblies.append(assembly)
 
-    def remove_group(self, group: Group):
-        self.groups.remove(group)
+    def remove_assembly(self, assembly: Assembly):
+        self.assemblies.remove(assembly)
 
     def add_nest(self, nest: Nest):
         self.nests.append(nest)
@@ -88,7 +87,7 @@ class Job:
         for assembly in self.get_all_assemblies():
             for assembly_laser_cut_part in assembly.laser_cut_parts:
                 unit_quantity = assembly_laser_cut_part.quantity
-                new_laser_cut_part = LaserCutPart(assembly_laser_cut_part.name, assembly_laser_cut_part.to_dict(), self.laser_cut_inventory)
+                new_laser_cut_part = LaserCutPart(assembly_laser_cut_part.to_dict(), self.laser_cut_inventory)
                 new_laser_cut_part.quantity = unit_quantity * assembly.quantity
 
                 if existing_component := laser_cut_part_dict.get(new_laser_cut_part.name):
@@ -106,7 +105,7 @@ class Job:
         for assembly in self.get_all_assemblies():
             for assembly_component in assembly.components:
                 unit_quantity = assembly_component.quantity
-                new_component = Component(assembly_component.name, assembly_component.to_dict(), self.components_inventory)
+                new_component = Component(assembly_component.to_dict(), self.components_inventory)
                 new_component.quantity = unit_quantity * assembly.quantity
                 if existing_component := components_dict.get(new_component.name):
                     existing_component.quantity += new_component.quantity
@@ -125,13 +124,11 @@ class Job:
     def sort_components(self):
         self.grouped_components = natsorted(self.grouped_components, key=lambda laser_cut_part: laser_cut_part.name)
 
-    def get_group(self, group_name: str) -> Group:
-        return next((group for group in self.groups if group.name == group_name), None)
-
     def get_all_assemblies(self) -> list[Assembly]:
         assemblies: list[Assembly] = []
-        for group in self.groups:
-            assemblies.extend(group.get_all_assemblies())
+        assemblies.extend(self.assemblies)
+        for assembly in self.assemblies:
+            assemblies.extend(assembly.get_all_sub_assemblies())
         return assemblies
 
     def get_all_laser_cut_parts(self) -> list[LaserCutPart]:
@@ -142,6 +139,7 @@ class Job:
         return laser_cut_parts
 
     def get_all_nested_laser_cut_parts(self) -> list[LaserCutPart]:
+        """Laser cut parts in nests excluding assembly laser cut parts."""
         laser_cut_parts: list[LaserCutPart] = []
         for nest in self.nests:
             laser_cut_parts.extend(nest.laser_cut_parts)
@@ -166,27 +164,28 @@ class Job:
             return
 
         job_data = data.get("job_data", {})
+        self.name = job_data.get("name", "")
         self.order_number = job_data.get("order_number", 0.0)
         self.ship_to = job_data.get("ship_to", "")
         self.date_shipped = job_data.get("date_shipped", "")
         self.date_expected = job_data.get("date_expected", "")
-        self.status = JobStatus(int(job_data.get("type", 0)))  # Just in case we cast, trust me
+        self.status = JobStatus(int(job_data.get("type", 0)))  # We cast just in case, trust me
         self.color = JobColor.get_color(self.status)
         self.price_calculator.load_settings(job_data.get("price_settings", {}))
 
-        nests_data = data.get("nests", {})
+        nests_data = data.get("nests", [])
 
         self.nests.clear()
-        for nest_name, nest_data in nests_data.items():
-            nest = Nest(nest_name, nest_data, self.sheet_settings, self.laser_cut_inventory)
+        for nest_data in nests_data:
+            nest = Nest(nest_data, self.sheet_settings, self.laser_cut_inventory)
             self.add_nest(nest)
 
-        groups_data = data.get("groups", {})
+        assemblies_data = data.get("assemblies", [])
 
-        self.groups.clear()
-        for group_name, group_data in groups_data.items():
-            group = Group(group_name, group_data, self)
-            self.add_group(group)
+        self.assemblies.clear()
+        for assembly_data in assemblies_data:
+            assembly = Assembly(assembly_data, self)
+            self.add_assembly(assembly)
 
     def to_dict(self) -> dict:
         self.unsaved_changes = False
@@ -220,6 +219,7 @@ class Job:
 
         return {
             "job_data": {
+                "name": self.name,
                 "type": self.status.value,
                 "order_number": self.order_number,
                 "ship_to": self.ship_to,
@@ -228,6 +228,6 @@ class Job:
                 "color": JobColor.get_color(self.status),
                 "price_settings": self.price_calculator.to_dict(),
             },
-            "nests": {nest.name: nest.to_dict() for nest in self.nests},
-            "groups": {group.name: group.to_dict() for group in self.groups},
+            "nests": [nest.to_dict() for nest in self.nests],
+            "assemblies": [assembly.to_dict() for assembly in self.assemblies],
         }

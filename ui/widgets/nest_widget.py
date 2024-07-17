@@ -1,28 +1,19 @@
 import os
 from datetime import datetime
 from functools import partial
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Optional
 
 from PyQt6 import uic
 from PyQt6.QtCore import Qt, pyqtSignal
-from PyQt6.QtGui import QPixmap
-from PyQt6.QtWidgets import (
-    QComboBox,
-    QDoubleSpinBox,
-    QLabel,
-    QMessageBox,
-    QPushButton,
-    QTreeWidget,
-    QTreeWidgetItem,
-    QVBoxLayout,
-    QWidget,
-)
+from PyQt6.QtGui import QPixmap, QAction
+from PyQt6.QtWidgets import QComboBox, QDoubleSpinBox, QLabel, QMessageBox, QPushButton, QTreeWidget, QTreeWidgetItem, QVBoxLayout, QWidget, QMenu
 
 from ui.custom.machine_cut_time_double_spin_box import MachineCutTimeDoubleSpinBox
 from ui.dialogs.add_sheet_dialog import AddSheetDialog
 from utils.inventory.laser_cut_part import LaserCutPart
 from utils.inventory.sheets_inventory import Sheet
 from utils.inventory.nest import Nest
+from utils.inventory.category import Category
 from utils.workspace.assembly import Assembly
 
 if TYPE_CHECKING:
@@ -44,6 +35,8 @@ class NestWidget(QWidget):
         self.sheet_settings = self.parent.parent.job_manager.sheet_settings
         self.price_calculator = self.parent.price_calculator
         self.job_preferences = self.parent.job_preferences
+        self.laser_cut_inventory = self.parent.parent.job_manager.laser_cut_inventory
+
         self.part_to_assembly: dict[str, Assembly] = {}
         self.assembly_dict: dict[str, Assembly] = {}
         self.part_assembly_comboboxes: list[QComboBox] = []
@@ -124,6 +117,9 @@ class NestWidget(QWidget):
         self.doubleSpinBox_width.valueChanged.connect(self.sheet_changed)
 
         self.treeWidget_parts = self.findChild(QTreeWidget, "treeWidget_parts")
+        self.treeWidget_parts.setContextMenuPolicy(Qt.ContextMenuPolicy.CustomContextMenu)
+        self.treeWidget_parts.customContextMenuRequested.connect(self.show_context_menu)
+
         self.load_nest_parts()
 
         self.image_widget = self.findChild(QWidget, "image_widget")
@@ -143,6 +139,23 @@ class NestWidget(QWidget):
         self.label_total_cost_for_nested_parts = self.findChild(QLabel, "label_total_cost_for_nested_parts")
         self.update_nest_cost()
         self.update_sheet_status()
+
+    def show_context_menu(self, position):
+        context_menu = QMenu(self)
+
+        assembly_menu = QMenu("Assmebly", context_menu)
+
+        for assembly in ["None"] + [assembly.name for assembly in self.parent.job.get_all_assemblies()]:
+            assembly_action = QAction(assembly, assembly_menu)
+            assembly_action.triggered.connect(partial(self.parts_assembly_changed, assembly))
+            assembly_menu.addAction(assembly_action)
+
+        add_to_inventory_action = QAction("Add to Inventory", assembly_menu)
+        add_to_inventory_action.triggered.connect(self.add_parts_to_inventory)
+
+        context_menu.addMenu(assembly_menu)
+        context_menu.addAction(add_to_inventory_action)
+        context_menu.exec(self.treeWidget_parts.viewport().mapToGlobal(position))
 
     def update_ui_values(self):
         self.block_ui_signals(True)
@@ -166,8 +179,16 @@ class NestWidget(QWidget):
         if self.toolbox_button:
             self.toolbox_button.setText(self.nest.get_name())
             self.job_preferences.nest_toggled(self.nest.get_name(), self.toolbox_button)
-        self.update_nest_cost()
+        for nest_laser_cut_part in self.nest.laser_cut_parts:
+            for assembly_name, assembly in self.assembly_dict.items():
+                if self.is_part_in_assembly(assembly_name, nest_laser_cut_part.name):
+                    for laser_cut_part in assembly.laser_cut_parts:
+                        if laser_cut_part.name == nest_laser_cut_part.name:
+                            laser_cut_part.material = self.sheet.material
+                            laser_cut_part.gauge = self.sheet.thickness
+        self.parent.parent.update_tables()
         self.parent.changes_made()
+        self.update_nest_cost()
 
     def nest_changed(self):
         self.nest.sheet_count = self.doubleSpinBox_sheet_count.value()
@@ -209,9 +230,7 @@ class NestWidget(QWidget):
         add_sheet_dialog = AddSheetDialog(self.sheet, None, self.sheets_inventory, self.sheet_settings, self)
 
         if add_sheet_dialog.exec():
-            new_sheet = Sheet(
-                "new_name",
-                {
+            new_sheet = Sheet({
                     "quantity": add_sheet_dialog.get_quantity(),
                     "length": add_sheet_dialog.get_length(),
                     "width": add_sheet_dialog.get_width(),
@@ -312,13 +331,98 @@ class NestWidget(QWidget):
             for laser_cut_part in assembly.laser_cut_parts:
                 self.part_to_assembly[laser_cut_part.name] = assembly
 
-    def find_parts_assembly(self, part_name: str) -> Assembly | None:
+    def find_parts_assembly(self, part_name: str) -> Optional[Assembly]:
         return self.part_to_assembly.get(part_name, None)
 
     def is_part_in_assembly(self, assembly_name: str, part_name: str) -> bool:
         if assembly := self.assembly_dict.get(assembly_name):
             return any(part_name == part.name for part in assembly.laser_cut_parts)
         return False
+
+    def get_selected_tree_items(self) -> list[str]:
+        selected_items: list[str] = [item.text(0) for item in self.treeWidget_parts.selectedItems()]
+        return selected_items
+
+    def get_nested_laser_cut_part(self, name: str) -> LaserCutPart:
+        return next(
+            (nested_laser_cut_part for nested_laser_cut_part in self.nest.laser_cut_parts if nested_laser_cut_part.name == name),
+            None,
+        )
+
+    def get_selected_tree_parts(self) -> list[LaserCutPart]:
+        selected_parts: list[LaserCutPart] = []
+        if selected_items := self.get_selected_tree_items():
+            for item in selected_items:
+                selected_parts.append(self.get_nested_laser_cut_part(item))
+        return selected_parts
+
+    def add_parts_to_inventory(self):
+        if selected_parts := self.get_selected_tree_parts():
+            for selected_nest_laser_cut_part in selected_parts:
+                if existing_laser_cut_part := self.laser_cut_inventory.get_laser_cut_part_by_name(selected_nest_laser_cut_part.name):
+                    existing_laser_cut_part.quantity += selected_nest_laser_cut_part.quantity
+                    existing_laser_cut_part.material = selected_nest_laser_cut_part.material
+                    existing_laser_cut_part.gauge = selected_nest_laser_cut_part.gauge
+                    existing_laser_cut_part.modified_date = f"{os.getlogin().title()} - Added {selected_nest_laser_cut_part.quantity} quantities from {self.nest.name} at {datetime.now().strftime('%B %d %A %Y %I:%M:%S %p')}"
+                else:
+                    if not (category := self.laser_cut_inventory.get_category("Uncategorized")):
+                        category = Category("Uncategorized")
+                        self.laser_cut_inventory.add_category(category)
+                    selected_nest_laser_cut_part.add_to_category(category)
+                    selected_nest_laser_cut_part.modified_date = f"{os.getlogin().title()} - Part added from {self.assembly.name} at {datetime.now().strftime('%B %d %A %Y %I:%M:%S %p')}"
+                    self.laser_cut_inventory.add_laser_cut_part(selected_nest_laser_cut_part)
+            self.laser_cut_inventory.save()
+            self.sync_changes()
+
+    def parts_assembly_changed(self, assembly_name: str):
+        if assembly_name == "None":
+            return
+        updated_parts = ""
+        parts_that_do_not_exist: list[LaserCutPart] = []
+        if selected_parts := self.get_selected_tree_parts():
+            for selected_nest_laser_cut_part in selected_parts:
+                if self.is_part_in_assembly(assembly_name, selected_nest_laser_cut_part.name):
+                    if assembly := self.assembly_dict.get(assembly_name):
+                        for laser_cut_part in assembly.laser_cut_parts:
+                            if laser_cut_part.name == selected_nest_laser_cut_part.name:
+                                laser_cut_part.load_part_data(selected_nest_laser_cut_part.to_dict())
+                                updated_parts += f"{laser_cut_part.name}\n"
+                else:
+                    parts_that_do_not_exist.append(selected_nest_laser_cut_part)
+            self.parent.update_tables()
+            if updated_parts:
+                msg = QMessageBox(
+                    QMessageBox.Icon.Information,
+                    "Updated",
+                    f"Updated the following parts:\n{updated_parts}",
+                    QMessageBox.StandardButton.Ok,
+                    self,
+                )
+                msg.exec()
+            if parts_that_do_not_exist:
+                parts_that_do_not_exist_text = ""
+                for part in parts_that_do_not_exist:
+                    parts_that_do_not_exist_text += f"{part.name}\n"
+                msg = QMessageBox(
+                    QMessageBox.Icon.Information,
+                    "Items not found",
+                    f"The following items could not be found in {assembly_name}:\n{parts_that_do_not_exist_text}\nDo you want to add them to {assembly_name}?",
+                    QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No | QMessageBox.StandardButton.Cancel,
+                    self,
+                )
+                if msg.exec() != QMessageBox.StandardButton.Yes:
+                    return
+                if assembly := self.assembly_dict.get(assembly_name):
+                    for nest_laser_cut_part in parts_that_do_not_exist:
+                        new_laser_cut_part = LaserCutPart(
+                            nest_laser_cut_part.to_dict(),
+                            nest_laser_cut_part.laser_cut_inventory,
+                        )
+                        assembly.add_laser_cut_part(new_laser_cut_part)
+                        self.part_to_assembly[nest_laser_cut_part] = assembly
+                    self.parent.update_tables()
+                    self.parent.changes_made()
+                self.load_nest_parts()
 
     def part_assembly_changed(self, assembly_combobox: QComboBox, nest_laser_cut_part: LaserCutPart):
         if assembly_combobox.currentText() == "None":
@@ -348,15 +452,17 @@ class NestWidget(QWidget):
                 self,
             )
             if msg.exec() != QMessageBox.StandardButton.Yes:
+                self.load_nest_parts()
                 return
             if assembly := self.assembly_dict.get(assembly_combobox.currentText()):
                 new_laser_cut_part = LaserCutPart(
-                    nest_laser_cut_part.name,
                     nest_laser_cut_part.to_dict(),
                     nest_laser_cut_part.laser_cut_inventory,
                 )
                 assembly.add_laser_cut_part(new_laser_cut_part)
+                self.part_to_assembly[nest_laser_cut_part] = assembly
                 self.parent.update_tables()
+                self.parent.changes_made()
 
     def sync_changes(self):
         self.parent.parent.sync_changes()

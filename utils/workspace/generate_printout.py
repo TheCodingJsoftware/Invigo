@@ -9,7 +9,6 @@ from utils.inventory.laser_cut_part import LaserCutPart
 from utils.inventory.nest import Nest
 from utils.ip_utils import get_server_ip_address, get_server_port
 from utils.workspace.assembly import Assembly
-from utils.workspace.group import Group
 from utils.workspace.job import Job
 
 
@@ -22,7 +21,7 @@ class CoverPage:
         return f"""<div id="cover-page">
                 <div class="field label prefix border max">
                     <i>numbers</i>
-                    <input type="number" id="order-number" value={self.job.order_number}>
+                    <input type="number" id="order-number" value={int(self.job.order_number)}>
                     <label>Order Number</label>
                 </div>
 
@@ -548,26 +547,9 @@ class JobDiv:
 
     def generate(self) -> str:
         html = ""
-        for group in self.job.groups:
-            group_div = GroupDiv(self.job, group)
+        for assembly in self.job.assemblies:
+            group_div = AssemblyDiv(self.job, assembly)
             html += group_div.generate()
-        return html
-
-
-class GroupDiv:
-    def __init__(self, job: Job, group: Group) -> None:
-        self.job = job
-        self.group = group
-
-    def generate(self) -> str:
-        html = '<details class="group_details" open>'
-        html += f"<summary>{self.group.name}</summary>"
-        html += '<div class="group">'
-        for assembly in self.group.assemblies:
-            assembly_div = AssemblyDiv(self.job, assembly, True)
-            html += assembly_div.generate()
-        html += "</div>"
-        html += "</details>"
         return html
 
 
@@ -716,14 +698,14 @@ class Printout:
             {self.printout_css}
         </style>
         <body class="quote">
-        <nav class="left l" id="printout-controls" style="width: 10vw;">
+        <nav class="left l" id="printout-controls" style="width: 8vw;">
             <div class="left-align">
                 <label class="checkbox">
                     <input type="checkbox" id="showCoverPage" data-name="show-cover-page" data-layout="cover-page" checked>
                     <span>Show Cover Page</span>
                 </label>
                 <label class="checkbox">
-                    <input type="checkbox" id="showAssemblies" data-name="show-assemblies" data-layout="assemblies-list-layout" {"checked" if self.job.groups else ""}>
+                    <input type="checkbox" id="showAssemblies" data-name="show-assemblies" data-layout="assemblies-list-layout" {"checked" if self.job.assemblies else ""}>
                     <span>Show Assemblies</span>
                 </label>
                 <label class="checkbox">
@@ -775,12 +757,12 @@ class Printout:
 
         html += '<div id="parts-layout">'
         html += """<div class="tabs">
-            <a data-ui="#assemblies-layout"><i>table_view</i>Groups Layout</a>
+            <a data-ui="#assemblies-layout"><i>table_view</i>Nested Layout</a>
             <a class="active" data-ui="#assemblies-list"> <i>data_table</i>Assemblies List</a>
             <a data-ui="#parts-list"> <i>format_list_bulleted</i>Grouped Parts List</a>
         </div>"""
         html += '<div class="page right hidden" id="assemblies-layout">'
-        if self.job.groups:
+        if self.job.assemblies:
             job_div = JobDiv(self.job)
             html += job_div.generate()
         else:

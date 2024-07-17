@@ -849,11 +849,8 @@ class LaserCutTab(QWidget):
         for job_widget in self.parent.job_planner_widget.job_widgets:
             job = job_widget.job
             job_menu = QMenu(job.name, job_planner_menu)
-            for group in job.groups:
-                group_menu = QMenu(group.name, job_menu)
-                for assembly in group.assemblies:
-                    self.load_assembly_menu(group_menu, job, [assembly])
-                job_menu.addMenu(group_menu)
+            for assembly in job.assemblies:
+                self.load_assembly_menu(job_menu, job, [assembly])
             job_planner_menu.addMenu(job_menu)
 
         menu.addMenu(job_planner_menu)
@@ -872,7 +869,6 @@ class LaserCutTab(QWidget):
             for laser_cut_part in laser_cut_parts:
                 assembly.add_laser_cut_part(
                     LaserCutPart(
-                        laser_cut_part.name,
                         laser_cut_part.to_dict(),
                         self.laser_cut_inventory,
                     )

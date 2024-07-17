@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>978</width>
-    <height>624</height>
+    <width>1077</width>
+    <height>619</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -78,9 +78,9 @@
              </sizepolicy>
             </property>
             <property name="text">
-             <string>Set quantity for selected jobs.
+             <string>Select jobs and set quantity for selected jobs.
 
-Press 'Generate' when finished.</string>
+Press 'Add' when finished.</string>
             </property>
             <property name="alignment">
              <set>Qt::AlignmentFlag::AlignLeading|Qt::AlignmentFlag::AlignLeft|Qt::AlignmentFlag::AlignTop</set>
@@ -98,7 +98,7 @@ Press 'Generate' when finished.</string>
            <widget class="QGroupBox" name="groupBox">
             <property name="minimumSize">
              <size>
-              <width>200</width>
+              <width>0</width>
               <height>0</height>
              </size>
             </property>
@@ -146,8 +146,8 @@ Press 'Generate' when finished.</string>
                  <rect>
                   <x>0</x>
                   <y>0</y>
-                  <width>742</width>
-                  <height>490</height>
+                  <width>641</width>
+                  <height>485</height>
                  </rect>
                 </property>
                 <layout class="QVBoxLayout" name="verticalLayout_5">
@@ -178,6 +178,12 @@ Press 'Generate' when finished.</string>
           </item>
           <item>
            <widget class="QGroupBox" name="groupBox_2">
+            <property name="minimumSize">
+             <size>
+              <width>400</width>
+              <height>0</height>
+             </size>
+            </property>
             <property name="maximumSize">
              <size>
               <width>16777215</width>
@@ -214,7 +220,7 @@ Press 'Generate' when finished.</string>
                 </font>
                </property>
                <property name="text">
-                <string>* Will add the job template x amount of times to workspace.</string>
+                <string>* Will add the job x amount of times to workspace.</string>
                </property>
                <property name="wordWrap">
                 <bool>true</bool>
@@ -222,7 +228,11 @@ Press 'Generate' when finished.</string>
               </widget>
              </item>
              <item>
-              <layout class="QVBoxLayout" name="verticalLayout_workorders"/>
+              <layout class="QVBoxLayout" name="verticalLayout_workorders">
+               <property name="spacing">
+                <number>6</number>
+               </property>
+              </layout>
              </item>
             </layout>
            </widget>

@@ -49,6 +49,7 @@ from utils.inventory.sheets_inventory import SheetsInventory
 from utils.inventory.nest import Nest
 from utils.quote.quote import Quote
 from utils.sheet_settings.sheet_settings import SheetSettings
+from utils.settings import Settings
 
 
 class PaintSettingsWidget(QWidget):
@@ -236,6 +237,14 @@ class QuoteWidget(QWidget):
         self.paint_inventory = self.laser_cut_inventory.paint_inventory
         self.sheets_inventory = sheets_inventory
         self.sheet_settings = sheet_settings
+
+
+        self.settings_file = Settings()
+        self.tables_font = QFont()
+        self.tables_font.setFamily(self.settings_file.get_value("tables_font")["family"])
+        self.tables_font.setPointSize(self.settings_file.get_value("tables_font")["pointSize"])
+        self.tables_font.setWeight(self.settings_file.get_value("tables_font")["weight"])
+        self.tables_font.setItalic(self.settings_file.get_value("tables_font")["italic"])
 
         self.load_ui()
 
@@ -1091,21 +1100,29 @@ class QuoteWidget(QWidget):
     def add_laser_cut_part(self):
         add_item_dialog = AddLaserCutPartDialog(self)
         if add_item_dialog.exec():
-            if not (laser_cut_part := self.laser_cut_inventory.get_laser_cut_part_by_name(add_item_dialog.get_name())):
-                msg = QMessageBox(
-                    QMessageBox.Icon.Critical,
-                    "Does not exist",
-                    f"{add_item_dialog.get_name()} does not exist in the laser cut parts inventory",
-                    QMessageBox.StandardButton.Ok,
-                    self,
-                )
-                msg.show()
-                return
-            new_laser_cut_part = LaserCutPart(laser_cut_part.name, laser_cut_part.to_dict(), self.laser_cut_inventory)
-            new_laser_cut_part.quantity = add_item_dialog.get_current_quantity()
-            new_laser_cut_part.quantity_in_nest = 1
-            self.quote.add_laser_cut_part_to_custom_nest(new_laser_cut_part)
-            self.parent.parent.download_required_images_thread([new_laser_cut_part.image_index])
+            if laser_cut_parts := add_item_dialog.get_selected_laser_cut_parts():
+                for laser_cut_part in laser_cut_parts:
+                    new_laser_cut_part = LaserCutPart(laser_cut_part.to_dict(), self.laser_cut_inventory)
+                    new_laser_cut_part.quantity = add_item_dialog.get_current_quantity()
+                    new_laser_cut_part.quantity_in_nest = 1
+                    self.quote.add_laser_cut_part_to_custom_nest(new_laser_cut_part)
+                    self.parent.parent.download_required_images_thread([new_laser_cut_part.image_index])
+            else:
+                if not (laser_cut_part := self.laser_cut_inventory.get_laser_cut_part_by_name(add_item_dialog.get_name())):
+                    msg = QMessageBox(
+                        QMessageBox.Icon.Critical,
+                        "Does not exist",
+                        f"{add_item_dialog.get_name()} does not exist in the laser cut parts inventory",
+                        QMessageBox.StandardButton.Ok,
+                        self,
+                    )
+                    msg.show()
+                    return
+                new_laser_cut_part = LaserCutPart(laser_cut_part.to_dict(), self.laser_cut_inventory)
+                new_laser_cut_part.quantity = add_item_dialog.get_current_quantity()
+                new_laser_cut_part.quantity_in_nest = 1
+                self.quote.add_laser_cut_part_to_custom_nest(new_laser_cut_part)
+                self.parent.parent.download_required_images_thread([new_laser_cut_part.image_index])
             self.load_laser_cut_parts()
             self.load_nests()
             self.load_nest_summary()
@@ -1141,7 +1158,7 @@ class QuoteWidget(QWidget):
                 self.laser_cut_table_widget.insertRow(row_index)
                 self.laser_cut_table_widget.setRowHeight(row_index, 70)
                 image_item = QTableWidgetItem()
-                if not "images" in laser_cut_part.image_index:
+                if "images" not in laser_cut_part.image_index:
                     laser_cut_part.image_index = "images/" + laser_cut_part.image_index
                 if not laser_cut_part.image_index.endswith(".jpeg"):
                     laser_cut_part.image_index += ".jpeg"
@@ -1161,6 +1178,7 @@ class QuoteWidget(QWidget):
                 self.laser_cut_table_widget.setItem(row_index, LaserCutTableColumns.PICTURE.value, image_item)
 
                 table_widget_item_name = QTableWidgetItem(laser_cut_part.name)
+                table_widget_item_name.setFont(self.tables_font)
                 table_widget_item_name.setTextAlignment(Qt.AlignmentFlag.AlignCenter | Qt.AlignmentFlag.AlignVCenter)
                 self.laser_cut_table_widget.setItem(
                     row_index,
@@ -1206,6 +1224,7 @@ class QuoteWidget(QWidget):
                 if not laser_cut_part.quantity_in_nest:  # I dont understand why I need to check, it throws TypeError in the following lines
                     laser_cut_part.quantity_in_nest = laser_cut_part.quantity
                 table_widget_item_quantity = QTableWidgetItem(str(laser_cut_part.quantity_in_nest * nest.sheet_count))
+                table_widget_item_quantity.setFont(self.tables_font)
                 table_widget_item_quantity.setTextAlignment(Qt.AlignmentFlag.AlignCenter | Qt.AlignmentFlag.AlignVCenter)
                 table_widget_item_quantity.setToolTip(f"One sheet has: {laser_cut_part.quantity_in_nest}")
                 self.laser_cut_table_widget.setItem(
@@ -1216,6 +1235,7 @@ class QuoteWidget(QWidget):
                 self.laser_cut_table_items[laser_cut_part].update({"quantity": table_widget_item_quantity})
 
                 table_widget_item_part_dim = QTableWidgetItem(f"{laser_cut_part.part_dim}\n\n{laser_cut_part.surface_area} in²")
+                table_widget_item_part_dim.setFont(self.tables_font)
                 table_widget_item_part_dim.setTextAlignment(Qt.AlignmentFlag.AlignCenter | Qt.AlignmentFlag.AlignVCenter)
                 self.laser_cut_table_widget.setItem(
                     row_index,
@@ -1242,6 +1262,7 @@ class QuoteWidget(QWidget):
 
                 # COGS
                 table_widget_item_paint_cost = QTableWidgetItem("$0.00")
+                table_widget_item_paint_cost.setFont(self.tables_font)
                 table_widget_item_paint_cost.setTextAlignment(Qt.AlignmentFlag.AlignCenter | Qt.AlignmentFlag.AlignVCenter)
                 self.laser_cut_table_widget.setItem(
                     row_index,
@@ -1252,6 +1273,7 @@ class QuoteWidget(QWidget):
 
                 # COGS
                 table_widget_item_cost_of_goods = QTableWidgetItem("$0.00")
+                table_widget_item_cost_of_goods.setFont(self.tables_font)
                 table_widget_item_cost_of_goods.setTextAlignment(Qt.AlignmentFlag.AlignCenter | Qt.AlignmentFlag.AlignVCenter)
                 self.laser_cut_table_widget.setItem(
                     row_index,
@@ -1262,6 +1284,7 @@ class QuoteWidget(QWidget):
 
                 # Bend Cost
                 table_widget_item_bend_cost = QTableWidgetItem(f"${laser_cut_part.bend_cost:,.2f}")
+                table_widget_item_bend_cost.setFont(self.tables_font)
                 table_widget_item_bend_cost.setTextAlignment(Qt.AlignmentFlag.AlignCenter | Qt.AlignmentFlag.AlignVCenter)
                 self.laser_cut_table_widget.setItem(
                     row_index,
@@ -1272,6 +1295,7 @@ class QuoteWidget(QWidget):
 
                 # Labor Cost
                 table_widget_item_bend_cost = QTableWidgetItem(f"${laser_cut_part.labor_cost:,.2f}")
+                table_widget_item_bend_cost.setFont(self.tables_font)
                 table_widget_item_bend_cost.setTextAlignment(Qt.AlignmentFlag.AlignCenter | Qt.AlignmentFlag.AlignVCenter)
                 self.laser_cut_table_widget.setItem(
                     row_index,
@@ -1282,6 +1306,7 @@ class QuoteWidget(QWidget):
 
                 # Unit Price
                 table_widget_item_unit_price = QTableWidgetItem("$0.00")
+                table_widget_item_unit_price.setFont(self.tables_font)
                 table_widget_item_unit_price.setTextAlignment(Qt.AlignmentFlag.AlignCenter | Qt.AlignmentFlag.AlignVCenter)
                 self.laser_cut_table_widget.setItem(
                     row_index,
@@ -1292,6 +1317,7 @@ class QuoteWidget(QWidget):
 
                 # Price
                 table_widget_item_price = QTableWidgetItem("$0.00")
+                table_widget_item_price.setFont(self.tables_font)
                 table_widget_item_price.setTextAlignment(Qt.AlignmentFlag.AlignCenter | Qt.AlignmentFlag.AlignVCenter)
                 self.laser_cut_table_widget.setItem(
                     row_index,
@@ -1302,6 +1328,7 @@ class QuoteWidget(QWidget):
 
                 # Shelf Number
                 table_widget_item_shelf_number = QTableWidgetItem(laser_cut_part.shelf_number)
+                table_widget_item_shelf_number.setFont(self.tables_font)
                 table_widget_item_shelf_number.setTextAlignment(Qt.AlignmentFlag.AlignCenter | Qt.AlignmentFlag.AlignVCenter)
                 self.laser_cut_table_widget.setItem(
                     row_index,
@@ -1531,7 +1558,8 @@ class QuoteWidget(QWidget):
             QMessageBox.StandardButton.Cancel,
         ]:
             return
-        self.quote.custom_nest = Nest("Custom", {}, self.sheet_settings, self.laser_cut_inventory)
+        self.quote.custom_nest = Nest({"name": "Custom"}, self.sheet_settings, self.laser_cut_inventory)
+        self.quote.custom_nest.name = "Custom"
         self.quote.custom_nest.is_custom = True
         self.quote.nests.clear()
         self.quote.grouped_laser_cut_parts.clear()
@@ -1544,20 +1572,20 @@ class QuoteWidget(QWidget):
     def add_component(self):
         add_item_dialog = AddComponentDialog(self)
         if add_item_dialog.exec():
-            if not (component := self.components_inventory.get_component_by_name(add_item_dialog.get_part_number())):
-                if not add_item_dialog.get_part_number():
-                    part_number = add_item_dialog.get_name()
-                else:
-                    part_number = add_item_dialog.get_part_number()
-                component = Component(
-                    part_number,
-                    {
+            if components := add_item_dialog.get_selected_components():
+                for component in components:
+                    new_component = Component(component.to_dict(), self.components_inventory)
+                    new_component.quantity = 1.0
+                    self.quote.add_component(new_component)
+            else:
+                component = Component({
+                        "part_number": add_item_dialog.get_name(),
                         "quantity": add_item_dialog.get_current_quantity(),
                         "part_name": add_item_dialog.get_name(),
                     },
                     self.components_inventory,
                 )
-            self.quote.add_component(component)
+                self.quote.add_component(component)
             self.load_component_parts()
         self.quote_changed()
 
@@ -1590,40 +1618,50 @@ class QuoteWidget(QWidget):
             self.components_table_widget.insertRow(row_index)
             self.components_table_widget.setRowHeight(row_index, 60)
 
-            self.components_table_widget.setItem(row_index, 0, QTableWidgetItem(""))
-            self.components_table_widget.item(row_index, 0).setData(Qt.ItemDataRole.DecorationRole, QPixmap(component.image_path))
+            self.components_table_widget.setItem(row_index, ComponentsTableColumns.PICTURE.value, QTableWidgetItem(""))
+            self.components_table_widget.item(row_index, ComponentsTableColumns.PICTURE.value).setData(Qt.ItemDataRole.DecorationRole, QPixmap(component.image_path))
 
             table_widget_part_name = QTableWidgetItem(component.part_name)
-            self.components_table_widget.setItem(row_index, 1, table_widget_part_name)
+            table_widget_part_name.setFont(self.tables_font)
+            self.components_table_widget.setItem(row_index, ComponentsTableColumns.PART_NAME.value, table_widget_part_name)
             self.components_table_items[component].update({"part_name": table_widget_part_name})
 
             table_widget_part_number = QTableWidgetItem(component.part_number)
-            self.components_table_widget.setItem(row_index, 2, table_widget_part_number)
-            self.components_table_widget.item(row_index, 2).setTextAlignment(Qt.AlignmentFlag.AlignCenter | Qt.AlignmentFlag.AlignVCenter)
+            table_widget_part_name.setFont(self.tables_font)
+            self.components_table_widget.setItem(row_index, ComponentsTableColumns.PART_NUMBER.value, table_widget_part_number)
+            self.components_table_widget.item(row_index, ComponentsTableColumns.PART_NUMBER.value).setTextAlignment(Qt.AlignmentFlag.AlignCenter | Qt.AlignmentFlag.AlignVCenter)
             self.components_table_items[component].update({"part_number": table_widget_part_number})
 
             table_widget_shelf_number = QTableWidgetItem(component.shelf_number)
-            self.components_table_widget.setItem(row_index, 3, table_widget_shelf_number)
-            self.components_table_widget.item(row_index, 3).setTextAlignment(Qt.AlignmentFlag.AlignCenter | Qt.AlignmentFlag.AlignVCenter)
+            table_widget_shelf_number.setFont(self.tables_font)
+            self.components_table_widget.setItem(row_index, ComponentsTableColumns.SHELF_NUMBER.value, table_widget_shelf_number)
+            self.components_table_widget.item(row_index, ComponentsTableColumns.SHELF_NUMBER.value).setTextAlignment(Qt.AlignmentFlag.AlignCenter | Qt.AlignmentFlag.AlignVCenter)
             self.components_table_items[component].update({"shelf_number": table_widget_shelf_number})
 
             table_widget_notes = QTableWidgetItem(component.notes)
-            self.components_table_widget.setItem(row_index, 4, table_widget_notes)
+            table_widget_notes.setFont(self.tables_font)
+            self.components_table_widget.setItem(row_index, ComponentsTableColumns.NOTES.value, table_widget_notes)
             self.components_table_items[component].update({"notes": table_widget_notes})
 
             table_widget_item_quantity = QTableWidgetItem(str(component.quantity))
-            self.components_table_widget.setItem(row_index, 5, table_widget_item_quantity)
-            self.components_table_widget.item(row_index, 5).setTextAlignment(Qt.AlignmentFlag.AlignCenter | Qt.AlignmentFlag.AlignVCenter)
+            table_widget_item_quantity.setFont(self.tables_font)
+            self.components_table_widget.setItem(row_index, ComponentsTableColumns.UNIT_QUANTITY.value, table_widget_item_quantity)
+            self.components_table_widget.item(row_index, ComponentsTableColumns.UNIT_QUANTITY.value).setTextAlignment(Qt.AlignmentFlag.AlignCenter | Qt.AlignmentFlag.AlignVCenter)
             self.components_table_items[component].update({"quantity": table_widget_item_quantity})
 
+            self.components_table_widget.setItem(row_index, ComponentsTableColumns.QUANTITY.value, QTableWidgetItem("<- This column\nis quantity"))
+            self.components_table_widget.item(row_index, ComponentsTableColumns.QUANTITY.value).setTextAlignment(Qt.AlignmentFlag.AlignCenter | Qt.AlignmentFlag.AlignVCenter)
+
             table_widget_item_unit_price = QTableWidgetItem(f"${component.price:,.2f}")
-            self.components_table_widget.setItem(row_index, 6, table_widget_item_unit_price)
-            self.components_table_widget.item(row_index, 6).setTextAlignment(Qt.AlignmentFlag.AlignCenter | Qt.AlignmentFlag.AlignVCenter)
+            table_widget_item_unit_price.setFont(self.tables_font)
+            self.components_table_widget.setItem(row_index, ComponentsTableColumns.UNIT_PRICE.value, table_widget_item_unit_price)
+            self.components_table_widget.item(row_index, ComponentsTableColumns.UNIT_PRICE.value).setTextAlignment(Qt.AlignmentFlag.AlignCenter | Qt.AlignmentFlag.AlignVCenter)
             self.components_table_items[component].update({"unit_price": table_widget_item_unit_price})
 
             table_widget_item_price = QTableWidgetItem("$0.00")
-            self.components_table_widget.setItem(row_index, 7, table_widget_item_price)
-            self.components_table_widget.item(row_index, 7).setTextAlignment(Qt.AlignmentFlag.AlignCenter | Qt.AlignmentFlag.AlignVCenter)
+            table_widget_item_price.setFont(self.tables_font)
+            self.components_table_widget.setItem(row_index, ComponentsTableColumns.PRICE.value, table_widget_item_price)
+            self.components_table_widget.item(row_index, ComponentsTableColumns.PRICE.value).setTextAlignment(Qt.AlignmentFlag.AlignCenter | Qt.AlignmentFlag.AlignVCenter)
             self.components_table_items[component].update({"price": table_widget_item_price})
 
         self.components_table_widget.blockSignals(False)
@@ -1741,9 +1779,7 @@ class QuoteWidget(QWidget):
         add_sheet_dialog = AddSheetDialog(nest.sheet, None, self.sheets_inventory, self.sheet_settings, self)
 
         if add_sheet_dialog.exec():
-            new_sheet = Sheet(
-                "new_name",
-                {
+            new_sheet = Sheet({
                     "quantity": add_sheet_dialog.get_quantity(),
                     "length": add_sheet_dialog.get_length(),
                     "width": add_sheet_dialog.get_width(),

@@ -1,6 +1,6 @@
 import contextlib
 from functools import partial
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Optional
 
 from PyQt6.QtCore import Qt, QTimer, pyqtSignal
 from PyQt6.QtGui import QKeySequence, QShortcut
@@ -8,7 +8,6 @@ from PyQt6.QtWidgets import QInputDialog, QPushButton, QVBoxLayout, QWidget
 
 from ui.custom.job_tab_widget import JobTabWidget
 from ui.widgets.job_widget import JobWidget
-from utils import colors
 from utils.workspace.job import Job, JobStatus
 from utils.workspace.job_manager import JobManager
 from utils.workspace.job_preferences import JobPreferences
@@ -19,7 +18,6 @@ if TYPE_CHECKING:
 
 class JobTab(QWidget):
     saveJob = pyqtSignal(Job)
-    saveJobAs = pyqtSignal(Job)
     reloadJob = pyqtSignal(JobWidget)
 
     def __init__(self, parent) -> None:
@@ -31,12 +29,13 @@ class JobTab(QWidget):
 
         self.job_widgets: list[JobWidget] = []
         self.current_job: Job = None
+        self.default_job_status: JobStatus = None
 
         self.shortcut_save = QShortcut(QKeySequence("Ctrl+S"), self)
         self.shortcut_save.activated.connect(self.save_current_job)
 
-        self.shortcut_save_as = QShortcut(QKeySequence("Ctrl+Shift+S"), self)
-        self.shortcut_save_as.activated.connect(self.save_current_job_as)
+        self.shortcut_open_printout = QShortcut(QKeySequence("Ctrl+P"), self)
+        self.shortcut_open_printout.activated.connect(self.open_printout)
 
         self.load_ui()
 
@@ -61,16 +60,12 @@ class JobTab(QWidget):
         for job_widget in self.job_widgets:
             job_widget.workspace_settings_changed()
 
-    def add_job(self, new_job: Job = None) -> JobWidget:
+    def add_job(self, new_job: Optional[Job] = None) -> JobWidget:
         if not new_job:
-            job = Job(f"Enter Job Name{len(self.job_widgets)}", {}, self.job_manager)
-            job.color = colors.get_random_color()
-            if self.parent.tabWidget.tabText(self.parent.tabWidget.currentIndex()) == "Job Planner":
-                job.status = JobStatus.PLANNING
-            elif self.parent.tabWidget.tabText(self.parent.tabWidget.currentIndex()) == "Job Quoter":
-                job.status = JobStatus.QUOTED
+            job = Job({}, self.job_manager)
+            job.name = f"Enter Job Name{len(self.job_widgets)}"
+            job.status = self.default_job_status
             job.order_number = self.parent.order_number
-            self.job_manager.add_job(job)
         else:
             job = new_job
 
@@ -96,8 +91,8 @@ class JobTab(QWidget):
             new_widget = JobWidget(job, self)
             new_widget.reloadJob.connect(self.reloadJob.emit)
 
-            for group in job.groups:
-                new_widget.load_group(group)
+            for assembly in job.assemblies:
+                new_widget.load_assembly(assembly)
 
             self.job_tab.removeTab(current_index)
             self.job_tab.insertTab(current_index, new_widget, job.name)
@@ -112,8 +107,8 @@ class JobTab(QWidget):
 
     def load_job(self, job: Job):
         job_widget = self.add_job(job)
-        for group in job.groups:
-            job_widget.load_group(group)
+        for assembly in job.assemblies:
+            job_widget.load_assembly(assembly)
         self.current_job = job
         self.job_tab.setCurrentIndex(self.get_tab_index(job))
         self.set_job_widget_scroll_position_with_delay(job, job_widget)
@@ -148,6 +143,15 @@ class JobTab(QWidget):
     def get_active_tab(self) -> str:
         return self.job_tab.tabText(self.job_tab.currentIndex())
 
+    def get_job(self, job_name: str) -> Optional[Job]:
+        return next(
+            (job_widget.job for job_widget in self.job_widgets if job_widget.job.name == job_name),
+            None,
+        )
+
+    def get_active_jobs(self) -> list[Job]:
+        return [job_widget.job for job_widget in self.job_widgets]
+
     def get_active_job(self) -> Job:
         return next(
             (job_widget.job for job_widget in self.job_widgets if job_widget.job.name == self.get_active_tab()),
@@ -171,8 +175,8 @@ class JobTab(QWidget):
             self.update_job_save_status(self.current_job)
 
     def duplicate_job(self, job: Job):
-        new_job = Job(job.name, job.to_dict(), self)
-        self.job_manager.add_job(new_job)
+        new_job = Job(job.to_dict(), self)
+        new_job.name = job.name
         self.load_job(new_job)
 
     def close_current_tab(self):
@@ -195,10 +199,11 @@ class JobTab(QWidget):
         self.saveJob.emit(self.current_job)
         self.update_job_save_status(self.current_job)
 
-    def save_current_job_as(self):
+    def open_printout(self):
         self.current_job.unsaved_changes = False
-        self.saveJobAs.emit(self.current_job)
+        self.saveJob.emit(self.current_job)
         self.update_job_save_status(self.current_job)
+        self.parent.open_job(f"saved_jobs/{self.current_job.status.name.lower()}/{self.current_job.name}")
 
     def job_changed(self, job: Job):
         job.changes_made()

@@ -22,13 +22,11 @@ class LaserCutTableColumns(AutoNumber):
     PAINTING = auto()
     PAINT_SETTINGS = auto()
     PAINT_COST = auto()
-    COST_OF_GOODS = auto()
     BEND_COST = auto()
     LABOR_COST = auto()
+    COST_OF_GOODS = auto()
     UNIT_PRICE = auto()
     PRICE = auto()
-    RECUT = auto()
-    ADD_TO_INVENTORY = auto()
 
 
 class LaserCutPartsQuotingTableWidget(CustomTableWidget):
@@ -69,8 +67,6 @@ class LaserCutPartsQuotingTableWidget(CustomTableWidget):
             "Labor Cost": LaserCutTableColumns.LABOR_COST.value,
             "Unit Price": LaserCutTableColumns.UNIT_PRICE.value,
             "Price": LaserCutTableColumns.PRICE.value,
-            "Recut": LaserCutTableColumns.RECUT.value,
-            "Add to Inventory": LaserCutTableColumns.ADD_TO_INVENTORY.value,
         }
         self.setColumnCount(len(headers))
         for header, column in headers.items():

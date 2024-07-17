@@ -1,6 +1,6 @@
 import contextlib
 from functools import partial
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Union, Optional
 
 from natsort import natsorted
 from PyQt6 import uic
@@ -20,14 +20,15 @@ from PyQt6.QtWidgets import (
     QVBoxLayout,
     QWidget,
 )
-
-from ui.widgets.group_widget import GroupWidget
+from ui.custom.assembly_planning_widget import AssemblyPlanningWidget
+from ui.custom.assembly_quoting_widget import AssemblyQuotingWidget
 from ui.custom_widgets import AssemblyMultiToolBox, MultiToolBox, QLineEdit
+from ui.dialogs.add_assembly_dialog import AddAssemblyDialog
 from ui.widgets.nest_widget import NestWidget
 from utils import colors
 from utils.colors import darken_color, lighten_color
 from utils.inventory.nest import Nest
-from utils.workspace.group import Group
+from utils.workspace.assembly import Assembly
 from utils.workspace.job import Job, JobStatus, JobColor
 
 if TYPE_CHECKING:
@@ -47,8 +48,10 @@ class JobWidget(QWidget):
         self.sheet_settings = self.parent.parent.sheet_settings
         self.paint_inventory = self.parent.parent.paint_inventory
         self.price_calculator = self.job.price_calculator
+        self.main_window_tab_widget = self.parent.parent.tabWidget
 
-        self.group_widgets: list[GroupWidget] = []
+        self.assembly_widgets: list[Union[AssemblyPlanningWidget, AssemblyQuotingWidget]] = []
+
         self.nest_widgets: list[NestWidget] = []
         self.nest_laser_cut_parts_assembly_comboboxes: list[QComboBox] = []
 
@@ -58,7 +61,6 @@ class JobWidget(QWidget):
         self.verticalLayout_4.setAlignment(Qt.AlignmentFlag.AlignTop)
         self.gridLayout_2.setAlignment(Qt.AlignmentFlag.AlignTop)
         self.verticalLayout_8.setAlignment(Qt.AlignmentFlag.AlignTop)
-
 
         self.item_quoting_options_layout = self.findChild(QVBoxLayout, "item_quoting_options_layout")
         self.item_quoting_options_layout.setAlignment(Qt.AlignmentFlag.AlignTop)
@@ -157,8 +159,6 @@ class JobWidget(QWidget):
         self.pushButton_nests.setChecked(self.job_preferences.is_nests_closed(self.job.name))
         self.nests_widget.setHidden(not self.job_preferences.is_nests_closed(self.job.name))
 
-        # TODO: Save close close/opened nest
-
         self.scrollArea = self.findChild(QScrollArea, "scrollArea")
 
         self.pushButton_reload_job = self.findChild(QPushButton, "pushButton_reload_job")
@@ -200,13 +200,18 @@ class JobWidget(QWidget):
         self.textEdit_ship_to.setText(self.job.ship_to)
         self.textEdit_ship_to.textChanged.connect(self.job_settings_changed)
 
-        self.groups_layout = self.findChild(QVBoxLayout, "groups_layout")
-        self.groups_layout.setAlignment(Qt.AlignmentFlag.AlignTop)
-        self.add_group_button = self.findChild(QPushButton, "add_group_button")
-        self.add_group_button.clicked.connect(self.add_group)
+        self.assemblies_layout = self.findChild(QVBoxLayout, "assemblies_layout")
+        self.assemblies_layout.setAlignment(Qt.AlignmentFlag.AlignTop)
 
-        self.groups_toolbox = AssemblyMultiToolBox(self)
-        self.groups_layout.addWidget(self.groups_toolbox)
+        self.pushButton_add_new_assembly = self.findChild(QPushButton, "pushButton_add_new_assembly")
+        self.pushButton_add_new_assembly.clicked.connect(self.add_assembly)
+
+        self.pushButton_add_existing_assembly = self.findChild(QPushButton, "pushButton_add_existing_assembly")
+        self.pushButton_add_existing_assembly.clicked.connect(self.add_existing_assembly)
+
+
+        self.assemblies_toolbox = AssemblyMultiToolBox(self)
+        self.assemblies_layout.addWidget(self.assemblies_toolbox)
 
         self.comboBox_laser_cutting = self.findChild(QComboBox, "comboBox_laser_cutting")
         self.comboBox_laser_cutting.wheelEvent = lambda event: None
@@ -263,11 +268,11 @@ class JobWidget(QWidget):
 
         self.splitter = self.findChild(QSplitter, "splitter")
 
-        if self.job.status == JobStatus.PLANNING and self.parent.parent.tabWidget.tabText(self.parent.parent.tabWidget.currentIndex()) == "Job Planner":
+        if self.job.status == JobStatus.PLANNING or self.parent.parent.tabWidget.tabText(self.parent.parent.tabWidget.currentIndex()) == "Job Planner":
             self.splitter.setSizes([0, 1])
             # self.quoting_settings_widget.setEnabled(False)
 
-        self.splitter.setStretchFactor(0, 1)
+        self.splitter.setStretchFactor(0, 3)
         self.splitter.setStretchFactor(1, 2)
 
         self.label_total_cost_for_parts = self.findChild(QLabel, "label_total_cost_for_parts")
@@ -361,25 +366,44 @@ QPushButton:checked:pressed#assembly_button_drop_menu {
         self.changes_made()
 
     def workspace_settings_changed(self):
-        for group_widget in self.group_widgets:
-            group_widget.workspace_settings_changed()
+        for assembliy_widget in self.assembly_widgets:
+            assembliy_widget.workspace_settings_changed()
 
-    def add_group(self, new_group: Group = None) -> GroupWidget:
-        if not new_group:
-            group = Group(f"Enter Group Name{len(self.job.groups)}", {}, self.job)
-            group.color = colors.get_random_color()
-            self.job.add_group(group)
+    def get_assemblies_dialog(self) -> Optional[list[Assembly]]:
+        dialog = AddAssemblyDialog(self.parent.get_active_jobs(), self)
+        if dialog.exec():
+            return dialog.get_selected_assemblies()
+        return None
+
+    def add_existing_assembly(self):
+        if assemblies_to_add := self.get_assemblies_dialog():
+            for assembly in assemblies_to_add:
+                new_assembly = Assembly(assembly.to_dict(), self.job)
+                self.job.add_assembly(new_assembly)
+                self.load_assembly(new_assembly)
+            self.update_prices()
+
+    def add_assembly(self, new_assembly: Optional[Assembly] = None) -> Union[AssemblyPlanningWidget, AssemblyQuotingWidget]:
+        if not new_assembly:
+            assembly = Assembly({}, self.job)
+            assembly.name = f"Enter Assembly Name{len(self.job.assemblies)}"
+            assembly.color = colors.get_random_color()
+            self.job.add_assembly(assembly)
             self.changes_made()
         else:
-            group = new_group
+            assembly = new_assembly
 
-        group_widget = GroupWidget(group, self)
-        self.groups_toolbox.addItem(group_widget, group.name, group.color)
+        if self.main_window_tab_widget.tabText(self.main_window_tab_widget.currentIndex()) == "Job Planner":
+            assembly_widget = AssemblyPlanningWidget(assembly, self)
+        elif self.main_window_tab_widget.tabText(self.main_window_tab_widget.currentIndex()) == "Job Quoter":
+            assembly_widget = AssemblyQuotingWidget(assembly, self)
 
-        toggle_button = self.groups_toolbox.getLastToggleButton()
+        self.assemblies_toolbox.addItem(assembly_widget, assembly.name, assembly.color)
 
-        job_name_input: QLineEdit = self.groups_toolbox.getLastInputBox()
-        job_name_input.textChanged.connect(partial(self.group_name_renamed, group, job_name_input))
+        toggle_button = self.assemblies_toolbox.getLastToggleButton()
+
+        job_name_input: QLineEdit = self.assemblies_toolbox.getLastInputBox()
+        job_name_input.textChanged.connect(partial(self.assembly_name_renamed, assembly, job_name_input))
 
         job_name_input.textChanged.connect(
             partial(
@@ -396,41 +420,81 @@ QPushButton:checked:pressed#assembly_button_drop_menu {
             )
         )
 
-        duplicate_button = self.groups_toolbox.getLastDuplicateButton()
-        duplicate_button.clicked.connect(partial(self.duplicate_group, group))
+        duplicate_button = self.assemblies_toolbox.getLastDuplicateButton()
+        duplicate_button.clicked.connect(partial(self.duplicate_assembly, assembly))
 
-        delete_button = self.groups_toolbox.getLastDeleteButton()
-        delete_button.clicked.connect(partial(self.delete_group, group_widget))
+        delete_button = self.assemblies_toolbox.getLastDeleteButton()
+        delete_button.clicked.connect(partial(self.delete_assembly, assembly_widget))
 
-        self.group_widgets.append(group_widget)
+        assembly_widget.pushButton_laser_cut_parts.clicked.connect(
+            partial(
+                self.job_preferences.assembly_toolbox_toggled,
+                job_name_input,
+                toggle_button,
+                assembly_widget.pushButton_laser_cut_parts,
+                assembly_widget.pushButton_components,
+                assembly_widget.pushButton_sub_assemblies,
+            )
+        )
+        assembly_widget.pushButton_components.clicked.connect(
+            partial(
+                self.job_preferences.assembly_toolbox_toggled,
+                job_name_input,
+                toggle_button,
+                assembly_widget.pushButton_laser_cut_parts,
+                assembly_widget.pushButton_components,
+                assembly_widget.pushButton_sub_assemblies,
+            )
+        )
+        assembly_widget.pushButton_sub_assemblies.clicked.connect(
+            partial(
+                self.job_preferences.assembly_toolbox_toggled,
+                job_name_input,
+                toggle_button,
+                assembly_widget.pushButton_laser_cut_parts,
+                assembly_widget.pushButton_components,
+                assembly_widget.pushButton_sub_assemblies,
+            )
+        )
 
-        if self.job_preferences.is_group_closed(group.name):
-            self.groups_toolbox.closeLastToolBox()
+        self.assembly_widgets.append(assembly_widget)
 
-        return group_widget
+        if self.job_preferences.is_assembly_closed(assembly.name):
+            self.assemblies_toolbox.closeLastToolBox()
 
-    def load_group(self, group: Group):
-        group_widget = self.add_group(group)
-        for assembly in group.assemblies:
-            group_widget.load_assembly(assembly)
+        assembly_widget.pushButton_laser_cut_parts.setChecked(self.job_preferences.is_assembly_laser_cut_closed(assembly.name))
+        assembly_widget.laser_cut_widget.setHidden(not self.job_preferences.is_assembly_laser_cut_closed(assembly.name))
+        assembly_widget.pushButton_components.setChecked(self.job_preferences.is_assembly_component_closed(assembly.name))
+        assembly_widget.component_widget.setHidden(not self.job_preferences.is_assembly_component_closed(assembly.name))
+        assembly_widget.pushButton_sub_assemblies.setChecked(self.job_preferences.is_assembly_sub_assembly_closed(assembly.name))
+        assembly_widget.sub_assemblies_widget.setHidden(not self.job_preferences.is_assembly_sub_assembly_closed(assembly.name))
+
+        return assembly_widget
+
+    def load_assembly(self, sub_assembly: Assembly):
+        assembly_widget = self.add_assembly(sub_assembly)
+        for sub_assembly in sub_assembly.sub_assemblies:
+            sub_assembly.job = self.job
+            assembly_widget.load_sub_assembly(sub_assembly)
         self.load_nests()
         self.update_nest_summary()
 
-    def group_name_renamed(self, group: Group, new_group_name: QLineEdit):
-        group.name = new_group_name.text()
+    def assembly_name_renamed(self, assembly: Assembly, new_group_name: QLineEdit):
+        assembly.name = new_group_name.text()
         self.changes_made()
 
-    def duplicate_group(self, group: Group):
-        new_group = Group(f"{group.name} - (Copy)", group.to_dict(), self.job)
-        new_group.color = colors.get_random_color()
-        self.load_group(new_group)
-        self.job.add_group(new_group)
+    def duplicate_assembly(self, assembly: Assembly):
+        new_assembly = Assembly(assembly.to_dict(), self.job)
+        new_assembly.name = f"{assembly.name} - (Copy)"
+        new_assembly.color = colors.get_random_color()
+        self.load_assembly(new_assembly)
+        self.job.add_assembly(new_assembly)
         self.changes_made()
 
-    def delete_group(self, group_widget: GroupWidget):
-        self.group_widgets.remove(group_widget)
-        self.groups_toolbox.removeItem(group_widget)
-        self.job.remove_group(group_widget.group)
+    def delete_assembly(self, assembly_widget: Union[AssemblyPlanningWidget, AssemblyQuotingWidget]):
+        self.assembly_widgets.remove(assembly_widget)
+        self.assemblies_toolbox.removeItem(assembly_widget)
+        self.job.remove_assembly(assembly_widget.assembly)
         self.changes_made()
 
     def reload_job(self):
@@ -531,16 +595,17 @@ QPushButton:checked:pressed#assembly_button_drop_menu {
         self.changes_made()
 
     def update_tables(self):
-        for group_widget in self.group_widgets:
+        for group_widget in self.assembly_widgets:
             group_widget.update_tables()
 
     def update_prices(self):
-        self.price_calculator.update_laser_cut_parts_cost()
-        self.price_calculator.update_laser_cut_parts_to_sheet_price()
-        self.label_total_cost_for_parts.setText(f"Total Cost for Parts: ${self.price_calculator.get_job_cost():,.2f}")
-        self.label_total_cost_for_sheets.setText(f"Total Cost for Nested Sheets: ${self.price_calculator.get_total_cost_for_sheets():,.2f}")
-        for group_widget in self.group_widgets:
-            group_widget.update_prices()
+        if self.main_window_tab_widget.tabText(self.main_window_tab_widget.currentIndex()) == "Job Quoter":
+            self.price_calculator.update_laser_cut_parts_cost()
+            self.price_calculator.update_laser_cut_parts_to_sheet_price()
+            self.label_total_cost_for_parts.setText(f"Total Cost for Parts: ${self.price_calculator.get_job_cost():,.2f}")
+            self.label_total_cost_for_sheets.setText(f"Total Cost for Nested Sheets: ${self.price_calculator.get_total_cost_for_sheets():,.2f}")
+            for assembly_widget in self.assembly_widgets:
+                assembly_widget.update_prices()
 
     def price_settings_changed(self):
         self.price_calculator.item_overhead = self.doubleSpinBox_items_overhead.value() / 100

@@ -1,5 +1,5 @@
 import contextlib
-from typing import TYPE_CHECKING, Union
+from typing import TYPE_CHECKING, Union, Optional
 
 from PyQt6 import uic
 from PyQt6.QtCore import Qt
@@ -19,27 +19,30 @@ from PyQt6.QtWidgets import (
 
 from ui.windows.image_viewer import QImageViewer
 from ui.windows.pdf_viewer import PDFViewer
+from ui.dialogs.add_assembly_dialog import AddAssemblyDialog
 from utils.colors import darken_color, lighten_color
 from utils.workspace.assembly import Assembly
 from utils.workspace.job_preferences import JobPreferences
 
 if TYPE_CHECKING:
-    from ui.widgets.group_widget import GroupWidget
+    from ui.custom.job_tab import JobTab
+    from ui.widgets.job_widget import JobWidget
 
 
 class AssemblyWidget(QWidget):
     def __init__(self, assembly: Assembly, parent) -> None:
         super().__init__(parent)
         uic.loadUi("ui/widgets/assembly_widget.ui", self)
-        self.parent: Union["AssemblyWidget", GroupWidget] = parent
+        self.parent: Union["AssemblyWidget", JobWidget] = parent
 
         self.assembly = assembly
         self.job_preferences: JobPreferences = self.parent.job_preferences
-        self.sheet_settings = self.assembly.group.job.sheet_settings
-        self.workspace_settings = self.assembly.group.job.workspace_settings
-        self.components_inventory = self.assembly.group.job.components_inventory
-        self.laser_cut_inventory = self.assembly.group.job.laser_cut_inventory
+        self.sheet_settings = self.assembly.job.sheet_settings
+        self.workspace_settings = self.assembly.job.workspace_settings
+        self.components_inventory = self.assembly.job.components_inventory
+        self.laser_cut_inventory = self.assembly.job.laser_cut_inventory
         self.price_calculator = self.parent.price_calculator
+        self.job_tab: JobTab = self.parent.parent
 
         self.assembly_widget = self.findChild(QWidget, "assembly_widget")
         self.assembly_widget.setStyleSheet(
@@ -51,7 +54,7 @@ border-bottom-right-radius: 10px;
 border-top-right-radius: 0px;
 border-top-left-radius: 0px;
 }"""
-            % {"base_color": self.assembly.group.color}
+            % {"base_color": self.assembly.color}
         )
         self.verticalLayout_14 = self.findChild(QVBoxLayout, "verticalLayout_14")
         self.verticalLayout_14.setAlignment(Qt.AlignmentFlag.AlignTop)
@@ -96,7 +99,7 @@ border-top-left-radius: 0px;
         self.add_existing_assembly_button = self.findChild(QPushButton, "add_existing_assembly_button")
 
     def apply_stylesheet_to_toggle_buttons(self, button: QPushButton, widget: QWidget):
-        base_color = self.assembly.group.color
+        base_color = self.assembly.color
         hover_color: str = lighten_color(base_color)
         pressed_color: str = darken_color(base_color)
         button.setObjectName("assembly_button_drop_menu")
@@ -190,6 +193,12 @@ QPushButton:checked:pressed#assembly_button_drop_menu {
                 item = QTableWidgetItem()
                 table.setItem(row_index, j, item)
             item.setBackground(QColor(color))
+
+    def get_assemblies_dialog(self) -> Optional[list[Assembly]]:
+        dialog = AddAssemblyDialog(self.job_tab.get_active_jobs(), self)
+        if dialog.exec():
+            return dialog.get_selected_assemblies()
+        return None
 
     def changes_made(self):
         self.parent.changes_made()

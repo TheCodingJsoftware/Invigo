@@ -34,7 +34,7 @@ class Quote:
         self.grouped_laser_cut_parts: list[LaserCutPart] = []
         self.components: list[Component] = []
         self.nests: list[Nest] = []
-        self.custom_nest: Nest = Nest("Custom", {}, self.sheet_settings, self.laser_cut_inventory)
+        self.custom_nest = Nest({"name": "Custom"}, self.sheet_settings, self.laser_cut_inventory)
         self.custom_nest.is_custom = True
 
         # * Nest, Sheet, Item Quoting Settings
@@ -92,7 +92,6 @@ class Quote:
                     laser_cut_part_dict[laser_cut_part.name].quantity += laser_cut_part.quantity
                 else:
                     new_laser_cut_part = LaserCutPart(
-                        laser_cut_part.name,
                         laser_cut_part.to_dict(),
                         self.laser_cut_inventory,
                     )
@@ -151,23 +150,33 @@ class Quote:
     def load_data(self, data: dict[str, dict[str, str | bool | float]]):
         self.load_settings(data)
         self.components.clear()
-        for component_name, component_data in data["components"].items():
-            self.components.append(Component(component_name, component_data, self.component_inventory))
+        for component_data in data["components"]:
+            try:
+                component = Component(component_data, self.component_inventory)
+            except AttributeError: # Old inventory format
+                component = Component(data["components"][component_data], self.component_inventory)
+                component.name = component_data
+            self.components.append(component)
 
         self.nests.clear()
 
         custom_nest_data = data.get("custom_nest", {})
-        self.custom_nest = Nest("Custom", custom_nest_data, self.sheet_settings, self.laser_cut_inventory)
+        self.custom_nest = Nest(custom_nest_data, self.sheet_settings, self.laser_cut_inventory)
+        self.custom_nest.name = "Custom"
         self.custom_nest.is_custom = True
 
-        for nest_name, nest_data in data["nests"].items():
-            self.nests.append(Nest(nest_name, nest_data, self.sheet_settings, self.laser_cut_inventory))
+        for nest_data in data["nests"]:
+            try:
+                nest = Nest(nest_data, self.sheet_settings, self.laser_cut_inventory)
+            except AttributeError: # Old inventory format
+                nest = Nest(data["nests"][nest_data], self.sheet_settings, self.laser_cut_inventory)
+            self.nests.append(nest)
 
         self.group_laser_cut_parts()
 
     def to_dict(self) -> dict[str, dict[str, dict]]:
         self.unsaved_changes = False
-        data: dict[str, dict[str, dict]] = {
+        return {
             "settings": {
                 "laser_cutting_method": self.laser_cutting_method,
                 "laser_cutting_cost": self.laser_cutting_cost,
@@ -189,15 +198,7 @@ class Quote:
                 "ship_to": self.ship_to,
                 "date_expected": self.date_expected,
             },
-            "components": {},
-            "nests": {},
+            "components": [component.to_dict() for component in self.components],
+            "nests": [nest.to_dict() for nest in self.nests],
             "custom_nest": self.custom_nest.to_dict(),
         }
-
-        for component in self.components:
-            data["components"].update({component.name: component.to_dict()})
-
-        for nest in self.nests:
-            data["nests"].update({nest.name: nest.to_dict()})
-
-        return data

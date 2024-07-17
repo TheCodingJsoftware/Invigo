@@ -2,8 +2,8 @@ from utils.inventory.category import Category
 
 
 class InventoryItem:
-    def __init__(self, name: str):
-        self.name: str = name
+    def __init__(self):
+        self.name = ""
         self.categories: list[Category] = []
 
     def print_categories(self) -> str:

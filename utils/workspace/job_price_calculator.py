@@ -8,7 +8,6 @@ from utils.inventory.paint_inventory import PaintInventory
 from utils.inventory.nest import Nest
 from utils.sheet_settings.sheet_settings import SheetSettings
 from utils.workspace.assembly import Assembly
-from utils.workspace.group import Group
 
 if TYPE_CHECKING:
     from utils.workspace.job import Job
@@ -63,18 +62,15 @@ class JobPriceCalculator:
 
     def get_job_cost(self) -> float:
         total = 0.0
-        for group in self.job.groups:
-            total += self.get_group_cost(group)
-        return total
-
-    def get_group_cost(self, group: Group) -> float:
-        total = 0.0
-        for assembly in group.get_all_assemblies():
+        for assembly in self.job.assemblies:
             total += self.get_assembly_cost(assembly)
         return total
 
     def get_assembly_cost(self, assembly: Assembly) -> float:
-        return self.get_laser_cut_parts_cost(assembly.laser_cut_parts) * assembly.quantity + self.get_components_cost(assembly.components) * assembly.quantity
+        total = self.get_laser_cut_parts_cost(assembly.laser_cut_parts) * assembly.quantity + self.get_components_cost(assembly.components) * assembly.quantity
+        for sub_assembly in assembly.sub_assemblies:
+            total += self.get_assembly_cost(sub_assembly)
+        return total
 
     def get_laser_cut_parts_cost(self, laser_cut_parts: list[LaserCutPart]) -> float:
         total = 0.0

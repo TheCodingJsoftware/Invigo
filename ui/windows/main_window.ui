@@ -80,7 +80,7 @@
        <enum>QTabWidget::TabShape::Rounded</enum>
       </property>
       <property name="currentIndex">
-       <number>6</number>
+       <number>7</number>
       </property>
       <property name="elideMode">
        <enum>Qt::TextElideMode::ElideNone</enum>
@@ -394,7 +394,7 @@
                       <rect>
                        <x>0</x>
                        <y>0</y>
-                       <width>80</width>
+                       <width>68</width>
                        <height>16</height>
                       </rect>
                      </property>
@@ -486,7 +486,7 @@ QPushButton#pushButton_send_to_workspace:disabled{
 }</string>
                 </property>
                 <property name="text">
-                 <string>Send Job to Workspace</string>
+                 <string>Send Jobs to Workspace</string>
                 </property>
                </widget>
               </item>
@@ -516,7 +516,7 @@ QPushButton#pushButton_send_to_workspace:disabled{
          <number>0</number>
         </property>
         <property name="bottomMargin">
-         <number>0</number>
+         <number>9</number>
         </property>
         <item>
          <widget class="QSplitter" name="splitter_2">
@@ -580,6 +580,9 @@ QPushButton#pushButton_send_to_workspace:disabled{
                     <property name="text">
                      <string>Clear All Selections</string>
                     </property>
+                    <property name="icon">
+                     <iconset theme="edit-clear"/>
+                    </property>
                    </widget>
                   </item>
                   <item>
@@ -606,7 +609,10 @@ QPushButton#pushButton_send_to_workspace:disabled{
                    </size>
                   </property>
                   <property name="text">
-                   <string>Load 0 Nests</string>
+                   <string>Import 0 Nests</string>
+                  </property>
+                  <property name="icon">
+                   <iconset theme="emblem-symbolic-link"/>
                   </property>
                  </widget>
                 </item>
@@ -633,7 +639,7 @@ QPushButton#pushButton_send_to_workspace:disabled{
                     <rect>
                      <x>0</x>
                      <y>0</y>
-                     <width>80</width>
+                     <width>68</width>
                      <height>16</height>
                     </rect>
                    </property>
@@ -684,7 +690,7 @@ QPushButton#pushButton_send_to_workspace:disabled{
                     <rect>
                      <x>0</x>
                      <y>0</y>
-                     <width>80</width>
+                     <width>68</width>
                      <height>16</height>
                     </rect>
                    </property>
@@ -776,7 +782,7 @@ QPushButton#pushButton_send_to_workspace_2:disabled{
 }</string>
               </property>
               <property name="text">
-               <string>Send Job to Workspace</string>
+               <string>Send Jobs to Workspace</string>
               </property>
              </widget>
             </item>
@@ -932,6 +938,9 @@ QPushButton#pushButton_send_to_workspace_2:disabled{
                        <property name="text">
                         <string>Clear All Selections</string>
                        </property>
+                       <property name="icon">
+                        <iconset theme="edit-clear"/>
+                       </property>
                       </widget>
                      </item>
                      <item>
@@ -991,7 +1000,7 @@ QPushButton#pushButton_send_to_workspace_2:disabled{
                        <rect>
                         <x>0</x>
                         <y>0</y>
-                        <width>80</width>
+                        <width>68</width>
                         <height>16</height>
                        </rect>
                       </property>
@@ -1060,7 +1069,7 @@ QPushButton#pushButton_send_to_workspace_2:disabled{
                        <rect>
                         <x>0</x>
                         <y>0</y>
-                        <width>80</width>
+                        <width>68</width>
                         <height>16</height>
                        </rect>
                       </property>
@@ -1117,7 +1126,10 @@ QPushButton#pushButton_send_to_workspace_2:disabled{
                  <item>
                   <widget class="QPushButton" name="pushButton_save_as">
                    <property name="text">
-                    <string>Save As...</string>
+                    <string>Save As... (Ctrl + Shift + S)</string>
+                   </property>
+                   <property name="icon">
+                    <iconset theme="document-save-as"/>
                    </property>
                   </widget>
                  </item>

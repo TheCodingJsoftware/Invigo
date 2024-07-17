@@ -816,11 +816,8 @@ class ComponentsTab(QWidget):
             for job_widget in self.parent.job_planner_widget.job_widgets:
                 job = job_widget.job
                 job_menu = QMenu(job.name, job_planner_menu)
-                for group in job.groups:
-                    group_menu = QMenu(group.name, job_menu)
-                    for assembly in group.assemblies:
-                        self.load_assembly_menu(group_menu, job, [assembly])
-                    job_menu.addMenu(group_menu)
+                for assembly in job.assemblies:
+                    self.load_assembly_menu(job_menu, job, [assembly])
                 job_planner_menu.addMenu(job_menu)
 
             menu.addMenu(job_planner_menu)
@@ -830,7 +827,7 @@ class ComponentsTab(QWidget):
     def add_to_assembly(self, job: Job, assembly: Assembly):
         if components := self.get_selected_components():
             for component in components:
-                assembly.add_component(Component(component.name, component.to_dict(), self.components_inventory))
+                assembly.add_component(Component(component.to_dict(), self.components_inventory))
             job.changes_made()
             if len(components) == 1:
                 self.parent.status_button.setText(f"Added {len(components)} component to {job.name}", "lime")
@@ -858,9 +855,8 @@ class ComponentsTab(QWidget):
                     response = msg_box.exec()
                     return
 
-            new_component = Component(
-                add_item_dialog.get_part_number(),
-                {
+            new_component = Component({
+                    "part_number": add_item_dialog.get_part_number(),
                     "part_name": add_item_dialog.get_name(),
                     "unit_quantities": {self.category: add_item_dialog.get_unit_quantity()},
                     "current_quantity": add_item_dialog.get_current_quantity(),
