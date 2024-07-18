@@ -112,17 +112,13 @@ class SendJobsToWorkspaceDialog(QDialog):
         spin_box.setDecimals(0)
         spin_box.setMinimum(1)
 
-        group_assemblies_checkbox = QCheckBox("Split up Assemblies")
-
         layout.addWidget(label)
         layout.addWidget(label_1)
         layout.addWidget(spin_box)
-        layout.addWidget(group_assemblies_checkbox)
 
-        layout.setStretch(0, 2)
+        layout.setStretch(0, 1)
         layout.setStretch(1, 0)
         layout.setStretch(2, 1)
-        layout.setStretch(3, 0)
 
         container.setLayout(layout)
 
@@ -136,7 +132,7 @@ class SendJobsToWorkspaceDialog(QDialog):
                 widget.deleteLater()
                 break
 
-    def get_selected_jobs(self) -> dict[str, list[tuple[str, float, bool]]]:
+    def get_selected_jobs(self) -> dict[str, list[tuple[str, int]]]:
         selected_jobs = {"planning": [], "quoting": []}
 
         def collect_selected_jobs(item: QTreeWidgetItem, category: str):
@@ -145,10 +141,8 @@ class SendJobsToWorkspaceDialog(QDialog):
                     widget = self.verticalLayout_workorders.itemAt(i).widget()
                     if widget and widget.objectName() == item.text(0):
                         spin_box = widget.findChild(QDoubleSpinBox)
-                        group_assemblies_checkbox = widget.findChild(QCheckBox)
                         quantity = int(spin_box.value()) if spin_box else 1
-                        group_assemblies = group_assemblies_checkbox.isChecked() if group_assemblies_checkbox else False
-                        selected_jobs[category].append((item.text(0), quantity, group_assemblies))
+                        selected_jobs[category].append((item.text(0), quantity))
                         break
             for i in range(item.childCount()):
                 collect_selected_jobs(item.child(i), category)

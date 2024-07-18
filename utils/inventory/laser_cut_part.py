@@ -76,17 +76,30 @@ class LaserCutPart(InventoryItem):
 
         self.flow_tag: FlowTag = None
         self.current_flow_tag_index: int = 0
+        self.current_flow_tag_status_index: int = 0
         self.bending_files: list[str] = []
         self.welding_files: list[str] = []
         self.cnc_milling_files: list[str] = []
 
         # NOTE Only for Quote Generator and load_nest.py
         self.nest: Nest = None
-        self.quoted_price: float = 0.0
         self.quantity_in_nest: int = None
         self.matched_to_sheet_cost_price: float = 0.0
 
         self.load_data(data)
+
+    def is_process_finished(self) -> bool:
+        return self.current_flow_tag_index >= len(self.flow_tag.tags)
+
+    def mark_as_recut(self):
+        self.current_flow_tag_index = 0
+        self.recut = True
+        self.recut_count += 1
+
+    def move_to_next_process(self):
+        if not self.is_process_finished():
+            self.current_flow_tag_index += 1
+            self.recut = False
 
     def get_current_tag(self) -> Optional[Tag]:
         try:
@@ -186,6 +199,7 @@ class LaserCutPart(InventoryItem):
 
         self.flow_tag = FlowTag("", data.get("flow_tag", {"name": "", "tags": []}), self.workspace_settings)
         self.current_flow_tag_index = data.get("current_flow_tag_index", 0)
+        self.current_flow_tag_status_index = data.get("current_flow_tag_status_index", 0)
         self.bending_files.clear()
         self.bending_files = data.get("bending_files", [])
         self.welding_files.clear()
@@ -267,6 +281,7 @@ class LaserCutPart(InventoryItem):
             "quantity_in_nest": self.quantity_in_nest,
             "flow_tag": self.flow_tag.to_dict(),
             "current_flow_tag_index": self.current_flow_tag_index,
+            "current_flow_tag_status_index": self.current_flow_tag_status_index,
             "bending_files": self.bending_files,
             "welding_files": self.welding_files,
             "cnc_milling_files": self.cnc_milling_files,

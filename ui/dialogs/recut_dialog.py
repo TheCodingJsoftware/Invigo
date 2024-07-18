@@ -8,8 +8,8 @@ from PyQt6.QtWidgets import QDialog
 class RecutDialog(QDialog):
     def __init__(
         self,
-        message,
-        max_value,
+        message: str,
+        max_value: float,
         parent,
     ) -> None:
         super().__init__(parent)
@@ -21,7 +21,7 @@ class RecutDialog(QDialog):
         self.max_value = max_value
 
         self.lblMessage.setText(message)
-        self.doubleSpinBox_input.setMaximum(max_value)
+        self.doubleSpinBox_input.setMaximum(float(max_value))
 
         self.pushButton_1.clicked.connect(partial(self.quick_input_button_press, "1"))
         self.pushButton_2.clicked.connect(partial(self.quick_input_button_press, "2"))
@@ -32,11 +32,17 @@ class RecutDialog(QDialog):
         self.pushButton_ok.clicked.connect(self.button_press)
         self.pushButton_cancel.clicked.connect(self.reject)
 
-    def quick_input_button_press(self, input_text) -> None:
+    def quick_input_button_press(self, input_text: str) -> None:
         if input_text == "All":
-            self.input_text = self.max_value
+            self.input_text = float(self.max_value)
+        else:
+            self.input_text = float(input_text)
+        self.doubleSpinBox_input.setValue(self.input_text)
         self.accept()
 
     def button_press(self) -> None:
         self.input_text = self.doubleSpinBox_input.value()
         self.accept()
+
+    def get_quantity(self) -> int:
+        return int(self.input_text)

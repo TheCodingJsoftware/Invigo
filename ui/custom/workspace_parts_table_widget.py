@@ -20,6 +20,7 @@ class WorkspacePartsTableColumns(AutoNumber):
     PROCESS_CONTROLS = auto()
     NOTES = auto()
     SHELF_NUMBER = auto()
+    RECUT = auto()
 
 
 class WorkspacePartsTableWidget(CustomTableWidget):
@@ -47,6 +48,7 @@ class WorkspacePartsTableWidget(CustomTableWidget):
             "Process Controls": WorkspacePartsTableColumns.PROCESS_CONTROLS.value,
             "Shelf #": WorkspacePartsTableColumns.SHELF_NUMBER.value,
             "Notes": WorkspacePartsTableColumns.NOTES.value,
+            "Recut": WorkspacePartsTableColumns.RECUT.value,
         }
 
         self.setColumnCount(len(headers))

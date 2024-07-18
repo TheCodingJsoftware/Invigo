@@ -159,38 +159,18 @@ class Job:
         self.group_components()
         return self.grouped_components
 
-    def load_data(self, data: dict[str, dict[str, object]]):
-        if not data:
-            return
-
+    def load_settings(self, data: dict[str, dict[str, object]]):
         job_data = data.get("job_data", {})
         self.name = job_data.get("name", "")
         self.order_number = job_data.get("order_number", 0.0)
         self.ship_to = job_data.get("ship_to", "")
         self.date_shipped = job_data.get("date_shipped", "")
         self.date_expected = job_data.get("date_expected", "")
-        self.status = JobStatus(int(job_data.get("type", 0)))  # We cast just in case, trust me
+        self.status = JobStatus(int(job_data.get("type", 1)))  # We cast just in case, trust me
         self.color = JobColor.get_color(self.status)
         self.price_calculator.load_settings(job_data.get("price_settings", {}))
 
-        nests_data = data.get("nests", [])
-
-        self.nests.clear()
-        for nest_data in nests_data:
-            nest = Nest(nest_data, self.sheet_settings, self.laser_cut_inventory)
-            self.add_nest(nest)
-
-        assemblies_data = data.get("assemblies", [])
-
-        self.assemblies.clear()
-        for assembly_data in assemblies_data:
-            assembly = Assembly(assembly_data, self)
-            self.add_assembly(assembly)
-
-    def to_dict(self) -> dict:
-        self.unsaved_changes = False
-
-        # Updating all parts in the main inventory
+    def update_inventory_items_data(self):
         for laser_cut_part in self.get_all_laser_cut_parts():
             if inventory_laser_cut_part := self.laser_cut_inventory.get_laser_cut_part_by_name(laser_cut_part.name):
                 inventory_laser_cut_part.bending_files = laser_cut_part.bending_files
@@ -217,6 +197,34 @@ class Job:
                 inventory_component.image_path = component.image_path
         self.components_inventory.save()
 
+    def is_valid(self) -> tuple[bool, str]:
+        for assembly in self.get_all_assemblies():
+            if not assembly.flow_tag:
+                return (False, assembly.name)
+        for laser_cut_part in self.get_all_laser_cut_parts():
+            if not laser_cut_part.flow_tag.tags:
+                return (False, laser_cut_part.name)
+        return (True, "")
+
+    def load_data(self, data: dict[str, dict[str, object]]):
+        self.load_settings(data)
+
+        nests_data = data.get("nests", [])
+
+        self.nests.clear()
+        for nest_data in nests_data:
+            nest = Nest(nest_data, self.sheet_settings, self.laser_cut_inventory)
+            self.add_nest(nest)
+
+        assemblies_data = data.get("assemblies", [])
+
+        self.assemblies.clear()
+        for assembly_data in assemblies_data:
+            assembly = Assembly(assembly_data, self)
+            self.add_assembly(assembly)
+
+    def to_dict(self) -> dict:
+        self.unsaved_changes = False
         return {
             "job_data": {
                 "name": self.name,

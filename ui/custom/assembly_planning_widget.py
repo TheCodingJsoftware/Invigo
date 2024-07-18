@@ -210,7 +210,10 @@ class AssemblyPlanningWidget(AssemblyWidget):
 
     def assembly_flow_tag_changed(self):
         self.assembly.flow_tag = self.workspace_settings.get_flow_tag_by_name(self.comboBox_assembly_flow_tag.currentText())
-        self.paint_widget.setVisible(self.assembly.flow_tag.contains(["paint", "powder", "coating", "liquid"]))
+        try:
+            self.paint_widget.setVisible(self.assembly.flow_tag.contains(["paint", "powder", "coating", "liquid"]))
+        except AttributeError: # There is no flow tag selected
+            self.paint_widget.setHidden(True)
         self.changes_made()
 
     def add_assembly_drag_file_widget(self, files_layout: QHBoxLayout, file_path: str):

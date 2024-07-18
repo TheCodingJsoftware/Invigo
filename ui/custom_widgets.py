@@ -44,7 +44,6 @@ from PyQt6.QtWidgets import (
 
 from utils.colors import darken_color, lighten_color
 from utils.workspace.assembly import Assembly
-from utils.workspace.workspace_item import WorkspaceItem
 
 
 class PreviousQuoteItem(QGroupBox):
@@ -906,84 +905,6 @@ class DraggableButton(QPushButton):
         self.dragging = False
         if event.button() == Qt.MouseButton.LeftButton:
             super().mouseReleaseEvent(event)
-
-
-class DropWidget(QWidget):
-    def __init__(
-        self,
-        parent,
-        assembly: Assembly,
-        item: WorkspaceItem,
-        files_layout: QHBoxLayout,
-        file_category: str,
-    ):
-        super().__init__()
-        self.parent = parent
-        self.setAcceptDrops(True)
-        self.assembly = assembly
-        self.item = item
-        self.files_layout = files_layout
-        self.file_category = file_category
-        self.setMaximumWidth(1000)
-        layout = QVBoxLayout(self)
-        layout.setAlignment(Qt.AlignmentFlag.AlignCenter)
-        layout.setContentsMargins(0, 0, 0, 0)
-        layout.setSpacing(0)
-        self.setLayout(layout)
-
-        self.label = QLabel("Drag Here", self)
-        self.label.setMaximumWidth(1000)
-        self.label.setMinimumHeight(40)
-        self.label.setStyleSheet("background-color: rgba(30,30,30,100);")
-        layout.addWidget(self.label)
-
-    def dragEnterEvent(self, event: QDragEnterEvent):
-        if event.mimeData().hasUrls():
-            self.label.setText("Drop Me")
-            self.label.setStyleSheet("background-color: rgba(70,210,110, 100);")
-            event.accept()
-        else:
-            self.label.setText("Drag Here")
-            self.label.setStyleSheet("background-color: rgba(30,30,30,100);")
-            event.ignore()
-
-    def dragLeaveEvent(self, event: QDragEnterEvent):
-        self.label.setText("Drag Here")
-        self.label.setStyleSheet("background-color: rgba(30,30,30,100);")
-        event.accept()
-
-    def dropEvent(self, event: QDropEvent):
-        if event.mimeData().hasUrls():
-            urls = event.mimeData().urls()
-            file_paths = [url.toLocalFile() for url in urls]
-            allowed_extensions = [
-                ".pdf",
-                ".dxf",
-                ".jpeg",
-                ".geo",
-                ".png",
-                ".jpg",
-                "sldprt",
-            ]  # Allowed file extensions
-            valid_files = all(file_path.lower().endswith(tuple(allowed_extensions)) for file_path in file_paths)
-            if valid_files:
-                self.label.setText("Processing")
-                self.label.setStyleSheet("background-color: rgba(70,210,110, 100);")
-                self.parent.handle_dropped_file(
-                    self.label,
-                    file_paths,
-                    self.assembly,
-                    self.item,
-                    self.files_layout,
-                    self.file_category,
-                )
-                event.accept()
-            else:
-                self.label.setText("Not allowed")
-                self.label.setStyleSheet("background-color: rgba(210,70,60, 100);")
-                event.ignore()
-        else:
-            event.ignore()
 
 
 class DictionaryTableModel(QAbstractTableModel):
