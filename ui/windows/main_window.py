@@ -20,7 +20,7 @@ from PyQt6.QtGui import QAction, QColor, QCursor, QDragEnterEvent, QDragLeaveEve
 from PyQt6.QtWidgets import QApplication, QComboBox, QFileDialog, QFontDialog, QGridLayout, QInputDialog, QLabel, QListWidget, QListWidgetItem, QMainWindow, QMenu, QMessageBox, QPushButton, QScrollArea, QSplitter, QTableWidgetItem, QTabWidget, QToolBox, QVBoxLayout, QWidget
 
 from ui.custom.job_tab import JobTab
-from ui.custom_widgets import CustomTableWidget, MultiToolBox, PdfTreeView, PreviousQuoteItem, RichTextPushButton, SavedQuoteItem, ScrollPositionManager, ViewTree, set_default_dialog_button_stylesheet
+from ui.custom_widgets import CustomTableWidget, MultiToolBox, PdfTreeView, PreviousQuoteItem, RichTextPushButton, SavedQuoteItem, ScrollPositionManager, set_default_dialog_button_stylesheet
 from ui.dialogs.about_dialog import AboutDialog
 from ui.dialogs.edit_paint_inventory import EditPaintInventory
 from ui.dialogs.edit_workspace_settings import EditWorkspaceSettings
@@ -88,7 +88,7 @@ from utils.workspace.job_preferences import JobPreferences
 from utils.workspace.workspace import Workspace
 from utils.workspace.workspace_settings import WorkspaceSettings
 
-__version__: str = "v3.2.2"
+__version__: str = "v3.2.3"
 
 
 def check_folders(folders: list[str]) -> None:
@@ -875,6 +875,20 @@ class MainWindow(QMainWindow):
             ],
         )
 
+    def add_job_to_workspace(self, jobs_data: dict[str, int]):
+        job_name, job_quantity = jobs_data
+        if not (job := self.job_planner_widget.get_job(job_name)):
+            msg = QMessageBox(QMessageBox.Icon.Question, "Could not find job?", f"{job_name} not found. How did this happen?\n\nOperation aborted.", QMessageBox.StandardButton.Ok, self)
+            msg.exec()
+            return
+        is_job_valid, response = job.is_valid()
+        if not is_job_valid:
+            msg = QMessageBox(QMessageBox.Icon.Information, "Flow tags missing", f"{job.name} is not properly set up.\n\nCheck: {response}\n\nOperation aborted.", QMessageBox.StandardButton.Ok, self)
+            msg.exec()
+            return
+        for _ in range(job_quantity):  # Add job x amount of times
+            self.workspace.add_job(job)
+
     def send_job_to_workspace(self):
         active_jobs_in_planning = {}
         for job_widget in self.job_planner_widget.job_widgets:
@@ -903,22 +917,11 @@ class MainWindow(QMainWindow):
 
         if send_to_workspace_dialog.exec():
             selected_jobs = send_to_workspace_dialog.get_selected_jobs()
-            msg = QMessageBox(QMessageBox.Icon.Information, "In development", f"Selected Jobs: {selected_jobs}\n\nNothing happen.", QMessageBox.StandardButton.Ok, self)
-            msg.exec()
-            return
             self.workspace.load_data()
             for selected_job_data in selected_jobs.get("planning", []):
-                job_name, job_quantity, split_assemblies = selected_job_data
-                if job := self.job_planner_widget.get_job(job_name):
-                    for _ in range(job_quantity):  # Add job x amount of times
-                        new_job = Job(job.to_dict(), self.job_manager)
-                        self.workspace.add_job(new_job)
+                self.add_job_to_workspace(selected_job_data)
             for selected_job_data in selected_jobs.get("quoting", []):
-                job_name, job_quantity, split_assemblies = selected_job_data
-                if job := self.job_quote_widget.get_job(job_name):
-                    for _ in range(job_quantity):  # Add job x amount of times
-                        new_job = Job(job.to_dict(), self.job_manager)
-                        self.workspace.add_job(new_job)
+                self.add_job_to_workspace(selected_job_data)
             self.workspace.save()
             self.upload_file(
                 [

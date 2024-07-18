@@ -10,7 +10,7 @@ from PyQt6.QtCore import QDate, Qt
 from PyQt6.QtGui import QAction, QCursor, QFont, QIcon
 from PyQt6.QtWidgets import QAbstractItemView, QApplication, QComboBox, QCompleter, QGridLayout, QGroupBox, QHBoxLayout, QInputDialog, QLabel, QLineEdit, QMenu, QMessageBox, QPushButton, QScrollArea, QTableWidgetItem, QTabWidget, QVBoxLayout, QWidget
 
-from ui.custom_widgets import AssemblyImage, AssemblyMultiToolBox, CustomTableWidget, DeletePushButton, DraggableButton, DropWidget, FilterTabWidget, HumbleDoubleSpinBox, ItemsGroupBox, MultiToolBox, NotesPlainTextEdit, RecordingWidget, ScrollPositionManager, SelectRangeCalendar, TimeSpinBox
+from ui.custom_widgets import AssemblyImage, AssemblyMultiToolBox, CustomTableWidget, DeletePushButton, DraggableButton, FilterTabWidget, HumbleDoubleSpinBox, ItemsGroupBox, MultiToolBox, NotesPlainTextEdit, RecordingWidget, ScrollPositionManager, SelectRangeCalendar, TimeSpinBox
 from ui.dialogs.color_picker_dialog import ColorPicker
 from ui.dialogs.recut_dialog import RecutDialog
 from ui.widgets.workspace_widget import WorkspaceWidget
@@ -25,18 +25,11 @@ from utils.threads.workspace_upload_file_thread import WorkspaceUploadThread
 from utils.trusted_users import get_trusted_users
 from utils.workspace.assembly import Assembly
 from utils.workspace.workspace import Workspace
-from utils.workspace.workspace_item import WorkspaceItem
-from utils.workspace.workspace_item_group import WorkspaceItemGroup
 from utils.workspace.workspace_settings import WorkspaceSettings
 
 if TYPE_CHECKING:
     from ui.windows.main_window import MainWindow
 
-
-class Filter:
-    def __init__(self):
-        self.current_tag: str = None
-        self.search_text: str = ""
 
 
 class WorkspaceTabWidget(QWidget):
@@ -50,7 +43,7 @@ class WorkspaceTabWidget(QWidget):
         self.workspace = self.parent.workspace
         self.workspace_settings = self.parent.workspace_settings
 
-        self.filter = Filter()
+        self.workspace_filter = self.workspace.workspace_filter
 
         self.tag_buttons: list[QPushButton] = []
         self.last_selected_tag_button: QPushButton = None
@@ -113,7 +106,7 @@ class WorkspaceTabWidget(QWidget):
             self.tag_button_pressed(self.tag_buttons[0])
 
     def search_typing(self):
-        self.filter.search_text = self.lineEdit_search.text()
+        self.workspace_filter.search_text = self.lineEdit_search.text()
         self.has_searched = False
 
     def search_pressed(self):
@@ -133,7 +126,7 @@ class WorkspaceTabWidget(QWidget):
                 tag_button.setChecked(False)
                 tag_button.setEnabled(True)
         self.last_selected_tag_button = pressed_tag_button
-        self.filter.current_tag = pressed_tag_button.text()
+        self.workspace_filter.current_tag = pressed_tag_button.text()
         self.workspace_widget.load_parts_table()
         self.workspace_widget.load_assembly_table()
 

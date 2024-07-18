@@ -20,6 +20,7 @@ class UploadJobThread(QThread):
 
     def run(self) -> None:
         try:
+            self.job.update_inventory_items_data()
             data = {
                 "folder": self.folder,
                 "html_file_contents": self.html_file_contents,

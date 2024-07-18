@@ -551,7 +551,7 @@ class EditWorkspaceSettings(QDialog):
                 self.status_table_items[status].update({"name": status_name})
 
                 checkbox_moves_tag_forward = QCheckBox("Moves Tag Forward", self)
-                checkbox_moves_tag_forward.setChecked(status.completed)
+                checkbox_moves_tag_forward.setChecked(status.marks_complete)
                 checkbox_moves_tag_forward.stateChanged.connect(
                     partial(
                         self.checkbox_move_tag_forward_changed,
@@ -591,7 +591,7 @@ class EditWorkspaceSettings(QDialog):
         self.tableWidget_statuses.blockSignals(True)
         for status, table_items in self.status_table_items.items():
             status.name = table_items["name"].text()
-            status.completed = table_items["checkbox_move_tag_forward"].isChecked()
+            status.marks_complete = table_items["checkbox_move_tag_forward"].isChecked()
             status.start_timer = table_items["checkbox_starts_timer"].isChecked()
         self.tableWidget_statuses.blockSignals(False)
 
