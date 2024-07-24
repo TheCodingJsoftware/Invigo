@@ -29,6 +29,14 @@ details>summary {
 .assembly_data{
     display: flex;
 }
+#printout-controls{
+    display: grid;
+    grid-template-columns: 1fr;
+    align-items: center;
+    align-content: space-between;
+    row-gap: 10px;
+    padding: 1em;
+}
 @media print {
     .tabs, #showCoverPageLabel, #showAssemblies, #showNests, #showSheets, .checkbox, #printout-controls, .nested-parts, details:not([open]) {
         display: none;
