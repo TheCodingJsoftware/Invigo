@@ -17,7 +17,28 @@ from natsort import natsorted, ns
 from PyQt6 import uic
 from PyQt6.QtCore import QEventLoop, QPoint, Qt, QThread, QTimer
 from PyQt6.QtGui import QAction, QColor, QCursor, QDragEnterEvent, QDragLeaveEvent, QDragMoveEvent, QDropEvent, QFont, QIcon
-from PyQt6.QtWidgets import QApplication, QComboBox, QFileDialog, QFontDialog, QGridLayout, QInputDialog, QLabel, QListWidget, QListWidgetItem, QMainWindow, QMenu, QMessageBox, QPushButton, QScrollArea, QSplitter, QTableWidgetItem, QTabWidget, QToolBox, QVBoxLayout, QWidget
+from PyQt6.QtWidgets import (
+    QApplication,
+    QComboBox,
+    QFileDialog,
+    QFontDialog,
+    QGridLayout,
+    QInputDialog,
+    QLabel,
+    QListWidget,
+    QListWidgetItem,
+    QMainWindow,
+    QMenu,
+    QMessageBox,
+    QPushButton,
+    QScrollArea,
+    QSplitter,
+    QTableWidgetItem,
+    QTabWidget,
+    QToolBox,
+    QVBoxLayout,
+    QWidget,
+)
 
 from ui.custom.job_tab import JobTab
 from ui.custom_widgets import CustomTableWidget, MultiToolBox, PdfTreeView, PreviousQuoteItem, RichTextPushButton, SavedQuoteItem, ScrollPositionManager, set_default_dialog_button_stylesheet
@@ -88,7 +109,7 @@ from utils.workspace.job_preferences import JobPreferences
 from utils.workspace.workspace import Workspace
 from utils.workspace.workspace_settings import WorkspaceSettings
 
-__version__: str = "v3.2.3"
+__version__: str = "v3.2.4"
 
 
 def check_folders(folders: list[str]) -> None:
@@ -1821,7 +1842,17 @@ class MainWindow(QMainWindow):
             self.showMaximized()
 
     def download_all_files(self) -> None:
-        self.download_files([f"{self.sheet_settings.filename}.json", f"{self.paint_inventory.filename}.json", f"{self.workspace_settings.filename}.json", f"{self.laser_cut_inventory.filename}.json", f"{self.sheets_inventory.filename}.json", f"{self.components_inventory.filename}.json", f"{self.workspace.filename}.json"])
+        self.download_files(
+            [
+                f"{self.sheet_settings.filename}.json",
+                f"{self.paint_inventory.filename}.json",
+                f"{self.workspace_settings.filename}.json",
+                f"{self.laser_cut_inventory.filename}.json",
+                f"{self.sheets_inventory.filename}.json",
+                f"{self.components_inventory.filename}.json",
+                f"{self.workspace.filename}.json",
+            ]
+        )
 
     def load_nests_for_job_thread(self, nests: list[str]) -> None:
         QApplication.setOverrideCursor(Qt.CursorShape.WaitCursor)
@@ -2185,7 +2216,13 @@ class MainWindow(QMainWindow):
 
     def delete_job_thread(self, folder_path: str):
         job_name = folder_path.split("\\")[-1]
-        are_you_sure = QMessageBox(QMessageBox.Icon.Question, "Are you sure?", f"Are you sure you want to delete {job_name}?\n\nThis is permanent and cannot be undone.", QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No | QMessageBox.StandardButton.Cancel, self)
+        are_you_sure = QMessageBox(
+            QMessageBox.Icon.Question,
+            "Are you sure?",
+            f"Are you sure you want to delete {job_name}?\n\nThis is permanent and cannot be undone.",
+            QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No | QMessageBox.StandardButton.Cancel,
+            self,
+        )
         if are_you_sure.exec() == QMessageBox.StandardButton.Yes:
             self.status_button.setText(f"Deleting {folder_path}", "yellow")
             delete_job_thread = DeleteJobThread(folder_path)
@@ -2255,7 +2292,13 @@ class MainWindow(QMainWindow):
 
     def delete_quote_thread(self, folder_path: str):
         quote_name = folder_path.split("/")[-1]
-        are_you_sure = QMessageBox(QMessageBox.Icon.Question, "Are you sure?", f"Are you sure you want to delete {quote_name}?\n\nThis is permanent and cannot be undone.", QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No | QMessageBox.StandardButton.Cancel, self)
+        are_you_sure = QMessageBox(
+            QMessageBox.Icon.Question,
+            "Are you sure?",
+            f"Are you sure you want to delete {quote_name}?\n\nThis is permanent and cannot be undone.",
+            QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No | QMessageBox.StandardButton.Cancel,
+            self,
+        )
         if are_you_sure.exec() == QMessageBox.StandardButton.Yes:
             self.status_button.setText(f"Deleting {folder_path}", "yellow")
             delete_quote_thread = DeleteQuoteThread(folder_path)
@@ -2300,8 +2343,9 @@ class MainWindow(QMainWindow):
             msg.setIcon(QMessageBox.Icon.Information)
             msg.setWindowTitle("New Update Available")
             if update_message:
-                update_notes = f"\n\nUpdate Notes:\n{update_message}"
-            msg.setText(f"Current Version: {__version__}\nNew Version: {version}\n\nPlease consider updating to the latest version at your earliest convenience.{update_notes}\n\nWould you like to update?")
+                msg.setText(f"Current Version: {__version__}\nNew Version: {version}\n\nPlease consider updating to the latest version at your earliest convenience.\n\nUpdate Notes:\n{update_message}\n\nWould you like to update?")
+            else:
+                msg.setText(f"Current Version: {__version__}\nNew Version: {version}\n\nPlease consider updating to the latest version at your earliest convenience.\n\nWould you like to update?")
             msg.setStandardButtons(QMessageBox.StandardButton.No | QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.Cancel)
             msg.setDefaultButton(QMessageBox.StandardButton.Yes)
             response = msg.exec()

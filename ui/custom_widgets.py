@@ -5,7 +5,27 @@ from functools import partial
 
 from natsort import natsorted
 from PyQt6.QtCore import QAbstractTableModel, QDate, QDateTime, QEvent, QMargins, QMimeData, QModelIndex, QPoint, QRegularExpression, QSize, QSortFilterProxyModel, Qt, QTimer, QUrl, pyqtSignal
-from PyQt6.QtGui import QBrush, QColor, QCursor, QDrag, QDragEnterEvent, QDragLeaveEvent, QDragMoveEvent, QDropEvent, QFileSystemModel, QIcon, QKeySequence, QMouseEvent, QPainter, QPalette, QPixmap, QRegularExpressionValidator, QStandardItem, QStandardItemModel, QTextCharFormat
+from PyQt6.QtGui import (
+    QBrush,
+    QColor,
+    QCursor,
+    QDrag,
+    QDragEnterEvent,
+    QDragLeaveEvent,
+    QDragMoveEvent,
+    QDropEvent,
+    QFileSystemModel,
+    QIcon,
+    QKeySequence,
+    QMouseEvent,
+    QPainter,
+    QPalette,
+    QPixmap,
+    QRegularExpressionValidator,
+    QStandardItem,
+    QStandardItemModel,
+    QTextCharFormat,
+)
 from PyQt6.QtWidgets import (
     QAbstractItemView,
     QAbstractSpinBox,

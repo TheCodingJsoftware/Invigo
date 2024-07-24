@@ -13,12 +13,27 @@ from PyQt6.QtWidgets import QAbstractItemView, QApplication, QComboBox, QComplet
 from ui.custom.file_button import FileButton
 from ui.custom.workspace_assembly_table_widget import WorkspaceAssemblyTableColumns, WorkspaceAssemblyTableWidget
 from ui.custom.workspace_parts_table_widget import WorkspacePartsTableColumns, WorkspacePartsTableWidget
-from ui.custom_widgets import AssemblyImage, AssemblyMultiToolBox, CustomTableWidget, DeletePushButton, DraggableButton, FilterTabWidget, HumbleDoubleSpinBox, ItemsGroupBox, MultiToolBox, NotesPlainTextEdit, RecordingWidget, ScrollPositionManager, SelectRangeCalendar, TimeSpinBox
+from ui.custom_widgets import (
+    AssemblyImage,
+    AssemblyMultiToolBox,
+    CustomTableWidget,
+    DeletePushButton,
+    DraggableButton,
+    FilterTabWidget,
+    HumbleDoubleSpinBox,
+    ItemsGroupBox,
+    MultiToolBox,
+    NotesPlainTextEdit,
+    RecordingWidget,
+    RecutButton,
+    ScrollPositionManager,
+    SelectRangeCalendar,
+    TimeSpinBox,
+)
 from ui.dialogs.color_picker_dialog import ColorPicker
 from ui.dialogs.recut_dialog import RecutDialog
 from ui.windows.image_viewer import QImageViewer
 from ui.windows.pdf_viewer import PDFViewer
-from ui.custom_widgets import RecutButton
 from utils.colors import get_random_color
 from utils.dialog_buttons import DialogButtons
 from utils.inventory.component import Component
@@ -166,7 +181,6 @@ class WorkspaceWidget(QWidget):
         notes_item.setFont(self.tables_font)
         self.parts_table_widget.setItem(current_row, WorkspacePartsTableColumns.NOTES.value, notes_item)
         self.parts_table_items[group].update({"notes": notes_item})
-
 
         recut_button = QPushButton("Recut", self)
         recut_button.setFixedWidth(100)
@@ -323,7 +337,6 @@ class WorkspaceWidget(QWidget):
         flow_tag_controls_widget = self.get_flow_tag_controls(assembly)
         self.assemblies_table_widget.setCellWidget(current_row, WorkspaceAssemblyTableColumns.PROCESS_CONTROLS.value, flow_tag_controls_widget)
         self.assemblies_table_items[assembly].update({"flow_tag_controls": flow_tag_controls_widget})
-
 
     def load_assembly_table(self):
         self.assemblies_table_widget.blockSignals(True)

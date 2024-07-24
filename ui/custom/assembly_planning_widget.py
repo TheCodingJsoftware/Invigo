@@ -212,7 +212,7 @@ class AssemblyPlanningWidget(AssemblyWidget):
         self.assembly.flow_tag = self.workspace_settings.get_flow_tag_by_name(self.comboBox_assembly_flow_tag.currentText())
         try:
             self.paint_widget.setVisible(self.assembly.flow_tag.contains(["paint", "powder", "coating", "liquid"]))
-        except AttributeError: # There is no flow tag selected
+        except AttributeError:  # There is no flow tag selected
             self.paint_widget.setHidden(True)
         self.changes_made()
 

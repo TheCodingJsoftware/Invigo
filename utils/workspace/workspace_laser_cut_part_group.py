@@ -3,6 +3,7 @@ from typing import Optional
 from utils.inventory.laser_cut_part import LaserCutPart
 from utils.workspace.tag import Tag
 
+
 class WorkspaceLaserCutPartGroup:
     def __init__(self):
         self.laser_cut_parts: list[LaserCutPart] = []

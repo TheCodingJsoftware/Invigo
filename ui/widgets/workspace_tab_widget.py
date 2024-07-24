@@ -10,7 +10,22 @@ from PyQt6.QtCore import QDate, Qt
 from PyQt6.QtGui import QAction, QCursor, QFont, QIcon
 from PyQt6.QtWidgets import QAbstractItemView, QApplication, QComboBox, QCompleter, QGridLayout, QGroupBox, QHBoxLayout, QInputDialog, QLabel, QLineEdit, QMenu, QMessageBox, QPushButton, QScrollArea, QTableWidgetItem, QTabWidget, QVBoxLayout, QWidget
 
-from ui.custom_widgets import AssemblyImage, AssemblyMultiToolBox, CustomTableWidget, DeletePushButton, DraggableButton, FilterTabWidget, HumbleDoubleSpinBox, ItemsGroupBox, MultiToolBox, NotesPlainTextEdit, RecordingWidget, ScrollPositionManager, SelectRangeCalendar, TimeSpinBox
+from ui.custom_widgets import (
+    AssemblyImage,
+    AssemblyMultiToolBox,
+    CustomTableWidget,
+    DeletePushButton,
+    DraggableButton,
+    FilterTabWidget,
+    HumbleDoubleSpinBox,
+    ItemsGroupBox,
+    MultiToolBox,
+    NotesPlainTextEdit,
+    RecordingWidget,
+    ScrollPositionManager,
+    SelectRangeCalendar,
+    TimeSpinBox,
+)
 from ui.dialogs.color_picker_dialog import ColorPicker
 from ui.dialogs.recut_dialog import RecutDialog
 from ui.widgets.workspace_widget import WorkspaceWidget
@@ -29,7 +44,6 @@ from utils.workspace.workspace_settings import WorkspaceSettings
 
 if TYPE_CHECKING:
     from ui.windows.main_window import MainWindow
-
 
 
 class WorkspaceTabWidget(QWidget):

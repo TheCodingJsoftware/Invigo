@@ -1,7 +1,8 @@
 from natsort import natsorted
 from PyQt6 import uic
+from PyQt6.QtCore import Qt
 from PyQt6.QtGui import QIcon
-from PyQt6.QtWidgets import QComboBox, QDialog, QListWidget
+from PyQt6.QtWidgets import QCompleter, QDialog, QLineEdit, QListWidget
 
 from utils.inventory.component import Component
 from utils.inventory.components_inventory import ComponentsInventory
@@ -19,12 +20,16 @@ class AddComponentDialog(QDialog):
         self.setWindowTitle("Add New Component")
         self.setWindowIcon(QIcon("icons/icon.png"))
 
-        self.comboBox_component_name: QComboBox
-        self.listWidget_components: QListWidget
+        self.lineEdit_component_name: QLineEdit
+        self.completer = QCompleter(natsorted(self.components_inventory.get_all_part_names()))
+        self.completer.setCaseSensitivity(Qt.CaseSensitivity.CaseInsensitive)
+        self.completer.setFilterMode(Qt.MatchFlag.MatchContains)
+        self.completer.setWidget(self.lineEdit_component_name)
+        self.completer.activated.connect(self.handleCompletion)
+        self.lineEdit_component_name.textChanged.connect(self.component_name_changed)
+        self._completing = False
 
-        self.comboBox_component_name.addItems(natsorted(self.components_inventory.get_all_part_names()))
-        self.comboBox_component_name.setCurrentText("")
-        self.comboBox_component_name.lineEdit().textChanged.connect(self.component_name_changed)
+        self.listWidget_components: QListWidget
 
         self.listWidget_components.addItems(natsorted(self.components_inventory.get_all_part_names()))
         self.listWidget_components.currentTextChanged.connect(self.selection_changed)
@@ -32,14 +37,21 @@ class AddComponentDialog(QDialog):
         self.pushButton_add.clicked.connect(self.accept)
         self.pushButton_cancel.clicked.connect(self.reject)
 
+    def handleCompletion(self, text):
+        if not self._completing:
+            self._completing = True
+            prefix = self.completer.completionPrefix()
+            self.lineEdit_component_name.setText(self.lineEdit_component_name.text()[: -len(prefix)] + text)
+            self._completing = False
+
     def selection_changed(self):
         if len(self.listWidget_components.selectedItems()) > 1:
             return
         for component in self.components_inventory.components:
             if component.part_name == self.listWidget_components.currentItem().text():
-                self.comboBox_component_name.lineEdit().blockSignals(True)
-                self.comboBox_component_name.setCurrentText(component.part_name)
-                self.comboBox_component_name.lineEdit().blockSignals(False)
+                self.lineEdit_component_name.blockSignals(True)
+                self.lineEdit_component_name.setText(component.part_name)
+                self.lineEdit_component_name.blockSignals(False)
                 self.label_component_status.setStyleSheet("color: #4EE753;")
                 self.label_component_status.setText(" * Component exists in inventory.")
                 self.selected_component = component
@@ -55,23 +67,31 @@ class AddComponentDialog(QDialog):
             0,
         )
 
-    def component_name_changed(self) -> None:
-        for component in self.components_inventory.components:
-            if component.part_name == self.comboBox_component_name.currentText():
-                self.listWidget_components.blockSignals(True)
-                self.listWidget_components.setCurrentRow(self.get_component_row(component.part_name))
-                self.listWidget_components.blockSignals(False)
-                self.label_component_status.setStyleSheet("color: #4EE753;")
-                self.label_component_status.setText(" * Component exists in inventory.")
-                self.selected_component = component
-                return
+    def component_name_changed(self, text: str) -> None:
+        if not self._completing:
+            found = False
+            prefix = text.rpartition(",")[-1]
+            if len(prefix) > 1:
+                self.completer.setCompletionPrefix(prefix)
+                if self.completer.currentRow() >= 0:
+                    found = True
+            if found:
+                self.completer.complete()
             else:
-                self.label_component_status.setStyleSheet("color: #E74E4E;")
-                self.label_component_status.setText(" * Component does NOT exists in inventory.")
-                self.selected_component = None
+                self.completer.popup().hide()
+
+        new_parts_last = []
+        self.label_component_status.setStyleSheet("color: #E74E4E;")
+        self.listWidget_components.blockSignals(True)
+        self.listWidget_components.clear()
+        for name in self.components_inventory.get_all_part_names():
+            if text.lower() in name.lower():
+                new_parts_last.append(name)
+        self.listWidget_components.addItems(natsorted(new_parts_last))
+        self.listWidget_components.blockSignals(False)
 
     def get_name(self) -> str:
-        return self.comboBox_component_name.currentText().encode("ascii", "ignore").decode()
+        return self.lineEdit_component_name.text().encode("ascii", "ignore").decode()
 
     def get_current_quantity(self) -> int:
         return self.spinBox_current_quantity.value()
