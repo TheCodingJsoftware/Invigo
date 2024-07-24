@@ -8,9 +8,9 @@ from utils.inventory.laser_cut_part import LaserCutPart
 from utils.workspace.assembly import Assembly
 from utils.workspace.job import Job
 from utils.workspace.job_manager import JobManager
-from utils.workspace.workspace_settings import WorkspaceSettings
-from utils.workspace.workspace_laser_cut_part_group import WorkspaceLaserCutPartGroup
 from utils.workspace.workspace_filter import WorkspaceFilter
+from utils.workspace.workspace_laser_cut_part_group import WorkspaceLaserCutPartGroup
+from utils.workspace.workspace_settings import WorkspaceSettings
 
 
 class Workspace:
