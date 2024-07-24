@@ -154,31 +154,33 @@ navCheckBoxLinks.forEach(link => {
     });
 });
 
-
 checkboxes.forEach(checkbox => {
     const layoutId = checkbox.getAttribute('data-layout');
-    const layoutDiv = document.getElementById(layoutId);
+    const layoutDivs = document.querySelectorAll(`#${layoutId}`);
     const storedState = localStorage.getItem(getStorageKey(checkbox.id));
 
     if (storedState === 'true') {
         checkbox.checked = true;
-        layoutDiv.classList.remove('hidden');
+        layoutDivs.forEach(layoutDiv => layoutDiv.classList.remove('hidden'));
     } else if (storedState === 'false') {
         checkbox.checked = false;
-        layoutDiv.classList.add('hidden');
+        layoutDivs.forEach(layoutDiv => layoutDiv.classList.add('hidden'));
     } else {
         checkbox.checked = true;
     }
 
     checkbox.addEventListener('change', function () {
         localStorage.setItem(getStorageKey(checkbox.id), this.checked);
-        if (this.checked) {
-            layoutDiv.classList.remove('hidden');
-        } else {
-            layoutDiv.classList.add('hidden');
-        }
+        layoutDivs.forEach(layoutDiv => {
+            if (this.checked) {
+                layoutDiv.classList.remove('hidden');
+            } else {
+                layoutDiv.classList.add('hidden');
+            }
+        });
     });
 });
+
 
 const storedTargetColumn = localStorage.getItem(getStorageKey('selectedTargetColumn'));
 
@@ -265,6 +267,7 @@ function toggleCheckboxes(targetColumn, navLinks) {
             link.classList.remove('primary');
         }
     });
+
     const config = checkboxConfig[targetColumn];
     if (config) {
         for (const [column, shouldCheck] of Object.entries(config)) {
@@ -275,18 +278,22 @@ function toggleCheckboxes(targetColumn, navLinks) {
                     // This is for the nav selection show-total-cost checkbox
                     try {
                         const layoutId = checkbox.getAttribute('data-layout');
-                        const layoutDiv = document.getElementById(layoutId);
-                        if (shouldCheck) {
-                            layoutDiv.classList.remove('hidden');
-                        } else {
-                            layoutDiv.classList.add('hidden');
-                        }
+                        const layoutDivs = document.querySelectorAll(`#${layoutId}`);
+                        layoutDivs.forEach(layoutDiv => {
+                            if (shouldCheck) {
+                                layoutDiv.classList.remove('hidden');
+                            } else {
+                                layoutDiv.classList.add('hidden');
+                            }
+                        });
                     } catch (error) { }
                 }
-            })
+            });
         }
     }
 }
+
+
 
 function hideUncheckedColumns() {
     const checkboxes = document.querySelectorAll('.column-toggle');
