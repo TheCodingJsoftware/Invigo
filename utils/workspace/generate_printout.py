@@ -528,7 +528,7 @@ class AssemblyTable:
                     <img src="{self.server_directory}/image/{assembly.assembly_image}" class="assembly_image round">
                     <div class="max">
                         <h6 class="small">{assembly.name}</h6>
-                        <div>{assembly.flow_tag.get_name()}</div>
+                        <div id="assembly-proess-layout">{assembly.flow_tag.get_name()}</div>
                     </div>
                     <h5>× {int(assembly.quantity)}</h5>
                 </a><div class="divider"></div>"""
@@ -685,7 +685,7 @@ class Printout:
             {self.printout_css}
         </style>
         <body class="quote">
-        <nav class="left l" id="printout-controls" style="width: 8vw;">
+        <nav class="left l" id="printout-controls">
             <div class="left-align">
                 <label class="checkbox">
                     <input type="checkbox" id="showCoverPage" data-name="show-cover-page" data-layout="cover-page" checked>
@@ -694,6 +694,10 @@ class Printout:
                 <label class="checkbox">
                     <input type="checkbox" id="showAssemblies" data-name="show-assemblies" data-layout="assemblies-list-layout" {"checked" if self.job.assemblies else ""}>
                     <span>Show Assemblies</span>
+                </label>
+                <label class="checkbox">
+                    <input type="checkbox" id="showAssemblyProcess" data-name="show-assembly-process" data-layout="assembly-proess-layout" checked>
+                    <span>Show Assembly Process</span>
                 </label>
                 <label class="checkbox">
                     <input type="checkbox" id="showNests" data-name="show-nests" data-layout="nests-layout" {"checked" if self.job.nests else ""}>

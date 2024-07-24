@@ -109,7 +109,7 @@ from utils.workspace.job_preferences import JobPreferences
 from utils.workspace.workspace import Workspace
 from utils.workspace.workspace_settings import WorkspaceSettings
 
-__version__: str = "v3.2.4"
+__version__: str = "v3.2.5"
 
 
 def check_folders(folders: list[str]) -> None:
@@ -1087,9 +1087,12 @@ class MainWindow(QMainWindow):
 
         if tag_editor.exec():
             upload_workspace_settings()
-            self.job_planner_widget.workspace_settings_changed()
-            self.job_quote_widget.workspace_settings_changed()
-            self.workspace_tab_widget.workspace_settings_changed()
+            if self.job_planner_widget:
+                self.job_planner_widget.workspace_settings_changed()
+            if self.job_quote_widget:
+                self.job_quote_widget.workspace_settings_changed()
+            if self.workspace_tab_widget:
+                self.workspace_tab_widget.workspace_settings_changed()
 
     # * /\ Dialogs /\
 

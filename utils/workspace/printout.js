@@ -13,6 +13,7 @@ const checkboxConfig = {
         "process": false,
         "paint": true,
         "show-total-cost": true,
+        "show-assembly-process": true,
     },
     "workorder": {
         "picture": true,
@@ -28,6 +29,7 @@ const checkboxConfig = {
         "process": true,
         "paint": true,
         "show-total-cost": false,
+        "show-assembly-process": true,
     },
     "packingslip": {
         "picture": true,
@@ -43,6 +45,7 @@ const checkboxConfig = {
         "process": false,
         "paint": true,
         "show-total-cost": false,
+        "show-assembly-process": false,
     }
 };
 
