@@ -56,6 +56,7 @@ class WorkspaceTabWidget(QWidget):
         self.parent: MainWindow = parent
         self.workspace = self.parent.workspace
         self.workspace_settings = self.parent.workspace_settings
+        self.workspace_history = self.parent.workspace_history
 
         self.workspace_filter = self.workspace.workspace_filter
 
@@ -108,7 +109,7 @@ class WorkspaceTabWidget(QWidget):
         font.setBold(True)
         self.clear_layout(self.tags_layout)
         self.tag_buttons.clear()
-        for tag in self.workspace_settings.get_all_tags():
+        for tag in ["Recut"] + self.workspace_settings.get_all_tags():
             tag_button = QPushButton(tag, self)
             tag_button.setFont(font)
             tag_button.setCheckable(True)
@@ -148,7 +149,6 @@ class WorkspaceTabWidget(QWidget):
         self.workspace.load_data()
         self.workspace_widget.load_parts_table()
         self.workspace_widget.load_assembly_table()
-        print("settigns changed")
 
     def sync_changes(self):
         self.parent.sync_changes()

@@ -18,7 +18,7 @@ from ui.custom.laser_cut_part_file_drop_widget import LaserCutPartFileDropWidget
 from ui.custom.laser_cut_part_paint_settings_widget import LasserCutPartPaintSettingsWidget
 from ui.custom.laser_cut_part_paint_widget import LaserCutPartPaintWidget
 from ui.custom.laser_cut_parts_planning_table_widget import LaserCutPartsPlanningTableWidget, LaserCutTableColumns
-from ui.custom_widgets import AssemblyMultiToolBox
+from ui.custom_widgets import AssemblyMultiToolBox, TimeSpinBox
 from ui.dialogs.add_component_dialog import AddComponentDialog
 from ui.dialogs.add_laser_cut_part_dialog import AddLaserCutPartDialog
 from ui.widgets.assembly_widget import AssemblyWidget
@@ -72,6 +72,11 @@ class AssemblyPlanningWidget(AssemblyWidget):
         self.doubleSpinBox_quantity.setValue(self.assembly.quantity)
         self.doubleSpinBox_quantity.valueChanged.connect(self.assembly_quantity_changed)
 
+        self.time_to_complete_spinbox = TimeSpinBox(self)
+        self.time_to_complete_spinbox.setValue(self.assembly.expected_time_to_complete)
+        self.time_to_complete_spinbox.valueChanged.connect(self.assembly_time_to_complete_changed)
+        self.expected_time_to_complete_layout.addWidget(self.time_to_complete_spinbox)
+
         self.paint_widget.setVisible(self.assembly.flow_tag.contains(["paint", "powder", "coating", "liquid"]))
 
         self.assembly_setting_paint_widget = AssemblyPaintSettingsWidget(self.assembly, self)
@@ -111,13 +116,6 @@ class AssemblyPlanningWidget(AssemblyWidget):
 
         self.sub_assemblies_toolbox = AssemblyMultiToolBox(self)
         self.sub_assembly_layout.addWidget(self.sub_assemblies_toolbox)
-
-        # ! JUST FOR TESTING REMOVE IN PRODUCTION
-        # self.splitter.setSizes([0, 0, 0, 0])
-        # self.splitter.setSizes([0, 1, 0, 0])
-        # self.splitter.setSizes([0, 1, 1, 0])
-        # self.splitter.setStretchFactor(0, 1)
-        # self.splitter.setStretchFactor(1, 0)
 
     def workspace_settings_changed(self):
         assembly_selected_flow_tag = self.comboBox_assembly_flow_tag.currentText()
@@ -261,6 +259,10 @@ class AssemblyPlanningWidget(AssemblyWidget):
     def assembly_get_all_file_types(self, file_ext: str) -> list[str]:
         files: set[str] = {file for file in self.assembly.assembly_files if file.lower().endswith(file_ext)}
         return list(files)
+
+    def assembly_time_to_complete_changed(self):
+        self.assembly.expected_time_to_complete = self.time_to_complete_spinbox.value()
+        self.changes_made()
 
     # COMPONENT STUFF
     def load_components_table(self):
@@ -644,14 +646,6 @@ class AssemblyPlanningWidget(AssemblyWidget):
         flow_tag_combobox.currentTextChanged.connect(partial(self.laser_cut_part_flow_tag_changed, laser_cut_part, flow_tag_combobox))
         self.laser_cut_parts_table.setCellWidget(current_row, LaserCutTableColumns.FLOW_TAG.value, flow_tag_combobox)
         self.laser_cut_part_table_items[laser_cut_part].update({"flow_tag": flow_tag_combobox})
-
-        expected_time_to_complete = QDoubleSpinBox(self)
-        self.laser_cut_parts_table.setCellWidget(
-            current_row,
-            LaserCutTableColumns.EXPECTED_TIME_TO_COMPLETE.value,
-            expected_time_to_complete,
-        )
-        self.laser_cut_part_table_items[laser_cut_part].update({"expected_time_to_complete": expected_time_to_complete})
 
         notes_item = QTableWidgetItem(laser_cut_part.notes)
         notes_item.setFont(self.tables_font)

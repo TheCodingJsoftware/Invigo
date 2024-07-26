@@ -1,5 +1,5 @@
 from enum import Enum
-from typing import TYPE_CHECKING, Union
+from typing import TYPE_CHECKING, Union, Iterator
 
 from utils.workspace.tag import Tag
 
@@ -65,6 +65,9 @@ class FlowTag:
 
     def __str__(self):
         return f"{self.name}: {self.get_name()}"
+
+    def __iter__(self) -> Iterator[Tag]:
+        return iter(self.tags)
 
     def to_dict(self) -> dict[str]:
         try:

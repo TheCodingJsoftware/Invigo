@@ -77,10 +77,7 @@ class Sheet(InventoryItem):
 
     def to_dict(self) -> dict[str, dict]:
         return {
-            "quantity": self.quantity,
-            "latest_change_quantity": self.latest_change_quantity,
-            "red_quantity_limit": self.red_quantity_limit,
-            "yellow_quantity_limit": self.yellow_quantity_limit,
+            "name": self.get_name(),
             "thickness": self.thickness,
             "material": self.material,
             "width": round(self.width, 3),
@@ -89,4 +86,8 @@ class Sheet(InventoryItem):
             "notes": self.notes,
             "orders": [order.to_dict() for order in self.orders],
             "categories": [category.name for category in self.categories],
+            "quantity": self.quantity,
+            "latest_change_quantity": self.latest_change_quantity,
+            "red_quantity_limit": self.red_quantity_limit,
+            "yellow_quantity_limit": self.yellow_quantity_limit,
         }

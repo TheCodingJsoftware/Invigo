@@ -16,9 +16,7 @@ class WorkspaceAssemblyTableColumns(AutoNumber):
     ASSEMBLY_NAME = auto()
     ASSEMBLY_FILES = auto()
     PAINT = auto()
-    QUANTITY = auto()
     PROCESS_CONTROLS = auto()
-    TIMERS = auto()
 
 
 class WorkspaceAssemblyTableWidget(CustomTableWidget):
@@ -42,9 +40,7 @@ class WorkspaceAssemblyTableWidget(CustomTableWidget):
             "Assembly Name": WorkspaceAssemblyTableColumns.ASSEMBLY_NAME.value,
             "Assembly Files": WorkspaceAssemblyTableColumns.ASSEMBLY_FILES.value,
             "Paint": WorkspaceAssemblyTableColumns.PAINT.value,
-            "Quantity": WorkspaceAssemblyTableColumns.QUANTITY.value,
             "Process Controls": WorkspaceAssemblyTableColumns.PROCESS_CONTROLS.value,
-            "Timers": WorkspaceAssemblyTableColumns.TIMERS.value,
         }
 
         self.setColumnCount(len(headers))

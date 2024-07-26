@@ -206,6 +206,12 @@ class Job:
                 return (False, laser_cut_part.name)
         return (True, "")
 
+    def is_job_finished(self) -> bool:
+        for assembly in self.get_all_assemblies():
+            if not assembly.is_assembly_finished():
+                return False
+        return True
+
     def load_data(self, data: dict[str, dict[str, object]]):
         self.load_settings(data)
 
