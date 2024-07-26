@@ -140,7 +140,7 @@ class FlowTagWidget(QWidget):
         self.load_data()
 
     def load_data(self):
-        for tag in self.flow_tag.tags:
+        for tag in self.flow_tag:
             tag_widget = TagWidget(tag, self.remaining_tags, self.workspace_settings, self)
             tag_widget.addQuantityTagChanged.connect(partial(self.add_quantity_tag_changed, tag_widget))
             tag_widget.removeQuantityTagChanged.connect(partial(self.remove_quantity_tag_changed, tag_widget))

@@ -19,14 +19,13 @@ class LaserCutTableColumns(AutoNumber):
     CNC_MILLING_FILES = auto()
     MATERIAL = auto()
     THICKNESS = auto()
+    NOTES = auto()
+    SHELF_NUMBER = auto()
     UNIT_QUANTITY = auto()
     QUANTITY = auto()
-    SHELF_NUMBER = auto()
     PAINTING = auto()
     PAINT_SETTINGS = auto()
     FLOW_TAG = auto()
-    EXPECTED_TIME_TO_COMPLETE = auto()
-    NOTES = auto()
 
 
 class LaserCutPartsPlanningTableWidget(CustomTableWidget):
@@ -64,7 +63,6 @@ class LaserCutPartsPlanningTableWidget(CustomTableWidget):
             "Painting": LaserCutTableColumns.PAINTING.value,
             "Paint Settings": LaserCutTableColumns.PAINT_SETTINGS.value,
             "Flow Tag": LaserCutTableColumns.FLOW_TAG.value,
-            "Expected time\nto complete": LaserCutTableColumns.EXPECTED_TIME_TO_COMPLETE.value,
             "Notes": LaserCutTableColumns.NOTES.value,
         }
 

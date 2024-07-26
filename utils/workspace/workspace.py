@@ -1,7 +1,6 @@
 import os
 
 import msgspec
-from natsort import natsorted
 
 from utils.inventory.component import Component
 from utils.inventory.laser_cut_part import LaserCutPart
@@ -11,6 +10,7 @@ from utils.workspace.job_manager import JobManager
 from utils.workspace.workspace_filter import WorkspaceFilter
 from utils.workspace.workspace_laser_cut_part_group import WorkspaceLaserCutPartGroup
 from utils.workspace.workspace_settings import WorkspaceSettings
+from utils.workspace.workspace_timer import WorkspaceTimer
 
 
 class Workspace:
@@ -62,6 +62,8 @@ class Workspace:
         for part in laser_cut_parts:
             for _ in range(int(part.quantity)):
                 new_part = LaserCutPart(part.to_dict(), self.laser_cut_inventory)
+                # timer = WorkspaceTimer({}, new_part.flow_tag)
+                new_part.timer.start_timer()
                 new_part.quantity = 1
                 assembly.add_laser_cut_part(new_part)
 
@@ -72,13 +74,16 @@ class Workspace:
     def remove_job(self, job: Job):
         self.jobs.remove(job)
 
-    def get_job(self, job_name: str) -> Job:
-        return next((job for job in self.jobs if job.name == job_name), None)
+    def get_all_assemblies(self) -> list[Assembly]:
+        assemblies: list[Assembly] = []
+        for job in self.jobs:
+            assemblies.extend(job.get_all_assemblies())
+        return assemblies
 
     def get_filtered_assemblies(self, job: Job) -> list[Assembly]:
         assemblies: list[Assembly] = []
         for assembly in job.get_all_assemblies():
-            if assembly.is_process_finished():
+            if assembly.is_assembly_finished():
                 continue
             if not assembly.all_laser_cut_parts_complete():
                 continue
@@ -96,11 +101,12 @@ class Workspace:
         for laser_cut_part in job.get_all_laser_cut_parts():
             if laser_cut_part.is_process_finished():
                 continue
-            if laser_cut_part.recut:
-                continue
-            if current_tag := laser_cut_part.get_current_tag():
-                if current_tag.name != self.workspace_filter.current_tag:
+            if self.workspace_filter.current_tag != "Recut":
+                if laser_cut_part.recut:
                     continue
+                if part_current_tag := laser_cut_part.get_current_tag():
+                    if part_current_tag.name != self.workspace_filter.current_tag:
+                        continue
             search_text = self.workspace_filter.search_text.lower()
             paint_text = laser_cut_part.get_all_paints().lower()
             if search_text:
@@ -118,6 +124,10 @@ class Workspace:
         grouped_laser_cut_parts: list[WorkspaceLaserCutPartGroup] = []
         parts_group: dict[str, WorkspaceLaserCutPartGroup] = {}
         for laser_cut_part in laser_cut_parts:
+            if self.workspace_filter.current_tag == "Recut" and not laser_cut_part.recut:
+                continue
+            elif self.workspace_filter.current_tag != "Recut" and laser_cut_part.recut:
+                continue
             if group := parts_group.get(laser_cut_part.name):
                 group.add_laser_cut_part(laser_cut_part)
             else:
@@ -125,6 +135,7 @@ class Workspace:
                 group.add_laser_cut_part(laser_cut_part)
                 grouped_laser_cut_parts.append(group)
                 parts_group.update({laser_cut_part.name: group})
+
         return grouped_laser_cut_parts
 
     def to_list(self) -> list[dict[str, object]]:

@@ -1,4 +1,4 @@
-from typing import Optional
+from typing import Optional, Iterator
 
 from utils.inventory.laser_cut_part import LaserCutPart
 from utils.workspace.tag import Tag
@@ -20,6 +20,10 @@ class WorkspaceLaserCutPartGroup:
             text += f"{laser_cut_part.name}: {laser_cut_part.flow_tag.get_name()}\n"
         return text
 
+    def unmark_as_recut(self):
+        for laser_cut_part in self:
+            laser_cut_part.recut = False
+
     def get_current_tag(self) -> Optional[Tag]:
         return self.base_part.get_current_tag()
 
@@ -34,5 +38,5 @@ class WorkspaceLaserCutPartGroup:
     def get_quantity(self) -> int:
         return len(self.laser_cut_parts)
 
-    def __iter__(self):
+    def __iter__(self) -> Iterator[LaserCutPart]:
         return iter(self.laser_cut_parts)

@@ -108,8 +108,9 @@ from utils.workspace.job_manager import JobManager
 from utils.workspace.job_preferences import JobPreferences
 from utils.workspace.workspace import Workspace
 from utils.workspace.workspace_settings import WorkspaceSettings
+from utils.workspace.workspace_history import WorkspaceHistory
 
-__version__: str = "v3.2.6"
+__version__: str = "v3.2.7"
 
 
 def check_folders(folders: list[str]) -> None:
@@ -202,6 +203,7 @@ class MainWindow(QMainWindow):
         self.paint_inventory = PaintInventory(self.components_inventory)
         self.laser_cut_inventory = LaserCutInventory(self.paint_inventory, self.workspace_settings)
         self.job_manager = JobManager(self)
+        self.workspace_history = WorkspaceHistory(self.job_manager)
         self.workspace = Workspace(self.workspace_settings, self.job_manager)
 
         self.quote_generator_tab_widget = QuoteGeneratorTab(self)
@@ -506,6 +508,8 @@ class MainWindow(QMainWindow):
         self.laser_cut_inventory.load_data()
         self.sheet_settings.load_data()
         self.workspace_settings.load_data()
+        self.workspace.load_data()
+        self.workspace_history.load_data()
 
         self.clear_layout(self.sheet_settings_layout)
         self.sheet_settings_layout.addWidget(QLabel("Loading...", self))
@@ -1548,12 +1552,7 @@ class MainWindow(QMainWindow):
 
     def open_folder(self, path: str) -> None:
         try:
-            if sys.platform == "win32":
-                os.startfile(path)
-            elif sys.platform == "darwin":
-                subprocess.Popen(["open", path])
-            else:
-                subprocess.Popen(["xdg-open", path])
+            os.startfile(path)
         except Exception as e:
             msg = QMessageBox(self)
             msg.setIcon(QMessageBox.Icon.Critical)
@@ -1596,13 +1595,14 @@ class MainWindow(QMainWindow):
         if self.tabWidget.tabText(self.tabWidget.currentIndex()) == "Sheet Settings":
             self.upload_file(
                 [
-                    "sheet_settings.json",
+                    f"{self.sheet_settings.filename}.json",
                 ],
             )
         if self.tabWidget.tabText(self.tabWidget.currentIndex()) == "Workspace":
             self.upload_file(
                 [
-                    "workspace.json",
+                    f"{self.workspace.filename}.json",
+                    f"{self.workspace_history.filename}.json",
                 ],
             )
 
@@ -1797,20 +1797,29 @@ class MainWindow(QMainWindow):
             # Update relevant files
             if f"{self.sheet_settings.filename}.json" in response["successful_files"]:
                 self.sheet_settings.load_data()
+
             if f"{self.workspace_settings.filename}.json" in response["successful_files"]:
                 self.workspace_settings.load_data()
                 self.workspace.load_data()
                 self.job_planner_widget.workspace_settings_changed()
                 self.job_quote_widget.workspace_settings_changed()
                 self.workspace_tab_widget.workspace_settings_changed()
+
             if f"{self.components_inventory.filename}.json" in response["successful_files"]:
                 self.components_inventory.load_data()
+
             if f"{self.sheets_inventory.filename}.json" in response["successful_files"]:
                 self.sheets_inventory.load_data()
+
             if f"{self.laser_cut_inventory.filename}.json" in response["successful_files"]:
                 self.laser_cut_inventory.load_data()
+
             if f"{self.workspace.filename}.json" in response["successful_files"]:
                 self.workspace.load_data()
+
+            if f"{self.workspace_history.filename}.json" in response["successful_files"]:
+                self.workspace_history.load_data()
+
             if f"{self.paint_inventory.filename}.json" in response["successful_files"]:
                 self.paint_inventory.load_data()
 
@@ -1854,6 +1863,7 @@ class MainWindow(QMainWindow):
                 f"{self.sheets_inventory.filename}.json",
                 f"{self.components_inventory.filename}.json",
                 f"{self.workspace.filename}.json",
+                f"{self.workspace_history.filename}.json",
             ]
         )
 
