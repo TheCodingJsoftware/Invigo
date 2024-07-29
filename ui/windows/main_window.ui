@@ -534,6 +534,9 @@ QPushButton#pushButton_send_to_workspace:disabled{
             <property name="topMargin">
              <number>9</number>
             </property>
+            <property name="rightMargin">
+             <number>9</number>
+            </property>
             <item>
              <widget class="QTabWidget" name="tabWidget_4">
               <property name="currentIndex">
@@ -639,8 +642,8 @@ QPushButton#pushButton_send_to_workspace:disabled{
                     <rect>
                      <x>0</x>
                      <y>0</y>
-                     <width>68</width>
-                     <height>16</height>
+                     <width>1498</width>
+                     <height>560</height>
                     </rect>
                    </property>
                    <layout class="QVBoxLayout" name="verticalLayout_27">
@@ -690,8 +693,8 @@ QPushButton#pushButton_send_to_workspace:disabled{
                     <rect>
                      <x>0</x>
                      <y>0</y>
-                     <width>68</width>
-                     <height>16</height>
+                     <width>1490</width>
+                     <height>560</height>
                     </rect>
                    </property>
                    <layout class="QVBoxLayout" name="verticalLayout_31">
@@ -1192,28 +1195,106 @@ QPushButton#pushButton_generate_quote:disabled{
        <attribute name="title">
         <string>Workspace</string>
        </attribute>
-       <layout class="QVBoxLayout" name="verticalLayout_15" stretch="0">
-        <property name="spacing">
-         <number>6</number>
-        </property>
-        <property name="leftMargin">
-         <number>0</number>
-        </property>
-        <property name="topMargin">
-         <number>0</number>
-        </property>
-        <property name="rightMargin">
-         <number>0</number>
-        </property>
-        <property name="bottomMargin">
-         <number>0</number>
-        </property>
+       <layout class="QHBoxLayout" name="horizontalLayout_2">
         <item>
-         <layout class="QVBoxLayout" name="workspace_layout">
-          <property name="bottomMargin">
-           <number>9</number>
+         <widget class="QSplitter" name="splitter_4">
+          <property name="orientation">
+           <enum>Qt::Orientation::Horizontal</enum>
           </property>
-         </layout>
+          <widget class="QWidget" name="verticalLayoutWidget">
+           <layout class="QVBoxLayout" name="workspace_layout"/>
+          </widget>
+          <widget class="QWidget" name="verticalLayoutWidget_6">
+           <layout class="QVBoxLayout" name="verticalLayout_5">
+            <property name="leftMargin">
+             <number>9</number>
+            </property>
+            <item>
+             <widget class="QTabWidget" name="tabWidget_5">
+              <property name="currentIndex">
+               <number>0</number>
+              </property>
+              <property name="documentMode">
+               <bool>true</bool>
+              </property>
+              <widget class="QWidget" name="tab_3">
+               <attribute name="title">
+                <string>Nest Directories</string>
+               </attribute>
+               <layout class="QVBoxLayout" name="verticalLayout_36" stretch="1,0,0">
+                <item>
+                 <layout class="QVBoxLayout" name="verticalLayout_34">
+                  <item>
+                   <layout class="QVBoxLayout" name="verticalLayout_37">
+                    <property name="spacing">
+                     <number>6</number>
+                    </property>
+                    <property name="leftMargin">
+                     <number>0</number>
+                    </property>
+                    <property name="topMargin">
+                     <number>0</number>
+                    </property>
+                    <property name="rightMargin">
+                     <number>0</number>
+                    </property>
+                    <property name="bottomMargin">
+                     <number>0</number>
+                    </property>
+                   </layout>
+                  </item>
+                 </layout>
+                </item>
+                <item>
+                 <layout class="QHBoxLayout" name="horizontalLayout_22">
+                  <property name="topMargin">
+                   <number>0</number>
+                  </property>
+                  <item>
+                   <widget class="QPushButton" name="pushButton_clear_selections_3">
+                    <property name="text">
+                     <string>Clear All Selections</string>
+                    </property>
+                    <property name="icon">
+                     <iconset theme="edit-clear"/>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QPushButton" name="pushButton_refresh_directories_3">
+                    <property name="text">
+                     <string>Refresh</string>
+                    </property>
+                    <property name="icon">
+                     <iconset theme="emblem-synchronized"/>
+                    </property>
+                   </widget>
+                  </item>
+                 </layout>
+                </item>
+                <item>
+                 <widget class="QPushButton" name="pushButton_load_nests_3">
+                  <property name="enabled">
+                   <bool>true</bool>
+                  </property>
+                  <property name="minimumSize">
+                   <size>
+                    <width>0</width>
+                    <height>30</height>
+                   </size>
+                  </property>
+                  <property name="text">
+                   <string>Load 0 Nests</string>
+                  </property>
+                 </widget>
+                </item>
+               </layout>
+              </widget>
+             </widget>
+            </item>
+           </layout>
+          </widget>
+         </widget>
         </item>
        </layout>
       </widget>

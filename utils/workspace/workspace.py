@@ -7,10 +7,9 @@ from utils.inventory.laser_cut_part import LaserCutPart
 from utils.workspace.assembly import Assembly
 from utils.workspace.job import Job
 from utils.workspace.job_manager import JobManager
-from utils.workspace.workspace_filter import WorkspaceFilter
+from utils.workspace.workspace_filter import WorkspaceFilter, SortingMethod
 from utils.workspace.workspace_laser_cut_part_group import WorkspaceLaserCutPartGroup
 from utils.workspace.workspace_settings import WorkspaceSettings
-from utils.workspace.workspace_timer import WorkspaceTimer
 
 
 class Workspace:
@@ -90,35 +89,109 @@ class Workspace:
             if current_tag := assembly.get_current_tag():
                 if current_tag.name != self.workspace_filter.current_tag:
                     continue
-            if self.workspace_filter.search_text.lower() not in assembly.name.lower():
-                continue
+
+            if any(self.workspace_filter.paint_filter.values()):
+                paints = assembly.get_all_paints()
+                if not any(self.workspace_filter.paint_filter.get(paint, False) for paint in paints.split()):
+                    continue
+
+            search_text = self.workspace_filter.search_text.lower()
+            search_queries = [query.strip() for query in search_text.split(',')] if search_text else []
+
+            if search_queries:
+                name_match = any(query in assembly.name.lower() for query in search_queries)
+                paint_match = any(query in assembly.get_all_paints().lower() for query in search_queries)
+
+                if not (name_match or paint_match):
+                    continue
 
             assemblies.append(assembly)
+        return self.sort_assemblies(assemblies)
+
+    def sort_assemblies(self, assemblies: list[Assembly]) -> list[Assembly]:
+        if not self.workspace_filter.sorting_method or self.workspace_filter.sorting_method in [SortingMethod.LARGE_SMALL, SortingMethod.SMALL_LARGE]:
+            return assemblies
+
+        if self.workspace_filter.sorting_method == SortingMethod.A_Z:
+            assemblies.sort(key=lambda assembly: assembly.name)
+        elif self.workspace_filter.sorting_method == SortingMethod.Z_A:
+            assemblies.sort(key=lambda assembly: assembly.name, reverse=True)
+        elif self.workspace_filter.sorting_method == SortingMethod.MOST_LEAST:
+            assemblies.sort(key=lambda assembly: assembly.quantity, reverse=True)
+        elif self.workspace_filter.sorting_method == SortingMethod.LEAST_MOST:
+            assemblies.sort(key=lambda assembly: assembly.quantity)
+        elif self.workspace_filter.sorting_method == SortingMethod.HEAVY_LIGHT:
+            assemblies.sort(key=lambda assembly: assembly.get_weight(), reverse=True)
+        elif self.workspace_filter.sorting_method == SortingMethod.LIGHT_HEAVY:
+            assemblies.sort(key=lambda assembly: assembly.get_weight())
+
         return assemblies
 
-    def get_filtered_parts(self, job: Job) -> list[LaserCutPart]:
-        parts: list[LaserCutPart] = []
+    def get_filtered_laser_cut_parts(self, job: Job) -> list[LaserCutPart]:
+        laser_cut_parts: list[LaserCutPart] = []
         for laser_cut_part in job.get_all_laser_cut_parts():
             if laser_cut_part.is_process_finished():
                 continue
+            if self.workspace_filter.current_tag == "Recut" and not laser_cut_part.recut:
+                continue
+
             if self.workspace_filter.current_tag != "Recut":
                 if laser_cut_part.recut:
                     continue
                 if part_current_tag := laser_cut_part.get_current_tag():
                     if part_current_tag.name != self.workspace_filter.current_tag:
                         continue
+
+            if any(self.workspace_filter.material_filter.values()):
+                if not self.workspace_filter.material_filter.get(laser_cut_part.material, False):
+                    continue
+
+            if any(self.workspace_filter.thickness_filter.values()):
+                if not self.workspace_filter.thickness_filter.get(laser_cut_part.gauge, False):
+                    continue
+
+            if any(self.workspace_filter.paint_filter.values()):
+                paints = laser_cut_part.get_all_paints()
+                if not any(self.workspace_filter.paint_filter.get(paint, False) for paint in paints.split()):
+                    continue
+
             search_text = self.workspace_filter.search_text.lower()
-            paint_text = laser_cut_part.get_all_paints().lower()
-            if search_text:
-                name_match = search_text in laser_cut_part.name.lower()
-                material_match = search_text in f"{laser_cut_part.gauge} {laser_cut_part.material}".lower()
-                paint_match = search_text in paint_text
+            search_queries = [query.strip() for query in search_text.split(',')] if search_text else []
+
+            if search_queries:
+                name_match = any(query in laser_cut_part.name.lower() for query in search_queries)
+                material_match = any(query in f"{laser_cut_part.gauge} {laser_cut_part.material}".lower() for query in search_queries)
+                paint_match = any(query in laser_cut_part.get_all_paints().lower() for query in search_queries)
 
                 if not (name_match or material_match or paint_match):
                     continue
 
-            parts.append(laser_cut_part)
-        return parts
+            laser_cut_parts.append(laser_cut_part)
+
+        return laser_cut_parts
+
+    def sort_grouped_laser_cut_parts(self, grouped_laser_cut_parts: list[WorkspaceLaserCutPartGroup]) -> list[WorkspaceLaserCutPartGroup]:
+        if not self.workspace_filter.sorting_method:
+            return grouped_laser_cut_parts
+
+        if self.workspace_filter.sorting_method == SortingMethod.A_Z:
+            grouped_laser_cut_parts.sort(key=lambda group: group.base_part.name)
+        elif self.workspace_filter.sorting_method == SortingMethod.Z_A:
+            grouped_laser_cut_parts.sort(key=lambda group: group.base_part.name, reverse=True)
+        elif self.workspace_filter.sorting_method == SortingMethod.MOST_LEAST:
+            grouped_laser_cut_parts.sort(key=lambda group: group.get_quantity(), reverse=True)
+        elif self.workspace_filter.sorting_method == SortingMethod.LEAST_MOST:
+            grouped_laser_cut_parts.sort(key=lambda group: group.get_quantity())
+        elif self.workspace_filter.sorting_method == SortingMethod.HEAVY_LIGHT:
+            grouped_laser_cut_parts.sort(key=lambda group: group.base_part.weight, reverse=True)
+        elif self.workspace_filter.sorting_method == SortingMethod.LIGHT_HEAVY:
+            grouped_laser_cut_parts.sort(key=lambda group: group.base_part.weight)
+        elif self.workspace_filter.sorting_method == SortingMethod.LARGE_SMALL:
+            grouped_laser_cut_parts.sort(key=lambda group: group.base_part.surface_area, reverse=True)
+        elif self.workspace_filter.sorting_method == SortingMethod.SMALL_LARGE:
+            grouped_laser_cut_parts.sort(key=lambda group: group.base_part.surface_area)
+
+        return grouped_laser_cut_parts
 
     def get_grouped_laser_cut_parts(self, laser_cut_parts: list[LaserCutPart]) -> list[WorkspaceLaserCutPartGroup]:
         grouped_laser_cut_parts: list[WorkspaceLaserCutPartGroup] = []
@@ -136,7 +209,7 @@ class Workspace:
                 grouped_laser_cut_parts.append(group)
                 parts_group.update({laser_cut_part.name: group})
 
-        return grouped_laser_cut_parts
+        return self.sort_grouped_laser_cut_parts(grouped_laser_cut_parts)
 
     def to_list(self) -> list[dict[str, object]]:
         return [job.to_dict() for job in self.jobs]

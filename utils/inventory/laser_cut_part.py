@@ -118,11 +118,11 @@ class LaserCutPart(InventoryItem):
     def get_all_paints(self) -> str:
         name = ""
         if self.uses_primer and self.primer_item:
-            name += f"{self.primer_item.name}"
+            name += f"{self.primer_item.name}\n"
         if self.uses_paint and self.paint_item:
-            name += f"{self.paint_item.name}"
+            name += f"{self.paint_item.name}\n"
         if self.uses_powder and self.powder_item:
-            name += f"{self.powder_item.name}"
+            name += f"{self.powder_item.name}\n"
         return name
 
     def move_to_category(self, from_category: Category, to_category: Category):

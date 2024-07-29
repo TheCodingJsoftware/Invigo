@@ -188,7 +188,15 @@ if (storedTargetColumn) {
     toggleCheckboxes(storedTargetColumn, navCheckBoxLinks);
     document.body.className = storedTargetColumn;
 } else {
-    const defaultTarget = navCheckBoxLinks[0].getAttribute('data-target');
+    let defaultTarget = null;
+    navCheckBoxLinks.forEach(link => {
+        if (link.classList.contains('active') && link.classList.contains('primary')) {
+            defaultTarget = link.getAttribute('data-target');
+        }
+    });
+    if (!defaultTarget) {
+        defaultTarget = navCheckBoxLinks[0].getAttribute('data-target');
+    }
     toggleCheckboxes(defaultTarget, navCheckBoxLinks);
     document.body.className = defaultTarget;
 }
@@ -256,6 +264,38 @@ document.querySelectorAll('.qr-item').forEach(async item => {
     });
 
 });
+
+
+const workorderDiv = document.getElementById('workorder_id');
+
+if (workorderDiv) {
+    const workorderId = workorderDiv.getAttribute('data-workorder-id');
+    const qrUrl = `http://invi.go/workorder/${workorderId}`;
+
+    // Create a new div for the QR code
+    const qrDiv = document.createElement('div');
+    qrDiv.classList.add('qr-code');
+    workorderDiv.appendChild(qrDiv);
+
+    // Generate the QR code
+    new QRCode(qrDiv, {
+        text: qrUrl,
+        width: 512,
+        height: 512,
+        colorDark: "#000000",
+        colorLight: "#ffffff",
+        correctLevel: QRCode.CorrectLevel.H
+    });
+    var imgElement = qrDiv.querySelector('img');
+    if (imgElement) {
+        // Add the desired class to the img element
+        imgElement.classList.add('responsive');
+    }
+    // Set cursor to pointer and add click event to open the URL in a new tab
+    qrDiv.addEventListener('click', function () {
+        window.open(qrUrl);
+    });
+}
 
 function toggleCheckboxes(targetColumn, navLinks) {
     navLinks.forEach(link => {
