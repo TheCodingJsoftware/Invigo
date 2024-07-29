@@ -56,12 +56,12 @@ class PoundsPerSquareFootTableWidget(CustomTableWidget):
 
 
 class PoundsPerSquareFootTab(CustomTabWidget):
-    def __init__(self, parent: QWidget) -> None:
+    def __init__(self, parent: QWidget):
         super().__init__(parent)
 
 
 class SheetSettingsTab(QWidget):
-    def __init__(self, parent) -> None:
+    def __init__(self, parent):
         super().__init__(parent)
         uic.loadUi("ui/widgets/sheet_settings_tab.ui", self)
         self.parent = parent
@@ -410,13 +410,13 @@ class SheetSettingsTab(QWidget):
             self.sync_changes()
             self.load_tabs()
 
-    def open_group_menu(self, menu: QMenu) -> None:
+    def open_group_menu(self, menu: QMenu):
         menu.exec(QCursor.pos())
 
     def sync_changes(self):
         self.parent.sync_changes()
 
-    def clear_layout(self, layout: QVBoxLayout | QWidget) -> None:
+    def clear_layout(self, layout: QVBoxLayout | QWidget):
         with contextlib.suppress(AttributeError):
             if layout is not None:
                 while layout.count():

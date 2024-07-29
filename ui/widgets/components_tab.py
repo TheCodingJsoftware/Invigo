@@ -63,12 +63,12 @@ class ComponentsTableWidget(CustomTableWidget):
 
 
 class ComponentsTabWidget(CustomTabWidget):
-    def __init__(self, parent: QWidget) -> None:
+    def __init__(self, parent: QWidget):
         super().__init__(parent)
 
 
 class OrderWidget(QWidget):
-    def __init__(self, component: Component, parent: "ComponentsTab") -> None:
+    def __init__(self, component: Component, parent: "ComponentsTab"):
         super().__init__(parent)
         self.parent: "ComponentsTab" = parent
         self.component = component
@@ -178,7 +178,7 @@ class OrderWidget(QWidget):
         self.parent.components_inventory.save()
         self.parent.sync_changes()
 
-    def clear_layout(self, layout: QVBoxLayout | QWidget) -> None:
+    def clear_layout(self, layout: QVBoxLayout | QWidget):
         with contextlib.suppress(AttributeError):
             if layout is not None:
                 while layout.count():
@@ -191,7 +191,7 @@ class OrderWidget(QWidget):
 
 
 class ComponentsTab(QWidget):
-    def __init__(self, parent: QWidget) -> None:
+    def __init__(self, parent: QWidget):
         super().__init__(parent)
         uic.loadUi("ui/widgets/components_tab.ui", self)
         from main import MainWindow
@@ -808,7 +808,7 @@ class ComponentsTab(QWidget):
             else:
                 self.parent.status_button.setText(f"Added {len(components)} components to {job.name}", "lime")
 
-    def add_item(self) -> None:
+    def add_item(self):
         add_item_dialog = AddItemDialog(
             f'Add new item to "{self.category.name}"',
             f"Adding a new item to \"{self.category.name}\".\n\nPress 'Add' when finished.",
@@ -865,7 +865,7 @@ class ComponentsTab(QWidget):
         self.category_tables[self.category].blockSignals(False)
         self.label_total_unit_cost.setText(f"Total Unit Cost: ${total_unit_cost:,.2f}")
 
-    def update_category_total_stock_costs(self) -> None:
+    def update_category_total_stock_costs(self):
         total_stock_costs = {category.name: self.components_inventory.get_total_category_cost_in_stock(category) for category in self.components_inventory.get_categories()}
         total_stock_costs["Polar Total Stock Cost"] = self.components_inventory.get_total_stock_cost_for_similar_categories("Polar")
         total_stock_costs["BL Total Stock Cost"] = self.components_inventory.get_total_stock_cost_for_similar_categories("BL")
@@ -897,7 +897,7 @@ class ComponentsTab(QWidget):
         lbl.setStyleSheet("border-top: 1px solid #8C8C8C")
         self.gridLayout_category_stock_costs.addWidget(lbl, i + 1, 1)
 
-    def set_custom_quantity_limit(self) -> None:
+    def set_custom_quantity_limit(self):
         current_table = self.category_tables[self.category]
         if components := self.get_selected_components():
             components_string = "".join(f"    {i + 1}. {component.part_name}\n" for i, component in enumerate(components))
@@ -1004,7 +1004,7 @@ class ComponentsTab(QWidget):
                     self.listWidget_itemnames.setCurrentRow(row)
                     break
 
-    def open_po(self, po_name: str = None) -> None:
+    def open_po(self, po_name: str = None):
         if po_name is None:
             input_dialog = SelectItemDialog(
                 DialogButtons.open_cancel,
@@ -1153,17 +1153,17 @@ class ComponentsTab(QWidget):
     def sync_changes(self):
         self.parent.sync_changes()
 
-    def reload_po_menu(self) -> None:
+    def reload_po_menu(self):
         for po_button in self.po_buttons:
             po_menu = QMenu(self)
             for po in get_all_po():
                 po_menu.addAction(po, partial(self.open_po, po))
             po_button.setMenu(po_menu)
 
-    def open_group_menu(self, menu: QMenu) -> None:
+    def open_group_menu(self, menu: QMenu):
         menu.exec(QCursor.pos())
 
-    def clear_layout(self, layout: QVBoxLayout | QWidget) -> None:
+    def clear_layout(self, layout: QVBoxLayout | QWidget):
         with contextlib.suppress(AttributeError):
             if layout is not None:
                 while layout.count():

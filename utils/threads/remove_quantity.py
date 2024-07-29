@@ -17,7 +17,7 @@ class RemoveQuantityThread(QThread):
         inventory: JsonFile,
         category: str,
         multiplier: int,
-    ) -> None:
+    ):
         QThread.__init__(self)
         self.username = os.getlogin().title()
         self.category = category
@@ -26,7 +26,7 @@ class RemoveQuantityThread(QThread):
         self.max_item_count = inventory.get_sum_of_items()
         self.inventory = inventory
 
-    def run(self) -> None:
+    def run(self):
         print("thread running")
         self.signal.emit(f"{self.completion_count}, {self.max_item_count}")
         try:

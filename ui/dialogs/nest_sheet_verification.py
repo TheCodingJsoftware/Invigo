@@ -16,7 +16,7 @@ class NestSheetVerification(QDialog):
         material,
         sheet_settings: SheetSettings,
         parent=None,
-    ) -> None:
+    ):
         super().__init__(parent)
         uic.loadUi("ui/dialogs/nest_sheet_verification.ui", self)
 
@@ -48,7 +48,7 @@ class NestSheetVerification(QDialog):
 
         self.lblMessage.setText(self.message)
 
-    def button_press(self, text) -> None:
+    def button_press(self, text):
         self.response = text
         self.accept()
 

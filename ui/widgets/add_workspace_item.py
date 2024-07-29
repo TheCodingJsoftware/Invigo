@@ -17,7 +17,7 @@ class AddWorkspaceItem(QDialog):
         components_inventory: ComponentsInventory,
         laser_cut_inventory: LaserCutInventory,
         parent=None,
-    ) -> None:
+    ):
         super().__init__(parent)
         uic.loadUi("ui/widgets/add_workspace_item.ui", self)
 
@@ -43,7 +43,7 @@ class AddWorkspaceItem(QDialog):
         self.pushButton_add.clicked.connect(self.accept)
         self.pushButton_cancel.clicked.connect(self.reject)
 
-    def listWidget_item_changed(self) -> None:
+    def listWidget_item_changed(self):
         self.lineEdit_name.setText(self.listWidget_all_items.currentItem().text())
         self.thickness = ""
         self.material = ""
@@ -53,7 +53,7 @@ class AddWorkspaceItem(QDialog):
                 self.material = laser_cut_part.material
                 break
 
-    def name_changed(self) -> None:
+    def name_changed(self):
         all_part_names = natsorted(self.get_all_part_names())
         for part_name in all_part_names:
             if part_name == self.lineEdit_name.text():

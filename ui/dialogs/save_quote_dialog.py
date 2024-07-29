@@ -11,7 +11,7 @@ class SaveQuoteDialog(QDialog):
         self,
         quote: Quote,
         parent=None,
-    ) -> None:
+    ):
         super().__init__(parent)
         uic.loadUi("ui/dialogs/save_quote_dialog.ui", self)
 

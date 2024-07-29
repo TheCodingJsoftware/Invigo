@@ -36,7 +36,7 @@ class JobColor(Enum):
 
 
 class Job:
-    def __init__(self, data: dict, job_manager) -> None:
+    def __init__(self, data: dict, job_manager):
         self.name: str = ""
         self.order_number: float = 0.0
         self.ship_to: str = ""

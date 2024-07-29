@@ -7,7 +7,7 @@ from utils.ip_utils import get_server_ip_address, get_server_port
 class DownloadThread(QThread):
     signal = pyqtSignal(object, list)
 
-    def __init__(self, files_to_download: list[str]) -> None:
+    def __init__(self, files_to_download: list[str]):
         QThread.__init__(self)
         self.SERVER_IP: str = get_server_ip_address()
         self.SERVER_PORT: int = get_server_port()
@@ -15,7 +15,7 @@ class DownloadThread(QThread):
         self.session = Session()
         self.file_url = f"http://{self.SERVER_IP}:{self.SERVER_PORT}/file/"
 
-    def run(self) -> None:
+    def run(self):
         successful_downloads = []
         failed_downloads = []
 

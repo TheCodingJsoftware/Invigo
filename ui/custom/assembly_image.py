@@ -7,7 +7,7 @@ class AssemblyImage(QLabel):
     clicked = pyqtSignal()
     imagePathDropped = pyqtSignal(str)
 
-    def __init__(self, parent: QWidget | None = ...) -> None:
+    def __init__(self, parent: QWidget | None = ...):
         super().__init__(parent)
         self.setMinimumSize(120, 120)
         self.setFixedHeight(120)

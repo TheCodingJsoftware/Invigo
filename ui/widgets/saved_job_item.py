@@ -11,7 +11,7 @@ class SavedPlanningJobItem(QWidget):
     delete_job = pyqtSignal()
     job_type_changed = pyqtSignal()
 
-    def __init__(self, file_info: dict[str, str], parent: QWidget) -> None:
+    def __init__(self, file_info: dict[str, str], parent: QWidget):
         super().__init__(parent)
         uic.loadUi("ui/widgets/job_plan_widget.ui", self)
 

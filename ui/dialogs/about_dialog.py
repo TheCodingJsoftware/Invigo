@@ -5,7 +5,7 @@ from PyQt6.QtWidgets import QDialog
 
 
 class AboutDialog(QDialog):
-    def __init__(self, parent, version: str, home: str) -> None:
+    def __init__(self, parent, version: str, home: str):
         super().__init__(parent)
         uic.loadUi("ui/dialogs/about_dialog.ui", self)
         self.parent = parent

@@ -6,7 +6,7 @@ from openpyxl import load_workbook
 
 
 class POTemplate:
-    def __init__(self, po_template: str) -> None:
+    def __init__(self, po_template: str):
         self.po_template = po_template
         self.order_number_cell = (4, 6)  # F4
         self.date_cell = (6, 6)  # F6
@@ -16,7 +16,7 @@ class POTemplate:
         self.vendor: str = self.get_vendor()
         self.order_number: int = self.get_order_number()
 
-    def generate(self) -> None:
+    def generate(self):
         self.output_path: str = f"{self.cwd}/PO's/{self.vendor}/PO {self.order_number+1}.xlsx"
         shutil.copyfile(self.po_template, self.output_path)
         self.set_order_number()
@@ -54,21 +54,21 @@ class POTemplate:
     def get_output_path(self) -> str:
         return self.output_path
 
-    def set_order_number(self) -> None:
+    def set_order_number(self):
         workbook = load_workbook(filename=self.output_path)
         worksheet = workbook.active
         worksheet.cell(row=self.order_number_cell[0], column=self.order_number_cell[1]).value = self.order_number + 1
         workbook.save(self.output_path)
         workbook.close()
 
-    def set_date(self) -> None:
+    def set_date(self):
         workbook = load_workbook(filename=self.output_path)
         worksheet = workbook.active
         worksheet.cell(row=self.date_cell[0], column=self.date_cell[1]).value = self.date
         workbook.save(self.output_path)
         workbook.close()
 
-    def set_signature(self) -> None:
+    def set_signature(self):
         workbook = load_workbook(filename=self.output_path)
         worksheet = workbook.active
         signature_row: int = 0

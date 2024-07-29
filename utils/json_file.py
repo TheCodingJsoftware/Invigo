@@ -13,71 +13,71 @@ class JsonFile:
         self.__create_file()
         self.load_data()
 
-    def __create_file(self) -> None:
+    def __create_file(self):
         if not os.path.exists(f"{self.FOLDER_LOCATION}/{self.file_name}.json"):
             with open(f"{self.FOLDER_LOCATION}/{self.file_name}.json", "w") as json_file:
                 json_file.write("{}")
 
-    def load_data(self) -> None:
+    def load_data(self):
         try:
             with open(f"{self.FOLDER_LOCATION}/{self.file_name}.json", "r", encoding="utf-8") as json_file:
                 self.data = json.load(json_file)
         except Exception as error:
             print(f"{self.file_name}.JsonFile.load_data: {error}")
 
-    def __save_data(self) -> None:
+    def __save_data(self):
         with open(f"{self.FOLDER_LOCATION}/{self.file_name}.json", "w", encoding="utf-8") as json_file:
             json.dump(self.data, json_file, ensure_ascii=False, indent=4)
 
-    def save_data(self, data: dict) -> None:
+    def save_data(self, data: dict):
         with open(f"{self.FOLDER_LOCATION}/{self.file_name}.json", "w", encoding="utf-8") as json_file:
             json.dump(data, json_file, ensure_ascii=False, indent=4)
 
-    def add_item(self, item_name: str, value) -> None:
+    def add_item(self, item_name: str, value):
         self.data.update({item_name: value})
         self.__save_data()
 
-    def add_item_in_object(self, object_name: str, item_name: str) -> None:
+    def add_item_in_object(self, object_name: str, item_name: str):
         self.data[object_name].update({item_name: {}})
         self.__save_data()
 
-    def add_group_to_category(self, category: str, group_name: str) -> None:
+    def add_group_to_category(self, category: str, group_name: str):
         self.data[category].update({group_name: {"group": True}})
         self.__save_data()
 
-    def change_key_name(self, key_name: str, new_name: str) -> None:
+    def change_key_name(self, key_name: str, new_name: str):
         self.data[new_name] = self.data[key_name]
         del self.data[key_name]
         self.__save_data()
 
-    def clone_key(self, key_name) -> None:
+    def clone_key(self, key_name):
         clonded_data = self.data
         clonded_data[f"Clone from: {key_name} Double click me rename me"] = clonded_data[key_name]
         self.data.update(clonded_data)
         self.__save_data()
 
-    def change_item_name(self, object_name: str, item_name: str, new_name: str) -> None:
+    def change_item_name(self, object_name: str, item_name: str, new_name: str):
         self.data[object_name][new_name] = self.data[object_name][item_name]
         del self.data[object_name][item_name]
         self.__save_data()
 
-    def change_item(self, item_name: str, new_value) -> None:
+    def change_item(self, item_name: str, new_value):
         self.data.update({item_name: new_value})
         self.__save_data()
 
-    def change_object_item(self, object_name: str, item_name: str, new_value) -> None:
+    def change_object_item(self, object_name: str, item_name: str, new_value):
         self.data[object_name][item_name] = new_value
         self.__save_data()
 
-    def change_object_in_object_item(self, object_name: str, item_name: str, value_name: str, new_value) -> None:
+    def change_object_in_object_item(self, object_name: str, item_name: str, value_name: str, new_value):
         self.data[object_name][item_name][value_name] = new_value
         self.__save_data()
 
-    def remove_item(self, item_name) -> None:
+    def remove_item(self, item_name):
         self.data.pop(item_name)
         self.__save_data()
 
-    def remove_object_item(self, object_name: str, item_name: str) -> None:
+    def remove_object_item(self, object_name: str, item_name: str):
         del self.data[object_name][item_name]
         self.__save_data()
 
@@ -196,7 +196,7 @@ class JsonFile:
 
         return grouped_category
 
-    def sort(self, category: str, item_name: str, ascending: bool) -> None:
+    def sort(self, category: str, item_name: str, ascending: bool):
         if item_name == "alphabet":
             sorted_data = dict(
                 sorted(

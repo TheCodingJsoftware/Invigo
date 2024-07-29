@@ -32,7 +32,7 @@ from utils.workspace.assembly import Assembly
 
 
 class AssemblyPlanningWidget(AssemblyWidget):
-    def __init__(self, assembly: Assembly, parent) -> None:
+    def __init__(self, assembly: Assembly, parent):
         super().__init__(assembly, parent)
 
         self.sub_assembly_widgets: list[AssemblyPlanningWidget] = []
@@ -275,7 +275,7 @@ class AssemblyPlanningWidget(AssemblyWidget):
         self.components_table.resizeColumnsToContents()
         self.update_components_table_height()
 
-    def component_image_pasted(self, image_file_name: str, row: int) -> None:
+    def component_image_pasted(self, image_file_name: str, row: int):
         component_name = self.components_table.item(row, ComponentsTableColumns.PART_NUMBER.value).text()
         component = self.get_component_by_name(component_name)
 

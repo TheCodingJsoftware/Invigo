@@ -18,7 +18,7 @@ class JobSorterThread(QThread):
         path_to_excel_file: str,
         directory_to_sort: str,
         output_directory: str,
-    ) -> None:
+    ):
         QThread.__init__(self)
         self.data = {}
         self.path_to_excel_file: str = path_to_excel_file
@@ -84,7 +84,7 @@ class JobSorterThread(QThread):
                 filtered_paths.append(file_path)
         return filtered_paths
 
-    def run(self) -> None:
+    def run(self):
         try:
             data = self.get_data_from_excel(self.path_to_excel_file)
             all_file_paths = self.get_all_file_paths_from_directory(directory_to_sort=self.directory_to_sort)

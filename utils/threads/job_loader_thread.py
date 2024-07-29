@@ -13,7 +13,7 @@ from utils.workspace.job_manager import JobManager
 class JobLoaderThread(QThread):
     signal = pyqtSignal(object)
 
-    def __init__(self, job_manager: JobManager, folder_name: str) -> None:
+    def __init__(self, job_manager: JobManager, folder_name: str):
         super().__init__()
         self.folder_name = folder_name
         self.job_manager = job_manager
@@ -50,14 +50,14 @@ class JobLoaderThread(QThread):
                     files.add(laser_cut_part_file)
         return list(files)
 
-    def download_job_data_thread(self, folder_name: str) -> None:
+    def download_job_data_thread(self, folder_name: str):
         download_job_thread = DownloadJobThread(folder_name)
         self.threads.append(download_job_thread)
         self.remaining_threads += 1
         download_job_thread.signal.connect(self.download_job_data_response)
         download_job_thread.start()
 
-    def download_job_data_response(self, data: dict, folder_name: str) -> None:
+    def download_job_data_response(self, data: dict, folder_name: str):
         print(f"download_job_data_response: {data} {folder_name}")
         if isinstance(data, dict):
             self.job = Job(data, self.job_manager)
@@ -67,7 +67,7 @@ class JobLoaderThread(QThread):
             self.download_required_images_thread(required_images)
         self.thread_finished()
 
-    def download_required_images_thread(self, image_paths: list[str]) -> None:
+    def download_required_images_thread(self, image_paths: list[str]):
         if image_paths:
             download_images_thread = DownloadImagesThread(image_paths)
             self.threads.append(download_images_thread)
@@ -75,13 +75,13 @@ class JobLoaderThread(QThread):
             download_images_thread.signal.connect(self.download_images_response)
             download_images_thread.start()
 
-    def download_images_response(self, response: str) -> None:
+    def download_images_response(self, response: str):
         print(f"download_images_response: {response}")
         all_files = self.get_all_files(self.job)
         self.download_required_files_thread(all_files)
         self.thread_finished()
 
-    def download_required_files_thread(self, files: list[str]) -> None:
+    def download_required_files_thread(self, files: list[str]):
         if files:
             download_files_thread = WorkspaceDownloadFile(files, False)
             self.threads.append(download_files_thread)

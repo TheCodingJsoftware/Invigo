@@ -15,7 +15,7 @@ class SendJobsToWorkspaceDialog(QDialog):
         active_jobs_in_planning: dict[str, dict[str, Union[Job, float, str, int]]],
         active_jobs_in_quoting: dict[str, dict[str, Union[Job, float, str, int]]],
         parent=None,
-    ) -> None:
+    ):
         super().__init__(parent)
         uic.loadUi("ui/dialogs/send_jobs_to_workspace_dialog.ui", self)
 

@@ -3,7 +3,7 @@ from utils.workspace.status import Status
 
 
 class Tag:
-    def __init__(self, name, data: dict[str, dict]) -> None:
+    def __init__(self, name, data: dict[str, dict]):
         self.name: str = name
         self.attribute: Attribute = None
         self.statuses: list[Status] = []

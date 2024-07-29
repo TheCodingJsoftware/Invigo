@@ -7,7 +7,7 @@ from utils.workspace.job import Job
 
 
 class AddAssemblyDialog(QDialog):
-    def __init__(self, all_jobs: list[Job], parent) -> None:
+    def __init__(self, all_jobs: list[Job], parent):
         super().__init__(parent)
         uic.loadUi("ui/dialogs/add_assembly_dialog.ui", self)
         self.parent = parent
@@ -31,14 +31,14 @@ class AddAssemblyDialog(QDialog):
                 assemblies.update({assembly: assembly.name})
         return assemblies
 
-    def populate_tree_widget(self) -> None:
+    def populate_tree_widget(self):
         self.treeWidget_assemblies.clear()
         for job in self.all_jobs:
             job_item = QTreeWidgetItem([job.name])
             self.treeWidget_assemblies.addTopLevelItem(job_item)
             self.add_assemblies_to_tree(job_item, job.assemblies)
 
-    def add_assemblies_to_tree(self, parent_item: QTreeWidgetItem, assemblies: list[Assembly]) -> None:
+    def add_assemblies_to_tree(self, parent_item: QTreeWidgetItem, assemblies: list[Assembly]):
         for assembly in assemblies:
             assembly_item = QTreeWidgetItem([assembly.name])
             parent_item.addChild(assembly_item)

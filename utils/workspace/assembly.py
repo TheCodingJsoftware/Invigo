@@ -16,7 +16,7 @@ if TYPE_CHECKING:
 
 
 class Assembly:
-    def __init__(self, assembly_data: dict[str, object], job) -> None:
+    def __init__(self, assembly_data: dict[str, object], job):
         self.job: Job = job
 
         self.name = ""
@@ -135,7 +135,7 @@ class Assembly:
             None,
         )
 
-    def rename(self, new_name: str) -> None:
+    def rename(self, new_name: str):
         self.name = new_name
 
     def get_all_sub_assemblies(self) -> list["Assembly"]:

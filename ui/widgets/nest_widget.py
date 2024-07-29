@@ -23,7 +23,7 @@ if TYPE_CHECKING:
 class NestWidget(QWidget):
     updateLaserCutPartSettings = pyqtSignal(Nest)
 
-    def __init__(self, nest: Nest, parent) -> None:
+    def __init__(self, nest: Nest, parent):
         super().__init__(parent)
         uic.loadUi("ui/widgets/nest_widget.ui", self)
 

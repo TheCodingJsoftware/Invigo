@@ -2,7 +2,7 @@ from datetime import datetime
 
 
 class Message:
-    def __init__(self, user: str, text: str, date_created: str = None) -> None:
+    def __init__(self, user: str, text: str, date_created: str = None):
         self.user = user
         self.text = text
         self.date_created = date_created if date_created is not None else datetime.now().strftime("%Y-%m-%d %H:%M:%S")

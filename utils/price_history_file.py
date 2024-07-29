@@ -2,7 +2,7 @@ from openpyxl import Workbook, load_workbook
 
 
 class PriceHistoryFile:
-    def __init__(self, file_name: str) -> None:
+    def __init__(self, file_name: str):
         self.file_name = file_name
         self.row_pos: int = 0
         try:
@@ -23,7 +23,7 @@ class PriceHistoryFile:
         }
         self.load_file()
 
-    def load_file(self) -> None:
+    def load_file(self):
         self.row_pos = len(self.price_history_sheet["A"])
 
         for cell in self.price_history_sheet["A"]:
@@ -47,7 +47,7 @@ class PriceHistoryFile:
         part_number: str,
         old_price: float,
         new_price: float,
-    ) -> None:
+    ):
         if old_price == new_price:
             return
         self.price_history_sheet.cell(row=self.row_pos + 1, column=1, value=date)

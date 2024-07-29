@@ -6,7 +6,7 @@ from utils.chat.chat import Chat
 
 
 class ChatFile:
-    def __init__(self, file_name: str) -> None:
+    def __init__(self, file_name: str):
         self.file_name: str = file_name
         self.chats: list[Chat] = []
         self.chat_data: dict[str, Chat] = {}
@@ -14,7 +14,7 @@ class ChatFile:
         self.__create_file()
         self.load_data()
 
-    def __create_file(self) -> None:
+    def __create_file(self):
         if not os.path.exists(f"{self.FOLDER_LOCATION}/{self.file_name}.json"):
             with open(f"{self.FOLDER_LOCATION}/{self.file_name}.json", "w") as json_file:
                 json_file.write("{}")
@@ -25,11 +25,11 @@ class ChatFile:
         chat.set_chat_data(chat_data["chat_data"])
         return chat
 
-    def save(self) -> None:
+    def save(self):
         with open(f"{self.FOLDER_LOCATION}/{self.file_name}.json", "wb") as file:
             file.write(msgspec.json.encode(self.to_dict()))
 
-    def load_data(self) -> None:
+    def load_data(self):
         self.chats.clear()
         with open(f"{self.FOLDER_LOCATION}/{self.file_name}.json", "rb") as file:
             data = msgspec.json.decode(file.read())

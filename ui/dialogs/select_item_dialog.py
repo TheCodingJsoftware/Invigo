@@ -18,7 +18,7 @@ class SelectItemDialog(QDialog):
         message: str,
         items: list[str],
         parent,
-    ) -> None:
+    ):
         super().__init__(parent)
         uic.loadUi("ui/dialogs/select_item_dialog.ui", self)
 
@@ -35,11 +35,11 @@ class SelectItemDialog(QDialog):
         self.listWidget.addItems(self.items)
         self.listWidget.setSelectionMode(QAbstractItemView.SelectionMode.SingleSelection)
 
-    def button_press(self, button) -> None:
+    def button_press(self, button):
         self.response = button.text()
         self.accept()
 
-    def load_dialog_buttons(self) -> None:
+    def load_dialog_buttons(self):
         button_names = self.button_names.split(", ")
         for index, name in enumerate(button_names):
             if name in [DialogButtons.clone, DialogButtons.set]:

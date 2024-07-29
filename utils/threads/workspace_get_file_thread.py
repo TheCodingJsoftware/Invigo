@@ -10,7 +10,7 @@ from utils.ip_utils import get_server_ip_address, get_server_port
 class WorkspaceDownloadFile(QThread):
     signal = pyqtSignal(str, str, bool)
 
-    def __init__(self, files_to_download: list[str], open_when_done: bool) -> None:
+    def __init__(self, files_to_download: list[str], open_when_done: bool):
         QThread.__init__(self)
         self.SERVER_IP: str = get_server_ip_address()
         self.SERVER_PORT: int = get_server_port()
@@ -20,7 +20,7 @@ class WorkspaceDownloadFile(QThread):
         self.open_when_done = open_when_done
         self.file_url = f"http://{self.SERVER_IP}:{self.SERVER_PORT}/workspace_get_file/"
 
-    def run(self) -> None:
+    def run(self):
         for file_to_download in self.files_to_download:
             try:
                 response = self.session.get(self.file_url + file_to_download, timeout=10)

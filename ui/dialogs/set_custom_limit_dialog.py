@@ -10,7 +10,7 @@ class SetCustomLimitDialog(QDialog):
         message: str = "",
         red_limit: int = 10,
         yellow_limit: int = 20,
-    ) -> None:
+    ):
         super().__init__(parent)
         uic.loadUi("ui/dialogs/set_custom_limit_dialog.ui", self)
 
@@ -31,7 +31,7 @@ class SetCustomLimitDialog(QDialog):
         self.pushButton_set.clicked.connect(self.accept)
         self.pushButton_cancel.clicked.connect(self.reject)
 
-    def check_quantity_values(self) -> None:
+    def check_quantity_values(self):
         if self.get_red_limit() > self.get_yellow_limit():
             self.doubleSpinBox_red_limit.setValue(self.doubleSpinBox_yellow_limit.value())
 

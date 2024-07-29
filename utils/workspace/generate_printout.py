@@ -13,7 +13,7 @@ from utils.workspace.job import Job
 
 
 class CoverPage:
-    def __init__(self, order_number: float, date_shipped: str, date_expected: str, ship_to: str) -> None:
+    def __init__(self, order_number: float, date_shipped: str, date_expected: str, ship_to: str):
         self.order_number = order_number
         self.date_shipped = date_shipped
         self.date_expected = date_expected
@@ -64,7 +64,7 @@ class WorkorderID:
         return f"""<h5 class="center-align">Scan to open workorder</h5><div class='padding' id='workorder_id' data-workorder-id={self.workorder_id}></div><div id="page-break" class="page-break"></div>"""
 
 class NestsTable:
-    def __init__(self, nests: list[Nest]) -> None:
+    def __init__(self, nests: list[Nest]):
         self.headers = [
             "Nest Name",
             "Thickness",
@@ -300,7 +300,7 @@ class NestedLaserCutParts:
 
 
 class LaserCutPartsTable:
-    def __init__(self, job: Job, assembly_quantity: int, laser_cut_parts: list[LaserCutPart]) -> None:
+    def __init__(self, job: Job, assembly_quantity: int, laser_cut_parts: list[LaserCutPart]):
         self.job = job
         self.assembly_quantity = assembly_quantity
         self.laser_cut_parts = laser_cut_parts
@@ -407,7 +407,7 @@ class LaserCutPartsTable:
 
 
 class ComponentsTable:
-    def __init__(self, job: Job, assembly_quantity: int, components: list[Component]) -> None:
+    def __init__(self, job: Job, assembly_quantity: int, components: list[Component]):
         self.job = job
         self.assembly_quantity = assembly_quantity
         self.components = components
@@ -548,7 +548,7 @@ class AssemblyTable:
 
 
 class JobDiv:
-    def __init__(self, job: Job) -> None:
+    def __init__(self, job: Job):
         self.job = job
 
     def generate(self) -> str:
@@ -560,7 +560,7 @@ class JobDiv:
 
 
 class AssemblyDiv:
-    def __init__(self, job: Job, assembly: Assembly, use_recursion=True) -> None:
+    def __init__(self, job: Job, assembly: Assembly, use_recursion=True):
         self.job = job
         self.assembly = assembly
         self.use_recursion = use_recursion
@@ -621,7 +621,7 @@ class AssemblyDiv:
 
 
 class JobParts:
-    def __init__(self, job: Job) -> None:
+    def __init__(self, job: Job):
         self.job = job
 
     def generate(self) -> str:
@@ -629,7 +629,7 @@ class JobParts:
 
 
 class PrintoutHeader:
-    def __init__(self, name: str, printout_type: Literal["QUOTE", "WORKORDER", "PACKINGSLIP"] = "QUOTE") -> None:
+    def __init__(self, name: str, printout_type: Literal["QUOTE", "WORKORDER", "PACKINGSLIP"] = "QUOTE"):
         self.name = name
         self.printout_type = printout_type
         self.server_directory = f"http://{get_server_ip_address()}:{get_server_port()}"
@@ -661,7 +661,7 @@ class PrintoutHeader:
 
 
 class WorkspaceJobPrintout:
-    def __init__(self, job: Job, printout_type: Literal["QUOTE", "WORKORDER", "PACKINGSLIP"] = "QUOTE") -> None:
+    def __init__(self, job: Job, printout_type: Literal["QUOTE", "WORKORDER", "PACKINGSLIP"] = "QUOTE"):
         self.job = job
         self.printout_type = printout_type
         self.program_directory = os.path.dirname(os.path.realpath(sys.argv[0]))
@@ -824,7 +824,7 @@ class WorkspaceJobPrintout:
 
 
 class WorkorderPrintout:
-    def __init__(self, nests: list[Nest], workorder_id: str, printout_type: Literal["QUOTE", "WORKORDER", "PACKINGSLIP"] = "WORKORDER") -> None:
+    def __init__(self, nests: list[Nest], workorder_id: str, printout_type: Literal["QUOTE", "WORKORDER", "PACKINGSLIP"] = "WORKORDER"):
         self.nests = nests
         self.workorder_id = workorder_id
         self.printout_type = printout_type

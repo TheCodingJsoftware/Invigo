@@ -10,7 +10,7 @@ from utils.workspace.tag import Tag
 
 
 class WorkspaceSettings:
-    def __init__(self) -> None:
+    def __init__(self):
         self.filename: str = "workspace_settings"
         self.FOLDER_LOCATION: str = f"{os.getcwd()}/data"
         self.notes: str = ""

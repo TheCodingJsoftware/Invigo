@@ -7,7 +7,7 @@ from utils.ip_utils import get_server_ip_address, get_server_port
 class UploadThread(QThread):
     signal = pyqtSignal(object, list)
 
-    def __init__(self, files_to_upload: list[str]) -> None:
+    def __init__(self, files_to_upload: list[str]):
         QThread.__init__(self)
         self.SERVER_IP: str = get_server_ip_address()
         self.SERVER_PORT: int = get_server_port()
@@ -15,7 +15,7 @@ class UploadThread(QThread):
         self.session = Session()
         self.files_to_upload = files_to_upload
 
-    def run(self) -> None:
+    def run(self):
         try:
             successful_uploads = []
             failed_uploads = []

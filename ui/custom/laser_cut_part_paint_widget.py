@@ -14,7 +14,7 @@ class LaserCutPartPaintWidget(QWidget):
         laser_cut_part: LaserCutPart,
         paint_settings_widget: LasserCutPartPaintSettingsWidget,
         parent: CustomTableWidget,
-    ) -> None:
+    ):
         super().__init__(parent)
         self.parent: CustomTableWidget = parent
 

@@ -13,7 +13,7 @@ settings_file = Settings()
 
 
 class EditPaintInventory(QDialog):
-    def __init__(self, paint_inventory: PaintInventory, parent) -> None:
+    def __init__(self, paint_inventory: PaintInventory, parent):
         super().__init__(parent)
         uic.loadUi("ui/dialogs/edit_paint_inventory.ui", self)
         self.parent = parent
@@ -294,13 +294,13 @@ class EditPaintInventory(QDialog):
             )
             msg.exec()
 
-    def autofill(self) -> None:
+    def autofill(self):
         for component in self.components_inventory.components:
             if component.part_name == self.lineEdit_name.currentText():
                 self.lineEdit_name.setCurrentText(component.name)
                 self.doubleSpinBox_price.setValue(component.price)
 
-    def name_changed(self) -> None:
+    def name_changed(self):
         for component in self.components_inventory.components:
             if component.part_name == self.lineEdit_name.currentText():
                 self.pushButton_autofill.setEnabled(True)

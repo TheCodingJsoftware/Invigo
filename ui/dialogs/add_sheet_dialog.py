@@ -16,7 +16,7 @@ class AddSheetDialog(QDialog):
         sheets_inventory: SheetsInventory,
         sheet_settings: SheetSettings,
         parent=None,
-    ) -> None:
+    ):
         super().__init__(parent)
         uic.loadUi("ui/dialogs/add_sheet_dialog.ui", self)
 

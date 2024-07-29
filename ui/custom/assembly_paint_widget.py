@@ -13,7 +13,7 @@ class AssemblyPaintWidget(QWidget):
         assembly: Assembly,
         paint_settings_widget: AssemblyPaintSettingsWidget,
         parent,
-    ) -> None:
+    ):
         super().__init__(parent)
         self.parent = parent
 

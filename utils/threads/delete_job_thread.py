@@ -8,14 +8,14 @@ from utils.ip_utils import get_server_ip_address, get_server_port
 class DeleteJobThread(QThread):
     signal = pyqtSignal(object, object)
 
-    def __init__(self, folder_name: str) -> None:
+    def __init__(self, folder_name: str):
         QThread.__init__(self)
         self.SERVER_IP: str = get_server_ip_address()
         self.SERVER_PORT: int = get_server_port()
         self.folder_name: str = folder_name
         self.url = f"http://{self.SERVER_IP}:{self.SERVER_PORT}/delete_job/{self.folder_name}"
 
-    def run(self) -> None:
+    def run(self):
         try:
             response = requests.post(self.url, timeout=10)
             response_data = msgspec.json.decode(response.content)

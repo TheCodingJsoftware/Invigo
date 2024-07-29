@@ -14,12 +14,12 @@ from PyQt6.QtWidgets import QApplication, QLabel, QVBoxLayout, QWidget
 class DownloadThread(QThread):
     signal = pyqtSignal(object)
 
-    def __init__(self, url) -> None:
+    def __init__(self, url):
         QThread.__init__(self)
         self.url = url
         self.file_name = "Invigo.zip"
 
-    def run(self) -> None:
+    def run(self):
         try:
             QApplication.setOverrideCursor(Qt.CursorShape.WaitCursor)
             self.download()
@@ -189,12 +189,12 @@ class Window(QWidget):
         QApplication.setOverrideCursor(Qt.CursorShape.WaitCursor)
         self.start_thread(download_thread)
 
-    def start_thread(self, thread: DownloadThread) -> None:
+    def start_thread(self, thread: DownloadThread):
         thread.signal.connect(self.data_received)
         self.threads.append(thread)
         thread.start()
 
-    def data_received(self, data) -> None:
+    def data_received(self, data):
         self.progress_text.setText(data)
         if data == "":
             QApplication.restoreOverrideCursor()

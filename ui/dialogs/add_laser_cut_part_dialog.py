@@ -9,7 +9,7 @@ from utils.inventory.laser_cut_part import LaserCutPart
 
 
 class AddLaserCutPartDialog(QDialog):
-    def __init__(self, parent) -> None:
+    def __init__(self, parent):
         super().__init__(parent)
         uic.loadUi("ui/dialogs/add_laser_cut_part_dialog.ui", self)
         self.parent = parent
@@ -64,7 +64,7 @@ class AddLaserCutPartDialog(QDialog):
             0,
         )
 
-    def name_changed(self, text: str) -> None:
+    def name_changed(self, text: str):
         if not self._completing:
             found = False
             prefix = text.rpartition(",")[-1]

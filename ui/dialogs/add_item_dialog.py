@@ -13,7 +13,7 @@ class AddItemDialog(QDialog):
         message: str,
         components_inventory: ComponentsInventory,
         parent=None,
-    ) -> None:
+    ):
         super().__init__(parent)
         uic.loadUi("ui/dialogs/add_item_dialog.ui", self)
 
@@ -39,13 +39,13 @@ class AddItemDialog(QDialog):
         self.pushButton_add.clicked.connect(self.accept)
         self.pushButton_cancel.clicked.connect(self.reject)
 
-    def autofill(self) -> None:
+    def autofill(self):
         for component in self.components_inventory.components:
             if component.part_name == self.lineEdit_name.currentText():
                 self.lineEdit_part_number.setCurrentText(component.part_number)
                 self._extracted_from_part_number_changed_10(component)
 
-    def name_changed(self) -> None:
+    def name_changed(self):
         for component in self.components_inventory.components:
             if component.part_name == self.lineEdit_name.currentText():
                 self.pushButton_autofill.setEnabled(True)
@@ -53,14 +53,14 @@ class AddItemDialog(QDialog):
             else:
                 self.pushButton_autofill.setEnabled(False)
 
-    def part_number_changed(self) -> None:
+    def part_number_changed(self):
         for component in self.components_inventory.components:
             if component.part_number == self.lineEdit_part_number.currentText():
                 self.lineEdit_name.setCurrentText(component.part_name)
                 self._extracted_from_part_number_changed_10(component)
 
     # TODO Rename this here and in `name_changed` and `part_number_changed`
-    def _extracted_from_part_number_changed_10(self, component: Component) -> None:
+    def _extracted_from_part_number_changed_10(self, component: Component):
         self.comboBox_priority.setCurrentIndex(component.priority)
         self.spinBox_current_quantity.setValue(int(component.quantity))
 

@@ -17,6 +17,7 @@ class WorkspacePartsTableColumns(AutoNumber):
     MATERIAL = auto()
     PAINT = auto()
     QUANTITY = auto()
+    QUANTITY_IN_STOCK = auto()
     PROCESS_CONTROLS = auto()
     NOTES = auto()
     SHELF_NUMBER = auto()
@@ -45,6 +46,7 @@ class WorkspacePartsTableWidget(CustomTableWidget):
             "Material": WorkspacePartsTableColumns.MATERIAL.value,
             "Paint": WorkspacePartsTableColumns.PAINT.value,
             "Quantity": WorkspacePartsTableColumns.QUANTITY.value,
+            "Quantity in Stock": WorkspacePartsTableColumns.QUANTITY_IN_STOCK.value,
             "Process Controls": WorkspacePartsTableColumns.PROCESS_CONTROLS.value,
             "Shelf #": WorkspacePartsTableColumns.SHELF_NUMBER.value,
             "Notes": WorkspacePartsTableColumns.NOTES.value,
@@ -54,5 +56,3 @@ class WorkspacePartsTableWidget(CustomTableWidget):
         self.setColumnCount(len(headers))
         for header, column in headers.items():
             self.setHorizontalHeaderItem(column, QTableWidgetItem(header))
-
-        self.setStyleSheet("border-color: transparent;")

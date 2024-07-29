@@ -16,7 +16,7 @@ class QuoteGeneratorTab(QWidget):
     save_quote = pyqtSignal(Quote)
     save_quote_as = pyqtSignal(Quote)
 
-    def __init__(self, parent) -> None:
+    def __init__(self, parent):
         super().__init__(parent)
         self.parent = parent
         self.components_inventory: ComponentsInventory = self.parent.components_inventory
@@ -164,7 +164,7 @@ class QuoteGeneratorTab(QWidget):
         else:
             self.parent.label_quote_save_status.setText("")
 
-    def clear_layout(self, layout: QVBoxLayout | QWidget) -> None:
+    def clear_layout(self, layout: QVBoxLayout | QWidget):
         with contextlib.suppress(AttributeError):
             if layout is not None:
                 while layout.count():

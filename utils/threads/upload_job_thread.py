@@ -9,7 +9,7 @@ from utils.workspace.job import Job
 class UploadJobThread(QThread):
     signal = pyqtSignal(str)
 
-    def __init__(self, folder: str, job: Job, html_file_contents: str) -> None:
+    def __init__(self, folder: str, job: Job, html_file_contents: str):
         QThread.__init__(self)
         self.SERVER_IP: str = get_server_ip_address()
         self.SERVER_PORT: int = get_server_port()
@@ -18,7 +18,7 @@ class UploadJobThread(QThread):
         self.html_file_contents = html_file_contents
         self.upload_url = f"http://{self.SERVER_IP}:{self.SERVER_PORT}/upload_job"
 
-    def run(self) -> None:
+    def run(self):
         try:
             self.job.update_inventory_items_data()
             data = {

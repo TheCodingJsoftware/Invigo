@@ -8,7 +8,7 @@ class SetComponentOrderPendingDialog(QDialog):
         self,
         message: str,
         parent,
-    ) -> None:
+    ):
         super().__init__(parent)
         uic.loadUi("ui/dialogs/set_component_order_pending_dialog.ui", self)
 

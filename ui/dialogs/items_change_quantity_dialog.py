@@ -16,7 +16,7 @@ class ItemsChangeQuantityDialog(QDialog):
         add_or_remove: str,
         items: list[Component] | list[LaserCutPart],
         parent=None,
-    ) -> None:
+    ):
         super().__init__(parent)
         uic.loadUi("ui/dialogs/items_change_quantity_dialog.ui", self)
 

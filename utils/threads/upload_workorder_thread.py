@@ -9,7 +9,7 @@ from utils.workspace.workorder import Workorder
 class UploadWorkorderThread(QThread):
     signal = pyqtSignal(str)
 
-    def __init__(self, folder: str, workorder: Workorder, html_file_contents: str) -> None:
+    def __init__(self, folder: str, workorder: Workorder, html_file_contents: str):
         QThread.__init__(self)
         self.SERVER_IP: str = get_server_ip_address()
         self.SERVER_PORT: int = get_server_port()
@@ -18,7 +18,7 @@ class UploadWorkorderThread(QThread):
         self.html_file_contents = html_file_contents
         self.upload_url = f"http://{self.SERVER_IP}:{self.SERVER_PORT}/upload_workorder"
 
-    def run(self) -> None:
+    def run(self):
         try:
             data = {
                 "folder": self.folder,
