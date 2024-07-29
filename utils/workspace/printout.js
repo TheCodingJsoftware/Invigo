@@ -280,8 +280,8 @@ if (workorderDiv) {
     // Generate the QR code
     new QRCode(qrDiv, {
         text: qrUrl,
-        width: 512,
-        height: 512,
+        width: 256,
+        height: 256,
         colorDark: "#000000",
         colorLight: "#ffffff",
         correctLevel: QRCode.CorrectLevel.H

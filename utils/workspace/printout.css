@@ -28,8 +28,8 @@ details>summary {
 }
 .qr-code img{
     cursor: pointer;
-    width: 512px;
-    height: 512px;
+    width: 256px;
+    height: 256px;
 }
 .assembly_data{
     display: flex;
