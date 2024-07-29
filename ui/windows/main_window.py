@@ -1,15 +1,18 @@
+import base64
 import contextlib
 import logging
 import os
 import shutil
 import subprocess
 import sys
+import time
 import threading
 import webbrowser
 import winsound
+import uuid
 from datetime import datetime
 from functools import partial
-from typing import Any
+from typing import Any, Union
 
 import requests
 import win32api  # pywin32
@@ -99,18 +102,20 @@ from utils.threads.set_order_number_thread import SetOrderNumberThread
 from utils.threads.update_job_setting import UpdateJobSetting
 from utils.threads.update_quote_settings import UpdateQuoteSettings
 from utils.threads.upload_job_thread import UploadJobThread
+from utils.threads.upload_workorder_thread import UploadWorkorderThread
 from utils.threads.upload_quote import UploadQuote
 from utils.threads.upload_thread import UploadThread
 from utils.trusted_users import get_trusted_users
-from utils.workspace.generate_printout import Printout
+from utils.workspace.generate_printout import WorkspaceJobPrintout, WorkorderPrintout
 from utils.workspace.job import Job, JobColor, JobStatus
 from utils.workspace.job_manager import JobManager
 from utils.workspace.job_preferences import JobPreferences
 from utils.workspace.workspace import Workspace
 from utils.workspace.workspace_settings import WorkspaceSettings
 from utils.workspace.workspace_history import WorkspaceHistory
+from utils.workspace.workorder import Workorder
 
-__version__: str = "v3.2.7"
+__version__: str = "v3.2.8"
 
 
 def check_folders(folders: list[str]) -> None:
@@ -276,8 +281,9 @@ class MainWindow(QMainWindow):
             self.last_selected_menu_tab: str = self.settings_file.get_value("menu_tabs_order")[self.settings_file.get_value("last_toolbox_tab")]
         except IndexError:
             self.last_selected_menu_tab: str = self.settings_file.get_value("menu_tabs_order")[0]
-        self.quote_nest_directories_list_widgets: dict[str, PdfTreeView] = {}
-        self.quote_job_directories_list_widgets: dict[str, PdfTreeView] = {}
+        self.toolbox_quote_nest_directories_list_widgets: dict[str, PdfTreeView] = {}
+        self.toolbox_job_nest_directories_list_widgets: dict[str, PdfTreeView] = {}
+        self.toolbox_workspace_nest_directories_list_widgets: dict[str, PdfTreeView] = {}
         self.quote_nest_information = {}
         self.quote_components_information = {}
         self.tabWidget: QTabWidget = self.findChild(QTabWidget, "tabWidget")
@@ -294,6 +300,7 @@ class MainWindow(QMainWindow):
         self.splitter = self.findChild(QSplitter, "splitter")
         self.splitter_2 = self.findChild(QSplitter, "splitter_2")
         self.splitter_3 = self.findChild(QSplitter, "splitter_3")
+        self.splitter_4 = self.findChild(QSplitter, "splitter_4")
 
         self.splitter.setStretchFactor(0, 0)  # Job Planner
         self.splitter.setStretchFactor(1, 1)  # Job Planner
@@ -303,6 +310,10 @@ class MainWindow(QMainWindow):
 
         self.splitter_2.setStretchFactor(0, 1)  # Job Quoter
         self.splitter_2.setStretchFactor(1, 0)  # Job Quoter
+
+        self.splitter_4.setSizes([1, 0])
+        self.splitter_4.setStretchFactor(0, 1)
+        self.splitter_4.setStretchFactor(1, 0)
 
     def __load_ui(self) -> None:
         menu_tabs_order: list[str] = self.settings_file.get_value(setting_name="menu_tabs_order")
@@ -341,15 +352,22 @@ class MainWindow(QMainWindow):
         self.cutoff_widget.addItem(cutoff_items, "Cutoff Sheets")
         self.cutoff_widget.close_all()
 
-        self.pushButton_load_nests.clicked.connect(self.process_selected_nests)
-        self.pushButton_clear_selections.clicked.connect(self.clear_nest_selections)
-        self.pushButton_refresh_directories.clicked.connect(self.refresh_nest_directories)
+        # NEST RELATED
         self.pushButton_generate_quote.clicked.connect(self.generate_printout)
 
+        self.pushButton_load_nests.clicked.connect(self.process_selected_nests)
         self.pushButton_load_nests_2.clicked.connect(self.process_selected_nests_to_job)
-        self.pushButton_clear_selections_2.clicked.connect(self.clear_job_quote_selections)
-        self.pushButton_refresh_directories_2.clicked.connect(self.refresh_nest_directories)
+        self.pushButton_load_nests_3.clicked.connect(self.workspace_process_selected_nests)
 
+        self.pushButton_clear_selections.clicked.connect(self.clear_nest_selections)
+        self.pushButton_clear_selections_2.clicked.connect(self.clear_job_quote_selections)
+        self.pushButton_clear_selections_3.clicked.connect(self.clear_workspace_nest_selections)
+
+        self.pushButton_refresh_directories.clicked.connect(self.refresh_nest_directories)
+        self.pushButton_refresh_directories_2.clicked.connect(self.refresh_nest_directories)
+        self.pushButton_refresh_directories_3.clicked.connect(self.refresh_nest_directories)
+
+        # Jobs
         self.pushButton_refresh_jobs.clicked.connect(self.load_jobs_thread)
         self.pushButton_refresh_jobs_2.clicked.connect(self.load_jobs_thread)
 
@@ -558,7 +576,9 @@ class MainWindow(QMainWindow):
             self.load_jobs_thread()
             self.job_planner_widget.update_tables()
         elif self.tabWidget.tabText(self.tabWidget.currentIndex()) == "Workspace":
+            self.refresh_nest_directories()
             self.workspace_tab_widget = WorkspaceTabWidget(self)
+            self.workspace_tab_widget.tabChanged.connect(self.workspace_tab_changed)
             self.clear_layout(self.workspace_layout)
             self.workspace_layout.addWidget(self.workspace_tab_widget)
         self.settings_file.set_value("last_toolbox_tab", self.tabWidget.currentIndex())
@@ -659,6 +679,10 @@ class MainWindow(QMainWindow):
         if selected_items := self.get_all_selected_job_quotes():
             self.load_nests_for_job_thread(selected_items)
 
+    def workspace_process_selected_nests(self):
+        if selected_items := self.get_all_selected_workspace_nests():
+            self.load_nests_for_workspace_thread(selected_items)
+
     def cutoff_sheet_double_clicked(self, cutoff_items: QListWidget):
         cutoff_sheets = self.sheets_inventory.get_sheets_by_category("Cutoff")
         item_pressed: QListWidgetItem = cutoff_items.selectedItems()[0]
@@ -674,6 +698,11 @@ class MainWindow(QMainWindow):
                 self.quote_generator_tab_widget.quotes[self.quote_generator_tab_widget.tab_widget.currentIndex()].update_sheet_statuses()
                 return
 
+    def workspace_tab_changed(self, tab_name: str):
+        if any(keyword in tab_name.lower() for keyword in ["laser"]):
+            self.splitter_4.setSizes([1, 1])
+        else:
+            self.splitter_4.setSizes([1, 0])
     # * /\ SLOTS & SIGNALS /\
 
     # * \/ UPDATE UI ELEMENTS \/
@@ -738,11 +767,15 @@ class MainWindow(QMainWindow):
             item.setForeground(QColor(color))
 
     def clear_nest_selections(self) -> None:
-        for tree_view in self.quote_nest_directories_list_widgets.values():
+        for tree_view in self.toolbox_quote_nest_directories_list_widgets.values():
             tree_view.clearSelection()
 
     def clear_job_quote_selections(self) -> None:
-        for tree_view in self.quote_job_directories_list_widgets.values():
+        for tree_view in self.toolbox_job_nest_directories_list_widgets.values():
+            tree_view.clearSelection()
+
+    def clear_workspace_nest_selections(self) -> None:
+        for tree_view in self.toolbox_workspace_nest_directories_list_widgets.values():
             tree_view.clearSelection()
 
     def nest_directory_item_selected(self) -> None:
@@ -763,6 +796,14 @@ class MainWindow(QMainWindow):
             self.pushButton_load_nests_2.setEnabled(True)
         self.pushButton_load_nests_2.setText(f"Import {selected_nests} Nest{'' if selected_nests == 1 else 's'}")
 
+    def workspace_directory_item_selected(self) -> None:
+        selected_nests = len(self.get_all_selected_workspace_nests())
+        if selected_nests == 0:
+            self.pushButton_load_nests_3.setEnabled(False)
+        else:
+            self.pushButton_load_nests_3.setEnabled(True)
+        self.pushButton_load_nests_3.setText(f"Load {selected_nests} Nest{'' if selected_nests == 1 else 's'}")
+
     def save_scroll_position(self, category: Category, table: CustomTableWidget):
         self.scroll_position_manager.save_scroll_position(
             f"{self.tabWidget.tabText(self.tabWidget.currentIndex())} - {category.name}",
@@ -780,13 +821,19 @@ class MainWindow(QMainWindow):
 
     def get_all_selected_nests(self) -> list[str]:
         selected_nests = []
-        for tree_view in self.quote_nest_directories_list_widgets.values():
+        for tree_view in self.toolbox_quote_nest_directories_list_widgets.values():
             selected_nests.extend(tree_view.full_paths)
         return list(set(selected_nests))
 
     def get_all_selected_job_quotes(self) -> list[str]:
         selected_nests = []
-        for tree_view in self.quote_job_directories_list_widgets.values():
+        for tree_view in self.toolbox_job_nest_directories_list_widgets.values():
+            selected_nests.extend(tree_view.full_paths)
+        return list(set(selected_nests))
+
+    def get_all_selected_workspace_nests(self) -> list[str]:
+        selected_nests = []
+        for tree_view in self.toolbox_workspace_nest_directories_list_widgets.values():
             selected_nests.extend(tree_view.full_paths)
         return list(set(selected_nests))
 
@@ -883,7 +930,7 @@ class MainWindow(QMainWindow):
             msg.exec()
             return
         try:
-            job_plan_printout = Printout(job)
+            job_plan_printout = WorkspaceJobPrintout(job)
             html = job_plan_printout.generate()
         except Exception as e:
             html = f"There was an error when generating the printout for {job.name}.\n\nPlease report the error:\n{e}"
@@ -900,9 +947,9 @@ class MainWindow(QMainWindow):
             ],
         )
 
-    def add_job_to_workspace(self, jobs_data: dict[str, int]):
+    def add_job_to_workspace(self, job_widget: JobTab, jobs_data: dict[str, int]):
         job_name, job_quantity = jobs_data
-        if not (job := self.job_planner_widget.get_job(job_name)):
+        if not (job := job_widget.get_job(job_name)):
             msg = QMessageBox(QMessageBox.Icon.Question, "Could not find job?", f"{job_name} not found. How did this happen?\n\nOperation aborted.", QMessageBox.StandardButton.Ok, self)
             msg.exec()
             return
@@ -944,9 +991,9 @@ class MainWindow(QMainWindow):
             selected_jobs = send_to_workspace_dialog.get_selected_jobs()
             self.workspace.load_data()
             for selected_job_data in selected_jobs.get("planning", []):
-                self.add_job_to_workspace(selected_job_data)
+                self.add_job_to_workspace(self.job_planner_widget, selected_job_data)
             for selected_job_data in selected_jobs.get("quoting", []):
-                self.add_job_to_workspace(selected_job_data)
+                self.add_job_to_workspace(self.job_quote_widget, selected_job_data)
             self.workspace.save()
             self.upload_file(
                 [
@@ -1340,8 +1387,10 @@ class MainWindow(QMainWindow):
     def refresh_nest_directories(self) -> None:
         self.clear_layout(self.verticalLayout_24)
         self.clear_layout(self.verticalLayout_33)
-        self.quote_nest_directories_list_widgets.clear()
-        self.quote_job_directories_list_widgets.clear()
+        self.clear_layout(self.verticalLayout_37)
+        self.toolbox_quote_nest_directories_list_widgets.clear()
+        self.toolbox_job_nest_directories_list_widgets.clear()
+        self.toolbox_workspace_nest_directories_list_widgets.clear()
         self.settings_file.load_data()
         nest_directories: list[str] = self.settings_file.get_value("quote_nest_directories")
         toolbox_1 = QToolBox(self)
@@ -1350,22 +1399,32 @@ class MainWindow(QMainWindow):
         toolbox_2 = QToolBox(self)
         toolbox_2.setLineWidth(0)
         toolbox_2.layout().setSpacing(0)
+        toolbox_3 = QToolBox(self)
+        toolbox_3.setLineWidth(0)
+        toolbox_3.layout().setSpacing(0)
         self.verticalLayout_24.addWidget(toolbox_1)  # Quote Generator
         self.verticalLayout_33.addWidget(toolbox_2)  # Job Quoter
+        self.verticalLayout_37.addWidget(toolbox_3)
         for i, nest_directory in enumerate(nest_directories):
             nest_directory_name: str = nest_directory.split("/")[-1]
             tree_view_1 = PdfTreeView(nest_directory, self)
             tree_view_1.selectionModel().selectionChanged.connect(self.nest_directory_item_selected)
             tree_view_2 = PdfTreeView(nest_directory, self)
             tree_view_2.selectionModel().selectionChanged.connect(self.job_quote_directory_item_selected)
-            self.quote_nest_directories_list_widgets[nest_directory] = tree_view_1
-            self.quote_job_directories_list_widgets[nest_directory] = tree_view_2
+            tree_view_3 = PdfTreeView(nest_directory, self)
+            tree_view_3.selectionModel().selectionChanged.connect(self.workspace_directory_item_selected)
+            self.toolbox_quote_nest_directories_list_widgets[nest_directory] = tree_view_1
+            self.toolbox_job_nest_directories_list_widgets[nest_directory] = tree_view_2
+            self.toolbox_workspace_nest_directories_list_widgets[nest_directory] = tree_view_3
             toolbox_1.addItem(tree_view_1, nest_directory_name)
             toolbox_1.setItemIcon(i, QIcon("icons/folder.png"))
             toolbox_2.addItem(tree_view_2, nest_directory_name)
             toolbox_2.setItemIcon(i, QIcon("icons/folder.png"))
+            toolbox_3.addItem(tree_view_3, nest_directory_name)
+            toolbox_3.setItemIcon(i, QIcon("icons/folder.png"))
         self.nest_directory_item_selected()
         self.job_quote_directory_item_selected()
+        self.workspace_directory_item_selected()
 
     # * \/ CHECKERS \/
     def check_for_updates(self, on_start_up: bool = False) -> None:
@@ -1534,6 +1593,12 @@ class MainWindow(QMainWindow):
     def open_job(self, folder: str):
         webbrowser.open(
             f"http://{get_server_ip_address()}:{get_server_port()}/load_job/{folder}",
+            new=0,
+        )
+
+    def open_workorder(self, folder: str):
+        webbrowser.open(
+            f"http://{get_server_ip_address()}:{get_server_port()}/load_workorder/{folder}",
             new=0,
         )
 
@@ -1881,9 +1946,10 @@ class MainWindow(QMainWindow):
         self.threads.append(load_nest_thread)
         load_nest_thread.signal.connect(self.load_nests_for_job_response)
         load_nest_thread.start()
+        load_nest_thread.wait()
 
     # TODO Update existing LCP's with the ones in the nest
-    def load_nests_for_job_response(self, nests: list[Nest] | str) -> None:
+    def load_nests_for_job_response(self, nests: Union[list[Nest], str]) -> None:
         if isinstance(nests, str):
             self.status_button.setText(f"Encountered error processing nests: {nests}", "red")
             self.pushButton_load_nests_2.setEnabled(True)
@@ -1957,6 +2023,49 @@ class MainWindow(QMainWindow):
             self.status_button.setText(f"Nests loaded into {current_job.name}", "lime")
         else:
             self.status_button.setText("Loading nests aborted", "lime")
+        QApplication.restoreOverrideCursor()
+
+    def load_nests_for_workspace_thread(self, nests: list[str]) -> None:
+        QApplication.setOverrideCursor(Qt.CursorShape.WaitCursor)
+        self.status_button.setText("Processing nests", "yellow")
+        self.pushButton_load_nests_3.setEnabled(False)
+        load_nest_thread = LoadNestsThread(
+            self,
+            nests,
+            self.components_inventory,
+            self.laser_cut_inventory,
+            self.sheet_settings,
+        )
+        self.threads.append(load_nest_thread)
+        load_nest_thread.signal.connect(self.load_nests_for_workspace_response)
+        load_nest_thread.start()
+        load_nest_thread.wait()
+
+    def load_nests_for_workspace_response(self, nests: Union[list[Nest], str]) -> None:
+        if isinstance(nests, str):
+            self.status_button.setText(f"Encountered error processing nests: {nests}", "red")
+            self.pushButton_load_nests_3.setEnabled(True)
+            QApplication.restoreOverrideCursor()
+            msg = QMessageBox(
+                QMessageBox.Icon.Critical,
+                "PDF error",
+                f"{nests}",
+                QMessageBox.StandardButton.Ok,
+                self,
+            )
+            msg.exec()
+            return
+
+        QApplication.restoreOverrideCursor()
+
+        folder_name = datetime.now().strftime('%Y%m%d%H%M%S%f')
+        workorder = Workorder({}, self.sheet_settings, self.laser_cut_inventory)
+        workorder.nests = nests
+        printout = WorkorderPrintout(nests, folder_name)
+        self.upload_workorder_thread(folder_name, workorder, printout.generate())
+        self.open_workorder(folder_name)
+        self.pushButton_load_nests_3.setEnabled(True)
+
         QApplication.restoreOverrideCursor()
 
     def generate_quote_thread(self, nests: list[str]) -> None:
@@ -2093,6 +2202,24 @@ class MainWindow(QMainWindow):
         else:
             self.status_button.setText(f"Error: {data}'", "red")
 
+    def upload_workorder_thread(self, folder: str, workorder: Workorder, html_file_contents: str) -> None:
+        upload_batch = UploadWorkorderThread(folder, workorder, html_file_contents)
+        upload_batch.signal.connect(self.upload_workorder_response)
+        self.threads.append(upload_batch)
+        self.status_button.setText("Uploading workorder", "yellow")
+        upload_batch.start()
+
+    def upload_workorder_response(self, response: str) -> None:
+        if response == "Workorder sent successfully":
+            self.status_button.setText("Workorder was sent successfully", "lime")
+        else:
+            self.status_button.setText("Workorder failed to send", "red")
+            msg = QMessageBox(self)
+            msg.setIcon(QMessageBox.Icon.Critical)
+            msg.setWindowTitle("Upload error")
+            msg.setText(f"{response}")
+            msg.exec()
+
     def upload_job_thread(self, folder: str, job: Job, html_file_contents: str) -> None:
         upload_batch = UploadJobThread(folder, job, html_file_contents)
         upload_batch.signal.connect(self.upload_job_response)
@@ -2100,6 +2227,7 @@ class MainWindow(QMainWindow):
         self.status_button.setText(f"Uploading {job.name}", "yellow")
         self.job_planner_widget.update_job_save_status(job)
         upload_batch.start()
+        upload_batch.wait()
 
     def upload_job_response(self, response: str) -> None:
         if response == "Job sent successfully":

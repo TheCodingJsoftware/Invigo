@@ -86,16 +86,6 @@
               <string>Template</string>
              </property>
             </item>
-            <item>
-             <property name="text">
-              <string>Workspace</string>
-             </property>
-            </item>
-            <item>
-             <property name="text">
-              <string>Archive</string>
-             </property>
-            </item>
            </widget>
           </item>
          </layout>

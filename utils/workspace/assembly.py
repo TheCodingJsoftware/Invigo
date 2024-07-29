@@ -96,6 +96,22 @@ class Assembly:
         except IndexError:
             return None
 
+    def get_all_paints(self) -> str:
+        name = ""
+        if self.uses_primer and self.primer_item:
+            name += f"{self.primer_item.name}\n"
+        if self.uses_paint and self.paint_item:
+            name += f"{self.paint_item.name}\n"
+        if self.uses_powder and self.powder_item:
+            name += f"{self.powder_item.name}\n"
+        return name
+
+    def get_weight(self) -> float:
+        weight: float = 0.0
+        for laser_cut_part in self.laser_cut_parts:
+            weight += laser_cut_part.weight
+        return weight
+
     def get_master_assembly(self) -> "Assembly":
         master_assembly = self
         while master_assembly.parent_assembly is not None:

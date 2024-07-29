@@ -6,9 +6,9 @@ from typing import TYPE_CHECKING, Any, Union
 
 import sympy
 from PyQt6 import uic
-from PyQt6.QtCore import QDate, Qt
+from PyQt6.QtCore import QDate, Qt, pyqtSignal
 from PyQt6.QtGui import QAction, QCursor, QFont, QIcon
-from PyQt6.QtWidgets import QAbstractItemView, QApplication, QComboBox, QCompleter, QGridLayout, QGroupBox, QHBoxLayout, QInputDialog, QLabel, QLineEdit, QMenu, QMessageBox, QPushButton, QScrollArea, QTableWidgetItem, QTabWidget, QVBoxLayout, QWidget
+from PyQt6.QtWidgets import QAbstractItemView, QSplitter, QComboBox, QCompleter, QGridLayout, QGroupBox, QHBoxLayout, QInputDialog, QLabel, QLineEdit, QMenu, QMessageBox, QPushButton, QScrollArea, QTableWidgetItem, QTabWidget, QVBoxLayout, QWidget
 
 from ui.custom_widgets import (
     AssemblyImage,
@@ -41,12 +41,16 @@ from utils.trusted_users import get_trusted_users
 from utils.workspace.assembly import Assembly
 from utils.workspace.workspace import Workspace
 from utils.workspace.workspace_settings import WorkspaceSettings
+from ui.custom.filter_button import FilterButton
+from ui.custom.sort_button import SortButton
+from utils.workspace.workspace_filter import SortingMethod
 
 if TYPE_CHECKING:
     from ui.windows.main_window import MainWindow
 
 
 class WorkspaceTabWidget(QWidget):
+    tabChanged = pyqtSignal(str)
     def __init__(
         self,
         parent,
@@ -57,6 +61,8 @@ class WorkspaceTabWidget(QWidget):
         self.workspace = self.parent.workspace
         self.workspace_settings = self.parent.workspace_settings
         self.workspace_history = self.parent.workspace_history
+        self.sheet_settings = self.parent.sheet_settings
+        self.paint_inventory = self.parent.paint_inventory
 
         self.workspace_filter = self.workspace.workspace_filter
 
@@ -88,7 +94,14 @@ class WorkspaceTabWidget(QWidget):
         self.workspace_widget = WorkspaceWidget(self)
         self.workspace_layout.addWidget(self.workspace_widget)
 
+        self.menu_buttons_layout = self.findChild(QHBoxLayout, "menu_buttons_layout")
+        self.sort_layout = self.findChild(QHBoxLayout, "sort_layout")
+
+        self.nests_layout = self.findChild(QVBoxLayout, "nests_layout")
+
         self.load_tags()
+        self.load_menu_buttons()
+        self.load_sort_button()
 
     def view_parts_table(self):
         self.lineEdit_search.setPlaceholderText("Search parts...")
@@ -120,6 +133,41 @@ class WorkspaceTabWidget(QWidget):
             self.tag_buttons[0].setChecked(True)
             self.tag_button_pressed(self.tag_buttons[0])
 
+    def load_menu_buttons(self):
+        self.clear_layout(self.menu_buttons_layout)
+
+        self.materials_menu_button = FilterButton("Materials", self.sheet_settings.get_materials())
+        self.materials_menu_button.checkbox_states_changed.connect(self.filter_button_changed)
+        self.workspace_filter.material_filter = self.materials_menu_button.dropdown.checkbox_states
+
+        self.thickness_menu_button = FilterButton("Thicknesses", self.sheet_settings.get_thicknesses())
+        self.thickness_menu_button.checkbox_states_changed.connect(self.filter_button_changed)
+        self.workspace_filter.thickness_filter = self.thickness_menu_button.dropdown.checkbox_states
+
+        self.paint_menu_button = FilterButton("Paint", self.paint_inventory.get_all_paints() + self.paint_inventory.get_all_primers() + self.paint_inventory.get_all_powders())
+        self.paint_menu_button.checkbox_states_changed.connect(self.filter_button_changed)
+        self.workspace_filter.paint_filter = self.paint_menu_button.dropdown.checkbox_states
+
+        self.menu_buttons_layout.addWidget(self.materials_menu_button)
+        self.menu_buttons_layout.addWidget(self.thickness_menu_button)
+        self.menu_buttons_layout.addWidget(self.paint_menu_button)
+
+    def filter_button_changed(self, states: dict[str, bool]):
+        self.workspace_widget.load_parts_table()
+        self.workspace_widget.load_assembly_table()
+
+    def load_sort_button(self):
+        self.clear_layout(self.sort_layout)
+
+        self.sort_button = SortButton()
+        self.sort_button.sorting_method_selected.connect(self.sort)
+        self.sort_layout.addWidget(self.sort_button)
+
+    def sort(self, method: SortingMethod):
+        self.workspace_filter.sorting_method = method
+        self.workspace_widget.load_parts_table()
+        self.workspace_widget.load_assembly_table()
+
     def search_typing(self):
         self.workspace_filter.search_text = self.lineEdit_search.text()
         self.has_searched = False
@@ -144,6 +192,7 @@ class WorkspaceTabWidget(QWidget):
         self.workspace_filter.current_tag = pressed_tag_button.text()
         self.workspace_widget.load_parts_table()
         self.workspace_widget.load_assembly_table()
+        self.tabChanged.emit(pressed_tag_button.text())
 
     def workspace_settings_changed(self):
         self.workspace.load_data()

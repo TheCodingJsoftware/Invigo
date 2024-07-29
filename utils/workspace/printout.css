@@ -26,6 +26,11 @@ details>summary {
 .hidden{
     display: none;
 }
+.qr-code img{
+    cursor: pointer;
+    width: 256px;
+    height: 256px;
+}
 .assembly_data{
     display: flex;
 }

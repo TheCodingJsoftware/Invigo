@@ -330,7 +330,7 @@ class WorkspaceWidget(QWidget):
         self.parts_table_rows.clear()
         self.parts_table_widget.setRowCount(0)
         for job in self.workspace.jobs:
-            if not (filtered_parts := self.workspace.get_filtered_parts(job)):
+            if not (filtered_parts := self.workspace.get_filtered_laser_cut_parts(job)):
                 continue
             current_row = self.parts_table_widget.rowCount()
             self.parts_table_widget.insertRow(current_row)
