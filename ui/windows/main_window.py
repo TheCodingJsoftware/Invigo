@@ -186,7 +186,7 @@ class MainWindow(QMainWindow):
         self.components_inventory = ComponentsInventory()
         self.paint_inventory = PaintInventory(self.components_inventory)
         self.laser_cut_inventory = LaserCutInventory(self.paint_inventory, self.workspace_settings)
-        self.job_manager = JobManager(self)
+        self.job_manager = JobManager(self.sheet_settings, self.sheets_inventory, self.workspace_settings, self.components_inventory, self.laser_cut_inventory, self.paint_inventory, self)
         self.workspace_history = WorkspaceHistory(self.job_manager)
         self.workspace = Workspace(self.workspace_settings, self.job_manager)
 

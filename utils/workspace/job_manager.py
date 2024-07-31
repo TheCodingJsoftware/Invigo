@@ -12,15 +12,15 @@ if TYPE_CHECKING:
 
 
 class JobManager:
-    def __init__(self, parent):
+    def __init__(self, sheet_settings: SheetSettings, sheets_inventory: SheetsInventory, workspace_settings: WorkspaceSettings, components_inventory: ComponentsInventory, laser_cut_inventory: LaserCutInventory, paint_inventory: PaintInventory, parent):
         self.parent: MainWindow = parent
 
-        self.sheet_settings: SheetSettings = self.parent.sheet_settings
-        self.sheets_inventory: SheetsInventory = self.parent.sheets_inventory
-        self.workspace_settings: WorkspaceSettings = self.parent.workspace_settings
-        self.components_inventory: ComponentsInventory = self.parent.components_inventory
-        self.laser_cut_inventory: LaserCutInventory = self.parent.laser_cut_inventory
-        self.paint_inventory: PaintInventory = self.parent.paint_inventory
+        self.sheet_settings = sheet_settings
+        self.sheets_inventory = sheets_inventory
+        self.workspace_settings = workspace_settings
+        self.components_inventory = components_inventory
+        self.laser_cut_inventory = laser_cut_inventory
+        self.paint_inventory = paint_inventory
 
     def sync_changes(self):
         self.parent.sync_changes()
