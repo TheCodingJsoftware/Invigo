@@ -1,15 +1,12 @@
-import base64
 import contextlib
 import logging
 import os
 import shutil
 import subprocess
 import sys
-import time
 import threading
 import webbrowser
 import winsound
-import uuid
 from datetime import datetime
 from functools import partial
 from typing import Any, Union
@@ -55,6 +52,8 @@ from ui.dialogs.save_quote_dialog import SaveQuoteDialog
 from ui.dialogs.select_item_dialog import SelectItemDialog
 from ui.dialogs.send_jobs_to_workspace_dialog import SendJobsToWorkspaceDialog
 from ui.dialogs.view_removed_quantities_history_dialog import ViewRemovedQuantitiesHistoryDialog
+from ui.dialogs.message_dialog import MessageDialog
+from ui.dialogs.generate_workorder_dialog import GenerateWorkorderDialog
 from ui.widgets.components_tab import ComponentsTab
 from ui.widgets.job_widget import JobWidget
 from ui.widgets.laser_cut_tab import LaserCutTab
@@ -114,11 +113,12 @@ from utils.workspace.workspace import Workspace
 from utils.workspace.workspace_settings import WorkspaceSettings
 from utils.workspace.workspace_history import WorkspaceHistory
 from utils.workspace.workorder import Workorder
+from utils.workspace.workspace_laser_cut_part_group import WorkspaceLaserCutPartGroup
 
-__version__: str = "v3.2.8"
+__version__: str = "v3.3.0"
 
 
-def check_folders(folders: list[str]) -> None:
+def check_folders(folders: list[str]):
     for folder in folders:
         with contextlib.suppress(FileExistsError):
             if not os.path.exists(folder):
@@ -141,11 +141,11 @@ check_folders(
 )
 
 
-def _play_celebrate_sound() -> None:
+def _play_celebrate_sound():
     winsound.PlaySound("sounds/sound.wav", winsound.SND_FILENAME)
 
 
-def _play_boot_sound() -> None:
+def _play_boot_sound():
     winsound.PlaySound("sounds/boot.wav", winsound.SND_FILENAME)
 
 
@@ -315,7 +315,7 @@ class MainWindow(QMainWindow):
         self.splitter_4.setStretchFactor(0, 1)
         self.splitter_4.setStretchFactor(1, 0)
 
-    def __load_ui(self) -> None:
+    def __load_ui(self):
         menu_tabs_order: list[str] = self.settings_file.get_value(setting_name="menu_tabs_order")
         for tab_name in menu_tabs_order:
             index = self.get_tab_from_name(tab_name)
@@ -519,7 +519,7 @@ class MainWindow(QMainWindow):
             )
 
     # * \/ SLOTS & SIGNALS \/
-    def tool_box_menu_changed(self) -> None:
+    def tool_box_menu_changed(self):
         # self.loading_screen.show()
         self.components_inventory.load_data()
         self.sheets_inventory.load_data()
@@ -578,6 +578,7 @@ class MainWindow(QMainWindow):
         elif self.tabWidget.tabText(self.tabWidget.currentIndex()) == "Workspace":
             self.refresh_nest_directories()
             self.workspace_tab_widget = WorkspaceTabWidget(self)
+            self.workspace_tab_changed(self.workspace_tab_widget.last_selected_tag_button.text())
             self.workspace_tab_widget.tabChanged.connect(self.workspace_tab_changed)
             self.clear_layout(self.workspace_layout)
             self.workspace_layout.addWidget(self.workspace_tab_widget)
@@ -599,7 +600,7 @@ class MainWindow(QMainWindow):
                 self.laser_cut_tab_widget.sort_laser_cut_parts()
                 self.status_button.setText("Sorted Laser Cut Parts", "lime")
 
-    def action_group(self, group_name: str, actions: list[QAction]) -> None:
+    def action_group(self, group_name: str, actions: list[QAction]):
         self.settings_file.load_data()
         if group_name == "order":
             if self.settings_file.get_value(setting_name="sort_descending"):
@@ -642,7 +643,7 @@ class MainWindow(QMainWindow):
         dialog = EditPaintInventory(self.paint_inventory, self)
         dialog.show()
 
-    def process_selected_nests(self) -> None:
+    def process_selected_nests(self):
         if self.quote_generator_tab_widget.current_quote.downloaded_from_server:
             msg = QMessageBox(
                 QMessageBox.Icon.Question,
@@ -706,7 +707,7 @@ class MainWindow(QMainWindow):
     # * /\ SLOTS & SIGNALS /\
 
     # * \/ UPDATE UI ELEMENTS \/
-    def change_tables_font(self) -> None:
+    def change_tables_font(self):
         font, ok = QFontDialog.getFont()
         if ok:
             font_data = {
@@ -721,7 +722,7 @@ class MainWindow(QMainWindow):
             self.tables_font.setItalic(font.italic())
             self.settings_file.set_value("tables_font", font_data)
 
-    def update_sorting_status_text(self) -> None:
+    def update_sorting_status_text(self):
         sorting_from_alphabet: str = "A"
         sorting_to_alphabet: str = "Z"
 
@@ -766,19 +767,19 @@ class MainWindow(QMainWindow):
                 table.setItem(row_index, j, item)
             item.setForeground(QColor(color))
 
-    def clear_nest_selections(self) -> None:
+    def clear_nest_selections(self):
         for tree_view in self.toolbox_quote_nest_directories_list_widgets.values():
             tree_view.clearSelection()
 
-    def clear_job_quote_selections(self) -> None:
+    def clear_job_quote_selections(self):
         for tree_view in self.toolbox_job_nest_directories_list_widgets.values():
             tree_view.clearSelection()
 
-    def clear_workspace_nest_selections(self) -> None:
+    def clear_workspace_nest_selections(self):
         for tree_view in self.toolbox_workspace_nest_directories_list_widgets.values():
             tree_view.clearSelection()
 
-    def nest_directory_item_selected(self) -> None:
+    def nest_directory_item_selected(self):
         # self.process_selected_nests()
         selected_nests = len(self.get_all_selected_nests())
         if selected_nests == 0:
@@ -787,7 +788,7 @@ class MainWindow(QMainWindow):
             self.pushButton_load_nests.setEnabled(True)
         self.pushButton_load_nests.setText(f"Load {selected_nests} Nest{'' if selected_nests == 1 else 's'}")
 
-    def job_quote_directory_item_selected(self) -> None:
+    def job_quote_directory_item_selected(self):
         # self.process_selected_nests()
         selected_nests = len(self.get_all_selected_job_quotes())
         if selected_nests == 0:
@@ -796,7 +797,7 @@ class MainWindow(QMainWindow):
             self.pushButton_load_nests_2.setEnabled(True)
         self.pushButton_load_nests_2.setText(f"Import {selected_nests} Nest{'' if selected_nests == 1 else 's'}")
 
-    def workspace_directory_item_selected(self) -> None:
+    def workspace_directory_item_selected(self):
         selected_nests = len(self.get_all_selected_workspace_nests())
         if selected_nests == 0:
             self.pushButton_load_nests_3.setEnabled(False)
@@ -854,7 +855,7 @@ class MainWindow(QMainWindow):
         return selected_items
 
     # * /\ GETTERS /\
-    def save_geometry(self) -> None:
+    def save_geometry(self):
         geometry = self.settings_file.get_value("geometry")
         geometry["x"] = max(self.pos().x(), 0)
         geometry["y"] = max(self.pos().y(), 0)
@@ -862,11 +863,11 @@ class MainWindow(QMainWindow):
         geometry["height"] = self.size().height()
         self.settings_file.set_value("geometry", geometry)
 
-    def save_menu_tab_order(self) -> None:
+    def save_menu_tab_order(self):
         self.settings_file.set_value("menu_tabs_order", self.get_menu_tab_order())
 
     # * \/ Dialogs \/
-    def show_about_dialog(self) -> None:
+    def show_about_dialog(self):
         dialog = AboutDialog(
             self,
             __version__,
@@ -874,7 +875,7 @@ class MainWindow(QMainWindow):
         )
         dialog.show()
 
-    def show_not_trusted_user(self) -> None:
+    def show_not_trusted_user(self):
         self.tabWidget.setCurrentIndex(self.settings_file.get_value("menu_tabs_order").index(self.last_selected_menu_tab))
         msg = QMessageBox(self)
         msg.setIcon(QMessageBox.Icon.Information)
@@ -882,17 +883,17 @@ class MainWindow(QMainWindow):
         msg.setText("You don't have permission to change inventory items.")
         msg.exec()
 
-    def open_group_menu(self, menu: QMenu) -> None:
+    def open_group_menu(self, menu: QMenu):
         menu.exec(QCursor.pos())
 
-    def add_nest_directory(self) -> None:
+    def add_nest_directory(self):
         nest_directories: list[str] = self.settings_file.get_value("quote_nest_directories")
         if new_nest_directory := QFileDialog.getExistingDirectory(self, "Open directory", "/"):
             nest_directories.append(new_nest_directory)
             self.settings_file.set_value("quote_nest_directories", nest_directories)
             self.refresh_nest_directories()
 
-    def remove_nest_directory(self) -> None:
+    def remove_nest_directory(self):
         nest_directories: list[str] = self.settings_file.get_value("quote_nest_directories")
         select_item_dialog = SelectItemDialog(
             DialogButtons.discard_cancel,
@@ -940,14 +941,14 @@ class MainWindow(QMainWindow):
         job.unsaved_changes = False
         self.job_planner_widget.update_job_save_status(job)
         self.status_button.setText(f"Saved {job.name}", "lime")
-        self.upload_file(
+        self.upload_files(
             [
                 f"{self.components_inventory.filename}.json",
                 f"{self.laser_cut_inventory.filename}.json",
             ],
         )
 
-    def add_job_to_workspace(self, job_widget: JobTab, jobs_data: dict[str, int]):
+    def add_job_to_workspace(self, job_widget: JobTab, jobs_data: dict[str, int], should_update_components: bool):
         job_name, job_quantity = jobs_data
         if not (job := job_widget.get_job(job_name)):
             msg = QMessageBox(QMessageBox.Icon.Question, "Could not find job?", f"{job_name} not found. How did this happen?\n\nOperation aborted.", QMessageBox.StandardButton.Ok, self)
@@ -959,6 +960,8 @@ class MainWindow(QMainWindow):
             msg.exec()
             return
         for _ in range(job_quantity):  # Add job x amount of times
+            if should_update_components:
+                self.subtract_component_quantity_from_job(job)
             self.workspace.add_job(job)
 
     def send_job_to_workspace(self):
@@ -990,16 +993,18 @@ class MainWindow(QMainWindow):
         if send_to_workspace_dialog.exec():
             selected_jobs = send_to_workspace_dialog.get_selected_jobs()
             self.workspace.load_data()
+            self.components_inventory.load_data()
             for selected_job_data in selected_jobs.get("planning", []):
-                self.add_job_to_workspace(self.job_planner_widget, selected_job_data)
+                self.add_job_to_workspace(self.job_planner_widget, selected_job_data, send_to_workspace_dialog.should_update_components())
             for selected_job_data in selected_jobs.get("quoting", []):
-                self.add_job_to_workspace(self.job_quote_widget, selected_job_data)
+                self.add_job_to_workspace(self.job_quote_widget, selected_job_data, send_to_workspace_dialog.should_update_components())
+
+            self.workspace_tab_widget.workspace_widget.check_if_jobs_are_complete()
+            self.workspace_tab_widget.workspace_widget.check_if_assemblies_are_ready_to_start_timer()
+
             self.workspace.save()
-            self.upload_file(
-                [
-                    "workspace.json",
-                ]
-            )
+            self.components_inventory.save()
+            self.upload_files([f"{self.workspace.filename}.json", f"{self.components_inventory.filename}.json"])
 
     def save_quote(self, quote: Quote):
         if quote is None:
@@ -1044,7 +1049,7 @@ class MainWindow(QMainWindow):
             self.quote_generator_tab_widget.update_quote_save_status(quote)
 
     # TODO
-    def generate_printout(self) -> None:
+    def generate_printout(self):
         select_item_dialog = GenerateQuoteDialog(self)
         if select_item_dialog.exec():
             (
@@ -1082,10 +1087,10 @@ class MainWindow(QMainWindow):
             self.status_button.setText("Generated printouts", "lime")
 
             if should_update_inventory:
-                self.add_quantities_to_laser_cut_inventory(quote)
+                self.add_quantities_to_laser_cut_inventory_from_quote(quote)
 
             if should_remove_sheet_quantities:
-                self.remove_sheet_quantities(quote)
+                self.remove_sheet_quantities_from_quote(quote)
 
             self.load_previous_quotes_thread()
             self.quote_generator_tab_widget.quotes[self.quote_generator_tab_widget.tab_widget.currentIndex()].update_sheet_statuses()
@@ -1111,7 +1116,7 @@ class MainWindow(QMainWindow):
         if self.settings_file.get_value(open_file_settings):
             self.open_quote(folder)
 
-    def set_order_number(self) -> None:
+    def set_order_number(self):
         self.get_order_number_thread()
         loop = QEventLoop()
         QTimer.singleShot(200, loop.quit)
@@ -1120,19 +1125,19 @@ class MainWindow(QMainWindow):
         if input_number and ok:
             self.set_order_number_thread(input_number)
 
-    def open_job_sorter(self) -> None:
+    def open_job_sorter(self):
         job_sorter_menu = JobSorterDialog(
             self,
         )
         job_sorter_menu.show()
 
-    def open_tag_editor(self) -> None:
+    def open_tag_editor(self):
         self.workspace_settings.load_data()
         tag_editor = EditWorkspaceSettings(self.workspace_settings, self)
 
         def upload_workspace_settings():
             self.status_button.setText("Synching", "lime")
-            self.upload_file(
+            self.upload_files(
                 ["workspace_settings.json"],
             )
 
@@ -1148,7 +1153,7 @@ class MainWindow(QMainWindow):
     # * /\ Dialogs /\
 
     # * \/ Load UI \/
-    def load_cuttoff_drop_down(self) -> None:
+    def load_cuttoff_drop_down(self):
         cutoff_items: QListWidget = self.cutoff_widget.widgets[0]
         cutoff_items.clear()
         cutoff_sheets = self.sheets_inventory.get_sheets_by_category("Cutoff")
@@ -1159,7 +1164,7 @@ class MainWindow(QMainWindow):
                     continue
                 cutoff_items.addItem(sheet.get_name())
 
-    def load_previous_quotes(self, data: dict[str, dict[str, Any]]) -> None:
+    def load_previous_quotes(self, data: dict[str, dict[str, Any]]):
         sorted_data = dict(
             natsorted(
                 data.items(),
@@ -1306,7 +1311,7 @@ class MainWindow(QMainWindow):
         self.saved_jobs_multitoolbox_2.set_widgets_visibility(self.saved_planning_job_items_last_opened_2)
         self.templates_jobs_multitoolbox_2.set_widgets_visibility(self.templates_job_items_last_opened_2)
 
-    def load_saved_quotes(self, data: dict[str, dict[str, Any]]) -> None:
+    def load_saved_quotes(self, data: dict[str, dict[str, Any]]):
         sorted_data = dict(
             natsorted(
                 data.items(),
@@ -1384,7 +1389,7 @@ class MainWindow(QMainWindow):
                 packing_slips_layout.addWidget(quote_item)
         self.status_button.setText("Refreshed", "lime")
 
-    def refresh_nest_directories(self) -> None:
+    def refresh_nest_directories(self):
         self.clear_layout(self.verticalLayout_24)
         self.clear_layout(self.verticalLayout_33)
         self.clear_layout(self.verticalLayout_37)
@@ -1427,7 +1432,7 @@ class MainWindow(QMainWindow):
         self.workspace_directory_item_selected()
 
     # * \/ CHECKERS \/
-    def check_for_updates(self, on_start_up: bool = False) -> None:
+    def check_for_updates(self, on_start_up: bool = False):
         try:
             try:
                 response = requests.get("http://10.0.0.10:5051/version", timeout=5)
@@ -1451,7 +1456,7 @@ class MainWindow(QMainWindow):
                 msg.setText(f"{e}")
                 msg.exec()
 
-    def check_trusted_user(self) -> None:
+    def check_trusted_user(self):
         trusted_users = get_trusted_users()
         check_trusted_user = (user for user in trusted_users if not self.trusted_user)
         for user in check_trusted_user:
@@ -1463,7 +1468,7 @@ class MainWindow(QMainWindow):
     # * /\ CHECKERS /\
 
     # * \/ Purchase Order \/
-    def open_po(self, po_name: str = None) -> None:
+    def open_po(self, po_name: str = None):
         if po_name is None:
             input_dialog = SelectItemDialog(
                 DialogButtons.open_cancel,
@@ -1488,7 +1493,7 @@ class MainWindow(QMainWindow):
             po_template.generate()
             os.startfile(po_template.get_output_path())
 
-    def delete_po(self) -> None:
+    def delete_po(self):
         input_dialog = SelectItemDialog(
             DialogButtons.discard_cancel,
             "Delete PO",
@@ -1511,7 +1516,7 @@ class MainWindow(QMainWindow):
             elif response == DialogButtons.cancel:
                 return
 
-    def add_po_templates(self, po_file_paths: list[str], open_select_file_dialog: bool = False) -> None:
+    def add_po_templates(self, po_file_paths: list[str], open_select_file_dialog: bool = False):
         if open_select_file_dialog:
             po_file_paths, check = QFileDialog.getOpenFileNames(None, "Add Purchase Order Template", "", "Excel Files (*.xlsx)")
             if not po_file_paths:
@@ -1556,7 +1561,7 @@ class MainWindow(QMainWindow):
 
         self.reload_po_menu()
 
-    def reload_po_menu(self) -> None:
+    def reload_po_menu(self):
         with contextlib.suppress(Exception, RuntimeError):
             for po_button in self.components_tab_widget.po_buttons:
                 po_menu = QMenu(self)
@@ -1569,22 +1574,22 @@ class MainWindow(QMainWindow):
     def open_print_selected_parts(self):
         webbrowser.open("print_selected_parts.html", new=0)
 
-    def open_server_log(self) -> None:
+    def open_server_log(self):
         webbrowser.open(f"http://{get_server_ip_address()}:{get_server_port()}/server_log", new=0)
 
-    def open_server_logs(self) -> None:
+    def open_server_logs(self):
         webbrowser.open(f"http://{get_server_ip_address()}:{get_server_port()}/logs", new=0)
 
-    def open_inventory(self) -> None:
+    def open_inventory(self):
         webbrowser.open(f"http://{get_server_ip_address()}:{get_server_port()}/inventory", new=0)
 
-    def open_way_back_machine(self) -> None:
+    def open_way_back_machine(self):
         webbrowser.open(f"http://{get_server_ip_address()}:{get_server_port()}/way_back_machine", new=0)
 
-    def open_wiki(self) -> None:
+    def open_wiki(self):
         webbrowser.open("https://github.com/TheCodingJsoftware/Invigo/wiki", new=0)
 
-    def open_qr_codes(self) -> None:
+    def open_qr_codes(self):
         webbrowser.open(
             f"http://{get_server_ip_address()}:{get_server_port()}/sheet_qr_codes",
             new=0,
@@ -1598,7 +1603,7 @@ class MainWindow(QMainWindow):
 
     def open_workorder(self, folder: str):
         webbrowser.open(
-            f"http://{get_server_ip_address()}:{get_server_port()}/load_workorder/{folder}",
+            f"http://{get_server_ip_address()}:{get_server_port()}/workorder_printout/{folder}",
             new=0,
         )
 
@@ -1608,14 +1613,14 @@ class MainWindow(QMainWindow):
             new=0,
         )
 
-    def open_item_history(self) -> None:
+    def open_item_history(self):
         os.startfile(f"{os.path.dirname(os.path.realpath(sys.argv[0]))}/data/inventory history.xlsx")
 
     def view_removed_component_quantity_history(self):
         dialog = ViewRemovedQuantitiesHistoryDialog(self)
         dialog.show()
 
-    def open_folder(self, path: str) -> None:
+    def open_folder(self, path: str):
         try:
             os.startfile(path)
         except Exception as e:
@@ -1625,24 +1630,24 @@ class MainWindow(QMainWindow):
             msg.setText(f"{e}")
             msg.exec()
 
-    def play_celebrate_sound(self) -> None:
+    def play_celebrate_sound(self):
         threading.Thread(target=_play_celebrate_sound).start()
 
-    def play_boot_sound(self) -> None:
+    def play_boot_sound(self):
         threading.Thread(target=_play_boot_sound).start()
 
     # * /\ External Actions /\
     # * \/ THREADS \/
-    def sync_changes(self) -> None:
+    def sync_changes(self):
         self.status_button.setText(f"Synching {self.tabWidget.tabText(self.tabWidget.currentIndex())}", "lime")
         if self.tabWidget.tabText(self.tabWidget.currentIndex()) == "Components":
-            self.upload_file(
+            self.upload_files(
                 [
                     f"{self.components_inventory.filename}.json",
                 ],
             )
         if self.tabWidget.tabText(self.tabWidget.currentIndex()) in ["Laser Cut Inventory", "Quote Generator", "Job Quoter", "Job Planner"]:
-            self.upload_file(
+            self.upload_files(
                 [
                     f"{self.laser_cut_inventory.filename}.json",
                 ],
@@ -1652,26 +1657,27 @@ class MainWindow(QMainWindow):
             "Quote Generator",
             "Job Quoter",
         ]:
-            self.upload_file(
+            self.upload_files(
                 [
                     f"{self.sheets_inventory.filename}.json",
                 ],
             )
         if self.tabWidget.tabText(self.tabWidget.currentIndex()) == "Sheet Settings":
-            self.upload_file(
+            self.upload_files(
                 [
                     f"{self.sheet_settings.filename}.json",
                 ],
             )
         if self.tabWidget.tabText(self.tabWidget.currentIndex()) == "Workspace":
-            self.upload_file(
+            self.upload_files(
                 [
+                    f"{self.laser_cut_inventory.filename}.json", # Because of add/remove quantity flow tags
                     f"{self.workspace.filename}.json",
                     f"{self.workspace_history.filename}.json",
                 ],
             )
 
-    def add_laser_cut_part_to_inventory(self, laser_cut_part_to_add: LaserCutPart, quote_name: str):
+    def add_laser_cut_part_to_inventory(self, laser_cut_part_to_add: LaserCutPart, from_where: str):
         laser_cut_part_to_add.quantity_in_nest = None
         if laser_cut_part_to_add.recut:
             new_recut_part = LaserCutPart(
@@ -1683,7 +1689,7 @@ class MainWindow(QMainWindow):
                 existing_recut_part.recut_count += 1
                 new_recut_part.recut_count = existing_recut_part.recut_count
                 new_recut_part.name = f"{new_recut_part.name} - (Recut count: {new_recut_part.recut_count})"
-            new_recut_part.modified_date = f"{os.getlogin().title()} - Part added from {quote_name} at {datetime.now().strftime('%B %d %A %Y %I:%M:%S %p')}"
+            new_recut_part.modified_date = f"{os.getlogin().title()} - Part added from {from_where} at {datetime.now().strftime('%B %d %A %Y %I:%M:%S %p')}"
             self.laser_cut_inventory.add_recut_part(new_recut_part)
         elif existing_laser_cut_part := self.laser_cut_inventory.get_laser_cut_part_by_name(laser_cut_part_to_add.name):
             existing_laser_cut_part.quantity += laser_cut_part_to_add.quantity
@@ -1697,24 +1703,24 @@ class MainWindow(QMainWindow):
             existing_laser_cut_part.powder_name = laser_cut_part_to_add.powder_name
             existing_laser_cut_part.primer_overspray = laser_cut_part_to_add.primer_overspray
             existing_laser_cut_part.paint_overspray = laser_cut_part_to_add.paint_overspray
-            existing_laser_cut_part.modified_date = f"{os.getlogin().title()} - Added {laser_cut_part_to_add.quantity} quantities from {quote_name} at {datetime.now().strftime('%B %d %A %Y %I:%M:%S %p')}"
+            existing_laser_cut_part.modified_date = f"{os.getlogin().title()} - Added {laser_cut_part_to_add.quantity} quantities from {from_where} at {datetime.now().strftime('%B %d %A %Y %I:%M:%S %p')}"
         else:
             if not (category := self.laser_cut_inventory.get_category("Uncategorized")):
                 category = Category("Uncategorized")
                 self.laser_cut_inventory.add_category(category)
             laser_cut_part_to_add.add_to_category(category)
             laser_cut_part_to_add.quantity = 1
-            laser_cut_part_to_add.modified_date = f"{os.getlogin().title()} - Part added from {quote_name} at {datetime.now().strftime('%B %d %A %Y %I:%M:%S %p')}"
+            laser_cut_part_to_add.modified_date = f"{os.getlogin().title()} - Part added from {from_where} at {datetime.now().strftime('%B %d %A %Y %I:%M:%S %p')}"
             self.laser_cut_inventory.add_laser_cut_part(laser_cut_part_to_add)
 
-    def add_quantities_to_laser_cut_inventory(self, quote: Quote):
+    def add_quantities_to_laser_cut_inventory_from_quote(self, quote: Quote):
         quote.group_laser_cut_parts()
         for laser_cut_part in quote.grouped_laser_cut_parts:
             self.add_laser_cut_part_to_inventory(laser_cut_part, quote.name)
         self.laser_cut_inventory.save()
         self.sync_changes()
 
-    def remove_sheet_quantities(self, quote: Quote):
+    def remove_sheet_quantities_from_quote(self, quote: Quote):
         for nest in quote.nests:
             if sheet := self.sheets_inventory.get_sheet_by_name(nest.sheet.get_name()):
                 old_quantity = sheet.quantity
@@ -1727,6 +1733,29 @@ class MainWindow(QMainWindow):
                     self.sheets_inventory.remove_sheet(sheet)
         self.sheets_inventory.save()
         self.sync_changes()
+
+    def remove_sheet_quantities_from_nests(self, nests: list[Nest]):
+        for nest in nests:
+            if sheet := self.sheets_inventory.get_sheet_by_name(nest.sheet.get_name()):
+                old_quantity = sheet.quantity
+                sheet.quantity -= nest.sheet_count
+                sheet.latest_change_quantity = f"{os.getlogin().title()} - Removed {nest.sheet_count} sheets from workorder at {datetime.now().strftime('%B %d %A %Y %I:%M:%S %p')}"
+                if sheet.quantity <= sheet.red_quantity_limit and not sheet.has_sent_warning and "Cutoff" not in sheet.get_categories():
+                    sheet.has_sent_warning = True
+                    self.generate_single_sheet_report(sheet, old_quantity)
+                if "Cutoff" in sheet.get_categories() and sheet.quantity <= 0:
+                    self.sheets_inventory.remove_sheet(sheet)
+        self.sheets_inventory.save()
+        self.upload_files([f"{self.sheets_inventory.filename}.json"])
+
+    def subtract_component_quantity_from_job(self, job: Job):
+        self.components_inventory.load_data()
+        for assembly in job.get_all_assemblies():
+            for component_from_job in assembly.components:
+                if not (component_from_inventory := self.components_inventory.get_component_by_part_name(component_from_job.part_name)):
+                    continue
+                component_from_inventory.quantity -= (component_from_job.quantity * assembly.quantity)
+                component_from_inventory.latest_change_quantity = f"{os.getlogin().title()} removed {component_from_job.quantity * assembly.quantity} quantity from sending {job.name} to workspace at {datetime.now().strftime('%B %d %A %Y %I:%M:%S %p')}"
 
     def generate_single_sheet_report(self, sheet: Sheet, old_quantity: int):
         notes = sheet.notes
@@ -1755,13 +1784,13 @@ class MainWindow(QMainWindow):
             ["jaredgrozz@gmail.com", "lynden@pineymfg.com"],
         )
 
-    def download_required_images_thread(self, required_images: list[str]) -> None:
+    def download_required_images_thread(self, required_images: list[str]):
         download_thread = DownloadImagesThread(required_images)
         download_thread.signal.connect(self.download_required_images_response)
         self.threads.append(download_thread)
         download_thread.start()
 
-    def download_required_images_response(self, response: str) -> None:
+    def download_required_images_response(self, response: str):
         if not response:
             self.status_button.setText("Warning: No images found", "yellow")
         elif response == "Successfully downloaded":
@@ -1773,7 +1802,7 @@ class MainWindow(QMainWindow):
         else:
             self.status_button.setText(f"Error: {response}", "red")
 
-    def upload_nest_images(self, data: Quote | list[Nest]) -> None:
+    def upload_nest_images(self, data: Quote | list[Nest]):
         images_to_upload: list[str] = []
         if isinstance(data, Quote):
             data.group_laser_cut_parts()
@@ -1786,9 +1815,9 @@ class MainWindow(QMainWindow):
                 images_to_upload.extend(nest.image_path for nest in data)
 
         images = set(images_to_upload)
-        self.upload_file(list(images))
+        self.upload_files(list(images))
 
-    def changes_response(self, response: str | list[str]) -> None:
+    def changes_response(self, response: str | list[str]):
         if isinstance(response, list):
             self.status_button.setText("Syncing", "yellow")
             self.downloading_changes = True
@@ -1802,7 +1831,7 @@ class MainWindow(QMainWindow):
         else:
             self.status_button.setText(f"Syncing Error: {response}", "red")
 
-    def data_received(self, data) -> None:
+    def data_received(self, data):
         print(data)
 
         if "timed out" in str(data).lower() or "fail" in str(data).lower():
@@ -1815,30 +1844,30 @@ class MainWindow(QMainWindow):
             msg.exec()
         # QApplication.restoreOverrideCursor()
 
-    def start_changes_thread(self) -> None:
+    def start_changes_thread(self):
         changes_thread = ChangesThread(self)  # 5 minutes
         changes_thread.signal.connect(self.changes_response)
         self.threads.append(changes_thread)
         changes_thread.start()
 
-    def start_exchange_rate_thread(self) -> None:
+    def start_exchange_rate_thread(self):
         exchange_rate_thread = ExchangeRate()
         exchange_rate_thread.signal.connect(self.exchange_rate_received)
         self.threads.append(exchange_rate_thread)
         exchange_rate_thread.start()
 
-    def exchange_rate_received(self, exchange_rate: float) -> None:
+    def exchange_rate_received(self, exchange_rate: float):
         with contextlib.suppress(AttributeError, RuntimeError):  # It might be the case that ComponentsTab is not loaded
             self.components_tab_widget.label_exchange_price.setText(f"1.00 USD: {exchange_rate} CAD")
             self.settings_file.load_data()
             self.settings_file.set_value("exchange_rate", exchange_rate)
 
-    def send_sheet_report(self) -> None:
+    def send_sheet_report(self):
         thread = SendReportThread()
         self.threads.append(thread)
         thread.start()
 
-    def upload_file(self, files_to_upload: list[str]) -> None:
+    def upload_files(self, files_to_upload: list[str]):
         upload_thread = UploadThread(files_to_upload)
         self.threads.append(upload_thread)
         upload_thread.signal.connect(self.upload_thread_response)
@@ -1849,7 +1878,7 @@ class MainWindow(QMainWindow):
         if response["status"] == "success":
             self.status_button.setText("Synched", "lime")
 
-    def download_files(self, files_to_download: list[str]) -> None:
+    def download_files(self, files_to_download: list[str]):
         download_thread = DownloadThread(files_to_download)
         self.threads.append(download_thread)
         download_thread.signal.connect(self.download_thread_response)
@@ -1918,7 +1947,7 @@ class MainWindow(QMainWindow):
         if self.username != "Jared":  # Because I can
             self.showMaximized()
 
-    def download_all_files(self) -> None:
+    def download_all_files(self):
         self.download_files(
             [
                 f"{self.sheet_settings.filename}.json",
@@ -1932,7 +1961,7 @@ class MainWindow(QMainWindow):
             ]
         )
 
-    def load_nests_for_job_thread(self, nests: list[str]) -> None:
+    def load_nests_for_job_thread(self, nests: list[str]):
         QApplication.setOverrideCursor(Qt.CursorShape.WaitCursor)
         self.status_button.setText("Processing nests", "yellow")
         self.pushButton_load_nests_2.setEnabled(False)
@@ -1949,7 +1978,7 @@ class MainWindow(QMainWindow):
         load_nest_thread.wait()
 
     # TODO Update existing LCP's with the ones in the nest
-    def load_nests_for_job_response(self, nests: Union[list[Nest], str]) -> None:
+    def load_nests_for_job_response(self, nests: Union[list[Nest], str]):
         if isinstance(nests, str):
             self.status_button.setText(f"Encountered error processing nests: {nests}", "red")
             self.pushButton_load_nests_2.setEnabled(True)
@@ -1963,6 +1992,7 @@ class MainWindow(QMainWindow):
             )
             msg.exec()
             return
+
         self.pushButton_load_nests_2.setEnabled(True)
 
         self.upload_nest_images(nests)
@@ -1971,7 +2001,7 @@ class MainWindow(QMainWindow):
 
         settings_text = "".join(f"  {i + 1}. {nest.name}: {nest.sheet.thickness} {nest.sheet.material}\n" for i, nest in enumerate(nests))
         select_item_dialog = NestSheetVerification(
-            f"The nests sheet settings from pdf are:\n{settings_text}",
+            f"The nests sheet settings from PDF are:\n{settings_text}",
             nests[0].sheet.thickness,
             nests[0].sheet.material,
             self.sheet_settings,
@@ -2025,7 +2055,7 @@ class MainWindow(QMainWindow):
             self.status_button.setText("Loading nests aborted", "lime")
         QApplication.restoreOverrideCursor()
 
-    def load_nests_for_workspace_thread(self, nests: list[str]) -> None:
+    def load_nests_for_workspace_thread(self, nests: list[str]):
         QApplication.setOverrideCursor(Qt.CursorShape.WaitCursor)
         self.status_button.setText("Processing nests", "yellow")
         self.pushButton_load_nests_3.setEnabled(False)
@@ -2041,34 +2071,310 @@ class MainWindow(QMainWindow):
         load_nest_thread.start()
         load_nest_thread.wait()
 
-    def load_nests_for_workspace_response(self, nests: Union[list[Nest], str]) -> None:
+    def load_nests_for_workspace_response(self, nests: Union[list[Nest], str]):
         if isinstance(nests, str):
-            self.status_button.setText(f"Encountered error processing nests: {nests}", "red")
-            self.pushButton_load_nests_3.setEnabled(True)
-            QApplication.restoreOverrideCursor()
-            msg = QMessageBox(
-                QMessageBox.Icon.Critical,
-                "PDF error",
-                f"{nests}",
-                QMessageBox.StandardButton.Ok,
-                self,
-            )
-            msg.exec()
+            self.handle_load_nest_pdf_error(nests)
             return
 
-        QApplication.restoreOverrideCursor()
-
-        folder_name = datetime.now().strftime('%Y%m%d%H%M%S%f')
-        workorder = Workorder({}, self.sheet_settings, self.laser_cut_inventory)
-        workorder.nests = nests
-        printout = WorkorderPrintout(nests, folder_name)
-        self.upload_workorder_thread(folder_name, workorder, printout.generate())
-        self.open_workorder(folder_name)
         self.pushButton_load_nests_3.setEnabled(True)
+        self.upload_nest_images(nests)
+        QApplication.restoreOverrideCursor()
+
+        if not (sheet_dialog := self.verify_nest_sheet_settings(nests)):
+            return
+
+        if not sheet_dialog.exec():
+            return
+
+        if sheet_dialog.response == DialogButtons.set:
+            self.update_nest_material_and_thickness(sheet_dialog.get_selected_material(), sheet_dialog.get_selected_thickness(), nests)
+
+        self.process_generate_workorder_dialog(nests)
 
         QApplication.restoreOverrideCursor()
 
-    def generate_quote_thread(self, nests: list[str]) -> None:
+    def handle_load_nest_pdf_error(self, error_message: str):
+        self.status_button.setText(f"Encountered error processing nests: {error_message}", "red")
+        self.pushButton_load_nests_3.setEnabled(True)
+        QApplication.restoreOverrideCursor()
+        msg = QMessageBox(
+            QMessageBox.Icon.Critical,
+            "PDF error",
+            error_message,
+            QMessageBox.StandardButton.Ok,
+            self,
+        )
+        msg.exec()
+
+    def verify_nest_sheet_settings(self, nests: list[Nest]) -> NestSheetVerification:
+        settings_text = "".join(
+            f"  {i + 1}. {nest.name}: {nest.sheet.thickness} {nest.sheet.material}\n"
+            for i, nest in enumerate(nests)
+        )
+        return NestSheetVerification(
+            f"The nests sheet settings from PDF are:\n{settings_text}",
+            nests[0].sheet.thickness,
+            nests[0].sheet.material,
+            self.sheet_settings,
+            self,
+        )
+
+    def get_nested_laser_cut_parts(self, nests: list[Nest]) -> list[LaserCutPart]:
+        part_dict: dict[str, LaserCutPart] = {}
+
+        for nest in nests:
+            for laser_cut_part in nest.laser_cut_parts:
+                part_name = laser_cut_part.name
+                if part_name not in part_dict:
+                    new_part = LaserCutPart(laser_cut_part.to_dict(), self.laser_cut_inventory)
+                    new_part.quantity = laser_cut_part.quantity_in_nest * nest.sheet_count
+                    part_dict[part_name] = new_part
+                else:
+                    part_dict[part_name].quantity += laser_cut_part.quantity_in_nest * nest.sheet_count
+
+        return natsorted(part_dict.values(), key=lambda part: part.name)
+
+    def update_nest_material_and_thickness(self, new_material: str, new_thickness: str, nests: list[Nest]):
+        for nest in nests:
+            nest.sheet.material = new_material
+            nest.sheet.thickness = new_thickness
+            for laser_cut_part in nest.laser_cut_parts:
+                laser_cut_part.material = new_material
+                laser_cut_part.gauge = new_thickness
+
+    def get_nested_parts_not_in_workspace(self, nested_laser_cut_parts: list[LaserCutPart], workspace_laser_cut_part_groups: list[WorkspaceLaserCutPartGroup]) -> list[LaserCutPart]:
+        workspace_part_names = set()
+        for group in workspace_laser_cut_part_groups:
+            for part in group:
+                workspace_part_names.add(part.name)
+
+        return [
+            part
+            for part in nested_laser_cut_parts
+            if part.name not in workspace_part_names
+        ]
+
+    def get_nested_parts_in_workspace(self, nested_laser_cut_parts: list[LaserCutPart], workspace_laser_cut_part_groups: list[WorkspaceLaserCutPartGroup]) -> list[LaserCutPart]:
+        workspace_parts_dict: dict[str, LaserCutPart] = {}
+        for group in workspace_laser_cut_part_groups:
+            for part in group:
+                workspace_parts_dict[part.name] = part
+
+        updated_parts = []
+        for part in nested_laser_cut_parts:
+            if part.name in workspace_parts_dict:
+                workspace_part = workspace_parts_dict[part.name]
+                part.flow_tag = workspace_part.flow_tag
+                updated_parts.append(part)
+
+        return updated_parts
+
+    def show_nested_parts_not_in_workspace_dialog(self, nested_parts_not_in_workspace: list[LaserCutPart]) -> int:
+        headers = ["No.", "Part Name", "Quantity", "Destination"]
+        table_rows = "".join(
+            f"""
+            <tr>
+                <td>{i + 1}</td>
+                <td>{part.name}</td>
+                <td>{part.quantity}</td>
+                <td>Laser Cut Inventory</td>
+            </tr>
+            """
+            for i, part in enumerate(nested_parts_not_in_workspace)
+        )
+        message = f"""
+        <html>
+            <head>
+                <style>
+                    table {{
+                        width: 100%;
+                        border-collapse: collapse;
+                    }}
+                    th, td {{
+                        border-bottom: 1px solid white;
+                        padding: 8px;
+                        text-align: left;
+                    }}
+                </style>
+            </head>
+            <body>
+                <p>The following parts were NOT found in Workspace and will be added to laser cut inventory:</p>
+                <table>
+                    <tr>
+                        <th>{headers[0]}</th>
+                        <th>{headers[1]}</th>
+                        <th>{headers[2]}</th>
+                        <th>{headers[3]}</th>
+                    </tr>
+                    {table_rows}
+                </table>
+                <p>Be sure to review these parts.</p>
+            </body>
+        </html>
+        """
+
+        message_dialog = MessageDialog("Parts NOT found in Workspace", message, self)
+        return message_dialog.exec()
+
+    def show_nested_parts_in_workspace_dialog(self, nested_parts_in_workspace: list[LaserCutPart]) -> int:
+        headers = ["No.", "Part Name", "Quantity", "Next Process", "Entire Process"]
+        table_rows = ""
+
+        for i, part in enumerate(nested_parts_in_workspace):
+            next_process = part.get_next_tag_name()
+            table_rows += f"""
+            <tr>
+                <td>{i + 1}</td>
+                <td>{part.name}</td>
+                <td>{part.quantity}</td>
+                <td>{next_process}</td>
+                <td>{part.flow_tag.get_name()}</td>
+            </tr>
+            """
+
+        message = f"""
+        <html>
+            <head>
+                <style>
+                    table {{
+                        width: 100%;
+                        border-collapse: collapse;
+                    }}
+                    th, td {{
+                        border-bottom: 1px solid white;
+                        padding: 8px;
+                        text-align: left;
+                    }}
+                </style>
+            </head>
+            <body>
+                <p>The following parts were found in Workspace and their process will be updated:</p>
+                <table>
+                    <tr>
+                        <th>{headers[0]}</th>
+                        <th>{headers[1]}</th>
+                        <th>{headers[2]}</th>
+                        <th>{headers[3]}</th>
+                        <th>{headers[4]}</th>
+                    </tr>
+                    {table_rows}
+                </table>
+            </body>
+        </html>
+        """
+
+        message_dialog = MessageDialog("Parts found in Workspace", message, self)
+        return message_dialog.exec()
+
+    def process_generate_workorder_dialog(self, nests: list[Nest]):
+        generate_workorder_dialog = GenerateWorkorderDialog(self)
+        if generate_workorder_dialog.exec():
+            all_nested_laser_cut_parts = self.get_nested_laser_cut_parts(nests)
+            all_workspace_laser_part_groups = self.workspace.get_grouped_laser_cut_parts(self.workspace.get_all_laser_cut_parts_with_similar_tag("laser"))
+
+            self.workorder_update_nest_parts_data(nests, all_workspace_laser_part_groups)
+
+            nested_parts_not_in_workspace = self.get_nested_parts_not_in_workspace(all_nested_laser_cut_parts, all_workspace_laser_part_groups)
+            nested_parts_in_workspace = self.get_nested_parts_in_workspace(all_nested_laser_cut_parts, all_workspace_laser_part_groups)
+
+            if nested_parts_not_in_workspace and generate_workorder_dialog.should_add_overflow_parts():
+                if self.show_nested_parts_not_in_workspace_dialog(nested_parts_not_in_workspace):
+                    for nest in nests:
+                        for nest_laser_cut_part in nest.laser_cut_parts:
+                            for nested_laser_cut_part_not_in_workspace in nested_parts_not_in_workspace:
+                                if nest_laser_cut_part.name == nested_laser_cut_part_not_in_workspace.name:
+                                    self.handle_nest_laser_cut_part_over_flow(nested_laser_cut_part_not_in_workspace, nested_laser_cut_part_not_in_workspace.quantity_in_nest * nest.sheet_count)
+                                    break
+                    self.laser_cut_inventory.save()
+                    self.upload_files([f"{self.laser_cut_inventory.filename}.json"])
+                    msg = QMessageBox(QMessageBox.Icon.Information, "Updated", "Parts were added to laser cut inventory.", QMessageBox.StandardButton.Ok, self)
+                    msg.exec()
+                else:
+                    msg = QMessageBox(QMessageBox.Icon.Information, "Aborted", "Process aborted.", QMessageBox.StandardButton.Ok, self)
+                    msg.exec()
+                    return
+
+            if generate_workorder_dialog.should_remove_sheet_quantity():
+                self.remove_sheet_quantities_from_nests(nests)
+                msg = QMessageBox(QMessageBox.Icon.Information, "Updated", "Sheets quantity was updated.", QMessageBox.StandardButton.Ok, self)
+                msg.exec()
+
+            if generate_workorder_dialog.should_update_inventory() and nested_parts_in_workspace:
+                if not self.show_nested_parts_in_workspace_dialog(nested_parts_in_workspace):
+                    self.laser_cut_inventory.save()
+                    self.workspace.save()
+                    self.upload_files(
+                        [
+                            f"{self.workspace.filename}.json",
+                            f"{self.laser_cut_inventory.filename}.json",
+                        ],
+                    )
+                    msg = QMessageBox(QMessageBox.Icon.Information, "Aborted", "Process aborted.", QMessageBox.StandardButton.Ok, self)
+                    msg.exec()
+                    return
+                self.workorder_move_to_next_process(nests, all_workspace_laser_part_groups, generate_workorder_dialog.should_add_remaining_parts())
+                self.laser_cut_inventory.save()
+                self.workspace.save()
+                self.upload_files(
+                    [
+                        f"{self.workspace.filename}.json",
+                        f"{self.laser_cut_inventory.filename}.json",
+                    ],
+                )
+
+            if generate_workorder_dialog.should_generate_printout():
+                folder_name = datetime.now().strftime('%Y%m%d%H%M%S%f')
+                workorder = Workorder({}, self.sheet_settings, self.laser_cut_inventory)
+                workorder.nests = nests
+
+                printout = WorkorderPrintout(nests, folder_name, generate_workorder_dialog.should_show_qr_code())
+                self.upload_workorder_thread(folder_name, workorder, printout.generate())
+
+                if generate_workorder_dialog.should_open_printout():
+                    self.open_workorder(folder_name)
+
+            self.workspace_tab_widget.workspace_widget.load_parts_table()
+            self.workspace_tab_widget.workspace_widget.load_assembly_table()
+
+    def workorder_update_nest_parts_data(self, nests: list[Nest], all_workspace_laser_part_groups: list[WorkspaceLaserCutPartGroup]):
+        for nest in nests:
+            for nest_laser_cut_part in nest.laser_cut_parts:
+                for workspace_laser_cut_part_group in all_workspace_laser_part_groups:
+                    if workspace_laser_cut_part_group.base_part.name == nest_laser_cut_part.name:
+                        nest_laser_cut_part.flow_tag = workspace_laser_cut_part_group.base_part.flow_tag
+
+                        nest_laser_cut_part.shelf_number = workspace_laser_cut_part_group.base_part.shelf_number
+
+                        nest_laser_cut_part.uses_primer = workspace_laser_cut_part_group.base_part.uses_primer
+                        nest_laser_cut_part.primer_item = workspace_laser_cut_part_group.base_part.primer_item
+                        nest_laser_cut_part.primer_name = workspace_laser_cut_part_group.base_part.primer_name
+                        nest_laser_cut_part.uses_paint = workspace_laser_cut_part_group.base_part.uses_paint
+                        nest_laser_cut_part.paint_name = workspace_laser_cut_part_group.base_part.paint_name
+                        nest_laser_cut_part.paint_item = workspace_laser_cut_part_group.base_part.paint_item
+                        nest_laser_cut_part.uses_powder = workspace_laser_cut_part_group.base_part.uses_powder
+                        nest_laser_cut_part.powder_name = workspace_laser_cut_part_group.base_part.powder_name
+                        nest_laser_cut_part.powder_item = workspace_laser_cut_part_group.base_part.powder_item
+                        break
+
+    def workorder_move_to_next_process(self, nests: list[Nest], all_workspace_laser_part_groups: list[WorkspaceLaserCutPartGroup], should_handle_remaining_parts: bool):
+        for nest in nests:
+            for nest_laser_cut_part in nest.laser_cut_parts:
+                for workspace_laser_cut_part_group in all_workspace_laser_part_groups:
+                    if workspace_laser_cut_part_group.base_part.name == nest_laser_cut_part.name and "laser" in workspace_laser_cut_part_group.get_current_tag().name.lower():
+                        workorder_quantity = workspace_laser_cut_part_group.get_quantity()
+                        nest_quantity = nest_laser_cut_part.quantity_in_nest * nest.sheet_count
+                        workorder_remaining_quantity = nest_quantity - workorder_quantity
+                        workspace_laser_cut_part_group.move_to_next_process(workorder_quantity)
+                        if nest_quantity > workorder_quantity and should_handle_remaining_parts:
+                            self.handle_nest_laser_cut_part_over_flow(nest_laser_cut_part, workorder_remaining_quantity)
+                        break
+
+    def handle_nest_laser_cut_part_over_flow(self, nest_laser_cut_part: LaserCutPart, workorder_remaining_quantity: int):
+        new_part = LaserCutPart(nest_laser_cut_part.to_dict(), self.laser_cut_inventory)
+        new_part.quantity = workorder_remaining_quantity
+        self.laser_cut_inventory.add_or_update_laser_cut_part(new_part, "workorder nest overflow")
+
+    def generate_quote_thread(self, nests: list[str]):
         QApplication.setOverrideCursor(Qt.CursorShape.WaitCursor)
         self.status_button.setText("Processing nests", "yellow")
         self.pushButton_load_nests.setEnabled(False)
@@ -2083,7 +2389,7 @@ class MainWindow(QMainWindow):
         load_nest_thread.signal.connect(self.generate_quote_response)
         load_nest_thread.start()
 
-    def generate_quote_response(self, data: Quote | str) -> None:
+    def generate_quote_response(self, data: Quote | str):
         if isinstance(data, str):
             self.status_button.setText("Encountered error processing nests", "red")
             self.pushButton_load_nests.setEnabled(True)
@@ -2140,14 +2446,14 @@ class MainWindow(QMainWindow):
             self.status_button.setText("Loading nests aborted", "lime")
         QApplication.restoreOverrideCursor()
 
-    def upload_quote_thread(self, folder: str, quote: Quote, html_file_contents: str) -> None:
+    def upload_quote_thread(self, folder: str, quote: Quote, html_file_contents: str):
         upload_batch = UploadQuote(folder, quote, html_file_contents)
         upload_batch.signal.connect(self.upload_quote_response)
         self.threads.append(upload_batch)
         self.status_button.setText(f"Uploading {quote.name}", "yellow")
         upload_batch.start()
 
-    def upload_quote_response(self, response: str) -> None:
+    def upload_quote_response(self, response: str):
         if response == "Quote sent successfully":
             self.status_button.setText("Quote was sent successfully", "lime")
             self.load_saved_quoted_thread()
@@ -2159,20 +2465,20 @@ class MainWindow(QMainWindow):
             msg.setText(f"{response}")
             msg.exec()
 
-    def set_order_number_thread(self, order_number: float) -> None:
+    def set_order_number_thread(self, order_number: float):
         self.order_number = order_number
         set_order_number_thread = SetOrderNumberThread(order_number)
         set_order_number_thread.signal.connect(self.set_order_number_thread_response)
         self.threads.append(set_order_number_thread)
         set_order_number_thread.start()
 
-    def get_order_number_thread(self) -> None:
+    def get_order_number_thread(self):
         get_order_number_thread = GetOrderNumberThread()
         get_order_number_thread.signal.connect(self.get_order_number_thread_response)
         self.threads.append(get_order_number_thread)
         get_order_number_thread.start()
 
-    def set_order_number_thread_response(self, response) -> None:
+    def set_order_number_thread_response(self, response):
         if response != "success":
             msg = QMessageBox(self)
             msg.setIcon(QMessageBox.Icon.Critical)
@@ -2180,7 +2486,7 @@ class MainWindow(QMainWindow):
             msg.setText(f"Encountered error when setting order number.\n\n{response}")
             msg.exec()
 
-    def get_order_number_thread_response(self, order_number: int) -> None:
+    def get_order_number_thread_response(self, order_number: int):
         try:
             self.order_number = order_number
         except Exception as e:
@@ -2190,26 +2496,26 @@ class MainWindow(QMainWindow):
             msg.setText(f"{e}")
             msg.exec()
 
-    def load_previous_quotes_thread(self) -> None:
+    def load_previous_quotes_thread(self):
         get_previous_quotes_thread = GetPreviousQuotesThread()
         self.threads.append(get_previous_quotes_thread)
         get_previous_quotes_thread.signal.connect(self.load_previous_quotes_response)
         get_previous_quotes_thread.start()
 
-    def load_previous_quotes_response(self, data: dict) -> None:
+    def load_previous_quotes_response(self, data: dict):
         if isinstance(data, dict):
             self.load_previous_quotes(data)
         else:
             self.status_button.setText(f"Error: {data}'", "red")
 
-    def upload_workorder_thread(self, folder: str, workorder: Workorder, html_file_contents: str) -> None:
+    def upload_workorder_thread(self, folder: str, workorder: Workorder, html_file_contents: str):
         upload_batch = UploadWorkorderThread(folder, workorder, html_file_contents)
         upload_batch.signal.connect(self.upload_workorder_response)
         self.threads.append(upload_batch)
         self.status_button.setText("Uploading workorder", "yellow")
         upload_batch.start()
 
-    def upload_workorder_response(self, response: str) -> None:
+    def upload_workorder_response(self, response: str):
         if response == "Workorder sent successfully":
             self.status_button.setText("Workorder was sent successfully", "lime")
         else:
@@ -2220,7 +2526,7 @@ class MainWindow(QMainWindow):
             msg.setText(f"{response}")
             msg.exec()
 
-    def upload_job_thread(self, folder: str, job: Job, html_file_contents: str) -> None:
+    def upload_job_thread(self, folder: str, job: Job, html_file_contents: str):
         upload_batch = UploadJobThread(folder, job, html_file_contents)
         upload_batch.signal.connect(self.upload_job_response)
         self.threads.append(upload_batch)
@@ -2229,7 +2535,7 @@ class MainWindow(QMainWindow):
         upload_batch.start()
         upload_batch.wait()
 
-    def upload_job_response(self, response: str) -> None:
+    def upload_job_response(self, response: str):
         if response == "Job sent successfully":
             self.status_button.setText("Job was sent successfully", "lime")
             self.load_jobs_thread()
@@ -2241,13 +2547,13 @@ class MainWindow(QMainWindow):
             msg.setText(f"{response}")
             msg.exec()
 
-    def load_jobs_thread(self) -> None:
+    def load_jobs_thread(self):
         get_saved_quotes_thread = GetJobsThread()
         self.threads.append(get_saved_quotes_thread)
         get_saved_quotes_thread.signal.connect(self.load_jobs_response)
         get_saved_quotes_thread.start()
 
-    def load_jobs_response(self, data: dict) -> None:
+    def load_jobs_response(self, data: dict):
         self.saved_jobs = data
         if isinstance(data, dict):
             self.status_button.setText("Fetched all jobs", "lime")
@@ -2259,13 +2565,13 @@ class MainWindow(QMainWindow):
         else:
             self.status_button.setText(f"Error: {data}'", "red")
 
-    def load_saved_quoted_thread(self) -> None:
+    def load_saved_quoted_thread(self):
         get_saved_quotes_thread = GetSavedQuotesThread()
         self.threads.append(get_saved_quotes_thread)
         get_saved_quotes_thread.signal.connect(self.load_saved_quotes_response)
         get_saved_quotes_thread.start()
 
-    def load_saved_quotes_response(self, data: dict) -> None:
+    def load_saved_quotes_response(self, data: dict):
         if isinstance(data, dict):
             self.load_saved_quotes(data)
         else:
@@ -2313,14 +2619,14 @@ class MainWindow(QMainWindow):
                 "red",
             )
 
-    def download_job_data_thread(self, folder_name: str) -> None:
+    def download_job_data_thread(self, folder_name: str):
         self.status_button.setText("Fetching job data", "lime")
         download_quote_thread = DownloadJobThread(folder_name)
         self.threads.append(download_quote_thread)
         download_quote_thread.signal.connect(self.download_job_data_response)
         download_quote_thread.start()
 
-    def download_job_data_response(self, data: dict[str, dict[str, Any]], folder_name: str) -> None:
+    def download_job_data_response(self, data: dict[str, dict[str, Any]], folder_name: str):
         if isinstance(data, dict):
             job = Job(data, self.job_manager)
 
@@ -2371,7 +2677,7 @@ class MainWindow(QMainWindow):
             delete_job_thread.signal.connect(self.delete_job_response)
             delete_job_thread.start()
 
-    def delete_job_response(self, response: dict | str, folder_name: str) -> None:
+    def delete_job_response(self, response: dict | str, folder_name: str):
         if isinstance(response, dict):
             self.status_button.setText(
                 f"Successfully deleted {folder_name}",
@@ -2398,14 +2704,14 @@ class MainWindow(QMainWindow):
             self.status_button.setText(f"Error: {response} - {folder_name}", "red")
         self.load_saved_quoted_thread()
 
-    def download_quote_data_thread(self, folder_name: str) -> None:
+    def download_quote_data_thread(self, folder_name: str):
         self.status_button.setText("Fetching quote data", "lime")
         download_quote_thread = DownloadQuoteThread(folder_name)
         self.threads.append(download_quote_thread)
         download_quote_thread.signal.connect(self.download_quote_data_response)
         download_quote_thread.start()
 
-    def download_quote_data_response(self, data: dict[str, dict[str, Any]], folder_name: str) -> None:
+    def download_quote_data_response(self, data: dict[str, dict[str, Any]], folder_name: str):
         if isinstance(data, dict):
             quote_name = folder_name.split("/")[-1]
             quote = Quote(
@@ -2447,7 +2753,7 @@ class MainWindow(QMainWindow):
             delete_quote_thread.signal.connect(self.delete_quote_response)
             delete_quote_thread.start()
 
-    def delete_quote_response(self, response: dict | str, folder_name: str) -> None:
+    def delete_quote_response(self, response: dict | str, folder_name: str):
         if isinstance(response, dict):
             self.status_button.setText(
                 f"Successfully deleted {folder_name}",
@@ -2471,13 +2777,13 @@ class MainWindow(QMainWindow):
     def send_email_response(self, response: str):
         self.status_button.setText(response, "lime")
 
-    def start_check_for_updates_thread(self) -> None:
+    def start_check_for_updates_thread(self):
         check_for_updates_thread = CheckForUpdatesThread(self, __version__)
         check_for_updates_thread.signal.connect(self.update_available_thread_response)
         self.threads.append(check_for_updates_thread)
         check_for_updates_thread.start()
 
-    def update_available_thread_response(self, version: str, update_message: str) -> None:
+    def update_available_thread_response(self, version: str, update_message: str):
         if not self.ignore_update:
             self.ignore_update = True
             msg = QMessageBox(self)
@@ -2495,7 +2801,7 @@ class MainWindow(QMainWindow):
 
     # * /\ THREADS /\
 
-    def clear_layout(self, layout: QVBoxLayout | QWidget) -> None:
+    def clear_layout(self, layout: QVBoxLayout | QWidget):
         with contextlib.suppress(AttributeError):
             if layout is not None:
                 while layout.count():
@@ -2513,7 +2819,7 @@ class MainWindow(QMainWindow):
         right_label: str,
         highlighted_message_width: int,
         button_pressed_event=None,
-    ) -> None:
+    ):
         # self.clear_layout(#self.active_layout)
         self.tabs.clear()
 
@@ -2562,13 +2868,13 @@ class MainWindow(QMainWindow):
         tab.addWidget(lbl2, 0, 2)
 
     # * \/ OVERIDDEN UI EVENTS \/
-    def dragEnterEvent(self, event: QDragEnterEvent) -> None:
+    def dragEnterEvent(self, event: QDragEnterEvent):
         if event.mimeData().hasUrls:
             event.accept()
         else:
             event.ignore()
 
-    def dragMoveEvent(self, event: QDragMoveEvent) -> None:
+    def dragMoveEvent(self, event: QDragMoveEvent):
         if self.tabWidget.tabText(self.tabWidget.currentIndex()) == "Workspace":
             return
         if event.mimeData().hasUrls:
@@ -2586,10 +2892,10 @@ class MainWindow(QMainWindow):
         else:
             event.ignore()
 
-    def dragLeaveEvent(self, event: QDragLeaveEvent) -> None:
+    def dragLeaveEvent(self, event: QDragLeaveEvent):
         pass
 
-    def dropEvent(self, event: QDropEvent) -> None:
+    def dropEvent(self, event: QDropEvent):
         if self.tabWidget.tabText(self.tabWidget.currentIndex()) == "Workspace":
             return
         if event.mimeData().hasUrls:
@@ -2602,7 +2908,7 @@ class MainWindow(QMainWindow):
                     break
             event.ignore()
 
-    def closeEvent(self, event) -> None:
+    def closeEvent(self, event):
         self.save_geometry()
         self.save_menu_tab_order()
         super().closeEvent(event)

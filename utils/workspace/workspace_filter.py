@@ -1,14 +1,14 @@
 from enum import Enum
 
 class SortingMethod(Enum):
-    A_Z = "A ➜ Z"
-    Z_A = "Z ➜ A"
-    MOST_LEAST = "Most ➜ Least"
-    LEAST_MOST = "Least ➜ Most"
-    HEAVY_LIGHT = "Heavy ➜ Light"
-    LIGHT_HEAVY = "Light ➜ Heavy"
-    LARGE_SMALL = "Large ➜ Small"
-    SMALL_LARGE = "Small ➜ Large"
+    A_TO_Z = "A ➜ Z"
+    Z_TO_A = "Z ➜ A"
+    MOST_TO_LEAST = "Most ➜ Least"
+    LEAST_TO_MOST = "Least ➜ Most"
+    HEAVY_TO_LIGHT = "Heavy ➜ Light"
+    LIGHT_TO_HEAVY = "Light ➜ Heavy"
+    LARGE_TO_SMALL = "Large ➜ Small"
+    SMALL_TO_LARGE = "Small ➜ Large"
 
 
 class WorkspaceFilter:

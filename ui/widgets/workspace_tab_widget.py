@@ -78,6 +78,7 @@ class WorkspaceTabWidget(QWidget):
 
         self.pushButton_view_parts = self.findChild(QPushButton, "pushButton_view_parts")
         self.pushButton_view_parts.clicked.connect(self.view_parts_table)
+
         self.pushButton_view_assemblies = self.findChild(QPushButton, "pushButton_view_assemblies")
         self.pushButton_view_assemblies.clicked.connect(self.view_assemblies_table)
 
@@ -105,16 +106,24 @@ class WorkspaceTabWidget(QWidget):
 
     def view_parts_table(self):
         self.lineEdit_search.setPlaceholderText("Search parts...")
+
+        self.pushButton_view_parts.setChecked(True)
         self.pushButton_view_assemblies.setChecked(False)
+
         self.pushButton_view_parts.setEnabled(False)
         self.pushButton_view_assemblies.setEnabled(True)
+
         self.workspace_widget.view_parts_table()
 
     def view_assemblies_table(self):
         self.lineEdit_search.setPlaceholderText("Search assemblies...")
+
         self.pushButton_view_parts.setChecked(False)
-        self.pushButton_view_assemblies.setEnabled(False)
+        self.pushButton_view_assemblies.setChecked(True)
+
         self.pushButton_view_parts.setEnabled(True)
+        self.pushButton_view_assemblies.setEnabled(False)
+
         self.workspace_widget.view_assemblies_table()
 
     def load_tags(self):
@@ -122,7 +131,7 @@ class WorkspaceTabWidget(QWidget):
         font.setBold(True)
         self.clear_layout(self.tags_layout)
         self.tag_buttons.clear()
-        for tag in ["Recut"] + self.workspace_settings.get_all_tags():
+        for tag in self.workspace_settings.get_all_tags():
             tag_button = QPushButton(tag, self)
             tag_button.setFont(font)
             tag_button.setCheckable(True)
@@ -202,7 +211,7 @@ class WorkspaceTabWidget(QWidget):
     def sync_changes(self):
         self.parent.sync_changes()
 
-    def clear_layout(self, layout: Union[QVBoxLayout, QWidget]) -> None:
+    def clear_layout(self, layout: Union[QVBoxLayout, QWidget]):
         with contextlib.suppress(AttributeError):
             if layout is not None:
                 while layout.count():

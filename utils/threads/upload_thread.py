@@ -1,19 +1,20 @@
+import time
 from PyQt6.QtCore import QThread, pyqtSignal
 from requests import Session
-
 from utils.ip_utils import get_server_ip_address, get_server_port
-
 
 class UploadThread(QThread):
     signal = pyqtSignal(object, list)
 
-    def __init__(self, files_to_upload: list[str]):
+    def __init__(self, files_to_upload: list[str], max_retries: int = 3, delay_between_requests: float = 0.1):
         QThread.__init__(self)
         self.SERVER_IP: str = get_server_ip_address()
         self.SERVER_PORT: int = get_server_port()
         self.upload_url = f"http://{self.SERVER_IP}:{self.SERVER_PORT}/upload"
         self.session = Session()
         self.files_to_upload = files_to_upload
+        self.max_retries = max_retries
+        self.delay_between_requests = delay_between_requests
 
     def run(self):
         try:
@@ -29,10 +30,23 @@ class UploadThread(QThread):
                         file = {"file": (file_to_upload, f.read(), "image/jpeg")}
 
                 if file:
-                    response = self.session.post(self.upload_url, files=file, timeout=10)
-                    if response.status_code == 200:
-                        successful_uploads.append(file_to_upload)
-                    else:
+                    success = False
+                    for attempt in range(self.max_retries):
+                        try:
+                            response = self.session.post(self.upload_url, files=file, timeout=10)
+                            if response.status_code == 200:
+                                successful_uploads.append(file_to_upload)
+                                success = True
+                                break
+                            else:
+                                failed_uploads.append(file_to_upload)
+                        except Exception as e:
+                            if attempt == self.max_retries - 1:
+                                failed_uploads.append(file_to_upload)
+                                self.signal.emit({"status": "error", "error": str(e)}, self.files_to_upload)
+                        time.sleep(self.delay_between_requests)  # Rate limiting
+
+                    if not success:
                         failed_uploads.append(file_to_upload)
 
             if failed_uploads:

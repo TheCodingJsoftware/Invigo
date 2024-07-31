@@ -266,7 +266,7 @@ document.querySelectorAll('.qr-item').forEach(async item => {
 });
 
 
-const workorderDiv = document.getElementById('workorder_id');
+const workorderDiv = document.getElementById('workorder-id');
 
 if (workorderDiv) {
     const workorderId = workorderDiv.getAttribute('data-workorder-id');

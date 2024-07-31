@@ -155,3 +155,6 @@ class SendJobsToWorkspaceDialog(QDialog):
                 collect_selected_jobs(top_item, "quoting")
 
         return selected_jobs
+
+    def should_update_components(self) -> bool:
+        return self.checkBox_update_components.isChecked()

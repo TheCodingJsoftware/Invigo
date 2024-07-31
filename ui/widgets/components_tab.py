@@ -833,8 +833,8 @@ class ComponentsTab(QWidget):
                 {
                     "part_number": add_item_dialog.get_part_number(),
                     "part_name": add_item_dialog.get_name(),
-                    "unit_quantities": {self.category: add_item_dialog.get_unit_quantity()},
-                    "current_quantity": add_item_dialog.get_current_quantity(),
+                    "quantity": add_item_dialog.get_current_quantity(),
+                    "category_quantities": {self.category.name: add_item_dialog.get_unit_quantity()},
                     "price": add_item_dialog.get_item_price(),
                     "use_exchange_rate": add_item_dialog.get_exchange_rate(),
                     "priority": add_item_dialog.get_priority(),

@@ -36,7 +36,7 @@ class SheetsTableWidget(CustomTableWidget):
         self.setVerticalScrollMode(QAbstractItemView.ScrollMode.ScrollPerPixel)
         self.setHorizontalScrollMode(QAbstractItemView.ScrollMode.ScrollPerPixel)
 
-        self.set_editable_column_index([5, 9])
+        self.set_editable_column_index([5, 8])
         headers: list[str] = [
             "Thickness",
             "Material",
