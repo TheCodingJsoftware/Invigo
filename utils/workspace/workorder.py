@@ -1,8 +1,8 @@
 from typing import Union
 
+from utils.inventory.laser_cut_inventory import LaserCutInventory
 from utils.inventory.nest import Nest
 from utils.sheet_settings.sheet_settings import SheetSettings
-from utils.inventory.laser_cut_inventory import LaserCutInventory
 
 
 class Workorder:

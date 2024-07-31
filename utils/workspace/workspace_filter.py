@@ -1,5 +1,6 @@
 from enum import Enum
 
+
 class SortingMethod(Enum):
     A_TO_Z = "A ➜ Z"
     Z_TO_A = "Z ➜ A"

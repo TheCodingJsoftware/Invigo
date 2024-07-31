@@ -8,8 +8,8 @@ from utils.inventory.powder import Powder
 from utils.inventory.primer import Primer
 from utils.workspace.flow_tag import FlowTag
 from utils.workspace.tag import Tag
-from utils.workspace.workspace_timer import WorkspaceTimer
 from utils.workspace.workspace_settings import WorkspaceSettings
+from utils.workspace.workspace_timer import WorkspaceTimer
 
 if TYPE_CHECKING:
     from utils.workspace.job import Job
@@ -230,7 +230,7 @@ class Assembly:
                 "flow_tag": self.flow_tag.to_dict(),
                 "current_flow_tag_index": self.current_flow_tag_index,
                 "current_flow_tag_status_index": self.current_flow_tag_status_index,
-                "timer": self.timer.to_dict()
+                "timer": self.timer.to_dict(),
             },
             "laser_cut_parts": [laser_cut_part.to_dict() for laser_cut_part in self.laser_cut_parts],
             "components": [component.to_dict() for component in self.components],

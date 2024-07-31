@@ -9,7 +9,7 @@ from utils.inventory.laser_cut_part import LaserCutPart
 from utils.workspace.assembly import Assembly
 from utils.workspace.job import Job
 from utils.workspace.job_manager import JobManager
-from utils.workspace.workspace_filter import WorkspaceFilter, SortingMethod
+from utils.workspace.workspace_filter import SortingMethod, WorkspaceFilter
 from utils.workspace.workspace_laser_cut_part_group import WorkspaceLaserCutPartGroup
 from utils.workspace.workspace_settings import WorkspaceSettings
 
@@ -98,7 +98,7 @@ class Workspace:
                     continue
 
             search_text = self.workspace_filter.search_text.lower()
-            search_queries = [query.strip() for query in search_text.split(',')] if search_text else []
+            search_queries = [query.strip() for query in search_text.split(",")] if search_text else []
 
             if search_queries:
                 name_match = any(query in assembly.name.lower() for query in search_queries)
@@ -162,7 +162,7 @@ class Workspace:
                     continue
 
             search_text = self.workspace_filter.search_text.lower()
-            search_queries = [query.strip() for query in search_text.split(',')] if search_text else []
+            search_queries = [query.strip() for query in search_text.split(",")] if search_text else []
 
             if search_queries:
                 name_match = any(query in laser_cut_part.name.lower() for query in search_queries)
@@ -202,6 +202,7 @@ class Workspace:
     def get_grouped_laser_cut_parts(self, laser_cut_parts: list[LaserCutPart]) -> list[WorkspaceLaserCutPartGroup]:
         grouped_laser_cut_parts: list[WorkspaceLaserCutPartGroup] = []
         parts_group: dict[str, WorkspaceLaserCutPartGroup] = {}
+
         def create_part_group(base_part: LaserCutPart):
             group = WorkspaceLaserCutPartGroup()
             group.add_laser_cut_part(base_part)
@@ -222,11 +223,7 @@ class Workspace:
         return self.sort_grouped_laser_cut_parts(grouped_laser_cut_parts)
 
     def to_dict(self) -> dict[str, Union[dict[str, object], list[dict[str, object]]]]:
-        return {
-            "jobs": [
-                job.to_dict() for job in self.jobs
-            ]
-        }
+        return {"jobs": [job.to_dict() for job in self.jobs]}
 
     def __create_file(self):
         if not os.path.exists(f"{self.FOLDER_LOCATION}/{self.filename}.json"):

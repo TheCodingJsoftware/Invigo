@@ -1,8 +1,8 @@
-from PyQt6.QtCore import Qt, pyqtSignal
-from PyQt6.QtWidgets import QWidget, QVBoxLayout, QPushButton, QCheckBox
-from PyQt6.QtGui import QIcon
-
 from functools import partial
+
+from PyQt6.QtCore import Qt, pyqtSignal
+from PyQt6.QtGui import QIcon
+from PyQt6.QtWidgets import QCheckBox, QPushButton, QVBoxLayout, QWidget
 
 
 class DropDownWidget(QWidget):
@@ -24,6 +24,7 @@ class DropDownWidget(QWidget):
         checked = not state == 0  # Check if the checkbox is checked
         self.checkbox_states[name] = checked
         self.checkbox_states_changed.emit(self.checkbox_states)
+
 
 class FilterButton(QPushButton):
     checkbox_states_changed = pyqtSignal(dict)

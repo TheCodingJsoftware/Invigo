@@ -13,28 +13,11 @@ from PyQt6.QtWidgets import QAbstractItemView, QApplication, QComboBox, QComplet
 from ui.custom.file_button import FileButton
 from ui.custom.workspace_assembly_table_widget import WorkspaceAssemblyTableColumns, WorkspaceAssemblyTableWidget
 from ui.custom.workspace_parts_table_widget import WorkspacePartsTableColumns, WorkspacePartsTableWidget
-from ui.custom_widgets import (
-    AssemblyImage,
-    AssemblyMultiToolBox,
-    CustomTableWidget,
-    DeletePushButton,
-    DraggableButton,
-    FilterTabWidget,
-    HumbleDoubleSpinBox,
-    ItemsGroupBox,
-    MultiToolBox,
-    NotesPlainTextEdit,
-    RecordingWidget,
-    RecutButton,
-    ScrollPositionManager,
-    SelectRangeCalendar,
-    TimeSpinBox,
-)
+from ui.custom_widgets import AssemblyImage, AssemblyMultiToolBox, CustomTableWidget, DeletePushButton, DraggableButton, FilterTabWidget, HumbleDoubleSpinBox, ItemsGroupBox, MultiToolBox, NotesPlainTextEdit, RecordingWidget, RecutButton, ScrollPositionManager, SelectRangeCalendar, TimeSpinBox
 from ui.dialogs.color_picker_dialog import ColorPicker
 from ui.dialogs.recut_dialog import RecutDialog
 from ui.windows.image_viewer import QImageViewer
 from ui.windows.pdf_viewer import PDFViewer
-from utils.threads.upload_thread import UploadThread
 from utils.colors import get_random_color
 from utils.dialog_buttons import DialogButtons
 from utils.inventory.component import Component
@@ -43,6 +26,7 @@ from utils.inventory.laser_cut_inventory import LaserCutInventory
 from utils.inventory.laser_cut_part import LaserCutPart
 from utils.inventory.paint_inventory import PaintInventory
 from utils.settings import Settings
+from utils.threads.upload_thread import UploadThread
 from utils.threads.workspace_get_file_thread import WorkspaceDownloadFile
 from utils.threads.workspace_upload_file_thread import WorkspaceUploadThread
 from utils.trusted_users import get_trusted_users
@@ -427,9 +411,7 @@ class WorkspaceWidget(QWidget):
         self.sync_changes()
 
     def parts_table_get_selected_rows(self) -> list[int]:
-        selected_rows: set[int] = {
-            item.row() for item in self.parts_table_widget.selectedItems()
-        }
+        selected_rows: set[int] = {item.row() for item in self.parts_table_widget.selectedItems()}
         return list(selected_rows)
 
     def parts_table_row_changed(self, row: int):
@@ -539,9 +521,7 @@ class WorkspaceWidget(QWidget):
         self.sync_changes()
 
     def assemblies_table_get_selected_rows(self) -> list[int]:
-        selected_rows: set[int] = {
-            item.row() for item in self.assemblies_table_widget.selectedItems()
-        }
+        selected_rows: set[int] = {item.row() for item in self.assemblies_table_widget.selectedItems()}
         return list(selected_rows)
 
     def assemblies_table_row_changed(self, row: int):
@@ -549,7 +529,7 @@ class WorkspaceWidget(QWidget):
 
     # OTHER STUFF
     def open_context_menu(self, menu: QMenu):
-         menu.exec(QCursor.pos())
+        menu.exec(QCursor.pos())
 
     def get_flow_tag_controls(self, part_group_or_assembly: Union[WorkspaceLaserCutPartGroup, Assembly]) -> Union[QComboBox, QPushButton]:
         if isinstance(part_group_or_assembly, WorkspaceLaserCutPartGroup):

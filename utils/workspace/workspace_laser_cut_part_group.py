@@ -1,4 +1,4 @@
-from typing import Optional, Iterator
+from typing import Iterator, Optional
 
 from utils.inventory.laser_cut_part import LaserCutPart
 from utils.workspace.tag import Tag
@@ -32,7 +32,7 @@ class WorkspaceLaserCutPartGroup:
         for laser_cut_part in self:
             laser_cut_part.current_flow_tag_status_index = status_index
 
-    def move_to_next_process(self, quantity: Optional[int]=None):
+    def move_to_next_process(self, quantity: Optional[int] = None):
         max_quantity = len(self.laser_cut_parts)
         if quantity is None or quantity > max_quantity:
             quantity = max_quantity

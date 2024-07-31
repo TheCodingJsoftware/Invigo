@@ -1,8 +1,8 @@
-from typing import Union
 from datetime import datetime
+from typing import Union
 
-from utils.workspace.tag import Tag
 from utils.workspace.flow_tag import FlowTag
+from utils.workspace.tag import Tag
 
 
 class TagTimer:

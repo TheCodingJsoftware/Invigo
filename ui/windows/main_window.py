@@ -17,28 +17,7 @@ from natsort import natsorted, ns
 from PyQt6 import uic
 from PyQt6.QtCore import QEventLoop, QPoint, Qt, QThread, QTimer
 from PyQt6.QtGui import QAction, QColor, QCursor, QDragEnterEvent, QDragLeaveEvent, QDragMoveEvent, QDropEvent, QFont, QIcon
-from PyQt6.QtWidgets import (
-    QApplication,
-    QComboBox,
-    QFileDialog,
-    QFontDialog,
-    QGridLayout,
-    QInputDialog,
-    QLabel,
-    QListWidget,
-    QListWidgetItem,
-    QMainWindow,
-    QMenu,
-    QMessageBox,
-    QPushButton,
-    QScrollArea,
-    QSplitter,
-    QTableWidgetItem,
-    QTabWidget,
-    QToolBox,
-    QVBoxLayout,
-    QWidget,
-)
+from PyQt6.QtWidgets import QApplication, QComboBox, QFileDialog, QFontDialog, QGridLayout, QInputDialog, QLabel, QListWidget, QListWidgetItem, QMainWindow, QMenu, QMessageBox, QPushButton, QScrollArea, QSplitter, QTableWidgetItem, QTabWidget, QToolBox, QVBoxLayout, QWidget
 
 from ui.custom.job_tab import JobTab
 from ui.custom_widgets import CustomTableWidget, MultiToolBox, PdfTreeView, PreviousQuoteItem, RichTextPushButton, SavedQuoteItem, ScrollPositionManager, set_default_dialog_button_stylesheet
@@ -46,14 +25,14 @@ from ui.dialogs.about_dialog import AboutDialog
 from ui.dialogs.edit_paint_inventory import EditPaintInventory
 from ui.dialogs.edit_workspace_settings import EditWorkspaceSettings
 from ui.dialogs.generate_quote_dialog import GenerateQuoteDialog
+from ui.dialogs.generate_workorder_dialog import GenerateWorkorderDialog
 from ui.dialogs.job_sorter_dialog import JobSorterDialog
+from ui.dialogs.message_dialog import MessageDialog
 from ui.dialogs.nest_sheet_verification import NestSheetVerification
 from ui.dialogs.save_quote_dialog import SaveQuoteDialog
 from ui.dialogs.select_item_dialog import SelectItemDialog
 from ui.dialogs.send_jobs_to_workspace_dialog import SendJobsToWorkspaceDialog
 from ui.dialogs.view_removed_quantities_history_dialog import ViewRemovedQuantitiesHistoryDialog
-from ui.dialogs.message_dialog import MessageDialog
-from ui.dialogs.generate_workorder_dialog import GenerateWorkorderDialog
 from ui.widgets.components_tab import ComponentsTab
 from ui.widgets.job_widget import JobWidget
 from ui.widgets.laser_cut_tab import LaserCutTab
@@ -101,19 +80,19 @@ from utils.threads.set_order_number_thread import SetOrderNumberThread
 from utils.threads.update_job_setting import UpdateJobSetting
 from utils.threads.update_quote_settings import UpdateQuoteSettings
 from utils.threads.upload_job_thread import UploadJobThread
-from utils.threads.upload_workorder_thread import UploadWorkorderThread
 from utils.threads.upload_quote import UploadQuote
 from utils.threads.upload_thread import UploadThread
+from utils.threads.upload_workorder_thread import UploadWorkorderThread
 from utils.trusted_users import get_trusted_users
-from utils.workspace.generate_printout import WorkspaceJobPrintout, WorkorderPrintout
+from utils.workspace.generate_printout import WorkorderPrintout, WorkspaceJobPrintout
 from utils.workspace.job import Job, JobColor, JobStatus
 from utils.workspace.job_manager import JobManager
 from utils.workspace.job_preferences import JobPreferences
-from utils.workspace.workspace import Workspace
-from utils.workspace.workspace_settings import WorkspaceSettings
-from utils.workspace.workspace_history import WorkspaceHistory
 from utils.workspace.workorder import Workorder
+from utils.workspace.workspace import Workspace
+from utils.workspace.workspace_history import WorkspaceHistory
 from utils.workspace.workspace_laser_cut_part_group import WorkspaceLaserCutPartGroup
+from utils.workspace.workspace_settings import WorkspaceSettings
 
 __version__: str = "v3.3.0"
 
@@ -704,6 +683,7 @@ class MainWindow(QMainWindow):
             self.splitter_4.setSizes([1, 1])
         else:
             self.splitter_4.setSizes([1, 0])
+
     # * /\ SLOTS & SIGNALS /\
 
     # * \/ UPDATE UI ELEMENTS \/
@@ -1671,7 +1651,7 @@ class MainWindow(QMainWindow):
         if self.tabWidget.tabText(self.tabWidget.currentIndex()) == "Workspace":
             self.upload_files(
                 [
-                    f"{self.laser_cut_inventory.filename}.json", # Because of add/remove quantity flow tags
+                    f"{self.laser_cut_inventory.filename}.json",  # Because of add/remove quantity flow tags
                     f"{self.workspace.filename}.json",
                     f"{self.workspace_history.filename}.json",
                 ],
@@ -1754,7 +1734,7 @@ class MainWindow(QMainWindow):
             for component_from_job in assembly.components:
                 if not (component_from_inventory := self.components_inventory.get_component_by_part_name(component_from_job.part_name)):
                     continue
-                component_from_inventory.quantity -= (component_from_job.quantity * assembly.quantity)
+                component_from_inventory.quantity -= component_from_job.quantity * assembly.quantity
                 component_from_inventory.latest_change_quantity = f"{os.getlogin().title()} removed {component_from_job.quantity * assembly.quantity} quantity from sending {job.name} to workspace at {datetime.now().strftime('%B %d %A %Y %I:%M:%S %p')}"
 
     def generate_single_sheet_report(self, sheet: Sheet, old_quantity: int):
@@ -2107,10 +2087,7 @@ class MainWindow(QMainWindow):
         msg.exec()
 
     def verify_nest_sheet_settings(self, nests: list[Nest]) -> NestSheetVerification:
-        settings_text = "".join(
-            f"  {i + 1}. {nest.name}: {nest.sheet.thickness} {nest.sheet.material}\n"
-            for i, nest in enumerate(nests)
-        )
+        settings_text = "".join(f"  {i + 1}. {nest.name}: {nest.sheet.thickness} {nest.sheet.material}\n" for i, nest in enumerate(nests))
         return NestSheetVerification(
             f"The nests sheet settings from PDF are:\n{settings_text}",
             nests[0].sheet.thickness,
@@ -2148,11 +2125,7 @@ class MainWindow(QMainWindow):
             for part in group:
                 workspace_part_names.add(part.name)
 
-        return [
-            part
-            for part in nested_laser_cut_parts
-            if part.name not in workspace_part_names
-        ]
+        return [part for part in nested_laser_cut_parts if part.name not in workspace_part_names]
 
     def get_nested_parts_in_workspace(self, nested_laser_cut_parts: list[LaserCutPart], workspace_laser_cut_part_groups: list[WorkspaceLaserCutPartGroup]) -> list[LaserCutPart]:
         workspace_parts_dict: dict[str, LaserCutPart] = {}
@@ -2323,7 +2296,7 @@ class MainWindow(QMainWindow):
                 )
 
             if generate_workorder_dialog.should_generate_printout():
-                folder_name = datetime.now().strftime('%Y%m%d%H%M%S%f')
+                folder_name = datetime.now().strftime("%Y%m%d%H%M%S%f")
                 workorder = Workorder({}, self.sheet_settings, self.laser_cut_inventory)
                 workorder.nests = nests
 
