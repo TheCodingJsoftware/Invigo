@@ -33,7 +33,7 @@ from utils.sheet_settings.sheet_settings import SheetSettings
 class PaintSettingsWidget(QWidget):
     settingsChanged = pyqtSignal()
 
-    def __init__(self, laser_cut_part: LaserCutPart, parent: "LaserCutPartsQuotingTableWidget") -> None:
+    def __init__(self, laser_cut_part: LaserCutPart, parent: "LaserCutPartsQuotingTableWidget"):
         super().__init__(parent)
         self.parent: LaserCutPartsQuotingTableWidget = parent
         self.laser_cut_part = laser_cut_part
@@ -146,7 +146,7 @@ class PaintWidget(QWidget):
         laser_cut_part: LaserCutPart,
         paint_settings_widget: PaintSettingsWidget,
         parent: "LaserCutPartsQuotingTableWidget",
-    ) -> None:
+    ):
         super().__init__(parent)
         self.parent: LaserCutPartsQuotingTableWidget = parent
 
@@ -279,7 +279,7 @@ class QuoteWidget(QWidget):
         sheets_inventory: SheetsInventory,
         sheet_settings: SheetSettings,
         parent: QWidget,
-    ) -> None:
+    ):
         super().__init__(parent)
         uic.loadUi("ui/widgets/quote_widget.ui", self)
 
@@ -949,7 +949,7 @@ class QuoteWidget(QWidget):
                 label_sheet_cuttime.setStyleSheet("border-top: 1px solid #8C8C8C; border-bottom: 1px solid #8C8C8C")
             self.gridLayout_nest_summary_2.addWidget(label_sheet_cuttime, i + 1, 2)
 
-    def open_image(self, path: str, title: str) -> None:
+    def open_image(self, path: str, title: str):
         image_viewer = QImageViewer(self, path, title)
         image_viewer.show()
 
@@ -1477,7 +1477,7 @@ class QuoteWidget(QWidget):
             )
         )
 
-    def update_laser_cut_parts_to_sheet_price(self) -> None:
+    def update_laser_cut_parts_to_sheet_price(self):
         target_value = self.get_total_cost_for_sheets()
         profit_margin = self.doubleSpinBox_profit_margin_items_2.value() / 100
         overhead = self.doubleSpinBox_overhead_items_2.value() / 100
@@ -1758,7 +1758,7 @@ class QuoteWidget(QWidget):
             if component.name == component_name:
                 return component
 
-    def clear_all_components(self) -> None:
+    def clear_all_components(self):
         msg_box = QMessageBox(self)
         msg_box.setIcon(QMessageBox.Icon.Question)
         msg_box.setWindowTitle("Are you sure?")
@@ -1776,7 +1776,7 @@ class QuoteWidget(QWidget):
         self.components_table_widget.setRowCount(0)
         self.components_table_items.clear()
 
-    def component_image_pasted(self, image_file_name: str, row: int) -> None:
+    def component_image_pasted(self, image_file_name: str, row: int):
         component_name = self.components_table_widget.item(row, 2).text()
         component = self.get_component_by_name(component_name)
         component.image_path = image_file_name
@@ -1796,7 +1796,7 @@ class QuoteWidget(QWidget):
         return total_sheet_cost
 
     # TODO OMNIGEN
-    def match_sheet_to_item_price(self) -> None:
+    def match_sheet_to_item_price(self):
         return
         target_value: float = float(self.label_total_item_cost.text().replace("Total Cost for Items: $", "").replace(",", ""))
         best_difference = float("inf")
@@ -1895,13 +1895,13 @@ class QuoteWidget(QWidget):
                 table.setItem(row_index, j, item)
             item.setBackground(QColor(color))
 
-    def open_group_menu(self, menu: QMenu) -> None:
+    def open_group_menu(self, menu: QMenu):
         menu.exec(QCursor.pos())
 
     def sync_changes(self):
         self.parent.parent.sync_changes()
 
-    def clear_layout(self, layout: QVBoxLayout | QWidget) -> None:
+    def clear_layout(self, layout: QVBoxLayout | QWidget):
         with contextlib.suppress(AttributeError):
             if layout is not None:
                 while layout.count():

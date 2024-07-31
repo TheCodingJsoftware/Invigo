@@ -24,7 +24,7 @@ class GenerateQuoteThread(LoadNestFileThread):
         components_inventory: ComponentsInventory,
         laser_cut_inventory: LaserCutInventory,
         sheet_settings: SheetSettings,
-    ) -> None:
+    ):
         super().__init__(parent, components_inventory, laser_cut_inventory, sheet_settings)
         self.nest_files = nest_files
         self.quote = Quote(
@@ -35,7 +35,7 @@ class GenerateQuoteThread(LoadNestFileThread):
             self.sheet_settings,
         )
 
-    def run(self) -> None:
+    def run(self):
         try:
             Path(f"{self.program_directory}/images").mkdir(parents=True, exist_ok=True)
             self.extract_images_from_pdf(self.nest_files)

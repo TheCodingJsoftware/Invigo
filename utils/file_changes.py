@@ -6,7 +6,7 @@ from datetime import datetime
 
 
 class FileChanges:
-    def __init__(self, from_file: str, to_file: str) -> None:
+    def __init__(self, from_file: str, to_file: str):
         self.server_file = from_file
         self.client_file = to_file
 

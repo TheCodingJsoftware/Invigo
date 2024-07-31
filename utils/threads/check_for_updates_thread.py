@@ -7,12 +7,12 @@ from PyQt6.QtCore import QThread, pyqtSignal
 class CheckForUpdatesThread(QThread):
     signal = pyqtSignal(object, object)
 
-    def __init__(self, parent, current_version: str) -> None:
+    def __init__(self, parent, current_version: str):
         self.parent = parent
         self.current_version = current_version
         QThread.__init__(self)
 
-    def run(self) -> None:
+    def run(self):
         while True:
             try:
                 response_version = requests.get("http://10.0.0.10:5051/version", timeout=10)

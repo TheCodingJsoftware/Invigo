@@ -1,5 +1,5 @@
 class Attribute:
-    def __init__(self, data: dict[str, bool | str]) -> None:
+    def __init__(self, data: dict[str, bool | str]):
         self.show_all_items: bool = False
         self.is_timer_enabled: bool = False
         self.next_flow_tag_message: str = ""

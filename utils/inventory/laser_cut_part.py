@@ -108,12 +108,25 @@ class LaserCutPart(InventoryItem):
             self.current_flow_tag_status_index = 0
             self.recut = False
             self.timer.start(self.get_current_tag())
+            self.check_update_quantity_tags()
+
+    def check_update_quantity_tags(self):
+        if self.flow_tag.add_quantity_tag and self.get_current_tag().name == self.flow_tag.add_quantity_tag.name:
+            self.laser_cut_inventory.add_or_update_laser_cut_part(self, f"workspace tag: {self.get_current_tag().name}")
+        if self.flow_tag.remove_quantity_tag and self.get_current_tag().name == self.flow_tag.remove_quantity_tag.name:
+            self.laser_cut_inventory.remove_laser_cut_part_quantity(self, f"workspace tag: {self.get_current_tag().name}")
 
     def get_current_tag(self) -> Optional[Tag]:
         try:
             return self.flow_tag.tags[self.current_flow_tag_index]
         except IndexError:
             return None
+
+    def get_next_tag_name(self) -> str:
+        try:
+            return self.flow_tag.tags[self.current_flow_tag_index + 1].name
+        except IndexError:
+            return "Done"
 
     def get_all_paints(self) -> str:
         name = ""

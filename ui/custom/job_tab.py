@@ -20,7 +20,7 @@ class JobTab(QWidget):
     saveJob = pyqtSignal(Job)
     reloadJob = pyqtSignal(JobWidget)
 
-    def __init__(self, parent) -> None:
+    def __init__(self, parent):
         super().__init__(parent)
         self.parent: MainWindow = parent
 
@@ -225,7 +225,7 @@ class JobTab(QWidget):
         for job_widget in self.job_widgets:
             job_widget.update_tables()
 
-    def clear_layout(self, layout: QVBoxLayout | QWidget) -> None:
+    def clear_layout(self, layout: QVBoxLayout | QWidget):
         with contextlib.suppress(AttributeError):
             if layout is not None:
                 while layout.count():

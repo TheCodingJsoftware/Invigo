@@ -6,7 +6,7 @@ from PyQt6.QtGui import QFont
 
 
 class Settings:
-    def __init__(self) -> None:
+    def __init__(self):
         self.data = {}
         self.file_name: str = "settings"
         self.FOLDER_LOCATION: str = f"{os.getcwd()}/"
@@ -14,12 +14,12 @@ class Settings:
         self.load_data()
         self.default_settings()
 
-    def __create_file(self) -> None:
+    def __create_file(self):
         if not os.path.exists(f"{self.FOLDER_LOCATION}/{self.file_name}.json"):
             with open(f"{self.FOLDER_LOCATION}/{self.file_name}.json", "w", encoding="utf-8") as json_file:
                 json_file.write("{}")
 
-    def load_data(self) -> None:
+    def load_data(self):
         try:
             with open(f"{self.FOLDER_LOCATION}/{self.file_name}.json", "rb") as json_file:
                 self.data = msgspec.json.decode(json_file.read())
@@ -27,7 +27,7 @@ class Settings:
             print(f"{self.file_name}.JsonFile.load_data: {error}")
             self.default_settings()
 
-    def save_data(self) -> None:
+    def save_data(self):
         with open(f"{self.FOLDER_LOCATION}/{self.file_name}.json", "wb") as json_file:
             json_file.write(msgspec.json.encode(self.data))
 
@@ -42,7 +42,7 @@ class Settings:
         self.data[setting_name] = setting_value
         self.save_data()
 
-    def default_settings(self) -> None:
+    def default_settings(self):
         self.data.setdefault("open_quote_when_generated", True)
         self.data.setdefault("open_workorder_when_generated", True)
         self.data.setdefault("open_packing_slip_when_generated", True)

@@ -13,7 +13,7 @@ class ExcelFile:
         generate_quote: bool,
         should_generate_packing_slip: bool,
         should_generate_workorder: bool,
-    ) -> None:
+    ):
         self.workbook = xlsxwriter.Workbook(file_name)
         self.workbook.set_properties(
             {
@@ -55,7 +55,7 @@ class ExcelFile:
         if matches := re.search(self.cell_regex, cell):
             return (matches[1], int(matches[2]))
 
-    def add_list_to_sheet(self, cell: str, items: list, horizontal: bool = True) -> None:
+    def add_list_to_sheet(self, cell: str, items: list, horizontal: bool = True):
         """Adds a list of items to the specfied sheet
         Args:
             sheet_name (str): Name of the sheet you want to add a list to.
@@ -87,7 +87,7 @@ class ExcelFile:
                     self.add_item_to_sheet(f"{col}{row}", item)
                 row += 1
 
-    def add_item_to_sheet(self, cell: str, item, number_format=None) -> None:
+    def add_item_to_sheet(self, cell: str, item, number_format=None):
         """Add any item to any cell in the specified sheet
         Args:
             cell (str): Such as "A1"
@@ -109,7 +109,7 @@ class ExcelFile:
         except AttributeError:
             self.info_worksheet.write(f"{col}{row}", item, cell_format)
 
-    def set_row_hidden_sheet(self, cell: str, hidden: bool = True) -> None:
+    def set_row_hidden_sheet(self, cell: str, hidden: bool = True):
         """Hide row
 
         Args:
@@ -119,7 +119,7 @@ class ExcelFile:
         _, row = self.parse_cell(cell=cell)
         self.info_worksheet.set_row(row - 1, None, None, {"hidden": 1})
 
-    def add_list(self, cell: str, items: list, horizontal: bool = True) -> None:
+    def add_list(self, cell: str, items: list, horizontal: bool = True):
         """Adds a list of items to the current workbook
 
         Args:
@@ -140,7 +140,7 @@ class ExcelFile:
                 self.add_item(f"{col}{row}", item)
                 row += 1
 
-    def add_item(self, cell: str, item, number_format=None, totals: bool = False) -> None:
+    def add_item(self, cell: str, item, number_format=None, totals: bool = False):
         """Add any item to any cell in the excel work book
 
         Args:
@@ -177,7 +177,7 @@ class ExcelFile:
         except (TypeError, AttributeError):
             self.worksheet.write(f"{col}{row}", item, cell_format)
 
-    def set_cell_width(self, cell: str, width: int) -> None:
+    def set_cell_width(self, cell: str, width: int):
         # sourcery skip: remove-unnecessary-cast
         """Change teh width of any cell, only the column is, the row is not used.
 
@@ -188,7 +188,7 @@ class ExcelFile:
         col, _ = self.parse_cell(cell=cell)
         self.worksheet.set_column(f"{col}:{col}", int(width))
 
-    def set_cell_height(self, cell: str, height: int) -> None:
+    def set_cell_height(self, cell: str, height: int):
         """Change teh width of any cell, only the row is, the column is not used.
 
         Args:
@@ -199,7 +199,7 @@ class ExcelFile:
 
         self.worksheet.set_row(row - 1, height)
 
-    def add_image(self, cell: str, path_to_image: str) -> None:
+    def add_image(self, cell: str, path_to_image: str):
         """Add an image to any cell
 
         Args:
@@ -213,7 +213,7 @@ class ExcelFile:
             {"x_offset": 2, "y_offset": 2, "x_scale": 1, "y_scale": 1},
         )
 
-    def add_dropdown_selection(self, cell: str, type: str, location: str) -> None:
+    def add_dropdown_selection(self, cell: str, type: str, location: str):
         """Add a data validation drop down selection for any cell
 
         Args:
@@ -224,7 +224,7 @@ class ExcelFile:
         col, row = self.parse_cell(cell=cell)
         self.worksheet.data_validation(f"${col}${row}", {"validate": type, "source": location})
 
-    def add_table(self, display_name: str, theme: str, location: str, headers: list) -> None:
+    def add_table(self, display_name: str, theme: str, location: str, headers: list):
         """Add a table to the excel sheet
 
         Args:
@@ -242,7 +242,7 @@ class ExcelFile:
             },
         )
 
-    def set_pagebreak(self, row: int) -> None:
+    def set_pagebreak(self, row: int):
         """
         This function sets a horizontal page break at a specified row in a worksheet.
 
@@ -253,7 +253,7 @@ class ExcelFile:
         """
         self.worksheet.set_h_pagebreaks([row])
 
-    def set_col_hidden(self, cell: str, hidden: bool = True) -> None:
+    def set_col_hidden(self, cell: str, hidden: bool = True):
         """Hide column
 
         Args:
@@ -263,7 +263,7 @@ class ExcelFile:
         col, _ = self.parse_cell(cell=cell)
         self.worksheet.set_column(f"{col}:{col}", None, None, {"hidden": 1})
 
-    def set_row_hidden(self, cell: str, hidden: bool = True) -> None:
+    def set_row_hidden(self, cell: str, hidden: bool = True):
         """Hide row
 
         Args:
@@ -273,16 +273,16 @@ class ExcelFile:
         _, row = self.parse_cell(cell=cell)
         self.worksheet.set_row(row, None, None, {"hidden": 1})
 
-    def add_macro(self, macro_path) -> None:
+    def add_macro(self, macro_path):
         self.workbook.add_vba_project(macro_path)
 
-    def set_print_area(self, cell) -> None:
+    def set_print_area(self, cell):
         self.worksheet.print_area(cell)
 
-    def freeze_pane(self, row: int) -> None:
+    def freeze_pane(self, row: int):
         self.worksheet.freeze_panes(f"A{row}")
 
-    def save(self) -> None:
+    def save(self):
         """Save excel file."""
         merge_format = self.workbook.add_format({"align": "top", "valign": "right", "font_name": self.FONT_NAME})
         merge_format.set_text_wrap()

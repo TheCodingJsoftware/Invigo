@@ -10,14 +10,14 @@ from utils.ip_utils import get_server_ip_address, get_server_port
 class ChangesThread(QThread):
     signal = pyqtSignal(object)
 
-    def __init__(self, parent) -> None:
+    def __init__(self, parent):
         QThread.__init__(self)
         self.parent = parent
         self.SERVER_IP: str = get_server_ip_address()
         self.SERVER_PORT: int = get_server_port()
         self.websocket_url = f"ws://{self.SERVER_IP}:{self.SERVER_PORT}/ws"
 
-    def run(self) -> None:
+    def run(self):
         while True:
             try:
 
@@ -37,5 +37,5 @@ class ChangesThread(QThread):
                 with contextlib.suppress(AttributeError):
                     self.signal.emit(str(error))
 
-    def quit(self) -> None:
+    def quit(self):
         self.websocket.close()

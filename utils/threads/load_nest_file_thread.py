@@ -20,7 +20,7 @@ class LoadNestFileThread(QThread):
         components_inventory: ComponentsInventory,
         laser_cut_inventory: LaserCutInventory,
         sheet_settings: SheetSettings,
-    ) -> None:
+    ):
         QThread.__init__(self, parent)
         self.parent = parent
         self.components_inventory = components_inventory
@@ -58,7 +58,7 @@ class LoadNestFileThread(QThread):
         self.sheet_cut_time_regex = r"MACHINING TIME: NC postprocessor (\d{1,} : \d{1,} : \d{1,})"
         self.geofile_name = r"GEOFILE NAME: (.:[\s\S]*?\.[Gg][Ee][Oo])"
 
-    def extract_images_from_pdf(self, pdf_paths: list[str]) -> None:
+    def extract_images_from_pdf(self, pdf_paths: list[str]):
         image_count: int = 0
         for _, pdf_path in enumerate(pdf_paths, start=1):
             pdf_file = fitz.open(pdf_path)

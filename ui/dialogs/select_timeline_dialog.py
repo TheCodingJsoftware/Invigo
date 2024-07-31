@@ -12,7 +12,7 @@ class SelectTimeLineDialog(QDialog):
         starting_date: str,
         ending_date: str,
         parent,
-    ) -> None:
+    ):
         super().__init__(parent)
         uic.loadUi("ui/dialogs/select_timeline_dialog.ui", self)
 
@@ -119,7 +119,7 @@ class SelectTimeLineDialog(QDialog):
                 calendar.setDateTextFormat(d1, highlight_format)
                 d1 = d1.addDays(1)
 
-    def load_theme(self) -> None:
+    def load_theme(self):
         weekend_format = QTextCharFormat()
         weekend_format.setForeground(QColor("black"))  # Set the desired color
         weekend_format.setBackground(QColor(44, 44, 44, 130))

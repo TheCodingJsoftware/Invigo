@@ -14,7 +14,7 @@ if TYPE_CHECKING:
 
 
 class JobPriceCalculator:
-    def __init__(self, job, sheet_settings: SheetSettings, paint_inventory: PaintInventory, settings: dict[str, float]) -> None:
+    def __init__(self, job, sheet_settings: SheetSettings, paint_inventory: PaintInventory, settings: dict[str, float]):
         self.job: Job = job
 
         # These are percentages

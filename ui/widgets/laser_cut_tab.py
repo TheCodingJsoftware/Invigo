@@ -142,13 +142,13 @@ class LaserCutPartsTableWidget(CustomTableWidget):
 
 
 class LaserCutPartsTabWidget(CustomTabWidget):
-    def __init__(self, parent: QWidget) -> None:
+    def __init__(self, parent: QWidget):
         super().__init__(parent)
         self.parent: "LaserCutTab" = parent
 
 
 class PaintSettingsWidget(QWidget):
-    def __init__(self, laser_cut_part: LaserCutPart, parent: LaserCutPartsTableWidget) -> None:
+    def __init__(self, laser_cut_part: LaserCutPart, parent: LaserCutPartsTableWidget):
         super().__init__(parent)
         self.parent: LaserCutPartsTableWidget = parent
         self.laser_cut_part = laser_cut_part
@@ -232,7 +232,7 @@ class PaintWidget(QWidget):
         laser_cut_part: LaserCutPart,
         paint_settings_widget: PaintSettingsWidget,
         parent: LaserCutPartsTableWidget,
-    ) -> None:
+    ):
         super().__init__(parent)
         self.parent: LaserCutPartsTableWidget = parent
 
@@ -280,7 +280,7 @@ class PaintWidget(QWidget):
 
 
 class LaserCutTab(QWidget):
-    def __init__(self, parent) -> None:
+    def __init__(self, parent):
         super().__init__(parent)
         uic.loadUi("ui/widgets/laser_cut_tab.ui", self)
         from main import MainWindow
@@ -921,7 +921,7 @@ class LaserCutTab(QWidget):
             table_items["total_cost"].setText(f"${laser_cut_part.price*laser_cut_part.quantity:,.2f}")
         self.category_tables[self.category].blockSignals(False)
 
-    def update_category_total_stock_costs(self) -> None:
+    def update_category_total_stock_costs(self):
         summary: dict[str, float] = {category.name: self.laser_cut_inventory.get_category_parts_total_stock_cost(category) for category in self.laser_cut_inventory.get_categories()} | {"Recut": self.laser_cut_inventory.get_recut_parts_total_stock_cost()}
         summary = dict(natsorted(summary.items()))
 
@@ -933,7 +933,7 @@ class LaserCutTab(QWidget):
             lbl = QLabel(f"${category_total:,.2f}", self)
             self.gridLayout_laser_cut_parts_summary.addWidget(lbl, row_index, 1)
 
-    def set_custom_quantity_limit(self) -> None:
+    def set_custom_quantity_limit(self):
         current_table = self.category_tables[self.category]
         if laser_cut_parts := self.get_selected_laser_cut_parts():
             laser_cut_parts_string = "".join(f"    {i + 1}. {laser_cut_part.name}\n" for i, laser_cut_part in enumerate(laser_cut_parts))
@@ -1006,7 +1006,7 @@ class LaserCutTab(QWidget):
                 self.sort_laser_cut_parts()
                 self.select_last_selected_item()
 
-    def edit_laser_cut_part(self) -> None:
+    def edit_laser_cut_part(self):
         if not (laser_cut_part := self.get_selected_laser_cut_part()):
             return
         item_dialog = EditLaserCutPart(laser_cut_part, self)
@@ -1141,10 +1141,10 @@ class LaserCutTab(QWidget):
     def sync_changes(self):
         self.parent.sync_changes()
 
-    def open_group_menu(self, menu: QMenu) -> None:
+    def open_group_menu(self, menu: QMenu):
         menu.exec(QCursor.pos())
 
-    def clear_layout(self, layout: QVBoxLayout | QWidget) -> None:
+    def clear_layout(self, layout: QVBoxLayout | QWidget):
         with contextlib.suppress(AttributeError):
             if layout is not None:
                 while layout.count():

@@ -9,7 +9,7 @@ class SetOrderPendingDialog(QDialog):
         message: str,
         label_text: str,
         parent,
-    ) -> None:
+    ):
         super().__init__(parent)
         uic.loadUi("ui/dialogs/set_order_pending_dialog.ui", self)
 

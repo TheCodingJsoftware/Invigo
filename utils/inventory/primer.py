@@ -8,7 +8,7 @@ if TYPE_CHECKING:
 
 
 class Primer(InventoryItem):
-    def __init__(self, data: dict[str, str | float], paint_inventory) -> None:
+    def __init__(self, data: dict[str, str | float], paint_inventory):
         super().__init__()
         self.paint_inventory: PaintInventory = paint_inventory
         self.component: Component = None

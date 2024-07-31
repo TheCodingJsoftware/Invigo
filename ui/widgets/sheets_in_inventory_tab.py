@@ -36,7 +36,7 @@ class SheetsTableWidget(CustomTableWidget):
         self.setVerticalScrollMode(QAbstractItemView.ScrollMode.ScrollPerPixel)
         self.setHorizontalScrollMode(QAbstractItemView.ScrollMode.ScrollPerPixel)
 
-        self.set_editable_column_index([5, 9])
+        self.set_editable_column_index([5, 8])
         headers: list[str] = [
             "Thickness",
             "Material",
@@ -54,12 +54,12 @@ class SheetsTableWidget(CustomTableWidget):
 
 
 class SheetsTabWidget(CustomTabWidget):
-    def __init__(self, parent: QWidget) -> None:
+    def __init__(self, parent: QWidget):
         super().__init__(parent)
 
 
 class OrderWidget(QWidget):
-    def __init__(self, sheet: Sheet, parent: "SheetsInInventoryTab") -> None:
+    def __init__(self, sheet: Sheet, parent: "SheetsInInventoryTab"):
         super().__init__(parent)
         self.parent: "SheetsInInventoryTab" = parent
         self.sheet = sheet
@@ -168,7 +168,7 @@ class OrderWidget(QWidget):
         self.parent.sheets_inventory.save()
         self.parent.sync_changes()
 
-    def clear_layout(self, layout: QVBoxLayout | QWidget) -> None:
+    def clear_layout(self, layout: QVBoxLayout | QWidget):
         with contextlib.suppress(AttributeError):
             if layout is not None:
                 while layout.count():
@@ -181,7 +181,7 @@ class OrderWidget(QWidget):
 
 
 class SheetsInInventoryTab(QWidget):
-    def __init__(self, parent) -> None:
+    def __init__(self, parent):
         super().__init__(parent)
         uic.loadUi("ui/widgets/sheets_in_inventory_tab.ui", self)
         self.parent = parent
@@ -534,7 +534,7 @@ class SheetsInInventoryTab(QWidget):
             table_data["length"].setEnabled(self.checkBox_edit_sheets.isChecked())
             table_data["width"].setEnabled(self.checkBox_edit_sheets.isChecked())
 
-    def add_sheet(self) -> None:
+    def add_sheet(self):
         add_sheet_dialog = AddSheetDialog(None, self.category, self.sheets_inventory, self.sheet_settings, self)
 
         if add_sheet_dialog.exec():
@@ -573,7 +573,7 @@ class SheetsInInventoryTab(QWidget):
             table_items["total_cost_in_stock"].setText(f"${table_item_cost_in_stock:,.2f}")
         self.category_tables[self.category].blockSignals(False)
 
-    def set_custom_quantity_limit(self) -> None:
+    def set_custom_quantity_limit(self):
         current_table = self.category_tables[self.category]
         if sheets := self.get_selected_sheets():
             sheets_string = "".join(f"    {i + 1}. {sheet.get_name()}\n" for i, sheet in enumerate(sheets))
@@ -591,7 +591,7 @@ class SheetsInInventoryTab(QWidget):
                 self.sheets_inventory.save()
                 self.sync_changes()
 
-    def update_stock_costs(self) -> None:
+    def update_stock_costs(self):
         self.clear_layout(self.gridLayout_sheet_prices)
         grand_total: float = 0.0
         i: int = 0
@@ -724,10 +724,10 @@ class SheetsInInventoryTab(QWidget):
     def sync_changes(self):
         self.parent.sync_changes()
 
-    def open_group_menu(self, menu: QMenu) -> None:
+    def open_group_menu(self, menu: QMenu):
         menu.exec(QCursor.pos())
 
-    def clear_layout(self, layout: QVBoxLayout | QWidget) -> None:
+    def clear_layout(self, layout: QVBoxLayout | QWidget):
         with contextlib.suppress(AttributeError):
             if layout is not None:
                 while layout.count():

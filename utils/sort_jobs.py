@@ -156,7 +156,7 @@ def filter_file_paths(file_paths: list[str], desired_file_names: list[str]) -> l
     return filtered_paths
 
 
-def sort_jobs(path_to_file: str, directory_to_sort: str, output_directory: str) -> None:
+def sort_jobs(path_to_file: str, directory_to_sort: str, output_directory: str):
     data = {}
     if path_to_file.lower().endswith(".xlsx"):
         data = get_data_from_excel(path_to_file)
@@ -179,7 +179,7 @@ def sort_jobs(path_to_file: str, directory_to_sort: str, output_directory: str) 
     # copy_files(new_copy_location)
 
 
-def copy_files(locations_dictionary: dict) -> None:
+def copy_files(locations_dictionary: dict):
     for original_location in locations_dictionary:
         new_location = locations_dictionary.get(original_location)["new_location"]
         old_name = locations_dictionary.get(original_location)["old_name"]

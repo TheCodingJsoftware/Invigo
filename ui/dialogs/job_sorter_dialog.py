@@ -9,7 +9,7 @@ class JobSorterDialog(QDialog):
     def __init__(
         self,
         parent,
-    ) -> None:
+    ):
         super().__init__(parent)
         uic.loadUi("ui/dialogs/job_sorter_dialog.ui", self)
         self.parent = parent
@@ -32,7 +32,7 @@ class JobSorterDialog(QDialog):
 
         self.pushButton_sort.clicked.connect(self.sort)
 
-    def sort(self) -> None:
+    def sort(self):
         job_sorter_thread = JobSorterThread(
             self.parent,
             self.job_name,
@@ -44,7 +44,7 @@ class JobSorterDialog(QDialog):
         job_sorter_thread.signal.connect(self.thread_response)
         job_sorter_thread.start()
 
-    def thread_response(self, response) -> None:
+    def thread_response(self, response):
         if response == "Done":
             msg = QMessageBox(
                 QMessageBox.Icon.Information,
@@ -64,14 +64,14 @@ class JobSorterDialog(QDialog):
             )
             msg.exec()
 
-    def paths_changes(self) -> None:
+    def paths_changes(self):
         self.excel_file_path: str = self.lineEdit_path_to_data_file.text()
         self.directory_to_sort: str = self.lineEdit_directory_to_sort.text()
         self.output_directory: str = self.lineEdit_output_directory.text()
         self.job_name: str = self.lineEdit_job_name.text()
         self.pushButton_sort.setEnabled(bool(self.excel_file_path and self.directory_to_sort and self.output_directory and self.job_name))
 
-    def set_excel_file_path(self) -> None:
+    def set_excel_file_path(self):
         file_dialog = QFileDialog()
         file_dialog.setNameFilter("Excel Files (*.xlsx)")
         file_dialog.setWindowTitle("Select Excel File")
@@ -82,7 +82,7 @@ class JobSorterDialog(QDialog):
             self.excel_file_path = selected_file
             self.lineEdit_path_to_data_file.setText(selected_file)
 
-    def set_sorting_directory(self) -> None:
+    def set_sorting_directory(self):
         file_dialog = QFileDialog()
         file_dialog.setWindowTitle("Select Folder")
         file_dialog.setFileMode(QFileDialog.FileMode.Directory)
@@ -92,7 +92,7 @@ class JobSorterDialog(QDialog):
             self.directory_to_sort = selected_folder
             self.lineEdit_directory_to_sort.setText(selected_folder)
 
-    def set_output_directory(self) -> None:
+    def set_output_directory(self):
         file_dialog = QFileDialog()
         file_dialog.setWindowTitle("Select Folder")
         file_dialog.setFileMode(QFileDialog.FileMode.Directory)

@@ -9,7 +9,7 @@ from utils.inventory.components_inventory import ComponentsInventory
 
 
 class AddComponentDialog(QDialog):
-    def __init__(self, parent) -> None:
+    def __init__(self, parent):
         super().__init__(parent)
         uic.loadUi("ui/dialogs/add_component_dialog.ui", self)
         self.parent = parent
@@ -67,7 +67,7 @@ class AddComponentDialog(QDialog):
             0,
         )
 
-    def component_name_changed(self, text: str) -> None:
+    def component_name_changed(self, text: str):
         if not self._completing:
             found = False
             prefix = text.rpartition(",")[-1]

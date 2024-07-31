@@ -7,13 +7,13 @@ from utils.ip_utils import get_server_ip_address, get_server_port
 class GetPreviousQuotesThread(QThread):
     signal = pyqtSignal(object)
 
-    def __init__(self) -> None:
+    def __init__(self):
         QThread.__init__(self)
         self.SERVER_IP: str = get_server_ip_address()
         self.SERVER_PORT: int = get_server_port()
         self.url = f"http://{self.SERVER_IP}:{self.SERVER_PORT}/get_previous_quotes"
 
-    def run(self) -> None:
+    def run(self):
         try:
             response = requests.get(self.url, timeout=10)
             data = response.json()

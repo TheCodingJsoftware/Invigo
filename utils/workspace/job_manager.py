@@ -12,7 +12,7 @@ if TYPE_CHECKING:
 
 
 class JobManager:
-    def __init__(self, parent) -> None:
+    def __init__(self, parent):
         self.parent: MainWindow = parent
 
         self.sheet_settings: SheetSettings = self.parent.sheet_settings

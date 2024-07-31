@@ -13,7 +13,7 @@ class UpdateComponentOrderPendingDialog(QDialog):
         order: Order,
         message: str,
         parent,
-    ) -> None:
+    ):
         super().__init__(parent)
         uic.loadUi("ui/dialogs/update_component_order_pending_dialog.ui", self)
 

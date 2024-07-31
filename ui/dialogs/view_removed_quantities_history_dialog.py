@@ -9,7 +9,7 @@ class ViewRemovedQuantitiesHistoryDialog(QDialog):
     def __init__(
         self,
         parent,
-    ) -> None:
+    ):
         super().__init__(parent)
         uic.loadUi("ui/dialogs/view_removed_quantities_history_dialog.ui", self)
 

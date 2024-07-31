@@ -4,7 +4,7 @@ from utils.workspace.flow_tag import FlowTag, Group
 
 
 class FlowTags:
-    def __init__(self, name: str) -> None:
+    def __init__(self, name: str):
         self.name = name
         self.group: Group = Group.LASER_CUT_PART
         self.flow_tags: list[FlowTag] = []

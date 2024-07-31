@@ -71,7 +71,7 @@ class PreviousQuoteItem(QGroupBox):
     open_webpage = pyqtSignal()
     delete_quote = pyqtSignal()
 
-    def __init__(self, file_info: dict[str, str], parent: QWidget) -> None:
+    def __init__(self, file_info: dict[str, str], parent: QWidget):
         super().__init__(parent)
         quote_name = file_info.get("name")
         modified_date = datetime.fromtimestamp(file_info.get("modified_date")).strftime("%A, %B %d, %Y, %I:%M:%S %p")
@@ -132,7 +132,7 @@ class SavedQuoteItem(QGroupBox):
     delete_quote = pyqtSignal()
     status_changed = pyqtSignal()
 
-    def __init__(self, file_info: dict[str, str], parent: QWidget) -> None:
+    def __init__(self, file_info: dict[str, str], parent: QWidget):
         super().__init__(parent)
         quote_name = file_info.get("name")
         modified_date = datetime.fromtimestamp(file_info.get("modified_date")).strftime("%A, %B %d, %Y, %I:%M:%S %p")
@@ -254,7 +254,7 @@ class AssemblyImage(QLabel):
     clicked = pyqtSignal()
     imagePathDropped = pyqtSignal(str)
 
-    def __init__(self, parent: QWidget | None = ...) -> None:
+    def __init__(self, parent: QWidget | None = ...):
         super().__init__(parent)
         self.setMinimumSize(120, 120)
         self.setFixedHeight(120)
@@ -400,12 +400,12 @@ class SelectRangeCalendar(QCalendarWidget):
 class ItemsGroupBox(QGroupBox):
     filesDropped = pyqtSignal(list)
 
-    def __init__(self, parent: QWidget | None = ...) -> None:
+    def __init__(self, parent: QWidget | None = ...):
         super().__init__(parent)
         self.setTitle("Items")
         self.setObjectName("items_group_box")
 
-    def dragEnterEvent(self, event: QDragEnterEvent) -> None:
+    def dragEnterEvent(self, event: QDragEnterEvent):
         if event.mimeData().hasUrls:
             for url in event.mimeData().urls():
                 if str(url.toLocalFile()).endswith(".xlsx"):
@@ -416,7 +416,7 @@ class ItemsGroupBox(QGroupBox):
         else:
             event.ignore()
 
-    def dragMoveEvent(self, event: QDragMoveEvent) -> None:
+    def dragMoveEvent(self, event: QDragMoveEvent):
         if event.mimeData().hasUrls:
             for url in event.mimeData().urls():
                 if str(url.toLocalFile()).endswith(".xlsx"):
@@ -427,11 +427,11 @@ class ItemsGroupBox(QGroupBox):
         else:
             event.ignore()
 
-    def dragLeaveEvent(self, event: QDragLeaveEvent) -> None:
+    def dragLeaveEvent(self, event: QDragLeaveEvent):
         self.setStyleSheet("QGroupBox#items_group_box {}")
         return super().dragLeaveEvent(event)
 
-    def dropEvent(self, event: QDropEvent) -> None:
+    def dropEvent(self, event: QDropEvent):
         if event.mimeData().hasUrls:
             event.setDropAction(Qt.DropAction.CopyAction)
             event.accept()
@@ -446,7 +446,7 @@ class ItemsGroupBox(QGroupBox):
 class FilterTabWidget(QWidget):
     filterButtonPressed = pyqtSignal()
 
-    def __init__(self, columns: int, parent: QWidget | None = ...) -> None:
+    def __init__(self, columns: int, parent: QWidget | None = ...):
         super().__init__(parent)
         self.tab_widget = QTabWidget()
         self.show_all_tab = QWidget(self)
@@ -488,17 +488,17 @@ class FilterTabWidget(QWidget):
 
         return layout
 
-    def clear_selections(self, tab_name: str) -> None:
+    def clear_selections(self, tab_name: str):
         buttons = self.tabs.get(tab_name)
         if buttons is not None:
             for button in buttons:
                 button.setChecked(False)
 
-    def clear_all_selections(self) -> None:
+    def clear_all_selections(self):
         for button in self.buttons:
             button.setChecked(False)
 
-    def enable_button(self, button_name: str) -> None:
+    def enable_button(self, button_name: str):
         for button in self.buttons:
             if button.text() == button_name:
                 button.setChecked(True)
@@ -890,7 +890,7 @@ class DraggableButton(QPushButton):
         self.setCursor(Qt.CursorShape.PointingHandCursor)
         self.setContextMenuPolicy(Qt.ContextMenuPolicy.CustomContextMenu)
 
-    def setFile(self, file: str) -> None:
+    def setFile(self, file: str):
         self.file = file
 
     def mouseMoveEvent(self, event):
@@ -1137,7 +1137,7 @@ background-color: rgba(25, 25, 25, 0.6);
 
         self.layout().addWidget(_widget)
 
-    def removeItem(self, widget_to_delete: QWidget) -> None:
+    def removeItem(self, widget_to_delete: QWidget):
         main_layout = self.layout()  # Get the reference to the main layout
         for i in range(main_layout.count()):
             layout_item = main_layout.itemAt(i)
@@ -1237,7 +1237,7 @@ background-color: rgba(25, 25, 25, 0.6);
             widget.setParent(None)
             widget.deleteLater()
 
-    def clear_layout(self, layout) -> None:
+    def clear_layout(self, layout):
         with contextlib.suppress(AttributeError):
             if layout is not None:
                 while layout.count():
@@ -1251,7 +1251,7 @@ background-color: rgba(25, 25, 25, 0.6);
     def get_widget_visibility(self) -> dict[int, bool]:
         return {i: widget.isVisible() for i, widget in enumerate(self.widgets)}
 
-    def set_widgets_visibility(self, widgets_visibility: dict[int, bool]) -> None:
+    def set_widgets_visibility(self, widgets_visibility: dict[int, bool]):
         if len(widgets_visibility.items()) > 0:
             for i, is_visible in widgets_visibility.items():
                 if is_visible:
@@ -1279,7 +1279,7 @@ background-color: rgba(25, 25, 25, 0.6);
             self.delete_buttons[index].setStyleSheet("border-radius: 0px; border-top-right-radius: 5px; border-bottom-right-radius: 5px;")
             self.input_box[index].setStyleSheet("QLineEdit{background-color: rgba(71, 71, 71, 110); border-color: rgba(76, 76, 76, 110); border-bottom-right-radius: 5px;} QMenu { background-color: rgb(22,22,22);}")
 
-    def close_all(self) -> None:
+    def close_all(self):
         for button, widget, input_box, delete_button in zip(self.buttons, self.widgets, self.input_box, self.delete_buttons):
             button.setChecked(True)
             button.setText("🡆")
@@ -1419,7 +1419,7 @@ QPushButton:!checked:pressed#sheet_nest_button {
     def get_widget_visibility(self) -> dict[int, bool]:
         return {i: widget.isVisible() for i, widget in enumerate(self.widgets)}
 
-    def set_widgets_visibility(self, widgets_visibility: dict[int, bool]) -> None:
+    def set_widgets_visibility(self, widgets_visibility: dict[int, bool]):
         try:
             if len(widgets_visibility.items()) > 0:
                 for i, is_visible in widgets_visibility.items():
@@ -1455,21 +1455,21 @@ QPushButton:!checked:pressed#sheet_nest_button {
             self.buttons[index].setChecked(True)
             self.widgets[index].setVisible(False)
 
-    def close_all(self) -> None:
+    def close_all(self):
         for button, widget in zip(self.buttons, self.widgets):
             button.click()
             button.click()
             button.setChecked(True)
             widget.setVisible(False)
 
-    def open_all(self) -> None:
+    def open_all(self):
         for button, widget in zip(self.buttons, self.widgets):
             button.click()
             button.click()
             button.setChecked(False)
             widget.setVisible(True)
 
-    def clear_layout(self, layout: QVBoxLayout | QWidget) -> None:
+    def clear_layout(self, layout: QVBoxLayout | QWidget):
         with contextlib.suppress(AttributeError):
             if layout is not None:
                 while layout.count():
@@ -1706,7 +1706,7 @@ class CustomTabWidget(QWidget):
         self.stacked_widget.setCurrentIndex(self.currentIndex())
         self.tabOrderChanged.emit()
 
-    def clear_layout(self, layout: QVBoxLayout | QWidget) -> None:
+    def clear_layout(self, layout: QVBoxLayout | QWidget):
         with contextlib.suppress(AttributeError):
             if layout is not None:
                 while layout.count():
@@ -2114,7 +2114,7 @@ class RichTextPushButton(QPushButton):
         self.__layout.addWidget(self.__lbl)
         return
 
-    def setText(self, text: str, color: str) -> None:
+    def setText(self, text: str, color: str):
         set_status_button_stylesheet(button=self, color=color)
         if color == "lime":
             color = "#cef4d9"
@@ -2269,7 +2269,7 @@ class ViewTree(QTreeWidget):
         self.setItemDelegate(delegate)
         self.load_ui()
 
-    def load_ui(self) -> None:
+    def load_ui(self):
         def fill_item(item, value):
             """
             It takes a QTreeWidgetItem and a value, and if the value is a dict, list, or tuple, it
@@ -2348,7 +2348,7 @@ class HeaderScrollArea(QScrollArea):
             self.headings_layout.addWidget(heading, 0, col_index)
             self.headings_layout.setColumnStretch(col_index, 0)
 
-    def resizeEvent(self, event) -> None:
+    def resizeEvent(self, event):
         rect = self.viewport().geometry()
         self.headings_widget.setGeometry(rect.x(), rect.y() - self.margins.top(), rect.width(), self.margins.top())
         QScrollArea.resizeEvent(self, event)
@@ -2417,7 +2417,7 @@ class StyledItemDelegate(QStyledItemDelegate):
         return item
 
 
-def set_default_dialog_button_stylesheet(button: QPushButton) -> None:
+def set_default_dialog_button_stylesheet(button: QPushButton):
     button.setStyleSheet(
         """
         QPushButton#default_dialog_button{
@@ -2444,7 +2444,7 @@ def set_default_dialog_button_stylesheet(button: QPushButton) -> None:
     )
 
 
-def set_status_button_stylesheet(button: QPushButton, color: str) -> None:
+def set_status_button_stylesheet(button: QPushButton, color: str):
     background_color = "rgb(71, 71, 71)"
     border_color = "rgb(71, 71, 71)"
     if color == "lime":

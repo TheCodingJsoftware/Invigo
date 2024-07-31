@@ -7,7 +7,7 @@ from utils.workspace.workspace_item import WorkspaceItem
 
 
 class MondayExcelFile:
-    def __init__(self, path: str) -> None:
+    def __init__(self, path: str):
         self.path: str = path
         self.columns_to_find: list[str] = [
             "name",
@@ -18,7 +18,7 @@ class MondayExcelFile:
         ]  # in lower
         self.data: dict[str, dict[dict[str, int], dict[str, any]]] = {}
 
-    def find_jobs(self, sheet: Worksheet) -> None:
+    def find_jobs(self, sheet: Worksheet):
         for row_index in range(1, sheet.max_row + 1):
             cell = sheet.cell(row=row_index, column=1)
             cell_value = cell.value
@@ -31,7 +31,7 @@ class MondayExcelFile:
                     "items": {},
                 }
 
-    def find_table_headers(self, sheet: Worksheet) -> None:
+    def find_table_headers(self, sheet: Worksheet):
         for job_index, (job_name, job_data) in enumerate(self.data.items()):
             job_row: int = job_data["job_data"]["start_row"]
             try:

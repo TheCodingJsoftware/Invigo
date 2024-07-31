@@ -54,7 +54,7 @@
        <number>0</number>
       </property>
       <item>
-       <layout class="QVBoxLayout" name="verticalLayout" stretch="0,1,0">
+       <layout class="QVBoxLayout" name="verticalLayout" stretch="0,1,0,0">
         <property name="leftMargin">
          <number>9</number>
         </property>
@@ -147,7 +147,7 @@ Press 'Add' when finished.</string>
                   <x>0</x>
                   <y>0</y>
                   <width>641</width>
-                  <height>485</height>
+                  <height>457</height>
                  </rect>
                 </property>
                 <layout class="QVBoxLayout" name="verticalLayout_5">
@@ -216,11 +216,11 @@ Press 'Add' when finished.</string>
               <widget class="QLabel" name="label">
                <property name="font">
                 <font>
-                 <italic>true</italic>
+                 <italic>false</italic>
                 </font>
                </property>
                <property name="text">
-                <string>* Will add the job x amount of times to workspace.</string>
+                <string>* Will add the job 𝓍 amount of times to workspace.</string>
                </property>
                <property name="wordWrap">
                 <bool>true</bool>
@@ -235,6 +235,39 @@ Press 'Add' when finished.</string>
               </layout>
              </item>
             </layout>
+           </widget>
+          </item>
+         </layout>
+        </item>
+        <item>
+         <layout class="QHBoxLayout" name="horizontalLayout_3">
+          <item>
+           <spacer name="horizontalSpacer_2">
+            <property name="orientation">
+             <enum>Qt::Orientation::Horizontal</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>40</width>
+              <height>20</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+          <item>
+           <widget class="QCheckBox" name="checkBox_update_components">
+            <property name="toolTip">
+             <string>Will remove components and update components inventory accordingly to what is in the jobs.</string>
+            </property>
+            <property name="text">
+             <string>Update Components Quantity</string>
+            </property>
+            <property name="checkable">
+             <bool>true</bool>
+            </property>
+            <property name="checked">
+             <bool>true</bool>
+            </property>
            </widget>
           </item>
          </layout>
@@ -263,7 +296,7 @@ Press 'Add' when finished.</string>
              </size>
             </property>
             <property name="text">
-             <string>Add</string>
+             <string>Send to Workspace</string>
             </property>
            </widget>
           </item>

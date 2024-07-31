@@ -8,7 +8,7 @@ settings_file = Settings()
 
 
 class GenerateQuoteDialog(QDialog):
-    def __init__(self, parent) -> None:
+    def __init__(self, parent):
         super().__init__(parent)
         uic.loadUi("ui/dialogs/generate_quote_dialog.ui", self)
 

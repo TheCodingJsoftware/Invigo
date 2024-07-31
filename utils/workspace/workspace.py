@@ -1,4 +1,6 @@
+import contextlib
 import os
+from typing import Union
 
 import msgspec
 
@@ -13,7 +15,7 @@ from utils.workspace.workspace_settings import WorkspaceSettings
 
 
 class Workspace:
-    def __init__(self, workspace_settings: WorkspaceSettings, job_manager: JobManager) -> None:
+    def __init__(self, workspace_settings: WorkspaceSettings, job_manager: JobManager):
         self.jobs: list[Job] = []
 
         self.filename: str = "workspace"
@@ -109,38 +111,42 @@ class Workspace:
         return self.sort_assemblies(assemblies)
 
     def sort_assemblies(self, assemblies: list[Assembly]) -> list[Assembly]:
-        if not self.workspace_filter.sorting_method or self.workspace_filter.sorting_method in [SortingMethod.LARGE_SMALL, SortingMethod.SMALL_LARGE]:
+        if not self.workspace_filter.sorting_method or self.workspace_filter.sorting_method in [SortingMethod.LARGE_TO_SMALL, SortingMethod.SMALL_TO_LARGE]:
             return assemblies
 
-        if self.workspace_filter.sorting_method == SortingMethod.A_Z:
+        if self.workspace_filter.sorting_method == SortingMethod.A_TO_Z:
             assemblies.sort(key=lambda assembly: assembly.name)
-        elif self.workspace_filter.sorting_method == SortingMethod.Z_A:
+        elif self.workspace_filter.sorting_method == SortingMethod.Z_TO_A:
             assemblies.sort(key=lambda assembly: assembly.name, reverse=True)
-        elif self.workspace_filter.sorting_method == SortingMethod.MOST_LEAST:
+        elif self.workspace_filter.sorting_method == SortingMethod.MOST_TO_LEAST:
             assemblies.sort(key=lambda assembly: assembly.quantity, reverse=True)
-        elif self.workspace_filter.sorting_method == SortingMethod.LEAST_MOST:
+        elif self.workspace_filter.sorting_method == SortingMethod.LEAST_TO_MOST:
             assemblies.sort(key=lambda assembly: assembly.quantity)
-        elif self.workspace_filter.sorting_method == SortingMethod.HEAVY_LIGHT:
+        elif self.workspace_filter.sorting_method == SortingMethod.HEAVY_TO_LIGHT:
             assemblies.sort(key=lambda assembly: assembly.get_weight(), reverse=True)
-        elif self.workspace_filter.sorting_method == SortingMethod.LIGHT_HEAVY:
+        elif self.workspace_filter.sorting_method == SortingMethod.LIGHT_TO_HEAVY:
             assemblies.sort(key=lambda assembly: assembly.get_weight())
 
         return assemblies
+
+    def get_all_laser_cut_parts_with_similar_tag(self, query: str) -> list[LaserCutPart]:
+        laser_cut_parts: list[LaserCutPart] = []
+        for job in self.jobs:
+            for laser_cut_part in job.get_all_laser_cut_parts():
+                if not (current_tag := laser_cut_part.get_current_tag()):
+                    continue
+                if query.lower() in current_tag.name.lower():
+                    laser_cut_parts.append(laser_cut_part)
+        return laser_cut_parts
 
     def get_filtered_laser_cut_parts(self, job: Job) -> list[LaserCutPart]:
         laser_cut_parts: list[LaserCutPart] = []
         for laser_cut_part in job.get_all_laser_cut_parts():
             if laser_cut_part.is_process_finished():
                 continue
-            if self.workspace_filter.current_tag == "Recut" and not laser_cut_part.recut:
-                continue
-
-            if self.workspace_filter.current_tag != "Recut":
-                if laser_cut_part.recut:
+            if part_current_tag := laser_cut_part.get_current_tag():
+                if part_current_tag.name != self.workspace_filter.current_tag:
                     continue
-                if part_current_tag := laser_cut_part.get_current_tag():
-                    if part_current_tag.name != self.workspace_filter.current_tag:
-                        continue
 
             if any(self.workspace_filter.material_filter.values()):
                 if not self.workspace_filter.material_filter.get(laser_cut_part.material, False):
@@ -174,21 +180,21 @@ class Workspace:
         if not self.workspace_filter.sorting_method:
             return grouped_laser_cut_parts
 
-        if self.workspace_filter.sorting_method == SortingMethod.A_Z:
+        if self.workspace_filter.sorting_method == SortingMethod.A_TO_Z:
             grouped_laser_cut_parts.sort(key=lambda group: group.base_part.name)
-        elif self.workspace_filter.sorting_method == SortingMethod.Z_A:
+        elif self.workspace_filter.sorting_method == SortingMethod.Z_TO_A:
             grouped_laser_cut_parts.sort(key=lambda group: group.base_part.name, reverse=True)
-        elif self.workspace_filter.sorting_method == SortingMethod.MOST_LEAST:
+        elif self.workspace_filter.sorting_method == SortingMethod.MOST_TO_LEAST:
             grouped_laser_cut_parts.sort(key=lambda group: group.get_quantity(), reverse=True)
-        elif self.workspace_filter.sorting_method == SortingMethod.LEAST_MOST:
+        elif self.workspace_filter.sorting_method == SortingMethod.LEAST_TO_MOST:
             grouped_laser_cut_parts.sort(key=lambda group: group.get_quantity())
-        elif self.workspace_filter.sorting_method == SortingMethod.HEAVY_LIGHT:
+        elif self.workspace_filter.sorting_method == SortingMethod.HEAVY_TO_LIGHT:
             grouped_laser_cut_parts.sort(key=lambda group: group.base_part.weight, reverse=True)
-        elif self.workspace_filter.sorting_method == SortingMethod.LIGHT_HEAVY:
+        elif self.workspace_filter.sorting_method == SortingMethod.LIGHT_TO_HEAVY:
             grouped_laser_cut_parts.sort(key=lambda group: group.base_part.weight)
-        elif self.workspace_filter.sorting_method == SortingMethod.LARGE_SMALL:
+        elif self.workspace_filter.sorting_method == SortingMethod.LARGE_TO_SMALL:
             grouped_laser_cut_parts.sort(key=lambda group: group.base_part.surface_area, reverse=True)
-        elif self.workspace_filter.sorting_method == SortingMethod.SMALL_LARGE:
+        elif self.workspace_filter.sorting_method == SortingMethod.SMALL_TO_LARGE:
             grouped_laser_cut_parts.sort(key=lambda group: group.base_part.surface_area)
 
         return grouped_laser_cut_parts
@@ -196,42 +202,53 @@ class Workspace:
     def get_grouped_laser_cut_parts(self, laser_cut_parts: list[LaserCutPart]) -> list[WorkspaceLaserCutPartGroup]:
         grouped_laser_cut_parts: list[WorkspaceLaserCutPartGroup] = []
         parts_group: dict[str, WorkspaceLaserCutPartGroup] = {}
+        def create_part_group(base_part: LaserCutPart):
+            group = WorkspaceLaserCutPartGroup()
+            group.add_laser_cut_part(base_part)
+            grouped_laser_cut_parts.append(group)
+            parts_group[base_part.name] = group
+
         for laser_cut_part in laser_cut_parts:
-            if self.workspace_filter.current_tag == "Recut" and not laser_cut_part.recut:
-                continue
-            elif self.workspace_filter.current_tag != "Recut" and laser_cut_part.recut:
-                continue
             if group := parts_group.get(laser_cut_part.name):
-                group.add_laser_cut_part(laser_cut_part)
+                if group.base_part.recut and laser_cut_part.recut:
+                    group.add_laser_cut_part(laser_cut_part)
+                elif not group.base_part.recut and not laser_cut_part.recut:
+                    group.add_laser_cut_part(laser_cut_part)
+                else:
+                    create_part_group(laser_cut_part)
             else:
-                group = WorkspaceLaserCutPartGroup()
-                group.add_laser_cut_part(laser_cut_part)
-                grouped_laser_cut_parts.append(group)
-                parts_group.update({laser_cut_part.name: group})
+                create_part_group(laser_cut_part)
 
         return self.sort_grouped_laser_cut_parts(grouped_laser_cut_parts)
 
-    def to_list(self) -> list[dict[str, object]]:
-        return [job.to_dict() for job in self.jobs]
+    def to_dict(self) -> dict[str, Union[dict[str, object], list[dict[str, object]]]]:
+        return {
+            "jobs": [
+                job.to_dict() for job in self.jobs
+            ]
+        }
 
-    def __create_file(self) -> None:
+    def __create_file(self):
         if not os.path.exists(f"{self.FOLDER_LOCATION}/{self.filename}.json"):
             with open(f"{self.FOLDER_LOCATION}/{self.filename}.json", "w", encoding="utf-8") as json_file:
-                json_file.write("[]")
+                json_file.write("{}")
 
-    def save(self) -> None:
+    def save(self):
         with open(f"{self.FOLDER_LOCATION}/{self.filename}.json", "wb") as file:
-            file.write(msgspec.json.encode(self.to_list()))
+            file.write(msgspec.json.encode(self.to_dict()))
 
-    def load_data(self) -> None:
+    def load_data(self):
         try:
             with open(f"{self.FOLDER_LOCATION}/{self.filename}.json", "rb") as file:
-                data: list[dict[str, object]] = msgspec.json.decode(file.read())
+                data: dict[str, list[dict[str, object]]] = msgspec.json.decode(file.read())
         except msgspec.DecodeError:
             return
 
         self.jobs.clear()
 
-        for job_data in data:
-            job = Job(job_data, self.job_manager)
-            self.jobs.append(job)
+        with contextlib.suppress(AttributeError):
+            jobs = data.get("jobs", [])
+
+            for job_data in jobs:
+                job = Job(job_data, self.job_manager)
+                self.jobs.append(job)

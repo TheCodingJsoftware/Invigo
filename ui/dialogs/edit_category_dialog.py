@@ -17,7 +17,7 @@ class EditCategoryDialog(QDialog):
         category: Category,
         inventory: ComponentsInventory | SheetSettings | LaserCutInventory,
         parent,
-    ) -> None:
+    ):
         super().__init__(parent)
         uic.loadUi("ui/dialogs/edit_category_dialog.ui", self)
 

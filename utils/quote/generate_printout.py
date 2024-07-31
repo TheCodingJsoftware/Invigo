@@ -11,7 +11,7 @@ from utils.workspace.job import Job
 
 
 class CoverPage:
-    def __init__(self, title: str, quote: Quote | Job) -> None:
+    def __init__(self, title: str, quote: Quote | Job):
         self.title = title
         self.quote = quote
         self.server_directory = f"http://{get_server_ip_address()}:{get_server_port()}"
@@ -61,7 +61,7 @@ class CoverPage:
 
 
 class SheetsPictures:
-    def __init__(self, nests: list[Nest]) -> None:
+    def __init__(self, nests: list[Nest]):
         self.nests = nests
         self.server_directory = f"http://{get_server_ip_address()}:{get_server_port()}"
 
@@ -76,7 +76,7 @@ class SheetsPictures:
 
 
 class SheetsTable:
-    def __init__(self, nests: list[Nest]) -> None:
+    def __init__(self, nests: list[Nest]):
         self.headers = [
             "Sheet Name",
             "Thickness",
@@ -138,7 +138,7 @@ class SheetsTable:
 
 
 class LaserCutPartsTable:
-    def __init__(self, title: str, laser_cut_parts: list[LaserCutPart]) -> None:
+    def __init__(self, title: str, laser_cut_parts: list[LaserCutPart]):
         self.title = title
         self.headers = [
             "Picture",
@@ -236,7 +236,7 @@ class LaserCutPartsTable:
 
 
 class ComponentsTable:
-    def __init__(self, components: list[Component]) -> None:
+    def __init__(self, components: list[Component]):
         self.components = components
         self.server_directory = f"http://{get_server_ip_address()}:{get_server_port()}"
         self.headers = [
@@ -325,7 +325,7 @@ class ComponentsTable:
 
 
 class QuotePrintout:
-    def __init__(self, quote: Quote) -> None:
+    def __init__(self, quote: Quote):
         self.quote = quote
 
     def get_total_price(self) -> float:
@@ -367,7 +367,7 @@ class QuotePrintout:
 
 
 class WorkorderPrintout:
-    def __init__(self, quote: Quote) -> None:
+    def __init__(self, quote: Quote):
         self.quote = quote
 
     def get_total_price(self) -> float:
@@ -409,7 +409,7 @@ class WorkorderPrintout:
 
 
 class PackingSlipPrintout:
-    def __init__(self, quote: Quote) -> None:
+    def __init__(self, quote: Quote):
         self.quote = quote
 
     def get_total_price(self) -> float:
@@ -455,7 +455,7 @@ class GeneratePrintout:
         self,
         title: str,
         quote: Quote,
-    ) -> None:
+    ):
         self.title = title
         self.quote = quote
 

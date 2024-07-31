@@ -8,7 +8,7 @@ class AddJobDialog(QDialog):
         self,
         group_names: list[str],
         parent,
-    ) -> None:
+    ):
         super().__init__(parent)
         uic.loadUi("ui/dialogs/add_job_dialog.ui", self)
 

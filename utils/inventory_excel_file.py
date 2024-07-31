@@ -9,7 +9,7 @@ settings_file = Settings()
 
 
 class ExcelFile:
-    def __init__(self, inventory: JsonFile, file_name) -> None:
+    def __init__(self, inventory: JsonFile, file_name):
         self.file_name: str = file_name
         self.workbook: xlsxwriter.Workbook = xlsxwriter.Workbook(self.file_name)
         self.workbook.set_properties(
@@ -33,7 +33,7 @@ class ExcelFile:
         ]
         self.inventory = inventory
 
-    def generate(self) -> None:
+    def generate(self):
         """
         It takes a dictionary of dictionaries of dictionaries and writes it to an excel file.
         """
@@ -143,7 +143,7 @@ class ExcelFile:
 
         return grouped_category
 
-    def save(self) -> None:
+    def save(self):
         self.workbook.close()
 
     def __get_exchange_rate(self) -> float:

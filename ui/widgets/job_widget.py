@@ -25,7 +25,7 @@ if TYPE_CHECKING:
 class JobWidget(QWidget):
     reloadJob = pyqtSignal(object)  # object -> JobWidget
 
-    def __init__(self, job: Job, parent) -> None:
+    def __init__(self, job: Job, parent):
         super().__init__(parent)
         uic.loadUi("ui/widgets/job_widget.ui", self)
 
@@ -609,7 +609,7 @@ QPushButton:checked:pressed#assembly_button_drop_menu {
         self.update_nest_parts_assemblies()
         self.update_prices()
 
-    def clear_layout(self, layout: QVBoxLayout | QWidget) -> None:
+    def clear_layout(self, layout: QVBoxLayout | QWidget):
         with contextlib.suppress(AttributeError):
             if layout is not None:
                 while layout.count():

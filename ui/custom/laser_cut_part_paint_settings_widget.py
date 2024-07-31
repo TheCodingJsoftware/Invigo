@@ -8,7 +8,7 @@ from utils.inventory.laser_cut_part import LaserCutPart
 class LasserCutPartPaintSettingsWidget(QWidget):
     settingsChanged = pyqtSignal()
 
-    def __init__(self, laser_cut_part: LaserCutPart, parent: CustomTableWidget) -> None:
+    def __init__(self, laser_cut_part: LaserCutPart, parent: CustomTableWidget):
         super().__init__(parent)
         self.parent: CustomTableWidget = parent
         self.laser_cut_part = laser_cut_part

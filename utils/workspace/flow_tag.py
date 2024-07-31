@@ -15,7 +15,7 @@ if TYPE_CHECKING:
 
 
 class FlowTag:
-    def __init__(self, name: str, data: list[str], workspace_settings) -> None:
+    def __init__(self, name: str, data: list[str], workspace_settings):
         self.name = name
         self.tags: list[Tag] = []
         self.group: Group = Group.LASER_CUT_PART

@@ -337,7 +337,7 @@ class FlowTagsTableWidget(QTableWidget):
                 flow_tag.name = table_item["name"].text()
         self.blockSignals(False)
 
-    def open_group_menu(self, menu: QMenu) -> None:
+    def open_group_menu(self, menu: QMenu):
         menu.exec(QCursor.pos())
 
 
@@ -346,7 +346,7 @@ class EditWorkspaceSettings(QDialog):
         self,
         workspace_settings: WorkspaceSettings,
         parent=None,
-    ) -> None:
+    ):
         super().__init__(parent)
         uic.loadUi("ui/dialogs/edit_workspace_settings.ui", self)
 
@@ -645,7 +645,7 @@ class EditWorkspaceSettings(QDialog):
     def notes_changed(self):
         self.workspace_settings.notes = self.textEdit_notes.toPlainText()
 
-    def clear_layout(self, layout: QHBoxLayout | QWidget) -> None:
+    def clear_layout(self, layout: QHBoxLayout | QWidget):
         with contextlib.suppress(AttributeError):
             if layout is not None:
                 while layout.count():
@@ -656,7 +656,7 @@ class EditWorkspaceSettings(QDialog):
                     else:
                         self.clear_layout(item.layout())
 
-    def open_group_menu(self, menu: QMenu) -> None:
+    def open_group_menu(self, menu: QMenu):
         menu.exec(QCursor.pos())
 
     def save(self):

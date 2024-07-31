@@ -11,7 +11,7 @@ class RecutDialog(QDialog):
         message: str,
         max_value: float,
         parent,
-    ) -> None:
+    ):
         super().__init__(parent)
         uic.loadUi("ui/dialogs/recut_dialog.ui", self)
 
@@ -32,7 +32,7 @@ class RecutDialog(QDialog):
         self.pushButton_ok.clicked.connect(self.button_press)
         self.pushButton_cancel.clicked.connect(self.reject)
 
-    def quick_input_button_press(self, input_text: str) -> None:
+    def quick_input_button_press(self, input_text: str):
         if input_text == "All":
             self.input_text = float(self.max_value)
         else:
@@ -40,7 +40,7 @@ class RecutDialog(QDialog):
         self.doubleSpinBox_input.setValue(self.input_text)
         self.accept()
 
-    def button_press(self) -> None:
+    def button_press(self):
         self.input_text = self.doubleSpinBox_input.value()
         self.accept()
 

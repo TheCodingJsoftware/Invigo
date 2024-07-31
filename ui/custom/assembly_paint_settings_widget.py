@@ -7,7 +7,7 @@ from utils.workspace.assembly import Assembly
 class AssemblyPaintSettingsWidget(QWidget):
     settingsChanged = pyqtSignal()
 
-    def __init__(self, assembly: Assembly, parent) -> None:
+    def __init__(self, assembly: Assembly, parent):
         super().__init__(parent)
         self.parent = parent
         self.assembly = assembly

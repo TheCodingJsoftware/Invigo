@@ -19,7 +19,7 @@ if TYPE_CHECKING:
 
 
 class AssemblyWidget(QWidget):
-    def __init__(self, assembly: Assembly, parent) -> None:
+    def __init__(self, assembly: Assembly, parent):
         super().__init__(parent)
         uic.loadUi("ui/widgets/assembly_widget.ui", self)
         self.parent: Union["AssemblyWidget", JobWidget] = parent
@@ -164,7 +164,7 @@ QPushButton:checked:pressed#assembly_button_drop_menu {
     def open_assembly_image(self):
         self.open_image(self.assembly.assembly_image, self.assembly.name)
 
-    def open_image(self, path: str, title: str) -> None:
+    def open_image(self, path: str, title: str):
         image_viewer = QImageViewer(self, path, title)
         image_viewer.show()
 
@@ -172,7 +172,7 @@ QPushButton:checked:pressed#assembly_button_drop_menu {
         pdf_viewer = PDFViewer(files, file_path, self)
         pdf_viewer.show()
 
-    def open_group_menu(self, menu: QMenu) -> None:
+    def open_group_menu(self, menu: QMenu):
         menu.exec(QCursor.pos())
 
     def set_table_row_color(self, table: QTableWidget, row_index: int, color: str):
@@ -192,7 +192,7 @@ QPushButton:checked:pressed#assembly_button_drop_menu {
     def changes_made(self):
         self.parent.changes_made()
 
-    def clear_layout(self, layout: QVBoxLayout | QWidget) -> None:
+    def clear_layout(self, layout: QVBoxLayout | QWidget):
         with contextlib.suppress(AttributeError):
             if layout is not None:
                 while layout.count():

@@ -8,10 +8,10 @@ from PyQt6.QtCore import QThread, pyqtSignal
 class ExchangeRate(QThread):
     signal = pyqtSignal(object)
 
-    def __init__(self) -> None:
+    def __init__(self):
         QThread.__init__(self)
 
-    def run(self) -> None:
+    def run(self):
         while True:
             with contextlib.suppress(Exception):
                 currency_rates = CurrencyRates()

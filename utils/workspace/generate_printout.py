@@ -13,7 +13,7 @@ from utils.workspace.job import Job
 
 
 class CoverPage:
-    def __init__(self, order_number: float, date_shipped: str, date_expected: str, ship_to: str) -> None:
+    def __init__(self, order_number: float, date_shipped: str, date_expected: str, ship_to: str):
         self.order_number = order_number
         self.date_shipped = date_shipped
         self.date_expected = date_expected
@@ -61,10 +61,11 @@ class WorkorderID:
         self.workorder_id = workorder_id
 
     def generate(self) -> str:
-        return f"""<h5 class="center-align">Scan to open workorder</h5><div class='padding' id='workorder_id' data-workorder-id={self.workorder_id}></div><div id="page-break" class="page-break"></div>"""
+        return f"""<h5 class="center-align">Scan to Open Workorder</h5><div class='padding' id='workorder-id' data-workorder-id={self.workorder_id}></div><div id="page-break" class="page-break"></div>"""
+
 
 class NestsTable:
-    def __init__(self, nests: list[Nest]) -> None:
+    def __init__(self, nests: list[Nest]):
         self.headers = [
             "Nest Name",
             "Thickness",
@@ -248,7 +249,7 @@ class NestedLaserCutParts:
     def __init__(self, nests: list[Nest]):
         self.nests = nests
         self.server_directory = f"http://{get_server_ip_address()}:{get_server_port()}"
-        self.headers = ["Part", "Material", "Sheet Qty", "Qty"]
+        self.headers = ["Part", "Part #", "Sheet Qty", "Qty"]
 
     def format_filename(self, s: str):
         valid_chars = f"-_.() {string.ascii_letters}{string.digits}"
@@ -270,16 +271,16 @@ class NestedLaserCutParts:
                 <span class="small-text">{laser_cut_part.name}</span>
                 </button>
             </td>
-            <td class="small-text" data-column="1" data-name="material">{laser_cut_part.gauge} {laser_cut_part.material}</td>
-            <td class="small-text" data-column="2" data-name="sheet-qty">{laser_cut_part.quantity}</td>
-            <td class="small-text" data-column="3" data-name="qty">{(laser_cut_part.quantity * nest.sheet_count):,.2f}</td>
+            <td class="small-text" data-column="2" data-name="part-#"><i>tag</i>{laser_cut_part.part_number}</td>
+            <td class="small-text" data-column="3" data-name="sheet-qty">{int(laser_cut_part.quantity)}</td>
+            <td class="small-text" data-column="4" data-name="qty">{int(laser_cut_part.quantity * nest.sheet_count):,.2f}</td>
             </tr>"""
         html += """<tr>
-                <th class="small-text" data-column="0" data-name="part"></th>
-                <th class="small-text" data-column="1" data-name="material"></th>
-                <th class="small-text" data-column="2" data-name="sheet-qty"></th>
-                <th class="small-text" data-column="3" data-name="qty"></th>
-            </tr></tbody></table>"""
+            <th class="small-text" data-column="0" data-name="part"></th>
+            <th class="small-text" data-column="1" data-name="part-#"></th>
+            <th class="small-text" data-column="3" data-name="sheet-qty"></th>
+            <th class="small-text" data-column="4" data-name="qty"></th>
+        </tr></tbody></table>"""
         return html
 
     def generate(self) -> str:
@@ -300,7 +301,7 @@ class NestedLaserCutParts:
 
 
 class LaserCutPartsTable:
-    def __init__(self, job: Job, assembly_quantity: int, laser_cut_parts: list[LaserCutPart]) -> None:
+    def __init__(self, job: Job, assembly_quantity: int, laser_cut_parts: list[LaserCutPart]):
         self.job = job
         self.assembly_quantity = assembly_quantity
         self.laser_cut_parts = laser_cut_parts
@@ -407,7 +408,7 @@ class LaserCutPartsTable:
 
 
 class ComponentsTable:
-    def __init__(self, job: Job, assembly_quantity: int, components: list[Component]) -> None:
+    def __init__(self, job: Job, assembly_quantity: int, components: list[Component]):
         self.job = job
         self.assembly_quantity = assembly_quantity
         self.components = components
@@ -548,7 +549,7 @@ class AssemblyTable:
 
 
 class JobDiv:
-    def __init__(self, job: Job) -> None:
+    def __init__(self, job: Job):
         self.job = job
 
     def generate(self) -> str:
@@ -560,7 +561,7 @@ class JobDiv:
 
 
 class AssemblyDiv:
-    def __init__(self, job: Job, assembly: Assembly, use_recursion=True) -> None:
+    def __init__(self, job: Job, assembly: Assembly, use_recursion=True):
         self.job = job
         self.assembly = assembly
         self.use_recursion = use_recursion
@@ -621,7 +622,7 @@ class AssemblyDiv:
 
 
 class JobParts:
-    def __init__(self, job: Job) -> None:
+    def __init__(self, job: Job):
         self.job = job
 
     def generate(self) -> str:
@@ -629,7 +630,7 @@ class JobParts:
 
 
 class PrintoutHeader:
-    def __init__(self, name: str, printout_type: Literal["QUOTE", "WORKORDER", "PACKINGSLIP"] = "QUOTE") -> None:
+    def __init__(self, name: str, printout_type: Literal["QUOTE", "WORKORDER", "PACKINGSLIP"] = "QUOTE"):
         self.name = name
         self.printout_type = printout_type
         self.server_directory = f"http://{get_server_ip_address()}:{get_server_port()}"
@@ -661,7 +662,7 @@ class PrintoutHeader:
 
 
 class WorkspaceJobPrintout:
-    def __init__(self, job: Job, printout_type: Literal["QUOTE", "WORKORDER", "PACKINGSLIP"] = "QUOTE") -> None:
+    def __init__(self, job: Job, printout_type: Literal["QUOTE", "WORKORDER", "PACKINGSLIP"] = "QUOTE"):
         self.job = job
         self.printout_type = printout_type
         self.program_directory = os.path.dirname(os.path.realpath(sys.argv[0]))
@@ -824,12 +825,13 @@ class WorkspaceJobPrintout:
 
 
 class WorkorderPrintout:
-    def __init__(self, nests: list[Nest], workorder_id: str, printout_type: Literal["QUOTE", "WORKORDER", "PACKINGSLIP"] = "WORKORDER") -> None:
+    def __init__(self, nests: list[Nest], workorder_id: str, should_include_qr_to_workorder: bool, printout_type: Literal["QUOTE", "WORKORDER", "PACKINGSLIP"] = "WORKORDER"):
         self.nests = nests
         self.workorder_id = workorder_id
         self.printout_type = printout_type
         self.program_directory = os.path.dirname(os.path.realpath(sys.argv[0]))
         self.server_directory = f"http://{get_server_ip_address()}:{get_server_port()}"
+        self.should_include_qr_to_workorder = should_include_qr_to_workorder
 
         with open("utils/workspace/printout.css", "r", encoding="utf-8") as printout_css_file:
             self.printout_css = printout_css_file.read()
@@ -883,8 +885,9 @@ class WorkorderPrintout:
         <main class="responsive">
         {header_html}<br>"""
 
-        workorder_id = WorkorderID(self.workorder_id)
-        html += workorder_id.generate()
+        if self.should_include_qr_to_workorder:
+            workorder_id = WorkorderID(self.workorder_id)
+            html += workorder_id.generate()
 
         sheets_table = NestsTable(self.nests)
         html += sheets_table.generate()
