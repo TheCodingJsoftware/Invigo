@@ -4,6 +4,7 @@ import os
 import shutil
 import subprocess
 import sys
+import time
 import threading
 import webbrowser
 import winsound
@@ -979,8 +980,9 @@ class MainWindow(QMainWindow):
             for selected_job_data in selected_jobs.get("quoting", []):
                 self.add_job_to_workspace(self.job_quote_widget, selected_job_data, send_to_workspace_dialog.should_update_components())
 
-            self.workspace_tab_widget.workspace_widget.check_if_jobs_are_complete()
-            self.workspace_tab_widget.workspace_widget.check_if_assemblies_are_ready_to_start_timer()
+            for assembly in self.workspace.get_all_assemblies():
+                if assembly.all_laser_cut_parts_complete() and not assembly.timer.has_started_timer():
+                    assembly.timer.start_timer()
 
             self.workspace.save()
             self.components_inventory.save()
@@ -1258,6 +1260,7 @@ class MainWindow(QMainWindow):
         self.saved_jobs_multitoolbox_2.clear()
         sorted_data = dict(natsorted(data.items(), key=lambda x: x[1]["name"], reverse=True))
         for folder_path, file_info in sorted_data.items():
+            print(folder_path)
             job_item = SavedPlanningJobItem(file_info, self)
             job_item.load_job.connect(partial(self.load_job_thread, f"saved_jobs/{folder_path}"))
             job_item.delete_job.connect(partial(self.delete_job_thread, f"saved_jobs/{folder_path}"))
@@ -1496,6 +1499,28 @@ class MainWindow(QMainWindow):
             elif response == DialogButtons.cancel:
                 return
 
+    def copy_file_with_overwrite(self, source, target, retry_interval=1, max_retries=10):
+        retries = 0
+        while retries < max_retries:
+            try:
+                if os.path.exists(target):
+                    if os.path.samefile(source, target):
+                        os.remove(target)
+                shutil.copyfile(source, target)
+                return
+            except shutil.SameFileError:
+                if os.path.samefile(source, target):
+                    os.remove(target)
+                    shutil.copyfile(source, target)
+                    return
+            except PermissionError as e:
+                if e.winerror == 32:  # File in use error
+                    retries += 1
+                    time.sleep(retry_interval)
+                else:
+                    raise
+        raise PermissionError(f"Failed to copy file {source} to {target} after {max_retries} retries.")
+
     def add_po_templates(self, po_file_paths: list[str], open_select_file_dialog: bool = False):
         if open_select_file_dialog:
             po_file_paths, check = QFileDialog.getOpenFileNames(None, "Add Purchase Order Template", "", "Excel Files (*.xlsx)")
@@ -1512,7 +1537,7 @@ class MainWindow(QMainWindow):
                     msg.exec()
                     return
                 new_file_path = f"PO's/templates/{po_file.get_vendor().replace('.','')}.xlsx"
-                shutil.copyfile(po_file_path, new_file_path)
+                self.copy_file_with_overwrite(po_file_path, new_file_path)
             check_po_directories()
             msg = QMessageBox(self)
             msg.setIcon(QMessageBox.Icon.Information)
@@ -1531,7 +1556,7 @@ class MainWindow(QMainWindow):
                     msg.exec()
                     return
                 new_file_path = f"PO's/templates/{po_file.get_vendor().replace('.','')}.xlsx"
-                shutil.copyfile(po_file_path, new_file_path)
+                self.copy_file_with_overwrite(po_file_path, new_file_path)
             check_po_directories()
             msg = QMessageBox(self)
             msg.setIcon(QMessageBox.Icon.Information)

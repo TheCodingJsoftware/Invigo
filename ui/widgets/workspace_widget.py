@@ -16,6 +16,7 @@ from ui.custom.workspace_parts_table_widget import WorkspacePartsTableColumns, W
 from ui.custom_widgets import AssemblyImage, AssemblyMultiToolBox, CustomTableWidget, DeletePushButton, DraggableButton, FilterTabWidget, HumbleDoubleSpinBox, ItemsGroupBox, MultiToolBox, NotesPlainTextEdit, RecordingWidget, RecutButton, ScrollPositionManager, SelectRangeCalendar, TimeSpinBox
 from ui.dialogs.color_picker_dialog import ColorPicker
 from ui.dialogs.recut_dialog import RecutDialog
+from ui.dialogs.view_assembly_dialog import ViewAssemblyDialog
 from ui.windows.image_viewer import QImageViewer
 from ui.windows.pdf_viewer import PDFViewer
 from utils.colors import get_random_color
@@ -132,11 +133,11 @@ class WorkspaceWidget(QWidget):
 
         # FILES
         if any(keyword in group.base_part.get_current_tag().name.lower() for keyword in ["weld", "assembly"]):
-            files_widget, files_layout = self.create_file_layout(group.base_part, ["welding_files"])
+            files_widget, files_layout = self.create_file_layout(group, ["welding_files"])
         elif any(keyword in group.base_part.get_current_tag().name.lower() for keyword in ["bend", "break"]):
-            files_widget, files_layout = self.create_file_layout(group.base_part, ["bending_files"])
+            files_widget, files_layout = self.create_file_layout(group, ["bending_files"])
         elif any(keyword in group.base_part.get_current_tag().name.lower() for keyword in ["cnc", "laser", "cutting", "milling", "thread"]):
-            files_widget, files_layout = self.create_file_layout(group.base_part, ["cnc_milling_files"])
+            files_widget, files_layout = self.create_file_layout(group, ["cnc_milling_files"])
         else:
             files_widget = QLabel("No files", table_widget)
         table_widget.setCellWidget(
@@ -251,7 +252,7 @@ class WorkspaceWidget(QWidget):
 
     def add_laser_cut_part_drag_file_widget(
         self,
-        item: Union[LaserCutPart, Assembly],
+        item: Union[WorkspaceLaserCutPartGroup, Assembly],
         file_category: str,
         files_layout: QHBoxLayout,
         file_path: str,
@@ -268,7 +269,7 @@ class WorkspaceWidget(QWidget):
 
     def create_file_layout(
         self,
-        item: Union[LaserCutPart, Assembly],
+        item: Union[WorkspaceLaserCutPartGroup, Assembly],
         file_types: list[
             Union[
                 Literal["bending_files"],
@@ -302,33 +303,23 @@ class WorkspaceWidget(QWidget):
         main_layout.addWidget(scroll_area)
 
         for file_type in file_types:
-            file_list: list[str] = getattr(item, file_type)
+            if isinstance(item, Assembly):
+                file_list: list[str] = getattr(item, file_type)
+            elif isinstance(item, WorkspaceLaserCutPartGroup):
+                file_list = item.get_files(file_type)
             for file in file_list:
                 self.add_laser_cut_part_drag_file_widget(item, file_type, files_layout, file)
         return main_widget, files_layout
 
-    def laser_cut_part_get_all_file_types(self, laser_cut_part: LaserCutPart, file_ext: str) -> list[str]:
-        files: set[str] = set()
-        for bending_file in laser_cut_part.bending_files:
-            if bending_file.lower().endswith(file_ext):
-                files.add(bending_file)
-        for welding_file in laser_cut_part.welding_files:
-            if welding_file.lower().endswith(file_ext):
-                files.add(welding_file)
-        for cnc_milling_file in laser_cut_part.cnc_milling_files:
-            if cnc_milling_file.lower().endswith(file_ext):
-                files.add(cnc_milling_file)
-        return list(files)
-
-    def laser_cut_part_file_clicked(self, item: Union[LaserCutPart, Assembly], file_path: str):
+    def laser_cut_part_file_clicked(self, item: Union[WorkspaceLaserCutPartGroup, Assembly], file_path: str):
         self.download_file_thread = WorkspaceDownloadFile([file_path], True)
         self.download_file_thread.signal.connect(self.file_downloaded)
         self.download_file_thread.start()
         self.download_file_thread.wait()
         if file_path.lower().endswith(".pdf"):
-            if isinstance(item, LaserCutPart):
+            if isinstance(item, WorkspaceLaserCutPartGroup):
                 self.open_pdf(
-                    self.laser_cut_part_get_all_file_types(item, ".pdf"),
+                    item.get_all_files(".pdf"),
                     file_path,
                 )
             elif isinstance(item, Assembly):
@@ -444,6 +435,11 @@ class WorkspaceWidget(QWidget):
         self.assemblies_table_widget.setItem(current_row, WorkspaceAssemblyTableColumns.ASSEMBLY_NAME.value, part_name_item)
         self.assemblies_table_items[assembly].update({"name": part_name_item})
 
+        # VIEW FILES BUTTON
+        view_parts_button = QPushButton("View Parts", self)
+        view_parts_button.clicked.connect(partial(self.view_assembly_parts, assembly))
+        self.assemblies_table_widget.setCellWidget(current_row, WorkspaceAssemblyTableColumns.ASSEMBLY_PARTS_BUTTON.value, view_parts_button)
+
         # FILES
         if assembly.assembly_files:
             files_widget, files_layout = self.create_file_layout(assembly, ["assembly_files"])
@@ -526,6 +522,10 @@ class WorkspaceWidget(QWidget):
 
     def assemblies_table_row_changed(self, row: int):
         pass
+
+    def view_assembly_parts(self, assembly: Assembly):
+        view_assembly_dialog = ViewAssemblyDialog(assembly, self.workspace, self)
+        view_assembly_dialog.exec()
 
     # OTHER STUFF
     def open_context_menu(self, menu: QMenu):

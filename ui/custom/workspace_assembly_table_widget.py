@@ -14,6 +14,7 @@ class AutoNumber(Enum):
 class WorkspaceAssemblyTableColumns(AutoNumber):
     PICTURE = auto()
     ASSEMBLY_NAME = auto()
+    ASSEMBLY_PARTS_BUTTON = auto()
     ASSEMBLY_FILES = auto()
     PAINT = auto()
     PROCESS_CONTROLS = auto()
@@ -38,6 +39,7 @@ class WorkspaceAssemblyTableWidget(CustomTableWidget):
         headers = {
             "Picture": WorkspaceAssemblyTableColumns.PICTURE.value,
             "Assembly Name": WorkspaceAssemblyTableColumns.ASSEMBLY_NAME.value,
+            "View Parts": WorkspaceAssemblyTableColumns.ASSEMBLY_PARTS_BUTTON.value,
             "Assembly Files": WorkspaceAssemblyTableColumns.ASSEMBLY_FILES.value,
             "Paint": WorkspaceAssemblyTableColumns.PAINT.value,
             "Process Controls": WorkspaceAssemblyTableColumns.PROCESS_CONTROLS.value,

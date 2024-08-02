@@ -1,5 +1,6 @@
 import os
 import shutil
+import time
 from datetime import date
 
 from openpyxl import load_workbook
@@ -16,9 +17,31 @@ class POTemplate:
         self.vendor: str = self.get_vendor()
         self.order_number: int = self.get_order_number()
 
+    def copy_file_with_overwrite(self, source, target, retry_interval=1, max_retries=10):
+        retries = 0
+        while retries < max_retries:
+            try:
+                if os.path.exists(target):
+                    if os.path.samefile(source, target):
+                        os.remove(target)
+                shutil.copyfile(source, target)
+                return
+            except shutil.SameFileError:
+                if os.path.samefile(source, target):
+                    os.remove(target)
+                    shutil.copyfile(source, target)
+                    return
+            except PermissionError as e:
+                if e.winerror == 32:  # File in use error
+                    retries += 1
+                    time.sleep(retry_interval)
+                else:
+                    raise
+        raise PermissionError(f"Failed to copy file {source} to {target} after {max_retries} retries.")
+
     def generate(self):
         self.output_path: str = f"{self.cwd}/PO's/{self.vendor}/PO {self.order_number+1}.xlsx"
-        shutil.copyfile(self.po_template, self.output_path)
+        self.copy_file_with_overwrite(self.po_template, self.output_path)
         self.set_order_number()
         self.set_date()
         self.set_signature()
