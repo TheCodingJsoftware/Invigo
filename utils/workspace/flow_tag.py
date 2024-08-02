@@ -1,5 +1,5 @@
 from enum import Enum
-from typing import TYPE_CHECKING, Union, Iterator
+from typing import TYPE_CHECKING, Iterator, Union
 
 from utils.workspace.tag import Tag
 

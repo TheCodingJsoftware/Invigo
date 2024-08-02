@@ -1,6 +1,7 @@
 import contextlib
 import os
 import shutil
+import time
 from functools import partial
 from typing import Optional
 
@@ -175,12 +176,13 @@ class AssemblyPlanningWidget(AssemblyWidget):
 
         return main_widget, files_layout
 
-    def upload_assembly_image(self, path_to_image: str):
+    def upload_assembly_image(self, path_to_image: str, save_image: bool = True):
         file_name = os.path.basename(path_to_image)
 
         target_path = os.path.join("images", file_name)
 
-        shutil.copyfile(path_to_image, target_path)
+        if save_image:
+            self.copy_file_with_overwrite(path_to_image, target_path)
 
         self.assembly_image.set_new_image(target_path)
         self.assembly.assembly_image = target_path
@@ -204,7 +206,7 @@ class AssemblyPlanningWidget(AssemblyWidget):
             if not image.isNull():
                 temp_path = f"images/{self.assembly.name}.png"
                 image.save(temp_path)
-                self.upload_assembly_image(temp_path)
+                self.upload_assembly_image(temp_path, False)
 
     def assembly_flow_tag_changed(self):
         self.assembly.flow_tag = self.workspace_settings.get_flow_tag_by_name(self.comboBox_assembly_flow_tag.currentText())
@@ -249,10 +251,10 @@ class AssemblyPlanningWidget(AssemblyWidget):
             if not os.path.exists(target_dir):
                 os.makedirs(target_dir)
 
-            with contextlib.suppress(shutil.SameFileError):
-                shutil.copyfile(file_path, target_path)
-                self.assembly.assembly_files.append(target_path)
-                self.add_assembly_drag_file_widget(files_layout, target_path)
+            self.copy_file_with_overwrite(file_path, target_path)
+
+            self.assembly.assembly_files.append(target_path)
+            self.add_assembly_drag_file_widget(files_layout, target_path)
         self.upload_files(file_paths)
         self.changes_made()
 
@@ -281,7 +283,7 @@ class AssemblyPlanningWidget(AssemblyWidget):
 
         target_path = os.path.join("images", f"{component.name}.png")
 
-        shutil.copyfile(image_file_name, target_path)
+        self.copy_file_with_overwrite(image_file_name, target_path)
 
         component.image_path = target_path
         self.upload_images([target_path])
@@ -881,6 +883,28 @@ class AssemblyPlanningWidget(AssemblyWidget):
         self.changes_made()
 
     # OTHER STUFF
+    def copy_file_with_overwrite(self, source, target, retry_interval=1, max_retries=10):
+        retries = 0
+        while retries < max_retries:
+            try:
+                if os.path.exists(target):
+                    if os.path.samefile(source, target):
+                        os.remove(target)
+                shutil.copyfile(source, target)
+                return
+            except shutil.SameFileError:
+                if os.path.samefile(source, target):
+                    os.remove(target)
+                    shutil.copyfile(source, target)
+                    return
+            except PermissionError as e:
+                if e.winerror == 32:  # File in use error
+                    retries += 1
+                    time.sleep(retry_interval)
+                else:
+                    raise
+        raise PermissionError(f"Failed to copy file {source} to {target} after {max_retries} retries.")
+
     def file_downloaded(self, file_ext: str, file_name: str, open_when_done: bool):
         if file_ext is None:
             msg = QMessageBox(
@@ -932,7 +956,7 @@ class AssemblyPlanningWidget(AssemblyWidget):
             if not os.path.exists(target_dir):
                 os.makedirs(target_dir)
 
-            shutil.copyfile(file_path, target_path)
+            self.copy_file_with_overwrite(file_path, target_path)
             getattr(laser_cut_part, file_category).append(target_path)
             # if file_category == "bending_files":
             #     laser_cut_part.bending_files.append(target_path)

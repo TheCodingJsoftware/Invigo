@@ -1,8 +1,8 @@
-from typing import Union
 from datetime import datetime
+from typing import Union
 
-from utils.workspace.tag import Tag
 from utils.workspace.flow_tag import FlowTag
+from utils.workspace.tag import Tag
 
 
 class TagTimer:
@@ -14,7 +14,11 @@ class TagTimer:
         self.timer_data.append({"started": datetime.now().isoformat(), "finished": None})
 
     def stop(self):
-        self.timer_data[-1]["finished"] = datetime.now().isoformat()
+        try:
+            self.timer_data[-1]["finished"] = datetime.now().isoformat()
+        except IndexError:
+            self.start()
+            self.stop()
 
     def load_data(self, data: list[dict[str, str]]):
         self.timer_data.clear()

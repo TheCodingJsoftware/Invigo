@@ -1,7 +1,10 @@
 import time
+
 from PyQt6.QtCore import QThread, pyqtSignal
 from requests import Session
+
 from utils.ip_utils import get_server_ip_address, get_server_port
+
 
 class UploadThread(QThread):
     signal = pyqtSignal(object, list)

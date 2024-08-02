@@ -1,4 +1,4 @@
-from typing import Optional, Iterator
+from typing import Iterator, Optional
 
 from utils.inventory.laser_cut_part import LaserCutPart
 from utils.workspace.tag import Tag
@@ -14,11 +14,45 @@ class WorkspaceLaserCutPartGroup:
             self.base_part = laser_cut_part
         self.laser_cut_parts.append(laser_cut_part)
 
+    def get_files(self, file_type: str) -> list[str]:
+        all_files: set[str] = set()
+        for laser_cut_part in self:
+            files = getattr(laser_cut_part, file_type)
+            for file in files:
+                all_files.add(file)
+        return list(all_files)
+
+    def get_all_files(self, file_ext: str) -> list[str]:
+        all_files: set[str] = set()
+        for laser_cut_part in self:
+            for bending_file in laser_cut_part.bending_files:
+                if bending_file.lower().endswith(file_ext):
+                    all_files.add(bending_file)
+            for welding_file in laser_cut_part.welding_files:
+                if welding_file.lower().endswith(file_ext):
+                    all_files.add(welding_file)
+            for cnc_milling_file in laser_cut_part.cnc_milling_files:
+                if cnc_milling_file.lower().endswith(file_ext):
+                    all_files.add(cnc_milling_file)
+        return list(all_files)
+
     def get_parts_list(self) -> str:
         text = ""
         for laser_cut_part in self:
             text += f"{laser_cut_part.name}: {laser_cut_part.flow_tag.get_name()}\n"
         return text
+
+    def mark_as_recut(self, quantity: Optional[int] = None):
+        max_quantity = len(self.laser_cut_parts)
+        if quantity is None or quantity > max_quantity:
+            quantity = max_quantity
+
+        for i in range(quantity):
+            self.laser_cut_parts[i].timer.stop(self.get_current_tag())
+            self.laser_cut_parts[i].current_flow_tag_index = 0
+            self.laser_cut_parts[i].current_flow_tag_status_index = 0
+            self.laser_cut_parts[i].recut = True
+            self.laser_cut_parts[i].recut_count += 1
 
     def unmark_as_recut(self):
         for laser_cut_part in self:
@@ -32,7 +66,7 @@ class WorkspaceLaserCutPartGroup:
         for laser_cut_part in self:
             laser_cut_part.current_flow_tag_status_index = status_index
 
-    def move_to_next_process(self, quantity: Optional[int]=None):
+    def move_to_next_process(self, quantity: Optional[int] = None):
         max_quantity = len(self.laser_cut_parts)
         if quantity is None or quantity > max_quantity:
             quantity = max_quantity

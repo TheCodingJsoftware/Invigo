@@ -1,12 +1,14 @@
 from functools import partial
-
 from natsort import natsorted
 from PyQt6 import uic
-from PyQt6.QtCore import Qt, QUrl
+from PyQt6.QtCore import Qt, QUrl, QMarginsF, QEventLoop, QObject, QPointF
+from PyQt6.QtGui import QPainter
 from PyQt6.QtWebEngineWidgets import QWebEngineView
-from PyQt6.QtWidgets import QHBoxLayout, QMainWindow, QMessageBox, QPushButton, QSplitter, QVBoxLayout
-
+from PyQt6.QtWidgets import QMainWindow, QMessageBox, QPushButton, QSplitter, QVBoxLayout, QApplication
+from PyQt6.QtPrintSupport import QPrinter, QPrintDialog, QPrintPreviewDialog
 from utils.threads.workspace_get_file_thread import WorkspaceDownloadFile
+
+import subprocess, sys, os
 
 
 class PDFViewer(QMainWindow):
@@ -27,10 +29,13 @@ class PDFViewer(QMainWindow):
         self.webView.settings().setAttribute(self.webView.settings().WebAttribute.FullScreenSupportEnabled, True)
         self.webView.settings().setAttribute(self.webView.settings().WebAttribute.PrintElementBackgrounds, True)
         self.webView.settings().setAttribute(self.webView.settings().WebAttribute.WebGLEnabled, True)
+        self.webView.printRequested.connect(self.print_pdf)
         # self.webView.page().loadFinished.connect(self.hide_thumbnails)
 
         self.webview_layout = self.findChild(QVBoxLayout, "webview_layout")
         self.webview_layout.addWidget(self.webView)
+
+        self.current_pdf_file: str = ""
 
         self.load_pdf_buttons()
 
@@ -42,7 +47,9 @@ class PDFViewer(QMainWindow):
         self.splitter.setStretchFactor(1, 1)
 
         self.pdf_button_pressed(file_path)
-        # self.resize(1200, 850)
+
+        self.pushButton_print = self.findChild(QPushButton, "pushButton_print")
+        self.pushButton_print.clicked.connect(self.print_pdf)
 
     def pdf_button_pressed(self, path: str):
         file_name = path.split("\\")[-1].replace(".pdf", "")
@@ -57,12 +64,14 @@ class PDFViewer(QMainWindow):
                 button.blockSignals(False)
         self.webView.setUrl(QUrl("file:///" + path.replace("\\", "/")))
         self.setWindowTitle(path)
+        self.current_pdf_file = path
 
     def get_pdf_files(self) -> list[str]:
         pdf_files: set[str] = {file for file in self.files if file.lower().endswith(".pdf")}
         return list(pdf_files)
 
     def load_pdf_file(self, file_path: str):
+        self.current_pdf_file = file_path
         self.download_file_thread = WorkspaceDownloadFile([file_path], True)
         self.download_file_thread.signal.connect(self.file_downloaded)
         self.download_file_thread.start()
@@ -104,3 +113,6 @@ class PDFViewer(QMainWindow):
             }, 100);
         """
         )
+
+    def print_pdf(self):
+        os.popen(f'PDFtoPrinterSelect.exe "{self.current_pdf_file}"')

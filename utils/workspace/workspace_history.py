@@ -18,7 +18,6 @@ class WorkspaceHistory:
         self.__create_file()
         self.load_data()
 
-
     def add_job(self, job: Job):
         new_job = Job(job.to_dict(), self.job_manager)
         self.jobs.append(new_job)

@@ -8,24 +8,11 @@ import sympy
 from PyQt6 import uic
 from PyQt6.QtCore import QDate, Qt, pyqtSignal
 from PyQt6.QtGui import QAction, QCursor, QFont, QIcon
-from PyQt6.QtWidgets import QAbstractItemView, QSplitter, QComboBox, QCompleter, QGridLayout, QGroupBox, QHBoxLayout, QInputDialog, QLabel, QLineEdit, QMenu, QMessageBox, QPushButton, QScrollArea, QTableWidgetItem, QTabWidget, QVBoxLayout, QWidget
+from PyQt6.QtWidgets import QAbstractItemView, QComboBox, QCompleter, QGridLayout, QGroupBox, QHBoxLayout, QInputDialog, QLabel, QLineEdit, QMenu, QMessageBox, QPushButton, QScrollArea, QSplitter, QTableWidgetItem, QTabWidget, QVBoxLayout, QWidget
 
-from ui.custom_widgets import (
-    AssemblyImage,
-    AssemblyMultiToolBox,
-    CustomTableWidget,
-    DeletePushButton,
-    DraggableButton,
-    FilterTabWidget,
-    HumbleDoubleSpinBox,
-    ItemsGroupBox,
-    MultiToolBox,
-    NotesPlainTextEdit,
-    RecordingWidget,
-    ScrollPositionManager,
-    SelectRangeCalendar,
-    TimeSpinBox,
-)
+from ui.custom.filter_button import FilterButton
+from ui.custom.sort_button import SortButton
+from ui.custom_widgets import AssemblyImage, AssemblyMultiToolBox, CustomTableWidget, DeletePushButton, DraggableButton, FilterTabWidget, HumbleDoubleSpinBox, ItemsGroupBox, MultiToolBox, NotesPlainTextEdit, RecordingWidget, ScrollPositionManager, SelectRangeCalendar, TimeSpinBox
 from ui.dialogs.color_picker_dialog import ColorPicker
 from ui.dialogs.recut_dialog import RecutDialog
 from ui.widgets.workspace_widget import WorkspaceWidget
@@ -40,10 +27,8 @@ from utils.threads.workspace_upload_file_thread import WorkspaceUploadThread
 from utils.trusted_users import get_trusted_users
 from utils.workspace.assembly import Assembly
 from utils.workspace.workspace import Workspace
-from utils.workspace.workspace_settings import WorkspaceSettings
-from ui.custom.filter_button import FilterButton
-from ui.custom.sort_button import SortButton
 from utils.workspace.workspace_filter import SortingMethod
+from utils.workspace.workspace_settings import WorkspaceSettings
 
 if TYPE_CHECKING:
     from ui.windows.main_window import MainWindow
@@ -51,6 +36,7 @@ if TYPE_CHECKING:
 
 class WorkspaceTabWidget(QWidget):
     tabChanged = pyqtSignal(str)
+
     def __init__(
         self,
         parent,

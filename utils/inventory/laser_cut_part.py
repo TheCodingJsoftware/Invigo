@@ -93,6 +93,7 @@ class LaserCutPart(InventoryItem):
         return self.current_flow_tag_index >= len(self.flow_tag.tags)
 
     def mark_as_recut(self):
+        self.timer.stop(self.get_current_tag())
         self.current_flow_tag_index = 0
         self.current_flow_tag_status_index = 0
         self.recut = True
@@ -100,6 +101,7 @@ class LaserCutPart(InventoryItem):
 
     def unmark_as_recut(self):
         self.recut = False
+        self.move_to_next_process()
 
     def move_to_next_process(self):
         self.timer.stop(self.get_current_tag())

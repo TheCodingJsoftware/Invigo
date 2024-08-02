@@ -1,8 +1,9 @@
 from typing import Union
 
+from utils.inventory.laser_cut_inventory import LaserCutInventory
+from utils.inventory.laser_cut_part import LaserCutPart
 from utils.inventory.nest import Nest
 from utils.sheet_settings.sheet_settings import SheetSettings
-from utils.inventory.laser_cut_inventory import LaserCutInventory
 
 
 class Workorder:
@@ -11,6 +12,12 @@ class Workorder:
         self.sheet_settings = sheet_settings
         self.laser_cut_inventory = laser_cut_inventory
         self.load_data(data)
+
+    def get_all_laser_cut_parts(self) -> list[LaserCutPart]:
+        laser_cut_parts: list[LaserCutPart] = []
+        for nest in self.nests:
+            laser_cut_parts.extend(nest.laser_cut_parts)
+        return laser_cut_parts
 
     def load_data(self, data: list[dict[str, object]]):
         self.nests.clear()
