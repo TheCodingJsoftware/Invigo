@@ -95,7 +95,7 @@ from utils.workspace.workspace_history import WorkspaceHistory
 from utils.workspace.workspace_laser_cut_part_group import WorkspaceLaserCutPartGroup
 from utils.workspace.workspace_settings import WorkspaceSettings
 
-__version__: str = "v3.3.1"
+__version__: str = "v3.3.2"
 
 
 def check_folders(folders: list[str]):
