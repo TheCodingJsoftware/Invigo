@@ -95,7 +95,7 @@ from utils.workspace.workspace_history import WorkspaceHistory
 from utils.workspace.workspace_laser_cut_part_group import WorkspaceLaserCutPartGroup
 from utils.workspace.workspace_settings import WorkspaceSettings
 
-__version__: str = "v3.3.2"
+__version__: str = "v3.3.3"
 
 
 def check_folders(folders: list[str]):
@@ -1900,9 +1900,12 @@ class MainWindow(QMainWindow):
             if f"{self.workspace_settings.filename}.json" in response["successful_files"]:
                 self.workspace_settings.load_data()
                 self.workspace.load_data()
-                self.job_planner_widget.workspace_settings_changed()
-                self.job_quote_widget.workspace_settings_changed()
-                self.workspace_tab_widget.workspace_settings_changed()
+                with contextlib.suppress(AttributeError):
+                    self.job_planner_widget.workspace_settings_changed()
+                with contextlib.suppress(AttributeError):
+                    self.job_quote_widget.workspace_settings_changed()
+                with contextlib.suppress(AttributeError):
+                    self.workspace_tab_widget.workspace_settings_changed()
 
             if f"{self.components_inventory.filename}.json" in response["successful_files"]:
                 self.components_inventory.load_data()

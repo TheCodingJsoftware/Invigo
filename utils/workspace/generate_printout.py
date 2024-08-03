@@ -688,7 +688,7 @@ class WorkspaceJobPrintout:
                         <link href="https://cdn.jsdelivr.net/npm/beercss@3.6.8/dist/cdn/beer.min.css" rel="stylesheet">
                         <script type="module" src="https://cdn.jsdelivr.net/npm/beercss@3.6.8/dist/cdn/beer.min.js"></script>
                         <script type="module" src="https://cdn.jsdelivr.net/npm/material-dynamic-colors@1.1.2/dist/cdn/material-dynamic-colors.min.js"></script>
-                        <link rel="stylesheet" type="text/css" href="/static/theme.css">
+                        <link rel="stylesheet" type="text/css" href="/static/css/theme.css">
                         <title>{self.printout_type.title()} {self.job.name}</title>
                         <meta property="og:title" content="{self.printout_type.title()} - {self.job.name}" />
                         <meta property="og:description" content="{self.job.ship_to}" />
@@ -853,7 +853,7 @@ class WorkorderPrintout:
                         <link href="https://cdn.jsdelivr.net/npm/beercss@3.6.8/dist/cdn/beer.min.css" rel="stylesheet">
                         <script type="module" src="https://cdn.jsdelivr.net/npm/beercss@3.6.8/dist/cdn/beer.min.js"></script>
                         <script type="module" src="https://cdn.jsdelivr.net/npm/material-dynamic-colors@1.1.2/dist/cdn/material-dynamic-colors.min.js"></script>
-                        <link rel="stylesheet" type="text/css" href="/static/theme.css">
+                        <link rel="stylesheet" type="text/css" href="/static/css/theme.css">
                         <title>{self.printout_type.title()} Workspace Nests Printout</title>
                         <meta property="og:title" content="{self.printout_type.title()} -  Workspace Nests Printout" />
                         <meta property="og:description" content="Workspace Nests Printout" />
