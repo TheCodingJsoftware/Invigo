@@ -12,14 +12,8 @@ from PyQt6.QtWidgets import QAbstractItemView, QComboBox, QCompleter, QGridLayou
 
 from ui.custom.filter_button import FilterButton
 from ui.custom.sort_button import SortButton
-from ui.custom_widgets import AssemblyImage, AssemblyMultiToolBox, CustomTableWidget, DeletePushButton, DraggableButton, FilterTabWidget, HumbleDoubleSpinBox, ItemsGroupBox, MultiToolBox, NotesPlainTextEdit, RecordingWidget, ScrollPositionManager, SelectRangeCalendar, TimeSpinBox
-from ui.dialogs.color_picker_dialog import ColorPicker
-from ui.dialogs.recut_dialog import RecutDialog
+from ui.custom.calendar_button import CalendarButton
 from ui.widgets.workspace_widget import WorkspaceWidget
-from utils.colors import get_random_color
-from utils.dialog_buttons import DialogButtons
-from utils.inventory.components_inventory import ComponentsInventory
-from utils.inventory.laser_cut_inventory import LaserCutInventory
 from utils.inventory.paint_inventory import PaintInventory
 from utils.settings import Settings
 from utils.threads.workspace_get_file_thread import WorkspaceDownloadFile
@@ -143,11 +137,26 @@ class WorkspaceTabWidget(QWidget):
         self.paint_menu_button.checkbox_states_changed.connect(self.filter_button_changed)
         self.workspace_filter.paint_filter = self.paint_menu_button.dropdown.checkbox_states
 
+        self.calendar_button = CalendarButton("Date Range")
+        self.calendar_button.date_range_changed.connect(self.date_range_changed)
+        self.calendar_button.date_range_toggled.connect(self.date_range_toggled)
+
         self.menu_buttons_layout.addWidget(self.materials_menu_button)
         self.menu_buttons_layout.addWidget(self.thickness_menu_button)
         self.menu_buttons_layout.addWidget(self.paint_menu_button)
+        self.menu_buttons_layout.addWidget(self.calendar_button)
 
     def filter_button_changed(self, states: dict[str, bool]):
+        self.workspace_widget.load_parts_table()
+        self.workspace_widget.load_assembly_table()
+
+    def date_range_changed(self, dates: dict[QDate, QDate]):
+        self.workspace_filter.date_range = dates
+        self.workspace_widget.load_parts_table()
+        self.workspace_widget.load_assembly_table()
+
+    def date_range_toggled(self, checked: bool):
+        self.workspace_filter.enable_date_range = checked
         self.workspace_widget.load_parts_table()
         self.workspace_widget.load_assembly_table()
 

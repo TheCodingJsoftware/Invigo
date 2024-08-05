@@ -19,10 +19,10 @@ from ui.custom.laser_cut_part_file_drop_widget import LaserCutPartFileDropWidget
 from ui.custom.laser_cut_part_paint_settings_widget import LasserCutPartPaintSettingsWidget
 from ui.custom.laser_cut_part_paint_widget import LaserCutPartPaintWidget
 from ui.custom.laser_cut_parts_planning_table_widget import LaserCutPartsPlanningTableWidget, LaserCutTableColumns
-from ui.custom_widgets import AssemblyMultiToolBox, TimeSpinBox
 from ui.dialogs.add_component_dialog import AddComponentDialog
 from ui.dialogs.add_laser_cut_part_dialog import AddLaserCutPartDialog
 from ui.widgets.assembly_widget import AssemblyWidget
+from ui.custom_widgets import AssemblyMultiToolBox
 from utils.inventory.component import Component
 from utils.inventory.laser_cut_part import LaserCutPart
 from utils.settings import Settings
@@ -73,10 +73,9 @@ class AssemblyPlanningWidget(AssemblyWidget):
         self.doubleSpinBox_quantity.setValue(self.assembly.quantity)
         self.doubleSpinBox_quantity.valueChanged.connect(self.assembly_quantity_changed)
 
-        self.time_to_complete_spinbox = TimeSpinBox(self)
-        self.time_to_complete_spinbox.setValue(self.assembly.expected_time_to_complete)
-        self.time_to_complete_spinbox.valueChanged.connect(self.assembly_time_to_complete_changed)
-        self.expected_time_to_complete_layout.addWidget(self.time_to_complete_spinbox)
+        self.doubleSpinBox_expected_time_to_complete = self.findChild(QDoubleSpinBox, "doubleSpinBox_expected_time_to_complete")
+        self.doubleSpinBox_expected_time_to_complete.setValue(self.assembly.expected_time_to_complete)
+        self.doubleSpinBox_expected_time_to_complete.valueChanged.connect(self.assembly_time_to_complete_changed)
 
         self.paint_widget.setVisible(self.assembly.flow_tag.contains(["paint", "powder", "coating", "liquid"]))
 
@@ -263,7 +262,7 @@ class AssemblyPlanningWidget(AssemblyWidget):
         return list(files)
 
     def assembly_time_to_complete_changed(self):
-        self.assembly.expected_time_to_complete = self.time_to_complete_spinbox.value()
+        self.assembly.expected_time_to_complete = self.doubleSpinBox_expected_time_to_complete.value()
         self.changes_made()
 
     # COMPONENT STUFF

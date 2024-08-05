@@ -75,7 +75,7 @@
                  <number>0</number>
                 </property>
                 <item>
-                 <layout class="QVBoxLayout" name="verticalLayout_4" stretch="0,0,1">
+                 <layout class="QVBoxLayout" name="verticalLayout_4" stretch="0,0,0,1">
                   <item>
                    <widget class="QGroupBox" name="recut_parts_widget">
                     <property name="title">
@@ -84,6 +84,18 @@
                     <layout class="QVBoxLayout" name="verticalLayout_12">
                      <item>
                       <layout class="QVBoxLayout" name="recut_parts_layout"/>
+                     </item>
+                    </layout>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QGroupBox" name="recoat_parts_widget">
+                    <property name="title">
+                     <string>Recoat Parts</string>
+                    </property>
+                    <layout class="QVBoxLayout" name="verticalLayout_6">
+                     <item>
+                      <layout class="QVBoxLayout" name="recoat_parts_layout"/>
                      </item>
                     </layout>
                    </widget>

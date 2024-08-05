@@ -4,7 +4,6 @@ from datetime import datetime
 from functools import partial
 from typing import TYPE_CHECKING, Literal, Optional, Union
 
-import sympy
 from PyQt6 import uic
 from PyQt6.QtCore import QDate, Qt
 from PyQt6.QtGui import QAction, QCursor, QFont, QIcon, QPixmap
@@ -13,29 +12,17 @@ from PyQt6.QtWidgets import QAbstractItemView, QApplication, QComboBox, QComplet
 from ui.custom.file_button import FileButton
 from ui.custom.workspace_assembly_table_widget import WorkspaceAssemblyTableColumns, WorkspaceAssemblyTableWidget
 from ui.custom.workspace_parts_table_widget import WorkspacePartsTableColumns, WorkspacePartsTableWidget
-from ui.custom_widgets import AssemblyImage, AssemblyMultiToolBox, CustomTableWidget, DeletePushButton, DraggableButton, FilterTabWidget, HumbleDoubleSpinBox, ItemsGroupBox, MultiToolBox, NotesPlainTextEdit, RecordingWidget, RecutButton, ScrollPositionManager, SelectRangeCalendar, TimeSpinBox
-from ui.dialogs.color_picker_dialog import ColorPicker
 from ui.dialogs.recut_dialog import RecutDialog
 from ui.dialogs.view_assembly_dialog import ViewAssemblyDialog
 from ui.windows.image_viewer import QImageViewer
 from ui.windows.pdf_viewer import PDFViewer
-from utils.colors import get_random_color
-from utils.dialog_buttons import DialogButtons
-from utils.inventory.component import Component
-from utils.inventory.components_inventory import ComponentsInventory
-from utils.inventory.laser_cut_inventory import LaserCutInventory
 from utils.inventory.laser_cut_part import LaserCutPart
-from utils.inventory.paint_inventory import PaintInventory
 from utils.settings import Settings
 from utils.threads.upload_thread import UploadThread
 from utils.threads.workspace_get_file_thread import WorkspaceDownloadFile
-from utils.threads.workspace_upload_file_thread import WorkspaceUploadThread
-from utils.trusted_users import get_trusted_users
 from utils.workspace.assembly import Assembly
 from utils.workspace.job import Job
-from utils.workspace.workspace import Workspace
 from utils.workspace.workspace_laser_cut_part_group import WorkspaceLaserCutPartGroup
-from utils.workspace.workspace_settings import WorkspaceSettings
 
 if TYPE_CHECKING:
     from ui.widgets.workspace_tab_widget import WorkspaceTabWidget

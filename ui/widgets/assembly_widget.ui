@@ -157,11 +157,27 @@
              <item row="2" column="1">
               <widget class="QComboBox" name="comboBox_assembly_flow_tag"/>
              </item>
-             <item row="1" column="1">
-              <layout class="QVBoxLayout" name="expected_time_to_complete_layout"/>
-             </item>
              <item row="0" column="1">
               <layout class="QHBoxLayout" name="assembly_files_layout"/>
+             </item>
+             <item row="1" column="1">
+              <widget class="QDoubleSpinBox" name="doubleSpinBox_expected_time_to_complete">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="suffix">
+                <string> days</string>
+               </property>
+               <property name="decimals">
+                <number>0</number>
+               </property>
+               <property name="value">
+                <double>7.000000000000000</double>
+               </property>
+              </widget>
              </item>
             </layout>
            </item>

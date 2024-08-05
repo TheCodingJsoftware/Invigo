@@ -1,9 +1,11 @@
 import contextlib
 import os
+from datetime import datetime, timedelta
 from typing import Union
 
 import msgspec
 
+from utils.colors import get_random_color
 from utils.inventory.component import Component
 from utils.inventory.laser_cut_part import LaserCutPart
 from utils.workspace.assembly import Assembly
@@ -36,23 +38,38 @@ class Workspace:
 
     def deep_split_job_copy(self, job: Job) -> Job:
         new_job = Job({}, self.job_manager)
+        new_job.color = get_random_color()
         new_job.load_settings(job.to_dict())
-        self.copy_assemblies(job.assemblies, new_job)
+        self.copy_assemblies(job.assemblies, new_job, job.ending_date)
         return new_job
 
-    def copy_assemblies(self, assemblies: list[Assembly], job: Job):
+    def copy_assemblies(self, assemblies: list[Assembly], parent: Union[Job, Assembly], job_ending_date: str):
         for assembly in assemblies:
             for _ in range(int(assembly.quantity)):
-                new_assembly = Assembly({}, job)
+                new_assembly = Assembly({}, parent if isinstance(parent, Job) else parent.job)
                 new_assembly.load_settings(assembly.to_dict())
+
+                parent_starting_date = datetime.strptime(parent.starting_date, '%Y-%m-%d')
+
+                calculated_starting_date = parent_starting_date - timedelta(days=7.0)
+                calculated_ending_date = calculated_starting_date + timedelta(days=assembly.expected_time_to_complete)
+
+                new_assembly.starting_date = calculated_starting_date.strftime('%Y-%m-%d')
+                new_assembly.ending_date = calculated_ending_date.strftime('%Y-%m-%d')
+
                 new_assembly.quantity = 1
-                job.add_assembly(new_assembly)
+
+                if isinstance(parent, Job):
+                    parent.add_assembly(new_assembly)
+                else:
+                    parent.add_sub_assembly(new_assembly)
+
                 if assembly.laser_cut_parts:
                     self.copy_laser_cut_parts(assembly.laser_cut_parts, new_assembly)
                 if assembly.components:
                     self.copy_components(assembly.components, new_assembly)
                 if assembly.sub_assemblies:
-                    self.copy_assemblies(assembly.sub_assemblies, job)
+                    self.copy_assemblies(assembly.sub_assemblies, new_assembly, job_ending_date)
 
     def copy_components(self, components: list[Component], assembly: Assembly):
         for component in components:
@@ -63,7 +80,6 @@ class Workspace:
         for part in laser_cut_parts:
             for _ in range(int(part.quantity)):
                 new_part = LaserCutPart(part.to_dict(), self.laser_cut_inventory)
-                # timer = WorkspaceTimer({}, new_part.flow_tag)
                 new_part.timer.start_timer()
                 new_part.quantity = 1
                 assembly.add_laser_cut_part(new_part)
@@ -87,6 +103,8 @@ class Workspace:
             if assembly.is_assembly_finished():
                 continue
             if not assembly.all_laser_cut_parts_complete():
+                continue
+            if not assembly.all_sub_assemblies_complete():
                 continue
             if current_tag := assembly.get_current_tag():
                 if current_tag.name != self.workspace_filter.current_tag:
