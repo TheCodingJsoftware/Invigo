@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1154</width>
-    <height>1109</height>
+    <width>1150</width>
+    <height>1101</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -60,20 +60,23 @@
           <item row="0" column="2">
            <widget class="QLabel" name="label_4">
             <property name="text">
-             <string>Date shipped:</string>
+             <string>Starting date:</string>
             </property>
             <property name="buddy">
-             <cstring>dateEdit_shipped</cstring>
+             <cstring>dateEdit_start</cstring>
             </property>
            </widget>
           </item>
           <item row="1" column="3">
-           <widget class="QDateEdit" name="dateEdit_expected">
+           <widget class="QDateEdit" name="dateEdit_end">
             <property name="minimumSize">
              <size>
               <width>100</width>
               <height>0</height>
              </size>
+            </property>
+            <property name="toolTip">
+             <string>When is this job supposed to be finished.</string>
             </property>
             <property name="showGroupSeparator" stdset="0">
              <bool>true</bool>
@@ -127,10 +130,10 @@
           <item row="1" column="2">
            <widget class="QLabel" name="label_3">
             <property name="text">
-             <string>Date expected:</string>
+             <string>Ending date:</string>
             </property>
             <property name="buddy">
-             <cstring>dateEdit_expected</cstring>
+             <cstring>dateEdit_end</cstring>
             </property>
            </widget>
           </item>
@@ -169,12 +172,15 @@
            </widget>
           </item>
           <item row="0" column="3">
-           <widget class="QDateEdit" name="dateEdit_shipped">
+           <widget class="QDateEdit" name="dateEdit_start">
             <property name="minimumSize">
              <size>
               <width>100</width>
               <height>0</height>
              </size>
+            </property>
+            <property name="toolTip">
+             <string>When is this job supposed to start.</string>
             </property>
             <property name="showGroupSeparator" stdset="0">
              <bool>true</bool>
@@ -380,8 +386,8 @@ QPushButton#pushButton_reload_job:flat:hover {
              <rect>
               <x>0</x>
               <y>0</y>
-              <width>209</width>
-              <height>989</height>
+              <width>208</width>
+              <height>981</height>
              </rect>
             </property>
             <layout class="QVBoxLayout" name="verticalLayout_7">
@@ -697,6 +703,29 @@ QPushButton#pushButton_reload_job:flat:hover {
                            </widget>
                           </item>
                          </layout>
+                        </item>
+                        <item>
+                         <widget class="QGroupBox" name="groupBox">
+                          <property name="title">
+                           <string>Components</string>
+                          </property>
+                          <layout class="QVBoxLayout" name="verticalLayout_10">
+                           <item>
+                            <widget class="QCheckBox" name="checkBox_components_use_overhead">
+                             <property name="text">
+                              <string>Use overhead</string>
+                             </property>
+                            </widget>
+                           </item>
+                           <item>
+                            <widget class="QCheckBox" name="checkBox_components_use_profit_margin">
+                             <property name="text">
+                              <string>Use profit margin</string>
+                             </property>
+                            </widget>
+                           </item>
+                          </layout>
+                         </widget>
                         </item>
                         <item>
                          <widget class="QPushButton" name="pushButton_item_to_sheet">
@@ -1054,8 +1083,8 @@ QPushButton#pushButton_reload_job:flat:hover {
            <rect>
             <x>0</x>
             <y>0</y>
-            <width>892</width>
-            <height>963</height>
+            <width>889</width>
+            <height>955</height>
            </rect>
           </property>
           <layout class="QVBoxLayout" name="verticalLayout_3">
@@ -1175,9 +1204,9 @@ QPushButton#pushButton_reload_job:flat:hover {
  <tabstops>
   <tabstop>doubleSpinBox_order_number</tabstop>
   <tabstop>pushButton_get_order_number</tabstop>
-  <tabstop>dateEdit_shipped</tabstop>
+  <tabstop>dateEdit_start</tabstop>
   <tabstop>comboBox_type</tabstop>
-  <tabstop>dateEdit_expected</tabstop>
+  <tabstop>dateEdit_end</tabstop>
   <tabstop>pushButton_global_sheet_settings</tabstop>
   <tabstop>comboBox_laser_cutting</tabstop>
   <tabstop>doubleSpinBox_cost_for_laser</tabstop>

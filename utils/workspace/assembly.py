@@ -47,6 +47,8 @@ class Assembly:
         self.powder_transfer_efficiency: float = 66.67
         self.cost_for_powder_coating: float = 0.0
 
+        self.starting_date: str = ""
+        self.ending_date: str = ""
         self.expected_time_to_complete: float = 0.0
         self.flow_tag: FlowTag = None
         self.current_flow_tag_index: int = 0
@@ -75,6 +77,12 @@ class Assembly:
     def all_laser_cut_parts_complete(self) -> bool:
         for laser_cut_part in self.laser_cut_parts:
             if not laser_cut_part.is_process_finished():
+                return False
+        return True
+
+    def all_sub_assemblies_complete(self) -> bool:
+        for sub_assembly in self.sub_assemblies:
+            if not sub_assembly.is_assembly_finished():
                 return False
         return True
 
@@ -148,7 +156,9 @@ class Assembly:
     def load_settings(self, data: dict[str, Union[float, bool, str, dict]]):
         assembly_data = data.get("assembly_data", {})
         self.name = assembly_data.get("name", "Assembly")
+        self.starting_date: str = assembly_data.get("starting_date", "")
         self.expected_time_to_complete: float = assembly_data.get("expected_time_to_complete", 0.0)
+        self.ending_date: str = assembly_data.get("ending_date", "")
         self.flow_tag = FlowTag("", assembly_data.get("flow_tag", {}), self.workspace_settings)
         self.current_flow_tag_index = assembly_data.get("current_flow_tag_index", 0)
         self.current_flow_tag_status_index = assembly_data.get("current_flow_tag_status_index", 0)
@@ -206,12 +216,14 @@ class Assembly:
             sub_assembly = Assembly(sub_assembly_data, self.job)
             self.sub_assemblies.append(sub_assembly)
 
-    def to_dict(self) -> dict:
+    def to_dict(self) -> dict[str, dict[str, Union[list[dict[str, object]], object]]]:
         return {
             "assembly_data": {
                 "name": self.name,
                 "color": self.color,
+                "starting_date": self.starting_date,
                 "expected_time_to_complete": self.expected_time_to_complete,
+                "ending_date": self.ending_date,
                 "assembly_image": self.assembly_image,
                 "quantity": self.quantity,
                 "uses_primer": self.uses_primer,

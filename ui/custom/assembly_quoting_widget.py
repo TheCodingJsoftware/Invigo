@@ -167,12 +167,13 @@ class AssemblyQuotingWidget(AssemblyWidget):
 
         return main_widget, files_layout
 
-    def upload_assembly_image(self, path_to_image: str):
+    def upload_assembly_image(self, path_to_image: str, save_image: bool = True):
         file_name = os.path.basename(path_to_image)
 
         target_path = os.path.join("images", file_name)
 
-        self.copy_file_with_overwrite(path_to_image, target_path)
+        if save_image:
+            self.copy_file_with_overwrite(path_to_image, target_path)
 
         self.assembly_image.set_new_image(target_path)
         self.assembly.assembly_image = target_path
@@ -196,7 +197,7 @@ class AssemblyQuotingWidget(AssemblyWidget):
             if not image.isNull():
                 temp_path = f"images/{self.assembly.name}.png"
                 image.save(temp_path)
-                self.upload_assembly_image(temp_path)
+                self.upload_assembly_image(temp_path, False)
 
     def assembly_flow_tag_changed(self):
         self.assembly.flow_tag = self.workspace_settings.get_flow_tag_by_name(self.comboBox_assembly_flow_tag.currentText())

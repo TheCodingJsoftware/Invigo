@@ -48,9 +48,9 @@ class CoverPage:
                 <div style="border: #cccccc; border-radius: 10px; border-width: 1px; border-style: solid; left: 0; width: 400px; height: 180px; position: absolute; margin: 10px; top: 100px;">
                     <div style="padding-top: 10px; padding-right: 10px; padding-left: 10px">
                         Date Shipped:
-                        <input class="input-box" type="text" value="{self.quote.date_shipped}">
+                        <input class="input-box" type="text" value="{self.quote.starting_date}">
                         Date Expected:
-                        <input class="input-box" type="text" value="{self.quote.date_expected}">
+                        <input class="input-box" type="text" value="{self.quote.ending_date}">
                         Received in good order by:
                         <input class="input-box" type="text" value="">
                     </div>

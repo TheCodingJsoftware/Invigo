@@ -1,3 +1,5 @@
+from PyQt6.QtCore import QDate
+
 from enum import Enum
 
 
@@ -20,3 +22,5 @@ class WorkspaceFilter:
         self.thickness_filter: dict[str, bool] = {}
         self.paint_filter: dict[str, bool] = {}
         self.sorting_method: SortingMethod = ""
+        self.date_range: tuple[QDate, QDate] = ()
+        self.enable_date_range: bool = False

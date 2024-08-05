@@ -740,7 +740,7 @@ class WorkspaceJobPrintout:
         <main class="responsive">
         {header_html}<br>"""
 
-        cover_page = CoverPage(self.job.order_number, self.job.date_shipped, self.job.date_expected, self.job.ship_to)
+        cover_page = CoverPage(self.job.order_number, self.job.starting_date, self.job.ending_date, self.job.ship_to)
 
         html += cover_page.generate()
 

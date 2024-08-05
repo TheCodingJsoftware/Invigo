@@ -167,22 +167,22 @@ class JobWidget(QWidget):
         self.comboBox_type.setCurrentIndex(self.job.status.value - 1)
         self.comboBox_type.wheelEvent = lambda event: None
         self.comboBox_type.currentTextChanged.connect(self.job_settings_changed)
-        self.dateEdit_shipped: QDateEdit = self.findChild(QDateEdit, "dateEdit_shipped")
+        self.dateEdit_start: QDateEdit = self.findChild(QDateEdit, "dateEdit_start")
         try:
-            year, month, day = map(int, self.job.date_shipped.split("-"))
-            self.dateEdit_shipped.setDate(QDate(year, month, day))
+            year, month, day = map(int, self.job.starting_date.split("-"))
+            self.dateEdit_start.setDate(QDate(year, month, day))
         except ValueError:
-            self.dateEdit_shipped.setDate(QDate.currentDate())
-        self.dateEdit_shipped.dateChanged.connect(self.job_settings_changed)
-        self.dateEdit_shipped.wheelEvent = lambda event: None
-        self.dateEdit_expected: QDateEdit = self.findChild(QDateEdit, "dateEdit_expected")
+            self.dateEdit_start.setDate(QDate.currentDate())
+        self.dateEdit_start.dateChanged.connect(self.job_settings_changed)
+        self.dateEdit_start.wheelEvent = lambda event: None
+        self.dateEdit_end: QDateEdit = self.findChild(QDateEdit, "dateEdit_end")
         try:
-            year, month, day = map(int, self.job.date_expected.split("-"))
-            self.dateEdit_expected.setDate(QDate(year, month, day))
+            year, month, day = map(int, self.job.ending_date.split("-"))
+            self.dateEdit_end.setDate(QDate(year, month, day))
         except ValueError:
-            self.dateEdit_expected.setDate(QDate.currentDate())
-        self.dateEdit_expected.dateChanged.connect(self.job_settings_changed)
-        self.dateEdit_expected.wheelEvent = lambda event: None
+            self.dateEdit_end.setDate(QDate.currentDate())
+        self.dateEdit_end.dateChanged.connect(self.job_settings_changed)
+        self.dateEdit_end.wheelEvent = lambda event: None
         self.textEdit_ship_to: QTextEdit = self.findChild(QTextEdit, "textEdit_ship_to")
         self.textEdit_ship_to.setText(self.job.ship_to)
         self.textEdit_ship_to.textChanged.connect(self.job_settings_changed)
@@ -346,8 +346,8 @@ QPushButton:checked:pressed#assembly_button_drop_menu {
     def job_settings_changed(self):
         self.job.order_number = self.doubleSpinBox_order_number.value()
         self.job.status = JobStatus(self.comboBox_type.currentIndex() + 1)
-        self.job.date_shipped = self.dateEdit_shipped.date().toString("yyyy-MM-dd")
-        self.job.date_expected = self.dateEdit_expected.date().toString("yyyy-MM-dd")
+        self.job.starting_date = self.dateEdit_start.date().toString("yyyy-MM-dd")
+        self.job.ending_date = self.dateEdit_end.date().toString("yyyy-MM-dd")
         self.job.ship_to = self.textEdit_ship_to.toPlainText()
         self.changes_made()
 

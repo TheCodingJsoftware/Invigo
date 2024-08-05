@@ -95,7 +95,7 @@ from utils.workspace.workspace_history import WorkspaceHistory
 from utils.workspace.workspace_laser_cut_part_group import WorkspaceLaserCutPartGroup
 from utils.workspace.workspace_settings import WorkspaceSettings
 
-__version__: str = "v3.3.3"
+__version__: str = "v3.3.4"
 
 
 def check_folders(folders: list[str]):
@@ -1739,6 +1739,7 @@ class MainWindow(QMainWindow):
         self.sheets_inventory.save()
         self.sync_changes()
 
+    # TODO Group sheets together with quantity: e.g. 5, 10, 1 should be total 16 of the same sheets in different nests
     def remove_sheet_quantities_from_nests(self, nests: list[Nest]):
         for nest in nests:
             if sheet := self.sheets_inventory.get_sheet_by_name(nest.sheet.get_name()):
@@ -1985,7 +1986,7 @@ class MainWindow(QMainWindow):
         load_nest_thread.start()
         load_nest_thread.wait()
 
-    # TODO Update existing LCP's with the ones in the nest
+    # ? TODO Update existing LCP's with the ones in the nest
     def load_nests_for_job_response(self, nests: Union[list[Nest], str]):
         if isinstance(nests, str):
             self.status_button.setText(f"Encountered error processing nests: {nests}", "red")

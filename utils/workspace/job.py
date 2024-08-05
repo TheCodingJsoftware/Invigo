@@ -1,5 +1,5 @@
 from enum import Enum, auto
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Union
 
 from natsort import natsorted
 
@@ -40,8 +40,8 @@ class Job:
         self.name: str = ""
         self.order_number: float = 0.0
         self.ship_to: str = ""
-        self.date_shipped: str = ""
-        self.date_expected: str = ""
+        self.starting_date: str = ""
+        self.ending_date: str = ""
         self.color: str = "#eabf3e"  # default
         self.assemblies: list[Assembly] = []
         self.nests: list[Nest] = []
@@ -146,6 +146,7 @@ class Job:
         return laser_cut_parts
 
     def get_grouped_laser_cut_parts(self) -> list[LaserCutPart]:
+        '''Used in printouts'''
         self.group_laser_cut_parts()
         return self.grouped_laser_cut_parts
 
@@ -164,8 +165,8 @@ class Job:
         self.name = job_data.get("name", "")
         self.order_number = job_data.get("order_number", 0.0)
         self.ship_to = job_data.get("ship_to", "")
-        self.date_shipped = job_data.get("date_shipped", "")
-        self.date_expected = job_data.get("date_expected", "")
+        self.starting_date = job_data.get("starting_date", "")
+        self.ending_date = job_data.get("ending_date", "")
         self.status = JobStatus(int(job_data.get("type", 1)))  # We cast just in case, trust me
         self.color = JobColor.get_color(self.status)
         self.price_calculator.load_settings(job_data.get("price_settings", {}))
@@ -229,7 +230,7 @@ class Job:
             assembly = Assembly(assembly_data, self)
             self.add_assembly(assembly)
 
-    def to_dict(self) -> dict:
+    def to_dict(self) -> dict[str, dict[str, Union[list[dict[str, object]], object]]]:
         self.unsaved_changes = False
         return {
             "job_data": {
@@ -237,8 +238,8 @@ class Job:
                 "type": self.status.value,
                 "order_number": self.order_number,
                 "ship_to": self.ship_to,
-                "date_shipped": self.date_shipped,
-                "date_expected": self.date_expected,
+                "starting_date": self.starting_date,
+                "ending_date": self.ending_date,
                 "color": JobColor.get_color(self.status),
                 "price_settings": self.price_calculator.to_dict(),
             },

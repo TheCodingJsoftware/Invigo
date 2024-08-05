@@ -1046,9 +1046,7 @@ QLabel {
     color: #EAE9FC;
 }
 /* https://www.qtcentre.org/threads/30478-How-To-Change-Style-Sheet-for-QCalendarWidget */
-QCalendarWidget QAbstractItemView:item{
-    border: 1px solid #151515;
-}
+
 QCalendarWidget QWidget{
 	background-color: #151515;
 	border-radius: 5px;
@@ -1079,10 +1077,11 @@ QCalendarWidget QToolButton#qt_calendar_nextmonth {
     qproperty-icon: url(ui/svg/calendar_next.svg);
 }
 
-QCalendarWidget QAbstractItemView:disabled { color: rgb(64, 64, 64); }
+QCalendarWidget QAbstractItemView:disabled {
+    color: rgb(64, 64, 64);
+}
 /* days in other months */
-QCalendarWidget QAbstractItemView:enabled
-{
+QCalendarWidget QAbstractItemView:enabled {
 	color: rgb(180, 180, 180);
 	selection-background-color: rgb(64, 64, 64);
 	selection-color: rgb(0, 255, 0);
