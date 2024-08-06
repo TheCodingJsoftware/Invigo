@@ -1,7 +1,7 @@
 from datetime import datetime
 from typing import Union
 
-from utils.workspace.flow_tag import FlowTag
+from utils.workspace.flowtag import Flowtag
 from utils.workspace.tag import Tag
 
 
@@ -31,8 +31,8 @@ class TagTimer:
         return self.timer_data
 
 
-class WorkspaceTimer:
-    def __init__(self, data: dict[str, list[dict[str, str]]], flow_tag: FlowTag):
+class FlowtagTimer:
+    def __init__(self, data: dict[str, list[dict[str, str]]], flow_tag: Flowtag):
         self.recorded_data: dict[Tag, TagTimer] = {}
         self.flow_tag = flow_tag
         self.load_data(data)

@@ -7,7 +7,9 @@ from utils.inventory.component import Component
 from utils.inventory.laser_cut_part import LaserCutPart
 from utils.inventory.nest import Nest
 from utils.workspace.assembly import Assembly
+from utils.workspace.tag import Tag
 from utils.workspace.job_price_calculator import JobPriceCalculator
+from utils.workspace.flowtag_timeline import FlowtagTimeline
 
 if TYPE_CHECKING:
     from utils.workspace.job_manager import JobManager
@@ -45,6 +47,7 @@ class Job:
         self.color: str = "#eabf3e"  # default
         self.assemblies: list[Assembly] = []
         self.nests: list[Nest] = []
+        self.process_timeline = FlowtagTimeline(self)
 
         self.job_manager: JobManager = job_manager
         self.status = JobStatus.PLANNING
@@ -66,6 +69,13 @@ class Job:
 
         if self.price_calculator.match_item_cogs_to_sheet:
             self.price_calculator.update_laser_cut_parts_to_sheet_price()
+
+    def get_unique_parts_flowtag_tags(self) -> list[Tag]:
+        tags: dict[str, Tag] = {}
+        for laser_cut_part in self.get_all_laser_cut_parts():
+            for tag in laser_cut_part.flow_tag.tags:
+                tags[tag.name] = tag
+        return tags.values()
 
     def changes_made(self):
         self.unsaved_changes = True
@@ -170,6 +180,7 @@ class Job:
         self.status = JobStatus(int(job_data.get("type", 1)))  # We cast just in case, trust me
         self.color = JobColor.get_color(self.status)
         self.price_calculator.load_settings(job_data.get("price_settings", {}))
+        self.process_timeline.load_data(job_data.get("process_timeline", {}))
 
     def update_inventory_items_data(self):
         for laser_cut_part in self.get_all_laser_cut_parts():
@@ -242,6 +253,7 @@ class Job:
                 "ending_date": self.ending_date,
                 "color": JobColor.get_color(self.status),
                 "price_settings": self.price_calculator.to_dict(),
+                "process_timeline": self.process_timeline.to_dict(),
             },
             "nests": [nest.to_dict() for nest in self.nests],
             "assemblies": [assembly.to_dict() for assembly in self.assemblies],

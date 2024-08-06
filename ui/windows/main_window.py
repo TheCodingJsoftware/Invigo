@@ -358,8 +358,8 @@ class MainWindow(QMainWindow):
         self.pushButton_save_job_2.clicked.connect(partial(self.save_job, None))
         self.pushButton_save_as_job.setHidden(True)
         self.pushButton_save_as_job_2.setHidden(True)
-        self.pushButton_send_to_workspace.clicked.connect(self.send_job_to_workspace)
-        self.pushButton_send_to_workspace_2.clicked.connect(self.send_job_to_workspace)
+        self.pushButton_send_to_production_planner.clicked.connect(self.send_job_to_workspace)
+        self.pushButton_send_to_production_planner_2.clicked.connect(self.send_job_to_workspace)
 
         self.saved_planning_jobs_layout = self.findChild(QVBoxLayout, "saved_planning_jobs_layout")
         self.saved_planning_jobs_layout.setAlignment(Qt.AlignmentFlag.AlignTop)

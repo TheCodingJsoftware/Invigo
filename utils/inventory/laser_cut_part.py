@@ -6,10 +6,10 @@ from utils.inventory.inventory_item import InventoryItem
 from utils.inventory.paint import Paint
 from utils.inventory.powder import Powder
 from utils.inventory.primer import Primer
-from utils.workspace.flow_tag import FlowTag
+from utils.workspace.flowtag import Flowtag
 from utils.workspace.tag import Tag
 from utils.workspace.workspace_settings import WorkspaceSettings
-from utils.workspace.workspace_timer import WorkspaceTimer
+from utils.workspace.flowtag_timer import FlowtagTimer
 
 if TYPE_CHECKING:
     from utils.inventory.laser_cut_inventory import LaserCutInventory
@@ -74,13 +74,13 @@ class LaserCutPart(InventoryItem):
         self.powder_transfer_efficiency: float = 66.67
         self.cost_for_powder_coating: float = 0.0
 
-        self.flow_tag: FlowTag = None
+        self.flow_tag: Flowtag = None
         self.current_flow_tag_index: int = 0
         self.current_flow_tag_status_index: int = 0
         self.bending_files: list[str] = []
         self.welding_files: list[str] = []
         self.cnc_milling_files: list[str] = []
-        self.timer: WorkspaceTimer = None
+        self.timer: FlowtagTimer = None
 
         # NOTE Only for Quote Generator and load_nest.py
         self.nest: Nest = None
@@ -219,7 +219,7 @@ class LaserCutPart(InventoryItem):
             self.powder_item = self.paint_inventory.get_powder(self.powder_name)
         self.cost_for_powder_coating = data.get("cost_for_powder_coating", 0.0)
 
-        self.flow_tag = FlowTag("", data.get("flow_tag", {"name": "", "tags": []}), self.workspace_settings)
+        self.flow_tag = Flowtag("", data.get("flow_tag", {"name": "", "tags": []}), self.workspace_settings)
         self.current_flow_tag_index = data.get("current_flow_tag_index", 0)
         self.current_flow_tag_status_index = data.get("current_flow_tag_status_index", 0)
         self.bending_files.clear()
@@ -231,7 +231,7 @@ class LaserCutPart(InventoryItem):
         # If deepcopy is not done, than a reference is kept in the original object it was copied from
         # and then it messes everything up, specifically it will mess up laser cut parts
         # when you add a job to workspace
-        self.timer = WorkspaceTimer(copy.deepcopy(data.get("timer", {})), self.flow_tag)
+        self.timer = FlowtagTimer(copy.deepcopy(data.get("timer", {})), self.flow_tag)
 
         self.quantity_in_nest = data.get("quantity_in_nest")
 

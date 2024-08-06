@@ -17,10 +17,10 @@ from utils.workspace.workspace_settings import WorkspaceSettings
 
 
 class Workspace:
-    def __init__(self, workspace_settings: WorkspaceSettings, job_manager: JobManager):
+    def __init__(self, workspace_settings: WorkspaceSettings, job_manager: JobManager, filename: str = "workspace"):
         self.jobs: list[Job] = []
 
-        self.filename: str = "workspace"
+        self.filename: str = filename
         self.FOLDER_LOCATION: str = f"{os.getcwd()}/data"
 
         self.workspace_settings = workspace_settings
