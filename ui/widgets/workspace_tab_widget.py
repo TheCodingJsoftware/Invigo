@@ -140,6 +140,7 @@ class WorkspaceTabWidget(QWidget):
         self.calendar_button = CalendarButton("Date Range")
         self.calendar_button.date_range_changed.connect(self.date_range_changed)
         self.calendar_button.date_range_toggled.connect(self.date_range_toggled)
+        self.workspace_filter.date_range = (QDate().currentDate(), None)
 
         self.menu_buttons_layout.addWidget(self.materials_menu_button)
         self.menu_buttons_layout.addWidget(self.thickness_menu_button)

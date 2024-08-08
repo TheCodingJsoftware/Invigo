@@ -387,7 +387,7 @@ class LaserCutPartsTable:
                 </button>
             </td>
             <td class="small-text min" data-column="1" data-name="material">{laser_cut_part.gauge}<br>{laser_cut_part.material}</td>
-            <td class="small-text" data-column="2" data-name="process">{laser_cut_part.flow_tag.get_name()}{self.get_paint(laser_cut_part)}</td>
+            <td class="small-text" data-column="2" data-name="process">{laser_cut_part.flowtag.get_name()}{self.get_paint(laser_cut_part)}</td>
             <td class="small-text" data-column="3" data-name="shelf-#">{laser_cut_part.shelf_number}</td>
             <td class="small-text min" data-column="4" data-name="unit-qty">{laser_cut_part.quantity}</td>
             <td class="small-text min" data-column="5" data-name="qty">{(laser_cut_part.quantity * self.assembly_quantity):,.2f}</td>
@@ -540,7 +540,7 @@ class AssemblyTable:
                     <img src="{self.server_directory}/image/{assembly.assembly_image}" class="assembly_image round">
                     <div class="max">
                         <h6 class="small">{assembly.name}</h6>
-                        <div id="assembly-proess-layout">{assembly.flow_tag.get_name()}</div>
+                        <div id="assembly-proess-layout">{assembly.flowtag.get_name()}</div>
                     </div>
                     <h5>× {int(assembly.quantity)}</h5>
                 </a><div class="divider"></div>"""
@@ -574,7 +574,7 @@ class AssemblyDiv:
         html += '<div class="padding">'
         html += f"<h5>{self.assembly.name}</h5>"
         html += f'<p class="small-text">Assembly Quantity: {self.assembly.quantity}</p>'
-        html += f'<p class="small-text">Process: {self.assembly.flow_tag.get_name()}</p>'
+        html += f'<p class="small-text">Process: {self.assembly.flowtag.get_name()}</p>'
         html += "</div>"
         html += "</div>"
         return html
@@ -650,7 +650,7 @@ class PrintoutHeader:
                     <span>Quote</span>
                 </a>
                 <a {'class="active primary"' if self.printout_type == "WORKORDER" else ''} data-target="workorder">
-                    <i>manufacturing</i>
+                    <i>construction</i>
                     <span>Workorder</span>
                 </a>
                 <a {'class="active primary"' if self.printout_type == "PACKINGSLIP" else ''} data-target="packingslip">

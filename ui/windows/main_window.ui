@@ -80,7 +80,7 @@
        <enum>QTabWidget::TabShape::Rounded</enum>
       </property>
       <property name="currentIndex">
-       <number>7</number>
+       <number>4</number>
       </property>
       <property name="elideMode">
        <enum>Qt::TextElideMode::ElideNone</enum>
@@ -353,8 +353,8 @@
                       <rect>
                        <x>0</x>
                        <y>0</y>
-                       <width>1484</width>
-                       <height>559</height>
+                       <width>1486</width>
+                       <height>519</height>
                       </rect>
                      </property>
                      <layout class="QVBoxLayout" name="verticalLayout_17">
@@ -394,7 +394,7 @@
                       <rect>
                        <x>0</x>
                        <y>0</y>
-                       <width>68</width>
+                       <width>80</width>
                        <height>16</height>
                       </rect>
                      </property>
@@ -459,6 +459,36 @@
                  </widget>
                 </item>
                </layout>
+              </item>
+              <item>
+               <widget class="QPushButton" name="pushButton_send_to_production_planner">
+                <property name="styleSheet">
+                 <string notr="true">QPushButton#pushButton_send_to_production_planner{
+    color: #171717;
+	background-color: #3daee9;
+	border: 1px solid #3daee9;
+	border-radius: 8px;
+	padding: 8px 16px;
+	font-weight: bold;
+}
+QPushButton#pushButton_send_to_production_planner:hover{
+	background-color: #48b6ed;
+	border-color: #48b6ed;
+}
+QPushButton#pushButton_send_to_production_planner:pressed{
+	background-color: #2b92c5;
+}
+QPushButton#pushButton_send_to_production_planner:disabled{
+	background-color: rgba(44, 44, 44, 130);
+	border: 1px solid rgba(57, 57, 57, 130);
+	color: rgb(144, 144, 144);
+	border-radius: 4px;
+}</string>
+                </property>
+                <property name="text">
+                 <string>Send Jobs to Production Planner</string>
+                </property>
+               </widget>
               </item>
               <item>
                <widget class="QPushButton" name="pushButton_send_to_workspace">
@@ -642,8 +672,8 @@ QPushButton#pushButton_send_to_workspace:disabled{
                     <rect>
                      <x>0</x>
                      <y>0</y>
-                     <width>1498</width>
-                     <height>560</height>
+                     <width>80</width>
+                     <height>16</height>
                     </rect>
                    </property>
                    <layout class="QVBoxLayout" name="verticalLayout_27">
@@ -693,8 +723,8 @@ QPushButton#pushButton_send_to_workspace:disabled{
                     <rect>
                      <x>0</x>
                      <y>0</y>
-                     <width>1490</width>
-                     <height>560</height>
+                     <width>80</width>
+                     <height>16</height>
                     </rect>
                    </property>
                    <layout class="QVBoxLayout" name="verticalLayout_31">
@@ -758,6 +788,36 @@ QPushButton#pushButton_send_to_workspace:disabled{
                </widget>
               </item>
              </layout>
+            </item>
+            <item>
+             <widget class="QPushButton" name="pushButton_send_to_production_planner_2">
+              <property name="styleSheet">
+               <string notr="true">QPushButton#pushButton_send_to_production_planner_2{
+    color: #171717;
+	background-color: #3daee9;
+	border: 1px solid #3daee9;
+	border-radius: 8px;
+	padding: 8px 16px;
+	font-weight: bold;
+}
+QPushButton#pushButton_send_to_production_planner_2:hover{
+	background-color: #48b6ed;
+	border-color: #48b6ed;
+}
+QPushButton#pushButton_send_to_production_planner_2:pressed{
+	background-color: #2b92c5;
+}
+QPushButton#pushButton_send_to_production_planner_2:disabled{
+	background-color: rgba(44, 44, 44, 130);
+	border: 1px solid rgba(57, 57, 57, 130);
+	color: rgb(144, 144, 144);
+	border-radius: 4px;
+}</string>
+              </property>
+              <property name="text">
+               <string>Send Jobs to Production Planner</string>
+              </property>
+             </widget>
             </item>
             <item>
              <widget class="QPushButton" name="pushButton_send_to_workspace_2">
@@ -1003,7 +1063,7 @@ QPushButton#pushButton_send_to_workspace_2:disabled{
                        <rect>
                         <x>0</x>
                         <y>0</y>
-                        <width>68</width>
+                        <width>80</width>
                         <height>16</height>
                        </rect>
                       </property>
@@ -1072,7 +1132,7 @@ QPushButton#pushButton_send_to_workspace_2:disabled{
                        <rect>
                         <x>0</x>
                         <y>0</y>
-                        <width>68</width>
+                        <width>80</width>
                         <height>16</height>
                        </rect>
                       </property>
@@ -1352,6 +1412,7 @@ QPushButton#pushButton_generate_quote:disabled{
     </property>
     <addaction name="actionInvigo_Help"/>
     <addaction name="separator"/>
+    <addaction name="actionInvi_go"/>
     <addaction name="actionInventory"/>
     <addaction name="actionServer_log"/>
     <addaction name="actionServer_logs"/>
@@ -1419,12 +1480,19 @@ QPushButton#pushButton_generate_quote:disabled{
     <addaction name="actionOpen_Item_History"/>
     <addaction name="actionRemoved_Component_Quantity_History"/>
    </widget>
+   <widget class="QMenu" name="menuProduction_Planner">
+    <property name="title">
+     <string>Production Planner</string>
+    </property>
+    <addaction name="actionOpen_production_planner"/>
+   </widget>
    <addaction name="menuFile"/>
    <addaction name="menuSettings"/>
    <addaction name="menuSort"/>
    <addaction name="menuPurchase_Orders"/>
    <addaction name="menuQuote_Generator"/>
    <addaction name="menuPaint_Inventory"/>
+   <addaction name="menuProduction_Planner"/>
    <addaction name="menuJobSorter"/>
    <addaction name="menuHistory"/>
    <addaction name="menuHelp"/>
@@ -1741,6 +1809,25 @@ QPushButton#pushButton_generate_quote:disabled{
    </property>
    <property name="text">
     <string>Live Server Log</string>
+   </property>
+  </action>
+  <action name="actionInvi_go">
+   <property name="icon">
+    <iconset theme="applications-internet"/>
+   </property>
+   <property name="text">
+    <string>Invi.go</string>
+   </property>
+   <property name="statusTip">
+    <string>Opens invi.go website in your default web browser</string>
+   </property>
+  </action>
+  <action name="actionOpen_production_planner">
+   <property name="icon">
+    <iconset theme="applications-internet"/>
+   </property>
+   <property name="text">
+    <string>Open</string>
    </property>
   </action>
  </widget>

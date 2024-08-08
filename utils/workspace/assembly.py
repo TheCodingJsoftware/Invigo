@@ -6,10 +6,10 @@ from utils.inventory.laser_cut_part import LaserCutPart
 from utils.inventory.paint import Paint
 from utils.inventory.powder import Powder
 from utils.inventory.primer import Primer
-from utils.workspace.flow_tag import FlowTag
+from utils.workspace.flowtag import Flowtag
 from utils.workspace.tag import Tag
 from utils.workspace.workspace_settings import WorkspaceSettings
-from utils.workspace.workspace_timer import WorkspaceTimer
+from utils.workspace.flowtag_timer import FlowtagTimer
 
 if TYPE_CHECKING:
     from utils.workspace.job import Job
@@ -50,13 +50,13 @@ class Assembly:
         self.starting_date: str = ""
         self.ending_date: str = ""
         self.expected_time_to_complete: float = 0.0
-        self.flow_tag: FlowTag = None
+        self.flowtag: Flowtag = None
         self.current_flow_tag_index: int = 0
         self.current_flow_tag_status_index: int = 0
         self.assembly_image: str = None
         self.quantity: int = 1
 
-        self.timer: WorkspaceTimer = None
+        self.timer: FlowtagTimer = None
 
         # NOTE Non serializable variables
         self.workspace_settings: WorkspaceSettings = self.job.workspace_settings
@@ -64,7 +64,7 @@ class Assembly:
         self.load_data(assembly_data)
 
     def is_assembly_finished(self) -> bool:
-        return self.current_flow_tag_index >= len(self.flow_tag.tags)
+        return self.current_flow_tag_index >= len(self.flowtag.tags)
 
     def move_to_next_process(self):
         self.timer.stop(self.get_current_tag())
@@ -100,7 +100,7 @@ class Assembly:
 
     def get_current_tag(self) -> Optional[Tag]:
         try:
-            return self.flow_tag.tags[self.current_flow_tag_index]
+            return self.flowtag.tags[self.current_flow_tag_index]
         except IndexError:
             return None
 
@@ -159,7 +159,7 @@ class Assembly:
         self.starting_date: str = assembly_data.get("starting_date", "")
         self.expected_time_to_complete: float = assembly_data.get("expected_time_to_complete", 0.0)
         self.ending_date: str = assembly_data.get("ending_date", "")
-        self.flow_tag = FlowTag("", assembly_data.get("flow_tag", {}), self.workspace_settings)
+        self.flowtag = Flowtag("", assembly_data.get("flow_tag", {}), self.workspace_settings)
         self.current_flow_tag_index = assembly_data.get("current_flow_tag_index", 0)
         self.current_flow_tag_status_index = assembly_data.get("current_flow_tag_status_index", 0)
         self.assembly_image: str = assembly_data.get("assembly_image")
@@ -169,7 +169,7 @@ class Assembly:
         # If deepcopy is not done, than a reference is kept in the original object it was copied from
         # and then it messes everything up, specifically it will mess up laser cut parts
         # when you add a job to workspace
-        self.timer = WorkspaceTimer(copy.deepcopy(assembly_data.get("timer", {})), self.flow_tag)
+        self.timer = FlowtagTimer(copy.deepcopy(assembly_data.get("timer", {})), self.flowtag)
 
         self.uses_primer: bool = assembly_data.get("uses_primer", False)
         self.primer_name: str = assembly_data.get("primer_name")
@@ -239,7 +239,7 @@ class Assembly:
                 "powder_transfer_efficiency": self.powder_transfer_efficiency,
                 "cost_for_powder_coating": self.cost_for_powder_coating,
                 "assembly_files": self.assembly_files,
-                "flow_tag": self.flow_tag.to_dict(),
+                "flow_tag": self.flowtag.to_dict(),
                 "current_flow_tag_index": self.current_flow_tag_index,
                 "current_flow_tag_status_index": self.current_flow_tag_status_index,
                 "timer": self.timer.to_dict(),

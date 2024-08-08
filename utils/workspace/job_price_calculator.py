@@ -21,6 +21,9 @@ class JobPriceCalculator:
         self.item_profit_margin = 0.3
         self.item_overhead = 0.18
 
+        self.components_use_overhead = False
+        self.components_use_profit_margin = False
+
         self.sheet_profit_margin = 0.3
         self.sheet_overhead = 0.18
 
@@ -34,7 +37,7 @@ class JobPriceCalculator:
 
         self.load_settings(settings)
 
-    def calculate_item_overhead(
+    def calculate_laser_cut_part_overhead(
         self,
         cost: float,
         max_iterations: int = 10,
@@ -45,6 +48,18 @@ class JobPriceCalculator:
                 unit_price = (cost + (unit_price * self.item_overhead)) / (1 - self.item_profit_margin)
             except ZeroDivisionError:
                 unit_price = cost + (unit_price * self.item_overhead) / 0.00000001
+        return unit_price
+
+    def calculate_component_overhead(self, cost: float, max_iterations: int = 10) -> float:
+        profit_margin = self.item_profit_margin if self.components_use_profit_margin else 0
+        overhead = self.item_overhead if self.components_use_overhead else 0
+
+        unit_price = 0
+        for _ in range(max_iterations):
+            try:
+                unit_price = (cost + (unit_price * overhead)) / (1 - profit_margin)
+            except ZeroDivisionError:
+                unit_price = cost + (unit_price * overhead) / 0.00000001
         return unit_price
 
     def calculate_sheet_overhead(
@@ -89,26 +104,26 @@ class JobPriceCalculator:
         cost_for_painting = self.paint_inventory.get_paint_cost(laser_cut_part)
         cost_for_powder_coating = self.paint_inventory.get_powder_cost(laser_cut_part, self.mil_thickness)
         return (
-            self.calculate_item_overhead(
+            self.calculate_laser_cut_part_overhead(
                 cost_for_priming,
             )
-            + self.calculate_item_overhead(
+            + self.calculate_laser_cut_part_overhead(
                 cost_for_painting,
             )
-            + self.calculate_item_overhead(
+            + self.calculate_laser_cut_part_overhead(
                 cost_for_powder_coating,
             )
         )
 
     def get_laser_cut_part_cost(self, laser_cut_part: LaserCutPart) -> float:
         return (
-            self.calculate_item_overhead(
+            self.calculate_laser_cut_part_overhead(
                 self.get_laser_cut_part_cost_of_goods(laser_cut_part),
             )
-            + self.calculate_item_overhead(
+            + self.calculate_laser_cut_part_overhead(
                 laser_cut_part.bend_cost,
             )
-            + self.calculate_item_overhead(
+            + self.calculate_laser_cut_part_overhead(
                 laser_cut_part.labor_cost,
             )
             + self.get_laser_cut_part_cost_for_painting(laser_cut_part)
@@ -121,6 +136,8 @@ class JobPriceCalculator:
         return total
 
     def get_component_cost(self, component: Component) -> float:
+        if self.components_use_profit_margin or self.components_use_overhead:
+            return self.calculate_component_overhead(component.price)
         return component.price
 
     def get_cutting_cost(self, nest: Nest) -> float:
@@ -192,6 +209,8 @@ class JobPriceCalculator:
         self.cost_for_laser = settings.get("cost_for_laser", 150)
         self.mil_thickness = settings.get("mil_thickness", 2.0)
         self.match_item_cogs_to_sheet = settings.get("match_item_cogs_to_sheet", False)
+        self.components_use_overhead = settings.get("components_use_overhead", False)
+        self.components_use_profit_margin = settings.get("components_use_profit_margin", False)
 
     def to_dict(self):
         return {
@@ -202,4 +221,6 @@ class JobPriceCalculator:
             "cost_for_laser": self.cost_for_laser,
             "mil_thickness": self.mil_thickness,
             "match_item_cogs_to_sheet": self.match_item_cogs_to_sheet,
+            "components_use_overhead": self.components_use_overhead,
+            "components_use_profit_margin": self.components_use_profit_margin,
         }

@@ -18,9 +18,12 @@ class DropDownCalendarWidget(QWidget):
         self.use_date_range.toggled.connect(self.use_date_range_changed)
 
         self.date_range_calendar = DateRangeCalendar(self)
+        self.date_changed((QDate.currentDate(), None))
         self.date_range_calendar.date_range_changed.connect(self.date_changed)
 
-        self.dates: tuple[QDate, QDate] = ()
+        self.use_date_range.setChecked(False)
+
+        self.dates: tuple[QDate, QDate] = (QDate.currentDate(), None)
 
         self.layout().addWidget(self.use_date_range)
         self.layout().addWidget(self.date_range_calendar)
@@ -73,10 +76,8 @@ class DropDownCalendarWidget(QWidget):
 
     def date_changed(self, dates: tuple[QDate, QDate]):
         self.dates = dates
-        if dates[0]:
-            self.use_date_range.blockSignals(True)
+        if dates[0] and not self.use_date_range.isChecked():
             self.use_date_range.setChecked(True)
-            self.use_date_range.blockSignals(False)
         self.date_range_changed.emit(dates)
 
     def use_date_range_changed(self):
@@ -93,7 +94,7 @@ class CalendarButton(QPushButton):
         self.dropdown_calendar = DropDownCalendarWidget()
         self.dropdown_calendar.date_range_changed.connect(self.on_dates_changed)
         self.dropdown_calendar.date_range_toggled.connect(self.on_date_range_toggled)
-        self.date_range: tuple[QDate, QDate] = ()
+        self.date_range: tuple[QDate, QDate] = (QDate.currentDate(), None)
         self.date_range_checked: bool = False
 
         self.clicked.connect(self.toggle_dropdown)

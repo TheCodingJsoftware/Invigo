@@ -14,7 +14,7 @@ if TYPE_CHECKING:
     from utils.workspace.workspace_settings import WorkspaceSettings
 
 
-class FlowTag:
+class Flowtag:
     def __init__(self, name: str, data: list[str], workspace_settings):
         self.name = name
         self.tags: list[Tag] = []

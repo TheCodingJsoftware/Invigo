@@ -8,8 +8,8 @@ from PyQt6.QtGui import QAction, QCursor, QIcon
 from PyQt6.QtWidgets import QAbstractItemView, QCheckBox, QComboBox, QDialog, QGroupBox, QHBoxLayout, QInputDialog, QLabel, QLineEdit, QListWidget, QMenu, QMessageBox, QPlainTextEdit, QPushButton, QSplitter, QTableWidget, QTableWidgetItem, QTabWidget, QTextEdit, QVBoxLayout, QWidget
 
 from ui.custom_widgets import AssemblyMultiToolBox, DeletePushButton
-from utils.workspace.flow_tag import FlowTag, Group
-from utils.workspace.flow_tags import FlowTags
+from utils.workspace.flowtag import Flowtag, Group
+from utils.workspace.flowtags import Flowtags
 from utils.workspace.status import Status
 from utils.workspace.tag import Tag
 from utils.workspace.workspace_settings import WorkspaceSettings
@@ -87,7 +87,7 @@ class TagWidget(QWidget):
 
 
 class FlowTagWidget(QWidget):
-    def __init__(self, flow_tag: FlowTag, workspace_settings: WorkspaceSettings, parent: "FlowTagsTableWidget"):
+    def __init__(self, flow_tag: Flowtag, workspace_settings: WorkspaceSettings, parent: "FlowTagsTableWidget"):
         super().__init__(parent)
         self.parent: "FlowTagsTableWidget" = parent
         self.flow_tag = flow_tag
@@ -196,17 +196,17 @@ class FlowTagWidget(QWidget):
 class FlowTagsTableWidget(QTableWidget):
     def __init__(
         self,
-        flow_tag_group: FlowTags,
+        flow_tag_group: Flowtags,
         workspace_settings: WorkspaceSettings,
         parent: QWidget,
     ):
         super().__init__(parent)
         self.flow_tag_group = flow_tag_group
         self.workspace_settings = workspace_settings
-        self.table_items: dict[FlowTag, QTableWidgetItem] = {}
+        self.table_items: dict[Flowtag, QTableWidgetItem] = {}
         self.flow_tag_counter: int = 0
 
-        self.table_widgets: dict[FlowTag, dict[str, QTableWidgetItem | FlowTagWidget]] = {}
+        self.table_widgets: dict[Flowtag, dict[str, QTableWidgetItem | FlowTagWidget]] = {}
 
         self.setSelectionBehavior(QAbstractItemView.SelectionBehavior.SelectRows)
         self.setSelectionMode(QAbstractItemView.SelectionMode.ExtendedSelection)
@@ -245,7 +245,7 @@ class FlowTagsTableWidget(QTableWidget):
             self.removeCellWidget(row_count - 1, 0)
 
         self.insertRow(self.rowCount())
-        flow_tag = FlowTag(f"FlowTag{self.flow_tag_counter}", [], self.workspace_settings)
+        flow_tag = Flowtag(f"Flowtag{self.flow_tag_counter}", [], self.workspace_settings)
 
         self.flow_tag_group.add_flow_tag(flow_tag)
 
@@ -287,10 +287,10 @@ class FlowTagsTableWidget(QTableWidget):
         self.setFixedHeight((self.rowCount() * 45) + 70)
         self.flow_tag_counter = self.rowCount() - 1
 
-    def add_tag(self, flow_tag: FlowTag):
+    def add_tag(self, flow_tag: Flowtag):
         self.table_widgets[flow_tag]["widget"].add_tag()
 
-    def delete_selected_flow_tags(self, flow_tag: FlowTag):
+    def delete_selected_flow_tags(self, flow_tag: Flowtag):
         if selected_flow_tags := self.get_selected_flow_tags():
             for flow_tag in selected_flow_tags:
                 self.table_widgets[flow_tag]["widget"].deleteLater()
@@ -298,12 +298,12 @@ class FlowTagsTableWidget(QTableWidget):
                 del self.table_widgets[flow_tag]
                 self.flow_tag_group.remove_flow_tag(flow_tag)
 
-    def get_selected_flow_tags(self) -> list[FlowTags]:
-        selected_flow_tags: list[FlowTags] = []
+    def get_selected_flow_tags(self) -> list[Flowtags]:
+        selected_flow_tags: list[Flowtags] = []
         selected_flow_tags.extend(flow_tag for flow_tag, table_items in self.table_widgets.items() if table_items["name"].isSelected())
         return selected_flow_tags
 
-    def get_selected_flow_tag(self) -> FlowTag:
+    def get_selected_flow_tag(self) -> Flowtag:
         for flow_tag, flow_tag_items in self.table_widgets.items():
             if flow_tag_items["name"].isSelected():
                 return flow_tag
@@ -339,7 +339,7 @@ class EditWorkspaceSettings(QDialog):
         self.tabWidget = self.findChild(QTabWidget, "tabWidget")
         self.tabWidget.currentChanged.connect(self.tab_changed)
 
-        self.flow_tag_tables: dict[FlowTags, FlowTagsTableWidget] = {}
+        self.flow_tag_tables: dict[Flowtags, FlowTagsTableWidget] = {}
 
         self.listWidget_select_tag = self.findChild(QListWidget, "listWidget_select_tag")
         self.listWidget_select_tag.currentItemChanged.connect(self.tag_selection_changed)
@@ -409,7 +409,7 @@ class EditWorkspaceSettings(QDialog):
                 flow_tag_group.group = Group.COMPONENT
             self.add_group(flow_tag_group)
 
-    def add_group(self, flow_tag_group: FlowTags):
+    def add_group(self, flow_tag_group: Flowtags):
         table_widget = FlowTagsTableWidget(flow_tag_group, self.workspace_settings, self)
         if flow_tag_group.group == Group.ASSEMBLY:
             self.assembly_groups_multi_tool_box.addItem(table_widget, flow_tag_group.name)
@@ -437,10 +437,10 @@ class EditWorkspaceSettings(QDialog):
             duplicate_button.clicked.connect(partial(self.duplicate_group, flow_tag_group))
         self.flow_tag_tables.update({flow_tag_group: table_widget})
 
-    def rename_group(self, flow_tag_group: FlowTags, input_box: QLineEdit):
+    def rename_group(self, flow_tag_group: Flowtags, input_box: QLineEdit):
         flow_tag_group.name = input_box.text()
 
-    def delete_group(self, flow_tag_group: FlowTags):
+    def delete_group(self, flow_tag_group: Flowtags):
         self.clear_layout(self.flow_tag_tables[flow_tag_group])
         if flow_tag_group.group == Group.ASSEMBLY:
             self.assembly_groups_multi_tool_box.removeItem(self.actve_groups_multi_tool_box.getWidget(self.workspace_settings.flow_tags_group.index(flow_tag_group)))
@@ -451,7 +451,7 @@ class EditWorkspaceSettings(QDialog):
         self.workspace_settings.delete_group(flow_tag_group)
         del self.flow_tag_tables[flow_tag_group]
 
-    def duplicate_group(self, flow_tag_group: FlowTags):
+    def duplicate_group(self, flow_tag_group: Flowtags):
         new_group = self.workspace_settings.create_group(f"{flow_tag_group.name} - Copy")
         if self.tabWidget.currentIndex() == 0:
             new_group.group = Group.ASSEMBLY

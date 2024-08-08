@@ -74,7 +74,7 @@ class AssemblyQuotingWidget(AssemblyWidget):
         self.doubleSpinBox_quantity.setValue(self.assembly.quantity)
         self.doubleSpinBox_quantity.valueChanged.connect(self.assembly_quantity_changed)
 
-        self.paint_widget.setVisible(self.assembly.flow_tag.contains(["paint", "powder", "coating", "liquid"]))
+        self.paint_widget.setVisible(self.assembly.flowtag.contains(["paint", "powder", "coating", "liquid"]))
 
         self.assembly_setting_paint_widget = AssemblyPaintSettingsWidget(self.assembly, self)
         self.assembly_setting_paint_widget.settingsChanged.connect(self.changes_made)
@@ -85,11 +85,11 @@ class AssemblyQuotingWidget(AssemblyWidget):
 
         self.image_layout.addWidget(self.assembly_image)
 
-        if str(self.assembly.flow_tag.name):
+        if str(self.assembly.flowtag.name):
             self.comboBox_assembly_flow_tag.addItems([f"{flow_tag}" for flow_tag in list(self.workspace_settings.get_all_assembly_flow_tags().values())])
         else:
             self.comboBox_assembly_flow_tag.addItems(["Select flow tag"] + [f"{flow_tag}" for flow_tag in list(self.workspace_settings.get_all_assembly_flow_tags().values())])
-        self.comboBox_assembly_flow_tag.setCurrentText(str(self.assembly.flow_tag))
+        self.comboBox_assembly_flow_tag.setCurrentText(str(self.assembly.flowtag))
         self.comboBox_assembly_flow_tag.setEnabled(False)
 
         self.laser_cut_parts_table = LaserCutPartsQuotingTableWidget(self)
@@ -114,13 +114,6 @@ class AssemblyQuotingWidget(AssemblyWidget):
         self.sub_assembly_layout.addWidget(self.sub_assemblies_toolbox)
 
         self.label_total_cost_for_assembly.setText(f"Total Cost for Assembly: ${self.price_calculator.get_assembly_cost(self.assembly):,.2f}")
-
-        # ! JUST FOR TESTING REMOVE IN PRODUCTION
-        # self.splitter.setSizes([0, 0, 0, 0])
-        # self.splitter.setSizes([0, 1, 0, 0])
-        # self.splitter.setSizes([0, 1, 1, 0])
-        # self.splitter.setStretchFactor(0, 1)
-        # self.splitter.setStretchFactor(1, 0)
 
     def workspace_settings_changed(self):
         for sub_assembly_widget in self.sub_assembly_widgets:
@@ -200,8 +193,8 @@ class AssemblyQuotingWidget(AssemblyWidget):
                 self.upload_assembly_image(temp_path, False)
 
     def assembly_flow_tag_changed(self):
-        self.assembly.flow_tag = self.workspace_settings.get_flow_tag_by_name(self.comboBox_assembly_flow_tag.currentText())
-        self.paint_widget.setVisible(self.assembly.flow_tag.contains(["paint", "powder", "coating", "liquid"]))
+        self.assembly.flowtag = self.workspace_settings.get_flow_tag_by_name(self.comboBox_assembly_flow_tag.currentText())
+        self.paint_widget.setVisible(self.assembly.flowtag.contains(["paint", "powder", "coating", "liquid"]))
         self.changes_made()
 
     def add_assembly_drag_file_widget(self, files_layout: QHBoxLayout, file_path: str):
@@ -359,7 +352,7 @@ class AssemblyQuotingWidget(AssemblyWidget):
     def update_components_table_prices(self):
         self.components_table.blockSignals(True)
         for component, table_data in self.components_table_items.items():
-            table_data["price"].setText(f"${(component.price * component.quantity * self.assembly.quantity):,.2f}")
+            table_data["price"].setText(f"${(self.price_calculator.get_component_cost(component) * component.quantity * self.assembly.quantity):,.2f}")
         self.components_table.blockSignals(False)
 
     def components_table_changed(self, row: int):
@@ -413,7 +406,6 @@ class AssemblyQuotingWidget(AssemblyWidget):
                     self.add_component_to_table(new_component)
             else:
                 new_component = Component(
-                    add_item_dialog.get_name(),
                     {"part_name": add_item_dialog.get_name(), "part_number": add_item_dialog.get_name()},
                     self.components_inventory,
                 )
@@ -558,9 +550,9 @@ class AssemblyQuotingWidget(AssemblyWidget):
         part_name_item = QTableWidgetItem(laser_cut_part.name)
         part_name_item.setFont(self.tables_font)
         if does_exist_in_inventory:
-            laser_cut_part_inventory_status = f"{laser_cut_part.name} exists in inventory.\nProcess: {laser_cut_part.flow_tag.get_name()}"
+            laser_cut_part_inventory_status = f"{laser_cut_part.name} exists in inventory.\nProcess: {laser_cut_part.flowtag.get_name()}"
         else:
-            laser_cut_part_inventory_status = f"{laser_cut_part.name} does NOT exist in inventory.\nProcess: {laser_cut_part.flow_tag.get_name()}"
+            laser_cut_part_inventory_status = f"{laser_cut_part.name} does NOT exist in inventory.\nProcess: {laser_cut_part.flowtag.get_name()}"
 
         part_name_item.setToolTip(laser_cut_part_inventory_status)
         self.laser_cut_parts_table.setItem(current_row, LaserCutTableColumns.PART_NAME.value, part_name_item)
