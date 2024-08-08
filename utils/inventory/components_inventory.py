@@ -99,6 +99,7 @@ class ComponentsInventory(Inventory):
 
     def sort_by_quantity(self, ascending: bool) -> list[Component]:
         self.components = natsorted(self.components, key=lambda component: component.quantity, reverse=ascending)
+        return self.components
 
     def sort_by_name(self, ascending: bool) -> list[Component]:
         self.components = natsorted(
@@ -106,6 +107,7 @@ class ComponentsInventory(Inventory):
             key=lambda component: component.part_name,
             reverse=ascending,
         )
+        return self.compoennts
 
     def save(self):
         with open(f"{self.FOLDER_LOCATION}/{self.filename}.json", "wb") as file:

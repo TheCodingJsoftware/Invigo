@@ -296,7 +296,7 @@ Press 'Add' when finished.</string>
              </size>
             </property>
             <property name="text">
-             <string>Send to Workspace</string>
+             <string>Send to Production Planner</string>
             </property>
            </widget>
           </item>

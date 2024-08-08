@@ -354,7 +354,7 @@
                        <x>0</x>
                        <y>0</y>
                        <width>1486</width>
-                       <height>559</height>
+                       <height>519</height>
                       </rect>
                      </property>
                      <layout class="QVBoxLayout" name="verticalLayout_17">
@@ -487,6 +487,36 @@ QPushButton#pushButton_send_to_production_planner:disabled{
                 </property>
                 <property name="text">
                  <string>Send Jobs to Production Planner</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QPushButton" name="pushButton_send_to_workspace">
+                <property name="styleSheet">
+                 <string notr="true">QPushButton#pushButton_send_to_workspace{
+    color: #171717;
+	background-color: #3daee9;
+	border: 1px solid #3daee9;
+	border-radius: 8px;
+	padding: 8px 16px;
+	font-weight: bold;
+}
+QPushButton#pushButton_send_to_workspace:hover{
+	background-color: #48b6ed;
+	border-color: #48b6ed;
+}
+QPushButton#pushButton_send_to_workspace:pressed{
+	background-color: #2b92c5;
+}
+QPushButton#pushButton_send_to_workspace:disabled{
+	background-color: rgba(44, 44, 44, 130);
+	border: 1px solid rgba(57, 57, 57, 130);
+	color: rgb(144, 144, 144);
+	border-radius: 4px;
+}</string>
+                </property>
+                <property name="text">
+                 <string>Send Jobs to Workspace</string>
                 </property>
                </widget>
               </item>
@@ -786,6 +816,36 @@ QPushButton#pushButton_send_to_production_planner_2:disabled{
               </property>
               <property name="text">
                <string>Send Jobs to Production Planner</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QPushButton" name="pushButton_send_to_workspace_2">
+              <property name="styleSheet">
+               <string notr="true">QPushButton#pushButton_send_to_workspace_2{
+    color: #171717;
+	background-color: #3daee9;
+	border: 1px solid #3daee9;
+	border-radius: 8px;
+	padding: 8px 16px;
+	font-weight: bold;
+}
+QPushButton#pushButton_send_to_workspace_2:hover{
+	background-color: #48b6ed;
+	border-color: #48b6ed;
+}
+QPushButton#pushButton_send_to_workspace_2:pressed{
+	background-color: #2b92c5;
+}
+QPushButton#pushButton_send_to_workspace_2:disabled{
+	background-color: rgba(44, 44, 44, 130);
+	border: 1px solid rgba(57, 57, 57, 130);
+	color: rgb(144, 144, 144);
+	border-radius: 4px;
+}</string>
+              </property>
+              <property name="text">
+               <string>Send Jobs to Workspace</string>
               </property>
              </widget>
             </item>

@@ -89,13 +89,14 @@ from utils.workspace.generate_printout import WorkorderPrintout, WorkspaceJobPri
 from utils.workspace.job import Job, JobColor, JobStatus
 from utils.workspace.job_manager import JobManager
 from utils.workspace.job_preferences import JobPreferences
+from utils.workspace.production_plan import ProductionPlan
 from utils.workspace.workorder import Workorder
 from utils.workspace.workspace import Workspace
 from utils.workspace.workspace_history import WorkspaceHistory
 from utils.workspace.workspace_laser_cut_part_group import WorkspaceLaserCutPartGroup
 from utils.workspace.workspace_settings import WorkspaceSettings
 
-__version__: str = "v3.3.4"
+__version__: str = "v3.3.5"
 
 
 def check_folders(folders: list[str]):
@@ -190,6 +191,7 @@ class MainWindow(QMainWindow):
         self.job_manager = JobManager(self.sheet_settings, self.sheets_inventory, self.workspace_settings, self.components_inventory, self.laser_cut_inventory, self.paint_inventory, self)
         self.workspace_history = WorkspaceHistory(self.job_manager)
         self.workspace = Workspace(self.workspace_settings, self.job_manager)
+        self.production_plan = ProductionPlan(self.workspace_settings, self.job_manager)
 
         self.quote_generator_tab_widget = QuoteGeneratorTab(self)
         self.quote_generator_tab_widget.add_quote(
@@ -358,8 +360,12 @@ class MainWindow(QMainWindow):
         self.pushButton_save_job_2.clicked.connect(partial(self.save_job, None))
         self.pushButton_save_as_job.setHidden(True)
         self.pushButton_save_as_job_2.setHidden(True)
-        self.pushButton_send_to_production_planner.clicked.connect(self.send_job_to_workspace)
-        self.pushButton_send_to_production_planner_2.clicked.connect(self.send_job_to_workspace)
+
+        self.pushButton_send_to_production_planner.clicked.connect(self.send_job_to_production_planner)
+        self.pushButton_send_to_production_planner_2.clicked.connect(self.send_job_to_production_planner)
+
+        self.pushButton_send_to_workspace.clicked.connect(self.send_job_to_workspace)
+        self.pushButton_send_to_workspace_2.clicked.connect(self.send_job_to_workspace)
 
         self.saved_planning_jobs_layout = self.findChild(QVBoxLayout, "saved_planning_jobs_layout")
         self.saved_planning_jobs_layout.setAlignment(Qt.AlignmentFlag.AlignTop)
@@ -929,10 +935,10 @@ class MainWindow(QMainWindow):
             ],
         )
 
-    def add_job_to_workspace(self, job_widget: JobTab, jobs_data: dict[str, int], should_update_components: bool):
+    def add_job_to_production_plan(self, job_widget: JobTab, jobs_data: dict[str, int], should_update_components: bool):
         job_name, job_quantity = jobs_data
         if not (job := job_widget.get_job(job_name)):
-            msg = QMessageBox(QMessageBox.Icon.Question, "Could not find job?", f"{job_name} not found. How did this happen?\n\nOperation aborted.", QMessageBox.StandardButton.Ok, self)
+            msg = QMessageBox(QMessageBox.Icon.Question, "Could not find job?", f"{job_name} not found. How did this happen?\n\nOperation aborted. Start panic.", QMessageBox.StandardButton.Ok, self)
             msg.exec()
             return
         is_job_valid, response = job.is_valid()
@@ -943,7 +949,69 @@ class MainWindow(QMainWindow):
         for _ in range(job_quantity):  # Add job x amount of times
             if should_update_components:
                 self.subtract_component_quantity_from_job(job)
-            self.workspace.add_job(job)
+            self.production_plan.add_job(job)
+
+    # TODO: ? Do I need to start timers?
+    def send_job_to_production_planner(self):
+        active_jobs_in_planning = {}
+        for job_widget in self.job_planner_widget.job_widgets:
+            job = job_widget.job
+            active_jobs_in_planning[job.name] = {
+                "job": job,
+                "type": job.status.value,
+                "modified_date": "Currently open",
+                "order_number": job.order_number,
+            }
+        active_jobs_in_quoting = {}
+        for job_widget in self.job_quote_widget.job_widgets:
+            job = job_widget.job
+            active_jobs_in_quoting[job.name] = {
+                "job": job,
+                "type": job.status.value,
+                "modified_date": "Currently open",
+                "order_number": job.order_number,
+            }
+        if not (active_jobs_in_planning or active_jobs_in_quoting):
+            msg = QMessageBox(QMessageBox.Icon.Information, "No jobs loaded", "You have no jobs currently loaded.", QMessageBox.StandardButton.Ok, self)
+            msg.exec()
+            return
+
+        send_to_workspace_dialog = SendJobsToWorkspaceDialog(active_jobs_in_planning, active_jobs_in_quoting, "Production Planner", self)
+
+        if send_to_workspace_dialog.exec():
+            selected_jobs = send_to_workspace_dialog.get_selected_jobs()
+            self.production_plan.load_data()
+            self.components_inventory.load_data()
+            for selected_job_data in selected_jobs.get("planning", []):
+                self.add_job_to_production_plan(self.job_planner_widget, selected_job_data, send_to_workspace_dialog.should_update_components())
+            for selected_job_data in selected_jobs.get("quoting", []):
+                self.add_job_to_production_plan(self.job_quote_widget, selected_job_data, send_to_workspace_dialog.should_update_components())
+
+            # for assembly in self.workspace.get_all_assemblies():
+            #     if assembly.all_laser_cut_parts_complete() and not assembly.timer.has_started_timer():
+            #         assembly.timer.start_timer()
+
+            self.production_plan.save()
+            self.components_inventory.save()
+            self.upload_files([f"{self.production_plan.filename}.json", f"{self.components_inventory.filename}.json"])
+
+    def add_job_to_workspace(self, job_widget: JobTab, jobs_data: dict[str, int], should_update_components: bool):
+        job_name, job_quantity = jobs_data
+        if not (job := job_widget.get_job(job_name)):
+            msg = QMessageBox(QMessageBox.Icon.Question, "Could not find job?", f"{job_name} not found. How did this happen?\n\nOperation aborted. Start panic.", QMessageBox.StandardButton.Ok, self)
+            msg.exec()
+            return
+        is_job_valid, response = job.is_valid()
+        if not is_job_valid:
+            msg = QMessageBox(QMessageBox.Icon.Information, "Flow tags missing", f"{job.name} is not properly set up.\n\nCheck: {response}\n\nOperation aborted.", QMessageBox.StandardButton.Ok, self)
+            msg.exec()
+            return
+        for _ in range(job_quantity):  # Add job x amount of times
+            if should_update_components:
+                self.subtract_component_quantity_from_job(job)
+            new_job = self.workspace.add_job(job)
+            for laser_cut_part in new_job.get_all_laser_cut_parts():
+                laser_cut_part.timer.start_timer()
 
     def send_job_to_workspace(self):
         active_jobs_in_planning = {}
@@ -969,7 +1037,7 @@ class MainWindow(QMainWindow):
             msg.exec()
             return
 
-        send_to_workspace_dialog = SendJobsToWorkspaceDialog(active_jobs_in_planning, active_jobs_in_quoting, self)
+        send_to_workspace_dialog = SendJobsToWorkspaceDialog(active_jobs_in_planning, active_jobs_in_quoting, "Workspace", self)
 
         if send_to_workspace_dialog.exec():
             selected_jobs = send_to_workspace_dialog.get_selected_jobs()
@@ -1238,13 +1306,13 @@ class MainWindow(QMainWindow):
             if file_info["type"] == JobStatus.PLANNING.value:
                 self.saved_jobs_multitoolbox.addItem(
                     job_item,
-                    file_info.get("name"),
+                    f'{file_info.get("name")} #{int(file_info.get("order_number", 0))}',
                     JobColor.get_color(JobStatus(file_info.get("type", 1))),
                 )
             elif file_info["type"] == JobStatus.TEMPLATE.value:
                 self.templates_jobs_multitoolbox.addItem(
                     job_item,
-                    file_info.get("name"),
+                    f'{file_info.get("name")} #{int(file_info.get("order_number", 0))}',
                     JobColor.get_color(JobStatus(file_info.get("type", 1))),
                 )
         self.saved_jobs_multitoolbox.close_all()
@@ -1280,13 +1348,13 @@ class MainWindow(QMainWindow):
             ]:
                 self.saved_jobs_multitoolbox_2.addItem(
                     job_item,
-                    file_info.get("name"),
+                    f'{file_info.get("name")} #{int(file_info.get("order_number", 0))}',
                     JobColor.get_color(JobStatus(file_info.get("type", 1))),
                 )
             elif file_info["type"] == JobStatus.TEMPLATE.value:
                 self.templates_jobs_multitoolbox_2.addItem(
                     job_item,
-                    file_info.get("name"),
+                    f'{file_info.get("name")} #{int(file_info.get("order_number", 0))}',
                     JobColor.get_color(JobStatus(file_info.get("type", 1))),
                 )
         self.saved_jobs_multitoolbox_2.close_all()
@@ -1917,6 +1985,9 @@ class MainWindow(QMainWindow):
             if f"{self.laser_cut_inventory.filename}.json" in response["successful_files"]:
                 self.laser_cut_inventory.load_data()
 
+            if f"{self.production_plan.filename}.json" in response["successful_files"]:
+                self.production_plan.load_data()
+
             if f"{self.workspace.filename}.json" in response["successful_files"]:
                 self.workspace.load_data()
 
@@ -1965,6 +2036,7 @@ class MainWindow(QMainWindow):
                 f"{self.laser_cut_inventory.filename}.json",
                 f"{self.sheets_inventory.filename}.json",
                 f"{self.components_inventory.filename}.json",
+                f"{self.production_plan.filename}.json",
                 f"{self.workspace.filename}.json",
                 f"{self.workspace_history.filename}.json",
             ]
@@ -2166,7 +2238,7 @@ class MainWindow(QMainWindow):
         for part in nested_laser_cut_parts:
             if part.name in workspace_parts_dict:
                 workspace_part = workspace_parts_dict[part.name]
-                part.flow_tag = workspace_part.flow_tag
+                part.flowtag = workspace_part.flowtag
                 updated_parts.append(part)
 
         return updated_parts
@@ -2230,7 +2302,7 @@ class MainWindow(QMainWindow):
                 <td>{part.name}</td>
                 <td>{part.quantity}</td>
                 <td>{next_process}</td>
-                <td>{part.flow_tag.get_name()}</td>
+                <td>{part.flowtag.get_name()}</td>
             </tr>
             """
 
@@ -2343,7 +2415,7 @@ class MainWindow(QMainWindow):
             for nest_laser_cut_part in nest.laser_cut_parts:
                 for workspace_laser_cut_part_group in all_workspace_laser_part_groups:
                     if workspace_laser_cut_part_group.base_part.name == nest_laser_cut_part.name:
-                        nest_laser_cut_part.flow_tag = workspace_laser_cut_part_group.base_part.flow_tag
+                        nest_laser_cut_part.flowtag = workspace_laser_cut_part_group.base_part.flowtag
 
                         nest_laser_cut_part.shelf_number = workspace_laser_cut_part_group.base_part.shelf_number
 

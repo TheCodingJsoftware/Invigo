@@ -14,12 +14,13 @@ class SendJobsToWorkspaceDialog(QDialog):
         self,
         active_jobs_in_planning: dict[str, dict[str, Union[Job, float, str, int]]],
         active_jobs_in_quoting: dict[str, dict[str, Union[Job, float, str, int]]],
+        destintion: str,
         parent=None,
     ):
         super().__init__(parent)
         uic.loadUi("ui/dialogs/send_jobs_to_workspace_dialog.ui", self)
 
-        self.setWindowTitle("Send Jobs to Workspace")
+        self.setWindowTitle(f"Send Jobs to {destintion}")
         self.setWindowIcon(QIcon("icons/icon.png"))
 
         self.pushButton_add.clicked.connect(self.accept)

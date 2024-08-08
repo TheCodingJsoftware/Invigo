@@ -71,7 +71,7 @@ class LaserCutInventory(Inventory):
         elif existing_laser_cut_part := self.get_laser_cut_part_by_name(laser_cut_part_to_add.name):
             existing_laser_cut_part.quantity += laser_cut_part_to_add.quantity
 
-            existing_laser_cut_part.flow_tag = laser_cut_part_to_add.flow_tag
+            existing_laser_cut_part.flowtag = laser_cut_part_to_add.flowtag
 
             existing_laser_cut_part.shelf_number = laser_cut_part_to_add.shelf_number
 

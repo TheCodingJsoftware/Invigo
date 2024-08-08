@@ -77,7 +77,7 @@ class AssemblyPlanningWidget(AssemblyWidget):
         self.doubleSpinBox_expected_time_to_complete.setValue(self.assembly.expected_time_to_complete)
         self.doubleSpinBox_expected_time_to_complete.valueChanged.connect(self.assembly_time_to_complete_changed)
 
-        self.paint_widget.setVisible(self.assembly.flow_tag.contains(["paint", "powder", "coating", "liquid"]))
+        self.paint_widget.setVisible(self.assembly.flowtag.contains(["paint", "powder", "coating", "liquid"]))
 
         self.assembly_setting_paint_widget = AssemblyPaintSettingsWidget(self.assembly, self)
         self.assembly_setting_paint_widget.settingsChanged.connect(self.changes_made)
@@ -88,11 +88,11 @@ class AssemblyPlanningWidget(AssemblyWidget):
 
         self.image_layout.addWidget(self.assembly_image)
 
-        if str(self.assembly.flow_tag.name):
+        if str(self.assembly.flowtag.name):
             self.comboBox_assembly_flow_tag.addItems([f"{flow_tag}" for flow_tag in list(self.workspace_settings.get_all_assembly_flow_tags().values())])
         else:
             self.comboBox_assembly_flow_tag.addItems(["Select flow tag"] + [f"{flow_tag}" for flow_tag in list(self.workspace_settings.get_all_assembly_flow_tags().values())])
-        self.comboBox_assembly_flow_tag.setCurrentText(str(self.assembly.flow_tag))
+        self.comboBox_assembly_flow_tag.setCurrentText(str(self.assembly.flowtag))
         self.comboBox_assembly_flow_tag.wheelEvent = lambda event: None
         self.comboBox_assembly_flow_tag.currentTextChanged.connect(self.assembly_flow_tag_changed)
 
@@ -208,9 +208,9 @@ class AssemblyPlanningWidget(AssemblyWidget):
                 self.upload_assembly_image(temp_path, False)
 
     def assembly_flow_tag_changed(self):
-        self.assembly.flow_tag = self.workspace_settings.get_flow_tag_by_name(self.comboBox_assembly_flow_tag.currentText())
+        self.assembly.flowtag = self.workspace_settings.get_flow_tag_by_name(self.comboBox_assembly_flow_tag.currentText())
         try:
-            self.paint_widget.setVisible(self.assembly.flow_tag.contains(["paint", "powder", "coating", "liquid"]))
+            self.paint_widget.setVisible(self.assembly.flowtag.contains(["paint", "powder", "coating", "liquid"]))
         except AttributeError:  # There is no flow tag selected
             self.paint_widget.setHidden(True)
         self.changes_made()
@@ -639,11 +639,11 @@ class AssemblyPlanningWidget(AssemblyWidget):
         flow_tag_combobox = QComboBox(self)
         flow_tag_combobox.setStyleSheet("border-radius: 0px;")
         flow_tag_combobox.wheelEvent = lambda event: None
-        if str(laser_cut_part.flow_tag.name):
+        if str(laser_cut_part.flowtag.name):
             flow_tag_combobox.addItems([f"{flow_tag}" for flow_tag in list(self.workspace_settings.get_all_laser_cut_part_flow_tags().values())])
         else:
             flow_tag_combobox.addItems(["Select flow tag"] + [f"{flow_tag}" for flow_tag in list(self.workspace_settings.get_all_laser_cut_part_flow_tags().values())])
-        flow_tag_combobox.setCurrentText(str(laser_cut_part.flow_tag))
+        flow_tag_combobox.setCurrentText(str(laser_cut_part.flowtag))
         flow_tag_combobox.currentTextChanged.connect(partial(self.laser_cut_part_flow_tag_changed, laser_cut_part, flow_tag_combobox))
         self.laser_cut_parts_table.setCellWidget(current_row, LaserCutTableColumns.FLOW_TAG.value, flow_tag_combobox)
         self.laser_cut_part_table_items[laser_cut_part].update({"flow_tag": flow_tag_combobox})
@@ -703,7 +703,7 @@ class AssemblyPlanningWidget(AssemblyWidget):
         self.changes_made()
 
     def laser_cut_part_flow_tag_changed(self, laser_cut_part: LaserCutPart, flow_tag_combobox: QComboBox):
-        laser_cut_part.flow_tag = self.workspace_settings.get_flow_tag_by_name(flow_tag_combobox.currentText())
+        laser_cut_part.flowtag = self.workspace_settings.get_flow_tag_by_name(flow_tag_combobox.currentText())
         self.changes_made()
 
     def add_laser_cut_part_drag_file_widget(
@@ -877,7 +877,7 @@ class AssemblyPlanningWidget(AssemblyWidget):
             elif ACTION == "SET_QUANTITY":
                 laser_cut_part.quantity = float(selection)
             elif ACTION == "SET_FLOW_TAG":
-                laser_cut_part.flow_tag = self.workspace_settings.get_flow_tag_by_name(selection)
+                laser_cut_part.flowtag = self.workspace_settings.get_flow_tag_by_name(selection)
         self.load_laser_cut_parts_table()
         self.changes_made()
 

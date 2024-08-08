@@ -5,10 +5,11 @@ from typing import TYPE_CHECKING, Optional, Union
 from natsort import natsorted
 from PyQt6 import uic
 from PyQt6.QtCore import QDate, Qt, pyqtSignal
-from PyQt6.QtWidgets import QComboBox, QDateEdit, QDoubleSpinBox, QGridLayout, QLabel, QPushButton, QScrollArea, QSplitter, QTextEdit, QTreeWidget, QTreeWidgetItem, QVBoxLayout, QWidget
+from PyQt6.QtWidgets import QCheckBox, QComboBox, QDateEdit, QDoubleSpinBox, QGridLayout, QLabel, QPushButton, QScrollArea, QSplitter, QTextEdit, QTreeWidget, QTreeWidgetItem, QVBoxLayout, QWidget
 
 from ui.custom.assembly_planning_widget import AssemblyPlanningWidget
 from ui.custom.assembly_quoting_widget import AssemblyQuotingWidget
+from ui.custom.flowtag_timeline_widget import FlowtagTimelineWidget
 from ui.custom_widgets import AssemblyMultiToolBox, MultiToolBox, QLineEdit
 from ui.dialogs.add_assembly_dialog import AddAssemblyDialog
 from ui.widgets.nest_widget import NestWidget
@@ -173,6 +174,7 @@ class JobWidget(QWidget):
             self.dateEdit_start.setDate(QDate(year, month, day))
         except ValueError:
             self.dateEdit_start.setDate(QDate.currentDate())
+            self.job.starting_date = self.dateEdit_start.date().toString("yyyy-MM-dd")
         self.dateEdit_start.dateChanged.connect(self.job_settings_changed)
         self.dateEdit_start.wheelEvent = lambda event: None
         self.dateEdit_end: QDateEdit = self.findChild(QDateEdit, "dateEdit_end")
@@ -180,7 +182,12 @@ class JobWidget(QWidget):
             year, month, day = map(int, self.job.ending_date.split("-"))
             self.dateEdit_end.setDate(QDate(year, month, day))
         except ValueError:
-            self.dateEdit_end.setDate(QDate.currentDate())
+            current_date = QDate.currentDate()
+            new_date = current_date.addDays(7)
+            self.dateEdit_end.setDate(new_date)
+            self.job.ending_date = self.dateEdit_end.date().toString("yyyy-MM-dd")
+
+        self.label_16.setText(f"Process's timeline: ({self.job.starting_date} - {self.job.ending_date})")
         self.dateEdit_end.dateChanged.connect(self.job_settings_changed)
         self.dateEdit_end.wheelEvent = lambda event: None
         self.textEdit_ship_to: QTextEdit = self.findChild(QTextEdit, "textEdit_ship_to")
@@ -230,6 +237,14 @@ class JobWidget(QWidget):
         self.doubleSpinBox_items_overhead.setValue(self.price_calculator.item_overhead * 100)
         self.doubleSpinBox_items_overhead.valueChanged.connect(self.price_settings_changed)
 
+        self.checkBox_components_use_overhead = self.findChild(QCheckBox, "checkBox_components_use_overhead")
+        self.checkBox_components_use_overhead.toggled.connect(self.price_settings_changed)
+        self.checkBox_components_use_overhead.setChecked(self.price_calculator.components_use_overhead)
+
+        self.checkBox_components_use_profit_margin = self.findChild(QCheckBox, "checkBox_components_use_profit_margin")
+        self.checkBox_components_use_profit_margin.toggled.connect(self.price_settings_changed)
+        self.checkBox_components_use_profit_margin.setChecked(self.price_calculator.components_use_profit_margin)
+
         self.doubleSpinBox_items_profit_margin = self.findChild(QDoubleSpinBox, "doubleSpinBox_items_profit_margin")
         self.doubleSpinBox_items_profit_margin.wheelEvent = lambda event: None
         self.doubleSpinBox_items_profit_margin.setValue(self.price_calculator.item_profit_margin * 100)
@@ -253,6 +268,8 @@ class JobWidget(QWidget):
         self.nests_layout.addWidget(self.nests_toolbox)
 
         self.splitter = self.findChild(QSplitter, "splitter")
+        self.processes_widget = self.findChild(QWidget, "processes_widget")
+        self.processes_widget.setVisible(self.job.status == JobStatus.PLANNING)
 
         if self.job.status == JobStatus.PLANNING or self.parent.parent.tabWidget.tabText(self.parent.parent.tabWidget.currentIndex()) == "Job Planner":
             self.splitter.setSizes([0, 1])
@@ -268,6 +285,10 @@ class JobWidget(QWidget):
         self.label_total_cost_for_sheets = self.findChild(QLabel, "label_total_cost_for_sheets")
         self.label_total_cost_for_sheets.setHidden(self.job.status == JobStatus.PLANNING)
         self.label_total_cost_for_sheets.setText(f"Total Cost for Nested Sheets: ${self.price_calculator.get_total_cost_for_sheets():,.2f}")
+
+        self.flowtag_timeline = FlowtagTimelineWidget(self.job.flowtag_timeline, self)
+        self.verticalLayout_flowtag_timeline = self.findChild(QVBoxLayout, "verticalLayout_flowtag_timeline")
+        self.verticalLayout_flowtag_timeline.addWidget(self.flowtag_timeline)
 
     def apply_stylesheet_to_toggle_buttons(self, button: QPushButton, widget: QWidget):
         base_color = JobColor.get_color(self.job.status)
@@ -344,11 +365,13 @@ QPushButton:checked:pressed#assembly_button_drop_menu {
         )
 
     def job_settings_changed(self):
-        self.job.order_number = self.doubleSpinBox_order_number.value()
+        self.job.order_number = int(self.doubleSpinBox_order_number.value())
         self.job.status = JobStatus(self.comboBox_type.currentIndex() + 1)
         self.job.starting_date = self.dateEdit_start.date().toString("yyyy-MM-dd")
         self.job.ending_date = self.dateEdit_end.date().toString("yyyy-MM-dd")
+        self.flowtag_timeline.set_range(self.dateEdit_start.date(), self.dateEdit_end.date())
         self.job.ship_to = self.textEdit_ship_to.toPlainText()
+        self.label_16.setText(f"Process's timeline: ({self.job.starting_date} - {self.job.ending_date})")
         self.changes_made()
 
     def workspace_settings_changed(self):
@@ -598,6 +621,8 @@ QPushButton:checked:pressed#assembly_button_drop_menu {
         self.price_calculator.item_profit_margin = self.doubleSpinBox_items_profit_margin.value() / 100
         self.price_calculator.sheet_overhead = self.doubleSpinBox_sheets_overhead.value() / 100
         self.price_calculator.sheet_profit_margin = self.doubleSpinBox_sheets_profit_margin.value() / 100
+        self.price_calculator.components_use_overhead = self. checkBox_components_use_overhead.isChecked()
+        self.price_calculator.components_use_profit_margin = self. checkBox_components_use_profit_margin.isChecked()
         self.changes_made()
 
     def nest_settings_changed(self, nest: Nest):
@@ -605,6 +630,8 @@ QPushButton:checked:pressed#assembly_button_drop_menu {
         self.changes_made()
 
     def changes_made(self):
+        with contextlib.suppress(AttributeError): # Happens when reloading when no flowtags set.
+            self.flowtag_timeline.load_tag_timelines()
         self.parent.job_changed(self.job)
         self.update_nest_parts_assemblies()
         self.update_prices()

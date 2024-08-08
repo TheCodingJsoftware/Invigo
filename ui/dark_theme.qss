@@ -63,6 +63,26 @@ QStatusBar {
     border: 1px solid #242424;
 }
 
+QSlider {
+    min-height: 20px;
+}
+
+QSlider::groove:horizontal {
+    background-color: #242424;
+    border: 0px;
+    height: 20px;
+    border-radius: 5px;
+}
+
+QSlider::handle {
+    background: #3daee9;
+    height: 5px;
+    width: 5px;
+    border-radius: 2px;
+}
+QRangeSlider {
+    qproperty-barColor: #3daee9;
+}
 /* https://www.qtcentre.org/threads/18151-QScrollArea-misbehaving-background-style */
 QAbstractScrollArea {
     background-color: transparent;

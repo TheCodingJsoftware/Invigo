@@ -48,10 +48,12 @@ class WorkspaceWidget(QWidget):
         self.username = os.getlogin().title()
 
         self.recut_parts_table_items: dict[WorkspaceLaserCutPartGroup, dict[str, Union[QTableWidgetItem]]] = {}
+        self.recoat_parts_table_items: dict[WorkspaceLaserCutPartGroup, dict[str, Union[QTableWidgetItem]]] = {}
         self.parts_table_items: dict[WorkspaceLaserCutPartGroup, dict[str, Union[QTableWidgetItem]]] = {}
         self.assemblies_table_items: dict[Assembly, dict[str, Union[QTableWidgetItem]]] = {}
 
         self.recut_parts_table_rows: dict[int, WorkspaceLaserCutPartGroup] = {}
+        self.recoat_parts_table_rows: dict[int, WorkspaceLaserCutPartGroup] = {}
         self.parts_table_rows: dict[int, WorkspaceLaserCutPartGroup] = {}
         self.assemblies_table_rows: dict[int, Assembly] = {}
 
@@ -68,7 +70,11 @@ class WorkspaceWidget(QWidget):
         # self.parts_table_widget.rowChanged.connect(self.parts_table_row_changed)
 
         self.recut_parts_table_widget = WorkspacePartsTableWidget(self)
+        self.recut_parts_table_widget.hideColumn(WorkspacePartsTableColumns.RECOAT.value)
         # self.recut_parts_table_widget.rowChanged.connect(self.parts_table_row_changed)
+
+        self.recoat_parts_table_widget = WorkspacePartsTableWidget(self)
+        # self.recoat_parts_table_widget.rowChanged.connect(self.parts_table_row_changed)
 
         self.assemblies_table_widget = WorkspaceAssemblyTableWidget(self)
         # self.assemblies_table_widget.rowChanged.connect(self.assemblies_table_row_changed)
@@ -80,6 +86,10 @@ class WorkspaceWidget(QWidget):
         self.recut_parts_widget = self.findChild(QGroupBox, "recut_parts_widget")
         self.recut_parts_layout = self.findChild(QVBoxLayout, "recut_parts_layout")
         self.recut_parts_layout.addWidget(self.recut_parts_table_widget)
+
+        self.recoat_parts_widget = self.findChild(QGroupBox, "recoat_parts_widget")
+        self.recoat_parts_layout = self.findChild(QVBoxLayout, "recoat_parts_layout")
+        self.recoat_parts_layout.addWidget(self.recoat_parts_table_widget)
 
         self.assembly_widget = self.findChild(QWidget, "assembly_widget")
         self.assembly_widget.setHidden(True)
@@ -96,11 +106,19 @@ class WorkspaceWidget(QWidget):
 
     # PARTS
     def add_part_group_to_table(self, group: WorkspaceLaserCutPartGroup):
-        if group.base_part.recut:
+        if group.base_part.recut and group.base_part.recoat:
             table_rows = self.recut_parts_table_rows
             table_widget = self.recut_parts_table_widget
             table_items = self.recut_parts_table_items
-        elif not group.base_part.recut:
+        elif group.base_part.recut:
+            table_rows = self.recut_parts_table_rows
+            table_widget = self.recut_parts_table_widget
+            table_items = self.recut_parts_table_items
+        elif group.base_part.recoat:
+            table_rows = self.recoat_parts_table_rows
+            table_widget = self.recoat_parts_table_widget
+            table_items = self.recoat_parts_table_items
+        else:
             table_rows = self.parts_table_rows
             table_widget = self.parts_table_widget
             table_items = self.parts_table_items
@@ -188,6 +206,7 @@ class WorkspaceWidget(QWidget):
         table_widget.setItem(current_row, WorkspacePartsTableColumns.NOTES.value, notes_item)
         table_items[group].update({"notes": notes_item})
 
+        # RECUT
         recut_button = QPushButton("Recut", self)
         if group.base_part.recut:
             recut_button.setToolTip("Part is recut. (recut=False)")
@@ -196,6 +215,16 @@ class WorkspaceWidget(QWidget):
         recut_button.setFixedWidth(100)
         recut_button.clicked.connect(partial(self.recut_pressed, group))
         table_widget.setCellWidget(current_row, WorkspacePartsTableColumns.RECUT.value, recut_button)
+
+        # RECOAT
+        recoat_button = QPushButton("Recoat", self)
+        if group.base_part.recoat:
+            recoat_button.setToolTip("Part is recoat. (recoat=False)")
+        else:
+            recoat_button.setToolTip("Request part to be recoat. (recoat=True)")
+        recoat_button.setFixedWidth(100)
+        recoat_button.clicked.connect(partial(self.recoat_pressed, group))
+        table_widget.setCellWidget(current_row, WorkspacePartsTableColumns.RECOAT.value, recoat_button)
 
     def recut_pressed(self, laser_cut_part_group: WorkspaceLaserCutPartGroup):
         if laser_cut_part_group.base_part.recut:
@@ -215,6 +244,23 @@ class WorkspaceWidget(QWidget):
                     self.laser_cut_inventory.add_recut_part(new_part)
                     self.laser_cut_inventory.save()
                     self.upload_files([f"{self.laser_cut_inventory.filename}.json"])
+                self.load_parts_table()
+                self.workspace.save()
+                self.sync_changes()
+
+    def recoat_pressed(self, laser_cut_part_group: WorkspaceLaserCutPartGroup):
+        if laser_cut_part_group.base_part.recoat:
+            laser_cut_part_group.unmark_as_recoat()
+            self.load_parts_table()
+            self.workspace.save()
+            self.sync_changes()
+        else:
+            dialog = RecutDialog(f"Recoat: {laser_cut_part_group.base_part.name}", laser_cut_part_group.get_quantity(), self)
+            if dialog.exec():
+                if not (recut_count := dialog.get_quantity()):
+                    return
+                for i in range(recut_count):
+                    laser_cut_part_group.laser_cut_parts[i].mark_as_recoat()
                 self.load_parts_table()
                 self.workspace.save()
                 self.sync_changes()
@@ -318,13 +364,21 @@ class WorkspaceWidget(QWidget):
     def load_parts_table(self):
         if any(keyword in self.workspace_filter.current_tag.lower() for keyword in ["laser"]):
             self.parts_table_widget.showColumn(WorkspacePartsTableColumns.QUANTITY_IN_STOCK.value)
-            self.recut_parts_widget.setHidden(False)
+            self.recut_parts_widget.setVisible(True)
         else:
             self.parts_table_widget.hideColumn(WorkspacePartsTableColumns.QUANTITY_IN_STOCK.value)
             self.recut_parts_widget.setHidden(True)
 
+        if any(keyword in self.workspace_filter.current_tag.lower() for keyword in ["powder", "coating", "liquid", "paint", "gloss", "prime"]):
+            self.parts_table_widget.showColumn(WorkspacePartsTableColumns.RECOAT.value)
+            self.recoat_parts_widget.setVisible(True)
+        else:
+            self.parts_table_widget.hideColumn(WorkspacePartsTableColumns.RECOAT.value)
+            self.recoat_parts_widget.setHidden(True)
+
         self.parts_table_widget.blockSignals(True)
         self.recut_parts_table_widget.blockSignals(True)
+        self.recoat_parts_table_widget.blockSignals(True)
 
         self.parts_table_items.clear()
         self.parts_table_rows.clear()
@@ -333,6 +387,10 @@ class WorkspaceWidget(QWidget):
         self.recut_parts_table_items.clear()
         self.recut_parts_table_rows.clear()
         self.recut_parts_table_widget.setRowCount(0)
+
+        self.recoat_parts_table_items.clear()
+        self.recoat_parts_table_rows.clear()
+        self.recoat_parts_table_widget.setRowCount(0)
 
         for job in self.workspace.jobs:
             if not (filtered_parts := self.workspace.get_filtered_laser_cut_parts(job)):
@@ -352,11 +410,14 @@ class WorkspaceWidget(QWidget):
                 self.add_part_group_to_table(laser_cut_part_group)
         self.parts_table_widget.blockSignals(False)
         self.recut_parts_table_widget.blockSignals(False)
+        self.recoat_parts_table_widget.blockSignals(False)
         self.parts_table_widget.resizeColumnsToContents()
         self.recut_parts_table_widget.resizeColumnsToContents()
+        self.recoat_parts_table_widget.resizeColumnsToContents()
 
         self.parts_table_widget.setFixedHeight((self.parts_table_widget.rowCount() + 1) * self.parts_table_widget.row_height)
         self.recut_parts_table_widget.setFixedHeight((self.recut_parts_table_widget.rowCount() + 1) * self.recut_parts_table_widget.row_height)
+        self.recoat_parts_table_widget.setFixedHeight((self.recoat_parts_table_widget.rowCount() + 1) * self.recoat_parts_table_widget.row_height)
         self.load_parts_table_context_menu()
 
     def load_parts_table_context_menu(self):
@@ -537,7 +598,7 @@ class WorkspaceWidget(QWidget):
             return flowtag_combobox
         else:
             try:
-                button_text = f"Move to {item.flow_tag.tags[item.current_flow_tag_index + 1].name}"
+                button_text = f"Move to {item.flowtag.tags[item.current_flow_tag_index + 1].name}"
             except IndexError:
                 button_text = "Mark as done"
             flowtag_button = QPushButton(button_text, self)

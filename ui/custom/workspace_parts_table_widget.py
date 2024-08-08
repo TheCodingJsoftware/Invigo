@@ -22,6 +22,7 @@ class WorkspacePartsTableColumns(AutoNumber):
     NOTES = auto()
     SHELF_NUMBER = auto()
     RECUT = auto()
+    RECOAT = auto()
 
 
 class WorkspacePartsTableWidget(CustomTableWidget):
@@ -51,6 +52,7 @@ class WorkspacePartsTableWidget(CustomTableWidget):
             "Shelf #": WorkspacePartsTableColumns.SHELF_NUMBER.value,
             "Notes": WorkspacePartsTableColumns.NOTES.value,
             "Recut": WorkspacePartsTableColumns.RECUT.value,
+            "Recoat": WorkspacePartsTableColumns.RECOAT.value,
         }
 
         self.setColumnCount(len(headers))

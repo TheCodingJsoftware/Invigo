@@ -47,7 +47,7 @@ class Job:
         self.color: str = "#eabf3e"  # default
         self.assemblies: list[Assembly] = []
         self.nests: list[Nest] = []
-        self.process_timeline = FlowtagTimeline(self)
+        self.flowtag_timeline = FlowtagTimeline(self)
 
         self.job_manager: JobManager = job_manager
         self.status = JobStatus.PLANNING
@@ -73,9 +73,18 @@ class Job:
     def get_unique_parts_flowtag_tags(self) -> list[Tag]:
         tags: dict[str, Tag] = {}
         for laser_cut_part in self.get_all_laser_cut_parts():
-            for tag in laser_cut_part.flow_tag.tags:
+            for tag in laser_cut_part.flowtag.tags:
                 tags[tag.name] = tag
-        return tags.values()
+        for assembly in self.get_all_assemblies():
+            for tag in assembly.flowtag.tags:
+                tags[tag.name] = tag
+
+        ordered_tags: list[Tag] = []
+        for ordered_tag in self.workspace_settings.get_all_tags():
+            if ordered_tag in tags:
+                ordered_tags.append(tags[ordered_tag])
+
+        return ordered_tags
 
     def changes_made(self):
         self.unsaved_changes = True
@@ -173,14 +182,13 @@ class Job:
     def load_settings(self, data: dict[str, dict[str, object]]):
         job_data = data.get("job_data", {})
         self.name = job_data.get("name", "")
-        self.order_number = job_data.get("order_number", 0.0)
+        self.order_number = job_data.get("order_number", 0)
         self.ship_to = job_data.get("ship_to", "")
         self.starting_date = job_data.get("starting_date", "")
         self.ending_date = job_data.get("ending_date", "")
         self.status = JobStatus(int(job_data.get("type", 1)))  # We cast just in case, trust me
         self.color = JobColor.get_color(self.status)
         self.price_calculator.load_settings(job_data.get("price_settings", {}))
-        self.process_timeline.load_data(job_data.get("process_timeline", {}))
 
     def update_inventory_items_data(self):
         for laser_cut_part in self.get_all_laser_cut_parts():
@@ -188,7 +196,7 @@ class Job:
                 inventory_laser_cut_part.bending_files = laser_cut_part.bending_files
                 inventory_laser_cut_part.welding_files = laser_cut_part.welding_files
                 inventory_laser_cut_part.cnc_milling_files = laser_cut_part.cnc_milling_files
-                inventory_laser_cut_part.flow_tag = laser_cut_part.flow_tag
+                inventory_laser_cut_part.flowtag = laser_cut_part.flowtag
 
                 inventory_laser_cut_part.uses_primer = laser_cut_part.uses_primer
                 inventory_laser_cut_part.uses_paint = laser_cut_part.uses_paint
@@ -211,10 +219,10 @@ class Job:
 
     def is_valid(self) -> tuple[bool, str]:
         for assembly in self.get_all_assemblies():
-            if not assembly.flow_tag:
+            if not assembly.flowtag:
                 return (False, assembly.name)
         for laser_cut_part in self.get_all_laser_cut_parts():
-            if not laser_cut_part.flow_tag.tags:
+            if not laser_cut_part.flowtag.tags:
                 return (False, laser_cut_part.name)
         return (True, "")
 
@@ -241,19 +249,22 @@ class Job:
             assembly = Assembly(assembly_data, self)
             self.add_assembly(assembly)
 
+        # Because we need laser cut parts
+        self.flowtag_timeline.load_data(data.get("job_data", {}).get("flowtag_timeline", {}))
+
     def to_dict(self) -> dict[str, dict[str, Union[list[dict[str, object]], object]]]:
         self.unsaved_changes = False
         return {
             "job_data": {
                 "name": self.name,
                 "type": self.status.value,
-                "order_number": self.order_number,
+                "order_number": int(self.order_number), # Just in case
                 "ship_to": self.ship_to,
                 "starting_date": self.starting_date,
                 "ending_date": self.ending_date,
                 "color": JobColor.get_color(self.status),
                 "price_settings": self.price_calculator.to_dict(),
-                "process_timeline": self.process_timeline.to_dict(),
+                "flowtag_timeline": self.flowtag_timeline.to_dict(),
             },
             "nests": [nest.to_dict() for nest in self.nests],
             "assemblies": [assembly.to_dict() for assembly in self.assemblies],
