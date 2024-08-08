@@ -19,10 +19,12 @@ class SendJobsToWorkspaceDialog(QDialog):
     ):
         super().__init__(parent)
         uic.loadUi("ui/dialogs/send_jobs_to_workspace_dialog.ui", self)
+        self.destintion = destintion
 
-        self.setWindowTitle(f"Send Jobs to {destintion}")
+        self.setWindowTitle(f"Send Jobs to {self.destintion}")
         self.setWindowIcon(QIcon("icons/icon.png"))
 
+        self.pushButton_add.setText(f"Send Jobs to {self.destintion}")
         self.pushButton_add.clicked.connect(self.accept)
         self.pushButton_cancel.clicked.connect(self.reject)
 
