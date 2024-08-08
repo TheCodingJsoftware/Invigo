@@ -48,6 +48,7 @@ class Job:
         self.assemblies: list[Assembly] = []
         self.nests: list[Nest] = []
         self.flowtag_timeline = FlowtagTimeline(self)
+        self.moved_job_to_workspace = False
 
         self.job_manager: JobManager = job_manager
         self.status = JobStatus.PLANNING
@@ -188,6 +189,7 @@ class Job:
         self.ending_date = job_data.get("ending_date", "")
         self.status = JobStatus(int(job_data.get("type", 1)))  # We cast just in case, trust me
         self.color = JobColor.get_color(self.status)
+        self.moved_job_to_workspace = job_data.get("moved_job_to_workspace", False)
         self.price_calculator.load_settings(job_data.get("price_settings", {}))
 
     def update_inventory_items_data(self):
@@ -265,6 +267,7 @@ class Job:
                 "color": JobColor.get_color(self.status),
                 "price_settings": self.price_calculator.to_dict(),
                 "flowtag_timeline": self.flowtag_timeline.to_dict(),
+                "moved_job_to_workspace": self.moved_job_to_workspace,
             },
             "nests": [nest.to_dict() for nest in self.nests],
             "assemblies": [assembly.to_dict() for assembly in self.assemblies],
