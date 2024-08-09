@@ -8,7 +8,7 @@ if TYPE_CHECKING:
     from utils.workspace.job import Job
 
 
-class FlowtagTimeline:
+class JobFlowtagTimeline:
     def __init__(self, job):
         self.tags_data: dict[Tag, dict[str, str]] = {}
         self.job: Job = job

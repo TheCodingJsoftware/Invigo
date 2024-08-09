@@ -9,7 +9,7 @@ from utils.inventory.nest import Nest
 from utils.workspace.assembly import Assembly
 from utils.workspace.tag import Tag
 from utils.workspace.job_price_calculator import JobPriceCalculator
-from utils.workspace.flowtag_timeline import FlowtagTimeline
+from utils.workspace.job_flowtag_timeline import JobFlowtagTimeline
 
 if TYPE_CHECKING:
     from utils.workspace.job_manager import JobManager
@@ -47,7 +47,7 @@ class Job:
         self.color: str = "#eabf3e"  # default
         self.assemblies: list[Assembly] = []
         self.nests: list[Nest] = []
-        self.flowtag_timeline = FlowtagTimeline(self)
+        self.flowtag_timeline = JobFlowtagTimeline(self)
         self.moved_job_to_workspace = False
 
         self.job_manager: JobManager = job_manager
