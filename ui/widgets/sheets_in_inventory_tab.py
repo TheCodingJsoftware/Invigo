@@ -2,10 +2,11 @@ import contextlib
 import os
 from datetime import datetime
 from functools import partial
+from typing import TYPE_CHECKING
 
 import sympy
 from PyQt6 import uic
-from PyQt6.QtCore import QDate, Qt
+from PyQt6.QtCore import QDate, Qt, pyqtSignal
 from PyQt6.QtGui import QAction, QColor, QCursor, QFont
 from PyQt6.QtWidgets import QAbstractItemView, QCheckBox, QComboBox, QDateEdit, QGridLayout, QHBoxLayout, QInputDialog, QLabel, QMenu, QMessageBox, QPushButton, QTableWidgetItem, QVBoxLayout, QWidget
 
@@ -23,6 +24,9 @@ from utils.settings import Settings
 from utils.sheet_settings.sheet_settings import SheetSettings
 
 settings_file = Settings()
+
+if TYPE_CHECKING:
+    from ui.windows.main_window import MainWindow
 
 
 class SheetsTableWidget(CustomTableWidget):
@@ -59,6 +63,8 @@ class SheetsTabWidget(CustomTabWidget):
 
 
 class OrderWidget(QWidget):
+    orderOpened = pyqtSignal()
+    orderClosed = pyqtSignal()
     def __init__(self, sheet: Sheet, parent: "SheetsInInventoryTab"):
         super().__init__(parent)
         self.parent: "SheetsInInventoryTab" = parent
@@ -128,6 +134,7 @@ class OrderWidget(QWidget):
             self.load_ui()
 
     def order_button_pressed(self, order: Order, order_status_button: OrderStatusButton):
+        self.orderOpened.emit()
         dialog = UpdateComponentOrderPendingDialog(order, f"Update order for {self.sheet.get_name()}", self)
         if dialog.exec():
             if dialog.action == "CANCEL_ORDER":
@@ -155,13 +162,16 @@ class OrderWidget(QWidget):
                         self.sheet.remove_order(order)
             else:  # You never know.
                 order_status_button.setChecked(True)
+                self.orderClosed.emit()
                 return
             self.parent.sheets_inventory.save()
             self.parent.sync_changes()
+            self.parent.sort_sheets()
             self.parent.select_last_selected_item()
             self.load_ui()
         else:  # Close order pressed
             order_status_button.setChecked(True)
+            self.orderClosed.emit()
 
     def date_changed(self, order: Order, arrival_date: QDateEdit):
         order.expected_arrival_time = arrival_date.date().toString("yyyy-MM-dd")
@@ -184,7 +194,7 @@ class SheetsInInventoryTab(QWidget):
     def __init__(self, parent):
         super().__init__(parent)
         uic.loadUi("ui/widgets/sheets_in_inventory_tab.ui", self)
-        self.parent = parent
+        self.parent: MainWindow = parent
         self.sheets_inventory: SheetsInventory = self.parent.sheets_inventory
         self.sheet_settings: SheetSettings = self.parent.sheet_settings
 
@@ -433,6 +443,8 @@ class SheetsInInventoryTab(QWidget):
 
                 # ORDERS
                 order_widget = OrderWidget(sheet, self)
+                order_widget.orderOpened.connect(self.block_table_signals)
+                order_widget.orderClosed.connect(self.unblock_table_signals)
                 current_table.setCellWidget(row_index, col_index, order_widget)
                 col_index += 1
 
@@ -490,6 +502,12 @@ class SheetsInInventoryTab(QWidget):
         self.save_current_tab()
         self.save_category_tabs_order()
         self.restore_scroll_position()
+
+    def block_table_signals(self):
+        self.category_tables[self.category].blockSignals(True)
+
+    def unblock_table_signals(self):
+        self.category_tables[self.category].blockSignals(False)
 
     def table_selected_changed(self):
         if sheet := self.get_selected_sheet():
