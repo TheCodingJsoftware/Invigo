@@ -9,7 +9,7 @@ from PyQt6.QtWidgets import QCheckBox, QComboBox, QDateEdit, QDoubleSpinBox, QGr
 
 from ui.custom.assembly_planning_widget import AssemblyPlanningWidget
 from ui.custom.assembly_quoting_widget import AssemblyQuotingWidget
-from ui.custom.flowtag_timeline_widget import FlowtagTimelineWidget
+from ui.custom.job_flowtag_timeline_widget import JobFlowtagTimelineWidget
 from ui.custom_widgets import AssemblyMultiToolBox, MultiToolBox, QLineEdit
 from ui.dialogs.add_assembly_dialog import AddAssemblyDialog
 from ui.widgets.nest_widget import NestWidget
@@ -286,7 +286,7 @@ class JobWidget(QWidget):
         self.label_total_cost_for_sheets.setHidden(self.job.status == JobStatus.PLANNING)
         self.label_total_cost_for_sheets.setText(f"Total Cost for Nested Sheets: ${self.price_calculator.get_total_cost_for_sheets():,.2f}")
 
-        self.flowtag_timeline = FlowtagTimelineWidget(self.job.flowtag_timeline, self)
+        self.flowtag_timeline = JobFlowtagTimelineWidget(self.job.flowtag_timeline, self)
         self.verticalLayout_flowtag_timeline = self.findChild(QVBoxLayout, "verticalLayout_flowtag_timeline")
         self.verticalLayout_flowtag_timeline.addWidget(self.flowtag_timeline)
 
