@@ -1,4 +1,4 @@
-class Status:
+class TagStatus:
     def __init__(self, name: str, data: dict[str, bool]):
         self.name = name
         self.marks_complete: bool = False

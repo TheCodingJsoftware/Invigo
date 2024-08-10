@@ -92,6 +92,8 @@ class AssemblyQuotingWidget(AssemblyWidget):
         self.comboBox_assembly_flow_tag.setCurrentText(str(self.assembly.flowtag))
         self.comboBox_assembly_flow_tag.setEnabled(False)
 
+        self.groupBox_flowtag_data.setHidden(True)
+
         self.laser_cut_parts_table = LaserCutPartsQuotingTableWidget(self)
         self.laser_cut_parts_table.rowChanged.connect(self.laser_cut_parts_table_changed)
         self.laser_cut_parts_layout.addWidget(self.laser_cut_parts_table)

@@ -7,10 +7,11 @@ from PyQt6.QtCore import Qt, pyqtSignal
 from PyQt6.QtGui import QAction, QCursor, QIcon
 from PyQt6.QtWidgets import QAbstractItemView, QCheckBox, QComboBox, QDialog, QGroupBox, QHBoxLayout, QInputDialog, QLabel, QLineEdit, QListWidget, QMenu, QMessageBox, QPlainTextEdit, QPushButton, QSplitter, QTableWidget, QTableWidgetItem, QTabWidget, QTextEdit, QVBoxLayout, QWidget
 
+from ui.custom.time_double_spin_box import TimeSpinBox
 from ui.custom_widgets import AssemblyMultiToolBox, DeletePushButton
 from utils.workspace.flowtag import Flowtag, Group
 from utils.workspace.flowtags import Flowtags
-from utils.workspace.status import Status
+from utils.workspace.tag_status import TagStatus
 from utils.workspace.tag import Tag
 from utils.workspace.workspace_settings import WorkspaceSettings
 
@@ -357,16 +358,16 @@ class EditWorkspaceSettings(QDialog):
         self.tableWidget_statuses.setColumnWidth(1, 200)
         self.tableWidget_statuses.setColumnWidth(2, 200)
         self.tableWidget_statuses.setColumnWidth(3, 40)
-        self.status_table_items: dict[Status, dict[str, QTableWidgetItem | QCheckBox]] = {}
+        self.status_table_items: dict[TagStatus, dict[str, QTableWidgetItem | QCheckBox]] = {}
         self.pushButton_add_status.clicked.connect(self.add_status)
 
         self.groupBox_5 = self.findChild(QGroupBox, "groupBox_5")
-        self.checkBox_enable_timer = self.findChild(QCheckBox, "checkBox_enable_timer")
-        self.checkBox_enable_timer.checkStateChanged.connect(self.checkbox_enable_timer_changed)
-        self.checkBox_show_all_items = self.findChild(QCheckBox, "checkBox_show_all_items")
-        self.checkBox_show_all_items.checkStateChanged.connect(self.checkbox_show_all_items_changed)
         self.plainTextEdit_next_flow_tag_message = self.findChild(QPlainTextEdit, "plainTextEdit_next_flow_tag_message")
         self.plainTextEdit_next_flow_tag_message.textChanged.connect(self.next_flow_tag_message_changed)
+
+        self.time_spin_box = TimeSpinBox(self)
+        self.time_spin_box.dateTimeChanged.connect(self.default_expected_time_to_complete_changed)
+        self.verticalLayout_expected_time_to_complete.addWidget(self.time_spin_box)
 
         self.pushButton_add_tag.clicked.connect(self.add_tag)
         self.pushButton_delete_tag.clicked.connect(self.delete_tag)
@@ -567,7 +568,7 @@ class EditWorkspaceSettings(QDialog):
                 self.tableWidget_statuses.setCellWidget(row, 2, checkbox_starts_timer)
                 self.status_table_items[status].update({"checkbox_starts_timer": checkbox_starts_timer})
 
-                def delete_status(status_to_delete: Status):
+                def delete_status(status_to_delete: TagStatus):
                     selected_tag.delete_status(status_to_delete)
                     self.load_status_table()
 
@@ -597,28 +598,27 @@ class EditWorkspaceSettings(QDialog):
 
     def add_status(self):
         if selected_tag := self.get_selected_tag():
-            status = Status(f"Status{self.tableWidget_statuses.rowCount()}", {})
+            status = TagStatus(f"Status{self.tableWidget_statuses.rowCount()}", {})
             selected_tag.add_status(status)
             self.load_status_table()
 
-    def checkbox_enable_timer_changed(self):
+    def default_expected_time_to_complete_changed(self):
         if selected_tag := self.get_selected_tag():
-            selected_tag.attribute.is_timer_enabled = self.checkBox_enable_timer.isChecked()
-
-    def checkbox_show_all_items_changed(self):
-        if selected_tag := self.get_selected_tag():
-            selected_tag.attribute.show_all_items = self.checkBox_show_all_items.isChecked()
+            selected_tag.attributes.expected_time_to_complete = self.time_spin_box.value()
 
     def next_flow_tag_message_changed(self):
         if selected_tag := self.get_selected_tag():
-            selected_tag.attribute.next_flow_tag_message = self.plainTextEdit_next_flow_tag_message.toPlainText()
+            selected_tag.attributes.next_flow_tag_message = self.plainTextEdit_next_flow_tag_message.toPlainText()
 
     def load_attributes(self):
         if selected_tag := self.get_selected_tag():
             self.groupBox_5.setTitle(f"Attributes for {selected_tag.name}")
-            self.checkBox_enable_timer.setChecked(selected_tag.attribute.is_timer_enabled)
-            self.checkBox_show_all_items.setChecked(selected_tag.attribute.show_all_items)
-            self.plainTextEdit_next_flow_tag_message.setPlainText(selected_tag.attribute.next_flow_tag_message)
+            self.plainTextEdit_next_flow_tag_message.blockSignals(True)
+            self.plainTextEdit_next_flow_tag_message.setPlainText(selected_tag.attributes.next_flow_tag_message)
+            self.plainTextEdit_next_flow_tag_message.blockSignals(False)
+            self.time_spin_box.blockSignals(True)
+            self.time_spin_box.setValue(selected_tag.attributes.expected_time_to_complete)
+            self.time_spin_box.blockSignals(False)
 
     def notes_changed(self):
         self.workspace_settings.notes = self.textEdit_notes.toPlainText()

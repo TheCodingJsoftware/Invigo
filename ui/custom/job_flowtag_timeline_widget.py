@@ -5,7 +5,7 @@ from typing import Union, TYPE_CHECKING
 from utils.workspace.job_flowtag_timeline import JobFlowtagTimeline
 from utils.workspace.tag import Tag
 
-from PyQt6.QtCore import Qt, QDate
+from PyQt6.QtCore import Qt, QDateTime
 from PyQt6.QtWidgets import QSlider, QWidget, QLabel, QGridLayout
 
 from superqt import QRangeSlider
@@ -25,7 +25,7 @@ class JobFlowtagTimelineWidget(QWidget):
         self.sliders: list[dict[str, Union[QRangeSlider, QLabel]]] = []
         self.load_tag_timelines()
 
-    def set_range(self, start: QDate, end: QDate):
+    def set_range(self, start: QDateTime, end: QDateTime):
         for slider in self.sliders:
             slider['slider'].setMaximum(start.daysTo(end))
 
@@ -34,8 +34,8 @@ class JobFlowtagTimelineWidget(QWidget):
         self.sliders.clear()
         self.flowtag_timeline.load_data(self.flowtag_timeline.to_dict())
 
-        job_start_date = datetime.strptime(self.flowtag_timeline.job.starting_date, "%Y-%m-%d")
-        job_end_date = datetime.strptime(self.flowtag_timeline.job.ending_date, "%Y-%m-%d")
+        job_start_date = datetime.strptime(self.flowtag_timeline.job.starting_date, "%Y-%m-%d %I:%M %p")
+        job_end_date = datetime.strptime(self.flowtag_timeline.job.ending_date, "%Y-%m-%d %I:%M %p")
         job_duration = (job_end_date - job_start_date).days
 
         row = 0
@@ -44,8 +44,8 @@ class JobFlowtagTimelineWidget(QWidget):
             slider.setTickPosition(QSlider.TickPosition.NoTicks)
             slider.setMaximum(job_duration)
             try:
-                tag_start_date = datetime.strptime(tag_data["starting_date"], "%Y-%m-%d")
-                tag_end_date = datetime.strptime(tag_data["ending_date"], "%Y-%m-%d")
+                tag_start_date = datetime.strptime(tag_data["starting_date"], "%Y-%m-%d %I:%M %p")
+                tag_end_date = datetime.strptime(tag_data["ending_date"], "%Y-%m-%d %I:%M %p")
             except ValueError: # For when it was never initialized
                 tag_start_date = job_start_date
                 tag_end_date = job_end_date
@@ -73,12 +73,12 @@ class JobFlowtagTimelineWidget(QWidget):
         start_label.setText(str(value[0]))
         end_label.setText(str(value[1]))
 
-        start_date = datetime.strptime(self.flowtag_timeline.job.starting_date, "%Y-%m-%d")
+        start_date = datetime.strptime(self.flowtag_timeline.job.starting_date, "%Y-%m-%d %I:%M %p")
         tag_start_date = start_date + timedelta(days=value[0])
         tag_end_date = tag_start_date + timedelta(days=value[1])
 
-        self.flowtag_timeline.tags_data[tag]["starting_date"] = tag_start_date.strftime("%Y-%m-%d")
-        self.flowtag_timeline.tags_data[tag]["ending_date"] = tag_end_date.strftime("%Y-%m-%d")
+        self.flowtag_timeline.tags_data[tag]["starting_date"] = tag_start_date.strftime("%Y-%m-%d %I:%M %p")
+        self.flowtag_timeline.tags_data[tag]["ending_date"] = tag_end_date.strftime("%Y-%m-%d %I:%M %p")
 
         tag_name_label.setText(f"{tag.name} ({value[1] - value[0]} days)")
         self.changes_made()

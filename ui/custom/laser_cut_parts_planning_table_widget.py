@@ -7,6 +7,7 @@ from ui.custom_widgets import CustomTableWidget
 
 
 class AutoNumber(Enum):
+    '''Starts at 1 and not 0'''
     def _generate_next_value_(name, start, count, last_values):
         return count
 
@@ -26,6 +27,7 @@ class LaserCutTableColumns(AutoNumber):
     PAINTING = auto()
     PAINT_SETTINGS = auto()
     FLOW_TAG = auto()
+    FLOW_TAG_DATA = auto()
 
 
 class LaserCutPartsPlanningTableWidget(CustomTableWidget):
@@ -62,8 +64,9 @@ class LaserCutPartsPlanningTableWidget(CustomTableWidget):
             "Shelf #": LaserCutTableColumns.SHELF_NUMBER.value,
             "Painting": LaserCutTableColumns.PAINTING.value,
             "Paint Settings": LaserCutTableColumns.PAINT_SETTINGS.value,
-            "Flow Tag": LaserCutTableColumns.FLOW_TAG.value,
             "Notes": LaserCutTableColumns.NOTES.value,
+            "Process": LaserCutTableColumns.FLOW_TAG.value,
+            "Process Data": LaserCutTableColumns.FLOW_TAG_DATA.value,
         }
 
         self.setColumnCount(len(headers))

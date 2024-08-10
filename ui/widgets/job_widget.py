@@ -1,11 +1,12 @@
 import contextlib
+from datetime import datetime
 from functools import partial
 from typing import TYPE_CHECKING, Optional, Union
 
 from natsort import natsorted
 from PyQt6 import uic
-from PyQt6.QtCore import QDate, Qt, pyqtSignal
-from PyQt6.QtWidgets import QCheckBox, QComboBox, QDateEdit, QDoubleSpinBox, QGridLayout, QLabel, QPushButton, QScrollArea, QSplitter, QTextEdit, QTreeWidget, QTreeWidgetItem, QVBoxLayout, QWidget
+from PyQt6.QtCore import QDateTime, Qt, pyqtSignal
+from PyQt6.QtWidgets import QCheckBox, QComboBox, QDateTimeEdit, QDoubleSpinBox, QGridLayout, QLabel, QPushButton, QScrollArea, QSplitter, QTextEdit, QTreeWidget, QTreeWidgetItem, QVBoxLayout, QWidget
 
 from ui.custom.assembly_planning_widget import AssemblyPlanningWidget
 from ui.custom.assembly_quoting_widget import AssemblyQuotingWidget
@@ -168,24 +169,25 @@ class JobWidget(QWidget):
         self.comboBox_type.setCurrentIndex(self.job.status.value - 1)
         self.comboBox_type.wheelEvent = lambda event: None
         self.comboBox_type.currentTextChanged.connect(self.job_settings_changed)
-        self.dateEdit_start: QDateEdit = self.findChild(QDateEdit, "dateEdit_start")
+
+        self.dateEdit_start: QDateTimeEdit = self.findChild(QDateTimeEdit, "dateEdit_start")
         try:
-            year, month, day = map(int, self.job.starting_date.split("-"))
-            self.dateEdit_start.setDate(QDate(year, month, day))
+            self.dateEdit_start.setDateTime(QDateTime(datetime.strptime(self.job.starting_date, "%Y-%m-%d %I:%M %p")))
         except ValueError:
-            self.dateEdit_start.setDate(QDate.currentDate())
-            self.job.starting_date = self.dateEdit_start.date().toString("yyyy-MM-dd")
+            self.dateEdit_start.setDateTime(QDateTime().currentDateTime())
+            self.job.starting_date = self.dateEdit_start.dateTime().toString("yyyy-MM-dd h:mm AP")
+
         self.dateEdit_start.dateChanged.connect(self.job_settings_changed)
         self.dateEdit_start.wheelEvent = lambda event: None
-        self.dateEdit_end: QDateEdit = self.findChild(QDateEdit, "dateEdit_end")
+
+        self.dateEdit_end: QDateTimeEdit = self.findChild(QDateTimeEdit, "dateEdit_end")
         try:
-            year, month, day = map(int, self.job.ending_date.split("-"))
-            self.dateEdit_end.setDate(QDate(year, month, day))
+            self.dateEdit_end.setDateTime(QDateTime(datetime.strptime(self.job.ending_date, "%Y-%m-%d %I:%M %p")))
         except ValueError:
-            current_date = QDate.currentDate()
+            current_date = QDateTime.currentDateTime()
             new_date = current_date.addDays(7)
-            self.dateEdit_end.setDate(new_date)
-            self.job.ending_date = self.dateEdit_end.date().toString("yyyy-MM-dd")
+            self.dateEdit_end.setDateTime(new_date)
+            self.job.ending_date = self.dateEdit_end.dateTime().toString("yyyy-MM-dd h:mm AP")
 
         self.label_16.setText(f"Process's timeline: ({self.job.starting_date} - {self.job.ending_date})")
         self.dateEdit_end.dateChanged.connect(self.job_settings_changed)
@@ -367,9 +369,9 @@ QPushButton:checked:pressed#assembly_button_drop_menu {
     def job_settings_changed(self):
         self.job.order_number = int(self.doubleSpinBox_order_number.value())
         self.job.status = JobStatus(self.comboBox_type.currentIndex() + 1)
-        self.job.starting_date = self.dateEdit_start.date().toString("yyyy-MM-dd")
-        self.job.ending_date = self.dateEdit_end.date().toString("yyyy-MM-dd")
-        self.flowtag_timeline.set_range(self.dateEdit_start.date(), self.dateEdit_end.date())
+        self.job.starting_date = self.dateEdit_start.dateTime().toString("yyyy-MM-dd h:mm AP")
+        self.job.ending_date = self.dateEdit_end.dateTime().toString("yyyy-MM-dd h:mm AP")
+        self.flowtag_timeline.set_range(self.dateEdit_start.dateTime(), self.dateEdit_end.dateTime())
         self.job.ship_to = self.textEdit_ship_to.toPlainText()
         self.label_16.setText(f"Process's timeline: ({self.job.starting_date} - {self.job.ending_date})")
         self.changes_made()

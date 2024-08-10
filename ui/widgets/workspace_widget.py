@@ -587,7 +587,7 @@ class WorkspaceWidget(QWidget):
         current_tag = item.get_current_tag()
         if current_tag.statuses:
             flowtag_combobox = QComboBox(self)
-            flowtag_combobox.setToolTip(current_tag.attribute.next_flow_tag_message)
+            flowtag_combobox.setToolTip(current_tag.attributes.next_flow_tag_message)
             for status in current_tag.statuses:
                 flowtag_combobox.addItem(status.name)
             flowtag_combobox.setCurrentIndex(item.current_flow_tag_status_index)
@@ -602,7 +602,7 @@ class WorkspaceWidget(QWidget):
             except IndexError:
                 button_text = "Mark as done"
             flowtag_button = QPushButton(button_text, self)
-            flowtag_button.setToolTip(current_tag.attribute.next_flow_tag_message)
+            flowtag_button.setToolTip(current_tag.attributes.next_flow_tag_message)
             if isinstance(part_group_or_assembly, WorkspaceLaserCutPartGroup):
                 flowtag_button.clicked.connect(partial(self.move_item_process_forward, part_group_or_assembly))
             elif isinstance(part_group_or_assembly, Assembly):

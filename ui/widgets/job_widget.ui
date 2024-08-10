@@ -75,32 +75,6 @@
               </property>
              </widget>
             </item>
-            <item row="0" column="3">
-             <widget class="QDateEdit" name="dateEdit_start">
-              <property name="minimumSize">
-               <size>
-                <width>100</width>
-                <height>0</height>
-               </size>
-              </property>
-              <property name="toolTip">
-               <string>When is this job supposed to start.</string>
-              </property>
-              <property name="showGroupSeparator" stdset="0">
-               <bool>true</bool>
-              </property>
-              <property name="calendarPopup">
-               <bool>true</bool>
-              </property>
-              <property name="date">
-               <date>
-                <year>2024</year>
-                <month>1</month>
-                <day>1</day>
-               </date>
-              </property>
-             </widget>
-            </item>
             <item row="1" column="1">
              <widget class="QComboBox" name="comboBox_type">
               <item>
@@ -133,32 +107,6 @@
                 <string>Archive</string>
                </property>
               </item>
-             </widget>
-            </item>
-            <item row="1" column="3">
-             <widget class="QDateEdit" name="dateEdit_end">
-              <property name="minimumSize">
-               <size>
-                <width>100</width>
-                <height>0</height>
-               </size>
-              </property>
-              <property name="toolTip">
-               <string>When is this job supposed to be finished.</string>
-              </property>
-              <property name="showGroupSeparator" stdset="0">
-               <bool>true</bool>
-              </property>
-              <property name="calendarPopup">
-               <bool>true</bool>
-              </property>
-              <property name="date">
-               <date>
-                <year>2024</year>
-                <month>1</month>
-                <day>1</day>
-               </date>
-              </property>
              </widget>
             </item>
             <item row="0" column="1">
@@ -244,6 +192,40 @@
               </property>
               <property name="placeholderText">
                <string>Information about where this job is shipped to...</string>
+              </property>
+             </widget>
+            </item>
+            <item row="1" column="3">
+             <widget class="QDateTimeEdit" name="dateEdit_end">
+              <property name="minimumDate">
+               <date>
+                <year>2024</year>
+                <month>1</month>
+                <day>1</day>
+               </date>
+              </property>
+              <property name="currentSection">
+               <enum>QDateTimeEdit::Section::DaySection</enum>
+              </property>
+              <property name="calendarPopup">
+               <bool>true</bool>
+              </property>
+             </widget>
+            </item>
+            <item row="0" column="3">
+             <widget class="QDateTimeEdit" name="dateEdit_start">
+              <property name="minimumDate">
+               <date>
+                <year>2024</year>
+                <month>1</month>
+                <day>1</day>
+               </date>
+              </property>
+              <property name="currentSection">
+               <enum>QDateTimeEdit::Section::DaySection</enum>
+              </property>
+              <property name="calendarPopup">
+               <bool>true</bool>
               </property>
              </widget>
             </item>
@@ -1219,9 +1201,7 @@ QPushButton#pushButton_reload_job:flat:hover {
  <tabstops>
   <tabstop>doubleSpinBox_order_number</tabstop>
   <tabstop>pushButton_get_order_number</tabstop>
-  <tabstop>dateEdit_start</tabstop>
   <tabstop>comboBox_type</tabstop>
-  <tabstop>dateEdit_end</tabstop>
   <tabstop>pushButton_global_sheet_settings</tabstop>
   <tabstop>comboBox_laser_cutting</tabstop>
   <tabstop>doubleSpinBox_cost_for_laser</tabstop>

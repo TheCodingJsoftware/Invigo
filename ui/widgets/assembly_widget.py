@@ -4,7 +4,7 @@ from typing import TYPE_CHECKING, Optional, Union
 from PyQt6 import uic
 from PyQt6.QtCore import Qt
 from PyQt6.QtGui import QColor, QCursor
-from PyQt6.QtWidgets import QComboBox, QDoubleSpinBox, QHBoxLayout, QLabel, QMenu, QPushButton, QTableWidget, QTableWidgetItem, QVBoxLayout, QWidget
+from PyQt6.QtWidgets import QComboBox, QDoubleSpinBox, QGroupBox, QHBoxLayout, QLabel, QMenu, QPushButton, QTableWidget, QTableWidgetItem, QVBoxLayout, QWidget
 
 from ui.dialogs.add_assembly_dialog import AddAssemblyDialog
 from ui.windows.image_viewer import QImageViewer
@@ -70,6 +70,10 @@ border-top-left-radius: 0px;
         self.apply_stylesheet_to_toggle_buttons(self.pushButton_sub_assemblies, self.sub_assemblies_widget)
 
         self.label_total_cost_for_assembly = self.findChild(QLabel, "label_total_cost_for_assembly")
+
+        self.expected_time_to_complete_layout = self.findChild(QVBoxLayout, "expected_time_to_complete_layout")
+        self.flowtag_data_layout = self.findChild(QVBoxLayout, "flowtag_data_layout")
+        self.groupBox_flowtag_data = self.findChild(QGroupBox, "groupBox_flowtag_data")
 
         self.image_layout = self.findChild(QVBoxLayout, "image_layout")
         self.doubleSpinBox_quantity = self.findChild(QDoubleSpinBox, "doubleSpinBox_quantity")

@@ -11,10 +11,12 @@ from PyQt6.QtWidgets import QApplication, QComboBox, QDoubleSpinBox, QHBoxLayout
 
 from ui.custom.assembly_file_drop_widget import AssemblyFileDropWidget
 from ui.custom.assembly_image import AssemblyImage
+from ui.custom.time_double_spin_box import TimeSpinBox
 from ui.custom.assembly_paint_settings_widget import AssemblyPaintSettingsWidget
 from ui.custom.assembly_paint_widget import AssemblyPaintWidget
 from ui.custom.components_planning_table_widget import ComponentsPlanningTableWidget, ComponentsTableColumns
 from ui.custom.file_button import FileButton
+from ui.custom.flowtag_data_widget import FlowtagDataWidget
 from ui.custom.laser_cut_part_file_drop_widget import LaserCutPartFileDropWidget
 from ui.custom.laser_cut_part_paint_settings_widget import LasserCutPartPaintSettingsWidget
 from ui.custom.laser_cut_part_paint_widget import LaserCutPartPaintWidget
@@ -37,7 +39,7 @@ class AssemblyPlanningWidget(AssemblyWidget):
         super().__init__(assembly, parent)
 
         self.sub_assembly_widgets: list[AssemblyPlanningWidget] = []
-        self.laser_cut_part_table_items: dict[LaserCutPart, dict[str, QTableWidgetItem | QComboBox | QWidget | int]] = {}
+        self.laser_cut_part_table_items: dict[LaserCutPart, dict[str, QTableWidgetItem | QComboBox | QWidget | int | FlowtagDataWidget]] = {}
         self.components_table_items: dict[Component, dict[str, QTableWidgetItem | int]] = {}
 
         self.upload_images_thread: UploadThread = None
@@ -73,9 +75,10 @@ class AssemblyPlanningWidget(AssemblyWidget):
         self.doubleSpinBox_quantity.setValue(self.assembly.quantity)
         self.doubleSpinBox_quantity.valueChanged.connect(self.assembly_quantity_changed)
 
-        self.doubleSpinBox_expected_time_to_complete = self.findChild(QDoubleSpinBox, "doubleSpinBox_expected_time_to_complete")
-        self.doubleSpinBox_expected_time_to_complete.setValue(self.assembly.expected_time_to_complete)
-        self.doubleSpinBox_expected_time_to_complete.valueChanged.connect(self.assembly_time_to_complete_changed)
+        self.doubleSpinBox_expected_time_to_complete = TimeSpinBox(self)
+        self.doubleSpinBox_expected_time_to_complete.setValue(int(self.assembly.expected_time_to_complete))
+        self.doubleSpinBox_expected_time_to_complete.dateTimeChanged.connect(self.assembly_time_to_complete_changed)
+        self.expected_time_to_complete_layout.addWidget(self.doubleSpinBox_expected_time_to_complete)
 
         self.paint_widget.setVisible(self.assembly.flowtag.contains(["paint", "powder", "coating", "liquid"]))
 
@@ -95,6 +98,10 @@ class AssemblyPlanningWidget(AssemblyWidget):
         self.comboBox_assembly_flow_tag.setCurrentText(str(self.assembly.flowtag))
         self.comboBox_assembly_flow_tag.wheelEvent = lambda event: None
         self.comboBox_assembly_flow_tag.currentTextChanged.connect(self.assembly_flow_tag_changed)
+
+        self.groupBox_flowtag_data.setVisible(True)
+        self.assembly_flowtag_data_widget = FlowtagDataWidget(self.assembly.flowtag_data, self)
+        self.flowtag_data_layout.addWidget(self.assembly_flowtag_data_widget)
 
         self.laser_cut_parts_table = LaserCutPartsPlanningTableWidget(self)
         self.laser_cut_parts_table.rowChanged.connect(self.laser_cut_parts_table_changed)
@@ -208,9 +215,17 @@ class AssemblyPlanningWidget(AssemblyWidget):
                 self.upload_assembly_image(temp_path, False)
 
     def assembly_flow_tag_changed(self):
-        self.assembly.flowtag = self.workspace_settings.get_flow_tag_by_name(self.comboBox_assembly_flow_tag.currentText())
+        if not (new_flowtag := self.workspace_settings.get_flow_tag_by_name(self.comboBox_assembly_flow_tag.currentText())):
+            msg = QMessageBox(QMessageBox.Icon.Warning, "Not a flowtag", "Not a valid flowtag", QMessageBox.StandardButton.Ok, self)
+            msg.exec()
+            return
+        self.assembly.flowtag = new_flowtag
+        self.assembly.flowtag_data.flowtag = new_flowtag
+        self.assembly.flowtag_data.load_data(self.assembly.flowtag_data.to_dict())
+        self.assembly_flowtag_data_widget.load_ui()
+
         try:
-            self.paint_widget.setVisible(self.assembly.flowtag.contains(["paint", "powder", "coating", "liquid"]))
+            self.paint_widget.setVisible(self.assembly.flowtag.contains(["paint", "gloss" "powder", "coating", "liquid"]))
         except AttributeError:  # There is no flow tag selected
             self.paint_widget.setHidden(True)
         self.changes_made()
@@ -481,6 +496,7 @@ class AssemblyPlanningWidget(AssemblyWidget):
             self.add_laser_cut_part_to_table(laser_cut_part)
         self.laser_cut_parts_table.blockSignals(False)
         self.laser_cut_parts_table.resizeColumnsToContents()
+        self.laser_cut_parts_table.resizeRowsToContents()
         self.update_laser_cut_parts_table_height()
 
     def add_laser_cut_part_to_table(self, laser_cut_part: LaserCutPart):
@@ -664,6 +680,10 @@ class AssemblyPlanningWidget(AssemblyWidget):
         self.laser_cut_parts_table.blockSignals(False)
         self.update_laser_cut_parts_table_height()
 
+        flowtag_data_widget = FlowtagDataWidget(laser_cut_part.flowtag_data, self)
+        self.laser_cut_parts_table.setCellWidget(current_row, LaserCutTableColumns.FLOW_TAG_DATA.value, flowtag_data_widget)
+        self.laser_cut_part_table_items[laser_cut_part].update({"flowtag_data": flowtag_data_widget})
+
     def update_laser_cut_parts_table_quantity(self):
         self.laser_cut_parts_table.blockSignals(True)
         for laser_cut_part, table_data in self.laser_cut_part_table_items.items():
@@ -703,7 +723,19 @@ class AssemblyPlanningWidget(AssemblyWidget):
         self.changes_made()
 
     def laser_cut_part_flow_tag_changed(self, laser_cut_part: LaserCutPart, flow_tag_combobox: QComboBox):
-        laser_cut_part.flowtag = self.workspace_settings.get_flow_tag_by_name(flow_tag_combobox.currentText())
+        if not (new_flowtag := self.workspace_settings.get_flow_tag_by_name(flow_tag_combobox.currentText())):
+            msg = QMessageBox(QMessageBox.Icon.Warning, "Not a flowtag", "Not a valid flowtag", QMessageBox.StandardButton.Ok, self)
+            msg.exec()
+            return
+        laser_cut_part.flowtag = new_flowtag
+        laser_cut_part.flowtag_data.flowtag = new_flowtag
+        laser_cut_part.flowtag_data.load_data(laser_cut_part.flowtag_data.to_dict())
+        if tag := laser_cut_part.flowtag.get_tag_with_similar_name("laser"):
+            laser_cut_part.flowtag_data.set_tag_data(tag, "expected_time_to_complete", int(laser_cut_part.machine_time * 60))
+        self.laser_cut_part_table_items[laser_cut_part]["flowtag_data"].load_ui()
+        self.laser_cut_parts_table.resizeRowsToContents()
+        self.laser_cut_parts_table.resizeColumnsToContents()
+        self.update_laser_cut_parts_table_height()
         self.changes_made()
 
     def add_laser_cut_part_drag_file_widget(
@@ -751,7 +783,10 @@ class AssemblyPlanningWidget(AssemblyWidget):
                 self.add_laser_cut_part_to_table(new_laser_cut_part)
 
     def update_laser_cut_parts_table_height(self):
-        self.laser_cut_parts_table.setFixedHeight((len(self.assembly.laser_cut_parts) + 1) * self.laser_cut_parts_table.row_height)
+        total_height = 0
+        for row in range(self.laser_cut_parts_table.rowCount()):
+            total_height += self.laser_cut_parts_table.rowHeight(row)
+        self.laser_cut_parts_table.setFixedHeight(total_height + 70)
 
     def laser_cut_part_get_all_file_types(self, laser_cut_part: LaserCutPart, file_ext: str) -> list[str]:
         files: set[str] = set()
@@ -878,6 +913,13 @@ class AssemblyPlanningWidget(AssemblyWidget):
                 laser_cut_part.quantity = float(selection)
             elif ACTION == "SET_FLOW_TAG":
                 laser_cut_part.flowtag = self.workspace_settings.get_flow_tag_by_name(selection)
+                laser_cut_part.flowtag_data.load_data(laser_cut_part.flowtag_data.to_dict())
+                if tag := laser_cut_part.flowtag.get_tag_with_similar_name("laser"):
+                    laser_cut_part.flowtag_data.set_tag_data(tag, "expected_time_to_complete", int(laser_cut_part.machine_time * 60))
+                self.laser_cut_part_table_items[laser_cut_part]["flowtag_data"].load_ui()
+                self.laser_cut_parts_table.resizeRowsToContents()
+                self.laser_cut_parts_table.resizeColumnsToContents()
+                self.update_laser_cut_parts_table_height()
         self.load_laser_cut_parts_table()
         self.changes_made()
 

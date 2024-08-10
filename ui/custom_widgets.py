@@ -1842,7 +1842,8 @@ class CustomTableWidget(QTableWidget):
     def handle_row_change(self):
         changed_rows_copy = self.changed_rows.copy()  # Make a copy of the set
         for row in changed_rows_copy:
-            self.rowChanged.emit(row)
+            if not self.signalsBlocked():
+                self.rowChanged.emit(row)
         self.changed_rows.clear()
 
     def edit(self, index, trigger, event):

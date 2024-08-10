@@ -199,6 +199,7 @@ class Job:
                 inventory_laser_cut_part.welding_files = laser_cut_part.welding_files
                 inventory_laser_cut_part.cnc_milling_files = laser_cut_part.cnc_milling_files
                 inventory_laser_cut_part.flowtag = laser_cut_part.flowtag
+                inventory_laser_cut_part.flowtag_data = laser_cut_part.flowtag_data
 
                 inventory_laser_cut_part.uses_primer = laser_cut_part.uses_primer
                 inventory_laser_cut_part.uses_paint = laser_cut_part.uses_paint
