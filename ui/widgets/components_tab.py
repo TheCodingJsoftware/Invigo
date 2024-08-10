@@ -2,11 +2,12 @@ import contextlib
 import os
 from datetime import datetime
 from functools import partial
+from typing import TYPE_CHECKING
 
 import sympy
 from natsort import natsorted
 from PyQt6 import uic
-from PyQt6.QtCore import QDate, Qt
+from PyQt6.QtCore import QDate, Qt, pyqtSignal
 from PyQt6.QtGui import QAction, QColor, QCursor, QFont, QIcon
 from PyQt6.QtWidgets import QAbstractItemView, QCompleter, QDateEdit, QGridLayout, QHBoxLayout, QInputDialog, QLabel, QLineEdit, QListWidget, QMenu, QMessageBox, QPushButton, QTableWidgetItem, QVBoxLayout, QWidget
 
@@ -29,6 +30,9 @@ from utils.po_template import POTemplate
 from utils.settings import Settings
 from utils.workspace.assembly import Assembly
 from utils.workspace.job import Job
+
+if TYPE_CHECKING:
+    from ui.windows.main_window import MainWindow
 
 
 class ComponentsTableWidget(CustomTableWidget):
@@ -68,6 +72,8 @@ class ComponentsTabWidget(CustomTabWidget):
 
 
 class OrderWidget(QWidget):
+    orderOpened = pyqtSignal()
+    orderClosed = pyqtSignal()
     def __init__(self, component: Component, parent: "ComponentsTab"):
         super().__init__(parent)
         self.parent: "ComponentsTab" = parent
@@ -137,6 +143,7 @@ class OrderWidget(QWidget):
             self.load_ui()
 
     def order_button_pressed(self, order: Order, order_status_button: OrderStatusButton):
+        self.orderOpened.emit()
         dialog = UpdateComponentOrderPendingDialog(order, f"Update order for {self.component.part_name}", self)
         if dialog.exec():
             if dialog.action == "CANCEL_ORDER":
@@ -164,6 +171,7 @@ class OrderWidget(QWidget):
                         self.component.remove_order(order)
             else:  # You never know.
                 order_status_button.setChecked(True)
+                self.orderClosed.emit()
                 return
             self.parent.components_inventory.save()
             self.parent.sync_changes()
@@ -172,6 +180,7 @@ class OrderWidget(QWidget):
             self.load_ui()
         else:  # Close order pressed
             order_status_button.setChecked(True)
+            self.orderClosed.emit()
 
     def date_changed(self, order: Order, arrival_date: QDateEdit):
         order.expected_arrival_time = arrival_date.date().toString("yyyy-MM-dd")
@@ -194,7 +203,6 @@ class ComponentsTab(QWidget):
     def __init__(self, parent: QWidget):
         super().__init__(parent)
         uic.loadUi("ui/widgets/components_tab.ui", self)
-        from main import MainWindow
 
         self.parent: MainWindow = parent
         self.components_inventory: ComponentsInventory = self.parent.components_inventory
@@ -528,6 +536,8 @@ class ComponentsTab(QWidget):
 
             # ORDER WIDGET
             order_widget = OrderWidget(component, self)
+            order_widget.orderOpened.connect(self.block_table_signals)
+            order_widget.orderClosed.connect(self.unblock_table_signals)
             current_table.setCellWidget(row_index, col_index, order_widget)
 
             self.update_component_row_color(current_table, component)
@@ -550,6 +560,12 @@ class ComponentsTab(QWidget):
         self.save_current_tab()
         self.save_category_tabs_order()
         self.restore_scroll_position()
+
+    def block_table_signals(self):
+        self.category_tables[self.category].blockSignals(True)
+
+    def unblock_table_signals(self):
+        self.category_tables[self.category].blockSignals(False)
 
     def table_selected_changed(self):
         if component := self.get_selected_component():

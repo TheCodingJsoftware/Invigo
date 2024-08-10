@@ -10,6 +10,7 @@ from utils.workspace.flowtag import Flowtag
 from utils.workspace.tag import Tag
 from utils.workspace.workspace_settings import WorkspaceSettings
 from utils.workspace.flowtag_timer import FlowtagTimer
+from utils.workspace.flowtag_data import FlowtagData
 
 if TYPE_CHECKING:
     from utils.inventory.laser_cut_inventory import LaserCutInventory
@@ -84,6 +85,7 @@ class LaserCutPart(InventoryItem):
         self.welding_files: list[str] = []
         self.cnc_milling_files: list[str] = []
         self.timer: FlowtagTimer = None
+        self.flowtag_data: FlowtagData = None
 
         # NOTE Only for Quote Generator and load_nest.py
         self.nest: Nest = None
@@ -257,6 +259,8 @@ class LaserCutPart(InventoryItem):
         # and then it messes everything up, specifically it will mess up laser cut parts
         # when you add a job to workspace
         self.timer = FlowtagTimer(copy.deepcopy(data.get("timer", {})), self.flowtag)
+        self.flowtag_data = FlowtagData(self.flowtag)
+        self.flowtag_data.load_data(data.get("flow_tag_data", {}))
 
         self.quantity_in_nest = data.get("quantity_in_nest", 0)
 
@@ -340,4 +344,5 @@ class LaserCutPart(InventoryItem):
             "current_flow_tag_index": self.current_flow_tag_index,
             "current_flow_tag_status_index": self.current_flow_tag_status_index,
             "timer": self.timer.to_dict(),
+            "flow_tag_data": self.flowtag_data.to_dict(),
         }

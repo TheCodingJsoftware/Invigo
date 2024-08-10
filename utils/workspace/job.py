@@ -9,7 +9,7 @@ from utils.inventory.nest import Nest
 from utils.workspace.assembly import Assembly
 from utils.workspace.tag import Tag
 from utils.workspace.job_price_calculator import JobPriceCalculator
-from utils.workspace.flowtag_timeline import FlowtagTimeline
+from utils.workspace.job_flowtag_timeline import JobFlowtagTimeline
 
 if TYPE_CHECKING:
     from utils.workspace.job_manager import JobManager
@@ -47,7 +47,7 @@ class Job:
         self.color: str = "#eabf3e"  # default
         self.assemblies: list[Assembly] = []
         self.nests: list[Nest] = []
-        self.flowtag_timeline = FlowtagTimeline(self)
+        self.flowtag_timeline = JobFlowtagTimeline(self)
         self.moved_job_to_workspace = False
 
         self.job_manager: JobManager = job_manager
@@ -199,6 +199,7 @@ class Job:
                 inventory_laser_cut_part.welding_files = laser_cut_part.welding_files
                 inventory_laser_cut_part.cnc_milling_files = laser_cut_part.cnc_milling_files
                 inventory_laser_cut_part.flowtag = laser_cut_part.flowtag
+                inventory_laser_cut_part.flowtag_data = laser_cut_part.flowtag_data
 
                 inventory_laser_cut_part.uses_primer = laser_cut_part.uses_primer
                 inventory_laser_cut_part.uses_paint = laser_cut_part.uses_paint

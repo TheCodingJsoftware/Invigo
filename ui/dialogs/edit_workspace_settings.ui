@@ -141,8 +141,8 @@ li.checked::marker { content: &quot;\2612&quot;; }
                     <rect>
                      <x>0</x>
                      <y>0</y>
-                     <width>1221</width>
-                     <height>264</height>
+                     <width>1209</width>
+                     <height>20</height>
                     </rect>
                    </property>
                    <layout class="QVBoxLayout" name="verticalLayout_5">
@@ -236,8 +236,8 @@ li.checked::marker { content: &quot;\2612&quot;; }
                     <rect>
                      <x>0</x>
                      <y>0</y>
-                     <width>1221</width>
-                     <height>264</height>
+                     <width>1209</width>
+                     <height>20</height>
                     </rect>
                    </property>
                    <layout class="QVBoxLayout" name="verticalLayout_13">
@@ -319,8 +319,8 @@ li.checked::marker { content: &quot;\2612&quot;; }
                     <rect>
                      <x>0</x>
                      <y>0</y>
-                     <width>1221</width>
-                     <height>264</height>
+                     <width>1209</width>
+                     <height>20</height>
                     </rect>
                    </property>
                    <layout class="QVBoxLayout" name="verticalLayout_17">
@@ -529,40 +529,34 @@ li.checked::marker { content: &quot;\2612&quot;; }
               <property name="title">
                <string>Attributes</string>
               </property>
-              <layout class="QVBoxLayout" name="verticalLayout_10" stretch="0">
+              <layout class="QVBoxLayout" name="verticalLayout_10" stretch="0,0">
+               <item>
+                <layout class="QHBoxLayout" name="horizontalLayout_9" stretch="0,1">
+                 <item>
+                  <widget class="QLabel" name="label_4">
+                   <property name="text">
+                    <string>Default Exp. Dur.:</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <layout class="QVBoxLayout" name="verticalLayout_expected_time_to_complete"/>
+                 </item>
+                </layout>
+               </item>
                <item>
                 <layout class="QGridLayout" name="gridLayout">
-                 <item row="2" column="0">
+                 <item row="1" column="0">
                   <widget class="QLabel" name="label_3">
                    <property name="text">
                     <string>Next flow tag message:</string>
                    </property>
                   </widget>
                  </item>
-                 <item row="3" column="0">
+                 <item row="2" column="0">
                   <widget class="QPlainTextEdit" name="plainTextEdit_next_flow_tag_message">
                    <property name="toolTip">
                     <string>This message will show when it is the next tag in the flow tag.</string>
-                   </property>
-                  </widget>
-                 </item>
-                 <item row="0" column="0">
-                  <widget class="QCheckBox" name="checkBox_enable_timer">
-                   <property name="toolTip">
-                    <string>This will enable a timer that the user can start/stop to time how long the part takes to complete.</string>
-                   </property>
-                   <property name="text">
-                    <string>Enable Timer</string>
-                   </property>
-                  </widget>
-                 </item>
-                 <item row="1" column="0">
-                  <widget class="QCheckBox" name="checkBox_show_all_items">
-                   <property name="toolTip">
-                    <string>All items will still show in the sub-assembly in case it needs to be recut when its on this tag.</string>
-                   </property>
-                   <property name="text">
-                    <string>Show All Items</string>
                    </property>
                   </widget>
                  </item>

@@ -1,5 +1,5 @@
 from enum import Enum
-from typing import TYPE_CHECKING, Iterator, Union
+from typing import TYPE_CHECKING, Iterator, Union, Optional
 
 from utils.workspace.tag import Tag
 
@@ -56,6 +56,12 @@ class Flowtag:
                 if text.lower() in tag.name.lower():
                     return True
         return False
+
+    def get_tag_with_similar_name(self, tag_name: str) -> Optional[Tag]:
+        for tag in self.tags:
+            if tag_name.lower() in tag.name.lower():
+                return tag
+        return None
 
     def add_tag(self, tag: Tag):
         self.tags.append(tag)

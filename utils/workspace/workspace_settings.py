@@ -5,7 +5,7 @@ import msgspec
 
 from utils.workspace.flowtag import Flowtag, Group
 from utils.workspace.flowtags import Flowtags
-from utils.workspace.status import Status
+from utils.workspace.tag_status import TagStatus
 from utils.workspace.tag import Tag
 
 
@@ -41,8 +41,8 @@ class WorkspaceSettings:
     def get_all_tags(self) -> list[str]:
         return [tag.name for tag in self.tags]
 
-    def get_all_statuses(self) -> list[Status]:
-        statuses: list[Status] = []
+    def get_all_statuses(self) -> list[TagStatus]:
+        statuses: list[TagStatus] = []
         for tag in self.tags:
             statuses.extend(status.name for status in tag.statuses)
         return statuses

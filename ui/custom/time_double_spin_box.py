@@ -1,108 +1,82 @@
-from datetime import datetime, timedelta
-
-from PyQt6.QtCore import QDateTime, QEvent, QRegularExpression, Qt
-from PyQt6.QtGui import QRegularExpressionValidator
-from PyQt6.QtWidgets import QDoubleSpinBox
+from PyQt6.QtCore import QEvent, Qt, pyqtSignal
+from PyQt6.QtWidgets import QDoubleSpinBox, QHBoxLayout, QWidget, QLabel
 
 
-class TimeSpinBox(QDoubleSpinBox):
-    # ! IF VALUE IS SET TO 1, THAT IS 1 DAY
+class SpinBox(QDoubleSpinBox):
+    def __init__(self, parent: QWidget | None = ...) -> None:
+        super().__init__(parent)
+        self.setDecimals(0)
+        self.setFixedWidth(40)
+        self.setRange(0, 999999999)
+        self.setDecimals(0)
+        self.setButtonSymbols(QDoubleSpinBox.ButtonSymbols.NoButtons)
+        self.wheelEvent = lambda event: None
+        self.setFixedHeight(30)
+
+
+class TimeSpinBox(QWidget):
+    dateTimeChanged = pyqtSignal(int)
+
     def __init__(self, parent=None):
         super().__init__(parent)
-        self.setRange(0, 99999999)
-        self.setSingleStep(0.001)
-        self.setDecimals(9)
-        self.setFixedWidth(200)
-        self.setWrapping(True)
-        self.setAccelerated(True)
-        self.setFocusPolicy(Qt.FocusPolicy.StrongFocus)
+        self.setFixedHeight(30)
 
-        regex = QRegularExpression(r"\d+.\d{2}")
-        validator = QRegularExpressionValidator(regex, self)
-        self.lineEdit().setValidator(validator)
+        # Create QDoubleSpinBoxes for days, hours, minutes, and seconds
+        self.days_spinbox = SpinBox(self)
+        self.days_spinbox.setSuffix("d")
+        self.days_spinbox.setStyleSheet("border-top-right-radius: 0; border-bottom-right-radius: 0;")
 
-        self.installEventFilter(self)
+        self.hours_spinbox = SpinBox(self)
+        self.hours_spinbox.setSuffix("h")
+        self.hours_spinbox.setStyleSheet("border-radius: 0;")
 
-    def focusInEvent(self, event):
-        self.setFocusPolicy(Qt.FocusPolicy.WheelFocus)
-        super().focusInEvent(event)
+        self.minutes_spinbox = SpinBox(self)
+        self.minutes_spinbox.setSuffix("m")
+        self.minutes_spinbox.setStyleSheet("border-radius: 0;")
 
-    def focusOutEvent(self, event):
-        self.setFocusPolicy(Qt.FocusPolicy.StrongFocus)
-        super().focusOutEvent(event)
+        self.seconds_spinbox = SpinBox(self)
+        self.seconds_spinbox.setSuffix("s")
+        self.seconds_spinbox.setStyleSheet("border-top-left-radius: 0; border-bottom-left-radius: 0;")
 
-    def wheelEvent(self, event):
-        if self.hasFocus():
-            return super().wheelEvent(event)
-        else:
-            event.ignore()
+        layout = QHBoxLayout(self)
+        layout.setAlignment(Qt.AlignmentFlag.AlignLeft)
+        layout.addWidget(self.days_spinbox)
+        layout.addWidget(self.hours_spinbox)
+        layout.addWidget(self.minutes_spinbox)
+        layout.addWidget(self.seconds_spinbox)
+        layout.setSpacing(0)
+        layout.setContentsMargins(0, 0, 0, 0)
 
-    def eventFilter(self, obj, event):
-        if event.type() == QEvent.Type.Wheel and self.hasFocus():
-            delta = event.angleDelta().y() / 120
-            self.changeValue(delta)
-            return True
+        self.setLayout(layout)
 
-        return super().eventFilter(obj, event)
+        self.days_spinbox.valueChanged.connect(self.emit_dateTimeChanged)
+        self.hours_spinbox.valueChanged.connect(self.emit_dateTimeChanged)
+        self.minutes_spinbox.valueChanged.connect(self.emit_dateTimeChanged)
+        self.seconds_spinbox.valueChanged.connect(self.emit_dateTimeChanged)
 
-    def changeValue(self, delta):
-        current_value = self.value()
+        self.setFixedWidth(160)
 
-        if delta > 0:
-            # Increase the value
-            if current_value >= 1:  # day
-                self.setValue(current_value + 1)
-            elif current_value >= 0.5:
-                self.setValue(current_value + 0.0416666666666667)
-            else:
-                self.setValue(current_value + 0.000694444444444444)
-        elif delta < 0:
-            # Decrease the value
-            if current_value >= 1:
-                self.setValue(current_value - 1)
-            elif current_value >= 0.5:
-                self.setValue(current_value - 0.0416666666666667)
-            else:
-                self.setValue(current_value - 0.000694444444444444)
+    def emit_dateTimeChanged(self):
+        self.dateTimeChanged.emit(self.value())
 
-    def textFromValue(self, value):
-        days = int(value)
-        hours = int((value - days) * 24)
-        minutes = int(((value - days) * 24 - hours) * 60)
-        return f"{days} day{'s' if days != 1 else ''} {hours:02d} hour{'s' if hours != 1 else ''} {minutes:02d} minute{'s' if minutes != 1 else ''}"
+    def setValue(self, total_seconds):
+        days = total_seconds // 86400
+        remaining_seconds = total_seconds % 86400
+        hours = remaining_seconds // 3600
+        remaining_seconds %= 3600
+        minutes = remaining_seconds // 60
+        seconds = remaining_seconds % 60
 
-    def valueFromText(self, text):
-        time_parts = text.split(" ")
-        days = int(time_parts[0])
-        hours = int(time_parts[2])
-        minutes = int(time_parts[4])
-        return days + hours / 24 + minutes / (24 * 60)
+        self.days_spinbox.setValue(days)
+        self.hours_spinbox.setValue(hours)
+        self.minutes_spinbox.setValue(minutes)
+        self.seconds_spinbox.setValue(seconds)
 
-    def fixup(self, text):
-        time_parts = text.split(" ")
-        if len(time_parts) == 6:
-            days = int(time_parts[0])
-            hours = int(time_parts[2])
-            minutes = int(time_parts[4])
-            if days == 1:
-                time_parts[0] = f"0{time_parts[0]}"
-            if hours == 1:
-                time_parts[2] = f"0{time_parts[2]}"
-            if minutes == 1:
-                time_parts[4] = f"0{time_parts[4]}"
-            return " ".join(time_parts)
+    def value(self):
+        days = int(self.days_spinbox.value())
+        hours = int(self.hours_spinbox.value())
+        minutes = int(self.minutes_spinbox.value())
+        seconds = int(self.seconds_spinbox.value())
 
-        return text
-
-    def get_time_delta(self) -> datetime:
-        value = self.value()
-
-        days = int(value)
-        hours = int((value - days) * 24)
-        minutes = int(((value - days) * 24 - hours) * 60)
-
-        current_date_time = QDateTime.currentDateTime()
-        end_date_time = current_date_time.addDays(days).addSecs(hours * 3600 + minutes * 60)
-
-        time_delta = end_date_time.toSecsSinceEpoch() - current_date_time.toSecsSinceEpoch()
-        return timedelta(seconds=time_delta)
+        total_seconds = (days * 86400) + (hours * 3600) + (minutes * 60) + seconds
+        return total_seconds

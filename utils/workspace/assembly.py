@@ -10,6 +10,7 @@ from utils.workspace.flowtag import Flowtag
 from utils.workspace.tag import Tag
 from utils.workspace.workspace_settings import WorkspaceSettings
 from utils.workspace.flowtag_timer import FlowtagTimer
+from utils.workspace.flowtag_data import FlowtagData
 
 if TYPE_CHECKING:
     from utils.workspace.job import Job
@@ -49,7 +50,7 @@ class Assembly:
 
         self.starting_date: str = ""
         self.ending_date: str = ""
-        self.expected_time_to_complete: float = 0.0
+        self.expected_time_to_complete: int = 0
         self.flowtag: Flowtag = None
         self.current_flow_tag_index: int = 0
         self.current_flow_tag_status_index: int = 0
@@ -57,6 +58,7 @@ class Assembly:
         self.quantity: int = 1
 
         self.timer: FlowtagTimer = None
+        self.flowtag_data: FlowtagData = None
 
         # NOTE Non serializable variables
         self.workspace_settings: WorkspaceSettings = self.job.workspace_settings
@@ -156,38 +158,40 @@ class Assembly:
     def load_settings(self, data: dict[str, Union[float, bool, str, dict]]):
         assembly_data = data.get("assembly_data", {})
         self.name = assembly_data.get("name", "Assembly")
-        self.starting_date: str = assembly_data.get("starting_date", "")
-        self.expected_time_to_complete: float = assembly_data.get("expected_time_to_complete", 0.0)
-        self.ending_date: str = assembly_data.get("ending_date", "")
+        self.starting_date = assembly_data.get("starting_date", "")
+        self.expected_time_to_complete = assembly_data.get("expected_time_to_complete", 0)
+        self.ending_date = assembly_data.get("ending_date", "")
         self.flowtag = Flowtag("", assembly_data.get("flow_tag", {}), self.workspace_settings)
         self.current_flow_tag_index = assembly_data.get("current_flow_tag_index", 0)
         self.current_flow_tag_status_index = assembly_data.get("current_flow_tag_status_index", 0)
-        self.assembly_image: str = assembly_data.get("assembly_image")
-        self.assembly_files: list[str] = assembly_data.get("assembly_files", [])
-        self.quantity: int = assembly_data.get("quantity", 1)
+        self.assembly_image = assembly_data.get("assembly_image")
+        self.assembly_files = assembly_data.get("assembly_files", [])
+        self.quantity = assembly_data.get("quantity", 1)
         self.color = assembly_data.get("color", "#3daee9")
         # If deepcopy is not done, than a reference is kept in the original object it was copied from
         # and then it messes everything up, specifically it will mess up laser cut parts
         # when you add a job to workspace
         self.timer = FlowtagTimer(copy.deepcopy(assembly_data.get("timer", {})), self.flowtag)
+        self.flowtag_data = FlowtagData(self.flowtag)
+        self.flowtag_data.load_data(assembly_data.get("flow_tag_data", {}))
 
-        self.uses_primer: bool = assembly_data.get("uses_primer", False)
-        self.primer_name: str = assembly_data.get("primer_name")
-        self.primer_overspray: float = assembly_data.get("primer_overspray", 66.67)
+        self.uses_primer = assembly_data.get("uses_primer", False)
+        self.primer_name = assembly_data.get("primer_name")
+        self.primer_overspray = assembly_data.get("primer_overspray", 66.67)
         if self.uses_primer and self.primer_name:
             self.primer_item = self.paint_inventory.get_primer(self.primer_name)
         self.cost_for_primer = assembly_data.get("cost_for_primer", 0.0)
 
-        self.uses_paint: bool = assembly_data.get("uses_paint", False)
-        self.paint_name: str = assembly_data.get("paint_name")
-        self.paint_overspray: float = assembly_data.get("paint_overspray", 66.67)
+        self.uses_paint = assembly_data.get("uses_paint", False)
+        self.paint_name = assembly_data.get("paint_name")
+        self.paint_overspray = assembly_data.get("paint_overspray", 66.67)
         if self.uses_paint and self.paint_name:
             self.paint_item = self.paint_inventory.get_paint(self.paint_name)
         self.cost_for_paint = assembly_data.get("cost_for_paint", 0.0)
 
-        self.uses_powder: bool = assembly_data.get("uses_powder_coating", False)
-        self.powder_name: str = assembly_data.get("powder_name")
-        self.powder_transfer_efficiency: float = assembly_data.get("powder_transfer_efficiency", 66.67)
+        self.uses_powder = assembly_data.get("uses_powder_coating", False)
+        self.powder_name = assembly_data.get("powder_name")
+        self.powder_transfer_efficiency = assembly_data.get("powder_transfer_efficiency", 66.67)
         if self.uses_powder and self.powder_name:
             self.powder_item = self.paint_inventory.get_powder(self.powder_name)
         self.cost_for_powder_coating = assembly_data.get("cost_for_powder_coating", 0.0)
@@ -243,6 +247,7 @@ class Assembly:
                 "current_flow_tag_index": self.current_flow_tag_index,
                 "current_flow_tag_status_index": self.current_flow_tag_status_index,
                 "timer": self.timer.to_dict(),
+                "flow_tag_data": self.flowtag_data.to_dict(),
             },
             "laser_cut_parts": [laser_cut_part.to_dict() for laser_cut_part in self.laser_cut_parts],
             "components": [component.to_dict() for component in self.components],
