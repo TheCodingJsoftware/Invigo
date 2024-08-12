@@ -21,6 +21,9 @@ class CoverPage:
         self.server_directory = f"http://{get_server_ip_address()}:{get_server_port()}"
 
     def generate(self) -> str:
+        formatted_date_shipped = datetime.strptime(self.date_shipped, '%Y-%m-%d %I:%M %p').strftime('%Y-%m-%dT%H:%M')
+        formatted_date_expected = datetime.strptime(self.date_expected, '%Y-%m-%d %I:%M %p').strftime('%Y-%m-%dT%H:%M')
+
         return f"""<div id="cover-page">
                 <div class="field label prefix border max">
                     <i>numbers</i>
@@ -32,13 +35,15 @@ class CoverPage:
                     <article class="border max">
                         <div class="field label prefix border">
                             <i>today</i>
-                            <input type="date" value="{self.date_shipped}">
+                            <input type="datetime-local" value="{formatted_date_shipped}">
                             <label>Date Shipped</label>
+                            <i>schedule</i>
                         </div>
                         <div class="field label prefix border">
                             <i>today</i>
-                            <input type="date" value="{self.date_expected}">
+                            <input type="datetime-local" value="{formatted_date_expected}">
                             <label>Date Expected</label>
+                            <i>schedule</i>
                         </div>
                     </article>
                     <article class="border max">

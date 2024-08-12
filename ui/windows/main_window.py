@@ -84,19 +84,18 @@ from utils.threads.upload_job_thread import UploadJobThread
 from utils.threads.upload_quote import UploadQuote
 from utils.threads.upload_thread import UploadThread
 from utils.threads.upload_workorder_thread import UploadWorkorderThread
+from utils.threads.add_job_to_production_planner_thread import AddJobToProductionPlannerThread
 from utils.trusted_users import get_trusted_users
 from utils.workspace.generate_printout import WorkorderPrintout, WorkspaceJobPrintout
 from utils.workspace.job import Job, JobColor, JobStatus
 from utils.workspace.job_manager import JobManager
 from utils.workspace.job_preferences import JobPreferences
-from utils.workspace.production_plan import ProductionPlan
 from utils.workspace.workorder import Workorder
 from utils.workspace.workspace import Workspace
-from utils.workspace.workspace_history import WorkspaceHistory
 from utils.workspace.workspace_laser_cut_part_group import WorkspaceLaserCutPartGroup
 from utils.workspace.workspace_settings import WorkspaceSettings
 
-__version__: str = "v3.3.7"
+__version__: str = "v3.4.0"
 
 
 def check_folders(folders: list[str]):
@@ -189,9 +188,7 @@ class MainWindow(QMainWindow):
         self.paint_inventory = PaintInventory(self.components_inventory)
         self.laser_cut_inventory = LaserCutInventory(self.paint_inventory, self.workspace_settings)
         self.job_manager = JobManager(self.sheet_settings, self.sheets_inventory, self.workspace_settings, self.components_inventory, self.laser_cut_inventory, self.paint_inventory, self)
-        self.workspace_history = WorkspaceHistory(self.job_manager)
         self.workspace = Workspace(self.workspace_settings, self.job_manager)
-        self.production_plan = ProductionPlan(self.workspace_settings, self.job_manager)
 
         self.quote_generator_tab_widget = QuoteGeneratorTab(self)
         self.quote_generator_tab_widget.add_quote(
@@ -513,7 +510,6 @@ class MainWindow(QMainWindow):
         self.sheet_settings.load_data()
         self.workspace_settings.load_data()
         self.workspace.load_data()
-        self.workspace_history.load_data()
 
         self.clear_layout(self.sheet_settings_layout)
         self.sheet_settings_layout.addWidget(QLabel("Loading...", self))
@@ -946,12 +942,18 @@ class MainWindow(QMainWindow):
             msg = QMessageBox(QMessageBox.Icon.Information, "Flow tags missing", f"{job.name} is not properly set up.\n\nCheck: {response}\n\nOperation aborted.", QMessageBox.StandardButton.Ok, self)
             msg.exec()
             return
+        if job.unsaved_changes:
+            msg = QMessageBox(QMessageBox.Icon.Information, "Ensure job is Saved", f"Save {job.name} before adding it to the production plan.\n\nOperation aborted.", QMessageBox.StandardButton.Ok, self)
+            msg.exec()
+            return
+
+        job_path = f"saved_jobs/{job.status.name.lower()}/{job.name}"
+
         for _ in range(job_quantity):  # Add job x amount of times
             if should_update_components:
                 self.subtract_component_quantity_from_job(job)
-            self.production_plan.add_job(job)
+            self.add_job_to_production_planner_thread(job_path)
 
-    # TODO: ? Do I need to start timers?
     def send_job_to_production_planner(self):
         active_jobs_in_planning = {}
         for job_widget in self.job_planner_widget.job_widgets:
@@ -980,20 +982,14 @@ class MainWindow(QMainWindow):
 
         if send_to_workspace_dialog.exec():
             selected_jobs = send_to_workspace_dialog.get_selected_jobs()
-            self.production_plan.load_data()
             self.components_inventory.load_data()
             for selected_job_data in selected_jobs.get("planning", []):
                 self.add_job_to_production_plan(self.job_planner_widget, selected_job_data, send_to_workspace_dialog.should_update_components())
             for selected_job_data in selected_jobs.get("quoting", []):
                 self.add_job_to_production_plan(self.job_quote_widget, selected_job_data, send_to_workspace_dialog.should_update_components())
 
-            # for assembly in self.workspace.get_all_assemblies():
-            #     if assembly.all_laser_cut_parts_complete() and not assembly.timer.has_started_timer():
-            #         assembly.timer.start_timer()
-
-            self.production_plan.save()
             self.components_inventory.save()
-            self.upload_files([f"{self.production_plan.filename}.json", f"{self.components_inventory.filename}.json"])
+            self.upload_files([f"{self.components_inventory.filename}.json"])
 
     def add_job_to_workspace(self, job_widget: JobTab, jobs_data: dict[str, int], should_update_components: bool):
         job_name, job_quantity = jobs_data
@@ -1042,7 +1038,6 @@ class MainWindow(QMainWindow):
         if send_to_workspace_dialog.exec():
             selected_jobs = send_to_workspace_dialog.get_selected_jobs()
             self.workspace.load_data()
-            self.components_inventory.load_data()
             for selected_job_data in selected_jobs.get("planning", []):
                 self.add_job_to_workspace(self.job_planner_widget, selected_job_data, send_to_workspace_dialog.should_update_components())
             for selected_job_data in selected_jobs.get("quoting", []):
@@ -1053,8 +1048,7 @@ class MainWindow(QMainWindow):
                     assembly.timer.start_timer()
 
             self.workspace.save()
-            self.components_inventory.save()
-            self.upload_files([f"{self.workspace.filename}.json", f"{self.components_inventory.filename}.json"])
+            self.upload_files([f"{self.workspace.filename}.json", f"{self.components_inventory.filename}.json", f"{self.laser_cut_inventory.filename}.json"])
 
     def save_quote(self, quote: Quote):
         if quote is None:
@@ -1746,9 +1740,29 @@ class MainWindow(QMainWindow):
                 [
                     f"{self.laser_cut_inventory.filename}.json",  # Because of add/remove quantity flow tags
                     f"{self.workspace.filename}.json",
-                    f"{self.workspace_history.filename}.json",
                 ],
             )
+
+    def add_job_to_production_planner_thread(self, job_path: str):
+        thread = AddJobToProductionPlannerThread(job_path)
+        self.threads.append(thread)
+        thread.signal.connect(self.add_job_to_production_planner_response)
+        thread.start()
+        thread.wait()
+
+    def add_job_to_production_planner_response(self, response: str, job_path: str, status_code: int):
+        if status_code == 200:
+            msg = QMessageBox(self)
+            msg.setIcon(QMessageBox.Icon.Information)
+            msg.setWindowTitle("Job added")
+            msg.setText(f"{response['message']}")
+            msg.exec()
+        else:
+            msg = QMessageBox(self)
+            msg.setIcon(QMessageBox.Icon.Critical)
+            msg.setWindowTitle("Job not added")
+            msg.setText(f"{response}")
+            msg.exec()
 
     def add_laser_cut_part_to_inventory(self, laser_cut_part_to_add: LaserCutPart, from_where: str):
         laser_cut_part_to_add.quantity_in_nest = None
@@ -1985,14 +1999,8 @@ class MainWindow(QMainWindow):
             if f"{self.laser_cut_inventory.filename}.json" in response["successful_files"]:
                 self.laser_cut_inventory.load_data()
 
-            if f"{self.production_plan.filename}.json" in response["successful_files"]:
-                self.production_plan.load_data()
-
             if f"{self.workspace.filename}.json" in response["successful_files"]:
                 self.workspace.load_data()
-
-            if f"{self.workspace_history.filename}.json" in response["successful_files"]:
-                self.workspace_history.load_data()
 
             if f"{self.paint_inventory.filename}.json" in response["successful_files"]:
                 self.paint_inventory.load_data()
@@ -2036,9 +2044,7 @@ class MainWindow(QMainWindow):
                 f"{self.laser_cut_inventory.filename}.json",
                 f"{self.sheets_inventory.filename}.json",
                 f"{self.components_inventory.filename}.json",
-                f"{self.production_plan.filename}.json",
                 f"{self.workspace.filename}.json",
-                f"{self.workspace_history.filename}.json",
             ]
         )
 

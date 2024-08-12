@@ -155,6 +155,16 @@ class Assembly:
             assemblies.extend(sub_assembly.get_all_sub_assemblies())
         return assemblies
 
+    def get_expected_time_to_complete(self) -> int:
+        total_time: int = 0
+        for laser_cut_part in self.laser_cut_parts:
+            total_time += laser_cut_part.get_expected_time_to_complete() * laser_cut_part.quantity
+        for tag in self.flowtag_data.tags_data:
+            total_time += self.flowtag_data.get_tag_data(tag, "expected_time_to_complete")
+        for sub_assembly in self.sub_assemblies:
+            total_time += sub_assembly.get_expected_time_to_complete()
+        return total_time * self.quantity
+
     def load_settings(self, data: dict[str, Union[float, bool, str, dict]]):
         assembly_data = data.get("assembly_data", {})
         self.name = assembly_data.get("name", "Assembly")
@@ -226,7 +236,7 @@ class Assembly:
                 "name": self.name,
                 "color": self.color,
                 "starting_date": self.starting_date,
-                "expected_time_to_complete": self.expected_time_to_complete,
+                "expected_time_to_complete": self.get_expected_time_to_complete(),
                 "ending_date": self.ending_date,
                 "assembly_image": self.assembly_image,
                 "quantity": self.quantity,

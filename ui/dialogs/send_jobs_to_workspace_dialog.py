@@ -1,4 +1,4 @@
-from typing import Union
+from typing import Union, Literal
 
 from PyQt6 import uic
 from PyQt6.QtCore import Qt
@@ -14,7 +14,7 @@ class SendJobsToWorkspaceDialog(QDialog):
         self,
         active_jobs_in_planning: dict[str, dict[str, Union[Job, float, str, int]]],
         active_jobs_in_quoting: dict[str, dict[str, Union[Job, float, str, int]]],
-        destintion: str,
+        destintion: Literal["Workspace", "Production Planner"],
         parent=None,
     ):
         super().__init__(parent)

@@ -3,7 +3,7 @@ import os
 import shutil
 import time
 from functools import partial
-from typing import Optional
+from typing import Optional, override
 
 from PyQt6.QtCore import Qt
 from PyQt6.QtGui import QAction, QCursor, QFont, QPixmap
@@ -76,8 +76,8 @@ class AssemblyPlanningWidget(AssemblyWidget):
         self.doubleSpinBox_quantity.valueChanged.connect(self.assembly_quantity_changed)
 
         self.doubleSpinBox_expected_time_to_complete = TimeSpinBox(self)
-        self.doubleSpinBox_expected_time_to_complete.setValue(int(self.assembly.expected_time_to_complete))
-        self.doubleSpinBox_expected_time_to_complete.dateTimeChanged.connect(self.assembly_time_to_complete_changed)
+        self.doubleSpinBox_expected_time_to_complete.setEnabled(False)
+        self.doubleSpinBox_expected_time_to_complete.setValue(int(self.assembly.get_expected_time_to_complete()))
         self.expected_time_to_complete_layout.addWidget(self.doubleSpinBox_expected_time_to_complete)
 
         self.paint_widget.setVisible(self.assembly.flowtag.contains(["paint", "powder", "coating", "liquid"]))
@@ -275,10 +275,6 @@ class AssemblyPlanningWidget(AssemblyWidget):
     def assembly_get_all_file_types(self, file_ext: str) -> list[str]:
         files: set[str] = {file for file in self.assembly.assembly_files if file.lower().endswith(file_ext)}
         return list(files)
-
-    def assembly_time_to_complete_changed(self):
-        self.assembly.expected_time_to_complete = self.doubleSpinBox_expected_time_to_complete.value()
-        self.changes_made()
 
     # COMPONENT STUFF
     def load_components_table(self):
@@ -681,6 +677,8 @@ class AssemblyPlanningWidget(AssemblyWidget):
         self.update_laser_cut_parts_table_height()
 
         flowtag_data_widget = FlowtagDataWidget(laser_cut_part.flowtag_data, self)
+        if tag := laser_cut_part.flowtag.get_tag_with_similar_name("laser"):
+            laser_cut_part.flowtag_data.set_tag_data(tag, "expected_time_to_complete", int(laser_cut_part.machine_time * 60))
         self.laser_cut_parts_table.setCellWidget(current_row, LaserCutTableColumns.FLOW_TAG_DATA.value, flowtag_data_widget)
         self.laser_cut_part_table_items[laser_cut_part].update({"flowtag_data": flowtag_data_widget})
 
@@ -1153,3 +1151,8 @@ class AssemblyPlanningWidget(AssemblyWidget):
         self.load_laser_cut_parts_table()
         for sub_assembly_widget in self.sub_assembly_widgets:
             sub_assembly_widget.update_tables()
+
+    @override
+    def changes_made(self):
+        self.doubleSpinBox_expected_time_to_complete.setValue(int(self.assembly.get_expected_time_to_complete()))
+        super().changes_made()

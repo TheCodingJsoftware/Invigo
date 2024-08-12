@@ -17,8 +17,8 @@ class JobFlowtagTimeline:
 
     def get_job_range(self) -> int:
         with contextlib.suppress(ValueError): # Date not set yer
-            start_date = datetime.strptime(self.job.starting_date, "%Y-%m-%d")
-            end_date = datetime.strptime(self.job.ending_date, "%Y-%m-%d")
+            start_date = datetime.strptime(self.job.starting_date, "%Y-%m-%d %I:%M %p")
+            end_date = datetime.strptime(self.job.ending_date, "%Y-%m-%d %I:%M %p")
             return (end_date - start_date).days
         return 1
 

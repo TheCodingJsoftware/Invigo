@@ -128,13 +128,13 @@ class LaserCutPart(InventoryItem):
 
     def move_to_next_process(self):
         self.timer.stop(self.get_current_tag())
+        self.check_update_quantity_tags()
         if not self.is_process_finished():
             self.current_flow_tag_index += 1
             self.current_flow_tag_status_index = 0
             self.recut = False
             self.recoat = False
             self.timer.start(self.get_current_tag())
-            self.check_update_quantity_tags()
 
     def check_update_quantity_tags(self):
         if self.flowtag.add_quantity_tag and self.get_current_tag().name == self.flowtag.add_quantity_tag.name:
@@ -163,6 +163,12 @@ class LaserCutPart(InventoryItem):
         if self.uses_powder and self.powder_item:
             name += f"{self.powder_item.name}\n"
         return name
+
+    def get_expected_time_to_complete(self) -> int:
+        total_time: int = 0
+        for tag in self.flowtag_data.tags_data:
+            total_time += self.flowtag_data.get_tag_data(tag, "expected_time_to_complete")
+        return total_time
 
     def move_to_category(self, from_category: Category, to_category: Category):
         super().remove_from_category(from_category)

@@ -48,13 +48,13 @@ class Workspace:
                 new_assembly = Assembly({}, parent if isinstance(parent, Job) else parent.job)
                 new_assembly.load_settings(assembly.to_dict())
 
-                parent_starting_date = datetime.strptime(parent.starting_date, '%Y-%m-%d')
+                parent_starting_date = datetime.strptime(parent.starting_date, '%Y-%m-%d %I:%M %p')
 
                 calculated_starting_date = parent_starting_date - timedelta(days=7.0)
                 calculated_ending_date = calculated_starting_date + timedelta(days=assembly.expected_time_to_complete)
 
-                new_assembly.starting_date = calculated_starting_date.strftime('%Y-%m-%d')
-                new_assembly.ending_date = calculated_ending_date.strftime('%Y-%m-%d')
+                new_assembly.starting_date = calculated_starting_date.strftime('%Y-%m-%d %I:%M %p')
+                new_assembly.ending_date = calculated_ending_date.strftime('%Y-%m-%d %I:%M %p')
 
                 new_assembly.quantity = 1
 
@@ -172,8 +172,8 @@ class Workspace:
                 tag_start_date_str = job.flowtag_timeline.tags_data[laser_cut_part.get_current_tag()]["starting_date"]
                 tag_end_date_str = job.flowtag_timeline.tags_data[laser_cut_part.get_current_tag()]["ending_date"]
 
-                tag_start_date = datetime.strptime(tag_start_date_str, "%Y-%m-%d").date()
-                tag_end_date = datetime.strptime(tag_end_date_str, "%Y-%m-%d").date()
+                tag_start_date = datetime.strptime(tag_start_date_str, "%Y-%m-%d %I:%M %p").date()
+                tag_end_date = datetime.strptime(tag_end_date_str, "%Y-%m-%d %I:%M %p").date()
 
                 if filter_start_date and not filter_end_date:
                     if not (tag_start_date <= filter_start_date <= tag_end_date):

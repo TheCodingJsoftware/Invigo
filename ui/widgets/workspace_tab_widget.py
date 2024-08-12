@@ -40,7 +40,6 @@ class WorkspaceTabWidget(QWidget):
         self.parent: MainWindow = parent
         self.workspace = self.parent.workspace
         self.workspace_settings = self.parent.workspace_settings
-        self.workspace_history = self.parent.workspace_history
         self.sheet_settings = self.parent.sheet_settings
         self.paint_inventory = self.parent.paint_inventory
 

@@ -49,8 +49,9 @@ class JobFlowtagTimelineWidget(QWidget):
             except ValueError: # For when it was never initialized
                 tag_start_date = job_start_date
                 tag_end_date = job_end_date
+
             start_value = (tag_start_date - job_start_date).days
-            end_value = (tag_end_date - tag_start_date).days  # Adjusted to be relative to the start_value
+            end_value = start_value + (tag_end_date - tag_start_date).days  # Adjusted to be relative to the start_value
 
             tag_name_label = QLabel(f"{tag.name} ({end_value - start_value} days)")
 
@@ -73,9 +74,10 @@ class JobFlowtagTimelineWidget(QWidget):
         start_label.setText(str(value[0]))
         end_label.setText(str(value[1]))
 
-        start_date = datetime.strptime(self.flowtag_timeline.job.starting_date, "%Y-%m-%d %I:%M %p")
-        tag_start_date = start_date + timedelta(days=value[0])
-        tag_end_date = tag_start_date + timedelta(days=value[1])
+        job_start_date = datetime.strptime(self.flowtag_timeline.job.starting_date, "%Y-%m-%d %I:%M %p")
+
+        tag_start_date = job_start_date + timedelta(days=value[0])
+        tag_end_date = tag_start_date + timedelta(days=(value[1] - value[0]))
 
         self.flowtag_timeline.tags_data[tag]["starting_date"] = tag_start_date.strftime("%Y-%m-%d %I:%M %p")
         self.flowtag_timeline.tags_data[tag]["ending_date"] = tag_end_date.strftime("%Y-%m-%d %I:%M %p")

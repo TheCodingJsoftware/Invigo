@@ -38,7 +38,6 @@ class WorkspaceWidget(QWidget):
         self.parent: WorkspaceTabWidget = parent
         self.workspace = self.parent.workspace
         self.workspace_settings = self.parent.workspace_settings
-        self.workspace_history = self.parent.workspace_history
         self.workspace_filter = self.parent.workspace_filter
 
         self.laser_cut_inventory = self.workspace.laser_cut_inventory
@@ -443,7 +442,6 @@ class WorkspaceWidget(QWidget):
             if not (selected_workspace_group := self.get_workspace_part_group_from_row(selected_row)):
                 continue
             selected_workspace_group.move_to_next_process()
-        self.check_if_jobs_are_complete()
         self.check_if_assemblies_are_ready_to_start_timer()
         self.load_parts_table()
         self.workspace.save()
@@ -558,7 +556,6 @@ class WorkspaceWidget(QWidget):
             if not (selected_assembly := self.get_assembly_from_row(selected_row)):
                 continue
             selected_assembly.move_to_next_process()
-        self.check_if_jobs_are_complete()
         self.check_if_assemblies_are_ready_to_start_timer()
         self.load_assembly_table()
         self.workspace.save()
@@ -638,7 +635,6 @@ class WorkspaceWidget(QWidget):
             part_group_or_assembly.move_to_next_process()
         elif isinstance(part_group_or_assembly, Assembly):
             part_group_or_assembly.move_to_next_process()
-        self.check_if_jobs_are_complete()
         self.check_if_assemblies_are_ready_to_start_timer()
         self.load_assembly_table()
         self.load_parts_table()
@@ -649,18 +645,6 @@ class WorkspaceWidget(QWidget):
         for assembly in self.workspace.get_all_assemblies():
             if assembly.all_laser_cut_parts_complete() and not assembly.timer.has_started_timer():
                 assembly.timer.start_timer()
-
-    def check_if_jobs_are_complete(self):
-        completed_jobs: list[Job] = []
-        for job in self.workspace.jobs:
-            if job.is_job_finished():
-                self.workspace_history.add_job(job)
-                completed_jobs.append(job)
-
-        if completed_jobs:
-            for job in completed_jobs:
-                self.workspace.remove_job(job)
-            self.workspace_history.save()
 
     def file_downloaded(self, file_ext: Optional[str], file_name: str, open_when_done: bool):
         if file_ext is None:
