@@ -9,8 +9,6 @@ from PyQt6.QtWidgets import QInputDialog, QPushButton, QVBoxLayout, QWidget
 from ui.custom.job_tab_widget import JobTabWidget
 from ui.widgets.job_widget import JobWidget
 from utils.workspace.job import Job, JobStatus
-from utils.workspace.job_manager import JobManager
-from utils.workspace.job_preferences import JobPreferences
 
 if TYPE_CHECKING:
     from ui.windows.main_window import MainWindow
@@ -24,8 +22,8 @@ class JobTab(QWidget):
         super().__init__(parent)
         self.parent: MainWindow = parent
 
-        self.job_manager: JobManager = self.parent.job_manager
-        self.job_preferences: JobPreferences = self.parent.job_preferences
+        self.job_manager = self.parent.job_manager
+        self.job_preferences = self.parent.job_preferences
 
         self.job_widgets: list[JobWidget] = []
         self.current_job: Job = None

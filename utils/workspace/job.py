@@ -47,7 +47,6 @@ class Job:
         self.color: str = "#eabf3e"  # default
         self.assemblies: list[Assembly] = []
         self.nests: list[Nest] = []
-        self.flowtag_timeline = JobFlowtagTimeline(self)
         self.moved_job_to_workspace = False
 
         self.job_manager: JobManager = job_manager
@@ -65,6 +64,9 @@ class Job:
 
         self.unsaved_changes = False
         self.downloaded_from_server = False
+
+        # Because we need job_manager to be loaded first
+        self.flowtag_timeline = JobFlowtagTimeline(self)
 
         self.load_data(data)
 

@@ -12,6 +12,7 @@ class JobFlowtagTimeline:
     def __init__(self, job):
         self.tags_data: dict[Tag, dict[str, str]] = {}
         self.job: Job = job
+        self.workspace_settings = self.job.workspace_settings
         self.job_starting_date = self.job.starting_date
         self.job_ending_date = self.job.ending_date
 
@@ -29,4 +30,11 @@ class JobFlowtagTimeline:
             self.tags_data.update({tag: tag_data})
 
     def to_dict(self) -> dict[str, dict[str, str]]:
-        return {tag.name: tag_data for tag, tag_data in self.tags_data.items()}
+        data = {}
+        tag_order = self.workspace_settings.get_all_tags()
+        for tag_name in tag_order:
+            for tag in self.tags_data:
+                if tag.name == tag_name:
+                    data[tag_name] = self.tags_data[tag]
+                    break
+        return data
