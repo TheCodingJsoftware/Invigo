@@ -978,7 +978,7 @@ class MainWindow(QMainWindow):
             msg.exec()
             return
 
-        send_to_workspace_dialog = SendJobsToWorkspaceDialog(active_jobs_in_planning, active_jobs_in_quoting, "Production Planner", self)
+        send_to_workspace_dialog = SendJobsToWorkspaceDialog(active_jobs_in_planning, active_jobs_in_quoting, "Production Planner", self.tabWidget.tabText(self.tabWidget.currentIndex()), self)
 
         if send_to_workspace_dialog.exec():
             selected_jobs = send_to_workspace_dialog.get_selected_jobs()
@@ -1033,7 +1033,7 @@ class MainWindow(QMainWindow):
             msg.exec()
             return
 
-        send_to_workspace_dialog = SendJobsToWorkspaceDialog(active_jobs_in_planning, active_jobs_in_quoting, "Workspace", self)
+        send_to_workspace_dialog = SendJobsToWorkspaceDialog(active_jobs_in_planning, active_jobs_in_quoting, "Workspace", self.tabWidget.tabText(self.tabWidget.currentIndex()), self)
 
         if send_to_workspace_dialog.exec():
             selected_jobs = send_to_workspace_dialog.get_selected_jobs()

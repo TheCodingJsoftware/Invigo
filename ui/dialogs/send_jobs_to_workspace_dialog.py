@@ -15,11 +15,13 @@ class SendJobsToWorkspaceDialog(QDialog):
         active_jobs_in_planning: dict[str, dict[str, Union[Job, float, str, int]]],
         active_jobs_in_quoting: dict[str, dict[str, Union[Job, float, str, int]]],
         destintion: Literal["Workspace", "Production Planner"],
+        current_tab: Literal["Job Planner", "Job Quoter"],
         parent=None,
     ):
         super().__init__(parent)
         uic.loadUi("ui/dialogs/send_jobs_to_workspace_dialog.ui", self)
         self.destintion = destintion
+        self.current_tab = current_tab
 
         self.setWindowTitle(f"Send Jobs to {self.destintion}")
         self.setWindowIcon(QIcon("icons/icon.png"))
@@ -52,13 +54,13 @@ class SendJobsToWorkspaceDialog(QDialog):
         self.job_tree_widget.setColumnCount(2)
         self.job_tree_widget.setHeaderLabels(["Job Name", "Order Number"])
 
-        if active_jobs_in_planning:
+        if active_jobs_in_planning and self.current_tab == "Job Planner":
             planning_item = QTreeWidgetItem(["Active Jobs in Planning"])
             planning_item.setFont(0, self.tables_font)
             self.job_tree_widget.addTopLevelItem(planning_item)
             self.add_jobs_to_item(planning_item, active_jobs_in_planning, True)
 
-        if active_jobs_in_quoting:
+        if active_jobs_in_quoting and self.current_tab == "Job Quoter":
             quoting_item = QTreeWidgetItem(["Active Jobs in Quoting"])
             quoting_item.setFont(0, self.tables_font)
             self.job_tree_widget.addTopLevelItem(quoting_item)
