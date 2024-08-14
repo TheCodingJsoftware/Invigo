@@ -40,6 +40,7 @@ class JobTab(QWidget):
     def load_ui(self):
         self.jobs_layout = QVBoxLayout(self)
         self.jobs_layout.setAlignment(Qt.AlignmentFlag.AlignTop)
+        self.jobs_layout.setContentsMargins(0, 0, 0, 0)
 
         self.job_tab = JobTabWidget(self)
         self.job_tab.tabCloseRequested.connect(self.close_tab)
