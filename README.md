@@ -16,12 +16,14 @@
 
 # Development Setup
 
-1. Download and install [python](https://www.python.org/downloads/).
-2. Install virtualenv with, `pip install virtualenv`.
-3. Clone this repository with, `git clone https://github.com/TheCodingJsoftware/Invigo`.
-4. Create a virtual environment with, `virtualenv venv`. (`venv` is the name of the virtual environment)
-5. Make sure your virtual environment is active.
-6. Install Invigo's requirements with, `pip install -r requirements.txt`.
-7. Set up [Invigo-Web](https://github.com/TheCodingJsoftware/Invigo-Web) for managing updates.
+1. Download and install [Python 3.12](https://www.python.org/downloads/).
+2. (Optional) Download and install [git](https://git-scm.com/download/win).
+   1. Clone this repository with, `git clone https://github.com/TheCodingJsoftware/Invigo`.
+3. Download this repository [here](https://github.com/TheCodingJsoftware/Invigo/archive/refs/heads/master.zip) **IF NOT** using [git](https://git-scm.com/download/win).
+4. Install virtualenv with, `pip install virtualenv`.
+5. Create a virtual environment with, `virtualenv venv`. (`venv` is the name of the virtual environment)
+6. Active the virtual environment with, `venv/Scripts/activate`.
+7. Install requirements with, `pip install -r requirements.txt`.
 8. Set up [Invigo-Server](https://github.com/TheCodingJsoftware/Invigo-Server) for managing multiple users and file sharing. (**NOTE:** Invigo cannot be used without the server)
-9. May not work on first try and may need to resort to trial and error since I have never had to setup from scratch.
+9. (Optional) Set up [Invigo-Web](https://github.com/TheCodingJsoftware/Invigo-Web) for managing updates.
+10. May not work on first try and may need to resort to trial and error since I have never had to setup from scratch.
