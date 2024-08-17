@@ -1,8 +1,6 @@
 import os
+import json
 from datetime import datetime
-
-import msgspec
-from PyQt6.QtGui import QFont
 
 
 class Settings:
@@ -21,15 +19,15 @@ class Settings:
 
     def load_data(self):
         try:
-            with open(f"{self.FOLDER_LOCATION}/{self.file_name}.json", "rb") as json_file:
-                self.data = msgspec.json.decode(json_file.read())
-        except msgspec.DecodeError as error:
+            with open(f"{self.FOLDER_LOCATION}/{self.file_name}.json", "r", encoding="utf-8") as json_file:
+                self.data = json.load(json_file)
+        except json.decoder.JSONDecodeError as error:
             print(f"{self.file_name}.JsonFile.load_data: {error}")
             self.default_settings()
 
     def save_data(self):
-        with open(f"{self.FOLDER_LOCATION}/{self.file_name}.json", "wb") as json_file:
-            json_file.write(msgspec.json.encode(self.data))
+        with open(f"{self.FOLDER_LOCATION}/{self.file_name}.json", "w", encoding="utf-8") as json_file:
+            json.dump(self.data, json_file, ensure_ascii=False, indent=4, sort_keys=True)
 
     def get_value(self, setting_name: str) -> None | dict[str, dict[str, int]] | int | bool | str | float:
         try:
@@ -43,10 +41,24 @@ class Settings:
         self.save_data()
 
     def default_settings(self):
+        self.data.setdefault("tab_visibility", {
+            "Chat": True,
+            "Components": True,
+            "Job Planner": True,
+            "Job Quoter": True,
+            "Laser Cut Inventory": True,
+            "Quote Generator": True,
+            "Sheet Settings": True,
+            "Sheets in Inventory": True,
+            "View Price Changes History": True,
+            "View Removed Quantities History": True,
+            "Workspace": True
+        })
         self.data.setdefault("open_quote_when_generated", True)
         self.data.setdefault("open_workorder_when_generated", True)
         self.data.setdefault("open_packing_slip_when_generated", True)
         self.data.setdefault("exchange_rate", 1.0)
+        self.data.setdefault("show_maximized", True)
         self.data.setdefault("sort_ascending", False)
         self.data.setdefault("sort_descending", True)
         self.data.setdefault("sort_quantity_in_stock", True)
@@ -56,25 +68,16 @@ class Settings:
         self.data.setdefault("server_port", 80)
         self.data.setdefault("geometry", {"x": 200, "y": 200, "width": 1200, "height": 600})
         self.data.setdefault("last_opened", str(datetime.now()))
-        self.data.setdefault("last_category_tab", 0)
         self.data.setdefault("last_toolbox_tab", 0)
         self.data.setdefault("last_dock_location", 2)
-        self.data.setdefault("change_quantities_by", "Category")
-        self.data.setdefault("inventory_file_name", "inventory")
-        self.data.setdefault("path_to_order_number", "order_number.json")
-        self.data.setdefault(
-            "trusted_users",
-            ["lynden", "jared", "laserpc", "laser pc", "justin", "jordan"],
-        )
         self.data.setdefault("quote_nest_directories", [])
-        font = QFont("Segoe UI", 8, 400)
         self.data.setdefault(
             "tables_font",
             {
-                "family": font.family(),
-                "pointSize": font.pointSize(),
-                "weight": font.weight(),
-                "italic": font.italic(),
+                "family": "Segoe UI",
+                "italic": False,
+                "pointSize": 8,
+                "weight": 400
             },
         )
         self.data.setdefault(
@@ -101,6 +104,4 @@ class Settings:
                 "Workspace": [],
             },
         )
-        self.data.setdefault("price_history_file_name", str(datetime.now().strftime("%B %d %A %Y")))
-        self.data.setdefault("days_until_new_price_history_assessment", 90)
         self.save_data()

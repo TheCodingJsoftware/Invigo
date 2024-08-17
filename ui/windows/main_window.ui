@@ -7,8 +7,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1551</width>
-    <height>836</height>
+    <width>1458</width>
+    <height>984</height>
    </rect>
   </property>
   <property name="font">
@@ -52,6 +52,9 @@
      <number>0</number>
     </property>
     <item>
+     <layout class="QHBoxLayout" name="horizontalLayout_tab_buttons"/>
+    </item>
+    <item>
      <widget class="QTabWidget" name="tabWidget">
       <property name="minimumSize">
        <size>
@@ -68,6 +71,9 @@
         <kerning>true</kerning>
        </font>
       </property>
+      <property name="focusPolicy">
+       <enum>Qt::FocusPolicy::NoFocus</enum>
+      </property>
       <property name="styleSheet">
        <string notr="true">QTabWidget#tabWidget &gt; QWidget {
 	border-radius: 0px;
@@ -80,7 +86,7 @@
        <enum>QTabWidget::TabShape::Rounded</enum>
       </property>
       <property name="currentIndex">
-       <number>4</number>
+       <number>3</number>
       </property>
       <property name="elideMode">
        <enum>Qt::TextElideMode::ElideNone</enum>
@@ -353,8 +359,8 @@
                       <rect>
                        <x>0</x>
                        <y>0</y>
-                       <width>1486</width>
-                       <height>519</height>
+                       <width>1394</width>
+                       <height>665</height>
                       </rect>
                      </property>
                      <layout class="QVBoxLayout" name="verticalLayout_17">
@@ -394,7 +400,7 @@
                       <rect>
                        <x>0</x>
                        <y>0</y>
-                       <width>80</width>
+                       <width>68</width>
                        <height>16</height>
                       </rect>
                      </property>
@@ -437,6 +443,12 @@
                 <property name="text">
                  <string/>
                 </property>
+                <property name="alignment">
+                 <set>Qt::AlignmentFlag::AlignCenter</set>
+                </property>
+                <property name="wordWrap">
+                 <bool>true</bool>
+                </property>
                </widget>
               </item>
               <item>
@@ -462,9 +474,11 @@
               </item>
               <item>
                <widget class="QPushButton" name="pushButton_send_to_production_planner">
+                <property name="toolTip">
+                 <string>WIll be prompted to select jobs to send to production planner on invi.go</string>
+                </property>
                 <property name="styleSheet">
                  <string notr="true">QPushButton#pushButton_send_to_production_planner{
-    color: #171717;
 	background-color: #3daee9;
 	border: 1px solid #3daee9;
 	border-radius: 8px;
@@ -476,25 +490,32 @@ QPushButton#pushButton_send_to_production_planner:hover{
 	border-color: #48b6ed;
 }
 QPushButton#pushButton_send_to_production_planner:pressed{
+	color: white;
 	background-color: #2b92c5;
 }
 QPushButton#pushButton_send_to_production_planner:disabled{
 	background-color: rgba(44, 44, 44, 130);
 	border: 1px solid rgba(57, 57, 57, 130);
-	color: rgb(144, 144, 144);
 	border-radius: 4px;
 }</string>
                 </property>
                 <property name="text">
                  <string>Send Jobs to Production Planner</string>
                 </property>
+                <property name="icon">
+                 <iconset>
+                  <normalon>../../icons/edit_calendar.png</normalon>
+                 </iconset>
+                </property>
                </widget>
               </item>
               <item>
                <widget class="QPushButton" name="pushButton_send_to_workspace">
+                <property name="toolTip">
+                 <string>Will be prompted to select jobs to send jobs directly to workspace skipping production planner</string>
+                </property>
                 <property name="styleSheet">
                  <string notr="true">QPushButton#pushButton_send_to_workspace{
-    color: #171717;
 	background-color: #3daee9;
 	border: 1px solid #3daee9;
 	border-radius: 8px;
@@ -506,17 +527,20 @@ QPushButton#pushButton_send_to_workspace:hover{
 	border-color: #48b6ed;
 }
 QPushButton#pushButton_send_to_workspace:pressed{
+	color: white;
 	background-color: #2b92c5;
 }
 QPushButton#pushButton_send_to_workspace:disabled{
 	background-color: rgba(44, 44, 44, 130);
 	border: 1px solid rgba(57, 57, 57, 130);
-	color: rgb(144, 144, 144);
 	border-radius: 4px;
 }</string>
                 </property>
                 <property name="text">
                  <string>Send Jobs to Workspace</string>
+                </property>
+                <property name="icon">
+                 <iconset theme="emblem-shared"/>
                 </property>
                </widget>
               </item>
@@ -567,6 +591,62 @@ QPushButton#pushButton_send_to_workspace:disabled{
             <property name="rightMargin">
              <number>9</number>
             </property>
+            <item>
+             <layout class="QVBoxLayout" name="verticalLayout_cutoff_2">
+              <property name="spacing">
+               <number>0</number>
+              </property>
+              <item>
+               <widget class="QPushButton" name="pushButton_toggle_cutoff">
+                <property name="minimumSize">
+                 <size>
+                  <width>0</width>
+                  <height>30</height>
+                 </size>
+                </property>
+                <property name="cursor">
+                 <cursorShape>PointingHandCursor</cursorShape>
+                </property>
+                <property name="text">
+                 <string>Cutoff Sheets</string>
+                </property>
+                <property name="checkable">
+                 <bool>true</bool>
+                </property>
+                <property name="checked">
+                 <bool>false</bool>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QWidget" name="cutoff_widget" native="true">
+                <layout class="QVBoxLayout" name="verticalLayout_15">
+                 <property name="leftMargin">
+                  <number>1</number>
+                 </property>
+                 <property name="topMargin">
+                  <number>1</number>
+                 </property>
+                 <property name="rightMargin">
+                  <number>1</number>
+                 </property>
+                 <property name="bottomMargin">
+                  <number>1</number>
+                 </property>
+                 <item>
+                  <widget class="QTreeWidget" name="treeWidget_cutoff_sheets">
+                   <column>
+                    <property name="text">
+                     <string>Sheets</string>
+                    </property>
+                   </column>
+                  </widget>
+                 </item>
+                </layout>
+               </widget>
+              </item>
+             </layout>
+            </item>
             <item>
              <widget class="QTabWidget" name="tabWidget_4">
               <property name="currentIndex">
@@ -641,6 +721,9 @@ QPushButton#pushButton_send_to_workspace:disabled{
                     <height>30</height>
                    </size>
                   </property>
+                  <property name="toolTip">
+                   <string>Will load the selected nests into the nests view on the left.</string>
+                  </property>
                   <property name="text">
                    <string>Import 0 Nests</string>
                   </property>
@@ -672,7 +755,7 @@ QPushButton#pushButton_send_to_workspace:disabled{
                     <rect>
                      <x>0</x>
                      <y>0</y>
-                     <width>80</width>
+                     <width>68</width>
                      <height>16</height>
                     </rect>
                    </property>
@@ -723,7 +806,7 @@ QPushButton#pushButton_send_to_workspace:disabled{
                     <rect>
                      <x>0</x>
                      <y>0</y>
-                     <width>80</width>
+                     <width>68</width>
                      <height>16</height>
                     </rect>
                    </property>
@@ -763,8 +846,20 @@ QPushButton#pushButton_send_to_workspace:disabled{
             </item>
             <item>
              <widget class="QLabel" name="label_job_save_status_2">
+              <property name="font">
+               <font>
+                <pointsize>12</pointsize>
+                <bold>true</bold>
+               </font>
+              </property>
               <property name="text">
                <string/>
+              </property>
+              <property name="alignment">
+               <set>Qt::AlignmentFlag::AlignCenter</set>
+              </property>
+              <property name="wordWrap">
+               <bool>true</bool>
               </property>
              </widget>
             </item>
@@ -791,9 +886,11 @@ QPushButton#pushButton_send_to_workspace:disabled{
             </item>
             <item>
              <widget class="QPushButton" name="pushButton_send_to_production_planner_2">
+              <property name="toolTip">
+               <string>WIll be prompted to select jobs to send to production planner on invi.go</string>
+              </property>
               <property name="styleSheet">
                <string notr="true">QPushButton#pushButton_send_to_production_planner_2{
-    color: #171717;
 	background-color: #3daee9;
 	border: 1px solid #3daee9;
 	border-radius: 8px;
@@ -805,25 +902,32 @@ QPushButton#pushButton_send_to_production_planner_2:hover{
 	border-color: #48b6ed;
 }
 QPushButton#pushButton_send_to_production_planner_2:pressed{
+	color: white;
 	background-color: #2b92c5;
 }
 QPushButton#pushButton_send_to_production_planner_2:disabled{
 	background-color: rgba(44, 44, 44, 130);
 	border: 1px solid rgba(57, 57, 57, 130);
-	color: rgb(144, 144, 144);
 	border-radius: 4px;
 }</string>
               </property>
               <property name="text">
-               <string>Send Jobs to Production Planner</string>
+               <string> Send Jobs to Production Planner</string>
+              </property>
+              <property name="icon">
+               <iconset>
+                <normalon>../../icons/edit_calendar.png</normalon>
+               </iconset>
               </property>
              </widget>
             </item>
             <item>
              <widget class="QPushButton" name="pushButton_send_to_workspace_2">
+              <property name="toolTip">
+               <string>Will be prompted to select jobs to send jobs directly to workspace skipping production planner</string>
+              </property>
               <property name="styleSheet">
                <string notr="true">QPushButton#pushButton_send_to_workspace_2{
-    color: #171717;
 	background-color: #3daee9;
 	border: 1px solid #3daee9;
 	border-radius: 8px;
@@ -835,17 +939,20 @@ QPushButton#pushButton_send_to_workspace_2:hover{
 	border-color: #48b6ed;
 }
 QPushButton#pushButton_send_to_workspace_2:pressed{
+	color: white;
 	background-color: #2b92c5;
 }
 QPushButton#pushButton_send_to_workspace_2:disabled{
 	background-color: rgba(44, 44, 44, 130);
 	border: 1px solid rgba(57, 57, 57, 130);
-	color: rgb(144, 144, 144);
 	border-radius: 4px;
 }</string>
               </property>
               <property name="text">
-               <string>Send Jobs to Workspace</string>
+               <string> Send Jobs to Workspace</string>
+              </property>
+              <property name="icon">
+               <iconset theme="emblem-shared"/>
               </property>
              </widget>
             </item>
@@ -1063,7 +1170,7 @@ QPushButton#pushButton_send_to_workspace_2:disabled{
                        <rect>
                         <x>0</x>
                         <y>0</y>
-                        <width>80</width>
+                        <width>68</width>
                         <height>16</height>
                        </rect>
                       </property>
@@ -1132,7 +1239,7 @@ QPushButton#pushButton_send_to_workspace_2:disabled{
                        <rect>
                         <x>0</x>
                         <y>0</y>
-                        <width>80</width>
+                        <width>68</width>
                         <height>16</height>
                        </rect>
                       </property>
@@ -1169,6 +1276,12 @@ QPushButton#pushButton_send_to_workspace_2:disabled{
                </item>
                <item>
                 <widget class="QLabel" name="label_quote_save_status">
+                 <property name="font">
+                  <font>
+                   <pointsize>12</pointsize>
+                   <bold>false</bold>
+                  </font>
+                 </property>
                  <property name="text">
                   <string/>
                  </property>
@@ -1386,7 +1499,7 @@ QPushButton#pushButton_generate_quote:disabled{
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1551</width>
+     <width>1458</width>
      <height>33</height>
     </rect>
    </property>
@@ -1400,9 +1513,24 @@ QPushButton#pushButton_generate_quote:disabled{
     <property name="title">
      <string>Settings</string>
     </property>
+    <widget class="QMenu" name="menuVisible_Tabs">
+     <property name="title">
+      <string>Visible Tabs</string>
+     </property>
+     <addaction name="actionComponents"/>
+     <addaction name="actionSheets_in_Inventory"/>
+     <addaction name="actionLaser_Cut_Inventory"/>
+     <addaction name="actionSheet_Settings"/>
+     <addaction name="actionJob_Planner"/>
+     <addaction name="actionJob_Quoter"/>
+     <addaction name="actionQuote_Generator"/>
+     <addaction name="actionWorkspace"/>
+    </widget>
     <addaction name="actionChange_tables_font"/>
     <addaction name="actionSet_Order_Number"/>
     <addaction name="action_Set_User_Workspace"/>
+    <addaction name="menuVisible_Tabs"/>
+    <addaction name="actionStart_Maximized"/>
     <addaction name="separator"/>
     <addaction name="actionEditTags"/>
    </widget>
@@ -1710,6 +1838,9 @@ QPushButton#pushButton_generate_quote:disabled{
    <property name="text">
     <string>Set Order Number</string>
    </property>
+   <property name="statusTip">
+    <string>The latest order number is determined by the order numbers used currently in jobs.</string>
+   </property>
   </action>
   <action name="actionOpenMenu">
    <property name="text">
@@ -1830,7 +1961,150 @@ QPushButton#pushButton_generate_quote:disabled{
     <string>Open</string>
    </property>
   </action>
+  <action name="actionStart_Maximized">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="checked">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset theme="view-fullscreen"/>
+   </property>
+   <property name="text">
+    <string>Start Maximized</string>
+   </property>
+  </action>
+  <action name="actionComponents">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="checked">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset theme="format-justify-left"/>
+   </property>
+   <property name="text">
+    <string>Components</string>
+   </property>
+  </action>
+  <action name="actionSheets_in_Inventory">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="checked">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset theme="format-justify-left"/>
+   </property>
+   <property name="text">
+    <string>Sheets in Inventory</string>
+   </property>
+  </action>
+  <action name="actionLaser_Cut_Inventory">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="checked">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset theme="format-justify-left"/>
+   </property>
+   <property name="text">
+    <string>Laser Cut Inventory</string>
+   </property>
+  </action>
+  <action name="actionSheet_Settings">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="checked">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset theme="document-properties"/>
+   </property>
+   <property name="text">
+    <string>Sheet Settings</string>
+   </property>
+  </action>
+  <action name="actionJob_Planner">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="checked">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset theme="applications-development"/>
+   </property>
+   <property name="text">
+    <string>Job Planner</string>
+   </property>
+  </action>
+  <action name="actionJob_Quoter">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="checked">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset theme="accessories-calculator"/>
+   </property>
+   <property name="text">
+    <string>Job Quoter</string>
+   </property>
+  </action>
+  <action name="actionQuote_Generator">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="checked">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset theme="accessories-calculator"/>
+   </property>
+   <property name="text">
+    <string>Quote Generator</string>
+   </property>
+  </action>
+  <action name="actionWorkspace">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="checked">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset theme="emblem-shared"/>
+   </property>
+   <property name="text">
+    <string>Workspace</string>
+   </property>
+  </action>
  </widget>
  <resources/>
- <connections/>
+ <connections>
+  <connection>
+   <sender>pushButton_toggle_cutoff</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>cutoff_widget</receiver>
+   <slot>setVisible(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>735</x>
+     <y>85</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>735</x>
+     <y>268</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
 </ui>

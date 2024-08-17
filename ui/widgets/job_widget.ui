@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1516</width>
-    <height>1101</height>
+    <width>1512</width>
+    <height>1093</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -383,8 +383,8 @@ QPushButton#pushButton_reload_job:flat:hover {
              <rect>
               <x>0</x>
               <y>0</y>
-              <width>283</width>
-              <height>912</height>
+              <width>282</width>
+              <height>904</height>
              </rect>
             </property>
             <layout class="QVBoxLayout" name="verticalLayout_7">
@@ -616,7 +616,7 @@ QPushButton#pushButton_reload_job:flat:hover {
                     <cursorShape>PointingHandCursor</cursorShape>
                    </property>
                    <property name="text">
-                    <string>Item Quoting Options</string>
+                    <string>Part Quoting Options</string>
                    </property>
                    <property name="checkable">
                     <bool>true</bool>
@@ -924,7 +924,7 @@ QPushButton#pushButton_reload_job:flat:hover {
                        <number>1</number>
                       </property>
                       <property name="bottomMargin">
-                       <number>9</number>
+                       <number>1</number>
                       </property>
                       <item>
                        <widget class="QTreeWidget" name="treeWidget_nest_summary">
@@ -1080,8 +1080,8 @@ QPushButton#pushButton_reload_job:flat:hover {
            <rect>
             <x>0</x>
             <y>0</y>
-            <width>1180</width>
-            <height>886</height>
+            <width>1177</width>
+            <height>878</height>
            </rect>
           </property>
           <layout class="QVBoxLayout" name="verticalLayout_3">

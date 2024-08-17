@@ -38,9 +38,6 @@ class ItemsChangeQuantityDialog(QDialog):
         self.pushButton_remove.clicked.connect(self.accept)
         self.pushButton_cancel.clicked.connect(self.reject)
 
-        # self.pushButton_category.setChecked(settings_file.get_value("change_quantities_by") == "Category")
-        # self.pushButton_item.setChecked(settings_file.get_value("change_quantities_by") == "Item")
-
         if self.items:
             self.pushButton_category.clicked.connect(
                 lambda: (
@@ -68,10 +65,6 @@ class ItemsChangeQuantityDialog(QDialog):
         self.quantity_changed()
 
     def quantity_changed(self):
-        settings_file.set_value(
-            "change_quantities_by",
-            "Item" if self.pushButton_item.isChecked() else "Category",
-        )
         self.pushButton_add.setEnabled(self.doubleSpinBox_quantity.value() > 0 and (self.pushButton_item.isChecked() or self.pushButton_category.isChecked()))
         self.pushButton_remove.setEnabled(self.doubleSpinBox_quantity.value() > 0 and (self.pushButton_item.isChecked() or self.pushButton_category.isChecked()))
         if self.pushButton_category.isChecked():

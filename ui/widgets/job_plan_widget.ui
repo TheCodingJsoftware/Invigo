@@ -140,7 +140,7 @@ QPushButton#pushButton_open_in_browser:flat {
              <string/>
             </property>
             <property name="icon">
-             <iconset theme="document-print-preview"/>
+             <iconset theme="document-print"/>
             </property>
             <property name="flat">
              <bool>true</bool>

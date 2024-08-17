@@ -146,6 +146,9 @@ class Job:
     def sort_components(self):
         self.grouped_components = natsorted(self.grouped_components, key=lambda laser_cut_part: laser_cut_part.name)
 
+    def get_net_weight(self) -> float:
+        return sum(laser_cut_part.weight * laser_cut_part.quantity for laser_cut_part in self.get_all_laser_cut_parts())
+
     def get_all_assemblies(self) -> list[Assembly]:
         assemblies: list[Assembly] = []
         assemblies.extend(self.assemblies)

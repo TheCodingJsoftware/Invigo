@@ -209,16 +209,23 @@ class JobTab(QWidget):
         self.update_job_save_status(job)
 
     def update_job_save_status(self, job: Job):
+        SAVED_JOB_STYLE = "background-color: #315432; color: #cef4d9; padding: 5px; border-radius: 5px;"
+        UNSAVED_JOB_STYLE = "background-color: #413C28; color: #ffffe0; padding: 5px; border-radius: 5px;"
+
         if job.status == JobStatus.PLANNING:
             if job.unsaved_changes:
                 self.parent.label_job_save_status.setText("You have unsaved changes")
+                self.parent.label_job_save_status.setStyleSheet(UNSAVED_JOB_STYLE)
             else:
-                self.parent.label_job_save_status.setText("")
+                self.parent.label_job_save_status.setText("Job is saved")
+                self.parent.label_job_save_status.setStyleSheet(SAVED_JOB_STYLE)
         else:
             if job.unsaved_changes:
                 self.parent.label_job_save_status_2.setText("You have unsaved changes")
+                self.parent.label_job_save_status_2.setStyleSheet(UNSAVED_JOB_STYLE)
             else:
-                self.parent.label_job_save_status_2.setText("")
+                self.parent.label_job_save_status_2.setText("Job is saved")
+                self.parent.label_job_save_status_2.setStyleSheet(SAVED_JOB_STYLE)
 
     def update_tables(self):
         for job_widget in self.job_widgets:

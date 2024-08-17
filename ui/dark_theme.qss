@@ -36,26 +36,64 @@ QMenu::item{
     border: 1px solid #303030;
     border-radius: 5px;
     min-width: 100px;
-}
-QMenu::icon{
-    padding: 5px;
+    margin: 1px;
+    margin-left: 5px;
 }
 QMenu::item:selected{
     background-color: #303030;
     border-color: #3daee9;
     color: #EAE9FC;
 }
-QMenu::item:selected:pressed{
-    background-color: #3daee9;
-    color: #171717;
-}
-QMenu::item:checked{
+QMenu::item:pressed{
     background-color: #3daee9;
     border-color: #3daee9;
-    color: #171717;
+    color: #EAE9FC;
+}
+QMenu::item:checked{
+    color: #EAE9FC;
 }
 QMenu::separator {
     background-color: #86898a;
+    padding: 5px;
+    margin: 5px;
+}
+
+QMenu::icon {
+    padding-right: 5px;
+    position: fixed;
+    top: 1px;
+    right: 1px;
+    bottom: 1px;
+    left: 1px;
+    margin: 3px;
+    padding: 1px;
+    border-radius: 3px;
+}
+
+QMenu::icon:checked {
+    background: #3daee9;
+    border: 1px solid #3daee9;
+}
+
+QMenu::icon:!checked {
+    background: #303030;
+    border: 1px solid #303030;
+}
+
+QMenu::icon:checked:pressed {
+    background: #303030;
+    border: 1px solid #303030;
+}
+
+QMenu::icon:!checked:pressed {
+    background: #3daee9;
+    border: 1px solid #3daee9;
+}
+
+QMenu::separator {
+    background-color: #86898a;
+    padding: 5px;
+    margin: 5px;
 }
 
 QStatusBar {
@@ -639,7 +677,10 @@ QTreeView::indicator:checked {
 QTreeView::indicator:hover {
     border-color: #3daee9;
 }
-
+QTreeWidget{
+    border-bottom-right-radius: 10px;
+    border-bottom-left-radius: 10px;
+}
 QTreeWidget::item {
     border-bottom: 2px solid rgb(44, 44, 44);
 }
@@ -1059,6 +1100,37 @@ QDateEdit::drop-down:button {
 }
 
 QDateEdit::down-arrow {
+    image: url(ui/svg/drop-down.svg);
+    width: 12px;
+    height: 12px;
+}
+
+
+QDateTimeEdit {
+    background-color: rgba(15, 15, 15, 0.6);
+    border: 1px solid rgb(65, 65, 65);
+    border-radius: 5px;
+    padding: 5px 10px;
+    color: #EAE9FC;
+}
+
+QDateTimeEdit::editable {
+    background-color: rgba(15, 15, 15, 0.6);
+}
+
+QDateTimeEdit:hover {
+    border-color: #3daee9;
+}
+
+QDateTimeEdit:disabled {
+    color: rgb(102, 102, 102);
+}
+
+QDateTimeEdit::drop-down:button {
+    border-radius: 2px;
+}
+
+QDateTimeEdit::down-arrow {
     image: url(ui/svg/drop-down.svg);
     width: 12px;
     height: 12px;

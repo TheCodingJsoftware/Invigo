@@ -1,11 +1,12 @@
 import contextlib
 import os
+from typing import TYPE_CHECKING
 from datetime import datetime
 
 from PyQt6 import uic
 from PyQt6.QtCore import Qt
 from PyQt6.QtGui import QCursor, QFont, QIcon
-from PyQt6.QtWidgets import QAbstractItemView, QComboBox, QDoubleSpinBox, QInputDialog, QLineEdit, QListWidget, QMenu, QPushButton, QTableWidget, QTableWidgetItem, QTabWidget, QVBoxLayout, QWidget
+from PyQt6.QtWidgets import QApplication, QAbstractItemView, QComboBox, QDialog, QDoubleSpinBox, QInputDialog, QLineEdit, QListWidget, QMenu, QPushButton, QTableWidget, QTableWidgetItem, QTabWidget, QVBoxLayout, QWidget
 
 from ui.custom_widgets import CustomTableWidget, CustomTabWidget
 from utils.settings import Settings
@@ -13,6 +14,9 @@ from utils.sheet_settings.pounds_per_square_foot import Pound
 from utils.sheet_settings.price_per_pound import Price
 from utils.sheet_settings.sheet_settings import SheetSettings
 from utils.sheet_settings.thickness import Thickness
+
+if TYPE_CHECKING:
+    from ui.windows.main_window import MainWindow
 
 settings_file = Settings()
 
@@ -64,9 +68,8 @@ class SheetSettingsTab(QWidget):
     def __init__(self, parent):
         super().__init__(parent)
         uic.loadUi("ui/widgets/sheet_settings_tab.ui", self)
-        self.parent = parent
-        self.sheet_settings: SheetSettings = self.parent.sheet_settings
-        self.sheet_settings.load_data()
+        self.parent: MainWindow = parent
+        self.sheet_settings = self.parent.sheet_settings
 
         self.price_per_pound_table: PricePerPoundTableWidget = None
         self.price_per_pound_table_items: dict[Price, QTableWidgetItem] = {}
@@ -79,6 +82,7 @@ class SheetSettingsTab(QWidget):
         self.load_ui()
 
     def load_ui(self):
+        self.sheet_settings.load_data()
         self.tables_font = QFont()
         self.tables_font.setFamily(settings_file.get_value("tables_font")["family"])
         self.tables_font.setPointSize(settings_file.get_value("tables_font")["pointSize"])
@@ -153,6 +157,9 @@ class SheetSettingsTab(QWidget):
         self.comboBox_GALV_cut.currentTextChanged.connect(self.material_cutting_changes)
         self.lineEdit_GALN_name.editingFinished.connect(self.material_cutting_changes)
         self.comboBox_GALN_cut.currentTextChanged.connect(self.material_cutting_changes)
+
+        self.pusbButton_popout = self.findChild(QPushButton, "pushButton_popout")
+        self.pusbButton_popout.clicked.connect(self.popout)
 
         self.load_tabs()
 
@@ -410,6 +417,17 @@ class SheetSettingsTab(QWidget):
             self.sync_changes()
             self.load_tabs()
 
+    def popout(self):
+        # Create the popout widget and pass the layout you want to pop out
+        self.popout_widget = PopoutWidget(self.layout(), self.parent)
+        self.popout_widget.show()
+
+    def closeEvent(self, event):
+        # Ensure that if the main widget is closed, the popout widget is closed as well
+        if hasattr(self, 'popout_widget') and self.popout_widget.isVisible():
+            self.popout_widget.close()
+        super().closeEvent(event)
+
     def open_group_menu(self, menu: QMenu):
         menu.exec(QCursor.pos())
 
@@ -426,3 +444,19 @@ class SheetSettingsTab(QWidget):
                         widget.deleteLater()
                     else:
                         self.clear_layout(item.layout())
+
+class PopoutWidget(QWidget):
+    def __init__(self, layout_to_popout: QVBoxLayout, parent=None):
+        super().__init__(parent)
+        self.parent: MainWindow = parent
+        self.original_layout_parent = layout_to_popout.parentWidget()
+        self.original_layout = layout_to_popout
+        self.setWindowFlags(Qt.WindowType.Window)
+        self.setWindowTitle("Sheet Settings")
+        self.setLayout(self.original_layout)
+
+    def closeEvent(self, event):
+        # Restore the layout to the original widget when the popout is closed
+        if self.original_layout_parent:
+            self.original_layout_parent.setLayout(self.original_layout)
+        super().closeEvent(event)

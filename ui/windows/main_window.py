@@ -16,12 +16,12 @@ import requests
 import win32api  # pywin32
 from natsort import natsorted, ns
 from PyQt6 import uic
-from PyQt6.QtCore import QEventLoop, QPoint, Qt, QThread, QTimer
+from PyQt6.QtCore import QEventLoop, QPoint, Qt, QThread, QTimer, pyqtSignal
 from PyQt6.QtGui import QAction, QColor, QCursor, QDragEnterEvent, QDragLeaveEvent, QDragMoveEvent, QDropEvent, QFont, QIcon
-from PyQt6.QtWidgets import QApplication, QComboBox, QFileDialog, QFontDialog, QGridLayout, QInputDialog, QLabel, QListWidget, QListWidgetItem, QMainWindow, QMenu, QMessageBox, QPushButton, QScrollArea, QSplitter, QTableWidgetItem, QTabWidget, QToolBox, QVBoxLayout, QWidget
+from PyQt6.QtWidgets import QApplication, QComboBox, QFileDialog, QFontDialog, QGridLayout, QHBoxLayout, QInputDialog, QLabel, QListWidget, QListWidgetItem, QMainWindow, QMenu, QMessageBox, QPushButton, QStackedWidget, QScrollArea, QSplitter, QTableWidgetItem, QTabWidget, QTreeWidget, QTreeWidgetItem, QToolBox, QVBoxLayout, QWidget
 
 from ui.custom.job_tab import JobTab
-from ui.custom_widgets import CustomTableWidget, MultiToolBox, PdfTreeView, PreviousQuoteItem, RichTextPushButton, SavedQuoteItem, ScrollPositionManager, set_default_dialog_button_stylesheet
+from ui.custom_widgets import CustomTableWidget, MultiToolBox, PdfTreeView, PreviousQuoteItem, RichTextPushButton, SavedQuoteItem, ScrollPositionManager, TabButton, set_default_dialog_button_stylesheet
 from ui.dialogs.about_dialog import AboutDialog
 from ui.dialogs.edit_paint_inventory import EditPaintInventory
 from ui.dialogs.edit_workspace_settings import EditWorkspaceSettings
@@ -55,11 +55,13 @@ from utils.inventory.sheets_inventory import SheetsInventory
 from utils.ip_utils import get_server_ip_address, get_server_port
 from utils.po import check_po_directories, get_all_po
 from utils.po_template import POTemplate
+from utils.colors import lighten_color, darken_color
 from utils.quote.generate_printout import GeneratePrintout
 from utils.quote.quote import Quote
 from utils.settings import Settings
 from utils.sheet_settings.sheet_settings import SheetSettings
 from utils.threads.changes_thread import ChangesThread
+from utils.threads.connect_thread import ConnectThread
 from utils.threads.check_for_updates_thread import CheckForUpdatesThread
 from utils.threads.delete_job_thread import DeleteJobThread
 from utils.threads.delete_quote_thread import DeleteQuoteThread
@@ -69,6 +71,7 @@ from utils.threads.download_quote_thread import DownloadQuoteThread
 from utils.threads.download_thread import DownloadThread
 from utils.threads.exchange_rate import ExchangeRate
 from utils.threads.generate_quote_thread import GenerateQuoteThread
+from utils.threads.get_client_data_thread import IsClientTrustedThread
 from utils.threads.get_jobs_thread import GetJobsThread
 from utils.threads.get_order_number_thread import GetOrderNumberThread
 from utils.threads.get_previous_quotes_thread import GetPreviousQuotesThread
@@ -171,9 +174,19 @@ sys.excepthook = excepthook
 
 
 class MainWindow(QMainWindow):
+    trusted_user_checked = pyqtSignal(bool)
     def __init__(self):
         super().__init__()
         uic.loadUi("ui/windows/main_window.ui", self)
+        self.username = os.getlogin()
+        self.trusted_user = False
+        self.ignore_update = False
+
+        self.trusted_user_checked.connect(self.on_trusted_user_checked)
+
+        self.setWindowTitle(f"Invigo - {__version__} - {self.username}")
+        self.setWindowIcon(QIcon(Icons.icon))
+
         self.threads: list[QThread] = []
         self.order_number: int = -1
         self.get_order_number_thread()
@@ -189,6 +202,152 @@ class MainWindow(QMainWindow):
         self.laser_cut_inventory = LaserCutInventory(self.paint_inventory, self.workspace_settings)
         self.job_manager = JobManager(self.sheet_settings, self.sheets_inventory, self.workspace_settings, self.components_inventory, self.laser_cut_inventory, self.paint_inventory, self)
         self.workspace = Workspace(self.workspace_settings, self.job_manager)
+
+        self.components_tab_widget: ComponentsTab = None
+        self.sheets_inventory_tab_widget: SheetsInInventoryTab = None
+        self.laser_cut_tab_widget: LaserCutTab = None
+        self.sheet_settings_tab_widget: SheetSettingsTab = None
+        self.workspace_tab_widget: WorkspaceTabWidget = None
+
+        check_po_directories()
+
+        # VARIABLES
+        self.components_tab_widget_last_selected_tab_index = 0  # * Used inside components_tab.py
+        self.sheets_inventory_tab_widget_last_selected_tab_index = 0  # * Used inside sheets_in_inventory_tab.py
+        self.laser_cut_tab_widget_last_selected_tab_index = 0  # * Used inside laser_cut_tab.py
+        self.category: Category = None
+        self.categories: list[Category] = []
+        self.active_layout: QVBoxLayout = None
+        self.downloading_changes = False
+        self.finished_downloading_all_files = False
+        self.finished_loading_tabs = False
+        self.files_downloaded_count = 0
+        self.tables_font = QFont()
+        self.tables_font.setFamily(self.settings_file.get_value("tables_font")["family"])
+        self.tables_font.setPointSize(self.settings_file.get_value("tables_font")["pointSize"])
+        self.tables_font.setWeight(self.settings_file.get_value("tables_font")["weight"])
+        self.tables_font.setItalic(self.settings_file.get_value("tables_font")["italic"])
+        self.tabs: dict[Category, CustomTableWidget] = {}
+        self.parts_in_inventory_name_lookup: dict[str, int] = {}
+        try:
+            self.last_selected_menu_tab: str = self.settings_file.get_value("menu_tabs_order")[self.settings_file.get_value("last_toolbox_tab")]
+        except IndexError:
+            self.last_selected_menu_tab: str = self.settings_file.get_value("menu_tabs_order")[0]
+        self.toolbox_quote_nest_directories_list_widgets: dict[str, PdfTreeView] = {}
+        self.toolbox_job_nest_directories_list_widgets: dict[str, PdfTreeView] = {}
+        self.toolbox_workspace_nest_directories_list_widgets: dict[str, PdfTreeView] = {}
+        self.quote_nest_information = {}
+        self.quote_components_information = {}
+        self.tabWidget = self.findChild(QTabWidget, "tabWidget")
+        self.scroll_position_manager = ScrollPositionManager()
+        self.saved_jobs: dict[str, dict[str, str]] = {}
+
+        # Status
+        self.status_button = RichTextPushButton(self)
+        self.status_button.setText("Downloading all files, please wait...", "yellow")
+        self.status_button.setObjectName("status_button")
+        self.status_button.setFlat(True)
+        self.status_button.setFixedHeight(25)
+        self.verticalLayout_status.addWidget(self.status_button)
+
+        self.connect_client()
+
+    def on_trusted_user_checked(self):
+        self.__load_ui()
+        self.download_all_files()
+        self.start_check_for_updates_thread()
+
+    def connect_client(self):
+        self.connect_thread = ConnectThread(__version__)
+        self.connect_thread.start()
+        self.connect_thread.finished.connect(self.check_trusted_user)
+        self.connect_thread.wait()
+
+    def __load_ui(self):
+        self.horizontalLayout_tab_buttons = self.findChild(QHBoxLayout, "horizontalLayout_tab_buttons")
+        tab_buttons = {
+            "Components": "format-justify-left",
+            "Laser Cut Inventory": "format-justify-left",
+            "Sheets Inventory": "format-justify-left",
+        }
+        for tab_name, tab_icon in tab_buttons.items():
+            tab_button = TabButton(tab_name, self)
+            icon = QIcon.fromTheme(tab_icon)
+            tab_button.setIcon(icon)
+            self.horizontalLayout_tab_buttons.addWidget(tab_button)
+
+        if not self.trusted_user:
+            self.set_tab_visibility("Components", False)
+            self.set_tab_visibility("Sheets in Inventory", False)
+            self.set_tab_visibility("Laser Cut Inventory", False)
+            self.set_tab_visibility("Sheet Settings", False)
+            self.set_tab_visibility("Job Planner", False)
+            self.set_tab_visibility("Job Quoter", False)
+            self.set_tab_visibility("Quote Generator", False)
+
+            self.menuHistory.setEnabled(False)
+            self.menuJobSorter.setEnabled(False)
+            self.menuProduction_Planner.setEnabled(False)
+            self.menuPaint_Inventory.setEnabled(False)
+            self.menuQuote_Generator.setEnabled(False)
+            self.menuPurchase_Orders.setEnabled(False)
+            self.menuSort.setEnabled(False)
+
+            self.action_Set_User_Workspace.setEnabled(False)
+            self.actionSet_Order_Number.setEnabled(False)
+            self.actionEditTags.setEnabled(False)
+            self.actionComponents.setEnabled(False)
+            self.actionSheets_in_Inventory.setEnabled(False)
+            self.actionLaser_Cut_Inventory.setEnabled(False)
+            self.actionSheet_Settings.setEnabled(False)
+            self.actionJob_Planner.setEnabled(False)
+            self.actionJob_Quoter.setEnabled(False)
+            self.actionQuote_Generator.setEnabled(False)
+            self.actionWorkspace.setEnabled(False)
+            for tab in self.settings_file.get_value("menu_tabs_order"):
+                if tab == "Workspace":
+                    self.set_tab_visibility(tab, True)
+                    self.settings_file.get_value("tab_visibility")[tab] = True
+                    self.last_selected_menu_tab = "Workspace"
+                    continue
+                self.set_tab_visibility(tab, False)
+                self.settings_file.get_value("tab_visibility")[tab] = False
+            self.settings_file.save_data()
+        else:
+            for tab in self.settings_file.get_value("menu_tabs_order"):
+                self.set_tab_visibility(tab, self.settings_file.get_value("tab_visibility").get(tab, True))
+
+        menu_tabs_order: list[str] = self.settings_file.get_value(setting_name="menu_tabs_order")
+        for tab_name in menu_tabs_order:
+            index = self.get_tab_from_name(tab_name)
+            if index != -1:
+                self.tabWidget.tabBar().moveTab(index, menu_tabs_order.index(tab_name))
+
+        if self.trusted_user:
+            try:
+                self.set_current_tab(self.last_selected_menu_tab)
+            except IndexError:
+                self.tabWidget.setCurrentIndex(0)
+        else:
+            self.set_current_tab("Workspace")
+
+        self.splitter = self.findChild(QSplitter, "splitter")
+        self.splitter_2 = self.findChild(QSplitter, "splitter_2")
+        self.splitter_3 = self.findChild(QSplitter, "splitter_3")
+        self.splitter_4 = self.findChild(QSplitter, "splitter_4")
+
+        self.splitter.setStretchFactor(0, 0)  # Job Planner
+        self.splitter.setStretchFactor(1, 1)  # Job Planner
+
+        self.splitter_3.setStretchFactor(0, 3)  # Quote Generator
+        self.splitter_3.setStretchFactor(1, 2)  # Quote Generator
+
+        self.splitter_2.setStretchFactor(0, 1)  # Job Quoter
+        self.splitter_2.setStretchFactor(1, 0)  # Job Quoter
+
+        self.splitter_4.setSizes([1, 0])
+        self.splitter_4.setStretchFactor(0, 1)
+        self.splitter_4.setStretchFactor(1, 0)
 
         self.quote_generator_tab_widget = QuoteGeneratorTab(self)
         self.quote_generator_tab_widget.add_quote(
@@ -221,88 +380,7 @@ class MainWindow(QMainWindow):
         self.clear_layout(self.quote_generator_layout)
         self.quote_generator_layout.addWidget(self.job_quote_widget)
 
-        self.components_tab_widget: ComponentsTab = None
-        self.components_tab_widget_last_selected_tab_index: int = 0  # * Used inside components_tab.py
-
-        self.sheets_inventory_tab_widget: SheetsInInventoryTab = None
-        self.sheets_inventory_tab_widget_last_selected_tab_index: int = 0  # * Used inside sheets_in_inventory_tab.py
-
-        self.laser_cut_tab_widget: LaserCutTab = None
-        self.laser_cut_tab_widget_last_selected_tab_index: int = 0  # * Used inside laser_cut_tab.py
-
-        self.sheet_settings_tab_widget: SheetSettingsTab = None
-
-        self.workspace_tab_widget: WorkspaceTabWidget = None
-
-        self.username = os.getlogin().title()
-        self.trusted_user: bool = False
-        self.setWindowTitle(f"Invigo - {__version__} - {self.username}")
-        self.setWindowIcon(QIcon(Icons.icon))
-
-        check_po_directories()
-
-        # VARIABLES
-        self.category: Category = None
-        self.categories: list[Category] = []
-        self.active_layout: QVBoxLayout = None
-        self.downloading_changes: bool = False
-        self.finished_downloading_all_files: bool = False
-        self.finished_loading_tabs: bool = False
-        self.files_downloaded_count: int = 0
-        self.tables_font = QFont()
-        self.tables_font.setFamily(self.settings_file.get_value("tables_font")["family"])
-        self.tables_font.setPointSize(self.settings_file.get_value("tables_font")["pointSize"])
-        self.tables_font.setWeight(self.settings_file.get_value("tables_font")["weight"])
-        self.tables_font.setItalic(self.settings_file.get_value("tables_font")["italic"])
-        self.tabs: dict[Category, CustomTableWidget] = {}
-        self.parts_in_inventory_name_lookup: dict[str, int] = {}
-        try:
-            self.last_selected_menu_tab: str = self.settings_file.get_value("menu_tabs_order")[self.settings_file.get_value("last_toolbox_tab")]
-        except IndexError:
-            self.last_selected_menu_tab: str = self.settings_file.get_value("menu_tabs_order")[0]
-        self.toolbox_quote_nest_directories_list_widgets: dict[str, PdfTreeView] = {}
-        self.toolbox_job_nest_directories_list_widgets: dict[str, PdfTreeView] = {}
-        self.toolbox_workspace_nest_directories_list_widgets: dict[str, PdfTreeView] = {}
-        self.quote_nest_information = {}
-        self.quote_components_information = {}
-        self.tabWidget: QTabWidget = self.findChild(QTabWidget, "tabWidget")
-        self.scroll_position_manager = ScrollPositionManager()
-        self.saved_jobs: dict[str, dict[str, str]] = {}
-
-        self.ignore_update: bool = False
-
-        self.check_trusted_user()
-        self.__load_ui()
-        self.download_all_files()
-        self.start_check_for_updates_thread()
-
-        self.splitter = self.findChild(QSplitter, "splitter")
-        self.splitter_2 = self.findChild(QSplitter, "splitter_2")
-        self.splitter_3 = self.findChild(QSplitter, "splitter_3")
-        self.splitter_4 = self.findChild(QSplitter, "splitter_4")
-
-        self.splitter.setStretchFactor(0, 0)  # Job Planner
-        self.splitter.setStretchFactor(1, 1)  # Job Planner
-
-        self.splitter_3.setStretchFactor(0, 3)  # Quote Generator
-        self.splitter_3.setStretchFactor(1, 2)  # Quote Generator
-
-        self.splitter_2.setStretchFactor(0, 1)  # Job Quoter
-        self.splitter_2.setStretchFactor(1, 0)  # Job Quoter
-
-        self.splitter_4.setSizes([1, 0])
-        self.splitter_4.setStretchFactor(0, 1)
-        self.splitter_4.setStretchFactor(1, 0)
-
-    def __load_ui(self):
-        menu_tabs_order: list[str] = self.settings_file.get_value(setting_name="menu_tabs_order")
-        for tab_name in menu_tabs_order:
-            index = self.get_tab_from_name(tab_name)
-            if index != -1:
-                self.tabWidget.tabBar().moveTab(index, menu_tabs_order.index(tab_name))
-
         # Tool Box
-        self.tabWidget.setCurrentIndex(self.settings_file.get_value(setting_name="last_toolbox_tab"))
         self.tabWidget.currentChanged.connect(self.tool_box_menu_changed)
 
         # Load Nests
@@ -324,6 +402,13 @@ class MainWindow(QMainWindow):
         self.verticalLayout_28.addWidget(self.previous_quotes_tool_box)
         self.pushButton_refresh_previous_nests.clicked.connect(self.load_previous_quotes_thread)
 
+        # WORKSPACE
+        self.treeWidget_cutoff_sheets = self.findChild(QTreeWidget, "treeWidget_cutoff_sheets")
+        self.treeWidget_cutoff_sheets.doubleClicked.connect(self.tree_widget_cutoff_sheet_double_clicked)
+        self.apply_stylesheet_to_toggle_buttons(self.pushButton_toggle_cutoff, self.cutoff_widget)
+        self.cutoff_widget.setHidden(True)
+
+        # QUOTE GENERATOR
         self.cutoff_widget = MultiToolBox(self)
         self.verticalLayout_cutoff.addWidget(self.cutoff_widget)
         cutoff_items = QListWidget(self)
@@ -388,14 +473,6 @@ class MainWindow(QMainWindow):
         self.templates_jobs_layout_2.addWidget(self.templates_jobs_multitoolbox_2)
         self.templates_job_items_last_opened_2: dict[int, bool] = {}
 
-        # Status
-        self.status_button = RichTextPushButton(self)
-        self.status_button.setText("Downloading all files, please wait...", "yellow")
-        self.status_button.setObjectName("status_button")
-        self.status_button.setFlat(True)
-        self.status_button.setFixedHeight(25)
-        self.verticalLayout_status.addWidget(self.status_button)
-
         # Tab widget
         # self.pushButton_add_new_sheet.clicked.connect(self.add_sheet_item)
 
@@ -403,6 +480,7 @@ class MainWindow(QMainWindow):
         # HELP
         self.actionAbout_Qt.triggered.connect(QApplication.aboutQt)
         self.actionCheck_for_Updates.triggered.connect(self.check_for_updates)
+        self.actionInvi_go.triggered.connect(self.open_invigo)
         self.actionAbout.triggered.connect(self.show_about_dialog)
         self.actionServer_log.triggered.connect(self.open_server_log)
         self.actionServer_logs.triggered.connect(self.open_server_logs)
@@ -415,6 +493,26 @@ class MainWindow(QMainWindow):
         # SETTINGS
         self.actionChange_tables_font.triggered.connect(self.change_tables_font)
         self.actionSet_Order_Number.triggered.connect(self.set_order_number)
+
+        self.actionComponents.triggered.connect(partial(self.toggle_tab_visibility, self.actionComponents))
+        self.actionComponents.setChecked(self.settings_file.get_value("tab_visibility").get("Components", True))
+        self.actionSheets_in_Inventory.triggered.connect(partial(self.toggle_tab_visibility, self.actionSheets_in_Inventory))
+        self.actionSheets_in_Inventory.setChecked(self.settings_file.get_value("tab_visibility").get("Sheets in Inventory", True))
+        self.actionLaser_Cut_Inventory.triggered.connect(partial(self.toggle_tab_visibility, self.actionLaser_Cut_Inventory))
+        self.actionLaser_Cut_Inventory.setChecked(self.settings_file.get_value("tab_visibility").get("Laser Cut Inventory", True))
+        self.actionSheet_Settings.triggered.connect(partial(self.toggle_tab_visibility, self.actionSheet_Settings))
+        self.actionSheet_Settings.setChecked(self.settings_file.get_value("tab_visibility").get("Sheet Settings", True))
+        self.actionJob_Planner.triggered.connect(partial(self.toggle_tab_visibility, self.actionJob_Planner))
+        self.actionJob_Planner.setChecked(self.settings_file.get_value("tab_visibility").get("Job Planner", True))
+        self.actionJob_Quoter.triggered.connect(partial(self.toggle_tab_visibility, self.actionJob_Quoter))
+        self.actionJob_Quoter.setChecked(self.settings_file.get_value("tab_visibility").get("Job Quoter", True))
+        self.actionQuote_Generator.triggered.connect(partial(self.toggle_tab_visibility, self.actionQuote_Generator))
+        self.actionQuote_Generator.setChecked(self.settings_file.get_value("tab_visibility").get("Quote Generator", True))
+        self.actionWorkspace.triggered.connect(partial(self.toggle_tab_visibility, self.actionWorkspace))
+        self.actionWorkspace.setChecked(self.settings_file.get_value("tab_visibility").get("Workspace", True))
+
+        self.actionStart_Maximized.triggered.connect(partial(self.toggle_maximized, self.actionStart_Maximized))
+        self.actionStart_Maximized.setChecked(self.settings_file.get_value("show_maximized"))
 
         # SORT BY
         self.actionAlphabatical.triggered.connect(
@@ -487,20 +585,6 @@ class MainWindow(QMainWindow):
         self.actionExit.triggered.connect(self.close)
         # self.actionExit.setIcon(QIcon("icons/tab_close.png"))
 
-        if not self.trusted_user:
-            self.tabWidget.setTabVisible(
-                self.settings_file.get_value("menu_tabs_order").index("Components"),
-                False,
-            )
-            self.tabWidget.setTabVisible(
-                self.settings_file.get_value("menu_tabs_order").index("View Price Changes History"),
-                False,
-            )
-            self.tabWidget.setTabVisible(
-                self.settings_file.get_value("menu_tabs_order").index("View Removed Quantities History"),
-                False,
-            )
-
     # * \/ SLOTS & SIGNALS \/
     def tool_box_menu_changed(self):
         # self.loading_screen.show()
@@ -520,14 +604,12 @@ class MainWindow(QMainWindow):
         self.clear_layout(self.components_layout)
         self.components_layout.addWidget(QLabel("Loading...", self))
         if self.tabWidget.tabText(self.tabWidget.currentIndex()) == "Components":
-            if not self.trusted_user:
-                self.show_not_trusted_user()
-                return
             self.menuSort.setEnabled(True)
             self.clear_layout(self.components_layout)
             self.components_tab_widget = ComponentsTab(self)
             self.components_layout.addWidget(self.components_tab_widget)
             self.components_tab_widget.restore_scroll_position()
+            self.components_tab_widget.sort_components()
         elif self.tabWidget.tabText(self.tabWidget.currentIndex()) == "Sheets in Inventory":
             self.menuSort.setEnabled(True)
             self.clear_layout(self.sheets_inventory_layout)
@@ -552,6 +634,7 @@ class MainWindow(QMainWindow):
             for quote_widget in self.quote_generator_tab_widget.quotes:
                 quote_widget.update_sheet_statuses()
         elif self.tabWidget.tabText(self.tabWidget.currentIndex()) == "Job Quoter":
+            self.load_tree_widget_cuttoff_drop_down()
             self.load_jobs_thread()
             self.refresh_nest_directories()
         elif self.tabWidget.tabText(self.tabWidget.currentIndex()) == "Job Planner":
@@ -681,6 +764,22 @@ class MainWindow(QMainWindow):
                 self.quote_generator_tab_widget.quotes[self.quote_generator_tab_widget.tab_widget.currentIndex()].update_sheet_statuses()
                 return
 
+    def tree_widget_cutoff_sheet_double_clicked(self):
+        cutoff_sheets = self.sheets_inventory.get_sheets_by_category("Cutoff")
+        item_pressed = self.treeWidget_cutoff_sheets.selectedItems()[0]
+        for sheet in cutoff_sheets:
+            if item_pressed.text(0) == sheet.get_name():
+                self.status_button.setText(f"Applying cutoff sheet ({sheet.get_name()}) settings to nests...", "yellow")
+                active_job_widget = self.job_quote_widget.get_active_job_widget()
+                active_job_widget.comboBox_materials.setCurrentText(sheet.material)
+                active_job_widget.comboBox_thicknesses.setCurrentText(sheet.thickness)
+                active_job_widget.doubleSpinBox_length.setValue(sheet.length)
+                active_job_widget.doubleSpinBox_width.setValue(sheet.width)
+                for nest_Widget in active_job_widget.nest_widgets:
+                    nest_Widget.sheet_changed()
+                self.status_button.setText(f"Applied cutoff sheet ({sheet.get_name()}) settings to nests", "lime")
+                return
+
     def workspace_tab_changed(self, tab_name: str):
         if any(keyword in tab_name.lower() for keyword in ["laser"]):
             self.splitter_4.setSizes([1, 1])
@@ -690,6 +789,33 @@ class MainWindow(QMainWindow):
     # * /\ SLOTS & SIGNALS /\
 
     # * \/ UPDATE UI ELEMENTS \/
+    def set_current_tab(self, tab_name: str):
+        for i in range(self.tabWidget.count()):
+            if self.tabWidget.tabText(i) == tab_name:
+                self.tabWidget.setCurrentIndex(i)
+                break
+
+    def set_tab_visibility(self, tab_name: str, visible: bool):
+        for i in range(self.tabWidget.count()):
+            if self.tabWidget.tabText(i) == tab_name:
+                self.tabWidget.setTabVisible(i, visible)
+                break
+
+    def toggle_tab_visibility(self, action: QAction):
+        tab_name = action.text()
+        self.settings_file.load_data()
+        self.settings_file.get_value("tab_visibility")[tab_name] = action.isChecked()
+        self.settings_file.save_data()
+        self.set_tab_visibility(tab_name, action.isChecked())
+
+    def toggle_maximized(self, action: QAction):
+        if action.isChecked():
+            self.showMaximized()
+
+        self.settings_file.load_data()
+        self.settings_file.set_value("show_maximized", action.isChecked())
+        self.settings_file.save_data()
+
     def change_tables_font(self):
         font, ok = QFontDialog.getFont()
         if ok:
@@ -1208,6 +1334,23 @@ class MainWindow(QMainWindow):
                     continue
                 cutoff_items.addItem(sheet.get_name())
 
+    def load_tree_widget_cuttoff_drop_down(self):
+        self.treeWidget_cutoff_sheets.clear()
+        self.treeWidget_cutoff_sheets.setColumnCount(0)
+        self.treeWidget_cutoff_sheets.setHeaderLabels(["Sheets"])
+        cutoff_sheets = self.sheets_inventory.get_sheets_by_category("Cutoff")
+        for group in self.sheets_inventory.get_all_sheets_material(cutoff_sheets):
+            parent_item = QTreeWidgetItem()
+            parent_item.setText(0, group)
+            for sheet in cutoff_sheets:
+                if group != sheet.material:
+                    continue
+                sheet_item = QTreeWidgetItem(parent_item)
+                sheet_item.setText(0, sheet.get_name())
+                parent_item.addChild(sheet_item)
+            self.treeWidget_cutoff_sheets.addTopLevelItem(parent_item)
+        self.treeWidget_cutoff_sheets.expandAll()
+
     def load_previous_quotes(self, data: dict[str, dict[str, Any]]):
         sorted_data = dict(
             natsorted(
@@ -1502,13 +1645,18 @@ class MainWindow(QMainWindow):
                 msg.exec()
 
     def check_trusted_user(self):
-        trusted_users = get_trusted_users()
-        check_trusted_user = (user for user in trusted_users if not self.trusted_user)
-        for user in check_trusted_user:
-            self.trusted_user = self.username.lower() == user.lower()
+        self.client_data = IsClientTrustedThread()
+        self.client_data.signal.connect(self.handle_client_data)
+        self.client_data.finished.connect(self.on_trusted_user_checked)
+        self.client_data.start()
+        self.client_data.wait()
 
-        # if not self.trusted_user:
-        # self.menuSort.setEnabled(False)
+    def handle_client_data(self, data: dict[str, bool], error):
+        if error:
+            self.status_button.setText(f"Error recieving client data: {error}", "red")
+        else:
+            self.trusted_user = data.get("is_trusted", False)
+        print("is_trusted", self.trusted_user)
 
     # * /\ CHECKERS /\
 
@@ -1640,6 +1788,9 @@ class MainWindow(QMainWindow):
     # * \/ External Actions \/
     def open_print_selected_parts(self):
         webbrowser.open("print_selected_parts.html", new=0)
+
+    def open_invigo(self):
+        webbrowser.open(f"http://{get_server_ip_address()}:{get_server_port()}", new=0)
 
     def open_server_log(self):
         webbrowser.open(f"http://{get_server_ip_address()}:{get_server_port()}/server_log", new=0)
@@ -1971,6 +2122,7 @@ class MainWindow(QMainWindow):
         self.threads.append(download_thread)
         download_thread.signal.connect(self.download_thread_response)
         download_thread.start()
+        download_thread.wait()
 
     def download_thread_response(self, response: dict, files_uploaded: list[str]):
         if not self.finished_downloading_all_files:
@@ -2032,7 +2184,7 @@ class MainWindow(QMainWindow):
         self.downloading_changes = False
         self.start_changes_thread()
         self.start_exchange_rate_thread()
-        if self.username != "Jared":  # Because I can
+        if self.settings_file.get_value("show_maximized"):
             self.showMaximized()
 
     def download_all_files(self):
@@ -2557,6 +2709,7 @@ class MainWindow(QMainWindow):
         get_order_number_thread.signal.connect(self.get_order_number_thread_response)
         self.threads.append(get_order_number_thread)
         get_order_number_thread.start()
+        get_order_number_thread.wait()
 
     def set_order_number_thread_response(self, response):
         if response != "success":
@@ -2946,6 +3099,80 @@ class MainWindow(QMainWindow):
         tab.addWidget(lbl1, 0, 0)
         tab.addWidget(btn, 0, 1)
         tab.addWidget(lbl2, 0, 2)
+
+    def apply_stylesheet_to_toggle_buttons(self, button: QPushButton, widget: QWidget):
+        base_color = "#3daee9"
+        hover_color: str = lighten_color(base_color)
+        pressed_color: str = darken_color(base_color)
+        button.setObjectName("assembly_button_drop_menu")
+        button.setStyleSheet(
+            """
+QPushButton#assembly_button_drop_menu {
+    border: 1px solid rgba(71, 71, 71, 110);
+    background-color: rgba(71, 71, 71, 110);
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
+    color: #EAE9FC;
+    text-align: left;
+}
+
+QPushButton:hover#assembly_button_drop_menu {
+    background-color: rgba(76, 76, 76, 110);
+    border: 1px solid %(base_color)s;
+}
+
+QPushButton:pressed#assembly_button_drop_menu {
+    background-color: %(base_color)s;
+    color: #171717;
+}
+
+QPushButton:!checked#assembly_button_drop_menu {
+    color: #8C8C8C;
+}
+
+QPushButton:!checked:pressed#assembly_button_drop_menu {
+    color: #EAE9FC;
+}
+
+QPushButton:checked#assembly_button_drop_menu {
+    color: #171717;
+    border-color: %(base_color)s;
+    background-color: %(base_color)s;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+    border-bottom-left-radius: 0px;
+    border-bottom-right-radius: 0px;
+}
+
+QPushButton:checked:hover#assembly_button_drop_menu {
+    background-color: %(hover_color)s;
+}
+
+QPushButton:checked:pressed#assembly_button_drop_menu {
+    color: #171717;
+    background-color: %(pressed_color)s;
+}
+"""
+            % {
+                "base_color": base_color,
+                "hover_color": hover_color,
+                "pressed_color": pressed_color,
+            }
+        )
+        widget.setObjectName("assembly_widget_drop_menu")
+        widget.setStyleSheet(
+            """QWidget#assembly_widget_drop_menu{
+            border: 1px solid %(base_color)s;
+            border-top-left-radius: 0px;
+            border-top-right-radius: 0px;
+            border-bottom-left-radius: 10px;
+            border-bottom-right-radius: 10px;
+            };
+            """
+            % {"base_color": base_color}
+        )
 
     # * \/ OVERIDDEN UI EVENTS \/
     def dragEnterEvent(self, event: QDragEnterEvent):

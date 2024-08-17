@@ -18,7 +18,7 @@
 
 1. Download and install [Python 3.12](https://www.python.org/downloads/).
 2. (Optional) Download and install [git](https://git-scm.com/download/win).
-   1. Clone this repository with, `git clone https://github.com/TheCodingJsoftware/Invigo`.
+   - Clone this repository with, `git clone https://github.com/TheCodingJsoftware/Invigo`.
 3. Download this repository [here](https://github.com/TheCodingJsoftware/Invigo/archive/refs/heads/master.zip) **IF NOT** using [git](https://git-scm.com/download/win).
 4. Install virtualenv with, `pip install virtualenv`.
 5. Create a virtual environment with, `virtualenv venv`. (`venv` is the name of the virtual environment)
