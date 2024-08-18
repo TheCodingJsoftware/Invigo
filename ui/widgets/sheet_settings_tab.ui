@@ -455,6 +455,9 @@
        <property name="leftMargin">
         <number>9</number>
        </property>
+       <property name="topMargin">
+        <number>9</number>
+       </property>
        <property name="rightMargin">
         <number>0</number>
        </property>
@@ -493,11 +496,24 @@
              <height>30</height>
             </size>
            </property>
+           <property name="cursor">
+            <cursorShape>PointingHandCursor</cursorShape>
+           </property>
            <property name="text">
             <string/>
            </property>
            <property name="icon">
-            <iconset theme="window-new"/>
+            <iconset>
+             <normaloff>../../icons/open_in_new.png</normaloff>../../icons/open_in_new.png</iconset>
+           </property>
+           <property name="iconSize">
+            <size>
+             <width>30</width>
+             <height>30</height>
+            </size>
+           </property>
+           <property name="flat">
+            <bool>true</bool>
            </property>
           </widget>
          </item>

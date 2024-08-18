@@ -768,24 +768,24 @@ QTabBar::tab:disabled {
 }
 
 QTabBar::tab:!selected {
-    margin-top: 3px;
-    border-top-right-radius: 5px;
-    border-top-left-radius: 5px;
+    /* margin-top: 3px; */
+    /* border-top-right-radius: 5px; */
+    /* border-top-left-radius: 5px; */
     /* make non-selected tabs look smaller */
 }
 
 QTabBar::tab:!selected:hover {
-    margin-top: 1px;
+    /* margin-top: 1px; */
     /* make non-selected tabs look smaller */
-    border-top-right-radius: 5px;
-    border-top-left-radius: 5px;
+    /* border-top-right-radius: 5px; */
+    /* border-top-left-radius: 5px; */
 }
 
 QTabBar::tab:selected {
     color: #EAE9FC;
     background-color: #3daee9;
-    border-top-right-radius: 6px;
-    border-top-left-radius: 6px;
+    /* border-top-right-radius: 6px; */
+    /* border-top-left-radius: 6px; */
     /*border-bottom-left-radius: 0.2em;
     border-bottom-right-radius: 0.2em; */
     /* padding-right: 5px; */

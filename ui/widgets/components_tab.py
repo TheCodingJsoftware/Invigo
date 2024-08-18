@@ -199,6 +199,26 @@ class OrderWidget(QWidget):
                         self.clear_layout(item.layout())
 
 
+class PopoutWidget(QWidget):
+    def __init__(self, layout_to_popout: QVBoxLayout, parent=None):
+        super().__init__(parent)
+        self.parent: MainWindow = parent
+        self.original_layout = layout_to_popout
+        self.original_layout_parent: "ComponentsTab" = self.original_layout.parentWidget()
+        self.setWindowFlags(Qt.WindowType.Window)
+        self.setWindowTitle("Components Tab")
+        self.setWindowIcon(QIcon.fromTheme("format-justify-left"))
+        self.setLayout(self.original_layout)
+
+    def closeEvent(self, event):
+        if self.original_layout_parent:
+            self.original_layout_parent.setLayout(self.original_layout)
+            self.original_layout_parent.pushButton_popout.setIcon(QIcon("icons/open_in_new.png"))
+            self.original_layout_parent.pushButton_popout.clicked.disconnect()
+            self.original_layout_parent.pushButton_popout.clicked.connect(self.original_layout_parent.popout)
+        super().closeEvent(event)
+
+
 class ComponentsTab(QWidget):
     def __init__(self, parent: QWidget):
         super().__init__(parent)
@@ -262,6 +282,10 @@ class ComponentsTab(QWidget):
         self.pushButton_remove_quantity.setIcon(QIcon("./icons/list_remove.png"))
 
         self.listWidget_itemnames.itemSelectionChanged.connect(self.listWidget_item_changed)
+
+        self.pushButton_popout = self.findChild(QPushButton, "pushButton_popout")
+        self.pushButton_popout.setStyleSheet("background-color: transparent; border: none;")
+        self.pushButton_popout.clicked.connect(self.popout)
 
     def add_category(self):
         new_category_name, ok = QInputDialog.getText(self, "New Category", "Enter a name for a category:")
@@ -1166,8 +1190,15 @@ class ComponentsTab(QWidget):
         if scroll_position := self.parent.get_scroll_position(self.category):
             self.category_tables[self.category].verticalScrollBar().setValue(scroll_position)
 
+    def popout(self):
+        self.popout_widget = PopoutWidget(self.layout(), self.parent)
+        self.popout_widget.show()
+        self.pushButton_popout.setIcon(QIcon("icons/dock_window.png"))
+        self.pushButton_popout.clicked.disconnect()
+        self.pushButton_popout.clicked.connect(self.popout_widget.close)
+
     def sync_changes(self):
-        self.parent.sync_changes()
+        self.parent.sync_changes("components_tab")
 
     def reload_po_menu(self):
         for po_button in self.po_buttons:

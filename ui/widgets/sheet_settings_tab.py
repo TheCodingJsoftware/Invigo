@@ -64,6 +64,26 @@ class PoundsPerSquareFootTab(CustomTabWidget):
         super().__init__(parent)
 
 
+class PopoutWidget(QWidget):
+    def __init__(self, layout_to_popout: QVBoxLayout, parent=None):
+        super().__init__(parent)
+        self.parent: MainWindow = parent
+        self.original_layout = layout_to_popout
+        self.original_layout_parent: "SheetSettingsTab" = self.original_layout.parentWidget()
+        self.setWindowFlags(Qt.WindowType.Window)
+        self.setWindowTitle("Sheet Settings")
+        self.setWindowIcon(QIcon.fromTheme("document-properties"))
+        self.setLayout(self.original_layout)
+
+    def closeEvent(self, event):
+        if self.original_layout_parent:
+            self.original_layout_parent.setLayout(self.original_layout)
+            self.original_layout_parent.pushButton_popout.setIcon(QIcon("icons/open_in_new.png"))
+            self.original_layout_parent.pushButton_popout.clicked.disconnect()
+            self.original_layout_parent.pushButton_popout.clicked.connect(self.original_layout_parent.popout)
+        super().closeEvent(event)
+
+
 class SheetSettingsTab(QWidget):
     def __init__(self, parent):
         super().__init__(parent)
@@ -158,8 +178,9 @@ class SheetSettingsTab(QWidget):
         self.lineEdit_GALN_name.editingFinished.connect(self.material_cutting_changes)
         self.comboBox_GALN_cut.currentTextChanged.connect(self.material_cutting_changes)
 
-        self.pusbButton_popout = self.findChild(QPushButton, "pushButton_popout")
-        self.pusbButton_popout.clicked.connect(self.popout)
+        self.pushButton_popout = self.findChild(QPushButton, "pushButton_popout")
+        self.pushButton_popout.setStyleSheet("background-color: transparent; border: none;")
+        self.pushButton_popout.clicked.connect(self.popout)
 
         self.load_tabs()
 
@@ -418,21 +439,17 @@ class SheetSettingsTab(QWidget):
             self.load_tabs()
 
     def popout(self):
-        # Create the popout widget and pass the layout you want to pop out
+        self.pushButton_popout.setIcon(QIcon("icons/dock_window.png"))
+        self.pushButton_popout.clicked.disconnect()
         self.popout_widget = PopoutWidget(self.layout(), self.parent)
         self.popout_widget.show()
-
-    def closeEvent(self, event):
-        # Ensure that if the main widget is closed, the popout widget is closed as well
-        if hasattr(self, 'popout_widget') and self.popout_widget.isVisible():
-            self.popout_widget.close()
-        super().closeEvent(event)
+        self.pushButton_popout.clicked.connect(self.popout_widget.close)
 
     def open_group_menu(self, menu: QMenu):
         menu.exec(QCursor.pos())
 
     def sync_changes(self):
-        self.parent.sync_changes()
+        self.parent.sync_changes("sheet_settings_tab")
 
     def clear_layout(self, layout: QVBoxLayout | QWidget):
         with contextlib.suppress(AttributeError):
@@ -444,19 +461,3 @@ class SheetSettingsTab(QWidget):
                         widget.deleteLater()
                     else:
                         self.clear_layout(item.layout())
-
-class PopoutWidget(QWidget):
-    def __init__(self, layout_to_popout: QVBoxLayout, parent=None):
-        super().__init__(parent)
-        self.parent: MainWindow = parent
-        self.original_layout_parent = layout_to_popout.parentWidget()
-        self.original_layout = layout_to_popout
-        self.setWindowFlags(Qt.WindowType.Window)
-        self.setWindowTitle("Sheet Settings")
-        self.setLayout(self.original_layout)
-
-    def closeEvent(self, event):
-        # Restore the layout to the original widget when the popout is closed
-        if self.original_layout_parent:
-            self.original_layout_parent.setLayout(self.original_layout)
-        super().closeEvent(event)

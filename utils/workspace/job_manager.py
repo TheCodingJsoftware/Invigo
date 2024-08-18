@@ -22,5 +22,5 @@ class JobManager:
         self.laser_cut_inventory = laser_cut_inventory
         self.paint_inventory = paint_inventory
 
-    def sync_changes(self):
-        self.parent.sync_changes()
+    def sync_changes(self, tab_name: str):
+        self.parent.sync_changes(tab_name)

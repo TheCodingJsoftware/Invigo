@@ -4,6 +4,7 @@ import os
 from datetime import datetime
 from enum import Enum, auto
 from functools import partial
+from typing import TYPE_CHECKING
 
 from natsort import natsorted
 from PyQt6 import uic
@@ -29,6 +30,8 @@ from utils.quote.quote import Quote
 from utils.settings import Settings
 from utils.sheet_settings.sheet_settings import SheetSettings
 
+if TYPE_CHECKING:
+    from ui.widgets.quote_generator_tab import QuoteGeneratorTab
 
 class PaintSettingsWidget(QWidget):
     settingsChanged = pyqtSignal()
@@ -283,7 +286,7 @@ class QuoteWidget(QWidget):
         super().__init__(parent)
         uic.loadUi("ui/widgets/quote_widget.ui", self)
 
-        self.parent = parent
+        self.parent: QuoteGeneratorTab = parent
         self.quote = quote
         self.components_inventory = components_inventory
         self.laser_cut_inventory = laser_cut_inventory
@@ -1899,7 +1902,7 @@ class QuoteWidget(QWidget):
         menu.exec(QCursor.pos())
 
     def sync_changes(self):
-        self.parent.parent.sync_changes()
+        self.parent.sync_changes()
 
     def clear_layout(self, layout: QVBoxLayout | QWidget):
         with contextlib.suppress(AttributeError):

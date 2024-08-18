@@ -33,11 +33,12 @@ class JobWidget(QWidget):
 
         self.parent: JobTab = parent
         self.job = job
-        self.job_preferences = self.parent.job_preferences
-        self.sheet_settings = self.parent.parent.sheet_settings
-        self.paint_inventory = self.parent.parent.paint_inventory
         self.price_calculator = self.job.price_calculator
-        self.main_window_tab_widget = self.parent.parent.tabWidget
+        self.job_preferences = self.parent.job_preferences
+        self.main_window = self.parent.parent
+        self.sheet_settings = self.main_window.sheet_settings
+        self.paint_inventory = self.main_window.paint_inventory
+        self.main_window_tab_widget = self.main_window.tabWidget
 
         self.assembly_widgets: list[Union[AssemblyPlanningWidget, AssemblyQuotingWidget]] = []
 
@@ -273,7 +274,7 @@ class JobWidget(QWidget):
         self.processes_widget = self.findChild(QWidget, "processes_widget")
         self.processes_widget.setVisible(self.job.status == JobStatus.PLANNING)
 
-        if self.job.status == JobStatus.PLANNING or self.parent.parent.tabWidget.tabText(self.parent.parent.tabWidget.currentIndex()) == "Job Planner":
+        if self.job.status == JobStatus.PLANNING or self.parent.parent.tab_text(self.parent.parent.tabWidget.currentIndex()) == "job_planner_tab":
             self.splitter.setSizes([0, 1])
             # self.quoting_settings_widget.setEnabled(False)
 
@@ -404,9 +405,9 @@ QPushButton:checked:pressed#assembly_button_drop_menu {
         else:
             assembly = new_assembly
 
-        if self.main_window_tab_widget.tabText(self.main_window_tab_widget.currentIndex()) == "Job Planner":
+        if self.main_window.tab_text(self.main_window_tab_widget.currentIndex()) == "job_planner_tab":
             assembly_widget = AssemblyPlanningWidget(assembly, self)
-        elif self.main_window_tab_widget.tabText(self.main_window_tab_widget.currentIndex()) == "Job Quoter":
+        elif self.main_window.tab_text(self.main_window_tab_widget.currentIndex()) == "job_quoter_tab":
             assembly_widget = AssemblyQuotingWidget(assembly, self)
 
         self.assemblies_toolbox.addItem(assembly_widget, assembly.name, assembly.color)
@@ -610,7 +611,7 @@ QPushButton:checked:pressed#assembly_button_drop_menu {
             group_widget.update_tables()
 
     def update_prices(self):
-        if self.main_window_tab_widget.tabText(self.main_window_tab_widget.currentIndex()) == "Job Quoter":
+        if self.main_window.tab_text(self.main_window_tab_widget.currentIndex()) == "job_quoter_tab":
             self.price_calculator.update_laser_cut_parts_cost()
             self.price_calculator.update_laser_cut_parts_to_sheet_price()
             self.label_total_cost_for_parts.setText(f"Total Cost for Parts: ${self.price_calculator.get_job_cost():,.2f}")

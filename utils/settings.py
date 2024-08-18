@@ -50,8 +50,6 @@ class Settings:
             "Quote Generator": True,
             "Sheet Settings": True,
             "Sheets in Inventory": True,
-            "View Price Changes History": True,
-            "View Removed Quantities History": True,
             "Workspace": True
         })
         self.data.setdefault("open_quote_when_generated", True)
@@ -81,27 +79,24 @@ class Settings:
             },
         )
         self.data.setdefault(
-            "menu_tabs_order",
+            "tabs_order",
             [
-                "Components",
-                "Sheets in Inventory",
-                "Laser Cut Inventory",
-                "Quote Generator",
-                "Job Planner",
-                "Job Quoter",
-                "Workspace",
-                "Chat",
-                "View Removed Quantities History",
-                "View Price Changes History",
+                "components_tab",
+                "sheets_in_inventory_tab",
+                "sheet_settings_tab",
+                "laser_cut_inventory_tab",
+                "job_planner_tab",
+                "job_quoter_tab",
+                "quote_generator_tab",
+                "workspace_tab"
             ],
         )
         self.data.setdefault(
             "category_tabs_order",
             {
-                "Components": [],
-                "Sheets in Inventory": [],
-                "Laser Cut Inventory": [],
-                "Workspace": [],
+                "components_tab": [],
+                "sheets_in_inventory_tab": [],
+                "laser_cut_inventory_tab": [],
             },
         )
         self.save_data()

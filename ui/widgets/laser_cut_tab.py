@@ -1,6 +1,7 @@
 import contextlib
 import os
 from datetime import datetime
+from typing import TYPE_CHECKING
 from functools import partial
 
 import sympy
@@ -22,6 +23,8 @@ from utils.sheet_settings.sheet_settings import SheetSettings
 from utils.workspace.assembly import Assembly
 from utils.workspace.job import Job
 
+if TYPE_CHECKING:
+    from ui.windows.main_window import MainWindow
 
 class EditLaserCutPart(QDialog):
     def __init__(self, laser_cut_part: LaserCutPart, parent=None):
@@ -279,11 +282,30 @@ class PaintWidget(QWidget):
         self.parent.parent.parent.sync_changes()
 
 
+class PopoutWidget(QWidget):
+    def __init__(self, layout_to_popout: QVBoxLayout, parent=None):
+        super().__init__(parent)
+        self.parent: MainWindow = parent
+        self.original_layout = layout_to_popout
+        self.original_layout_parent: "LaserCutTab" = self.original_layout.parentWidget()
+        self.setWindowFlags(Qt.WindowType.Window)
+        self.setWindowTitle("Sheets In Inventory Tab")
+        self.setWindowIcon(QIcon.fromTheme("format-justify-left"))
+        self.setLayout(self.original_layout)
+
+    def closeEvent(self, event):
+        if self.original_layout_parent:
+            self.original_layout_parent.setLayout(self.original_layout)
+            self.original_layout_parent.pushButton_popout.setIcon(QIcon("icons/open_in_new.png"))
+            self.original_layout_parent.pushButton_popout.clicked.disconnect()
+            self.original_layout_parent.pushButton_popout.clicked.connect(self.original_layout_parent.popout)
+        super().closeEvent(event)
+
+
 class LaserCutTab(QWidget):
     def __init__(self, parent):
         super().__init__(parent)
         uic.loadUi("ui/widgets/laser_cut_tab.ui", self)
-        from main import MainWindow
 
         self.parent: MainWindow = parent
         self.laser_cut_inventory: LaserCutInventory = self.parent.laser_cut_inventory
@@ -369,6 +391,10 @@ class LaserCutTab(QWidget):
 
         self.pushButton_add_quantity.setIcon(QIcon("icons/list_add.png"))
         self.pushButton_remove_quantity.setIcon(QIcon("icons/list_remove.png"))
+
+        self.pushButton_popout = self.findChild(QPushButton, "pushButton_popout")
+        self.pushButton_popout.setStyleSheet("background-color: transparent; border: none;")
+        self.pushButton_popout.clicked.connect(self.popout)
 
     def add_category(self):
         new_category_name, ok = QInputDialog.getText(self, "New Category", "Enter a name for a category:")
@@ -1138,8 +1164,15 @@ class LaserCutTab(QWidget):
         if scroll_position := self.parent.get_scroll_position(self.category):
             self.category_tables[self.category].verticalScrollBar().setValue(scroll_position)
 
+    def popout(self):
+        self.popout_widget = PopoutWidget(self.layout(), self.parent)
+        self.popout_widget.show()
+        self.pushButton_popout.setIcon(QIcon("icons/dock_window.png"))
+        self.pushButton_popout.clicked.disconnect()
+        self.pushButton_popout.clicked.connect(self.popout_widget.close)
+
     def sync_changes(self):
-        self.parent.sync_changes()
+        self.parent.sync_changes("laser_cut_inventory_tab")
 
     def open_group_menu(self, menu: QMenu):
         menu.exec(QCursor.pos())

@@ -3,7 +3,7 @@ from functools import partial
 from typing import TYPE_CHECKING, Optional
 
 from PyQt6.QtCore import Qt, QTimer, pyqtSignal
-from PyQt6.QtGui import QKeySequence, QShortcut
+from PyQt6.QtGui import QIcon, QKeySequence, QShortcut
 from PyQt6.QtWidgets import QInputDialog, QPushButton, QVBoxLayout, QWidget
 
 from ui.custom.job_tab_widget import JobTabWidget
@@ -14,13 +14,42 @@ if TYPE_CHECKING:
     from ui.windows.main_window import MainWindow
 
 
+class PopoutWidget(QWidget):
+    def __init__(self, tab_data: dict[str, str], layout_to_popout: QVBoxLayout, parent=None):
+        super().__init__(parent)
+        self.parent: MainWindow = parent
+        self.tab_data = tab_data
+
+        self.tab_name = self.tab_data["object_name"]
+        self.tab_icon = self.tab_data["icon"]
+
+        self.original_layout = layout_to_popout
+        self.original_layout_parent: "JobTab" = self.original_layout.parentWidget()
+        self.setWindowFlags(Qt.WindowType.Window)
+        self.setWindowTitle(self.tab_name)
+        self.setWindowIcon(QIcon.fromTheme(self.tab_icon))
+        self.setLayout(self.original_layout)
+
+    def closeEvent(self, event):
+        if self.original_layout_parent:
+            self.original_layout_parent.setLayout(self.original_layout)
+            self.original_layout_parent.pushButton_popout.setIcon(QIcon("icons/open_in_new.png"))
+            self.original_layout_parent.pushButton_popout.clicked.disconnect()
+            self.original_layout_parent.pushButton_popout.clicked.connect(self.original_layout_parent.popout)
+        super().closeEvent(event)
+
+
 class JobTab(QWidget):
     saveJob = pyqtSignal(Job)
     reloadJob = pyqtSignal(JobWidget)
 
-    def __init__(self, parent):
+    def __init__(self, tab_data: dict[str, str], parent):
         super().__init__(parent)
         self.parent: MainWindow = parent
+        self.tab_data = tab_data
+
+        self.tab_name = self.tab_data["object_name"]
+        self.tab_icon = self.tab_data["icon"]
 
         self.job_manager = self.parent.job_manager
         self.job_preferences = self.parent.job_preferences
@@ -190,8 +219,15 @@ class JobTab(QWidget):
         else:
             self.job_tab.setTabsClosable(True)
 
+    def popout(self):
+        self.popout_widget = PopoutWidget(self.tab_data, self.layout(), self.parent)
+        self.popout_widget.show()
+        self.pushButton_popout.setIcon(QIcon("icons/dock_window.png"))
+        self.pushButton_popout.clicked.disconnect()
+        self.pushButton_popout.clicked.connect(self.popout_widget.close)
+
     def sync_changes(self):
-        self.job_manager.sync_changes()
+        self.job_manager.sync_changes(self.tab_name)
 
     def save_current_job(self):
         self.current_job.unsaved_changes = False

@@ -1,8 +1,6 @@
 import contextlib
-import os
-from datetime import datetime
 from functools import partial
-from typing import TYPE_CHECKING, Any, Union
+from typing import TYPE_CHECKING, Union
 
 import sympy
 from PyQt6 import uic
@@ -14,18 +12,30 @@ from ui.custom.filter_button import FilterButton
 from ui.custom.sort_button import SortButton
 from ui.custom.calendar_button import CalendarButton
 from ui.widgets.workspace_widget import WorkspaceWidget
-from utils.inventory.paint_inventory import PaintInventory
-from utils.settings import Settings
-from utils.threads.workspace_get_file_thread import WorkspaceDownloadFile
-from utils.threads.workspace_upload_file_thread import WorkspaceUploadThread
-from utils.trusted_users import get_trusted_users
-from utils.workspace.assembly import Assembly
-from utils.workspace.workspace import Workspace
 from utils.workspace.workspace_filter import SortingMethod
-from utils.workspace.workspace_settings import WorkspaceSettings
 
 if TYPE_CHECKING:
     from ui.windows.main_window import MainWindow
+
+
+class PopoutWidget(QWidget):
+    def __init__(self, layout_to_popout: QVBoxLayout, parent=None):
+        super().__init__(parent)
+        self.parent: MainWindow = parent
+        self.original_layout = layout_to_popout
+        self.original_layout_parent: "WorkspaceTabWidget" = self.original_layout.parentWidget()
+        self.setWindowFlags(Qt.WindowType.Window)
+        self.setWindowTitle("Workspace")
+        self.setWindowIcon(QIcon.fromTheme("emblem-shared"))
+        self.setLayout(self.original_layout)
+
+    def closeEvent(self, event):
+        if self.original_layout_parent:
+            self.original_layout_parent.setLayout(self.original_layout)
+            self.original_layout_parent.pushButton_popout.setIcon(QIcon("icons/open_in_new.png"))
+            self.original_layout_parent.pushButton_popout.clicked.disconnect()
+            self.original_layout_parent.pushButton_popout.clicked.connect(self.original_layout_parent.popout)
+        super().closeEvent(event)
 
 
 class WorkspaceTabWidget(QWidget):
@@ -203,8 +213,15 @@ class WorkspaceTabWidget(QWidget):
         self.workspace_widget.load_parts_table()
         self.workspace_widget.load_assembly_table()
 
+    def popout(self):
+        self.popout_widget = PopoutWidget(self.layout(), self.parent)
+        self.popout_widget.show()
+        self.pushButton_popout.setIcon(QIcon("icons/dock_window.png"))
+        self.pushButton_popout.clicked.disconnect()
+        self.pushButton_popout.clicked.connect(self.popout_widget.close)
+
     def sync_changes(self):
-        self.parent.sync_changes()
+        self.parent.sync_changes("workspace_tab")
 
     def clear_layout(self, layout: Union[QVBoxLayout, QWidget]):
         with contextlib.suppress(AttributeError):
