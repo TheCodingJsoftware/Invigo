@@ -15,7 +15,7 @@ from ui.custom.assembly_paint_settings_widget import AssemblyPaintSettingsWidget
 from ui.custom.assembly_paint_widget import AssemblyPaintWidget
 from ui.custom.components_planning_table_widget import ComponentsPlanningTableWidget, ComponentsTableColumns
 from ui.custom.file_button import FileButton
-from ui.custom.flowtag_data_widget import FlowtagDataWidget
+from ui.custom.flowtag_data_widget import FlowtagDataButton, FlowtagDataWidget
 from ui.custom.laser_cut_part_file_drop_widget import LaserCutPartFileDropWidget
 from ui.custom.laser_cut_part_paint_settings_widget import LasserCutPartPaintSettingsWidget
 from ui.custom.laser_cut_part_paint_widget import LaserCutPartPaintWidget

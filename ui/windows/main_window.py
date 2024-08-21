@@ -100,7 +100,7 @@ from utils.workspace.workspace import Workspace
 from utils.workspace.workspace_laser_cut_part_group import WorkspaceLaserCutPartGroup
 from utils.workspace.workspace_settings import WorkspaceSettings
 
-__version__: str = "v3.5.1"
+__version__: str = "v3.5.2"
 
 
 def check_folders(folders: list[str]):
@@ -2347,22 +2347,22 @@ class MainWindow(QMainWindow):
                 self.paint_inventory.load_data()
 
             # Update relevant tabs
-            if self.tab_text(self.tabWidget.currentIndex()) == "laser_cut_inventory_tab":
+            if self.tab_text(self.tabWidget.currentIndex()) == "laser_cut_inventory_tab" or self.should_update_laser_cut_inventory_tab:
                 self.laser_cut_tab_widget.load_categories()
                 self.laser_cut_tab_widget.restore_last_selected_tab()
                 self.should_update_laser_cut_inventory_tab = False
-            elif self.tab_text(self.tabWidget.currentIndex()) == "sheets_in_inventory_tab":
+            elif self.tab_text(self.tabWidget.currentIndex()) == "sheets_in_inventory_tab" or self.should_update_sheets_in_inventory_tab:
                 self.sheets_inventory_tab_widget.load_categories()
                 self.sheets_inventory_tab_widget.restore_last_selected_tab()
                 self.should_update_sheets_in_inventory_tab = False
-            elif self.tab_text(self.tabWidget.currentIndex()) == "components_tab":
+            elif self.tab_text(self.tabWidget.currentIndex()) == "components_tab" or self.should_update_components_tab:
                 self.components_tab_widget.load_categories()
                 self.components_tab_widget.restore_last_selected_tab()
                 self.should_update_components_tab = False
             elif self.tab_text(self.tabWidget.currentIndex()) == "quote_generator_tab":
                 self.load_saved_quoted_thread()
                 self.load_cuttoff_drop_down()
-            elif self.tab_text(self.tabWidget.currentIndex()) == "workspace_tab":
+            elif self.tab_text(self.tabWidget.currentIndex()) == "workspace_tab" or self.should_update_workspace_tab:
                 self.workspace_tab_widget.load_tags()
                 self.workspace_tab_widget.workspace_widget.load_parts_table()
                 self.workspace_tab_widget.workspace_widget.load_assembly_table()

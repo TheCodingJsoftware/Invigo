@@ -644,15 +644,15 @@ class AssemblyDiv:
         html += "</details>"
         return html
 
-    def get_paint(self, assembly: Assembly) -> str:
+    def get_paint(self) -> str:
         html = '<div class="no-padding small-text">'
-        if assembly.uses_primer and assembly.primer_item:
-            html += f'<div class="row no-margin"><div style="height: 20px; width: 20px; background-color: {assembly.primer_item.color}; border-radius: 5px;"></div>{assembly.primer_item.name}</div>'
-        if assembly.uses_paint and assembly.paint_item:
-            html += f'<div class="row no-margin"><div style="height: 20px; width: 20px; background-color: {assembly.paint_item.color}; border-radius: 5px;"></div>{assembly.paint_item.name}</div>'
-        if assembly.uses_powder and assembly.powder_item:
-            html += f'<div class="row no-margin"><div style="height: 20px; width: 20px; background-color: {assembly.powder_item.color}; border-radius: 5px;"></div>{assembly.powder_item.name}</div>'
-        if not (assembly.uses_primer or assembly.uses_paint or assembly.uses_powder):
+        if self.assembly.uses_primer and self.assembly.primer_item:
+            html += f'<div class="row no-margin"><div style="height: 20px; width: 20px; background-color: {self.assembly.primer_item.color}; border-radius: 5px;"></div>{self.assembly.primer_item.name}</div>'
+        if self.assembly.uses_paint and self.assembly.paint_item:
+            html += f'<div class="row no-margin"><div style="height: 20px; width: 20px; background-color: {self.assembly.paint_item.color}; border-radius: 5px;"></div>{self.assembly.paint_item.name}</div>'
+        if self.assembly.uses_powder and self.assembly.powder_item:
+            html += f'<div class="row no-margin"><div style="height: 20px; width: 20px; background-color: {self.assembly.powder_item.color}; border-radius: 5px;"></div>{self.assembly.powder_item.name}</div>'
+        if not (self.assembly.uses_primer or self.assembly.uses_paint or self.assembly.uses_powder):
             html = ""
         html += "</div>"
         return html
