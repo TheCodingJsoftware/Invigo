@@ -23,6 +23,13 @@ QMenuBar {
 }
 QWidget#drop_down{
     background-color: var(--surface-container);
+    border: 1px solid var(--primary);
+    border-radius: var(--border-radius);
+}
+QFrame#drop_down{
+    background-color: var(--surface-container);
+    border: 1px solid var(--primary);
+    border-radius: var(--border-radius);
 }
 QMenuBar::item {
     padding: 5px;

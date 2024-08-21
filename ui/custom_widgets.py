@@ -1055,7 +1055,7 @@ class CustomTabWidget(QWidget):
 
     def dropEvent(self, event: QDropEvent):
         position: QPoint = event.position().toPoint()
-        button: DraggableButton = event.source()
+        button = event.source()
         if button in self.buttons:
             original_index = self.buttons.index(button)
             for i, btn in enumerate(self.buttons):

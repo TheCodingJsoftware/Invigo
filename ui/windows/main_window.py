@@ -100,7 +100,7 @@ from utils.workspace.workspace import Workspace
 from utils.workspace.workspace_laser_cut_part_group import WorkspaceLaserCutPartGroup
 from utils.workspace.workspace_settings import WorkspaceSettings
 
-__version__: str = "v3.5.3"
+__version__: str = "v3.5.4"
 
 
 def check_folders(folders: list[str]):
@@ -1350,7 +1350,14 @@ class MainWindow(QMainWindow):
                     assembly.timer.start_timer()
 
             self.workspace.save()
+            self.components_inventory.save()
+            self.laser_cut_inventory.save()
             self.upload_files([f"{self.workspace.filename}.json", f"{self.components_inventory.filename}.json", f"{self.laser_cut_inventory.filename}.json"])
+            self.workspace_tab_widget.load_tags()
+            self.workspace_tab_widget.workspace_widget.load_parts_table()
+            self.workspace_tab_widget.workspace_widget.load_assembly_table()
+            with contextlib.suppress(AttributeError):  # There are no visible process tags
+                self.workspace_tab_changed(self.workspace_tab_widget.last_selected_tag_button.text())
 
     def save_quote(self, quote: Quote):
         if quote is None:
@@ -1601,7 +1608,8 @@ class MainWindow(QMainWindow):
 
         self.templates_jobs_multitoolbox.clear()
         self.saved_jobs_multitoolbox.clear()
-        sorted_data = dict(natsorted(data.items(), key=lambda x: x[1]["name"], reverse=True))
+        sorted_data = dict(natsorted(data.items(), key=lambda x: x[1]["type"]))
+        sorted_data = dict(natsorted(data.items(), key=lambda x: x[1]["order_number"], reverse=True))
         for folder_path, file_info in sorted_data.items():
             job_item = SavedPlanningJobItem(file_info, self)
             job_item.load_job.connect(partial(self.load_job_thread, f"saved_jobs/{folder_path}"))
@@ -1616,7 +1624,7 @@ class MainWindow(QMainWindow):
                     job_item.comboBox_job_status,
                 )
             )
-            if file_info["type"] == JobStatus.PLANNING.value:
+            if file_info["type"] != JobStatus.TEMPLATE.value:
                 self.saved_jobs_multitoolbox.addItem(
                     job_item,
                     f'{file_info.get("name")} #{int(file_info.get("order_number", 0))}',
@@ -1639,7 +1647,8 @@ class MainWindow(QMainWindow):
 
         self.templates_jobs_multitoolbox_2.clear()
         self.saved_jobs_multitoolbox_2.clear()
-        sorted_data = dict(natsorted(data.items(), key=lambda x: x[1]["name"], reverse=True))
+        sorted_data = dict(natsorted(data.items(), key=lambda x: x[1]["type"]))
+        sorted_data = dict(natsorted(data.items(), key=lambda x: x[1]["order_number"], reverse=True))
         for folder_path, file_info in sorted_data.items():
             print(folder_path)
             job_item = SavedPlanningJobItem(file_info, self)
@@ -1655,10 +1664,7 @@ class MainWindow(QMainWindow):
                     job_item.comboBox_job_status,
                 )
             )
-            if file_info["type"] in [
-                JobStatus.QUOTED.value,
-                JobStatus.QUOTING.value,
-            ]:
+            if file_info["type"] != JobStatus.TEMPLATE.value:
                 self.saved_jobs_multitoolbox_2.addItem(
                     job_item,
                     f'{file_info.get("name")} #{int(file_info.get("order_number", 0))}',
@@ -2297,7 +2303,7 @@ class MainWindow(QMainWindow):
         upload_thread.start()
 
     def upload_thread_response(self, response: dict, files_uploaded: list[str]):
-        print(response, files_uploaded)
+        print("upload_thread_response", response, files_uploaded)
         if response["status"] == "success":
             self.status_button.setText("Synched", "lime")
 
@@ -2309,6 +2315,7 @@ class MainWindow(QMainWindow):
         download_thread.wait()
 
     def download_thread_response(self, response: dict, files_uploaded: list[str]):
+        print("download_thread_response", response, files_uploaded)
         if not self.finished_downloading_all_files:
             self.download_all_files_finished()
         elif self.downloading_changes and response["status"] == "success":
@@ -2366,6 +2373,8 @@ class MainWindow(QMainWindow):
                 self.workspace_tab_widget.load_tags()
                 self.workspace_tab_widget.workspace_widget.load_parts_table()
                 self.workspace_tab_widget.workspace_widget.load_assembly_table()
+                with contextlib.suppress(AttributeError):  # There are no visible process tags
+                    self.workspace_tab_changed(self.workspace_tab_widget.last_selected_tag_button.text())
                 self.should_update_workspace_tab = False
             self.downloading_changes = False
 
@@ -2655,7 +2664,7 @@ class MainWindow(QMainWindow):
                 <td>{part.name}</td>
                 <td>{part.quantity}</td>
                 <td>{next_process}</td>
-                <td>{part.flowtag.get_name()}</td>
+                <td>{part.flowtag.get_flow_string()}</td>
             </tr>
             """
 

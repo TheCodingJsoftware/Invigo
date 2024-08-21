@@ -57,8 +57,9 @@ body.light {
     --small-padding: 5px;
     --disabled: #8C8C8C;
     --job-planning: #695f00;
-    --job-quoting: #006e1c;
+    --job-quoting: #466e00;
     --job-quoted: #006e1c;
+    --job-quote-confirmed: #006e58;
     --job-template: #8b5000;
     --job-workspace: #0061a4;
     --job-archive: #6f43c0;

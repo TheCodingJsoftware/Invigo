@@ -57,8 +57,9 @@ body.dark {
     --small-padding: 5px;
     --disabled: #8C8C8C;
     --job-planning: #dbc90a;
-    --job-quoting: #78dc77;
-    --job-quoted: #78dc77;
+    --job-quoting: #bcdc77;
+    --job-quoted: #77dc77;
+    --job-quote-confirmed: #77dccd;
     --job-template: #ffb870;
     --job-workspace: #9ecaff;
     --job-archive: #d3bbff;

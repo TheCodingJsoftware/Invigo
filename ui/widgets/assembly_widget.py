@@ -75,7 +75,7 @@ background-color: {theme_var('surface')};
 
         self.expected_time_to_complete_layout = self.findChild(QVBoxLayout, "expected_time_to_complete_layout")
         self.flowtag_data_layout = self.findChild(QVBoxLayout, "flowtag_data_layout")
-        self.groupBox_flowtag_data = self.findChild(QGroupBox, "groupBox_flowtag_data")
+        self.flowtag_data_widget = self.findChild(QWidget, "flowtag_data_widget")
 
         self.image_layout = self.findChild(QVBoxLayout, "image_layout")
         self.doubleSpinBox_quantity = self.findChild(QDoubleSpinBox, "doubleSpinBox_quantity")

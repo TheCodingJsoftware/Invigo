@@ -214,7 +214,7 @@ class LaserCutPartsTable:
             <td class="ui-table-cell-visible">{laser_cut_part.material}</td>
             <td class="ui-table-cell-visible">{laser_cut_part.gauge}</td>
             <td class="ui-table-cell-visible">{laser_cut_part.quantity}</td>
-            <td class="ui-table-cell-{'visible' if self.title == "Workorder" else 'hidden'}">{laser_cut_part.flowtag.get_name()}</td>
+            <td class="ui-table-cell-{'visible' if self.title == "Workorder" else 'hidden'}">{laser_cut_part.flowtag.get_flow_string()}</td>
             <td class="ui-table-cell-{'visible' if self.title == "Workorder" else 'hidden'}">{laser_cut_part.shelf_number}</td>
             <td class="ui-table-cell-{'visible' if self.title == "Quote" else 'hidden'}">${laser_cut_part.price:,.2f}</td>
             <td class="ui-table-cell-{'visible' if self.title == "Quote" else 'hidden'}">${(laser_cut_part.price * laser_cut_part.quantity):,.2f}</td>

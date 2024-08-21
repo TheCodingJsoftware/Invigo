@@ -154,7 +154,7 @@ QPushButton:checked:pressed#assembly_button_drop_menu {{
         self.tableWidget_laser_cut_parts.setItem(current_row, 2, QTableWidgetItem(f"{laser_cut_part.gauge} {laser_cut_part.material}"))
         self.tableWidget_laser_cut_parts.setItem(current_row, 3, QTableWidgetItem("TODO: FILES_WIDGET"))
         self.tableWidget_laser_cut_parts.setItem(current_row, 4, QTableWidgetItem(f"{laser_cut_part.quantity}"))
-        self.tableWidget_laser_cut_parts.setItem(current_row, 5, QTableWidgetItem(f"{laser_cut_part.flowtag.get_name()}"))
+        self.tableWidget_laser_cut_parts.setItem(current_row, 5, QTableWidgetItem(f"{laser_cut_part.flowtag.get_flow_string()}"))
         self.tableWidget_laser_cut_parts.setItem(current_row, 6, QTableWidgetItem("TODO: RECUT_BUTTON"))
         self.tableWidget_laser_cut_parts.setItem(current_row, 7, QTableWidgetItem("TODO: RECOAT_BUTTON"))
 

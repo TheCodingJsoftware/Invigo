@@ -249,7 +249,7 @@ class JobTab(QWidget):
         SAVED_JOB_STYLE = f"background-color: {theme_var('primary-green')}; color: {theme_var('on-primary-green')}; padding: 5px; border-radius: 5px;"
         UNSAVED_JOB_STYLE = f"background-color: {theme_var('primary-yellow')}; color: {theme_var('on-primary-yellow')}; padding: 5px; border-radius: 5px;"
 
-        if job.status == JobStatus.PLANNING:
+        if self.parent.tab_text(self.parent.tabWidget.currentIndex()) == "job_planner_tab":
             if job.unsaved_changes:
                 self.parent.label_job_save_status.setText("You have unsaved changes")
                 self.parent.label_job_save_status.setStyleSheet(UNSAVED_JOB_STYLE)

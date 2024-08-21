@@ -28,3 +28,6 @@ class Tag:
             "attribute": self.attributes.to_dict(),
             "statuses": {status.name: status.to_dict() for status in self.statuses},
         }
+
+    def __str__(self):
+        return f"{self.name}"

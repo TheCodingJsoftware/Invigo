@@ -411,7 +411,7 @@ class LaserCutPartsTable:
                 </button>
             </td>
             <td class="small-text min" data-label="{self.headers[1]}" data-column="1" data-name="material">{laser_cut_part.gauge}<br>{laser_cut_part.material}</td>
-            <td class="small-text" data-label="{self.headers[2]}" data-column="2" data-name="process">{laser_cut_part.flowtag.get_name()}{self.get_paint(laser_cut_part)}</td>
+            <td class="small-text" data-label="{self.headers[2]}" data-column="2" data-name="process">{laser_cut_part.flowtag.get_flow_string()}{self.get_paint(laser_cut_part)}</td>
             <td class="small-text" data-label="{self.headers[3]}" data-column="3" data-name="shelf-#">{laser_cut_part.shelf_number}</td>
             <td class="small-text min" data-label="{self.headers[4]}" data-column="4" data-name="unit-qty">{laser_cut_part.quantity:,.2f}</td>
             <td class="small-text min" data-label="{self.headers[5]}" data-column="5" data-name="qty">{(laser_cut_part.quantity * self.assembly_quantity):,.2f}</td>
@@ -564,7 +564,7 @@ class AssemblyTable:
                     <img src="{self.server_directory}/image/{assembly.assembly_image}" class="assembly_image round">
                     <div class="max">
                         <h6 class="small">{assembly.name}</h6>
-                        <div id="assembly-proess-layout">{assembly.flowtag.get_name()}</div>
+                        <div id="assembly-proess-layout">{assembly.flowtag.get_flow_string()}</div>
                     </div>
                     <h5>× {int(assembly.quantity)}</h5>
                 </a><div class="divider"></div>"""
@@ -598,7 +598,7 @@ class AssemblyDiv:
         html += '<div class="padding">'
         html += f"<h5>{self.assembly.name}</h5>"
         html += f'<p class="small-text">Assembly Quantity: {self.assembly.quantity}</p>'
-        html += f'<p class="small-text">Process: {self.assembly.flowtag.get_name()}</p>'
+        html += f'<p class="small-text">Process: {self.assembly.flowtag.get_flow_string()}</p>'
         html += f'<p class="small-text">Paint: {self.get_paint()}</p>'
         html += "</div>"
         html += "</div>"

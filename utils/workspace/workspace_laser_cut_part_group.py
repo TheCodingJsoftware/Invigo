@@ -39,7 +39,7 @@ class WorkspaceLaserCutPartGroup:
     def get_parts_list(self) -> str:
         text = ""
         for laser_cut_part in self:
-            text += f"{laser_cut_part.name}: {laser_cut_part.flowtag.get_name()}\n"
+            text += f"{laser_cut_part.name}: {laser_cut_part.flowtag.get_flow_string()}\n"
         return text
 
     def mark_as_recoat(self, quantity: Optional[int] = None):

@@ -51,6 +51,7 @@ class Icons:
     folder_icon = None
     sun_icon = None
     moon_icon = None
+    flowtag_data_icon = None
 
     @classmethod
     def load_icons(cls):
@@ -508,6 +509,15 @@ class Icons:
                     "color": theme_var("on-surface"),
                     "color_active": theme_var("primary"),
                     "color_selected": theme_var("on-primary"),
+                }
+            ],
+        )
+        cls.flowtag_data_icon = qta.icon(
+            "ph.sliders-horizontal-fill",
+            options=[
+                {
+                    "color": theme_var("on-primary"),
+                    "color_active": theme_var("on-primary"),
                 }
             ],
         )

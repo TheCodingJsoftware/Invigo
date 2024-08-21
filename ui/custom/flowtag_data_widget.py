@@ -1,6 +1,7 @@
 import contextlib
 from typing import TYPE_CHECKING
 
+from PyQt6.QtCore import Qt
 from PyQt6.QtGui import QIcon
 from PyQt6.QtWidgets import QGridLayout, QLabel, QPushButton, QWidget
 
@@ -16,15 +17,16 @@ if TYPE_CHECKING:
 class FlowtagDataWidget(QWidget):
     def __init__(self, flowtag_data: FlowtagData, parent=None):
         super().__init__(parent)
-        self.parent: AssemblyPlanningWidget = parent
+        self.parent: "AssemblyPlanningWidget" = parent
         self.flowtag_data = flowtag_data
+        self.setWindowFlags(Qt.WindowType.Popup | Qt.WindowType.FramelessWindowHint)
+        self.setObjectName("drop_down")
+
         self.grid_layout = QGridLayout()
         self.grid_layout.setVerticalSpacing(1)
         self.grid_layout.setHorizontalSpacing(0)
-        # self.layout().addWidget(self.widget)
-        self.load_ui()
-        self.setObjectName("drop_down")
         self.setLayout(self.grid_layout)
+        self.load_ui()
 
     def load_ui(self):
         self.clear_layout(self.grid_layout)  # Clear any existing layout
@@ -70,17 +72,22 @@ class FlowtagDataButton(QPushButton):
     def __init__(self, flowtag_data: FlowtagData, parent=None):
         super().__init__("Flow Tag Data", parent)
         self.parent: AssemblyPlanningWidget = parent
-        self.flowtag_data = flowtag_data
-        self.dropdown = FlowtagDataWidget(self.flowtag_data, self.parent)
+        self.dropdown = FlowtagDataWidget(flowtag_data, self.parent)
         self.clicked.connect(self.toggle_dropdown)
 
-        self.setIcon(QIcon(Icons.sheet_settings_icon))
+        self.setIcon(QIcon(Icons.flowtag_data_icon))
         self.setText("Flow Tag Data")
 
     def show_dropdown(self):
         button_rect = self.rect()
-        global_pos = self.mapToGlobal(button_rect.bottomLeft())
-        self.dropdown.move(global_pos)
+        global_pos = self.mapToGlobal(button_rect.topLeft())
+
+        adjusted_x = global_pos.x() + (button_rect.width() / 2) - (self.dropdown.width() / 2)
+        adjusted_y = global_pos.y() + (button_rect.height() / 2) - (self.dropdown.height() / 2)
+
+        self.dropdown.move(int(adjusted_x), int(adjusted_y))
+
+        self.dropdown.adjustSize()
         self.dropdown.show()
 
     def hide_dropdown(self):

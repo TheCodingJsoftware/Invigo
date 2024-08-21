@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>382</width>
-    <height>109</height>
+    <height>119</height>
    </rect>
   </property>
   <property name="maximumSize">
@@ -79,6 +79,11 @@
             <item>
              <property name="text">
               <string>Quoted</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>Quote Confirmed</string>
              </property>
             </item>
             <item>

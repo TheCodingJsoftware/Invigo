@@ -93,7 +93,7 @@ class AssemblyQuotingWidget(AssemblyWidget):
         self.comboBox_assembly_flow_tag.setCurrentText(str(self.assembly.flowtag))
         self.comboBox_assembly_flow_tag.setEnabled(False)
 
-        self.groupBox_flowtag_data.setHidden(True)
+        self.flowtag_data_widget.setHidden(True)
 
         self.laser_cut_parts_table = LaserCutPartsQuotingTableWidget(self)
         self.laser_cut_parts_table.rowChanged.connect(self.laser_cut_parts_table_changed)
@@ -553,9 +553,9 @@ class AssemblyQuotingWidget(AssemblyWidget):
         part_name_item = QTableWidgetItem(laser_cut_part.name)
         part_name_item.setFont(self.tables_font)
         if does_exist_in_inventory:
-            laser_cut_part_inventory_status = f"{laser_cut_part.name} exists in inventory.\nProcess: {laser_cut_part.flowtag.get_name()}"
+            laser_cut_part_inventory_status = f"{laser_cut_part.name} exists in inventory.\nProcess: {laser_cut_part.flowtag.get_flow_string()}"
         else:
-            laser_cut_part_inventory_status = f"{laser_cut_part.name} does NOT exist in inventory.\nProcess: {laser_cut_part.flowtag.get_name()}"
+            laser_cut_part_inventory_status = f"{laser_cut_part.name} does NOT exist in inventory.\nProcess: {laser_cut_part.flowtag.get_flow_string()}"
 
         part_name_item.setToolTip(laser_cut_part_inventory_status)
         self.laser_cut_parts_table.setItem(current_row, LaserCutTableColumns.PART_NAME.value, part_name_item)

@@ -445,6 +445,7 @@ class WorkspaceWidget(QWidget):
         self.check_if_assemblies_are_ready_to_start_timer()
         self.load_parts_table()
         self.workspace.save()
+        self.laser_cut_inventory.save()
         self.sync_changes()
 
     def parts_table_get_selected_rows(self) -> list[int]:
@@ -639,6 +640,7 @@ class WorkspaceWidget(QWidget):
         self.load_assembly_table()
         self.load_parts_table()
         self.workspace.save()
+        self.laser_cut_inventory.save()
         self.sync_changes()
 
     def check_if_assemblies_are_ready_to_start_timer(self):
