@@ -1,4 +1,5 @@
 from typing import override
+
 from utils.workspace.job import Job
 from utils.workspace.job_manager import JobManager
 from utils.workspace.workspace import Workspace

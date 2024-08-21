@@ -12,6 +12,7 @@ class DropDownWidget(QWidget):
         super().__init__()
         self.setWindowFlags(Qt.WindowType.Popup)
         self.setLayout(QVBoxLayout())
+        self.setObjectName("drop_down")
         self.options = options
         self.checkbox_states = {option: False for option in self.options}
 

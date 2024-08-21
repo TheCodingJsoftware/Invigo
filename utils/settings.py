@@ -1,5 +1,5 @@
-import os
 import json
+import os
 from datetime import datetime
 
 
@@ -41,22 +41,21 @@ class Settings:
         self.save_data()
 
     def default_settings(self):
-        self.data.setdefault("tab_visibility", {
-            "Chat": True,
-            "Components": True,
-            "Job Planner": True,
-            "Job Quoter": True,
-            "Laser Cut Inventory": True,
-            "Quote Generator": True,
-            "Sheet Settings": True,
-            "Sheets in Inventory": True,
-            "Workspace": True
-        })
+        self.data.setdefault("tab_visibility", {"Chat": True, "Components": True, "Job Planner": True, "Job Quoter": True, "Laser Cut Inventory": True, "Quote Generator": True, "Sheet Settings": True, "Sheets In Inventory": True, "View Price Changes History": False, "View Removed Quantities History": False, "Workspace": True})
+        self.data.setdefault(
+            "user_workspace_settings",
+            {
+                "view_parts": True,
+                "view_assemblies": True,
+                "visible_process_tags": ["Laser Cutting"],
+            },
+        )
         self.data.setdefault("open_quote_when_generated", True)
         self.data.setdefault("open_workorder_when_generated", True)
         self.data.setdefault("open_packing_slip_when_generated", True)
         self.data.setdefault("exchange_rate", 1.0)
         self.data.setdefault("show_maximized", True)
+        self.data.setdefault("theme", "dark_theme")
         self.data.setdefault("sort_ascending", False)
         self.data.setdefault("sort_descending", True)
         self.data.setdefault("sort_quantity_in_stock", True)
@@ -71,25 +70,11 @@ class Settings:
         self.data.setdefault("quote_nest_directories", [])
         self.data.setdefault(
             "tables_font",
-            {
-                "family": "Segoe UI",
-                "italic": False,
-                "pointSize": 8,
-                "weight": 400
-            },
+            {"family": "Segoe UI", "italic": False, "pointSize": 8, "weight": 400},
         )
         self.data.setdefault(
             "tabs_order",
-            [
-                "components_tab",
-                "sheets_in_inventory_tab",
-                "sheet_settings_tab",
-                "laser_cut_inventory_tab",
-                "job_planner_tab",
-                "job_quoter_tab",
-                "quote_generator_tab",
-                "workspace_tab"
-            ],
+            ["components_tab", "sheets_in_inventory_tab", "sheet_settings_tab", "laser_cut_inventory_tab", "job_planner_tab", "job_quoter_tab", "quote_generator_tab", "workspace_tab"],
         )
         self.data.setdefault(
             "category_tabs_order",

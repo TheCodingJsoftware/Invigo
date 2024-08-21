@@ -1,14 +1,15 @@
 import contextlib
 import os
-from typing import TYPE_CHECKING
 from datetime import datetime
+from typing import TYPE_CHECKING
 
 from PyQt6 import uic
 from PyQt6.QtCore import Qt
 from PyQt6.QtGui import QCursor, QFont, QIcon
-from PyQt6.QtWidgets import QApplication, QAbstractItemView, QComboBox, QDialog, QDoubleSpinBox, QInputDialog, QLineEdit, QListWidget, QMenu, QPushButton, QTableWidget, QTableWidgetItem, QTabWidget, QVBoxLayout, QWidget
+from PyQt6.QtWidgets import QAbstractItemView, QApplication, QComboBox, QDialog, QDoubleSpinBox, QInputDialog, QLineEdit, QListWidget, QMenu, QPushButton, QTableWidget, QTableWidgetItem, QTabWidget, QVBoxLayout, QWidget
 
 from ui.custom_widgets import CustomTableWidget, CustomTabWidget
+from ui.icons import Icons
 from utils.settings import Settings
 from utils.sheet_settings.pounds_per_square_foot import Pound
 from utils.sheet_settings.price_per_pound import Price
@@ -72,13 +73,13 @@ class PopoutWidget(QWidget):
         self.original_layout_parent: "SheetSettingsTab" = self.original_layout.parentWidget()
         self.setWindowFlags(Qt.WindowType.Window)
         self.setWindowTitle("Sheet Settings")
-        self.setWindowIcon(QIcon.fromTheme("document-properties"))
         self.setLayout(self.original_layout)
+        self.setObjectName('popout_widget')
 
     def closeEvent(self, event):
         if self.original_layout_parent:
             self.original_layout_parent.setLayout(self.original_layout)
-            self.original_layout_parent.pushButton_popout.setIcon(QIcon("icons/open_in_new.png"))
+            self.original_layout_parent.pushButton_popout.setIcon(Icons.dock_icon)
             self.original_layout_parent.pushButton_popout.clicked.disconnect()
             self.original_layout_parent.pushButton_popout.clicked.connect(self.original_layout_parent.popout)
         super().closeEvent(event)
@@ -128,11 +129,11 @@ class SheetSettingsTab(QWidget):
 
         self.pushButton_add_material = self.findChild(QPushButton, "pushButton_add_material")
         self.pushButton_add_material.clicked.connect(self.add_material)
-        self.pushButton_add_material.setIcon(QIcon("icons/list_add.png"))
+        self.pushButton_add_material.setIcon(Icons.plus_icon)
 
         self.pushButton_remove_material = self.findChild(QPushButton, "pushButton_remove_material")
         self.pushButton_remove_material.clicked.connect(self.remove_material)
-        self.pushButton_remove_material.setIcon(QIcon("icons/list_remove.png"))
+        self.pushButton_remove_material.setIcon(Icons.minus_icon)
 
         self.thicknesses_list = self.findChild(QListWidget, "thicknesses_list")
         self.thicknesses_list.doubleClicked.connect(self.rename_thickness)
@@ -140,11 +141,11 @@ class SheetSettingsTab(QWidget):
 
         self.pushButton_add_thickness = self.findChild(QPushButton, "pushButton_add_thickness")
         self.pushButton_add_thickness.clicked.connect(self.add_thickness)
-        self.pushButton_add_thickness.setIcon(QIcon("icons/list_add.png"))
+        self.pushButton_add_thickness.setIcon(Icons.plus_icon)
 
         self.pushButton_remove_thickness = self.findChild(QPushButton, "pushButton_remove_thickness")
         self.pushButton_remove_thickness.clicked.connect(self.remove_thickness)
-        self.pushButton_remove_thickness.setIcon(QIcon("icons/list_remove.png"))
+        self.pushButton_remove_thickness.setIcon(Icons.minus_icon)
 
         self.tableWidget_thickness_id = self.findChild(QTableWidget, "tableWidget_thickness_id")
 
@@ -181,6 +182,7 @@ class SheetSettingsTab(QWidget):
         self.pushButton_popout = self.findChild(QPushButton, "pushButton_popout")
         self.pushButton_popout.setStyleSheet("background-color: transparent; border: none;")
         self.pushButton_popout.clicked.connect(self.popout)
+        self.pushButton_popout.setIcon(Icons.dock_icon)
 
         self.load_tabs()
 
@@ -439,10 +441,10 @@ class SheetSettingsTab(QWidget):
             self.load_tabs()
 
     def popout(self):
-        self.pushButton_popout.setIcon(QIcon("icons/dock_window.png"))
-        self.pushButton_popout.clicked.disconnect()
         self.popout_widget = PopoutWidget(self.layout(), self.parent)
         self.popout_widget.show()
+        self.pushButton_popout.setIcon(Icons.redock_icon)
+        self.pushButton_popout.clicked.disconnect()
         self.pushButton_popout.clicked.connect(self.popout_widget.close)
 
     def open_group_menu(self, menu: QMenu):

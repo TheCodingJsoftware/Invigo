@@ -1,8 +1,12 @@
 from datetime import datetime
 
+import qtawesome as qta
 from PyQt6 import uic
 from PyQt6.QtCore import pyqtSignal
 from PyQt6.QtWidgets import QComboBox, QLabel, QPushButton, QWidget
+
+from ui.icons import Icons
+from ui.theme import theme_var
 
 
 class SavedPlanningJobItem(QWidget):
@@ -18,11 +22,24 @@ class SavedPlanningJobItem(QWidget):
         modified_date = datetime.fromtimestamp(file_info.get("modified_date")).strftime("%A, %B %d, %Y, %I:%M:%S %p")
         job_type = file_info.get("type", 0)
 
+        printer_icon = qta.icon(
+            "ph.printer-fill",
+            options=[
+                {
+                    "color": theme_var("on-surface"),
+                    "color_active": theme_var("primary"),
+                }
+            ],
+        )
+
         self.comboBox_job_status = self.findChild(QComboBox, "comboBox_job_status")
         self.pushButton_load_job = self.findChild(QPushButton, "pushButton_load_job")
         self.label_modified_date = self.findChild(QLabel, "label_modified_date")
         self.pushButton_open_in_browser = self.findChild(QPushButton, "pushButton_open_in_browser")
+        self.pushButton_open_in_browser.setIcon(printer_icon)
         self.pushButton_delete = self.findChild(QPushButton, "pushButton_delete")
+        self.pushButton_delete.setIcon(Icons.delete_icon)
+        self.pushButton_delete.setObjectName("delete_button")
 
         self.comboBox_job_status.wheelEvent = lambda event: None
         self.comboBox_job_status.setCurrentIndex(job_type - 1)
@@ -31,6 +48,7 @@ class SavedPlanningJobItem(QWidget):
         self.label_modified_date.setText(f"Modified: {modified_date}")
 
         self.pushButton_load_job.clicked.connect(self.load_job.emit)
+        self.pushButton_load_job.setObjectName("load_job")
 
         self.pushButton_open_in_browser.clicked.connect(self.open_webpage.emit)
 

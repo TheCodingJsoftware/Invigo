@@ -3,14 +3,14 @@ from typing import TYPE_CHECKING
 from PyQt6 import uic
 from PyQt6.QtCore import Qt
 from PyQt6.QtGui import QIcon, QPixmap
-from PyQt6.QtWidgets import QDialog, QTableWidgetItem, QWidget, QTableWidget, QPushButton, QLabel
+from PyQt6.QtWidgets import QDialog, QLabel, QPushButton, QTableWidget, QTableWidgetItem, QWidget
 
+from ui.theme import theme_var
 from utils.colors import darken_color, lighten_color
-from utils.workspace.workspace import Workspace
-from utils.workspace.assembly import Assembly
 from utils.inventory.component import Component
 from utils.inventory.laser_cut_part import LaserCutPart
-
+from utils.workspace.assembly import Assembly
+from utils.workspace.workspace import Workspace
 
 if TYPE_CHECKING:
     from ui.windows.main_window import MainWindow
@@ -43,62 +43,60 @@ class ViewAssemblyDialog(QDialog):
     def apply_stylesheet_to_toggle_buttons(self, button: QPushButton, widget: QWidget):
         base_color = self.assembly.color
         hover_color: str = lighten_color(base_color)
-        pressed_color: str = darken_color(base_color)
         button.setObjectName("assembly_button_drop_menu")
         button.setStyleSheet(
-            """
-QPushButton#assembly_button_drop_menu {
-    border: 1px solid rgba(71, 71, 71, 110);
-    background-color: rgba(71, 71, 71, 110);
-    border-top-left-radius: 5px;
-    border-top-right-radius: 5px;
-    border-bottom-left-radius: 5px;
-    border-bottom-right-radius: 5px;
-    color: #EAE9FC;
+            f"""
+QPushButton#assembly_button_drop_menu {{
+    border: 1px solid {theme_var('surface')};
+    background-color: {theme_var('surface')};
+    border-radius: {theme_var('border-radius')};
+    color: {theme_var('on-surface')};
     text-align: left;
-}
+}}
 
-QPushButton:hover#assembly_button_drop_menu {
-    background-color: rgba(76, 76, 76, 110);
-    border: 1px solid %(base_color)s;
-}
+QPushButton:hover#assembly_button_drop_menu {{
+    background-color: {theme_var('outline-variant')};
+    border: 1px solid{theme_var('outline')};
+    color: %(base_color)s;
+}}
 
-QPushButton:pressed#assembly_button_drop_menu {
+QPushButton:pressed#assembly_button_drop_menu {{
     background-color: %(base_color)s;
-    color: #EAE9FC;
-}
+    color: {theme_var('surface')};
+}}
 
-QPushButton:!checked#assembly_button_drop_menu {
-    color: #8C8C8C;
-}
+QPushButton:!checked#assembly_button_drop_menu {{
+    color: {theme_var('on-surface')};
+    border: 1px solid {theme_var('outline')};
+}}
 
-QPushButton:!checked:pressed#assembly_button_drop_menu {
-    color: #EAE9FC;
-}
+QPushButton:!checked:pressed#assembly_button_drop_menu {{
+    color: {theme_var('surface')};
+}}
 
-QPushButton:checked#assembly_button_drop_menu {
-    color: #EAE9FC;
+QPushButton:checked#assembly_button_drop_menu {{
+    color: {theme_var('surface')};
     border-color: %(base_color)s;
     background-color: %(base_color)s;
-    border-top-left-radius: 5px;
-    border-top-right-radius: 5px;
+    border-top-left-radius: {theme_var('border-radius')};
+    border-top-right-radius: {theme_var('border-radius')};
     border-bottom-left-radius: 0px;
     border-bottom-right-radius: 0px;
-}
+}}
 
-QPushButton:checked:hover#assembly_button_drop_menu {
+QPushButton:checked:hover#assembly_button_drop_menu {{
     background-color: %(hover_color)s;
-}
+}}
 
-QPushButton:checked:pressed#assembly_button_drop_menu {
-    color: #EAE9FC;
+QPushButton:checked:pressed#assembly_button_drop_menu {{
+    color: {theme_var('surface')};
     background-color: %(pressed_color)s;
-}
+}}
 """
             % {
                 "base_color": base_color,
                 "hover_color": hover_color,
-                "pressed_color": pressed_color,
+                "pressed_color": base_color,
             }
         )
         widget.setObjectName("assembly_widget_drop_menu")

@@ -48,13 +48,13 @@ class Workspace:
                 new_assembly = Assembly({}, parent if isinstance(parent, Job) else parent.job)
                 new_assembly.load_settings(assembly.to_dict())
 
-                parent_starting_date = datetime.strptime(parent.starting_date, '%Y-%m-%d %I:%M %p')
+                parent_starting_date = datetime.strptime(parent.starting_date, "%Y-%m-%d %I:%M %p")
 
                 calculated_starting_date = parent_starting_date - timedelta(days=7.0)
                 calculated_ending_date = calculated_starting_date + timedelta(days=assembly.expected_time_to_complete)
 
-                new_assembly.starting_date = calculated_starting_date.strftime('%Y-%m-%d %I:%M %p')
-                new_assembly.ending_date = calculated_ending_date.strftime('%Y-%m-%d %I:%M %p')
+                new_assembly.starting_date = calculated_starting_date.strftime("%Y-%m-%d %I:%M %p")
+                new_assembly.ending_date = calculated_ending_date.strftime("%Y-%m-%d %I:%M %p")
 
                 new_assembly.quantity = 1
 

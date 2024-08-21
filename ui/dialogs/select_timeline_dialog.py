@@ -4,6 +4,8 @@ from PyQt6.QtGui import QColor, QIcon, QTextCharFormat
 from PyQt6.QtSvgWidgets import QSvgWidget
 from PyQt6.QtWidgets import QCalendarWidget, QDialog
 
+from ui.theme import theme_var
+
 
 class SelectTimeLineDialog(QDialog):
     def __init__(
@@ -101,7 +103,7 @@ class SelectTimeLineDialog(QDialog):
 
     def highlight_selection(self, calendar: QCalendarWidget):
         highlight_format = QTextCharFormat()
-        highlight_format.setBackground(QColor("#3daee9"))
+        highlight_format.setBackground(QColor(theme_var("primary")))
         highlight_format.setForeground(QColor("white"))
 
         calendar.setDateTextFormat(QDate(), QTextCharFormat())

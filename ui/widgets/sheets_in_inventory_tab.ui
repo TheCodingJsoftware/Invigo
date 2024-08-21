@@ -259,27 +259,7 @@
             <string>Create a new item</string>
            </property>
            <property name="styleSheet">
-            <string notr="true">QPushButton#pushButton_add_new_sheet{
-    color: #171717;
-	background-color: #3daee9;
-	border: 1px solid #3daee9;
-	border-radius: 5px;
-	padding: 8px 16px;
-	font-weight: bold;
-}
-QPushButton#pushButton_add_new_sheet:hover{
-	background-color: #48b6ed;
-	border-color: #48b6ed;
-}
-QPushButton#pushButton_add_new_sheet:pressed{
-	background-color: #2b92c5;
-}
-QPushButton#pushButton_add_new_sheet:disabled{
-	background-color: rgba(44, 44, 44, 130);
-	border: 1px solid rgba(57, 57, 57, 130);
-	color: rgb(144, 144, 144);
-	border-radius: 4px;
-}</string>
+            <string notr="true"/>
            </property>
            <property name="text">
             <string>Add New Sheet to Inventory</string>
@@ -288,10 +268,7 @@ QPushButton#pushButton_add_new_sheet:disabled{
             <bool>false</bool>
            </property>
            <property name="default">
-            <bool>false</bool>
-           </property>
-           <property name="flat">
-            <bool>false</bool>
+            <bool>true</bool>
            </property>
           </widget>
          </item>

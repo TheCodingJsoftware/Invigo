@@ -17,6 +17,7 @@ from ui.custom_widgets import ClickableLabel, CustomTableWidget, MachineCutTimeS
 from ui.dialogs.add_component_dialog import AddComponentDialog
 from ui.dialogs.add_laser_cut_part_dialog import AddLaserCutPartDialog
 from ui.dialogs.add_sheet_dialog import AddSheetDialog
+from ui.theme import theme_var
 from ui.windows.image_viewer import QImageViewer
 from utils.calulations import calculate_overhead
 from utils.inventory.component import Component
@@ -32,6 +33,7 @@ from utils.sheet_settings.sheet_settings import SheetSettings
 
 if TYPE_CHECKING:
     from ui.widgets.quote_generator_tab import QuoteGeneratorTab
+
 
 class PaintSettingsWidget(QWidget):
     settingsChanged = pyqtSignal()
@@ -924,7 +926,7 @@ class QuoteWidget(QWidget):
         for i, (sheet_name, sheet_data) in enumerate(sorted_summary.items(), start=1):
             label_sheet_name = QLabel(sheet_name, self)
             if "x" not in sheet_name:
-                label_sheet_name.setStyleSheet("border-top: 1px solid #8C8C8C; border-bottom: 1px solid #8C8C8C")
+                label_sheet_name.setStyleSheet(f"border-top: 1px solid {theme_var('outline')}; border-bottom: 1px solid {theme_var('outline')}")
             self.gridLayout_nest_summary_2.addWidget(label_sheet_name, i + 1, 0)
 
             if "x" not in sheet_name:
@@ -932,7 +934,7 @@ class QuoteWidget(QWidget):
             else:
                 label_sheet_count = QLabel(str(sheet_data["total_sheet_count"]), self)
             if "x" not in sheet_name:
-                label_sheet_count.setStyleSheet("border-top: 1px solid #8C8C8C; border-bottom: 1px solid #8C8C8C")
+                label_sheet_count.setStyleSheet(f"border-top: 1px solid {theme_var('outline')}; border-bottom: 1px solid {theme_var('outline')}")
             self.gridLayout_nest_summary_2.addWidget(label_sheet_count, i + 1, 1)
 
             total_seconds = sheet_data["total_seconds"]
@@ -949,7 +951,7 @@ class QuoteWidget(QWidget):
             else:
                 label_sheet_cuttime = QLabel(total_seconds_string, self)
             if "x" not in sheet_name:
-                label_sheet_cuttime.setStyleSheet("border-top: 1px solid #8C8C8C; border-bottom: 1px solid #8C8C8C")
+                label_sheet_cuttime.setStyleSheet(f"border-top: 1px solid {theme_var('outline')}; border-bottom: 1px solid {theme_var('outline')}")
             self.gridLayout_nest_summary_2.addWidget(label_sheet_cuttime, i + 1, 2)
 
     def open_image(self, path: str, title: str):
@@ -1204,7 +1206,7 @@ class QuoteWidget(QWidget):
             item.setFont(font)
             self.laser_cut_table_widget.setItem(row_index, 0, item)
             self.laser_cut_table_widget.setSpan(row_index, 0, 1, self.laser_cut_table_widget.columnCount())
-            self.set_table_row_color(self.laser_cut_table_widget, row_index, "#141414")
+            self.set_table_row_color(self.laser_cut_table_widget, row_index, f"{theme_var('background')}")
             row_index += 1
             for laser_cut_part in nest.laser_cut_parts:
                 self.laser_cut_table_items.update({laser_cut_part: {"nest": nest}})
@@ -1417,7 +1419,7 @@ class QuoteWidget(QWidget):
                 )
 
                 if not does_part_exist:
-                    self.set_table_row_color(self.laser_cut_table_widget, row_index, "#3F1E25")
+                    self.set_table_row_color(self.laser_cut_table_widget, row_index, f"{theme_var('table-red-quantity')}")
                 row_index += 1
         self.laser_cut_table_widget.resizeColumnsToContents()
         self.laser_cut_table_widget.cellChanged.connect(self.update_laser_cut_parts_price)

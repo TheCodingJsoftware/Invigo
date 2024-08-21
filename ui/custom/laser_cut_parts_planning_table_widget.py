@@ -7,7 +7,8 @@ from ui.custom_widgets import CustomTableWidget
 
 
 class AutoNumber(Enum):
-    '''Starts at 1 and not 0'''
+    """Starts at 1 and not 0"""
+
     def _generate_next_value_(name, start, count, last_values):
         return count
 

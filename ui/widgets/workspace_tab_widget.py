@@ -8,10 +8,13 @@ from PyQt6.QtCore import QDate, Qt, pyqtSignal
 from PyQt6.QtGui import QAction, QCursor, QFont, QIcon
 from PyQt6.QtWidgets import QAbstractItemView, QComboBox, QCompleter, QGridLayout, QGroupBox, QHBoxLayout, QInputDialog, QLabel, QLineEdit, QMenu, QMessageBox, QPushButton, QScrollArea, QSplitter, QTableWidgetItem, QTabWidget, QVBoxLayout, QWidget
 
+from ui.custom.calendar_button import CalendarButton
 from ui.custom.filter_button import FilterButton
 from ui.custom.sort_button import SortButton
-from ui.custom.calendar_button import CalendarButton
+from ui.custom_widgets import TabButton
+from ui.icons import Icons
 from ui.widgets.workspace_widget import WorkspaceWidget
+from utils.settings import Settings
 from utils.workspace.workspace_filter import SortingMethod
 
 if TYPE_CHECKING:
@@ -26,8 +29,8 @@ class PopoutWidget(QWidget):
         self.original_layout_parent: "WorkspaceTabWidget" = self.original_layout.parentWidget()
         self.setWindowFlags(Qt.WindowType.Window)
         self.setWindowTitle("Workspace")
-        self.setWindowIcon(QIcon.fromTheme("emblem-shared"))
         self.setLayout(self.original_layout)
+        self.setObjectName('popout_widget')
 
     def closeEvent(self, event):
         if self.original_layout_parent:
@@ -48,15 +51,17 @@ class WorkspaceTabWidget(QWidget):
         super().__init__(parent)
         uic.loadUi("ui/widgets/workspace_tab_widget.ui", self)
         self.parent: MainWindow = parent
+
         self.workspace = self.parent.workspace
         self.workspace_settings = self.parent.workspace_settings
         self.sheet_settings = self.parent.sheet_settings
         self.paint_inventory = self.parent.paint_inventory
+        self.settings_file = Settings()
 
         self.workspace_filter = self.workspace.workspace_filter
 
-        self.tag_buttons: list[QPushButton] = []
-        self.last_selected_tag_button: QPushButton = None
+        self.tag_buttons: list[TabButton] = []
+        self.last_selected_tag_button: TabButton = None
         self.has_searched = True
 
         self.load_ui()
@@ -65,11 +70,18 @@ class WorkspaceTabWidget(QWidget):
         self.tags_layout = self.findChild(QHBoxLayout, "tags_layout")
         self.workspace_layout = self.findChild(QVBoxLayout, "workspace_layout")
 
+        view_parts = self.settings_file.get_value("user_workspace_settings").get("view_parts", True)
+        view_assemblies = self.settings_file.get_value("user_workspace_settings").get("view_assemblies", True)
+
         self.pushButton_view_parts = self.findChild(QPushButton, "pushButton_view_parts")
         self.pushButton_view_parts.clicked.connect(self.view_parts_table)
+        self.pushButton_view_parts.setVisible(view_parts)
+        self.pushButton_view_parts.setChecked(True if view_parts and not view_assemblies else False)
 
         self.pushButton_view_assemblies = self.findChild(QPushButton, "pushButton_view_assemblies")
         self.pushButton_view_assemblies.clicked.connect(self.view_assemblies_table)
+        self.pushButton_view_assemblies.setVisible(view_assemblies)
+        self.pushButton_view_assemblies.setChecked(True if view_assemblies and not view_parts else False)
 
         self.pushButton_search = self.findChild(QPushButton, "pushButton_search")
         self.pushButton_search.clicked.connect(self.search_pressed)
@@ -115,15 +127,25 @@ class WorkspaceTabWidget(QWidget):
 
         self.workspace_widget.view_assemblies_table()
 
+    def user_workspace_settings_changed(self):
+        self.settings_file.load_data()
+        view_parts = self.settings_file.get_value("user_workspace_settings").get("view_parts", True)
+        view_assemblies = self.settings_file.get_value("user_workspace_settings").get("view_assemblies", True)
+
+        self.pushButton_view_parts.setVisible(view_parts)
+        self.pushButton_view_assemblies.setVisible(view_assemblies)
+        self.load_tags()
+        self.tag_buttons[0].setChecked(True)
+        self.tag_button_pressed(self.tag_buttons[0])
+
     def load_tags(self):
-        font = QFont()
-        font.setBold(True)
         self.clear_layout(self.tags_layout)
         self.tag_buttons.clear()
+        selected_tags = self.settings_file.get_value("user_workspace_settings").get("visible_process_tags", [])
         for tag in self.workspace_settings.get_all_tags():
-            tag_button = QPushButton(tag, self)
-            tag_button.setFont(font)
-            tag_button.setCheckable(True)
+            if tag not in selected_tags:
+                continue
+            tag_button = TabButton(tag, self)
             tag_button.clicked.connect(partial(self.tag_button_pressed, tag_button))
             self.tags_layout.addWidget(tag_button)
             self.tag_buttons.append(tag_button)
@@ -135,18 +157,22 @@ class WorkspaceTabWidget(QWidget):
         self.clear_layout(self.menu_buttons_layout)
 
         self.materials_menu_button = FilterButton("Materials", self.sheet_settings.get_materials())
+        self.materials_menu_button.setIcon(Icons.filter_icon)
         self.materials_menu_button.checkbox_states_changed.connect(self.filter_button_changed)
         self.workspace_filter.material_filter = self.materials_menu_button.dropdown.checkbox_states
 
         self.thickness_menu_button = FilterButton("Thicknesses", self.sheet_settings.get_thicknesses())
+        self.thickness_menu_button.setIcon(Icons.filter_icon)
         self.thickness_menu_button.checkbox_states_changed.connect(self.filter_button_changed)
         self.workspace_filter.thickness_filter = self.thickness_menu_button.dropdown.checkbox_states
 
         self.paint_menu_button = FilterButton("Paint", self.paint_inventory.get_all_paints() + self.paint_inventory.get_all_primers() + self.paint_inventory.get_all_powders())
+        self.paint_menu_button.setIcon(Icons.filter_icon)
         self.paint_menu_button.checkbox_states_changed.connect(self.filter_button_changed)
         self.workspace_filter.paint_filter = self.paint_menu_button.dropdown.checkbox_states
 
         self.calendar_button = CalendarButton("Date Range")
+        self.calendar_button.setIcon(Icons.date_range_icon)
         self.calendar_button.date_range_changed.connect(self.date_range_changed)
         self.calendar_button.date_range_toggled.connect(self.date_range_toggled)
         self.workspace_filter.date_range = (QDate().currentDate(), None)
@@ -174,6 +200,7 @@ class WorkspaceTabWidget(QWidget):
         self.clear_layout(self.sort_layout)
 
         self.sort_button = SortButton()
+        self.sort_button.setIcon(Icons.sort_fill_icon)
         self.sort_button.sorting_method_selected.connect(self.sort)
         self.sort_layout.addWidget(self.sort_button)
 

@@ -1,14 +1,17 @@
+import os
+import subprocess
+import sys
 from functools import partial
+
 from natsort import natsorted
 from PyQt6 import uic
-from PyQt6.QtCore import Qt, QUrl, QMarginsF, QEventLoop, QObject, QPointF
+from PyQt6.QtCore import QEventLoop, QMarginsF, QObject, QPointF, Qt, QUrl
 from PyQt6.QtGui import QPainter
+from PyQt6.QtPrintSupport import QPrintDialog, QPrinter, QPrintPreviewDialog
 from PyQt6.QtWebEngineWidgets import QWebEngineView
-from PyQt6.QtWidgets import QMainWindow, QMessageBox, QPushButton, QSplitter, QVBoxLayout, QApplication
-from PyQt6.QtPrintSupport import QPrinter, QPrintDialog, QPrintPreviewDialog
-from utils.threads.workspace_get_file_thread import WorkspaceDownloadFile
+from PyQt6.QtWidgets import QApplication, QMainWindow, QMessageBox, QPushButton, QSplitter, QVBoxLayout
 
-import subprocess, sys, os
+from utils.threads.workspace_get_file_thread import WorkspaceDownloadFile
 
 
 class PDFViewer(QMainWindow):

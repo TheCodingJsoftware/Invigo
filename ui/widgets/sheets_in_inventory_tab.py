@@ -16,6 +16,8 @@ from ui.dialogs.edit_category_dialog import EditCategoryDialog
 from ui.dialogs.set_component_order_pending_dialog import SetComponentOrderPendingDialog
 from ui.dialogs.set_custom_limit_dialog import SetCustomLimitDialog
 from ui.dialogs.update_component_order_pending_dialog import UpdateComponentOrderPendingDialog
+from ui.icons import Icons
+from ui.theme import theme_var
 from utils.inventory.category import Category
 from utils.inventory.order import Order
 from utils.inventory.sheet import Sheet
@@ -65,6 +67,7 @@ class SheetsTabWidget(CustomTabWidget):
 class OrderWidget(QWidget):
     orderOpened = pyqtSignal()
     orderClosed = pyqtSignal()
+
     def __init__(self, sheet: Sheet, parent: "SheetsInInventoryTab"):
         super().__init__(parent)
         self.parent: "SheetsInInventoryTab" = parent
@@ -198,13 +201,13 @@ class PopoutWidget(QWidget):
         self.original_layout_parent: "SheetsInInventoryTab" = self.original_layout.parentWidget()
         self.setWindowFlags(Qt.WindowType.Window)
         self.setWindowTitle("Sheets In Inventory Tab")
-        self.setWindowIcon(QIcon.fromTheme("format-justify-left"))
         self.setLayout(self.original_layout)
+        self.setObjectName('popout_widget')
 
     def closeEvent(self, event):
         if self.original_layout_parent:
             self.original_layout_parent.setLayout(self.original_layout)
-            self.original_layout_parent.pushButton_popout.setIcon(QIcon("icons/open_in_new.png"))
+            self.original_layout_parent.pushButton_popout.setIcon(Icons.dock_icon)
             self.original_layout_parent.pushButton_popout.clicked.disconnect()
             self.original_layout_parent.pushButton_popout.clicked.connect(self.original_layout_parent.popout)
         super().closeEvent(event)
@@ -244,8 +247,11 @@ class SheetsInInventoryTab(QWidget):
         self.tables_font.setItalic(settings_file.get_value("tables_font")["italic"])
 
         self.gridLayout_sheet_prices = self.findChild(QGridLayout, "gridLayout_sheet_prices")
+
         self.pushButton_add_new_sheet = self.findChild(QPushButton, "pushButton_add_new_sheet")
         self.pushButton_add_new_sheet.clicked.connect(self.add_sheet)
+        self.pushButton_add_new_sheet.setIcon(Icons.plus_circle_icon)
+
         self.verticalLayout_10 = self.findChild(QVBoxLayout, "verticalLayout_10")
         self.verticalLayout_10.addWidget(self.tab_widget)
         self.checkBox_edit_sheets = self.findChild(QCheckBox, "checkBox_edit_sheets")
@@ -254,6 +260,7 @@ class SheetsInInventoryTab(QWidget):
         self.pushButton_popout = self.findChild(QPushButton, "pushButton_popout")
         self.pushButton_popout.setStyleSheet("background-color: transparent; border: none;")
         self.pushButton_popout.clicked.connect(self.popout)
+        self.pushButton_popout.setIcon(Icons.dock_icon)
 
     def add_category(self):
         new_category_name, ok = QInputDialog.getText(self, "New Category", "Enter a name for a category:")
@@ -376,7 +383,7 @@ class SheetsInInventoryTab(QWidget):
             group_table_item.setFont(font)
             current_table.setItem(row_index, 0, group_table_item)
             current_table.setSpan(row_index, 0, 1, current_table.columnCount())
-            self.set_table_row_color(current_table, row_index, "#141414")
+            self.set_table_row_color(current_table, row_index, f"{theme_var('background')}")
             row_index += 1
 
             for sheet in self.sheets_inventory.get_sheets_by_category(self.category):
@@ -647,10 +654,10 @@ class SheetsInInventoryTab(QWidget):
             grand_total += category_total
             i += 1
         lbl = QLabel("Total:", self)
-        lbl.setStyleSheet("border-top: 1px solid #8C8C8C; border-bottom: 1px solid #8C8C8C")
+        lbl.setStyleSheet(f"border-top: 1px solid {theme_var('outline')}; border-bottom: 1px solid {theme_var('outline')}")
         self.gridLayout_sheet_prices.addWidget(lbl, i + 1, 0)
         lbl = QLabel(f"${grand_total:,.2f}", self)
-        lbl.setStyleSheet("border-top: 1px solid #8C8C8C; border-bottom: 1px solid #8C8C8C")
+        lbl.setStyleSheet(f"border-top: 1px solid {theme_var('outline')}; border-bottom: 1px solid {theme_var('outline')}")
         self.gridLayout_sheet_prices.addWidget(lbl, i + 1, 1)
 
     def select_last_selected_item(self):
@@ -713,19 +720,19 @@ class SheetsInInventoryTab(QWidget):
                 <td>{sheet.latest_change_quantity.replace("\n", "<br>")}</td>
                 </tr>"""
             html += "</tbody></table><body><html>"
-        with open("print_selected_parts.html", "w", encoding="utf-8") as f:
-            f.write(html)
-        self.parent.open_print_selected_parts()
+            with open("print_selected_parts.html", "w", encoding="utf-8") as f:
+                f.write(html)
+            self.parent.open_print_selected_parts()
 
     def update_sheet_row_color(self, table, sheet: Sheet):
         if sheet.orders:
-            self.set_table_row_color(table, self.table_sheets_widgets[sheet]["row"], "#29422c")
+            self.set_table_row_color(table, self.table_sheets_widgets[sheet]["row"], f"{theme_var('table-order-pending')}")
         elif sheet.quantity <= sheet.red_quantity_limit:
-            self.set_table_row_color(table, self.table_sheets_widgets[sheet]["row"], "#3F1E25")
+            self.set_table_row_color(table, self.table_sheets_widgets[sheet]["row"], f"{theme_var('table-red-quantity')}")
         elif sheet.quantity <= sheet.yellow_quantity_limit:
-            self.set_table_row_color(table, self.table_sheets_widgets[sheet]["row"], "#413C28")
+            self.set_table_row_color(table, self.table_sheets_widgets[sheet]["row"], f"{theme_var('table-yellow-quantity')}")
         else:
-            self.set_table_row_color(table, self.table_sheets_widgets[sheet]["row"], "#141414")
+            self.set_table_row_color(table, self.table_sheets_widgets[sheet]["row"], f"{theme_var('background')}")
 
     def set_table_row_color(self, table: SheetsTableWidget, row_index: int, color: str):
         for j in range(table.columnCount()):
@@ -766,7 +773,7 @@ class SheetsInInventoryTab(QWidget):
     def popout(self):
         self.popout_widget = PopoutWidget(self.layout(), self.parent)
         self.popout_widget.show()
-        self.pushButton_popout.setIcon(QIcon("icons/dock_window.png"))
+        self.pushButton_popout.setIcon(Icons.redock_icon)
         self.pushButton_popout.clicked.disconnect()
         self.pushButton_popout.clicked.connect(self.popout_widget.close)
 

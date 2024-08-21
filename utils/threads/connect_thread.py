@@ -19,10 +19,7 @@ class ConnectThread(QThread):
         self.client_name = os.getlogin()
 
     def run(self):
-        payload = {
-            "client_name": self.client_name,
-            "version": self.version
-        }
+        payload = {"client_name": self.client_name, "version": self.version}
         try:
             response = requests.post(self.url, json=payload, timeout=10)
             response.raise_for_status()

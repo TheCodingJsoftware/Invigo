@@ -14,6 +14,7 @@ class DropDownWidget(QWidget):
         super().__init__()
         self.setWindowFlags(Qt.WindowType.Popup)
         self.setLayout(QVBoxLayout())
+        self.setObjectName("drop_down")
 
         for option in SortingMethod:
             button = QPushButton(self)

@@ -33,7 +33,7 @@ class LaserCutTableColumns(AutoNumber):
 class LaserCutPartsQuotingTableWidget(CustomTableWidget):
     def __init__(self, parent=None):
         super().__init__(parent)
-        self.row_height = 70
+        self.row_height = 80
 
         editable_columns = [
             LaserCutTableColumns.UNIT_QUANTITY,

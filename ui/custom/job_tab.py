@@ -7,6 +7,7 @@ from PyQt6.QtGui import QIcon, QKeySequence, QShortcut
 from PyQt6.QtWidgets import QInputDialog, QPushButton, QVBoxLayout, QWidget
 
 from ui.custom.job_tab_widget import JobTabWidget
+from ui.theme import theme_var
 from ui.widgets.job_widget import JobWidget
 from utils.workspace.job import Job, JobStatus
 
@@ -27,8 +28,8 @@ class PopoutWidget(QWidget):
         self.original_layout_parent: "JobTab" = self.original_layout.parentWidget()
         self.setWindowFlags(Qt.WindowType.Window)
         self.setWindowTitle(self.tab_name)
-        self.setWindowIcon(QIcon.fromTheme(self.tab_icon))
         self.setLayout(self.original_layout)
+        self.setObjectName('popout_widget')
 
     def closeEvent(self, event):
         if self.original_layout_parent:
@@ -245,8 +246,8 @@ class JobTab(QWidget):
         self.update_job_save_status(job)
 
     def update_job_save_status(self, job: Job):
-        SAVED_JOB_STYLE = "background-color: #315432; color: #cef4d9; padding: 5px; border-radius: 5px;"
-        UNSAVED_JOB_STYLE = "background-color: #413C28; color: #ffffe0; padding: 5px; border-radius: 5px;"
+        SAVED_JOB_STYLE = f"background-color: {theme_var('primary-green')}; color: {theme_var('on-primary-green')}; padding: 5px; border-radius: 5px;"
+        UNSAVED_JOB_STYLE = f"background-color: {theme_var('primary-yellow')}; color: {theme_var('on-primary-yellow')}; padding: 5px; border-radius: 5px;"
 
         if job.status == JobStatus.PLANNING:
             if job.unsaved_changes:

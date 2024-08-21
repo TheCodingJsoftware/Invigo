@@ -61,6 +61,12 @@
        <property name="checked">
         <bool>true</bool>
        </property>
+       <property name="default">
+        <bool>false</bool>
+       </property>
+       <property name="flat">
+        <bool>true</bool>
+       </property>
       </widget>
      </item>
      <item>
@@ -90,6 +96,9 @@
         <string>View Assemblies</string>
        </property>
        <property name="checkable">
+        <bool>true</bool>
+       </property>
+       <property name="flat">
         <bool>true</bool>
        </property>
       </widget>
@@ -241,7 +250,11 @@
     </layout>
    </item>
    <item>
-    <layout class="QHBoxLayout" name="tags_layout"/>
+    <layout class="QHBoxLayout" name="tags_layout">
+     <property name="spacing">
+      <number>0</number>
+     </property>
+    </layout>
    </item>
    <item>
     <layout class="QVBoxLayout" name="workspace_layout"/>

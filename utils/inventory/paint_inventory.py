@@ -26,7 +26,8 @@ class PaintInventory(Inventory):
         self.primers.append(primer)
 
     def remove_primer(self, primer: Primer):
-        self.primers.remove(primer)
+        with contextlib.suppress(ValueError):  # Already removed
+            self.primers.remove(primer)
 
     def get_primer(self, name: str) -> Primer:
         for primer in self.primers:
@@ -49,7 +50,8 @@ class PaintInventory(Inventory):
         self.paints.append(paint)
 
     def remove_paint(self, paint: Paint):
-        self.paints.remove(paint)
+        with contextlib.suppress(ValueError):  # Already removed
+            self.paints.remove(paint)
 
     def get_paint(self, name: str) -> Paint:
         for paint in self.paints:
@@ -72,7 +74,8 @@ class PaintInventory(Inventory):
         self.powders.append(powder)
 
     def remove_powder(self, powder: Powder):
-        self.powders.remove(powder)
+        with contextlib.suppress(ValueError):  # Already removed
+            self.powders.remove(powder)
 
     def get_powder(self, name: str) -> Powder:
         for powder in self.powders:

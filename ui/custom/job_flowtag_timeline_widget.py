@@ -1,14 +1,13 @@
 import contextlib
 from datetime import datetime, timedelta
-from typing import Union, TYPE_CHECKING
+from typing import TYPE_CHECKING, Union
+
+from PyQt6.QtCore import QDateTime, Qt
+from PyQt6.QtWidgets import QGridLayout, QLabel, QSlider, QWidget
+from superqt import QRangeSlider
 
 from utils.workspace.job_flowtag_timeline import JobFlowtagTimeline
 from utils.workspace.tag import Tag
-
-from PyQt6.QtCore import Qt, QDateTime
-from PyQt6.QtWidgets import QSlider, QWidget, QLabel, QGridLayout
-
-from superqt import QRangeSlider
 
 if TYPE_CHECKING:
     from ui.widgets.job_widget import JobWidget
@@ -27,7 +26,7 @@ class JobFlowtagTimelineWidget(QWidget):
 
     def set_range(self, start: QDateTime, end: QDateTime):
         for slider in self.sliders:
-            slider['slider'].setMaximum(start.daysTo(end))
+            slider["slider"].setMaximum(start.daysTo(end))
 
     def load_tag_timelines(self):
         self.clear_layout(self.grid_layout)
@@ -46,7 +45,7 @@ class JobFlowtagTimelineWidget(QWidget):
             try:
                 tag_start_date = datetime.strptime(tag_data["starting_date"], "%Y-%m-%d %I:%M %p")
                 tag_end_date = datetime.strptime(tag_data["ending_date"], "%Y-%m-%d %I:%M %p")
-            except ValueError: # For when it was never initialized
+            except ValueError:  # For when it was never initialized
                 tag_start_date = job_start_date
                 tag_end_date = job_end_date
 
@@ -67,7 +66,7 @@ class JobFlowtagTimelineWidget(QWidget):
             self.grid_layout.addWidget(slider, row, 2)
             self.grid_layout.addWidget(end_label, row, 3)
 
-            self.sliders.append({'tag': tag, 'slider': slider, 'start_label': start_label, 'end_label': end_label, 'tag_name_label': tag_name_label})
+            self.sliders.append({"tag": tag, "slider": slider, "start_label": start_label, "end_label": end_label, "tag_name_label": tag_name_label})
             row += 1
 
     def update_labels(self, value: tuple[int, int], tag: Tag, slider: QRangeSlider, start_label: QLabel, end_label: QLabel, tag_name_label: QLabel):
@@ -100,4 +99,3 @@ class JobFlowtagTimelineWidget(QWidget):
                         widget.deleteLater()
                     else:
                         self.clear_layout(item.layout())
-

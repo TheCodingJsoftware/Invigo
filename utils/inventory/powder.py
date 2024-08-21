@@ -12,6 +12,7 @@ class Powder(InventoryItem):
         super().__init__()
         self.paint_inventory: PaintInventory = paint_inventory
         self.component: Component = None
+        self.name: str = ""
         self.color: str = "#ffffff"
         self.gravity: float = 2.0
         self.load_data(data)

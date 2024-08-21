@@ -14,7 +14,7 @@ from utils.workspace.job import Job
 
 class Head:
     def __init__(self, title: str, description: str) -> None:
-        self.html = f'''
+        self.html = f"""
             <head>
                 <meta charset="UTF-8">
                 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -27,7 +27,8 @@ class Head:
                 <meta property="og:description" content="{description}" />
                 <script src="/dist/js/qrcode.min.js"></script>
                 <script type="module" src="/dist/js/printout.bundle.js"></script>
-            </head>'''
+            </head>"""
+
 
 class CoverPage:
     def __init__(self, order_number: float, date_shipped: str, date_expected: str, ship_to: str):
@@ -38,8 +39,8 @@ class CoverPage:
         self.server_directory = f"http://{get_server_ip_address()}:{get_server_port()}"
 
     def generate(self) -> str:
-        formatted_date_shipped = datetime.strptime(self.date_shipped, '%Y-%m-%d %I:%M %p').strftime('%Y-%m-%dT%H:%M')
-        formatted_date_expected = datetime.strptime(self.date_expected, '%Y-%m-%d %I:%M %p').strftime('%Y-%m-%dT%H:%M')
+        formatted_date_shipped = datetime.strptime(self.date_shipped, "%Y-%m-%d %I:%M %p").strftime("%Y-%m-%dT%H:%M")
+        formatted_date_expected = datetime.strptime(self.date_expected, "%Y-%m-%d %I:%M %p").strftime("%Y-%m-%dT%H:%M")
 
         return f"""<div id="cover-page">
                 <div class="field label prefix border max">

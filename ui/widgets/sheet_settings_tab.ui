@@ -612,12 +612,24 @@
               <property name="text">
                <string>Add</string>
               </property>
+              <property name="default">
+               <bool>false</bool>
+              </property>
+              <property name="flat">
+               <bool>true</bool>
+              </property>
              </widget>
             </item>
             <item>
              <widget class="QPushButton" name="pushButton_remove_material">
               <property name="text">
                <string>Remove</string>
+              </property>
+              <property name="default">
+               <bool>false</bool>
+              </property>
+              <property name="flat">
+               <bool>true</bool>
               </property>
              </widget>
             </item>
@@ -642,12 +654,24 @@
               <property name="text">
                <string>Add</string>
               </property>
+              <property name="default">
+               <bool>false</bool>
+              </property>
+              <property name="flat">
+               <bool>true</bool>
+              </property>
              </widget>
             </item>
             <item>
              <widget class="QPushButton" name="pushButton_remove_thickness">
               <property name="text">
                <string>Remove</string>
+              </property>
+              <property name="default">
+               <bool>false</bool>
+              </property>
+              <property name="flat">
+               <bool>true</bool>
               </property>
              </widget>
             </item>

@@ -214,17 +214,17 @@ Press 'Add' when finsihed.</string>
                </property>
                <property name="styleSheet">
                 <string notr="true">QPushButton#pushButton_has_items{
-    background-color: #3daee9;
-    border: 1px solid #3daee9;
+    background-color: #8dcdff;
+    border: 1px solid #8dcdff;
     border-radius: 5px;
 }
 QPushButton#pushButton_has_items:checked{
-    background-color: #3daee9;
+    background-color: #8dcdff;
     color: #171717;
 }
 QPushButton#pushButton_has_items:hover{
     background-color: #48b6ed;
-    border-color: #3daee9;
+    border-color: #8dcdff;
 }
 QPushButton#pushButton_has_items:pressed{
     background-color: #2b92c5;
@@ -239,11 +239,11 @@ QPushButton#pushButton_has_items:!checked {
 
 QPushButton:hover#pushButton_has_items:!checked {
     background-color: rgba(76, 76, 76, 130);
-    border-color: #3daee9;
+    border-color: #8dcdff;
 }
 
 QPushButton:pressed#pushButton_has_items:!checked {
-    background-color: #3daee9;
+    background-color: #8dcdff;
     color: #171717;
 }</string>
                </property>
@@ -277,17 +277,17 @@ QPushButton:pressed#pushButton_has_items:!checked {
                </property>
                <property name="styleSheet">
                 <string notr="true">QPushButton#pushButton_has_sub_assemblies{
-    background-color: #3daee9;
-    border: 1px solid #3daee9;
+    background-color: #8dcdff;
+    border: 1px solid #8dcdff;
     border-radius: 5px;
 }
 QPushButton#pushButton_has_sub_assemblies:checked{
-    background-color: #3daee9;
+    background-color: #8dcdff;
     color: #171717;
 }
 QPushButton#pushButton_has_sub_assemblies:hover{
     background-color: #48b6ed;
-    border-color: #3daee9;
+    border-color: #8dcdff;
 }
 QPushButton#pushButton_has_sub_assemblies:pressed{
     background-color: #2b92c5;
@@ -302,11 +302,11 @@ QPushButton#pushButton_has_sub_assemblies:!checked {
 
 QPushButton:hover#pushButton_has_sub_assemblies:!checked {
     background-color: rgba(76, 76, 76, 130);
-    border-color: #3daee9;
+    border-color: #8dcdff;
 }
 
 QPushButton:pressed#pushButton_has_sub_assemblies:!checked {
-    background-color: #3daee9;
+    background-color: #8dcdff;
     color: #171717;
 }</string>
                </property>

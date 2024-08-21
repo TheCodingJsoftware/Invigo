@@ -9,10 +9,11 @@ from PyQt6.QtWidgets import QAbstractItemView, QCheckBox, QComboBox, QDialog, QG
 
 from ui.custom.time_double_spin_box import TimeSpinBox
 from ui.custom_widgets import AssemblyMultiToolBox, DeletePushButton
+from ui.theme import theme_var
 from utils.workspace.flowtag import Flowtag, Group
 from utils.workspace.flowtags import Flowtags
-from utils.workspace.tag_status import TagStatus
 from utils.workspace.tag import Tag
+from utils.workspace.tag_status import TagStatus
 from utils.workspace.workspace_settings import WorkspaceSettings
 
 
@@ -33,7 +34,7 @@ class TagWidget(QWidget):
         self.remaining_tags = remaining_tags
         self.workspace_settings = workspace_settings
         self.tag = tag
-        self.setStyleSheet("QWidget#tag_idget{border: 1px solid rgba(120, 120, 120, 70);}")
+        self.setStyleSheet(f"QWidget#tag_idget{{border: 1px solid {theme_var('outline')};}}")
         v_layout = QVBoxLayout(self)
         v_layout.setContentsMargins(0, 0, 0, 0)
         v_layout.setSpacing(0)
@@ -49,7 +50,7 @@ class TagWidget(QWidget):
         self.tag_combobox.wheelEvent = lambda event: None
         self.arrow_label = QLabel("➜", self)
         self.arrow_label.setFixedWidth(60)
-        self.delete_button = DeletePushButton(self, "Delete this tag", icon=QIcon("icons/trash.png"))
+        self.delete_button = DeletePushButton(self, "Delete this tag")
         self.delete_button.setFixedSize(20, 20)
         self.delete_button.clicked.connect(self.delete_tag)
         h_layout_1.addWidget(self.tag_combobox)
@@ -572,7 +573,7 @@ class EditWorkspaceSettings(QDialog):
                     selected_tag.delete_status(status_to_delete)
                     self.load_status_table()
 
-                delete_status_button = DeletePushButton(self, "Delete status", QIcon("icons/trash.png"))
+                delete_status_button = DeletePushButton(self, "Delete status")
                 delete_status_button.setFixedWidth(40)
                 delete_status_button.clicked.connect(partial(delete_status, status))
                 self.tableWidget_statuses.setCellWidget(row, 3, delete_status_button)

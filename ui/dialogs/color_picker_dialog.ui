@@ -3,7 +3,7 @@
  <class>ColorPicker</class>
  <widget class="QDialog" name="ColorPicker">
   <property name="windowModality">
-   <enum>Qt::WindowModal</enum>
+   <enum>Qt::WindowModality::WindowModal</enum>
   </property>
   <property name="geometry">
    <rect>
@@ -102,10 +102,10 @@ background-color: qlineargradient(x1:1, x2:0, stop:0 hsl(0%,100%,50%), stop:1 rg
 </string>
             </property>
             <property name="frameShape">
-             <enum>QFrame::StyledPanel</enum>
+             <enum>QFrame::Shape::StyledPanel</enum>
             </property>
             <property name="frameShadow">
-             <enum>QFrame::Raised</enum>
+             <enum>QFrame::Shadow::Raised</enum>
             </property>
             <layout class="QVBoxLayout" name="verticalLayout_2">
              <property name="spacing">
@@ -132,10 +132,10 @@ border-radius: 4px;
 </string>
                </property>
                <property name="frameShape">
-                <enum>QFrame::StyledPanel</enum>
+                <enum>QFrame::Shape::StyledPanel</enum>
                </property>
                <property name="frameShadow">
-                <enum>QFrame::Raised</enum>
+                <enum>QFrame::Shadow::Raised</enum>
                </property>
                <widget class="QFrame" name="selector">
                 <property name="geometry">
@@ -164,10 +164,10 @@ border: 2px solid white;
 border-radius: 5px;</string>
                 </property>
                 <property name="frameShape">
-                 <enum>QFrame::StyledPanel</enum>
+                 <enum>QFrame::Shape::StyledPanel</enum>
                 </property>
                 <property name="frameShadow">
-                 <enum>QFrame::Raised</enum>
+                 <enum>QFrame::Shadow::Raised</enum>
                 </property>
                 <widget class="QLabel" name="black_ring">
                  <property name="geometry">
@@ -225,10 +225,10 @@ border-radius: 5px;</string>
 }</string>
             </property>
             <property name="frameShape">
-             <enum>QFrame::StyledPanel</enum>
+             <enum>QFrame::Shape::StyledPanel</enum>
             </property>
             <property name="frameShadow">
-             <enum>QFrame::Raised</enum>
+             <enum>QFrame::Shadow::Raised</enum>
             </property>
             <widget class="QFrame" name="hue_bg">
              <property name="geometry">
@@ -250,10 +250,10 @@ border-radius: 5px;</string>
 border-radius: 5px;</string>
              </property>
              <property name="frameShape">
-              <enum>QFrame::StyledPanel</enum>
+              <enum>QFrame::Shape::StyledPanel</enum>
              </property>
              <property name="frameShadow">
-              <enum>QFrame::Raised</enum>
+              <enum>QFrame::Shadow::Raised</enum>
              </property>
             </widget>
             <widget class="QLabel" name="hue_selector">
@@ -301,10 +301,10 @@ border: 2px solid white;</string>
               <string notr="true"/>
              </property>
              <property name="frameShape">
-              <enum>QFrame::StyledPanel</enum>
+              <enum>QFrame::Shape::StyledPanel</enum>
              </property>
              <property name="frameShadow">
-              <enum>QFrame::Raised</enum>
+              <enum>QFrame::Shadow::Raised</enum>
              </property>
             </widget>
            </widget>
@@ -334,10 +334,10 @@ font-weight: bold;
 </string>
             </property>
             <property name="frameShape">
-             <enum>QFrame::StyledPanel</enum>
+             <enum>QFrame::Shape::StyledPanel</enum>
             </property>
             <property name="frameShadow">
-             <enum>QFrame::Raised</enum>
+             <enum>QFrame::Shadow::Raised</enum>
             </property>
             <layout class="QFormLayout" name="formLayout">
              <property name="horizontalSpacing">
@@ -398,7 +398,7 @@ background-color: #000;
                 <string>255</string>
                </property>
                <property name="alignment">
-                <set>Qt::AlignCenter</set>
+                <set>Qt::AlignmentFlag::AlignCenter</set>
                </property>
                <property name="clearButtonEnabled">
                 <bool>false</bool>
@@ -421,7 +421,7 @@ background-color: #000;
                 <string>255</string>
                </property>
                <property name="alignment">
-                <set>Qt::AlignCenter</set>
+                <set>Qt::AlignmentFlag::AlignCenter</set>
                </property>
               </widget>
              </item>
@@ -441,7 +441,7 @@ background-color: #000;
                 <string>255</string>
                </property>
                <property name="alignment">
-                <set>Qt::AlignCenter</set>
+                <set>Qt::AlignmentFlag::AlignCenter</set>
                </property>
               </widget>
              </item>
@@ -454,7 +454,7 @@ background-color: #000;
                 <string>#</string>
                </property>
                <property name="alignment">
-                <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+                <set>Qt::AlignmentFlag::AlignLeading|Qt::AlignmentFlag::AlignLeft|Qt::AlignmentFlag::AlignVCenter</set>
                </property>
                <property name="buddy">
                 <cstring>blue</cstring>
@@ -467,7 +467,7 @@ background-color: #000;
                 <string>ffffff</string>
                </property>
                <property name="alignment">
-                <set>Qt::AlignCenter</set>
+                <set>Qt::AlignmentFlag::AlignCenter</set>
                </property>
                <property name="dragEnabled">
                 <bool>false</bool>
@@ -538,6 +538,12 @@ background-color: #000;
             <property name="text">
              <string>Set</string>
             </property>
+            <property name="autoDefault">
+             <bool>false</bool>
+            </property>
+            <property name="default">
+             <bool>true</bool>
+            </property>
            </widget>
           </item>
           <item>
@@ -556,6 +562,12 @@ background-color: #000;
             </property>
             <property name="text">
              <string>Cancel</string>
+            </property>
+            <property name="autoDefault">
+             <bool>false</bool>
+            </property>
+            <property name="default">
+             <bool>true</bool>
             </property>
            </widget>
           </item>

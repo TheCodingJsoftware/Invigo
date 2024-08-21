@@ -172,7 +172,7 @@
                 <x>0</x>
                 <y>0</y>
                 <width>185</width>
-                <height>198</height>
+                <height>210</height>
                </rect>
               </property>
               <layout class="QVBoxLayout" name="verticalLayout_21">
@@ -257,14 +257,6 @@
                   <height>16777215</height>
                  </size>
                 </property>
-                <property name="styleSheet">
-                 <string notr="true">QWidget#tab_materials{
-	background-color: rgba(25, 25, 25, 200); 
-}
-QWidget#tab_thicknesses{
-	background-color: rgba(25, 25, 25, 200); 
-}</string>
-                </property>
                 <property name="currentIndex">
                  <number>0</number>
                 </property>
@@ -299,7 +291,7 @@ QWidget#tab_thicknesses{
                        <x>0</x>
                        <y>0</y>
                        <width>159</width>
-                       <height>77</height>
+                       <height>65</height>
                       </rect>
                      </property>
                      <layout class="QVBoxLayout" name="verticalLayout_4">
@@ -349,7 +341,7 @@ QWidget#tab_thicknesses{
                        <x>0</x>
                        <y>0</y>
                        <width>159</width>
-                       <height>80</height>
+                       <height>65</height>
                       </rect>
                      </property>
                      <layout class="QVBoxLayout" name="verticalLayout_5">
@@ -380,6 +372,9 @@ QWidget#tab_thicknesses{
                <property name="text">
                 <string>Add Quantity</string>
                </property>
+               <property name="flat">
+                <bool>true</bool>
+               </property>
               </widget>
              </item>
              <item>
@@ -392,6 +387,9 @@ QWidget#tab_thicknesses{
                </property>
                <property name="text">
                 <string>Remove Quantity</string>
+               </property>
+               <property name="flat">
+                <bool>true</bool>
                </property>
               </widget>
              </item>

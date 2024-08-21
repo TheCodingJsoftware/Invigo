@@ -11,7 +11,6 @@ from PyQt6.QtWidgets import QApplication, QComboBox, QDoubleSpinBox, QHBoxLayout
 
 from ui.custom.assembly_file_drop_widget import AssemblyFileDropWidget
 from ui.custom.assembly_image import AssemblyImage
-from ui.custom.time_double_spin_box import TimeSpinBox
 from ui.custom.assembly_paint_settings_widget import AssemblyPaintSettingsWidget
 from ui.custom.assembly_paint_widget import AssemblyPaintWidget
 from ui.custom.components_planning_table_widget import ComponentsPlanningTableWidget, ComponentsTableColumns
@@ -21,10 +20,12 @@ from ui.custom.laser_cut_part_file_drop_widget import LaserCutPartFileDropWidget
 from ui.custom.laser_cut_part_paint_settings_widget import LasserCutPartPaintSettingsWidget
 from ui.custom.laser_cut_part_paint_widget import LaserCutPartPaintWidget
 from ui.custom.laser_cut_parts_planning_table_widget import LaserCutPartsPlanningTableWidget, LaserCutTableColumns
+from ui.custom.time_double_spin_box import TimeSpinBox
+from ui.custom_widgets import AssemblyMultiToolBox
 from ui.dialogs.add_component_dialog import AddComponentDialog
 from ui.dialogs.add_laser_cut_part_dialog import AddLaserCutPartDialog
+from ui.theme import theme_var
 from ui.widgets.assembly_widget import AssemblyWidget
-from ui.custom_widgets import AssemblyMultiToolBox
 from utils.inventory.component import Component
 from utils.inventory.laser_cut_part import LaserCutPart
 from utils.settings import Settings
@@ -324,10 +325,10 @@ class AssemblyPlanningWidget(AssemblyWidget):
         part_name_item.setFont(self.tables_font)
         if self.components_inventory.get_component_by_name(component.name):
             component_inventory_status = f"{component.name} exists in inventory."
-            self.set_table_row_color(self.components_table, current_row, "#141414")
+            self.set_table_row_color(self.components_table, current_row, f"{theme_var('background')}")
         else:
             component_inventory_status = f"{component.name} does NOT exist in inventory."
-            self.set_table_row_color(self.components_table, current_row, "#3F1E25")
+            self.set_table_row_color(self.components_table, current_row, f"{theme_var('table-red-quantity')}")
         part_name_item.setToolTip(component_inventory_status)
         self.components_table.setItem(current_row, ComponentsTableColumns.PART_NAME.value, part_name_item)
         self.components_table_items[component].update({"part_name": part_name_item})
@@ -380,14 +381,14 @@ class AssemblyPlanningWidget(AssemblyWidget):
             self.set_table_row_color(
                 self.components_table,
                 self.components_table_items[changed_component]["row"],
-                "#141414",
+                f"{theme_var('background')}",
             )
         else:
             component_inventory_status = f"{changed_component.name} does NOT exist in inventory."
             self.set_table_row_color(
                 self.components_table,
                 self.components_table_items[changed_component]["row"],
-                "#3F1E25",
+                f"{theme_var('table-red-quantity')}",
             )
         self.components_table_items[changed_component]["part_name"].setToolTip(component_inventory_status)
         self.components_table_items[changed_component]["part_number"].setToolTip(component_inventory_status)
@@ -564,10 +565,10 @@ class AssemblyPlanningWidget(AssemblyWidget):
         part_name_item.setFont(self.tables_font)
         if self.laser_cut_inventory.get_laser_cut_part_by_name(laser_cut_part.name):
             laser_cut_part_inventory_status = f"{laser_cut_part.name} exists in inventory."
-            self.set_table_row_color(self.laser_cut_parts_table, current_row, "#141414")
+            self.set_table_row_color(self.laser_cut_parts_table, current_row, f"{theme_var('background')}")
         else:
             laser_cut_part_inventory_status = f"{laser_cut_part.name} does NOT exist in inventory."
-            self.set_table_row_color(self.laser_cut_parts_table, current_row, "#3F1E25")
+            self.set_table_row_color(self.laser_cut_parts_table, current_row, f"{theme_var('table-red-quantity')}")
 
         part_name_item.setToolTip(laser_cut_part_inventory_status)
         self.laser_cut_parts_table.setItem(current_row, LaserCutTableColumns.PART_NAME.value, part_name_item)
@@ -701,14 +702,14 @@ class AssemblyPlanningWidget(AssemblyWidget):
             self.set_table_row_color(
                 self.laser_cut_parts_table,
                 self.laser_cut_part_table_items[changed_laser_cut_part]["row"],
-                "#141414",
+                f"{theme_var('background')}",
             )
         else:
             laser_cut_part_inventory_status = f"{changed_laser_cut_part.name} does NOT exist in inventory."
             self.set_table_row_color(
                 self.laser_cut_parts_table,
                 self.laser_cut_part_table_items[changed_laser_cut_part]["row"],
-                "#3F1E25",
+                f"{theme_var('table-red-quantity')}",
             )
         self.laser_cut_part_table_items[changed_laser_cut_part]["part_name"].setToolTip(laser_cut_part_inventory_status)
         changed_laser_cut_part.material = self.laser_cut_part_table_items[changed_laser_cut_part]["material"].currentText()
@@ -1043,7 +1044,7 @@ class AssemblyPlanningWidget(AssemblyWidget):
 
         toggle_button = self.sub_assemblies_toolbox.getLastToggleButton()
 
-        name_input: QLineEdit = self.sub_assemblies_toolbox.getLastInputBox()
+        name_input = self.sub_assemblies_toolbox.getLastInputBox()
         name_input.textChanged.connect(partial(self.sub_assembly_name_renamed, sub_assembly, name_input))
 
         name_input.textChanged.connect(
@@ -1108,6 +1109,8 @@ class AssemblyPlanningWidget(AssemblyWidget):
 
         if self.job_preferences.is_assembly_closed(sub_assembly.name):
             self.sub_assemblies_toolbox.closeLastToolBox()
+        else:
+            self.sub_assemblies_toolbox.openLastToolBox()
 
         sub_assembly_widget.pushButton_laser_cut_parts.setChecked(self.job_preferences.is_assembly_laser_cut_closed(sub_assembly.name))
         sub_assembly_widget.laser_cut_widget.setHidden(not self.job_preferences.is_assembly_laser_cut_closed(sub_assembly.name))

@@ -14,7 +14,11 @@
 </tbody>
 </table>
 
-# Development Setup
+## Activity
+
+![Alt](https://repobeats.axiom.co/api/embed/a4b6b74c97aa8f4e752c8c63641112aa7c5bf56e.svg "Repobeats analytics image")
+
+## Development Setup
 
 1. Download and install [Python 3.12](https://www.python.org/downloads/).
 2. (Optional) Download and install [git](https://git-scm.com/download/win).

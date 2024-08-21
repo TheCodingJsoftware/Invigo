@@ -15,6 +15,7 @@ from utils.sheet_settings.sheet_settings import SheetSettings
 if TYPE_CHECKING:
     from ui.windows.main_window import MainWindow
 
+
 class PopoutWidget(QWidget):
     def __init__(self, layout_to_popout: QVBoxLayout, parent=None):
         super().__init__(parent)
@@ -24,8 +25,8 @@ class PopoutWidget(QWidget):
         self.original_layout_parent: "QuoteGeneratorTab" = self.original_layout.parentWidget()
         self.setWindowFlags(Qt.WindowType.Window)
         self.setWindowTitle("Quote Generator")
-        self.setWindowIcon(QIcon.fromTheme("accessories-calculator"))
         self.setLayout(self.original_layout)
+        self.setObjectName('popout_widget')
 
     def closeEvent(self, event):
         if self.original_layout_parent:

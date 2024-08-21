@@ -1,16 +1,17 @@
 import copy
 from typing import TYPE_CHECKING, Optional, Union
 
+from ui.theme import theme_var
 from utils.inventory.component import Component
 from utils.inventory.laser_cut_part import LaserCutPart
 from utils.inventory.paint import Paint
 from utils.inventory.powder import Powder
 from utils.inventory.primer import Primer
 from utils.workspace.flowtag import Flowtag
+from utils.workspace.flowtag_data import FlowtagData
+from utils.workspace.flowtag_timer import FlowtagTimer
 from utils.workspace.tag import Tag
 from utils.workspace.workspace_settings import WorkspaceSettings
-from utils.workspace.flowtag_timer import FlowtagTimer
-from utils.workspace.flowtag_data import FlowtagData
 
 if TYPE_CHECKING:
     from utils.workspace.job import Job
@@ -177,7 +178,7 @@ class Assembly:
         self.assembly_image = assembly_data.get("assembly_image")
         self.assembly_files = assembly_data.get("assembly_files", [])
         self.quantity = assembly_data.get("quantity", 1)
-        self.color = assembly_data.get("color", "#3daee9")
+        self.color = assembly_data.get("color", theme_var("primary"))
         # If deepcopy is not done, than a reference is kept in the original object it was copied from
         # and then it messes everything up, specifically it will mess up laser cut parts
         # when you add a job to workspace

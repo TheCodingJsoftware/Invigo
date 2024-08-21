@@ -5,8 +5,8 @@ import msgspec
 
 from utils.workspace.flowtag import Flowtag, Group
 from utils.workspace.flowtags import Flowtags
-from utils.workspace.tag_status import TagStatus
 from utils.workspace.tag import Tag
+from utils.workspace.tag_status import TagStatus
 
 
 class WorkspaceSettings:

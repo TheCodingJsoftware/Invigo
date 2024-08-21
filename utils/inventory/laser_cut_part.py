@@ -7,10 +7,10 @@ from utils.inventory.paint import Paint
 from utils.inventory.powder import Powder
 from utils.inventory.primer import Primer
 from utils.workspace.flowtag import Flowtag
+from utils.workspace.flowtag_data import FlowtagData
+from utils.workspace.flowtag_timer import FlowtagTimer
 from utils.workspace.tag import Tag
 from utils.workspace.workspace_settings import WorkspaceSettings
-from utils.workspace.flowtag_timer import FlowtagTimer
-from utils.workspace.flowtag_data import FlowtagData
 
 if TYPE_CHECKING:
     from utils.inventory.laser_cut_inventory import LaserCutInventory

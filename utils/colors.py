@@ -369,3 +369,12 @@ def get_random_color() -> str:
         random.randint(25, 75) / 100,
         random.randint(15, 50) / 100,
     )
+
+
+def get_contrast_text_color(hex_color: str) -> str:
+    hex_color = hex_color.lstrip("#")
+    r = int(hex_color[0:2], 16)
+    g = int(hex_color[2:4], 16)
+    b = int(hex_color[4:6], 16)
+    luminance = (0.2126 * r + 0.7152 * g + 0.0722 * b) / 255
+    return "black" if luminance > 0.5 else "white"

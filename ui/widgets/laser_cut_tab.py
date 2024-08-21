@@ -1,20 +1,22 @@
 import contextlib
 import os
 from datetime import datetime
-from typing import TYPE_CHECKING
 from functools import partial
+from typing import TYPE_CHECKING
 
 import sympy
 from natsort import natsorted
 from PyQt6 import uic
 from PyQt6.QtCore import Qt
-from PyQt6.QtGui import QAction, QColor, QCursor, QFont, QIcon
+from PyQt6.QtGui import QAction, QColor, QCursor, QFont
 from PyQt6.QtWidgets import QAbstractItemView, QCheckBox, QComboBox, QCompleter, QDialog, QDoubleSpinBox, QGridLayout, QHBoxLayout, QInputDialog, QLabel, QLineEdit, QMenu, QMessageBox, QPushButton, QScrollArea, QTableWidgetItem, QVBoxLayout, QWidget
 
 from ui.custom_widgets import CustomTableWidget, CustomTabWidget, FilterButton
 from ui.dialogs.edit_category_dialog import EditCategoryDialog
 from ui.dialogs.items_change_quantity_dialog import ItemsChangeQuantityDialog
 from ui.dialogs.set_custom_limit_dialog import SetCustomLimitDialog
+from ui.icons import Icons
+from ui.theme import theme_var
 from utils.inventory.category import Category
 from utils.inventory.laser_cut_inventory import LaserCutInventory
 from utils.inventory.laser_cut_part import LaserCutPart
@@ -25,6 +27,7 @@ from utils.workspace.job import Job
 
 if TYPE_CHECKING:
     from ui.windows.main_window import MainWindow
+
 
 class EditLaserCutPart(QDialog):
     def __init__(self, laser_cut_part: LaserCutPart, parent=None):
@@ -290,13 +293,13 @@ class PopoutWidget(QWidget):
         self.original_layout_parent: "LaserCutTab" = self.original_layout.parentWidget()
         self.setWindowFlags(Qt.WindowType.Window)
         self.setWindowTitle("Sheets In Inventory Tab")
-        self.setWindowIcon(QIcon.fromTheme("format-justify-left"))
         self.setLayout(self.original_layout)
+        self.setObjectName('popout_widget')
 
     def closeEvent(self, event):
         if self.original_layout_parent:
             self.original_layout_parent.setLayout(self.original_layout)
-            self.original_layout_parent.pushButton_popout.setIcon(QIcon("icons/open_in_new.png"))
+            self.original_layout_parent.pushButton_popout.setIcon(Icons.dock_icon)
             self.original_layout_parent.pushButton_popout.clicked.disconnect()
             self.original_layout_parent.pushButton_popout.clicked.connect(self.original_layout_parent.popout)
         super().closeEvent(event)
@@ -350,8 +353,10 @@ class LaserCutTab(QWidget):
         self.lineEdit_search_laser_cut_parts = self.findChild(QLineEdit, "lineEdit_search_parts_in_inventory")
         self.pushButton_add_quantity = self.findChild(QPushButton, "pushButton_add_quantity")
         self.pushButton_add_quantity.clicked.connect(partial(self.change_quantities, "ADD"))
+        self.pushButton_add_quantity.setIcon(Icons.plus_icon)
         self.pushButton_remove_quantity = self.findChild(QPushButton, "pushButton_remove_quantity")
         self.pushButton_remove_quantity.clicked.connect(partial(self.change_quantities, "REMOVE"))
+        self.pushButton_remove_quantity.setIcon(Icons.minus_icon)
 
         self.verticalLayout_11 = self.findChild(QVBoxLayout, "verticalLayout_11")
         self.clear_layout(self.verticalLayout_11)
@@ -389,12 +394,10 @@ class LaserCutTab(QWidget):
         completer.setCaseSensitivity(Qt.CaseSensitivity.CaseInsensitive)
         self.lineEdit_search_laser_cut_parts.setCompleter(completer)
 
-        self.pushButton_add_quantity.setIcon(QIcon("icons/list_add.png"))
-        self.pushButton_remove_quantity.setIcon(QIcon("icons/list_remove.png"))
-
         self.pushButton_popout = self.findChild(QPushButton, "pushButton_popout")
         self.pushButton_popout.setStyleSheet("background-color: transparent; border: none;")
         self.pushButton_popout.clicked.connect(self.popout)
+        self.pushButton_popout.setIcon(Icons.dock_icon)
 
     def add_category(self):
         new_category_name, ok = QInputDialog.getText(self, "New Category", "Enter a name for a category:")
@@ -557,7 +560,7 @@ class LaserCutTab(QWidget):
             item.setFont(font)
             current_table.setItem(row_index, 0, item)
             current_table.setSpan(row_index, 0, 1, current_table.columnCount())
-            self.set_table_row_color(current_table, row_index, "#141414")
+            self.set_table_row_color(current_table, row_index, f"{theme_var('background')}")
             row_index += 1
             for laser_cut_part in laser_cut_parts:
                 if self.lineEdit_search_laser_cut_parts.text() not in laser_cut_part.name:
@@ -571,7 +574,7 @@ class LaserCutTab(QWidget):
                         continue
 
                 current_table.insertRow(row_index)
-                current_table.setRowHeight(row_index, 70)
+                current_table.setRowHeight(row_index, 80)
 
                 self.table_laser_cut_parts_widgets.update({laser_cut_part: {}})
                 self.table_laser_cut_parts_widgets[laser_cut_part].update({"row": row_index})
@@ -657,9 +660,9 @@ class LaserCutTab(QWidget):
 
                 if self.category.name != "Recut":
                     if laser_cut_part.quantity <= laser_cut_part.red_quantity_limit:
-                        self.set_table_row_color(current_table, row_index, "#3F1E25")
+                        self.set_table_row_color(current_table, row_index, f"{theme_var('table-red-quantity')}")
                     elif laser_cut_part.quantity <= laser_cut_part.yellow_quantity_limit:
-                        self.set_table_row_color(current_table, row_index, "#413C28")
+                        self.set_table_row_color(current_table, row_index, f"{theme_var('table-yellow-quantity')}")
                 row_index += 1
 
         current_table.blockSignals(False)
@@ -977,19 +980,19 @@ class LaserCutTab(QWidget):
                         self.set_table_row_color(
                             current_table,
                             self.table_laser_cut_parts_widgets[laser_cut_part]["row"],
-                            "#3F1E25",
+                            f"{theme_var('table-red-quantity')}",
                         )
                     elif laser_cut_part.quantity <= laser_cut_part.yellow_quantity_limit:
                         self.set_table_row_color(
                             current_table,
                             self.table_laser_cut_parts_widgets[laser_cut_part]["row"],
-                            "#413C28",
+                            f"{theme_var('table-yellow-quantity')}",
                         )
                     else:
                         self.set_table_row_color(
                             current_table,
                             self.table_laser_cut_parts_widgets[laser_cut_part]["row"],
-                            "#2c2c2c",
+                            theme_var("surface-container-low"),
                         )
                 self.laser_cut_inventory.save()
                 self.sync_changes()
@@ -1124,9 +1127,9 @@ class LaserCutTab(QWidget):
                 <td>{laser_cut_part.shelf_number}</td>
                 <td>{laser_cut_part.modified_date.replace("\n", "<br>")}</td></tr>'''
             html += "</tbody></table><body><html>"
-        with open("print_selected_parts.html", "w", encoding="utf-8") as f:
-            f.write(html)
-        self.parent.open_print_selected_parts()
+            with open("print_selected_parts.html", "w", encoding="utf-8") as f:
+                f.write(html)
+            self.parent.open_print_selected_parts()
 
     def set_table_row_color(self, table: LaserCutPartsTableWidget, row_index: int, color: str):
         for j in range(table.columnCount()):
@@ -1167,7 +1170,7 @@ class LaserCutTab(QWidget):
     def popout(self):
         self.popout_widget = PopoutWidget(self.layout(), self.parent)
         self.popout_widget.show()
-        self.pushButton_popout.setIcon(QIcon("icons/dock_window.png"))
+        self.pushButton_popout.setIcon(Icons.redock_icon)
         self.pushButton_popout.clicked.disconnect()
         self.pushButton_popout.clicked.connect(self.popout_widget.close)
 

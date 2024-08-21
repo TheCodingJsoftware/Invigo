@@ -8,7 +8,7 @@ import sympy
 from natsort import natsorted
 from PyQt6 import uic
 from PyQt6.QtCore import QDate, Qt, pyqtSignal
-from PyQt6.QtGui import QAction, QColor, QCursor, QFont, QIcon
+from PyQt6.QtGui import QAction, QColor, QCursor, QFont
 from PyQt6.QtWidgets import QAbstractItemView, QCompleter, QDateEdit, QGridLayout, QHBoxLayout, QInputDialog, QLabel, QLineEdit, QListWidget, QMenu, QMessageBox, QPushButton, QTableWidgetItem, QVBoxLayout, QWidget
 
 from ui.custom_widgets import CustomTableWidget, CustomTabWidget, ExchangeRateComboBox, NotesPlainTextEdit, OrderStatusButton, POPushButton, PriorityComboBox
@@ -19,6 +19,8 @@ from ui.dialogs.select_item_dialog import SelectItemDialog
 from ui.dialogs.set_component_order_pending_dialog import SetComponentOrderPendingDialog
 from ui.dialogs.set_custom_limit_dialog import SetCustomLimitDialog
 from ui.dialogs.update_component_order_pending_dialog import UpdateComponentOrderPendingDialog
+from ui.icons import Icons
+from ui.theme import theme_var
 from utils.dialog_buttons import DialogButtons
 from utils.history_file import HistoryFile
 from utils.inventory.category import Category
@@ -74,6 +76,7 @@ class ComponentsTabWidget(CustomTabWidget):
 class OrderWidget(QWidget):
     orderOpened = pyqtSignal()
     orderClosed = pyqtSignal()
+
     def __init__(self, component: Component, parent: "ComponentsTab"):
         super().__init__(parent)
         self.parent: "ComponentsTab" = parent
@@ -110,7 +113,7 @@ class OrderWidget(QWidget):
             date = QDate(year, month, day)
 
             arrival_date = QDateEdit(self)
-            arrival_date.setStyleSheet("QDateEdit{border-top-left-radius: 0; border-top-right-radius: 0; border-bottom-left-radius: 5px; border-bottom-right-radius: 5px;} QDateEdit:hover{border-color: #3bba6d; }")
+            arrival_date.setStyleSheet(f"QDateEdit{{border-top-left-radius: 0; border-top-right-radius: 0; border-bottom-left-radius: 5px; border-bottom-right-radius: 5px;}} QDateEdit:hover{{border-color: {theme_var('primary-green')}; }}")
             arrival_date.wheelEvent = lambda event: None
             arrival_date.setDate(date)
             arrival_date.setCalendarPopup(True)
@@ -207,13 +210,13 @@ class PopoutWidget(QWidget):
         self.original_layout_parent: "ComponentsTab" = self.original_layout.parentWidget()
         self.setWindowFlags(Qt.WindowType.Window)
         self.setWindowTitle("Components Tab")
-        self.setWindowIcon(QIcon.fromTheme("format-justify-left"))
         self.setLayout(self.original_layout)
+        self.setObjectName('popout_widget')
 
     def closeEvent(self, event):
         if self.original_layout_parent:
             self.original_layout_parent.setLayout(self.original_layout)
-            self.original_layout_parent.pushButton_popout.setIcon(QIcon("icons/open_in_new.png"))
+            self.original_layout_parent.pushButton_popout.setIcon(Icons.dock_icon)
             self.original_layout_parent.pushButton_popout.clicked.disconnect()
             self.original_layout_parent.pushButton_popout.clicked.connect(self.original_layout_parent.popout)
         super().closeEvent(event)
@@ -264,28 +267,36 @@ class ComponentsTab(QWidget):
 
         self.label_exchange_price = self.findChild(QLabel, "label_exchange_price")
         self.label_total_unit_cost = self.findChild(QLabel, "label_total_unit_cost")
+
         self.gridLayout_category_stock_costs = self.findChild(QGridLayout, "gridLayout_category_stock_costs")
+
         self.lineEdit_search_items = self.findChild(QLineEdit, "lineEdit_search_items")
         self.listWidget_itemnames = self.findChild(QListWidget, "listWidget_itemnames")
+
         self.pushButton_add_quantity = self.findChild(QPushButton, "pushButton_add_quantity")
         self.pushButton_add_quantity.clicked.connect(partial(self.change_quantities, "ADD"))
+        self.pushButton_add_quantity.setIcon(Icons.plus_icon)
+
         self.pushButton_remove_quantity = self.findChild(QPushButton, "pushButton_remove_quantity")
         self.pushButton_remove_quantity.clicked.connect(partial(self.change_quantities, "REMOVE"))
+        self.pushButton_remove_quantity.setIcon(Icons.minus_icon)
+
         self.pushButton_create_new = self.findChild(QPushButton, "pushButton_create_new")
+        self.pushButton_create_new.setIcon(Icons.plus_circle_icon)
+
         self.verticalLayout = self.findChild(QVBoxLayout, "verticalLayout")
         self.verticalLayout.addWidget(self.tab_widget)
 
         self.lineEdit_search_items.textChanged.connect(self.update_edit_inventory_list_widget)
 
         self.pushButton_create_new.clicked.connect(self.add_item)
-        self.pushButton_add_quantity.setIcon(QIcon("./icons/list_add.png"))
-        self.pushButton_remove_quantity.setIcon(QIcon("./icons/list_remove.png"))
 
         self.listWidget_itemnames.itemSelectionChanged.connect(self.listWidget_item_changed)
 
         self.pushButton_popout = self.findChild(QPushButton, "pushButton_popout")
         self.pushButton_popout.setStyleSheet("background-color: transparent; border: none;")
         self.pushButton_popout.clicked.connect(self.popout)
+        self.pushButton_popout.setIcon(Icons.dock_icon)
 
     def add_category(self):
         new_category_name, ok = QInputDialog.getText(self, "New Category", "Enter a name for a category:")
@@ -523,9 +534,9 @@ class ComponentsTab(QWidget):
             combo_priority = PriorityComboBox(self, component.priority)
             combo_priority.setStyleSheet("border-radius: 0px;")
             if combo_priority.currentText() == "Medium":
-                combo_priority.setStyleSheet("QComboBox{background-color: #524b2f; border-radius: 0px;} QComboBox:hover{border-color: #e9bb3d;}")
+                combo_priority.setStyleSheet(f"""QComboBox{{background-color: {theme_var('medium-priority')}; border-radius: 0px;}} QComboBox:hover{{border-color: {theme_var('primary-yellow')}}}""")
             elif combo_priority.currentText() == "High":
-                combo_priority.setStyleSheet("QComboBox{background-color: #4d2323; border-radius: 0px;} QComboBox:hover{border-color: #e93d3d;}")
+                combo_priority.setStyleSheet(f"""QComboBox{{background-color: {theme_var('high-priority')}; border-radius: 0px;}} QComboBox:hover{{border-color: {theme_var('primary-red')}}}""")
             combo_priority.currentIndexChanged.connect(partial(self.table_changed, row_index))
             current_table.setCellWidget(row_index, col_index, combo_priority)
             self.table_components_widgets[component].update({"priority": combo_priority})
@@ -616,7 +627,7 @@ class ComponentsTab(QWidget):
             self.set_table_row_color(
                 self.category_tables[self.category],
                 self.table_components_widgets[component]["row"],
-                "#e93d3d",
+                theme_var("on-error"),
             )
             self.parent.status_button.setText(f"Invalid number for {component.name} unit quantity", "red")
             return
@@ -631,7 +642,7 @@ class ComponentsTab(QWidget):
             self.set_table_row_color(
                 self.category_tables[self.category],
                 self.table_components_widgets[component]["row"],
-                "#e93d3d",
+                theme_var("on-error"),
             )
             self.parent.status_button.setText(f"Invalid number for {component.name} quantity", "red")
             return
@@ -647,7 +658,7 @@ class ComponentsTab(QWidget):
             self.set_table_row_color(
                 self.category_tables[self.category],
                 self.table_components_widgets[component]["row"],
-                "#e93d3d",
+                theme_var("on-error"),
             )
             self.parent.status_button.setText(f"Invalid number for {component.name} price", "red")
             return
@@ -661,9 +672,9 @@ class ComponentsTab(QWidget):
         component.priority = self.table_components_widgets[component]["priority"].currentIndex()
 
         if self.table_components_widgets[component]["priority"].currentText() == "Medium":
-            self.table_components_widgets[component]["priority"].setStyleSheet("QComboBox{background-color: #524b2f; border-radius: 0px;} QComboBox:hover{border-color: #e9bb3d;}")
+            self.table_components_widgets[component]["priority"].setStyleSheet(f"""QComboBox{{background-color: {theme_var('medium-priority')}; border-radius: 0px;}} QComboBox:hover{{border-color: {theme_var('primary-yellow')}}}""")
         elif self.table_components_widgets[component]["priority"].currentText() == "High":
-            self.table_components_widgets[component]["priority"].setStyleSheet("QComboBox{background-color: #4d2323; border-radius: 0px;} QComboBox:hover{border-color: #e93d3d;}")
+            self.table_components_widgets[component]["priority"].setStyleSheet(f"""QComboBox{{background-color: {theme_var('high-priority')}; border-radius: 0px;}} QComboBox:hover{{border-color: {theme_var('primary-red')}}}""")
         else:
             self.table_components_widgets[component]["priority"].setStyleSheet("border-radius: 0px;")
 
@@ -919,22 +930,22 @@ class ComponentsTab(QWidget):
         for i, stock_cost in enumerate(total_stock_costs, start=1):
             lbl = QLabel(stock_cost, self)
             if "Total" in stock_cost:
-                lbl.setStyleSheet("border-top: 1px solid #8C8C8C; border-bottom: 1px solid #8C8C8C")
+                lbl.setStyleSheet(f"border-top: 1px solid {theme_var('outline')}; border-bottom: 1px solid {theme_var('outline')}")
             self.gridLayout_category_stock_costs.addWidget(lbl, i, 0)
             lbl = QLabel(f"${total_stock_costs[stock_cost]:,.2f}", self)
             lbl.setTextInteractionFlags(Qt.TextInteractionFlag.TextSelectableByMouse)
             if "Total" in stock_cost:
-                lbl.setStyleSheet("border-top: 1px solid #8C8C8C; border-bottom: 1px solid #8C8C8C")
+                lbl.setStyleSheet(f"border-top: 1px solid {theme_var('outline')}; border-bottom: 1px solid {theme_var('outline')}")
             self.gridLayout_category_stock_costs.addWidget(lbl, i, 1)
         lbl = QLabel("Total Cost in Stock:", self)
-        lbl.setStyleSheet("border-top: 1px solid #8C8C8C")
+        lbl.setStyleSheet(f"border-top: 1px solid {theme_var('outline')}")
         self.gridLayout_category_stock_costs.addWidget(lbl, i + 1, 0)
         lbl = QLabel(
             f"${self.components_inventory.get_total_stock_cost():,.2f}",
             self,
         )
         # lbl.setTextInteractionFlags(Qt.ItemFlag.TextSelectableByMouse)
-        lbl.setStyleSheet("border-top: 1px solid #8C8C8C")
+        lbl.setStyleSheet(f"border-top: 1px solid {theme_var('outline')}")
         self.gridLayout_category_stock_costs.addWidget(lbl, i + 1, 1)
 
     def set_custom_quantity_limit(self):
@@ -1142,13 +1153,13 @@ class ComponentsTab(QWidget):
 
     def update_component_row_color(self, table, component: Component):
         if component.orders:
-            self.set_table_row_color(table, self.table_components_widgets[component]["row"], "#29422c")
+            self.set_table_row_color(table, self.table_components_widgets[component]["row"], f"{theme_var('table-order-pending')}")
         elif component.quantity <= component.red_quantity_limit:
-            self.set_table_row_color(table, self.table_components_widgets[component]["row"], "#3F1E25")
+            self.set_table_row_color(table, self.table_components_widgets[component]["row"], f"{theme_var('table-red-quantity')}")
         elif component.quantity <= component.yellow_quantity_limit:
-            self.set_table_row_color(table, self.table_components_widgets[component]["row"], "#413C28")
+            self.set_table_row_color(table, self.table_components_widgets[component]["row"], f"{theme_var('table-yellow-quantity')}")
         else:
-            self.set_table_row_color(table, self.table_components_widgets[component]["row"], "#141414")
+            self.set_table_row_color(table, self.table_components_widgets[component]["row"], f"{theme_var('background')}")
 
     def set_table_row_color(self, table: ComponentsTableWidget, row_index: int, color: str):
         for j in range(table.columnCount()):
@@ -1193,7 +1204,7 @@ class ComponentsTab(QWidget):
     def popout(self):
         self.popout_widget = PopoutWidget(self.layout(), self.parent)
         self.popout_widget.show()
-        self.pushButton_popout.setIcon(QIcon("icons/dock_window.png"))
+        self.pushButton_popout.setIcon(Icons.redock_icon)
         self.pushButton_popout.clicked.disconnect()
         self.pushButton_popout.clicked.connect(self.popout_widget.close)
 

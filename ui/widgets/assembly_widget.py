@@ -7,9 +7,10 @@ from PyQt6.QtGui import QColor, QCursor
 from PyQt6.QtWidgets import QComboBox, QDoubleSpinBox, QGroupBox, QHBoxLayout, QLabel, QMenu, QPushButton, QTableWidget, QTableWidgetItem, QVBoxLayout, QWidget
 
 from ui.dialogs.add_assembly_dialog import AddAssemblyDialog
+from ui.theme import theme_var
 from ui.windows.image_viewer import QImageViewer
 from ui.windows.pdf_viewer import PDFViewer
-from utils.colors import darken_color, lighten_color
+from utils.colors import get_contrast_text_color, lighten_color
 from utils.workspace.assembly import Assembly
 from utils.workspace.job_preferences import JobPreferences
 
@@ -35,14 +36,15 @@ class AssemblyWidget(QWidget):
 
         self.assembly_widget = self.findChild(QWidget, "assembly_widget")
         self.assembly_widget.setStyleSheet(
-            """
-QWidget#assembly_widget {
+            f"""
+QWidget#assembly_widget {{
 border: 1px solid %(base_color)s;
 border-bottom-left-radius: 10px;
 border-bottom-right-radius: 10px;
 border-top-right-radius: 0px;
 border-top-left-radius: 0px;
-}"""
+background-color: {theme_var('surface')};
+}}"""
             % {"base_color": self.assembly.color}
         )
         self.verticalLayout_14 = self.findChild(QVBoxLayout, "verticalLayout_14")
@@ -93,76 +95,59 @@ border-top-left-radius: 0px;
 
     def apply_stylesheet_to_toggle_buttons(self, button: QPushButton, widget: QWidget):
         base_color = self.assembly.color
-        hover_color: str = lighten_color(base_color)
-        pressed_color: str = darken_color(base_color)
+        hover_color = lighten_color(base_color)
+        font_color = get_contrast_text_color(base_color)
         button.setObjectName("assembly_button_drop_menu")
         button.setStyleSheet(
-            """
-QPushButton#assembly_button_drop_menu {
-    border: 1px solid rgba(71, 71, 71, 110);
-    background-color: rgba(71, 71, 71, 110);
-    border-top-left-radius: 5px;
-    border-top-right-radius: 5px;
-    border-bottom-left-radius: 5px;
-    border-bottom-right-radius: 5px;
-    color: #EAE9FC;
-    text-align: left;
-}
+            f"""
+            QPushButton#assembly_button_drop_menu {{
+                border: 1px solid {theme_var('surface')};
+                background-color: {theme_var('surface')};
+                border-radius: {theme_var('border-radius')};
+                text-align: left;
+            }}
+            /* CLOSED */
+            QPushButton:!checked#assembly_button_drop_menu {{
+                color: {theme_var('on-surface')};
+                border: 1px solid {theme_var('outline')};
+            }}
 
-QPushButton:hover#assembly_button_drop_menu {
-    background-color: rgba(76, 76, 76, 110);
-    border: 1px solid %(base_color)s;
-}
+            QPushButton:!checked:hover#assembly_button_drop_menu {{
+                background-color: {theme_var('outline-variant')};
+            }}
+            QPushButton:!checked:pressed#assembly_button_drop_menu{{
+                color: {theme_var('on-surface')};
+                background-color: {theme_var('surface')};
+            }}
+            /* OPENED */
+            QPushButton:checked#assembly_button_drop_menu {{
+                color: {font_color};
+                border-color: {base_color};
+                background-color: {base_color};
+                border-top-left-radius: {theme_var('border-radius')};
+                border-top-right-radius: {theme_var('border-radius')};
+                border-bottom-left-radius: 0px;
+                border-bottom-right-radius: 0px;
+            }}
 
-QPushButton:pressed#assembly_button_drop_menu {
-    background-color: %(base_color)s;
-    color: #EAE9FC;
-}
+            QPushButton:checked:hover#assembly_button_drop_menu {{
+                background-color: {hover_color};
+            }}
 
-QPushButton:!checked#assembly_button_drop_menu {
-    color: #8C8C8C;
-}
-
-QPushButton:!checked:pressed#assembly_button_drop_menu {
-    color: #EAE9FC;
-}
-
-QPushButton:checked#assembly_button_drop_menu {
-    color: #EAE9FC;
-    border-color: %(base_color)s;
-    background-color: %(base_color)s;
-    border-top-left-radius: 5px;
-    border-top-right-radius: 5px;
-    border-bottom-left-radius: 0px;
-    border-bottom-right-radius: 0px;
-}
-
-QPushButton:checked:hover#assembly_button_drop_menu {
-    background-color: %(hover_color)s;
-}
-
-QPushButton:checked:pressed#assembly_button_drop_menu {
-    color: #EAE9FC;
-    background-color: %(pressed_color)s;
-}
-"""
-            % {
-                "base_color": base_color,
-                "hover_color": hover_color,
-                "pressed_color": pressed_color,
-            }
+            QPushButton:checked:pressed#assembly_button_drop_menu {{
+                background-color: {base_color};
+            }}"""
         )
         widget.setObjectName("assembly_widget_drop_menu")
         widget.setStyleSheet(
-            """QWidget#assembly_widget_drop_menu{
-            border: 1px solid %(base_color)s;
+            f"""QWidget#assembly_widget_drop_menu{{
+            border: 1px solid {base_color};
             border-top-left-radius: 0px;
             border-top-right-radius: 0px;
             border-bottom-left-radius: 10px;
             border-bottom-right-radius: 10px;
-            };
-            """
-            % {"base_color": base_color}
+            background-color: {theme_var('background')};
+            }}"""
         )
 
     def open_assembly_image(self):

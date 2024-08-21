@@ -5,9 +5,8 @@ from PyQt6 import uic
 from PyQt6.QtGui import QIcon
 from PyQt6.QtWidgets import QAbstractItemView, QDialog, QPushButton
 
-from ui.custom_widgets import set_default_dialog_button_stylesheet
+from ui.icons import Icons
 from utils.dialog_buttons import DialogButtons
-from utils.dialog_icons import Icons
 
 
 class SelectItemDialog(QDialog):
@@ -39,7 +38,7 @@ class SelectItemDialog(QDialog):
         self.response = button.text()
         self.accept()
 
-    def load_dialog_buttons(self):
+    def load_dialog_buttons(self):  # Dont ask me what this is supposed to do
         button_names = self.button_names.split(", ")
         for index, name in enumerate(button_names):
             if name in [DialogButtons.clone, DialogButtons.set]:
@@ -50,14 +49,11 @@ class SelectItemDialog(QDialog):
                 button.setIcon(QIcon(f"icons/dialog_{name.lower()}.svg"))
             else:
                 button = QPushButton(name)
+
             if index == 0:
                 button.setObjectName("default_dialog_button")
-                set_default_dialog_button_stylesheet(button)
+            button.setDefault(True)
             button.setFixedWidth(100)
-            if name == DialogButtons.copy:
-                button.setToolTip("Will copy this window to your clipboard.")
-            elif name == DialogButtons.save and self.icon_name == Icons.critical:
-                button.setToolTip("Will save this error log to the logs directory.")
             button.clicked.connect(partial(self.button_press, button))
             self.buttonsLayout.addWidget(button)
 

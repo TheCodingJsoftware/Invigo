@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>382</width>
-    <height>110</height>
+    <height>109</height>
    </rect>
   </property>
   <property name="maximumSize">
@@ -100,6 +100,9 @@
             <property name="text">
              <string>Load Job</string>
             </property>
+            <property name="default">
+             <bool>true</bool>
+            </property>
            </widget>
           </item>
           <item>
@@ -112,14 +115,14 @@
             </property>
             <property name="minimumSize">
              <size>
-              <width>25</width>
-              <height>25</height>
+              <width>30</width>
+              <height>30</height>
              </size>
             </property>
             <property name="maximumSize">
              <size>
-              <width>25</width>
-              <height>25</height>
+              <width>30</width>
+              <height>30</height>
              </size>
             </property>
             <property name="cursor">
@@ -129,12 +132,7 @@
              <string>Will open up the printout in your default web browser.</string>
             </property>
             <property name="styleSheet">
-             <string notr="true">
-QPushButton#pushButton_open_in_browser:flat {
-    background-color: transparent;
-	border-color: transparent;
-}
-</string>
+             <string notr="true"/>
             </property>
             <property name="text">
              <string/>
@@ -168,31 +166,18 @@ QPushButton#pushButton_open_in_browser:flat {
            <widget class="QPushButton" name="pushButton_delete">
             <property name="minimumSize">
              <size>
-              <width>25</width>
-              <height>25</height>
+              <width>30</width>
+              <height>30</height>
              </size>
             </property>
             <property name="maximumSize">
              <size>
-              <width>25</width>
-              <height>25</height>
+              <width>30</width>
+              <height>30</height>
              </size>
             </property>
             <property name="styleSheet">
-             <string notr="true">
-QPushButton#pushButton_delete {
-    background-color: rgba(71, 71, 71, 0.6);
-	border: 1px solid rgba(71, 71, 71, 0.6);
-	border-radius: 5px;
-}
-
-QPushButton:hover#pushButton_delete {
-    border-color: #e73b40;
-}
-
-QPushButton:pressed#pushButton_delete {
-    background-color: #e73b40;
-}</string>
+             <string notr="true"/>
             </property>
             <property name="text">
              <string/>

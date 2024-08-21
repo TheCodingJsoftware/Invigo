@@ -54,7 +54,7 @@
     <item>
      <layout class="QHBoxLayout" name="horizontalLayout_tab_buttons">
       <property name="spacing">
-       <number>1</number>
+       <number>0</number>
       </property>
      </layout>
     </item>
@@ -86,7 +86,7 @@
       <property name="currentIndex">
        <number>0</number>
       </property>
-      <widget class="QWidget" name="components_tab" native="true">
+      <widget class="QWidget" name="components_tab">
        <layout class="QVBoxLayout" name="verticalLayout_41">
         <property name="spacing">
          <number>6</number>
@@ -134,7 +134,7 @@
         </item>
        </layout>
       </widget>
-      <widget class="QWidget" name="sheets_in_inventory_tab" native="true">
+      <widget class="QWidget" name="sheets_in_inventory_tab">
        <layout class="QVBoxLayout" name="verticalLayout_13">
         <property name="spacing">
          <number>6</number>
@@ -173,7 +173,7 @@
         </item>
        </layout>
       </widget>
-      <widget class="QWidget" name="sheet_settings_tab" native="true">
+      <widget class="QWidget" name="sheet_settings_tab">
        <layout class="QVBoxLayout" name="verticalLayout">
         <property name="spacing">
          <number>6</number>
@@ -212,7 +212,7 @@
         </item>
        </layout>
       </widget>
-      <widget class="QWidget" name="laser_cut_inventory_tab" native="true">
+      <widget class="QWidget" name="laser_cut_inventory_tab">
        <layout class="QVBoxLayout" name="verticalLayout_12">
         <property name="spacing">
          <number>6</number>
@@ -248,7 +248,7 @@
         </item>
        </layout>
       </widget>
-      <widget class="QWidget" name="job_planner_tab" native="true">
+      <widget class="QWidget" name="job_planner_tab">
        <layout class="QVBoxLayout" name="verticalLayout_11">
         <property name="leftMargin">
          <number>0</number>
@@ -286,7 +286,7 @@
               <item>
                <widget class="QTabWidget" name="tabWidget_3">
                 <property name="currentIndex">
-                 <number>1</number>
+                 <number>0</number>
                 </property>
                 <property name="documentMode">
                  <bool>true</bool>
@@ -312,8 +312,8 @@
                       <rect>
                        <x>0</x>
                        <y>0</y>
-                       <width>1399</width>
-                       <height>697</height>
+                       <width>1401</width>
+                       <height>685</height>
                       </rect>
                      </property>
                      <layout class="QVBoxLayout" name="verticalLayout_17">
@@ -353,8 +353,8 @@
                       <rect>
                        <x>0</x>
                        <y>0</y>
-                       <width>1399</width>
-                       <height>697</height>
+                       <width>1401</width>
+                       <height>685</height>
                       </rect>
                      </property>
                      <layout class="QVBoxLayout" name="verticalLayout_20">
@@ -389,10 +389,19 @@
                 <property name="icon">
                  <iconset theme="emblem-synchronized"/>
                 </property>
+                <property name="flat">
+                 <bool>true</bool>
+                </property>
                </widget>
               </item>
               <item>
                <widget class="QLabel" name="label_job_save_status">
+                <property name="font">
+                 <font>
+                  <pointsize>12</pointsize>
+                  <bold>true</bold>
+                 </font>
+                </property>
                 <property name="text">
                  <string/>
                 </property>
@@ -414,6 +423,9 @@
                   <property name="icon">
                    <iconset theme="document-save"/>
                   </property>
+                  <property name="flat">
+                   <bool>true</bool>
+                  </property>
                  </widget>
                 </item>
                 <item>
@@ -421,79 +433,64 @@
                   <property name="text">
                    <string>Save As...</string>
                   </property>
+                  <property name="flat">
+                   <bool>true</bool>
+                  </property>
                  </widget>
                 </item>
                </layout>
               </item>
               <item>
                <widget class="QPushButton" name="pushButton_send_to_production_planner">
+                <property name="minimumSize">
+                 <size>
+                  <width>0</width>
+                  <height>40</height>
+                 </size>
+                </property>
+                <property name="font">
+                 <font>
+                  <bold>true</bold>
+                 </font>
+                </property>
                 <property name="toolTip">
                  <string>WIll be prompted to select jobs to send to production planner on invi.go</string>
                 </property>
                 <property name="styleSheet">
-                 <string notr="true">QPushButton#pushButton_send_to_production_planner{
-	background-color: #3daee9;
-	border: 1px solid #3daee9;
-	border-radius: 8px;
-	padding: 8px 16px;
-	font-weight: bold;
-}
-QPushButton#pushButton_send_to_production_planner:hover{
-	background-color: #48b6ed;
-	border-color: #48b6ed;
-}
-QPushButton#pushButton_send_to_production_planner:pressed{
-	color: white;
-	background-color: #2b92c5;
-}
-QPushButton#pushButton_send_to_production_planner:disabled{
-	background-color: rgba(44, 44, 44, 130);
-	border: 1px solid rgba(57, 57, 57, 130);
-	border-radius: 4px;
-}</string>
+                 <string notr="true"/>
                 </property>
                 <property name="text">
-                 <string> Send Jobs to Production Planner</string>
+                 <string>Send Jobs to Production Planner</string>
                 </property>
-                <property name="icon">
-                 <iconset>
-                  <normalon>../../icons/edit_calendar.png</normalon>
-                 </iconset>
+                <property name="default">
+                 <bool>true</bool>
                 </property>
                </widget>
               </item>
               <item>
                <widget class="QPushButton" name="pushButton_send_to_workspace">
+                <property name="minimumSize">
+                 <size>
+                  <width>0</width>
+                  <height>40</height>
+                 </size>
+                </property>
+                <property name="font">
+                 <font>
+                  <bold>true</bold>
+                 </font>
+                </property>
                 <property name="toolTip">
                  <string>Will be prompted to select jobs to send jobs directly to workspace skipping production planner</string>
                 </property>
                 <property name="styleSheet">
-                 <string notr="true">QPushButton#pushButton_send_to_workspace{
-	background-color: #3daee9;
-	border: 1px solid #3daee9;
-	border-radius: 8px;
-	padding: 8px 16px;
-	font-weight: bold;
-}
-QPushButton#pushButton_send_to_workspace:hover{
-	background-color: #48b6ed;
-	border-color: #48b6ed;
-}
-QPushButton#pushButton_send_to_workspace:pressed{
-	color: white;
-	background-color: #2b92c5;
-}
-QPushButton#pushButton_send_to_workspace:disabled{
-	background-color: rgba(44, 44, 44, 130);
-	border: 1px solid rgba(57, 57, 57, 130);
-	border-radius: 4px;
-}</string>
+                 <string notr="true"/>
                 </property>
                 <property name="text">
-                 <string> Send Jobs to Workspace</string>
+                 <string>Send Jobs to Workspace</string>
                 </property>
-                <property name="icon">
-                 <iconset theme="emblem-shared"/>
+                <property name="default">
+                 <bool>true</bool>
                 </property>
                </widget>
               </item>
@@ -505,7 +502,7 @@ QPushButton#pushButton_send_to_workspace:disabled{
         </item>
        </layout>
       </widget>
-      <widget class="QWidget" name="job_quoter_tab" native="true">
+      <widget class="QWidget" name="job_quoter_tab">
        <layout class="QVBoxLayout" name="verticalLayout_7">
         <property name="leftMargin">
          <number>0</number>
@@ -597,7 +594,7 @@ QPushButton#pushButton_send_to_workspace:disabled{
             <item>
              <widget class="QTabWidget" name="tabWidget_4">
               <property name="currentIndex">
-               <number>1</number>
+               <number>0</number>
               </property>
               <property name="documentMode">
                <bool>true</bool>
@@ -643,6 +640,9 @@ QPushButton#pushButton_send_to_workspace:disabled{
                     <property name="icon">
                      <iconset theme="edit-clear"/>
                     </property>
+                    <property name="flat">
+                     <bool>true</bool>
+                    </property>
                    </widget>
                   </item>
                   <item>
@@ -652,6 +652,9 @@ QPushButton#pushButton_send_to_workspace:disabled{
                     </property>
                     <property name="icon">
                      <iconset theme="emblem-synchronized"/>
+                    </property>
+                    <property name="flat">
+                     <bool>true</bool>
                     </property>
                    </widget>
                   </item>
@@ -676,6 +679,9 @@ QPushButton#pushButton_send_to_workspace:disabled{
                   </property>
                   <property name="icon">
                    <iconset theme="emblem-symbolic-link"/>
+                  </property>
+                  <property name="flat">
+                   <bool>true</bool>
                   </property>
                  </widget>
                 </item>
@@ -702,8 +708,8 @@ QPushButton#pushButton_send_to_workspace:disabled{
                     <rect>
                      <x>0</x>
                      <y>0</y>
-                     <width>1404</width>
-                     <height>306</height>
+                     <width>1405</width>
+                     <height>300</height>
                     </rect>
                    </property>
                    <layout class="QVBoxLayout" name="verticalLayout_27">
@@ -734,6 +740,9 @@ QPushButton#pushButton_send_to_workspace:disabled{
                   <property name="icon">
                    <iconset theme="emblem-synchronized"/>
                   </property>
+                  <property name="flat">
+                   <bool>true</bool>
+                  </property>
                  </widget>
                 </item>
                </layout>
@@ -753,8 +762,8 @@ QPushButton#pushButton_send_to_workspace:disabled{
                     <rect>
                      <x>0</x>
                      <y>0</y>
-                     <width>1404</width>
-                     <height>306</height>
+                     <width>1405</width>
+                     <height>300</height>
                     </rect>
                    </property>
                    <layout class="QVBoxLayout" name="verticalLayout_31">
@@ -784,6 +793,9 @@ QPushButton#pushButton_send_to_workspace:disabled{
                   </property>
                   <property name="icon">
                    <iconset theme="emblem-synchronized"/>
+                  </property>
+                  <property name="flat">
+                   <bool>true</bool>
                   </property>
                  </widget>
                 </item>
@@ -820,6 +832,9 @@ QPushButton#pushButton_send_to_workspace:disabled{
                 <property name="icon">
                  <iconset theme="document-save"/>
                 </property>
+                <property name="flat">
+                 <bool>true</bool>
+                </property>
                </widget>
               </item>
               <item>
@@ -827,79 +842,64 @@ QPushButton#pushButton_send_to_workspace:disabled{
                 <property name="text">
                  <string>Save As...</string>
                 </property>
+                <property name="flat">
+                 <bool>true</bool>
+                </property>
                </widget>
               </item>
              </layout>
             </item>
             <item>
              <widget class="QPushButton" name="pushButton_send_to_production_planner_2">
+              <property name="minimumSize">
+               <size>
+                <width>0</width>
+                <height>40</height>
+               </size>
+              </property>
+              <property name="font">
+               <font>
+                <bold>true</bold>
+               </font>
+              </property>
               <property name="toolTip">
                <string>WIll be prompted to select jobs to send to production planner on invi.go</string>
               </property>
               <property name="styleSheet">
-               <string notr="true">QPushButton#pushButton_send_to_production_planner_2{
-	background-color: #3daee9;
-	border: 1px solid #3daee9;
-	border-radius: 8px;
-	padding: 8px 16px;
-	font-weight: bold;
-}
-QPushButton#pushButton_send_to_production_planner_2:hover{
-	background-color: #48b6ed;
-	border-color: #48b6ed;
-}
-QPushButton#pushButton_send_to_production_planner_2:pressed{
-	color: white;
-	background-color: #2b92c5;
-}
-QPushButton#pushButton_send_to_production_planner_2:disabled{
-	background-color: rgba(44, 44, 44, 130);
-	border: 1px solid rgba(57, 57, 57, 130);
-	border-radius: 4px;
-}</string>
+               <string notr="true"/>
               </property>
               <property name="text">
-               <string> Send Jobs to Production Planner</string>
+               <string>Send Jobs to Production Planner</string>
               </property>
-              <property name="icon">
-               <iconset>
-                <normalon>../../icons/edit_calendar.png</normalon>
-               </iconset>
+              <property name="default">
+               <bool>true</bool>
               </property>
              </widget>
             </item>
             <item>
              <widget class="QPushButton" name="pushButton_send_to_workspace_2">
+              <property name="minimumSize">
+               <size>
+                <width>0</width>
+                <height>40</height>
+               </size>
+              </property>
+              <property name="font">
+               <font>
+                <bold>true</bold>
+               </font>
+              </property>
               <property name="toolTip">
                <string>Will be prompted to select jobs to send jobs directly to workspace skipping production planner</string>
               </property>
               <property name="styleSheet">
-               <string notr="true">QPushButton#pushButton_send_to_workspace_2{
-	background-color: #3daee9;
-	border: 1px solid #3daee9;
-	border-radius: 8px;
-	padding: 8px 16px;
-	font-weight: bold;
-}
-QPushButton#pushButton_send_to_workspace_2:hover{
-	background-color: #48b6ed;
-	border-color: #48b6ed;
-}
-QPushButton#pushButton_send_to_workspace_2:pressed{
-	color: white;
-	background-color: #2b92c5;
-}
-QPushButton#pushButton_send_to_workspace_2:disabled{
-	background-color: rgba(44, 44, 44, 130);
-	border: 1px solid rgba(57, 57, 57, 130);
-	border-radius: 4px;
-}</string>
+               <string notr="true"/>
               </property>
               <property name="text">
-               <string> Send Jobs to Workspace</string>
+               <string>Send Jobs to Workspace</string>
               </property>
-              <property name="icon">
-               <iconset theme="emblem-shared"/>
+              <property name="default">
+               <bool>true</bool>
               </property>
              </widget>
             </item>
@@ -909,7 +909,7 @@ QPushButton#pushButton_send_to_workspace_2:disabled{
         </item>
        </layout>
       </widget>
-      <widget class="QWidget" name="quote_generator_tab" native="true">
+      <widget class="QWidget" name="quote_generator_tab">
        <layout class="QVBoxLayout" name="verticalLayout_25" stretch="0">
         <property name="spacing">
          <number>6</number>
@@ -1052,6 +1052,9 @@ QPushButton#pushButton_send_to_workspace_2:disabled{
                        <property name="icon">
                         <iconset theme="edit-clear"/>
                        </property>
+                       <property name="flat">
+                        <bool>true</bool>
+                       </property>
                       </widget>
                      </item>
                      <item>
@@ -1061,6 +1064,9 @@ QPushButton#pushButton_send_to_workspace_2:disabled{
                        </property>
                        <property name="icon">
                         <iconset theme="emblem-synchronized"/>
+                       </property>
+                       <property name="flat">
+                        <bool>true</bool>
                        </property>
                       </widget>
                      </item>
@@ -1079,6 +1085,9 @@ QPushButton#pushButton_send_to_workspace_2:disabled{
                      </property>
                      <property name="text">
                       <string>Load 0 Nests</string>
+                     </property>
+                     <property name="flat">
+                      <bool>true</bool>
                      </property>
                     </widget>
                    </item>
@@ -1112,7 +1121,7 @@ QPushButton#pushButton_send_to_workspace_2:disabled{
                         <x>0</x>
                         <y>0</y>
                         <width>1366</width>
-                        <height>724</height>
+                        <height>728</height>
                        </rect>
                       </property>
                       <layout class="QVBoxLayout" name="verticalLayout_6">
@@ -1139,6 +1148,9 @@ QPushButton#pushButton_send_to_workspace_2:disabled{
                     <widget class="QPushButton" name="pushButton_refresh_saved_nests">
                      <property name="text">
                       <string>Refresh</string>
+                     </property>
+                     <property name="flat">
+                      <bool>true</bool>
                      </property>
                     </widget>
                    </item>
@@ -1181,7 +1193,7 @@ QPushButton#pushButton_send_to_workspace_2:disabled{
                         <x>0</x>
                         <y>0</y>
                         <width>1366</width>
-                        <height>724</height>
+                        <height>728</height>
                        </rect>
                       </property>
                       <layout class="QVBoxLayout" name="verticalLayout_3">
@@ -1208,6 +1220,9 @@ QPushButton#pushButton_send_to_workspace_2:disabled{
                     <widget class="QPushButton" name="pushButton_refresh_previous_nests">
                      <property name="text">
                       <string>Refresh</string>
+                     </property>
+                     <property name="flat">
+                      <bool>true</bool>
                      </property>
                     </widget>
                    </item>
@@ -1238,6 +1253,9 @@ QPushButton#pushButton_send_to_workspace_2:disabled{
                    <property name="icon">
                     <iconset theme="document-save"/>
                    </property>
+                   <property name="flat">
+                    <bool>true</bool>
+                   </property>
                   </widget>
                  </item>
                  <item>
@@ -1247,6 +1265,9 @@ QPushButton#pushButton_send_to_workspace_2:disabled{
                    </property>
                    <property name="icon">
                     <iconset theme="document-save-as"/>
+                   </property>
+                   <property name="flat">
+                    <bool>true</bool>
                    </property>
                   </widget>
                  </item>
@@ -1266,30 +1287,13 @@ QPushButton#pushButton_send_to_workspace_2:disabled{
                   </font>
                  </property>
                  <property name="styleSheet">
-                  <string notr="true">QPushButton#pushButton_generate_quote{
-    color: #171717;
-	background-color: #3daee9;
-	border: 1px solid #3daee9;
-	border-radius: 8px;
-	padding: 8px 16px;
-	font-weight: bold;
-}
-QPushButton#pushButton_generate_quote:hover{
-	background-color: #48b6ed;
-	border-color: #48b6ed;
-}
-QPushButton#pushButton_generate_quote:pressed{
-	background-color: #2b92c5;
-}
-QPushButton#pushButton_generate_quote:disabled{
-	background-color: rgba(44, 44, 44, 130);
-	border: 1px solid rgba(57, 57, 57, 130);
-	color: rgb(144, 144, 144);
-	border-radius: 4px;
-}</string>
+                  <string notr="true"/>
                  </property>
                  <property name="text">
                   <string>Generate Printout</string>
+                 </property>
+                 <property name="default">
+                  <bool>true</bool>
                  </property>
                 </widget>
                </item>
@@ -1302,7 +1306,7 @@ QPushButton#pushButton_generate_quote:disabled{
         </item>
        </layout>
       </widget>
-      <widget class="QWidget" name="workspace_tab" native="true">
+      <widget class="QWidget" name="workspace_tab">
        <layout class="QHBoxLayout" name="horizontalLayout_2">
         <item>
          <widget class="QSplitter" name="splitter_4">
@@ -1366,6 +1370,9 @@ QPushButton#pushButton_generate_quote:disabled{
                     <property name="icon">
                      <iconset theme="edit-clear"/>
                     </property>
+                    <property name="flat">
+                     <bool>true</bool>
+                    </property>
                    </widget>
                   </item>
                   <item>
@@ -1375,6 +1382,9 @@ QPushButton#pushButton_generate_quote:disabled{
                     </property>
                     <property name="icon">
                      <iconset theme="emblem-synchronized"/>
+                    </property>
+                    <property name="flat">
+                     <bool>true</bool>
                     </property>
                    </widget>
                   </item>
@@ -1393,6 +1403,9 @@ QPushButton#pushButton_generate_quote:disabled{
                   </property>
                   <property name="text">
                    <string>Load 0 Nests</string>
+                  </property>
+                  <property name="flat">
+                   <bool>true</bool>
                   </property>
                  </widget>
                 </item>
@@ -1461,11 +1474,19 @@ QPushButton#pushButton_generate_quote:disabled{
      <addaction name="actionQuote_Generator"/>
      <addaction name="actionWorkspace"/>
     </widget>
+    <widget class="QMenu" name="menuTheme">
+     <property name="title">
+      <string>Theme</string>
+     </property>
+     <addaction name="actionLight"/>
+     <addaction name="actionDark"/>
+    </widget>
     <addaction name="actionChange_tables_font"/>
     <addaction name="actionSet_Order_Number"/>
     <addaction name="action_Set_User_Workspace"/>
     <addaction name="menuVisible_Tabs"/>
     <addaction name="actionStart_Maximized"/>
+    <addaction name="menuTheme"/>
     <addaction name="separator"/>
     <addaction name="actionEditTags"/>
    </widget>
@@ -1653,11 +1674,11 @@ QPushButton#pushButton_generate_quote:disabled{
    </property>
   </action>
   <action name="actionSort">
+   <property name="icon">
+    <iconset theme="format-justify-center"/>
+   </property>
    <property name="text">
     <string>Sort</string>
-   </property>
-   <property name="iconVisibleInMenu">
-    <bool>false</bool>
    </property>
   </action>
   <action name="actionAdd_Purchase_Order">
@@ -1778,11 +1799,11 @@ QPushButton#pushButton_generate_quote:disabled{
    </property>
   </action>
   <action name="actionOpenMenu">
+   <property name="icon">
+    <iconset theme="window-new"/>
+   </property>
    <property name="text">
     <string>Open Menu</string>
-   </property>
-   <property name="iconVisibleInMenu">
-    <bool>true</bool>
    </property>
   </action>
   <action name="action_Set_User_Workspace">
@@ -2020,6 +2041,16 @@ QPushButton#pushButton_generate_quote:disabled{
    </property>
    <property name="text">
     <string>Workspace</string>
+   </property>
+  </action>
+  <action name="actionLight">
+   <property name="text">
+    <string>Light</string>
+   </property>
+  </action>
+  <action name="actionDark">
+   <property name="text">
+    <string>Dark</string>
    </property>
   </action>
  </widget>

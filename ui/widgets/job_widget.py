@@ -13,9 +13,11 @@ from ui.custom.assembly_quoting_widget import AssemblyQuotingWidget
 from ui.custom.job_flowtag_timeline_widget import JobFlowtagTimelineWidget
 from ui.custom_widgets import AssemblyMultiToolBox, MultiToolBox, QLineEdit
 from ui.dialogs.add_assembly_dialog import AddAssemblyDialog
+from ui.icons import Icons
+from ui.theme import theme_var
 from ui.widgets.nest_widget import NestWidget
 from utils import colors
-from utils.colors import darken_color, lighten_color
+from utils.colors import get_contrast_text_color, lighten_color
 from utils.inventory.nest import Nest
 from utils.workspace.assembly import Assembly
 from utils.workspace.job import Job, JobColor, JobStatus
@@ -153,6 +155,7 @@ class JobWidget(QWidget):
 
         self.pushButton_reload_job = self.findChild(QPushButton, "pushButton_reload_job")
         self.pushButton_reload_job.clicked.connect(self.reload_job)
+        self.pushButton_reload_job.setIcon(Icons.refresh_icon)
 
         self.doubleSpinBox_order_number: QDoubleSpinBox = self.findChild(QDoubleSpinBox, "doubleSpinBox_order_number")
         self.doubleSpinBox_order_number.setValue(self.job.order_number)
@@ -295,75 +298,66 @@ class JobWidget(QWidget):
 
     def apply_stylesheet_to_toggle_buttons(self, button: QPushButton, widget: QWidget):
         base_color = JobColor.get_color(self.job.status)
-        hover_color: str = lighten_color(base_color)
-        pressed_color: str = darken_color(base_color)
+        hover_color = lighten_color(base_color)
+        inverted_color = get_contrast_text_color(base_color)
         button.setObjectName("assembly_button_drop_menu")
         button.setStyleSheet(
-            """
-QPushButton#assembly_button_drop_menu {
-    border: 1px solid rgba(71, 71, 71, 110);
-    background-color: rgba(71, 71, 71, 110);
-    border-top-left-radius: 5px;
-    border-top-right-radius: 5px;
-    border-bottom-left-radius: 5px;
-    border-bottom-right-radius: 5px;
-    color: #EAE9FC;
+            f"""
+QPushButton#assembly_button_drop_menu {{
+    border: 1px solid {theme_var('surface')};
+    background-color: {theme_var('surface')};
+    border-radius: {theme_var('border-radius')};
+    color: {theme_var('on-surface')};
     text-align: left;
-}
+}}
+/* CLOSED */
+QPushButton:!checked#assembly_button_drop_menu {{
+    color: {theme_var('on-surface')};
+    border: 1px solid {theme_var('outline')};
+}}
 
-QPushButton:hover#assembly_button_drop_menu {
-    background-color: rgba(76, 76, 76, 110);
-    border: 1px solid %(base_color)s;
-}
-
-QPushButton:pressed#assembly_button_drop_menu {
-    background-color: %(base_color)s;
-    color: #171717;
-}
-
-QPushButton:!checked#assembly_button_drop_menu {
-    color: #8C8C8C;
-}
-
-QPushButton:!checked:pressed#assembly_button_drop_menu {
-    color: #EAE9FC;
-}
-
-QPushButton:checked#assembly_button_drop_menu {
-    color: #171717;
+QPushButton:!checked:hover#assembly_button_drop_menu {{
+    background-color: {theme_var('outline-variant')};
+}}
+QPushButton:!checked:pressed#assembly_button_drop_menu {{
+    background-color: {theme_var('surface')};
+}}
+/* OPENED */
+QPushButton:checked#assembly_button_drop_menu {{
+    color: %(inverted_color)s;
     border-color: %(base_color)s;
     background-color: %(base_color)s;
-    border-top-left-radius: 5px;
-    border-top-right-radius: 5px;
+    border-top-left-radius: {theme_var('border-radius')};
+    border-top-right-radius: {theme_var('border-radius')};
     border-bottom-left-radius: 0px;
     border-bottom-right-radius: 0px;
-}
+}}
 
-QPushButton:checked:hover#assembly_button_drop_menu {
+QPushButton:checked:hover#assembly_button_drop_menu {{
     background-color: %(hover_color)s;
-}
+}}
 
-QPushButton:checked:pressed#assembly_button_drop_menu {
-    color: #171717;
+QPushButton:checked:pressed#assembly_button_drop_menu {{
     background-color: %(pressed_color)s;
-}
+}}
 """
             % {
                 "base_color": base_color,
                 "hover_color": hover_color,
-                "pressed_color": pressed_color,
+                "pressed_color": base_color,
+                "inverted_color": inverted_color,
             }
         )
         widget.setObjectName("assembly_widget_drop_menu")
         widget.setStyleSheet(
-            """QWidget#assembly_widget_drop_menu{
+            f"""QWidget#assembly_widget_drop_menu{{
             border: 1px solid %(base_color)s;
             border-top-left-radius: 0px;
             border-top-right-radius: 0px;
             border-bottom-left-radius: 10px;
             border-bottom-right-radius: 10px;
-            };
-            """
+            background-color: {theme_var('background')};
+            }}"""
             % {"base_color": base_color}
         )
 
@@ -414,21 +408,27 @@ QPushButton:checked:pressed#assembly_button_drop_menu {
 
         toggle_button = self.assemblies_toolbox.getLastToggleButton()
 
-        job_name_input: QLineEdit = self.assemblies_toolbox.getLastInputBox()
-        job_name_input.textChanged.connect(partial(self.assembly_name_renamed, assembly, job_name_input))
+        name_input: QLineEdit = self.assemblies_toolbox.getLastInputBox()
+        name_input.textChanged.connect(partial(self.assembly_name_renamed, assembly, name_input))
 
-        job_name_input.textChanged.connect(
+        name_input.textChanged.connect(
             partial(
-                self.job_preferences.group_toolbox_toggled,
-                job_name_input,
+                self.job_preferences.assembly_toolbox_toggled,
+                name_input,
                 toggle_button,
+                assembly_widget.pushButton_laser_cut_parts,
+                assembly_widget.pushButton_components,
+                assembly_widget.pushButton_sub_assemblies,
             )
         )
         toggle_button.clicked.connect(
             partial(
-                self.job_preferences.group_toolbox_toggled,
-                job_name_input,
+                self.job_preferences.assembly_toolbox_toggled,
+                name_input,
                 toggle_button,
+                assembly_widget.pushButton_laser_cut_parts,
+                assembly_widget.pushButton_components,
+                assembly_widget.pushButton_sub_assemblies,
             )
         )
 
@@ -441,7 +441,7 @@ QPushButton:checked:pressed#assembly_button_drop_menu {
         assembly_widget.pushButton_laser_cut_parts.clicked.connect(
             partial(
                 self.job_preferences.assembly_toolbox_toggled,
-                job_name_input,
+                name_input,
                 toggle_button,
                 assembly_widget.pushButton_laser_cut_parts,
                 assembly_widget.pushButton_components,
@@ -451,7 +451,7 @@ QPushButton:checked:pressed#assembly_button_drop_menu {
         assembly_widget.pushButton_components.clicked.connect(
             partial(
                 self.job_preferences.assembly_toolbox_toggled,
-                job_name_input,
+                name_input,
                 toggle_button,
                 assembly_widget.pushButton_laser_cut_parts,
                 assembly_widget.pushButton_components,
@@ -461,7 +461,7 @@ QPushButton:checked:pressed#assembly_button_drop_menu {
         assembly_widget.pushButton_sub_assemblies.clicked.connect(
             partial(
                 self.job_preferences.assembly_toolbox_toggled,
-                job_name_input,
+                name_input,
                 toggle_button,
                 assembly_widget.pushButton_laser_cut_parts,
                 assembly_widget.pushButton_components,
@@ -473,6 +473,8 @@ QPushButton:checked:pressed#assembly_button_drop_menu {
 
         if self.job_preferences.is_assembly_closed(assembly.name):
             self.assemblies_toolbox.closeLastToolBox()
+        else:
+            self.assemblies_toolbox.openLastToolBox()
 
         assembly_widget.pushButton_laser_cut_parts.setChecked(self.job_preferences.is_assembly_laser_cut_closed(assembly.name))
         assembly_widget.laser_cut_widget.setHidden(not self.job_preferences.is_assembly_laser_cut_closed(assembly.name))
@@ -624,8 +626,8 @@ QPushButton:checked:pressed#assembly_button_drop_menu {
         self.price_calculator.item_profit_margin = self.doubleSpinBox_items_profit_margin.value() / 100
         self.price_calculator.sheet_overhead = self.doubleSpinBox_sheets_overhead.value() / 100
         self.price_calculator.sheet_profit_margin = self.doubleSpinBox_sheets_profit_margin.value() / 100
-        self.price_calculator.components_use_overhead = self. checkBox_components_use_overhead.isChecked()
-        self.price_calculator.components_use_profit_margin = self. checkBox_components_use_profit_margin.isChecked()
+        self.price_calculator.components_use_overhead = self.checkBox_components_use_overhead.isChecked()
+        self.price_calculator.components_use_profit_margin = self.checkBox_components_use_profit_margin.isChecked()
         self.changes_made()
 
     def nest_settings_changed(self, nest: Nest):
@@ -633,7 +635,7 @@ QPushButton:checked:pressed#assembly_button_drop_menu {
         self.changes_made()
 
     def changes_made(self):
-        with contextlib.suppress(AttributeError): # Happens when reloading when no flowtags set.
+        with contextlib.suppress(AttributeError):  # Happens when reloading when no flowtags set.
             self.flowtag_timeline.load_tag_timelines()
         self.parent.job_changed(self.job)
         self.update_nest_parts_assemblies()

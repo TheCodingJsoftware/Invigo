@@ -32,7 +32,7 @@
    <item>
     <widget class="QWidget" name="widget" native="true">
      <property name="contextMenuPolicy">
-      <enum>Qt::ActionsContextMenu</enum>
+      <enum>Qt::ContextMenuPolicy::ActionsContextMenu</enum>
      </property>
      <property name="autoFillBackground">
       <bool>false</bool>
@@ -89,7 +89,7 @@ Select a paint item to edit.
 Double click to delete.</string>
           </property>
           <property name="alignment">
-           <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+           <set>Qt::AlignmentFlag::AlignLeading|Qt::AlignmentFlag::AlignLeft|Qt::AlignmentFlag::AlignTop</set>
           </property>
          </widget>
         </item>
@@ -207,7 +207,7 @@ Double click to delete.</string>
                  <string>Price per gallon:</string>
                 </property>
                 <property name="alignment">
-                 <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+                 <set>Qt::AlignmentFlag::AlignLeading|Qt::AlignmentFlag::AlignLeft|Qt::AlignmentFlag::AlignVCenter</set>
                 </property>
                 <property name="buddy">
                  <cstring>doubleSpinBox_price</cstring>
@@ -237,7 +237,7 @@ Double click to delete.</string>
                  <string>Name:</string>
                 </property>
                 <property name="alignment">
-                 <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+                 <set>Qt::AlignmentFlag::AlignLeading|Qt::AlignmentFlag::AlignLeft|Qt::AlignmentFlag::AlignVCenter</set>
                 </property>
                 <property name="buddy">
                  <cstring>lineEdit_name</cstring>
@@ -285,7 +285,7 @@ Double click to delete.</string>
                    <string>$</string>
                   </property>
                   <property name="alignment">
-                   <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                   <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
                   </property>
                  </widget>
                 </item>
@@ -350,7 +350,7 @@ Double click to delete.</string>
               <item>
                <spacer name="horizontalSpacer_2">
                 <property name="orientation">
-                 <enum>Qt::Horizontal</enum>
+                 <enum>Qt::Orientation::Horizontal</enum>
                 </property>
                 <property name="sizeHint" stdset="0">
                  <size>
@@ -369,14 +369,21 @@ Double click to delete.</string>
                  </size>
                 </property>
                 <property name="text">
-                 <string>Add</string>
+                 <string>Add Item</string>
                 </property>
                </widget>
               </item>
               <item>
                <widget class="QPushButton" name="pushButton_apply">
                 <property name="text">
-                 <string>Apply</string>
+                 <string>Save &amp;&amp; Apply</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QPushButton" name="pushButton_close">
+                <property name="text">
+                 <string>Close</string>
                 </property>
                </widget>
               </item>

@@ -1,13 +1,12 @@
 import contextlib
 from datetime import datetime, timedelta
-from typing import Union, TYPE_CHECKING
+from typing import TYPE_CHECKING, Union
+
+from PyQt6.QtWidgets import QGridLayout, QLabel, QWidget
 
 from ui.custom.time_double_spin_box import TimeSpinBox
 from utils.workspace.flowtag_data import FlowtagData
 from utils.workspace.tag import Tag
-
-from PyQt6.QtWidgets import QWidget, QLabel, QGridLayout
-
 
 if TYPE_CHECKING:
     from ui.custom.assembly_planning_widget import AssemblyPlanningWidget
@@ -39,9 +38,7 @@ class FlowtagDataWidget(QWidget):
 
             time_spin_box = TimeSpinBox(self)
             time_spin_box.setValue(tag_data["expected_time_to_complete"])
-            time_spin_box.dateTimeChanged.connect(
-                lambda value, t=tag: self.update_expected_time_to_complete(t, value)
-            )
+            time_spin_box.dateTimeChanged.connect(lambda value, t=tag: self.update_expected_time_to_complete(t, value))
 
             self.grid_layout.addWidget(time_spin_box, row, 2)
 

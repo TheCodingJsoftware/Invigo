@@ -23,7 +23,7 @@ class LoadWindow(QWidget):
         widget = QWidget(self)
         widget.resize(300, 150)
         widget.setObjectName("widget")
-        widget.setStyleSheet("QWidget#widget{ border-top-left-radius:10px; border-bottom-left-radius:10px; border-top-right-radius:10px; border-bottom-right-radius:10px; border: 1px solid #3daee9; background-color: #292929;}")
+        widget.setStyleSheet("QWidget#widget{ border-top-left-radius:10px; border-bottom-left-radius:10px; border-top-right-radius:10px; border-bottom-right-radius:10px; border: 1px solid #8dcdff; background-color: #292929;}")
         shadow = QGraphicsDropShadowEffect(self)
         shadow.setBlurRadius(10)  # Adjust the blur radius as desired
         shadow.setColor(QColor(61, 174, 233, 255))
@@ -54,7 +54,7 @@ class LoadWindow(QWidget):
             shadow.setColor(QColor(0, 0, 0, 255))
             shadow.setOffset(0, 0)  # Set the shadow offset (x, y)
             progress_bar.setGraphicsEffect(shadow)
-            progress_bar.setStyleSheet("background-color: #3daee9; border-radius: 15px; border: 3px solid #101010;")
+            progress_bar.setStyleSheet("background-color: #8dcdff; border-radius: 15px; border: 3px solid #101010;")
             progress_bar.resize(CIRCLE_RADIUS, CIRCLE_RADIUS)
             self.anim = QPropertyAnimation(progress_bar, b"pos")
             self.anim.setDuration(self.ANIMATION_DURATION)

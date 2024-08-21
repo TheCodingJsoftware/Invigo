@@ -1,4 +1,4 @@
-from typing import Union, Literal
+from typing import Literal, Union
 
 from PyQt6 import uic
 from PyQt6.QtCore import Qt
@@ -15,7 +15,7 @@ class SendJobsToWorkspaceDialog(QDialog):
         active_jobs_in_planning: dict[str, dict[str, Union[Job, float, str, int]]],
         active_jobs_in_quoting: dict[str, dict[str, Union[Job, float, str, int]]],
         destintion: Literal["Workspace", "Production Planner"],
-        current_tab: Literal["Job Planner", "Job Quoter"],
+        current_tab: Literal["job_planner_tab", "job_quoter_tab"],
         parent=None,
     ):
         super().__init__(parent)
@@ -38,6 +38,7 @@ class SendJobsToWorkspaceDialog(QDialog):
         self.tables_font.setItalic(self.settings_file.get_value("tables_font")["italic"])
 
         self.job_tree_widget = QTreeWidget(self)
+        self.job_tree_widget.setUniformRowHeights(True)
         self.job_tree_widget.setStyleSheet("QTreeWidget { border: none; }")
 
         self.jobs_layout = self.findChild(QVBoxLayout, "jobs_layout")
@@ -54,13 +55,13 @@ class SendJobsToWorkspaceDialog(QDialog):
         self.job_tree_widget.setColumnCount(2)
         self.job_tree_widget.setHeaderLabels(["Job Name", "Order Number"])
 
-        if active_jobs_in_planning and self.current_tab == "Job Planner":
+        if active_jobs_in_planning and self.current_tab == "job_planner_tab":
             planning_item = QTreeWidgetItem(["Active Jobs in Planning"])
             planning_item.setFont(0, self.tables_font)
             self.job_tree_widget.addTopLevelItem(planning_item)
             self.add_jobs_to_item(planning_item, active_jobs_in_planning, True)
 
-        if active_jobs_in_quoting and self.current_tab == "Job Quoter":
+        if active_jobs_in_quoting and self.current_tab == "job_quoter_tab":
             quoting_item = QTreeWidgetItem(["Active Jobs in Quoting"])
             quoting_item.setFont(0, self.tables_font)
             self.job_tree_widget.addTopLevelItem(quoting_item)
@@ -87,7 +88,7 @@ class SendJobsToWorkspaceDialog(QDialog):
             item = QTreeWidgetItem(
                 [
                     job_name,
-                    str(int(job_data["order_number"])),
+                    f"#{int(job_data["order_number"])}",
                 ]
             )
             item.setFont(0, self.tables_font)

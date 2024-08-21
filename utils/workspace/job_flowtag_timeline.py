@@ -1,6 +1,6 @@
 import contextlib
-from typing import TYPE_CHECKING
 from datetime import datetime
+from typing import TYPE_CHECKING
 
 from utils.workspace.tag import Tag
 
@@ -17,7 +17,7 @@ class JobFlowtagTimeline:
         self.job_ending_date = self.job.ending_date
 
     def get_job_range(self) -> int:
-        with contextlib.suppress(ValueError): # Date not set yer
+        with contextlib.suppress(ValueError):  # Date not set yer
             start_date = datetime.strptime(self.job.starting_date, "%Y-%m-%d %I:%M %p")
             end_date = datetime.strptime(self.job.ending_date, "%Y-%m-%d %I:%M %p")
             return (end_date - start_date).days
