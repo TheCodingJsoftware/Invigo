@@ -49,7 +49,7 @@ class CoverPage:
                     <label>Order Number</label>
                 </div>
 
-                <div class="grid l m">
+                <div class="grid">
                     <article class="border s6">
                         <div class="field label prefix border">
                             <i>today</i>
@@ -65,32 +65,6 @@ class CoverPage:
                         </div>
                     </article>
                     <article class="border s6">
-                        <div class="field textarea label border">
-                            <textarea>{self.ship_to}</textarea>
-                            <label>Ship To</label>
-                        </div>
-                        <div class="field border">
-                            <input type="text">
-                            <span class="helper">Received in good order by</span>
-                        </div>
-                    </article>
-                </div>
-                <div class="grid s">
-                    <article class="border s12">
-                        <div class="field label prefix border">
-                            <i>today</i>
-                            <input type="datetime-local" value="{formatted_date_shipped}">
-                            <label>Date Shipped</label>
-                            <i>schedule</i>
-                        </div>
-                        <div class="field label prefix border">
-                            <i>date_range</i>
-                            <input type="datetime-local" value="{formatted_date_expected}">
-                            <label>Date Expected</label>
-                            <i>schedule</i>
-                        </div>
-                    </article>
-                    <article class="border s12">
                         <div class="field textarea label border">
                             <textarea>{self.ship_to}</textarea>
                             <label>Ship To</label>
@@ -624,6 +598,7 @@ class AssemblyDiv:
         html += f"<h5>{self.assembly.name}</h5>"
         html += f'<p class="small-text">Assembly Quantity: {self.assembly.quantity}</p>'
         html += f'<p class="small-text">Process: {self.assembly.flowtag.get_name()}</p>'
+        html += f'<p class="small-text">Paint: {self.get_paint()}</p>'
         html += "</div>"
         html += "</div>"
         return html
@@ -669,6 +644,18 @@ class AssemblyDiv:
         html += "</details>"
         return html
 
+    def get_paint(self, assembly: Assembly) -> str:
+        html = '<div class="no-padding small-text">'
+        if assembly.uses_primer and assembly.primer_item:
+            html += f'<div class="row no-margin"><div style="height: 20px; width: 20px; background-color: {assembly.primer_item.color}; border-radius: 5px;"></div>{assembly.primer_item.name}</div>'
+        if assembly.uses_paint and assembly.paint_item:
+            html += f'<div class="row no-margin"><div style="height: 20px; width: 20px; background-color: {assembly.paint_item.color}; border-radius: 5px;"></div>{assembly.paint_item.name}</div>'
+        if assembly.uses_powder and assembly.powder_item:
+            html += f'<div class="row no-margin"><div style="height: 20px; width: 20px; background-color: {assembly.powder_item.color}; border-radius: 5px;"></div>{assembly.powder_item.name}</div>'
+        if not (assembly.uses_primer or assembly.uses_paint or assembly.uses_powder):
+            html = ""
+        html += "</div>"
+        return html
 
 class JobParts:
     def __init__(self, job: Job):
