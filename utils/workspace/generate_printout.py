@@ -390,7 +390,8 @@ class LaserCutPartsTable:
             html += f'<div class="row no-margin"><div style="height: 20px; width: 20px; background-color: {laser_cut_part.powder_item.color}; border-radius: 5px;"></div>{laser_cut_part.powder_item.name}</div>'
         if not (laser_cut_part.uses_primer or laser_cut_part.uses_paint or laser_cut_part.uses_powder):
             html = ""
-        html += "</div>"
+        else:
+            html += "</div>"
         return html
 
     def generate(self) -> str:
@@ -654,7 +655,8 @@ class AssemblyDiv:
             html += f'<div class="row no-margin"><div style="height: 20px; width: 20px; background-color: {self.assembly.powder_item.color}; border-radius: 5px;"></div>{self.assembly.powder_item.name}</div>'
         if not (self.assembly.uses_primer or self.assembly.uses_paint or self.assembly.uses_powder):
             html = ""
-        html += "</div>"
+        else:
+            html += "</div>"
         return html
 
 class JobParts:

@@ -18,12 +18,13 @@ class FlowtagDataWidget(QWidget):
         super().__init__(parent)
         self.parent: AssemblyPlanningWidget = parent
         self.flowtag_data = flowtag_data
-        self.grid_layout = QGridLayout(self)
+        self.grid_layout = QGridLayout()
         self.grid_layout.setVerticalSpacing(1)
         self.grid_layout.setHorizontalSpacing(0)
-        self.setLayout(self.grid_layout)
+        # self.layout().addWidget(self.widget)
         self.load_ui()
         self.setObjectName("drop_down")
+        self.setLayout(self.grid_layout)
 
     def load_ui(self):
         self.clear_layout(self.grid_layout)  # Clear any existing layout
