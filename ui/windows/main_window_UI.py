@@ -1,4 +1,4 @@
-# Form implementation generated from reading ui file 'main_window.ui'
+# Form implementation generated from reading ui file 'c:\Users\Jared\Documents\Code\Python-Projects\Inventory Manager\ui\windows\main_window.ui'
 #
 # Created by: PyQt6 UI code generator 6.7.1
 #
@@ -41,7 +41,9 @@ class Ui_MainWindow(object):
         font.setStyleStrategy(QtGui.QFont.StyleStrategy.PreferAntialias)
         self.stackedWidget.setFont(font)
         self.stackedWidget.setFocusPolicy(QtCore.Qt.FocusPolicy.NoFocus)
-        self.stackedWidget.setStyleSheet("QTabWidget#tabWidget > QWidget {\n" "    border-radius: 0px;\n" "}")
+        self.stackedWidget.setStyleSheet("QTabWidget#tabWidget > QWidget {\n"
+"    border-radius: 0px;\n"
+"}")
         self.stackedWidget.setObjectName("stackedWidget")
         self.components_tab = QtWidgets.QWidget()
         self.components_tab.setObjectName("components_tab")
@@ -54,7 +56,7 @@ class Ui_MainWindow(object):
         self.components_layout.setSpacing(0)
         self.components_layout.setObjectName("components_layout")
         self.label = QtWidgets.QLabel(parent=self.components_tab)
-        self.label.setAlignment(QtCore.Qt.AlignmentFlag.AlignLeading | QtCore.Qt.AlignmentFlag.AlignLeft | QtCore.Qt.AlignmentFlag.AlignVCenter)
+        self.label.setAlignment(QtCore.Qt.AlignmentFlag.AlignLeading|QtCore.Qt.AlignmentFlag.AlignLeft|QtCore.Qt.AlignmentFlag.AlignVCenter)
         self.label.setObjectName("label")
         self.components_layout.addWidget(self.label)
         self.verticalLayout_41.addLayout(self.components_layout)
@@ -70,7 +72,7 @@ class Ui_MainWindow(object):
         self.sheets_inventory_layout.setSpacing(0)
         self.sheets_inventory_layout.setObjectName("sheets_inventory_layout")
         self.label_2 = QtWidgets.QLabel(parent=self.sheets_in_inventory_tab)
-        self.label_2.setAlignment(QtCore.Qt.AlignmentFlag.AlignLeading | QtCore.Qt.AlignmentFlag.AlignLeft | QtCore.Qt.AlignmentFlag.AlignVCenter)
+        self.label_2.setAlignment(QtCore.Qt.AlignmentFlag.AlignLeading|QtCore.Qt.AlignmentFlag.AlignLeft|QtCore.Qt.AlignmentFlag.AlignVCenter)
         self.label_2.setObjectName("label_2")
         self.sheets_inventory_layout.addWidget(self.label_2)
         self.verticalLayout_13.addLayout(self.sheets_inventory_layout)
@@ -86,7 +88,7 @@ class Ui_MainWindow(object):
         self.sheet_settings_layout.setSpacing(0)
         self.sheet_settings_layout.setObjectName("sheet_settings_layout")
         self.label_4 = QtWidgets.QLabel(parent=self.sheet_settings_tab)
-        self.label_4.setAlignment(QtCore.Qt.AlignmentFlag.AlignLeading | QtCore.Qt.AlignmentFlag.AlignLeft | QtCore.Qt.AlignmentFlag.AlignVCenter)
+        self.label_4.setAlignment(QtCore.Qt.AlignmentFlag.AlignLeading|QtCore.Qt.AlignmentFlag.AlignLeft|QtCore.Qt.AlignmentFlag.AlignVCenter)
         self.label_4.setObjectName("label_4")
         self.sheet_settings_layout.addWidget(self.label_4)
         self.verticalLayout.addLayout(self.sheet_settings_layout)
@@ -101,7 +103,7 @@ class Ui_MainWindow(object):
         self.laser_cut_layout.setContentsMargins(-1, -1, -1, 9)
         self.laser_cut_layout.setObjectName("laser_cut_layout")
         self.label_3 = QtWidgets.QLabel(parent=self.laser_cut_inventory_tab)
-        self.label_3.setAlignment(QtCore.Qt.AlignmentFlag.AlignLeading | QtCore.Qt.AlignmentFlag.AlignLeft | QtCore.Qt.AlignmentFlag.AlignVCenter)
+        self.label_3.setAlignment(QtCore.Qt.AlignmentFlag.AlignLeading|QtCore.Qt.AlignmentFlag.AlignLeft|QtCore.Qt.AlignmentFlag.AlignVCenter)
         self.label_3.setObjectName("label_3")
         self.laser_cut_layout.addWidget(self.label_3)
         self.verticalLayout_12.addLayout(self.laser_cut_layout)
@@ -928,7 +930,7 @@ class Ui_MainWindow(object):
         self.tabWidget_4.setCurrentIndex(0)
         self.tabWidget_2.setCurrentIndex(0)
         self.tabWidget_5.setCurrentIndex(0)
-        self.pushButton_toggle_cutoff.toggled["bool"].connect(self.cutoff_widget.setVisible)  # type: ignore
+        self.pushButton_toggle_cutoff.toggled['bool'].connect(self.cutoff_widget.setVisible) # type: ignore
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
     def retranslateUi(self, MainWindow):
@@ -1006,11 +1008,11 @@ class Ui_MainWindow(object):
         self.actionAdd_Purchase_Order.setText(_translate("MainWindow", "Add Template"))
         self.actionAdd_Purchase_Order.setStatusTip(_translate("MainWindow", "Add a new Purchase Order"))
         self.actionRemove_Purchase_Order.setText(_translate("MainWindow", "Remove Template"))
-        self.actionRemove_Purchase_Order.setStatusTip(_translate("MainWindow", "Remove a PO Template, BUT does NOT remove the generated PO's"))
+        self.actionRemove_Purchase_Order.setStatusTip(_translate("MainWindow", "Remove a PO Template, BUT does NOT remove the generated PO\'s"))
         self.actionOpen_Purchase_Order.setText(_translate("MainWindow", "Use Purchase Order"))
         self.actionOpen_Purchase_Order.setStatusTip(_translate("MainWindow", "Will generate a purchase order, update date and order number."))
         self.actionOpen_Folder.setText(_translate("MainWindow", "Open PO Directory"))
-        self.actionOpen_Folder.setStatusTip(_translate("MainWindow", "Open PO's directory in windows explorer"))
+        self.actionOpen_Folder.setStatusTip(_translate("MainWindow", "Open PO\'s directory in windows explorer"))
         self.actionOpen_Item_History.setText(_translate("MainWindow", "Open Inventory History File"))
         self.actionOpen_Item_History.setToolTip(_translate("MainWindow", "Open removed quantites history excel file."))
         self.actionOpen_Item_History.setStatusTip(_translate("MainWindow", "Open removed quantites history excel file."))

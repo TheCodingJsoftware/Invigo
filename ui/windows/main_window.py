@@ -18,7 +18,7 @@ import win32api  # pywin32
 from natsort import natsorted, ns
 from PyQt6.QtCore import QEventLoop, QPoint, Qt, QThread, QTimer, QVariant, pyqtSignal
 from PyQt6.QtGui import QAction, QColor, QCursor, QDragEnterEvent, QDragLeaveEvent, QDragMoveEvent, QDropEvent, QFont, QIcon
-from PyQt6.QtWidgets import QApplication, QComboBox, QFileDialog, QFontDialog, QGridLayout, QHBoxLayout, QInputDialog, QLabel, QListWidget, QListWidgetItem, QMainWindow, QMenu, QMessageBox, QPushButton, QScrollArea, QSplitter, QStackedWidget, QTableWidgetItem, QTabWidget, QToolBox, QTreeWidget, QTreeWidgetItem, QVBoxLayout, QWidget
+from PyQt6.QtWidgets import QApplication, QComboBox, QFileDialog, QFontDialog, QInputDialog, QListWidget, QListWidgetItem, QMainWindow, QMenu, QMessageBox, QPushButton, QTableWidgetItem, QToolBox, QTreeWidgetItem, QVBoxLayout, QWidget
 
 from ui.custom.job_tab import JobTab
 from ui.custom_widgets import ButtonManagerWidget, CustomTableWidget, MainTabButton, MultiToolBox, PdfTreeView, PreviousQuoteItem, RichTextPushButton, SavedQuoteItem, ScrollPositionManager
@@ -45,8 +45,8 @@ from ui.widgets.saved_job_item import SavedPlanningJobItem
 from ui.widgets.sheet_settings_tab import SheetSettingsTab
 from ui.widgets.sheets_in_inventory_tab import SheetsInInventoryTab
 from ui.widgets.workspace_tab_widget import WorkspaceTabWidget
-from ui.windows.MainWindow import Ui_MainWindow
-from utils.colors import get_contrast_text_color, lighten_color
+from ui.windows.main_window_UI import Ui_MainWindow
+from utils.colors import lighten_color
 from utils.dialog_buttons import DialogButtons
 from utils.inventory.category import Category
 from utils.inventory.components_inventory import ComponentsInventory
