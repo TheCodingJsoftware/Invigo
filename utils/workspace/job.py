@@ -114,6 +114,7 @@ class Job:
                 unit_quantity = assembly_laser_cut_part.quantity
                 new_laser_cut_part = LaserCutPart(assembly_laser_cut_part.to_dict(), self.laser_cut_inventory)
                 new_laser_cut_part.quantity = unit_quantity * assembly.quantity
+                new_laser_cut_part.matched_to_sheet_cost_price = assembly_laser_cut_part.matched_to_sheet_cost_price
 
                 if existing_component := laser_cut_part_dict.get(new_laser_cut_part.name):
                     existing_component.quantity += new_laser_cut_part.quantity

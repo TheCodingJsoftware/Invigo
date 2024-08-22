@@ -569,7 +569,8 @@ QPushButton:checked:pressed#assembly_button_drop_menu {{
             self.label_total_cost_for_parts.setText(f"Total Cost for Parts: ${self.price_calculator.get_job_cost():,.2f}")
             self.label_total_cost_for_sheets.setText(f"Total Cost for Nested Sheets: ${self.price_calculator.get_total_cost_for_sheets():,.2f}")
             for assembly_widget in self.assembly_widgets:
-                assembly_widget.update_prices()
+                if isinstance(assembly_widget, AssemblyQuotingWidget):
+                    assembly_widget.update_prices()
 
     def price_settings_changed(self):
         self.price_calculator.item_overhead = self.doubleSpinBox_items_overhead.value() / 100
