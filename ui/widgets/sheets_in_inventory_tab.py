@@ -5,10 +5,9 @@ from functools import partial
 from typing import TYPE_CHECKING
 
 import sympy
-from PyQt6 import uic
 from PyQt6.QtCore import QDate, Qt, pyqtSignal
-from PyQt6.QtGui import QAction, QColor, QCursor, QFont, QIcon
-from PyQt6.QtWidgets import QAbstractItemView, QCheckBox, QComboBox, QDateEdit, QGridLayout, QHBoxLayout, QInputDialog, QLabel, QMenu, QMessageBox, QPushButton, QTableWidgetItem, QVBoxLayout, QWidget
+from PyQt6.QtGui import QAction, QColor, QCursor, QFont
+from PyQt6.QtWidgets import QAbstractItemView, QComboBox, QDateEdit, QHBoxLayout, QInputDialog, QLabel, QMenu, QMessageBox, QPushButton, QTableWidgetItem, QVBoxLayout, QWidget
 
 from ui.custom_widgets import CustomTableWidget, CustomTabWidget, HumbleDoubleSpinBox, OrderStatusButton
 from ui.dialogs.add_sheet_dialog import AddSheetDialog
@@ -18,14 +17,13 @@ from ui.dialogs.set_custom_limit_dialog import SetCustomLimitDialog
 from ui.dialogs.update_component_order_pending_dialog import UpdateComponentOrderPendingDialog
 from ui.icons import Icons
 from ui.theme import theme_var
+from ui.widgets.sheets_in_inventory_tab_UI import Ui_Form
 from utils.inventory.category import Category
 from utils.inventory.order import Order
 from utils.inventory.sheet import Sheet
 from utils.inventory.sheets_inventory import SheetsInventory
 from utils.settings import Settings
 from utils.sheet_settings.sheet_settings import SheetSettings
-
-settings_file = Settings()
 
 if TYPE_CHECKING:
     from ui.windows.main_window import MainWindow
@@ -202,7 +200,7 @@ class PopoutWidget(QWidget):
         self.setWindowFlags(Qt.WindowType.Window)
         self.setWindowTitle("Sheets In Inventory Tab")
         self.setLayout(self.original_layout)
-        self.setObjectName('popout_widget')
+        self.setObjectName("popout_widget")
 
     def closeEvent(self, event):
         if self.original_layout_parent:
@@ -213,10 +211,10 @@ class PopoutWidget(QWidget):
         super().closeEvent(event)
 
 
-class SheetsInInventoryTab(QWidget):
+class SheetsInInventoryTab(QWidget, Ui_Form):
     def __init__(self, parent):
         super().__init__(parent)
-        uic.loadUi("ui/widgets/sheets_in_inventory_tab.ui", self)
+        self.setupUi(self)
         self.parent: MainWindow = parent
         self.sheets_inventory: SheetsInventory = self.parent.sheets_inventory
         self.sheet_settings: SheetSettings = self.parent.sheet_settings
@@ -241,23 +239,17 @@ class SheetsInInventoryTab(QWidget):
 
     def load_ui(self):
         self.tables_font = QFont()
-        self.tables_font.setFamily(settings_file.get_value("tables_font")["family"])
-        self.tables_font.setPointSize(settings_file.get_value("tables_font")["pointSize"])
-        self.tables_font.setWeight(settings_file.get_value("tables_font")["weight"])
-        self.tables_font.setItalic(settings_file.get_value("tables_font")["italic"])
+        self.tables_font.setFamily(self.settings_file.get_value("tables_font")["family"])
+        self.tables_font.setPointSize(self.settings_file.get_value("tables_font")["pointSize"])
+        self.tables_font.setWeight(self.settings_file.get_value("tables_font")["weight"])
+        self.tables_font.setItalic(self.settings_file.get_value("tables_font")["italic"])
 
-        self.gridLayout_sheet_prices = self.findChild(QGridLayout, "gridLayout_sheet_prices")
-
-        self.pushButton_add_new_sheet = self.findChild(QPushButton, "pushButton_add_new_sheet")
         self.pushButton_add_new_sheet.clicked.connect(self.add_sheet)
         self.pushButton_add_new_sheet.setIcon(Icons.plus_circle_icon)
 
-        self.verticalLayout_10 = self.findChild(QVBoxLayout, "verticalLayout_10")
         self.verticalLayout_10.addWidget(self.tab_widget)
-        self.checkBox_edit_sheets = self.findChild(QCheckBox, "checkBox_edit_sheets")
         self.checkBox_edit_sheets.toggled.connect(self.toggle_edit_mode)
 
-        self.pushButton_popout = self.findChild(QPushButton, "pushButton_popout")
         self.pushButton_popout.setStyleSheet("background-color: transparent; border: none;")
         self.pushButton_popout.clicked.connect(self.popout)
         self.pushButton_popout.setIcon(Icons.dock_icon)

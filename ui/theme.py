@@ -2,9 +2,9 @@ import contextlib
 import os
 import re
 
-from utils.settings import Settings
-
 from PyQt6.QtWidgets import QApplication
+
+from utils.settings import Settings
 
 settings = Settings()
 
@@ -15,7 +15,7 @@ THEME_PATH = os.path.join(UI_PATH, "themes", f"{settings.get_value('theme')}.css
 DEFAULT_ICON_PATH = "icons"
 CURRENT_ICON_PATH = os.path.join(UI_PATH, DEFAULT_ICON_PATH).replace("\\", "/")
 
-THEME_VARIABLES = {}
+THEME_VARIABLES: dict[str, str] = {}
 
 
 def parse_theme_css(theme_file: str):
@@ -40,7 +40,7 @@ def theme_var(variable_name: str) -> str:
     global THEME_VARIABLES
     if not THEME_VARIABLES:
         THEME_VARIABLES = parse_theme_css(THEME_PATH)
-    return THEME_VARIABLES.get(variable_name, None)
+    return THEME_VARIABLES.get(variable_name, "red")
 
 
 def set_theme(app: QApplication, theme: str):

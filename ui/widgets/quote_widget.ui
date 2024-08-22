@@ -1201,7 +1201,7 @@
                           <number>0</number>
                          </property>
                          <item>
-                          <layout class="QVBoxLayout" name="verticalLayout_sheets_2"/>
+                          <layout class="QVBoxLayout" name="nests_layout"/>
                          </item>
                         </layout>
                        </widget>
@@ -1291,7 +1291,7 @@
                <enum>QLayout::SizeConstraint::SetDefaultConstraint</enum>
               </property>
               <item>
-               <layout class="QVBoxLayout" name="verticalLayout_55">
+               <layout class="QVBoxLayout" name="laser_cut_layout">
                 <property name="spacing">
                  <number>0</number>
                 </property>
@@ -1341,7 +1341,7 @@
              </property>
              <layout class="QVBoxLayout" name="verticalLayout_47" stretch="1,0">
               <item>
-               <layout class="QVBoxLayout" name="verticalLayout_49"/>
+               <layout class="QVBoxLayout" name="components_layout"/>
               </item>
               <item>
                <layout class="QHBoxLayout" name="horizontalLayout_17" stretch="0,0,0,0">

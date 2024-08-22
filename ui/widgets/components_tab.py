@@ -6,7 +6,6 @@ from typing import TYPE_CHECKING
 
 import sympy
 from natsort import natsorted
-from PyQt6 import uic
 from PyQt6.QtCore import QDate, Qt, pyqtSignal
 from PyQt6.QtGui import QAction, QColor, QCursor, QFont
 from PyQt6.QtWidgets import QAbstractItemView, QCompleter, QDateEdit, QGridLayout, QHBoxLayout, QInputDialog, QLabel, QLineEdit, QListWidget, QMenu, QMessageBox, QPushButton, QTableWidgetItem, QVBoxLayout, QWidget
@@ -21,6 +20,7 @@ from ui.dialogs.set_custom_limit_dialog import SetCustomLimitDialog
 from ui.dialogs.update_component_order_pending_dialog import UpdateComponentOrderPendingDialog
 from ui.icons import Icons
 from ui.theme import theme_var
+from ui.widgets.components_tab_UI import Ui_Form
 from utils.dialog_buttons import DialogButtons
 from utils.history_file import HistoryFile
 from utils.inventory.category import Category
@@ -211,7 +211,7 @@ class PopoutWidget(QWidget):
         self.setWindowFlags(Qt.WindowType.Window)
         self.setWindowTitle("Components Tab")
         self.setLayout(self.original_layout)
-        self.setObjectName('popout_widget')
+        self.setObjectName("popout_widget")
 
     def closeEvent(self, event):
         if self.original_layout_parent:
@@ -222,10 +222,10 @@ class PopoutWidget(QWidget):
         super().closeEvent(event)
 
 
-class ComponentsTab(QWidget):
+class ComponentsTab(QWidget, Ui_Form):
     def __init__(self, parent: QWidget):
         super().__init__(parent)
-        uic.loadUi("ui/widgets/components_tab.ui", self)
+        self.setupUi(self)
 
         self.parent: MainWindow = parent
         self.components_inventory: ComponentsInventory = self.parent.components_inventory
@@ -265,35 +265,21 @@ class ComponentsTab(QWidget):
         self.tables_font.setWeight(self.settings_file.get_value("tables_font")["weight"])
         self.tables_font.setItalic(self.settings_file.get_value("tables_font")["italic"])
 
-        self.label_exchange_price = self.findChild(QLabel, "label_exchange_price")
-        self.label_total_unit_cost = self.findChild(QLabel, "label_total_unit_cost")
-
-        self.gridLayout_category_stock_costs = self.findChild(QGridLayout, "gridLayout_category_stock_costs")
-
-        self.lineEdit_search_items = self.findChild(QLineEdit, "lineEdit_search_items")
-        self.listWidget_itemnames = self.findChild(QListWidget, "listWidget_itemnames")
-
-        self.pushButton_add_quantity = self.findChild(QPushButton, "pushButton_add_quantity")
         self.pushButton_add_quantity.clicked.connect(partial(self.change_quantities, "ADD"))
         self.pushButton_add_quantity.setIcon(Icons.plus_icon)
 
-        self.pushButton_remove_quantity = self.findChild(QPushButton, "pushButton_remove_quantity")
         self.pushButton_remove_quantity.clicked.connect(partial(self.change_quantities, "REMOVE"))
         self.pushButton_remove_quantity.setIcon(Icons.minus_icon)
 
-        self.pushButton_create_new = self.findChild(QPushButton, "pushButton_create_new")
         self.pushButton_create_new.setIcon(Icons.plus_circle_icon)
+        self.pushButton_create_new.clicked.connect(self.add_item)
 
-        self.verticalLayout = self.findChild(QVBoxLayout, "verticalLayout")
         self.verticalLayout.addWidget(self.tab_widget)
 
         self.lineEdit_search_items.textChanged.connect(self.update_edit_inventory_list_widget)
 
-        self.pushButton_create_new.clicked.connect(self.add_item)
-
         self.listWidget_itemnames.itemSelectionChanged.connect(self.listWidget_item_changed)
 
-        self.pushButton_popout = self.findChild(QPushButton, "pushButton_popout")
         self.pushButton_popout.setStyleSheet("background-color: transparent; border: none;")
         self.pushButton_popout.clicked.connect(self.popout)
         self.pushButton_popout.setIcon(Icons.dock_icon)

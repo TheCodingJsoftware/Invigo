@@ -1,23 +1,23 @@
-from PyQt6 import uic
 from PyQt6.QtGui import QIcon
-from PyQt6.QtWidgets import QDialog, QTreeWidget, QTreeWidgetItem
+from PyQt6.QtWidgets import QDialog, QTreeWidgetItem
 
+from ui.dialogs.add_assembly_dialog_UI import Ui_Form
+from ui.icons import Icons
 from utils.workspace.assembly import Assembly
 from utils.workspace.job import Job
 
 
-class AddAssemblyDialog(QDialog):
+class AddAssemblyDialog(QDialog, Ui_Form):
     def __init__(self, all_jobs: list[Job], parent):
         super().__init__(parent)
-        uic.loadUi("ui/dialogs/add_assembly_dialog.ui", self)
+        self.setupUi(self)
         self.parent = parent
         self.all_jobs = all_jobs
         self.all_assemblies = self.get_all_assemblies(self.all_jobs)
 
         self.setWindowTitle("Add Assembly")
-        self.setWindowIcon(QIcon("icons/icon.png"))
+        self.setWindowIcon(QIcon(Icons.invigo_icon))
 
-        self.treeWidget_assemblies: QTreeWidget
         self.populate_tree_widget()
         self.treeWidget_assemblies.expandAll()
 

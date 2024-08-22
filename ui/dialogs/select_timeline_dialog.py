@@ -1,13 +1,14 @@
-from PyQt6 import uic
 from PyQt6.QtCore import QDate, Qt
 from PyQt6.QtGui import QColor, QIcon, QTextCharFormat
 from PyQt6.QtSvgWidgets import QSvgWidget
 from PyQt6.QtWidgets import QCalendarWidget, QDialog
 
+from ui.dialogs.select_timeline_dialog_UI import Ui_Form
+from ui.icons import Icons
 from ui.theme import theme_var
 
 
-class SelectTimeLineDialog(QDialog):
+class SelectTimeLineDialog(QDialog, Ui_Form):
     def __init__(
         self,
         message: str,
@@ -16,10 +17,10 @@ class SelectTimeLineDialog(QDialog):
         parent,
     ):
         super().__init__(parent)
-        uic.loadUi("ui/dialogs/select_timeline_dialog.ui", self)
+        self.setupUi(self)
 
         self.setWindowTitle("Set Timeline")
-        self.setWindowIcon(QIcon("icons/icon.png"))
+        self.setWindowIcon(QIcon(Icons.invigo_icon))
 
         self.lblMessage.setText(message)
 

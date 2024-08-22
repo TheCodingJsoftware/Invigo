@@ -1,15 +1,16 @@
 from typing import Literal, Union
 
-from PyQt6 import uic
 from PyQt6.QtCore import Qt
 from PyQt6.QtGui import QFont, QIcon
-from PyQt6.QtWidgets import QCheckBox, QDialog, QDoubleSpinBox, QHBoxLayout, QLabel, QTreeWidget, QTreeWidgetItem, QVBoxLayout, QWidget
+from PyQt6.QtWidgets import QDialog, QDoubleSpinBox, QHBoxLayout, QLabel, QTreeWidget, QTreeWidgetItem, QWidget
 
+from ui.dialogs.send_jobs_to_workspace_dialog_UI import Ui_Form
+from ui.icons import Icons
 from utils.settings import Settings
 from utils.workspace.job import Job, JobStatus
 
 
-class SendJobsToWorkspaceDialog(QDialog):
+class SendJobsToWorkspaceDialog(QDialog, Ui_Form):
     def __init__(
         self,
         active_jobs_in_planning: dict[str, dict[str, Union[Job, float, str, int]]],
@@ -19,12 +20,13 @@ class SendJobsToWorkspaceDialog(QDialog):
         parent=None,
     ):
         super().__init__(parent)
-        uic.loadUi("ui/dialogs/send_jobs_to_workspace_dialog.ui", self)
+        self.setupUi(self)
+
         self.destintion = destintion
         self.current_tab = current_tab
 
         self.setWindowTitle(f"Send Jobs to {self.destintion}")
-        self.setWindowIcon(QIcon("icons/icon.png"))
+        self.setWindowIcon(QIcon(Icons.invigo_icon))
 
         self.pushButton_add.setText(f"Send Jobs to {self.destintion}")
         self.pushButton_add.clicked.connect(self.accept)
@@ -41,10 +43,8 @@ class SendJobsToWorkspaceDialog(QDialog):
         self.job_tree_widget.setUniformRowHeights(True)
         self.job_tree_widget.setStyleSheet("QTreeWidget { border: none; }")
 
-        self.jobs_layout = self.findChild(QVBoxLayout, "jobs_layout")
         self.jobs_layout.addWidget(self.job_tree_widget)
 
-        self.verticalLayout_workorders = self.findChild(QVBoxLayout, "verticalLayout_workorders")
         self.verticalLayout_workorders.setAlignment(Qt.AlignmentFlag.AlignTop)
 
         self.populate_tree_widget(active_jobs_in_planning, active_jobs_in_quoting)

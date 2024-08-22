@@ -593,7 +593,7 @@ class AssemblyDiv:
 
     def get_assembly_data_html(self) -> str:
         html = '<div class="assembly_data">'
-        image_html = f'<img src="{self.server_directory}/image/{self.assembly.assembly_image}" class="assembly_image">' if self.assembly.assembly_image else ""
+        image_html = f'<img class="assembly-image" src="{self.server_directory}/image/{self.assembly.assembly_image}">' if self.assembly.assembly_image else ""
         html += image_html
         html += '<div class="padding">'
         html += f"<h5>{self.assembly.name}</h5>"
@@ -658,6 +658,7 @@ class AssemblyDiv:
         else:
             html += "</div>"
         return html
+
 
 class JobParts:
     def __init__(self, job: Job):

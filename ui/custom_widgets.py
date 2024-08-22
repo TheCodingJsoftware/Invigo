@@ -1346,9 +1346,9 @@ class RichTextPushButton(QPushButton):
         self.__timer.timeout.connect(self.make_transparent)  # Make the button transparent when the timer times out
 
         # Initialize colors and animations
-        self._bg_color = QColor(theme_var('surface'))
-        self._text_color = QColor(theme_var('surface'))
-        self._border_color = QColor(theme_var('surface'))
+        self._bg_color = QColor(theme_var("surface"))
+        self._text_color = QColor(theme_var("surface"))
+        self._border_color = QColor(theme_var("surface"))
         self.bg_animation = QPropertyAnimation(self, b"bgColor")
         self.bg_animation.setDuration(300)
         self.bg_animation.setEasingCurve(QEasingCurve.Type.OutQuad)

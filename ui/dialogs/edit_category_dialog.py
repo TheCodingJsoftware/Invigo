@@ -1,14 +1,15 @@
-from PyQt6 import uic
 from PyQt6.QtGui import QIcon
 from PyQt6.QtWidgets import QDialog
 
+from ui.dialogs.edit_category_dialog_UI import Ui_Form
+from ui.icons import Icons
 from utils.inventory.category import Category
 from utils.inventory.components_inventory import ComponentsInventory
 from utils.inventory.laser_cut_inventory import LaserCutInventory
 from utils.inventory.sheets_inventory import SheetSettings
 
 
-class EditCategoryDialog(QDialog):
+class EditCategoryDialog(QDialog, Ui_Form):
     def __init__(
         self,
         title,
@@ -19,14 +20,14 @@ class EditCategoryDialog(QDialog):
         parent,
     ):
         super().__init__(parent)
-        uic.loadUi("ui/dialogs/edit_category_dialog.ui", self)
+        self.setupUi(self)
 
         self.inputText: str | int = ""
         self.category = category
         self.inventory = inventory
 
         self.action: str = ""
-        self.setWindowIcon(QIcon("icons/icon.png"))
+        self.setWindowIcon(QIcon(Icons.invigo_icon))
 
         self.setWindowTitle(title)
         self.lblMessage.setText(message)

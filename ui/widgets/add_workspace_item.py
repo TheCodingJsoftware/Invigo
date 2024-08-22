@@ -1,9 +1,9 @@
 from natsort import natsorted
-from PyQt6 import uic
 from PyQt6.QtCore import Qt
 from PyQt6.QtGui import QIcon
 from PyQt6.QtWidgets import QCompleter, QDialog
 
+from ui.widgets.add_workspace_item_UI import Ui_Form
 from utils.inventory.components_inventory import ComponentsInventory
 from utils.inventory.laser_cut_inventory import LaserCutInventory
 from utils.settings import Settings
@@ -11,7 +11,7 @@ from utils.settings import Settings
 settings_file = Settings()
 
 
-class AddWorkspaceItem(QDialog):
+class AddWorkspaceItem(QDialog, Ui_Form):
     def __init__(
         self,
         components_inventory: ComponentsInventory,
@@ -19,7 +19,7 @@ class AddWorkspaceItem(QDialog):
         parent=None,
     ):
         super().__init__(parent)
-        uic.loadUi("ui/widgets/add_workspace_item.ui", self)
+        self.setupUi(self)
 
         self.components_inventory = components_inventory
         self.laser_cut_inventory = laser_cut_inventory
@@ -28,7 +28,7 @@ class AddWorkspaceItem(QDialog):
         self.material = ""
 
         self.setWindowTitle("Add Workspace Item")
-        self.setWindowIcon(QIcon("icons/icon.png"))
+        self.setWindowIcon(QIcon(Icons.invigo_icon))
 
         all_part_names = natsorted(self.get_all_part_names())
 

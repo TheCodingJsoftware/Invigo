@@ -1,9 +1,11 @@
-from PyQt6 import uic
 from PyQt6.QtGui import QIcon
 from PyQt6.QtWidgets import QDialog
 
+from ui.dialogs.message_dialog_UI import Ui_Dialog
+from ui.icons import Icons
 
-class MessageDialog(QDialog):
+
+class MessageDialog(QDialog, Ui_Dialog):
     def __init__(
         self,
         title: str,
@@ -11,8 +13,8 @@ class MessageDialog(QDialog):
         parent,
     ):
         super().__init__(parent)
-        uic.loadUi("ui/dialogs/message_dialog.ui", self)
+        self.setupUi(self)
 
         self.setWindowTitle(title)
-        self.setWindowIcon(QIcon("icons/icon.png"))
+        self.setWindowIcon(QIcon(Icons.invigo_icon))
         self.label_message.setText(message)

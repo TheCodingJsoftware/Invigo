@@ -352,6 +352,15 @@ QPushButton[flat="true"]:disabled {
     color: var(--disabled);
 }
 
+QPushButton[flat="true"]:checked:hover{
+    background-color: var(--primary-hover);
+    color: var(--on-primary);
+}
+QPushButton[flat="true"]:checked:pressed{
+    background-color: var(--primary);
+    color: var(--on-primary);
+}
+
 QPushButton#custom_tab_button{
     color: var(--on-primary);
     background-color: var(--primary);

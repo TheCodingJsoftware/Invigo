@@ -1,13 +1,14 @@
 from functools import partial
 
-from PyQt6 import uic
 from PyQt6.QtGui import QIcon
 from PyQt6.QtWidgets import QDialog
 
+from ui.dialogs.update_component_order_pending_dialog_UI import Ui_Form
+from ui.icons import Icons
 from utils.inventory.order import Order
 
 
-class UpdateComponentOrderPendingDialog(QDialog):
+class UpdateComponentOrderPendingDialog(QDialog, Ui_Form):
     def __init__(
         self,
         order: Order,
@@ -15,10 +16,10 @@ class UpdateComponentOrderPendingDialog(QDialog):
         parent,
     ):
         super().__init__(parent)
-        uic.loadUi("ui/dialogs/update_component_order_pending_dialog.ui", self)
+        self.setupUi(self)
 
         self.setWindowTitle("Update Order")
-        self.setWindowIcon(QIcon("icons/icon.png"))
+        self.setWindowIcon(QIcon(Icons.invigo_icon))
 
         self.action: str = ""
 

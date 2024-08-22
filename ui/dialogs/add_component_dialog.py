@@ -1,26 +1,27 @@
 from natsort import natsorted
-from PyQt6 import uic
 from PyQt6.QtCore import Qt
 from PyQt6.QtGui import QIcon
-from PyQt6.QtWidgets import QCompleter, QDialog, QLineEdit, QListWidget
+from PyQt6.QtWidgets import QCompleter, QDialog
 
+from ui.dialogs.add_component_dialog_UI import Ui_Form
+from ui.icons import Icons
+from ui.theme import theme_var
 from utils.inventory.component import Component
 from utils.inventory.components_inventory import ComponentsInventory
 
 
-class AddComponentDialog(QDialog):
-    def __init__(self, parent):
+class AddComponentDialog(QDialog, Ui_Form):
+    def __init__(self, components_inventory: ComponentsInventory, parent):
         super().__init__(parent)
-        uic.loadUi("ui/dialogs/add_component_dialog.ui", self)
+        self.setupUi(self)
         self.parent = parent
 
-        self.components_inventory: ComponentsInventory = self.parent.components_inventory
+        self.components_inventory = components_inventory
         self.selected_component: Component = None
 
         self.setWindowTitle("Add New Component")
-        self.setWindowIcon(QIcon("icons/icon.png"))
+        self.setWindowIcon(QIcon(Icons.invigo_icon))
 
-        self.lineEdit_component_name: QLineEdit
         self.completer = QCompleter(natsorted(self.components_inventory.get_all_part_names()))
         self.completer.setCaseSensitivity(Qt.CaseSensitivity.CaseInsensitive)
         self.completer.setFilterMode(Qt.MatchFlag.MatchContains)
@@ -29,11 +30,9 @@ class AddComponentDialog(QDialog):
         self.lineEdit_component_name.textChanged.connect(self.component_name_changed)
         self._completing = False
 
-        self.listWidget_components: QListWidget
-
         self.listWidget_components.addItems(natsorted(self.components_inventory.get_all_part_names()))
         self.listWidget_components.currentTextChanged.connect(self.selection_changed)
-        self.label_component_status.setStyleSheet("color: #E74E4E;")
+        self.label_component_status.setStyleSheet(f"color: {theme_var('error')};")
         self.pushButton_add.clicked.connect(self.accept)
         self.pushButton_cancel.clicked.connect(self.reject)
 
@@ -52,12 +51,12 @@ class AddComponentDialog(QDialog):
                 self.lineEdit_component_name.blockSignals(True)
                 self.lineEdit_component_name.setText(component.part_name)
                 self.lineEdit_component_name.blockSignals(False)
-                self.label_component_status.setStyleSheet("color: #4EE753;")
+                self.label_component_status.setStyleSheet(f"color: {theme_var('primary-green')};")
                 self.label_component_status.setText(" * Component exists in inventory.")
                 self.selected_component = component
                 return
             else:
-                self.label_component_status.setStyleSheet("color: #E74E4E;")
+                self.label_component_status.setStyleSheet(f"color: {theme_var('error')};")
                 self.label_component_status.setText(" * Component does NOT exists in inventory.")
                 self.selected_component = None
 
@@ -81,7 +80,7 @@ class AddComponentDialog(QDialog):
                 self.completer.popup().hide()
 
         new_parts_last = []
-        self.label_component_status.setStyleSheet("color: #E74E4E;")
+        self.label_component_status.setStyleSheet(f"color: {theme_var('error')};")
         self.listWidget_components.blockSignals(True)
         self.listWidget_components.clear()
         for name in self.components_inventory.get_all_part_names():

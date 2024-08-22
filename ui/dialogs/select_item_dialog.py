@@ -1,15 +1,15 @@
 import os.path
 from functools import partial
 
-from PyQt6 import uic
 from PyQt6.QtGui import QIcon
 from PyQt6.QtWidgets import QAbstractItemView, QDialog, QPushButton
 
+from ui.dialogs.select_item_dialog_UI import Ui_Form
 from ui.icons import Icons
 from utils.dialog_buttons import DialogButtons
 
 
-class SelectItemDialog(QDialog):
+class SelectItemDialog(QDialog, Ui_Form):
     def __init__(
         self,
         button_names: str,
@@ -19,13 +19,13 @@ class SelectItemDialog(QDialog):
         parent,
     ):
         super().__init__(parent)
-        uic.loadUi("ui/dialogs/select_item_dialog.ui", self)
+        self.setupUi(self)
 
         self.button_names = button_names
         self.items = items
 
         self.setWindowTitle(title)
-        self.setWindowIcon(QIcon("icons/icon.png"))
+        self.setWindowIcon(QIcon(Icons.invigo_icon))
 
         self.lblMessage.setText(message)
 
@@ -34,7 +34,7 @@ class SelectItemDialog(QDialog):
         self.listWidget.addItems(self.items)
         self.listWidget.setSelectionMode(QAbstractItemView.SelectionMode.SingleSelection)
 
-    def button_press(self, button):
+    def button_press(self, button: QPushButton):
         self.response = button.text()
         self.accept()
 

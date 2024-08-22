@@ -1,19 +1,21 @@
-from PyQt6 import uic
 from PyQt6.QtGui import QIcon
 from PyQt6.QtWidgets import QDialog
 
+from ui.dialogs.set_component_order_pending_dialog_UI import Ui_Form
+from ui.icons import Icons
 
-class SetComponentOrderPendingDialog(QDialog):
+
+class SetComponentOrderPendingDialog(QDialog, Ui_Form):
     def __init__(
         self,
         message: str,
         parent,
     ):
         super().__init__(parent)
-        uic.loadUi("ui/dialogs/set_component_order_pending_dialog.ui", self)
+        self.setupUi(self)
 
         self.setWindowTitle("Create Order")
-        self.setWindowIcon(QIcon("icons/icon.png"))
+        self.setWindowIcon(QIcon(Icons.invigo_icon))
 
         self.lblMessage.setText(message)
 

@@ -5,8 +5,8 @@ from PyQt6.QtCore import Qt
 from PyQt6.QtGui import QIcon
 from PyQt6.QtWidgets import QGridLayout, QLabel, QPushButton, QWidget
 
-from ui.icons import Icons
 from ui.custom.time_double_spin_box import TimeSpinBox
+from ui.icons import Icons
 from utils.workspace.flowtag_data import FlowtagData
 from utils.workspace.tag import Tag
 

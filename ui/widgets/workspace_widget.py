@@ -4,16 +4,16 @@ from datetime import datetime
 from functools import partial
 from typing import TYPE_CHECKING, Literal, Optional, Union
 
-from PyQt6 import uic
-from PyQt6.QtCore import QDate, Qt
-from PyQt6.QtGui import QAction, QCursor, QFont, QIcon, QPixmap
-from PyQt6.QtWidgets import QAbstractItemView, QApplication, QComboBox, QCompleter, QGridLayout, QGroupBox, QHBoxLayout, QInputDialog, QLabel, QLineEdit, QMenu, QMessageBox, QPushButton, QScrollArea, QTableWidgetItem, QTabWidget, QVBoxLayout, QWidget
+from PyQt6.QtCore import Qt
+from PyQt6.QtGui import QAction, QCursor, QFont, QPixmap
+from PyQt6.QtWidgets import QComboBox, QHBoxLayout, QLabel, QMenu, QMessageBox, QPushButton, QScrollArea, QTableWidgetItem, QVBoxLayout, QWidget
 
 from ui.custom.file_button import FileButton
 from ui.custom.workspace_assembly_table_widget import WorkspaceAssemblyTableColumns, WorkspaceAssemblyTableWidget
 from ui.custom.workspace_parts_table_widget import WorkspacePartsTableColumns, WorkspacePartsTableWidget
 from ui.dialogs.recut_dialog import RecutDialog
 from ui.dialogs.view_assembly_dialog import ViewAssemblyDialog
+from ui.widgets.workspace_widget_UI import Ui_Form
 from ui.windows.image_viewer import QImageViewer
 from ui.windows.pdf_viewer import PDFViewer
 from utils.inventory.laser_cut_part import LaserCutPart
@@ -21,20 +21,20 @@ from utils.settings import Settings
 from utils.threads.upload_thread import UploadThread
 from utils.threads.workspace_get_file_thread import WorkspaceDownloadFile
 from utils.workspace.assembly import Assembly
-from utils.workspace.job import Job
 from utils.workspace.workspace_laser_cut_part_group import WorkspaceLaserCutPartGroup
 
 if TYPE_CHECKING:
     from ui.widgets.workspace_tab_widget import WorkspaceTabWidget
 
 
-class WorkspaceWidget(QWidget):
+class WorkspaceWidget(QWidget, Ui_Form):
     def __init__(
         self,
         parent,
     ):
         super().__init__(parent)
-        uic.loadUi("ui/widgets/workspace_widget.ui", self)
+        self.setupUi(self)
+
         self.parent: WorkspaceTabWidget = parent
         self.workspace = self.parent.workspace
         self.workspace_settings = self.parent.workspace_settings
@@ -78,21 +78,13 @@ class WorkspaceWidget(QWidget):
         self.assemblies_table_widget = WorkspaceAssemblyTableWidget(self)
         # self.assemblies_table_widget.rowChanged.connect(self.assemblies_table_row_changed)
 
-        self.parts_widget = self.findChild(QWidget, "parts_widget")
-        self.parts_layout = self.findChild(QVBoxLayout, "parts_layout")
         self.parts_layout.addWidget(self.parts_table_widget)
 
-        self.recut_parts_widget = self.findChild(QGroupBox, "recut_parts_widget")
-        self.recut_parts_layout = self.findChild(QVBoxLayout, "recut_parts_layout")
         self.recut_parts_layout.addWidget(self.recut_parts_table_widget)
 
-        self.recoat_parts_widget = self.findChild(QGroupBox, "recoat_parts_widget")
-        self.recoat_parts_layout = self.findChild(QVBoxLayout, "recoat_parts_layout")
         self.recoat_parts_layout.addWidget(self.recoat_parts_table_widget)
 
-        self.assembly_widget = self.findChild(QWidget, "assembly_widget")
         self.assembly_widget.setHidden(True)
-        self.assembly_layout = self.findChild(QVBoxLayout, "assembly_layout")
         self.assembly_layout.addWidget(self.assemblies_table_widget)
 
     def view_parts_table(self):

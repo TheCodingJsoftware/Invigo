@@ -1,7 +1,8 @@
-from PyQt6 import uic
 from PyQt6.QtGui import QIcon
 from PyQt6.QtWidgets import QDialog
 
+from ui.dialogs.items_change_quantity_dialog_UI import Ui_Form
+from ui.icons import Icons
 from utils.inventory.component import Component
 from utils.inventory.laser_cut_part import LaserCutPart
 from utils.settings import Settings
@@ -9,7 +10,7 @@ from utils.settings import Settings
 settings_file = Settings()
 
 
-class ItemsChangeQuantityDialog(QDialog):
+class ItemsChangeQuantityDialog(QDialog, Ui_Form):
     def __init__(
         self,
         title,
@@ -18,7 +19,7 @@ class ItemsChangeQuantityDialog(QDialog):
         parent=None,
     ):
         super().__init__(parent)
-        uic.loadUi("ui/dialogs/items_change_quantity_dialog.ui", self)
+        self.setupUi(self)
 
         self.title = title
         self.items = items
@@ -27,7 +28,7 @@ class ItemsChangeQuantityDialog(QDialog):
         settings_file.load_data()
 
         self.setWindowTitle(self.title)
-        self.setWindowIcon(QIcon("icons/icon.png"))
+        self.setWindowIcon(QIcon(Icons.invigo_icon))
 
         if self.add_or_remove == "ADD":
             self.pushButton_remove.setHidden(True)

@@ -1,13 +1,13 @@
 import contextlib
 from typing import TYPE_CHECKING, Optional, Union
 
-from PyQt6 import uic
 from PyQt6.QtCore import Qt
 from PyQt6.QtGui import QColor, QCursor
 from PyQt6.QtWidgets import QComboBox, QDoubleSpinBox, QGroupBox, QHBoxLayout, QLabel, QMenu, QPushButton, QTableWidget, QTableWidgetItem, QVBoxLayout, QWidget
 
 from ui.dialogs.add_assembly_dialog import AddAssemblyDialog
 from ui.theme import theme_var
+from ui.widgets.assembly_widget_UI import Ui_Form
 from ui.windows.image_viewer import QImageViewer
 from ui.windows.pdf_viewer import PDFViewer
 from utils.colors import get_contrast_text_color, lighten_color
@@ -19,10 +19,10 @@ if TYPE_CHECKING:
     from ui.widgets.job_widget import JobWidget
 
 
-class AssemblyWidget(QWidget):
+class AssemblyWidget(QWidget, Ui_Form):
     def __init__(self, assembly: Assembly, parent):
         super().__init__(parent)
-        uic.loadUi("ui/widgets/assembly_widget.ui", self)
+        self.setupUi(self)
         self.parent: Union["AssemblyWidget", JobWidget] = parent
 
         self.assembly = assembly
@@ -34,7 +34,6 @@ class AssemblyWidget(QWidget):
         self.price_calculator = self.parent.price_calculator
         self.job_tab: JobTab = self.parent.parent
 
-        self.assembly_widget = self.findChild(QWidget, "assembly_widget")
         self.assembly_widget.setStyleSheet(
             f"""
 QWidget#assembly_widget {{
@@ -47,51 +46,15 @@ background-color: {theme_var('surface')};
 }}"""
             % {"base_color": self.assembly.color}
         )
-        self.verticalLayout_14 = self.findChild(QVBoxLayout, "verticalLayout_14")
         self.verticalLayout_14.setAlignment(Qt.AlignmentFlag.AlignTop)
-
-        self.verticalLayout_3 = self.findChild(QVBoxLayout, "verticalLayout_3")
         self.verticalLayout_3.setAlignment(Qt.AlignmentFlag.AlignTop)
-
-        self.verticalLayout_4 = self.findChild(QVBoxLayout, "verticalLayout_4")
         self.verticalLayout_4.setAlignment(Qt.AlignmentFlag.AlignTop)
-
-        self.verticalLayout_10 = self.findChild(QVBoxLayout, "verticalLayout_10")
         self.verticalLayout_10.setAlignment(Qt.AlignmentFlag.AlignTop)
-
-        self.pushButton_laser_cut_parts = self.findChild(QPushButton, "pushButton_laser_cut_parts")
-        self.laser_cut_widget = self.findChild(QWidget, "laser_cut_widget")
         self.apply_stylesheet_to_toggle_buttons(self.pushButton_laser_cut_parts, self.laser_cut_widget)
-
-        self.pushButton_components = self.findChild(QPushButton, "pushButton_components")
-        self.component_widget = self.findChild(QWidget, "component_widget")
         self.apply_stylesheet_to_toggle_buttons(self.pushButton_components, self.component_widget)
-
-        self.pushButton_sub_assemblies = self.findChild(QPushButton, "pushButton_sub_assemblies")
-        self.sub_assemblies_widget = self.findChild(QWidget, "sub_assemblies_widget")
         self.apply_stylesheet_to_toggle_buttons(self.pushButton_sub_assemblies, self.sub_assemblies_widget)
-
-        self.label_total_cost_for_assembly = self.findChild(QLabel, "label_total_cost_for_assembly")
-
-        self.expected_time_to_complete_layout = self.findChild(QVBoxLayout, "expected_time_to_complete_layout")
-        self.flowtag_data_layout = self.findChild(QVBoxLayout, "flowtag_data_layout")
-        self.flowtag_data_widget = self.findChild(QWidget, "flowtag_data_widget")
-
-        self.image_layout = self.findChild(QVBoxLayout, "image_layout")
-        self.doubleSpinBox_quantity = self.findChild(QDoubleSpinBox, "doubleSpinBox_quantity")
         self.doubleSpinBox_quantity.wheelEvent = lambda event: None
-        self.assembly_files_layout = self.findChild(QHBoxLayout, "assembly_files_layout")
-        self.paint_widget = self.findChild(QWidget, "paint_widget")
-        self.paint_layout = self.findChild(QHBoxLayout, "paint_layout")
-        self.comboBox_assembly_flow_tag = self.findChild(QComboBox, "comboBox_assembly_flow_tag")
-        self.laser_cut_parts_layout = self.findChild(QVBoxLayout, "laser_cut_parts_layout")
-        self.add_laser_cut_part_button = self.findChild(QPushButton, "add_laser_cut_part_button")
-        self.components_layout = self.findChild(QVBoxLayout, "components_layout")
-        self.add_component_button = self.findChild(QPushButton, "add_component_button")
-        self.sub_assembly_layout = self.findChild(QVBoxLayout, "sub_assembly_layout")
         self.sub_assembly_layout.setAlignment(Qt.AlignmentFlag.AlignTop)
-        self.add_new_sub_assembly_button = self.findChild(QPushButton, "add_new_sub_assembly_button")
-        self.add_existing_assembly_button = self.findChild(QPushButton, "add_existing_assembly_button")
 
     def apply_stylesheet_to_toggle_buttons(self, button: QPushButton, widget: QWidget):
         base_color = self.assembly.color

@@ -26,7 +26,7 @@ class PopoutWidget(QWidget):
         self.setWindowFlags(Qt.WindowType.Window)
         self.setWindowTitle("Quote Generator")
         self.setLayout(self.original_layout)
-        self.setObjectName('popout_widget')
+        self.setObjectName("popout_widget")
 
     def closeEvent(self, event):
         if self.original_layout_parent:

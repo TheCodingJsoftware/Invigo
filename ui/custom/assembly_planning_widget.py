@@ -410,7 +410,7 @@ class AssemblyPlanningWidget(AssemblyWidget):
         )
 
     def add_component(self):
-        add_item_dialog = AddComponentDialog(self)
+        add_item_dialog = AddComponentDialog(self.components_inventory, self)
         if add_item_dialog.exec():
             if components := add_item_dialog.get_selected_components():
                 for component in components:
@@ -771,7 +771,7 @@ class AssemblyPlanningWidget(AssemblyWidget):
         self.laser_cut_parts_table.resizeColumnsToContents()
 
     def add_laser_cut_part(self):
-        add_item_dialog = AddLaserCutPartDialog(self)
+        add_item_dialog = AddLaserCutPartDialog(self.laser_cut_inventory, self)
         if add_item_dialog.exec():
             if laser_cut_parts := add_item_dialog.get_selected_laser_cut_parts():
                 for laser_cut_part in laser_cut_parts:

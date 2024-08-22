@@ -1,20 +1,21 @@
-from PyQt6 import uic
 from PyQt6.QtGui import QIcon
 from PyQt6.QtWidgets import QDialog, QTableWidgetItem
 
+from ui.dialogs.view_removed_quantities_history_dialog_UI import Ui_Form
+from ui.icons import Icons
 from utils.history_file import HistoryFile
 
 
-class ViewRemovedQuantitiesHistoryDialog(QDialog):
+class ViewRemovedQuantitiesHistoryDialog(QDialog, Ui_Form):
     def __init__(
         self,
         parent,
     ):
         super().__init__(parent)
-        uic.loadUi("ui/dialogs/view_removed_quantities_history_dialog.ui", self)
+        self.setupUi(self)
 
         self.setWindowTitle("History")
-        self.setWindowIcon(QIcon("icons/icon.png"))
+        self.setWindowIcon(QIcon(Icons.invigo_icon))
 
         # CATOGRY HISTORY
         self.categoryHistoryTable.clear()

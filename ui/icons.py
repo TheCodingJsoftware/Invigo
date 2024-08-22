@@ -4,7 +4,7 @@ from ui.theme import theme_var
 
 
 class Icons:
-    invigo_icon = "icons/icon.png"
+    invigo_icon = "icons/invigo.png"
     refresh_icon = None
     clear_icon = None
     save_icon = None
@@ -52,6 +52,7 @@ class Icons:
     sun_icon = None
     moon_icon = None
     flowtag_data_icon = None
+    printer_icon = None
 
     @classmethod
     def load_icons(cls):
@@ -518,6 +519,15 @@ class Icons:
                 {
                     "color": theme_var("on-primary"),
                     "color_active": theme_var("on-primary"),
+                }
+            ],
+        )
+        cls.printer_icon = qta.icon(
+            "ph.printer-fill",
+            options=[
+                {
+                    "color": theme_var("on-surface"),
+                    "color_active": theme_var("primary"),
                 }
             ],
         )

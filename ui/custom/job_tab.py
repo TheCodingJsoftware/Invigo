@@ -29,7 +29,7 @@ class PopoutWidget(QWidget):
         self.setWindowFlags(Qt.WindowType.Window)
         self.setWindowTitle(self.tab_name)
         self.setLayout(self.original_layout)
-        self.setObjectName('popout_widget')
+        self.setObjectName("popout_widget")
 
     def closeEvent(self, event):
         if self.original_layout_parent:
@@ -249,7 +249,7 @@ class JobTab(QWidget):
         SAVED_JOB_STYLE = f"background-color: {theme_var('primary-green')}; color: {theme_var('on-primary-green')}; padding: 5px; border-radius: 5px;"
         UNSAVED_JOB_STYLE = f"background-color: {theme_var('primary-yellow')}; color: {theme_var('on-primary-yellow')}; padding: 5px; border-radius: 5px;"
 
-        if self.parent.tab_text(self.parent.tabWidget.currentIndex()) == "job_planner_tab":
+        if self.parent.tab_text(self.parent.stackedWidget.currentIndex()) == "job_planner_tab":
             if job.unsaved_changes:
                 self.parent.label_job_save_status.setText("You have unsaved changes")
                 self.parent.label_job_save_status.setStyleSheet(UNSAVED_JOB_STYLE)

@@ -4,7 +4,7 @@
 <tbody>
 <td style="width: 200px;">
 <br>
-<img style="border-radius: 25px; width: 200px; height: auto;" src="icons/icon.png" /><h3 style="text-align: center">Invigo</h3></p>
+<img style="border-radius: 25px; width: 200px; height: auto;" src=Icons.invigo_icon /><h3 style="text-align: center">Invigo</h3></p>
 </td>
 <td>
 <img src="https://img.shields.io/github/created-at/TheCodingJsoftware/Inventory-Manager?style=for-the-badge&"/><img src="https://img.shields.io/github/license/TheCodingJsoftware/Inventory-Manager?&style=for-the-badge"/><img src="https://img.shields.io/static/v1?label=Platform&message=Windows&&style=for-the-badge"/><img src="https://img.shields.io/github/repo-size/TheCodingJsoftware/Inventory-Manager?label=Size&style=for-the-badge"/><img src="https://img.shields.io/github/commit-activity/m/TheCodingJsoftware/Inventory-Manager?style=for-the-badge"/><img src="https://img.shields.io/github/last-commit/TheCodingJsoftware/Invigo?style=for-the-badge"/><img src="https://img.shields.io/github/languages/count/TheCodingJsoftware/Inventory-Manager?style=for-the-badge"><img src="https://img.shields.io/github/languages/top/TheCodingJsoftware/Inventory-Manager?style=for-the-badge"><img src="https://img.shields.io/badge/python-3.12-blue?style=for-the-badge">

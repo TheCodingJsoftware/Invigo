@@ -1,25 +1,26 @@
 from natsort import natsorted
-from PyQt6 import uic
 from PyQt6.QtCore import Qt
 from PyQt6.QtGui import QIcon
-from PyQt6.QtWidgets import QCompleter, QDialog, QLineEdit, QListWidget
+from PyQt6.QtWidgets import QCompleter, QDialog
 
+from ui.dialogs.add_laser_cut_part_dialog_UI import Ui_Form
+from ui.icons import Icons
+from ui.theme import theme_var
 from utils.inventory.laser_cut_inventory import LaserCutInventory
 from utils.inventory.laser_cut_part import LaserCutPart
 
 
-class AddLaserCutPartDialog(QDialog):
-    def __init__(self, parent):
+class AddLaserCutPartDialog(QDialog, Ui_Form):
+    def __init__(self, laser_cut_inventory: LaserCutInventory, parent):
         super().__init__(parent)
-        uic.loadUi("ui/dialogs/add_laser_cut_part_dialog.ui", self)
+        self.setupUi(self)
         self.parent = parent
 
-        self.laser_cut_inventory: LaserCutInventory = self.parent.laser_cut_inventory
+        self.laser_cut_inventory = laser_cut_inventory
 
         self.setWindowTitle("Add New Laser Cut Part")
-        self.setWindowIcon(QIcon("icons/icon.png"))
+        self.setWindowIcon(QIcon(Icons.invigo_icon))
 
-        self.lineEdit_name: QLineEdit
         self.completer = QCompleter(natsorted(self.laser_cut_inventory.get_all_part_names()))
         self.completer.setCaseSensitivity(Qt.CaseSensitivity.CaseInsensitive)
         self.completer.setFilterMode(Qt.MatchFlag.MatchContains)
@@ -28,11 +29,9 @@ class AddLaserCutPartDialog(QDialog):
         self.lineEdit_name.textChanged.connect(self.name_changed)
         self._completing = False
 
-        self.listWidget_laser_cut_parts: QListWidget
-
         self.listWidget_laser_cut_parts.addItems(natsorted(self.laser_cut_inventory.get_all_part_names()))
         self.listWidget_laser_cut_parts.currentTextChanged.connect(self.selection_changed)
-        self.label_laser_cut_part_status.setStyleSheet("color: #E74E4E;")
+        self.label_laser_cut_part_status.setStyleSheet(f"color: {theme_var('error')};")
         self.pushButton_add.clicked.connect(self.accept)
         self.pushButton_cancel.clicked.connect(self.reject)
 
@@ -51,11 +50,11 @@ class AddLaserCutPartDialog(QDialog):
                 self.lineEdit_name.blockSignals(True)
                 self.lineEdit_name.setText(laser_cut_part.name)
                 self.lineEdit_name.blockSignals(False)
-                self.label_laser_cut_part_status.setStyleSheet("color: #4EE753;")
+                self.label_laser_cut_part_status.setStyleSheet(f"color: {theme_var('primary-green')};")
                 self.label_laser_cut_part_status.setText(" * Laser Cut Part exists in inventory.")
                 return
             else:
-                self.label_laser_cut_part_status.setStyleSheet("color: #E74E4E;")
+                self.label_laser_cut_part_status.setStyleSheet(f"color: {theme_var('error')};")
                 self.label_laser_cut_part_status.setText(" * Laser Cut Part does NOT exists in inventory.")
 
     def get_laser_cut_part_row(self, laser_cut_part_name: str) -> int:
@@ -78,7 +77,7 @@ class AddLaserCutPartDialog(QDialog):
                 self.completer.popup().hide()
 
         new_parts_last = []
-        self.label_laser_cut_part_status.setStyleSheet("color: #E74E4E;")
+        self.label_laser_cut_part_status.setStyleSheet(f"color: {theme_var('error')};")
         self.listWidget_laser_cut_parts.blockSignals(True)
         self.listWidget_laser_cut_parts.clear()
         for name in self.laser_cut_inventory.get_all_part_names():

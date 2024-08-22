@@ -6,7 +6,6 @@ from typing import TYPE_CHECKING
 
 import sympy
 from natsort import natsorted
-from PyQt6 import uic
 from PyQt6.QtCore import Qt
 from PyQt6.QtGui import QAction, QColor, QCursor, QFont
 from PyQt6.QtWidgets import QAbstractItemView, QCheckBox, QComboBox, QCompleter, QDialog, QDoubleSpinBox, QGridLayout, QHBoxLayout, QInputDialog, QLabel, QLineEdit, QMenu, QMessageBox, QPushButton, QScrollArea, QTableWidgetItem, QVBoxLayout, QWidget
@@ -17,6 +16,7 @@ from ui.dialogs.items_change_quantity_dialog import ItemsChangeQuantityDialog
 from ui.dialogs.set_custom_limit_dialog import SetCustomLimitDialog
 from ui.icons import Icons
 from ui.theme import theme_var
+from ui.widgets.laser_cut_tab_UI import Ui_Form
 from utils.inventory.category import Category
 from utils.inventory.laser_cut_inventory import LaserCutInventory
 from utils.inventory.laser_cut_part import LaserCutPart
@@ -294,7 +294,7 @@ class PopoutWidget(QWidget):
         self.setWindowFlags(Qt.WindowType.Window)
         self.setWindowTitle("Sheets In Inventory Tab")
         self.setLayout(self.original_layout)
-        self.setObjectName('popout_widget')
+        self.setObjectName("popout_widget")
 
     def closeEvent(self, event):
         if self.original_layout_parent:
@@ -305,10 +305,10 @@ class PopoutWidget(QWidget):
         super().closeEvent(event)
 
 
-class LaserCutTab(QWidget):
+class LaserCutTab(QWidget, Ui_Form):
     def __init__(self, parent):
         super().__init__(parent)
-        uic.loadUi("ui/widgets/laser_cut_tab.ui", self)
+        self.setupUi(self)
 
         self.parent: MainWindow = parent
         self.laser_cut_inventory: LaserCutInventory = self.parent.laser_cut_inventory
@@ -344,21 +344,14 @@ class LaserCutTab(QWidget):
         self.tables_font.setWeight(self.settings_file.get_value("tables_font")["weight"])
         self.tables_font.setItalic(self.settings_file.get_value("tables_font")["italic"])
 
-        self.gridLayout_laser_cut_parts_summary = self.findChild(QGridLayout, "gridLayout_laser_cut_parts_summary")
-        self.gridLayout_materials = self.findChild(QGridLayout, "gridLayout_materials")
         self.gridLayout_materials.setAlignment(Qt.AlignmentFlag.AlignHCenter | Qt.AlignmentFlag.AlignTop)
-        self.gridLayout_thicknesses = self.findChild(QGridLayout, "gridLayout_thicknesses")
         self.gridLayout_thicknesses.setAlignment(Qt.AlignmentFlag.AlignHCenter | Qt.AlignmentFlag.AlignTop)
 
-        self.lineEdit_search_laser_cut_parts = self.findChild(QLineEdit, "lineEdit_search_parts_in_inventory")
-        self.pushButton_add_quantity = self.findChild(QPushButton, "pushButton_add_quantity")
         self.pushButton_add_quantity.clicked.connect(partial(self.change_quantities, "ADD"))
         self.pushButton_add_quantity.setIcon(Icons.plus_icon)
-        self.pushButton_remove_quantity = self.findChild(QPushButton, "pushButton_remove_quantity")
         self.pushButton_remove_quantity.clicked.connect(partial(self.change_quantities, "REMOVE"))
         self.pushButton_remove_quantity.setIcon(Icons.minus_icon)
 
-        self.verticalLayout_11 = self.findChild(QVBoxLayout, "verticalLayout_11")
         self.clear_layout(self.verticalLayout_11)
         self.verticalLayout_11.addWidget(self.tab_widget)
 
@@ -388,13 +381,12 @@ class LaserCutTab(QWidget):
             col += 1
             self.laser_cut_parts_filter["thicknesses"].append(button)
 
-        self.lineEdit_search_laser_cut_parts.returnPressed.connect(self.load_table)
+        self.lineEdit_search_parts_in_inventory.returnPressed.connect(self.load_table)
         autofill_search_options = natsorted(self.laser_cut_inventory.get_all_part_names())
         completer = QCompleter(autofill_search_options, self)
         completer.setCaseSensitivity(Qt.CaseSensitivity.CaseInsensitive)
-        self.lineEdit_search_laser_cut_parts.setCompleter(completer)
+        self.lineEdit_search_parts_in_inventory.setCompleter(completer)
 
-        self.pushButton_popout = self.findChild(QPushButton, "pushButton_popout")
         self.pushButton_popout.setStyleSheet("background-color: transparent; border: none;")
         self.pushButton_popout.clicked.connect(self.popout)
         self.pushButton_popout.setIcon(Icons.dock_icon)
@@ -547,7 +539,7 @@ class LaserCutTab(QWidget):
 
             # We check to see if there are any items to show, if not, we dont loop through the group data
             for laser_cut_part in laser_cut_parts:
-                if self.lineEdit_search_laser_cut_parts.text() in laser_cut_part.name:
+                if self.lineEdit_search_parts_in_inventory.text() in laser_cut_part.name:
                     break
             else:
                 continue
@@ -563,7 +555,7 @@ class LaserCutTab(QWidget):
             self.set_table_row_color(current_table, row_index, f"{theme_var('background')}")
             row_index += 1
             for laser_cut_part in laser_cut_parts:
-                if self.lineEdit_search_laser_cut_parts.text() not in laser_cut_part.name:
+                if self.lineEdit_search_parts_in_inventory.text() not in laser_cut_part.name:
                     continue
                 if selected_materials := [button.text() for button in self.laser_cut_parts_filter["materials"] if button.isChecked()]:
                     if laser_cut_part.material not in selected_materials:

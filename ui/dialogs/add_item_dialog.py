@@ -1,12 +1,13 @@
-from PyQt6 import uic
 from PyQt6.QtGui import QIcon
 from PyQt6.QtWidgets import QDialog
 
+from ui.dialogs.add_item_dialog_UI import Ui_Form
+from ui.icons import Icons
 from utils.inventory.component import Component
 from utils.inventory.components_inventory import ComponentsInventory
 
 
-class AddItemDialog(QDialog):
+class AddItemDialog(QDialog, Ui_Form):
     def __init__(
         self,
         title: str,
@@ -15,11 +16,11 @@ class AddItemDialog(QDialog):
         parent=None,
     ):
         super().__init__(parent)
-        uic.loadUi("ui/dialogs/add_item_dialog.ui", self)
+        self.setupUi(self)
 
         self.components_inventory = components_inventory
 
-        self.setWindowIcon(QIcon("icons/icon.png"))
+        self.setWindowIcon(QIcon(Icons.invigo_icon))
 
         self.setWindowTitle(title)
         self.lblMessage.setText(message)

@@ -2,17 +2,15 @@ import contextlib
 from functools import partial
 from typing import TYPE_CHECKING, Union
 
-import sympy
-from PyQt6 import uic
-from PyQt6.QtCore import QDate, Qt, pyqtSignal
-from PyQt6.QtGui import QAction, QCursor, QFont, QIcon
-from PyQt6.QtWidgets import QAbstractItemView, QComboBox, QCompleter, QGridLayout, QGroupBox, QHBoxLayout, QInputDialog, QLabel, QLineEdit, QMenu, QMessageBox, QPushButton, QScrollArea, QSplitter, QTableWidgetItem, QTabWidget, QVBoxLayout, QWidget
+from PyQt6.QtCore import QDate, pyqtSignal
+from PyQt6.QtWidgets import QPushButton, QVBoxLayout, QWidget
 
 from ui.custom.calendar_button import CalendarButton
 from ui.custom.filter_button import FilterButton
 from ui.custom.sort_button import SortButton
 from ui.custom_widgets import TabButton
 from ui.icons import Icons
+from ui.widgets.workspace_tab_widget_UI import Ui_Form
 from ui.widgets.workspace_widget import WorkspaceWidget
 from utils.settings import Settings
 from utils.workspace.workspace_filter import SortingMethod
@@ -21,27 +19,7 @@ if TYPE_CHECKING:
     from ui.windows.main_window import MainWindow
 
 
-class PopoutWidget(QWidget):
-    def __init__(self, layout_to_popout: QVBoxLayout, parent=None):
-        super().__init__(parent)
-        self.parent: MainWindow = parent
-        self.original_layout = layout_to_popout
-        self.original_layout_parent: "WorkspaceTabWidget" = self.original_layout.parentWidget()
-        self.setWindowFlags(Qt.WindowType.Window)
-        self.setWindowTitle("Workspace")
-        self.setLayout(self.original_layout)
-        self.setObjectName('popout_widget')
-
-    def closeEvent(self, event):
-        if self.original_layout_parent:
-            self.original_layout_parent.setLayout(self.original_layout)
-            self.original_layout_parent.pushButton_popout.setIcon(QIcon("icons/open_in_new.png"))
-            self.original_layout_parent.pushButton_popout.clicked.disconnect()
-            self.original_layout_parent.pushButton_popout.clicked.connect(self.original_layout_parent.popout)
-        super().closeEvent(event)
-
-
-class WorkspaceTabWidget(QWidget):
+class WorkspaceTabWidget(QWidget, Ui_Form):
     tabChanged = pyqtSignal(str)
 
     def __init__(
@@ -49,7 +27,7 @@ class WorkspaceTabWidget(QWidget):
         parent,
     ):
         super().__init__(parent)
-        uic.loadUi("ui/widgets/workspace_tab_widget.ui", self)
+        self.setupUi(self)
         self.parent: MainWindow = parent
 
         self.workspace = self.parent.workspace
@@ -61,45 +39,32 @@ class WorkspaceTabWidget(QWidget):
         self.workspace_filter = self.workspace.workspace_filter
 
         self.tag_buttons: list[TabButton] = []
-        self.last_selected_tag_button: TabButton = None
+        self.last_selected_tag: str = None
         self.has_searched = True
 
         self.load_ui()
 
     def load_ui(self):
-        self.tags_layout = self.findChild(QHBoxLayout, "tags_layout")
-        self.workspace_layout = self.findChild(QVBoxLayout, "workspace_layout")
-
         view_parts = self.settings_file.get_value("user_workspace_settings").get("view_parts", True)
         view_assemblies = self.settings_file.get_value("user_workspace_settings").get("view_assemblies", True)
 
-        self.pushButton_view_parts = self.findChild(QPushButton, "pushButton_view_parts")
         self.pushButton_view_parts.clicked.connect(self.view_parts_table)
         self.pushButton_view_parts.setVisible(view_parts)
         self.pushButton_view_parts.setChecked(True if view_parts and not view_assemblies else False)
 
-        self.pushButton_view_assemblies = self.findChild(QPushButton, "pushButton_view_assemblies")
         self.pushButton_view_assemblies.clicked.connect(self.view_assemblies_table)
         self.pushButton_view_assemblies.setVisible(view_assemblies)
         self.pushButton_view_assemblies.setChecked(True if view_assemblies and not view_parts else False)
 
-        self.pushButton_search = self.findChild(QPushButton, "pushButton_search")
         self.pushButton_search.clicked.connect(self.search_pressed)
 
-        self.lineEdit_search = self.findChild(QLineEdit, "lineEdit_search")
         self.lineEdit_search.returnPressed.connect(self.search_pressed)
         self.lineEdit_search.textChanged.connect(self.search_typing)
 
-        self.pushButton_clear_search = self.findChild(QPushButton, "pushButton_clear_search")
         self.pushButton_clear_search.clicked.connect(self.clear_search)
 
         self.workspace_widget = WorkspaceWidget(self)
         self.workspace_layout.addWidget(self.workspace_widget)
-
-        self.menu_buttons_layout = self.findChild(QHBoxLayout, "menu_buttons_layout")
-        self.sort_layout = self.findChild(QHBoxLayout, "sort_layout")
-
-        self.nests_layout = self.findChild(QVBoxLayout, "nests_layout")
 
         self.load_tags()
         self.load_menu_buttons()
@@ -149,7 +114,7 @@ class WorkspaceTabWidget(QWidget):
             tag_button.clicked.connect(partial(self.tag_button_pressed, tag_button))
             self.tags_layout.addWidget(tag_button)
             self.tag_buttons.append(tag_button)
-        if not self.last_selected_tag_button:
+        if not self.last_selected_tag:
             self.tag_buttons[0].setChecked(True)
             self.tag_button_pressed(self.tag_buttons[0])
 
@@ -229,23 +194,29 @@ class WorkspaceTabWidget(QWidget):
             if tag_button != pressed_tag_button:
                 tag_button.setChecked(False)
                 tag_button.setEnabled(True)
-        self.last_selected_tag_button = pressed_tag_button
+        self.last_selected_tag = pressed_tag_button.text()
         self.workspace_filter.current_tag = pressed_tag_button.text()
         self.workspace_widget.load_parts_table()
         self.workspace_widget.load_assembly_table()
         self.tabChanged.emit(pressed_tag_button.text())
 
-    def workspace_settings_changed(self):
-        self.workspace.load_data()
+    def set_current_tab(self, tab_name: str):
+        for tag_button in self.tag_buttons:
+            if tag_button.text() == tab_name:
+                tag_button.setChecked(True)
+                tag_button.setEnabled(False)
+            else:
+                tag_button.setChecked(False)
+                tag_button.setEnabled(True)
+        self.last_selected_tag = tab_name
+        self.workspace_filter.current_tag = tab_name
         self.workspace_widget.load_parts_table()
         self.workspace_widget.load_assembly_table()
+        self.tabChanged.emit(tab_name)
 
-    def popout(self):
-        self.popout_widget = PopoutWidget(self.layout(), self.parent)
-        self.popout_widget.show()
-        self.pushButton_popout.setIcon(QIcon("icons/dock_window.png"))
-        self.pushButton_popout.clicked.disconnect()
-        self.pushButton_popout.clicked.connect(self.popout_widget.close)
+    def workspace_settings_changed(self):
+        self.workspace.load_data()
+        self.set_current_tab(self.last_selected_tag)
 
     def sync_changes(self):
         self.parent.sync_changes("workspace_tab")
