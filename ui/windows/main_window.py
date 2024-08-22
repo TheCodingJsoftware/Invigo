@@ -16,8 +16,8 @@ import qtawesome as qta
 import requests
 import win32api  # pywin32
 from natsort import natsorted, ns
-from PyQt6.QtCore import QEventLoop, QPoint, Qt, QThread, QTimer, QVariant, pyqtSignal
-from PyQt6.QtGui import QAction, QColor, QCursor, QDragEnterEvent, QDragLeaveEvent, QDragMoveEvent, QDropEvent, QFont, QIcon
+from PyQt6.QtCore import QEventLoop, QPoint, Qt, QThread, QTimer, pyqtSignal
+from PyQt6.QtGui import QAction, QColor, QCursor, QDragEnterEvent, QDragLeaveEvent, QDropEvent, QFont, QIcon
 from PyQt6.QtWidgets import QApplication, QComboBox, QFileDialog, QFontDialog, QInputDialog, QListWidget, QListWidgetItem, QMainWindow, QMenu, QMessageBox, QPushButton, QTableWidgetItem, QToolBox, QTreeWidgetItem, QVBoxLayout, QWidget
 
 from ui.custom.job_tab import JobTab
@@ -100,7 +100,7 @@ from utils.workspace.workspace import Workspace
 from utils.workspace.workspace_laser_cut_part_group import WorkspaceLaserCutPartGroup
 from utils.workspace.workspace_settings import WorkspaceSettings
 
-__version__: str = "v3.5.4"
+__version__: str = "v3.5.5"
 
 
 def check_folders(folders: list[str]):
