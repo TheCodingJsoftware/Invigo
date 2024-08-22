@@ -36,12 +36,11 @@ class Ui_Form(object):
         self.gridLayout_2.setContentsMargins(-1, -1, -1, 0)
         self.gridLayout_2.setObjectName("gridLayout_2")
         self.label = QtWidgets.QLabel(parent=self.job_settings_widget)
-        self.label.setAlignment(QtCore.Qt.AlignmentFlag.AlignRight | QtCore.Qt.AlignmentFlag.AlignTrailing | QtCore.Qt.AlignmentFlag.AlignVCenter)
+        self.label.setAlignment(QtCore.Qt.AlignmentFlag.AlignRight|QtCore.Qt.AlignmentFlag.AlignTrailing|QtCore.Qt.AlignmentFlag.AlignVCenter)
         self.label.setObjectName("label")
         self.gridLayout_2.addWidget(self.label, 0, 0, 1, 1)
         self.comboBox_type = QtWidgets.QComboBox(parent=self.job_settings_widget)
         self.comboBox_type.setObjectName("comboBox_type")
-        self.comboBox_type.addItem("")
         self.comboBox_type.addItem("")
         self.comboBox_type.addItem("")
         self.comboBox_type.addItem("")
@@ -52,7 +51,7 @@ class Ui_Form(object):
         self.horizontalLayout_4.setObjectName("horizontalLayout_4")
         self.doubleSpinBox_order_number = QtWidgets.QDoubleSpinBox(parent=self.job_settings_widget)
         self.doubleSpinBox_order_number.setDecimals(0)
-        self.doubleSpinBox_order_number.setMaximum(1e18)
+        self.doubleSpinBox_order_number.setMaximum(1e+18)
         self.doubleSpinBox_order_number.setObjectName("doubleSpinBox_order_number")
         self.horizontalLayout_4.addWidget(self.doubleSpinBox_order_number)
         self.pushButton_get_order_number = QtWidgets.QPushButton(parent=self.job_settings_widget)
@@ -62,19 +61,19 @@ class Ui_Form(object):
         self.horizontalLayout_4.addWidget(self.pushButton_get_order_number)
         self.gridLayout_2.addLayout(self.horizontalLayout_4, 0, 1, 1, 1)
         self.label_4 = QtWidgets.QLabel(parent=self.job_settings_widget)
-        self.label_4.setAlignment(QtCore.Qt.AlignmentFlag.AlignRight | QtCore.Qt.AlignmentFlag.AlignTrailing | QtCore.Qt.AlignmentFlag.AlignVCenter)
+        self.label_4.setAlignment(QtCore.Qt.AlignmentFlag.AlignRight|QtCore.Qt.AlignmentFlag.AlignTrailing|QtCore.Qt.AlignmentFlag.AlignVCenter)
         self.label_4.setObjectName("label_4")
         self.gridLayout_2.addWidget(self.label_4, 0, 2, 1, 1)
         self.label_3 = QtWidgets.QLabel(parent=self.job_settings_widget)
-        self.label_3.setAlignment(QtCore.Qt.AlignmentFlag.AlignRight | QtCore.Qt.AlignmentFlag.AlignTrailing | QtCore.Qt.AlignmentFlag.AlignVCenter)
+        self.label_3.setAlignment(QtCore.Qt.AlignmentFlag.AlignRight|QtCore.Qt.AlignmentFlag.AlignTrailing|QtCore.Qt.AlignmentFlag.AlignVCenter)
         self.label_3.setObjectName("label_3")
         self.gridLayout_2.addWidget(self.label_3, 1, 2, 1, 1)
         self.label_2 = QtWidgets.QLabel(parent=self.job_settings_widget)
-        self.label_2.setAlignment(QtCore.Qt.AlignmentFlag.AlignRight | QtCore.Qt.AlignmentFlag.AlignTrailing | QtCore.Qt.AlignmentFlag.AlignVCenter)
+        self.label_2.setAlignment(QtCore.Qt.AlignmentFlag.AlignRight|QtCore.Qt.AlignmentFlag.AlignTrailing|QtCore.Qt.AlignmentFlag.AlignVCenter)
         self.label_2.setObjectName("label_2")
         self.gridLayout_2.addWidget(self.label_2, 1, 0, 1, 1)
         self.label_5 = QtWidgets.QLabel(parent=self.job_settings_widget)
-        self.label_5.setAlignment(QtCore.Qt.AlignmentFlag.AlignRight | QtCore.Qt.AlignmentFlag.AlignTop | QtCore.Qt.AlignmentFlag.AlignTrailing)
+        self.label_5.setAlignment(QtCore.Qt.AlignmentFlag.AlignRight|QtCore.Qt.AlignmentFlag.AlignTop|QtCore.Qt.AlignmentFlag.AlignTrailing)
         self.label_5.setObjectName("label_5")
         self.gridLayout_2.addWidget(self.label_5, 2, 0, 1, 1)
         self.textEdit_ship_to = QtWidgets.QTextEdit(parent=self.job_settings_widget)
@@ -122,25 +121,23 @@ class Ui_Form(object):
         self.pushButton_reload_job = QtWidgets.QPushButton(parent=self.job_settings_widget)
         self.pushButton_reload_job.setMinimumSize(QtCore.QSize(25, 25))
         self.pushButton_reload_job.setMaximumSize(QtCore.QSize(25, 25))
-        self.pushButton_reload_job.setStyleSheet(
-            "\n"
-            "QPushButton#pushButton_reload_job:flat {\n"
-            "    background-color: transparent;\n"
-            "    border: 1px solid transparent;\n"
-            "    border-radius: 12px;\n"
-            "    padding: 5px 10px;\n"
-            "    color: #EAE9FC;\n"
-            "}\n"
-            "\n"
-            "QPushButton#pushButton_reload_job:flat:pressed {\n"
-            "    background-color: #8dcdff;\n"
-            "    color: #171717;\n"
-            "}\n"
-            "\n"
-            "QPushButton#pushButton_reload_job:flat:hover {\n"
-            "    background-color: rgba(76, 76, 76, 0.6);\n"
-            "}"
-        )
+        self.pushButton_reload_job.setStyleSheet("\n"
+"QPushButton#pushButton_reload_job:flat {\n"
+"    background-color: transparent;\n"
+"    border: 1px solid transparent;\n"
+"    border-radius: 12px;\n"
+"    padding: 5px 10px;\n"
+"    color: #EAE9FC;\n"
+"}\n"
+"\n"
+"QPushButton#pushButton_reload_job:flat:pressed {\n"
+"    background-color: #8dcdff;\n"
+"    color: #171717;\n"
+"}\n"
+"\n"
+"QPushButton#pushButton_reload_job:flat:hover {\n"
+"    background-color: rgba(76, 76, 76, 0.6);\n"
+"}")
         self.pushButton_reload_job.setText("")
         icon = QtGui.QIcon.fromTheme("emblem-synchronized")
         self.pushButton_reload_job.setIcon(icon)
@@ -167,7 +164,7 @@ class Ui_Form(object):
         self.verticalLayout_5.setObjectName("verticalLayout_5")
         self.scrollArea_2 = QtWidgets.QScrollArea(parent=self.quoting_settings_widget)
         self.scrollArea_2.setWidgetResizable(True)
-        self.scrollArea_2.setAlignment(QtCore.Qt.AlignmentFlag.AlignLeading | QtCore.Qt.AlignmentFlag.AlignLeft | QtCore.Qt.AlignmentFlag.AlignTop)
+        self.scrollArea_2.setAlignment(QtCore.Qt.AlignmentFlag.AlignLeading|QtCore.Qt.AlignmentFlag.AlignLeft|QtCore.Qt.AlignmentFlag.AlignTop)
         self.scrollArea_2.setObjectName("scrollArea_2")
         self.scrollAreaWidgetContents_2 = QtWidgets.QWidget()
         self.scrollAreaWidgetContents_2.setGeometry(QtCore.QRect(0, 0, 282, 904))
@@ -497,7 +494,7 @@ class Ui_Form(object):
         font.setPointSize(14)
         self.label_total_cost_for_sheets.setFont(font)
         self.label_total_cost_for_sheets.setWordWrap(True)
-        self.label_total_cost_for_sheets.setTextInteractionFlags(QtCore.Qt.TextInteractionFlag.LinksAccessibleByMouse | QtCore.Qt.TextInteractionFlag.TextSelectableByMouse)
+        self.label_total_cost_for_sheets.setTextInteractionFlags(QtCore.Qt.TextInteractionFlag.LinksAccessibleByMouse|QtCore.Qt.TextInteractionFlag.TextSelectableByMouse)
         self.label_total_cost_for_sheets.setObjectName("label_total_cost_for_sheets")
         self.horizontalLayout.addWidget(self.label_total_cost_for_sheets)
         self.label_total_cost_for_parts = QtWidgets.QLabel(parent=self.cost_summary_widget)
@@ -505,7 +502,7 @@ class Ui_Form(object):
         font.setPointSize(14)
         self.label_total_cost_for_parts.setFont(font)
         self.label_total_cost_for_parts.setWordWrap(True)
-        self.label_total_cost_for_parts.setTextInteractionFlags(QtCore.Qt.TextInteractionFlag.LinksAccessibleByMouse | QtCore.Qt.TextInteractionFlag.TextSelectableByMouse)
+        self.label_total_cost_for_parts.setTextInteractionFlags(QtCore.Qt.TextInteractionFlag.LinksAccessibleByMouse|QtCore.Qt.TextInteractionFlag.TextSelectableByMouse)
         self.label_total_cost_for_parts.setObjectName("label_total_cost_for_parts")
         self.horizontalLayout.addWidget(self.label_total_cost_for_parts)
         self.horizontalLayout.setStretch(0, 1)
@@ -534,11 +531,11 @@ class Ui_Form(object):
         self.label_11.setBuddy(self.doubleSpinBox_sheets_overhead)
 
         self.retranslateUi(Form)
-        self.pushButton_nests.clicked["bool"].connect(self.nests_widget.setVisible)  # type: ignore
-        self.pushButton_nest_summary.clicked["bool"].connect(self.nest_summary_widget.setVisible)  # type: ignore
-        self.pushButton_sheet_quoting_options.clicked["bool"].connect(self.sheet_quoting_options_widget.setVisible)  # type: ignore
-        self.pushButton_global_sheet_settings.clicked["bool"].connect(self.global_sheet_settings_widget.setVisible)  # type: ignore
-        self.pushButton_item_quoting_options.clicked["bool"].connect(self.item_quoting_options_widget.setVisible)  # type: ignore
+        self.pushButton_nests.clicked['bool'].connect(self.nests_widget.setVisible) # type: ignore
+        self.pushButton_nest_summary.clicked['bool'].connect(self.nest_summary_widget.setVisible) # type: ignore
+        self.pushButton_sheet_quoting_options.clicked['bool'].connect(self.sheet_quoting_options_widget.setVisible) # type: ignore
+        self.pushButton_global_sheet_settings.clicked['bool'].connect(self.global_sheet_settings_widget.setVisible) # type: ignore
+        self.pushButton_item_quoting_options.clicked['bool'].connect(self.item_quoting_options_widget.setVisible) # type: ignore
         QtCore.QMetaObject.connectSlotsByName(Form)
         Form.setTabOrder(self.doubleSpinBox_order_number, self.pushButton_get_order_number)
         Form.setTabOrder(self.pushButton_get_order_number, self.comboBox_type)
@@ -570,9 +567,8 @@ class Ui_Form(object):
         self.comboBox_type.setItemText(0, _translate("Form", "Planning"))
         self.comboBox_type.setItemText(1, _translate("Form", "Quoting"))
         self.comboBox_type.setItemText(2, _translate("Form", "Quoted"))
-        self.comboBox_type.setItemText(3, _translate("Form", "Template"))
-        self.comboBox_type.setItemText(4, _translate("Form", "Workspace"))
-        self.comboBox_type.setItemText(5, _translate("Form", "Archive"))
+        self.comboBox_type.setItemText(3, _translate("Form", "Quote Confirmed"))
+        self.comboBox_type.setItemText(4, _translate("Form", "Template"))
         self.doubleSpinBox_order_number.setPrefix(_translate("Form", "#"))
         self.pushButton_get_order_number.setText(_translate("Form", "Get latest order number"))
         self.label_4.setText(_translate("Form", "Starting date:"))
@@ -580,8 +576,10 @@ class Ui_Form(object):
         self.label_2.setText(_translate("Form", "Job status:"))
         self.label_5.setText(_translate("Form", "Ship to:"))
         self.textEdit_ship_to.setPlaceholderText(_translate("Form", "Information about where this job is shipped to..."))
-        self.label_16.setText(_translate("Form", "Process's timeline:"))
-        self.pushButton_reload_job.setToolTip(_translate("Form", "Reload current job\n" "\n" "Ctrl + R"))
+        self.label_16.setText(_translate("Form", "Process\'s timeline:"))
+        self.pushButton_reload_job.setToolTip(_translate("Form", "Reload current job\n"
+"\n"
+"Ctrl + R"))
         self.pushButton_reload_job.setShortcut(_translate("Form", "Ctrl+R"))
         self.pushButton_global_sheet_settings.setText(_translate("Form", "Global Sheet Settings"))
         self.label_15.setText(_translate("Form", "* These will over write all nests sheet settings"))

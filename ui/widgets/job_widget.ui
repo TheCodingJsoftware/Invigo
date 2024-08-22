@@ -97,17 +97,12 @@
               </item>
               <item>
                <property name="text">
+                <string>Quote Confirmed</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
                 <string>Template</string>
-               </property>
-              </item>
-              <item>
-               <property name="text">
-                <string>Workspace</string>
-               </property>
-              </item>
-              <item>
-               <property name="text">
-                <string>Archive</string>
                </property>
               </item>
              </widget>

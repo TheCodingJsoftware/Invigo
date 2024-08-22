@@ -4,7 +4,7 @@ from ui.theme import theme_var
 
 
 class Icons:
-    invigo_icon = "icons/invigo.png"
+    invigo_icon = "icons/icon.png"
     refresh_icon = None
     clear_icon = None
     save_icon = None
