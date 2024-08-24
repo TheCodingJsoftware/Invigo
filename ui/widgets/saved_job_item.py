@@ -24,7 +24,7 @@ class SavedPlanningJobItem(QWidget, Ui_Form):
         self.pushButton_delete.setIcon(Icons.delete_icon)
         self.pushButton_delete.setObjectName("delete_button")
 
-        self.comboBox_job_status.wheelEvent = lambda event: None
+        self.comboBox_job_status.wheelEvent = lambda event: self.parent().wheelEvent(event)
         self.comboBox_job_status.setCurrentIndex(job_type - 1)
         self.comboBox_job_status.currentTextChanged.connect(self.job_type_changed.emit)
 

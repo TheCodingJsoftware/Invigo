@@ -84,7 +84,7 @@ class WorkorderID:
         self.workorder_id = workorder_id
 
     def generate(self) -> str:
-        return f"""<h5 class="center-align">Scan to Open Workorder</h5><div class='padding' id='workorder-id' data-workorder-id={self.workorder_id}></div><div id="page-break" class="page-break"></div>"""
+        return f"""<h5 class="center-align">Scan to Open Workorder</h5><div class='padding' id='workorder-id' data-workorder-id={self.workorder_id}></div>"""
 
 
 class NestsTable:
@@ -230,7 +230,7 @@ class SheetImages:
                 html += f"""
                 <div class="s6" id="nest-container">
                     <article class="nest no-padding border">
-                        <img style="margin-bottom: -50px; margin-top: -40px; z-index: -1; height: auto;" src="{self.server_directory}/image/{nest.image_path}" class="responsive small nest_image">
+                        <img src="{self.server_directory}/image/{nest.image_path}" class="responsive small nest_image">
                         <div class="{'right-align' if i % 2 == 0 else 'left-align'}">
                             <button class="nested-parts transparent small small-round">
                                 <i>format_list_bulleted</i>
@@ -314,7 +314,7 @@ class NestedLaserCutParts:
             for i, nest in enumerate(self.nests):
                 html += '<article class="border nest-summary"><div class="center-align">'
                 html += f'<h6 class="center-align">{nest.get_name()}</h6><br>'
-                html += f'<img style="margin-bottom: -80px; margin-top: -100px; z-index: -1; height: auto;" src="{self.server_directory}/image/{nest.image_path}" class="responsive nest_image"></div>'
+                html += f'<img src="{self.server_directory}/image/{nest.image_path}" class="responsive nest_image"></div>'
                 html += self.generate_laser_cut_part_table(nest)
                 html += "</article>"
                 if i < len(self.nests) - 1:  # Check if it's not the last item

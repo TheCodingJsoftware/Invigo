@@ -69,14 +69,14 @@ class EditLaserCutPart(QDialog):
                 edit.setText(value)
             elif isinstance(value, float):
                 edit = QDoubleSpinBox(widget)
-                edit.wheelEvent = lambda event: None
+                edit.wheelEvent = lambda event: self.parent().wheelEvent(event)
                 edit.setValue(value)
             elif isinstance(value, bool):
                 edit = QCheckBox(widget)
                 edit.setChecked(value)
             elif isinstance(value, int):
                 edit = QDoubleSpinBox(widget)
-                edit.wheelEvent = lambda event: None
+                edit.wheelEvent = lambda event: self.parent().wheelEvent(event)
                 edit.setDecimals(0)
                 edit.setValue(value)
             else:
@@ -174,7 +174,7 @@ class PaintSettingsWidget(QWidget):
         self.primer_layout.setContentsMargins(3, 3, 3, 3)
         self.primer_layout.setSpacing(0)
         self.combobox_primer = QComboBox(self.widget_primer)
-        self.combobox_primer.wheelEvent = lambda event: None
+        self.combobox_primer.wheelEvent = lambda event: self.parent.wheelEvent(event)
         self.combobox_primer.addItems(["None"] + self.paint_inventory.get_all_primers())
         if self.laser_cut_part.primer_name:
             self.combobox_primer.setCurrentText(self.laser_cut_part.primer_name)
@@ -192,7 +192,7 @@ class PaintSettingsWidget(QWidget):
         self.paint_color_layout.setContentsMargins(3, 3, 3, 3)
         self.paint_color_layout.setSpacing(0)
         self.combobox_paint_color = QComboBox(self.widget_paint_color)
-        self.combobox_paint_color.wheelEvent = lambda event: None
+        self.combobox_paint_color.wheelEvent = lambda event: self.parent.wheelEvent(event)
         self.combobox_paint_color.addItems(["None"] + self.paint_inventory.get_all_paints())
         if self.laser_cut_part.paint_name:
             self.combobox_paint_color.setCurrentText(self.laser_cut_part.paint_name)
@@ -210,7 +210,7 @@ class PaintSettingsWidget(QWidget):
         self.powder_coating_layout.setContentsMargins(3, 3, 3, 3)
         self.powder_coating_layout.setSpacing(0)
         self.combobox_powder_coating_color = QComboBox(self.widget_powder_coating)
-        self.combobox_powder_coating_color.wheelEvent = lambda event: None
+        self.combobox_powder_coating_color.wheelEvent = lambda event: self.parent.wheelEvent(event)
         self.combobox_powder_coating_color.addItems(["None"] + self.paint_inventory.get_all_powders())
         if self.laser_cut_part.powder_name:
             self.combobox_powder_coating_color.setCurrentText(self.laser_cut_part.powder_name)

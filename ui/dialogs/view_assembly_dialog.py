@@ -129,7 +129,11 @@ class ViewAssemblyDialog(QDialog, Ui_Form):
             image = QPixmap(laser_cut_part.image_index)
             original_width = image.width()
             original_height = image.height()
-            new_width = int(original_width * (new_height / original_height))
+            try:
+                new_width = int(original_width * (new_height / original_height))
+            except ZeroDivisionError:
+                new_width = 0
+                new_height = 0
             pixmap = image.scaled(new_width, new_height, Qt.AspectRatioMode.KeepAspectRatio)
             image_item.setData(Qt.ItemDataRole.DecorationRole, pixmap)
         self.tableWidget_laser_cut_parts.setRowHeight(current_row, new_height)

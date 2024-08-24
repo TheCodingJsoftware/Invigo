@@ -97,7 +97,7 @@ class AssemblyPlanningWidget(AssemblyWidget):
         else:
             self.comboBox_assembly_flow_tag.addItems(["Select flow tag"] + [f"{flow_tag}" for flow_tag in list(self.workspace_settings.get_all_assembly_flow_tags().values())])
         self.comboBox_assembly_flow_tag.setCurrentText(str(self.assembly.flowtag))
-        self.comboBox_assembly_flow_tag.wheelEvent = lambda event: None
+        self.comboBox_assembly_flow_tag.wheelEvent = lambda event: self.parent.wheelEvent(event)
         self.comboBox_assembly_flow_tag.currentTextChanged.connect(self.assembly_flow_tag_changed)
         self.comboBox_assembly_flow_tag.setFixedWidth(200)
         self.comboBox_assembly_flow_tag.setToolTip(self.assembly.flowtag.get_tooltip())
@@ -607,7 +607,7 @@ class AssemblyPlanningWidget(AssemblyWidget):
 
         materials_combobox = QComboBox(self)
         materials_combobox.setStyleSheet("border-radius: 0px;")
-        materials_combobox.wheelEvent = lambda event: None
+        materials_combobox.wheelEvent = lambda event: self.parent.wheelEvent(event)
         materials_combobox.addItems(self.sheet_settings.get_materials())
         materials_combobox.setCurrentText(laser_cut_part.material)
         materials_combobox.currentTextChanged.connect(partial(self.laser_cut_parts_table_changed, current_row))
@@ -616,7 +616,7 @@ class AssemblyPlanningWidget(AssemblyWidget):
 
         thicknesses_combobox = QComboBox(self)
         thicknesses_combobox.setStyleSheet("border-radius: 0px;")
-        thicknesses_combobox.wheelEvent = lambda event: None
+        thicknesses_combobox.wheelEvent = lambda event: self.parent.wheelEvent(event)
         thicknesses_combobox.addItems(self.sheet_settings.get_thicknesses())
         thicknesses_combobox.setCurrentText(laser_cut_part.gauge)
         thicknesses_combobox.currentTextChanged.connect(partial(self.laser_cut_parts_table_changed, current_row))
@@ -655,7 +655,7 @@ class AssemblyPlanningWidget(AssemblyWidget):
 
         flow_tag_combobox = QComboBox(self)
         flow_tag_combobox.setStyleSheet("border-radius: 0px;")
-        flow_tag_combobox.wheelEvent = lambda event: None
+        flow_tag_combobox.wheelEvent = lambda event: self.parent.wheelEvent(event)
         if str(laser_cut_part.flowtag.name):
             flow_tag_combobox.addItems([f"{flow_tag}" for flow_tag in list(self.workspace_settings.get_all_laser_cut_part_flow_tags().values())])
         else:

@@ -15,7 +15,6 @@ class WorkspaceDownloadFile(QThread):
         self.SERVER_IP: str = get_server_ip_address()
         self.SERVER_PORT: int = get_server_port()
         self.files_to_download = files_to_download
-        print(self.files_to_download)
         self.session = Session()
         self.open_when_done = open_when_done
         self.file_url = f"http://{self.SERVER_IP}:{self.SERVER_PORT}/workspace_get_file/"

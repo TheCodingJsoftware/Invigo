@@ -64,31 +64,31 @@ class NestWidget(QWidget, Ui_Form):
         self.label_scrap_percentage.setText(f"{self.nest.scrap_percentage:,.2f}%")
 
         self.doubleSpinBox_sheet_cut_time = MachineCutTimeDoubleSpinBox(self)
-        self.doubleSpinBox_sheet_cut_time.wheelEvent = lambda event: None
+        self.doubleSpinBox_sheet_cut_time.wheelEvent = lambda event: self.parent.wheelEvent(event)
         self.doubleSpinBox_sheet_cut_time.setValue(self.nest.sheet_cut_time)
         self.doubleSpinBox_sheet_cut_time.setToolTip(f"Original: {self.get_sheet_cut_time()}")
         self.doubleSpinBox_sheet_cut_time.valueChanged.connect(self.nest_changed)
         self.verticalLayout_sheet_cut_time.addWidget(self.doubleSpinBox_sheet_cut_time)
 
-        self.doubleSpinBox_sheet_count.wheelEvent = lambda event: None
+        self.doubleSpinBox_sheet_count.wheelEvent = lambda event: self.parent.wheelEvent(event)
         self.doubleSpinBox_sheet_count.setValue(self.nest.sheet_count)
         self.doubleSpinBox_sheet_count.valueChanged.connect(self.nest_changed)
 
-        self.comboBox_material.wheelEvent = lambda event: None
+        self.comboBox_material.wheelEvent = lambda event: self.parent.wheelEvent(event)
         self.comboBox_material.addItems(self.sheet_settings.get_materials())
         self.comboBox_material.setCurrentText(self.sheet.material)
         self.comboBox_material.currentTextChanged.connect(self.sheet_changed)
 
-        self.comboBox_thickness.wheelEvent = lambda event: None
+        self.comboBox_thickness.wheelEvent = lambda event: self.parent.wheelEvent(event)
         self.comboBox_thickness.addItems(self.sheet_settings.get_thicknesses())
         self.comboBox_thickness.setCurrentText(self.sheet.thickness)
         self.comboBox_thickness.currentTextChanged.connect(self.sheet_changed)
 
-        self.doubleSpinBox_length.wheelEvent = lambda event: None
+        self.doubleSpinBox_length.wheelEvent = lambda event: self.parent.wheelEvent(event)
         self.doubleSpinBox_length.setValue(self.sheet.length)
         self.doubleSpinBox_length.valueChanged.connect(self.sheet_changed)
 
-        self.doubleSpinBox_width.wheelEvent = lambda event: None
+        self.doubleSpinBox_width.wheelEvent = lambda event: self.parent.wheelEvent(event)
         self.doubleSpinBox_width.setValue(self.sheet.width)
         self.doubleSpinBox_width.valueChanged.connect(self.sheet_changed)
 
@@ -274,7 +274,7 @@ class NestWidget(QWidget, Ui_Form):
             )  # Placeholder for the QComboBox
             assembly_combobox = QComboBox(self.treeWidget_parts)
             self.part_assembly_comboboxes.append(assembly_combobox)
-            assembly_combobox.wheelEvent = lambda event: None
+            assembly_combobox.wheelEvent = lambda event: self.parent.wheelEvent(event)
             assembly_combobox.addItems(["None"] + [assembly.name for assembly in self.parent.job.get_all_assemblies()])
             if assembly := self.find_parts_assembly(laser_cut_part.name):
                 assembly_combobox.setCurrentText(assembly.name)

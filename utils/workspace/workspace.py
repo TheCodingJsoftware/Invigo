@@ -12,6 +12,7 @@ from utils.workspace.job import Job
 from utils.workspace.job_manager import JobManager
 from utils.workspace.workspace_filter import SortingMethod, WorkspaceFilter
 from utils.workspace.workspace_laser_cut_part_group import WorkspaceLaserCutPartGroup
+from utils.workspace.workspace_assemply_group import WorkspaceAssemblyGroup
 from utils.workspace.workspace_settings import WorkspaceSettings
 
 
@@ -232,6 +233,24 @@ class Workspace:
             grouped_laser_cut_parts.sort(key=lambda group: group.base_part.surface_area)
 
         return grouped_laser_cut_parts
+
+    def get_grouped_assemblies(self, assemblies: list[Assembly]) -> list[WorkspaceAssemblyGroup]:
+        grouped_assemblies: list[WorkspaceAssemblyGroup] = []
+        parts_group: dict[str, WorkspaceAssemblyGroup] = {}
+
+        def create_part_group(base_assembly: Assembly):
+            group = WorkspaceAssemblyGroup()
+            group.add_assembly(base_assembly)
+            grouped_assemblies.append(group)
+            parts_group[base_assembly.name] = group
+
+        for assembly in assemblies:
+            if group := parts_group.get(assembly.name):
+                group.add_assembly(assembly)
+            else:
+                create_part_group(assembly)
+
+        return grouped_assemblies
 
     def get_grouped_laser_cut_parts(self, laser_cut_parts: list[LaserCutPart]) -> list[WorkspaceLaserCutPartGroup]:
         grouped_laser_cut_parts: list[WorkspaceLaserCutPartGroup] = []

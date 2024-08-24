@@ -10,7 +10,7 @@ class SpinBox(QDoubleSpinBox):
         self.setRange(0, 999999999)
         self.setDecimals(0)
         self.setButtonSymbols(QDoubleSpinBox.ButtonSymbols.NoButtons)
-        self.wheelEvent = lambda event: None
+        self.wheelEvent = lambda event: self.parent().wheelEvent(event)
         self.setFixedHeight(30)
 
 

@@ -53,7 +53,7 @@ background-color: {theme_var('surface')};
         self.apply_stylesheet_to_toggle_buttons(self.pushButton_laser_cut_parts, self.laser_cut_widget)
         self.apply_stylesheet_to_toggle_buttons(self.pushButton_components, self.component_widget)
         self.apply_stylesheet_to_toggle_buttons(self.pushButton_sub_assemblies, self.sub_assemblies_widget)
-        self.doubleSpinBox_quantity.wheelEvent = lambda event: None
+        self.doubleSpinBox_quantity.wheelEvent = lambda event: self.parent.wheelEvent(event)
         self.sub_assembly_layout.setAlignment(Qt.AlignmentFlag.AlignTop)
 
     def apply_stylesheet_to_toggle_buttons(self, button: QPushButton, widget: QWidget):

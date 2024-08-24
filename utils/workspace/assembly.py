@@ -74,7 +74,6 @@ class Assembly:
         if not self.is_assembly_finished():
             self.current_flow_tag_index += 1
             self.current_flow_tag_status_index = 0
-            self.recut = False
             self.timer.start(self.get_current_tag())
 
     def all_laser_cut_parts_complete(self) -> bool:

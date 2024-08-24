@@ -48,7 +48,7 @@ class TagWidget(QWidget):
         self.tag_combobox.addItems([tag.name for tag in self.remaining_tags])
         self.tag_combobox.setCurrentText(tag.name)
         self.tag_combobox.currentTextChanged.connect(self.tag_changed)
-        self.tag_combobox.wheelEvent = lambda event: None
+        self.tag_combobox.wheelEvent = lambda event: self.parent.wheelEvent(event)
         self.arrow_label = QLabel("➜", self)
         self.arrow_label.setFixedWidth(60)
         self.delete_button = DeletePushButton(self, "Delete this tag")

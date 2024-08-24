@@ -18,7 +18,7 @@ import win32api  # pywin32
 from natsort import natsorted, ns
 from PyQt6.QtCore import QEventLoop, QPoint, Qt, QThread, QTimer, pyqtSignal
 from PyQt6.QtGui import QAction, QColor, QCursor, QDragEnterEvent, QDragLeaveEvent, QDropEvent, QFont, QIcon
-from PyQt6.QtWidgets import QApplication, QComboBox, QFileDialog, QFontDialog, QInputDialog, QListWidget, QListWidgetItem, QMainWindow, QMenu, QMessageBox, QPushButton, QTableWidgetItem, QToolBox, QTreeWidgetItem, QVBoxLayout, QWidget
+from PyQt6.QtWidgets import QApplication, QComboBox, QFileDialog, QFontDialog, QInputDialog, QListWidget, QListWidgetItem, QMainWindow, QMenu, QMessageBox, QPushButton, QTableWidgetItem, QToolBox, QTreeWidget, QTreeWidgetItem, QVBoxLayout, QWidget
 
 from ui.custom.job_tab import JobTab
 from ui.custom_widgets import ButtonManagerWidget, CustomTableWidget, MainTabButton, MultiToolBox, PdfTreeView, PreviousQuoteItem, RichTextPushButton, SavedQuoteItem, ScrollPositionManager
@@ -100,7 +100,7 @@ from utils.workspace.workspace import Workspace
 from utils.workspace.workspace_laser_cut_part_group import WorkspaceLaserCutPartGroup
 from utils.workspace.workspace_settings import WorkspaceSettings
 
-__version__: str = "v3.5.7"
+__version__: str = "v3.5.8"
 
 
 def check_folders(folders: list[str]):
@@ -488,6 +488,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
         self.clear_layout(self.workspace_layout)
         self.workspace_tab_widget = WorkspaceTabWidget(self)
+        self.workspace_tab_widget_last_selected_tab = self.workspace_tab_widget.tag_buttons[0].text()
         with contextlib.suppress(AttributeError):  # There are no visible process tags
             self.workspace_tab_changed(self.workspace_tab_widget_last_selected_tab)
         self.workspace_tab_widget.tabChanged.connect(self.workspace_tab_changed)
@@ -522,6 +523,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.treeWidget_cutoff_sheets.doubleClicked.connect(self.tree_widget_cutoff_sheet_double_clicked)
         self.apply_stylesheet_to_toggle_buttons(self.pushButton_toggle_cutoff, self.cutoff_widget)
         self.cutoff_widget.setHidden(True)
+
+        self.apply_stylesheet_to_toggle_buttons(self.pushButton_toggle_cutoff_2, self.cutoff_widget_2)
+        self.cutoff_widget_2.setHidden(True)
 
         # QUOTE GENERATOR
         self.cutoff_widget = MultiToolBox(self)
@@ -757,7 +761,6 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.actionEditTags.setIcon(Icons.edit_workspace_settings_icon)
 
         # FILE
-
         self.actionOpen_Item_History.triggered.connect(self.open_item_history)
         self.actionOpen_Item_History.setIcon(Icons.generate_file_icon)
         self.actionRemoved_Component_Quantity_History.triggered.connect(self.view_removed_component_quantity_history)
@@ -814,13 +817,14 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             for quote_widget in self.quote_generator_tab_widget.quotes:
                 quote_widget.update_sheet_statuses()
         elif self.tab_text(self.stackedWidget.currentIndex()) == "job_quoter_tab":
-            self.load_tree_widget_cuttoff_drop_down()
-            self.load_jobs_thread()
+            self.load_tree_widget_cuttoff_drop_down(self.treeWidget_cutoff_sheets)
             self.refresh_nest_directories()
+            self.load_jobs_thread()
         elif self.tab_text(self.stackedWidget.currentIndex()) == "job_planner_tab":
             self.load_jobs_thread()
             self.job_planner_widget.update_tables()
         elif self.tab_text(self.stackedWidget.currentIndex()) == "workspace_tab":
+            self.load_tree_widget_cuttoff_drop_down(self.treeWidget_cutoff_sheets_2)
             self.refresh_nest_directories()
             if self.should_update_workspace_tab:
                 self.workspace_tab_widget.load_tags()
@@ -1503,10 +1507,10 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                     continue
                 cutoff_items.addItem(sheet.get_name())
 
-    def load_tree_widget_cuttoff_drop_down(self):
-        self.treeWidget_cutoff_sheets.clear()
-        self.treeWidget_cutoff_sheets.setColumnCount(0)
-        self.treeWidget_cutoff_sheets.setHeaderLabels(["Sheets"])
+    def load_tree_widget_cuttoff_drop_down(self, tree_widget: QTreeWidget):
+        tree_widget.clear()
+        tree_widget.setColumnCount(0)
+        tree_widget.setHeaderLabels(["Sheets"])
         cutoff_sheets = self.sheets_inventory.get_sheets_by_category("Cutoff")
         for group in self.sheets_inventory.get_all_sheets_material(cutoff_sheets):
             parent_item = QTreeWidgetItem()
@@ -1517,8 +1521,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 sheet_item = QTreeWidgetItem(parent_item)
                 sheet_item.setText(0, sheet.get_name())
                 parent_item.addChild(sheet_item)
-            self.treeWidget_cutoff_sheets.addTopLevelItem(parent_item)
-        self.treeWidget_cutoff_sheets.expandAll()
+            tree_widget.addTopLevelItem(parent_item)
+        tree_widget.expandAll()
 
     def load_previous_quotes(self, data: dict[str, dict[str, Any]]):
         sorted_data = dict(
@@ -1636,7 +1640,6 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         sorted_data = dict(natsorted(data.items(), key=lambda x: x[1]["type"]))
         sorted_data = dict(natsorted(data.items(), key=lambda x: x[1]["order_number"], reverse=True))
         for folder_path, file_info in sorted_data.items():
-            print(folder_path)
             job_item = SavedPlanningJobItem(file_info, self)
             job_item.load_job.connect(partial(self.load_job_thread, f"saved_jobs/{folder_path}"))
             job_item.delete_job.connect(partial(self.delete_job_thread, f"saved_jobs/{folder_path}"))
@@ -1824,7 +1827,6 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             self.status_button.setText(f"Error recieving client data: {error}", "red")
         else:
             self.trusted_user = data.get("is_trusted", False)
-        print("is_trusted", self.trusted_user)
 
     # * /\ CHECKERS /\
 
@@ -2246,8 +2248,6 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             self.status_button.setText(f"Syncing Error: {response}", "red")
 
     def data_received(self, data):
-        print(data)
-
         if "timed out" in str(data).lower() or "fail" in str(data).lower():
             self.status_button.setText("Server error", "red")
             self.centralwidget.setEnabled(False)
@@ -2753,7 +2753,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                     self.open_workorder(folder_name)
 
             self.workspace_tab_widget.workspace_widget.load_parts_table()
-            self.workspace_tab_widget.workspace_widget.load_assembly_table()
+            self.workspace_tab_widget.workspace_widget.load_parts_tree()
+            self.workspace_tab_widget.workspace_widget.load_assembly_tree()
 
     def workorder_update_nest_parts_data(self, nests: list[Nest], all_workspace_laser_part_groups: list[WorkspaceLaserCutPartGroup]):
         for nest in nests:
@@ -2998,7 +2999,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             self.status_button.setText(f"Error: {data}'", "red")
 
     def reload_job_thread(self, folder_name: str):
-        self.status_button.setText(f"Fetching {folder_name} data...", "yellow")
+        self.status_button.setText(f"Loading {folder_name} data...", "yellow")
         job_loader_thread = JobLoaderThread(self.job_manager, folder_name)
         self.threads.append(job_loader_thread)
         job_loader_thread.signal.connect(self.reload_job_response)
@@ -3019,7 +3020,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             )
 
     def load_job_thread(self, folder_name: str):
-        self.status_button.setText(f"Fetching {folder_name} data...", "yellow")
+        self.status_button.setText(f"Loading {folder_name} data...", "yellow")
         job_loader_thread = JobLoaderThread(self.job_manager, folder_name)
         self.threads.append(job_loader_thread)
         job_loader_thread.signal.connect(self.load_job_response)
@@ -3040,7 +3041,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             )
 
     def download_job_data_thread(self, folder_name: str):
-        self.status_button.setText("Fetching job data", "lime")
+        self.status_button.setText("Loading job data", "lime")
         download_quote_thread = DownloadJobThread(folder_name)
         self.threads.append(download_quote_thread)
         download_quote_thread.signal.connect(self.download_job_data_response)
@@ -3125,7 +3126,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.load_saved_quoted_thread()
 
     def download_quote_data_thread(self, folder_name: str):
-        self.status_button.setText("Fetching quote data", "lime")
+        self.status_button.setText("Loading quote data", "lime")
         download_quote_thread = DownloadQuoteThread(folder_name)
         self.threads.append(download_quote_thread)
         download_quote_thread.signal.connect(self.download_quote_data_response)
@@ -3187,7 +3188,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             self.status_button.setText(f"Error: {response}", "red")
 
     def send_email_thread(self, title: str, message: str, emails: list[str], notify: bool = False):
-        self.status_button.setText("Fetching quote data", "yellow")
+        self.status_button.setText("Loading quote data", "yellow")
         send_email_thread = SendEmailThread(title, message, emails)
         self.threads.append(send_email_thread)
         if notify:

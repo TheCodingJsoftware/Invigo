@@ -128,7 +128,7 @@ class SavedQuoteItem(QGroupBox):
 
         self.status_combobox = QComboBox(self)
         self.status_combobox.addItems(["In progress", "Need more info", "Quoted", "Confirmed"])
-        self.status_combobox.wheelEvent = lambda event: None
+        self.status_combobox.wheelEvent = lambda event: self.parent().wheelEvent(event)
         self.status_combobox.setCurrentText(status)
         self.status_combobox.currentTextChanged.connect(self.status_changed.emit)
 
@@ -221,7 +221,7 @@ class MachineCutTimeSpinBox(QDoubleSpinBox):
         self.setFixedWidth(200)
         self.setWrapping(True)
         self.setAccelerated(True)
-        self.wheelEvent = lambda event: None
+        self.wheelEvent = lambda event: self.parent().wheelEvent(event)
         self.setFocusPolicy(Qt.FocusPolicy.StrongFocus)
 
         regex = QRegularExpression(r"\d+.\d{2}")
@@ -1271,25 +1271,25 @@ class OrderStatusButton(QPushButton):
 
 class PriorityComboBox(QComboBox):
     def __init__(self, parent, selected_item: int):
-        QComboBox.__init__(self, parent)
+        super().__init__(parent)
         self.addItems(["Default", "Low", "Medium", "High"])
         self.setCurrentIndex(selected_item)
-        self.wheelEvent = lambda event: None
+        self.wheelEvent = lambda event: self.parent().wheelEvent(event)
         self.setFixedWidth(120)
 
 
 class ExchangeRateComboBox(QComboBox):
     def __init__(self, parent, selected_item: int):
-        QComboBox.__init__(self, parent)
+        super().__init__(parent)
         self.addItems(["CAD", "USD"])
         self.setCurrentText(selected_item)
-        self.wheelEvent = lambda event: None
+        self.wheelEvent = lambda event: self.parent().wheelEvent(event)
         # #self.setFixedWidth(40)
 
 
 class NotesPlainTextEdit(QPlainTextEdit):
     def __init__(self, parent, text: str, tool_tip: str):
-        QPlainTextEdit.__init__(self, parent)
+        super().__init__(parent)
         self.setMinimumWidth(100)
         self.setObjectName("notes")
         self.setStyleSheet("QPlainTextEdit#notes{border-radius: 0px;}")

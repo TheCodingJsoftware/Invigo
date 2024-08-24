@@ -43,6 +43,7 @@ class Ui_MainWindow(object):
         self.pushButton_print.setText("")
         icon = QtGui.QIcon.fromTheme("document-print")
         self.pushButton_print.setIcon(icon)
+        self.pushButton_print.setFlat(True)
         self.pushButton_print.setObjectName("pushButton_print")
         self.horizontalLayout_2.addWidget(self.pushButton_print)
         self.horizontalLayout_2.setStretch(0, 1)

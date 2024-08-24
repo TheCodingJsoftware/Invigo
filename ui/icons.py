@@ -53,6 +53,10 @@ class Icons:
     moon_icon = None
     flowtag_data_icon = None
     printer_icon = None
+    check_fill_icon = None
+    arrow_right_fill_icon = None
+    recut_icon = None
+    recoat_icon = None
 
     @classmethod
     def load_icons(cls):
@@ -531,3 +535,41 @@ class Icons:
                 }
             ],
         )
+        cls.check_fill_icon = qta.icon(
+            "ph.check-circle-fill",
+            options=[
+                {
+                    "color": theme_var("on-primary"),
+                    "color_active": theme_var("on-primary"),
+                }
+            ],
+        )
+        cls.arrow_right_fill_icon = qta.icon(
+            "ph.arrow-fat-line-right-fill",
+            options=[
+                {
+                    "color": theme_var("on-primary"),
+                    "color_active": theme_var("on-primary"),
+                }
+            ],
+        )
+        cls.recut_icon = qta.icon(
+            "ph.arrow-u-down-left-fill",
+            options=[
+                {
+                    "color": theme_var("on-primary"),
+                    "color_active": theme_var("on-primary"),
+                }
+            ],
+        )
+
+        cls.recoat_icon = qta.icon(
+            "ph.arrow-u-down-left-fill",
+            options=[
+                {
+                    "color": theme_var("on-primary"),
+                    "color_active": theme_var("on-primary"),
+                }
+            ],
+        )
+

@@ -572,7 +572,7 @@ class AssemblyQuotingWidget(AssemblyWidget):
 
         materials_combobox = QComboBox(self)
         materials_combobox.setStyleSheet("border-radius: 0px;")
-        materials_combobox.wheelEvent = lambda event: None
+        materials_combobox.wheelEvent = lambda event: self.parent.wheelEvent(event)
         materials_combobox.addItems(self.sheet_settings.get_materials())
         materials_combobox.setCurrentText(laser_cut_part.material)
         materials_combobox.currentTextChanged.connect(partial(self.laser_cut_parts_table_changed, current_row))
@@ -581,7 +581,7 @@ class AssemblyQuotingWidget(AssemblyWidget):
 
         thicknesses_combobox = QComboBox(self)
         thicknesses_combobox.setStyleSheet("border-radius: 0px;")
-        thicknesses_combobox.wheelEvent = lambda event: None
+        thicknesses_combobox.wheelEvent = lambda event: self.parent.wheelEvent(event)
         thicknesses_combobox.addItems(self.sheet_settings.get_thicknesses())
         thicknesses_combobox.setCurrentText(laser_cut_part.gauge)
         thicknesses_combobox.currentTextChanged.connect(partial(self.laser_cut_parts_table_changed, current_row))
@@ -627,12 +627,14 @@ class AssemblyQuotingWidget(AssemblyWidget):
         table_widget_item_paint_cost = QTableWidgetItem(f"${self.price_calculator.get_laser_cut_part_cost_for_painting(laser_cut_part):,.2f}")
         table_widget_item_paint_cost.setFont(self.tables_font)
         table_widget_item_paint_cost.setTextAlignment(Qt.AlignmentFlag.AlignCenter | Qt.AlignmentFlag.AlignVCenter)
+        table_widget_item_paint_cost.setToolTip(f"Cost for priming: ${laser_cut_part.cost_for_primer:,.2f}\nCost for painting: ${laser_cut_part.cost_for_paint:,.2f}\nCost for powder coating: ${laser_cut_part.cost_for_powder_coating:,.2f}")
         self.laser_cut_parts_table.setItem(
             current_row,
             LaserCutTableColumns.PAINT_COST.value,
             table_widget_item_paint_cost,
         )
         self.laser_cut_part_table_items[laser_cut_part].update({"paint_cost": table_widget_item_paint_cost})
+
 
         # COGS
         table_widget_item_cost_of_goods = QTableWidgetItem(f"${self.price_calculator.get_laser_cut_part_cost_of_goods(laser_cut_part):,.2f}")
@@ -719,6 +721,7 @@ class AssemblyQuotingWidget(AssemblyWidget):
             cost_of_goods = self.price_calculator.get_laser_cut_part_cost_of_goods(laser_cut_part)
             paint_cost = self.price_calculator.get_laser_cut_part_cost_for_painting(laser_cut_part)
             table_data["paint_cost"].setText(f"${paint_cost:,.2f}")
+            table_data["paint_cost"].setToolTip(f"Cost for priming: ${laser_cut_part.cost_for_primer:,.2f}\nCost for painting: ${laser_cut_part.cost_for_paint:,.2f}\nCost for powder coating: ${laser_cut_part.cost_for_powder_coating:,.2f}")
             table_data["cost_of_goods"].setText(f"${cost_of_goods:,.2f}")
             table_data["labor_cost"].setText(f"${laser_cut_part.labor_cost:,.2f}")
             table_data["bend_cost"].setText(f"${laser_cut_part.bend_cost:,.2f}")

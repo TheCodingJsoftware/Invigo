@@ -87,6 +87,8 @@ class OrderWidget(QWidget):
         self.orders_layout = QHBoxLayout()
         self.add_order_button = QPushButton("Add Order", self)
         self.add_order_button.clicked.connect(self.create_order)
+        self.add_order_button.setFlat(True)
+        self.add_order_button.setIcon(Icons.plus_icon)
 
         self.h_layout.addLayout(self.orders_layout)
         self.h_layout.addWidget(self.add_order_button)
@@ -114,7 +116,7 @@ class OrderWidget(QWidget):
 
             arrival_date = QDateEdit(self)
             arrival_date.setStyleSheet(f"QDateEdit{{border-top-left-radius: 0; border-top-right-radius: 0; border-bottom-left-radius: 5px; border-bottom-right-radius: 5px;}} QDateEdit:hover{{border-color: {theme_var('primary-green')}; }}")
-            arrival_date.wheelEvent = lambda event: None
+            arrival_date.wheelEvent = lambda event: self.parent.wheelEvent(event)
             arrival_date.setDate(date)
             arrival_date.setCalendarPopup(True)
             arrival_date.setToolTip("Expected arrival time.")

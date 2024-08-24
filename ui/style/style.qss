@@ -50,12 +50,12 @@ QMenuBar:disabled {
     color: var(--disabled);
 }
 QMenu{
-    background-color: var(--background);
+    background-color: var(--surface-container);
     color: var(--on-background);
 }
 QMenu::item{
     padding: 7px;
-    background-color: var(--background);
+    background-color: var(--surface-container);
     color: var(--on-background);
     border: 1px solid transparent;
     border-radius: var(--border-radius);
@@ -63,7 +63,7 @@ QMenu::item{
     margin: 1px;
 }
 QMenu::item:selected{ /* HOVER */
-    background-color: var(--background);
+    background-color: var(--surface-container);
     border-color: var(--primary);
     color: var(--primary);
 }
@@ -99,13 +99,13 @@ QMenu::icon:checked {
 }
 
 QMenu::icon:!checked {
-    background: var(--background);
-    border: 1px solid var(--background);
+    background: var(--surface-container);
+    border: 1px solid var(--surface-container);
 }
 
 QMenu::icon:checked:pressed {
-    background: var(--background);
-    border: 1px solid var(--background);
+    background: var(--surface-container);
+    border: 1px solid var(--surface-container);
 }
 
 QMenu::icon:!checked:pressed {
@@ -525,8 +525,8 @@ QRadioButton::indicator:checked#option {
 }
 
 QToolTip {
-    background-color: var(--background);
-    color: var(--on-background);
+    background-color: var(--surface-container);
+    color: var(--on-surface);
     border: 1px solid var(--primary);
     padding: 5px;
     border-radius: var(--border-radius);
@@ -671,19 +671,33 @@ QTreeWidget::indicator:checked {
 QTreeWidget::item:selected {
     background: var(--primary-container);
     color: var(--primary);
-    border: none;
+}
+
+QTreeWidget::item {
+    border-bottom: 1px solid var(--outline);
+    padding: 5px;
+}
+
+QTreeWidget::item:selected:focus {
+    background-color: var(--primary);
+    color: var(--on-primary);
 }
 
 QTreeView::item:selected {
     background: var(--primary-container);
     color: var(--primary);
-    border: none;
+}
+
+QTableView::item:selected {
+    background-color: var(--primary-container);
+    color: var(--primary);
 }
 
 QListWidget::item:selected {
     background: var(--primary-container);
     color: var(--primary);
 }
+
 QListView::item:selected {
     background: var(--primary-container);
     color: var(--primary);
@@ -694,7 +708,6 @@ QTableWidget::item:selected {
     color: var(--primary);
 }
 QToolBox{
-    border: none;
     color: var(--on-surface);
 }
 
@@ -784,6 +797,31 @@ QTableView {
     gridline-color: rgba(120, 120, 120, 0.1);
 }
 
+QTreeWidget {
+    gridline-color: rgba(120, 120, 120, 0.1);
+}
+QTableView {
+    background-color: var(--surface-container-low);
+    color: var(--on-surface);
+    border: 1px solid var(--outline);
+    border-top-right-radius: 0px;
+    border-top-left-radius: 0px;
+    border-bottom-right-radius: 5px;
+    border-bottom-left-radius: 5px;
+}
+
+QTableView:hover {
+    border-color: var(--primary);
+}
+
+QTableView:focus {
+    border-color: var(--primary);
+}
+QTableView::item:selected:focus {
+    background-color: var(--primary);
+    color: var(--on-primary);
+}
+
 QTableWidget {
     background-color: var(--surface-container-low);
     color: var(--on-surface);
@@ -806,13 +844,6 @@ QTableWidget::item:selected:focus {
     color: var(--on-primary);
 }
 
-
-QTableView::item:selected {
-    border: none;
-}
-QAbstractItem::item:selected {
-    border: none;
-}
 
 /* QTableWidget:item { */
 /* border: 0px solid rgba(65, 65, 65, 0.4); */

@@ -75,7 +75,7 @@
                  <number>0</number>
                 </property>
                 <item>
-                 <layout class="QVBoxLayout" name="verticalLayout_4" stretch="0,0,0,1">
+                 <layout class="QVBoxLayout" name="verticalLayout_4" stretch="0,0,1">
                   <item>
                    <widget class="QGroupBox" name="recut_parts_widget">
                     <property name="title">
@@ -103,19 +103,6 @@
                   <item>
                    <layout class="QVBoxLayout" name="parts_layout"/>
                   </item>
-                  <item>
-                   <spacer name="verticalSpacer_3">
-                    <property name="orientation">
-                     <enum>Qt::Orientation::Vertical</enum>
-                    </property>
-                    <property name="sizeHint" stdset="0">
-                     <size>
-                      <width>20</width>
-                      <height>40</height>
-                     </size>
-                    </property>
-                   </spacer>
-                  </item>
                  </layout>
                 </item>
                </layout>
@@ -140,19 +127,6 @@
                  <layout class="QVBoxLayout" name="verticalLayout_9">
                   <item>
                    <layout class="QVBoxLayout" name="assembly_layout"/>
-                  </item>
-                  <item>
-                   <spacer name="verticalSpacer_2">
-                    <property name="orientation">
-                     <enum>Qt::Orientation::Vertical</enum>
-                    </property>
-                    <property name="sizeHint" stdset="0">
-                     <size>
-                      <width>20</width>
-                      <height>40</height>
-                     </size>
-                    </property>
-                   </spacer>
                   </item>
                  </layout>
                 </item>
