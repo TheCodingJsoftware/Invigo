@@ -3,7 +3,7 @@ import os
 import shutil
 import time
 from functools import partial
-from typing import Optional, override
+from typing import Optional, Union, override
 
 from PyQt6.QtCore import Qt
 from PyQt6.QtGui import QAction, QCursor, QFont, QPixmap
@@ -842,8 +842,13 @@ class AssemblyPlanningWidget(AssemblyWidget):
         self.load_laser_cut_parts_table()
 
     def load_laser_cut_parts_table_context_menu(self):
-        if self.laser_cut_parts_table.contextMenuPolicy() == Qt.ContextMenuPolicy.CustomContextMenu:
-            return
+        try:
+            # Disconnect the existing context menu if already connected
+            self.laser_cut_parts_table.customContextMenuRequested.disconnect()
+        except TypeError:
+            # If not connected, do nothing
+            pass
+
         self.laser_cut_parts_table.setContextMenuPolicy(Qt.ContextMenuPolicy.CustomContextMenu)
 
         menu = QMenu(self)
@@ -896,6 +901,36 @@ class AssemblyPlanningWidget(AssemblyWidget):
             )
             flow_tag_menu.addAction(action)
 
+        add_to_menu = QMenu("Add part to", menu)
+        for assembly_widget in self.job_tab.get_active_job_widget().get_all_assembly_widgets():
+            action = QAction(assembly_widget.assembly.name, add_to_menu)
+            if assembly_widget == self:
+                action.setText(action.text() + " - (You are here)")
+                action.setEnabled(False)
+            action.triggered.connect(
+                partial(
+                    self.handle_laser_cut_parts_table_context_menu,
+                    "ADD_PART_TO_ASSEMBLY",
+                    assembly_widget,
+                )
+            )
+            add_to_menu.addAction(action)
+
+        move_to_menu = QMenu("Move part to", menu)
+        for assembly_widget in self.job_tab.get_active_job_widget().get_all_assembly_widgets():
+            action = QAction(assembly_widget.assembly.name, move_to_menu)
+            if assembly_widget == self:
+                action.setText(action.text() + " - (You are here)")
+                action.setEnabled(False)
+            action.triggered.connect(
+                partial(
+                    self.handle_laser_cut_parts_table_context_menu,
+                    "MOVE_PART_TO_ASSEMBLY",
+                    assembly_widget,
+                )
+            )
+            move_to_menu.addAction(action)
+
         delete_action = QAction("Delete", self)
         delete_action.triggered.connect(self.delete_selected_laser_cut_parts)
 
@@ -903,11 +938,14 @@ class AssemblyPlanningWidget(AssemblyWidget):
         menu.addMenu(thickness_menu)
         menu.addMenu(set_quantity_menu)
         menu.addMenu(flow_tag_menu)
+        menu.addMenu(add_to_menu)
+        menu.addMenu(move_to_menu)
         menu.addAction(delete_action)
 
         self.laser_cut_parts_table.customContextMenuRequested.connect(partial(self.open_group_menu, menu))
 
-    def handle_laser_cut_parts_table_context_menu(self, ACTION: str, selection: str | int | float):
+    def handle_laser_cut_parts_table_context_menu(self, ACTION: str, selection: Union[str, int, float, "AssemblyPlanningWidget"]):
+        should_update_assembly_widget_tables = False
         if not (selected_laser_cut_parts := self.get_selected_laser_cut_parts()):
             return
         for laser_cut_part in selected_laser_cut_parts:
@@ -926,10 +964,34 @@ class AssemblyPlanningWidget(AssemblyWidget):
                 self.laser_cut_parts_table.resizeRowsToContents()
                 self.laser_cut_parts_table.resizeColumnsToContents()
                 self.update_laser_cut_parts_table_height()
+            elif ACTION == "ADD_PART_TO_ASSEMBLY":
+                should_update_assembly_widget_tables = True
+                assmebly_widget: AssemblyPlanningWidget = selection
+                assembly: Assembly = assmebly_widget.assembly
+                new_part = LaserCutPart(laser_cut_part.to_dict(), self.laser_cut_inventory)
+                new_part.quantity = laser_cut_part.quantity
+                assembly.add_laser_cut_part(new_part)
+            elif ACTION == "MOVE_PART_TO_ASSEMBLY":
+                should_update_assembly_widget_tables = True
+                assmebly_widget: AssemblyPlanningWidget = selection
+                assembly: Assembly = assmebly_widget.assembly
+                self.assembly.remove_laser_cut_part(laser_cut_part)
+                assembly.add_laser_cut_part(laser_cut_part)
+
+        if should_update_assembly_widget_tables:
+            selection.update_tables()
+
         self.load_laser_cut_parts_table()
         self.changes_made()
 
     # OTHER STUFF
+    def get_all_sub_assembly_widgets(self) -> list["AssemblyPlanningWidget"]:
+        widgets: list["AssemblyPlanningWidget"] = []
+        widgets.extend(self.sub_assembly_widgets)
+        for sub_assembly_widget in self.sub_assembly_widgets:
+            widgets.extend(sub_assembly_widget.get_all_sub_assembly_widgets())
+        return widgets
+
     def copy_file_with_overwrite(self, source, target, retry_interval=1, max_retries=10):
         retries = 0
         while retries < max_retries:
@@ -1126,6 +1188,7 @@ class AssemblyPlanningWidget(AssemblyWidget):
         sub_assembly_widget.pushButton_sub_assemblies.setChecked(self.job_preferences.is_assembly_sub_assembly_closed(sub_assembly.name))
         sub_assembly_widget.sub_assemblies_widget.setHidden(not self.job_preferences.is_assembly_sub_assembly_closed(sub_assembly.name))
 
+        self.update_context_menu()
         return sub_assembly_widget
 
     def load_sub_assemblies(self):
@@ -1140,6 +1203,7 @@ class AssemblyPlanningWidget(AssemblyWidget):
 
     def sub_assembly_name_renamed(self, sub_assembly: Assembly, new_sub_assembly_name: QLineEdit):
         sub_assembly.name = new_sub_assembly_name.text()
+        self.update_context_menu()
         self.changes_made()
 
     def duplicate_sub_assembly(self, sub_assembly: Assembly):
@@ -1161,6 +1225,11 @@ class AssemblyPlanningWidget(AssemblyWidget):
         self.load_laser_cut_parts_table()
         for sub_assembly_widget in self.sub_assembly_widgets:
             sub_assembly_widget.update_tables()
+
+    def reload_context_menu(self):
+        self.load_laser_cut_parts_table_context_menu()
+        for sub_assembly_widget in self.sub_assembly_widgets:
+            sub_assembly_widget.reload_context_menu()
 
     @override
     def changes_made(self):

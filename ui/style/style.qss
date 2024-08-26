@@ -75,6 +75,9 @@ QMenu::item:pressed{
 QMenu::item:checked{
     color: var(--on-surface);
 }
+QMenu::item:disabled{
+    color: var(--disabled);
+}
 QMenu::separator {
     background-color: var(--outline);
     padding: 5px;

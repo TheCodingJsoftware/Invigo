@@ -881,7 +881,7 @@ class AssemblyQuotingWidget(AssemblyWidget):
     def get_selected_laser_cut_parts(self) -> list[LaserCutPart]:
         selected_laser_cut_parts: list[LaserCutPart] = []
         selected_rows = self.get_selected_laser_cut_part_rows()
-        selected_laser_cut_parts.extend(component for component, table_items in self.laser_cut_part_table_items.items() if table_items["row"] in selected_rows)
+        selected_laser_cut_parts.extend(laser_cut_part for laser_cut_part, table_items in self.laser_cut_part_table_items.items() if table_items["row"] in selected_rows)
         return selected_laser_cut_parts
 
     def get_selected_laser_cut_part_rows(self) -> list[int]:
@@ -896,8 +896,13 @@ class AssemblyQuotingWidget(AssemblyWidget):
         self.load_laser_cut_parts_table()
 
     def load_laser_cut_parts_table_context_menu(self):
-        if self.laser_cut_parts_table.contextMenuPolicy() == Qt.ContextMenuPolicy.CustomContextMenu:
-            return
+        try:
+            # Disconnect the existing context menu if already connected
+            self.laser_cut_parts_table.customContextMenuRequested.disconnect()
+        except TypeError:
+            # If not connected, do nothing
+            pass
+
         self.laser_cut_parts_table.setContextMenuPolicy(Qt.ContextMenuPolicy.CustomContextMenu)
 
         menu = QMenu(self)
@@ -938,17 +943,51 @@ class AssemblyQuotingWidget(AssemblyWidget):
             )
             set_quantity_menu.addAction(action)
 
+        add_to_menu = QMenu("Add part to", menu)
+        for assembly_widget in self.job_tab.get_active_job_widget().get_all_assembly_widgets():
+            action = QAction(assembly_widget.assembly.name, add_to_menu)
+            if assembly_widget == self:
+                action.setText(action.text() + " - (You are here)")
+                action.setEnabled(False)
+            action.triggered.connect(
+                partial(
+                    self.handle_laser_cut_parts_table_context_menu,
+                    "ADD_PART_TO_ASSEMBLY",
+                    assembly_widget,
+                )
+            )
+            add_to_menu.addAction(action)
+
+        move_to_menu = QMenu("Move part to", menu)
+        for assembly_widget in self.job_tab.get_active_job_widget().get_all_assembly_widgets():
+            action = QAction(assembly_widget.assembly.name, move_to_menu)
+            if assembly_widget == self:
+                action.setText(action.text() + " - (You are here)")
+                action.setEnabled(False)
+            action.triggered.connect(
+                partial(
+                    self.handle_laser_cut_parts_table_context_menu,
+                    "MOVE_PART_TO_ASSEMBLY",
+                    assembly_widget,
+                )
+            )
+            move_to_menu.addAction(action)
+
         delete_action = QAction("Delete", self)
         delete_action.triggered.connect(self.delete_selected_laser_cut_parts)
 
         menu.addMenu(material_menu)
         menu.addMenu(thickness_menu)
         menu.addMenu(set_quantity_menu)
+        menu.addMenu(add_to_menu)
+        menu.addMenu(move_to_menu)
         menu.addAction(delete_action)
+
 
         self.laser_cut_parts_table.customContextMenuRequested.connect(partial(self.open_group_menu, menu))
 
-    def handle_laser_cut_parts_table_context_menu(self, ACTION: str, selection: str | int | float):
+    def handle_laser_cut_parts_table_context_menu(self, ACTION: str, selection: Union[str, int, float, "AssemblyQuotingWidget"]):
+        should_update_assembly_widget_tables = False
         if not (selected_laser_cut_parts := self.get_selected_laser_cut_parts()):
             return
         for laser_cut_part in selected_laser_cut_parts:
@@ -958,6 +997,23 @@ class AssemblyQuotingWidget(AssemblyWidget):
                 laser_cut_part.gauge = selection
             elif ACTION == "SET_QUANTITY":
                 laser_cut_part.quantity = float(selection)
+            elif ACTION == "ADD_PART_TO_ASSEMBLY":
+                should_update_assembly_widget_tables = True
+                assmebly_widget: AssemblyQuotingWidget = selection
+                assembly: Assembly = assmebly_widget.assembly
+                new_part = LaserCutPart(laser_cut_part.to_dict(), self.laser_cut_inventory)
+                new_part.quantity = laser_cut_part.quantity
+                assembly.add_laser_cut_part(new_part)
+            elif ACTION == "MOVE_PART_TO_ASSEMBLY":
+                should_update_assembly_widget_tables = True
+                assmebly_widget: AssemblyQuotingWidget = selection
+                assembly: Assembly = assmebly_widget.assembly
+                self.assembly.remove_laser_cut_part(laser_cut_part)
+                assembly.add_laser_cut_part(laser_cut_part)
+
+        if should_update_assembly_widget_tables:
+            selection.update_tables()
+
         self.load_laser_cut_parts_table()
         self.changes_made()
 
@@ -1176,6 +1232,7 @@ class AssemblyQuotingWidget(AssemblyWidget):
 
     def sub_assembly_name_renamed(self, sub_assembly: Assembly, new_sub_assembly_name: QLineEdit):
         sub_assembly.name = new_sub_assembly_name.text()
+        self.update_context_menu()
         self.changes_made()
 
     def duplicate_sub_assembly(self, sub_assembly: Assembly):

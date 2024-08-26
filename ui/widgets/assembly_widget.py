@@ -3,7 +3,7 @@ from typing import TYPE_CHECKING, Optional, Union
 
 from PyQt6.QtCore import Qt
 from PyQt6.QtGui import QColor, QCursor
-from PyQt6.QtWidgets import QComboBox, QDoubleSpinBox, QGroupBox, QHBoxLayout, QLabel, QMenu, QPushButton, QTableWidget, QTableWidgetItem, QVBoxLayout, QWidget
+from PyQt6.QtWidgets import QMenu, QPushButton, QTableWidget, QTableWidgetItem, QVBoxLayout, QWidget
 
 from ui.dialogs.add_assembly_dialog import AddAssemblyDialog
 from ui.theme import theme_var
@@ -140,6 +140,9 @@ background-color: {theme_var('surface')};
         if dialog.exec():
             return dialog.get_selected_assemblies()
         return None
+
+    def update_context_menu(self):
+        self.parent.update_context_menu()
 
     def changes_made(self):
         self.parent.changes_made()

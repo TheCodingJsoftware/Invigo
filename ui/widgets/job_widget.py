@@ -331,6 +331,13 @@ QPushButton:checked:pressed#assembly_button_drop_menu {{
             return dialog.get_selected_assemblies()
         return None
 
+    def get_all_assembly_widgets(self) -> list[Union[AssemblyPlanningWidget, AssemblyQuotingWidget]]:
+        widgets: list[Union[AssemblyPlanningWidget, AssemblyQuotingWidget]] = []
+        widgets.extend(self.assembly_widgets)
+        for assembly_widget in self.assembly_widgets:
+            widgets.extend(assembly_widget.get_all_sub_assembly_widgets())
+        return widgets
+
     def add_existing_assembly(self):
         if assemblies_to_add := self.get_assemblies_dialog():
             for assembly in assemblies_to_add:
@@ -433,6 +440,7 @@ QPushButton:checked:pressed#assembly_button_drop_menu {{
         assembly_widget.pushButton_sub_assemblies.setChecked(self.job_preferences.is_assembly_sub_assembly_closed(assembly.name))
         assembly_widget.sub_assemblies_widget.setHidden(not self.job_preferences.is_assembly_sub_assembly_closed(assembly.name))
 
+        self.update_context_menu()
         return assembly_widget
 
     def load_assembly(self, sub_assembly: Assembly):
@@ -445,6 +453,7 @@ QPushButton:checked:pressed#assembly_button_drop_menu {{
 
     def assembly_name_renamed(self, assembly: Assembly, new_group_name: QLineEdit):
         assembly.name = new_group_name.text()
+        self.update_context_menu()
         self.changes_made()
 
     def duplicate_assembly(self, assembly: Assembly):
@@ -584,6 +593,10 @@ QPushButton:checked:pressed#assembly_button_drop_menu {{
     def nest_settings_changed(self, nest: Nest):
         self.update_tables()
         self.changes_made()
+
+    def update_context_menu(self):
+        for assembly_widget in self.assembly_widgets:
+            assembly_widget.reload_context_menu()
 
     def changes_made(self):
         with contextlib.suppress(AttributeError):  # Happens when reloading when no flowtags set.
