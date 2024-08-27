@@ -20,8 +20,6 @@ class Head:
                 <meta name="viewport" content="width=device-width, initial-scale=1">
                 <meta http-equiv="X-UA-Compatible" content="ie=edge">
                 <meta name="google" content="notranslate">
-                <link rel="stylesheet" type="text/css" href="/static/css/theme.css">
-                <link rel="stylesheet" type="text/css" href="/static/css/printout.css">
                 <title>{title}</title>
                 <meta property="og:title" content="{title}" />
                 <meta property="og:description" content="{description}" />
