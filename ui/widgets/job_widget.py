@@ -462,12 +462,14 @@ QPushButton:checked:pressed#assembly_button_drop_menu {{
         new_assembly.color = colors.get_random_color()
         self.load_assembly(new_assembly)
         self.job.add_assembly(new_assembly)
+        self.update_context_menu()
         self.changes_made()
 
     def delete_assembly(self, assembly_widget: Union[AssemblyPlanningWidget, AssemblyQuotingWidget]):
         self.assembly_widgets.remove(assembly_widget)
         self.assemblies_toolbox.removeItem(assembly_widget)
         self.job.remove_assembly(assembly_widget.assembly)
+        self.update_context_menu()
         self.changes_made()
 
     def reload_job(self):

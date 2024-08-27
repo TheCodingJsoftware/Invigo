@@ -1,6 +1,10 @@
+import os
+
 from PyQt6.QtCore import QMimeData, Qt, QUrl, pyqtSignal
 from PyQt6.QtGui import QDrag, QMouseEvent
 from PyQt6.QtWidgets import QMenu, QPushButton
+
+from utils.threads.workspace_get_file_thread import WorkspaceDownloadFile
 
 
 class FileButton(QPushButton):
@@ -27,16 +31,17 @@ class FileButton(QPushButton):
         except TypeError:
             return
         if distance >= self.longDragThreshold:
+            if not os.path.exists(self.file):
+                self.download_thread = WorkspaceDownloadFile([self.file], False)
+                self.download_thread.start()
+
             self.dragging = True
             mime_data = QMimeData()
             url = QUrl.fromLocalFile(self.file)  # Replace with the actual file path
-            print(self.file)
             mime_data.setUrls([url])
-
             drag = QDrag(self)
             drag.setMimeData(mime_data)
 
-            # Start the drag operation
             drag.exec(Qt.DropAction.CopyAction)
             super().mousePressEvent(event)
 

@@ -992,7 +992,11 @@ class AssemblyPlanningWidget(AssemblyWidget):
             widgets.extend(sub_assembly_widget.get_all_sub_assembly_widgets())
         return widgets
 
-    def copy_file_with_overwrite(self, source, target, retry_interval=1, max_retries=10):
+    def copy_file_with_overwrite(self, source: str, target: str, retry_interval=1, max_retries=10):
+        source = source.replace("/", "\\")
+        target = target.replace("/", "\\")
+        if target in source:
+            return
         retries = 0
         while retries < max_retries:
             try:
@@ -1212,12 +1216,14 @@ class AssemblyPlanningWidget(AssemblyWidget):
         new_sub_assembly.color = self.assembly.color
         self.load_sub_assembly(new_sub_assembly)
         self.assembly.add_sub_assembly(new_sub_assembly)
+        self.update_context_menu()
         self.changes_made()
 
     def delete_sub_assembly(self, sub_assembly_widget: "AssemblyPlanningWidget"):
         self.sub_assembly_widgets.remove(sub_assembly_widget)
         self.sub_assemblies_toolbox.removeItem(sub_assembly_widget)
         self.assembly.remove_sub_assembly(sub_assembly_widget.assembly)
+        self.update_context_menu()
         self.changes_made()
 
     def update_tables(self):

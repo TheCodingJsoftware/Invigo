@@ -22,7 +22,7 @@ class WorkspaceLaserCutPartGroup:
                 all_files.add(file)
         return list(all_files)
 
-    def get_all_files(self, file_ext: str) -> list[str]:
+    def get_all_files_with_ext(self, file_ext: str) -> list[str]:
         all_files: set[str] = set()
         for laser_cut_part in self:
             for bending_file in laser_cut_part.bending_files:
@@ -34,6 +34,17 @@ class WorkspaceLaserCutPartGroup:
             for cnc_milling_file in laser_cut_part.cnc_milling_files:
                 if cnc_milling_file.lower().endswith(file_ext):
                     all_files.add(cnc_milling_file)
+        return list(all_files)
+
+    def get_all_files(self) -> list[str]:
+        all_files: set[str] = set()
+        for laser_cut_part in self:
+            for bending_file in laser_cut_part.bending_files:
+                all_files.add(bending_file)
+            for welding_file in laser_cut_part.welding_files:
+                all_files.add(welding_file)
+            for cnc_milling_file in laser_cut_part.cnc_milling_files:
+                all_files.add(cnc_milling_file)
         return list(all_files)
 
     def get_parts_list(self) -> str:

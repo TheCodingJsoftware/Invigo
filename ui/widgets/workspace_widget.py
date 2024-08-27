@@ -3,6 +3,7 @@ import os
 from datetime import datetime
 from functools import partial
 from typing import TYPE_CHECKING, Literal, Optional, Union
+import shutil
 
 from PyQt6.QtCore import Qt
 from PyQt6.QtGui import QAction, QCursor, QFont, QPixmap, QIcon
@@ -15,6 +16,7 @@ from ui.custom.workspace_assembly_tree_widget import WorkspaceAssemblyTreeColumn
 from ui.custom.workspace_parts_table_widget import WorkspacePartsTableColumns, WorkspacePartsTableWidget
 from ui.custom.workspace_parts_tree_widget import WorkspacePartsTreeWidget, WorkspacePartsTreeColumns
 from ui.dialogs.recut_dialog import RecutDialog
+from ui.dialogs.select_files_to_download_dialog import SelectFilesToDownloadDialog
 from ui.dialogs.view_assembly_dialog import ViewAssemblyDialog
 from ui.widgets.workspace_widget_UI import Ui_Form
 from ui.windows.image_viewer import QImageViewer
@@ -438,7 +440,7 @@ class WorkspaceWidget(QWidget, Ui_Form):
         if file_path.lower().endswith(".pdf"):
             if isinstance(item, WorkspaceLaserCutPartGroup):
                 self.open_pdf(
-                    item.get_all_files(".pdf"),
+                    item.get_all_files_with_ext(".pdf"),
                     file_path,
                 )
             elif isinstance(item, WorkspaceAssemblyGroup):
@@ -553,9 +555,15 @@ class WorkspaceWidget(QWidget, Ui_Form):
         self.parts_tree_widget.setContextMenuPolicy(Qt.ContextMenuPolicy.CustomContextMenu)
 
         menu = QMenu(self)
-        action = QAction("Move to Next Process", self)
-        action.triggered.connect(self.move_parts_to_next_process)
-        menu.addAction(action)
+
+        move_to_next_process_action = QAction("Move to Next Process", self)
+        move_to_next_process_action.triggered.connect(self.move_parts_to_next_process)
+
+        download_files_action = QAction("Download files", self)
+        download_files_action.triggered.connect(self.download_files)
+
+        menu.addAction(move_to_next_process_action)
+        menu.addAction(download_files_action)
 
         self.parts_tree_widget.customContextMenuRequested.connect(partial(self.open_context_menu, menu))
 
@@ -569,6 +577,30 @@ class WorkspaceWidget(QWidget, Ui_Form):
             self.workspace.save()
             self.laser_cut_inventory.save()
             self.sync_changes()
+
+    def download_files(self):
+        files: set[str] = set()
+        if selected_items := self.parts_tree_get_selected_items():
+            for selected_item in selected_items:
+                files.update(selected_item.get_all_files())
+
+        files_dialog = SelectFilesToDownloadDialog(files, self)
+        if files_dialog.exec():
+            self.files_to_download = files_dialog.get_selected_items()
+            self.download_directory = files_dialog.get_download_directory()
+            if self.files_to_download and self.download_directory:
+                self.download_thread = WorkspaceDownloadFile(self.files_to_download, False, download_directory=self.download_directory)
+                self.download_thread.signal.connect(self.download_thread_response)
+                self.download_thread.start()
+            else:
+                msg = QMessageBox(self)
+                msg.setIcon(QMessageBox.Icon.Critical)
+                msg.setWindowTitle("Error")
+                msg.setText("Please select files to download and a download directory.")
+                msg.exec()
+
+    def download_thread_response(self, response: str):
+        os.startfile(self.download_directory)
 
     def parts_tree_get_selected_items(self) -> list[WorkspaceLaserCutPartGroup]:
         selected_items: list[WorkspaceLaserCutPartGroup] = []

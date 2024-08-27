@@ -100,7 +100,7 @@ from utils.workspace.workspace import Workspace
 from utils.workspace.workspace_laser_cut_part_group import WorkspaceLaserCutPartGroup
 from utils.workspace.workspace_settings import WorkspaceSettings
 
-__version__: str = "v3.5.9"
+__version__: str = "v3.5.10"
 
 
 def check_folders(folders: list[str]):
@@ -149,8 +149,8 @@ def excepthook(exc_type, exc_value, exc_traceback):
     threading.Thread(target=send_error_report).start()
     win32api.MessageBox(
         0,
-        f"We've encountered an unexpected issue. The details of this glitch have been automatically reported to Jared, and a notification has been sent to jared@pinelandfarms.ca for immediate attention. Rest assured, Jared is on the case and will likely have this resolved with the next update. Your patience and understanding are greatly appreciated. If this problem persists, please don't hesitate to reach out directly to Jared for further assistance.\n\nTechnical details for reference:\n - Exception Type: {exc_type}\n - Error Message: {exc_value}\n - Traceback Information: {exc_traceback}",
-        "Unhandled exception - excepthook detected",
+        f"An unhandled exception has occurred and has been reported to jared@pinelandfarms.ca and will be fixed as soon as possible in the next update. If the error persists and needs an immediate fix please contact me the exact details of how and where the error occured.\n\nTechnical details for reference:\n - Exception Type: {exc_type}\n - Error Message: {exc_value}\n - Traceback Information: {exc_traceback}",
+        "Unhandled exception",
         0x40,
     )  # 0x40 for OK button
 
@@ -1879,7 +1879,11 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             elif response == DialogButtons.cancel:
                 return
 
-    def copy_file_with_overwrite(self, source, target, retry_interval=1, max_retries=10):
+    def copy_file_with_overwrite(self, source: str, target: str, retry_interval=1, max_retries=10):
+        source = source.replace("/", "\\")
+        target = target.replace("/", "\\")
+        if target in source:
+            return
         retries = 0
         while retries < max_retries:
             try:

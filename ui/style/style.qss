@@ -323,12 +323,18 @@ QPushButton:!flat:pressed{
     background-color: var(--primary);
 }
 
+QPushButton:!flat:disabled{
+    background-color: var(--surface);
+    border: 1px solid var(--disabled);
+    color: var(--disabled);
+}
+
+
 QPushButton[flat="true"] {
     background-color: var(--surface);
     border: 1px solid var(--outline);
     color: var(--primary);
 }
-
 
 QPushButton[flat="true"]:checked{
     background-color: var(--primary);
@@ -353,6 +359,7 @@ QPushButton[flat="true"]:pressed {
 
 QPushButton[flat="true"]:disabled {
     color: var(--disabled);
+    border: 1px solid var(--disabled);
 }
 
 QPushButton[flat="true"]:checked:hover{
