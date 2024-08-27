@@ -230,7 +230,7 @@ class SheetImages:
                 html += f"""
                 <div class="s6" id="nest-container">
                     <article class="nest no-padding border">
-                        <img src="{self.server_directory}/image/{nest.image_path}" class="responsive small nest_image">
+                        <img src="{self.server_directory}/image/{nest.image_path}" class="responsive nest_image">
                         <div class="{'right-align' if i % 2 == 0 else 'left-align'}">
                             <button class="nested-parts transparent small small-round">
                                 <i>format_list_bulleted</i>
