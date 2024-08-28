@@ -23,6 +23,7 @@ class Head:
                 <title>{title}</title>
                 <meta property="og:title" content="{title}" />
                 <meta property="og:description" content="{description}" />
+                <link href="/dist/css/printout.bundle.css" rel="stylesheet">
                 <script src="/dist/js/qrcode.min.js"></script>
                 <script type="module" src="/dist/js/printout.bundle.js"></script>
             </head>"""

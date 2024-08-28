@@ -1245,12 +1245,14 @@ class AssemblyQuotingWidget(AssemblyWidget):
         new_sub_assembly.color = self.assembly.color
         self.load_sub_assembly(new_sub_assembly)
         self.assembly.add_sub_assembly(new_sub_assembly)
+        self.update_context_menu()
         self.changes_made()
 
     def delete_sub_assembly(self, sub_assembly_widget: "AssemblyQuotingWidget"):
         self.sub_assembly_widgets.remove(sub_assembly_widget)
         self.sub_assemblies_toolbox.removeItem(sub_assembly_widget)
         self.assembly.remove_sub_assembly(sub_assembly_widget.assembly)
+        self.update_context_menu()
         self.changes_made()
 
     def sync_changes(self):
@@ -1261,6 +1263,11 @@ class AssemblyQuotingWidget(AssemblyWidget):
         self.load_laser_cut_parts_table()
         for sub_assembly_widget in self.sub_assembly_widgets:
             sub_assembly_widget.update_tables()
+
+    def reload_context_menu(self):
+        self.load_laser_cut_parts_table_context_menu()
+        for sub_assembly_widget in self.sub_assembly_widgets:
+            sub_assembly_widget.reload_context_menu()
 
     def update_prices(self):
         self.label_total_cost_for_assembly.setText(f"Total Cost for Assembly: ${self.price_calculator.get_assembly_cost(self.assembly):,.2f}")
