@@ -1018,6 +1018,13 @@ class AssemblyQuotingWidget(AssemblyWidget):
         self.changes_made()
 
     # OTHER STUFF
+    def get_all_sub_assembly_widgets(self) -> list["AssemblyQuotingWidget"]:
+        widgets: list["AssemblyQuotingWidget"] = []
+        widgets.extend(self.sub_assembly_widgets)
+        for sub_assembly_widget in self.sub_assembly_widgets:
+            widgets.extend(sub_assembly_widget.get_all_sub_assembly_widgets())
+        return widgets
+
     def copy_file_with_overwrite(self, source: str, target: str, retry_interval=1, max_retries=10):
         source = source.replace("/", "\\")
         target = target.replace("/", "\\")
