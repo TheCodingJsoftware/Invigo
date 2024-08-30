@@ -1157,12 +1157,15 @@ class ComponentsTab(QWidget, Ui_Form):
                 table.setItem(row_index, j, item)
             item.setBackground(QColor(color))
 
-    def sort_components(self):
+    def sort_component_inventory(self):
         self.settings_file.load_data()
-        if self.settings_file.get_value(setting_name="sort_alphabatical"):
+        if self.settings_file.get_value(setting_name="sort_alphabetical"):
             self.components_inventory.sort_by_name(not self.settings_file.get_value(setting_name="sort_ascending"))
         elif self.settings_file.get_value(setting_name="sort_quantity_in_stock"):
             self.components_inventory.sort_by_quantity(not self.settings_file.get_value(setting_name="sort_ascending"))
+
+    def sort_components(self):
+        self.sort_component_inventory()
         self.load_table()
 
     def save_current_tab(self):

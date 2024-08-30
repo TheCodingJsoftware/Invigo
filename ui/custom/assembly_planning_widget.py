@@ -686,6 +686,8 @@ class AssemblyPlanningWidget(AssemblyWidget):
         flowtag_data_widget = FlowtagDataButton(laser_cut_part.flowtag_data, self)
         if tag := laser_cut_part.flowtag.get_tag_with_similar_name("laser"):
             laser_cut_part.flowtag_data.set_tag_data(tag, "expected_time_to_complete", int(laser_cut_part.machine_time * 60))
+        elif tag := laser_cut_part.flowtag.get_tag_with_similar_name("picking"):
+            laser_cut_part.flowtag_data.set_tag_data(tag, "expected_time_to_complete", laser_cut_part.weight)
         self.laser_cut_parts_table.setCellWidget(current_row, LaserCutTableColumns.FLOW_TAG_DATA.value, flowtag_data_widget)
         self.laser_cut_part_table_items[laser_cut_part].update({"flowtag_data_button": flowtag_data_widget})
 
@@ -737,6 +739,8 @@ class AssemblyPlanningWidget(AssemblyWidget):
         laser_cut_part.flowtag_data.load_data(laser_cut_part.flowtag_data.to_dict())
         if tag := laser_cut_part.flowtag.get_tag_with_similar_name("laser"):
             laser_cut_part.flowtag_data.set_tag_data(tag, "expected_time_to_complete", int(laser_cut_part.machine_time * 60))
+        elif tag := laser_cut_part.flowtag.get_tag_with_similar_name("picking"):
+            laser_cut_part.flowtag_data.set_tag_data(tag, "expected_time_to_complete", laser_cut_part.weight)
         self.laser_cut_part_table_items[laser_cut_part]["flowtag_data_button"].dropdown.load_ui()
         self.laser_cut_parts_table.resizeRowsToContents()
         self.laser_cut_parts_table.resizeColumnsToContents()
@@ -960,6 +964,8 @@ class AssemblyPlanningWidget(AssemblyWidget):
                 laser_cut_part.flowtag_data.load_data(laser_cut_part.flowtag_data.to_dict())
                 if tag := laser_cut_part.flowtag.get_tag_with_similar_name("laser"):
                     laser_cut_part.flowtag_data.set_tag_data(tag, "expected_time_to_complete", int(laser_cut_part.machine_time * 60))
+                elif tag := laser_cut_part.flowtag.get_tag_with_similar_name("picking"):
+                    laser_cut_part.flowtag_data.set_tag_data(tag, "expected_time_to_complete", laser_cut_part.weight)
                 self.laser_cut_part_table_items[laser_cut_part]["flowtag_data_button"].dropdown.load_ui()
                 self.laser_cut_parts_table.resizeRowsToContents()
                 self.laser_cut_parts_table.resizeColumnsToContents()

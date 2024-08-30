@@ -42,37 +42,30 @@ class CoverPage:
         formatted_date_expected = datetime.strptime(self.date_expected, "%Y-%m-%d %I:%M %p").strftime("%Y-%m-%dT%H:%M")
 
         return f"""<div id="cover-page">
-                <div class="field label prefix border max">
-                    <i>numbers</i>
-                    <input type="number" id="order-number" value={int(self.order_number)}>
-                    <label>Order Number</label>
-                </div>
-
                 <div class="grid">
-                    <article class="border s6">
-                        <div class="field label prefix border">
-                            <i>today</i>
-                            <input type="datetime-local" value="{formatted_date_shipped}">
-                            <label>Date Shipped</label>
-                            <i>schedule</i>
-                        </div>
-                        <div class="field label prefix border">
-                            <i>date_range</i>
-                            <input type="datetime-local" value="{formatted_date_expected}">
-                            <label>Date Expected</label>
-                            <i>schedule</i>
-                        </div>
-                    </article>
-                    <article class="border s6">
-                        <div class="field textarea label border">
-                            <textarea>{self.ship_to}</textarea>
-                            <label>Ship To</label>
-                        </div>
-                        <div class="field border">
-                            <input type="text">
-                            <span class="helper">Received in good order by</span>
-                        </div>
-                    </article>
+                    <div class="field label prefix border max s2">
+                        <i>numbers</i>
+                        <input type="number" id="order-number" value={int(self.order_number)}>
+                        <label>Order Number</label>
+                    </div>
+                    <div class="field prefix label border s5">
+                        <i>today</i>
+                        <input type="text">
+                        <label>Date Shipped</label>
+                    </div>
+                    <div class="field label prefix border s5">
+                        <i>date_range</i>
+                        <input type="datetime-local" value="{formatted_date_expected}">
+                        <label>Date Expected</label>
+                    </div>
+                    <div class="field textarea label border s6">
+                        <textarea>{self.ship_to}</textarea>
+                        <label>Ship To</label>
+                    </div>
+                    <div class="field border extra s6">
+                        <input type="text">
+                        <span class="helper">Received in good order by</span>
+                    </div>
                 </div>
             </div>
         </div><br>"""
@@ -559,10 +552,10 @@ class AssemblyTable:
         else:
             for assembly in self.job.get_all_assemblies():
                 html += f"""
-                <a class="row padding surface-container wave" onclick="ui('#A-{self.format_filename(assembly.name)}');">
+                <a class="row tiny-padding surface-container wave" onclick="ui('#A-{self.format_filename(assembly.name)}');">
                     <img src="{self.server_directory}/image/{assembly.assembly_image}" class="assembly_image round">
                     <div class="max">
-                        <h6 class="small">{assembly.name}</h6>
+                        <h6>{assembly.name}</h6>
                         <div id="assembly-proess-layout">{assembly.flowtag.get_flow_string()}</div>
                     </div>
                     <h5>× {int(assembly.quantity)}</h5>
@@ -842,13 +835,15 @@ class WorkspaceJobPrintout:
 
         if grouped_components or grouped_laser_cut_parts:
             html += f"""
-            <div id="net-weight-layout">
-                <h6 class="center-align bold">Net Weight: {self.job.get_net_weight():,.2f} lb</h6>
-            </div>
-            <div id="total-cost-layout">
-                <h6 class="center-align bold">Total Cost: ${self.job.price_calculator.get_job_cost():,.2f}</h6>
-                <p class="small-text center-align bold underline">No tax is included in this quote.</p>
-                <p class="small-text center-align">Payment past due date will receive 1.5% interest rate per month of received goods.</p>
+            <div class="grid row max center-align">
+                <div id="net-weight-layout" class="s6">
+                    <h6 class="center-align bold">Net Weight: {self.job.get_net_weight():,.2f} lb</h6>
+                </div>
+                <div id="total-cost-layout" class="s6">
+                    <h6 class="center-align bold">Total Cost: ${self.job.price_calculator.get_job_cost():,.2f}</h6>
+                    <p class="small-text no-margin center-align bold underline">No tax is included in this quote.</p>
+                    <p class="small-text no-margin center-align">Payment past due date will receive 1.5% interest rate per month of received goods.</p>
+                </div>
             </div>"""
 
         if grouped_laser_cut_parts:
@@ -898,7 +893,7 @@ class WorkorderPrintout:
                 </a>
                 <a class="surface-container">
                     <label class="checkbox">
-                        <input type="checkbox" id="usePageBreaks" data-name="use-page-breaks" data-layout="page-break" checked>
+                        <input type="checkbox" id="usePageBreaks" data-name="use-page-breaks" data-layout="page-break">
                         <span>Use Page Breaks</span>
                     </label>
                 </a>

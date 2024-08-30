@@ -269,7 +269,8 @@ class LaserCutPart(InventoryItem):
         self.flowtag_data.load_data(data.get("flow_tag_data", {}))
         if tag := self.flowtag.get_tag_with_similar_name("laser"):
             self.flowtag_data.set_tag_data(tag, "expected_time_to_complete", int(self.machine_time * 60))
-
+        elif tag := self.flowtag.get_tag_with_similar_name("picking"):
+            self.flowtag_data.set_tag_data(tag, "expected_time_to_complete", self.weight)
         self.quantity_in_nest = data.get("quantity_in_nest", 0)
 
         self.categories.clear()

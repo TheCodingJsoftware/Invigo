@@ -100,7 +100,7 @@ from utils.workspace.workspace import Workspace
 from utils.workspace.workspace_laser_cut_part_group import WorkspaceLaserCutPartGroup
 from utils.workspace.workspace_settings import WorkspaceSettings
 
-__version__: str = "v3.5.14"
+__version__: str = "v3.5.15"
 
 
 def check_folders(folders: list[str]):
@@ -2346,14 +2346,17 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             # Update relevant tabs
             if self.tab_text(self.stackedWidget.currentIndex()) == "laser_cut_inventory_tab" or self.should_update_laser_cut_inventory_tab:
                 self.laser_cut_tab_widget.load_categories()
+                self.laser_cut_inventory.sort_by_quantity()
                 self.laser_cut_tab_widget.restore_last_selected_tab()
                 self.should_update_laser_cut_inventory_tab = False
             elif self.tab_text(self.stackedWidget.currentIndex()) == "sheets_in_inventory_tab" or self.should_update_sheets_in_inventory_tab:
                 self.sheets_inventory_tab_widget.load_categories()
+                self.sheets_inventory.sort_by_thickness()
                 self.sheets_inventory_tab_widget.restore_last_selected_tab()
                 self.should_update_sheets_in_inventory_tab = False
             elif self.tab_text(self.stackedWidget.currentIndex()) == "components_tab" or self.should_update_components_tab:
                 self.components_tab_widget.load_categories()
+                self.components_tab_widget.sort_component_inventory()
                 self.components_tab_widget.restore_last_selected_tab()
                 self.should_update_components_tab = False
             elif self.tab_text(self.stackedWidget.currentIndex()) == "quote_generator_tab":
