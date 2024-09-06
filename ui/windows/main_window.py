@@ -100,7 +100,7 @@ from utils.workspace.workspace import Workspace
 from utils.workspace.workspace_laser_cut_part_group import WorkspaceLaserCutPartGroup
 from utils.workspace.workspace_settings import WorkspaceSettings
 
-__version__: str = "v3.5.15"
+__version__: str = "v3.5.16"
 
 
 def check_folders(folders: list[str]):
@@ -388,7 +388,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
         if not self.trusted_user:
             self.set_tab_visibility("Components", False)
-            self.set_tab_visibility("Sheets in Inventory", False)
+            self.set_tab_visibility("Sheets In Inventory", False)
             self.set_tab_visibility("Laser Cut Inventory", False)
             self.set_tab_visibility("Sheet Settings", False)
             self.set_tab_visibility("Job Planner", False)
@@ -653,7 +653,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.actionComponents.setChecked(self.settings_file.get_value("tab_visibility").get("Components", True))
         self.actionComponents.setIcon(Icons.inventory_icon)
         self.actionSheets_in_Inventory.triggered.connect(partial(self.toggle_tab_visibility, self.actionSheets_in_Inventory))
-        self.actionSheets_in_Inventory.setChecked(self.settings_file.get_value("tab_visibility").get("Sheets in Inventory", True))
+        self.actionSheets_in_Inventory.setChecked(self.settings_file.get_value("tab_visibility").get("Sheets In Inventory", True))
         self.actionSheets_in_Inventory.setIcon(Icons.inventory_icon)
         self.actionLaser_Cut_Inventory.triggered.connect(partial(self.toggle_tab_visibility, self.actionLaser_Cut_Inventory))
         self.actionLaser_Cut_Inventory.setChecked(self.settings_file.get_value("tab_visibility").get("Laser Cut Inventory", True))
@@ -820,6 +820,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             self.load_tree_widget_cuttoff_drop_down(self.treeWidget_cutoff_sheets)
             self.refresh_nest_directories()
             self.load_jobs_thread()
+            self.job_quote_widget.update_tables()
         elif self.tab_text(self.stackedWidget.currentIndex()) == "job_planner_tab":
             self.load_jobs_thread()
             self.job_planner_widget.update_tables()

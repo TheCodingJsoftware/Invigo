@@ -138,6 +138,10 @@ class JobWidget(QWidget, Ui_Form):
         self.doubleSpinBox_order_number.wheelEvent = lambda event: self.parent.wheelEvent(event)
         self.doubleSpinBox_order_number.valueChanged.connect(self.job_settings_changed)
 
+        self.doubleSpinBox_po_number.setValue(self.job.PO_number)
+        self.doubleSpinBox_po_number.wheelEvent = lambda event: self.parent.wheelEvent(event)
+        self.doubleSpinBox_po_number.valueChanged.connect(self.job_settings_changed)
+
         def get_latest_order_number():
             self.doubleSpinBox_order_number.setValue(self.parent.parent.order_number)
             self.job_settings_changed()
@@ -313,6 +317,7 @@ QPushButton:checked:pressed#assembly_button_drop_menu {{
 
     def job_settings_changed(self):
         self.job.order_number = int(self.doubleSpinBox_order_number.value())
+        self.job.PO_number = int(self.doubleSpinBox_po_number.value())
         self.job.status = JobStatus(self.comboBox_type.currentIndex() + 1)
         self.job.starting_date = self.dateEdit_start.dateTime().toString("yyyy-MM-dd h:mm AP")
         self.job.ending_date = self.dateEdit_end.dateTime().toString("yyyy-MM-dd h:mm AP")

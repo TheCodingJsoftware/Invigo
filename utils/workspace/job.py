@@ -44,6 +44,7 @@ class Job:
     def __init__(self, data: dict, job_manager):
         self.name: str = ""
         self.order_number: float = 0.0
+        self.PO_number: float = 0.0
         self.ship_to: str = ""
         self.starting_date: str = ""
         self.ending_date: str = ""
@@ -197,6 +198,7 @@ class Job:
         job_data = data.get("job_data", {})
         self.name = job_data.get("name", "")
         self.order_number = job_data.get("order_number", 0)
+        self.PO_number = job_data.get("PO_number", 0)
         self.ship_to = job_data.get("ship_to", "")
         self.starting_date = job_data.get("starting_date", "")
         self.ending_date = job_data.get("ending_date", "")
@@ -275,6 +277,7 @@ class Job:
                 "name": self.name,
                 "type": self.status.value,
                 "order_number": int(self.order_number),  # Just in case
+                "PO_number": int(self.PO_number),
                 "ship_to": self.ship_to,
                 "starting_date": self.starting_date,
                 "ending_date": self.ending_date,

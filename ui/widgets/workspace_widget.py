@@ -137,7 +137,7 @@ class WorkspaceWidget(QWidget, Ui_Form):
         # FILES
         if any(keyword in group.base_part.get_current_tag().name.lower() for keyword in ["weld", "assembly"]):
             files_widget, files_layout = self.create_file_layout(group, ["welding_files"])
-        elif any(keyword in group.base_part.get_current_tag().name.lower() for keyword in ["bend", "break"]):
+        elif any(keyword in group.base_part.get_current_tag().name.lower() for keyword in ["bend", "break", "form"]):
             files_widget, files_layout = self.create_file_layout(group, ["bending_files"])
         elif any(keyword in group.base_part.get_current_tag().name.lower() for keyword in ["cnc", "laser", "cutting", "milling", "thread"]):
             files_widget, files_layout = self.create_file_layout(group, ["cnc_milling_files"])

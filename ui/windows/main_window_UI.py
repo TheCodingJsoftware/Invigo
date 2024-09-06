@@ -1064,7 +1064,7 @@ class Ui_MainWindow(object):
         self.actionOpen_production_planner.setText(_translate("MainWindow", "Open"))
         self.actionStart_Maximized.setText(_translate("MainWindow", "Start Maximized"))
         self.actionComponents.setText(_translate("MainWindow", "Components"))
-        self.actionSheets_in_Inventory.setText(_translate("MainWindow", "Sheets in Inventory"))
+        self.actionSheets_in_Inventory.setText(_translate("MainWindow", "Sheets In Inventory"))
         self.actionLaser_Cut_Inventory.setText(_translate("MainWindow", "Laser Cut Inventory"))
         self.actionSheet_Settings.setText(_translate("MainWindow", "Sheet Settings"))
         self.actionJob_Planner.setText(_translate("MainWindow", "Job Planner"))

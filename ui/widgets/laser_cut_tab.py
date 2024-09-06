@@ -292,7 +292,7 @@ class PopoutWidget(QWidget):
         self.original_layout = layout_to_popout
         self.original_layout_parent: "LaserCutTab" = self.original_layout.parentWidget()
         self.setWindowFlags(Qt.WindowType.Window)
-        self.setWindowTitle("Sheets In Inventory Tab")
+        self.setWindowTitle("Laser Cut Inventory Tab")
         self.setLayout(self.original_layout)
         self.setObjectName("popout_widget")
 
@@ -674,26 +674,17 @@ class LaserCutTab(QWidget, Ui_Form):
 
         self.load_context_menu()
 
-    def load_assembly_menu(self, menu: QMenu, job: Job, assemblies: list[Assembly], level=0, prefix=""):
-        for i, assembly in enumerate(assemblies):
-            is_last = i == len(assemblies) - 1
-            next_assembly = None if is_last else assemblies[i + 1]
-            has_next_assembly = next_assembly is not None
-
-            action_text = prefix + ("├ " if has_next_assembly else "└ ") + assembly.name
-
-            action = QAction(action_text, menu)
-            action.triggered.connect(partial(self.add_to_assembly, job, assembly))
-            menu.addAction(action)
-            if assembly.sub_assemblies:
-                sub_prefix = prefix + ("│   " if has_next_assembly else "    ")
-                self.load_assembly_menu(menu, job, assembly.sub_assemblies, level + 1, sub_prefix)
-
     def load_context_menu(self):
         current_table = self.category_tables[self.category]
-        if current_table.contextMenuPolicy() == Qt.ContextMenuPolicy.CustomContextMenu:
-            return
+        try:
+            # Disconnect the existing context menu if already connected
+            current_table.customContextMenuRequested.disconnect()
+        except TypeError:
+            # If not connected, do nothing
+            pass
+
         current_table.setContextMenuPolicy(Qt.ContextMenuPolicy.CustomContextMenu)
+
         menu = QMenu(self)
         action = QAction("View Part Data", self)
         action.triggered.connect(self.edit_laser_cut_part)
@@ -847,15 +838,29 @@ class LaserCutTab(QWidget, Ui_Form):
 
         menu.addSeparator()
 
-        job_planner_menu = QMenu("Add to Job", self)
+        job_planner_menu = QMenu("Add to Job Planner", self)
         for job_widget in self.parent.job_planner_widget.job_widgets:
             job = job_widget.job
             job_menu = QMenu(job.name, job_planner_menu)
-            for assembly in job.assemblies:
-                self.load_assembly_menu(job_menu, job, [assembly])
+            for assembly_widget in job_widget.get_all_assembly_widgets():
+                action = QAction(f"{assembly_widget.assembly.name}", menu)
+                action.triggered.connect(partial(self.add_to_assembly, job, assembly_widget.assembly))
+                job_menu.addAction(action)
             job_planner_menu.addMenu(job_menu)
 
         menu.addMenu(job_planner_menu)
+
+        job_quoter_menu = QMenu("Add to Job Quoter", self)
+        for job_widget in self.parent.job_quote_widget.job_widgets:
+            job = job_widget.job
+            job_menu = QMenu(job.name, job_quoter_menu)
+            for assembly_widget in job_widget.get_all_assembly_widgets():
+                action = QAction(f"{assembly_widget.assembly.name}", menu)
+                action.triggered.connect(partial(self.add_to_assembly, job, assembly_widget.assembly))
+                job_menu.addAction(action)
+            job_quoter_menu.addMenu(job_menu)
+
+        menu.addMenu(job_quoter_menu)
 
         # if self.category.name != "Recut":
         #     action1 = QAction("Generate Quote with Selected Parts", self)

@@ -65,46 +65,43 @@
             <property name="bottomMargin">
              <number>0</number>
             </property>
-            <item row="0" column="0">
-             <widget class="QLabel" name="label">
+            <item row="2" column="2">
+             <widget class="QLabel" name="label_3">
               <property name="text">
-               <string>Order number:</string>
+               <string>Ending date:</string>
               </property>
               <property name="alignment">
                <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
               </property>
               <property name="buddy">
-               <cstring>doubleSpinBox_order_number</cstring>
+               <cstring>dateEdit_end</cstring>
               </property>
              </widget>
             </item>
-            <item row="1" column="1">
-             <widget class="QComboBox" name="comboBox_type">
-              <item>
-               <property name="text">
-                <string>Planning</string>
-               </property>
-              </item>
-              <item>
-               <property name="text">
-                <string>Quoting</string>
-               </property>
-              </item>
-              <item>
-               <property name="text">
-                <string>Quoted</string>
-               </property>
-              </item>
-              <item>
-               <property name="text">
-                <string>Quote Confirmed</string>
-               </property>
-              </item>
-              <item>
-               <property name="text">
-                <string>Template</string>
-               </property>
-              </item>
+            <item row="0" column="2">
+             <widget class="QLabel" name="label_4">
+              <property name="text">
+               <string>Starting date:</string>
+              </property>
+              <property name="alignment">
+               <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
+              </property>
+              <property name="buddy">
+               <cstring>dateEdit_start</cstring>
+              </property>
+             </widget>
+            </item>
+            <item row="2" column="0">
+             <widget class="QLabel" name="label_2">
+              <property name="text">
+               <string>Job status:</string>
+              </property>
+              <property name="alignment">
+               <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
+              </property>
+              <property name="buddy">
+               <cstring>comboBox_type</cstring>
+              </property>
              </widget>
             </item>
             <item row="0" column="1">
@@ -137,59 +134,7 @@
               </item>
              </layout>
             </item>
-            <item row="0" column="2">
-             <widget class="QLabel" name="label_4">
-              <property name="text">
-               <string>Starting date:</string>
-              </property>
-              <property name="alignment">
-               <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
-              </property>
-              <property name="buddy">
-               <cstring>dateEdit_start</cstring>
-              </property>
-             </widget>
-            </item>
-            <item row="1" column="2">
-             <widget class="QLabel" name="label_3">
-              <property name="text">
-               <string>Ending date:</string>
-              </property>
-              <property name="alignment">
-               <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
-              </property>
-              <property name="buddy">
-               <cstring>dateEdit_end</cstring>
-              </property>
-             </widget>
-            </item>
-            <item row="1" column="0">
-             <widget class="QLabel" name="label_2">
-              <property name="text">
-               <string>Job status:</string>
-              </property>
-              <property name="alignment">
-               <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
-              </property>
-              <property name="buddy">
-               <cstring>comboBox_type</cstring>
-              </property>
-             </widget>
-            </item>
-            <item row="2" column="0">
-             <widget class="QLabel" name="label_5">
-              <property name="text">
-               <string>Ship to:</string>
-              </property>
-              <property name="alignment">
-               <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTop|Qt::AlignmentFlag::AlignTrailing</set>
-              </property>
-              <property name="buddy">
-               <cstring>textEdit_ship_to</cstring>
-              </property>
-             </widget>
-            </item>
-            <item row="2" column="1">
+            <item row="3" column="1">
              <widget class="QTextEdit" name="textEdit_ship_to">
               <property name="maximumSize">
                <size>
@@ -202,20 +147,16 @@
               </property>
              </widget>
             </item>
-            <item row="1" column="3">
-             <widget class="QDateTimeEdit" name="dateEdit_end">
-              <property name="minimumDate">
-               <date>
-                <year>2024</year>
-                <month>1</month>
-                <day>1</day>
-               </date>
+            <item row="3" column="0">
+             <widget class="QLabel" name="label_5">
+              <property name="text">
+               <string>Ship to:</string>
               </property>
-              <property name="currentSection">
-               <enum>QDateTimeEdit::Section::DaySection</enum>
+              <property name="alignment">
+               <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTop|Qt::AlignmentFlag::AlignTrailing</set>
               </property>
-              <property name="calendarPopup">
-               <bool>true</bool>
+              <property name="buddy">
+               <cstring>textEdit_ship_to</cstring>
               </property>
              </widget>
             </item>
@@ -233,6 +174,94 @@
               </property>
               <property name="calendarPopup">
                <bool>true</bool>
+              </property>
+             </widget>
+            </item>
+            <item row="2" column="3">
+             <widget class="QDateTimeEdit" name="dateEdit_end">
+              <property name="minimumDate">
+               <date>
+                <year>2024</year>
+                <month>1</month>
+                <day>1</day>
+               </date>
+              </property>
+              <property name="currentSection">
+               <enum>QDateTimeEdit::Section::DaySection</enum>
+              </property>
+              <property name="calendarPopup">
+               <bool>true</bool>
+              </property>
+             </widget>
+            </item>
+            <item row="0" column="0">
+             <widget class="QLabel" name="label">
+              <property name="text">
+               <string>Order number:</string>
+              </property>
+              <property name="alignment">
+               <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
+              </property>
+              <property name="buddy">
+               <cstring>doubleSpinBox_order_number</cstring>
+              </property>
+             </widget>
+            </item>
+            <item row="2" column="1">
+             <widget class="QComboBox" name="comboBox_type">
+              <item>
+               <property name="text">
+                <string>Planning</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>Quoting</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>Quoted</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>Quote Confirmed</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>Template</string>
+               </property>
+              </item>
+             </widget>
+            </item>
+            <item row="1" column="0">
+             <widget class="QLabel" name="label_17">
+              <property name="text">
+               <string>PO number:</string>
+              </property>
+              <property name="alignment">
+               <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
+              </property>
+              <property name="buddy">
+               <cstring>doubleSpinBox_po_number</cstring>
+              </property>
+             </widget>
+            </item>
+            <item row="1" column="1">
+             <widget class="QDoubleSpinBox" name="doubleSpinBox_po_number">
+              <property name="accelerated">
+               <bool>true</bool>
+              </property>
+              <property name="prefix">
+               <string/>
+              </property>
+              <property name="decimals">
+               <number>0</number>
+              </property>
+              <property name="maximum">
+               <double>100000000000000000.000000000000000</double>
               </property>
              </widget>
             </item>
@@ -380,7 +409,7 @@ QPushButton#pushButton_reload_job:flat:hover {
               <x>0</x>
               <y>0</y>
               <width>282</width>
-              <height>904</height>
+              <height>877</height>
              </rect>
             </property>
             <layout class="QVBoxLayout" name="verticalLayout_7">
@@ -1080,7 +1109,7 @@ QPushButton#pushButton_reload_job:flat:hover {
             <x>0</x>
             <y>0</y>
             <width>1177</width>
-            <height>878</height>
+            <height>851</height>
            </rect>
           </property>
           <layout class="QVBoxLayout" name="verticalLayout_3">

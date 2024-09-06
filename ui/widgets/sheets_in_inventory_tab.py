@@ -337,7 +337,7 @@ class SheetsInInventoryTab(QWidget, Ui_Form):
         self.tab_widget.clear()
         self.category_tables.clear()
         all_categories = [category.name for category in self.sheets_inventory.get_categories()]
-        tab_order: list[str] = self.settings_file.get_value("category_tabs_order")["Sheets in Inventory"]
+        tab_order: list[str] = self.settings_file.get_value("category_tabs_order")["Sheets In Inventory"]
 
         # Updates the tab order to add categories that have not previously been added
         for category in all_categories:
@@ -753,7 +753,7 @@ class SheetsInInventoryTab(QWidget, Ui_Form):
     def save_category_tabs_order(self):
         self.settings_file.load_data()
         tab_order = self.settings_file.get_value("category_tabs_order")
-        tab_order["Sheets in Inventory"] = self.tab_widget.get_tab_order()
+        tab_order["Sheets In Inventory"] = self.tab_widget.get_tab_order()
         self.settings_file.set_value("category_tabs_order", tab_order)
 
     def save_scroll_position(self):

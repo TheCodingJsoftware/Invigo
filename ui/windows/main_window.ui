@@ -2012,7 +2012,7 @@
     <iconset theme="format-justify-left"/>
    </property>
    <property name="text">
-    <string>Sheets in Inventory</string>
+    <string>Sheets In Inventory</string>
    </property>
   </action>
   <action name="actionLaser_Cut_Inventory">

@@ -30,8 +30,9 @@ class Head:
 
 
 class CoverPage:
-    def __init__(self, order_number: float, date_shipped: str, date_expected: str, ship_to: str):
+    def __init__(self, order_number: float, PO_number: float, date_shipped: str, date_expected: str, ship_to: str):
         self.order_number = order_number
+        self.PO_number = PO_number
         self.date_shipped = date_shipped
         self.date_expected = date_expected
         self.ship_to = ship_to
@@ -48,12 +49,17 @@ class CoverPage:
                         <input type="number" id="order-number" value={int(self.order_number)}>
                         <label>Order Number</label>
                     </div>
-                    <div class="field prefix label border s5">
+                    <div class="field label prefix border max s2">
+                        <i>numbers</i>
+                        <input type="number" id="PO-number" value={int(self.PO_number)}>
+                        <label>PO Number</label>
+                    </div>
+                    <div class="field prefix label border s4">
                         <i>today</i>
                         <input type="text">
                         <label>Date Shipped</label>
                     </div>
-                    <div class="field label prefix border s5">
+                    <div class="field label prefix border s4">
                         <i>date_range</i>
                         <input type="datetime-local" value="{formatted_date_expected}">
                         <label>Date Expected</label>
@@ -771,7 +777,7 @@ class WorkspaceJobPrintout:
             {header_html}<br>
         """
 
-        cover_page = CoverPage(self.job.order_number, self.job.starting_date, self.job.ending_date, self.job.ship_to)
+        cover_page = CoverPage(self.job.order_number, self.job.PO_number, self.job.starting_date, self.job.ending_date, self.job.ship_to)
 
         html += cover_page.generate()
 
