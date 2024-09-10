@@ -126,6 +126,7 @@ class Job:
 
         self.grouped_laser_cut_parts = laser_cut_part_dict.values()
         self.sort_laser_cut_parts()
+        return self.grouped_laser_cut_parts
 
     def group_components(self):
         components_dict: dict[str, Component] = {}
@@ -141,6 +142,7 @@ class Job:
 
         self.grouped_components = components_dict.values()
         self.sort_components()
+        return self.grouped_components
 
     def sort_nests(self):
         self.nests = natsorted(self.nests, key=lambda nest: nest.name)
@@ -182,7 +184,7 @@ class Job:
     def get_grouped_laser_cut_parts(self) -> list[LaserCutPart]:
         """Used in printouts"""
         self.group_laser_cut_parts()
-        return self.grouped_laser_cut_parts
+        return self.group_laser_cut_parts()
 
     def get_all_components(self) -> list[Component]:
         components: list[Component] = []
@@ -191,8 +193,7 @@ class Job:
         return components
 
     def get_grouped_components(self) -> list[Component]:
-        self.group_components()
-        return self.grouped_components
+        return self.group_components()
 
     def load_settings(self, data: dict[str, dict[str, object]]):
         job_data = data.get("job_data", {})
