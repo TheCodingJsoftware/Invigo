@@ -801,7 +801,7 @@ class WorkspaceJobPrintout:
             <a class="active" data-ui="#assemblies-list"> <i>data_table</i>Assemblies List</a>
             <a data-ui="#parts-list"> <i>format_list_bulleted</i>Grouped Parts List</a>
         </div>"""
-        html += '<div class="page hidden" id="assemblies-layout">'
+        html += '<div class="page" id="assemblies-layout">'
         if self.job.assemblies:
             job_div = JobDiv(self.job)
             html += job_div.generate()
@@ -826,7 +826,7 @@ class WorkspaceJobPrintout:
         grouped_components = self.job.get_grouped_components()
         grouped_components_table = ComponentsTable(self.job, 1, grouped_components)
 
-        html += '<div class="page hidden" id="parts-list">'
+        html += '<div class="page" id="parts-list">'
         if grouped_laser_cut_parts or grouped_components:
             if grouped_laser_cut_parts:
                 html += '<h5 class="center-align">Laser Cut Parts:</h5>'
