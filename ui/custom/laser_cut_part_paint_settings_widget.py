@@ -106,8 +106,11 @@ class LasserCutPartPaintSettingsWidget(QWidget):
         self.laser_cut_part.paint_overspray = self.spinbox_paint_overspray.value()
         self.laser_cut_part.powder_transfer_efficiency = self.spinbox_powder_transfer_efficiency.value()
         self.laser_cut_part.paint_name = self.combobox_paint_color.currentText()
+        self.laser_cut_part.paint_item = self.paint_inventory.get_paint(self.laser_cut_part.paint_name)
         self.laser_cut_part.primer_name = self.combobox_primer.currentText()
+        self.laser_cut_part.primer_item = self.paint_inventory.get_primer(self.laser_cut_part.primer_name)
         self.laser_cut_part.powder_name = self.combobox_powder_coating_color.currentText()
+        self.laser_cut_part.powder_item = self.paint_inventory.get_powder(self.laser_cut_part.powder_name)
 
         self.parent.resizeColumnsToContents()
 

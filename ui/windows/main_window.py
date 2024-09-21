@@ -100,7 +100,7 @@ from utils.workspace.workspace import Workspace
 from utils.workspace.workspace_laser_cut_part_group import WorkspaceLaserCutPartGroup
 from utils.workspace.workspace_settings import WorkspaceSettings
 
-__version__: str = "v3.5.19"
+__version__: str = "v3.5.20"
 
 
 def check_folders(folders: list[str]):
@@ -789,6 +789,12 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         # self.sheets_inventory_layout.addWidget(QLabel("Loading...", self))
         # self.clear_layout(self.components_layout)
         # self.components_layout.addWidget(QLabel("Loading...", self))
+        if self.last_selected_menu_tab == "Job Planner" and self.job_planner_widget.get_active_job().unsaved_changes:
+            msg = QMessageBox(QMessageBox.Icon.Information, "Unsaved changes", f"There are unsaved changes in Job Planner, {self.job_planner_widget.get_active_job().name}.")
+            msg.exec()
+        if self.last_selected_menu_tab == "Job Quoter" and self.job_quote_widget.get_active_job().unsaved_changes:
+            msg = QMessageBox(QMessageBox.Icon.Information, "Unsaved changes", f"There are unsaved changes in Job Quoter, {self.job_quote_widget.get_active_job().name}.")
+            msg.exec()
         if self.tab_text(self.stackedWidget.currentIndex()) == "components_tab":
             self.menuSort.setEnabled(True)
             if self.should_update_components_tab:

@@ -54,10 +54,10 @@ class CoverPage:
                         <input type="number" id="PO-number" value={int(self.PO_number)}>
                         <label>PO Number</label>
                     </div>
-                    <div class="field prefix label border s4">
+                    <div class="field prefix border s4">
                         <i>today</i>
                         <input type="text">
-                        <label>Date Shipped</label>
+                        <span class="helper">Date Shipped</span>
                     </div>
                     <div class="field label prefix border s4">
                         <i>date_range</i>
@@ -330,6 +330,7 @@ class LaserCutPartsTable:
             "Part",
             "Material",
             "Process",
+            "Notes",
             "Shelf #",
             "Unit Qty",
             "Qty",
@@ -379,13 +380,13 @@ class LaserCutPartsTable:
         return total
 
     def get_paint(self, laser_cut_part: LaserCutPart) -> str:
-        html = '<div class="no-padding small-text">'
+        html = '<div class="no-padding small-text grid center-align">'
         if laser_cut_part.uses_primer and laser_cut_part.primer_item:
-            html += f'<div class="row no-margin"><div style="height: 20px; width: 20px; background-color: {laser_cut_part.primer_item.color}; border-radius: 5px;"></div>{laser_cut_part.primer_item.name}</div>'
+            html += f'<div class="no-margin s12"><div class="tiny-margin" style="height: 20px; width: 20px; display: inline-flex; background-color: {laser_cut_part.primer_item.color}; border-radius: 5px;"></div><span class="tiny-margin">{laser_cut_part.primer_item.name}</span></div>'
         if laser_cut_part.uses_paint and laser_cut_part.paint_item:
-            html += f'<div class="row no-margin"><div style="height: 20px; width: 20px; background-color: {laser_cut_part.paint_item.color}; border-radius: 5px;"></div>{laser_cut_part.paint_item.name}</div>'
+            html += f'<div class="no-margin s12"><div class="tiny-margin" style="height: 20px; width: 20px; display: inline-flex; background-color: {laser_cut_part.paint_item.color}; border-radius: 5px;"></div><span class="tiny-margin">{laser_cut_part.paint_item.name}</span></div>'
         if laser_cut_part.uses_powder and laser_cut_part.powder_item:
-            html += f'<div class="row no-margin"><div style="height: 20px; width: 20px; background-color: {laser_cut_part.powder_item.color}; border-radius: 5px;"></div>{laser_cut_part.powder_item.name}</div>'
+            html += f'<div class="no-margin s12"><div class="tiny-margin" style="height: 20px; width: 20px; display: inline-flex; background-color: {laser_cut_part.powder_item.color}; border-radius: 5px;"></div><span class="tiny-margin">{laser_cut_part.powder_item.name}</span></div>'
         if not (laser_cut_part.uses_primer or laser_cut_part.uses_paint or laser_cut_part.uses_powder):
             html = ""
         else:
@@ -410,21 +411,23 @@ class LaserCutPartsTable:
             </td>
             <td class="small-text min" data-label="{self.headers[1]}" data-column="1" data-name="material">{laser_cut_part.gauge}<br>{laser_cut_part.material}</td>
             <td class="small-text" data-label="{self.headers[2]}" data-column="2" data-name="process">{laser_cut_part.flowtag.get_flow_string()}{self.get_paint(laser_cut_part)}</td>
-            <td class="small-text" data-label="{self.headers[3]}" data-column="3" data-name="shelf-#">{laser_cut_part.shelf_number}</td>
-            <td class="small-text min" data-label="{self.headers[4]}" data-column="4" data-name="unit-qty">{laser_cut_part.quantity:,.2f}</td>
-            <td class="small-text min" data-label="{self.headers[5]}" data-column="5" data-name="qty">{(laser_cut_part.quantity * self.assembly_quantity):,.2f}</td>
-            <td class="small-text min" data-label="{self.headers[6]}" data-column="6" data-name="unit-price">${unit_price:,.2f}</td>
-            <td class="small-text" data-label="{self.headers[7]}" data-column="7" data-name="price">${(unit_price * laser_cut_part.quantity * self.assembly_quantity):,.2f}</td>
+            <td class="small-text left-align" data-label="{self.headers[3]}" data-column="3" data-name="notes">{laser_cut_part.notes}</td>
+            <td class="small-text" data-label="{self.headers[4]}" data-column="4" data-name="shelf-#">{laser_cut_part.shelf_number}</td>
+            <td class="small-text min" data-label="{self.headers[5]}" data-column="5" data-name="unit-qty">{laser_cut_part.quantity:,.2f}</td>
+            <td class="small-text min" data-label="{self.headers[6]}" data-column="6" data-name="qty">{(laser_cut_part.quantity * self.assembly_quantity):,.2f}</td>
+            <td class="small-text min" data-label="{self.headers[7]}" data-column="7" data-name="unit-price">${unit_price:,.2f}</td>
+            <td class="small-text" data-label="{self.headers[8]}" data-column="8" data-name="price">${(unit_price * laser_cut_part.quantity * self.assembly_quantity):,.2f}</td>
             </tr>"""
         html += f"""<tr>
                 <th class="small-text" data-label="{self.headers[0]}" data-column="0" data-name="part"></th>
                 <th class="small-text" data-label="{self.headers[1]}" data-column="1" data-name="material"></th>
                 <th class="small-text" data-label="{self.headers[2]}" data-column="2" data-name="process"></th>
-                <th class="small-text" data-label="{self.headers[3]}" data-column="3" data-name="shelf-#"></th>
-                <th class="small-text" data-label="{self.headers[4]}" data-column="4" data-name="unit-qty"></th>
-                <th class="small-text" data-label="{self.headers[5]}" data-column="5" data-name="qty"></th>
-                <th class="small-text" data-label="{self.headers[6]}" data-column="6" data-name="unit-price"></th>
-                <th class="small-text min" data-label="{self.headers[7]}" data-column="7" data-name="price">Total: ${self.get_total_cost():,.2f}</th>
+                <th class="small-text" data-label="{self.headers[3]}" data-column="3" data-name="notes"></th>
+                <th class="small-text" data-label="{self.headers[4]}" data-column="4" data-name="shelf-#"></th>
+                <th class="small-text" data-label="{self.headers[5]}" data-column="5" data-name="unit-qty"></th>
+                <th class="small-text" data-label="{self.headers[6]}" data-column="6" data-name="qty"></th>
+                <th class="small-text" data-label="{self.headers[7]}" data-column="7" data-name="unit-price"></th>
+                <th class="small-text min" data-label="{self.headers[8]}" data-column="8" data-name="price">Total: ${self.get_total_cost():,.2f}</th>
             </tr></tbody></table>"""
         return html
 
@@ -435,7 +438,7 @@ class ComponentsTable:
         self.assembly_quantity = assembly_quantity
         self.components = components
         self.server_directory = f"http://{get_server_ip_address()}:{get_server_port()}"
-        self.headers = ["Part", "Part #", "Shelf #", "Unit Qty", "Qty", "Unit Price", "Price"]
+        self.headers = ["Part", "Part #", "Notes", "Shelf #", "Unit Qty", "Qty", "Unit Price", "Price"]
 
     def format_filename(self, s: str):
         valid_chars = f"-_.() {string.ascii_letters}{string.digits}"
@@ -491,20 +494,22 @@ class ComponentsTable:
                 <span class="small-text">{component.part_name}</span>
             </td>
             <td class="small-text min" data-label="{self.headers[1]}" data-column="1" data-name="part-#">{component.part_number}</td>
-            <td class="small-text" data-label="{self.headers[2]}" data-column="2" data-name="shelf-#">{component.shelf_number}</td>
-            <td class="small-text min" data-label="{self.headers[3]}" data-column="3" data-name="unit-qty">{component.quantity:,.2f}</td>
-            <td class="small-text min" data-label="{self.headers[4]}" data-column="4" data-name="qty">{(component.quantity * self.assembly_quantity):,.2f}</td>
-            <td class="small-text min" data-label="{self.headers[5]}" data-column="5" data-name="unit-price">${unit_price:,.2f}</td>
-            <td class="small-text" data-label="{self.headers[6]}" data-column="6" data-name="price">${(unit_price * component.quantity * self.assembly_quantity):,.2f}</td>
+            <td class="small-text left-align" data-label="{self.headers[2]}" data-column="2" data-name="notes">{component.notes}</td>
+            <td class="small-text" data-label="{self.headers[3]}" data-column="3" data-name="shelf-#">{component.shelf_number}</td>
+            <td class="small-text min" data-label="{self.headers[4]}" data-column="4" data-name="unit-qty">{component.quantity:,.2f}</td>
+            <td class="small-text min" data-label="{self.headers[5]}" data-column="5" data-name="qty">{(component.quantity * self.assembly_quantity):,.2f}</td>
+            <td class="small-text min" data-label="{self.headers[6]}" data-column="6" data-name="unit-price">${unit_price:,.2f}</td>
+            <td class="small-text" data-label="{self.headers[7]}" data-column="7" data-name="price">${(unit_price * component.quantity * self.assembly_quantity):,.2f}</td>
             </tr>"""
         html += f"""</tbody><tfoot><tr>
         <th class="small-text" data-label="{self.headers[0]}" data-column="0" data-name="picture"></th>
         <th class="small-text" data-label="{self.headers[1]}" data-column="1" data-name="part-#"></th>
-        <th class="small-text" data-label="{self.headers[2]}" data-column="2" data-name="shelf-#"></th>
-        <th class="small-text" data-label="{self.headers[3]}" data-column="3" data-name="unit-qty"></th>
-        <th class="small-text" data-label="{self.headers[4]}" data-column="4" data-name="qty"></th>
-        <th class="small-text" data-label="{self.headers[5]}" data-column="5" data-name="unit-price"></th>
-        <th class="small-text min" data-label="{self.headers[6]}" data-column="6" data-name="price">Total: ${self.get_total_cost():,.2f}</th>
+        <th class="small-text" data-label="{self.headers[2]}" data-column="2" data-name="notes"></th>
+        <th class="small-text" data-label="{self.headers[3]}" data-column="3" data-name="shelf-#"></th>
+        <th class="small-text" data-label="{self.headers[4]}" data-column="4" data-name="unit-qty"></th>
+        <th class="small-text" data-label="{self.headers[5]}" data-column="5" data-name="qty"></th>
+        <th class="small-text" data-label="{self.headers[6]}" data-column="6" data-name="unit-price"></th>
+        <th class="small-text min" data-label="{self.headers[7]}" data-column="7" data-name="price">Total: ${self.get_total_cost():,.2f}</th>
         </tr></tfoot></table>"""
         return html
 

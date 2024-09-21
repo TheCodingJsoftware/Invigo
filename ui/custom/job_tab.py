@@ -4,7 +4,7 @@ from typing import TYPE_CHECKING, Optional
 
 from PyQt6.QtCore import Qt, QTimer, pyqtSignal
 from PyQt6.QtGui import QIcon, QKeySequence, QShortcut
-from PyQt6.QtWidgets import QInputDialog, QPushButton, QVBoxLayout, QWidget
+from PyQt6.QtWidgets import QInputDialog, QPushButton, QMessageBox, QVBoxLayout, QWidget
 
 from ui.custom.job_tab_widget import JobTabWidget
 from ui.theme import theme_var
@@ -166,6 +166,9 @@ class JobTab(QWidget):
     def tab_changed(self):
         if not self.get_active_job():
             return
+        if self.current_job and self.current_job.unsaved_changes:
+            msg = QMessageBox(QMessageBox.Icon.Information, "Unsaved changes", f"There are unsaved changes in {self.parent.last_selected_menu_tab}, {self.current_job.name}.")
+            msg.exec()
         self.current_job = self.get_active_job()
         self.update_job_save_status(self.current_job)
 
