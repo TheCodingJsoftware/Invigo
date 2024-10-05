@@ -48,7 +48,7 @@ class ComponentsTableWidget(CustomTableWidget):
         self.setSelectionMode(QAbstractItemView.SelectionMode.ExtendedSelection)
         self.setVerticalScrollMode(QAbstractItemView.ScrollMode.ScrollPerPixel)
         self.setHorizontalScrollMode(QAbstractItemView.ScrollMode.ScrollPerPixel)
-        self.set_editable_column_index([0, 1, 2, 3, 4, 9])
+        self.set_editable_column_index([0, 2, 3, 4, 9])
         headers: list[str] = [
             "Part Name",
             "Part Number",
@@ -697,6 +697,21 @@ class ComponentsTab(QWidget, Ui_Form):
         menu = QMenu(self)
         action = QAction("Set Custom Quantity Limit", self)
         action.triggered.connect(self.set_custom_quantity_limit)
+        menu.addAction(action)
+
+        def rename_part_number():
+            if not (selected_component := self.get_selected_component()):
+                return
+
+            new_part_number_name, ok = QInputDialog.getText(self, "Part Number Name", "Enter a new part number name:", text=selected_component.part_number)
+            if new_part_number_name and ok:
+                selected_component.part_number = new_part_number_name
+                self.components_inventory.save()
+                self.sync_changes()
+                self.sort_components()
+
+        action = QAction("Rename Part Number", self)
+        action.triggered.connect(rename_part_number)
         menu.addAction(action)
 
         action = QAction("Print Selected Parts", self)
