@@ -48,7 +48,7 @@ class ComponentsTableWidget(CustomTableWidget):
         self.setSelectionMode(QAbstractItemView.SelectionMode.ExtendedSelection)
         self.setVerticalScrollMode(QAbstractItemView.ScrollMode.ScrollPerPixel)
         self.setHorizontalScrollMode(QAbstractItemView.ScrollMode.ScrollPerPixel)
-        self.set_editable_column_index([0, 2, 3, 4, 9])
+        self.set_editable_column_index([0, 4, 9])
         headers: list[str] = [
             "Part Name",
             "Part Number",
@@ -710,8 +710,54 @@ class ComponentsTab(QWidget, Ui_Form):
                 self.sync_changes()
                 self.sort_components()
 
+        def edit_quantity_per_unit():
+            if not (selected_component := self.get_selected_component()):
+                return
+
+            new_unit_quantity, ok = QInputDialog.getDouble(self, "Unit Quantity", "Enter a new unit quantity:", value=selected_component.get_category_quantity(self.category), min=0)
+            if new_unit_quantity and ok:
+                selected_component.set_category_quantity(self.category, new_unit_quantity)
+                self.components_inventory.save()
+                self.sync_changes()
+                self.sort_components()
+
+        def edit_quantity_in_stock():
+            if not (selected_component := self.get_selected_component()):
+                return
+
+            new_quantity_in_stock, ok = QInputDialog.getDouble(self, "Quantity in Stock", "Enter a new quantity in stock:", value=selected_component.quantity)
+            if new_quantity_in_stock and ok:
+                try:
+                    new_quantity_in_stock = float(
+                        sympy.sympify(
+                            new_quantity_in_stock,
+                            evaluate=True,
+                        )
+                    )
+                except sympy.SympifyError:
+                    msg = QMessageBox(self)
+                    msg.setIcon(QMessageBox.Icon.Warning)
+                    msg.setWindowTitle("Invalid number")
+                    msg.setText("The number you entered is not a valid number.")
+                    msg.setStandardButtons(QMessageBox.StandardButton.Ok)
+                    msg.setDefaultButton(QMessageBox.StandardButton.Ok)
+                    msg.exec()
+                    return
+                selected_component.quantity = new_quantity_in_stock
+                self.components_inventory.save()
+                self.sync_changes()
+                self.sort_components()
+
         action = QAction("Rename Part Number", self)
         action.triggered.connect(rename_part_number)
+        menu.addAction(action)
+
+        action = QAction("Edit Quantity per Unit", self)
+        action.triggered.connect(partial(edit_quantity_per_unit))
+        menu.addAction(action)
+
+        action = QAction("Edit Quantity in Stock", self)
+        action.triggered.connect(partial(edit_quantity_in_stock))
         menu.addAction(action)
 
         action = QAction("Print Selected Parts", self)
