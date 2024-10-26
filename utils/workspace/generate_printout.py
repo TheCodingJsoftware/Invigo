@@ -56,10 +56,10 @@ class CoverPage:
                         <input type="number" id="PO-number" value={int(self.PO_number)}>
                         <label>PO Number</label>
                     </div>
-                    <div class="field prefix border s4">
+                    <div class="field label prefix border s4">
                         <i>today</i>
                         <input type="text">
-                        <span class="helper">Date Shipped</span>
+                        <label>Date Shipped</label>
                     </div>
                     <div class="field label prefix border s4">
                         <i>date_range</i>
@@ -873,6 +873,8 @@ class WorkspaceJobPrintout:
 class WorkorderPrintout:
     def __init__(self, nests: list[Nest], workorder_id: str, should_include_qr_to_workorder: bool, printout_type: Literal["QUOTE", "WORKORDER", "PACKINGSLIP"] = "WORKORDER"):
         self.nests = nests
+        for nest in self.nests:
+            nest.sort_laser_cut_parts()
         self.sorted_nests = natsorted(self.nests, key=lambda nest: nest.get_name())
         self.sorted_nests_reversed = natsorted(self.nests, key=lambda nest: nest.get_name(), reverse=True)
 

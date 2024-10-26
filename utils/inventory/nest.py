@@ -1,5 +1,7 @@
 from typing import Union
 
+from natsort import natsorted
+
 from utils.inventory.laser_cut_inventory import LaserCutInventory
 from utils.inventory.laser_cut_part import LaserCutPart
 from utils.inventory.sheet import Sheet
@@ -63,6 +65,9 @@ class Nest:
 
     def get_name(self) -> str:
         return f"{self.sheet.thickness} {self.sheet.material} {self.get_sheet_dimension()} {self.name}"
+
+    def sort_laser_cut_parts(self):
+        self.laser_cut_parts = natsorted(self.laser_cut_parts, key=lambda laser_cut_part: laser_cut_part.part_number)
 
     def load_data(self, data: dict[str, float | int | str | dict[str, float | str]]):
         self.name = data.get("name", "")
