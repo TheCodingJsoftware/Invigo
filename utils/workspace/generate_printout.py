@@ -11,6 +11,8 @@ from utils.ip_utils import get_server_ip_address, get_server_port
 from utils.workspace.assembly import Assembly
 from utils.workspace.job import Job
 
+from natsort import natsorted
+
 
 class Head:
     def __init__(self, title: str, description: str) -> None:
@@ -871,6 +873,9 @@ class WorkspaceJobPrintout:
 class WorkorderPrintout:
     def __init__(self, nests: list[Nest], workorder_id: str, should_include_qr_to_workorder: bool, printout_type: Literal["QUOTE", "WORKORDER", "PACKINGSLIP"] = "WORKORDER"):
         self.nests = nests
+        self.sorted_nests = natsorted(self.nests, key=lambda nest: nest.get_name())
+        self.sorted_nests_reversed = natsorted(self.nests, key=lambda nest: nest.get_name(), reverse=True)
+
         self.workorder_id = workorder_id
         self.printout_type = printout_type
         self.program_directory = os.path.dirname(os.path.realpath(sys.argv[0]))
@@ -916,13 +921,13 @@ class WorkorderPrintout:
             workorder_id = WorkorderID(self.workorder_id)
             html += workorder_id.generate()
 
-        sheets_table = NestsTable(self.nests)
+        sheets_table = NestsTable(self.sorted_nests)
         html += sheets_table.generate()
 
-        nests_table = SheetImages(self.nests)
+        nests_table = SheetImages(self.sorted_nests)
         html += nests_table.generate()
 
-        nested_parts = NestedLaserCutParts(self.nests)
+        nested_parts = NestedLaserCutParts(self.sorted_nests_reversed)
         html += nested_parts.generate()
 
         html += nests_table.generate_laser_cut_part_popups()
