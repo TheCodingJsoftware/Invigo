@@ -4,48 +4,31 @@ from datetime import datetime, timedelta
 from functools import partial
 
 from natsort import natsorted
-from PyQt6.QtCore import QAbstractTableModel, QDate, QDateTime, QEasingCurve, QEvent, QMargins, QMimeData, QModelIndex, QPoint, QPropertyAnimation, QRect, QRegularExpression, QSize, QSortFilterProxyModel, Qt, QTimer, QUrl, pyqtProperty, pyqtSignal
-from PyQt6.QtGui import QBrush, QColor, QCursor, QDrag, QDragEnterEvent, QDragLeaveEvent, QDragMoveEvent, QDropEvent, QFileSystemModel, QFont, QIcon, QKeySequence, QMouseEvent, QPainter, QPalette, QPixmap, QRegularExpressionValidator, QStandardItem, QStandardItemModel, QTextCharFormat
+from PyQt6.QtCore import QDateTime, QEasingCurve, QEvent, QMimeData, QModelIndex, QPoint, QPropertyAnimation, QRegularExpression, QSortFilterProxyModel, Qt, QTimer, pyqtProperty, pyqtSignal
+from PyQt6.QtGui import QColor, QCursor, QDrag, QDragEnterEvent, QDropEvent, QFileSystemModel, QFont, QIcon, QMouseEvent, QRegularExpressionValidator
 from PyQt6.QtWidgets import (
     QAbstractItemView,
-    QAbstractSpinBox,
-    QApplication,
-    QCalendarWidget,
     QCheckBox,
     QComboBox,
     QDoubleSpinBox,
-    QGraphicsDropShadowEffect,
-    QGridLayout,
     QGroupBox,
     QHBoxLayout,
-    QHeaderView,
     QLabel,
     QLineEdit,
     QPlainTextEdit,
     QPushButton,
     QScrollArea,
     QSizePolicy,
-    QSpinBox,
-    QSplashScreen,
     QStackedWidget,
-    QStyle,
-    QStyledItemDelegate,
-    QStyleOptionComboBox,
-    QStylePainter,
-    QTableView,
     QTableWidget,
-    QTabWidget,
     QTreeView,
-    QTreeWidget,
-    QTreeWidgetItem,
     QVBoxLayout,
     QWidget,
 )
 
 from ui.icons import Icons
 from ui.theme import theme_var
-from utils.colors import darken_color, get_contrast_text_color, lighten_color
-from utils.workspace.assembly import Assembly
+from utils.colors import get_contrast_text_color, lighten_color
 
 
 class PreviousQuoteItem(QGroupBox):

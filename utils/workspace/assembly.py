@@ -29,6 +29,7 @@ class Assembly:
         self.laser_cut_parts: list[LaserCutPart] = []
         self.components: list[Component] = []
         self.sub_assemblies: list[Assembly] = []
+        self.not_part_of_process = False
 
         # Paint Items
         self.uses_primer: bool = False
@@ -49,14 +50,14 @@ class Assembly:
         self.powder_transfer_efficiency: float = 66.67
         self.cost_for_powder_coating: float = 0.0
 
-        self.starting_date: str = ""
-        self.ending_date: str = ""
-        self.expected_time_to_complete: int = 0
+        self.starting_date = ""
+        self.ending_date = ""
+        self.expected_time_to_complete = 0
         self.flowtag: Flowtag = None
-        self.current_flow_tag_index: int = 0
-        self.current_flow_tag_status_index: int = 0
+        self.current_flow_tag_index = 0
+        self.current_flow_tag_status_index = 0
         self.assembly_image: str = None
-        self.quantity: int = 1
+        self.quantity = 1
 
         self.timer: FlowtagTimer = None
         self.flowtag_data: FlowtagData = None
@@ -155,6 +156,13 @@ class Assembly:
             assemblies.extend(sub_assembly.get_all_sub_assemblies())
         return assemblies
 
+    def get_all_laser_cut_parts(self) -> list[LaserCutPart]:
+        return self.laser_cut_parts + [
+            part
+            for sub_assembly in self.get_all_sub_assemblies()
+            for part in sub_assembly.laser_cut_parts
+        ]
+
     def get_expected_time_to_complete(self) -> int:
         total_time: int = 0
         for laser_cut_part in self.laser_cut_parts:
@@ -178,6 +186,7 @@ class Assembly:
         self.assembly_files = assembly_data.get("assembly_files", [])
         self.quantity = assembly_data.get("quantity", 1)
         self.color = assembly_data.get("color", theme_var("primary"))
+        self.not_part_of_process = assembly_data.get("not_part_of_process", False)
         # If deepcopy is not done, than a reference is kept in the original object it was copied from
         # and then it messes everything up, specifically it will mess up laser cut parts
         # when you add a job to workspace
@@ -240,6 +249,7 @@ class Assembly:
                 "ending_date": self.ending_date,
                 "assembly_image": self.assembly_image,
                 "quantity": self.quantity,
+                "not_part_of_process": self.not_part_of_process,
                 "uses_primer": self.uses_primer,
                 "primer_name": None if self.primer_name == "None" else self.primer_name,
                 "primer_overspray": self.primer_overspray,

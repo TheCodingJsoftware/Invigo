@@ -12,6 +12,7 @@ from ui.custom.assembly_quoting_widget import AssemblyQuotingWidget
 from ui.custom.job_flowtag_timeline_widget import JobFlowtagTimelineWidget
 from ui.custom_widgets import AssemblyMultiToolBox, MultiToolBox, QLineEdit
 from ui.dialogs.add_assembly_dialog import AddAssemblyDialog
+from ui.dialogs.laser_cut_parts_list_summary_dialog import LaserCutPartsListSummaryDialog
 from ui.icons import Icons
 from ui.theme import theme_var
 from ui.widgets.job_widget_UI import Ui_Form
@@ -174,6 +175,8 @@ class JobWidget(QWidget, Ui_Form):
         self.dateEdit_end.wheelEvent = lambda event: self.parent.wheelEvent(event)
         self.textEdit_ship_to.setText(self.job.ship_to)
         self.textEdit_ship_to.textChanged.connect(self.job_settings_changed)
+
+        self.pushButton_show_parts_list_summary.clicked.connect(self.show_parts_list_summary)
 
         self.assemblies_layout.setAlignment(Qt.AlignmentFlag.AlignTop)
 
@@ -548,6 +551,10 @@ QPushButton:checked:pressed#assembly_button_drop_menu {{
             self.treeWidget_nest_summary.expandAll()
             self.treeWidget_nest_summary.resizeColumnToContents(0)
             self.treeWidget_nest_summary.resizeColumnToContents(1)
+
+    def show_parts_list_summary(self):
+        dialog = LaserCutPartsListSummaryDialog(self.job.assemblies, self)
+        dialog.show()
 
     def match_item_to_sheet_toggled(self):
         self.price_calculator.match_item_cogs_to_sheet = self.pushButton_item_to_sheet.isChecked()

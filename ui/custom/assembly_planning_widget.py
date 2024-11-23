@@ -7,7 +7,7 @@ from typing import Optional, Union, override
 
 from PyQt6.QtCore import Qt
 from PyQt6.QtGui import QAction, QCursor, QFont, QPixmap
-from PyQt6.QtWidgets import QApplication, QComboBox, QDoubleSpinBox, QHBoxLayout, QLineEdit, QMenu, QMessageBox, QScrollArea, QTableWidgetItem, QWidget
+from PyQt6.QtWidgets import QApplication, QComboBox, QHBoxLayout, QLineEdit, QMenu, QMessageBox, QScrollArea, QTableWidgetItem, QWidget
 
 from ui.custom.assembly_file_drop_widget import AssemblyFileDropWidget
 from ui.custom.assembly_image import AssemblyImage
@@ -15,7 +15,7 @@ from ui.custom.assembly_paint_settings_widget import AssemblyPaintSettingsWidget
 from ui.custom.assembly_paint_widget import AssemblyPaintWidget
 from ui.custom.components_planning_table_widget import ComponentsPlanningTableWidget, ComponentsTableColumns
 from ui.custom.file_button import FileButton
-from ui.custom.flowtag_data_widget import FlowtagDataButton, FlowtagDataWidget
+from ui.custom.flowtag_data_widget import FlowtagDataButton
 from ui.custom.laser_cut_part_file_drop_widget import LaserCutPartFileDropWidget
 from ui.custom.laser_cut_part_paint_settings_widget import LasserCutPartPaintSettingsWidget
 from ui.custom.laser_cut_part_paint_widget import LaserCutPartPaintWidget
@@ -768,6 +768,10 @@ class AssemblyPlanningWidget(AssemblyWidget):
         )
         file_name = os.path.basename(file_path)
         file_ext = file_name.split(".")[-1].upper()
+        if 'dxf' in file_ext.lower():
+            laser_cut_part.file_name = file_name.split(".")[0]
+            current_row = self.laser_cut_part_table_items[laser_cut_part]["row"]
+            self.laser_cut_parts_table.item(current_row, LaserCutTableColumns.PART_NAME.value).setText(laser_cut_part.file_name)
         file_button.setText(file_ext)
         file_button.setToolTip(file_path)
         file_button.setToolTipDuration(0)

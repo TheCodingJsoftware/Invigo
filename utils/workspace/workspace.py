@@ -96,19 +96,29 @@ class Workspace:
         for job in self.jobs:
             assemblies.extend(job.get_all_assemblies())
         return assemblies
-
     def get_filtered_assemblies(self, job: Job) -> list[Assembly]:
         assemblies: list[Assembly] = []
         for assembly in job.get_all_assemblies():
-            if assembly.is_assembly_finished():
-                continue
-            if not assembly.all_laser_cut_parts_complete():
-                continue
-            if not assembly.all_sub_assemblies_complete():
-                continue
-            if current_tag := assembly.get_current_tag():
-                if current_tag.name != self.workspace_filter.current_tag:
+            # For assemblies marked as not part of process, show them when their parts are complete
+            # until their parent assembly is finished
+            if assembly.not_part_of_process:
+                if not assembly.all_laser_cut_parts_complete() or not assembly.all_sub_assemblies_complete():
                     continue
+                # Get parent assembly and check if it's finished
+                parent = assembly.parent_assembly
+                if parent and parent.is_assembly_finished():
+                    continue
+            else:
+                # Normal assembly filtering
+                if assembly.is_assembly_finished():
+                    continue
+                if not assembly.all_laser_cut_parts_complete():
+                    continue
+                if not assembly.all_sub_assemblies_complete():
+                    continue
+                if current_tag := assembly.get_current_tag():
+                    if current_tag.name != self.workspace_filter.current_tag:
+                        continue
 
             if any(self.workspace_filter.paint_filter.values()):
                 paints = assembly.get_all_paints()

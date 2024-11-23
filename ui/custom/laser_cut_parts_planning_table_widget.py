@@ -75,3 +75,18 @@ class LaserCutPartsPlanningTableWidget(CustomTableWidget):
             self.setHorizontalHeaderItem(column, QTableWidgetItem(header))
 
         self.setStyleSheet("border-color: transparent;")
+
+    def hide_columns(self, columns: list[LaserCutTableColumns]):
+        for column in columns:
+            self.setColumnHidden(column.value, True)
+
+    def show_columns(self, columns: list[LaserCutTableColumns]):
+        for column in columns:
+            self.setColumnHidden(column.value, False)
+
+    def get_columns_visibility(self) -> list[bool]:
+        return [self.isColumnHidden(i) for i in range(self.columnCount())]
+
+    def set_columns_visibility(self, visibility: list[bool]):
+        for i, visible in enumerate(visibility):
+            self.setColumnHidden(i, visible)

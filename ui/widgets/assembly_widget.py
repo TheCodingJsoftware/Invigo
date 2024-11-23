@@ -6,6 +6,7 @@ from PyQt6.QtGui import QColor, QCursor
 from PyQt6.QtWidgets import QMenu, QPushButton, QTableWidget, QTableWidgetItem, QVBoxLayout, QWidget
 
 from ui.dialogs.add_assembly_dialog import AddAssemblyDialog
+from ui.dialogs.laser_cut_parts_list_summary_dialog import LaserCutPartsListSummaryDialog
 from ui.theme import theme_var
 from ui.widgets.assembly_widget_UI import Ui_Form
 from ui.windows.image_viewer import QImageViewer
@@ -55,6 +56,11 @@ background-color: {theme_var('surface')};
         self.apply_stylesheet_to_toggle_buttons(self.pushButton_sub_assemblies, self.sub_assemblies_widget)
         self.doubleSpinBox_quantity.wheelEvent = lambda event: self.parent.wheelEvent(event)
         self.sub_assembly_layout.setAlignment(Qt.AlignmentFlag.AlignTop)
+
+        self.checkBox_not_part_of_process.setChecked(self.assembly.not_part_of_process)
+        self.checkBox_not_part_of_process.clicked.connect(self.changes_made)
+
+        self.pushButton_show_parts_list_summary.clicked.connect(self.show_parts_list_summary)
 
     def apply_stylesheet_to_toggle_buttons(self, button: QPushButton, widget: QWidget):
         base_color = self.assembly.color
@@ -113,6 +119,10 @@ background-color: {theme_var('surface')};
             }}"""
         )
 
+    def show_parts_list_summary(self):
+        dialog = LaserCutPartsListSummaryDialog([self.assembly], self)
+        dialog.show()
+
     def open_assembly_image(self):
         self.open_image(self.assembly.assembly_image, self.assembly.name)
 
@@ -145,6 +155,7 @@ background-color: {theme_var('surface')};
         self.parent.update_context_menu()
 
     def changes_made(self):
+        self.assembly.not_part_of_process = self.checkBox_not_part_of_process.isChecked()
         self.parent.changes_made()
 
     def clear_layout(self, layout: QVBoxLayout | QWidget):

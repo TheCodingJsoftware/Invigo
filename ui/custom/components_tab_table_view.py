@@ -6,8 +6,8 @@ from typing import TYPE_CHECKING
 
 import sympy
 from PyQt6.QtCore import QAbstractTableModel, QDate, QModelIndex, Qt, pyqtSignal, QSize
-from PyQt6.QtGui import QFont, QPainter
-from PyQt6.QtWidgets import QComboBox, QDateEdit, QHBoxLayout, QMessageBox, QPushButton, QSizePolicy, QStyledItemDelegate, QStyleOptionViewItem, QTableView, QVBoxLayout, QWidget, QPlainTextEdit, QAbstractItemView
+from PyQt6.QtGui import QFont
+from PyQt6.QtWidgets import QComboBox, QDateEdit, QHBoxLayout, QMessageBox, QPushButton, QStyledItemDelegate, QTableView, QVBoxLayout, QWidget, QPlainTextEdit, QAbstractItemView
 
 from ui.custom_widgets import OrderStatusButton
 from ui.dialogs.set_component_order_pending_dialog import SetComponentOrderPendingDialog
