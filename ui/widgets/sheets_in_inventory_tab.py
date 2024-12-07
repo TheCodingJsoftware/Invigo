@@ -151,6 +151,7 @@ class OrderWidget(QWidget):
                 old_quantity = self.sheet.quantity
                 new_quantity = old_quantity + quantity_to_add
                 self.sheet.quantity = new_quantity
+                self.sheet.has_sent_warning = False
                 self.sheet.latest_change_quantity = f"Used: Order pending - add quantity\nChanged from {old_quantity} to {new_quantity} at {datetime.now().strftime('%B %d %A %Y %I:%M:%S %p')}"
                 order.quantity = remaining_quantity
                 if remaining_quantity <= 0:
@@ -554,6 +555,7 @@ class SheetsInInventoryTab(QWidget, Ui_Form):
             )
         )
         if old_quantity != sheet.quantity:
+            sheet.has_sent_warning = False
             sheet.latest_change_quantity = f'{os.getlogin().title()} - Manually set to {sheet.quantity} from {old_quantity} quantity at {str(datetime.now().strftime("%B %d %A %Y %I:%M:%S %p"))}'
         sheet.notes = self.table_sheets_widgets[sheet]["notes"].text()
         sheet.material = self.table_sheets_widgets[sheet]["material"].currentText()
