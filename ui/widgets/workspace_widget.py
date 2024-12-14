@@ -162,7 +162,7 @@ class WorkspaceWidget(QWidget, Ui_Form):
         table_widget.setCellWidget(current_row, WorkspacePartsTableColumns.PAINT.value, paint_item)
 
         # QUANTITY
-        quantity_item = QTableWidgetItem(f"{group.get_quantity()}")
+        quantity_item = QTableWidgetItem(f"{group.get_count()}")
         quantity_item.setFont(self.tables_font)
         quantity_item.setTextAlignment(Qt.AlignmentFlag.AlignCenter)
         table_widget.setItem(current_row, WorkspacePartsTableColumns.QUANTITY.value, quantity_item)
@@ -238,7 +238,7 @@ class WorkspaceWidget(QWidget, Ui_Form):
         self.parts_tree_index.update({id(part_tree_widget_item): group})
         part_tree_widget_item.setText(WorkspacePartsTreeColumns.PART_NAME.value, group.base_part.name)
         part_tree_widget_item.setText(WorkspacePartsTreeColumns.MATERIAL.value, f"{group.base_part.gauge} {group.base_part.material}")
-        part_tree_widget_item.setText(WorkspacePartsTreeColumns.QUANTITY.value, f"{group.get_quantity():,.2f}")
+        part_tree_widget_item.setText(WorkspacePartsTreeColumns.QUANTITY.value, f"{group.get_count():,.2f}")
 
         if inventory_part := self.laser_cut_inventory.get_laser_cut_part_by_name(group.base_part.name):
             quantity_in_stock = inventory_part.quantity
@@ -319,7 +319,7 @@ class WorkspaceWidget(QWidget, Ui_Form):
             self.workspace.save()
             self.sync_changes()
         else:
-            dialog = RecutDialog(f"Recut: {laser_cut_part_group.base_part.name}", laser_cut_part_group.get_quantity(), self)
+            dialog = RecutDialog(f"Recut: {laser_cut_part_group.base_part.name}", laser_cut_part_group.get_count(), self)
             if dialog.exec():
                 if not (recut_count := dialog.get_quantity()):
                     return
@@ -343,7 +343,7 @@ class WorkspaceWidget(QWidget, Ui_Form):
             self.workspace.save()
             self.sync_changes()
         else:
-            dialog = RecutDialog(f"Recoat: {laser_cut_part_group.base_part.name}", laser_cut_part_group.get_quantity(), self)
+            dialog = RecutDialog(f"Recoat: {laser_cut_part_group.base_part.name}", laser_cut_part_group.get_count(), self)
             if dialog.exec():
                 if not (recut_count := dialog.get_quantity()):
                     return

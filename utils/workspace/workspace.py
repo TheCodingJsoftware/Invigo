@@ -230,9 +230,9 @@ class Workspace:
         elif self.workspace_filter.sorting_method == SortingMethod.Z_TO_A:
             grouped_laser_cut_parts.sort(key=lambda group: group.base_part.name, reverse=True)
         elif self.workspace_filter.sorting_method == SortingMethod.MOST_TO_LEAST:
-            grouped_laser_cut_parts.sort(key=lambda group: group.get_quantity(), reverse=True)
+            grouped_laser_cut_parts.sort(key=lambda group: group.get_count(), reverse=True)
         elif self.workspace_filter.sorting_method == SortingMethod.LEAST_TO_MOST:
-            grouped_laser_cut_parts.sort(key=lambda group: group.get_quantity())
+            grouped_laser_cut_parts.sort(key=lambda group: group.get_count())
         elif self.workspace_filter.sorting_method == SortingMethod.HEAVY_TO_LIGHT:
             grouped_laser_cut_parts.sort(key=lambda group: group.base_part.weight, reverse=True)
         elif self.workspace_filter.sorting_method == SortingMethod.LIGHT_TO_HEAVY:

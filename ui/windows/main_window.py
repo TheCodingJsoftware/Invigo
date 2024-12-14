@@ -100,7 +100,7 @@ from utils.workspace.workspace import Workspace
 from utils.workspace.workspace_laser_cut_part_group import WorkspaceLaserCutPartGroup
 from utils.workspace.workspace_settings import WorkspaceSettings
 
-__version__: str = "v3.5.26"
+__version__: str = "v3.5.27"
 
 
 def check_folders(folders: list[str]):
@@ -2795,7 +2795,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             for nest_laser_cut_part in nest.laser_cut_parts:
                 for workspace_laser_cut_part_group in all_workspace_laser_part_groups:
                     if workspace_laser_cut_part_group.base_part.name == nest_laser_cut_part.name and "laser" in workspace_laser_cut_part_group.get_current_tag().name.lower():
-                        workorder_quantity = workspace_laser_cut_part_group.get_quantity()
+                        workorder_quantity = workspace_laser_cut_part_group.get_count()
                         nest_quantity = nest_laser_cut_part.quantity_in_nest * nest.sheet_count
                         workorder_remaining_quantity = nest_quantity - workorder_quantity
                         workspace_laser_cut_part_group.move_to_next_process(workorder_quantity)

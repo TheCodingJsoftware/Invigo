@@ -12,6 +12,7 @@ from utils.workspace.flowtag_data import FlowtagData
 from utils.workspace.flowtag_timer import FlowtagTimer
 from utils.workspace.tag import Tag
 from utils.workspace.workspace_settings import WorkspaceSettings
+from utils.workspace.workspace_laser_cut_part_group import WorkspaceLaserCutPartGroup
 
 if TYPE_CHECKING:
     from utils.workspace.job import Job

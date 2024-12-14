@@ -102,8 +102,14 @@ class WorkspaceLaserCutPartGroup:
         for i in range(quantity):
             self.laser_cut_parts[i].move_to_next_process()
 
-    def get_quantity(self) -> int:
+    def get_count(self) -> int:
         return len(self.laser_cut_parts)
+
+    def get_quantity(self) -> int:
+        quantity = 0
+        for laser_cut_part in self:
+            quantity += laser_cut_part.quantity
+        return quantity
 
     def __iter__(self) -> Iterator[LaserCutPart]:
         return iter(self.laser_cut_parts)
